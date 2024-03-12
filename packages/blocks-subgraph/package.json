@@ -1,7 +1,7 @@
 {
     "type": "module",
     "private": true,
-    "name": "uniswap-v3-subgraph",
+    "name": "blocks-subgraph",
     "scripts": {
         "codegen": "graph codegen",
         "build:only": "graph build",
