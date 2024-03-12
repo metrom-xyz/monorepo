@@ -1,0 +1,5 @@
+type Block @entity(immutable: true) {
+    id: Bytes!
+    number: BigInt!
+    timestamp: BigInt!
+}

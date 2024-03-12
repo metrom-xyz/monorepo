@@ -1,0 +1,24 @@
+{
+    "$schema": "https://turbo.build/schema.json",
+    "pipeline": {
+        "build": {
+            "dependsOn": ["^build"],
+            "outputs": ["build/**", "generated/**"]
+        },
+        "test": {
+            "dependsOn": ["^build"],
+            "inputs": [
+                "src/**/*.{ts,tsx}",
+                "tests/**/*.{ts,tsx}",
+                "src/**/*.test.{ts,tsx}"
+            ]
+        },
+        "size-limit": {
+            "dependsOn": ["^build", "build"],
+            "outputs": ["build/**", "generated/**"]
+        },
+        "lint": {},
+        "format": {}
+    },
+    "globalEnv": ["NODE_ENV"]
+}

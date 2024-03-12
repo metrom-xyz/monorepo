@@ -1,0 +1,27 @@
+{
+    "type": "module",
+    "private": true,
+    "scripts": {
+        "changeset:publish": "pnpm build && changeset publish",
+        "lint": "turbo run lint",
+        "format": "turbo run format",
+        "build": "turbo run build",
+        "test": "turbo run test",
+        "commitlint": "commitlint -e",
+        "prepare": "husky"
+    },
+    "devDependencies": {
+        "@changesets/cli": "^2.27.1",
+        "@commitlint/cli": "^19.0.2",
+        "@commitlint/config-conventional": "^19.0.0",
+        "@typescript-eslint/eslint-plugin": "^7.1.1",
+        "@typescript-eslint/parser": "^7.1.1",
+        "eslint": "^8.57.0",
+        "eslint-config-prettier": "^9.1.0",
+        "eslint-config-turbo": "^1.12.5",
+        "eslint-plugin-prettier": "^5.1.3",
+        "husky": "^9.0.11",
+        "prettier": "^3.2.5",
+        "turbo": "^1.12.4"
+    }
+}

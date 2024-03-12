@@ -1,0 +1,25 @@
+specVersion: 1.0.0
+indexerHints:
+  prune: never
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum
+    name: Placeholder
+    network: gnosis
+    source:
+      abi: Placeholder
+      address: "0x0000000000000000000000000000000000000000"
+      startBlock: 32891204
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      file: ./src/mappings.ts
+      entities:
+        - Block
+      abis:
+        - name: Placeholder
+          file: ./abis/Placeholder.json
+      blockHandlers:
+        - handler: handleBlock
