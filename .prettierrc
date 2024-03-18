@@ -11,6 +11,12 @@
                 "proseWrap": "always",
                 "tabWidth": 2
             }
+        },
+        {
+            "files": ["*.json", ".eslintrc", ".prettierrc"],
+            "options": {
+                "trailingComma": "none"
+            }
         }
     ]
 }
