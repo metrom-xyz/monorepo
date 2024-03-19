@@ -69,43 +69,24 @@ export default {
     theme: {
         fontFamily: {
             inter: ["Inter", "sans-serif"],
-            // mono: ["IBM Plex Mono", "ui-monospace", "monospace"],
         },
         colors: {
             // primary
-            orange: "#EF692B",
             green: "#6CFF95",
             // secondary
-            "orange-dark": "#D6602A",
             "green-dark": "#359650",
-            yellow: "#F6FB18",
-            "sky-blue": "#22BDD5",
-            blue: "#0029FF",
-            magenta: "#CF2CF6",
-            pink: "#EA33A8",
-            red: "#EA392A",
             // neutrals
             transparent: "transparent",
             current: "currentColor",
             white: "#ffffff",
             black: "#000000",
             gray: {
-                // 400: "#E7E7E7",
-                // 300: "#656363",
-                // 200: "#F8F7FC",
-                // 100: "#E6E6E6",
-
-                400: "#656363",
-                300: "#F8F7FC",
-                200: "#E6E6E6",
-                100: "#E7E7E7",
-                // 700: "#272727",
-                // 600: "#616161",
-                // 500: "#828282",
-                // 400: "#B3B3B3",
-                // 300: "#CBCBCB",
-                // 200: "#E9E9E9",
-                // 100: "#F6F6F6",
+                600: "#656363",
+                500: "#DEDEDE",
+                400: "#E6E6E6",
+                300: "#E7E7E7",
+                200: "#F5F0F0",
+                100: "#F8F7FC",
             },
         },
         fontSize: {

@@ -27,7 +27,7 @@ import MuiTypography from "./ui/typography/MuiTypography.vue";
 </template>
 <style>
 .app__container {
-    @apply h-screen flex flex-col gap-14 items-center py-8 px-12 bg-gray-100 bg-3 bg-dots;
+    @apply min-h-screen flex flex-col gap-14 items-center py-8 px-12 bg-gray-300 bg-3 bg-dots;
 }
 
 .app__header {
