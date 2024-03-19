@@ -110,12 +110,12 @@ const attrs = useAttrs();
         font-inter
         font-normal
         focus:outline-none
-        placeholder-gray-400
+        placeholder-gray-600
         border-2
         border-transparent
         text-black
         focus:border-green
-        bg-gray-300;
+        bg-gray-100;
 }
 
 .mui_base_input_wrapper__container__xs > input {
@@ -143,7 +143,7 @@ const attrs = useAttrs();
 }
 
 .mui_base_input_wrapper__container__loading > input {
-    @apply bg-gray-300 animate-pulse;
+    @apply bg-gray-100 animate-pulse;
 }
 
 .mui_base_input_wrapper__icon {
