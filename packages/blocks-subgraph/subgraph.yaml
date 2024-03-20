@@ -6,11 +6,11 @@ schema:
 dataSources:
   - kind: ethereum
     name: Placeholder
-    network: gnosis
+    network: celo-alfajores
     source:
       abi: Placeholder
       address: "0x0000000000000000000000000000000000000000"
-      startBlock: 32891204
+      startBlock: 23112411
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
