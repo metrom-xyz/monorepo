@@ -19,17 +19,10 @@ export interface SupportedChain extends Chain {
         ensUniversalResolver?: ChainContract;
         multicall3: ChainContract;
         factory: ChainContract;
-        kpiTokensManager: ChainContract;
-        oraclesManager: ChainContract;
     };
     subgraphUrl?: string;
 }
 
 export interface MetromChain extends SupportedChain {
     icon: ChainIconData;
-}
-
-export const enum ChainId {
-    Gnosis,
-    Celo,
 }
