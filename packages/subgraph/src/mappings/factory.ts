@@ -114,11 +114,11 @@ export function handleSetFee(event: SetFee): void {
     factory.fee = event.params.fee;
     factory.save();
 
-    let setFeeReceiverEvent = new SetFeeEvent(getEventId(event));
-    setFeeReceiverEvent.transaction = getOrCreateTransaction(event).id;
-    setFeeReceiverEvent.factory = factory.id;
-    setFeeReceiverEvent.fee = event.params.fee;
-    setFeeReceiverEvent.save();
+    let setFeeEvent = new SetFeeEvent(getEventId(event));
+    setFeeEvent.transaction = getOrCreateTransaction(event).id;
+    setFeeEvent.factory = factory.id;
+    setFeeEvent.fee = event.params.fee;
+    setFeeEvent.save();
 }
 
 export function handleCreate(event: Create): void {

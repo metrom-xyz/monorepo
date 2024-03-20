@@ -33,7 +33,7 @@ type Factory @entity {
     updater: Bytes!
     implementation: Bytes!
     feeReceiver: Bytes!
-    fee: Int!
+    fee: BigInt!
     campaignsAmount: BigInt!
 
     campaigns: [Campaign!]! @derivedFrom(field: "factory")
@@ -84,7 +84,7 @@ type SetFeeEvent @entity(immutable: true) {
     id: Bytes!
     transaction: Transaction!
     factory: Factory!
-    fee: Int!
+    fee: BigInt!
 }
 
 type Campaign @entity {
@@ -92,7 +92,9 @@ type Campaign @entity {
     factory: Factory!
     owner: Bytes!
     pendingOwner: Bytes!
-    specificationHash: Bytes!
+    pool: Bytes!
+    from: BigInt!
+    to: BigInt!
     treeRoot: Bytes!
     dataHash: Bytes!
 

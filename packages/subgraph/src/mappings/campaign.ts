@@ -45,7 +45,9 @@ export function handleInitialize(event: Initialize): void {
     campaign.factory = getFactoryOrThrow().id;
     campaign.owner = event.params.owner;
     campaign.pendingOwner = Address.zero();
-    campaign.specificationHash = event.params.specificationHash;
+    campaign.pool = event.params.pool;
+    campaign.from = event.params.from;
+    campaign.to = event.params.to;
     campaign.treeRoot = Bytes.empty();
     campaign.dataHash = Bytes.empty();
     campaign.save();

@@ -6,11 +6,11 @@ schema:
 dataSources:
   - kind: ethereum
     name: Factory
-    network: celo
+    network: celo-alfajores
     source:
       abi: Factory
-      address: "0xAfE208a311B21f13EF87E33A90049fC17A7acDEc"
-      startBlock: 13916355
+      address: "0xe82c4D8b993D613a28600B953e91A3A93Ae69Fd6"
+      startBlock: 23111863
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
@@ -27,9 +27,9 @@ dataSources:
         - Transaction
       abis:
         - name: Factory
-          file: "./node_modules/@metrom-xyz/contracts/dist/abis/MetromCampaignFactory.json"
+          file: ./node_modules/@metrom-xyz/contracts/dist/abis/MetromCampaignFactory.json
       eventHandlers:
-        - event: Initialize(indexed address,address,address,address,uint16)
+        - event: Initialize(indexed address,address,address,address,uint32)
           handler: handleInitialize
         - event: TransferOwnership(indexed address)
           handler: handleTransferOwnership
@@ -43,12 +43,12 @@ dataSources:
           handler: handleSetImplementation
         - event: SetFeeReceiver(indexed address)
           handler: handleSetFeeReceiver
-        - event: SetFee(uint16)
+        - event: SetFee(uint32)
           handler: handleSetFee
 templates:
   - kind: ethereum/contract
     name: Campaign
-    network: celo
+    network: celo-alfajores
     source:
       abi: Campaign
     mapping:
@@ -68,7 +68,7 @@ templates:
         - Transaction
       abis:
         - name: Campaign
-          file: "./node_modules/@metrom-xyz/contracts/dist/abis/MetromCampaign.json"
+          file: ./node_modules/@metrom-xyz/contracts/dist/abis/MetromCampaign.json
         - name: Erc20
           file: ./abis/Erc20.json
         - name: Erc20BytesName
@@ -76,7 +76,8 @@ templates:
         - name: Erc20BytesSymbol
           file: ./abis/Erc20BytesSymbol.json
       eventHandlers:
-        - event: Initialize(address,bytes32,address,(address,uint256,uint256)[])
+        - event: Initialize(indexed address,indexed
+            address,uint32,uint32,address,(address,uint256,uint256)[])
           handler: handleInitialize
         - event: TransferOwnership(indexed address)
           handler: handleTransferOwnership

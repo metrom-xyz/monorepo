@@ -6,8 +6,8 @@
         "update-addresses": "tsx ./scripts/update-addresses.ts",
         "codegen": "graph codegen",
         "build:only": "graph build",
-        "build": "pnpm update-addresses sepolia && pnpm codegen && graph build",
-        "deploy:sepolia": "pnpm update-addresses sepolia && graph deploy --product hosted-service --network sepolia metrom-xyz/metrom-sepolia",
+        "build": "pnpm update-addresses celo-alfajores && pnpm codegen && graph build",
+        "deploy:celo-alfajores": "pnpm update-addresses celo-alfajores && graph deploy --studio --network celo-alfajores metrom-celo-alfajores",
         "lint": "eslint --ext .js,.ts ./ && prettier --check './**/*.{json,md}'",
         "format": "eslint --fix --ext .js,.ts ./ && prettier --write './**/*.{json,md}'"
     },
@@ -16,7 +16,7 @@
         "@graphprotocol/graph-ts": "0.34.0"
     },
     "devDependencies": {
-        "@metrom-xyz/contracts": "^0.1.5",
+        "@metrom-xyz/contracts": "^0.2.1",
         "@types/node": "^20.11.30",
         "@typescript-eslint/eslint-plugin": "^7.3.1",
         "@typescript-eslint/parser": "^7.3.1",

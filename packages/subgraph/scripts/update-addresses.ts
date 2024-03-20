@@ -1,11 +1,11 @@
 import { existsSync, writeFileSync, rmSync } from "node:fs";
 import { dirname, join } from "node:path";
-import { DEPLOYMENT_ADDRESSES, ChainId } from "@metrom-xyz/contracts";
+import { ADDRESS, SupportedChain } from "@metrom-xyz/contracts";
 import { fileURLToPath } from "node:url";
 import { exec } from "node:child_process";
 
-const NETWORK_NAME: Record<ChainId, string> = {
-    [ChainId.Sepolia]: "sepolia",
+const NETWORK_NAME: Record<SupportedChain, string> = {
+    [SupportedChain.CeloAlfajores]: "celo-alfajores",
 };
 
 const [, , rawNetwork = ""] = process.argv;
@@ -25,7 +25,7 @@ const factoryConfig =
     rawNetwork === "placeholder"
         ? // eslint-disable-next-line @typescript-eslint/no-explicit-any
           ({} as any)
-        : DEPLOYMENT_ADDRESSES[parseInt(entry[0]) as ChainId];
+        : ADDRESS[parseInt(entry[0]) as SupportedChain];
 if (!factoryConfig) {
     console.error(
         `"${network}" is not a valid network. Valid values are: ${Object.values(NETWORK_NAME).join(", ")}`,
@@ -65,7 +65,10 @@ try {
         JSON.stringify(
             {
                 [network]: {
-                    Factory: factoryConfig,
+                    Factory: {
+                        address: factoryConfig.address,
+                        startBlock: factoryConfig.blockCreated,
+                    },
                 },
             },
             undefined,
