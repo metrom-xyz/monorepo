@@ -133,5 +133,4 @@ dist
 generated
 build
 
-networks.json
 src/addresses.ts

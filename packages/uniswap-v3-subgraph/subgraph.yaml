@@ -6,11 +6,11 @@ schema:
 dataSources:
   - kind: ethereum
     name: Factory
-    network: celo
+    network: celo-alfajores
     source:
       abi: Factory
       address: "0xAfE208a311B21f13EF87E33A90049fC17A7acDEc"
-      startBlock: 13916355
+      startBlock: 12360360
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
@@ -33,11 +33,11 @@ dataSources:
           handler: handlePoolCreated
   - kind: ethereum/contract
     name: NonFungiblePositionManager
-    network: celo
+    network: celo-alfajores
     source:
       abi: NonFungiblePositionManager
       address: "0x3d79EdAaBC0EaB6F08ED885C05Fc0B014290D95A"
-      startBlock: 13916373
+      startBlock: 12360382
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
@@ -62,7 +62,7 @@ dataSources:
 templates:
   - kind: ethereum/contract
     name: Pool
-    network: celo
+    network: celo-alfajores
     source:
       abi: Pool
     mapping:

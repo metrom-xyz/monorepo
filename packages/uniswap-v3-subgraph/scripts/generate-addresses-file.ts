@@ -6,19 +6,7 @@ import networks from "../networks.json";
 
 const [, , rawNetwork = ""] = process.argv;
 const network = rawNetwork.toLowerCase();
-const config =
-    network === "placeholder"
-        ? {
-              Factory: {
-                  address: "0x0000000000000000000000000000000000000000",
-                  startBlock: -1,
-              },
-              NonFungiblePositionManager: {
-                  address: "0x0000000000000000000000000000000000000000",
-                  startBlock: -1,
-              },
-          }
-        : networks[network as keyof typeof networks];
+const config = networks[network as keyof typeof networks];
 
 if (!config) {
     console.error(

@@ -1,0 +1,12 @@
+{
+    "celo-alfajores": {
+        "Factory": {
+            "address": "0xAfE208a311B21f13EF87E33A90049fC17A7acDEc",
+            "startBlock": 12360360
+        },
+        "NonFungiblePositionManager": {
+            "address": "0x3d79EdAaBC0EaB6F08ED885C05Fc0B014290D95A",
+            "startBlock": 12360382
+        }
+    }
+}
