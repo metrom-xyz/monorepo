@@ -1,6 +1,16 @@
+type Token @entity(immutable: true) {
+    id: Bytes!
+    name: String!
+    symbol: String!
+    decimals: BigInt!
+}
+
 type Pool @entity {
     id: Bytes!
+    token0: Token!
+    token1: Token!
     tick: BigInt!
+    fee: BigInt!
     positions: [Position!]! @derivedFrom(field: "pool")
     events: [Event!]! @derivedFrom(field: "pool")
 }

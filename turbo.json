@@ -13,10 +13,6 @@
                 "src/**/*.test.{ts,tsx}"
             ]
         },
-        "size-limit": {
-            "dependsOn": ["^build", "build"],
-            "outputs": ["build/**", "generated/**"]
-        },
         "lint": {},
         "format": {}
     },

@@ -18,9 +18,16 @@ dataSources:
       file: ./src/mappings/factory.ts
       entities:
         - Pool
+        - Token
       abis:
         - name: Factory
           file: ./abis/Factory.json
+        - name: Erc20
+          file: ./abis/Erc20.json
+        - name: Erc20BytesName
+          file: ./abis/Erc20BytesName.json
+        - name: Erc20BytesSymbol
+          file: ./abis/Erc20BytesSymbol.json
       eventHandlers:
         - event: Pool(indexed address,indexed address,address)
           handler: handlePoolCreated
@@ -74,6 +81,8 @@ templates:
       eventHandlers:
         - event: Initialize(uint160,int24)
           handler: handleInitialize
+        - event: Fee(uint16)
+          handler: handleFee
         - event: Swap(indexed address,indexed address,int256,int256,uint160,uint128,int24)
           handler: handleSwap
         - event: Mint(address,indexed address,indexed int24,indexed
