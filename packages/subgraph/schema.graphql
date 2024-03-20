@@ -1,0 +1,154 @@
+type Token @entity(immutable: true) {
+    id: Bytes!
+    symbol: String!
+    name: String!
+    decimals: BigInt!
+}
+
+type Transaction @entity(immutable: true) {
+    id: Bytes!
+    blockNumber: BigInt!
+    timestamp: BigInt!
+
+    # factory events
+    transferFactoryOwnershipEvents: [TransferFactoryOwnershipEvent!]! @derivedFrom(field: "transaction")
+    acceptFactoryOwnershipEvents: [AcceptFactoryOwnershipEvent!]! @derivedFrom(field: "transaction")
+    setUpdaterEvents: [SetUpdaterEvent!]! @derivedFrom(field: "transaction")
+    setImplementationEvents: [SetImplementationEvent!]! @derivedFrom(field: "transaction")
+    setFeeReceiverEvents: [SetFeeReceiverEvent!]! @derivedFrom(field: "transaction")
+    setFeeEvents: [SetFeeEvent!]! @derivedFrom(field: "transaction")
+
+    # campaign events
+    transferCampaignOwnershipEvents: [TransferCampaignOwnershipEvent!]! @derivedFrom(field: "transaction")
+    acceptCampaignOwnershipEvents: [AcceptCampaignOwnershipEvent!]! @derivedFrom(field: "transaction")
+    claims: [ClaimEvent!]! @derivedFrom(field: "transaction")
+    treeUpdates: [TreeUpdateEvent!]! @derivedFrom(field: "transaction")
+    recoveries: [RecoverEvent!]! @derivedFrom(field: "transaction")
+}
+
+type Factory @entity {
+    id: Bytes!
+    owner: Bytes!
+    pendingOwner: Bytes!
+    updater: Bytes!
+    implementation: Bytes!
+    feeReceiver: Bytes!
+    fee: Int!
+    campaignsAmount: BigInt!
+
+    campaigns: [Campaign!]! @derivedFrom(field: "factory")
+    transferOwnershipEvents: [TransferFactoryOwnershipEvent!]! @derivedFrom(field: "factory")
+    accceptOwnershipEvents: [AcceptFactoryOwnershipEvent!]! @derivedFrom(field: "factory")
+    setUpdaterEvents: [SetUpdaterEvent!]! @derivedFrom(field: "factory")
+    setImplementationEvents: [SetImplementationEvent!]! @derivedFrom(field: "factory")
+    setFeeReceiverEvents: [SetFeeReceiverEvent!]! @derivedFrom(field: "factory")
+    setFeeEvents: [SetFeeEvent!]! @derivedFrom(field: "factory")
+}
+
+type TransferFactoryOwnershipEvent @entity(immutable: true) {
+    id: Bytes!
+    transaction: Transaction!
+    factory: Factory!
+    owner: Bytes!
+}
+
+type AcceptFactoryOwnershipEvent @entity(immutable: true) {
+    id: Bytes!
+    transaction: Transaction!
+    factory: Factory!
+    owner: Bytes!
+}
+
+type SetUpdaterEvent @entity(immutable: true) {
+    id: Bytes!
+    transaction: Transaction!
+    factory: Factory!
+    updater: Bytes!
+}
+
+type SetImplementationEvent @entity(immutable: true) {
+    id: Bytes!
+    transaction: Transaction!
+    factory: Factory!
+    implementation: Bytes!
+}
+
+type SetFeeReceiverEvent @entity(immutable: true) {
+    id: Bytes!
+    transaction: Transaction!
+    factory: Factory!
+    feeReceiver: Bytes!
+}
+
+type SetFeeEvent @entity(immutable: true) {
+    id: Bytes!
+    transaction: Transaction!
+    factory: Factory!
+    fee: Int!
+}
+
+type Campaign @entity {
+    id: Bytes!
+    factory: Factory!
+    owner: Bytes!
+    pendingOwner: Bytes!
+    specificationHash: Bytes!
+    treeRoot: Bytes!
+    dataHash: Bytes!
+
+    rewards: [Reward!]! @derivedFrom(field: "campaign")
+    
+    transferOwnershipEvents: [TransferCampaignOwnershipEvent!]! @derivedFrom(field: "campaign")
+    accceptOwnershipEvents: [AcceptCampaignOwnershipEvent!]! @derivedFrom(field: "campaign")
+    claimEvents: [ClaimEvent!]! @derivedFrom(field: "campaign")
+    treeUpdateEvents: [TreeUpdateEvent!]! @derivedFrom(field: "campaign")
+    recoverEvents: [RecoverEvent!]! @derivedFrom(field: "campaign")
+}
+
+type Reward @entity {
+    id: Bytes!
+    campaign: Campaign!
+    token: Token!
+    amount: BigInt!
+    unclaimed: BigInt!
+}
+
+type TransferCampaignOwnershipEvent @entity(immutable: true) {
+    id: Bytes!
+    transaction: Transaction!
+    campaign: Campaign!
+    owner: Bytes!
+}
+
+type AcceptCampaignOwnershipEvent @entity(immutable: true) {
+    id: Bytes!
+    transaction: Transaction!
+    campaign: Campaign!
+    owner: Bytes!
+}
+
+type ClaimEvent @entity(immutable: true) {
+    id: Bytes!
+    transaction: Transaction!
+    campaign: Campaign!
+    user: Bytes!
+    token: Token!
+    amount: BigInt!
+}
+
+type TreeUpdateEvent @entity(immutable: true) {
+    id: Bytes!
+    transaction: Transaction!
+    campaign: Campaign!
+    root: Bytes!
+    dataHash: Bytes!
+}
+
+type RecoverEvent @entity(immutable: true) {
+    id: Bytes!
+    transaction: Transaction!
+    campaign: Campaign!
+    receiver: Bytes!
+    token: Token!
+    amount: BigInt!
+}
