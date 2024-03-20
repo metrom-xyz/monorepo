@@ -1,51 +1,38 @@
-import { defineChain, type ChainFormatters } from "viem";
-import { celo, gnosis } from "viem/chains";
+import { defineChain, type ChainFormatters, type Transport, http } from "viem";
+import { celoAlfajores } from "viem/chains";
 import GnosisLogo from "./icons/GnosisLogoIcon.vue";
-import { ChainId, type MetromChain, type SupportedChain } from "./types";
+import { type MetromChain, type SupportedChain } from "./types";
+import {
+    ADDRESS,
+    SupportedChain as MetromChainId,
+} from "@metrom-xyz/contracts";
 
 // FIXME: move this configuration to the sdk
-export const SUPPORTED_CHAIN: Record<ChainId, SupportedChain> = {
-    [ChainId.Gnosis]: defineChain<ChainFormatters, SupportedChain>({
-        ...gnosis,
-        // FIXME: add contract addresses once deployed
-        contracts: {
-            ...gnosis.contracts,
-            factory: { address: "0x" },
-            kpiTokensManager: { address: "0x" },
-            oraclesManager: { address: "0x" },
+export const SUPPORTED_CHAIN: Record<MetromChainId, SupportedChain> = {
+    [MetromChainId.CeloAlfajores]: defineChain<ChainFormatters, SupportedChain>(
+        {
+            ...celoAlfajores,
+            contracts: {
+                ...celoAlfajores.contracts,
+                factory: ADDRESS[MetromChainId.CeloAlfajores],
+            },
+            subgraphUrl:
+                "https://api.studio.thegraph.com/query/68570/metrom-uni-v3-celo-alfajores/version/latest",
         },
-        // FIXME: use proper subgraph url
-        subgraphUrl:
-            "https://api.thegraph.com/subgraphs/name/carrot-kpi/carrot-gnosis",
-    }),
-    [ChainId.Celo]: defineChain<ChainFormatters, SupportedChain>({
-        ...celo,
-        // FIXME: add contract addresses once deployed
-        contracts: {
-            ...celo.contracts,
-            factory: { address: "0x" },
-            kpiTokensManager: { address: "0x" },
-            oraclesManager: { address: "0x" },
-        },
-        // FIXME: use proper subgraph url
-        subgraphUrl:
-            "https://api.thegraph.com/subgraphs/name/carrot-kpi/carrot-celo",
-    }),
+    ),
 };
 
-export const METROM_CHAIN: Record<ChainId, MetromChain> = {
-    [ChainId.Gnosis]: {
-        ...SUPPORTED_CHAIN[ChainId.Gnosis],
+export const SUPPORTED_CHAINS: [MetromChain, ...MetromChain[]] = [
+    {
+        ...SUPPORTED_CHAIN[MetromChainId.CeloAlfajores],
         icon: {
+            // FIXME: use celo logo
             logo: GnosisLogo,
             backgroundColor: "#213147",
         },
     },
-    [ChainId.Celo]: {
-        ...SUPPORTED_CHAIN[ChainId.Celo],
-        icon: {
-            logo: GnosisLogo,
-            backgroundColor: "#213147",
-        },
-    },
+];
+
+export const SUPPORTED_CHAIN_TRANSPORT: Record<MetromChainId, Transport> = {
+    [MetromChainId.CeloAlfajores]: http(),
 };
