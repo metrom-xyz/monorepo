@@ -1,0 +1,91 @@
+specVersion: 1.0.0
+indexerHints:
+  prune: never
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum
+    name: Factory
+    network: celo-alfajores
+    source:
+      abi: Factory
+      address: "0xe82c4D8b993D613a28600B953e91A3A93Ae69Fd6"
+      startBlock: 23111863
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      file: ./src/mappings/factory.ts
+      entities:
+        - AcceptFactoryOwnershipEvent
+        - Factory
+        - SetFeeEvent
+        - SetFeeReceiverEvent
+        - SetImplementationEvent
+        - SetUpdaterEvent
+        - TransferFactoryOwnershipEvent
+        - Transaction
+      abis:
+        - name: Factory
+          file: ./node_modules/@metrom-xyz/contracts/dist/abis/MetromCampaignFactory.json
+      eventHandlers:
+        - event: Initialize(indexed address,address,address,address,uint32)
+          handler: handleInitialize
+        - event: TransferOwnership(indexed address)
+          handler: handleTransferOwnership
+        - event: AcceptOwnership()
+          handler: handleAcceptOwnership
+        - event: Create(indexed address)
+          handler: handleCreate
+        - event: SetUpdater(indexed address)
+          handler: handleSetUpdater
+        - event: SetImplementation(indexed address)
+          handler: handleSetImplementation
+        - event: SetFeeReceiver(indexed address)
+          handler: handleSetFeeReceiver
+        - event: SetFee(uint32)
+          handler: handleSetFee
+templates:
+  - kind: ethereum/contract
+    name: Campaign
+    network: celo-alfajores
+    source:
+      abi: Campaign
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      file: ./src/mappings/campaign.ts
+      entities:
+        - AcceptCampaignOwnershipEvent
+        - Campaign
+        - ClaimEvent
+        - RecoverEvent
+        - Reward
+        - Token
+        - TransferCampaignOwnershipEvent
+        - TreeUpdateEvent
+        - Transaction
+      abis:
+        - name: Campaign
+          file: ./node_modules/@metrom-xyz/contracts/dist/abis/MetromCampaign.json
+        - name: Erc20
+          file: ./abis/Erc20.json
+        - name: Erc20BytesName
+          file: ./abis/Erc20BytesName.json
+        - name: Erc20BytesSymbol
+          file: ./abis/Erc20BytesSymbol.json
+      eventHandlers:
+        - event: Initialize(indexed address,indexed
+            address,uint32,uint32,address,(address,uint256,uint256)[])
+          handler: handleInitialize
+        - event: TransferOwnership(indexed address)
+          handler: handleTransferOwnership
+        - event: AcceptOwnership()
+          handler: handleAcceptOwnership
+        - event: UpdateTree(bytes32,bytes32)
+          handler: handleUpdateTree
+        - event: Claim(indexed address,indexed address,uint256)
+          handler: handleClaim
+        - event: Recover(indexed address,indexed address,uint256)
+          handler: handleRecover
