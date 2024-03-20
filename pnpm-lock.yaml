@@ -3449,7 +3449,6 @@ packages:
       - typescript
       - utf-8-validate
       - zod
-    dev: true
 
   /@motionone/animation@10.17.0:
     resolution: {integrity: sha512-ANfIN9+iq1kGgsZxs+Nz96uiNcPLGTXwfNo2Xz/fcJXniPYpaz/Uyrfa+7I5BPLxCP82sh7quVDudf1GABqHbg==}
@@ -4816,11 +4815,6 @@ packages:
 
   /@types/node@20.11.24:
     resolution: {integrity: sha512-Kza43ewS3xoLgCEpQrsT+xRo/EJej1y0kVYGiLFE1NEODXGzTfwiC6tXTLMQskn1X4/Rjlh0MQUvx9W+L9long==}
-    dependencies:
-      undici-types: 5.26.5
-
-  /@types/node@20.11.30:
-    resolution: {integrity: sha512-dHM6ZxwlmuZaRmUPfv1p+KrdD1Dci04FbdEm/9wEMouFqxYoFl5aMkt0VMAUtYRQDyYvD41WJLukhq/ha3YuTw==}
     dependencies:
       undici-types: 5.26.5
 
@@ -13778,8 +13772,8 @@ packages:
       '@wagmi/core': ^2.6.4
       vue: ^3.4.15
     dependencies:
-      '@wagmi/core': 2.6.5(react@18.2.0)(typescript@5.4.2)(viem@2.8.5)
-      viem: 2.8.5(typescript@5.4.2)
+      '@wagmi/core': 2.6.5(react@18.2.0)(typescript@5.4.2)(viem@2.8.14)
+      viem: 2.8.14(typescript@5.4.2)
       vue: 3.4.21(typescript@5.4.2)
     transitivePeerDependencies:
       - bufferutil
