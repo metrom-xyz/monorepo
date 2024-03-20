@@ -4,6 +4,7 @@ import {
     Swap as SwapEvent,
     Mint as MintEvent,
     Burn as BurnEvent,
+    Fee as FeeEvent,
 } from "../../generated/templates/Pool/Pool";
 import { Position, Pool } from "../../generated/schema";
 import { createBaseEvent, getPoolOrThrow } from "../commons";
@@ -17,6 +18,12 @@ export function handleInitialize(event: InitializeEvent): void {
         );
 
     pool.tick = BigInt.fromI32(event.params.tick);
+    pool.save();
+}
+
+export function handleFee(event: FeeEvent): void {
+    let pool = getPoolOrThrow(event.address);
+    pool.fee = BigInt.fromU32(event.params.fee);
     pool.save();
 }
 
