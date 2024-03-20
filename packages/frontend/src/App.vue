@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { RouterView } from "vue-router";
 import MetromLogoIcon from "./icons/MetromLogoIcon.vue";
-import NavigationBar from "./components/navigation/NavigationBar.vue";
+import NavigationBar from "./components/NavigationBar.vue";
 import MuiTypography from "./ui/typography/MuiTypography.vue";
+import UserAccount from "./components/UserAccount.vue";
 </script>
 <template>
     <div class="app__container">
@@ -11,7 +12,7 @@ import MuiTypography from "./ui/typography/MuiTypography.vue";
             <div class="app__nav">
                 <NavigationBar />
             </div>
-            <div>account todo</div>
+            <UserAccount />
         </header>
         <div class="app__content">
             <RouterView />
@@ -27,7 +28,7 @@ import MuiTypography from "./ui/typography/MuiTypography.vue";
 </template>
 <style>
 .app__container {
-    @apply min-h-screen flex flex-col gap-14 items-center py-8 px-12 bg-gray-300 bg-3 bg-dots;
+    @apply min-h-screen flex flex-col gap-14 items-center p-8 bg-gray-300 bg-3 bg-dots;
 }
 
 .app__header {
