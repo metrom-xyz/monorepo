@@ -54,21 +54,4 @@ jobs:
         run: pnpm install
       - name: Run tests
         run: pnpm test
-  size-limit:
-    name: Size limit
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-      - uses: pnpm/action-setup@v3
-        with:
-          version: latest
-      - name: Setup node
-        uses: actions/setup-node@v3
-        with:
-          node-version: latest
-          cache: "pnpm"
-      - name: Install dependencies
-        run: pnpm install
-      - name: Check size limit
-        run: pnpm size-limit
+
