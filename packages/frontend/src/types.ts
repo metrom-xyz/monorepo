@@ -1,4 +1,4 @@
-import type { Chain, ChainContract } from "viem";
+import type { ChainContract } from "viem";
 import type { Component } from "vue";
 
 export enum Environment {
@@ -19,12 +19,11 @@ export interface Amm {
     subgraphUrl: string;
 }
 
-export interface SupportedChain extends Chain {
+export interface ChainData {
+    icon: ChainIconData;
     contracts: {
-        ensRegistry?: ChainContract;
-        ensUniversalResolver?: ChainContract;
-        multicall3: ChainContract;
         factory: ChainContract;
     };
     subgraphUrl?: string;
+    amms: Amm[];
 }
