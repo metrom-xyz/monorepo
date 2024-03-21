@@ -35,6 +35,7 @@ export function handleInitialize(event: Initialize): void {
 
     let factory = new Factory(FACTORY_ADDRESS);
     factory.owner = event.params.owner;
+    factory.transaction = getOrCreateTransaction(event).id;
     factory.pendingOwner = Address.zero();
     factory.updater = event.params.updater;
     factory.implementation = event.params.implementation;
