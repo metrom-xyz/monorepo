@@ -17,7 +17,8 @@ export const SUPPORTED_CHAIN: Record<MetromChainId, SupportedChain> = {
                 factory: ADDRESS[MetromChainId.CeloAlfajores],
             },
             subgraphUrl:
-                "https://api.studio.thegraph.com/query/68570/metrom-uni-v3-celo-alfajores/version/latest",
+                "https://api.studio.thegraph.com/query/68570/metrom-celo-alfajores/version/latest",
+            ammSubgraphs: [],
         },
     ),
 };
