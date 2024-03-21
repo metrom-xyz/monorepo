@@ -13,10 +13,10 @@ export interface ChainIconData {
     backgroundColor: string;
 }
 
-export interface AmmSubgraph {
+export interface Amm {
     logo: Component;
     name: string;
-    url: string;
+    subgraphUrl: string;
 }
 
 export interface SupportedChain extends Chain {
@@ -27,9 +27,4 @@ export interface SupportedChain extends Chain {
         factory: ChainContract;
     };
     subgraphUrl?: string;
-    ammSubgraphs?: AmmSubgraph[];
-}
-
-export interface MetromChain extends SupportedChain {
-    icon: ChainIconData;
 }
