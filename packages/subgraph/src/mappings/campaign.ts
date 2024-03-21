@@ -43,6 +43,7 @@ export function handleInitialize(event: Initialize): void {
 
     let campaign = new Campaign(event.address);
     campaign.factory = getFactoryOrThrow().id;
+    campaign.transaction = getOrCreateTransaction(event).id;
     campaign.owner = event.params.owner;
     campaign.pendingOwner = Address.zero();
     campaign.pool = event.params.pool;

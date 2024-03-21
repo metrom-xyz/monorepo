@@ -28,6 +28,7 @@ type Transaction @entity(immutable: true) {
 
 type Factory @entity {
     id: Bytes!
+    transaction: Transaction!
     owner: Bytes!
     pendingOwner: Bytes!
     updater: Bytes!
@@ -89,6 +90,7 @@ type SetFeeEvent @entity(immutable: true) {
 
 type Campaign @entity {
     id: Bytes!
+    transaction: Transaction!
     factory: Factory!
     owner: Bytes!
     pendingOwner: Bytes!
