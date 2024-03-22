@@ -36,7 +36,7 @@ import UserAccount from "./components/UserAccount.vue";
 }
 
 .app__content {
-    @apply flex-grow mt-10;
+    @apply flex-grow;
 }
 
 .app__nav {
