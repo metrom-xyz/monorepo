@@ -71,11 +71,9 @@ export default {
             inter: ["Inter", "sans-serif"],
         },
         colors: {
-            // primary
             green: "#6CFF95",
-            // secondary
             "green-dark": "#359650",
-            // neutrals
+            "green-light": "#E4F7EA",
             transparent: "transparent",
             current: "currentColor",
             white: "#ffffff",

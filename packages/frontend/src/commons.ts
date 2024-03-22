@@ -1,6 +1,6 @@
 import { type Transport, http, type Chain } from "viem";
 import { celoAlfajores } from "viem/chains";
-import { type Amm, type ChainData } from "./types";
+import { type ChainData } from "./types";
 import {
     ADDRESS,
     SupportedChain as MetromChainId,
@@ -22,6 +22,7 @@ export const CHAIN_DATA: Record<MetromChainId, ChainData> = {
             "https://api.studio.thegraph.com/query/68570/metrom-celo-alfajores/version/latest",
         amms: [
             {
+                slug: "univ3",
                 logo: UniswapLogoIcon,
                 name: "Uniswap v3",
                 subgraphUrl:

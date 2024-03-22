@@ -63,6 +63,6 @@ defineProps<StepItemProps>();
 }
 
 .mui_step__content {
-    @apply w-full pt-3 pb-5 px-6;
+    @apply w-full p-3;
 }
 </style>

@@ -14,6 +14,7 @@ export interface ChainIconData {
 }
 
 export interface Amm {
+    slug: string;
     logo: Component;
     name: string;
     subgraphUrl: string;
