@@ -15,7 +15,7 @@ const { el, masked, typed } = useIMask({
 });
 
 watchEffect(() => {
-    model.value = masked ? Number(typed) : undefined;
+    model.value = masked.value ? Number(typed.value) : undefined;
 });
 </script>
 <template>
