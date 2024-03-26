@@ -21,10 +21,9 @@ defineProps<ErrorTextProps>();
 }
 
 .mui_error_text__icon {
-    @apply w-6 stroke-red;
+    @apply w-6;
 }
 
 .mui_error_text__typograhpy {
-    @apply text-red;
 }
 </style>

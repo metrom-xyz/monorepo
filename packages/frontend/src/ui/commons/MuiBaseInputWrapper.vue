@@ -3,6 +3,7 @@ import MuiTypography from "../typography/MuiTypography.vue";
 import MuiErrorText from "../error-text/MuiErrorText.vue";
 import type { BaseInputWrapperProps } from "./types";
 import { useAttrs } from "vue";
+import type { Component } from "vue";
 
 defineOptions({
     inheritAttrs: false,
@@ -10,6 +11,7 @@ defineOptions({
 
 defineSlots<{
     default: HTMLInputElement;
+    icon: Component;
 }>();
 
 defineProps<BaseInputWrapperProps>();
@@ -36,16 +38,17 @@ const attrs = useAttrs();
                 mui_base_input_wrapper__container__xl: $props.xl,
                 mui_base_input_wrapper__container__no__border:
                     $props.borderless,
-                mui_base_input_wrapper__container__error: !!$props.error,
+                // TODO: add error status
+                // mui_base_input_wrapper__container__error: !!$props.error,
                 mui_base_input_wrapper__container__loading: $props.loading,
                 mui_base_input_wrapper__container__left_icon: $props.iconLeft,
             }"
         >
             <div
-                v-if="!!$props.icon && $props.iconLeft"
+                v-if="(!!$props.icon || !!$slots.icon) && $props.iconLeft"
                 class="mui_base_input_wrapper__icon mui_base_input_wrapper__icon__left"
             >
-                <component :is="$props.icon" />
+                <component :is="$slots.icon || $props.icon" />
             </div>
             <div
                 v-if="!!$props.action && !$props.actionRight"
@@ -55,10 +58,10 @@ const attrs = useAttrs();
             </div>
             <slot></slot>
             <div
-                v-if="!!$props.icon && !$props.iconLeft"
+                v-if="(!!$props.icon || !!$slots.icon) && !$props.iconLeft"
                 class="mui_base_input_wrapper__icon mui_base_input_wrapper__icon__right"
             >
-                <component :is="$props.icon" />
+                <component :is="$slots.icon || $props.icon" />
             </div>
             <div
                 v-if="!!$props.action && $props.actionRight"
@@ -132,10 +135,6 @@ const attrs = useAttrs();
 
 .mui_base_input_wrapper__container__xl > input {
     @apply text-xl;
-}
-
-.mui_base_input_wrapper__container__error > input {
-    @apply bg-red/20;
 }
 
 .mui_base_input_wrapper__container__left_icon > input {
