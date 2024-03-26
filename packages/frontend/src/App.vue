@@ -4,6 +4,11 @@ import MetromLogoIcon from "./icons/MetromLogoIcon.vue";
 import NavigationBar from "./components/NavigationBar.vue";
 import MuiTypography from "./ui/typography/MuiTypography.vue";
 import UserAccount from "./components/UserAccount.vue";
+import { useTokens } from "./stores/tokens";
+
+// TODO: improve tokens fetching
+const tokenListsStore = useTokens();
+tokenListsStore.fetchTokensLists();
 </script>
 <template>
     <div class="app__container">
@@ -43,3 +48,4 @@ import UserAccount from "./components/UserAccount.vue";
     @apply flex gap-2;
 }
 </style>
+./stores/tokens

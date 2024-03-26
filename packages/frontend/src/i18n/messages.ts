@@ -22,5 +22,14 @@ export const messages = {
         },
         carrot: "Carrot",
         powered: "Powered by {0}",
+        ui: {
+            pairSelect: {
+                placeholder: "Select pair",
+                search: "Search for token address, pair etc.",
+                pair: "Pair",
+                tvl: "Tvl",
+                empty: "Nothing here",
+            },
+        },
     },
 };

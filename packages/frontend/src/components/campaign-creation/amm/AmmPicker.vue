@@ -8,10 +8,12 @@ import type { CampaignState } from "@/views/create-campaign-view/types";
 import DexIcon from "@/icons/DexIcon.vue";
 import { computed } from "vue";
 import { SUPPORTED_CHAIN_OPTIONS } from "./commons";
+import { watchEffect } from "vue";
 
 const props = defineProps<AmmPickerTypes>();
 const emit = defineEmits<{
     updateState: [state: CampaignState];
+    complete: [];
 }>();
 
 function handleNetworkOnChange(option: AccordionSelectOption<number>) {
@@ -44,6 +46,11 @@ const SUPPORTED_AMM_OPTIONS = computed<AccordionSelectOption<string>[]>(() => {
         value: amm.slug,
         icon: amm.logo,
     }));
+});
+
+watchEffect(() => {
+    if (props.completed || !props.state?.network || !props.state.amm) return;
+    emit("complete");
 });
 
 // TODO: update accordion icons

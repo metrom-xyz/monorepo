@@ -6,13 +6,18 @@ import {
     SupportedChain as MetromChainId,
 } from "@metrom-xyz/contracts";
 import UniswapLogoIcon from "./icons/UniswapLogoIcon.vue";
-import GnosisLogoIcon from "./icons/GnosisLogoIcon.vue";
+import CeloIcon from "./icons/CeloIcon.vue";
+
+export const TOKEN_LISTS = [
+    "https://tokens.coingecko.com/xdai/all.json",
+    "https://tokens.coingecko.com/celo/all.json",
+];
 
 export const CHAIN_DATA: Record<MetromChainId, ChainData> = {
     [MetromChainId.CeloAlfajores]: {
         icon: {
-            // FIXME: use celo logo
-            logo: GnosisLogoIcon,
+            // FIXME: use better icon
+            logo: CeloIcon,
             backgroundColor: "#213147",
         },
         contracts: {
@@ -23,6 +28,7 @@ export const CHAIN_DATA: Record<MetromChainId, ChainData> = {
         amms: [
             {
                 slug: "univ3",
+                // FIXME: use better icon
                 logo: UniswapLogoIcon,
                 name: "Uniswap v3",
                 subgraphUrl:
