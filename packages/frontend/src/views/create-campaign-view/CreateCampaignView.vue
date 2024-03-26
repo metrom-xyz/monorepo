@@ -8,12 +8,17 @@ import type { CampaignState } from "./types";
 import DexIcon from "@/icons/DexIcon.vue";
 import PairIcon from "@/icons/PairIcon.vue";
 import CupIcon from "@/icons/CupIcon.vue";
+import PairPicker from "@/components/campaign-creation/pair/PairPicker.vue";
 
-const activeStep = ref(1);
+const stepCursor = ref(1);
 const campaignState = ref<CampaignState>();
 
 function handleCampaignStateOnUpdate(state: CampaignState) {
     campaignState.value = state;
+}
+
+function handleStepOnComplete() {
+    stepCursor.value++;
 }
 </script>
 <template>
@@ -24,28 +29,35 @@ function handleCampaignStateOnUpdate(state: CampaignState) {
                 :step="1"
                 :title="$t('campaign.amm.title')"
                 active
-                :completed="activeStep > 1"
+                :completed="stepCursor > 1"
                 :icon="DexIcon"
             >
                 <AmmPicker
                     :state="campaignState"
+                    :completed="stepCursor > 1"
                     @updateState="handleCampaignStateOnUpdate"
+                    @complete="handleStepOnComplete"
                 />
             </MuiStep>
             <MuiStep
                 :step="2"
                 :title="$t('campaign.pair.title')"
-                :active="activeStep === 2"
-                :completed="activeStep > 2"
+                :active="stepCursor === 2"
+                :completed="stepCursor > 2"
                 :icon="PairIcon"
             >
-                Step 2
+                <PairPicker
+                    :state="campaignState"
+                    :completed="stepCursor > 2"
+                    @updateState="handleCampaignStateOnUpdate"
+                    @complete="handleStepOnComplete"
+                />
             </MuiStep>
             <MuiStep
                 :step="3"
                 :title="$t('campaign.rewards.title')"
-                :active="activeStep === 3"
-                :completed="activeStep > 3"
+                :active="stepCursor === 3"
+                :completed="stepCursor > 3"
                 :icon="CupIcon"
             >
                 Step 3

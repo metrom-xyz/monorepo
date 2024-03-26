@@ -5,6 +5,7 @@ import type { BaseInputWrapperProps } from "./commons/types";
 
 defineSlots<{
     action: Component;
+    icon: Component;
 }>();
 const props = defineProps<BaseInputWrapperProps>();
 const model = defineModel();
@@ -27,6 +28,9 @@ const optionalModel = props.noModel ? undefined : model;
             v-bind="attrs"
             class="mui_text_input__root"
         />
+        <template #icon>
+            <slot name="icon"></slot>
+        </template>
     </MuiBaseInputWrapper>
 </template>
 <style>
