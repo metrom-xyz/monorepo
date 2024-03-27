@@ -31,7 +31,7 @@ defineProps<PairSelectSearchRowProps>();
 </template>
 <style>
 .mui_pair_select_search_row__root {
-    @apply flex gap-3 p-4 justify-between items-center rounded-xl hover:cursor-pointer hover:bg-green-light;
+    @apply flex gap-3 p-3 justify-between items-center rounded-xl hover:cursor-pointer hover:bg-green-light;
 }
 
 .mui_pair_select_search_row__root__selected {

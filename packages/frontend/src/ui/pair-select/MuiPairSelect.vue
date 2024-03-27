@@ -34,7 +34,7 @@ const inputValue = computed(() => {
                 readonly
                 :model-value="inputValue"
                 :placeholder="$t('ui.pairSelect.placeholder')"
-                class="mui_pair_select__root_input"
+                class="mui_pair_select__input"
             >
                 <template #icon>
                     <PairSelectIcon v-if="!$props.selected" />
@@ -62,7 +62,7 @@ const inputValue = computed(() => {
 .mui_pair_select__root {
 }
 
-.mui_pair_select__root_input {
+.mui_pair_select__input {
     @apply hover:cursor-pointer;
 }
 </style>

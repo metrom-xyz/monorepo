@@ -9,9 +9,13 @@ import DexIcon from "@/icons/DexIcon.vue";
 import PairIcon from "@/icons/PairIcon.vue";
 import CupIcon from "@/icons/CupIcon.vue";
 import PairPicker from "@/components/campaign-creation/pair/PairPicker.vue";
+import RewardsPicker from "@/components/campaign-creation/rewards/RewardsPicker.vue";
+import { watchEffect } from "vue";
 
 const stepCursor = ref(1);
-const campaignState = ref<CampaignState>();
+const campaignState = ref<CampaignState>({
+    rewards: [{}],
+});
 
 function handleCampaignStateOnUpdate(state: CampaignState) {
     campaignState.value = state;
@@ -20,6 +24,10 @@ function handleCampaignStateOnUpdate(state: CampaignState) {
 function handleStepOnComplete() {
     stepCursor.value++;
 }
+
+watchEffect(() => {
+    console.log("campaign", JSON.stringify(campaignState.value, null, 4));
+});
 </script>
 <template>
     <div class="create_campaign__root">
@@ -60,13 +68,18 @@ function handleStepOnComplete() {
                 :completed="stepCursor > 3"
                 :icon="CupIcon"
             >
-                Step 3
+                <RewardsPicker
+                    :state="campaignState"
+                    :completed="stepCursor > 2"
+                    @addReward="campaignState.rewards.push({})"
+                    @complete="handleStepOnComplete"
+                />
             </MuiStep>
         </MuiStepper>
     </div>
 </template>
 <style>
 .create_campaign__root {
-    @apply w-full flex flex-col gap-9 items-center min-w-96;
+    @apply w-full flex flex-col gap-9 items-center min-w-96 max-w-96;
 }
 </style>

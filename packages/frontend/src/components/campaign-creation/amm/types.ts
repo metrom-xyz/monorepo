@@ -1,6 +1,3 @@
-import type { CampaignState } from "@/views/create-campaign-view/types";
+import type { CampaignStepProps } from "@/views/create-campaign-view/types";
 
-export interface AmmPickerTypes {
-    state?: CampaignState;
-    completed?: boolean;
-}
+export interface AmmPickerTypes extends CampaignStepProps {}
