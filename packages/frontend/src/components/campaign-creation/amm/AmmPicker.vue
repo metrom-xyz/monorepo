@@ -4,7 +4,6 @@ import MuiAccordionSelect from "@/ui/accordion-select/MuiAccordionSelect.vue";
 import MuiTypography from "@/ui/typography/MuiTypography.vue";
 import type { AmmPickerTypes } from "./types";
 import type { AccordionSelectOption } from "@/ui/accordion-select/types";
-import type { CampaignState } from "@/views/create-campaign-view/types";
 import DexIcon from "@/icons/DexIcon.vue";
 import { computed } from "vue";
 import { SUPPORTED_CHAIN_OPTIONS } from "./commons";
@@ -12,36 +11,13 @@ import { watchEffect } from "vue";
 
 const props = defineProps<AmmPickerTypes>();
 const emit = defineEmits<{
-    updateState: [state: CampaignState];
     complete: [];
 }>();
-
-function handleNetworkOnChange(option: AccordionSelectOption<number>) {
-    emit("updateState", {
-        ...props.state,
-        network: option.value,
-    });
-}
-
-function handleAmmOnChange(option: AccordionSelectOption<string>) {
-    if (!props.state.network) return;
-
-    const amm = CHAIN_DATA[props.state.network].amms.find(
-        (amm) => amm.slug === option.value,
-    );
-
-    if (!amm) return;
-
-    emit("updateState", {
-        ...props.state,
-        amm: amm.slug,
-    });
-}
 
 const SUPPORTED_AMM_OPTIONS = computed<AccordionSelectOption<string>[]>(() => {
     if (!props.state.network) return [];
 
-    return CHAIN_DATA[props.state.network].amms.map((amm) => ({
+    return CHAIN_DATA[props.state.network.value].amms.map((amm) => ({
         label: amm.name,
         value: amm.slug,
         icon: amm.logo,
@@ -60,14 +36,7 @@ watchEffect(() => {
         <MuiAccordionSelect
             :label="$t('campaign.amm.network')"
             :icon="DexIcon"
-            :selected="
-                $props.state.network
-                    ? SUPPORTED_CHAIN_OPTIONS.find(
-                          (chain) => chain.value === $props.state.network,
-                      ) || null
-                    : null
-            "
-            @change="handleNetworkOnChange"
+            v-model="$props.state.network"
             :options="SUPPORTED_CHAIN_OPTIONS"
         >
             <div class="amm_picker__network_accordion">
@@ -82,14 +51,7 @@ watchEffect(() => {
             :label="$t('campaign.amm.dex')"
             :icon="DexIcon"
             :disabled="!$props.state.network"
-            :selected="
-                $props.state.amm
-                    ? SUPPORTED_AMM_OPTIONS.find(
-                          (amm) => amm.value === $props.state.amm,
-                      ) || null
-                    : null
-            "
-            @change="handleAmmOnChange"
+            v-model="$props.state.amm"
             :options="SUPPORTED_AMM_OPTIONS"
         >
             <div class="amm_picker__network_accordion">
