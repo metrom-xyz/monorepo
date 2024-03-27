@@ -6,6 +6,7 @@ import { ref } from "vue";
 import type { PairPickerTypes } from "./types";
 import { watchEffect } from "vue";
 
+// TODO: fetch
 const pairs: Pair[] = [
     {
         id: "0x02f683bf41b869949268b7d7a7f6f9315b2bf7e7",
@@ -76,7 +77,7 @@ function handlePairOnChange(pair: Pair) {
 }
 
 watchEffect(() => {
-    if (props.completed || !props.state?.pair) return;
+    if (props.completed || !props.state.pair) return;
     emit("complete");
 });
 </script>
@@ -86,8 +87,8 @@ watchEffect(() => {
             :open="open"
             :pairs="pairs"
             :selected="
-                $props.state?.pair
-                    ? pairs.find((pair) => pair.id === $props.state?.pair) ||
+                $props.state.pair
+                    ? pairs.find((pair) => pair.id === $props.state.pair) ||
                       null
                     : null
             "
@@ -97,4 +98,8 @@ watchEffect(() => {
         />
     </div>
 </template>
-<style></style>
+<style>
+.pair_picker__root {
+    @apply p-3;
+}
+</style>

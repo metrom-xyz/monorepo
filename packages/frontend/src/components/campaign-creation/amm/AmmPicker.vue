@@ -24,7 +24,7 @@ function handleNetworkOnChange(option: AccordionSelectOption<number>) {
 }
 
 function handleAmmOnChange(option: AccordionSelectOption<string>) {
-    if (!props.state?.network) return;
+    if (!props.state.network) return;
 
     const amm = CHAIN_DATA[props.state.network].amms.find(
         (amm) => amm.slug === option.value,
@@ -39,7 +39,7 @@ function handleAmmOnChange(option: AccordionSelectOption<string>) {
 }
 
 const SUPPORTED_AMM_OPTIONS = computed<AccordionSelectOption<string>[]>(() => {
-    if (!props.state?.network) return [];
+    if (!props.state.network) return [];
 
     return CHAIN_DATA[props.state.network].amms.map((amm) => ({
         label: amm.name,
@@ -49,7 +49,7 @@ const SUPPORTED_AMM_OPTIONS = computed<AccordionSelectOption<string>[]>(() => {
 });
 
 watchEffect(() => {
-    if (props.completed || !props.state?.network || !props.state.amm) return;
+    if (props.completed || !props.state.network || !props.state.amm) return;
     emit("complete");
 });
 
@@ -61,9 +61,9 @@ watchEffect(() => {
             :label="$t('campaign.amm.network')"
             :icon="DexIcon"
             :selected="
-                $props.state?.network
+                $props.state.network
                     ? SUPPORTED_CHAIN_OPTIONS.find(
-                          (chain) => chain.value === $props.state?.network,
+                          (chain) => chain.value === $props.state.network,
                       ) || null
                     : null
             "
@@ -81,11 +81,11 @@ watchEffect(() => {
         <MuiAccordionSelect
             :label="$t('campaign.amm.dex')"
             :icon="DexIcon"
-            :disabled="!$props.state?.network"
+            :disabled="!$props.state.network"
             :selected="
-                $props.state?.amm
+                $props.state.amm
                     ? SUPPORTED_AMM_OPTIONS.find(
-                          (amm) => amm.value === $props.state?.amm,
+                          (amm) => amm.value === $props.state.amm,
                       ) || null
                     : null
             "
@@ -103,7 +103,7 @@ watchEffect(() => {
 </template>
 <style>
 .amm_picker__root {
-    @apply flex flex-col gap-2;
+    @apply flex flex-col gap-2 p-3;
 }
 
 .amm_picker__divider {

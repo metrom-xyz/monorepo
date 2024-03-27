@@ -1,5 +1,6 @@
 import { isAddress } from "viem";
 import type { Pair } from "../pair-select/types";
+import type { TokenInfo } from "@uniswap/token-lists";
 
 export const filterPairs = (pairs: Pair[], searchQuery: string) => {
     if (pairs.length === 0) return [];
@@ -36,6 +37,31 @@ export const filterPairs = (pairs: Pair[], searchQuery: string) => {
             (token1.symbol &&
                 matchesSearch(token1.symbol, lowercaseSearchParts)) ||
             (token1.name && matchesSearch(token1.name, lowercaseSearchParts))
+        );
+    });
+};
+
+export const filterTokens = (tokens: TokenInfo[], searchQuery: string) => {
+    if (tokens.length === 0) return [];
+    if (!searchQuery) return tokens;
+    if (isAddress(searchQuery)) {
+        const lowercaseSearchQuery = searchQuery.toLowerCase();
+        const tokenByAddress = tokens.find(
+            (token) => token.address.toLowerCase() === lowercaseSearchQuery,
+        );
+        return tokenByAddress ? [tokenByAddress] : [];
+    }
+    const lowercaseSearchParts = searchQuery
+        .trim()
+        .toLowerCase()
+        .split(/\s+/)
+        .filter((s) => s.length > 0);
+    if (lowercaseSearchParts.length === 0) return tokens;
+    return tokens.filter((token) => {
+        const { symbol, name } = token;
+        return (
+            (symbol && matchesSearch(symbol, lowercaseSearchParts)) ||
+            (name && matchesSearch(name, lowercaseSearchParts))
         );
     });
 };

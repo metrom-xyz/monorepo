@@ -48,7 +48,7 @@ const attrs = useAttrs();
                 v-if="(!!$props.icon || !!$slots.icon) && $props.iconLeft"
                 class="mui_base_input_wrapper__icon mui_base_input_wrapper__icon__left"
             >
-                <component :is="$slots.icon || $props.icon" />
+                <component :is="$props.icon || $slots.icon" />
             </div>
             <div
                 v-if="!!$props.action && !$props.actionRight"
@@ -61,7 +61,7 @@ const attrs = useAttrs();
                 v-if="(!!$props.icon || !!$slots.icon) && !$props.iconLeft"
                 class="mui_base_input_wrapper__icon mui_base_input_wrapper__icon__right"
             >
-                <component :is="$slots.icon || $props.icon" />
+                <component :is="$props.icon || $slots.icon" />
             </div>
             <div
                 v-if="!!$props.action && $props.actionRight"
