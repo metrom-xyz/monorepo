@@ -18,6 +18,16 @@ export const messages = {
             },
             rewards: {
                 title: "Rewards",
+                select: {
+                    placeholder: "Token",
+                    search: {
+                        inputLabel: "Select token",
+                        inputPlaceholder: "Search",
+                        noTokens: "Nothing here.",
+                    },
+                },
+                amount: "Amount",
+                addReward: "Add reward",
             },
         },
         carrot: "Carrot",
