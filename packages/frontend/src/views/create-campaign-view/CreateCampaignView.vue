@@ -57,7 +57,6 @@ watchEffect(() => {
                 <PairPicker
                     :state="campaignState"
                     :completed="stepCursor > 2"
-                    @updateState="handleCampaignStateOnUpdate"
                     @complete="handleStepOnComplete"
                 />
             </MuiStep>
@@ -70,7 +69,7 @@ watchEffect(() => {
             >
                 <RewardsPicker
                     :state="campaignState"
-                    :completed="stepCursor > 2"
+                    :completed="stepCursor > 3"
                     @addReward="campaignState.rewards.push({})"
                     @complete="handleStepOnComplete"
                 />
