@@ -8,13 +8,11 @@ import MuiOption from "./option/MuiOption.vue";
 import MuiTypography from "../typography/MuiTypography.vue";
 import MuiAccordion from "../accordion/MuiAccordion.vue";
 
-const props = defineProps<AccordionSelectProps<T>>();
-const emit = defineEmits<{
-    change: [option: T];
-}>();
+defineProps<AccordionSelectProps<T>>();
+const selected = defineModel<T>();
 
 function handleOptionOnClick(option: T) {
-    emit("change", option);
+    selected.value = option;
 }
 </script>
 <template>
@@ -24,12 +22,9 @@ function handleOptionOnClick(option: T) {
             :disabled="$props.disabled"
         >
             <template #summary>
-                <div
-                    v-if="props.selected"
-                    class="mui_accordion_select__summary"
-                >
+                <div v-if="selected" class="mui_accordion_select__summary">
                     <component
-                        :is="props.selected.icon"
+                        :is="selected.icon"
                         class="mui_accordion_select__selected_icon"
                     ></component>
                     <div class="mui_accordion_select__selected_label">
@@ -37,7 +32,7 @@ function handleOptionOnClick(option: T) {
                             {{ $props.label }}
                         </MuiTypography>
                         <MuiTypography>
-                            {{ props.selected.label }}
+                            {{ selected.label }}
                         </MuiTypography>
                     </div>
                 </div>
@@ -59,7 +54,7 @@ function handleOptionOnClick(option: T) {
                     v-for="(option, index) in $props.options"
                     :label="option.label"
                     :icon="option.icon"
-                    :selected="props.selected?.value === option.value"
+                    :selected="selected?.value === option.value"
                     @click="handleOptionOnClick(option)"
                 />
             </div>

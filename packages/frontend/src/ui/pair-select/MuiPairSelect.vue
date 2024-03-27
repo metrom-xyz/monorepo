@@ -39,6 +39,7 @@ const inputValue = computed(() => {
                 <template #icon>
                     <PairSelectIcon v-if="!selected" />
                     <!-- TODO: add pair icon when selected -->
+                    <!-- TODO: add messages prop -->
                     <!-- <MuiPairRemoteLogo
                         v-else
                         :token0="$props.selected.token0"

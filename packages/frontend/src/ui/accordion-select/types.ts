@@ -14,7 +14,6 @@ export interface AccordionSelectProps<
 > {
     label: string;
     icon: Component;
-    selected: T | null;
     options: T[];
     disabled?: boolean;
 }
