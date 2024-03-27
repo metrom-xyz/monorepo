@@ -76,8 +76,8 @@ const { containerProps, wrapperProps, list } = useVirtualList(items, {
                     v-for="{ index, data } in list"
                     :key="index"
                     :selected="
-                        !!$props.selectedPair &&
-                        $props.selectedPair.id.toLowerCase() ===
+                        !!$props.selected &&
+                        $props.selected.id.toLowerCase() ===
                             data.id.toLowerCase()
                     "
                     :loading="$props.loading"

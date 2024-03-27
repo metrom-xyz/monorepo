@@ -6,24 +6,24 @@ import MuiPairSelectSearch from "./search/MuiPairSelectSearch.vue";
 import type { Pair, PairSelectProps } from "./types";
 import { computed } from "vue";
 
-const props = defineProps<PairSelectProps>();
+defineProps<PairSelectProps>();
 const emit = defineEmits<{
     dismiss: [];
-    pairChange: [pair: Pair];
 }>();
+const selected = defineModel<Pair>();
 
 function handleModalOnDismiss() {
     emit("dismiss");
 }
 
 function handlePairOnChange(pair: Pair) {
-    emit("pairChange", pair);
+    selected.value = pair;
     emit("dismiss");
 }
 
 const inputValue = computed(() => {
-    if (!props.selected) return;
-    return `${props.selected.token0.symbol} / ${props.selected.token1.symbol}`;
+    if (!selected.value) return;
+    return `${selected.value.token0.symbol} / ${selected.value.token1.symbol}`;
 });
 </script>
 <template>
@@ -37,7 +37,7 @@ const inputValue = computed(() => {
                 class="mui_pair_select__input"
             >
                 <template #icon>
-                    <PairSelectIcon v-if="!$props.selected" />
+                    <PairSelectIcon v-if="!selected" />
                     <!-- TODO: add pair icon when selected -->
                     <!-- <MuiPairRemoteLogo
                         v-else
@@ -50,7 +50,7 @@ const inputValue = computed(() => {
                 <MuiPairSelectSearch
                     :pairs="$props.pairs"
                     :label="$t('ui.pairSelect.placeholder')"
-                    :selectedPair="$props.selected"
+                    :selected="selected"
                     @dismiss="handleModalOnDismiss"
                     @pairChange="handlePairOnChange"
                 />
