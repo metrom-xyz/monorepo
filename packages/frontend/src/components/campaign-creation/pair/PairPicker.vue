@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import MuiPairSelect from "@/ui/pair-select/MuiPairSelect.vue";
 import type { Pair } from "@/ui/pair-select/types";
-import type { CampaignState } from "@/views/create-campaign-view/types";
 import { ref } from "vue";
 import type { PairPickerTypes } from "./types";
 import { watchEffect } from "vue";
@@ -24,7 +23,7 @@ const pairs: Pair[] = [
             symbol: "CELO",
             decimals: 18,
         },
-        tvl: 5000n,
+        tvl: 5000,
     },
     {
         id: "0x043712ccd482e782bcc9e1b2128c9714ff24fddf",
@@ -42,7 +41,7 @@ const pairs: Pair[] = [
             symbol: "USDC",
             decimals: 6,
         },
-        tvl: 5000n,
+        tvl: 5000,
     },
     {
         id: "0x045c1c5ee0807ed3a7fa8e63e5135e78462876cd",
@@ -60,21 +59,16 @@ const pairs: Pair[] = [
             symbol: "CELO",
             decimals: 18,
         },
-        tvl: 5000n,
+        tvl: 5000,
     },
 ];
 
 const props = defineProps<PairPickerTypes>();
 const emit = defineEmits<{
-    updateState: [state: CampaignState];
     complete: [];
 }>();
 
 const open = ref(false);
-
-function handlePairOnChange(pair: Pair) {
-    emit("updateState", { ...props.state, pair: pair.id });
-}
 
 watchEffect(() => {
     if (props.completed || !props.state.pair) return;
@@ -86,13 +80,7 @@ watchEffect(() => {
         <MuiPairSelect
             :open="open"
             :pairs="pairs"
-            :selected="
-                $props.state.pair
-                    ? pairs.find((pair) => pair.id === $props.state.pair) ||
-                      null
-                    : null
-            "
-            @pairChange="handlePairOnChange"
+            v-model="$props.state.pair"
             @dismiss="open = false"
             @click="open = true"
         />
