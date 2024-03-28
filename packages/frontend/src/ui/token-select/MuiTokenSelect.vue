@@ -59,6 +59,7 @@ const selectedToken = computed(() => {
                     :tokens="$props.tokens"
                     :selected="selected?.address"
                     :messages="$props.messages.search"
+                    :optionDisabled="$props.optionDisabled"
                     @dismiss="handleModalOnDismiss"
                     @tokenChange="handleTokenOnChange"
                 />

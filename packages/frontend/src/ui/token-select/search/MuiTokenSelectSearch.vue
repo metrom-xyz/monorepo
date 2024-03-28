@@ -35,6 +35,11 @@ const items = computed<TokenInfo[]>(() => {
 const { containerProps, wrapperProps, list } = useVirtualList(items, {
     itemHeight: 64,
 });
+
+function disableOption(token: TokenInfo) {
+    if (!props.optionDisabled) return false;
+    return props.optionDisabled(token);
+}
 </script>
 <template>
     <div class="mui_token_select_search__root">
@@ -74,6 +79,7 @@ const { containerProps, wrapperProps, list } = useVirtualList(items, {
                             data.address.toLowerCase()
                     "
                     :loading="$props.loading"
+                    :disabled="disableOption(data)"
                     @click="emit('tokenChange', data)"
                     v-bind="{ ...data }"
                 />

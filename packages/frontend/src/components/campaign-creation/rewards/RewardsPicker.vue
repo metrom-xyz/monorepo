@@ -82,6 +82,13 @@ const open = ref<number | undefined>();
                             ),
                         },
                     }"
+                    :optionDisabled="
+                        (token) =>
+                            !!$props.state.rewards.find(
+                                (reward) =>
+                                    reward.token?.address === token.address,
+                            )
+                    "
                     @dismiss="open = undefined"
                     @click="open = index"
                 />
