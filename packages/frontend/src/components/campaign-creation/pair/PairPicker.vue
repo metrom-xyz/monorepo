@@ -83,6 +83,16 @@ watchEffect(() => {
             v-model="$props.state.pair"
             @dismiss="open = false"
             @click="open = true"
+            :messages="{
+                inputPlaceholder: $t('campaign.pair.select.placeholder'),
+                search: {
+                    inputLabel: $t('campaign.pair.select.search.inputLabel'),
+                    inputPlaceholder: $t(
+                        'campaign.pair.select.search.inputPlaceholder',
+                    ),
+                    noPairs: $t('campaign.pair.select.search.noPairs'),
+                },
+            }"
         />
     </div>
 </template>

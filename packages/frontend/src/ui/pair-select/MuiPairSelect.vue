@@ -33,7 +33,7 @@ const inputValue = computed(() => {
                 iconLeft
                 readonly
                 :model-value="inputValue"
-                :placeholder="$t('ui.pairSelect.placeholder')"
+                :placeholder="$props.messages.inputPlaceholder"
                 class="mui_pair_select__input"
             >
                 <template #icon>
@@ -50,10 +50,10 @@ const inputValue = computed(() => {
             <template #modal>
                 <MuiPairSelectSearch
                     :pairs="$props.pairs"
-                    :label="$t('ui.pairSelect.placeholder')"
                     :selected="selected"
                     @dismiss="handleModalOnDismiss"
                     @pairChange="handlePairOnChange"
+                    :messages="$props.messages.search"
                 />
             </template>
         </MuiModal>
