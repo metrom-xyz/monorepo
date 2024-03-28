@@ -15,9 +15,6 @@ export const messages = {
             },
             pair: {
                 title: "Pick a pair",
-            },
-            rewards: {
-                title: "Rewards",
                 select: {
                     placeholder: "Token",
                     search: {
@@ -26,19 +23,28 @@ export const messages = {
                         noTokens: "Nothing here.",
                     },
                 },
+            },
+            rewards: {
+                title: "Rewards",
+                select: {
+                    placeholder: "Token",
+                    search: {
+                        inputLabel: "Select token",
+                        inputPlaceholder: "Search for token address, pair etc",
+                        noTokens: "Nothing here.",
+                    },
+                },
                 amount: "Amount",
                 addReward: "Add reward",
+                maxRewards: "Rewards limit reached",
             },
         },
         carrot: "Carrot",
         powered: "Powered by {0}",
         ui: {
             pairSelect: {
-                placeholder: "Select pair",
-                search: "Search for token address, pair etc.",
                 pair: "Pair",
                 tvl: "Tvl",
-                empty: "Nothing here",
             },
         },
     },

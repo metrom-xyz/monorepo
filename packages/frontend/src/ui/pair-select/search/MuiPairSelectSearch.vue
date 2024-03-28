@@ -47,8 +47,8 @@ const { containerProps, wrapperProps, list } = useVirtualList(items, {
             <MuiTextInput
                 id="token-search"
                 :disabled="$props.loading"
-                :label="$props.label"
-                :placeholder="$t('ui.pairSelect.search')"
+                :label="$props.messages.inputLabel"
+                :placeholder="$props.messages.inputPlaceholder"
                 :icon="SearchIcon"
                 iconLeft
                 v-model="searchQuery"
@@ -86,7 +86,7 @@ const { containerProps, wrapperProps, list } = useVirtualList(items, {
                 />
             </div>
             <MuiTypography v-else>
-                {{ $t("ui.pairSelect.empty") }}
+                {{ $props.messages.noPairs }}
             </MuiTypography>
         </div>
     </div>
