@@ -138,7 +138,7 @@ const attrs = useAttrs();
 }
 
 .mui_base_input_wrapper__container__left_icon > input {
-    @apply pl-12;
+    @apply pl-[80px];
 }
 
 .mui_base_input_wrapper__container__loading > input {
@@ -150,11 +150,11 @@ const attrs = useAttrs();
 }
 
 .mui_base_input_wrapper__icon > svg {
-    @apply w-5 text-black;
+    @apply text-black;
 }
 
 .mui_base_input_wrapper__icon__left {
-    @apply left-0;
+    @apply left-4;
 }
 
 .mui_base_input_wrapper__icon__right {

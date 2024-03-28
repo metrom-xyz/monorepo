@@ -20,7 +20,7 @@ defineProps<PairRemoteLogoProps>();
 </template>
 <style>
 .mui_pair_remote_logo__root {
-    @apply relative flex min-w-16;
+    @apply relative flex;
 }
 
 .mui_pair_remote_logo__token0 {
