@@ -41,9 +41,7 @@ watchPostEffect((onCleanup) => {
 });
 </script>
 <template>
-    <span>
-        <slot></slot>
-    </span>
+    <slot></slot>
     <Teleport to="body">
         <Transition name="mui_modal__fade">
             <div class="mui_modal__root" v-show="props.open">

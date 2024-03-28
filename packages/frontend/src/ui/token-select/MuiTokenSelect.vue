@@ -30,7 +30,8 @@ const selectedToken = computed(() => {
 
     return props.tokens.find(
         (token) =>
-            token.address.toLowerCase() === selected.value?.address.toLowerCase(),
+            token.address.toLowerCase() ===
+            selected.value?.address.toLowerCase(),
     );
 });
 </script>
@@ -48,7 +49,7 @@ const selectedToken = computed(() => {
                     <TokenSelectIcon v-if="!selectedToken" />
                     <MuiRemoteLogo
                         v-else
-                        :token="selectedToken.address"
+                        :address="selectedToken.address"
                         :defaultText="selectedToken.symbol"
                     />
                 </template>
@@ -71,5 +72,20 @@ const selectedToken = computed(() => {
 
 .mui_token_select__input {
     @apply hover:cursor-pointer;
+}
+
+/* text input customization */
+.mui_token_select__root
+    > .mui_base_input_wrapper__root
+    > .mui_base_input_wrapper__container__left_icon
+    > input {
+    @apply pl-14;
+}
+
+.mui_token_select__root
+    > .mui_base_input_wrapper__root
+    > .mui_base_input_wrapper__container__left_icon
+    > .mui_base_input_wrapper__icon__left {
+    @apply left-1.5;
 }
 </style>

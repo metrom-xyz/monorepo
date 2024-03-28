@@ -10,7 +10,11 @@ defineProps<PairSelectSearchRowProps>();
         class="mui_pair_select_search_row__root"
         :class="{ mui_pair_select_search_row__root__selected: $props.selected }"
     >
-        <MuiPairRemoteLogo :token0="$props.token0" :token1="$props.token1" />
+        <MuiPairRemoteLogo
+            :token0="$props.token0"
+            :token1="$props.token1"
+            class="mui_pair_select_search_row__pair_icon"
+        />
         <div class="mui_pair_select_search_row__pair_name">
             <MuiTypography lg>
                 {{ $props.token0.symbol }}
@@ -32,6 +36,10 @@ defineProps<PairSelectSearchRowProps>();
 <style>
 .mui_pair_select_search_row__root {
     @apply flex gap-3 p-3 justify-between items-center rounded-xl hover:cursor-pointer hover:bg-green-light;
+}
+
+.mui_pair_select_search_row__pair_icon {
+    @apply min-w-16;
 }
 
 .mui_pair_select_search_row__root__selected {

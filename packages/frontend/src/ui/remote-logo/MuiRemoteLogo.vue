@@ -8,7 +8,9 @@ const props = defineProps<RemoteLogoProps>();
 
 const tokenLists = useTokens();
 
-const token = props.address && tokenLists.getToken(props.address);
+const token = computed(() => {
+    return props.address && tokenLists.getToken(props.address);
+});
 
 const resolvedDefaultText = computed(() =>
     props.defaultText

@@ -5,6 +5,7 @@ import MuiModal from "../modal/MuiModal.vue";
 import MuiPairSelectSearch from "./search/MuiPairSelectSearch.vue";
 import type { Pair, PairSelectProps } from "./types";
 import { computed } from "vue";
+import MuiPairRemoteLogo from "../pair-remote-logo/MuiPairRemoteLogo.vue";
 
 defineProps<PairSelectProps>();
 const emit = defineEmits<{
@@ -38,13 +39,12 @@ const inputValue = computed(() => {
             >
                 <template #icon>
                     <PairSelectIcon v-if="!selected" />
-                    <!-- TODO: add pair icon when selected -->
-                    <!-- TODO: add messages prop -->
-                    <!-- <MuiPairRemoteLogo
+                    <MuiPairRemoteLogo
                         v-else
-                        :token0="$props.selected.token0"
-                        :token1="$props.selected.token1"
-                    /> -->
+                        :token0="selected.token0"
+                        :token1="selected.token1"
+                        class="mui_pair_select__icon"
+                    />
                 </template>
             </MuiTextInput>
             <template #modal>
@@ -65,5 +65,9 @@ const inputValue = computed(() => {
 
 .mui_pair_select__input {
     @apply hover:cursor-pointer;
+}
+
+.mui_pair_select__icon {
+    @apply w-12;
 }
 </style>
