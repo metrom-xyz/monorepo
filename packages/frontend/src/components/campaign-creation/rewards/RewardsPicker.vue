@@ -93,14 +93,16 @@ const open = ref<number | undefined>();
             </div>
         </div>
         <div
-            class="rewards_picker__action"
+            class="rewards_picker__footer rewards_picker__action"
             @click="emit('addReward')"
             v-if="$props.state.rewards.length < 5"
         >
             <PlusCircleIcon />
             {{ $t("campaign.rewards.addReward") }}
         </div>
-        <div v-else>max rewards</div>
+        <div v-else class="rewards_picker__footer rewards_picker__max_rewards">
+            {{ $t("campaign.rewards.maxRewards") }}
+        </div>
     </div>
 </template>
 <style>
@@ -120,16 +122,22 @@ const open = ref<number | undefined>();
     @apply text-right;
 }
 
-.rewards_picker__action {
+.rewards_picker__footer {
     @apply flex
-        gap-3
         bg-gray-100
         border-t
         border-dashed
         border-gray-400
-        cursor-pointer
         py-5
         px-9
         rounded-b-[30px];
+}
+
+.rewards_picker__action {
+    @apply flex gap-3 cursor-pointer;
+}
+
+.rewards_picker__max_rewards {
+    @apply flex justify-center items-center;
 }
 </style>
