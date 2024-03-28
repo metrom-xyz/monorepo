@@ -4,6 +4,7 @@ export interface TokenSelectSearchProps {
     loading?: boolean;
     selected?: string | null;
     tokens?: TokenInfo[];
+    optionDisabled?: (token: TokenInfo) => boolean;
     messages: {
         inputLabel: string;
         inputPlaceholder: string;
