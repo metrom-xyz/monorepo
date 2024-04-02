@@ -1,0 +1,130 @@
+<script setup lang="ts">
+import { computed, ref, useAttrs } from "vue";
+import MuiModal from "../modal/MuiModal.vue";
+import MuiTextInput from "../MuiTextInput.vue";
+import CalendarIcon from "@/icons/CalendarIcon.vue";
+import type { DateRangeInputProps } from "./types";
+import LocalizedFormat from "dayjs/plugin/localizedFormat";
+import dayjs, { Dayjs } from "dayjs";
+import type { BaseInputWrapperProps } from "../commons/types";
+import MuiDateRangeInputPicker from "./range-picker/MuiDateRangeInputPicker.vue";
+import MuiButton from "../button/MuiButton.vue";
+import MuiTypography from "../typography/MuiTypography.vue";
+
+dayjs.extend(LocalizedFormat);
+
+const props = defineProps<
+    Pick<BaseInputWrapperProps, "loading" | "error"> & DateRangeInputProps
+>();
+const startDateModel = defineModel<Dayjs>("startDate");
+const endDateModel = defineModel<Dayjs>("endDate");
+
+const attrs = useAttrs();
+
+const open = ref(false);
+const internalStartDate = ref<Dayjs | undefined>(startDateModel.value);
+const internalEndDate = ref<Dayjs | undefined>(endDateModel.value);
+
+const startDateText = computed(() =>
+    startDateModel.value
+        ? dayjs(startDateModel.value).format("L HH:mm:ss")
+        : undefined,
+);
+
+const endDateText = computed(() =>
+    endDateModel.value
+        ? dayjs(endDateModel.value).format("L HH:mm:ss")
+        : undefined,
+);
+
+function handlePickerOpenOnClick() {
+    if (!open.value && (attrs.disabled || props.loading)) return;
+    open.value = true;
+}
+
+function handlePickerOnDismiss() {
+    if (!startDateModel.value || !endDateModel.value) {
+        internalStartDate.value = undefined;
+        internalEndDate.value = undefined;
+    }
+    open.value = false;
+}
+
+function handlePickerOnApply() {
+    startDateModel.value = internalStartDate.value;
+    endDateModel.value = internalEndDate.value;
+    open.value = false;
+}
+</script>
+<template>
+    <div class="mui_date_range_input__root">
+        <MuiModal :open="open" :onDismiss="handlePickerOnDismiss">
+            <div class="mui_date_range_input__text__inputs">
+                <MuiTextInput
+                    v-model="startDateText"
+                    v-bind="{
+                        loading: $props.loading,
+                        placeholder: $props.messages.startPlaceholder,
+                        error: $props.error,
+                    }"
+                    readonly
+                    :icon="CalendarIcon"
+                    @click="handlePickerOpenOnClick"
+                />
+                <MuiTextInput
+                    v-model="endDateText"
+                    v-bind="{
+                        loading: $props.loading,
+                        placeholder: $props.messages.endPlaceholder,
+                        error: $props.error,
+                    }"
+                    readonly
+                    :icon="CalendarIcon"
+                    @click="handlePickerOpenOnClick"
+                />
+            </div>
+            <template #modal>
+                <MuiDateRangeInputPicker
+                    :onDismiss="handlePickerOnDismiss"
+                    :messages="{
+                        startLabel: $props.messages.startLabel,
+                        endLabel: $props.messages.endLabel,
+                    }"
+                    v-model:startDate="internalStartDate"
+                    v-model:endDate="internalEndDate"
+                />
+                <div class="mui_date_range_input__modal__footer">
+                    <div class="mui_date_range_input__modal__footer__content">
+                        <MuiButton
+                            sm
+                            class="mui_date_range_input__modal__apply__button"
+                            :disabled="!internalStartDate || !internalEndDate"
+                            @click="handlePickerOnApply"
+                        >
+                            <MuiTypography medium>
+                                {{ $t("campaign.range.picker.apply") }}
+                            </MuiTypography>
+                        </MuiButton>
+                    </div>
+                </div>
+            </template>
+        </MuiModal>
+    </div>
+</template>
+<style>
+.mui_date_range_input__modal__footer {
+    @apply border-t border border-gray-400 bg-white rounded-b-[30px] border-x-2 border-b-2 border-b-green border-x-green;
+}
+
+.mui_date_range_input__modal__footer__content {
+    @apply flex justify-center px-8 py-5;
+}
+
+.mui_date_range_input__modal__apply__button {
+    @apply w-1/2;
+}
+
+.mui_date_range_input__text__inputs {
+    @apply flex flex-col gap-2;
+}
+</style>
