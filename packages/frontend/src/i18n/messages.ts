@@ -38,6 +38,11 @@ export const messages = {
                 addReward: "Add reward",
                 maxRewards: "Rewards limit reached",
             },
+            range: {
+                picker: {
+                    apply: "Apply",
+                },
+            },
         },
         carrot: "Carrot",
         powered: "Powered by {0}",

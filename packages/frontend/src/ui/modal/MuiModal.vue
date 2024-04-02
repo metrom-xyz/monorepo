@@ -44,7 +44,7 @@ watchPostEffect((onCleanup) => {
     <slot></slot>
     <Teleport to="body">
         <Transition name="mui_modal__fade">
-            <div class="mui_modal__root" v-show="props.open">
+            <div class="mui_modal__root" v-if="props.open">
                 <span ref="contentRef">
                     <slot name="modal"> </slot>
                 </span>
