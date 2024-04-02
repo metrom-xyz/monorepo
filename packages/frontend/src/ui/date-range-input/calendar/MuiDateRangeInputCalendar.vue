@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Dayjs } from "dayjs";
+import dayjs, { Dayjs } from "dayjs";
 import { ref, watchEffect } from "vue";
 import MuiTypography from "../../typography/MuiTypography.vue";
 import type { DateRangeInputCalendarProps } from "./types";
@@ -8,6 +8,8 @@ import {
     type CalendarCell,
     isCalendarCellDisabled,
     isCalendarCellSelected,
+    isCalendarCellStartRangeDate,
+    isCalendarCellEndRangeDate,
 } from "../../../utils/date";
 import ArrowLeftIcon from "@/icons/ArrowLeftIcon.vue";
 
@@ -84,11 +86,18 @@ function handleCellOnClick(event: MouseEvent) {
                 :key="index"
                 :class="{
                     mui_date_range_input_calendar__cell__wrapper__in__range:
-                        !!$props.dateInRange && $props.dateInRange(cell.value),
+                        !!$props.dateInRange &&
+                        $props.dateInRange(cell.value) &&
+                        !isCalendarCellDisabled(
+                            cell,
+                            $props.lookupDate,
+                            $props.min,
+                            $props.max,
+                        ),
                     mui_date_range_input_calendar__cell__wrapper__selected__from:
-                        cell.value.isSame($props.from),
+                        isCalendarCellStartRangeDate(cell, $props.from, value),
                     mui_date_range_input_calendar__cell__wrapper__selected__to:
-                        cell.value.isSame($props.to),
+                        isCalendarCellEndRangeDate(cell, $props.to, value),
                 }"
             >
                 <MuiTypography
@@ -124,6 +133,12 @@ function handleCellOnClick(event: MouseEvent) {
                                 $props.max,
                             ),
                         mui_date_range_input_calendar__cell__in__range:
+                            !isCalendarCellDisabled(
+                                cell,
+                                $props.lookupDate,
+                                $props.min,
+                                $props.max,
+                            ) &&
                             !!$props.dateInRange &&
                             $props.dateInRange(cell.value),
                     }"
@@ -168,7 +183,7 @@ function handleCellOnClick(event: MouseEvent) {
 }
 
 .mui_date_range_input_calendar__cells {
-    @apply grid grid-cols-7 grid-rows-4;
+    @apply grid grid-cols-7 grid-rows-4 gap-y-1;
 }
 
 .mui_date_range_input_calendar__cell {
@@ -203,10 +218,10 @@ function handleCellOnClick(event: MouseEvent) {
 }
 
 .mui_date_range_input_calendar__cell__selected {
-    @apply bg-green text-black;
+    @apply bg-green text-black hover:bg-green;
 }
 
 .mui_date_range_input_calendar__cell__disabled {
-    @apply text-gray-400 hover:bg-white cursor-not-allowed;
+    @apply invisible text-gray-400 hover:bg-white cursor-not-allowed;
 }
 </style>

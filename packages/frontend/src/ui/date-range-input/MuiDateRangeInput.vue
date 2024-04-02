@@ -10,30 +10,30 @@ import type { BaseInputWrapperProps } from "../commons/types";
 import MuiDateRangeInputPicker from "./range-picker/MuiDateRangeInputPicker.vue";
 import MuiButton from "../button/MuiButton.vue";
 import MuiTypography from "../typography/MuiTypography.vue";
+import type { Range } from "@/views/create-campaign-view/types";
 
 dayjs.extend(LocalizedFormat);
 
 const props = defineProps<
     Pick<BaseInputWrapperProps, "loading" | "error"> & DateRangeInputProps
 >();
-const startDateModel = defineModel<Dayjs>("startDate");
-const endDateModel = defineModel<Dayjs>("endDate");
+const rangeModel = defineModel<Range>("range");
 
 const attrs = useAttrs();
 
 const open = ref(false);
-const internalStartDate = ref<Dayjs | undefined>(startDateModel.value);
-const internalEndDate = ref<Dayjs | undefined>(endDateModel.value);
+const internalStartDate = ref<Dayjs | undefined>(rangeModel.value?.from);
+const internalEndDate = ref<Dayjs | undefined>(rangeModel.value?.from);
 
 const startDateText = computed(() =>
-    startDateModel.value
-        ? dayjs(startDateModel.value).format("L HH:mm:ss")
+    rangeModel.value?.from
+        ? dayjs(rangeModel.value.from).format("L HH:mm:ss")
         : undefined,
 );
 
 const endDateText = computed(() =>
-    endDateModel.value
-        ? dayjs(endDateModel.value).format("L HH:mm:ss")
+    rangeModel.value?.from
+        ? dayjs(rangeModel.value.from).format("L HH:mm:ss")
         : undefined,
 );
 
@@ -43,7 +43,7 @@ function handlePickerOpenOnClick() {
 }
 
 function handlePickerOnDismiss() {
-    if (!startDateModel.value || !endDateModel.value) {
+    if (!rangeModel.value?.from || !rangeModel.value.from) {
         internalStartDate.value = undefined;
         internalEndDate.value = undefined;
     }
@@ -51,8 +51,10 @@ function handlePickerOnDismiss() {
 }
 
 function handlePickerOnApply() {
-    startDateModel.value = internalStartDate.value;
-    endDateModel.value = internalEndDate.value;
+    rangeModel.value = {
+        from: internalStartDate.value,
+        to: internalEndDate.value,
+    };
     open.value = false;
 }
 </script>
