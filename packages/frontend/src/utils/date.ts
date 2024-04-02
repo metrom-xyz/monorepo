@@ -23,6 +23,26 @@ export const getCalendarCells = (date: Dayjs): CalendarCell[] => {
     for (let i = 0; i < daysInMonth; i++)
         calendarCells.push(prepareCell(date, i + 1));
 
+    // we always aim to have a constant day-week cell array
+    // so that the first cell starts at monday and the 7th
+    // ends on sunday
+    const firstDateDayOfWeek = calendarCells[0].value.day();
+    const cellsToPrepend =
+        firstDateDayOfWeek === 0 ? 6 : firstDateDayOfWeek - 1;
+
+    // add to start from prev month
+    const lastMonth = date.subtract(1, "month");
+    for (let i = 0; i < cellsToPrepend; i++)
+        calendarCells.unshift(
+            prepareCell(lastMonth, lastMonth.daysInMonth() - i),
+        );
+
+    // add to end from next month
+    const nextMonth = date.add(1, "month");
+    const calendarCellsLength = calendarCells.length;
+    for (let i = 0; i < 42 - calendarCellsLength; i++)
+        calendarCells.push(prepareCell(nextMonth, i + 1));
+
     return calendarCells;
 };
 
@@ -51,6 +71,30 @@ export const isCalendarCellSelected = (
         dayjs(lookupDate).year() === cell.value.year() &&
         dayjs(lookupDate).month() === cell.value.month() &&
         dayjs(lookupDate).date() === cell.value.date()
+    );
+};
+
+export const isCalendarCellStartRangeDate = (
+    cell: CalendarCell,
+    from?: Dayjs | Date | null,
+    lookupDate?: Dayjs | Date | null,
+) => {
+    return (
+        cell.value.isSame(from) ||
+        cell.value.day() === 1 ||
+        dayjs(lookupDate).startOf("month").date() === cell.value.date()
+    );
+};
+
+export const isCalendarCellEndRangeDate = (
+    cell: CalendarCell,
+    to?: Dayjs | Date | null,
+    lookupDate?: Dayjs | Date | null,
+) => {
+    return (
+        cell.value.isSame(to) ||
+        cell.value.day() === 0 ||
+        dayjs(lookupDate).endOf("month").date() === cell.value.date()
     );
 };
 
