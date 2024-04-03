@@ -228,7 +228,7 @@ importers:
         specifier: ^2.0.6
         version: 2.0.7(typescript@5.4.2)
 
-  packages/landing:
+  packages/landing-page:
     dependencies:
       '@fontsource/inter':
         specifier: ^5.0.17
