@@ -31,6 +31,13 @@ export function getRewardId(campaign: Address, token: Address): Bytes {
     return campaign.concat(token);
 }
 
+// this is the string "initial" encoded with utf-8
+const INITIAL_REWARD_ID_PREFIX = Bytes.fromHexString("0x696e697469616c");
+
+export function getInitialRewardId(campaign: Address, token: Address): Bytes {
+    return INITIAL_REWARD_ID_PREFIX.concat(getRewardId(campaign, token));
+}
+
 export function getRewardOrThrow(campaign: Address, token: Address): Reward {
     let reward = Reward.load(getRewardId(campaign, token));
     if (reward != null) return reward;
