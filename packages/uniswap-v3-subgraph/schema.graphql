@@ -30,6 +30,7 @@ type Event @entity(immutable: true) {
     id: Bytes!
     transactionHash: Bytes!
     blockNumber: BigInt!
+    logIndex: BigInt!
     pool: Pool!
 
     # non zero liquidity change fields

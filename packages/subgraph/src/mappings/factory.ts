@@ -12,6 +12,7 @@ import {
 import {
     AcceptFactoryOwnershipEvent,
     Factory,
+    InitializeFactoryEvent,
     SetFeeEvent,
     SetFeeReceiverEvent,
     SetImplementationEvent,
@@ -32,6 +33,18 @@ export function handleInitialize(event: Initialize): void {
         throw new Error(
             `Inconsistent factory address: expected ${FACTORY_ADDRESS.toHex()}, got ${event.address.toHex()}`,
         );
+
+    let transaction = getOrCreateTransaction(event);
+
+    let initializeEvent = new InitializeFactoryEvent(getEventId(event));
+    initializeEvent.transaction = transaction.id;
+    initializeEvent.factory = FACTORY_ADDRESS;
+    initializeEvent.owner = event.params.owner;
+    initializeEvent.updater = event.params.updater;
+    initializeEvent.implementation = event.params.implementation;
+    initializeEvent.feeReceiver = event.params.feeReceiver;
+    initializeEvent.fee = event.params.fee;
+    initializeEvent.save();
 
     let factory = new Factory(FACTORY_ADDRESS);
     factory.owner = event.params.owner;

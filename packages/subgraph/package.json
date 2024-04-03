@@ -12,17 +12,17 @@
         "format": "eslint --fix --ext .js,.ts ./ && prettier --write './**/*.{json,md}'"
     },
     "dependencies": {
-        "@graphprotocol/graph-cli": "0.69.0",
+        "@graphprotocol/graph-cli": "0.69.1",
         "@graphprotocol/graph-ts": "0.34.0"
     },
     "devDependencies": {
-        "@metrom-xyz/contracts": "^0.2.1",
+        "@metrom-xyz/contracts": "^0.3.0",
         "@types/node": "^20.11.30",
-        "@typescript-eslint/eslint-plugin": "^7.3.1",
-        "@typescript-eslint/parser": "^7.3.1",
+        "@typescript-eslint/eslint-plugin": "^7.4.0",
+        "@typescript-eslint/parser": "^7.4.0",
         "eslint": "^8.57.0",
         "eslint-config-prettier": "^9.1.0",
-        "eslint-config-turbo": "^1.12.5",
+        "eslint-config-turbo": "^1.13.0",
         "eslint-plugin-prettier": "^5.1.3",
         "prettier": "^3.2.5",
         "tsx": "^4.7.1"

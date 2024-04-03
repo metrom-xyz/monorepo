@@ -11,6 +11,8 @@ import {
     AcceptCampaignOwnershipEvent,
     Campaign,
     ClaimEvent,
+    InitialReward,
+    InitializeCampaignEvent,
     RecoverEvent,
     Reward,
     TransferCampaignOwnershipEvent,
@@ -20,6 +22,7 @@ import {
     getCampaignOrThrow,
     getEventId,
     getFactoryOrThrow,
+    getInitialRewardId,
     getOrCreateToken,
     getOrCreateTransaction,
     getRewardId,
@@ -27,6 +30,18 @@ import {
 } from "../commons";
 
 export function handleInitialize(event: Initialize): void {
+    let transaction = getOrCreateTransaction(event);
+
+    let initializeEvent = new InitializeCampaignEvent(getEventId(event));
+    initializeEvent.transaction = transaction.id;
+    initializeEvent.campaign = event.address;
+    initializeEvent.owner = event.params.owner;
+    initializeEvent.pool = event.params.pool;
+    initializeEvent.from = event.params.from;
+    initializeEvent.to = event.params.to;
+    initializeEvent.feeReceiver = event.params.feeReceiver;
+    initializeEvent.save();
+
     for (let i = 0; i < event.params.rewards.length; i++) {
         let rewardFromEvent = event.params.rewards[i];
         let token = getOrCreateToken(rewardFromEvent.token);
@@ -39,11 +54,20 @@ export function handleInitialize(event: Initialize): void {
         reward.amount = rewardFromEvent.amount;
         reward.unclaimed = rewardFromEvent.amount;
         reward.save();
+
+        let initialReward = new InitialReward(
+            getInitialRewardId(event.address, rewardFromEvent.token),
+        );
+        initialReward.event = initializeEvent.id;
+        initialReward.token = token.id;
+        initialReward.amount = rewardFromEvent.amount;
+        initialReward.fee = rewardFromEvent.fee;
+        initialReward.save();
     }
 
     let campaign = new Campaign(event.address);
     campaign.factory = getFactoryOrThrow().id;
-    campaign.transaction = getOrCreateTransaction(event).id;
+    campaign.transaction = transaction.id;
     campaign.owner = event.params.owner;
     campaign.pendingOwner = Address.zero();
     campaign.pool = event.params.pool;

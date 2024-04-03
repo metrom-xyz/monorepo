@@ -21,6 +21,7 @@ export function createBaseEvent(event: ethereum.Event, poolId: Bytes): Event {
     let baseEvent = new Event(id);
     baseEvent.transactionHash = event.transaction.hash;
     baseEvent.blockNumber = event.block.number;
+    baseEvent.logIndex = event.logIndex;
     baseEvent.pool = poolId;
     baseEvent.save();
     return baseEvent;
