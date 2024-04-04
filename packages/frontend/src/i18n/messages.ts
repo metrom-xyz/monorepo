@@ -7,7 +7,12 @@ export const messages = {
             },
         },
         campaign: {
-            title: "New farming campaign",
+            create: {
+                title: "New farming campaign",
+            },
+            summary: {
+                title: "Campaign summary",
+            },
             amm: {
                 title: "Pick a DEX",
                 network: "Network",
@@ -52,6 +57,7 @@ export const messages = {
                 title: "Launch",
                 connectWallet: "Connect wallet to continue",
                 preview: "See campaign preview",
+                launch: "Launch campaign",
             },
         },
         carrot: "Carrot",
