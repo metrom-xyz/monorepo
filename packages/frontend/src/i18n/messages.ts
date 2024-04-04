@@ -39,9 +39,19 @@ export const messages = {
                 maxRewards: "Rewards limit reached",
             },
             range: {
+                title: "Pick a period",
                 picker: {
                     apply: "Apply",
+                    startLabel: "Start",
+                    endLabel: "End",
+                    startPlaceholder: "Start",
+                    endPlaceholder: "End",
                 },
+            },
+            deploy: {
+                title: "Launch",
+                connectWallet: "Connect wallet to continue",
+                preview: "See campaign preview",
             },
         },
         carrot: "Carrot",

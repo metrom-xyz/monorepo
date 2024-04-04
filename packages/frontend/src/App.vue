@@ -48,4 +48,3 @@ tokenListsStore.fetchTokensLists();
     @apply flex gap-2;
 }
 </style>
-./stores/tokens
