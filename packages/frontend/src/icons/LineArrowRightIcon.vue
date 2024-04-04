@@ -7,16 +7,18 @@
         xmlns="http://www.w3.org/2000/svg"
     >
         <path
-            d="M7.39969 6.31991L15.8897 3.48991C19.6997 2.21991 21.7697 4.29991 20.5097 8.10991L17.6797 16.5999C15.7797 22.3099 12.6597 22.3099 10.7597 16.5999L9.91969 14.0799L7.39969 13.2399C1.68969 11.3399 1.68969 8.22991 7.39969 6.31991Z"
-            stroke="currentColor"
+            d="M14.4297 5.93018L20.4997 12.0002L14.4297 18.0702"
+            stroke="white"
             stroke-width="1.5"
+            stroke-miterlimit="10"
             stroke-linecap="round"
             stroke-linejoin="round"
         />
         <path
-            d="M10.1094 13.6501L13.6894 10.0601"
-            stroke="currentColor"
+            d="M3.5 12H20.33"
+            stroke="white"
             stroke-width="1.5"
+            stroke-miterlimit="10"
             stroke-linecap="round"
             stroke-linejoin="round"
         />

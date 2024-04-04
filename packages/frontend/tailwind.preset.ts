@@ -78,6 +78,7 @@ export default {
             current: "currentColor",
             white: "#ffffff",
             black: "#000000",
+            blue: "#007AFF",
             gray: {
                 600: "#656363",
                 500: "#DEDEDE",
