@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { RewardsPickerTypes } from "./types";
 import MuiNumberInput from "@/ui/MuiNumberInput.vue";
-import { ref } from "vue";
+import { ref, watchEffect } from "vue";
 import MuiTokenSelect from "@/ui/token-select/MuiTokenSelect.vue";
 import type { TokenInfo } from "@uniswap/token-lists";
 import PlusCircleIcon from "@/icons/PlusCircleIcon.vue";
@@ -45,13 +45,23 @@ const TOKENS: TokenInfo[] = [
     },
 ];
 
-defineProps<RewardsPickerTypes>();
+const props = defineProps<RewardsPickerTypes>();
 const emit = defineEmits<{
     addReward: [];
     complete: [];
 }>();
 
 const open = ref<number | undefined>();
+
+watchEffect(() => {
+    if (
+        props.completed ||
+        props.state.rewards.filter(({ amount, token }) => !!token && !!amount)
+            .length === 0
+    )
+        return;
+    emit("complete");
+});
 </script>
 <template>
     <div class="rewards_picker__root">
