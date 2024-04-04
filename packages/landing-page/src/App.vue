@@ -3,7 +3,7 @@ import FormPreviewImage from "./assets/FormPreviewImage.vue";
 import MetromLogo from "./assets/MetromLogo.vue";
 import TelegramLogo from "./assets/TelegramLogo.vue";
 import XLogo from "./assets/XLogo.vue";
-import { METROM_X_ACCOUNT } from "./common";
+import { METROM_TELEGRAM, METROM_X_ACCOUNT } from "./common";
 </script>
 <template>
     <div class="app__container">
@@ -15,7 +15,11 @@ import { METROM_X_ACCOUNT } from "./common";
                     {{ $t("landing.description") }}
                 </h3>
                 <div class="app__socials">
-                    <a href="" target="_blank" rel="noopener noreferrer">
+                    <a
+                        :href="METROM_TELEGRAM"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
                         <TelegramLogo />
                     </a>
                     <a
