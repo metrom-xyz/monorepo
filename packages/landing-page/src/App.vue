@@ -48,11 +48,11 @@ import { METROM_TELEGRAM, METROM_X_ACCOUNT } from "./common";
 </template>
 <style>
 .app__container {
-    @apply flex flex-col gap-14 items-center md:items-start px-2.5 md:px-[15%] lg:px-[23%] py-3 md:py-9 bg-gray-300 bg-3 bg-dots;
+    @apply min-h-screen flex flex-col gap-14 items-center md:items-start px-2.5 lg:px-16 xl:px-[23%] py-3 md:py-9 bg-gray-300 bg-3 bg-dots;
 }
 
 .app__content {
-    @apply flex flex-col items-center md:items-start md:flex-row gap-11;
+    @apply flex flex-col flex-grow items-center md:items-start md:flex-row gap-11;
 }
 
 .app__copy {
