@@ -1,7 +1,5 @@
 <script setup lang="ts">
-import MuiCard from "@/ui/MuiCard.vue";
 import type { StepItemProps } from "./types";
-import MuiTypography from "@/ui/typography/MuiTypography.vue";
 import MuiStepPreview from "@/ui/stepper/step-preview/MuiStepPreview.vue";
 
 defineProps<StepItemProps>();
@@ -20,16 +18,10 @@ defineProps<StepItemProps>();
             </div>
             <div class="mui_step__connector"></div>
         </div>
-        <MuiCard v-if="$props.active || $props.completed">
-            <template #title>
-                <MuiTypography medium h4>{{ $props.title }}</MuiTypography>
-            </template>
-            <template #content>
-                <div class="mui_step__content">
-                    <slot></slot>
-                </div>
-            </template>
-        </MuiCard>
+        <component
+            :is="$slots.default"
+            v-if="$props.active || $props.completed"
+        />
         <MuiStepPreview v-else :title="$props.title" />
     </div>
 </template>
@@ -52,6 +44,14 @@ defineProps<StepItemProps>();
 
 .mui_step__icon_wrapper__active {
     @apply bg-green;
+}
+
+.mui_step__root:last-child > .mui_step__stepper > .mui_step__icon_wrapper__active {
+    @apply bg-blue;
+}
+
+.mui_step__root:last-child > .mui_step__stepper > .mui_step__icon_wrapper__active > .mui_step__icon {
+    @apply text-white;
 }
 
 .mui_step__icon_wrapper__completed {
