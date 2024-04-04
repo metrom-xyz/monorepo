@@ -11,6 +11,8 @@ import CupIcon from "@/icons/CupIcon.vue";
 import PairPicker from "@/components/campaign-creation/pair/PairPicker.vue";
 import RewardsPicker from "@/components/campaign-creation/rewards/RewardsPicker.vue";
 import { watchEffect } from "vue";
+import CalendarIcon from "@/icons/CalendarIcon.vue";
+import DatePicker from "@/components/campaign-creation/date/DatePicker.vue";
 
 const stepCursor = ref(1);
 const campaignState = ref<CampaignState>({
@@ -71,6 +73,19 @@ watchEffect(() => {
                     :state="campaignState"
                     :completed="stepCursor > 3"
                     @addReward="campaignState.rewards.push({})"
+                    @complete="handleStepOnComplete"
+                />
+            </MuiStep>
+            <MuiStep
+                :step="4"
+                :title="$t('campaign.range.title')"
+                :active="stepCursor === 4"
+                :completed="stepCursor > 4"
+                :icon="CalendarIcon"
+            >
+                <DatePicker
+                    :state="campaignState"
+                    :completed="stepCursor > 4"
                     @complete="handleStepOnComplete"
                 />
             </MuiStep>

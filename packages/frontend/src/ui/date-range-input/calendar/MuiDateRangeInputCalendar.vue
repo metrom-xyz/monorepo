@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import dayjs, { Dayjs } from "dayjs";
+import { Dayjs } from "dayjs";
 import { ref, watchEffect } from "vue";
 import MuiTypography from "../../typography/MuiTypography.vue";
 import type { DateRangeInputCalendarProps } from "./types";
