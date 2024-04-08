@@ -32,8 +32,8 @@ const startDateText = computed(() =>
 );
 
 const endDateText = computed(() =>
-    rangeModel.value?.from
-        ? dayjs(rangeModel.value.from).format("L HH:mm:ss")
+    rangeModel.value?.to
+        ? dayjs(rangeModel.value.to).format("L HH:mm:ss")
         : undefined,
 );
 
