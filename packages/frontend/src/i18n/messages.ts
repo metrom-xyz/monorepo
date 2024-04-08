@@ -12,6 +12,12 @@ export const messages = {
             },
             summary: {
                 title: "Campaign summary",
+                pair: "Pair",
+                amm: "DEX",
+                rewards: "Rewards",
+                period: "Duration",
+                periodFrom: "Start",
+                periodTo: "To",
             },
             amm: {
                 title: "Pick a DEX",
@@ -25,7 +31,7 @@ export const messages = {
                     search: {
                         inputLabel: "Select token",
                         inputPlaceholder: "Search",
-                        noTokens: "Nothing here.",
+                        noPairs: "Nothing here.",
                     },
                 },
             },

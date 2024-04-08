@@ -56,7 +56,10 @@ function handleOnClick() {
             </div>
         </div>
         <div v-else class="preview_deploy_button__content" medium>
-            <MuiTypography>
+            <div
+                class="preview_deploy_button__icon preview_deploy_button__icon_hidden"
+            ></div>
+            <MuiTypography medium>
                 {{ $t("campaign.deploy.launch") }}
             </MuiTypography>
             <div

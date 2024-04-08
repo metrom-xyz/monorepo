@@ -22,7 +22,10 @@ function handleOptionOnClick(option: T) {
             :disabled="$props.disabled"
         >
             <template #summary>
-                <div v-if="selected?.value" class="mui_accordion_select__summary">
+                <div
+                    v-if="selected?.value"
+                    class="mui_accordion_select__summary"
+                >
                     <component
                         :is="selected.icon"
                         class="mui_accordion_select__selected_icon"
