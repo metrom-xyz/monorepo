@@ -7,13 +7,21 @@ defineProps<PairRemoteLogoProps>();
 <template>
     <div class="mui_pair_remote_logo__root">
         <MuiRemoteLogo
-            :address="$props.token0.address"
-            :defaultText="$props.token0.symbol"
+            :address="$props.token0?.address"
+            :defaultText="$props.token0?.symbol"
+            :sm="$props.sm"
+            :lg="$props.lg"
+            :xl="$props.xl"
+            :xxl="$props.xxl"
             class="mui_pair_remote_logo__token0"
         />
         <MuiRemoteLogo
-            :address="$props.token1.address"
-            :defaultText="$props.token1.symbol"
+            :address="$props.token1?.address"
+            :defaultText="$props.token1?.symbol"
+            :sm="$props.sm"
+            :lg="$props.lg"
+            :xl="$props.xl"
+            :xxl="$props.xxl"
             class="mui_pair_remote_logo__token1"
         />
     </div>
@@ -24,7 +32,7 @@ defineProps<PairRemoteLogoProps>();
 }
 
 .mui_pair_remote_logo__token0 {
-    @apply z-[1] rounded-full shadow shadow-gray-500;
+    @apply z-[1] rounded-full;
 }
 
 .mui_pair_remote_logo__token1 {
