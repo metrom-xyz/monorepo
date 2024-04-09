@@ -6,10 +6,10 @@ defineProps<MuiTextFieldProps>();
 </script>
 <template>
     <div class="mui_text_field__root">
-        <MuiTypography uppercase xs>
+        <MuiTypography uppercase xs class="mui_text_field__label">
             {{ $props.label }}
         </MuiTypography>
-        <MuiTypography lg>
+        <MuiTypography>
             {{ $props.value }}
         </MuiTypography>
     </div>
@@ -17,5 +17,9 @@ defineProps<MuiTextFieldProps>();
 <style>
 .mui_text_field__root {
     @apply flex flex-col;
+}
+
+.mui_text_field__label {
+    @apply text-gray-700;
 }
 </style>

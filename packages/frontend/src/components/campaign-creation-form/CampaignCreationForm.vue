@@ -17,6 +17,10 @@ import type { CampaignCreationFormProps } from "./types";
 import { ref } from "vue";
 
 defineProps<CampaignCreationFormProps>();
+const emit = defineEmits<{
+    addReward: [];
+    removeReward: [index: number];
+}>();
 
 const stepCursor = ref(1);
 
@@ -36,7 +40,7 @@ function handleStepOnComplete() {
             >
                 <MuiCard>
                     <template #title>
-                        <MuiTypography medium h4>
+                        <MuiTypography medium lg>
                             {{ $t("campaign.amm.title") }}
                         </MuiTypography>
                     </template>
@@ -60,7 +64,7 @@ function handleStepOnComplete() {
             >
                 <MuiCard>
                     <template #title>
-                        <MuiTypography medium h4>
+                        <MuiTypography medium lg>
                             {{ $t("campaign.pair.title") }}
                         </MuiTypography>
                     </template>
@@ -82,7 +86,7 @@ function handleStepOnComplete() {
             >
                 <MuiCard>
                     <template #title>
-                        <MuiTypography medium h4>
+                        <MuiTypography medium lg>
                             {{ $t("campaign.rewards.title") }}
                         </MuiTypography>
                     </template>
@@ -90,7 +94,8 @@ function handleStepOnComplete() {
                         <RewardsPicker
                             :state="$props.state"
                             :completed="stepCursor > 3"
-                            @addReward="$props.state.rewards.push({})"
+                            @addReward="emit('addReward')"
+                            @removeReward="emit('removeReward', $event)"
                             @complete="handleStepOnComplete"
                         />
                     </template>
@@ -105,7 +110,7 @@ function handleStepOnComplete() {
             >
                 <MuiCard>
                     <template #title>
-                        <MuiTypography medium h4>
+                        <MuiTypography medium lg>
                             {{ $t("campaign.range.title") }}
                         </MuiTypography>
                     </template>

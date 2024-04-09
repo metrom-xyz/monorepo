@@ -16,6 +16,7 @@ export const useTokens = defineStore(TOKEN_STORE_NAME, {
     },
     actions: {
         async fetchTokensLists() {
+            // FIXME: improve token fetching
             if (this.tokens.size > 0) return;
             const tokenLists = await Promise.all(
                 TOKEN_LISTS.map(async (url) => {

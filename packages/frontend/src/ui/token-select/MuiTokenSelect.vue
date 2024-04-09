@@ -68,9 +68,6 @@ const selectedToken = computed(() => {
     </div>
 </template>
 <style>
-.mui_token_select__root {
-}
-
 .mui_token_select__input {
     @apply hover:cursor-pointer;
 }

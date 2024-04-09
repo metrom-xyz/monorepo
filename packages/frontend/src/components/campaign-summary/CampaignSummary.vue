@@ -20,7 +20,7 @@ defineProps<CampaignSummaryProps>();
                         :token1="$props.state.pair?.token1"
                         class="campaign_summary__pair"
                     />
-                    <MuiTypography lg>
+                    <MuiTypography>
                         {{
                             `${$props.state.pair?.token0.symbol} / ${$props.state.pair?.token1.symbol}`
                         }}
@@ -33,7 +33,7 @@ defineProps<CampaignSummaryProps>();
                         :is="$props.state.amm?.icon"
                         class="campaign_summary__amm__icon"
                     ></component>
-                    <MuiTypography lg>
+                    <MuiTypography>
                         {{ $props.state.amm?.label }}
                     </MuiTypography>
                 </div>
@@ -45,10 +45,10 @@ defineProps<CampaignSummaryProps>();
                     class="campaign_summary__rewards__box"
                 >
                     <MuiRemoteLogo xxl :address="reward.token?.address" />
-                    <MuiTypography lg>
+                    <MuiTypography>
                         {{ reward.token?.symbol }}
                     </MuiTypography>
-                    <MuiTypography lg>
+                    <MuiTypography>
                         {{ reward.amount }}
                     </MuiTypography>
                 </div>

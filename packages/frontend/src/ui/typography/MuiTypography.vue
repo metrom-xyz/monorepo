@@ -36,7 +36,7 @@ const baseComponent = props.h1
 </template>
 <style>
 .mui_typography__root {
-    @apply text-black font-inter text-base;
+    @apply leading-normal text-black font-inter text-base;
 }
 
 .mui_typography__root__upper {

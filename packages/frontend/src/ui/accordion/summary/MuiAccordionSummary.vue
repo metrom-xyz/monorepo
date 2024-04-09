@@ -20,6 +20,7 @@ const props = defineProps<AccordionSummaryProps>();
 <style>
 .mui_accordion_summary__root {
     @apply hover:cursor-pointer
+        rounded-[18px]
         flex 
         justify-between
         items-center

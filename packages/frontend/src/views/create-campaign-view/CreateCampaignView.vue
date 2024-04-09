@@ -14,6 +14,27 @@ const campaignState = ref<CampaignState>({
 watchEffect(() => {
     console.log("campaign", JSON.stringify(campaignState.value, null, 4));
 });
+
+function handleRewardOnRemove(index: number) {
+    if (campaignState.value.rewards.length > 1) {
+        campaignState.value.rewards = campaignState.value.rewards
+            .slice(0, index)
+            .concat(campaignState.value.rewards.slice(index + 1));
+    } else {
+        campaignState.value.rewards[index] = {};
+    }
+}
+
+function handlePreviewOnClick() {
+    // TODO: implement campaign state formatting
+    preview.value = true;
+    campaignState.value = {
+        ...campaignState.value,
+        rewards: campaignState.value.rewards.filter(
+            (reward) => reward.amount && reward.token,
+        ),
+    };
+}
 </script>
 <template>
     <div class="create_campaign__root">
@@ -27,7 +48,9 @@ watchEffect(() => {
             <MuiTypography h3>{{ $t("campaign.create.title") }}</MuiTypography>
             <CampaignCreationForm
                 :state="campaignState"
-                :onPreviewClick="() => (preview = true)"
+                :onPreviewClick="handlePreviewOnClick"
+                @addReward="campaignState.rewards.push({})"
+                @removeReward="handleRewardOnRemove"
             />
         </div>
     </div>

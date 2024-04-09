@@ -64,22 +64,18 @@ function handlePickerOnApply() {
             <div class="mui_date_range_input__text__inputs">
                 <MuiTextInput
                     v-model="startDateText"
-                    v-bind="{
-                        loading: $props.loading,
-                        placeholder: $props.messages.startPlaceholder,
-                        error: $props.error,
-                    }"
+                    :loading="$props.loading"
+                    :placeholder="$props.messages.startPlaceholder"
+                    :error="$props.error"
                     readonly
                     :icon="CalendarIcon"
                     @click="handlePickerOpenOnClick"
                 />
+                <div class="mui_date_range_input__divider"></div>
                 <MuiTextInput
                     v-model="endDateText"
-                    v-bind="{
-                        loading: $props.loading,
-                        placeholder: $props.messages.endPlaceholder,
-                        error: $props.error,
-                    }"
+                    :placeholder="$props.messages.endPlaceholder"
+                    :error="$props.error"
                     readonly
                     :icon="CalendarIcon"
                     @click="handlePickerOpenOnClick"
@@ -128,5 +124,9 @@ function handlePickerOnApply() {
 
 .mui_date_range_input__text__inputs {
     @apply flex flex-col gap-2;
+}
+
+.mui_date_range_input__divider {
+    @apply h-[1px] border-b border-gray-400;
 }
 </style>
