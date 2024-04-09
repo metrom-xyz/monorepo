@@ -1,10 +1,9 @@
 <script setup lang="ts">
 import type { RewardsPickerTypes } from "./types";
-import MuiNumberInput from "@/ui/MuiNumberInput.vue";
-import { ref, watchEffect } from "vue";
-import MuiTokenSelect from "@/ui/token-select/MuiTokenSelect.vue";
+import { watchEffect } from "vue";
 import type { TokenInfo } from "@uniswap/token-lists";
 import PlusCircleIcon from "@/icons/PlusCircleIcon.vue";
+import RewardRow from "./reward-row/RewardRow.vue";
 
 // TODO: fetch
 const TOKENS: TokenInfo[] = [
@@ -48,10 +47,9 @@ const TOKENS: TokenInfo[] = [
 const props = defineProps<RewardsPickerTypes>();
 const emit = defineEmits<{
     addReward: [];
+    removeReward: [address: number];
     complete: [];
 }>();
-
-const open = ref<number | undefined>();
 
 watchEffect(() => {
     if (
@@ -62,52 +60,24 @@ watchEffect(() => {
         return;
     emit("complete");
 });
+
+function handleRewardOnTokenRemove(index: number) {
+    emit("removeReward", index);
+}
 </script>
 <template>
     <div class="rewards_picker__root">
         <div class="rewards_picker__rewards_wrapper">
-            <div
+            <RewardRow
                 :key="index"
+                :index="index"
                 v-for="(_, index) in $props.state.rewards"
-                class="rewards_picker__reward_wrapper"
-            >
-                <MuiTokenSelect
-                    :key="index"
-                    :open="open === index"
-                    :tokens="TOKENS"
-                    v-model="$props.state.rewards[index].token"
-                    :messages="{
-                        inputPlaceholder: $t(
-                            'campaign.rewards.select.placeholder',
-                        ),
-                        search: {
-                            inputLabel: $t(
-                                'campaign.rewards.select.search.inputLabel',
-                            ),
-                            inputPlaceholder: $t(
-                                'campaign.rewards.select.search.inputPlaceholder',
-                            ),
-                            noTokens: $t(
-                                'campaign.rewards.select.search.noTokens',
-                            ),
-                        },
-                    }"
-                    :optionDisabled="
-                        (token) =>
-                            !!$props.state.rewards.find(
-                                (reward) =>
-                                    reward.token?.address === token.address,
-                            )
-                    "
-                    @dismiss="open = undefined"
-                    @click="open = index"
-                />
-                <MuiNumberInput
-                    :placeholder="$t('campaign.rewards.amount')"
-                    class="text-right"
-                    v-model="$props.state.rewards[index].amount"
-                />
-            </div>
+                :tokens="TOKENS"
+                :rewards="$props.state.rewards"
+                v-model:token="$props.state.rewards[index].token"
+                v-model:amount="$props.state.rewards[index].amount"
+                :onRemove="handleRewardOnTokenRemove"
+            />
         </div>
         <div
             class="rewards_picker__footer rewards_picker__action"
@@ -124,7 +94,7 @@ watchEffect(() => {
 </template>
 <style>
 .rewards_picker__root {
-    @apply flex flex-col gap-2;
+    @apply flex flex-col;
 }
 
 .rewards_picker__rewards_wrapper {

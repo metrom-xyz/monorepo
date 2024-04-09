@@ -2,6 +2,7 @@
 import { ref } from "vue";
 import MuiAccordionSummary from "./summary/MuiAccordionSummary.vue";
 import { type AccordionProps } from "./types";
+import { computed } from "vue";
 
 defineSlots<{
     default: unknown;
@@ -14,12 +15,13 @@ const props = withDefaults(defineProps<AccordionProps>(), {
 
 let internalExpanded = ref(false);
 
-const detailsVisible =
-    props.expanded === undefined ? internalExpanded : props.expanded;
+const detailsVisible = computed(() =>
+    props.expanded === undefined ? internalExpanded : props.expanded,
+);
 
 const handleExpandOnClick = (event: MouseEvent) => {
     if (props.onExpandToggle) {
-        props.onExpandToggle(event, !internalExpanded.value);
+        props.onExpandToggle(event, !detailsVisible.value);
     }
     if (props.expanded === undefined) {
         internalExpanded.value = !internalExpanded.value;
@@ -43,15 +45,34 @@ const handleExpandOnClick = (event: MouseEvent) => {
         >
             <slot name="summary"></slot>
         </MuiAccordionSummary>
-        <div
-            v-if="detailsVisible && !!$slots.default"
-            class="mui_accordion__details"
-        >
-            <slot></slot>
-        </div>
+        <Transition name="mui_accordion">
+            <div
+                v-if="detailsVisible && !!$slots.default"
+                class="mui_accordion__details"
+            >
+                <slot></slot>
+            </div>
+        </Transition>
     </div>
 </template>
 <style>
+/* @keyframes mui_accordion_height {
+    0% {
+        max-height: 0;
+    }
+    100% {
+        max-height: 400px;
+    }
+}
+
+.mui_accordion-enter-active {
+    animation: mui_accordion_height 0.2s linear;
+}
+
+.mui_accordion-leave-active {
+    animation: mui_accordion_height 0.2s linear reverse;
+} */
+
 .mui_accordion__root {
     @apply border-2 border-transparent rounded-[18px];
 }
