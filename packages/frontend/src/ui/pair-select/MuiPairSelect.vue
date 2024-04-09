@@ -60,9 +60,6 @@ const inputValue = computed(() => {
     </div>
 </template>
 <style>
-.mui_pair_select__root {
-}
-
 .mui_pair_select__input {
     @apply hover:cursor-pointer;
 }

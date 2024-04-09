@@ -80,6 +80,7 @@ export default {
             black: "#000000",
             blue: "#007AFF",
             gray: {
+                700: "#5F5E5E",
                 600: "#656363",
                 500: "#DEDEDE",
                 400: "#E6E6E6",

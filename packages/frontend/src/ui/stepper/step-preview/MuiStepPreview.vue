@@ -6,7 +6,7 @@ defineProps<StepPreviewProps>();
 </script>
 <template>
     <div class="mui_step_preview__root">
-        <MuiTypography medium h4>{{ $props.title }}</MuiTypography>
+        <MuiTypography medium lg>{{ $props.title }}</MuiTypography>
     </div>
 </template>
 <style>

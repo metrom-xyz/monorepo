@@ -20,6 +20,6 @@ defineSlots<{
 }
 
 .mui_card__title {
-    @apply w-full flex items-center justify-between pt-6 pb-5 px-6 border-b border-gray-400;
+    @apply w-full flex items-center justify-between pt-6 pb-4 px-6 border-b border-gray-400;
 }
 </style>

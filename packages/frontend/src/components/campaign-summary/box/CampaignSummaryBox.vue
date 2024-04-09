@@ -6,7 +6,7 @@ defineProps<CampaignSummaryBox>();
 </script>
 <template>
     <div class="campaign_summary_box__root">
-        <MuiTypography medium lg class="campaign_summary_box__title">
+        <MuiTypography lg class="campaign_summary_box__title">
             {{ $props.title }}
         </MuiTypography>
         <slot></slot>

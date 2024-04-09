@@ -100,6 +100,21 @@ const { containerProps, wrapperProps, list } = useVirtualList(items, {
     @apply flex flex-col justify-between;
 }
 
+/* text input customization */
+.mui_pair_select_search__header
+    > .mui_base_input_wrapper__root
+    > .mui_base_input_wrapper__container__left_icon
+    > input {
+    @apply pl-14;
+}
+
+.mui_pair_select_search__header
+    > .mui_base_input_wrapper__root
+    > .mui_base_input_wrapper__container__left_icon
+    > .mui_base_input_wrapper__icon__left {
+    @apply left-1.5;
+}
+
 .mui_pair_select_search__label {
     @apply mb-6;
 }

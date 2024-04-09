@@ -27,10 +27,10 @@ export const messages = {
             pair: {
                 title: "Pick a pair",
                 select: {
-                    placeholder: "Token",
+                    placeholder: "Select pair",
                     search: {
-                        inputLabel: "Select token",
-                        inputPlaceholder: "Search",
+                        inputLabel: "Select pair",
+                        inputPlaceholder: "Search for token address, pair etc",
                         noPairs: "Nothing here.",
                     },
                 },
@@ -41,7 +41,7 @@ export const messages = {
                     placeholder: "Token",
                     search: {
                         inputLabel: "Select token",
-                        inputPlaceholder: "Search for token address, pair etc",
+                        inputPlaceholder: "Search",
                         noTokens: "Nothing here.",
                     },
                 },

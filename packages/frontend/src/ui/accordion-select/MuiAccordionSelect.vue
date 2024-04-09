@@ -7,12 +7,21 @@ import type {
 import MuiOption from "./option/MuiOption.vue";
 import MuiTypography from "../typography/MuiTypography.vue";
 import MuiAccordion from "../accordion/MuiAccordion.vue";
+import { ref } from "vue";
+import MuiTextField from "../text-field/MuiTextField.vue";
 
 defineProps<AccordionSelectProps<T>>();
 const selected = defineModel<T>();
 
+const open = ref(false);
+
 function handleOptionOnClick(option: T) {
     selected.value = option;
+    open.value = false;
+}
+
+function handleAccordionOnToggle(_: MouseEvent, expanded: boolean) {
+    open.value = expanded;
 }
 </script>
 <template>
@@ -20,6 +29,8 @@ function handleOptionOnClick(option: T) {
         <MuiAccordion
             class="mui_accordion_select__accordion"
             :disabled="$props.disabled"
+            :expanded="open"
+            :onExpandToggle="handleAccordionOnToggle"
         >
             <template #summary>
                 <div
@@ -30,14 +41,10 @@ function handleOptionOnClick(option: T) {
                         :is="selected.icon"
                         class="mui_accordion_select__selected_icon"
                     ></component>
-                    <div class="mui_accordion_select__selected_label">
-                        <MuiTypography xs uppercase>
-                            {{ $props.label }}
-                        </MuiTypography>
-                        <MuiTypography>
-                            {{ selected.label }}
-                        </MuiTypography>
-                    </div>
+                    <MuiTextField
+                        :label="$props.label"
+                        :value="selected.label"
+                    />
                 </div>
                 <div v-else class="mui_accordion_select__summary">
                     <div
@@ -48,7 +55,12 @@ function handleOptionOnClick(option: T) {
                             class="mui_accordion_select__summary_placeholder_icon"
                         ></component>
                     </div>
-                    <MuiTypography uppercase>{{ $props.label }}</MuiTypography>
+                    <MuiTypography
+                        uppercase
+                        class="mui_accordion_select__label"
+                    >
+                        {{ $props.label }}
+                    </MuiTypography>
                 </div>
             </template>
             <div class="mui_accordion_select__options_wrapper">
@@ -83,6 +95,10 @@ function handleOptionOnClick(option: T) {
 
 .mui_accordion_select__selected_label {
     @apply flex flex-col;
+}
+
+.mui_accordion_select__label {
+    @apply text-gray-700;
 }
 
 .mui_accordion_select__summary_placeholder_icon {
