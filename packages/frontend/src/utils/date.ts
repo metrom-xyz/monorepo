@@ -68,9 +68,7 @@ export const isCalendarCellSelected = (
     if (!lookupDate) return false;
     return (
         !isCalendarCellDisabled(cell, lookupDate, min, max) &&
-        dayjs(lookupDate).year() === cell.value.year() &&
-        dayjs(lookupDate).month() === cell.value.month() &&
-        dayjs(lookupDate).date() === cell.value.date()
+        isOnlyDateSame(lookupDate, cell.value)
     );
 };
 
@@ -80,7 +78,9 @@ export const isCalendarCellStartRangeDate = (
     lookupDate?: Dayjs | Date | null,
 ) => {
     return (
-        cell.value.isSame(from) ||
+        (cell.value.year() === dayjs(from).year() &&
+            cell.value.month() === dayjs(from).month() &&
+            cell.value.date() === dayjs(from).date()) ||
         cell.value.day() === 1 ||
         dayjs(lookupDate).startOf("month").date() === cell.value.date()
     );
@@ -92,7 +92,7 @@ export const isCalendarCellEndRangeDate = (
     lookupDate?: Dayjs | Date | null,
 ) => {
     return (
-        cell.value.isSame(to) ||
+        isOnlyDateSame(cell.value, to) ||
         cell.value.day() === 0 ||
         dayjs(lookupDate).endOf("month").date() === cell.value.date()
     );
@@ -129,10 +129,6 @@ export const isCalendarTimeCellDisabled = (
                 atTime = dayjs(lookupDate).minute(parseInt(timeValue));
                 break;
             }
-            case "second": {
-                atTime = dayjs(lookupDate).second(parseInt(timeValue));
-                break;
-            }
             default: {
                 atTime = dayjs();
             }
@@ -157,7 +153,7 @@ export const getUpdatedMinMaxValue = (
     if (!newValue) return previousValue;
     const parsedPreviousValue = dayjs(previousValue);
     if (!parsedPreviousValue.isValid()) return newValue;
-    if (parsedPreviousValue.isSame(newValue, "seconds")) return previousValue;
+    if (parsedPreviousValue.isSame(newValue, "minutes")) return previousValue;
     return newValue;
 };
 
@@ -166,8 +162,8 @@ export const rectifyDate = (
     min?: Dayjs | Date | null,
     max?: Dayjs | Date | null,
 ) => {
-    if (min && dayjs(value).isBefore(min, "seconds")) return dayjs(min);
-    if (max && dayjs(value).isAfter(max, "seconds")) return dayjs(max);
+    if (min && dayjs(value).isBefore(min, "minutes")) return dayjs(min);
+    if (max && dayjs(value).isAfter(max, "minutes")) return dayjs(max);
     return value;
 };
 
@@ -194,7 +190,18 @@ export const isDateInRange = (
 ) => {
     if (!from || !to) return false;
     return (
-        (date.isSame(from) || date.isAfter(from)) &&
-        (date.isSame(to) || date.isBefore(to))
+        (isOnlyDateSame(date, from) || date.isAfter(from)) &&
+        (isOnlyDateSame(date, to) || date.isBefore(to))
+    );
+};
+
+export const isOnlyDateSame = (
+    dateA?: Dayjs | Date | null,
+    dateB?: Dayjs | Date | null,
+) => {
+    return (
+        dayjs(dateA).year() === dayjs(dateB).year() &&
+        dayjs(dateA).month() === dayjs(dateB).month() &&
+        dayjs(dateA).date() === dayjs(dateB).date()
     );
 };

@@ -12,9 +12,13 @@ import ClockIcon from "@/icons/ClockIcon.vue";
 
 dayjs.extend(LocalizedFormat);
 
-const props = defineProps<BaseInputWrapperProps & { time?: boolean }>();
+const props = withDefaults(
+    defineProps<BaseInputWrapperProps & { time?: boolean; active?: boolean }>(),
+    { active: undefined },
+);
 const model = defineModel<Dayjs>();
 
+const inputRef = ref<HTMLInputElement | null>(null);
 const internalValue = ref();
 
 watchEffect(() => {
@@ -61,7 +65,7 @@ function handleOnBlur(event: FocusEvent) {
             iconLeft
         >
             <input
-                ref="el"
+                ref="inputRef"
                 :value="internalValue"
                 :id="($attrs.id as string) || $.uid.toString()"
                 :disabled="($attrs.disabled as boolean) || $props.loading"
@@ -77,6 +81,13 @@ function handleOnBlur(event: FocusEvent) {
 <style>
 .mui_date_input_text__root {
     @apply w-[170px];
+}
+
+.mui_date_input_text__root
+    > .mui_base_input_wrapper__root
+    > .mui_base_input_wrapper__container
+    > input {
+    @apply hover:cursor-pointer;
 }
 
 .mui_date_input_text__root_time {
