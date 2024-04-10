@@ -73,6 +73,11 @@ export const messages = {
                 pair: "Pair",
                 tvl: "Tvl",
             },
+            dateRangeInput: {
+                picker: {
+                    ok: "Ok",
+                },
+            },
         },
     },
 };

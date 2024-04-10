@@ -2,16 +2,32 @@
 import type { DatePickerTypes } from "./types";
 import { watchEffect } from "vue";
 import MuiDateRangeInput from "@/ui/date-range-input/MuiDateRangeInput.vue";
+import { ref } from "vue";
+import dayjs, { Dayjs } from "dayjs";
+import { onMounted } from "vue";
+import { onUnmounted } from "vue";
 
 const props = defineProps<DatePickerTypes>();
 const emit = defineEmits<{
     complete: [];
 }>();
 
+const minDate = ref<Dayjs | undefined>();
+
 watchEffect(() => {
     if (props.completed || !props.state.range?.from || !props.state.range.to)
         return;
     emit("complete");
+});
+
+let interval: NodeJS.Timeout;
+onMounted(() => {
+    interval = setInterval(() => {
+        minDate.value = dayjs();
+    }, 1000);
+});
+onUnmounted(() => {
+    clearInterval(interval);
 });
 </script>
 <template>
@@ -24,6 +40,7 @@ watchEffect(() => {
                 endPlaceholder: $t('campaign.range.picker.endPlaceholder'),
             }"
             v-model:range="$props.state.range"
+            :min="minDate"
         />
     </div>
 </template>
