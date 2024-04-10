@@ -90,6 +90,8 @@ function handlePickerOnApply() {
                     }"
                     v-model:startDate="internalStartDate"
                     v-model:endDate="internalEndDate"
+                    :min="$props.min"
+                    :max="$props.max"
                 />
                 <div class="mui_date_range_input__modal__footer">
                     <div class="mui_date_range_input__modal__footer__content">

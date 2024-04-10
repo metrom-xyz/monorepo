@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Dayjs } from "dayjs";
+import dayjs, { Dayjs } from "dayjs";
 import { ref, watchEffect } from "vue";
 import MuiTypography from "../../typography/MuiTypography.vue";
 import type { DateRangeInputCalendarProps } from "./types";
@@ -34,7 +34,13 @@ function handleCellOnClick(event: MouseEvent) {
     if (index !== undefined) {
         const parsedIndex = parseInt(index);
         if (parsedIndex >= 0)
-            emits("dateChange", cells.value[parsedIndex].value);
+            emits(
+                "dateChange",
+                dayjs(props.value)
+                    .date(cells.value[parsedIndex].value.date())
+                    .month(cells.value[parsedIndex].value.month())
+                    .year(cells.value[parsedIndex].value.year()),
+            );
     }
 }
 </script>
@@ -222,6 +228,6 @@ function handleCellOnClick(event: MouseEvent) {
 }
 
 .mui_date_range_input_calendar__cell__disabled {
-    @apply invisible text-gray-400 hover:bg-white cursor-not-allowed;
+    @apply bg-white text-gray-400 hover:bg-white cursor-not-allowed;
 }
 </style>

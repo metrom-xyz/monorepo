@@ -8,6 +8,8 @@ import { ref } from "vue";
 import { watch } from "vue";
 import MuiDateTimeTextInput from "@/ui/MuiDateTimeTextInput.vue";
 import { isDateInRange } from "@/utils/date";
+import MuiDateRangeInputTimeWheel from "../time-wheel/MuiDateRangeInputTimeWheel.vue";
+import MuiButton from "@/ui/button/MuiButton.vue";
 
 defineProps<DateRangeInputPickerProps>();
 
@@ -18,6 +20,7 @@ const lastPickedDate = ref<Dayjs | undefined>(undefined);
 const lookupDate = ref<Dayjs>(
     startDateModel.value ? dayjs(startDateModel.value) : dayjs(),
 );
+const timeInputFocused = ref<"start" | "end" | undefined>(undefined);
 
 watch(lastPickedDate, (pickedDate) => {
     if (!pickedDate) return;
@@ -46,8 +49,16 @@ watch(lastPickedDate, (pickedDate) => {
     endDateModel.value = undefined;
 });
 
-function handleLastDatePickOnChange(value: Dayjs) {
-    lastPickedDate.value = value;
+function handleLastDatePickOnChange(date: Dayjs) {
+    lastPickedDate.value = dayjs(date).second(0).millisecond(0);
+}
+
+function handleStartTimeOnChange(date: Dayjs) {
+    startDateModel.value = date;
+}
+
+function handleEndTimeOnChange(date: Dayjs) {
+    endDateModel.value = date;
 }
 </script>
 <template>
@@ -66,16 +77,36 @@ function handleLastDatePickOnChange(value: Dayjs) {
                     <MuiDateTimeTextInput
                         v-model:modelValue="startDateModel"
                         readonly
+                        @click="timeInputFocused = undefined"
                     />
                     <MuiDateTimeTextInput
                         v-model:modelValue="startDateModel"
                         time
                         readonly
+                        @focus="timeInputFocused = 'start'"
                     />
-                    <!-- TODO: add time wheel -->
+                </div>
+                <div
+                    v-if="timeInputFocused === 'start'"
+                    class="mui_date_range_input_picker_input__time__wheel__wrapper"
+                >
+                    <MuiDateRangeInputTimeWheel
+                        :value="startDateModel"
+                        @timeChange="handleStartTimeOnChange"
+                        :min="$props.min"
+                        :max="$props.max"
+                    />
+                    <MuiButton @click="timeInputFocused = undefined" sm>
+                        <MuiTypography medium>
+                            {{ $t("ui.dateRangeInput.picker.ok") }}
+                        </MuiTypography>
+                    </MuiButton>
                 </div>
                 <MuiDateRangeInputCalendar
+                    v-else
                     leftPicker
+                    :min="$props.min"
+                    :max="$props.max"
                     :from="startDateModel"
                     :to="endDateModel"
                     :value="startDateModel"
@@ -99,14 +130,35 @@ function handleLastDatePickOnChange(value: Dayjs) {
                     <MuiDateTimeTextInput
                         v-model:modelValue="endDateModel"
                         readonly
+                        @click="timeInputFocused = undefined"
                     />
                     <MuiDateTimeTextInput
                         v-model:modelValue="endDateModel"
                         time
                         readonly
+                        @focus="timeInputFocused = 'end'"
                     />
                 </div>
+                <div
+                    v-if="timeInputFocused === 'end'"
+                    class="mui_date_range_input_picker_input__time__wheel__wrapper"
+                >
+                    <MuiDateRangeInputTimeWheel
+                        :value="endDateModel"
+                        @timeChange="handleEndTimeOnChange"
+                        :min="$props.min"
+                        :max="$props.max"
+                    />
+                    <MuiButton @click="timeInputFocused = undefined" sm>
+                        <MuiTypography medium>
+                            {{ $t("ui.dateRangeInput.picker.ok") }}
+                        </MuiTypography>
+                    </MuiButton>
+                </div>
                 <MuiDateRangeInputCalendar
+                    v-else
+                    :min="$props.min"
+                    :max="$props.max"
                     :from="startDateModel"
                     :to="endDateModel"
                     :value="endDateModel"
@@ -145,5 +197,9 @@ function handleLastDatePickOnChange(value: Dayjs) {
 
 .mui_date_range_input_picker_input__text__inputs {
     @apply flex gap-2 mb-3;
+}
+
+.mui_date_range_input_picker_input__time__wheel__wrapper {
+    @apply h-full min-h-[360px] flex flex-col gap-2 justify-center items-center;
 }
 </style>
