@@ -10,8 +10,9 @@ import { SUPPORTED_CHAIN_OPTIONS } from "./commons";
 import { watchEffect } from "vue";
 
 const props = defineProps<AmmPickerTypes>();
-const emit = defineEmits<{
+const emits = defineEmits<{
     complete: [];
+    error: [boolean];
 }>();
 
 const SUPPORTED_AMM_OPTIONS = computed<AccordionSelectOption<string>[]>(() => {
@@ -25,8 +26,13 @@ const SUPPORTED_AMM_OPTIONS = computed<AccordionSelectOption<string>[]>(() => {
 });
 
 watchEffect(() => {
+    emits(
+        "error",
+        props.completed && (!props.state.network || !props.state.amm),
+    );
+
     if (props.completed || !props.state.network || !props.state.amm) return;
-    emit("complete");
+    emits("complete");
 });
 
 // TODO: update accordion icons

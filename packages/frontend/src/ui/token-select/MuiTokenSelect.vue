@@ -41,6 +41,7 @@ const selectedToken = computed(() => {
             <MuiTextInput
                 iconLeft
                 readonly
+                :error="$props.error"
                 :model-value="selectedToken?.symbol"
                 :placeholder="$props.messages.inputPlaceholder"
                 class="mui_token_select__input"

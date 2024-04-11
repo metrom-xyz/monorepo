@@ -3,7 +3,7 @@ import MuiTokenSelect from "@/ui/token-select/MuiTokenSelect.vue";
 import type { RewardRowProps } from "./types";
 import MuiNumberInput from "@/ui/MuiNumberInput.vue";
 import type { TokenInfo } from "@uniswap/token-lists";
-import { ref } from "vue";
+import { ref, watch } from "vue";
 import MuiRemoteLogo from "@/ui/remote-logo/MuiRemoteLogo.vue";
 import RemoveXIcon from "@/icons/RemoveXIcon.vue";
 import MuiTypography from "@/ui/typography/MuiTypography.vue";
@@ -18,6 +18,24 @@ const attrs = useAttrs();
 
 const open = ref<boolean>();
 const amountInputActive = ref(false);
+const tokenError = ref(false);
+const amountError = ref(false);
+
+watch(
+    tokenModel,
+    () => {
+        tokenError.value = !tokenModel.value;
+    },
+    { immediate: false },
+);
+
+watch(
+    amountModel,
+    () => {
+        amountError.value = !amountModel.value;
+    },
+    { immediate: false },
+);
 
 function handleRewardOnTokenRemove() {
     if (!props.onRemove || attrs.index === undefined) return;
@@ -29,9 +47,10 @@ function handleRewardOnTokenRemove() {
         <div class="reward_row__token__select__wrapper">
             <MuiTokenSelect
                 v-if="!tokenModel"
-                :open="open"
-                :tokens="$props.tokens"
                 v-model="tokenModel"
+                :open="open"
+                :error="tokenError"
+                :tokens="$props.tokens"
                 :messages="{
                     inputPlaceholder: $t('campaign.rewards.select.placeholder'),
                     search: {
@@ -76,6 +95,7 @@ function handleRewardOnTokenRemove() {
                 v-model="amountModel"
                 @focus="amountInputActive = true"
                 @blur="amountInputActive = false"
+                :error="amountError"
             />
             <div
                 v-else

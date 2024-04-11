@@ -72,6 +72,7 @@ export default {
         },
         colors: {
             green: "#6CFF95",
+            yellow: "#FFD60A",
             "green-dark": "#359650",
             "green-light": "#E4F7EA",
             transparent: "transparent",
