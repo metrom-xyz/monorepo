@@ -13,6 +13,7 @@ import dayjs, { Dayjs, type UnitType } from "dayjs";
 import MuiTypography from "@/ui/typography/MuiTypography.vue";
 import { ref } from "vue";
 import { watchEffect } from "vue";
+import { onMounted } from "vue";
 
 const props = defineProps<DateRangeInputTimeWheelProps>();
 const emits = defineEmits<{
@@ -21,8 +22,8 @@ const emits = defineEmits<{
 
 const maxDate = ref(props.max);
 const minDate = ref(props.min);
-const hoursWheel = ref();
-const minutesWheel = ref();
+const hoursWheelCells = ref<Record<string, unknown>>({});
+const minutesWheelCells = ref<Record<string, unknown>>({});
 
 function handleTimeOnChange(event: MouseEvent) {
     const data = (event.target as HTMLLIElement).dataset.data;
@@ -79,12 +80,26 @@ watchEffect(() => {
     if (!originalValue.isSame(rectifiedValue, "minutes"))
         emits("timeChange", dayjs(rectifiedValue));
 });
+
+onMounted(() => {
+    (
+        hoursWheelCells.value[dayjs(props.value).format("HH")] as {
+            element: Element;
+        }
+    ).element.scrollIntoView();
+    (
+        minutesWheelCells.value[dayjs(props.value).format("mm")] as {
+            element: Element;
+        }
+    ).element.scrollIntoView();
+});
 </script>
 <template>
     <div class="mui_time_wheel__wheels">
         <div class="mui_time_wheel__wheel">
             <MuiTypography
                 v-for="hour in HOURS"
+                :ref="(el) => (hoursWheelCells[hour] = el)"
                 :key="hour"
                 :data-data="`hour-${hour}`"
                 @click="handleTimeOnChange($event)"
@@ -110,6 +125,7 @@ watchEffect(() => {
         <div class="mui_time_wheel__wheel">
             <MuiTypography
                 v-for="minute in MINUTES_SECONDS"
+                :ref="(el) => (minutesWheelCells[minute] = el)"
                 :key="minute"
                 :data-data="`minute-${minute}`"
                 @click="handleTimeOnChange($event)"

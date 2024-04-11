@@ -1,7 +1,10 @@
 <script setup lang="ts">
+import { ref } from "vue";
 import { type TypographyProps } from "./types";
 
 const props = defineProps<TypographyProps>();
+
+const element = ref(null);
 
 const baseComponent = props.h1
     ? "h1"
@@ -12,9 +15,12 @@ const baseComponent = props.h1
         : props.h4
           ? "h4"
           : "p";
+
+defineExpose({ element });
 </script>
 <template>
     <component
+        ref="element"
         :is="baseComponent"
         class="mui_typography__root"
         :class="{
