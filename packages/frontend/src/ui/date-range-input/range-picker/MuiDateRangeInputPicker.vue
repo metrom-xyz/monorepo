@@ -54,11 +54,11 @@ function handleLastDatePickOnChange(date: Dayjs) {
 }
 
 function handleStartTimeOnChange(date: Dayjs) {
-    startDateModel.value = date;
+    startDateModel.value = date.second(0).millisecond(0);
 }
 
 function handleEndTimeOnChange(date: Dayjs) {
-    endDateModel.value = date;
+    endDateModel.value = date.second(0).millisecond(0);
 }
 </script>
 <template>

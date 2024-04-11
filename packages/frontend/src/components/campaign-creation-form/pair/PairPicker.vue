@@ -64,7 +64,7 @@ const pairs: Pair[] = [
 ];
 
 const props = defineProps<PairPickerTypes>();
-const emit = defineEmits<{
+const emits = defineEmits<{
     complete: [];
 }>();
 
@@ -72,7 +72,7 @@ const open = ref(false);
 
 watchEffect(() => {
     if (props.completed || !props.state.pair) return;
-    emit("complete");
+    emits("complete");
 });
 </script>
 <template>

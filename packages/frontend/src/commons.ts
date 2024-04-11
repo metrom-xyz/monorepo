@@ -9,6 +9,8 @@ import UniswapLogoIcon from "./icons/UniswapLogoIcon.vue";
 import CeloIcon from "./icons/CeloIcon.vue";
 import { markRaw } from "vue";
 
+export const MIN_CAMPAIGN_HOURS_DURATION = 2;
+
 export const TOKEN_LISTS = [
     "https://tokens.coingecko.com/xdai/all.json",
     "https://tokens.coingecko.com/celo/all.json",

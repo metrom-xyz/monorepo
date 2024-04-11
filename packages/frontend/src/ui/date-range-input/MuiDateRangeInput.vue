@@ -11,6 +11,7 @@ import MuiDateRangeInputPicker from "./range-picker/MuiDateRangeInputPicker.vue"
 import MuiButton from "../button/MuiButton.vue";
 import MuiTypography from "../typography/MuiTypography.vue";
 import type { Range } from "@/views/create-campaign-view/types";
+import { watchEffect } from "vue";
 
 dayjs.extend(LocalizedFormat);
 
@@ -37,13 +38,20 @@ const endDateText = computed(() =>
         : undefined,
 );
 
+const validRange = computed(
+    () =>
+        internalStartDate.value &&
+        internalEndDate.value &&
+        internalEndDate.value.isAfter(internalStartDate.value),
+);
+
 function handlePickerOpenOnClick() {
     if (!open.value && (attrs.disabled || props.loading)) return;
     open.value = true;
 }
 
 function handlePickerOnDismiss() {
-    if (!rangeModel.value?.from || !rangeModel.value.from) {
+    if (!rangeModel.value?.from || !rangeModel.value.to) {
         internalStartDate.value = undefined;
         internalEndDate.value = undefined;
     }
@@ -57,6 +65,16 @@ function handlePickerOnApply() {
     };
     open.value = false;
 }
+
+watchEffect(() => {
+    if (!open.value) {
+        internalStartDate.value = undefined;
+        internalEndDate.value = undefined;
+    } else {
+        internalStartDate.value = rangeModel.value?.from;
+        internalEndDate.value = rangeModel.value?.to;
+    }
+});
 </script>
 <template>
     <div class="mui_date_range_input__root">
@@ -98,7 +116,7 @@ function handlePickerOnApply() {
                         <MuiButton
                             sm
                             class="mui_date_range_input__modal__apply__button"
-                            :disabled="!internalStartDate || !internalEndDate"
+                            :disabled="!validRange"
                             @click="handlePickerOnApply"
                         >
                             <MuiTypography medium>
