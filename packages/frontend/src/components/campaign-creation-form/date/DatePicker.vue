@@ -1,26 +1,52 @@
 <script setup lang="ts">
 import type { DatePickerTypes } from "./types";
-import { watchEffect } from "vue";
+import { computed, watch, watchEffect } from "vue";
 import MuiDateRangeInput from "@/ui/date-range-input/MuiDateRangeInput.vue";
 import { ref } from "vue";
 import dayjs, { Dayjs } from "dayjs";
 import { onMounted } from "vue";
 import { onUnmounted } from "vue";
+import { MIN_CAMPAIGN_HOURS_DURATION } from "@/commons";
 
 const props = defineProps<DatePickerTypes>();
-const emit = defineEmits<{
+const emits = defineEmits<{
     complete: [];
+    error: [boolean];
 }>();
 
 const minDate = ref<Dayjs | undefined>();
+const rangeError = ref(false);
+
+const hoursRange = computed(() =>
+    dayjs(props.state.range?.to).diff(props.state.range?.from, "hours"),
+);
+
+watch(
+    () => [props.state.range?.from, props.state.range?.to, minDate.value],
+    () => {
+        if (
+            props.state.range &&
+            props.state.range.from &&
+            props.state.range.to
+        ) {
+            rangeError.value =
+                hoursRange.value < MIN_CAMPAIGN_HOURS_DURATION ||
+                dayjs(props.state.range?.from).isBefore(dayjs(), "seconds") ||
+                dayjs(props.state.range?.to).isBefore(dayjs(), "seconds");
+        }
+    },
+    { immediate: false },
+);
 
 watchEffect(() => {
+    emits("error", props.completed && rangeError.value);
+
     if (props.completed || !props.state.range?.from || !props.state.range.to)
         return;
-    emit("complete");
+    emits("complete");
 });
 
-let interval: NodeJS.Timeout;
+let interval: any;
 onMounted(() => {
     interval = setInterval(() => {
         minDate.value = dayjs();
@@ -33,14 +59,15 @@ onUnmounted(() => {
 <template>
     <div class="date_picker__root">
         <MuiDateRangeInput
+            v-model:range="$props.state.range"
+            :error="rangeError"
+            :min="minDate"
             :messages="{
                 startLabel: $t('campaign.range.picker.startLabel'),
                 endLabel: $t('campaign.range.picker.endLabel'),
                 startPlaceholder: $t('campaign.range.picker.startPlaceholder'),
                 endPlaceholder: $t('campaign.range.picker.endPlaceholder'),
             }"
-            v-model:range="$props.state.range"
-            :min="minDate"
         />
     </div>
 </template>

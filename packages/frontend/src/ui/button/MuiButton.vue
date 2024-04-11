@@ -80,7 +80,8 @@ const baseButtonIconClasses = {
     transition-colors 
     rounded-xxl
     bg-green 
-    disabled:bg-gray-400;
+    disabled:bg-gray-400
+    disabled:hover:cursor-not-allowed;
 }
 
 .mui_button__root div {

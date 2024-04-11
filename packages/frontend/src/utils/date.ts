@@ -133,7 +133,10 @@ export const isCalendarTimeCellDisabled = (
                 atTime = dayjs();
             }
         }
-        disabled = !dayjs(rectifyDate(atTime, min, max)).isSame(atTime);
+        disabled = !dayjs(rectifyDate(atTime, min, max)).isSame(
+            atTime,
+            timeUnit,
+        );
     }
     return disabled;
 };
@@ -153,7 +156,7 @@ export const getUpdatedMinMaxValue = (
     if (!newValue) return previousValue;
     const parsedPreviousValue = dayjs(previousValue);
     if (!parsedPreviousValue.isValid()) return newValue;
-    if (parsedPreviousValue.isSame(newValue, "minutes")) return previousValue;
+    if (parsedPreviousValue.isSame(newValue, "seconds")) return previousValue;
     return newValue;
 };
 
@@ -162,8 +165,8 @@ export const rectifyDate = (
     min?: Dayjs | Date | null,
     max?: Dayjs | Date | null,
 ) => {
-    if (min && dayjs(value).isBefore(min, "minutes")) return dayjs(min);
-    if (max && dayjs(value).isAfter(max, "minutes")) return dayjs(max);
+    if (min && dayjs(value).isBefore(min, "seconds")) return dayjs(min);
+    if (max && dayjs(value).isAfter(max, "seconds")) return dayjs(max);
     return value;
 };
 

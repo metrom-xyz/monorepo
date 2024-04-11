@@ -8,10 +8,11 @@ defineProps<StepItemProps>();
     <div class="mui_step__root">
         <div class="mui_step__stepper">
             <div
-                class="mui_step__icon_wrapper"
+                class="mui_step__icon__wrapper"
                 :class="{
-                    mui_step__icon_wrapper__active: $props.active,
-                    mui_step__icon_wrapper__completed: $props.completed,
+                    mui_step__icon__wrapper_error: $props.error,
+                    mui_step__icon__wrapper_active: $props.active,
+                    mui_step__icon__wrapper_completed: $props.completed,
                 }"
             >
                 <component :is="$props.icon" class="mui_step__icon" />
@@ -38,24 +39,33 @@ defineProps<StepItemProps>();
     @apply h-[calc(100%-38px)] absolute -translate-x-[78px] translate-y-2;
 }
 
-.mui_step__icon_wrapper {
+.mui_step__icon__wrapper {
     @apply bg-gray-500 p-4 rounded-full;
 }
 
-.mui_step__icon_wrapper__active {
+.mui_step__icon__wrapper_active {
     @apply bg-green;
 }
 
-.mui_step__root:last-child > .mui_step__stepper > .mui_step__icon_wrapper__active {
+.mui_step__icon__wrapper_completed {
+    @apply bg-white;
+}
+
+.mui_step__icon__wrapper_error {
+    @apply bg-yellow;
+}
+
+.mui_step__root:last-child
+    > .mui_step__stepper
+    > .mui_step__icon__wrapper_active {
     @apply bg-blue;
 }
 
-.mui_step__root:last-child > .mui_step__stepper > .mui_step__icon_wrapper__active > .mui_step__icon {
+.mui_step__root:last-child
+    > .mui_step__stepper
+    > .mui_step__icon__wrapper_active
+    > .mui_step__icon {
     @apply text-white;
-}
-
-.mui_step__icon_wrapper__completed {
-    @apply bg-white;
 }
 
 .mui_step__connector {

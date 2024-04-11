@@ -36,10 +36,7 @@ const attrs = useAttrs();
                 mui_base_input_wrapper__container__sm: $props.sm,
                 mui_base_input_wrapper__container__lg: $props.lg,
                 mui_base_input_wrapper__container__xl: $props.xl,
-                mui_base_input_wrapper__container__no__border:
-                    $props.borderless,
-                // TODO: add error status
-                // mui_base_input_wrapper__container__error: !!$props.error,
+                mui_base_input_wrapper__container__error: !!$props.error,
                 mui_base_input_wrapper__container__loading: $props.loading,
                 mui_base_input_wrapper__container__left_icon: $props.iconLeft,
             }"
@@ -139,6 +136,10 @@ const attrs = useAttrs();
 
 .mui_base_input_wrapper__container__left_icon > input {
     @apply pl-[80px];
+}
+
+.mui_base_input_wrapper__container__error > input {
+    @apply border-yellow;
 }
 
 .mui_base_input_wrapper__container__loading > input {

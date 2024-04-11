@@ -72,7 +72,7 @@ function handleOnClick() {
 </template>
 <style>
 .preview_deploy_button__root {
-    @apply bg-blue w-full px-4 py-3 rounded-[30px];
+    @apply bg-blue w-full px-4 py-3 rounded-[30px] disabled:bg-gray-600;
 }
 
 .preview_deploy_button__root_deploy {

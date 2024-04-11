@@ -21,6 +21,8 @@ const emits = defineEmits<{
 
 const maxDate = ref(props.max);
 const minDate = ref(props.min);
+const hoursWheel = ref();
+const minutesWheel = ref();
 
 function handleTimeOnChange(event: MouseEvent) {
     const data = (event.target as HTMLLIElement).dataset.data;
@@ -74,7 +76,7 @@ watchEffect(() => {
         minDate.value,
         maxDate.value,
     );
-    if (!originalValue.isSame(rectifiedValue, "seconds"))
+    if (!originalValue.isSame(rectifiedValue, "minutes"))
         emits("timeChange", dayjs(rectifiedValue));
 });
 </script>
@@ -146,7 +148,7 @@ watchEffect(() => {
 }
 
 .mui_time_wheel__cell__disabled {
-    @apply text-gray-400 hover:bg-white cursor-not-allowed;
+    @apply text-gray-400 hover:bg-white cursor-not-allowed pointer-events-none;
 }
 
 .mui_time_wheel__cell__selected {

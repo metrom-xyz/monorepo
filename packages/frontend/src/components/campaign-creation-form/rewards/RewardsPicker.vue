@@ -45,24 +45,33 @@ const TOKENS: TokenInfo[] = [
 ];
 
 const props = defineProps<RewardsPickerTypes>();
-const emit = defineEmits<{
+const emits = defineEmits<{
     addReward: [];
     removeReward: [address: number];
     complete: [];
+    error: [boolean];
 }>();
 
 watchEffect(() => {
+    emits(
+        "error",
+        props.completed &&
+            props.state.rewards.filter(
+                ({ amount, token }) => !token || !amount,
+            ).length > 0,
+    );
+
     if (
         props.completed ||
         props.state.rewards.filter(({ amount, token }) => !!token && !!amount)
             .length === 0
     )
         return;
-    emit("complete");
+    emits("complete");
 });
 
 function handleRewardOnTokenRemove(index: number) {
-    emit("removeReward", index);
+    emits("removeReward", index);
 }
 </script>
 <template>
@@ -81,7 +90,7 @@ function handleRewardOnTokenRemove(index: number) {
         </div>
         <div
             class="rewards_picker__footer rewards_picker__action"
-            @click="emit('addReward')"
+            @click="emits('addReward')"
             v-if="$props.state.rewards.length < 5"
         >
             <PlusCircleIcon />

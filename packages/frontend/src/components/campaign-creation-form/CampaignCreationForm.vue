@@ -14,15 +14,25 @@ import RewardsPicker from "./rewards/RewardsPicker.vue";
 import PairPicker from "./pair/PairPicker.vue";
 import AmmPicker from "./amm/AmmPicker.vue";
 import type { CampaignCreationFormProps } from "./types";
-import { ref } from "vue";
+import { computed, ref } from "vue";
 
 defineProps<CampaignCreationFormProps>();
-const emit = defineEmits<{
+const emits = defineEmits<{
     addReward: [];
     removeReward: [index: number];
 }>();
 
 const stepCursor = ref(1);
+const ammStepError = ref(false);
+const rewardsStepError = ref(false);
+const dateRangeStepError = ref(false);
+
+const formError = computed(
+    () =>
+        ammStepError.value ||
+        rewardsStepError.value ||
+        dateRangeStepError.value,
+);
 
 function handleStepOnComplete() {
     stepCursor.value++;
@@ -32,10 +42,11 @@ function handleStepOnComplete() {
     <div class="campaign_creation_form__root">
         <MuiStepper>
             <MuiStep
+                active
                 :step="1"
                 :title="$t('campaign.amm.title')"
-                active
                 :completed="stepCursor > 1"
+                :error="ammStepError"
                 :icon="DexIcon"
             >
                 <MuiCard>
@@ -50,6 +61,7 @@ function handleStepOnComplete() {
                                 :state="$props.state"
                                 :completed="stepCursor > 1"
                                 @complete="handleStepOnComplete"
+                                @error="ammStepError = $event"
                             />
                         </div>
                     </template>
@@ -82,6 +94,7 @@ function handleStepOnComplete() {
                 :title="$t('campaign.rewards.title')"
                 :active="stepCursor === 3"
                 :completed="stepCursor > 3"
+                :error="rewardsStepError"
                 :icon="CupIcon"
             >
                 <MuiCard>
@@ -94,9 +107,10 @@ function handleStepOnComplete() {
                         <RewardsPicker
                             :state="$props.state"
                             :completed="stepCursor > 3"
-                            @addReward="emit('addReward')"
-                            @removeReward="emit('removeReward', $event)"
+                            @addReward="emits('addReward')"
+                            @removeReward="emits('removeReward', $event)"
                             @complete="handleStepOnComplete"
+                            @error="rewardsStepError = $event"
                         />
                     </template>
                 </MuiCard>
@@ -106,6 +120,7 @@ function handleStepOnComplete() {
                 :title="$t('campaign.range.title')"
                 :active="stepCursor === 4"
                 :completed="stepCursor > 4"
+                :error="dateRangeStepError"
                 :icon="CalendarIcon"
             >
                 <MuiCard>
@@ -119,6 +134,7 @@ function handleStepOnComplete() {
                             :state="$props.state"
                             :completed="stepCursor > 4"
                             @complete="handleStepOnComplete"
+                            @error="dateRangeStepError = $event"
                         />
                     </template>
                 </MuiCard>
@@ -132,6 +148,7 @@ function handleStepOnComplete() {
             >
                 <PreviewDeployButton
                     variant="preview"
+                    :disabled="formError"
                     :onClick="$props.onPreviewClick"
                 />
             </MuiStep>
