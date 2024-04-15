@@ -1,4 +1,4 @@
-import type { Pair } from "../types";
+import type { Pair } from "@/sdk/entities/pair";
 
 export interface PairSelectSearchProps {
     loading?: boolean;

@@ -29,7 +29,8 @@ defineProps<PairSelectSearchRowProps>();
             </MuiTypography>
         </div>
         <MuiTypography sm class="mui_pair_select_search_row__tvl">
-            {{ $props.tvl }}
+            <!-- TODO: fetch tvl -->
+            {{ $props?.tvl }}
         </MuiTypography>
     </div>
 </template>

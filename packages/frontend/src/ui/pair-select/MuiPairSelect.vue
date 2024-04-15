@@ -3,9 +3,10 @@ import PairSelectIcon from "@/icons/PairSelectIcon.vue";
 import MuiTextInput from "../MuiTextInput.vue";
 import MuiModal from "../modal/MuiModal.vue";
 import MuiPairSelectSearch from "./search/MuiPairSelectSearch.vue";
-import type { Pair, PairSelectProps } from "./types";
+import type { PairSelectProps } from "./types";
 import { computed } from "vue";
 import MuiPairRemoteLogo from "../pair-remote-logo/MuiPairRemoteLogo.vue";
+import type { Pair } from "@/sdk/entities/pair";
 
 defineProps<PairSelectProps>();
 const emit = defineEmits<{
@@ -33,6 +34,8 @@ const inputValue = computed(() => {
             <MuiTextInput
                 iconLeft
                 readonly
+                :disabled="$attrs.disabled"
+                :loading="$props.loading"
                 :model-value="inputValue"
                 :placeholder="$props.messages.inputPlaceholder"
                 class="mui_pair_select__input"

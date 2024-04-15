@@ -1,6 +1,6 @@
 import { isAddress } from "viem";
-import type { Pair } from "../pair-select/types";
 import type { TokenInfo } from "@uniswap/token-lists";
+import type { Pair } from "@/sdk/entities/pair";
 
 export const filterPairs = (pairs: Pair[], searchQuery: string) => {
     if (pairs.length === 0) return [];
@@ -8,7 +8,7 @@ export const filterPairs = (pairs: Pair[], searchQuery: string) => {
     if (isAddress(searchQuery)) {
         const lowercaseSearchQuery = searchQuery.toLowerCase();
         const pairByAddress = pairs.find(
-            (pair) => pair.id.toLowerCase() === lowercaseSearchQuery,
+            (pair) => pair.address.toLowerCase() === lowercaseSearchQuery,
         );
 
         if (pairByAddress) return [pairByAddress];
