@@ -7,9 +7,9 @@ import { computed } from "vue";
 import { filterPairs } from "@/ui/utils/tokens";
 import MuiPairSelectSearchRow from "./row/MuiPairSelectSearchRow.vue";
 import MuiTypography from "@/ui/typography/MuiTypography.vue";
-import type { Pair } from "../types";
 import XIcon from "@/icons/XIcon.vue";
 import SearchIcon from "@/icons/SearchIcon.vue";
+import type { Pair } from "@/sdk/entities/pair";
 
 const props = defineProps<PairSelectSearchProps>();
 const emit = defineEmits<{
@@ -77,8 +77,8 @@ const { containerProps, wrapperProps, list } = useVirtualList(items, {
                     :key="index"
                     :selected="
                         !!$props.selected &&
-                        $props.selected.id.toLowerCase() ===
-                            data.id.toLowerCase()
+                        $props.selected.address.toLowerCase() ===
+                            data.address.toLowerCase()
                     "
                     :loading="$props.loading"
                     @click="emit('pairChange', data)"
