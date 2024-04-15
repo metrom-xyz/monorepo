@@ -9,7 +9,7 @@ import { METROM_TELEGRAM, METROM_X_ACCOUNT } from "./common";
     <div class="app__container">
         <div class="app__content">
             <div class="app__copy">
-                <MetromLogo />
+                <MetromLogo class="app__logo" />
                 <h2 class="app__title__text">{{ $t("landing.title") }}</h2>
                 <h3 class="app__description__text">
                     {{ $t("landing.description") }}
@@ -57,6 +57,10 @@ import { METROM_TELEGRAM, METROM_X_ACCOUNT } from "./common";
 
 .app__copy {
     @apply flex flex-col gap-5;
+}
+
+.app__logo {
+    @apply h-16 w-64;
 }
 
 .app__title__text {
