@@ -13,7 +13,7 @@ tokenListsStore.fetchTokensLists();
 <template>
     <div class="app__container">
         <header class="app__header">
-            <MetromLogoIcon />
+            <MetromLogoIcon class="app__logo" />
             <div class="app__nav">
                 <NavigationBar />
             </div>
@@ -38,6 +38,10 @@ tokenListsStore.fetchTokensLists();
 
 .app__header {
     @apply w-full flex justify-between;
+}
+
+.app__logo {
+    @apply h-8 w-36;
 }
 
 .app__content {
