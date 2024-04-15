@@ -1,19 +1,12 @@
-import type { TokenInfo } from "@uniswap/token-lists";
-import type { Address } from "viem";
 import type { PairSelectSearchProps } from "./search/types";
+import type { Pair } from "@/sdk/entities/pair";
 
 export interface PairSelectProps {
+    loading?: boolean;
     open?: boolean;
     pairs?: Pair[];
     messages: {
         inputPlaceholder: string;
         search: PairSelectSearchProps["messages"];
     };
-}
-
-export interface Pair {
-    id: Address;
-    token0: TokenInfo;
-    token1: TokenInfo;
-    tvl: number;
 }

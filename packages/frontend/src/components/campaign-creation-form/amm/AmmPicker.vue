@@ -1,19 +1,29 @@
 <script setup lang="ts">
-import { CHAIN_DATA } from "@/commons";
 import MuiAccordionSelect from "@/ui/accordion-select/MuiAccordionSelect.vue";
 import MuiTypography from "@/ui/typography/MuiTypography.vue";
 import type { AmmPickerTypes } from "./types";
 import type { AccordionSelectOption } from "@/ui/accordion-select/types";
 import DexIcon from "@/icons/DexIcon.vue";
 import { computed } from "vue";
-import { SUPPORTED_CHAIN_OPTIONS } from "./commons";
 import { watchEffect } from "vue";
+import { CHAIN_DATA } from "@/sdk/commons";
+import { SUPPORTED_CHAINS } from "@/commons";
 
 const props = defineProps<AmmPickerTypes>();
 const emits = defineEmits<{
     complete: [];
     error: [boolean];
 }>();
+
+const SUPPORTED_CHAIN_OPTIONS = computed<AccordionSelectOption<number>[]>(
+    () => {
+        return SUPPORTED_CHAINS.map((chain) => ({
+            label: chain.name,
+            value: chain.id,
+            icon: CHAIN_DATA[chain.id].icon.logo,
+        }));
+    },
+);
 
 const SUPPORTED_AMM_OPTIONS = computed<AccordionSelectOption<string>[]>(() => {
     if (!props.state.network) return [];
@@ -34,8 +44,6 @@ watchEffect(() => {
     if (props.completed || !props.state.network || !props.state.amm) return;
     emits("complete");
 });
-
-// TODO: update accordion icons
 </script>
 <template>
     <div class="amm_picker__root">

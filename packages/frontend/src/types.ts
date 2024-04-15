@@ -13,8 +13,10 @@ export interface ChainIconData {
     backgroundColor: string;
 }
 
+export type SupportedAmm = "univ3";
+
 export interface Amm {
-    slug: string;
+    slug: SupportedAmm;
     logo: Component;
     name: string;
     subgraphUrl: string;

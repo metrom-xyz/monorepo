@@ -56,9 +56,8 @@ watchEffect(() => {
     emits(
         "error",
         props.completed &&
-            props.state.rewards.filter(
-                ({ amount, token }) => !token || !amount,
-            ).length > 0,
+            props.state.rewards.filter(({ amount, token }) => !token || !amount)
+                .length > 0,
     );
 
     if (
