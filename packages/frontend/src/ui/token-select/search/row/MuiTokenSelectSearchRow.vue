@@ -2,6 +2,8 @@
 import MuiTypography from "@/ui/typography/MuiTypography.vue";
 import type { TokenSelectSearchRowProps } from "./types";
 import MuiRemoteLogo from "@/ui/remote-logo/MuiRemoteLogo.vue";
+import MuiBalance from "@/ui/balance/MuiBalance.vue";
+import MuiSkeleton from "@/ui/skeleton/MuiSkeleton.vue";
 
 defineProps<TokenSelectSearchRowProps>();
 </script>
@@ -13,11 +15,23 @@ defineProps<TokenSelectSearchRowProps>();
             mui_token_select_search_row__root__selected: $props.selected,
         }"
     >
-        <MuiRemoteLogo :address="$props.address" :defaultText="$props.symbol" />
+        <MuiSkeleton v-if="$props.loading" circular width="32px" />
+        <MuiRemoteLogo
+            v-else
+            lg
+            :address="$props.address"
+            :defaultText="$props.symbol"
+        />
         <div class="mui_token_select_search_row__token_name">
-            <MuiTypography lg>
+            <MuiSkeleton v-if="$props.loading" width="64px" />
+            <MuiTypography v-else lg>
                 {{ $props.symbol }}
             </MuiTypography>
+            <MuiBalance
+                :balance="$props.balance"
+                :decimals="$props.decimals"
+                :loading="$props.loading || $props.loadingBalances"
+            />
         </div>
     </div>
 </template>
@@ -35,6 +49,6 @@ defineProps<TokenSelectSearchRowProps>();
 }
 
 .mui_token_select_search_row__token_name {
-    @apply flex gap-3 flex-grow mr-16;
+    @apply flex items-center justify-between gap-3 flex-grow;
 }
 </style>

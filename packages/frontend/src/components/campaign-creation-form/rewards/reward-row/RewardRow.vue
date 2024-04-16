@@ -50,7 +50,6 @@ function handleRewardOnTokenRemove() {
                 v-model="tokenModel"
                 :open="open"
                 :error="tokenError"
-                :tokens="$props.tokens"
                 :messages="{
                     inputPlaceholder: $t('campaign.rewards.select.placeholder'),
                     search: {

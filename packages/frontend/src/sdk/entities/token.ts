@@ -24,3 +24,14 @@ export class Token extends Currency {
         );
     }
 }
+
+export function currencyEquals(
+    currencyA: Currency,
+    currencyB: Currency,
+): boolean {
+    if (currencyA instanceof Token && currencyB instanceof Token)
+        return currencyA.equals(currencyB);
+    else if (currencyA instanceof Token) return false;
+    else if (currencyB instanceof Token) return false;
+    else return currencyA === currencyB;
+}

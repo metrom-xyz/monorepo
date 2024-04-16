@@ -44,6 +44,7 @@ const inputValue = computed(() => {
                     <PairSelectIcon v-if="!selected" />
                     <MuiPairRemoteLogo
                         v-else
+                        lg
                         :token0="selected.token0"
                         :token1="selected.token1"
                         class="mui_pair_select__icon"
