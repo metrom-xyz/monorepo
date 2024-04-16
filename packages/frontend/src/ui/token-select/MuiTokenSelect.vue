@@ -7,13 +7,39 @@ import MuiModal from "../modal/MuiModal.vue";
 import { computed } from "vue";
 import TokenSelectIcon from "@/icons/TokenSelectIcon.vue";
 import type { TokenInfo } from "@uniswap/token-lists";
+import { useAccount, useChainId, useReadContracts } from "vevm";
+import { useTokens } from "@/stores/tokens";
+import type { TokenInfoWithBalance } from "@/components/campaign-creation-form/rewards/types";
+import { erc20Abi, type Address } from "viem";
 
-const props = defineProps<TokenSelectProps>();
+defineProps<TokenSelectProps>();
 
 const emit = defineEmits<{
     dismiss: [];
 }>();
 const selected = defineModel<TokenInfo>();
+
+const account = useAccount();
+const chainId = useChainId();
+const tokensInChain = useTokens().getTokens(
+    chainId.value,
+) as TokenInfoWithBalance[];
+
+const { data: rawBalances, loading: loadingBalances } = useReadContracts({
+    contracts:
+        (account.value.isConnected &&
+            account.value.address &&
+            tokensInChain.map((token) => {
+                return {
+                    abi: erc20Abi,
+                    address: token.address as Address,
+                    functionName: "balanceOf",
+                    args: [account.value.address],
+                };
+            })) ||
+        [],
+    allowFailure: true,
+});
 
 function handleModalOnDismiss() {
     emit("dismiss");
@@ -25,10 +51,37 @@ function handleTokenOnChange(token?: TokenInfo) {
     emit("dismiss");
 }
 
-const selectedToken = computed(() => {
-    if (!props.tokens || !selected.value) return null;
+const tokensWithBalance = computed(() => {
+    const tokensInChainWithBalance = tokensInChain.reduce(
+        (accumulator: Record<string, TokenInfoWithBalance>, token, i) => {
+            if (!rawBalances.value?.[i]) return accumulator;
 
-    return props.tokens.find(
+            const rawBalance = rawBalances.value[i];
+            accumulator[`${token.address.toLowerCase()}-${token.chainId}`] =
+                rawBalance.status !== "failure"
+                    ? {
+                          ...token,
+                          balance: rawBalance.result as bigint,
+                      }
+                    : token;
+            return accumulator;
+        },
+        {},
+    );
+
+    return tokensInChain.map((token) => {
+        const tokenWithBalance =
+            tokensInChainWithBalance[
+                `${token.address.toLowerCase()}-${token.chainId}`
+            ];
+        return tokenWithBalance || token;
+    });
+});
+
+const selectedToken = computed(() => {
+    if (!tokensWithBalance.value || !selected.value) return null;
+
+    return tokensWithBalance.value.find(
         (token) =>
             token.address.toLowerCase() ===
             selected.value?.address.toLowerCase(),
@@ -57,8 +110,10 @@ const selectedToken = computed(() => {
             </MuiTextInput>
             <template #modal>
                 <MuiTokenSelectSearch
-                    :tokens="$props.tokens"
+                    :tokens="tokensWithBalance"
                     :selected="selected?.address"
+                    :loading="!tokensInChain"
+                    :loadingBalances="loadingBalances"
                     :messages="$props.messages.search"
                     :optionDisabled="$props.optionDisabled"
                     @dismiss="handleModalOnDismiss"

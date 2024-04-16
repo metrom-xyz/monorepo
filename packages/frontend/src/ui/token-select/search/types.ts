@@ -2,6 +2,7 @@ import type { TokenInfo } from "@uniswap/token-lists";
 
 export interface TokenSelectSearchProps {
     loading?: boolean;
+    loadingBalances?: boolean;
     selected?: string | null;
     tokens?: TokenInfo[];
     optionDisabled?: (token: TokenInfo) => boolean;

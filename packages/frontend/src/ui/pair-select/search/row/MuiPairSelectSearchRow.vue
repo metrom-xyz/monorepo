@@ -11,6 +11,7 @@ defineProps<PairSelectSearchRowProps>();
         :class="{ mui_pair_select_search_row__root__selected: $props.selected }"
     >
         <MuiPairRemoteLogo
+            lg
             :token0="$props.token0"
             :token1="$props.token1"
             class="mui_pair_select_search_row__pair_icon"

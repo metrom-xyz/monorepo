@@ -32,7 +32,7 @@ export class AmmSubgraphClient {
             document: GetPairs,
             variables: {
                 // TODO: handle pagination
-                limit: 100,
+                limit: 1000,
                 tokenParts: params.tokenParts || "",
             },
         });

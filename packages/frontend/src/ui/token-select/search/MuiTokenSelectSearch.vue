@@ -4,7 +4,7 @@ import type { TokenSelectSearchProps } from "./types";
 import { ref } from "vue";
 import { watchDebounced, useVirtualList } from "@vueuse/core";
 import { computed } from "vue";
-import { filterTokens } from "@/ui/utils/tokens";
+import { filterTokens, sortERC20Tokens } from "@/ui/utils/tokens";
 import MuiTypography from "@/ui/typography/MuiTypography.vue";
 import XIcon from "@/icons/XIcon.vue";
 import SearchIcon from "@/icons/SearchIcon.vue";
@@ -29,7 +29,7 @@ watchDebounced(
 
 const items = computed<TokenInfo[]>(() => {
     if (!props.tokens) return [];
-    return filterTokens(props.tokens, debouncedQuery.value);
+    return sortERC20Tokens(filterTokens(props.tokens, debouncedQuery.value));
 });
 
 const { containerProps, wrapperProps, list } = useVirtualList(items, {
@@ -79,6 +79,7 @@ function disableOption(token: TokenInfo) {
                             data.address.toLowerCase()
                     "
                     :loading="$props.loading"
+                    :loadingBalances="$props.loadingBalances"
                     :disabled="disableOption(data)"
                     @click="emit('tokenChange', data)"
                     v-bind="{ ...data }"

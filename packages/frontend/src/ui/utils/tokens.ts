@@ -1,6 +1,7 @@
 import { isAddress } from "viem";
 import type { TokenInfo } from "@uniswap/token-lists";
 import type { Pair } from "@/sdk/entities/pair";
+import type { TokenInfoWithBalance } from "@/components/campaign-creation-form/rewards/types";
 
 export const filterPairs = (pairs: Pair[], searchQuery: string) => {
     if (pairs.length === 0) return [];
@@ -63,6 +64,26 @@ export const filterTokens = (tokens: TokenInfo[], searchQuery: string) => {
             (symbol && matchesSearch(symbol, lowercaseSearchParts)) ||
             (name && matchesSearch(name, lowercaseSearchParts))
         );
+    });
+};
+
+export const sortERC20Tokens = (
+    tokens: TokenInfoWithBalance[],
+): TokenInfoWithBalance[] => {
+    return tokens.sort((a, b) => {
+        const balanceA = a.balance;
+        const balanceB = b.balance;
+
+        let result = 0;
+        if (balanceA && balanceB)
+            result = balanceA > balanceB ? -1 : balanceA === balanceB ? 0 : 1;
+        else if (balanceA && balanceA > 0n) result = -1;
+        else if (balanceB && balanceB > 0n) result = 1;
+        if (result !== 0) return result;
+
+        if (a.symbol && b.symbol)
+            return a.symbol.toLowerCase() < b.symbol.toLowerCase() ? -1 : 1;
+        else return a.symbol ? -1 : b.symbol ? -1 : 0;
     });
 };
 

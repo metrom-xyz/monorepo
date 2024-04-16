@@ -2,17 +2,12 @@
 import MuiTypography from "@/ui/typography/MuiTypography.vue";
 import { ref } from "vue";
 import type { CampaignState } from "./types";
-import { watchEffect } from "vue";
 import CampaignCreationForm from "@/components/campaign-creation-form/CampaignCreationForm.vue";
 import CampaignSummary from "@/components/campaign-summary/CampaignSummary.vue";
 
 const preview = ref(false);
 const campaignState = ref<CampaignState>({
     rewards: [{}],
-});
-
-watchEffect(() => {
-    console.log("campaign", JSON.stringify(campaignState.value, null, 4));
 });
 
 function handleRewardOnRemove(index: number) {
