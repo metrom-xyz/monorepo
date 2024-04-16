@@ -6,7 +6,8 @@
         "codegen": "graph codegen",
         "build:only": "graph build",
         "build": "pnpm codegen && graph build",
-        "deploy:celo-alfajores": "graph deploy --studio --network celo-alfajores metrom-blocks-celo-alfajores",
+        "deploy:celo-alfajores": "graph codegen && graph deploy --studio --network celo-alfajores metrom-blocks-celo-alfajores",
+        "deploy:gnosis": "graph codegen && graph deploy --studio --network gnosis metrom-blocks-gnosis",
         "lint": "eslint --ext .js,.ts ./ && prettier --check './**/*.{json,md}'",
         "format": "eslint --fix --ext .js,.ts ./ && prettier --write './**/*.{json,md}'"
     },
