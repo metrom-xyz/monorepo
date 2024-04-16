@@ -7,7 +7,7 @@
         "codegen": "graph codegen",
         "build:only": "graph build",
         "build": "pnpm update-addresses placeholder placeholder && pnpm codegen && graph build",
-        "deploy:swapr:gnosis": "pnpm update-addresses gnosis swapr && graph deploy --product hosted-service --network gnosis metrom-xyz/swapr-gnosis",
+        "deploy:swapr:gnosis": "pnpm update-addresses gnosis swapr && graph codegen && graph deploy --studio --network gnosis metrom-swapr-gnosis",
         "lint": "eslint --ext .js,.ts ./ && prettier --check './**/*.{json,md}'",
         "format": "eslint --fix --ext .js,.ts ./ && prettier --write './**/*.{json,md}'"
     },
