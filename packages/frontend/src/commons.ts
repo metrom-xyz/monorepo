@@ -6,6 +6,7 @@ export const MIN_CAMPAIGN_HOURS_DURATION = 2;
 export const TOKEN_LISTS = [
     "https://tokens.coingecko.com/xdai/all.json",
     "https://tokens.coingecko.com/celo/all.json",
+    "https://celo-org.github.io/celo-token-list/celo.tokenlist.json",
 ];
 
 export const SUPPORTED_CHAINS: [Chain, ...Chain[]] = [celoAlfajores];
