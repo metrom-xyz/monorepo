@@ -5,14 +5,11 @@ import {
     watchEffect,
     toValue,
 } from "vue";
-import type { Pair } from "../sdk/entities/pair";
-import { AmmClient } from "@/sdk";
-import type { SupportedAmm } from "@/types";
+import type { Pair } from "sdk";
+import type { Amm } from "@/types";
 
 export interface UsePairsParams {
-    chainId?: number;
-    amm?: SupportedAmm;
-    tokenParts?: string;
+    amm?: Amm;
 }
 
 export interface UsePairsReturnType {
@@ -34,14 +31,10 @@ export function usePairs(
         pairs.value = undefined;
 
         const newParams = toValue(params);
-        if (!newParams || !newParams.chainId || !newParams.amm) return;
+        if (!newParams || !newParams.amm) return;
 
         try {
-            pairs.value = await AmmClient.fetchPairs({
-                chainId: newParams.chainId,
-                amm: newParams.amm,
-                tokenParts: newParams.tokenParts,
-            });
+            pairs.value = await newParams.amm.subgraphClient.fetchPairs();
         } catch (thrown) {
             error.value = thrown as Error;
         } finally {

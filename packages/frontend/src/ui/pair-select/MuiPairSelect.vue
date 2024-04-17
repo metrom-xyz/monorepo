@@ -6,7 +6,7 @@ import MuiPairSelectSearch from "./search/MuiPairSelectSearch.vue";
 import type { PairSelectProps } from "./types";
 import { computed } from "vue";
 import MuiPairRemoteLogo from "../pair-remote-logo/MuiPairRemoteLogo.vue";
-import type { Pair } from "@/sdk/entities/pair";
+import type { Pair } from "sdk";
 
 defineProps<PairSelectProps>();
 const emit = defineEmits<{

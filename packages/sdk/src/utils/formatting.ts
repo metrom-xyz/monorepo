@@ -1,27 +1,26 @@
 import { formatUnits } from "viem";
-import { Amount } from "../entities/amount";
-import type { Currency } from "../entities/currency";
+import { type Erc20TokenAmount } from "../entities";
 
 export interface FormatCurrencyAmountParams {
-    amount: Amount<Currency>;
+    amount: Erc20TokenAmount;
     withSymbol?: boolean;
     commify?: boolean;
     nonZeroDecimalsAmount?: number;
 }
 
-export const formatCurrencyAmount = ({
+export const formatErc20TokenAmount = ({
     amount,
     withSymbol = true,
     commify = true,
     nonZeroDecimalsAmount = 4,
 }: FormatCurrencyAmountParams) => {
     const rawBaseAmount = formatDecimals({
-        number: formatUnits(amount.raw, amount.currency.decimals),
+        number: formatUnits(amount.amount, amount.token.decimals),
         decimalsAmount: nonZeroDecimalsAmount,
         commify,
     });
     return withSymbol
-        ? `${rawBaseAmount} ${amount.currency.symbol}`
+        ? `${rawBaseAmount} ${amount.token.symbol}`
         : rawBaseAmount;
 };
 

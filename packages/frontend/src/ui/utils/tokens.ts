@@ -1,6 +1,6 @@
 import { isAddress } from "viem";
 import type { TokenInfo } from "@uniswap/token-lists";
-import type { Pair } from "@/sdk/entities/pair";
+import type { Pair } from "sdk";
 import type { TokenInfoWithBalance } from "@/components/campaign-creation-form/rewards/types";
 
 export const filterPairs = (pairs: Pair[], searchQuery: string) => {

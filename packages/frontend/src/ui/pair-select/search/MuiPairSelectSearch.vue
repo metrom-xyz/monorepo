@@ -9,7 +9,7 @@ import MuiPairSelectSearchRow from "./row/MuiPairSelectSearchRow.vue";
 import MuiTypography from "@/ui/typography/MuiTypography.vue";
 import XIcon from "@/icons/XIcon.vue";
 import SearchIcon from "@/icons/SearchIcon.vue";
-import type { Pair } from "@/sdk/entities/pair";
+import type { Pair } from "sdk";
 
 const props = defineProps<PairSelectSearchProps>();
 const emit = defineEmits<{
