@@ -1,5 +1,5 @@
 import type { PairSelectSearchProps } from "./search/types";
-import type { Pair } from "@/sdk/entities/pair";
+import type { Pair } from "sdk";
 
 export interface PairSelectProps {
     loading?: boolean;

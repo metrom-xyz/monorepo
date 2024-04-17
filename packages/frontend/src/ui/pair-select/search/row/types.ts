@@ -1,9 +1,9 @@
-import type { Token } from "@/sdk/entities/token";
+import type { Erc20Token } from "sdk";
 
 export interface PairSelectSearchRowProps {
     selected?: boolean;
     loading?: boolean;
-    token0: Token;
-    token1: Token;
+    token0: Erc20Token;
+    token1: Erc20Token;
     tvl?: number;
 }

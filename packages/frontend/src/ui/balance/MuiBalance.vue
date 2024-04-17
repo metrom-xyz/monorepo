@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { formatDecimals } from "@/sdk/utils/formatting";
+import { formatDecimals } from "sdk";
 import type { BalanceProps } from "./types";
 import { formatUnits } from "viem";
 import MuiTypography from "../typography/MuiTypography.vue";

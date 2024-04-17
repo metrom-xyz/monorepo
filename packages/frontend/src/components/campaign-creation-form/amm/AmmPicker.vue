@@ -6,8 +6,7 @@ import type { AccordionSelectOption } from "@/ui/accordion-select/types";
 import DexIcon from "@/icons/DexIcon.vue";
 import { computed } from "vue";
 import { watchEffect } from "vue";
-import { CHAIN_DATA } from "@/sdk/commons";
-import { SUPPORTED_CHAINS } from "@/commons";
+import { SUPPORTED_CHAINS, CHAIN_DATA } from "@/commons";
 
 const props = defineProps<AmmPickerTypes>();
 const emits = defineEmits<{

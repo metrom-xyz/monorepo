@@ -1,25 +1,17 @@
 import type { ChainContract } from "viem";
 import type { Component } from "vue";
-
-export enum Environment {
-    Local = "local",
-    Development = "development",
-    Staging = "staging",
-    Production = "production",
-}
+import type { AmmSubgraphClient } from "sdk";
 
 export interface ChainIconData {
     logo: Component;
     backgroundColor: string;
 }
 
-export type SupportedAmm = "univ3";
-
 export interface Amm {
-    slug: SupportedAmm;
-    logo: Component;
+    slug: string;
     name: string;
-    subgraphUrl: string;
+    logo: Component;
+    subgraphClient: AmmSubgraphClient;
 }
 
 export interface ChainData {
@@ -27,6 +19,5 @@ export interface ChainData {
     contracts: {
         factory: ChainContract;
     };
-    subgraphUrl?: string;
     amms: Amm[];
 }
