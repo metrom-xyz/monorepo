@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import MuiPairSelect from "@/ui/pair-select/MuiPairSelect.vue";
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import type { PairPickerTypes } from "./types";
 import { watchEffect } from "vue";
 import { usePairs } from "@/composables/usePairs";
-import type { SupportedAmm } from "@/types";
+import { CHAIN_DATA } from "@/commons";
+import type { SupportedChain } from "sdk";
 
 const props = defineProps<PairPickerTypes>();
 const emits = defineEmits<{
@@ -13,10 +14,14 @@ const emits = defineEmits<{
 
 const open = ref(false);
 
+const amm = computed(() => {
+    return CHAIN_DATA[props.state.network?.value as SupportedChain].amms.find(
+        (amm) => amm.slug === props.state.amm?.value,
+    );
+});
+
 const { pairs, loading } = usePairs({
-    chainId: props.state.network?.value,
-    amm: props.state.amm?.value as SupportedAmm,
-    // TODO: filtering/pagination?
+    amm: amm.value,
 });
 
 watchEffect(() => {

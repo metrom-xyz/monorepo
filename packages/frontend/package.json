@@ -15,7 +15,7 @@
     },
     "dependencies": {
         "@fontsource/inter": "^5.0.17",
-        "@metrom-xyz/contracts": "^0.2.1",
+        "@metrom-xyz/contracts": "^0.4.0",
         "@uniswap/token-lists": "1.0.0-beta.33",
         "@vueuse/core": "^10.9.0",
         "@wagmi/connectors": "^4.1.14",
@@ -25,6 +25,7 @@
         "graphql": "^16.8.1",
         "graphql-request": "^6.1.0",
         "pinia": "^2.1.7",
+        "sdk": "workspace:*",
         "vevm": "^0.1.1",
         "viem": "^2.8.5",
         "vue": "^3.4.21",
