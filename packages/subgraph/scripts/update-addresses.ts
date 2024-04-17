@@ -1,6 +1,6 @@
 import { existsSync, writeFileSync, rmSync } from "node:fs";
 import { dirname, join } from "node:path";
-import { ADDRESS, SupportedChain } from "@metrom-xyz/contracts";
+import { ADDRESSES, SupportedChain } from "@metrom-xyz/contracts";
 import { fileURLToPath } from "node:url";
 import { exec } from "node:child_process";
 
@@ -25,7 +25,7 @@ const factoryConfig =
     rawNetwork === "placeholder"
         ? // eslint-disable-next-line @typescript-eslint/no-explicit-any
           ({} as any)
-        : ADDRESS[parseInt(entry[0]) as SupportedChain];
+        : ADDRESSES[parseInt(entry[0]) as SupportedChain].factory;
 if (!factoryConfig) {
     console.error(
         `"${network}" is not a valid network. Valid values are: ${Object.values(NETWORK_NAME).join(", ")}`,

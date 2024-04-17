@@ -9,8 +9,8 @@ dataSources:
     network: celo-alfajores
     source:
       abi: Factory
-      address: "0x1776bE1f971CB0F758680aCFD2cc5121B474249E"
-      startBlock: 23250417
+      address: "0xb4F8FB8cC48A9Eb8d8E0A530C9775eD06728BaDd"
+      startBlock: 23576703
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
