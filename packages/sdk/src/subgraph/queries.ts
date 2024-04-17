@@ -56,7 +56,7 @@ export type GetPairsQueryResult = {
 };
 
 export const GetPairs = `
-    query getPools($limit: Int!, $lastId: Int!) {
+    query getPools($limit: Int!, $lastId: String!) {
         pools(first: $limit, where: { id_gt: $lastId }) {
             address: id
             token0 {

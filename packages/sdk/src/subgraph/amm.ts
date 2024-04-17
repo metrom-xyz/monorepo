@@ -22,7 +22,7 @@ export class AmmSubgraphClient {
             const result: GetPairsQueryResult = await query(
                 this.url,
                 GetPairs,
-                { limit: PAGE_SIZE, lastId },
+                { limit: PAGE_SIZE, lastId: lastId || "" },
             );
 
             for (const pool of result.pools) {
