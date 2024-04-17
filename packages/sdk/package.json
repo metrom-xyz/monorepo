@@ -7,8 +7,8 @@
     "types": "./dist/index.d.ts",
     "scripts": {
         "build": "vite build &&  tsc --build --force tsconfig.lib.json",
-        "lint": "eslint --ext .tsx,.ts ./src && prettier --check './**/*.{json,md}'",
-        "format": "eslint --fix --ext .tsx,.ts,.js ./ && prettier --write './**/*.{json,md}'"
+        "lint": "eslint && prettier --check './**/*.{json,md}'",
+        "format": "eslint --fix --ext .ts,.js ./ && prettier --write './**/*.{json,md}'"
     },
     "dependencies": {
         "@metrom-xyz/contracts": "^0.4.0",
@@ -18,7 +18,7 @@
     "devDependencies": {
         "@tsconfig/node20": "^20.1.2",
         "@types/node": "^20.12.7",
-        "eslint": "^8.49.0",
+        "eslint": "^9.0.0",
         "eslint-config-custom": "*",
         "eslint-plugin-prettier": "^5.1.3",
         "eslint-plugin-react": "^7.33.2",
