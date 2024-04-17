@@ -5,6 +5,7 @@ import type { ChainData } from "./types";
 import MuiCeloIcon from "./icons/CeloIcon.vue";
 import MuiUniswapLogoIcon from "./icons/UniswapLogoIcon.vue";
 import { ADDRESSES } from "@metrom-xyz/contracts";
+import { markRaw } from "vue";
 
 export const MIN_CAMPAIGN_HOURS_DURATION = 2;
 
@@ -23,7 +24,7 @@ export const SUPPORTED_CHAIN_TRANSPORT: Record<number, Transport> = {
 export const CHAIN_DATA: Record<SupportedChain, ChainData> = {
     [SupportedChain.CeloAlfajores]: {
         icon: {
-            logo: MuiCeloIcon,
+            logo: markRaw(MuiCeloIcon),
             backgroundColor: "#000",
         },
         contracts: {
@@ -32,7 +33,7 @@ export const CHAIN_DATA: Record<SupportedChain, ChainData> = {
         amms: [
             {
                 slug: "uni-v3",
-                logo: MuiUniswapLogoIcon,
+                logo: markRaw(MuiUniswapLogoIcon),
                 name: "Uniswap v3",
                 subgraphClient: new AmmSubgraphClient(
                     SupportedChain.CeloAlfajores,
