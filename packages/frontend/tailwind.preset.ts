@@ -91,10 +91,10 @@ export default {
             },
         },
         fontSize: {
-            xs: "0.75rem",
-            sm: "0.85rem",
-            base: "1rem",
-            lg: "1.188rem",
+            xs: "0.563rem",
+            sm: "0.75rem",
+            base: "0.875rem",
+            lg: "1.125rem",
             xl: "1.5rem",
             h1: [
                 "3.5rem",
