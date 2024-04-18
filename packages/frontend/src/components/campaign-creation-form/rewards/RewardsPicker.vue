@@ -36,15 +36,18 @@ function handleRewardOnTokenRemove(index: number) {
 <template>
     <div class="rewards_picker__root">
         <div class="rewards_picker__rewards_wrapper">
-            <RewardRow
-                :key="index"
-                :index="index"
-                v-for="(_, index) in $props.state.rewards"
-                :rewards="$props.state.rewards"
-                v-model:token="$props.state.rewards[index].token"
-                v-model:amount="$props.state.rewards[index].amount"
-                :onRemove="handleRewardOnTokenRemove"
-            />
+            <template
+                v-for="(reward, index) in $props.state.rewards"
+                :key="reward.id"
+            >
+                <RewardRow
+                    :index="index"
+                    :rewards="$props.state.rewards"
+                    v-model:token="$props.state.rewards[index].token"
+                    v-model:amount="$props.state.rewards[index].amount"
+                    :onRemove="handleRewardOnTokenRemove"
+                />
+            </template>
         </div>
         <div
             class="rewards_picker__footer rewards_picker__action"
