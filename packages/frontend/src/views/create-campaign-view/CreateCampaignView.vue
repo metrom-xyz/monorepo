@@ -4,19 +4,18 @@ import { ref } from "vue";
 import type { CampaignState } from "./types";
 import CampaignCreationForm from "@/components/campaign-creation-form/CampaignCreationForm.vue";
 import CampaignSummary from "@/components/campaign-summary/CampaignSummary.vue";
+import { v4 } from "uuid";
 
 const preview = ref(false);
 const campaignState = ref<CampaignState>({
-    rewards: [{}],
+    rewards: [{ id: v4() }],
 });
 
 function handleRewardOnRemove(index: number) {
     if (campaignState.value.rewards.length > 1) {
-        campaignState.value.rewards = campaignState.value.rewards
-            .slice(0, index)
-            .concat(campaignState.value.rewards.slice(index + 1));
-    } else {
-        campaignState.value.rewards[index] = {};
+        campaignState.value.rewards = campaignState.value.rewards.filter(
+            (_, i) => i !== index,
+        );
     }
 }
 
@@ -44,7 +43,7 @@ function handlePreviewOnClick() {
             <CampaignCreationForm
                 :state="campaignState"
                 :onPreviewClick="handlePreviewOnClick"
-                @addReward="campaignState.rewards.push({})"
+                @addReward="campaignState.rewards.push({ id: v4() })"
                 @removeReward="handleRewardOnRemove"
             />
         </div>
