@@ -8,16 +8,14 @@ import MuiSkeleton from "../skeleton/MuiSkeleton.vue";
 withDefaults(defineProps<BalanceProps>(), { decimals: 18 });
 </script>
 <template>
-    <div v-if="$props.balance">
-        <MuiSkeleton v-if="$props.loading" width="40px" />
-        <MuiTypography v-else sm>
-            {{
-                formatDecimals({
-                    number: formatUnits($props.balance, $props.decimals || 18),
-                    decimalsAmount: 4,
-                })
-            }}
-        </MuiTypography>
-    </div>
+    <MuiSkeleton v-if="$props.loading && !$props.balance" width="40px" />
+    <MuiTypography v-else-if="$props.balance" sm>
+        {{
+            formatDecimals({
+                number: formatUnits($props.balance, $props.decimals || 18),
+                decimalsAmount: 4,
+            })
+        }}
+    </MuiTypography>
 </template>
 <style></style>
