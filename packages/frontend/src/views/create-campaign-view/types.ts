@@ -12,6 +12,7 @@ export interface CampaignState {
 }
 
 export interface Reward {
+    id: string;
     token?: TokenInfo;
     amount?: number;
 }
