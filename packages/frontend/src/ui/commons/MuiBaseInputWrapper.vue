@@ -142,7 +142,7 @@ const attrs = useAttrs();
     @apply border-yellow;
 }
 
-.mui_base_input_wrapper__container__loading > input {
+.mui_base_input_wrapper__container__loading {
     @apply bg-gray-100 animate-pulse;
 }
 

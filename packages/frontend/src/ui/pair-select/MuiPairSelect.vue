@@ -34,7 +34,7 @@ const inputValue = computed(() => {
             <MuiTextInput
                 iconLeft
                 readonly
-                :disabled="$attrs.disabled"
+                :disabled="$attrs.disabled || $props.loading"
                 :loading="$props.loading"
                 :model-value="inputValue"
                 :placeholder="$props.messages.inputPlaceholder"
