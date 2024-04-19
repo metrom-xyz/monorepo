@@ -12,8 +12,9 @@ import type { TokenInfo } from "@uniswap/token-lists";
 import MuiTokenSelectSearchRow from "./row/MuiTokenSelectSearchRow.vue";
 
 const props = defineProps<TokenSelectSearchProps>();
-const emit = defineEmits<{
+const emits = defineEmits<{
     tokenChange: [token?: TokenInfo];
+    searchQueryChange: [query?: string];
     dismiss: [];
 }>();
 const searchQuery = ref("");
@@ -23,6 +24,7 @@ watchDebounced(
     searchQuery,
     () => {
         debouncedQuery.value = searchQuery.value;
+        emits("searchQueryChange", debouncedQuery.value);
     },
     { debounce: 300 },
 );
@@ -40,12 +42,17 @@ function disableOption(token: TokenInfo) {
     if (!props.optionDisabled) return false;
     return props.optionDisabled(token);
 }
+
+function handleOnDismissClick() {
+    emits("dismiss");
+    emits("searchQueryChange");
+}
 </script>
 <template>
     <div class="mui_token_select_search__root">
         <div class="mui_token_select_search__header">
             <XIcon
-                @click="emit('dismiss')"
+                @click="handleOnDismissClick"
                 class="mui_token_select_search__close_icon"
             />
             <MuiTextInput
@@ -81,7 +88,7 @@ function disableOption(token: TokenInfo) {
                     :loading="$props.loading"
                     :loadingBalances="$props.loadingBalances"
                     :disabled="disableOption(data)"
-                    @click="emit('tokenChange', data)"
+                    @click="emits('tokenChange', data)"
                     v-bind="{ ...data }"
                 />
             </div>
