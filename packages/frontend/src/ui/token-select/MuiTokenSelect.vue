@@ -11,13 +11,17 @@ import { useAccount, useChainId, useReadContracts } from "vevm";
 import { useTokens } from "@/stores/tokens";
 import type { TokenInfoWithBalance } from "@/components/campaign-creation-form/rewards/types";
 import { erc20Abi, type Address } from "viem";
+import { useImportableToken } from "@/composables/useImportableToken";
+import { ref } from "vue";
 
 defineProps<TokenSelectProps>();
 
-const emit = defineEmits<{
+const emits = defineEmits<{
     dismiss: [];
 }>();
 const selected = defineModel<TokenInfo>();
+
+const tokenSearchQuery = ref();
 
 const account = useAccount();
 const chainId = useChainId();
@@ -41,15 +45,15 @@ const { data: rawBalances, loading: loadingBalances } = useReadContracts({
     allowFailure: true,
 });
 
-function handleModalOnDismiss() {
-    emit("dismiss");
-}
-
-function handleTokenOnChange(token?: TokenInfo) {
-    if (!token) return;
-    selected.value = token;
-    emit("dismiss");
-}
+const { loading: loadingImportableToken, token: importableToken } =
+    useImportableToken(
+        // FIXME: better way to keep the reactivity to the debounced query?
+        computed(() => ({
+            connectedAccountAddress: account.value.address,
+            debouncedQuery: tokenSearchQuery.value,
+            withBalances: account.value.isConnected,
+        })),
+    );
 
 const tokensWithBalance = computed(() => {
     const tokensInChainWithBalance = tokensInChain.reduce(
@@ -69,13 +73,17 @@ const tokensWithBalance = computed(() => {
         {},
     );
 
-    return tokensInChain.map((token) => {
+    const tokensWithBalance = tokensInChain.map((token) => {
         const tokenWithBalance =
             tokensInChainWithBalance[
                 `${token.address.toLowerCase()}-${token.chainId}`
             ];
         return tokenWithBalance || token;
     });
+
+    if (importableToken.value) tokensWithBalance.push(importableToken.value);
+
+    return tokensWithBalance;
 });
 
 const selectedToken = computed(() => {
@@ -87,6 +95,16 @@ const selectedToken = computed(() => {
             selected.value?.address.toLowerCase(),
     );
 });
+
+function handleModalOnDismiss() {
+    emits("dismiss");
+}
+
+function handleTokenOnChange(token?: TokenInfo) {
+    if (!token) return;
+    selected.value = token;
+    emits("dismiss");
+}
 </script>
 <template>
     <div class="mui_token_select__root" v-bind="{ ...$attrs }">
@@ -113,11 +131,12 @@ const selectedToken = computed(() => {
                     :tokens="tokensWithBalance"
                     :selected="selected?.address"
                     :loading="!tokensInChain"
-                    :loadingBalances="loadingBalances"
+                    :loadingBalances="loadingBalances || loadingImportableToken"
                     :messages="$props.messages.search"
                     :optionDisabled="$props.optionDisabled"
                     @dismiss="handleModalOnDismiss"
                     @tokenChange="handleTokenOnChange"
+                    @searchQueryChange="tokenSearchQuery = $event"
                 />
             </template>
         </MuiModal>
