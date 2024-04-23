@@ -1,50 +1,63 @@
 import { Address, BigInt, Bytes, ethereum } from "@graphprotocol/graph-ts";
 import {
+    ClaimableFee,
     Campaign,
-    Factory,
+    Metrom,
     Reward,
     Token,
     Transaction,
 } from "../generated/schema";
-import { FACTORY_ADDRESS } from "./addresses";
+import { METROM_ADDRESS } from "./addresses";
 import { Erc20 } from "../generated/templates/Campaign/Erc20";
 import { Erc20BytesName } from "../generated/templates/Campaign/Erc20BytesName";
 import { Erc20BytesSymbol } from "../generated/templates/Campaign/Erc20BytesSymbol";
 
-export function getFactoryOrThrow(): Factory {
-    let factory = Factory.load(FACTORY_ADDRESS);
-    if (factory != null) return factory;
+export function getMetromOrThrow(): Metrom {
+    let metrom = Metrom.load(METROM_ADDRESS);
+    if (metrom != null) return metrom;
 
     throw new Error(
-        `Could not find factory with address ${FACTORY_ADDRESS.toHex()}`,
+        `Could not find Metrom at address ${METROM_ADDRESS.toHex()}`,
     );
 }
 
-export function getCampaignOrThrow(address: Address): Campaign {
-    let campaign = Campaign.load(address);
+export function getCampaignOrThrow(id: Bytes): Campaign {
+    let campaign = Campaign.load(id);
     if (campaign != null) return campaign;
 
-    throw new Error(`Could not find campaign with address ${address.toHex()}`);
+    throw new Error(`Could not find campaign with id ${id.toHex()}`);
 }
 
-export function getRewardId(campaign: Address, token: Address): Bytes {
-    return campaign.concat(token);
+export function getRewardId(campaignId: Bytes, token: Address): Bytes {
+    return campaignId.concat(token);
 }
 
-// this is the string "initial" encoded with utf-8
-const INITIAL_REWARD_ID_PREFIX = Bytes.fromHexString("0x696e697469616c");
-
-export function getInitialRewardId(campaign: Address, token: Address): Bytes {
-    return INITIAL_REWARD_ID_PREFIX.concat(getRewardId(campaign, token));
-}
-
-export function getRewardOrThrow(campaign: Address, token: Address): Reward {
-    let reward = Reward.load(getRewardId(campaign, token));
+export function getRewardOrThrow(campaignId: Bytes, token: Address): Reward {
+    let reward = Reward.load(getRewardId(campaignId, token));
     if (reward != null) return reward;
 
     throw new Error(
-        `Could not find reward for token ${token.toHex()} on campaign ${campaign.toHex()}`,
+        `Could not find reward for token ${token.toHex()} on campaign with id ${campaignId.toHex()}`,
     );
+}
+
+export function getOrCreateClaimableFee(token: Token): ClaimableFee {
+    let claimableFee = ClaimableFee.load(token.id);
+    if (claimableFee !== null) return claimableFee;
+
+    claimableFee = new ClaimableFee(token.id);
+    claimableFee.metrom = METROM_ADDRESS;
+    claimableFee.token = token.id;
+    claimableFee.amount = BigInt.zero();
+    claimableFee.save();
+    return claimableFee;
+}
+
+export function getClaimableFeeOrThrow(token: Token): ClaimableFee {
+    let claimableFee = ClaimableFee.load(token.id);
+    if (claimableFee != null) return claimableFee;
+
+    throw new Error(`Could not find accrued fee for token ${token.id.toHex()}`);
 }
 
 export function getOrCreateTransaction(event: ethereum.Event): Transaction {
