@@ -9,132 +9,164 @@ type Transaction @entity(immutable: true) {
     id: Bytes!
     blockNumber: BigInt!
     timestamp: BigInt!
-
-    # factory events
-    initializeFactoryEvent: InitializeFactoryEvent!
+    initializeEvent: InitializeEvent! @derivedFrom(field: "transaction")
+    createCampaignEvent: CreateCampaignEvent! @derivedFrom(field: "transaction")
+    distributeRewardEvent: DistributeRewardEvent!
         @derivedFrom(field: "transaction")
-    transferFactoryOwnershipEvents: [TransferFactoryOwnershipEvent!]!
+    claimRewardEvent: ClaimRewardEvent! @derivedFrom(field: "transaction")
+    claimFee: ClaimFeeEvent! @derivedFrom(field: "transaction")
+    transferOwnershipEvents: [TransferOwnershipEvent!]!
         @derivedFrom(field: "transaction")
-    acceptFactoryOwnershipEvents: [AcceptFactoryOwnershipEvent!]!
+    acceptOwnershipEvents: [AcceptOwnershipEvent!]!
         @derivedFrom(field: "transaction")
     setUpdaterEvents: [SetUpdaterEvent!]! @derivedFrom(field: "transaction")
-    setImplementationEvents: [SetImplementationEvent!]!
-        @derivedFrom(field: "transaction")
-    setFeeReceiverEvents: [SetFeeReceiverEvent!]!
-        @derivedFrom(field: "transaction")
     setFeeEvents: [SetFeeEvent!]! @derivedFrom(field: "transaction")
-
-    # campaign events
-    initializeCampaignEvents: [InitializeCampaignEvent!]!
+    setMinimumCampaignDuration: [SetMinimumCampaignDurationEvent!]!
         @derivedFrom(field: "transaction")
-    transferCampaignOwnershipEvents: [TransferCampaignOwnershipEvent!]!
-        @derivedFrom(field: "transaction")
-    acceptCampaignOwnershipEvents: [AcceptCampaignOwnershipEvent!]!
-        @derivedFrom(field: "transaction")
-    claims: [ClaimEvent!]! @derivedFrom(field: "transaction")
-    treeUpdates: [TreeUpdateEvent!]! @derivedFrom(field: "transaction")
-    recoveries: [RecoverEvent!]! @derivedFrom(field: "transaction")
 }
 
-type Factory @entity {
+type Metrom @entity {
     id: Bytes!
     transaction: Transaction!
     owner: Bytes!
     pendingOwner: Bytes!
     updater: Bytes!
-    implementation: Bytes!
-    feeReceiver: Bytes!
     fee: BigInt!
+    minimumCampaignDuration: BigInt!
     campaignsAmount: BigInt!
 
-    campaigns: [Campaign!]! @derivedFrom(field: "factory")
-    initializeEvent: InitializeFactoryEvent! @derivedFrom(field: "factory")
-    transferOwnershipEvents: [TransferFactoryOwnershipEvent!]!
-        @derivedFrom(field: "factory")
-    accceptOwnershipEvents: [AcceptFactoryOwnershipEvent!]!
-        @derivedFrom(field: "factory")
-    setUpdaterEvents: [SetUpdaterEvent!]! @derivedFrom(field: "factory")
-    setImplementationEvents: [SetImplementationEvent!]!
-        @derivedFrom(field: "factory")
-    setFeeReceiverEvents: [SetFeeReceiverEvent!]! @derivedFrom(field: "factory")
-    setFeeEvents: [SetFeeEvent!]! @derivedFrom(field: "factory")
+    claimableFees: [ClaimableFee!]! @derivedFrom(field: "metrom")
+    campaigns: [Campaign!]! @derivedFrom(field: "metrom")
+
+    initializeEvent: InitializeEvent! @derivedFrom(field: "metrom")
+    createCampaignEvent: CreateCampaignEvent! @derivedFrom(field: "metrom")
+    distributeRewardEvent: DistributeRewardEvent! @derivedFrom(field: "metrom")
+    claimRewardEvent: ClaimRewardEvent! @derivedFrom(field: "metrom")
+    claimFee: ClaimFeeEvent! @derivedFrom(field: "metrom")
+    transferOwnershipEvents: [TransferOwnershipEvent!]!
+        @derivedFrom(field: "metrom")
+    acceptOwnershipEvents: [AcceptOwnershipEvent!]!
+        @derivedFrom(field: "metrom")
+    setUpdaterEvents: [SetUpdaterEvent!]! @derivedFrom(field: "metrom")
+    setFeeEvents: [SetFeeEvent!]! @derivedFrom(field: "metrom")
+    setMinimumCampaignDuration: [SetMinimumCampaignDurationEvent!]!
+        @derivedFrom(field: "metrom")
 }
 
-type InitializeFactoryEvent @entity(immutable: true) {
+type ClaimableFee @entity {
+    id: Bytes!
+    metrom: Metrom!
+    token: Token!
+    amount: BigInt!
+}
+
+type InitializeEvent @entity(immutable: true) {
     id: Bytes!
     transaction: Transaction!
-    factory: Factory!
+    metrom: Metrom!
     owner: Bytes!
     updater: Bytes!
-    implementation: Bytes!
-    feeReceiver: Bytes!
     fee: BigInt!
+    minimumCampaignDuration: BigInt!
 }
 
-type TransferFactoryOwnershipEvent @entity(immutable: true) {
+type CreateCampaignEvent @entity(immutable: true) {
     id: Bytes!
     transaction: Transaction!
-    factory: Factory!
+    metrom: Metrom!
+    campaign: Campaign!
+    chainId: BigInt!
+    owner: Bytes!
+    pool: Bytes!
+    from: BigInt!
+    to: BigInt!
+    specification: Bytes!
+    rewardTokens: [Bytes!]!
+    rewardAmounts: [BigInt!]!
+    feeAmounts: [BigInt!]!
+}
+
+type DistributeRewardEvent @entity(immutable: true) {
+    id: Bytes!
+    transaction: Transaction!
+    metrom: Metrom!
+    campaign: Campaign!
+    root: Bytes!
+    data: Bytes!
+}
+
+type ClaimRewardEvent @entity(immutable: true) {
+    id: Bytes!
+    transaction: Transaction!
+    metrom: Metrom!
+    campaign: Campaign!
+    token: Token!
+    amount: BigInt!
+    receiver: Bytes!
+}
+
+type ClaimFeeEvent @entity(immutable: true) {
+    id: Bytes!
+    transaction: Transaction!
+    metrom: Metrom!
+    token: Token!
+    amount: BigInt!
+    receiver: Bytes!
+}
+
+type TransferOwnershipEvent @entity(immutable: true) {
+    id: Bytes!
+    transaction: Transaction!
+    metrom: Metrom!
     owner: Bytes!
 }
 
-type AcceptFactoryOwnershipEvent @entity(immutable: true) {
+type AcceptOwnershipEvent @entity(immutable: true) {
     id: Bytes!
     transaction: Transaction!
-    factory: Factory!
+    metrom: Metrom!
     owner: Bytes!
 }
 
 type SetUpdaterEvent @entity(immutable: true) {
     id: Bytes!
     transaction: Transaction!
-    factory: Factory!
+    metrom: Metrom!
     updater: Bytes!
-}
-
-type SetImplementationEvent @entity(immutable: true) {
-    id: Bytes!
-    transaction: Transaction!
-    factory: Factory!
-    implementation: Bytes!
-}
-
-type SetFeeReceiverEvent @entity(immutable: true) {
-    id: Bytes!
-    transaction: Transaction!
-    factory: Factory!
-    feeReceiver: Bytes!
 }
 
 type SetFeeEvent @entity(immutable: true) {
     id: Bytes!
     transaction: Transaction!
-    factory: Factory!
+    metrom: Metrom!
     fee: BigInt!
+}
+
+type SetMinimumCampaignDurationEvent @entity(immutable: true) {
+    id: Bytes!
+    transaction: Transaction!
+    metrom: Metrom!
+    minimumCampaignDuration: BigInt!
 }
 
 type Campaign @entity {
     id: Bytes!
     transaction: Transaction!
-    factory: Factory!
-    owner: Bytes!
-    pendingOwner: Bytes!
+    metrom: Metrom!
+    chainId: BigInt!
     pool: Bytes!
     from: BigInt!
     to: BigInt!
-    treeRoot: Bytes!
-    dataHash: Bytes!
+    specification: Bytes!
+    root: Bytes!
+    data: Bytes!
 
     rewards: [Reward!]! @derivedFrom(field: "campaign")
 
-    initializeEvent: InitializeCampaignEvent! @derivedFrom(field: "campaign")
-    transferOwnershipEvents: [TransferCampaignOwnershipEvent!]!
+    createEvent: CreateCampaignEvent! @derivedFrom(field: "campaign")
+    distributeRewardEvents: [DistributeRewardEvent!]!
         @derivedFrom(field: "campaign")
-    accceptOwnershipEvents: [AcceptCampaignOwnershipEvent!]!
-        @derivedFrom(field: "campaign")
-    claimEvents: [ClaimEvent!]! @derivedFrom(field: "campaign")
-    treeUpdateEvents: [TreeUpdateEvent!]! @derivedFrom(field: "campaign")
-    recoverEvents: [RecoverEvent!]! @derivedFrom(field: "campaign")
+    claimRewardEvents: [ClaimRewardEvent!]! @derivedFrom(field: "campaign")
 }
 
 type Reward @entity {
@@ -143,64 +175,4 @@ type Reward @entity {
     token: Token!
     amount: BigInt!
     unclaimed: BigInt!
-}
-
-type InitializeCampaignEvent @entity(immutable: true) {
-    id: Bytes!
-    transaction: Transaction!
-    campaign: Campaign!
-    owner: Bytes!
-    pool: Bytes!
-    from: BigInt!
-    to: BigInt!
-    feeReceiver: Bytes!
-    rewards: [InitialReward!]! @derivedFrom(field: "event")
-}
-
-type InitialReward @entity {
-    id: Bytes!
-    event: InitializeCampaignEvent!
-    token: Token!
-    amount: BigInt!
-    fee: BigInt!
-}
-
-type TransferCampaignOwnershipEvent @entity(immutable: true) {
-    id: Bytes!
-    transaction: Transaction!
-    campaign: Campaign!
-    owner: Bytes!
-}
-
-type AcceptCampaignOwnershipEvent @entity(immutable: true) {
-    id: Bytes!
-    transaction: Transaction!
-    campaign: Campaign!
-    owner: Bytes!
-}
-
-type ClaimEvent @entity(immutable: true) {
-    id: Bytes!
-    transaction: Transaction!
-    campaign: Campaign!
-    user: Bytes!
-    token: Token!
-    amount: BigInt!
-}
-
-type TreeUpdateEvent @entity(immutable: true) {
-    id: Bytes!
-    transaction: Transaction!
-    campaign: Campaign!
-    root: Bytes!
-    dataHash: Bytes!
-}
-
-type RecoverEvent @entity(immutable: true) {
-    id: Bytes!
-    transaction: Transaction!
-    campaign: Campaign!
-    receiver: Bytes!
-    token: Token!
-    amount: BigInt!
 }
