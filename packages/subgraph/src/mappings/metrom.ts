@@ -47,6 +47,15 @@ export function handleInitialize(event: Initialize): void {
         );
 
     let transaction = getOrCreateTransaction(event);
+    let initializeEvent = new InitializeEvent(getEventId(event));
+    initializeEvent.transaction = transaction.id;
+    initializeEvent.metrom = METROM_ADDRESS;
+    initializeEvent.owner = event.params.owner;
+    initializeEvent.updater = event.params.updater;
+    initializeEvent.fee = event.params.fee;
+    initializeEvent.minimumCampaignDuration =
+        event.params.minimumCampaignDuration;
+    initializeEvent.save();
 
     let metrom = new Metrom(METROM_ADDRESS);
     metrom.transaction = transaction.id;
@@ -57,16 +66,6 @@ export function handleInitialize(event: Initialize): void {
     metrom.minimumCampaignDuration = event.params.minimumCampaignDuration;
     metrom.campaignsAmount = BigInt.zero();
     metrom.save();
-
-    let initializeEvent = new InitializeEvent(getEventId(event));
-    initializeEvent.transaction = transaction.id;
-    initializeEvent.metrom = METROM_ADDRESS;
-    initializeEvent.owner = event.params.owner;
-    initializeEvent.updater = event.params.updater;
-    initializeEvent.fee = event.params.fee;
-    initializeEvent.minimumCampaignDuration =
-        event.params.minimumCampaignDuration;
-    initializeEvent.save();
 }
 
 export function handleCreateCampaign(event: CreateCampaign): void {
@@ -90,9 +89,7 @@ export function handleCreateCampaign(event: CreateCampaign): void {
         let rewardToken = getOrCreateToken(event.params.rewardTokens[i]);
         let rewardAmount = event.params.rewardAmounts[i];
 
-        let reward = new Reward(
-            getRewardId(campaign.id, rewardToken.id as Address),
-        );
+        let reward = new Reward(getRewardId(campaign.id, rewardToken.id));
         reward.campaign = campaign.id;
         reward.token = rewardToken.id;
         reward.amount = rewardAmount;
