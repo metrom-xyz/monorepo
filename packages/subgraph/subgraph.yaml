@@ -35,6 +35,12 @@ dataSources:
       abis:
         - name: Metrom
           file: ./node_modules/@metrom-xyz/contracts/dist/abis/Metrom.json
+        - name: Erc20
+          file: ./abis/Erc20.json
+        - name: Erc20BytesName
+          file: ./abis/Erc20BytesName.json
+        - name: Erc20BytesSymbol
+          file: ./abis/Erc20BytesSymbol.json
       eventHandlers:
         - event: Initialize(indexed address,address,uint32,uint32)
           handler: handleInitialize

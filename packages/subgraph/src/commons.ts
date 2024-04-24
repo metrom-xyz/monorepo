@@ -8,9 +8,9 @@ import {
     Transaction,
 } from "../generated/schema";
 import { METROM_ADDRESS } from "./addresses";
-import { Erc20 } from "../generated/templates/Campaign/Erc20";
-import { Erc20BytesName } from "../generated/templates/Campaign/Erc20BytesName";
-import { Erc20BytesSymbol } from "../generated/templates/Campaign/Erc20BytesSymbol";
+import { Erc20 } from "../generated/Metrom/Erc20";
+import { Erc20BytesName } from "../generated/Metrom/Erc20BytesName";
+import { Erc20BytesSymbol } from "../generated/Metrom/Erc20BytesSymbol";
 
 export function getMetromOrThrow(): Metrom {
     let metrom = Metrom.load(METROM_ADDRESS);
@@ -28,11 +28,11 @@ export function getCampaignOrThrow(id: Bytes): Campaign {
     throw new Error(`Could not find campaign with id ${id.toHex()}`);
 }
 
-export function getRewardId(campaignId: Bytes, token: Address): Bytes {
+export function getRewardId(campaignId: Bytes, token: Bytes): Bytes {
     return campaignId.concat(token);
 }
 
-export function getRewardOrThrow(campaignId: Bytes, token: Address): Reward {
+export function getRewardOrThrow(campaignId: Bytes, token: Bytes): Reward {
     let reward = Reward.load(getRewardId(campaignId, token));
     if (reward != null) return reward;
 

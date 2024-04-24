@@ -9,9 +9,10 @@ type Transaction @entity(immutable: true) {
     id: Bytes!
     blockNumber: BigInt!
     timestamp: BigInt!
-    initializeEvent: InitializeEvent! @derivedFrom(field: "transaction")
-    createCampaignEvent: CreateCampaignEvent! @derivedFrom(field: "transaction")
-    distributeRewardEvent: DistributeRewardEvent!
+    initializeEvents: [InitializeEvent!]! @derivedFrom(field: "transaction")
+    createCampaignEvents: [CreateCampaignEvent!]!
+        @derivedFrom(field: "transaction")
+    distributeRewardEvents: [DistributeRewardEvent!]!
         @derivedFrom(field: "transaction")
     claimRewardEvent: ClaimRewardEvent! @derivedFrom(field: "transaction")
     claimFee: ClaimFeeEvent! @derivedFrom(field: "transaction")
@@ -38,9 +39,10 @@ type Metrom @entity {
     claimableFees: [ClaimableFee!]! @derivedFrom(field: "metrom")
     campaigns: [Campaign!]! @derivedFrom(field: "metrom")
 
-    initializeEvent: InitializeEvent! @derivedFrom(field: "metrom")
-    createCampaignEvent: CreateCampaignEvent! @derivedFrom(field: "metrom")
-    distributeRewardEvent: DistributeRewardEvent! @derivedFrom(field: "metrom")
+    initializeEvents: [InitializeEvent!]! @derivedFrom(field: "metrom")
+    createCampaignEvents: [CreateCampaignEvent!]! @derivedFrom(field: "metrom")
+    distributeRewardEvents: [DistributeRewardEvent!]!
+        @derivedFrom(field: "metrom")
     claimRewardEvent: ClaimRewardEvent! @derivedFrom(field: "metrom")
     claimFee: ClaimFeeEvent! @derivedFrom(field: "metrom")
     transferOwnershipEvents: [TransferOwnershipEvent!]!
