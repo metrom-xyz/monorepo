@@ -8,8 +8,10 @@ import {
     TransferOwnership,
     AcceptOwnership,
     SetUpdater,
-    SetFee,
+    SetGlobalFee,
     SetMinimumCampaignDuration,
+    SetMaximumCampaignDuration,
+    SetSpecificFee,
 } from "../../generated/Metrom/Metrom";
 import {
     AcceptOwnershipEvent,
@@ -21,8 +23,10 @@ import {
     InitializeEvent,
     Metrom,
     Reward,
-    SetFeeEvent,
+    SetGlobalFeeEvent,
+    SetSpecificFeeEvent,
     SetMinimumCampaignDurationEvent,
+    SetMaximumCampaignDurationEvent,
     SetUpdaterEvent,
     TransferOwnershipEvent,
 } from "../../generated/schema";
@@ -37,6 +41,7 @@ import {
     getOrCreateTransaction,
     getRewardId,
     getRewardOrThrow,
+    getOrCreateSpecificFee,
 } from "../commons";
 
 export function handleInitialize(event: Initialize): void {
@@ -52,8 +57,10 @@ export function handleInitialize(event: Initialize): void {
     initializeEvent.metrom = METROM_ADDRESS;
     initializeEvent.owner = event.params.owner;
     initializeEvent.updater = event.params.updater;
-    initializeEvent.fee = event.params.fee;
+    initializeEvent.globalFee = event.params.globalFee;
     initializeEvent.minimumCampaignDuration =
+        event.params.minimumCampaignDuration;
+    initializeEvent.maximumCampaignDuration =
         event.params.minimumCampaignDuration;
     initializeEvent.save();
 
@@ -62,14 +69,18 @@ export function handleInitialize(event: Initialize): void {
     metrom.owner = event.params.owner;
     metrom.pendingOwner = Address.zero();
     metrom.updater = event.params.updater;
-    metrom.fee = event.params.fee;
+    metrom.globalFee = event.params.globalFee;
     metrom.minimumCampaignDuration = event.params.minimumCampaignDuration;
+    metrom.maximumCampaignDuration = event.params.maximumCampaignDuration;
     metrom.campaignsAmount = BigInt.zero();
     metrom.save();
 }
 
 export function handleCreateCampaign(event: CreateCampaign): void {
     let metrom = getMetromOrThrow();
+    metrom.campaignsAmount = metrom.campaignsAmount.plus(BigInt.fromI32(1));
+    metrom.save();
+
     let transaction = getOrCreateTransaction(event);
 
     let campaign = new Campaign(event.params.id);
@@ -205,23 +216,37 @@ export function handleSetUpdater(event: SetUpdater): void {
     setUpdaterEvent.save();
 }
 
-export function handleSetFee(event: SetFee): void {
+export function handleSetGlobalFee(event: SetGlobalFee): void {
     let metrom = getMetromOrThrow();
-    metrom.fee = event.params.fee;
+    metrom.globalFee = event.params.globalFee;
     metrom.save();
 
-    let setFeeEvent = new SetFeeEvent(getEventId(event));
-    setFeeEvent.transaction = getOrCreateTransaction(event).id;
-    setFeeEvent.metrom = metrom.id;
-    setFeeEvent.fee = event.params.fee;
-    setFeeEvent.save();
+    let setGlobalFeeEvent = new SetGlobalFeeEvent(getEventId(event));
+    setGlobalFeeEvent.transaction = getOrCreateTransaction(event).id;
+    setGlobalFeeEvent.metrom = metrom.id;
+    setGlobalFeeEvent.globalFee = event.params.globalFee;
+    setGlobalFeeEvent.save();
+}
+
+export function handleSetSpecificFee(event: SetSpecificFee): void {
+    let specificFee = getOrCreateSpecificFee(event.params.account);
+    specificFee.fee = event.params.specificFee;
+    specificFee.none = event.params.specificFee == BigInt.zero();
+    specificFee.save();
+
+    let setSpecificFeeEvent = new SetSpecificFeeEvent(getEventId(event));
+    setSpecificFeeEvent.transaction = getOrCreateTransaction(event).id;
+    setSpecificFeeEvent.metrom = METROM_ADDRESS;
+    setSpecificFeeEvent.address = event.params.account;
+    setSpecificFeeEvent.specificFee = event.params.specificFee;
+    setSpecificFeeEvent.save();
 }
 
 export function handleSetMinimumCampaignDuration(
     event: SetMinimumCampaignDuration,
 ): void {
     let metrom = getMetromOrThrow();
-    metrom.minimumCampaignDuration = event.params.minimumDuration;
+    metrom.minimumCampaignDuration = event.params.minimumCampaignDuration;
     metrom.save();
 
     let setMinimumCampaignDuration = new SetMinimumCampaignDurationEvent(
@@ -230,6 +255,23 @@ export function handleSetMinimumCampaignDuration(
     setMinimumCampaignDuration.transaction = getOrCreateTransaction(event).id;
     setMinimumCampaignDuration.metrom = metrom.id;
     setMinimumCampaignDuration.minimumCampaignDuration =
-        event.params.minimumDuration;
+        event.params.minimumCampaignDuration;
     setMinimumCampaignDuration.save();
+}
+
+export function handleSetMaximumCampaignDuration(
+    event: SetMaximumCampaignDuration,
+): void {
+    let metrom = getMetromOrThrow();
+    metrom.maximumCampaignDuration = event.params.maximumCampaignDuration;
+    metrom.save();
+
+    let setMaximumCampaignDuration = new SetMaximumCampaignDurationEvent(
+        getEventId(event),
+    );
+    setMaximumCampaignDuration.transaction = getOrCreateTransaction(event).id;
+    setMaximumCampaignDuration.metrom = metrom.id;
+    setMaximumCampaignDuration.maximumCampaignDuration =
+        event.params.maximumCampaignDuration;
+    setMaximumCampaignDuration.save();
 }

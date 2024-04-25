@@ -6,6 +6,7 @@ import { exec } from "node:child_process";
 
 const NETWORK_NAME: Record<SupportedChain, string> = {
     [SupportedChain.CeloAlfajores]: "celo-alfajores",
+    [SupportedChain.Sepolia]: "sepolia",
 };
 
 const [, , rawNetwork = ""] = process.argv;
