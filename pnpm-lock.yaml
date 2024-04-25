@@ -121,6 +121,9 @@ importers:
 
   packages/frontend:
     dependencies:
+      '@floating-ui/vue':
+        specifier: ^1.0.6
+        version: 1.0.6(vue@3.4.21)
       '@fontsource/inter':
         specifier: ^5.0.17
         version: 5.0.17
@@ -3119,6 +3122,34 @@ packages:
       js-yaml: 4.1.0
     dev: false
 
+  /@floating-ui/core@1.6.0:
+    resolution: {integrity: sha512-PcF++MykgmTj3CIyOQbKA/hDzOAiqI3mhuoN44WRCopIs1sgoDoU4oty4Jtqaj/y3oDU6fnVSm4QG0a3t5i0+g==}
+    dependencies:
+      '@floating-ui/utils': 0.2.1
+    dev: false
+
+  /@floating-ui/dom@1.6.3:
+    resolution: {integrity: sha512-RnDthu3mzPlQ31Ss/BTwQ1zjzIhr3lk1gZB1OC56h/1vEtaXkESrOqL5fQVMfXpwGtRwX+YsZBdyHtJMQnkArw==}
+    dependencies:
+      '@floating-ui/core': 1.6.0
+      '@floating-ui/utils': 0.2.1
+    dev: false
+
+  /@floating-ui/utils@0.2.1:
+    resolution: {integrity: sha512-9TANp6GPoMtYzQdt54kfAyMmz1+osLlXdg2ENroU7zzrtflTLrrC/lgrIfaSe+Wu0b89GKccT7vxXA0MoAIO+Q==}
+    dev: false
+
+  /@floating-ui/vue@1.0.6(vue@3.4.21):
+    resolution: {integrity: sha512-EdrOljjkpkkqZnrpqUcPoz9NvHxuTjUtSInh6GMv3+Mcy+giY2cE2pHh9rpacRcZ2eMSCxel9jWkWXTjLmY55w==}
+    dependencies:
+      '@floating-ui/dom': 1.6.3
+      '@floating-ui/utils': 0.2.1
+      vue-demi: 0.14.7(vue@3.4.21)
+    transitivePeerDependencies:
+      - '@vue/composition-api'
+      - vue
+    dev: false
+
   /@fontsource/inter@5.0.17:
     resolution: {integrity: sha512-2meBGx1kt7u5LwzGc5Sz5rka6ZDrydg6nT3x6Wkt310vHXUchIywrO8pooWMzZdHYcyFY/cv4lEpJZgMD94bCg==}
     dev: false
@@ -3929,6 +3960,45 @@ packages:
       - typescript
     dev: false
 
+  /@oclif/core@2.15.0(@types/node@20.12.7)(typescript@5.4.5):
+    resolution: {integrity: sha512-fNEMG5DzJHhYmI3MgpByTvltBOMyFcnRIUMxbiz2ai8rhaYgaTHMG3Q38HcosfIvtw9nCjxpcQtC8MN8QtVCcA==}
+    engines: {node: '>=14.0.0'}
+    dependencies:
+      '@types/cli-progress': 3.11.5
+      ansi-escapes: 4.3.2
+      ansi-styles: 4.3.0
+      cardinal: 2.1.1
+      chalk: 4.1.2
+      clean-stack: 3.0.1
+      cli-progress: 3.12.0
+      debug: 4.3.4(supports-color@8.1.1)
+      ejs: 3.1.9
+      get-package-type: 0.1.0
+      globby: 11.1.0
+      hyperlinker: 1.0.0
+      indent-string: 4.0.0
+      is-wsl: 2.2.0
+      js-yaml: 3.14.1
+      natural-orderby: 2.0.3
+      object-treeify: 1.1.33
+      password-prompt: 1.1.3
+      slice-ansi: 4.0.0
+      string-width: 4.2.3
+      strip-ansi: 6.0.1
+      supports-color: 8.1.1
+      supports-hyperlinks: 2.3.0
+      ts-node: 10.9.2(@types/node@20.12.7)(typescript@5.4.5)
+      tslib: 2.6.2
+      widest-line: 3.1.0
+      wordwrap: 1.0.0
+      wrap-ansi: 7.0.0
+    transitivePeerDependencies:
+      - '@swc/core'
+      - '@swc/wasm'
+      - '@types/node'
+      - typescript
+    dev: false
+
   /@oclif/core@2.16.0(@types/node@20.11.24)(typescript@5.4.5):
     resolution: {integrity: sha512-dL6atBH0zCZl1A1IXCKJgLPrM/wR7K+Wi401E/IvqsK8m2iCHW+0TEOGrans/cuN3oTW+uxIyJFHJ8Im0k4qBw==}
     engines: {node: '>=14.0.0'}
@@ -4243,7 +4313,7 @@ packages:
     resolution: {integrity: sha512-nIyaR4y692frwh7wIHZ3fb+2L6XEecQwRDIb4zbEam0TvaVmBQWZoColQyWA84ljFBPZ8XWiQyTz+ixSwdRkqg==}
     engines: {node: '>=12.0.0'}
     dependencies:
-      '@oclif/core': 2.16.0(@types/node@20.12.7)(typescript@5.4.5)
+      '@oclif/core': 2.15.0(@types/node@20.12.7)(typescript@5.4.5)
       chalk: 4.1.2
       fast-levenshtein: 3.0.0
     transitivePeerDependencies:

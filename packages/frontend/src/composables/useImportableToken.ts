@@ -36,7 +36,6 @@ export const useImportableToken = (
     watchEffect(async () => {
         const newParams = toValue(params);
 
-        console.log("new params", newParams);
         if (
             !newParams ||
             !newParams.debouncedQuery ||
@@ -88,7 +87,6 @@ export const useImportableToken = (
                 token.value.balance = rawImportableTokenBalance.value;
             }
         } catch (thrown) {
-            console.error("thrown", thrown);
             error.value = thrown as Error;
         } finally {
             loading.value = false;

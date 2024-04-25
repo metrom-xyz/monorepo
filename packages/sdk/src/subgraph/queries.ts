@@ -74,3 +74,91 @@ export const GetPairs = `
         }
     }
 `;
+
+export type GetPairQueryResult = {
+    pool: {
+        address: Address;
+        token0: {
+            address: Address;
+            name: string;
+            symbol: string;
+            decimals: string;
+        };
+        token1: {
+            address: Address;
+            name: string;
+            symbol: string;
+            decimals: string;
+        };
+    } | null;
+};
+
+export const GetPair = `
+    query getPool($id: String!) {
+        pool(id: $id) {
+            address: id
+            token0 {
+                address: id
+                name
+                symbol
+                decimals
+            }
+            token1 {
+                address: id
+                name
+                symbol
+                decimals
+            }
+        }
+    }
+`;
+
+export type GetCampaignsQueryResult = {
+    campaigns: {
+        id: Address;
+        chainId: bigint;
+        pool: Address;
+        from: bigint;
+        to: bigint;
+        specification: string;
+        data: string;
+        root: string;
+        rewards: {
+            id: Address;
+            token: {
+                address: Address;
+                name: string;
+                symbol: string;
+                decimals: string;
+            };
+            amount: bigint;
+            unclaimed: bigint;
+        }[];
+    }[];
+};
+
+export const GetCampaigns = `
+    query getCampaigns($limit: Int!, $lastId: String!) {
+        campaigns(first: $limit, where: { id_gt: $lastId }) {
+            id
+            chainId
+            pool
+            from
+            to
+            specification
+            data
+            root
+            rewards {
+                id
+                token {
+                    address: id
+                    symbol
+                    name
+                    decimals
+                }
+                amount
+                unclaimed
+            }
+        }
+    }
+`;

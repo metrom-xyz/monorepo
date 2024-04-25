@@ -5,7 +5,7 @@ import type { BaseInputWrapperProps } from "./commons/types";
 import { useIMask } from "vue-imask";
 
 defineProps<BaseInputWrapperProps>();
-const model = defineModel<number>();
+const model = defineModel<number | string>();
 
 const { el, masked, typed } = useIMask({
     mask: Number,
