@@ -71,4 +71,18 @@ const inputValue = computed(() => {
 .mui_pair_select__icon {
     @apply w-12;
 }
+
+.mui_pair_select__root
+    > .mui_base_input_wrapper__root
+    > .mui_base_input_wrapper__container__left_icon
+    > input {
+    @apply pl-[80px];
+}
+
+.mui_pair_select__root
+    > .mui_base_input_wrapper__root
+    > .mui_base_input_wrapper__container__left_icon
+    > .mui_base_input_wrapper__icon__left {
+    @apply left-4;
+}
 </style>

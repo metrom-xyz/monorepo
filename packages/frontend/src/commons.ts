@@ -1,7 +1,7 @@
-import { SupportedChain, AmmSubgraphClient } from "sdk";
+import { SupportedChain, AmmSubgraphClient, MetromSubgraphClient } from "sdk";
 import { type Transport, http, type Chain } from "viem";
 import { celoAlfajores } from "viem/chains";
-import type { ChainData } from "./types";
+import type { Amm, ChainData } from "./types";
 import MuiCeloIcon from "./icons/CeloIcon.vue";
 import MuiUniswapLogoIcon from "./icons/UniswapLogoIcon.vue";
 import { ADDRESSES } from "@metrom-xyz/contracts";
@@ -21,6 +21,22 @@ export const SUPPORTED_CHAIN_TRANSPORT: Record<number, Transport> = {
     [celoAlfajores.id]: http(),
 };
 
+const AMMS: Record<SupportedChain, Amm[]> = {
+    [SupportedChain.CeloAlfajores]: [
+        {
+            slug: "uni-v3",
+            logo: markRaw(MuiUniswapLogoIcon),
+            name: "Uniswap v3",
+            addLiquidityUrl: "https://app.uniswap.org/add/{target_pair}",
+            subgraphClient: new AmmSubgraphClient(
+                SupportedChain.CeloAlfajores,
+                "uni-v3",
+                "https://api.studio.thegraph.com/query/68570/metrom-uni-v3-celo-alfajores/version/latest",
+            ),
+        },
+    ],
+};
+
 export const CHAIN_DATA: Record<SupportedChain, ChainData> = {
     [SupportedChain.CeloAlfajores]: {
         icon: {
@@ -30,16 +46,11 @@ export const CHAIN_DATA: Record<SupportedChain, ChainData> = {
         contracts: {
             factory: ADDRESSES[SupportedChain.CeloAlfajores].factory,
         },
-        amms: [
-            {
-                slug: "uni-v3",
-                logo: markRaw(MuiUniswapLogoIcon),
-                name: "Uniswap v3",
-                subgraphClient: new AmmSubgraphClient(
-                    SupportedChain.CeloAlfajores,
-                    "https://api.studio.thegraph.com/query/68570/metrom-uni-v3-celo-alfajores/version/latest",
-                ),
-            },
-        ],
+        metromSubgraphClient: new MetromSubgraphClient(
+            SupportedChain.CeloAlfajores,
+            "https://api.studio.thegraph.com/query/68570/metrom-celo-alfajores/version/latest",
+            AMMS[SupportedChain.CeloAlfajores].map((amm) => amm.subgraphClient),
+        ),
+        amms: AMMS[SupportedChain.CeloAlfajores],
     },
 };

@@ -66,6 +66,33 @@ export const messages = {
                 launch: "Launch campaign",
             },
         },
+        allCampaigns: {
+            table: {
+                filters: {
+                    pairs: "Search for pairs",
+                },
+                header: {
+                    network: "Network",
+                    pair: "Pair",
+                    apr: "Apr",
+                    tvl: "Tvl",
+                    status: "Status",
+                    rewards: "Rewards",
+                    amm: "Deposit",
+                    links: "Links",
+                },
+                status: {
+                    live: "Live",
+                    expired: "Expired",
+                    soon: "Soon",
+                },
+                rewards: {
+                    amount: "Amount",
+                    unclaimed: "Unclaimed",
+                },
+                empty: "Nothing here.",
+            },
+        },
         carrot: "Carrot",
         powered: "Powered by {0}",
         ui: {
