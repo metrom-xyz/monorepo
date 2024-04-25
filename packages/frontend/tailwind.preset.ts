@@ -73,13 +73,15 @@ export default {
         colors: {
             green: "#6CFF95",
             yellow: "#FFD60A",
-            "green-dark": "#359650",
-            "green-light": "#E4F7EA",
             transparent: "transparent",
             current: "currentColor",
             white: "#ffffff",
             black: "#000000",
             blue: "#007AFF",
+            "red-light": "#FF6482",
+            "blue-light": "#70D7FF",
+            "green-dark": "#359650",
+            "green-light": "#E4F7EA",
             gray: {
                 700: "#5F5E5E",
                 600: "#656363",
@@ -167,6 +169,9 @@ export default {
                 dots:
                     "radial-gradient(circle, rgba(0, 0, 0, 0.08) 1.8px, transparent 1px), " +
                     "radial-gradient(circle, rgba(0, 0, 0, 0.08) 1.8px, transparent 1px)",
+            },
+            gridTemplateColumns: {
+                campaignsTable: "0.5fr 5fr 1fr 1fr 1fr 1.5fr 1fr 1fr",
             },
         },
     },

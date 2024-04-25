@@ -135,7 +135,7 @@ const attrs = useAttrs();
 }
 
 .mui_base_input_wrapper__container__left_icon > input {
-    @apply pl-[80px];
+    @apply pl-14;
 }
 
 .mui_base_input_wrapper__container__error > input {
@@ -155,7 +155,7 @@ const attrs = useAttrs();
 }
 
 .mui_base_input_wrapper__icon__left {
-    @apply left-4;
+    @apply left-1.5;
 }
 
 .mui_base_input_wrapper__icon__right {

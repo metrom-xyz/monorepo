@@ -29,3 +29,24 @@ export interface Pair {
     token0: Erc20Token;
     token1: Erc20Token;
 }
+
+export interface Reward {
+    id: Address;
+    token: Erc20Token;
+    amount: bigint;
+    unclaimed: bigint;
+}
+
+export interface Campaign {
+    id: Address;
+    amm: string;
+    chainId: number;
+    pairChainId: number;
+    pair: Pair;
+    from: bigint;
+    to: bigint;
+    specification: string;
+    root: string;
+    data: string;
+    rewards: Reward[];
+}

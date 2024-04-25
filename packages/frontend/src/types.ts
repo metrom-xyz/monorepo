@@ -1,6 +1,6 @@
 import type { ChainContract } from "viem";
 import type { Component } from "vue";
-import type { AmmSubgraphClient } from "sdk";
+import type { AmmSubgraphClient, MetromSubgraphClient } from "sdk";
 
 export interface ChainIconData {
     logo: Component;
@@ -10,6 +10,7 @@ export interface ChainIconData {
 export interface Amm {
     slug: string;
     name: string;
+    addLiquidityUrl: string;
     logo: Component;
     subgraphClient: AmmSubgraphClient;
 }
@@ -19,5 +20,6 @@ export interface ChainData {
     contracts: {
         factory: ChainContract;
     };
+    metromSubgraphClient: MetromSubgraphClient;
     amms: Amm[];
 }
