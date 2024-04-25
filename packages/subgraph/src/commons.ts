@@ -6,6 +6,7 @@ import {
     Reward,
     Token,
     Transaction,
+    SpecificFee,
 } from "../generated/schema";
 import { METROM_ADDRESS } from "./addresses";
 import { Erc20 } from "../generated/Metrom/Erc20";
@@ -41,6 +42,19 @@ export function getRewardOrThrow(campaignId: Bytes, token: Bytes): Reward {
     );
 }
 
+export function getOrCreateSpecificFee(account: Address): SpecificFee {
+    let specificFee = SpecificFee.load(account);
+    if (specificFee !== null) return specificFee;
+
+    specificFee = new SpecificFee(account);
+    specificFee.metrom = METROM_ADDRESS;
+    specificFee.address = account;
+    specificFee.fee = BigInt.zero();
+    specificFee.none = false;
+    specificFee.save();
+    return specificFee;
+}
+
 export function getOrCreateClaimableFee(token: Token): ClaimableFee {
     let claimableFee = ClaimableFee.load(token.id);
     if (claimableFee !== null) return claimableFee;
@@ -57,7 +71,9 @@ export function getClaimableFeeOrThrow(token: Token): ClaimableFee {
     let claimableFee = ClaimableFee.load(token.id);
     if (claimableFee != null) return claimableFee;
 
-    throw new Error(`Could not find accrued fee for token ${token.id.toHex()}`);
+    throw new Error(
+        `Could not find claimable fee for token ${token.id.toHex()}`,
+    );
 }
 
 export function getOrCreateTransaction(event: ethereum.Event): Transaction {
