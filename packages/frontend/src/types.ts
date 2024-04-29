@@ -17,9 +17,7 @@ export interface Amm {
 
 export interface ChainData {
     icon: ChainIconData;
-    contracts: {
-        factory: ChainContract;
-    };
+    contract: ChainContract;
     metromSubgraphClient: MetromSubgraphClient;
     amms: Amm[];
 }

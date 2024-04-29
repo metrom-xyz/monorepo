@@ -15,19 +15,27 @@ const emits = defineEmits<{
 const open = ref(false);
 
 const amm = computed(() => {
-    return CHAIN_DATA[props.state.network?.value as SupportedChain].amms.find(
+    return CHAIN_DATA[props.state.network as SupportedChain].amms.find(
         (amm) => amm.slug === props.state.amm?.value,
     );
 });
 
-const { pairs, loading } = usePairs({
-    amm: amm.value,
-});
+// fetches the pairs every time the network or amm changes
+const { pairs, loading } = usePairs(
+    computed(() => ({
+        amm: amm.value,
+    })),
+);
 
 watchEffect(() => {
     if (props.completed || !props.state.pair) return;
     emits("complete");
 });
+
+// if either the selected network or amm changes, the selected pair has to be reset
+// watch([amm], () => {
+//     if (props.state.pair) emits("reset");
+// });
 </script>
 <template>
     <div class="pair_picker__root">
@@ -40,7 +48,10 @@ watchEffect(() => {
             @dismiss="open = false"
             @click="open = true"
             :messages="{
-                inputPlaceholder: $t('campaign.pair.select.placeholder'),
+                inputPlaceholder:
+                    (!loading && !pairs) || pairs?.length === 0
+                        ? $t('campaign.pair.select.placeholderNoPairs')
+                        : $t('campaign.pair.select.placeholder'),
                 search: {
                     inputLabel: $t('campaign.pair.select.search.inputLabel'),
                     inputPlaceholder: $t(

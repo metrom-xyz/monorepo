@@ -1,5 +1,5 @@
 import type { SupportedChain } from "sdk";
 
-export interface CampaignsTableProps {
+export interface AllCampaignsViewProps {
     selectedChain: SupportedChain;
 }

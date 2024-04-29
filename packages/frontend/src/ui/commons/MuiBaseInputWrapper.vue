@@ -109,6 +109,7 @@ const attrs = useAttrs();
         p-4
         font-inter
         font-normal
+        disabled:cursor-not-allowed
         focus:outline-none
         placeholder-gray-600
         border-2
