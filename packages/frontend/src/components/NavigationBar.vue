@@ -36,11 +36,11 @@ import { RouterLink } from "vue-router";
 </template>
 <style>
 .navigation_bar__root {
-    @apply flex bg-gray-100 rounded-[14px] p-1.5 absolute left-1/2 -translate-x-1/2;
+    @apply h-14 flex bg-gray-100 rounded-xxl p-1.5 absolute left-1/2 -translate-x-1/2;
 }
 
 .navigation_bar__link {
-    @apply flex gap-2 bg-transparent rounded-xl py-3.5 px-3;
+    @apply h-full w-fit flex items-center gap-2 bg-transparent rounded-xxl px-3;
 }
 
 .navigation_bar__link__active {
