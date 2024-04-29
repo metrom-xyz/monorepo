@@ -11,20 +11,20 @@
         "format": "eslint --fix --ext .ts,.js ./ && prettier --write './**/*.{json,md}'"
     },
     "dependencies": {
-        "@metrom-xyz/contracts": "^0.4.0",
+        "@metrom-xyz/contracts": "^0.5.9",
         "tiny-invariant": "^1.3.3",
-        "viem": "^2.7.1"
+        "viem": "^2.9.26"
     },
     "devDependencies": {
-        "@tsconfig/node20": "^20.1.2",
+        "@tsconfig/node20": "^20.1.4",
         "@types/node": "^20.12.7",
-        "eslint": "^9.0.0",
+        "eslint": "^9.1.1",
         "eslint-config-custom": "*",
         "eslint-plugin-prettier": "^5.1.3",
         "eslint-plugin-react": "^7.33.2",
         "prettier": "^3.2.4",
         "rimraf": "^5.0.5",
-        "typescript": "^5.3.3",
-        "vite": "^5.1.5"
+        "typescript": "^5.4.0",
+        "vite": "^5.2.10"
     }
 }

@@ -4,17 +4,19 @@ import { useCampaigns } from "@/composables/useCampaigns";
 import SearchIcon from "@/icons/SearchIcon.vue";
 import MuiTextInput from "@/ui/MuiTextInput.vue";
 import MuiPairRemoteLogo from "@/ui/pair-remote-logo/MuiPairRemoteLogo.vue";
-import MuiRemoteLogo from "@/ui/remote-logo/MuiRemoteLogo.vue";
 import MuiTypography from "@/ui/typography/MuiTypography.vue";
 import { filterCampaigns } from "@/ui/utils/campaigns";
 import { useVirtualList, watchDebounced } from "@vueuse/core";
-import { SupportedChain, type Campaign } from "sdk";
+import { type Campaign } from "sdk";
 import { computed } from "vue";
 import CampaignsTableStatus from "./status/CampaignsTableStatus.vue";
 import CampaignsTableDeposit from "./deposit/CampaignsTableDeposit.vue";
 import { ref } from "vue";
 import MuiSkeleton from "@/ui/skeleton/MuiSkeleton.vue";
 import CampaignsTableRewards from "./rewards/CampaignsTableRewards.vue";
+import { useRoute } from "vue-router";
+import { watch } from "vue";
+import type { CampaignsTableProps } from "./types";
 
 const HEADERS = [
     "allCampaigns.table.header.network",
@@ -27,9 +29,21 @@ const HEADERS = [
     "allCampaigns.table.header.links",
 ];
 
+const props = defineProps<CampaignsTableProps>();
+
+const route = useRoute();
+
+const selectedChainId = ref();
 const searchQuery = ref("");
 const debouncedQuery = ref("");
 
+watch(
+    () => route.query,
+    (chainId) => {
+        selectedChainId.value = chainId;
+    },
+    { immediate: true },
+);
 watchDebounced(
     searchQuery,
     () => {
@@ -38,11 +52,11 @@ watchDebounced(
     { debounce: 300 },
 );
 
-// TODO: fetch the campaigns for the current selected network
-// TODO: implement network selector (with a default)
-const { campaigns, loading: loadingCampaigns } = useCampaigns({
-    client: CHAIN_DATA[SupportedChain.CeloAlfajores].metromSubgraphClient,
-});
+const { campaigns, loading: loadingCampaigns } = useCampaigns(
+    computed(() => ({
+        client: CHAIN_DATA[props.selectedChain].metromSubgraphClient,
+    })),
+);
 
 const items = computed<Campaign[]>(() => {
     if (!campaigns.value) return [];

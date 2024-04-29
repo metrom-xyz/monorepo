@@ -15,11 +15,13 @@ import PairPicker from "./pair/PairPicker.vue";
 import AmmPicker from "./amm/AmmPicker.vue";
 import type { CampaignCreationFormProps } from "./types";
 import { computed, ref } from "vue";
+import { watch } from "vue";
 
-defineProps<CampaignCreationFormProps>();
+const props = defineProps<CampaignCreationFormProps>();
 const emits = defineEmits<{
     addReward: [];
     removeReward: [index: number];
+    reset: [];
 }>();
 
 const stepCursor = ref(1);
@@ -37,6 +39,28 @@ const formError = computed(
 function handleStepOnComplete() {
     stepCursor.value++;
 }
+
+// reset the whole state when the selected network changes
+watch(
+    () => props.state.network,
+    (network, oldNetwork) => {
+        if (network !== oldNetwork) {
+            stepCursor.value = 1;
+            emits("reset");
+        }
+    },
+);
+
+// reset the whole state when the selected amm changes
+watch(
+    () => props.state.amm,
+    (amm, oldAmm) => {
+        if (!!oldAmm && amm !== oldAmm) {
+            stepCursor.value = 1;
+            emits("reset");
+        }
+    },
+);
 </script>
 <template>
     <div class="campaign_creation_form__root">
@@ -56,14 +80,12 @@ function handleStepOnComplete() {
                         </MuiTypography>
                     </template>
                     <template #content>
-                        <div class="mui_step__content">
-                            <AmmPicker
-                                :state="$props.state"
-                                :completed="stepCursor > 1"
-                                @complete="handleStepOnComplete"
-                                @error="ammStepError = $event"
-                            />
-                        </div>
+                        <AmmPicker
+                            :state="$props.state"
+                            :completed="stepCursor > 1"
+                            @complete="handleStepOnComplete"
+                            @error="ammStepError = $event"
+                        />
                     </template>
                 </MuiCard>
             </MuiStep>

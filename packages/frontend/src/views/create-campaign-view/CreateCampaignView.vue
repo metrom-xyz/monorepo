@@ -1,13 +1,17 @@
 <script setup lang="ts">
 import MuiTypography from "@/ui/typography/MuiTypography.vue";
 import { ref } from "vue";
-import type { CampaignState } from "./types";
+import type { CampaignState, CreateCampaignViewProps } from "./types";
 import CampaignCreationForm from "@/components/campaign-creation-form/CampaignCreationForm.vue";
 import CampaignSummary from "@/components/campaign-summary/CampaignSummary.vue";
 import { v4 } from "uuid";
+import { watchEffect } from "vue";
+
+const props = defineProps<CreateCampaignViewProps>();
 
 const preview = ref(false);
 const campaignState = ref<CampaignState>({
+    network: props.selectedChain,
     rewards: [{ id: v4() }],
 });
 
@@ -29,6 +33,15 @@ function handlePreviewOnClick() {
         ),
     };
 }
+
+function handleStateReset() {
+    campaignState.value = {
+        network: props.selectedChain,
+        rewards: [{ id: v4() }],
+    };
+}
+
+watchEffect(() => [(campaignState.value.network = props.selectedChain)]);
 </script>
 <template>
     <div class="create_campaign__root">
@@ -39,12 +52,12 @@ function handlePreviewOnClick() {
             <CampaignSummary :state="campaignState" />
         </div>
         <div v-else class="create_campaign__form__container">
-            <MuiTypography h3>{{ $t("campaign.create.title") }}</MuiTypography>
             <CampaignCreationForm
                 :state="campaignState"
                 :onPreviewClick="handlePreviewOnClick"
                 @addReward="campaignState.rewards.push({ id: v4() })"
                 @removeReward="handleRewardOnRemove"
+                @reset="handleStateReset"
             />
         </div>
     </div>

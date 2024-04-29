@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import DocumentIcon from "@/icons/DocumentIcon.vue";
 import FolderIcon from "@/icons/FolderIcon.vue";
+import MuiTypography from "@/ui/typography/MuiTypography.vue";
 import { RouterLink } from "vue-router";
 </script>
 <template>
@@ -13,7 +14,9 @@ import { RouterLink } from "vue-router";
                 }"
             >
                 <FolderIcon />
-                {{ $t("navigation.campaigns.all") }}
+                <MuiTypography lg>
+                    {{ $t("navigation.campaigns.all") }}
+                </MuiTypography>
             </div>
         </RouterLink>
         <RouterLink to="/create">
@@ -24,7 +27,9 @@ import { RouterLink } from "vue-router";
                 }"
             >
                 <DocumentIcon />
-                {{ $t("navigation.campaigns.create") }}
+                <MuiTypography lg>
+                    {{ $t("navigation.campaigns.create") }}
+                </MuiTypography>
             </div>
         </RouterLink>
     </nav>
