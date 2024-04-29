@@ -4,7 +4,7 @@ import type { Dayjs } from "dayjs";
 import type { Pair } from "sdk";
 
 export interface CampaignState {
-    network?: AccordionSelectOption<number>;
+    network: number;
     amm?: AccordionSelectOption<string>;
     pair?: Pair;
     rewards: Reward[];
@@ -25,4 +25,8 @@ export interface Range {
 export interface CampaignStepProps {
     state: CampaignState;
     completed?: boolean;
+}
+
+export interface CreateCampaignViewProps {
+    selectedChain: number;
 }

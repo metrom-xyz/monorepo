@@ -3,13 +3,20 @@ export const messages = {
         navigation: {
             campaigns: {
                 all: "All Campaigns",
-                create: "Create new campaign",
+                create: "New campaign",
+            },
+        },
+        account: {
+            connect: "Connect",
+        },
+        chain: {
+            unsupported: {
+                title: "Unsupported network",
+                content:
+                    "Your connected network is unsupported. Switch to a supported network from your wallet.",
             },
         },
         campaign: {
-            create: {
-                title: "New farming campaign",
-            },
             summary: {
                 title: "Campaign summary",
                 pair: "Pair",
@@ -28,6 +35,7 @@ export const messages = {
                 title: "Pick a pair",
                 select: {
                     placeholder: "Select pair",
+                    placeholderNoPairs: "No pairs found for the selected DEX",
                     search: {
                         inputLabel: "Select pair",
                         inputPlaceholder: "Search for token address, pair etc",

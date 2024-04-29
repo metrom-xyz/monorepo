@@ -6,7 +6,7 @@ import type { AccordionSelectOption } from "@/ui/accordion-select/types";
 import DexIcon from "@/icons/DexIcon.vue";
 import { computed } from "vue";
 import { watchEffect } from "vue";
-import { SUPPORTED_CHAINS, CHAIN_DATA } from "@/commons";
+import { CHAIN_DATA } from "@/commons";
 
 const props = defineProps<AmmPickerTypes>();
 const emits = defineEmits<{
@@ -14,20 +14,10 @@ const emits = defineEmits<{
     error: [boolean];
 }>();
 
-const SUPPORTED_CHAIN_OPTIONS = computed<AccordionSelectOption<number>[]>(
-    () => {
-        return SUPPORTED_CHAINS.map((chain) => ({
-            label: chain.name,
-            value: chain.id,
-            icon: CHAIN_DATA[chain.id].icon.logo,
-        }));
-    },
-);
-
 const SUPPORTED_AMM_OPTIONS = computed<AccordionSelectOption<string>[]>(() => {
     if (!props.state.network) return [];
 
-    return CHAIN_DATA[props.state.network.value].amms.map((amm) => ({
+    return CHAIN_DATA[props.state.network].amms.map((amm) => ({
         label: amm.name,
         value: amm.slug,
         icon: amm.logo,
@@ -46,20 +36,6 @@ watchEffect(() => {
 </script>
 <template>
     <div class="amm_picker__root">
-        <MuiAccordionSelect
-            :label="$t('campaign.amm.network')"
-            :icon="DexIcon"
-            v-model="$props.state.network"
-            :options="SUPPORTED_CHAIN_OPTIONS"
-        >
-            <div class="amm_picker__network_accordion">
-                <div class="amm_picker__network_accordion_icon_wrapper">
-                    <DexIcon class="amm_picker__network_accordion_icon" />
-                </div>
-                <MuiTypography>{{ $t("campaign.amm.network") }}</MuiTypography>
-            </div>
-        </MuiAccordionSelect>
-        <div class="amm_picker__divider"></div>
         <MuiAccordionSelect
             :label="$t('campaign.amm.dex')"
             :icon="DexIcon"

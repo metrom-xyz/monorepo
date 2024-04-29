@@ -106,6 +106,6 @@ function handleAccordionOnToggle(_: MouseEvent, expanded: boolean) {
 }
 
 .mui_accordion_select__options_wrapper {
-    @apply flex flex-col;
+    @apply flex flex-col gap-2;
 }
 </style>

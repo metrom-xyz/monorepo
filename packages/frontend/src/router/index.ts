@@ -2,12 +2,13 @@ import { createRouter, createWebHistory } from "vue-router";
 import AllCampaignsView from "../views/all-campaigns-view/AllCampaignsView.vue";
 
 export const router = createRouter({
-    history: createWebHistory(import.meta.env.BASE_URL),
+    history: createWebHistory(),
     routes: [
         {
             path: "/",
             name: "campaigns",
             component: AllCampaignsView,
+            props: (route) => ({ selectedChain: Number(route.query.chain) }),
         },
         {
             path: "/create",
@@ -17,6 +18,14 @@ export const router = createRouter({
             // which is lazy-loaded when the route is visited.
             component: () =>
                 import("../views/create-campaign-view/CreateCampaignView.vue"),
+            props: (route) => ({ selectedChain: Number(route.query.chain) }),
         },
     ],
+});
+
+// preserve the chain query param
+router.beforeEach((to, from, next) => {
+    if (!Object.keys(to.query).length && !!Object.keys(from).length)
+        next({ name: to.name!, query: from.query });
+    else next();
 });

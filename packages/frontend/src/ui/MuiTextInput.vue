@@ -18,7 +18,6 @@ const optionalModel = props.noModel ? undefined : model;
         class="mui_text_input__wrapper"
         v-bind="$props"
         :id="attrs.id || $.uid.toString()"
-        :action="$slots.action"
     >
         <input
             v-model="optionalModel"
