@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import MuiTypography from "@/ui/typography/MuiTypography.vue";
 import { ref } from "vue";
-import type { CampaignState, CreateCampaignViewProps } from "./types";
+import type { CreateCampaignViewProps } from "./types";
 import CampaignCreationForm from "@/components/campaign-creation-form/CampaignCreationForm.vue";
 import CampaignSummary from "@/components/campaign-summary/CampaignSummary.vue";
 import { v4 } from "uuid";
 import { watchEffect } from "vue";
+import type { CampaignState } from "@/types";
 
 const props = defineProps<CreateCampaignViewProps>();
 
