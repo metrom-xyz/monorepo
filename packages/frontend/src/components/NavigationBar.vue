@@ -14,7 +14,7 @@ import { RouterLink } from "vue-router";
                 }"
             >
                 <FolderIcon />
-                <MuiTypography lg>
+                <MuiTypography>
                     {{ $t("navigation.campaigns.all") }}
                 </MuiTypography>
             </div>
@@ -27,7 +27,7 @@ import { RouterLink } from "vue-router";
                 }"
             >
                 <DocumentIcon />
-                <MuiTypography lg>
+                <MuiTypography>
                     {{ $t("navigation.campaigns.create") }}
                 </MuiTypography>
             </div>

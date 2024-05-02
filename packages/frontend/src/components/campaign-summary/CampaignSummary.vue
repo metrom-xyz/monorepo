@@ -4,7 +4,6 @@ import CampaignSummaryBox from "./box/CampaignSummaryBox.vue";
 import type { CampaignSummaryProps } from "./types";
 import MuiTypography from "@/ui/typography/MuiTypography.vue";
 import MuiRemoteLogo from "@/ui/remote-logo/MuiRemoteLogo.vue";
-import PreviewDeployButton from "../campaign-creation-form/preview-deploy-button/PreviewDeployButton.vue";
 import MuiTextField from "@/ui/text-field/MuiTextField.vue";
 
 defineProps<CampaignSummaryProps>();
@@ -66,10 +65,6 @@ defineProps<CampaignSummaryProps>();
                 </div>
             </CampaignSummaryBox>
         </div>
-        <PreviewDeployButton
-            variant="deploy"
-            class="campaign_summary__deploy__button"
-        />
     </div>
 </template>
 <style>

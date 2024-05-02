@@ -7,8 +7,6 @@ import SendIcon from "@/icons/SendIcon.vue";
 import MuiCard from "@/ui/MuiCard.vue";
 import MuiStepper from "@/ui/stepper/MuiStepper.vue";
 import MuiStep from "@/ui/stepper/step/MuiStep.vue";
-import PreviewDeployButton from "./preview-deploy-button/PreviewDeployButton.vue";
-import DatePicker from "./date/DatePicker.vue";
 import MuiTypography from "@/ui/typography/MuiTypography.vue";
 import RewardsPicker from "./rewards/RewardsPicker.vue";
 import PairPicker from "./pair/PairPicker.vue";
@@ -16,6 +14,8 @@ import AmmPicker from "./amm/AmmPicker.vue";
 import type { CampaignCreationFormProps } from "./types";
 import { computed, ref } from "vue";
 import { watch } from "vue";
+import DeployCampaign from "./deploy/DeployCampaign.vue";
+import DatePicker from "./date/DatePicker.vue";
 
 const props = defineProps<CampaignCreationFormProps>();
 const emits = defineEmits<{
@@ -28,6 +28,7 @@ const stepCursor = ref(1);
 const ammStepError = ref(false);
 const rewardsStepError = ref(false);
 const dateRangeStepError = ref(false);
+const readonly = ref(false);
 
 const formError = computed(
     () =>
@@ -38,6 +39,14 @@ const formError = computed(
 
 function handleStepOnComplete() {
     stepCursor.value++;
+}
+
+function handleCampaignValidated() {
+    readonly.value = true;
+}
+
+function handleCampaignEdited() {
+    readonly.value = false;
 }
 
 // reset the whole state when the selected network changes
@@ -72,8 +81,9 @@ watch(
                 :completed="stepCursor > 1"
                 :error="ammStepError"
                 :icon="DexIcon"
+                :disabled="readonly"
             >
-                <MuiCard>
+                <MuiCard :disabled="readonly">
                     <template #title>
                         <MuiTypography medium lg>
                             {{ $t("campaign.amm.title") }}
@@ -95,8 +105,9 @@ watch(
                 :active="stepCursor === 2"
                 :completed="stepCursor > 2"
                 :icon="PairIcon"
+                :disabled="readonly"
             >
-                <MuiCard>
+                <MuiCard :disabled="readonly">
                     <template #title>
                         <MuiTypography medium lg>
                             {{ $t("campaign.pair.title") }}
@@ -118,8 +129,9 @@ watch(
                 :completed="stepCursor > 3"
                 :error="rewardsStepError"
                 :icon="CupIcon"
+                :disabled="readonly"
             >
-                <MuiCard>
+                <MuiCard :disabled="readonly">
                     <template #title>
                         <MuiTypography medium lg>
                             {{ $t("campaign.rewards.title") }}
@@ -144,8 +156,9 @@ watch(
                 :completed="stepCursor > 4"
                 :error="dateRangeStepError"
                 :icon="CalendarIcon"
+                :disabled="readonly"
             >
-                <MuiCard>
+                <MuiCard :disabled="readonly">
                     <template #title>
                         <MuiTypography medium lg>
                             {{ $t("campaign.range.title") }}
@@ -167,11 +180,14 @@ watch(
                 :active="stepCursor === 5"
                 :completed="stepCursor > 5"
                 :icon="SendIcon"
+                :disabled="readonly"
             >
-                <PreviewDeployButton
-                    variant="preview"
+                <DeployCampaign
+                    :state="$props.state"
                     :disabled="formError"
-                    :onClick="$props.onPreviewClick"
+                    :validated="readonly"
+                    @validated="handleCampaignValidated"
+                    @edited="handleCampaignEdited"
                 />
             </MuiStep>
         </MuiStepper>

@@ -6,6 +6,10 @@ defineSlots<{
 </script>
 <template>
     <div class="mui_card__root">
+        <div
+            class="mui_card__root__disabled__layer"
+            :class="{ mui_card__root__disabled__layer_active: $attrs.disabled }"
+        ></div>
         <div class="mui_card__title">
             <slot name="title"></slot>
         </div>
@@ -17,6 +21,14 @@ defineSlots<{
 <style>
 .mui_card__root {
     @apply bg-white w-full rounded-[30px];
+}
+
+.mui_card__root__disabled__layer {
+    @apply bg-gray-500 opacity-50 z-10 w-full h-full rounded-[30px] absolute hidden;
+}
+
+.mui_card__root__disabled__layer_active {
+    @apply block;
 }
 
 .mui_card__title {

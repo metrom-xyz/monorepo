@@ -6,7 +6,7 @@ defineProps<StepItemProps>();
 </script>
 <template>
     <div class="mui_step__root">
-        <div class="mui_step__stepper">
+        <div v-if="!disabled" class="mui_step__stepper">
             <div
                 class="mui_step__icon__wrapper"
                 :class="{
