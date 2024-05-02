@@ -1,4 +1,4 @@
-import type { CampaignState } from "@/views/create-campaign-view/types";
+import type { CampaignState } from "@/types";
 
 export interface CampaignSummaryProps {
     state: CampaignState;

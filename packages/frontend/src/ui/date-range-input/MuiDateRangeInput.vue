@@ -10,8 +10,8 @@ import type { BaseInputWrapperProps } from "../commons/types";
 import MuiDateRangeInputPicker from "./range-picker/MuiDateRangeInputPicker.vue";
 import MuiButton from "../button/MuiButton.vue";
 import MuiTypography from "../typography/MuiTypography.vue";
-import type { Range } from "@/views/create-campaign-view/types";
 import { watchEffect } from "vue";
+import type { Range } from "@/types";
 
 dayjs.extend(LocalizedFormat);
 

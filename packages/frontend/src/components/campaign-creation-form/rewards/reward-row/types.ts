@@ -1,4 +1,4 @@
-import type { Reward } from "@/views/create-campaign-view/types";
+import type { Reward } from "@/types";
 import type { TokenInfo } from "@uniswap/token-lists";
 
 export interface RewardRowProps {
