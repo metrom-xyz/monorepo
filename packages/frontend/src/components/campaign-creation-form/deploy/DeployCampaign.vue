@@ -44,7 +44,6 @@ function handleConfirmOnClick() {
     if (validRewards.length !== rewards.length) return;
 
     // TODO: add minimun and maximum campaign duration validation
-    // TODO: add edit button that resets validation and enable form edit
 
     validatedState.value = {
         amm,
@@ -65,7 +64,7 @@ function handleEditOnClick() {
 <template>
     <div class="deploy_campaign__root">
         <MuiButton v-if="$props.validated" sm @click="handleEditOnClick">
-            Edit
+            {{ $t("campaign.deploy.edit") }}
         </MuiButton>
         <SubmitButton
             v-if="!$props.validated || !validatedState"
