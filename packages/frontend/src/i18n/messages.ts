@@ -71,6 +71,7 @@ export const messages = {
                 title: "Launch",
                 connectWallet: "Connect wallet to continue",
                 confirm: "Confirm",
+                edit: "Edit campaign",
                 approveReward: "Approve reward: ",
                 launch: "Launch campaign",
             },
