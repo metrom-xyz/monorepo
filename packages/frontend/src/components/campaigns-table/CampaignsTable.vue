@@ -19,11 +19,8 @@ import { watch } from "vue";
 import type { CampaignsTableProps } from "./types";
 
 const HEADERS = [
-    "allCampaigns.table.header.network",
     "allCampaigns.table.header.pair",
     "allCampaigns.table.header.apr",
-    "allCampaigns.table.header.tvl",
-    "allCampaigns.table.header.status",
     "allCampaigns.table.header.rewards",
     "allCampaigns.table.header.amm",
     "allCampaigns.table.header.links",
@@ -100,10 +97,6 @@ const { containerProps, wrapperProps, list } = useVirtualList(items, {
                         class="campaigns_table__grid campaigns_table__content"
                         v-bind="{ ...data }"
                     >
-                        <component
-                            :is="CHAIN_DATA[data.chainId].icon.logo"
-                            class="campaigns_table__chain__row"
-                        ></component>
                         <div class="campaigns_table__pair__row">
                             <MuiPairRemoteLogo
                                 :token0="data.pair.token0"
@@ -118,11 +111,6 @@ const { containerProps, wrapperProps, list } = useVirtualList(items, {
                             </MuiTypography>
                         </div>
                         <MuiTypography></MuiTypography>
-                        <MuiTypography></MuiTypography>
-                        <CampaignsTableStatus
-                            :from="Number(data.from)"
-                            :to="Number(data.to)"
-                        />
                         <CampaignsTableRewards :rewards="data.rewards" />
                         <CampaignsTableDeposit
                             :chainId="data.chainId"
