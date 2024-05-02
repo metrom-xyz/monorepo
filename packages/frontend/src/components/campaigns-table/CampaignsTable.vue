@@ -9,7 +9,6 @@ import { filterCampaigns } from "@/ui/utils/campaigns";
 import { useVirtualList, watchDebounced } from "@vueuse/core";
 import { type Campaign } from "sdk";
 import { computed } from "vue";
-import CampaignsTableStatus from "./status/CampaignsTableStatus.vue";
 import CampaignsTableDeposit from "./deposit/CampaignsTableDeposit.vue";
 import { ref } from "vue";
 import MuiSkeleton from "@/ui/skeleton/MuiSkeleton.vue";
