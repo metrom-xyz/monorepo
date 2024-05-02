@@ -70,7 +70,8 @@ export const messages = {
             deploy: {
                 title: "Launch",
                 connectWallet: "Connect wallet to continue",
-                preview: "See campaign preview",
+                confirm: "Confirm",
+                approveReward: "Approve reward: ",
                 launch: "Launch campaign",
             },
         },
