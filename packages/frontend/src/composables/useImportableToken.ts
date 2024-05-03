@@ -39,7 +39,6 @@ export const useImportableToken = (
         if (
             !newParams ||
             !newParams.debouncedQuery ||
-            !newParams.connectedAccountAddress ||
             !isAddress(newParams.debouncedQuery)
         )
             return;
@@ -78,7 +77,7 @@ export const useImportableToken = (
                 chainId: chainId.value,
             };
 
-            if (newParams.withBalances) {
+            if (newParams.withBalances && newParams.connectedAccountAddress) {
                 const rawImportableTokenBalance = await getBalance(config, {
                     address: newParams.connectedAccountAddress as Address,
                     token: newParams.debouncedQuery as Address,
