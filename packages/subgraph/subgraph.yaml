@@ -6,11 +6,11 @@ schema:
 dataSources:
   - kind: ethereum
     name: Metrom
-    network: sepolia
+    network: holesky
     source:
       abi: Metrom
-      address: "0x4038F70453Bd0Ef6936163A79B036E393B2ac79f"
-      startBlock: 5773663
+      address: "0x64a0745EF9d3772d9739D9350873eD3703bE45eC"
+      startBlock: 1468875
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
