@@ -1,7 +1,7 @@
 import { SupportedChain, AmmSubgraphClient, MetromSubgraphClient } from "sdk";
 import { type Transport, http, type Chain } from "viem";
 import { celoAlfajores, holesky, sepolia } from "viem/chains";
-import type { Amm, ChainData } from "./types";
+import { SupportedAmm, type Amm, type ChainData } from "./types";
 import MuiCeloIcon from "./icons/CeloIcon.vue";
 import MuiEthIcon from "./icons/EthIcon.vue";
 import MuiUniswapLogoIcon from "./icons/UniswapLogoIcon.vue";
@@ -31,40 +31,40 @@ export const SUPPORTED_CHAIN_TRANSPORT: Record<number, Transport> = {
 const AMMS: Record<SupportedChain, Amm[]> = {
     [SupportedChain.CeloAlfajores]: [
         {
-            slug: "uni-v3",
+            slug: SupportedAmm.Univ3,
             logo: markRaw(MuiUniswapLogoIcon),
             name: "Uniswap v3",
             addLiquidityUrl: "https://app.uniswap.org/add/{target_pair}",
             subgraphClient: new AmmSubgraphClient(
                 SupportedChain.CeloAlfajores,
-                "uni-v3",
+                SupportedAmm.Univ3,
                 "https://api.studio.thegraph.com/query/68570/metrom-uni-v3-celo-alfajores/version/latest",
             ),
         },
     ],
     [SupportedChain.Sepolia]: [
         {
-            slug: "uni-v3",
+            slug: SupportedAmm.Univ3,
             logo: markRaw(MuiUniswapLogoIcon),
             name: "Uniswap v3",
             addLiquidityUrl: "https://app.uniswap.org/add/{target_pair}",
             subgraphClient: new AmmSubgraphClient(
                 SupportedChain.Sepolia,
-                "uni-v3",
+                SupportedAmm.Univ3,
                 "https://api.studio.thegraph.com/query/68570/metrom-uni-v3-sepolia/version/latest",
             ),
         },
     ],
     [SupportedChain.Holesky]: [
         {
-            slug: "algebra-integral",
+            slug: SupportedAmm.AlgebraIntegral,
             logo: markRaw(MuiAlgebraIntegralIcon),
             name: "Algebra integral",
             addLiquidityUrl:
                 "https://integral.algebra.finance/pool/{target_pair}/new-position",
             subgraphClient: new AmmSubgraphClient(
                 SupportedChain.Holesky,
-                "algebra-integral",
+                SupportedAmm.AlgebraIntegral,
                 "https://api.studio.thegraph.com/query/68570/metrom-test-integral-holesky/version/latest",
             ),
         },
