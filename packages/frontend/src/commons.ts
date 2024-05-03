@@ -1,10 +1,11 @@
 import { SupportedChain, AmmSubgraphClient, MetromSubgraphClient } from "sdk";
 import { type Transport, http, type Chain } from "viem";
-import { celoAlfajores, sepolia } from "viem/chains";
+import { celoAlfajores, holesky, sepolia } from "viem/chains";
 import type { Amm, ChainData } from "./types";
 import MuiCeloIcon from "./icons/CeloIcon.vue";
-import MuiSepoliaIcon from "./icons/SepoliaIcon.vue";
+import MuiEthIcon from "./icons/EthIcon.vue";
 import MuiUniswapLogoIcon from "./icons/UniswapLogoIcon.vue";
+import MuiAlgebraIntegralIcon from "./icons/AlgebraIntegralIcon.vue";
 import { ADDRESS } from "@metrom-xyz/contracts";
 import { markRaw } from "vue";
 
@@ -15,11 +16,16 @@ export const TOKEN_LISTS = [
     "https://celo-org.github.io/celo-token-list/celo.tokenlist.json",
 ];
 
-export const SUPPORTED_CHAINS: [Chain, ...Chain[]] = [celoAlfajores, sepolia];
+export const SUPPORTED_CHAINS: [Chain, ...Chain[]] = [
+    celoAlfajores,
+    sepolia,
+    holesky,
+];
 
 export const SUPPORTED_CHAIN_TRANSPORT: Record<number, Transport> = {
     [celoAlfajores.id]: http(),
     [sepolia.id]: http(),
+    [holesky.id]: http(),
 };
 
 const AMMS: Record<SupportedChain, Amm[]> = {
@@ -49,6 +55,20 @@ const AMMS: Record<SupportedChain, Amm[]> = {
             ),
         },
     ],
+    [SupportedChain.Holesky]: [
+        {
+            slug: "algebra-integral",
+            logo: markRaw(MuiAlgebraIntegralIcon),
+            name: "Algebra integral",
+            addLiquidityUrl:
+                "https://integral.algebra.finance/pool/{target_pair}/new-position",
+            subgraphClient: new AmmSubgraphClient(
+                SupportedChain.Holesky,
+                "algebra-integral",
+                "https://api.studio.thegraph.com/query/68570/metrom-test-integral-holesky/version/latest",
+            ),
+        },
+    ],
 };
 
 export const CHAIN_DATA: Record<SupportedChain, ChainData> = {
@@ -67,7 +87,7 @@ export const CHAIN_DATA: Record<SupportedChain, ChainData> = {
     },
     [SupportedChain.Sepolia]: {
         icon: {
-            logo: markRaw(MuiSepoliaIcon),
+            logo: markRaw(MuiEthIcon),
             backgroundColor: "#000",
         },
         contract: ADDRESS[SupportedChain.Sepolia],
@@ -77,5 +97,18 @@ export const CHAIN_DATA: Record<SupportedChain, ChainData> = {
             AMMS[SupportedChain.Sepolia].map((amm) => amm.subgraphClient),
         ),
         amms: AMMS[SupportedChain.Sepolia],
+    },
+    [SupportedChain.Holesky]: {
+        icon: {
+            logo: markRaw(MuiEthIcon),
+            backgroundColor: "#000",
+        },
+        contract: ADDRESS[SupportedChain.Holesky],
+        metromSubgraphClient: new MetromSubgraphClient(
+            SupportedChain.Holesky,
+            "https://api.studio.thegraph.com/query/68570/metrom-holesky/version/latest",
+            AMMS[SupportedChain.Holesky].map((amm) => amm.subgraphClient),
+        ),
+        amms: AMMS[SupportedChain.Holesky],
     },
 };
