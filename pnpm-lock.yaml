@@ -402,14 +402,14 @@ importers:
   packages/subgraph:
     dependencies:
       '@graphprotocol/graph-cli':
-        specifier: 0.71.0
-        version: 0.71.0(@types/node@20.12.7)(node-fetch@3.3.2)(typescript@5.4.5)
+        specifier: 0.71.1
+        version: 0.71.1(@types/node@20.12.7)(node-fetch@3.3.2)(typescript@5.4.5)
       '@graphprotocol/graph-ts':
         specifier: 0.35.1
         version: 0.35.1
     devDependencies:
       '@metrom-xyz/contracts':
-        specifier: ^0.5.9
+        specifier: ^0.5.10
         version: 0.5.10(typescript@5.4.5)
       '@types/node':
         specifier: ^20.12.7
@@ -3239,8 +3239,8 @@ packages:
       - utf-8-validate
     dev: false
 
-  /@graphprotocol/graph-cli@0.71.0(@types/node@20.12.7)(node-fetch@3.3.2)(typescript@5.4.5):
-    resolution: {integrity: sha512-ITcSBHuXPuaoRs7FzNtqD0tCOIy4JGsM3j4IQNA2yZgXgr/TmmHG7KTB/c3B5Zlnsr9foXrU71T6ixGmwJ4PKw==}
+  /@graphprotocol/graph-cli@0.71.1(@types/node@20.12.7)(node-fetch@3.3.2)(typescript@5.4.5):
+    resolution: {integrity: sha512-1QctcyrVGGiJMp+5znt92tU1N+EZMP/i8XLNbCmF9Sts8Coh8JGkzxNq8fhhDqHfdWC6bWrRaNNHK9Zz2rnOrg==}
     engines: {node: '>=18'}
     hasBin: true
     dependencies:
