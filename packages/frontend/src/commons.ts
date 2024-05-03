@@ -5,7 +5,7 @@ import type { Amm, ChainData } from "./types";
 import MuiCeloIcon from "./icons/CeloIcon.vue";
 import MuiEthIcon from "./icons/EthIcon.vue";
 import MuiUniswapLogoIcon from "./icons/UniswapLogoIcon.vue";
-import MuiAlgebraIntegraIcon from "./icons/AlgebraIntegralIcon.vue";
+import MuiAlgebraIntegralIcon from "./icons/AlgebraIntegralIcon.vue";
 import { ADDRESS } from "@metrom-xyz/contracts";
 import { markRaw } from "vue";
 
@@ -58,7 +58,7 @@ const AMMS: Record<SupportedChain, Amm[]> = {
     [SupportedChain.Holesky]: [
         {
             slug: "algebra-integral",
-            logo: markRaw(MuiAlgebraIntegraIcon),
+            logo: markRaw(MuiAlgebraIntegralIcon),
             name: "Algebra integral",
             addLiquidityUrl:
                 "https://integral.algebra.finance/pool/{target_pair}/new-position",
