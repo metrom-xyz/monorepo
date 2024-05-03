@@ -8,6 +8,7 @@
         "build": "pnpm codegen && graph build",
         "deploy:celo-alfajores": "graph codegen && graph deploy --studio --network celo-alfajores metrom-blocks-celo-alfajores",
         "deploy:gnosis": "graph codegen && graph deploy --studio --network gnosis metrom-blocks-gnosis",
+        "deploy:holesky": "graph codegen && graph deploy --studio --network holesky metrom-blocks-holesky",
         "lint": "eslint --ext .js,.ts ./ && prettier --check './**/*.{json,md}'",
         "format": "eslint --fix --ext .js,.ts ./ && prettier --write './**/*.{json,md}'"
     },
