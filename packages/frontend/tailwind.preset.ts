@@ -171,7 +171,7 @@ export default {
                     "radial-gradient(circle, rgba(0, 0, 0, 0.08) 1.8px, transparent 1px)",
             },
             gridTemplateColumns: {
-                campaignsTable: "5fr 1fr 1.5fr 1fr 1fr",
+                campaignsTable: "5fr 1.5fr 1fr 1fr",
             },
         },
     },

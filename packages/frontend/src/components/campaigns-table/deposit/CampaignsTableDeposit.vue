@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { CampaignsTableDepositProps } from "./types";
 import { computed } from "vue";
-import { getAmm, getPoolLink } from "@/utils/amm";
+import { getAmm, getPairAddLiquidityLink } from "@/utils/amm";
 
 const props = defineProps<CampaignsTableDepositProps>();
 
@@ -10,7 +10,7 @@ const amm = computed(() => {
     if (!amm) return null;
 
     return {
-        addLiquidityUrl: getPoolLink(amm, props.pair),
+        addLiquidityUrl: getPairAddLiquidityLink(amm, props.pair),
         logo: amm.logo,
     };
 });

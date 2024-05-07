@@ -7,13 +7,17 @@ import { ref } from "vue";
 import { writeContract } from "@wagmi/core";
 import SubmitButton from "../../submit-button/SubmitButton.vue";
 import SendIcon from "@/icons/SendIcon.vue";
+import { useRouter } from "vue-router";
 
 const props = defineProps<DeployButtonProps>();
+const emits = defineEmits(["deployed"]);
 
 const config = useWagmiConfig();
 const publicClient = usePublicClient();
+const router = useRouter();
 
 const deploying = ref(false);
+const deployed = ref(false);
 
 const { simulation: simulatedCreate, loading: simulatingCreate } =
     useSimulateContract({
@@ -45,6 +49,10 @@ const { simulation: simulatedCreate, loading: simulatingCreate } =
     });
 
 async function handleDeployOnClick() {
+    if (deployed.value) {
+        router.push({ name: "campaigns" });
+        return;
+    }
     if (!publicClient.value || !simulatedCreate.value) return;
 
     try {
@@ -53,6 +61,8 @@ async function handleDeployOnClick() {
         await publicClient.value.waitForTransactionReceipt({
             hash,
         });
+        deployed.value = true;
+        emits("deployed");
     } catch (error) {
         console.warn("could not create campaign", error);
     } finally {
@@ -62,13 +72,17 @@ async function handleDeployOnClick() {
 </script>
 <template>
     <SubmitButton
-        variant="deploy"
+        :variant="deployed ? 'success' : 'base'"
         :disabled="$props.disabled"
         :loading="simulatingCreate || deploying"
         :onClick="handleDeployOnClick"
         :icon="SendIcon"
     >
-        {{ $t("campaign.deploy.launch") }}
+        {{
+            deployed
+                ? $t("campaign.deploy.success")
+                : $t("campaign.deploy.launch")
+        }}
     </SubmitButton>
 </template>
 <style></style>
