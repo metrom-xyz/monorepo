@@ -6,7 +6,7 @@ import { ref } from "vue";
 import dayjs, { Dayjs } from "dayjs";
 import { onMounted } from "vue";
 import { onUnmounted } from "vue";
-import { MIN_CAMPAIGN_HOURS_DURATION } from "@/commons";
+import { useCampaignMinMaxDuration } from "@/composables/useCampaignMinMaxDuration";
 
 const props = defineProps<DatePickerTypes>();
 const emits = defineEmits<{
@@ -17,20 +17,31 @@ const emits = defineEmits<{
 const minDate = ref<Dayjs | undefined>();
 const rangeError = ref(false);
 
-const hoursRange = computed(() =>
-    dayjs(props.state.range?.to).diff(props.state.range?.from, "hours"),
+const { duration: durationLimits, loading: loadingMinMaxDuration } =
+    useCampaignMinMaxDuration();
+
+const campaignDuration = computed(() =>
+    dayjs(props.state.range?.to).diff(props.state.range?.from, "seconds"),
 );
 
 watch(
-    () => [props.state.range?.from, props.state.range?.to, minDate.value],
+    () => [
+        props.state.range?.from,
+        props.state.range?.to,
+        minDate.value,
+        durationLimits.value,
+    ],
     () => {
         if (
+            durationLimits.value?.max !== undefined &&
+            durationLimits.value?.min !== undefined &&
             props.state.range &&
             props.state.range.from &&
             props.state.range.to
         ) {
             rangeError.value =
-                hoursRange.value < MIN_CAMPAIGN_HOURS_DURATION ||
+                campaignDuration.value < durationLimits.value.min ||
+                campaignDuration.value > durationLimits.value.max ||
                 dayjs(props.state.range?.from).isBefore(dayjs(), "seconds") ||
                 dayjs(props.state.range?.to).isBefore(dayjs(), "seconds");
         }
@@ -62,6 +73,7 @@ onUnmounted(() => {
             v-model:range="$props.state.range"
             :error="rangeError"
             :min="minDate"
+            :loading="loadingMinMaxDuration"
             :messages="{
                 startLabel: $t('campaign.range.picker.startLabel'),
                 endLabel: $t('campaign.range.picker.endLabel'),
