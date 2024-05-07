@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
 import AllCampaignsView from "../views/all-campaigns-view/AllCampaignsView.vue";
+import CreateCampaignView from "../views/create-campaign-view/CreateCampaignView.vue";
 
 export const router = createRouter({
     history: createWebHistory(),
@@ -13,11 +14,7 @@ export const router = createRouter({
         {
             path: "/create",
             name: "create",
-            // route level code-splitting
-            // this generates a separate chunk (About.[hash].js) for this route
-            // which is lazy-loaded when the route is visited.
-            component: () =>
-                import("../views/create-campaign-view/CreateCampaignView.vue"),
+            component: CreateCampaignView,
             props: (route) => ({ selectedChain: Number(route.query.chain) }),
         },
     ],
