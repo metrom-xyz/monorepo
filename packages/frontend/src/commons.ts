@@ -9,8 +9,6 @@ import MuiAlgebraIntegralIcon from "./icons/AlgebraIntegralIcon.vue";
 import { ADDRESS } from "@metrom-xyz/contracts";
 import { markRaw } from "vue";
 
-export const MIN_CAMPAIGN_HOURS_DURATION = 2;
-
 export const TOKEN_LISTS = [
     "https://tokens.coingecko.com/celo/all.json",
     "https://celo-org.github.io/celo-token-list/celo.tokenlist.json",

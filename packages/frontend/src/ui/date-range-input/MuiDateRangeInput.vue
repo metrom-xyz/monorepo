@@ -92,6 +92,7 @@ watchEffect(() => {
                 <div class="mui_date_range_input__divider"></div>
                 <MuiTextInput
                     v-model="endDateText"
+                    :loading="$props.loading"
                     :placeholder="$props.messages.endPlaceholder"
                     :error="$props.error"
                     readonly
