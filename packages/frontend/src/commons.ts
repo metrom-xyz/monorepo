@@ -35,6 +35,8 @@ const AMMS: Record<SupportedChain, Amm[]> = {
             logo: markRaw(MuiUniswapLogoIcon),
             name: "Uniswap v3",
             addLiquidityUrl: "https://app.uniswap.org/add/{target_pair}",
+            pairExplorerUrl:
+                "https://app.uniswap.org/explore/pools/celo_alfajores/{target_pair}",
             subgraphClient: new AmmSubgraphClient(
                 SupportedChain.CeloAlfajores,
                 SupportedAmm.Univ3,
@@ -48,6 +50,8 @@ const AMMS: Record<SupportedChain, Amm[]> = {
             logo: markRaw(MuiUniswapLogoIcon),
             name: "Uniswap v3",
             addLiquidityUrl: "https://app.uniswap.org/add/{target_pair}",
+            pairExplorerUrl:
+                "https://app.uniswap.org/explore/pools/sepolia/{target_pair}",
             subgraphClient: new AmmSubgraphClient(
                 SupportedChain.Sepolia,
                 SupportedAmm.Univ3,

@@ -79,6 +79,7 @@ export const messages = {
                 edit: "Edit campaign",
                 approveReward: "Approve reward: ",
                 launch: "Launch campaign",
+                success: "Campaign deployed",
             },
         },
         allCampaigns: {

@@ -13,17 +13,15 @@ const popover = ref(false);
 </script>
 <template>
     <MuiPopover :open="popover" :placement="'top-start'">
-        <div
-            class="campaigns_table_rewards__root"
-            @mouseenter="popover = true"
-            @mouseleave="popover = false"
-        >
+        <div class="campaigns_table_rewards__root">
             <MuiRemoteLogo
                 :key="reward.token.address"
                 v-for="(reward, index) in $props.rewards"
                 :address="reward.token.address"
                 lg
                 :style="{ left: `-${8 * index}px` }"
+                @mouseenter="popover = true"
+                @mouseleave="popover = false"
             />
         </div>
         <template #popover>

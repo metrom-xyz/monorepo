@@ -24,6 +24,7 @@ function handleConnectOnClick() {
 
 const allRewardsApproved = ref(false);
 const validatedState = ref<FinalizedState | undefined>();
+const deployed = ref(false);
 
 const metrom = computed(() => {
     if (!account.value.chainId) return;
@@ -63,7 +64,11 @@ function handleEditOnClick() {
 </script>
 <template>
     <div class="deploy_campaign__root">
-        <MuiButton v-if="$props.validated" sm @click="handleEditOnClick">
+        <MuiButton
+            v-if="$props.validated && !deployed"
+            sm
+            @click="handleEditOnClick"
+        >
             {{ $t("campaign.deploy.edit") }}
         </MuiButton>
         <SubmitButton
@@ -89,6 +94,7 @@ function handleEditOnClick() {
             v-else-if="metrom"
             :metrom="metrom"
             :state="validatedState"
+            @deployed="deployed = true"
         />
     </div>
 </template>
