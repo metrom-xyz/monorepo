@@ -48,7 +48,7 @@ const items = computed<Campaign[]>(() => {
 });
 
 const { containerProps, wrapperProps, list } = useVirtualList(items, {
-    itemHeight: 44,
+    itemHeight: 45,
 });
 </script>
 <template>

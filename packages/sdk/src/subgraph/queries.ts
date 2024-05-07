@@ -116,10 +116,10 @@ export const GetPair = `
 export type GetCampaignsQueryResult = {
     campaigns: {
         id: Address;
-        chainId: bigint;
+        chainId: number;
         pool: Address;
-        from: bigint;
-        to: bigint;
+        from: number;
+        to: number;
         specification: string;
         data: string;
         root: string;
@@ -134,6 +134,9 @@ export type GetCampaignsQueryResult = {
             amount: bigint;
             unclaimed: bigint;
         }[];
+        transaction: {
+            timestamp: number;
+        };
     }[];
 };
 
@@ -158,6 +161,9 @@ export const GetCampaigns = `
                 }
                 amount
                 unclaimed
+            }
+            transaction {
+                timestamp
             }
         }
     }

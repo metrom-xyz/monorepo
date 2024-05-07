@@ -40,6 +40,7 @@ export class MetromSubgraphClient {
 
                 campaigns.push(<Campaign>{
                     id: campaign.id,
+                    timestamp: campaign.transaction.timestamp,
                     amm: resolvedAmm.slug,
                     chainId: resolvedAmm.chain,
                     pairChainId: Number(campaign.chainId),
@@ -72,6 +73,6 @@ export class MetromSubgraphClient {
                     : result.campaigns[result.campaigns.length - 1].id;
         } while (lastId);
 
-        return campaigns;
+        return campaigns.sort((a, b) => b.timestamp - a.timestamp);
     }
 }
