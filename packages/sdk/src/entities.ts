@@ -39,12 +39,13 @@ export interface Reward {
 
 export interface Campaign {
     id: Address;
+    timestamp: number;
     amm: string;
     chainId: number;
     pairChainId: number;
     pair: Pair;
-    from: bigint;
-    to: bigint;
+    from: number;
+    to: number;
     specification: string;
     root: string;
     data: string;
