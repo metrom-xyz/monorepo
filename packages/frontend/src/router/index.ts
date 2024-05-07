@@ -22,10 +22,3 @@ export const router = createRouter({
         },
     ],
 });
-
-// preserve the chain query param
-router.beforeEach((to, from, next) => {
-    if (!Object.keys(to.query).length && !!Object.keys(from).length)
-        next({ name: to.name!, query: from.query });
-    else next();
-});
