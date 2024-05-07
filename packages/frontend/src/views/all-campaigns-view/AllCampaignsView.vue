@@ -6,7 +6,7 @@ defineProps<AllCampaignsViewProps>();
 </script>
 <template>
     <div class="all_campaigns__root">
-        <CampaignsTable :selectedChain="$props.selectedChain" />
+        <CampaignsTable :chain="$props.selectedChain" />
     </div>
 </template>
 <style>

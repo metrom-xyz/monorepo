@@ -15,6 +15,11 @@ export const messages = {
                 content:
                     "Your connected network is unsupported. Switch to a supported network from your wallet.",
             },
+            wrong: {
+                title: "Wrong network",
+                content:
+                    "In order to view this page please switch to {chainName} in your connected wallet to continue.",
+            },
         },
         campaign: {
             summary: {

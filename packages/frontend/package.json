@@ -19,6 +19,7 @@
         "@metrom-xyz/contracts": "^0.5.10",
         "@uniswap/token-lists": "1.0.0-beta.34",
         "@vueuse/core": "^10.9.0",
+        "@vueuse/router": "^10.9.0",
         "@wagmi/connectors": "^4.1.28",
         "@wagmi/core": "^2.6.19",
         "dayjs": "^1.11.10",

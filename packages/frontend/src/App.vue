@@ -5,11 +5,7 @@ import NavigationBar from "./components/NavigationBar.vue";
 import MuiTypography from "./ui/typography/MuiTypography.vue";
 import UserAccount from "./components/UserAccount.vue";
 import { useTokens } from "./stores/tokens";
-import { isChainSupported } from "./utils/chain";
-import MuiCard from "./ui/MuiCard.vue";
-import { useSelectedChain } from "./composables/useSelectedChain";
-
-const selectedChain = useSelectedChain();
+import MultiChainLinks from "./components/MultiChainLinks.vue";
 
 // TODO: improve tokens fetching
 const tokenListsStore = useTokens();
@@ -25,23 +21,9 @@ tokenListsStore.fetchTokensLists();
             <UserAccount />
         </header>
         <div class="app__content">
-            <div v-if="!!selectedChain && isChainSupported(selectedChain)">
+            <MultiChainLinks>
                 <RouterView />
-            </div>
-            <MuiCard v-else>
-                <template #title>
-                    <MuiTypography medium lg>
-                        {{ $t("chain.unsupported.title") }}
-                    </MuiTypography>
-                </template>
-                <template #content>
-                    <div class="app__network__unsupported">
-                        <MuiTypography>
-                            {{ $t("chain.unsupported.content") }}
-                        </MuiTypography>
-                    </div>
-                </template>
-            </MuiCard>
+            </MultiChainLinks>
         </div>
         <footer>
             <MuiTypography uppercase>
@@ -69,12 +51,7 @@ tokenListsStore.fetchTokensLists();
     @apply flex-grow;
 }
 
-.app__network__unsupported {
-    @apply p-3;
-}
-
 .app__nav {
     @apply flex gap-2;
 }
 </style>
-./composables/useSelectedChain
