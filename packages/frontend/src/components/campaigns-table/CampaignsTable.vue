@@ -13,8 +13,6 @@ import CampaignsTableDeposit from "./deposit/CampaignsTableDeposit.vue";
 import { ref } from "vue";
 import MuiSkeleton from "@/ui/skeleton/MuiSkeleton.vue";
 import CampaignsTableRewards from "./rewards/CampaignsTableRewards.vue";
-import { useRoute } from "vue-router";
-import { watch } from "vue";
 import type { CampaignsTableProps } from "./types";
 
 const HEADERS = [
@@ -27,19 +25,9 @@ const HEADERS = [
 
 const props = defineProps<CampaignsTableProps>();
 
-const route = useRoute();
-
-const selectedChainId = ref();
 const searchQuery = ref("");
 const debouncedQuery = ref("");
 
-watch(
-    () => route.query,
-    (chainId) => {
-        selectedChainId.value = chainId;
-    },
-    { immediate: true },
-);
 watchDebounced(
     searchQuery,
     () => {
@@ -50,7 +38,7 @@ watchDebounced(
 
 const { campaigns, loading: loadingCampaigns } = useCampaigns(
     computed(() => ({
-        client: CHAIN_DATA[props.selectedChain].metromSubgraphClient,
+        client: CHAIN_DATA[props.chain].metromSubgraphClient,
     })),
 );
 

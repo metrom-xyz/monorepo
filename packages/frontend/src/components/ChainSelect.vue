@@ -3,15 +3,12 @@ import { CHAIN_DATA, SUPPORTED_CHAINS } from "@/commons";
 import MuiSelect from "@/ui/select/MuiSelect.vue";
 import type { SelectOption } from "@/ui/select/types";
 import MuiTypography from "@/ui/typography/MuiTypography.vue";
-import { SupportedChain } from "sdk";
+import { isChainSupported } from "@/utils/chain";
 import { useAccount } from "vevm";
-import { watch } from "vue";
-import { watchEffect } from "vue";
 import { computed } from "vue";
-import { useRoute, useRouter } from "vue-router";
+import { useRouter } from "vue-router";
 
 const account = useAccount();
-const route = useRoute();
 const router = useRouter();
 
 const SUPPORTED_CHAIN_OPTIONS = computed(() => {
@@ -22,65 +19,42 @@ const SUPPORTED_CHAIN_OPTIONS = computed(() => {
     }));
 });
 
-const selectedNetwork = computed(() => {
-    const chainId = route.query["chain"]?.toString();
-
-    if (chainId && Object.values(SupportedChain).includes(Number(chainId))) {
-        return (
-            SUPPORTED_CHAIN_OPTIONS.value.find(
-                (chain) => chain.value === Number(chainId),
-            ) || null
-        );
-    }
-
-    if (!!account.value.isConnected && !!account.value.chainId) {
-        return (
-            SUPPORTED_CHAIN_OPTIONS.value.find(
-                (chain) => chain.value === account.value.chainId,
-            ) || null
-        );
-    }
-
-    return SUPPORTED_CHAIN_OPTIONS.value[0];
-});
-
 async function handleNetworkOnChange(option: SelectOption<number>) {
     try {
         await account.value.connector?.switchChain?.({ chainId: option.value });
     } catch (error) {
         console.warn("could not switch network", error);
     }
-    router.push({ query: { chain: option.value } });
+    router.replace({ query: { chain: option.value } });
 }
-
-watchEffect(() => {
-    if (selectedNetwork.value)
-        router.push({
-            query: { chain: selectedNetwork.value.value },
-        });
-});
-
-watch(
-    () => account.value.chainId,
-    (newChainId) => {
-        if (!newChainId || !selectedNetwork.value?.value) return;
-        router.push({
-            query: { chain: newChainId },
-        });
-    },
-);
 </script>
 <template>
     <div class="chain_select__root">
-        <div v-if="!selectedNetwork" class="chain_select__unsupported__network">
+        <div
+            v-if="
+                $route.query.chain &&
+                !isChainSupported($route.query.chain?.toString())
+            "
+            class="chain_select__unsupported__network"
+        >
             <MuiTypography>{{ $t("chain.unsupported.title") }}</MuiTypography>
         </div>
         <MuiSelect
             v-else
             :messages="{ noResults: '' }"
             :options="SUPPORTED_CHAIN_OPTIONS"
-            :selected="selectedNetwork"
-            :icon="selectedNetwork?.icon"
+            :selected="
+                SUPPORTED_CHAIN_OPTIONS.find(
+                    (chain) =>
+                        chain.value === Number($route.query.chain?.toString()),
+                ) || null
+            "
+            :icon="
+                SUPPORTED_CHAIN_OPTIONS.find(
+                    (chain) =>
+                        chain.value === Number($route.query.chain?.toString()),
+                )?.icon || undefined
+            "
             @change="handleNetworkOnChange"
             class="chain_select"
         >
