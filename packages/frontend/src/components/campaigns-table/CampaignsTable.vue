@@ -14,10 +14,10 @@ import { ref } from "vue";
 import MuiSkeleton from "@/ui/skeleton/MuiSkeleton.vue";
 import CampaignsTableRewards from "./rewards/CampaignsTableRewards.vue";
 import type { CampaignsTableProps } from "./types";
+import CampaignsTableExplorer from "./explore/CampaignsTableExplorer.vue";
 
 const HEADERS = [
     "allCampaigns.table.header.pair",
-    "allCampaigns.table.header.apr",
     "allCampaigns.table.header.rewards",
     "allCampaigns.table.header.amm",
     "allCampaigns.table.header.links",
@@ -48,7 +48,7 @@ const items = computed<Campaign[]>(() => {
 });
 
 const { containerProps, wrapperProps, list } = useVirtualList(items, {
-    itemHeight: 45,
+    itemHeight: 46,
 });
 </script>
 <template>
@@ -97,14 +97,17 @@ const { containerProps, wrapperProps, list } = useVirtualList(items, {
                                 }}
                             </MuiTypography>
                         </div>
-                        <MuiTypography></MuiTypography>
                         <CampaignsTableRewards :rewards="data.rewards" />
                         <CampaignsTableDeposit
                             :chainId="data.chainId"
                             :ammSlug="data.amm"
                             :pair="data.pair"
                         />
-                        <MuiTypography></MuiTypography>
+                        <CampaignsTableExplorer
+                            :chainId="data.chainId"
+                            :ammSlug="data.amm"
+                            :pair="data.pair"
+                        />
                     </div>
                 </div>
                 <MuiTypography v-else>

@@ -46,6 +46,7 @@ export interface Amm {
     slug: string;
     name: string;
     addLiquidityUrl: string;
+    pairExplorerUrl?: string;
     logo: Component;
     subgraphClient: AmmSubgraphClient;
 }
