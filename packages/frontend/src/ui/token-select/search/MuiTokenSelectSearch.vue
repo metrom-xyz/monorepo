@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import MuiTextInput from "@/ui/MuiTextInput.vue";
 import type { TokenSelectSearchProps } from "./types";
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 import { watchDebounced, useVirtualList } from "@vueuse/core";
 import { computed } from "vue";
 import { filterTokens, sortERC20Tokens } from "@/ui/utils/tokens";
@@ -19,6 +19,9 @@ const emits = defineEmits<{
 }>();
 const searchQuery = ref("");
 const debouncedQuery = ref("");
+const searchInputRef = ref<InstanceType<typeof MuiTextInput> | null | null>(
+    null,
+);
 
 watchDebounced(
     searchQuery,
@@ -47,6 +50,10 @@ function handleOnDismissClick() {
     emits("dismiss");
     emits("searchQueryChange");
 }
+
+onMounted(() => {
+    if (searchInputRef.value?.input) searchInputRef.value.input.focus();
+});
 </script>
 <template>
     <div class="mui_token_select_search__root">
@@ -56,6 +63,7 @@ function handleOnDismissClick() {
                 class="mui_token_select_search__close_icon"
             />
             <MuiTextInput
+                ref="searchInputRef"
                 id="token-search"
                 :label="$props.messages.inputLabel"
                 :disabled="$props.loading"

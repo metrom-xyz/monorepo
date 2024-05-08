@@ -2,6 +2,7 @@
 import { useAttrs, type Component } from "vue";
 import MuiBaseInputWrapper from "./commons/MuiBaseInputWrapper.vue";
 import type { BaseInputWrapperProps } from "./commons/types";
+import { ref } from "vue";
 
 defineSlots<{
     action: Component;
@@ -11,7 +12,12 @@ const props = defineProps<BaseInputWrapperProps>();
 const model = defineModel();
 
 const attrs = useAttrs();
+
+const inputRef = ref<HTMLInputElement | null>(null);
+
 const optionalModel = props.noModel ? undefined : model;
+
+defineExpose({ input: inputRef });
 </script>
 <template>
     <MuiBaseInputWrapper
@@ -20,6 +26,7 @@ const optionalModel = props.noModel ? undefined : model;
         :id="attrs.id || $.uid.toString()"
     >
         <input
+            ref="inputRef"
             v-model="optionalModel"
             :id="(attrs.id as string) || $.uid.toString()"
             type="text"
