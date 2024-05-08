@@ -28,13 +28,13 @@ const internalEndDate = ref<Dayjs | undefined>(rangeModel.value?.from);
 
 const startDateText = computed(() =>
     rangeModel.value?.from
-        ? dayjs(rangeModel.value.from).format("L HH:mm:ss")
+        ? dayjs(rangeModel.value.from).format("DD MMM YYYY HH:MM")
         : undefined,
 );
 
 const endDateText = computed(() =>
     rangeModel.value?.to
-        ? dayjs(rangeModel.value.to).format("L HH:mm:ss")
+        ? dayjs(rangeModel.value.to).format("DD MMM YYYY HH:MM")
         : undefined,
 );
 
