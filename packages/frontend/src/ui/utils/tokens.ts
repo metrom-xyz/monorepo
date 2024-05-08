@@ -27,17 +27,17 @@ export const filterPairs = (pairs: Pair[], searchQuery: string) => {
         .trim()
         .toLowerCase()
         .split(/\s+/)
-        .filter((s) => s.length > 0);
+        .filter((s) => s.length > 0 && s !== "/");
     if (lowercaseSearchParts.length === 0) return pairs;
     return pairs.filter((pair) => {
         const { token0, token1 } = pair;
+
         return (
-            (token0.symbol &&
-                matchesSearch(token0.symbol, lowercaseSearchParts)) ||
-            (token0.name && matchesSearch(token0.name, lowercaseSearchParts)) ||
-            (token1.symbol &&
-                matchesSearch(token1.symbol, lowercaseSearchParts)) ||
-            (token1.name && matchesSearch(token1.name, lowercaseSearchParts))
+            matchesSearch(
+                `${token0.symbol} ${token1.symbol}`,
+                lowercaseSearchParts,
+            ) ||
+            matchesSearch(`${token0.name} ${token1.name}`, lowercaseSearchParts)
         );
     });
 };
@@ -92,6 +92,7 @@ const matchesSearch = (searched: string, parts: string[]): boolean => {
         .toLowerCase()
         .split(/\s+/)
         .filter((s) => s.length > 0);
+
     return parts.every(
         (part) =>
             part.length === 0 ||
