@@ -10,6 +10,7 @@ import MuiTypography from "@/ui/typography/MuiTypography.vue";
 import XIcon from "@/icons/XIcon.vue";
 import SearchIcon from "@/icons/SearchIcon.vue";
 import type { Pair } from "sdk";
+import { onMounted } from "vue";
 
 const props = defineProps<PairSelectSearchProps>();
 const emit = defineEmits<{
@@ -19,6 +20,9 @@ const emit = defineEmits<{
 
 const searchQuery = ref("");
 const debouncedQuery = ref("");
+const searchInputRef = ref<InstanceType<typeof MuiTextInput> | null | null>(
+    null,
+);
 
 watchDebounced(
     searchQuery,
@@ -36,6 +40,10 @@ const items = computed<Pair[]>(() => {
 const { containerProps, wrapperProps, list } = useVirtualList(items, {
     itemHeight: 64,
 });
+
+onMounted(() => {
+    if (searchInputRef.value?.input) searchInputRef.value.input.focus();
+});
 </script>
 <template>
     <div class="mui_pair_select_search__root">
@@ -45,6 +53,7 @@ const { containerProps, wrapperProps, list } = useVirtualList(items, {
                 class="mui_pair_select_search__close_icon"
             />
             <MuiTextInput
+                ref="searchInputRef"
                 id="token-search"
                 :disabled="$props.loading"
                 :label="$props.messages.inputLabel"
