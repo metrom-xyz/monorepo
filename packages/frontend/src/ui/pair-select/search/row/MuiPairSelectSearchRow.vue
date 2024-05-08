@@ -49,7 +49,7 @@ defineProps<PairSelectSearchRowProps>();
 }
 
 .mui_pair_select_search_row__pair_name {
-    @apply flex gap-3 flex-grow mr-16;
+    @apply flex gap-3 flex-grow mr-16 items-center;
 }
 
 .mui_pair_select_search_row__pair_name_divider {
