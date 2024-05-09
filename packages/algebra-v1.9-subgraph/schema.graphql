@@ -26,10 +26,16 @@ type Position @entity {
     events: [Event!]! @derivedFrom(field: "position")
 }
 
+type Block @entity(immutable: true) {
+    id: Bytes!
+    number: BigInt!
+    timestamp: BigInt!
+}
+
 type Event @entity(immutable: true) {
     id: Bytes!
     transactionHash: Bytes!
-    blockNumber: BigInt!
+    block: Block!
     logIndex: BigInt!
     pool: Pool!
 
