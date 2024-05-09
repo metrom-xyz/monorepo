@@ -1,5 +1,5 @@
 import { Address, BigInt, Bytes, ethereum } from "@graphprotocol/graph-ts";
-import { Event, Pool, Token } from "../generated/schema";
+import { Block, Event, Pool, Token } from "../generated/schema";
 import { NonFungiblePositionManager } from "../generated/NonFungiblePositionManager/NonFungiblePositionManager";
 import { Factory } from "../generated/Factory/Factory";
 import {
@@ -14,13 +14,25 @@ export const NonFungiblePositionManagerContract =
     NonFungiblePositionManager.bind(NON_FUNGIBLE_POSITION_MANAGER_ADDRESS);
 export const FactoryContract = Factory.bind(FACTORY_ADDRESS);
 
+export function getOrCreateBlock(event: ethereum.Event): Block {
+    let block = Block.load(event.block.hash);
+    if (block !== null) return block;
+
+    block = new Block(event.block.hash);
+    block.number = event.block.number;
+    block.timestamp = event.block.timestamp;
+    block.save();
+
+    return block;
+}
+
 export function createBaseEvent(event: ethereum.Event, poolId: Bytes): Event {
     let id = changetype<Bytes>(
         event.block.number.leftShift(40).plus(event.logIndex).reverse(),
     );
     let baseEvent = new Event(id);
     baseEvent.transactionHash = event.transaction.hash;
-    baseEvent.blockNumber = event.block.number;
+    baseEvent.block = getOrCreateBlock(event).id;
     baseEvent.logIndex = event.logIndex;
     baseEvent.pool = poolId;
     baseEvent.save();
