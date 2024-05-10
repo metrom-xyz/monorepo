@@ -59,7 +59,7 @@ const popover = ref(false);
 }
 
 .campaigns_table_rewards__details {
-    @apply flex flex-col gap-3 rounded-lg p-4;
+    @apply flex flex-col gap-3 rounded-lg p-2;
 }
 
 .campaigns_table_rewards__details__row {
