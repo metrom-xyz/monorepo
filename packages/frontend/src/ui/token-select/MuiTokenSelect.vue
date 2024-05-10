@@ -7,89 +7,23 @@ import MuiModal from "../modal/MuiModal.vue";
 import { computed } from "vue";
 import TokenSelectIcon from "@/icons/TokenSelectIcon.vue";
 import type { TokenInfo } from "@uniswap/token-lists";
-import { useAccount, useChainId, useReadContracts } from "vevm";
-import { useTokens } from "@/stores/tokens";
 import type { TokenInfoWithBalance } from "@/components/campaign-creation-form/rewards/types";
-import { erc20Abi, type Address } from "viem";
-import { useImportableToken } from "@/composables/useImportableToken";
 import { ref } from "vue";
 
-defineProps<TokenSelectProps>();
+const props = defineProps<TokenSelectProps>();
 
 const emits = defineEmits<{
     dismiss: [];
+    searchQueryChange: [query?: string];
 }>();
-const selected = defineModel<TokenInfo>();
+const selected = defineModel<TokenInfoWithBalance>();
 
 const tokenSearchQuery = ref();
 
-const account = useAccount();
-const chainId = useChainId();
-const tokensInChain = useTokens().getTokens(
-    chainId.value,
-) as TokenInfoWithBalance[];
-
-const { data: rawBalances, loading: loadingBalances } = useReadContracts({
-    contracts:
-        (account.value.isConnected &&
-            account.value.address &&
-            tokensInChain.map((token) => {
-                return {
-                    abi: erc20Abi,
-                    address: token.address as Address,
-                    functionName: "balanceOf",
-                    args: [account.value.address],
-                };
-            })) ||
-        [],
-    allowFailure: true,
-});
-
-const { loading: loadingImportableToken, token: importableToken } =
-    useImportableToken(
-        // FIXME: better way to keep the reactivity to the debounced query?
-        computed(() => ({
-            connectedAccountAddress: account.value.address,
-            debouncedQuery: tokenSearchQuery.value,
-            withBalances: account.value.isConnected,
-        })),
-    );
-
-const tokensWithBalance = computed(() => {
-    const tokensInChainWithBalance = tokensInChain.reduce(
-        (accumulator: Record<string, TokenInfoWithBalance>, token, i) => {
-            if (!rawBalances.value?.[i]) return accumulator;
-
-            const rawBalance = rawBalances.value[i];
-            accumulator[`${token.address.toLowerCase()}-${token.chainId}`] =
-                rawBalance.status !== "failure"
-                    ? {
-                          ...token,
-                          balance: rawBalance.result as bigint,
-                      }
-                    : token;
-            return accumulator;
-        },
-        {},
-    );
-
-    const tokensWithBalance = tokensInChain.map((token) => {
-        const tokenWithBalance =
-            tokensInChainWithBalance[
-                `${token.address.toLowerCase()}-${token.chainId}`
-            ];
-        return tokenWithBalance || token;
-    });
-
-    if (importableToken.value) tokensWithBalance.push(importableToken.value);
-
-    return tokensWithBalance;
-});
-
 const selectedToken = computed(() => {
-    if (!tokensWithBalance.value || !selected.value) return null;
+    if (!selected.value) return null;
 
-    return tokensWithBalance.value.find(
+    return props.tokens.find(
         (token) =>
             token.address.toLowerCase() ===
             selected.value?.address.toLowerCase(),
@@ -104,6 +38,11 @@ function handleTokenOnChange(token?: TokenInfo) {
     if (!token) return;
     selected.value = token;
     emits("dismiss");
+}
+
+function handleSearchQueryChange(query?: string) {
+    tokenSearchQuery.value = query;
+    emits("searchQueryChange", query);
 }
 </script>
 <template>
@@ -128,15 +67,15 @@ function handleTokenOnChange(token?: TokenInfo) {
             </MuiTextInput>
             <template #modal>
                 <MuiTokenSelectSearch
-                    :tokens="tokensWithBalance"
+                    :tokens="tokens"
                     :selected="selected?.address"
-                    :loading="!tokensInChain"
-                    :loadingBalances="loadingBalances || loadingImportableToken"
+                    :loading="loading"
+                    :loadingBalances="loading"
                     :messages="$props.messages.search"
                     :optionDisabled="$props.optionDisabled"
                     @dismiss="handleModalOnDismiss"
                     @tokenChange="handleTokenOnChange"
-                    @searchQueryChange="tokenSearchQuery = $event"
+                    @searchQueryChange="handleSearchQueryChange"
                 />
             </template>
         </MuiModal>

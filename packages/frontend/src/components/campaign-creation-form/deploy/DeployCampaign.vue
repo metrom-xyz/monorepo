@@ -72,17 +72,18 @@ function handleEditOnClick() {
             {{ $t("campaign.deploy.edit") }}
         </MuiButton>
         <SubmitButton
-            v-if="!$props.validated || !validatedState"
-            @click="handleConfirmOnClick"
-        >
-            {{ $t("campaign.deploy.confirm") }}
-        </SubmitButton>
-        <SubmitButton
-            v-else-if="!account.isConnected"
+            v-if="!account.isConnected"
             @click="handleConnectOnClick"
             :icon="WalletIcon"
         >
             {{ $t("campaign.deploy.connectWallet") }}
+        </SubmitButton>
+        <SubmitButton
+            v-else-if="!$props.validated || !validatedState"
+            :disabled="$props.disabled"
+            @click="handleConfirmOnClick"
+        >
+            {{ $t("campaign.deploy.confirm") }}
         </SubmitButton>
         <ApproveRewards
             v-else-if="!allRewardsApproved && metrom"

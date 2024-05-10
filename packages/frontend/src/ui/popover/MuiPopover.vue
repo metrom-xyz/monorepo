@@ -46,7 +46,7 @@ const { floatingStyles } = useFloating(anchor, popover, {
 </template>
 <style scoped>
 .mui_popover__root {
-    @apply inline-block rounded-xl border bg-white z-10 shadow-lg;
+    @apply inline-block rounded-xl border bg-white z-10 shadow-lg p-0;
 }
 
 .mui_popover__fade-enter-active,
