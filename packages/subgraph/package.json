@@ -6,7 +6,7 @@
         "update-addresses": "tsx ./scripts/update-addresses.ts",
         "codegen": "graph codegen",
         "build:only": "graph build",
-        "build": "pnpm update-addresses celo-alfajores && pnpm codegen && graph build",
+        "build": "pnpm update-addresses holesky && pnpm codegen && graph build",
         "deploy:holesky": "pnpm update-addresses holesky && graph deploy --studio --network holesky metrom-holesky",
         "lint": "eslint --ext .js,.ts ./ && prettier --check './**/*.{json,md}'",
         "format": "eslint --fix --ext .js,.ts ./ && prettier --write './**/*.{json,md}'"
