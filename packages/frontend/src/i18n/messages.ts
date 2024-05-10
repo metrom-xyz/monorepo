@@ -61,8 +61,7 @@ export const messages = {
                 amount: "Amount",
                 insufficientBalance: {
                     label: "Insufficient balance",
-                    required: "{amount} {symbol} required",
-                    balance: "{balance} {symbol} available",
+                    balance: "{symbol} balance: {balance}",
                 },
                 addReward: "Add reward",
                 maxRewards: "Rewards limit reached",
