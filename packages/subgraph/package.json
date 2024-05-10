@@ -7,18 +7,16 @@
         "codegen": "graph codegen",
         "build:only": "graph build",
         "build": "pnpm update-addresses celo-alfajores && pnpm codegen && graph build",
-        "deploy:celo-alfajores": "pnpm update-addresses celo-alfajores && graph deploy --studio --network celo-alfajores metrom-celo-alfajores",
-        "deploy:sepolia": "pnpm update-addresses sepolia && graph deploy --studio --network sepolia metrom-sepolia",
         "deploy:holesky": "pnpm update-addresses holesky && graph deploy --studio --network holesky metrom-holesky",
         "lint": "eslint --ext .js,.ts ./ && prettier --check './**/*.{json,md}'",
         "format": "eslint --fix --ext .js,.ts ./ && prettier --write './**/*.{json,md}'"
     },
     "dependencies": {
-        "@graphprotocol/graph-cli": "0.71.1",
+        "@graphprotocol/graph-cli": "0.71.2",
         "@graphprotocol/graph-ts": "0.35.1"
     },
     "devDependencies": {
-        "@metrom-xyz/contracts": "^0.5.10",
+        "@metrom-xyz/contracts": "^0.6.1",
         "@types/node": "^20.12.7",
         "@typescript-eslint/eslint-plugin": "^7.4.0",
         "@typescript-eslint/parser": "^7.4.0",

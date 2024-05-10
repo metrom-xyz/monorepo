@@ -15,6 +15,7 @@ type Transaction @entity(immutable: true) {
     distributeRewardEvents: [DistributeRewardEvent!]!
         @derivedFrom(field: "transaction")
     claimRewardEvent: ClaimRewardEvent! @derivedFrom(field: "transaction")
+    recoverRewardEvent: RecoverRewardEvent! @derivedFrom(field: "transaction")
     claimFee: ClaimFeeEvent! @derivedFrom(field: "transaction")
     transferOwnershipEvents: [TransferOwnershipEvent!]!
         @derivedFrom(field: "transaction")
@@ -50,6 +51,7 @@ type Metrom @entity {
     distributeRewardEvents: [DistributeRewardEvent!]!
         @derivedFrom(field: "metrom")
     claimRewardEvent: ClaimRewardEvent! @derivedFrom(field: "metrom")
+    recoverRewardEvent: RecoverRewardEvent! @derivedFrom(field: "metrom")
     claimFee: ClaimFeeEvent! @derivedFrom(field: "metrom")
     transferOwnershipEvents: [TransferOwnershipEvent!]!
         @derivedFrom(field: "metrom")
@@ -116,6 +118,16 @@ type DistributeRewardEvent @entity(immutable: true) {
 }
 
 type ClaimRewardEvent @entity(immutable: true) {
+    id: Bytes!
+    transaction: Transaction!
+    metrom: Metrom!
+    campaign: Campaign!
+    token: Token!
+    amount: BigInt!
+    receiver: Bytes!
+}
+
+type RecoverRewardEvent @entity(immutable: true) {
     id: Bytes!
     transaction: Transaction!
     metrom: Metrom!
@@ -202,6 +214,7 @@ type Campaign @entity {
     distributeRewardEvents: [DistributeRewardEvent!]!
         @derivedFrom(field: "campaign")
     claimRewardEvents: [ClaimRewardEvent!]! @derivedFrom(field: "campaign")
+    recoverRewardEvents: [RecoverRewardEvent!]! @derivedFrom(field: "campaign")
 }
 
 type Reward @entity {

@@ -9,8 +9,8 @@ dataSources:
     network: holesky
     source:
       abi: Metrom
-      address: "0x64a0745EF9d3772d9739D9350873eD3703bE45eC"
-      startBlock: 1468875
+      address: "0xA310dee8A01880977Ba24d39e58049AE02F77EC3"
+      startBlock: 1516415
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
@@ -25,6 +25,7 @@ dataSources:
         - DistributeRewardEvent
         - Metrom
         - InitializeEvent
+        - RecoverRewardEvent
         - Reward
         - SetFeeEvent
         - SetMinimumCampaignDurationEvent
@@ -51,6 +52,8 @@ dataSources:
           handler: handleDistributeReward
         - event: ClaimReward(indexed bytes32,address,uint256,indexed address)
           handler: handleClaimReward
+        - event: RecoverReward(indexed bytes32,address,uint256,indexed address)
+          handler: handleRecoverReward
         - event: ClaimFee(address,uint256,indexed address)
           handler: handleClaimFee
         - event: TransferOwnership(indexed address)
