@@ -7,10 +7,9 @@ import RemoveXIcon from "@/icons/RemoveXIcon.vue";
 import { useAttrs } from "vue";
 import type { TokenInfoWithBalance } from "../types";
 import { watchEffect } from "vue";
-import { getRewardPlusFeeAmount } from "@/utils/rewards";
 import { watch } from "vue";
 import MuiTypography from "@/ui/typography/MuiTypography.vue";
-import { formatUnits } from "viem";
+import { formatUnits, parseUnits } from "viem";
 import { formatDecimals } from "sdk";
 import { useAccount } from "vevm";
 import { computed } from "vue";
@@ -31,7 +30,7 @@ const attrs = useAttrs();
 const open = ref<boolean>();
 const tokenError = ref(false);
 const amountError = ref(false);
-const rewardWithFees = ref<{
+const reward = ref<{
     symbol: string;
     amount: string;
     balance: string;
@@ -57,21 +56,16 @@ watch(
         if (
             !account.value.isConnected ||
             !tokenModel.value ||
+            !amountModel.value ||
             tokenModel.value.balance === undefined ||
             tokenModel.value.balance === null
         )
             return;
 
-        const rewardPlusFee = getRewardPlusFeeAmount(
-            tokenModel.value,
-            amountModel.value,
-            props.globalFee,
-        );
-
-        rewardWithFees.value = {
+        reward.value = {
             symbol: tokenModel.value.symbol,
             amount: formatDecimals({
-                number: formatUnits(rewardPlusFee, tokenModel.value.decimals),
+                number: amountModel.value.toString(),
                 decimalsAmount: 3,
             }),
             balance: formatDecimals({
@@ -81,20 +75,23 @@ watch(
                 ),
                 decimalsAmount: 3,
             }),
-            insufficient: rewardPlusFee > tokenModel.value.balance,
+            insufficient:
+                parseUnits(
+                    amountModel.value.toString(),
+                    tokenModel.value.decimals,
+                ) > tokenModel.value.balance,
         };
     },
     { immediate: false },
 );
 
-watch([amountModel, rewardWithFees], () => {
-    amountError.value =
-        !amountModel.value || !!rewardWithFees.value?.insufficient;
+watch([amountModel, reward], () => {
+    amountError.value = !amountModel.value || !!reward.value?.insufficient;
 });
 
 watchEffect(() => {
-    if (rewardWithFees.value === undefined || !tokenModel.value) return;
-    if (rewardWithFees.value.insufficient)
+    if (reward.value === undefined || !tokenModel.value) return;
+    if (reward.value.insufficient)
         emits("insufficientBalance", tokenModel.value.address, true);
     else emits("insufficientBalance", tokenModel.value.address, false);
 });
@@ -164,24 +161,16 @@ onUnmounted(() => {
                 @click="handleRewardOnTokenRemove"
             />
         </div>
-        <MuiWarningMessage v-if="rewardWithFees && rewardWithFees.insufficient">
+        <MuiWarningMessage v-if="reward && reward.insufficient">
             <MuiTypography>
                 {{ $t("campaign.rewards.insufficientBalance.label") }}
             </MuiTypography>
             <template #popover>
                 <MuiTypography>
                     {{
-                        $t("campaign.rewards.insufficientBalance.required", {
-                            amount: rewardWithFees.amount,
-                            symbol: rewardWithFees.symbol,
-                        })
-                    }}
-                </MuiTypography>
-                <MuiTypography>
-                    {{
                         $t("campaign.rewards.insufficientBalance.balance", {
-                            balance: rewardWithFees.balance,
-                            symbol: rewardWithFees.symbol,
+                            symbol: reward.symbol,
+                            balance: reward.balance,
                         })
                     }}
                 </MuiTypography>

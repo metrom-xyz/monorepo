@@ -20,18 +20,9 @@ const publicClient = usePublicClient();
 
 const approving = ref(false);
 
-const rewardPlusFees = computed(
-    () =>
-        parseUnits(
-            props.reward.amount.toString(),
-            props.reward.token.decimals,
-        ) +
-        (parseUnits(
-            props.reward.amount.toString(),
-            props.reward.token.decimals,
-        ) *
-            BigInt(props.globalFee.toString())) /
-            1_000_000n,
+const amountToApprove = parseUnits(
+    props.reward.amount.toString(),
+    props.reward.token.decimals,
 );
 
 const { simulation: simulatedApprove, loading: simulatingApprove } =
@@ -41,7 +32,7 @@ const { simulation: simulatedApprove, loading: simulatingApprove } =
             address: props.reward.token?.address as Address,
             abi: erc20Abi,
             functionName: "approve",
-            args: [props.metrom.address, rewardPlusFees.value],
+            args: [props.metrom.address, amountToApprove],
         })),
     );
 
@@ -67,13 +58,11 @@ async function handleApproveRewardOnClick() {
 </script>
 <template>
     <SubmitButton
-        :loading="
-            $props.loading || !rewardPlusFees || simulatingApprove || approving
-        "
+        :loading="$props.loading || simulatingApprove || approving"
         @click="handleApproveRewardOnClick"
     >
         {{ $t("campaign.deploy.approveReward") }}
-        {{ formatUnits(rewardPlusFees, props.reward.token.decimals) }}
+        {{ formatUnits(amountToApprove, props.reward.token.decimals) }}
         {{ $props.reward.token?.symbol }}
     </SubmitButton>
 </template>
