@@ -1,8 +1,21 @@
 <script setup lang="ts">
-import type { RewardsPickerTypes } from "./types";
+import type { RewardsPickerTypes, TokenInfoWithBalance } from "./types";
 import { watchEffect } from "vue";
 import PlusCircleIcon from "@/icons/PlusCircleIcon.vue";
 import RewardRow from "./reward-row/RewardRow.vue";
+import { useTokens } from "@/stores/tokens";
+import {
+    useAccount,
+    useChainId,
+    useReadContract,
+    useReadContracts,
+} from "vevm";
+import { erc20Abi, type Address } from "viem";
+import { useImportableToken } from "@/composables/useImportableToken";
+import { computed } from "vue";
+import { ref } from "vue";
+import { ADDRESS } from "@metrom-xyz/contracts";
+import metromAbi from "@/abis/metrom";
 
 const props = defineProps<RewardsPickerTypes>();
 const emits = defineEmits<{
@@ -12,12 +25,106 @@ const emits = defineEmits<{
     error: [boolean];
 }>();
 
+const account = useAccount();
+const chainId = useChainId();
+const tokensInChain = useTokens().getTokens(
+    chainId.value,
+) as TokenInfoWithBalance[];
+
+const tokenSearchQuery = ref();
+const importedTokens = ref<TokenInfoWithBalance[]>([]);
+const rewardsWithInsufficientBalance = ref<string[]>([]);
+
+const metrom = computed(() => {
+    if (!account.value.chainId) return;
+    return ADDRESS[account.value.chainId];
+});
+
+const { data: globalFee, loading: loadingGlobalFee } = useReadContract(
+    computed(() => {
+        return {
+            address: metrom.value?.address as Address,
+            abi: metromAbi,
+            functionName: "globalFee",
+        };
+    }),
+);
+
+const { data: rawBalances, loading: loadingBalances } = useReadContracts(
+    computed(() => ({
+        contracts:
+            (account.value.isConnected &&
+                account.value.address &&
+                tokensInChain.map((token) => {
+                    return {
+                        abi: erc20Abi,
+                        address: token.address as Address,
+                        functionName: "balanceOf",
+                        args: [account.value.address],
+                    };
+                })) ||
+            [],
+        allowFailure: true,
+    })),
+);
+
+const { loading: loadingImportableToken, token: importableToken } =
+    useImportableToken(
+        computed(() => ({
+            connectedAccountAddress: account.value.address,
+            debouncedQuery: tokenSearchQuery.value,
+            withBalances: account.value.isConnected,
+        })),
+    );
+
+const tokensWithBalance = computed(() => {
+    const tokensInChainWithBalance = tokensInChain.reduce(
+        (accumulator: Record<string, TokenInfoWithBalance>, token, i) => {
+            if (!rawBalances.value?.[i]) return accumulator;
+
+            const rawBalance = rawBalances.value[i];
+            accumulator[`${token.address.toLowerCase()}-${token.chainId}`] =
+                rawBalance.status !== "failure"
+                    ? {
+                          ...token,
+                          balance: rawBalance.result as bigint,
+                      }
+                    : token;
+            return accumulator;
+        },
+        {},
+    );
+
+    const tokensWithBalance = tokensInChain.map((token) => {
+        const tokenWithBalance =
+            tokensInChainWithBalance[
+                `${token.address.toLowerCase()}-${token.chainId}`
+            ];
+        return tokenWithBalance || token;
+    });
+
+    return tokensWithBalance.concat(importedTokens.value);
+});
+
+// keep track of the imported tokens
+watchEffect(() => {
+    if (
+        importableToken.value &&
+        !importedTokens.value.find(
+            (token) => token.address === importableToken.value?.address,
+        )
+    )
+        importedTokens.value.push(importableToken.value);
+});
+
 watchEffect(() => {
     emits(
         "error",
         props.completed &&
-            props.state.rewards.filter(({ amount, token }) => !token || !amount)
-                .length > 0,
+            (rewardsWithInsufficientBalance.value.length > 0 ||
+                props.state.rewards.filter(
+                    ({ amount, token }) => !token || !amount,
+                ).length > 0),
     );
 
     if (
@@ -32,6 +139,25 @@ watchEffect(() => {
 function handleRewardOnTokenRemove(index: number) {
     emits("removeReward", index);
 }
+
+function handleRewardOnInsufficientBalance(
+    address: string,
+    insufficientBalance: boolean,
+) {
+    const existing = rewardsWithInsufficientBalance.value.find(
+        (reward) => reward === address,
+    );
+
+    if (insufficientBalance) {
+        if (!existing) rewardsWithInsufficientBalance.value.push(address);
+    } else {
+        if (existing)
+            rewardsWithInsufficientBalance.value =
+                rewardsWithInsufficientBalance.value.filter(
+                    (reward) => reward !== address,
+                );
+    }
+}
 </script>
 <template>
     <div class="rewards_picker__root">
@@ -42,10 +168,19 @@ function handleRewardOnTokenRemove(index: number) {
             >
                 <RewardRow
                     :index="index"
+                    :tokens="tokensWithBalance"
+                    :globalFee="globalFee"
+                    :loading="
+                        loadingGlobalFee ||
+                        loadingBalances ||
+                        loadingImportableToken
+                    "
                     :rewards="$props.state.rewards"
                     v-model:token="$props.state.rewards[index].token"
                     v-model:amount="$props.state.rewards[index].amount"
                     :onRemove="handleRewardOnTokenRemove"
+                    @searchQueryChange="tokenSearchQuery = $event"
+                    @insufficientBalance="handleRewardOnInsufficientBalance"
                 />
             </template>
         </div>

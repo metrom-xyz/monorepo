@@ -2,8 +2,8 @@ import type { ChainContract } from "viem";
 import type { Component } from "vue";
 import type { AmmSubgraphClient, MetromSubgraphClient, Pair } from "sdk";
 import type { AccordionSelectOption } from "@/ui/accordion-select/types";
-import type { TokenInfo } from "@uniswap/token-lists";
 import type { Dayjs } from "dayjs";
+import type { TokenInfoWithBalance } from "./components/campaign-creation-form/rewards/types";
 
 export enum SupportedAmm {
     Univ3 = "uni-v3",
@@ -28,7 +28,7 @@ export interface FinalizedState {
 
 export interface Reward {
     id: string;
-    token?: TokenInfo;
+    token?: TokenInfoWithBalance;
     amount?: number;
 }
 
