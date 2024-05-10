@@ -5,8 +5,6 @@ import { fileURLToPath } from "node:url";
 import { exec } from "node:child_process";
 
 const NETWORK_NAME: Record<SupportedChain, string> = {
-    [SupportedChain.CeloAlfajores]: "celo-alfajores",
-    [SupportedChain.Sepolia]: "sepolia",
     [SupportedChain.Holesky]: "holesky",
 };
 

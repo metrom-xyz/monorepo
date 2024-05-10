@@ -12,6 +12,7 @@ import {
     SetMinimumCampaignDuration,
     SetMaximumCampaignDuration,
     SetSpecificFee,
+    RecoverReward,
 } from "../../generated/Metrom/Metrom";
 import {
     AcceptOwnershipEvent,
@@ -29,6 +30,7 @@ import {
     SetMaximumCampaignDurationEvent,
     SetUpdaterEvent,
     TransferOwnershipEvent,
+    RecoverRewardEvent,
 } from "../../generated/schema";
 import { METROM_ADDRESS } from "../addresses";
 import {
@@ -162,6 +164,23 @@ export function handleClaimReward(event: ClaimReward): void {
     claimRewardEvent.amount = event.params.amount;
     claimRewardEvent.receiver = event.params.receiver;
     claimRewardEvent.save();
+}
+
+export function handleRecoverReward(event: RecoverReward): void {
+    let campaign = getCampaignOrThrow(event.params.campaignId);
+    let reward = getRewardOrThrow(campaign.id, event.params.token);
+
+    reward.unclaimed = reward.unclaimed.minus(event.params.amount);
+    reward.save();
+
+    let recoverRewardEvent = new RecoverRewardEvent(getEventId(event));
+    recoverRewardEvent.transaction = getOrCreateTransaction(event).id;
+    recoverRewardEvent.metrom = METROM_ADDRESS;
+    recoverRewardEvent.campaign = campaign.id;
+    recoverRewardEvent.token = event.params.token;
+    recoverRewardEvent.amount = event.params.amount;
+    recoverRewardEvent.receiver = event.params.receiver;
+    recoverRewardEvent.save();
 }
 
 export function handleClaimFee(event: ClaimFee): void {
