@@ -165,8 +165,8 @@ importers:
         specifier: ^5.0.18
         version: 5.0.18
       '@metrom-xyz/contracts':
-        specifier: ^0.5.10
-        version: 0.5.10(typescript@5.4.5)
+        specifier: ^0.6.1
+        version: 0.6.1(typescript@5.4.5)
       '@uniswap/token-lists':
         specifier: 1.0.0-beta.34
         version: 1.0.0-beta.34
@@ -359,8 +359,8 @@ importers:
   packages/sdk:
     dependencies:
       '@metrom-xyz/contracts':
-        specifier: ^0.5.9
-        version: 0.5.10(typescript@5.4.5)
+        specifier: ^0.6.1
+        version: 0.6.1(typescript@5.4.5)
       tiny-invariant:
         specifier: ^1.3.3
         version: 1.3.3
@@ -3439,17 +3439,6 @@ packages:
       - supports-color
     dev: false
 
-  /@metrom-xyz/contracts@0.5.10(typescript@5.4.5):
-    resolution: {integrity: sha512-LlofgFvxSn3M6LOm9veCQ0CKw5H/p1cUJURWLKW/M7MPJF5oL5MPpga3BVMguiHZcpuYzuLpcvQdlYCLOjuI+A==}
-    dependencies:
-      viem: 2.9.31(typescript@5.4.5)
-    transitivePeerDependencies:
-      - bufferutil
-      - typescript
-      - utf-8-validate
-      - zod
-    dev: false
-
   /@metrom-xyz/contracts@0.6.1(typescript@5.4.5):
     resolution: {integrity: sha512-OIrejJ6k63QVU72t4Yr5EzFU0FcjRKvpYZc36TY6hlEPCSUgug603boW/r8tHF4t9Ik1NT2OS1u3kK3nveywyg==}
     dependencies:
@@ -3459,7 +3448,6 @@ packages:
       - typescript
       - utf-8-validate
       - zod
-    dev: true
 
   /@motionone/animation@10.17.0:
     resolution: {integrity: sha512-ANfIN9+iq1kGgsZxs+Nz96uiNcPLGTXwfNo2Xz/fcJXniPYpaz/Uyrfa+7I5BPLxCP82sh7quVDudf1GABqHbg==}
@@ -14341,7 +14329,6 @@ packages:
       - bufferutil
       - utf-8-validate
       - zod
-    dev: true
 
   /viem@2.9.31(typescript@5.4.5):
     resolution: {integrity: sha512-8aJ8Dm/591Czwb/nRayo0z8Ls5KxqC4QYE33fmHwhx2tDUWC/hHcPZqjLRSTWFtAfi0aZKvP7BeB6UZ3ZkTRhQ==}
