@@ -87,12 +87,14 @@ function handleEditOnClick() {
         </SubmitButton>
         <ApproveRewards
             v-else-if="!allRewardsApproved && metrom"
+            :disabled="$props.disabled"
             :rewards="validatedState.rewards"
             :metrom="metrom"
             @allApproved="allRewardsApproved = true"
         />
         <DeployButton
             v-else-if="metrom"
+            :disabled="$props.disabled"
             :metrom="metrom"
             :state="validatedState"
             @deployed="deployed = true"

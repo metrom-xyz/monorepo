@@ -7,6 +7,8 @@ import dayjs, { Dayjs } from "dayjs";
 import { onMounted } from "vue";
 import { onUnmounted } from "vue";
 import { useCampaignMinMaxDuration } from "@/composables/useCampaignMinMaxDuration";
+import MuiTypography from "@/ui/typography/MuiTypography.vue";
+import MuiWarningMessage from "@/ui/MuiWarningMessage.vue";
 
 const props = defineProps<DatePickerTypes>();
 const emits = defineEmits<{
@@ -42,8 +44,11 @@ watch(
             rangeError.value =
                 campaignDuration.value < durationLimits.value.min ||
                 campaignDuration.value > durationLimits.value.max ||
-                dayjs(props.state.range?.from).isBefore(dayjs(), "seconds") ||
-                dayjs(props.state.range?.to).isBefore(dayjs(), "seconds");
+                dayjs(props.state.range?.from).isBefore(
+                    minDate.value,
+                    "seconds",
+                ) ||
+                dayjs(props.state.range?.to).isBefore(minDate.value, "seconds");
         }
     },
     { immediate: false },
@@ -81,6 +86,21 @@ onUnmounted(() => {
                 endPlaceholder: $t('campaign.range.picker.endPlaceholder'),
             }"
         />
+        <MuiWarningMessage v-if="rangeError" class="date_picker__warning">
+            <MuiTypography>
+                {{ $t("campaign.range.picker.error.label") }}
+            </MuiTypography>
+            <template v-if="durationLimits" #popover>
+                <MuiTypography>{{
+                    $t("campaign.range.picker.error.description", {
+                        minDuration: Math.floor(durationLimits.min / 60),
+                        maxDuration: Math.floor(
+                            durationLimits.max / 60 / 60 / 24,
+                        ),
+                    })
+                }}</MuiTypography>
+            </template>
+        </MuiWarningMessage>
     </div>
 </template>
 <style>
@@ -88,19 +108,7 @@ onUnmounted(() => {
     @apply flex flex-col gap-2 p-3;
 }
 
-.date_picker__divider {
-    @apply h-[1px] border-b border-gray-400;
-}
-
-.date_picker__network_accordion {
-    @apply flex gap-2 items-center;
-}
-
-.date_picker__network_accordion_icon_wrapper {
-    @apply p-1.5 bg-green-light rounded-full;
-}
-
-.date_picker__network_accordion_icon {
-    @apply w-5 h-5;
+.date_picker__warning {
+    @apply self-end;
 }
 </style>

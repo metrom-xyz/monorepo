@@ -14,8 +14,8 @@ import { formatUnits } from "viem";
 import { formatDecimals } from "sdk";
 import { useAccount } from "vevm";
 import { computed } from "vue";
-import MuiPopover from "@/ui/popover/MuiPopover.vue";
 import { onUnmounted } from "vue";
+import MuiWarningMessage from "@/ui/MuiWarningMessage.vue";
 
 const props = defineProps<RewardRowProps>();
 const emits = defineEmits<{
@@ -29,7 +29,6 @@ const account = useAccount();
 const attrs = useAttrs();
 
 const open = ref<boolean>();
-const insufficientBalancePopover = ref(false);
 const tokenError = ref(false);
 const amountError = ref(false);
 const rewardWithFees = ref<{
@@ -165,51 +164,29 @@ onUnmounted(() => {
                 @click="handleRewardOnTokenRemove"
             />
         </div>
-        <div
-            v-if="rewardWithFees && rewardWithFees.insufficient"
-            class="reward_row__insufficient__balance__warning"
-        >
-            <MuiPopover
-                :open="insufficientBalancePopover"
-                :placement="'top-start'"
-            >
-                <MuiTypography
-                    @mouseenter="insufficientBalancePopover = true"
-                    @mouseleave="insufficientBalancePopover = false"
-                    class="reward_row__insufficient__balance__label"
-                >
-                    {{ $t("campaign.rewards.insufficientBalance.label") }}
+        <MuiWarningMessage v-if="rewardWithFees && rewardWithFees.insufficient">
+            <MuiTypography>
+                {{ $t("campaign.rewards.insufficientBalance.label") }}
+            </MuiTypography>
+            <template #popover>
+                <MuiTypography>
+                    {{
+                        $t("campaign.rewards.insufficientBalance.required", {
+                            amount: rewardWithFees.amount,
+                            symbol: rewardWithFees.symbol,
+                        })
+                    }}
                 </MuiTypography>
-                <template #popover>
-                    <div
-                        class="reward_row__insufficient__balance__warning__popover"
-                    >
-                        <MuiTypography>
-                            {{
-                                $t(
-                                    "campaign.rewards.insufficientBalance.required",
-                                    {
-                                        amount: rewardWithFees.amount,
-                                        symbol: rewardWithFees.symbol,
-                                    },
-                                )
-                            }}
-                        </MuiTypography>
-                        <MuiTypography>
-                            {{
-                                $t(
-                                    "campaign.rewards.insufficientBalance.balance",
-                                    {
-                                        balance: rewardWithFees.balance,
-                                        symbol: rewardWithFees.symbol,
-                                    },
-                                )
-                            }}
-                        </MuiTypography>
-                    </div>
-                </template>
-            </MuiPopover>
-        </div>
+                <MuiTypography>
+                    {{
+                        $t("campaign.rewards.insufficientBalance.balance", {
+                            balance: rewardWithFees.balance,
+                            symbol: rewardWithFees.symbol,
+                        })
+                    }}
+                </MuiTypography>
+            </template>
+        </MuiWarningMessage>
     </div>
 </template>
 <style>
@@ -256,17 +233,5 @@ onUnmounted(() => {
 
 .reward_row__amount__input__selected {
     @apply justify-between;
-}
-
-.reward_row__insufficient__balance__warning {
-    @apply bg-yellow py-1 px-2 rounded-lg w-fit;
-}
-
-.reward_row__insufficient__balance__label {
-    @apply hover:cursor-pointer;
-}
-
-.reward_row__insufficient__balance__warning__popover {
-    @apply flex flex-col rounded-lg bg-yellow gap-2 p-3;
 }
 </style>
