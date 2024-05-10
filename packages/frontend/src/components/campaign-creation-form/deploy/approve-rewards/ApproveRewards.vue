@@ -105,6 +105,7 @@ watchEffect(() => {
         :index="approvingRewardIndex"
         :total="rewardsToApprove.length"
         :loading="loadingAllowances || loadingGlobalFee"
+        :disabled="$props.disabled"
         :onApprove="handleApproveRewardOnClick"
     />
 </template>
