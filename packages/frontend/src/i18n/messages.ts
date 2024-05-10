@@ -75,6 +75,11 @@ export const messages = {
                     endLabel: "End",
                     startPlaceholder: "Start",
                     endPlaceholder: "End",
+                    error: {
+                        label: "Period not valid",
+                        description:
+                            "The start date can't be in the past, and the campaign duration must be more than {minDuration} minutes but less than {maxDuration} days.",
+                    },
                 },
             },
             deploy: {

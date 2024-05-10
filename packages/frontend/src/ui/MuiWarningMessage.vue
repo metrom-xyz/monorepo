@@ -18,7 +18,6 @@ const open = ref(false);
     >
         <MuiPopover :open="!!$slots.popover && open" :placement="'top-start'">
             <slot></slot>
-
             <template v-if="!!$slots.popover" #popover>
                 <div class="mui_warning_message__popover__wrapper">
                     <slot name="popover"></slot>
@@ -37,6 +36,6 @@ const open = ref(false);
 }
 
 .mui_warning_message__popover__wrapper {
-    @apply flex flex-col rounded-lg bg-yellow gap-2 p-3;
+    @apply flex flex-col rounded-lg bg-yellow gap-2 p-3 max-w-96;
 }
 </style>
