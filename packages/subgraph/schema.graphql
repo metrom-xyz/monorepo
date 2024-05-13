@@ -17,6 +17,10 @@ type Transaction @entity(immutable: true) {
     claimRewardEvent: ClaimRewardEvent! @derivedFrom(field: "transaction")
     recoverRewardEvent: RecoverRewardEvent! @derivedFrom(field: "transaction")
     claimFee: ClaimFeeEvent! @derivedFrom(field: "transaction")
+    transferCampaignOwnershipEvents: [TransferCampaignOwnershipEvent!]!
+        @derivedFrom(field: "transaction")
+    acceptCampaignOwnershipEvents: [AcceptCampaignOwnershipEvent!]!
+        @derivedFrom(field: "transaction")
     transferOwnershipEvents: [TransferOwnershipEvent!]!
         @derivedFrom(field: "transaction")
     acceptOwnershipEvents: [AcceptOwnershipEvent!]!
@@ -53,6 +57,10 @@ type Metrom @entity {
     claimRewardEvent: ClaimRewardEvent! @derivedFrom(field: "metrom")
     recoverRewardEvent: RecoverRewardEvent! @derivedFrom(field: "metrom")
     claimFee: ClaimFeeEvent! @derivedFrom(field: "metrom")
+    transferCampaignOwnershipEvents: [TransferCampaignOwnershipEvent!]!
+        @derivedFrom(field: "metrom")
+    acceptCampaignOwnershipEvents: [AcceptCampaignOwnershipEvent!]!
+        @derivedFrom(field: "metrom")
     transferOwnershipEvents: [TransferOwnershipEvent!]!
         @derivedFrom(field: "metrom")
     acceptOwnershipEvents: [AcceptOwnershipEvent!]!
@@ -97,8 +105,8 @@ type CreateCampaignEvent @entity(immutable: true) {
     transaction: Transaction!
     metrom: Metrom!
     campaign: Campaign!
-    chainId: BigInt!
     owner: Bytes!
+    chainId: BigInt!
     pool: Bytes!
     from: BigInt!
     to: BigInt!
@@ -144,6 +152,22 @@ type ClaimFeeEvent @entity(immutable: true) {
     token: Token!
     amount: BigInt!
     receiver: Bytes!
+}
+
+type TransferCampaignOwnershipEvent @entity(immutable: true) {
+    id: Bytes!
+    transaction: Transaction!
+    metrom: Metrom!
+    campaign: Campaign!
+    owner: Bytes!
+}
+
+type AcceptCampaignOwnershipEvent @entity(immutable: true) {
+    id: Bytes!
+    transaction: Transaction!
+    metrom: Metrom!
+    campaign: Campaign!
+    owner: Bytes!
 }
 
 type TransferOwnershipEvent @entity(immutable: true) {
@@ -200,6 +224,8 @@ type Campaign @entity {
     id: Bytes!
     transaction: Transaction!
     metrom: Metrom!
+    owner: Bytes!
+    pendingOwner: Bytes!
     chainId: BigInt!
     pool: Bytes!
     from: BigInt!
@@ -211,6 +237,10 @@ type Campaign @entity {
     rewards: [Reward!]! @derivedFrom(field: "campaign")
 
     createEvent: CreateCampaignEvent! @derivedFrom(field: "campaign")
+    transferOwnershipEvents: [TransferCampaignOwnershipEvent!]!
+        @derivedFrom(field: "campaign")
+    acceptOwnershipEvents: [AcceptCampaignOwnershipEvent!]!
+        @derivedFrom(field: "campaign")
     distributeRewardEvents: [DistributeRewardEvent!]!
         @derivedFrom(field: "campaign")
     claimRewardEvents: [ClaimRewardEvent!]! @derivedFrom(field: "campaign")

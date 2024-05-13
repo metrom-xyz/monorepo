@@ -9,8 +9,8 @@ dataSources:
     network: holesky
     source:
       abi: Metrom
-      address: "0xA310dee8A01880977Ba24d39e58049AE02F77EC3"
-      startBlock: 1516415
+      address: "0xc9CC9a4d4F2c57F0d47c169A3d96D47FfFe5E0b6"
+      startBlock: 1536780
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
@@ -18,6 +18,7 @@ dataSources:
       file: ./src/mappings/metrom.ts
       entities:
         - AcceptOwnershipEvent
+        - AcceptCampaignOwnershipEvent
         - Campaign
         - ClaimRewardEvent
         - ClaimFeeEvent
@@ -32,6 +33,7 @@ dataSources:
         - SetUpdaterEvent
         - Token
         - TransferOwnershipEvent
+        - TransferCampaignOwnershipEvent
         - Transaction
       abis:
         - name: Metrom
@@ -56,6 +58,10 @@ dataSources:
           handler: handleRecoverReward
         - event: ClaimFee(address,uint256,indexed address)
           handler: handleClaimFee
+        - event: TransferCampaignOwnership(indexed bytes32,indexed address)
+          handler: handleTransferCampaignOwnership
+        - event: AcceptCampaignOwnership(indexed bytes32)
+          handler: handleAcceptCampaignOwnership
         - event: TransferOwnership(indexed address)
           handler: handleTransferOwnership
         - event: AcceptOwnership()
@@ -64,7 +70,7 @@ dataSources:
           handler: handleSetGlobalFee
         - event: SetSpecificFee(address,uint32)
           handler: handleSetSpecificFee
-        - event: SetUpdater(indexed address)
-          handler: handleSetUpdater
         - event: SetMinimumCampaignDuration(uint32)
           handler: handleSetMinimumCampaignDuration
+        - event: SetUpdater(indexed address)
+          handler: handleSetUpdater

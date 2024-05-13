@@ -3442,7 +3442,7 @@ packages:
   /@metrom-xyz/contracts@0.6.2(typescript@5.4.5):
     resolution: {integrity: sha512-DPj8FeTfj2nzCFxOpOmeCq1McM6atbJySyVR9lBcWvc0O7FH77fKvXVet8E8ZLt0UVv1GTxVmpJ39XWvDd4N3Q==}
     dependencies:
-      viem: 2.10.3(typescript@5.4.5)
+      viem: 2.10.5(typescript@5.4.5)
     transitivePeerDependencies:
       - bufferutil
       - typescript
@@ -14308,8 +14308,8 @@ packages:
       - zod
     dev: false
 
-  /viem@2.10.3(typescript@5.4.5):
-    resolution: {integrity: sha512-GmPMH+D/SDSXpVSjLM0GN1H1/h4NUPHaIqnFLwAit8nkfCiDuajKflGFiMPCIs1h7QZlBICuKvON/rc09H+w6Q==}
+  /viem@2.10.5(typescript@5.4.5):
+    resolution: {integrity: sha512-rzU2y6poYgXu7axcQmwddaJ/nGP3tjtslXdUCu+PvryeXACuuqoyP3chjTEHciG84a663gYbrVGbxNUFA3aURQ==}
     peerDependencies:
       typescript: '>=5.0.4'
     peerDependenciesMeta:
