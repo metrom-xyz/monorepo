@@ -93,6 +93,7 @@ export function handleCreateCampaign(event: CreateCampaign): void {
     campaign.transaction = transaction.id;
     campaign.metrom = metrom.id;
     campaign.owner = event.params.owner;
+    campaign.pendingOwner = Address.zero();
     campaign.chainId = event.params.chainId;
     campaign.pool = event.params.pool;
     campaign.from = event.params.from;
