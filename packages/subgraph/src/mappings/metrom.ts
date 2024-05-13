@@ -13,6 +13,8 @@ import {
     SetMaximumCampaignDuration,
     SetSpecificFee,
     RecoverReward,
+    TransferCampaignOwnership,
+    AcceptCampaignOwnership,
 } from "../../generated/Metrom/Metrom";
 import {
     AcceptOwnershipEvent,
@@ -31,6 +33,8 @@ import {
     SetUpdaterEvent,
     TransferOwnershipEvent,
     RecoverRewardEvent,
+    TransferCampaignOwnershipEvent,
+    AcceptCampaignOwnershipEvent,
 } from "../../generated/schema";
 import { METROM_ADDRESS } from "../addresses";
 import {
@@ -88,6 +92,7 @@ export function handleCreateCampaign(event: CreateCampaign): void {
     let campaign = new Campaign(event.params.id);
     campaign.transaction = transaction.id;
     campaign.metrom = metrom.id;
+    campaign.owner = event.params.owner;
     campaign.chainId = event.params.chainId;
     campaign.pool = event.params.pool;
     campaign.from = event.params.from;
@@ -122,6 +127,7 @@ export function handleCreateCampaign(event: CreateCampaign): void {
     createCampaignEvent.transaction = transaction.id;
     createCampaignEvent.metrom = METROM_ADDRESS;
     createCampaignEvent.campaign = event.params.id;
+    createCampaignEvent.owner = event.params.owner;
     createCampaignEvent.chainId = event.params.chainId;
     createCampaignEvent.owner = event.params.owner;
     createCampaignEvent.pool = event.params.pool;
@@ -196,6 +202,42 @@ export function handleClaimFee(event: ClaimFee): void {
     claimFeeEvent.amount = event.params.amount;
     claimFeeEvent.receiver = event.params.receiver;
     claimFeeEvent.save();
+}
+
+export function handleTransferCampaignOwnership(
+    event: TransferCampaignOwnership,
+): void {
+    let campaign = getCampaignOrThrow(event.params.id);
+    campaign.pendingOwner = event.params.owner;
+    campaign.save();
+
+    let transferCampaignOwnershipEvent = new TransferCampaignOwnershipEvent(
+        getEventId(event),
+    );
+    transferCampaignOwnershipEvent.transaction =
+        getOrCreateTransaction(event).id;
+    transferCampaignOwnershipEvent.metrom = METROM_ADDRESS;
+    transferCampaignOwnershipEvent.campaign = campaign.id;
+    transferCampaignOwnershipEvent.owner = event.params.owner;
+    transferCampaignOwnershipEvent.save();
+}
+
+export function handleAcceptCampaignOwnership(
+    event: AcceptCampaignOwnership,
+): void {
+    let campaign = getCampaignOrThrow(event.params.id);
+    campaign.owner = campaign.pendingOwner;
+    campaign.pendingOwner = Address.zero();
+    campaign.save();
+
+    let acceptCampaignOwnershipEvent = new AcceptCampaignOwnershipEvent(
+        getEventId(event),
+    );
+    acceptCampaignOwnershipEvent.transaction = getOrCreateTransaction(event).id;
+    acceptCampaignOwnershipEvent.metrom = METROM_ADDRESS;
+    acceptCampaignOwnershipEvent.campaign = campaign.id;
+    acceptCampaignOwnershipEvent.owner = campaign.owner;
+    acceptCampaignOwnershipEvent.save();
 }
 
 export function handleTransferOwnership(event: TransferOwnership): void {
