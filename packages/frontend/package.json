@@ -16,7 +16,7 @@
     "dependencies": {
         "@floating-ui/vue": "^1.0.6",
         "@fontsource/inter": "^5.0.18",
-        "@metrom-xyz/contracts": "^0.6.1",
+        "@metrom-xyz/contracts": "^0.6.2",
         "@uniswap/token-lists": "1.0.0-beta.34",
         "@vueuse/core": "^10.9.0",
         "@wagmi/connectors": "^4.1.28",
