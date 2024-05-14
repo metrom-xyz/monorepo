@@ -92,6 +92,10 @@ export const messages = {
             },
         },
         allCampaigns: {
+            rewards: {
+                available: "Available claims: {total}",
+                claim: "Claim",
+            },
             table: {
                 filters: {
                     pairs: "Search for pairs",
@@ -118,6 +122,7 @@ export const messages = {
                 empty: "Nothing here.",
             },
         },
+
         carrot: "Carrot",
         powered: "Powered by {0}",
         ui: {
