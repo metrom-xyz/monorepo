@@ -6,6 +6,7 @@ import { ref } from "vue";
 import { formatUnits } from "viem";
 import MuiTypography from "@/ui/typography/MuiTypography.vue";
 import MuiTextField from "@/ui/text-field/MuiTextField.vue";
+import { formatDecimals } from "sdk";
 
 defineProps<CampaignsTableRewardsProps>();
 
@@ -39,13 +40,23 @@ const popover = ref(false);
                     <MuiTextField
                         :label="$t('allCampaigns.table.rewards.amount')"
                         :value="
-                            formatUnits(reward.amount, reward.token.decimals)
+                            formatDecimals({
+                                number: formatUnits(
+                                    reward.amount,
+                                    reward.token.decimals,
+                                ),
+                            })
                         "
                     />
                     <MuiTextField
                         :label="$t('allCampaigns.table.rewards.unclaimed')"
                         :value="
-                            formatUnits(reward.unclaimed, reward.token.decimals)
+                            formatDecimals({
+                                number: formatUnits(
+                                    reward.unclaimed,
+                                    reward.token.decimals,
+                                ),
+                            })
                         "
                     />
                 </div>
