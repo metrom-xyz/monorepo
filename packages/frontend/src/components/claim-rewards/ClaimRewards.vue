@@ -51,21 +51,14 @@ const claimRewardsParams = computed(() => {
             }[],
             reward,
         ) => {
-            // FIXME: remove filter
             accumulator.push(
-                ...reward.claims
-                    .filter(
-                        (claim) =>
-                            claim.token.address !==
-                            "0xe3da4e4b76c4ed3e4227db20f20d1f25a4507f9b",
-                    )
-                    .map((claim) => ({
-                        campaignId: reward.campaignId,
-                        token: claim.token.address,
-                        amount: claim.amount,
-                        proof: claim.proof,
-                        receiver: account.value.address!,
-                    })),
+                ...reward.claims.map((claim) => ({
+                    campaignId: reward.campaignId,
+                    token: claim.token.address,
+                    amount: claim.amount,
+                    proof: claim.proof,
+                    receiver: account.value.address!,
+                })),
             );
 
             return accumulator;
