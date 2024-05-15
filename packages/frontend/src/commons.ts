@@ -1,4 +1,9 @@
-import { SupportedChain, AmmSubgraphClient, MetromSubgraphClient } from "sdk";
+import {
+    SupportedChain,
+    AmmSubgraphClient,
+    MetromSubgraphClient,
+    MetromApiClient,
+} from "sdk";
 import { type Transport, http, type Chain } from "viem";
 import { holesky } from "viem/chains";
 import { SupportedAmm, type Amm, type ChainData } from "./types";
@@ -104,6 +109,9 @@ export const CHAIN_DATA: Record<SupportedChain, ChainData> = {
             backgroundColor: "#000",
         },
         contract: ADDRESS[SupportedChain.Holesky],
+        metromApiClient: new MetromApiClient(
+            "https://api.dev.metrom.xyz/holesky",
+        ),
         metromSubgraphClient: new MetromSubgraphClient(
             SupportedChain.Holesky,
             "https://api.studio.thegraph.com/query/68570/metrom-holesky/version/latest",

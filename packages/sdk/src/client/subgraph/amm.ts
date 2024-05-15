@@ -6,7 +6,7 @@ import {
     GetPair,
     type GetPairQueryResult,
 } from "./queries";
-import { type Pair } from "../entities";
+import { type Pair } from "../../entities";
 import type { Address } from "viem";
 
 const PAGE_SIZE = 500;

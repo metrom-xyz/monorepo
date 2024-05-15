@@ -165,8 +165,8 @@ importers:
         specifier: ^5.0.18
         version: 5.0.18
       '@metrom-xyz/contracts':
-        specifier: ^0.6.2
-        version: 0.6.2(typescript@5.4.5)
+        specifier: ^0.6.3
+        version: 0.6.3(typescript@5.4.5)
       '@uniswap/token-lists':
         specifier: 1.0.0-beta.34
         version: 1.0.0-beta.34
@@ -359,8 +359,8 @@ importers:
   packages/sdk:
     dependencies:
       '@metrom-xyz/contracts':
-        specifier: ^0.6.2
-        version: 0.6.2(typescript@5.4.5)
+        specifier: ^0.6.3
+        version: 0.6.3(typescript@5.4.5)
       tiny-invariant:
         specifier: ^1.3.3
         version: 1.3.3
@@ -3439,8 +3439,8 @@ packages:
       - supports-color
     dev: false
 
-  /@metrom-xyz/contracts@0.6.2(typescript@5.4.5):
-    resolution: {integrity: sha512-DPj8FeTfj2nzCFxOpOmeCq1McM6atbJySyVR9lBcWvc0O7FH77fKvXVet8E8ZLt0UVv1GTxVmpJ39XWvDd4N3Q==}
+  /@metrom-xyz/contracts@0.6.3(typescript@5.4.5):
+    resolution: {integrity: sha512-spa4hhyil24MuKW1ArqQcc/PTfKUrWcBpH1MHfX6jVVQs3QyzA7rOk7GYjbCSmlDkLQP/p/pTrMMuSnBuRjQfg==}
     dependencies:
       viem: 2.10.5(typescript@5.4.5)
     transitivePeerDependencies:

@@ -7,10 +7,11 @@ import {
     useSimulateContract,
     useWagmiConfig,
 } from "vevm";
-import { erc20Abi, type Address, parseUnits, formatUnits } from "viem";
+import { erc20Abi, type Address, parseUnits } from "viem";
 import { ref } from "vue";
 import { writeContract } from "@wagmi/core";
 import SubmitButton from "../../submit-button/SubmitButton.vue";
+import { formatDecimals } from "sdk";
 
 const props = defineProps<ApproveRewardProps>();
 
@@ -62,7 +63,7 @@ async function handleApproveRewardOnClick() {
         @click="handleApproveRewardOnClick"
     >
         {{ $t("campaign.deploy.approveReward") }}
-        {{ formatUnits(amountToApprove, props.reward.token.decimals) }}
+        {{ formatDecimals({ number: props.reward.amount.toString() }) }}
         {{ $props.reward.token?.symbol }}
     </SubmitButton>
 </template>

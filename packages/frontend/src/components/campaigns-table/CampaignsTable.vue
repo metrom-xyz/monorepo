@@ -15,6 +15,7 @@ import MuiSkeleton from "@/ui/skeleton/MuiSkeleton.vue";
 import CampaignsTableRewards from "./rewards/CampaignsTableRewards.vue";
 import type { CampaignsTableProps } from "./types";
 import CampaignsTableExplorer from "./explore/CampaignsTableExplorer.vue";
+import ClaimRewards from "../claim-rewards/ClaimRewards.vue";
 
 const HEADERS = [
     "allCampaigns.table.header.pair",
@@ -54,13 +55,15 @@ const { containerProps, wrapperProps, list } = useVirtualList(items, {
 <template>
     <div class="campaigns_table__root">
         <div class="campaigns_table__filters">
-            <MuiTextInput
-                :icon="SearchIcon"
-                iconLeft
-                :placeholder="$t('allCampaigns.table.filters.pairs')"
-                v-model="searchQuery"
-                class="campaigns_table__pair__filter"
-            />
+            <div class="campaigns_table__pair__filter">
+                <MuiTextInput
+                    :icon="SearchIcon"
+                    iconLeft
+                    :placeholder="$t('allCampaigns.table.filters.pairs')"
+                    v-model="searchQuery"
+                />
+            </div>
+            <ClaimRewards :chain="$props.chain" />
         </div>
         <div class="campaigns_table__wrapper">
             <div class="campaigns_table__grid campaigns_table__header">
@@ -127,7 +130,7 @@ const { containerProps, wrapperProps, list } = useVirtualList(items, {
 }
 
 .campaigns_table__filters {
-    @apply w-1/2 flex gap-4;
+    @apply flex gap-4 justify-between;
 }
 
 .campaigns_table__pair__filter {
