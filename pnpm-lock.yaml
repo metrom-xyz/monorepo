@@ -3442,24 +3442,12 @@ packages:
   /@metrom-xyz/contracts@0.6.3(typescript@5.4.5):
     resolution: {integrity: sha512-spa4hhyil24MuKW1ArqQcc/PTfKUrWcBpH1MHfX6jVVQs3QyzA7rOk7GYjbCSmlDkLQP/p/pTrMMuSnBuRjQfg==}
     dependencies:
-      viem: 2.10.5(typescript@5.4.5)
+      viem: 2.10.3(typescript@5.4.5)
     transitivePeerDependencies:
       - bufferutil
       - typescript
       - utf-8-validate
       - zod
-    dev: false
-
-  /@metrom-xyz/contracts@0.6.3(typescript@5.4.5):
-    resolution: {integrity: sha512-spa4hhyil24MuKW1ArqQcc/PTfKUrWcBpH1MHfX6jVVQs3QyzA7rOk7GYjbCSmlDkLQP/p/pTrMMuSnBuRjQfg==}
-    dependencies:
-      viem: 2.10.5(typescript@5.4.5)
-    transitivePeerDependencies:
-      - bufferutil
-      - typescript
-      - utf-8-validate
-      - zod
-    dev: true
 
   /@motionone/animation@10.17.0:
     resolution: {integrity: sha512-ANfIN9+iq1kGgsZxs+Nz96uiNcPLGTXwfNo2Xz/fcJXniPYpaz/Uyrfa+7I5BPLxCP82sh7quVDudf1GABqHbg==}
@@ -14320,8 +14308,8 @@ packages:
       - zod
     dev: false
 
-  /viem@2.10.5(typescript@5.4.5):
-    resolution: {integrity: sha512-rzU2y6poYgXu7axcQmwddaJ/nGP3tjtslXdUCu+PvryeXACuuqoyP3chjTEHciG84a663gYbrVGbxNUFA3aURQ==}
+  /viem@2.10.3(typescript@5.4.5):
+    resolution: {integrity: sha512-GmPMH+D/SDSXpVSjLM0GN1H1/h4NUPHaIqnFLwAit8nkfCiDuajKflGFiMPCIs1h7QZlBICuKvON/rc09H+w6Q==}
     peerDependencies:
       typescript: '>=5.0.4'
     peerDependenciesMeta:
