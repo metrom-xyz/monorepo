@@ -32,6 +32,7 @@ export default [
     { inputs: [], name: "FailedInnerCall", type: "error" },
     { inputs: [], name: "Forbidden", type: "error" },
     { inputs: [], name: "InvalidAccount", type: "error" },
+    { inputs: [], name: "InvalidAmount", type: "error" },
     { inputs: [], name: "InvalidData", type: "error" },
     { inputs: [], name: "InvalidFrom", type: "error" },
     { inputs: [], name: "InvalidGlobalFee", type: "error" },
@@ -54,6 +55,19 @@ export default [
         type: "error",
     },
     { inputs: [], name: "ZeroAmount", type: "error" },
+    {
+        anonymous: false,
+        inputs: [
+            {
+                indexed: true,
+                internalType: "bytes32",
+                name: "id",
+                type: "bytes32",
+            },
+        ],
+        name: "AcceptCampaignOwnership",
+        type: "event",
+    },
     { anonymous: false, inputs: [], name: "AcceptOwnership", type: "event" },
     {
         anonymous: false,
@@ -244,6 +258,37 @@ export default [
         anonymous: false,
         inputs: [
             {
+                indexed: true,
+                internalType: "bytes32",
+                name: "campaignId",
+                type: "bytes32",
+            },
+            {
+                indexed: false,
+                internalType: "address",
+                name: "token",
+                type: "address",
+            },
+            {
+                indexed: false,
+                internalType: "uint256",
+                name: "amount",
+                type: "uint256",
+            },
+            {
+                indexed: true,
+                internalType: "address",
+                name: "receiver",
+                type: "address",
+            },
+        ],
+        name: "RecoverReward",
+        type: "event",
+    },
+    {
+        anonymous: false,
+        inputs: [
+            {
                 indexed: false,
                 internalType: "uint32",
                 name: "globalFee",
@@ -316,6 +361,25 @@ export default [
         inputs: [
             {
                 indexed: true,
+                internalType: "bytes32",
+                name: "id",
+                type: "bytes32",
+            },
+            {
+                indexed: true,
+                internalType: "address",
+                name: "owner",
+                type: "address",
+            },
+        ],
+        name: "TransferCampaignOwnership",
+        type: "event",
+    },
+    {
+        anonymous: false,
+        inputs: [
+            {
+                indexed: true,
                 internalType: "address",
                 name: "owner",
                 type: "address",
@@ -323,6 +387,13 @@ export default [
         ],
         name: "TransferOwnership",
         type: "event",
+    },
+    {
+        inputs: [{ internalType: "bytes32", name: "_id", type: "bytes32" }],
+        name: "acceptCampaignOwnership",
+        outputs: [],
+        stateMutability: "nonpayable",
+        type: "function",
     },
     {
         inputs: [],
@@ -337,6 +408,12 @@ export default [
         outputs: [
             {
                 components: [
+                    { internalType: "address", name: "owner", type: "address" },
+                    {
+                        internalType: "address",
+                        name: "pendingOwner",
+                        type: "address",
+                    },
                     {
                         internalType: "uint256",
                         name: "chainId",
@@ -379,6 +456,20 @@ export default [
                 type: "tuple",
             },
         ],
+        stateMutability: "view",
+        type: "function",
+    },
+    {
+        inputs: [{ internalType: "bytes32", name: "_id", type: "bytes32" }],
+        name: "campaignOwner",
+        outputs: [{ internalType: "address", name: "", type: "address" }],
+        stateMutability: "view",
+        type: "function",
+    },
+    {
+        inputs: [{ internalType: "bytes32", name: "_id", type: "bytes32" }],
+        name: "campaignPendingOwner",
+        outputs: [{ internalType: "address", name: "", type: "address" }],
         stateMutability: "view",
         type: "function",
     },
@@ -543,6 +634,42 @@ export default [
     },
     {
         inputs: [
+            {
+                components: [
+                    {
+                        internalType: "bytes32",
+                        name: "campaignId",
+                        type: "bytes32",
+                    },
+                    {
+                        internalType: "bytes32[]",
+                        name: "proof",
+                        type: "bytes32[]",
+                    },
+                    { internalType: "address", name: "token", type: "address" },
+                    {
+                        internalType: "uint256",
+                        name: "amount",
+                        type: "uint256",
+                    },
+                    {
+                        internalType: "address",
+                        name: "receiver",
+                        type: "address",
+                    },
+                ],
+                internalType: "struct ClaimRewardBundle[]",
+                name: "_bundles",
+                type: "tuple[]",
+            },
+        ],
+        name: "recoverRewards",
+        outputs: [],
+        stateMutability: "nonpayable",
+        type: "function",
+    },
+    {
+        inputs: [
             { internalType: "uint32", name: "_globalFee", type: "uint32" },
         ],
         name: "setGlobalFee",
@@ -612,6 +739,16 @@ export default [
             },
         ],
         stateMutability: "view",
+        type: "function",
+    },
+    {
+        inputs: [
+            { internalType: "bytes32", name: "_id", type: "bytes32" },
+            { internalType: "address", name: "_owner", type: "address" },
+        ],
+        name: "transferCampaignOwnership",
+        outputs: [],
+        stateMutability: "nonpayable",
         type: "function",
     },
     {
