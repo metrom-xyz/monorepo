@@ -1,7 +1,7 @@
 import type { SupportedChain } from "@metrom-xyz/contracts";
-import type { Campaign } from "../entities";
+import type { Campaign } from "../../entities";
 import { query, type GetCampaignsQueryResult, GetCampaigns } from "./queries";
-import { resolveAmmSubgraphClient } from "../utils/amm";
+import { resolveAmmSubgraphClient } from "../../utils/amm";
 import type { AmmSubgraphClient } from "./amm";
 
 const PAGE_SIZE = 25;

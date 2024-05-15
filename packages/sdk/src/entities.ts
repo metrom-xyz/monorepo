@@ -51,3 +51,14 @@ export interface Campaign {
     data: string;
     rewards: Reward[];
 }
+
+export interface Claim {
+    token: Erc20Token;
+    amount: bigint;
+    proof: Address[];
+}
+
+export interface ClaimableRewards {
+    campaignId: Address;
+    claims: Claim[];
+}

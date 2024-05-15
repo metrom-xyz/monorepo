@@ -48,6 +48,7 @@ const baseButtonIconClasses = {
             <div
                 v-if="props.loading && !props.icon"
                 class="mui_button__spinning__icon__wrapper"
+                :class="baseButtonIconClasses"
             >
                 <SpinnerIcon />
             </div>
@@ -80,7 +81,7 @@ const baseButtonIconClasses = {
     transition-colors 
     rounded-xxl
     bg-green 
-    disabled:bg-gray-400
+    disabled:bg-gray-600
     disabled:hover:cursor-not-allowed;
 }
 
@@ -132,16 +133,16 @@ const baseButtonIconClasses = {
     @apply m-0;
 }
 
+.mui_button__icon__lg > svg {
+    @apply w-6 h-6;
+}
+
 .mui_button__icon__xs > svg {
     @apply w-4 h-4;
 }
 
 .mui_button__icon__sm > svg {
     @apply w-5 h-5;
-}
-
-.mui_button__icon__lg > svg {
-    @apply w-6 h-6;
 }
 
 .mui_button__icon__loading > svg {

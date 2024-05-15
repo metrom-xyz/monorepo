@@ -1,6 +1,10 @@
-export { SupportedChain } from "@metrom-xyz/contracts";
+import { CoreClient as InternalCoreClient } from "./client/core";
 
-export { AmmSubgraphClient } from "./subgraph/amm";
-export { MetromSubgraphClient } from "./subgraph/metrom";
+export const CoreClient = new InternalCoreClient();
+
+export { SupportedChain } from "@metrom-xyz/contracts";
+export { MetromApiClient } from "./client/metrom";
+export { AmmSubgraphClient } from "./client/subgraph/amm";
+export { MetromSubgraphClient } from "./client/subgraph/metrom";
 export * from "./utils/formatting";
 export * from "./entities";
