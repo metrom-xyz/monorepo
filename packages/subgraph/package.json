@@ -16,7 +16,7 @@
         "@graphprotocol/graph-ts": "0.35.1"
     },
     "devDependencies": {
-        "@metrom-xyz/contracts": "^0.6.2",
+        "@metrom-xyz/contracts": "^0.6.3",
         "@types/node": "^20.12.7",
         "@typescript-eslint/eslint-plugin": "^7.4.0",
         "@typescript-eslint/parser": "^7.4.0",
