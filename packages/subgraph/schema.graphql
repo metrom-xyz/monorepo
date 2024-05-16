@@ -224,6 +224,8 @@ type Campaign @entity {
     id: Bytes!
     transaction: Transaction!
     metrom: Metrom!
+    creationBlockNumber: BigInt!
+    creationTimestamp: BigInt!
     owner: Bytes!
     pendingOwner: Bytes!
     chainId: BigInt!
