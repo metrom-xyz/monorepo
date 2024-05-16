@@ -5,15 +5,18 @@ import {
     watchEffect,
     toValue,
 } from "vue";
-import type { Campaign, MetromSubgraphClient } from "sdk";
+import type { Campaign, MetromApiClient } from "sdk";
 
 export interface UseCampaignsParams {
-    client?: MetromSubgraphClient;
+    pageNumber?: number;
+    pageSize?: number;
+    client?: MetromApiClient;
 }
 
 export interface UseCampaignsReturnType {
     loading: Ref<boolean>;
     error: Ref<Error | undefined>;
+    amount: Ref<number>;
     campaigns: Ref<Campaign[] | undefined>;
 }
 
@@ -22,6 +25,7 @@ export function useCampaigns(
 ): UseCampaignsReturnType {
     const loading = ref(false);
     const error = ref<Error | undefined>();
+    const amount = ref(0);
     const campaigns = ref<Campaign[] | undefined>();
 
     watchEffect(async () => {
@@ -33,7 +37,12 @@ export function useCampaigns(
         if (!newParams || !newParams.client) return;
 
         try {
-            campaigns.value = await newParams.client.fetchCampaigns();
+            const response = await newParams.client.fetchCampaigns({
+                pageNumber: newParams.pageNumber,
+                pageSize: newParams.pageSize,
+            });
+            campaigns.value = response.campaigns;
+            amount.value = response.amount;
         } catch (thrown) {
             error.value = thrown as Error;
         } finally {
@@ -44,6 +53,7 @@ export function useCampaigns(
     return {
         loading,
         error,
+        amount,
         campaigns,
     };
 }

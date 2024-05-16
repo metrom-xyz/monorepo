@@ -1,12 +1,12 @@
 import {
     SupportedChain,
     AmmSubgraphClient,
-    MetromSubgraphClient,
     MetromApiClient,
+    SupportedAmm,
 } from "sdk";
 import { type Transport, http, type Chain } from "viem";
 import { holesky } from "viem/chains";
-import { SupportedAmm, type Amm, type ChainData } from "./types";
+import { type Amm, type ChainData } from "./types";
 import MuiEthIcon from "./icons/EthIcon.vue";
 import MuiAlgebraIntegralIcon from "./icons/AlgebraIntegralIcon.vue";
 import { ADDRESS } from "@metrom-xyz/contracts";
@@ -62,14 +62,14 @@ const AMMS: Record<SupportedChain, Amm[]> = {
     // ],
     [SupportedChain.Holesky]: [
         {
-            slug: SupportedAmm.AlgebraIntegral,
+            slug: SupportedAmm.TestIntegral,
             logo: markRaw(MuiAlgebraIntegralIcon),
             name: "Algebra integral",
             addLiquidityUrl:
                 "https://integral.algebra.finance/pool/{target_pair}/new-position",
             subgraphClient: new AmmSubgraphClient(
                 SupportedChain.Holesky,
-                SupportedAmm.AlgebraIntegral,
+                SupportedAmm.TestIntegral,
                 "https://api.studio.thegraph.com/query/68570/metrom-test-integral-holesky/version/latest",
             ),
         },
@@ -110,12 +110,8 @@ export const CHAIN_DATA: Record<SupportedChain, ChainData> = {
         },
         contract: ADDRESS[SupportedChain.Holesky],
         metromApiClient: new MetromApiClient(
-            "https://api.dev.metrom.xyz/holesky",
-        ),
-        metromSubgraphClient: new MetromSubgraphClient(
+            "https://api.dev.metrom.xyz",
             SupportedChain.Holesky,
-            "https://api.studio.thegraph.com/query/68570/metrom-holesky/version/latest",
-            AMMS[SupportedChain.Holesky].map((amm) => amm.subgraphClient),
         ),
         amms: AMMS[SupportedChain.Holesky],
     },

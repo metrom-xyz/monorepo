@@ -1,6 +1,6 @@
 import { CHAIN_DATA } from "@/commons";
-import { SupportedAmm, type Amm } from "@/types";
-import { SupportedChain, type Pair } from "sdk";
+import type { Amm } from "@/types";
+import { SupportedChain, type Pair, SupportedAmm } from "sdk";
 
 export const getAmm = (
     chainId: SupportedChain,
