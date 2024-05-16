@@ -113,7 +113,9 @@ async function handleClaimRewardsOnClick() {
             v-if="account.address"
             sm
             :loading="loadingRewards"
-            :disabled="!loadingRewards && rewards?.length === 0"
+            :disabled="
+                loadingRewards || (!loadingRewards && rewards?.length === 0)
+            "
             @click="modalOpen = true"
         >
             <MuiTypography>

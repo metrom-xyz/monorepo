@@ -6,7 +6,7 @@ import MuiTextInput from "@/ui/MuiTextInput.vue";
 import MuiPairRemoteLogo from "@/ui/pair-remote-logo/MuiPairRemoteLogo.vue";
 import MuiTypography from "@/ui/typography/MuiTypography.vue";
 import { filterCampaigns } from "@/ui/utils/campaigns";
-import { useVirtualList, watchDebounced } from "@vueuse/core";
+import { watchDebounced } from "@vueuse/core";
 import { type Campaign } from "sdk";
 import { computed } from "vue";
 import CampaignsTableDeposit from "./deposit/CampaignsTableDeposit.vue";
@@ -14,8 +14,13 @@ import { ref } from "vue";
 import MuiSkeleton from "@/ui/skeleton/MuiSkeleton.vue";
 import CampaignsTableRewards from "./rewards/CampaignsTableRewards.vue";
 import type { CampaignsTableProps } from "./types";
-import CampaignsTableExplorer from "./explore/CampaignsTableExplorer.vue";
 import ClaimRewards from "../claim-rewards/ClaimRewards.vue";
+import MuiButton from "@/ui/button/MuiButton.vue";
+import ChrevronLeftIcon from "@/icons/ChrevronLeftIcon.vue";
+import ChrevronRightIcon from "@/icons/ChrevronRightIcon.vue";
+import CampaignsTableExplorer from "./explore/CampaignsTableExplorer.vue";
+
+const PAGE_SIZE = 10;
 
 const HEADERS = [
     "allCampaigns.table.header.pair",
@@ -28,6 +33,7 @@ const props = defineProps<CampaignsTableProps>();
 
 const searchQuery = ref("");
 const debouncedQuery = ref("");
+const currentPage = ref(0);
 
 watchDebounced(
     searchQuery,
@@ -37,9 +43,15 @@ watchDebounced(
     { debounce: 300 },
 );
 
-const { campaigns, loading: loadingCampaigns } = useCampaigns(
+const {
+    amount: totalCampaigns,
+    campaigns,
+    loading: loadingCampaigns,
+} = useCampaigns(
     computed(() => ({
-        client: CHAIN_DATA[props.chain].metromSubgraphClient,
+        client: CHAIN_DATA[props.chain].metromApiClient,
+        pageNumber: currentPage.value,
+        pageSize: PAGE_SIZE,
     })),
 );
 
@@ -48,9 +60,9 @@ const items = computed<Campaign[]>(() => {
     return filterCampaigns(campaigns.value, debouncedQuery.value);
 });
 
-const { containerProps, wrapperProps, list } = useVirtualList(items, {
-    itemHeight: 46,
-});
+const totalPages = computed(
+    () => Math.floor(totalCampaigns.value / PAGE_SIZE) + 1,
+);
 </script>
 <template>
     <div class="campaigns_table__root">
@@ -72,44 +84,50 @@ const { containerProps, wrapperProps, list } = useVirtualList(items, {
                 </MuiTypography>
             </div>
             <div class="campaigns_table__divider"></div>
-            <div v-bind="containerProps">
-                <div v-if="loadingCampaigns">
-                    <MuiSkeleton :height="36" />
+            <div>
+                <div
+                    v-if="loadingCampaigns"
+                    class="campaigns_table__skeletons__container"
+                >
+                    <MuiSkeleton
+                        :key="size"
+                        v-for="size in PAGE_SIZE"
+                        :height="32"
+                    />
                 </div>
                 <div
-                    v-else-if="list.length > 0"
-                    v-bind="wrapperProps"
+                    v-else-if="items.length > 0"
                     class="campaigns_table__container"
                 >
                     <div
-                        :key="data.id"
-                        v-for="{ data } in list"
+                        :key="campaign.id"
+                        v-for="campaign in items"
                         class="campaigns_table__grid campaigns_table__content"
-                        v-bind="{ ...data }"
+                        v-bind="{ ...campaign }"
                     >
                         <div class="campaigns_table__pair__row">
                             <MuiPairRemoteLogo
-                                :token0="data.pair.token0"
-                                :token1="data.pair.token1"
+                                :token0="campaign.pair.token0"
+                                :token1="campaign.pair.token1"
                                 lg
                                 class="campaigns_table__pair__logo"
                             />
                             <MuiTypography>
                                 {{
-                                    `${data.pair.token0.symbol} / ${data.pair.token1.symbol}`
+                                    `${campaign.pair.token0.symbol} / ${campaign.pair.token1.symbol}`
                                 }}
                             </MuiTypography>
                         </div>
-                        <CampaignsTableRewards :rewards="data.rewards" />
+                        <CampaignsTableRewards :rewards="campaign.rewards" />
                         <CampaignsTableDeposit
-                            :chainId="data.chainId"
-                            :ammSlug="data.amm"
-                            :pair="data.pair"
+                            :chainId="campaign.pair.token0.chainId"
+                            :ammSlug="campaign.pair.amm"
+                            :pair="campaign.pair"
                         />
                         <CampaignsTableExplorer
-                            :chainId="data.chainId"
-                            :ammSlug="data.amm"
-                            :pair="data.pair"
+                            :chainId="campaign.pair.token0.chainId"
+                            :ammSlug="campaign.pair.amm"
+                            :pair="campaign.pair"
                         />
                     </div>
                 </div>
@@ -117,6 +135,24 @@ const { containerProps, wrapperProps, list } = useVirtualList(items, {
                     {{ $t("allCampaigns.table.empty") }}
                 </MuiTypography>
             </div>
+        </div>
+        <div class="campaigns_table__pagination">
+            <MuiButton
+                xs
+                @click="currentPage -= 1"
+                :disabled="currentPage === 0"
+                :icon="ChrevronLeftIcon"
+            />
+            <MuiTypography>
+                {{ currentPage + 1 }} /
+                {{ totalPages }}
+            </MuiTypography>
+            <MuiButton
+                xs
+                @click="currentPage += 1"
+                :disabled="currentPage + 1 === totalPages"
+                :icon="ChrevronRightIcon"
+            />
         </div>
     </div>
 </template>
@@ -126,7 +162,7 @@ const { containerProps, wrapperProps, list } = useVirtualList(items, {
 }
 
 .campaigns_table__wrapper {
-    @apply max-h-[585px] w-full flex flex-col gap-3 bg-white rounded-[38px] pt-6 pb-4 px-6;
+    @apply w-full flex flex-col gap-3 bg-white rounded-[38px] pt-6 pb-4 px-6;
 }
 
 .campaigns_table__filters {
@@ -148,6 +184,10 @@ const { containerProps, wrapperProps, list } = useVirtualList(items, {
     @apply h-[1px] border-b border-gray-400;
 }
 
+.campaigns_table__skeletons__container {
+    @apply flex flex-col gap-4;
+}
+
 .campaigns_table__container {
     @apply flex flex-col gap-4;
 }
@@ -165,5 +205,9 @@ const { containerProps, wrapperProps, list } = useVirtualList(items, {
 
 .campaigns_table__pair__logo {
     @apply mr-6;
+}
+
+.campaigns_table__pagination {
+    @apply w-fit flex gap-2 items-center justify-between p-2 bg-white rounded-xxl self-end;
 }
 </style>

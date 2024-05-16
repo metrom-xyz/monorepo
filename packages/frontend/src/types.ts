@@ -1,14 +1,9 @@
 import type { ChainContract } from "viem";
 import type { Component } from "vue";
-import type { AmmSubgraphClient, MetromApiClient, MetromSubgraphClient, Pair } from "sdk";
+import type { AmmSubgraphClient, MetromApiClient, Pair } from "sdk";
 import type { AccordionSelectOption } from "@/ui/accordion-select/types";
 import type { Dayjs } from "dayjs";
 import type { TokenInfoWithBalance } from "./components/campaign-creation-form/rewards/types";
-
-export enum SupportedAmm {
-    Univ3 = "uni-v3",
-    AlgebraIntegral = "algebra-integral",
-}
 
 export interface CampaignState {
     network: number;
@@ -54,7 +49,6 @@ export interface Amm {
 export interface ChainData {
     icon: ChainIconData;
     contract: ChainContract;
-    metromApiClient: MetromApiClient,
-    metromSubgraphClient: MetromSubgraphClient;
+    metromApiClient: MetromApiClient;
     amms: Amm[];
 }

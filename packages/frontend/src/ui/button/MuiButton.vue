@@ -106,7 +106,7 @@ const baseButtonIconClasses = {
 }
 
 .mui_button__root__xs {
-    @apply p-4 text-xs;
+    @apply p-2 text-xs;
 }
 
 .mui_button__wrapper {
