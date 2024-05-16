@@ -1,11 +1,5 @@
 import { SupportedChain } from "@metrom-xyz/contracts";
-import {
-    GetPairs,
-    type GetPairsQueryResult,
-    query,
-    GetPair,
-    type GetPairQueryResult,
-} from "./queries";
+import { GetPairs, type GetPairsQueryResult, query } from "./queries";
 import { type Pair } from "../../entities";
 import type { Address } from "viem";
 
@@ -64,31 +58,5 @@ export class AmmSubgraphClient {
         } while (lastId);
 
         return pairs;
-    }
-
-    async fetchPair(params: FetchParamsParams): Promise<Pair | null> {
-        const result: GetPairQueryResult = await query(this.url, GetPair, {
-            id: params.address,
-        });
-
-        if (!result.pool) return null;
-
-        return {
-            address: result.pool.address,
-            token0: {
-                chainId: this.chain,
-                address: result.pool.token0.address,
-                decimals: parseInt(result.pool.token0.decimals),
-                symbol: result.pool.token0.symbol,
-                name: result.pool.token0.name,
-            },
-            token1: {
-                chainId: this.chain,
-                address: result.pool.token1.address,
-                decimals: parseInt(result.pool.token1.decimals),
-                symbol: result.pool.token1.symbol,
-                name: result.pool.token1.name,
-            },
-        };
     }
 }

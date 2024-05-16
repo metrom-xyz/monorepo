@@ -1,4 +1,5 @@
-import { type Address } from "viem";
+import { type Address, type Hex } from "viem";
+import type { SupportedAmm } from "./commons";
 
 export enum Environment {
     Local = "local",
@@ -26,31 +27,32 @@ export function erc20TokenEquals(a: Erc20Token, b: Erc20Token): boolean {
 
 export interface Pair {
     address: Address;
+    amm: SupportedAmm;
     token0: Erc20Token;
     token1: Erc20Token;
 }
 
 export interface Reward {
-    id: Address;
     token: Erc20Token;
     amount: bigint;
+    claimed: bigint;
     unclaimed: bigint;
+    usdValue: number | null;
 }
 
-export interface Campaign {
+export type Campaign = {
     id: Address;
-    timestamp: number;
-    amm: string;
-    chainId: number;
-    pairChainId: number;
-    pair: Pair;
+    createdAt: number;
+    owner: Address;
+    pendingOwner: Address;
     from: number;
     to: number;
-    specification: string;
-    root: string;
-    data: string;
+    pair: Pair;
+    specification: Hex;
+    root: Hex;
+    data: Hex;
     rewards: Reward[];
-}
+};
 
 export interface Claim {
     token: Erc20Token;
