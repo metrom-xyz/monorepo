@@ -16,6 +16,11 @@ import { computed } from "vue";
 import { ref } from "vue";
 import { ADDRESS } from "@metrom-xyz/contracts";
 import metromAbi from "@/abis/metrom";
+import {
+    cacheTokenInfoWithBalance,
+    cachedTokensInfoWithBalanceInChain,
+    tokenInfoWithBalanceEquals,
+} from "@/utils/cache";
 
 const props = defineProps<RewardsPickerTypes>();
 const emits = defineEmits<{
@@ -27,12 +32,11 @@ const emits = defineEmits<{
 
 const account = useAccount();
 const chainId = useChainId();
-const tokensInChain = useTokens().getTokens(
-    chainId.value,
-) as TokenInfoWithBalance[];
 
 const tokenSearchQuery = ref();
-const importedTokens = ref<TokenInfoWithBalance[]>([]);
+const tokensList = ref<TokenInfoWithBalance[]>(
+    useTokens().getTokens(chainId.value),
+);
 const rewardsWithInsufficientBalance = ref<string[]>([]);
 
 const metrom = computed(() => {
@@ -55,7 +59,7 @@ const { data: rawBalances, loading: loadingBalances } = useReadContracts(
         contracts:
             (account.value.isConnected &&
                 account.value.address &&
-                tokensInChain.map((token) => {
+                tokensList.value.map((token) => {
                     return {
                         abi: erc20Abi,
                         address: token.address as Address,
@@ -78,7 +82,7 @@ const { loading: loadingImportableToken, token: importableToken } =
     );
 
 const tokensWithBalance = computed(() => {
-    const tokensInChainWithBalance = tokensInChain.reduce(
+    const tokensInChainWithBalance = tokensList.value.reduce(
         (accumulator: Record<string, TokenInfoWithBalance>, token, i) => {
             if (!rawBalances.value?.[i]) return accumulator;
 
@@ -95,7 +99,7 @@ const tokensWithBalance = computed(() => {
         {},
     );
 
-    const tokensWithBalance = tokensInChain.map((token) => {
+    const tokensWithBalance = tokensList.value.map((token) => {
         const tokenWithBalance =
             tokensInChainWithBalance[
                 `${token.address.toLowerCase()}-${token.chainId}`
@@ -103,18 +107,25 @@ const tokensWithBalance = computed(() => {
         return tokenWithBalance || token;
     });
 
-    return tokensWithBalance.concat(importedTokens.value);
+    return tokensWithBalance;
 });
 
-// keep track of the imported tokens
 watchEffect(() => {
     if (
         importableToken.value &&
-        !importedTokens.value.find(
-            (token) => token.address === importableToken.value?.address,
+        !tokensList.value.find((token) =>
+            tokenInfoWithBalanceEquals(token, importableToken.value),
         )
-    )
-        importedTokens.value.push(importableToken.value);
+    ) {
+        cacheTokenInfoWithBalance(importableToken.value);
+        tokensList.value.push(importableToken.value);
+    }
+});
+
+watchEffect(() => {
+    tokensList.value = tokensList.value.concat(
+        cachedTokensInfoWithBalanceInChain(chainId.value),
+    );
 });
 
 watchEffect(() => {
