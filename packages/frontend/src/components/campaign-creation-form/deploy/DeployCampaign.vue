@@ -32,8 +32,8 @@ const metrom = computed(() => {
 });
 
 function handleConfirmOnClick() {
-    const { network, amm, pair, range, rewards } = props.state;
-    if (!amm || !pair || !range || rewards.length === 0) return;
+    const { network, amm, pool, range, rewards } = props.state;
+    if (!amm || !pool || !range || rewards.length === 0) return;
 
     const { from, to } = range;
     if (!from || !to) return;
@@ -44,12 +44,10 @@ function handleConfirmOnClick() {
 
     if (validRewards.length !== rewards.length) return;
 
-    // TODO: add minimun and maximum campaign duration validation
-
     validatedState.value = {
         amm,
         network,
-        pair,
+        pool,
         range: { from, to },
         rewards: validRewards,
     };

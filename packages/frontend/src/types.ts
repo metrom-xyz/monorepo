@@ -1,6 +1,6 @@
 import type { ChainContract } from "viem";
 import type { Component } from "vue";
-import type { AmmSubgraphClient, MetromApiClient, Pair } from "sdk";
+import type { AmmSubgraphClient, MetromApiClient, Pool } from "sdk";
 import type { AccordionSelectOption } from "@/ui/accordion-select/types";
 import type { Dayjs } from "dayjs";
 import type { TokenInfoWithBalance } from "./components/campaign-creation-form/rewards/types";
@@ -8,7 +8,7 @@ import type { TokenInfoWithBalance } from "./components/campaign-creation-form/r
 export interface CampaignState {
     network: number;
     amm?: AccordionSelectOption<string>;
-    pair?: Pair;
+    pool?: Pool;
     rewards: Reward[];
     range?: Range;
 }
@@ -16,7 +16,7 @@ export interface CampaignState {
 export interface FinalizedState {
     network: number;
     amm: AccordionSelectOption<string>;
-    pair: Pair;
+    pool: Pool;
     rewards: Required<Reward>[];
     range: Required<Range>;
 }
@@ -41,7 +41,7 @@ export interface Amm {
     slug: string;
     name: string;
     addLiquidityUrl: string;
-    pairExplorerUrl?: string;
+    poolExplorerUrl?: string;
     logo: Component;
     subgraphClient: AmmSubgraphClient;
 }

@@ -37,7 +37,7 @@ export const query = async <R>(
     return responseJSON.data as R;
 };
 
-export type GetPairsQueryResult = {
+export type GetPoolsQueryResult = {
     pools: {
         address: Address;
         token0: {
@@ -55,47 +55,9 @@ export type GetPairsQueryResult = {
     }[];
 };
 
-export const GetPairs = `
+export const GetPools = `
     query getPools($limit: Int!, $lastId: String!) {
         pools(first: $limit, where: { id_gt: $lastId }) {
-            address: id
-            token0 {
-                address: id
-                name
-                symbol
-                decimals
-            }
-            token1 {
-                address: id
-                name
-                symbol
-                decimals
-            }
-        }
-    }
-`;
-
-export type GetPairQueryResult = {
-    pool: {
-        address: Address;
-        token0: {
-            address: Address;
-            name: string;
-            symbol: string;
-            decimals: string;
-        };
-        token1: {
-            address: Address;
-            name: string;
-            symbol: string;
-            decimals: string;
-        };
-    } | null;
-};
-
-export const GetPair = `
-    query getPool($id: String!) {
-        pool(id: $id) {
             address: id
             token0 {
                 address: id

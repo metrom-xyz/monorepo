@@ -1,20 +1,20 @@
 <script setup lang="ts">
 import type { CampaignsTableExplorerProps } from "./types";
 import { computed } from "vue";
-import { getPairExplorerLink } from "@/utils/amm";
+import { getPoolExplorerLink } from "@/utils/amm";
 import ChartIcon from "@/icons/ChartIcon.vue";
 
 const props = defineProps<CampaignsTableExplorerProps>();
 
-const pairExplorerLink = computed(() => {
-    return getPairExplorerLink(props.chainId, props.ammSlug, props.pair);
+const poolExplorerLink = computed(() => {
+    return getPoolExplorerLink(props.chainId, props.ammSlug, props.pool);
 });
 </script>
 <template>
     <div class="campaigns_table_explorer__root">
         <a
-            v-if="pairExplorerLink"
-            :href="pairExplorerLink"
+            v-if="poolExplorerLink"
+            :href="poolExplorerLink"
             target="_blank"
             rel="noopener noreferrer"
         >

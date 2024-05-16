@@ -1,23 +1,23 @@
 import { isAddress } from "viem";
 import type { TokenInfo } from "@uniswap/token-lists";
-import type { Pair } from "sdk";
+import type { Pool } from "sdk";
 import type { TokenInfoWithBalance } from "@/components/campaign-creation-form/rewards/types";
 
-export const filterPairs = (pairs: Pair[], searchQuery: string) => {
-    if (pairs.length === 0) return [];
-    if (!searchQuery) return pairs;
+export const filterPools = (pools: Pool[], searchQuery: string) => {
+    if (pools.length === 0) return [];
+    if (!searchQuery) return pools;
     if (isAddress(searchQuery)) {
         const lowercaseSearchQuery = searchQuery.toLowerCase();
-        const pairByAddress = pairs.find(
-            (pair) => pair.address.toLowerCase() === lowercaseSearchQuery,
+        const poolByAddress = pools.find(
+            (pool) => pool.address.toLowerCase() === lowercaseSearchQuery,
         );
 
-        if (pairByAddress) return [pairByAddress];
+        if (poolByAddress) return [poolByAddress];
 
-        const tokenByAddress = pairs.find(
-            (pair) =>
-                pair.token0.address.toLowerCase() === lowercaseSearchQuery ||
-                pair.token1.address.toLowerCase() === lowercaseSearchQuery,
+        const tokenByAddress = pools.find(
+            (pool) =>
+                pool.token0.address.toLowerCase() === lowercaseSearchQuery ||
+                pool.token1.address.toLowerCase() === lowercaseSearchQuery,
         );
 
         return tokenByAddress ? [tokenByAddress] : [];
@@ -28,9 +28,9 @@ export const filterPairs = (pairs: Pair[], searchQuery: string) => {
         .toLowerCase()
         .split(/\s+/)
         .filter((s) => s.length > 0 && s !== "/");
-    if (lowercaseSearchParts.length === 0) return pairs;
-    return pairs.filter((pair) => {
-        const { token0, token1 } = pair;
+    if (lowercaseSearchParts.length === 0) return pools;
+    return pools.filter((pool) => {
+        const { token0, token1 } = pool;
 
         return (
             matchesSearch(

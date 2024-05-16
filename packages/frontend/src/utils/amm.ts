@@ -1,6 +1,6 @@
 import { CHAIN_DATA } from "@/commons";
 import type { Amm } from "@/types";
-import { SupportedChain, type Pair, SupportedAmm } from "sdk";
+import { SupportedChain, type Pool, SupportedAmm } from "sdk";
 
 export const getAmm = (
     chainId: SupportedChain,
@@ -9,23 +9,23 @@ export const getAmm = (
     return CHAIN_DATA[chainId].amms.find((amm) => amm.slug === ammSlug);
 };
 
-export const getPairAddLiquidityLink = (amm: Amm, pair: Pair): string => {
+export const getPoolAddLiquidityLink = (amm: Amm, pool: Pool): string => {
     if (amm.slug === SupportedAmm.Univ3)
         return amm.addLiquidityUrl.replace(
-            "{target_pair}",
-            `${pair.token0.address}/${pair.token1.address}`,
+            "{target_pool}",
+            `${pool.token0.address}/${pool.token1.address}`,
         );
 
-    return amm.addLiquidityUrl.replace("{target_pair}", `${pair.address}`);
+    return amm.addLiquidityUrl.replace("{target_pool}", `${pool.address}`);
 };
 
-export const getPairExplorerLink = (
+export const getPoolExplorerLink = (
     chainId: SupportedChain,
     ammSlug: string,
-    pair: Pair,
+    pool: Pool,
 ): string | undefined => {
     const amm = getAmm(chainId, ammSlug);
-    if (!amm || !amm.pairExplorerUrl) return;
+    if (!amm || !amm.poolExplorerUrl) return;
 
-    return amm.pairExplorerUrl.replace("{target_pair}", `${pair.address}`);
+    return amm.poolExplorerUrl.replace("{target_pool}", `${pool.address}`);
 };
