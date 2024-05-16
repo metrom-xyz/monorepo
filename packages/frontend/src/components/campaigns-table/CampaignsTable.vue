@@ -23,7 +23,7 @@ import CampaignsTableExplorer from "./explore/CampaignsTableExplorer.vue";
 const PAGE_SIZE = 10;
 
 const HEADERS = [
-    "allCampaigns.table.header.pair",
+    "allCampaigns.table.header.pool",
     "allCampaigns.table.header.rewards",
     "allCampaigns.table.header.amm",
     "allCampaigns.table.header.links",
@@ -67,11 +67,11 @@ const totalPages = computed(
 <template>
     <div class="campaigns_table__root">
         <div class="campaigns_table__filters">
-            <div class="campaigns_table__pair__filter">
+            <div class="campaigns_table__pool__filter">
                 <MuiTextInput
                     :icon="SearchIcon"
                     iconLeft
-                    :placeholder="$t('allCampaigns.table.filters.pairs')"
+                    :placeholder="$t('allCampaigns.table.filters.pools')"
                     v-model="searchQuery"
                 />
             </div>
@@ -105,29 +105,29 @@ const totalPages = computed(
                         class="campaigns_table__grid campaigns_table__content"
                         v-bind="{ ...campaign }"
                     >
-                        <div class="campaigns_table__pair__row">
+                        <div class="campaigns_table__pool__row">
                             <MuiPairRemoteLogo
-                                :token0="campaign.pair.token0"
-                                :token1="campaign.pair.token1"
+                                :token0="campaign.pool.token0"
+                                :token1="campaign.pool.token1"
                                 lg
-                                class="campaigns_table__pair__logo"
+                                class="campaigns_table__pool__logo"
                             />
                             <MuiTypography>
                                 {{
-                                    `${campaign.pair.token0.symbol} / ${campaign.pair.token1.symbol}`
+                                    `${campaign.pool.token0.symbol} / ${campaign.pool.token1.symbol}`
                                 }}
                             </MuiTypography>
                         </div>
                         <CampaignsTableRewards :rewards="campaign.rewards" />
                         <CampaignsTableDeposit
-                            :chainId="campaign.pair.token0.chainId"
-                            :ammSlug="campaign.pair.amm"
-                            :pair="campaign.pair"
+                            :chainId="campaign.pool.token0.chainId"
+                            :ammSlug="campaign.pool.amm"
+                            :pool="campaign.pool"
                         />
                         <CampaignsTableExplorer
-                            :chainId="campaign.pair.token0.chainId"
-                            :ammSlug="campaign.pair.amm"
-                            :pair="campaign.pair"
+                            :chainId="campaign.pool.token0.chainId"
+                            :ammSlug="campaign.pool.amm"
+                            :pool="campaign.pool"
                         />
                     </div>
                 </div>
@@ -169,7 +169,7 @@ const totalPages = computed(
     @apply flex gap-4 justify-between;
 }
 
-.campaigns_table__pair__filter {
+.campaigns_table__pool__filter {
     @apply max-w-96;
 }
 
@@ -199,11 +199,11 @@ const totalPages = computed(
     @apply w-9 h-9;
 }
 
-.campaigns_table__pair__row {
+.campaigns_table__pool__row {
     @apply flex gap-3 items-center;
 }
 
-.campaigns_table__pair__logo {
+.campaigns_table__pool__logo {
     @apply mr-6;
 }
 

@@ -1,7 +1,7 @@
-import type { Pair } from "sdk";
+import type { Pool } from "sdk";
 
 export interface CampaignsTableExplorerProps {
-    pair: Pair;
+    pool: Pool;
     chainId: number;
     ammSlug: string;
 }

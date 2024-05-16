@@ -2,14 +2,14 @@
 import CalendarIcon from "@/icons/CalendarIcon.vue";
 import CupIcon from "@/icons/CupIcon.vue";
 import DexIcon from "@/icons/DexIcon.vue";
-import PairIcon from "@/icons/PairIcon.vue";
+import PoolIcon from "@/icons/PoolIcon.vue";
 import SendIcon from "@/icons/SendIcon.vue";
 import MuiCard from "@/ui/MuiCard.vue";
 import MuiStepper from "@/ui/stepper/MuiStepper.vue";
 import MuiStep from "@/ui/stepper/step/MuiStep.vue";
 import MuiTypography from "@/ui/typography/MuiTypography.vue";
 import RewardsPicker from "./rewards/RewardsPicker.vue";
-import PairPicker from "./pair/PairPicker.vue";
+import PoolPicker from "./pool/PoolPicker.vue";
 import AmmPicker from "./amm/AmmPicker.vue";
 import type { CampaignCreationFormProps } from "./types";
 import { computed, ref } from "vue";
@@ -101,20 +101,20 @@ watch(
             </MuiStep>
             <MuiStep
                 :step="2"
-                :title="$t('campaign.pair.title')"
+                :title="$t('campaign.pool.title')"
                 :active="stepCursor === 2"
                 :completed="stepCursor > 2"
-                :icon="PairIcon"
+                :icon="PoolIcon"
                 :disabled="readonly"
             >
                 <MuiCard :disabled="readonly">
                     <template #title>
                         <MuiTypography medium lg>
-                            {{ $t("campaign.pair.title") }}
+                            {{ $t("campaign.pool.title") }}
                         </MuiTypography>
                     </template>
                     <template #content>
-                        <PairPicker
+                        <PoolPicker
                             :state="$props.state"
                             :completed="stepCursor > 2"
                             @complete="handleStepOnComplete"

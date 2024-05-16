@@ -1,21 +1,21 @@
 <script setup lang="ts">
 import MuiTextInput from "@/ui/MuiTextInput.vue";
-import type { PairSelectSearchProps } from "./types";
+import type { PoolSelectSearchProps } from "./types";
 import { ref } from "vue";
 import { watchDebounced, useVirtualList } from "@vueuse/core";
 import { computed } from "vue";
-import { filterPairs } from "@/ui/utils/tokens";
-import MuiPairSelectSearchRow from "./row/MuiPairSelectSearchRow.vue";
+import { filterPools } from "@/ui/utils/tokens";
+import MuiPoolSelectSearchRow from "./row/MuiPoolSelectSearchRow.vue";
 import MuiTypography from "@/ui/typography/MuiTypography.vue";
 import XIcon from "@/icons/XIcon.vue";
 import SearchIcon from "@/icons/SearchIcon.vue";
-import type { Pair } from "sdk";
+import type { Pool } from "sdk";
 import { onMounted } from "vue";
 
-const props = defineProps<PairSelectSearchProps>();
+const props = defineProps<PoolSelectSearchProps>();
 const emit = defineEmits<{
     dismiss: [];
-    pairChange: [pair: Pair];
+    poolChange: [pool: Pool];
 }>();
 
 const searchQuery = ref("");
@@ -32,9 +32,9 @@ watchDebounced(
     { debounce: 300 },
 );
 
-const items = computed<Pair[]>(() => {
-    if (!props.pairs) return [];
-    return filterPairs(props.pairs, debouncedQuery.value);
+const items = computed<Pool[]>(() => {
+    if (!props.pools) return [];
+    return filterPools(props.pools, debouncedQuery.value);
 });
 
 const { containerProps, wrapperProps, list } = useVirtualList(items, {
@@ -46,11 +46,11 @@ onMounted(() => {
 });
 </script>
 <template>
-    <div class="mui_pair_select_search__root">
-        <div class="mui_pair_select_search__header">
+    <div class="mui_pool_select_search__root">
+        <div class="mui_pool_select_search__header">
             <XIcon
                 @click="emit('dismiss')"
-                class="mui_pair_select_search__close_icon"
+                class="mui_pool_select_search__close_icon"
             />
             <MuiTextInput
                 ref="searchInputRef"
@@ -63,25 +63,25 @@ onMounted(() => {
                 v-model="searchQuery"
             />
         </div>
-        <div class="mui_pair_select_search__list_header">
-            <MuiTypography sm>{{ $t("ui.pairSelect.pair") }}</MuiTypography>
+        <div class="mui_pool_select_search__list_header">
+            <MuiTypography sm>{{ $t("ui.poolSelect.pool") }}</MuiTypography>
             <MuiTypography uppercase sm>
-                {{ $t("ui.pairSelect.tvl") }}
+                {{ $t("ui.poolSelect.tvl") }}
             </MuiTypography>
         </div>
         <div
-            class="mui_pair_select_search__list_wrapper"
+            class="mui_pool_select_search__list_wrapper"
             :class="{
-                mui_pair_select_search_wrapper__empty: list.length === 0,
+                mui_pool_select_search_wrapper__empty: list.length === 0,
             }"
             v-bind="containerProps"
         >
             <div
                 v-if="list.length > 0"
                 v-bind="wrapperProps"
-                class="mui_pair_select_search__list_container"
+                class="mui_pool_select_search__list_container"
             >
-                <MuiPairSelectSearchRow
+                <MuiPoolSelectSearchRow
                     v-for="{ index, data } in list"
                     :key="index"
                     :selected="
@@ -90,50 +90,50 @@ onMounted(() => {
                             data.address.toLowerCase()
                     "
                     :loading="$props.loading"
-                    @click="emit('pairChange', data)"
+                    @click="emit('poolChange', data)"
                     v-bind="{ ...data }"
                 />
             </div>
             <MuiTypography v-else>
-                {{ $props.messages.noPairs }}
+                {{ $props.messages.noPools }}
             </MuiTypography>
         </div>
     </div>
 </template>
 <style>
-.mui_pair_select_search__root {
+.mui_pool_select_search__root {
     @apply flex flex-col gap-4 h-[480px] w-[440px] bg-white px-8 py-5 rounded-[30px] border-2 border-green;
 }
 
-.mui_pair_select_search__header {
+.mui_pool_select_search__header {
     @apply flex flex-col justify-between;
 }
 
-.mui_pair_select_search__label {
+.mui_pool_select_search__label {
     @apply mb-6;
 }
 
-.mui_pair_select_search__close_icon {
+.mui_pool_select_search__close_icon {
     @apply self-end hover:cursor-pointer;
 }
 
-.mui_pair_select_search__list_header {
+.mui_pool_select_search__list_header {
     @apply flex justify-between w-full border-gray-400 border-b border-dashed;
 }
 
-.mui_pair_select_search__list_header > p {
+.mui_pool_select_search__list_header > p {
     @apply text-gray-600;
 }
 
-.mui_pair_select_search__list_container {
+.mui_pool_select_search__list_container {
     @apply flex flex-col gap-2;
 }
 
-.mui_pair_select_search__list_wrapper {
+.mui_pool_select_search__list_wrapper {
     @apply flex flex-col gap-6;
 }
 
-.mui_pair_select_search_wrapper__empty {
+.mui_pool_select_search_wrapper__empty {
     @apply flex justify-center items-center;
 }
 </style>

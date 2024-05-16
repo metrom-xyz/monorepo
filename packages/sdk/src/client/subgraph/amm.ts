@@ -1,11 +1,11 @@
 import { SupportedChain } from "@metrom-xyz/contracts";
-import { GetPairs, type GetPairsQueryResult, query } from "./queries";
-import { type Pair } from "../../entities";
+import { GetPools, type GetPoolsQueryResult, query } from "./queries";
+import { type Pool } from "../../entities";
 import type { Address } from "viem";
 
 const PAGE_SIZE = 500;
 
-export type GetPairsQueryParams = {
+export type GetPoolsQueryParams = {
     limit: number;
     tokenParts?: string;
 };
@@ -21,18 +21,18 @@ export class AmmSubgraphClient {
         public readonly url: string,
     ) {}
 
-    async fetchPairs(): Promise<Pair[]> {
+    async fetchPools(): Promise<Pool[]> {
         let lastId = null;
-        const pairs = [];
+        const pools = [];
         do {
-            const result: GetPairsQueryResult = await query(
+            const result: GetPoolsQueryResult = await query(
                 this.url,
-                GetPairs,
+                GetPools,
                 { limit: PAGE_SIZE, lastId: lastId || "" },
             );
 
             for (const pool of result.pools) {
-                pairs.push(<Pair>{
+                pools.push(<Pool>{
                     address: pool.address,
                     token0: {
                         chainId: this.chain,
@@ -57,6 +57,6 @@ export class AmmSubgraphClient {
                     : result.pools[result.pools.length - 1].address;
         } while (lastId);
 
-        return pairs;
+        return pools;
     }
 }

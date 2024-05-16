@@ -1,6 +1,6 @@
 import type { Erc20Token } from "sdk";
 
-export interface PairSelectSearchRowProps {
+export interface PoolSelectSearchRowProps {
     selected?: boolean;
     loading?: boolean;
     token0: Erc20Token;
