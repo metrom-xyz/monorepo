@@ -163,7 +163,7 @@ async function handleClaimRewardsOnClick() {
                 >
                     {{ $t("allCampaigns.rewards.claim") }}
                 </MuiButton>
-                <MuiWarningMessage v-if="error">
+                <MuiWarningMessage v-if="!!(error as any).shortMessage">
                     <MuiTypography>
                         {{ (error as any).shortMessage }}
                     </MuiTypography>
