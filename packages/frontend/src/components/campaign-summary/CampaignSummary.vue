@@ -11,17 +11,17 @@ defineProps<CampaignSummaryProps>();
 <template>
     <div class="campaign_summary__root">
         <div class="campaign_summary__card">
-            <CampaignSummaryBox :title="$t('campaign.summary.pair')">
-                <div class="campaign_summary__pair__box">
+            <CampaignSummaryBox :title="$t('campaign.summary.pool')">
+                <div class="campaign_summary__pool__box">
                     <MuiPairRemoteLogo
                         xxl
-                        :token0="$props.state.pair?.token0"
-                        :token1="$props.state.pair?.token1"
+                        :token0="$props.state.pool?.token0"
+                        :token1="$props.state.pool?.token1"
                         class="campaign_summary__pair"
                     />
                     <MuiTypography>
                         {{
-                            `${$props.state.pair?.token0.symbol} / ${$props.state.pair?.token1.symbol}`
+                            `${$props.state.pool?.token0.symbol} / ${$props.state.pool?.token1.symbol}`
                         }}
                     </MuiTypography>
                 </div>
@@ -76,7 +76,7 @@ defineProps<CampaignSummaryProps>();
     @apply flex flex-col md:flex-row gap-8 md:gap-16 bg-white rounded-[38px] px-9 py-6;
 }
 
-.campaign_summary__pair__box {
+.campaign_summary__pool__box {
     @apply flex gap-3 items-center;
 }
 

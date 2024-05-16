@@ -1,25 +1,25 @@
 <script setup lang="ts">
-import PairSelectIcon from "@/icons/PairSelectIcon.vue";
+import PoolSelectIcon from "@/icons/PoolSelectIcon.vue";
 import MuiTextInput from "../MuiTextInput.vue";
 import MuiModal from "../modal/MuiModal.vue";
-import MuiPairSelectSearch from "./search/MuiPairSelectSearch.vue";
-import type { PairSelectProps } from "./types";
+import MuiPoolSelectSearch from "./search/MuiPoolSelectSearch.vue";
+import type { PoolSelectProps } from "./types";
 import { computed } from "vue";
 import MuiPairRemoteLogo from "../pair-remote-logo/MuiPairRemoteLogo.vue";
-import type { Pair } from "sdk";
+import type { Pool } from "sdk";
 
-defineProps<PairSelectProps>();
+defineProps<PoolSelectProps>();
 const emit = defineEmits<{
     dismiss: [];
 }>();
-const selected = defineModel<Pair>();
+const selected = defineModel<Pool>();
 
 function handleModalOnDismiss() {
     emit("dismiss");
 }
 
-function handlePairOnChange(pair: Pair) {
-    selected.value = pair;
+function handlePoolOnChange(pool: Pool) {
+    selected.value = pool;
     emit("dismiss");
 }
 
@@ -29,7 +29,7 @@ const inputValue = computed(() => {
 });
 </script>
 <template>
-    <div class="mui_pair_select__root" v-bind="{ ...$attrs }">
+    <div class="mui_pool_select__root" v-bind="{ ...$attrs }">
         <MuiModal :open="$props.open" :onDismiss="handleModalOnDismiss">
             <MuiTextInput
                 iconLeft
@@ -38,25 +38,25 @@ const inputValue = computed(() => {
                 :loading="$props.loading"
                 :model-value="inputValue"
                 :placeholder="$props.messages.inputPlaceholder"
-                class="mui_pair_select__input"
+                class="mui_pool_select__input"
             >
                 <template #icon>
-                    <PairSelectIcon v-if="!selected" />
+                    <PoolSelectIcon v-if="!selected" />
                     <MuiPairRemoteLogo
                         v-else
                         lg
                         :token0="selected.token0"
                         :token1="selected.token1"
-                        class="mui_pair_select__icon"
+                        class="mui_pool_select__icon"
                     />
                 </template>
             </MuiTextInput>
             <template #modal>
-                <MuiPairSelectSearch
-                    :pairs="$props.pairs"
+                <MuiPoolSelectSearch
+                    :pools="$props.pools"
                     :selected="selected"
                     @dismiss="handleModalOnDismiss"
-                    @pairChange="handlePairOnChange"
+                    @poolChange="handlePoolOnChange"
                     :messages="$props.messages.search"
                 />
             </template>
@@ -64,22 +64,22 @@ const inputValue = computed(() => {
     </div>
 </template>
 <style>
-.mui_pair_select__input {
+.mui_pool_select__input {
     @apply hover:cursor-pointer;
 }
 
-.mui_pair_select__icon {
+.mui_pool_select__icon {
     @apply w-12;
 }
 
-.mui_pair_select__root
+.mui_pool_select__root
     > .mui_base_input_wrapper__root
     > .mui_base_input_wrapper__container__left_icon
     > input {
     @apply pl-[80px];
 }
 
-.mui_pair_select__root
+.mui_pool_select__root
     > .mui_base_input_wrapper__root
     > .mui_base_input_wrapper__container__left_icon
     > .mui_base_input_wrapper__icon__left {

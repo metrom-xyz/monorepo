@@ -25,7 +25,7 @@ export function erc20TokenEquals(a: Erc20Token, b: Erc20Token): boolean {
     return a === b || (a.chainId === b.chainId && a.address === b.address);
 }
 
-export interface Pair {
+export interface Pool {
     address: Address;
     amm: SupportedAmm;
     token0: Erc20Token;
@@ -47,7 +47,7 @@ export type Campaign = {
     pendingOwner: Address;
     from: number;
     to: number;
-    pair: Pair;
+    pool: Pool;
     specification: Hex;
     root: Hex;
     data: Hex;

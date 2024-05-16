@@ -5,36 +5,36 @@ import {
     watchEffect,
     toValue,
 } from "vue";
-import type { Pair } from "sdk";
+import type { Pool } from "sdk";
 import type { Amm } from "@/types";
 
-export interface UsePairsParams {
+export interface UsePoolsParams {
     amm?: Amm;
 }
 
-export interface UsePairsReturnType {
+export interface UsePoolsReturnType {
     loading: Ref<boolean>;
     error: Ref<Error | undefined>;
-    pairs: Ref<Pair[] | undefined>;
+    pools: Ref<Pool[] | undefined>;
 }
 
-export function usePairs(
-    params?: MaybeRefOrGetter<UsePairsParams>,
-): UsePairsReturnType {
+export function usePools(
+    params?: MaybeRefOrGetter<UsePoolsParams>,
+): UsePoolsReturnType {
     const loading = ref(false);
     const error = ref<Error | undefined>();
-    const pairs = ref<Pair[] | undefined>();
+    const pools = ref<Pool[] | undefined>();
 
     watchEffect(async () => {
         loading.value = true;
         error.value = undefined;
-        pairs.value = undefined;
+        pools.value = undefined;
 
         const newParams = toValue(params);
         if (!newParams || !newParams.amm) return;
 
         try {
-            pairs.value = await newParams.amm.subgraphClient.fetchPairs();
+            pools.value = await newParams.amm.subgraphClient.fetchPools();
         } catch (thrown) {
             error.value = thrown as Error;
         } finally {
@@ -42,5 +42,5 @@ export function usePairs(
         }
     });
 
-    return { loading, error, pairs };
+    return { loading, error, pools };
 }

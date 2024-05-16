@@ -24,7 +24,7 @@ export const messages = {
         campaign: {
             summary: {
                 title: "Campaign summary",
-                pair: "Pair",
+                pool: "Pool",
                 amm: "DEX",
                 rewards: "Rewards",
                 period: "Duration",
@@ -36,15 +36,15 @@ export const messages = {
                 network: "Network",
                 dex: "Dex",
             },
-            pair: {
-                title: "Pick a pair",
+            pool: {
+                title: "Pick a pool",
                 select: {
-                    placeholder: "Select pair",
-                    placeholderNoPairs: "No pairs found for the selected DEX",
+                    placeholder: "Select pool",
+                    placeholderNoPools: "No pools found for the selected DEX",
                     search: {
-                        inputLabel: "Select pair",
-                        inputPlaceholder: "Search for token address, pair etc",
-                        noPairs: "Nothing here.",
+                        inputLabel: "Select pool",
+                        inputPlaceholder: "Search for token address, pool etc",
+                        noPools: "Nothing here.",
                     },
                 },
             },
@@ -98,11 +98,11 @@ export const messages = {
             },
             table: {
                 filters: {
-                    pairs: "Search for pairs",
+                    pools: "Search for pools",
                 },
                 header: {
                     network: "Network",
-                    pair: "Pair",
+                    pool: "Pool",
                     apr: "Apr",
                     tvl: "Tvl",
                     status: "Status",
@@ -122,12 +122,11 @@ export const messages = {
                 empty: "Nothing here.",
             },
         },
-
         carrot: "Carrot",
         powered: "Powered by {0}",
         ui: {
-            pairSelect: {
-                pair: "Pair",
+            poolSelect: {
+                pool: "Pool",
                 tvl: "Tvl",
             },
             dateRangeInput: {

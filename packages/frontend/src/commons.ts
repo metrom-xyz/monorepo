@@ -35,9 +35,9 @@ const AMMS: Record<SupportedChain, Amm[]> = {
     //         slug: SupportedAmm.Univ3,
     //         logo: markRaw(MuiUniswapLogoIcon),
     //         name: "Uniswap v3",
-    //         addLiquidityUrl: "https://app.uniswap.org/add/{target_pair}",
+    //         addLiquidityUrl: "https://app.uniswap.org/add/{target_pool}",
     //         pairExplorerUrl:
-    //             "https://app.uniswap.org/explore/pools/celo_alfajores/{target_pair}",
+    //             "https://app.uniswap.org/explore/pools/celo_alfajores/{target_pool}",
     //         subgraphClient: new AmmSubgraphClient(
     //             SupportedChain.CeloAlfajores,
     //             SupportedAmm.Univ3,
@@ -50,9 +50,9 @@ const AMMS: Record<SupportedChain, Amm[]> = {
     //         slug: SupportedAmm.Univ3,
     //         logo: markRaw(MuiUniswapLogoIcon),
     //         name: "Uniswap v3",
-    //         addLiquidityUrl: "https://app.uniswap.org/add/{target_pair}",
+    //         addLiquidityUrl: "https://app.uniswap.org/add/{target_pool}",
     //         pairExplorerUrl:
-    //             "https://app.uniswap.org/explore/pools/sepolia/{target_pair}",
+    //             "https://app.uniswap.org/explore/pools/sepolia/{target_pool}",
     //         subgraphClient: new AmmSubgraphClient(
     //             SupportedChain.Sepolia,
     //             SupportedAmm.Univ3,
@@ -66,7 +66,7 @@ const AMMS: Record<SupportedChain, Amm[]> = {
             logo: markRaw(MuiAlgebraIntegralIcon),
             name: "Algebra integral",
             addLiquidityUrl:
-                "https://integral.algebra.finance/pool/{target_pair}/new-position",
+                "https://integral.algebra.finance/pool/{target_pool}/new-position",
             subgraphClient: new AmmSubgraphClient(
                 SupportedChain.Holesky,
                 SupportedAmm.TestIntegral,
