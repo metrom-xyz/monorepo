@@ -70,14 +70,9 @@ export class MetromApiClient extends CoreClient {
 
         return {
             campaigns: rawCampaignsResponse.campaigns.map((rawCampaign) => ({
-                id: rawCampaign.id,
-                createdAt: rawCampaign.createdAt,
-                owner: rawCampaign.owner,
-                pendingOwner: rawCampaign.pendingOwner,
-                from: rawCampaign.from,
-                to: rawCampaign.to,
-                pair: {
-                    address: rawCampaign.pool.address,
+                ...rawCampaign,
+                pool: {
+                    ...rawCampaign.pool,
                     amm: rawCampaign.pool.amm as SupportedAmm,
                     token0: {
                         ...rawCampaign.pool.token0,
@@ -88,10 +83,8 @@ export class MetromApiClient extends CoreClient {
                         chainId: this.chain,
                     },
                 },
-                specification: rawCampaign.specification,
-                root: rawCampaign.root,
-                data: rawCampaign.data,
                 rewards: rawCampaign.rewards.map((rawReward) => ({
+                    ...rawReward,
                     token: {
                         ...rawReward.token,
                         chainId: this.chain,
@@ -99,7 +92,6 @@ export class MetromApiClient extends CoreClient {
                     amount: BigInt(rawReward.amount),
                     claimed: BigInt(rawReward.claimed),
                     unclaimed: BigInt(rawReward.unclaimed),
-                    usdValue: rawReward.usdValue,
                 })),
             })),
             amount: rawCampaignsResponse.amount,
