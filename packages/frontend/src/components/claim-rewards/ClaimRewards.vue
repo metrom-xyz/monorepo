@@ -20,6 +20,7 @@ import { formatDecimals } from "sdk";
 import metromAbi from "../../abis/metrom";
 import { ADDRESS } from "@metrom-xyz/contracts";
 import { writeContract } from "@wagmi/core";
+import MuiWarningMessage from "@/ui/MuiWarningMessage.vue";
 
 const props = defineProps<ClaimRewardsProps>();
 
@@ -157,10 +158,16 @@ async function handleClaimRewardsOnClick() {
                 <MuiButton
                     sm
                     :loading="simulatingClaimRewards || claiming"
+                    :disabled="error"
                     @click="handleClaimRewardsOnClick"
                 >
                     {{ $t("allCampaigns.rewards.claim") }}
                 </MuiButton>
+                <MuiWarningMessage v-if="!!(error as any).shortMessage">
+                    <MuiTypography>
+                        {{ (error as any).shortMessage }}
+                    </MuiTypography>
+                </MuiWarningMessage>
             </div>
         </template>
     </MuiModal>
@@ -178,4 +185,3 @@ async function handleClaimRewardsOnClick() {
     @apply flex gap-3 items-center;
 }
 </style>
-@/composables/useClaimableRewards

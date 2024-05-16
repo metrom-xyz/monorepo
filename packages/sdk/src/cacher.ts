@@ -21,6 +21,14 @@ export class Cacher {
         return cacheItem.data;
     }
 
+    public getOrDefault<T extends object | string>(
+        key: string,
+        defaultValue: T,
+    ): T {
+        const cachedItem = this.get<T>(key);
+        return cachedItem || defaultValue;
+    }
+
     public set<T extends object | string>(
         key: string,
         value: T,
