@@ -92,6 +92,8 @@ export function handleCreateCampaign(event: CreateCampaign): void {
     let campaign = new Campaign(event.params.id);
     campaign.transaction = transaction.id;
     campaign.metrom = metrom.id;
+    campaign.creationBlockNumber = event.block.number;
+    campaign.creationTimestamp = event.block.timestamp;
     campaign.owner = event.params.owner;
     campaign.pendingOwner = Address.zero();
     campaign.chainId = event.params.chainId;
