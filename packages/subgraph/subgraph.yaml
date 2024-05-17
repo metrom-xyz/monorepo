@@ -9,8 +9,8 @@ dataSources:
     network: holesky
     source:
       abi: Metrom
-      address: "0x5d0a4B3D99ED117E87570Bd1aeF89a972ff218E7"
-      startBlock: 1543251
+      address: "0x8d98758EfF88Dc944035B0618a8412C400E71C72"
+      startBlock: 1561518
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
@@ -25,6 +25,7 @@ dataSources:
         - CreateCampaignEvent
         - DistributeRewardEvent
         - Metrom
+        - OssifyEvent
         - InitializeEvent
         - RecoverRewardEvent
         - Reward
@@ -74,3 +75,5 @@ dataSources:
           handler: handleSetMinimumCampaignDuration
         - event: SetUpdater(indexed address)
           handler: handleSetUpdater
+        - event: Ossify()
+          handler: handleOssify

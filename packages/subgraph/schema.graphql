@@ -9,7 +9,8 @@ type Transaction @entity(immutable: true) {
     id: Bytes!
     blockNumber: BigInt!
     timestamp: BigInt!
-    initializeEvents: [InitializeEvent!]! @derivedFrom(field: "transaction")
+    initializeEvent: [InitializeEvent!]! @derivedFrom(field: "transaction")
+    ossifyEvents: [OssifyEvent!]! @derivedFrom(field: "transaction")
     createCampaignEvents: [CreateCampaignEvent!]!
         @derivedFrom(field: "transaction")
     distributeRewardEvents: [DistributeRewardEvent!]!
@@ -38,6 +39,7 @@ type Transaction @entity(immutable: true) {
 type Metrom @entity {
     id: Bytes!
     transaction: Transaction!
+    ossified: Boolean!
     owner: Bytes!
     pendingOwner: Bytes!
     updater: Bytes!
@@ -51,6 +53,7 @@ type Metrom @entity {
     campaigns: [Campaign!]! @derivedFrom(field: "metrom")
 
     initializeEvents: [InitializeEvent!]! @derivedFrom(field: "metrom")
+    ossifyEvents: [OssifyEvent!]! @derivedFrom(field: "metrom")
     createCampaignEvents: [CreateCampaignEvent!]! @derivedFrom(field: "metrom")
     distributeRewardEvents: [DistributeRewardEvent!]!
         @derivedFrom(field: "metrom")
@@ -98,6 +101,12 @@ type InitializeEvent @entity(immutable: true) {
     globalFee: BigInt!
     minimumCampaignDuration: BigInt!
     maximumCampaignDuration: BigInt!
+}
+
+type OssifyEvent @entity(immutable: true) {
+    id: Bytes!
+    transaction: Transaction!
+    metrom: Metrom!
 }
 
 type CreateCampaignEvent @entity(immutable: true) {
@@ -255,4 +264,22 @@ type Reward @entity {
     token: Token!
     amount: BigInt!
     unclaimed: BigInt!
+    recovered: BigInt!
+
+    claimedByAccount: [ClaimedByAccount!]! @derivedFrom(field: "reward")
+    recoveredByAccount: [RecoveredByAccount!]! @derivedFrom(field: "reward")
+}
+
+type ClaimedByAccount @entity {
+    id: Bytes!
+    reward: Reward!
+    account: Bytes!
+    amount: BigInt!
+}
+
+type RecoveredByAccount @entity {
+    id: Bytes!
+    reward: Reward!
+    account: Bytes!
+    amount: BigInt!
 }

@@ -15,6 +15,7 @@ import {
     RecoverReward,
     TransferCampaignOwnership,
     AcceptCampaignOwnership,
+    Ossify,
 } from "../../generated/Metrom/Metrom";
 import {
     AcceptOwnershipEvent,
@@ -35,6 +36,7 @@ import {
     RecoverRewardEvent,
     TransferCampaignOwnershipEvent,
     AcceptCampaignOwnershipEvent,
+    OssifyEvent,
 } from "../../generated/schema";
 import { METROM_ADDRESS } from "../addresses";
 import {
@@ -48,6 +50,8 @@ import {
     getRewardId,
     getRewardOrThrow,
     getOrCreateSpecificFee,
+    getOrCreateClaimedByAccount,
+    getOrCreateRecoveredByAccount,
 } from "../commons";
 
 export function handleInitialize(event: Initialize): void {
@@ -72,6 +76,7 @@ export function handleInitialize(event: Initialize): void {
 
     let metrom = new Metrom(METROM_ADDRESS);
     metrom.transaction = transaction.id;
+    metrom.ossified = false;
     metrom.owner = event.params.owner;
     metrom.pendingOwner = Address.zero();
     metrom.updater = event.params.updater;
@@ -115,6 +120,7 @@ export function handleCreateCampaign(event: CreateCampaign): void {
         reward.token = rewardToken.id;
         reward.amount = rewardAmount;
         reward.unclaimed = rewardAmount;
+        reward.recovered = BigInt.zero();
         reward.save();
 
         let claimableFee = getOrCreateClaimableFee(rewardToken);
@@ -161,9 +167,17 @@ export function handleDistributeReward(event: DistributeReward): void {
 export function handleClaimReward(event: ClaimReward): void {
     let campaign = getCampaignOrThrow(event.params.campaignId);
     let reward = getRewardOrThrow(campaign.id, event.params.token);
+    let claimedByAccount = getOrCreateClaimedByAccount(
+        campaign.id,
+        reward.id,
+        event.transaction.from,
+    );
 
     reward.unclaimed = reward.unclaimed.minus(event.params.amount);
     reward.save();
+
+    claimedByAccount.amount = claimedByAccount.amount.plus(event.params.amount);
+    claimedByAccount.save();
 
     let claimRewardEvent = new ClaimRewardEvent(getEventId(event));
     claimRewardEvent.transaction = getOrCreateTransaction(event).id;
@@ -178,9 +192,20 @@ export function handleClaimReward(event: ClaimReward): void {
 export function handleRecoverReward(event: RecoverReward): void {
     let campaign = getCampaignOrThrow(event.params.campaignId);
     let reward = getRewardOrThrow(campaign.id, event.params.token);
+    let recoveredByAccount = getOrCreateRecoveredByAccount(
+        campaign.id,
+        reward.id,
+        event.transaction.from,
+    );
 
     reward.unclaimed = reward.unclaimed.minus(event.params.amount);
+    reward.recovered = reward.recovered.plus(event.params.amount);
     reward.save();
+
+    recoveredByAccount.amount = recoveredByAccount.amount.plus(
+        event.params.amount,
+    );
+    recoveredByAccount.save();
 
     let recoverRewardEvent = new RecoverRewardEvent(getEventId(event));
     recoverRewardEvent.transaction = getOrCreateTransaction(event).id;
@@ -338,4 +363,15 @@ export function handleSetMaximumCampaignDuration(
     setMaximumCampaignDuration.maximumCampaignDuration =
         event.params.maximumCampaignDuration;
     setMaximumCampaignDuration.save();
+}
+
+export function handleOssify(event: Ossify): void {
+    let metrom = getMetromOrThrow();
+    metrom.ossified = true;
+    metrom.save();
+
+    let ossify = new OssifyEvent(getEventId(event));
+    ossify.transaction = getOrCreateTransaction(event).id;
+    ossify.metrom = metrom.id;
+    ossify.save();
 }
