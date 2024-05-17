@@ -7,6 +7,8 @@ import {
     Token,
     Transaction,
     SpecificFee,
+    ClaimedByAccount,
+    RecoveredByAccount,
 } from "../generated/schema";
 import { METROM_ADDRESS } from "./addresses";
 import { Erc20 } from "../generated/Metrom/Erc20";
@@ -40,6 +42,56 @@ export function getRewardOrThrow(campaignId: Bytes, token: Bytes): Reward {
     throw new Error(
         `Could not find reward for token ${token.toHex()} on campaign with id ${campaignId.toHex()}`,
     );
+}
+
+export function getClaimedByAccountId(
+    campaignId: Bytes,
+    rewardId: Bytes,
+    account: Bytes,
+): Bytes {
+    return campaignId.concat(rewardId).concat(account);
+}
+
+export function getOrCreateClaimedByAccount(
+    campaignId: Bytes,
+    rewardId: Bytes,
+    account: Bytes,
+): ClaimedByAccount {
+    let id = getClaimedByAccountId(campaignId, rewardId, account);
+    let claimed = ClaimedByAccount.load(id);
+    if (claimed !== null) return claimed;
+
+    claimed = new ClaimedByAccount(id);
+    claimed.reward = rewardId;
+    claimed.account = account;
+    claimed.amount = BigInt.zero();
+    claimed.save();
+    return claimed;
+}
+
+export function getRecoveredByAccountId(
+    campaignId: Bytes,
+    rewardId: Bytes,
+    account: Bytes,
+): Bytes {
+    return campaignId.concat(rewardId).concat(account);
+}
+
+export function getOrCreateRecoveredByAccount(
+    campaignId: Bytes,
+    rewardId: Bytes,
+    account: Bytes,
+): RecoveredByAccount {
+    let id = getRecoveredByAccountId(campaignId, rewardId, account);
+    let recovered = RecoveredByAccount.load(id);
+    if (recovered !== null) return recovered;
+
+    recovered = new RecoveredByAccount(id);
+    recovered.reward = rewardId;
+    recovered.account = account;
+    recovered.amount = BigInt.zero();
+    recovered.save();
+    return recovered;
 }
 
 export function getOrCreateSpecificFee(account: Address): SpecificFee {
