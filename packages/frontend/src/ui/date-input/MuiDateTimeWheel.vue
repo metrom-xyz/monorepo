@@ -175,7 +175,7 @@ onMounted(() => {
 }
 
 .mui_time_wheel__wheel {
-    @apply h-80 w-full py-2 px-1 overflow-y-auto;
+    @apply h-80 w-full py-2 px-1 overflow-y-auto overflow-x-hidden;
 }
 
 .mui_time_wheel__cell {
