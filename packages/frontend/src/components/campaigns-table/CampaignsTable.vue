@@ -16,8 +16,8 @@ import CampaignsTableRewards from "./rewards/CampaignsTableRewards.vue";
 import type { CampaignsTableProps } from "./types";
 import ClaimRewards from "../claim-rewards/ClaimRewards.vue";
 import MuiButton from "@/ui/button/MuiButton.vue";
-import ChrevronLeftIcon from "@/icons/ChrevronLeftIcon.vue";
-import ChrevronRightIcon from "@/icons/ChrevronRightIcon.vue";
+import ChevronLeftIcon from "@/icons/ChevronLeftIcon.vue";
+import ChevronRightIcon from "@/icons/ChevronRightIcon.vue";
 import CampaignsTableExplorer from "./explore/CampaignsTableExplorer.vue";
 
 const PAGE_SIZE = 10;
@@ -141,7 +141,7 @@ const totalPages = computed(
                 xs
                 @click="currentPage -= 1"
                 :disabled="currentPage === 0"
-                :icon="ChrevronLeftIcon"
+                :icon="ChevronLeftIcon"
             />
             <MuiTypography>
                 {{ currentPage + 1 }} /
@@ -151,7 +151,7 @@ const totalPages = computed(
                 xs
                 @click="currentPage += 1"
                 :disabled="currentPage + 1 === totalPages"
-                :icon="ChrevronRightIcon"
+                :icon="ChevronRightIcon"
             />
         </div>
     </div>
