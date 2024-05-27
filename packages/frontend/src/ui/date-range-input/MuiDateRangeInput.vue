@@ -1,133 +1,60 @@
 <script setup lang="ts">
-import { computed, ref, useAttrs } from "vue";
-import MuiModal from "../modal/MuiModal.vue";
-import MuiTextInput from "../MuiTextInput.vue";
-import CalendarIcon from "@/icons/CalendarIcon.vue";
+import { ref } from "vue";
 import type { DateRangeInputProps } from "./types";
 import LocalizedFormat from "dayjs/plugin/localizedFormat";
 import dayjs, { Dayjs } from "dayjs";
 import type { BaseInputWrapperProps } from "../commons/types";
-import MuiDateRangeInputPicker from "./range-picker/MuiDateRangeInputPicker.vue";
-import MuiButton from "../button/MuiButton.vue";
-import MuiTypography from "../typography/MuiTypography.vue";
-import { watchEffect } from "vue";
 import type { Range } from "@/types";
+import MuiDateInput from "../date-input/MuiDateInput.vue";
+import { watchEffect } from "vue";
 
 dayjs.extend(LocalizedFormat);
 
-const props = defineProps<
+defineProps<
     Pick<BaseInputWrapperProps, "loading" | "error"> & DateRangeInputProps
 >();
 const rangeModel = defineModel<Range>("range");
 
-const attrs = useAttrs();
-
-const open = ref(false);
 const internalStartDate = ref<Dayjs | undefined>(rangeModel.value?.from);
 const internalEndDate = ref<Dayjs | undefined>(rangeModel.value?.from);
 
-const startDateText = computed(() =>
-    rangeModel.value?.from
-        ? dayjs(rangeModel.value.from).format("DD MMM YYYY HH:mm")
-        : undefined,
-);
-
-const endDateText = computed(() =>
-    rangeModel.value?.to
-        ? dayjs(rangeModel.value.to).format("DD MMM YYYY HH:mm")
-        : undefined,
-);
-
-const validRange = computed(
-    () =>
-        internalStartDate.value &&
-        internalEndDate.value &&
-        internalEndDate.value.isAfter(internalStartDate.value),
-);
-
-function handlePickerOpenOnClick() {
-    if (!open.value && (attrs.disabled || props.loading)) return;
-    open.value = true;
-}
-
-function handlePickerOnDismiss() {
-    if (!rangeModel.value?.from || !rangeModel.value.to) {
-        internalStartDate.value = undefined;
-        internalEndDate.value = undefined;
-    }
-    open.value = false;
-}
-
-function handlePickerOnApply() {
+watchEffect(() => {
     rangeModel.value = {
         from: internalStartDate.value,
         to: internalEndDate.value,
     };
-    open.value = false;
-}
-
-watchEffect(() => {
-    if (!open.value) {
-        internalStartDate.value = undefined;
-        internalEndDate.value = undefined;
-    } else {
-        internalStartDate.value = rangeModel.value?.from;
-        internalEndDate.value = rangeModel.value?.to;
-    }
 });
 </script>
 <template>
     <div class="mui_date_range_input__root">
-        <MuiModal :open="open" :onDismiss="handlePickerOnDismiss">
-            <div class="mui_date_range_input__text__inputs">
-                <MuiTextInput
-                    v-model="startDateText"
-                    :loading="$props.loading"
-                    :placeholder="$props.messages.startPlaceholder"
-                    :error="$props.error"
-                    readonly
-                    :icon="CalendarIcon"
-                    @click="handlePickerOpenOnClick"
-                />
-                <div class="mui_date_range_input__divider"></div>
-                <MuiTextInput
-                    v-model="endDateText"
-                    :loading="$props.loading"
-                    :placeholder="$props.messages.endPlaceholder"
-                    :error="$props.error"
-                    readonly
-                    :icon="CalendarIcon"
-                    @click="handlePickerOpenOnClick"
-                />
-            </div>
-            <template #modal>
-                <MuiDateRangeInputPicker
-                    :onDismiss="handlePickerOnDismiss"
-                    :messages="{
-                        startLabel: $props.messages.startLabel,
-                        endLabel: $props.messages.endLabel,
-                    }"
-                    v-model:startDate="internalStartDate"
-                    v-model:endDate="internalEndDate"
-                    :min="$props.min"
-                    :max="$props.max"
-                />
-                <div class="mui_date_range_input__modal__footer">
-                    <div class="mui_date_range_input__modal__footer__content">
-                        <MuiButton
-                            sm
-                            class="mui_date_range_input__modal__apply__button"
-                            :disabled="!validRange"
-                            @click="handlePickerOnApply"
-                        >
-                            <MuiTypography medium>
-                                {{ $t("campaign.range.picker.apply") }}
-                            </MuiTypography>
-                        </MuiButton>
-                    </div>
-                </div>
-            </template>
-        </MuiModal>
+        <div class="mui_date_range_input__text__inputs">
+            <MuiDateInput
+                time
+                v-model="internalStartDate"
+                :error="$props.error"
+                :loading="$props.loading"
+                :min="$props.min"
+                :max="$props.max"
+                :messages="{
+                    label: '',
+                    placeholder: $props.messages.startPlaceholder,
+                }"
+            />
+            <div class="mui_date_range_input__divider"></div>
+            <MuiDateInput
+                time
+                v-model="internalEndDate"
+                :error="$props.error"
+                :loading="$props.loading"
+                :min="internalStartDate || $props.min"
+                :max="$props.max"
+                :lookupDate="internalStartDate"
+                :messages="{
+                    label: '',
+                    placeholder: $props.messages.endPlaceholder,
+                }"
+            />
+        </div>
     </div>
 </template>
 <style>

@@ -24,7 +24,7 @@ defineSlots<{
 }
 
 .mui_card__root__disabled__layer {
-    @apply bg-gray-500 opacity-50 z-10 w-full h-full rounded-[30px] absolute hidden;
+    @apply bg-gray-500 opacity-40 z-10 w-full h-full rounded-[30px] absolute hidden;
 }
 
 .mui_card__root__disabled__layer_active {
