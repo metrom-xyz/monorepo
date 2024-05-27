@@ -76,8 +76,12 @@ export const messages = {
                     endPlaceholder: "End",
                     error: {
                         label: "Period not valid",
-                        description:
-                            "The start date can't be in the past, and the campaign duration must be more than {minDuration} minutes but less than {maxDuration} days.",
+                        pastStartDate: "Start date can't be in the past.",
+                        pastEndDate: "End date can't be in the past.",
+                        minimumDuration:
+                            "The campaign duration must be more than {minDuration} minutes.",
+                        maximumDuration:
+                            "The campaign duration must be less than {maxDuration} days.",
                     },
                 },
             },

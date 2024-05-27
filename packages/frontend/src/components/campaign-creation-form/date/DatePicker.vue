@@ -16,8 +16,8 @@ const emits = defineEmits<{
     error: [boolean];
 }>();
 
-const minDate = ref<Dayjs | undefined>();
-const rangeError = ref(false);
+const minDate = ref<Dayjs | undefined>(dayjs());
+const rangeError = ref("");
 
 const { duration: durationLimits, loading: loadingMinMaxDuration } =
     useCampaignMinMaxDuration();
@@ -41,21 +41,31 @@ watch(
             props.state.range.from &&
             props.state.range.to
         ) {
-            rangeError.value =
-                campaignDuration.value < durationLimits.value.min ||
-                campaignDuration.value > durationLimits.value.max ||
+            if (campaignDuration.value < durationLimits.value.min)
+                rangeError.value =
+                    "campaign.range.picker.error.minimumDuration";
+            else if (campaignDuration.value > durationLimits.value.max)
+                rangeError.value =
+                    "campaign.range.picker.error.maximumDuration";
+            else if (
                 dayjs(props.state.range?.from).isBefore(
                     minDate.value,
                     "seconds",
-                ) ||
-                dayjs(props.state.range?.to).isBefore(minDate.value, "seconds");
+                )
+            )
+                rangeError.value = "campaign.range.picker.error.pastStartDate";
+            else if (
+                dayjs(props.state.range?.to).isBefore(minDate.value, "seconds")
+            )
+                rangeError.value = "campaign.range.picker.error.pastEndDate";
+            else rangeError.value = "";
         }
     },
     { immediate: false },
 );
 
 watchEffect(() => {
-    emits("error", props.completed && rangeError.value);
+    emits("error", props.completed && !!rangeError.value);
 
     if (props.completed || !props.state.range?.from || !props.state.range.to)
         return;
@@ -76,7 +86,7 @@ onUnmounted(() => {
     <div class="date_picker__root">
         <MuiDateRangeInput
             v-model:range="$props.state.range"
-            :error="rangeError"
+            :error="!!rangeError"
             :min="minDate"
             :loading="loadingMinMaxDuration"
             :messages="{
@@ -92,7 +102,7 @@ onUnmounted(() => {
             </MuiTypography>
             <template v-if="durationLimits" #popover>
                 <MuiTypography>{{
-                    $t("campaign.range.picker.error.description", {
+                    $t(rangeError, {
                         minDuration: Math.floor(durationLimits.min / 60),
                         maxDuration: Math.floor(
                             durationLimits.max / 60 / 60 / 24,
