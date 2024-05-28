@@ -25,6 +25,7 @@
         "decimal.js-light": "^2.5.1",
         "graphql": "^16.8.1",
         "graphql-request": "^6.1.0",
+        "jwt-decode": "^4.0.0",
         "pinia": "^2.1.7",
         "sdk": "workspace:*",
         "uuid": "^9.0.1",
