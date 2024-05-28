@@ -5,34 +5,34 @@ import {
     watchEffect,
     toValue,
 } from "vue";
-import { type MetromApiClient, type ClaimableRewards } from "sdk";
+import { type MetromApiClient, type Claim } from "sdk";
 import type { Address } from "viem";
 import { usePublicClient } from "vevm";
 
-export interface UseClaimableRewards {
+export interface useClaims {
     address?: Address;
     client?: MetromApiClient;
 }
 
-export interface UseClaimableRewardsReturnType {
+export interface UseClaimsReturnType {
     loading: Ref<boolean>;
     error: Ref<Error | undefined>;
-    rewards: Ref<ClaimableRewards[] | undefined>;
+    claims: Ref<Claim[] | undefined>;
 }
 
-export function useClaimableRewards(
-    params?: MaybeRefOrGetter<UseClaimableRewards>,
-): UseClaimableRewardsReturnType {
+export function useClaims(
+    params?: MaybeRefOrGetter<useClaims>,
+): UseClaimsReturnType {
     const loading = ref(false);
     const error = ref<Error | undefined>();
-    const rewards = ref<ClaimableRewards[] | undefined>();
+    const claims = ref<Claim[] | undefined>();
 
     const publicClient = usePublicClient();
 
     watchEffect(async () => {
         loading.value = true;
         error.value = undefined;
-        rewards.value = undefined;
+        claims.value = undefined;
 
         const newParams = toValue(params);
         if (
@@ -44,7 +44,7 @@ export function useClaimableRewards(
             return;
 
         try {
-            rewards.value = await newParams.client.fetchClaimableRewards({
+            claims.value = await newParams.client.fetchClaims({
                 address: newParams.address,
                 publicClient: publicClient.value,
             });
@@ -58,6 +58,6 @@ export function useClaimableRewards(
     return {
         loading,
         error,
-        rewards,
+        claims,
     };
 }

@@ -6,8 +6,8 @@ export const messages = {
                 create: "New campaign",
             },
         },
-        account: {
-            connect: "Connect",
+        wallet: {
+            connect: "Connect wallet",
         },
         chain: {
             unsupported: {
@@ -98,6 +98,10 @@ export const messages = {
         allCampaigns: {
             rewards: {
                 available: "Available claims: {total}",
+                overview: "Rewards overview",
+                remaining: "Amount claimable",
+                amount: "Total claimed",
+                nothingToClaim: "Nothing to claim",
                 claim: "Claim",
             },
             table: {
