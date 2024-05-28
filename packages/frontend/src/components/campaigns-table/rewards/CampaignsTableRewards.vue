@@ -14,15 +14,19 @@ const popover = ref(false);
 </script>
 <template>
     <MuiPopover :open="popover" :placement="'top-start'">
-        <div class="campaigns_table_rewards__root">
+        <div
+            @mouseenter="popover = true"
+            @mouseleave="popover = false"
+            class="campaigns_table_rewards__root"
+        >
             <MuiRemoteLogo
                 :key="reward.token.address"
                 v-for="(reward, index) in $props.rewards"
-                :address="reward.token.address"
                 lg
-                :style="{ left: `-${8 * index}px` }"
-                @mouseenter="popover = true"
-                @mouseleave="popover = false"
+                :address="reward.token.address"
+                :defaultText="reward.token.symbol"
+                :style="{ left: `${24 * index}px` }"
+                class="campaigns_table_reward__logo"
             />
         </div>
         <template #popover>
@@ -33,8 +37,12 @@ const popover = ref(false);
                     :address="reward.token.address"
                     class="campaigns_table_rewards__details__row"
                 >
-                    <div class="campaigns_table_rewards__amount">
-                        <MuiRemoteLogo :address="reward.token.address" lg />
+                    <div class="campaigns_table_rewards__symbol">
+                        <MuiRemoteLogo
+                            lg
+                            :address="reward.token.address"
+                            :defaultText="reward.token.symbol"
+                        />
                         <MuiTypography>{{ reward.token.symbol }}</MuiTypography>
                     </div>
                     <MuiTextField
@@ -66,18 +74,22 @@ const popover = ref(false);
 </template>
 <style>
 .campaigns_table_rewards__root {
-    @apply flex relative items-center;
+    @apply w-fit flex relative items-center;
+}
+
+.campaigns_table_reward__logo {
+    @apply top-0 absolute;
 }
 
 .campaigns_table_rewards__details {
-    @apply flex flex-col gap-3 rounded-lg p-2;
+    @apply flex flex-col gap-3 rounded-lg p-5;
 }
 
 .campaigns_table_rewards__details__row {
     @apply flex gap-8 items-center justify-between;
 }
 
-.campaigns_table_rewards__amount {
-    @apply flex gap-3 items-center;
+.campaigns_table_rewards__symbol {
+    @apply flex min-w-24 gap-3 items-center;
 }
 </style>

@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { useClaimableRewards } from "@/composables/useClaimableRewards";
 import {
     useAccount,
     usePublicClient,
@@ -13,14 +12,14 @@ import MuiButton from "@/ui/button/MuiButton.vue";
 import MuiTypography from "@/ui/typography/MuiTypography.vue";
 import MuiModal from "@/ui/modal/MuiModal.vue";
 import MuiTextField from "@/ui/text-field/MuiTextField.vue";
-import { shortenAddress } from "@/utils/address";
 import MuiRemoteLogo from "@/ui/remote-logo/MuiRemoteLogo.vue";
-import { formatUnits, type Address } from "viem";
+import { formatUnits } from "viem";
 import { formatDecimals } from "sdk";
 import metromAbi from "../../abis/metrom";
 import { ADDRESS } from "@metrom-xyz/contracts";
 import { writeContract } from "@wagmi/core";
 import MuiWarningMessage from "@/ui/MuiWarningMessage.vue";
+import { useClaims } from "@/composables/useClaims";
 
 const props = defineProps<ClaimRewardsProps>();
 
@@ -31,7 +30,7 @@ const account = useAccount();
 const modalOpen = ref(false);
 const claiming = ref(false);
 
-const { rewards, loading: loadingRewards } = useClaimableRewards(
+const { claims, loading: loadingRewards } = useClaims(
     computed(() => ({
         client: CHAIN_DATA[props.chain].metromApiClient,
         address: account.value.address,
@@ -39,35 +38,17 @@ const { rewards, loading: loadingRewards } = useClaimableRewards(
 );
 
 const claimRewardsParams = computed(() => {
-    if (!rewards.value || !account.value.address) return [];
+    if (!claims.value || !account.value.address) return [];
 
-    const args = rewards.value.reduce(
-        (
-            accumulator: {
-                campaignId: Address;
-                token: Address;
-                amount: bigint;
-                proof: Address[];
-                receiver: Address;
-            }[],
-            reward,
-        ) => {
-            accumulator.push(
-                ...reward.claims.map((claim) => ({
-                    campaignId: reward.campaignId,
-                    token: claim.token.address,
-                    amount: claim.amount,
-                    proof: claim.proof,
-                    receiver: account.value.address!,
-                })),
-            );
-
-            return accumulator;
-        },
-        [],
-    );
-
-    return args;
+    return claims.value
+        .filter((claim) => claim.remaining > 0n)
+        .map((claim) => ({
+            campaignId: claim.campaignId,
+            token: claim.token.address,
+            amount: claim.amount,
+            proof: claim.proof,
+            receiver: account.value.address!,
+        }));
 });
 
 const {
@@ -114,56 +95,72 @@ async function handleClaimRewardsOnClick() {
             sm
             :loading="loadingRewards"
             :disabled="
-                loadingRewards || (!loadingRewards && rewards?.length === 0)
+                loadingRewards || (!loadingRewards && claims?.length === 0)
             "
             @click="modalOpen = true"
         >
             <MuiTypography>
                 {{
                     $t("allCampaigns.rewards.available", {
-                        total: rewards?.length || 0,
+                        total: claimRewardsParams.length || 0,
                     })
                 }}
             </MuiTypography>
         </MuiButton>
         <template #modal>
             <div class="claim_rewards__modal">
-                <div :key="reward.campaignId" v-for="reward in rewards">
-                    <div class="claim_rewards__campaign__wrapper">
-                        <MuiTextField
-                            label="Campaign"
-                            :value="shortenAddress(reward.campaignId)"
-                        />
-                        <MuiTextField label="Claims" />
-                        <div
-                            :key="claim.token.address"
-                            v-for="claim in reward.claims"
-                            class="claim_rewards__campaign__claim__wrapper"
-                        >
-                            <MuiRemoteLogo xxl :address="claim.token.address" />
+                <MuiTypography lg>
+                    {{ $t("allCampaigns.rewards.overview") }}
+                </MuiTypography>
+                <div :key="claim.token.address" v-for="claim in claims">
+                    <div class="claim_rewards__reward__wrapper">
+                        <div class="claim_rewards__reward__token">
+                            <MuiRemoteLogo
+                                xxl
+                                :address="claim.token.address"
+                                :defaultText="claim.token.symbol"
+                            />
                             <MuiTypography>
                                 {{ claim.token.symbol }}
                             </MuiTypography>
-                            <MuiTypography>
-                                {{
-                                    formatDecimals({
-                                        number: formatUnits(
-                                            claim.amount,
-                                            claim.token.decimals,
-                                        ),
-                                    })
-                                }}
-                            </MuiTypography>
                         </div>
+                        <MuiTextField
+                            :label="$t('allCampaigns.rewards.remaining')"
+                            :value="
+                                formatDecimals({
+                                    number: formatUnits(
+                                        claim.remaining,
+                                        claim.token.decimals,
+                                    ),
+                                })
+                            "
+                        />
+                        <MuiTextField
+                            :label="$t('allCampaigns.rewards.amount')"
+                            :value="
+                                formatDecimals({
+                                    number: formatUnits(
+                                        claim.amount,
+                                        claim.token.decimals,
+                                    ),
+                                })
+                            "
+                        />
                     </div>
                 </div>
                 <MuiButton
                     sm
                     :loading="simulatingClaimRewards || claiming"
-                    :disabled="error"
+                    :disabled="error || claimRewardsParams.length === 0"
                     @click="handleClaimRewardsOnClick"
                 >
-                    {{ $t("allCampaigns.rewards.claim") }}
+                    <MuiTypography>
+                        {{
+                            claimRewardsParams.length === 0
+                                ? $t("allCampaigns.rewards.nothingToClaim")
+                                : $t("allCampaigns.rewards.claim")
+                        }}
+                    </MuiTypography>
                 </MuiButton>
                 <MuiWarningMessage
                     v-if="!!error && !!(error as any).shortMessage"
@@ -178,11 +175,19 @@ async function handleClaimRewardsOnClick() {
 </template>
 <style>
 .claim_rewards__modal {
-    @apply flex flex-col gap-4 w-[440px] bg-white px-8 py-5 rounded-[30px] border-2 border-green;
+    @apply flex flex-col gap-4 w-[440px] bg-white p-5 rounded-[30px] border-2 border-green;
 }
 
-.claim_rewards__campaign__wrapper {
-    @apply flex flex-col gap-1;
+.claim_rewards__reward__wrapper {
+    @apply flex justify-between items-center;
+}
+
+.claim_rewards__reward__token {
+    @apply min-w-28 flex gap-3 items-center;
+}
+
+.claim_rewards__reward__amounts {
+    @apply flex gap-3 items-center;
 }
 
 .claim_rewards__campaign__claim__wrapper {
