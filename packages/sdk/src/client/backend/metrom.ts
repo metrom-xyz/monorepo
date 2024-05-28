@@ -1,9 +1,9 @@
 import type { Address, PublicClient } from "viem";
 import { CoreClient } from "../core";
-import type { FetchCampaignsResponse, RawClaimableRewards } from "./types";
+import type { FetchCampaignsResponse, FetchClaimsResponse } from "./types";
 import type { SupportedChain } from "@metrom-xyz/contracts";
 import { SUPPORTED_CHAIN_NAMES, SupportedAmm } from "../../commons";
-import type { Campaign, ClaimableRewards } from "../../entities";
+import type { Campaign, Claim } from "../../entities";
 
 export type FetchClaimsParams = {
     address: Address;
@@ -98,9 +98,7 @@ export class MetromApiClient extends CoreClient {
         };
     }
 
-    async fetchClaimableRewards(
-        params: FetchClaimsParams,
-    ): Promise<ClaimableRewards[]> {
+    async fetchClaims(params: FetchClaimsParams): Promise<Claim[]> {
         const response = await fetch(
             new URL(
                 `${this.targetChainName}/claims?address=${params.address}`,
@@ -112,30 +110,19 @@ export class MetromApiClient extends CoreClient {
                 `response not ok while fetching claimable rewards: ${await response.text()}`,
             );
 
-        const rawRewards = (await response.json()) as RawClaimableRewards[];
-
-        const tokenAddresses = rawRewards.reduce(
-            (uniqueTokens: Set<string>, reward) => {
-                reward.claims.forEach((claim) => {
-                    uniqueTokens.add(claim.token);
-                });
-                return uniqueTokens;
-            },
-            new Set<string>(),
-        );
+        const rawRewards = (await response.json()) as FetchClaimsResponse;
 
         const erc20Tokens = await this.fetchErc20Tokens({
-            addresses: Array.from(tokenAddresses) as Address[],
+            addresses: rawRewards.claims.map((reward) => reward.token),
             publicClient: params.publicClient,
         });
 
-        return rawRewards.map((rawReward) => ({
+        return rawRewards.claims.map((rawReward) => ({
             ...rawReward,
-            claims: rawReward.claims.map((claim) => ({
-                token: erc20Tokens[claim.token],
-                amount: BigInt(claim.amount),
-                proof: claim.proof,
-            })),
+            token: erc20Tokens[rawReward.token],
+            amount: BigInt(rawReward.amount),
+            remaining: BigInt(rawReward.remaining),
+            proof: rawReward.proof,
         }));
     }
 }
