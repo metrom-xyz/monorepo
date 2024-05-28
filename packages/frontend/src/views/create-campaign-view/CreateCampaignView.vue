@@ -1,14 +1,16 @@
 <script setup lang="ts">
-import MuiTypography from "@/ui/typography/MuiTypography.vue";
 import { ref } from "vue";
 import type { CreateCampaignViewProps } from "./types";
 import CampaignCreationForm from "@/components/campaign-creation-form/CampaignCreationForm.vue";
-import CampaignSummary from "@/components/campaign-summary/CampaignSummary.vue";
 import { v4 } from "uuid";
 import { watchEffect } from "vue";
 import type { CampaignState } from "@/types";
+import AuthenticateAccount from "@/components/AuthenticateAccount.vue";
+import { useAuth } from "@/stores/auth";
 
 const props = defineProps<CreateCampaignViewProps>();
+
+const auth = useAuth();
 
 const preview = ref(false);
 const campaignState = ref<CampaignState>({
@@ -25,7 +27,6 @@ function handleRewardOnRemove(index: number) {
 }
 
 function handlePreviewOnClick() {
-    // TODO: implement campaign state formatting
     preview.value = true;
     campaignState.value = {
         ...campaignState.value,
@@ -46,14 +47,10 @@ watchEffect(() => [(campaignState.value.network = props.selectedChain)]);
 </script>
 <template>
     <div class="create_campaign__root">
-        <div v-if="preview" class="create_campaign__summary__container">
-            <MuiTypography h3>
-                {{ $t("campaign.summary.title") }}
-            </MuiTypography>
-            <CampaignSummary :state="campaignState" />
-        </div>
-        <div v-else class="create_campaign__form__container">
+        <div class="create_campaign__form__container">
+            <AuthenticateAccount v-if="!auth.isJwtAuthTokenValid" />
             <CampaignCreationForm
+                v-else
                 :state="campaignState"
                 :onPreviewClick="handlePreviewOnClick"
                 @addReward="campaignState.rewards.push({ id: v4() })"

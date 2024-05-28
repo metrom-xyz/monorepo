@@ -21,6 +21,12 @@ export const messages = {
                     "In order to view this page please switch to {chainName} in your connected wallet to continue.",
             },
         },
+        authenticate: {
+            title: "Welcome to Metrom",
+            description:
+                "In order to create campaigns it's necessary to sign a message. This request will not trigger a blockchain transaction or cost you any fees.",
+            sign: "Sign message",
+        },
         campaign: {
             summary: {
                 title: "Campaign summary",
