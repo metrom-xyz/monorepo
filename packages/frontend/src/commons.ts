@@ -17,6 +17,9 @@ export const TOKEN_LISTS = [
     "https://celo-org.github.io/celo-token-list/celo.tokenlist.json",
 ];
 
+// TODO: define issuer
+export const METROM_BACKEND_JWT_ISSUER = "metrom-backend";
+
 export const SUPPORTED_CHAINS: [Chain, ...Chain[]] = [
     // celoAlfajores,
     // sepolia,

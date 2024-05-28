@@ -11,6 +11,7 @@ import DeployButton from "./deploy-button/DeployButton.vue";
 import SubmitButton from "../submit-button/SubmitButton.vue";
 import WalletIcon from "@/icons/WalletIcon.vue";
 import MuiButton from "@/ui/button/MuiButton.vue";
+import MuiTypography from "@/ui/typography/MuiTypography.vue";
 
 const props = defineProps<DeployCampaignProps>();
 const emits = defineEmits(["validated", "edited"]);
@@ -67,7 +68,7 @@ function handleEditOnClick() {
             sm
             @click="handleEditOnClick"
         >
-            {{ $t("campaign.deploy.edit") }}
+            <MuiTypography>{{ $t("campaign.deploy.edit") }}</MuiTypography>
         </MuiButton>
         <SubmitButton
             v-if="!account.isConnected"

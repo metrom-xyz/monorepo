@@ -10,7 +10,7 @@ defineSlots<{
             class="mui_card__root__disabled__layer"
             :class="{ mui_card__root__disabled__layer_active: $attrs.disabled }"
         ></div>
-        <div class="mui_card__title">
+        <div v-if="!!$slots.title" class="mui_card__title">
             <slot name="title"></slot>
         </div>
         <div class="mui_card__content">
