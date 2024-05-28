@@ -1,12 +1,11 @@
 import type { Address, Hex } from "viem";
 
-export type RawClaimableRewards = {
+type RawClaimableRewards = {
     campaignId: Address;
-    claims: {
-        token: Address;
-        amount: string;
-        proof: Address[];
-    }[];
+    token: Address;
+    amount: string;
+    remaining: string;
+    proof: Address[];
 };
 
 type RawToken = {
@@ -42,10 +41,16 @@ type RawCampaign = {
     specification: Hex;
     root: Hex;
     data: Hex;
+    rewardsUsdValue: number | null;
+    apr: number | null;
     rewards: RawReward[];
 };
 
 export type FetchCampaignsResponse = {
     campaigns: RawCampaign[];
     amount: number;
+};
+
+export type FetchClaimsResponse = {
+    claims: RawClaimableRewards[];
 };

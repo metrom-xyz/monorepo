@@ -51,16 +51,15 @@ export type Campaign = {
     specification: Hex;
     root: Hex;
     data: Hex;
+    rewardsUsdValue: number | null;
+    apr: number | null;
     rewards: Reward[];
 };
 
 export interface Claim {
+    campaignId: Address;
     token: Erc20Token;
     amount: bigint;
+    remaining: bigint;
     proof: Address[];
-}
-
-export interface ClaimableRewards {
-    campaignId: Address;
-    claims: Claim[];
 }
