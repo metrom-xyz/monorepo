@@ -5,6 +5,7 @@ import { shortenAddress } from "@/utils/address";
 import { injected } from "@wagmi/core";
 import { useAccount, useConnect } from "vevm";
 import ChainSelect from "./ChainSelect.vue";
+import ConnectWallet from "./ConnectWallet.vue";
 
 const account = useAccount();
 const { connect } = useConnect();
@@ -21,12 +22,7 @@ const { connect } = useConnect();
                     {{ shortenAddress(account.address) }}
                 </MuiTypography>
             </template>
-            <div v-else class="user_account__connect__wrapper">
-                <!-- TODO: implement connect button -->
-                <button @click="connect({ connector: injected() })">
-                    <MuiTypography>{{ $t("account.connect") }}</MuiTypography>
-                </button>
-            </div>
+            <ConnectWallet v-else class="user_account__connect__button" />
         </div>
     </div>
 </template>
@@ -47,7 +43,7 @@ const { connect } = useConnect();
     @apply pr-4;
 }
 
-.user_account__connect__wrapper {
-    @apply p-4;
+.user_account__connect__button {
+    @apply h-14;
 }
 </style>
