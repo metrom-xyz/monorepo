@@ -14,7 +14,7 @@ import MuiModal from "@/ui/modal/MuiModal.vue";
 import MuiTextField from "@/ui/text-field/MuiTextField.vue";
 import MuiRemoteLogo from "@/ui/remote-logo/MuiRemoteLogo.vue";
 import { formatUnits } from "viem";
-import { formatDecimals } from "sdk";
+import { formatDecimals, type Claim } from "sdk";
 import metromAbi from "../../abis/metrom";
 import { ADDRESS } from "@metrom-xyz/contracts";
 import { writeContract } from "@wagmi/core";
@@ -49,6 +49,26 @@ const claimRewardsParams = computed(() => {
             proof: claim.proof,
             receiver: account.value.address!,
         }));
+});
+
+const aggregatedClaims = computed(() => {
+    if (!claims.value || !account.value.address) return [];
+
+    return Object.values(
+        claims.value.reduce((accumulator: Record<string, Claim>, claim) => {
+            // avoid mutating the original claims
+            const clonedClaim = { ...claim };
+
+            if (!accumulator[claim.token.address]) {
+                accumulator[claim.token.address] = clonedClaim;
+                return accumulator;
+            }
+
+            accumulator[claim.token.address].amount += clonedClaim.amount;
+            accumulator[claim.token.address].remaining += clonedClaim.remaining;
+            return accumulator;
+        }, {}),
+    );
 });
 
 const {
@@ -112,7 +132,10 @@ async function handleClaimRewardsOnClick() {
                 <MuiTypography lg>
                     {{ $t("allCampaigns.rewards.overview") }}
                 </MuiTypography>
-                <div :key="claim.token.address" v-for="claim in claims">
+                <div
+                    :key="claim.token.address"
+                    v-for="claim in aggregatedClaims"
+                >
                     <div class="claim_rewards__reward__wrapper">
                         <div class="claim_rewards__reward__token">
                             <MuiRemoteLogo
