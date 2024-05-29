@@ -97,6 +97,7 @@ const resolvedDefaultText = computed(() =>
     @apply bg-black
         text-white
         rounded-full
+        select-none
         flex
         justify-center
         items-center
