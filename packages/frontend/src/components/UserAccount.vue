@@ -2,13 +2,11 @@
 import WalletIcon from "@/icons/WalletIcon.vue";
 import MuiTypography from "@/ui/typography/MuiTypography.vue";
 import { shortenAddress } from "@/utils/address";
-import { injected } from "@wagmi/core";
-import { useAccount, useConnect } from "vevm";
+import { useAccount } from "vevm";
 import ChainSelect from "./ChainSelect.vue";
 import ConnectWallet from "./ConnectWallet.vue";
 
 const account = useAccount();
-const { connect } = useConnect();
 </script>
 <template>
     <div class="user_account__root">
