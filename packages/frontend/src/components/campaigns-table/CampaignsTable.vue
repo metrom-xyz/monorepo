@@ -19,11 +19,13 @@ import MuiButton from "@/ui/button/MuiButton.vue";
 import ChevronLeftIcon from "@/icons/ChevronLeftIcon.vue";
 import ChevronRightIcon from "@/icons/ChevronRightIcon.vue";
 import CampaignsTableExplorer from "./explore/CampaignsTableExplorer.vue";
+import CampaignsTablePeriod from "./period/CampaignsTablePeriod.vue";
 
 const PAGE_SIZE = 10;
 
 const HEADERS = [
     "allCampaigns.table.header.pool",
+    "allCampaigns.table.header.period",
     "allCampaigns.table.header.rewards",
     "allCampaigns.table.header.amm",
     "allCampaigns.table.header.links",
@@ -118,6 +120,10 @@ const totalPages = computed(
                                 }}
                             </MuiTypography>
                         </div>
+                        <CampaignsTablePeriod
+                            :from="campaign.from"
+                            :to="campaign.to"
+                        />
                         <CampaignsTableRewards :rewards="campaign.rewards" />
                         <CampaignsTableDeposit
                             :chainId="campaign.pool.token0.chainId"

@@ -99,8 +99,8 @@ export const messages = {
             rewards: {
                 available: "Available claims: {total}",
                 overview: "Rewards overview",
-                remaining: "Amount claimable",
-                amount: "Total claimed",
+                remaining: "Claimable amount",
+                amount: "Assigned amount",
                 nothingToClaim: "Nothing to claim",
                 claim: "Claim",
             },
@@ -109,19 +109,17 @@ export const messages = {
                     pools: "Search for pools",
                 },
                 header: {
-                    network: "Network",
                     pool: "Pool",
+                    period: "Period",
                     apr: "Apr",
-                    tvl: "Tvl",
                     status: "Status",
                     rewards: "Rewards",
                     amm: "Deposit",
                     links: "Links",
                 },
-                status: {
-                    live: "Live",
-                    expired: "Expired",
-                    soon: "Soon",
+                period: {
+                    from: "Start",
+                    to: "End",
                 },
                 rewards: {
                     amount: "Amount",
