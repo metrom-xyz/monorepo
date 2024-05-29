@@ -99,9 +99,11 @@ export const messages = {
             rewards: {
                 available: "Available claims: {total}",
                 overview: "Rewards overview",
+                showAll: "Show all",
                 remaining: "Claimable amount",
                 amount: "Assigned amount",
                 nothingToClaim: "Nothing to claim",
+                empty: "No claimable rewards.",
                 claim: "Claim",
             },
             table: {
