@@ -5,12 +5,13 @@ import CampaignCreationForm from "@/components/campaign-creation-form/CampaignCr
 import { v4 } from "uuid";
 import { watchEffect } from "vue";
 import type { CampaignState } from "@/types";
-import AuthenticateAccount from "@/components/AuthenticateAccount.vue";
-import { useAuth } from "@/stores/auth";
+import AuthenticateUser from "@/components/AuthenticateUser.vue";
+import { useLogin } from "@/stores/auth";
+import { storeToRefs } from "pinia";
 
 const props = defineProps<CreateCampaignViewProps>();
 
-const auth = useAuth();
+const { isJwtTokenValid: isJwtAuthTokenValid } = storeToRefs(useLogin());
 
 const preview = ref(false);
 const campaignState = ref<CampaignState>({
@@ -48,7 +49,7 @@ watchEffect(() => [(campaignState.value.network = props.selectedChain)]);
 <template>
     <div class="create_campaign__root">
         <div class="create_campaign__form__container">
-            <AuthenticateAccount v-if="!auth.isJwtAuthTokenValid" />
+            <AuthenticateUser v-if="!isJwtAuthTokenValid" />
             <CampaignCreationForm
                 v-else
                 :state="campaignState"

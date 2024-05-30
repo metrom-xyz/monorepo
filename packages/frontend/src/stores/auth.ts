@@ -1,14 +1,14 @@
-import { METROM_BACKEND_JWT_ISSUER } from "@/commons";
+import { METROM_DATA_MANAGER_JWT_ISSUER } from "@/commons";
 import { useStorage, type RemovableRef } from "@vueuse/core";
 import { jwtDecode } from "jwt-decode";
 import { defineStore } from "pinia";
 
 const JWT_AUTH_TOKEN = "jwt-auth-token";
 
-export const useAuth = defineStore(JWT_AUTH_TOKEN, {
-    state: (): { jwtAuthToken: RemovableRef<string | undefined> } => ({
-        jwtAuthToken: useStorage<string | undefined>(
-            "auth.jwtAuthToken",
+export const useLogin = defineStore(JWT_AUTH_TOKEN, {
+    state: (): { jwtToken: RemovableRef<string | undefined> } => ({
+        jwtToken: useStorage<string | undefined>(
+            "auth.jwtToken",
             undefined,
             localStorage,
             {
@@ -17,21 +17,21 @@ export const useAuth = defineStore(JWT_AUTH_TOKEN, {
         ),
     }),
     getters: {
-        isJwtAuthTokenValid(state) {
-            const jwt = state.jwtAuthToken;
+        isJwtTokenValid(state) {
+            const jwt = state.jwtToken;
             if (!jwt) return false;
             const decoded = jwtDecode(jwt, { header: false });
             return (
                 !!decoded &&
-                decoded.iss === METROM_BACKEND_JWT_ISSUER &&
+                decoded.iss === METROM_DATA_MANAGER_JWT_ISSUER &&
                 !!decoded.exp &&
                 decoded.exp > Math.floor(Date.now() / 1000)
             );
         },
     },
     actions: {
-        setJwtAuthToken(jwtAuthToken: string) {
-            this.jwtAuthToken = jwtAuthToken;
+        setJwtToken(jwtToken: string) {
+            this.jwtToken = jwtToken;
         },
     },
 });

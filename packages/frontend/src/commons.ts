@@ -3,6 +3,8 @@ import {
     AmmSubgraphClient,
     MetromApiClient,
     SupportedAmm,
+    Environment,
+    SERVICE_URLS,
 } from "sdk";
 import { type Transport, http, type Chain } from "viem";
 import { holesky } from "viem/chains";
@@ -12,13 +14,13 @@ import MuiAlgebraIntegralIcon from "./icons/AlgebraIntegralIcon.vue";
 import { ADDRESS } from "@metrom-xyz/contracts";
 import { markRaw } from "vue";
 
+export const ENVIRONMENT = import.meta.env.MODE as Environment;
+export const METROM_DATA_MANAGER_JWT_ISSUER = "metrom-data-manager";
+
 export const TOKEN_LISTS = [
     "https://tokens.coingecko.com/celo/all.json",
     "https://celo-org.github.io/celo-token-list/celo.tokenlist.json",
 ];
-
-// TODO: define issuer
-export const METROM_BACKEND_JWT_ISSUER = "metrom-backend";
 
 export const SUPPORTED_CHAINS: [Chain, ...Chain[]] = [
     // celoAlfajores,
@@ -113,7 +115,7 @@ export const CHAIN_DATA: Record<SupportedChain, ChainData> = {
         },
         contract: ADDRESS[SupportedChain.Holesky],
         metromApiClient: new MetromApiClient(
-            "https://api.dev.metrom.xyz",
+            SERVICE_URLS[ENVIRONMENT].metrom,
             SupportedChain.Holesky,
         ),
         amms: AMMS[SupportedChain.Holesky],
