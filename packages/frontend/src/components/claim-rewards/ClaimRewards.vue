@@ -56,6 +56,8 @@ const claimRewardsParams = computed(() => {
 const aggregatedClaims = computed(() => {
     if (!claims.value || !account.value.address) return [];
 
+    const collator = new Intl.Collator();
+
     return Object.values(
         claims.value
             .filter((claim) => showAllClaims.value || claim.remaining > 0n)
@@ -73,7 +75,7 @@ const aggregatedClaims = computed(() => {
                     clonedClaim.remaining;
                 return accumulator;
             }, {}),
-    );
+    ).sort((a, b) => collator.compare(a.token.symbol, b.token.symbol));
 });
 
 const {
