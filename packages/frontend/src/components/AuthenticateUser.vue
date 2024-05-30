@@ -10,7 +10,6 @@ import { watchEffect } from "vue";
 import { ref } from "vue";
 import ConnectWallet from "./ConnectWallet.vue";
 import { SERVICE_URLS } from "sdk";
-import { ENVIRONMENT } from "@/commons";
 
 const signedLoginMessage = ref<string>();
 const loading = ref(false);
@@ -25,7 +24,7 @@ async function handleSignOnClick() {
 
     try {
         const response = await fetch(
-            `${SERVICE_URLS[ENVIRONMENT].dataManager}/login-message?address=${account.value.address}`,
+            `${SERVICE_URLS[__ENVIRONMENT__].dataManager}/login-message?address=${account.value.address}`,
         );
         if (!response.ok) throw new Error(await response.text());
         const { message } = (await response.json()) as { message: string };
@@ -51,7 +50,7 @@ watchEffect(() => {
         try {
             loading.value = true;
             const response = await fetch(
-                `${SERVICE_URLS[ENVIRONMENT].dataManager}/token`,
+                `${SERVICE_URLS[__ENVIRONMENT__].dataManager}/token`,
                 {
                     method: "POST",
                     headers: {
