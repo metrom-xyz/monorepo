@@ -1,13 +1,6 @@
 import { type Address, type Hex } from "viem";
 import type { SupportedAmm } from "./commons";
 
-export enum Environment {
-    Local = "local",
-    Development = "development",
-    Staging = "staging",
-    Production = "production",
-}
-
 export interface Erc20Token {
     chainId: number;
     address: Address;
