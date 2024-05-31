@@ -59,23 +59,22 @@ const aggregatedClaims = computed(() => {
     const collator = new Intl.Collator();
 
     return Object.values(
-        claims.value
-            .filter((claim) => showAllClaims.value || claim.remaining > 0n)
-            .reduce((accumulator: Record<string, Claim>, claim) => {
-                // avoid mutating the original claims
-                const clonedClaim = { ...claim };
+        claims.value.reduce((accumulator: Record<string, Claim>, claim) => {
+            // avoid mutating the original claims
+            const clonedClaim = { ...claim };
 
-                if (!accumulator[claim.token.address]) {
-                    accumulator[claim.token.address] = clonedClaim;
-                    return accumulator;
-                }
-
-                accumulator[claim.token.address].amount += clonedClaim.amount;
-                accumulator[claim.token.address].remaining +=
-                    clonedClaim.remaining;
+            if (!accumulator[claim.token.address]) {
+                accumulator[claim.token.address] = clonedClaim;
                 return accumulator;
-            }, {}),
-    ).sort((a, b) => collator.compare(a.token.symbol, b.token.symbol));
+            }
+
+            accumulator[claim.token.address].amount += clonedClaim.amount;
+            accumulator[claim.token.address].remaining += clonedClaim.remaining;
+            return accumulator;
+        }, {}),
+    )
+        .sort((a, b) => collator.compare(a.token.symbol, b.token.symbol))
+        .filter((claim) => showAllClaims.value || claim.remaining > 0n);
 });
 
 const {
