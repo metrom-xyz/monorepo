@@ -16,6 +16,9 @@ import { computed, ref } from "vue";
 import { watch } from "vue";
 import DeployCampaign from "./deploy/DeployCampaign.vue";
 import DatePicker from "./date/DatePicker.vue";
+import AuthenticateUser from "../AuthenticateUser.vue";
+import { useLogin } from "@/stores/auth";
+import { storeToRefs } from "pinia";
 
 const props = defineProps<CampaignCreationFormProps>();
 const emits = defineEmits<{
@@ -29,6 +32,8 @@ const ammStepError = ref(false);
 const rewardsStepError = ref(false);
 const dateRangeStepError = ref(false);
 const readonly = ref(false);
+
+const { isJwtTokenValid: isJwtAuthTokenValid } = storeToRefs(useLogin());
 
 const formError = computed(
     () =>
@@ -73,7 +78,8 @@ watch(
 </script>
 <template>
     <div class="campaign_creation_form__root">
-        <MuiStepper>
+        <AuthenticateUser v-show="!isJwtAuthTokenValid && readonly" />
+        <MuiStepper v-show="isJwtAuthTokenValid || !readonly">
             <MuiStep
                 active
                 :step="1"
