@@ -5,13 +5,8 @@ import CampaignCreationForm from "@/components/campaign-creation-form/CampaignCr
 import { v4 } from "uuid";
 import { watchEffect } from "vue";
 import type { CampaignState } from "@/types";
-import AuthenticateUser from "@/components/AuthenticateUser.vue";
-import { useLogin } from "@/stores/auth";
-import { storeToRefs } from "pinia";
 
 const props = defineProps<CreateCampaignViewProps>();
-
-const { isJwtTokenValid: isJwtAuthTokenValid } = storeToRefs(useLogin());
 
 const preview = ref(false);
 const campaignState = ref<CampaignState>({
@@ -49,9 +44,7 @@ watchEffect(() => [(campaignState.value.network = props.selectedChain)]);
 <template>
     <div class="create_campaign__root">
         <div class="create_campaign__form__container">
-            <AuthenticateUser v-if="!isJwtAuthTokenValid" />
             <CampaignCreationForm
-                v-else
                 :state="campaignState"
                 :onPreviewClick="handlePreviewOnClick"
                 @addReward="campaignState.rewards.push({ id: v4() })"
