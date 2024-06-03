@@ -15,6 +15,8 @@ type Transaction @entity(immutable: true) {
         @derivedFrom(field: "transaction")
     distributeRewardEvents: [DistributeRewardEvent!]!
         @derivedFrom(field: "transaction")
+    setMinimumRewardTokenRateEvents: [SetMinimumRewardTokenRateEvent!]!
+        @derivedFrom(field: "transaction")
     claimRewardEvent: ClaimRewardEvent! @derivedFrom(field: "transaction")
     recoverRewardEvent: RecoverRewardEvent! @derivedFrom(field: "transaction")
     claimFee: ClaimFeeEvent! @derivedFrom(field: "transaction")
@@ -27,9 +29,8 @@ type Transaction @entity(immutable: true) {
     acceptOwnershipEvents: [AcceptOwnershipEvent!]!
         @derivedFrom(field: "transaction")
     setUpdaterEvents: [SetUpdaterEvent!]! @derivedFrom(field: "transaction")
-    setGlobalFeeEvents: [SetGlobalFeeEvent!]! @derivedFrom(field: "transaction")
-    setSpecificFeeEvents: [SetSpecificFeeEvent!]!
-        @derivedFrom(field: "transaction")
+    setFeeEvents: [SetFeeEvent!]! @derivedFrom(field: "transaction")
+    setFeeRebateEvents: [SetFeeRebateEvent!]! @derivedFrom(field: "transaction")
     setMinimumCampaignDuration: [SetMinimumCampaignDurationEvent!]!
         @derivedFrom(field: "transaction")
     setMaximumCampaignDuration: [SetMaximumCampaignDurationEvent!]!
@@ -43,19 +44,23 @@ type Metrom @entity {
     owner: Bytes!
     pendingOwner: Bytes!
     updater: Bytes!
-    globalFee: BigInt!
+    fee: BigInt!
     minimumCampaignDuration: BigInt!
     maximumCampaignDuration: BigInt!
     campaignsAmount: BigInt!
 
+    whitelistedRewardTokens: [WhitelistedRewardToken!]!
+        @derivedFrom(field: "metrom")
     claimableFees: [ClaimableFee!]! @derivedFrom(field: "metrom")
-    specificFees: [SpecificFee!]! @derivedFrom(field: "metrom")
+    feeRebates: [FeeRebate!]! @derivedFrom(field: "metrom")
     campaigns: [Campaign!]! @derivedFrom(field: "metrom")
 
     initializeEvents: [InitializeEvent!]! @derivedFrom(field: "metrom")
     ossifyEvents: [OssifyEvent!]! @derivedFrom(field: "metrom")
     createCampaignEvents: [CreateCampaignEvent!]! @derivedFrom(field: "metrom")
     distributeRewardEvents: [DistributeRewardEvent!]!
+        @derivedFrom(field: "metrom")
+    setMinimumRewardTokenRateEvents: [SetMinimumRewardTokenRateEvent!]!
         @derivedFrom(field: "metrom")
     claimRewardEvent: ClaimRewardEvent! @derivedFrom(field: "metrom")
     recoverRewardEvent: RecoverRewardEvent! @derivedFrom(field: "metrom")
@@ -69,27 +74,12 @@ type Metrom @entity {
     acceptOwnershipEvents: [AcceptOwnershipEvent!]!
         @derivedFrom(field: "metrom")
     setUpdaterEvents: [SetUpdaterEvent!]! @derivedFrom(field: "metrom")
-    setGlobalFeeEvents: [SetGlobalFeeEvent!]! @derivedFrom(field: "metrom")
-    setSpecificFeeEvents: [SetSpecificFeeEvent!]! @derivedFrom(field: "metrom")
+    setFeeEvents: [SetFeeEvent!]! @derivedFrom(field: "metrom")
+    setFeeRebateEvents: [SetFeeRebateEvent!]! @derivedFrom(field: "metrom")
     setMinimumCampaignDuration: [SetMinimumCampaignDurationEvent!]!
         @derivedFrom(field: "metrom")
     setMaximumCampaignDuration: [SetMaximumCampaignDurationEvent!]!
         @derivedFrom(field: "metrom")
-}
-
-type ClaimableFee @entity {
-    id: Bytes!
-    metrom: Metrom!
-    token: Token!
-    amount: BigInt!
-}
-
-type SpecificFee @entity {
-    id: Bytes!
-    metrom: Metrom!
-    address: Bytes!
-    fee: BigInt!
-    none: Boolean!
 }
 
 type InitializeEvent @entity(immutable: true) {
@@ -98,7 +88,7 @@ type InitializeEvent @entity(immutable: true) {
     metrom: Metrom!
     owner: Bytes!
     updater: Bytes!
-    globalFee: BigInt!
+    fee: BigInt!
     minimumCampaignDuration: BigInt!
     maximumCampaignDuration: BigInt!
 }
@@ -120,9 +110,16 @@ type CreateCampaignEvent @entity(immutable: true) {
     from: BigInt!
     to: BigInt!
     specification: Bytes!
-    rewardTokens: [Bytes!]!
-    rewardAmounts: [BigInt!]!
-    feeAmounts: [BigInt!]!
+    rewards: [CreatedCampaignReward!]!
+        @derivedFrom(field: "createCampaignEvent")
+}
+
+type CreatedCampaignReward @entity(immutable: true) {
+    id: Bytes!
+    createCampaignEvent: CreateCampaignEvent!
+    token: Token!
+    amount: BigInt!
+    fee: BigInt!
 }
 
 type DistributeRewardEvent @entity(immutable: true) {
@@ -132,6 +129,14 @@ type DistributeRewardEvent @entity(immutable: true) {
     campaign: Campaign!
     root: Bytes!
     data: Bytes!
+}
+
+type SetMinimumRewardTokenRateEvent @entity(immutable: true) {
+    id: Bytes!
+    transaction: Transaction!
+    metrom: Metrom!
+    token: Token!
+    minimumRate: BigInt!
 }
 
 type ClaimRewardEvent @entity(immutable: true) {
@@ -200,19 +205,19 @@ type SetUpdaterEvent @entity(immutable: true) {
     updater: Bytes!
 }
 
-type SetGlobalFeeEvent @entity(immutable: true) {
+type SetFeeEvent @entity(immutable: true) {
     id: Bytes!
     transaction: Transaction!
     metrom: Metrom!
-    globalFee: BigInt!
+    fee: BigInt!
 }
 
-type SetSpecificFeeEvent @entity(immutable: true) {
+type SetFeeRebateEvent @entity(immutable: true) {
     id: Bytes!
     transaction: Transaction!
     metrom: Metrom!
-    address: Bytes!
-    specificFee: BigInt!
+    account: Bytes!
+    rebate: BigInt!
 }
 
 type SetMinimumCampaignDurationEvent @entity(immutable: true) {
@@ -227,6 +232,27 @@ type SetMaximumCampaignDurationEvent @entity(immutable: true) {
     transaction: Transaction!
     metrom: Metrom!
     maximumCampaignDuration: BigInt!
+}
+
+type ClaimableFee @entity {
+    id: Bytes!
+    metrom: Metrom!
+    token: Token!
+    amount: BigInt!
+}
+
+type FeeRebate @entity {
+    id: Bytes!
+    metrom: Metrom!
+    account: Bytes!
+    rebate: BigInt!
+}
+
+type WhitelistedRewardToken @entity {
+    id: Bytes!
+    metrom: Metrom!
+    token: Token!
+    minimumRate: BigInt!
 }
 
 type Campaign @entity {

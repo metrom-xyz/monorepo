@@ -8,14 +8,15 @@ import {
     TransferOwnership,
     AcceptOwnership,
     SetUpdater,
-    SetGlobalFee,
+    SetFee,
     SetMinimumCampaignDuration,
     SetMaximumCampaignDuration,
-    SetSpecificFee,
+    SetFeeRebate,
     RecoverReward,
     TransferCampaignOwnership,
     AcceptCampaignOwnership,
     Ossify,
+    SetMinimumRewardTokenRate,
 } from "../../generated/Metrom/Metrom";
 import {
     AcceptOwnershipEvent,
@@ -27,8 +28,8 @@ import {
     InitializeEvent,
     Metrom,
     Reward,
-    SetGlobalFeeEvent,
-    SetSpecificFeeEvent,
+    SetFeeEvent,
+    SetFeeRebateEvent,
     SetMinimumCampaignDurationEvent,
     SetMaximumCampaignDurationEvent,
     SetUpdaterEvent,
@@ -37,6 +38,8 @@ import {
     TransferCampaignOwnershipEvent,
     AcceptCampaignOwnershipEvent,
     OssifyEvent,
+    CreatedCampaignReward,
+    SetMinimumRewardTokenRateEvent,
 } from "../../generated/schema";
 import { METROM_ADDRESS } from "../addresses";
 import {
@@ -49,9 +52,10 @@ import {
     getOrCreateTransaction,
     getRewardId,
     getRewardOrThrow,
-    getOrCreateSpecificFee,
+    getOrCreateFeeRebate,
     getOrCreateClaimedByAccount,
     getOrCreateRecoveredByAccount,
+    getOrCreateWhitelistedRewardToken,
 } from "../commons";
 
 export function handleInitialize(event: Initialize): void {
@@ -67,7 +71,7 @@ export function handleInitialize(event: Initialize): void {
     initializeEvent.metrom = METROM_ADDRESS;
     initializeEvent.owner = event.params.owner;
     initializeEvent.updater = event.params.updater;
-    initializeEvent.globalFee = event.params.globalFee;
+    initializeEvent.fee = event.params.fee;
     initializeEvent.minimumCampaignDuration =
         event.params.minimumCampaignDuration;
     initializeEvent.maximumCampaignDuration =
@@ -80,7 +84,7 @@ export function handleInitialize(event: Initialize): void {
     metrom.owner = event.params.owner;
     metrom.pendingOwner = Address.zero();
     metrom.updater = event.params.updater;
-    metrom.globalFee = event.params.globalFee;
+    metrom.fee = event.params.fee;
     metrom.minimumCampaignDuration = event.params.minimumCampaignDuration;
     metrom.maximumCampaignDuration = event.params.maximumCampaignDuration;
     metrom.campaignsAmount = BigInt.zero();
@@ -111,9 +115,10 @@ export function handleCreateCampaign(event: CreateCampaign): void {
     campaign.save();
 
     let rewardTokensBytes: Bytes[] = [];
-    for (let i = 0; i < event.params.rewardTokens.length; i++) {
-        let rewardToken = getOrCreateToken(event.params.rewardTokens[i]);
-        let rewardAmount = event.params.rewardAmounts[i];
+    for (let i = 0; i < event.params.rewards.length; i++) {
+        let eventReward = event.params.rewards[i];
+        let rewardToken = getOrCreateToken(eventReward.token);
+        let rewardAmount = eventReward.amount;
 
         let reward = new Reward(getRewardId(campaign.id, rewardToken.id));
         reward.campaign = campaign.id;
@@ -124,9 +129,7 @@ export function handleCreateCampaign(event: CreateCampaign): void {
         reward.save();
 
         let claimableFee = getOrCreateClaimableFee(rewardToken);
-        claimableFee.amount = claimableFee.amount.plus(
-            event.params.feeAmounts[i],
-        );
+        claimableFee.amount = claimableFee.amount.plus(eventReward.fee);
         claimableFee.save();
 
         rewardTokensBytes.push(rewardToken.id);
@@ -143,10 +146,22 @@ export function handleCreateCampaign(event: CreateCampaign): void {
     createCampaignEvent.from = event.params.from;
     createCampaignEvent.to = event.params.to;
     createCampaignEvent.specification = event.params.specification;
-    createCampaignEvent.rewardTokens = rewardTokensBytes;
-    createCampaignEvent.rewardAmounts = event.params.rewardAmounts;
-    createCampaignEvent.feeAmounts = event.params.feeAmounts;
     createCampaignEvent.save();
+
+    for (let i = 0; i < event.params.rewards.length; i++) {
+        let reward = event.params.rewards[i];
+
+        let eventReward = new CreatedCampaignReward(
+            getEventId(event).concat(
+                Bytes.fromByteArray(Bytes.fromBigInt(BigInt.fromU32(i))),
+            ),
+        );
+        eventReward.createCampaignEvent = createCampaignEvent.id;
+        eventReward.token = reward.token;
+        eventReward.amount = reward.amount;
+        eventReward.fee = reward.fee;
+        eventReward.save();
+    }
 }
 
 export function handleDistributeReward(event: DistributeReward): void {
@@ -162,6 +177,28 @@ export function handleDistributeReward(event: DistributeReward): void {
     distributeRewardEvent.root = event.params.root;
     distributeRewardEvent.data = event.params.data;
     distributeRewardEvent.save();
+}
+
+export function handleSetMinimumRewardTokenRate(
+    event: SetMinimumRewardTokenRate,
+): void {
+    let whitelistedRewardToken = getOrCreateWhitelistedRewardToken(
+        event.params.token,
+    );
+    whitelistedRewardToken.minimumRate = event.params.minimumRate;
+    whitelistedRewardToken.save();
+
+    let setMinimumRewardTokenRateEvent = new SetMinimumRewardTokenRateEvent(
+        getEventId(event),
+    );
+    setMinimumRewardTokenRateEvent.transaction =
+        getOrCreateTransaction(event).id;
+    setMinimumRewardTokenRateEvent.metrom = METROM_ADDRESS;
+    setMinimumRewardTokenRateEvent.token = getOrCreateToken(
+        event.params.token,
+    ).id;
+    setMinimumRewardTokenRateEvent.minimumRate = event.params.minimumRate;
+    setMinimumRewardTokenRateEvent.save();
 }
 
 export function handleClaimReward(event: ClaimReward): void {
@@ -305,30 +342,29 @@ export function handleSetUpdater(event: SetUpdater): void {
     setUpdaterEvent.save();
 }
 
-export function handleSetGlobalFee(event: SetGlobalFee): void {
+export function handleSetFee(event: SetFee): void {
     let metrom = getMetromOrThrow();
-    metrom.globalFee = event.params.globalFee;
+    metrom.fee = event.params.fee;
     metrom.save();
 
-    let setGlobalFeeEvent = new SetGlobalFeeEvent(getEventId(event));
-    setGlobalFeeEvent.transaction = getOrCreateTransaction(event).id;
-    setGlobalFeeEvent.metrom = metrom.id;
-    setGlobalFeeEvent.globalFee = event.params.globalFee;
-    setGlobalFeeEvent.save();
+    let setFeeEvent = new SetFeeEvent(getEventId(event));
+    setFeeEvent.transaction = getOrCreateTransaction(event).id;
+    setFeeEvent.metrom = metrom.id;
+    setFeeEvent.fee = event.params.fee;
+    setFeeEvent.save();
 }
 
-export function handleSetSpecificFee(event: SetSpecificFee): void {
-    let specificFee = getOrCreateSpecificFee(event.params.account);
-    specificFee.fee = event.params.specificFee;
-    specificFee.none = event.params.specificFee == BigInt.zero();
-    specificFee.save();
+export function handleSetFeeRebate(event: SetFeeRebate): void {
+    let feeRebate = getOrCreateFeeRebate(event.params.account);
+    feeRebate.rebate = event.params.rebate;
+    feeRebate.save();
 
-    let setSpecificFeeEvent = new SetSpecificFeeEvent(getEventId(event));
-    setSpecificFeeEvent.transaction = getOrCreateTransaction(event).id;
-    setSpecificFeeEvent.metrom = METROM_ADDRESS;
-    setSpecificFeeEvent.address = event.params.account;
-    setSpecificFeeEvent.specificFee = event.params.specificFee;
-    setSpecificFeeEvent.save();
+    let setFeeRebateEvent = new SetFeeRebateEvent(getEventId(event));
+    setFeeRebateEvent.transaction = getOrCreateTransaction(event).id;
+    setFeeRebateEvent.metrom = METROM_ADDRESS;
+    setFeeRebateEvent.account = event.params.account;
+    setFeeRebateEvent.rebate = event.params.rebate;
+    setFeeRebateEvent.save();
 }
 
 export function handleSetMinimumCampaignDuration(

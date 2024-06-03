@@ -6,9 +6,10 @@ import {
     Reward,
     Token,
     Transaction,
-    SpecificFee,
     ClaimedByAccount,
     RecoveredByAccount,
+    FeeRebate,
+    WhitelistedRewardToken,
 } from "../generated/schema";
 import { METROM_ADDRESS } from "./addresses";
 import { Erc20 } from "../generated/Metrom/Erc20";
@@ -69,6 +70,22 @@ export function getOrCreateClaimedByAccount(
     return claimed;
 }
 
+export function getOrCreateWhitelistedRewardToken(
+    token: Bytes,
+): WhitelistedRewardToken {
+    let whitelistedRewardToken = WhitelistedRewardToken.load(token);
+    if (whitelistedRewardToken !== null) return whitelistedRewardToken;
+
+    whitelistedRewardToken = new WhitelistedRewardToken(token);
+    whitelistedRewardToken.metrom = METROM_ADDRESS;
+    whitelistedRewardToken.token = getOrCreateToken(
+        Address.fromBytes(token),
+    ).id;
+    whitelistedRewardToken.minimumRate = BigInt.zero();
+    whitelistedRewardToken.save();
+    return whitelistedRewardToken;
+}
+
 export function getRecoveredByAccountId(
     campaignId: Bytes,
     rewardId: Bytes,
@@ -94,17 +111,15 @@ export function getOrCreateRecoveredByAccount(
     return recovered;
 }
 
-export function getOrCreateSpecificFee(account: Address): SpecificFee {
-    let specificFee = SpecificFee.load(account);
-    if (specificFee !== null) return specificFee;
+export function getOrCreateFeeRebate(account: Address): FeeRebate {
+    let feeRebate = FeeRebate.load(account);
+    if (feeRebate !== null) return feeRebate;
 
-    specificFee = new SpecificFee(account);
-    specificFee.metrom = METROM_ADDRESS;
-    specificFee.address = account;
-    specificFee.fee = BigInt.zero();
-    specificFee.none = false;
-    specificFee.save();
-    return specificFee;
+    feeRebate = new FeeRebate(account);
+    feeRebate.metrom = METROM_ADDRESS;
+    feeRebate.account = account;
+    feeRebate.rebate = BigInt.zero();
+    return feeRebate;
 }
 
 export function getOrCreateClaimableFee(token: Token): ClaimableFee {
