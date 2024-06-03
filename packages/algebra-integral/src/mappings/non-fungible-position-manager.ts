@@ -15,22 +15,19 @@ function getNftPositionId(tokenId: BigInt): Bytes {
     return Bytes.fromByteArray(Bytes.fromBigInt(tokenId));
 }
 
-function getOrCreateNftPosition(tokenId: BigInt): Position {
+function getOrCreateNftPosition(tokenId: BigInt): Position | null {
     let id = getNftPositionId(tokenId);
     let position = Position.load(id);
     if (position != null) return position;
 
     let result = NonFungiblePositionManagerContract.try_positions(tokenId);
 
-    if (result.reverted)
-        throw new Error(
-            `Could not get position with id ${tokenId.toString()} from NonFungiblePositionManagerContract`,
-        );
-
     // the following call reverts in situations where the position is minted
     // and deleted in the same block - from my investigation this happens
     // in calls from  BancorSwap
     // (e.g. 0xf7867fa19aa65298fadb8d4f72d0daed5e836f3ba01f0b9b9631cdc6c36bed40)
+    if (result.reverted) return null;
+
     let poolAddress = FactoryContract.poolByPair(
         result.value.getToken0(),
         result.value.getToken1(),
@@ -63,6 +60,8 @@ export function handleIncreaseLiquidity(event: IncreaseLiquidityEvent): void {
     if (event.params.actualLiquidity.isZero()) return;
 
     let position = getOrCreateNftPosition(event.params.tokenId);
+    if (position == null) return;
+
     position.liquidity = position.liquidity.plus(event.params.actualLiquidity);
     position.save();
 
