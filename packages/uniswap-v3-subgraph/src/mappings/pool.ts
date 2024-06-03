@@ -10,7 +10,7 @@ import { createBaseEvent, getPoolOrThrow } from "../commons";
 import { NON_FUNGIBLE_POSITION_MANAGER_ADDRESS } from "../addresses";
 
 export function handleInitialize(event: InitializeEvent): void {
-    let pool = Pool.loadInBlock(event.address);
+    let pool = Pool.load(event.address);
     if (pool === null)
         throw new Error(
             `Could not find pool in block with address ${event.address.toHexString()}`,
