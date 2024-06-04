@@ -11,6 +11,7 @@ import { type Amm, type ChainData } from "./types";
 import MuiEthIcon from "./icons/EthIcon.vue";
 import MuiAlgebraIntegralIcon from "./icons/AlgebraIntegralIcon.vue";
 import MuiCeloIcon from "./icons/CeloIcon.vue";
+import MuiUniswapLogoIcon from "./icons/UniswapLogoIcon.vue";
 import { ADDRESS } from "@metrom-xyz/contracts";
 import { markRaw } from "vue";
 
@@ -37,7 +38,7 @@ const AMMS: Record<SupportedChain, Amm[]> = {
     [SupportedChain.CeloAlfajores]: [
         {
             slug: SupportedAmm.Univ3,
-            logo: markRaw(MuiCeloIcon),
+            logo: markRaw(MuiUniswapLogoIcon),
             name: "Uniswap v3",
             addLiquidityUrl: "https://app.uniswap.org/add/{target_pool}",
             poolExplorerUrl:
