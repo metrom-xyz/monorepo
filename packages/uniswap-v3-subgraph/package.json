@@ -6,7 +6,7 @@
         "generate-addresses-file": "tsx ./scripts/generate-addresses-file.ts",
         "codegen": "graph codegen",
         "build:only": "graph build",
-        "build": "pnpm generate-addresses-file celo-alfajores && pnpm codegen && graph build",
+        "build": "pnpm generate-addresses-file celo-alfajores && pnpm codegen && graph build && pnpm format",
         "deploy:celo-alfajores": "pnpm generate-addresses-file celo-alfajores && graph deploy --studio --network celo-alfajores metrom-uni-v3-celo-alfajores",
         "lint": "eslint --ext .js,.ts ./ && prettier --check './**/*.{json,md}'",
         "format": "eslint --fix --ext .js,.ts ./ && prettier --write './**/*.{json,md}'"
@@ -16,14 +16,14 @@
         "@graphprotocol/graph-ts": "0.34.0"
     },
     "devDependencies": {
-        "@types/node": "^20.11.30",
-        "@typescript-eslint/eslint-plugin": "^7.4.0",
-        "@typescript-eslint/parser": "^7.4.0",
+        "@types/node": "^20.14.1",
+        "@typescript-eslint/eslint-plugin": "^7.12.0",
+        "@typescript-eslint/parser": "^7.12.0",
         "eslint": "^8.57.0",
         "eslint-config-prettier": "^9.1.0",
         "eslint-config-turbo": "^1.13.0",
         "eslint-plugin-prettier": "^5.1.3",
-        "prettier": "^3.2.5",
-        "tsx": "^4.7.1"
+        "prettier": "^3.3.0",
+        "tsx": "^4.11.2"
     }
 }
