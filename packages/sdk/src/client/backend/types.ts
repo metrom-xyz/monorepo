@@ -15,6 +15,8 @@ type RawToken = {
     decimals: number;
 };
 
+type RawWhitelistedToken = RawToken & { minimumRate: string };
+
 type RawPool = {
     address: Address;
     amm: string;
@@ -53,4 +55,8 @@ export type FetchCampaignsResponse = {
 
 export type FetchClaimsResponse = {
     claims: RawClaimableRewards[];
+};
+
+export type FetchWhitelistedRewardTokensResponse = {
+    tokens: RawWhitelistedToken[];
 };
