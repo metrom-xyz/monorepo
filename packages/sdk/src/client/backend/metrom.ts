@@ -57,7 +57,7 @@ export class MetromApiClient extends CoreClient {
             orderDirection: "desc",
             ...Object.fromEntries(
                 Object.entries(params || {}).filter(
-                    ([_, value]) => !!value || !isNaN(Number(value)),
+                    ([, value]) => !!value || !isNaN(Number(value)),
                 ),
             ),
         };

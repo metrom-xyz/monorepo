@@ -3,6 +3,7 @@ import { Cacher } from "./cacher";
 
 export const SUPPORTED_CHAIN_NAMES: Record<SupportedChain, string> = {
     [SupportedChain.Holesky]: "holesky",
+    [SupportedChain.CeloAlfajores]: "celo-alfajores",
 };
 
 export const CACHER = new Cacher("metrom-sdk");
