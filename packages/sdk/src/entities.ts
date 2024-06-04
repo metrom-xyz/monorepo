@@ -56,3 +56,7 @@ export interface Claim {
     remaining: bigint;
     proof: Address[];
 }
+
+export interface WhitelistedErc20Token extends Erc20Token {
+    minimumRate: bigint;
+}
