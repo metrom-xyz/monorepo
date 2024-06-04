@@ -124,7 +124,7 @@ export function handleCreateCampaign(event: CreateCampaign): void {
         reward.campaign = campaign.id;
         reward.token = rewardToken.id;
         reward.amount = rewardAmount;
-        reward.unclaimed = rewardAmount;
+        reward.claimed = BigInt.zero();
         reward.recovered = BigInt.zero();
         reward.save();
 
@@ -210,7 +210,7 @@ export function handleClaimReward(event: ClaimReward): void {
         event.transaction.from,
     );
 
-    reward.unclaimed = reward.unclaimed.minus(event.params.amount);
+    reward.claimed = reward.claimed.plus(event.params.amount);
     reward.save();
 
     claimedByAccount.amount = claimedByAccount.amount.plus(event.params.amount);
@@ -235,7 +235,6 @@ export function handleRecoverReward(event: RecoverReward): void {
         event.transaction.from,
     );
 
-    reward.unclaimed = reward.unclaimed.minus(event.params.amount);
     reward.recovered = reward.recovered.plus(event.params.amount);
     reward.save();
 
