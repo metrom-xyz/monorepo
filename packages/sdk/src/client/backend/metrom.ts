@@ -1,20 +1,28 @@
 import type { Address, PublicClient } from "viem";
 import { CoreClient } from "../core";
-import type { FetchCampaignsResponse, FetchClaimsResponse } from "./types";
+import type {
+    FetchCampaignsResponse,
+    FetchClaimsResponse,
+    FetchWhitelistedRewardTokensResponse,
+} from "./types";
 import type { SupportedChain } from "@metrom-xyz/contracts";
 import { SUPPORTED_CHAIN_NAMES, SupportedAmm } from "../../commons";
-import type { Campaign, Claim } from "../../entities";
-
-export type FetchClaimsParams = {
-    address: Address;
-    publicClient: PublicClient;
-};
+import type { Campaign, Claim, WhitelistedErc20Token } from "../../entities";
 
 export type FetchCampaignsParams = {
     pageNumber?: number;
     pageSize?: number;
     orderBy?: string;
     orderDirection?: "asc" | "desc";
+};
+
+export type FetchClaimsParams = {
+    address: Address;
+    publicClient: PublicClient;
+};
+
+export type FetchWhitelistedRewardTokensResult = {
+    tokens: Address;
 };
 
 export type FetchCampaignsResult = {
@@ -123,6 +131,28 @@ export class MetromApiClient extends CoreClient {
             amount: BigInt(rawReward.amount),
             remaining: BigInt(rawReward.remaining),
             proof: rawReward.proof,
+        }));
+    }
+
+    async fetchWhitelistedRewardTokens(): Promise<WhitelistedErc20Token[]> {
+        const response = await fetch(
+            new URL(
+                `${this.targetChainName}/whitelisted-reward-tokens`,
+                this.baseUrl,
+            ),
+        );
+        if (!response.ok)
+            throw new Error(
+                `response not ok while fetching whitelisted reward tokens: ${await response.text()}`,
+            );
+
+        const rawWhitelistedTokens =
+            (await response.json()) as FetchWhitelistedRewardTokensResponse;
+
+        return rawWhitelistedTokens.tokens.map((token) => ({
+            ...token,
+            chainId: this.chain,
+            minimumRate: BigInt(token.minimumRate),
         }));
     }
 }
