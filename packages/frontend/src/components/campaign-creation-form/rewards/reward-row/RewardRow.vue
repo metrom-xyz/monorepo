@@ -19,6 +19,8 @@ import MuiWarningMessage from "@/ui/MuiWarningMessage.vue";
 const props = defineProps<RewardRowProps>();
 const emits = defineEmits<{
     insufficientBalance: [address: string, value: boolean];
+    // TODO: handle emit
+    rewardRateTooLow: [address: string, value: boolean];
     searchQueryChange: [query?: string];
 }>();
 const tokenModel = defineModel<TokenInfoWithBalance>("token");
@@ -40,6 +42,67 @@ const reward = ref<{
 // keep the reactivity on the tokens to react when the balances
 // are fetched after the reward has been picked
 const computedTokens = computed(() => props.tokens);
+
+const minimumRewardAmount = computed(() => {
+    if (
+        !props.state.range ||
+        !props.state.range.from ||
+        !props.state.range.to ||
+        !tokenModel.value ||
+        !tokenModel.value.minimumRate
+    )
+        return 0;
+
+    const campaignDuration = props.state.range.to.diff(
+        props.state.range.from,
+        "seconds",
+    );
+
+    return (
+        (Number(
+            formatUnits(
+                tokenModel.value.minimumRate,
+                tokenModel.value.decimals,
+            ),
+        ) /
+            3_600) *
+        campaignDuration
+    );
+});
+
+const rewardRateTooLow = computed(() => {
+    if (
+        !props.state.range ||
+        !props.state.range.from ||
+        !props.state.range.to ||
+        !tokenModel.value ||
+        !tokenModel.value.minimumRate ||
+        !amountModel.value
+    )
+        return false;
+
+    const campaignDuration = props.state.range.to.diff(
+        props.state.range.from,
+        "seconds",
+    );
+
+    return (
+        (amountModel.value * 3_600) / campaignDuration <
+        Number(
+            formatUnits(
+                tokenModel.value.minimumRate,
+                tokenModel.value.decimals,
+            ),
+        )
+    );
+});
+
+// emit the
+watch([rewardRateTooLow, tokenModel], () => {
+    if (!tokenModel.value?.address) return;
+
+    emits("rewardRateTooLow", tokenModel.value.address, rewardRateTooLow.value);
+});
 
 // when the tokens property changes, inject the token balance for the reward
 // in order to trigger the validation when the wallet is connected
@@ -66,14 +129,12 @@ watch(
             symbol: tokenModel.value.symbol,
             amount: formatDecimals({
                 number: amountModel.value.toString(),
-                decimalsAmount: 3,
             }),
             balance: formatDecimals({
                 number: formatUnits(
                     tokenModel.value.balance,
                     tokenModel.value.decimals,
                 ),
-                decimalsAmount: 3,
             }),
             insufficient:
                 parseUnits(
@@ -168,9 +229,32 @@ onUnmounted(() => {
             <template #popover>
                 <MuiTypography>
                     {{
-                        $t("campaign.rewards.insufficientBalance.balance", {
+                        $t("campaign.rewards.insufficientBalance.info", {
                             symbol: reward.symbol,
                             balance: reward.balance,
+                        })
+                    }}
+                </MuiTypography>
+            </template>
+        </MuiWarningMessage>
+        <MuiWarningMessage v-if="rewardRateTooLow && tokenModel?.minimumRate">
+            <MuiTypography>
+                {{ $t("campaign.rewards.lowRate.label") }}
+            </MuiTypography>
+            <template #popover>
+                <MuiTypography>
+                    {{
+                        $t("campaign.rewards.lowRate.info", {
+                            symbol: tokenModel.symbol.toUpperCase(),
+                            minimumRewardAmount: formatDecimals({
+                                number: minimumRewardAmount.toString(),
+                            }),
+                            minimumRewardRate: formatDecimals({
+                                number: formatUnits(
+                                    tokenModel.minimumRate,
+                                    tokenModel.decimals,
+                                ),
+                            }),
                         })
                     }}
                 </MuiTypography>

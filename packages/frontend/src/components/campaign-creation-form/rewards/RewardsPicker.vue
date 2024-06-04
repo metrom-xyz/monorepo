@@ -3,7 +3,6 @@ import type { RewardsPickerTypes, TokenInfoWithBalance } from "./types";
 import { watchEffect } from "vue";
 import PlusCircleIcon from "@/icons/PlusCircleIcon.vue";
 import RewardRow from "./reward-row/RewardRow.vue";
-import { useTokens } from "@/stores/tokens";
 import {
     useAccount,
     useChainId,
@@ -11,16 +10,12 @@ import {
     useReadContracts,
 } from "vevm";
 import { erc20Abi, type Address } from "viem";
-import { useImportableToken } from "@/composables/useImportableToken";
 import { computed } from "vue";
 import { ref } from "vue";
 import { ADDRESS } from "@metrom-xyz/contracts";
 import metromAbi from "@/abis/metrom";
-import {
-    cacheTokenInfoWithBalance,
-    cachedTokensInfoWithBalanceInChain,
-    tokenInfoWithBalanceEquals,
-} from "@/utils/cache";
+import { useWhitelistedRewardTokens } from "@/composables/useWhitelistedRewardTokens";
+import { CHAIN_DATA } from "@/commons";
 
 const props = defineProps<RewardsPickerTypes>();
 const emits = defineEmits<{
@@ -34,10 +29,15 @@ const account = useAccount();
 const chainId = useChainId();
 
 const tokenSearchQuery = ref();
-const tokensList = ref<TokenInfoWithBalance[]>(
-    useTokens().getTokens(chainId.value),
-);
+const { loading: loadingWhitelistedTokens, whitelistedTokens } =
+    useWhitelistedRewardTokens(
+        computed(() => ({
+            client: CHAIN_DATA[chainId.value].metromApiClient,
+        })),
+    );
+
 const rewardsWithInsufficientBalance = ref<string[]>([]);
+const rewardsWithRateTooLow = ref<string[]>([]);
 
 const metrom = computed(() => {
     if (!account.value.chainId) return;
@@ -49,7 +49,7 @@ const { data: globalFee, loading: loadingGlobalFee } = useReadContract(
         return {
             address: metrom.value?.address as Address,
             abi: metromAbi,
-            functionName: "globalFee",
+            functionName: "fee",
         };
     }),
 );
@@ -59,7 +59,8 @@ const { data: rawBalances, loading: loadingBalances } = useReadContracts(
         contracts:
             (account.value.isConnected &&
                 account.value.address &&
-                tokensList.value.map((token) => {
+                whitelistedTokens.value &&
+                whitelistedTokens.value.map((token) => {
                     return {
                         abi: erc20Abi,
                         address: token.address as Address,
@@ -72,17 +73,10 @@ const { data: rawBalances, loading: loadingBalances } = useReadContracts(
     })),
 );
 
-const { loading: loadingImportableToken, token: importableToken } =
-    useImportableToken(
-        computed(() => ({
-            connectedAccountAddress: account.value.address,
-            debouncedQuery: tokenSearchQuery.value,
-            withBalances: account.value.isConnected,
-        })),
-    );
-
 const tokensWithBalance = computed(() => {
-    const tokensInChainWithBalance = tokensList.value.reduce(
+    if (!whitelistedTokens.value) return [];
+
+    const tokensInChainWithBalance = whitelistedTokens.value.reduce(
         (accumulator: Record<string, TokenInfoWithBalance>, token, i) => {
             if (!rawBalances.value?.[i]) return accumulator;
 
@@ -99,7 +93,7 @@ const tokensWithBalance = computed(() => {
         {},
     );
 
-    const tokensWithBalance = tokensList.value.map((token) => {
+    const tokensWithBalance = whitelistedTokens.value.map((token) => {
         const tokenWithBalance =
             tokensInChainWithBalance[
                 `${token.address.toLowerCase()}-${token.chainId}`
@@ -111,28 +105,11 @@ const tokensWithBalance = computed(() => {
 });
 
 watchEffect(() => {
-    if (
-        importableToken.value &&
-        !tokensList.value.find((token) =>
-            tokenInfoWithBalanceEquals(token, importableToken.value),
-        )
-    ) {
-        cacheTokenInfoWithBalance(importableToken.value);
-        tokensList.value.push(importableToken.value);
-    }
-});
-
-watchEffect(() => {
-    tokensList.value = tokensList.value.concat(
-        cachedTokensInfoWithBalanceInChain(chainId.value),
-    );
-});
-
-watchEffect(() => {
     emits(
         "error",
         props.completed &&
             (rewardsWithInsufficientBalance.value.length > 0 ||
+                rewardsWithRateTooLow.value.length > 0 ||
                 props.state.rewards.filter(
                     ({ amount, token }) => !token || !amount,
                 ).length > 0),
@@ -169,6 +146,21 @@ function handleRewardOnInsufficientBalance(
                 );
     }
 }
+
+function handleRewardOnRateTooLow(address: string, rateTooLow: boolean) {
+    const existing = rewardsWithRateTooLow.value.find(
+        (reward) => reward === address,
+    );
+
+    if (rateTooLow) {
+        if (!existing) rewardsWithRateTooLow.value.push(address);
+    } else {
+        if (existing)
+            rewardsWithRateTooLow.value = rewardsWithRateTooLow.value.filter(
+                (reward) => reward !== address,
+            );
+    }
+}
 </script>
 <template>
     <div class="rewards_picker__root">
@@ -184,14 +176,16 @@ function handleRewardOnInsufficientBalance(
                     :loading="
                         loadingGlobalFee ||
                         loadingBalances ||
-                        loadingImportableToken
+                        loadingWhitelistedTokens
                     "
+                    :state="$props.state"
                     :rewards="$props.state.rewards"
                     v-model:token="$props.state.rewards[index].token"
                     v-model:amount="$props.state.rewards[index].amount"
                     :onRemove="handleRewardOnTokenRemove"
                     @searchQueryChange="tokenSearchQuery = $event"
                     @insufficientBalance="handleRewardOnInsufficientBalance"
+                    @rewardRateTooLow="handleRewardOnRateTooLow"
                 />
             </template>
         </div>

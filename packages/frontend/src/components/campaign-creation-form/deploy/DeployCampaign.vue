@@ -102,6 +102,6 @@ function handleEditOnClick() {
 </template>
 <style>
 .deploy_campaign__root {
-    @apply w-full flex flex-col-reverse items-center gap-4;
+    @apply w-full flex flex-col-reverse items-center gap-4 relative;
 }
 </style>

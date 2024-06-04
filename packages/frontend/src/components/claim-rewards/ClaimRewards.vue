@@ -18,7 +18,6 @@ import { formatDecimals, type Claim } from "sdk";
 import metromAbi from "../../abis/metrom";
 import { ADDRESS } from "@metrom-xyz/contracts";
 import { writeContract } from "@wagmi/core";
-import MuiWarningMessage from "@/ui/MuiWarningMessage.vue";
 import { useClaims } from "@/composables/useClaims";
 import MuiSwitch from "@/ui/switch/MuiSwitch.vue";
 
@@ -206,13 +205,6 @@ async function handleClaimRewardsOnClick() {
                         }}
                     </MuiTypography>
                 </MuiButton>
-                <MuiWarningMessage
-                    v-if="!!error && !!(error as any).shortMessage"
-                >
-                    <MuiTypography>
-                        {{ (error as any).shortMessage }}
-                    </MuiTypography>
-                </MuiWarningMessage>
             </div>
         </template>
     </MuiModal>

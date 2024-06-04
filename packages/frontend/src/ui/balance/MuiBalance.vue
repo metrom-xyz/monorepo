@@ -13,7 +13,6 @@ withDefaults(defineProps<BalanceProps>(), { decimals: 18 });
         {{
             formatDecimals({
                 number: formatUnits($props.balance, $props.decimals || 18),
-                decimalsAmount: 4,
             })
         }}
     </MuiTypography>
