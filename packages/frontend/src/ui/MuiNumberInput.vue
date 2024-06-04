@@ -9,6 +9,7 @@ const model = defineModel<number | string>();
 
 const { el, masked, typed } = useIMask({
     mask: Number,
+    scale: 3,
     thousandsSeparator: ",",
     radix: ".",
     mapToRadix: ["."],

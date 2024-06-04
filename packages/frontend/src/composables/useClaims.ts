@@ -9,7 +9,7 @@ import { type MetromApiClient, type Claim } from "sdk";
 import type { Address } from "viem";
 import { usePublicClient } from "vevm";
 
-export interface useClaims {
+export interface UseClaims {
     address?: Address;
     client?: MetromApiClient;
 }
@@ -21,7 +21,7 @@ export interface UseClaimsReturnType {
 }
 
 export function useClaims(
-    params?: MaybeRefOrGetter<useClaims>,
+    params?: MaybeRefOrGetter<UseClaims>,
 ): UseClaimsReturnType {
     const loading = ref(false);
     const error = ref<Error | undefined>();

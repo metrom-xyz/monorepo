@@ -16,7 +16,7 @@ const open = ref(false);
         class="mui_warning_message__root"
         :class="{ mui_warning_message__root_hover: !!$slots.popover }"
     >
-        <MuiPopover :open="!!$slots.popover && open" :placement="'top-start'">
+        <MuiPopover :open="!!$slots.popover && open" :placement="'right-end'">
             <slot></slot>
             <template v-if="!!$slots.popover" #popover>
                 <div class="mui_warning_message__popover__wrapper">

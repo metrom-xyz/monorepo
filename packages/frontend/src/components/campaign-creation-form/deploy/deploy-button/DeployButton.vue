@@ -19,34 +19,35 @@ const router = useRouter();
 const deploying = ref(false);
 const deployed = ref(false);
 
-const { simulation: simulatedCreate, loading: simulatingCreate } =
-    useSimulateContract({
-        abi: metromAbi,
-        address: props.metrom.address,
-        functionName: "createCampaigns",
-        args: [
-            [
-                {
-                    chainId: BigInt(props.state.network),
-                    pool: props.state.pool.address,
-                    from: props.state.range.from.unix(),
-                    to: props.state.range.to.unix(),
-                    // TODO: add specification
-                    specification:
-                        "0x0000000000000000000000000000000000000000000000000000000000000000",
-                    rewardTokens: props.state.rewards.map(
-                        (reward) => reward.token.address as Address,
+const {
+    simulation: simulatedCreate,
+    loading: simulatingCreate,
+    error,
+} = useSimulateContract({
+    abi: metromAbi,
+    address: props.metrom.address,
+    functionName: "createCampaigns",
+    args: [
+        [
+            {
+                chainId: BigInt(props.state.network),
+                pool: props.state.pool.address,
+                from: props.state.range.from.unix(),
+                to: props.state.range.to.unix(),
+                // TODO: add specification
+                specification:
+                    "0x0000000000000000000000000000000000000000000000000000000000000000",
+                rewards: props.state.rewards.map((reward) => ({
+                    token: reward.token.address as Address,
+                    amount: parseUnits(
+                        reward.amount.toString(),
+                        reward.token.decimals,
                     ),
-                    rewardAmounts: props.state.rewards.map((reward) =>
-                        parseUnits(
-                            reward.amount.toString(),
-                            reward.token.decimals,
-                        ),
-                    ),
-                },
-            ],
+                })),
+            },
         ],
-    });
+    ],
+});
 
 async function handleDeployOnClick() {
     if (deployed.value) {

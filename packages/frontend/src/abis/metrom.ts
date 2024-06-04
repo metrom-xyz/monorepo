@@ -1,23 +1,5 @@
 export default [
-    {
-        inputs: [
-            { internalType: "address", name: "_owner", type: "address" },
-            { internalType: "address", name: "_updater", type: "address" },
-            { internalType: "uint32", name: "_globalFee", type: "uint32" },
-            {
-                internalType: "uint32",
-                name: "_minimumCampaignDuration",
-                type: "uint32",
-            },
-            {
-                internalType: "uint32",
-                name: "_maximumCampaignDuration",
-                type: "uint32",
-            },
-        ],
-        stateMutability: "nonpayable",
-        type: "constructor",
-    },
+    { inputs: [], stateMutability: "nonpayable", type: "constructor" },
     {
         inputs: [{ internalType: "address", name: "target", type: "address" }],
         name: "AddressEmptyCode",
@@ -29,29 +11,53 @@ export default [
         type: "error",
     },
     { inputs: [], name: "CampaignAlreadyExists", type: "error" },
+    { inputs: [], name: "DuplicatedDistribution", type: "error" },
+    { inputs: [], name: "DuplicatedMinimumRewardTokenRate", type: "error" },
+    {
+        inputs: [
+            {
+                internalType: "address",
+                name: "implementation",
+                type: "address",
+            },
+        ],
+        name: "ERC1967InvalidImplementation",
+        type: "error",
+    },
+    { inputs: [], name: "ERC1967NonPayable", type: "error" },
     { inputs: [], name: "FailedInnerCall", type: "error" },
     { inputs: [], name: "Forbidden", type: "error" },
     { inputs: [], name: "InvalidAccount", type: "error" },
     { inputs: [], name: "InvalidAmount", type: "error" },
     { inputs: [], name: "InvalidData", type: "error" },
+    { inputs: [], name: "InvalidFee", type: "error" },
     { inputs: [], name: "InvalidFrom", type: "error" },
-    { inputs: [], name: "InvalidGlobalFee", type: "error" },
+    { inputs: [], name: "InvalidInitialization", type: "error" },
     { inputs: [], name: "InvalidMaximumCampaignDuration", type: "error" },
     { inputs: [], name: "InvalidMinimumCampaignDuration", type: "error" },
     { inputs: [], name: "InvalidOwner", type: "error" },
     { inputs: [], name: "InvalidPool", type: "error" },
     { inputs: [], name: "InvalidProof", type: "error" },
+    { inputs: [], name: "InvalidRebate", type: "error" },
     { inputs: [], name: "InvalidReceiver", type: "error" },
     { inputs: [], name: "InvalidRewards", type: "error" },
     { inputs: [], name: "InvalidRoot", type: "error" },
-    { inputs: [], name: "InvalidSpecificFee", type: "error" },
     { inputs: [], name: "InvalidTo", type: "error" },
     { inputs: [], name: "InvalidToken", type: "error" },
     { inputs: [], name: "InvalidUpdater", type: "error" },
     { inputs: [], name: "NonExistentCampaign", type: "error" },
+    { inputs: [], name: "NonExistentReward", type: "error" },
+    { inputs: [], name: "NotInitializing", type: "error" },
+    { inputs: [], name: "Ossified", type: "error" },
     {
         inputs: [{ internalType: "address", name: "token", type: "address" }],
         name: "SafeERC20FailedOperation",
+        type: "error",
+    },
+    { inputs: [], name: "UUPSUnauthorizedCallContext", type: "error" },
+    {
+        inputs: [{ internalType: "bytes32", name: "slot", type: "bytes32" }],
+        name: "UUPSUnsupportedProxiableUUID",
         type: "error",
     },
     { inputs: [], name: "ZeroAmount", type: "error" },
@@ -64,11 +70,29 @@ export default [
                 name: "id",
                 type: "bytes32",
             },
+            {
+                indexed: true,
+                internalType: "address",
+                name: "owner",
+                type: "address",
+            },
         ],
         name: "AcceptCampaignOwnership",
         type: "event",
     },
-    { anonymous: false, inputs: [], name: "AcceptOwnership", type: "event" },
+    {
+        anonymous: false,
+        inputs: [
+            {
+                indexed: true,
+                internalType: "address",
+                name: "owner",
+                type: "address",
+            },
+        ],
+        name: "AcceptOwnership",
+        type: "event",
+    },
     {
         anonymous: false,
         inputs: [
@@ -171,22 +195,19 @@ export default [
                 type: "bytes32",
             },
             {
+                components: [
+                    { internalType: "address", name: "token", type: "address" },
+                    {
+                        internalType: "uint256",
+                        name: "amount",
+                        type: "uint256",
+                    },
+                    { internalType: "uint256", name: "fee", type: "uint256" },
+                ],
                 indexed: false,
-                internalType: "address[]",
-                name: "rewardTokens",
-                type: "address[]",
-            },
-            {
-                indexed: false,
-                internalType: "uint256[]",
-                name: "rewardAmounts",
-                type: "uint256[]",
-            },
-            {
-                indexed: false,
-                internalType: "uint256[]",
-                name: "feeAmounts",
-                type: "uint256[]",
+                internalType: "struct CreatedCampaignReward[]",
+                name: "rewards",
+                type: "tuple[]",
             },
         ],
         name: "CreateCampaign",
@@ -235,7 +256,7 @@ export default [
             {
                 indexed: false,
                 internalType: "uint32",
-                name: "globalFee",
+                name: "fee",
                 type: "uint32",
             },
             {
@@ -254,6 +275,20 @@ export default [
         name: "Initialize",
         type: "event",
     },
+    {
+        anonymous: false,
+        inputs: [
+            {
+                indexed: false,
+                internalType: "uint64",
+                name: "version",
+                type: "uint64",
+            },
+        ],
+        name: "Initialized",
+        type: "event",
+    },
+    { anonymous: false, inputs: [], name: "Ossify", type: "event" },
     {
         anonymous: false,
         inputs: [
@@ -291,11 +326,30 @@ export default [
             {
                 indexed: false,
                 internalType: "uint32",
-                name: "globalFee",
+                name: "fee",
                 type: "uint32",
             },
         ],
-        name: "SetGlobalFee",
+        name: "SetFee",
+        type: "event",
+    },
+    {
+        anonymous: false,
+        inputs: [
+            {
+                indexed: false,
+                internalType: "address",
+                name: "account",
+                type: "address",
+            },
+            {
+                indexed: false,
+                internalType: "uint32",
+                name: "rebate",
+                type: "uint32",
+            },
+        ],
+        name: "SetFeeRebate",
         type: "event",
     },
     {
@@ -328,19 +382,19 @@ export default [
         anonymous: false,
         inputs: [
             {
-                indexed: false,
+                indexed: true,
                 internalType: "address",
-                name: "account",
+                name: "token",
                 type: "address",
             },
             {
                 indexed: false,
-                internalType: "uint32",
-                name: "specificFee",
-                type: "uint32",
+                internalType: "uint256",
+                name: "minimumRate",
+                type: "uint256",
             },
         ],
-        name: "SetSpecificFee",
+        name: "SetMinimumRewardTokenRate",
         type: "event",
     },
     {
@@ -389,6 +443,26 @@ export default [
         type: "event",
     },
     {
+        anonymous: false,
+        inputs: [
+            {
+                indexed: true,
+                internalType: "address",
+                name: "implementation",
+                type: "address",
+            },
+        ],
+        name: "Upgraded",
+        type: "event",
+    },
+    {
+        inputs: [],
+        name: "UPGRADE_INTERFACE_VERSION",
+        outputs: [{ internalType: "string", name: "", type: "string" }],
+        stateMutability: "view",
+        type: "function",
+    },
+    {
         inputs: [{ internalType: "bytes32", name: "_id", type: "bytes32" }],
         name: "acceptCampaignOwnership",
         outputs: [],
@@ -428,28 +502,6 @@ export default [
                         type: "bytes32",
                     },
                     { internalType: "bytes32", name: "root", type: "bytes32" },
-                    {
-                        components: [
-                            {
-                                internalType: "address",
-                                name: "token",
-                                type: "address",
-                            },
-                            {
-                                internalType: "uint256",
-                                name: "amount",
-                                type: "uint256",
-                            },
-                            {
-                                internalType: "uint256",
-                                name: "unclaimed",
-                                type: "uint256",
-                            },
-                        ],
-                        internalType: "struct ReadonlyReward[]",
-                        name: "rewards",
-                        type: "tuple[]",
-                    },
                 ],
                 internalType: "struct ReadonlyCampaign",
                 name: "",
@@ -470,6 +522,16 @@ export default [
         inputs: [{ internalType: "bytes32", name: "_id", type: "bytes32" }],
         name: "campaignPendingOwner",
         outputs: [{ internalType: "address", name: "", type: "address" }],
+        stateMutability: "view",
+        type: "function",
+    },
+    {
+        inputs: [
+            { internalType: "bytes32", name: "_id", type: "bytes32" },
+            { internalType: "address", name: "_token", type: "address" },
+        ],
+        name: "campaignReward",
+        outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
         stateMutability: "view",
         type: "function",
     },
@@ -539,6 +601,17 @@ export default [
     },
     {
         inputs: [
+            { internalType: "bytes32", name: "_id", type: "bytes32" },
+            { internalType: "address", name: "_token", type: "address" },
+            { internalType: "address", name: "_account", type: "address" },
+        ],
+        name: "claimedCampaignReward",
+        outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+        stateMutability: "view",
+        type: "function",
+    },
+    {
+        inputs: [
             {
                 components: [
                     {
@@ -555,14 +628,21 @@ export default [
                         type: "bytes32",
                     },
                     {
-                        internalType: "address[]",
-                        name: "rewardTokens",
-                        type: "address[]",
-                    },
-                    {
-                        internalType: "uint256[]",
-                        name: "rewardAmounts",
-                        type: "uint256[]",
+                        components: [
+                            {
+                                internalType: "address",
+                                name: "token",
+                                type: "address",
+                            },
+                            {
+                                internalType: "uint256",
+                                name: "amount",
+                                type: "uint256",
+                            },
+                        ],
+                        internalType: "struct RewardAmount[]",
+                        name: "rewards",
+                        type: "tuple[]",
                     },
                 ],
                 internalType: "struct CreateBundle[]",
@@ -599,9 +679,37 @@ export default [
     },
     {
         inputs: [],
-        name: "globalFee",
+        name: "fee",
         outputs: [{ internalType: "uint32", name: "", type: "uint32" }],
         stateMutability: "view",
+        type: "function",
+    },
+    {
+        inputs: [{ internalType: "address", name: "account", type: "address" }],
+        name: "feeRebate",
+        outputs: [{ internalType: "uint32", name: "rebate", type: "uint32" }],
+        stateMutability: "view",
+        type: "function",
+    },
+    {
+        inputs: [
+            { internalType: "address", name: "_owner", type: "address" },
+            { internalType: "address", name: "_updater", type: "address" },
+            { internalType: "uint32", name: "_fee", type: "uint32" },
+            {
+                internalType: "uint32",
+                name: "_minimumCampaignDuration",
+                type: "uint32",
+            },
+            {
+                internalType: "uint32",
+                name: "_maximumCampaignDuration",
+                type: "uint32",
+            },
+        ],
+        name: "initialize",
+        outputs: [],
+        stateMutability: "nonpayable",
         type: "function",
     },
     {
@@ -619,6 +727,29 @@ export default [
         type: "function",
     },
     {
+        inputs: [{ internalType: "address", name: "token", type: "address" }],
+        name: "minimumRewardTokenRate",
+        outputs: [
+            { internalType: "uint256", name: "minimumRate", type: "uint256" },
+        ],
+        stateMutability: "view",
+        type: "function",
+    },
+    {
+        inputs: [],
+        name: "ossified",
+        outputs: [{ internalType: "bool", name: "", type: "bool" }],
+        stateMutability: "view",
+        type: "function",
+    },
+    {
+        inputs: [],
+        name: "ossify",
+        outputs: [],
+        stateMutability: "nonpayable",
+        type: "function",
+    },
+    {
         inputs: [],
         name: "owner",
         outputs: [{ internalType: "address", name: "", type: "address" }],
@@ -629,6 +760,13 @@ export default [
         inputs: [],
         name: "pendingOwner",
         outputs: [{ internalType: "address", name: "", type: "address" }],
+        stateMutability: "view",
+        type: "function",
+    },
+    {
+        inputs: [],
+        name: "proxiableUUID",
+        outputs: [{ internalType: "bytes32", name: "", type: "bytes32" }],
         stateMutability: "view",
         type: "function",
     },
@@ -669,10 +807,18 @@ export default [
         type: "function",
     },
     {
+        inputs: [{ internalType: "uint32", name: "_fee", type: "uint32" }],
+        name: "setFee",
+        outputs: [],
+        stateMutability: "nonpayable",
+        type: "function",
+    },
+    {
         inputs: [
-            { internalType: "uint32", name: "_globalFee", type: "uint32" },
+            { internalType: "address", name: "_account", type: "address" },
+            { internalType: "uint32", name: "_rebate", type: "uint32" },
         ],
-        name: "setGlobalFee",
+        name: "setFeeRebate",
         outputs: [],
         stateMutability: "nonpayable",
         type: "function",
@@ -705,10 +851,21 @@ export default [
     },
     {
         inputs: [
-            { internalType: "address", name: "_account", type: "address" },
-            { internalType: "uint32", name: "_specificFee", type: "uint32" },
+            {
+                components: [
+                    { internalType: "address", name: "token", type: "address" },
+                    {
+                        internalType: "uint256",
+                        name: "minimumRate",
+                        type: "uint256",
+                    },
+                ],
+                internalType: "struct SetMinimumRewardTokenRateBundle[]",
+                name: "_bundles",
+                type: "tuple[]",
+            },
         ],
-        name: "setSpecificFee",
+        name: "setMinimumRewardTokenRates",
         outputs: [],
         stateMutability: "nonpayable",
         type: "function",
@@ -720,25 +877,6 @@ export default [
         name: "setUpdater",
         outputs: [],
         stateMutability: "nonpayable",
-        type: "function",
-    },
-    {
-        inputs: [
-            { internalType: "address", name: "_account", type: "address" },
-        ],
-        name: "specificFeeFor",
-        outputs: [
-            {
-                components: [
-                    { internalType: "uint32", name: "fee", type: "uint32" },
-                    { internalType: "bool", name: "none", type: "bool" },
-                ],
-                internalType: "struct SpecificFee",
-                name: "",
-                type: "tuple",
-            },
-        ],
-        stateMutability: "view",
         type: "function",
     },
     {
@@ -763,6 +901,20 @@ export default [
         name: "updater",
         outputs: [{ internalType: "address", name: "", type: "address" }],
         stateMutability: "view",
+        type: "function",
+    },
+    {
+        inputs: [
+            {
+                internalType: "address",
+                name: "newImplementation",
+                type: "address",
+            },
+            { internalType: "bytes", name: "data", type: "bytes" },
+        ],
+        name: "upgradeToAndCall",
+        outputs: [],
+        stateMutability: "payable",
         type: "function",
     },
 ] as const;
