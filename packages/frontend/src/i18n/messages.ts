@@ -67,7 +67,11 @@ export const messages = {
                 amount: "Amount",
                 insufficientBalance: {
                     label: "Insufficient balance",
-                    balance: "{symbol} balance: {balance}",
+                    info: "{symbol} balance: {balance}.",
+                },
+                lowRate: {
+                    label: "Distribution rate too low",
+                    info: "The minimum {symbol} amount for the selected campaign duration is {minimumRewardAmount}. The minimum distribution rate is {minimumRewardRate} {symbol} per hour.",
                 },
                 addReward: "Add reward",
                 maxRewards: "Rewards limit reached",

@@ -29,7 +29,7 @@ const approvingReward = computed(
 const { data: globalFee, loading: loadingGlobalFee } = useReadContract({
     address: props.metrom.address,
     abi: metromAbi,
-    functionName: "globalFee",
+    functionName: "fee",
 });
 
 const { data: allowances, loading: loadingAllowances } = useReadContracts(
