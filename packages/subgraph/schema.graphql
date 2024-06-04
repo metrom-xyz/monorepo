@@ -289,7 +289,7 @@ type Reward @entity {
     campaign: Campaign!
     token: Token!
     amount: BigInt!
-    unclaimed: BigInt!
+    claimed: BigInt!
     recovered: BigInt!
 
     claimedByAccount: [ClaimedByAccount!]! @derivedFrom(field: "reward")
