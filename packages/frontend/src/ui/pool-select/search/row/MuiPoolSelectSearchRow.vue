@@ -2,6 +2,7 @@
 import MuiTypography from "@/ui/typography/MuiTypography.vue";
 import MuiPairRemoteLogo from "@/ui/pair-remote-logo/MuiPairRemoteLogo.vue";
 import type { PoolSelectSearchRowProps } from "./types";
+import { formatDecimals } from "sdk";
 
 defineProps<PoolSelectSearchRowProps>();
 </script>
@@ -28,10 +29,27 @@ defineProps<PoolSelectSearchRowProps>();
             <MuiTypography lg>
                 {{ $props.token1.symbol }}
             </MuiTypography>
+            <MuiTypography
+                v-if="$props.fee"
+                sm
+                class="mui_pool_select_search_row__fee"
+            >
+                {{
+                    formatDecimals({
+                        number: $props.fee.toString(),
+                        decimalsAmount: 2,
+                    })
+                }}
+                %
+            </MuiTypography>
         </div>
-        <MuiTypography sm class="mui_pool_select_search_row__tvl">
+        <MuiTypography
+            v-if="$props.tvl"
+            sm
+            class="mui_pool_select_search_row__tvl"
+        >
             <!-- TODO: fetch tvl -->
-            {{ $props?.tvl }}
+            {{ $props.tvl }}
         </MuiTypography>
     </div>
 </template>
@@ -49,10 +67,14 @@ defineProps<PoolSelectSearchRowProps>();
 }
 
 .mui_pool_select_search_row__pool_name {
-    @apply flex gap-3 flex-grow mr-16 items-center;
+    @apply flex gap-3 flex-grow items-center;
 }
 
 .mui_pool_select_search_row__pool_name_divider {
+    @apply text-gray-600;
+}
+
+.mui_pool_select_search_row__fee {
     @apply text-gray-600;
 }
 
