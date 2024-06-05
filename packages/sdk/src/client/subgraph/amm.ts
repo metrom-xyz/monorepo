@@ -48,6 +48,7 @@ export class AmmSubgraphClient {
                         symbol: pool.token1.symbol,
                         name: pool.token1.name,
                     },
+                    fee: parseInt(pool.fee) / 10_000,
                 });
             }
 
