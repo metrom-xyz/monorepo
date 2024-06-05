@@ -6,4 +6,5 @@ export interface PoolSelectSearchRowProps {
     token0: Erc20Token;
     token1: Erc20Token;
     tvl?: number;
+    fee?: number;
 }
