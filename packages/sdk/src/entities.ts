@@ -21,6 +21,7 @@ export function erc20TokenEquals(a: Erc20Token, b: Erc20Token): boolean {
 export interface Pool {
     address: Address;
     amm: SupportedAmm;
+    fee?: number;
     token0: Erc20Token;
     token1: Erc20Token;
 }

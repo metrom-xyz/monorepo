@@ -52,6 +52,7 @@ export type GetPoolsQueryResult = {
             symbol: string;
             decimals: string;
         };
+        fee: string;
     }[];
 };
 
@@ -71,6 +72,7 @@ export const GetPools = `
                 symbol
                 decimals
             }
+            fee
         }
     }
 `;
