@@ -135,7 +135,7 @@ export const messages = {
                 },
                 rewards: {
                     amount: "Amount",
-                    unclaimed: "Unclaimed",
+                    remaining: "Remaining",
                 },
                 empty: "Nothing here.",
             },
