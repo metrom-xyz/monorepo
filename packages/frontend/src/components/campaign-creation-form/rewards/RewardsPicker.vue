@@ -3,12 +3,7 @@ import type { RewardsPickerTypes, TokenInfoWithBalance } from "./types";
 import { watchEffect } from "vue";
 import PlusCircleIcon from "@/icons/PlusCircleIcon.vue";
 import RewardRow from "./reward-row/RewardRow.vue";
-import {
-    useAccount,
-    useChainId,
-    useReadContract,
-    useReadContracts,
-} from "vevm";
+import { useAccount, useReadContract, useReadContracts } from "vevm";
 import { erc20Abi, type Address } from "viem";
 import { computed } from "vue";
 import { ref } from "vue";
@@ -26,13 +21,12 @@ const emits = defineEmits<{
 }>();
 
 const account = useAccount();
-const chainId = useChainId();
 
 const tokenSearchQuery = ref();
 const { loading: loadingWhitelistedTokens, whitelistedTokens } =
     useWhitelistedRewardTokens(
         computed(() => ({
-            client: CHAIN_DATA[chainId.value].metromApiClient,
+            client: CHAIN_DATA[props.state.network].metromApiClient,
         })),
     );
 
