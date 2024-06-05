@@ -57,11 +57,11 @@ const popover = ref(false);
                         "
                     />
                     <MuiTextField
-                        :label="$t('allCampaigns.table.rewards.unclaimed')"
+                        :label="$t('allCampaigns.table.rewards.remaining')"
                         :value="
                             formatDecimals({
                                 number: formatUnits(
-                                    reward.unclaimed,
+                                    reward.remaining,
                                     reward.token.decimals,
                                 ),
                             })

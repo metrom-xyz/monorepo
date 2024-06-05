@@ -29,7 +29,8 @@ export interface Reward {
     token: Erc20Token;
     amount: bigint;
     claimed: bigint;
-    unclaimed: bigint;
+    recovered: bigint;
+    remaining: bigint;
     usdValue: number | null;
 }
 

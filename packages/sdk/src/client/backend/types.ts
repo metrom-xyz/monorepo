@@ -27,7 +27,8 @@ type RawPool = {
 type RawReward = {
     amount: string;
     claimed: string;
-    unclaimed: string;
+    recovered: string;
+    remaining: string;
     token: RawToken;
     usdValue: number | null;
 };

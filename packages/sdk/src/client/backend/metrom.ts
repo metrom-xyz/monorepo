@@ -57,7 +57,7 @@ export class MetromApiClient extends CoreClient {
             orderDirection: "desc",
             ...Object.fromEntries(
                 Object.entries(params || {}).filter(
-                    ([_, value]) => !!value || !isNaN(Number(value)),
+                    ([, value]) => !!value || !isNaN(Number(value)),
                 ),
             ),
         };
@@ -99,7 +99,8 @@ export class MetromApiClient extends CoreClient {
                     },
                     amount: BigInt(rawReward.amount),
                     claimed: BigInt(rawReward.claimed),
-                    unclaimed: BigInt(rawReward.unclaimed),
+                    remaining: BigInt(rawReward.remaining),
+                    recovered: BigInt(rawReward.recovered),
                 })),
             })),
             amount: rawCampaignsResponse.amount,

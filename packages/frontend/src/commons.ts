@@ -6,10 +6,12 @@ import {
     SERVICE_URLS,
 } from "sdk";
 import { type Transport, http, type Chain } from "viem";
-import { holesky } from "viem/chains";
+import { celoAlfajores, holesky } from "viem/chains";
 import { type Amm, type ChainData } from "./types";
 import MuiEthIcon from "./icons/EthIcon.vue";
 import MuiAlgebraIntegralIcon from "./icons/AlgebraIntegralIcon.vue";
+import MuiCeloIcon from "./icons/CeloIcon.vue";
+import MuiUniswapLogoIcon from "./icons/UniswapLogoIcon.vue";
 import { ADDRESS } from "@metrom-xyz/contracts";
 import { markRaw } from "vue";
 
@@ -21,33 +23,33 @@ export const TOKEN_LISTS = [
 ];
 
 export const SUPPORTED_CHAINS: [Chain, ...Chain[]] = [
-    // celoAlfajores,
+    celoAlfajores,
     // sepolia,
     holesky,
 ];
 
 export const SUPPORTED_CHAIN_TRANSPORT: Record<number, Transport> = {
-    // [celoAlfajores.id]: http(),
+    [celoAlfajores.id]: http(),
     // [sepolia.id]: http(),
     [holesky.id]: http(),
 };
 
 const AMMS: Record<SupportedChain, Amm[]> = {
-    // [SupportedChain.CeloAlfajores]: [
-    //     {
-    //         slug: SupportedAmm.Univ3,
-    //         logo: markRaw(MuiUniswapLogoIcon),
-    //         name: "Uniswap v3",
-    //         addLiquidityUrl: "https://app.uniswap.org/add/{target_pool}",
-    //         pairExplorerUrl:
-    //             "https://app.uniswap.org/explore/pools/celo_alfajores/{target_pool}",
-    //         subgraphClient: new AmmSubgraphClient(
-    //             SupportedChain.CeloAlfajores,
-    //             SupportedAmm.Univ3,
-    //             "https://api.studio.thegraph.com/query/68570/metrom-uni-v3-celo-alfajores/version/latest",
-    //         ),
-    //     },
-    // ],
+    [SupportedChain.CeloAlfajores]: [
+        {
+            slug: SupportedAmm.Univ3,
+            logo: markRaw(MuiUniswapLogoIcon),
+            name: "Uniswap v3",
+            addLiquidityUrl: "https://app.uniswap.org/add/{target_pool}",
+            poolExplorerUrl:
+                "https://app.uniswap.org/explore/pools/celo_alfajores/{target_pool}",
+            subgraphClient: new AmmSubgraphClient(
+                SupportedChain.CeloAlfajores,
+                SupportedAmm.Univ3,
+                "https://api.studio.thegraph.com/query/68570/metrom-uni-v3-celo-alfajores/version/latest",
+            ),
+        },
+    ],
     // [SupportedChain.Sepolia]: [
     //     {
     //         slug: SupportedAmm.Univ3,
@@ -80,19 +82,18 @@ const AMMS: Record<SupportedChain, Amm[]> = {
 };
 
 export const CHAIN_DATA: Record<SupportedChain, ChainData> = {
-    // [SupportedChain.CeloAlfajores]: {
-    //     icon: {
-    //         logo: markRaw(MuiCeloIcon),
-    //         backgroundColor: "#000",
-    //     },
-    //     contract: ADDRESS[SupportedChain.CeloAlfajores],
-    //     metromSubgraphClient: new MetromSubgraphClient(
-    //         SupportedChain.CeloAlfajores,
-    //         "https://api.studio.thegraph.com/query/68570/metrom-celo-alfajores/version/latest",
-    //         AMMS[SupportedChain.CeloAlfajores].map((amm) => amm.subgraphClient),
-    //     ),
-    //     amms: AMMS[SupportedChain.CeloAlfajores],
-    // },
+    [SupportedChain.CeloAlfajores]: {
+        icon: {
+            logo: markRaw(MuiCeloIcon),
+            backgroundColor: "#000",
+        },
+        contract: ADDRESS[SupportedChain.CeloAlfajores],
+        metromApiClient: new MetromApiClient(
+            SERVICE_URLS[__ENVIRONMENT__].metrom,
+            SupportedChain.CeloAlfajores,
+        ),
+        amms: AMMS[SupportedChain.CeloAlfajores],
+    },
     // [SupportedChain.Sepolia]: {
     //     icon: {
     //         logo: markRaw(MuiEthIcon),
