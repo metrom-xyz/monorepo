@@ -19,7 +19,6 @@ import MuiWarningMessage from "@/ui/MuiWarningMessage.vue";
 const props = defineProps<RewardRowProps>();
 const emits = defineEmits<{
     insufficientBalance: [address: string, value: boolean];
-    // TODO: handle emit
     rewardRateTooLow: [address: string, value: boolean];
     searchQueryChange: [query?: string];
 }>();

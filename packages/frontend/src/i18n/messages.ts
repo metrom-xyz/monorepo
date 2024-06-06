@@ -101,6 +101,7 @@ export const messages = {
                 confirm: "Confirm",
                 edit: "Edit campaign",
                 approveReward: "Approve reward: ",
+                fee: "Protocol fee: ",
                 launch: "Launch campaign",
                 success: "Campaign deployed",
             },
