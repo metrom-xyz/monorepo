@@ -11,6 +11,8 @@ export interface CampaignState {
     pool?: Pool;
     rewards: Reward[];
     range?: Range;
+    // TODO: define proper type for the specification (whitelists, blacklistsi)
+    specification?: string;
 }
 
 export interface FinalizedState {
