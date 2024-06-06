@@ -3,12 +3,10 @@ import type { RewardsPickerTypes, TokenInfoWithBalance } from "./types";
 import { watchEffect } from "vue";
 import PlusCircleIcon from "@/icons/PlusCircleIcon.vue";
 import RewardRow from "./reward-row/RewardRow.vue";
-import { useAccount, useReadContract, useReadContracts } from "vevm";
+import { useAccount, useReadContracts } from "vevm";
 import { erc20Abi, type Address } from "viem";
 import { computed } from "vue";
 import { ref } from "vue";
-import { ADDRESS } from "@metrom-xyz/contracts";
-import metromAbi from "@/abis/metrom";
 import { useWhitelistedRewardTokens } from "@/composables/useWhitelistedRewardTokens";
 import { CHAIN_DATA } from "@/commons";
 
@@ -32,21 +30,6 @@ const { loading: loadingWhitelistedTokens, whitelistedTokens } =
 
 const rewardsWithInsufficientBalance = ref<string[]>([]);
 const rewardsWithRateTooLow = ref<string[]>([]);
-
-const metrom = computed(() => {
-    if (!account.value.chainId) return;
-    return ADDRESS[account.value.chainId];
-});
-
-const { data: globalFee, loading: loadingGlobalFee } = useReadContract(
-    computed(() => {
-        return {
-            address: metrom.value?.address as Address,
-            abi: metromAbi,
-            functionName: "fee",
-        };
-    }),
-);
 
 const { data: rawBalances, loading: loadingBalances } = useReadContracts(
     computed(() => ({
@@ -166,12 +149,7 @@ function handleRewardOnRateTooLow(address: string, rateTooLow: boolean) {
                 <RewardRow
                     :index="index"
                     :tokens="tokensWithBalance"
-                    :globalFee="globalFee"
-                    :loading="
-                        loadingGlobalFee ||
-                        loadingBalances ||
-                        loadingWhitelistedTokens
-                    "
+                    :loading="loadingBalances || loadingWhitelistedTokens"
                     :state="$props.state"
                     :rewards="$props.state.rewards"
                     v-model:token="$props.state.rewards[index].token"

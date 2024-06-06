@@ -3,7 +3,7 @@ import type { ChainContract } from "viem";
 
 export interface ApproveRewardProps {
     reward: Required<Reward>;
-    globalFee: number;
+    fee?: number;
     total: number;
     index: number;
     loading: boolean;
