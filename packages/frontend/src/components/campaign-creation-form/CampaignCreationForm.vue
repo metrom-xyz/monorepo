@@ -42,6 +42,10 @@ const formError = computed(
         dateRangeStepError.value,
 );
 
+const showLogin = computed(
+    () => !isJwtAuthTokenValid && readonly && props.state.specification,
+);
+
 function handleStepOnComplete() {
     stepCursor.value++;
 }
@@ -78,8 +82,8 @@ watch(
 </script>
 <template>
     <div class="campaign_creation_form__root">
-        <AuthenticateUser v-show="!isJwtAuthTokenValid && readonly" />
-        <MuiStepper v-show="isJwtAuthTokenValid || !readonly">
+        <AuthenticateUser v-show="showLogin" />
+        <MuiStepper v-show="!showLogin">
             <MuiStep
                 active
                 :step="1"
