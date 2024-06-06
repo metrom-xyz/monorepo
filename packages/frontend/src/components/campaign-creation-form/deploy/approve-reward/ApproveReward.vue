@@ -26,6 +26,11 @@ const amountToApprove = parseUnits(
     props.reward.token.decimals,
 );
 
+const protocolFee = computed(() => {
+    if (!props.fee) return null;
+    return props.fee / 10_000;
+});
+
 const { simulation: simulatedApprove, loading: simulatingApprove } =
     useSimulateContract(
         computed(() => ({
@@ -65,6 +70,12 @@ async function handleApproveRewardOnClick() {
         {{ $t("campaign.deploy.approveReward") }}
         {{ formatDecimals({ number: props.reward.amount.toString() }) }}
         {{ $props.reward.token?.symbol }}
+        <div v-if="protocolFee">
+            {{ $t("campaign.deploy.fee") }} {{ protocolFee }}% ({{
+                ($props.reward.amount * protocolFee) / 100
+            }}
+            {{ $props.reward.token.symbol }})
+        </div>
     </SubmitButton>
 </template>
 <style></style>

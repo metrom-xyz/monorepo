@@ -8,7 +8,6 @@ import { erc20Abi, type Address, parseUnits } from "viem";
 import { watchEffect } from "vue";
 import ApproveReward from "../approve-reward/ApproveReward.vue";
 import metromAbi from "@/abis/metrom";
-import SubmitButton from "../../submit-button/SubmitButton.vue";
 
 const props = defineProps<ApproveRewardsProps>();
 const emits = defineEmits(["allApproved"]);
@@ -26,7 +25,7 @@ const approvingReward = computed(
         rewardsToApprove.value[approvingRewardIndex.value] as Required<Reward>,
 );
 
-const { data: globalFee, loading: loadingGlobalFee } = useReadContract({
+const { data: fee, loading: loadingGlobalFee } = useReadContract({
     address: props.metrom.address,
     abi: metromAbi,
     functionName: "fee",
@@ -91,17 +90,10 @@ watchEffect(() => {
 });
 </script>
 <template>
-    <SubmitButton
-        v-if="loadingAllowances || loadingGlobalFee || !globalFee"
-        :loading="loadingAllowances || loadingGlobalFee || !globalFee"
-        disabled
-        :onClick="() => {}"
-    />
     <ApproveReward
-        v-else
         :metrom="$props.metrom"
+        :fee="fee"
         :reward="approvingReward"
-        :globalFee="globalFee"
         :index="approvingRewardIndex"
         :total="rewardsToApprove.length"
         :loading="loadingAllowances || loadingGlobalFee"
