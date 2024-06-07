@@ -46,14 +46,9 @@ function getOrCreateNftPosition(tokenId: BigInt): Position | null {
     return position;
 }
 
-function getNftPositionOrThrow(tokenId: BigInt): Position {
+function getNftPosition(tokenId: BigInt): Position | null {
     let id = getNftPositionId(tokenId);
-    let position = Position.load(id);
-    if (position != null) return position;
-
-    throw new Error(
-        `Could not get NFT position with token id ${tokenId.toString()}`,
-    );
+    return Position.load(id);
 }
 
 export function handleIncreaseLiquidity(event: IncreaseLiquidityEvent): void {
@@ -74,7 +69,9 @@ export function handleIncreaseLiquidity(event: IncreaseLiquidityEvent): void {
 export function handleDecreaseLiquidity(event: DecreaseLiquidityEvent): void {
     if (event.params.liquidity.isZero()) return;
 
-    let position = getNftPositionOrThrow(event.params.tokenId);
+    let position = getNftPosition(event.params.tokenId);
+    if (position == null) return;
+
     position.liquidity = position.liquidity.minus(event.params.liquidity);
     position.save();
 
@@ -91,7 +88,9 @@ export function handleTransfer(event: TransferEvent): void {
     // liquidity is added
     if (event.params.from == Address.zero()) return;
 
-    let position = getNftPositionOrThrow(event.params.tokenId);
+    let position = getNftPosition(event.params.tokenId);
+    if (position == null) return;
+
     position.owner = event.params.to;
     position.save();
 }
