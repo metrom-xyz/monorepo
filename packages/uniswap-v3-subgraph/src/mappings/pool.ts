@@ -27,6 +27,7 @@ export function handleSwap(event: SwapEvent): void {
     if (newTick == pool.tick) return;
 
     pool.tick = newTick;
+    pool.liquidity = event.params.liquidity;
     pool.save();
 
     let tickMovingSwap = createBaseEvent(event, pool.id);
@@ -106,6 +107,12 @@ export function handleMint(event: MintEvent): void {
     position.liquidity = position.liquidity.plus(event.params.amount);
     position.save();
 
+    let pool = getPoolOrThrow(Address.fromBytes(position.pool));
+    if (position.lowerTick <= pool.tick && position.upperTick >= pool.tick) {
+        pool.liquidity = pool.liquidity.plus(event.params.amount);
+        pool.save();
+    }
+
     let nonZeroLiquidityChange = createBaseEvent(event, position.pool);
     nonZeroLiquidityChange.liquidityDelta = event.params.amount;
     nonZeroLiquidityChange.position = position.id;
@@ -127,6 +134,12 @@ export function handleBurn(event: BurnEvent): void {
     );
     position.liquidity = position.liquidity.minus(event.params.amount);
     position.save();
+
+    let pool = getPoolOrThrow(Address.fromBytes(position.pool));
+    if (position.lowerTick <= pool.tick && position.upperTick >= pool.tick) {
+        pool.liquidity = pool.liquidity.minus(event.params.amount);
+        pool.save();
+    }
 
     let nonZeroLiquidityChange = createBaseEvent(event, position.pool);
     nonZeroLiquidityChange.liquidityDelta = event.params.amount.neg();

@@ -9,6 +9,7 @@ export function handlePoolCreated(event: PoolCreatedEvent): void {
     // will be updated in the pool's initialize event
     pool.token0 = getOrCreateToken(event.params.token0).id;
     pool.token1 = getOrCreateToken(event.params.token1).id;
+    pool.liquidity = BigInt.zero();
     pool.tick = BigInt.zero();
     pool.fee = BigInt.fromU32(100);
     pool.save();
