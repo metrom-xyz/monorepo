@@ -9,6 +9,7 @@ import {
     FactoryContract,
     NonFungiblePositionManagerContract,
     createBaseEvent,
+    getPoolOrThrow,
 } from "../commons";
 
 function getNftPositionId(tokenId: BigInt): Bytes {
@@ -60,6 +61,12 @@ export function handleIncreaseLiquidity(event: IncreaseLiquidityEvent): void {
     position.liquidity = position.liquidity.plus(event.params.actualLiquidity);
     position.save();
 
+    let pool = getPoolOrThrow(Address.fromBytes(position.pool));
+    if (position.lowerTick <= pool.tick && position.upperTick >= pool.tick) {
+        pool.liquidity = pool.liquidity.plus(event.params.actualLiquidity);
+        pool.save();
+    }
+
     let nonZeroLiquidityChange = createBaseEvent(event, position.pool);
     nonZeroLiquidityChange.liquidityDelta = event.params.actualLiquidity;
     nonZeroLiquidityChange.position = position.id;
@@ -74,6 +81,12 @@ export function handleDecreaseLiquidity(event: DecreaseLiquidityEvent): void {
 
     position.liquidity = position.liquidity.minus(event.params.liquidity);
     position.save();
+
+    let pool = getPoolOrThrow(Address.fromBytes(position.pool));
+    if (position.lowerTick <= pool.tick && position.upperTick >= pool.tick) {
+        pool.liquidity = pool.liquidity.minus(event.params.liquidity);
+        pool.save();
+    }
 
     let nonZeroLiquidityChange = createBaseEvent(event, position.pool);
     nonZeroLiquidityChange.liquidityDelta = event.params.liquidity.neg();
