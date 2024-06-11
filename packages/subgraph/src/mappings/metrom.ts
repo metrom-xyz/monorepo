@@ -7,7 +7,8 @@ import {
     ClaimFee,
     TransferOwnership,
     AcceptOwnership,
-    SetUpdater,
+    SetCampaignsUpdater,
+    SetRatesUpdater,
     SetFee,
     SetMinimumCampaignDuration,
     SetMaximumCampaignDuration,
@@ -32,7 +33,8 @@ import {
     SetFeeRebateEvent,
     SetMinimumCampaignDurationEvent,
     SetMaximumCampaignDurationEvent,
-    SetUpdaterEvent,
+    SetCampaignsUpdaterEvent,
+    SetRatesUpdaterEvent,
     TransferOwnershipEvent,
     RecoverRewardEvent,
     TransferCampaignOwnershipEvent,
@@ -70,7 +72,8 @@ export function handleInitialize(event: Initialize): void {
     initializeEvent.transaction = transaction.id;
     initializeEvent.metrom = METROM_ADDRESS;
     initializeEvent.owner = event.params.owner;
-    initializeEvent.updater = event.params.updater;
+    initializeEvent.campaignsUpdater = event.params.campaignsUpdater;
+    initializeEvent.ratesUpdater = event.params.ratesUpdater;
     initializeEvent.fee = event.params.fee;
     initializeEvent.minimumCampaignDuration =
         event.params.minimumCampaignDuration;
@@ -83,7 +86,8 @@ export function handleInitialize(event: Initialize): void {
     metrom.ossified = false;
     metrom.owner = event.params.owner;
     metrom.pendingOwner = Address.zero();
-    metrom.updater = event.params.updater;
+    metrom.campaignsUpdater = event.params.campaignsUpdater;
+    metrom.ratesUpdater = event.params.ratesUpdater;
     metrom.fee = event.params.fee;
     metrom.minimumCampaignDuration = event.params.minimumCampaignDuration;
     metrom.maximumCampaignDuration = event.params.maximumCampaignDuration;
@@ -105,7 +109,6 @@ export function handleCreateCampaign(event: CreateCampaign): void {
     campaign.creationTimestamp = event.block.timestamp;
     campaign.owner = event.params.owner;
     campaign.pendingOwner = Address.zero();
-    campaign.chainId = event.params.chainId;
     campaign.pool = event.params.pool;
     campaign.from = event.params.from;
     campaign.to = event.params.to;
@@ -140,7 +143,6 @@ export function handleCreateCampaign(event: CreateCampaign): void {
     createCampaignEvent.metrom = METROM_ADDRESS;
     createCampaignEvent.campaign = event.params.id;
     createCampaignEvent.owner = event.params.owner;
-    createCampaignEvent.chainId = event.params.chainId;
     createCampaignEvent.owner = event.params.owner;
     createCampaignEvent.pool = event.params.pool;
     createCampaignEvent.from = event.params.from;
@@ -329,16 +331,28 @@ export function handleAcceptOwnership(event: AcceptOwnership): void {
     acceptOwnershipEvent.save();
 }
 
-export function handleSetUpdater(event: SetUpdater): void {
+export function handleSetCampaignsUpdater(event: SetCampaignsUpdater): void {
     let metrom = getMetromOrThrow();
-    metrom.updater = event.params.updater;
+    metrom.campaignsUpdater = event.params.campaignsUpdater;
     metrom.save();
 
-    let setUpdaterEvent = new SetUpdaterEvent(getEventId(event));
+    let setUpdaterEvent = new SetCampaignsUpdaterEvent(getEventId(event));
     setUpdaterEvent.transaction = getOrCreateTransaction(event).id;
     setUpdaterEvent.metrom = metrom.id;
-    setUpdaterEvent.updater = event.params.updater;
+    setUpdaterEvent.campaignsUpdater = event.params.campaignsUpdater;
     setUpdaterEvent.save();
+}
+
+export function handleSetRatesUpdater(event: SetRatesUpdater): void {
+    let metrom = getMetromOrThrow();
+    metrom.ratesUpdater = event.params.ratesUpdater;
+    metrom.save();
+
+    let setRatesUpdaterEvent = new SetRatesUpdaterEvent(getEventId(event));
+    setRatesUpdaterEvent.transaction = getOrCreateTransaction(event).id;
+    setRatesUpdaterEvent.metrom = metrom.id;
+    setRatesUpdaterEvent.ratesUpdater = event.params.ratesUpdater;
+    setRatesUpdaterEvent.save();
 }
 
 export function handleSetFee(event: SetFee): void {

@@ -28,7 +28,8 @@ type Transaction @entity(immutable: true) {
         @derivedFrom(field: "transaction")
     acceptOwnershipEvents: [AcceptOwnershipEvent!]!
         @derivedFrom(field: "transaction")
-    setUpdaterEvents: [SetUpdaterEvent!]! @derivedFrom(field: "transaction")
+    setCampaignsUpdaterEvents: [SetCampaignsUpdaterEvent!]! @derivedFrom(field: "transaction")
+    setRatesUpdaterEvents: [SetRatesUpdaterEvent!]! @derivedFrom(field: "transaction")
     setFeeEvents: [SetFeeEvent!]! @derivedFrom(field: "transaction")
     setFeeRebateEvents: [SetFeeRebateEvent!]! @derivedFrom(field: "transaction")
     setMinimumCampaignDuration: [SetMinimumCampaignDurationEvent!]!
@@ -43,7 +44,8 @@ type Metrom @entity {
     ossified: Boolean!
     owner: Bytes!
     pendingOwner: Bytes!
-    updater: Bytes!
+    campaignsUpdater: Bytes!
+    ratesUpdater: Bytes!
     fee: BigInt!
     minimumCampaignDuration: BigInt!
     maximumCampaignDuration: BigInt!
@@ -73,7 +75,8 @@ type Metrom @entity {
         @derivedFrom(field: "metrom")
     acceptOwnershipEvents: [AcceptOwnershipEvent!]!
         @derivedFrom(field: "metrom")
-    setUpdaterEvents: [SetUpdaterEvent!]! @derivedFrom(field: "metrom")
+    setCampaignsUpdaterEvents: [SetCampaignsUpdaterEvent!]! @derivedFrom(field: "metrom")
+    setRatesUpdaterEvents: [SetRatesUpdaterEvent!]! @derivedFrom(field: "metrom")
     setFeeEvents: [SetFeeEvent!]! @derivedFrom(field: "metrom")
     setFeeRebateEvents: [SetFeeRebateEvent!]! @derivedFrom(field: "metrom")
     setMinimumCampaignDuration: [SetMinimumCampaignDurationEvent!]!
@@ -87,7 +90,8 @@ type InitializeEvent @entity(immutable: true) {
     transaction: Transaction!
     metrom: Metrom!
     owner: Bytes!
-    updater: Bytes!
+    campaignsUpdater: Bytes!
+    ratesUpdater: Bytes!
     fee: BigInt!
     minimumCampaignDuration: BigInt!
     maximumCampaignDuration: BigInt!
@@ -105,7 +109,6 @@ type CreateCampaignEvent @entity(immutable: true) {
     metrom: Metrom!
     campaign: Campaign!
     owner: Bytes!
-    chainId: BigInt!
     pool: Bytes!
     from: BigInt!
     to: BigInt!
@@ -198,11 +201,18 @@ type AcceptOwnershipEvent @entity(immutable: true) {
     owner: Bytes!
 }
 
-type SetUpdaterEvent @entity(immutable: true) {
+type SetCampaignsUpdaterEvent @entity(immutable: true) {
     id: Bytes!
     transaction: Transaction!
     metrom: Metrom!
-    updater: Bytes!
+    campaignsUpdater: Bytes!
+}
+
+type SetRatesUpdaterEvent @entity(immutable: true) {
+    id: Bytes!
+    transaction: Transaction!
+    metrom: Metrom!
+    ratesUpdater: Bytes!
 }
 
 type SetFeeEvent @entity(immutable: true) {
@@ -263,7 +273,6 @@ type Campaign @entity {
     creationTimestamp: BigInt!
     owner: Bytes!
     pendingOwner: Bytes!
-    chainId: BigInt!
     pool: Bytes!
     from: BigInt!
     to: BigInt!
