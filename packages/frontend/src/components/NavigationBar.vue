@@ -9,32 +9,30 @@ const chain = useSelectedChain();
 </script>
 <template>
     <nav class="navigation_bar__root">
-        <RouterLink :to="`/?chain=${chain}`">
+        <div class="navigation_bar__wrapper">
+            <RouterLink :to="`/?chain=${chain}`">
+                <div class="navigation_bar__link">
+                    <FolderIcon />
+                    <MuiTypography>
+                        {{ $t("navigation.campaigns.all") }}
+                    </MuiTypography>
+                </div>
+            </RouterLink>
+            <RouterLink :to="`/create?chain=${chain}`">
+                <div class="navigation_bar__link">
+                    <DocumentIcon />
+                    <MuiTypography>
+                        {{ $t("navigation.campaigns.create") }}
+                    </MuiTypography>
+                </div>
+            </RouterLink>
             <div
-                class="navigation_bar__link"
+                class="navigation_bar__link__active"
                 :class="{
-                    navigation_bar__link__active: $route.name === 'campaigns',
+                    navigation_bar__link_slide_right: $route.name === 'create',
                 }"
-            >
-                <FolderIcon />
-                <MuiTypography>
-                    {{ $t("navigation.campaigns.all") }}
-                </MuiTypography>
-            </div>
-        </RouterLink>
-        <RouterLink :to="`/create?chain=${chain}`">
-            <div
-                class="navigation_bar__link"
-                :class="{
-                    navigation_bar__link__active: $route.name === 'create',
-                }"
-            >
-                <DocumentIcon />
-                <MuiTypography>
-                    {{ $t("navigation.campaigns.create") }}
-                </MuiTypography>
-            </div>
-        </RouterLink>
+            ></div>
+        </div>
     </nav>
 </template>
 <style>
@@ -42,11 +40,19 @@ const chain = useSelectedChain();
     @apply h-14 flex bg-gray-100 rounded-xxl p-1.5 absolute left-1/2 -translate-x-1/2;
 }
 
+.navigation_bar__wrapper {
+    @apply relative flex;
+}
+
 .navigation_bar__link {
     @apply h-full w-fit flex items-center gap-2 bg-transparent rounded-xxl px-3;
 }
 
 .navigation_bar__link__active {
-    @apply bg-white;
+    @apply -z-[1] absolute h-full w-1/2 bg-white rounded-xl transition-transform duration-200 ease-in-out;
+}
+
+.navigation_bar__link_slide_right {
+    @apply translate-x-full;
 }
 </style>

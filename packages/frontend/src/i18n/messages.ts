@@ -3,7 +3,7 @@ export const messages = {
         navigation: {
             campaigns: {
                 all: "All Campaigns",
-                create: "New campaign",
+                create: "New Campaign",
             },
         },
         wallet: {
