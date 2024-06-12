@@ -1,4 +1,4 @@
-import { SupportedChain } from "@metrom-xyz/contracts";
+import { SupportedChain, Environment } from "@metrom-xyz/contracts";
 import { Cacher } from "./cacher";
 
 export const SUPPORTED_CHAIN_NAMES: Record<SupportedChain, string> = {
@@ -11,12 +11,6 @@ export const CACHER = new Cacher("metrom-sdk");
 export enum SupportedAmm {
     Univ3 = "uni-v3",
     TestIntegral = "test-integral",
-}
-
-export enum Environment {
-    Development = "development",
-    Staging = "staging",
-    Production = "production",
 }
 
 export interface ServiceUrls {
@@ -32,9 +26,5 @@ export const SERVICE_URLS: Record<Environment, ServiceUrls> = {
     [Environment.Staging]: {
         dataManager: "https://data-manager.staging.metrom.xyz",
         metrom: "https://api.staging.metrom.xyz",
-    },
-    [Environment.Production]: {
-        dataManager: "https://data-manager.metrom.xyz",
-        metrom: "https://api.metrom.xyz",
     },
 };
