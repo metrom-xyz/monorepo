@@ -1,21 +1,37 @@
 import { existsSync, writeFileSync, rmSync } from "node:fs";
 import { dirname, join } from "node:path";
-import { ADDRESS, SupportedChain } from "@metrom-xyz/contracts";
+import { ADDRESS, SupportedChain, Environment } from "@metrom-xyz/contracts";
 import { fileURLToPath } from "node:url";
 import { exec } from "node:child_process";
+
+const ENVIRONMENT_NAME: Record<Environment, string> = {
+    [Environment.Development]: "development",
+    [Environment.Staging]: "staging",
+};
 
 const NETWORK_NAME: Record<SupportedChain, string> = {
     [SupportedChain.Holesky]: "holesky",
     [SupportedChain.CeloAlfajores]: "celo-alfajores",
 };
 
-const [, , rawNetwork = ""] = process.argv;
+const [, , rawEnvironment, rawNetwork = ""] = process.argv;
+const environment = rawEnvironment.toLowerCase();
 const network = rawNetwork.toLowerCase();
 
-const entry = Object.entries(NETWORK_NAME).find(([, name]) => {
-    return name === rawNetwork;
+const environmentExists = !!Object.values(ENVIRONMENT_NAME).find(
+    (name) => name === environment,
+);
+if (!environmentExists) {
+    console.error(
+        `"${environment}" is not a valid environment. Valid values are: ${Object.values(ENVIRONMENT_NAME).join(", ")}`,
+    );
+    process.exit(1);
+}
+
+const resolvedNetwork = Object.entries(NETWORK_NAME).find(([, name]) => {
+    return name === network;
 });
-if (!entry) {
+if (!resolvedNetwork) {
     console.error(
         `"${network}" is not a valid network. Valid values are: ${Object.values(NETWORK_NAME).join(", ")}`,
     );
@@ -23,13 +39,20 @@ if (!entry) {
 }
 
 const metrom =
-    rawNetwork === "placeholder"
-        ? // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          ({} as any)
-        : ADDRESS[parseInt(entry[0]) as SupportedChain];
+    ADDRESS[environment as Environment][
+        parseInt(resolvedNetwork[0]) as SupportedChain
+    ];
 if (!metrom) {
     console.error(
-        `"${network}" is not a valid network. Valid values are: ${Object.values(NETWORK_NAME).join(", ")}`,
+        `"${environment}/${network}" is not a valid environment/network combination. Valid values are:\n\n${Object.entries(
+            ADDRESS,
+        )
+            .map(([validEnvironment, deployments]) => {
+                return `${validEnvironment}: ${Object.keys(deployments)
+                    .map((chainId) => NETWORK_NAME[parseInt(chainId)])
+                    .join(", ")}`;
+            })
+            .join("\n")}`,
     );
     process.exit(1);
 }

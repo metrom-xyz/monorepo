@@ -415,8 +415,8 @@ importers:
         version: 0.35.1
     devDependencies:
       '@metrom-xyz/contracts':
-        specifier: ^0.9.0
-        version: 0.9.0(bufferutil@4.0.8)(typescript@5.4.5)
+        specifier: ^0.10.0
+        version: 0.10.0(bufferutil@4.0.8)(typescript@5.4.5)
       '@types/node':
         specifier: ^20.14.1
         version: 20.14.1
@@ -1846,11 +1846,11 @@ packages:
     resolution: {integrity: sha512-dbIc3C7alOe0agCuBHM1h71UaEaEqOk2W8rAtEn8QGz4haH2Qq7MoK6i7v2guzvkJVVh79c+QCzIqphC3KvrJg==}
     engines: {node: '>=16.0.0'}
 
+  '@metrom-xyz/contracts@0.10.0':
+    resolution: {integrity: sha512-ie/fwUpjaLDJS7niiIzcwYOmRSw1Qyc6mAdkZ3SwXbvHVfP9umUNFhy2kklC8X+WDry244g3gzoGZtWJSevwRw==}
+
   '@metrom-xyz/contracts@0.8.1':
     resolution: {integrity: sha512-Z7Mf30Hwt8lhqQOzUgwc2/5nQB/ccEGNT596Vr/FsTPy/sPzPvxzMKpqYhRxqO2JjGWrONIB0FXK7l845GgACg==}
-
-  '@metrom-xyz/contracts@0.9.0':
-    resolution: {integrity: sha512-43LBVPxksEPsBRgtm107TFvDVo4lo42Hdlh7JCbmxa514mvkXa4o4VIeQE6qMT/HAf17dj/UjB9Nbk3Sf2MKQw==}
 
   '@motionone/animation@10.18.0':
     resolution: {integrity: sha512-9z2p5GFGCm0gBsZbi8rVMOAJCtw1WqBTIPw3ozk06gDvZInBPIsQcHgYogEJ4yuHJ+akuW8g1SEIOpTOvYs8hw==}
@@ -3874,8 +3874,8 @@ packages:
   electron-to-chromium@1.4.703:
     resolution: {integrity: sha512-094ZZC4nHXPKl/OwPinSMtLN9+hoFkdfQGKnvXbY+3WEAYtVDpz9UhJIViiY6Zb8agvqxiaJzNG9M+pRZWvSZw==}
 
-  electron-to-chromium@1.4.798:
-    resolution: {integrity: sha512-by9J2CiM9KPGj9qfp5U4FcPSbXJG7FNzqnYaY4WLzX+v2PHieVGmnsA4dxfpGE3QEC7JofpPZmn7Vn1B9NR2+Q==}
+  electron-to-chromium@1.4.799:
+    resolution: {integrity: sha512-3D3DwWkRTzrdEpntY0hMLYwj7SeBk1138CkPE8sBDSj3WzrzOiG2rHm3luw8jucpf+WiyLBCZyU9lMHyQI9M9Q==}
 
   elliptic@6.5.4:
     resolution: {integrity: sha512-iLhC6ULemrljPZb+QutR5TQGB+pdW6KGD5RSegS+8sorOZT+rdQFbsQFJgvN3eRqNALqJer4oQ16YvJHlU8hzQ==}
@@ -9832,18 +9832,18 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@metrom-xyz/contracts@0.8.1(bufferutil@4.0.8)(typescript@5.4.5)(utf-8-validate@6.0.4)':
+  '@metrom-xyz/contracts@0.10.0(bufferutil@4.0.8)(typescript@5.4.5)':
     dependencies:
-      viem: 2.13.5(bufferutil@4.0.8)(typescript@5.4.5)(utf-8-validate@6.0.4)
+      viem: 2.13.8(bufferutil@4.0.8)(typescript@5.4.5)
     transitivePeerDependencies:
       - bufferutil
       - typescript
       - utf-8-validate
       - zod
 
-  '@metrom-xyz/contracts@0.9.0(bufferutil@4.0.8)(typescript@5.4.5)':
+  '@metrom-xyz/contracts@0.8.1(bufferutil@4.0.8)(typescript@5.4.5)(utf-8-validate@6.0.4)':
     dependencies:
-      viem: 2.13.8(bufferutil@4.0.8)(typescript@5.4.5)
+      viem: 2.13.5(bufferutil@4.0.8)(typescript@5.4.5)(utf-8-validate@6.0.4)
     transitivePeerDependencies:
       - bufferutil
       - typescript
@@ -11928,7 +11928,7 @@ snapshots:
   browserslist@4.23.1:
     dependencies:
       caniuse-lite: 1.0.30001632
-      electron-to-chromium: 1.4.798
+      electron-to-chromium: 1.4.799
       node-releases: 2.0.14
       update-browserslist-db: 1.0.16(browserslist@4.23.1)
 
@@ -12581,7 +12581,7 @@ snapshots:
 
   electron-to-chromium@1.4.703: {}
 
-  electron-to-chromium@1.4.798: {}
+  electron-to-chromium@1.4.799: {}
 
   elliptic@6.5.4:
     dependencies:
