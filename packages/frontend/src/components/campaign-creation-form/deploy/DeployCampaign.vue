@@ -4,7 +4,6 @@ import type { DeployCampaignProps } from "./types";
 import ApproveRewards from "./approve-rewards/ApproveRewards.vue";
 import { computed } from "vue";
 import { useAccount, useConnect } from "vevm";
-import { ADDRESS } from "@metrom-xyz/contracts";
 import type { FinalizedState } from "@/types";
 import { injected } from "@wagmi/core";
 import DeployButton from "./deploy-button/DeployButton.vue";
@@ -12,6 +11,7 @@ import SubmitButton from "../submit-button/SubmitButton.vue";
 import WalletIcon from "@/icons/WalletIcon.vue";
 import MuiButton from "@/ui/button/MuiButton.vue";
 import MuiTypography from "@/ui/typography/MuiTypography.vue";
+import { CHAIN_DATA } from "@/commons";
 
 const props = defineProps<DeployCampaignProps>();
 const emits = defineEmits(["validated", "edited"]);
@@ -29,7 +29,7 @@ const deployed = ref(false);
 
 const metrom = computed(() => {
     if (!account.value.chainId) return;
-    return ADDRESS[__ENVIRONMENT__][account.value.chainId];
+    return CHAIN_DATA[account.value.chainId].contract;
 });
 
 function handleConfirmOnClick() {

@@ -1,19 +1,13 @@
-import {
-    SupportedChain,
-    AmmSubgraphClient,
-    MetromApiClient,
-    SupportedAmm,
-    SERVICE_URLS,
-} from "sdk";
+import { SupportedChain, AmmSubgraphClient, SupportedAmm } from "sdk";
 import { type Transport, http, type Chain } from "viem";
 import { celoAlfajores, holesky } from "viem/chains";
-import { type Amm, type ChainData } from "./types";
+import { type Amm } from "./types";
 import MuiEthIcon from "./icons/EthIcon.vue";
 import MuiAlgebraIntegralIcon from "./icons/AlgebraIntegralIcon.vue";
 import MuiCeloIcon from "./icons/CeloIcon.vue";
 import MuiUniswapLogoIcon from "./icons/UniswapLogoIcon.vue";
-import { ADDRESS } from "@metrom-xyz/contracts";
-import { markRaw } from "vue";
+import { markRaw, type Component } from "vue";
+import { buildChainData } from "./utils/chain-data";
 
 export const METROM_DATA_MANAGER_JWT_ISSUER = "metrom-data-manager";
 
@@ -34,7 +28,12 @@ export const SUPPORTED_CHAIN_TRANSPORT: Record<number, Transport> = {
     [holesky.id]: http(),
 };
 
-const AMMS: Record<SupportedChain, Amm[]> = {
+export const SUPPORTED_CHAIN_ICONS: Record<SupportedChain, Component> = {
+    [SupportedChain.CeloAlfajores]: markRaw(MuiCeloIcon),
+    [SupportedChain.Holesky]: markRaw(MuiEthIcon),
+};
+
+export const SUPPORTED_AMMS: Record<SupportedChain, Amm[]> = {
     [SupportedChain.CeloAlfajores]: [
         {
             slug: SupportedAmm.Univ3,
@@ -50,21 +49,6 @@ const AMMS: Record<SupportedChain, Amm[]> = {
             ),
         },
     ],
-    // [SupportedChain.Sepolia]: [
-    //     {
-    //         slug: SupportedAmm.Univ3,
-    //         logo: markRaw(MuiUniswapLogoIcon),
-    //         name: "Uniswap v3",
-    //         addLiquidityUrl: "https://app.uniswap.org/add/{target_pool}",
-    //         pairExplorerUrl:
-    //             "https://app.uniswap.org/explore/pools/sepolia/{target_pool}",
-    //         subgraphClient: new AmmSubgraphClient(
-    //             SupportedChain.Sepolia,
-    //             SupportedAmm.Univ3,
-    //             "https://api.studio.thegraph.com/query/68570/metrom-uni-v3-sepolia/version/latest",
-    //         ),
-    //     },
-    // ],
     [SupportedChain.Holesky]: [
         {
             slug: SupportedAmm.TestIntegral,
@@ -81,42 +65,4 @@ const AMMS: Record<SupportedChain, Amm[]> = {
     ],
 };
 
-export const CHAIN_DATA: Record<SupportedChain, ChainData> = {
-    [SupportedChain.CeloAlfajores]: {
-        icon: {
-            logo: markRaw(MuiCeloIcon),
-            backgroundColor: "#000",
-        },
-        contract: ADDRESS[__ENVIRONMENT__][SupportedChain.CeloAlfajores],
-        metromApiClient: new MetromApiClient(
-            SERVICE_URLS[__ENVIRONMENT__].metrom,
-            SupportedChain.CeloAlfajores,
-        ),
-        amms: AMMS[SupportedChain.CeloAlfajores],
-    },
-    // [SupportedChain.Sepolia]: {
-    //     icon: {
-    //         logo: markRaw(MuiEthIcon),
-    //         backgroundColor: "#000",
-    //     },
-    //     contract: ADDRESS[SupportedChain.Sepolia],
-    //     metromSubgraphClient: new MetromSubgraphClient(
-    //         SupportedChain.Sepolia,
-    //         "https://api.studio.thegraph.com/query/68570/metrom-sepolia/version/latest",
-    //         AMMS[SupportedChain.Sepolia].map((amm) => amm.subgraphClient),
-    //     ),
-    //     amms: AMMS[SupportedChain.Sepolia],
-    // },
-    [SupportedChain.Holesky]: {
-        icon: {
-            logo: markRaw(MuiEthIcon),
-            backgroundColor: "#000",
-        },
-        contract: ADDRESS[__ENVIRONMENT__][SupportedChain.Holesky],
-        metromApiClient: new MetromApiClient(
-            SERVICE_URLS[__ENVIRONMENT__].metrom,
-            SupportedChain.Holesky,
-        ),
-        amms: AMMS[SupportedChain.Holesky],
-    },
-};
+export const CHAIN_DATA = buildChainData();

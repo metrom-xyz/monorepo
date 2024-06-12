@@ -16,7 +16,6 @@ import MuiRemoteLogo from "@/ui/remote-logo/MuiRemoteLogo.vue";
 import { formatUnits } from "viem";
 import { formatDecimals, type Claim } from "sdk";
 import metromAbi from "../../abis/metrom";
-import { ADDRESS } from "@metrom-xyz/contracts";
 import { writeContract } from "@wagmi/core";
 import { useClaims } from "@/composables/useClaims";
 import MuiSwitch from "@/ui/switch/MuiSwitch.vue";
@@ -83,7 +82,7 @@ const {
 } = useSimulateContract(
     computed(() => ({
         abi: metromAbi,
-        address: ADDRESS[__ENVIRONMENT__][props.chain].address,
+        address: CHAIN_DATA[props.chain].contract.address,
         functionName: "claimRewards",
         args: [claimRewardsParams.value],
     })),
