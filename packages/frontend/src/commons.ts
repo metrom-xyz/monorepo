@@ -87,7 +87,7 @@ export const CHAIN_DATA: Record<SupportedChain, ChainData> = {
             logo: markRaw(MuiCeloIcon),
             backgroundColor: "#000",
         },
-        contract: ADDRESS[SupportedChain.CeloAlfajores],
+        contract: ADDRESS[__ENVIRONMENT__][SupportedChain.CeloAlfajores],
         metromApiClient: new MetromApiClient(
             SERVICE_URLS[__ENVIRONMENT__].metrom,
             SupportedChain.CeloAlfajores,
@@ -112,7 +112,7 @@ export const CHAIN_DATA: Record<SupportedChain, ChainData> = {
             logo: markRaw(MuiEthIcon),
             backgroundColor: "#000",
         },
-        contract: ADDRESS[SupportedChain.Holesky],
+        contract: ADDRESS[__ENVIRONMENT__][SupportedChain.Holesky],
         metromApiClient: new MetromApiClient(
             SERVICE_URLS[__ENVIRONMENT__].metrom,
             SupportedChain.Holesky,
