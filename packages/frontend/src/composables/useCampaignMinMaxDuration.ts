@@ -25,7 +25,7 @@ export const useCampaignMinMaxDuration = (): UseCampaignMinMaxDurationType => {
 
     const metrom = computed(() => {
         if (!account.value.chainId) return;
-        return ADDRESS[account.value.chainId];
+        return ADDRESS[__ENVIRONMENT__][account.value.chainId];
     });
 
     watchEffect(async () => {
