@@ -29,7 +29,7 @@ const deployed = ref(false);
 
 const metrom = computed(() => {
     if (!account.value.chainId) return;
-    return ADDRESS[account.value.chainId];
+    return ADDRESS[__ENVIRONMENT__][account.value.chainId];
 });
 
 function handleConfirmOnClick() {
