@@ -83,7 +83,7 @@ const {
 } = useSimulateContract(
     computed(() => ({
         abi: metromAbi,
-        address: ADDRESS[props.chain].address,
+        address: ADDRESS[__ENVIRONMENT__][props.chain].address,
         functionName: "claimRewards",
         args: [claimRewardsParams.value],
     })),
