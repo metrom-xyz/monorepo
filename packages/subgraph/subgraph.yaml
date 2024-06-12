@@ -9,8 +9,8 @@ dataSources:
     network: celo-alfajores
     source:
       abi: Metrom
-      address: "0xDDD3e99f11488290Ff07BAe128Bd6D23362f2455"
-      startBlock: 24543646
+      address: "0x8d98758EfF88Dc944035B0618a8412C400E71C72"
+      startBlock: 24556248
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
