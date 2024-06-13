@@ -10,9 +10,12 @@ export default [
         name: "AddressInsufficientBalance",
         type: "error",
     },
-    { inputs: [], name: "CampaignAlreadyExists", type: "error" },
+    { inputs: [], name: "AlreadyExists", type: "error" },
+    { inputs: [], name: "DisallowedRewardToken", type: "error" },
     { inputs: [], name: "DuplicatedDistribution", type: "error" },
     { inputs: [], name: "DuplicatedMinimumRewardTokenRate", type: "error" },
+    { inputs: [], name: "DurationTooLong", type: "error" },
+    { inputs: [], name: "DurationTooShort", type: "error" },
     {
         inputs: [
             {
@@ -27,40 +30,43 @@ export default [
     { inputs: [], name: "ERC1967NonPayable", type: "error" },
     { inputs: [], name: "FailedInnerCall", type: "error" },
     { inputs: [], name: "Forbidden", type: "error" },
-    { inputs: [], name: "InvalidAccount", type: "error" },
-    { inputs: [], name: "InvalidAmount", type: "error" },
-    { inputs: [], name: "InvalidData", type: "error" },
     { inputs: [], name: "InvalidFee", type: "error" },
-    { inputs: [], name: "InvalidFrom", type: "error" },
     { inputs: [], name: "InvalidInitialization", type: "error" },
     { inputs: [], name: "InvalidMaximumCampaignDuration", type: "error" },
     { inputs: [], name: "InvalidMinimumCampaignDuration", type: "error" },
-    { inputs: [], name: "InvalidOwner", type: "error" },
-    { inputs: [], name: "InvalidPool", type: "error" },
     { inputs: [], name: "InvalidProof", type: "error" },
-    { inputs: [], name: "InvalidRebate", type: "error" },
-    { inputs: [], name: "InvalidReceiver", type: "error" },
-    { inputs: [], name: "InvalidRewards", type: "error" },
-    { inputs: [], name: "InvalidRoot", type: "error" },
-    { inputs: [], name: "InvalidTo", type: "error" },
-    { inputs: [], name: "InvalidToken", type: "error" },
-    { inputs: [], name: "InvalidUpdater", type: "error" },
+    { inputs: [], name: "NoRewards", type: "error" },
     { inputs: [], name: "NonExistentCampaign", type: "error" },
     { inputs: [], name: "NonExistentReward", type: "error" },
     { inputs: [], name: "NotInitializing", type: "error" },
     { inputs: [], name: "Ossified", type: "error" },
+    { inputs: [], name: "RebateTooHigh", type: "error" },
+    { inputs: [], name: "RewardAmountTooLow", type: "error" },
     {
         inputs: [{ internalType: "address", name: "token", type: "address" }],
         name: "SafeERC20FailedOperation",
         type: "error",
     },
+    { inputs: [], name: "StartTimeInThePast", type: "error" },
+    { inputs: [], name: "TooManyRewards", type: "error" },
+    { inputs: [], name: "TooMuchClaimedAmount", type: "error" },
     { inputs: [], name: "UUPSUnauthorizedCallContext", type: "error" },
     {
         inputs: [{ internalType: "bytes32", name: "slot", type: "bytes32" }],
         name: "UUPSUnsupportedProxiableUUID",
         type: "error",
     },
+    { inputs: [], name: "ZeroAddressAccount", type: "error" },
+    { inputs: [], name: "ZeroAddressCampaignsUpdater", type: "error" },
+    { inputs: [], name: "ZeroAddressOwner", type: "error" },
+    { inputs: [], name: "ZeroAddressPool", type: "error" },
+    { inputs: [], name: "ZeroAddressRatesUpdater", type: "error" },
+    { inputs: [], name: "ZeroAddressReceiver", type: "error" },
+    { inputs: [], name: "ZeroAddressRewardToken", type: "error" },
     { inputs: [], name: "ZeroAmount", type: "error" },
+    { inputs: [], name: "ZeroData", type: "error" },
+    { inputs: [], name: "ZeroRewardAmount", type: "error" },
+    { inputs: [], name: "ZeroRoot", type: "error" },
     {
         anonymous: false,
         inputs: [
@@ -166,12 +172,6 @@ export default [
             },
             {
                 indexed: false,
-                internalType: "uint256",
-                name: "chainId",
-                type: "uint256",
-            },
-            {
-                indexed: false,
                 internalType: "address",
                 name: "pool",
                 type: "address",
@@ -250,7 +250,13 @@ export default [
             {
                 indexed: false,
                 internalType: "address",
-                name: "updater",
+                name: "campaignsUpdater",
+                type: "address",
+            },
+            {
+                indexed: false,
+                internalType: "address",
+                name: "ratesUpdater",
                 type: "address",
             },
             {
@@ -318,6 +324,19 @@ export default [
             },
         ],
         name: "RecoverReward",
+        type: "event",
+    },
+    {
+        anonymous: false,
+        inputs: [
+            {
+                indexed: true,
+                internalType: "address",
+                name: "campaignsUpdater",
+                type: "address",
+            },
+        ],
+        name: "SetCampaignsUpdater",
         type: "event",
     },
     {
@@ -403,11 +422,11 @@ export default [
             {
                 indexed: true,
                 internalType: "address",
-                name: "updater",
+                name: "ratesUpdater",
                 type: "address",
             },
         ],
-        name: "SetUpdater",
+        name: "SetRatesUpdater",
         type: "event",
     },
     {
@@ -488,11 +507,6 @@ export default [
                         name: "pendingOwner",
                         type: "address",
                     },
-                    {
-                        internalType: "uint256",
-                        name: "chainId",
-                        type: "uint256",
-                    },
                     { internalType: "address", name: "pool", type: "address" },
                     { internalType: "uint32", name: "from", type: "uint32" },
                     { internalType: "uint32", name: "to", type: "uint32" },
@@ -532,6 +546,13 @@ export default [
         ],
         name: "campaignReward",
         outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+        stateMutability: "view",
+        type: "function",
+    },
+    {
+        inputs: [],
+        name: "campaignsUpdater",
+        outputs: [{ internalType: "address", name: "", type: "address" }],
         stateMutability: "view",
         type: "function",
     },
@@ -614,11 +635,6 @@ export default [
         inputs: [
             {
                 components: [
-                    {
-                        internalType: "uint256",
-                        name: "chainId",
-                        type: "uint256",
-                    },
                     { internalType: "address", name: "pool", type: "address" },
                     { internalType: "uint32", name: "from", type: "uint32" },
                     { internalType: "uint32", name: "to", type: "uint32" },
@@ -694,7 +710,12 @@ export default [
     {
         inputs: [
             { internalType: "address", name: "_owner", type: "address" },
-            { internalType: "address", name: "_updater", type: "address" },
+            {
+                internalType: "address",
+                name: "_campaignsUpdater",
+                type: "address",
+            },
+            { internalType: "address", name: "_ratesUpdater", type: "address" },
             { internalType: "uint32", name: "_fee", type: "uint32" },
             {
                 internalType: "uint32",
@@ -771,6 +792,13 @@ export default [
         type: "function",
     },
     {
+        inputs: [],
+        name: "ratesUpdater",
+        outputs: [{ internalType: "address", name: "", type: "address" }],
+        stateMutability: "view",
+        type: "function",
+    },
+    {
         inputs: [
             {
                 components: [
@@ -802,6 +830,19 @@ export default [
             },
         ],
         name: "recoverRewards",
+        outputs: [],
+        stateMutability: "nonpayable",
+        type: "function",
+    },
+    {
+        inputs: [
+            {
+                internalType: "address",
+                name: "_campaignsUpdater",
+                type: "address",
+            },
+        ],
+        name: "setCampaignsUpdater",
         outputs: [],
         stateMutability: "nonpayable",
         type: "function",
@@ -872,9 +913,9 @@ export default [
     },
     {
         inputs: [
-            { internalType: "address", name: "_updater", type: "address" },
+            { internalType: "address", name: "_ratesUpdater", type: "address" },
         ],
-        name: "setUpdater",
+        name: "setRatesUpdater",
         outputs: [],
         stateMutability: "nonpayable",
         type: "function",
@@ -894,13 +935,6 @@ export default [
         name: "transferOwnership",
         outputs: [],
         stateMutability: "nonpayable",
-        type: "function",
-    },
-    {
-        inputs: [],
-        name: "updater",
-        outputs: [{ internalType: "address", name: "", type: "address" }],
-        stateMutability: "view",
         type: "function",
     },
     {

@@ -27,7 +27,6 @@ const { simulation: simulatedCreate, loading: simulatingCreate } =
         args: [
             [
                 {
-                    chainId: BigInt(props.state.network),
                     pool: props.state.pool.address,
                     from: props.state.range.from.unix(),
                     to: props.state.range.to.unix(),
