@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { TabsProps } from "./types";
 import MuiTab from "./tab/MuiTab.vue";
-import { computed } from "vue";
+import { computed, onMounted } from "vue";
 import { useSlots } from "vue";
 import { ref } from "vue";
 import { useResizeObserver } from "@vueuse/core";
@@ -18,6 +18,7 @@ const slots = useSlots();
 
 const wrapper = ref<HTMLElement | null>(null);
 const tabsWidth = ref(0);
+const transition = ref(false);
 
 function handleTabOnClick(value: number) {
     emits("change", value);
@@ -42,6 +43,17 @@ const activeWidth = computed(() => {
     const tabs = slots.default();
     return tabsWidth.value / tabs.length;
 });
+
+// enable the css transition after x ms (the transition duration)
+// to avoid having the background component moving from the start
+// position on every mount
+onMounted(() => {
+    const timeout = setTimeout(() => {
+        transition.value = true;
+    }, 200);
+
+    return () => clearTimeout(timeout);
+});
 </script>
 <template>
     <div class="mui_tabs__root">
@@ -56,6 +68,9 @@ const activeWidth = computed(() => {
             ></component>
             <div
                 class="mui_tabs_active"
+                :class="{
+                    mui_tabs_disable_transition: !transition,
+                }"
                 :style="{
                     transform: `translateX(${translate}px)`,
                     width: `${activeWidth}px`,
