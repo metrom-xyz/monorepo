@@ -32,10 +32,11 @@ export type FetchCampaignsResult = {
 
 export class MetromApiClient extends CoreClient {
     private readonly targetChainName: string;
+    private readonly chain: number;
 
     constructor(
         public readonly baseUrl: string,
-        public readonly chain: SupportedChain,
+        chain: SupportedChain,
     ) {
         super();
 
@@ -44,6 +45,7 @@ export class MetromApiClient extends CoreClient {
                 `unsupported chain, supported chains are: ${Object.keys(SUPPORTED_CHAIN_NAMES)}`,
             );
 
+        this.chain = parseInt(chain as unknown as string);
         this.targetChainName = SUPPORTED_CHAIN_NAMES[chain];
     }
 
