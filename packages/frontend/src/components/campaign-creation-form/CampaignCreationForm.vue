@@ -19,6 +19,7 @@ import DatePicker from "./date/DatePicker.vue";
 import AuthenticateUser from "../AuthenticateUser.vue";
 import { useLogin } from "@/stores/auth";
 import { storeToRefs } from "pinia";
+import RestrictionsPicker from "./restrictions/RestrictionsPicker.vue";
 
 const props = defineProps<CampaignCreationFormProps>();
 const emits = defineEmits<{
@@ -43,7 +44,10 @@ const formError = computed(
 );
 
 const showLogin = computed(
-    () => !isJwtAuthTokenValid && readonly && props.state.specification,
+    () =>
+        !isJwtAuthTokenValid.value &&
+        readonly.value &&
+        props.state.restrictions,
 );
 
 function handleStepOnComplete() {
@@ -143,9 +147,14 @@ watch(
             >
                 <MuiCard :disabled="readonly">
                     <template #title>
-                        <MuiTypography medium lg>
-                            {{ $t("campaign.rewards.title") }}
-                        </MuiTypography>
+                        <div class="campaign_creation_form__restrictions">
+                            <MuiTypography medium lg>
+                                {{ $t("campaign.rewards.title") }}
+                            </MuiTypography>
+                            <RestrictionsPicker
+                                v-model="$props.state.restrictions"
+                            />
+                        </div>
                     </template>
                     <template #content>
                         <RewardsPicker
@@ -206,5 +215,9 @@ watch(
 <style>
 .campaign_creation_form__root {
     @apply w-full;
+}
+
+.campaign_creation_form__restrictions {
+    @apply w-full flex justify-between items-center;
 }
 </style>

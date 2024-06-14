@@ -15,7 +15,7 @@ import MuiTextField from "@/ui/text-field/MuiTextField.vue";
 import MuiRemoteLogo from "@/ui/remote-logo/MuiRemoteLogo.vue";
 import { formatUnits } from "viem";
 import { formatDecimals, type Claim } from "sdk";
-import metromAbi from "../../abis/metrom";
+import { metromAbi } from "@metrom-xyz/contracts/abi";
 import { writeContract } from "@wagmi/core";
 import { useClaims } from "@/composables/useClaims";
 import MuiSwitch from "@/ui/switch/MuiSwitch.vue";
@@ -114,23 +114,25 @@ async function handleClaimRewardsOnClick() {
 </script>
 <template>
     <MuiModal :open="modalOpen" :onDismiss="handleModalOnDismiss">
-        <MuiButton
-            v-if="account.address"
-            sm
-            :loading="loadingRewards"
-            :disabled="
-                loadingRewards || (!loadingRewards && claims?.length === 0)
-            "
-            @click="modalOpen = true"
-        >
-            <MuiTypography>
-                {{
-                    $t("allCampaigns.rewards.available", {
-                        total: claimRewardsParams.length || 0,
-                    })
-                }}
-            </MuiTypography>
-        </MuiButton>
+        <div class="claim_rewards__button__wrapper">
+            <MuiButton
+                v-if="account.address"
+                sm
+                :loading="loadingRewards"
+                :disabled="
+                    loadingRewards || (!loadingRewards && claims?.length === 0)
+                "
+                @click="modalOpen = true"
+            >
+                <MuiTypography>
+                    {{
+                        $t("allCampaigns.rewards.available", {
+                            total: claimRewardsParams.length || 0,
+                        })
+                    }}
+                </MuiTypography>
+            </MuiButton>
+        </div>
         <template #modal>
             <div class="claim_rewards__modal">
                 <div class="claim_rewards__header">
@@ -209,6 +211,10 @@ async function handleClaimRewardsOnClick() {
     </MuiModal>
 </template>
 <style>
+.claim_rewards__button__wrapper {
+    @apply w-48;
+}
+
 .claim_rewards__modal {
     @apply flex flex-col gap-4 w-[440px] min-h-96 max-h-96 bg-white p-5 rounded-[30px] border-2 border-green;
 }
