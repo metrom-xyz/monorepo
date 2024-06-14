@@ -76,6 +76,19 @@ export const messages = {
                 addReward: "Add reward",
                 maxRewards: "Rewards limit reached",
             },
+            restrictions: {
+                add: "Add restrictions",
+                amount: "{amount} Restrictions",
+                overview:
+                    "Blacklist addresses that shouldn't receive rewards, or whitelist those that should be the only ones eligible.",
+                whitelist: "Whitelist",
+                blacklist: "Blacklist",
+                input: {
+                    placeholder: "Enter address",
+                    button: "Add",
+                },
+                apply: "Apply",
+            },
             range: {
                 title: "Pick a period",
                 picker: {

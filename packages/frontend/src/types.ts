@@ -1,4 +1,4 @@
-import type { ChainContract } from "viem";
+import type { Address, ChainContract } from "viem";
 import type { Component } from "vue";
 import type { AmmSubgraphClient, MetromApiClient, Pool } from "sdk";
 import type { AccordionSelectOption } from "@/ui/accordion-select/types";
@@ -11,8 +11,10 @@ export interface CampaignState {
     pool?: Pool;
     rewards: Reward[];
     range?: Range;
-    // TODO: define proper type for the specification (whitelists, blacklistsi)
-    specification?: string;
+    restrictions?: {
+        type: "blacklist" | "whitelist";
+        list: Address[];
+    };
 }
 
 export interface FinalizedState {
@@ -20,6 +22,9 @@ export interface FinalizedState {
     amm: AccordionSelectOption<string>;
     pool: Pool;
     rewards: Required<Reward>[];
+    specification?: {
+        [key: string]: Address[];
+    };
     range: Required<Range>;
 }
 
