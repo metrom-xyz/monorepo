@@ -67,7 +67,7 @@ function handleSearchQueryChange(query?: string) {
             </MuiTextInput>
             <template #modal>
                 <MuiTokenSelectSearch
-                    :tokens="tokens"
+                    :tokens="$props.tokens"
                     :selected="selected?.address"
                     :loading="loading"
                     :loadingBalances="loading"
