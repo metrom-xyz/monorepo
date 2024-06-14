@@ -33,7 +33,7 @@ const metrom = computed(() => {
 });
 
 function handleConfirmOnClick() {
-    const { network, amm, pool, range, rewards } = props.state;
+    const { network, amm, pool, range, rewards, restrictions } = props.state;
     if (!amm || !pool || !range || rewards.length === 0) return;
 
     const { from, to } = range;
@@ -51,6 +51,9 @@ function handleConfirmOnClick() {
         pool,
         range: { from, to },
         rewards: validRewards,
+        ...(restrictions
+            ? { specification: { [restrictions.type]: restrictions.list } }
+            : {}),
     };
     emits("validated");
 }
