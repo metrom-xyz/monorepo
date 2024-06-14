@@ -7,7 +7,7 @@ import { computed } from "vue";
 import { erc20Abi, type Address, parseUnits } from "viem";
 import { watchEffect } from "vue";
 import ApproveReward from "../approve-reward/ApproveReward.vue";
-import metromAbi from "@/abis/metrom";
+import { metromAbi } from "@metrom-xyz/contracts/abi";
 
 const props = defineProps<ApproveRewardsProps>();
 const emits = defineEmits(["allApproved"]);

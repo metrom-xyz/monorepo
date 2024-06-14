@@ -1,6 +1,6 @@
 import { useAccount, useWagmiConfig } from "vevm";
 import { ref, watchEffect, type Ref, computed } from "vue";
-import metromAbi from "@/abis/metrom";
+import { metromAbi } from "@metrom-xyz/contracts/abi";
 import { readContract } from "@wagmi/core";
 import { CHAIN_DATA } from "@/commons";
 
