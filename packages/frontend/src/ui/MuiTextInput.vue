@@ -20,11 +20,7 @@ const optionalModel = props.noModel ? undefined : model;
 defineExpose({ input: inputRef });
 </script>
 <template>
-    <MuiBaseInputWrapper
-        class="mui_text_input__wrapper"
-        v-bind="$props"
-        :id="attrs.id || $.uid.toString()"
-    >
+    <MuiBaseInputWrapper v-bind="$props" :id="attrs.id || $.uid.toString()">
         <input
             ref="inputRef"
             v-model="optionalModel"
