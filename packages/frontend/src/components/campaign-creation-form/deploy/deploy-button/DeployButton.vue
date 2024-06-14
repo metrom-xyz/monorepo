@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { usePublicClient, useSimulateContract, useWagmiConfig } from "vevm";
-import metromAbi from "@/abis/metrom";
+import { metromAbi } from "@metrom-xyz/contracts/abi";
 import type { DeployButtonProps } from "./types";
 import { parseUnits, type Address } from "viem";
 import { ref } from "vue";
