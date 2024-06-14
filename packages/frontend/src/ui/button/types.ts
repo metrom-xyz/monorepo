@@ -1,6 +1,7 @@
 import type { Component } from "vue";
 
 export interface ButtonProps {
+    fill?: boolean;
     loading?: boolean;
     icon?: Component;
     iconRight?: boolean;

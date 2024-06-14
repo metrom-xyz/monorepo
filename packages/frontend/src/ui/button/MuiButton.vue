@@ -28,25 +28,26 @@ const baseButtonIconClasses = {
     <component
         :is="baseComponent"
         class="mui_button__root"
-        :disabled="attrs.disabled || props.loading"
+        :disabled="attrs.disabled || $props.loading"
         :class="{
-            mui_button__root__xs: props.xs,
-            mui_button__root__sm: props.sm,
-            mui_button__root__lg: props.lg,
-            mui_button__root__secondary: props.secondary,
-            mui_button__root__active: props.active,
+            mui_button__root__fill: $props.fill,
+            mui_button__root__xs: $props.xs,
+            mui_button__root__sm: $props.sm,
+            mui_button__root__lg: $props.lg,
+            mui_button__root__secondary: $props.secondary,
+            mui_button__root__active: $props.active,
         }"
     >
         <div
-            v-if="!!props.icon && !props.iconRight"
+            v-if="!!$props.icon && !$props.iconRight"
             :class="baseButtonIconClasses"
         >
-            <component :is="props.icon" v-if="!props.loading" />
+            <component :is="$props.icon" v-if="!$props.loading" />
             <SpinnerIcon v-else />
         </div>
         <span v-if="$slots.default" :class="baseButtonIconClasses">
             <div
-                v-if="props.loading && !props.icon"
+                v-if="$props.loading && !$props.icon"
                 class="mui_button__spinning__icon__wrapper"
                 :class="baseButtonIconClasses"
             >
@@ -54,17 +55,17 @@ const baseButtonIconClasses = {
             </div>
             <div
                 :class="{
-                    mui_button__wrapper: props.loading && !props.icon,
+                    mui_button__wrapper: $props.loading && !$props.icon,
                 }"
             >
                 <slot></slot>
             </div>
         </span>
         <div
-            v-if="!!props.icon && props.iconRight"
+            v-if="!!$props.icon && $props.iconRight"
             :class="baseButtonIconClasses"
         >
-            <component :is="props.icon" v-if="!props.loading" />
+            <component :is="$props.icon" v-if="!$props.loading" />
             <SpinnerIcon v-else />
         </div>
     </component>
@@ -90,7 +91,11 @@ const baseButtonIconClasses = {
 }
 
 .mui_button__root__secondary {
-    @apply border-black text-black bg-white hover:bg-white;
+    @apply w-fit text-white bg-blue;
+}
+
+.mui_button__root__fill {
+    @apply w-full;
 }
 
 .mui_button__root__active {
