@@ -2,7 +2,6 @@
 import { RouterView } from "vue-router";
 import MetromLogoIcon from "./icons/MetromLogoIcon.vue";
 import NavigationBar from "./components/NavigationBar.vue";
-import MuiTypography from "./ui/typography/MuiTypography.vue";
 import UserAccount from "./components/UserAccount.vue";
 import { useTokens } from "./stores/tokens";
 import MultiChainLinks from "./components/MultiChainLinks.vue";
@@ -25,13 +24,6 @@ tokenListsStore.fetchTokensLists();
                 <RouterView />
             </MultiChainLinks>
         </div>
-        <footer>
-            <MuiTypography uppercase>
-                <i18n-t keypath="powered" for="carrot">
-                    <b>{{ $t("carrot") }}</b>
-                </i18n-t>
-            </MuiTypography>
-        </footer>
     </div>
 </template>
 <style>
