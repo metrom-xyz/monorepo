@@ -141,8 +141,6 @@ export const messages = {
                 empty: "Nothing here.",
             },
         },
-        carrot: "Carrot",
-        powered: "Powered by {0}",
         ui: {
             poolSelect: {
                 pool: "Pool",
