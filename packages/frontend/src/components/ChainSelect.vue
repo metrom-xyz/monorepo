@@ -4,12 +4,13 @@ import MuiSelect from "@/ui/select/MuiSelect.vue";
 import type { SelectOption } from "@/ui/select/types";
 import MuiTypography from "@/ui/typography/MuiTypography.vue";
 import { isChainSupported } from "@/utils/chain";
-import { useAccount } from "vevm";
+import { useAccount, useSwitchChain } from "vevm";
 import { computed } from "vue";
 import { useRouter } from "vue-router";
 
 const account = useAccount();
 const router = useRouter();
+const { switchChain } = useSwitchChain();
 
 const SUPPORTED_CHAIN_OPTIONS = computed(() => {
     return SUPPORTED_CHAINS.map((chain) => ({
@@ -22,6 +23,7 @@ const SUPPORTED_CHAIN_OPTIONS = computed(() => {
 async function handleNetworkOnChange(option: SelectOption<number>) {
     try {
         await account.value.connector?.switchChain?.({ chainId: option.value });
+        switchChain({ chainId: option.value });
     } catch (error) {
         console.warn("could not switch network", error);
     }

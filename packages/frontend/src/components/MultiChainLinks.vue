@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { SUPPORTED_CHAINS } from "@/commons";
 import { isChainSupported } from "@/utils/chain";
-import { useAccount, useReconnect } from "vevm";
+import { useAccount, useReconnect, useSwitchChain } from "vevm";
 import { watch } from "vue";
 import { watchEffect } from "vue";
 import { ref } from "vue";
@@ -9,21 +9,27 @@ import { useRoute, useRouter } from "vue-router";
 import { useUrlSearchParams } from "@vueuse/core";
 import MuiCard from "@/ui/MuiCard.vue";
 import MuiTypography from "@/ui/typography/MuiTypography.vue";
+import { onMounted } from "vue";
 
 defineSlots<{ default: unknown }>();
 
 const account = useAccount();
 const { reconnect } = useReconnect();
+const { switchChain } = useSwitchChain();
 const route = useRoute();
 const router = useRouter();
+const params = useUrlSearchParams();
 
 const targetLandingChain = ref<number>();
 const triedSwitchingAutomatically = ref(false);
 
-const params = useUrlSearchParams();
-
-watchEffect(() => {
-    if (account.value && account.value.isDisconnected) reconnect({});
+onMounted(() => {
+    if (
+        account.value &&
+        account.value.isDisconnected &&
+        !account.value.isReconnecting
+    )
+        reconnect({});
 });
 
 // set the target landing chain by checking if the chain query parameter exists
@@ -40,6 +46,11 @@ watch(
 
         let targetChain: number;
         if (!chainQueryParam || !isChainSupported(chainQueryParam)) {
+            // get chain id from the wagmi store
+            const chainId: number = JSON.parse(
+                localStorage.getItem("wagmi.store") || "''",
+            ).state.chainId;
+
             const activeSupportedChain =
                 account.value.chainId &&
                 SUPPORTED_CHAINS.some((supportedChain) => {
@@ -48,7 +59,7 @@ watch(
 
             targetChain = activeSupportedChain
                 ? account.value.chainId!
-                : SUPPORTED_CHAINS[0].id;
+                : chainId || SUPPORTED_CHAINS[0].id;
             router.replace({ query: { chain: targetChain } });
         } else {
             const canditateTargetChain = isChainSupported(chainQueryParam)
@@ -57,6 +68,7 @@ watch(
 
             if (!canditateTargetChain) return;
             targetChain = canditateTargetChain;
+            switchChain({ chainId: targetChain });
         }
 
         targetLandingChain.value = targetChain;
