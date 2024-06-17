@@ -1,12 +1,15 @@
 <script setup lang="ts">
+import { useSelectedChain } from "@/composables/useSelectedChain";
 import DocumentIcon from "@/icons/DocumentIcon.vue";
 import FolderIcon from "@/icons/FolderIcon.vue";
 import MuiTypography from "@/ui/typography/MuiTypography.vue";
 import { RouterLink } from "vue-router";
+
+const chain = useSelectedChain();
 </script>
 <template>
     <nav class="navigation_bar__root">
-        <RouterLink to="/">
+        <RouterLink :to="`/?chain=${chain}`">
             <div
                 class="navigation_bar__link"
                 :class="{
@@ -19,7 +22,7 @@ import { RouterLink } from "vue-router";
                 </MuiTypography>
             </div>
         </RouterLink>
-        <RouterLink to="/create">
+        <RouterLink :to="`/create?chain=${chain}`" replace>
             <div
                 class="navigation_bar__link"
                 :class="{

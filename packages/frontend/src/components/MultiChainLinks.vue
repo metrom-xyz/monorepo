@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { SUPPORTED_CHAINS } from "@/commons";
 import { isChainSupported } from "@/utils/chain";
-import { useAccount } from "vevm";
+import { useAccount, useReconnect } from "vevm";
 import { watch } from "vue";
 import { watchEffect } from "vue";
 import { ref } from "vue";
@@ -13,6 +13,7 @@ import MuiTypography from "@/ui/typography/MuiTypography.vue";
 defineSlots<{ default: unknown }>();
 
 const account = useAccount();
+const { reconnect } = useReconnect();
 const route = useRoute();
 const router = useRouter();
 
@@ -21,12 +22,16 @@ const triedSwitchingAutomatically = ref(false);
 
 const params = useUrlSearchParams();
 
+watchEffect(() => {
+    if (account.value && account.value.isDisconnected) reconnect({});
+});
+
 // set the target landing chain by checking if the chain query parameter exists
 // and it's a supported chain, otherwise check if the active chain in the connected wallet
 // is supported; if the wallet is not connect or the chain is not supported fallback to the
 // default chain
 watch(
-    [() => route.query, () => params],
+    [() => route.query, () => params, () => account.value.chainId],
     (value) => {
         const chain: number | undefined = Number(value[0].chain?.toString());
         const existingChain = Number(value[1].chain?.toString());
@@ -49,6 +54,7 @@ watch(
             const canditateTargetChain = isChainSupported(chainQueryParam)
                 ? chainQueryParam
                 : null;
+
             if (!canditateTargetChain) return;
             targetChain = canditateTargetChain;
         }
@@ -60,7 +66,7 @@ watch(
     },
 );
 
-// automatically switch chain on the connected wallet whenver the target chain is defined
+// automatically switch chain on the connected wallet whenever the target chain is defined
 watchEffect(async () => {
     if (!account.value.connector) return;
 
