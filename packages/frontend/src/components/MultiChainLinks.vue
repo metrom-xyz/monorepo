@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { SUPPORTED_CHAINS } from "@/commons";
 import { isChainSupported } from "@/utils/chain";
-import { useAccount, useReconnect, useSwitchChain } from "vevm";
+import { useAccount, useReconnect } from "vevm";
 import { watch } from "vue";
 import { watchEffect } from "vue";
 import { ref } from "vue";
@@ -15,7 +15,6 @@ defineSlots<{ default: unknown }>();
 
 const account = useAccount();
 const { reconnect } = useReconnect();
-const { switchChain } = useSwitchChain();
 const route = useRoute();
 const router = useRouter();
 const params = useUrlSearchParams();
@@ -68,7 +67,6 @@ watch(
 
             if (!canditateTargetChain) return;
             targetChain = canditateTargetChain;
-            switchChain({ chainId: targetChain });
         }
 
         targetLandingChain.value = targetChain;
