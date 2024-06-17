@@ -22,7 +22,7 @@ const chain = useSelectedChain();
                 </MuiTypography>
             </div>
         </RouterLink>
-        <RouterLink :to="`/create?chain=${chain}`" replace>
+        <RouterLink :to="`/create?chain=${chain}`">
             <div
                 class="navigation_bar__link"
                 :class="{
