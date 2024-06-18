@@ -28,7 +28,15 @@ tokenListsStore.fetchTokensLists();
 </template>
 <style>
 .app__container {
-    @apply min-h-screen flex flex-col gap-14 items-center p-8 bg-gray-300 bg-3 bg-dots;
+    @apply min-h-screen
+        flex
+        flex-col
+        gap-14
+        items-center
+        p-8
+        bg-gray-300
+        bg-3
+        bg-dots;
 }
 
 .app__header {

@@ -199,7 +199,11 @@ function handleRewardOnRateTooLow(address: string, rateTooLow: boolean) {
         border-gray-400
         py-5
         px-9
-        rounded-b-[30px];
+        rounded-b-[30px]
+        transition-colors
+        duration-200
+        ease-in-out
+        hover:bg-gray-300;
 }
 
 .rewards_picker__action {

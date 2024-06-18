@@ -50,7 +50,7 @@ const expired = computed(() => {
 }
 
 .campaigns_table_status__circle_soon {
-    @apply bg-blue-light;
+    @apply bg-blue-200;
 }
 
 .campaigns_table_status__circle_live {

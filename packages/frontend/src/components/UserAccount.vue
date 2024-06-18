@@ -24,7 +24,7 @@ function handleDisconnectOnClick() {
                 >
                     <WalletIcon />
                 </div>
-                <MuiTypography uppercase class="user_account__address">
+                <MuiTypography uppercase>
                     {{ shortenAddress(account.address) }}
                 </MuiTypography>
                 <div
@@ -57,10 +57,6 @@ function handleDisconnectOnClick() {
 
 .user_account__icon__wrapper__right {
     @apply hover:cursor-pointer rounded-r-xxl;
-}
-
-.user_account__address {
-    @apply pr-4;
 }
 
 .user_account__connect__button {

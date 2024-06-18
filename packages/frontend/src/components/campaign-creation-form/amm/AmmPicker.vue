@@ -66,7 +66,7 @@ watchEffect(() => {
 }
 
 .amm_picker__network_accordion_icon_wrapper {
-    @apply p-1.5 bg-green-light rounded-full;
+    @apply p-1.5 bg-green rounded-full;
 }
 
 .amm_picker__network_accordion_icon {
