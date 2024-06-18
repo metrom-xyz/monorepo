@@ -168,7 +168,17 @@ const totalPages = computed(
 }
 
 .campaigns_table__wrapper {
-    @apply w-full min-w-[800px] flex flex-col gap-3 bg-white rounded-[38px] pt-6 pb-4 px-6;
+    @apply w-full
+        min-h-[550px]
+        min-w-[800px]
+        flex
+        flex-col
+        gap-3
+        bg-white
+        rounded-[38px]
+        pt-6
+        pb-4
+        px-6;
 }
 
 .campaigns_table__filters {
