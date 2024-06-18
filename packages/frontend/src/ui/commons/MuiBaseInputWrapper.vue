@@ -116,7 +116,10 @@ const attrs = useAttrs();
         border-transparent
         text-black
         focus:border-green
-        bg-gray-100;
+        bg-gray-100
+        transition-colors
+        duration-200
+        ease-in-out;
 }
 
 .mui_base_input_wrapper__container__xs > input {
@@ -143,7 +146,7 @@ const attrs = useAttrs();
     @apply border-yellow;
 }
 
-.mui_base_input_wrapper__container__loading {
+.mui_base_input_wrapper__container__loading > input {
     @apply bg-gray-100 animate-pulse;
 }
 
@@ -176,7 +179,7 @@ const attrs = useAttrs();
 }
 
 .mui_base_input_wrapper__error_text {
-    @apply ml-4;
+    @apply text-red-light;
 }
 
 /* customize children styles */

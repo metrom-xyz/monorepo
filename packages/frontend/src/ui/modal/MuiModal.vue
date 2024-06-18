@@ -69,7 +69,7 @@ watchPostEffect((onCleanup) => {
 
 .mui_modal__fade-enter-active,
 .mui_modal__fade-leave-active {
-    @apply transition-opacity;
+    @apply transition-opacity duration-200 ease-in-out;
 }
 
 .mui_modal__fade-enter-from,

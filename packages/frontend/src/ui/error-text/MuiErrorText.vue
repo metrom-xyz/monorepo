@@ -3,7 +3,7 @@ import type { ErrorTextProps } from "./types";
 import MuiTypography from "../typography/MuiTypography.vue";
 
 defineSlots<{
-    default: string;
+    default?: string;
 }>();
 
 defineProps<ErrorTextProps>();
@@ -25,5 +25,6 @@ defineProps<ErrorTextProps>();
 }
 
 .mui_error_text__typograhpy {
+    @apply text-red-light;
 }
 </style>

@@ -23,7 +23,7 @@ const normalizedProgress = computed(() =>
 }
 
 .mui_progress_bar__progress {
-    @apply absolute h-full rounded-lg bg-blue-light;
+    @apply absolute h-full rounded-lg bg-blue-200;
 }
 
 .mui_progress_bar__completed {

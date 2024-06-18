@@ -15,11 +15,21 @@ defineProps<OptionProps>();
 </template>
 <style>
 .mui_option__root {
-    @apply w-full flex items-center gap-4 p-4 rounded-xl hover:cursor-pointer hover:bg-green-light;
+    @apply w-full
+        flex
+        items-center
+        gap-4
+        p-4
+        rounded-xl
+        hover:cursor-pointer
+        transition-colors
+        duration-200
+        ease-in-out
+        hover:bg-green-200;
 }
 
 .mui_option__root__selected {
-    @apply bg-green-light;
+    @apply bg-green-200;
 }
 
 .mui_option__icon {
