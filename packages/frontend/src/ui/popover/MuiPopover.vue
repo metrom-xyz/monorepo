@@ -51,7 +51,7 @@ const { floatingStyles } = useFloating(anchor, popover, {
 
 .mui_popover__fade-enter-active,
 .mui_popover__fade-leave-active {
-    @apply transition-opacity;
+    @apply transition-opacity duration-200 ease-in-out;
 }
 
 .mui_popover__fade-enter-from,
