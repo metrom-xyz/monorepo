@@ -16,15 +16,12 @@ export const TOKEN_LISTS = [
     "https://celo-org.github.io/celo-token-list/celo.tokenlist.json",
 ];
 
-export const SUPPORTED_CHAINS: [Chain, ...Chain[]] = [
-    celoAlfajores,
-    // sepolia,
-    holesky,
-];
+export const MAXIMUM_REWARDS_RESTRICTIONS = 20;
+
+export const SUPPORTED_CHAINS: [Chain, ...Chain[]] = [celoAlfajores, holesky];
 
 export const SUPPORTED_CHAIN_TRANSPORT: Record<number, Transport> = {
     [celoAlfajores.id]: http(),
-    // [sepolia.id]: http(),
     [holesky.id]: http(),
 };
 

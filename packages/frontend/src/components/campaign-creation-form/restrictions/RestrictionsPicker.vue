@@ -15,6 +15,7 @@ import { isAddress, type Address } from "viem";
 import { watch } from "vue";
 import { ref } from "vue";
 import RestrictionRow from "./row/RestrictionRow.vue";
+import { MAXIMUM_REWARDS_RESTRICTIONS } from "@/commons";
 
 const model = defineModel<CampaignState["restrictions"]>();
 
@@ -49,7 +50,7 @@ function handleAddAddress(addresses: ListItem<Address>[]) {
 }
 
 function validateAddress(address: ItemType) {
-    return isAddress(address as string);
+    return isAddress(address as string) ? "" : "Not a valid address";
 }
 
 function handleApplyOnClick() {
@@ -82,7 +83,7 @@ function handleApplyOnClick() {
                     <MuiTypography sm medium>
                         {{
                             $t("campaign.restrictions.amount", {
-                                amount: model.list.length,
+                                n: model.list.length,
                             })
                         }}
                     </MuiTypography>
@@ -120,7 +121,7 @@ function handleApplyOnClick() {
                         </MuiTab>
                     </MuiTabs>
                     <MuiListInput
-                        :max="20"
+                        :max="MAXIMUM_REWARDS_RESTRICTIONS"
                         :items="restrictions"
                         @change="handleAddAddress"
                         :validate="validateAddress"
@@ -129,6 +130,14 @@ function handleApplyOnClick() {
                                 'campaign.restrictions.input.placeholder',
                             ),
                             button: $t('campaign.restrictions.input.button'),
+                            error: {
+                                duplicated: $t(
+                                    'campaign.restrictions.input.error.duplicated',
+                                ),
+                                maximum: $t(
+                                    'campaign.restrictions.input.error.maximum',
+                                ),
+                            },
                         }"
                     >
                         <template #item="{ item, onRemove }">
@@ -161,7 +170,16 @@ function handleApplyOnClick() {
 }
 
 .restrictions_picker__button {
-    @apply w-full p-1.5 rounded-xl border border-gray-400 bg-gray-100;
+    @apply w-full
+        p-1.5
+        rounded-xl
+        border
+        border-gray-400
+        bg-gray-100
+        transition-colors
+        duration-200
+        ease-in-out
+        hover:bg-gray-300;
 }
 
 .restrictions_picker__button__content {

@@ -45,7 +45,17 @@ defineSlots<{
 </template>
 <style>
 .submit_button__root {
-    @apply bg-blue w-full px-4 py-3 rounded-[30px] disabled:bg-gray-600 disabled:hover:cursor-not-allowed;
+    @apply bg-blue
+        w-full
+        px-4
+        py-3
+        rounded-[30px]
+        disabled:bg-gray-600
+        transition-colors
+        duration-200
+        ease-in-out
+        hover:bg-blue-600
+        disabled:hover:cursor-not-allowed;
 }
 
 .submit_button__root_success {

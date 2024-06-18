@@ -78,7 +78,7 @@ export const messages = {
             },
             restrictions: {
                 add: "Add restrictions",
-                amount: "{amount} Restrictions",
+                amount: "{n} Restriction | {n} Restrictions",
                 overview:
                     "Blacklist addresses that shouldn't receive rewards, or whitelist those that should be the only ones eligible.",
                 whitelist: "Whitelist",
@@ -86,6 +86,10 @@ export const messages = {
                 input: {
                     placeholder: "Enter address",
                     button: "Add",
+                    error: {
+                        duplicated: "Address already restricted",
+                        maximum: "Restrictions limit reached",
+                    },
                 },
                 apply: "Apply",
             },
