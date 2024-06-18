@@ -16,7 +16,7 @@ export interface UseCampaignsParams {
 export interface UseCampaignsReturnType {
     loading: Ref<boolean>;
     error: Ref<Error | undefined>;
-    amount: Ref<number>;
+    amount: Ref<bigint>;
     campaigns: Ref<Campaign[] | undefined>;
 }
 
@@ -25,7 +25,7 @@ export function useCampaigns(
 ): UseCampaignsReturnType {
     const loading = ref(false);
     const error = ref<Error | undefined>();
-    const amount = ref(0);
+    const amount = ref(0n);
     const campaigns = ref<Campaign[] | undefined>();
 
     watchEffect(async () => {

@@ -63,7 +63,7 @@ const items = computed<Campaign[]>(() => {
 });
 
 const totalPages = computed(
-    () => Math.floor(totalCampaigns.value / PAGE_SIZE) + 1,
+    () => totalCampaigns.value / BigInt(PAGE_SIZE) + 1n,
 );
 </script>
 <template>
