@@ -79,10 +79,14 @@ const baseButtonIconClasses = {
     justify-center 
     font-inter 
     cursor-pointer 
-    transition-colors 
+    transition-all
+    ease-in-out 
+    duration-200
     rounded-xxl
-    bg-green 
+    bg-green
+    hover:bg-green-600
     disabled:bg-gray-600
+    disabled:hover:bg-gray-600
     disabled:hover:cursor-not-allowed;
 }
 
@@ -91,7 +95,7 @@ const baseButtonIconClasses = {
 }
 
 .mui_button__root__secondary {
-    @apply w-fit text-white bg-blue;
+    @apply w-fit text-white bg-blue hover:bg-blue-600;
 }
 
 .mui_button__root__fill {

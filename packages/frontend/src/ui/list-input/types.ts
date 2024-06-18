@@ -10,7 +10,11 @@ export interface ListInputProps<V extends ListItem<ItemType>> {
     messages: {
         placeholder: string;
         button: string;
+        error: {
+            duplicated: string;
+            maximum: string;
+        };
     };
     max?: number;
-    validate?: (item: ItemType) => boolean;
+    validate?: (item: ItemType) => string;
 }

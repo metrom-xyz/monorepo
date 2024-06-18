@@ -54,7 +54,12 @@ const handleExpandOnClick = (event: MouseEvent) => {
 </template>
 <style>
 .mui_accordion__root {
-    @apply border-2 border-transparent rounded-[18px];
+    @apply transition-colors
+        duration-200
+        ease-in-out
+        border-2
+        border-transparent
+        rounded-[18px];
 }
 
 .mui_accordion__disabled {

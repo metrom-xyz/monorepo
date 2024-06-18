@@ -37,7 +37,17 @@ defineProps<TokenSelectSearchRowProps>();
 </template>
 <style>
 .mui_token_select_search_row__root {
-    @apply flex gap-3 p-3 justify-between items-center rounded-xl hover:cursor-pointer hover:bg-green-light;
+    @apply flex
+        gap-3
+        p-3
+        justify-between
+        items-center
+        rounded-xl
+        hover:cursor-pointer
+        transition-colors
+        duration-200
+        ease-in-out
+        hover:bg-green-200;
 }
 
 .mui_token_select_search_row__root__disabled {
@@ -45,7 +55,7 @@ defineProps<TokenSelectSearchRowProps>();
 }
 
 .mui_token_select_search_row__root__selected {
-    @apply opacity-100 bg-green-light;
+    @apply opacity-100 bg-green-200;
 }
 
 .mui_token_select_search_row__token_name {
