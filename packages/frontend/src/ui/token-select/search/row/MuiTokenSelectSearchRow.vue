@@ -15,7 +15,7 @@ defineProps<TokenSelectSearchRowProps>();
             mui_token_select_search_row__root__selected: $props.selected,
         }"
     >
-        <MuiSkeleton v-if="$props.loading" circular width="32px" />
+        <MuiSkeleton v-if="$props.loadingToken" circular width="32px" />
         <MuiRemoteLogo
             v-else
             lg
@@ -23,14 +23,14 @@ defineProps<TokenSelectSearchRowProps>();
             :defaultText="$props.symbol"
         />
         <div class="mui_token_select_search_row__token_name">
-            <MuiSkeleton v-if="$props.loading" width="64px" />
+            <MuiSkeleton v-if="$props.loadingToken" width="64px" />
             <MuiTypography v-else lg>
                 {{ $props.symbol }}
             </MuiTypography>
             <MuiBalance
                 :balance="$props.balance"
                 :decimals="$props.decimals"
-                :loading="$props.loading || $props.loadingBalances"
+                :loading="$props.loadingBalance"
             />
         </div>
     </div>

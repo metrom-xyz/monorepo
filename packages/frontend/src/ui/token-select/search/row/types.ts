@@ -2,7 +2,7 @@ import type { TokenInfoWithBalance } from "@/components/campaign-creation-form/r
 
 export interface TokenSelectSearchRowProps extends TokenInfoWithBalance {
     selected?: boolean;
-    loading?: boolean;
-    loadingBalances?: boolean;
+    loadingToken?: boolean;
+    loadingBalance?: boolean;
     disabled?: boolean;
 }
