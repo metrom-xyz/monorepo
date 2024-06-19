@@ -6,7 +6,7 @@
         "update-addresses": "tsx ./scripts/update-addresses.ts",
         "codegen": "graph codegen",
         "build:only": "graph build",
-        "build": "pnpm update-addresses holesky && pnpm codegen && graph build",
+        "build": "pnpm update-addresses development holesky && pnpm codegen && graph build",
         "deploy:holesky:dev": "pnpm update-addresses development holesky && graph deploy --studio --network holesky metrom-holesky-dev",
         "deploy:holesky:staging": "pnpm update-addresses staging holesky && graph deploy --studio --network holesky metrom-holesky-staging",
         "deploy:celo-alfajores:dev": "pnpm update-addresses development celo-alfajores && graph deploy --studio --network celo-alfajores metrom-celo-alfajores-dev",
