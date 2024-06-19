@@ -2,7 +2,7 @@ import type { Address, Hex } from "viem";
 
 type RawClaimableRewards = {
     campaignId: Address;
-    token: Address;
+    token: RawToken;
     amount: string;
     remaining: string;
     proof: Address[];
@@ -47,6 +47,8 @@ type RawCampaign = {
     rewardsUsdValue: number | null;
     apr: number | null;
     rewards: RawReward[];
+    whitelist: Address[] | null;
+    blacklist: Address[] | null;
 };
 
 export type FetchCampaignsResponse = {

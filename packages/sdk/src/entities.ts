@@ -14,10 +14,6 @@ export interface Erc20TokenAmount {
     amount: bigint;
 }
 
-export function erc20TokenEquals(a: Erc20Token, b: Erc20Token): boolean {
-    return a === b || (a.chainId === b.chainId && a.address === b.address);
-}
-
 export interface Pool {
     address: Address;
     amm: SupportedAmm;
@@ -49,6 +45,8 @@ export type Campaign = {
     rewardsUsdValue: number | null;
     apr: number | null;
     rewards: Reward[];
+    whitelist: Address[] | null;
+    blacklist: Address[] | null;
 };
 
 export interface Claim {
