@@ -1,13 +1,12 @@
-import type { Address, PublicClient } from "viem";
-import { CoreClient } from "../core";
+import type { Address } from "viem";
 import type {
     FetchCampaignsResponse,
     FetchClaimsResponse,
     FetchWhitelistedRewardTokensResponse,
 } from "./types";
 import type { SupportedChain } from "@metrom-xyz/contracts";
-import { SUPPORTED_CHAIN_NAMES, SupportedAmm } from "../../commons";
-import type { Campaign, Claim, WhitelistedErc20Token } from "../../entities";
+import { SUPPORTED_CHAIN_NAMES, SupportedAmm } from "../commons";
+import type { Campaign, Claim, WhitelistedErc20Token } from "../entities";
 
 export type FetchCampaignsParams = {
     pageNumber?: number;
@@ -15,21 +14,20 @@ export type FetchCampaignsParams = {
     orderDirection?: "asc" | "desc";
 };
 
+export type FetchCampaignsResult = {
+    campaigns: Campaign[];
+    amount: bigint;
+};
+
 export type FetchClaimsParams = {
     address: Address;
-    publicClient: PublicClient;
 };
 
 export type FetchWhitelistedRewardTokensResult = {
     tokens: Address;
 };
 
-export type FetchCampaignsResult = {
-    campaigns: Campaign[];
-    amount: bigint;
-};
-
-export class MetromApiClient extends CoreClient {
+export class MetromApiClient {
     private readonly targetChainName: string;
     private readonly chain: number;
 
@@ -37,8 +35,6 @@ export class MetromApiClient extends CoreClient {
         public readonly baseUrl: string,
         chain: SupportedChain,
     ) {
-        super();
-
         if (!SUPPORTED_CHAIN_NAMES[chain])
             throw new Error(
                 `unsupported chain, supported chains are: ${Object.keys(SUPPORTED_CHAIN_NAMES)}`,
@@ -119,19 +115,17 @@ export class MetromApiClient extends CoreClient {
                 `response not ok while fetching claimable rewards: ${await response.text()}`,
             );
 
-        const rawRewards = (await response.json()) as FetchClaimsResponse;
+        const { claims: rawClaims } =
+            (await response.json()) as FetchClaimsResponse;
 
-        const erc20Tokens = await this.fetchErc20Tokens({
-            addresses: rawRewards.claims.map((reward) => reward.token),
-            publicClient: params.publicClient,
-        });
-
-        return rawRewards.claims.map((rawReward) => ({
-            ...rawReward,
-            token: erc20Tokens[rawReward.token],
-            amount: BigInt(rawReward.amount),
-            remaining: BigInt(rawReward.remaining),
-            proof: rawReward.proof,
+        return rawClaims.map((rawClaim) => ({
+            ...rawClaim,
+            token: {
+                ...rawClaim.token,
+                chainId: this.chain,
+            },
+            amount: BigInt(rawClaim.amount),
+            remaining: BigInt(rawClaim.remaining),
         }));
     }
 

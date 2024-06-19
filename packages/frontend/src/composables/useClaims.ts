@@ -7,7 +7,6 @@ import {
 } from "vue";
 import { type MetromApiClient, type Claim } from "sdk";
 import type { Address } from "viem";
-import { usePublicClient } from "vevm";
 
 export interface UseClaims {
     address?: Address;
@@ -27,26 +26,17 @@ export function useClaims(
     const error = ref<Error | undefined>();
     const claims = ref<Claim[] | undefined>();
 
-    const publicClient = usePublicClient();
-
     watchEffect(async () => {
         loading.value = true;
         error.value = undefined;
         claims.value = undefined;
 
         const newParams = toValue(params);
-        if (
-            !newParams ||
-            !newParams.client ||
-            !newParams.address ||
-            !publicClient.value
-        )
-            return;
+        if (!newParams || !newParams.client || !newParams.address) return;
 
         try {
             claims.value = await newParams.client.fetchClaims({
                 address: newParams.address,
-                publicClient: publicClient.value,
             });
         } catch (thrown) {
             error.value = thrown as Error;
