@@ -4,7 +4,8 @@ import type { TokenInfoWithBalance } from "@/components/campaign-creation-form/r
 
 export interface TokenSelectProps {
     tokens: TokenInfoWithBalance[];
-    loading?: boolean;
+    loadingTokens?: boolean;
+    loadingBalances?: boolean;
     open?: boolean;
     error?: boolean;
     optionDisabled?: (token: TokenInfo) => boolean;

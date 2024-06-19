@@ -69,8 +69,8 @@ function handleSearchQueryChange(query?: string) {
                 <MuiTokenSelectSearch
                     :tokens="$props.tokens"
                     :selected="selected?.address"
-                    :loading="loading"
-                    :loadingBalances="loading"
+                    :loadingTokens="loadingTokens"
+                    :loadingBalances="loadingBalances"
                     :messages="$props.messages.search"
                     :optionDisabled="$props.optionDisabled"
                     @dismiss="handleModalOnDismiss"

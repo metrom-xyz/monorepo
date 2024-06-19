@@ -10,6 +10,7 @@ import XIcon from "@/icons/XIcon.vue";
 import SearchIcon from "@/icons/SearchIcon.vue";
 import type { TokenInfo } from "@uniswap/token-lists";
 import MuiTokenSelectSearchRow from "./row/MuiTokenSelectSearchRow.vue";
+import MuiSkeleton from "@/ui/skeleton/MuiSkeleton.vue";
 
 const props = defineProps<TokenSelectSearchProps>();
 const emits = defineEmits<{
@@ -60,13 +61,13 @@ onMounted(() => {
         <div class="mui_token_select_search__header">
             <XIcon
                 @click="handleOnDismissClick"
-                class="mui_token_select_search__close_icon"
+                class="mui_token_select_search__close__icon"
             />
             <MuiTextInput
                 ref="searchInputRef"
                 id="token-search"
                 :label="$props.messages.inputLabel"
-                :disabled="$props.loading"
+                :disabled="$props.loadingTokens"
                 :placeholder="$props.messages.inputPlaceholder"
                 :icon="SearchIcon"
                 iconLeft
@@ -74,16 +75,26 @@ onMounted(() => {
             />
         </div>
         <div
-            class="mui_token_select_search__list_wrapper"
-            :class="{
-                mui_token_select_search_wrapper__empty: list.length === 0,
-            }"
+            class="mui_token_select_search__list__wrapper"
             v-bind="containerProps"
         >
             <div
-                v-if="list.length > 0"
+                v-if="(loadingTokens || loadingBalances) && list.length === 0"
+                class="mui_token_select_search__list__container"
+            >
+                <div
+                    :key="n"
+                    v-for="n in 4"
+                    class="mui_token_select_search__skeleton"
+                >
+                    <MuiSkeleton :height="32" :width="125" />
+                    <MuiSkeleton :height="32" :width="60" />
+                </div>
+            </div>
+            <div
+                v-else-if="list.length > 0"
                 v-bind="wrapperProps"
-                class="mui_token_select_search__list_container"
+                class="mui_token_select_search__list__container"
             >
                 <MuiTokenSelectSearchRow
                     v-for="{ index, data } in list"
@@ -93,8 +104,8 @@ onMounted(() => {
                         $props.selected.toLowerCase() ===
                             data.address.toLowerCase()
                     "
-                    :loading="$props.loading"
-                    :loadingBalances="$props.loadingBalances"
+                    :loadingToken="$props.loadingTokens"
+                    :loadingBalance="$props.loadingBalances"
                     :disabled="disableOption(data)"
                     @click="emits('tokenChange', data)"
                     v-bind="{ ...data }"
@@ -134,7 +145,7 @@ onMounted(() => {
     @apply mb-6;
 }
 
-.mui_token_select_search__close_icon {
+.mui_token_select_search__close__icon {
     @apply self-end hover:cursor-pointer;
 }
 
@@ -146,11 +157,11 @@ onMounted(() => {
     @apply text-gray-600;
 }
 
-.mui_token_select_search__list_container {
+.mui_token_select_search__list__container {
     @apply flex flex-col gap-2;
 }
 
-.mui_token_select_search_wrapper__empty {
-    @apply flex justify-center items-center;
+.mui_token_select_search__skeleton {
+    @apply flex justify-between p-3;
 }
 </style>

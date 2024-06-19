@@ -1,7 +1,7 @@
 import type { TokenInfo } from "@uniswap/token-lists";
 
 export interface TokenSelectSearchProps {
-    loading?: boolean;
+    loadingTokens?: boolean;
     loadingBalances?: boolean;
     selected?: string | null;
     tokens?: TokenInfo[];
