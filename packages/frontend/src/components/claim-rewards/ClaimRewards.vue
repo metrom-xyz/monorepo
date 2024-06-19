@@ -114,25 +114,23 @@ async function handleClaimRewardsOnClick() {
 </script>
 <template>
     <MuiModal :open="modalOpen" :onDismiss="handleModalOnDismiss">
-        <div class="claim_rewards__button__wrapper">
-            <MuiButton
-                v-if="account.address"
-                sm
-                :loading="loadingRewards"
-                :disabled="
-                    loadingRewards || (!loadingRewards && claims?.length === 0)
-                "
-                @click="modalOpen = true"
-            >
-                <MuiTypography>
-                    {{
-                        $t("allCampaigns.rewards.available", {
-                            total: claimRewardsParams.length || 0,
-                        })
-                    }}
-                </MuiTypography>
-            </MuiButton>
-        </div>
+        <MuiButton
+            v-if="account.address"
+            sm
+            :loading="loadingRewards"
+            :disabled="
+                loadingRewards || (!loadingRewards && claims?.length === 0)
+            "
+            @click="modalOpen = true"
+        >
+            <MuiTypography>
+                {{
+                    $t("allCampaigns.rewards.available", {
+                        total: claimRewardsParams.length || 0,
+                    })
+                }}
+            </MuiTypography>
+        </MuiButton>
         <template #modal>
             <div class="claim_rewards__modal">
                 <div class="claim_rewards__header">
@@ -211,10 +209,6 @@ async function handleClaimRewardsOnClick() {
     </MuiModal>
 </template>
 <style>
-.claim_rewards__button__wrapper {
-    @apply w-48;
-}
-
 .claim_rewards__modal {
     @apply flex flex-col gap-4 w-[440px] min-h-96 max-h-96 bg-white p-5 rounded-[30px] border-2 border-green;
 }

@@ -62,8 +62,8 @@ const items = computed<Campaign[]>(() => {
     return filterCampaigns(campaigns.value, debouncedQuery.value);
 });
 
-const totalPages = computed(
-    () => Math.floor(totalCampaigns.value / PAGE_SIZE) + 1,
+const totalPages = computed(() =>
+    Number(totalCampaigns.value / BigInt(PAGE_SIZE) + 1n),
 );
 </script>
 <template>

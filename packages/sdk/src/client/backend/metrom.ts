@@ -12,7 +12,6 @@ import type { Campaign, Claim, WhitelistedErc20Token } from "../../entities";
 export type FetchCampaignsParams = {
     pageNumber?: number;
     pageSize?: number;
-    orderBy?: string;
     orderDirection?: "asc" | "desc";
 };
 
@@ -27,7 +26,7 @@ export type FetchWhitelistedRewardTokensResult = {
 
 export type FetchCampaignsResult = {
     campaigns: Campaign[];
-    amount: number;
+    amount: bigint;
 };
 
 export class MetromApiClient extends CoreClient {
@@ -55,7 +54,6 @@ export class MetromApiClient extends CoreClient {
         const queryParams: Record<string, string | number> = {
             pageNumber: 0,
             pageSize: 10,
-            orderBy: "creationTimestamp",
             orderDirection: "desc",
             ...Object.fromEntries(
                 Object.entries(params || {}).filter(
@@ -105,7 +103,7 @@ export class MetromApiClient extends CoreClient {
                     recovered: BigInt(rawReward.recovered),
                 })),
             })),
-            amount: rawCampaignsResponse.amount,
+            amount: BigInt(rawCampaignsResponse.amount),
         };
     }
 
