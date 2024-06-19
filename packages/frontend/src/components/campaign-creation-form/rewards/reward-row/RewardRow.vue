@@ -175,7 +175,8 @@ onUnmounted(() => {
                     :tokens="$props.tokens"
                     :open="open"
                     :error="tokenError"
-                    :loading="$props.loading"
+                    :loadingTokens="$props.loadingTokens"
+                    :loadingBalances="$props.loadingBalances"
                     :messages="{
                         inputPlaceholder: $t(
                             'campaign.rewards.select.placeholder',
