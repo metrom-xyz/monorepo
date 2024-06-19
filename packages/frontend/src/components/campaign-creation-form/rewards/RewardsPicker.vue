@@ -9,6 +9,7 @@ import { computed } from "vue";
 import { ref } from "vue";
 import { useWhitelistedRewardTokens } from "@/composables/useWhitelistedRewardTokens";
 import { CHAIN_DATA } from "@/commons";
+import { watchDebounced } from "@vueuse/core";
 
 const props = defineProps<RewardsPickerTypes>();
 const emits = defineEmits<{
@@ -53,12 +54,14 @@ const { data: balances, loading: loadingBalances } = useReadContracts(
     })),
 );
 
-watch(loadingBalances, () => {
-    setTimeout(() => {
+watchDebounced(
+    loadingBalances,
+    () => {
         if (loadingBalances.value) debouncedLoadingBalances.value = true;
         else debouncedLoadingBalances.value = false;
-    }, 500);
-});
+    },
+    { debounce: 300 },
+);
 
 watch([block, balances, whitelistedTokens], () => {
     if (!balances.value || !whitelistedTokens.value) return;
