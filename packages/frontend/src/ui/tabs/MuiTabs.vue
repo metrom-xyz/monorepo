@@ -48,7 +48,7 @@ const activeWidth = computed(() => {
 // enable the css transition after x ms (the transition duration)
 // to avoid having the background component moving from the start
 // position on every mount
-let timeout: NodeJS.Timeout;
+let timeout: any;
 onMounted(() => {
     timeout = setTimeout(() => {
         transition.value = true;
