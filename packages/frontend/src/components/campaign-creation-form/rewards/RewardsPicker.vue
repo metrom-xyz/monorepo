@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import type { RewardsPickerTypes, TokenInfoWithBalance } from "./types";
-import { watchEffect } from "vue";
+import { watchEffect, watch } from "vue";
 import PlusCircleIcon from "@/icons/PlusCircleIcon.vue";
 import RewardRow from "./reward-row/RewardRow.vue";
-import { useAccount, useReadContracts } from "vevm";
+import { useAccount, useReadContracts, useWatchBlockNumber } from "vevm";
 import { erc20Abi, type Address } from "viem";
 import { computed } from "vue";
 import { ref } from "vue";
@@ -19,8 +19,13 @@ const emits = defineEmits<{
 }>();
 
 const account = useAccount();
-
+const block = ref(0n);
 const tokenSearchQuery = ref();
+const rewardsWithInsufficientBalance = ref<string[]>([]);
+const rewardsWithRateTooLow = ref<string[]>([]);
+const tokensWithBalance = ref<TokenInfoWithBalance[]>([]);
+const debouncedLoadingBalances = ref(false);
+
 const { loading: loadingWhitelistedTokens, whitelistedTokens } =
     useWhitelistedRewardTokens(
         computed(() => ({
@@ -28,13 +33,11 @@ const { loading: loadingWhitelistedTokens, whitelistedTokens } =
         })),
     );
 
-const rewardsWithInsufficientBalance = ref<string[]>([]);
-const rewardsWithRateTooLow = ref<string[]>([]);
-
-const { data: rawBalances, loading: loadingBalances } = useReadContracts(
+const { data: balances, loading: loadingBalances } = useReadContracts(
     computed(() => ({
         contracts:
-            (account.value.isConnected &&
+            (block.value !== undefined &&
+                account.value.isConnected &&
                 account.value.address &&
                 whitelistedTokens.value &&
                 whitelistedTokens.value.map((token) => {
@@ -50,14 +53,21 @@ const { data: rawBalances, loading: loadingBalances } = useReadContracts(
     })),
 );
 
-const tokensWithBalance = computed(() => {
-    if (!whitelistedTokens.value) return [];
+watch(loadingBalances, () => {
+    setTimeout(() => {
+        if (loadingBalances.value) debouncedLoadingBalances.value = true;
+        else debouncedLoadingBalances.value = false;
+    }, 500);
+});
+
+watch([block, balances, whitelistedTokens], () => {
+    if (!balances.value || !whitelistedTokens.value) return;
 
     const tokensInChainWithBalance = whitelistedTokens.value.reduce(
         (accumulator: Record<string, TokenInfoWithBalance>, token, i) => {
-            if (!rawBalances.value?.[i]) return accumulator;
+            if (!balances.value?.[i]) return accumulator;
 
-            const rawBalance = rawBalances.value[i];
+            const rawBalance = balances.value[i];
             accumulator[`${token.address.toLowerCase()}-${token.chainId}`] =
                 rawBalance.status !== "failure"
                     ? {
@@ -70,15 +80,19 @@ const tokensWithBalance = computed(() => {
         {},
     );
 
-    const tokensWithBalance = whitelistedTokens.value.map((token) => {
+    tokensWithBalance.value = whitelistedTokens.value.map((token) => {
         const tokenWithBalance =
             tokensInChainWithBalance[
                 `${token.address.toLowerCase()}-${token.chainId}`
             ];
         return tokenWithBalance || token;
     });
+});
 
-    return tokensWithBalance;
+useWatchBlockNumber({
+    onBlockNumber: (number) => {
+        block.value = number;
+    },
 });
 
 watchEffect(() => {
@@ -149,7 +163,8 @@ function handleRewardOnRateTooLow(address: string, rateTooLow: boolean) {
                 <RewardRow
                     :index="index"
                     :tokens="tokensWithBalance"
-                    :loading="loadingBalances || loadingWhitelistedTokens"
+                    :loadingTokens="loadingWhitelistedTokens"
+                    :loadingBalances="debouncedLoadingBalances"
                     :state="$props.state"
                     :rewards="$props.state.rewards"
                     v-model:token="$props.state.rewards[index].token"

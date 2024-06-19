@@ -5,6 +5,7 @@ export interface RewardRowProps {
     state: CampaignState;
     tokens: TokenInfoWithBalance[];
     rewards: Reward[];
-    loading?: boolean;
+    loadingBalances?: boolean;
+    loadingTokens?: boolean;
     onRemove?: (index: number) => void;
 }
