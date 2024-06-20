@@ -1,5 +1,5 @@
 import {
-    POPULAR_CHAIN_TOKENS,
+    BASE_CHAIN_TOKENS,
     SUPPORTED_AMMS,
     SUPPORTED_CHAIN_ICONS,
 } from "@/commons";
@@ -26,7 +26,7 @@ export const buildChainData = () => {
                     chain,
                 ),
                 amms: SUPPORTED_AMMS[chain],
-                popularTokens: POPULAR_CHAIN_TOKENS[chain],
+                popularTokens: BASE_CHAIN_TOKENS[chain],
             };
             return chainData;
         },
