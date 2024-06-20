@@ -1,4 +1,8 @@
-import { SUPPORTED_AMMS, SUPPORTED_CHAIN_ICONS } from "@/commons";
+import {
+    POPULAR_CHAIN_TOKENS,
+    SUPPORTED_AMMS,
+    SUPPORTED_CHAIN_ICONS,
+} from "@/commons";
 import type { ChainData } from "@/types";
 import { ADDRESS, SupportedChain } from "@metrom-xyz/contracts";
 import { MetromApiClient, SERVICE_URLS } from "sdk";
@@ -22,6 +26,7 @@ export const buildChainData = () => {
                     chain,
                 ),
                 amms: SUPPORTED_AMMS[chain],
+                popularTokens: POPULAR_CHAIN_TOKENS[chain],
             };
             return chainData;
         },

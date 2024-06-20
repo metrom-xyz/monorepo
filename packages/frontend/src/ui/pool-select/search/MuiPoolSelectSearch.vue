@@ -11,6 +11,11 @@ import XIcon from "@/icons/XIcon.vue";
 import SearchIcon from "@/icons/SearchIcon.vue";
 import type { Pool } from "sdk";
 import { onMounted } from "vue";
+import MuiChip from "@/ui/chip/MuiChip.vue";
+import { CHAIN_DATA } from "@/commons";
+import { useSelectedChain } from "@/composables/useSelectedChain";
+import MuiRemoteLogo from "@/ui/remote-logo/MuiRemoteLogo.vue";
+import type { Address } from "viem";
 
 const props = defineProps<PoolSelectSearchProps>();
 const emit = defineEmits<{
@@ -23,6 +28,8 @@ const debouncedQuery = ref("");
 const searchInputRef = ref<InstanceType<typeof MuiTextInput> | null | null>(
     null,
 );
+
+const chain = useSelectedChain();
 
 watchDebounced(
     searchQuery,
@@ -40,6 +47,11 @@ const items = computed<Pool[]>(() => {
 const { containerProps, wrapperProps, list } = useVirtualList(items, {
     itemHeight: 64,
 });
+
+function handleOnPopularTokenClick(address: Address) {
+    debouncedQuery.value = address;
+    if (searchInputRef.value?.input) searchInputRef.value.input.value = "";
+}
 
 onMounted(() => {
     if (searchInputRef.value?.input) searchInputRef.value.input.focus();
@@ -66,6 +78,24 @@ onMounted(() => {
                 iconLeft
                 v-model="searchQuery"
             />
+            <div v-if="chain" class="mui_pool_select_search__list__populars">
+                <MuiChip
+                    clickable
+                    :active="debouncedQuery === token.address"
+                    :key="token.address"
+                    v-for="token in CHAIN_DATA[chain].popularTokens"
+                    @click="handleOnPopularTokenClick(token.address)"
+                >
+                    <div class="mui_pool_select_search__list__popular__chip">
+                        <MuiRemoteLogo
+                            :address="token.address"
+                            :defaultText="token.symbol"
+                            lg
+                        />
+                        <MuiTypography lg>{{ token.symbol }}</MuiTypography>
+                    </div>
+                </MuiChip>
+            </div>
         </div>
         <div class="mui_pool_select_search__list__header">
             <MuiTypography sm>{{ $t("ui.poolSelect.pool") }}</MuiTypography>
@@ -117,7 +147,7 @@ onMounted(() => {
 }
 
 .mui_pool_select_search__header {
-    @apply flex flex-col gap-4 justify-between p-5;
+    @apply flex flex-col gap-5 justify-between p-5;
 }
 
 .mui_pool_select_search__title {
@@ -130,6 +160,14 @@ onMounted(() => {
 
 .mui_pool_select_search__close__icon {
     @apply self-end hover:cursor-pointer;
+}
+
+.mui_pool_select_search__list__populars {
+    @apply flex gap-2;
+}
+
+.mui_pool_select_search__list__popular__chip {
+    @apply flex items-center gap-1.5;
 }
 
 .mui_pool_select_search__list__header {
