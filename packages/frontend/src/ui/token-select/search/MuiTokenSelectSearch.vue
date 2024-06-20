@@ -125,7 +125,7 @@ onMounted(() => {
 .mui_token_select_search__root {
     @apply flex
         flex-col
-        h-[480px]
+        h-[600px]
         w-[440px]
         bg-white
         rounded-[30px]
