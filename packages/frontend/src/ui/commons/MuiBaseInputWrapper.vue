@@ -112,7 +112,7 @@ const attrs = useAttrs();
         disabled:cursor-not-allowed
         focus:outline-none
         placeholder-gray-600
-        border-2
+        border
         border-transparent
         text-black
         focus:border-green

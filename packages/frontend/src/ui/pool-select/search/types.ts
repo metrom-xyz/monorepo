@@ -5,8 +5,8 @@ export interface PoolSelectSearchProps {
     selected?: Pool | null;
     pools?: Pool[];
     messages: {
-        inputLabel: string;
-        inputPlaceholder: string;
+        label: string;
+        placeholder: string;
         noPools: string;
     };
 }

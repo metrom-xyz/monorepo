@@ -53,7 +53,7 @@ function handleSearchQueryChange(query?: string) {
                 readonly
                 :error="$props.error"
                 :model-value="selectedToken?.symbol"
-                :placeholder="$props.messages.inputPlaceholder"
+                :placeholder="$props.messages.placeholder"
                 class="mui_token_select__input"
             >
                 <template #icon>
