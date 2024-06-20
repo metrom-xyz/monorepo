@@ -163,7 +163,7 @@ onMounted(() => {
 }
 
 .mui_pool_select_search__list__populars {
-    @apply flex gap-2;
+    @apply flex flex-wrap gap-2;
 }
 
 .mui_pool_select_search__list__popular__chip {
