@@ -14,7 +14,7 @@ const { ensName } = useEnsName({ address: props.address });
     <MuiTypography v-bind="$props">
         {{
             ensName || props.short
-                ? shortenAddress(props.address)
+                ? shortenAddress(props.address, true)
                 : props.address
         }}
     </MuiTypography>

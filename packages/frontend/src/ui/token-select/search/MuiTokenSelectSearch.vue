@@ -134,7 +134,11 @@ onMounted(() => {
 }
 
 .mui_token_select_search__header {
-    @apply flex flex-col gap-4 justify-between p-5;
+    @apply flex
+        flex-col
+        gap-5
+        justify-between
+        p-5;
 }
 
 .mui_token_select_search__title {
