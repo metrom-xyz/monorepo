@@ -210,7 +210,7 @@ async function handleClaimRewardsOnClick() {
 </template>
 <style>
 .claim_rewards__modal {
-    @apply flex flex-col gap-4 w-[440px] min-h-96 max-h-96 bg-white p-5 rounded-[30px] border-2 border-green;
+    @apply flex flex-col gap-4 w-[440px] min-h-96 max-h-96 bg-white p-5 rounded-[30px] border border-green;
 }
 
 .claim_rewards__header {

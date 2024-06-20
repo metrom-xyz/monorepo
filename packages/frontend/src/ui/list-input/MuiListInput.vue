@@ -125,7 +125,7 @@ function handleRemoveOnClick(remove: V) {
     > .mui_base_input_wrapper__root
     > .mui_base_input_wrapper__container
     > input {
-    @apply bg-white border-2 border-gray-300 focus:border-green;
+    @apply bg-white border border-gray-300 focus:border-green;
 }
 
 .mui_list_input__wrapper__padding

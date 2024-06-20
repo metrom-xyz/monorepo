@@ -51,6 +51,9 @@ defineProps<PoolSelectSearchRowProps>();
             <!-- TODO: fetch tvl -->
             {{ $props.tvl }}
         </MuiTypography>
+        <MuiTypography v-else class="mui_pool_select_search_row__tvl">
+            -
+        </MuiTypography>
     </div>
 </template>
 <style>
