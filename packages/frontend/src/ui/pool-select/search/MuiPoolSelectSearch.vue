@@ -103,7 +103,7 @@ onMounted(() => {
             </MuiTypography>
         </div>
         <div
-            class="mui_pool_select_search__list__wrapper"
+            class="mui_pool_select_search__list__container"
             :class="{
                 mui_pool_select_search_wrapper__empty: list.length === 0,
             }"
@@ -112,7 +112,7 @@ onMounted(() => {
             <div
                 v-if="list.length > 0"
                 v-bind="wrapperProps"
-                class="mui_pool_select_search__list__container"
+                class="mui_pool_select_search__list__wrapper"
             >
                 <MuiPoolSelectSearchRow
                     v-for="{ index, data } in list"
@@ -140,6 +140,7 @@ onMounted(() => {
         h-[600px]
         w-[440px]
         bg-white
+        overflow-hidden
         rounded-[30px]
         border
         border-green;
@@ -182,12 +183,12 @@ onMounted(() => {
     @apply text-gray-600;
 }
 
-.mui_pool_select_search__list__wrapper {
-    @apply flex flex-col gap-6 mx-5;
+.mui_pool_select_search__list__container {
+    @apply flex flex-col gap-6;
 }
 
-.mui_pool_select_search__list__container {
-    @apply flex flex-col gap-2;
+.mui_pool_select_search__list__wrapper {
+    @apply flex flex-col gap-1;
 }
 
 .mui_pool_select_search_wrapper__empty {
