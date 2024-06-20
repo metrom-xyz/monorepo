@@ -178,15 +178,11 @@ onUnmounted(() => {
                     :loadingTokens="$props.loadingTokens"
                     :loadingBalances="$props.loadingBalances"
                     :messages="{
-                        inputPlaceholder: $t(
-                            'campaign.rewards.select.placeholder',
-                        ),
+                        placeholder: $t('campaign.rewards.select.placeholder'),
                         search: {
-                            inputLabel: $t(
-                                'campaign.rewards.select.search.inputLabel',
-                            ),
-                            inputPlaceholder: $t(
-                                'campaign.rewards.select.search.inputPlaceholder',
+                            label: $t('campaign.rewards.select.search.label'),
+                            placeholder: $t(
+                                'campaign.rewards.select.search.placeholder',
                             ),
                             noTokens: $t(
                                 'campaign.rewards.select.search.noTokens',
@@ -297,7 +293,7 @@ onUnmounted(() => {
         items-center
         h-[60px]
         p-4
-        border-2
+        border
         rounded-xxl
         border-transparent
         bg-gray-100

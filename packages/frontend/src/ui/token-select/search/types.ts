@@ -7,8 +7,8 @@ export interface TokenSelectSearchProps {
     tokens?: TokenInfo[];
     optionDisabled?: (token: TokenInfo) => boolean;
     messages: {
-        inputLabel: string;
-        inputPlaceholder: string;
+        label: string;
+        placeholder: string;
         noTokens: string;
     };
 }

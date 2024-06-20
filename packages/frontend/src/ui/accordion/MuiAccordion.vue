@@ -57,7 +57,7 @@ const handleExpandOnClick = (event: MouseEvent) => {
     @apply transition-colors
         duration-200
         ease-in-out
-        border-2
+        border
         border-transparent
         rounded-[18px];
 }

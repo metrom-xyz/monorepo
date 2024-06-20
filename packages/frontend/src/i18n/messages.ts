@@ -48,8 +48,8 @@ export const messages = {
                     placeholder: "Select pool",
                     placeholderNoPools: "No pools found for the selected DEX",
                     search: {
-                        inputLabel: "Select pool",
-                        inputPlaceholder: "Search for token address, pool etc",
+                        label: "Select pool",
+                        placeholder: "Search for token address, pool etc",
                         noPools: "Nothing here.",
                     },
                 },
@@ -59,8 +59,8 @@ export const messages = {
                 select: {
                     placeholder: "Token",
                     search: {
-                        inputLabel: "Select token",
-                        inputPlaceholder: "Search",
+                        label: "Select token",
+                        placeholder: "Search",
                         noTokens: "Nothing here.",
                     },
                 },

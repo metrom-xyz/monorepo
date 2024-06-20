@@ -59,16 +59,20 @@ onMounted(() => {
 <template>
     <div class="mui_token_select_search__root">
         <div class="mui_token_select_search__header">
-            <XIcon
-                @click="handleOnDismissClick"
-                class="mui_token_select_search__close__icon"
-            />
+            <div class="mui_token_select_search__title">
+                <MuiTypography lg medium>
+                    {{ $props.messages.label }}
+                </MuiTypography>
+                <XIcon
+                    @click="handleOnDismissClick"
+                    class="mui_token_select_search__close__icon"
+                />
+            </div>
             <MuiTextInput
                 ref="searchInputRef"
                 id="token-search"
-                :label="$props.messages.inputLabel"
                 :disabled="$props.loadingTokens"
-                :placeholder="$props.messages.inputPlaceholder"
+                :placeholder="$props.messages.placeholder"
                 :icon="SearchIcon"
                 iconLeft
                 v-model="searchQuery"
@@ -119,11 +123,22 @@ onMounted(() => {
 </template>
 <style>
 .mui_token_select_search__root {
-    @apply flex flex-col gap-4 h-[480px] w-[440px] bg-white px-8 py-5 rounded-[30px] border-2 border-green;
+    @apply flex
+        flex-col
+        h-[480px]
+        w-[440px]
+        bg-white
+        rounded-[30px]
+        border
+        border-green;
 }
 
 .mui_token_select_search__header {
-    @apply flex flex-col justify-between;
+    @apply flex flex-col gap-4 justify-between p-5;
+}
+
+.mui_token_select_search__title {
+    @apply flex justify-between items-center;
 }
 
 /* text input customization */
@@ -141,10 +156,6 @@ onMounted(() => {
     @apply left-1.5;
 }
 
-.mui_token_select_search__title {
-    @apply mb-6;
-}
-
 .mui_token_select_search__close__icon {
     @apply self-end hover:cursor-pointer;
 }
@@ -155,6 +166,10 @@ onMounted(() => {
 
 .mui_token_select_search__list_header > p {
     @apply text-gray-600;
+}
+
+.mui_token_select_search__list__wrapper {
+    @apply flex flex-col gap-6 mx-5;
 }
 
 .mui_token_select_search__list__container {

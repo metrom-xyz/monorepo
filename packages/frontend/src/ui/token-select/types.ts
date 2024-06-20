@@ -10,7 +10,7 @@ export interface TokenSelectProps {
     error?: boolean;
     optionDisabled?: (token: TokenInfo) => boolean;
     messages: {
-        inputPlaceholder: string;
+        placeholder: string;
         search: TokenSelectSearchProps["messages"];
     };
 }

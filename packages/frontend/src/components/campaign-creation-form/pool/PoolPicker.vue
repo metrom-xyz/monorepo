@@ -48,10 +48,8 @@ watchEffect(() => {
                         ? $t('campaign.pool.select.placeholderNoPools')
                         : $t('campaign.pool.select.placeholder'),
                 search: {
-                    inputLabel: $t('campaign.pool.select.search.inputLabel'),
-                    inputPlaceholder: $t(
-                        'campaign.pool.select.search.inputPlaceholder',
-                    ),
+                    label: $t('campaign.pool.select.search.label'),
+                    placeholder: $t('campaign.pool.select.search.placeholder'),
                     noPools: $t('campaign.pool.select.search.noPools'),
                 },
             }"

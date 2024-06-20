@@ -191,7 +191,7 @@ function handleApplyOnClick() {
 }
 
 .restrictions_picker__modal__container {
-    @apply flex flex-col gap-4 bg-white px-8 py-5 max-w-[414px] rounded-[30px] border-2 border-green;
+    @apply flex flex-col gap-4 bg-white px-8 py-5 max-w-[414px] rounded-[30px] border border-green;
 }
 
 .restrictions_picker__modal__close__icon {
