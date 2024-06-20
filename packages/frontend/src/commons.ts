@@ -35,7 +35,7 @@ export const SUPPORTED_CHAIN_ICONS: Record<SupportedChain, Component> = {
     [SupportedChain.Holesky]: markRaw(MuiEthIcon),
 };
 
-export const POPULAR_CHAIN_TOKENS: Record<SupportedChain, Erc20Token[]> = {
+export const BASE_CHAIN_TOKENS: Record<SupportedChain, Erc20Token[]> = {
     [SupportedChain.CeloAlfajores]: [
         {
             address: "0xF194afDf50B03e69Bd7D057c1Aa9e10c9954E4C9",
