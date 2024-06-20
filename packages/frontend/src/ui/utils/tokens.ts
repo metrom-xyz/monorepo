@@ -14,13 +14,13 @@ export const filterPools = (pools: Pool[], searchQuery: string) => {
 
         if (poolByAddress) return [poolByAddress];
 
-        const tokenByAddress = pools.find(
+        const poolByToken = pools.filter(
             (pool) =>
                 pool.token0.address.toLowerCase() === lowercaseSearchQuery ||
                 pool.token1.address.toLowerCase() === lowercaseSearchQuery,
         );
 
-        return tokenByAddress ? [tokenByAddress] : [];
+        return poolByToken;
     }
 
     const lowercaseSearchParts = searchQuery
