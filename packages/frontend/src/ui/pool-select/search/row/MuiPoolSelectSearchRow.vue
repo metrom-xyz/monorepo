@@ -60,10 +60,10 @@ defineProps<PoolSelectSearchRowProps>();
 .mui_pool_select_search_row__root {
     @apply flex
         gap-3
-        p-3
+        py-3
+        px-5
         justify-between
         items-center
-        rounded-xl
         hover:cursor-pointer
         transition-colors
         duration-200
