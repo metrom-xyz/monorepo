@@ -79,12 +79,12 @@ onMounted(() => {
             />
         </div>
         <div
-            class="mui_token_select_search__list__wrapper"
+            class="mui_token_select_search__list__container"
             v-bind="containerProps"
         >
             <div
                 v-if="(loadingTokens || loadingBalances) && list.length === 0"
-                class="mui_token_select_search__list__container"
+                class="mui_token_select_search__list__wrapper"
             >
                 <div
                     :key="n"
@@ -98,7 +98,7 @@ onMounted(() => {
             <div
                 v-else-if="list.length > 0"
                 v-bind="wrapperProps"
-                class="mui_token_select_search__list__container"
+                class="mui_token_select_search__list__wrapper"
             >
                 <MuiTokenSelectSearchRow
                     v-for="{ index, data } in list"
@@ -128,6 +128,7 @@ onMounted(() => {
         h-[600px]
         w-[440px]
         bg-white
+        overflow-hidden
         rounded-[30px]
         border
         border-green;
@@ -172,12 +173,12 @@ onMounted(() => {
     @apply text-gray-600;
 }
 
-.mui_token_select_search__list__wrapper {
-    @apply flex flex-col gap-6 mx-5;
+.mui_token_select_search__list__container {
+    @apply flex flex-col gap-6;
 }
 
-.mui_token_select_search__list__container {
-    @apply flex flex-col gap-2;
+.mui_token_select_search__list__wrapper {
+    @apply flex flex-col gap-1;
 }
 
 .mui_token_select_search__skeleton {
