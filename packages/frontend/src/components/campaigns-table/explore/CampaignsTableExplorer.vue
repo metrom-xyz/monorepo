@@ -3,7 +3,7 @@ import type { CampaignsTableExplorerProps } from "./types";
 import { computed } from "vue";
 import { getPoolExplorerLink } from "@/utils/amm";
 import ChartIcon from "@/icons/ChartIcon.vue";
-import MuiTypography from "@/ui/typography/MuiTypography.vue";
+import { MetTypography } from "@metrom-xyz/ui";
 
 const props = defineProps<CampaignsTableExplorerProps>();
 
@@ -21,7 +21,7 @@ const poolExplorerLink = computed(() => {
         >
             <ChartIcon class="campaigns_table_explorer__icon" />
         </a>
-        <MuiTypography v-else>-</MuiTypography>
+        <MetTypography v-else>-</MetTypography>
     </div>
 </template>
 <style>

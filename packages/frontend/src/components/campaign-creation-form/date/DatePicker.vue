@@ -1,14 +1,16 @@
 <script setup lang="ts">
 import type { DatePickerTypes } from "./types";
 import { computed, watch, watchEffect } from "vue";
-import MuiDateRangeInput from "@/ui/date-range-input/MuiDateRangeInput.vue";
+import {
+    MetDateRangeInput,
+    MetTypography,
+    MetWarningMessage,
+} from "@metrom-xyz/ui";
 import { ref } from "vue";
 import dayjs, { Dayjs } from "dayjs";
 import { onMounted } from "vue";
 import { onUnmounted } from "vue";
 import { useCampaignMinMaxDuration } from "@/composables/useCampaignMinMaxDuration";
-import MuiTypography from "@/ui/typography/MuiTypography.vue";
-import MuiWarningMessage from "@/ui/MuiWarningMessage.vue";
 
 const props = defineProps<DatePickerTypes>();
 const emits = defineEmits<{
@@ -84,7 +86,7 @@ onUnmounted(() => {
 </script>
 <template>
     <div class="date_picker__root">
-        <MuiDateRangeInput
+        <MetDateRangeInput
             v-model:range="$props.state.range"
             :error="!!rangeError"
             :min="minDate"
@@ -96,21 +98,21 @@ onUnmounted(() => {
                 endPlaceholder: $t('campaign.range.picker.endPlaceholder'),
             }"
         />
-        <MuiWarningMessage v-if="rangeError" class="date_picker__warning">
-            <MuiTypography>
+        <MetWarningMessage v-if="rangeError" class="date_picker__warning">
+            <MetTypography>
                 {{ $t("campaign.range.picker.error.label") }}
-            </MuiTypography>
+            </MetTypography>
             <template v-if="durationLimits" #popover>
-                <MuiTypography>{{
+                <MetTypography>{{
                     $t(rangeError, {
                         minDuration: Math.floor(durationLimits.min / 60),
                         maxDuration: Math.floor(
                             durationLimits.max / 60 / 60 / 24,
                         ),
                     })
-                }}</MuiTypography>
+                }}</MetTypography>
             </template>
-        </MuiWarningMessage>
+        </MetWarningMessage>
     </div>
 </template>
 <style>

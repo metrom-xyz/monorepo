@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import MuiTypography from "@/ui/typography/MuiTypography.vue";
+import { MetTypography } from "@metrom-xyz/ui";
 import type { SubmitButtonProps } from "./types";
 
 const props = defineProps<SubmitButtonProps>();
@@ -21,7 +21,7 @@ defineSlots<{
             <div
                 class="submit_button__icon__wrapper submit_button__icon__wrapper_invisible"
             ></div>
-            <MuiTypography
+            <MetTypography
                 medium
                 class="submit_button__text"
                 :class="{
@@ -29,7 +29,7 @@ defineSlots<{
                 }"
             >
                 <slot></slot>
-            </MuiTypography>
+            </MetTypography>
             <div
                 class="submit_button__icon__wrapper"
                 :class="{

@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import { CHAIN_DATA, SUPPORTED_CHAINS } from "@/commons";
-import MuiSelect from "@/ui/select/MuiSelect.vue";
-import type { SelectOption } from "@/ui/select/types";
-import MuiTypography from "@/ui/typography/MuiTypography.vue";
+import { MetSelect, type SelectOption, MetTypography } from "@metrom-xyz/ui";
 import { isChainSupported } from "@/utils/chain";
 import { useAccount, useSwitchChain } from "vevm";
 import { computed } from "vue";
@@ -39,9 +37,9 @@ async function handleNetworkOnChange(option: SelectOption<number>) {
             "
             class="chain_select__unsupported__network"
         >
-            <MuiTypography>{{ $t("chain.unsupported.title") }}</MuiTypography>
+            <MetTypography>{{ $t("chain.unsupported.title") }}</MetTypography>
         </div>
-        <MuiSelect
+        <MetSelect
             v-else
             :messages="{ noResults: '' }"
             :options="SUPPORTED_CHAIN_OPTIONS"
@@ -70,10 +68,10 @@ async function handleNetworkOnChange(option: SelectOption<number>) {
                         class="chain_select__option__icon"
                     >
                     </component>
-                    <MuiTypography>{{ option.label }}</MuiTypography>
+                    <MetTypography>{{ option.label }}</MetTypography>
                 </div>
             </template>
-        </MuiSelect>
+        </MetSelect>
     </div>
 </template>
 <style>

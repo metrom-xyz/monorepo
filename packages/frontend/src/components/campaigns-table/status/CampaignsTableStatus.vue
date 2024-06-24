@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import MuiTypography from "@/ui/typography/MuiTypography.vue";
+import { MetTypography } from "@metrom-xyz/ui";
 import type { CampaignsTableStatusProps } from "./types";
 import dayjs from "dayjs";
 import { computed } from "vue";
@@ -29,15 +29,15 @@ const expired = computed(() => {
                 campaigns_table_status__circle_expired: expired,
             }"
         ></div>
-        <MuiTypography v-if="soon">
+        <MetTypography v-if="soon">
             {{ $t("allCampaigns.table.status.soon") }}
-        </MuiTypography>
-        <MuiTypography v-else-if="live">
+        </MetTypography>
+        <MetTypography v-else-if="live">
             {{ $t("allCampaigns.table.status.live") }}
-        </MuiTypography>
-        <MuiTypography v-else>
+        </MetTypography>
+        <MetTypography v-else>
             {{ $t("allCampaigns.table.status.expired") }}
-        </MuiTypography>
+        </MetTypography>
     </div>
 </template>
 <style>

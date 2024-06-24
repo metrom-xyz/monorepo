@@ -1,6 +1,10 @@
 import { formatUnits } from "viem";
 import { type Erc20TokenAmount } from "../entities";
 
+export const enforceDoubleDigits = (n: number): string => {
+    return n < 10 ? `0${n}` : n.toString();
+};
+
 export interface FormatCurrencyAmountParams {
     amount: Erc20TokenAmount;
     withSymbol?: boolean;

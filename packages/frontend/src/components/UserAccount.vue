@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import WalletIcon from "@/icons/WalletIcon.vue";
 import PowerIcon from "@/icons/PowerIcon.vue";
-import MuiTypography from "@/ui/typography/MuiTypography.vue";
-import { shortenAddress } from "@/utils/address";
+import { MetTypography } from "@metrom-xyz/ui";
+import { shortenAddress } from "sdk";
 import { useAccount, useDisconnect } from "vevm";
 import ChainSelect from "./ChainSelect.vue";
 import ConnectWallet from "./ConnectWallet.vue";
@@ -24,9 +24,9 @@ function handleDisconnectOnClick() {
                 >
                     <WalletIcon />
                 </div>
-                <MuiTypography uppercase>
+                <MetTypography uppercase>
                     {{ shortenAddress(account.address) }}
-                </MuiTypography>
+                </MetTypography>
                 <div
                     @click="handleDisconnectOnClick"
                     class="user_account__icon__wrapper user_account__icon__wrapper__right"
