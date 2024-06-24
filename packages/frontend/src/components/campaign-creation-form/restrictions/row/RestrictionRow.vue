@@ -1,25 +1,22 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import type { RestrictionRowProps } from "./types";
-import MuiEns from "@/ui/ens/MuiEns.vue";
-import XIcon from "@/icons/XIcon.vue";
-import MuiAvatar from "@/ui/avatar/MuiAvatar.vue";
-import MuiPopover from "@/ui/popover/MuiPopover.vue";
+import { MetEns, MetAvatar, MetPopover } from "@metrom-xyz/ui";
 
 defineProps<RestrictionRowProps>();
 
 const popover = ref(false);
 </script>
 <template>
-    <MuiPopover :open="popover" :placement="'top'">
+    <MetPopover :open="popover" :placement="'top'">
         <div class="restriction_row__address__wrapper">
             <div
                 class="restriction_row__address"
                 @mouseenter="popover = true"
                 @mouseleave="popover = false"
             >
-                <MuiAvatar :address="$props.address" />
-                <MuiEns :address="$props.address" short />
+                <MetAvatar :address="$props.address" />
+                <MetEns :address="$props.address" short />
             </div>
             <XIcon
                 @click="$props.onRemove"
@@ -28,10 +25,10 @@ const popover = ref(false);
         </div>
         <template #popover>
             <div class="restriction_row__address__popover">
-                <MuiEns :address="$props.address" medium />
+                <MetEns :address="$props.address" medium />
             </div>
         </template>
-    </MuiPopover>
+    </MetPopover>
 </template>
 <style>
 .restriction_row__address__wrapper {

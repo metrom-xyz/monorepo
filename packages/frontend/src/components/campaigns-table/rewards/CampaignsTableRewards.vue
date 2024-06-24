@@ -1,11 +1,13 @@
 <script setup lang="ts">
-import MuiPopover from "@/ui/popover/MuiPopover.vue";
+import {
+    MetPopover,
+    MetRemoteLogo,
+    MetTypography,
+    MetTextField,
+} from "@metrom-xyz/ui";
 import type { CampaignsTableRewardsProps } from "./types";
-import MuiRemoteLogo from "@/ui/remote-logo/MuiRemoteLogo.vue";
 import { ref } from "vue";
 import { formatUnits } from "viem";
-import MuiTypography from "@/ui/typography/MuiTypography.vue";
-import MuiTextField from "@/ui/text-field/MuiTextField.vue";
 import { formatDecimals } from "sdk";
 
 defineProps<CampaignsTableRewardsProps>();
@@ -13,13 +15,13 @@ defineProps<CampaignsTableRewardsProps>();
 const popover = ref(false);
 </script>
 <template>
-    <MuiPopover :open="popover" :placement="'top-start'">
+    <MetPopover :open="popover" :placement="'top-start'">
         <div
             @mouseenter="popover = true"
             @mouseleave="popover = false"
             class="campaigns_table_rewards__root"
         >
-            <MuiRemoteLogo
+            <MetRemoteLogo
                 :key="reward.token.address"
                 v-for="(reward, index) in $props.rewards"
                 lg
@@ -38,14 +40,14 @@ const popover = ref(false);
                     class="campaigns_table_rewards__details__row"
                 >
                     <div class="campaigns_table_rewards__symbol">
-                        <MuiRemoteLogo
+                        <MetRemoteLogo
                             lg
                             :address="reward.token.address"
                             :defaultText="reward.token.symbol"
                         />
-                        <MuiTypography>{{ reward.token.symbol }}</MuiTypography>
+                        <MetTypography>{{ reward.token.symbol }}</MetTypography>
                     </div>
-                    <MuiTextField
+                    <MetTextField
                         :label="$t('allCampaigns.table.rewards.amount')"
                         :value="
                             formatDecimals({
@@ -56,7 +58,7 @@ const popover = ref(false);
                             })
                         "
                     />
-                    <MuiTextField
+                    <MetTextField
                         :label="$t('allCampaigns.table.rewards.remaining')"
                         :value="
                             formatDecimals({
@@ -70,7 +72,7 @@ const popover = ref(false);
                 </div>
             </div>
         </template>
-    </MuiPopover>
+    </MetPopover>
 </template>
 <style>
 .campaigns_table_rewards__root {

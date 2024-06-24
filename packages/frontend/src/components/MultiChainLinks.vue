@@ -7,8 +7,7 @@ import { watchEffect } from "vue";
 import { ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { useUrlSearchParams } from "@vueuse/core";
-import MuiCard from "@/ui/MuiCard.vue";
-import MuiTypography from "@/ui/typography/MuiTypography.vue";
+import { MetTypography, MetCard } from "@metrom-xyz/ui";
 import { onMounted } from "vue";
 
 defineSlots<{ default: unknown }>();
@@ -109,21 +108,21 @@ watch(
 );
 </script>
 <template>
-    <MuiCard v-if="!!account.chainId && !isChainSupported(account.chainId)">
+    <MetCard v-if="!!account.chainId && !isChainSupported(account.chainId)">
         <template #title>
-            <MuiTypography medium lg>
+            <MetTypography medium lg>
                 {{ $t("chain.unsupported.title") }}
-            </MuiTypography>
+            </MetTypography>
         </template>
         <template #content>
             <div class="multi_chain_links__unsupported">
-                <MuiTypography>
+                <MetTypography>
                     {{ $t("chain.unsupported.content") }}
-                </MuiTypography>
+                </MetTypography>
             </div>
         </template>
-    </MuiCard>
-    <MuiCard
+    </MetCard>
+    <MetCard
         v-else-if="
             !!account.chainId &&
             $route.query.chain &&
@@ -131,13 +130,13 @@ watch(
         "
     >
         <template #title>
-            <MuiTypography medium lg>
+            <MetTypography medium lg>
                 {{ $t("chain.wrong.title") }}
-            </MuiTypography>
+            </MetTypography>
         </template>
         <template #content>
             <div class="multi_chain_links__wrong">
-                <MuiTypography>
+                <MetTypography>
                     {{
                         $t("chain.wrong.content", {
                             chainName: SUPPORTED_CHAINS.find(
@@ -147,10 +146,10 @@ watch(
                             )?.name,
                         })
                     }}
-                </MuiTypography>
+                </MetTypography>
             </div>
         </template>
-    </MuiCard>
+    </MetCard>
     <slot
         v-else-if="
             $route.query.chain &&

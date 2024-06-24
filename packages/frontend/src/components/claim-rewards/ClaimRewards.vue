@@ -8,17 +8,19 @@ import {
 import { computed, ref } from "vue";
 import type { ClaimRewardsProps } from "./types";
 import { CHAIN_DATA } from "@/commons";
-import MuiButton from "@/ui/button/MuiButton.vue";
-import MuiTypography from "@/ui/typography/MuiTypography.vue";
-import MuiModal from "@/ui/modal/MuiModal.vue";
-import MuiTextField from "@/ui/text-field/MuiTextField.vue";
-import MuiRemoteLogo from "@/ui/remote-logo/MuiRemoteLogo.vue";
+import {
+    MetButton,
+    MetTypography,
+    MetModal,
+    MetTextField,
+    MetRemoteLogo,
+    MetSwitch,
+} from "@metrom-xyz/ui";
 import { formatUnits } from "viem";
 import { formatDecimals, type Claim } from "sdk";
 import { metromAbi } from "@metrom-xyz/contracts/abi";
 import { writeContract } from "@wagmi/core";
 import { useClaims } from "@/composables/useClaims";
-import MuiSwitch from "@/ui/switch/MuiSwitch.vue";
 
 const props = defineProps<ClaimRewardsProps>();
 
@@ -113,8 +115,8 @@ async function handleClaimRewardsOnClick() {
 }
 </script>
 <template>
-    <MuiModal :open="modalOpen" :onDismiss="handleModalOnDismiss">
-        <MuiButton
+    <MetModal :open="modalOpen" :onDismiss="handleModalOnDismiss">
+        <MetButton
             v-if="account.address"
             sm
             :loading="loadingRewards"
@@ -123,21 +125,21 @@ async function handleClaimRewardsOnClick() {
             "
             @click="modalOpen = true"
         >
-            <MuiTypography>
+            <MetTypography>
                 {{
                     $t("allCampaigns.rewards.available", {
                         total: claimRewardsParams.length || 0,
                     })
                 }}
-            </MuiTypography>
-        </MuiButton>
+            </MetTypography>
+        </MetButton>
         <template #modal>
             <div class="claim_rewards__modal">
                 <div class="claim_rewards__header">
-                    <MuiTypography lg>
+                    <MetTypography lg>
                         {{ $t("allCampaigns.rewards.overview") }}
-                    </MuiTypography>
-                    <MuiSwitch
+                    </MetTypography>
+                    <MetSwitch
                         :label="$t('allCampaigns.rewards.showAll')"
                         v-model="showAllClaims"
                     />
@@ -152,16 +154,16 @@ async function handleClaimRewardsOnClick() {
                     >
                         <div class="claim_rewards__reward__wrapper">
                             <div class="claim_rewards__reward__token">
-                                <MuiRemoteLogo
+                                <MetRemoteLogo
                                     xxl
                                     :address="claim.token.address"
                                     :defaultText="claim.token.symbol"
                                 />
-                                <MuiTypography>
+                                <MetTypography>
                                     {{ claim.token.symbol }}
-                                </MuiTypography>
+                                </MetTypography>
                             </div>
-                            <MuiTextField
+                            <MetTextField
                                 :label="$t('allCampaigns.rewards.remaining')"
                                 :value="
                                     formatDecimals({
@@ -172,7 +174,7 @@ async function handleClaimRewardsOnClick() {
                                     })
                                 "
                             />
-                            <MuiTextField
+                            <MetTextField
                                 :label="$t('allCampaigns.rewards.amount')"
                                 :value="
                                     formatDecimals({
@@ -186,27 +188,27 @@ async function handleClaimRewardsOnClick() {
                         </div>
                     </div>
                 </div>
-                <MuiTypography v-else>
+                <MetTypography v-else>
                     {{ $t("allCampaigns.rewards.empty") }}
-                </MuiTypography>
-                <MuiButton
+                </MetTypography>
+                <MetButton
                     sm
                     :loading="simulatingClaimRewards || claiming"
                     :disabled="error || claimRewardsParams.length === 0"
                     @click="handleClaimRewardsOnClick"
                     class="claim_rewards__button"
                 >
-                    <MuiTypography>
+                    <MetTypography>
                         {{
                             claimRewardsParams.length === 0
                                 ? $t("allCampaigns.rewards.nothingToClaim")
                                 : $t("allCampaigns.rewards.claim")
                         }}
-                    </MuiTypography>
-                </MuiButton>
+                    </MetTypography>
+                </MetButton>
             </div>
         </template>
-    </MuiModal>
+    </MetModal>
 </template>
 <style>
 .claim_rewards__modal {

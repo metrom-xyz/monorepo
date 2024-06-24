@@ -1,11 +1,9 @@
 <script setup lang="ts">
-import MuiProgressBar from "@/ui/progress-bar/MuiProgressBar.vue";
+import { MetProgressBar, MetPopover, MetTextField } from "@metrom-xyz/ui";
 import type { CampaignsTablePeriodProps } from "./types";
 import { computed } from "vue";
 import dayjs from "dayjs";
-import MuiPopover from "@/ui/popover/MuiPopover.vue";
 import { ref } from "vue";
-import MuiTextField from "@/ui/text-field/MuiTextField.vue";
 
 const props = defineProps<CampaignsTablePeriodProps>();
 
@@ -25,27 +23,27 @@ const progress = computed(() => {
 });
 </script>
 <template>
-    <MuiPopover :open="popover" :placement="'top-start'">
+    <MetPopover :open="popover" :placement="'top-start'">
         <div
             class="campaign_table_period__root"
             @mouseenter="popover = true"
             @mouseleave="popover = false"
         >
-            <MuiProgressBar :progress="progress" />
+            <MetProgressBar :progress="progress" />
         </div>
         <template #popover>
             <div class="campaign_table_period__popover">
-                <MuiTextField
+                <MetTextField
                     :label="$t('allCampaigns.table.period.from')"
                     :value="dayjs.unix($props.from).format('DD MMM YYYY HH:mm')"
                 />
-                <MuiTextField
+                <MetTextField
                     :label="$t('allCampaigns.table.period.to')"
                     :value="dayjs.unix($props.to).format('DD MMM YYYY HH:mm')"
                 />
             </div>
         </template>
-    </MuiPopover>
+    </MetPopover>
 </template>
 <style>
 .campaign_table_period__root {

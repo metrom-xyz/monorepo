@@ -1,6 +1,6 @@
-import "@fontsource/inter/400.css";
-import "@fontsource/inter/500.css";
-import "@fontsource/inter/700.css";
+import "@fontsource-variable/inter";
+import "@metrom-xyz/ui/index.css";
+
 import "./main.css";
 
 import { createApp } from "vue";

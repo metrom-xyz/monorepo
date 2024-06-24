@@ -1,9 +1,7 @@
 <script setup lang="ts">
 import MetromRoundLogo from "@/icons/MetromRoundLogo.vue";
 import { useLogin } from "@/stores/auth";
-import MuiCard from "@/ui/MuiCard.vue";
-import MuiButton from "@/ui/button/MuiButton.vue";
-import MuiTypography from "@/ui/typography/MuiTypography.vue";
+import { MetCard, MetButton, MetTypography } from "@metrom-xyz/ui";
 import { signMessage } from "@wagmi/core";
 import { useAccount, useWagmiConfig } from "vevm";
 import { watchEffect } from "vue";
@@ -82,29 +80,29 @@ watchEffect(() => {
 });
 </script>
 <template>
-    <MuiCard>
+    <MetCard>
         <template #content>
             <div class="authenticate_account__content">
-                <MuiTypography h4 bold>
+                <MetTypography h4 bold>
                     {{ $t("authenticate.title") }}
-                </MuiTypography>
+                </MetTypography>
                 <MetromRoundLogo class="authenticate_account__metrom__logo" />
-                <MuiTypography>
+                <MetTypography>
                     {{ $t("authenticate.description") }}
-                </MuiTypography>
-                <MuiButton
+                </MetTypography>
+                <MetButton
                     v-if="account.address"
                     @click="handleSignOnClick"
                     :loading="loading"
                 >
-                    <MuiTypography uppercase>
+                    <MetTypography uppercase>
                         {{ $t("authenticate.sign") }}
-                    </MuiTypography>
-                </MuiButton>
+                    </MetTypography>
+                </MetButton>
                 <ConnectWallet v-else />
             </div>
         </template>
-    </MuiCard>
+    </MetCard>
 </template>
 <style>
 .authenticate_account__metrom__logo {
