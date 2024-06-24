@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import MuiPoolSelect from "@/ui/pool-select/MuiPoolSelect.vue";
+import { MetPoolSelect } from "@metrom-xyz/ui";
 import { computed, ref } from "vue";
 import type { PoolPickerTypes } from "./types";
 import { watchEffect } from "vue";
@@ -34,7 +34,7 @@ watchEffect(() => {
 </script>
 <template>
     <div class="pool_picker__root">
-        <MuiPoolSelect
+        <MetPoolSelect
             :open="open"
             :pools="pools"
             :loading="loading"

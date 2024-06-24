@@ -2,20 +2,22 @@
 import { CHAIN_DATA } from "@/commons";
 import { useCampaigns } from "@/composables/useCampaigns";
 import SearchIcon from "@/icons/SearchIcon.vue";
-import MuiTextInput from "@/ui/MuiTextInput.vue";
-import MuiPairRemoteLogo from "@/ui/pair-remote-logo/MuiPairRemoteLogo.vue";
-import MuiTypography from "@/ui/typography/MuiTypography.vue";
-import { filterCampaigns } from "@/ui/utils/campaigns";
+import {
+    MetTextInput,
+    MetPairRemoteLogo,
+    MetTypography,
+    MetSkeleton,
+    MetButton,
+} from "@metrom-xyz/ui";
+import { filterCampaigns } from "../../utils/campaigns";
 import { watchDebounced } from "@vueuse/core";
 import { type Campaign } from "sdk";
 import { computed } from "vue";
 import CampaignsTableDeposit from "./deposit/CampaignsTableDeposit.vue";
 import { ref } from "vue";
-import MuiSkeleton from "@/ui/skeleton/MuiSkeleton.vue";
 import CampaignsTableRewards from "./rewards/CampaignsTableRewards.vue";
 import type { CampaignsTableProps } from "./types";
 import ClaimRewards from "../claim-rewards/ClaimRewards.vue";
-import MuiButton from "@/ui/button/MuiButton.vue";
 import ChevronLeftIcon from "@/icons/ChevronLeftIcon.vue";
 import ChevronRightIcon from "@/icons/ChevronRightIcon.vue";
 import CampaignsTableExplorer from "./explore/CampaignsTableExplorer.vue";
@@ -70,7 +72,7 @@ const totalPages = computed(() =>
     <div class="campaigns_table__root">
         <div class="campaigns_table__filters">
             <div class="campaigns_table__pool__filter">
-                <MuiTextInput
+                <MetTextInput
                     :icon="SearchIcon"
                     iconLeft
                     :placeholder="$t('allCampaigns.table.filters.pools')"
@@ -81,9 +83,9 @@ const totalPages = computed(() =>
         </div>
         <div class="campaigns_table__wrapper">
             <div class="campaigns_table__grid campaigns_table__header">
-                <MuiTypography :key="header" v-for="header in HEADERS" medium>
+                <MetTypography :key="header" v-for="header in HEADERS" medium>
                     {{ $t(header) }}
-                </MuiTypography>
+                </MetTypography>
             </div>
             <div class="campaigns_table__divider"></div>
             <div>
@@ -91,7 +93,7 @@ const totalPages = computed(() =>
                     v-if="loadingCampaigns"
                     class="campaigns_table__skeletons__container"
                 >
-                    <MuiSkeleton
+                    <MetSkeleton
                         :key="size"
                         v-for="size in PAGE_SIZE"
                         :height="32"
@@ -108,17 +110,17 @@ const totalPages = computed(() =>
                         v-bind="{ ...campaign }"
                     >
                         <div class="campaigns_table__pool__row">
-                            <MuiPairRemoteLogo
+                            <MetPairRemoteLogo
                                 :token0="campaign.pool.token0"
                                 :token1="campaign.pool.token1"
                                 lg
                                 class="campaigns_table__pool__logo"
                             />
-                            <MuiTypography>
+                            <MetTypography>
                                 {{
                                     `${campaign.pool.token0.symbol} / ${campaign.pool.token1.symbol}`
                                 }}
-                            </MuiTypography>
+                            </MetTypography>
                         </div>
                         <CampaignsTablePeriod
                             :from="campaign.from"
@@ -137,23 +139,23 @@ const totalPages = computed(() =>
                         />
                     </div>
                 </div>
-                <MuiTypography v-else>
+                <MetTypography v-else>
                     {{ $t("allCampaigns.table.empty") }}
-                </MuiTypography>
+                </MetTypography>
             </div>
         </div>
         <div class="campaigns_table__pagination">
-            <MuiButton
+            <MetButton
                 xs
                 @click="currentPage -= 1"
                 :disabled="currentPage === 0"
                 :icon="ChevronLeftIcon"
             />
-            <MuiTypography>
+            <MetTypography>
                 {{ currentPage + 1 }} /
                 {{ totalPages }}
-            </MuiTypography>
-            <MuiButton
+            </MetTypography>
+            <MetButton
                 xs
                 @click="currentPage += 1"
                 :disabled="currentPage + 1 === totalPages"

@@ -1,14 +1,14 @@
 <script setup lang="ts">
-import MuiTypography from "@/ui/typography/MuiTypography.vue";
+import { MetTypography } from "@metrom-xyz/ui";
 import type { CampaignSummaryBox } from "./types";
 
 defineProps<CampaignSummaryBox>();
 </script>
 <template>
     <div class="campaign_summary_box__root">
-        <MuiTypography lg class="campaign_summary_box__title">
+        <MetTypography lg class="campaign_summary_box__title">
             {{ $props.title }}
-        </MuiTypography>
+        </MetTypography>
         <slot></slot>
     </div>
 </template>

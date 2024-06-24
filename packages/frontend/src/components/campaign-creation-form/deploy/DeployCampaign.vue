@@ -9,8 +9,7 @@ import { injected } from "@wagmi/core";
 import DeployButton from "./deploy-button/DeployButton.vue";
 import SubmitButton from "../submit-button/SubmitButton.vue";
 import WalletIcon from "@/icons/WalletIcon.vue";
-import MuiButton from "@/ui/button/MuiButton.vue";
-import MuiTypography from "@/ui/typography/MuiTypography.vue";
+import { MetButton, MetTypography } from "@metrom-xyz/ui";
 import { CHAIN_DATA } from "@/commons";
 
 const props = defineProps<DeployCampaignProps>();
@@ -66,13 +65,13 @@ function handleEditOnClick() {
 </script>
 <template>
     <div class="deploy_campaign__root">
-        <MuiButton
+        <MetButton
             v-if="$props.validated && !deployed"
             sm
             @click="handleEditOnClick"
         >
-            <MuiTypography>{{ $t("campaign.deploy.edit") }}</MuiTypography>
-        </MuiButton>
+            <MetTypography>{{ $t("campaign.deploy.edit") }}</MetTypography>
+        </MetButton>
         <SubmitButton
             v-if="!account.isConnected"
             @click="handleConnectOnClick"

@@ -1,20 +1,22 @@
 <script setup lang="ts">
-import MuiTokenSelect from "@/ui/token-select/MuiTokenSelect.vue";
+import {
+    MetTokenSelect,
+    MetNumberInput,
+    MetTypography,
+    MetWarningMessage,
+} from "@metrom-xyz/ui";
 import type { RewardRowProps } from "./types";
-import MuiNumberInput from "@/ui/MuiNumberInput.vue";
 import { ref } from "vue";
 import RemoveXIcon from "@/icons/RemoveXIcon.vue";
 import { useAttrs } from "vue";
 import type { TokenInfoWithBalance } from "../types";
 import { watchEffect } from "vue";
 import { watch } from "vue";
-import MuiTypography from "@/ui/typography/MuiTypography.vue";
 import { formatUnits, parseUnits } from "viem";
 import { formatDecimals } from "sdk";
 import { useAccount } from "vevm";
 import { computed } from "vue";
 import { onUnmounted } from "vue";
-import MuiWarningMessage from "@/ui/MuiWarningMessage.vue";
 
 const props = defineProps<RewardRowProps>();
 const emits = defineEmits<{
@@ -170,7 +172,7 @@ onUnmounted(() => {
     <div class="reward_row__root">
         <div class="reward_row__wrapper">
             <div class="reward_row__token__select__wrapper">
-                <MuiTokenSelect
+                <MetTokenSelect
                     v-model="tokenModel"
                     :tokens="$props.tokens"
                     :open="open"
@@ -202,7 +204,7 @@ onUnmounted(() => {
                 />
             </div>
             <div class="reward_row__token__amount__input__wrapper">
-                <MuiNumberInput
+                <MetNumberInput
                     :placeholder="$t('campaign.rewards.amount')"
                     class="reward_row__token__amount__input"
                     v-model="amountModel"
@@ -218,27 +220,27 @@ onUnmounted(() => {
                 @click="handleRewardOnTokenRemove"
             />
         </div>
-        <MuiWarningMessage v-if="reward && reward.insufficient">
-            <MuiTypography>
+        <MetWarningMessage v-if="reward && reward.insufficient">
+            <MetTypography>
                 {{ $t("campaign.rewards.insufficientBalance.label") }}
-            </MuiTypography>
+            </MetTypography>
             <template #popover>
-                <MuiTypography>
+                <MetTypography>
                     {{
                         $t("campaign.rewards.insufficientBalance.info", {
                             symbol: reward.symbol,
                             balance: reward.balance,
                         })
                     }}
-                </MuiTypography>
+                </MetTypography>
             </template>
-        </MuiWarningMessage>
-        <MuiWarningMessage v-if="rewardRateTooLow && tokenModel?.minimumRate">
-            <MuiTypography>
+        </MetWarningMessage>
+        <MetWarningMessage v-if="rewardRateTooLow && tokenModel?.minimumRate">
+            <MetTypography>
                 {{ $t("campaign.rewards.lowRate.label") }}
-            </MuiTypography>
+            </MetTypography>
             <template #popover>
-                <MuiTypography>
+                <MetTypography>
                     {{
                         $t("campaign.rewards.lowRate.info", {
                             symbol: tokenModel.symbol.toUpperCase(),
@@ -253,9 +255,9 @@ onUnmounted(() => {
                             }),
                         })
                     }}
-                </MuiTypography>
+                </MetTypography>
             </template>
-        </MuiWarningMessage>
+        </MetWarningMessage>
     </div>
 </template>
 <style>

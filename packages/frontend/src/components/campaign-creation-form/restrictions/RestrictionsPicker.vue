@@ -3,14 +3,16 @@ import PlusCircleIcon from "@/icons/PlusCircleIcon.vue";
 import RestrictionsIcon from "@/icons/RestrictionsIcon.vue";
 import XIcon from "@/icons/XIcon.vue";
 import type { CampaignState } from "@/types";
-import MuiButton from "@/ui/button/MuiButton.vue";
-import MuiListInput from "@/ui/list-input/MuiListInput.vue";
-import type { ItemType } from "@/ui/list-input/types";
-import type { ListItem } from "@/ui/list-input/types";
-import MuiModal from "@/ui/modal/MuiModal.vue";
-import MuiTabs from "@/ui/tabs/MuiTabs.vue";
-import MuiTab from "@/ui/tabs/tab/MuiTab.vue";
-import MuiTypography from "@/ui/typography/MuiTypography.vue";
+import {
+    MetButton,
+    MetListInput,
+    type ItemType,
+    type ListItem,
+    MetModal,
+    MetTabs,
+    MetTab,
+    MetTypography,
+} from "@metrom-xyz/ui";
 import { isAddress, type Address } from "viem";
 import { watch } from "vue";
 import { ref } from "vue";
@@ -65,28 +67,28 @@ function handleApplyOnClick() {
 </script>
 <template>
     <div class="restrictions_picker__root">
-        <MuiModal :onDismiss="handleModalOnDismiss" :open="open">
+        <MetModal :onDismiss="handleModalOnDismiss" :open="open">
             <button @click="open = true" class="restrictions_picker__button">
                 <div
                     v-if="!model || model.list.length === 0"
                     class="restrictions_picker__button__content"
                 >
                     <PlusCircleIcon class="restrictions_picker__button__icon" />
-                    <MuiTypography sm medium>
+                    <MetTypography sm medium>
                         {{ $t("campaign.restrictions.add") }}
-                    </MuiTypography>
+                    </MetTypography>
                 </div>
                 <div v-else class="restrictions_picker__button__content">
                     <RestrictionsIcon
                         class="restrictions_picker__button__icon"
                     />
-                    <MuiTypography sm medium>
+                    <MetTypography sm medium>
                         {{
                             $t("campaign.restrictions.amount", {
                                 n: model.list.length,
                             })
                         }}
-                    </MuiTypography>
+                    </MetTypography>
                 </div>
             </button>
             <template #modal>
@@ -95,32 +97,32 @@ function handleApplyOnClick() {
                         @click="handleModalOnDismiss"
                         class="restrictions_picker__modal__close__icon"
                     />
-                    <MuiTypography>
+                    <MetTypography>
                         {{ $t("campaign.restrictions.overview") }}
-                    </MuiTypography>
-                    <MuiTabs @change="handleListTypeOnChange" :value="listType">
-                        <MuiTab>
+                    </MetTypography>
+                    <MetTabs @change="handleListTypeOnChange" :value="listType">
+                        <MetTab>
                             <div class="restrictions_picker__tab__content">
                                 <div
                                     class="restrictions_picker__dot restrictions_picker__dot__green"
                                 ></div>
-                                <MuiTypography medium>
+                                <MetTypography medium>
                                     {{ $t("campaign.restrictions.whitelist") }}
-                                </MuiTypography>
+                                </MetTypography>
                             </div>
-                        </MuiTab>
-                        <MuiTab>
+                        </MetTab>
+                        <MetTab>
                             <div class="restrictions_picker__tab__content">
                                 <div
                                     class="restrictions_picker__dot restrictions_picker__dot__red"
                                 ></div>
-                                <MuiTypography medium>
+                                <MetTypography medium>
                                     {{ $t("campaign.restrictions.blacklist") }}
-                                </MuiTypography>
+                                </MetTypography>
                             </div>
-                        </MuiTab>
-                    </MuiTabs>
-                    <MuiListInput
+                        </MetTab>
+                    </MetTabs>
+                    <MetListInput
                         :max="MAXIMUM_REWARDS_RESTRICTIONS"
                         :items="restrictions"
                         @change="handleAddAddress"
@@ -146,9 +148,9 @@ function handleApplyOnClick() {
                                 :onRemove="onRemove"
                             />
                         </template>
-                    </MuiListInput>
+                    </MetListInput>
                     <div class="restrictions_picker__footer">
-                        <MuiButton
+                        <MetButton
                             @click="handleApplyOnClick"
                             fill
                             :disabled="
@@ -158,11 +160,11 @@ function handleApplyOnClick() {
                             secondary
                         >
                             {{ $t("campaign.restrictions.apply") }}
-                        </MuiButton>
+                        </MetButton>
                     </div>
                 </div>
             </template>
-        </MuiModal>
+        </MetModal>
     </div>
 </template>
 <style>

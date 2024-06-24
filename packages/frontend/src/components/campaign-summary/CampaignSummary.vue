@@ -1,10 +1,12 @@
 <script setup lang="ts">
-import MuiPairRemoteLogo from "@/ui/pair-remote-logo/MuiPairRemoteLogo.vue";
 import CampaignSummaryBox from "./box/CampaignSummaryBox.vue";
 import type { CampaignSummaryProps } from "./types";
-import MuiTypography from "@/ui/typography/MuiTypography.vue";
-import MuiRemoteLogo from "@/ui/remote-logo/MuiRemoteLogo.vue";
-import MuiTextField from "@/ui/text-field/MuiTextField.vue";
+import {
+    MetPairRemoteLogo,
+    MetTypography,
+    MetRemoteLogo,
+    MetTextField,
+} from "@metrom-xyz/ui";
 
 defineProps<CampaignSummaryProps>();
 </script>
@@ -13,17 +15,17 @@ defineProps<CampaignSummaryProps>();
         <div class="campaign_summary__card">
             <CampaignSummaryBox :title="$t('campaign.summary.pool')">
                 <div class="campaign_summary__pool__box">
-                    <MuiPairRemoteLogo
+                    <MetPairRemoteLogo
                         xxl
                         :token0="$props.state.pool?.token0"
                         :token1="$props.state.pool?.token1"
                         class="campaign_summary__pair"
                     />
-                    <MuiTypography>
+                    <MetTypography>
                         {{
                             `${$props.state.pool?.token0.symbol} / ${$props.state.pool?.token1.symbol}`
                         }}
-                    </MuiTypography>
+                    </MetTypography>
                 </div>
             </CampaignSummaryBox>
             <CampaignSummaryBox :title="$t('campaign.summary.amm')">
@@ -32,9 +34,9 @@ defineProps<CampaignSummaryProps>();
                         :is="$props.state.amm?.icon"
                         class="campaign_summary__amm__icon"
                     ></component>
-                    <MuiTypography>
+                    <MetTypography>
                         {{ $props.state.amm?.label }}
-                    </MuiTypography>
+                    </MetTypography>
                 </div>
             </CampaignSummaryBox>
             <CampaignSummaryBox :title="$t('campaign.summary.rewards')">
@@ -43,22 +45,22 @@ defineProps<CampaignSummaryProps>();
                     v-for="reward in $props.state.rewards"
                     class="campaign_summary__rewards__box"
                 >
-                    <MuiRemoteLogo xxl :address="reward.token?.address" />
-                    <MuiTypography>
+                    <MetRemoteLogo xxl :address="reward.token?.address" />
+                    <MetTypography>
                         {{ reward.token?.symbol }}
-                    </MuiTypography>
-                    <MuiTypography>
+                    </MetTypography>
+                    <MetTypography>
                         {{ reward.amount }}
-                    </MuiTypography>
+                    </MetTypography>
                 </div>
             </CampaignSummaryBox>
             <CampaignSummaryBox :title="$t('campaign.summary.period')">
                 <div class="campaign_summary__period__box">
-                    <MuiTextField
+                    <MetTextField
                         :label="$t('campaign.summary.periodFrom')"
                         :value="$props.state.range?.from?.format('L HH:mm')"
                     />
-                    <MuiTextField
+                    <MetTextField
                         :label="$t('campaign.summary.periodTo')"
                         :value="$props.state.range?.to?.format('L HH:mm')"
                     />

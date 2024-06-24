@@ -1,8 +1,10 @@
 <script setup lang="ts">
-import MuiAccordionSelect from "@/ui/accordion-select/MuiAccordionSelect.vue";
-import MuiTypography from "@/ui/typography/MuiTypography.vue";
+import {
+    MetAccordionSelect,
+    type AccordionSelectOption,
+    MetTypography,
+} from "@metrom-xyz/ui";
 import type { AmmPickerTypes } from "./types";
-import type { AccordionSelectOption } from "@/ui/accordion-select/types";
 import DexIcon from "@/icons/DexIcon.vue";
 import { computed } from "vue";
 import { watchEffect } from "vue";
@@ -36,7 +38,7 @@ watchEffect(() => {
 </script>
 <template>
     <div class="amm_picker__root">
-        <MuiAccordionSelect
+        <MetAccordionSelect
             :label="$t('campaign.amm.dex')"
             :icon="DexIcon"
             :disabled="!$props.state.network"
@@ -47,9 +49,9 @@ watchEffect(() => {
                 <div class="amm_picker__network_accordion_icon_wrapper">
                     <DexIcon class="amm_picker__network_accordion_icon" />
                 </div>
-                <MuiTypography>{{ $t("campaign.amm.dex") }}</MuiTypography>
+                <MetTypography>{{ $t("campaign.amm.dex") }}</MetTypography>
             </div>
-        </MuiAccordionSelect>
+        </MetAccordionSelect>
     </div>
 </template>
 <style>

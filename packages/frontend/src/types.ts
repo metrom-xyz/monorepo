@@ -1,8 +1,7 @@
 import type { Address, ChainContract } from "viem";
 import type { Component } from "vue";
 import type { AmmSubgraphClient, Erc20Token, MetromApiClient, Pool } from "sdk";
-import type { AccordionSelectOption } from "@/ui/accordion-select/types";
-import type { Dayjs } from "dayjs";
+import type { AccordionSelectOption } from "@metrom-xyz/ui";
 import type { TokenInfoWithBalance } from "./components/campaign-creation-form/rewards/types";
 
 export interface CampaignState {
@@ -32,11 +31,6 @@ export interface Reward {
     id: string;
     token?: TokenInfoWithBalance;
     amount?: number;
-}
-
-export interface Range {
-    from?: Dayjs;
-    to?: Dayjs;
 }
 
 export interface ChainIconData {

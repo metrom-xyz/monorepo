@@ -4,10 +4,7 @@ import CupIcon from "@/icons/CupIcon.vue";
 import DexIcon from "@/icons/DexIcon.vue";
 import PoolIcon from "@/icons/PoolIcon.vue";
 import SendIcon from "@/icons/SendIcon.vue";
-import MuiCard from "@/ui/MuiCard.vue";
-import MuiStepper from "@/ui/stepper/MuiStepper.vue";
-import MuiStep from "@/ui/stepper/step/MuiStep.vue";
-import MuiTypography from "@/ui/typography/MuiTypography.vue";
+import { MetCard, MetStepper, MetStep, MetTypography } from "@metrom-xyz/ui";
 import RewardsPicker from "./rewards/RewardsPicker.vue";
 import PoolPicker from "./pool/PoolPicker.vue";
 import AmmPicker from "./amm/AmmPicker.vue";
@@ -87,8 +84,8 @@ watch(
 <template>
     <div class="campaign_creation_form__root">
         <AuthenticateUser v-show="showLogin" />
-        <MuiStepper v-show="!showLogin">
-            <MuiStep
+        <MetStepper v-show="!showLogin">
+            <MetStep
                 active
                 :step="1"
                 :title="$t('campaign.amm.title')"
@@ -97,11 +94,11 @@ watch(
                 :icon="DexIcon"
                 :disabled="readonly"
             >
-                <MuiCard :disabled="readonly">
+                <MetCard :disabled="readonly">
                     <template #title>
-                        <MuiTypography medium lg>
+                        <MetTypography medium lg>
                             {{ $t("campaign.amm.title") }}
-                        </MuiTypography>
+                        </MetTypography>
                     </template>
                     <template #content>
                         <AmmPicker
@@ -111,9 +108,9 @@ watch(
                             @error="ammStepError = $event"
                         />
                     </template>
-                </MuiCard>
-            </MuiStep>
-            <MuiStep
+                </MetCard>
+            </MetStep>
+            <MetStep
                 :step="2"
                 :title="$t('campaign.pool.title')"
                 :active="stepCursor === 2"
@@ -121,11 +118,11 @@ watch(
                 :icon="PoolIcon"
                 :disabled="readonly"
             >
-                <MuiCard :disabled="readonly">
+                <MetCard :disabled="readonly">
                     <template #title>
-                        <MuiTypography medium lg>
+                        <MetTypography medium lg>
                             {{ $t("campaign.pool.title") }}
-                        </MuiTypography>
+                        </MetTypography>
                     </template>
                     <template #content>
                         <PoolPicker
@@ -134,9 +131,9 @@ watch(
                             @complete="handleStepOnComplete"
                         />
                     </template>
-                </MuiCard>
-            </MuiStep>
-            <MuiStep
+                </MetCard>
+            </MetStep>
+            <MetStep
                 :step="3"
                 :title="$t('campaign.rewards.title')"
                 :active="stepCursor === 3"
@@ -145,12 +142,12 @@ watch(
                 :icon="CupIcon"
                 :disabled="readonly"
             >
-                <MuiCard :disabled="readonly">
+                <MetCard :disabled="readonly">
                     <template #title>
                         <div class="campaign_creation_form__restrictions">
-                            <MuiTypography medium lg>
+                            <MetTypography medium lg>
                                 {{ $t("campaign.rewards.title") }}
-                            </MuiTypography>
+                            </MetTypography>
                             <RestrictionsPicker
                                 v-model="$props.state.restrictions"
                             />
@@ -166,9 +163,9 @@ watch(
                             @error="rewardsStepError = $event"
                         />
                     </template>
-                </MuiCard>
-            </MuiStep>
-            <MuiStep
+                </MetCard>
+            </MetStep>
+            <MetStep
                 :step="4"
                 :title="$t('campaign.range.title')"
                 :active="stepCursor === 4"
@@ -177,11 +174,11 @@ watch(
                 :icon="CalendarIcon"
                 :disabled="readonly"
             >
-                <MuiCard :disabled="readonly">
+                <MetCard :disabled="readonly">
                     <template #title>
-                        <MuiTypography medium lg>
+                        <MetTypography medium lg>
                             {{ $t("campaign.range.title") }}
-                        </MuiTypography>
+                        </MetTypography>
                     </template>
                     <template #content>
                         <DatePicker
@@ -191,9 +188,9 @@ watch(
                             @error="dateRangeStepError = $event"
                         />
                     </template>
-                </MuiCard>
-            </MuiStep>
-            <MuiStep
+                </MetCard>
+            </MetStep>
+            <MetStep
                 :step="5"
                 :title="$t('campaign.deploy.title')"
                 :active="stepCursor === 5"
@@ -208,8 +205,8 @@ watch(
                     @validated="handleCampaignValidated"
                     @edited="handleCampaignEdited"
                 />
-            </MuiStep>
-        </MuiStepper>
+            </MetStep>
+        </MetStepper>
     </div>
 </template>
 <style>
