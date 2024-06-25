@@ -7,7 +7,7 @@ export interface TokenInfo {
     readonly name: string;
     readonly decimals: number;
     readonly logoURI?: string;
-    readonly minimumRate?: bigint;
+    minimumRate?: bigint;
     balance?: bigint;
 }
 
