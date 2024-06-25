@@ -45,7 +45,11 @@ defineProps<CampaignSummaryProps>();
                     v-for="reward in $props.state.rewards"
                     class="campaign_summary__rewards__box"
                 >
-                    <MetRemoteLogo xxl :address="reward.token?.address" />
+                    <MetRemoteLogo
+                        xxl
+                        :address="reward.token?.address"
+                        :defaultText="reward.token?.symbol"
+                    />
                     <MetTypography>
                         {{ reward.token?.symbol }}
                     </MetTypography>

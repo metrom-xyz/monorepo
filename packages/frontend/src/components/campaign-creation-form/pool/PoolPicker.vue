@@ -51,6 +51,8 @@ watchEffect(() => {
                     label: $t('campaign.pool.select.search.label'),
                     placeholder: $t('campaign.pool.select.search.placeholder'),
                     noPools: $t('campaign.pool.select.search.noPools'),
+                    pool: $t('campaign.pool.select.search.pool'),
+                    tvl: $t('campaign.pool.select.search.tvl'),
                 },
             }"
         />
