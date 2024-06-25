@@ -16,7 +16,7 @@ const props = withDefaults(defineProps<AccordionProps>(), {
 
 const internalExpanded = ref(false);
 const detailsVisible = computed(() =>
-    props.expanded === undefined ? internalExpanded : props.expanded,
+    props.expanded === undefined ? internalExpanded.value : props.expanded,
 );
 
 const handleExpandOnClick = (event: MouseEvent) => {

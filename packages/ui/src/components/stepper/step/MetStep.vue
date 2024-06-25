@@ -2,7 +2,7 @@
 import type { StepItemProps } from "./types";
 import MetStepPreview from "../../stepper/step-preview/MetStepPreview.vue";
 
-defineProps<StepItemProps>();
+withDefaults(defineProps<StepItemProps>(), { disabled: false });
 </script>
 <template>
     <div class="met_step__root">

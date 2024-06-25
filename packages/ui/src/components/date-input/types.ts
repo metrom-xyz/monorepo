@@ -6,7 +6,7 @@ export interface DateInputProps {
     max?: Dayjs | Date | null;
     lookupDate?: Dayjs | Date | null;
     messages: {
-        label: string;
+        label?: string;
         placeholder: string;
     };
 }

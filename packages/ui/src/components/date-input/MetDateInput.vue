@@ -58,6 +58,7 @@ onUnmounted(() => {
             <MetTextInput
                 v-model="dateText"
                 :loading="$props.loading"
+                :label="$props.messages.label"
                 :placeholder="$props.messages.placeholder"
                 :error="$props.error"
                 readonly

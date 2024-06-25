@@ -40,25 +40,31 @@ export const DatePicker: Story = {
         template: `
             <div class="flex flex-col gap-4">
                 <MetDateInput
-                    label="Date input"
-                    placeholder="Date input"
                     :onDatePick="args.handleValueOnChange"
                     :value="args.date.value"
+                    :messages="{
+                        label: 'Date input',
+                        placeholder: 'Date input'
+                    }"
                 />
                 <MetDateInput
-                    label="Date time input"
-                    placeholder="Date time input"
                     time
                     :onDatePick="args.handleValueOnChange"
                     :value="args.date.value"
+                    :messages="{
+                        label: 'Date time input',
+                        placeholder: 'Date time input'
+                    }"
                 />
                 <MetDateInput
-                    label="Date input with min valye"
-                    placeholder="Date input"
                     time
                     :min="args.minDate.value"
                     :onDatePick="args.handleValueOnChange"
                     :value="args.date.value"
+                    :messages="{
+                        label: 'Date input with min value',
+                        placeholder: 'Date input'
+                    }"
                 />
             </div>
         `,
