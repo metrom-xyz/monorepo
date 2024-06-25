@@ -6,8 +6,7 @@ import {
 } from "@metrom-xyz/ui";
 import type { AmmPickerTypes } from "./types";
 import DexIcon from "@/icons/DexIcon.vue";
-import { computed } from "vue";
-import { watchEffect } from "vue";
+import { computed, watchEffect } from "vue";
 import { CHAIN_DATA } from "@/commons";
 
 const props = defineProps<AmmPickerTypes>();

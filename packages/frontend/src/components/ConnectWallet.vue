@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import MetButton from "@metrom-xyz/ui";
+import { MetButton } from "@metrom-xyz/ui";
 import { injected } from "@wagmi/core";
 import { useConnect } from "vevm";
 
