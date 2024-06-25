@@ -51,6 +51,8 @@ export const messages = {
                         label: "Select pool",
                         placeholder: "Search for token address, pool etc",
                         noPools: "Nothing here.",
+                        pool: "Pool",
+                        tvl: "TVL",
                     },
                 },
             },
