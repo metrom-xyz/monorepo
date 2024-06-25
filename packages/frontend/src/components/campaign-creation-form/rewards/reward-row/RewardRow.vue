@@ -4,12 +4,12 @@ import {
     MetNumberInput,
     MetTypography,
     MetWarningMessage,
+    type TokenInfo,
 } from "@metrom-xyz/ui";
 import type { RewardRowProps } from "./types";
 import { ref } from "vue";
 import RemoveXIcon from "@/icons/RemoveXIcon.vue";
 import { useAttrs } from "vue";
-import type { TokenInfoWithBalance } from "../types";
 import { watchEffect } from "vue";
 import { watch } from "vue";
 import { formatUnits, parseUnits } from "viem";
@@ -24,7 +24,7 @@ const emits = defineEmits<{
     rewardRateTooLow: [address: string, value: boolean];
     searchQueryChange: [query?: string];
 }>();
-const tokenModel = defineModel<TokenInfoWithBalance>("token");
+const tokenModel = defineModel<TokenInfo>("token");
 const amountModel = defineModel<number>("amount");
 
 const account = useAccount();

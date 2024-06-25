@@ -5,20 +5,20 @@ import { isChainSupported } from "@/utils/chain";
 import { useAccount, useSwitchChain } from "vevm";
 import { computed } from "vue";
 import { useRouter } from "vue-router";
+import type { SupportedChain } from "sdk";
 
 const account = useAccount();
 const router = useRouter();
 const { switchChain } = useSwitchChain();
 
-const SUPPORTED_CHAIN_OPTIONS = computed(() => {
+const SUPPORTED_CHAIN_OPTIONS = computed<SelectOption<SupportedChain>[]>(() => {
     return SUPPORTED_CHAINS.map((chain) => ({
         label: chain.name,
         value: chain.id,
-        icon: CHAIN_DATA[chain.id].icon.logo,
     }));
 });
 
-async function handleNetworkOnChange(option: SelectOption<number>) {
+async function handleNetworkOnChange(option: SelectOption<SupportedChain>) {
     try {
         await account.value.connector?.switchChain?.({ chainId: option.value });
         switchChain({ chainId: option.value });
@@ -50,12 +50,16 @@ async function handleNetworkOnChange(option: SelectOption<number>) {
                 ) || null
             "
             :icon="
-                SUPPORTED_CHAIN_OPTIONS.find(
-                    (chain) =>
-                        chain.value === Number($route.query.chain?.toString()),
-                )?.icon || undefined
+                CHAIN_DATA[
+                    Number($route.query.chain?.toString()) as SupportedChain
+                ]?.icon.logo || undefined
             "
-            @change="handleNetworkOnChange"
+            @change="
+                (option) =>
+                    handleNetworkOnChange(
+                        option as SelectOption<SupportedChain>,
+                    )
+            "
             class="chain_select"
         >
             <template #option="{ option }">
@@ -64,7 +68,9 @@ async function handleNetworkOnChange(option: SelectOption<number>) {
                     :class="{ chain_select__option_selected: option.selected }"
                 >
                     <component
-                        :is="option.icon"
+                        :is="
+                            CHAIN_DATA[option.value as SupportedChain].icon.logo
+                        "
                         class="chain_select__option__icon"
                     >
                     </component>
