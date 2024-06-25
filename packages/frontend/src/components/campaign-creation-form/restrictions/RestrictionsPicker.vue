@@ -6,7 +6,7 @@ import type { CampaignState } from "@/types";
 import {
     MetButton,
     MetListInput,
-    type ItemType,
+    type ListItemType,
     type ListItem,
     MetModal,
     MetTabs,
@@ -51,7 +51,7 @@ function handleAddAddress(addresses: ListItem<Address>[]) {
     restrictions.value = addresses;
 }
 
-function validateAddress(address: ItemType) {
+function validateAddress(address: ListItemType) {
     return isAddress(address as string) ? "" : "Not a valid address";
 }
 
@@ -125,7 +125,10 @@ function handleApplyOnClick() {
                     <MetListInput
                         :max="MAXIMUM_REWARDS_RESTRICTIONS"
                         :items="restrictions"
-                        @change="handleAddAddress"
+                        @change="
+                            (item) =>
+                                handleAddAddress(item as ListItem<Address>[])
+                        "
                         :validate="validateAddress"
                         :messages="{
                             placeholder: $t(
@@ -144,7 +147,7 @@ function handleApplyOnClick() {
                     >
                         <template #item="{ item, onRemove }">
                             <RestrictionRow
-                                :address="item.value"
+                                :address="item.value as Address"
                                 :onRemove="onRemove"
                             />
                         </template>

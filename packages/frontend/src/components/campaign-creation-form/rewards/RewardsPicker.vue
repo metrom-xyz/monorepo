@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { RewardsPickerTypes, TokenInfoWithBalance } from "./types";
+import type { RewardsPickerTypes } from "./types";
 import { watchEffect, watch } from "vue";
 import PlusCircleIcon from "@/icons/PlusCircleIcon.vue";
 import RewardRow from "./reward-row/RewardRow.vue";
@@ -10,6 +10,7 @@ import { ref } from "vue";
 import { useWhitelistedRewardTokens } from "@/composables/useWhitelistedRewardTokens";
 import { CHAIN_DATA } from "@/commons";
 import { watchDebounced } from "@vueuse/core";
+import type { TokenInfo } from "@metrom-xyz/ui";
 
 const props = defineProps<RewardsPickerTypes>();
 const emits = defineEmits<{
@@ -24,7 +25,7 @@ const block = ref(0n);
 const tokenSearchQuery = ref();
 const rewardsWithInsufficientBalance = ref<string[]>([]);
 const rewardsWithRateTooLow = ref<string[]>([]);
-const tokensWithBalance = ref<TokenInfoWithBalance[]>([]);
+const tokensWithBalance = ref<TokenInfo[]>([]);
 const debouncedLoadingBalances = ref(false);
 
 const { loading: loadingWhitelistedTokens, whitelistedTokens } =
@@ -67,7 +68,7 @@ watch([block, balances, whitelistedTokens], () => {
     if (!balances.value || !whitelistedTokens.value) return;
 
     const tokensInChainWithBalance = whitelistedTokens.value.reduce(
-        (accumulator: Record<string, TokenInfoWithBalance>, token, i) => {
+        (accumulator: Record<string, TokenInfo>, token, i) => {
             if (!balances.value?.[i]) return accumulator;
 
             const rawBalance = balances.value[i];
