@@ -13,6 +13,11 @@ const resolvedDefaultText = computed(() =>
         : "?",
 );
 
+const resolvedSrc = computed(() => {
+    if (!props.address || !props.chain) return "";
+    return `https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/${props.chain}/assets/${props.address}/logo.png`;
+});
+
 const fallback = ref(false);
 </script>
 <template>
@@ -29,7 +34,7 @@ const fallback = ref(false);
         <CuiSkeleton circular class="cui_remote_logo__skeleton" width="100%" />
         <img
             class="cui_remote_logo__img"
-            :src="props.src"
+            :src="resolvedSrc"
             @error="fallback = true"
         />
     </div>
