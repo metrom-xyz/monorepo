@@ -16,11 +16,11 @@ export const RemoteLogo: Story = {
         components: { MetRemoteLogo },
         template: `
             <div class="flex flex-col gap-4">
-                <MetRemoteLogo src="https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0x6B175474E89094C44Da98b954EedeAC495271d0F/logo.png"/>
-                <MetRemoteLogo :src="['https://foo.bar']"/>
-                <MetRemoteLogo src="https://picsum.photos/200"/>
+                <MetRemoteLogo address="0x6B175474E89094C44Da98b954EedeAC495271d0F" chain="ethereum" />
+                <MetRemoteLogo address="foo" />
+                <MetRemoteLogo address="https://picsum.photos/200"/>
                 <MetRemoteLogo />
-                <MetRemoteLogo :src="['https://foo.bar']" defaultText="FOO" />
+                <MetRemoteLogo :address="['https://foo.bar']" defaultText="FOO" />
             </div>
         `,
     }),
