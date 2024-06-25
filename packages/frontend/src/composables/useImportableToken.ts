@@ -1,6 +1,5 @@
 import { type Address, erc20Abi } from "viem";
 import { getBalance, readContracts } from "@wagmi/core";
-import type { TokenInfoWithBalance } from "@/components/campaign-creation-form/rewards/types";
 import {
     ref,
     type MaybeRefOrGetter,
@@ -10,6 +9,7 @@ import {
 } from "vue";
 import { useChainId, useWagmiConfig } from "vevm";
 import { isAddress } from "viem/utils";
+import type { TokenInfo } from "@metrom-xyz/ui";
 
 export interface UseImportableTokenParams {
     debouncedQuery?: string;
@@ -20,7 +20,7 @@ export interface UseImportableTokenParams {
 export interface UseImportableTokenReturnType {
     loading: Ref<boolean>;
     error: Ref<Error | undefined>;
-    token: Ref<TokenInfoWithBalance | undefined>;
+    token: Ref<TokenInfo | undefined>;
 }
 
 export const useImportableToken = (
@@ -28,7 +28,7 @@ export const useImportableToken = (
 ): UseImportableTokenReturnType => {
     const loading = ref(false);
     const error = ref<Error | undefined>();
-    const token = ref<TokenInfoWithBalance | undefined>();
+    const token = ref<TokenInfo | undefined>();
 
     const chainId = useChainId();
     const config = useWagmiConfig();
