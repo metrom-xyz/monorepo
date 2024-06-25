@@ -21,35 +21,40 @@ export const Accordion: Story = {
         },
         template: `
             <div>
-                <MetAccordion summary="First accordion">
+                <MetAccordion>
+                    <template #summary>First accordion</template>
                     <MetTypography sm>
                         Lorem ipsum dolor sit amet, consectetur adipiscing elit.
                         Suspendisse malesuada lacus ex, sit amet blandit leo
                         lobortis eget.
                     </MetTypography>
                 </MetAccordion>
-                <MetAccordion summary="Second accordion">
+                <MetAccordion>
+                    <template #summary>Second accordion</template>
                     <MetTypography sm>
                         Lorem ipsum dolor sit amet, consectetur adipiscing elit.
                         Suspendisse malesuada lacus ex, sit amet blandit leo
                         lobortis eget.
                     </MetTypography>
                 </MetAccordion>
-                <MetAccordion summary="Third accordion">
+                <MetAccordion>
+                    <template #summary>Third accordion</template>
                     <MetTypography sm>
                         Lorem ipsum dolor sit amet, consectetur adipiscing elit.
                         Suspendisse malesuada lacus ex, sit amet blandit leo
                         lobortis eget.
                     </MetTypography>
                 </MetAccordion>
-                <MetAccordion summary="Fourth accordion">
+                <MetAccordion>
+                    <template #summary>Fourth accordion</template>
                     <MetTypography sm>
                         Lorem ipsum dolor sit amet, consectetur adipiscing elit.
                         Suspendisse malesuada lacus ex, sit amet blandit leo
                         lobortis eget.
                     </MetTypography>
                 </MetAccordion>
-                <MetAccordion summary="Fifth accordion">
+                <MetAccordion>
+                    <template #summary>Fifth accordion</template>
                     <MetTypography sm>
                         Lorem ipsum dolor sit amet, consectetur adipiscing elit.
                         Suspendisse malesuada lacus ex, sit amet blandit leo

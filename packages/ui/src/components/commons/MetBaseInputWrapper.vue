@@ -2,8 +2,10 @@
 import MetTypography from "../typography/MetTypography.vue";
 import MetErrorText from "../error-text/MetErrorText.vue";
 import type { BaseInputWrapperProps } from "./types";
-import { useAttrs } from "vue";
+import { ref, useAttrs } from "vue";
 import type { Component } from "vue";
+import MetPopover from "../popover/MetPopover.vue";
+import MetInfoIcon from "../../icons/InfoIcon.vue";
 
 defineOptions({
     inheritAttrs: false,
@@ -17,6 +19,8 @@ defineSlots<{
 defineProps<BaseInputWrapperProps>();
 
 const attrs = useAttrs();
+
+const popover = ref(false);
 </script>
 <template>
     <div class="met_base_input_wrapper__root">
@@ -28,6 +32,20 @@ const attrs = useAttrs();
             <MetTypography class="met_base_input_wrapper__label__text">
                 {{ $props.label }}
             </MetTypography>
+            <MetPopover v-if="!!$props.info" :open="popover">
+                <MetInfoIcon
+                    class="met_base_input_wrapper__info__icon"
+                    @mouseenter="popover = true"
+                    @mouseleave="popover = false"
+                />
+                <template #popover>
+                    <div class="met_base_input_wrapper__info__popover">
+                        <MetTypography>
+                            {{ $props.info }}
+                        </MetTypography>
+                    </div>
+                </template>
+            </MetPopover>
         </label>
         <div
             class="met_base_input_wrapper__container"
@@ -90,11 +108,11 @@ const attrs = useAttrs();
     @apply flex items-center gap-1.5 w-fit mb-2.5 ml-4;
 }
 
-.met_base_input_wrapper__info_icon {
+.met_base_input_wrapper__info__icon {
     @apply w-4 h-4 text-black;
 }
 
-.met_base_input_wrapper__info_popover {
+.met_base_input_wrapper__info__popover {
     @apply px-3 py-2;
 }
 
@@ -143,7 +161,7 @@ const attrs = useAttrs();
 }
 
 .met_base_input_wrapper__container__error > input {
-    @apply border-yellow;
+    @apply border-red-light focus:border-red-light;
 }
 
 .met_base_input_wrapper__container__loading {
@@ -176,10 +194,6 @@ const attrs = useAttrs();
 
 .met_base_input_wrapper__action {
     @apply absolute top-0 h-full flex justify-center items-center;
-}
-
-.met_base_input_wrapper__error_text {
-    @apply text-red-light;
 }
 
 /* customize children styles */

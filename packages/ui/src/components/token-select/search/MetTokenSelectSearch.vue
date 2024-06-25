@@ -96,7 +96,9 @@ onMounted(() => {
                 </div>
             </div>
             <div
-                v-else-if="list.length > 0"
+                v-else-if="
+                    !loadingTokens && !loadingBalances && list.length > 0
+                "
                 v-bind="wrapperProps"
                 class="met_token_select_search__list__wrapper"
             >
