@@ -9,7 +9,8 @@ export default {
         },
         colors: {
             gray: {
-                600: "#656363",
+                700: "#656363",
+                600: "#999",
                 500: "#DEDEDE",
                 400: "#E6E6E6",
                 300: "#E7E7E7",
@@ -61,6 +62,7 @@ export default {
                 dots:
                     "radial-gradient(circle, rgba(0, 0, 0, 0.08) 1.8px, transparent 1px), " +
                     "radial-gradient(circle, rgba(0, 0, 0, 0.08) 1.8px, transparent 1px)",
+                "hero-background": "url(/hero-background.png)",
             },
         },
     },

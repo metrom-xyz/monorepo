@@ -25,6 +25,7 @@ defineExpose({ element });
         class="met_typography__root"
         :class="{
             met_typography__root__upper: $props.uppercase,
+            met_typography__root__normal: $props.normal,
             met_typography__root__medium: $props.medium,
             met_typography__root__bold: $props.bold,
             met_typography__root__xs: $props.xs,
@@ -81,8 +82,12 @@ defineExpose({ element });
     @apply text-h4;
 }
 
-.met_typography__root__medium {
+.met_typography__root__normal {
     @apply font-normal;
+}
+
+.met_typography__root__medium {
+    @apply font-medium;
 }
 
 .met_typography__root__bold {

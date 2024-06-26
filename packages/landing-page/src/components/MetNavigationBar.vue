@@ -1,0 +1,56 @@
+<script setup lang="ts">
+import MetromLogo from "../assets/MetromLogo.vue";
+import ExternalIcon from "../assets/icons/MetExternalIcon.vue";
+import { MetTypography, MetButton } from "@metrom-xyz/ui";
+</script>
+<template>
+    <header class="navigation_bar__root">
+        <nav class="navigation_bar__wrapper">
+            <MetromLogo class="navigation_bar__logo" />
+            <div class="navigation_bar__links">
+                <div class="navigation_bar__link">
+                    <div class="navigation_bar__dot"></div>
+                    <MetTypography medium lg>Features</MetTypography>
+                </div>
+                <div class="navigation_bar__link">
+                    <div class="navigation_bar__dot"></div>
+                    <MetTypography medium lg>Deep dive</MetTypography>
+                </div>
+                <div class="navigation_bar__link">
+                    <div class="navigation_bar__dot"></div>
+                    <MetTypography medium lg>FAQ</MetTypography>
+                </div>
+            </div>
+            <MetButton sm :icon="ExternalIcon">Launch dapp</MetButton>
+        </nav>
+    </header>
+</template>
+<style>
+.navigation_bar__root {
+    @apply w-full h-20 flex justify-center;
+}
+
+.navigation_bar__wrapper {
+    @apply w-1/2 flex items-center justify-between;
+}
+
+.navigation_bar__logo {
+    @apply h-8 w-36;
+}
+
+.navigation_bar__links {
+    @apply flex items-center gap-10;
+}
+
+.navigation_bar__link {
+    @apply flex items-center gap-2;
+}
+
+.navigation_bar__dot {
+    @apply h-2 w-2 rounded-full bg-gray-600;
+}
+
+.navigation_bar__dot__green {
+    @apply bg-green;
+}
+</style>
