@@ -4,7 +4,7 @@ import HatsFinanceLogo from "../assets/HatsFinanceLogo.vue";
 
 const AUDITS = [
     {
-        component: "Contracts",
+        component: "audits.contracts",
         auditor: "Hats Finance",
         logo: HatsFinanceLogo,
     },
@@ -12,7 +12,7 @@ const AUDITS = [
 </script>
 <template>
     <div class="audits__root">
-        <MetTypography xl bold>Audits</MetTypography>
+        <MetTypography xl bold>{{ $t("audits.title") }}</MetTypography>
         <div class="audits__wrapper">
             <MetCard :key="index" v-for="(audit, index) in AUDITS">
                 <template #content>
@@ -21,7 +21,9 @@ const AUDITS = [
                             :is="audit.logo"
                             class="audits__auditor__logo"
                         ></component>
-                        <MetTypography lg>{{ audit.component }}</MetTypography>
+                        <MetTypography lg>
+                            {{ $t(audit.component) }}
+                        </MetTypography>
                         <MetTypography>{{ audit.auditor }}</MetTypography>
                     </div>
                 </template>

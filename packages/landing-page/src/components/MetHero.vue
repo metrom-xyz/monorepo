@@ -11,14 +11,13 @@ import ExternalIcon from "../assets/icons/MetExternalIcon.vue";
             </div>
             <div class="hero__text">
                 <MetTypography h1 class="hero__text__title">
-                    Design your incentives
+                    {{ $t("hero.title") }}
                 </MetTypography>
                 <MetTypography h3 normal class="hero__text__subtitle">
-                    Attract liquidity providers by tailoring rewards to meet
-                    your specific goals.
+                    {{ $t("hero.description") }}
                 </MetTypography>
                 <MetButton secondary :icon="ExternalIcon">
-                    Create campaign
+                    {{ $t("hero.create") }}
                 </MetButton>
             </div>
         </div>

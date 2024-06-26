@@ -33,7 +33,6 @@ import MetFeatures from "./components/MetFeatures/MetFeatures.vue";
     @apply max-w-[1920px]
         w-full
         flex
-        items-center
         flex-col
         sm:gap-16;
 }
