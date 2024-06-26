@@ -1,6 +1,6 @@
 export const messages = {
     en: {
-        toolbar: {
+        navigation: {
             features: "Features",
             deepDive: "Deep dive",
             faq: "FAQ",

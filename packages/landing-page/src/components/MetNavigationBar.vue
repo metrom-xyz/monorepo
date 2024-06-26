@@ -11,24 +11,24 @@ import { MetTypography, MetButton } from "@metrom-xyz/ui";
                 <div class="navigation_bar__link">
                     <div class="navigation_bar__dot"></div>
                     <MetTypography medium lg>
-                        {{ $t("toobar.features") }}
+                        {{ $t("navigation.features") }}
                     </MetTypography>
                 </div>
                 <div class="navigation_bar__link">
                     <div class="navigation_bar__dot"></div>
                     <MetTypography medium lg>
-                        {{ $t("toobar.deepDive") }}
+                        {{ $t("navigation.deepDive") }}
                     </MetTypography>
                 </div>
                 <div class="navigation_bar__link">
                     <div class="navigation_bar__dot"></div>
                     <MetTypography medium lg>
-                        {{ $t("toobar.faq") }}
+                        {{ $t("navigation.faq") }}
                     </MetTypography>
                 </div>
             </div>
             <MetButton sm :icon="ExternalIcon">
-                {{ $t("toolbar.launchDapp") }}
+                {{ $t("navigation.launchDapp") }}
             </MetButton>
         </nav>
     </header>
