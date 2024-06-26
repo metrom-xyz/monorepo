@@ -26,7 +26,7 @@ import ExternalIcon from "../assets/icons/MetExternalIcon.vue";
 </template>
 <style>
 .hero__root {
-    @apply w-full flex justify-center;
+    @apply w-full flex justify-center mb-14;
 }
 
 .hero__wrapper {
@@ -47,7 +47,7 @@ import ExternalIcon from "../assets/icons/MetExternalIcon.vue";
         flex-col
         sm:flex
         gap-4
-        mb-10;
+        mb-16;
 }
 
 .hero__text__title {
@@ -69,11 +69,9 @@ import ExternalIcon from "../assets/icons/MetExternalIcon.vue";
 }
 
 .hero__image__foreground {
-    @apply w-[266px]
-        sm:w-full
+    @apply w-full
         h-[512px]
         sm:h-[850px]
-        left-6
         sm:left-0
         -top-16
         sm:-top-14
