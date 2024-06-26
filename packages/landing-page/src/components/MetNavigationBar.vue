@@ -31,7 +31,7 @@ import { MetTypography, MetButton } from "@metrom-xyz/ui";
 }
 
 .navigation_bar__wrapper {
-    @apply w-1/2 flex items-center justify-between;
+    @apply w-full flex items-center justify-between;
 }
 
 .navigation_bar__logo {
@@ -39,7 +39,11 @@ import { MetTypography, MetButton } from "@metrom-xyz/ui";
 }
 
 .navigation_bar__links {
-    @apply flex items-center gap-10;
+    @apply hidden
+        md:flex
+        items-center
+        justify-between
+        gap-10;
 }
 
 .navigation_bar__link {
