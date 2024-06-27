@@ -19,7 +19,6 @@ defineProps<FeatureProps>();
 .feature__root {
     @apply flex
         flex-col-reverse
-        max-w-[900px]
         sm:flex-row
         sm:even:flex-row-reverse
         sm:[&>div]:even:ml-44
@@ -31,8 +30,8 @@ defineProps<FeatureProps>();
 .feature__image {
     @apply w-full
         h-full
-        max-w-[406px]
-        max-h-[340px]
+        sm:w-[520px]
+        sm:h-[340px]
         rounded-[50px];
 }
 

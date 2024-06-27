@@ -6,9 +6,6 @@ import ExternalIcon from "../assets/icons/MetExternalIcon.vue";
 <template>
     <div class="hero__root">
         <div class="hero__wrapper">
-            <div class="hero__image__background">
-                <HeroForeground class="hero__image__foreground" />
-            </div>
             <div class="hero__text">
                 <MetTypography h1 class="hero__text__title">
                     {{ $t("hero.title") }}
@@ -19,6 +16,9 @@ import ExternalIcon from "../assets/icons/MetExternalIcon.vue";
                 <MetButton secondary :icon="ExternalIcon">
                     {{ $t("hero.create") }}
                 </MetButton>
+            </div>
+            <div class="hero__image__background">
+                <HeroForeground class="hero__image__foreground" />
             </div>
         </div>
     </div>
@@ -31,9 +31,10 @@ import ExternalIcon from "../assets/icons/MetExternalIcon.vue";
 .hero__wrapper {
     @apply w-full
         flex
-        flex-col-reverse
+        flex-col
+        justify-between
         gap-5
-        sm:flex-row-reverse
+        sm:flex-row
         sm:gap-16
         items-center;
 }
