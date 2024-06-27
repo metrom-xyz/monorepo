@@ -21,7 +21,7 @@ const FEATURES = [
 ];
 </script>
 <template>
-    <div class="features__root">
+    <section id="features" class="features__root">
         <MetFeature
             :key="index"
             v-for="(feature, index) in FEATURES"
@@ -29,7 +29,7 @@ const FEATURES = [
             :description="feature.description"
             :image="feature.image"
         />
-    </div>
+    </section>
 </template>
 <style>
 .features__root {

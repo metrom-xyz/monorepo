@@ -2,7 +2,11 @@
 import MetNavigationBar from "./components/MetNavigationBar.vue";
 import MetHero from "./components/MetHero.vue";
 import MetAudits from "./components/MetAudits.vue";
-import MetFeatures from "./components/MetFeatures/MetFeatures.vue";
+import MetFeatures from "./components/features/MetFeatures.vue";
+import MetPartners from "./components/MetPartners.vue";
+import MetDeepDive from "./components/MetDeepDive.vue";
+import MetFaqs from "./components/faqs/MetFaqs.vue";
+import MetSocials from "./components/MetSocials.vue";
 </script>
 <template>
     <div class="app__container">
@@ -12,6 +16,10 @@ import MetFeatures from "./components/MetFeatures/MetFeatures.vue";
                 <MetHero />
                 <MetAudits />
                 <MetFeatures />
+                <MetPartners />
+                <MetDeepDive />
+                <MetFaqs />
+                <MetSocials />
             </div>
         </div>
     </div>
@@ -38,6 +46,7 @@ import MetFeatures from "./components/MetFeatures/MetFeatures.vue";
 }
 
 .app__content {
-    @apply flex flex-col gap-12 sm:gap-24;
+    @apply flex flex-col gap-12 items-center sm:gap-24;
 }
 </style>
+./components/features/MetFeatures.vue

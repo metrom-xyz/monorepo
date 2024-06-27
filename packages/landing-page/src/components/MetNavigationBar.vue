@@ -8,24 +8,24 @@ import { MetTypography, MetButton } from "@metrom-xyz/ui";
         <nav class="navigation_bar__wrapper">
             <MetromLogo class="navigation_bar__logo" />
             <div class="navigation_bar__links">
-                <div class="navigation_bar__link">
+                <a href="#features" class="navigation_bar__link">
                     <div class="navigation_bar__dot"></div>
                     <MetTypography medium lg>
                         {{ $t("navigation.features") }}
                     </MetTypography>
-                </div>
-                <div class="navigation_bar__link">
+                </a>
+                <a href="#deepDive" class="navigation_bar__link">
                     <div class="navigation_bar__dot"></div>
                     <MetTypography medium lg>
                         {{ $t("navigation.deepDive") }}
                     </MetTypography>
-                </div>
-                <div class="navigation_bar__link">
+                </a>
+                <a href="#faq" class="navigation_bar__link">
                     <div class="navigation_bar__dot"></div>
                     <MetTypography medium lg>
                         {{ $t("navigation.faq") }}
                     </MetTypography>
-                </div>
+                </a>
             </div>
             <MetButton sm :icon="ExternalIcon">
                 {{ $t("navigation.launchDapp") }}
