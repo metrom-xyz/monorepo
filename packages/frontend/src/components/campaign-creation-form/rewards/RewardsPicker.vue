@@ -8,7 +8,7 @@ import { erc20Abi, type Address } from "viem";
 import { computed } from "vue";
 import { ref } from "vue";
 import { useWhitelistedRewardTokens } from "@/composables/useWhitelistedRewardTokens";
-import { CHAIN_DATA } from "@/commons";
+import { CHAIN_DATA, REWARD_TOKEN_ICONS } from "@/commons";
 import { watchDebounced } from "@vueuse/core";
 import type { TokenInfo } from "@metrom-xyz/ui";
 
@@ -89,7 +89,13 @@ watch([block, balances, whitelistedTokens], () => {
             tokensInChainWithBalance[
                 `${token.address.toLowerCase()}-${token.chainId}`
             ];
-        return tokenWithBalance || token;
+        return {
+            ...(tokenWithBalance || token),
+            logoURI:
+                REWARD_TOKEN_ICONS[props.state.network][
+                    token.address.toLowerCase() as Address
+                ],
+        };
     });
 });
 

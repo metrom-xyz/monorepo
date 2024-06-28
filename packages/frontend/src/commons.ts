@@ -4,7 +4,7 @@ import {
     SupportedAmm,
     type Erc20Token,
 } from "sdk";
-import { type Transport, http, type Chain } from "viem";
+import { type Transport, http, type Chain, type Address } from "viem";
 import { celoAlfajores, holesky } from "viem/chains";
 import { type Amm } from "./types";
 import MuiEthIcon from "./icons/EthIcon.vue";
@@ -75,6 +75,30 @@ export const BASE_CHAIN_TOKENS: Record<SupportedChain, Erc20Token[]> = {
             symbol: "USDT",
         },
     ],
+};
+
+export const REWARD_TOKEN_ICONS: Record<
+    SupportedChain,
+    Record<Address, string>
+> = {
+    [SupportedChain.Holesky]: {
+        "0x94373a4919b3240d86ea41593d5eba789fef3848":
+            "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png",
+        "0x0fe5a93b63accf31679321dd0daf341c037a1187":
+            "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0x6B175474E89094C44Da98b954EedeAC495271d0F/logo.png",
+        "0xa5ba8636a78bbf1910430d0368c0175ef5a1845b":
+            "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48/logo.png",
+    },
+    [SupportedChain.CeloAlfajores]: {
+        "0xf194afdf50b03e69bd7d057c1aa9e10c9954e4c9":
+            "https://assets.coingecko.com/coins/images/11090/standard/InjXBNx9_400x400.jpg?1696511031",
+        "0x10c892a6ec43a53e45d0b916b4b7d383b1b78c0f":
+            "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/celo/assets/0xD8763CBa276a3738E6DE85b4b3bF5FDed6D6cA73/logo.png",
+        "0x2043d9aa54e333c52db22a8afbfcbdce35958f42":
+            "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0x6B175474E89094C44Da98b954EedeAC495271d0F/logo.png",
+        "0x22d8655b405f6a8d6bb7c5838aaf187a32158b07":
+            "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48/logo.png",
+    },
 };
 
 export const SUPPORTED_AMMS: Record<SupportedChain, Amm[]> = {

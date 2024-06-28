@@ -14,6 +14,7 @@ const resolvedDefaultText = computed(() =>
 );
 
 const resolvedSrc = computed(() => {
+    if (props.src) return props.src;
     if (!props.address || !props.chain) return "";
     return `https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/${props.chain}/assets/${props.address}/logo.png`;
 });
