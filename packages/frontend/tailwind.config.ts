@@ -1,9 +1,10 @@
 import { type Config } from "tailwindcss";
-import preset from "./tailwind.preset";
+import metPreset from "@metrom-xyz/ui/tailwind.preset";
+
 
 const config: Config = {
     content: ["./src/**/*.{js,ts,vue}"],
-    presets: [preset],
+    presets: [metPreset],
 };
 
 export default config;

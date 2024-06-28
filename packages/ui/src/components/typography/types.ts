@@ -10,7 +10,8 @@ export interface TextSizes {
 }
 
 export interface TypographyProps extends TextSizes {
-    bold?: boolean;
+    normal?: boolean;
     medium?: boolean;
+    bold?: boolean;
     uppercase?: boolean;
 }

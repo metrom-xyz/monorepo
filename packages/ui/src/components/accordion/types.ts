@@ -5,4 +5,5 @@ export interface AccordionProps {
     expanded?: boolean;
     disabled?: boolean;
     expandIcon?: Component;
+    activeBorder?: boolean;
 }
