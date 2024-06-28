@@ -86,7 +86,7 @@ importers:
     dependencies:
       '@graphprotocol/graph-cli':
         specifier: 0.69.1
-        version: 0.69.1(@types/node@20.14.8)(bufferutil@4.0.8)(encoding@0.1.13)(node-fetch@2.7.0(encoding@0.1.13))(typescript@5.5.2)
+        version: 0.69.1(@types/node@20.14.8)(bufferutil@4.0.8)(encoding@0.1.13)(node-fetch@3.3.2)(typescript@5.5.2)
       '@graphprotocol/graph-ts':
         specifier: 0.34.0
         version: 0.34.0
@@ -123,7 +123,7 @@ importers:
     dependencies:
       '@graphprotocol/graph-cli':
         specifier: 0.68.5
-        version: 0.68.5(@types/node@20.14.8)(bufferutil@4.0.8)(encoding@0.1.13)(node-fetch@2.7.0(encoding@0.1.13))(typescript@5.5.2)
+        version: 0.68.5(@types/node@20.14.8)(bufferutil@4.0.8)(encoding@0.1.13)(node-fetch@3.3.2)(typescript@5.5.2)
       '@graphprotocol/graph-ts':
         specifier: 0.32.0
         version: 0.32.0
@@ -165,8 +165,8 @@ importers:
         specifier: ^5.0.18
         version: 5.0.18
       '@metrom-xyz/contracts':
-        specifier: ^0.10.1
-        version: 0.10.1(bufferutil@4.0.8)(typescript@5.5.2)(utf-8-validate@6.0.4)
+        specifier: ^0.11.0
+        version: 0.11.0(bufferutil@4.0.8)(typescript@5.5.2)(utf-8-validate@6.0.4)
       '@metrom-xyz/ui':
         specifier: workspace:*
         version: link:../ui
@@ -374,8 +374,8 @@ importers:
   packages/sdk:
     dependencies:
       '@metrom-xyz/contracts':
-        specifier: ^0.10.1
-        version: 0.10.1(bufferutil@4.0.8)(typescript@5.5.2)(utf-8-validate@6.0.4)
+        specifier: ^0.11.0
+        version: 0.11.0(bufferutil@4.0.8)(typescript@5.5.2)(utf-8-validate@6.0.4)
       tiny-invariant:
         specifier: ^1.3.3
         version: 1.3.3
@@ -425,7 +425,7 @@ importers:
     devDependencies:
       '@metrom-xyz/contracts':
         specifier: ^0.11.0
-        version: 0.11.0(bufferutil@4.0.8)(typescript@5.5.2)
+        version: 0.11.0(bufferutil@4.0.8)(typescript@5.5.2)(utf-8-validate@6.0.4)
       '@types/node':
         specifier: ^20.14.1
         version: 20.14.8
@@ -603,7 +603,7 @@ importers:
     dependencies:
       '@graphprotocol/graph-cli':
         specifier: 0.69.1
-        version: 0.69.1(@types/node@20.14.8)(bufferutil@4.0.8)(encoding@0.1.13)(node-fetch@2.7.0(encoding@0.1.13))(typescript@5.5.2)
+        version: 0.69.1(@types/node@20.14.8)(bufferutil@4.0.8)(encoding@0.1.13)(node-fetch@3.3.2)(typescript@5.5.2)
       '@graphprotocol/graph-ts':
         specifier: 0.34.0
         version: 0.34.0
@@ -2159,9 +2159,6 @@ packages:
     resolution: {integrity: sha512-dbIc3C7alOe0agCuBHM1h71UaEaEqOk2W8rAtEn8QGz4haH2Qq7MoK6i7v2guzvkJVVh79c+QCzIqphC3KvrJg==}
     engines: {node: '>=16.0.0'}
 
-  '@metrom-xyz/contracts@0.10.1':
-    resolution: {integrity: sha512-jTrLnejdVzpmbd5FWryGZvTya/g57AiBhqEw3q05FhueQcbZsWqounrfydLTvtKWhpNjQ53fn5zndzQhtSocaQ==}
-
   '@metrom-xyz/contracts@0.11.0':
     resolution: {integrity: sha512-UuilFUoLdroRLzLqWN4pyGAyGOXYt4p9WxkkOwp3z9oHLGqobmCQp/5+EITI1B03UfHM9gpIUBAnPNpa/3a0WQ==}
 
@@ -3708,17 +3705,6 @@ packages:
 
   abitype@1.0.0:
     resolution: {integrity: sha512-NMeMah//6bJ56H5XRj8QCV4AwuW6hB6zqz2LnhhLdcWVQOsXki6/Pn3APeqxCma62nXIcmZWdu1DlHWS74umVQ==}
-    peerDependencies:
-      typescript: '>=5.0.4'
-      zod: ^3 >=3.22.0
-    peerDependenciesMeta:
-      typescript:
-        optional: true
-      zod:
-        optional: true
-
-  abitype@1.0.4:
-    resolution: {integrity: sha512-UivtYZOGJGE8rsrM/N5vdRkUpqEZVmuTumfTuolm7m/6O09wprd958rx8kUBwVAAAhQDveGAgD0GJdBuR8s6tw==}
     peerDependencies:
       typescript: '>=5.0.4'
       zod: ^3 >=3.22.0
@@ -8922,14 +8908,6 @@ packages:
       typescript:
         optional: true
 
-  viem@2.16.3:
-    resolution: {integrity: sha512-6ExbIpi77C1HzGSjx6W+fn39Cz1ULlVV74XHxi1kYpOAqY7/iAoynK5X2aQp2LvxstTqS1GIKEdpCAZ8dKi2Ag==}
-    peerDependencies:
-      typescript: '>=5.0.4'
-    peerDependenciesMeta:
-      typescript:
-        optional: true
-
   vite-node@1.6.0:
     resolution: {integrity: sha512-de6HJgzC+TFzOu0NTC4RAIsyf/DY/ibWDYQUcuEA84EMHhcefTUGkjFHKKEJhQN4A+6I0u++kr3l36ZF2d7XRw==}
     engines: {node: ^18.0.0 || >=20.0.0}
@@ -10980,7 +10958,7 @@ snapshots:
 
   '@fontsource/inter@5.0.18': {}
 
-  '@graphprotocol/graph-cli@0.68.5(@types/node@20.14.8)(bufferutil@4.0.8)(encoding@0.1.13)(node-fetch@2.7.0(encoding@0.1.13))(typescript@5.5.2)':
+  '@graphprotocol/graph-cli@0.68.5(@types/node@20.14.8)(bufferutil@4.0.8)(encoding@0.1.13)(node-fetch@3.3.2)(typescript@5.5.2)':
     dependencies:
       '@float-capital/float-subgraph-uncrashable': 0.0.0-internal-testing.5
       '@oclif/core': 2.8.6(@types/node@20.14.8)(typescript@5.5.2)
@@ -10999,7 +10977,7 @@ snapshots:
       gluegun: 5.1.6(debug@4.3.4)
       graphql: 15.5.0
       immutable: 4.2.1
-      ipfs-http-client: 55.0.0(encoding@0.1.13)(node-fetch@2.7.0(encoding@0.1.13))
+      ipfs-http-client: 55.0.0(encoding@0.1.13)(node-fetch@3.3.2)
       jayson: 4.0.0(bufferutil@4.0.8)
       js-yaml: 3.14.1
       prettier: 3.0.3
@@ -11040,6 +11018,46 @@ snapshots:
       graphql: 15.5.0
       immutable: 4.2.1
       ipfs-http-client: 55.0.0(encoding@0.1.13)(node-fetch@2.7.0(encoding@0.1.13))
+      jayson: 4.0.0(bufferutil@4.0.8)
+      js-yaml: 3.14.1
+      prettier: 3.0.3
+      semver: 7.4.0
+      sync-request: 6.1.0
+      tmp-promise: 3.0.3
+      web3-eth-abi: 1.7.0
+      which: 2.0.2
+      yaml: 1.10.2
+    transitivePeerDependencies:
+      - '@swc/core'
+      - '@swc/wasm'
+      - '@types/node'
+      - bufferutil
+      - encoding
+      - node-fetch
+      - supports-color
+      - typescript
+      - utf-8-validate
+
+  '@graphprotocol/graph-cli@0.69.1(@types/node@20.14.8)(bufferutil@4.0.8)(encoding@0.1.13)(node-fetch@3.3.2)(typescript@5.5.2)':
+    dependencies:
+      '@float-capital/float-subgraph-uncrashable': 0.0.0-internal-testing.5
+      '@oclif/core': 2.8.6(@types/node@20.14.8)(typescript@5.5.2)
+      '@oclif/plugin-autocomplete': 2.3.10(@types/node@20.14.8)(typescript@5.5.2)
+      '@oclif/plugin-not-found': 2.4.3(@types/node@20.14.8)(typescript@5.5.2)
+      '@whatwg-node/fetch': 0.8.8
+      assemblyscript: 0.19.23
+      binary-install-raw: 0.0.13(debug@4.3.4)
+      chalk: 3.0.0
+      chokidar: 3.5.3
+      debug: 4.3.4(supports-color@8.1.1)
+      docker-compose: 0.23.19
+      dockerode: 2.5.8
+      fs-extra: 9.1.0
+      glob: 9.3.5
+      gluegun: 5.1.6(debug@4.3.4)
+      graphql: 15.5.0
+      immutable: 4.2.1
+      ipfs-http-client: 55.0.0(encoding@0.1.13)(node-fetch@3.3.2)
       jayson: 4.0.0(bufferutil@4.0.8)
       js-yaml: 3.14.1
       prettier: 3.0.3
@@ -11417,18 +11435,9 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@metrom-xyz/contracts@0.10.1(bufferutil@4.0.8)(typescript@5.5.2)(utf-8-validate@6.0.4)':
+  '@metrom-xyz/contracts@0.11.0(bufferutil@4.0.8)(typescript@5.5.2)(utf-8-validate@6.0.4)':
     dependencies:
       viem: 2.13.5(bufferutil@4.0.8)(typescript@5.5.2)(utf-8-validate@6.0.4)
-    transitivePeerDependencies:
-      - bufferutil
-      - typescript
-      - utf-8-validate
-      - zod
-
-  '@metrom-xyz/contracts@0.11.0(bufferutil@4.0.8)(typescript@5.5.2)':
-    dependencies:
-      viem: 2.16.3(bufferutil@4.0.8)(typescript@5.5.2)
     transitivePeerDependencies:
       - bufferutil
       - typescript
@@ -14104,10 +14113,6 @@ snapshots:
       typescript: 5.5.2
 
   abitype@1.0.0(typescript@5.5.2):
-    optionalDependencies:
-      typescript: 5.5.2
-
-  abitype@1.0.4(typescript@5.5.2):
     optionalDependencies:
       typescript: 5.5.2
 
@@ -16917,7 +16922,7 @@ snapshots:
       '@ipld/dag-pb': 2.1.18
       abort-controller: 3.0.0
       any-signal: 2.1.2
-      debug: 4.3.4(supports-color@8.1.1)
+      debug: 4.3.5(supports-color@8.1.1)
       err-code: 3.0.1
       ipfs-core-types: 0.9.0(node-fetch@3.3.2)
       ipfs-core-utils: 0.13.0(encoding@0.1.13)(node-fetch@3.3.2)
@@ -17181,10 +17186,6 @@ snapshots:
   isows@1.0.4(ws@8.13.0(bufferutil@4.0.8)(utf-8-validate@6.0.4)):
     dependencies:
       ws: 8.13.0(bufferutil@4.0.8)(utf-8-validate@6.0.4)
-
-  isows@1.0.4(ws@8.17.1(bufferutil@4.0.8)):
-    dependencies:
-      ws: 8.17.1(bufferutil@4.0.8)(utf-8-validate@6.0.4)
 
   it-all@1.0.6: {}
 
@@ -20286,23 +20287,6 @@ snapshots:
       abitype: 1.0.0(typescript@5.5.2)
       isows: 1.0.4(ws@8.13.0(bufferutil@4.0.8)(utf-8-validate@6.0.4))
       ws: 8.13.0(bufferutil@4.0.8)(utf-8-validate@6.0.4)
-    optionalDependencies:
-      typescript: 5.5.2
-    transitivePeerDependencies:
-      - bufferutil
-      - utf-8-validate
-      - zod
-
-  viem@2.16.3(bufferutil@4.0.8)(typescript@5.5.2):
-    dependencies:
-      '@adraffy/ens-normalize': 1.10.0
-      '@noble/curves': 1.2.0
-      '@noble/hashes': 1.3.2
-      '@scure/bip32': 1.3.2
-      '@scure/bip39': 1.2.1
-      abitype: 1.0.4(typescript@5.5.2)
-      isows: 1.0.4(ws@8.17.1(bufferutil@4.0.8))
-      ws: 8.17.1(bufferutil@4.0.8)(utf-8-validate@6.0.4)
     optionalDependencies:
       typescript: 5.5.2
     transitivePeerDependencies:
