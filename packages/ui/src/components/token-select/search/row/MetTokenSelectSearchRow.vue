@@ -19,6 +19,7 @@ defineProps<TokenSelectSearchRowProps>();
         <MetRemoteLogo
             v-else
             lg
+            :src="$props.logoURI"
             :address="$props.address"
             :defaultText="$props.symbol"
         />

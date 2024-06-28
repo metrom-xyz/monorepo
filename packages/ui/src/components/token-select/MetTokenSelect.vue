@@ -59,6 +59,7 @@ function handleSearchQueryChange(query?: string) {
                     <TokenSelectIcon v-if="!selectedToken" />
                     <MetRemoteLogo
                         v-else
+                        :src="selectedToken.logoURI"
                         :address="selectedToken.address"
                         :defaultText="selectedToken.symbol"
                     />
