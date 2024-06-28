@@ -9,8 +9,8 @@ dataSources:
     network: celo-alfajores
     source:
       abi: Metrom
-      address: "0x8d98758EfF88Dc944035B0618a8412C400E71C72"
-      startBlock: 24556248
+      address: "0xd1c1153fd809Aae3bb431b586C032C4856abaeD4"
+      startBlock: 24833840
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
@@ -32,8 +32,7 @@ dataSources:
         - SetFeeEvent
         - SetMinimumCampaignDurationEvent
         - SetMinimumRewardTokenRateEvent
-        - SetCampaignsUpdaterEvent
-        - SetRatesUpdaterEvent
+        - SetUpdaterEvent
         - Token
         - TransferOwnershipEvent
         - TransferCampaignOwnershipEvent
@@ -48,7 +47,7 @@ dataSources:
         - name: Erc20BytesSymbol
           file: ./abis/Erc20BytesSymbol.json
       eventHandlers:
-        - event: Initialize(indexed address,address,address,uint32,uint32,uint32)
+        - event: Initialize(indexed address,address,uint32,uint32,uint32)
           handler: handleInitialize
         - event: CreateCampaign(indexed bytes32,indexed
             address,address,uint32,uint32,bytes32,(address,uint256,uint256)[])
@@ -77,9 +76,7 @@ dataSources:
           handler: handleSetFeeRebate
         - event: SetMinimumCampaignDuration(uint32)
           handler: handleSetMinimumCampaignDuration
-        - event: SetCampaignsUpdater(indexed address)
-          handler: handleSetCampaignsUpdater
-        - event: SetRatesUpdater(indexed address)
-          handler: handleSetRatesUpdater
+        - event: SetUpdater(indexed address)
+          handler: handleSetUpdater
         - event: Ossify()
           handler: handleOssify
