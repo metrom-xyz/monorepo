@@ -55,6 +55,7 @@ const inputValue = computed(() => {
                 <MetPoolSelectSearch
                     :pools="$props.pools"
                     :selected="selected"
+                    :baseTokens="$props.baseTokens"
                     @dismiss="handleModalOnDismiss"
                     @poolChange="handlePoolOnChange"
                     :messages="$props.messages.search"

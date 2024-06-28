@@ -12,6 +12,7 @@ defineSlots<{
 
 const props = withDefaults(defineProps<AccordionProps>(), {
     expanded: undefined,
+    activeBorder: true,
 });
 
 const internalExpanded = ref(false);
@@ -32,7 +33,7 @@ const handleExpandOnClick = (event: MouseEvent) => {
     <div
         class="met_accordion__root"
         :class="{
-            met_accordion__root__active: detailsVisible,
+            met_accordion__root__active: activeBorder && detailsVisible,
         }"
     >
         <MetAccordionSummary
