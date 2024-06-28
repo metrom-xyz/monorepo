@@ -25,7 +25,7 @@ const SOCIALS = [
 ];
 </script>
 <template>
-    <div class="socials__root">
+    <section class="socials__root">
         <MetTypography xl bold>{{ $t("socials.title") }}</MetTypography>
         <div class="socials__wrapper">
             <MetInfoCard
@@ -36,7 +36,7 @@ const SOCIALS = [
                 :href="social.link"
             />
         </div>
-    </div>
+    </section>
 </template>
 <style>
 .socials__root {

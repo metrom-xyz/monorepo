@@ -7,6 +7,7 @@ import MetPartners from "./components/MetPartners.vue";
 import MetDeepDive from "./components/MetDeepDive.vue";
 import MetFaqs from "./components/faqs/MetFaqs.vue";
 import MetSocials from "./components/MetSocials.vue";
+import MetAbout from "./components/MetAbout.vue";
 </script>
 <template>
     <div class="app__container">
@@ -20,6 +21,7 @@ import MetSocials from "./components/MetSocials.vue";
                 <MetDeepDive />
                 <MetFaqs />
                 <MetSocials />
+                <MetAbout />
             </div>
         </div>
     </div>

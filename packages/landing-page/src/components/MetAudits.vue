@@ -33,7 +33,7 @@ const AUDITS = [
 ];
 </script>
 <template>
-    <div class="audits__root">
+    <section class="audits__root">
         <MetTypography xl bold>{{ $t("audits.title") }}</MetTypography>
         <div class="audits__wrapper">
             <MetInfoCard
@@ -44,7 +44,7 @@ const AUDITS = [
                 :description="audit.auditor"
             />
         </div>
-    </div>
+    </section>
 </template>
 <style>
 .audits__root {

@@ -81,5 +81,11 @@ export const messages = {
         socials: {
             title: "Socials",
         },
+        about: {
+            title: "About",
+            audits: "Audits",
+            team: "Team",
+            documentation: "Documentation",
+        },
     },
 };

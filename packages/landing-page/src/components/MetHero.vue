@@ -5,7 +5,7 @@ import ExternalIcon from "../assets/icons/MetExternalIcon.vue";
 import { METROM_DAPP_LINK, SUPPORTED_CHAIN_IDS } from "../commons";
 </script>
 <template>
-    <div class="hero__root">
+    <section class="hero__root">
         <div class="hero__wrapper">
             <div class="hero__text">
                 <MetTypography h1 class="hero__text__title">
@@ -28,7 +28,7 @@ import { METROM_DAPP_LINK, SUPPORTED_CHAIN_IDS } from "../commons";
                 <HeroForeground class="hero__image__foreground" />
             </div>
         </div>
-    </div>
+    </section>
 </template>
 <style>
 .hero__root {
