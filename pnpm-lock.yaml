@@ -166,7 +166,7 @@ importers:
         version: 5.0.18
       '@metrom-xyz/contracts':
         specifier: ^0.11.0
-        version: 0.11.0(bufferutil@4.0.8)(typescript@5.5.2)
+        version: 0.11.0(bufferutil@4.0.8)(typescript@5.5.2)(utf-8-validate@6.0.4)
       '@metrom-xyz/ui':
         specifier: workspace:*
         version: link:../ui
@@ -374,8 +374,8 @@ importers:
   packages/sdk:
     dependencies:
       '@metrom-xyz/contracts':
-        specifier: ^0.10.1
-        version: 0.10.1(bufferutil@4.0.8)(typescript@5.5.2)(utf-8-validate@6.0.4)
+        specifier: ^0.11.0
+        version: 0.11.0(bufferutil@4.0.8)(typescript@5.5.2)(utf-8-validate@6.0.4)
       tiny-invariant:
         specifier: ^1.3.3
         version: 1.3.3
@@ -424,8 +424,8 @@ importers:
         version: 0.35.1
     devDependencies:
       '@metrom-xyz/contracts':
-        specifier: ^0.10.1
-        version: 0.10.1(bufferutil@4.0.8)(typescript@5.5.2)(utf-8-validate@6.0.4)
+        specifier: ^0.11.0
+        version: 0.11.0(bufferutil@4.0.8)(typescript@5.5.2)(utf-8-validate@6.0.4)
       '@types/node':
         specifier: ^20.14.1
         version: 20.14.8
@@ -2158,9 +2158,6 @@ packages:
   '@metamask/utils@8.4.0':
     resolution: {integrity: sha512-dbIc3C7alOe0agCuBHM1h71UaEaEqOk2W8rAtEn8QGz4haH2Qq7MoK6i7v2guzvkJVVh79c+QCzIqphC3KvrJg==}
     engines: {node: '>=16.0.0'}
-
-  '@metrom-xyz/contracts@0.10.1':
-    resolution: {integrity: sha512-jTrLnejdVzpmbd5FWryGZvTya/g57AiBhqEw3q05FhueQcbZsWqounrfydLTvtKWhpNjQ53fn5zndzQhtSocaQ==}
 
   '@metrom-xyz/contracts@0.11.0':
     resolution: {integrity: sha512-UuilFUoLdroRLzLqWN4pyGAyGOXYt4p9WxkkOwp3z9oHLGqobmCQp/5+EITI1B03UfHM9gpIUBAnPNpa/3a0WQ==}
@@ -11433,16 +11430,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@metrom-xyz/contracts@0.10.1(bufferutil@4.0.8)(typescript@5.5.2)(utf-8-validate@6.0.4)':
-    dependencies:
-      viem: 2.13.5(bufferutil@4.0.8)(typescript@5.5.2)(utf-8-validate@6.0.4)
-    transitivePeerDependencies:
-      - bufferutil
-      - typescript
-      - utf-8-validate
-      - zod
-
-  '@metrom-xyz/contracts@0.11.0(bufferutil@4.0.8)(typescript@5.5.2)':
+  '@metrom-xyz/contracts@0.11.0(bufferutil@4.0.8)(typescript@5.5.2)(utf-8-validate@6.0.4)':
     dependencies:
       viem: 2.13.5(bufferutil@4.0.8)(typescript@5.5.2)(utf-8-validate@6.0.4)
     transitivePeerDependencies:
