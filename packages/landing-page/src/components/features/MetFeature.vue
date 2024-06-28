@@ -23,20 +23,20 @@ defineProps<FeatureProps>();
         sm:even:flex-row-reverse
         sm:[&>div]:even:ml-44
         gap-3
-        sm:gap-10
+        sm:gap-24
         items-center;
 }
 
 .feature__image {
     @apply w-full
         h-full
-        sm:w-[520px]
+        sm:w-[580px]
         sm:h-[340px]
         rounded-[50px];
 }
 
 .feature__text {
-    @apply flex flex-col gap-3 sm:gap-4 sm:w-[406px];
+    @apply flex flex-col gap-3 sm:gap-4 sm:w-full;
 }
 
 .feature__title {
