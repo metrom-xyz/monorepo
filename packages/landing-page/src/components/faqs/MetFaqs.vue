@@ -5,6 +5,7 @@ import MetCreateCampaign from "./MetCreateCampaign.vue";
 import MetLps from "./MetLps.vue";
 import MetRewards from "./MetRewards.vue";
 import MetExpandIcon from "../../assets/icons/MetExpandIcon.vue";
+import { ref } from "vue";
 
 const FAQS: { summary: string; description: string | Component }[] = [
     {
@@ -28,6 +29,12 @@ const FAQS: { summary: string; description: string | Component }[] = [
         description: MetRewards,
     },
 ];
+
+const firstAccordionOpen = ref(true);
+
+function onExpandToggle() {
+    firstAccordionOpen.value = !firstAccordionOpen.value;
+}
 </script>
 <template>
     <section id="faq" class="faqs__root">
@@ -38,6 +45,10 @@ const FAQS: { summary: string; description: string | Component }[] = [
                 v-for="(faq, index) in FAQS"
                 :activeBorder="false"
                 :expandIcon="MetExpandIcon"
+                :expanded="index === 0 ? firstAccordionOpen : undefined"
+                :onExpandToggle="
+                    index === 0 ? () => onExpandToggle() : undefined
+                "
             >
                 <template #summary>
                     <MetTypography xl medium>
