@@ -5,6 +5,7 @@ export interface PoolSelectProps {
     loading?: boolean;
     open?: boolean;
     pools?: Pool[];
+    baseTokens?: PoolSelectSearchProps["baseTokens"];
     messages: {
         inputPlaceholder: string;
         search: PoolSelectSearchProps["messages"];
