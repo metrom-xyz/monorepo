@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { METROM_DAPP_LINK } from "../commons";
 import MetromLogo from "../assets/MetromLogo.vue";
 import ExternalIcon from "../assets/icons/MetExternalIcon.vue";
 import { MetTypography, MetButton } from "@metrom-xyz/ui";
@@ -27,7 +28,13 @@ import { MetTypography, MetButton } from "@metrom-xyz/ui";
                     </MetTypography>
                 </a>
             </div>
-            <MetButton sm :icon="ExternalIcon">
+            <MetButton
+                sm
+                :icon="ExternalIcon"
+                :href="METROM_DAPP_LINK"
+                rel="noopener noreferrer"
+                target="_blank"
+            >
                 {{ $t("navigation.launchDapp") }}
             </MetButton>
         </nav>

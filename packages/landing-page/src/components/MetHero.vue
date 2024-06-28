@@ -2,6 +2,7 @@
 import { MetTypography, MetButton } from "@metrom-xyz/ui";
 import HeroForeground from "../assets/HeroForeground.vue";
 import ExternalIcon from "../assets/icons/MetExternalIcon.vue";
+import { METROM_DAPP_LINK, SUPPORTED_CHAIN_IDS } from "../commons";
 </script>
 <template>
     <div class="hero__root">
@@ -13,7 +14,13 @@ import ExternalIcon from "../assets/icons/MetExternalIcon.vue";
                 <MetTypography h3 normal class="hero__text__subtitle">
                     {{ $t("hero.description") }}
                 </MetTypography>
-                <MetButton secondary :icon="ExternalIcon">
+                <MetButton
+                    secondary
+                    :icon="ExternalIcon"
+                    :href="`${METROM_DAPP_LINK}/create?chain=${SUPPORTED_CHAIN_IDS[0]}`"
+                    rel="noopener noreferrer"
+                    target="_blank"
+                >
                     {{ $t("hero.create") }}
                 </MetButton>
             </div>

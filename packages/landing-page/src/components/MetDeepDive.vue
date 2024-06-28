@@ -25,7 +25,7 @@ const MEDIUM_ARTICLES = [
             <MetCard
                 :key="index"
                 v-for="(article, index) in MEDIUM_ARTICLES"
-                class="bg-blue-600"
+                class="deep__dive__card__wrapper"
             >
                 <template #content>
                     <div class="deep__dive__card">
@@ -63,6 +63,10 @@ const MEDIUM_ARTICLES = [
         sm:flex-row
         gap-5
         justify-center;
+}
+
+.deep__dive__card__wrapper {
+    @apply bg-blue;
 }
 
 .deep__dive__card {

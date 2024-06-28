@@ -5,7 +5,12 @@ import { METROM_DAPP_LINK } from "../../commons";
 <template>
     <MetTypography>
         {{ $t("faq.campaign.description.text1") }}
-        <a :href="METROM_DAPP_LINK" rel="noopener noreferrer" target="_blank">
+        <a
+            :href="METROM_DAPP_LINK"
+            rel="noopener noreferrer"
+            target="_blank"
+            class="create__campaign__link"
+        >
             metrom.xyz.app
         </a>
         {{ $t("faq.campaign.description.text2") }}
@@ -36,5 +41,9 @@ import { METROM_DAPP_LINK } from "../../commons";
 <style>
 .create__campaign__list {
     @apply list-decimal ml-5;
+}
+
+.create__campaign__link {
+    @apply text-blue-600;
 }
 </style>
