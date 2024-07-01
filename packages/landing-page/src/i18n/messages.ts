@@ -15,6 +15,7 @@ export const messages = {
         audits: {
             title: "Audits",
             contracts: "Contracts",
+            backend: "Backend",
         },
         features: {
             flow: {

@@ -3,7 +3,7 @@ import { MetTypography } from "@metrom-xyz/ui";
 import { METROM_DAPP_LINK } from "../../commons";
 </script>
 <template>
-    <MetTypography>
+    <MetTypography lg>
         {{ $t("faq.campaign.description.text1") }}
         <a
             :href="METROM_DAPP_LINK"
@@ -17,22 +17,22 @@ import { METROM_DAPP_LINK } from "../../commons";
     </MetTypography>
     <ol class="create__campaign__list">
         <li>
-            <MetTypography>
+            <MetTypography lg>
                 {{ $t("faq.campaign.description.step1") }}
             </MetTypography>
         </li>
         <li>
-            <MetTypography>
+            <MetTypography lg>
                 {{ $t("faq.campaign.description.step2") }}
             </MetTypography>
         </li>
         <li>
-            <MetTypography>
+            <MetTypography lg>
                 {{ $t("faq.campaign.description.step3") }}
             </MetTypography>
         </li>
         <li>
-            <MetTypography>
+            <MetTypography lg>
                 {{ $t("faq.campaign.description.step4") }}
             </MetTypography>
         </li>

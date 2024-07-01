@@ -3,7 +3,6 @@ import { MetTypography } from "@metrom-xyz/ui";
 import HatsFinanceLogo from "../assets/HatsFinanceLogo.vue";
 import MetInfoCard from "./info-card/MetInfoCard.vue";
 
-// TODO: add audits
 const AUDITS = [
     {
         component: "audits.contracts",
@@ -12,21 +11,12 @@ const AUDITS = [
     },
     {
         component: "audits.contracts",
-        auditor: "Hats Finance",
+        auditor: "0xCommit",
+        // TODO: 0xcommit log
         logo: HatsFinanceLogo,
     },
     {
-        component: "audits.contracts",
-        auditor: "Hats Finance",
-        logo: HatsFinanceLogo,
-    },
-    {
-        component: "audits.contracts",
-        auditor: "Hats Finance",
-        logo: HatsFinanceLogo,
-    },
-    {
-        component: "audits.contracts",
+        component: "audits.backend",
         auditor: "Hats Finance",
         logo: HatsFinanceLogo,
     },
@@ -53,7 +43,7 @@ const AUDITS = [
         flex-col
         items-center
         gap-5
-        max-w-5xl;
+        max-w-6xl;
 }
 
 .audits__wrapper {

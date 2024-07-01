@@ -36,6 +36,7 @@ const FEATURES = [
     @apply flex
         flex-col
         gap-8
-        items-center;
+        items-center
+        max-w-6xl;
 }
 </style>
