@@ -2,6 +2,7 @@
 import { MetTypography } from "@metrom-xyz/ui";
 import HatsFinanceLogo from "../assets/HatsFinanceLogo.vue";
 import MetInfoCard from "./info-card/MetInfoCard.vue";
+import { Vue3Marquee } from "vue3-marquee";
 
 // TODO: add partners
 const PARTNERS = [
@@ -38,6 +39,16 @@ const PARTNERS = [
                 :title="$t(audit.name)"
             />
         </div>
+        <div class="partners__wrapper__mobile">
+            <Vue3Marquee>
+                <MetInfoCard
+                    :key="index"
+                    v-for="(audit, index) in PARTNERS"
+                    :icon="audit.logo"
+                    :title="$t(audit.name)"
+                />
+            </Vue3Marquee>
+        </div>
     </section>
 </template>
 <style>
@@ -51,12 +62,20 @@ const PARTNERS = [
 }
 
 .partners__wrapper {
-    @apply flex
+    @apply hidden
+        sm:flex
         overflow-x-auto
         w-full
-        flex-row
-        gap-5
-        sm:flex-wrap
-        sm:justify-center;
+        flex-wrap
+        justify-center
+        gap-5;
+}
+
+.partners__wrapper__mobile {
+    @apply sm:hidden flex flex-row w-full;
+}
+
+.partners__wrapper__mobile > .vue3-marquee > .marquee > .info__card__root {
+    @apply mx-2.5;
 }
 </style>

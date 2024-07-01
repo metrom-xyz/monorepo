@@ -34,6 +34,7 @@ import MetAbout from "./components/MetAbout.vue";
         bg-gray-300
         bg-3
         bg-dots
+        py-6
         px-6
         md:px-12
         lg:px-44;
@@ -44,11 +45,15 @@ import MetAbout from "./components/MetAbout.vue";
         w-full
         flex
         flex-col
-        sm:gap-16;
+        gap-9
+        sm:gap-28;
 }
 
 .app__content {
-    @apply flex flex-col gap-12 items-center sm:gap-24;
+    @apply flex
+        flex-col
+        gap-12
+        items-center
+        sm:gap-24;
 }
 </style>
-./components/features/MetFeatures.vue
