@@ -39,11 +39,8 @@ const PARTNERS = [
                 :title="$t(audit.name)"
             />
         </div>
-        <div
-            class="partners__wrapper__mobile"
-            :style="{ width: `${PARTNERS.length * 192}px` }"
-        >
-            <Vue3Marquee clone>
+        <div class="partners__wrapper__mobile">
+            <Vue3Marquee>
                 <MetInfoCard
                     :key="index"
                     v-for="(audit, index) in PARTNERS"
@@ -75,7 +72,7 @@ const PARTNERS = [
 }
 
 .partners__wrapper__mobile {
-    @apply sm:hidden flex flex-row;
+    @apply sm:hidden flex flex-row w-full;
 }
 
 .partners__wrapper__mobile > .vue3-marquee > .marquee > .info__card__root {
