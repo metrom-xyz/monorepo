@@ -45,7 +45,7 @@ const SOCIALS = [
         flex-col
         items-center
         gap-5
-        max-w-5xl;
+        max-w-6xl;
 }
 
 .socials__wrapper {

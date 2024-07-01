@@ -2,17 +2,17 @@
 import { MetTypography } from "@metrom-xyz/ui";
 </script>
 <template>
-    <MetTypography>
+    <MetTypography lg>
         {{ $t("faq.lps.description.text1") }}
     </MetTypography>
     <ol class="lps__list">
         <li>
-            <MetTypography>
+            <MetTypography lg>
                 {{ $t("faq.lps.description.step1") }}
             </MetTypography>
         </li>
         <li>
-            <MetTypography>
+            <MetTypography lg>
                 {{ $t("faq.lps.description.step2") }}
             </MetTypography>
         </li>

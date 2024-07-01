@@ -25,14 +25,6 @@ const PARTNERS = [
         name: "Hats Finance",
         logo: HatsFinanceLogo,
     },
-    {
-        name: "Hats Finance",
-        logo: HatsFinanceLogo,
-    },
-    {
-        name: "Hats Finance",
-        logo: HatsFinanceLogo,
-    },
 ];
 </script>
 <template>
@@ -55,7 +47,7 @@ const PARTNERS = [
         flex-col
         items-center
         gap-5
-        max-w-5xl;
+        max-w-6xl;
 }
 
 .partners__wrapper {

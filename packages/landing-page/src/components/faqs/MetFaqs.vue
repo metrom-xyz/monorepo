@@ -56,7 +56,7 @@ function onExpandToggle() {
                     </MetTypography>
                 </template>
                 <div class="faqs__summary">
-                    <MetTypography v-if="typeof faq.description === 'string'">
+                    <MetTypography v-if="typeof faq.description === 'string'" lg>
                         {{ $t(faq.description) }}
                     </MetTypography>
                     <component v-else :is="faq.description"></component>
@@ -71,7 +71,7 @@ function onExpandToggle() {
         flex-col
         items-center
         gap-5
-        max-w-5xl
+        max-w-6xl
         w-full;
 }
 
