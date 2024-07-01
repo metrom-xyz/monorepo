@@ -1,19 +1,17 @@
 <script setup lang="ts">
-import { useSelectedChain } from "@/composables/useSelectedChain";
 import DocumentIcon from "@/icons/DocumentIcon.vue";
 import FolderIcon from "@/icons/FolderIcon.vue";
 import { useRouter } from "vue-router";
 import { MetTab, MetTabs, MetTypography } from "@metrom-xyz/ui";
 import { ref, watch } from "vue";
 
-const chain = useSelectedChain();
 const { currentRoute, push } = useRouter();
 
 const tab = ref(0);
 
 function handleTabChange(value: number | undefined) {
     if (value === undefined) return;
-    push(!value ? `/?chain=${chain.value}` : `/create?chain=${chain.value}`);
+    push(!value ? { name: "campaigns" } : { name: "create" });
 }
 
 watch(currentRoute, () => {
