@@ -18,7 +18,7 @@ const emits = defineEmits(["deployed"]);
 
 const config = useWagmiConfig();
 const publicClient = usePublicClient();
-const router = useRouter();
+const { push } = useRouter();
 const { jwtToken } = useLogin();
 
 const uploadingSpecification = ref(false);
@@ -88,7 +88,7 @@ watchEffect(() => {
 
 async function handleDeployOnClick() {
     if (deployed.value) {
-        router.push({ name: "campaigns" });
+        push({ name: "campaigns" });
         return;
     }
     if (!publicClient.value || !simulatedCreate.value) return;
