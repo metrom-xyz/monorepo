@@ -42,11 +42,11 @@ import { MetTypography, MetButton } from "@metrom-xyz/ui";
 </template>
 <style>
 .navigation_bar__root {
-    @apply w-full flex justify-center sm:px-24;
+    @apply w-full flex justify-center;
 }
 
 .navigation_bar__wrapper {
-    @apply w-full flex items-center justify-between;
+    @apply w-full flex items-center justify-between max-w-6xl;
 }
 
 .navigation_bar__logo {
