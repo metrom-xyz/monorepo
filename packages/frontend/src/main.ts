@@ -1,5 +1,5 @@
 import "@fontsource-variable/inter";
-import "@metrom-xyz/ui/index.css";
+import "@metrom-xyz/ui/style.css";
 
 import "./main.css";
 

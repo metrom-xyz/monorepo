@@ -12,7 +12,7 @@ export default defineNuxtConfig({
     },
     css: [
         "@fontsource-variable/inter",
-        "@metrom-xyz/ui/index.css",
+        "@metrom-xyz/ui/style.css",
         "~/assets/css/main.css",
     ],
     modules: ["@nuxtjs/i18n", "@nuxt/image", "@nuxt/eslint"],
