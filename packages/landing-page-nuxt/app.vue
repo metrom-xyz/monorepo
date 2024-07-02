@@ -3,7 +3,7 @@ import { useHead, useSeoMeta } from "#imports";
 import NavigationBar from "./components/NavigationBar.vue";
 import Hero from "./components/Hero.vue";
 import Audits from "./components/Audits.vue";
-import Features from "./components/features/Features.vue";
+import Features from "./components/Features.vue";
 import Partners from "./components/Partners.vue";
 import DeepDive from "./components/DeepDive.vue";
 import Faqs from "./components/faqs/Faqs.vue";
