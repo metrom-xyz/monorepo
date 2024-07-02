@@ -100,4 +100,3 @@ useSeoMeta({
     @apply flex flex-col gap-12 items-center sm:gap-24;
 }
 </style>
-./components/features/Features.vue
