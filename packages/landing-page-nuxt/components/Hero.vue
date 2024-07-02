@@ -25,7 +25,11 @@ import { METROM_DAPP_LINK, SUPPORTED_CHAIN_IDS } from "../utils/commons";
                     {{ $t("hero.create") }}
                 </MetButton>
             </div>
-            <div class="hero__image__background">
+            <div class="hero__image__wrapper">
+                <NuxtImg
+                    src="/hero-background.png"
+                    class="hero__image__background"
+                />
                 <HeroForeground class="hero__image__foreground" />
             </div>
         </div>
@@ -66,14 +70,17 @@ import { METROM_DAPP_LINK, SUPPORTED_CHAIN_IDS } from "../utils/commons";
     @apply text-left mb-4;
 }
 
-.hero__image__background {
+.hero__image__wrapper {
     @apply w-full
         max-w-[680px]
         h-[350px]
         sm:h-[700px]
-        bg-hero-background
         rounded-[40px]
         relative;
+}
+
+.hero__image__background {
+    @apply w-full h-full rounded-[40px];
 }
 
 .hero__image__foreground {
