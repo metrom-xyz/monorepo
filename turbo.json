@@ -1,12 +1,11 @@
 {
     "$schema": "https://turbo.build/schema.json",
-    "pipeline": {
+    "tasks": {
         "build": {
-            "dependsOn": ["^build"],
-            "outputs": ["build/**", "generated/**"]
+            "dependsOn": ["^build"]
         },
         "test": {
-            "dependsOn": ["^build"],
+             "dependsOn": ["^build"],
             "inputs": [
                 "src/**/*.{ts,tsx}",
                 "tests/**/*.{ts,tsx}",
@@ -15,6 +14,5 @@
         },
         "lint": {},
         "format": {}
-    },
-    "globalEnv": ["NODE_ENV", "MODE"]
+    }
 }
