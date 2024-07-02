@@ -40,11 +40,21 @@ function handleDisconnectOnClick() {
 </template>
 <style>
 .user_account__root {
-    @apply flex items-center gap-4;
+    @apply w-full
+        sm:w-fit
+        flex
+        items-center
+        justify-between
+        gap-4;
 }
 
 .user_account__wrapper {
-    @apply w-fit bg-white rounded-xxl flex items-center gap-3;
+    @apply w-fit
+        bg-white
+        flex
+        rounded-xxl
+        items-center
+        gap-3;
 }
 
 .user_account__icon__wrapper {

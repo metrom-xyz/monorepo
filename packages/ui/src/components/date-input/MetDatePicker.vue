@@ -43,7 +43,7 @@ const handleCellOnClick = (event: MouseEvent) => {
                 {{ lookupDate.format("MMMM YYYY") }}
             </MetTypography>
             <ArrowLeftIcon
-                class="met_date_picker__icon rotate-180"
+                class="met_date_picker__icon met_date_picker__icon_rotate"
                 @click="lookupDate = lookupDate.add(1, 'month')"
             />
         </div>
@@ -102,11 +102,15 @@ const handleCellOnClick = (event: MouseEvent) => {
 }
 
 .met_date_picker__header {
-    @apply flex items-center;
+    @apply flex items-center justify-between;
 }
 
 .met_date_picker__icon {
     @apply cursor-pointer text-black;
+}
+
+.met_date_picker__icon_rotate {
+    @apply rotate-180;
 }
 
 .met_date_picker__week__days {

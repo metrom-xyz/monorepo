@@ -31,16 +31,24 @@ tokenListsStore.fetchTokensLists();
     @apply min-h-screen
         flex
         flex-col
-        gap-14
+        gap-7
+        sm:gap-14
         items-center
-        p-8
+        p-4
+        sm:p-8
         bg-gray-300
         bg-3
         bg-dots;
 }
 
 .app__header {
-    @apply w-full flex justify-between;
+    @apply w-full
+        flex
+        justify-between
+        flex-col
+        gap-4
+        sm:flex-row
+        max-w-[1920px];
 }
 
 .app__logo {
@@ -48,7 +56,7 @@ tokenListsStore.fetchTokensLists();
 }
 
 .app__content {
-    @apply flex-grow;
+    @apply flex-grow max-w-[1920px];
 }
 
 .app__nav {

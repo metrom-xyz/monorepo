@@ -26,7 +26,7 @@ const poolExplorerLink = computed(() => {
 </template>
 <style>
 .campaigns_table_explorer__root {
-    @apply flex items-center;
+    @apply hidden sm:flex items-center;
 }
 
 .campaigns_table_explorer__icon {

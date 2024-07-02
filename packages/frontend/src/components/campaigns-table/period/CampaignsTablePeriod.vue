@@ -25,7 +25,7 @@ const progress = computed(() => {
 <template>
     <MetPopover :open="popover" :placement="'top-start'">
         <div
-            class="campaign_table_period__root"
+            class="campaign_table_period__wrapper"
             @mouseenter="popover = true"
             @mouseleave="popover = false"
         >
@@ -46,7 +46,7 @@ const progress = computed(() => {
     </MetPopover>
 </template>
 <style>
-.campaign_table_period__root {
+.campaign_table_period__wrapper {
     @apply flex h-full items-center;
 }
 
