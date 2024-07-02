@@ -26,8 +26,8 @@ import { METROM_DAPP_LINK, SUPPORTED_CHAIN_IDS } from "../utils/commons";
                 </MetButton>
             </div>
             <div class="hero__image__wrapper">
-                <NuxtImg
-                    src="/hero-background.png"
+                <img
+                    src="~/assets/img/hero-background.webp"
                     class="hero__image__background"
                 />
                 <HeroForeground class="hero__image__foreground" />

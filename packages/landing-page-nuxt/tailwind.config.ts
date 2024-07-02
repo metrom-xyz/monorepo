@@ -11,13 +11,6 @@ const config: Config = {
         "./error.vue",
     ],
     presets: [metPreset],
-    theme: {
-        extend: {
-            backgroundImage: {
-                "hero-background": "url(/hero-background.png)",
-            },
-        },
-    },
 };
 
 export default config;
