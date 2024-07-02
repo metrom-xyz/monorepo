@@ -18,7 +18,8 @@
         "@nuxt/image": "^1.7.0",
         "@nuxtjs/i18n": "^8.3.1",
         "nuxt": "^3.12.2",
-        "vue": "^3.4.31"
+        "vue": "^3.4.31",
+        "vue3-marquee": "^4.2.0"
     },
     "devDependencies": {
         "autoprefixer": "^10.4.19",

@@ -83,7 +83,7 @@ useSeoMeta({
         bg-gray-300
         bg-3
         bg-dots
-        px-6
+        py-6
         md:px-12
         lg:px-44;
 }
@@ -93,10 +93,19 @@ useSeoMeta({
         w-full
         flex
         flex-col
-        sm:gap-16;
+        gap-9
+        sm:gap-28;
 }
 
 .app__content {
-    @apply flex flex-col gap-12 items-center sm:gap-24;
+    @apply flex
+        flex-col
+        gap-12
+        items-center
+        sm:gap-24;
+}
+
+.app__content > :not(.partners__root) {
+    @apply px-6;
 }
 </style>
