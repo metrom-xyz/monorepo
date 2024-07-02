@@ -4,7 +4,7 @@ import { withThemeByClassName } from "@storybook/addon-themes";
 
 import "@fontsource-variable/inter";
 
-import "../src/style.css";
+import "../src/index.css";
 
 setup((app) => {
     app.use(MetromUiPlugin);

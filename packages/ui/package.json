@@ -11,6 +11,9 @@
             "types": "./dist/index.d.ts",
             "default": "./dist/index.js"
         },
+        "./index.css": {
+            "default": "./dist/style.css"
+        },
         "./tailwind.preset": {
             "types": "./dist/tailwind.preset.d.ts",
             "default": "./dist/tailwind.preset.js"
