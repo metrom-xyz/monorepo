@@ -25,7 +25,7 @@ export const query = async <R>(
         );
     }
     const responseJSON = await response.json();
-    if (!!responseJSON.errors) {
+    if (responseJSON.errors) {
         const errors = responseJSON.errors as SubgraphError[];
         throw new Error(
             `error returned from subgraph:\n${errors

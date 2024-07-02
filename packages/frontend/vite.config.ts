@@ -1,11 +1,10 @@
 import { fileURLToPath, URL } from "node:url";
 
-import { defineConfig, type UserConfig } from "vite";
+import { defineConfig } from "vite";
 import vue from "@vitejs/plugin-vue";
 
 const ALLOWED_ENVIRONMENTS = ["development", "staging", "production"];
 
-// https://vitejs.dev/config/
 export default defineConfig(({ mode }) => {
     if (!ALLOWED_ENVIRONMENTS.includes(mode)) {
         throw new Error(
@@ -25,4 +24,4 @@ export default defineConfig(({ mode }) => {
             __ENVIRONMENT__: JSON.stringify(mode),
         },
     };
-}) as UserConfig;
+});
