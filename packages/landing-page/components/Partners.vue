@@ -42,8 +42,8 @@ const PARTNERS = [
         <div class="partners__wrapper__mobile">
             <Vue3Marquee>
                 <InfoCard
-                    :key="index"
                     v-for="(audit, index) in PARTNERS"
+                    :key="index"
                     :icon="audit.logo"
                     :title="$t(audit.name)"
                 />
