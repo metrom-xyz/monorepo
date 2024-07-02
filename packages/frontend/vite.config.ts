@@ -1,6 +1,6 @@
 import { fileURLToPath, URL } from "node:url";
 
-import { defineConfig, type UserConfig } from "vite";
+import { defineConfig } from "vite";
 import vue from "@vitejs/plugin-vue";
 
 const ALLOWED_ENVIRONMENTS = ["development", "staging", "production"];
