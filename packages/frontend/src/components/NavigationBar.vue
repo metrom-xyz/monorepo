@@ -23,7 +23,7 @@ watch(currentRoute, () => {
     <nav class="navigation_bar__root">
         <div class="navigation_bar__wrapper">
             <MetTabs @change="handleTabChange" :value="tab">
-                <MetTab>
+                <MetTab class="">
                     <div class="navigation_bar__link">
                         <FolderIcon />
                         <MetTypography>
@@ -45,11 +45,19 @@ watch(currentRoute, () => {
 </template>
 <style>
 .navigation_bar__root {
-    @apply absolute left-1/2 -translate-x-1/2;
+    @apply w-full
+        sm:w-fit
+        sm:absolute
+        sm:left-1/2
+        sm:-translate-x-1/2;
 }
 
 .navigation_bar__wrapper {
     @apply relative flex;
+}
+
+.navigation_bar__wrapper > .met_tabs__root {
+    @apply w-full sm:w-fit;
 }
 
 .navigation_bar__link {

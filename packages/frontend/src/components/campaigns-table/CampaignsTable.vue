@@ -33,6 +33,13 @@ const HEADERS = [
     "allCampaigns.table.header.links",
 ];
 
+const HEADERS_SM = [
+    "allCampaigns.table.header.pool",
+    "allCampaigns.table.header.period",
+    "allCampaigns.table.header.rewards",
+    "allCampaigns.table.header.amm",
+];
+
 const props = defineProps<CampaignsTableProps>();
 
 const searchQuery = ref("");
@@ -87,6 +94,15 @@ const totalPages = computed(() =>
                     {{ $t(header) }}
                 </MetTypography>
             </div>
+            <div class="campaigns_table__grid campaigns_table__header__sm">
+                <MetTypography
+                    :key="header"
+                    v-for="header in HEADERS_SM"
+                    medium
+                >
+                    {{ $t(header) }}
+                </MetTypography>
+            </div>
             <div class="campaigns_table__divider"></div>
             <div>
                 <div
@@ -116,7 +132,7 @@ const totalPages = computed(() =>
                                 lg
                                 class="campaigns_table__pool__logo"
                             />
-                            <MetTypography>
+                            <MetTypography class="campaigns_table__pool__name">
                                 {{
                                     `${campaign.pool.token0.symbol} / ${campaign.pool.token1.symbol}`
                                 }}
@@ -166,13 +182,13 @@ const totalPages = computed(() =>
 </template>
 <style>
 .campaigns_table__root {
-    @apply w-full flex flex-col gap-7;
+    @apply w-full flex flex-col gap-4 sm:gap-7;
 }
 
 .campaigns_table__wrapper {
     @apply w-full
         min-h-[550px]
-        min-w-[800px]
+        sm:min-w-[800px]
         flex
         flex-col
         gap-3
@@ -192,10 +208,18 @@ const totalPages = computed(() =>
 }
 
 .campaigns_table__grid {
-    @apply grid grid-cols-campaignsTable gap-8;
+    @apply grid
+        grid-cols-campaignsTableSm
+        sm:grid-cols-campaignsTable
+        gap-8;
 }
 
 .campaigns_table__header {
+    @apply hidden sm:grid;
+}
+
+.campaigns_table__header__sm {
+    @apply grid sm:hidden;
 }
 
 .campaigns_table__divider {
@@ -223,6 +247,10 @@ const totalPages = computed(() =>
 
 .campaigns_table__pool__logo {
     @apply mr-6;
+}
+
+.campaigns_table__pool__name {
+    @apply hidden sm:flex;
 }
 
 .campaigns_table__pagination {

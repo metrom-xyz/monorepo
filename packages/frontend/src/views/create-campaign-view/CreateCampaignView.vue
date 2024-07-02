@@ -64,6 +64,11 @@ watchEffect(() => [(campaignState.value.network = props.selectedChain)]);
 }
 
 .create_campaign__form__container {
-    @apply flex flex-col gap-9 items-center min-w-96 max-w-96;
+    @apply flex
+        flex-col
+        gap-9
+        items-center
+        min-w-96
+        max-w-96;
 }
 </style>
