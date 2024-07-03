@@ -37,7 +37,7 @@ import { METROM_DAPP_LINK, SUPPORTED_CHAIN_IDS } from "../utils/commons";
 </template>
 <style>
 .hero__root {
-    @apply w-full flex justify-center mb-14 max-w-6xl;
+    @apply w-full flex justify-center mb-14 max-w-7xl;
 }
 
 .hero__wrapper {

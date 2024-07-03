@@ -30,7 +30,8 @@ import { MetTypography } from "@metrom-xyz/ui";
         flex-col
         items-center
         gap-5
-        max-w-5xl;
+        max-w-5xl
+        mb-8;
 }
 
 .about__wrapper {

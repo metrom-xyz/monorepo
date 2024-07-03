@@ -47,7 +47,7 @@ import MetromLogo from "./logos/Metrom.vue";
 }
 
 .navigation_bar__wrapper {
-    @apply w-full flex items-center justify-between max-w-6xl;
+    @apply w-full flex items-center justify-between max-w-7xl;
 }
 
 .navigation_bar__logo {
