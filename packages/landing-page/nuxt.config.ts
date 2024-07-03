@@ -21,5 +21,8 @@ export default defineNuxtConfig({
     image: {
         format: ["webp"],
     },
-    modules: ["@nuxtjs/i18n", "@nuxt/image", "@nuxt/eslint"],
+    fathom: {
+        siteId: process.env.FATHOM_SITE_ID,
+    },
+    modules: ["@nuxtjs/i18n", "@nuxt/image", "@nuxt/eslint", "nuxt-fathom"],
 });
