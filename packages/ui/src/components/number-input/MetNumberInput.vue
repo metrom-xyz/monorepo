@@ -1,22 +1,30 @@
 <script setup lang="ts">
 import { watchEffect } from "vue";
-import MetBaseInputWrapper from "./commons/MetBaseInputWrapper.vue";
-import type { BaseInputWrapperProps } from "./commons/types";
+import MetBaseInputWrapper from "../commons/MetBaseInputWrapper.vue";
+import type { BaseInputWrapperProps } from "../commons/types";
 import { useIMask } from "vue-imask";
+import type { NumberInputProps, NumberMaskValue } from "./types";
 
-defineProps<BaseInputWrapperProps>();
-const model = defineModel<number | string>();
+const props = withDefaults(
+    defineProps<BaseInputWrapperProps & NumberInputProps>(),
+    { scale: 10 },
+);
+const model = defineModel<NumberMaskValue>();
 
-const { el, masked, typed } = useIMask({
+const { el, masked, typed, unmasked, mask } = useIMask({
     mask: Number,
-    scale: 3,
+    scale: props.scale,
     thousandsSeparator: ",",
     radix: ".",
     mapToRadix: ["."],
 });
 
 watchEffect(() => {
-    model.value = masked.value ? Number(typed.value) : undefined;
+    model.value = {
+        floatValue: typed.value,
+        formattedValue: masked.value,
+        value: unmasked.value,
+    };
 });
 </script>
 <template>

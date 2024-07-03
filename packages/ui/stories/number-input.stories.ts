@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/vue3";
-import MetNumberInput from "../src/components/MetNumberInput.vue";
+import MetNumberInput from "../src/components/number-input/MetNumberInput.vue";
 import InfoIcon from "../src/icons/InfoIcon.vue";
 
 const meta: Meta<typeof MetNumberInput> = {
