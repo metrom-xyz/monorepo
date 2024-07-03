@@ -6,11 +6,11 @@ schema:
 dataSources:
   - kind: ethereum
     name: Placeholder
-    network: holesky
+    network: arbitrum-one
     source:
       abi: Placeholder
       address: "0x0000000000000000000000000000000000000000"
-      startBlock: 1468000
+      startBlock: 154000000
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
