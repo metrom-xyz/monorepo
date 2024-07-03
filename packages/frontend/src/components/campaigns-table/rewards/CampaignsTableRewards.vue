@@ -55,6 +55,7 @@ const popover = ref(false);
                                     reward.amount,
                                     reward.token.decimals,
                                 ),
+                                decimalsAmount: 6,
                             })
                         "
                     />
@@ -66,6 +67,7 @@ const popover = ref(false);
                                     reward.remaining,
                                     reward.token.decimals,
                                 ),
+                                decimalsAmount: 6,
                             })
                         "
                     />

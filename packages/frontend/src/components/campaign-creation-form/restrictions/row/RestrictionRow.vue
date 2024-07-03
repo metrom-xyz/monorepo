@@ -2,6 +2,7 @@
 import { ref } from "vue";
 import type { RestrictionRowProps } from "./types";
 import { MetEns, MetAvatar, MetPopover } from "@metrom-xyz/ui";
+import XIcon from "@/icons/XIcon.vue";
 
 defineProps<RestrictionRowProps>();
 

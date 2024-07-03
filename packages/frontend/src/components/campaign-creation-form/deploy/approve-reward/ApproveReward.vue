@@ -7,7 +7,7 @@ import {
     useSimulateContract,
     useWagmiConfig,
 } from "vevm";
-import { erc20Abi, type Address, parseUnits } from "viem";
+import { erc20Abi, type Address, formatUnits } from "viem";
 import { ref } from "vue";
 import { writeContract } from "@wagmi/core";
 import SubmitButton from "../../submit-button/SubmitButton.vue";
@@ -21,11 +21,6 @@ const publicClient = usePublicClient();
 
 const approving = ref(false);
 
-const amountToApprove = parseUnits(
-    props.reward.amount.toString(),
-    props.reward.token.decimals,
-);
-
 const protocolFee = computed(() => {
     if (!props.fee) return null;
     return props.fee / 10_000;
@@ -38,7 +33,7 @@ const { simulation: simulatedApprove, loading: simulatingApprove } =
             address: props.reward.token?.address as Address,
             abi: erc20Abi,
             functionName: "approve",
-            args: [props.metrom.address, amountToApprove],
+            args: [props.metrom.address, props.reward.amount],
         })),
     );
 
@@ -68,13 +63,18 @@ async function handleApproveRewardOnClick() {
         @click="handleApproveRewardOnClick"
     >
         {{ $t("campaign.deploy.approveReward") }}
-        {{ formatDecimals({ number: props.reward.amount.toString() }) }}
+        {{
+            formatDecimals({
+                number: formatUnits(
+                    props.reward.amount,
+                    props.reward.token.decimals,
+                ),
+                decimalsAmount: 10,
+            })
+        }}
         {{ $props.reward.token?.symbol }}
         <div v-if="protocolFee">
-            {{ $t("campaign.deploy.fee") }} {{ protocolFee }}% ({{
-                ($props.reward.amount * protocolFee) / 100
-            }}
-            {{ $props.reward.token.symbol }})
+            {{ $t("campaign.deploy.fee") }} {{ protocolFee }}%
         </div>
     </SubmitButton>
 </template>

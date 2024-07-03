@@ -5,6 +5,7 @@ import {
     MetTypography,
     MetWarningMessage,
     type TokenInfo,
+    type NumberMaskValue,
 } from "@metrom-xyz/ui";
 import type { RewardRowProps } from "./types";
 import { ref } from "vue";
@@ -25,7 +26,7 @@ const emits = defineEmits<{
     searchQueryChange: [query?: string];
 }>();
 const tokenModel = defineModel<TokenInfo>("token");
-const amountModel = defineModel<number>("amount");
+const amountModel = defineModel<bigint>("amount");
 
 const account = useAccount();
 const attrs = useAttrs();
@@ -87,14 +88,11 @@ const rewardRateTooLow = computed(() => {
         "seconds",
     );
 
+    if (campaignDuration <= 0) return false;
+
     return (
-        (amountModel.value * 3_600) / campaignDuration <
-        Number(
-            formatUnits(
-                tokenModel.value.minimumRate,
-                tokenModel.value.decimals,
-            ),
-        )
+        (amountModel.value * 3_600n) / BigInt(campaignDuration) <
+        tokenModel.value.minimumRate
     );
 });
 
@@ -129,19 +127,20 @@ watch(
         reward.value = {
             symbol: tokenModel.value.symbol,
             amount: formatDecimals({
-                number: amountModel.value.toString(),
+                number: formatUnits(
+                    amountModel.value,
+                    tokenModel.value.decimals,
+                ),
+                decimalsAmount: 10,
             }),
             balance: formatDecimals({
                 number: formatUnits(
                     tokenModel.value.balance,
                     tokenModel.value.decimals,
                 ),
+                decimalsAmount: 10,
             }),
-            insufficient:
-                parseUnits(
-                    amountModel.value.toString(),
-                    tokenModel.value.decimals,
-                ) > tokenModel.value.balance,
+            insufficient: amountModel.value > tokenModel.value.balance,
         };
     },
     { immediate: false },
@@ -161,6 +160,11 @@ watchEffect(() => {
 function handleRewardOnTokenRemove() {
     if (!props.onRemove || attrs.index === undefined) return;
     props.onRemove(attrs.index as number);
+}
+
+function handleRewardAmountOnChange(mask: NumberMaskValue) {
+    if (!tokenModel.value) return;
+    amountModel.value = parseUnits(mask.value, tokenModel.value.decimals);
 }
 
 onUnmounted(() => {
@@ -205,9 +209,10 @@ onUnmounted(() => {
             </div>
             <div class="reward_row__token__amount__input__wrapper">
                 <MetNumberInput
+                    :disabled="!tokenModel"
                     :placeholder="$t('campaign.rewards.amount')"
                     class="reward_row__token__amount__input"
-                    v-model="amountModel"
+                    @update:modelValue="handleRewardAmountOnChange"
                     :error="amountError"
                 />
             </div>
@@ -246,12 +251,14 @@ onUnmounted(() => {
                             symbol: tokenModel.symbol.toUpperCase(),
                             minimumRewardAmount: formatDecimals({
                                 number: minimumRewardAmount.toString(),
+                                decimalsAmount: 10,
                             }),
                             minimumRewardRate: formatDecimals({
                                 number: formatUnits(
                                     tokenModel.minimumRate,
                                     tokenModel.decimals,
                                 ),
+                                decimalsAmount: 10,
                             }),
                         })
                     }}
