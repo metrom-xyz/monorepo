@@ -38,19 +38,19 @@ export const formatDecimals = ({
     number,
     decimalsAmount = 4,
     commify = true,
-}: FormatDecimalsParams): string => {
-    const decimalIndex = number.indexOf(".");
-    if (decimalIndex === -1)
-        return commify ? Number(number).toLocaleString() : number;
-    let i = decimalIndex + 1;
-    while (i < number.length) {
-        if (number[i] !== "0") {
-            i += decimalsAmount;
-            break;
-        }
-        i++;
+}: FormatDecimalsParams) => {
+    const num = parseFloat(number);
+    if (isNaN(num)) return number;
+    let formatted = new Intl.NumberFormat("en-US", {
+        minimumFractionDigits: 0,
+        maximumFractionDigits: decimalsAmount,
+        useGrouping: commify,
+    }).format(num);
+
+    if (formatted.includes(".")) {
+        formatted = formatted.replace(/(\.\d*?[1-9])0+$/, "$1");
+        formatted = formatted.replace(/\.0*$/, "");
     }
-    return commify
-        ? Number(number.substring(0, i)).toLocaleString()
-        : number.substring(0, i);
+
+    return formatted;
 };
