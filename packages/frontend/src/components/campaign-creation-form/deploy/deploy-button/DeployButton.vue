@@ -2,7 +2,7 @@
 import { usePublicClient, useSimulateContract, useWagmiConfig } from "vevm";
 import { metromAbi } from "@metrom-xyz/contracts/abi";
 import type { DeployButtonProps } from "./types";
-import { parseUnits, type Address, type Hex } from "viem";
+import { type Address, type Hex } from "viem";
 import { ref } from "vue";
 import { writeContract } from "@wagmi/core";
 import SubmitButton from "../../submit-button/SubmitButton.vue";
@@ -43,10 +43,7 @@ const { simulation: simulatedCreate, loading: simulatingCreate } =
                         specification: specificationHash.value,
                         rewards: props.state.rewards.map((reward) => ({
                             token: reward.token.address as Address,
-                            amount: parseUnits(
-                                reward.amount.toString(),
-                                reward.token.decimals,
-                            ),
+                            amount: reward.amount,
                         })),
                     },
                 ],

@@ -29,7 +29,7 @@ export interface FinalizedState {
 export interface Reward {
     id: string;
     token?: TokenInfo;
-    amount?: number;
+    amount?: bigint;
 }
 
 export interface ChainIconData {

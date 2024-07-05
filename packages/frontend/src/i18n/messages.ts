@@ -86,6 +86,7 @@ export const messages = {
                 whitelist: "Whitelist",
                 blacklist: "Blacklist",
                 input: {
+                    title: "Restrictions",
                     placeholder: "Enter address",
                     button: "Add",
                     error: {

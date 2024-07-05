@@ -59,7 +59,7 @@ defineSlots<{
 }
 
 .submit_button__root_success {
-    @apply bg-green;
+    @apply bg-green hover:bg-green-600;
 }
 
 .submit_button__root_loading {

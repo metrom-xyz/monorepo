@@ -15,7 +15,7 @@ import MetEns from "./components/ens/MetEns.vue";
 import MetErrorText from "./components/error-text/MetErrorText.vue";
 import MetListInput from "./components/list-input/MetListInput.vue";
 import MetModal from "./components/modal/MetModal.vue";
-import MetNumberInput from "./components/MetNumberInput.vue";
+import MetNumberInput from "./components/number-input/MetNumberInput.vue";
 import MetPairRemoteLogo from "./components/pair-remote-logo/MetPairRemoteLogo.vue";
 import MetPoolSelect from "./components/pool-select/MetPoolSelect.vue";
 import MetPopover from "./components/popover/MetPopover.vue";

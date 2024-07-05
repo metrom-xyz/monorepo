@@ -24,3 +24,4 @@ export type {
     SelectOption,
     ValueType as SelectValueType,
 } from "./components/select/types";
+export type { NumberMaskValue } from "./components/number-input/types";

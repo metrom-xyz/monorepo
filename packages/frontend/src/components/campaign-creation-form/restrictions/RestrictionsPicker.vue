@@ -93,10 +93,15 @@ function handleApplyOnClick() {
             </button>
             <template #modal>
                 <div class="restrictions_picker__modal__container">
-                    <XIcon
-                        @click="handleModalOnDismiss"
-                        class="restrictions_picker__modal__close__icon"
-                    />
+                    <div class="restrictions_picker__modal__title">
+                        <MetTypography lg medium>
+                            {{ $t("campaign.restrictions.input.title") }}
+                        </MetTypography>
+                        <XIcon
+                            @click="handleModalOnDismiss"
+                            class="restrictions_picker__modal__close__icon"
+                        />
+                    </div>
                     <MetTypography>
                         {{ $t("campaign.restrictions.overview") }}
                     </MetTypography>
@@ -196,7 +201,24 @@ function handleApplyOnClick() {
 }
 
 .restrictions_picker__modal__container {
-    @apply flex flex-col gap-4 bg-white px-8 py-5 max-w-[414px] rounded-[30px] border border-green;
+    @apply flex
+        flex-col
+        gap-4
+        bg-white
+        p-5
+        h-[680px]
+        w-[440px]
+        rounded-[30px]
+        border
+        border-green;
+}
+
+.restrictions_picker__modal__title {
+    @apply flex justify-between items-center;
+}
+
+.restrictions_picker__modal__container > .met_list_input__root {
+    @apply grow;
 }
 
 .restrictions_picker__modal__close__icon {
