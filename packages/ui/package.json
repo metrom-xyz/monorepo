@@ -3,7 +3,7 @@
     "name": "@metrom-xyz/ui",
     "license": "GPL-3.0-or-later",
     "author": "Federico Luzzi <federico.luzzi@protonmail.com>",
-    "version": "0.1.0",
+    "version": "0.3.0",
     "main": "./dist/index.js",
     "types": "./dist/index.d.ts",
     "exports": {
@@ -22,6 +22,9 @@
     "publishConfig": {
         "access": "public"
     },
+    "files": [
+        "./dist"
+    ],
     "scripts": {
         "lint": "eslint && prettier --check './**/*.{json,md}'",
         "format": "eslint --fix && prettier --write './**/*.{json,md}'",
@@ -38,7 +41,7 @@
         "@vueuse/core": "^10.11.0",
         "dayjs": "^1.11.10",
         "ethereum-blockies-base64": "^1.0.2",
-        "sdk": "workspace:*",
+        "@metrom-xyz/sdk": "workspace:*",
         "viem": "^2.16.5",
         "vue-collapsed": "^1.3.3",
         "vue-imask": "^7.5.0"
