@@ -7,7 +7,6 @@ import HatsFinanceLogo from "./logos/HatsFinance.vue";
 import AlgebraLogo from "./logos/Algebra.vue";
 import SwaprLogo from "./logos/Swapr.vue";
 
-// TODO: add partners
 const PARTNERS = [
     {
         name: "Hats Finance",

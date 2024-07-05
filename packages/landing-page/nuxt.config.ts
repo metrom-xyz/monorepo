@@ -1,5 +1,6 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
+    compatibilityDate: "2024-07-05",
     devtools: { enabled: true },
     nitro: {
         static: true,
@@ -13,11 +14,7 @@ export default defineNuxtConfig({
             autoprefixer: {},
         },
     },
-    css: [
-        "@fontsource-variable/inter",
-        "@metrom-xyz/ui/index.css",
-        "~/assets/css/main.css",
-    ],
+    css: ["@metrom-xyz/ui/index.css", "~/assets/css/main.css"],
     image: {
         format: ["webp"],
     },

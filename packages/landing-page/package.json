@@ -12,6 +12,7 @@
         "lint:fix": "eslint . --fix"
     },
     "dependencies": {
+        "@fontsource-variable/inter": "^5.0.18",
         "@metrom-xyz/contracts": "^0.11.0",
         "@metrom-xyz/ui": "workspace:*",
         "@nuxt/eslint": "^0.3.13",

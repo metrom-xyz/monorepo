@@ -16,7 +16,8 @@ export const METROM_DAPP_LINKS: Record<Environment, string> = {
 
 // TODO: the environment has to be taken in through an env
 
-export const METROM_DAPP_LINK = METROM_DAPP_LINKS[Environment.Development];
+export const METROM_DAPP_LINK =
+    METROM_DAPP_LINKS[process.env.ENVIRONMENT as Environment];
 
 export const SUPPORTED_CHAIN_IDS = Object.keys(
     ADDRESS[Environment.Development],

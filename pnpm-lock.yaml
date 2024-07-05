@@ -291,6 +291,9 @@ importers:
 
   packages/landing-page:
     dependencies:
+      '@fontsource-variable/inter':
+        specifier: ^5.0.18
+        version: 5.0.18
       '@metrom-xyz/contracts':
         specifier: ^0.11.0
         version: 0.11.0(bufferutil@4.0.8)(typescript@5.5.3)(utf-8-validate@5.0.10)(zod@3.23.8)
