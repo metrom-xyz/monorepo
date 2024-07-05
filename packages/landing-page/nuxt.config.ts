@@ -5,6 +5,11 @@ export default defineNuxtConfig({
     nitro: {
         static: true,
     },
+    runtimeConfig: {
+        public: {
+            showDappLinks: process.env.ENVIRONMENT !== "production",
+        },
+    },
     imports: {
         autoImport: false,
     },

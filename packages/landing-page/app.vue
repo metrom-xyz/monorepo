@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useHead, useSeoMeta } from "#imports";
+import { useHead, useRuntimeConfig, useSeoMeta } from "#imports";
 import NavigationBar from "./components/NavigationBar.vue";
 import Hero from "./components/Hero.vue";
 import Audits from "./components/Audits.vue";
@@ -9,6 +9,10 @@ import DeepDive from "./components/DeepDive.vue";
 import Faqs from "./components/faqs/Faqs.vue";
 import Socials from "./components/Socials.vue";
 import About from "./components/About.vue";
+
+const {
+    public: { showDappLinks },
+} = useRuntimeConfig();
 
 useHead({
     link: [
@@ -70,14 +74,14 @@ useSeoMeta({
                 <DeepDive />
                 <Faqs />
                 <Socials />
-                <About />
+                <About v-if="showDappLinks" />
             </div>
         </div>
     </div>
 </template>
 <style>
 .app__container {
-    @apply min-h-screen
+    @apply w-screen
         flex
         justify-center
         bg-gray-300
@@ -85,7 +89,8 @@ useSeoMeta({
         bg-dots
         py-6
         md:px-12
-        lg:px-44;
+        lg:px-44
+        pb-20;
 }
 
 .app__content__wrapper {

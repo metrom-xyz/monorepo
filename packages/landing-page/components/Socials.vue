@@ -55,7 +55,6 @@ const SOCIALS = [
 
 .socials__wrapper {
     @apply flex
-        flex-wrap 
         justify-center
         w-full
         flex-row

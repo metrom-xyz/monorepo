@@ -4,6 +4,11 @@ import { MetTypography, MetButton } from "@metrom-xyz/ui";
 import ExternalIcon from "./icons/External.vue";
 import HeroForeground from "./assets/HeroForeground.vue";
 import { METROM_DAPP_LINK, SUPPORTED_CHAIN_IDS } from "../utils/commons";
+import { useRuntimeConfig } from "#app";
+
+const {
+    public: { showDappLinks },
+} = useRuntimeConfig();
 </script>
 <template>
     <section class="hero__root">
@@ -16,6 +21,7 @@ import { METROM_DAPP_LINK, SUPPORTED_CHAIN_IDS } from "../utils/commons";
                     {{ $t("hero.description") }}
                 </MetTypography>
                 <MetButton
+                    v-if="showDappLinks"
                     secondary
                     :icon="ExternalIcon"
                     :href="`${METROM_DAPP_LINK}/create?chain=${SUPPORTED_CHAIN_IDS[0]}`"

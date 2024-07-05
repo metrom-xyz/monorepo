@@ -4,6 +4,11 @@ import { MetTypography, MetButton } from "@metrom-xyz/ui";
 import { METROM_DAPP_LINK } from "../utils/commons";
 import ExternalIcon from "./icons/External.vue";
 import MetromLogo from "./logos/Metrom.vue";
+import { useRuntimeConfig } from "#app";
+
+const {
+    public: { showDappLinks },
+} = useRuntimeConfig();
 </script>
 <template>
     <header class="navigation_bar__root">
@@ -30,6 +35,7 @@ import MetromLogo from "./logos/Metrom.vue";
                 </a>
             </div>
             <MetButton
+                v-if="showDappLinks"
                 sm
                 :icon="ExternalIcon"
                 :href="METROM_DAPP_LINK"

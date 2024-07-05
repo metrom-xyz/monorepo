@@ -47,12 +47,14 @@ const linkProps = {
         flex-col
         items-center
         justify-center
-        w-40
-        h-44
+        sm:w-40
+        sm:h-44
+        w-28
+        h-32
         rounded-[40px];
 }
 
 .info__card__icon {
-    @apply h-20 w-20 mb-2;
+    @apply h-12 w-12 sm:h-20 sm:w-20 mb-2;
 }
 </style>

@@ -47,7 +47,6 @@ const AUDITS = [
 
 .audits__wrapper {
     @apply flex
-        flex-wrap
         justify-center
         w-full
         flex-row
