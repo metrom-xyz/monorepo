@@ -47,11 +47,10 @@ const AUDITS = [
 
 .audits__wrapper {
     @apply flex
-        overflow-x-auto
+        flex-wrap
+        justify-center
         w-full
         flex-row
-        gap-5
-        sm:flex-wrap
-        sm:justify-center;
+        gap-5;
 }
 </style>
