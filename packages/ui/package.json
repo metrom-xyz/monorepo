@@ -3,7 +3,7 @@
     "name": "@metrom-xyz/ui",
     "license": "GPL-3.0-or-later",
     "author": "Federico Luzzi <federico.luzzi@protonmail.com>",
-    "version": "0.4.1",
+    "version": "0.4.2",
     "main": "./dist/index.js",
     "types": "./dist/index.d.ts",
     "exports": {
