@@ -7,7 +7,7 @@ import { useAccount, useWagmiConfig } from "vevm";
 import { watchEffect } from "vue";
 import { ref } from "vue";
 import ConnectWallet from "./ConnectWallet.vue";
-import { SERVICE_URLS } from "sdk";
+import { SERVICE_URLS } from "@metrom-xyz/sdk";
 
 const signedLoginMessage = ref<string>();
 const loading = ref(false);

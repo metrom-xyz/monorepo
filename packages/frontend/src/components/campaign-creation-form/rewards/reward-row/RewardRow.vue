@@ -14,7 +14,7 @@ import { useAttrs } from "vue";
 import { watchEffect } from "vue";
 import { watch } from "vue";
 import { formatUnits, parseUnits } from "viem";
-import { formatDecimals } from "sdk";
+import { formatDecimals } from "@metrom-xyz/sdk";
 import { useAccount } from "vevm";
 import { computed } from "vue";
 import { onUnmounted } from "vue";

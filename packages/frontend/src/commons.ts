@@ -3,7 +3,7 @@ import {
     AmmSubgraphClient,
     SupportedAmm,
     type Erc20Token,
-} from "sdk";
+} from "@metrom-xyz/sdk";
 import { type Transport, http, type Chain, type Address } from "viem";
 import { celoAlfajores, holesky } from "viem/chains";
 import { type Amm } from "./types";

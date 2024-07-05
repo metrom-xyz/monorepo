@@ -1,6 +1,6 @@
 import { CHAIN_DATA } from "@/commons";
 import type { Amm } from "@/types";
-import { SupportedChain, type Pool, SupportedAmm } from "sdk";
+import { SupportedChain, type Pool, SupportedAmm } from "@metrom-xyz/sdk";
 
 export const getAmm = (
     chainId: SupportedChain,

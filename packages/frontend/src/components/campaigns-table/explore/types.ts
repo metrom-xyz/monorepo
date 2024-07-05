@@ -1,4 +1,4 @@
-import type { Pool } from "sdk";
+import type { Pool } from "@metrom-xyz/sdk";
 
 export interface CampaignsTableExplorerProps {
     pool: Pool;

@@ -5,7 +5,7 @@ import {
     watchEffect,
     toValue,
 } from "vue";
-import type { Campaign, MetromApiClient } from "sdk";
+import type { Campaign, MetromApiClient } from "@metrom-xyz/sdk";
 
 export interface UseCampaignsParams {
     pageNumber?: number;

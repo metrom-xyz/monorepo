@@ -1,6 +1,6 @@
 import { isAddress } from "viem";
 import type { TokenInfo } from "../types";
-import type { Pool } from "sdk";
+import type { Pool } from "@metrom-xyz/sdk";
 
 export const filterPools = (pools: Pool[], searchQuery: string) => {
     if (pools.length === 0) return [];

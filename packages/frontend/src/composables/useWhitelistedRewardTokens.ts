@@ -5,7 +5,7 @@ import {
     toValue,
     type MaybeRefOrGetter,
 } from "vue";
-import { MetromApiClient, type WhitelistedErc20Token } from "sdk";
+import { MetromApiClient, type WhitelistedErc20Token } from "@metrom-xyz/sdk";
 
 export interface UseWhitelistedRewardTokensReturnParams {
     client?: MetromApiClient;

@@ -5,7 +5,7 @@ import {
     watchEffect,
     toValue,
 } from "vue";
-import type { Pool } from "sdk";
+import type { Pool } from "@metrom-xyz/sdk";
 import type { Amm } from "@/types";
 
 export interface UsePoolsParams {

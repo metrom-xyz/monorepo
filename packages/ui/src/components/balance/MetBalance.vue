@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { formatDecimals } from "sdk";
+import { formatDecimals } from "@metrom-xyz/sdk";
 import type { BalanceProps } from "./types";
 import { formatUnits } from "viem";
 import MetTypography from "../typography/MetTypography.vue";

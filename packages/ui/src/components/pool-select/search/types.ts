@@ -1,4 +1,4 @@
-import type { Pool } from "sdk";
+import type { Pool } from "@metrom-xyz/sdk";
 import type { TokenInfo } from "../../../types";
 
 export interface PoolSelectSearchProps {

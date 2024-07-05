@@ -8,7 +8,7 @@ import {
 import type { CampaignsTableRewardsProps } from "./types";
 import { ref } from "vue";
 import { formatUnits } from "viem";
-import { formatDecimals } from "sdk";
+import { formatDecimals } from "@metrom-xyz/sdk";
 
 defineProps<CampaignsTableRewardsProps>();
 

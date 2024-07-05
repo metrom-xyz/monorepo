@@ -17,7 +17,7 @@ import {
     MetSwitch,
 } from "@metrom-xyz/ui";
 import { formatUnits } from "viem";
-import { formatDecimals, type Claim } from "sdk";
+import { formatDecimals, type Claim } from "@metrom-xyz/sdk";
 import { metromAbi } from "@metrom-xyz/contracts/abi";
 import { writeContract } from "@wagmi/core";
 import { useClaims } from "@/composables/useClaims";

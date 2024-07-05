@@ -1,6 +1,6 @@
 import type { Dayjs } from "dayjs";
 import dayjs from "dayjs";
-import { enforceDoubleDigits } from "sdk";
+import { enforceDoubleDigits } from "@metrom-xyz/sdk";
 
 // our interface for a single cell
 export interface CalendarCell {

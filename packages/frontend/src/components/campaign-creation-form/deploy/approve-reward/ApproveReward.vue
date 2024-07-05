@@ -11,7 +11,7 @@ import { erc20Abi, type Address, formatUnits } from "viem";
 import { ref } from "vue";
 import { writeContract } from "@wagmi/core";
 import SubmitButton from "../../submit-button/SubmitButton.vue";
-import { formatDecimals } from "sdk";
+import { formatDecimals } from "@metrom-xyz/sdk";
 
 const props = defineProps<ApproveRewardProps>();
 

@@ -5,7 +5,7 @@ import type { PoolPickerTypes } from "./types";
 import { watchEffect } from "vue";
 import { usePools } from "@/composables/usePools";
 import { CHAIN_DATA } from "@/commons";
-import type { SupportedChain } from "sdk";
+import type { SupportedChain } from "@metrom-xyz/sdk";
 
 const props = defineProps<PoolPickerTypes>();
 const emits = defineEmits<{

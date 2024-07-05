@@ -1,6 +1,6 @@
 import type { Address, ChainContract } from "viem";
 import type { Component } from "vue";
-import type { AmmSubgraphClient, Erc20Token, MetromApiClient, Pool } from "sdk";
+import type { AmmSubgraphClient, Erc20Token, MetromApiClient, Pool } from "@metrom-xyz/sdk";
 import type { AccordionSelectOption, Range, TokenInfo } from "@metrom-xyz/ui";
 
 export interface CampaignState {

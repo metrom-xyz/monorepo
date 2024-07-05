@@ -2,7 +2,7 @@
 import WalletIcon from "@/icons/WalletIcon.vue";
 import PowerIcon from "@/icons/PowerIcon.vue";
 import { MetTypography } from "@metrom-xyz/ui";
-import { shortenAddress } from "sdk";
+import { shortenAddress } from "@metrom-xyz/sdk";
 import { useAccount, useDisconnect } from "vevm";
 import ChainSelect from "./ChainSelect.vue";
 import ConnectWallet from "./ConnectWallet.vue";

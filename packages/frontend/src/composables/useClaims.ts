@@ -5,7 +5,7 @@ import {
     watchEffect,
     toValue,
 } from "vue";
-import { type MetromApiClient, type Claim } from "sdk";
+import { type MetromApiClient, type Claim } from "@metrom-xyz/sdk";
 import type { Address } from "viem";
 
 export interface UseClaims {

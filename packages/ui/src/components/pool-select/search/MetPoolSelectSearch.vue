@@ -9,7 +9,7 @@ import MetPoolSelectSearchRow from "./row/MetPoolSelectSearchRow.vue";
 import MetTypography from "../../typography/MetTypography.vue";
 import XIcon from "../../../icons/XIcon.vue";
 import SearchIcon from "../../../icons/SearchIcon.vue";
-import type { Pool } from "sdk";
+import type { Pool } from "@metrom-xyz/sdk";
 import { onMounted } from "vue";
 import MetChip from "../../chip/MetChip.vue";
 import MetRemoteLogo from "../../remote-logo/MetRemoteLogo.vue";

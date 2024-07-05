@@ -6,7 +6,7 @@ import MetPoolSelectSearch from "./search/MetPoolSelectSearch.vue";
 import type { PoolSelectProps } from "./types";
 import { computed } from "vue";
 import MetPairRemoteLogo from "../pair-remote-logo/MetPairRemoteLogo.vue";
-import type { Pool } from "sdk";
+import type { Pool } from "@metrom-xyz/sdk";
 
 defineProps<PoolSelectProps>();
 const emit = defineEmits<{

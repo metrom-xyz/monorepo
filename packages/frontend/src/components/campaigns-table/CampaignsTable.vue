@@ -11,7 +11,7 @@ import {
 } from "@metrom-xyz/ui";
 import { filterCampaigns } from "../../utils/campaigns";
 import { watchDebounced } from "@vueuse/core";
-import { type Campaign } from "sdk";
+import { type Campaign } from "@metrom-xyz/sdk";
 import { computed } from "vue";
 import CampaignsTableDeposit from "./deposit/CampaignsTableDeposit.vue";
 import { ref } from "vue";

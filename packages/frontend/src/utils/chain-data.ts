@@ -5,7 +5,7 @@ import {
 } from "@/commons";
 import type { ChainData } from "@/types";
 import { ADDRESS, SupportedChain } from "@metrom-xyz/contracts";
-import { MetromApiClient, SERVICE_URLS } from "sdk";
+import { MetromApiClient, SERVICE_URLS } from "@metrom-xyz/sdk";
 import type { ChainContract } from "viem";
 
 export const buildChainData = () => {

@@ -8,7 +8,7 @@ import { writeContract } from "@wagmi/core";
 import SubmitButton from "../../submit-button/SubmitButton.vue";
 import SendIcon from "@/icons/SendIcon.vue";
 import { useRouter } from "vue-router";
-import { SERVICE_URLS } from "sdk";
+import { SERVICE_URLS } from "@metrom-xyz/sdk";
 import { useLogin } from "@/stores/auth";
 import { computed } from "vue";
 import { watchEffect } from "vue";

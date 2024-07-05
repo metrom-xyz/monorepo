@@ -2,7 +2,7 @@
 import MetTypography from "../../../typography/MetTypography.vue";
 import MetPairRemoteLogo from "../../../pair-remote-logo/MetPairRemoteLogo.vue";
 import type { PoolSelectSearchRowProps } from "./types";
-import { formatDecimals } from "sdk";
+import { formatDecimals } from "@metrom-xyz/sdk";
 
 defineProps<PoolSelectSearchRowProps>();
 </script>

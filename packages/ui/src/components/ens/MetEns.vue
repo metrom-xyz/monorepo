@@ -2,7 +2,7 @@
 import { useEnsName } from "vevm";
 import type { EnsProps } from "./types";
 import MetTypography from "../typography/MetTypography.vue";
-import { shortenAddress } from "sdk";
+import { shortenAddress } from "@metrom-xyz/sdk";
 import type { TypographyProps } from "../typography/types";
 
 const props = defineProps<EnsProps & TypographyProps>();

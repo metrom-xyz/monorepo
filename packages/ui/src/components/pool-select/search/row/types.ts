@@ -1,4 +1,4 @@
-import type { Erc20Token } from "sdk";
+import type { Erc20Token } from "@metrom-xyz/sdk";
 
 export interface PoolSelectSearchRowProps {
     selected?: boolean;

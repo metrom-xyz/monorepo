@@ -1,5 +1,5 @@
 import type { PoolSelectSearchProps } from "./search/types";
-import type { Pool } from "sdk";
+import type { Pool } from "@metrom-xyz/sdk";
 
 export interface PoolSelectProps {
     loading?: boolean;

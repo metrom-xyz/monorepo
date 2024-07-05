@@ -5,7 +5,7 @@ import { isChainSupported } from "@/utils/chain";
 import { useAccount, useSwitchChain } from "vevm";
 import { computed } from "vue";
 import { useRouter } from "vue-router";
-import type { SupportedChain } from "sdk";
+import type { SupportedChain } from "@metrom-xyz/sdk";
 
 const account = useAccount();
 const router = useRouter();
