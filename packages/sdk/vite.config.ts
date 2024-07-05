@@ -1,5 +1,4 @@
 import { defineConfig } from "vite";
-import pkg from "./package.json";
 
 export default defineConfig({
     build: {
@@ -17,9 +16,6 @@ export default defineConfig({
                 preserveModules: true,
                 preserveModulesRoot: "src",
             },
-            external: Object.keys(pkg.dependencies || {}).concat(
-                Object.keys(pkg.devDependencies || {}),
-            ),
         },
     },
 });

@@ -18,9 +18,7 @@ export default defineConfig({
                 preserveModules: true,
                 preserveModulesRoot: "src",
             },
-            external: Object.keys(pkg.dependencies || {})
-                .concat(Object.keys(pkg.peerDependencies || {}))
-                .concat(Object.keys(pkg.devDependencies || {})),
+            external: Object.keys(pkg.peerDependencies),
         },
     },
 });
