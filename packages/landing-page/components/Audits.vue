@@ -10,14 +10,14 @@ const AUDITS = [
         logo: HatsFinanceLogo,
     },
     {
-        component: "audits.contracts",
-        auditor: "0xCommit",
-        logo: ZeroXCommitLogo,
-    },
-    {
         component: "audits.backend",
         auditor: "Hats Finance",
         logo: HatsFinanceLogo,
+    },
+    {
+        component: "audits.contracts",
+        auditor: "0xCommit",
+        logo: ZeroXCommitLogo,
     },
 ];
 </script>
