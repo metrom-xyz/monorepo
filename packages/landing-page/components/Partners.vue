@@ -69,7 +69,7 @@ const PARTNERS = [
     @apply sm:hidden flex flex-row w-full;
 }
 
-.partners__wrapper__mobile > .vue3-marquee > .marquee > .info__card__root {
-    @apply mx-2.5;
+.partners__wrapper__mobile > .vue3-marquee > .marquee > .info_card__root {
+    @apply mx-3;
 }
 </style>

@@ -20,16 +20,19 @@ const linkProps = {
     <component
         :is="baseComponent"
         v-bind="{ ...($props.href ? linkProps : {}) }"
-        class="info__card__root"
+        class="info_card__root"
     >
         <MetCard>
             <template #content>
-                <div class="info__card">
-                    <component :is="$props.icon" class="info__card__icon" />
+                <div class="info_card">
+                    <component :is="$props.icon" class="info_card__icon" />
                     <MetTypography lg>
                         {{ $props.title }}
                     </MetTypography>
-                    <MetTypography v-if="$props.description">
+                    <MetTypography
+                        v-if="$props.description"
+                        class="info_card__description"
+                    >
                         {{ $props.description }}
                     </MetTypography>
                 </div>
@@ -38,11 +41,11 @@ const linkProps = {
     </component>
 </template>
 <style>
-.info__card__root {
+.info_card__root {
     @apply w-fit;
 }
 
-.info__card {
+.info_card {
     @apply flex
         flex-col
         items-center
@@ -51,10 +54,15 @@ const linkProps = {
         sm:h-44
         w-28
         h-32
+        p-2
         rounded-[40px];
 }
 
-.info__card__icon {
+.info_card p {
+    @apply text-center;
+}
+
+.info_card__icon {
     @apply h-12 w-12 sm:h-20 sm:w-20 mb-2;
 }
 </style>
