@@ -49,11 +49,10 @@ const linkProps = {
         justify-center
         w-48
         h-44
-        gap-0.5
         rounded-[40px];
 }
 
 .info__card__icon {
-    @apply h-[90px] w-[90px];
+    @apply h-[90px] w-[90px] mb-2;
 }
 </style>

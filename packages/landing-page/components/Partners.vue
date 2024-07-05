@@ -2,7 +2,10 @@
 import { MetTypography } from "@metrom-xyz/ui";
 import { Vue3Marquee } from "vue3-marquee";
 
+import InfoCard from "./InfoCard.vue";
 import HatsFinanceLogo from "./logos/HatsFinance.vue";
+import AlgebraLogo from "./logos/Algebra.vue";
+import SwaprLogo from "./logos/Swapr.vue";
 
 // TODO: add partners
 const PARTNERS = [
@@ -11,20 +14,12 @@ const PARTNERS = [
         logo: HatsFinanceLogo,
     },
     {
-        name: "Hats Finance",
-        logo: HatsFinanceLogo,
+        name: "Algebra finance",
+        logo: AlgebraLogo,
     },
     {
-        name: "Hats Finance",
-        logo: HatsFinanceLogo,
-    },
-    {
-        name: "Hats Finance",
-        logo: HatsFinanceLogo,
-    },
-    {
-        name: "Hats Finance",
-        logo: HatsFinanceLogo,
+        name: "Swapr",
+        logo: SwaprLogo,
     },
 ];
 </script>

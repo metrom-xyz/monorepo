@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { MetTypography } from "@metrom-xyz/ui";
 import HatsFinanceLogo from "./logos/HatsFinance.vue";
+import ZeroXCommitLogo from "./logos/0xCommit.vue";
 
 const AUDITS = [
     {
@@ -11,8 +12,7 @@ const AUDITS = [
     {
         component: "audits.contracts",
         auditor: "0xCommit",
-        // TODO: 0xcommit log
-        logo: HatsFinanceLogo,
+        logo: ZeroXCommitLogo,
     },
     {
         component: "audits.backend",
