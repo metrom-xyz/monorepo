@@ -5,59 +5,68 @@ import MediumLogo from "./logos/Medium.vue";
 // TODO: fetch articles from Medium API https://api.rss2json.com/v1/api.json?rss_url=https://medium.com/feed/@metromxyz
 const MEDIUM_ARTICLES = [
     {
+        title: "Introducing Metrom: Design Your Incentives to AMMplify Liquidity",
+        description:
+            "Metrom is an all-in-one, efficient liquidity mining platform designed to make the entire liquidity process easy and accessible for both campaign creators and liquidity providers.",
+        link: "https://medium.com/@metromxyz/introducing-metrom-design-your-incentives-to-ammplify-liquidity-0fe3068774e3",
+    },
+    {
+        title: "Metrom quick start guide",
+        description:
+            "The idea behind Metrom is simple: make it easy to set up liquidity mining campaigns to attract the most liquidity without leaking incentives. Discover how to do it with this guide.",
+        link: "https://medium.com/@metromxyz/metrom-quick-start-guide-0f85d1a05703",
+    },
+    {
         title: "Inside our Hats Finance Audit: The Key Findings",
         description:
             "Welcome to the second part of our Hats Finance summary. In this post, we delve deeper into the issues identified and share some recommendations for other teams.",
         link: "https://medium.com/@metromxyz/inside-our-hats-finance-audit-the-key-findings-dd0cf36a842a",
     },
-    {
-        title: "Inside Our Hats Finance Audit: The Experience",
-        description:
-            "At the end of April, Metrom entered a crucial phase in its journey: the auditing stage. We kicked this off with a Hats Finance Audit Competition.",
-        link: "https://medium.com/@metromxyz/inside-our-hats-finance-audit-the-experience-af726ac0e536",
-    },
 ];
 </script>
 <template>
-    <section id="deepDive" class="deep__dive__root">
+    <section id="deepDive" class="deep_dive__root">
         <MetTypography xl bold>{{ $t("deepDive.title") }}</MetTypography>
-        <div class="deep__dive__wrapper">
-            <MetCard
+        <div class="deep_dive__wrapper">
+            <a
                 v-for="(article, index) in MEDIUM_ARTICLES"
                 :key="index"
-                class="deep__dive__card__wrapper"
+                :href="article.link"
+                rel="noopener noreferrer"
+                target="_blank"
             >
-                <template #content>
-                    <div class="deep__dive__card">
-                        <MetTypography h3 bold>
-                            {{ article.title }}
-                        </MetTypography>
-                        <div class="deep__dive__card__description__wrapper">
-                            <MetTypography xl class="text-ellipsis">
-                                {{ article.description }}
-                            </MetTypography>
-                            <a
-                                :href="article.link"
-                                rel="noopener noreferrer"
-                                target="_blank"
-                                class="deep__dive__card__link"
+                <MetCard class="deep_dive__card__wrapper">
+                    <template #content>
+                        <div class="deep_dive__card">
+                            <MetTypography
+                                h3
+                                bold
+                                class="deep_dive__card__title"
                             >
+                                {{ article.title }}
+                            </MetTypography>
+                            <div class="deep_dive__card__description__wrapper">
+                                <MetTypography xl class="text-ellipsis">
+                                    {{ article.description }}
+                                </MetTypography>
+                            </div>
+                            <div class="deep_dive__medium">
                                 <MediumLogo />
                                 <MetTypography lg>Medium</MetTypography>
-                            </a>
+                            </div>
                         </div>
-                    </div>
-                </template>
-            </MetCard>
+                    </template>
+                </MetCard>
+            </a>
         </div>
     </section>
 </template>
 <style>
-.deep__dive__root {
+.deep_dive__root {
     @apply flex flex-col items-center gap-5;
 }
 
-.deep__dive__wrapper {
+.deep_dive__wrapper {
     @apply flex
         flex-col
         sm:flex-row
@@ -65,29 +74,33 @@ const MEDIUM_ARTICLES = [
         justify-center;
 }
 
-.deep__dive__card__wrapper {
-    @apply bg-blue;
+.deep_dive__card__wrapper {
+    @apply bg-blue
+        w-[24rem]
+        h-[36rem];
 }
 
-.deep__dive__card {
-    @apply flex
+.deep_dive__card {
+    @apply h-full 
+        flex
         flex-col
-        gap-20
-        p-9
-        max-w-[380px]
-        min-h-[530px];
+        p-9;
 }
 
-.deep__dive__card__description__wrapper {
+.deep_dive__card__title {
+    @apply h-20;
+}
+
+.deep_dive__card__description__wrapper {
     @apply flex
         flex-col
         h-full
         flex-1
-        gap-3
+        mt-4
         justify-between;
 }
 
-.deep__dive__card__link {
+.deep_dive__medium {
     @apply flex gap-2 items-center;
 }
 </style>
