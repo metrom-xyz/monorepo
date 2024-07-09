@@ -12,6 +12,7 @@ import { ref } from "vue";
 import { writeContract } from "@wagmi/core";
 import SubmitButton from "../../submit-button/SubmitButton.vue";
 import { formatDecimals } from "@metrom-xyz/sdk";
+import CupIcon from "@/icons/CupIcon.vue";
 
 const props = defineProps<ApproveRewardProps>();
 
@@ -60,9 +61,11 @@ async function handleApproveRewardOnClick() {
 <template>
     <SubmitButton
         :loading="$props.loading || simulatingApprove || approving"
+        variant="submit"
+        :icon="CupIcon"
         @click="handleApproveRewardOnClick"
     >
-        {{ $t("campaign.deploy.approveReward") }}
+        {{ $t("campaign.preview.approveReward") }}
         {{
             formatDecimals({
                 number: formatUnits(
@@ -74,7 +77,7 @@ async function handleApproveRewardOnClick() {
         }}
         {{ $props.reward.token?.symbol }}
         <div v-if="protocolFee">
-            {{ $t("campaign.deploy.fee") }} {{ protocolFee }}%
+            {{ $t("campaign.preview.fee") }} {{ protocolFee }}%
         </div>
     </SubmitButton>
 </template>

@@ -1,5 +1,10 @@
 <script setup lang="ts">
-import { useAccount, useReadContract, useReadContracts } from "vevm";
+import {
+    useAccount,
+    useConnect,
+    useReadContract,
+    useReadContracts,
+} from "vevm";
 import { ref } from "vue";
 import type { ApproveRewardsProps } from "./types";
 import type { Reward } from "@/types";
@@ -8,11 +13,15 @@ import { erc20Abi, type Address, parseUnits } from "viem";
 import { watchEffect } from "vue";
 import ApproveReward from "../approve-reward/ApproveReward.vue";
 import { metromAbi } from "@metrom-xyz/contracts/abi";
+import { injected } from "@wagmi/core";
+import WalletIcon from "@/icons/WalletIcon.vue";
+import SubmitButton from "@/components/submit-button/SubmitButton.vue";
 
 const props = defineProps<ApproveRewardsProps>();
 const emits = defineEmits(["allApproved"]);
 
 const account = useAccount();
+const { connect } = useConnect();
 
 const rewardsToApprove = ref<Required<Reward[]>>(
     (props.rewards as Required<Reward[]>) || [],
@@ -56,6 +65,10 @@ function handleApproveRewardOnClick() {
     } else approvingRewardIndex.value = updatedIndex;
 }
 
+function handleConnectOnClick() {
+    connect({ connector: injected() });
+}
+
 watchEffect(() => {
     if (
         !allowances.value ||
@@ -90,7 +103,16 @@ watchEffect(() => {
 });
 </script>
 <template>
+    <SubmitButton
+        v-if="!account.isConnected"
+        @click="handleConnectOnClick"
+        variant="submit"
+        :icon="WalletIcon"
+    >
+        {{ $t("campaign.preview.connectWallet") }}
+    </SubmitButton>
     <ApproveReward
+        v-else
         :metrom="$props.metrom"
         :fee="fee"
         :reward="approvingReward"

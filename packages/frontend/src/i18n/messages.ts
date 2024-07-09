@@ -28,15 +28,6 @@ export const messages = {
             sign: "Sign message",
         },
         campaign: {
-            summary: {
-                title: "Campaign summary",
-                pool: "Pool",
-                amm: "DEX",
-                rewards: "Rewards",
-                period: "Duration",
-                periodFrom: "Start",
-                periodTo: "To",
-            },
             amm: {
                 title: "Pick a DEX",
                 network: "Network",
@@ -115,11 +106,20 @@ export const messages = {
                     },
                 },
             },
-            deploy: {
+            confirm: {
                 title: "Launch",
                 connectWallet: "Connect wallet to continue",
-                confirm: "Confirm",
-                edit: "Edit campaign",
+                preview: "See campaign preview",
+            },
+            preview: {
+                summary: "Campaign summary",
+                pool: "Pool",
+                rewards: "Rewards",
+                period: "Date",
+                periodFrom: "Start",
+                periodTo: "To",
+                back: "Campaign creation",
+                connectWallet: "Connect wallet to continue",
                 approveReward: "Approve reward: ",
                 fee: "Protocol fee: ",
                 launch: "Launch campaign",
