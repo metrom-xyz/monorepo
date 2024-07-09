@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { SUPPORTED_CHAINS } from "@/commons";
 import { isChainSupported } from "@/utils/chain";
-import { useAccount, useChainId, useReconnect } from "vevm";
+import { useAccount, useReconnect } from "vevm";
 import { watch } from "vue";
 import { watchEffect } from "vue";
 import { ref } from "vue";

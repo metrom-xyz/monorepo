@@ -9,7 +9,7 @@ import { ref } from "vue";
 import type { ApproveRewardsProps } from "./types";
 import type { Reward } from "@/types";
 import { computed } from "vue";
-import { erc20Abi, type Address, parseUnits } from "viem";
+import { erc20Abi, type Address } from "viem";
 import { watchEffect } from "vue";
 import ApproveReward from "../approve-reward/ApproveReward.vue";
 import { metromAbi } from "@metrom-xyz/contracts/abi";

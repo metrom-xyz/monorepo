@@ -117,7 +117,7 @@ export const messages = {
                 rewards: "Rewards",
                 period: "Date",
                 periodFrom: "Start",
-                periodTo: "To",
+                periodTo: "End",
                 back: "Campaign creation",
                 connectWallet: "Connect wallet to continue",
                 approveReward: "Approve reward: ",
