@@ -78,6 +78,13 @@ onMounted(() => {
                 v-model="searchQuery"
             />
         </div>
+        <div class="met_token_select_search__list__header">
+            <MetTypography sm>{{ $props.messages.token }}</MetTypography>
+            <MetTypography sm>
+                {{ $props.messages.minimumDistributionRate }}
+            </MetTypography>
+            <MetTypography sm>{{ $props.messages.balance }}</MetTypography>
+        </div>
         <div
             class="met_token_select_search__list__container"
             v-bind="containerProps"
@@ -173,6 +180,24 @@ onMounted(() => {
 
 .met_token_select_search__list_header > p {
     @apply text-gray-600;
+}
+
+.met_token_select_search__list__header {
+    @apply grid
+        grid-cols-tokenSelectHeader
+        gap-8
+        w-full
+        border-gray-400
+        border-b
+        px-8;
+}
+
+.met_token_select_search__list__header > p {
+    @apply text-gray-600;
+}
+
+.met_token_select_search__list__header > :not(:first-child) {
+    @apply text-right;
 }
 
 .met_token_select_search__list__container {
