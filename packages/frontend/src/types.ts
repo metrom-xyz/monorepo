@@ -51,5 +51,5 @@ export interface ChainData {
     contract: ChainContract;
     metromApiClient: MetromApiClient;
     amms: Amm[];
-    popularTokens: Erc20Token[];
+    baseTokens: Erc20Token[];
 }
