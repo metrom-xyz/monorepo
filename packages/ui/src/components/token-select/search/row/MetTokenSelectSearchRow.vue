@@ -18,22 +18,18 @@ defineProps<TokenSelectSearchRowProps>();
         }"
     >
         <div class="met_token_select_search_row__token__name">
-            <MetSkeleton v-if="$props.loadingToken" circular width="32px" />
             <MetRemoteLogo
-                v-else
                 lg
                 :src="$props.logoURI"
                 :address="$props.address"
                 :defaultText="$props.symbol"
             />
-            <MetSkeleton v-if="$props.loadingToken" width="64px" />
-            <MetTypography v-else lg>
+            <MetTypography lg>
                 {{ $props.symbol }}
             </MetTypography>
         </div>
         <div class="met_token_select_search_row__distribution__rate">
-            <MetSkeleton v-if="$props.loadingToken" width="40px" />
-            <MetTypography v-else>
+            <MetTypography>
                 {{
                     formatDecimals({
                         number: formatUnits(
@@ -82,10 +78,10 @@ defineProps<TokenSelectSearchRowProps>();
 }
 
 .met_token_select_search_row__distribution__rate {
-    @apply text-right;
+    @apply flex justify-end;
 }
 
 .met_token_select_search_row__balance {
-    @apply text-right;
+    @apply flex justify-end;
 }
 </style>

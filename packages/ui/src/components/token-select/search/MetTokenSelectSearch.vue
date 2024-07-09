@@ -90,7 +90,10 @@ onMounted(() => {
             v-bind="containerProps"
         >
             <div
-                v-if="(loadingTokens || loadingBalances) && list.length === 0"
+                v-if="
+                    ($props.loadingTokens || $props.loadingBalances) &&
+                    !$props.tokens
+                "
                 class="met_token_select_search__list__wrapper"
             >
                 <div
@@ -100,12 +103,11 @@ onMounted(() => {
                 >
                     <MetSkeleton :height="32" :width="125" />
                     <MetSkeleton :height="32" :width="60" />
+                    <MetSkeleton :height="32" :width="60" />
                 </div>
             </div>
             <div
-                v-else-if="
-                    !loadingTokens && !loadingBalances && list.length > 0
-                "
+                v-else-if="$props.tokens && $props.tokens.length > 0"
                 v-bind="wrapperProps"
                 class="met_token_select_search__list__wrapper"
             >
@@ -124,7 +126,9 @@ onMounted(() => {
                     v-bind="{ ...data }"
                 />
             </div>
-            <MetTypography v-else>
+            <MetTypography
+                v-else-if="$props.tokens && $props.tokens.length === 0"
+            >
                 {{ $props.messages.noTokens }}
             </MetTypography>
         </div>

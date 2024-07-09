@@ -104,7 +104,7 @@ watch([rewardRateTooLow, tokenModel], () => {
 // when the tokens property changes, inject the token balance for the reward
 // in order to trigger the validation when the wallet is connected
 watch(computedTokens, (tokens) => {
-    if (!tokenModel.value) return;
+    if (!tokenModel.value || !tokens) return;
     tokenModel.value.balance = tokens.find(
         (token) => token.address === tokenModel.value?.address,
     )?.balance;
