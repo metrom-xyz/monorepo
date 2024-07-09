@@ -80,22 +80,21 @@ watchEffect(() => {
     const newToApprove = [];
     for (let i = 0; i < props.rewards.length; i++) {
         const reward = props.rewards[i] as Required<Reward>;
+
         if (
             allowances.value[i]?.result === null ||
             allowances.value[i]?.result === undefined ||
             !reward.amount
         )
             return;
-        if (
-            (allowances.value[i].result as bigint) >=
-            parseUnits(reward.amount.toString(), reward.token.decimals)
-        )
-            continue;
+
+        if ((allowances.value[i].result as bigint) >= reward.amount) continue;
         newToApprove.push(reward);
     }
 
     if (newToApprove.length === 0) {
         allRewardsApproved.value = true;
+        emits("allApproved");
         return;
     }
 
