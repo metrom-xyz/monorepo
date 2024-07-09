@@ -31,7 +31,6 @@ watchEffect(() => {
             <MetDateInput
                 time
                 v-model="internalStartDate"
-                :error="$props.error"
                 :loading="$props.loading"
                 :min="$props.min"
                 :max="$props.max"
