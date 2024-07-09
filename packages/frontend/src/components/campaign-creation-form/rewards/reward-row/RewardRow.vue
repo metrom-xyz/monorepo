@@ -200,6 +200,13 @@ onUnmounted(() => {
                             noTokens: $t(
                                 'campaign.rewards.select.search.noTokens',
                             ),
+                            token: $t('campaign.rewards.select.search.token'),
+                            minimumDistributionRate: $t(
+                                'campaign.rewards.select.search.rate',
+                            ),
+                            balance: $t(
+                                'campaign.rewards.select.search.balance',
+                            ),
                         },
                     }"
                     :optionDisabled="

@@ -123,7 +123,6 @@ const totalPages = computed(() =>
                         :key="campaign.id"
                         v-for="campaign in items"
                         class="campaigns_table__grid campaigns_table__content"
-                        v-bind="{ ...campaign }"
                     >
                         <div class="campaigns_table__pool__row">
                             <MetPairRemoteLogo
