@@ -144,7 +144,7 @@ watch(
     { immediate: false },
 );
 
-watch([amountModel, reward], () => {
+watch([amountModel, reward, rewardRateTooLow], () => {
     amountError.value = rewardRateTooLow.value
         ? t("campaign.rewards.lowRate.label", {
               symbol: tokenModel.value?.symbol.toUpperCase(),

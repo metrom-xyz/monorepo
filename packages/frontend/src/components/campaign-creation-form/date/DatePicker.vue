@@ -1,22 +1,21 @@
 <script setup lang="ts">
 import type { DatePickerTypes } from "./types";
 import { computed, watch, watchEffect } from "vue";
-import {
-    MetDateRangeInput,
-    MetTypography,
-    MetWarningMessage,
-} from "@metrom-xyz/ui";
+import { MetDateRangeInput } from "@metrom-xyz/ui";
 import { ref } from "vue";
 import dayjs, { Dayjs } from "dayjs";
 import { onMounted } from "vue";
 import { onUnmounted } from "vue";
 import { useCampaignMinMaxDuration } from "@/composables/useCampaignMinMaxDuration";
+import { useI18n } from "vue-i18n";
 
 const props = defineProps<DatePickerTypes>();
 const emits = defineEmits<{
     complete: [];
     error: [boolean];
 }>();
+
+const { t } = useI18n();
 
 const minDate = ref<Dayjs | undefined>(dayjs());
 const rangeError = ref("");
@@ -28,38 +27,62 @@ const campaignDuration = computed(() =>
     dayjs(props.state.range?.to).diff(props.state.range?.from, "seconds"),
 );
 
+const limits = computed(() => {
+    if (!durationLimits.value) return null;
+
+    return {
+        min: {
+            raw: durationLimits.value.min,
+            parsed: Math.floor(durationLimits.value.min / 60),
+        },
+        max: {
+            raw: durationLimits.value.max,
+            parsed: Math.floor(durationLimits.value.max / 60 / 60 / 24),
+        },
+    };
+});
+
 watch(
     () => [
         props.state.range?.from,
         props.state.range?.to,
         minDate.value,
-        durationLimits.value,
+        limits.value,
     ],
     () => {
         if (
-            durationLimits.value?.max !== undefined &&
-            durationLimits.value?.min !== undefined &&
+            !!limits.value &&
             props.state.range &&
             props.state.range.from &&
             props.state.range.to
         ) {
-            if (campaignDuration.value < durationLimits.value.min)
-                rangeError.value =
-                    "campaign.range.picker.error.minimumDuration";
-            else if (campaignDuration.value > durationLimits.value.max)
-                rangeError.value =
-                    "campaign.range.picker.error.maximumDuration";
+            if (campaignDuration.value < limits.value.min.raw)
+                rangeError.value = t(
+                    "campaign.range.picker.error.minimumDuration",
+                    {
+                        minDuration: limits.value.min.parsed,
+                    },
+                );
+            else if (campaignDuration.value > limits.value.max.raw)
+                rangeError.value = t(
+                    "campaign.range.picker.error.maximumDuration",
+                    {
+                        maxDuration: limits.value.max.parsed,
+                    },
+                );
             else if (
                 dayjs(props.state.range?.from).isBefore(
                     minDate.value,
                     "seconds",
                 )
             )
-                rangeError.value = "campaign.range.picker.error.pastStartDate";
+                rangeError.value = t(
+                    "campaign.range.picker.error.pastStartDate",
+                );
             else if (
                 dayjs(props.state.range?.to).isBefore(minDate.value, "seconds")
             )
-                rangeError.value = "campaign.range.picker.error.pastEndDate";
+                rangeError.value = t("campaign.range.picker.error.pastEndDate");
             else rangeError.value = "";
         }
     },
@@ -88,7 +111,7 @@ onUnmounted(() => {
     <div class="date_picker__root">
         <MetDateRangeInput
             v-model:range="$props.state.range"
-            :error="!!rangeError"
+            :error="rangeError || false"
             :min="minDate"
             :loading="loadingMinMaxDuration"
             :messages="{
@@ -98,21 +121,6 @@ onUnmounted(() => {
                 endPlaceholder: $t('campaign.range.picker.endPlaceholder'),
             }"
         />
-        <MetWarningMessage v-if="rangeError" class="date_picker__warning">
-            <MetTypography>
-                {{ $t("campaign.range.picker.error.label") }}
-            </MetTypography>
-            <template v-if="durationLimits" #popover>
-                <MetTypography>{{
-                    $t(rangeError, {
-                        minDuration: Math.floor(durationLimits.min / 60),
-                        maxDuration: Math.floor(
-                            durationLimits.max / 60 / 60 / 24,
-                        ),
-                    })
-                }}</MetTypography>
-            </template>
-        </MetWarningMessage>
     </div>
 </template>
 <style>
