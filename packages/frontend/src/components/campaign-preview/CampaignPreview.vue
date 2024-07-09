@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import ApproveRewards from "./approve-rewards/ApproveRewards.vue";
-import PreviewBox from "./box/PreviewBox.vue";
+import PreviewBox from "./PreviewBox.vue";
 import DeployButton from "./deploy-button/DeployButton.vue";
 import type { CampaignPreviewProps } from "./types";
 import {

@@ -6,4 +6,5 @@ export const i18n = createI18n({
     messages,
     silentFallbackWarn: true,
     silentTranslationWarn: true,
+    legacy: false,
 });

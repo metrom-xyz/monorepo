@@ -2,8 +2,6 @@
 import {
     MetTokenSelect,
     MetNumberInput,
-    MetTypography,
-    MetWarningMessage,
     type TokenInfo,
     type NumberMaskValue,
 } from "@metrom-xyz/ui";
@@ -18,6 +16,7 @@ import { formatDecimals } from "@metrom-xyz/sdk";
 import { useAccount } from "vevm";
 import { computed } from "vue";
 import { onUnmounted } from "vue";
+import { useI18n } from "vue-i18n";
 
 const props = defineProps<RewardRowProps>();
 const emits = defineEmits<{
@@ -30,10 +29,10 @@ const amountModel = defineModel<bigint>("amount");
 
 const account = useAccount();
 const attrs = useAttrs();
+const { t } = useI18n();
 
 const open = ref<boolean>();
-const tokenError = ref(false);
-const amountError = ref(false);
+const amountError = ref("");
 const reward = ref<{
     symbol: string;
     amount: string;
@@ -96,7 +95,6 @@ const rewardRateTooLow = computed(() => {
     );
 });
 
-// emit the
 watch([rewardRateTooLow, tokenModel], () => {
     if (!tokenModel.value?.address) return;
 
@@ -147,7 +145,17 @@ watch(
 );
 
 watch([amountModel, reward], () => {
-    amountError.value = !amountModel.value || !!reward.value?.insufficient;
+    amountError.value = rewardRateTooLow.value
+        ? t("campaign.rewards.lowRate.label", {
+              symbol: tokenModel.value?.symbol.toUpperCase(),
+              minimumRewardAmount: formatDecimals({
+                  number: minimumRewardAmount.value.toString(),
+                  decimalsAmount: 3,
+              }),
+          })
+        : reward.value?.insufficient
+          ? t("campaign.rewards.insufficientBalance.label")
+          : "";
 });
 
 watchEffect(() => {
@@ -180,7 +188,6 @@ onUnmounted(() => {
                     v-model="tokenModel"
                     :tokens="$props.tokens"
                     :open="open"
-                    :error="tokenError"
                     :loadingTokens="$props.loadingTokens"
                     :loadingBalances="$props.loadingBalances"
                     :messages="{
@@ -213,7 +220,7 @@ onUnmounted(() => {
                     :placeholder="$t('campaign.rewards.amount')"
                     class="reward_row__token__amount__input"
                     @update:modelValue="handleRewardAmountOnChange"
-                    :error="amountError"
+                    :error="amountError || false"
                 />
             </div>
             <RemoveXIcon
@@ -225,46 +232,6 @@ onUnmounted(() => {
                 @click="handleRewardOnTokenRemove"
             />
         </div>
-        <MetWarningMessage v-if="reward && reward.insufficient">
-            <MetTypography>
-                {{ $t("campaign.rewards.insufficientBalance.label") }}
-            </MetTypography>
-            <template #popover>
-                <MetTypography>
-                    {{
-                        $t("campaign.rewards.insufficientBalance.info", {
-                            symbol: reward.symbol,
-                            balance: reward.balance,
-                        })
-                    }}
-                </MetTypography>
-            </template>
-        </MetWarningMessage>
-        <MetWarningMessage v-if="rewardRateTooLow && tokenModel?.minimumRate">
-            <MetTypography>
-                {{ $t("campaign.rewards.lowRate.label") }}
-            </MetTypography>
-            <template #popover>
-                <MetTypography>
-                    {{
-                        $t("campaign.rewards.lowRate.info", {
-                            symbol: tokenModel.symbol.toUpperCase(),
-                            minimumRewardAmount: formatDecimals({
-                                number: minimumRewardAmount.toString(),
-                                decimalsAmount: 10,
-                            }),
-                            minimumRewardRate: formatDecimals({
-                                number: formatUnits(
-                                    tokenModel.minimumRate,
-                                    tokenModel.decimals,
-                                ),
-                                decimalsAmount: 10,
-                            }),
-                        })
-                    }}
-                </MetTypography>
-            </template>
-        </MetWarningMessage>
     </div>
 </template>
 <style>
@@ -273,7 +240,7 @@ onUnmounted(() => {
 }
 
 .reward_row__wrapper {
-    @apply flex gap-2 items-center;
+    @apply flex gap-2;
 }
 
 .reward_row__token__select__wrapper {
