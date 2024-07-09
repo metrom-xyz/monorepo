@@ -13,6 +13,8 @@ import {
 import { computed } from "vue";
 import { CHAIN_DATA } from "@/commons";
 import { useChainId } from "vevm";
+import LocalizedFormat from "dayjs/plugin/localizedFormat";
+import dayjs from "dayjs";
 import SubmitButton from "../submit-button/SubmitButton.vue";
 import LineArrowLeftIcon from "@/icons/LineArrowLeftIcon.vue";
 import { formatUnits } from "viem";
@@ -20,6 +22,8 @@ import { formatDecimals } from "@metrom-xyz/sdk";
 import PoolIcon from "@/icons/PoolIcon.vue";
 import CalendarIcon from "@/icons/CalendarIcon.vue";
 import CupIcon from "@/icons/CupIcon.vue";
+
+dayjs.extend(LocalizedFormat);
 
 defineProps<CampaignPreviewProps>();
 const emits = defineEmits(["edited"]);
@@ -36,7 +40,6 @@ const metrom = computed(() => {
 <template>
     <div class="campaign_preview__root">
         <SubmitButton
-            :disabled="$props.disabled"
             :icon="LineArrowLeftIcon"
             iconLeft
             :onClick="() => emits('edited')"
