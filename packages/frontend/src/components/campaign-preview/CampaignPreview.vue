@@ -16,7 +16,7 @@ import { useChainId } from "vevm";
 import SubmitButton from "../submit-button/SubmitButton.vue";
 import LineArrowLeftIcon from "@/icons/LineArrowLeftIcon.vue";
 import { formatUnits } from "viem";
-import { formatDecimals } from "sdk";
+import { formatDecimals } from "@metrom-xyz/sdk";
 import PoolIcon from "@/icons/PoolIcon.vue";
 import CalendarIcon from "@/icons/CalendarIcon.vue";
 import CupIcon from "@/icons/CupIcon.vue";
