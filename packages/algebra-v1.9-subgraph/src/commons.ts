@@ -1,4 +1,10 @@
-import { Address, BigInt, Bytes, ethereum } from "@graphprotocol/graph-ts";
+import {
+    Address,
+    BigDecimal,
+    BigInt,
+    Bytes,
+    ethereum,
+} from "@graphprotocol/graph-ts";
 import { Block, Event, Pool, Token } from "../generated/schema";
 import { NonFungiblePositionManager } from "../generated/NonFungiblePositionManager/NonFungiblePositionManager";
 import { Factory } from "../generated/Factory/Factory";
@@ -9,6 +15,13 @@ import {
 import { Erc20 } from "../generated/Factory/Erc20";
 import { Erc20BytesSymbol } from "../generated/Factory/Erc20BytesSymbol";
 import { Erc20BytesName } from "../generated/Factory/Erc20BytesName";
+
+export const BI_0 = BigInt.zero();
+export const BI_1 = BigInt.fromI32(1);
+export const BI_100 = BigInt.fromI32(100);
+export const BD_0 = BigDecimal.zero();
+export const BD_10 = BigDecimal.fromString("10");
+const BD_Q192 = BigDecimal.fromString(Math.pow(2, 192).toString());
 
 export const NonFungiblePositionManagerContract =
     NonFungiblePositionManager.bind(NON_FUNGIBLE_POSITION_MANAGER_ADDRESS);
@@ -44,6 +57,13 @@ export function getPoolOrThrow(address: Address): Pool {
     if (pool != null) return pool;
 
     throw new Error(`Could not find pool with address ${address.toHex()}`);
+}
+
+export function getTokenOrThrow(address: Address): Token {
+    let token = Token.load(address);
+    if (token != null) return token;
+
+    throw new Error(`Could not find token with address ${address.toHex()}`);
 }
 
 export function fetchTokenSymbol(address: Address): string {
@@ -91,4 +111,35 @@ export function getOrCreateToken(address: Address): Token {
     token.save();
 
     return token;
+}
+
+export function sqrtPriceToTokenPrices(
+    sqrtPrice: BigInt,
+    token0Decimals: BigInt,
+    token1Decimals: BigInt,
+): BigDecimal[] {
+    let price = sqrtPrice.pow(2).toBigDecimal();
+    let price1 = price
+        .div(BD_Q192)
+        .times(exponentToBigDecimal(token0Decimals))
+        .div(exponentToBigDecimal(token1Decimals));
+
+    let price0 = safeDiv(BigDecimal.fromString("1"), price1);
+    return [price0, price1];
+}
+
+function exponentToBigDecimal(decimals: BigInt): BigDecimal {
+    let bd = BigDecimal.fromString("1");
+    for (let i = BI_0; i.lt(decimals as BigInt); i = i.plus(BI_1)) {
+        bd = bd.times(BD_10);
+    }
+    return bd;
+}
+
+function safeDiv(amount0: BigDecimal, amount1: BigDecimal): BigDecimal {
+    if (amount1.equals(BD_0)) {
+        return BD_0;
+    } else {
+        return amount0.div(amount1);
+    }
 }
