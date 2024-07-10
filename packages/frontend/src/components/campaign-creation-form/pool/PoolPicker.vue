@@ -39,6 +39,7 @@ watchEffect(() => {
             :pools="pools"
             :loading="loading"
             :disabled="!pools || pools.length === 0"
+            :baseTokens="CHAIN_DATA[props.state.network].baseTokens"
             v-model="$props.state.pool"
             @dismiss="open = false"
             @click="open = true"

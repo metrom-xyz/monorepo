@@ -26,7 +26,7 @@ export const buildChainData = () => {
                     chain,
                 ),
                 amms: SUPPORTED_AMMS[chain],
-                popularTokens: BASE_CHAIN_TOKENS[chain],
+                baseTokens: BASE_CHAIN_TOKENS[chain],
             };
             return chainData;
         },

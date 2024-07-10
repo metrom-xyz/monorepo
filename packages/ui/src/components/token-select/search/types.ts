@@ -10,5 +10,8 @@ export interface TokenSelectSearchProps {
         label: string;
         placeholder: string;
         noTokens: string;
+        token: string;
+        minimumDistributionRate: string;
+        balance: string;
     };
 }

@@ -9,6 +9,7 @@ import { useRoute, useRouter } from "vue-router";
 import { useUrlSearchParams } from "@vueuse/core";
 import { MetTypography, MetCard } from "@metrom-xyz/ui";
 import { onMounted } from "vue";
+import { computed } from "vue";
 
 defineSlots<{ default: unknown }>();
 
@@ -20,6 +21,16 @@ const params = useUrlSearchParams();
 
 const targetLandingChain = ref<number>();
 const triedSwitchingAutomatically = ref(false);
+
+const unsupported = computed(
+    () => !!account.value.chainId && !isChainSupported(account.value.chainId),
+);
+const wrong = computed(
+    () =>
+        !!account.value.chainId &&
+        route.query.chain &&
+        Number(route.query.chain?.toString()) !== account.value.chainId,
+);
 
 onMounted(() => {
     if (
@@ -108,7 +119,7 @@ watch(
 );
 </script>
 <template>
-    <MetCard v-if="!!account.chainId && !isChainSupported(account.chainId)">
+    <MetCard v-if="unsupported">
         <template #title>
             <MetTypography medium lg>
                 {{ $t("chain.unsupported.title") }}
@@ -122,13 +133,7 @@ watch(
             </div>
         </template>
     </MetCard>
-    <MetCard
-        v-else-if="
-            !!account.chainId &&
-            $route.query.chain &&
-            Number($route.query.chain?.toString()) !== account.chainId
-        "
-    >
+    <MetCard v-else-if="wrong">
         <template #title>
             <MetTypography medium lg>
                 {{ $t("chain.wrong.title") }}
@@ -150,12 +155,9 @@ watch(
             </div>
         </template>
     </MetCard>
-    <slot
-        v-else-if="
-            $route.query.chain &&
-            isChainSupported($route.query.chain.toString())
-        "
-    ></slot>
+    <div v-else-if="!unsupported && !wrong">
+        <slot></slot>
+    </div>
 </template>
 <style>
 .multi_chain_links__unsupported__modal {

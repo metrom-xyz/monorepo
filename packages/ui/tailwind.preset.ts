@@ -106,6 +106,10 @@ export default {
                     "radial-gradient(circle, rgba(0, 0, 0, 0.08) 1.8px, transparent 1px), " +
                     "radial-gradient(circle, rgba(0, 0, 0, 0.08) 1.8px, transparent 1px)",
             },
+            gridTemplateColumns: {
+                tokenSelectHeader: "1fr 2fr 1fr",
+                tokenSelectRow: "1fr 1.5fr 1fr",
+            },
         },
     },
 } as Omit<Config, "content">;

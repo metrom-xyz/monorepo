@@ -3,7 +3,7 @@ import type { TokenInfo } from "@metrom-xyz/ui";
 
 export interface RewardRowProps {
     state: CampaignState;
-    tokens: TokenInfo[];
+    tokens?: TokenInfo[];
     rewards: Reward[];
     loadingBalances?: boolean;
     loadingTokens?: boolean;

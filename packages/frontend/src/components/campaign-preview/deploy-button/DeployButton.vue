@@ -107,7 +107,7 @@ async function handleDeployOnClick() {
 </script>
 <template>
     <SubmitButton
-        :variant="deployed ? 'success' : 'base'"
+        variant="success"
         :disabled="$props.disabled"
         :loading="uploadingSpecification || simulatingCreate || deploying"
         :onClick="handleDeployOnClick"
@@ -115,8 +115,8 @@ async function handleDeployOnClick() {
     >
         {{
             deployed
-                ? $t("campaign.deploy.success")
-                : $t("campaign.deploy.launch")
+                ? $t("campaign.preview.success")
+                : $t("campaign.preview.launch")
         }}
     </SubmitButton>
 </template>

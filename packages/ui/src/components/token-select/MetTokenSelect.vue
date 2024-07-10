@@ -20,7 +20,7 @@ const selected = defineModel<TokenInfo>();
 const tokenSearchQuery = ref();
 
 const selectedToken = computed(() => {
-    if (!selected.value) return null;
+    if (!selected.value || !props.tokens) return null;
 
     return props.tokens.find(
         (token) =>

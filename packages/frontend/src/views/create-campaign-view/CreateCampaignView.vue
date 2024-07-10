@@ -68,7 +68,6 @@ watchEffect(() => [(campaignState.value.network = props.selectedChain)]);
         flex-col
         gap-9
         items-center
-        min-w-96
-        max-w-96;
+        min-w-96;
 }
 </style>

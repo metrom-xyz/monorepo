@@ -2,7 +2,7 @@ import type { TokenInfo } from "../../types";
 import type { TokenSelectSearchProps } from "./search/types";
 
 export interface TokenSelectProps {
-    tokens: TokenInfo[];
+    tokens?: TokenInfo[];
     loadingTokens?: boolean;
     loadingBalances?: boolean;
     open?: boolean;

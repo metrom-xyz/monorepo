@@ -25,7 +25,7 @@ const block = ref(0n);
 const tokenSearchQuery = ref();
 const rewardsWithInsufficientBalance = ref<string[]>([]);
 const rewardsWithRateTooLow = ref<string[]>([]);
-const tokensWithBalance = ref<TokenInfo[]>([]);
+const tokensWithBalance = ref<TokenInfo[]>();
 const debouncedLoadingBalances = ref(false);
 
 const { loading: loadingWhitelistedTokens, whitelistedTokens } =

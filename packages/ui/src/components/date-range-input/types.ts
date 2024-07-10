@@ -6,7 +6,6 @@ export interface Range {
 }
 
 export interface DateRangeInputProps {
-    error?: boolean;
     min?: Dayjs | Date | null;
     max?: Dayjs | Date | null;
     messages: {

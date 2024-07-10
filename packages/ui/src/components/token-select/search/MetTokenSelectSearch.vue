@@ -78,12 +78,22 @@ onMounted(() => {
                 v-model="searchQuery"
             />
         </div>
+        <div class="met_token_select_search__list__header">
+            <MetTypography sm>{{ $props.messages.token }}</MetTypography>
+            <MetTypography sm>
+                {{ $props.messages.minimumDistributionRate }}
+            </MetTypography>
+            <MetTypography sm>{{ $props.messages.balance }}</MetTypography>
+        </div>
         <div
             class="met_token_select_search__list__container"
             v-bind="containerProps"
         >
             <div
-                v-if="(loadingTokens || loadingBalances) && list.length === 0"
+                v-if="
+                    ($props.loadingTokens || $props.loadingBalances) &&
+                    !$props.tokens
+                "
                 class="met_token_select_search__list__wrapper"
             >
                 <div
@@ -93,12 +103,11 @@ onMounted(() => {
                 >
                     <MetSkeleton :height="32" :width="125" />
                     <MetSkeleton :height="32" :width="60" />
+                    <MetSkeleton :height="32" :width="60" />
                 </div>
             </div>
             <div
-                v-else-if="
-                    !loadingTokens && !loadingBalances && list.length > 0
-                "
+                v-else-if="$props.tokens && $props.tokens.length > 0"
                 v-bind="wrapperProps"
                 class="met_token_select_search__list__wrapper"
             >
@@ -117,7 +126,9 @@ onMounted(() => {
                     v-bind="{ ...data }"
                 />
             </div>
-            <MetTypography v-else>
+            <MetTypography
+                v-else-if="$props.tokens && $props.tokens.length === 0"
+            >
                 {{ $props.messages.noTokens }}
             </MetTypography>
         </div>
@@ -173,6 +184,24 @@ onMounted(() => {
 
 .met_token_select_search__list_header > p {
     @apply text-gray-600;
+}
+
+.met_token_select_search__list__header {
+    @apply grid
+        grid-cols-tokenSelectHeader
+        gap-8
+        w-full
+        border-gray-400
+        border-b
+        px-8;
+}
+
+.met_token_select_search__list__header > p {
+    @apply text-gray-600;
+}
+
+.met_token_select_search__list__header > :not(:first-child) {
+    @apply text-right;
 }
 
 .met_token_select_search__list__container {
