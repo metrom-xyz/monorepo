@@ -9,7 +9,10 @@ type Pool @entity {
     id: Bytes!
     token0: Token!
     token1: Token!
-    liquidity: BigInt!
+    token0Tvl: BigInt!
+    token1Tvl: BigInt!
+    token0Price: BigDecimal!
+    token1Price: BigDecimal!
     tick: BigInt!
     fee: BigInt!
     positions: [Position!]! @derivedFrom(field: "pool")
