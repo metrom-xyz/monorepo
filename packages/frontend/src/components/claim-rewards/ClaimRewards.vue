@@ -20,7 +20,6 @@ import { metromAbi } from "@metrom-xyz/contracts/abi";
 import { writeContract } from "@wagmi/core";
 import { useClaims } from "@/composables/useClaims";
 import ClaimRow from "./row/ClaimRow.vue";
-import ChevronDownIcon from "@/icons/ChevronDownIcon.vue";
 
 interface MergedClaim {
     merged: Claim;
@@ -157,10 +156,7 @@ async function handleClaimRewardsOnClick() {
                         v-for="mergedClaim in mergedClaims"
                         class="claim_rewards__claim__wrapper"
                     >
-                        <MetAccordion
-                            v-if="mergedClaim.list.length > 1"
-                            :expandIcon="ChevronDownIcon"
-                        >
+                        <MetAccordion v-if="mergedClaim.list.length > 1">
                             <template #summary>
                                 <ClaimRow
                                     :claim="mergedClaim.merged"
