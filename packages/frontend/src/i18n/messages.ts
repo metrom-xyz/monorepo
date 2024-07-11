@@ -129,14 +129,14 @@ export const messages = {
         },
         allCampaigns: {
             rewards: {
-                available: "Available claims: {total}",
+                rewards: "Rewards",
                 overview: "Rewards overview",
-                showAll: "Show all",
+                showAll: "Show claimed",
                 remaining: "Claimable amount",
                 amount: "Assigned amount",
                 nothingToClaim: "Nothing to claim",
                 empty: "No claimable rewards.",
-                claim: "Claim",
+                claim: "Claim rewards",
             },
             table: {
                 filters: {
