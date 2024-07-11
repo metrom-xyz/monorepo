@@ -12,15 +12,20 @@ import {
     MetButton,
     MetTypography,
     MetModal,
-    MetTextField,
-    MetRemoteLogo,
     MetSwitch,
+    MetAccordion,
 } from "@metrom-xyz/ui";
-import { formatUnits } from "viem";
-import { formatDecimals, type Claim } from "@metrom-xyz/sdk";
+import { type Claim } from "@metrom-xyz/sdk";
 import { metromAbi } from "@metrom-xyz/contracts/abi";
 import { writeContract } from "@wagmi/core";
 import { useClaims } from "@/composables/useClaims";
+import ClaimRow from "./row/ClaimRow.vue";
+import ChevronDownIcon from "@/icons/ChevronDownIcon.vue";
+
+interface MergedClaim {
+    merged: Claim;
+    list: Claim[];
+}
 
 const props = defineProps<ClaimRewardsProps>();
 
@@ -53,28 +58,34 @@ const claimRewardsParams = computed(() => {
         }));
 });
 
-const aggregatedClaims = computed(() => {
+const mergedClaims = computed(() => {
     if (!claims.value || !account.value.address) return [];
 
     const collator = new Intl.Collator();
 
     return Object.values(
-        claims.value.reduce((accumulator: Record<string, Claim>, claim) => {
+        claims.value.reduce((acc: Record<string, MergedClaim>, claim) => {
             // avoid mutating the original claims
-            const clonedClaim = { ...claim };
+            const cloned = { ...claim };
 
-            if (!accumulator[claim.token.address]) {
-                accumulator[claim.token.address] = clonedClaim;
-                return accumulator;
+            if (!acc[claim.token.address]) {
+                acc[claim.token.address] = {
+                    merged: cloned,
+                    list: [claim],
+                };
+                return acc;
             }
 
-            accumulator[claim.token.address].amount += clonedClaim.amount;
-            accumulator[claim.token.address].remaining += clonedClaim.remaining;
-            return accumulator;
+            acc[claim.token.address].merged.amount += cloned.amount;
+            acc[claim.token.address].merged.remaining += cloned.remaining;
+            acc[claim.token.address].list.push(claim);
+            return acc;
         }, {}),
     )
-        .sort((a, b) => collator.compare(a.token.symbol, b.token.symbol))
-        .filter((claim) => showAllClaims.value || claim.remaining > 0n);
+        .sort((a, b) =>
+            collator.compare(a.merged.token.symbol, b.merged.token.symbol),
+        )
+        .filter((claim) => showAllClaims.value || claim.merged.remaining > 0n);
 });
 
 const {
@@ -126,11 +137,7 @@ async function handleClaimRewardsOnClick() {
             @click="modalOpen = true"
         >
             <MetTypography>
-                {{
-                    $t("allCampaigns.rewards.available", {
-                        total: claimRewardsParams.length || 0,
-                    })
-                }}
+                {{ $t("allCampaigns.rewards.rewards") }}
             </MetTypography>
         </MetButton>
         <template #modal>
@@ -144,91 +151,120 @@ async function handleClaimRewardsOnClick() {
                         v-model="showAllClaims"
                     />
                 </div>
-                <div
-                    v-if="aggregatedClaims.length > 0"
-                    class="claim_rewards__list"
-                >
+                <div v-if="mergedClaims.length > 0" class="claim_rewards__list">
                     <div
-                        :key="claim.token.address"
-                        v-for="claim in aggregatedClaims"
+                        :key="mergedClaim.merged.token.address"
+                        v-for="mergedClaim in mergedClaims"
+                        class="claim_rewards__claim__wrapper"
                     >
-                        <div class="claim_rewards__reward__wrapper">
-                            <div class="claim_rewards__reward__token">
-                                <MetRemoteLogo
+                        <MetAccordion
+                            v-if="mergedClaim.list.length > 1"
+                            :expandIcon="ChevronDownIcon"
+                        >
+                            <template #summary>
+                                <ClaimRow
+                                    :claim="mergedClaim.merged"
+                                    logo
                                     xxl
-                                    :address="claim.token.address"
-                                    :defaultText="claim.token.symbol"
                                 />
-                                <MetTypography>
-                                    {{ claim.token.symbol }}
-                                </MetTypography>
+                            </template>
+                            <div class="claim_rewards__claim__accordion">
+                                <div
+                                    :key="index"
+                                    v-for="(claim, index) in mergedClaim.list"
+                                    class="claim_rewards__claim__details"
+                                >
+                                    <ClaimRow :claim="claim" logo />
+                                </div>
                             </div>
-                            <MetTextField
-                                :label="$t('allCampaigns.rewards.remaining')"
-                                :value="
-                                    formatDecimals({
-                                        number: formatUnits(
-                                            claim.remaining,
-                                            claim.token.decimals,
-                                        ),
-                                    })
-                                "
-                            />
-                            <MetTextField
-                                :label="$t('allCampaigns.rewards.amount')"
-                                :value="
-                                    formatDecimals({
-                                        number: formatUnits(
-                                            claim.amount,
-                                            claim.token.decimals,
-                                        ),
-                                    })
-                                "
-                            />
+                        </MetAccordion>
+                        <div v-else class="claim_rewards__claim__no__details">
+                            <ClaimRow :claim="mergedClaim.merged" logo xxl />
                         </div>
                     </div>
                 </div>
                 <MetTypography v-else>
                     {{ $t("allCampaigns.rewards.empty") }}
                 </MetTypography>
-                <MetButton
-                    sm
-                    :loading="simulatingClaimRewards || claiming"
-                    :disabled="error || claimRewardsParams.length === 0"
-                    @click="handleClaimRewardsOnClick"
-                    class="claim_rewards__button"
-                >
-                    <MetTypography>
-                        {{
-                            claimRewardsParams.length === 0
-                                ? $t("allCampaigns.rewards.nothingToClaim")
-                                : $t("allCampaigns.rewards.claim")
-                        }}
-                    </MetTypography>
-                </MetButton>
+                <div class="claim_rewards__footer">
+                    <MetButton
+                        sm
+                        :loading="simulatingClaimRewards || claiming"
+                        :disabled="error || claimRewardsParams.length === 0"
+                        @click="handleClaimRewardsOnClick"
+                    >
+                        <MetTypography>
+                            {{
+                                claimRewardsParams.length === 0
+                                    ? $t("allCampaigns.rewards.nothingToClaim")
+                                    : $t("allCampaigns.rewards.claim")
+                            }}
+                        </MetTypography>
+                    </MetButton>
+                </div>
             </div>
         </template>
     </MetModal>
 </template>
 <style>
 .claim_rewards__modal {
-    @apply flex flex-col gap-4 w-[440px] min-h-96 max-h-96 bg-white p-5 rounded-[30px] border border-green;
+    @apply flex
+        flex-col
+        gap-5
+        w-full
+        sm:min-w-[630px]
+        h-[600px]
+        min-h-96
+        bg-white
+        rounded-[30px]
+        border
+        border-green;
 }
 
 .claim_rewards__header {
-    @apply flex justify-between items-center;
+    @apply flex justify-between items-center px-5 pt-5;
 }
 
 .claim_rewards__list {
-    @apply flex flex-col gap-4 h-3/4 overflow-y-auto;
+    @apply flex
+        flex-col
+        flex-1
+        gap-2
+        h-3/4
+        overflow-y-auto
+        px-5
+        border-y;
 }
 
-.claim_rewards__reward__wrapper {
-    @apply flex justify-between items-center;
+.claim_rewards__claim__wrapper {
+    @apply flex flex-col gap-3;
+}
+
+.claim_rewards__claim__wrapper
+    > .met_accordion__root
+    > .met_accordion_summary__root {
+    @apply transition-all
+        ease-in-out 
+        duration-200
+        bg-green-200
+        hover:bg-green
+        border-none;
 }
 
 .claim_rewards__reward__token {
     @apply min-w-28 flex gap-3 items-center;
+}
+
+.claim_rewards__claim__accordion {
+    @apply w-full flex flex-col gap-3;
+}
+
+.claim_rewards__claim__details {
+    @apply w-full flex justify-between items-center;
+}
+
+.claim_rewards__claim__no__details {
+    @apply border rounded-[18px] px-4 py-3;
 }
 
 .claim_rewards__reward__amounts {
@@ -239,7 +275,7 @@ async function handleClaimRewardsOnClick() {
     @apply flex gap-3 items-center;
 }
 
-.claim_rewards__button {
-    @apply mt-auto;
+.claim_rewards__footer {
+    @apply px-5 pb-5;
 }
 </style>
