@@ -64,19 +64,17 @@ const mergedClaims = computed(() => {
 
     return Object.values(
         claims.value.reduce((acc: Record<string, MergedClaim>, claim) => {
-            // avoid mutating the original claims
-            const cloned = { ...claim };
 
             if (!acc[claim.token.address]) {
                 acc[claim.token.address] = {
-                    merged: cloned,
+                    merged: { ...claim },
                     list: [claim],
                 };
                 return acc;
             }
 
-            acc[claim.token.address].merged.amount += cloned.amount;
-            acc[claim.token.address].merged.remaining += cloned.remaining;
+            acc[claim.token.address].merged.amount += claim.amount;
+            acc[claim.token.address].merged.remaining += claim.remaining;
             acc[claim.token.address].list.push(claim);
             return acc;
         }, {}),
