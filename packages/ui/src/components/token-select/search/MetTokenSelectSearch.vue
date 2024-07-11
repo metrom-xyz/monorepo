@@ -126,11 +126,14 @@ onMounted(() => {
                     v-bind="{ ...data }"
                 />
             </div>
-            <MetTypography
+            <div
                 v-else-if="$props.tokens && $props.tokens.length === 0"
+                class="met_token_select_search__list__wrapper__empty"
             >
-                {{ $props.messages.noTokens }}
-            </MetTypography>
+                <MetTypography>
+                    {{ $props.messages.noTokens }}
+                </MetTypography>
+            </div>
         </div>
     </div>
 </template>
@@ -210,6 +213,10 @@ onMounted(() => {
 
 .met_token_select_search__list__wrapper {
     @apply flex flex-col gap-1;
+}
+
+.met_token_select_search__list__wrapper__empty {
+    @apply flex justify-center items-center;
 }
 
 .met_token_select_search__skeleton {
