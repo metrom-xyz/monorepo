@@ -56,6 +56,8 @@ import {
     getOrCreateClaimedByAccount,
     getOrCreateRecoveredByAccount,
     getOrCreateWhitelistedRewardToken,
+    BI_1,
+    BI_0,
 } from "../commons";
 
 export function handleInitialize(event: Initialize): void {
@@ -87,13 +89,13 @@ export function handleInitialize(event: Initialize): void {
     metrom.fee = event.params.fee;
     metrom.minimumCampaignDuration = event.params.minimumCampaignDuration;
     metrom.maximumCampaignDuration = event.params.maximumCampaignDuration;
-    metrom.campaignsAmount = BigInt.zero();
+    metrom.campaignsAmount = BI_0;
     metrom.save();
 }
 
 export function handleCreateCampaign(event: CreateCampaign): void {
     let metrom = getMetromOrThrow();
-    metrom.campaignsAmount = metrom.campaignsAmount.plus(BigInt.fromI32(1));
+    metrom.campaignsAmount = metrom.campaignsAmount.plus(BI_1);
     metrom.save();
 
     let transaction = getOrCreateTransaction(event);
@@ -123,8 +125,8 @@ export function handleCreateCampaign(event: CreateCampaign): void {
         reward.campaign = campaign.id;
         reward.token = rewardToken.id;
         reward.amount = rewardAmount;
-        reward.claimed = BigInt.zero();
-        reward.recovered = BigInt.zero();
+        reward.claimed = BI_0;
+        reward.recovered = BI_0;
         reward.save();
 
         let claimableFee = getOrCreateClaimableFee(rewardToken);
@@ -254,7 +256,7 @@ export function handleRecoverReward(event: RecoverReward): void {
 export function handleClaimFee(event: ClaimFee): void {
     let feeToken = getOrCreateToken(event.params.token);
     let claimableFee = getClaimableFeeOrThrow(feeToken);
-    claimableFee.amount = BigInt.zero();
+    claimableFee.amount = BI_0;
     claimableFee.save();
 
     let claimFeeEvent = new ClaimFeeEvent(getEventId(event));

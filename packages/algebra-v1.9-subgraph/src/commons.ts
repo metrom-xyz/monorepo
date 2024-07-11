@@ -16,6 +16,7 @@ import { Erc20 } from "../generated/Factory/Erc20";
 import { Erc20BytesSymbol } from "../generated/Factory/Erc20BytesSymbol";
 import { Erc20BytesName } from "../generated/Factory/Erc20BytesName";
 
+export const BI_MINUS_1 = BigInt.fromI32(-1);
 export const BI_0 = BigInt.zero();
 export const BI_1 = BigInt.fromI32(1);
 export const BI_100 = BigInt.fromI32(100);
@@ -91,13 +92,9 @@ export function fetchTokenName(address: Address): string {
 }
 
 export function fetchTokenDecimals(address: Address): BigInt {
-    let decimals = -1;
-
     let contract = Erc20.bind(address);
     let result = contract.try_decimals();
-    if (!result.reverted) decimals = result.value;
-
-    return BigInt.fromI32(decimals);
+    return result.reverted ? BI_MINUS_1 : result.value;
 }
 
 export function getOrCreateToken(address: Address): Token {
