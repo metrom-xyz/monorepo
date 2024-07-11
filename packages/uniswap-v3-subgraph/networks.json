@@ -8,5 +8,15 @@
             "address": "0x3d79EdAaBC0EaB6F08ED885C05Fc0B014290D95A",
             "startBlock": 12360382
         }
+    },
+    "arbitrum-one": {
+        "Factory": {
+            "address": "0x1F98431c8aD98523631AE4a59f267346ea31F984",
+            "startBlock": 165
+        },
+        "NonFungiblePositionManager": {
+            "address": "0xC36442b4a4522E871399CD717aBDD847Ab11FE88",
+            "startBlock": 173
+        }
     }
 }
