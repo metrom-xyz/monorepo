@@ -16,6 +16,10 @@ import { Erc20 } from "../generated/Metrom/Erc20";
 import { Erc20BytesName } from "../generated/Metrom/Erc20BytesName";
 import { Erc20BytesSymbol } from "../generated/Metrom/Erc20BytesSymbol";
 
+export const BI_MINUS_1 = BigInt.fromI32(-1);
+export const BI_0 = BigInt.zero();
+export const BI_1 = BigInt.fromI32(1);
+
 export function getMetromOrThrow(): Metrom {
     let metrom = Metrom.load(METROM_ADDRESS);
     if (metrom != null) return metrom;
@@ -65,7 +69,7 @@ export function getOrCreateClaimedByAccount(
     claimed = new ClaimedByAccount(id);
     claimed.reward = rewardId;
     claimed.account = account;
-    claimed.amount = BigInt.zero();
+    claimed.amount = BI_0;
     claimed.save();
     return claimed;
 }
@@ -81,7 +85,7 @@ export function getOrCreateWhitelistedRewardToken(
     whitelistedRewardToken.token = getOrCreateToken(
         Address.fromBytes(token),
     ).id;
-    whitelistedRewardToken.minimumRate = BigInt.zero();
+    whitelistedRewardToken.minimumRate = BI_0;
     whitelistedRewardToken.save();
     return whitelistedRewardToken;
 }
@@ -106,7 +110,7 @@ export function getOrCreateRecoveredByAccount(
     recovered = new RecoveredByAccount(id);
     recovered.reward = rewardId;
     recovered.account = account;
-    recovered.amount = BigInt.zero();
+    recovered.amount = BI_0;
     recovered.save();
     return recovered;
 }
@@ -118,7 +122,7 @@ export function getOrCreateFeeRebate(account: Address): FeeRebate {
     feeRebate = new FeeRebate(account);
     feeRebate.metrom = METROM_ADDRESS;
     feeRebate.account = account;
-    feeRebate.rebate = BigInt.zero();
+    feeRebate.rebate = BI_0;
     return feeRebate;
 }
 
@@ -129,7 +133,7 @@ export function getOrCreateClaimableFee(token: Token): ClaimableFee {
     claimableFee = new ClaimableFee(token.id);
     claimableFee.metrom = METROM_ADDRESS;
     claimableFee.token = token.id;
-    claimableFee.amount = BigInt.zero();
+    claimableFee.amount = BI_0;
     claimableFee.save();
     return claimableFee;
 }
@@ -186,13 +190,9 @@ export function fetchTokenName(address: Address): string {
 }
 
 export function fetchTokenDecimals(address: Address): BigInt {
-    let decimals = -1;
-
     let contract = Erc20.bind(address);
     let result = contract.try_decimals();
-    if (!result.reverted) decimals = result.value;
-
-    return BigInt.fromI32(decimals);
+    return result.reverted ? BI_MINUS_1 : result.value;
 }
 
 export function getOrCreateToken(address: Address): Token {

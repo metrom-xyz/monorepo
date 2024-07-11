@@ -8,6 +8,7 @@
         "build:only": "graph build",
         "build": "pnpm generate-addresses-file celo-alfajores && pnpm codegen && graph build && pnpm format",
         "deploy:celo-alfajores": "pnpm generate-addresses-file celo-alfajores && graph deploy --studio --network celo-alfajores metrom-uni-v3-celo-alfajores",
+        "deploy:arbitrum": "pnpm generate-addresses-file arbitrum-one && graph deploy --studio --network arbitrum-one metrom-uni-v3-arbitrum",
         "lint": "eslint .",
         "format": "eslint --fix ."
     },
