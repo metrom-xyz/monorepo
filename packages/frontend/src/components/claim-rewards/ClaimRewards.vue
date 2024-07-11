@@ -64,7 +64,6 @@ const mergedClaims = computed(() => {
 
     return Object.values(
         claims.value.reduce((acc: Record<string, MergedClaim>, claim) => {
-
             if (!acc[claim.token.address]) {
                 acc[claim.token.address] = {
                     merged: { ...claim },
@@ -177,9 +176,11 @@ async function handleClaimRewardsOnClick() {
                         </div>
                     </div>
                 </div>
-                <MetTypography v-else>
-                    {{ $t("allCampaigns.rewards.empty") }}
-                </MetTypography>
+                <div v-else class="claim_rewards__list__empty">
+                    <MetTypography>
+                        {{ $t("allCampaigns.rewards.empty") }}
+                    </MetTypography>
+                </div>
                 <div class="claim_rewards__footer">
                     <MetButton
                         sm
@@ -228,6 +229,10 @@ async function handleClaimRewardsOnClick() {
         overflow-y-auto
         px-5
         border-y;
+}
+
+.claim_rewards__list__empty {
+    @apply flex justify-center items-center flex-1;
 }
 
 .claim_rewards__claim__wrapper {
