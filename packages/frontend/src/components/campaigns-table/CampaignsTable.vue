@@ -44,7 +44,7 @@ const props = defineProps<CampaignsTableProps>();
 
 const searchQuery = ref("");
 const debouncedQuery = ref("");
-const currentPage = ref(0);
+const currentPage = ref(1);
 
 watchDebounced(
     searchQuery,
@@ -163,17 +163,17 @@ const totalPages = computed(() =>
             <MetButton
                 xs
                 @click="currentPage -= 1"
-                :disabled="currentPage === 0"
+                :disabled="currentPage === 1"
                 :icon="ChevronLeftIcon"
             />
             <MetTypography>
-                {{ currentPage + 1 }} /
+                {{ currentPage }} /
                 {{ totalPages }}
             </MetTypography>
             <MetButton
                 xs
                 @click="currentPage += 1"
-                :disabled="currentPage + 1 === totalPages"
+                :disabled="currentPage === totalPages"
                 :icon="ChevronRightIcon"
             />
         </div>
