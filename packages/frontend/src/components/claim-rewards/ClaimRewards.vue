@@ -15,15 +15,14 @@ import {
     MetSwitch,
     MetAccordion,
 } from "@metrom-xyz/ui";
-import { type Claim } from "@metrom-xyz/sdk";
 import { metromAbi } from "@metrom-xyz/contracts/abi";
 import { writeContract } from "@wagmi/core";
-import { useClaims } from "@/composables/useClaims";
+import { useClaims, type ClaimWithRemaining } from "@/composables/useClaims";
 import ClaimRow from "./row/ClaimRow.vue";
 
 interface MergedClaim {
-    merged: Claim;
-    list: Claim[];
+    merged: ClaimWithRemaining;
+    list: ClaimWithRemaining[];
 }
 
 const props = defineProps<ClaimRewardsProps>();
@@ -44,7 +43,7 @@ const { claims, loading: loadingRewards } = useClaims(
 );
 
 const claimRewardsParams = computed(() => {
-    if (!claims.value || !account.value.address) return [];
+    if (!account.value.address) return [];
 
     return claims.value
         .filter((claim) => claim.remaining > 0n)

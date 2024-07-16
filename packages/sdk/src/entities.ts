@@ -53,7 +53,6 @@ export interface Claim {
     campaignId: Address;
     token: Erc20Token;
     amount: bigint;
-    remaining: bigint;
     proof: Address[];
 }
 
