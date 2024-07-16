@@ -1,7 +1,7 @@
-import type { Claim } from "@metrom-xyz/sdk";
+import type { ClaimWithRemaining } from "@/composables/useClaims";
 
 export interface ClaimRowProps {
-    claim: Claim;
+    claim: ClaimWithRemaining;
     logo?: boolean;
     sm?: boolean;
     lg?: boolean;
