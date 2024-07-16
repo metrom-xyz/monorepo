@@ -71,6 +71,7 @@ export function useClaims(
                 return {
                     ...rawClaim,
                     claimed,
+                    remaining: rawClaim.amount - claimed,
                 };
             });
         } catch (thrown) {
