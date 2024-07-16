@@ -44,7 +44,7 @@ const { claims, loading: loadingRewards } = useClaims(
 );
 
 const claimRewardsParams = computed(() => {
-    if (!claims.value || !account.value.address) return [];
+    if (!account.value.address) return [];
 
     return claims.value
         .filter((claim) => claim.remaining > 0n)

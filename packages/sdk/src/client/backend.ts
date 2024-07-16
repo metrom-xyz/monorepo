@@ -125,7 +125,6 @@ export class MetromApiClient {
                 chainId: this.chain,
             },
             amount: BigInt(rawClaim.amount),
-            remaining: BigInt(rawClaim.remaining),
         }));
     }
 
