@@ -1,8 +1,9 @@
-import { existsSync, writeFileSync, rmSync } from "node:fs";
+import { existsSync, writeFileSync, rmSync, readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { ADDRESS, SupportedChain, Environment } from "@metrom-xyz/contracts";
 import { fileURLToPath } from "node:url";
 import { exec } from "node:child_process";
+import Mustache from "mustache";
 
 const ENVIRONMENT_NAME: Record<Environment, string> = {
     [Environment.Development]: "development",
@@ -12,6 +13,7 @@ const ENVIRONMENT_NAME: Record<Environment, string> = {
 const NETWORK_NAME: Record<SupportedChain, string> = {
     [SupportedChain.Holesky]: "holesky",
     [SupportedChain.CeloAlfajores]: "celo-alfajores",
+    [SupportedChain.MantleSepolia]: "mantle-sepolia",
 };
 
 const [, , rawEnvironment, rawNetwork = ""] = process.argv;
@@ -49,7 +51,10 @@ if (!metrom) {
         )
             .map(([validEnvironment, deployments]) => {
                 return `${validEnvironment}: ${Object.keys(deployments)
-                    .map((chainId) => NETWORK_NAME[parseInt(chainId)])
+                    .map(
+                        (chainId) =>
+                            NETWORK_NAME[parseInt(chainId) as SupportedChain],
+                    )
                     .join(", ")}`;
             })
             .join("\n")}`,
@@ -76,32 +81,33 @@ try {
     process.exit(1);
 }
 
-console.log(`Generating networks.ts file for network ${network}`);
+console.log(`Generating subgrpah.yaml file for network ${network}`);
 
 try {
-    const networksFileOut = join(
+    const pathOut = join(
         fileURLToPath(dirname(import.meta.url)),
-        "../networks.json",
+        "../subgraph.yaml",
     );
-    if (existsSync(networksFileOut)) rmSync(networksFileOut);
+    if (existsSync(pathOut)) rmSync(pathOut);
     writeFileSync(
-        networksFileOut,
-        JSON.stringify(
+        pathOut,
+        Mustache.render(
+            readFileSync(
+                join(
+                    fileURLToPath(dirname(import.meta.url)),
+                    "../subgraph.template.yaml",
+                ),
+            ).toString(),
             {
-                [network]: {
-                    Metrom: {
-                        address: metrom.address,
-                        startBlock: metrom.blockCreated,
-                    },
-                },
+                network: resolvedNetwork[1],
+                address: metrom.address,
+                startBlock: metrom.blockCreated,
             },
-            undefined,
-            4,
         ),
     );
-    console.log("Networks file successfully generated.");
+    console.log("subgraph.yaml file successfully generated.");
 } catch (error) {
-    console.error("Error while generating networks file", error);
+    console.error("Error while generating subgraph.yaml file", error);
     process.exit(1);
 }
 

@@ -1,0 +1,27 @@
+{
+    "include": ["scripts/**/*.ts", "./start-blocks.ts"],
+    "exclude": ["node_modules"],
+    "compilerOptions": {
+        "composite": true,
+        "target": "esnext",
+        "module": "esnext",
+        "useDefineForClassFields": true,
+        "lib": ["esnext"],
+        "strict": true,
+        "alwaysStrict": true,
+        "strictNullChecks": true,
+        "noUnusedLocals": true,
+        "noFallthroughCasesInSwitch": true,
+        "noImplicitAny": true,
+        "noImplicitThis": true,
+        "noImplicitReturns": true,
+        "moduleResolution": "node",
+        "allowSyntheticDefaultImports": true,
+        "declaration": true,
+        "emitDeclarationOnly": false,
+        "declarationMap": true,
+        "skipLibCheck": true,
+        "verbatimModuleSyntax": true,
+        "resolveJsonModule": true
+    }
+}

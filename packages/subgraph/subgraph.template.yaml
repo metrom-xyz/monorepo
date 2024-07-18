@@ -6,11 +6,11 @@ schema:
 dataSources:
   - kind: ethereum
     name: Metrom
-    network: celo-alfajores
+    network: {{network}}
     source:
       abi: Metrom
-      address: "0xd1c1153fd809Aae3bb431b586C032C4856abaeD4"
-      startBlock: 24833840
+      address: "{{address}}"
+      startBlock: {{startBlock}}
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7

@@ -135,3 +135,4 @@ build
 
 networks.json
 src/addresses.ts
+subgraph.yaml

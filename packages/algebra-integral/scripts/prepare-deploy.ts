@@ -1,18 +1,15 @@
-import { existsSync, writeFileSync, rmSync } from "node:fs";
+import { existsSync, writeFileSync, rmSync, readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
-import { DEPLOYMENTS, SupportedAmm, SupportedNetwork } from "../deployments";
+import { DEPLOYMENTS } from "../deployments";
 import { fileURLToPath } from "node:url";
 import { exec } from "node:child_process";
+import Mustache from "mustache";
 
 const [, , rawNetwork = "", rawAmm = ""] = process.argv;
 const network = rawNetwork.toLowerCase();
 const amm = rawAmm.toLowerCase();
 
-const networkConfig =
-    network === "placeholder"
-        ? // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          ({} as any)
-        : DEPLOYMENTS[network as SupportedNetwork];
+const networkConfig = DEPLOYMENTS[network];
 if (!networkConfig) {
     console.error(
         `"${network}" is not a valid network. Valid values are: ${Object.keys(DEPLOYMENTS).join(", ")}`,
@@ -20,19 +17,7 @@ if (!networkConfig) {
     process.exit(1);
 }
 
-const contracts =
-    amm === "placeholder"
-        ? {
-              Factory: {
-                  address: "0x0000000000000000000000000000000000000000",
-                  startBlock: -1,
-              },
-              NonFungiblePositionManager: {
-                  address: "0x0000000000000000000000000000000000000000",
-                  startBlock: -1,
-              },
-          }
-        : networkConfig[amm as SupportedAmm];
+const contracts = networkConfig[amm];
 if (!contracts) {
     console.error(
         `"${amm}" is not a valid amm for the network ${network}. Valid values are: ${Object.keys(networkConfig).join(", ")}`,
@@ -62,23 +47,37 @@ try {
     process.exit(1);
 }
 
-console.log(
-    `Generating networks.ts file for network ${network} and AMM ${amm}`,
-);
+console.log(`Generating subgraph file for network ${network} and AMM ${amm}`);
 
 try {
-    const networksFileOut = join(
+    const subgraphFileOut = join(
         fileURLToPath(dirname(import.meta.url)),
-        "../networks.json",
+        "../subgraph.yaml",
     );
-    if (existsSync(networksFileOut)) rmSync(networksFileOut);
+    if (existsSync(subgraphFileOut)) rmSync(subgraphFileOut);
     writeFileSync(
-        networksFileOut,
-        JSON.stringify({ [network]: contracts }, undefined, 4),
+        subgraphFileOut,
+        Mustache.render(
+            readFileSync(
+                join(
+                    fileURLToPath(dirname(import.meta.url)),
+                    "../subgraph.template.yaml",
+                ),
+            ).toString(),
+            {
+                network,
+                factoryAddress: contracts.Factory.address,
+                factoryStartBlock: contracts.Factory.startBlock,
+                nftPositionManagerAddress:
+                    contracts.NonFungiblePositionManager.address,
+                nftPositionManagerStartBlock:
+                    contracts.NonFungiblePositionManager.startBlock,
+            },
+        ),
     );
-    console.log("Networks file successfully generated.");
+    console.log("Subgraph file successfully generated.");
 } catch (error) {
-    console.error("Error while generating networks file", error);
+    console.error("Error while generating subgraph file", error);
     process.exit(1);
 }
 

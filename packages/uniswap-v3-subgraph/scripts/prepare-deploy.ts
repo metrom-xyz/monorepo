@@ -1,8 +1,9 @@
-import { existsSync, writeFileSync, rmSync } from "node:fs";
+import { existsSync, writeFileSync, rmSync, readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { exec } from "node:child_process";
 import networks from "../networks.json";
+import Mustache from "mustache";
 
 const [, , rawNetwork = ""] = process.argv;
 const network = rawNetwork.toLowerCase();
@@ -29,6 +30,38 @@ try {
     console.log("Addresses file successfully generated.");
 } catch (error) {
     console.error("Error while generating addresses file", error);
+    process.exit(1);
+}
+
+try {
+    const subgraphFileOut = join(
+        fileURLToPath(dirname(import.meta.url)),
+        "../subgraph.yaml",
+    );
+    if (existsSync(subgraphFileOut)) rmSync(subgraphFileOut);
+    writeFileSync(
+        subgraphFileOut,
+        Mustache.render(
+            readFileSync(
+                join(
+                    fileURLToPath(dirname(import.meta.url)),
+                    "../subgraph.template.yaml",
+                ),
+            ).toString(),
+            {
+                network,
+                factoryAddress: config.Factory.address,
+                factoryStartBlock: config.Factory.startBlock,
+                nftPositionManagerAddress:
+                    config.NonFungiblePositionManager.address,
+                nftPositionManagerStartBlock:
+                    config.NonFungiblePositionManager.startBlock,
+            },
+        ),
+    );
+    console.log("Subgraph file successfully generated.");
+} catch (error) {
+    console.error("Error while generating subgraph file", error);
     process.exit(1);
 }
 
