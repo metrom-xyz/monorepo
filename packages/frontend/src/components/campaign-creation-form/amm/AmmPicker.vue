@@ -4,6 +4,7 @@ import {
     type AccordionSelectOption,
     MetTypography,
 } from "@metrom-xyz/ui";
+import { type SupportedChain } from "@metrom-xyz/sdk";
 import type { AmmPickerTypes } from "./types";
 import DexIcon from "@/icons/DexIcon.vue";
 import { computed, watchEffect } from "vue";
@@ -18,11 +19,13 @@ const emits = defineEmits<{
 const SUPPORTED_AMM_OPTIONS = computed<AccordionSelectOption<string>[]>(() => {
     if (!props.state.network) return [];
 
-    return CHAIN_DATA[props.state.network].amms.map((amm) => ({
-        label: amm.name,
-        value: amm.slug,
-        icon: amm.logo,
-    }));
+    return CHAIN_DATA[props.state.network as SupportedChain].amms.map(
+        (amm) => ({
+            label: amm.name,
+            value: amm.slug,
+            icon: amm.logo,
+        }),
+    );
 });
 
 watchEffect(() => {

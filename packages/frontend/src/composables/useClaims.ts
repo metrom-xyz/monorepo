@@ -5,7 +5,11 @@ import {
     watchEffect,
     toValue,
 } from "vue";
-import { type MetromApiClient, type Claim } from "@metrom-xyz/sdk";
+import {
+    type MetromApiClient,
+    type Claim,
+    type SupportedChain,
+} from "@metrom-xyz/sdk";
 import type { Address } from "viem";
 import { useChainId, usePublicClient } from "vevm";
 import { CHAIN_DATA } from "@/commons";
@@ -54,7 +58,9 @@ export function useClaims(
                 allowFailure: false,
                 contracts: rawClaims.map((rawClaim) => {
                     return {
-                        address: CHAIN_DATA[chainId.value].contract.address,
+                        address:
+                            CHAIN_DATA[chainId.value as SupportedChain].contract
+                                .address,
                         abi: metromAbi,
                         functionName: "claimedCampaignReward",
                         args: [

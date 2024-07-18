@@ -11,6 +11,7 @@ import { useWhitelistedRewardTokens } from "@/composables/useWhitelistedRewardTo
 import { CHAIN_DATA, REWARD_TOKEN_ICONS } from "@/commons";
 import { watchDebounced } from "@vueuse/core";
 import type { TokenInfo } from "@metrom-xyz/ui";
+import type { SupportedChain } from "@metrom-xyz/sdk";
 
 const props = defineProps<RewardsPickerTypes>();
 const emits = defineEmits<{
@@ -31,7 +32,8 @@ const debouncedLoadingBalances = ref(false);
 const { loading: loadingWhitelistedTokens, whitelistedTokens } =
     useWhitelistedRewardTokens(
         computed(() => ({
-            client: CHAIN_DATA[props.state.network].metromApiClient,
+            client: CHAIN_DATA[props.state.network as SupportedChain]
+                .metromApiClient,
         })),
     );
 
@@ -92,7 +94,7 @@ watch([block, balances, whitelistedTokens], () => {
         return {
             ...(tokenWithBalance || token),
             logoURI:
-                REWARD_TOKEN_ICONS[props.state.network][
+                REWARD_TOKEN_ICONS[props.state.network as SupportedChain][
                     token.address.toLowerCase() as Address
                 ],
         };

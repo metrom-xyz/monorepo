@@ -3,6 +3,7 @@ import { ref, watchEffect, type Ref, computed } from "vue";
 import { metromAbi } from "@metrom-xyz/contracts/abi";
 import { readContract } from "@wagmi/core";
 import { CHAIN_DATA } from "@/commons";
+import type { SupportedChain } from "@metrom-xyz/contracts";
 
 interface Duration {
     min: number;
@@ -25,7 +26,7 @@ export const useCampaignMinMaxDuration = (): UseCampaignMinMaxDurationType => {
 
     const metrom = computed(() => {
         if (!account.value.chainId) return;
-        return CHAIN_DATA[account.value.chainId].contract;
+        return CHAIN_DATA[account.value.chainId as SupportedChain].contract;
     });
 
     watchEffect(async () => {

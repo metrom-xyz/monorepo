@@ -18,7 +18,7 @@ import dayjs from "dayjs";
 import SubmitButton from "../submit-button/SubmitButton.vue";
 import LineArrowLeftIcon from "@/icons/LineArrowLeftIcon.vue";
 import { formatUnits } from "viem";
-import { formatDecimals } from "@metrom-xyz/sdk";
+import { formatDecimals, SupportedChain } from "@metrom-xyz/sdk";
 import PoolIcon from "@/icons/PoolIcon.vue";
 import CalendarIcon from "@/icons/CalendarIcon.vue";
 import CupIcon from "@/icons/CupIcon.vue";
@@ -34,7 +34,7 @@ const allRewardsApproved = ref(false);
 const deployed = ref(false);
 
 const metrom = computed(() => {
-    return CHAIN_DATA[chainId.value].contract;
+    return CHAIN_DATA[chainId.value as SupportedChain].contract;
 });
 </script>
 <template>
