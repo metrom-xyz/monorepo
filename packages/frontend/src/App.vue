@@ -3,12 +3,7 @@ import { RouterView } from "vue-router";
 import MetromLogoIcon from "./icons/MetromLogoIcon.vue";
 import NavigationBar from "./components/NavigationBar.vue";
 import UserAccount from "./components/UserAccount.vue";
-import { useTokens } from "./stores/tokens";
 import MultiChainLinks from "./components/MultiChainLinks.vue";
-
-// TODO: improve tokens fetching
-const tokenListsStore = useTokens();
-tokenListsStore.fetchTokensLists();
 </script>
 <template>
     <div class="app__container">

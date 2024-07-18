@@ -3,11 +3,13 @@ import { SupportedChain, Environment } from "@metrom-xyz/contracts";
 export const SUPPORTED_CHAIN_NAMES: Record<SupportedChain, string> = {
     [SupportedChain.Holesky]: "holesky",
     [SupportedChain.CeloAlfajores]: "celo-alfajores",
+    [SupportedChain.MantleSepolia]: "mantle-sepolia",
 };
 
 export enum SupportedAmm {
     Univ3 = "uni-v3",
     TestIntegral = "test-integral",
+    Swapsicle = "swapsicle",
 }
 
 export interface ServiceUrls {
