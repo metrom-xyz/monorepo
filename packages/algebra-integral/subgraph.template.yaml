@@ -6,11 +6,11 @@ schema:
 dataSources:
   - kind: ethereum
     name: Factory
-    network: holesky
+    network: {{network}}
     source:
       abi: Factory
-      address: "0x6AD6A4f233F1E33613e996CCc17409B93fF8bf5f"
-      startBlock: 1070314
+      address: "{{factoryAddress}}"
+      startBlock: {{factoryStartBlock}}
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
@@ -33,11 +33,11 @@ dataSources:
           handler: handlePoolCreated
   - kind: ethereum/contract
     name: NonFungiblePositionManager
-    network: holesky
+    network: {{network}}
     source:
       abi: NonFungiblePositionManager
-      address: "0x5AeFBA317BAba46EAF98Fd6f381d07673bcA6467"
-      startBlock: 1070336
+      address: "{{nftPositionManagerAddress}}"
+      startBlock: {{nftPositionManagerStartBlock}}
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
@@ -63,7 +63,7 @@ dataSources:
 templates:
   - kind: ethereum/contract
     name: Pool
-    network: holesky
+    network: {{network}}
     source:
       abi: Pool
     mapping:

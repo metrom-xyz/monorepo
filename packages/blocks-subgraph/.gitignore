@@ -134,3 +134,4 @@ generated
 build
 
 src/addresses.ts
+subgraph.yaml
