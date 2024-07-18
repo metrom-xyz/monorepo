@@ -16,7 +16,8 @@
     "dependencies": {
         "@floating-ui/vue": "^1.1.1",
         "@fontsource-variable/inter": "^5.0.18",
-        "@metrom-xyz/contracts": "^0.11.0",
+        "@metrom-xyz/contracts": "^0.13.1",
+        "@metrom-xyz/sdk": "workspace:*",
         "@metrom-xyz/ui": "workspace:*",
         "@uniswap/token-lists": "1.0.0-beta.34",
         "@vueuse/core": "^10.11.0",
@@ -29,7 +30,6 @@
         "graphql-request": "^7.1.0",
         "jwt-decode": "^4.0.0",
         "pinia": "^2.1.7",
-        "@metrom-xyz/sdk": "workspace:*",
         "uuid": "^10.0.0",
         "vevm": "^0.2.0",
         "viem": "^2.16.5",

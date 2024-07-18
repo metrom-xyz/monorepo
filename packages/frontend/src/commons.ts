@@ -5,34 +5,37 @@ import {
     type Erc20Token,
 } from "@metrom-xyz/sdk";
 import { type Transport, http, type Chain, type Address } from "viem";
-import { celoAlfajores, holesky } from "viem/chains";
+import { celoAlfajores, holesky, mantleSepoliaTestnet } from "viem/chains";
 import { type Amm } from "./types";
 import MuiEthIcon from "./icons/EthIcon.vue";
 import MuiAlgebraIntegralIcon from "./icons/AlgebraIntegralIcon.vue";
 import MuiCeloIcon from "./icons/CeloIcon.vue";
+import MuiMantleIcon from "./icons/MantleIcon.vue";
 import MuiUniswapLogoIcon from "./icons/UniswapLogoIcon.vue";
+import MuiSwapsicleIcon from "./icons/SwapsicleIcon.vue";
 import { markRaw, type Component } from "vue";
 import { buildChainData } from "./utils/chain-data";
 
 export const METROM_DATA_MANAGER_JWT_ISSUER = "metrom-data-manager";
 
-export const TOKEN_LISTS = [
-    "https://tokens.coingecko.com/celo/all.json",
-    "https://celo-org.github.io/celo-token-list/celo.tokenlist.json",
-];
-
 export const MAXIMUM_REWARDS_RESTRICTIONS = 20;
 
-export const SUPPORTED_CHAINS: [Chain, ...Chain[]] = [celoAlfajores, holesky];
+export const SUPPORTED_CHAINS: [Chain, ...Chain[]] = [
+    celoAlfajores,
+    holesky,
+    mantleSepoliaTestnet,
+];
 
 export const SUPPORTED_CHAIN_TRANSPORT: Record<number, Transport> = {
     [celoAlfajores.id]: http(),
     [holesky.id]: http(),
+    [mantleSepoliaTestnet.id]: http(),
 };
 
 export const SUPPORTED_CHAIN_ICONS: Record<SupportedChain, Component> = {
     [SupportedChain.CeloAlfajores]: markRaw(MuiCeloIcon),
     [SupportedChain.Holesky]: markRaw(MuiEthIcon),
+    [SupportedChain.MantleSepolia]: markRaw(MuiMantleIcon),
 };
 
 export const BASE_CHAIN_TOKENS: Record<SupportedChain, Erc20Token[]> = {
@@ -75,6 +78,15 @@ export const BASE_CHAIN_TOKENS: Record<SupportedChain, Erc20Token[]> = {
             symbol: "USDT",
         },
     ],
+    [SupportedChain.MantleSepolia]: [
+        {
+            address: "0xb1eda18c1b730a973dac2ec37cfd5685d7de10dd",
+            chainId: SupportedChain.MantleSepolia,
+            decimals: 18,
+            name: "Wrapped Mantle",
+            symbol: "WMNT",
+        },
+    ],
 };
 
 export const REWARD_TOKEN_ICONS: Record<
@@ -98,6 +110,10 @@ export const REWARD_TOKEN_ICONS: Record<
             "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0x6B175474E89094C44Da98b954EedeAC495271d0F/logo.png",
         "0x22d8655b405f6a8d6bb7c5838aaf187a32158b07":
             "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48/logo.png",
+    },
+    [SupportedChain.MantleSepolia]: {
+        "0xb1eda18c1b730a973dac2ec37cfd5685d7de10dd":
+            "https://assets.coingecko.com/coins/images/30980/standard/token-logo.png?1696529819",
     },
 };
 
@@ -128,6 +144,20 @@ export const SUPPORTED_AMMS: Record<SupportedChain, Amm[]> = {
                 SupportedChain.Holesky,
                 SupportedAmm.TestIntegral,
                 "https://api.studio.thegraph.com/query/68570/metrom-test-integral-holesky/version/latest",
+            ),
+        },
+    ],
+    [SupportedChain.MantleSepolia]: [
+        {
+            slug: SupportedAmm.Swapsicle,
+            logo: markRaw(MuiSwapsicleIcon),
+            name: "Swapsicle",
+            addLiquidityUrl:
+                "https://app.swapsicle.io/liquidity/v3/mantle-testnet/{target_pool}",
+            subgraphClient: new AmmSubgraphClient(
+                SupportedChain.MantleSepolia,
+                SupportedAmm.Swapsicle,
+                "https://api.goldsky.com/api/public/project_clycovfaomj6c0105c8bg8ohg/subgraphs/metrom-swapsicle-mantle-sepolia/0.2.0/gn",
             ),
         },
     ],
