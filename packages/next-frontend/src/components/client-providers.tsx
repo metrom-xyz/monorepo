@@ -5,8 +5,8 @@ import "@rainbow-me/rainbowkit/styles.css";
 import { type ReactNode } from "react";
 import { getDefaultConfig, RainbowKitProvider } from "@rainbow-me/rainbowkit";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { SUPPORTED_CHAINS } from "@/utils/commons";
 import { WagmiProvider } from "wagmi";
+import { SUPPORTED_CHAINS } from "@/utils/commons";
 
 const config = getDefaultConfig({
     appName: "Metrom",
