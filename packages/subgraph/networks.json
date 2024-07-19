@@ -1,0 +1,8 @@
+{
+    "holesky": {
+        "Metrom": {
+            "address": "0x05B92b5C40a266EFDD8B3fDF0496407e8C0d9cB6",
+            "startBlock": 1823746
+        }
+    }
+}
