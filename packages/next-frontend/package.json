@@ -11,6 +11,7 @@
         "format": "next lint --fix"
     },
     "dependencies": {
+        "@formatjs/intl-localematcher": "^0.5.4",
         "@metrom-xyz/contracts": "^0.11.0",
         "@metrom-xyz/sdk": "workspace:*",
         "@nextui-org/react": "^2.4.2",
@@ -18,6 +19,7 @@
         "@tanstack/react-query": "^5.51.1",
         "framer-motion": "^11.3.2",
         "next": "14.2.5",
+        "next-intl": "^3.17.2",
         "react": "^18",
         "react-dom": "^18",
         "viem": "^2.16.5",

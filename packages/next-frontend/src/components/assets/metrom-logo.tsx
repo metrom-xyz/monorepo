@@ -1,8 +1,6 @@
 export function MetromLogo(props: any) {
     return (
         <svg
-            width="1380"
-            height="254"
             viewBox="0 0 1380 254"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"

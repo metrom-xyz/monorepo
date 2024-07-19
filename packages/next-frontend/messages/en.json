@@ -1,0 +1,8 @@
+{
+    "navigation": {
+        "all_campaigns": "All campaigns",
+        "new_campaign": "New campaign"
+    },
+    "all_campaigns": { "title": "all campaigns" },
+    "new_campaign": { "title": "new campaign" }
+}

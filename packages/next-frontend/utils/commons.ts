@@ -15,13 +15,13 @@ import {
 } from "viem";
 import { celoAlfajores, holesky, mantleSepoliaTestnet } from "viem/chains";
 import type { FunctionComponent } from "react";
-import { CeloIcon } from "@/components/assets/celo-icon";
-import { EthIcon } from "@/components/assets/eth-icon";
-import { UniswapLogo } from "@/components/assets/uniswap-logo";
-import { AlgebraIntegralLogo } from "@/components/assets/algebra-integral-logo";
+import { CeloIcon } from "@/src/components/assets/celo-icon";
+import { EthIcon } from "@/src/components/assets/eth-icon";
+import { UniswapLogo } from "@/src/components/assets/uniswap-logo";
+import { AlgebraIntegralLogo } from "@/src/components/assets/algebra-integral-logo";
 import { ADDRESS, Environment } from "@metrom-xyz/contracts";
-import { MantleIcon } from "@/components/assets/mantle-icon";
-import { SwapsicleIcon } from "@/components/assets/swapsicle-icon";
+import { MantleIcon } from "@/src/components/assets/mantle-icon";
+import { SwapsicleIcon } from "@/src/components/assets/swapsicle-icon";
 
 export interface Amm {
     slug: string;
