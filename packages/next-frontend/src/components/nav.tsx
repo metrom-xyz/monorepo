@@ -17,7 +17,7 @@ export function Nav() {
 
     return (
         <div className="relative h-20 w-full max-w-screen-2xl flex justify-between items-center">
-            <MetromLogo className="h-8 w-36" />
+            <MetromLogo className="h-8 w-36 text-white" />
             <Tabs
                 selectedKey={path}
                 onSelectionChange={handleOnNavigation}
