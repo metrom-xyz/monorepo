@@ -3,10 +3,15 @@
 import "@rainbow-me/rainbowkit/styles.css";
 
 import { type ReactNode } from "react";
-import { getDefaultConfig, RainbowKitProvider } from "@rainbow-me/rainbowkit";
+import {
+    getDefaultConfig,
+    RainbowKitProvider,
+    type Locale,
+    darkTheme,
+} from "@rainbow-me/rainbowkit";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { SUPPORTED_CHAINS } from "@/utils/commons";
 import { WagmiProvider } from "wagmi";
+import { SUPPORTED_CHAINS } from "@/utils/commons";
 
 const config = getDefaultConfig({
     appName: "Metrom",
@@ -19,14 +24,28 @@ const config = getDefaultConfig({
 const queryClient = new QueryClient();
 
 export function ClientProviders({
+    locale,
     children,
 }: Readonly<{
+    locale: Locale;
     children: ReactNode;
 }>) {
     return (
         <WagmiProvider config={config}>
             <QueryClientProvider client={queryClient}>
-                <RainbowKitProvider>{children}</RainbowKitProvider>
+                <RainbowKitProvider
+                    appInfo={{
+                        appName: "Metrom",
+                        learnMoreUrl: "https://www.metrom.xyz",
+                    }}
+                    locale={locale}
+                    theme={darkTheme({
+                        // TODO: add primary color
+                        accentColor: "#48D080",
+                    })}
+                >
+                    {children}
+                </RainbowKitProvider>
             </QueryClientProvider>
         </WagmiProvider>
     );
