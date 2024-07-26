@@ -5,9 +5,10 @@ import { NextUIProvider } from "@nextui-org/react";
 import { type ReactNode } from "react";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
-import { ClientProviders } from "@/components/client-providers";
-import { Nav } from "@/components/nav";
 import type { Locale } from "@rainbow-me/rainbowkit";
+import styles from "./styles.module.css";
+import { ClientProviders } from "../../components/client-providers";
+import { Nav } from "../../components/nav";
 
 export const metadata: Metadata = {
     title: "Metrom",
@@ -29,7 +30,7 @@ export default async function RootLayout({
                 <NextIntlClientProvider messages={messages}>
                     <NextUIProvider>
                         <ClientProviders locale={locale as Locale}>
-                            <div className="dark h-screen w-screen bg-black flex flex-col items-center">
+                            <div className={styles.app}>
                                 <Nav />
                                 {children}
                             </div>

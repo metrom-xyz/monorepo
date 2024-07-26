@@ -1,0 +1,17 @@
+.root {
+    @apply relative
+        h-20
+        w-full
+        max-w-screen-2xl
+        flex
+        justify-between
+        items-center;
+}
+
+.metrom_logo {
+    @apply h-8 w-36 dark:text-white;
+}
+
+.tabs {
+    @apply absolute left-1/2 -translate-x-1/2;
+}
