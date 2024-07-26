@@ -6,9 +6,9 @@ import { type ReactNode } from "react";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
 import type { Locale } from "@rainbow-me/rainbowkit";
-import styles from "./styles.module.css";
 import { ClientProviders } from "../../components/client-providers";
 import { Nav } from "../../components/nav";
+import styles from "./styles.module.css";
 
 export const metadata: Metadata = {
     title: "Metrom",
