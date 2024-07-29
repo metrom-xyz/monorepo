@@ -1,0 +1,8 @@
+.app {
+    @apply h-screen
+        w-screen
+        flex
+        flex-col
+        items-center
+        dark:bg-black;
+}

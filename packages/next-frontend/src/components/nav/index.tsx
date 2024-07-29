@@ -2,9 +2,10 @@
 
 import { Tab, Tabs } from "@nextui-org/react";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
-import { MetromLogo } from "./assets/metrom-logo";
-import { usePathname, useRouter } from "../navigation";
+import { usePathname, useRouter } from "@/src/navigation";
+import { MetromLogo } from "../assets/metrom-logo";
 import { useTranslations } from "next-intl";
+import styles from "./styles.module.css";
 
 export function Nav() {
     const t = useTranslations("navigation");
@@ -16,13 +17,13 @@ export function Nav() {
     }
 
     return (
-        <div className="relative h-20 w-full max-w-screen-2xl flex justify-between items-center">
-            <MetromLogo className="h-8 w-36 text-white" />
+        <div className={styles.root}>
+            <MetromLogo className={styles.metrom_logo} />
             <Tabs
                 selectedKey={path}
                 onSelectionChange={handleOnNavigation}
                 size="lg"
-                className="absolute left-1/2 -translate-x-1/2"
+                className={styles.tabs}
             >
                 <Tab key={"/"} title={t("all_campaigns")} />
                 <Tab key={"/campaigns/create"} title={t("new_campaign")} />
