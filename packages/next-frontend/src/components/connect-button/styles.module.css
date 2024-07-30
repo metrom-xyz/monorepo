@@ -1,0 +1,22 @@
+.connect_button__root {
+    @apply bg-white p-2.5 rounded-md;
+}
+
+.connect_button__wrapper {
+    @apply flex gap-3 items-center justify-between;
+}
+
+.connect_button__account {
+    @apply flex gap-1 items-center justify-between;
+}
+
+.connect_button__icon {
+    @apply w-7 h-7;
+}
+
+.connect_button__settings {
+    @apply p-1
+        bg-gray-5
+        rounded
+        hover:cursor-pointer;
+}

@@ -3,8 +3,10 @@ import type {
     Erc20Token,
     MetromApiClient,
 } from "@metrom-xyz/sdk";
-import type { FunctionComponent } from "react";
+import type { SVGProps, FunctionComponent } from "react";
 import type { ChainContract } from "viem";
+
+export type SVGIcon = Omit<SVGProps<SVGSVGElement>, "dangerouslySetInnerHTML">;
 
 export interface Amm {
     slug: string;
@@ -26,4 +28,17 @@ export interface ChainData {
     metromApiClient: MetromApiClient;
     amms: Amm[];
     baseTokens: Erc20Token[];
+}
+
+// TODO: define state
+export interface CampaignPayload {
+    network?: number;
+    amm?: string;
+    // pool?: Pool;
+    // rewards: Reward[];
+    // range?: Range;
+    // restrictions?: {
+    //     type: "blacklist" | "whitelist";
+    //     list: Address[];
+    // };
 }

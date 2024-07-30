@@ -1,0 +1,33 @@
+.step_preview__root {
+    @apply flex
+        items-end
+        justify-between
+        px-4
+        py-7
+        rounded-2xl
+        hover:bg-gray-5
+        hover:cursor-pointer
+        transition-colors
+        duration-200
+        ease-in-out;
+}
+
+.step_preview__root_open {
+    @apply rounded-b-none;
+}
+
+.step_preview__root_completed {
+    @apply py-4;
+}
+
+.step_preview__icon__wrapper {
+    @apply px-2 py-2.5 rounded-md bg-white;
+}
+
+.step_preview__icon {
+    @apply transition-transform;
+}
+
+.step_preview__icon_open {
+    @apply rotate-180;
+}

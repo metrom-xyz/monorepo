@@ -1,0 +1,3 @@
+.step_content__root {
+    @apply overflow-y-hidden bg-white rounded-b-2xl;
+}

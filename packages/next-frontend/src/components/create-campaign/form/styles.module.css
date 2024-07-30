@@ -1,0 +1,3 @@
+.create_campaign__root {
+    @apply flex flex-col gap-1;
+}

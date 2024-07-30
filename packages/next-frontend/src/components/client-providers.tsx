@@ -7,11 +7,11 @@ import {
     getDefaultConfig,
     RainbowKitProvider,
     type Locale,
-    darkTheme,
+    lightTheme,
 } from "@rainbow-me/rainbowkit";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { WagmiProvider } from "wagmi";
-import { SUPPORTED_CHAINS } from "@/utils/commons";
+import { SUPPORTED_CHAINS } from "../commons";
 
 const config = getDefaultConfig({
     appName: "Metrom",
@@ -39,7 +39,7 @@ export function ClientProviders({
                         learnMoreUrl: "https://www.metrom.xyz",
                     }}
                     locale={locale}
-                    theme={darkTheme({
+                    theme={lightTheme({
                         // TODO: add primary color
                         accentColor: "#48D080",
                     })}

@@ -1,11 +1,11 @@
 "use client";
 
 import { Tab, Tabs } from "@nextui-org/react";
-import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { usePathname, useRouter } from "@/src/navigation";
-import { MetromLogo } from "../assets/metrom-logo";
+import { MetromLogo } from "../../assets/metrom-logo";
 import { useTranslations } from "next-intl";
 import styles from "./styles.module.css";
+import { ConnectButton } from "../connect-button";
 
 export function Nav() {
     const t = useTranslations("navigation");

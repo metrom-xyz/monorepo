@@ -1,3 +1,7 @@
+import "@fontsource/ibm-plex-sans/400.css";
+import "@fontsource/ibm-plex-sans/500.css";
+import "@fontsource/ibm-plex-sans/700.css";
+import "@fontsource/ibm-plex-mono/500.css";
 import "./globals.css";
 
 import type { Metadata } from "next";
@@ -8,6 +12,7 @@ import { getMessages } from "next-intl/server";
 import type { Locale } from "@rainbow-me/rainbowkit";
 import { ClientProviders } from "../../components/client-providers";
 import { Nav } from "../../components/nav";
+
 import styles from "./styles.module.css";
 
 export const metadata: Metadata = {

@@ -6,15 +6,15 @@ import {
 } from "@metrom-xyz/sdk";
 import { type Transport, http, type Chain, type Address } from "viem";
 import { celoAlfajores, holesky, mantleSepoliaTestnet } from "viem/chains";
-import { type Amm } from "./types";
+import { type Amm, type SVGIcon } from "./types";
 import { buildChainData } from "./utils/chain-data";
 import type { FunctionComponent } from "react";
-import { CeloIcon } from "./components/assets/celo-icon";
-import { EthIcon } from "./components/assets/eth-icon";
-import { MantleIcon } from "./components/assets/mantle-icon";
-import { UniswapLogo } from "./components/assets/uniswap-logo";
-import { AlgebraIntegralLogo } from "./components/assets/algebra-integral-logo";
-import { SwapsicleIcon } from "./components/assets/swapsicle-icon";
+import { CeloIcon } from "./assets/celo-icon";
+import { EthIcon } from "./assets/eth-icon";
+import { MantleIcon } from "./assets/mantle-icon";
+import { UniswapLogo } from "./assets/uniswap-logo";
+import { AlgebraIntegralLogo } from "./assets/algebra-integral-logo";
+import { SwapsicleIcon } from "./assets/swapsicle-icon";
 
 export const METROM_DATA_MANAGER_JWT_ISSUER = "metrom-data-manager";
 
@@ -32,12 +32,14 @@ export const SUPPORTED_CHAIN_TRANSPORT: Record<number, Transport> = {
     [mantleSepoliaTestnet.id]: http(),
 };
 
-export const SUPPORTED_CHAIN_ICONS: Record<SupportedChain, FunctionComponent> =
-    {
-        [SupportedChain.CeloAlfajores]: CeloIcon,
-        [SupportedChain.Holesky]: EthIcon,
-        [SupportedChain.MantleSepolia]: MantleIcon,
-    };
+export const SUPPORTED_CHAIN_ICONS: Record<
+    SupportedChain,
+    FunctionComponent<SVGIcon>
+> = {
+    [SupportedChain.CeloAlfajores]: CeloIcon,
+    [SupportedChain.Holesky]: EthIcon,
+    [SupportedChain.MantleSepolia]: MantleIcon,
+};
 
 export const BASE_CHAIN_TOKENS: Record<SupportedChain, Erc20Token[]> = {
     [SupportedChain.CeloAlfajores]: [
@@ -118,6 +120,7 @@ export const REWARD_TOKEN_ICONS: Record<
     },
 };
 
+// TODO: get proper icons for the amms
 export const SUPPORTED_AMMS: Record<SupportedChain, Amm[]> = {
     [SupportedChain.CeloAlfajores]: [
         {
