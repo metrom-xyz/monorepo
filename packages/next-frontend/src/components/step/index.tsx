@@ -20,6 +20,7 @@ export function Step({
 }: StepProps) {
     const [open, setOpen] = useState(false);
     const [height, setHeight] = useState<Height>(0);
+    const [heightAnimationDone, setHeightAnimationDone] = useState(true);
 
     const childrenArray = React.Children.toArray(children);
 
@@ -41,6 +42,13 @@ export function Step({
         setHeight(open ? 0 : "auto");
     }
 
+    // Track the height animation status for the StepPreview component.
+    // This status is used to dynamically apply a CSS class to remove the bottom border rounding
+    // only after the animation has completed.
+    function handleContentAnimationOnEnd() {
+        setHeightAnimationDone((state) => !state);
+    }
+
     return (
         <div
             className={classNames(styles.step__root, {
@@ -50,9 +58,15 @@ export function Step({
             <div onClick={handlePreviewOnClick}>
                 {React.cloneElement<StepPreviewProps>(previewChildren, {
                     open,
+                    heightAnimationDone,
                 })}
             </div>
-            <AnimateHeight height={height} duration={200} easing="ease-in-out">
+            <AnimateHeight
+                height={height}
+                duration={200}
+                easing="ease-in-out"
+                onHeightAnimationEnd={handleContentAnimationOnEnd}
+            >
                 <div onClick={handleContentOnClick}>{contentChildren}</div>
             </AnimateHeight>
         </div>
