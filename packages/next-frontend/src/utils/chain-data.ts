@@ -9,8 +9,12 @@ import { MetromApiClient, SERVICE_URLS } from "@metrom-xyz/sdk";
 import type { ChainContract } from "viem";
 
 export const buildChainData = () => {
+    const environment = process.env.NEXT_PUBLIC_ENVIRONMENT;
+    if (!environment || environment in Environment)
+        throw new Error("An ENVIRONMENT env variable is needed");
+
     const environmentChains = Object.entries(
-        ADDRESS[process.env.NEXT_PUBLIC_ENVIRONMENT as Environment],
+        ADDRESS[environment as Environment],
     ) as unknown as [SupportedChain, ChainContract][];
 
     return environmentChains.reduce(

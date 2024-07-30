@@ -4,5 +4,12 @@
         "new_campaign": "New campaign"
     },
     "all_campaigns": { "title": "all campaigns" },
-    "new_campaign": { "title": "new campaign" }
+    "new_campaign": {
+        "form": {
+            "dex": { "title": "Dex" },
+            "pool": { "title": "Pool" },
+            "start_date": { "title": "Start date" },
+            "end_date": { "title": "End date" }
+        }
+    }
 }
