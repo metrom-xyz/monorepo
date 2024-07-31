@@ -1,7 +1,7 @@
 import React, { type ReactElement, useState } from "react";
 import AnimateHeight, { type Height } from "react-animate-height";
+import classNames from "@/src/utils/classes";
 import { matchChildByType } from "@/src/utils/components";
-import classNames from "classnames";
 import { StepPreview, type StepPreviewProps } from "./preview";
 import { StepContent } from "./content";
 
