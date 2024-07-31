@@ -1,8 +1,8 @@
-.dex__preview {
+.amm__preview {
     @apply flex gap-2 items-center;
 }
 
-.dex__wrapper {
+.amm__wrapper {
     @apply max-h-[300px]
         overflow-y-auto
         rounded-b-2xl
@@ -10,7 +10,7 @@
         snap-y;
 }
 
-.dex__row {
+.amm__row {
     @apply flex
         gap-2
         items-center
@@ -24,16 +24,16 @@
         hover:bg-gray-5;
 }
 
-.dex__row_selected {
+.amm__row_selected {
     @apply bg-gray-5;
 }
 
-.dex__row:only-child,
-.dex__row:last-child {
+.amm__row:only-child,
+.amm__row:last-child {
     @apply rounded-b-2xl;
 }
 
-.dex__row > * {
+.amm__row > * {
     @apply pointer-events-none;
 }
 
