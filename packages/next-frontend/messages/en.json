@@ -6,7 +6,7 @@
     "all_campaigns": { "title": "all campaigns" },
     "new_campaign": {
         "form": {
-            "dex": { "title": "Dex" },
+            "amm": { "title": "Dex" },
             "pool": { "title": "Pool" },
             "start_date": { "title": "Start date" },
             "end_date": { "title": "End date" }

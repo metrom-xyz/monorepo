@@ -16,7 +16,7 @@ interface AmmStepProps {
 }
 
 export function AmmStep({ amm, onAmmChange }: AmmStepProps) {
-    const t = useTranslations("new_campaign.form.dex");
+    const t = useTranslations("new_campaign.form.amm");
     const availableAmms = useAvailableAmms();
 
     const selected = useMemo(() => {
@@ -24,7 +24,7 @@ export function AmmStep({ amm, onAmmChange }: AmmStepProps) {
         return availableAmms.find((available) => available.slug === amm);
     }, [availableAmms, amm]);
 
-    const getDexChangeHandler = useCallback(
+    const getAmmChangeHandler = useCallback(
         (amm: CampaignPayload["amm"]) => {
             return () => {
                 if (selected && selected.slug === amm) return;
@@ -38,7 +38,7 @@ export function AmmStep({ amm, onAmmChange }: AmmStepProps) {
         <Step closeBehavior="innerClick">
             <StepPreview completed={!!selected} label={t("title")}>
                 {selected && (
-                    <div className={styles.dex__preview}>
+                    <div className={styles.amm__preview}>
                         <div className={styles.logo}>
                             <selected.logo />
                         </div>
@@ -49,15 +49,15 @@ export function AmmStep({ amm, onAmmChange }: AmmStepProps) {
                 )}
             </StepPreview>
             <StepContent>
-                <div className={styles.dex__wrapper}>
+                <div className={styles.amm__wrapper}>
                     {availableAmms.map(({ slug, name, logo: Logo }) => (
                         <div
                             key={slug}
-                            className={classNames(styles.dex__row, {
-                                [styles.dex__row_selected]:
+                            className={classNames(styles.amm__row, {
+                                [styles.amm__row_selected]:
                                     selected?.slug === slug,
                             })}
-                            onClick={getDexChangeHandler(slug)}
+                            onClick={getAmmChangeHandler(slug)}
                         >
                             <div className={styles.logo}>
                                 <Logo />
