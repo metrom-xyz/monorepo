@@ -52,7 +52,7 @@ export function Step({
     return (
         <div
             className={classNames(styles.root, {
-                [styles.root_disabled]: disabled,
+                [styles.rootDisabled]: disabled,
             })}
         >
             <div onClick={handlePreviewOnClick}>

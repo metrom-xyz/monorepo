@@ -8,7 +8,7 @@
         items-center;
 }
 
-.metrom_logo {
+.metromLogo {
     @apply h-8 w-36 dark:text-white;
 }
 

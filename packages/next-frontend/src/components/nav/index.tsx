@@ -18,7 +18,7 @@ export function Nav() {
 
     return (
         <div className={styles.root}>
-            <MetromLogo className={styles.metrom_logo} />
+            <MetromLogo className={styles.metromLogo} />
             <Tabs
                 selectedKey={path}
                 onSelectionChange={handleOnNavigation}

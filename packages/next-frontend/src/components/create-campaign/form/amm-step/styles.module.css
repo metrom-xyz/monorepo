@@ -1,8 +1,8 @@
-.amm__preview {
+.ammPreview {
     @apply flex gap-2 items-center;
 }
 
-.amm__wrapper {
+.ammWrapper {
     @apply max-h-[300px]
         overflow-y-auto
         rounded-b-2xl
@@ -10,7 +10,7 @@
         snap-y;
 }
 
-.amm__row {
+.ammRow {
     @apply flex
         gap-2
         items-center
@@ -24,16 +24,16 @@
         hover:bg-gray-5;
 }
 
-.amm__row_selected {
+.ammRowSelected {
     @apply bg-gray-5;
 }
 
-.amm__row:only-child,
-.amm__row:last-child {
+.ammRow:only-child,
+.ammRow:last-child {
     @apply rounded-b-2xl;
 }
 
-.amm__row > * {
+.ammRow > * {
     @apply pointer-events-none;
 }
 

@@ -38,8 +38,8 @@ export function StepPreview({
     return (
         <div
             className={classNames(styles.root, {
-                [styles.root_open]: open || !heightAnimationDone,
-                [styles.root_completed]: completed,
+                [styles.rootOpen]: open || !heightAnimationDone,
+                [styles.rootCompleted]: completed,
             })}
         >
             {completed ? (
@@ -54,10 +54,7 @@ export function StepPreview({
                     >
                         {label}
                     </Typography>
-                    <animated.div
-                        style={spring}
-                        className={styles.dex__preview}
-                    >
+                    <animated.div style={spring} className={styles.dexPreview}>
                         {children}
                     </animated.div>
                 </div>
@@ -66,10 +63,10 @@ export function StepPreview({
                     {label}
                 </Typography>
             )}
-            <div className={styles.icon__wrapper}>
+            <div className={styles.iconWrapper}>
                 <ChevronIcon
                     className={classNames(styles.icon, {
-                        [styles.icon_open]: open,
+                        [styles.iconOpen]: open,
                     })}
                 />
             </div>

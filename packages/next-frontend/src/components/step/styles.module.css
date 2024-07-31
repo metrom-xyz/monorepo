@@ -6,10 +6,10 @@
     @apply transition-opacity duration-200 ease-in-out;
 }
 
-.root_disabled {
+.rootDisabled {
     @apply hover:cursor-not-allowed;
 }
 
-.root_disabled > * {
+.rootDisabled > * {
     @apply pointer-events-none opacity-40 select-none;
 }
