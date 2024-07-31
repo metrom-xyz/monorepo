@@ -16,7 +16,6 @@ import { Erc20 } from "../generated/Factory/Erc20";
 import { Erc20BytesSymbol } from "../generated/Factory/Erc20BytesSymbol";
 import { Erc20BytesName } from "../generated/Factory/Erc20BytesName";
 
-export const BI_MINUS_1 = BigInt.fromI32(-1);
 export const BI_0 = BigInt.zero();
 export const BI_1 = BigInt.fromI32(1);
 export const BD_0 = BigDecimal.zero();

@@ -16,7 +16,6 @@ import { Erc20 } from "../generated/Factory/Erc20";
 import { Erc20BytesSymbol } from "../generated/Factory/Erc20BytesSymbol";
 import { Erc20BytesName } from "../generated/Factory/Erc20BytesName";
 
-export const BI_MINUS_1 = BigInt.fromI32(-1);
 export const BI_0 = BigInt.zero();
 export const BI_1 = BigInt.fromI32(1);
 export const BI_100 = BigInt.fromI32(100);
@@ -67,7 +66,7 @@ export function getTokenOrThrow(address: Address): Token {
     throw new Error(`Could not find token with address ${address.toHex()}`);
 }
 
-export function fetchTokenSymbol(address: Address): string {
+export function fetchTokenSymbol(address: Address): string | null {
     let contract = Erc20.bind(address);
     let result = contract.try_symbol();
     if (!result.reverted) return result.value;
@@ -76,10 +75,10 @@ export function fetchTokenSymbol(address: Address): string {
     let bytesResult = bytesContract.try_symbol();
     if (!bytesResult.reverted) return bytesResult.value.toString();
 
-    return "unknown";
+    return null;
 }
 
-export function fetchTokenName(address: Address): string {
+export function fetchTokenName(address: Address): string | null {
     let contract = Erc20.bind(address);
     let result = contract.try_name();
     if (!result.reverted) return result.value;
@@ -88,23 +87,32 @@ export function fetchTokenName(address: Address): string {
     let bytesResult = bytesContract.try_name();
     if (!bytesResult.reverted) return bytesResult.value.toString();
 
-    return "unknown";
+    return null;
 }
 
-export function fetchTokenDecimals(address: Address): BigInt {
+export function fetchTokenDecimals(address: Address): BigInt | null {
     let contract = Erc20.bind(address);
     let result = contract.try_decimals();
-    return result.reverted ? BI_MINUS_1 : result.value;
+    return result.reverted ? null : result.value;
 }
 
-export function getOrCreateToken(address: Address): Token {
+export function getOrCreateToken(address: Address): Token | null {
     let token = Token.load(address);
     if (token !== null) return token;
 
+    let symbol = fetchTokenSymbol(address);
+    if (symbol === null) return null;
+
+    let name = fetchTokenName(address);
+    if (name === null) return null;
+
+    let decimals = fetchTokenDecimals(address);
+    if (decimals === null) return null;
+
     token = new Token(address);
-    token.symbol = fetchTokenSymbol(address);
-    token.name = fetchTokenName(address);
-    token.decimals = fetchTokenDecimals(address);
+    token.symbol = symbol;
+    token.name = name;
+    token.decimals = decimals;
     token.save();
 
     return token;
