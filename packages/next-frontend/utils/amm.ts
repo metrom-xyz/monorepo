@@ -1,4 +1,5 @@
-import { CHAIN_DATA, type Amm } from "./commons";
+import { CHAIN_DATA } from "@/src/commons";
+import type { Amm } from "@/src/types";
 import { SupportedChain, type Pool, SupportedAmm } from "@metrom-xyz/sdk";
 
 export function getAmm(

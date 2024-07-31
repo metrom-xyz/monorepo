@@ -1,7 +1,7 @@
 import type { SupportedChain } from "@metrom-xyz/contracts";
+import { useChainId } from "wagmi";
 import { CHAIN_DATA } from "../commons";
 import type { Amm } from "../types";
-import { useChainId } from "wagmi";
 
 export function useAvailableAmms(): Pick<Amm, "slug" | "name" | "logo">[] {
     const chainId: SupportedChain = useChainId();
