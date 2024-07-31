@@ -1,11 +1,11 @@
 import { useMemo, type MouseEvent } from "react";
 import { useTranslations } from "next-intl";
-import classNames from "classnames";
 import { Step } from "@/src/components/step";
 import { StepPreview } from "@/src/components/step/preview";
 import { StepContent } from "@/src/components/step/content";
 import { useAvailableAmms } from "@/src/hooks/useAvailableAmms";
 import { animated, useSpring } from "@react-spring/web";
+import classNames from "@/src/utils/classes";
 import { Typography } from "@/src/ui/typography";
 import type { CreateCampaignFormProps } from "..";
 

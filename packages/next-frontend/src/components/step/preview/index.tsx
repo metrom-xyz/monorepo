@@ -1,6 +1,6 @@
 import { type ReactNode } from "react";
 import { ChevronIcon } from "@/src/assets/chevron-icon";
-import classNames from "classnames";
+import classNames from "@/src/utils/classes";
 
 import styles from "./styles.module.css";
 

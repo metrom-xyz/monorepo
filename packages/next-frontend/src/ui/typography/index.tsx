@@ -1,6 +1,5 @@
 "use client";
 
-import classNames from "classnames";
 import {
     forwardRef,
     type ElementType,
@@ -10,6 +9,7 @@ import {
     type ReactElement,
     useCallback,
 } from "react";
+import classNames from "@/src/utils/classes";
 
 import styles from "./styles.module.css";
 
