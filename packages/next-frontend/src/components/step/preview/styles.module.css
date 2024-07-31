@@ -12,15 +12,15 @@
         ease-in-out;
 }
 
-.root_open {
+.rootOpen {
     @apply rounded-b-none;
 }
 
-.root_completed {
+.rootCompleted {
     @apply py-4;
 }
 
-.icon__wrapper {
+.iconWrapper {
     @apply px-2 py-2.5 rounded-md bg-white;
 }
 
@@ -28,6 +28,6 @@
     @apply transition-transform;
 }
 
-.icon_open {
+.iconOpen {
     @apply rotate-180;
 }

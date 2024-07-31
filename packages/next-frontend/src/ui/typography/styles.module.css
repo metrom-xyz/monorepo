@@ -2,34 +2,34 @@
     @apply text-black font-mono;
 }
 
-.root_uppercase {
+.rootUppercase {
     @apply uppercase;
 }
 
-.root_xs {
+.rootXs {
     @apply font-normal font-mono text-xs;
 }
 
-.root_sm {
+.rootSm {
     @apply font-normal font-sans text-sm;
 }
 
-.root_base {
+.rootBase {
     @apply font-normal font-sans text-base;
 }
 
-.root_lg {
+.rootLg {
     @apply font-normal font-sans text-lg;
 }
 
-.root_normal {
+.rootNormal {
     @apply font-normal;
 }
 
-.root_medium {
+.rootMedium {
     @apply font-medium;
 }
 
-.root_bold {
+.rootBold {
     @apply font-bold;
 }

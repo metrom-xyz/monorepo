@@ -37,7 +37,7 @@ export function AmmStep({ amm, onAmmChange }: AmmStepProps) {
         <Step closeBehavior="innerClick">
             <StepPreview completed={!!amm} label={t("title")}>
                 {amm && (
-                    <div className={styles.amm__preview}>
+                    <div className={styles.ammPreview}>
                         <div className={styles.logo}>
                             <amm.logo />
                         </div>
@@ -48,12 +48,12 @@ export function AmmStep({ amm, onAmmChange }: AmmStepProps) {
                 )}
             </StepPreview>
             <StepContent>
-                <div className={styles.amm__wrapper}>
+                <div className={styles.ammWrapper}>
                     {availableAmms.map((availableAmm) => (
                         <div
                             key={availableAmm.slug}
-                            className={classNames(styles.amm__row, {
-                                [styles.amm__row_selected]:
+                            className={classNames(styles.ammRow, {
+                                [styles.ammRowSelected]:
                                     amm?.slug === availableAmm.slug,
                             })}
                             onClick={getAmmChangeHandler(availableAmm)}

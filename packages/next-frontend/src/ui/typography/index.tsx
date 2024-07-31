@@ -59,7 +59,7 @@ const COMPONENT_MAP: Record<TypographyVariant, ElementType> = {
 const Component = <V extends TypographyVariant>(
     {
         variant = "base",
-        weight,
+        weight = "normal",
         uppercase,
         className,
         children,
@@ -86,9 +86,11 @@ const Component = <V extends TypographyVariant>(
     return (
         <Root
             className={classNames(styles.root, className?.root, {
-                [styles.root_uppercase]: uppercase,
-                [styles[`root_${variant}`]]: true,
-                [styles[`root_${weight}`]]: true,
+                [styles.rootUppercase]: uppercase,
+                [styles[`root${variant[0].toUpperCase()}${variant.slice(1)}`]]:
+                    true,
+                [styles[`root${weight[0].toUpperCase()}${weight.slice(1)}`]]:
+                    true,
             })}
             {...rest}
             onMouseEnter={handleMouseEnter}
