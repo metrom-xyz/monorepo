@@ -38,7 +38,7 @@ export interface ChainData {
 // TODO: define state
 export interface CampaignPayload {
     network?: number;
-    amm?: string;
+    amm?: AmmInfo;
     pool?: Pool;
     startDate?: Dayjs;
     endDate?: Dayjs;
@@ -49,4 +49,5 @@ export interface CampaignPayload {
     // };
 }
 
+export type AmmInfo = Pick<Amm, "slug" | "name" | "logo">;
 export type CampaignPayloadPart = PropertyUnion<CampaignPayload>;
