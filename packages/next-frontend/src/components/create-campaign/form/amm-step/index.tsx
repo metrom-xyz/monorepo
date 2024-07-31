@@ -1,4 +1,4 @@
-import { useMemo, type MouseEvent } from "react";
+import { useMemo, useCallback } from "react";
 import { useTranslations } from "next-intl";
 import { Step } from "@/src/components/step";
 import { StepPreview } from "@/src/components/step/preview";
@@ -7,56 +7,51 @@ import { useAvailableAmms } from "@/src/hooks/useAvailableAmms";
 import { animated, useSpring } from "@react-spring/web";
 import classNames from "@/src/utils/classes";
 import { Typography } from "@/src/ui/typography";
-import type { CreateCampaignFormProps } from "..";
+import type { CampaignPayload, CampaignPayloadPart } from "@/src/types";
 
 import styles from "./styles.module.css";
 
-interface AmmStepProps extends CreateCampaignFormProps {}
+interface AmmStepProps {
+    amm?: CampaignPayload["amm"];
+    onAmmChange: (amm: CampaignPayloadPart) => void;
+}
 
-export function AmmStep({
-    payload,
-    payloadIndex,
-    onPayloadChange,
-}: AmmStepProps) {
+export function AmmStep({ amm, onAmmChange }: AmmStepProps) {
     const t = useTranslations("new_campaign.form.dex");
-    const amms = useAvailableAmms();
+    const availableAmms = useAvailableAmms();
     const [spring, api] = useSpring(() => ({
         from: { opacity: 0 },
         to: { opacity: 1 },
         config: { duration: 200 },
     }));
 
-    const selectedAmm = useMemo(() => {
-        if (!payload || !payload.amm) return null;
+    const selected = useMemo(() => {
+        if (!amm) return null;
+        return availableAmms.find((available) => available.slug === amm);
+    }, [availableAmms, amm]);
 
-        return amms.find((amm) => amm.slug === payload.amm);
-    }, [amms, payload]);
+    const getDexChangeHandler = useCallback(
+        (amm: CampaignPayload["amm"]) => {
+            return () => {
+                if (selected && selected.slug === amm) return;
 
-    function handleDexOnClick(event: MouseEvent<HTMLDivElement>) {
-        const dexSlug = (event.target as HTMLLIElement).getAttribute(
-            "data-slug",
-        );
+                api.start({
+                    from: { opacity: 0 },
+                    to: { opacity: 1 },
+                    config: { duration: 200 },
+                });
 
-        if (!dexSlug) {
-            console.warn("missing dex slug data attribute");
-            return;
-        }
-
-        if (selectedAmm?.slug === dexSlug) return;
-
-        api.start({
-            from: { opacity: 0 },
-            to: { opacity: 1 },
-            config: { duration: 200 },
-        });
-        onPayloadChange({ ...payload, amm: dexSlug }, payloadIndex);
-    }
+                onAmmChange({ amm });
+            };
+        },
+        [api, selected, onAmmChange],
+    );
 
     return (
         <Step closeBehavior="innerClick">
-            <StepPreview completed={!!selectedAmm}>
+            <StepPreview completed={!!selected}>
                 {/* TODO: find a way to embed this behavior inside the step component? */}
-                {selectedAmm ? (
+                {selected ? (
                     <div>
                         <Typography
                             uppercase
@@ -73,10 +68,10 @@ export function AmmStep({
                             className={styles.dex__preview}
                         >
                             <div className={styles.logo}>
-                                <selectedAmm.logo />
+                                <selected.logo />
                             </div>
                             <Typography variant="lg" weight="medium">
-                                {selectedAmm.name}
+                                {selected.name}
                             </Typography>
                         </animated.div>
                     </div>
@@ -88,15 +83,14 @@ export function AmmStep({
             </StepPreview>
             <StepContent>
                 <div className={styles.dex__wrapper}>
-                    {amms.map(({ slug, name, logo: Logo }) => (
+                    {availableAmms.map(({ slug, name, logo: Logo }) => (
                         <div
                             key={slug}
-                            data-slug={slug}
                             className={classNames(styles.dex__row, {
                                 [styles.dex__row_selected]:
-                                    selectedAmm?.slug === slug,
+                                    selected?.slug === slug,
                             })}
-                            onClick={handleDexOnClick}
+                            onClick={getDexChangeHandler(slug)}
                         >
                             <div className={styles.logo}>
                                 <Logo />

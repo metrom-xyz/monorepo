@@ -1,6 +1,6 @@
 "use client";
 
-import type { CampaignPayload } from "@/src/types";
+import type { CampaignPayload, CampaignPayloadPart } from "@/src/types";
 import { useEffect, useState } from "react";
 import { CreateCampaignForm } from "./form";
 import { Summary } from "./summary";
@@ -13,37 +13,26 @@ enum View {
 }
 
 export function CreateCampaign() {
-    const [payloads, setPayloads] = useState<CampaignPayload[]>([{}]);
+    const [payload, setPayload] = useState<CampaignPayload>({});
     const [view, setView] = useState<View>(View.form);
 
-    function handlePayloadOnChange(
-        updatedPayload: CampaignPayload,
-        payloadIndex: number,
-    ) {
-        setPayloads(
-            payloads.map((payload, index) => {
-                if (index !== payloadIndex) return payload;
-                return { ...payload, ...updatedPayload };
-            }),
-        );
+    function handlePayloadOnChange(part: CampaignPayloadPart) {
+        setPayload({ ...payload, ...part });
     }
 
     // TODO: remove
     useEffect(() => {
-        console.log(JSON.stringify(payloads, null, 4));
-    }, [payloads]);
+        console.log(JSON.stringify(payload, null, 4));
+    }, [payload]);
 
     return (
         <div className={styles.root}>
-            {view === View.form &&
-                payloads.map((payload, index) => (
-                    <CreateCampaignForm
-                        key={index}
-                        payloadIndex={index}
-                        payload={payload}
-                        onPayloadChange={handlePayloadOnChange}
-                    />
-                ))}
+            {view === View.form && (
+                <CreateCampaignForm
+                    payload={payload}
+                    onPayloadChange={handlePayloadOnChange}
+                />
+            )}
             {view === View.summary && <Summary />}
         </div>
     );

@@ -2,10 +2,15 @@ import type {
     AmmSubgraphClient,
     Erc20Token,
     MetromApiClient,
+    Pool,
 } from "@metrom-xyz/sdk";
+import type { Dayjs } from "dayjs";
 import type { SVGProps, FunctionComponent } from "react";
 import type { ChainContract } from "viem";
 
+type PropertyUnion<T> = {
+    [K in keyof T]: { [P in K]: T[K] };
+}[keyof T];
 export type SVGIcon = Omit<SVGProps<SVGSVGElement>, "dangerouslySetInnerHTML">;
 
 export interface Amm {
@@ -34,11 +39,14 @@ export interface ChainData {
 export interface CampaignPayload {
     network?: number;
     amm?: string;
-    // pool?: Pool;
+    pool?: Pool;
+    startDate?: Dayjs;
+    endDate?: Dayjs;
     // rewards: Reward[];
-    // range?: Range;
     // restrictions?: {
     //     type: "blacklist" | "whitelist";
     //     list: Address[];
     // };
 }
+
+export type CampaignPayloadPart = PropertyUnion<CampaignPayload>;
