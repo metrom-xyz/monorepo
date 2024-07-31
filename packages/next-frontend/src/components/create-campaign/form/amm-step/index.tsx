@@ -1,4 +1,4 @@
-import { useMemo, useCallback } from "react";
+import { useCallback } from "react";
 import { useTranslations } from "next-intl";
 import { Step } from "@/src/components/step";
 import { StepPreview } from "@/src/components/step/preview";
@@ -6,7 +6,11 @@ import { StepContent } from "@/src/components/step/content";
 import { useAvailableAmms } from "@/src/hooks/useAvailableAmms";
 import classNames from "@/src/utils/classes";
 import { Typography } from "@/src/ui/typography";
-import type { CampaignPayload, CampaignPayloadPart } from "@/src/types";
+import type {
+    AmmInfo,
+    CampaignPayload,
+    CampaignPayloadPart,
+} from "@/src/types";
 
 import styles from "./styles.module.css";
 
@@ -19,51 +23,46 @@ export function AmmStep({ amm, onAmmChange }: AmmStepProps) {
     const t = useTranslations("new_campaign.form.amm");
     const availableAmms = useAvailableAmms();
 
-    const selected = useMemo(() => {
-        if (!amm) return null;
-        return availableAmms.find((available) => available.slug === amm);
-    }, [availableAmms, amm]);
-
     const getAmmChangeHandler = useCallback(
-        (amm: CampaignPayload["amm"]) => {
+        (newAmm: AmmInfo) => {
             return () => {
-                if (selected && selected.slug === amm) return;
-                onAmmChange({ amm });
+                if (amm && amm.slug === newAmm.slug) return;
+                onAmmChange({ amm: newAmm });
             };
         },
-        [selected, onAmmChange],
+        [amm, onAmmChange],
     );
 
     return (
         <Step closeBehavior="innerClick">
-            <StepPreview completed={!!selected} label={t("title")}>
-                {selected && (
+            <StepPreview completed={!!amm} label={t("title")}>
+                {amm && (
                     <div className={styles.amm__preview}>
                         <div className={styles.logo}>
-                            <selected.logo />
+                            <amm.logo />
                         </div>
                         <Typography variant="lg" weight="medium">
-                            {selected.name}
+                            {amm.name}
                         </Typography>
                     </div>
                 )}
             </StepPreview>
             <StepContent>
                 <div className={styles.amm__wrapper}>
-                    {availableAmms.map(({ slug, name, logo: Logo }) => (
+                    {availableAmms.map((availableAmm) => (
                         <div
-                            key={slug}
+                            key={availableAmm.slug}
                             className={classNames(styles.amm__row, {
                                 [styles.amm__row_selected]:
-                                    selected?.slug === slug,
+                                    amm?.slug === availableAmm.slug,
                             })}
-                            onClick={getAmmChangeHandler(slug)}
+                            onClick={getAmmChangeHandler(availableAmm)}
                         >
                             <div className={styles.logo}>
-                                <Logo />
+                                <availableAmm.logo />
                             </div>
                             <Typography variant="lg" weight="medium">
-                                {name}
+                                {availableAmm.name}
                             </Typography>
                         </div>
                     ))}
