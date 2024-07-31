@@ -7,6 +7,7 @@ type Token @entity(immutable: true) {
 
 type Pool @entity {
     id: Bytes!
+    creationBlockNumber: BigInt!
     token0: Token!
     token1: Token!
     token0Tvl: BigInt!
