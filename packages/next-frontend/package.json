@@ -12,7 +12,7 @@
     },
     "dependencies": {
         "@formatjs/intl-localematcher": "^0.5.4",
-        "@metrom-xyz/contracts": "^0.13.1",
+        "@metrom-xyz/contracts": "^0.14.0",
         "@metrom-xyz/sdk": "workspace:*",
         "@nextui-org/react": "^2.4.2",
         "@rainbow-me/rainbowkit": "^2.1.3",
