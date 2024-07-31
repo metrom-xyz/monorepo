@@ -34,7 +34,7 @@ export function CreateCampaign() {
     }, [payloads]);
 
     return (
-        <div className={styles.create_campaign__root}>
+        <div className={styles.root}>
             {view === View.form &&
                 payloads.map((payload, index) => (
                     <CreateCampaignForm

@@ -7,5 +7,5 @@ interface StepContentProps {
 }
 
 export function StepContent({ children }: StepContentProps) {
-    return <div className={styles.step_content__root}>{children}</div>;
+    return <div className={styles.root}>{children}</div>;
 }

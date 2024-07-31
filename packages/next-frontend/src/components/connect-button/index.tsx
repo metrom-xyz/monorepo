@@ -20,7 +20,7 @@ export function ConnectButton() {
                 const connected = ready && account && chain;
 
                 return (
-                    <div className={styles.connect_button__root}>
+                    <div className={styles.root}>
                         {(() => {
                             if (!connected) {
                                 return (
@@ -45,32 +45,18 @@ export function ConnectButton() {
                             }
 
                             return (
-                                <div className={styles.connect_button__wrapper}>
-                                    <div
-                                        className={
-                                            styles.connect_button__account
-                                        }
-                                    >
-                                        <WalletIcon
-                                            className={
-                                                styles.connect_button__icon
-                                            }
-                                        />
+                                <div className={styles.wrapper}>
+                                    <div className={styles.account}>
+                                        <WalletIcon className={styles.icon} />
                                         {/* TODO: add typography */}
                                         {account.ensName || account.displayName}
                                     </div>
                                     {/* TODO: add icon button */}
                                     <div
                                         onClick={openAccountModal}
-                                        className={
-                                            styles.connect_button__settings
-                                        }
+                                        className={styles.settings}
                                     >
-                                        <SettingsIcon
-                                            className={
-                                                styles.connect_button__icon
-                                            }
-                                        />
+                                        <SettingsIcon className={styles.icon} />
                                     </div>
                                 </div>
                             );

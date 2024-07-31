@@ -1,35 +1,35 @@
-.typography__root {
+.root {
     @apply text-black font-mono;
 }
 
-.typography__root_uppercase {
+.root_uppercase {
     @apply uppercase;
 }
 
-.typography__root_xs {
+.root_xs {
     @apply font-normal font-mono text-xs;
 }
 
-.typography__root_sm {
+.root_sm {
     @apply font-normal font-sans text-sm;
 }
 
-.typography__root_base {
+.root_base {
     @apply font-normal font-sans text-base;
 }
 
-.typography__root_lg {
+.root_lg {
     @apply font-normal font-sans text-lg;
 }
 
-.typography__root_normal {
+.root_normal {
     @apply font-normal;
 }
 
-.typography__root_medium {
+.root_medium {
     @apply font-medium;
 }
 
-.typography__root_bold {
+.root_bold {
     @apply font-bold;
 }
