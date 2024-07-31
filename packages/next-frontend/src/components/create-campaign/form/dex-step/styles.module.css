@@ -1,8 +1,8 @@
-.amm_step__dex__preview {
+.dex__preview {
     @apply flex gap-2 items-center;
 }
 
-.amm_step__dex__wrapper {
+.dex__wrapper {
     @apply max-h-[300px]
         overflow-y-auto
         rounded-b-2xl
@@ -10,7 +10,7 @@
         snap-y;
 }
 
-.amm_step__dex__row {
+.dex__row {
     @apply flex
         gap-2
         items-center
@@ -24,19 +24,19 @@
         hover:bg-gray-5;
 }
 
-.amm_step__dex__row_selected {
+.dex__row_selected {
     @apply bg-gray-5;
 }
 
-.amm_step__dex__row:only-child,
-.amm_step__dex__row:last-child {
+.dex__row:only-child,
+.dex__row:last-child {
     @apply rounded-b-2xl;
 }
 
-.amm_step__dex__row > * {
+.dex__row > * {
     @apply pointer-events-none;
 }
 
-.amm_step__logo > svg {
+.logo > svg {
     @apply w-6 h-6;
 }

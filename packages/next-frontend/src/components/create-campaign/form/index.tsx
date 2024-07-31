@@ -18,7 +18,7 @@ export function CreateCampaignForm({
     onPayloadChange,
 }: CreateCampaignFormProps) {
     return (
-        <div className={styles.create_campaign__root}>
+        <div className={styles.root}>
             <AmmStep
                 payload={payload}
                 payloadIndex={payloadIndex}

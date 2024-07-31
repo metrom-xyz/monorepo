@@ -70,9 +70,9 @@ export function AmmStep({
                         </Typography>
                         <animated.div
                             style={spring}
-                            className={styles.amm_step__dex__preview}
+                            className={styles.dex__preview}
                         >
-                            <div className={styles.amm_step__logo}>
+                            <div className={styles.logo}>
                                 <selectedAmm.logo />
                             </div>
                             <Typography variant="lg" weight="medium">
@@ -87,18 +87,18 @@ export function AmmStep({
                 )}
             </StepPreview>
             <StepContent>
-                <div className={styles.amm_step__dex__wrapper}>
+                <div className={styles.dex__wrapper}>
                     {amms.map(({ slug, name, logo: Logo }) => (
                         <div
                             key={slug}
                             data-slug={slug}
-                            className={classNames(styles.amm_step__dex__row, {
-                                [styles.amm_step__dex__row_selected]:
+                            className={classNames(styles.dex__row, {
+                                [styles.dex__row_selected]:
                                     selectedAmm?.slug === slug,
                             })}
                             onClick={handleDexOnClick}
                         >
-                            <div className={styles.amm_step__logo}>
+                            <div className={styles.logo}>
                                 <Logo />
                             </div>
                             <Typography variant="lg" weight="medium">

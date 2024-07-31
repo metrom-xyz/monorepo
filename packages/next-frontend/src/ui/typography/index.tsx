@@ -85,10 +85,10 @@ const Component = <V extends TypographyVariant>(
 
     return (
         <Root
-            className={classNames(styles.typography_root, className?.root, {
-                [styles.typography__root_uppercase]: uppercase,
-                [styles[`typography__root_${variant}`]]: true,
-                [styles[`typography__root_${weight}`]]: true,
+            className={classNames(styles.root, className?.root, {
+                [styles.root_uppercase]: uppercase,
+                [styles[`root_${variant}`]]: true,
+                [styles[`root_${weight}`]]: true,
             })}
             {...rest}
             onMouseEnter={handleMouseEnter}

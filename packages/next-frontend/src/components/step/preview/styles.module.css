@@ -1,4 +1,4 @@
-.step_preview__root {
+.root {
     @apply flex
         items-end
         justify-between
@@ -12,22 +12,22 @@
         ease-in-out;
 }
 
-.step_preview__root_open {
+.root_open {
     @apply rounded-b-none;
 }
 
-.step_preview__root_completed {
+.root_completed {
     @apply py-4;
 }
 
-.step_preview__icon__wrapper {
+.icon__wrapper {
     @apply px-2 py-2.5 rounded-md bg-white;
 }
 
-.step_preview__icon {
+.icon {
     @apply transition-transform;
 }
 
-.step_preview__icon_open {
+.icon_open {
     @apply rotate-180;
 }

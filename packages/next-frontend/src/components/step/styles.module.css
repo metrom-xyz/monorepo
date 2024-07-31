@@ -1,15 +1,15 @@
-.step__root {
+.root {
     @apply bg-white rounded-2xl;
 }
 
-.step__root > * {
+.root > * {
     @apply transition-opacity duration-200 ease-in-out;
 }
 
-.step__root_disabled {
+.root_disabled {
     @apply hover:cursor-not-allowed;
 }
 
-.step__root_disabled > * {
+.root_disabled > * {
     @apply pointer-events-none opacity-40 select-none;
 }

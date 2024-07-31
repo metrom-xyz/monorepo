@@ -19,16 +19,16 @@ export function StepPreview({
 }: StepPreviewProps) {
     return (
         <div
-            className={classNames(styles.step_preview__root, {
-                [styles.step_preview__root_open]: open || !heightAnimationDone,
-                [styles.step_preview__root_completed]: completed,
+            className={classNames(styles.root, {
+                [styles.root_open]: open || !heightAnimationDone,
+                [styles.root_completed]: completed,
             })}
         >
             {children}
-            <div className={styles.step_preview__icon__wrapper}>
+            <div className={styles.icon__wrapper}>
                 <ChevronIcon
-                    className={classNames(styles.step_preview__icon, {
-                        [styles.step_preview__icon_open]: open,
+                    className={classNames(styles.icon, {
+                        [styles.icon_open]: open,
                     })}
                 />
             </div>
