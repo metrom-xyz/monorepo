@@ -1,6 +1,6 @@
-import React, { type ReactElement, useState } from "react";
-import AnimateHeight, { type Height } from "react-animate-height";
+import React, { type ReactElement, useState, useRef } from "react";
 import classNames from "@/src/utils/classes";
+import { animated, easings, useSpring } from "@react-spring/web";
 import { matchChildByType } from "@/src/utils/components";
 import { StepPreview, type StepPreviewProps } from "./preview";
 import { StepContent } from "./content";
@@ -18,8 +18,14 @@ export function Step({
     disabled,
     children,
 }: StepProps) {
+    const wrapperRef = useRef<HTMLDivElement>(null);
     const [open, setOpen] = useState(false);
-    const [height, setHeight] = useState<Height>(83);
+    const [spring, animate] = useSpring(
+        () => ({
+            height: "83px",
+        }),
+        [],
+    );
 
     const childrenArray = React.Children.toArray(children);
 
@@ -32,30 +38,36 @@ export function Step({
 
     function handlePreviewOnClick() {
         setOpen((open) => !open);
-        setHeight(open ? 83 : "auto");
+        animate({
+            height: (open ? 83 : wrapperRef?.current?.offsetHeight) + "px",
+            config: { duration: 200, easing: easings.easeInOutCubic },
+        });
     }
 
     function handleContentOnClick() {
         if (close === "manual") return;
         setOpen((open) => !open);
-        setHeight(open ? 83 : "auto");
+        animate({
+            height: (open ? 83 : wrapperRef?.current?.offsetHeight) + "px",
+            config: { duration: 250, easing: easings.easeInOutCubic },
+        });
     }
 
     return (
-        <AnimateHeight
-            height={height}
-            duration={200}
-            easing="ease-in-out"
+        <animated.div
+            style={spring}
             className={classNames(styles.root, {
                 [styles.rootDisabled]: disabled,
             })}
         >
-            <div onClick={handlePreviewOnClick}>
-                {React.cloneElement<StepPreviewProps>(previewChildren, {
-                    open,
-                })}
+            <div ref={wrapperRef}>
+                <div onClick={handlePreviewOnClick}>
+                    {React.cloneElement<StepPreviewProps>(previewChildren, {
+                        open,
+                    })}
+                </div>
+                <div onClick={handleContentOnClick}>{contentChildren}</div>
             </div>
-            <div onClick={handleContentOnClick}>{contentChildren}</div>
-        </AnimateHeight>
+        </animated.div>
     );
 }
