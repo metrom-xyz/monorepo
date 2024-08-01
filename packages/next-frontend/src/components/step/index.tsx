@@ -19,8 +19,7 @@ export function Step({
     children,
 }: StepProps) {
     const [open, setOpen] = useState(false);
-    const [height, setHeight] = useState<Height>(0);
-    const [heightAnimationDone, setHeightAnimationDone] = useState(true);
+    const [height, setHeight] = useState<Height>(83);
 
     const childrenArray = React.Children.toArray(children);
 
@@ -33,24 +32,20 @@ export function Step({
 
     function handlePreviewOnClick() {
         setOpen((open) => !open);
-        setHeight(open ? 0 : "auto");
+        setHeight(open ? 83 : "auto");
     }
 
     function handleContentOnClick() {
         if (close === "manual") return;
         setOpen((open) => !open);
-        setHeight(open ? 0 : "auto");
-    }
-
-    // Track the height animation status for the StepPreview component.
-    // This status is used to dynamically apply a CSS class to remove the bottom border rounding
-    // only after the animation has completed.
-    function handleContentAnimationOnEnd() {
-        setHeightAnimationDone((state) => !state);
+        setHeight(open ? 83 : "auto");
     }
 
     return (
-        <div
+        <AnimateHeight
+            height={height}
+            duration={200}
+            easing="ease-in-out"
             className={classNames(styles.root, {
                 [styles.rootDisabled]: disabled,
             })}
@@ -58,17 +53,9 @@ export function Step({
             <div onClick={handlePreviewOnClick}>
                 {React.cloneElement<StepPreviewProps>(previewChildren, {
                     open,
-                    heightAnimationDone,
                 })}
             </div>
-            <AnimateHeight
-                height={height}
-                duration={200}
-                easing="ease-in-out"
-                onHeightAnimationEnd={handleContentAnimationOnEnd}
-            >
-                <div onClick={handleContentOnClick}>{contentChildren}</div>
-            </AnimateHeight>
-        </div>
+            <div onClick={handleContentOnClick}>{contentChildren}</div>
+        </AnimateHeight>
     );
 }

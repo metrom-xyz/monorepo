@@ -15,11 +15,12 @@ import type {
 import styles from "./styles.module.css";
 
 interface AmmStepProps {
+    disabled?: boolean;
     amm?: CampaignPayload["amm"];
     onAmmChange: (amm: CampaignPayloadPart) => void;
 }
 
-export function AmmStep({ amm, onAmmChange }: AmmStepProps) {
+export function AmmStep({ disabled, amm, onAmmChange }: AmmStepProps) {
     const t = useTranslations("new_campaign.form.amm");
     const availableAmms = useAvailableAmms();
 
@@ -34,7 +35,7 @@ export function AmmStep({ amm, onAmmChange }: AmmStepProps) {
     );
 
     return (
-        <Step closeBehavior="innerClick">
+        <Step disabled={disabled} closeBehavior="innerClick">
             <StepPreview completed={!!amm} label={t("title")}>
                 {amm && (
                     <div className={styles.ammPreview}>

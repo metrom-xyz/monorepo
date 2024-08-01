@@ -1,4 +1,4 @@
-import { useEffect, type ReactNode } from "react";
+import { useEffect, type ReactNode, useState } from "react";
 import { animated, useSpring } from "@react-spring/web";
 import { ChevronIcon } from "@/src/assets/chevron-icon";
 import classNames from "@/src/utils/classes";
@@ -10,7 +10,6 @@ export interface StepPreviewProps {
     label: string;
     open?: boolean;
     completed?: boolean;
-    heightAnimationDone?: boolean;
     children?: ReactNode;
 }
 
@@ -18,51 +17,57 @@ export function StepPreview({
     label,
     open,
     completed,
-    heightAnimationDone,
     children,
 }: StepPreviewProps) {
-    const [spring, api] = useSpring(() => ({
-        from: { opacity: 0 },
-        to: { opacity: 1 },
-        config: { duration: 200 },
+    const [showChildren, setShowChildren] = useState(false);
+
+    const [labelStyle, animateLabel] = useSpring(() => ({
+        y: 0,
+        opacity: 1,
+    }));
+    const [childrenStyle, animateChildren] = useSpring(() => ({
+        opacity: 0,
     }));
 
     useEffect(() => {
-        api.start({
-            from: { opacity: 0 },
-            to: { opacity: 1 },
-            config: { duration: 200 },
+        if (!completed) return;
+
+        animateLabel.start({
+            from: { y: -9 },
+            to: { y: -32, opacity: 0.4 },
+            config: { duration: 100 },
+            onRest: () => {
+                setShowChildren(true);
+                animateChildren.start({
+                    to: { opacity: 1 },
+                    config: { duration: 100 },
+                });
+            },
         });
-    }, [api, completed]);
+    }, [completed, animateLabel, animateChildren]);
 
     return (
         <div
             className={classNames(styles.root, {
-                [styles.rootOpen]: open || !heightAnimationDone,
                 [styles.rootCompleted]: completed,
+                [styles.rootOpen]: open,
             })}
         >
-            {completed ? (
-                <div>
-                    <Typography
-                        uppercase
-                        variant="sm"
-                        weight="medium"
-                        className={{
-                            root: "transition-opacity duration-200 ease-out opacity-40",
-                        }}
-                    >
+            <div className={styles.wrapper}>
+                <animated.div style={labelStyle}>
+                    <Typography uppercase variant="sm" weight="medium">
                         {label}
                     </Typography>
-                    <animated.div style={spring} className={styles.dexPreview}>
-                        {children}
-                    </animated.div>
-                </div>
-            ) : (
-                <Typography uppercase variant="lg" weight="medium">
-                    {label}
-                </Typography>
-            )}
+                </animated.div>
+                <animated.div
+                    style={childrenStyle}
+                    className={classNames(styles.children, {
+                        [styles.childrenShow]: showChildren,
+                    })}
+                >
+                    {children}
+                </animated.div>
+            </div>
             <div className={styles.iconWrapper}>
                 <ChevronIcon
                     className={classNames(styles.icon, {
