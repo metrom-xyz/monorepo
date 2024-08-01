@@ -1,5 +1,10 @@
 .root {
-    @apply bg-white rounded-2xl overflow-hidden;
+    @apply bg-white
+        rounded-2xl
+        overflow-hidden
+        transition-colors
+        duration-200
+        ease-in-out;
 }
 
 .root > * {
