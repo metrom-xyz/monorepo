@@ -1,4 +1,4 @@
-import React, { type ReactElement, useState, useRef } from "react";
+import React, { type ReactElement, useState, useRef, useEffect } from "react";
 import classNames from "@/src/utils/classes";
 import { animated, easings, useSpring } from "@react-spring/web";
 import { matchChildByType } from "@/src/utils/components";
@@ -36,21 +36,20 @@ export function Step({
         matchChildByType(child, StepContent),
     ) as ReactElement;
 
-    function handlePreviewOnClick() {
-        setOpen((open) => !open);
+    useEffect(() => {
         animate({
-            height: (open ? 83 : wrapperRef?.current?.offsetHeight) + "px",
+            height: (open ? wrapperRef?.current?.offsetHeight : 83) + "px",
             config: { duration: 200, easing: easings.easeInOutCubic },
         });
+    }, [animate, open]);
+
+    function handlePreviewOnClick() {
+        setOpen((open) => !open);
     }
 
     function handleContentOnClick() {
         if (close === "manual") return;
         setOpen((open) => !open);
-        animate({
-            height: (open ? 83 : wrapperRef?.current?.offsetHeight) + "px",
-            config: { duration: 250, easing: easings.easeInOutCubic },
-        });
     }
 
     return (
