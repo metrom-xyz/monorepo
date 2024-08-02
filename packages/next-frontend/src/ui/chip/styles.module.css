@@ -1,0 +1,23 @@
+.root {
+    @apply bg-gray-100
+        rounded-[2.813rem]
+        transition-colors
+        duration-200
+        ease-in-out;
+}
+
+.rootSmall {
+    @apply px-1 py-1.5;
+}
+
+.rootBig {
+    @apply px-2 py-3;
+}
+
+.rootClickable {
+    @apply cursor-pointer hover:bg-gray-200;
+}
+
+.rootActive {
+    @apply bg-gray-200;
+}
