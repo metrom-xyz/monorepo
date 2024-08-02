@@ -10,6 +10,7 @@
         "deploy:holesky": "pnpm prepare:deploy holesky && pnpm codegen && graph deploy --studio metrom-blocks-holesky",
         "deploy:arbitrum": "pnpm prepare:deploy arbitrum-one && pnpm codegen && graph deploy --studio metrom-blocks-arbitrum",
         "deploy:mantle-sepolia": "pnpm prepare:deploy mantle-sepolia && pnpm codegen && graph build && goldsky subgraph deploy metrom-mantle-sepolia-blocks/0.1.0",
+        "deploy:mantle": "pnpm prepare:deploy mantle && pnpm codegen && graph build && goldsky subgraph deploy metrom-mantle-blocks/0.1.0",
         "lint": "eslint .",
         "format": "eslint --fix ."
     },
