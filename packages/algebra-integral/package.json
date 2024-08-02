@@ -7,6 +7,7 @@
         "codegen": "graph codegen",
         "deploy:test-integral:holesky": "pnpm prepare:deploy holesky test-integral && pnpm codegen && graph deploy --studio metrom-test-integral-holesky",
         "deploy:swapsicle:mantle-sepolia": "pnpm prepare:deploy mantle-sepolia swapsicle && pnpm codegen && graph build && goldsky subgraph deploy metrom-swapsicle-mantle-sepolia/0.3.0",
+        "deploy:swapsicle:mantle": "pnpm prepare:deploy mantle swapsicle && pnpm codegen && graph build && goldsky subgraph deploy metrom-swapsicle-mantle/0.1.0",
         "lint": "eslint .",
         "format": "eslint --fix ."
     },

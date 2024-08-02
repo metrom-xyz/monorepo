@@ -36,4 +36,16 @@ export const DEPLOYMENTS: {
             },
         },
     },
+    mantle: {
+        swapsicle: {
+            Factory: {
+                address: "0xC848bc597903B4200b9427a3d7F61e3FF0553913",
+                startBlock: 9796947,
+            },
+            NonFungiblePositionManager: {
+                address: "0x7D24DE60A68ae47BE4E852cf03Dd4d8588B489Ec",
+                startBlock: 9797112,
+            },
+        },
+    },
 };
