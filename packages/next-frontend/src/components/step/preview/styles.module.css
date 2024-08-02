@@ -1,6 +1,6 @@
 .root {
     @apply flex
-        items-end
+        items-center
         justify-between
         px-4
         py-7
@@ -26,7 +26,7 @@
 }
 
 .children {
-    @apply absolute top-0 invisible;
+    @apply absolute top-2 invisible;
 }
 
 .childrenShow {

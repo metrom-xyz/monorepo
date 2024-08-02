@@ -1,6 +1,6 @@
 import React, { type ReactElement, useState, useRef, useEffect } from "react";
 import classNames from "@/src/utils/classes";
-import { animated, easings, useSpring } from "@react-spring/web";
+import { animated, easings, useSpring, useTransition } from "@react-spring/web";
 import { matchChildByType } from "@/src/utils/components";
 import { StepPreview, type StepPreviewProps } from "./preview";
 import { StepContent } from "./content";
@@ -20,12 +20,18 @@ export function Step({
 }: StepProps) {
     const wrapperRef = useRef<HTMLDivElement>(null);
     const [open, setOpen] = useState(false);
+
     const [spring, animate] = useSpring(
         () => ({
             height: "83px",
         }),
         [],
     );
+    const transition = useTransition(open, {
+        from: { opacity: 0 },
+        enter: { opacity: 1 },
+        leave: { opacity: 0 },
+    });
 
     const childrenArray = React.Children.toArray(children);
 
@@ -65,7 +71,17 @@ export function Step({
                         open,
                     })}
                 </div>
-                <div onClick={handleContentOnClick}>{contentChildren}</div>
+                {transition(
+                    (styles, open) =>
+                        open && (
+                            <animated.div
+                                style={styles}
+                                onClick={handleContentOnClick}
+                            >
+                                {contentChildren}
+                            </animated.div>
+                        ),
+                )}
             </div>
         </animated.div>
     );

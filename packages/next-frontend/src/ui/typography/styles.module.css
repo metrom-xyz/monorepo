@@ -7,19 +7,19 @@
 }
 
 .rootXs {
-    @apply font-normal font-mono text-xs;
+    @apply font-normal font-mono text-xs leading-3;
 }
 
 .rootSm {
-    @apply font-normal font-sans text-sm;
+    @apply font-normal font-sans text-sm leading-[0.875rem];
 }
 
 .rootBase {
-    @apply font-normal font-sans text-base;
+    @apply font-normal font-sans text-base leading-4;
 }
 
 .rootLg {
-    @apply font-normal font-sans text-lg;
+    @apply font-normal font-sans text-lg leading-[1.125rem];
 }
 
 .rootNormal {
