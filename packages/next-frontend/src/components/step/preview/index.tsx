@@ -33,8 +33,8 @@ export function StepPreview({
         if (!completed) return;
 
         animateLabel.start({
-            from: { y: -9 },
-            to: { y: -30, opacity: 0.4 },
+            from: { y: 0 },
+            to: { y: -18, opacity: 0.4 },
             config: { duration: 100 },
             onRest: () => {
                 setShowChildren(true);

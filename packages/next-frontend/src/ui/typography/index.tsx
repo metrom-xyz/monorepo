@@ -39,11 +39,9 @@ type HTMLElementFromVariant<V extends TypographyVariant> = V extends
     ? HTMLHeadingElement
     : HTMLParagraphElement;
 
-type TypographyProps<V extends TypographyVariant = TypographyVariant> = Omit<
-    HTMLAttributes<HTMLElementFromVariant<V>>,
-    keyof BaseTypographyProps
-> &
-    BaseTypographyProps;
+export type TypographyProps<V extends TypographyVariant = TypographyVariant> =
+    Omit<HTMLAttributes<HTMLElementFromVariant<V>>, keyof BaseTypographyProps> &
+        BaseTypographyProps;
 
 const COMPONENT_MAP: Record<TypographyVariant, ElementType> = {
     xs: "p",
