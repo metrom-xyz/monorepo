@@ -26,8 +26,7 @@ export const Chip = ({
     <div
         {...rest}
         className={classNames(styles.root, {
-            [styles.rootSmall]: size === "small",
-            [styles.rootBig]: size === "big",
+            [styles[size]]: true,
             [styles.rootClickable]: clickable,
             [styles.rootActive]: active,
         })}
