@@ -6,11 +6,11 @@
         ease-in-out;
 }
 
-.rootSmall {
+.small {
     @apply px-1 py-1.5;
 }
 
-.rootBig {
+.big {
     @apply px-2 py-3;
 }
 

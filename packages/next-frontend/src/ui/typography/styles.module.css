@@ -6,30 +6,30 @@
     @apply uppercase;
 }
 
-.rootXs {
+.xs {
     @apply font-normal font-mono text-xs leading-3;
 }
 
-.rootSm {
+.sm {
     @apply font-normal font-sans text-sm leading-[0.875rem];
 }
 
-.rootBase {
+.base {
     @apply font-normal font-sans text-base leading-4;
 }
 
-.rootLg {
+.lg {
     @apply font-normal font-sans text-lg leading-[1.125rem];
 }
 
-.rootNormal {
+.normal {
     @apply font-normal;
 }
 
-.rootMedium {
+.medium {
     @apply font-medium;
 }
 
-.rootBold {
+.bold {
     @apply font-bold;
 }
