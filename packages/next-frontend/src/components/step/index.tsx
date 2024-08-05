@@ -11,7 +11,7 @@ interface StepProps {
     disabled?: boolean;
     completed?: boolean;
     open?: boolean;
-    onPreviewClick: () => void;
+    onPreviewClick?: () => void;
     children: ReactElement[];
 }
 
