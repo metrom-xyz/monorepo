@@ -23,6 +23,7 @@ export type TypographyVariant = "xs" | "sm" | "base" | "lg";
 interface BaseTypographyProps {
     variant?: TypographyVariant;
     weight?: "normal" | "medium" | "bold";
+    light?: boolean;
     uppercase?: boolean;
     truncate?: boolean;
     className?: {
@@ -58,6 +59,7 @@ const Component = <V extends TypographyVariant>(
     {
         variant = "base",
         weight = "normal",
+        light,
         uppercase,
         className,
         children,
@@ -83,8 +85,9 @@ const Component = <V extends TypographyVariant>(
 
     return (
         <Root
-            className={classNames(styles.root, className?.root, {
+            className={classNames(className?.root, styles.root, {
                 [styles.rootUppercase]: uppercase,
+                [styles.light]: light,
                 [styles[variant]]: true,
                 [styles[weight]]: true,
             })}
