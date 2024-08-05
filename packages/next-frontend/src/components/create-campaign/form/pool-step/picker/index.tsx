@@ -6,12 +6,12 @@ import { useCallback, useState, type ChangeEvent, useMemo } from "react";
 import { SearchIcon } from "@/src/assets/search-icon";
 import { useTranslations } from "next-intl";
 import type { CampaignPayload } from "@/src/types";
-import { useDebounce } from "@/src/hooks/useDebounce";
 import { usePools } from "@/src/hooks/usePools";
 import { Chip } from "@/src/ui/chip/chip";
 import { useBaseTokens } from "@/src/hooks/useBaseTokens";
 import { RemoteLogo } from "@/src/ui/remote-logo";
 import { Typography } from "@/src/ui/typography";
+import { useDebounce } from "react-use";
 import { filterPools } from "@/src/utils/tokens";
 import { Row } from "./row";
 
@@ -37,9 +37,13 @@ export function PoolPicker({ value, amm, onChange }: PoolPickerProps) {
         [baseTokenFilter?.address, debouncedSearch, pools],
     );
 
-    useDebounce(() => {
-        setDebouncedSearch(search);
-    }, 300);
+    useDebounce(
+        () => {
+            setDebouncedSearch(search);
+        },
+        300,
+        [search],
+    );
 
     const getBaseTokenChangeHandler = useCallback(
         (token: Erc20Token) => {
@@ -52,10 +56,8 @@ export function PoolPicker({ value, amm, onChange }: PoolPickerProps) {
         [baseTokenFilter?.address],
     );
 
-    function handleSearchOnChange() {
-        (event: ChangeEvent<HTMLInputElement>) => {
-            setSearch(event.target.value);
-        };
+    function handleSearchOnChange(event: ChangeEvent<HTMLInputElement>) {
+        setSearch(event.target.value);
     }
 
     return (
