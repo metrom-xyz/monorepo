@@ -7,7 +7,7 @@ import { Typography } from "@/src/ui/typography";
 import styles from "./styles.module.css";
 
 export interface StepPreviewProps {
-    label: string | ReactNode;
+    label: ReactNode;
     open?: boolean;
     completed?: boolean;
     children?: ReactNode;
