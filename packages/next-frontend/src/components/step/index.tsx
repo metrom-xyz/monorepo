@@ -1,4 +1,4 @@
-import React, { type ReactElement, useState, useRef, useEffect } from "react";
+import React, { type ReactElement, useRef, useEffect } from "react";
 import classNames from "@/src/utils/classes";
 import { animated, easings, useSpring, useTransition } from "@react-spring/web";
 import { matchChildByType } from "@/src/utils/components";
@@ -8,18 +8,21 @@ import { StepContent } from "./content";
 import styles from "./styles.module.css";
 
 interface StepProps {
-    closeBehavior?: "manual" | "innerClick";
     disabled?: boolean;
+    completed?: boolean;
+    open?: boolean;
+    onPreviewClick: () => void;
     children: ReactElement[];
 }
 
 export function Step({
-    closeBehavior: close = "manual",
     disabled,
+    completed,
+    open,
+    onPreviewClick,
     children,
 }: StepProps) {
     const wrapperRef = useRef<HTMLDivElement>(null);
-    const [open, setOpen] = useState(false);
 
     const [spring, animate] = useSpring(
         () => ({
@@ -49,15 +52,6 @@ export function Step({
         });
     }, [animate, open]);
 
-    function handlePreviewOnClick() {
-        setOpen((open) => !open);
-    }
-
-    function handleContentOnClick() {
-        if (close === "manual") return;
-        setOpen((open) => !open);
-    }
-
     return (
         <animated.div
             style={spring}
@@ -66,18 +60,16 @@ export function Step({
             })}
         >
             <div ref={wrapperRef}>
-                <div onClick={handlePreviewOnClick}>
+                <div onClick={onPreviewClick}>
                     {React.cloneElement<StepPreviewProps>(previewChildren, {
                         open,
+                        completed,
                     })}
                 </div>
                 {transition(
                     (styles, open) =>
                         open && (
-                            <animated.div
-                                style={styles}
-                                onClick={handleContentOnClick}
-                            >
+                            <animated.div style={styles}>
                                 {contentChildren}
                             </animated.div>
                         ),

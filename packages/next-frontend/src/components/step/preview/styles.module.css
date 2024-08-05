@@ -6,7 +6,7 @@
         py-7
         rounded-2xl
         h-[5.188rem]
-        hover:bg-gray-5
+        hover:bg-gray-200
         hover:cursor-pointer
         transition-colors
         duration-200
@@ -26,7 +26,7 @@
 }
 
 .children {
-    @apply absolute top-2 invisible;
+    @apply w-full absolute top-2 invisible;
 }
 
 .childrenShow {
