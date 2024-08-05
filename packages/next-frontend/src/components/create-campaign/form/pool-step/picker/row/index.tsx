@@ -1,5 +1,6 @@
 import type { Pool } from "@metrom-xyz/sdk";
 import numeral from "numeral";
+import { useCallback } from "react";
 import { Typography } from "@/src/ui/typography";
 import classNames from "@/src/utils/classes";
 import { PoolRemoteLogo } from "@/src/ui/pool-remote-logo";
@@ -16,9 +17,9 @@ interface PickerRowProps {
 }
 
 export function Row({ style, pool, active, loading, onClick }: PickerRowProps) {
-    function handlePoolOnClick() {
+    const handlePoolOnClick = useCallback(() => {
         onClick(pool);
-    }
+    }, [onClick, pool]);
 
     return (
         <div
