@@ -20,6 +20,7 @@ export function CreateCampaignForm({
             <AmmStep amm={payload?.amm} onAmmChange={onPayloadChange} />
             <PoolStep
                 disabled={!payload?.amm}
+                amm={payload?.amm}
                 pool={payload?.pool}
                 onPoolChange={onPayloadChange}
             />

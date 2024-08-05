@@ -1,0 +1,6 @@
+.previewCompletedLabel {
+    @apply flex
+        justify-between
+        items-center
+        pr-4;
+}

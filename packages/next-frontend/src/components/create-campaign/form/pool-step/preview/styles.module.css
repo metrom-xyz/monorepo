@@ -1,0 +1,15 @@
+.root {
+    @apply w-full
+        pr-4
+        flex
+        items-center
+        justify-between;
+}
+
+.pool {
+    @apply flex items-center gap-3;
+}
+
+.poolInfo {
+    @apply flex flex-col gap-1.5;
+}

@@ -7,7 +7,19 @@
     "new_campaign": {
         "form": {
             "amm": { "title": "Dex" },
-            "pool": { "title": "Pool" },
+            "pool": {
+                "title": "Pool",
+                "searchLabel": "Search for pool",
+                "list": {
+                    "pool": "Pool",
+                    "tvl": "Tvl",
+                    "empty": "Nothing here"
+                },
+                "preview": {
+                    "pool": "Pool",
+                    "tvl": "Tvl"
+                }
+            },
             "start_date": { "title": "Start date" },
             "end_date": { "title": "End date" }
         }

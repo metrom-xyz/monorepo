@@ -7,7 +7,7 @@ const MONO_FONT_FAMILY = ["IBM Plex Mono", "ui-monospace", "monospace"];
 const BODY_TEXT_SIZES_REM = {
     lg: "1.125rem",
     base: "1rem",
-    sm: "0.875",
+    sm: "0.875rem",
     xs: "0.75rem",
 };
 
@@ -29,6 +29,8 @@ const config: Config = {
             fontSize: BODY_TEXT_SIZES_REM,
             colors: {
                 brandGreen: "#6CFF95",
+                black: "#000000",
+                white: "#FFFFFF",
                 gray: {
                     1: "#656363",
                     2: "#909090",

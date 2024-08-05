@@ -29,7 +29,8 @@ export default async function RootLayout({
     const messages = await getMessages();
 
     return (
-        <html lang={locale}>
+        // TODO: use theme color
+        <html lang={locale} className="bg-[#F7F7F8]">
             <body>
                 <NextIntlClientProvider messages={messages}>
                     <NextUIProvider>
