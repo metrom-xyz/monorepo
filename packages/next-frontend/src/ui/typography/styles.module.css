@@ -1,5 +1,5 @@
 .root {
-    @apply text-black font-mono;
+    @apply text-black font-sans;
 }
 
 .rootUppercase {
@@ -7,7 +7,7 @@
 }
 
 .xs {
-    @apply font-normal font-mono text-xs leading-3;
+    @apply font-normal font-sans text-xs leading-3;
 }
 
 .sm {
@@ -20,6 +20,10 @@
 
 .lg {
     @apply font-normal font-sans text-lg leading-[1.125rem];
+}
+
+.light {
+    @apply text-gray-500;
 }
 
 .normal {

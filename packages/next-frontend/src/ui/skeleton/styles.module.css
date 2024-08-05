@@ -1,0 +1,23 @@
+.root {
+    @apply bg-gray-200 animate-pulse rounded-md;
+}
+
+.cirular {
+    @apply rounded-full;
+}
+
+.xs {
+    @apply h-3;
+}
+
+.sm {
+    @apply h-3.5;
+}
+
+.base {
+    @apply h-4;
+}
+
+.lg {
+    @apply h-[1.125rem]
+}
