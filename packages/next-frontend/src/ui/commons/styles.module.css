@@ -1,0 +1,84 @@
+.inputWrapper {
+    @apply w-fit relative;
+}
+
+.inputIconWrapper {
+    @apply absolute
+        top-0
+        h-full
+        w-12
+        flex
+        justify-center
+        items-center
+        pointer-events-none;
+}
+
+.placeLeft {
+    @apply left-0;
+}
+
+.placeRight {
+    @apply right-0;
+}
+
+.hasLeftIcon {
+    @apply pl-12;
+}
+
+.inputActionWrapper {
+    @apply absolute
+        top-0
+        h-full
+        flex
+        justify-center
+        items-center;
+}
+
+.inputIcon {
+    @apply w-5 text-black;
+}
+
+.input {
+    @apply rounded-md
+        px-2
+        py-3
+        font-sans
+        font-normal
+        outline-none
+        placeholder:text-gray-400
+        placeholder:select-none
+        bg-gray-100
+        text-black;
+}
+
+.inputXs {
+    @apply text-xs;
+}
+
+.inputSm {
+    @apply text-sm;
+}
+
+.inputBase {
+    @apply text-base;
+}
+
+.inputLg {
+    @apply text-lg;
+}
+
+.inputError {
+    @apply bg-red-200;
+}
+
+.inputLoading {
+    @apply bg-gray-200 animate-pulse;
+}
+
+.label {
+    @apply flex
+        items-center
+        gap-1.5
+        w-fit
+        mb-1.5;
+}
