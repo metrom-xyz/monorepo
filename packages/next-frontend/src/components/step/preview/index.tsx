@@ -7,7 +7,7 @@ import { Typography } from "@/src/ui/typography";
 import styles from "./styles.module.css";
 
 export interface StepPreviewProps {
-    label: string;
+    label: string | ReactNode;
     open?: boolean;
     completed?: boolean;
     children?: ReactNode;
@@ -55,9 +55,13 @@ export function StepPreview({
         >
             <div className={styles.wrapper}>
                 <animated.div style={labelStyle}>
-                    <Typography uppercase variant="sm" weight="medium">
-                        {label}
-                    </Typography>
+                    {typeof label === "string" ? (
+                        <Typography uppercase weight="medium">
+                            {label}
+                        </Typography>
+                    ) : (
+                        label
+                    )}
                 </animated.div>
                 <animated.div
                     style={childrenStyle}
