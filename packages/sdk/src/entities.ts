@@ -20,6 +20,7 @@ export interface Pool {
     fee?: number;
     token0: Erc20Token;
     token1: Erc20Token;
+    usdTvl: number;
 }
 
 export interface Reward {

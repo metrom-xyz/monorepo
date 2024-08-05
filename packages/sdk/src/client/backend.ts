@@ -86,6 +86,8 @@ export class MetromApiClient {
                         ...rawCampaign.pool.token1,
                         chainId: this.chain,
                     },
+                    // FIXME: map the proper entity
+                    usdTvl: 0,
                 },
                 rewards: rawCampaign.rewards.map((rawReward) => ({
                     ...rawReward,
