@@ -1,0 +1,47 @@
+.root {
+    @apply relative;
+}
+
+.image {
+    @apply rounded-full absolute;
+}
+
+.skeleton {
+    @apply absolute inset-px;
+}
+
+.fallback {
+    @apply bg-black
+        rounded-full
+        flex
+        justify-center
+        items-center;
+}
+
+.fallbackText {
+    @apply select-none;
+}
+
+.sm {
+    @apply w-6 h-6;
+}
+
+.sm > p {
+    @apply text-[0.5rem];
+}
+
+.md {
+    @apply w-7 h-7;
+}
+
+.md > p {
+    @apply text-[0.6rem];
+}
+
+.lg {
+    @apply w-9 h-9;
+}
+
+.lg > p {
+    @apply text-[0.7rem];
+}
