@@ -52,12 +52,11 @@ export function PoolPicker({ value, amm, onChange }: PoolPickerProps) {
         [baseTokenFilter?.address],
     );
 
-    const handleSearchOnChange = useCallback(
+    function handleSearchOnChange() {
         (event: ChangeEvent<HTMLInputElement>) => {
             setSearch(event.target.value);
-        },
-        [],
-    );
+        };
+    }
 
     return (
         <div className={styles.root}>

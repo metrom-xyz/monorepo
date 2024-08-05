@@ -30,15 +30,15 @@ export function AmmStep({ disabled, amm, onAmmChange }: AmmStepProps) {
             return () => {
                 if (amm && amm.slug === newAmm.slug) return;
                 onAmmChange({ amm: newAmm });
-                setOpen((open) => !open);
+                setOpen(false);
             };
         },
         [amm, onAmmChange],
     );
 
-    const handleStepOnClick = useCallback(() => {
+    function handleStepOnClick() {
         setOpen((open) => !open);
-    }, []);
+    }
 
     return (
         <Step

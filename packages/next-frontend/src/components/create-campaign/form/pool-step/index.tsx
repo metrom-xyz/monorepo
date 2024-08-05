@@ -31,9 +31,9 @@ export function PoolStep({ disabled, pool, amm, onPoolChange }: PoolStepProps) {
         [pool, onPoolChange],
     );
 
-    const handleStepOnClick = useCallback(() => {
+    function handleStepOnClick() {
         setOpen((open) => !open);
-    }, []);
+    }
 
     return (
         <Step
