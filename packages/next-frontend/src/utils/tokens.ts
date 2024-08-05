@@ -24,7 +24,7 @@ export const filterPools = (pools: Pool[], searchQuery: string) => {
     const lowercaseSearchParts = searchQuery
         .trim()
         .toLowerCase()
-        .split(/\s+/)
+        .split(/[/\s]+/)
         .filter((s) => s.length > 0 && s !== "/");
     if (lowercaseSearchParts.length === 0) return pools;
     return pools.filter((pool) => {

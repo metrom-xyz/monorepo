@@ -12,7 +12,7 @@ import { Chip } from "@/src/ui/chip/chip";
 import { useBaseTokens } from "@/src/hooks/useBaseTokens";
 import { RemoteLogo } from "@/src/ui/remote-logo";
 import { Typography } from "@/src/ui/typography";
-import { filterPools } from "@/utils/campaigns";
+import { filterPools } from "@/src/utils/tokens";
 import { Row } from "./row";
 
 import styles from "./styles.module.css";
