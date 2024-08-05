@@ -3,7 +3,7 @@
 }
 
 .ammWrapper {
-    @apply max-h-[300px]
+    @apply max-h-96
         overflow-y-auto
         rounded-b-2xl
         scroll-pt-0.5
@@ -22,11 +22,11 @@
         duration-200
         ease-in-out
         hover:cursor-pointer
-        hover:bg-gray-5;
+        hover:bg-gray-200;
 }
 
 .ammRowSelected {
-    @apply bg-gray-5;
+    @apply bg-gray-200;
 }
 
 .ammRow:only-child,

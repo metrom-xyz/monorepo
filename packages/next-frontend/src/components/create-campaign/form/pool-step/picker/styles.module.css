@@ -1,0 +1,48 @@
+.root {
+    @apply flex flex-col gap-6;
+}
+
+.header {
+    @apply flex
+        flex-col
+        gap-3
+        px-4
+        pt-4;
+}
+
+.searchInput {
+    @apply w-full;
+}
+
+.baseTokensWrapper {
+    @apply flex gap-2 flex-wrap;
+}
+
+.baseTokenChip {
+    @apply flex gap-2 items-center select-none;
+}
+
+.baseTokenChip > p {
+    @apply mr-1;
+}
+
+.listWrapper {
+    @apply h-96
+        w-full
+        overflow-hidden;
+}
+
+.listHeader {
+    @apply flex
+        justify-between
+        items-center
+        px-4;
+}
+
+.list {
+    @apply scroll-pt-0.5 pb-4 snap-y;
+}
+
+.emptyList {
+    @apply flex justify-center pt-4;
+}

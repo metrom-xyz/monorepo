@@ -1,10 +1,5 @@
 .app {
-    @apply h-screen
-        w-screen
-        flex
+    @apply flex
         flex-col
-        items-center
-        /* TODO: use proper theme color */
-        bg-gray-5 bg-opacity-50
-        dark:bg-black;
+        items-center;
 }

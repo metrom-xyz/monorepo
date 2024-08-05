@@ -1,0 +1,29 @@
+.root {
+    @apply flex
+        items-center
+        justify-between
+        snap-start
+        px-4
+        select-none
+        transition-colors
+        duration-200
+        ease-in-out
+        hover:cursor-pointer
+        hover:bg-gray-200;
+}
+
+.pool {
+    @apply flex items-center gap-3;
+}
+
+.poolInfo {
+    @apply flex flex-col gap-1.5;
+}
+
+.active {
+    @apply bg-gray-200;
+}
+
+.loading {
+    @apply pointer-events-none;
+}

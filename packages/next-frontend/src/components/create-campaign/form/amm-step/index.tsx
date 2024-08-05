@@ -1,4 +1,4 @@
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 import { useTranslations } from "next-intl";
 import { Step } from "@/src/components/step";
 import { StepPreview } from "@/src/components/step/preview";
@@ -22,6 +22,7 @@ interface AmmStepProps {
 
 export function AmmStep({ disabled, amm, onAmmChange }: AmmStepProps) {
     const t = useTranslations("new_campaign.form.amm");
+    const [open, setOpen] = useState(false);
     const availableAmms = useAvailableAmms();
 
     const getAmmChangeHandler = useCallback(
@@ -29,14 +30,24 @@ export function AmmStep({ disabled, amm, onAmmChange }: AmmStepProps) {
             return () => {
                 if (amm && amm.slug === newAmm.slug) return;
                 onAmmChange({ amm: newAmm });
+                setOpen((open) => !open);
             };
         },
         [amm, onAmmChange],
     );
 
+    const handleStepOnClick = useCallback(() => {
+        setOpen((open) => !open);
+    }, []);
+
     return (
-        <Step disabled={disabled} closeBehavior="innerClick">
-            <StepPreview completed={!!amm} label={t("title")}>
+        <Step
+            disabled={disabled}
+            open={open}
+            completed={!!amm}
+            onPreviewClick={handleStepOnClick}
+        >
+            <StepPreview label={t("title")}>
                 {amm && (
                     <div className={styles.ammPreview}>
                         <div className={styles.logo}>
