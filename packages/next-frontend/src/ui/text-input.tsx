@@ -52,7 +52,6 @@ export const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
                     type="text"
                     ref={ref}
                     value={value}
-                    defaultValue={""}
                     disabled={loading || disabled}
                     {...rest}
                     className={classNames(styles.input, className?.input, {
