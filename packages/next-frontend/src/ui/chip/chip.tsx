@@ -9,7 +9,7 @@ export interface BaseChipsProps {
     clickable?: boolean;
     active?: boolean;
     className?: { root?: string };
-    children: ReactNode;
+    children: string | ReactNode;
 }
 
 export type ChipProps = BaseChipsProps &
@@ -31,8 +31,12 @@ export const Chip = ({
             [styles.rootActive]: active,
         })}
     >
-        <Typography variant="sm" weight="medium">
-            {children}
-        </Typography>
+        {typeof children === "string" ? (
+            <Typography variant="sm" weight="medium">
+                {children}
+            </Typography>
+        ) : (
+            children
+        )}
     </div>
 );
