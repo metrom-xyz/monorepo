@@ -40,7 +40,7 @@
 }
 
 .list {
-    @apply scroll-pt-0.5 pb-4 snap-y;
+    @apply scroll-pt-1 pb-4 snap-y;
 }
 
 .emptyList {
