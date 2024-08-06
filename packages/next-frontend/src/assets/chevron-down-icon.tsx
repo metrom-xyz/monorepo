@@ -1,4 +1,4 @@
-export function ChevronIcon(props: any) {
+export function ChevronDownIcon(props: any) {
     return (
         <svg
             width="10"

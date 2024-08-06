@@ -1,6 +1,7 @@
 import { useEffect, type ReactNode, useState } from "react";
+import { usePrevious } from "react-use";
 import { animated, useSpring } from "@react-spring/web";
-import { ChevronIcon } from "@/src/assets/chevron-icon";
+import { ChevronDownIcon } from "@/src/assets/chevron-down-icon";
 import classNames from "@/src/utils/classes";
 import { Typography } from "@/src/ui/typography";
 
@@ -20,6 +21,7 @@ export function StepPreview({
     children,
 }: StepPreviewProps) {
     const [showChildren, setShowChildren] = useState(false);
+    const previousCompleted = usePrevious(completed);
 
     const [labelStyle, animateLabel] = useSpring(() => ({
         y: 0,
@@ -28,6 +30,26 @@ export function StepPreview({
     const [childrenStyle, animateChildren] = useSpring(() => ({
         opacity: 0,
     }));
+
+    useEffect(() => {
+        if (previousCompleted && !completed) {
+            setShowChildren(false);
+            animateChildren.start({
+                from: { opacity: 1 },
+                to: { opacity: 0 },
+                config: { duration: 100 },
+                onRest: () => {
+                    animateLabel.start({
+                        from: { y: -18 },
+                        to: { y: 0, opacity: 1 },
+                        config: { duration: 100 },
+                    });
+                },
+            });
+
+            return;
+        }
+    }, [animateChildren, animateLabel, completed, previousCompleted]);
 
     useEffect(() => {
         if (!completed) return;
@@ -73,7 +95,7 @@ export function StepPreview({
                 </animated.div>
             </div>
             <div className={styles.iconWrapper}>
-                <ChevronIcon
+                <ChevronDownIcon
                     className={classNames(styles.icon, {
                         [styles.iconOpen]: open,
                     })}
