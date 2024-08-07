@@ -1,7 +1,5 @@
 import { useTranslations } from "next-intl";
 import type { CampaignPayload, CampaignPayloadPart } from "@/src/types";
-import { Button } from "@/src/ui/button";
-import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
 import { AmmStep } from "./amm-step";
 import { StartDateStep } from "./start-date-step";
 import { EndDateStep } from "./end-date-step";
@@ -41,13 +39,6 @@ export function CreateCampaignForm({
                 endDate={payload?.endDate}
                 onEndDateChange={onPayloadChange}
             />
-            <Button
-                icon={ArrowRightIcon}
-                iconPlacement="right"
-                className={{ root: styles.submitButton }}
-            >
-                {t("submit.preview")}
-            </Button>
         </div>
     );
 }

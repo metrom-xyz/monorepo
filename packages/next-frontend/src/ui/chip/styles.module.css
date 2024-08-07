@@ -1,13 +1,14 @@
 .root {
     @apply bg-gray-100
         rounded-[2.813rem]
+        select-none
         transition-colors
         duration-200
         ease-in-out;
 }
 
 .small {
-    @apply p-1.5;
+    @apply px-2 py-2;
 }
 
 .big {
