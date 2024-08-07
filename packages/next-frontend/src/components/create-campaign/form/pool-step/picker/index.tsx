@@ -1,4 +1,12 @@
-import { useCallback, useState, type ChangeEvent, useMemo } from "react";
+import {
+    useCallback,
+    useState,
+    type ChangeEvent,
+    useMemo,
+    useRef,
+    useEffect,
+} from "react";
+import { useDebounce } from "react-use";
 import type { Token, Pool } from "@metrom-xyz/sdk";
 import { useChainId } from "wagmi";
 import { TextInput } from "@/src/ui/text-input";
@@ -12,7 +20,6 @@ import { Chip } from "@/src/ui/chip/chip";
 import { useBaseTokens } from "@/src/hooks/useBaseTokens";
 import { RemoteLogo } from "@/src/ui/remote-logo";
 import { Typography } from "@/src/ui/typography";
-import { useDebounce } from "react-use";
 import { filterPools } from "@/src/utils/tokens";
 import { Row } from "./row";
 
@@ -29,6 +36,7 @@ export function PoolPicker({ value, amm, onChange }: PoolPickerProps) {
     const [search, setSearch] = useState("");
     const [debouncedSearch, setDebouncedSearch] = useState(search);
     const [baseTokenFilter, setBaseTokenFilter] = useState<Token>();
+    const listRef = useRef(null);
 
     const chain = useChainId();
     const baseTokens = useBaseTokens();
@@ -38,6 +46,15 @@ export function PoolPicker({ value, amm, onChange }: PoolPickerProps) {
         () => filterPools(pools, baseTokenFilter?.address || debouncedSearch),
         [baseTokenFilter?.address, debouncedSearch, pools],
     );
+
+    const selectedIndex = useMemo(() => {
+        return pools.findIndex((pool) => pool.address === value?.address);
+    }, [pools, value?.address]);
+
+    useEffect(() => {
+        if (!listRef.current) return;
+        (listRef.current as any).scrollToItem(selectedIndex, "start");
+    }, [selectedIndex]);
 
     useDebounce(
         () => {
@@ -113,6 +130,7 @@ export function PoolPicker({ value, amm, onChange }: PoolPickerProps) {
                         {({ height, width }) => {
                             return (
                                 <FixedSizeList
+                                    ref={listRef}
                                     height={height}
                                     width={width}
                                     itemCount={
@@ -126,8 +144,8 @@ export function PoolPicker({ value, amm, onChange }: PoolPickerProps) {
                                     itemSize={57}
                                     className={styles.list}
                                 >
-                                    {({ index, style }) => {
-                                        const pool = filteredPools[index];
+                                    {({ index, style, data }) => {
+                                        const pool: Pool = data[index];
                                         return (
                                             <Row
                                                 style={style}
