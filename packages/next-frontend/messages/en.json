@@ -30,6 +30,9 @@
                     "3weeks": "3 weeks",
                     "1month": "1 month"
                 }
+            },
+            "rewards": {
+                "title": "Rewards"
             }
         },
         "submit": {
