@@ -1,51 +1,48 @@
-import type { Address, Hex } from "viem";
+import type { Address } from "viem";
 
-type RawClaimableRewards = {
+interface RawClaimableRewards {
     campaignId: Address;
     token: RawToken;
     amount: string;
     remaining: string;
     proof: Address[];
-};
+}
 
-type RawToken = {
+interface RawToken {
     address: Address;
     symbol: string;
     name: string;
     decimals: number;
-};
+}
 
-type RawWhitelistedToken = RawToken & { minimumRate: string };
+interface RawWhitelistedToken extends RawToken {
+    minimumRate: string;
+}
 
-type RawPool = {
+interface RawPool {
     address: Address;
     amm: string;
+    fee: number;
     token0: RawToken;
     token1: RawToken;
-};
+}
 
-type RawReward = {
-    amount: string;
-    claimed: string;
-    recovered: string;
-    remaining: string;
-    token: RawToken;
-    usdValue: number | null;
-};
+interface RawReward {
+    address: Address;
+    decimals: number;
+    symbol: string;
+    name: string;
+    amount: bigint;
+    priceUsd: number | null;
+}
 
 type RawCampaign = {
     id: Address;
-    createdAt: number;
-    owner: Address;
-    pendingOwner: Address;
     from: number;
     to: number;
+    createdAt: number;
+    snapshottedAt: number | null;
     pool: RawPool;
-    specification: Hex;
-    root: Hex;
-    data: Hex;
-    rewardsUsdValue: number | null;
-    apr: number | null;
     rewards: RawReward[];
     whitelist: Address[] | null;
     blacklist: Address[] | null;
@@ -58,6 +55,10 @@ export type FetchCampaignsResponse = {
 
 export type FetchClaimsResponse = {
     claims: RawClaimableRewards[];
+};
+
+export type FetchPoolsResponse = {
+    pools: RawPool[];
 };
 
 export type FetchWhitelistedRewardTokensResponse = {

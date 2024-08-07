@@ -1,23 +1,36 @@
-import type { Address } from "viem";
+import { type Address } from "viem";
 import type {
     FetchCampaignsResponse,
     FetchClaimsResponse,
+    FetchPoolsResponse,
     FetchWhitelistedRewardTokensResponse,
 } from "./types";
 import type { SupportedChain } from "@metrom-xyz/contracts";
 import { SUPPORTED_CHAIN_NAMES, SupportedAmm } from "../commons";
-import type { Campaign, Claim, WhitelistedErc20Token } from "../entities";
+import type {
+    Campaign,
+    Claim,
+    Pool,
+    Rewards,
+    WhitelistedErc20Token,
+} from "../entities";
 
-export type FetchCampaignsParams = {
+export interface FetchCampaignsParams {
     pageNumber?: number;
     pageSize?: number;
-    orderDirection?: "asc" | "desc";
-};
+    asc?: boolean;
+}
 
-export type FetchCampaignsResult = {
+export interface FetchCampaignsResult {
     campaigns: Campaign[];
     amount: bigint;
-};
+}
+
+export interface FetchPoolsParams {
+    amm: SupportedAmm;
+}
+
+export type FetchPoolsResult = Pool[];
 
 export type FetchClaimsParams = {
     address: Address;
@@ -47,21 +60,14 @@ export class MetromApiClient {
     async fetchCampaigns(
         params?: FetchCampaignsParams,
     ): Promise<FetchCampaignsResult> {
-        const queryParams: Record<string, string | number> = {
-            pageNumber: 0,
-            pageSize: 10,
-            orderDirection: "desc",
-            ...Object.fromEntries(
-                Object.entries(params || {}).filter(
-                    ([, value]) => !!value || !isNaN(Number(value)),
-                ),
-            ),
-        };
-
         const url = new URL(`${this.targetChainName}/campaigns`, this.baseUrl);
-        Object.keys(queryParams).forEach((param) => {
-            url.searchParams.set(param, queryParams[param].toString());
-        });
+
+        url.searchParams.set(
+            "pageNumber",
+            (params?.pageNumber || 0).toString(),
+        );
+        url.searchParams.set("pageSize", (params?.pageSize || 10).toString());
+        url.searchParams.set("asc", (params?.asc || false).toString());
 
         const response = await fetch(url);
         if (!response.ok)
@@ -73,36 +79,53 @@ export class MetromApiClient {
             (await response.json()) as FetchCampaignsResponse;
 
         return {
-            campaigns: rawCampaignsResponse.campaigns.map((rawCampaign) => ({
-                ...rawCampaign,
-                pool: {
-                    ...rawCampaign.pool,
-                    amm: rawCampaign.pool.amm as SupportedAmm,
-                    token0: {
-                        ...rawCampaign.pool.token0,
-                        chainId: this.chain,
+            campaigns: rawCampaignsResponse.campaigns.map((rawCampaign) => {
+                const rewards: Rewards = Object.assign([], { valueUsd: 0 });
+                for (const rawReward of rawCampaign.rewards) {
+                    let valueUsd = null;
+                    if (rewards.valueUsd !== null && rawReward.priceUsd) {
+                        valueUsd =
+                            Number(
+                                (rawReward.amount / 10n) ^
+                                    BigInt(rawReward.decimals),
+                            ) * rawReward.priceUsd;
+                        rewards.valueUsd += valueUsd;
+                    }
+                    rewards.push({
+                        ...rawReward,
+                        valueUsd,
+                    });
+                }
+
+                return {
+                    ...rawCampaign,
+                    pool: {
+                        ...rawCampaign.pool,
+                        amm: rawCampaign.pool.amm as SupportedAmm,
+                        // TODO: add the usd tvl
+                        usdTvl: 0,
                     },
-                    token1: {
-                        ...rawCampaign.pool.token1,
-                        chainId: this.chain,
-                    },
-                    // FIXME: map the proper entity
-                    usdTvl: 0,
-                },
-                rewards: rawCampaign.rewards.map((rawReward) => ({
-                    ...rawReward,
-                    token: {
-                        ...rawReward.token,
-                        chainId: this.chain,
-                    },
-                    amount: BigInt(rawReward.amount),
-                    claimed: BigInt(rawReward.claimed),
-                    remaining: BigInt(rawReward.remaining),
-                    recovered: BigInt(rawReward.recovered),
-                })),
-            })),
+                    rewards,
+                };
+            }),
             amount: BigInt(rawCampaignsResponse.amount),
         };
+    }
+
+    async fetchPools(params: FetchPoolsParams): Promise<FetchPoolsResult> {
+        const url = new URL(`${this.targetChainName}/pools`, this.baseUrl);
+
+        url.searchParams.set("amm", params?.amm);
+
+        const response = await fetch(url);
+        if (!response.ok)
+            throw new Error(
+                `response not ok while fetching pools: ${await response.text()}`,
+            );
+
+        const rawPoolsResponse = (await response.json()) as FetchPoolsResponse;
+
+        return rawPoolsResponse.pools as Pool[];
     }
 
     async fetchClaims(params: FetchClaimsParams): Promise<Claim[]> {
