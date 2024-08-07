@@ -1,0 +1,11 @@
+.dateInput {
+    @apply bg-transparent p-0;
+}
+
+.applyButton {
+    @apply w-full;
+}
+
+.stepContent {
+    @apply flex flex-col gap-3 p-4;
+}

@@ -20,8 +20,12 @@
                     "tvl": "Tvl"
                 }
             },
-            "start_date": { "title": "Start date" },
-            "end_date": { "title": "End date" }
+            "start_date": { "title": "Start date", "apply": "Apply" },
+            "end_date": { "title": "End date", "apply": "Apply" },
+            "submit": {
+                "preview": "Campaign preview",
+                "deploy": "Launch campaign"
+            }
         }
     }
 }
