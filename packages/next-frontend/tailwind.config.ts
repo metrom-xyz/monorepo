@@ -31,13 +31,6 @@ const config: Config = {
                 brandGreen: "#6CFF95",
                 black: "#000000",
                 white: "#FFFFFF",
-                gray: {
-                    1: "#656363",
-                    2: "#909090",
-                    3: "#B8B8B8",
-                    4: "#E7E7E7",
-                    5: "#EFEFEF",
-                },
             },
             borderRadius: {
                 // "3xl": "1.875rem",

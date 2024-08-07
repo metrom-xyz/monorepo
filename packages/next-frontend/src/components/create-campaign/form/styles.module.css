@@ -1,3 +1,7 @@
 .root {
     @apply flex flex-col gap-1;
 }
+
+.submitButton {
+    @apply w-full;
+}
