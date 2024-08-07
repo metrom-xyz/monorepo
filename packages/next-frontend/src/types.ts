@@ -1,9 +1,4 @@
-import type {
-    AmmSubgraphClient,
-    Erc20Token,
-    MetromApiClient,
-    Pool,
-} from "@metrom-xyz/sdk";
+import type { Token, MetromApiClient, Pool } from "@metrom-xyz/sdk";
 import type { Dayjs } from "dayjs";
 import type { SVGProps, FunctionComponent } from "react";
 import type { ChainContract } from "viem";
@@ -19,7 +14,6 @@ export interface Amm {
     addLiquidityUrl: string;
     poolExplorerUrl?: string;
     logo: FunctionComponent;
-    subgraphClient: AmmSubgraphClient;
 }
 
 export interface ChainIconData {
@@ -32,7 +26,7 @@ export interface ChainData {
     contract: ChainContract;
     metromApiClient: MetromApiClient;
     amms: Amm[];
-    baseTokens: Erc20Token[];
+    baseTokens: Token[];
 }
 
 // TODO: define state

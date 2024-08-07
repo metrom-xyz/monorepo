@@ -1,62 +1,59 @@
-import { type Address, type Hex } from "viem";
+import { type Address } from "viem";
 import type { SupportedAmm } from "./commons";
 
-export interface Erc20Token {
-    chainId: number;
+export interface Token {
     address: Address;
     decimals: number;
     symbol: string;
     name: string;
 }
 
-export interface Erc20TokenAmount {
-    token: Erc20Token;
+export interface TokenAmount {
+    token: Token;
     amount: bigint;
+}
+
+export interface UsdPricedToken extends Token {
+    priceUsd: number | null;
+}
+
+export interface UsdPricedTokenAmount extends UsdPricedToken {
+    valueUsd: number | null;
 }
 
 export interface Pool {
     address: Address;
     amm: SupportedAmm;
-    fee?: number;
-    token0: Erc20Token;
-    token1: Erc20Token;
+    fee: number;
+    token0: Token;
+    token1: Token;
+    // TODO: add the usd tvl value in the fetcher
     usdTvl: number;
 }
 
-export interface Reward {
-    token: Erc20Token;
-    amount: bigint;
-    claimed: bigint;
-    recovered: bigint;
-    remaining: bigint;
-    usdValue: number | null;
+export interface Rewards extends Array<UsdPricedTokenAmount> {
+    valueUsd: number | null;
 }
 
 export type Campaign = {
     id: Address;
     createdAt: number;
-    owner: Address;
-    pendingOwner: Address;
+    snapshottedAt: number | null;
     from: number;
     to: number;
     pool: Pool;
-    specification: Hex;
-    root: Hex;
-    data: Hex;
-    rewardsUsdValue: number | null;
-    apr: number | null;
-    rewards: Reward[];
     whitelist: Address[] | null;
     blacklist: Address[] | null;
+    rewards: Rewards;
 };
 
-export interface Claim {
+export interface Claim extends TokenAmount {
     campaignId: Address;
-    token: Erc20Token;
+    token: Token;
     amount: bigint;
     proof: Address[];
 }
 
-export interface WhitelistedErc20Token extends Erc20Token {
+export interface WhitelistedErc20Token extends Token {
     minimumRate: bigint;
 }

@@ -1,9 +1,4 @@
-import {
-    SupportedChain,
-    AmmSubgraphClient,
-    SupportedAmm,
-    type Erc20Token,
-} from "@metrom-xyz/sdk";
+import { SupportedChain, SupportedAmm, type Token } from "@metrom-xyz/sdk";
 import { type Transport, http, type Chain, type Address } from "viem";
 import { celoAlfajores, holesky, mantleSepoliaTestnet } from "viem/chains";
 import { type Amm, type SVGIcon } from "./types";
@@ -41,25 +36,22 @@ export const SUPPORTED_CHAIN_ICONS: Record<
     [SupportedChain.MantleSepolia]: MantleIcon,
 };
 
-export const BASE_CHAIN_TOKENS: Record<SupportedChain, Erc20Token[]> = {
+export const BASE_CHAIN_TOKENS: Record<SupportedChain, Token[]> = {
     [SupportedChain.CeloAlfajores]: [
         {
             address: "0xF194afDf50B03e69Bd7D057c1Aa9e10c9954E4C9",
-            chainId: SupportedChain.CeloAlfajores,
             decimals: 18,
             name: "Celo",
             symbol: "CELO",
         },
         {
             address: "0x874069Fa1Eb16D44d622F2e0Ca25eeA172369bC1",
-            chainId: SupportedChain.CeloAlfajores,
             decimals: 18,
             name: "Celo Dollar",
             symbol: "cUSD",
         },
         {
             address: "0x10c892A6EC43a53E45D0B916B4b7D383B1b78C0F",
-            chainId: SupportedChain.CeloAlfajores,
             decimals: 18,
             name: "Celo Euro",
             symbol: "cEUR",
@@ -68,14 +60,12 @@ export const BASE_CHAIN_TOKENS: Record<SupportedChain, Erc20Token[]> = {
     [SupportedChain.Holesky]: [
         {
             address: "0x94373a4919b3240d86ea41593d5eba789fef3848",
-            chainId: SupportedChain.Holesky,
             decimals: 18,
             name: "Wrapped Ether",
             symbol: "WETH",
         },
         {
             address: "0x7d98346b3b000c55904918e3d9e2fc3f94683b01",
-            chainId: SupportedChain.Holesky,
             decimals: 18,
             name: "USDT",
             symbol: "USDT",
@@ -84,7 +74,6 @@ export const BASE_CHAIN_TOKENS: Record<SupportedChain, Erc20Token[]> = {
     [SupportedChain.MantleSepolia]: [
         {
             address: "0xb1eda18c1b730a973dac2ec37cfd5685d7de10dd",
-            chainId: SupportedChain.MantleSepolia,
             decimals: 18,
             name: "Wrapped Mantle",
             symbol: "WMNT",
@@ -130,11 +119,6 @@ export const SUPPORTED_AMMS: Record<SupportedChain, Amm[]> = {
             addLiquidityUrl: "https://app.uniswap.org/add/{target_pool}",
             poolExplorerUrl:
                 "https://app.uniswap.org/explore/pools/celo_alfajores/{target_pool}",
-            subgraphClient: new AmmSubgraphClient(
-                SupportedChain.CeloAlfajores,
-                SupportedAmm.Univ3,
-                "https://api.studio.thegraph.com/query/68570/metrom-uni-v3-celo-alfajores/version/latest",
-            ),
         },
     ],
     [SupportedChain.Holesky]: [
@@ -144,11 +128,6 @@ export const SUPPORTED_AMMS: Record<SupportedChain, Amm[]> = {
             name: "Algebra integral",
             addLiquidityUrl:
                 "https://integral.algebra.finance/pool/{target_pool}/new-position",
-            subgraphClient: new AmmSubgraphClient(
-                SupportedChain.Holesky,
-                SupportedAmm.TestIntegral,
-                "https://api.studio.thegraph.com/query/68570/metrom-test-integral-holesky/version/latest",
-            ),
         },
     ],
     [SupportedChain.MantleSepolia]: [
@@ -158,11 +137,6 @@ export const SUPPORTED_AMMS: Record<SupportedChain, Amm[]> = {
             name: "Swapsicle",
             addLiquidityUrl:
                 "https://app.swapsicle.io/liquidity/v3/mantle-testnet/{target_pool}",
-            subgraphClient: new AmmSubgraphClient(
-                SupportedChain.MantleSepolia,
-                SupportedAmm.Swapsicle,
-                "https://api.goldsky.com/api/public/project_clycovfaomj6c0105c8bg8ohg/subgraphs/metrom-swapsicle-mantle-sepolia/0.2.0/gn",
-            ),
         },
     ],
 };

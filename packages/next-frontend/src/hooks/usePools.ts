@@ -1,72 +1,49 @@
-import type { Pool } from "@metrom-xyz/sdk";
+import type { SupportedChain } from "@metrom-xyz/contracts";
+import { useChainId } from "wagmi";
+import { CHAIN_DATA } from "../commons";
+import { SupportedAmm, type Pool } from "@metrom-xyz/sdk";
 import { useEffect, useState } from "react";
-import { type Address } from "viem";
 
-export interface UsePoolsParams {
-    ammSlug?: string;
-}
-
-export interface UsePoolsReturnType {
+export function usePools(ammSlug?: string): {
     loading: boolean;
-    error: Error | undefined;
     pools: Pool[];
-}
+} {
+    const chainId: SupportedChain = useChainId();
 
-export function usePools({ ammSlug }: UsePoolsParams): UsePoolsReturnType {
     const [pools, setPools] = useState<Pool[]>([]);
     const [loading, setLoading] = useState(false);
-    const [error, setError] = useState<Error>();
 
     useEffect(() => {
         let cancelled = false;
 
-        const fetchPools = async () => {
+        async function fetchData() {
+            if (!cancelled) setLoading(false);
+            if (!cancelled) setPools([]);
+
             if (!ammSlug) return;
-            if (!cancelled) setLoading(true);
+
             try {
-                // TODO: use sdk to call backend API
-                const pools = await Promise.resolve(
-                    Array.from({ length: 100 }).map(
-                        () =>
-                            ({
-                                address:
-                                    "0x4584e008a59e15070CA3e748078A02A71037BE6d" as Address,
-                                amm: ammSlug,
-                                token0: {
-                                    address:
-                                        "0x4584e008a59e15070CA3e748078A02A71037BE6d" as Address,
-                                    chainId: 1,
-                                    decimals: 18,
-                                    name: "SYMBOL",
-                                    symbol: "SYM",
-                                },
-                                token1: {
-                                    address:
-                                        "0x1317106dd45ff0eb911e9f0af78d63fbf9076f69" as Address,
-                                    chainId: 1,
-                                    decimals: 18,
-                                    name: "GASP",
-                                    symbol: "GSP",
-                                },
-                                usdTvl: 1000,
-                                fee: 100,
-                            }) as Pool,
-                    ),
-                );
+                if (!cancelled) setLoading(true);
+                const pools = await CHAIN_DATA[
+                    chainId
+                ].metromApiClient.fetchPools({
+                    amm: ammSlug as SupportedAmm,
+                });
                 if (!cancelled) setPools(pools);
             } catch (error) {
-                console.warn(`could not fetch pools`, error);
-                setError(error as Error);
+                console.error(`Could not fetch pools for amm ${ammSlug}`);
             } finally {
                 if (!cancelled) setLoading(false);
             }
-        };
-
-        fetchPools();
+        }
+        fetchData();
         return () => {
             cancelled = true;
         };
-    }, [ammSlug]);
+    }, [ammSlug, chainId]);
 
-    return { pools, loading, error };
+    return {
+        loading,
+        pools,
+    };
 }
