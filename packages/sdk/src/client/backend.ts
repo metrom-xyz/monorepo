@@ -86,7 +86,7 @@ export class MetromApiClient {
                     if (rewards.valueUsd !== null && rawReward.priceUsd) {
                         valueUsd =
                             Number(
-                                (rawReward.amount / 10n) ^
+                                (rawReward.amount / 10n) **
                                     BigInt(rawReward.decimals),
                             ) * rawReward.priceUsd;
                         rewards.valueUsd += valueUsd;
