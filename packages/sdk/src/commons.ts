@@ -7,7 +7,7 @@ export const SUPPORTED_CHAIN_NAMES: Record<SupportedChain, string> = {
 };
 
 export enum SupportedAmm {
-    Univ3 = "uni-v3",
+    Univ3 = "uniswap-v3",
     TestIntegral = "test-integral",
     Swapsicle = "swapsicle",
 }
