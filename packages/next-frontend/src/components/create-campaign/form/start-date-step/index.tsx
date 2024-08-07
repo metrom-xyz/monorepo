@@ -1,4 +1,5 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
+import { useChainId } from "wagmi";
 import dayjs, { type Dayjs } from "dayjs";
 import { useTranslations } from "next-intl";
 import { Step } from "@/src/components/step";
@@ -27,6 +28,11 @@ export function StartDateStep({
     const t = useTranslations("new_campaign.form.start_date");
     const [open, setOpen] = useState(false);
     const [date, setDate] = useState<Dayjs | undefined>(startDate);
+    const chainId = useChainId();
+
+    useEffect(() => {
+        setOpen(false);
+    }, [chainId]);
 
     function handleStepOnClick() {
         if (open && !startDate) setDate(undefined);
