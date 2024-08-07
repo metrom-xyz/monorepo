@@ -1,0 +1,82 @@
+.root {
+    @apply relative
+        w-fit
+        font-sans
+        font-medium
+        text-base
+        leading-4
+        flex
+        items-center
+        justify-center
+        cursor-pointer
+        transition-colors
+        duration-200;
+}
+
+.primary {
+    @apply rounded-2xl
+        text-white
+        bg-black
+        hover:bg-gray-900
+        disabled:bg-gray-700
+        disabled:text-gray-400
+        disabled:hover:bg-gray-700
+        disabled:cursor-not-allowed;
+}
+
+.secondary {
+    @apply rounded-lg
+        bg-gray-100
+        hover:bg-gray-200
+        border
+        border-gray-500
+        disabled:bg-transparent
+        disabled:text-gray-400
+        disabled:hover:bg-transparent
+        disabled:cursor-not-allowed;
+}
+
+.primary.big {
+    @apply px-6 py-5;
+}
+
+.primary.small {
+    @apply px-5 py-4;
+}
+
+.primary.xsmall {
+    @apply px-4 py-3;
+}
+
+.secondary.big {
+    @apply px-4 py-4;
+}
+
+.secondary.small {
+    @apply px-4 py-2.5;
+}
+
+.secondary.xsmall {
+    @apply px-2 py-1;
+}
+
+.icon {
+    @apply w-6 h-6;
+}
+
+.spinner {
+    @apply text-black origin-center animate-spin;
+}
+
+.wrapper {
+    @apply min-h-6
+        flex
+        items-center
+        first:mr-5
+        last:ml-5
+        only:m-0;
+}
+
+.wrapperLoadingNoIcon {
+    @apply hidden;
+}
