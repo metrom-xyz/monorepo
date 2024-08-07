@@ -1,4 +1,5 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
+import { useChainId } from "wagmi";
 import { useTranslations } from "next-intl";
 import type { Pool } from "@metrom-xyz/sdk";
 import { Step } from "@/src/components/step";
@@ -21,6 +22,11 @@ interface PoolStepProps {
 export function PoolStep({ disabled, pool, amm, onPoolChange }: PoolStepProps) {
     const t = useTranslations("new_campaign.form.pool");
     const [open, setOpen] = useState(false);
+    const chainId = useChainId();
+
+    useEffect(() => {
+        setOpen(false);
+    }, [chainId]);
 
     const handlePoolOnChange = useCallback(
         (newPool: Pool) => {

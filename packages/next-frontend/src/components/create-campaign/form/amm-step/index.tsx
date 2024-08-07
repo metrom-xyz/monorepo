@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
 import { Step } from "@/src/components/step";
 import { StepPreview } from "@/src/components/step/preview";
@@ -13,6 +13,7 @@ import type {
 } from "@/src/types";
 
 import styles from "./styles.module.css";
+import { useChainId } from "wagmi";
 
 interface AmmStepProps {
     disabled?: boolean;
@@ -24,6 +25,11 @@ export function AmmStep({ disabled, amm, onAmmChange }: AmmStepProps) {
     const t = useTranslations("new_campaign.form.amm");
     const [open, setOpen] = useState(false);
     const availableAmms = useAvailableAmms();
+    const chainId = useChainId();
+
+    useEffect(() => {
+        setOpen(false);
+    }, [chainId]);
 
     const getAmmChangeHandler = useCallback(
         (newAmm: AmmInfo) => {

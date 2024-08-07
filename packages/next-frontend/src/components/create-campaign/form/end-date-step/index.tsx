@@ -1,5 +1,6 @@
 import { useTranslations } from "next-intl";
-import { useCallback, useState } from "react";
+import { useChainId } from "wagmi";
+import { useCallback, useEffect, useState } from "react";
 import dayjs, { type Dayjs } from "dayjs";
 import { Step } from "@/src/components/step";
 import { StepPreview } from "@/src/components/step/preview";
@@ -27,6 +28,11 @@ export function EndDateStep({
     const t = useTranslations("new_campaign.form.end_date");
     const [open, setOpen] = useState(false);
     const [date, setDate] = useState<Dayjs | undefined>(endDate);
+    const chainId = useChainId();
+
+    useEffect(() => {
+        setOpen(false);
+    }, [chainId]);
 
     function handleStepOnClick() {
         if (open && !endDate) setDate(undefined);
