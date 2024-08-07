@@ -1,5 +1,5 @@
 .dateInput {
-    @apply bg-transparent p-0;
+    @apply bg-transparent p-0 font-medium;
 }
 
 .applyButton {
