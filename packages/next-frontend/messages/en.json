@@ -21,11 +21,20 @@
                 }
             },
             "start_date": { "title": "Start date", "apply": "Apply" },
-            "end_date": { "title": "End date", "apply": "Apply" },
-            "submit": {
-                "preview": "Campaign preview",
-                "deploy": "Launch campaign"
+            "end_date": {
+                "title": "End date",
+                "apply": "Apply",
+                "durations": {
+                    "1week": "1 week",
+                    "2weeks": "2 weeks",
+                    "3weeks": "3 weeks",
+                    "1month": "1 month"
+                }
             }
+        },
+        "submit": {
+            "preview": "Campaign preview",
+            "deploy": "Launch campaign"
         }
     }
 }

@@ -78,15 +78,6 @@ export const isDateInRange = (
     to?: Dayjs | Date | null,
 ) => {
     if (!from || !to) return false;
-    console.log(
-        {
-            from: from.toISOString(),
-            to: to.toISOString(),
-            date: date.toISOString(),
-        },
-        (isOnlyDateSame(date, from) || date.isAfter(from)) &&
-            (isOnlyDateSame(date, to) || date.isBefore(to)),
-    );
     return (
         (isOnlyDateSame(date, from) || date.isAfter(from)) &&
         (isOnlyDateSame(date, to) || date.isBefore(to))
