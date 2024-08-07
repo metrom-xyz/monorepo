@@ -1,5 +1,5 @@
 import { isAddress } from "viem";
-import type { Erc20Token, Pool } from "@metrom-xyz/sdk";
+import type { Token, Pool } from "@metrom-xyz/sdk";
 
 export const filterPools = (pools: Pool[], searchQuery: string) => {
     if (pools.length === 0) return [];
@@ -40,7 +40,7 @@ export const filterPools = (pools: Pool[], searchQuery: string) => {
     });
 };
 
-export const filterTokens = (tokens: Erc20Token[], searchQuery: string) => {
+export const filterTokens = (tokens: Token[], searchQuery: string) => {
     if (tokens.length === 0) return [];
     if (!searchQuery) return tokens;
     if (isAddress(searchQuery)) {

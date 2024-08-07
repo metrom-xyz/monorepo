@@ -1,8 +1,9 @@
-import type { Erc20Token, Pool } from "@metrom-xyz/sdk";
+import { useCallback, useState, type ChangeEvent, useMemo } from "react";
+import type { Token, Pool } from "@metrom-xyz/sdk";
+import { useChainId } from "wagmi";
 import { TextInput } from "@/src/ui/text-input";
 import AutoSizer from "react-virtualized-auto-sizer";
 import { FixedSizeList } from "react-window";
-import { useCallback, useState, type ChangeEvent, useMemo } from "react";
 import { SearchIcon } from "@/src/assets/search-icon";
 import { useTranslations } from "next-intl";
 import type { CampaignPayload } from "@/src/types";
@@ -27,10 +28,11 @@ export function PoolPicker({ value, amm, onChange }: PoolPickerProps) {
     const t = useTranslations("new_campaign.form.pool");
     const [search, setSearch] = useState("");
     const [debouncedSearch, setDebouncedSearch] = useState(search);
-    const [baseTokenFilter, setBaseTokenFilter] = useState<Erc20Token>();
+    const [baseTokenFilter, setBaseTokenFilter] = useState<Token>();
 
+    const chain = useChainId();
     const baseTokens = useBaseTokens();
-    const { pools, loading, error } = usePools({ ammSlug: amm?.slug });
+    const { pools, loading } = usePools(amm?.slug);
 
     const filteredPools = useMemo(
         () => filterPools(pools, baseTokenFilter?.address || debouncedSearch),
@@ -46,7 +48,7 @@ export function PoolPicker({ value, amm, onChange }: PoolPickerProps) {
     );
 
     const getBaseTokenChangeHandler = useCallback(
-        (token: Erc20Token) => {
+        (token: Token) => {
             return () => {
                 if (token.address === baseTokenFilter?.address)
                     setBaseTokenFilter(undefined);
@@ -87,7 +89,7 @@ export function PoolPicker({ value, amm, onChange }: PoolPickerProps) {
                                     size="sm"
                                     defaultText={" "}
                                     address={token.address}
-                                    chain={token.chainId}
+                                    chain={chain}
                                 />
                                 <Typography weight="medium">
                                     {token.symbol}
