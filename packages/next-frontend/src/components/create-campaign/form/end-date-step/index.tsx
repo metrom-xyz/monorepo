@@ -54,6 +54,7 @@ export function EndDateStep({
                 {/* TODO: add input mask for date */}
                 {/* TODO: add errors */}
                 <TextInput
+                    variant="lg"
                     readOnly
                     error={true}
                     errorText={"copa duro"}

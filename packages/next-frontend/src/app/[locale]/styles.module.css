@@ -3,3 +3,7 @@
         flex-col
         items-center;
 }
+
+.appWrapper {
+    @apply bg-gray-50;
+}
