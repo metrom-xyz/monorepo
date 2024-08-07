@@ -1,27 +1,19 @@
 .root {
-    @apply w-fit flex gap-[1px];
-}
-
-.root > :first-child {
-    @apply rounded-r-none;
+    @apply relative w-fit flex gap-[1px];
 }
 
 .root > :last-child {
-    @apply rounded-l-none;
-}
-
-.root > * {
-    @apply w-1/2;
+    @apply absolute right-0;
 }
 
 .sm {
-    @apply w-6 h-6;
+    @apply w-11 h-6;
 }
 
 .md {
-    @apply w-7 h-7;
+    @apply w-[3.25rem] h-7;
 }
 
 .lg {
-    @apply w-9 h-9;
+    @apply w-16 h-9;
 }

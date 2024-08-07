@@ -24,12 +24,12 @@ export function PoolStepPreview({ pool }: PoolStepPreviewProps) {
                     }}
                 />
                 <div className={styles.poolInfo}>
-                    <Typography weight="medium" variant="sm">
+                    <Typography weight="medium" variant="lg">
                         {pool.token1.symbol} / {pool.token0.symbol}
                     </Typography>
                     {pool.fee && (
                         <Typography variant="xs" light>
-                            {numeral(pool.fee / 10_000).format("0%")}
+                            {pool.fee / 10_000}%
                         </Typography>
                     )}
                 </div>

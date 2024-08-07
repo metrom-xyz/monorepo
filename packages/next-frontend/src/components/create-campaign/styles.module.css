@@ -1,3 +1,3 @@
 .root {
-    @apply w-[400px];
+    @apply max-w-[400px] w-full;
 }
