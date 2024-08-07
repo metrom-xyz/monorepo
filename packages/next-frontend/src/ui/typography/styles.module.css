@@ -23,7 +23,7 @@
 }
 
 .light {
-    @apply text-gray-500;
+    @apply text-gray-400;
 }
 
 .normal {

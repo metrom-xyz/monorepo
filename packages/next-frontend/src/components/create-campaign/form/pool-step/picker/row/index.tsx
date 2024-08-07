@@ -50,14 +50,14 @@ export function Row({ style, pool, active, loading, onClick }: PickerRowProps) {
                     {loading ? (
                         <Skeleton width="64px" variant="sm" />
                     ) : (
-                        <Typography weight="medium" variant="sm">
+                        <Typography weight="medium" variant="lg">
                             {pool.token1.symbol} / {pool.token0.symbol}
                         </Typography>
                     )}
                     {loading ? (
                         <Skeleton width="32px" variant="xs" />
                     ) : pool.fee ? (
-                        <Typography variant="xs" light>
+                        <Typography variant="xs" weight="medium" light>
                             {pool.fee / 10_000}%
                         </Typography>
                     ) : null}

@@ -25,8 +25,8 @@ export function PoolRemoteLogo({
                 [styles[size]]: true,
             })}
         >
-            <RemoteLogo chain={chain} size={size} {...token0} defaultText=" " />
             <RemoteLogo chain={chain} size={size} {...token1} defaultText=" " />
+            <RemoteLogo chain={chain} size={size} {...token0} defaultText=" " />
         </div>
     );
 }
