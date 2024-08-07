@@ -1,0 +1,57 @@
+.root {
+    @apply w-full
+        flex
+        gap-3
+        bg-white
+        rounded-md;
+}
+
+.divider {
+    @apply w-[1px] bg-gray-200 ml-1;
+}
+
+.timeWrapper {
+    @apply flex flex-col gap-2;
+}
+
+.header {
+    @apply flex justify-around;
+}
+
+.wheelsWrapper {
+    @apply flex h-full;
+}
+
+.cellList {
+    @apply h-[268px]
+        overflow-y-auto
+        overflow-x-hidden
+        scroll-pt-0.5
+        snap-y;
+}
+
+.cell {
+    @apply w-9
+        h-9
+        snap-start
+        select-none
+        cursor-pointer
+        flex
+        justify-center
+        items-center
+        rounded-md
+        transition-colors
+        duration-200
+        ease-in-out
+        hover:bg-gray-200;
+}
+
+.cellDisabled {
+    @apply cursor-not-allowed
+        hover:bg-transparent
+        opacity-40;
+}
+
+.cellSelected {
+    @apply bg-gray-200;
+}
