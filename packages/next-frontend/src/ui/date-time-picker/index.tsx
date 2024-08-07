@@ -12,6 +12,7 @@ import {
     rectifyDate,
     resolvedValue,
 } from "../../utils/date";
+import { ScrollIntoView } from "../scroll-into-view";
 import { DatePicker, type DatePickerProps } from "../date-picker";
 import { Typography } from "../typography";
 
@@ -22,7 +23,11 @@ export type DateTimePickerProps = DatePickerProps;
 const HOURS = new Array(24).fill(null).map((_, index) => {
     return enforceDoubleDigits(index);
 });
-const MINUTES_INTERVALS = ["00", "15", "30", "45"];
+const MINUTES_INTERVALS =
+    process.env.NEXT_PUBLIC_ENVIRONMENT &&
+    process.env.NEXT_PUBLIC_ENVIRONMENT !== "production"
+        ? new Array(60).fill(null).map((_, index) => enforceDoubleDigits(index))
+        : ["00", "15", "30", "45"];
 
 export const DateTimePicker = ({
     value,
@@ -138,26 +143,34 @@ export const DateTimePicker = ({
                                 ).isSame(atTime);
                             }
                             return (
-                                <Typography
-                                    variant="sm"
+                                <ScrollIntoView
                                     key={hour}
-                                    className={{
-                                        root: classNames(
-                                            className?.cell,
-                                            styles.cell,
-                                            {
-                                                [styles.cellDisabled]: disabled,
-                                                [styles.cellSelected]: selected,
-                                            },
-                                        ),
-                                    }}
-                                    onClick={
-                                        disabled ? undefined : handleTimeChange
-                                    }
-                                    data-data={`hour-${hour}`}
+                                    selected={!!selected}
                                 >
-                                    {hour}
-                                </Typography>
+                                    <Typography
+                                        variant="sm"
+                                        className={{
+                                            root: classNames(
+                                                className?.cell,
+                                                styles.cell,
+                                                {
+                                                    [styles.cellDisabled]:
+                                                        disabled,
+                                                    [styles.cellSelected]:
+                                                        selected,
+                                                },
+                                            ),
+                                        }}
+                                        onClick={
+                                            disabled
+                                                ? undefined
+                                                : handleTimeChange
+                                        }
+                                        data-data={`hour-${hour}`}
+                                    >
+                                        {hour}
+                                    </Typography>
+                                </ScrollIntoView>
                             );
                         })}
                     </div>
@@ -177,26 +190,34 @@ export const DateTimePicker = ({
                                 ).isSame(atTime);
                             }
                             return (
-                                <Typography
-                                    variant="sm"
+                                <ScrollIntoView
                                     key={minute}
-                                    className={{
-                                        root: classNames(
-                                            className?.cell,
-                                            styles.cell,
-                                            {
-                                                [styles.cellDisabled]: disabled,
-                                                [styles.cellSelected]: selected,
-                                            },
-                                        ),
-                                    }}
-                                    onClick={
-                                        disabled ? undefined : handleTimeChange
-                                    }
-                                    data-data={`minute-${minute}`}
+                                    selected={!!selected}
                                 >
-                                    {minute}
-                                </Typography>
+                                    <Typography
+                                        variant="sm"
+                                        className={{
+                                            root: classNames(
+                                                className?.cell,
+                                                styles.cell,
+                                                {
+                                                    [styles.cellDisabled]:
+                                                        disabled,
+                                                    [styles.cellSelected]:
+                                                        selected,
+                                                },
+                                            ),
+                                        }}
+                                        onClick={
+                                            disabled
+                                                ? undefined
+                                                : handleTimeChange
+                                        }
+                                        data-data={`minute-${minute}`}
+                                    >
+                                        {minute}
+                                    </Typography>
+                                </ScrollIntoView>
                             );
                         })}
                     </div>
