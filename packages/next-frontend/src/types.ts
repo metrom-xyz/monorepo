@@ -1,4 +1,4 @@
-import type { Token, MetromApiClient, Pool } from "@metrom-xyz/sdk";
+import type { Token, MetromApiClient, Pool, Rewards } from "@metrom-xyz/sdk";
 import type { Dayjs } from "dayjs";
 import type { SVGProps, FunctionComponent } from "react";
 import type { ChainContract } from "viem";
@@ -36,7 +36,7 @@ export interface CampaignPayload {
     pool?: Pool;
     startDate?: Dayjs;
     endDate?: Dayjs;
-    // rewards: Reward[];
+    rewards?: Rewards;
     // restrictions?: {
     //     type: "blacklist" | "whitelist";
     //     list: Address[];

@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
+import { useChainId } from "wagmi";
 import { useTranslations } from "next-intl";
 import { Step } from "@/src/components/step";
 import { StepPreview } from "@/src/components/step/preview";
@@ -13,7 +14,6 @@ import type {
 } from "@/src/types";
 
 import styles from "./styles.module.css";
-import { useChainId } from "wagmi";
 
 interface AmmStepProps {
     disabled?: boolean;
