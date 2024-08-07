@@ -6,7 +6,7 @@ import { Step } from "@/src/components/step";
 import { StepPreview } from "@/src/components/step/preview";
 import { StepContent } from "@/src/components/step/content";
 import type { CampaignPayload, CampaignPayloadPart } from "@/src/types";
-import { TextInput } from "@/src/ui/text-input";
+import { Typography } from "@/src/ui/typography";
 import { DateTimePicker } from "@/src/ui/date-time-picker";
 import { Button } from "@/src/ui/button";
 
@@ -59,16 +59,16 @@ export function EndDateStep({
             <StepPreview label={t("title")}>
                 {/* TODO: add input mask for date */}
                 {/* TODO: add errors */}
-                <TextInput
+                <Typography
+                    uppercase
                     variant="lg"
-                    readOnly
-                    error={true}
-                    errorText={"copa duro"}
-                    value={dayjs(date || endDate)
+                    weight="medium"
+                    className={{ root: styles.dateText }}
+                >
+                    {dayjs(date || endDate)
                         .format("DD MMM YYYY | HH:mm")
                         .toUpperCase()}
-                    className={{ input: styles.dateInput }}
-                />
+                </Typography>
             </StepPreview>
             <StepContent>
                 <div className={styles.stepContent}>
