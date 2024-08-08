@@ -1,5 +1,5 @@
 import { useTranslations } from "next-intl";
-import { useCall, useChainId } from "wagmi";
+import { useChainId } from "wagmi";
 import { useCallback, useEffect, useState } from "react";
 import dayjs, { type Dayjs, type ManipulateType } from "dayjs";
 import { Step } from "@/src/components/step";
