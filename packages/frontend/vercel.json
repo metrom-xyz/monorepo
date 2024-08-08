@@ -1,3 +1,0 @@
-{
-    "rewrites": [{ "source": "/:create*", "destination": "/index.html" }]
-}

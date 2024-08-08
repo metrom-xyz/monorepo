@@ -4,13 +4,17 @@ import {
     SUPPORTED_CHAIN_ICONS,
 } from "@/commons";
 import type { ChainData } from "@/types";
-import { ADDRESS, SupportedChain } from "@metrom-xyz/contracts";
+import { ADDRESS, Environment, SupportedChain } from "@metrom-xyz/contracts";
 import { MetromApiClient, SERVICE_URLS } from "@metrom-xyz/sdk";
 import type { ChainContract } from "viem";
 
 export const buildChainData = () => {
+    const environment = process.env.NEXT_PUBLIC_ENVIRONMENT;
+    if (!environment || environment in Environment)
+        throw new Error("An ENVIRONMENT env variable is needed");
+
     const environmentChains = Object.entries(
-        ADDRESS[__ENVIRONMENT__],
+        ADDRESS[environment as Environment],
     ) as unknown as [SupportedChain, ChainContract][];
 
     return environmentChains.reduce(
@@ -22,7 +26,9 @@ export const buildChainData = () => {
                 },
                 contract,
                 metromApiClient: new MetromApiClient(
-                    SERVICE_URLS[__ENVIRONMENT__].metrom,
+                    SERVICE_URLS[
+                        process.env.NEXT_PUBLIC_ENVIRONMENT as Environment
+                    ].metrom,
                     chain,
                 ),
                 amms: SUPPORTED_AMMS[chain],
