@@ -26,6 +26,10 @@
     @apply mr-1;
 }
 
+.baseTokenChipNotActive {
+    @apply bg-white;
+}
+
 .listWrapper {
     @apply h-96
         w-full

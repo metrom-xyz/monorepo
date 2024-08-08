@@ -36,7 +36,6 @@ export function Row({ style, pool, active, loading, onClick }: PickerRowProps) {
                     <Skeleton circular width="36px" />
                 ) : (
                     <PoolRemoteLogo
-                        size="lg"
                         token0={{
                             address: pool.token0.address,
                             defaultText: pool.token0.symbol,

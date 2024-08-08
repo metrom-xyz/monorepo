@@ -22,6 +22,14 @@
     @apply select-none;
 }
 
+.xs {
+    @apply w-4 h-4;
+}
+
+.xs > p {
+    @apply text-[0.4rem];
+}
+
 .sm {
     @apply w-6 h-6;
 }

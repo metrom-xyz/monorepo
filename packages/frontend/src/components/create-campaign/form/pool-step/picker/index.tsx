@@ -100,10 +100,17 @@ export function PoolPicker({ value, amm, onChange }: PoolPickerProps) {
                             clickable
                             active={baseTokenFilter?.address === token.address}
                             onClick={getBaseTokenChangeHandler(token)}
+                            className={{
+                                root:
+                                    baseTokenFilter &&
+                                    baseTokenFilter.address !== token.address
+                                        ? styles.baseTokenChipNotActive
+                                        : undefined,
+                            }}
                         >
                             <div className={styles.baseTokenChip}>
                                 <RemoteLogo
-                                    size="sm"
+                                    size="xs"
                                     defaultText={" "}
                                     address={token.address}
                                     chain={chain}
