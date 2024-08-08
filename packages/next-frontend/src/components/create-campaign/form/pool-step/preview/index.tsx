@@ -2,6 +2,7 @@ import numeral from "numeral";
 import type { Pool } from "@metrom-xyz/sdk";
 import { PoolRemoteLogo } from "@/src/ui/pool-remote-logo";
 import { Typography } from "@/src/ui/typography";
+import { PoolName } from "@/src/ui/pool-name";
 
 import styles from "./styles.module.css";
 
@@ -24,9 +25,7 @@ export function PoolStepPreview({ pool }: PoolStepPreviewProps) {
                     }}
                 />
                 <div className={styles.poolInfo}>
-                    <Typography weight="medium" variant="lg">
-                        {pool.token1.symbol} / {pool.token0.symbol}
-                    </Typography>
+                    <PoolName pool={pool} />
                     {pool.fee && (
                         <Typography variant="xs" light>
                             {pool.fee / 10_000}%
@@ -34,7 +33,7 @@ export function PoolStepPreview({ pool }: PoolStepPreviewProps) {
                     )}
                 </div>
             </div>
-            <Typography weight="medium" variant="sm">
+            <Typography weight="medium" variant="sm" light>
                 {numeral(pool.usdTvl).format("($ 0.00 a)")}
             </Typography>
         </div>

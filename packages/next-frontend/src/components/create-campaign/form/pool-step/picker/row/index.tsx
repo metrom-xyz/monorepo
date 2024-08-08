@@ -5,6 +5,7 @@ import { Typography } from "@/src/ui/typography";
 import classNames from "@/src/utils/classes";
 import { PoolRemoteLogo } from "@/src/ui/pool-remote-logo";
 import { Skeleton } from "@/src/ui/skeleton";
+import { PoolName } from "@/src/ui/pool-name";
 
 import styles from "./styles.module.css";
 
@@ -50,9 +51,7 @@ export function Row({ style, pool, active, loading, onClick }: PickerRowProps) {
                     {loading ? (
                         <Skeleton width="64px" variant="sm" />
                     ) : (
-                        <Typography weight="medium" variant="lg">
-                            {pool.token1.symbol} / {pool.token0.symbol}
-                        </Typography>
+                        <PoolName pool={pool} />
                     )}
                     {loading ? (
                         <Skeleton width="32px" variant="xs" />
@@ -66,7 +65,7 @@ export function Row({ style, pool, active, loading, onClick }: PickerRowProps) {
             {loading ? (
                 <Skeleton width="64px" variant="sm" />
             ) : (
-                <Typography weight="medium" variant="sm">
+                <Typography weight="medium" variant="sm" light>
                     {numeral(pool.usdTvl).format("($ 0.00 a)")}
                 </Typography>
             )}
