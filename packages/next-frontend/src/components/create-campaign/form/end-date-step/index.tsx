@@ -1,5 +1,5 @@
 import { useTranslations } from "next-intl";
-import { useChainId } from "wagmi";
+import { useCall, useChainId } from "wagmi";
 import { useCallback, useEffect, useState } from "react";
 import dayjs, { type Dayjs, type ManipulateType } from "dayjs";
 import { Step } from "@/src/components/step";
@@ -15,7 +15,7 @@ import styles from "./styles.module.css";
 
 interface EndDateStepProps {
     disabled?: boolean;
-    startDate?: CampaignPayload["endDate"];
+    startDate?: CampaignPayload["startDate"];
     endDate?: CampaignPayload["endDate"];
     onEndDateChange: (startDate: CampaignPayloadPart) => void;
 }
@@ -65,15 +65,11 @@ export function EndDateStep({
         setOpen(false);
     }, [chainId]);
 
-    function handleStepOnClick() {
+    const handleStepOnClick = useCallback(() => {
         if (open && !endDate) setDate(undefined);
         if (open) setDate(endDate);
         setOpen((open) => !open);
-    }
-
-    function handleDateOnChange(value: Dayjs) {
-        setDate(value);
-    }
+    }, [endDate, open]);
 
     const handleDateOnApply = useCallback(() => {
         onEndDateChange({ endDate: dayjs(date) });
@@ -145,7 +141,7 @@ export function EndDateStep({
                         min={startDate}
                         range={{ from: startDate, to: date }}
                         // TODO: add max campaign duration limit
-                        onChange={handleDateOnChange}
+                        onChange={setDate}
                     />
                     <Button
                         variant="secondary"

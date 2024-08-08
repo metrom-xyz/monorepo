@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { useChainId } from "wagmi";
+import { useCall, useChainId } from "wagmi";
 import dayjs, { type Dayjs } from "dayjs";
 import { useTranslations } from "next-intl";
 import { Step } from "@/src/components/step";
@@ -15,7 +15,7 @@ import styles from "./styles.module.css";
 interface StartDateStepProps {
     disabled?: boolean;
     startDate?: CampaignPayload["startDate"];
-    endDate?: CampaignPayload["startDate"];
+    endDate?: CampaignPayload["endDate"];
     onStartDateChange: (startDate: CampaignPayloadPart) => void;
 }
 
@@ -34,15 +34,11 @@ export function StartDateStep({
         setOpen(false);
     }, [chainId]);
 
-    function handleStepOnClick() {
+    const handleStepOnClick = useCallback(() => {
         if (open && !startDate) setDate(undefined);
         if (open) setDate(startDate);
         setOpen((open) => !open);
-    }
-
-    function handleDateOnChange(value: Dayjs) {
-        setDate(value);
-    }
+    }, [open, startDate]);
 
     const handleDateOnApply = useCallback(() => {
         onStartDateChange({ startDate: dayjs(date) });
@@ -74,7 +70,7 @@ export function StartDateStep({
                         value={date}
                         min={dayjs()}
                         range={{ from: date, to: endDate }}
-                        onChange={handleDateOnChange}
+                        onChange={setDate}
                     />
                     <Button
                         variant="secondary"
