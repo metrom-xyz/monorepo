@@ -20,7 +20,7 @@ export function RewardsStep({
     rewards,
     onRewardsChange,
 }: RewardsStepProps) {
-    const t = useTranslations("new_campaign.form.rewards");
+    const t = useTranslations("newCampaign.form.rewards");
     const [open, setOpen] = useState(false);
     const availableAmms = useAvailableAmms();
     const chainId = useChainId();

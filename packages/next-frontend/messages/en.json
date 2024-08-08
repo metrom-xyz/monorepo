@@ -1,10 +1,10 @@
 {
     "navigation": {
-        "all_campaigns": "All campaigns",
-        "new_campaign": "New campaign"
+        "allCampaigns": "All campaigns",
+        "newCampaign": "New campaign"
     },
-    "all_campaigns": { "title": "all campaigns" },
-    "new_campaign": {
+    "allCampaigns": { "title": "all campaigns" },
+    "newCampaign": {
         "form": {
             "amm": { "title": "Dex" },
             "pool": {
@@ -20,8 +20,8 @@
                     "tvl": "Tvl"
                 }
             },
-            "start_date": { "title": "Start date", "apply": "Apply" },
-            "end_date": {
+            "startDate": { "title": "Start date", "apply": "Apply" },
+            "endDate": {
                 "title": "End date",
                 "apply": "Apply",
                 "durations": {

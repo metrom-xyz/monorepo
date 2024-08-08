@@ -17,7 +17,7 @@ export function CreateCampaignForm({
     payload,
     onPayloadChange,
 }: CreateCampaignFormProps) {
-    const t = useTranslations("new_campaign.form");
+    const t = useTranslations("newCampaign.form");
 
     return (
         <div className={styles.root}>

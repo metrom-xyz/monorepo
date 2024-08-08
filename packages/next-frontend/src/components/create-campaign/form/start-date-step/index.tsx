@@ -25,7 +25,7 @@ export function StartDateStep({
     endDate,
     onStartDateChange,
 }: StartDateStepProps) {
-    const t = useTranslations("new_campaign.form.start_date");
+    const t = useTranslations("newCampaign.form.startDate");
     const [open, setOpen] = useState(false);
     const [date, setDate] = useState<Dayjs | undefined>(startDate);
     const chainId = useChainId();
