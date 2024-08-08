@@ -25,8 +25,8 @@ export function Nav() {
                 size="lg"
                 className={styles.tabs}
             >
-                <Tab key={"/"} title={t("all_campaigns")} />
-                <Tab key={"/campaigns/create"} title={t("new_campaign")} />
+                <Tab key={"/"} title={t("allCampaigns")} />
+                <Tab key={"/campaigns/create"} title={t("newCampaign")} />
             </Tabs>
             <ConnectButton />
         </div>

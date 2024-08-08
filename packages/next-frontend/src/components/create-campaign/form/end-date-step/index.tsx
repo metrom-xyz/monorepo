@@ -55,7 +55,7 @@ export function EndDateStep({
     endDate,
     onEndDateChange,
 }: EndDateStepProps) {
-    const t = useTranslations("new_campaign.form.end_date");
+    const t = useTranslations("newCampaign.form.endDate");
     const [open, setOpen] = useState(false);
     const [date, setDate] = useState<Dayjs | undefined>(endDate);
     const [durationPreset, setDurationPreset] = useState<DurationPreset>();

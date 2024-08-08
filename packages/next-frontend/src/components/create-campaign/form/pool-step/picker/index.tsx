@@ -32,7 +32,7 @@ interface PoolPickerProps {
 }
 
 export function PoolPicker({ value, amm, onChange }: PoolPickerProps) {
-    const t = useTranslations("new_campaign.form.pool");
+    const t = useTranslations("newCampaign.form.pool");
     const [search, setSearch] = useState("");
     const [debouncedSearch, setDebouncedSearch] = useState(search);
     const [baseTokenFilter, setBaseTokenFilter] = useState<Token>();

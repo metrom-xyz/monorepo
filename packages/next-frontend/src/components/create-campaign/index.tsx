@@ -17,7 +17,7 @@ enum View {
 }
 
 export function CreateCampaign() {
-    const t = useTranslations("new_campaign");
+    const t = useTranslations("newCampaign");
     const [payload, setPayload] = useState<CampaignPayload>({});
     const [view, setView] = useState<View>(View.form);
     const chainId = useChainId();

@@ -22,7 +22,7 @@ interface AmmStepProps {
 }
 
 export function AmmStep({ disabled, amm, onAmmChange }: AmmStepProps) {
-    const t = useTranslations("new_campaign.form.amm");
+    const t = useTranslations("newCampaign.form.amm");
     const [open, setOpen] = useState(false);
     const availableAmms = useAvailableAmms();
     const chainId = useChainId();

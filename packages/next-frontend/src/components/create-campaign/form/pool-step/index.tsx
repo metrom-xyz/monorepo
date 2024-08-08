@@ -20,7 +20,7 @@ interface PoolStepProps {
 }
 
 export function PoolStep({ disabled, pool, amm, onPoolChange }: PoolStepProps) {
-    const t = useTranslations("new_campaign.form.pool");
+    const t = useTranslations("newCampaign.form.pool");
     const [open, setOpen] = useState(false);
     const chainId = useChainId();
 
