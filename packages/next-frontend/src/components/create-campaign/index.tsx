@@ -5,7 +5,7 @@ import { useTranslations } from "next-intl";
 import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
 import type { CampaignPayload, CampaignPayloadPart } from "@/src/types";
 import { Button } from "@/src/ui/button";
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { CreateCampaignForm } from "./form";
 import { Summary } from "./summary";
 
@@ -41,9 +41,12 @@ export function CreateCampaign() {
         console.log(JSON.stringify(payload, null, 4));
     }, [payload]);
 
-    function handlePayloadOnChange(part: CampaignPayloadPart) {
-        setPayload({ ...payload, ...part });
-    }
+    const handlePayloadOnChange = useCallback(
+        (part: CampaignPayloadPart) => {
+            setPayload({ ...payload, ...part });
+        },
+        [payload],
+    );
 
     return (
         <div className={styles.root}>
