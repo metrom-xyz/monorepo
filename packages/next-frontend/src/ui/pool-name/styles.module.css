@@ -1,0 +1,11 @@
+.root {
+    @apply flex items-end gap-3;
+}
+
+.poolName {
+    @apply max-w-40 flex items-center gap-1;
+}
+
+.tokenName {
+    @apply text-ellipsis overflow-hidden;
+}
