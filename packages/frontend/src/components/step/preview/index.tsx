@@ -14,6 +14,8 @@ export interface StepPreviewProps {
     children?: ReactNode;
 }
 
+const AnimatedTypography = animated(Typography);
+
 export function StepPreview({
     label,
     open,
@@ -26,6 +28,7 @@ export function StepPreview({
     const [labelStyle, animateLabel] = useSpring(() => ({
         y: 0,
         opacity: 1,
+        fontSize: "1rem",
     }));
     const [childrenStyle, animateChildren] = useSpring(() => ({
         opacity: 0,
@@ -40,8 +43,8 @@ export function StepPreview({
                 config: { duration: 100 },
                 onRest: () => {
                     animateLabel.start({
-                        from: { y: -18 },
-                        to: { y: 0, opacity: 1 },
+                        from: { y: -18, fontSize: "0.75rem" },
+                        to: { y: 0, opacity: 1, fontSize: "1rem" },
                         config: { duration: 100 },
                     });
                 },
@@ -55,8 +58,8 @@ export function StepPreview({
         if (!completed) return;
 
         animateLabel.start({
-            from: { y: 0 },
-            to: { y: -18, opacity: 0.4 },
+            from: { y: 0, fontSize: "1rem" },
+            to: { y: -18, opacity: 0.4, fontSize: "0.75rem" },
             config: { duration: 100 },
             onRest: () => {
                 setShowChildren(true);
@@ -76,15 +79,17 @@ export function StepPreview({
             })}
         >
             <div className={styles.wrapper}>
-                <animated.div style={labelStyle}>
-                    {typeof label === "string" ? (
-                        <Typography uppercase weight="medium">
-                            {label}
-                        </Typography>
-                    ) : (
-                        label
-                    )}
-                </animated.div>
+                {typeof label === "string" ? (
+                    <AnimatedTypography
+                        style={labelStyle}
+                        uppercase
+                        weight="medium"
+                    >
+                        {label}
+                    </AnimatedTypography>
+                ) : (
+                    <animated.div style={labelStyle}>{label}</animated.div>
+                )}
                 <animated.div
                     style={childrenStyle}
                     className={classNames(styles.children, {

@@ -26,7 +26,7 @@ const config: Config = {
                 sans: SANS_FONT_FAMILY,
                 mono: MONO_FONT_FAMILY,
             },
-            fontSize: BODY_TEXT_SIZES_REM,
+            fontSize: { ...BODY_TEXT_SIZES_REM, inherit: "inherit" },
             colors: {
                 brandGreen: "#6CFF95",
                 black: "#000000",

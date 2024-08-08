@@ -34,7 +34,7 @@
 }
 
 .iconWrapper {
-    @apply px-2 py-2.5 rounded-md bg-white;
+    @apply px-2 py-2.5 rounded-md;
 }
 
 .icon {
