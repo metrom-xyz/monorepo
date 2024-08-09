@@ -1,4 +1,3 @@
-import { nextui } from "@nextui-org/react";
 import { type Config } from "tailwindcss";
 
 const SANS_FONT_FAMILY = ["IBM Plex Sans", "ui-sans-serif", "sans-serif"];
@@ -16,10 +15,9 @@ const config: Config = {
         "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
         "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
         "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
-        "../../node_modules/@nextui-org/theme/dist/**/*.{js,ts,jsx,tsx}",
     ],
     darkMode: "class",
-    plugins: [nextui()],
+    plugins: [],
     theme: {
         extend: {
             fontFamily: {
