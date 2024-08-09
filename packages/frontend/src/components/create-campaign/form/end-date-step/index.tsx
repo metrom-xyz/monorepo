@@ -38,11 +38,6 @@ const DURATION_PRESETS: DurationPreset[] = [
         value: 14,
     },
     {
-        label: "durations.3weeks",
-        unit: "days",
-        value: 21,
-    },
-    {
         label: "durations.1month",
         unit: "months",
         value: 1,
@@ -148,6 +143,21 @@ export function EndDateStep({
                         // TODO: add max campaign duration limit
                         onChange={setDate}
                     />
+                    <div className={styles.campaignDuration}>
+                        <Typography
+                            uppercase
+                            variant="sm"
+                            weight="medium"
+                            light
+                        >
+                            {t("campaignDuration")}
+                        </Typography>
+                        <Typography uppercase variant="sm" weight="medium">
+                            {t("days", {
+                                count: date?.diff(startDate, "days"),
+                            })}
+                        </Typography>
+                    </div>
                     <Button
                         variant="secondary"
                         size="small"

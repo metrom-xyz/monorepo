@@ -1,6 +1,5 @@
 .root {
-    @apply w-full
-        flex
+    @apply flex
         gap-2
         flex-col
         justify-between;
@@ -11,7 +10,7 @@
 }
 
 .headerMonth {
-    @apply flex-1 text-center;
+    @apply flex-1 text-center select-none;
 }
 
 .headerIconWrapper {
@@ -70,6 +69,10 @@
         hover:bg-gray-200;
 }
 
+.cellToday {
+    @apply bg-gray-100;
+}
+
 .cellDisabled {
     @apply cursor-not-allowed
         hover:bg-transparent
@@ -81,9 +84,21 @@
 }
 
 .cellInRange {
-    @apply bg-gray-100;
+    @apply bg-gray-100 rounded-none;
 }
 
-.cellRangeBound {
-    @apply bg-gray-200;
+.cellRangeBoundStart {
+    @apply bg-gray-200 rounded-r-none;
+}
+
+.cellRangeBoundEnd {
+    @apply bg-gray-200 rounded-l-none;
+}
+
+.cellInRange.startOfWeek {
+    @apply rounded-l-md;
+}
+
+.cellInRange.endOfWeek {
+    @apply rounded-r-md;
 }
