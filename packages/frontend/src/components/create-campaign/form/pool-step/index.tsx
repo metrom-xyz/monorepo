@@ -28,6 +28,11 @@ export function PoolStep({ disabled, pool, amm, onPoolChange }: PoolStepProps) {
         setOpen(false);
     }, [chainId]);
 
+    useEffect(() => {
+        if (disabled) return;
+        setOpen(true);
+    }, [disabled]);
+
     const handlePoolOnChange = useCallback(
         (newPool: Pool) => {
             if (pool && pool.address === newPool.address) return;
@@ -54,10 +59,18 @@ export function PoolStep({ disabled, pool, amm, onPoolChange }: PoolStepProps) {
                         t("title")
                     ) : (
                         <div className={styles.previewCompletedLabel}>
-                            <Typography uppercase weight="medium">
+                            <Typography
+                                uppercase
+                                weight="medium"
+                                className={{ root: styles.previewLabel }}
+                            >
                                 {t("preview.pool")}
                             </Typography>
-                            <Typography uppercase weight="medium">
+                            <Typography
+                                uppercase
+                                weight="medium"
+                                className={{ root: styles.previewLabel }}
+                            >
                                 {t("preview.tvl")}
                             </Typography>
                         </div>

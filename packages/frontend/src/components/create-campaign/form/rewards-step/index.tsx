@@ -29,6 +29,11 @@ export function RewardsStep({
         setOpen(false);
     }, [chainId]);
 
+    useEffect(() => {
+        if (disabled) return;
+        setOpen(true);
+    }, [disabled]);
+
     function handleStepOnClick() {
         setOpen((open) => !open);
     }
