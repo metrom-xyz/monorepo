@@ -20,6 +20,10 @@
     @apply flex items-end gap-3;
 }
 
+.fee {
+    @apply !leading-[1.125rem];
+}
+
 .active {
     @apply bg-gray-100;
 }

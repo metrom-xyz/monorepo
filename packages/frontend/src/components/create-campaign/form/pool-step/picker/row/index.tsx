@@ -55,8 +55,13 @@ export function Row({ style, pool, active, loading, onClick }: PickerRowProps) {
                     {loading ? (
                         <Skeleton width="32px" variant="xs" />
                     ) : pool.fee ? (
-                        <Typography variant="xs" weight="medium" light>
-                            {pool.fee / 10_000}%
+                        <Typography
+                            variant="xs"
+                            weight="medium"
+                            light
+                            className={{ root: styles.fee }}
+                        >
+                            {pool.fee}%
                         </Typography>
                     ) : null}
                 </div>

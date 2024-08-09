@@ -28,7 +28,7 @@ export function PoolStepPreview({ pool }: PoolStepPreviewProps) {
                     <PoolName pool={pool} />
                     {pool.fee && (
                         <Typography variant="xs" light>
-                            {pool.fee / 10_000}%
+                            {pool.fee}%
                         </Typography>
                     )}
                 </div>
