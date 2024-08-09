@@ -27,7 +27,7 @@
 }
 
 .baseTokenChipNotActive {
-    @apply bg-white;
+    @apply bg-gray-50;
 }
 
 .listWrapper {

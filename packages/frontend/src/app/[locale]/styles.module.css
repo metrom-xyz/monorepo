@@ -1,9 +1,10 @@
 .app {
     @apply flex
         flex-col
-        items-center;
+        items-center
+        gap-12;
 }
 
 .appWrapper {
-    @apply bg-gray-50;
+    @apply bg-gray-100;
 }

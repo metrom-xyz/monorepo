@@ -9,7 +9,7 @@
         duration-200
         ease-in-out
         hover:cursor-pointer
-        hover:bg-gray-100;
+        hover:bg-gray-200;
 }
 
 .pool {
@@ -25,7 +25,7 @@
 }
 
 .active {
-    @apply bg-gray-100;
+    @apply bg-gray-200;
 }
 
 .loading {
