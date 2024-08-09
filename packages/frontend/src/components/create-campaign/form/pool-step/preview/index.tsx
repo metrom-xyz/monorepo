@@ -27,7 +27,11 @@ export function PoolStepPreview({ pool }: PoolStepPreviewProps) {
                 <div className={styles.poolInfo}>
                     <PoolName pool={pool} />
                     {pool.fee && (
-                        <Typography variant="xs" light>
+                        <Typography
+                            variant="xs"
+                            light
+                            className={{ root: styles.fee }}
+                        >
                             {pool.fee}%
                         </Typography>
                     )}
