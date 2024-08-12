@@ -23,6 +23,7 @@ interface RawPool {
     address: Address;
     amm: string;
     fee: number;
+    tvl: number;
     token0: RawToken;
     token1: RawToken;
 }

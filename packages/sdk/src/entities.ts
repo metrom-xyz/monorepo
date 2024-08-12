@@ -27,8 +27,7 @@ export interface Pool {
     fee: number;
     token0: Token;
     token1: Token;
-    // TODO: add the usd tvl value in the fetcher
-    usdTvl: number;
+    tvlUsd: number;
 }
 
 export interface Rewards extends Array<UsdPricedTokenAmount> {

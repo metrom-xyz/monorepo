@@ -30,8 +30,6 @@ export interface FetchPoolsParams {
     amm: SupportedAmm;
 }
 
-export type FetchPoolsResult = Pool[];
-
 export type FetchClaimsParams = {
     address: Address;
 };
@@ -102,8 +100,7 @@ export class MetromApiClient {
                     pool: {
                         ...rawCampaign.pool,
                         amm: rawCampaign.pool.amm as SupportedAmm,
-                        // TODO: add the usd tvl
-                        usdTvl: 0,
+                        tvlUsd: rawCampaign.pool.tvl,
                     },
                     rewards,
                 };
@@ -112,7 +109,7 @@ export class MetromApiClient {
         };
     }
 
-    async fetchPools(params: FetchPoolsParams): Promise<FetchPoolsResult> {
+    async fetchPools(params: FetchPoolsParams): Promise<Pool[]> {
         const url = new URL(`${this.targetChainName}/pools`, this.baseUrl);
 
         url.searchParams.set("amm", params?.amm);
@@ -125,7 +122,11 @@ export class MetromApiClient {
 
         const rawPoolsResponse = (await response.json()) as FetchPoolsResponse;
 
-        return rawPoolsResponse.pools as Pool[];
+        return rawPoolsResponse.pools.map((pool) => ({
+            ...pool,
+            amm: pool.amm as SupportedAmm,
+            tvlUsd: pool.tvl,
+        }));
     }
 
     async fetchClaims(params: FetchClaimsParams): Promise<Claim[]> {
