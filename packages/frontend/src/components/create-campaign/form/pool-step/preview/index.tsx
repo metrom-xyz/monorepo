@@ -30,15 +30,16 @@ export function PoolStepPreview({ pool }: PoolStepPreviewProps) {
                         <Typography
                             variant="xs"
                             light
+                            weight="medium"
                             className={{ root: styles.fee }}
                         >
-                            {pool.fee}%
+                            {numeral(pool.fee).format("0.0[0]")}%
                         </Typography>
                     )}
                 </div>
             </div>
             <Typography weight="medium" variant="sm" light>
-                {numeral(pool.usdTvl).format("($ 0.00 a)")}
+                {numeral(pool.tvl).format("($ 0.00 a)")}
             </Typography>
         </div>
     );

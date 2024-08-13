@@ -61,7 +61,7 @@ export function Row({ style, pool, active, loading, onClick }: PickerRowProps) {
                             light
                             className={{ root: styles.fee }}
                         >
-                            {pool.fee}%
+                            {numeral(pool.fee).format("0.0[0]")}%
                         </Typography>
                     ) : null}
                 </div>
@@ -70,7 +70,7 @@ export function Row({ style, pool, active, loading, onClick }: PickerRowProps) {
                 <Skeleton width="64px" variant="sm" />
             ) : (
                 <Typography weight="medium" variant="sm" light>
-                    {numeral(pool.usdTvl).format("($ 0.00 a)")}
+                    {numeral(pool.tvl).format("($ 0.00 a)")}
                 </Typography>
             )}
         </div>
