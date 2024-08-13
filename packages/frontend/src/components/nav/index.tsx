@@ -1,5 +1,6 @@
 "use client";
 
+import { useCallback } from "react";
 import { usePathname, useRouter } from "@/src/navigation";
 import { MetromLogo } from "../../assets/metrom-logo";
 import { useTranslations } from "next-intl";
@@ -21,9 +22,12 @@ export function Nav() {
     const router = useRouter();
     const pathname = usePathname();
 
-    function getOnNavigationHandler(key: React.Key) {
-        return () => router.push(key.toString());
-    }
+    const getOnNavigationHandler = useCallback(
+        (key: React.Key) => {
+            return () => router.push(key.toString());
+        },
+        [router],
+    );
 
     return (
         <div className={styles.root}>
