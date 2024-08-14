@@ -1,4 +1,10 @@
-import type { Token, MetromApiClient, Pool, Rewards } from "@metrom-xyz/sdk";
+import type {
+    Token,
+    MetromApiClient,
+    Pool,
+    Rewards,
+    SupportedAmm,
+} from "@metrom-xyz/sdk";
 import type { Dayjs } from "dayjs";
 import type { SVGProps, FunctionComponent } from "react";
 import type { ChainContract } from "viem";
@@ -9,7 +15,7 @@ type PropertyUnion<T> = {
 export type SVGIcon = Omit<SVGProps<SVGSVGElement>, "dangerouslySetInnerHTML">;
 
 export interface Amm {
-    slug: string;
+    slug: SupportedAmm;
     name: string;
     addLiquidityUrl: string;
     poolExplorerUrl?: string;

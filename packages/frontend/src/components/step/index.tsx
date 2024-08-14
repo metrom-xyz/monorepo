@@ -24,7 +24,7 @@ export function Step({
 }: StepProps) {
     const wrapperRef = useRef<HTMLDivElement>(null);
 
-    const [spring, animate] = useSpring(
+    const [springStyles, springApi] = useSpring(
         () => ({
             height: "83px",
         }),
@@ -46,15 +46,15 @@ export function Step({
     ) as ReactElement;
 
     useEffect(() => {
-        animate({
+        springApi.start({
             height: (open ? wrapperRef?.current?.offsetHeight : 83) + "px",
             config: { duration: 200, easing: easings.easeInOutCubic },
         });
-    }, [animate, open]);
+    }, [springApi, open]);
 
     return (
         <animated.div
-            style={spring}
+            style={springStyles}
             className={classNames(styles.root, {
                 [styles.rootDisabled]: disabled,
             })}

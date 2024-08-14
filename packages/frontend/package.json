@@ -16,7 +16,6 @@
         "@formatjs/intl-localematcher": "^0.5.4",
         "@metrom-xyz/contracts": "^0.14.0",
         "@metrom-xyz/sdk": "workspace:*",
-        "@nextui-org/react": "^2.4.2",
         "@rainbow-me/rainbowkit": "^2.1.3",
         "@react-spring/web": "^9.7.4",
         "@tanstack/react-query": "^5.51.1",

@@ -2,10 +2,6 @@
     @apply select-none;
 }
 
-.applyButton {
-    @apply w-full;
-}
-
 .stepContent {
     @apply flex flex-col gap-3 p-4;
 }
@@ -14,6 +10,10 @@
     @apply flex gap-2;
 }
 
-.cellInRange {
-    @apply bg-gray-100;
+.campaignDuration {
+    @apply flex items-center gap-1 justify-center;
+}
+
+.applyButton {
+    @apply w-full;
 }

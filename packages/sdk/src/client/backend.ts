@@ -100,7 +100,7 @@ export class MetromApiClient {
                     pool: {
                         ...rawCampaign.pool,
                         amm: rawCampaign.pool.amm as SupportedAmm,
-                        tvlUsd: rawCampaign.pool.tvl,
+                        tvl: rawCampaign.pool.tvl,
                     },
                     rewards,
                 };

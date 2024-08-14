@@ -1,6 +1,11 @@
-import { useEffect, type ReactNode, useState } from "react";
-import { usePrevious } from "react-use";
-import { animated, useSpring } from "@react-spring/web";
+import { type ReactNode } from "react";
+import {
+    animated,
+    useChain,
+    useSpring,
+    useSpringRef,
+    useTransition,
+} from "@react-spring/web";
 import { ChevronDownIcon } from "@/src/assets/chevron-down-icon";
 import classNames from "@/src/utils/classes";
 import { Typography } from "@/src/ui/typography";
@@ -14,59 +19,43 @@ export interface StepPreviewProps {
     children?: ReactNode;
 }
 
+const AnimatedTypography = animated(Typography);
+
 export function StepPreview({
     label,
     open,
     completed,
     children,
 }: StepPreviewProps) {
-    const [showChildren, setShowChildren] = useState(false);
-    const previousCompleted = usePrevious(completed);
-
-    const [labelStyle, animateLabel] = useSpring(() => ({
+    const labelSpring = useSpringRef();
+    const labelSpringStyle = useSpring({
+        ref: labelSpring,
         y: 0,
         opacity: 1,
-    }));
-    const [childrenStyle, animateChildren] = useSpring(() => ({
-        opacity: 0,
-    }));
+        fontSize: "1rem",
+        to: {
+            y: completed ? -18 : 0,
+            opacity: completed ? 0.4 : 1,
+            fontSize: completed ? "0.75rem" : "1rem",
+        },
+        config: { duration: 100 },
+    });
 
-    useEffect(() => {
-        if (previousCompleted && !completed) {
-            setShowChildren(false);
-            animateChildren.start({
-                from: { opacity: 1 },
-                to: { opacity: 0 },
-                config: { duration: 100 },
-                onRest: () => {
-                    animateLabel.start({
-                        from: { y: -18 },
-                        to: { y: 0, opacity: 1 },
-                        config: { duration: 100 },
-                    });
-                },
-            });
+    const childrenTransitionSpring = useSpringRef();
+    const childrenTransition = useTransition(completed, {
+        ref: childrenTransitionSpring,
+        from: { opacity: 0 },
+        enter: { opacity: 1 },
+        leave: { opacity: 0 },
+        config: { duration: 100 },
+    });
 
-            return;
-        }
-    }, [animateChildren, animateLabel, completed, previousCompleted]);
-
-    useEffect(() => {
-        if (!completed) return;
-
-        animateLabel.start({
-            from: { y: 0 },
-            to: { y: -18, opacity: 0.4 },
-            config: { duration: 100 },
-            onRest: () => {
-                setShowChildren(true);
-                animateChildren.start({
-                    to: { opacity: 1 },
-                    config: { duration: 100 },
-                });
-            },
-        });
-    }, [completed, animateLabel, animateChildren]);
+    useChain(
+        completed
+            ? [labelSpring, childrenTransitionSpring]
+            : [childrenTransitionSpring, labelSpring],
+        completed ? [0, 0.1] : [0, 0.1],
+    );
 
     return (
         <div
@@ -76,23 +65,32 @@ export function StepPreview({
             })}
         >
             <div className={styles.wrapper}>
-                <animated.div style={labelStyle}>
-                    {typeof label === "string" ? (
-                        <Typography uppercase weight="medium">
-                            {label}
-                        </Typography>
-                    ) : (
-                        label
-                    )}
-                </animated.div>
-                <animated.div
-                    style={childrenStyle}
-                    className={classNames(styles.children, {
-                        [styles.childrenShow]: showChildren,
-                    })}
-                >
-                    {children}
-                </animated.div>
+                {typeof label === "string" ? (
+                    <AnimatedTypography
+                        style={labelSpringStyle}
+                        uppercase
+                        weight="medium"
+                    >
+                        {label}
+                    </AnimatedTypography>
+                ) : (
+                    <animated.div style={labelSpringStyle}>
+                        {label}
+                    </animated.div>
+                )}
+                {childrenTransition(
+                    (style, item) =>
+                        item && (
+                            <animated.div
+                                style={style}
+                                className={classNames(styles.children, {
+                                    [styles.childrenShow]: item,
+                                })}
+                            >
+                                {children}
+                            </animated.div>
+                        ),
+                )}
             </div>
             <div className={styles.iconWrapper}>
                 <ChevronDownIcon

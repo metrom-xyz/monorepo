@@ -1,13 +1,13 @@
 .root {
     @apply w-full
         flex
-        gap-3
+        gap-2
         bg-white
         rounded-md;
 }
 
 .divider {
-    @apply w-[1px] bg-gray-200 ml-1;
+    @apply w-[1px] bg-gray-200;
 }
 
 .timeWrapper {
@@ -15,7 +15,7 @@
 }
 
 .header {
-    @apply flex justify-around;
+    @apply flex justify-around select-none;
 }
 
 .wheelsWrapper {

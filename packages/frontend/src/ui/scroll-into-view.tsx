@@ -20,6 +20,7 @@ export function ScrollIntoView({ selected, children }: ScrollIntoViewProps) {
         container.scrollTo({
             top:
                 offsetTop -
+                32 +
                 clientHeight / 2 +
                 listItemRef.current.offsetHeight / 2,
             left:

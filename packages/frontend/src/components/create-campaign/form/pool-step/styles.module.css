@@ -2,5 +2,10 @@
     @apply flex
         justify-between
         items-center
-        pr-4;
+        pr-4
+        text-inherit;
+}
+
+.previewLabel {
+    @apply !text-inherit;
 }

@@ -34,6 +34,11 @@ export function StartDateStep({
         setOpen(false);
     }, [chainId]);
 
+    useEffect(() => {
+        if (disabled) return;
+        setOpen(true);
+    }, [disabled]);
+
     const handleStepOnClick = useCallback(() => {
         if (open && !startDate) setDate(undefined);
         if (open) setDate(startDate);

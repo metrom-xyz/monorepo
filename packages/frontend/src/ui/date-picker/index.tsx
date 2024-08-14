@@ -122,8 +122,17 @@ export const DatePicker = ({
                             onClick={disabled ? undefined : handleCellClick}
                             key={index}
                             data-index={index}
+                            light={isDateInRange(
+                                dayjs(cell.value),
+                                range?.from,
+                                range?.to,
+                            )}
                             className={{
                                 root: classNames(className?.cell, styles.cell, {
+                                    [styles.cellToday]: dayjs().isSame(
+                                        cell.value,
+                                        "days",
+                                    ),
                                     [styles.cellDisabled]: disabled,
                                     [styles.cellSelected]: selected,
                                     [styles.cellInRange]: isDateInRange(
@@ -131,17 +140,22 @@ export const DatePicker = ({
                                         range?.from,
                                         range?.to,
                                     ),
-                                    [styles.cellRangeBound]:
-                                        range?.from && range?.to
+                                    [styles.cellRangeBoundStart]:
+                                        range?.from && range.to
                                             ? isOnlyDateSame(
                                                   cell.value,
                                                   range.from,
-                                              ) ||
-                                              isOnlyDateSame(
+                                              )
+                                            : false,
+                                    [styles.cellRangeBoundEnd]:
+                                        range?.from && range.to
+                                            ? isOnlyDateSame(
                                                   cell.value,
                                                   range.to,
                                               )
                                             : false,
+                                    [styles.startOfWeek]: index % 7 === 0,
+                                    [styles.endOfWeek]: (index + 1) % 7 === 0,
                                 }),
                             }}
                         >

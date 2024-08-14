@@ -9,7 +9,7 @@
         duration-200
         ease-in-out
         hover:cursor-pointer
-        hover:bg-gray-100;
+        hover:bg-gray-200;
 }
 
 .pool {
@@ -20,8 +20,12 @@
     @apply flex items-end gap-3;
 }
 
+.fee {
+    @apply !leading-[1.125rem];
+}
+
 .active {
-    @apply bg-gray-100;
+    @apply bg-gray-200;
 }
 
 .loading {

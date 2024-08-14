@@ -6,7 +6,6 @@ import "./globals.css";
 import styles from "./styles.module.css";
 
 import type { Metadata } from "next";
-import { NextUIProvider } from "@nextui-org/react";
 import { type ReactNode } from "react";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
@@ -32,14 +31,12 @@ export default async function RootLayout({
         <html lang={locale} className={styles.appWrapper}>
             <body>
                 <NextIntlClientProvider messages={messages}>
-                    <NextUIProvider>
-                        <ClientProviders locale={locale as Locale}>
-                            <div className={styles.app}>
-                                <Nav />
-                                {children}
-                            </div>
-                        </ClientProviders>
-                    </NextUIProvider>
+                    <ClientProviders locale={locale as Locale}>
+                        <div className={styles.app}>
+                            <Nav />
+                            {children}
+                        </div>
+                    </ClientProviders>
                 </NextIntlClientProvider>
             </body>
         </html>

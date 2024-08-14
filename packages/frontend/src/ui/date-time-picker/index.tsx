@@ -74,7 +74,7 @@ export const DateTimePicker = ({
     const handleDateChange = useCallback(
         (newValue: Dayjs) => {
             if (!onChange) return;
-            if (!value) onChange(newValue);
+            if (!value) onChange(newValue.set("minutes", 0));
             else
                 onChange(
                     dayjs(value)
@@ -148,7 +148,6 @@ export const DateTimePicker = ({
                                     selected={!!selected}
                                 >
                                     <Typography
-                                        variant="sm"
                                         className={{
                                             root: classNames(
                                                 className?.cell,
@@ -195,7 +194,6 @@ export const DateTimePicker = ({
                                     selected={!!selected}
                                 >
                                     <Typography
-                                        variant="sm"
                                         className={{
                                             root: classNames(
                                                 className?.cell,

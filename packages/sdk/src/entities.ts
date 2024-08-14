@@ -27,7 +27,7 @@ export interface Pool {
     fee: number;
     token0: Token;
     token1: Token;
-    tvlUsd: number;
+    tvl: number;
 }
 
 export interface Rewards extends Array<UsdPricedTokenAmount> {

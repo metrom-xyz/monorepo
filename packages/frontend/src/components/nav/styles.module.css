@@ -13,5 +13,28 @@
 }
 
 .tabs {
-    @apply absolute left-1/2 -translate-x-1/2;
+    @apply flex gap-2 absolute left-1/2 -translate-x-1/2;
+}
+
+.tab {
+    @apply flex
+        items-center
+        gap-2
+        py-2.5
+        px-3
+        select-none
+        rounded-md
+        cursor-pointer
+        transition-colors
+        duration-200
+        ease-in-out
+        hover:bg-gray-200;
+}
+
+.tabIcon {
+    @apply w-5 h-5;
+}
+
+.tabActive {
+    @apply bg-white hover:bg-white;
 }

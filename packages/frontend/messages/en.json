@@ -27,9 +27,10 @@
                 "durations": {
                     "1week": "1 week",
                     "2weeks": "2 weeks",
-                    "3weeks": "3 weeks",
                     "1month": "1 month"
-                }
+                },
+                "campaignDuration": "Campaign duration",
+                "days": "{count} days"
             },
             "rewards": {
                 "title": "Rewards"

@@ -23,13 +23,19 @@ interface AmmStepProps {
 
 export function AmmStep({ disabled, amm, onAmmChange }: AmmStepProps) {
     const t = useTranslations("newCampaign.form.amm");
-    const [open, setOpen] = useState(false);
+    const [open, setOpen] = useState(true);
     const availableAmms = useAvailableAmms();
     const chainId = useChainId();
 
     useEffect(() => {
         setOpen(false);
     }, [chainId]);
+
+    useEffect(() => {
+        if (amm || availableAmms.length > 1) return;
+        onAmmChange({ amm: availableAmms[0] });
+        setOpen(false);
+    }, [amm, availableAmms, onAmmChange]);
 
     const getAmmChangeHandler = useCallback(
         (newAmm: AmmInfo) => {

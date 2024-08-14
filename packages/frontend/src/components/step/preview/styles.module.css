@@ -6,7 +6,7 @@
         py-7
         rounded-2xl
         h-[5.188rem]
-        hover:bg-gray-100
+        hover:bg-gray-200
         hover:cursor-pointer
         transition-colors
         duration-200
@@ -34,7 +34,7 @@
 }
 
 .iconWrapper {
-    @apply px-2 py-2.5 rounded-md bg-white;
+    @apply px-2 py-2.5 rounded-md;
 }
 
 .icon {

@@ -25,7 +25,7 @@ export const Chip = ({
 }: ChipProps) => (
     <div
         {...rest}
-        className={classNames(styles.root, {
+        className={classNames(className?.root, styles.root, {
             [styles[size]]: true,
             [styles.rootClickable]: clickable,
             [styles.rootActive]: active,

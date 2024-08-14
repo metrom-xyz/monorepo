@@ -36,7 +36,6 @@ export function Row({ style, pool, active, loading, onClick }: PickerRowProps) {
                     <Skeleton circular width="36px" />
                 ) : (
                     <PoolRemoteLogo
-                        size="lg"
                         token0={{
                             address: pool.token0.address,
                             defaultText: pool.token0.symbol,
@@ -56,8 +55,13 @@ export function Row({ style, pool, active, loading, onClick }: PickerRowProps) {
                     {loading ? (
                         <Skeleton width="32px" variant="xs" />
                     ) : pool.fee ? (
-                        <Typography variant="xs" weight="medium" light>
-                            {pool.fee / 10_000}%
+                        <Typography
+                            variant="xs"
+                            weight="medium"
+                            light
+                            className={{ root: styles.fee }}
+                        >
+                            {numeral(pool.fee).format("0.0[0]")}%
                         </Typography>
                     ) : null}
                 </div>
@@ -66,7 +70,7 @@ export function Row({ style, pool, active, loading, onClick }: PickerRowProps) {
                 <Skeleton width="64px" variant="sm" />
             ) : (
                 <Typography weight="medium" variant="sm" light>
-                    {numeral(pool.usdTvl).format("($ 0.00 a)")}
+                    {numeral(pool.tvl).format("($ 0.00 a)")}
                 </Typography>
             )}
         </div>
