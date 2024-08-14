@@ -11,9 +11,8 @@
         "format": "next lint --fix"
     },
     "dependencies": {
-        "@fontsource/ibm-plex-mono": "^5.0.13",
-        "@fontsource/ibm-plex-sans": "^5.0.20",
-        "@formatjs/intl-localematcher": "^0.5.4",
+        "@floating-ui/vue": "^1.1.1",
+        "@fontsource-variable/inter": "^5.0.18",
         "@metrom-xyz/contracts": "^0.14.0",
         "@metrom-xyz/sdk": "workspace:*",
         "@rainbow-me/rainbowkit": "^2.1.3",
