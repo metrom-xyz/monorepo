@@ -9,8 +9,8 @@
         "deploy:gnosis": "pnpm prepare:deploy gnosis && pnpm codegen && graph deploy --studio metrom-blocks-gnosis",
         "deploy:holesky": "pnpm prepare:deploy holesky && pnpm codegen && graph deploy --studio metrom-blocks-holesky",
         "deploy:arbitrum": "pnpm prepare:deploy arbitrum-one && pnpm codegen && graph deploy --studio metrom-blocks-arbitrum",
-        "deploy:mantle-sepolia": "pnpm prepare:deploy mantle-sepolia && pnpm codegen && graph build && goldsky subgraph deploy metrom-mantle-sepolia-blocks/0.1.0",
-        "deploy:mantle": "pnpm prepare:deploy mantle && pnpm codegen && graph build && goldsky subgraph deploy metrom-mantle-blocks/0.1.0",
+        "deploy:mantle-sepolia": "pnpm prepare:deploy mantle-sepolia && pnpm codegen && graph build && graph deploy metrom-mantle-sepolia-blocks -l 0.0.1 --node https://subgraph-api.mantle.xyz/deploy --ipfs https://subgraph-api.mantle.xyz/ipfs",
+        "deploy:mantle": "pnpm prepare:deploy mantle && pnpm codegen && graph build && graph deploy metrom-mantle-blocks -l 0.0.1 --node https://subgraph-api.mantle.xyz/deploy --ipfs https://subgraph-api.mantle.xyz/ipfs",
         "lint": "eslint .",
         "format": "eslint --fix ."
     },
