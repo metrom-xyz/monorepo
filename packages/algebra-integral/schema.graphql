@@ -47,6 +47,8 @@ type Event @entity(immutable: true) {
 
     # non zero liquidity change fields
     liquidityDelta: BigInt
+    token0TvlDelta: BigDecimal
+    token1TvlDelta: BigDecimal
     position: Position
 
     # tick moving swap fields

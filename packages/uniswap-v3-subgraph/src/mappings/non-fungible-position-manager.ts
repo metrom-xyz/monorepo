@@ -87,6 +87,8 @@ export function handleIncreaseLiquidity(event: IncreaseLiquidityEvent): void {
     if (!event.params.liquidity.isZero()) {
         let nonZeroLiquidityChange = createBaseEvent(event, position.pool);
         nonZeroLiquidityChange.liquidityDelta = event.params.liquidity;
+        nonZeroLiquidityChange.token0TvlDelta = amount0;
+        nonZeroLiquidityChange.token1TvlDelta = amount1;
         nonZeroLiquidityChange.position = position.id;
         nonZeroLiquidityChange.save();
     }
@@ -113,9 +115,15 @@ export function handleDecreaseLiquidity(event: DecreaseLiquidityEvent): void {
     position.liquidity = position.liquidity.minus(event.params.liquidity);
 
     let newToken0Tvl = position.token0Tvl.minus(amount0);
+    let token0TvlDelta = newToken0Tvl.lt(BD_0)
+        ? position.token0Tvl.neg()
+        : amount0.neg();
     position.token0Tvl = newToken0Tvl.lt(BD_0) ? BD_0 : newToken0Tvl;
 
     let newToken1Tvl = position.token1Tvl.minus(amount1);
+    let token1TvlDelta = newToken1Tvl.lt(BD_0)
+        ? position.token1Tvl.neg()
+        : amount1.neg();
     position.token1Tvl = newToken1Tvl.lt(BD_0) ? BD_0 : newToken1Tvl;
 
     position.save();
@@ -123,6 +131,8 @@ export function handleDecreaseLiquidity(event: DecreaseLiquidityEvent): void {
     if (!event.params.liquidity.isZero()) {
         let nonZeroLiquidityChange = createBaseEvent(event, position.pool);
         nonZeroLiquidityChange.liquidityDelta = event.params.liquidity.neg();
+        nonZeroLiquidityChange.token0TvlDelta = token0TvlDelta;
+        nonZeroLiquidityChange.token1TvlDelta = token1TvlDelta;
         nonZeroLiquidityChange.position = position.id;
         nonZeroLiquidityChange.save();
     }
