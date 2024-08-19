@@ -5,7 +5,7 @@
     "scripts": {
         "prepare:deploy": "tsx ./scripts/prepare-deploy.ts",
         "codegen": "graph codegen",
-        "deploy:celo-alfajores": "pnpm prepare:deploy celo-alfajores && pnpm codegen && graph deploy --studio metrom-uni-v3-celo-alfajores",
+        "deploy:celo-alfajores": "pnpm prepare:deploy celo-alfajores && pnpm codegen && graph deploy --studio metrom-uni-v3-celo-alfajores --version-label=v0.25.17",
         "deploy:arbitrum": "pnpm prepare:deploy arbitrum-one && pnpm codegen &&  graph deploy --studio metrom-uni-v3-arbitrum",
         "lint": "eslint .",
         "format": "eslint --fix ."

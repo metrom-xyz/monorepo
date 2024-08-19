@@ -24,13 +24,12 @@ export function handlePoolCreated(event: PoolCreatedEvent): void {
     }
 
     let pool = new Pool(event.params.pool);
-    pool.creationBlockNumber = event.block.number;
 
     pool.token0 = token0.id;
     pool.token1 = token1.id;
 
-    pool.token0Tvl = BI_0;
-    pool.token1Tvl = BI_0;
+    pool.token0Tvl = BD_0;
+    pool.token1Tvl = BD_0;
 
     pool.token0Price = BD_0;
     pool.token1Price = BD_0;
