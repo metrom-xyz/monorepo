@@ -148,3 +148,11 @@ function safeDiv(amount0: BigDecimal, amount1: BigDecimal): BigDecimal {
         return amount0.div(amount1);
     }
 }
+
+export function convertTokenToDecimal(
+    tokenAmount: BigInt,
+    tokenAddress: Address,
+): BigDecimal {
+    let token = getTokenOrThrow(tokenAddress);
+    return tokenAmount.toBigDecimal().div(exponentToBigDecimal(token.decimals));
+}
