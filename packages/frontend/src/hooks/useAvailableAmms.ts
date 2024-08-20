@@ -1,9 +1,9 @@
 import type { SupportedChain } from "@metrom-xyz/contracts";
 import { useChainId } from "wagmi";
 import { CHAIN_DATA } from "../commons";
-import type { AmmPayload } from "../types";
+import type { AmmInfo } from "../types";
 
-export function useAvailableAmms(): AmmPayload[] {
+export function useAvailableAmms(): AmmInfo[] {
     const chainId: SupportedChain = useChainId();
 
     return CHAIN_DATA[chainId].amms.map((amm) => ({
