@@ -1,11 +1,12 @@
 "use client";
 
 import { Typography } from "@/src/ui/typography";
-import styles from "./styles.module.css";
 import { type Campaign } from "@metrom-xyz/sdk";
 import type { AmmInfo } from "@/src/types";
 import { PoolRemoteLogo } from "@/src/ui/pool-remote-logo";
 import { useChainId } from "wagmi";
+
+import styles from "./styles.module.css";
 
 interface PoolProps {
     campaign: Campaign;

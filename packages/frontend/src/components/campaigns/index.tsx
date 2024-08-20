@@ -1,11 +1,12 @@
 "use client";
 
 import { Typography } from "@/src/ui/typography";
-import styles from "./styles.module.css";
 import { useCampaigns } from "@/src/hooks/useCampaigns";
 import { useState } from "react";
 import { useAvailableAmms } from "@/src/hooks/useAvailableAmms";
 import { Campaign } from "./campaign";
+
+import styles from "./styles.module.css";
 
 const PAGE_SIZE = 10;
 

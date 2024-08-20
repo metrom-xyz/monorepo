@@ -1,10 +1,11 @@
 "use client";
 
 import { Typography } from "@/src/ui/typography";
-import styles from "./styles.module.css";
 import dayjs from "dayjs";
 import classNames from "@/src/utils/classes";
 import { useTranslations } from "next-intl";
+
+import styles from "./styles.module.css";
 
 interface CampaignStatusProps {
     from: number;

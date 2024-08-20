@@ -1,8 +1,9 @@
 "use client";
 
 import { Typography } from "@/src/ui/typography";
-import styles from "./styles.module.css";
 import { formatDecimals } from "@metrom-xyz/sdk";
+
+import styles from "./styles.module.css";
 
 interface AprProps {
     apr: number | null;

@@ -1,11 +1,12 @@
 "use client";
 
 import { Typography } from "@/src/ui/typography";
-import styles from "./styles.module.css";
-import { formatDecimals, type Rewards } from "@metrom-xyz/sdk";
+import { type Rewards } from "@metrom-xyz/sdk";
 import dayjs from "dayjs";
 import { RemoteLogo } from "@/src/ui/remote-logo";
 import { useChainId } from "wagmi";
+
+import styles from "./styles.module.css";
 
 interface RewardsProps {
     from: number;
