@@ -1,29 +1,67 @@
-import { useEffect, useState } from "react";
-import { useChainId } from "wagmi";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { formatUnits, erc20Abi } from "viem";
+import { parseUnits } from "viem/utils";
+import { Button } from "@/src/ui/button";
+import { useAccount, useBlockNumber, useChainId, useReadContract } from "wagmi";
 import { useTranslations } from "next-intl";
+import type {
+    Token,
+    TokenAmount,
+    WhitelistedErc20Token,
+} from "@metrom-xyz/sdk";
 import { Step } from "@/src/components/step";
 import { StepPreview } from "@/src/components/step/preview";
 import { StepContent } from "@/src/components/step/content";
-import { useAvailableAmms } from "@/src/hooks/useAvailableAmms";
 import type { CampaignPayload, CampaignPayloadPart } from "@/src/types";
+import { RewardTokensList } from "./reward-tokens-list";
+import { NumberInput, type NumberFormatValues } from "@/src/ui/number-input";
+import { RemoteLogo } from "@/src/ui/remote-logo";
+import { Typography } from "@/src/ui/typography";
+import { PlusIcon } from "@/src/assets/plus-icon";
+import { ChevronDownIcon } from "@/src/assets/chevron-down-icon";
+import { RewardsPreview } from "./preview";
+import { ErrorText } from "@/src/ui/error-text";
 
 import styles from "./styles.module.css";
 
 interface RewardsStepProps {
     disabled?: boolean;
     rewards?: CampaignPayload["rewards"];
+    startDate?: CampaignPayload["startDate"];
+    endDate?: CampaignPayload["endDate"];
     onRewardsChange: (rewards: CampaignPayloadPart) => void;
 }
 
 export function RewardsStep({
     disabled,
     rewards,
+    startDate,
+    endDate,
     onRewardsChange,
 }: RewardsStepProps) {
     const t = useTranslations("newCampaign.form.rewards");
     const [open, setOpen] = useState(false);
-    const availableAmms = useAvailableAmms();
+    const [rewardAmount, setRewardAmount] = useState<bigint | undefined>();
+    const [rewardToken, setRewardToken] = useState<WhitelistedErc20Token>();
+    const [rewardAmountError, setRewardAmountError] = useState("");
+
+    const { address } = useAccount();
     const chainId = useChainId();
+
+    const { data: blockNumber } = useBlockNumber({ watch: true });
+    const { data: rewardTokenBalance, refetch } = useReadContract({
+        address: rewardToken?.address,
+        abi: erc20Abi,
+        functionName: "balanceOf",
+        args: address ? [address] : undefined,
+        query: { enabled: !!address && !!rewardToken },
+    });
+
+    const campaignDuration = useMemo(() => {
+        if (!startDate || !endDate) return;
+
+        return endDate.diff(startDate, "seconds");
+    }, [endDate, startDate]);
 
     useEffect(() => {
         setOpen(false);
@@ -34,19 +72,159 @@ export function RewardsStep({
         setOpen(true);
     }, [disabled]);
 
-    function handleStepOnClick() {
+    useEffect(() => {
+        refetch();
+    }, [blockNumber, refetch]);
+
+    useEffect(() => {
+        if (
+            !rewardAmount ||
+            rewardTokenBalance === undefined ||
+            !campaignDuration ||
+            !rewardToken
+        )
+            return;
+
+        const distributionRate =
+            (rewardAmount * 3_600n) / BigInt(campaignDuration);
+
+        setRewardAmountError(
+            rewardAmount > rewardTokenBalance
+                ? "errors.insufficientBalance"
+                : distributionRate < rewardToken.minimumRate
+                  ? "errors.lowDistributionRate"
+                  : "",
+        );
+    }, [campaignDuration, rewardAmount, rewardToken, rewardTokenBalance]);
+
+    function handleRewardTokenButtonOnClick() {
         setOpen((open) => !open);
     }
 
+    const handleRewardAmountOnChange = useCallback(
+        (rawNewAmount: NumberFormatValues) => {
+            const newAmount = parseUnits(
+                rawNewAmount.value,
+                // FIXME: is this ok?
+                rewardToken?.decimals || 18,
+            );
+
+            setRewardAmount(newAmount);
+        },
+        [rewardToken?.decimals],
+    );
+
+    const handleRewardTokenOnAdd = useCallback(() => {
+        if (!rewardAmount || !rewardToken) return;
+
+        const newRewards: TokenAmount[] = rewards
+            ? [...rewards, { amount: rewardAmount, token: rewardToken }]
+            : [{ amount: rewardAmount, token: rewardToken }];
+
+        onRewardsChange({ rewards: newRewards });
+        setRewardAmount(undefined);
+        setRewardToken(undefined);
+    }, [onRewardsChange, rewardAmount, rewardToken, rewards]);
+
+    const handleRewardTokenOnRemove = useCallback(
+        (token: Token) => {
+            if (!rewards) return;
+
+            onRewardsChange({
+                rewards: rewards.filter(
+                    (reward) => reward.token.address !== token.address,
+                ),
+            });
+        },
+        [onRewardsChange, rewards],
+    );
+
     return (
-        <Step
-            disabled={disabled}
-            open={open}
-            completed={!!rewards}
-            onPreviewClick={handleStepOnClick}
-        >
-            <StepPreview label={t("title")}></StepPreview>
-            <StepContent>todo</StepContent>
+        <Step disabled={disabled} open={open} completed={!disabled}>
+            <StepPreview
+                label={t("title")}
+                decorator={false}
+                className={{ preview: styles.stepPreview }}
+            >
+                <div className={styles.previewWrapper}>
+                    <RewardsPreview
+                        rewards={rewards}
+                        chain={chainId}
+                        onRemove={handleRewardTokenOnRemove}
+                    />
+                    {rewardAmountError && (
+                        <ErrorText variant="sm" weight="medium">
+                            {t(rewardAmountError)}
+                        </ErrorText>
+                    )}
+                    <div className={styles.rewardPickerWrapper}>
+                        <NumberInput
+                            placeholder="0"
+                            value={
+                                rewardToken && rewardAmount
+                                    ? formatUnits(
+                                          rewardAmount,
+                                          rewardToken.decimals,
+                                      )
+                                    : ""
+                            }
+                            onValueChange={handleRewardAmountOnChange}
+                            className={{
+                                input: styles.rewardTokenAmountInput,
+                                inputWrapper: styles.rewardTokenAmountInput,
+                            }}
+                        />
+
+                        <div
+                            className={styles.rewardTokenSelect}
+                            onClick={handleRewardTokenButtonOnClick}
+                        >
+                            <RemoteLogo
+                                size="xs"
+                                address={rewardToken?.address}
+                                chain={chainId}
+                                defaultText=" "
+                            />
+                            <Typography weight="medium">
+                                {rewardToken?.symbol}
+                            </Typography>
+                            <ChevronDownIcon />
+                        </div>
+                    </div>
+                    <Button
+                        variant="secondary"
+                        size="xsmall"
+                        icon={PlusIcon}
+                        disabled={
+                            rewards?.length === 5 ||
+                            !rewardAmount ||
+                            !rewardToken ||
+                            !!rewardAmountError
+                        }
+                        onClick={handleRewardTokenOnAdd}
+                        className={{
+                            root: styles.addRewardButton,
+                            contentWrapper: styles.addRewardButtonContent,
+                            icon: styles.addRewardButtonIcon,
+                        }}
+                    >
+                        {t("add")}
+                    </Button>
+                    <Typography uppercase variant="sm" weight="medium" light>
+                        {t("totalUsd")}
+                    </Typography>
+                    <Typography uppercase weight="bold" light>
+                        $ 0
+                    </Typography>
+                </div>
+            </StepPreview>
+            <StepContent>
+                <RewardTokensList
+                    unavailable={rewards}
+                    value={rewardToken}
+                    onRewardTokenClick={setRewardToken}
+                />
+            </StepContent>
         </Step>
     );
 }

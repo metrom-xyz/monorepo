@@ -58,7 +58,6 @@ export function StartDateStep({
             onPreviewClick={handleStepOnClick}
         >
             <StepPreview label={t("title")}>
-                {/* TODO: add input mask for date */}
                 {/* TODO: add errors */}
                 <Typography
                     uppercase

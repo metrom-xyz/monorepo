@@ -2,8 +2,8 @@ import type {
     Token,
     MetromApiClient,
     Pool,
-    Rewards,
     SupportedAmm,
+    TokenAmount,
 } from "@metrom-xyz/sdk";
 import type { Dayjs } from "dayjs";
 import type { SVGProps, FunctionComponent } from "react";
@@ -38,16 +38,16 @@ export interface ChainData {
 // TODO: define state
 export interface CampaignPayload {
     network?: number;
-    amm?: AmmInfo;
+    amm?: AmmPayload;
     pool?: Pool;
     startDate?: Dayjs;
     endDate?: Dayjs;
-    rewards?: Rewards;
+    rewards?: TokenAmount[];
     // restrictions?: {
     //     type: "blacklist" | "whitelist";
     //     list: Address[];
     // };
 }
 
-export type AmmInfo = Pick<Amm, "slug" | "name" | "logo">;
+export type AmmPayload = Pick<Amm, "slug" | "name" | "logo">;
 export type CampaignPayloadPart = PropertyUnion<CampaignPayload>;

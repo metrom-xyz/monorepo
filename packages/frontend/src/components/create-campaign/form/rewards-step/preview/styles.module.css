@@ -1,0 +1,37 @@
+.root {
+    @apply flex
+        flex-col
+        gap-2.5
+        mb-3
+        w-full;
+}
+
+.reward {
+    @apply w-full
+        grid
+        gap-3
+        items-center
+        grid-cols-rewardRow
+        bg-gray-100
+        rounded-lg
+        px-3
+        py-4;
+}
+
+.rewardAmount {
+    @apply w-28;
+}
+
+.rewardName {
+    @apply flex
+        items-center
+        gap-1;
+}
+
+.removeIconWrapper {
+    @apply justify-self-end cursor-pointer;
+}
+
+.removeIcon {
+    @apply w-2.5 h-2.5;
+}
