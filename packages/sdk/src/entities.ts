@@ -34,7 +34,7 @@ export interface Rewards extends Array<UsdPricedTokenAmount> {
     valueUsd: number | null;
 }
 
-export type Campaign = {
+export interface Campaign {
     id: Address;
     createdAt: number;
     snapshottedAt: number | null;
@@ -44,6 +44,7 @@ export type Campaign = {
     whitelist: Address[] | null;
     blacklist: Address[] | null;
     rewards: Rewards;
+    apr: number | null;
 };
 
 export interface Claim extends TokenAmount {

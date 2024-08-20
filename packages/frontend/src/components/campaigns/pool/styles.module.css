@@ -1,0 +1,11 @@
+.root {
+    @apply flex items-center gap-3;
+}
+
+.poolContainer {
+    @apply flex items-center gap-2;
+}
+
+.titleContainer {
+    @apply flex items-end gap-1;
+}

@@ -2,6 +2,10 @@
     @apply text-black font-sans;
 }
 
+.noWrap {
+    @apply whitespace-nowrap;
+}
+
 .rootUppercase {
     @apply uppercase;
 }
