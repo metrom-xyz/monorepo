@@ -38,7 +38,7 @@ export function CreateCampaign() {
 
     // TODO: remove
     useEffect(() => {
-        console.log(JSON.stringify(payload, null, 4));
+        console.log(payload);
     }, [payload]);
 
     const handlePayloadOnChange = useCallback(

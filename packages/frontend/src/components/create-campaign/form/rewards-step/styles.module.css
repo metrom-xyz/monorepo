@@ -1,0 +1,54 @@
+.stepPreview {
+    @apply hover:cursor-default hover:bg-inherit h-full;
+}
+
+.previewWrapper {
+    @apply flex flex-col gap-3;
+}
+
+.rewardPickerWrapper {
+    @apply flex items-center justify-between;
+}
+
+.inputWrapper {
+    @apply flex flex-col gap-1;
+}
+
+.rewardTokenAmountInput {
+    @apply w-full
+        bg-transparent
+        h-6
+        leading-6
+        p-0
+        font-bold
+        text-2xl;
+}
+
+.addRewardButton {
+    @apply px-1.5 !py-0 text-sm;
+}
+
+.addRewardButtonIcon {
+    @apply h-4 w-4;
+}
+
+.addRewardButtonContent {
+    @apply !ml-1;
+}
+
+.rewardTokenSelect {
+    @apply flex
+        gap-1
+        items-center
+        justify-between
+        rounded-md
+        bg-gray-100
+        px-0.5
+        py-1
+        pr-1.5
+        hover:bg-gray-200
+        hover:cursor-pointer
+        transition-colors
+        duration-200
+        ease-in-out;
+}

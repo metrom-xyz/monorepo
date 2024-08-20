@@ -43,6 +43,8 @@ export function CreateCampaignForm({
             <RewardsStep
                 disabled={!payload?.endDate}
                 rewards={payload?.rewards}
+                startDate={payload?.startDate}
+                endDate={payload?.endDate}
                 onRewardsChange={onPayloadChange}
             />
         </div>

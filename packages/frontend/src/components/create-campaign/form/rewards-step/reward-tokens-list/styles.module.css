@@ -1,0 +1,12 @@
+.root {
+    @apply h-96
+        w-full
+        overflow-hidden;
+}
+
+.listHeader {
+    @apply flex
+        justify-between
+        items-center
+        px-4;
+}

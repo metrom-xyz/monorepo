@@ -49,7 +49,18 @@
                 "days": "{count} days"
             },
             "rewards": {
-                "title": "Rewards"
+                "title": "Rewards",
+                "add": "Add reward",
+                "totalUsd": "Total value usd",
+                "errors": {
+                    "insufficientBalance": "Insufficient balance",
+                    "lowDistributionRate": "Low distribution rate"
+                },
+                "list": {
+                    "token": "Token",
+                    "balance": "Balance",
+                    "empty": "Nothing here"
+                }
             }
         },
         "submit": {

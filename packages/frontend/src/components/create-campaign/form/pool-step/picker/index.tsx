@@ -125,10 +125,10 @@ export function PoolPicker({ value, amm, onChange }: PoolPickerProps) {
             </div>
             <div className={styles.listWrapper}>
                 <div className={styles.listHeader}>
-                    <Typography uppercase weight="medium" light>
+                    <Typography uppercase variant="sm" weight="medium" light>
                         {t("list.pool")}
                     </Typography>
-                    <Typography uppercase weight="medium" light>
+                    <Typography uppercase variant="sm" weight="medium" light>
                         {t("list.tvl")}
                     </Typography>
                 </div>

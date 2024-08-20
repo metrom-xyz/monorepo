@@ -8,7 +8,7 @@ import { useAvailableAmms } from "@/src/hooks/useAvailableAmms";
 import classNames from "@/src/utils/classes";
 import { Typography } from "@/src/ui/typography";
 import type {
-    AmmInfo,
+    AmmPayload,
     CampaignPayload,
     CampaignPayloadPart,
 } from "@/src/types";
@@ -38,7 +38,7 @@ export function AmmStep({ disabled, amm, onAmmChange }: AmmStepProps) {
     }, [amm, availableAmms, onAmmChange]);
 
     const getAmmChangeHandler = useCallback(
-        (newAmm: AmmInfo) => {
+        (newAmm: AmmPayload) => {
             return () => {
                 if (amm && amm.slug === newAmm.slug) return;
                 onAmmChange({ amm: newAmm });
