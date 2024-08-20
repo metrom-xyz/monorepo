@@ -47,6 +47,7 @@ type RawCampaign = {
     rewards: RawReward[];
     whitelist: Address[] | null;
     blacklist: Address[] | null;
+    apr: number | null;
 };
 
 export type FetchCampaignsResponse = {

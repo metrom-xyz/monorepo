@@ -1,12 +1,5 @@
-import { Typography } from "@/src/ui/typography";
-import { useTranslations } from "next-intl";
+import { Campaigns } from "@/src/components/campaigns";
 
 export default function Home() {
-    const t = useTranslations("allCampaigns");
-
-    return (
-        <Typography uppercase weight="bold">
-            {t("title")}
-        </Typography>
-    );
+    return <Campaigns />;
 }

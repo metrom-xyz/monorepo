@@ -26,20 +26,16 @@ const config: Config = {
             },
             fontSize: { ...BODY_TEXT_SIZES_REM, inherit: "inherit" },
             colors: {
-                brandGreen: "#6CFF95",
+                "brand-green": "#6CFF95",
+                "brand-blue": "#3C82F6",
                 black: "#000000",
                 white: "#FFFFFF",
-            },
-            borderRadius: {
-                // "3xl": "1.875rem",
-                // xl: "0.75rem",
             },
             transitionProperty: {
                 colors: "border-radius, color, background-color, border-color, text-decoration-color, fill, stroke",
             },
             gridTemplateColumns: {
-                campaignsTable: "3fr 2.8fr 1.5fr 1fr 1fr",
-                campaignsTableSm: "2.1fr 2.2fr 1.5fr 1fr",
+                "campaigns-table": "3.5fr 1fr 1fr 1fr",
             },
             backgroundImage: {
                 dots:

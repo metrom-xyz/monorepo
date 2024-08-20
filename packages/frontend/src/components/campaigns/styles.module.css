@@ -1,0 +1,11 @@
+.root {
+    @apply max-w-screen-lg w-full flex flex-col;
+}
+
+.row {
+    @apply grid grid-cols-campaigns-table gap-4 py-4 px-6 items-center;
+}
+
+.bodyRow {
+    @apply bg-white rounded-xl;
+}

@@ -1,16 +1,20 @@
 import type { SupportedChain } from "@metrom-xyz/contracts";
 import { useChainId } from "wagmi";
 import { CHAIN_DATA } from "../commons";
-import { SupportedAmm, type Pool } from "@metrom-xyz/sdk";
+import { type Campaign } from "@metrom-xyz/sdk";
 import { useEffect, useState } from "react";
 
-export function usePools(ammSlug?: SupportedAmm): {
+export function useCampaigns(
+    pageNumber: number,
+    pageSize: number,
+    asc?: boolean,
+): {
     loading: boolean;
-    pools: Pool[];
+    campaigns: Campaign[];
 } {
     const chainId: SupportedChain = useChainId();
 
-    const [pools, setPools] = useState<Pool[]>([]);
+    const [campaigns, setCampaigns] = useState<Campaign[]>([]);
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
@@ -18,21 +22,21 @@ export function usePools(ammSlug?: SupportedAmm): {
 
         async function fetchData() {
             if (!cancelled) setLoading(false);
-            if (!cancelled) setPools([]);
-
-            if (!ammSlug) return;
+            if (!cancelled) setCampaigns([]);
 
             try {
                 if (!cancelled) setLoading(true);
-                const pools = await CHAIN_DATA[
+                const { campaigns } = await CHAIN_DATA[
                     chainId
-                ].metromApiClient.fetchPools({
-                    amm: ammSlug,
+                ].metromApiClient.fetchCampaigns({
+                    pageNumber,
+                    pageSize,
+                    asc,
                 });
-                if (!cancelled) setPools(pools);
+                if (!cancelled) setCampaigns(campaigns);
             } catch (error) {
                 console.error(
-                    `Could not fetch pools for amm ${ammSlug}: ${error}`,
+                    `Could not fetch campaigns for chain with id ${chainId}: ${error}`,
                 );
             } finally {
                 if (!cancelled) setLoading(false);
@@ -42,10 +46,10 @@ export function usePools(ammSlug?: SupportedAmm): {
         return () => {
             cancelled = true;
         };
-    }, [ammSlug, chainId]);
+    }, [chainId, asc, pageNumber, pageSize]);
 
     return {
         loading,
-        pools,
+        campaigns,
     };
 }

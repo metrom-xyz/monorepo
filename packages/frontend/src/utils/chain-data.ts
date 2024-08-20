@@ -10,7 +10,10 @@ import type { ChainContract } from "viem";
 
 export const buildChainData = () => {
     const environment = process.env.NEXT_PUBLIC_ENVIRONMENT;
-    if (!environment || environment in Environment)
+    if (
+        !environment ||
+        !(Object.values(Environment) as string[]).includes(environment)
+    )
         throw new Error("An ENVIRONMENT env variable is needed");
 
     const environmentChains = Object.entries(

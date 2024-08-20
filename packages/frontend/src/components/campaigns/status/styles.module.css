@@ -1,0 +1,23 @@
+.statusRoot {
+    @apply flex items-center gap-2;
+}
+
+.statusText {
+    @apply flex items-end gap-2;
+}
+
+.statusDot {
+    @apply w-2 h-2 rounded-full;
+}
+
+.statusDotLive {
+    @apply bg-brand-green;
+}
+
+.statusDotUpcoming {
+    @apply bg-brand-blue;
+}
+
+.statusDotEnded {
+    @apply bg-gray-400;
+}

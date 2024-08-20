@@ -3,7 +3,23 @@
         "allCampaigns": "All campaigns",
         "newCampaign": "New campaign"
     },
-    "allCampaigns": { "title": "all campaigns" },
+    "allCampaigns": {
+        "title": "all campaigns",
+        "status": {
+            "live": {
+                "text": "Live",
+                "duration": "{days}d left"
+            },
+            "upcoming": {
+                "text": "Upcoming",
+                "duration": "in {days}d"
+            },
+            "ended": {
+                "text": "Ended",
+                "duration": "{days}d ago"
+            }
+        }
+    },
     "newCampaign": {
         "form": {
             "amm": { "title": "Dex" },

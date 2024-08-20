@@ -30,13 +30,13 @@ export interface FetchPoolsParams {
     amm: SupportedAmm;
 }
 
-export type FetchClaimsParams = {
+export interface FetchClaimsParams {
     address: Address;
-};
+}
 
-export type FetchWhitelistedRewardTokensResult = {
+export interface FetchWhitelistedRewardTokensResult {
     tokens: Address;
-};
+}
 
 export class MetromApiClient {
     private readonly targetChainName: string;
