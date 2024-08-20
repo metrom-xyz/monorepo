@@ -12,6 +12,7 @@
     },
     "dependencies": {
         "@floating-ui/vue": "^1.1.1",
+        "@fontsource-variable/inter": "^5.0.18",
         "@fontsource/ibm-plex-mono": "^5.0.14",
         "@fontsource/ibm-plex-sans": "^5.0.21",
         "@metrom-xyz/contracts": "^0.14.0",
@@ -26,6 +27,7 @@
         "numeral": "^2.0.6",
         "react": "^18",
         "react-dom": "^18",
+        "react-number-format": "^5.4.0",
         "react-use": "^17.5.1",
         "react-virtualized-auto-sizer": "^1.0.24",
         "react-window": "^1.8.10",
