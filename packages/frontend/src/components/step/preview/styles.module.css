@@ -22,11 +22,11 @@
 }
 
 .wrapper {
-    @apply w-full relative select-none;
+    @apply w-full select-none;
 }
 
 .children {
-    @apply w-full absolute top-2 invisible;
+    @apply w-full flex invisible;
 }
 
 .childrenShow {

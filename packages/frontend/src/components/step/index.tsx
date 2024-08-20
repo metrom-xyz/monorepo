@@ -22,6 +22,7 @@ export function Step({
     onPreviewClick,
     children,
 }: StepProps) {
+    const rootRef = useRef<HTMLDivElement>(null);
     const wrapperRef = useRef<HTMLDivElement>(null);
 
     const [springStyles, springApi] = useSpring(
@@ -47,10 +48,13 @@ export function Step({
 
     useEffect(() => {
         springApi.start({
-            height: (open ? wrapperRef?.current?.offsetHeight : 83) + "px",
+            height:
+                (open
+                    ? wrapperRef?.current?.offsetHeight
+                    : rootRef.current?.offsetHeight) + "px",
             config: { duration: 200, easing: easings.easeInOutCubic },
         });
-    }, [springApi, open]);
+    }, [springApi, open, previewChildren]);
 
     return (
         <animated.div
@@ -60,7 +64,7 @@ export function Step({
             })}
         >
             <div ref={wrapperRef}>
-                <div onClick={onPreviewClick}>
+                <div ref={rootRef} onClick={onPreviewClick}>
                     {React.cloneElement<StepPreviewProps>(previewChildren, {
                         open,
                         completed,
