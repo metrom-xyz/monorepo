@@ -2,6 +2,8 @@ import React, { useCallback, useMemo, useState } from "react";
 import Image from "next/image";
 import { type Address } from "viem";
 import classNames from "@/src/utils/classes";
+import { REWARD_TOKEN_ICONS } from "@/src/commons";
+import type { SupportedChain } from "@metrom-xyz/contracts";
 import { getAddressColor } from "@/src/utils/address";
 import { Skeleton } from "../skeleton";
 import { Typography } from "../typography";
@@ -32,7 +34,11 @@ export const RemoteLogo = ({
     const resolvedSrc = useMemo(() => {
         if (src) return src;
         if (!address || !chain) return "";
-        return `https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/${chain}/assets/${address}/logo.png`;
+
+        return (
+            REWARD_TOKEN_ICONS[chain as SupportedChain][address] ||
+            `https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/${chain}/assets/${address}/logo.png`
+        );
     }, [address, chain, src]);
 
     const validResolvedSrc = useMemo(() => {
