@@ -27,6 +27,7 @@ export function CreateCampaign() {
         {},
     );
     const [view, setView] = useState<View>(View.form);
+
     const chainId = useChainId();
 
     // TODO: add complete validation
