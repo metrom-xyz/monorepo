@@ -22,7 +22,7 @@ export function Rewards({ from, to, rewards }: RewardsProps) {
         : 0;
 
     return perDayUsdValue === 0 ? (
-        <Typography>-</Typography>
+        <Typography weight="medium">-</Typography>
     ) : (
         <div className={styles.root}>
             {rewards.map((reward) => {
