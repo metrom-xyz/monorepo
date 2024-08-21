@@ -1,6 +1,7 @@
 import { useCallback } from "react";
+import { formatUnits } from "viem";
 import {
-    formatTokenAmount,
+    formatDecimals,
     type WhitelistedErc20Token,
     type WhitelistedErc20TokenWithBalance,
 } from "@metrom-xyz/sdk";
@@ -69,13 +70,12 @@ export function Row({
             ) : (
                 <Typography variant="xs" weight="medium" light>
                     {token.balance
-                        ? formatTokenAmount({
-                              amount: {
-                                  amount: token.balance,
-                                  token,
-                              },
-                              withSymbol: false,
-                              nonZeroDecimalsAmount: 2,
+                        ? formatDecimals({
+                              number: formatUnits(
+                                  token.balance,
+                                  token.decimals,
+                              ),
+                              decimalsAmount: 2,
                           })
                         : "-"}
                 </Typography>

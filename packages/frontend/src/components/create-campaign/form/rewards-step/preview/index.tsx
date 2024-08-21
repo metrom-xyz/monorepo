@@ -39,9 +39,7 @@ export function RewardsPreview({
                         weight="medium"
                         className={{ root: styles.rewardAmount }}
                     >
-                        {numeral(
-                            formatUnits(reward.amount, reward.token.decimals),
-                        ).format("(0.00 a)")}
+                        {numeral(reward.amount).format("(0.00 a)")}
                     </Typography>
                     <Typography weight="medium" light>
                         $ 0

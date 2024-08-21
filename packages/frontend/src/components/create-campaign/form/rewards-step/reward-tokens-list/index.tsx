@@ -91,18 +91,6 @@ export function RewardTokensList({
         refetch();
     }, [blockNumber, refetch]);
 
-    // useEffect(() => {
-    //     if (loading || whitelistedTokens.length === 0) return;
-    //     const availableTokens = whitelistedTokens.filter(
-    //         (whitelisted) =>
-    //             !unavailable?.find(
-    //                 (unavailableToken) =>
-    //                     unavailableToken.token.address === whitelisted.address,
-    //             ),
-    //     );
-    //     if (availableTokens) onRewardTokenClick(availableTokens[0]);
-    // }, [loading, onRewardTokenClick, unavailable, whitelistedTokens]);
-
     return (
         <div className={styles.root}>
             <div className={styles.listHeader}>

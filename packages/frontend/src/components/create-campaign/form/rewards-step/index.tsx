@@ -47,7 +47,7 @@ export function RewardsStep({
 }: RewardsStepProps) {
     const t = useTranslations("newCampaign.form.rewards");
     const [open, setOpen] = useState(false);
-    const [rewardAmount, setRewardAmount] = useState<bigint | undefined>();
+    const [rewardAmount, setRewardAmount] = useState<number | undefined>();
     const [rewardToken, setRewardToken] = useState<WhitelistedErc20Token>();
     const [rewardAmountError, setRewardAmountError] = useState("");
 
@@ -91,13 +91,18 @@ export function RewardsStep({
         )
             return;
 
-        const distributionRate =
-            (rewardAmount * 3_600n) / BigInt(campaignDuration);
+        const distributionRate = (rewardAmount * 3_600) / campaignDuration;
+        const balance = Number(
+            formatUnits(rewardTokenBalance, rewardToken.decimals),
+        );
+        const minimumRate = Number(
+            formatUnits(rewardToken.minimumRate, rewardToken.decimals),
+        );
 
         const error =
-            rewardAmount > rewardTokenBalance
+            rewardAmount > balance
                 ? "errors.insufficientBalance"
-                : distributionRate < rewardToken.minimumRate
+                : distributionRate < minimumRate
                   ? "errors.lowDistributionRate"
                   : "";
 
@@ -117,15 +122,9 @@ export function RewardsStep({
 
     const handleRewardAmountOnChange = useCallback(
         (rawNewAmount: NumberFormatValues) => {
-            const newAmount = parseUnits(
-                rawNewAmount.value,
-                // FIXME: is this ok?
-                rewardToken?.decimals || 18,
-            );
-
-            setRewardAmount(newAmount);
+            setRewardAmount(rawNewAmount.floatValue);
         },
-        [rewardToken?.decimals],
+        [],
     );
 
     const handleRewardTokenOnAdd = useCallback(() => {
@@ -191,14 +190,7 @@ export function RewardsStep({
                     <div className={styles.rewardPickerWrapper}>
                         <NumberInput
                             placeholder="0"
-                            value={
-                                rewardToken && rewardAmount
-                                    ? formatUnits(
-                                          rewardAmount,
-                                          rewardToken.decimals,
-                                      )
-                                    : ""
-                            }
+                            value={rewardAmount?.toString()}
                             onValueChange={handleRewardAmountOnChange}
                             className={{
                                 input: styles.rewardTokenAmountInput,
