@@ -1,3 +1,13 @@
+.previewLabelWrapper {
+    @apply flex
+        items-center
+        gap-2;
+}
+
+.previewLabel {
+    @apply !text-inherit;
+}
+
 .dateText {
     @apply select-none;
 }

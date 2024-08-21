@@ -5,11 +5,16 @@ import dayjs, { type Dayjs, type ManipulateType } from "dayjs";
 import { Step } from "@/src/components/step";
 import { StepPreview } from "@/src/components/step/preview";
 import { StepContent } from "@/src/components/step/content";
-import type { CampaignPayload, CampaignPayloadPart } from "@/src/types";
+import type {
+    CampaignPayload,
+    CampaignPayloadErrors,
+    CampaignPayloadPart,
+} from "@/src/types";
 import { Typography } from "@/src/ui/typography";
 import { DateTimePicker } from "@/src/ui/date-time-picker";
 import { Button } from "@/src/ui/button";
 import { Chip } from "@/src/ui/chip/chip";
+import { ErrorText } from "@/src/ui/error-text";
 
 import styles from "./styles.module.css";
 
@@ -18,6 +23,7 @@ interface EndDateStepProps {
     startDate?: CampaignPayload["startDate"];
     endDate?: CampaignPayload["endDate"];
     onEndDateChange: (startDate: CampaignPayloadPart) => void;
+    onError: (errors: CampaignPayloadErrors) => void;
 }
 
 interface DurationPreset {
@@ -49,11 +55,14 @@ export function EndDateStep({
     startDate,
     endDate,
     onEndDateChange,
+    onError,
 }: EndDateStepProps) {
     const t = useTranslations("newCampaign.form.endDate");
     const [open, setOpen] = useState(false);
     const [date, setDate] = useState<Dayjs | undefined>(endDate);
     const [durationPreset, setDurationPreset] = useState<DurationPreset>();
+    const [dateError, setDateError] = useState("");
+
     const chainId = useChainId();
 
     useEffect(() => {
@@ -64,6 +73,17 @@ export function EndDateStep({
         if (disabled) return;
         setOpen(true);
     }, [disabled]);
+
+    useEffect(() => {
+        if (!date || !startDate) return;
+
+        let dateError = "";
+        if (date.isBefore(startDate)) dateError = "errors.endBeforeStart";
+        else if (date.isBefore(dayjs())) dateError = "errors.dateInThePast";
+
+        onError({ endDate: !!dateError });
+        setDateError(dateError);
+    }, [date, onError, startDate]);
 
     const handleStepOnClick = useCallback(() => {
         if (open && !endDate) setDate(undefined);
@@ -107,10 +127,29 @@ export function EndDateStep({
             disabled={disabled}
             open={open}
             completed={!!date || !!endDate}
+            error={!!dateError}
             onPreviewClick={handleStepOnClick}
         >
-            <StepPreview label={t("title")}>
-                {/* TODO: add errors */}
+            <StepPreview
+                label={
+                    <div className={styles.previewLabelWrapper}>
+                        <Typography
+                            uppercase
+                            weight="medium"
+                            variant="sm"
+                            className={{ root: styles.previewLabel }}
+                        >
+                            {t("title")}
+                        </Typography>
+                        {dateError && (
+                            <ErrorText variant="xs" weight="medium">
+                                {t(dateError)}
+                            </ErrorText>
+                        )}
+                    </div>
+                }
+            >
+                {/* TODO: add minimum duration validation */}
                 <Typography
                     uppercase
                     variant="lg"

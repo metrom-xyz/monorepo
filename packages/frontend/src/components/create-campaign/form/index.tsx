@@ -39,12 +39,14 @@ export function CreateCampaignForm({
                 startDate={payload?.startDate}
                 endDate={payload?.endDate}
                 onStartDateChange={onPayloadChange}
+                onError={onPayloadError}
             />
             <EndDateStep
                 disabled={!payload?.startDate}
                 startDate={payload?.startDate}
                 endDate={payload?.endDate}
                 onEndDateChange={onPayloadChange}
+                onError={onPayloadError}
             />
             <RewardsStep
                 disabled={!payload?.endDate}
