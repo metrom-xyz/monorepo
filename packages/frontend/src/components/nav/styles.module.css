@@ -20,7 +20,7 @@
     @apply flex
         items-center
         gap-2
-        py-2.5
+        h-10
         px-3
         select-none
         rounded-md

@@ -3,6 +3,7 @@ import { ConnectButton as RainbowConnectButton } from "@rainbow-me/rainbowkit";
 import styles from "./styles.module.css";
 import { WalletIcon } from "@/src/assets/wallet-icon";
 import { SettingsIcon } from "@/src/assets/settings-icon";
+import { Typography } from "@/src/ui/typography";
 
 // TODO: implement connect button
 export function ConnectButton() {
@@ -48,8 +49,10 @@ export function ConnectButton() {
                                 <div className={styles.wrapper}>
                                     <div className={styles.account}>
                                         <WalletIcon className={styles.icon} />
-                                        {/* TODO: add typography */}
-                                        {account.ensName || account.displayName}
+                                        <Typography mono>
+                                            {account.ensName ||
+                                                account.displayName}
+                                        </Typography>
                                     </div>
                                     {/* TODO: add icon button */}
                                     <div

@@ -26,6 +26,7 @@ interface BaseTypographyProps {
     light?: boolean;
     uppercase?: boolean;
     noWrap?: boolean;
+    mono?: boolean;
     className?: {
         root?: string;
     };
@@ -62,6 +63,7 @@ const Component = <V extends TypographyVariant>(
         light,
         uppercase,
         noWrap,
+        mono,
         className,
         children,
         ...rest
@@ -92,6 +94,7 @@ const Component = <V extends TypographyVariant>(
                 [styles[variant]]: true,
                 [styles[weight]]: true,
                 [styles.noWrap]: noWrap,
+                [styles.mono]: mono,
             })}
             {...rest}
             onMouseEnter={handleMouseEnter}
