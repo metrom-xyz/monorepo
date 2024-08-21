@@ -32,15 +32,7 @@ export function Pool({ campaign, amms }: PoolProps) {
             />
             <div className={styles.titleContainer}>
                 <Typography variant="lg" weight="medium" noWrap>
-                    {amm}
-                </Typography>
-                <Typography variant="lg" weight="medium" noWrap>
-                    {campaign.pool.token0.symbol}
-                </Typography>
-                <Typography variant="lg" weight="medium" light noWrap>
-                    /
-                </Typography>
-                <Typography variant="lg" weight="medium">
+                    {amm} {campaign.pool.token0.symbol}/
                     {campaign.pool.token1.symbol}
                 </Typography>
                 <Typography variant="sm" weight="medium" light>

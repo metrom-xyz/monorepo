@@ -3,9 +3,13 @@
 }
 
 .row {
-    @apply grid grid-cols-campaigns-table gap-4 py-4 px-6 items-center;
+    @apply grid grid-cols-campaigns-table gap-4 px-6 items-center;
+}
+
+.body {
+    @apply w-full mt-4 flex flex-col gap-2;
 }
 
 .bodyRow {
-    @apply bg-white rounded-xl;
+    @apply bg-white rounded-xl h-14;
 }
