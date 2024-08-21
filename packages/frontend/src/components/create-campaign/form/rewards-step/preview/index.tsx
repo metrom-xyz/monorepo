@@ -42,7 +42,7 @@ export function RewardsPreview({
                         {numeral(reward.amount).format("(0.00 a)")}
                     </Typography>
                     <Typography weight="medium" light>
-                        $ 0
+                        {/* TODO: usd amount */}$ 0
                     </Typography>
                     <div className={styles.rewardName}>
                         <RemoteLogo

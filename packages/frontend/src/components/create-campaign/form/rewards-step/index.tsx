@@ -64,8 +64,7 @@ export function RewardsStep({
     });
 
     const campaignDuration = useMemo(() => {
-        if (!startDate || !endDate) return;
-
+        if (!startDate || !endDate) return undefined;
         return endDate.diff(startDate, "seconds");
     }, [endDate, startDate]);
 
@@ -236,7 +235,7 @@ export function RewardsStep({
                         {t("totalUsd")}
                     </Typography>
                     <Typography uppercase weight="bold" light>
-                        $ 0
+                        {/* TODO: usd amount */}$ 0
                     </Typography>
                 </div>
             </StepPreview>
