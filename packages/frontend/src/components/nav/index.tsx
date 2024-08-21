@@ -46,7 +46,9 @@ export function Nav() {
                     </div>
                 ))}
             </div>
-            <ConnectButton />
+            <div className={styles.chainStuffContainer}>
+                <ConnectButton />
+            </div>
         </div>
     );
 }

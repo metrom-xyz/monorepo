@@ -1,0 +1,14 @@
+.root {
+    @apply rounded-xl
+        border
+        bg-white
+        border-gray-200
+        z-10
+        transition-opacity
+        opacity-0
+        pointer-events-none;
+}
+
+.open {
+    @apply opacity-100 pointer-events-auto;
+}

@@ -7,6 +7,26 @@
 }
 
 .wrapper {
+    @apply flex gap-3;
+}
+
+.networkWrapper {
+    @apply bg-white w-10 h-10 rounded-md flex gap-3 items-center justify-center;
+}
+
+.networkIcon {
+    @apply w-7 h-7;
+}
+
+.networkRow {
+    @apply h-10 flex items-center px-2 gap-2 hover:bg-gray-200 transition-colors;
+}
+
+.networksWrapper {
+    @apply flex flex-col py-2;
+}
+
+.walletWrapper {
     @apply bg-white pl-3 pr-2 h-10 rounded-md flex gap-3 items-center justify-between;
 }
 

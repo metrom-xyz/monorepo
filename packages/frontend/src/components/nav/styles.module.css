@@ -38,3 +38,7 @@
 .tabActive {
     @apply bg-white hover:bg-white;
 }
+
+.chainStuffContainer {
+    @apply flex items-center gap-2;
+}
