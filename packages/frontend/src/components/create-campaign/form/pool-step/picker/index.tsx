@@ -156,6 +156,7 @@ export function PoolPicker({ value, amm, onChange }: PoolPickerProps) {
                                         return (
                                             <Row
                                                 style={style}
+                                                chain={chain}
                                                 loading={loading}
                                                 active={
                                                     pool &&

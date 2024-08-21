@@ -10,14 +10,22 @@ import { PoolName } from "@/src/ui/pool-name";
 import styles from "./styles.module.css";
 
 interface PickerRowProps {
-    pool: Pool;
     style?: any;
+    pool: Pool;
+    chain: number;
     loading?: boolean;
     active?: boolean;
     onClick: (pool: Pool) => void;
 }
 
-export function Row({ style, pool, active, loading, onClick }: PickerRowProps) {
+export function Row({
+    style,
+    pool,
+    chain,
+    active,
+    loading,
+    onClick,
+}: PickerRowProps) {
     const handlePoolOnClick = useCallback(() => {
         onClick(pool);
     }, [onClick, pool]);
@@ -36,6 +44,7 @@ export function Row({ style, pool, active, loading, onClick }: PickerRowProps) {
                     <Skeleton circular width="36px" />
                 ) : (
                     <PoolRemoteLogo
+                        chain={chain}
                         token0={{
                             address: pool.token0.address,
                             defaultText: pool.token0.symbol,
