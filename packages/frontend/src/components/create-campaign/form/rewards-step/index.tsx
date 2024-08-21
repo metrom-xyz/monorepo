@@ -161,9 +161,25 @@ export function RewardsStep({
             error={!!rewardAmountError}
         >
             <StepPreview
-                label={t("title")}
+                label={
+                    <div className={styles.previewLabelWrapper}>
+                        <Typography
+                            uppercase
+                            weight="medium"
+                            variant="sm"
+                            className={{ root: styles.previewLabel }}
+                        >
+                            {t("title")}
+                        </Typography>
+                        {rewardAmountError && (
+                            <ErrorText variant="xs" weight="medium">
+                                {t(rewardAmountError)}
+                            </ErrorText>
+                        )}
+                    </div>
+                }
                 decorator={disabled}
-                className={{ preview: styles.stepPreview }}
+                className={{ root: styles.stepPreview }}
             >
                 <div className={styles.previewWrapper}>
                     <RewardsPreview
@@ -171,11 +187,6 @@ export function RewardsStep({
                         chain={chainId}
                         onRemove={handleRewardTokenOnRemove}
                     />
-                    {rewardAmountError && (
-                        <ErrorText variant="sm" weight="medium">
-                            {t(rewardAmountError)}
-                        </ErrorText>
-                    )}
                     <div className={styles.rewardPickerWrapper}>
                         <NumberInput
                             placeholder="0"

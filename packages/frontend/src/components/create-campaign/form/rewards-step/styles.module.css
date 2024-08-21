@@ -2,6 +2,16 @@
     @apply hover:cursor-default hover:bg-inherit h-full;
 }
 
+.previewLabelWrapper {
+    @apply flex
+        items-center
+        gap-2;
+}
+
+.previewLabel {
+    @apply !text-inherit;
+}
+
 .previewWrapper {
     @apply flex flex-col gap-3;
 }
