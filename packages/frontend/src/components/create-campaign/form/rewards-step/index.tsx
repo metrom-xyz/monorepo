@@ -182,6 +182,7 @@ export function RewardsStep({
                 className={{ root: styles.stepPreview }}
             >
                 <div className={styles.previewWrapper}>
+                    {/* TODO: add balance validation to rewards added before connecting the wallet */}
                     <RewardsPreview
                         rewards={rewards}
                         chain={chainId}
