@@ -19,7 +19,7 @@ export interface StepPreviewProps {
     decorator?: boolean;
     children?: ReactNode;
     className?: {
-        preview?: string;
+        root?: string;
     };
 }
 
@@ -37,11 +37,11 @@ export function StepPreview({
     const labelSpringStyle = useSpring({
         ref: labelSpring,
         y: 0,
-        opacity: 1,
+        color: "black",
         fontSize: "1rem",
         to: {
             y: completed ? -8 : 0,
-            opacity: completed ? 0.4 : 1,
+            color: completed ? "#9CA3AF" : "black",
             fontSize: completed ? "0.75rem" : "1rem",
         },
         config: { duration: 100 },
@@ -65,7 +65,7 @@ export function StepPreview({
 
     return (
         <div
-            className={classNames(className?.preview, styles.root, {
+            className={classNames(className?.root, styles.root, {
                 [styles.rootCompleted]: completed,
                 [styles.rootOpen]: open,
             })}
@@ -76,11 +76,15 @@ export function StepPreview({
                         style={labelSpringStyle}
                         uppercase
                         weight="medium"
+                        className={{ root: styles.label }}
                     >
                         {label}
                     </AnimatedTypography>
                 ) : (
-                    <animated.div style={labelSpringStyle}>
+                    <animated.div
+                        style={labelSpringStyle}
+                        className={styles.label}
+                    >
                         {label}
                     </animated.div>
                 )}
