@@ -100,7 +100,6 @@ export class MetromApiClient {
                     pool: {
                         ...rawCampaign.pool,
                         amm: rawCampaign.pool.amm as SupportedAmm,
-                        tvl: rawCampaign.pool.tvl,
                     },
                     rewards,
                 };
@@ -125,7 +124,6 @@ export class MetromApiClient {
         return rawPoolsResponse.pools.map((pool) => ({
             ...pool,
             amm: pool.amm as SupportedAmm,
-            tvlUsd: pool.tvl,
         }));
     }
 
@@ -150,7 +148,6 @@ export class MetromApiClient {
                 ...rawClaim.token,
                 chainId: this.chain,
             },
-            amount: BigInt(rawClaim.amount),
         }));
     }
 

@@ -19,7 +19,7 @@
 }
 
 .fallbackText {
-    @apply select-none;
+    @apply select-none text-white;
 }
 
 .xs {

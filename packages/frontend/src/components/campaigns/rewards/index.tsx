@@ -21,7 +21,9 @@ export function Rewards({ from, to, rewards }: RewardsProps) {
           dayjs.unix(to).diff(dayjs.unix(from), "days", false)
         : 0;
 
-    return (
+    return perDayUsdValue === 0 ? (
+        <Typography>-</Typography>
+    ) : (
         <div className={styles.root}>
             {rewards.map((reward) => {
                 return (

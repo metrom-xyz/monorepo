@@ -10,16 +10,16 @@ interface AprProps {
 }
 
 export function Apr({ apr }: AprProps) {
-    return (
+    return apr ? (
         <div className={styles.root}>
             <Typography weight="medium">
-                {apr
-                    ? formatDecimals({
-                          number: apr.toString(),
-                      })
-                    : "-"}
+                {formatDecimals({
+                    number: apr.toString(),
+                })}
                 %
             </Typography>
         </div>
+    ) : (
+        <Typography weight="medium">-</Typography>
     );
 }

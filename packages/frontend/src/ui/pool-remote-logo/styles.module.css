@@ -3,7 +3,7 @@
 }
 
 .root > :last-child {
-    @apply absolute right-0;
+    @apply absolute right-1;
 }
 
 .sm {

@@ -73,14 +73,7 @@ export const RemoteLogo = ({
     }
 
     return (
-        <div
-            style={{
-                backgroundColor: getAddressColor(address),
-            }}
-            className={classNames(styles.fallback, {
-                [styles[size]]: true,
-            })}
-        >
+        <div className={`${styles.fallback} ${styles[size]}`}>
             <Typography uppercase className={{ root: styles.fallbackText }}>
                 {!!defaultText
                     ? defaultText.length > 4
