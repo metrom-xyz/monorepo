@@ -1,9 +1,13 @@
 .root {
-    @apply bg-white pl-3 pr-2 h-10 rounded-md cursor-pointer flex items-center;
+    @apply cursor-pointer flex items-center;
+}
+
+.connectButton {
+    @apply h-10 rounded-lg;
 }
 
 .wrapper {
-    @apply flex gap-3 items-center justify-between;
+    @apply bg-white pl-3 pr-2 h-10 rounded-md flex gap-3 items-center justify-between;
 }
 
 .account {

@@ -4,6 +4,7 @@ import styles from "./styles.module.css";
 import { WalletIcon } from "@/src/assets/wallet-icon";
 import { SettingsIcon } from "@/src/assets/settings-icon";
 import { Typography } from "@/src/ui/typography";
+import { Button } from "@/src/ui/button";
 
 // TODO: implement connect button
 export function ConnectButton() {
@@ -25,12 +26,15 @@ export function ConnectButton() {
                         {(() => {
                             if (!connected) {
                                 return (
-                                    <button
+                                    <Button
                                         onClick={openConnectModal}
                                         type="button"
+                                        className={{
+                                            root: styles.connectButton,
+                                        }}
                                     >
                                         Connect Wallet
-                                    </button>
+                                    </Button>
                                 );
                             }
 
