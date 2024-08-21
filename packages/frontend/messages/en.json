@@ -1,7 +1,8 @@
 {
     "navigation": {
         "allCampaigns": "All campaigns",
-        "newCampaign": "New campaign"
+        "newCampaign": "New campaign",
+        "connectWallet": "Connect wallet"
     },
     "allCampaigns": {
         "title": "all campaigns",

@@ -19,7 +19,7 @@
 }
 
 .networkRow {
-    @apply h-10 flex items-center px-2 gap-2 hover:bg-gray-200 transition-colors;
+    @apply h-10 flex items-center px-2 gap-2 hover:bg-gray-200 transition-colors duration-200;
 }
 
 .networksWrapper {

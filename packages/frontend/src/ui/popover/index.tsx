@@ -15,7 +15,7 @@ export interface PopoverProps {
     anchor?: Element | null;
     placement?: Placement;
     offset?: [number, number];
-    className?: { root?: string };
+    className?: string;
     children?: ReactNode;
 }
 

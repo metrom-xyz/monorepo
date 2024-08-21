@@ -11,8 +11,10 @@ import { Popover } from "@/src/ui/popover";
 import { useRef, useState } from "react";
 import { useChains, useSwitchChain } from "wagmi";
 import { useClickAway } from "react-use";
+import { useTranslations } from "next-intl";
 
 export function ConnectButton() {
+    const t = useTranslations();
     const chains = useChains();
     const { switchChain } = useSwitchChain();
 
@@ -115,7 +117,7 @@ export function ConnectButton() {
                                                 root: styles.connectButton,
                                             }}
                                         >
-                                            Connect Wallet
+                                            {t("navigation.connectWallet")}
                                         </Button>
                                     ) : (
                                         <div className={styles.walletWrapper}>
