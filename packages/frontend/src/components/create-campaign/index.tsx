@@ -36,12 +36,15 @@ export function CreateCampaign() {
             !payload.pool ||
             !payload.startDate ||
             !payload.endDate ||
+            !payload.rewards ||
+            payload.rewards.length === 0 ||
             Object.values(payloadErrors).some((error) => !!error)
         );
     }, [
         payload.amm,
         payload.endDate,
         payload.pool,
+        payload.rewards,
         payload.startDate,
         payloadErrors,
     ]);

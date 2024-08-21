@@ -50,7 +50,8 @@ export interface CampaignPayload {
 }
 
 export interface CampaignPayloadErrors {
-    period?: boolean;
+    startDate?: boolean;
+    endDate?: boolean;
     rewards?: boolean;
 }
 export type AmmInfo = Pick<Amm, "slug" | "name" | "logo">;

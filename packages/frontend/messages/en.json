@@ -36,7 +36,11 @@
                     "tvl": "Tvl"
                 }
             },
-            "startDate": { "title": "Start date", "apply": "Apply" },
+            "startDate": {
+                "title": "Start date",
+                "apply": "Apply",
+                "errors": { "dateInThePast": "Date can't be in the past" }
+            },
             "endDate": {
                 "title": "End date",
                 "apply": "Apply",
@@ -46,7 +50,11 @@
                     "1month": "1 month"
                 },
                 "campaignDuration": "Campaign duration",
-                "days": "{count} days"
+                "days": "{count} days",
+                "errors": {
+                    "endBeforeStart": "End date can't be before start date",
+                    "dateInThePast": "Date can't be in the past"
+                }
             },
             "rewards": {
                 "title": "Rewards",
