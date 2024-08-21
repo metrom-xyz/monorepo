@@ -17,7 +17,7 @@ export function PoolName({ pool }: PoolNameProps) {
                         root: styles.tokenName,
                     }}
                 >
-                    {pool.token1.symbol}
+                    {pool.token0.symbol}
                 </Typography>
                 <Typography variant="lg" light>
                     /
@@ -29,7 +29,7 @@ export function PoolName({ pool }: PoolNameProps) {
                         root: styles.tokenName,
                     }}
                 >
-                    {pool.token0.symbol}
+                    {pool.token1.symbol}
                 </Typography>
             </div>
         </div>
