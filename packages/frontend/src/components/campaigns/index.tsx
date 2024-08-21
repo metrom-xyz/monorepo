@@ -33,18 +33,20 @@ export function Campaigns() {
                     Rewards
                 </Typography>
             </div>
-            {loading
-                ? "Loading..."
-                : campaigns.map((campaign) => {
-                      return (
-                          <Campaign
-                              key={campaign.id}
-                              amms={amms}
-                              campaign={campaign}
-                              className={`${styles.row} ${styles.bodyRow}`}
-                          />
-                      );
-                  })}
+            <div className={styles.body}>
+                {loading
+                    ? "Loading..."
+                    : campaigns.map((campaign) => {
+                          return (
+                              <Campaign
+                                  key={campaign.id}
+                                  amms={amms}
+                                  campaign={campaign}
+                                  className={`${styles.row} ${styles.bodyRow}`}
+                              />
+                          );
+                      })}
+            </div>
         </div>
     );
 }

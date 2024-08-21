@@ -41,3 +41,7 @@
 .bold {
     @apply font-bold;
 }
+
+.mono {
+    @apply font-mono;
+}

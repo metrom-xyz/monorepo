@@ -20,13 +20,19 @@ export function PoolRemoteLogo({
     className,
 }: PoolRemoteLogoProps) {
     return (
-        <div
-            className={classNames(className?.root, styles.root, {
-                [styles[size]]: true,
-            })}
-        >
-            <RemoteLogo chain={chain} size={size} {...token1} defaultText=" " />
-            <RemoteLogo chain={chain} size={size} {...token0} defaultText=" " />
+        <div className={`${styles.root} ${styles[size]} ${className?.root}`}>
+            <RemoteLogo
+                chain={chain}
+                size={size}
+                {...token0}
+                defaultText={token0?.defaultText}
+            />
+            <RemoteLogo
+                chain={chain}
+                size={size}
+                {...token1}
+                defaultText={token1?.defaultText}
+            />
         </div>
     );
 }

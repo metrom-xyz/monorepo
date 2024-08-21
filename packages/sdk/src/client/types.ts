@@ -3,8 +3,8 @@ import type { Address } from "viem";
 interface RawClaimableRewards {
     campaignId: Address;
     token: RawToken;
-    amount: string;
-    remaining: string;
+    amount: number;
+    remaining: number;
     proof: Address[];
 }
 

@@ -10,7 +10,7 @@ export interface Token {
 
 export interface TokenAmount {
     token: Token;
-    amount: bigint;
+    amount: number;
 }
 
 export interface UsdPricedToken extends Token {
@@ -50,7 +50,7 @@ export interface Campaign {
 export interface Claim extends TokenAmount {
     campaignId: Address;
     token: Token;
-    amount: bigint;
+    amount: number;
     proof: Address[];
 }
 

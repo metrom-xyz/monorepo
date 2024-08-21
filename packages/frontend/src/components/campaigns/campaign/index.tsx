@@ -1,9 +1,9 @@
 import type { AmmInfo } from "@/src/types";
-import { Apr } from "../apr";
-import { Pool } from "../pool";
-import { Status } from "../status";
+import { Apr } from "./apr";
+import { Pool } from "./pool";
+import { Status } from "./status";
 import type { Campaign as CampaignType } from "@metrom-xyz/sdk";
-import { Rewards } from "../rewards";
+import { Rewards } from "./rewards";
 
 interface CampaignProps {
     campaign: CampaignType;

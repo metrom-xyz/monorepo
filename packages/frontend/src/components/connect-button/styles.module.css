@@ -1,5 +1,5 @@
 .root {
-    @apply bg-white p-2.5 rounded-md;
+    @apply bg-white pl-3 pr-2 h-10 rounded-md cursor-pointer flex items-center;
 }
 
 .wrapper {
@@ -11,7 +11,7 @@
 }
 
 .icon {
-    @apply w-7 h-7;
+    @apply w-5 h-5;
 }
 
 .settings {

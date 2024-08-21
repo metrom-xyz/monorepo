@@ -1,31 +1,5 @@
-import { formatUnits } from "viem";
-import { type TokenAmount } from "../entities";
-
 export const enforceDoubleDigits = (n: number): string => {
     return n < 10 ? `0${n}` : n.toString();
-};
-
-export interface FormatCurrencyAmountParams {
-    amount: TokenAmount;
-    withSymbol?: boolean;
-    commify?: boolean;
-    nonZeroDecimalsAmount?: number;
-}
-
-export const formatTokenAmount = ({
-    amount,
-    withSymbol = true,
-    commify = true,
-    nonZeroDecimalsAmount = 4,
-}: FormatCurrencyAmountParams) => {
-    const rawBaseAmount = formatDecimals({
-        number: formatUnits(amount.amount, amount.token.decimals),
-        decimalsAmount: nonZeroDecimalsAmount,
-        commify,
-    });
-    return withSymbol
-        ? `${rawBaseAmount} ${amount.token.symbol}`
-        : rawBaseAmount;
 };
 
 export interface FormatDecimalsParams {
