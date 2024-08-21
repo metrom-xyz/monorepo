@@ -57,3 +57,8 @@ export interface Claim extends TokenAmount {
 export interface WhitelistedErc20Token extends Token {
     minimumRate: bigint;
 }
+
+export interface WhitelistedErc20TokenWithBalance
+    extends WhitelistedErc20Token {
+    balance?: bigint;
+}

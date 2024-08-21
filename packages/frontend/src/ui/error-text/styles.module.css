@@ -1,0 +1,11 @@
+.root {
+    @apply flex items-center gap-1;
+}
+
+.icon {
+    @apply w-3.5 h-3.5 text-red-600;
+}
+
+.text {
+    @apply !text-red-600;
+}

@@ -3,7 +3,11 @@
 import { useChainId } from "wagmi";
 import { useTranslations } from "next-intl";
 import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
-import type { CampaignPayload, CampaignPayloadPart } from "@/src/types";
+import type {
+    CampaignPayload,
+    CampaignPayloadPart,
+    CampaignPayloadErrors,
+} from "@/src/types";
 import { Button } from "@/src/ui/button";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { CreateCampaignForm } from "./form";
@@ -19,7 +23,11 @@ enum View {
 export function CreateCampaign() {
     const t = useTranslations("newCampaign");
     const [payload, setPayload] = useState<CampaignPayload>({});
+    const [payloadErrors, setPayloadErrors] = useState<CampaignPayloadErrors>(
+        {},
+    );
     const [view, setView] = useState<View>(View.form);
+
     const chainId = useChainId();
 
     // TODO: add complete validation
@@ -28,9 +36,19 @@ export function CreateCampaign() {
             !payload.amm ||
             !payload.pool ||
             !payload.startDate ||
-            !payload.endDate
+            !payload.endDate ||
+            !payload.rewards ||
+            payload.rewards.length === 0 ||
+            Object.values(payloadErrors).some((error) => !!error)
         );
-    }, [payload]);
+    }, [
+        payload.amm,
+        payload.endDate,
+        payload.pool,
+        payload.rewards,
+        payload.startDate,
+        payloadErrors,
+    ]);
 
     useEffect(() => {
         setPayload({});
@@ -38,7 +56,7 @@ export function CreateCampaign() {
 
     // TODO: remove
     useEffect(() => {
-        console.log(JSON.stringify(payload, null, 4));
+        console.log(payload);
     }, [payload]);
 
     const handlePayloadOnChange = useCallback(
@@ -48,12 +66,20 @@ export function CreateCampaign() {
         [payload],
     );
 
+    const handlePayloadOnError = useCallback(
+        (errors: CampaignPayloadErrors) => {
+            setPayloadErrors((state) => ({ ...state, ...errors }));
+        },
+        [],
+    );
+
     return (
         <div className={styles.root}>
             {view === View.form && (
                 <CreateCampaignForm
                     payload={payload}
                     onPayloadChange={handlePayloadOnChange}
+                    onPayloadError={handlePayloadOnError}
                 />
             )}
             {view === View.summary && <Summary />}

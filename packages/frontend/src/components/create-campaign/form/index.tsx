@@ -1,5 +1,9 @@
 import { useTranslations } from "next-intl";
-import type { CampaignPayload, CampaignPayloadPart } from "@/src/types";
+import type {
+    CampaignPayload,
+    CampaignPayloadPart,
+    CampaignPayloadErrors,
+} from "@/src/types";
 import { AmmStep } from "./amm-step";
 import { PoolStep } from "./pool-step";
 import { StartDateStep } from "./start-date-step";
@@ -11,11 +15,13 @@ import styles from "./styles.module.css";
 export interface CreateCampaignFormProps {
     payload?: CampaignPayload;
     onPayloadChange: (part: CampaignPayloadPart) => void;
+    onPayloadError: (errors: CampaignPayloadErrors) => void;
 }
 
 export function CreateCampaignForm({
     payload,
     onPayloadChange,
+    onPayloadError,
 }: CreateCampaignFormProps) {
     const t = useTranslations("newCampaign.form");
 
@@ -33,17 +39,22 @@ export function CreateCampaignForm({
                 startDate={payload?.startDate}
                 endDate={payload?.endDate}
                 onStartDateChange={onPayloadChange}
+                onError={onPayloadError}
             />
             <EndDateStep
                 disabled={!payload?.startDate}
                 startDate={payload?.startDate}
                 endDate={payload?.endDate}
                 onEndDateChange={onPayloadChange}
+                onError={onPayloadError}
             />
             <RewardsStep
                 disabled={!payload?.endDate}
                 rewards={payload?.rewards}
+                startDate={payload?.startDate}
+                endDate={payload?.endDate}
                 onRewardsChange={onPayloadChange}
+                onError={onPayloadError}
             />
         </div>
     );

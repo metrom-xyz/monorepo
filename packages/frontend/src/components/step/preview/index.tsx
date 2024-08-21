@@ -1,4 +1,4 @@
-import { type ReactNode } from "react";
+import { type CSSProperties, type ReactNode } from "react";
 import {
     animated,
     useChain,
@@ -16,7 +16,11 @@ export interface StepPreviewProps {
     label: ReactNode;
     open?: boolean;
     completed?: boolean;
+    decorator?: boolean;
     children?: ReactNode;
+    className?: {
+        root?: string;
+    };
 }
 
 const AnimatedTypography = animated(Typography);
@@ -25,17 +29,19 @@ export function StepPreview({
     label,
     open,
     completed,
+    decorator = true,
     children,
+    className,
 }: StepPreviewProps) {
     const labelSpring = useSpringRef();
     const labelSpringStyle = useSpring({
         ref: labelSpring,
         y: 0,
-        opacity: 1,
+        color: "black",
         fontSize: "1rem",
         to: {
-            y: completed ? -18 : 0,
-            opacity: completed ? 0.4 : 1,
+            y: completed ? -8 : 0,
+            color: completed ? "#9CA3AF" : "black",
             fontSize: completed ? "0.75rem" : "1rem",
         },
         config: { duration: 100 },
@@ -59,7 +65,7 @@ export function StepPreview({
 
     return (
         <div
-            className={classNames(styles.root, {
+            className={classNames(className?.root, styles.root, {
                 [styles.rootCompleted]: completed,
                 [styles.rootOpen]: open,
             })}
@@ -70,11 +76,15 @@ export function StepPreview({
                         style={labelSpringStyle}
                         uppercase
                         weight="medium"
+                        className={{ root: styles.label }}
                     >
                         {label}
                     </AnimatedTypography>
                 ) : (
-                    <animated.div style={labelSpringStyle}>
+                    <animated.div
+                        style={labelSpringStyle}
+                        className={styles.label}
+                    >
                         {label}
                     </animated.div>
                 )}
@@ -92,13 +102,15 @@ export function StepPreview({
                         ),
                 )}
             </div>
-            <div className={styles.iconWrapper}>
-                <ChevronDownIcon
-                    className={classNames(styles.icon, {
-                        [styles.iconOpen]: open,
-                    })}
-                />
-            </div>
+            {decorator && (
+                <div className={styles.iconWrapper}>
+                    <ChevronDownIcon
+                        className={classNames(styles.icon, {
+                            [styles.iconOpen]: open,
+                        })}
+                    />
+                </div>
+            )}
         </div>
     );
 }

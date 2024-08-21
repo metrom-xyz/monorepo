@@ -1,14 +1,21 @@
 import { useCallback, useEffect, useState } from "react";
+import { usePrevious } from "react-use";
 import { useChainId } from "wagmi";
 import dayjs, { type Dayjs } from "dayjs";
 import { useTranslations } from "next-intl";
 import { Step } from "@/src/components/step";
 import { StepPreview } from "@/src/components/step/preview";
 import { StepContent } from "@/src/components/step/content";
-import type { CampaignPayload, CampaignPayloadPart } from "@/src/types";
+import type {
+    CampaignPayload,
+    CampaignPayloadErrors,
+    CampaignPayloadPart,
+} from "@/src/types";
 import { Typography } from "@/src/ui/typography";
 import { Button } from "@/src/ui/button";
 import { DateTimePicker } from "@/src/ui/date-time-picker";
+import { ErrorText } from "@/src/ui/error-text";
+import { getClosestAvailableDateTime } from "@/src/utils/date";
 
 import styles from "./styles.module.css";
 
@@ -17,6 +24,7 @@ interface StartDateStepProps {
     startDate?: CampaignPayload["startDate"];
     endDate?: CampaignPayload["endDate"];
     onStartDateChange: (startDate: CampaignPayloadPart) => void;
+    onError: (errors: CampaignPayloadErrors) => void;
 }
 
 export function StartDateStep({
@@ -24,10 +32,15 @@ export function StartDateStep({
     startDate,
     endDate,
     onStartDateChange,
+    onError,
 }: StartDateStepProps) {
     const t = useTranslations("newCampaign.form.startDate");
     const [open, setOpen] = useState(false);
     const [date, setDate] = useState<Dayjs | undefined>(startDate);
+    const [minDate, setMinDate] = useState<Dayjs | undefined>();
+    const [dateError, setDateError] = useState("");
+
+    const previousDate = usePrevious(date);
     const chainId = useChainId();
 
     useEffect(() => {
@@ -38,6 +51,31 @@ export function StartDateStep({
         if (disabled) return;
         setOpen(true);
     }, [disabled]);
+
+    useEffect(() => {
+        if (minDate || !open) return;
+        setMinDate(getClosestAvailableDateTime());
+    }, [minDate, open]);
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            if (date?.isBefore(dayjs()))
+                setMinDate(getClosestAvailableDateTime(date));
+        }, 1_000);
+        return () => {
+            clearInterval(interval);
+        };
+    }, [date, minDate]);
+
+    useEffect(() => {
+        if (!date || !minDate || !previousDate) return;
+
+        let dateError = "";
+        if (date.isBefore(minDate)) dateError = "errors.dateInThePast";
+
+        onError({ startDate: !!dateError });
+        setDateError(dateError);
+    }, [date, minDate, onError, previousDate]);
 
     const handleStepOnClick = useCallback(() => {
         if (open && !startDate) setDate(undefined);
@@ -55,11 +93,28 @@ export function StartDateStep({
             disabled={disabled}
             open={open}
             completed={!!date || !!startDate}
+            error={!!dateError}
             onPreviewClick={handleStepOnClick}
         >
-            <StepPreview label={t("title")}>
-                {/* TODO: add input mask for date */}
-                {/* TODO: add errors */}
+            <StepPreview
+                label={
+                    <div className={styles.previewLabelWrapper}>
+                        <Typography
+                            uppercase
+                            weight="medium"
+                            variant="sm"
+                            className={{ root: styles.previewLabel }}
+                        >
+                            {t("title")}
+                        </Typography>
+                        {dateError && (
+                            <ErrorText variant="xs" weight="medium">
+                                {t(dateError)}
+                            </ErrorText>
+                        )}
+                    </div>
+                }
+            >
                 <Typography
                     uppercase
                     variant="lg"
@@ -73,7 +128,7 @@ export function StartDateStep({
                 <div className={styles.stepContent}>
                     <DateTimePicker
                         value={date}
-                        min={dayjs()}
+                        min={minDate}
                         range={{ from: date, to: endDate }}
                         onChange={setDate}
                     />

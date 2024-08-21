@@ -5,7 +5,7 @@
         px-4
         py-7
         rounded-2xl
-        h-[5.188rem]
+        h-[5.25rem]
         hover:bg-gray-200
         hover:cursor-pointer
         transition-colors
@@ -22,11 +22,15 @@
 }
 
 .wrapper {
-    @apply w-full relative select-none;
+    @apply w-full select-none;
+}
+
+.label {
+    @apply flex items-center w-full min-h-6;
 }
 
 .children {
-    @apply w-full absolute top-2 invisible;
+    @apply w-full flex invisible;
 }
 
 .childrenShow {

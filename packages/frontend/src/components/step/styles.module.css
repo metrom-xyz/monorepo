@@ -1,6 +1,9 @@
 .root {
     @apply bg-white
         rounded-2xl
+        border
+        border-transparent
+        hover:border-gray-200
         overflow-hidden
         transition-colors
         duration-200
@@ -11,10 +14,14 @@
     @apply transition-opacity duration-200 ease-in-out;
 }
 
-.rootDisabled {
+.disabled {
     @apply hover:cursor-not-allowed;
 }
 
-.rootDisabled > * {
+.disabled > * {
     @apply pointer-events-none opacity-40 select-none;
+}
+
+.error {
+    @apply border-red-600 hover:border-red-600;
 }

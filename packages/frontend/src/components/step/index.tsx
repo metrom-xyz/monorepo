@@ -11,6 +11,7 @@ interface StepProps {
     disabled?: boolean;
     completed?: boolean;
     open?: boolean;
+    error?: boolean;
     onPreviewClick?: () => void;
     children: ReactElement[];
 }
@@ -19,14 +20,16 @@ export function Step({
     disabled,
     completed,
     open,
+    error,
     onPreviewClick,
     children,
 }: StepProps) {
+    const rootRef = useRef<HTMLDivElement>(null);
     const wrapperRef = useRef<HTMLDivElement>(null);
 
     const [springStyles, springApi] = useSpring(
         () => ({
-            height: "83px",
+            height: "84px",
         }),
         [],
     );
@@ -47,20 +50,24 @@ export function Step({
 
     useEffect(() => {
         springApi.start({
-            height: (open ? wrapperRef?.current?.offsetHeight : 83) + "px",
+            height:
+                (open
+                    ? wrapperRef?.current?.offsetHeight
+                    : rootRef.current?.offsetHeight) + "px",
             config: { duration: 200, easing: easings.easeInOutCubic },
         });
-    }, [springApi, open]);
+    }, [springApi, open, previewChildren]);
 
     return (
         <animated.div
             style={springStyles}
             className={classNames(styles.root, {
-                [styles.rootDisabled]: disabled,
+                [styles.disabled]: disabled,
+                [styles.error]: error,
             })}
         >
             <div ref={wrapperRef}>
-                <div onClick={onPreviewClick}>
+                <div ref={rootRef} onClick={onPreviewClick}>
                     {React.cloneElement<StepPreviewProps>(previewChildren, {
                         open,
                         completed,

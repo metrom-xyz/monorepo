@@ -5,19 +5,26 @@ import { Typography } from "@/src/ui/typography";
 import classNames from "@/src/utils/classes";
 import { PoolRemoteLogo } from "@/src/ui/pool-remote-logo";
 import { Skeleton } from "@/src/ui/skeleton";
-import { PoolName } from "@/src/ui/pool-name";
 
 import styles from "./styles.module.css";
 
 interface PickerRowProps {
-    pool: Pool;
     style?: any;
+    pool: Pool;
+    chain: number;
     loading?: boolean;
     active?: boolean;
     onClick: (pool: Pool) => void;
 }
 
-export function Row({ style, pool, active, loading, onClick }: PickerRowProps) {
+export function Row({
+    style,
+    pool,
+    chain,
+    active,
+    loading,
+    onClick,
+}: PickerRowProps) {
     const handlePoolOnClick = useCallback(() => {
         onClick(pool);
     }, [onClick, pool]);
@@ -36,6 +43,7 @@ export function Row({ style, pool, active, loading, onClick }: PickerRowProps) {
                     <Skeleton circular width="36px" />
                 ) : (
                     <PoolRemoteLogo
+                        chain={chain}
                         token0={{
                             address: pool.token0.address,
                             defaultText: pool.token0.symbol,
@@ -50,7 +58,9 @@ export function Row({ style, pool, active, loading, onClick }: PickerRowProps) {
                     {loading ? (
                         <Skeleton width="64px" variant="sm" />
                     ) : (
-                        <PoolName pool={pool} />
+                        <Typography weight="medium" variant="lg">
+                            {pool.token0.symbol} / {pool.token1.symbol}
+                        </Typography>
                     )}
                     {loading ? (
                         <Skeleton width="32px" variant="xs" />
