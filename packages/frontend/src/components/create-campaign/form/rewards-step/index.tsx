@@ -12,7 +12,11 @@ import type {
 import { Step } from "@/src/components/step";
 import { StepPreview } from "@/src/components/step/preview";
 import { StepContent } from "@/src/components/step/content";
-import type { CampaignPayload, CampaignPayloadPart } from "@/src/types";
+import type {
+    CampaignPayload,
+    CampaignPayloadPart,
+    CampaignPayloadErrors,
+} from "@/src/types";
 import { RewardTokensList } from "./reward-tokens-list";
 import { NumberInput, type NumberFormatValues } from "@/src/ui/number-input";
 import { RemoteLogo } from "@/src/ui/remote-logo";
@@ -30,6 +34,7 @@ interface RewardsStepProps {
     startDate?: CampaignPayload["startDate"];
     endDate?: CampaignPayload["endDate"];
     onRewardsChange: (rewards: CampaignPayloadPart) => void;
+    onError: (errors: CampaignPayloadErrors) => void;
 }
 
 export function RewardsStep({
@@ -38,6 +43,7 @@ export function RewardsStep({
     startDate,
     endDate,
     onRewardsChange,
+    onError,
 }: RewardsStepProps) {
     const t = useTranslations("newCampaign.form.rewards");
     const [open, setOpen] = useState(false);
@@ -88,14 +94,22 @@ export function RewardsStep({
         const distributionRate =
             (rewardAmount * 3_600n) / BigInt(campaignDuration);
 
-        setRewardAmountError(
+        const error =
             rewardAmount > rewardTokenBalance
                 ? "errors.insufficientBalance"
                 : distributionRate < rewardToken.minimumRate
                   ? "errors.lowDistributionRate"
-                  : "",
-        );
-    }, [campaignDuration, rewardAmount, rewardToken, rewardTokenBalance]);
+                  : "";
+
+        onError({ rewards: !!error });
+        setRewardAmountError(error);
+    }, [
+        campaignDuration,
+        onError,
+        rewardAmount,
+        rewardToken,
+        rewardTokenBalance,
+    ]);
 
     function handleRewardTokenButtonOnClick() {
         setOpen((open) => !open);
@@ -140,10 +154,15 @@ export function RewardsStep({
     );
 
     return (
-        <Step disabled={disabled} open={open} completed={!disabled}>
+        <Step
+            disabled={disabled}
+            open={open}
+            completed={!disabled}
+            error={!!rewardAmountError}
+        >
             <StepPreview
                 label={t("title")}
-                decorator={false}
+                decorator={disabled}
                 className={{ preview: styles.stepPreview }}
             >
                 <div className={styles.previewWrapper}>
@@ -174,7 +193,6 @@ export function RewardsStep({
                                 inputWrapper: styles.rewardTokenAmountInput,
                             }}
                         />
-
                         <div
                             className={styles.rewardTokenSelect}
                             onClick={handleRewardTokenButtonOnClick}

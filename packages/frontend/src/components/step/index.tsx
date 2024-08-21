@@ -11,6 +11,7 @@ interface StepProps {
     disabled?: boolean;
     completed?: boolean;
     open?: boolean;
+    error?: boolean;
     onPreviewClick?: () => void;
     children: ReactElement[];
 }
@@ -19,6 +20,7 @@ export function Step({
     disabled,
     completed,
     open,
+    error,
     onPreviewClick,
     children,
 }: StepProps) {
@@ -27,7 +29,7 @@ export function Step({
 
     const [springStyles, springApi] = useSpring(
         () => ({
-            height: "83px",
+            height: "84px",
         }),
         [],
     );
@@ -60,7 +62,8 @@ export function Step({
         <animated.div
             style={springStyles}
             className={classNames(styles.root, {
-                [styles.rootDisabled]: disabled,
+                [styles.disabled]: disabled,
+                [styles.error]: error,
             })}
         >
             <div ref={wrapperRef}>

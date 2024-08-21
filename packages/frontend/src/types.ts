@@ -49,5 +49,9 @@ export interface CampaignPayload {
     // };
 }
 
+export interface CampaignPayloadErrors {
+    period?: boolean;
+    rewards?: boolean;
+}
 export type AmmInfo = Pick<Amm, "slug" | "name" | "logo">;
 export type CampaignPayloadPart = PropertyUnion<CampaignPayload>;
