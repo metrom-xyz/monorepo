@@ -23,7 +23,7 @@
 }
 
 .error {
-    @apply border-red-600 hover:border-red-600;
+    @apply border-red-600 hover:!border-red-600;
 }
 
 .open {

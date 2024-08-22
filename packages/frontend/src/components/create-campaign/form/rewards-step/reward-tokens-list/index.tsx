@@ -1,11 +1,5 @@
-import { useEffect, useMemo, useRef } from "react";
-import {
-    useAccount,
-    useBlockNumber,
-    useChainId,
-    useReadContracts,
-} from "wagmi";
-import { erc20Abi } from "viem";
+import { useRef } from "react";
+import { useAccount, useChainId } from "wagmi";
 import AutoSizer from "react-virtualized-auto-sizer";
 import { FixedSizeList } from "react-window";
 import { useTranslations } from "next-intl";
@@ -13,10 +7,10 @@ import {
     type Token,
     type TokenAmount,
     type WhitelistedErc20Token,
-    type WhitelistedErc20TokenWithBalance,
 } from "@metrom-xyz/sdk";
 import { Typography } from "@/src/ui/typography";
 import { useWhitelistedRewardsTokens } from "@/src/hooks/useWhitelistedRewardsTokens";
+import { useWatchBalances } from "@/src/hooks/useWatchBalances";
 import { Row } from "./row";
 
 import styles from "./styles.module.css";
@@ -39,57 +33,10 @@ export function RewardTokensList({
     const chainId = useChainId();
     const { whitelistedTokens, loading } = useWhitelistedRewardsTokens();
 
-    const { data: blockNumber } = useBlockNumber({ watch: true });
-    // TODO: check if this works well with a lot of whitelisted tokens
     const {
-        data: rewardTokenRawBalances,
-        isLoading: loadingBalances,
-        refetch,
-    } = useReadContracts({
-        contracts: whitelistedTokens.map((whitelistedToken) => {
-            return {
-                address: whitelistedToken?.address,
-                abi: erc20Abi,
-                functionName: "balanceOf",
-                args: [address],
-            };
-        }),
-        allowFailure: true,
-        query: { enabled: !!address },
-    });
-
-    const whitelistedTokensWithBalance = useMemo(() => {
-        if (
-            !rewardTokenRawBalances ||
-            rewardTokenRawBalances.length !== whitelistedTokens.length
-        )
-            return whitelistedTokens;
-
-        const tokensInChainWithBalance = whitelistedTokens.reduce(
-            (
-                accumulator: Record<string, WhitelistedErc20TokenWithBalance>,
-                token,
-                i,
-            ) => {
-                const rawBalance = rewardTokenRawBalances[i];
-                accumulator[`${token.address.toLowerCase()}`] =
-                    rawBalance.status !== "failure"
-                        ? {
-                              ...token,
-                              balance: rawBalance.result as bigint,
-                          }
-                        : { ...token, balance: undefined };
-                return accumulator;
-            },
-            {},
-        );
-
-        return Object.values(tokensInChainWithBalance);
-    }, [rewardTokenRawBalances, whitelistedTokens]);
-
-    useEffect(() => {
-        refetch();
-    }, [blockNumber, refetch]);
+        tokensWithBalance: whitelistedTokensWithBalance,
+        loading: loadingBalances,
+    } = useWatchBalances(address, whitelistedTokens);
 
     return (
         <div className={styles.root}>
@@ -123,7 +70,7 @@ export function RewardTokensList({
                                 className={styles.list}
                             >
                                 {({ index, style, data }) => {
-                                    const token: WhitelistedErc20TokenWithBalance | null =
+                                    const whitelistedToken: WhitelistedErc20Token | null =
                                         data[index];
                                     return (
                                         <Row
@@ -134,14 +81,15 @@ export function RewardTokensList({
                                                 !!unavailable?.find(
                                                     ({ token: { address } }) =>
                                                         address ===
-                                                        token?.address,
+                                                        whitelistedToken?.address,
                                                 )
                                             }
                                             active={
-                                                !!token &&
-                                                token.address === value?.address
+                                                !!whitelistedToken &&
+                                                whitelistedToken.address ===
+                                                    value?.address
                                             }
-                                            token={token}
+                                            token={whitelistedToken}
                                             onClick={onRewardTokenClick}
                                         />
                                     );
