@@ -16,6 +16,7 @@ import styles from "./styles.module.css";
 interface ApproveRewardProps {
     fee?: number;
     loading: boolean;
+    disabled: boolean;
     reward: TokenAmount;
     index: number;
     totalAmount: number;
@@ -27,6 +28,7 @@ export function ApproveReward({
     // TODO: show fee somewhere
     fee,
     loading,
+    disabled,
     reward,
     index,
     totalAmount,
@@ -86,7 +88,7 @@ export function ApproveReward({
             icon={RewardIcon}
             iconPlacement="right"
             onClick={handleClick}
-            disabled={!approveAsync}
+            disabled={!approveAsync || disabled}
             loading={
                 loading || simulatingApprove || signingTransaction || approving
             }

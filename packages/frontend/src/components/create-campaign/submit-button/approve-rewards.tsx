@@ -15,12 +15,14 @@ import { CHAIN_DATA } from "@/src/commons";
 interface ApproveRewardsProps {
     rewards?: CampaignPayload["rewards"];
     spender?: Address;
+    disabled: boolean;
     onApprove: () => void;
 }
 
 export function ApproveRewards({
     rewards,
     spender,
+    disabled,
     onApprove,
 }: ApproveRewardsProps) {
     const chain: SupportedChain = useChainId();
@@ -113,6 +115,7 @@ export function ApproveRewards({
                 !currentlyApprovingReward ||
                 !spender
             }
+            disabled={disabled}
             fee={fee}
             reward={currentlyApprovingReward}
             index={currentIndex + 1}

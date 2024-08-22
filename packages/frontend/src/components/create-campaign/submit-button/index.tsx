@@ -134,6 +134,7 @@ export function SubmitButton({
         return (
             <ApproveRewards
                 onApprove={handleOnApprove}
+                disabled={malformedPayload}
                 rewards={payload?.rewards}
                 spender={CHAIN_DATA[chain].contract.address}
             />

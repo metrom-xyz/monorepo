@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { formatUnits } from "viem";
+import { formatUnits, type Address } from "viem";
 import { Button } from "@/src/ui/button";
 import { useAccount, useChainId } from "wagmi";
 import { useTranslations } from "next-intl";
@@ -50,6 +50,12 @@ export function RewardsStep({
     const [rewardAmount, setRewardAmount] = useState<number | undefined>();
     const [rewardToken, setRewardToken] = useState<WhitelistedErc20Token>();
     const [rewardAmountError, setRewardAmountError] = useState("");
+    const [existingRewardsErrors, setExistingRewardsErrors] = useState<
+        {
+            address: Address;
+            error?: string;
+        }[]
+    >([]);
 
     const { address } = useAccount();
     const chainId = useChainId();
@@ -63,6 +69,18 @@ export function RewardsStep({
         if (!startDate || !endDate) return undefined;
         return endDate.diff(startDate, "seconds");
     }, [endDate, startDate]);
+
+    const rewardsError = useMemo(() => {
+        if (!!rewardAmountError) return rewardAmountError;
+
+        return existingRewardsErrors.length > 0
+            ? existingRewardsErrors[0].error
+            : "";
+    }, [existingRewardsErrors, rewardAmountError]);
+
+    useEffect(() => {
+        onError({ rewards: !!rewardsError });
+    }, [onError, rewardsError]);
 
     useEffect(() => {
         setOpen(false);
@@ -97,15 +115,35 @@ export function RewardsStep({
                   ? "errors.lowDistributionRate"
                   : "";
 
-        onError({ rewards: !!error });
         setRewardAmountError(error);
-    }, [
-        campaignDuration,
-        onError,
-        rewardAmount,
-        rewardToken,
-        rewardTokenBalance,
-    ]);
+    }, [campaignDuration, rewardAmount, rewardToken, rewardTokenBalance]);
+
+    const handleExistingRewardsValidation = useCallback(
+        (address: Address, error?: string) => {
+            const duplicateError = existingRewardsErrors.find(
+                (existingRewardError) =>
+                    existingRewardError.address === address,
+            );
+
+            if (!!error && !!duplicateError) return;
+            if (!error && !duplicateError) return;
+
+            if (!!error) {
+                setExistingRewardsErrors([
+                    ...existingRewardsErrors,
+                    { address, error },
+                ]);
+            } else {
+                setExistingRewardsErrors(
+                    existingRewardsErrors.filter(
+                        (existingRewardError) =>
+                            existingRewardError.address !== address,
+                    ),
+                );
+            }
+        },
+        [existingRewardsErrors],
+    );
 
     function handleRewardTokenButtonOnClick() {
         setOpen((open) => !open);
@@ -154,7 +192,7 @@ export function RewardsStep({
             disabled={disabled}
             open={open}
             completed={!disabled}
-            error={!!rewardAmountError}
+            error={!!rewardsError}
         >
             <StepPreview
                 label={
@@ -167,9 +205,9 @@ export function RewardsStep({
                         >
                             {t("title")}
                         </Typography>
-                        {rewardAmountError && (
+                        {rewardsError && (
                             <ErrorText variant="xs" weight="medium">
-                                {t(rewardAmountError)}
+                                {t(rewardsError)}
                             </ErrorText>
                         )}
                     </div>
@@ -178,11 +216,11 @@ export function RewardsStep({
                 className={{ root: styles.stepPreview }}
             >
                 <div className={styles.previewWrapper}>
-                    {/* TODO: add balance validation to rewards added before connecting the wallet */}
                     <RewardsPreview
                         rewards={rewards}
                         campaignDuration={campaignDuration}
                         onRemove={handleRewardTokenOnRemove}
+                        onError={handleExistingRewardsValidation}
                     />
                     <div className={styles.rewardPickerWrapper}>
                         <NumberInput

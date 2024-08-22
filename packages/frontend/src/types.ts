@@ -7,7 +7,7 @@ import type {
 } from "@metrom-xyz/sdk";
 import type { Dayjs } from "dayjs";
 import type { SVGProps, FunctionComponent } from "react";
-import type { ChainContract, Address } from "viem";
+import type { ChainContract } from "viem";
 
 type PropertyUnion<T> = {
     [K in keyof T]: { [P in K]: T[K] };

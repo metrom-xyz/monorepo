@@ -3,20 +3,30 @@ import { RemoteLogo } from "@/src/ui/remote-logo";
 import { Typography } from "@/src/ui/typography";
 import type { Token, WhitelistedErc20TokenAmount } from "@metrom-xyz/sdk";
 import numeral from "numeral";
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useWatchBalance } from "@/src/hooks/useWatchBalance";
 import { useAccount, useChainId } from "wagmi";
 import { formatUnits } from "viem/utils";
+import type { Address } from "viem";
 
 import styles from "./styles.module.css";
+import classNames from "@/src/utils/classes";
 
 interface RewardProps {
     reward: WhitelistedErc20TokenAmount;
     campaignDuration?: number;
     onRemove: (reward: Token) => void;
+    onError: (address: Address, error?: string) => void;
 }
 
-export function Reward({ reward, campaignDuration, onRemove }: RewardProps) {
+export function Reward({
+    reward,
+    campaignDuration,
+    onRemove,
+    onError,
+}: RewardProps) {
+    const [error, setError] = useState(false);
+
     const { address } = useAccount();
     const chain = useChainId();
     const { balance: rewardTokenBalance } = useWatchBalance(
@@ -48,20 +58,23 @@ export function Reward({ reward, campaignDuration, onRemove }: RewardProps) {
                   ? "errors.lowDistributionRate"
                   : "";
 
-        // TODO: implement error
-        // onError(reward.token.address, error);
-    }, [campaignDuration, reward, rewardTokenBalance]);
+        onError(reward.token.address, error);
+        setError(!!error);
+    }, [campaignDuration, onError, reward, rewardTokenBalance]);
 
     const getRewardOnRemoveHandler = useCallback(
         (reward: Token) => () => {
-            // onError(reward.address, "");
+            onError(reward.address, "");
             onRemove(reward);
         },
-        [onRemove],
+        [onError, onRemove],
     );
 
     return (
-        <div key={reward.token.address} className={styles.reward}>
+        <div
+            key={reward.token.address}
+            className={classNames(styles.reward, { [styles.error]: error })}
+        >
             <Typography
                 variant="lg"
                 weight="medium"
