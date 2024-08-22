@@ -64,6 +64,7 @@ export function Step({
             className={classNames(styles.root, {
                 [styles.disabled]: disabled,
                 [styles.error]: error,
+                [styles.open]: open,
             })}
         >
             <div ref={wrapperRef}>

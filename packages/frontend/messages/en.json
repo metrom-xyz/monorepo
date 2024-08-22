@@ -73,6 +73,11 @@
             }
         },
         "submit": {
+            "connectWallet": "Connect wallet",
+            "approveRewards": {
+                "approving": "Approving {amount} {symbol} ({currentIndex}/{totalAmount})",
+                "approve": "Approve {amount} {symbol} ({currentIndex}/{totalAmount})"
+            },
             "preview": "Campaign preview",
             "deploy": "Launch campaign"
         }

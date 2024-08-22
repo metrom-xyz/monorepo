@@ -189,7 +189,7 @@ export function RewardsStep({
                     <div className={styles.rewardPickerWrapper}>
                         <NumberInput
                             placeholder="0"
-                            value={rewardAmount?.toString()}
+                            value={rewardAmount ? rewardAmount.toString() : ""}
                             onValueChange={handleRewardAmountOnChange}
                             className={{
                                 input: styles.rewardTokenAmountInput,

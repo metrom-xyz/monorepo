@@ -2,22 +2,21 @@
 
 import { useChainId } from "wagmi";
 import { useTranslations } from "next-intl";
-import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
 import type {
     CampaignPayload,
     CampaignPayloadPart,
     CampaignPayloadErrors,
 } from "@/src/types";
-import { Button } from "@/src/ui/button";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { CreateCampaignForm } from "./form";
-import { Summary } from "./summary";
+import { CampaignPreview } from "./preview";
 
 import styles from "./styles.module.css";
+import { SubmitButton } from "./submit-button";
 
-enum View {
+export enum View {
     form = "form",
-    summary = "summary",
+    preview = "preview",
 }
 
 export function CreateCampaign() {
@@ -73,6 +72,14 @@ export function CreateCampaign() {
         [],
     );
 
+    function handlePreviewOnClick() {
+        setView(View.preview);
+    }
+
+    function handleBackOnClick() {
+        setView(View.form);
+    }
+
     return (
         <div className={styles.root}>
             {view === View.form && (
@@ -82,15 +89,15 @@ export function CreateCampaign() {
                     onPayloadError={handlePayloadOnError}
                 />
             )}
-            {view === View.summary && <Summary />}
-            <Button
-                icon={ArrowRightIcon}
-                iconPlacement="right"
-                disabled={malformedPayload}
-                className={{ root: styles.submitButton }}
-            >
-                {t("submit.preview")}
-            </Button>
+            {view === View.preview && (
+                <CampaignPreview onBack={handleBackOnClick} />
+            )}
+            <SubmitButton
+                view={view}
+                malformedPayload={malformedPayload}
+                payload={payload}
+                onPreviewClick={handlePreviewOnClick}
+            />
         </div>
     );
 }
