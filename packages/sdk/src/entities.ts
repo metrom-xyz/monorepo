@@ -45,7 +45,7 @@ export interface Campaign {
     blacklist: Address[] | null;
     rewards: Rewards;
     apr: number | null;
-};
+}
 
 export interface Claim extends TokenAmount {
     campaignId: Address;
@@ -58,7 +58,10 @@ export interface WhitelistedErc20Token extends Token {
     minimumRate: bigint;
 }
 
-export interface WhitelistedErc20TokenWithBalance
-    extends WhitelistedErc20Token {
+export interface WhitelistedErc20TokenAmount extends TokenAmount {
+    minimumRate: bigint;
+}
+
+export interface TokenWithBalance extends Token {
     balance?: bigint;
 }

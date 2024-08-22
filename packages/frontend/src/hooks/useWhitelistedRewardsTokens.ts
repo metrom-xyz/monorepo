@@ -1,8 +1,8 @@
 import type { SupportedChain } from "@metrom-xyz/contracts";
 import { useChainId } from "wagmi";
 import { CHAIN_DATA } from "../commons";
-import { type Token, type WhitelistedErc20Token } from "@metrom-xyz/sdk";
 import { useEffect, useState } from "react";
+import type { WhitelistedErc20Token } from "@metrom-xyz/sdk";
 
 export function useWhitelistedRewardsTokens(): {
     loading: boolean;

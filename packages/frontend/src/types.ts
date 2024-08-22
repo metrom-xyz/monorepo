@@ -3,11 +3,11 @@ import type {
     MetromApiClient,
     Pool,
     SupportedAmm,
-    TokenAmount,
+    WhitelistedErc20TokenAmount,
 } from "@metrom-xyz/sdk";
 import type { Dayjs } from "dayjs";
 import type { SVGProps, FunctionComponent } from "react";
-import type { ChainContract } from "viem";
+import type { ChainContract, Address } from "viem";
 
 type PropertyUnion<T> = {
     [K in keyof T]: { [P in K]: T[K] };
@@ -42,7 +42,7 @@ export interface CampaignPayload {
     pool?: Pool;
     startDate?: Dayjs;
     endDate?: Dayjs;
-    rewards?: TokenAmount[];
+    rewards?: WhitelistedErc20TokenAmount[];
     // restrictions?: {
     //     type: "blacklist" | "whitelist";
     //     list: Address[];

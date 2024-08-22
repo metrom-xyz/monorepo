@@ -1,13 +1,12 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { formatUnits, erc20Abi } from "viem";
-import { parseUnits } from "viem/utils";
+import { formatUnits } from "viem";
 import { Button } from "@/src/ui/button";
-import { useAccount, useBlockNumber, useChainId, useReadContract } from "wagmi";
+import { useAccount, useChainId } from "wagmi";
 import { useTranslations } from "next-intl";
 import type {
     Token,
-    TokenAmount,
     WhitelistedErc20Token,
+    WhitelistedErc20TokenAmount,
 } from "@metrom-xyz/sdk";
 import { Step } from "@/src/components/step";
 import { StepPreview } from "@/src/components/step/preview";
@@ -25,6 +24,7 @@ import { PlusIcon } from "@/src/assets/plus-icon";
 import { ChevronDownIcon } from "@/src/assets/chevron-down-icon";
 import { RewardsPreview } from "./preview";
 import { ErrorText } from "@/src/ui/error-text";
+import { useWatchBalance } from "@/src/hooks/useWatchBalance";
 
 import styles from "./styles.module.css";
 
@@ -54,14 +54,10 @@ export function RewardsStep({
     const { address } = useAccount();
     const chainId = useChainId();
 
-    const { data: blockNumber } = useBlockNumber({ watch: true });
-    const { data: rewardTokenBalance, refetch } = useReadContract({
-        address: rewardToken?.address,
-        abi: erc20Abi,
-        functionName: "balanceOf",
-        args: address ? [address] : undefined,
-        query: { enabled: !!address && !!rewardToken },
-    });
+    const { balance: rewardTokenBalance } = useWatchBalance(
+        address,
+        rewardToken?.address,
+    );
 
     const campaignDuration = useMemo(() => {
         if (!startDate || !endDate) return undefined;
@@ -76,10 +72,6 @@ export function RewardsStep({
         if (disabled) return;
         setOpen(true);
     }, [disabled]);
-
-    useEffect(() => {
-        refetch();
-    }, [blockNumber, refetch]);
 
     useEffect(() => {
         if (
@@ -129,9 +121,15 @@ export function RewardsStep({
     const handleRewardTokenOnAdd = useCallback(() => {
         if (!rewardAmount || !rewardToken) return;
 
-        const newRewards: TokenAmount[] = rewards
-            ? [...rewards, { amount: rewardAmount, token: rewardToken }]
-            : [{ amount: rewardAmount, token: rewardToken }];
+        const { address, decimals, name, symbol, minimumRate } = rewardToken;
+        const reward: WhitelistedErc20TokenAmount = {
+            token: { address, decimals, name, symbol },
+            amount: rewardAmount,
+            minimumRate,
+        };
+        const newRewards: CampaignPayload["rewards"] = rewards
+            ? [...rewards, reward]
+            : [reward];
 
         onRewardsChange({ rewards: newRewards });
         setRewardAmount(undefined);
@@ -183,7 +181,7 @@ export function RewardsStep({
                     {/* TODO: add balance validation to rewards added before connecting the wallet */}
                     <RewardsPreview
                         rewards={rewards}
-                        chain={chainId}
+                        campaignDuration={campaignDuration}
                         onRemove={handleRewardTokenOnRemove}
                     />
                     <div className={styles.rewardPickerWrapper}>
