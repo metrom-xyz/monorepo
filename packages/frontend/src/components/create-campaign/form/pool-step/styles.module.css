@@ -1,5 +1,6 @@
 .previewCompletedLabel {
-    @apply flex
+    @apply w-full
+        flex
         justify-between
         items-center
         pr-4
