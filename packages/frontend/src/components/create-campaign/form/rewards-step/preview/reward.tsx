@@ -35,18 +35,12 @@ export function Reward({
     );
 
     useEffect(() => {
-        if (
-            !reward.amount ||
-            rewardTokenBalance === undefined ||
-            !campaignDuration ||
-            !reward
-        )
-            return;
+        if (!reward.amount || !campaignDuration || !reward) return;
 
         const distributionRate = (reward.amount * 3_600) / campaignDuration;
-        const balance = Number(
-            formatUnits(rewardTokenBalance, reward.token.decimals),
-        );
+        const balance = rewardTokenBalance
+            ? Number(formatUnits(rewardTokenBalance, reward.token.decimals))
+            : Number.MAX_SAFE_INTEGER;
         const minimumRate = Number(
             formatUnits(reward.minimumRate, reward.token.decimals),
         );

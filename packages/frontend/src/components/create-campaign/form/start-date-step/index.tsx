@@ -16,6 +16,7 @@ import { Button } from "@/src/ui/button";
 import { DateTimePicker } from "@/src/ui/date-time-picker";
 import { ErrorText } from "@/src/ui/error-text";
 import { getClosestAvailableDateTime } from "@/src/utils/date";
+import { useTransition, animated } from "@react-spring/web";
 
 import styles from "./styles.module.css";
 
@@ -42,6 +43,13 @@ export function StartDateStep({
 
     const previousDate = usePrevious(date);
     const chainId = useChainId();
+
+    const transition = useTransition(dateError, {
+        from: { opacity: 0 },
+        enter: { opacity: 1 },
+        leave: { opacity: 0 },
+        config: { duration: 200 },
+    });
 
     useEffect(() => {
         setOpen(false);
@@ -107,10 +115,15 @@ export function StartDateStep({
                         >
                             {t("title")}
                         </Typography>
-                        {dateError && (
-                            <ErrorText variant="xs" weight="medium">
-                                {t(dateError)}
-                            </ErrorText>
+                        {transition(
+                            (styles, error) =>
+                                !!error && (
+                                    <animated.div style={styles}>
+                                        <ErrorText variant="xs" weight="medium">
+                                            {t(error)}
+                                        </ErrorText>
+                                    </animated.div>
+                                ),
                         )}
                     </div>
                 }
