@@ -4,8 +4,8 @@ import { useChainId } from "wagmi";
 import { useTranslations } from "next-intl";
 import type {
     CampaignPayload,
-    CampaignPayloadPart,
     CampaignPayloadErrors,
+    CampaignPayloadPart,
 } from "@/src/types";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { CreateCampaignForm } from "./form";
