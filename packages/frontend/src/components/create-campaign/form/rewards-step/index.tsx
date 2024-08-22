@@ -97,9 +97,9 @@ export function RewardsStep({
     }, [chainId]);
 
     useEffect(() => {
-        if (disabled) return;
+        if (disabled || !!rewards) return;
         setOpen(true);
-    }, [disabled]);
+    }, [rewards, disabled]);
 
     useEffect(() => {
         if (!rewardAmount || !campaignDuration || !rewardToken) return;

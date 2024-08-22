@@ -1,7 +1,6 @@
 "use client";
 
 import { useChainId } from "wagmi";
-import { useTranslations } from "next-intl";
 import type {
     CampaignPayload,
     CampaignPayloadErrors,
@@ -10,9 +9,10 @@ import type {
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { CreateCampaignForm } from "./form";
 import { CampaignPreview } from "./preview";
+import { SubmitButton } from "./submit-button";
+import { useTransition, animated } from "@react-spring/web";
 
 import styles from "./styles.module.css";
-import { SubmitButton } from "./submit-button";
 
 export enum View {
     form = "form",
@@ -20,7 +20,6 @@ export enum View {
 }
 
 export function CreateCampaign() {
-    const t = useTranslations("newCampaign");
     const [payload, setPayload] = useState<CampaignPayload>({});
     const [payloadErrors, setPayloadErrors] = useState<CampaignPayloadErrors>(
         {},
@@ -48,6 +47,14 @@ export function CreateCampaign() {
         payload.startDate,
         payloadErrors,
     ]);
+
+    const transition = useTransition(view, {
+        exitBeforeEnter: true,
+        from: { opacity: 0 },
+        enter: { opacity: 1 },
+        leave: { opacity: 0 },
+        config: { duration: 200 },
+    });
 
     useEffect(() => {
         setPayload({});
@@ -82,16 +89,24 @@ export function CreateCampaign() {
 
     return (
         <div className={styles.root}>
-            {view === View.form && (
-                <CreateCampaignForm
-                    payload={payload}
-                    onPayloadChange={handlePayloadOnChange}
-                    onPayloadError={handlePayloadOnError}
-                />
-            )}
-            {view === View.preview && (
-                <CampaignPreview onBack={handleBackOnClick} />
-            )}
+            {transition((style, item) => (
+                <>
+                    {item === View.form && (
+                        <animated.div style={style}>
+                            <CreateCampaignForm
+                                payload={payload}
+                                onPayloadChange={handlePayloadOnChange}
+                                onPayloadError={handlePayloadOnError}
+                            />
+                        </animated.div>
+                    )}
+                    {item === View.preview && (
+                        <animated.div style={style}>
+                            <CampaignPreview onBack={handleBackOnClick} />
+                        </animated.div>
+                    )}
+                </>
+            ))}
             <SubmitButton
                 view={view}
                 malformedPayload={malformedPayload}

@@ -29,9 +29,9 @@ export function PoolStep({ disabled, pool, amm, onPoolChange }: PoolStepProps) {
     }, [chainId]);
 
     useEffect(() => {
-        if (disabled) return;
+        if (disabled || !!pool) return;
         setOpen(true);
-    }, [disabled]);
+    }, [pool, disabled]);
 
     const handlePoolOnChange = useCallback(
         (newPool: Pool) => {

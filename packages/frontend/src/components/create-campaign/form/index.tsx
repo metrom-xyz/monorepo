@@ -1,4 +1,3 @@
-import { useTranslations } from "next-intl";
 import type {
     CampaignPayload,
     CampaignPayloadPart,
@@ -23,8 +22,6 @@ export function CreateCampaignForm({
     onPayloadChange,
     onPayloadError,
 }: CreateCampaignFormProps) {
-    const t = useTranslations("newCampaign.form");
-
     return (
         <div className={styles.root}>
             <AmmStep amm={payload?.amm} onAmmChange={onPayloadChange} />
