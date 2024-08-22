@@ -25,6 +25,7 @@ import { ChevronDownIcon } from "@/src/assets/chevron-down-icon";
 import { RewardsPreview } from "./preview";
 import { ErrorText } from "@/src/ui/error-text";
 import { useWatchBalance } from "@/src/hooks/useWatchBalance";
+import { useTransition, animated } from "@react-spring/web";
 
 import styles from "./styles.module.css";
 
@@ -78,6 +79,15 @@ export function RewardsStep({
             : "";
     }, [existingRewardsErrors, rewardAmountError]);
 
+    const transition = useTransition(rewardsError, {
+        exitBeforeEnter: true,
+        trail: 100,
+        from: { opacity: 0 },
+        enter: { opacity: 1 },
+        leave: { opacity: 0 },
+        config: { duration: 100 },
+    });
+
     useEffect(() => {
         onError({ rewards: !!rewardsError });
     }, [onError, rewardsError]);
@@ -92,18 +102,12 @@ export function RewardsStep({
     }, [disabled]);
 
     useEffect(() => {
-        if (
-            !rewardAmount ||
-            rewardTokenBalance === undefined ||
-            !campaignDuration ||
-            !rewardToken
-        )
-            return;
+        if (!rewardAmount || !campaignDuration || !rewardToken) return;
 
         const distributionRate = (rewardAmount * 3_600) / campaignDuration;
-        const balance = Number(
-            formatUnits(rewardTokenBalance, rewardToken.decimals),
-        );
+        const balance = rewardTokenBalance
+            ? Number(formatUnits(rewardTokenBalance, rewardToken.decimals))
+            : Number.MAX_SAFE_INTEGER;
         const minimumRate = Number(
             formatUnits(rewardToken.minimumRate, rewardToken.decimals),
         );
@@ -120,29 +124,21 @@ export function RewardsStep({
 
     const handleExistingRewardsValidation = useCallback(
         (address: Address, error?: string) => {
-            const duplicateError = existingRewardsErrors.find(
-                (existingRewardError) =>
-                    existingRewardError.address === address,
-            );
-
-            if (!!error && !!duplicateError) return;
-            if (!error && !duplicateError) return;
-
             if (!!error) {
-                setExistingRewardsErrors([
-                    ...existingRewardsErrors,
+                setExistingRewardsErrors((state) => [
+                    ...state,
                     { address, error },
                 ]);
             } else {
-                setExistingRewardsErrors(
-                    existingRewardsErrors.filter(
+                setExistingRewardsErrors((state) =>
+                    state.filter(
                         (existingRewardError) =>
                             existingRewardError.address !== address,
                     ),
                 );
             }
         },
-        [existingRewardsErrors],
+        [],
     );
 
     function handleRewardTokenButtonOnClick() {
@@ -205,10 +201,15 @@ export function RewardsStep({
                         >
                             {t("title")}
                         </Typography>
-                        {rewardsError && (
-                            <ErrorText variant="xs" weight="medium">
-                                {t(rewardsError)}
-                            </ErrorText>
+                        {transition(
+                            (styles, error) =>
+                                error && (
+                                    <animated.div style={styles}>
+                                        <ErrorText variant="xs" weight="medium">
+                                            {t(error)}
+                                        </ErrorText>
+                                    </animated.div>
+                                ),
                         )}
                     </div>
                 }

@@ -15,6 +15,7 @@ import { DateTimePicker } from "@/src/ui/date-time-picker";
 import { Button } from "@/src/ui/button";
 import { Chip } from "@/src/ui/chip/chip";
 import { ErrorText } from "@/src/ui/error-text";
+import { useTransition, animated } from "@react-spring/web";
 
 import styles from "./styles.module.css";
 
@@ -64,6 +65,13 @@ export function EndDateStep({
     const [dateError, setDateError] = useState("");
 
     const chainId = useChainId();
+
+    const transition = useTransition(dateError, {
+        from: { opacity: 0 },
+        enter: { opacity: 1 },
+        leave: { opacity: 0 },
+        config: { duration: 200 },
+    });
 
     useEffect(() => {
         setOpen(false);
@@ -141,10 +149,15 @@ export function EndDateStep({
                         >
                             {t("title")}
                         </Typography>
-                        {dateError && (
-                            <ErrorText variant="xs" weight="medium">
-                                {t(dateError)}
-                            </ErrorText>
+                        {transition(
+                            (styles, error) =>
+                                !!error && (
+                                    <animated.div style={styles}>
+                                        <ErrorText variant="xs" weight="medium">
+                                            {t(error)}
+                                        </ErrorText>
+                                    </animated.div>
+                                ),
                         )}
                     </div>
                 }
