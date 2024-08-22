@@ -65,3 +65,8 @@ export interface WhitelistedErc20TokenAmount extends TokenAmount {
 export interface TokenWithBalance extends Token {
     balance?: bigint;
 }
+
+export interface WhitelistedErc20TokenWithBalance
+    extends WhitelistedErc20Token {
+    balance?: bigint;
+}
