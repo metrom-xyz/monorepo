@@ -10,7 +10,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { Modal } from "@/src/ui/modal";
 import { CreateCampaignForm } from "./form";
 import { CampaignPreview } from "./preview";
-import { SubmitButton } from "./submit-button";
+import { ApproveRewardsButton } from "./approve-rewards-button";
 
 import styles from "./styles.module.css";
 
@@ -93,7 +93,7 @@ export function CreateCampaign() {
                     malformedPayload={malformedPayload}
                 />
             </Modal>
-            <SubmitButton
+            <ApproveRewardsButton
                 malformedPayload={malformedPayload}
                 payload={payload}
                 onPreviewClick={handlePreviewOnClick}
