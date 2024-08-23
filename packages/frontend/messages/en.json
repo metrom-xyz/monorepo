@@ -87,8 +87,26 @@
                 "approving": "Approving {amount} {symbol} ({currentIndex}/{totalAmount})",
                 "approve": "Approve {amount} {symbol} ({currentIndex}/{totalAmount})"
             },
-            "preview": "Campaign preview",
-            "deploy": "Launch campaign"
+            "preview": "Campaign preview"
         }
+    },
+    "campaignPreview": {
+        "header": {
+            "back": "Back",
+            "startDate": "Start date",
+            "runTime": "Run time",
+            "runTimeDays": "{count} days",
+            "endDate": "End date"
+        },
+        "tvl": "Tvl",
+        "apr": "Apr",
+        "rewards": {
+            "daily": "Daily rewards",
+            "total": "Total rewards",
+            "token": "Reward token",
+            "amount": "Amount"
+        },
+        "deploy": "Launch campaign",
+        "connectWallet": "Connect wallet"
     }
 }

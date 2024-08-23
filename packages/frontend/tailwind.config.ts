@@ -4,6 +4,9 @@ const SANS_FONT_FAMILY = ["IBM Plex Sans", "ui-sans-serif", "sans-serif"];
 const MONO_FONT_FAMILY = ["IBM Plex Mono", "ui-monospace", "monospace"];
 
 const BODY_TEXT_SIZES_REM = {
+    // TODO: add missing sizes
+    xl5: "3rem",
+    xl4: "2.25rem",
     lg: "1.125rem",
     base: "1rem",
     sm: "0.875rem",
