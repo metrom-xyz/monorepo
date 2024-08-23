@@ -6,6 +6,13 @@
     },
     "allCampaigns": {
         "title": "all campaigns",
+        "header": {
+            "chain": "Chain",
+            "pool": "Pool",
+            "status": "Status",
+            "apr": "APR",
+            "rewards": "Rewards"
+        },
         "status": {
             "live": {
                 "text": "Live",

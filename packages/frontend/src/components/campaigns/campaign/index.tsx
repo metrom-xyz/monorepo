@@ -4,6 +4,7 @@ import { Pool } from "./pool";
 import { Status } from "./status";
 import type { Campaign as CampaignType } from "@metrom-xyz/sdk";
 import { Rewards } from "./rewards";
+import { Chain } from "./chain";
 
 interface CampaignProps {
     campaign: CampaignType;
@@ -14,6 +15,7 @@ interface CampaignProps {
 export function Campaign({ campaign, amms, className }: CampaignProps) {
     return (
         <div className={className}>
+            <Chain id={campaign.chainId} />
             <Pool amms={amms} campaign={campaign} />
             <Status from={campaign.from} to={campaign.to} />
             <Apr apr={campaign.apr} />
