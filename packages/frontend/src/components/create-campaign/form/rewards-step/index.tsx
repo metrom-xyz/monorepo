@@ -203,7 +203,7 @@ export function RewardsStep({
                         </Typography>
                         {transition(
                             (styles, error) =>
-                                error && (
+                                !!error && (
                                     <animated.div style={styles}>
                                         <ErrorText variant="xs" weight="medium">
                                             {t(error)}
