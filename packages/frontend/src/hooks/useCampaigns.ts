@@ -1,6 +1,6 @@
 import type { SupportedChain } from "@metrom-xyz/contracts";
 import { useChainId } from "wagmi";
-import { CHAIN_DATA } from "../commons";
+import { metromApiClient } from "../commons";
 import { type Campaign } from "@metrom-xyz/sdk";
 import { useEffect, useState } from "react";
 
@@ -26,9 +26,7 @@ export function useCampaigns(
 
             try {
                 if (!cancelled) setLoading(true);
-                const { campaigns } = await CHAIN_DATA[
-                    chainId
-                ].metromApiClient.fetchCampaigns({
+                const { campaigns } = await metromApiClient.fetchCampaigns({
                     pageNumber,
                     pageSize,
                     asc,

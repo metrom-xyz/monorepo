@@ -1,6 +1,6 @@
 import type { SupportedChain } from "@metrom-xyz/contracts";
 import { useChainId } from "wagmi";
-import { CHAIN_DATA } from "../commons";
+import { metromApiClient } from "../commons";
 import { useEffect, useState } from "react";
 import type { WhitelistedErc20Token } from "@metrom-xyz/sdk";
 
@@ -25,9 +25,9 @@ export function useWhitelistedRewardsTokens(): {
             try {
                 if (!cancelled) setLoading(true);
                 const tokens =
-                    await CHAIN_DATA[
-                        chainId
-                    ].metromApiClient.fetchWhitelistedRewardTokens();
+                    await metromApiClient.fetchWhitelistedRewardTokens({
+                        chainId,
+                    });
                 if (!cancelled) setWhitelistedTokens(tokens);
             } catch (error) {
                 console.error("Could not fetch whitelisted tokens");
