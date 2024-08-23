@@ -1,8 +1,9 @@
 "use client";
 
 import type { SupportedChain } from "@metrom-xyz/contracts";
-import styles from "./styles.module.css";
 import { SUPPORTED_CHAIN_ICONS } from "@/src/commons";
+
+import styles from "./styles.module.css";
 
 interface ChainProps {
     id: number;

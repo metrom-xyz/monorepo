@@ -9,7 +9,7 @@ import styles from "./styles.module.css";
 import { useTranslations } from "next-intl";
 
 export function Campaigns() {
-    const t = useTranslations();
+    const t = useTranslations("allCampaigns");
     const amms = useAvailableAmms();
 
     const { loading, campaigns } = useCampaigns();
@@ -19,19 +19,19 @@ export function Campaigns() {
         <div className={styles.root}>
             <div className={styles.row}>
                 <Typography variant="sm" light weight="medium">
-                    {t("allCampaigns.header.chain")}
+                    {t("header.chain")}
                 </Typography>
                 <Typography variant="sm" light weight="medium">
-                    {t("allCampaigns.header.pool")}
+                    {t("header.pool")}
                 </Typography>
                 <Typography variant="sm" light weight="medium">
-                    {t("allCampaigns.header.status")}
+                    {t("header.status")}
                 </Typography>
                 <Typography variant="sm" light weight="medium">
-                    {t("allCampaigns.header.apr")}
+                    {t("header.apr")}
                 </Typography>
                 <Typography variant="sm" light weight="medium">
-                    {t("allCampaigns.header.rewards")}
+                    {t("header.rewards")}
                 </Typography>
             </div>
             <div className={styles.body}>
