@@ -1,6 +1,4 @@
 import { ConnectButton as RainbowConnectButton } from "@rainbow-me/rainbowkit";
-
-import styles from "./styles.module.css";
 import { WalletIcon } from "@/src/assets/wallet-icon";
 import { SettingsIcon } from "@/src/assets/settings-icon";
 import { Typography } from "@/src/ui/typography";
@@ -9,13 +7,17 @@ import { SUPPORTED_CHAIN_ICONS } from "@/src/commons";
 import type { SupportedChain } from "@metrom-xyz/contracts";
 import { Popover } from "@/src/ui/popover";
 import { useRef, useState } from "react";
-import { useChains, useSwitchChain } from "wagmi";
+import { useChainId, useChains, useSwitchChain } from "wagmi";
 import { useClickAway } from "react-use";
 import { useTranslations } from "next-intl";
+import { ErrorIcon } from "@/src/assets/error-icon";
+
+import styles from "./styles.module.css";
 
 export function ConnectButton() {
     const t = useTranslations();
     const chains = useChains();
+    const currentChainId = useChainId();
     const { switchChain } = useSwitchChain();
 
     const [networkWrapper, setNetworkWrapper] = useState<HTMLDivElement | null>(
@@ -54,11 +56,10 @@ export function ConnectButton() {
                 return (
                     <div className={styles.root}>
                         {(() => {
-                            const ChainIcon = chain
-                                ? SUPPORTED_CHAIN_ICONS[
-                                      chain.id as SupportedChain
-                                  ]
-                                : () => null;
+                            const ChainIcon =
+                                SUPPORTED_CHAIN_ICONS[
+                                    currentChainId as SupportedChain
+                                ];
 
                             return (
                                 <div className={styles.wrapper}>
@@ -67,9 +68,11 @@ export function ConnectButton() {
                                         ref={setNetworkWrapper}
                                         onClick={handleOpenNetworkPopover}
                                     >
-                                        {!chain || chain.unsupported ? (
-                                            // TODO: introduce some sort of warning icon instead of the text
-                                            "Unsupported"
+                                        {chain?.unsupported ? (
+                                            // TODO: use proper icon
+                                            <ErrorIcon
+                                                className={styles.networkIcon}
+                                            />
                                         ) : (
                                             <ChainIcon
                                                 className={styles.networkIcon}
