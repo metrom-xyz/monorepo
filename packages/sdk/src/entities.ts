@@ -22,6 +22,7 @@ export interface UsdPricedTokenAmount extends UsdPricedToken {
 }
 
 export interface Pool {
+    chainId: number;
     address: Address;
     amm: SupportedAmm;
     fee: number;
