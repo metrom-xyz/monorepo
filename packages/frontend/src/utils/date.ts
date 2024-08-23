@@ -96,7 +96,8 @@ export const isOnlyDateSame = (
 };
 
 export const getClosestAvailableDateTime = (date?: Dayjs | Date | null) => {
-    if (process.env.NEXT_PUBLIC_ENVIRONMENT !== "production") return dayjs();
+    // FIXME: check issue with min date here
+    // if (process.env.NEXT_PUBLIC_ENVIRONMENT !== "production") return dayjs();
 
     const minutes = dayjs(date).get("minutes");
     if (minutes < 15) return dayjs(date).set("minutes", 15).set("seconds", 0);
