@@ -26,6 +26,14 @@
     @apply font-normal font-sans text-lg leading-[1.125rem];
 }
 
+.xl5 {
+    @apply font-normal font-sans text-xl5 leading-[3rem];
+}
+
+.xl4 {
+    @apply font-normal font-sans text-xl4 leading-10;
+}
+
 .light {
     @apply text-gray-400;
 }

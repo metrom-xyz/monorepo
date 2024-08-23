@@ -3,7 +3,7 @@ import { RemoteLogo, type RemoteLogoProps } from "../remote-logo";
 
 interface PoolRemoteLogoProps {
     loading?: boolean;
-    size?: "sm" | "md" | "lg";
+    size?: "sm" | "md" | "lg" | "xl";
     chain?: number | string;
     token0?: Omit<RemoteLogoProps, "size" | "chain">;
     token1?: Omit<RemoteLogoProps, "size" | "chain">;
