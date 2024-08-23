@@ -4,11 +4,7 @@ import { metromApiClient } from "../commons";
 import { type Campaign } from "@metrom-xyz/sdk";
 import { useEffect, useState } from "react";
 
-export function useCampaigns(
-    pageNumber: number,
-    pageSize: number,
-    asc?: boolean,
-): {
+export function useCampaigns(asc?: boolean): {
     loading: boolean;
     campaigns: Campaign[];
 } {
@@ -26,11 +22,7 @@ export function useCampaigns(
 
             try {
                 if (!cancelled) setLoading(true);
-                const { campaigns } = await metromApiClient.fetchCampaigns({
-                    pageNumber,
-                    pageSize,
-                    asc,
-                });
+                const campaigns = await metromApiClient.fetchCampaigns({ asc });
                 if (!cancelled) setCampaigns(campaigns);
             } catch (error) {
                 console.error(
@@ -44,7 +36,7 @@ export function useCampaigns(
         return () => {
             cancelled = true;
         };
-    }, [chainId, asc, pageNumber, pageSize]);
+    }, [chainId, asc]);
 
     return {
         loading,

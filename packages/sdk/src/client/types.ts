@@ -38,6 +38,7 @@ interface RawReward {
 }
 
 type RawCampaign = {
+    chainId: number;
     id: Address;
     from: number;
     to: number;

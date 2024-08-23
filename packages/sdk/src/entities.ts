@@ -35,11 +35,12 @@ export interface Rewards extends Array<UsdPricedTokenAmount> {
 }
 
 export interface Campaign {
+    chainId: number;
     id: Address;
-    createdAt: number;
-    snapshottedAt: number | null;
     from: number;
     to: number;
+    createdAt: number;
+    snapshottedAt: number | null;
     pool: Pool;
     whitelist: Address[] | null;
     blacklist: Address[] | null;

@@ -2,35 +2,36 @@
 
 import { Typography } from "@/src/ui/typography";
 import { useCampaigns } from "@/src/hooks/useCampaigns";
-import { useState } from "react";
 import { useAvailableAmms } from "@/src/hooks/useAvailableAmms";
 import { Campaign } from "./campaign";
 
 import styles from "./styles.module.css";
-
-const PAGE_SIZE = 10;
+import { useTranslations } from "next-intl";
 
 export function Campaigns() {
-    const [pageNumber, setPageNumber] = useState(1);
+    const t = useTranslations("allCampaigns");
     const amms = useAvailableAmms();
 
-    const { loading, campaigns } = useCampaigns(pageNumber, PAGE_SIZE);
+    const { loading, campaigns } = useCampaigns();
 
     return (
         // TODO: use i18n here
         <div className={styles.root}>
             <div className={styles.row}>
                 <Typography variant="sm" light weight="medium">
-                    Pool
+                    {t("header.chain")}
                 </Typography>
                 <Typography variant="sm" light weight="medium">
-                    Status
+                    {t("header.pool")}
                 </Typography>
                 <Typography variant="sm" light weight="medium">
-                    APR
+                    {t("header.status")}
                 </Typography>
                 <Typography variant="sm" light weight="medium">
-                    Rewards
+                    {t("header.apr")}
+                </Typography>
+                <Typography variant="sm" light weight="medium">
+                    {t("header.rewards")}
                 </Typography>
             </div>
             <div className={styles.body}>

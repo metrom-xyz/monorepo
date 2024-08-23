@@ -16,14 +16,7 @@ import type {
 } from "../entities";
 
 export interface FetchCampaignsParams {
-    pageNumber?: number;
-    pageSize?: number;
     asc?: boolean;
-}
-
-export interface FetchCampaignsResult {
-    campaigns: Campaign[];
-    amount: bigint;
 }
 
 export interface FetchPoolsParams {
@@ -46,17 +39,10 @@ export interface FetchWhitelistedRewardTokensResult {
 export class MetromApiClient {
     constructor(public readonly baseUrl: string) {}
 
-    async fetchCampaigns(
-        params?: FetchCampaignsParams,
-    ): Promise<FetchCampaignsResult> {
+    async fetchCampaigns(params?: FetchCampaignsParams): Promise<Campaign[]> {
         const url = new URL("campaigns", this.baseUrl);
 
-        url.searchParams.set(
-            "pageNumber",
-            (params?.pageNumber || 0).toString(),
-        );
-        url.searchParams.set("pageSize", (params?.pageSize || 10).toString());
-        url.searchParams.set("asc", (params?.asc || false).toString());
+        url.searchParams.set("asc", params?.asc ? "true" : "false");
 
         const response = await fetch(url);
         if (!response.ok)
@@ -67,36 +53,33 @@ export class MetromApiClient {
         const rawCampaignsResponse =
             (await response.json()) as FetchCampaignsResponse;
 
-        return {
-            campaigns: rawCampaignsResponse.campaigns.map((rawCampaign) => {
-                const rewards: Rewards = Object.assign([], { valueUsd: 0 });
-                for (const rawReward of rawCampaign.rewards) {
-                    let valueUsd = null;
-                    if (rewards.valueUsd !== null && rawReward.priceUsd) {
-                        valueUsd =
-                            Number(
-                                (rawReward.amount / 10n) **
-                                    BigInt(rawReward.decimals),
-                            ) * rawReward.priceUsd;
-                        rewards.valueUsd += valueUsd;
-                    }
-                    rewards.push({
-                        ...rawReward,
-                        valueUsd,
-                    });
+        return rawCampaignsResponse.campaigns.map((rawCampaign) => {
+            const rewards: Rewards = Object.assign([], { valueUsd: 0 });
+            for (const rawReward of rawCampaign.rewards) {
+                let valueUsd = null;
+                if (rewards.valueUsd !== null && rawReward.priceUsd) {
+                    valueUsd =
+                        Number(
+                            (rawReward.amount / 10n) **
+                                BigInt(rawReward.decimals),
+                        ) * rawReward.priceUsd;
+                    rewards.valueUsd += valueUsd;
                 }
+                rewards.push({
+                    ...rawReward,
+                    valueUsd,
+                });
+            }
 
-                return {
-                    ...rawCampaign,
-                    pool: {
-                        ...rawCampaign.pool,
-                        amm: rawCampaign.pool.amm as SupportedAmm,
-                    },
-                    rewards,
-                };
-            }),
-            amount: BigInt(rawCampaignsResponse.amount),
-        };
+            return {
+                ...rawCampaign,
+                pool: {
+                    ...rawCampaign.pool,
+                    amm: rawCampaign.pool.amm as SupportedAmm,
+                },
+                rewards,
+            };
+        });
     }
 
     async fetchPools(params: FetchPoolsParams): Promise<Pool[]> {

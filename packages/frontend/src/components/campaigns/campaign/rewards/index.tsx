@@ -16,12 +16,11 @@ interface RewardsProps {
 
 export function Rewards({ from, to, rewards }: RewardsProps) {
     const chainId = useChainId();
-    const perDayUsdValue = rewards.valueUsd
-        ? rewards.valueUsd /
-          dayjs.unix(to).diff(dayjs.unix(from), "days", false)
-        : 0;
+    const daysLeft = dayjs.unix(to).diff(dayjs.unix(from), "days", false);
+    const perDayUsdValue =
+        rewards.valueUsd && daysLeft > 0 ? rewards.valueUsd / daysLeft : 0;
 
-    return perDayUsdValue === 0 ? (
+    return daysLeft > 0 && perDayUsdValue === 0 ? (
         <Typography weight="medium">-</Typography>
     ) : (
         <div className={styles.root}>
@@ -35,7 +34,7 @@ export function Rewards({ from, to, rewards }: RewardsProps) {
                     />
                 );
             })}
-            <Typography>${perDayUsdValue}</Typography>
+            {perDayUsdValue > 0 && <Typography>${perDayUsdValue}</Typography>}
         </div>
     );
 }
