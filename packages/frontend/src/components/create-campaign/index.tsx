@@ -7,6 +7,7 @@ import type {
     CampaignPayloadPart,
 } from "@/src/types";
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { Modal } from "@/src/ui/modal";
 import { CreateCampaignForm } from "./form";
 import { CampaignPreview } from "./preview";
 import { SubmitButton } from "./submit-button";
@@ -80,18 +81,19 @@ export function CreateCampaign() {
 
     return (
         <div className={styles.root}>
-            {view === View.form && (
-                <CreateCampaignForm
+            <CreateCampaignForm
+                payload={payload}
+                onPayloadChange={handlePayloadOnChange}
+                onPayloadError={handlePayloadOnError}
+            />
+            <Modal open={view === View.preview}>
+                <CampaignPreview
+                    onBack={handleBackOnClick}
                     payload={payload}
-                    onPayloadChange={handlePayloadOnChange}
-                    onPayloadError={handlePayloadOnError}
+                    malformedPayload={malformedPayload}
                 />
-            )}
-            {view === View.preview && (
-                <CampaignPreview onBack={handleBackOnClick} />
-            )}
+            </Modal>
             <SubmitButton
-                view={view}
                 malformedPayload={malformedPayload}
                 payload={payload}
                 onPreviewClick={handlePreviewOnClick}

@@ -1,0 +1,19 @@
+.root {
+    @apply flex flex-col gap-4 bg-white p-5 px-6 rounded-t-3xl;
+}
+
+.backButton {
+    @apply self-end;
+}
+
+.backButtonContent {
+    @apply !mr-1;
+}
+
+.titleContainer {
+    @apply flex justify-between items-end gap-4 mb-7;
+}
+
+.durationContainer {
+    @apply flex justify-between;
+}

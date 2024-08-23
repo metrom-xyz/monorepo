@@ -1,6 +1,5 @@
 import type {
     Token,
-    MetromApiClient,
     Pool,
     SupportedAmm,
     WhitelistedErc20TokenAmount,

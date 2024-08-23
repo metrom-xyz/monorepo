@@ -1,0 +1,29 @@
+.root {
+    @apply flex
+        flex-col
+        gap-4
+        px-4
+        py-3.5
+        bg-white
+        rounded-2xl;
+}
+
+.header {
+    @apply flex justify-between items-center;
+}
+
+.nameContainer {
+    @apply flex gap-1.5 items-center;
+}
+
+.row {
+    @apply flex justify-between items-center;
+}
+
+.summary {
+    @apply flex justify-between gap-4;
+}
+
+.summaryBox {
+    @apply bg-gray-100;
+}
