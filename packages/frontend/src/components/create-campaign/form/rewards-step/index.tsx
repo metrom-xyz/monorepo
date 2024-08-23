@@ -105,9 +105,10 @@ export function RewardsStep({
         if (!rewardAmount || !campaignDuration || !rewardToken) return;
 
         const distributionRate = (rewardAmount * 3_600) / campaignDuration;
-        const balance = rewardTokenBalance
-            ? Number(formatUnits(rewardTokenBalance, rewardToken.decimals))
-            : Number.MAX_SAFE_INTEGER;
+        const balance =
+            rewardTokenBalance !== undefined
+                ? Number(formatUnits(rewardTokenBalance, rewardToken.decimals))
+                : Number.MAX_SAFE_INTEGER;
         const minimumRate = Number(
             formatUnits(rewardToken.minimumRate, rewardToken.decimals),
         );
@@ -166,6 +167,7 @@ export function RewardsStep({
             : [reward];
 
         onRewardsChange({ rewards: newRewards });
+        setOpen(false);
         setRewardAmount(undefined);
         setRewardToken(undefined);
     }, [onRewardsChange, rewardAmount, rewardToken, rewards]);
