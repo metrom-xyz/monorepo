@@ -10,7 +10,6 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { CreateCampaignForm } from "./form";
 import { CampaignPreview } from "./preview";
 import { SubmitButton } from "./submit-button";
-import { useTransition, animated } from "@react-spring/web";
 
 import styles from "./styles.module.css";
 
@@ -48,14 +47,6 @@ export function CreateCampaign() {
         payloadErrors,
     ]);
 
-    const transition = useTransition(view, {
-        exitBeforeEnter: true,
-        from: { opacity: 0 },
-        enter: { opacity: 1 },
-        leave: { opacity: 0 },
-        config: { duration: 200 },
-    });
-
     useEffect(() => {
         setPayload({});
     }, [chainId]);
@@ -89,24 +80,16 @@ export function CreateCampaign() {
 
     return (
         <div className={styles.root}>
-            {transition((style, item) => (
-                <>
-                    {item === View.form && (
-                        <animated.div style={style}>
-                            <CreateCampaignForm
-                                payload={payload}
-                                onPayloadChange={handlePayloadOnChange}
-                                onPayloadError={handlePayloadOnError}
-                            />
-                        </animated.div>
-                    )}
-                    {item === View.preview && (
-                        <animated.div style={style}>
-                            <CampaignPreview onBack={handleBackOnClick} />
-                        </animated.div>
-                    )}
-                </>
-            ))}
+            {view === View.form && (
+                <CreateCampaignForm
+                    payload={payload}
+                    onPayloadChange={handlePayloadOnChange}
+                    onPayloadError={handlePayloadOnError}
+                />
+            )}
+            {view === View.preview && (
+                <CampaignPreview onBack={handleBackOnClick} />
+            )}
             <SubmitButton
                 view={view}
                 malformedPayload={malformedPayload}
