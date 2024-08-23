@@ -38,9 +38,10 @@ export function Reward({
         if (!reward.amount || !campaignDuration || !reward) return;
 
         const distributionRate = (reward.amount * 3_600) / campaignDuration;
-        const balance = rewardTokenBalance
-            ? Number(formatUnits(rewardTokenBalance, reward.token.decimals))
-            : Number.MAX_SAFE_INTEGER;
+        const balance =
+            rewardTokenBalance !== undefined
+                ? Number(formatUnits(rewardTokenBalance, reward.token.decimals))
+                : Number.MAX_SAFE_INTEGER;
         const minimumRate = Number(
             formatUnits(reward.minimumRate, reward.token.decimals),
         );
