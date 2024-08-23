@@ -71,6 +71,7 @@ export class MetromApiClient {
                 ...rawCampaign,
                 pool: {
                     ...rawCampaign.pool,
+                    chainId: rawCampaign.chainId,
                     amm: rawCampaign.pool.amm as SupportedAmm,
                 },
                 rewards,
@@ -94,6 +95,7 @@ export class MetromApiClient {
 
         return rawPoolsResponse.pools.map((pool) => ({
             ...pool,
+            chainId: params.chainId,
             amm: pool.amm as SupportedAmm,
         }));
     }
