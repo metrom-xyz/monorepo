@@ -39,7 +39,6 @@ export interface FetchWhitelistedRewardTokensResult {
 }
 
 export class MetromApiClient {
-    private readonly targetChainName: string;
     private readonly chain: number;
 
     constructor(
@@ -52,13 +51,12 @@ export class MetromApiClient {
             );
 
         this.chain = parseInt(chain as unknown as string);
-        this.targetChainName = SUPPORTED_CHAIN_NAMES[chain];
     }
 
     async fetchCampaigns(
         params?: FetchCampaignsParams,
     ): Promise<FetchCampaignsResult> {
-        const url = new URL(`${this.targetChainName}/campaigns`, this.baseUrl);
+        const url = new URL("campaigns", this.baseUrl);
 
         url.searchParams.set(
             "pageNumber",
@@ -109,8 +107,9 @@ export class MetromApiClient {
     }
 
     async fetchPools(params: FetchPoolsParams): Promise<Pool[]> {
-        const url = new URL(`${this.targetChainName}/pools`, this.baseUrl);
+        const url = new URL("pools", this.baseUrl);
 
+        url.searchParams.set("chainId", this.chain.toString());
         url.searchParams.set("amm", params?.amm);
 
         const response = await fetch(url);
@@ -128,12 +127,12 @@ export class MetromApiClient {
     }
 
     async fetchClaims(params: FetchClaimsParams): Promise<Claim[]> {
-        const response = await fetch(
-            new URL(
-                `${this.targetChainName}/claims?address=${params.address}`,
-                this.baseUrl,
-            ),
-        );
+        const url = new URL("claims", this.baseUrl);
+
+        url.searchParams.set("chainId", this.chain.toString());
+        url.searchParams.set("address", params.address);
+
+        const response = await fetch(url);
         if (!response.ok)
             throw new Error(
                 `response not ok while fetching claimable rewards: ${await response.text()}`,
@@ -152,12 +151,11 @@ export class MetromApiClient {
     }
 
     async fetchWhitelistedRewardTokens(): Promise<WhitelistedErc20Token[]> {
-        const response = await fetch(
-            new URL(
-                `${this.targetChainName}/whitelisted-reward-tokens`,
-                this.baseUrl,
-            ),
-        );
+        const url = new URL("whitelisted-reward-tokens", this.baseUrl);
+
+        url.searchParams.set("chainId", this.chain.toString());
+
+        const response = await fetch(url);
         if (!response.ok)
             throw new Error(
                 `response not ok while fetching whitelisted reward tokens: ${await response.text()}`,
