@@ -19,7 +19,7 @@ interface SubmitButtonProps {
     onPreviewClick: () => void;
 }
 
-export function SubmitButton({
+export function ApproveRewardsButton({
     malformedPayload,
     payload,
     onPreviewClick,
