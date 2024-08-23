@@ -14,7 +14,7 @@ export interface RemoteLogoProps {
     src?: string;
     address?: Address;
     chain?: number | string;
-    size?: "xs" | "sm" | "md" | "lg";
+    size?: "xs" | "sm" | "md" | "lg" | "xl";
     defaultText?: string;
     className?: string;
 }

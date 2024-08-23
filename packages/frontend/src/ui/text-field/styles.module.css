@@ -1,0 +1,15 @@
+.root {
+    @apply w-full flex flex-col gap-3;
+}
+
+.boxed {
+    @apply px-4 py-3.5 bg-white rounded-2xl;
+}
+
+.alignCenter {
+    @apply items-center;
+}
+
+.alignRight {
+    @apply items-end;
+}

@@ -13,7 +13,7 @@ import classNames from "@/src/utils/classes";
 
 import styles from "./styles.module.css";
 
-export type TypographyVariant = "xs" | "sm" | "base" | "lg";
+export type TypographyVariant = "xs" | "sm" | "base" | "lg" | "xl4" | "xl5";
 // TODO: add headings
 // | "h1"
 // | "h2"
@@ -50,6 +50,8 @@ const COMPONENT_MAP: Record<TypographyVariant, ElementType> = {
     sm: "p",
     base: "p",
     lg: "p",
+    xl4: "h1",
+    xl5: "h1",
     // h1: "h1",
     // h2: "h2",
     // h3: "h3",

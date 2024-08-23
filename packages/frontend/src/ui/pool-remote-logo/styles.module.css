@@ -17,3 +17,7 @@
 .lg {
     @apply w-16 h-9;
 }
+
+.xl {
+    @apply w-[5.25rem] h-11;
+}
