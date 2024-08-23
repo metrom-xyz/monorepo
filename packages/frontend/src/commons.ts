@@ -1,4 +1,10 @@
-import { SupportedChain, SupportedAmm, type Token } from "@metrom-xyz/sdk";
+import {
+    SupportedChain,
+    SupportedAmm,
+    type Token,
+    MetromApiClient,
+    SERVICE_URLS,
+} from "@metrom-xyz/sdk";
 import { type Transport, http, type Chain, type Address } from "viem";
 import { celoAlfajores, holesky, mantleSepoliaTestnet } from "viem/chains";
 import { type Amm, type SVGIcon } from "./types";
@@ -10,6 +16,7 @@ import { MantleIcon } from "./assets/mantle-icon";
 import { UniswapLogo } from "./assets/uniswap-logo";
 import { AlgebraIntegralLogo } from "./assets/algebra-integral-logo";
 import { SwapsicleIcon } from "./assets/swapsicle-icon";
+import type { Environment } from "@metrom-xyz/contracts";
 
 export const METROM_DATA_MANAGER_JWT_ISSUER = "metrom-data-manager";
 
@@ -146,3 +153,6 @@ export const SUPPORTED_AMMS: Record<SupportedChain, Amm[]> = {
 };
 
 export const CHAIN_DATA = buildChainData();
+export const metromApiClient = new MetromApiClient(
+    SERVICE_URLS[process.env.NEXT_PUBLIC_ENVIRONMENT as Environment].metrom,
+);

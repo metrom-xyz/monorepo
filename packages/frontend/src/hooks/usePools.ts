@@ -1,6 +1,6 @@
 import type { SupportedChain } from "@metrom-xyz/contracts";
 import { useChainId } from "wagmi";
-import { CHAIN_DATA } from "../commons";
+import { CHAIN_DATA, metromApiClient } from "../commons";
 import { SupportedAmm, type Pool } from "@metrom-xyz/sdk";
 import { useEffect, useState } from "react";
 
@@ -24,9 +24,8 @@ export function usePools(ammSlug?: SupportedAmm): {
 
             try {
                 if (!cancelled) setLoading(true);
-                const pools = await CHAIN_DATA[
-                    chainId
-                ].metromApiClient.fetchPools({
+                const pools = await metromApiClient.fetchPools({
+                    chainId,
                     amm: ammSlug,
                 });
                 if (!cancelled) setPools(pools);

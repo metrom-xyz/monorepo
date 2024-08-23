@@ -6,7 +6,7 @@ import type {
     FetchWhitelistedRewardTokensResponse,
 } from "./types";
 import type { SupportedChain } from "@metrom-xyz/contracts";
-import { SUPPORTED_CHAIN_NAMES, SupportedAmm } from "../commons";
+import { SupportedAmm } from "../commons";
 import type {
     Campaign,
     Claim,
@@ -27,6 +27,7 @@ export interface FetchCampaignsResult {
 }
 
 export interface FetchPoolsParams {
+    chainId: SupportedChain;
     amm: SupportedAmm;
 }
 
@@ -34,24 +35,16 @@ export interface FetchClaimsParams {
     address: Address;
 }
 
+export interface FetchWhitelistedRewardTokensParams {
+    chainId: SupportedChain;
+}
+
 export interface FetchWhitelistedRewardTokensResult {
     tokens: Address;
 }
 
 export class MetromApiClient {
-    private readonly chain: number;
-
-    constructor(
-        public readonly baseUrl: string,
-        chain: SupportedChain,
-    ) {
-        if (!SUPPORTED_CHAIN_NAMES[chain])
-            throw new Error(
-                `unsupported chain, supported chains are: ${Object.keys(SUPPORTED_CHAIN_NAMES)}`,
-            );
-
-        this.chain = parseInt(chain as unknown as string);
-    }
+    constructor(public readonly baseUrl: string) {}
 
     async fetchCampaigns(
         params?: FetchCampaignsParams,
@@ -109,7 +102,7 @@ export class MetromApiClient {
     async fetchPools(params: FetchPoolsParams): Promise<Pool[]> {
         const url = new URL("pools", this.baseUrl);
 
-        url.searchParams.set("chainId", this.chain.toString());
+        url.searchParams.set("chainId", params.chainId.toString());
         url.searchParams.set("amm", params?.amm);
 
         const response = await fetch(url);
@@ -129,7 +122,6 @@ export class MetromApiClient {
     async fetchClaims(params: FetchClaimsParams): Promise<Claim[]> {
         const url = new URL("claims", this.baseUrl);
 
-        url.searchParams.set("chainId", this.chain.toString());
         url.searchParams.set("address", params.address);
 
         const response = await fetch(url);
@@ -141,19 +133,15 @@ export class MetromApiClient {
         const { claims: rawClaims } =
             (await response.json()) as FetchClaimsResponse;
 
-        return rawClaims.map((rawClaim) => ({
-            ...rawClaim,
-            token: {
-                ...rawClaim.token,
-                chainId: this.chain,
-            },
-        }));
+        return rawClaims;
     }
 
-    async fetchWhitelistedRewardTokens(): Promise<WhitelistedErc20Token[]> {
+    async fetchWhitelistedRewardTokens(
+        params: FetchWhitelistedRewardTokensParams,
+    ): Promise<WhitelistedErc20Token[]> {
         const url = new URL("whitelisted-reward-tokens", this.baseUrl);
 
-        url.searchParams.set("chainId", this.chain.toString());
+        url.searchParams.set("chainId", params.chainId.toString());
 
         const response = await fetch(url);
         if (!response.ok)
@@ -166,7 +154,6 @@ export class MetromApiClient {
 
         return rawWhitelistedTokens.tokens.map((token) => ({
             ...token,
-            chainId: this.chain,
             minimumRate: BigInt(token.minimumRate),
         }));
     }

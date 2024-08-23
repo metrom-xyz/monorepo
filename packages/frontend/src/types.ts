@@ -30,7 +30,6 @@ export interface ChainIconData {
 export interface ChainData {
     icon: ChainIconData;
     contract: ChainContract;
-    metromApiClient: MetromApiClient;
     amms: Amm[];
     baseTokens: Token[];
 }
