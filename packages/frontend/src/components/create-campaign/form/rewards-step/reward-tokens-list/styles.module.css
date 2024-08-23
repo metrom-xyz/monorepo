@@ -10,3 +10,7 @@
         items-center
         px-4;
 }
+
+.emptyList {
+    @apply flex justify-center pt-4;
+}

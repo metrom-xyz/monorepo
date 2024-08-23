@@ -56,8 +56,7 @@ export function StartDateStep({
     }, [chainId]);
 
     useEffect(() => {
-        if (disabled || !!date) return;
-        setOpen(true);
+        setOpen(disabled || !!date);
     }, [date, disabled]);
 
     useEffect(() => {

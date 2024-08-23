@@ -54,7 +54,9 @@
                 "days": "{count} days",
                 "errors": {
                     "endBeforeStart": "End date can't be before start date",
-                    "dateInThePast": "Date can't be in the past"
+                    "dateInThePast": "Date can't be in the past",
+                    "minimumDate": "The campaign must exceed {duration} minutes",
+                    "maximumDate": "The campaign must be under {duration} days"
                 }
             },
             "rewards": {

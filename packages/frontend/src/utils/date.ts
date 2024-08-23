@@ -1,4 +1,7 @@
 import dayjs, { type Dayjs } from "dayjs";
+import duration from "dayjs/plugin/duration";
+
+dayjs.extend(duration);
 
 export interface CalendarCell {
     text: string;
@@ -93,7 +96,7 @@ export const isOnlyDateSame = (
 };
 
 export const getClosestAvailableDateTime = (date?: Dayjs | Date | null) => {
-    // if (process.env.NEXT_PUBLIC_ENVIRONMENT !== "production") return dayjs();
+    if (process.env.NEXT_PUBLIC_ENVIRONMENT !== "production") return dayjs();
 
     const minutes = dayjs(date).get("minutes");
     if (minutes < 15) return dayjs(date).set("minutes", 15).set("seconds", 0);

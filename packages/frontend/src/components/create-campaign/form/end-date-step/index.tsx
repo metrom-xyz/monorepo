@@ -16,6 +16,7 @@ import { Button } from "@/src/ui/button";
 import { Chip } from "@/src/ui/chip/chip";
 import { ErrorText } from "@/src/ui/error-text";
 import { useTransition, animated } from "@react-spring/web";
+import { useCampaignDurationLimits } from "@/src/hooks/useCampaignDurationLimits";
 
 import styles from "./styles.module.css";
 
@@ -66,11 +67,15 @@ export function EndDateStep({
 
     const chainId = useChainId();
 
+    const { limits } = useCampaignDurationLimits();
+
     const transition = useTransition(dateError, {
+        exitBeforeEnter: true,
+        trail: 100,
         from: { opacity: 0 },
         enter: { opacity: 1 },
         leave: { opacity: 0 },
-        config: { duration: 200 },
+        config: { duration: 100 },
     });
 
     useEffect(() => {
@@ -78,20 +83,33 @@ export function EndDateStep({
     }, [chainId]);
 
     useEffect(() => {
-        if (disabled || !!date) return;
-        setOpen(true);
+        setOpen(disabled || !!date);
     }, [date, disabled]);
 
     useEffect(() => {
-        if (!date || !startDate) return;
+        if (!date || !startDate || !limits) {
+            onError({ endDate: false });
+            setDateError("");
+            return;
+        }
+
+        const campaignDuration = date.diff(startDate, "seconds");
 
         let dateError = "";
-        if (date.isBefore(startDate)) dateError = "errors.endBeforeStart";
-        else if (date.isBefore(dayjs())) dateError = "errors.dateInThePast";
+        if (date.isBefore(startDate)) dateError = t("errors.endBeforeStart");
+        else if (date.isBefore(dayjs())) dateError = t("errors.dateInThePast");
+        else if (campaignDuration < limits.minimumSeconds)
+            dateError = t("errors.minimumDate", {
+                duration: Math.floor(limits.minimumSeconds / 60),
+            });
+        else if (campaignDuration > limits.maximumSeconds)
+            dateError = t("errors.maximumDate", {
+                duration: Math.floor(limits.maximumSeconds / 60 / 60 / 24),
+            });
 
         onError({ endDate: !!dateError });
         setDateError(dateError);
-    }, [date, onError, startDate]);
+    }, [date, limits, onError, startDate, t]);
 
     const handleStepOnClick = useCallback(() => {
         if (open && !endDate) setDate(undefined);
@@ -154,7 +172,7 @@ export function EndDateStep({
                                 !!error && (
                                     <animated.div style={styles}>
                                         <ErrorText variant="xs" weight="medium">
-                                            {t(error)}
+                                            {error}
                                         </ErrorText>
                                     </animated.div>
                                 ),
@@ -162,7 +180,6 @@ export function EndDateStep({
                     </div>
                 }
             >
-                {/* TODO: add minimum duration validation */}
                 <Typography
                     uppercase
                     variant="lg"
@@ -213,7 +230,7 @@ export function EndDateStep({
                     <Button
                         variant="secondary"
                         size="small"
-                        disabled={!date}
+                        disabled={!date || !!dateError}
                         onClick={handleDateOnApply}
                         className={{ root: styles.applyButton }}
                     >
