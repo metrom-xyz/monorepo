@@ -13,12 +13,14 @@ import classNames from "@/src/utils/classes";
 
 import styles from "./styles.module.css";
 
-export type TypographyVariant = "xs" | "sm" | "base" | "lg" | "xl4" | "xl5";
-// TODO: add headings
-// | "h1"
-// | "h2"
-// | "h3"
-// | "h4"
+export type TypographyVariant =
+    | "xs"
+    | "sm"
+    | "base"
+    | "lg"
+    | "xl2"
+    | "xl4"
+    | "xl5";
 
 interface BaseTypographyProps {
     variant?: TypographyVariant;
@@ -50,12 +52,9 @@ const COMPONENT_MAP: Record<TypographyVariant, ElementType> = {
     sm: "p",
     base: "p",
     lg: "p",
+    xl2: "h1",
     xl4: "h1",
     xl5: "h1",
-    // h1: "h1",
-    // h2: "h2",
-    // h3: "h3",
-    // h4: "h4",
 };
 
 const Component = <V extends TypographyVariant>(
