@@ -9,6 +9,7 @@ import { useTranslations } from "next-intl";
 import numeral from "numeral";
 
 import styles from "./styles.module.css";
+import { useChainId } from "wagmi";
 
 interface HeaderProps {
     payload: CampaignPayload;
@@ -18,6 +19,7 @@ interface HeaderProps {
 
 export function Header({ payload, backDisabled, onBack }: HeaderProps) {
     const t = useTranslations("campaignPreview.header");
+    const chainId = useChainId();
 
     return (
         <div className={styles.root}>
@@ -37,7 +39,7 @@ export function Header({ payload, backDisabled, onBack }: HeaderProps) {
             </Button>
             <div className={styles.titleContainer}>
                 <PoolRemoteLogo
-                    chain={payload.pool?.chainId}
+                    chain={chainId}
                     size="xl"
                     token0={{
                         address: payload.pool?.token0.address,
