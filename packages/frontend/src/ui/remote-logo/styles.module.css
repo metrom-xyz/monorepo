@@ -11,7 +11,7 @@
 }
 
 .fallback {
-    @apply bg-black
+    @apply bg-gray-800
         rounded-full
         flex
         justify-center
