@@ -75,7 +75,7 @@ export const DatePicker = ({
                     uppercase
                     variant="lg"
                     weight="medium"
-                    className={{ root: styles.headerMonth }}
+                    className={styles.headerMonth}
                 >
                     {lookupDate.format("MMM YYYY")}
                 </Typography>
@@ -94,9 +94,7 @@ export const DatePicker = ({
                             key={dayOfWeek}
                             variant="sm"
                             uppercase
-                            className={{
-                                root: styles.weekDay,
-                            }}
+                            className={styles.weekDay}
                             weight="medium"
                         >
                             {cell.value.format("dd")}
@@ -124,8 +122,10 @@ export const DatePicker = ({
                                 range?.from,
                                 range?.to,
                             )}
-                            className={{
-                                root: classNames(className?.cell, styles.cell, {
+                            className={classNames(
+                                className?.cell,
+                                styles.cell,
+                                {
                                     [styles.cellToday]: dayjs().isSame(
                                         cell.value,
                                         "days",
@@ -153,8 +153,8 @@ export const DatePicker = ({
                                             : false,
                                     [styles.startOfWeek]: index % 7 === 0,
                                     [styles.endOfWeek]: (index + 1) % 7 === 0,
-                                }),
-                            }}
+                                },
+                            )}
                         >
                             {cell.text}
                         </Typography>

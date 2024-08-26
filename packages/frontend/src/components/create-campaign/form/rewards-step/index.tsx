@@ -197,7 +197,7 @@ export function RewardsStep({
                             uppercase
                             weight="medium"
                             variant="sm"
-                            className={{ root: styles.previewLabel }}
+                            className={styles.previewLabel}
                         >
                             {t("title")}
                         </Typography>
@@ -228,10 +228,7 @@ export function RewardsStep({
                             placeholder="0"
                             value={rewardAmount ? rewardAmount.toString() : ""}
                             onValueChange={handleRewardAmountOnChange}
-                            className={{
-                                input: styles.rewardTokenAmountInput,
-                                inputWrapper: styles.rewardTokenAmountInput,
-                            }}
+                            className={styles.rewardTokenAmountInput}
                         />
                         <div
                             className={styles.rewardTokenSelect}

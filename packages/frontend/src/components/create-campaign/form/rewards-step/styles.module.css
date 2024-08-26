@@ -24,7 +24,8 @@
     @apply flex flex-col gap-1;
 }
 
-.rewardTokenAmountInput {
+.rewardTokenAmountInput :global(.input),
+.rewardTokenAmountInput :global(.inputWrapper) {
     @apply w-full
         bg-transparent
         h-6

@@ -77,7 +77,7 @@ export const RemoteLogo = ({
 
     return (
         <div className={`${styles.fallback} ${styles[size]} ${className}`}>
-            <Typography uppercase className={{ root: styles.fallbackText }}>
+            <Typography uppercase className={styles.fallbackText}>
                 {!!defaultText
                     ? defaultText.length > 4
                         ? `${defaultText.slice(0, 4)}`

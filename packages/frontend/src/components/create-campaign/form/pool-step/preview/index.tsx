@@ -32,7 +32,7 @@ export function PoolStepPreview({ pool }: PoolStepPreviewProps) {
                             variant="xs"
                             light
                             weight="medium"
-                            className={{ root: styles.fee }}
+                            className={styles.fee}
                         >
                             {numeral(pool.fee).format("0.0[0]")}%
                         </Typography>

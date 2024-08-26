@@ -111,7 +111,7 @@ export function StartDateStep({
                             uppercase
                             weight="medium"
                             variant="sm"
-                            className={{ root: styles.previewLabel }}
+                            className={styles.previewLabel}
                         >
                             {t("title")}
                         </Typography>
@@ -132,7 +132,7 @@ export function StartDateStep({
                     uppercase
                     variant="lg"
                     weight="medium"
-                    className={{ root: styles.dateText }}
+                    className={styles.dateText}
                 >
                     {dayjs(date || startDate).format("DD MMM YYYY | HH:mm")}
                 </Typography>
