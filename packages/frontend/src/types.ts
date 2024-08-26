@@ -22,13 +22,7 @@ export interface Amm {
     logo: FunctionComponent;
 }
 
-export interface ChainIconData {
-    logo: FunctionComponent;
-    backgroundColor: string;
-}
-
 export interface ChainData {
-    icon: ChainIconData;
     contract: ChainContract;
     amms: Amm[];
     baseTokens: Token[];

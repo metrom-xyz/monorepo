@@ -69,7 +69,6 @@ export function ConnectButton() {
                                         onClick={handleOpenNetworkPopover}
                                     >
                                         {chain?.unsupported ? (
-                                            // TODO: use proper icon
                                             <ErrorIcon
                                                 className={styles.networkIcon}
                                             />

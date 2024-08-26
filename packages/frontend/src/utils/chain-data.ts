@@ -1,8 +1,4 @@
-import {
-    BASE_CHAIN_TOKENS,
-    SUPPORTED_AMMS,
-    SUPPORTED_CHAIN_ICONS,
-} from "@/commons";
+import { BASE_CHAIN_TOKENS, SUPPORTED_AMMS } from "@/commons";
 import type { ChainData } from "@/types";
 import { ADDRESS, Environment, SupportedChain } from "@metrom-xyz/contracts";
 import type { ChainContract } from "viem";
@@ -22,10 +18,6 @@ export const buildChainData = () => {
     return environmentChains.reduce(
         (chainData, [chain, contract]) => {
             chainData[chain] = {
-                icon: {
-                    logo: SUPPORTED_CHAIN_ICONS[chain],
-                    backgroundColor: "#000",
-                },
                 contract,
                 amms: SUPPORTED_AMMS[chain],
                 baseTokens: BASE_CHAIN_TOKENS[chain],

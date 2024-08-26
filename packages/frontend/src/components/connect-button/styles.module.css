@@ -15,7 +15,7 @@
 }
 
 .networkIcon {
-    @apply w-7 h-7;
+    @apply w-5 h-5;
 }
 
 .networkRow {
