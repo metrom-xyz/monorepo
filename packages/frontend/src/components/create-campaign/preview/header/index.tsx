@@ -37,8 +37,7 @@ export function Header({ payload, backDisabled, onBack }: HeaderProps) {
             </Button>
             <div className={styles.titleContainer}>
                 <PoolRemoteLogo
-                    // TODO: add chain
-                    // chain={payload.}
+                    chain={payload.pool?.chainId}
                     size="xl"
                     token0={{
                         address: payload.pool?.token0.address,
