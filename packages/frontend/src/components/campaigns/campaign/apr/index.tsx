@@ -2,6 +2,7 @@
 
 import { Typography } from "@/src/ui/typography";
 import { formatDecimals } from "@metrom-xyz/sdk";
+import { Skeleton } from "@/src/ui/skeleton";
 
 import styles from "./styles.module.css";
 
@@ -22,4 +23,8 @@ export function Apr({ apr }: AprProps) {
     ) : (
         <Typography weight="medium">-</Typography>
     );
+}
+
+export function SkeletonApr() {
+    return <Skeleton variant="lg" width={60} />;
 }

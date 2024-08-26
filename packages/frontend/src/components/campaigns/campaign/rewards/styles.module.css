@@ -1,3 +1,7 @@
 .root {
-    @apply relative flex items-center gap-3;
+    @apply relative flex items-center gap-[1px];
+}
+
+.root > :not(:first-child) {
+    @apply absolute left-4;
 }

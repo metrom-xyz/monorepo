@@ -1,10 +1,10 @@
 import type { AmmInfo } from "@/src/types";
-import { Apr } from "./apr";
-import { Pool } from "./pool";
-import { Status } from "./status";
+import { Apr, SkeletonApr } from "./apr";
+import { Pool, SkeletonPool } from "./pool";
+import { SkeletonStatus, Status } from "./status";
 import type { Campaign as CampaignType } from "@metrom-xyz/sdk";
-import { Rewards } from "./rewards";
-import { Chain } from "./chain";
+import { Rewards, SkeletonRewards } from "./rewards";
+import { Chain, SkeletonChain } from "./chain";
 
 interface CampaignProps {
     campaign: CampaignType;
@@ -24,6 +24,22 @@ export function Campaign({ campaign, amms, className }: CampaignProps) {
                 to={campaign.to}
                 rewards={campaign.rewards}
             />
+        </div>
+    );
+}
+
+interface SkeletonCampaignProps {
+    className: string;
+}
+
+export function SkeletonCampaign({ className }: SkeletonCampaignProps) {
+    return (
+        <div className={className}>
+            <SkeletonChain />
+            <SkeletonPool />
+            <SkeletonStatus />
+            <SkeletonApr />
+            <SkeletonRewards />
         </div>
     );
 }

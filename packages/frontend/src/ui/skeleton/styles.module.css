@@ -2,7 +2,7 @@
     @apply bg-gray-200 animate-pulse rounded-md;
 }
 
-.cirular {
+.circular {
     @apply rounded-full;
 }
 

@@ -9,7 +9,7 @@ export interface SkeletonProps {
     circular?: boolean;
     width?: number | string;
     height?: number | string;
-    className?: { root?: string };
+    className?: string;
 }
 
 export function Skeleton({
@@ -26,10 +26,7 @@ export function Skeleton({
                 width,
                 height: circular ? width : !!variant ? undefined : height,
             }}
-            className={classNames(className?.root, styles.root, {
-                [styles[variant]]: true,
-                [styles.cirular]: !!circular,
-            })}
+            className={`${styles.root} ${styles[variant]} ${circular ? styles.circular : ""} ${className}`}
             {...rest}
         />
     );

@@ -5,6 +5,7 @@ import { type Campaign } from "@metrom-xyz/sdk";
 import type { AmmInfo } from "@/src/types";
 import { PoolRemoteLogo } from "@/src/ui/pool-remote-logo";
 import { useChainId } from "wagmi";
+import { Skeleton } from "@/src/ui/skeleton";
 
 import styles from "./styles.module.css";
 
@@ -38,6 +39,18 @@ export function Pool({ campaign, amms }: PoolProps) {
                 <Typography variant="sm" weight="medium" light>
                     {campaign.pool.fee}%
                 </Typography>
+            </div>
+        </div>
+    );
+}
+
+export function SkeletonPool() {
+    return (
+        <div className={styles.root}>
+            <PoolRemoteLogo loading />
+            <div className={styles.titleContainer}>
+                <Skeleton variant="lg" width={200} />
+                <Skeleton variant="sm" width={50} />
             </div>
         </div>
     );

@@ -38,3 +38,7 @@ export function Rewards({ from, to, rewards }: RewardsProps) {
         </div>
     );
 }
+
+export function SkeletonRewards() {
+    return <RemoteLogo loading />;
+}

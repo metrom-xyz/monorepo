@@ -4,6 +4,7 @@ import { Typography } from "@/src/ui/typography";
 import dayjs from "dayjs";
 import classNames from "@/src/utils/classes";
 import { useTranslations } from "next-intl";
+import { Skeleton } from "@/src/ui/skeleton";
 
 import styles from "./styles.module.css";
 
@@ -62,6 +63,22 @@ export function Status({ from: rawFrom, to: rawTo }: CampaignStatusProps) {
                 </Typography>
                 <Typography variant="xs" light>
                     {duration}
+                </Typography>
+            </div>
+        </div>
+    );
+}
+
+export function SkeletonStatus() {
+    return (
+        <div className={styles.statusRoot}>
+            <Skeleton className={styles.statusDot} />
+            <div className={styles.statusText}>
+                <Typography variant="sm" weight="medium">
+                    <Skeleton width={50} />
+                </Typography>
+                <Typography variant="xs" light>
+                    <Skeleton width={30} />
                 </Typography>
             </div>
         </div>
