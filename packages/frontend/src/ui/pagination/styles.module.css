@@ -1,0 +1,40 @@
+.root {
+    @apply flex gap-2;
+}
+
+.arrow {
+    @apply mx-2;
+}
+
+.arrowLeft {
+    @apply transform rotate-90;
+}
+
+.arrowRight {
+    @apply transform -rotate-90;
+}
+
+.item {
+    @apply w-9 h-9 rounded-md flex items-center justify-center transition-colors duration-200;
+}
+
+.itemActive {
+    @apply bg-gray-200 hover:bg-gray-200;
+}
+
+.clickable {
+    @apply cursor-pointer hover:bg-gray-200 transition-colors duration-200;
+}
+
+.arrowItem {
+    @apply bg-white;
+}
+
+.arrowItem:disabled {
+    @apply bg-gray-200 cursor-not-allowed;
+}
+
+.arrowItem:disabled .arrowLeft,
+.arrowItem:disabled .arrowRight {
+    @apply text-gray-400;
+}

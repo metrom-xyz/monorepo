@@ -10,13 +10,13 @@ import { useMemo, useState, type ChangeEvent } from "react";
 import { TextInput } from "@/src/ui/text-input";
 import { SearchIcon } from "@/src/assets/search-icon";
 import { useDebounce } from "react-use";
-import { filterCampaigns } from "@/src/utils/filtering";
+import { filterCampaigns, sortCampaigns } from "@/src/utils/filtering";
 
 import styles from "./styles.module.css";
+import { Pagination } from "@/src/ui/pagination";
 
 const PAGE_SIZE = 10;
 
-// TODO: implement pagination
 export function Campaigns() {
     const t = useTranslations("allCampaigns");
 
@@ -35,11 +35,9 @@ export function Campaigns() {
     );
 
     const filteredCampaigns = useMemo(
-        () => filterCampaigns(campaigns, debouncedSearch),
+        () => filterCampaigns(sortCampaigns(campaigns), debouncedSearch),
         [debouncedSearch, campaigns],
     );
-
-    console.log(filteredCampaigns);
 
     const { data: pagedCampaigns, totalPages } = usePagination({
         data: filteredCampaigns,
@@ -49,6 +47,18 @@ export function Campaigns() {
 
     function handleSearchChange(event: ChangeEvent<HTMLInputElement>) {
         setSearch(event.target.value);
+    }
+
+    function handlePreviousPage() {
+        setPageNumber((page) => page - 1);
+    }
+
+    function handleNextPage() {
+        setPageNumber((page) => page + 1);
+    }
+
+    function handlePage(page: number) {
+        setPageNumber(page);
     }
 
     return (
@@ -125,6 +135,15 @@ export function Campaigns() {
                         );
                     })
                 )}
+            </div>
+            <div className={styles.paginationWrapper}>
+                <Pagination
+                    page={pageNumber}
+                    totalPages={totalPages}
+                    onNext={handleNextPage}
+                    onPrevious={handlePreviousPage}
+                    onPage={handlePage}
+                />
             </div>
         </div>
     );
