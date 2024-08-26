@@ -39,7 +39,9 @@ export function Rewards({ from, to, rewards }: RewardsProps) {
                     );
                 })}
             </div>
-            <Typography>${numeral(perDayUsdValue).format("0.0[0]")}</Typography>
+            <Typography weight="medium">
+                ${numeral(perDayUsdValue).format("0.0[0]")}
+            </Typography>
         </div>
     );
 }

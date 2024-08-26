@@ -12,6 +12,14 @@ import {
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { WagmiProvider } from "wagmi";
 import { SUPPORTED_CHAINS } from "../commons";
+import duration from "dayjs/plugin/duration";
+import localizedFormat from "dayjs/plugin/localizedFormat";
+import relativeTime from "dayjs/plugin/relativeTime";
+import dayjs from "dayjs";
+
+dayjs.extend(duration);
+dayjs.extend(localizedFormat);
+dayjs.extend(relativeTime);
 
 const config = getDefaultConfig({
     appName: "Metrom",

@@ -2,20 +2,20 @@
 
 import { Typography } from "@/src/ui/typography";
 import { useCampaigns } from "@/src/hooks/useCampaigns";
-import { useAvailableAmms } from "@/src/hooks/useAvailableAmms";
 import { Campaign, SkeletonCampaign } from "./campaign";
 
 import styles from "./styles.module.css";
 import { useTranslations } from "next-intl";
 import { usePagination } from "@/src/hooks/usePagination";
 import { useState } from "react";
+import { useAmms } from "@/src/hooks/useAmms";
 
 const PAGE_SIZE = 10;
 
 // TODO: implement pagination
 export function Campaigns() {
     const t = useTranslations("allCampaigns");
-    const amms = useAvailableAmms();
+    const amms = useAmms();
 
     const [pageNumber, setPageNumber] = useState(0);
 

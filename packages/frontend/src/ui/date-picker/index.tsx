@@ -1,7 +1,6 @@
 import dayjs, { Dayjs } from "dayjs";
 import React, { useCallback, useMemo, useState } from "react";
 import { Typography } from "../typography";
-import LocalizedFormat from "dayjs/plugin/localizedFormat";
 import {
     getCalendarCells,
     isDateInRange,
@@ -11,8 +10,6 @@ import { ChevronDownIcon } from "@/src/assets/chevron-down-icon";
 import classNames from "@/src/utils/classes";
 
 import styles from "./styles.module.css";
-
-dayjs.extend(LocalizedFormat);
 
 export interface DatePickerProps {
     onChange?: (date: Dayjs) => void;

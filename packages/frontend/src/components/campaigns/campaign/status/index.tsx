@@ -20,7 +20,7 @@ enum StatusState {
 }
 
 export function Status({ from: rawFrom, to: rawTo }: CampaignStatusProps) {
-    const t = useTranslations();
+    const t = useTranslations("allCampaigns.status");
     const now = dayjs();
     const from = dayjs.unix(rawFrom);
     const to = dayjs.unix(rawTo);
@@ -30,22 +30,16 @@ export function Status({ from: rawFrom, to: rawTo }: CampaignStatusProps) {
     let duration;
     if (now.isBefore(from)) {
         status = StatusState.Upcoming;
-        text = t("allCampaigns.status.upcoming.text");
-        duration = t("allCampaigns.status.upcoming.duration", {
-            days: from.diff(now, "days", false),
-        });
+        text = t("upcoming.text");
+        duration = t("upcoming.duration", { days: from.to(now, true) });
     } else if (now.isAfter(to)) {
         status = StatusState.Ended;
-        text = t("allCampaigns.status.ended.text");
-        duration = t("allCampaigns.status.ended.duration", {
-            days: now.diff(to, "days", false),
-        });
+        text = t("ended.text");
+        duration = t("ended.duration", { days: now.to(to, true) });
     } else {
         status = StatusState.Live;
-        text = t("allCampaigns.status.live.text");
-        duration = t("allCampaigns.status.live.duration", {
-            days: from.diff(now, "days", false),
-        });
+        text = t("live.text");
+        duration = t("live.duration", { days: from.to(now, true) });
     }
 
     return (

@@ -1,7 +1,4 @@
 import dayjs, { type Dayjs } from "dayjs";
-import duration from "dayjs/plugin/duration";
-
-dayjs.extend(duration);
 
 export interface CalendarCell {
     text: string;
