@@ -16,7 +16,11 @@ export function Campaign({ campaign, className }: CampaignProps) {
         <div className={className}>
             <Chain id={campaign.chainId} />
             <Pool campaign={campaign} />
-            <Status from={campaign.from} to={campaign.to} />
+            <Status
+                from={campaign.from}
+                to={campaign.to}
+                status={campaign.status}
+            />
             <Apr apr={campaign.apr} />
             <Rewards
                 from={campaign.from}
