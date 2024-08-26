@@ -4,24 +4,25 @@ import { type Address } from "viem";
 import classNames from "@/src/utils/classes";
 import { REWARD_TOKEN_ICONS } from "@/src/commons";
 import type { SupportedChain } from "@metrom-xyz/contracts";
-import { getAddressColor } from "@/src/utils/address";
 import { Skeleton } from "../skeleton";
 import { Typography } from "../typography";
 
 import styles from "./styles.module.css";
 
 export interface RemoteLogoProps {
+    loading?: boolean;
     src?: string;
     address?: Address;
     chain?: number | string;
     size?: "xs" | "sm" | "md" | "lg";
     defaultText?: string;
-    className?: { root: string };
+    className?: string;
 }
 
 const BAD_SRC: Record<string, boolean> = {};
 
 export const RemoteLogo = ({
+    loading,
     src,
     address,
     chain,
@@ -53,18 +54,14 @@ export const RemoteLogo = ({
         }
     }, [resolvedSrc]);
 
+    if (loading) {
+        return <Skeleton circular className={`${styles[size]} ${className}`} />;
+    }
+
     if (validResolvedSrc) {
         return (
-            <div
-                className={classNames(className?.root, styles.root, {
-                    [styles[size]]: true,
-                })}
-            >
-                <Skeleton
-                    circular
-                    width="100%"
-                    className={{ root: styles.skeleton }}
-                />
+            <div className={`${styles.root} ${styles[size]} ${className}`}>
+                <Skeleton circular width="100%" className={styles.skeleton} />
                 <Image
                     fill
                     src={validResolvedSrc}
@@ -79,7 +76,7 @@ export const RemoteLogo = ({
     }
 
     return (
-        <div className={`${styles.fallback} ${styles[size]}`}>
+        <div className={`${styles.fallback} ${styles[size]} ${className}`}>
             <Typography uppercase className={{ root: styles.fallbackText }}>
                 {!!defaultText
                     ? defaultText.length > 4
