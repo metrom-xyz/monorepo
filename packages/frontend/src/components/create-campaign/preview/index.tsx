@@ -8,15 +8,20 @@ import {
     useSimulateContract,
     useWriteContract,
 } from "wagmi";
+import Confetti from "react-confetti";
 import numeral from "numeral";
+import { useWindowSize } from "react-use";
 import { parseUnits } from "viem";
 import { metromAbi } from "@metrom-xyz/contracts/abi";
 import { CHAIN_DATA } from "@/src/commons";
 import type { SupportedChain } from "@metrom-xyz/contracts";
-import { useCallback, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 import { WalletIcon } from "@/src/assets/wallet-icon";
 import { useConnectModal } from "@rainbow-me/rainbowkit";
+import { Typography } from "@/src/ui/typography";
+import { MetromLightLogo } from "@/src/assets/metrom-light-logo";
+import { useRouter } from "@/src/navigation";
 import { TextField } from "@/src/ui/text-field";
 import { Rewards } from "./rewards";
 import { Header } from "./header";
@@ -36,7 +41,11 @@ export function CampaignPreview({
 }: CampaignPreviewProps) {
     const t = useTranslations("campaignPreview");
     const [creating, setCreating] = useState(false);
+    const [created, setCreated] = useState(false);
 
+    const feedback = useRef<HTMLDivElement>(null);
+    const router = useRouter();
+    const { width, height } = useWindowSize();
     const { openConnectModal } = useConnectModal();
     const chain: SupportedChain = useChainId();
     const publicClient = usePublicClient();
@@ -47,7 +56,6 @@ export function CampaignPreview({
         data: simulatedCreate,
         isLoading: simulatingCreate,
         isError: simulateCreateError,
-        error,
     } = useSimulateContract({
         abi: metromAbi,
         address: CHAIN_DATA[chain].contract.address,
@@ -98,10 +106,13 @@ export function CampaignPreview({
                 const receipt = await publicClient.waitForTransactionReceipt({
                     hash: tx,
                 });
+
                 if (receipt.status === "reverted") {
                     console.warn("creation transaction reverted");
                     return;
                 }
+
+                setCreated(true);
             } catch (error) {
                 console.warn("could not create kpi token", error);
             } finally {
@@ -111,45 +122,102 @@ export function CampaignPreview({
         void create();
     }, [publicClient, simulatedCreate, writeContractAsync]);
 
-    return (
-        <div className={styles.root}>
-            <Header payload={payload} onBack={onBack} />
-            <div className={styles.content}>
-                <div className={styles.contentGrid}>
-                    <TextField
-                        boxed
-                        label={t("tvl")}
-                        value={numeral(payload.pool?.tvl).format("($ 0.00 a)")}
-                    />
-                    {/* TODO: add apr */}
-                    <TextField boxed label={t("apr")} value={"0.0%"} />
-                </div>
-                <Rewards rewards={payload.rewards} />
-                <div className={styles.deployButtonContainer}>
-                    {!connectedAddress ? (
-                        <Button
-                            icon={WalletIcon}
-                            iconPlacement="right"
-                            disabled={malformedPayload}
-                            className={{ root: styles.deployButton }}
-                            onClick={openConnectModal}
-                        >
-                            {t("connectWallet")}
-                        </Button>
-                    ) : (
-                        <Button
-                            icon={NewCampaignIcon}
-                            iconPlacement="right"
-                            disabled={malformedPayload || simulateCreateError}
-                            loading={simulatingCreate || creating}
-                            className={{ root: styles.deployButton }}
-                            onClick={handleOnDeploy}
-                        >
-                            {t("deploy")}
-                        </Button>
-                    )}
+    function handleGoToAllCampaigns() {
+        router.push("/");
+    }
+
+    // TODO: add notification toast in case of errors
+    if (!created) {
+        return (
+            <div ref={feedback} className={styles.root}>
+                <Header
+                    payload={payload}
+                    onBack={onBack}
+                    backDisabled={simulatingCreate || creating}
+                />
+                <div className={styles.content}>
+                    <div className={styles.contentGrid}>
+                        <TextField
+                            boxed
+                            label={t("tvl")}
+                            value={numeral(payload.pool?.tvl).format(
+                                "($ 0.00 a)",
+                            )}
+                        />
+                        {/* TODO: add apr */}
+                        <TextField boxed label={t("apr")} value={"0.0%"} />
+                    </div>
+                    <Rewards rewards={payload.rewards} />
+                    <div className={styles.createButtonContainer}>
+                        {!connectedAddress ? (
+                            <Button
+                                icon={WalletIcon}
+                                iconPlacement="right"
+                                disabled={malformedPayload}
+                                className={{ root: styles.createButton }}
+                                onClick={openConnectModal}
+                            >
+                                {t("connectWallet")}
+                            </Button>
+                        ) : (
+                            <Button
+                                icon={NewCampaignIcon}
+                                iconPlacement="right"
+                                disabled={
+                                    malformedPayload || simulateCreateError
+                                }
+                                loading={simulatingCreate || creating}
+                                className={{ root: styles.createButton }}
+                                onClick={handleOnDeploy}
+                            >
+                                {t("deploy")}
+                            </Button>
+                        )}
+                    </div>
                 </div>
             </div>
+        );
+    }
+
+    return (
+        <div className={styles.feedback}>
+            <MetromLightLogo className={styles.metromLogo} />
+            <Typography uppercase weight="medium">
+                {t("congratulations")}
+            </Typography>
+            <Typography variant="xl2" weight="medium">
+                {t("launched")}
+            </Typography>
+            <div className={styles.feedbackActionsContainer}>
+                <Button
+                    onClick={handleGoToAllCampaigns}
+                    variant="secondary"
+                    className={{ root: styles.feedbackButton }}
+                >
+                    {t("allCampaigns")}
+                </Button>
+                <Button
+                    onClick={onBack}
+                    className={{ root: styles.feedbackButton }}
+                >
+                    {t("newCampaign")}
+                </Button>
+            </div>
+            <Confetti
+                numberOfPieces={600}
+                confettiSource={{
+                    x: 0,
+                    y: 0,
+                    w: width,
+                    h: height,
+                }}
+                run={true}
+                width={width}
+                height={height}
+                recycle={false}
+                initialVelocityY={30}
+                colors={["#163A5F", "#45EBA5", "#21ABA5", "#1D566E", "#163A5F"]}
+            />
         </div>
     );
 }

@@ -11,7 +11,7 @@
 }
 
 .titleContainer {
-    @apply flex justify-between items-end gap-4 mb-7;
+    @apply flex justify-between items-center gap-4 mb-8;
 }
 
 .durationContainer {

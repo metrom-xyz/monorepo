@@ -12,10 +12,11 @@ import styles from "./styles.module.css";
 
 interface HeaderProps {
     payload: CampaignPayload;
+    backDisabled: boolean;
     onBack: () => void;
 }
 
-export function Header({ payload, onBack }: HeaderProps) {
+export function Header({ payload, backDisabled, onBack }: HeaderProps) {
     const t = useTranslations("campaignPreview.header");
 
     return (
@@ -26,6 +27,7 @@ export function Header({ payload, onBack }: HeaderProps) {
                 variant="secondary"
                 size="xsmall"
                 onClick={onBack}
+                disabled={backDisabled}
                 className={{
                     root: styles.backButton,
                     contentWrapper: styles.backButtonContent,
