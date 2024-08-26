@@ -6,7 +6,7 @@
     @apply max-w-screen-lg w-full flex flex-col gap-3 mb-3;
 }
 
-.searchInput input {
+.searchInput :global(.input) {
     @apply bg-gray-200 py-2;
 }
 
