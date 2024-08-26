@@ -92,7 +92,7 @@
     },
     "campaignPreview": {
         "header": {
-            "back": "Back",
+            "back": "Close",
             "startDate": "Start date",
             "runTime": "Run time",
             "runTimeDays": "{count} days",
@@ -107,6 +107,10 @@
             "amount": "Amount"
         },
         "deploy": "Launch campaign",
-        "connectWallet": "Connect wallet"
+        "connectWallet": "Connect wallet",
+        "congratulations": "Congratulations!",
+        "launched": "Campaign successfully launched!",
+        "allCampaigns": "All campaigns",
+        "newCampaign": "New campaign"
     }
 }

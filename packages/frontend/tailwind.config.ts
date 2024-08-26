@@ -7,6 +7,7 @@ const BODY_TEXT_SIZES_REM = {
     // TODO: add missing sizes
     xl5: "3rem",
     xl4: "2.25rem",
+    xl2: "1.5rem",
     lg: "1.125rem",
     base: "1rem",
     sm: "0.875rem",

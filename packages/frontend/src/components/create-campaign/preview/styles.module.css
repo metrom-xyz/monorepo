@@ -1,7 +1,6 @@
 .root {
     @apply flex
         flex-col
-        gap-4
         bg-gray-100
         rounded-3xl;
 }
@@ -14,10 +13,38 @@
     @apply grid grid-cols-2 gap-4;
 }
 
-.deployButtonContainer {
+.createButtonContainer {
     @apply w-full flex justify-center;
 }
 
-.deployButton {
+.createButton {
     @apply w-full max-w-[400px];
+}
+
+.feedback {
+    @apply min-w-[40rem]
+        flex
+        flex-col
+        items-center
+        gap-3
+        px-6 py-4
+        bg-brand-green
+        rounded-3xl;
+}
+
+.metromLogo {
+    @apply m-7;
+}
+
+.feedbackActionsContainer {
+    @apply flex
+        w-full
+        gap-6
+        justify-between
+        items-center
+        mt-4;
+}
+
+.feedbackButton {
+    @apply w-full h-16;
 }
