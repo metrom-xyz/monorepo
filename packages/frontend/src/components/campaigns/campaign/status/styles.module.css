@@ -3,7 +3,7 @@
 }
 
 .statusText {
-    @apply flex flex-col gap-1;
+    @apply flex items-end gap-1;
 }
 
 .statusDot {

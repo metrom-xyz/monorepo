@@ -11,5 +11,5 @@
 }
 
 .bodyRow {
-    @apply bg-white rounded-xl h-16;
+    @apply bg-white rounded-xl h-14;
 }
