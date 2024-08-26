@@ -120,8 +120,14 @@ export const REWARD_TOKEN_ICONS: Record<
     },
 };
 
+export const SUPPORTED_AMM_SLUG_TO_NAME: Record<SupportedAmm, string> = {
+    [SupportedAmm.Swapsicle]: "Swapsicle",
+    [SupportedAmm.TestIntegral]: "Test integral",
+    [SupportedAmm.Univ3]: "Uniswap v3",
+};
+
 // TODO: get proper icons for the amms
-export const SUPPORTED_AMMS: Record<SupportedChain, Amm[]> = {
+export const SUPPORTED_AMMS_BY_CHAIN: Record<SupportedChain, Amm[]> = {
     [SupportedChain.CeloAlfajores]: [
         {
             slug: SupportedAmm.Univ3,

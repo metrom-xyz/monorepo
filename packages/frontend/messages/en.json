@@ -6,6 +6,11 @@
     },
     "allCampaigns": {
         "title": "all campaigns",
+        "filters": {
+            "search": {
+                "placeholder": "Search..."
+            }
+        },
         "header": {
             "chain": "Chain",
             "pool": "Pool",

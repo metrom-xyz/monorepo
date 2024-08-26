@@ -1,5 +1,34 @@
 import { isAddress } from "viem";
 import type { Token, Pool } from "@metrom-xyz/sdk";
+import type { NamedCampaign } from "../hooks/useCampaigns";
+
+export const filterCampaigns = (
+    campaigns: NamedCampaign[],
+    searchQuery: string,
+) => {
+    if (campaigns.length === 0) return [];
+    if (!searchQuery) return campaigns;
+    if (isAddress(searchQuery)) {
+        const lowercaseSearchQuery = searchQuery.toLowerCase();
+
+        const campaignByPool = campaigns.filter(
+            (campaign) =>
+                campaign.pool.address.toLowerCase() === lowercaseSearchQuery,
+        );
+
+        return campaignByPool;
+    }
+
+    const lowercaseSearchParts = searchQuery
+        .trim()
+        .toLowerCase()
+        .split(/[/\s]+/)
+        .filter((s) => s.length > 0 && s !== "/");
+    if (lowercaseSearchParts.length === 0) return campaigns;
+    return campaigns.filter((campaign) => {
+        return matchesSearch(campaign.name, lowercaseSearchParts);
+    });
+};
 
 export const filterPools = (pools: Pool[], searchQuery: string) => {
     if (pools.length === 0) return [];

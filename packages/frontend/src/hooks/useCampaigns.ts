@@ -1,16 +1,20 @@
 import type { SupportedChain } from "@metrom-xyz/contracts";
 import { useChainId } from "wagmi";
-import { metromApiClient } from "../commons";
+import { metromApiClient, SUPPORTED_AMM_SLUG_TO_NAME } from "../commons";
 import { type Campaign } from "@metrom-xyz/sdk";
 import { useEffect, useState } from "react";
 
+export interface NamedCampaign extends Campaign {
+    name: string;
+}
+
 export function useCampaigns(asc?: boolean): {
     loading: boolean;
-    campaigns: Campaign[];
+    campaigns: NamedCampaign[];
 } {
     const chainId: SupportedChain = useChainId();
 
-    const [campaigns, setCampaigns] = useState<Campaign[]>([]);
+    const [campaigns, setCampaigns] = useState<NamedCampaign[]>([]);
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
@@ -22,8 +26,19 @@ export function useCampaigns(asc?: boolean): {
 
             try {
                 if (!cancelled) setLoading(true);
-                const campaigns = await metromApiClient.fetchCampaigns({ asc });
-                if (!cancelled) setCampaigns(campaigns);
+                const fetchedCampaigns = await metromApiClient.fetchCampaigns({
+                    asc,
+                });
+                const namedCampaigns: NamedCampaign[] = [];
+                for (const campaign of fetchedCampaigns) {
+                    const amm =
+                        SUPPORTED_AMM_SLUG_TO_NAME[campaign.pool.amm] || "-";
+                    namedCampaigns.push({
+                        ...campaign,
+                        name: `${amm} ${campaign.pool.token0.symbol} / ${campaign.pool.token1.symbol}`,
+                    });
+                }
+                if (!cancelled) setCampaigns(namedCampaigns);
             } catch (error) {
                 console.error(
                     `Could not fetch campaigns for chain with id ${chainId}: ${error}`,

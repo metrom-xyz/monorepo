@@ -10,7 +10,8 @@
         pt-4;
 }
 
-.searchInput {
+.searchInput :global(.inputWrapper),
+.searchInput :global(.inputWrapper) :global(.input) {
     @apply w-full;
 }
 

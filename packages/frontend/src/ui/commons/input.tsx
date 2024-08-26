@@ -40,21 +40,7 @@ export interface BaseInputWrapperProps {
     iconPlacement?: "left" | "right";
     action?: ReactNode;
     actionPlacement?: "left" | "right";
-    className?: {
-        root?: string;
-        label?: string;
-        labelText?: TypographyProps["className"];
-        infoIcon?: string;
-        errorTextContainer?: string;
-        errorTextIcon?: string;
-        errorText?: TypographyProps["className"];
-        // should be applied when using the wrapper
-        inputIcon?: string;
-        inputIconWrapper?: string;
-        inputActionWrapper?: string;
-        inputWrapper?: string;
-        input?: string;
-    };
+    className?: string;
     children?: ReactNode;
 }
 
@@ -73,25 +59,19 @@ export const BaseInputWrapper = ({
 }: BaseInputWrapperProps): ReactElement => {
     const icon = !Action && Icon && (
         <div
-            className={classNames(
-                className?.inputIconWrapper,
-                styles.inputIconWrapper,
-                {
-                    [styles.placeLeft]: iconPlacement === "left",
-                    [styles.placeRight]: iconPlacement === "right",
-                },
-            )}
+            className={classNames("inputIconWrapper", styles.inputIconWrapper, {
+                [styles.placeLeft]: iconPlacement === "left",
+                [styles.placeRight]: iconPlacement === "right",
+            })}
         >
-            <Icon
-                className={classNames(styles.inputIcon, className?.inputIcon)}
-            />
+            <Icon className={classNames("inputIcon", styles.inputIcon)} />
         </div>
     );
 
     const action = Action && (
         <div
             className={classNames(
-                className?.inputActionWrapper,
+                "inputActionWrapper",
                 styles.inputActionWrapper,
                 {
                     [styles.placeLeft]: actionPlacement === "left",
@@ -104,27 +84,22 @@ export const BaseInputWrapper = ({
     );
 
     return (
-        <div className={className?.root}>
+        <div className={className}>
             {!!label && (
                 <label
-                    className={classNames(className?.label, styles.label)}
+                    className={classNames("label", styles.label)}
                     htmlFor={id}
                 >
                     <Typography
                         variant="xs"
                         weight="medium"
-                        className={className?.labelText}
+                        className="labelText"
                     >
                         {label}
                     </Typography>
                 </label>
             )}
-            <div
-                className={classNames(
-                    className?.inputWrapper,
-                    styles.inputWrapper,
-                )}
-            >
+            <div className={classNames("inputWrapper", styles.inputWrapper)}>
                 {iconPlacement === "left" && icon}
                 {actionPlacement === "left" && action}
                 {children}

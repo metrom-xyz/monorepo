@@ -20,7 +20,7 @@ import { Chip } from "@/src/ui/chip/chip";
 import { useBaseTokens } from "@/src/hooks/useBaseTokens";
 import { RemoteLogo } from "@/src/ui/remote-logo";
 import { Typography } from "@/src/ui/typography";
-import { filterPools } from "@/src/utils/tokens";
+import { filterPools } from "@/src/utils/filtering";
 import { Row } from "./row";
 
 import styles from "./styles.module.css";
@@ -88,10 +88,7 @@ export function PoolPicker({ value, amm, onChange }: PoolPickerProps) {
                     variant="lg"
                     placeholder={t("searchLabel")}
                     icon={SearchIcon}
-                    className={{
-                        input: styles.searchInput,
-                        inputWrapper: styles.searchInput,
-                    }}
+                    className={styles.searchInput}
                 />
                 <div className={styles.baseTokensWrapper}>
                     {baseTokens.map((token) => (

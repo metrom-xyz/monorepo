@@ -1,22 +1,19 @@
 "use client";
 
 import { Typography } from "@/src/ui/typography";
-import { type Campaign } from "@metrom-xyz/sdk";
-import type { AmmInfo } from "@/src/types";
 import { PoolRemoteLogo } from "@/src/ui/pool-remote-logo";
 import { useChainId } from "wagmi";
 import { Skeleton } from "@/src/ui/skeleton";
+import type { NamedCampaign } from "@/src/hooks/useCampaigns";
 
 import styles from "./styles.module.css";
 
 interface PoolProps {
-    campaign: Campaign;
-    amms: AmmInfo[];
+    campaign: NamedCampaign;
 }
 
-export function Pool({ campaign, amms }: PoolProps) {
+export function Pool({ campaign }: PoolProps) {
     const chainId = useChainId();
-    const amm = amms.find((amm) => amm.slug === campaign.pool.amm)?.name || "-";
 
     return (
         <div className={styles.root}>
@@ -33,8 +30,7 @@ export function Pool({ campaign, amms }: PoolProps) {
             />
             <div className={styles.titleContainer}>
                 <Typography variant="lg" weight="medium" noWrap>
-                    {amm} {campaign.pool.token0.symbol} /{" "}
-                    {campaign.pool.token1.symbol}
+                    {campaign.name}
                 </Typography>
                 <Typography variant="sm" weight="medium" light>
                     {campaign.pool.fee}%

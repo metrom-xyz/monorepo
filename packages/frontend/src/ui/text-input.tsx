@@ -54,7 +54,7 @@ export const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
                     value={value}
                     disabled={loading || disabled}
                     {...rest}
-                    className={classNames(styles.input, className?.input, {
+                    className={classNames("input", styles.input, {
                         [styles.inputError]: error,
                         [styles[
                             `input${variant[0].toUpperCase()}${variant.slice(1)}`
