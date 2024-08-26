@@ -14,11 +14,11 @@ export interface TokenAmount {
 }
 
 export interface UsdPricedToken extends Token {
-    priceUsd: number | null;
+    usdPrice: number | null;
 }
 
 export interface UsdPricedTokenAmount extends UsdPricedToken {
-    valueUsd: number | null;
+    usdValue: number | null;
 }
 
 export interface Pool {
@@ -31,7 +31,7 @@ export interface Pool {
 }
 
 export interface Rewards extends Array<UsdPricedTokenAmount> {
-    valueUsd: number | null;
+    usdValue: number | null;
 }
 
 export interface Campaign {

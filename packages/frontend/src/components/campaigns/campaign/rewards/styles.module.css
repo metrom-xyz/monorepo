@@ -1,7 +1,11 @@
 .root {
+    @apply flex items-center justify-between;
+}
+
+.tokenIcons {
     @apply relative flex items-center gap-[1px];
 }
 
-.root > :not(:first-child) {
+.tokenIcons > :not(:first-child) {
     @apply absolute left-4;
 }

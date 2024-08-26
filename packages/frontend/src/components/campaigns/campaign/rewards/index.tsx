@@ -5,6 +5,7 @@ import { type Rewards } from "@metrom-xyz/sdk";
 import dayjs from "dayjs";
 import { RemoteLogo } from "@/src/ui/remote-logo";
 import { useChainId } from "wagmi";
+import numeral from "numeral";
 
 import styles from "./styles.module.css";
 
@@ -16,25 +17,29 @@ interface RewardsProps {
 
 export function Rewards({ from, to, rewards }: RewardsProps) {
     const chainId = useChainId();
-    const daysLeft = dayjs.unix(to).diff(dayjs.unix(from), "days", false);
+    const daysDuration = dayjs
+        .unix(to)
+        .diff(dayjs.unix(from), "seconds", false);
     const perDayUsdValue =
-        rewards.valueUsd && daysLeft > 0 ? rewards.valueUsd / daysLeft : 0;
+        rewards.usdValue && daysDuration > 0
+            ? rewards.usdValue / daysDuration
+            : 0;
 
-    return daysLeft > 0 && perDayUsdValue === 0 ? (
-        <Typography weight="medium">-</Typography>
-    ) : (
+    return (
         <div className={styles.root}>
-            {rewards.map((reward) => {
-                return (
-                    <RemoteLogo
-                        key={reward.address}
-                        chain={chainId}
-                        address={reward.address}
-                        defaultText={reward.symbol}
-                    />
-                );
-            })}
-            {perDayUsdValue > 0 && <Typography>${perDayUsdValue}</Typography>}
+            <div className={styles.tokenIcons}>
+                {rewards.map((reward) => {
+                    return (
+                        <RemoteLogo
+                            key={reward.address}
+                            chain={chainId}
+                            address={reward.address}
+                            defaultText={reward.symbol}
+                        />
+                    );
+                })}
+            </div>
+            <Typography>${numeral(perDayUsdValue).format("0.0[0]")}</Typography>
         </div>
     );
 }

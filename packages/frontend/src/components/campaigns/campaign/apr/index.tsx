@@ -1,8 +1,8 @@
 "use client";
 
 import { Typography } from "@/src/ui/typography";
-import { formatDecimals } from "@metrom-xyz/sdk";
 import { Skeleton } from "@/src/ui/skeleton";
+import numeral from "numeral";
 
 import styles from "./styles.module.css";
 
@@ -14,9 +14,9 @@ export function Apr({ apr }: AprProps) {
     return apr ? (
         <div className={styles.root}>
             <Typography weight="medium">
-                {formatDecimals({
+                {numeral({
                     number: apr.toString(),
-                })}
+                }).format("0.0[0]")}
                 %
             </Typography>
         </div>

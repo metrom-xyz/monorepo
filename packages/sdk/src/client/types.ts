@@ -33,8 +33,8 @@ interface RawReward {
     decimals: number;
     symbol: string;
     name: string;
-    amount: bigint;
-    priceUsd: number | null;
+    amount: number;
+    usdPrice: number | null;
 }
 
 type RawCampaign = {

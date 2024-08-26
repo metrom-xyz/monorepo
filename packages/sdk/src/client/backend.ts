@@ -54,20 +54,16 @@ export class MetromApiClient {
             (await response.json()) as FetchCampaignsResponse;
 
         return rawCampaignsResponse.campaigns.map((rawCampaign) => {
-            const rewards: Rewards = Object.assign([], { valueUsd: 0 });
+            const rewards: Rewards = Object.assign([], { usdValue: 0 });
             for (const rawReward of rawCampaign.rewards) {
-                let valueUsd = null;
-                if (rewards.valueUsd !== null && rawReward.priceUsd) {
-                    valueUsd =
-                        Number(
-                            (rawReward.amount / 10n) **
-                                BigInt(rawReward.decimals),
-                        ) * rawReward.priceUsd;
-                    rewards.valueUsd += valueUsd;
+                let usdValue = null;
+                if (rewards.usdValue !== null && rawReward.usdPrice) {
+                    usdValue = rawReward.amount * rawReward.usdPrice;
+                    rewards.usdValue += usdValue;
                 }
                 rewards.push({
                     ...rawReward,
-                    valueUsd,
+                    usdValue,
                 });
             }
 
