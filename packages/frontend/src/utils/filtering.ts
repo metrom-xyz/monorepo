@@ -1,6 +1,36 @@
 import { isAddress } from "viem";
-import type { Token, Pool } from "@metrom-xyz/sdk";
+import { type Token, type Pool, Status } from "@metrom-xyz/sdk";
 import type { NamedCampaign } from "../hooks/useCampaigns";
+
+export const sortCampaigns = (campaigns: NamedCampaign[]) => {
+    const clusteredCampaigns = campaigns.reduce(
+        (clustered: Record<Status, NamedCampaign[]>, campaign) => {
+            clustered[campaign.status].push(campaign);
+            return clustered;
+        },
+        {
+            [Status.Upcoming]: [],
+            [Status.Live]: [],
+            [Status.Ended]: [],
+        },
+    );
+
+    clusteredCampaigns[Status.Live].sort((a, b) => {
+        return !a.apr || !b.apr ? a.from - b.from : a.apr - b.apr;
+    });
+    clusteredCampaigns[Status.Upcoming].sort((a, b) => {
+        return a.from - b.from;
+    });
+    clusteredCampaigns[Status.Ended].sort((a, b) => {
+        return a.from - b.from;
+    });
+
+    const sorted = clusteredCampaigns[Status.Live];
+    sorted.push(...clusteredCampaigns[Status.Upcoming]);
+    sorted.push(...clusteredCampaigns[Status.Ended]);
+
+    return sorted;
+};
 
 export const filterCampaigns = (
     campaigns: NamedCampaign[],
