@@ -1,4 +1,4 @@
-import { BASE_CHAIN_TOKENS, SUPPORTED_AMMS } from "@/commons";
+import { BASE_CHAIN_TOKENS, SUPPORTED_AMMS_BY_CHAIN } from "@/commons";
 import type { ChainData } from "@/types";
 import { ADDRESS, Environment, SupportedChain } from "@metrom-xyz/contracts";
 import type { ChainContract } from "viem";
@@ -19,7 +19,7 @@ export const buildChainData = () => {
         (chainData, [chain, contract]) => {
             chainData[chain] = {
                 contract,
-                amms: SUPPORTED_AMMS[chain],
+                amms: SUPPORTED_AMMS_BY_CHAIN[chain],
                 baseTokens: BASE_CHAIN_TOKENS[chain],
             };
             return chainData;

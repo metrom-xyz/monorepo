@@ -3,9 +3,9 @@
 }
 
 .tokenIcons {
-    @apply relative flex items-center gap-[1px];
+    @apply relative flex flex-1 items-center gap-[1px];
 }
 
-.tokenIcons > :not(:first-child) {
-    @apply absolute left-4;
+.tokenIcon {
+    @apply absolute;
 }

@@ -4,7 +4,7 @@ import { useTranslations } from "next-intl";
 import { Step } from "@/src/components/step";
 import { StepPreview } from "@/src/components/step/preview";
 import { StepContent } from "@/src/components/step/content";
-import { useAvailableAmms } from "@/src/hooks/useAvailableAmms";
+import { useAmmsInChain } from "@/src/hooks/useAmmsInChain";
 import classNames from "@/src/utils/classes";
 import { Typography } from "@/src/ui/typography";
 import type {
@@ -25,7 +25,7 @@ export function AmmStep({ disabled, amm, onAmmChange }: AmmStepProps) {
     const t = useTranslations("newCampaign.form.amm");
     const [open, setOpen] = useState(true);
 
-    const availableAmms = useAvailableAmms();
+    const availableAmms = useAmmsInChain();
     const chainId = useChainId();
 
     useEffect(() => {

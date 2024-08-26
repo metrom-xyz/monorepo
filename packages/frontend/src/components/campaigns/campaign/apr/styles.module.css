@@ -1,3 +1,7 @@
 .root {
     @apply bg-brand-blue rounded-lg py-2 px-2 w-fit;
 }
+
+.text {
+    @apply text-white;
+}

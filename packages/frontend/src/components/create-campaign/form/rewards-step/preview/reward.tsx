@@ -73,7 +73,7 @@ export function Reward({
             <Typography
                 variant="lg"
                 weight="medium"
-                className={{ root: styles.rewardAmount }}
+                className={styles.rewardAmount}
             >
                 {numeral(reward.amount).format("(0.00[00] a)")}
             </Typography>

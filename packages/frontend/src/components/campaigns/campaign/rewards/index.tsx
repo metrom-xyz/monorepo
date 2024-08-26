@@ -6,6 +6,7 @@ import dayjs from "dayjs";
 import { RemoteLogo } from "@/src/ui/remote-logo";
 import { useChainId } from "wagmi";
 import numeral from "numeral";
+import { Skeleton } from "@/src/ui/skeleton";
 
 import styles from "./styles.module.css";
 
@@ -28,22 +29,46 @@ export function Rewards({ from, to, rewards }: RewardsProps) {
     return (
         <div className={styles.root}>
             <div className={styles.tokenIcons}>
-                {rewards.map((reward) => {
+                {rewards.map((reward, i) => {
                     return (
-                        <RemoteLogo
+                        <div
                             key={reward.address}
-                            chain={chainId}
-                            address={reward.address}
-                            defaultText={reward.symbol}
-                        />
+                            className={styles.tokenIcon}
+                            style={{ left: i * 5 }}
+                        >
+                            <RemoteLogo
+                                chain={chainId}
+                                address={reward.address}
+                                defaultText={reward.symbol}
+                            />
+                        </div>
                     );
                 })}
             </div>
-            <Typography>${numeral(perDayUsdValue).format("0.0[0]")}</Typography>
+            <Typography weight="medium">
+                ${numeral(perDayUsdValue).format("0.0[0]")}
+            </Typography>
         </div>
     );
 }
 
 export function SkeletonRewards() {
-    return <RemoteLogo loading />;
+    return (
+        <div className={styles.root}>
+            <div className={styles.tokenIcons}>
+                {new Array(5).fill(null).map((_, i) => {
+                    return (
+                        <div
+                            key={i}
+                            className={styles.tokenIcon}
+                            style={{ left: i * 10 }}
+                        >
+                            <RemoteLogo loading />
+                        </div>
+                    );
+                })}
+            </div>
+            <Skeleton width={40} />
+        </div>
+    );
 }

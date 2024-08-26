@@ -9,7 +9,7 @@ export function ErrorText({ children, ...rest }: ErrorTextProps) {
     return (
         <div className={styles.root}>
             <ErrorIcon className={styles.icon} />
-            <Typography uppercase {...rest} className={{ root: styles.text }}>
+            <Typography uppercase {...rest} className={styles.text}>
                 {children}
             </Typography>
         </div>

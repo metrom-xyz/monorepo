@@ -62,14 +62,14 @@ export function PoolStep({ disabled, pool, amm, onPoolChange }: PoolStepProps) {
                             <Typography
                                 uppercase
                                 weight="medium"
-                                className={{ root: styles.previewLabel }}
+                                className={styles.previewLabel}
                             >
                                 {t("preview.pool")}
                             </Typography>
                             <Typography
                                 uppercase
                                 weight="medium"
-                                className={{ root: styles.previewLabel }}
+                                className={styles.previewLabel}
                             >
                                 {t("preview.tvl")}
                             </Typography>

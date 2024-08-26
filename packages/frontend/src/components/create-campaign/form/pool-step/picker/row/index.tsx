@@ -69,7 +69,7 @@ export function Row({
                             variant="xs"
                             weight="medium"
                             light
-                            className={{ root: styles.fee }}
+                            className={styles.fee}
                         >
                             {numeral(pool.fee).format("0.0[0]")}%
                         </Typography>

@@ -6,6 +6,11 @@
     },
     "allCampaigns": {
         "title": "all campaigns",
+        "filters": {
+            "search": {
+                "placeholder": "Search..."
+            }
+        },
         "header": {
             "chain": "Chain",
             "pool": "Pool",
@@ -16,15 +21,15 @@
         "status": {
             "live": {
                 "text": "Live",
-                "duration": "{days}d left"
+                "duration": "{days} left"
             },
             "upcoming": {
                 "text": "Upcoming",
-                "duration": "in {days}d"
+                "duration": "in {days}"
             },
             "ended": {
                 "text": "Ended",
-                "duration": "{days}d ago"
+                "duration": "{days} ago"
             }
         }
     },

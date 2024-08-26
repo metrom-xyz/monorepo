@@ -76,7 +76,7 @@ export function StepPreview({
                         style={labelSpringStyle}
                         uppercase
                         weight="medium"
-                        className={{ root: styles.label }}
+                        className={styles.label}
                     >
                         {label}
                     </AnimatedTypography>

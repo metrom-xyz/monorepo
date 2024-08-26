@@ -29,9 +29,7 @@ interface BaseTypographyProps {
     uppercase?: boolean;
     noWrap?: boolean;
     mono?: boolean;
-    className?: {
-        root?: string;
-    };
+    className?: string;
     children: ReactNode;
 }
 
@@ -89,7 +87,7 @@ const Component = <V extends TypographyVariant>(
 
     return (
         <Root
-            className={classNames(className?.root, styles.root, {
+            className={classNames(className, styles.root, {
                 [styles.rootUppercase]: uppercase,
                 [styles.light]: light,
                 [styles[variant]]: true,

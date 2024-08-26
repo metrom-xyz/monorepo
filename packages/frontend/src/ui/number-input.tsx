@@ -62,7 +62,7 @@ export const NumberInput = forwardRef<HTMLInputElement, NumberInputProps>(
                     getInputRef={ref}
                     id={resolvedId}
                     {...rest}
-                    className={classNames(styles.input, className?.input, {
+                    className={classNames("input", styles.input, {
                         [styles.inputError]: error,
                         [styles[
                             `input${variant[0].toUpperCase()}${variant.slice(1)}`

@@ -3,7 +3,7 @@ import { useChainId } from "wagmi";
 import { CHAIN_DATA } from "../commons";
 import type { AmmInfo } from "../types";
 
-export function useAvailableAmms(): AmmInfo[] {
+export function useAmmsInChain(): AmmInfo[] {
     const chainId: SupportedChain = useChainId();
 
     return CHAIN_DATA[chainId].amms.map((amm) => ({

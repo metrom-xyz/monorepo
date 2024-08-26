@@ -148,18 +148,14 @@ export const DateTimePicker = ({
                                     selected={!!selected}
                                 >
                                     <Typography
-                                        className={{
-                                            root: classNames(
-                                                className?.cell,
-                                                styles.cell,
-                                                {
-                                                    [styles.cellDisabled]:
-                                                        disabled,
-                                                    [styles.cellSelected]:
-                                                        selected,
-                                                },
-                                            ),
-                                        }}
+                                        className={classNames(
+                                            className?.cell,
+                                            styles.cell,
+                                            {
+                                                [styles.cellDisabled]: disabled,
+                                                [styles.cellSelected]: selected,
+                                            },
+                                        )}
                                         onClick={
                                             disabled
                                                 ? undefined
@@ -194,18 +190,14 @@ export const DateTimePicker = ({
                                     selected={!!selected}
                                 >
                                     <Typography
-                                        className={{
-                                            root: classNames(
-                                                className?.cell,
-                                                styles.cell,
-                                                {
-                                                    [styles.cellDisabled]:
-                                                        disabled,
-                                                    [styles.cellSelected]:
-                                                        selected,
-                                                },
-                                            ),
-                                        }}
+                                        className={classNames(
+                                            className?.cell,
+                                            styles.cell,
+                                            {
+                                                [styles.cellDisabled]: disabled,
+                                                [styles.cellSelected]: selected,
+                                            },
+                                        )}
                                         onClick={
                                             disabled
                                                 ? undefined
