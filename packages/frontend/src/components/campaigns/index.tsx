@@ -4,7 +4,6 @@ import { Typography } from "@/src/ui/typography";
 import { useCampaigns } from "@/src/hooks/useCampaigns";
 import { Campaign, SkeletonCampaign } from "./campaign";
 
-import styles from "./styles.module.css";
 import { useTranslations } from "next-intl";
 import { usePagination } from "@/src/hooks/usePagination";
 import { useMemo, useState, type ChangeEvent } from "react";
@@ -12,6 +11,8 @@ import { TextInput } from "@/src/ui/text-input";
 import { SearchIcon } from "@/src/assets/search-icon";
 import { useDebounce } from "react-use";
 import { filterCampaigns } from "@/src/utils/filtering";
+
+import styles from "./styles.module.css";
 
 const PAGE_SIZE = 10;
 
