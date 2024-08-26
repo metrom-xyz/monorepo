@@ -11,7 +11,7 @@
 }
 
 .row {
-    @apply grid grid-cols-campaigns-table gap-4 px-6 items-center;
+    @apply grid grid-cols-campaigns-table gap-5 px-6 items-center;
 }
 
 .body {

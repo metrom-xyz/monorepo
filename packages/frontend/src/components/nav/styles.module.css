@@ -3,6 +3,7 @@
         h-20
         w-full
         max-w-screen-2xl
+        px-6
         flex
         justify-between
         items-center;
