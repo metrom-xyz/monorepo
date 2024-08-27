@@ -52,41 +52,7 @@ export class MetromApiClient {
         const rawCampaignsResponse =
             (await response.json()) as FetchCampaignsResponse;
 
-        return rawCampaignsResponse.campaigns.map((rawCampaign) => {
-            let status;
-            const now = Math.floor(Date.now() / 1000);
-            if (now < rawCampaign.from) {
-                status = Status.Upcoming;
-            } else if (now > rawCampaign.to) {
-                status = Status.Ended;
-            } else {
-                status = Status.Live;
-            }
-
-            const rewards: Rewards = Object.assign([], { usdValue: 0 });
-            for (const rawReward of rawCampaign.rewards) {
-                let usdValue = null;
-                if (rewards.usdValue !== null && rawReward.usdPrice) {
-                    usdValue = rawReward.amount * rawReward.usdPrice;
-                    rewards.usdValue += usdValue;
-                }
-                rewards.push({
-                    ...rawReward,
-                    usdValue,
-                });
-            }
-
-            return {
-                ...rawCampaign,
-                status,
-                pool: {
-                    ...rawCampaign.pool,
-                    chainId: rawCampaign.chainId,
-                    amm: rawCampaign.pool.amm as SupportedAmm,
-                },
-                rewards,
-            };
-        });
+        return rawCampaignsResponse.campaigns.map(processCampaign);
     }
 
     async fetchCampaign(params: FetchCampaignParams): Promise<Campaign> {
@@ -103,39 +69,7 @@ export class MetromApiClient {
 
         const rawCampaign = (await response.json()) as RawCampaign;
 
-        let status;
-        const now = Math.floor(Date.now() / 1000);
-        if (now < rawCampaign.from) {
-            status = Status.Upcoming;
-        } else if (now > rawCampaign.to) {
-            status = Status.Ended;
-        } else {
-            status = Status.Live;
-        }
-
-        const rewards: Rewards = Object.assign([], { usdValue: 0 });
-        for (const rawReward of rawCampaign.rewards) {
-            let usdValue = null;
-            if (rewards.usdValue !== null && rawReward.usdPrice) {
-                usdValue = rawReward.amount * rawReward.usdPrice;
-                rewards.usdValue += usdValue;
-            }
-            rewards.push({
-                ...rawReward,
-                usdValue,
-            });
-        }
-
-        return {
-            ...rawCampaign,
-            status,
-            pool: {
-                ...rawCampaign.pool,
-                chainId: rawCampaign.chainId,
-                amm: rawCampaign.pool.amm as SupportedAmm,
-            },
-            rewards,
-        };
+        return processCampaign(rawCampaign);
     }
 
     async fetchPools(params: FetchPoolsParams): Promise<Pool[]> {
@@ -197,4 +131,40 @@ export class MetromApiClient {
             minimumRate: BigInt(token.minimumRate),
         }));
     }
+}
+
+function processCampaign(rawCampaign: RawCampaign) {
+    let status;
+    const now = Math.floor(Date.now() / 1000);
+    if (now < rawCampaign.from) {
+        status = Status.Upcoming;
+    } else if (now > rawCampaign.to) {
+        status = Status.Ended;
+    } else {
+        status = Status.Live;
+    }
+
+    const rewards: Rewards = Object.assign([], { usdValue: 0 });
+    for (const rawReward of rawCampaign.rewards) {
+        let usdValue = null;
+        if (rewards.usdValue !== null && rawReward.usdPrice) {
+            usdValue = rawReward.amount * rawReward.usdPrice;
+            rewards.usdValue += usdValue;
+        }
+        rewards.push({
+            ...rawReward,
+            usdValue,
+        });
+    }
+
+    return {
+        ...rawCampaign,
+        status,
+        pool: {
+            ...rawCampaign.pool,
+            chainId: rawCampaign.chainId,
+            amm: rawCampaign.pool.amm as SupportedAmm,
+        },
+        rewards,
+    };
 }
