@@ -5,6 +5,7 @@ import { Rewards, SkeletonRewards } from "./rewards";
 import { Chain, SkeletonChain } from "./chain";
 import type { NamedCampaign } from "@/src/hooks/useCampaigns";
 import Link from "next/link";
+import { useLocale } from "next-intl";
 import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
 
 import styles from "./styles.module.css";
@@ -14,9 +15,10 @@ interface CampaignProps {
 }
 
 export function Campaign({ campaign }: CampaignProps) {
+    const locale = useLocale();
     return (
         <Link
-            href={`/campaigns/${campaign.chainId}/${campaign.id}`}
+            href={`/${locale}/campaigns/${campaign.chainId}/${campaign.id}`}
             className={styles.root}
         >
             <Chain id={campaign.chainId} />

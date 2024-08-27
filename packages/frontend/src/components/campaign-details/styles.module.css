@@ -1,0 +1,11 @@
+.root {
+    @apply w-full flex flex-col;
+}
+
+.headerWrapper {
+    @apply flex flex-col items-center w-full bg-white;
+}
+
+.header {
+    @apply bg-white w-full;
+}

@@ -240,7 +240,6 @@ export function RewardsStep({
                                 size="xs"
                                 address={rewardToken?.address}
                                 chain={chainId}
-                                defaultText=" "
                             />
                             <Typography weight="medium">
                                 {rewardToken?.symbol}

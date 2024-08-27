@@ -54,7 +54,6 @@ export function Row({
                         size="sm"
                         address={token?.address}
                         chain={chain}
-                        defaultText=" "
                     />
                 )}
                 {loading ? (
