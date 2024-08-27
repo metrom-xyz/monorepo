@@ -26,6 +26,7 @@ export interface BaseButtonProps {
     iconPlacement?: "left" | "right";
     size?: "big" | "small" | "xsmall";
     variant?: "primary" | "secondary";
+    border?: boolean;
     active?: boolean;
     children?: ReactNode;
 }
@@ -51,6 +52,7 @@ const Component = (props: ButtonProps, ref: RefType<typeof props>) => {
         children,
         className,
         active = false,
+        border = true,
         icon: Icon,
         iconPlacement = "left",
         ...rest
@@ -60,6 +62,7 @@ const Component = (props: ButtonProps, ref: RefType<typeof props>) => {
         className: classNames(className?.root, styles.root, {
             [styles[size]]: true,
             [styles[variant]]: true,
+            [styles.noBorder]: !border,
         }),
     };
     const [Root, rootProps]: [ElementType, any] =

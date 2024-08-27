@@ -1,0 +1,31 @@
+.root {
+    @apply flex flex-col gap-8;
+}
+
+.titleContainer {
+    @apply flex flex-col gap-2;
+}
+
+.title {
+    @apply flex justify-between items-center gap-5;
+}
+
+.actionsContainer {
+    @apply flex justify-between mb-8;
+}
+
+.actionsContainer button {
+    @apply min-w-28;
+}
+
+.leftActions {
+    @apply flex gap-3;
+}
+
+.externalLinkIcon {
+    @apply h-4 w-4 transform -rotate-45;
+}
+
+.claimButton {
+    @apply self-end;
+}

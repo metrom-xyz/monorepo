@@ -36,6 +36,10 @@
         disabled:cursor-not-allowed;
 }
 
+.noBorder {
+    @apply border-transparent;
+}
+
 .primary.big {
     @apply px-6 py-5;
 }
@@ -72,8 +76,8 @@
     @apply min-h-6
         flex
         items-center
-        first:mr-5
-        last:ml-5
+        first:mr-2
+        last:ml-2
         only:m-0;
 }
 

@@ -1,21 +1,22 @@
 import type { SupportedChain } from "@metrom-xyz/contracts";
-import { useChainId } from "wagmi";
-import { metromApiClient } from "../commons";
 import { type Campaign } from "@metrom-xyz/sdk";
 import { useEffect, useState } from "react";
+import type { Hex } from "viem";
+import { metromApiClient } from "../commons";
 import { getCampaignName } from "../utils/campaign";
 
 export interface NamedCampaign extends Campaign {
     name: string;
 }
 
-export function useCampaigns(): {
+export function useCampaign(
+    chainId?: SupportedChain,
+    id?: Hex,
+): {
     loading: boolean;
-    campaigns: NamedCampaign[];
+    campaign?: NamedCampaign;
 } {
-    const chainId: SupportedChain = useChainId();
-
-    const [campaigns, setCampaigns] = useState<NamedCampaign[]>([]);
+    const [campaign, setCampaign] = useState<NamedCampaign>();
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
@@ -23,22 +24,25 @@ export function useCampaigns(): {
 
         async function fetchData() {
             if (!cancelled) setLoading(false);
-            if (!cancelled) setCampaigns([]);
+            if (!cancelled) setCampaign(undefined);
+
+            if (!chainId || !id) return;
 
             try {
                 if (!cancelled) setLoading(true);
-                const fetchedCampaigns = await metromApiClient.fetchCampaigns();
-                const namedCampaigns: NamedCampaign[] = [];
-                for (const campaign of fetchedCampaigns) {
-                    namedCampaigns.push({
+                const campaign = await metromApiClient.fetchCampaign({
+                    chainId,
+                    id,
+                });
+
+                if (!cancelled)
+                    setCampaign({
                         ...campaign,
                         name: getCampaignName(campaign),
                     });
-                }
-                if (!cancelled) setCampaigns(namedCampaigns);
             } catch (error) {
                 console.error(
-                    `Could not fetch campaigns for chain with id ${chainId}: ${error}`,
+                    `Could not fetch campaign ${id} for chain with id ${chainId}: ${error}`,
                 );
             } finally {
                 if (!cancelled) setLoading(false);
@@ -48,10 +52,10 @@ export function useCampaigns(): {
         return () => {
             cancelled = true;
         };
-    }, [chainId]);
+    }, [chainId, id]);
 
     return {
         loading,
-        campaigns,
+        campaign,
     };
 }

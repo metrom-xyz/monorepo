@@ -2,7 +2,7 @@ import classNames from "@/src/utils/classes";
 
 import styles from "./styles.module.css";
 
-type SkeletonVariant = "xs" | "sm" | "base" | "lg";
+type SkeletonVariant = "xs" | "sm" | "base" | "lg" | "xl2" | "xl4" | "xl5";
 
 export interface SkeletonProps {
     variant?: SkeletonVariant;
