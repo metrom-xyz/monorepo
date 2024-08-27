@@ -15,12 +15,14 @@ import { Pagination } from "@/src/ui/pagination";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import { Select, type SelectOption } from "@/src/ui/select";
 import { Status } from "@metrom-xyz/sdk";
+import { useChains } from "wagmi";
 
 import styles from "./styles.module.css";
 
 const PAGE_SIZE = 10;
 const QUERY_PARAM_SEARCH = "search";
 const QUERY_PARAM_STATUS = "status";
+const QUERY_PARAM_CHAIN = "chainId";
 
 export enum FilterableStatus {
     None = "",
@@ -31,6 +33,7 @@ export enum FilterableStatus {
 
 export function Campaigns() {
     const t = useTranslations("allCampaigns");
+    const chains = useChains();
     const router = useRouter();
     const pathname = usePathname();
     const searchParams = useSearchParams();
@@ -39,6 +42,7 @@ export function Campaigns() {
         searchParams.get(QUERY_PARAM_SEARCH) || "",
     );
     const [status, setStatus] = useState<FilterableStatus | null>(null);
+    const [chain, setChain] = useState<number | null>(null);
     const [debouncedSearch, setDebouncedSearch] = useState(search);
     const [pageNumber, setPageNumber] = useState(1);
 
@@ -63,6 +67,15 @@ export function Campaigns() {
         ];
     }, [t]);
 
+    const chainOptions = useMemo(() => {
+        return chains.map((chain) => {
+            return {
+                label: chain.name,
+                value: chain.id,
+            };
+        });
+    }, [chains]);
+
     const { loading, campaigns } = useCampaigns();
 
     useDebounce(
@@ -86,10 +99,11 @@ export function Campaigns() {
                 filterCampaigns(
                     campaigns,
                     status || FilterableStatus.None,
+                    chain,
                     debouncedSearch,
                 ),
             ),
-        [campaigns, status, debouncedSearch],
+        [campaigns, status, chain, debouncedSearch],
     );
 
     const { data: pagedCampaigns, totalPages } = usePagination({
@@ -118,6 +132,18 @@ export function Campaigns() {
         [pathname, router, searchParams],
     );
 
+    const handleChainChange = useCallback(
+        (chain: SelectOption<number>) => {
+            const params = new URLSearchParams(searchParams.toString());
+            if (params.has(QUERY_PARAM_CHAIN))
+                params.set(QUERY_PARAM_CHAIN, chain.value.toString());
+            else params.append(QUERY_PARAM_CHAIN, chain.value.toString());
+            router.push(`${pathname}?${params.toString()}`);
+            setChain(chain.value);
+        },
+        [pathname, router, searchParams],
+    );
+
     function handlePreviousPage() {
         setPageNumber((page) => page - 1);
     }
@@ -134,7 +160,7 @@ export function Campaigns() {
         <div className={styles.root}>
             <div className={styles.filters}>
                 <TextInput
-                    className={styles.searchInput}
+                    className={styles.filterInput}
                     icon={SearchIcon}
                     iconPlacement="right"
                     placeholder={t("filters.search.placeholder")}
@@ -149,7 +175,17 @@ export function Campaigns() {
                     messages={{
                         noResults: "",
                     }}
-                    className={styles.statusSelect}
+                    className={styles.filterInput}
+                />
+                <Select
+                    options={chainOptions}
+                    value={chain}
+                    onChange={handleChainChange}
+                    placeholder={t("filters.chain.placeholder")}
+                    messages={{
+                        noResults: "",
+                    }}
+                    className={styles.filterInput}
                 />
             </div>
             <div className={styles.row}>

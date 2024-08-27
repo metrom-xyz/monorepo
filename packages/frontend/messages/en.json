@@ -17,6 +17,9 @@
                 "live": "Live",
                 "upcoming": "Upcoming",
                 "ended": "Ended"
+            },
+            "chain": {
+                "placeholder": "Chain"
             }
         },
         "header": {

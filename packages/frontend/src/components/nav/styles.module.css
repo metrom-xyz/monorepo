@@ -2,9 +2,7 @@
     @apply relative
         h-20
         w-full
-        max-w-screen-lg
         px-6
-        lg:px-0
         flex
         justify-between
         items-center;
