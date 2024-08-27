@@ -37,7 +37,7 @@ interface RawReward {
     usdPrice: number | null;
 }
 
-type RawCampaign = {
+export interface RawCampaign {
     chainId: number;
     id: Address;
     from: number;
@@ -49,7 +49,7 @@ type RawCampaign = {
     whitelist: Address[] | null;
     blacklist: Address[] | null;
     apr: number | null;
-};
+}
 
 export type FetchCampaignsResponse = {
     campaigns: RawCampaign[];
