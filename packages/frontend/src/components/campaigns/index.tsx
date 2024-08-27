@@ -11,16 +11,23 @@ import { TextInput } from "@/src/ui/text-input";
 import { SearchIcon } from "@/src/assets/search-icon";
 import { useDebounce } from "react-use";
 import { filterCampaigns, sortCampaigns } from "@/src/utils/filtering";
+import { Pagination } from "@/src/ui/pagination";
+import { useRouter, usePathname, useSearchParams } from "next/navigation";
 
 import styles from "./styles.module.css";
-import { Pagination } from "@/src/ui/pagination";
 
 const PAGE_SIZE = 10;
+const QUERY_PARAM_SEARCH = "search";
 
 export function Campaigns() {
     const t = useTranslations("allCampaigns");
+    const router = useRouter();
+    const pathname = usePathname();
+    const searchParams = useSearchParams();
 
-    const [search, setSearch] = useState("");
+    const [search, setSearch] = useState(
+        searchParams.get(QUERY_PARAM_SEARCH) || "",
+    );
     const [debouncedSearch, setDebouncedSearch] = useState(search);
     const [pageNumber, setPageNumber] = useState(1);
 
@@ -29,6 +36,13 @@ export function Campaigns() {
     useDebounce(
         () => {
             setDebouncedSearch(search);
+            const params = new URLSearchParams(searchParams.toString());
+            if (search)
+                if (params.has(QUERY_PARAM_SEARCH))
+                    params.set(QUERY_PARAM_SEARCH, search);
+                else params.append(QUERY_PARAM_SEARCH, search);
+            else params.delete(QUERY_PARAM_SEARCH);
+            router.push(`${pathname}?${params.toString()}`);
         },
         300,
         [search],

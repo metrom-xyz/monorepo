@@ -16,15 +16,6 @@ const nextConfig = {
             },
         ],
     },
-    async redirects() {
-        return [
-            {
-                source: "/:locale/",
-                destination: "/campaigns",
-                permanent: true,
-            },
-        ];
-    },
 };
 
 export default withNextIntl(nextConfig);
