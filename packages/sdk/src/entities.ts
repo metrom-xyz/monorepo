@@ -36,9 +36,9 @@ export interface Rewards extends Array<UsdPricedTokenAmount> {
 }
 
 export enum Status {
-    Live,
-    Upcoming,
-    Ended,
+    Live = "live",
+    Upcoming = "upcoming",
+    Ended = "ended",
 }
 
 export interface Campaign {

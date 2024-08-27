@@ -1,10 +1,40 @@
 .root {
     composes: row from "../styles.module.css";
-    @apply bg-white 
+    @apply bg-white
         hover:bg-gray-200
         cursor-pointer
         transition-colors
         duration-200
         ease-in-out
         rounded-xl h-14;
+}
+
+.poolContainer {
+    @apply flex items-center gap-2;
+}
+
+.externalLink {
+    @apply bg-white
+        h-7
+        w-7
+        flex
+        items-center
+        justify-center
+        rounded-md
+        opacity-0
+        transform
+        scale-75
+        cursor-pointer
+        transition
+        duration-200
+        ease-in-out
+        pointer-events-none;
+}
+
+.externalLinkIcon {
+    @apply h-4 w-4 transform -rotate-45;
+}
+
+.root:hover .externalLink {
+    @apply opacity-100 scale-100;
 }

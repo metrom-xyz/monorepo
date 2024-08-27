@@ -5,6 +5,7 @@ import { Rewards, SkeletonRewards } from "./rewards";
 import { Chain, SkeletonChain } from "./chain";
 import type { NamedCampaign } from "@/src/hooks/useCampaigns";
 import Link from "next/link";
+import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
 
 import styles from "./styles.module.css";
 
@@ -19,7 +20,12 @@ export function Campaign({ campaign }: CampaignProps) {
             className={styles.root}
         >
             <Chain id={campaign.chainId} />
-            <Pool campaign={campaign} />
+            <div className={styles.poolContainer}>
+                <Pool campaign={campaign} />
+                <div className={styles.externalLink}>
+                    <ArrowRightIcon className={styles.externalLinkIcon} />
+                </div>
+            </div>
             <Status
                 from={campaign.from}
                 to={campaign.to}

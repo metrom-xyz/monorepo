@@ -6,7 +6,7 @@ import {
     isDateInRange,
     isOnlyDateSame,
 } from "@/src/utils/date";
-import { ChevronDownIcon } from "@/src/assets/chevron-down-icon";
+import { ChevronDown } from "@/src/assets/chevron-down";
 import classNames from "@/src/utils/classes";
 
 import styles from "./styles.module.css";
@@ -69,7 +69,7 @@ export const DatePicker = ({
                     className={styles.headerIconWrapper}
                     onClick={handlePreviousMonth}
                 >
-                    <ChevronDownIcon className={styles.rotateLeft} />
+                    <ChevronDown className={styles.rotateLeft} />
                 </div>
                 <Typography
                     uppercase
@@ -83,7 +83,7 @@ export const DatePicker = ({
                     className={styles.headerIconWrapper}
                     onClick={handleNextMonth}
                 >
-                    <ChevronDownIcon className={styles.rotateRight} />
+                    <ChevronDown className={styles.rotateRight} />
                 </div>
             </div>
             <div className={styles.weeksHeader}>

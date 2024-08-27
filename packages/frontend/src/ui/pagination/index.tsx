@@ -1,4 +1,5 @@
-import { ChevronDownIcon } from "@/src/assets/chevron-down-icon";
+import { ChevronLeft } from "@/src/assets/chevron-left";
+import { ChevronRight } from "@/src/assets/chevron-right";
 import classNames from "@/src/utils/classes";
 
 import styles from "./styles.module.css";
@@ -29,7 +30,7 @@ export function Pagination({
                 onClick={onPrevious}
                 disabled={page === 1}
             >
-                <ChevronDownIcon className={styles.arrowLeft} />
+                <ChevronLeft className={styles.arrowIcon} />
             </button>
             {new Array(totalPages).fill(null).map((_, i) => {
                 const number = i + 1;
@@ -57,7 +58,7 @@ export function Pagination({
                 onClick={onNext}
                 disabled={page === totalPages}
             >
-                <ChevronDownIcon className={styles.arrowRight} />
+                <ChevronRight className={styles.arrowIcon} />
             </button>
         </div>
     );

@@ -6,12 +6,8 @@
     @apply mx-2;
 }
 
-.arrowLeft {
-    @apply transform rotate-90;
-}
-
-.arrowRight {
-    @apply transform -rotate-90;
+.arrowIcon {
+    @apply w-5 h-5;
 }
 
 .item {
@@ -46,7 +42,6 @@
     @apply bg-gray-200 cursor-not-allowed;
 }
 
-.arrowItem:disabled .arrowLeft,
-.arrowItem:disabled .arrowRight {
+.arrowItem:disabled .arrowIcon {
     @apply text-gray-400;
 }

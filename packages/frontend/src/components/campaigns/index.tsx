@@ -6,18 +6,28 @@ import { Campaign, SkeletonCampaign } from "./campaign";
 
 import { useTranslations } from "next-intl";
 import { usePagination } from "@/src/hooks/usePagination";
-import { useMemo, useState, type ChangeEvent } from "react";
+import { useCallback, useMemo, useState, type ChangeEvent } from "react";
 import { TextInput } from "@/src/ui/text-input";
 import { SearchIcon } from "@/src/assets/search-icon";
 import { useDebounce } from "react-use";
 import { filterCampaigns, sortCampaigns } from "@/src/utils/filtering";
 import { Pagination } from "@/src/ui/pagination";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
+import { Select, type SelectOption } from "@/src/ui/select";
+import { Status } from "@metrom-xyz/sdk";
 
 import styles from "./styles.module.css";
 
 const PAGE_SIZE = 10;
 const QUERY_PARAM_SEARCH = "search";
+const QUERY_PARAM_STATUS = "status";
+
+export enum FilterableStatus {
+    None = "",
+    Live = Status.Live,
+    Upcoming = Status.Upcoming,
+    Ended = Status.Ended,
+}
 
 export function Campaigns() {
     const t = useTranslations("allCampaigns");
@@ -28,8 +38,30 @@ export function Campaigns() {
     const [search, setSearch] = useState(
         searchParams.get(QUERY_PARAM_SEARCH) || "",
     );
+    const [status, setStatus] = useState<FilterableStatus | null>(null);
     const [debouncedSearch, setDebouncedSearch] = useState(search);
     const [pageNumber, setPageNumber] = useState(1);
+
+    const statusOptions = useMemo(() => {
+        return [
+            {
+                label: t("filters.status.none"),
+                value: FilterableStatus.None,
+            },
+            {
+                label: t("filters.status.live"),
+                value: FilterableStatus.Live,
+            },
+            {
+                label: t("filters.status.upcoming"),
+                value: FilterableStatus.Upcoming,
+            },
+            {
+                label: t("filters.status.ended"),
+                value: FilterableStatus.Ended,
+            },
+        ];
+    }, [t]);
 
     const { loading, campaigns } = useCampaigns();
 
@@ -49,8 +81,15 @@ export function Campaigns() {
     );
 
     const filteredCampaigns = useMemo(
-        () => filterCampaigns(sortCampaigns(campaigns), debouncedSearch),
-        [debouncedSearch, campaigns],
+        () =>
+            sortCampaigns(
+                filterCampaigns(
+                    campaigns,
+                    status || FilterableStatus.None,
+                    debouncedSearch,
+                ),
+            ),
+        [campaigns, status, debouncedSearch],
     );
 
     const { data: pagedCampaigns, totalPages } = usePagination({
@@ -62,6 +101,22 @@ export function Campaigns() {
     function handleSearchChange(event: ChangeEvent<HTMLInputElement>) {
         setSearch(event.target.value);
     }
+
+    const handleStatusChange = useCallback(
+        (status: SelectOption<FilterableStatus>) => {
+            const params = new URLSearchParams(searchParams.toString());
+            if (status.value !== FilterableStatus.None) {
+                if (params.has(QUERY_PARAM_STATUS))
+                    params.set(QUERY_PARAM_STATUS, status.value.toString());
+                else params.append(QUERY_PARAM_STATUS, status.value.toString());
+            } else {
+                params.delete(QUERY_PARAM_STATUS);
+            }
+            router.push(`${pathname}?${params.toString()}`);
+            setStatus(status.value);
+        },
+        [pathname, router, searchParams],
+    );
 
     function handlePreviousPage() {
         setPageNumber((page) => page - 1);
@@ -85,6 +140,16 @@ export function Campaigns() {
                     placeholder={t("filters.search.placeholder")}
                     value={search}
                     onChange={handleSearchChange}
+                />
+                <Select
+                    options={statusOptions}
+                    value={status}
+                    onChange={handleStatusChange}
+                    placeholder={t("filters.status.placeholder")}
+                    messages={{
+                        noResults: "",
+                    }}
+                    className={styles.statusSelect}
                 />
             </div>
             <div className={styles.row}>
