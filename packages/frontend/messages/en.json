@@ -128,5 +128,13 @@
         "launched": "Campaign successfully launched!",
         "allCampaigns": "All campaigns",
         "newCampaign": "New campaign"
+    },
+    "campaignDetails": {
+        "header": {
+            "rewardsMayVary": "Rewards may vary",
+            "deposit": "Deposit",
+            "explorer": "Explorer",
+            "claim": "Claim"
+        }
     }
 }

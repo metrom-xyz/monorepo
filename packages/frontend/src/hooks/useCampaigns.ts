@@ -8,7 +8,7 @@ export interface NamedCampaign extends Campaign {
     name: string;
 }
 
-export function useCampaigns(asc?: boolean): {
+export function useCampaigns(): {
     loading: boolean;
     campaigns: NamedCampaign[];
 } {
@@ -49,7 +49,7 @@ export function useCampaigns(asc?: boolean): {
         return () => {
             cancelled = true;
         };
-    }, [chainId, asc]);
+    }, [chainId]);
 
     return {
         loading,

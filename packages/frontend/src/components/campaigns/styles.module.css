@@ -1,5 +1,5 @@
 .root {
-    @apply max-w-screen-lg w-full flex flex-col;
+    @apply max-w-screen-lg w-full flex flex-col mb-5;
 }
 
 .filters {
