@@ -68,7 +68,8 @@ export function RewardsStep({
     );
 
     const totalRewardsUsdAmount = useMemo(() => {
-        return rewards?.reduce((accumulator, reward) => {
+        if (!rewards) return 0;
+        return rewards.reduce((accumulator, reward) => {
             return (accumulator += reward.amount * reward.price);
         }, 0);
     }, [rewards]);
