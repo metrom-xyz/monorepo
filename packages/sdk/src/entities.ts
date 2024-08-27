@@ -57,6 +57,7 @@ export interface Campaign {
 }
 
 export interface Claim extends TokenAmount {
+    chainId: number;
     campaignId: Address;
     token: Token;
     amount: number;

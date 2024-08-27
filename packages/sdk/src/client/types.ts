@@ -1,6 +1,7 @@
 import type { Address } from "viem";
 
-interface RawClaimableRewards {
+interface RawClaim {
+    chainId: number;
     campaignId: Address;
     token: RawToken;
     amount: number;
@@ -57,7 +58,7 @@ export type FetchCampaignsResponse = {
 };
 
 export type FetchClaimsResponse = {
-    claims: RawClaimableRewards[];
+    claims: RawClaim[];
 };
 
 export type FetchPoolsResponse = {
