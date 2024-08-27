@@ -15,7 +15,15 @@
 }
 
 .item {
-    @apply w-9 h-9 rounded-md flex items-center justify-center transition-colors duration-200;
+    @apply w-9
+        h-9
+        rounded-md
+        flex
+        items-center
+        justify-center
+        transition-colors
+        duration-200
+        ease-in-out;
 }
 
 .itemActive {
@@ -23,7 +31,11 @@
 }
 
 .clickable {
-    @apply cursor-pointer hover:bg-gray-200 transition-colors duration-200;
+    @apply cursor-pointer
+        hover:bg-gray-200
+        transition-colors
+        duration-200
+        ease-in-out;
 }
 
 .arrowItem {

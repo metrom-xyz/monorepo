@@ -4,9 +4,9 @@ import { SkeletonStatus, Status } from "./status";
 import { Rewards, SkeletonRewards } from "./rewards";
 import { Chain, SkeletonChain } from "./chain";
 import type { NamedCampaign } from "@/src/hooks/useCampaigns";
+import Link from "next/link";
 
 import styles from "./styles.module.css";
-import Link from "next/link";
 
 interface CampaignProps {
     campaign: NamedCampaign;
