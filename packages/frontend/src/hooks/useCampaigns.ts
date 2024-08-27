@@ -1,8 +1,9 @@
 import type { SupportedChain } from "@metrom-xyz/contracts";
 import { useChainId } from "wagmi";
-import { metromApiClient, SUPPORTED_AMM_SLUG_TO_NAME } from "../commons";
+import { metromApiClient } from "../commons";
 import { type Campaign } from "@metrom-xyz/sdk";
 import { useEffect, useState } from "react";
+import { getCampaignName } from "../utils/campaign";
 
 export interface NamedCampaign extends Campaign {
     name: string;
@@ -29,11 +30,9 @@ export function useCampaigns(): {
                 const fetchedCampaigns = await metromApiClient.fetchCampaigns();
                 const namedCampaigns: NamedCampaign[] = [];
                 for (const campaign of fetchedCampaigns) {
-                    const amm =
-                        SUPPORTED_AMM_SLUG_TO_NAME[campaign.pool.amm] || "-";
                     namedCampaigns.push({
                         ...campaign,
-                        name: `${amm} ${campaign.pool.token0.symbol} / ${campaign.pool.token1.symbol}`,
+                        name: getCampaignName(campaign),
                     });
                 }
                 if (!cancelled) setCampaigns(namedCampaigns);

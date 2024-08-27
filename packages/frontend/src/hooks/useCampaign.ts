@@ -1,16 +1,17 @@
 import type { SupportedChain } from "@metrom-xyz/contracts";
 import { type Campaign } from "@metrom-xyz/sdk";
 import { useEffect, useState } from "react";
-import type { Address } from "viem";
-import { metromApiClient, SUPPORTED_AMM_SLUG_TO_NAME } from "../commons";
+import type { Hex } from "viem";
+import { metromApiClient } from "../commons";
+import { getCampaignName } from "../utils/campaign";
 
 export interface NamedCampaign extends Campaign {
     name: string;
 }
 
 export function useCampaign(
-    chainId: SupportedChain,
-    id: Address,
+    chainId?: SupportedChain,
+    id?: Hex,
 ): {
     loading: boolean;
     campaign?: NamedCampaign;
@@ -25,6 +26,8 @@ export function useCampaign(
             if (!cancelled) setLoading(false);
             if (!cancelled) setCampaign(undefined);
 
+            if (!chainId || !id) return;
+
             try {
                 if (!cancelled) setLoading(true);
                 const campaign = await metromApiClient.fetchCampaign({
@@ -35,7 +38,7 @@ export function useCampaign(
                 if (!cancelled)
                     setCampaign({
                         ...campaign,
-                        name: `${SUPPORTED_AMM_SLUG_TO_NAME[campaign.pool.amm] || "-"} ${campaign.pool.token0.symbol} / ${campaign.pool.token1.symbol}`,
+                        name: getCampaignName(campaign),
                     });
             } catch (error) {
                 console.error(

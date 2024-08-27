@@ -2,7 +2,7 @@
 
 import type { SupportedChain } from "@metrom-xyz/contracts";
 import { useCampaign } from "@/src/hooks/useCampaign";
-import type { Address } from "viem";
+import type { Hex } from "viem";
 import { useRouter } from "@/src/navigation";
 import { Nav } from "../nav";
 import { Header, SkeletonHeader } from "./header";
@@ -11,7 +11,7 @@ import styles from "./styles.module.css";
 
 interface CampaignDetailsProps {
     chain: SupportedChain;
-    campaignId: Address;
+    campaignId: Hex;
 }
 
 export function CampaignDetails({ chain, campaignId }: CampaignDetailsProps) {
