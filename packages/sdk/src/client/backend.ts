@@ -56,7 +56,7 @@ export class MetromApiClient {
     }
 
     async fetchCampaign(params: FetchCampaignParams): Promise<Campaign> {
-        const url = new URL("campaigns", this.baseUrl);
+        const url = new URL("campaign", this.baseUrl);
 
         url.searchParams.set("chainId", params.chainId.toString());
         url.searchParams.set("id", params.id.toString());
