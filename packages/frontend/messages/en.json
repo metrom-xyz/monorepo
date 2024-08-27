@@ -2,6 +2,7 @@
     "navigation": {
         "allCampaigns": "All campaigns",
         "newCampaign": "New campaign",
+        "claims": "Claims",
         "connectWallet": "Connect wallet"
     },
     "allCampaigns": {
