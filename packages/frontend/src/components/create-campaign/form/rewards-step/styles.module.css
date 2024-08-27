@@ -13,7 +13,7 @@
 }
 
 .previewWrapper {
-    @apply flex flex-col gap-3;
+    @apply w-full flex flex-col gap-3;
 }
 
 .rewardPickerWrapper {
@@ -27,6 +27,7 @@
 .rewardTokenAmountInput :global(.input),
 .rewardTokenAmountInput :global(.inputWrapper) {
     @apply w-full
+        max-w-56
         bg-transparent
         h-6
         leading-6

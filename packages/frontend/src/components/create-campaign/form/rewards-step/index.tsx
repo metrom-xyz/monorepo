@@ -248,7 +248,7 @@ export function RewardsStep({
                                 chain={chainId}
                             />
                             <Typography weight="medium">
-                                {rewardToken?.symbol}
+                                {rewardToken?.symbol || t("selectPlaceholder")}
                             </Typography>
                             <ChevronDown />
                         </div>
