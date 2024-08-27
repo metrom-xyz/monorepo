@@ -1,4 +1,4 @@
-.app {
+.layout {
     @apply flex
         flex-col
         items-center

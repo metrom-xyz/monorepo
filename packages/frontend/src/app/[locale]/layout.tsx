@@ -11,7 +11,6 @@ import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
 import type { Locale } from "@rainbow-me/rainbowkit";
 import { ClientProviders } from "../../components/client-providers";
-import { Nav } from "../../components/nav";
 
 export const metadata: Metadata = {
     title: "Metrom",
@@ -32,10 +31,7 @@ export default async function RootLayout({
             <body>
                 <NextIntlClientProvider messages={messages}>
                     <ClientProviders locale={locale as Locale}>
-                        <div className={styles.app}>
-                            <Nav />
-                            {children}
-                        </div>
+                        {children}
                     </ClientProviders>
                 </NextIntlClientProvider>
             </body>
