@@ -10,17 +10,24 @@ import { useMemo, useState, type ChangeEvent } from "react";
 import { TextInput } from "@/src/ui/text-input";
 import { SearchIcon } from "@/src/assets/search-icon";
 import { useDebounce } from "react-use";
-import { filterCampaigns } from "@/src/utils/filtering";
+import { filterCampaigns, sortCampaigns } from "@/src/utils/filtering";
+import { Pagination } from "@/src/ui/pagination";
+import { useRouter, usePathname, useSearchParams } from "next/navigation";
 
 import styles from "./styles.module.css";
 
 const PAGE_SIZE = 10;
+const QUERY_PARAM_SEARCH = "search";
 
-// TODO: implement pagination
 export function Campaigns() {
     const t = useTranslations("allCampaigns");
+    const router = useRouter();
+    const pathname = usePathname();
+    const searchParams = useSearchParams();
 
-    const [search, setSearch] = useState("");
+    const [search, setSearch] = useState(
+        searchParams.get(QUERY_PARAM_SEARCH) || "",
+    );
     const [debouncedSearch, setDebouncedSearch] = useState(search);
     const [pageNumber, setPageNumber] = useState(1);
 
@@ -29,17 +36,22 @@ export function Campaigns() {
     useDebounce(
         () => {
             setDebouncedSearch(search);
+            const params = new URLSearchParams(searchParams.toString());
+            if (search)
+                if (params.has(QUERY_PARAM_SEARCH))
+                    params.set(QUERY_PARAM_SEARCH, search);
+                else params.append(QUERY_PARAM_SEARCH, search);
+            else params.delete(QUERY_PARAM_SEARCH);
+            router.push(`${pathname}?${params.toString()}`);
         },
         300,
         [search],
     );
 
     const filteredCampaigns = useMemo(
-        () => filterCampaigns(campaigns, debouncedSearch),
+        () => filterCampaigns(sortCampaigns(campaigns), debouncedSearch),
         [debouncedSearch, campaigns],
     );
-
-    console.log(filteredCampaigns);
 
     const { data: pagedCampaigns, totalPages } = usePagination({
         data: filteredCampaigns,
@@ -49,6 +61,18 @@ export function Campaigns() {
 
     function handleSearchChange(event: ChangeEvent<HTMLInputElement>) {
         setSearch(event.target.value);
+    }
+
+    function handlePreviousPage() {
+        setPageNumber((page) => page - 1);
+    }
+
+    function handleNextPage() {
+        setPageNumber((page) => page + 1);
+    }
+
+    function handlePage(page: number) {
+        setPageNumber(page);
     }
 
     return (
@@ -83,48 +107,33 @@ export function Campaigns() {
             <div className={styles.body}>
                 {loading ? (
                     <>
-                        <SkeletonCampaign
-                            className={`${styles.row} ${styles.bodyRow}`}
-                        />
-                        <SkeletonCampaign
-                            className={`${styles.row} ${styles.bodyRow}`}
-                        />
-                        <SkeletonCampaign
-                            className={`${styles.row} ${styles.bodyRow}`}
-                        />
-                        <SkeletonCampaign
-                            className={`${styles.row} ${styles.bodyRow}`}
-                        />
-                        <SkeletonCampaign
-                            className={`${styles.row} ${styles.bodyRow}`}
-                        />
-                        <SkeletonCampaign
-                            className={`${styles.row} ${styles.bodyRow}`}
-                        />
-                        <SkeletonCampaign
-                            className={`${styles.row} ${styles.bodyRow}`}
-                        />
-                        <SkeletonCampaign
-                            className={`${styles.row} ${styles.bodyRow}`}
-                        />
-                        <SkeletonCampaign
-                            className={`${styles.row} ${styles.bodyRow}`}
-                        />
-                        <SkeletonCampaign
-                            className={`${styles.row} ${styles.bodyRow}`}
-                        />
+                        <SkeletonCampaign />
+                        <SkeletonCampaign />
+                        <SkeletonCampaign />
+                        <SkeletonCampaign />
+                        <SkeletonCampaign />
+                        <SkeletonCampaign />
+                        <SkeletonCampaign />
+                        <SkeletonCampaign />
+                        <SkeletonCampaign />
+                        <SkeletonCampaign />
                     </>
                 ) : (
                     pagedCampaigns.map((campaign) => {
                         return (
-                            <Campaign
-                                key={campaign.id}
-                                campaign={campaign}
-                                className={`${styles.row} ${styles.bodyRow}`}
-                            />
+                            <Campaign key={campaign.id} campaign={campaign} />
                         );
                     })
                 )}
+            </div>
+            <div className={styles.paginationWrapper}>
+                <Pagination
+                    page={pageNumber}
+                    totalPages={totalPages}
+                    onNext={handleNextPage}
+                    onPrevious={handlePreviousPage}
+                    onPage={handlePage}
+                />
             </div>
         </div>
     );

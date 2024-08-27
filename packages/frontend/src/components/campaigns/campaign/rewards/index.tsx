@@ -34,7 +34,7 @@ export function Rewards({ from, to, rewards }: RewardsProps) {
                         <div
                             key={reward.address}
                             className={styles.tokenIcon}
-                            style={{ left: i * 5 }}
+                            style={{ left: i * 10 }}
                         >
                             <RemoteLogo
                                 chain={chainId}

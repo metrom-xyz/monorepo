@@ -15,6 +15,7 @@ import styles from "./styles.module.css";
 const ROUTES = [
     { path: "/", label: "allCampaigns", icon: AllCampaignsIcon },
     { path: "/campaigns/create", label: "newCampaign", icon: NewCampaignIcon },
+    { path: "/claims", label: "claims", icon: null },
 ];
 
 export function Nav() {
@@ -41,7 +42,7 @@ export function Nav() {
                             [styles.tabActive]: pathname === path,
                         })}
                     >
-                        <Icon className={styles.tabIcon} />
+                        {Icon && <Icon className={styles.tabIcon} />}
                         <Typography>{t(label)}</Typography>
                     </div>
                 ))}

@@ -7,12 +7,13 @@ import type {
 } from "./types";
 import type { SupportedChain } from "@metrom-xyz/contracts";
 import { SupportedAmm } from "../commons";
-import type {
-    Campaign,
-    Claim,
-    Pool,
-    Rewards,
-    WhitelistedErc20Token,
+import {
+    Status,
+    type Campaign,
+    type Claim,
+    type Pool,
+    type Rewards,
+    type WhitelistedErc20Token,
 } from "../entities";
 
 export interface FetchCampaignsParams {
@@ -54,6 +55,16 @@ export class MetromApiClient {
             (await response.json()) as FetchCampaignsResponse;
 
         return rawCampaignsResponse.campaigns.map((rawCampaign) => {
+            let status;
+            const now = Math.floor(Date.now() / 1000);
+            if (now < rawCampaign.from) {
+                status = Status.Upcoming;
+            } else if (now > rawCampaign.to) {
+                status = Status.Ended;
+            } else {
+                status = Status.Live;
+            }
+
             const rewards: Rewards = Object.assign([], { usdValue: 0 });
             for (const rawReward of rawCampaign.rewards) {
                 let usdValue = null;
@@ -69,6 +80,7 @@ export class MetromApiClient {
 
             return {
                 ...rawCampaign,
+                status,
                 pool: {
                     ...rawCampaign.pool,
                     chainId: rawCampaign.chainId,

@@ -1,39 +1,43 @@
-import type { AmmInfo } from "@/src/types";
 import { Apr, SkeletonApr } from "./apr";
 import { Pool, SkeletonPool } from "./pool";
 import { SkeletonStatus, Status } from "./status";
 import { Rewards, SkeletonRewards } from "./rewards";
 import { Chain, SkeletonChain } from "./chain";
 import type { NamedCampaign } from "@/src/hooks/useCampaigns";
+import Link from "next/link";
+
+import styles from "./styles.module.css";
 
 interface CampaignProps {
     campaign: NamedCampaign;
-    className: string;
 }
 
-export function Campaign({ campaign, className }: CampaignProps) {
+export function Campaign({ campaign }: CampaignProps) {
     return (
-        <div className={className}>
+        <Link
+            href={`/campaigns/${campaign.chainId}/${campaign.id}`}
+            className={styles.root}
+        >
             <Chain id={campaign.chainId} />
             <Pool campaign={campaign} />
-            <Status from={campaign.from} to={campaign.to} />
+            <Status
+                from={campaign.from}
+                to={campaign.to}
+                status={campaign.status}
+            />
             <Apr apr={campaign.apr} />
             <Rewards
                 from={campaign.from}
                 to={campaign.to}
                 rewards={campaign.rewards}
             />
-        </div>
+        </Link>
     );
 }
 
-interface SkeletonCampaignProps {
-    className: string;
-}
-
-export function SkeletonCampaign({ className }: SkeletonCampaignProps) {
+export function SkeletonCampaign() {
     return (
-        <div className={className}>
+        <div className={styles.root}>
             <SkeletonChain />
             <SkeletonPool />
             <SkeletonStatus />

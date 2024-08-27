@@ -35,11 +35,18 @@ export interface Rewards extends Array<UsdPricedTokenAmount> {
     usdValue: number | null;
 }
 
+export enum Status {
+    Live,
+    Upcoming,
+    Ended,
+}
+
 export interface Campaign {
     chainId: number;
     id: Address;
     from: number;
     to: number;
+    status: Status;
     createdAt: number;
     snapshottedAt: number | null;
     pool: Pool;

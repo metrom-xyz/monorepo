@@ -3,7 +3,7 @@
 }
 
 .filters {
-    @apply max-w-screen-lg w-full flex flex-col gap-3 mb-3;
+    @apply max-w-screen-lg w-full flex flex-col gap-3 mb-5;
 }
 
 .searchInput :global(.input) {
@@ -15,9 +15,9 @@
 }
 
 .body {
-    @apply w-full mt-4 flex flex-col gap-2;
+    @apply w-full mt-4 flex flex-col gap-2 mb-7;
 }
 
-.bodyRow {
-    @apply bg-white rounded-xl h-14;
+.paginationWrapper {
+    @apply w-full h-8 flex justify-end;
 }

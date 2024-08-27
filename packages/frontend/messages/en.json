@@ -2,6 +2,7 @@
     "navigation": {
         "allCampaigns": "All campaigns",
         "newCampaign": "New campaign",
+        "claims": "Claims",
         "connectWallet": "Connect wallet"
     },
     "allCampaigns": {
@@ -16,7 +17,7 @@
             "pool": "Pool",
             "status": "Status",
             "apr": "APR",
-            "rewards": "Rewards"
+            "rewards": "Daily rewards"
         },
         "status": {
             "live": {
