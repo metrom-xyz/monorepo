@@ -145,9 +145,9 @@ export function Campaigns() {
                     options={statusOptions}
                     value={status}
                     onChange={handleStatusChange}
-                    placeholder="Status"
+                    placeholder={t("filters.status.placeholder")}
                     messages={{
-                        noResults: "no",
+                        noResults: "",
                     }}
                     className={styles.statusSelect}
                 />
