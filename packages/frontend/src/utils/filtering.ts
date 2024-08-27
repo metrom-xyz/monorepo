@@ -36,12 +36,20 @@ export const sortCampaigns = (campaigns: NamedCampaign[]) => {
 export const filterCampaigns = (
     campaigns: NamedCampaign[],
     status: FilterableStatus,
+    chainId: number | null,
     searchQuery: string,
 ) => {
     if (campaigns.length === 0) return [];
-    if (!searchQuery && status === FilterableStatus.None) return campaigns;
+    if (!searchQuery && status === FilterableStatus.None && !chainId)
+        return campaigns;
 
     let filteredCampaigns = campaigns;
+
+    if (chainId)
+        filteredCampaigns = filteredCampaigns.filter(
+            (campaign) => campaign.chainId === chainId,
+        );
+
     if (status !== FilterableStatus.None) {
         let convertedStatus: Status;
         if (status === FilterableStatus.Ended) convertedStatus = Status.Ended;
