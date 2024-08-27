@@ -27,7 +27,7 @@
 }
 
 .xs > p {
-    @apply text-[0.4rem];
+    @apply text-[0.3rem];
 }
 
 .sm {
@@ -35,7 +35,7 @@
 }
 
 .sm > p {
-    @apply text-[0.5rem];
+    @apply text-[0.4rem];
 }
 
 .md {
@@ -43,7 +43,7 @@
 }
 
 .md > p {
-    @apply text-[0.6rem];
+    @apply text-[0.5rem];
 }
 
 .lg {
@@ -51,7 +51,7 @@
 }
 
 .lg > p {
-    @apply text-[0.7rem];
+    @apply text-[0.6rem];
 }
 
 .xl {

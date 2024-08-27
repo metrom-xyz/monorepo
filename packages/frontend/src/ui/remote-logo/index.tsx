@@ -66,9 +66,7 @@ export const RemoteLogo = ({
                     fill
                     src={validResolvedSrc}
                     alt={address || ""}
-                    className={classNames(styles.image, {
-                        [styles[size]]: true,
-                    })}
+                    className={classNames(styles.image, styles[size])}
                     onError={handleImageError}
                 />
             </div>
