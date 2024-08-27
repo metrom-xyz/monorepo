@@ -16,7 +16,7 @@
             "pool": "Pool",
             "status": "Status",
             "apr": "APR",
-            "rewards": "Rewards"
+            "rewards": "Daily rewards"
         },
         "status": {
             "live": {
