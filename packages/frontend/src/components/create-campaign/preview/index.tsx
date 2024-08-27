@@ -15,7 +15,7 @@ import { parseUnits } from "viem";
 import { metromAbi } from "@metrom-xyz/contracts/abi";
 import { CHAIN_DATA } from "@/src/commons";
 import type { SupportedChain } from "@metrom-xyz/contracts";
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useMemo, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 import { WalletIcon } from "@/src/assets/wallet-icon";
 import { useConnectModal } from "@rainbow-me/rainbowkit";
@@ -51,6 +51,11 @@ export function CampaignPreview({
     const publicClient = usePublicClient();
     const { address: connectedAddress } = useAccount();
     const { writeContractAsync } = useWriteContract();
+
+    const campaignDurationDays = useMemo(() => {
+        if (!payload.startDate) return 0;
+        return payload.startDate.diff(payload.endDate, "days");
+    }, [payload.endDate, payload.startDate]);
 
     const {
         data: simulatedCreate,
@@ -131,9 +136,10 @@ export function CampaignPreview({
         return (
             <div ref={feedback} className={styles.root}>
                 <Header
-                    payload={payload}
-                    onBack={onBack}
                     backDisabled={simulatingCreate || creating}
+                    payload={payload}
+                    campaignDurationDays={campaignDurationDays}
+                    onBack={onBack}
                 />
                 <div className={styles.content}>
                     <div className={styles.contentGrid}>
@@ -147,7 +153,10 @@ export function CampaignPreview({
                         {/* TODO: add apr */}
                         <TextField boxed label={t("apr")} value={"0.0%"} />
                     </div>
-                    <Rewards rewards={payload.rewards} />
+                    <Rewards
+                        rewards={payload.rewards}
+                        campaignDurationDays={campaignDurationDays}
+                    />
                     <div className={styles.createButtonContainer}>
                         {!connectedAddress ? (
                             <Button

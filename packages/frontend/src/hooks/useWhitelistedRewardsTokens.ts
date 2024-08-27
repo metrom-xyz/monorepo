@@ -30,7 +30,7 @@ export function useWhitelistedRewardsTokens(): {
                     });
                 if (!cancelled) setWhitelistedTokens(tokens);
             } catch (error) {
-                console.error("Could not fetch whitelisted tokens");
+                console.error(`Could not fetch whitelisted tokens: ${error}`);
             } finally {
                 if (!cancelled) setLoading(false);
             }

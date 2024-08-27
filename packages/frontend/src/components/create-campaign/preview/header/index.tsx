@@ -7,17 +7,23 @@ import { Typography } from "@/src/ui/typography";
 import dayjs from "dayjs";
 import { useTranslations } from "next-intl";
 import numeral from "numeral";
+import { useChainId } from "wagmi";
 
 import styles from "./styles.module.css";
-import { useChainId } from "wagmi";
 
 interface HeaderProps {
     payload: CampaignPayload;
     backDisabled: boolean;
+    campaignDurationDays: number;
     onBack: () => void;
 }
 
-export function Header({ payload, backDisabled, onBack }: HeaderProps) {
+export function Header({
+    payload,
+    backDisabled,
+    campaignDurationDays,
+    onBack,
+}: HeaderProps) {
     const t = useTranslations("campaignPreview.header");
     const chainId = useChainId();
 
@@ -67,7 +73,7 @@ export function Header({ payload, backDisabled, onBack }: HeaderProps) {
                     alignment="center"
                     label={t("runTime")}
                     value={t("runTimeDays", {
-                        count: payload.startDate?.diff(payload.endDate, "days"),
+                        count: campaignDurationDays,
                     })}
                 />
                 <TextField

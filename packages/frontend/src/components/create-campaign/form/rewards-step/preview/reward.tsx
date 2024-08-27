@@ -42,14 +42,11 @@ export function Reward({
             rewardTokenBalance !== undefined
                 ? Number(formatUnits(rewardTokenBalance, reward.token.decimals))
                 : Number.MAX_SAFE_INTEGER;
-        const minimumRate = Number(
-            formatUnits(reward.minimumRate, reward.token.decimals),
-        );
 
         const error =
             reward.amount > balance
                 ? "errors.insufficientBalance"
-                : distributionRate < minimumRate
+                : distributionRate < reward.minimumRate
                   ? "errors.lowDistributionRate"
                   : "";
 
@@ -77,8 +74,8 @@ export function Reward({
             >
                 {numeral(reward.amount).format("(0.00[00] a)")}
             </Typography>
-            <Typography weight="medium" light>
-                {/* TODO: usd amount */}$ 0
+            <Typography weight="medium" light variant="sm">
+                {numeral(reward.amount * reward.price).format("($ 0.00 a)")}
             </Typography>
             <div className={styles.rewardName}>
                 <RemoteLogo

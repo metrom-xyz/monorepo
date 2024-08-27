@@ -6,16 +6,31 @@ import type { SupportedChain } from "@metrom-xyz/contracts";
 import { useTranslations } from "next-intl";
 import numeral from "numeral";
 import { useChainId } from "wagmi";
+import { useMemo } from "react";
 
 import styles from "./styles.module.css";
 
 interface RewardsProps {
     rewards: CampaignPayload["rewards"];
+    campaignDurationDays: number;
 }
 
-export function Rewards({ rewards }: RewardsProps) {
+export function Rewards({ rewards, campaignDurationDays }: RewardsProps) {
     const t = useTranslations("campaignPreview.rewards");
     const chain: SupportedChain = useChainId();
+
+    const totalRewardsUsdAmount = useMemo(() => {
+        if (!rewards) return 0;
+        return rewards.reduce((accumulator, reward) => {
+            return (accumulator += reward.amount * reward.price);
+        }, 0);
+    }, [rewards]);
+
+    const dailyRewards = useMemo(() => {
+        if (!totalRewardsUsdAmount) return 0;
+        if (campaignDurationDays === 0) return totalRewardsUsdAmount;
+        return totalRewardsUsdAmount / campaignDurationDays;
+    }, [campaignDurationDays, totalRewardsUsdAmount]);
 
     return (
         <div className={styles.root}>
@@ -38,9 +53,10 @@ export function Rewards({ rewards }: RewardsProps) {
                             {reward.token.symbol}
                         </Typography>
                     </div>
-                    {/* TODO: add rewards usd */}
                     <Typography uppercase weight="medium" light>
-                        $ 0
+                        {numeral(reward.amount * reward.price).format(
+                            "($ 0.00[0] a)",
+                        )}
                     </Typography>
                     <Typography uppercase weight="medium" variant="lg">
                         {numeral(reward.amount).format("(0.00[00] a)")}
@@ -48,17 +64,18 @@ export function Rewards({ rewards }: RewardsProps) {
                 </div>
             ))}
             <div className={styles.summary}>
-                {/* TODO: add rewards usd */}
                 <TextField
                     boxed
                     label={t("daily")}
-                    value={"$ 0"}
+                    value={numeral(dailyRewards).format("($ 0.00[0] a)")}
                     className={styles.summaryBox}
                 />
                 <TextField
                     boxed
                     label={t("total")}
-                    value={"$ 0"}
+                    value={numeral(totalRewardsUsdAmount).format(
+                        "($ 0.00[0] a)",
+                    )}
                     className={styles.summaryBox}
                 />
             </div>
