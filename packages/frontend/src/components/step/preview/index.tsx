@@ -1,4 +1,4 @@
-import { type CSSProperties, type ReactNode } from "react";
+import { type ReactNode } from "react";
 import {
     animated,
     useChain,
@@ -6,7 +6,7 @@ import {
     useSpringRef,
     useTransition,
 } from "@react-spring/web";
-import { ChevronDownIcon } from "@/src/assets/chevron-down-icon";
+import { ChevronDown } from "@/src/assets/chevron-down";
 import classNames from "@/src/utils/classes";
 import { Typography } from "@/src/ui/typography";
 
@@ -104,7 +104,7 @@ export function StepPreview({
             </div>
             {decorator && (
                 <div className={styles.iconWrapper}>
-                    <ChevronDownIcon
+                    <ChevronDown
                         className={classNames(styles.icon, {
                             [styles.iconOpen]: open,
                         })}

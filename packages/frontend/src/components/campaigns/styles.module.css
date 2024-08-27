@@ -3,10 +3,14 @@
 }
 
 .filters {
-    @apply max-w-screen-lg w-full flex flex-col gap-3 mb-5;
+    @apply max-w-screen-lg w-full flex gap-3 mb-5;
 }
 
 .searchInput :global(.input) {
+    @apply bg-gray-200 py-2;
+}
+
+.statusSelect :global(.input) {
     @apply bg-gray-200 py-2;
 }
 

@@ -1,6 +1,7 @@
 import { isAddress } from "viem";
 import { type Token, type Pool, Status } from "@metrom-xyz/sdk";
 import type { NamedCampaign } from "../hooks/useCampaigns";
+import { FilterableStatus } from "../components/campaigns";
 
 export const sortCampaigns = (campaigns: NamedCampaign[]) => {
     const clusteredCampaigns = campaigns.reduce(
@@ -34,14 +35,30 @@ export const sortCampaigns = (campaigns: NamedCampaign[]) => {
 
 export const filterCampaigns = (
     campaigns: NamedCampaign[],
+    status: FilterableStatus,
     searchQuery: string,
 ) => {
     if (campaigns.length === 0) return [];
-    if (!searchQuery) return campaigns;
+    if (!searchQuery && status === FilterableStatus.None) return campaigns;
+
+    let filteredCampaigns = campaigns;
+    if (status !== FilterableStatus.None) {
+        let convertedStatus: Status;
+        if (status === FilterableStatus.Ended) convertedStatus = Status.Ended;
+        else if (status === FilterableStatus.Live)
+            convertedStatus = Status.Live;
+        else if (status === FilterableStatus.Upcoming)
+            convertedStatus = Status.Upcoming;
+
+        filteredCampaigns = filteredCampaigns.filter(
+            (campaign) => campaign.status === convertedStatus,
+        );
+    }
+
     if (isAddress(searchQuery)) {
         const lowercaseSearchQuery = searchQuery.toLowerCase();
 
-        const campaignByPool = campaigns.filter(
+        const campaignByPool = filteredCampaigns.filter(
             (campaign) =>
                 campaign.pool.address.toLowerCase() === lowercaseSearchQuery,
         );
@@ -54,8 +71,8 @@ export const filterCampaigns = (
         .toLowerCase()
         .split(/[/\s]+/)
         .filter((s) => s.length > 0 && s !== "/");
-    if (lowercaseSearchParts.length === 0) return campaigns;
-    return campaigns.filter((campaign) => {
+    if (lowercaseSearchParts.length === 0) return filteredCampaigns;
+    return filteredCampaigns.filter((campaign) => {
         return matchesSearch(campaign.name, lowercaseSearchParts);
     });
 };

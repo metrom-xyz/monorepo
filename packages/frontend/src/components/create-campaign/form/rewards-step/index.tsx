@@ -21,7 +21,7 @@ import { NumberInput, type NumberFormatValues } from "@/src/ui/number-input";
 import { RemoteLogo } from "@/src/ui/remote-logo";
 import { Typography } from "@/src/ui/typography";
 import { PlusIcon } from "@/src/assets/plus-icon";
-import { ChevronDownIcon } from "@/src/assets/chevron-down-icon";
+import { ChevronDown } from "@/src/assets/chevron-down";
 import { RewardsPreview } from "./preview";
 import { ErrorText } from "@/src/ui/error-text";
 import { useWatchBalance } from "@/src/hooks/useWatchBalance";
@@ -245,7 +245,7 @@ export function RewardsStep({
                             <Typography weight="medium">
                                 {rewardToken?.symbol}
                             </Typography>
-                            <ChevronDownIcon />
+                            <ChevronDown />
                         </div>
                     </div>
                     <Button

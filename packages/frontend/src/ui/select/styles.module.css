@@ -1,0 +1,37 @@
+.input :global(.input) {
+    @apply cursor-pointer;
+}
+
+.input :global(.inputIcon) {
+    @apply w-4;
+}
+
+.dropdownRoot {
+    @apply max-h-48
+        z-20
+        overflow-hidden
+        h-fit;
+}
+
+.emptyOptionList {
+    @apply flex
+        justify-center
+        items-center
+        p-3
+        h-12;
+}
+
+.option {
+    @apply cursor-pointer
+        p-3
+        h-12
+        outline-none
+        placeholder-opacity-20
+        text-black
+        box-border
+        hover:bg-gray-200;
+}
+
+.pickedOption {
+    @apply bg-gray-300 hover:bg-gray-300;
+}
