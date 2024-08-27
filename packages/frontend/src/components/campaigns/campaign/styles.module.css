@@ -1,0 +1,9 @@
+.root {
+    composes: row from "../styles.module.css";
+    @apply bg-white 
+        hover:bg-gray-200
+        cursor-pointer
+        transition-colors
+        duration-200
+        rounded-xl h-14;
+}

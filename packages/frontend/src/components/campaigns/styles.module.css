@@ -18,10 +18,6 @@
     @apply w-full mt-4 flex flex-col gap-2 mb-7;
 }
 
-.bodyRow {
-    @apply bg-white rounded-xl h-14;
-}
-
 .paginationWrapper {
     @apply w-full h-8 flex justify-end;
 }

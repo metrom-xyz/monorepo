@@ -107,45 +107,21 @@ export function Campaigns() {
             <div className={styles.body}>
                 {loading ? (
                     <>
-                        <SkeletonCampaign
-                            className={`${styles.row} ${styles.bodyRow}`}
-                        />
-                        <SkeletonCampaign
-                            className={`${styles.row} ${styles.bodyRow}`}
-                        />
-                        <SkeletonCampaign
-                            className={`${styles.row} ${styles.bodyRow}`}
-                        />
-                        <SkeletonCampaign
-                            className={`${styles.row} ${styles.bodyRow}`}
-                        />
-                        <SkeletonCampaign
-                            className={`${styles.row} ${styles.bodyRow}`}
-                        />
-                        <SkeletonCampaign
-                            className={`${styles.row} ${styles.bodyRow}`}
-                        />
-                        <SkeletonCampaign
-                            className={`${styles.row} ${styles.bodyRow}`}
-                        />
-                        <SkeletonCampaign
-                            className={`${styles.row} ${styles.bodyRow}`}
-                        />
-                        <SkeletonCampaign
-                            className={`${styles.row} ${styles.bodyRow}`}
-                        />
-                        <SkeletonCampaign
-                            className={`${styles.row} ${styles.bodyRow}`}
-                        />
+                        <SkeletonCampaign />
+                        <SkeletonCampaign />
+                        <SkeletonCampaign />
+                        <SkeletonCampaign />
+                        <SkeletonCampaign />
+                        <SkeletonCampaign />
+                        <SkeletonCampaign />
+                        <SkeletonCampaign />
+                        <SkeletonCampaign />
+                        <SkeletonCampaign />
                     </>
                 ) : (
                     pagedCampaigns.map((campaign) => {
                         return (
-                            <Campaign
-                                key={campaign.id}
-                                campaign={campaign}
-                                className={`${styles.row} ${styles.bodyRow}`}
-                            />
+                            <Campaign key={campaign.id} campaign={campaign} />
                         );
                     })
                 )}
