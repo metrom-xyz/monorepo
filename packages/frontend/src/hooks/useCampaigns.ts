@@ -26,9 +26,7 @@ export function useCampaigns(asc?: boolean): {
 
             try {
                 if (!cancelled) setLoading(true);
-                const fetchedCampaigns = await metromApiClient.fetchCampaigns({
-                    asc,
-                });
+                const fetchedCampaigns = await metromApiClient.fetchCampaigns();
                 const namedCampaigns: NamedCampaign[] = [];
                 for (const campaign of fetchedCampaigns) {
                     const amm =

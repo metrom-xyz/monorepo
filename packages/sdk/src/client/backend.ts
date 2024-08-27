@@ -1,9 +1,10 @@
-import { type Address } from "viem";
+import { type Address, type Hex } from "viem";
 import type {
     FetchCampaignsResponse,
     FetchClaimsResponse,
     FetchPoolsResponse,
     FetchWhitelistedRewardTokensResponse,
+    RawCampaign,
 } from "./types";
 import type { SupportedChain } from "@metrom-xyz/contracts";
 import { SupportedAmm } from "../commons";
@@ -16,8 +17,9 @@ import {
     type WhitelistedErc20Token,
 } from "../entities";
 
-export interface FetchCampaignsParams {
-    asc?: boolean;
+export interface FetchCampaignParams {
+    chainId: number;
+    id: Hex;
 }
 
 export interface FetchPoolsParams {
@@ -40,12 +42,8 @@ export interface FetchWhitelistedRewardTokensResult {
 export class MetromApiClient {
     constructor(public readonly baseUrl: string) {}
 
-    async fetchCampaigns(params?: FetchCampaignsParams): Promise<Campaign[]> {
-        const url = new URL("campaigns", this.baseUrl);
-
-        url.searchParams.set("asc", params?.asc ? "true" : "false");
-
-        const response = await fetch(url);
+    async fetchCampaigns(): Promise<Campaign[]> {
+        const response = await fetch(new URL("campaigns", this.baseUrl));
         if (!response.ok)
             throw new Error(
                 `response not ok while fetching campaigns: ${await response.text()}`,
@@ -54,41 +52,24 @@ export class MetromApiClient {
         const rawCampaignsResponse =
             (await response.json()) as FetchCampaignsResponse;
 
-        return rawCampaignsResponse.campaigns.map((rawCampaign) => {
-            let status;
-            const now = Math.floor(Date.now() / 1000);
-            if (now < rawCampaign.from) {
-                status = Status.Upcoming;
-            } else if (now > rawCampaign.to) {
-                status = Status.Ended;
-            } else {
-                status = Status.Live;
-            }
+        return rawCampaignsResponse.campaigns.map(processCampaign);
+    }
 
-            const rewards: Rewards = Object.assign([], { usdValue: 0 });
-            for (const rawReward of rawCampaign.rewards) {
-                let usdValue = null;
-                if (rewards.usdValue !== null && rawReward.usdPrice) {
-                    usdValue = rawReward.amount * rawReward.usdPrice;
-                    rewards.usdValue += usdValue;
-                }
-                rewards.push({
-                    ...rawReward,
-                    usdValue,
-                });
-            }
+    async fetchCampaign(params: FetchCampaignParams): Promise<Campaign> {
+        const url = new URL("campaign", this.baseUrl);
 
-            return {
-                ...rawCampaign,
-                status,
-                pool: {
-                    ...rawCampaign.pool,
-                    chainId: rawCampaign.chainId,
-                    amm: rawCampaign.pool.amm as SupportedAmm,
-                },
-                rewards,
-            };
-        });
+        url.searchParams.set("chainId", params.chainId.toString());
+        url.searchParams.set("id", params.id.toString());
+
+        const response = await fetch(url);
+        if (!response.ok)
+            throw new Error(
+                `response not ok while fetching campaign with id ${params.id} on chain id ${params.chainId}: ${await response.text()}`,
+            );
+
+        const rawCampaign = (await response.json()) as RawCampaign;
+
+        return processCampaign(rawCampaign);
     }
 
     async fetchPools(params: FetchPoolsParams): Promise<Pool[]> {
@@ -150,4 +131,40 @@ export class MetromApiClient {
             minimumRate: BigInt(token.minimumRate),
         }));
     }
+}
+
+function processCampaign(rawCampaign: RawCampaign) {
+    let status;
+    const now = Math.floor(Date.now() / 1000);
+    if (now < rawCampaign.from) {
+        status = Status.Upcoming;
+    } else if (now > rawCampaign.to) {
+        status = Status.Ended;
+    } else {
+        status = Status.Live;
+    }
+
+    const rewards: Rewards = Object.assign([], { usdValue: 0 });
+    for (const rawReward of rawCampaign.rewards) {
+        let usdValue = null;
+        if (rewards.usdValue !== null && rawReward.usdPrice) {
+            usdValue = rawReward.amount * rawReward.usdPrice;
+            rewards.usdValue += usdValue;
+        }
+        rewards.push({
+            ...rawReward,
+            usdValue,
+        });
+    }
+
+    return {
+        ...rawCampaign,
+        status,
+        pool: {
+            ...rawCampaign.pool,
+            chainId: rawCampaign.chainId,
+            amm: rawCampaign.pool.amm as SupportedAmm,
+        },
+        rewards,
+    };
 }
