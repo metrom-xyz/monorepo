@@ -22,7 +22,7 @@ export const sortCampaigns = (campaigns: NamedCampaign[]) => {
         return a.from - b.from;
     });
     clusteredCampaigns[Status.Ended].sort((a, b) => {
-        return a.from - b.from;
+        return b.to - a.to;
     });
 
     const sorted = clusteredCampaigns[Status.Live];
