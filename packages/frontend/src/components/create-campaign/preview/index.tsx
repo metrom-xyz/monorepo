@@ -12,10 +12,11 @@ import Confetti from "react-confetti";
 import numeral from "numeral";
 import { useWindowSize } from "react-use";
 import { parseUnits } from "viem";
+import dayjs from "dayjs";
 import { metromAbi } from "@metrom-xyz/contracts/abi";
 import { CHAIN_DATA } from "@/src/commons";
 import type { SupportedChain } from "@metrom-xyz/contracts";
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useMemo, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 import { WalletIcon } from "@/src/assets/wallet-icon";
 import { useConnectModal } from "@rainbow-me/rainbowkit";
@@ -51,6 +52,11 @@ export function CampaignPreview({
     const publicClient = usePublicClient();
     const { address: connectedAddress } = useAccount();
     const { writeContractAsync } = useWriteContract();
+
+    const secondsDuration = useMemo(() => {
+        if (!payload.endDate) return 0;
+        return payload.endDate.diff(payload.startDate, "seconds", false);
+    }, [payload.endDate, payload.startDate]);
 
     const {
         data: simulatedCreate,
@@ -131,9 +137,9 @@ export function CampaignPreview({
         return (
             <div ref={feedback} className={styles.root}>
                 <Header
+                    backDisabled={simulatingCreate || creating}
                     payload={payload}
                     onBack={onBack}
-                    backDisabled={simulatingCreate || creating}
                 />
                 <div className={styles.content}>
                     <div className={styles.contentGrid}>
@@ -147,7 +153,10 @@ export function CampaignPreview({
                         {/* TODO: add apr */}
                         <TextField boxed label={t("apr")} value={"0.0%"} />
                     </div>
-                    <Rewards rewards={payload.rewards} />
+                    <Rewards
+                        rewards={payload.rewards}
+                        campaignDurationSeconds={secondsDuration}
+                    />
                     <div className={styles.createButtonContainer}>
                         {!connectedAddress ? (
                             <Button

@@ -6,16 +6,37 @@ import type { SupportedChain } from "@metrom-xyz/contracts";
 import { useTranslations } from "next-intl";
 import numeral from "numeral";
 import { useChainId } from "wagmi";
+import dayjs from "dayjs";
+import { useMemo } from "react";
 
 import styles from "./styles.module.css";
 
 interface RewardsProps {
     rewards: CampaignPayload["rewards"];
+    campaignDurationSeconds: number;
 }
 
-export function Rewards({ rewards }: RewardsProps) {
+export function Rewards({ rewards, campaignDurationSeconds }: RewardsProps) {
     const t = useTranslations("campaignPreview.rewards");
     const chain: SupportedChain = useChainId();
+
+    const totalRewardsUsdAmount = useMemo(() => {
+        if (!rewards) return 0;
+        return rewards.reduce((accumulator, reward) => {
+            if (!reward.usdPrice) return 0;
+            return (accumulator += reward.amount * reward.usdPrice);
+        }, 0);
+    }, [rewards]);
+
+    const dailyRewards = useMemo(() => {
+        if (!totalRewardsUsdAmount) return 0;
+
+        const daysDuration = dayjs
+            .duration(campaignDurationSeconds, "seconds")
+            .get("days");
+
+        return daysDuration > 0 ? totalRewardsUsdAmount / daysDuration : 0;
+    }, [campaignDurationSeconds, totalRewardsUsdAmount]);
 
     return (
         <div className={styles.root}>
@@ -38,9 +59,12 @@ export function Rewards({ rewards }: RewardsProps) {
                             {reward.token.symbol}
                         </Typography>
                     </div>
-                    {/* TODO: add rewards usd */}
                     <Typography uppercase weight="medium" light>
-                        $ 0
+                        {numeral(
+                            reward.usdPrice
+                                ? reward.amount * reward.usdPrice
+                                : 0,
+                        ).format("($ 0.00[0] a)")}
                     </Typography>
                     <Typography uppercase weight="medium" variant="lg">
                         {numeral(reward.amount).format("(0.00[00] a)")}
@@ -48,17 +72,18 @@ export function Rewards({ rewards }: RewardsProps) {
                 </div>
             ))}
             <div className={styles.summary}>
-                {/* TODO: add rewards usd */}
                 <TextField
                     boxed
                     label={t("daily")}
-                    value={"$ 0"}
+                    value={numeral(dailyRewards).format("($ 0.00[0] a)")}
                     className={styles.summaryBox}
                 />
                 <TextField
                     boxed
                     label={t("total")}
-                    value={"$ 0"}
+                    value={numeral(totalRewardsUsdAmount).format(
+                        "($ 0.00[0] a)",
+                    )}
                     className={styles.summaryBox}
                 />
             </div>

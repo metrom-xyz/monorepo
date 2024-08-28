@@ -30,9 +30,13 @@ export function TextField({
             <Typography uppercase weight="medium" light variant="sm">
                 {label}
             </Typography>
-            <Typography uppercase weight="medium" variant="lg">
-                {value}
-            </Typography>
+            {typeof value === "string" ? (
+                <Typography uppercase weight="medium" variant="lg">
+                    {value}
+                </Typography>
+            ) : (
+                value
+            )}
         </div>
     );
 }

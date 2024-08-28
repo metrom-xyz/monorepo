@@ -1,6 +1,6 @@
 import { useTranslations } from "next-intl";
 import { useChainId } from "wagmi";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import dayjs, { type Dayjs, type ManipulateType } from "dayjs";
 import { Step } from "@/src/components/step";
 import { StepPreview } from "@/src/components/step/preview";
@@ -77,6 +77,11 @@ export function EndDateStep({
         leave: { opacity: 0 },
         config: { duration: 100 },
     });
+
+    const secondsDuration = useMemo(() => {
+        if (!date) return 0;
+        return date.diff(startDate, "seconds", false);
+    }, [date, startDate]);
 
     useEffect(() => {
         setOpen(false);
@@ -223,9 +228,7 @@ export function EndDateStep({
                             {t("campaignDuration")}
                         </Typography>
                         <Typography uppercase variant="sm" weight="medium">
-                            {t("days", {
-                                count: date?.diff(startDate, "days"),
-                            })}
+                            {startDate ? startDate.to(date, true) : "-"}
                         </Typography>
                     </div>
                     <Button

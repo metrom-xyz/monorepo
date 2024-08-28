@@ -126,10 +126,13 @@ export class MetromApiClient {
         const rawWhitelistedTokens =
             (await response.json()) as FetchWhitelistedRewardTokensResponse;
 
-        return rawWhitelistedTokens.tokens.map((token) => ({
-            ...token,
-            minimumRate: BigInt(token.minimumRate),
-        }));
+        return rawWhitelistedTokens.tokens.map((token) => {
+            const { price, ...rest } = token;
+            return {
+                ...rest,
+                usdPrice: price,
+            };
+        });
     }
 }
 

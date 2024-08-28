@@ -3,14 +3,14 @@ import { RemoteLogo } from "@/src/ui/remote-logo";
 import { Typography } from "@/src/ui/typography";
 import type { Token, WhitelistedErc20TokenAmount } from "@metrom-xyz/sdk";
 import numeral from "numeral";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useWatchBalance } from "@/src/hooks/useWatchBalance";
 import { useAccount, useChainId } from "wagmi";
 import { formatUnits } from "viem/utils";
 import type { Address } from "viem";
+import classNames from "@/src/utils/classes";
 
 import styles from "./styles.module.css";
-import classNames from "@/src/utils/classes";
 
 interface RewardProps {
     reward: WhitelistedErc20TokenAmount;
@@ -34,6 +34,11 @@ export function Reward({
         reward.token.address,
     );
 
+    const tokenUsdValue = useMemo(() => {
+        if (!reward.usdPrice) return null;
+        return reward.amount * reward.usdPrice;
+    }, [reward.amount, reward.usdPrice]);
+
     useEffect(() => {
         if (!reward.amount || !campaignDuration || !reward) return;
 
@@ -42,14 +47,11 @@ export function Reward({
             rewardTokenBalance !== undefined
                 ? Number(formatUnits(rewardTokenBalance, reward.token.decimals))
                 : Number.MAX_SAFE_INTEGER;
-        const minimumRate = Number(
-            formatUnits(reward.minimumRate, reward.token.decimals),
-        );
 
         const error =
             reward.amount > balance
                 ? "errors.insufficientBalance"
-                : distributionRate < minimumRate
+                : distributionRate < reward.minimumRate
                   ? "errors.lowDistributionRate"
                   : "";
 
@@ -77,8 +79,10 @@ export function Reward({
             >
                 {numeral(reward.amount).format("(0.00[00] a)")}
             </Typography>
-            <Typography weight="medium" light>
-                {/* TODO: usd amount */}$ 0
+            <Typography weight="medium" light variant="sm">
+                {tokenUsdValue
+                    ? numeral(tokenUsdValue).format("($ 0.00 a)")
+                    : "-"}
             </Typography>
             <div className={styles.rewardName}>
                 <RemoteLogo

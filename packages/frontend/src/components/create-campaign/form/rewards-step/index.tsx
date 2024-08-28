@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { formatUnits, type Address } from "viem";
 import { Button } from "@/src/ui/button";
 import { useAccount, useChainId } from "wagmi";
+import numeral from "numeral";
 import { useTranslations } from "next-intl";
 import type {
     Token,
@@ -66,6 +67,14 @@ export function RewardsStep({
         rewardToken?.address,
     );
 
+    const totalRewardsUsdAmount = useMemo(() => {
+        if (!rewards) return 0;
+        return rewards.reduce((accumulator, reward) => {
+            if (!reward.usdPrice) return 0;
+            return (accumulator += reward.amount * reward.usdPrice);
+        }, 0);
+    }, [rewards]);
+
     const campaignDuration = useMemo(() => {
         if (!startDate || !endDate) return undefined;
         return endDate.diff(startDate, "seconds");
@@ -109,14 +118,11 @@ export function RewardsStep({
             rewardTokenBalance !== undefined
                 ? Number(formatUnits(rewardTokenBalance, rewardToken.decimals))
                 : Number.MAX_SAFE_INTEGER;
-        const minimumRate = Number(
-            formatUnits(rewardToken.minimumRate, rewardToken.decimals),
-        );
 
         const error =
             rewardAmount > balance
                 ? "errors.insufficientBalance"
-                : distributionRate < minimumRate
+                : distributionRate < rewardToken.minimumRate
                   ? "errors.lowDistributionRate"
                   : "";
 
@@ -156,10 +162,12 @@ export function RewardsStep({
     const handleRewardTokenOnAdd = useCallback(() => {
         if (!rewardAmount || !rewardToken) return;
 
-        const { address, decimals, name, symbol, minimumRate } = rewardToken;
+        const { address, decimals, name, symbol, minimumRate, usdPrice } =
+            rewardToken;
         const reward: WhitelistedErc20TokenAmount = {
             token: { address, decimals, name, symbol },
             amount: rewardAmount,
+            usdPrice,
             minimumRate,
         };
         const newRewards: CampaignPayload["rewards"] = rewards
@@ -242,7 +250,7 @@ export function RewardsStep({
                                 chain={chainId}
                             />
                             <Typography weight="medium">
-                                {rewardToken?.symbol}
+                                {rewardToken?.symbol || t("selectPlaceholder")}
                             </Typography>
                             <ChevronDown />
                         </div>
@@ -270,7 +278,7 @@ export function RewardsStep({
                         {t("totalUsd")}
                     </Typography>
                     <Typography uppercase weight="bold" light>
-                        {/* TODO: usd amount */}$ 0
+                        {numeral(totalRewardsUsdAmount).format("($ 0.00[0] a)")}
                     </Typography>
                 </div>
             </StepPreview>

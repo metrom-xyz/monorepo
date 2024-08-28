@@ -64,12 +64,13 @@ export interface Claim extends TokenAmount {
     proof: Address[];
 }
 
-export interface WhitelistedErc20Token extends Token {
-    minimumRate: bigint;
+export interface WhitelistedErc20Token extends UsdPricedToken {
+    minimumRate: number;
 }
 
 export interface WhitelistedErc20TokenAmount extends TokenAmount {
-    minimumRate: bigint;
+    minimumRate: number;
+    usdPrice: number | null;
 }
 
 export interface TokenWithBalance extends Token {

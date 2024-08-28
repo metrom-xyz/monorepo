@@ -7,9 +7,9 @@ import { Typography } from "@/src/ui/typography";
 import dayjs from "dayjs";
 import { useTranslations } from "next-intl";
 import numeral from "numeral";
+import { useChainId } from "wagmi";
 
 import styles from "./styles.module.css";
-import { useChainId } from "wagmi";
 
 interface HeaderProps {
     payload: CampaignPayload;
@@ -65,10 +65,12 @@ export function Header({ payload, backDisabled, onBack }: HeaderProps) {
                 />
                 <TextField
                     alignment="center"
-                    label={t("runTime")}
-                    value={t("runTimeDays", {
-                        count: payload.startDate?.diff(payload.endDate, "days"),
-                    })}
+                    label={t("runTimeLabel")}
+                    value={
+                        payload.startDate && payload.endDate
+                            ? payload.startDate.to(payload.endDate, true)
+                            : "-"
+                    }
                 />
                 <TextField
                     alignment="right"
