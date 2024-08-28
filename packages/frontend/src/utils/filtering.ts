@@ -40,7 +40,7 @@ export const filterCampaigns = (
     searchQuery: string,
 ) => {
     if (campaigns.length === 0) return [];
-    if (!searchQuery && status === FilterableStatus.None && !chainId)
+    if (!searchQuery && status === FilterableStatus.All && !chainId)
         return campaigns;
 
     let filteredCampaigns = campaigns;
@@ -50,7 +50,7 @@ export const filterCampaigns = (
             (campaign) => campaign.chainId === chainId,
         );
 
-    if (status !== FilterableStatus.None) {
+    if (status !== FilterableStatus.All) {
         let convertedStatus: Status;
         if (status === FilterableStatus.Ended) convertedStatus = Status.Ended;
         else if (status === FilterableStatus.Live)

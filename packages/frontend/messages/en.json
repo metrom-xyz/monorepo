@@ -9,17 +9,18 @@
         "title": "all campaigns",
         "filters": {
             "search": {
-                "placeholder": "Search"
+                "label": "Search"
             },
             "status": {
-                "placeholder": "Status",
-                "none": "None",
+                "label": "Status",
+                "all": "All",
                 "live": "Live",
                 "upcoming": "Upcoming",
                 "ended": "Ended"
             },
             "chain": {
-                "placeholder": "Chain"
+                "label": "Chain",
+                "all": "All"
             }
         },
         "header": {
