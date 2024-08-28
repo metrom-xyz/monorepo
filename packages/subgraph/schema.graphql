@@ -7,6 +7,7 @@ type Token @entity(immutable: true) {
 
 type Transaction @entity(immutable: true) {
     id: Bytes!
+    from: Bytes!
     blockNumber: BigInt!
     timestamp: BigInt!
     initializeEvent: [InitializeEvent!]! @derivedFrom(field: "transaction")

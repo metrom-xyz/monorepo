@@ -155,13 +155,14 @@ export function getOrCreateTransaction(event: ethereum.Event): Transaction {
     transaction = new Transaction(id);
     transaction.blockNumber = event.block.number;
     transaction.timestamp = event.block.timestamp;
+    transaction.from = event.transaction.from;
     transaction.save();
     return transaction;
 }
 
 export function getEventId(event: ethereum.Event): Bytes {
-    return event.transaction.hash.concat(
-        Bytes.fromByteArray(Bytes.fromBigInt(event.logIndex)),
+    return changetype<Bytes>(
+        event.block.number.leftShift(40).plus(event.logIndex).reverse(),
     );
 }
 
