@@ -4,7 +4,6 @@ import { Button } from "@/src/ui/button";
 import { PoolRemoteLogo } from "@/src/ui/pool-remote-logo";
 import { TextField } from "@/src/ui/text-field";
 import { Typography } from "@/src/ui/typography";
-import { CampaignDuration } from "@/src/components/campaign-duration";
 import dayjs from "dayjs";
 import { useTranslations } from "next-intl";
 import numeral from "numeral";

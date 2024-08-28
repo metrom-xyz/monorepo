@@ -17,7 +17,6 @@ import { Chip } from "@/src/ui/chip/chip";
 import { ErrorText } from "@/src/ui/error-text";
 import { useTransition, animated } from "@react-spring/web";
 import { useCampaignDurationLimits } from "@/src/hooks/useCampaignDurationLimits";
-import { CampaignDuration } from "@/src/components/campaign-duration";
 
 import styles from "./styles.module.css";
 
