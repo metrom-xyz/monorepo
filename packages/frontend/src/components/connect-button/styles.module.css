@@ -1,5 +1,5 @@
 .root {
-    @apply cursor-pointer flex items-center;
+    @apply flex items-center;
 }
 
 .connectButton {
@@ -26,21 +26,62 @@
     @apply flex flex-col py-2;
 }
 
+.overlay {
+    @apply z-20
+        fixed
+        top-0
+        bottom-0
+        left-0
+        right-0
+        bg-black
+        opacity-0
+        pointer-events-none
+        transition-opacity
+        ease-in-out
+        duration-200;
+}
+
+.overlayOpen {
+    @apply opacity-30 pointer-events-auto;
+}
+
+.accountMenu {
+    @apply z-20
+        fixed
+        top-0
+        bottom-0
+        -right-96
+        transition-transform
+        ease-in-out
+        duration-200;
+}
+
+.accountMenuOpen {
+    @apply transform -translate-x-96;
+}
+
 .walletWrapper {
-    @apply bg-white pl-3 pr-2 h-9 rounded-md flex gap-3 items-center justify-between;
+    @apply bg-white
+        pl-1
+        pr-3
+        h-9
+        rounded-md
+        flex
+        gap-3
+        items-center
+        justify-between
+        cursor-pointer;
 }
 
 .account {
-    @apply flex gap-1 items-center justify-between;
+    @apply flex gap-2 items-center justify-between;
+}
+
+.avatar {
+    @apply w-7 h-7 rounded-md;
 }
 
 .icon {
     @apply w-5 h-5;
 }
 
-.settings {
-    @apply p-1
-        bg-gray-100
-        rounded
-        hover:cursor-pointer;
-}

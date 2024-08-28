@@ -1,6 +1,4 @@
 import { ConnectButton as RainbowConnectButton } from "@rainbow-me/rainbowkit";
-import { WalletIcon } from "@/src/assets/wallet-icon";
-import { SettingsIcon } from "@/src/assets/settings-icon";
 import { Typography } from "@/src/ui/typography";
 import { Button } from "@/src/ui/button";
 import { SUPPORTED_CHAIN_ICONS } from "@/src/commons";
@@ -11,6 +9,10 @@ import { useChainId, useChains, useSwitchChain } from "wagmi";
 import { useClickAway } from "react-use";
 import { useTranslations } from "next-intl";
 import { ErrorIcon } from "@/src/assets/error-icon";
+import { blo, type Address } from "blo";
+import { AccountMenu } from "./account-menu";
+import { zeroAddress } from "viem";
+import classNames from "@/src/utils/classes";
 
 import styles from "./styles.module.css";
 
@@ -24,6 +26,7 @@ export function ConnectButton() {
         null,
     );
     const [networkPopoverOpen, setNetworkPopoverOpen] = useState(false);
+    const [accountMenuOpen, setAccountMenuOpen] = useState(false);
     const networksPopoverRef = useRef<HTMLDivElement>(null);
 
     function handleOpenNetworkPopover() {
@@ -41,6 +44,14 @@ export function ConnectButton() {
         };
     }
 
+    function handleAccountMenuOpen() {
+        setAccountMenuOpen(true);
+    }
+
+    function handleAccountMenuClose() {
+        setAccountMenuOpen(false);
+    }
+
     return (
         <RainbowConnectButton.Custom>
             {({
@@ -52,100 +63,109 @@ export function ConnectButton() {
             }) => {
                 const ready = mounted;
                 const connected = ready && account && chain;
+                const blockie = blo(
+                    (account?.address as Address) || zeroAddress,
+                );
+                const ChainIcon =
+                    SUPPORTED_CHAIN_ICONS[currentChainId as SupportedChain];
 
                 return (
                     <div className={styles.root}>
-                        {(() => {
-                            const ChainIcon =
-                                SUPPORTED_CHAIN_ICONS[
-                                    currentChainId as SupportedChain
-                                ];
+                        <div className={styles.wrapper}>
+                            <div
+                                className={styles.networkWrapper}
+                                ref={setNetworkWrapper}
+                                onClick={handleOpenNetworkPopover}
+                            >
+                                {chain?.unsupported ? (
+                                    <ErrorIcon className={styles.networkIcon} />
+                                ) : (
+                                    <ChainIcon className={styles.networkIcon} />
+                                )}
+                            </div>
+                            <Popover
+                                anchor={networkWrapper}
+                                open={networkPopoverOpen}
+                                ref={networksPopoverRef}
+                            >
+                                <div className={styles.networksWrapper}>
+                                    {chains.map((chain) => {
+                                        const ChainIcon =
+                                            SUPPORTED_CHAIN_ICONS[
+                                                chain.id as SupportedChain
+                                            ];
 
-                            return (
-                                <div className={styles.wrapper}>
-                                    <div
-                                        className={styles.networkWrapper}
-                                        ref={setNetworkWrapper}
-                                        onClick={handleOpenNetworkPopover}
-                                    >
-                                        {chain?.unsupported ? (
-                                            <ErrorIcon
-                                                className={styles.networkIcon}
-                                            />
-                                        ) : (
-                                            <ChainIcon
-                                                className={styles.networkIcon}
-                                            />
-                                        )}
-                                    </div>
-                                    <Popover
-                                        anchor={networkWrapper}
-                                        open={networkPopoverOpen}
-                                        ref={networksPopoverRef}
-                                    >
-                                        <div className={styles.networksWrapper}>
-                                            {chains.map((chain) => {
-                                                const ChainIcon =
-                                                    SUPPORTED_CHAIN_ICONS[
-                                                        chain.id as SupportedChain
-                                                    ];
-
-                                                return (
-                                                    <div
-                                                        key={chain.id}
-                                                        className={
-                                                            styles.networkRow
-                                                        }
-                                                        onClick={getSwitchChainHandler(
-                                                            chain.id,
-                                                        )}
-                                                    >
-                                                        <ChainIcon
-                                                            className={
-                                                                styles.networkIcon
-                                                            }
-                                                        />
-                                                        {chain.name}
-                                                    </div>
-                                                );
-                                            })}
-                                        </div>
-                                    </Popover>
-                                    {!connected ? (
-                                        <Button
-                                            onClick={openConnectModal}
-                                            type="button"
-                                            className={{
-                                                root: styles.connectButton,
-                                            }}
-                                        >
-                                            {t("navigation.connectWallet")}
-                                        </Button>
-                                    ) : (
-                                        <div className={styles.walletWrapper}>
-                                            <div className={styles.account}>
-                                                <WalletIcon
-                                                    className={styles.icon}
-                                                />
-                                                <Typography mono>
-                                                    {account.ensName ||
-                                                        account.displayName}
-                                                </Typography>
-                                            </div>
-                                            {/* TODO: add icon button */}
+                                        return (
                                             <div
-                                                onClick={openAccountModal}
-                                                className={styles.settings}
+                                                key={chain.id}
+                                                className={styles.networkRow}
+                                                onClick={getSwitchChainHandler(
+                                                    chain.id,
+                                                )}
                                             >
-                                                <SettingsIcon
-                                                    className={styles.icon}
+                                                <ChainIcon
+                                                    className={
+                                                        styles.networkIcon
+                                                    }
                                                 />
+                                                {chain.name}
                                             </div>
-                                        </div>
-                                    )}
+                                        );
+                                    })}
                                 </div>
-                            );
-                        })()}
+                            </Popover>
+                            {!connected ? (
+                                <Button
+                                    onClick={openConnectModal}
+                                    type="button"
+                                    className={{
+                                        root: styles.connectButton,
+                                    }}
+                                >
+                                    {t("navigation.connectWallet")}
+                                </Button>
+                            ) : (
+                                <>
+                                    <div
+                                        className={classNames(styles.overlay, {
+                                            [styles.overlayOpen]:
+                                                accountMenuOpen,
+                                        })}
+                                    />
+                                    <AccountMenu
+                                        account={account}
+                                        blockie={blockie}
+                                        className={classNames(
+                                            styles.accountMenu,
+                                            {
+                                                [styles.accountMenuOpen]:
+                                                    accountMenuOpen,
+                                            },
+                                        )}
+                                        onClose={handleAccountMenuClose}
+                                    />
+                                    <div
+                                        className={styles.walletWrapper}
+                                        onClick={handleAccountMenuOpen}
+                                    >
+                                        <div className={styles.account}>
+                                            {/* eslint-disable-next-line @next/next/no-img-element */}
+                                            <img
+                                                alt="Avatar"
+                                                src={
+                                                    account.ensAvatar || blockie
+                                                }
+                                                className={styles.avatar}
+                                            />
+                                            <Typography>
+                                                {account.ensName ||
+                                                    account.displayName}
+                                            </Typography>
+                                        </div>
+                                    </div>
+                                </>
+                            )}
+                        </div>
                     </div>
                 );
             }}

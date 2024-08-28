@@ -1,0 +1,6 @@
+.root {
+    @apply bg-gray-100
+        w-96
+        flex
+        flex-col;
+}
