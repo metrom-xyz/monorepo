@@ -4,6 +4,7 @@ import { Button } from "@/src/ui/button";
 import { PoolRemoteLogo } from "@/src/ui/pool-remote-logo";
 import { TextField } from "@/src/ui/text-field";
 import { Typography } from "@/src/ui/typography";
+import { CampaignDuration } from "@/src/components/campaign-duration";
 import dayjs from "dayjs";
 import { useTranslations } from "next-intl";
 import numeral from "numeral";
@@ -14,14 +15,14 @@ import styles from "./styles.module.css";
 interface HeaderProps {
     payload: CampaignPayload;
     backDisabled: boolean;
-    campaignDurationDays: number;
+    campaignDurationSeconds: number;
     onBack: () => void;
 }
 
 export function Header({
     payload,
     backDisabled,
-    campaignDurationDays,
+    campaignDurationSeconds,
     onBack,
 }: HeaderProps) {
     const t = useTranslations("campaignPreview.header");
@@ -71,10 +72,15 @@ export function Header({
                 />
                 <TextField
                     alignment="center"
-                    label={t("runTime")}
-                    value={t("runTimeDays", {
-                        count: campaignDurationDays,
-                    })}
+                    label={t("runTimeLabel")}
+                    value={
+                        <CampaignDuration
+                            secondsDuration={campaignDurationSeconds}
+                            uppercase
+                            weight="medium"
+                            variant="lg"
+                        />
+                    }
                 />
                 <TextField
                     alignment="right"

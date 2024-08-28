@@ -70,7 +70,8 @@ export function RewardsStep({
     const totalRewardsUsdAmount = useMemo(() => {
         if (!rewards) return 0;
         return rewards.reduce((accumulator, reward) => {
-            return (accumulator += reward.amount * reward.price);
+            if (!reward.usdPrice) return 0;
+            return (accumulator += reward.amount * reward.usdPrice);
         }, 0);
     }, [rewards]);
 
@@ -161,12 +162,12 @@ export function RewardsStep({
     const handleRewardTokenOnAdd = useCallback(() => {
         if (!rewardAmount || !rewardToken) return;
 
-        const { address, decimals, name, symbol, minimumRate, price } =
+        const { address, decimals, name, symbol, minimumRate, usdPrice } =
             rewardToken;
         const reward: WhitelistedErc20TokenAmount = {
             token: { address, decimals, name, symbol },
             amount: rewardAmount,
-            price,
+            usdPrice,
             minimumRate,
         };
         const newRewards: CampaignPayload["rewards"] = rewards

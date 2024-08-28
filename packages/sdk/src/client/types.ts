@@ -18,7 +18,7 @@ interface RawToken {
 
 interface RawWhitelistedToken extends RawToken {
     minimumRate: number;
-    price: number;
+    price: number | null;
 }
 
 interface RawPool {

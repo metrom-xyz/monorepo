@@ -18,9 +18,7 @@ interface RewardsProps {
 
 export function Rewards({ from, to, rewards }: RewardsProps) {
     const chainId = useChainId();
-    const daysDuration = dayjs
-        .unix(to)
-        .diff(dayjs.unix(from), "seconds", false);
+    const daysDuration = dayjs.unix(to).diff(dayjs.unix(from), "days", false);
     const perDayUsdValue =
         rewards.usdValue && daysDuration > 0
             ? rewards.usdValue / daysDuration
@@ -46,7 +44,7 @@ export function Rewards({ from, to, rewards }: RewardsProps) {
                 })}
             </div>
             <Typography weight="medium">
-                ${numeral(perDayUsdValue).format("0.0[0]")}
+                {numeral(perDayUsdValue).format("($ 0.0[0] a)")}
             </Typography>
         </div>
     );

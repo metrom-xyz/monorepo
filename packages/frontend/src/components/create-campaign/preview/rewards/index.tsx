@@ -6,31 +6,37 @@ import type { SupportedChain } from "@metrom-xyz/contracts";
 import { useTranslations } from "next-intl";
 import numeral from "numeral";
 import { useChainId } from "wagmi";
+import dayjs from "dayjs";
 import { useMemo } from "react";
 
 import styles from "./styles.module.css";
 
 interface RewardsProps {
     rewards: CampaignPayload["rewards"];
-    campaignDurationDays: number;
+    campaignDurationSeconds: number;
 }
 
-export function Rewards({ rewards, campaignDurationDays }: RewardsProps) {
+export function Rewards({ rewards, campaignDurationSeconds }: RewardsProps) {
     const t = useTranslations("campaignPreview.rewards");
     const chain: SupportedChain = useChainId();
 
     const totalRewardsUsdAmount = useMemo(() => {
         if (!rewards) return 0;
         return rewards.reduce((accumulator, reward) => {
-            return (accumulator += reward.amount * reward.price);
+            if (!reward.usdPrice) return 0;
+            return (accumulator += reward.amount * reward.usdPrice);
         }, 0);
     }, [rewards]);
 
     const dailyRewards = useMemo(() => {
         if (!totalRewardsUsdAmount) return 0;
-        if (campaignDurationDays === 0) return totalRewardsUsdAmount;
-        return totalRewardsUsdAmount / campaignDurationDays;
-    }, [campaignDurationDays, totalRewardsUsdAmount]);
+
+        const daysDuration = dayjs
+            .duration(campaignDurationSeconds, "seconds")
+            .get("days");
+
+        return daysDuration > 0 ? totalRewardsUsdAmount / daysDuration : 0;
+    }, [campaignDurationSeconds, totalRewardsUsdAmount]);
 
     return (
         <div className={styles.root}>
@@ -54,9 +60,11 @@ export function Rewards({ rewards, campaignDurationDays }: RewardsProps) {
                         </Typography>
                     </div>
                     <Typography uppercase weight="medium" light>
-                        {numeral(reward.amount * reward.price).format(
-                            "($ 0.00[0] a)",
-                        )}
+                        {numeral(
+                            reward.usdPrice
+                                ? reward.amount * reward.usdPrice
+                                : 0,
+                        ).format("($ 0.00[0] a)")}
                     </Typography>
                     <Typography uppercase weight="medium" variant="lg">
                         {numeral(reward.amount).format("(0.00[00] a)")}

@@ -1,6 +1,6 @@
 import { useTranslations } from "next-intl";
 import { useChainId } from "wagmi";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import dayjs, { type Dayjs, type ManipulateType } from "dayjs";
 import { Step } from "@/src/components/step";
 import { StepPreview } from "@/src/components/step/preview";
@@ -17,6 +17,7 @@ import { Chip } from "@/src/ui/chip/chip";
 import { ErrorText } from "@/src/ui/error-text";
 import { useTransition, animated } from "@react-spring/web";
 import { useCampaignDurationLimits } from "@/src/hooks/useCampaignDurationLimits";
+import { CampaignDuration } from "@/src/components/campaign-duration";
 
 import styles from "./styles.module.css";
 
@@ -77,6 +78,11 @@ export function EndDateStep({
         leave: { opacity: 0 },
         config: { duration: 100 },
     });
+
+    const secondsDuration = useMemo(() => {
+        if (!date) return 0;
+        return date.diff(startDate, "seconds", false);
+    }, [date, startDate]);
 
     useEffect(() => {
         setOpen(false);
@@ -222,11 +228,12 @@ export function EndDateStep({
                         >
                             {t("campaignDuration")}
                         </Typography>
-                        <Typography uppercase variant="sm" weight="medium">
-                            {t("days", {
-                                count: date?.diff(startDate, "days"),
-                            })}
-                        </Typography>
+                        <CampaignDuration
+                            secondsDuration={secondsDuration}
+                            uppercase
+                            variant="sm"
+                            weight="medium"
+                        />
                     </div>
                     <Button
                         variant="secondary"

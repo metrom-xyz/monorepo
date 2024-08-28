@@ -111,8 +111,7 @@
         "header": {
             "back": "Close",
             "startDate": "Start date",
-            "runTime": "Run time",
-            "runTimeDays": "{count} days",
+            "runTimeLabel": "Run time",
             "endDate": "End date"
         },
         "tvl": "Tvl",
@@ -137,5 +136,10 @@
             "explorer": "Explorer",
             "claim": "Claim"
         }
+    },
+    "campaignDuration": {
+        "minutes": "{count} minutes",
+        "hours": "{count, plural, =1 {# hour} other {# hours}}",
+        "days": "{count, plural, =1 {# day} other {# days}}"
     }
 }

@@ -12,6 +12,7 @@ import Confetti from "react-confetti";
 import numeral from "numeral";
 import { useWindowSize } from "react-use";
 import { parseUnits } from "viem";
+import dayjs from "dayjs";
 import { metromAbi } from "@metrom-xyz/contracts/abi";
 import { CHAIN_DATA } from "@/src/commons";
 import type { SupportedChain } from "@metrom-xyz/contracts";
@@ -52,9 +53,9 @@ export function CampaignPreview({
     const { address: connectedAddress } = useAccount();
     const { writeContractAsync } = useWriteContract();
 
-    const campaignDurationDays = useMemo(() => {
-        if (!payload.startDate) return 0;
-        return payload.startDate.diff(payload.endDate, "days");
+    const secondsDuration = useMemo(() => {
+        if (!payload.endDate) return 0;
+        return payload.endDate.diff(payload.startDate, "seconds", false);
     }, [payload.endDate, payload.startDate]);
 
     const {
@@ -138,7 +139,7 @@ export function CampaignPreview({
                 <Header
                     backDisabled={simulatingCreate || creating}
                     payload={payload}
-                    campaignDurationDays={campaignDurationDays}
+                    campaignDurationSeconds={secondsDuration}
                     onBack={onBack}
                 />
                 <div className={styles.content}>
@@ -155,7 +156,7 @@ export function CampaignPreview({
                     </div>
                     <Rewards
                         rewards={payload.rewards}
-                        campaignDurationDays={campaignDurationDays}
+                        campaignDurationSeconds={secondsDuration}
                     />
                     <div className={styles.createButtonContainer}>
                         {!connectedAddress ? (
