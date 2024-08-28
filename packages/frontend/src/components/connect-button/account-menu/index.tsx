@@ -1,8 +1,9 @@
-import styles from "./styles.module.css";
 import classNames from "@/src/utils/classes";
 import { useTranslations } from "next-intl";
 import { useClickAway } from "react-use";
 import { useRef } from "react";
+
+import styles from "./styles.module.css";
 
 interface AccountMenuProps {
     className?: string;
