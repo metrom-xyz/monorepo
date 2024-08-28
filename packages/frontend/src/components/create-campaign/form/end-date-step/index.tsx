@@ -228,12 +228,9 @@ export function EndDateStep({
                         >
                             {t("campaignDuration")}
                         </Typography>
-                        <CampaignDuration
-                            secondsDuration={secondsDuration}
-                            uppercase
-                            variant="sm"
-                            weight="medium"
-                        />
+                        <Typography uppercase variant="sm" weight="medium">
+                            {startDate ? startDate.to(date, true) : "-"}
+                        </Typography>
                     </div>
                     <Button
                         variant="secondary"

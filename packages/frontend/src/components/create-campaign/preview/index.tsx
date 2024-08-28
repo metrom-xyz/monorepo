@@ -139,7 +139,6 @@ export function CampaignPreview({
                 <Header
                     backDisabled={simulatingCreate || creating}
                     payload={payload}
-                    campaignDurationSeconds={secondsDuration}
                     onBack={onBack}
                 />
                 <div className={styles.content}>

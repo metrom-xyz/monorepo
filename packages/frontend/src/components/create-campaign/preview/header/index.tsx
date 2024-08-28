@@ -15,16 +15,10 @@ import styles from "./styles.module.css";
 interface HeaderProps {
     payload: CampaignPayload;
     backDisabled: boolean;
-    campaignDurationSeconds: number;
     onBack: () => void;
 }
 
-export function Header({
-    payload,
-    backDisabled,
-    campaignDurationSeconds,
-    onBack,
-}: HeaderProps) {
+export function Header({ payload, backDisabled, onBack }: HeaderProps) {
     const t = useTranslations("campaignPreview.header");
     const chainId = useChainId();
 
@@ -74,12 +68,9 @@ export function Header({
                     alignment="center"
                     label={t("runTimeLabel")}
                     value={
-                        <CampaignDuration
-                            secondsDuration={campaignDurationSeconds}
-                            uppercase
-                            weight="medium"
-                            variant="lg"
-                        />
+                        payload.startDate && payload.endDate
+                            ? payload.startDate.to(payload.endDate, true)
+                            : "-"
                     }
                 />
                 <TextField

@@ -35,7 +35,7 @@ export function Reward({
     );
 
     const tokenUsdValue = useMemo(() => {
-        if (!reward.usdPrice) return 0;
+        if (!reward.usdPrice) return null;
         return reward.amount * reward.usdPrice;
     }, [reward.amount, reward.usdPrice]);
 
@@ -80,7 +80,9 @@ export function Reward({
                 {numeral(reward.amount).format("(0.00[00] a)")}
             </Typography>
             <Typography weight="medium" light variant="sm">
-                {numeral(tokenUsdValue).format("($ 0.00 a)")}
+                {tokenUsdValue
+                    ? numeral(tokenUsdValue).format("($ 0.00 a)")
+                    : "-"}
             </Typography>
             <div className={styles.rewardName}>
                 <RemoteLogo
