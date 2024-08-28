@@ -6,7 +6,13 @@ import { Campaign, SkeletonCampaign } from "./campaign";
 
 import { useTranslations } from "next-intl";
 import { usePagination } from "@/src/hooks/usePagination";
-import { useCallback, useMemo, useState, type ChangeEvent } from "react";
+import {
+    useCallback,
+    useEffect,
+    useMemo,
+    useState,
+    type ChangeEvent,
+} from "react";
 import { TextInput } from "@/src/ui/text-input";
 import { SearchIcon } from "@/src/assets/search-icon";
 import { useDebounce } from "react-use";
@@ -20,6 +26,7 @@ import { useChains } from "wagmi";
 import styles from "./styles.module.css";
 
 const PAGE_SIZE = 10;
+const QUERY_PARAM_PAGE_NUMBER = "page";
 const QUERY_PARAM_SEARCH = "search";
 const QUERY_PARAM_STATUS = "status";
 const QUERY_PARAM_CHAIN = "chainId";
@@ -41,10 +48,15 @@ export function Campaigns() {
     const [search, setSearch] = useState(
         searchParams.get(QUERY_PARAM_SEARCH) || "",
     );
-    const [status, setStatus] = useState<FilterableStatus | null>(null);
+    const [status, setStatus] = useState<FilterableStatus | null>(() => {
+        const fromQuery = searchParams.get(QUERY_PARAM_STATUS);
+        return fromQuery ? (fromQuery as FilterableStatus) : null;
+    });
     const [chain, setChain] = useState<number | null>(null);
     const [debouncedSearch, setDebouncedSearch] = useState(search);
-    const [pageNumber, setPageNumber] = useState(1);
+    const [pageNumber, setPageNumber] = useState(
+        Number(searchParams.get(QUERY_PARAM_PAGE_NUMBER)) || 1,
+    );
 
     const statusOptions = useMemo(() => {
         return [
@@ -112,6 +124,32 @@ export function Campaigns() {
         size: PAGE_SIZE,
     });
 
+    useEffect(() => {
+        const params = new URLSearchParams(searchParams.toString());
+
+        let updatedPageNumber = pageNumber;
+        if (pageNumber > totalPages) {
+            updatedPageNumber = totalPages || 1;
+            setPageNumber(updatedPageNumber);
+        }
+
+        if (updatedPageNumber !== 1) {
+            if (params.has(QUERY_PARAM_PAGE_NUMBER))
+                params.set(
+                    QUERY_PARAM_PAGE_NUMBER,
+                    updatedPageNumber.toString(),
+                );
+            else
+                params.append(
+                    QUERY_PARAM_PAGE_NUMBER,
+                    updatedPageNumber.toString(),
+                );
+        } else {
+            params.delete(QUERY_PARAM_PAGE_NUMBER);
+        }
+        router.push(`${pathname}?${params.toString()}`);
+    }, [pageNumber, pathname, router, searchParams, totalPages]);
+
     function handleSearchChange(event: ChangeEvent<HTMLInputElement>) {
         setSearch(event.target.value);
     }
@@ -119,7 +157,7 @@ export function Campaigns() {
     const handleStatusChange = useCallback(
         (status: SelectOption<FilterableStatus>) => {
             const params = new URLSearchParams(searchParams.toString());
-            if (status.value !== FilterableStatus.None) {
+            if (status.value) {
                 if (params.has(QUERY_PARAM_STATUS))
                     params.set(QUERY_PARAM_STATUS, status.value.toString());
                 else params.append(QUERY_PARAM_STATUS, status.value.toString());
