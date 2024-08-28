@@ -140,6 +140,7 @@
     "campaignDuration": {
         "minutes": "{count} minutes",
         "hours": "{count, plural, =1 {# hour} other {# hours}}",
+        "months": "{count, plural, =1 {# month} other {# months}}",
         "days": "{count, plural, =1 {# day} other {# days}}"
     }
 }

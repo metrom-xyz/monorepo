@@ -16,6 +16,9 @@ export function CampaignDuration({
     const duration = useMemo(() => {
         const duration = dayjs.duration(secondsDuration, "seconds");
 
+        if (duration.months() > 0) {
+            return t("months", { count: duration.get("months") });
+        }
         if (duration.days() > 0) {
             return t("days", { count: duration.get("days") });
         }
