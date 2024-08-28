@@ -1,13 +1,13 @@
 .root {
-    @apply flex flex-col gap-8;
+    @apply flex flex-col gap-8 w-full max-w-screen-lg;
 }
 
 .titleContainer {
-    @apply flex flex-col gap-2;
+    @apply w-full flex flex-col gap-4;
 }
 
 .title {
-    @apply flex justify-between items-center gap-5;
+    @apply flex items-center gap-5;
 }
 
 .actionsContainer {
