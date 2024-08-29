@@ -54,13 +54,7 @@ export function ConnectButton() {
 
     return (
         <RainbowConnectButton.Custom>
-            {({
-                account,
-                chain,
-                openAccountModal,
-                openConnectModal,
-                mounted,
-            }) => {
+            {({ account, chain, openConnectModal, mounted }) => {
                 const ready = mounted;
                 const connected = ready && account && chain;
                 const blockie = blo(
@@ -135,6 +129,7 @@ export function ConnectButton() {
                                     <AccountMenu
                                         account={account}
                                         blockie={blockie}
+                                        chainId={chain.id}
                                         className={classNames(
                                             styles.accountMenu,
                                             {

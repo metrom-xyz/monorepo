@@ -1,4 +1,4 @@
-import { type Address } from "viem";
+import { type Address, type Hash } from "viem";
 import type { SupportedAmm } from "./commons";
 
 export interface Token {
@@ -66,6 +66,24 @@ export interface Claim extends TokenAmount {
 
 export interface WhitelistedErc20Token extends UsdPricedToken {
     minimumRate: number;
+}
+
+export interface Activity {
+    transaction: {
+        hash: Hash;
+        timestamp: number;
+    };
+    payload:
+        | {
+              type: "claimReward";
+              token: Token;
+              amount: number;
+              receiver: Address;
+          }
+        | {
+              type: "createCampaign";
+              id: Hash;
+          };
 }
 
 export interface WhitelistedErc20TokenAmount extends TokenAmount {

@@ -10,6 +10,7 @@ import type { SupportedChain } from "@metrom-xyz/contracts";
 import { SupportedAmm } from "../commons";
 import {
     Status,
+    type Activity,
     type Campaign,
     type Claim,
     type Pool,
@@ -33,6 +34,11 @@ export interface FetchClaimsParams {
 
 export interface FetchWhitelistedRewardTokensParams {
     chainId: SupportedChain;
+}
+
+export interface FetchActivitiesParams {
+    chainId: number;
+    address: Address;
 }
 
 export interface FetchWhitelistedRewardTokensResult {
@@ -133,6 +139,21 @@ export class MetromApiClient {
                 usdPrice: price,
             };
         });
+    }
+
+    async fetchActivities(params: FetchActivitiesParams): Promise<Activity[]> {
+        const url = new URL("activities", this.baseUrl);
+
+        url.searchParams.set("chainId", params.chainId.toString());
+        url.searchParams.set("address", params.address.toString());
+
+        const response = await fetch(url);
+        if (!response.ok)
+            throw new Error(
+                `response not ok while fetching activity for address ${params.address}: ${await response.text()}`,
+            );
+
+        return (await response.json()) as Activity[];
     }
 }
 

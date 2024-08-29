@@ -141,5 +141,17 @@
     "claims": {
         "chain": "Chain",
         "claimAll": "Claim all"
+    },
+    "accountMenu": {
+        "tabs": {
+            "activity": "Activity",
+            "campaigns": "Campaigns"
+        },
+        "activities": {
+            "claimReward": "Claim reward",
+            "createCampaign": "Create campaign",
+            "timeAgo": "{time} ago",
+            "seeCampaign": "See campaign"
+        }
     }
 }
