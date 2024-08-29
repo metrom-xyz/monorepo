@@ -23,7 +23,7 @@ export function Claims() {
         if (loading || claims.length === 0) return [];
         const reduced = claims.reduce(
             (acc, claim) => {
-                let data = acc[claim.chainId as SupportedChain];
+                const data = acc[claim.chainId as SupportedChain];
                 if (!data) {
                     console.warn(
                         `Claim detected on non-supported chain with id ${claim.chainId}`,

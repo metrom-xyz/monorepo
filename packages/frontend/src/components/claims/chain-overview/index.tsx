@@ -52,7 +52,6 @@ export function ChainOverview({
             !account
                 ? []
                 : chainWithClaimsData.claims.map((claim) => {
-                      console.log(claim.amount);
                       return {
                           campaignId: claim.campaignId,
                           proof: claim.proof,
@@ -95,8 +94,6 @@ export function ChainOverview({
         };
         void create();
     }, [publicClient, simulatedClaimAll, writeContractAsync]);
-
-    console.log({ error });
 
     return (
         <div className={classNames(styles.root, className)}>
