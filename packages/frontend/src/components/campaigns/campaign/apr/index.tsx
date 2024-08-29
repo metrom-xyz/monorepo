@@ -16,7 +16,7 @@ export function Apr({ apr }: AprProps) {
             <Typography weight="medium" className={styles.text}>
                 {numeral({
                     number: apr.toString(),
-                }).format("0.0[0]")}
+                }).format("0.0[0]a")}
                 %
             </Typography>
         </div>
