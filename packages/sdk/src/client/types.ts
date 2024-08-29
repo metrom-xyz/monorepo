@@ -36,6 +36,7 @@ interface RawReward {
     symbol: string;
     name: string;
     amount: number;
+    remaining: number;
     usdPrice: number | null;
 }
 
