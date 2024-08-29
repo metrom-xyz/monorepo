@@ -70,7 +70,7 @@ export function Rewards({ campaign, loading }: RewardsProps) {
                         <div key={reward.address} className={styles.row}>
                             <div className={styles.nameContainer}>
                                 <RemoteLogo
-                                    chain={chain}
+                                    chain={campaign.chainId}
                                     address={reward.address}
                                 />
                                 <Typography
