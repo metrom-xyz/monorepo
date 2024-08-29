@@ -13,6 +13,11 @@ export interface TokenAmount {
     amount: number;
 }
 
+export interface RewardBalance {
+    amount: number;
+    remaining: number;
+}
+
 export interface UsdPricedToken extends Token {
     usdPrice: number | null;
 }
@@ -31,7 +36,7 @@ export interface Pool {
     tvl: number;
 }
 
-export interface Rewards extends Array<UsdPricedTokenAmount> {
+export interface Rewards extends Array<UsdPricedTokenAmount & RewardBalance> {
     usdValue: number | null;
 }
 
