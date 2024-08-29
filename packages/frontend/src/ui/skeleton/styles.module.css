@@ -19,7 +19,11 @@
 }
 
 .lg {
-    @apply h-[1.125rem];
+    @apply h-7;
+}
+
+.xl {
+    @apply h-7;
 }
 
 .xl2 {

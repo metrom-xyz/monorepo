@@ -26,6 +26,10 @@
     @apply font-normal font-sans text-lg leading-[1.125rem];
 }
 
+.xl {
+    @apply font-normal font-sans text-xl leading-7;
+}
+
 .xl2 {
     @apply font-normal font-sans text-xl2 leading-8;
 }

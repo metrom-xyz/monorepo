@@ -1,8 +1,8 @@
-import classNames from "@/src/utils/classes";
+import type { TypographyVariant } from "../typography";
 
 import styles from "./styles.module.css";
 
-type SkeletonVariant = "xs" | "sm" | "base" | "lg" | "xl2" | "xl4" | "xl5";
+type SkeletonVariant = TypographyVariant;
 
 export interface SkeletonProps {
     variant?: SkeletonVariant;
