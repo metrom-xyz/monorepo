@@ -1,9 +1,9 @@
 .root {
-    @apply w-72 flex flex-col gap-2 bg-white rounded-xl p-4;
+    @apply w-80 h-fit flex flex-col gap-2 bg-white rounded-xl p-4;
 }
 
 .header {
-    @apply mb-4;
+    @apply mb-2;
 }
 
 .row {

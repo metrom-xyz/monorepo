@@ -1,7 +1,6 @@
 import classNames from "@/src/utils/classes";
-import type { ChainWithClaimsData } from "..";
 import { Typography } from "@/src/ui/typography";
-import { CHAIN_DATA, SUPPORTED_CHAIN_ICONS } from "@/src/commons";
+import { CHAIN_DATA } from "@/src/commons";
 import { type SupportedChain } from "@metrom-xyz/sdk";
 import { Button } from "@/src/ui/button";
 import { useTranslations } from "next-intl";
@@ -14,18 +13,18 @@ import {
 import { metromAbi } from "@metrom-xyz/contracts/abi";
 import { parseUnits } from "viem";
 import { useCallback, useState } from "react";
+import { RemoteLogo } from "@/src/ui/remote-logo";
+import numeral from "numeral";
+import type { TokenClaims } from "..";
 
 import styles from "./styles.module.css";
 
-interface ChainOverviewProps {
-    className?: string;
-    chainWithClaimsData: ChainWithClaimsData;
+interface TokenClaimProps {
+    chainId: number;
+    chainClaims: TokenClaims;
 }
 
-export function ChainOverview({
-    className,
-    chainWithClaimsData,
-}: ChainOverviewProps) {
+export function TokenClaim({ chainId, chainClaims }: TokenClaimProps) {
     const t = useTranslations("claims");
     const { address: account } = useAccount();
     const publicClient = usePublicClient();
@@ -34,23 +33,18 @@ export function ChainOverview({
     const [claiming, setClaiming] = useState(false);
     const [claimed, setClaimed] = useState(false);
 
-    const ChainIcon =
-        SUPPORTED_CHAIN_ICONS[chainWithClaimsData.chain.id as SupportedChain];
-
     const {
         data: simulatedClaimAll,
         isLoading: simulatingClaimAll,
         isError: simulateClaimAllError,
     } = useSimulateContract({
         abi: metromAbi,
-        address:
-            CHAIN_DATA[chainWithClaimsData.chain.id as SupportedChain].contract
-                .address,
+        address: CHAIN_DATA[chainId as SupportedChain].contract.address,
         functionName: "claimRewards",
         args: [
             !account
                 ? []
-                : chainWithClaimsData.claims.map((claim) => {
+                : chainClaims.claims.map((claim) => {
                       return {
                           campaignId: claim.campaignId,
                           proof: claim.proof,
@@ -64,11 +58,11 @@ export function ChainOverview({
                   }),
         ],
         query: {
-            enabled: account && chainWithClaimsData.claims.length > 0,
+            enabled: account && chainClaims.claims.length > 0,
         },
     });
 
-    const handleClaimAll = useCallback(() => {
+    const handleClaim = useCallback(() => {
         if (!writeContractAsync || !publicClient || !simulatedClaimAll?.request)
             return;
         const create = async () => {
@@ -95,20 +89,29 @@ export function ChainOverview({
     }, [publicClient, simulatedClaimAll, writeContractAsync]);
 
     return (
-        <div className={classNames(styles.root, className)}>
-            <div className={styles.chainNameWrapper}>
-                <ChainIcon className={styles.chainIcon} />
-                <Typography variant="xl4">
-                    {chainWithClaimsData.chain.name}
+        <div className={classNames(styles.root)}>
+            <div className={styles.leftWrapper}>
+                <RemoteLogo
+                    size="lg"
+                    chain={chainId}
+                    address={chainClaims.token.address}
+                    defaultText={chainClaims.token.symbol}
+                />
+                <Typography variant="lg" weight="medium">
+                    {chainClaims.token.symbol}
+                </Typography>
+                <Typography variant="lg" weight="medium">
+                    {numeral(chainClaims.totalAmount).format("(0.00[00]a")}
                 </Typography>
             </div>
             <Button
-                size="xsmall"
+                variant="secondary"
+                size="small"
                 disabled={simulateClaimAllError || claimed}
                 loading={simulatingClaimAll || claiming}
-                onClick={handleClaimAll}
+                onClick={handleClaim}
             >
-                {t("claimAll")}
+                {t("claimByToken", { tokenSymbol: chainClaims.token.symbol })}
             </Button>
         </div>
     );

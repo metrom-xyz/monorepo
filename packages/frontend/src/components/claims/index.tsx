@@ -7,6 +7,7 @@ import { useMemo, useState } from "react";
 import { type Chain } from "viem";
 import { celoAlfajores, holesky, mantleSepoliaTestnet } from "viem/chains";
 import { ChainOverview } from "./chain-overview";
+import { ChainClaims } from "./chain-claims";
 
 import styles from "./styles.module.css";
 
@@ -66,7 +67,14 @@ export function Claims() {
             />
             <div className={styles.rightWrapper}>
                 {chainWithClaimsData ? (
-                    <ChainOverview chainWithClaimsData={chainWithClaimsData} />
+                    <>
+                        <ChainOverview
+                            chainWithClaimsData={chainWithClaimsData}
+                        />
+                        <ChainClaims
+                            chainWithClaimsData={chainWithClaimsData}
+                        />
+                    </>
                 ) : (
                     <div>No claims</div>
                 )}
