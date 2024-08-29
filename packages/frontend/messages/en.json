@@ -137,5 +137,9 @@
             "explorer": "Explorer",
             "claim": "Claim"
         }
+    },
+    "claims": {
+        "chain": "Chain",
+        "claimAll": "Claim all"
     }
 }

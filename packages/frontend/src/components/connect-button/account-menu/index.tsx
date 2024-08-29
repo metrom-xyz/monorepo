@@ -1,5 +1,4 @@
 import classNames from "@/src/utils/classes";
-import { useTranslations } from "next-intl";
 import { useClickAway } from "react-use";
 import { useRef } from "react";
 
@@ -24,7 +23,6 @@ interface AccountMenuProps {
 
 // TODO: finish this
 export function AccountMenu({ className, onClose }: AccountMenuProps) {
-    const t = useTranslations("navigation.accountMenu");
     const rootRef = useRef(null);
 
     useClickAway(rootRef, onClose);
