@@ -34,6 +34,10 @@
     @apply underline;
 }
 
+.claimRewardWrapper {
+    @apply flex items-center gap-2;
+}
+
 .skeleton {
     @apply bg-gray-300;
 }

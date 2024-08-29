@@ -7,6 +7,8 @@ import { Typography } from "@/src/ui/typography";
 import Link from "next/link";
 import { Skeleton } from "@/src/ui/skeleton";
 import classNames from "@/src/utils/classes";
+import { RemoteLogo } from "@/src/ui/remote-logo";
+import numeral from "numeral";
 
 import styles from "./styles.module.css";
 
@@ -52,7 +54,18 @@ export function Activity({ chainId, transaction, payload }: ActivityProps) {
                             </Typography>
                         </Link>
                     ) : (
-                        <div>TODO</div>
+                        <div className={styles.claimRewardWrapper}>
+                            <RemoteLogo
+                                size="sm"
+                                chain={chainId}
+                                address={payload.token.address}
+                                defaultText={payload.token.symbol}
+                            />
+                            <Typography>{payload.token.symbol}</Typography>
+                            <Typography>
+                                {numeral(payload.amount).format("0.0[000]")}
+                            </Typography>
+                        </div>
                     )}
                 </div>
             </div>
