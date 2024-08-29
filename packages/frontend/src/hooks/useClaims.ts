@@ -1,15 +1,23 @@
-import { useAccount } from "wagmi";
-import { metromApiClient } from "../commons";
-import { type Claim } from "@metrom-xyz/sdk";
+import { useAccount, useReadContracts } from "wagmi";
+import { formatUnits } from "viem";
+import { CHAIN_DATA, metromApiClient } from "../commons";
+import { SupportedChain, type Claim } from "@metrom-xyz/sdk";
 import { useEffect, useState } from "react";
+import { metromAbi } from "@metrom-xyz/contracts/abi";
 
+interface ClaimWithRemaining extends Claim {
+    remaining: number;
+}
+
+// TODO: refetch and update claimed at each block
 export function useClaims(): {
     loading: boolean;
     claims: Claim[];
 } {
     const { address } = useAccount();
 
-    const [claims, setClaims] = useState<Claim[]>([]);
+    const [rawClaims, setRawClaims] = useState<Claim[]>([]);
+    const [claims, setClaims] = useState<ClaimWithRemaining[]>([]);
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
@@ -19,17 +27,17 @@ export function useClaims(): {
             if (!address) return;
 
             if (!cancelled) setLoading(false);
-            if (!cancelled) setClaims([]);
+            if (!cancelled) setRawClaims([]);
 
             try {
                 if (!cancelled) setLoading(true);
-                const claims = await metromApiClient.fetchClaims({
+                const rawClaims = await metromApiClient.fetchClaims({
                     address,
                 });
-                if (!cancelled) setClaims(claims);
+                if (!cancelled) setRawClaims(rawClaims);
             } catch (error) {
                 console.error(
-                    `Could not fetch claims for address ${address}: ${error}`,
+                    `Could not fetch raw claims for address ${address}: ${error}`,
                 );
             } finally {
                 if (!cancelled) setLoading(false);
@@ -41,8 +49,64 @@ export function useClaims(): {
         };
     }, [address]);
 
+    const {
+        isLoading: loadingClaimed,
+        data: claimedData,
+        isError: claimedErrored,
+        error: claimedError,
+    } = useReadContracts({
+        allowFailure: false,
+        contracts: rawClaims.map((rawClaim) => {
+            return {
+                chainId: rawClaim.chainId,
+                address:
+                    CHAIN_DATA[rawClaim.chainId as SupportedChain].contract
+                        .address,
+                abi: metromAbi,
+                functionName: "claimedCampaignReward",
+                args: [rawClaim.campaignId, rawClaim.token.address, address],
+            };
+        }),
+    });
+
+    useEffect(() => {
+        if (loadingClaimed) return;
+        if (claimedErrored) {
+            console.error(
+                `Could not fetch claimed data for address ${address}: ${claimedError}`,
+            );
+            return;
+        }
+        if (!claimedData) return;
+
+        const claims = [];
+        for (let i = 0; i < claimedData.length; i++) {
+            const rawClaimed = claimedData[i] as unknown as bigint;
+            const rawClaim = rawClaims[i];
+            const claimed = Number(
+                formatUnits(rawClaimed, rawClaim.token.decimals),
+            );
+            const remaining = rawClaim.amount - claimed;
+            if (remaining > 0) {
+                claims.push({
+                    ...rawClaim,
+                    remaining: rawClaim.amount - claimed,
+                });
+            }
+        }
+
+        setClaims(claims);
+    }, [
+        address,
+        claimedData,
+        claimedError,
+        claimedErrored,
+        loadingClaimed,
+        rawClaims,
+    ]);
+
     return {
-        loading,
+        loading: loading || loadingClaimed,
         claims,
     };
 }

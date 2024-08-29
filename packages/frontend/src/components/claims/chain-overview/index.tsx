@@ -9,6 +9,7 @@ import {
     useAccount,
     usePublicClient,
     useSimulateContract,
+    useSwitchChain,
     useWriteContract,
 } from "wagmi";
 import { metromAbi } from "@metrom-xyz/contracts/abi";
@@ -29,6 +30,7 @@ export function ChainOverview({
     const t = useTranslations("claims");
     const { address: account } = useAccount();
     const publicClient = usePublicClient();
+    const { switchChainAsync } = useSwitchChain();
     const { writeContractAsync } = useWriteContract();
 
     const [claiming, setClaiming] = useState(false);
@@ -42,6 +44,7 @@ export function ChainOverview({
         isLoading: simulatingClaimAll,
         isError: simulateClaimAllError,
     } = useSimulateContract({
+        chainId: chainWithClaimsData.chain.id,
         abi: metromAbi,
         address:
             CHAIN_DATA[chainWithClaimsData.chain.id as SupportedChain].contract
@@ -74,25 +77,35 @@ export function ChainOverview({
         const create = async () => {
             setClaiming(true);
             try {
+                await switchChainAsync({
+                    chainId: chainWithClaimsData.chain.id,
+                });
+
                 const tx = await writeContractAsync(simulatedClaimAll.request);
                 const receipt = await publicClient.waitForTransactionReceipt({
                     hash: tx,
                 });
 
                 if (receipt.status === "reverted") {
-                    console.warn("creation transaction reverted");
+                    console.warn("Claim transaction reverted");
                     return;
                 }
 
                 setClaimed(true);
             } catch (error) {
-                console.warn("could not create kpi token", error);
+                console.warn("Could not claim", error);
             } finally {
                 setClaiming(false);
             }
         };
         void create();
-    }, [publicClient, simulatedClaimAll, writeContractAsync]);
+    }, [
+        chainWithClaimsData.chain.id,
+        publicClient,
+        simulatedClaimAll,
+        switchChainAsync,
+        writeContractAsync,
+    ]);
 
     return (
         <div className={classNames(styles.root, className)}>
