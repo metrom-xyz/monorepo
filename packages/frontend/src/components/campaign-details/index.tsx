@@ -3,9 +3,10 @@
 import type { SupportedChain } from "@metrom-xyz/contracts";
 import { useCampaign } from "@/src/hooks/useCampaign";
 import type { Hex } from "viem";
-import { useRouter } from "@/src/navigation";
 import { Nav } from "../nav";
 import { Header, SkeletonHeader } from "./header";
+import { Details } from "./details";
+import { Rewards } from "./rewards";
 
 import styles from "./styles.module.css";
 
@@ -15,7 +16,6 @@ interface CampaignDetailsProps {
 }
 
 export function CampaignDetails({ chain, campaignId }: CampaignDetailsProps) {
-    const router = useRouter();
     const { loading, campaign } = useCampaign(chain, campaignId);
 
     return (
@@ -27,6 +27,10 @@ export function CampaignDetails({ chain, campaignId }: CampaignDetailsProps) {
                 ) : (
                     <Header campaign={campaign} />
                 )}
+            </div>
+            <div className={styles.contentWrapper}>
+                <Details campaign={campaign} loading={loading} />
+                <Rewards campaign={campaign} loading={loading} />
             </div>
         </div>
     );

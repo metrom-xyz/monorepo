@@ -135,7 +135,28 @@
             "rewardsMayVary": "Rewards may vary",
             "deposit": "Deposit",
             "explorer": "Explorer",
-            "claim": "Claim"
+            "claim": "Claim",
+            "apr": "Apr {value}%"
+        },
+        "details": {
+            "tvl": "Tvl",
+            "status": {
+                "text": "Status",
+                "live": "Live",
+                "upcoming": "Upcoming",
+                "ended": "Ended"
+            },
+            "startDate": "Start date",
+            "endDate": "End date",
+            "endsIn": "Ends in"
+        },
+        "rewards": {
+            "title": "Total rewards",
+            "token": "Token",
+            "inUsd": "In $",
+            "amount": "Amount",
+            "daily": "Daily rewards",
+            "total": "Total value usd"
         }
     },
     "claims": {

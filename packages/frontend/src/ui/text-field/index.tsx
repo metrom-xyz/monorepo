@@ -1,14 +1,16 @@
 import classNames from "@/src/utils/classes";
 import type { ReactNode } from "react";
-import { Typography } from "../typography";
+import { Typography, type TypographyProps } from "../typography";
+import { Skeleton } from "../skeleton";
 
 import styles from "./styles.module.css";
 
-interface TextFieldProps {
+interface TextFieldProps extends Omit<TypographyProps, "children"> {
     alignment?: "left" | "center" | "right";
     boxed?: boolean;
     label: string;
-    value: ReactNode;
+    value?: ReactNode;
+    loading?: boolean;
     className?: string;
 }
 
@@ -17,7 +19,10 @@ export function TextField({
     boxed = false,
     label,
     value,
+    loading,
     className,
+    variant = "lg",
+    ...rest
 }: TextFieldProps) {
     return (
         <div
@@ -30,8 +35,10 @@ export function TextField({
             <Typography uppercase weight="medium" light variant="sm">
                 {label}
             </Typography>
-            {typeof value === "string" ? (
-                <Typography uppercase weight="medium" variant="lg">
+            {loading ? (
+                <Skeleton variant={variant} width={125} />
+            ) : typeof value === "string" ? (
+                <Typography weight="medium" variant={variant} {...rest}>
                     {value}
                 </Typography>
             ) : (

@@ -55,6 +55,13 @@ export function Header({ campaign }: HeaderProps) {
                     <Button size="xsmall">{t("deposit")}</Button>
                     <Button
                         size="xsmall"
+                        className={{ root: styles.claimButton }}
+                        onClick={handleClaimOnClick}
+                    >
+                        {t("claim")}
+                    </Button>
+                    <Button
+                        size="xsmall"
                         variant="secondary"
                         border={false}
                         icon={ArrowRightIcon}
@@ -63,13 +70,18 @@ export function Header({ campaign }: HeaderProps) {
                         {t("explorer")}
                     </Button>
                 </div>
-                <Button
-                    size="xsmall"
-                    className={{ root: styles.claimButton }}
-                    onClick={handleClaimOnClick}
-                >
-                    {t("claim")}
-                </Button>
+                <div className={styles.aprContainer}>
+                    <Typography
+                        uppercase
+                        weight="medium"
+                        variant="lg"
+                        className={styles.aprText}
+                    >
+                        {t("apr", {
+                            value: numeral(campaign.apr).format("0.0[0]"),
+                        })}
+                    </Typography>
+                </div>
             </div>
         </div>
     );
@@ -95,6 +107,13 @@ export function SkeletonHeader() {
                     </Button>
                     <Button
                         size="xsmall"
+                        className={{ root: styles.claimButton }}
+                        loading
+                    >
+                        {t("claim")}
+                    </Button>
+                    <Button
+                        size="xsmall"
                         variant="secondary"
                         border={false}
                         loading
@@ -102,13 +121,6 @@ export function SkeletonHeader() {
                         {t("explorer")}
                     </Button>
                 </div>
-                <Button
-                    size="xsmall"
-                    className={{ root: styles.claimButton }}
-                    loading
-                >
-                    {t("claim")}
-                </Button>
             </div>
         </div>
     );
