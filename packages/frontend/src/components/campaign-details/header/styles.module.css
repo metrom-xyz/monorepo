@@ -11,7 +11,7 @@
 }
 
 .actionsContainer {
-    @apply flex justify-between mb-8;
+    @apply h-12 flex justify-between mb-8;
 }
 
 .actionsContainer button {
@@ -22,10 +22,18 @@
     @apply flex gap-3;
 }
 
+.claimButton {
+    @apply self-end;
+}
+
 .externalLinkIcon {
     @apply h-4 w-4 transform -rotate-45;
 }
 
-.claimButton {
-    @apply self-end;
+.aprContainer {
+    @apply flex items-center bg-brand-blue rounded-lg px-4 py-3 w-fit;
+}
+
+.aprText {
+    @apply text-white;
 }

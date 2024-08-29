@@ -1,0 +1,31 @@
+.root {
+    @apply w-full flex flex-col gap-4 mt-4;
+}
+
+.root > div {
+    @apply w-full flex justify-between gap-4;
+}
+
+.statusWrapper {
+    @apply flex items-center gap-2;
+}
+
+.statusDot {
+    @apply flex items-center justify-center w-6 h-6 rounded-full bg-gray-100;
+}
+
+.statusDot > div {
+    @apply w-5 h-5 rounded-full;
+}
+
+.live {
+    @apply bg-brand-green;
+}
+
+.upcoming {
+    @apply bg-brand-blue;
+}
+
+.ended {
+    @apply bg-gray-400;
+}

@@ -1,5 +1,5 @@
 .root {
-    @apply w-full flex flex-col;
+    @apply w-full flex flex-col items-center;
 }
 
 .headerWrapper {
@@ -8,4 +8,8 @@
 
 .header {
     @apply bg-white w-full;
+}
+
+.contentWrapper {
+    @apply w-full max-w-screen-lg flex flex-col gap-16;
 }
