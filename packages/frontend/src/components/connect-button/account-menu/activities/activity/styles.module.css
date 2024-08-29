@@ -1,0 +1,39 @@
+.root {
+    @apply bg-gray-200
+        rounded-xl
+        flex
+        justify-between
+        p-3
+        pr-5;
+}
+
+.leftWrapper {
+    @apply flex gap-3;
+}
+
+.iconWrapper {
+    @apply bg-gray-300
+        rounded-lg
+        flex
+        justify-center
+        items-center
+        p-1
+        w-10
+        h-10;
+}
+
+.icon {
+    @apply w-7 h-7;
+}
+
+.leftBodyWrapper {
+    @apply flex flex-col gap-1;
+}
+
+.seeCampaignLink {
+    @apply underline;
+}
+
+.skeleton {
+    @apply bg-gray-300;
+}

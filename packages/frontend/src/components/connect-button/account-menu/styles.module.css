@@ -2,5 +2,49 @@
     @apply bg-gray-100
         w-96
         flex
-        flex-col;
+        flex-col
+        p-3;
+}
+
+.headerWrapper {
+    @apply flex justify-between items-center mb-6;
+}
+
+.accountContainer {
+    @apply flex items-center gap-3;
+}
+
+.avatar {
+    @apply w-12 h-12 rounded-full;
+}
+
+.disconnectIcon {
+    @apply w-5 h-5 cursor-pointer;
+}
+
+.tabs {
+    @apply flex gap-2 mb-4;
+}
+
+.tab {
+    @apply flex
+        items-center
+        gap-2
+        h-10
+        px-3
+        select-none
+        rounded-md
+        cursor-pointer
+        transition-colors
+        duration-200
+        ease-in-out
+        hover:bg-white;
+}
+
+.tabIcon {
+    @apply w-5 h-5;
+}
+
+.tabActive {
+    @apply bg-gray-200 hover:bg-gray-200;
 }
