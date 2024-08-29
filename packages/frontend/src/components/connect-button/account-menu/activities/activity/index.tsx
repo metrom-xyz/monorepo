@@ -6,9 +6,9 @@ import { useLocale, useTranslations } from "next-intl";
 import { Typography } from "@/src/ui/typography";
 import Link from "next/link";
 import { Skeleton } from "@/src/ui/skeleton";
+import classNames from "@/src/utils/classes";
 
 import styles from "./styles.module.css";
-import classNames from "@/src/utils/classes";
 
 interface ActivityProps extends Activity {
     chainId: number;
