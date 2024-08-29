@@ -1,0 +1,14 @@
+.root {
+    @apply w-full
+        flex
+        justify-between
+        items-center
+        gap-3
+        bg-white
+        rounded-xl
+        p-4;
+}
+
+.leftWrapper {
+    @apply flex items-center gap-3;
+}

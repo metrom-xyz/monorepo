@@ -140,7 +140,8 @@
     },
     "claims": {
         "chain": "Chain",
-        "claimAll": "Claim all"
+        "claimAll": "Claim all",
+        "claimByToken": "Claim all {tokenSymbol}"
     },
     "accountMenu": {
         "tabs": {
