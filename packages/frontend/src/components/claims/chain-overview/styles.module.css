@@ -1,0 +1,16 @@
+.root {
+    @apply w-full
+        flex
+        justify-between
+        items-center
+        bg-white
+        rounded-xl p-4;
+}
+
+.chainNameWrapper {
+    @apply flex gap-3;
+}
+
+.chainIcon {
+    @apply w-10 h-10;
+}

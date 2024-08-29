@@ -1,0 +1,19 @@
+.root {
+    @apply w-72 flex flex-col gap-2 bg-white rounded-xl p-4;
+}
+
+.header {
+    @apply mb-4;
+}
+
+.row {
+    @apply flex p-3 gap-3 rounded-lg hover:bg-gray-100 cursor-pointer;
+}
+
+.rowActive {
+    @apply bg-gray-200 hover:bg-gray-200;
+}
+
+.chainIcon {
+    @apply w-5 h-5 rounded-md;
+}

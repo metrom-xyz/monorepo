@@ -12,7 +12,6 @@ import Confetti from "react-confetti";
 import numeral from "numeral";
 import { useWindowSize } from "react-use";
 import { parseUnits } from "viem";
-import dayjs from "dayjs";
 import { metromAbi } from "@metrom-xyz/contracts/abi";
 import { CHAIN_DATA } from "@/src/commons";
 import type { SupportedChain } from "@metrom-xyz/contracts";
