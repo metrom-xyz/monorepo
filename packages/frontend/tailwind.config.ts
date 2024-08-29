@@ -39,7 +39,7 @@ const config: Config = {
                 colors: "border-radius, color, background-color, border-color, text-decoration-color, fill, stroke",
             },
             gridTemplateColumns: {
-                "campaigns-table": "auto 3.5fr 1.3fr 1.1fr 1fr",
+                "campaigns-table": "auto 3.5fr 1.4fr 0.8fr 1fr",
                 rewardRow: "1.2fr 1.2fr 1.5fr 0.2fr",
             },
             backgroundImage: {
