@@ -104,3 +104,9 @@ export interface WhitelistedErc20TokenWithBalance
     extends WhitelistedErc20Token {
     balance?: bigint;
 }
+
+export interface DistributionData {
+    account: Address;
+    tokenAddress: Address;
+    amount: bigint;
+}
