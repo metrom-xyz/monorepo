@@ -70,3 +70,9 @@ export type FetchPoolsResponse = {
 export type FetchWhitelistedRewardTokensResponse = {
     tokens: RawWhitelistedToken[];
 };
+
+export type FetchDistributionDataResponse = {
+    account: Address;
+    token_address: Address;
+    amount: bigint;
+}[];
