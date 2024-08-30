@@ -6,9 +6,9 @@ import numeral from "numeral";
 import dayjs from "dayjs";
 import { useMemo } from "react";
 import type { NamedCampaign } from "@/src/hooks/useCampaign";
+import { Skeleton } from "@/src/ui/skeleton";
 
 import styles from "./styles.module.css";
-import { Skeleton } from "@/src/ui/skeleton";
 
 interface RewardsProps {
     campaign?: NamedCampaign;
@@ -85,7 +85,9 @@ export function Rewards({ campaign, loading }: RewardsProps) {
                                 ).format("($ 0.00[0] a)")}
                             </Typography>
                             <Typography uppercase weight="medium" variant="lg">
-                                {numeral(reward.amount).format("(0.00[00] a)")}
+                                {numeral(reward.remaining).format(
+                                    "(0.00[00] a)",
+                                )}
                             </Typography>
                         </div>
                     ))

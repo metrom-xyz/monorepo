@@ -1,14 +1,11 @@
 .root {
-    @apply flex flex-col gap-4;
-}
-
-.table {
-    @apply flex
+    @apply w-full
+        flex
         flex-col
         gap-7
         px-5
         py-4
-        bg-white
+        bg-gray-100
         rounded-2xl;
 }
 
@@ -24,12 +21,12 @@
     @apply justify-self-end;
 }
 
-.nameContainer {
-    @apply flex w-full max-w-32 gap-1.5 items-center;
-}
-
 .row {
     @apply grid grid-cols-3 items-center;
+}
+
+.row > :first-child {
+    @apply flex items-center gap-4;
 }
 
 .row > :nth-child(2) {
@@ -37,13 +34,13 @@
 }
 
 .row > :last-child {
-    @apply justify-self-end;
+    @apply flex items-center gap-4 justify-self-end;
 }
 
-.summary {
-    @apply flex justify-between gap-4;
+.rewardsPopover {
+    @apply flex flex-col gap-3 px-5 py-4;
 }
 
-.summaryBox {
-    @apply bg-gray-100;
+.rewardsPopoverRow {
+    @apply flex items-center gap-2;
 }

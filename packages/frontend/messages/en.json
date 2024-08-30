@@ -157,6 +157,20 @@
             "amount": "Amount",
             "daily": "Daily rewards",
             "total": "Total value usd"
+        },
+        "leaderboard": {
+            "title": "Leaderboard",
+            "subtitle": "As of the latest distribution:",
+            "personalRank": {
+                "connect": "View your rank",
+                "noRewards": "No rewards distributed",
+                "yourRank": "Your rank",
+                "address": "Address",
+                "rewardsDistributed": "Rewards distributed"
+            },
+            "rank": "Rank",
+            "address": "Address",
+            "rewardsDistributed": "Rewards distributed"
         }
     },
     "claims": {
