@@ -1,0 +1,42 @@
+.root {
+    @apply flex flex-col gap-6 h-full w-full;
+}
+
+.tooltipWrapper {
+    @apply absolute
+        flex
+        flex-col
+        items-center
+        justify-center
+        top-[90px]
+        w-[240px];
+}
+
+.chartWrapper {
+    @apply flex
+        items-center
+        justify-center
+        self-center
+        mt-4
+        w-[280px]
+        h-[280px]
+        bg-gray-100
+        rounded-full;
+}
+
+.cell {
+    @apply cursor-pointer
+        outline-none
+        hover:opacity-85
+        transition-opacity
+        duration-200
+        ease-in-out;
+}
+
+.chartWrapperLoading {
+    @apply animate-pulse;
+}
+
+.chartContainer {
+    @apply h-[240px] w-[240px];
+}

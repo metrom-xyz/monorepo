@@ -42,5 +42,9 @@
 }
 
 .rewardsPopoverRow {
+    @apply flex items-center gap-6 justify-between;
+}
+
+.rewardsPopoverRow > div {
     @apply flex items-center gap-2;
 }

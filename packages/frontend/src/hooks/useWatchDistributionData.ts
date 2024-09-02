@@ -16,6 +16,7 @@ import { dataManagerClient } from "../commons";
 export interface AggregatedEnrichedDistributionData {
     account: Address;
     amount: number;
+    position: number;
     rank: number;
     usdValue: number | null;
     details: EnrichedDistributionData[];
@@ -73,7 +74,7 @@ export function useWatchDistributionData(campaign?: Campaign): {
         }
 
         fetchData();
-    }, [campaign, campaignDataHash, distributionEvent?.timestamp]);
+    }, [campaign, campaignDataHash]);
 
     const enrichedDistributionData = useMemo(() => {
         if (!distributionData || !campaign) return undefined;
@@ -147,9 +148,11 @@ export function useWatchDistributionData(campaign?: Campaign): {
                     details,
                 };
             })
-            .sort(
-                (a, b) => b.rank - a.rank,
-            ) as AggregatedEnrichedDistributionData[];
+            .sort((a, b) => b.rank - a.rank)
+            .map((data, index) => ({
+                ...data,
+                position: index + 1,
+            })) as AggregatedEnrichedDistributionData[];
     }, [campaign, distributionData]);
 
     return {

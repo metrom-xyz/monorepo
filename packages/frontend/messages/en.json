@@ -170,7 +170,9 @@
             },
             "rank": "Rank",
             "address": "Address",
-            "rewardsDistributed": "Rewards distributed"
+            "rewardsDistributed": "Rewards distributed",
+            "repartition": "Source repartition",
+            "others": "Others"
         }
     },
     "claims": {

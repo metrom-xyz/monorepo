@@ -6,6 +6,7 @@ import { Skeleton } from "@/src/ui/skeleton";
 import dayjs from "dayjs";
 import numeral from "numeral";
 import { PersonalRank } from "./personal-rank";
+import { RepartitionChart } from "./repartition-chart";
 
 import styles from "./styles.module.css";
 
@@ -93,11 +94,11 @@ export function Leaderboard({ campaign, loading }: LeaderboardProps) {
                                 <SkeletonRow />
                             </>
                         ) : (
-                            distributionData.slice(0, 5).map((data, index) => (
+                            distributionData.slice(0, 5).map((data) => (
                                 <div key={data.account} className={styles.row}>
                                     <div>
                                         <Typography weight="medium" light>
-                                            # {index + 1}
+                                            # {data.position}
                                         </Typography>
                                         <Typography weight="medium">
                                             {numeral(data.rank).format(
@@ -128,7 +129,12 @@ export function Leaderboard({ campaign, loading }: LeaderboardProps) {
                         )}
                     </div>
                 </div>
-                <div className={styles.repartion}></div>
+                <div className={styles.repartion}>
+                    <RepartitionChart
+                        loading={loading}
+                        repartitionData={distributionData}
+                    />
+                </div>
             </div>
         </div>
     );

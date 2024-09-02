@@ -31,7 +31,11 @@ export function PersonalRank({
         useState<HTMLDivElement | null>(null);
     const rewardsPopoverRef = useRef<HTMLDivElement>(null);
 
-    const { address: connectedAddress } = useAccount();
+    const {
+        address: connectedAddress,
+        isConnecting: accountConnecting,
+        isReconnecting: accountReconnecting,
+    } = useAccount();
     const { openConnectModal } = useConnectModal();
 
     const personalRank = useMemo(() => {
@@ -60,7 +64,7 @@ export function PersonalRank({
         setRewardsPopoverOpen(false);
     }
 
-    return connectedAddress ? (
+    return (
         <div className={styles.root}>
             <div className={styles.header}>
                 <Typography uppercase weight="medium" light variant="sm">
@@ -73,8 +77,17 @@ export function PersonalRank({
                     {t("rewardsDistributed")}
                 </Typography>
             </div>
-            {loading ? (
+            {loading || accountConnecting || accountReconnecting ? (
                 <SkeletonRow />
+            ) : !connectedAddress ? (
+                <Button
+                    onClick={openConnectModal}
+                    size="xsmall"
+                    icon={WalletIcon}
+                    variant="secondary"
+                >
+                    {t("connect")}
+                </Button>
             ) : !personalRank ? (
                 <Typography weight="medium" light>
                     {t("noRewards")}
@@ -112,27 +125,33 @@ export function PersonalRank({
                                     key={enrichedData.token.address}
                                     className={styles.rewardsPopoverRow}
                                 >
-                                    <RemoteLogo
-                                        chain={chain}
-                                        size="sm"
-                                        address={enrichedData.token.address}
-                                        defaultText={enrichedData.token.symbol}
-                                    />
-                                    <Typography weight="medium">
-                                        {enrichedData.token.symbol}
-                                    </Typography>
-                                    <Typography weight="medium">
-                                        {numeral(enrichedData.amount).format(
-                                            "(0.0[0] a)",
-                                        )}
-                                    </Typography>
-                                    <Typography weight="medium">
-                                        {enrichedData.usdValue
-                                            ? numeral(
-                                                  enrichedData.usdValue,
-                                              ).format("($ 0.00 a)")
-                                            : "-"}
-                                    </Typography>
+                                    <div>
+                                        <RemoteLogo
+                                            chain={chain}
+                                            size="sm"
+                                            address={enrichedData.token.address}
+                                            defaultText={
+                                                enrichedData.token.symbol
+                                            }
+                                        />
+                                        <Typography weight="medium">
+                                            {enrichedData.token.symbol}
+                                        </Typography>
+                                    </div>
+                                    <div>
+                                        <Typography weight="medium">
+                                            {numeral(
+                                                enrichedData.amount,
+                                            ).format("(0.0[0] a)")}
+                                        </Typography>
+                                        <Typography weight="medium">
+                                            {enrichedData.usdValue
+                                                ? numeral(
+                                                      enrichedData.usdValue,
+                                                  ).format("($ 0.00 a)")
+                                                : "-"}
+                                        </Typography>
+                                    </div>
                                 </div>
                             ))}
                         </div>
@@ -156,9 +175,5 @@ export function PersonalRank({
                 </div>
             )}
         </div>
-    ) : (
-        <Button onClick={openConnectModal} size="xsmall" icon={WalletIcon}>
-            {t("connect")}
-        </Button>
     );
 }
