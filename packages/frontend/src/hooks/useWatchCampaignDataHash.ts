@@ -4,6 +4,7 @@ import { CHAIN_DATA } from "../commons";
 import type { SupportedChain } from "@metrom-xyz/contracts";
 import { query } from "../utils/subgraph";
 import type { Campaign } from "@metrom-xyz/sdk";
+import { useWatchRewardDistributionEvent } from "./useWatchRewardDistributionEvent";
 
 export interface GetCampaignDataResult {
     campaign: {
@@ -20,12 +21,14 @@ export const GetCampaignData = `
 `;
 
 // TODO: move fetch to a subgraph client in the sdk?
-export function useCampaignDataHash(campaign?: Campaign): {
+export function useWatchCampaignDataHash(campaign?: Campaign): {
     loading: boolean;
     hash?: Hex;
 } {
     const [hash, setHash] = useState<Hex>();
     const [loading, setLoading] = useState(false);
+
+    const { distribution } = useWatchRewardDistributionEvent(campaign);
 
     useEffect(() => {
         let cancelled = false;
@@ -56,7 +59,7 @@ export function useCampaignDataHash(campaign?: Campaign): {
         }
 
         fetchData();
-    }, [campaign]);
+    }, [campaign, distribution?.timestamp]);
 
     return {
         loading,
