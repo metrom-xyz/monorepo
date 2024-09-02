@@ -1,9 +1,10 @@
-import { useAccount, useReadContracts } from "wagmi";
+import { useAccount, useBlockNumber, useReadContracts } from "wagmi";
 import { formatUnits } from "viem";
 import { CHAIN_DATA, metromApiClient } from "../commons";
 import { SupportedChain, type Claim } from "@metrom-xyz/sdk";
 import { useEffect, useState } from "react";
 import { metromAbi } from "@metrom-xyz/contracts/abi";
+import { useQueryClient } from "@tanstack/react-query";
 
 interface ClaimWithRemaining extends Claim {
     remaining: number;
@@ -49,6 +50,8 @@ export function useClaims(): {
         };
     }, [address]);
 
+    const queryClient = useQueryClient();
+    const { data: blockNumber, queryKey } = useBlockNumber({ watch: true });
     const {
         isLoading: loadingClaimed,
         data: claimedData,
@@ -68,6 +71,10 @@ export function useClaims(): {
             };
         }),
     });
+
+    useEffect(() => {
+        queryClient.invalidateQueries({ queryKey });
+    }, [blockNumber, queryClient]);
 
     useEffect(() => {
         if (loadingClaimed) return;
