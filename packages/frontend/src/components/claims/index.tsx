@@ -3,7 +3,7 @@
 import { useClaims } from "@/src/hooks/useClaims";
 import { Chains, ChainsSkeleton } from "./chains";
 import { SupportedChain, type Claim } from "@metrom-xyz/sdk";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { type Chain } from "viem";
 import { ChainOverview, SkeletonChainOverview } from "./chain-overview";
 import { ChainClaims, SkeletonChainClaims } from "./chain-claims";
@@ -25,10 +25,15 @@ export interface ChainWithClaimsData {
 }
 
 export function Claims() {
+    const [chainWithClaimsData, setChainWithClaimsData] =
+        useState<ChainWithClaimsData | null>(null);
+    const [initializing, setInitializing] = useState(false);
+
     const { loading, claims } = useClaims();
 
     const chainsWithClaimsData = useMemo(() => {
         if (loading || claims.length === 0) return [];
+        setInitializing(true);
         const reduced = claims.reduce(
             (acc, claim) => {
                 const data = acc[claim.chainId as SupportedChain];
@@ -60,15 +65,23 @@ export function Claims() {
             } as Record<SupportedChain, ChainWithClaimsData>,
         );
 
-        return Object.values(reduced);
+        return Object.values(reduced).sort(
+            (a, b) => b.claims.length - a.claims.length,
+        );
     }, [claims, loading]);
 
-    const [chainWithClaimsData, setChainWithClaimsData] =
-        useState<ChainWithClaimsData | null>(
-            chainsWithClaimsData.length === 0 ? null : chainsWithClaimsData[0],
-        );
+    useEffect(() => {
+        if (!loading) {
+            setChainWithClaimsData(
+                chainsWithClaimsData.length > 0
+                    ? chainsWithClaimsData[0]
+                    : null,
+            );
+            setInitializing(false);
+        }
+    }, [chainsWithClaimsData, loading]);
 
-    if (loading) {
+    if (loading || initializing) {
         return (
             <div className={styles.root}>
                 <ChainsSkeleton />
@@ -80,6 +93,7 @@ export function Claims() {
         );
     }
 
+    // FIXME: fix the empty state flickering after the loading is completed
     if (!chainWithClaimsData) {
         return (
             <div className={styles.root}>
