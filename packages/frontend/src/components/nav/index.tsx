@@ -3,7 +3,7 @@
 import { useCallback } from "react";
 import { usePathname, useRouter } from "@/src/navigation";
 import { MetromLogo } from "../../assets/metrom-logo";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { ConnectButton } from "../connect-button";
 import { Typography } from "@/src/ui/typography";
 import classNames from "@/src/utils/classes";
@@ -11,6 +11,7 @@ import { NewCampaignIcon } from "@/src/assets/new-campaign-icon";
 import { AllCampaignsIcon } from "@/src/assets/all-campaigns-icon";
 
 import styles from "./styles.module.css";
+import Link from "next/link";
 
 const ROUTES = [
     { path: "/", label: "allCampaigns", icon: AllCampaignsIcon },
@@ -20,6 +21,7 @@ const ROUTES = [
 
 export function Nav() {
     const t = useTranslations("navigation");
+    const locale = useLocale();
     const router = useRouter();
     const pathname = usePathname();
 
@@ -32,7 +34,9 @@ export function Nav() {
 
     return (
         <div className={styles.root}>
-            <MetromLogo className={styles.metromLogo} />
+            <Link href={`/${locale}`}>
+                <MetromLogo className={styles.metromLogo} />
+            </Link>
             <div className={styles.tabs}>
                 {ROUTES.map(({ path, label, icon: Icon }) => (
                     <div
