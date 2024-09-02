@@ -2,8 +2,6 @@ import classNames from "@/src/utils/classes";
 import { Typography } from "@/src/ui/typography";
 import { useTranslations } from "next-intl";
 import type { ChainWithClaimsData } from "..";
-import { SUPPORTED_CHAIN_ICONS } from "@/src/commons";
-import type { SupportedChain } from "@metrom-xyz/contracts";
 import { Skeleton } from "@/src/ui/skeleton";
 
 import styles from "./styles.module.css";
@@ -26,8 +24,7 @@ export function Chains({ className, options, value, onChange }: ChainsProps) {
             {options.map((option) => {
                 if (option.claims.length === 0) return null;
 
-                const ChainIcon =
-                    SUPPORTED_CHAIN_ICONS[option.chain.id as SupportedChain];
+                const ChainIcon = option.chainData.icon;
 
                 return (
                     <div

@@ -1,12 +1,10 @@
 import type {
-    Token,
     Pool,
     SupportedAmm,
     WhitelistedErc20TokenAmount,
 } from "@metrom-xyz/sdk";
 import type { Dayjs } from "dayjs";
 import type { SVGProps, FunctionComponent } from "react";
-import type { ChainContract } from "viem";
 
 type PropertyUnion<T> = {
     [K in keyof T]: { [P in K]: T[K] };
@@ -19,12 +17,6 @@ export interface Amm {
     addLiquidityUrl: string;
     poolExplorerUrl?: string;
     logo: FunctionComponent;
-}
-
-export interface ChainData {
-    contract: ChainContract;
-    amms: Amm[];
-    baseTokens: Token[];
 }
 
 // TODO: define state
@@ -46,5 +38,7 @@ export interface CampaignPayloadErrors {
     endDate?: boolean;
     rewards?: boolean;
 }
+
 export type AmmInfo = Pick<Amm, "slug" | "name" | "logo">;
+
 export type CampaignPayloadPart = PropertyUnion<CampaignPayload>;

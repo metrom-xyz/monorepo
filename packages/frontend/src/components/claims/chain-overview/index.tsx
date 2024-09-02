@@ -1,8 +1,6 @@
 import classNames from "@/src/utils/classes";
 import type { ChainWithClaimsData } from "..";
 import { Typography } from "@/src/ui/typography";
-import { CHAIN_DATA, SUPPORTED_CHAIN_ICONS } from "@/src/commons";
-import { type SupportedChain } from "@metrom-xyz/sdk";
 import { Button } from "@/src/ui/button";
 import { useTranslations } from "next-intl";
 import {
@@ -37,8 +35,7 @@ export function ChainOverview({
     const [claiming, setClaiming] = useState(false);
     const [claimed, setClaimed] = useState(false);
 
-    const ChainIcon =
-        SUPPORTED_CHAIN_ICONS[chainWithClaimsData.chain.id as SupportedChain];
+    const ChainIcon = chainWithClaimsData.chainData.icon;
 
     const {
         data: simulatedClaimAll,
@@ -47,9 +44,7 @@ export function ChainOverview({
     } = useSimulateContract({
         chainId: chainWithClaimsData.chain.id,
         abi: metromAbi,
-        address:
-            CHAIN_DATA[chainWithClaimsData.chain.id as SupportedChain].contract
-                .address,
+        address: chainWithClaimsData.chainData.metromContract.address,
         functionName: "claimRewards",
         args: [
             !account

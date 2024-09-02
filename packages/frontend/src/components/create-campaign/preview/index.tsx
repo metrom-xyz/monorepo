@@ -3,7 +3,6 @@ import type { CampaignPayload } from "@/src/types";
 import { NewCampaignIcon } from "@/src/assets/new-campaign-icon";
 import {
     useAccount,
-    useChainId,
     usePublicClient,
     useSimulateContract,
     useWriteContract,
@@ -13,8 +12,6 @@ import numeral from "numeral";
 import { useWindowSize } from "react-use";
 import { parseUnits } from "viem";
 import { metromAbi } from "@metrom-xyz/contracts/abi";
-import { CHAIN_DATA } from "@/src/commons";
-import type { SupportedChain } from "@metrom-xyz/contracts";
 import { useCallback, useMemo, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 import { WalletIcon } from "@/src/assets/wallet-icon";
@@ -25,6 +22,7 @@ import { useRouter } from "@/src/i18n/routing";
 import { TextField } from "@/src/ui/text-field";
 import { Rewards } from "./rewards";
 import { Header } from "./header";
+import { useChainData } from "@/src/hooks/useChainData";
 
 import styles from "./styles.module.css";
 
@@ -47,7 +45,7 @@ export function CampaignPreview({
     const router = useRouter();
     const { width, height } = useWindowSize();
     const { openConnectModal } = useConnectModal();
-    const chain: SupportedChain = useChainId();
+    const chainData = useChainData();
     const publicClient = usePublicClient();
     const { address: connectedAddress } = useAccount();
     const { writeContractAsync } = useWriteContract();
@@ -63,7 +61,7 @@ export function CampaignPreview({
         isError: simulateCreateError,
     } = useSimulateContract({
         abi: metromAbi,
-        address: CHAIN_DATA[chain].contract.address,
+        address: chainData.metromContract.address,
         functionName: "createCampaigns",
         args: [
             payload.pool &&

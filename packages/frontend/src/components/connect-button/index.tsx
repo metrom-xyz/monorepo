@@ -1,7 +1,6 @@
 import { ConnectButton as RainbowConnectButton } from "@rainbow-me/rainbowkit";
 import { Typography } from "@/src/ui/typography";
 import { Button } from "@/src/ui/button";
-import { SUPPORTED_CHAIN_ICONS } from "@/src/commons";
 import type { SupportedChain } from "@metrom-xyz/contracts";
 import { Popover } from "@/src/ui/popover";
 import { useRef, useState } from "react";
@@ -13,6 +12,7 @@ import { blo, type Address } from "blo";
 import { AccountMenu } from "./account-menu";
 import { zeroAddress } from "viem";
 import classNames from "@/src/utils/classes";
+import { CHAIN_DATA } from "@/src/commons";
 
 import styles from "./styles.module.css";
 
@@ -61,7 +61,7 @@ export function ConnectButton() {
                     (account?.address as Address) || zeroAddress,
                 );
                 const ChainIcon =
-                    SUPPORTED_CHAIN_ICONS[currentChainId as SupportedChain];
+                    CHAIN_DATA[currentChainId as SupportedChain].icon;
 
                 return (
                     <div className={styles.root}>
@@ -85,9 +85,9 @@ export function ConnectButton() {
                                 <div className={styles.networksWrapper}>
                                     {chains.map((chain) => {
                                         const ChainIcon =
-                                            SUPPORTED_CHAIN_ICONS[
+                                            CHAIN_DATA[
                                                 chain.id as SupportedChain
-                                            ];
+                                            ].icon;
 
                                         return (
                                             <div

@@ -5,20 +5,25 @@ import { Chains, ChainsSkeleton } from "./chains";
 import { SupportedChain, type Claim } from "@metrom-xyz/sdk";
 import { useMemo, useState } from "react";
 import { type Chain } from "viem";
-import { celoAlfajores, holesky, mantleSepoliaTestnet } from "viem/chains";
 import { ChainOverview, SkeletonChainOverview } from "./chain-overview";
 import { ChainClaims, SkeletonChainClaims } from "./chain-claims";
 import { Empty } from "./empty";
+import type { ChainData } from "@/src/commons";
+import { celoAlfajores, holesky, mantleSepoliaTestnet } from "viem/chains";
+import {
+    celoAlfajoresData,
+    holeskyData,
+    mantleSepoliaData,
+} from "@/src/commons/chains";
 
 import styles from "./styles.module.css";
-import { Typography } from "@/src/ui/typography";
 
 export interface ChainWithClaimsData {
     chain: Chain;
+    chainData: ChainData;
     claims: Claim[];
 }
 
-// TODO: i18n
 export function Claims() {
     const { loading, claims } = useClaims();
 
@@ -39,14 +44,17 @@ export function Claims() {
             {
                 [SupportedChain.CeloAlfajores]: {
                     chain: celoAlfajores,
+                    chainData: celoAlfajoresData,
                     claims: [],
                 },
                 [SupportedChain.Holesky]: {
                     chain: holesky,
+                    chainData: holeskyData,
                     claims: [],
                 },
                 [SupportedChain.MantleSepolia]: {
                     chain: mantleSepoliaTestnet,
+                    data: mantleSepoliaData,
                     claims: [],
                 },
             } as Record<SupportedChain, ChainWithClaimsData>,

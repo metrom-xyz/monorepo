@@ -1,6 +1,6 @@
 import type { SupportedChain } from "@metrom-xyz/contracts";
 import { useChainId } from "wagmi";
-import { CHAIN_DATA, metromApiClient } from "../commons";
+import { metromApiClient } from "../commons";
 import { SupportedAmm, type Pool } from "@metrom-xyz/sdk";
 import { useEffect, useState } from "react";
 
