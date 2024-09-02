@@ -133,7 +133,7 @@ export function SkeletonChainOverview() {
         <div className={styles.root}>
             <div className={styles.chainNameWrapper}>
                 <Skeleton className={styles.chainIcon} />
-                <Skeleton width={100} variant="xl3" />
+                <Skeleton width={100} variant="xl2" />
             </div>
             <Button size="xsmall" loading />
         </div>
