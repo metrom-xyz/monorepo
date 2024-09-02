@@ -1,6 +1,6 @@
 import { useTranslations } from "next-intl";
 import { usePrevious } from "react-use";
-import { useAccount, useChainId } from "wagmi";
+import { useAccount } from "wagmi";
 import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
 import { Button } from "@/src/ui/button";
 import { WalletIcon } from "@/src/assets/wallet-icon";
@@ -8,8 +8,7 @@ import { useConnectModal } from "@rainbow-me/rainbowkit";
 import { useCallback, useEffect, useState } from "react";
 import { ApproveRewards } from "./approve-rewards";
 import type { CampaignPayload } from "@/src/types";
-import { CHAIN_DATA } from "@/src/commons";
-import type { SupportedChain } from "@metrom-xyz/contracts";
+import { useChainData } from "@/src/hooks/useChainData";
 
 import styles from "./styles.module.css";
 
@@ -30,7 +29,7 @@ export function ApproveRewardsButton({
     const previousRewards = usePrevious(payload.rewards);
 
     const { openConnectModal } = useConnectModal();
-    const chain: SupportedChain = useChainId();
+    const chainData = useChainData();
     const { address: connectedAddress } = useAccount();
 
     useEffect(() => {
@@ -64,7 +63,7 @@ export function ApproveRewardsButton({
                 onApprove={handleOnApprove}
                 disabled={malformedPayload}
                 rewards={payload?.rewards}
-                spender={CHAIN_DATA[chain].contract.address}
+                spender={chainData.metromContract.address}
             />
         );
 

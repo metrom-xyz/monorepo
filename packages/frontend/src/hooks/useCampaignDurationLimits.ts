@@ -1,8 +1,7 @@
 import { metromAbi } from "@metrom-xyz/contracts/abi";
 import { useMemo } from "react";
-import { useChainId, useReadContract } from "wagmi";
-import type { SupportedChain } from "@metrom-xyz/contracts";
-import { CHAIN_DATA } from "../commons";
+import { useReadContract } from "wagmi";
+import { useChainData } from "./useChainData";
 
 interface CampaignDurationLimits {
     minimumSeconds: number;
@@ -13,17 +12,17 @@ export function useCampaignDurationLimits(): {
     loading: boolean;
     limits?: CampaignDurationLimits;
 } {
-    const chain: SupportedChain = useChainId();
+    const chainData = useChainData();
 
     const { data: minimumSeconds, isLoading: loadingMinimumDuration } =
         useReadContract({
-            address: CHAIN_DATA[chain].contract.address,
+            address: chainData.metromContract.address,
             abi: metromAbi,
             functionName: "minimumCampaignDuration",
         });
     const { data: maximumSeconds, isLoading: loadingMaximumDuration } =
         useReadContract({
-            address: CHAIN_DATA[chain].contract.address,
+            address: chainData.metromContract.address,
             abi: metromAbi,
             functionName: "maximumCampaignDuration",
         });

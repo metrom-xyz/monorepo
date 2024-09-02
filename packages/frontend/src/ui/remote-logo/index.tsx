@@ -2,7 +2,7 @@ import React, { useCallback, useMemo, useState } from "react";
 import Image from "next/image";
 import { type Address } from "viem";
 import classNames from "@/src/utils/classes";
-import { REWARD_TOKEN_ICONS } from "@/src/commons";
+import { CHAIN_DATA } from "@/src/commons";
 import type { SupportedChain } from "@metrom-xyz/contracts";
 import { Skeleton } from "../skeleton";
 import { Typography } from "../typography";
@@ -37,7 +37,7 @@ export const RemoteLogo = ({
         if (!address || !chain) return "";
 
         return (
-            REWARD_TOKEN_ICONS[chain as SupportedChain][address] ||
+            CHAIN_DATA[chain as SupportedChain].rewardTokenIcons[address] ||
             `https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/${chain}/assets/${address}/logo.png`
         );
     }, [address, chain, src]);

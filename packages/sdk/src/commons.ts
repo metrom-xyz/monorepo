@@ -4,12 +4,14 @@ export const SUPPORTED_CHAIN_NAMES: Record<SupportedChain, string> = {
     [SupportedChain.Holesky]: "holesky",
     [SupportedChain.CeloAlfajores]: "celo-alfajores",
     [SupportedChain.MantleSepolia]: "mantle-sepolia",
+    [SupportedChain.Mode]: "mode",
 };
 
 export enum SupportedAmm {
     Univ3 = "uniswap-v3",
     TestIntegral = "test-integral",
     Swapsicle = "swapsicle",
+    Kim = "kim",
 }
 
 export interface ServiceUrls {
@@ -25,5 +27,9 @@ export const SERVICE_URLS: Record<Environment, ServiceUrls> = {
     [Environment.Staging]: {
         dataManager: "https://data-manager.staging.metrom.xyz",
         metrom: "https://api.staging.metrom.xyz",
+    },
+    [Environment.Production]: {
+        dataManager: "https://data-manager.metrom.xyz",
+        metrom: "https://api.metrom.xyz",
     },
 };

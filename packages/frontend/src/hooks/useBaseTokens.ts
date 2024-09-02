@@ -1,8 +1,8 @@
-import type { Token, SupportedChain } from "@metrom-xyz/sdk";
-import { useChainId } from "wagmi";
-import { CHAIN_DATA } from "../commons";
+import type { Token } from "@metrom-xyz/sdk";
+import { useChainData } from "./useChainData";
 
 export function useBaseTokens(): Token[] {
-    const chainId: SupportedChain = useChainId();
-    return CHAIN_DATA[chainId].baseTokens;
+    const chainData = useChainData();
+
+    return chainData.baseTokens;
 }
