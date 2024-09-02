@@ -60,8 +60,6 @@ export function PersonalRank({
         setRewardsPopoverOpen(false);
     }
 
-    console.log(personalRank);
-
     return connectedAddress ? (
         <div className={styles.root}>
             <div className={styles.header}>

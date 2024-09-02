@@ -24,8 +24,6 @@ export function Leaderboard({ campaign, loading }: LeaderboardProps) {
         lastDistribution,
     } = useWatchDistributionData(campaign);
 
-    console.log({ distributionData });
-
     const loadingRanks =
         loading || loadingDistributionData || !distributionData;
 

@@ -10,7 +10,7 @@ import {
     useWatchRewardDistributionEvent,
     type RewardDistribution,
 } from "./useWatchRewardDistributionEvent";
-import { useCampaignDataHash } from "./useCampaignDataHash";
+import { useWatchCampaignDataHash } from "./useWatchCampaignDataHash";
 import { dataManagerClient } from "../commons";
 
 export interface AggregatedEnrichedDistributionData {
@@ -38,10 +38,12 @@ export function useWatchDistributionData(campaign?: Campaign): {
     const [distributionData, setDistributionData] =
         useState<DistributionData[]>();
 
-    const { loading: loadingCampaignDataHash, hash: dataHash } =
-        useCampaignDataHash(campaign);
-    const { loading: loadingDistributionEvent, distribution } =
-        useWatchRewardDistributionEvent(campaign);
+    const { loading: loadingCampaignDataHash, hash: campaignDataHash } =
+        useWatchCampaignDataHash(campaign);
+    const {
+        loading: loadingDistributionEvent,
+        distribution: distributionEvent,
+    } = useWatchRewardDistributionEvent(campaign);
 
     useEffect(() => {
         let cancelled = false;
@@ -50,20 +52,20 @@ export function useWatchDistributionData(campaign?: Campaign): {
             if (!cancelled) setLoading(false);
             if (!cancelled) setDistributionData(undefined);
 
-            if (!campaign || !dataHash) return;
+            if (!campaign || !campaignDataHash) return;
 
             try {
                 if (!cancelled) setLoading(true);
 
                 const fetchedDistributionData =
                     await dataManagerClient.fetchDistributionData({
-                        hash: dataHash,
+                        hash: campaignDataHash,
                     });
 
                 if (!cancelled) setDistributionData(fetchedDistributionData);
             } catch (error) {
                 console.error(
-                    `Could not fetch campaign distribution data for hash ${dataHash}: ${error}`,
+                    `Could not fetch campaign distribution data for hash ${campaignDataHash}: ${error}`,
                 );
             } finally {
                 if (!cancelled) setLoading(false);
@@ -71,7 +73,7 @@ export function useWatchDistributionData(campaign?: Campaign): {
         }
 
         fetchData();
-    }, [campaign, dataHash, distribution?.timestamp]);
+    }, [campaign, campaignDataHash, distributionEvent?.timestamp]);
 
     const enrichedDistributionData = useMemo(() => {
         if (!distributionData || !campaign) return undefined;
@@ -148,41 +150,12 @@ export function useWatchDistributionData(campaign?: Campaign): {
             .sort(
                 (a, b) => b.rank - a.rank,
             ) as AggregatedEnrichedDistributionData[];
-
-        // return distributionData
-        //     .map((data) => {
-        //         // TODO: improve this
-        //         const rewardedToken = campaign.rewards.find(
-        //             (reward) => reward.address === data.tokenAddress,
-        //         );
-
-        //         // should never happen
-        //         if (!rewardedToken)
-        //             throw new Error(
-        //                 `Rewarded token ${data.tokenAddress} missing from campaign rewards`,
-        //             );
-
-        //         const amount = Number(
-        //             formatUnits(data.amount, rewardedToken.decimals),
-        //         );
-
-        //         return {
-        //             account: data.account,
-        //             token: rewardedToken,
-        //             rank: (amount / totalDistributedRewardsAmount) * 100,
-        //             amount,
-        //             usdValue: rewardedToken.usdPrice
-        //                 ? amount * rewardedToken.usdPrice
-        //                 : null,
-        //         };
-        //     })
-        //     .sort((a, b) => b.rank - a.rank) as EnrichedDistributionData[];
     }, [campaign, distributionData]);
 
     return {
         loadingData: loading || loadingCampaignDataHash,
         loadingEvent: loadingDistributionEvent,
         distributionData: enrichedDistributionData,
-        lastDistribution: distribution,
+        lastDistribution: distributionEvent,
     };
 }
