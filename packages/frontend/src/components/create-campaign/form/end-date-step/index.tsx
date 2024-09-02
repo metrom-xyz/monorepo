@@ -78,11 +78,6 @@ export function EndDateStep({
         config: { duration: 100 },
     });
 
-    const secondsDuration = useMemo(() => {
-        if (!date) return 0;
-        return date.diff(startDate, "seconds", false);
-    }, [date, startDate]);
-
     useEffect(() => {
         setOpen(false);
     }, [chainId]);

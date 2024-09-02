@@ -16,7 +16,6 @@ export const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
             id,
             label,
             variant = "base",
-            border,
             errorText,
             icon,
             iconPlacement,

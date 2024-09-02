@@ -5,3 +5,12 @@
 .rightWrapper {
     @apply w-full flex flex-col gap-2;
 }
+
+.fullSideCardWrapper {
+    @apply bg-white
+        rounded-xl
+        w-full
+        flex
+        justify-center
+        p-10;
+}

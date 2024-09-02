@@ -15,6 +15,7 @@ import {
 import { metromAbi } from "@metrom-xyz/contracts/abi";
 import { parseUnits } from "viem";
 import { useCallback, useState } from "react";
+import { Skeleton } from "@/src/ui/skeleton";
 
 import styles from "./styles.module.css";
 
@@ -123,6 +124,18 @@ export function ChainOverview({
             >
                 {t("claimAll")}
             </Button>
+        </div>
+    );
+}
+
+export function SkeletonChainOverview() {
+    return (
+        <div className={styles.root}>
+            <div className={styles.chainNameWrapper}>
+                <Skeleton className={styles.chainIcon} />
+                <Skeleton width={100} variant="xl3" />
+            </div>
+            <Button size="xsmall" loading />
         </div>
     );
 }

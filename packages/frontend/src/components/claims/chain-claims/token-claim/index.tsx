@@ -17,6 +17,7 @@ import { useCallback, useState } from "react";
 import { RemoteLogo } from "@/src/ui/remote-logo";
 import numeral from "numeral";
 import type { TokenClaims } from "..";
+import { Skeleton } from "@/src/ui/skeleton";
 
 import styles from "./styles.module.css";
 
@@ -124,6 +125,19 @@ export function TokenClaim({ chainId, chainClaims }: TokenClaimProps) {
             >
                 {t("claimByToken", { tokenSymbol: chainClaims.token.symbol })}
             </Button>
+        </div>
+    );
+}
+
+export function SkeletonTokenClaim() {
+    return (
+        <div className={classNames(styles.root)}>
+            <div className={styles.leftWrapper}>
+                <RemoteLogo loading size="lg" />
+                <Skeleton width={60} variant="lg" />
+                <Skeleton width={70} variant="lg" />
+            </div>
+            <Button variant="secondary" size="small" loading />
         </div>
     );
 }
