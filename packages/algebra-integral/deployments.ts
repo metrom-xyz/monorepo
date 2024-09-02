@@ -48,4 +48,16 @@ export const DEPLOYMENTS: {
             },
         },
     },
+    "mode-mainnet": {
+        kim: {
+            Factory: {
+                address: "0xB5F00c2C5f8821155D8ed27E31932CFD9DB3C5D5",
+                startBlock: 4823915,
+            },
+            NonFungiblePositionManager: {
+                address: "0x2e8614625226D26180aDf6530C3b1677d3D7cf10",
+                startBlock: 4823969,
+            },
+        },
+    },
 };
