@@ -10,7 +10,6 @@ interface ClaimWithRemaining extends Claim {
     remaining: number;
 }
 
-// TODO: refetch and update claimed at each block
 export function useClaims(): {
     loading: boolean;
     claims: Claim[];
