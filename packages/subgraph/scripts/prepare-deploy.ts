@@ -8,12 +8,14 @@ import Mustache from "mustache";
 const ENVIRONMENT_NAME: Record<Environment, string> = {
     [Environment.Development]: "development",
     [Environment.Staging]: "staging",
+    [Environment.Production]: "production",
 };
 
 const NETWORK_NAME: Record<SupportedChain, string> = {
     [SupportedChain.Holesky]: "holesky",
     [SupportedChain.CeloAlfajores]: "celo-alfajores",
     [SupportedChain.MantleSepolia]: "mantle-sepolia",
+    [SupportedChain.Mode]: "mode-mainnet",
 };
 
 const [, , rawEnvironment, rawNetwork = ""] = process.argv;
