@@ -30,6 +30,7 @@ export function useClaims(): {
 
             if (!cancelled) setLoading(false);
             if (!cancelled) setRawClaims([]);
+            if (!cancelled) setClaims([]);
 
             try {
                 if (!cancelled) setLoading(true);
