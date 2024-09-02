@@ -1,15 +1,17 @@
 "use client";
 
 import { useClaims } from "@/src/hooks/useClaims";
-import { Chains } from "./chains";
+import { Chains, ChainsSkeleton } from "./chains";
 import { SupportedChain, type Claim } from "@metrom-xyz/sdk";
 import { useMemo, useState } from "react";
 import { type Chain } from "viem";
 import { celoAlfajores, holesky, mantleSepoliaTestnet } from "viem/chains";
-import { ChainOverview } from "./chain-overview";
-import { ChainClaims } from "./chain-claims";
+import { ChainOverview, SkeletonChainOverview } from "./chain-overview";
+import { ChainClaims, SkeletonChainClaims } from "./chain-claims";
+import { Empty } from "./empty";
 
 import styles from "./styles.module.css";
+import { Typography } from "@/src/ui/typography";
 
 export interface ChainWithClaimsData {
     chain: Chain;
@@ -58,6 +60,28 @@ export function Claims() {
             chainsWithClaimsData.length === 0 ? null : chainsWithClaimsData[0],
         );
 
+    if (loading) {
+        return (
+            <div className={styles.root}>
+                <ChainsSkeleton />
+                <div className={styles.rightWrapper}>
+                    <SkeletonChainOverview />
+                    <SkeletonChainClaims />
+                </div>
+            </div>
+        );
+    }
+
+    if (!chainWithClaimsData) {
+        return (
+            <div className={styles.root}>
+                <div className={styles.fullSideCardWrapper}>
+                    <Empty />
+                </div>
+            </div>
+        );
+    }
+
     return (
         <div className={styles.root}>
             <Chains
@@ -66,18 +90,8 @@ export function Claims() {
                 onChange={setChainWithClaimsData}
             />
             <div className={styles.rightWrapper}>
-                {chainWithClaimsData ? (
-                    <>
-                        <ChainOverview
-                            chainWithClaimsData={chainWithClaimsData}
-                        />
-                        <ChainClaims
-                            chainWithClaimsData={chainWithClaimsData}
-                        />
-                    </>
-                ) : (
-                    <div>No claims</div>
-                )}
+                <ChainOverview chainWithClaimsData={chainWithClaimsData} />
+                <ChainClaims chainWithClaimsData={chainWithClaimsData} />
             </div>
         </div>
     );

@@ -4,6 +4,7 @@ import { useTranslations } from "next-intl";
 import type { ChainWithClaimsData } from "..";
 import { SUPPORTED_CHAIN_ICONS } from "@/src/commons";
 import type { SupportedChain } from "@metrom-xyz/contracts";
+import { Skeleton } from "@/src/ui/skeleton";
 
 import styles from "./styles.module.css";
 
@@ -31,7 +32,7 @@ export function Chains({ className, options, value, onChange }: ChainsProps) {
                 return (
                     <div
                         key={option.chain.id}
-                        className={classNames(styles.row, {
+                        className={classNames(styles.row, styles.rowAnimated, {
                             [styles.rowActive]:
                                 option.chain.id === value?.chain.id,
                         })}
@@ -39,6 +40,24 @@ export function Chains({ className, options, value, onChange }: ChainsProps) {
                     >
                         <ChainIcon className={styles.chainIcon} />
                         <Typography>{option.chain.name}</Typography>
+                    </div>
+                );
+            })}
+        </div>
+    );
+}
+
+const PLACEHOLDER = new Array(3).fill(null);
+
+export function ChainsSkeleton() {
+    return (
+        <div className={styles.root}>
+            <Skeleton width={60} className={styles.header} />
+            {PLACEHOLDER.map((_, i) => {
+                return (
+                    <div key={i} className={styles.row}>
+                        <Skeleton className={styles.chainIcon} />
+                        <Skeleton width={70} />
                     </div>
                 );
             })}

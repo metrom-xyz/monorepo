@@ -6,7 +6,7 @@ import numeral from "numeral";
 import { Skeleton } from "@/src/ui/skeleton";
 import { useTranslations } from "next-intl";
 import { Button } from "@/src/ui/button";
-import { useRouter } from "@/src/navigation";
+import { useRouter } from "@/src/i18n/routing";
 import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
 
 import styles from "./styles.module.css";

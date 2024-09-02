@@ -52,11 +52,6 @@ export function CreateCampaign() {
         setPayload({});
     }, [chainId]);
 
-    // TODO: remove
-    useEffect(() => {
-        console.log(payload);
-    }, [payload]);
-
     const handlePayloadOnChange = useCallback(
         (part: CampaignPayloadPart) => {
             setPayload({ ...payload, ...part });

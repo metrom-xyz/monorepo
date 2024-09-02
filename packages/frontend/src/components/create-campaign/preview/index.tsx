@@ -21,7 +21,7 @@ import { WalletIcon } from "@/src/assets/wallet-icon";
 import { useConnectModal } from "@rainbow-me/rainbowkit";
 import { Typography } from "@/src/ui/typography";
 import { MetromLightLogo } from "@/src/assets/metrom-light-logo";
-import { useRouter } from "@/src/navigation";
+import { useRouter } from "@/src/i18n/routing";
 import { TextField } from "@/src/ui/text-field";
 import { Rewards } from "./rewards";
 import { Header } from "./header";

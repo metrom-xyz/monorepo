@@ -162,7 +162,12 @@
     "claims": {
         "chain": "Chain",
         "claimAll": "Claim all",
-        "claimByToken": "Claim all {tokenSymbol}"
+        "claimByToken": "Claim all {tokenSymbol}",
+        "empty": {
+            "title": "No claims found",
+            "body": "There are currently no claims associated with the connected wallet. Explore the available opportunities on the all campaigns page.",
+            "action": "All campaigns"
+        }
     },
     "accountMenu": {
         "tabs": {

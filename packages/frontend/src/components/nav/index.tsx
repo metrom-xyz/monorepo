@@ -1,7 +1,6 @@
 "use client";
 
-import { useCallback } from "react";
-import { usePathname, useRouter } from "@/src/navigation";
+import { Link, usePathname } from "@/src/i18n/routing";
 import { MetromLogo } from "../../assets/metrom-logo";
 import { useTranslations } from "next-intl";
 import { ConnectButton } from "../connect-button";
@@ -20,31 +19,25 @@ const ROUTES = [
 
 export function Nav() {
     const t = useTranslations("navigation");
-    const router = useRouter();
     const pathname = usePathname();
-
-    const getOnNavigationHandler = useCallback(
-        (key: React.Key) => {
-            return () => router.push(key.toString());
-        },
-        [router],
-    );
 
     return (
         <div className={styles.root}>
-            <MetromLogo className={styles.metromLogo} />
+            <Link href="/">
+                <MetromLogo className={styles.metromLogo} />
+            </Link>
             <div className={styles.tabs}>
                 {ROUTES.map(({ path, label, icon: Icon }) => (
-                    <div
-                        key={path}
-                        onClick={getOnNavigationHandler(path)}
-                        className={classNames(styles.tab, {
-                            [styles.tabActive]: pathname === path,
-                        })}
-                    >
-                        {Icon && <Icon className={styles.tabIcon} />}
-                        <Typography>{t(label)}</Typography>
-                    </div>
+                    <Link key={path} href={path}>
+                        <div
+                            className={classNames(styles.tab, {
+                                [styles.tabActive]: pathname === path,
+                            })}
+                        >
+                            {Icon && <Icon className={styles.tabIcon} />}
+                            <Typography>{t(label)}</Typography>
+                        </div>
+                    </Link>
                 ))}
             </div>
             <div className={styles.chainStuffContainer}>

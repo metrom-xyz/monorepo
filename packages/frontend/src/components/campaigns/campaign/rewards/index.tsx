@@ -1,7 +1,7 @@
 "use client";
 
 import { Typography } from "@/src/ui/typography";
-import { type Rewards } from "@metrom-xyz/sdk";
+import { type Rewards as RewardsType } from "@metrom-xyz/sdk";
 import dayjs from "dayjs";
 import { RemoteLogo } from "@/src/ui/remote-logo";
 import { useChainId } from "wagmi";
@@ -13,7 +13,7 @@ import styles from "./styles.module.css";
 interface RewardsProps {
     from: number;
     to: number;
-    rewards: Rewards;
+    rewards: RewardsType;
 }
 
 export function Rewards({ from, to, rewards }: RewardsProps) {

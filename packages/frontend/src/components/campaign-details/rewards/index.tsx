@@ -1,11 +1,8 @@
-import type { CampaignPayload } from "@/src/types";
 import { RemoteLogo } from "@/src/ui/remote-logo";
 import { TextField } from "@/src/ui/text-field";
 import { Typography } from "@/src/ui/typography";
-import type { SupportedChain } from "@metrom-xyz/contracts";
 import { useTranslations } from "next-intl";
 import numeral from "numeral";
-import { useChainId } from "wagmi";
 import dayjs from "dayjs";
 import { useMemo } from "react";
 import type { NamedCampaign } from "@/src/hooks/useCampaign";
@@ -20,7 +17,6 @@ interface RewardsProps {
 
 export function Rewards({ campaign, loading }: RewardsProps) {
     const t = useTranslations("campaignDetails.rewards");
-    const chain: SupportedChain = useChainId();
 
     const totalRewardsUsdAmount = useMemo(() => {
         if (!campaign) return 0;

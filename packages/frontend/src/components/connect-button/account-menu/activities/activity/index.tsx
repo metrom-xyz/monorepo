@@ -2,9 +2,9 @@ import { ClaimReward } from "@/src/assets/claim-reward";
 import { NewCampaignIcon } from "@/src/assets/new-campaign-icon";
 import type { Activity } from "@metrom-xyz/sdk";
 import dayjs from "dayjs";
-import { useLocale, useTranslations } from "next-intl";
+import { useTranslations } from "next-intl";
 import { Typography } from "@/src/ui/typography";
-import Link from "next/link";
+import { Link } from "@/src/i18n/routing";
 import { Skeleton } from "@/src/ui/skeleton";
 import classNames from "@/src/utils/classes";
 import { RemoteLogo } from "@/src/ui/remote-logo";
@@ -16,10 +16,8 @@ interface ActivityProps extends Activity {
     chainId: number;
 }
 
-// TODO: finish this
 export function Activity({ chainId, transaction, payload }: ActivityProps) {
     const t = useTranslations("accountMenu.activities");
-    const locale = useLocale();
 
     const time = dayjs.unix(transaction.timestamp).to(dayjs(), true);
     const timeAgo = t("timeAgo", { time });
@@ -46,9 +44,7 @@ export function Activity({ chainId, transaction, payload }: ActivityProps) {
                         {title}
                     </Typography>
                     {payload.type === "createCampaign" ? (
-                        <Link
-                            href={`/${locale}/campaigns/${chainId}/${payload.id}`}
-                        >
+                        <Link href={`/campaigns/${chainId}/${payload.id}`}>
                             <Typography className={styles.seeCampaignLink}>
                                 {t("seeCampaign")}
                             </Typography>

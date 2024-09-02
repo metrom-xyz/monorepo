@@ -67,8 +67,8 @@ export const rectifyDate = (
     min?: Dayjs | Date | null,
     max?: Dayjs | Date | null,
 ) => {
-    if (!!(min && value.isBefore(min, "seconds"))) return dayjs(min);
-    if (!!(max && value.isAfter(max, "seconds"))) return dayjs(max);
+    if (min && value.isBefore(min, "seconds")) return dayjs(min);
+    if (max && value.isAfter(max, "seconds")) return dayjs(max);
     return value;
 };
 
