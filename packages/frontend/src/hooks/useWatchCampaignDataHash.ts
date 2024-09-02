@@ -5,6 +5,7 @@ import type { SupportedChain } from "@metrom-xyz/contracts";
 import { query } from "../utils/subgraph";
 import type { Campaign } from "@metrom-xyz/sdk";
 import { useWatchRewardDistributionEvent } from "./useWatchRewardDistributionEvent";
+import { useChainData } from "./useChainData";
 
 export interface GetCampaignDataResult {
     campaign: {
@@ -28,6 +29,7 @@ export function useWatchCampaignDataHash(campaign?: Campaign): {
     const [hash, setHash] = useState<Hex>();
     const [loading, setLoading] = useState(false);
 
+    const chainData = useChainData();
     const { distribution } = useWatchRewardDistributionEvent(campaign);
 
     useEffect(() => {
@@ -42,8 +44,7 @@ export function useWatchCampaignDataHash(campaign?: Campaign): {
             try {
                 if (!cancelled) setLoading(true);
                 const response = await query<GetCampaignDataResult>(
-                    CHAIN_DATA[campaign.chainId as SupportedChain]
-                        .metromSubgraphUrl,
+                    chainData.metromSubgraphUrl,
                     GetCampaignData,
                     { id: campaign.id },
                 );
@@ -59,7 +60,7 @@ export function useWatchCampaignDataHash(campaign?: Campaign): {
         }
 
         fetchData();
-    }, [campaign, distribution?.timestamp]);
+    }, [campaign, chainData.metromSubgraphUrl, distribution?.timestamp]);
 
     return {
         loading,

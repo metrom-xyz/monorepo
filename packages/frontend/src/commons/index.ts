@@ -1,4 +1,9 @@
-import { type Token, MetromApiClient, SERVICE_URLS } from "@metrom-xyz/sdk";
+import {
+    type Token,
+    MetromApiClient,
+    SERVICE_URLS,
+    DataManagerClient,
+} from "@metrom-xyz/sdk";
 import { type Address, type ChainContract, type Chain } from "viem";
 import { type Amm, type SVGIcon } from "../types";
 import type { FunctionComponent } from "react";
@@ -10,6 +15,7 @@ import {
     mantleSepoliaTestnet,
     mode,
 } from "viem/chains";
+
 import {
     celoAlfajoresData,
     holeskyData,
@@ -23,6 +29,7 @@ export interface ChainData {
     amms: Amm[];
     baseTokens: Token[];
     rewardTokenIcons: Record<Address, string>;
+    metromSubgraphUrl: string;
 }
 
 export const METROM_DATA_MANAGER_JWT_ISSUER = "metrom-data-manager";
@@ -43,4 +50,7 @@ export const CHAIN_DATA: Record<SupportedChain, ChainData> = {
 
 export const metromApiClient = new MetromApiClient(
     SERVICE_URLS[ENVIRONMENT].metrom,
+);
+export const dataManagerClient = new DataManagerClient(
+    SERVICE_URLS[ENVIRONMENT].dataManager,
 );

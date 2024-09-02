@@ -3,11 +3,13 @@ import { ADDRESS } from "@metrom-xyz/contracts";
 import { ModeIcon } from "../../assets/mode-icon";
 import { KimIcon } from "../../assets/kim-icon";
 import { ENVIRONMENT } from "../environment";
-import type { ChainData } from "..";
+import { type ChainData } from "..";
+import { METROM_SUBGRAPHS } from "../subgraphs";
 
 export const modeData: ChainData = {
     metromContract: ADDRESS[ENVIRONMENT][SupportedChain.Mode]!,
     icon: ModeIcon,
+    metromSubgraphUrl: METROM_SUBGRAPHS[ENVIRONMENT][SupportedChain.Mode],
     amms: [
         {
             slug: SupportedAmm.Kim,

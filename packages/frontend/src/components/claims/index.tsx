@@ -47,6 +47,11 @@ export function Claims() {
                 return acc;
             },
             {
+                [SupportedChain.Mode]: {
+                    chain: mantleSepoliaTestnet,
+                    data: mantleSepoliaData,
+                    claims: [],
+                },
                 [SupportedChain.CeloAlfajores]: {
                     chain: celoAlfajores,
                     chainData: celoAlfajoresData,

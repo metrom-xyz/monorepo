@@ -2,14 +2,15 @@ import { SupportedChain, SupportedAmm } from "@metrom-xyz/sdk";
 import { ADDRESS } from "@metrom-xyz/contracts";
 import { MantleIcon } from "../../assets/mantle-icon";
 import { SwapsicleIcon } from "../../assets/swapsicle-icon";
-import { mantleSepoliaTestnet } from "viem/chains";
 import { ENVIRONMENT } from "../environment";
-import type { ChainData } from "..";
+import { type ChainData } from "..";
+import { METROM_SUBGRAPHS } from "../subgraphs";
 
 export const mantleSepoliaData: ChainData = {
-    ...mantleSepoliaTestnet,
     metromContract: ADDRESS[ENVIRONMENT][SupportedChain.MantleSepolia]!,
     icon: MantleIcon,
+    metromSubgraphUrl:
+        METROM_SUBGRAPHS[ENVIRONMENT][SupportedChain.MantleSepolia],
     amms: [
         {
             slug: SupportedAmm.Swapsicle,
