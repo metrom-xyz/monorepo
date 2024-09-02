@@ -160,6 +160,7 @@ export function PersonalRank({
                         ref={setRewardedAmountWrapper}
                         onMouseOver={handleRewardedAmountPopoverOpen}
                         onMouseLeave={handleRewardedAmountPopoverClose}
+                        className={styles.rankWrapper}
                     >
                         <Typography weight="medium">
                             {numeral(personalRank.amount).format("(0.0[0] a)")}

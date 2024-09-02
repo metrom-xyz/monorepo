@@ -48,3 +48,7 @@
 .rewardsPopoverRow > div {
     @apply flex items-center gap-2;
 }
+
+.rankWrapper {
+    @apply cursor-pointer;
+}
