@@ -4,10 +4,13 @@ import { type ChainData } from "../index";
 import { UniswapLogo } from "../../assets/uniswap-logo";
 import { CeloIcon } from "../../assets/celo-icon";
 import { ENVIRONMENT } from "../environment";
+import { METROM_SUBGRAPHS } from "../subgraphs";
 
 export const celoAlfajoresData: ChainData = {
     metromContract: ADDRESS[ENVIRONMENT][SupportedChain.CeloAlfajores]!,
     icon: CeloIcon,
+    metromSubgraphUrl:
+        METROM_SUBGRAPHS[ENVIRONMENT][SupportedChain.CeloAlfajores],
     amms: [
         {
             slug: SupportedAmm.Univ3,
