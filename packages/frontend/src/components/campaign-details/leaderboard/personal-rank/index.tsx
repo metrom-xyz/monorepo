@@ -96,7 +96,7 @@ export function PersonalRank({
                 <div className={styles.row}>
                     <div>
                         <Typography weight="medium" light>
-                            # {personalRank.position}
+                            # {personalRank.position + 1}
                         </Typography>
                         <Typography weight="medium">
                             {numeral(personalRank.rank).format("0.[00]a")}%
