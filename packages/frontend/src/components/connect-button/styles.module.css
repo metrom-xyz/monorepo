@@ -11,7 +11,19 @@
 }
 
 .networkWrapper {
-    @apply bg-white w-9 h-9 rounded-md flex gap-3 items-center justify-center;
+    @apply bg-white
+        w-9
+        h-9
+        rounded-md
+        flex
+        gap-3
+        items-center
+        justify-center
+        cursor-pointer
+        hover:bg-gray-200
+        transition-colors
+        duration-200
+        ease-in-out;
 }
 
 .networkIcon {
@@ -19,7 +31,16 @@
 }
 
 .networkRow {
-    @apply h-9 flex items-center px-2 gap-2 hover:bg-gray-200 transition-colors duration-200;
+    @apply h-9
+        flex
+        items-center
+        px-2
+        gap-2
+        cursor-pointer
+        hover:bg-gray-200
+        transition-colors
+        duration-200
+        ease-in-out;
 }
 
 .networksWrapper {
@@ -70,7 +91,11 @@
         gap-3
         items-center
         justify-between
-        cursor-pointer;
+        cursor-pointer
+        hover:bg-gray-200
+        transition-colors
+        duration-200
+        ease-in-out;
 }
 
 .account {
@@ -84,4 +109,3 @@
 .icon {
     @apply w-5 h-5;
 }
-
