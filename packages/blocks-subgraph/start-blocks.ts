@@ -5,4 +5,5 @@ export const START_BLOCKS: { [network: string]: number } = {
     "arbitrum-one": 154000000,
     "mantle-sepolia": 9873155,
     mantle: 67227224,
+    "mode-mainnet": 12569458,
 };
