@@ -14,7 +14,8 @@
     @apply h-12 flex justify-between mb-8;
 }
 
-.actionsContainer button {
+.actionsContainer button,
+.actionsContainer a {
     @apply min-w-28;
 }
 
