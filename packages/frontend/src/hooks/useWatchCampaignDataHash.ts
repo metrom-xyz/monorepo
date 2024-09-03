@@ -1,7 +1,5 @@
 import { useEffect, useState } from "react";
 import type { Hex } from "viem";
-import { CHAIN_DATA } from "../commons";
-import type { SupportedChain } from "@metrom-xyz/contracts";
 import { query } from "../utils/subgraph";
 import type { Campaign } from "@metrom-xyz/sdk";
 import { useWatchRewardDistributionEvent } from "./useWatchRewardDistributionEvent";
@@ -10,7 +8,7 @@ import { useChainData } from "./useChainData";
 export interface GetCampaignDataResult {
     campaign: {
         data: Hex;
-    };
+    } | null;
 }
 
 export const GetCampaignData = `
@@ -48,6 +46,8 @@ export function useWatchCampaignDataHash(campaign?: Campaign): {
                     GetCampaignData,
                     { id: campaign.id },
                 );
+
+                if (!response.campaign) return;
 
                 if (!cancelled) setHash(response.campaign.data);
             } catch (error) {

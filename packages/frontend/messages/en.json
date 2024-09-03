@@ -171,6 +171,7 @@
         "leaderboard": {
             "title": "Leaderboard",
             "subtitle": "As of the latest distribution:",
+            "noDistribution": "Not yet distributed",
             "personalRank": {
                 "connect": "View your rank",
                 "noRewards": "You don't have any rewards",

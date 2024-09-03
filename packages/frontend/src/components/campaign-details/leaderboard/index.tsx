@@ -25,8 +25,7 @@ export function Leaderboard({ campaign, loading }: LeaderboardProps) {
         lastDistribution,
     } = useWatchDistributionData(campaign);
 
-    const loadingRanks =
-        loading || loadingDistributionData || !distributionData;
+    const loadingRanks = loading || loadingDistributionData;
 
     return (
         <div className={styles.root}>
@@ -38,15 +37,19 @@ export function Leaderboard({ campaign, loading }: LeaderboardProps) {
                     <Typography weight="medium" light uppercase>
                         {t("subtitle")}
                     </Typography>
-                    {loading ||
-                    fetchingLastDistribution ||
-                    !lastDistribution ? (
+                    {loading || fetchingLastDistribution ? (
                         <Skeleton width={130} />
                     ) : (
-                        <Typography weight="medium" light uppercase>
-                            {dayjs
-                                .unix(lastDistribution.timestamp)
-                                .format("DD/MMM/YY HH:mm")}
+                        <Typography
+                            weight="medium"
+                            light
+                            uppercase={!!lastDistribution}
+                        >
+                            {lastDistribution
+                                ? dayjs
+                                      .unix(lastDistribution.timestamp)
+                                      .format("DD/MMM/YY HH:mm")
+                                : t("noDistribution")}
                         </Typography>
                     )}
                 </div>
@@ -93,7 +96,7 @@ export function Leaderboard({ campaign, loading }: LeaderboardProps) {
                                 <SkeletonRow />
                                 <SkeletonRow />
                             </>
-                        ) : distributionData.length > 0 ? (
+                        ) : distributionData && distributionData.length > 0 ? (
                             distributionData.slice(0, 5).map((data) => (
                                 <div key={data.account} className={styles.row}>
                                     <div>
