@@ -13,12 +13,10 @@ interface PoolProps {
 }
 
 export function Pool({ campaign }: PoolProps) {
-    const chainId = useChainId();
-
     return (
         <div className={styles.root}>
             <PoolRemoteLogo
-                chain={chainId}
+                chain={campaign.chainId}
                 token0={{
                     address: campaign.pool.token0.address,
                     defaultText: campaign.pool.token0.symbol,

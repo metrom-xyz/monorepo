@@ -15,7 +15,6 @@ export const getPoolAddLiquidityLink = (
     pool: Pool,
 ): string | undefined => {
     const amm = getAmm(chainId, ammSlug);
-    console.log("here", amm);
     if (!amm || !amm.addLiquidityUrl) return;
 
     if (amm.slug === SupportedAmm.Univ3)
