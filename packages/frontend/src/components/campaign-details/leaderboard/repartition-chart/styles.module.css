@@ -4,6 +4,7 @@
 
 .tooltipWrapper {
     @apply absolute
+        select-none
         flex
         flex-col
         items-center

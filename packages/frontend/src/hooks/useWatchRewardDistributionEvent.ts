@@ -69,6 +69,8 @@ export function useWatchRewardDistributionEvent(campaign?: Campaign): {
 
                 const rawDistribution = response.distributeRewardEvents[0];
 
+                if (!rawDistribution) return;
+
                 const distribution: RewardDistribution = {
                     id: rawDistribution.id,
                     blockNumber: rawDistribution.transaction.blockNumber,

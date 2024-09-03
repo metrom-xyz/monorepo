@@ -53,7 +53,12 @@ export function useWatchDistributionData(campaign?: Campaign): {
             if (!cancelled) setLoading(false);
             if (!cancelled) setDistributionData(undefined);
 
-            if (!campaign || !campaignDataHash) return;
+            if (
+                !campaign ||
+                !campaignDataHash ||
+                campaignDataHash === "0x00000000"
+            )
+                return;
 
             try {
                 if (!cancelled) setLoading(true);
