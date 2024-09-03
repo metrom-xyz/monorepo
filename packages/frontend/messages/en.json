@@ -142,9 +142,19 @@
             "tvl": "Tvl",
             "status": {
                 "text": "Status",
-                "live": "Live",
-                "upcoming": "Upcoming",
-                "ended": "Ended"
+                "duration": "Duration",
+                "live": {
+                    "text": "Live",
+                    "duration": "{days} left"
+                },
+                "upcoming": {
+                    "text": "Upcoming",
+                    "duration": "in {days}"
+                },
+                "ended": {
+                    "text": "Ended",
+                    "duration": "{days} ago"
+                }
             },
             "startDate": "Start date",
             "endDate": "End date",

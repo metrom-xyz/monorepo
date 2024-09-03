@@ -35,8 +35,6 @@ export function Header({ campaign }: HeaderProps) {
         campaign.pool,
     );
 
-    console.log({ exploreLink });
-
     return (
         <div className={styles.root}>
             <div className={styles.titleContainer}>

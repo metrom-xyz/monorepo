@@ -35,7 +35,7 @@ export function Status({
         duration = t("ended.duration", { days: now.to(to, true) });
     } else {
         text = t("live.text");
-        duration = t("live.duration", { days: from.to(to, true) });
+        duration = t("live.duration", { days: now.to(to, true) });
     }
 
     return (

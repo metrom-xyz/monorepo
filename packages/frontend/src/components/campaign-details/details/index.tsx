@@ -17,12 +17,33 @@ export function Details({ campaign, loading }: DetailsProps) {
     const t = useTranslations("campaignDetails.details");
 
     const detailsLoading = loading || !campaign;
-    const campaignDuration = useMemo(
-        () =>
-            campaign &&
-            dayjs.unix(campaign.from).to(dayjs.unix(campaign.to), true),
-        [campaign],
-    );
+    const duration = useMemo(() => {
+        if (!campaign) return undefined;
+
+        if (campaign.status === Status.Upcoming) {
+            return {
+                text: t("status.upcoming.text"),
+                duration: t("status.upcoming.duration", {
+                    days: dayjs.unix(campaign.from).to(dayjs(), true),
+                }),
+            };
+        }
+        if (campaign.status === Status.Ended) {
+            return {
+                text: t("status.ended.text"),
+                duration: t("status.ended.duration", {
+                    days: dayjs().to(dayjs.unix(campaign.to), true),
+                }),
+            };
+        }
+
+        return {
+            text: t("status.live.text"),
+            duration: t("status.live.duration", {
+                days: dayjs().to(dayjs.unix(campaign.to), true),
+            }),
+        };
+    }, [campaign, t]);
 
     return (
         <div className={styles.root}>
@@ -49,7 +70,7 @@ export function Details({ campaign, loading }: DetailsProps) {
                                 ></div>
                             </div>
                             <Typography weight="medium" variant="xl">
-                                {t(`status.${campaign?.status}`)}
+                                {duration?.text}
                             </Typography>
                         </div>
                     }
@@ -81,13 +102,9 @@ export function Details({ campaign, loading }: DetailsProps) {
                 <TextField
                     boxed
                     variant="xl"
-                    label={t("endsIn")}
+                    label={duration?.text || t("status.duration")}
                     loading={detailsLoading}
-                    value={
-                        campaign?.status === Status.Ended
-                            ? "-"
-                            : campaignDuration
-                    }
+                    value={duration?.duration || "-"}
                 />
             </div>
         </div>
