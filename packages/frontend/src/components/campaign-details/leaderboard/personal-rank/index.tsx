@@ -2,7 +2,7 @@ import { useAccount } from "wagmi";
 import { useMemo, useRef, useState } from "react";
 import { Typography } from "@/src/ui/typography";
 import { useTranslations } from "next-intl";
-import type { AggregatedEnrichedDistributionData } from "@/src/hooks/useWatchDistributionData";
+import type { AggregatedEnrichedDistributionData } from "@/src/hooks/useDistributionData";
 import numeral from "numeral";
 import { SupportedChain, shortenAddress } from "@metrom-xyz/sdk";
 import { Button } from "@/src/ui/button";

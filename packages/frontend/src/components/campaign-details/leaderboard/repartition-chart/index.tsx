@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { useTranslations } from "next-intl";
-import type { AggregatedEnrichedDistributionData } from "@/src/hooks/useWatchDistributionData";
+import type { AggregatedEnrichedDistributionData } from "@/src/hooks/useDistributionData";
 import { Typography } from "@/src/ui/typography";
 import numeral from "numeral";
 import { Cell, Pie, PieChart, Tooltip } from "recharts";
