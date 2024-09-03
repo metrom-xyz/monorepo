@@ -183,8 +183,8 @@ importers:
         specifier: ^5.0.21
         version: 5.0.21
       '@metrom-xyz/contracts':
-        specifier: ^0.16.0
-        version: 0.16.0(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@6.0.4)(zod@3.23.8)
+        specifier: ^0.17.0
+        version: 0.17.0(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@6.0.4)(zod@3.23.8)
       '@metrom-xyz/sdk':
         specifier: workspace:*
         version: link:../sdk
@@ -304,8 +304,8 @@ importers:
         specifier: ^9.9.1
         version: 9.9.1
       '@metrom-xyz/contracts':
-        specifier: ^0.16.0
-        version: 0.16.0(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@6.0.4)(zod@3.23.8)
+        specifier: ^0.17.0
+        version: 0.17.0(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@6.0.4)(zod@3.23.8)
       '@tsconfig/node20':
         specifier: ^20.1.4
         version: 20.1.4
@@ -337,14 +337,14 @@ importers:
         specifier: ^5.5.4
         version: 5.5.4
       typescript-eslint:
-        specifier: ^8.3.0
-        version: 8.3.0(eslint@9.9.1(jiti@1.21.6))(typescript@5.5.4)
+        specifier: ^8.4.0
+        version: 8.4.0(eslint@9.9.1(jiti@1.21.6))(typescript@5.5.4)
       viem:
         specifier: ^2.21.1
         version: 2.21.1(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@6.0.4)(zod@3.23.8)
       vite:
-        specifier: ^5.4.2
-        version: 5.4.2(@types/node@22.5.2)(terser@5.31.6)
+        specifier: ^5.4.3
+        version: 5.4.3(@types/node@22.5.2)(terser@5.31.6)
 
   packages/subgraph:
     dependencies:
@@ -1904,9 +1904,6 @@ packages:
   '@metamask/utils@9.1.0':
     resolution: {integrity: sha512-g2REf+xSt0OZfMoNNdC4+/Yy8eP3KUqvIArel54XRFKPoXbHI6+YjFfrLtfykWBjffOp7DTfIc3Kvk5TLfuiyg==}
     engines: {node: '>=16.0.0'}
-
-  '@metrom-xyz/contracts@0.16.0':
-    resolution: {integrity: sha512-gqynHADz6oGYfKT43bwjfWL5aP65+OnpmvOwWH+zbZyc3NFw/DBrfDiLXhpBmqqKUblY45Hth7wX4cgl9keerQ==}
 
   '@metrom-xyz/contracts@0.17.0':
     resolution: {integrity: sha512-zQuZabjU2aoauCDbLdSakdVCKaMJ8xHoeLDgLMuVHMB85PyCETnhSfTzq29z5s+mnsvxjRtfM/C0wABwuo6Iog==}
@@ -7625,8 +7622,8 @@ packages:
       typescript:
         optional: true
 
-  vite@5.4.2:
-    resolution: {integrity: sha512-dDrQTRHp5C1fTFzcSaMxjk6vdpKvT+2/mIdE07Gw2ykehT49O0z/VHS3zZ8iV/Gh8BJJKHWOe5RjaNrW5xf/GA==}
+  vite@5.4.3:
+    resolution: {integrity: sha512-IH+nl64eq9lJjFqU+/yrRnrHPVTlgy42/+IzbOdaFDVlyLgI/wDlf+FCobXLX1cT0X5+7LMyH1mIy2xJdLfo8Q==}
     engines: {node: ^18.0.0 || >=20.0.0}
     hasBin: true
     peerDependencies:
@@ -9886,15 +9883,6 @@ snapshots:
       uuid: 9.0.1
     transitivePeerDependencies:
       - supports-color
-
-  '@metrom-xyz/contracts@0.16.0(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@6.0.4)(zod@3.23.8)':
-    dependencies:
-      viem: 2.21.1(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@6.0.4)(zod@3.23.8)
-    transitivePeerDependencies:
-      - bufferutil
-      - typescript
-      - utf-8-validate
-      - zod
 
   '@metrom-xyz/contracts@0.17.0(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@6.0.4)(zod@3.23.8)':
     dependencies:
@@ -17109,7 +17097,7 @@ snapshots:
       - utf-8-validate
       - zod
 
-  vite@5.4.2(@types/node@22.5.2)(terser@5.31.6):
+  vite@5.4.3(@types/node@22.5.2)(terser@5.31.6):
     dependencies:
       esbuild: 0.21.5
       postcss: 8.4.44
