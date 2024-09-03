@@ -31,18 +31,19 @@
     @apply rounded-xl
         bg-gray-100
         hover:bg-gray-200
-        border;
+        border
+        border-gray-500;
 }
 
 .secondary.disabled {
-    @apply border-gray-500
-        bg-gray-50
+    @apply bg-gray-50
         text-gray-400
         hover:bg-gray-50
         cursor-not-allowed;
 }
 
-.primary.noBorder, .secondary.noBorder {
+.primary.noBorder,
+.secondary.noBorder {
     @apply border-transparent;
 }
 
