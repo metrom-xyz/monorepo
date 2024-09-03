@@ -111,7 +111,12 @@ export function RewardsStep({
     }, [rewards, disabled]);
 
     useEffect(() => {
-        if (!rewardAmount || !campaignDuration || !rewardToken) return;
+        if (!campaignDuration || !rewardToken) return;
+
+        if (rewardAmount === undefined) {
+            setRewardAmountError("");
+            return;
+        }
 
         const distributionRate = (rewardAmount * 3_600) / campaignDuration;
         const balance =
