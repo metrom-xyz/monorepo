@@ -15,15 +15,19 @@ import styles from "./styles.module.css";
 interface SubmitButtonProps {
     malformedPayload: boolean;
     payload: CampaignPayload;
-    onPreviewClick: () => void;
+    deploying: boolean;
+    disabled: boolean;
+    onDeploy: () => void;
 }
 
 export function ApproveRewardsButton({
     malformedPayload,
     payload,
-    onPreviewClick,
+    deploying,
+    disabled,
+    onDeploy,
 }: SubmitButtonProps) {
-    const t = useTranslations("newCampaign.submit");
+    const t = useTranslations("campaignPreview");
     const [approved, setApproved] = useState(false);
 
     const previousRewards = usePrevious(payload.rewards);
@@ -71,11 +75,12 @@ export function ApproveRewardsButton({
         <Button
             icon={ArrowRightIcon}
             iconPlacement="right"
-            disabled={malformedPayload}
+            disabled={disabled}
+            loading={deploying}
             className={{ root: styles.button }}
-            onClick={onPreviewClick}
+            onClick={onDeploy}
         >
-            {t("preview")}
+            {t("deploy")}
         </Button>
     );
 }
