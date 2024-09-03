@@ -12,17 +12,18 @@ export const METROM_SUBGRAPHS: Record<
             "https://api.studio.thegraph.com/query/68570/metrom-holesky-dev/version/latest",
         // FIXME: latest mantle subgraph verions?
         [SupportedChain.MantleSepolia]:
-            "https://subgraph-api.mantle.xyz/api/public/33d97dee-2622-4f8a-a8e8-2692ce1a49b6/subgraphs/metrom-mantle-sepolia-dev/0.0.2/gn",
+            "https://subgraph-api.mantle.xyz/api/public/33d97dee-2622-4f8a-a8e8-2692ce1a49b6/subgraphs/metrom-mantle-sepolia-dev/0.0.4/gn",
     },
-    // TODO: add staging and production urls
     [Environment.Staging]: {
-        [SupportedChain.CeloAlfajores]: "",
-        [SupportedChain.Holesky]: "",
-        [SupportedChain.MantleSepolia]: "",
+        [SupportedChain.CeloAlfajores]:
+            "https://api.studio.thegraph.com/query/68570/metrom-celo-alfajores-staging/version/latest",
+        [SupportedChain.Holesky]:
+            "https://api.studio.thegraph.com/query/68570/metrom-holesky-staging/version/latest",
+        [SupportedChain.MantleSepolia]:
+            "https://subgraph-api.mantle.xyz/api/public/33d97dee-2622-4f8a-a8e8-2692ce1a49b6/subgraphs/metrom-mantle-sepolia-staging/0.0.4/gn",
     },
     [Environment.Production]: {
-        [SupportedChain.CeloAlfajores]: "",
-        [SupportedChain.Holesky]: "",
-        [SupportedChain.MantleSepolia]: "",
+        [SupportedChain.Mode]:
+            "https://api.studio.thegraph.com/query/68570/metrom-mode/version/latest",
     },
 };
