@@ -6,6 +6,7 @@ import numeral from "numeral";
 import { Cell, Pie, PieChart, Tooltip } from "recharts";
 import type { Address } from "viem";
 import { getAddressColor } from "@/src/utils/address";
+import { useTransition, animated } from "@react-spring/web";
 
 import styles from "./styles.module.css";
 
@@ -84,24 +85,34 @@ export function RepartitionChart({
 function RankTooltip({ active, payload }: any) {
     const t = useTranslations("campaignDetails.leaderboard");
 
-    if (!active || !payload || !payload.length) return null;
+    const transition = useTransition(active, {
+        from: { opacity: 0 },
+        enter: { opacity: 1 },
+        leave: { opacity: 0 },
+        config: { duration: 200 },
+    });
+
+    if (!payload || !payload.length) return null;
 
     const name = payload[0].name;
 
-    return (
-        <div className={styles.tooltipWrapper}>
-            <Typography
-                weight="bold"
-                variant="xl"
-                style={{
-                    color: name ? getAddressColor(name) : "#9CA3AF",
-                }}
-            >
-                #{payload[0].payload.position || t("others")}
-            </Typography>
-            <Typography weight="bold" variant="xl2">
-                {numeral(payload[0].value).format("0.[0]")}%
-            </Typography>
-        </div>
+    return transition(
+        (style, active) =>
+            !!active && (
+                <animated.div style={style} className={styles.tooltipWrapper}>
+                    <Typography
+                        weight="bold"
+                        variant="xl"
+                        style={{
+                            color: name ? getAddressColor(name) : "#9CA3AF",
+                        }}
+                    >
+                        #{payload[0].payload.position || t("others")}
+                    </Typography>
+                    <Typography weight="bold" variant="xl2">
+                        {numeral(payload[0].value).format("0.[0]")}%
+                    </Typography>
+                </animated.div>
+            ),
     );
 }

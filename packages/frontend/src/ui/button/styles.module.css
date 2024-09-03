@@ -17,7 +17,7 @@
     @apply rounded-xl
         text-white
         bg-black
-        hover:bg-gray-900;
+        hover:bg-gray-800;
 }
 
 .primary.disabled {
