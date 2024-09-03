@@ -1,7 +1,7 @@
 "use client";
 
 import { Typography } from "@/src/ui/typography";
-import { type Rewards as RewardsType } from "@metrom-xyz/sdk";
+import { SupportedChain, type Rewards as RewardsType } from "@metrom-xyz/sdk";
 import dayjs from "dayjs";
 import { RemoteLogo } from "@/src/ui/remote-logo";
 import { useChainId } from "wagmi";
@@ -14,10 +14,10 @@ interface RewardsProps {
     from: number;
     to: number;
     rewards: RewardsType;
+    chainId: SupportedChain;
 }
 
-export function Rewards({ from, to, rewards }: RewardsProps) {
-    const chainId = useChainId();
+export function Rewards({ from, to, rewards, chainId }: RewardsProps) {
     const daysDuration = dayjs.unix(to).diff(dayjs.unix(from), "days", false);
     const perDayUsdValue =
         rewards.usdValue && daysDuration > 0

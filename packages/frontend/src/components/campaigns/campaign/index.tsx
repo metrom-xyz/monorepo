@@ -36,6 +36,7 @@ export function Campaign({ campaign }: CampaignProps) {
                 from={campaign.from}
                 to={campaign.to}
                 rewards={campaign.rewards}
+                chainId={campaign.chainId}
             />
         </Link>
     );
