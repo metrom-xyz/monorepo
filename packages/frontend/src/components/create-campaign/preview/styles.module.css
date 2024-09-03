@@ -17,10 +17,6 @@
     @apply w-full flex justify-center;
 }
 
-.createButton {
-    @apply w-full max-w-[400px];
-}
-
 .feedback {
     @apply min-w-[40rem]
         flex
