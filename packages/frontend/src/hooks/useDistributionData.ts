@@ -7,10 +7,10 @@ import {
     type TokenAmount,
 } from "@metrom-xyz/sdk";
 import {
-    useWatchRewardDistributionEvent,
+    useRewardDistributionEvent,
     type RewardDistribution,
-} from "./useWatchRewardDistributionEvent";
-import { useWatchCampaignDataHash } from "./useWatchCampaignDataHash";
+} from "./useRewardDistributionEvent";
+import { useCampaignDataHash } from "./useCampaignDataHash";
 import { dataManagerClient } from "../commons";
 
 export interface AggregatedEnrichedDistributionData {
@@ -29,7 +29,7 @@ export interface EnrichedDistributionData extends TokenAmount {
 }
 
 // TODO: cache possibilities?
-export function useWatchDistributionData(campaign?: Campaign): {
+export function useDistributionData(campaign?: Campaign): {
     loadingData: boolean;
     loadingEvent: boolean;
     distributionData?: AggregatedEnrichedDistributionData[];
@@ -40,11 +40,11 @@ export function useWatchDistributionData(campaign?: Campaign): {
         useState<DistributionData[]>();
 
     const { loading: loadingCampaignDataHash, hash: campaignDataHash } =
-        useWatchCampaignDataHash(campaign);
+        useCampaignDataHash(campaign);
     const {
         loading: loadingDistributionEvent,
         distribution: distributionEvent,
-    } = useWatchRewardDistributionEvent(campaign);
+    } = useRewardDistributionEvent(campaign);
 
     useEffect(() => {
         let cancelled = false;
