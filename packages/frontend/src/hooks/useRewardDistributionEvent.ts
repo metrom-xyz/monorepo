@@ -34,7 +34,7 @@ export const GetLatestDistributeRewardEvent = `
 `;
 
 // TODO: move fetch to a subgraph client in the sdk?
-export function useWatchRewardDistributionEvent(campaign?: Campaign): {
+export function useRewardDistributionEvent(campaign?: Campaign): {
     loading: boolean;
     distribution?: RewardDistribution;
 } {
@@ -93,18 +93,7 @@ export function useWatchRewardDistributionEvent(campaign?: Campaign): {
             }
         }
 
-        if (!lastDistribution) {
-            fetchData();
-            return;
-        }
-
-        const interval = setInterval(() => {
-            fetchData();
-        }, 15000);
-
-        return () => {
-            clearInterval(interval);
-        };
+        fetchData();
     }, [campaign, lastDistribution]);
 
     return {

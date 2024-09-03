@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import type { Hex } from "viem";
 import { query } from "../utils/subgraph";
 import type { Campaign } from "@metrom-xyz/sdk";
-import { useWatchRewardDistributionEvent } from "./useWatchRewardDistributionEvent";
 import { useChainData } from "./useChainData";
 
 export interface GetCampaignDataResult {
@@ -20,7 +19,7 @@ export const GetCampaignData = `
 `;
 
 // TODO: move fetch to a subgraph client in the sdk?
-export function useWatchCampaignDataHash(campaign?: Campaign): {
+export function useCampaignDataHash(campaign?: Campaign): {
     loading: boolean;
     hash?: Hex;
 } {
@@ -28,7 +27,6 @@ export function useWatchCampaignDataHash(campaign?: Campaign): {
     const [loading, setLoading] = useState(false);
 
     const chainData = useChainData();
-    const { distribution } = useWatchRewardDistributionEvent(campaign);
 
     useEffect(() => {
         let cancelled = false;
@@ -60,7 +58,7 @@ export function useWatchCampaignDataHash(campaign?: Campaign): {
         }
 
         fetchData();
-    }, [campaign, chainData.metromSubgraphUrl, distribution?.timestamp]);
+    }, [campaign, chainData.metromSubgraphUrl]);
 
     return {
         loading,

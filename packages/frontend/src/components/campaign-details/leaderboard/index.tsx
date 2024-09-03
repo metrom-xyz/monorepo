@@ -1,4 +1,4 @@
-import { useWatchDistributionData } from "@/src/hooks/useWatchDistributionData";
+import { useDistributionData } from "@/src/hooks/useDistributionData";
 import { shortenAddress, type Campaign } from "@metrom-xyz/sdk";
 import { Typography } from "@/src/ui/typography";
 import { useTranslations } from "next-intl";
@@ -23,7 +23,7 @@ export function Leaderboard({ campaign, loading }: LeaderboardProps) {
         loadingEvent: fetchingLastDistribution,
         distributionData,
         lastDistribution,
-    } = useWatchDistributionData(campaign);
+    } = useDistributionData(campaign);
 
     const loadingRanks = loading || loadingDistributionData;
 
