@@ -173,7 +173,7 @@
             "subtitle": "As of the latest distribution:",
             "personalRank": {
                 "connect": "View your rank",
-                "noRewards": "No rewards distributed",
+                "noRewards": "You don't have any rewards",
                 "yourRank": "Your rank",
                 "address": "Address",
                 "rewardsDistributed": "Rewards distributed"
@@ -181,6 +181,7 @@
             "rank": "Rank",
             "address": "Address",
             "rewardsDistributed": "Rewards distributed",
+            "noRewards": "No rewards distributed",
             "repartition": "Source repartition",
             "others": "Others"
         }

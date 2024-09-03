@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import type { Address } from "blo";
-import { formatUnits } from "viem";
+import { formatUnits, zeroAddress } from "viem";
 import {
     type DistributionData,
     type Campaign,
@@ -149,6 +149,7 @@ export function useWatchDistributionData(campaign?: Campaign): {
                 };
             })
             .sort((a, b) => b.rank - a.rank)
+            .filter((data) => data.account !== zeroAddress)
             .map((data, index) => ({
                 ...data,
                 position: index + 1,

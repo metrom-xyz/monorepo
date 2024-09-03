@@ -93,7 +93,7 @@ export function Leaderboard({ campaign, loading }: LeaderboardProps) {
                                 <SkeletonRow />
                                 <SkeletonRow />
                             </>
-                        ) : (
+                        ) : distributionData.length > 0 ? (
                             distributionData.slice(0, 5).map((data) => (
                                 <div key={data.account} className={styles.row}>
                                     <div>
@@ -126,6 +126,10 @@ export function Leaderboard({ campaign, loading }: LeaderboardProps) {
                                     </div>
                                 </div>
                             ))
+                        ) : (
+                            <Typography weight="medium" light>
+                                {t("noRewards")}
+                            </Typography>
                         )}
                     </div>
                 </div>
