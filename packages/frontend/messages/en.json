@@ -5,6 +5,11 @@
         "claims": "Claims",
         "connectWallet": "Connect wallet"
     },
+    "footer": {
+        "support": "Support",
+        "documentation": "Documentation",
+        "contactUs": "Contact us"
+    },
     "allCampaigns": {
         "title": "all campaigns",
         "filters": {

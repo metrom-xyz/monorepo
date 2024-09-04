@@ -1,4 +1,4 @@
-export function EthIcon(props: any) {
+export function EthLogo(props: any) {
     return (
         <svg
             xmlnsXlink="http://www.w3.org/1999/xlink"

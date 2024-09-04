@@ -1,20 +1,20 @@
 import { SupportedChain, SupportedAmm } from "@metrom-xyz/sdk";
 import { ADDRESS } from "@metrom-xyz/contracts";
-import { MantleIcon } from "../../assets/mantle-icon";
-import { SwapsicleIcon } from "../../assets/swapsicle-icon";
+import { MantleLogo } from "../../assets/logos/chains/mantle";
+import { SwapsicleLogo } from "../../assets/logos/amms/swapsicle";
 import { ENVIRONMENT } from "../environment";
 import { type ChainData } from "..";
 import { METROM_SUBGRAPHS } from "../subgraphs";
 
 export const mantleSepoliaData: ChainData = {
     metromContract: ADDRESS[ENVIRONMENT][SupportedChain.MantleSepolia]!,
-    icon: MantleIcon,
+    icon: MantleLogo,
     metromSubgraphUrl:
         METROM_SUBGRAPHS[ENVIRONMENT][SupportedChain.MantleSepolia],
     amms: [
         {
             slug: SupportedAmm.Swapsicle,
-            logo: SwapsicleIcon,
+            logo: SwapsicleLogo,
             name: "Swapsicle",
             addLiquidityUrl:
                 "https://app.swapsicle.io/liquidity/v3/mantle-testnet/{target_pool}",

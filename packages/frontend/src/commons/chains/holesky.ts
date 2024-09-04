@@ -1,6 +1,6 @@
 import { SupportedChain, SupportedAmm } from "@metrom-xyz/sdk";
-import { EthIcon } from "../../assets/eth-icon";
-import { AlgebraIntegralLogo } from "../../assets/algebra-integral-logo";
+import { EthLogo } from "../../assets/logos/chains/eth";
+import { AlgebraIntegralLogo } from "../../assets/logos/amms/algebra-integral";
 import { ADDRESS } from "@metrom-xyz/contracts";
 import { type ChainData } from "../index";
 import { ENVIRONMENT } from "../environment";
@@ -8,7 +8,7 @@ import { METROM_SUBGRAPHS } from "../subgraphs";
 
 export const holeskyData: ChainData = {
     metromContract: ADDRESS[ENVIRONMENT][SupportedChain.Holesky]!,
-    icon: EthIcon,
+    icon: EthLogo,
     metromSubgraphUrl: METROM_SUBGRAPHS[ENVIRONMENT][SupportedChain.Holesky],
     amms: [
         {

@@ -8,6 +8,7 @@ import { Header, SkeletonHeader } from "./header";
 import { Details } from "./details";
 import { Rewards } from "./rewards";
 import { Leaderboard } from "./leaderboard";
+import { Footer } from "../footer";
 
 import styles from "./styles.module.css";
 
@@ -38,6 +39,7 @@ export function CampaignDetails({ chain, campaignId }: CampaignDetailsProps) {
                 <Rewards campaign={campaign} loading={loadingCampaign} />
                 <Leaderboard campaign={campaign} loading={loadingCampaign} />
             </div>
+            <Footer />
         </div>
     );
 }

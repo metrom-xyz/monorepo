@@ -1,4 +1,4 @@
-export function SwapsicleIcon(props: any) {
+export function SwapsicleLogo(props: any) {
     return (
         <svg
             viewBox="0 0 1920 1080"
