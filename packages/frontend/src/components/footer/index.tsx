@@ -51,7 +51,13 @@ export function Footer() {
                     >
                         <Typography weight="medium">{t("support")}</Typography>
                     </a>
-                    <Typography light>{t("documentation")}</Typography>
+                    <a
+                        href="https://metrom.gitbook.io/metrom"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        <Typography light>{t("documentation")}</Typography>
+                    </a>
                     <a href="mailto:hello@metrom.xyz">
                         <Typography light>{t("contactUs")}</Typography>
                     </a>
