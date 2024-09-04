@@ -50,7 +50,7 @@ export function Claims() {
             {
                 [SupportedChain.Mode]: {
                     chain: mantleSepoliaTestnet,
-                    data: modeData,
+                    chainData: modeData,
                     claims: [],
                 },
                 [SupportedChain.CeloAlfajores]: {
@@ -65,7 +65,7 @@ export function Claims() {
                 },
                 [SupportedChain.MantleSepolia]: {
                     chain: mantleSepoliaTestnet,
-                    data: mantleSepoliaData,
+                    chainData: mantleSepoliaData,
                     claims: [],
                 },
             } as Record<SupportedChain, ChainWithClaimsData>,
