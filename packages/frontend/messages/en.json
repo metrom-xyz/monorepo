@@ -8,8 +8,7 @@
     "footer": {
         "support": "Support",
         "documentation": "Documentation",
-        "contactUs": "Contact us",
-        "made": "Made with love by Carrot Labs"
+        "contactUs": "Contact us"
     },
     "allCampaigns": {
         "title": "all campaigns",

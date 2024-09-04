@@ -1,9 +1,5 @@
 .root {
-    @apply my-10 w-full flex flex-col gap-5 px-10 max-w-screen-xl;
-}
-
-.row {
-    @apply flex justify-between;
+    @apply my-10 w-full flex justify-between gap-5 px-10 max-w-screen-xl;
 }
 
 .socials {
