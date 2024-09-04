@@ -14,6 +14,7 @@ import {
     celoAlfajoresData,
     holeskyData,
     mantleSepoliaData,
+    modeData,
 } from "@/src/commons/chains";
 
 import styles from "./styles.module.css";
@@ -49,7 +50,7 @@ export function Claims() {
             {
                 [SupportedChain.Mode]: {
                     chain: mantleSepoliaTestnet,
-                    data: mantleSepoliaData,
+                    data: modeData,
                     claims: [],
                 },
                 [SupportedChain.CeloAlfajores]: {
