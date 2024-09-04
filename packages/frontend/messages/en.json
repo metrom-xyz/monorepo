@@ -5,6 +5,12 @@
         "claims": "Claims",
         "connectWallet": "Connect wallet"
     },
+    "footer": {
+        "support": "Support",
+        "documentation": "Documentation",
+        "contactUs": "Contact us",
+        "made": "Made with love by Carrot Labs"
+    },
     "allCampaigns": {
         "title": "all campaigns",
         "filters": {

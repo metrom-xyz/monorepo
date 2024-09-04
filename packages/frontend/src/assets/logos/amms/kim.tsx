@@ -1,4 +1,4 @@
-export function KimIcon(props: any) {
+export function KimLogo(props: any) {
     return (
         <svg
             width="26"

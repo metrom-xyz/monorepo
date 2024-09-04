@@ -1,4 +1,4 @@
-export function CeloIcon(props: any) {
+export function CeloLogo(props: any) {
     return (
         <svg
             version="1.0"

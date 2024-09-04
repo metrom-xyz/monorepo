@@ -1,4 +1,4 @@
-export function MantleIcon(props: any) {
+export function MantleLogo(props: any) {
     return (
         <svg
             viewBox="0 0 36.524601 36.523621"
