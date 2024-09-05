@@ -6,11 +6,13 @@
         transition-colors
         duration-200
         ease-in-out
-        rounded-xl h-14;
+        rounded-xl 
+        py-2
+        md:py-3;
 }
 
 .poolContainer {
-    @apply flex items-center gap-2;
+    @apply flex items-center gap-2 col-span-11 md:col-span-1;
 }
 
 .externalLink {

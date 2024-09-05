@@ -1,5 +1,5 @@
 .statusRoot {
-    @apply flex items-center gap-2;
+    @apply flex items-center gap-2 col-span-4 md:col-span-1;
 }
 
 .statusText {

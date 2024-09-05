@@ -1,5 +1,5 @@
 .root {
-    @apply bg-brand-blue rounded-lg py-2 px-2 w-fit;
+    @apply bg-brand-blue rounded-lg py-2 px-2 w-fit  col-span-4 md:col-span-1;
 }
 
 .text {
