@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { useTranslations } from "next-intl";
-import type { AggregatedEnrichedDistributionData } from "@/src/hooks/useDistributionData";
+import type { DistributionBreakdown } from "@/src/hooks/useDistributionBreakdown";
 import { Typography } from "@/src/ui/typography";
 import numeral from "numeral";
 import { Cell, Pie, PieChart, Tooltip } from "recharts";
@@ -12,7 +12,7 @@ import styles from "./styles.module.css";
 
 interface RepartitionChartProps {
     loading: boolean;
-    repartitionData?: AggregatedEnrichedDistributionData[];
+    distributionBreakdown?: DistributionBreakdown;
 }
 
 interface ChartData {
@@ -23,25 +23,35 @@ interface ChartData {
 
 export function RepartitionChart({
     loading,
-    repartitionData,
+    distributionBreakdown,
 }: RepartitionChartProps) {
     const t = useTranslations("campaignDetails.leaderboard");
 
-    const repartitionChartData: ChartData[] | undefined = useMemo(() => {
-        if (!repartitionData) return undefined;
+    const chartData: ChartData[] | undefined = useMemo(() => {
+        if (!distributionBreakdown) return undefined;
 
-        const topRepartitions = repartitionData.slice(0, 5).map((data) => ({
-            name: data.account,
-            position: data.position,
-            value: data.rank,
-        }));
+        const distributionBreakdownEntries = Object.entries(
+            distributionBreakdown.sortedDistributionsByAccount,
+        );
 
-        const otherRepartitions = repartitionData
-            .slice(6, repartitionData.length)
-            .reduce((acc, data) => (acc += data.rank), 0);
+        const topRepartitions = distributionBreakdownEntries
+            .slice(0, 5)
+            .map(([account, distribution], i) => ({
+                name: account as Address,
+                position: i + 1,
+                value: distribution.percentage,
+            }));
+
+        const otherRepartitions = distributionBreakdownEntries
+            .slice(6, distributionBreakdownEntries.length)
+            .reduce(
+                (accumulator, [_account, distribution]) =>
+                    (accumulator += distribution.percentage),
+                0,
+            );
 
         return [...topRepartitions, { value: otherRepartitions }];
-    }, [repartitionData]);
+    }, [distributionBreakdown]);
 
     return (
         <div className={styles.root}>
@@ -49,7 +59,7 @@ export function RepartitionChart({
                 {t("repartition")}
             </Typography>
             <div className={styles.chartWrapper}>
-                {!repartitionChartData || loading ? (
+                {!chartData || loading ? (
                     <div className={styles.chartWrapperLoading}></div>
                 ) : (
                     <PieChart height={240} width={240}>
@@ -57,11 +67,11 @@ export function RepartitionChart({
                             dataKey="value"
                             animationEasing="ease-in-out"
                             animationDuration={500}
-                            data={repartitionChartData}
+                            data={chartData}
                             innerRadius={70}
                             outerRadius={120}
                         >
-                            {repartitionChartData.map((entry, index) => (
+                            {chartData.map((entry, index) => (
                                 <Cell
                                     key={`cell-${index}`}
                                     fill={

@@ -4,13 +4,10 @@ import { MantleLogo } from "../../assets/logos/chains/mantle";
 import { SwapsicleLogo } from "../../assets/logos/amms/swapsicle";
 import { ENVIRONMENT } from "../environment";
 import { type ChainData } from "..";
-import { METROM_SUBGRAPHS } from "../subgraphs";
 
 export const mantleSepoliaData: ChainData = {
     metromContract: ADDRESS[ENVIRONMENT][SupportedChain.MantleSepolia]!,
     icon: MantleLogo,
-    metromSubgraphUrl:
-        METROM_SUBGRAPHS[ENVIRONMENT][SupportedChain.MantleSepolia],
     amms: [
         {
             slug: SupportedAmm.Swapsicle,

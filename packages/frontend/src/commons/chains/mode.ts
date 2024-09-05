@@ -4,12 +4,10 @@ import { ModeLogo } from "../../assets/logos/chains/mode";
 import { KimLogo } from "../../assets/logos/amms/kim";
 import { ENVIRONMENT } from "../environment";
 import { type ChainData } from "..";
-import { METROM_SUBGRAPHS } from "../subgraphs";
 
 export const modeData: ChainData = {
     metromContract: ADDRESS[ENVIRONMENT][SupportedChain.Mode]!,
     icon: ModeLogo,
-    metromSubgraphUrl: METROM_SUBGRAPHS[ENVIRONMENT][SupportedChain.Mode],
     amms: [
         {
             slug: SupportedAmm.Kim,

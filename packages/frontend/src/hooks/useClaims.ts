@@ -1,11 +1,10 @@
 import { useAccount, useBlockNumber, useReadContracts } from "wagmi";
 import { formatUnits } from "viem";
-import { metromApiClient } from "../commons";
+import { CHAIN_DATA, metromApiClient } from "../commons";
 import { type Claim } from "@metrom-xyz/sdk";
 import { useEffect, useState } from "react";
 import { metromAbi } from "@metrom-xyz/contracts/abi";
 import { useQueryClient } from "@tanstack/react-query";
-import { useChainData } from "./useChainData";
 
 interface ClaimWithRemaining extends Claim {
     remaining: number;
@@ -15,8 +14,7 @@ export function useClaims(): {
     loading: boolean;
     claims: Claim[];
 } {
-    const chainData = useChainData();
-    const { address, chain } = useAccount();
+    const { address } = useAccount();
 
     const [rawClaims, setRawClaims] = useState<Claim[]>([]);
     const [claims, setClaims] = useState<ClaimWithRemaining[]>([]);
@@ -64,7 +62,7 @@ export function useClaims(): {
         contracts: rawClaims.map((rawClaim) => {
             return {
                 chainId: rawClaim.chainId,
-                address: chainData.metromContract.address,
+                address: CHAIN_DATA[rawClaim.chainId]?.metromContract.address,
                 abi: metromAbi,
                 functionName: "claimedCampaignReward",
                 args: [rawClaim.campaignId, rawClaim.token.address, address],

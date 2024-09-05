@@ -1,6 +1,6 @@
 import { useTranslations } from "next-intl";
 import { usePrevious } from "react-use";
-import { useAccount } from "wagmi";
+import { useAccount, useChainId } from "wagmi";
 import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
 import { Button } from "@/src/ui/button";
 import { WalletIcon } from "@/src/assets/wallet-icon";
@@ -32,8 +32,9 @@ export function ApproveRewardsButton({
 
     const previousRewards = usePrevious(payload.rewards);
 
+    const chainId = useChainId();
     const { openConnectModal } = useConnectModal();
-    const chainData = useChainData();
+    const chainData = useChainData(chainId);
     const { address: connectedAddress } = useAccount();
 
     useEffect(() => {
@@ -67,7 +68,7 @@ export function ApproveRewardsButton({
                 onApprove={handleOnApprove}
                 disabled={malformedPayload}
                 rewards={payload?.rewards}
-                spender={chainData.metromContract.address}
+                spender={chainData?.metromContract.address}
             />
         );
 

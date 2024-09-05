@@ -181,12 +181,12 @@
                 "connect": "View your rank",
                 "noRewards": "You don't have any rewards",
                 "yourRank": "Your rank",
-                "address": "Address",
-                "rewardsDistributed": "Rewards distributed"
+                "account": "Account",
+                "rewardsDistributed": "Distributed"
             },
             "rank": "Rank",
-            "address": "Address",
-            "rewardsDistributed": "Rewards distributed",
+            "account": "Account",
+            "rewardsDistributed": "Distributed",
             "noRewards": "No rewards distributed",
             "repartition": "Source repartition",
             "others": "Others"

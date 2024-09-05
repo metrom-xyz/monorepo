@@ -1,17 +1,17 @@
-import type { DistributionData } from "src";
+import type { Snapshot } from "src";
 import type { Hex } from "viem";
-import type { FetchDistributionDataResponse } from "./types";
+import type { FetchSnapshotResponse } from "./types";
 
-export interface FetchDistributionDataParams {
+export interface FetchSnapshotParams {
     hash: Hex;
 }
 
 export class DataManagerClient {
     constructor(public readonly baseUrl: string) {}
 
-    async fetchDistributionData(
-        params: FetchDistributionDataParams,
-    ): Promise<DistributionData[]> {
+    async fetchSnapshot(
+        params: FetchSnapshotParams,
+    ): Promise<Snapshot> {
         const url = new URL("data", this.baseUrl);
 
         const sanitizedHash = params.hash.startsWith("0x")
@@ -25,15 +25,19 @@ export class DataManagerClient {
                 `response not ok while fetching distribution data for hash ${params.hash}: ${await response.text()}`,
             );
 
-        const rawDistributionData =
-            (await response.json()) as FetchDistributionDataResponse;
+        const json = (await response.json()) as FetchSnapshotResponse;
 
-        return rawDistributionData.map(
-            ({ account, amount, token_address }) => ({
-                account,
-                amount,
-                tokenAddress: token_address,
-            }),
-        );
+        if (json instanceof Array)
+            throw new Error(
+                `the fetched snapshot data with hash ${params.hash} uses an unsupported format, skipping`,
+            );
+
+        return {
+            ...json,
+            leaves: json.leaves.map((leaf) => ({
+                ...leaf,
+                amount: BigInt(leaf.amount),
+            })),
+        };
     }
 }

@@ -2,7 +2,7 @@ import { useAccount } from "wagmi";
 import { useMemo, useRef, useState } from "react";
 import { Typography } from "@/src/ui/typography";
 import { useTranslations } from "next-intl";
-import type { AggregatedEnrichedDistributionData } from "@/src/hooks/useDistributionData";
+import type { DistributionBreakdown } from "@/src/hooks/useDistributionBreakdown";
 import numeral from "numeral";
 import { SupportedChain, shortenAddress } from "@metrom-xyz/sdk";
 import { Button } from "@/src/ui/button";
@@ -17,13 +17,13 @@ import { RemoteLogo } from "@/src/ui/remote-logo";
 interface PersonalRankProps {
     chain?: SupportedChain;
     loading: boolean;
-    distributionData?: AggregatedEnrichedDistributionData[];
+    distributionBreakdown?: DistributionBreakdown;
 }
 
 export function PersonalRank({
     chain,
     loading,
-    distributionData,
+    distributionBreakdown,
 }: PersonalRankProps) {
     const t = useTranslations("campaignDetails.leaderboard.personalRank");
     const [rewardsPopoverOpen, setRewardsPopoverOpen] = useState(false);
@@ -38,23 +38,22 @@ export function PersonalRank({
     } = useAccount();
     const { openConnectModal } = useConnectModal();
 
-    const personalRank = useMemo(() => {
-        if (!connectedAddress || !distributionData) return undefined;
+    const personalDistribution = useMemo(() => {
+        if (!connectedAddress || !distributionBreakdown) return undefined;
 
-        const position = distributionData.findIndex(
-            (data) =>
-                data.account.toLowerCase() === connectedAddress.toLowerCase(),
-        );
+        const personalDistributionIndex = Object.keys(
+            distributionBreakdown.sortedDistributionsByAccount,
+        ).findIndex((account) => account === connectedAddress.toLowerCase());
 
-        if (position === -1) {
-            return undefined;
-        }
-
-        return {
-            ...distributionData[position],
-            position,
-        };
-    }, [connectedAddress, distributionData]);
+        return personalDistributionIndex < 0
+            ? null
+            : {
+                  ...distributionBreakdown.sortedDistributionsByAccount[
+                      connectedAddress
+                  ],
+                  position: personalDistributionIndex + 1,
+              };
+    }, [connectedAddress, distributionBreakdown]);
 
     function handleRewardedAmountPopoverOpen() {
         setRewardsPopoverOpen(true);
@@ -71,7 +70,7 @@ export function PersonalRank({
                     {t("yourRank")}
                 </Typography>
                 <Typography uppercase weight="medium" light variant="sm">
-                    {t("address")}
+                    {t("account")}
                 </Typography>
                 <Typography uppercase weight="medium" light variant="sm">
                     {t("rewardsDistributed")}
@@ -88,7 +87,7 @@ export function PersonalRank({
                 >
                     {t("connect")}
                 </Button>
-            ) : !personalRank ? (
+            ) : !personalDistribution ? (
                 <Typography weight="medium" light>
                     {t("noRewards")}
                 </Typography>
@@ -96,14 +95,17 @@ export function PersonalRank({
                 <div className={styles.row}>
                     <div>
                         <Typography weight="medium" light>
-                            # {personalRank.position + 1}
+                            # {personalDistribution.position}
                         </Typography>
                         <Typography weight="medium">
-                            {numeral(personalRank.rank).format("0.[00]a")}%
+                            {numeral(personalDistribution.percentage).format(
+                                "0.[00]a",
+                            )}
+                            %
                         </Typography>
                     </div>
                     <Typography weight="medium">
-                        {shortenAddress(personalRank.account)}
+                        {shortenAddress(connectedAddress)}
                     </Typography>
                     <Popover
                         placement="top"
@@ -120,40 +122,42 @@ export function PersonalRank({
                             >
                                 {t("rewardsDistributed")}
                             </Typography>
-                            {personalRank.details.map((enrichedData) => (
-                                <div
-                                    key={enrichedData.token.address}
-                                    className={styles.rewardsPopoverRow}
-                                >
-                                    <div>
-                                        <RemoteLogo
-                                            chain={chain}
-                                            size="sm"
-                                            address={enrichedData.token.address}
-                                            defaultText={
-                                                enrichedData.token.symbol
-                                            }
-                                        />
-                                        <Typography weight="medium">
-                                            {enrichedData.token.symbol}
-                                        </Typography>
+                            {personalDistribution.accrued.map(
+                                (accruedReward) => (
+                                    <div
+                                        key={accruedReward.address}
+                                        className={styles.rewardsPopoverRow}
+                                    >
+                                        <div>
+                                            <RemoteLogo
+                                                chain={chain}
+                                                size="sm"
+                                                address={accruedReward.address}
+                                                defaultText={
+                                                    accruedReward.symbol
+                                                }
+                                            />
+                                            <Typography weight="medium">
+                                                {accruedReward.symbol}
+                                            </Typography>
+                                        </div>
+                                        <div>
+                                            <Typography weight="medium">
+                                                {numeral(
+                                                    accruedReward.amount,
+                                                ).format("(0.0[0] a)")}
+                                            </Typography>
+                                            <Typography weight="medium">
+                                                {accruedReward.usdValue
+                                                    ? numeral(
+                                                          accruedReward.usdValue,
+                                                      ).format("($ 0.00 a)")
+                                                    : "-"}
+                                            </Typography>
+                                        </div>
                                     </div>
-                                    <div>
-                                        <Typography weight="medium">
-                                            {numeral(
-                                                enrichedData.amount,
-                                            ).format("(0.0[0] a)")}
-                                        </Typography>
-                                        <Typography weight="medium">
-                                            {enrichedData.usdValue
-                                                ? numeral(
-                                                      enrichedData.usdValue,
-                                                  ).format("($ 0.00 a)")
-                                                : "-"}
-                                        </Typography>
-                                    </div>
-                                </div>
-                            ))}
+                                ),
+                            )}
                         </div>
                     </Popover>
                     <div
@@ -162,12 +166,9 @@ export function PersonalRank({
                         onMouseLeave={handleRewardedAmountPopoverClose}
                         className={styles.rankWrapper}
                     >
-                        <Typography weight="medium">
-                            {numeral(personalRank.amount).format("(0.0[0] a)")}
-                        </Typography>
                         <Typography weight="medium" light>
-                            {personalRank.usdValue
-                                ? numeral(personalRank.usdValue).format(
+                            {personalDistribution.usdValue
+                                ? numeral(personalDistribution.usdValue).format(
                                       "($ 0.00 a)",
                                   )
                                 : "-"}

@@ -1,4 +1,4 @@
-import { useDistributionData } from "@/src/hooks/useDistributionData";
+import { useDistributionBreakdown } from "@/src/hooks/useDistributionBreakdown";
 import { shortenAddress, type Campaign } from "@metrom-xyz/sdk";
 import { Typography } from "@/src/ui/typography";
 import { useTranslations } from "next-intl";
@@ -7,6 +7,7 @@ import dayjs from "dayjs";
 import numeral from "numeral";
 import { PersonalRank } from "./personal-rank";
 import { RepartitionChart } from "./repartition-chart";
+import type { Address } from "viem";
 
 import styles from "./styles.module.css";
 
@@ -19,13 +20,9 @@ export function Leaderboard({ campaign, loading }: LeaderboardProps) {
     const t = useTranslations("campaignDetails.leaderboard");
 
     const {
-        loadingData: loadingDistributionData,
-        loadingEvent: fetchingLastDistribution,
-        distributionData,
-        lastDistribution,
-    } = useDistributionData(campaign);
-
-    const loadingRanks = loading || loadingDistributionData;
+        loading: loadingDistributionBreakdown,
+        breakdown: distributionBreakdown,
+    } = useDistributionBreakdown(campaign);
 
     return (
         <div className={styles.root}>
@@ -37,17 +34,17 @@ export function Leaderboard({ campaign, loading }: LeaderboardProps) {
                     <Typography weight="medium" light uppercase>
                         {t("subtitle")}
                     </Typography>
-                    {loading || fetchingLastDistribution ? (
+                    {loading || loadingDistributionBreakdown ? (
                         <Skeleton width={130} />
                     ) : (
                         <Typography
                             weight="medium"
                             light
-                            uppercase={!!lastDistribution}
+                            uppercase={!!distributionBreakdown}
                         >
-                            {lastDistribution
+                            {distributionBreakdown
                                 ? dayjs
-                                      .unix(lastDistribution.timestamp)
+                                      .unix(distributionBreakdown.timestamp)
                                       .format("DD/MMM/YY HH:mm")
                                 : t("noDistribution")}
                         </Typography>
@@ -58,8 +55,8 @@ export function Leaderboard({ campaign, loading }: LeaderboardProps) {
                 <div className={styles.card}>
                     <PersonalRank
                         chain={campaign?.chainId}
-                        loading={loadingRanks}
-                        distributionData={distributionData}
+                        loading={loadingDistributionBreakdown}
+                        distributionBreakdown={distributionBreakdown}
                     />
                     <div className={styles.tableWrapper}>
                         <div className={styles.header}>
@@ -77,7 +74,7 @@ export function Leaderboard({ campaign, loading }: LeaderboardProps) {
                                 light
                                 variant="sm"
                             >
-                                {t("address")}
+                                {t("account")}
                             </Typography>
                             <Typography
                                 uppercase
@@ -88,7 +85,7 @@ export function Leaderboard({ campaign, loading }: LeaderboardProps) {
                                 {t("rewardsDistributed")}
                             </Typography>
                         </div>
-                        {loadingRanks ? (
+                        {loadingDistributionBreakdown ? (
                             <>
                                 <SkeletonRow />
                                 <SkeletonRow />
@@ -96,39 +93,41 @@ export function Leaderboard({ campaign, loading }: LeaderboardProps) {
                                 <SkeletonRow />
                                 <SkeletonRow />
                             </>
-                        ) : distributionData && distributionData.length > 0 ? (
-                            distributionData.slice(0, 5).map((data) => (
-                                <div key={data.account} className={styles.row}>
-                                    <div>
-                                        <Typography weight="medium" light>
-                                            # {data.position}
-                                        </Typography>
+                        ) : distributionBreakdown &&
+                          Object.keys(
+                              distributionBreakdown.sortedDistributionsByAccount,
+                          ).length > 0 ? (
+                            Object.entries(
+                                distributionBreakdown.sortedDistributionsByAccount,
+                            )
+                                .slice(0, 5)
+                                .map(([account, distribution], i) => (
+                                    <div key={account} className={styles.row}>
+                                        <div>
+                                            <Typography weight="medium" light>
+                                                # {i + 1}
+                                            </Typography>
+                                            <Typography weight="medium">
+                                                {numeral(
+                                                    distribution.percentage,
+                                                ).format("0.[00]a")}
+                                                %
+                                            </Typography>
+                                        </div>
                                         <Typography weight="medium">
-                                            {numeral(data.rank).format(
-                                                "0.[00]a",
-                                            )}
-                                            %
+                                            {shortenAddress(account as Address)}
                                         </Typography>
+                                        <div>
+                                            <Typography weight="medium" light>
+                                                {distribution.usdValue
+                                                    ? numeral(
+                                                          distribution.usdValue,
+                                                      ).format("($ 0.00 a)")
+                                                    : "-"}
+                                            </Typography>
+                                        </div>
                                     </div>
-                                    <Typography weight="medium">
-                                        {shortenAddress(data.account)}
-                                    </Typography>
-                                    <div>
-                                        <Typography weight="medium">
-                                            {numeral(data.amount).format(
-                                                "(0.0[0] a)",
-                                            )}
-                                        </Typography>
-                                        <Typography weight="medium" light>
-                                            {data.usdValue
-                                                ? numeral(data.usdValue).format(
-                                                      "($ 0.00 a)",
-                                                  )
-                                                : "-"}
-                                        </Typography>
-                                    </div>
-                                </div>
-                            ))
+                                ))
                         ) : (
                             <Typography weight="medium" light>
                                 {t("noRewards")}
@@ -139,7 +138,7 @@ export function Leaderboard({ campaign, loading }: LeaderboardProps) {
                 <div className={styles.repartion}>
                     <RepartitionChart
                         loading={loading}
-                        repartitionData={distributionData}
+                        distributionBreakdown={distributionBreakdown}
                     />
                 </div>
             </div>

@@ -11,11 +11,11 @@
 }
 
 .statusDot {
-    @apply flex items-center justify-center w-6 h-6 rounded-full bg-gray-100;
+    @apply flex items-center justify-center w-3 h-3 rounded-full bg-gray-100;
 }
 
 .statusDot > div {
-    @apply w-5 h-5 rounded-full;
+    @apply w-3 h-3 rounded-full;
 }
 
 .live {

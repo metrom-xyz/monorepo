@@ -1,6 +1,11 @@
 import { Button } from "@/src/ui/button";
 import type { CampaignPayload } from "@/src/types";
-import { usePublicClient, useSimulateContract, useWriteContract } from "wagmi";
+import {
+    useChainId,
+    usePublicClient,
+    useSimulateContract,
+    useWriteContract,
+} from "wagmi";
 import Confetti from "react-confetti";
 import numeral from "numeral";
 import { useWindowSize } from "react-use";
@@ -37,7 +42,8 @@ export function CampaignPreview({
     const feedback = useRef<HTMLDivElement>(null);
     const router = useRouter();
     const { width, height } = useWindowSize();
-    const chainData = useChainData();
+    const chainId = useChainId();
+    const chainData = useChainData(chainId);
     const publicClient = usePublicClient();
     const { writeContractAsync } = useWriteContract();
 
@@ -53,7 +59,7 @@ export function CampaignPreview({
         error: simulateCreateError,
     } = useSimulateContract({
         abi: metromAbi,
-        address: chainData.metromContract.address,
+        address: chainData?.metromContract.address,
         functionName: "createCampaigns",
         args: [
             payload.pool &&

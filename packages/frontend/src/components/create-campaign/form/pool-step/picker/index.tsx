@@ -39,7 +39,7 @@ export function PoolPicker({ value, amm, onChange }: PoolPickerProps) {
     const listRef = useRef(null);
 
     const chain = useChainId();
-    const baseTokens = useBaseTokens();
+    const baseTokens = useBaseTokens(chain);
     const { pools, loading } = usePools(amm?.slug);
 
     const filteredPools = useMemo(

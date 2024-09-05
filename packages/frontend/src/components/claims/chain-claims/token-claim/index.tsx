@@ -31,7 +31,7 @@ export function TokenClaim({ chainId, chainClaims }: TokenClaimProps) {
     const publicClient = usePublicClient();
     const { switchChainAsync } = useSwitchChain();
     const { writeContractAsync } = useWriteContract();
-    const chainData = useChainData();
+    const chainData = useChainData(chainId);
 
     const [claiming, setClaiming] = useState(false);
     const [claimed, setClaimed] = useState(false);
@@ -43,7 +43,7 @@ export function TokenClaim({ chainId, chainClaims }: TokenClaimProps) {
     } = useSimulateContract({
         chainId,
         abi: metromAbi,
-        address: chainData.metromContract.address,
+        address: chainData?.metromContract.address,
         functionName: "claimRewards",
         args: [
             !account

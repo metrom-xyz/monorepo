@@ -1,5 +1,10 @@
 import { useCallback, useState, useEffect } from "react";
-import { useReadContracts, useAccount, useReadContract } from "wagmi";
+import {
+    useReadContracts,
+    useAccount,
+    useReadContract,
+    useChainId,
+} from "wagmi";
 import { type Address, erc20Abi, formatUnits } from "viem";
 import type { CampaignPayload } from "@/src/types";
 import { ApproveReward } from "./approve-reward";
@@ -20,7 +25,8 @@ export function ApproveRewards({
     disabled,
     onApprove,
 }: ApproveRewardsProps) {
-    const chainData = useChainData();
+    const chainId = useChainId();
+    const chainData = useChainData(chainId);
     const { address: connectedAddress } = useAccount();
 
     const [currentIndex, setCurrentIndex] = useState(0);
@@ -30,7 +36,7 @@ export function ApproveRewards({
         toApprove[currentIndex];
 
     const { data: fee, isLoading: loadingGlobalFee } = useReadContract({
-        address: chainData.metromContract.address,
+        address: chainData?.metromContract.address,
         abi: metromAbi,
         functionName: "fee",
     });

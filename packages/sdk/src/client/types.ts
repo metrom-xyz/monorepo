@@ -54,25 +54,30 @@ export interface RawCampaign {
     apr: number | null;
 }
 
-export type FetchCampaignsResponse = {
+export interface FetchCampaignsResponse {
     campaigns: RawCampaign[];
     amount: number;
-};
+}
 
-export type FetchClaimsResponse = {
+export interface FetchClaimsResponse {
     claims: RawClaim[];
-};
+}
 
-export type FetchPoolsResponse = {
+export interface FetchPoolsResponse {
     pools: RawPool[];
-};
+}
 
-export type FetchWhitelistedRewardTokensResponse = {
+export interface FetchWhitelistedRewardTokensResponse {
     tokens: RawWhitelistedToken[];
-};
+}
 
-export type FetchDistributionDataResponse = {
+export interface RawLeaf {
     account: Address;
-    token_address: Address;
-    amount: bigint;
-}[];
+    tokenAddress: Address;
+    amount: string;
+}
+
+export interface FetchSnapshotResponse {
+    timestamp: number;
+    leaves: RawLeaf[];
+}

@@ -4,12 +4,10 @@ import { AlgebraIntegralLogo } from "../../assets/logos/amms/algebra-integral";
 import { ADDRESS } from "@metrom-xyz/contracts";
 import { type ChainData } from "../index";
 import { ENVIRONMENT } from "../environment";
-import { METROM_SUBGRAPHS } from "../subgraphs";
 
 export const holeskyData: ChainData = {
     metromContract: ADDRESS[ENVIRONMENT][SupportedChain.Holesky]!,
     icon: EthLogo,
-    metromSubgraphUrl: METROM_SUBGRAPHS[ENVIRONMENT][SupportedChain.Holesky],
     amms: [
         {
             slug: SupportedAmm.TestIntegral,

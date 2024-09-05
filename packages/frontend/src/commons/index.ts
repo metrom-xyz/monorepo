@@ -29,7 +29,6 @@ export interface ChainData {
     amms: Amm[];
     baseTokens: Token[];
     rewardTokenIcons: Record<Address, string>;
-    metromSubgraphUrl: string;
 }
 
 export const METROM_DATA_MANAGER_JWT_ISSUER = "metrom-data-manager";
