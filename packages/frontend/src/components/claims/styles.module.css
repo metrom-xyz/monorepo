@@ -1,5 +1,5 @@
 .root {
-    @apply max-w-screen-lg w-full flex gap-2;
+    @apply max-w-screen-lg w-full h-fit flex gap-2 my-12;
 }
 
 .rightWrapper {
