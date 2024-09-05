@@ -8,9 +8,9 @@ import {
 import { type Address, erc20Abi, formatUnits } from "viem";
 import type { CampaignPayload } from "@/src/types";
 import { ApproveReward } from "./approve-reward";
-import type { SupportedChain, TokenAmount } from "@metrom-xyz/sdk";
+import type { TokenAmount } from "@metrom-xyz/sdk";
 import { metromAbi } from "@metrom-xyz/contracts/abi";
-import { CHAIN_DATA } from "@/src/commons";
+import { useChainData } from "@/src/hooks/useChainData";
 
 interface ApproveRewardsProps {
     rewards?: CampaignPayload["rewards"];
@@ -25,7 +25,8 @@ export function ApproveRewards({
     disabled,
     onApprove,
 }: ApproveRewardsProps) {
-    const chain: SupportedChain = useChainId();
+    const chainId = useChainId();
+    const chainData = useChainData(chainId);
     const { address: connectedAddress } = useAccount();
 
     const [currentIndex, setCurrentIndex] = useState(0);
@@ -35,7 +36,7 @@ export function ApproveRewards({
         toApprove[currentIndex];
 
     const { data: fee, isLoading: loadingGlobalFee } = useReadContract({
-        address: CHAIN_DATA[chain].contract.address,
+        address: chainData?.metromContract.address,
         abi: metromAbi,
         functionName: "fee",
     });

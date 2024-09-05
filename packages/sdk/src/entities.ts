@@ -23,6 +23,7 @@ export interface UsdPricedToken extends Token {
 }
 
 export interface UsdPricedTokenAmount extends UsdPricedToken {
+    amount: number;
     usdValue: number | null;
 }
 
@@ -103,4 +104,15 @@ export interface TokenWithBalance extends Token {
 export interface WhitelistedErc20TokenWithBalance
     extends WhitelistedErc20Token {
     balance?: bigint;
+}
+
+export interface Leaf {
+    account: Address;
+    tokenAddress: Address;
+    amount: bigint;
+}
+
+export interface Snapshot {
+    timestamp: number;
+    leaves: Leaf[];
 }

@@ -1,0 +1,15 @@
+.root {
+    @apply my-10 w-full flex justify-between gap-5 px-10 max-w-screen-xl;
+}
+
+.socials {
+    @apply flex gap-5;
+}
+
+.socialIcon {
+    @apply w-5 h-5 text-gray-900;
+}
+
+.support {
+    @apply flex flex-col gap-3;
+}

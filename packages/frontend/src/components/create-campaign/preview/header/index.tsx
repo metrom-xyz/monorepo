@@ -60,6 +60,7 @@ export function Header({ payload, backDisabled, onBack }: HeaderProps) {
             </div>
             <div className={styles.durationContainer}>
                 <TextField
+                    uppercase
                     label={t("startDate")}
                     value={dayjs(payload.startDate).format("DD/MMM/YY HH:mm")}
                 />
@@ -73,6 +74,7 @@ export function Header({ payload, backDisabled, onBack }: HeaderProps) {
                     }
                 />
                 <TextField
+                    uppercase
                     alignment="right"
                     label={t("endDate")}
                     value={dayjs(payload.endDate).format("DD/MMM/YY HH:mm")}

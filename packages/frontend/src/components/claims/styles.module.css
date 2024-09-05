@@ -1,7 +1,16 @@
 .root {
-    @apply max-w-screen-lg w-full flex gap-2;
+    @apply max-w-screen-lg w-full h-fit flex gap-2 my-12;
 }
 
 .rightWrapper {
     @apply w-full flex flex-col gap-2;
+}
+
+.fullSideCardWrapper {
+    @apply bg-white
+        rounded-xl
+        w-full
+        flex
+        justify-center
+        p-10;
 }

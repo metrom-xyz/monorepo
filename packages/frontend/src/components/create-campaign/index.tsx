@@ -10,7 +10,9 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { Modal } from "@/src/ui/modal";
 import { CreateCampaignForm } from "./form";
 import { CampaignPreview } from "./preview";
-import { ApproveRewardsButton } from "./approve-rewards-button";
+import { Button } from "@/src/ui/button";
+import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
+import { useTranslations } from "next-intl";
 
 import styles from "./styles.module.css";
 
@@ -20,6 +22,8 @@ export enum View {
 }
 
 export function CreateCampaign() {
+    const t = useTranslations("newCampaign");
+
     const [payload, setPayload] = useState<CampaignPayload>({});
     const [payloadErrors, setPayloadErrors] = useState<CampaignPayloadErrors>(
         {},
@@ -51,11 +55,6 @@ export function CreateCampaign() {
     useEffect(() => {
         setPayload({});
     }, [chainId]);
-
-    // TODO: remove
-    useEffect(() => {
-        console.log(payload);
-    }, [payload]);
 
     const handlePayloadOnChange = useCallback(
         (part: CampaignPayloadPart) => {
@@ -93,11 +92,15 @@ export function CreateCampaign() {
                     malformedPayload={malformedPayload}
                 />
             </Modal>
-            <ApproveRewardsButton
-                malformedPayload={malformedPayload}
-                payload={payload}
-                onPreviewClick={handlePreviewOnClick}
-            />
+            <Button
+                icon={ArrowRightIcon}
+                iconPlacement="right"
+                disabled={malformedPayload}
+                className={{ root: styles.button }}
+                onClick={handlePreviewOnClick}
+            >
+                {t("submit.preview")}
+            </Button>
         </div>
     );
 }

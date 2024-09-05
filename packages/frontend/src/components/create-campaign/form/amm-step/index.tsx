@@ -25,8 +25,8 @@ export function AmmStep({ disabled, amm, onAmmChange }: AmmStepProps) {
     const t = useTranslations("newCampaign.form.amm");
     const [open, setOpen] = useState(true);
 
-    const availableAmms = useAmmsInChain();
     const chainId = useChainId();
+    const availableAmms = useAmmsInChain(chainId);
 
     useEffect(() => {
         setOpen(false);

@@ -63,6 +63,7 @@ const Component = (props: ButtonProps, ref: RefType<typeof props>) => {
             [styles[size]]: true,
             [styles[variant]]: true,
             [styles.noBorder]: !border,
+            [styles.disabled]: disabled || loading,
         }),
     };
     const [Root, rootProps]: [ElementType, any] =

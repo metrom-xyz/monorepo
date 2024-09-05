@@ -1,17 +1,14 @@
-import type { CampaignPayload } from "@/src/types";
 import { RemoteLogo } from "@/src/ui/remote-logo";
 import { TextField } from "@/src/ui/text-field";
 import { Typography } from "@/src/ui/typography";
-import type { SupportedChain } from "@metrom-xyz/contracts";
 import { useTranslations } from "next-intl";
 import numeral from "numeral";
-import { useChainId } from "wagmi";
 import dayjs from "dayjs";
 import { useMemo } from "react";
 import type { NamedCampaign } from "@/src/hooks/useCampaign";
+import { Skeleton } from "@/src/ui/skeleton";
 
 import styles from "./styles.module.css";
-import { Skeleton } from "@/src/ui/skeleton";
 
 interface RewardsProps {
     campaign?: NamedCampaign;
@@ -20,25 +17,18 @@ interface RewardsProps {
 
 export function Rewards({ campaign, loading }: RewardsProps) {
     const t = useTranslations("campaignDetails.rewards");
-    const chain: SupportedChain = useChainId();
-
-    const totalRewardsUsdAmount = useMemo(() => {
-        if (!campaign) return 0;
-        return campaign.rewards.reduce((accumulator, reward) => {
-            if (!reward.usdPrice) return 0;
-            return (accumulator += reward.amount * reward.usdPrice);
-        }, 0);
-    }, [campaign]);
 
     const dailyRewards = useMemo(() => {
-        if (!totalRewardsUsdAmount || !campaign) return 0;
+        if (!campaign) return 0;
 
         const daysDuration = dayjs
             .unix(campaign.to)
             .diff(dayjs.unix(campaign.from), "days", false);
 
-        return daysDuration > 0 ? totalRewardsUsdAmount / daysDuration : 0;
-    }, [campaign, totalRewardsUsdAmount]);
+        return daysDuration > 0 && !!campaign.rewards.usdValue
+            ? campaign.rewards.usdValue / daysDuration
+            : 0;
+    }, [campaign]);
 
     return (
         <div className={styles.root}>
@@ -58,13 +48,7 @@ export function Rewards({ campaign, loading }: RewardsProps) {
                     </Typography>
                 </div>
                 {!campaign ? (
-                    <>
-                        <SkeletonReward />
-                        <SkeletonReward />
-                        <SkeletonReward />
-                        <SkeletonReward />
-                        <SkeletonReward />
-                    </>
+                    <SkeletonReward />
                 ) : (
                     campaign.rewards.map((reward) => (
                         <div key={reward.address} className={styles.row}>
@@ -72,6 +56,7 @@ export function Rewards({ campaign, loading }: RewardsProps) {
                                 <RemoteLogo
                                     chain={campaign.chainId}
                                     address={reward.address}
+                                    defaultText={reward.symbol}
                                 />
                                 <Typography
                                     uppercase
@@ -89,7 +74,9 @@ export function Rewards({ campaign, loading }: RewardsProps) {
                                 ).format("($ 0.00[0] a)")}
                             </Typography>
                             <Typography uppercase weight="medium" variant="lg">
-                                {numeral(reward.amount).format("(0.00[00] a)")}
+                                {numeral(reward.remaining).format(
+                                    "(0.00[00] a)",
+                                )}
                             </Typography>
                         </div>
                     ))
@@ -108,7 +95,7 @@ export function Rewards({ campaign, loading }: RewardsProps) {
                         variant="xl"
                         label={t("total")}
                         loading={loading || !campaign}
-                        value={numeral(totalRewardsUsdAmount).format(
+                        value={numeral(campaign?.rewards.usdValue).format(
                             "($ 0.00[0] a)",
                         )}
                         className={styles.summaryBox}

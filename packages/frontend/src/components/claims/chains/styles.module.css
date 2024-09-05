@@ -8,11 +8,15 @@
 
 .row {
     @apply flex
+        items-center
         p-3
         gap-3
-        rounded-lg
+        rounded-lg;
+}
+
+.rowAnimated {
+    @apply cursor-pointer
         hover:bg-gray-100
-        cursor-pointer
         transition-colors
         ease-in-out
         duration-200;
@@ -23,5 +27,5 @@
 }
 
 .chainIcon {
-    @apply w-5 h-5 rounded-md;
+    @apply w-5 !h-5 rounded-md;
 }

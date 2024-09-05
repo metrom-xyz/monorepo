@@ -5,6 +5,11 @@
         "claims": "Claims",
         "connectWallet": "Connect wallet"
     },
+    "footer": {
+        "support": "Support",
+        "documentation": "Documentation",
+        "contactUs": "Contact us"
+    },
     "allCampaigns": {
         "title": "all campaigns",
         "filters": {
@@ -142,9 +147,19 @@
             "tvl": "Tvl",
             "status": {
                 "text": "Status",
-                "live": "Live",
-                "upcoming": "Upcoming",
-                "ended": "Ended"
+                "duration": "Duration",
+                "live": {
+                    "text": "Live",
+                    "duration": "{days} left"
+                },
+                "upcoming": {
+                    "text": "Upcoming",
+                    "duration": "in {days}"
+                },
+                "ended": {
+                    "text": "Ended",
+                    "duration": "{days} ago"
+                }
             },
             "startDate": "Start date",
             "endDate": "End date",
@@ -157,12 +172,35 @@
             "amount": "Amount",
             "daily": "Daily rewards",
             "total": "Total value usd"
+        },
+        "leaderboard": {
+            "title": "Leaderboard",
+            "subtitle": "As of the latest distribution:",
+            "noDistribution": "Not yet distributed",
+            "personalRank": {
+                "connect": "View your rank",
+                "noRewards": "You don't have any rewards",
+                "yourRank": "Your rank",
+                "account": "Account",
+                "rewardsDistributed": "Distributed"
+            },
+            "rank": "Rank",
+            "account": "Account",
+            "rewardsDistributed": "Distributed",
+            "noRewards": "No rewards distributed",
+            "repartition": "Source repartition",
+            "others": "Others"
         }
     },
     "claims": {
         "chain": "Chain",
         "claimAll": "Claim all",
-        "claimByToken": "Claim all {tokenSymbol}"
+        "claimByToken": "Claim all {tokenSymbol}",
+        "empty": {
+            "title": "No claims found",
+            "body": "There are currently no claims associated with the connected wallet. Explore the available opportunities on the all campaigns page.",
+            "action": "All campaigns"
+        }
     },
     "accountMenu": {
         "tabs": {

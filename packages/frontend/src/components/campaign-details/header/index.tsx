@@ -6,8 +6,9 @@ import numeral from "numeral";
 import { Skeleton } from "@/src/ui/skeleton";
 import { useTranslations } from "next-intl";
 import { Button } from "@/src/ui/button";
-import { useRouter } from "@/src/navigation";
+import { useRouter } from "@/src/i18n/routing";
 import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
+import { getPoolAddLiquidityLink, getPoolExplorerLink } from "@/src/utils/amm";
 
 import styles from "./styles.module.css";
 
@@ -22,6 +23,17 @@ export function Header({ campaign }: HeaderProps) {
     const handleClaimOnClick = useCallback(() => {
         router.push("/claims");
     }, [router]);
+
+    const depositLink = getPoolAddLiquidityLink(
+        campaign.chainId,
+        campaign.pool.amm,
+        campaign.pool,
+    );
+    const exploreLink = getPoolExplorerLink(
+        campaign.chainId,
+        campaign.pool.amm,
+        campaign.pool,
+    );
 
     return (
         <div className={styles.root}>
@@ -52,7 +64,16 @@ export function Header({ campaign }: HeaderProps) {
             </div>
             <div className={styles.actionsContainer}>
                 <div className={styles.leftActions}>
-                    <Button size="xsmall">{t("deposit")}</Button>
+                    <Button
+                        size="xsmall"
+                        href={depositLink}
+                        disabled={!depositLink}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className={{ root: styles.button }}
+                    >
+                        {t("deposit")}
+                    </Button>
                     <Button
                         size="xsmall"
                         className={{ root: styles.claimButton }}
@@ -65,6 +86,10 @@ export function Header({ campaign }: HeaderProps) {
                         variant="secondary"
                         border={false}
                         icon={ArrowRightIcon}
+                        href={exploreLink}
+                        disabled={!exploreLink}
+                        target="_blank"
+                        rel="noopener noreferrer"
                         className={{ icon: styles.externalLinkIcon }}
                     >
                         {t("explorer")}

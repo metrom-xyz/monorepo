@@ -14,6 +14,7 @@ export function PoolStepPreview({ pool }: PoolStepPreviewProps) {
         <div className={styles.root}>
             <div className={styles.pool}>
                 <PoolRemoteLogo
+                    chain={pool.chainId}
                     token0={{
                         address: pool.token0.address,
                         defaultText: pool.token0.symbol,

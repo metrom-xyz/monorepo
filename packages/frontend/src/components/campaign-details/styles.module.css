@@ -1,9 +1,9 @@
 .root {
-    @apply w-full flex flex-col items-center;
+    @apply w-full flex flex-col items-center mb-5;
 }
 
 .headerWrapper {
-    @apply flex flex-col items-center w-full bg-white;
+    @apply flex flex-col items-center w-full bg-white gap-10 pt-12;
 }
 
 .header {
@@ -11,5 +11,5 @@
 }
 
 .contentWrapper {
-    @apply w-full max-w-screen-lg flex flex-col gap-16;
+    @apply w-full max-w-screen-lg flex flex-col gap-16 mb-12;
 }

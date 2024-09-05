@@ -1,15 +1,15 @@
-import { useAccount, useReadContracts } from "wagmi";
+import { useAccount, useBlockNumber, useReadContracts } from "wagmi";
 import { formatUnits } from "viem";
 import { CHAIN_DATA, metromApiClient } from "../commons";
-import { SupportedChain, type Claim } from "@metrom-xyz/sdk";
+import { type Claim } from "@metrom-xyz/sdk";
 import { useEffect, useState } from "react";
 import { metromAbi } from "@metrom-xyz/contracts/abi";
+import { useQueryClient } from "@tanstack/react-query";
 
 interface ClaimWithRemaining extends Claim {
     remaining: number;
 }
 
-// TODO: refetch and update claimed at each block
 export function useClaims(): {
     loading: boolean;
     claims: Claim[];
@@ -28,6 +28,7 @@ export function useClaims(): {
 
             if (!cancelled) setLoading(false);
             if (!cancelled) setRawClaims([]);
+            if (!cancelled) setClaims([]);
 
             try {
                 if (!cancelled) setLoading(true);
@@ -49,6 +50,8 @@ export function useClaims(): {
         };
     }, [address]);
 
+    const queryClient = useQueryClient();
+    const { data: blockNumber, queryKey } = useBlockNumber({ watch: true });
     const {
         isLoading: loadingClaimed,
         data: claimedData,
@@ -59,15 +62,17 @@ export function useClaims(): {
         contracts: rawClaims.map((rawClaim) => {
             return {
                 chainId: rawClaim.chainId,
-                address:
-                    CHAIN_DATA[rawClaim.chainId as SupportedChain].contract
-                        .address,
+                address: CHAIN_DATA[rawClaim.chainId]?.metromContract.address,
                 abi: metromAbi,
                 functionName: "claimedCampaignReward",
                 args: [rawClaim.campaignId, rawClaim.token.address, address],
             };
         }),
     });
+
+    useEffect(() => {
+        queryClient.invalidateQueries({ queryKey });
+    }, [blockNumber, queryClient, queryKey]);
 
     useEffect(() => {
         if (loadingClaimed) return;

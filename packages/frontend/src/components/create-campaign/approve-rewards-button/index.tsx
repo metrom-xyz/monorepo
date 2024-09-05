@@ -1,36 +1,35 @@
 import { useTranslations } from "next-intl";
 import { usePrevious } from "react-use";
 import { useAccount, useChainId } from "wagmi";
-import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
 import { Button } from "@/src/ui/button";
 import { WalletIcon } from "@/src/assets/wallet-icon";
 import { useConnectModal } from "@rainbow-me/rainbowkit";
 import { useCallback, useEffect, useState } from "react";
 import { ApproveRewards } from "./approve-rewards";
 import type { CampaignPayload } from "@/src/types";
-import { CHAIN_DATA } from "@/src/commons";
-import type { SupportedChain } from "@metrom-xyz/contracts";
+import { useChainData } from "@/src/hooks/useChainData";
 
 import styles from "./styles.module.css";
 
 interface SubmitButtonProps {
     malformedPayload: boolean;
     payload: CampaignPayload;
-    onPreviewClick: () => void;
+    onApproved: () => void;
 }
 
 export function ApproveRewardsButton({
     malformedPayload,
     payload,
-    onPreviewClick,
+    onApproved,
 }: SubmitButtonProps) {
-    const t = useTranslations("newCampaign.submit");
+    const t = useTranslations("campaignPreview");
     const [approved, setApproved] = useState(false);
 
     const previousRewards = usePrevious(payload.rewards);
 
+    const chainId = useChainId();
     const { openConnectModal } = useConnectModal();
-    const chain: SupportedChain = useChainId();
+    const chainData = useChainData(chainId);
     const { address: connectedAddress } = useAccount();
 
     useEffect(() => {
@@ -43,7 +42,8 @@ export function ApproveRewardsButton({
 
     const handleOnApprove = useCallback(() => {
         setApproved(true);
-    }, []);
+        onApproved();
+    }, [onApproved]);
 
     if (!connectedAddress)
         return (
@@ -64,19 +64,9 @@ export function ApproveRewardsButton({
                 onApprove={handleOnApprove}
                 disabled={malformedPayload}
                 rewards={payload?.rewards}
-                spender={CHAIN_DATA[chain].contract.address}
+                spender={chainData?.metromContract.address}
             />
         );
 
-    return (
-        <Button
-            icon={ArrowRightIcon}
-            iconPlacement="right"
-            disabled={malformedPayload}
-            className={{ root: styles.button }}
-            onClick={onPreviewClick}
-        >
-            {t("preview")}
-        </Button>
-    );
+    return null;
 }

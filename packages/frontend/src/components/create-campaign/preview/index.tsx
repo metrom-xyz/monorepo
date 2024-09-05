@@ -1,8 +1,6 @@
 import { Button } from "@/src/ui/button";
 import type { CampaignPayload } from "@/src/types";
-import { NewCampaignIcon } from "@/src/assets/new-campaign-icon";
 import {
-    useAccount,
     useChainId,
     usePublicClient,
     useSimulateContract,
@@ -13,16 +11,15 @@ import numeral from "numeral";
 import { useWindowSize } from "react-use";
 import { parseUnits } from "viem";
 import { metromAbi } from "@metrom-xyz/contracts/abi";
-import { CHAIN_DATA } from "@/src/commons";
-import type { SupportedChain } from "@metrom-xyz/contracts";
 import { useCallback, useMemo, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
-import { WalletIcon } from "@/src/assets/wallet-icon";
-import { useConnectModal } from "@rainbow-me/rainbowkit";
 import { Typography } from "@/src/ui/typography";
 import { MetromLightLogo } from "@/src/assets/metrom-light-logo";
-import { useRouter } from "@/src/navigation";
+import { useRouter } from "@/src/i18n/routing";
 import { TextField } from "@/src/ui/text-field";
+import { useChainData } from "@/src/hooks/useChainData";
+import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
+import { ApproveRewardsButton } from "../approve-rewards-button";
 import { Rewards } from "./rewards";
 import { Header } from "./header";
 
@@ -40,16 +37,16 @@ export function CampaignPreview({
     onBack,
 }: CampaignPreviewProps) {
     const t = useTranslations("campaignPreview");
-    const [creating, setCreating] = useState(false);
+    const [deploying, setDeploying] = useState(false);
     const [created, setCreated] = useState(false);
+    const [rewardsApproved, setRewardsApproved] = useState(false);
 
     const feedback = useRef<HTMLDivElement>(null);
     const router = useRouter();
     const { width, height } = useWindowSize();
-    const { openConnectModal } = useConnectModal();
-    const chain: SupportedChain = useChainId();
+    const chainId = useChainId();
+    const chainData = useChainData(chainId);
     const publicClient = usePublicClient();
-    const { address: connectedAddress } = useAccount();
     const { writeContractAsync } = useWriteContract();
 
     const secondsDuration = useMemo(() => {
@@ -60,12 +57,14 @@ export function CampaignPreview({
     const {
         data: simulatedCreate,
         isLoading: simulatingCreate,
-        isError: simulateCreateError,
+        isError: simulateCreateErrored,
+        error: simulateCreateError,
     } = useSimulateContract({
         abi: metromAbi,
-        address: CHAIN_DATA[chain].contract.address,
+        address: chainData?.metromContract.address,
         functionName: "createCampaigns",
         args: [
+            rewardsApproved &&
             payload.pool &&
             payload.startDate &&
             payload.endDate &&
@@ -92,6 +91,7 @@ export function CampaignPreview({
         ],
         query: {
             enabled:
+                rewardsApproved &&
                 !malformedPayload &&
                 !!payload.pool &&
                 !!payload.startDate &&
@@ -101,11 +101,23 @@ export function CampaignPreview({
         },
     });
 
+    function handleOnRewardsApproved() {
+        setRewardsApproved(true);
+    }
+
     const handleOnDeploy = useCallback(() => {
+        if (simulateCreateErrored) {
+            console.warn(
+                `Could not deploy the campaign: ${simulateCreateError}`,
+            );
+            return;
+        }
+
         if (!writeContractAsync || !publicClient || !simulatedCreate?.request)
             return;
+
         const create = async () => {
-            setCreating(true);
+            setDeploying(true);
             try {
                 const tx = await writeContractAsync(simulatedCreate.request);
                 const receipt = await publicClient.waitForTransactionReceipt({
@@ -121,11 +133,17 @@ export function CampaignPreview({
             } catch (error) {
                 console.warn("could not create kpi token", error);
             } finally {
-                setCreating(false);
+                setDeploying(false);
             }
         };
         void create();
-    }, [publicClient, simulatedCreate, writeContractAsync]);
+    }, [
+        publicClient,
+        simulateCreateError,
+        simulateCreateErrored,
+        simulatedCreate,
+        writeContractAsync,
+    ]);
 
     function handleGoToAllCampaigns() {
         router.push("/");
@@ -136,7 +154,7 @@ export function CampaignPreview({
         return (
             <div ref={feedback} className={styles.root}>
                 <Header
-                    backDisabled={simulatingCreate || creating}
+                    backDisabled={simulatingCreate || deploying}
                     payload={payload}
                     onBack={onBack}
                 />
@@ -150,36 +168,32 @@ export function CampaignPreview({
                             )}
                         />
                         {/* TODO: add apr */}
-                        <TextField boxed label={t("apr")} value={"0.0%"} />
+                        <TextField boxed label={t("apr")} value={"-"} />
                     </div>
                     <Rewards
                         rewards={payload.rewards}
                         campaignDurationSeconds={secondsDuration}
                     />
-                    <div className={styles.createButtonContainer}>
-                        {!connectedAddress ? (
+                    <div className={styles.deployButtonContainer}>
+                        {rewardsApproved ? (
                             <Button
-                                icon={WalletIcon}
-                                iconPlacement="right"
-                                disabled={malformedPayload}
-                                className={{ root: styles.createButton }}
-                                onClick={openConnectModal}
-                            >
-                                {t("connectWallet")}
-                            </Button>
-                        ) : (
-                            <Button
-                                icon={NewCampaignIcon}
+                                icon={ArrowRightIcon}
                                 iconPlacement="right"
                                 disabled={
-                                    malformedPayload || simulateCreateError
+                                    malformedPayload || simulateCreateErrored
                                 }
-                                loading={simulatingCreate || creating}
-                                className={{ root: styles.createButton }}
+                                loading={deploying}
+                                className={{ root: styles.deployButton }}
                                 onClick={handleOnDeploy}
                             >
                                 {t("deploy")}
                             </Button>
+                        ) : (
+                            <ApproveRewardsButton
+                                malformedPayload={malformedPayload}
+                                payload={payload}
+                                onApproved={handleOnRewardsApproved}
+                            />
                         )}
                     </div>
                 </div>

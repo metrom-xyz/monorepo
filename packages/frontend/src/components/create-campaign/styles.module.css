@@ -4,5 +4,10 @@
         gap-11
         max-w-[400px]
         w-full
-        mb-5;
+        mb-5
+        my-12;
+}
+
+.button {
+    @apply w-full;
 }

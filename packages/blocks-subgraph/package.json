@@ -11,26 +11,27 @@
         "deploy:arbitrum": "pnpm prepare:deploy arbitrum-one && pnpm codegen && graph deploy --studio metrom-blocks-arbitrum",
         "deploy:mantle-sepolia": "pnpm prepare:deploy mantle-sepolia && pnpm codegen && graph build && graph deploy metrom-mantle-sepolia-blocks -l 0.0.1 --node https://subgraph-api.mantle.xyz/deploy --ipfs https://subgraph-api.mantle.xyz/ipfs",
         "deploy:mantle": "pnpm prepare:deploy mantle && pnpm codegen && graph build && graph deploy metrom-mantle-blocks -l 0.0.1 --node https://subgraph-api.mantle.xyz/deploy --ipfs https://subgraph-api.mantle.xyz/ipfs",
+        "deploy:mode": "pnpm prepare:deploy mode-mainnet && pnpm codegen && graph build && graph deploy --studio metrom-mode-blocks -l 0.0.1",
         "lint": "eslint .",
         "format": "eslint --fix ."
     },
     "dependencies": {
-        "@graphprotocol/graph-cli": "0.78.0",
+        "@graphprotocol/graph-cli": "0.81.0",
         "@graphprotocol/graph-ts": "0.35.1"
     },
     "devDependencies": {
-        "@eslint/js": "^9.9.0",
+        "@eslint/js": "^9.9.1",
         "@types/eslint__js": "^8.42.3",
         "@types/mustache": "^4.2.5",
-        "@types/node": "^20.14.9",
-        "eslint": "^8",
+        "@types/node": "^22.5.2",
+        "eslint": "^9.9.1",
         "eslint-config-prettier": "^9.1.0",
-        "eslint-config-turbo": "^2.0.14",
+        "eslint-config-turbo": "^2.1.1",
         "eslint-plugin-prettier": "^5.2.1",
         "mustache": "^4.2.0",
         "prettier": "^3.3.3",
-        "tsx": "^4.17.0",
+        "tsx": "^4.19.0",
         "typescript": "^5.5.4",
-        "typescript-eslint": "^7.15.0"
+        "typescript-eslint": "^8.4.0"
     }
 }

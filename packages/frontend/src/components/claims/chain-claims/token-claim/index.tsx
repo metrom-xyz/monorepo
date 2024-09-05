@@ -1,7 +1,5 @@
 import classNames from "@/src/utils/classes";
 import { Typography } from "@/src/ui/typography";
-import { CHAIN_DATA } from "@/src/commons";
-import { type SupportedChain } from "@metrom-xyz/sdk";
 import { Button } from "@/src/ui/button";
 import { useTranslations } from "next-intl";
 import {
@@ -17,6 +15,8 @@ import { useCallback, useState } from "react";
 import { RemoteLogo } from "@/src/ui/remote-logo";
 import numeral from "numeral";
 import type { TokenClaims } from "..";
+import { Skeleton } from "@/src/ui/skeleton";
+import { useChainData } from "@/src/hooks/useChainData";
 
 import styles from "./styles.module.css";
 
@@ -31,6 +31,7 @@ export function TokenClaim({ chainId, chainClaims }: TokenClaimProps) {
     const publicClient = usePublicClient();
     const { switchChainAsync } = useSwitchChain();
     const { writeContractAsync } = useWriteContract();
+    const chainData = useChainData(chainId);
 
     const [claiming, setClaiming] = useState(false);
     const [claimed, setClaimed] = useState(false);
@@ -42,7 +43,7 @@ export function TokenClaim({ chainId, chainClaims }: TokenClaimProps) {
     } = useSimulateContract({
         chainId,
         abi: metromAbi,
-        address: CHAIN_DATA[chainId as SupportedChain].contract.address,
+        address: chainData?.metromContract.address,
         functionName: "claimRewards",
         args: [
             !account
@@ -124,6 +125,19 @@ export function TokenClaim({ chainId, chainClaims }: TokenClaimProps) {
             >
                 {t("claimByToken", { tokenSymbol: chainClaims.token.symbol })}
             </Button>
+        </div>
+    );
+}
+
+export function SkeletonTokenClaim() {
+    return (
+        <div className={classNames(styles.root)}>
+            <div className={styles.leftWrapper}>
+                <RemoteLogo loading size="lg" />
+                <Skeleton width={60} variant="lg" />
+                <Skeleton width={70} variant="lg" />
+            </div>
+            <Button variant="secondary" size="small" loading />
         </div>
     );
 }

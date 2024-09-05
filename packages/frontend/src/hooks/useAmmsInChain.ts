@@ -1,14 +1,14 @@
-import type { SupportedChain } from "@metrom-xyz/contracts";
-import { useChainId } from "wagmi";
-import { CHAIN_DATA } from "../commons";
 import type { AmmInfo } from "../types";
+import { useChainData } from "./useChainData";
 
-export function useAmmsInChain(): AmmInfo[] {
-    const chainId: SupportedChain = useChainId();
+export function useAmmsInChain(chainId?: number): AmmInfo[] {
+    const chainData = useChainData(chainId);
 
-    return CHAIN_DATA[chainId].amms.map((amm) => ({
-        slug: amm.slug,
-        name: amm.name,
-        logo: amm.logo,
-    }));
+    return chainData
+        ? chainData.amms.map((amm) => ({
+              slug: amm.slug,
+              name: amm.name,
+              logo: amm.logo,
+          }))
+        : [];
 }

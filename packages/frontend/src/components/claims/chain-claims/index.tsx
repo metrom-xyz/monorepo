@@ -1,7 +1,7 @@
 import { type Claim, type Token } from "@metrom-xyz/sdk";
 import { useMemo } from "react";
 import { type Address } from "viem";
-import { TokenClaim } from "./token-claim";
+import { SkeletonTokenClaim, TokenClaim } from "./token-claim";
 import type { ChainWithClaimsData } from "..";
 
 interface ChainOverviewProps {
@@ -43,4 +43,13 @@ export function ChainClaims({ chainWithClaimsData }: ChainOverviewProps) {
             />
         );
     });
+}
+
+export function SkeletonChainClaims() {
+    return (
+        <>
+            <SkeletonTokenClaim />
+            <SkeletonTokenClaim />
+        </>
+    );
 }

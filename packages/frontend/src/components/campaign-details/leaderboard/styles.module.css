@@ -1,0 +1,69 @@
+.root {
+    @apply flex flex-col gap-4;
+}
+
+.titleContainer {
+    @apply flex flex-col gap-2;
+}
+
+.subtitleContainer {
+    @apply flex items-center gap-1;
+}
+
+.cardsWrapper {
+    @apply flex gap-4;
+}
+
+.card {
+    @apply w-full
+        flex
+        flex-col
+        flex-[2]
+        min-h-[352px]
+        gap-7
+        px-5
+        py-4
+        bg-white
+        rounded-2xl;
+}
+
+.repartion {
+    @apply w-full
+        flex-[1]
+        px-4
+        py-3.5
+        bg-white
+        rounded-2xl;
+}
+
+.tableWrapper {
+    @apply flex flex-col gap-7 px-5;
+}
+
+.header {
+    @apply grid grid-cols-3;
+}
+
+.header > :nth-child(2) {
+    @apply justify-self-center;
+}
+
+.header > :last-child {
+    @apply justify-self-end;
+}
+
+.row {
+    @apply grid grid-cols-3 items-center;
+}
+
+.row > :first-child {
+    @apply flex items-center gap-4;
+}
+
+.row > :nth-child(2) {
+    @apply justify-self-center;
+}
+
+.row > :last-child {
+    @apply flex items-center gap-4 justify-self-end;
+}

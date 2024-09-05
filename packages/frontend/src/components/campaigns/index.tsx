@@ -169,13 +169,11 @@ export function Campaigns() {
     const handleStatusChange = useCallback(
         (status: SelectOption<FilterableStatus>) => {
             const params = new URLSearchParams(searchParams.toString());
-            console.log(status.value, FilterableStatus.All);
             if (status.value)
                 if (params.has(QUERY_PARAM_STATUS))
                     params.set(QUERY_PARAM_STATUS, status.value.toString());
                 else params.append(QUERY_PARAM_STATUS, status.value.toString());
             else params.delete(QUERY_PARAM_STATUS);
-            console.log(params, params.toString());
             router.push(`${pathname}?${params.toString()}`);
             setStatus(status.value);
         },
