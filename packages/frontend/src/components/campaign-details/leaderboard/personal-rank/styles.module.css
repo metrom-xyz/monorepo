@@ -36,19 +36,3 @@
 .row > :last-child {
     @apply flex items-center gap-4 justify-self-end;
 }
-
-.rewardsPopover {
-    @apply flex flex-col gap-3 px-5 py-4;
-}
-
-.rewardsPopoverRow {
-    @apply flex items-center gap-6 justify-between;
-}
-
-.rewardsPopoverRow > div {
-    @apply flex items-center gap-2;
-}
-
-.rankWrapper {
-    @apply cursor-pointer;
-}

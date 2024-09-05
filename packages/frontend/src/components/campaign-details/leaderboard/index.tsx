@@ -8,6 +8,7 @@ import numeral from "numeral";
 import { PersonalRank } from "./personal-rank";
 import { RepartitionChart } from "./repartition-chart";
 import type { Address } from "viem";
+import { RewardsBreakdown } from "./rewards-breakdown";
 
 import styles from "./styles.module.css";
 
@@ -118,13 +119,11 @@ export function Leaderboard({ campaign, loading }: LeaderboardProps) {
                                             {shortenAddress(account as Address)}
                                         </Typography>
                                         <div>
-                                            <Typography weight="medium" light>
-                                                {distribution.usdValue
-                                                    ? numeral(
-                                                          distribution.usdValue,
-                                                      ).format("($ 0.00 a)")
-                                                    : "-"}
-                                            </Typography>
+                                            <RewardsBreakdown
+                                                chain={campaign?.chainId}
+                                                accrued={distribution.accrued}
+                                                usdValue={distribution.usdValue}
+                                            />
                                         </div>
                                     </div>
                                 ))
