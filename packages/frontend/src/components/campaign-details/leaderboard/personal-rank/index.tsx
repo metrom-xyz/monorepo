@@ -13,6 +13,7 @@ import type { Address } from "viem";
 import { RewardsBreakdown } from "../rewards-breakdown";
 
 import styles from "./styles.module.css";
+import { formatPercentage } from "@/src/utils/format";
 
 interface PersonalRankProps {
     chain?: SupportedChain;
@@ -86,10 +87,7 @@ export function PersonalRank({
                             # {personalDistribution.position}
                         </Typography>
                         <Typography weight="medium">
-                            {numeral(personalDistribution.percentage).format(
-                                "0.[00]a",
-                            )}
-                            %
+                            {formatPercentage(personalDistribution.percentage)}%
                         </Typography>
                     </div>
                     <Typography weight="medium">

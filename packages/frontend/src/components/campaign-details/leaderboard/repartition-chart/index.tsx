@@ -9,6 +9,7 @@ import { getAddressColor } from "@/src/utils/address";
 import { useTransition, animated } from "@react-spring/web";
 
 import styles from "./styles.module.css";
+import { formatPercentage } from "@/src/utils/format";
 
 interface RepartitionChartProps {
     loading: boolean;
@@ -120,7 +121,7 @@ function RankTooltip({ active, payload }: any) {
                         #{payload[0].payload.position || t("others")}
                     </Typography>
                     <Typography weight="bold" variant="xl2">
-                        {numeral(payload[0].value).format("0.[0]")}%
+                        {formatPercentage(payload[0].value)}%
                     </Typography>
                 </animated.div>
             ),

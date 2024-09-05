@@ -4,6 +4,7 @@ import { PoolRemoteLogo } from "@/src/ui/pool-remote-logo";
 import { Typography } from "@/src/ui/typography";
 
 import styles from "./styles.module.css";
+import { formatPercentage, formatUsdAmount } from "@/src/utils/format";
 
 export interface PoolStepPreviewProps {
     pool: Pool;
@@ -35,13 +36,13 @@ export function PoolStepPreview({ pool }: PoolStepPreviewProps) {
                             weight="medium"
                             className={styles.fee}
                         >
-                            {numeral(pool.fee).format("0.0[0]")}%
+                            {formatPercentage(pool.fee)}%
                         </Typography>
                     )}
                 </div>
             </div>
             <Typography weight="medium" variant="sm" light>
-                {numeral(pool.tvl).format("($ 0.00 a)")}
+                {formatUsdAmount(pool.tvl)}
             </Typography>
         </div>
     );

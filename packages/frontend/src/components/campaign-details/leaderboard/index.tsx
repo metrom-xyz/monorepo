@@ -11,6 +11,7 @@ import type { Address } from "viem";
 import { RewardsBreakdown } from "./rewards-breakdown";
 
 import styles from "./styles.module.css";
+import { formatPercentage } from "@/src/utils/format";
 
 interface LeaderboardProps {
     campaign?: Campaign;
@@ -106,12 +107,12 @@ export function Leaderboard({ campaign, loading }: LeaderboardProps) {
                                     <div key={account} className={styles.row}>
                                         <div>
                                             <Typography weight="medium" light>
-                                                # {i + 1}
+                                                #{i + 1}
                                             </Typography>
                                             <Typography weight="medium">
-                                                {numeral(
+                                                {formatPercentage(
                                                     distribution.percentage,
-                                                ).format("0.[00]a")}
+                                                )}
                                                 %
                                             </Typography>
                                         </div>

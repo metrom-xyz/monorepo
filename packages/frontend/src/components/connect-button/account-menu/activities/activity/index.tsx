@@ -11,6 +11,7 @@ import { RemoteLogo } from "@/src/ui/remote-logo";
 import numeral from "numeral";
 
 import styles from "./styles.module.css";
+import { formatTokenAmount } from "@/src/utils/format";
 
 interface ActivityProps extends Activity {
     chainId: number;
@@ -59,7 +60,7 @@ export function Activity({ chainId, transaction, payload }: ActivityProps) {
                             />
                             <Typography>{payload.token.symbol}</Typography>
                             <Typography>
-                                {numeral(payload.amount).format("0.0[000]")}
+                                {formatTokenAmount(payload.amount)}
                             </Typography>
                         </div>
                     )}

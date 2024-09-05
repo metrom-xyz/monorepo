@@ -7,6 +7,7 @@ import { PoolRemoteLogo } from "@/src/ui/pool-remote-logo";
 import { Skeleton } from "@/src/ui/skeleton";
 
 import styles from "./styles.module.css";
+import { formatPercentage, formatUsdAmount } from "@/src/utils/format";
 
 interface PickerRowProps {
     style?: any;
@@ -71,7 +72,7 @@ export function Row({
                             light
                             className={styles.fee}
                         >
-                            {numeral(pool.fee).format("0.0[0]")}%
+                            {formatPercentage(pool.fee)}%
                         </Typography>
                     ) : null}
                 </div>
@@ -80,7 +81,7 @@ export function Row({
                 <Skeleton width="64px" variant="sm" />
             ) : (
                 <Typography weight="medium" variant="sm" light>
-                    {numeral(pool.tvl).format("($ 0.00 a)")}
+                    {formatUsdAmount(pool.tvl)}
                 </Typography>
             )}
         </div>

@@ -24,6 +24,7 @@ import { Rewards } from "./rewards";
 import { Header } from "./header";
 
 import styles from "./styles.module.css";
+import { formatUsdAmount } from "@/src/utils/format";
 
 interface CampaignPreviewProps {
     malformedPayload: boolean;
@@ -163,9 +164,7 @@ export function CampaignPreview({
                         <TextField
                             boxed
                             label={t("tvl")}
-                            value={numeral(payload.pool?.tvl).format(
-                                "($ 0.00 a)",
-                            )}
+                            value={formatUsdAmount(payload.pool?.tvl)}
                         />
                         {/* TODO: add apr */}
                         <TextField boxed label={t("apr")} value={"-"} />

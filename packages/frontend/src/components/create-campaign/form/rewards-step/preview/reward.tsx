@@ -11,6 +11,7 @@ import type { Address } from "viem";
 import classNames from "@/src/utils/classes";
 
 import styles from "./styles.module.css";
+import { formatTokenAmount, formatUsdAmount } from "@/src/utils/format";
 
 interface RewardProps {
     reward: WhitelistedErc20TokenAmount;
@@ -77,12 +78,10 @@ export function Reward({
                 weight="medium"
                 className={styles.rewardAmount}
             >
-                {numeral(reward.amount).format("(0.00[00] a)")}
+                {formatTokenAmount(reward.amount)}
             </Typography>
             <Typography weight="medium" light variant="sm">
-                {tokenUsdValue
-                    ? numeral(tokenUsdValue).format("($ 0.00 a)")
-                    : "-"}
+                {tokenUsdValue ? formatUsdAmount(tokenUsdValue) : "-"}
             </Typography>
             <div className={styles.rewardName}>
                 <RemoteLogo

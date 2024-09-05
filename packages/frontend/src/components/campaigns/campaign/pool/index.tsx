@@ -7,6 +7,7 @@ import type { NamedCampaign } from "@/src/hooks/useCampaigns";
 import numeral from "numeral";
 
 import styles from "./styles.module.css";
+import { formatPercentage } from "@/src/utils/format";
 
 interface PoolProps {
     campaign: NamedCampaign;
@@ -31,7 +32,7 @@ export function Pool({ campaign }: PoolProps) {
                     {campaign.name}
                 </Typography>
                 <Typography variant="sm" weight="medium" light>
-                    {numeral(campaign.pool.fee).format("0.00[0]")}%
+                    {formatPercentage(campaign.pool.fee)}%
                 </Typography>
             </div>
         </div>

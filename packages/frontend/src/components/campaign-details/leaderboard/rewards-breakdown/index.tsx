@@ -7,6 +7,7 @@ import numeral from "numeral";
 import { useRef, useState } from "react";
 
 import styles from "./styles.module.css";
+import { formatTokenAmount, formatUsdAmount } from "@/src/utils/format";
 
 interface RewardsBreakdownProps {
     chain?: SupportedChain;
@@ -60,15 +61,13 @@ export function RewardsBreakdown({
                             </div>
                             <div>
                                 <Typography weight="medium">
-                                    {numeral(accruedReward.amount).format(
-                                        "(0.0[0] a)",
-                                    )}
+                                    {formatTokenAmount(accruedReward.amount)}
                                 </Typography>
                                 <Typography weight="medium">
                                     {accruedReward.usdValue
-                                        ? numeral(
+                                        ? formatUsdAmount(
                                               accruedReward.usdValue,
-                                          ).format("($ 0.00 a)")
+                                          )
                                         : "-"}
                                 </Typography>
                             </div>
@@ -83,7 +82,7 @@ export function RewardsBreakdown({
                 className={styles.rankWrapper}
             >
                 <Typography weight="medium" light>
-                    {usdValue ? numeral(usdValue).format("($ 0.00 a)") : "-"}
+                    {usdValue ? formatUsdAmount(usdValue) : "-"}
                 </Typography>
             </div>
         </>

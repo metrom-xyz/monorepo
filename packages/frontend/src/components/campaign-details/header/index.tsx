@@ -11,6 +11,7 @@ import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
 import { getPoolAddLiquidityLink, getPoolExplorerLink } from "@/src/utils/amm";
 
 import styles from "./styles.module.css";
+import { formatPercentage } from "@/src/utils/format";
 
 interface HeaderProps {
     campaign: NamedCampaign;
@@ -55,7 +56,7 @@ export function Header({ campaign }: HeaderProps) {
                         {campaign.name}
                     </Typography>
                     <Typography variant="lg" weight="medium" light>
-                        {numeral(campaign.pool.fee).format("0.0[0]")}%
+                        {formatPercentage(campaign.pool.fee)}%
                     </Typography>
                 </div>
                 <Typography variant="sm" weight="medium" light>
@@ -102,9 +103,7 @@ export function Header({ campaign }: HeaderProps) {
                         variant="lg"
                         className={styles.aprText}
                     >
-                        {t("apr", {
-                            value: numeral(campaign.apr).format("0.0[0]"),
-                        })}
+                        {t("apr", { value: formatPercentage(campaign.apr) })}
                     </Typography>
                 </div>
             </div>

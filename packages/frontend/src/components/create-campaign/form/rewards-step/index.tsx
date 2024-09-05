@@ -29,6 +29,7 @@ import { useWatchBalance } from "@/src/hooks/useWatchBalance";
 import { useTransition, animated } from "@react-spring/web";
 
 import styles from "./styles.module.css";
+import { formatUsdAmount } from "@/src/utils/format";
 
 interface RewardsStepProps {
     disabled?: boolean;
@@ -283,7 +284,7 @@ export function RewardsStep({
                         {t("totalUsd")}
                     </Typography>
                     <Typography uppercase weight="bold" light>
-                        {numeral(totalRewardsUsdAmount).format("($ 0.00[0] a)")}
+                        {formatUsdAmount(totalRewardsUsdAmount)}
                     </Typography>
                 </div>
             </StepPreview>

@@ -9,6 +9,7 @@ import numeral from "numeral";
 import { Skeleton } from "@/src/ui/skeleton";
 
 import styles from "./styles.module.css";
+import { formatUsdAmount } from "@/src/utils/format";
 
 interface RewardsProps {
     from: number;
@@ -44,7 +45,7 @@ export function Rewards({ from, to, rewards, chainId }: RewardsProps) {
                 })}
             </div>
             <Typography weight="medium">
-                {numeral(perDayUsdValue).format("($ 0.0[0] a)")}
+                {formatUsdAmount(perDayUsdValue)}
             </Typography>
         </div>
     );

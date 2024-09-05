@@ -19,6 +19,7 @@ import { Skeleton } from "@/src/ui/skeleton";
 import { useChainData } from "@/src/hooks/useChainData";
 
 import styles from "./styles.module.css";
+import { formatTokenAmount } from "@/src/utils/format";
 
 interface TokenClaimProps {
     chainId: number;
@@ -113,7 +114,7 @@ export function TokenClaim({ chainId, chainClaims }: TokenClaimProps) {
                     {chainClaims.token.symbol}
                 </Typography>
                 <Typography variant="lg" weight="medium">
-                    {numeral(chainClaims.totalAmount).format("(0.00[00]a")}
+                    {formatTokenAmount(chainClaims.totalAmount)}
                 </Typography>
             </div>
             <Button

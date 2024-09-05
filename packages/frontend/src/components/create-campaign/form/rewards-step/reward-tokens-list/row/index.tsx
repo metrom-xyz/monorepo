@@ -11,6 +11,7 @@ import { RemoteLogo } from "@/src/ui/remote-logo";
 import numeral from "numeral";
 
 import styles from "./styles.module.css";
+import { formatTokenAmount } from "@/src/utils/format";
 
 interface PickerRowProps {
     token: WhitelistedErc20TokenWithBalance | null;
@@ -69,9 +70,11 @@ export function Row({
             ) : (
                 <Typography variant="xs" weight="medium" light>
                     {token.balance
-                        ? numeral(
-                              formatUnits(token.balance, token.decimals),
-                          ).format("(0.00[00] a)")
+                        ? formatTokenAmount(
+                              Number(
+                                  formatUnits(token.balance, token.decimals),
+                              ),
+                          )
                         : "-"}
                 </Typography>
             )}
