@@ -1,4 +1,15 @@
 .root {
+    @apply h-20
+        w-full
+        flex
+        justify-center;
+}
+
+.header {
+    @apply bg-white;
+}
+
+.main {
     @apply relative
         h-20
         w-full

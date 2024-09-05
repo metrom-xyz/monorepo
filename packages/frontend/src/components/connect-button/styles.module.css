@@ -26,6 +26,10 @@
         ease-in-out;
 }
 
+.wrongNetwork {
+    @apply bg-red-300;
+}
+
 .networkIcon {
     @apply w-5 h-5;
 }

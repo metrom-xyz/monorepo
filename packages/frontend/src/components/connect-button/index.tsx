@@ -67,7 +67,9 @@ export function ConnectButton() {
                     <div className={styles.root}>
                         <div className={styles.wrapper}>
                             <div
-                                className={styles.networkWrapper}
+                                className={classNames(styles.networkWrapper, {
+                                    [styles.wrongNetwork]: chain?.unsupported,
+                                })}
                                 ref={setNetworkWrapper}
                                 onClick={handleOpenNetworkPopover}
                             >

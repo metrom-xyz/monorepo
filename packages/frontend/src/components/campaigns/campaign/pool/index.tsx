@@ -2,9 +2,9 @@
 
 import { Typography } from "@/src/ui/typography";
 import { PoolRemoteLogo } from "@/src/ui/pool-remote-logo";
-import { useChainId } from "wagmi";
 import { Skeleton } from "@/src/ui/skeleton";
 import type { NamedCampaign } from "@/src/hooks/useCampaigns";
+import numeral from "numeral";
 
 import styles from "./styles.module.css";
 
@@ -31,7 +31,7 @@ export function Pool({ campaign }: PoolProps) {
                     {campaign.name}
                 </Typography>
                 <Typography variant="sm" weight="medium" light>
-                    {campaign.pool.fee}%
+                    {numeral(campaign.pool.fee).format("0.00[0]")}%
                 </Typography>
             </div>
         </div>

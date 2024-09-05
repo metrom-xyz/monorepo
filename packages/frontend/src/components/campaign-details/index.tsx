@@ -3,12 +3,10 @@
 import type { SupportedChain } from "@metrom-xyz/contracts";
 import { useCampaign } from "@/src/hooks/useCampaign";
 import type { Hex } from "viem";
-import { Nav } from "../nav";
 import { Header, SkeletonHeader } from "./header";
 import { Details } from "./details";
 import { Rewards } from "./rewards";
 import { Leaderboard } from "./leaderboard";
-import { Footer } from "../footer";
 
 import styles from "./styles.module.css";
 
@@ -27,7 +25,6 @@ export function CampaignDetails({ chain, campaignId }: CampaignDetailsProps) {
     return (
         <div className={styles.root}>
             <div className={styles.headerWrapper}>
-                <Nav />
                 {!campaign || loadingCampaign ? (
                     <SkeletonHeader />
                 ) : (
@@ -39,7 +36,6 @@ export function CampaignDetails({ chain, campaignId }: CampaignDetailsProps) {
                 <Rewards campaign={campaign} loading={loadingCampaign} />
                 <Leaderboard campaign={campaign} loading={loadingCampaign} />
             </div>
-            <Footer />
         </div>
     );
 }

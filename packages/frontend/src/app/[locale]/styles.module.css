@@ -1,10 +1,3 @@
-.layout {
-    @apply flex
-        flex-col
-        items-center
-        gap-12;
-}
-
-.appWrapper {
+.root {
     @apply bg-gray-100;
 }
