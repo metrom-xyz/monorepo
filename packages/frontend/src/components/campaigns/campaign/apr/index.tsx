@@ -18,7 +18,9 @@ export function Apr({ apr }: AprProps) {
             </Typography>
         </div>
     ) : (
-        <Typography weight="medium">-</Typography>
+        <Typography className={styles.emptyAPR} weight="medium">
+            -
+        </Typography>
     );
 }
 

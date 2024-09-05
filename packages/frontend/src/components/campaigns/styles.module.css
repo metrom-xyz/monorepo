@@ -18,7 +18,7 @@
 } */
 
 .row {
-    @apply grid grid-cols-12 md:grid-cols-campaigns-table gap-5 px-6 items-center;
+    @apply grid grid-cols-12 md:grid-cols-campaigns-table gap-5 px-2 md:px-6 items-center;
 }
 
 .header {

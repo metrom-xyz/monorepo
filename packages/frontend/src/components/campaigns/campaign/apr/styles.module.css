@@ -3,5 +3,9 @@
 }
 
 .text {
-    @apply text-white;
+    @apply text-white text-sm md:text-base;
+}
+
+.emptyAPR{
+    @apply w-full col-span-4 md:col-span-1 text-center;
 }
