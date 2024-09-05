@@ -26,12 +26,12 @@ export const RemoteLogo = ({
     src,
     address,
     chain,
-    size = "md",
+    size,
     defaultText = "?",
     className,
 }: RemoteLogoProps) => {
     const [imageError, setImageError] = useState(false);
-
+    const sizeClass = size ? styles[size] : styles.selfAdjust;
     const resolvedSrc = useMemo(() => {
         if (src) return src;
         if (!address || !chain) return "";
@@ -55,18 +55,18 @@ export const RemoteLogo = ({
     }, [resolvedSrc]);
 
     if (loading) {
-        return <Skeleton circular className={`${styles[size]} ${className}`} />;
+        return <Skeleton circular className={`${sizeClass} ${className}`} />;
     }
 
     if (validResolvedSrc) {
         return (
-            <div className={`${styles.root} ${styles[size]} ${className}`}>
+            <div className={`${styles.root} ${sizeClass} ${className}`}>
                 <Skeleton circular width="100%" className={styles.skeleton} />
                 <Image
                     fill
                     src={validResolvedSrc}
                     alt={address || ""}
-                    className={classNames(styles.image, styles[size])}
+                    className={classNames(styles.image, sizeClass)}
                     onError={handleImageError}
                 />
             </div>
@@ -74,7 +74,7 @@ export const RemoteLogo = ({
     }
 
     return (
-        <div className={`${styles.fallback} ${styles[size]} ${className}`}>
+        <div className={`${styles.fallback} ${sizeClass} ${className}`}>
             <Typography uppercase className={styles.fallbackText}>
                 {!!defaultText
                     ? defaultText.length > 4

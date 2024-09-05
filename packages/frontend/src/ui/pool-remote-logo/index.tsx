@@ -14,14 +14,16 @@ interface PoolRemoteLogoProps {
 
 export function PoolRemoteLogo({
     loading,
-    size = "md",
+    size,
     chain,
     token0,
     token1,
     className,
 }: PoolRemoteLogoProps) {
     return (
-        <div className={`${styles.root} ${styles[size]} ${className?.root}`}>
+        <div
+            className={`${styles.root} ${size ? styles[size] : styles.selfAdjust} ${className?.root}`}
+        >
             <RemoteLogo
                 loading={loading}
                 chain={chain}
