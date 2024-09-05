@@ -17,10 +17,11 @@ import { Typography } from "@/src/ui/typography";
 import { MetromLightLogo } from "@/src/assets/metrom-light-logo";
 import { useRouter } from "@/src/i18n/routing";
 import { TextField } from "@/src/ui/text-field";
+import { useChainData } from "@/src/hooks/useChainData";
+import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
+import { ApproveRewardsButton } from "../approve-rewards-button";
 import { Rewards } from "./rewards";
 import { Header } from "./header";
-import { useChainData } from "@/src/hooks/useChainData";
-import { ApproveRewardsButton } from "../approve-rewards-button";
 
 import styles from "./styles.module.css";
 
@@ -36,8 +37,9 @@ export function CampaignPreview({
     onBack,
 }: CampaignPreviewProps) {
     const t = useTranslations("campaignPreview");
-    const [creating, setCreating] = useState(false);
+    const [deploying, setDeploying] = useState(false);
     const [created, setCreated] = useState(false);
+    const [rewardsApproved, setRewardsApproved] = useState(false);
 
     const feedback = useRef<HTMLDivElement>(null);
     const router = useRouter();
@@ -62,6 +64,7 @@ export function CampaignPreview({
         address: chainData?.metromContract.address,
         functionName: "createCampaigns",
         args: [
+            rewardsApproved &&
             payload.pool &&
             payload.startDate &&
             payload.endDate &&
@@ -88,6 +91,7 @@ export function CampaignPreview({
         ],
         query: {
             enabled:
+                rewardsApproved &&
                 !malformedPayload &&
                 !!payload.pool &&
                 !!payload.startDate &&
@@ -96,6 +100,10 @@ export function CampaignPreview({
                 payload.rewards.length > 0,
         },
     });
+
+    function handleOnRewardsApproved() {
+        setRewardsApproved(true);
+    }
 
     const handleOnDeploy = useCallback(() => {
         if (simulateCreateErrored) {
@@ -109,7 +117,7 @@ export function CampaignPreview({
             return;
 
         const create = async () => {
-            setCreating(true);
+            setDeploying(true);
             try {
                 const tx = await writeContractAsync(simulatedCreate.request);
                 const receipt = await publicClient.waitForTransactionReceipt({
@@ -125,7 +133,7 @@ export function CampaignPreview({
             } catch (error) {
                 console.warn("could not create kpi token", error);
             } finally {
-                setCreating(false);
+                setDeploying(false);
             }
         };
         void create();
@@ -146,7 +154,7 @@ export function CampaignPreview({
         return (
             <div ref={feedback} className={styles.root}>
                 <Header
-                    backDisabled={simulatingCreate || creating}
+                    backDisabled={simulatingCreate || deploying}
                     payload={payload}
                     onBack={onBack}
                 />
@@ -166,14 +174,27 @@ export function CampaignPreview({
                         rewards={payload.rewards}
                         campaignDurationSeconds={secondsDuration}
                     />
-                    <div className={styles.createButtonContainer}>
-                        <ApproveRewardsButton
-                            malformedPayload={malformedPayload}
-                            payload={payload}
-                            disabled={malformedPayload || simulateCreateErrored}
-                            deploying={simulatingCreate || creating}
-                            onDeploy={handleOnDeploy}
-                        />
+                    <div className={styles.deployButtonContainer}>
+                        {rewardsApproved ? (
+                            <Button
+                                icon={ArrowRightIcon}
+                                iconPlacement="right"
+                                disabled={
+                                    malformedPayload || simulateCreateErrored
+                                }
+                                loading={deploying}
+                                className={{ root: styles.deployButton }}
+                                onClick={handleOnDeploy}
+                            >
+                                {t("deploy")}
+                            </Button>
+                        ) : (
+                            <ApproveRewardsButton
+                                malformedPayload={malformedPayload}
+                                payload={payload}
+                                onApproved={handleOnRewardsApproved}
+                            />
+                        )}
                     </div>
                 </div>
             </div>
