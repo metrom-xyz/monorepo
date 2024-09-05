@@ -9,7 +9,7 @@ import { type ReactNode } from "react";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
 import type { Locale } from "@rainbow-me/rainbowkit";
-import { ClientProviders } from "../components/client-providers";
+import { ClientProviders } from "../../components/client-providers";
 
 import styles from "./styles.module.css";
 
