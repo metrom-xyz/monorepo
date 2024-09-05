@@ -1,5 +1,5 @@
 .inputWrapper {
-    @apply w-fit relative;
+    @apply w-full md:w-fit relative ;
 }
 
 .inputIconWrapper {
@@ -48,7 +48,8 @@
         placeholder:text-gray-400
         placeholder:select-none
         bg-gray-100
-        text-black;
+        text-black
+        w-full;
 }
 
 .inputXs {
@@ -76,7 +77,8 @@
 }
 
 .label {
-    @apply flex
+    @apply invisible
+        md:flex
         items-center
         gap-1.5
         w-fit

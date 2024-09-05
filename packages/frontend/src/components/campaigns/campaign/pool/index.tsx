@@ -29,10 +29,20 @@ export function Pool({ campaign }: PoolProps) {
                 }}
             />
             <div className={styles.titleContainer}>
-                <Typography variant="lg" weight="medium" noWrap>
+                <Typography
+                    variant="sm"
+                    weight="medium"
+                    className={styles.campaignName}
+                    noWrap
+                >
                     {campaign.name}
                 </Typography>
-                <Typography variant="sm" weight="medium" light>
+                <Typography
+                    variant="xs"
+                    weight="medium"
+                    className={styles.campaignFee}
+                    light
+                >
                     {campaign.pool.fee}%
                 </Typography>
             </div>

@@ -9,3 +9,12 @@
 .titleContainer {
     @apply flex items-end gap-1.5;
 }
+/* TODO : if react-responsive is used, no need for the following */
+.campaignName{
+    @apply md:!text-lg;
+}
+
+.campaignFee{
+    @apply md:!text-sm;
+}
+
