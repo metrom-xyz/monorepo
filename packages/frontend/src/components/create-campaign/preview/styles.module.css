@@ -13,8 +13,12 @@
     @apply grid grid-cols-2 gap-4;
 }
 
-.createButtonContainer {
+.deployButtonContainer {
     @apply w-full flex justify-center;
+}
+
+.deployButton {
+    @apply w-full max-w-[400px];
 }
 
 .feedback {

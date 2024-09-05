@@ -1,7 +1,6 @@
 import { useTranslations } from "next-intl";
 import { usePrevious } from "react-use";
 import { useAccount, useChainId } from "wagmi";
-import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
 import { Button } from "@/src/ui/button";
 import { WalletIcon } from "@/src/assets/wallet-icon";
 import { useConnectModal } from "@rainbow-me/rainbowkit";
@@ -15,17 +14,13 @@ import styles from "./styles.module.css";
 interface SubmitButtonProps {
     malformedPayload: boolean;
     payload: CampaignPayload;
-    deploying: boolean;
-    disabled: boolean;
-    onDeploy: () => void;
+    onApproved: () => void;
 }
 
 export function ApproveRewardsButton({
     malformedPayload,
     payload,
-    deploying,
-    disabled,
-    onDeploy,
+    onApproved,
 }: SubmitButtonProps) {
     const t = useTranslations("campaignPreview");
     const [approved, setApproved] = useState(false);
@@ -47,7 +42,8 @@ export function ApproveRewardsButton({
 
     const handleOnApprove = useCallback(() => {
         setApproved(true);
-    }, []);
+        onApproved();
+    }, [onApproved]);
 
     if (!connectedAddress)
         return (
@@ -72,16 +68,5 @@ export function ApproveRewardsButton({
             />
         );
 
-    return (
-        <Button
-            icon={ArrowRightIcon}
-            iconPlacement="right"
-            disabled={disabled}
-            loading={deploying}
-            className={{ root: styles.button }}
-            onClick={onDeploy}
-        >
-            {t("deploy")}
-        </Button>
-    );
+    return null;
 }
