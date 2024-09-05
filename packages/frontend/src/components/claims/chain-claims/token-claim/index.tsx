@@ -13,13 +13,12 @@ import { metromAbi } from "@metrom-xyz/contracts/abi";
 import { parseUnits } from "viem";
 import { useCallback, useState } from "react";
 import { RemoteLogo } from "@/src/ui/remote-logo";
-import numeral from "numeral";
 import type { TokenClaims } from "..";
 import { Skeleton } from "@/src/ui/skeleton";
 import { useChainData } from "@/src/hooks/useChainData";
+import { formatTokenAmount } from "@/src/utils/format";
 
 import styles from "./styles.module.css";
-import { formatTokenAmount } from "@/src/utils/format";
 
 interface TokenClaimProps {
     chainId: number;

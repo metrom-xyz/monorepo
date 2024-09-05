@@ -4,13 +4,12 @@ import { TextField } from "@/src/ui/text-field";
 import { Typography } from "@/src/ui/typography";
 import type { SupportedChain } from "@metrom-xyz/contracts";
 import { useTranslations } from "next-intl";
-import numeral from "numeral";
 import { useChainId } from "wagmi";
 import dayjs from "dayjs";
 import { useMemo } from "react";
+import { formatTokenAmount, formatUsdAmount } from "@/src/utils/format";
 
 import styles from "./styles.module.css";
-import { formatTokenAmount, formatUsdAmount } from "@/src/utils/format";
 
 interface RewardsProps {
     rewards: CampaignPayload["rewards"];

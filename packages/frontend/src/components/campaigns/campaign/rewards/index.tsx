@@ -4,12 +4,10 @@ import { Typography } from "@/src/ui/typography";
 import { SupportedChain, type Rewards as RewardsType } from "@metrom-xyz/sdk";
 import dayjs from "dayjs";
 import { RemoteLogo } from "@/src/ui/remote-logo";
-import { useChainId } from "wagmi";
-import numeral from "numeral";
 import { Skeleton } from "@/src/ui/skeleton";
+import { formatUsdAmount } from "@/src/utils/format";
 
 import styles from "./styles.module.css";
-import { formatUsdAmount } from "@/src/utils/format";
 
 interface RewardsProps {
     from: number;

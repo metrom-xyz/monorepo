@@ -1,10 +1,9 @@
-import numeral from "numeral";
 import type { Pool } from "@metrom-xyz/sdk";
 import { PoolRemoteLogo } from "@/src/ui/pool-remote-logo";
 import { Typography } from "@/src/ui/typography";
+import { formatPercentage, formatUsdAmount } from "@/src/utils/format";
 
 import styles from "./styles.module.css";
-import { formatPercentage, formatUsdAmount } from "@/src/utils/format";
 
 export interface PoolStepPreviewProps {
     pool: Pool;

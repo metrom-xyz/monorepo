@@ -2,16 +2,15 @@ import { XIcon } from "@/src/assets/x-icon";
 import { RemoteLogo } from "@/src/ui/remote-logo";
 import { Typography } from "@/src/ui/typography";
 import type { Token, WhitelistedErc20TokenAmount } from "@metrom-xyz/sdk";
-import numeral from "numeral";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useWatchBalance } from "@/src/hooks/useWatchBalance";
 import { useAccount, useChainId } from "wagmi";
 import { formatUnits } from "viem/utils";
 import type { Address } from "viem";
 import classNames from "@/src/utils/classes";
+import { formatTokenAmount, formatUsdAmount } from "@/src/utils/format";
 
 import styles from "./styles.module.css";
-import { formatTokenAmount, formatUsdAmount } from "@/src/utils/format";
 
 interface RewardProps {
     reward: WhitelistedErc20TokenAmount;

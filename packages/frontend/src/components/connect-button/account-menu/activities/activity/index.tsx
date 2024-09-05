@@ -8,10 +8,9 @@ import { Link } from "@/src/i18n/routing";
 import { Skeleton } from "@/src/ui/skeleton";
 import classNames from "@/src/utils/classes";
 import { RemoteLogo } from "@/src/ui/remote-logo";
-import numeral from "numeral";
+import { formatTokenAmount } from "@/src/utils/format";
 
 import styles from "./styles.module.css";
-import { formatTokenAmount } from "@/src/utils/format";
 
 interface ActivityProps extends Activity {
     chainId: number;

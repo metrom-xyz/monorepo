@@ -4,14 +4,13 @@ import { Typography } from "@/src/ui/typography";
 import { useTranslations } from "next-intl";
 import { Skeleton } from "@/src/ui/skeleton";
 import dayjs from "dayjs";
-import numeral from "numeral";
 import { PersonalRank } from "./personal-rank";
 import { RepartitionChart } from "./repartition-chart";
 import type { Address } from "viem";
 import { RewardsBreakdown } from "./rewards-breakdown";
+import { formatPercentage } from "@/src/utils/format";
 
 import styles from "./styles.module.css";
-import { formatPercentage } from "@/src/utils/format";
 
 interface LeaderboardProps {
     campaign?: Campaign;

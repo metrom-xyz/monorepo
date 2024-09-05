@@ -1,13 +1,12 @@
 import type { Pool } from "@metrom-xyz/sdk";
-import numeral from "numeral";
 import { useCallback } from "react";
 import { Typography } from "@/src/ui/typography";
 import classNames from "@/src/utils/classes";
 import { PoolRemoteLogo } from "@/src/ui/pool-remote-logo";
 import { Skeleton } from "@/src/ui/skeleton";
+import { formatPercentage, formatUsdAmount } from "@/src/utils/format";
 
 import styles from "./styles.module.css";
-import { formatPercentage, formatUsdAmount } from "@/src/utils/format";
 
 interface PickerRowProps {
     style?: any;

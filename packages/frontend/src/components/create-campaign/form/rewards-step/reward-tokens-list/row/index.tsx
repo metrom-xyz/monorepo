@@ -8,10 +8,9 @@ import classNames from "@/src/utils/classes";
 import { Typography } from "@/src/ui/typography";
 import { Skeleton } from "@/src/ui/skeleton";
 import { RemoteLogo } from "@/src/ui/remote-logo";
-import numeral from "numeral";
+import { formatTokenAmount } from "@/src/utils/format";
 
 import styles from "./styles.module.css";
-import { formatTokenAmount } from "@/src/utils/format";
 
 interface PickerRowProps {
     token: WhitelistedErc20TokenWithBalance | null;

@@ -2,14 +2,13 @@ import { useMemo } from "react";
 import { useTranslations } from "next-intl";
 import type { DistributionBreakdown } from "@/src/hooks/useDistributionBreakdown";
 import { Typography } from "@/src/ui/typography";
-import numeral from "numeral";
 import { Cell, Pie, PieChart, Tooltip } from "recharts";
 import type { Address } from "viem";
 import { getAddressColor } from "@/src/utils/address";
 import { useTransition, animated } from "@react-spring/web";
+import { formatPercentage } from "@/src/utils/format";
 
 import styles from "./styles.module.css";
-import { formatPercentage } from "@/src/utils/format";
 
 interface RepartitionChartProps {
     loading: boolean;

@@ -3,11 +3,10 @@ import { RemoteLogo } from "@/src/ui/remote-logo";
 import { Typography } from "@/src/ui/typography";
 import type { SupportedChain, UsdPricedTokenAmount } from "@metrom-xyz/sdk";
 import { useTranslations } from "next-intl";
-import numeral from "numeral";
 import { useRef, useState } from "react";
+import { formatTokenAmount, formatUsdAmount } from "@/src/utils/format";
 
 import styles from "./styles.module.css";
-import { formatTokenAmount, formatUsdAmount } from "@/src/utils/format";
 
 interface RewardsBreakdownProps {
     chain?: SupportedChain;

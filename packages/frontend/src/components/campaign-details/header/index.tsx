@@ -2,16 +2,15 @@ import { useCallback } from "react";
 import type { NamedCampaign } from "@/src/hooks/useCampaign";
 import { Typography } from "@/src/ui/typography";
 import { PoolRemoteLogo } from "@/src/ui/pool-remote-logo";
-import numeral from "numeral";
 import { Skeleton } from "@/src/ui/skeleton";
 import { useTranslations } from "next-intl";
 import { Button } from "@/src/ui/button";
 import { useRouter } from "@/src/i18n/routing";
 import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
 import { getPoolAddLiquidityLink, getPoolExplorerLink } from "@/src/utils/amm";
+import { formatPercentage } from "@/src/utils/format";
 
 import styles from "./styles.module.css";
-import { formatPercentage } from "@/src/utils/format";
 
 interface HeaderProps {
     campaign: NamedCampaign;

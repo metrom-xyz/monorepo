@@ -3,7 +3,6 @@ import { useMemo } from "react";
 import { Typography } from "@/src/ui/typography";
 import { useTranslations } from "next-intl";
 import type { DistributionBreakdown } from "@/src/hooks/useDistributionBreakdown";
-import numeral from "numeral";
 import { shortenAddress, SupportedChain } from "@metrom-xyz/sdk";
 import { Button } from "@/src/ui/button";
 import { WalletIcon } from "@/src/assets/wallet-icon";
@@ -11,9 +10,9 @@ import { useConnectModal } from "@rainbow-me/rainbowkit";
 import { SkeletonRow } from "..";
 import type { Address } from "viem";
 import { RewardsBreakdown } from "../rewards-breakdown";
+import { formatPercentage } from "@/src/utils/format";
 
 import styles from "./styles.module.css";
-import { formatPercentage } from "@/src/utils/format";
 
 interface PersonalRankProps {
     chain?: SupportedChain;

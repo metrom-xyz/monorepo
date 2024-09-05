@@ -1,7 +1,6 @@
 import { useTranslations } from "next-intl";
 import styles from "./styles.module.css";
 import { TextField } from "@/src/ui/text-field";
-import numeral from "numeral";
 import type { NamedCampaign } from "@/src/hooks/useCampaign";
 import dayjs from "dayjs";
 import { Status } from "@metrom-xyz/sdk";

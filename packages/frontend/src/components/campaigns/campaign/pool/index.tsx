@@ -4,10 +4,9 @@ import { Typography } from "@/src/ui/typography";
 import { PoolRemoteLogo } from "@/src/ui/pool-remote-logo";
 import { Skeleton } from "@/src/ui/skeleton";
 import type { NamedCampaign } from "@/src/hooks/useCampaigns";
-import numeral from "numeral";
+import { formatPercentage } from "@/src/utils/format";
 
 import styles from "./styles.module.css";
-import { formatPercentage } from "@/src/utils/format";
 
 interface PoolProps {
     campaign: NamedCampaign;
