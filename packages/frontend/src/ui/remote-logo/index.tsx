@@ -55,12 +55,14 @@ export const RemoteLogo = ({
     }, [resolvedSrc]);
 
     if (loading) {
-        return <Skeleton circular className={`${sizeClass} ${className}`} />;
+        return (
+            <Skeleton circular className={classNames(sizeClass, className)} />
+        );
     }
 
     if (validResolvedSrc) {
         return (
-            <div className={`${styles.root} ${sizeClass} ${className}`}>
+            <div className={classNames(styles.root, sizeClass, className)}>
                 <Skeleton circular width="100%" className={styles.skeleton} />
                 <Image
                     fill
@@ -74,7 +76,7 @@ export const RemoteLogo = ({
     }
 
     return (
-        <div className={`${styles.fallback} ${sizeClass} ${className}`}>
+        <div className={classNames(styles.fallback, sizeClass, className)}>
             <Typography uppercase className={styles.fallbackText}>
                 {!!defaultText
                     ? defaultText.length > 4

@@ -1,5 +1,5 @@
 .root {
-    @apply flex items-center justify-between  col-span-4 md:col-span-1;
+    @apply flex items-center justify-between col-span-4 md:col-span-1;
 }
 
 .tokenIcons {

@@ -8,7 +8,7 @@
         ease-in-out
         rounded-xl 
         px-3
-        py-4
+        py-4;
 }
 
 .poolContainer {
@@ -18,7 +18,7 @@
 .externalLink {
     @apply hidden
         md:flex
-      bg-white
+        bg-white
         h-7
         w-7
         items-center

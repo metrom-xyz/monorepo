@@ -10,7 +10,7 @@
     @apply bg-gray-200 py-2;
 }
 
-.selectionFilters{
+.selectionFilters {
     @apply flex justify-between items-center gap-3;
 }
 
@@ -19,7 +19,7 @@
 }
 
 .header {
-    @apply md:grid hidden
+    @apply md:grid hidden;
 }
 
 .body {
@@ -30,6 +30,6 @@
     @apply w-full h-8 flex justify-end;
 }
 
-.searchLabel {
+.searchFilter :global(.label) {
     @apply invisible md:visible;
 }

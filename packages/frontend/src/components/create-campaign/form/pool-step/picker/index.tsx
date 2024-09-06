@@ -88,7 +88,7 @@ export function PoolPicker({ value, amm, onChange }: PoolPickerProps) {
                     variant="lg"
                     placeholder={t("searchLabel")}
                     icon={SearchIcon}
-                    className={{ root: styles.searchInput }}
+                    className={styles.searchInput}
                 />
                 <div className={styles.baseTokensWrapper}>
                     {baseTokens.map((token) => (

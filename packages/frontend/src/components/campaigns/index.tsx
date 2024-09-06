@@ -210,13 +210,10 @@ export function Campaigns() {
         <div className={styles.root}>
             <div className={styles.filters}>
                 <TextInput
-                    className={{
-                        root: classNames(
-                            styles.searchFilter,
-                            styles.filterInput,
-                        ),
-                        label: styles.searchLabel,
-                    }}
+                    className={classNames(
+                        styles.searchFilter,
+                        styles.filterInput,
+                    )}
                     icon={SearchIcon}
                     iconPlacement="right"
                     label={t("filters.search.label")}

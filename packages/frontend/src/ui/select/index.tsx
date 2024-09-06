@@ -169,7 +169,7 @@ function Component<V extends ValueType, O extends SelectOption<V>>(
                 disabled={disabled}
                 loading={loading}
                 {...rest}
-                className={{ root: styles.input }}
+                className={styles.input}
                 onChange={handleChange}
                 onClick={handleClick}
             />
