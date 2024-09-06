@@ -8,13 +8,14 @@ import { Typography } from "@/src/ui/typography";
 import classNames from "@/src/utils/classes";
 import { NewCampaignIcon } from "@/src/assets/new-campaign-icon";
 import { AllCampaignsIcon } from "@/src/assets/all-campaigns-icon";
+import { ClaimsIcon } from "@/src/assets/claims";
 
 import styles from "./styles.module.css";
 
 const ROUTES = [
     { path: "/", label: "allCampaigns", icon: AllCampaignsIcon },
     { path: "/campaigns/create", label: "newCampaign", icon: NewCampaignIcon },
-    { path: "/claims", label: "claims", icon: null },
+    { path: "/claims", label: "claims", icon: ClaimsIcon },
 ];
 
 interface NavProps {
@@ -41,6 +42,7 @@ export function Nav({ header }: NavProps) {
                             <div
                                 className={classNames(styles.tab, {
                                     [styles.tabActive]: pathname === path,
+                                    [styles.header]: header,
                                 })}
                             >
                                 {Icon && <Icon className={styles.tabIcon} />}
