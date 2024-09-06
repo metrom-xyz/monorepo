@@ -8,7 +8,7 @@ import classNames from "@/src/utils/classes";
 import { Typography } from "@/src/ui/typography";
 import { Skeleton } from "@/src/ui/skeleton";
 import { RemoteLogo } from "@/src/ui/remote-logo";
-import numeral from "numeral";
+import { formatTokenAmount } from "@/src/utils/format";
 
 import styles from "./styles.module.css";
 
@@ -69,9 +69,11 @@ export function Row({
             ) : (
                 <Typography variant="xs" weight="medium" light>
                     {token.balance
-                        ? numeral(
-                              formatUnits(token.balance, token.decimals),
-                          ).format("(0.00[00] a)")
+                        ? formatTokenAmount(
+                              Number(
+                                  formatUnits(token.balance, token.decimals),
+                              ),
+                          )
                         : "-"}
                 </Typography>
             )}

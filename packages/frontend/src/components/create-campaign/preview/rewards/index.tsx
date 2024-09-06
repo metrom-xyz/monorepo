@@ -4,10 +4,10 @@ import { TextField } from "@/src/ui/text-field";
 import { Typography } from "@/src/ui/typography";
 import type { SupportedChain } from "@metrom-xyz/contracts";
 import { useTranslations } from "next-intl";
-import numeral from "numeral";
 import { useChainId } from "wagmi";
 import dayjs from "dayjs";
 import { useMemo } from "react";
+import { formatTokenAmount, formatUsdAmount } from "@/src/utils/format";
 
 import styles from "./styles.module.css";
 
@@ -60,14 +60,14 @@ export function Rewards({ rewards, campaignDurationSeconds }: RewardsProps) {
                         </Typography>
                     </div>
                     <Typography uppercase weight="medium" light>
-                        {numeral(
+                        {formatUsdAmount(
                             reward.usdPrice
                                 ? reward.amount * reward.usdPrice
                                 : 0,
-                        ).format("($ 0.00[0] a)")}
+                        )}
                     </Typography>
                     <Typography uppercase weight="medium" variant="lg">
-                        {numeral(reward.amount).format("(0.00[00] a)")}
+                        {formatTokenAmount(reward.amount)}
                     </Typography>
                 </div>
             ))}
@@ -75,15 +75,13 @@ export function Rewards({ rewards, campaignDurationSeconds }: RewardsProps) {
                 <TextField
                     boxed
                     label={t("daily")}
-                    value={numeral(dailyRewards).format("($ 0.00[0] a)")}
+                    value={formatUsdAmount(dailyRewards)}
                     className={styles.summaryBox}
                 />
                 <TextField
                     boxed
                     label={t("total")}
-                    value={numeral(totalRewardsUsdAmount).format(
-                        "($ 0.00[0] a)",
-                    )}
+                    value={formatUsdAmount(totalRewardsUsdAmount)}
                     className={styles.summaryBox}
                 />
             </div>

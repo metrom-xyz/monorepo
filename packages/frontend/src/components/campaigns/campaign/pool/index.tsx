@@ -4,7 +4,7 @@ import { Typography } from "@/src/ui/typography";
 import { PoolRemoteLogo } from "@/src/ui/pool-remote-logo";
 import { Skeleton } from "@/src/ui/skeleton";
 import type { NamedCampaign } from "@/src/hooks/useCampaigns";
-import numeral from "numeral";
+import { formatPercentage } from "@/src/utils/format";
 
 import styles from "./styles.module.css";
 
@@ -41,7 +41,7 @@ export function Pool({ campaign }: PoolProps) {
                     className={styles.campaignFee}
                     light
                 >
-                    {numeral(campaign.pool.fee).format("0.00[0]")}%
+                    {formatPercentage(campaign.pool.fee)}
                 </Typography>
             </div>
         </div>

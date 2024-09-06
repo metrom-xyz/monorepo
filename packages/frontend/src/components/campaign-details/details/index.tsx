@@ -1,12 +1,12 @@
 import { useTranslations } from "next-intl";
 import styles from "./styles.module.css";
 import { TextField } from "@/src/ui/text-field";
-import numeral from "numeral";
 import type { NamedCampaign } from "@/src/hooks/useCampaign";
 import dayjs from "dayjs";
 import { Status } from "@metrom-xyz/sdk";
 import { Typography } from "@/src/ui/typography";
 import { useMemo } from "react";
+import { formatUsdAmount } from "@/src/utils/format";
 
 interface DetailsProps {
     campaign?: NamedCampaign;
@@ -53,7 +53,7 @@ export function Details({ campaign, loading }: DetailsProps) {
                     variant="xl"
                     label={t("tvl")}
                     loading={detailsLoading}
-                    value={numeral(campaign?.pool.tvl).format("($ 0.00 a)")}
+                    value={formatUsdAmount(campaign?.pool.tvl)}
                 />
                 <TextField
                     boxed

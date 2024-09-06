@@ -1,7 +1,7 @@
-import numeral from "numeral";
 import type { Pool } from "@metrom-xyz/sdk";
 import { PoolRemoteLogo } from "@/src/ui/pool-remote-logo";
 import { Typography } from "@/src/ui/typography";
+import { formatPercentage, formatUsdAmount } from "@/src/utils/format";
 
 import styles from "./styles.module.css";
 
@@ -35,13 +35,13 @@ export function PoolStepPreview({ pool }: PoolStepPreviewProps) {
                             weight="medium"
                             className={styles.fee}
                         >
-                            {numeral(pool.fee).format("0.0[0]")}%
+                            {formatPercentage(pool.fee)}
                         </Typography>
                     )}
                 </div>
             </div>
             <Typography weight="medium" variant="sm" light>
-                {numeral(pool.tvl).format("($ 0.00 a)")}
+                {formatUsdAmount(pool.tvl)}
             </Typography>
         </div>
     );

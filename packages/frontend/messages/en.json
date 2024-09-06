@@ -120,8 +120,8 @@
             "runTimeLabel": "Run time",
             "endDate": "End date"
         },
-        "tvl": "Tvl",
-        "apr": "Apr",
+        "tvl": "TVL",
+        "apr": "APR",
         "rewards": {
             "daily": "Daily rewards",
             "total": "Total rewards",
@@ -141,7 +141,7 @@
             "deposit": "Deposit",
             "explorer": "Explorer",
             "claim": "Claim",
-            "apr": "Apr {value}%"
+            "apr": "Apr {value}"
         },
         "details": {
             "tvl": "Tvl",

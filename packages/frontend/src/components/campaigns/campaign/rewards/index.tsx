@@ -4,9 +4,10 @@ import { Typography } from "@/src/ui/typography";
 import { SupportedChain, type Rewards as RewardsType } from "@metrom-xyz/sdk";
 import dayjs from "dayjs";
 import { RemoteLogo } from "@/src/ui/remote-logo";
-import { useChainId } from "wagmi";
-import numeral from "numeral";
 import { Skeleton } from "@/src/ui/skeleton";
+import { formatTokenAmount, formatUsdAmount } from "@/src/utils/format";
+import { Popover } from "@/src/ui/popover";
+import { useRef, useState } from "react";
 
 import styles from "./styles.module.css";
 
@@ -18,15 +19,72 @@ interface RewardsProps {
 }
 
 export function Rewards({ from, to, rewards, chainId }: RewardsProps) {
+    const [popoverOpen, setPopoverOpen] = useState(false);
+    const [rewardsBreakdown, setRewardsBreakdown] =
+        useState<HTMLDivElement | null>(null);
+    const breakdownPopoverRef = useRef<HTMLDivElement>(null);
+
     const daysDuration = dayjs.unix(to).diff(dayjs.unix(from), "days", false);
     const perDayUsdValue =
         rewards.usdValue && daysDuration > 0
             ? rewards.usdValue / daysDuration
             : 0;
 
+    function handleRewardsBreakdownPopoverOpen() {
+        setPopoverOpen(true);
+    }
+
+    function handleRewardsBreakdownPopoverClose() {
+        setPopoverOpen(false);
+    }
+
     return (
         <div className={styles.root}>
-            <div className={styles.tokenIcons}>
+            <Popover
+                open={popoverOpen}
+                anchor={rewardsBreakdown}
+                ref={breakdownPopoverRef}
+                placement="top"
+            >
+                <div className={styles.breakdownContainer}>
+                    {rewards.map((reward, i) => {
+                        return (
+                            <div
+                                key={reward.address}
+                                className={styles.breakdownRow}
+                            >
+                                <div>
+                                    <RemoteLogo
+                                        chain={chainId}
+                                        size="sm"
+                                        address={reward.address}
+                                        defaultText={reward.symbol}
+                                    />
+                                    <Typography weight="medium">
+                                        {reward.symbol}
+                                    </Typography>
+                                </div>
+                                <div>
+                                    <Typography weight="medium">
+                                        {formatTokenAmount(reward.amount)}
+                                    </Typography>
+                                    <Typography weight="medium">
+                                        {reward.usdValue
+                                            ? formatUsdAmount(reward.usdValue)
+                                            : "-"}
+                                    </Typography>
+                                </div>
+                            </div>
+                        );
+                    })}
+                </div>
+            </Popover>
+            <div
+                ref={setRewardsBreakdown}
+                className={styles.tokenIcons}
+                onMouseEnter={handleRewardsBreakdownPopoverOpen}
+                onMouseLeave={handleRewardsBreakdownPopoverClose}
+            >
                 {rewards.map((reward, i) => {
                     return (
                         <div
@@ -44,7 +102,7 @@ export function Rewards({ from, to, rewards, chainId }: RewardsProps) {
                 })}
             </div>
             <Typography className={styles.textRewards} weight="medium">
-                {numeral(perDayUsdValue).format("($ 0.0[0] a)")}
+                {formatUsdAmount(perDayUsdValue)}
             </Typography>
         </div>
     );

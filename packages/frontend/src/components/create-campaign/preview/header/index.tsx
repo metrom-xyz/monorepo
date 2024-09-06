@@ -10,6 +10,7 @@ import numeral from "numeral";
 import { useChainId } from "wagmi";
 
 import styles from "./styles.module.css";
+import { formatPercentage } from "@/src/utils/format";
 
 interface HeaderProps {
     payload: CampaignPayload;
@@ -55,7 +56,7 @@ export function Header({ payload, backDisabled, onBack }: HeaderProps) {
                     {payload.pool?.token1.symbol}
                 </Typography>
                 <Typography variant="lg" weight="medium" light>
-                    {numeral(payload.pool?.fee).format("0.0[0]")}%
+                    {formatPercentage(payload.pool?.fee)}
                 </Typography>
             </div>
             <div className={styles.durationContainer}>

@@ -3,7 +3,7 @@
 }
 
 .text {
-    @apply text-white text-sm md:text-base;
+    @apply !text-white text-sm md:text-base;
 }
 
 .emptyAPR {

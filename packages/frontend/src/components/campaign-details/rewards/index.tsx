@@ -2,11 +2,11 @@ import { RemoteLogo } from "@/src/ui/remote-logo";
 import { TextField } from "@/src/ui/text-field";
 import { Typography } from "@/src/ui/typography";
 import { useTranslations } from "next-intl";
-import numeral from "numeral";
 import dayjs from "dayjs";
 import { useMemo } from "react";
 import type { NamedCampaign } from "@/src/hooks/useCampaign";
 import { Skeleton } from "@/src/ui/skeleton";
+import { formatTokenAmount, formatUsdAmount } from "@/src/utils/format";
 
 import styles from "./styles.module.css";
 
@@ -67,16 +67,14 @@ export function Rewards({ campaign, loading }: RewardsProps) {
                                 </Typography>
                             </div>
                             <Typography uppercase weight="medium" light>
-                                {numeral(
+                                {formatUsdAmount(
                                     reward.usdPrice
                                         ? reward.amount * reward.usdPrice
                                         : 0,
-                                ).format("($ 0.00[0] a)")}
+                                )}
                             </Typography>
                             <Typography uppercase weight="medium" variant="lg">
-                                {numeral(reward.remaining).format(
-                                    "(0.00[00] a)",
-                                )}
+                                {formatTokenAmount(reward.remaining)}
                             </Typography>
                         </div>
                     ))
@@ -87,7 +85,7 @@ export function Rewards({ campaign, loading }: RewardsProps) {
                         variant="xl"
                         label={t("daily")}
                         loading={loading || !campaign}
-                        value={numeral(dailyRewards).format("($ 0.00[0] a)")}
+                        value={formatUsdAmount(dailyRewards)}
                         className={styles.summaryBox}
                     />
                     <TextField
@@ -95,9 +93,7 @@ export function Rewards({ campaign, loading }: RewardsProps) {
                         variant="xl"
                         label={t("total")}
                         loading={loading || !campaign}
-                        value={numeral(campaign?.rewards.usdValue).format(
-                            "($ 0.00[0] a)",
-                        )}
+                        value={formatTokenAmount(campaign?.rewards.usdValue)}
                         className={styles.summaryBox}
                     />
                 </div>

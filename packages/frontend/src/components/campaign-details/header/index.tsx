@@ -2,13 +2,13 @@ import { useCallback } from "react";
 import type { NamedCampaign } from "@/src/hooks/useCampaign";
 import { Typography } from "@/src/ui/typography";
 import { PoolRemoteLogo } from "@/src/ui/pool-remote-logo";
-import numeral from "numeral";
 import { Skeleton } from "@/src/ui/skeleton";
 import { useTranslations } from "next-intl";
 import { Button } from "@/src/ui/button";
 import { useRouter } from "@/src/i18n/routing";
 import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
 import { getPoolAddLiquidityLink, getPoolExplorerLink } from "@/src/utils/amm";
+import { formatPercentage } from "@/src/utils/format";
 
 import styles from "./styles.module.css";
 
@@ -55,7 +55,7 @@ export function Header({ campaign }: HeaderProps) {
                         {campaign.name}
                     </Typography>
                     <Typography variant="lg" weight="medium" light>
-                        {numeral(campaign.pool.fee).format("0.0[0]")}%
+                        {formatPercentage(campaign.pool.fee)}
                     </Typography>
                 </div>
                 <Typography variant="sm" weight="medium" light>
@@ -95,18 +95,20 @@ export function Header({ campaign }: HeaderProps) {
                         {t("explorer")}
                     </Button>
                 </div>
-                <div className={styles.aprContainer}>
-                    <Typography
-                        uppercase
-                        weight="medium"
-                        variant="lg"
-                        className={styles.aprText}
-                    >
-                        {t("apr", {
-                            value: numeral(campaign.apr).format("0.0[0]"),
-                        })}
-                    </Typography>
-                </div>
+                {campaign.apr && (
+                    <div className={styles.aprContainer}>
+                        <Typography
+                            uppercase
+                            weight="medium"
+                            variant="lg"
+                            className={styles.aprText}
+                        >
+                            {t("apr", {
+                                value: formatPercentage(campaign.apr),
+                            })}
+                        </Typography>
+                    </div>
+                )}
             </div>
         </div>
     );

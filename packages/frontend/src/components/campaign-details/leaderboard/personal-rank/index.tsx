@@ -3,7 +3,6 @@ import { useMemo } from "react";
 import { Typography } from "@/src/ui/typography";
 import { useTranslations } from "next-intl";
 import type { DistributionBreakdown } from "@/src/hooks/useDistributionBreakdown";
-import numeral from "numeral";
 import { shortenAddress, SupportedChain } from "@metrom-xyz/sdk";
 import { Button } from "@/src/ui/button";
 import { WalletIcon } from "@/src/assets/wallet-icon";
@@ -11,6 +10,7 @@ import { useConnectModal } from "@rainbow-me/rainbowkit";
 import { SkeletonRow } from "..";
 import type { Address } from "viem";
 import { RewardsBreakdown } from "../rewards-breakdown";
+import { formatPercentage } from "@/src/utils/format";
 
 import styles from "./styles.module.css";
 
@@ -86,10 +86,7 @@ export function PersonalRank({
                             # {personalDistribution.position}
                         </Typography>
                         <Typography weight="medium">
-                            {numeral(personalDistribution.percentage).format(
-                                "0.[00]a",
-                            )}
-                            %
+                            {formatPercentage(personalDistribution.percentage)}
                         </Typography>
                     </div>
                     <Typography weight="medium">
