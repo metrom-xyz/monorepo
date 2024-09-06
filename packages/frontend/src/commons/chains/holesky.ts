@@ -3,7 +3,7 @@ import { EthLogo } from "../../assets/logos/chains/eth";
 import { AlgebraIntegralLogo } from "../../assets/logos/amms/algebra-integral";
 import { ADDRESS } from "@metrom-xyz/contracts";
 import { type ChainData } from "../index";
-import { ENVIRONMENT } from "../environment";
+import { ENVIRONMENT } from "../env";
 
 export const holeskyData: ChainData = {
     metromContract: ADDRESS[ENVIRONMENT][SupportedChain.Holesky]!,

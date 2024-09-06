@@ -3,7 +3,7 @@ import { ADDRESS } from "@metrom-xyz/contracts";
 import { type ChainData } from "../index";
 import { UniswapLogo } from "../../assets/logos/amms/uniswap";
 import { CeloLogo } from "../../assets/logos/chains/celo";
-import { ENVIRONMENT } from "../environment";
+import { ENVIRONMENT } from "../env";
 
 export const celoAlfajoresData: ChainData = {
     metromContract: ADDRESS[ENVIRONMENT][SupportedChain.CeloAlfajores]!,

@@ -2,7 +2,7 @@ import { SupportedChain, SupportedAmm } from "@metrom-xyz/sdk";
 import { ADDRESS } from "@metrom-xyz/contracts";
 import { ModeLogo } from "../../assets/logos/chains/mode";
 import { KimLogo } from "../../assets/logos/amms/kim";
-import { ENVIRONMENT } from "../environment";
+import { ENVIRONMENT } from "../env";
 import { type ChainData } from "..";
 
 export const modeData: ChainData = {
