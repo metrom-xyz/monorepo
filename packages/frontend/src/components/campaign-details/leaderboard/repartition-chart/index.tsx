@@ -117,7 +117,9 @@ function RankTooltip({ active, payload }: any) {
                             color: name ? getAddressColor(name) : "#9CA3AF",
                         }}
                     >
-                        #{payload[0].payload.position || t("others")}
+                        {payload[0].payload.position
+                            ? `#${payload[0].payload.position}`
+                            : t("others")}
                     </Typography>
                     <Typography weight="bold" variant="xl2">
                         {formatPercentage(payload[0].value)}
