@@ -8,7 +8,7 @@ import { type Address, type ChainContract, type Chain } from "viem";
 import { type Amm, type SVGIcon } from "../types";
 import type { FunctionComponent } from "react";
 import { Environment, SupportedChain } from "@metrom-xyz/contracts";
-import { ENVIRONMENT } from "./environment";
+import { ENVIRONMENT } from "./env";
 import {
     celoAlfajores,
     holesky,

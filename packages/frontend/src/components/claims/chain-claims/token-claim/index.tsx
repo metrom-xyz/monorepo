@@ -54,7 +54,7 @@ export function TokenClaim({ chainId, chainClaims }: TokenClaimProps) {
                           proof: claim.proof,
                           token: claim.token.address,
                           amount: parseUnits(
-                              claim.amount.toString(),
+                              claim.amount.toFixed(claim.token.decimals),
                               claim.token.decimals,
                           ),
                           receiver: account,

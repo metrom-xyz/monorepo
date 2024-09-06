@@ -35,7 +35,7 @@ export function PoolStepPreview({ pool }: PoolStepPreviewProps) {
                             weight="medium"
                             className={styles.fee}
                         >
-                            {formatPercentage(pool.fee)}%
+                            {formatPercentage(pool.fee)}
                         </Typography>
                     )}
                 </div>

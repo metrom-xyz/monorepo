@@ -55,7 +55,7 @@ export function Header({ campaign }: HeaderProps) {
                         {campaign.name}
                     </Typography>
                     <Typography variant="lg" weight="medium" light>
-                        {formatPercentage(campaign.pool.fee)}%
+                        {formatPercentage(campaign.pool.fee)}
                     </Typography>
                 </div>
                 <Typography variant="sm" weight="medium" light>
@@ -95,16 +95,20 @@ export function Header({ campaign }: HeaderProps) {
                         {t("explorer")}
                     </Button>
                 </div>
-                <div className={styles.aprContainer}>
-                    <Typography
-                        uppercase
-                        weight="medium"
-                        variant="lg"
-                        className={styles.aprText}
-                    >
-                        {t("apr", { value: formatPercentage(campaign.apr) })}
-                    </Typography>
-                </div>
+                {campaign.apr && (
+                    <div className={styles.aprContainer}>
+                        <Typography
+                            uppercase
+                            weight="medium"
+                            variant="lg"
+                            className={styles.aprText}
+                        >
+                            {t("apr", {
+                                value: formatPercentage(campaign.apr),
+                            })}
+                        </Typography>
+                    </div>
+                )}
             </div>
         </div>
     );

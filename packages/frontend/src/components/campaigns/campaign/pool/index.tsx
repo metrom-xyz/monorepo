@@ -31,7 +31,7 @@ export function Pool({ campaign }: PoolProps) {
                     {campaign.name}
                 </Typography>
                 <Typography variant="sm" weight="medium" light>
-                    {formatPercentage(campaign.pool.fee)}%
+                    {formatPercentage(campaign.pool.fee)}
                 </Typography>
             </div>
         </div>

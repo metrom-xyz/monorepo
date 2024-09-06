@@ -12,6 +12,7 @@ import {
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { WagmiProvider } from "wagmi";
 import { SUPPORTED_CHAINS } from "../commons";
+import { WALLETCONNECT_PROJECT_ID } from "../commons/env";
 import duration from "dayjs/plugin/duration";
 import localizedFormat from "dayjs/plugin/localizedFormat";
 import relativeTime from "dayjs/plugin/relativeTime";
@@ -23,8 +24,7 @@ dayjs.extend(relativeTime);
 
 const config = getDefaultConfig({
     appName: "Metrom",
-    // TODO: actually set a project id here
-    projectId: "YOUR_PROJECT_ID",
+    projectId: WALLETCONNECT_PROJECT_ID,
     chains: SUPPORTED_CHAINS,
     ssr: true,
 });
@@ -48,8 +48,7 @@ export function ClientProviders({
                     }}
                     locale={locale}
                     theme={lightTheme({
-                        // TODO: add primary color
-                        accentColor: "#48D080",
+                        accentColor: "#000",
                     })}
                 >
                     {children}

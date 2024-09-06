@@ -112,7 +112,6 @@ export function Leaderboard({ campaign, loading }: LeaderboardProps) {
                                                 {formatPercentage(
                                                     distribution.percentage,
                                                 )}
-                                                %
                                             </Typography>
                                         </div>
                                         <Typography weight="medium">

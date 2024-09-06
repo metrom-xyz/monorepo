@@ -17,7 +17,7 @@ export const sortCampaigns = (campaigns: NamedCampaign[]) => {
     );
 
     clusteredCampaigns[Status.Live].sort((a, b) => {
-        return !a.apr || !b.apr ? a.from - b.from : a.apr - b.apr;
+        return !a.apr || !b.apr ? b.from - a.from : b.apr - a.apr;
     });
     clusteredCampaigns[Status.Upcoming].sort((a, b) => {
         return a.from - b.from;

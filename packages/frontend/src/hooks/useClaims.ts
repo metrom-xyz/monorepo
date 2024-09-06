@@ -51,12 +51,13 @@ export function useClaims(): {
     }, [address]);
 
     const queryClient = useQueryClient();
-    const { data: blockNumber, queryKey } = useBlockNumber({ watch: true });
+    const { data: blockNumber } = useBlockNumber({ watch: true });
     const {
         isLoading: loadingClaimed,
         data: claimedData,
         isError: claimedErrored,
         error: claimedError,
+        queryKey,
     } = useReadContracts({
         allowFailure: false,
         contracts: rawClaims.map((rawClaim) => {

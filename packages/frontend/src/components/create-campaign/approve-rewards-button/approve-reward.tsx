@@ -49,7 +49,10 @@ export function ApproveReward({
                 functionName: "approve",
                 args: [
                     spender,
-                    parseUnits(reward.amount.toString(), reward.token.decimals),
+                    parseUnits(
+                        reward.amount.toFixed(reward.token.decimals),
+                        reward.token.decimals,
+                    ),
                 ],
                 query: {
                     enabled: !!spender && !!reward.token.address,

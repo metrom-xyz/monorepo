@@ -71,7 +71,7 @@ export function Row({
                             light
                             className={styles.fee}
                         >
-                            {formatPercentage(pool.fee)}%
+                            {formatPercentage(pool.fee)}
                         </Typography>
                     ) : null}
                 </div>

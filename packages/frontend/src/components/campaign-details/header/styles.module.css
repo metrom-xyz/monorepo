@@ -36,5 +36,5 @@
 }
 
 .aprText {
-    @apply text-white;
+    @apply !text-white;
 }

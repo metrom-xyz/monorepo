@@ -9,7 +9,12 @@ import { ChainOverview, SkeletonChainOverview } from "./chain-overview";
 import { ChainClaims, SkeletonChainClaims } from "./chain-claims";
 import { Empty } from "./empty";
 import type { ChainData } from "@/src/commons";
-import { celoAlfajores, holesky, mantleSepoliaTestnet } from "viem/chains";
+import {
+    celoAlfajores,
+    holesky,
+    mantleSepoliaTestnet,
+    mode,
+} from "viem/chains";
 import {
     celoAlfajoresData,
     holeskyData,
@@ -49,7 +54,7 @@ export function Claims() {
             },
             {
                 [SupportedChain.Mode]: {
-                    chain: mantleSepoliaTestnet,
+                    chain: mode,
                     chainData: modeData,
                     claims: [],
                 },
