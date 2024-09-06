@@ -81,7 +81,7 @@ export function CampaignPreview({
                           rewards: payload.rewards.map((reward) => ({
                               token: reward.token.address,
                               amount: parseUnits(
-                                  reward.amount.toString(),
+                                  reward.amount.toFixed(reward.token.decimals),
                                   reward.token.decimals,
                               ),
                           })),
