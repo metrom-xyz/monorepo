@@ -10,6 +10,10 @@
     @apply w-5 h-5;
 }
 
+.ellipsis {
+    @apply w-9 h-9 flex items-center justify-center;
+}
+
 .item {
     @apply w-9
         h-9

@@ -1,5 +1,3 @@
-import type { SupportedChain } from "@metrom-xyz/contracts";
-import { useChainId } from "wagmi";
 import { metromApiClient } from "../commons";
 import { type Campaign } from "@metrom-xyz/sdk";
 import { useEffect, useState } from "react";
@@ -13,8 +11,6 @@ export function useCampaigns(): {
     loading: boolean;
     campaigns: NamedCampaign[];
 } {
-    const chainId: SupportedChain = useChainId();
-
     const [campaigns, setCampaigns] = useState<NamedCampaign[]>([]);
     const [loading, setLoading] = useState(false);
 
@@ -37,9 +33,7 @@ export function useCampaigns(): {
                 }
                 if (!cancelled) setCampaigns(namedCampaigns);
             } catch (error) {
-                console.error(
-                    `Could not fetch campaigns for chain with id ${chainId}: ${error}`,
-                );
+                console.error(`Could not fetch campaigns: ${error}`);
             } finally {
                 if (!cancelled) setLoading(false);
             }
@@ -48,7 +42,7 @@ export function useCampaigns(): {
         return () => {
             cancelled = true;
         };
-    }, [chainId]);
+    }, []);
 
     return {
         loading,
