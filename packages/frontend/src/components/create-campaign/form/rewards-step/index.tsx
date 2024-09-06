@@ -2,7 +2,6 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { formatUnits, type Address } from "viem";
 import { Button } from "@/src/ui/button";
 import { useAccount, useChainId } from "wagmi";
-import numeral from "numeral";
 import { useTranslations } from "next-intl";
 import type {
     Token,
@@ -27,6 +26,7 @@ import { RewardsPreview } from "./preview";
 import { ErrorText } from "@/src/ui/error-text";
 import { useWatchBalance } from "@/src/hooks/useWatchBalance";
 import { useTransition, animated } from "@react-spring/web";
+import { formatUsdAmount } from "@/src/utils/format";
 
 import styles from "./styles.module.css";
 
@@ -283,7 +283,7 @@ export function RewardsStep({
                         {t("totalUsd")}
                     </Typography>
                     <Typography uppercase weight="bold" light>
-                        {numeral(totalRewardsUsdAmount).format("($ 0.00[0] a)")}
+                        {formatUsdAmount(totalRewardsUsdAmount)}
                     </Typography>
                 </div>
             </StepPreview>

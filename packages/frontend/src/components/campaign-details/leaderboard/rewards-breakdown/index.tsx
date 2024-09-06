@@ -3,8 +3,8 @@ import { RemoteLogo } from "@/src/ui/remote-logo";
 import { Typography } from "@/src/ui/typography";
 import type { SupportedChain, UsdPricedTokenAmount } from "@metrom-xyz/sdk";
 import { useTranslations } from "next-intl";
-import numeral from "numeral";
 import { useRef, useState } from "react";
+import { formatTokenAmount, formatUsdAmount } from "@/src/utils/format";
 
 import styles from "./styles.module.css";
 
@@ -60,15 +60,13 @@ export function RewardsBreakdown({
                             </div>
                             <div>
                                 <Typography weight="medium">
-                                    {numeral(accruedReward.amount).format(
-                                        "(0.0[0] a)",
-                                    )}
+                                    {formatTokenAmount(accruedReward.amount)}
                                 </Typography>
                                 <Typography weight="medium">
                                     {accruedReward.usdValue
-                                        ? numeral(
+                                        ? formatUsdAmount(
                                               accruedReward.usdValue,
-                                          ).format("($ 0.00 a)")
+                                          )
                                         : "-"}
                                 </Typography>
                             </div>
@@ -83,7 +81,7 @@ export function RewardsBreakdown({
                 className={styles.rankWrapper}
             >
                 <Typography weight="medium" light>
-                    {usdValue ? numeral(usdValue).format("($ 0.00 a)") : "-"}
+                    {usdValue ? formatUsdAmount(usdValue) : "-"}
                 </Typography>
             </div>
         </>

@@ -4,11 +4,11 @@ import { Typography } from "@/src/ui/typography";
 import { useTranslations } from "next-intl";
 import { Skeleton } from "@/src/ui/skeleton";
 import dayjs from "dayjs";
-import numeral from "numeral";
 import { PersonalRank } from "./personal-rank";
 import { RepartitionChart } from "./repartition-chart";
 import type { Address } from "viem";
 import { RewardsBreakdown } from "./rewards-breakdown";
+import { formatPercentage } from "@/src/utils/format";
 
 import styles from "./styles.module.css";
 
@@ -106,12 +106,12 @@ export function Leaderboard({ campaign, loading }: LeaderboardProps) {
                                     <div key={account} className={styles.row}>
                                         <div>
                                             <Typography weight="medium" light>
-                                                # {i + 1}
+                                                #{i + 1}
                                             </Typography>
                                             <Typography weight="medium">
-                                                {numeral(
+                                                {formatPercentage(
                                                     distribution.percentage,
-                                                ).format("0.[00]a")}
+                                                )}
                                                 %
                                             </Typography>
                                         </div>

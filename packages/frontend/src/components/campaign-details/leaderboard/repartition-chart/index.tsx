@@ -2,11 +2,11 @@ import { useMemo } from "react";
 import { useTranslations } from "next-intl";
 import type { DistributionBreakdown } from "@/src/hooks/useDistributionBreakdown";
 import { Typography } from "@/src/ui/typography";
-import numeral from "numeral";
 import { Cell, Pie, PieChart, Tooltip } from "recharts";
 import type { Address } from "viem";
 import { getAddressColor } from "@/src/utils/address";
 import { useTransition, animated } from "@react-spring/web";
+import { formatPercentage } from "@/src/utils/format";
 
 import styles from "./styles.module.css";
 
@@ -120,7 +120,7 @@ function RankTooltip({ active, payload }: any) {
                         #{payload[0].payload.position || t("others")}
                     </Typography>
                     <Typography weight="bold" variant="xl2">
-                        {numeral(payload[0].value).format("0.[0]")}%
+                        {formatPercentage(payload[0].value)}%
                     </Typography>
                 </animated.div>
             ),

@@ -7,7 +7,6 @@ import {
     useWriteContract,
 } from "wagmi";
 import Confetti from "react-confetti";
-import numeral from "numeral";
 import { useWindowSize } from "react-use";
 import { parseUnits } from "viem";
 import { metromAbi } from "@metrom-xyz/contracts/abi";
@@ -22,6 +21,7 @@ import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
 import { ApproveRewardsButton } from "../approve-rewards-button";
 import { Rewards } from "./rewards";
 import { Header } from "./header";
+import { formatUsdAmount } from "@/src/utils/format";
 
 import styles from "./styles.module.css";
 
@@ -163,9 +163,7 @@ export function CampaignPreview({
                         <TextField
                             boxed
                             label={t("tvl")}
-                            value={numeral(payload.pool?.tvl).format(
-                                "($ 0.00 a)",
-                            )}
+                            value={formatUsdAmount(payload.pool?.tvl)}
                         />
                         {/* TODO: add apr */}
                         <TextField boxed label={t("apr")} value={"-"} />

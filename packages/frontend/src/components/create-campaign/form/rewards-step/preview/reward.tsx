@@ -2,13 +2,13 @@ import { XIcon } from "@/src/assets/x-icon";
 import { RemoteLogo } from "@/src/ui/remote-logo";
 import { Typography } from "@/src/ui/typography";
 import type { Token, WhitelistedErc20TokenAmount } from "@metrom-xyz/sdk";
-import numeral from "numeral";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useWatchBalance } from "@/src/hooks/useWatchBalance";
 import { useAccount, useChainId } from "wagmi";
 import { formatUnits } from "viem/utils";
 import type { Address } from "viem";
 import classNames from "@/src/utils/classes";
+import { formatTokenAmount, formatUsdAmount } from "@/src/utils/format";
 
 import styles from "./styles.module.css";
 
@@ -77,12 +77,10 @@ export function Reward({
                 weight="medium"
                 className={styles.rewardAmount}
             >
-                {numeral(reward.amount).format("(0.00[00] a)")}
+                {formatTokenAmount(reward.amount)}
             </Typography>
             <Typography weight="medium" light variant="sm">
-                {tokenUsdValue
-                    ? numeral(tokenUsdValue).format("($ 0.00 a)")
-                    : "-"}
+                {tokenUsdValue ? formatUsdAmount(tokenUsdValue) : "-"}
             </Typography>
             <div className={styles.rewardName}>
                 <RemoteLogo

@@ -8,7 +8,7 @@ import { Link } from "@/src/i18n/routing";
 import { Skeleton } from "@/src/ui/skeleton";
 import classNames from "@/src/utils/classes";
 import { RemoteLogo } from "@/src/ui/remote-logo";
-import numeral from "numeral";
+import { formatTokenAmount } from "@/src/utils/format";
 
 import styles from "./styles.module.css";
 
@@ -59,7 +59,7 @@ export function Activity({ chainId, transaction, payload }: ActivityProps) {
                             />
                             <Typography>{payload.token.symbol}</Typography>
                             <Typography>
-                                {numeral(payload.amount).format("0.0[000]")}
+                                {formatTokenAmount(payload.amount)}
                             </Typography>
                         </div>
                     )}
