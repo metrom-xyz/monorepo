@@ -7,7 +7,7 @@
 }
 
 .statusDot {
-    @apply w-2 h-2 rounded-full;
+    @apply w-2 h-2 rounded-full px-1;
 }
 
 .statusDotLive {
@@ -23,5 +23,5 @@
 }
 
 .statusDuration {
-    @apply !text-[10px] md:!text-xs;
+    @apply !text-[9px] md:!text-xs whitespace-nowrap;
 }
