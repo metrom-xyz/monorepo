@@ -13,9 +13,6 @@
 .selectionFilters{
     @apply flex justify-between items-center gap-3;
 }
-/* .searchFilter{
-    @apply  bg-red-900 ;
-} */
 
 .row {
     @apply grid grid-cols-12 md:grid-cols-campaigns-table gap-5 px-2 md:px-6 items-center;
@@ -31,4 +28,8 @@
 
 .paginationWrapper {
     @apply w-full h-8 flex justify-end;
+}
+
+.searchLabel {
+    @apply invisible md:visible;
 }

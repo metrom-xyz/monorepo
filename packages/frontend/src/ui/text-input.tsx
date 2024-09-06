@@ -8,6 +8,7 @@ import styles from "./commons/styles.module.css";
 
 export type TextInputProps = Omit<BaseInputProps<string>, "id"> & {
     id?: string;
+    className?: { root?: string; label?: string };
 };
 
 export const TextInput = forwardRef<HTMLInputElement, TextInputProps>(

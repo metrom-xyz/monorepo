@@ -3,7 +3,7 @@
 }
 
 .statusText {
-    @apply flex items-end gap-1;
+    @apply flex items-center md:items-end gap-2;
 }
 
 .statusDot {
@@ -20,4 +20,8 @@
 
 .statusDotEnded {
     @apply bg-gray-400;
+}
+
+.statusDuration {
+    @apply !text-[10px] md:!text-xs;
 }

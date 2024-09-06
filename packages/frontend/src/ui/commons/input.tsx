@@ -40,7 +40,7 @@ export interface BaseInputWrapperProps {
     iconPlacement?: "left" | "right";
     action?: ReactNode;
     actionPlacement?: "left" | "right";
-    className?: string;
+    className?: { root?: string; label?: string };
     children?: ReactNode;
 }
 
@@ -84,10 +84,14 @@ export const BaseInputWrapper = ({
     );
 
     return (
-        <div className={className}>
+        <div className={className?.root}>
             {!!label && (
                 <label
-                    className={classNames("label", styles.label)}
+                    className={classNames(
+                        "label",
+                        styles.label,
+                        className?.label,
+                    )}
                     htmlFor={id}
                 >
                     <Typography

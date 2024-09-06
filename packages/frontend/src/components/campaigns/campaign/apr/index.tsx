@@ -14,7 +14,7 @@ export function Apr({ apr }: AprProps) {
     return apr ? (
         <div className={styles.root}>
             <Typography weight="medium" className={styles.text}>
-                {numeral(apr).format("0.[0]a")}%
+                {numeral(apr).format("0.[0]a")} %
             </Typography>
         </div>
     ) : (

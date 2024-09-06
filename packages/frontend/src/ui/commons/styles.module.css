@@ -77,8 +77,7 @@
 }
 
 .label {
-    @apply invisible
-        md:flex
+    @apply flex
         items-center
         gap-1.5
         w-fit

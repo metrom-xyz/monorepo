@@ -51,7 +51,11 @@ export function Status({
                 <Typography variant="sm" weight="medium">
                     {text}
                 </Typography>
-                <Typography variant="xs" light>
+                <Typography
+                    className={styles.statusDuration}
+                    variant="xs"
+                    light
+                >
                     {duration}
                 </Typography>
             </div>

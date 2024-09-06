@@ -10,7 +10,7 @@
     @apply flex items-end gap-1.5;
 }
 .campaignName{
-    @apply md:!text-lg;
+    @apply md:!text-lg truncate max-w-[180px] md:!overflow-visible  md:max-w-full  ;
 }
 
 .campaignFee{

@@ -9,3 +9,7 @@
 .tokenIcon {
     @apply absolute;
 }
+
+.textRewards {
+    @apply !text-sm md:!text-base;
+}
