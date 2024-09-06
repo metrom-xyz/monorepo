@@ -2,11 +2,11 @@ import { ChevronLeft } from "@/src/assets/chevron-left";
 import { ChevronRight } from "@/src/assets/chevron-right";
 import classNames from "@/src/utils/classes";
 import { useMemo } from "react";
-
-import styles from "./styles.module.css";
 import { Typography } from "../typography";
 
-const PAGES_THRESHOLD = 4;
+import styles from "./styles.module.css";
+
+const PAGES_THRESHOLD = 5;
 
 export interface PaginationProps {
     page: number;
