@@ -53,7 +53,7 @@ export function SkeletonPool() {
         <div className={styles.root}>
             <PoolRemoteLogo loading />
             <div className={styles.titleContainer}>
-                <Skeleton variant="lg" width={200} />
+                <Skeleton variant="lg" width={180} />
                 <Skeleton variant="sm" width={50} />
             </div>
         </div>

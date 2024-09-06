@@ -25,5 +25,5 @@ export function Apr({ apr }: AprProps) {
 }
 
 export function SkeletonApr() {
-    return <Skeleton variant="lg" width={60} />;
+    return <Skeleton className={styles.emptyAPR} variant="lg" width={60} />;
 }

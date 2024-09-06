@@ -48,7 +48,9 @@ export function SkeletonCampaign() {
     return (
         <div className={styles.root}>
             <SkeletonChain />
-            <SkeletonPool />
+            <div className={styles.poolContainer}>
+                <SkeletonPool />
+            </div>
             <SkeletonStatus />
             <SkeletonApr />
             <SkeletonRewards />
