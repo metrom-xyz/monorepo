@@ -86,7 +86,7 @@ export function PersonalRank({
                             # {personalDistribution.position}
                         </Typography>
                         <Typography weight="medium">
-                            {formatPercentage(personalDistribution.percentage)}%
+                            {formatPercentage(personalDistribution.percentage)}
                         </Typography>
                     </div>
                     <Typography weight="medium">

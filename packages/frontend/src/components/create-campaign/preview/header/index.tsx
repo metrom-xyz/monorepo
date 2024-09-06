@@ -56,7 +56,7 @@ export function Header({ payload, backDisabled, onBack }: HeaderProps) {
                     {payload.pool?.token1.symbol}
                 </Typography>
                 <Typography variant="lg" weight="medium" light>
-                    {formatPercentage(payload.pool?.fee)}%
+                    {formatPercentage(payload.pool?.fee)}
                 </Typography>
             </div>
             <div className={styles.durationContainer}>
