@@ -1,8 +1,12 @@
 import { ChevronLeft } from "@/src/assets/chevron-left";
 import { ChevronRight } from "@/src/assets/chevron-right";
 import classNames from "@/src/utils/classes";
+import { useMemo } from "react";
 
 import styles from "./styles.module.css";
+import { Typography } from "../typography";
+
+const PAGES_THRESHOLD = 4;
 
 export interface PaginationProps {
     page: number;
@@ -19,6 +23,23 @@ export function Pagination({
     onNext,
     onPage,
 }: PaginationProps) {
+    const pages = useMemo(() => {
+        const pages = [1];
+
+        const start = Math.max(2, page - Math.floor(PAGES_THRESHOLD / 2));
+        const end = Math.min(
+            totalPages - 1,
+            page + Math.floor(PAGES_THRESHOLD / 2),
+        );
+
+        if (start > 2) pages.push(-1);
+        for (let i = start; i <= end; i++) pages.push(i);
+        if (end < totalPages - 1) pages.push(-1);
+        if (totalPages > 1) pages.push(totalPages);
+
+        return pages;
+    }, [page, totalPages]);
+
     return (
         <div className={styles.root}>
             <button
@@ -32,9 +53,15 @@ export function Pagination({
             >
                 <ChevronLeft className={styles.arrowIcon} />
             </button>
-            {new Array(totalPages).fill(null).map((_, i) => {
-                const number = i + 1;
+            {pages.map((number, i) => {
                 const disabled = page === number;
+
+                if (number < 0)
+                    return (
+                        <Typography key={i} className={styles.ellipsis}>
+                            ...
+                        </Typography>
+                    );
                 return (
                     <button
                         key={i}
@@ -45,7 +72,7 @@ export function Pagination({
                         disabled={disabled}
                         onClick={() => onPage(number)}
                     >
-                        {number}
+                        <Typography>{number}</Typography>
                     </button>
                 );
             })}
