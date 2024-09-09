@@ -63,7 +63,9 @@ export function Header({ payload, backDisabled, onBack }: HeaderProps) {
                 <TextField
                     uppercase
                     label={t("startDate")}
-                    value={dayjs(payload.startDate).format("DD/MMM/YY HH:mm")}
+                    value={dayjs(payload.startDate).format(
+                        "DD MMM YYYY | HH:mm",
+                    )}
                 />
                 <TextField
                     alignment="center"
@@ -78,7 +80,7 @@ export function Header({ payload, backDisabled, onBack }: HeaderProps) {
                     uppercase
                     alignment="right"
                     label={t("endDate")}
-                    value={dayjs(payload.endDate).format("DD/MMM/YY HH:mm")}
+                    value={dayjs(payload.endDate).format("DD MMM YYYY | HH:mm")}
                 />
             </div>
         </div>

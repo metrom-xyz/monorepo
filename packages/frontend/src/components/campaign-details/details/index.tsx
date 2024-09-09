@@ -85,7 +85,7 @@ export function Details({ campaign, loading }: DetailsProps) {
                     loading={detailsLoading}
                     value={
                         campaign &&
-                        dayjs.unix(campaign.from).format("DD/MMM/YY HH:mm")
+                        dayjs.unix(campaign.from).format("DD MMM YYYY | HH:mm")
                     }
                 />
                 <TextField
@@ -96,7 +96,7 @@ export function Details({ campaign, loading }: DetailsProps) {
                     loading={detailsLoading}
                     value={
                         campaign &&
-                        dayjs.unix(campaign.to).format("DD/MMM/YY HH:mm")
+                        dayjs.unix(campaign.to).format("DD MMM YYYY | HH:mm")
                     }
                 />
                 <TextField
