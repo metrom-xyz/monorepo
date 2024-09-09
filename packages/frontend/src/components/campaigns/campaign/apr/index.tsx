@@ -18,10 +18,12 @@ export function Apr({ apr }: AprProps) {
             </Typography>
         </div>
     ) : (
-        <Typography weight="medium">-</Typography>
+        <Typography className={styles.emptyAPR} weight="medium">
+            -
+        </Typography>
     );
 }
 
 export function SkeletonApr() {
-    return <Skeleton variant="lg" width={60} />;
+    return <Skeleton className={styles.emptyAPR} variant="lg" width={60} />;
 }

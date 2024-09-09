@@ -1,5 +1,5 @@
 .root {
-    @apply flex items-center justify-between;
+    @apply flex items-center justify-between col-span-4 md:col-span-1;
 }
 
 .tokenIcons {
@@ -20,4 +20,8 @@
 
 .breakdownRow > div {
     @apply flex items-center gap-2;
+}
+
+.textRewards {
+    @apply !text-sm md:!text-base;
 }

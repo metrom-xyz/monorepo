@@ -1,17 +1,25 @@
 .root {
-    @apply max-w-screen-lg w-full flex flex-col my-12;
+    @apply max-w-screen-lg w-full flex flex-col my-12 px-5;
 }
 
 .filters {
-    @apply max-w-screen-lg w-full flex gap-3 mb-7;
+    @apply max-w-screen-lg w-full flex-col md:flex-row flex gap-3 mb-7;
 }
 
 .filterInput :global(.input) {
     @apply bg-gray-200 py-2;
 }
 
+.selectionFilters {
+    @apply flex justify-between items-center gap-3;
+}
+
 .row {
-    @apply grid grid-cols-campaigns-table gap-5 px-6 items-center;
+    @apply grid grid-cols-12 md:grid-cols-campaigns-table gap-5 px-2 md:px-6 items-center;
+}
+
+.header {
+    @apply md:grid hidden;
 }
 
 .body {
@@ -20,4 +28,8 @@
 
 .paginationWrapper {
     @apply w-full h-8 flex justify-end;
+}
+
+.searchFilter :global(.label) {
+    @apply invisible md:visible;
 }

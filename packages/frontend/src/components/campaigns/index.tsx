@@ -210,7 +210,10 @@ export function Campaigns() {
         <div className={styles.root}>
             <div className={styles.filters}>
                 <TextInput
-                    className={styles.filterInput}
+                    className={classNames(
+                        styles.searchFilter,
+                        styles.filterInput,
+                    )}
                     icon={SearchIcon}
                     iconPlacement="right"
                     label={t("filters.search.label")}
@@ -218,26 +221,28 @@ export function Campaigns() {
                     value={search}
                     onChange={handleSearchChange}
                 />
-                <Select
-                    options={statusOptions}
-                    value={status}
-                    onChange={handleStatusChange}
-                    label={t("filters.status.label")}
-                    messages={{
-                        noResults: "",
-                    }}
-                    className={styles.filterInput}
-                />
-                <Select
-                    options={chainOptions}
-                    value={chain}
-                    onChange={handleChainChange}
-                    label={t("filters.chain.label")}
-                    messages={{
-                        noResults: "",
-                    }}
-                    className={styles.filterInput}
-                />
+                <div className={styles.selectionFilters}>
+                    <Select
+                        options={statusOptions}
+                        value={status}
+                        onChange={handleStatusChange}
+                        label={t("filters.status.label")}
+                        messages={{
+                            noResults: "",
+                        }}
+                        className={styles.filterInput}
+                    />
+                    <Select
+                        options={chainOptions}
+                        value={chain}
+                        onChange={handleChainChange}
+                        label={t("filters.chain.label")}
+                        messages={{
+                            noResults: "",
+                        }}
+                        className={styles.filterInput}
+                    />
+                </div>
             </div>
             <div className={classNames(styles.row, styles.header)}>
                 <Typography variant="sm" weight="medium">

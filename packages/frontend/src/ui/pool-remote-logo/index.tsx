@@ -1,6 +1,6 @@
 import styles from "./styles.module.css";
 import { RemoteLogo, type RemoteLogoProps } from "../remote-logo";
-
+import classNames from "@/src/utils/classes";
 interface PoolRemoteLogoProps {
     loading?: boolean;
     size?: "sm" | "md" | "lg" | "xl";
@@ -14,14 +14,20 @@ interface PoolRemoteLogoProps {
 
 export function PoolRemoteLogo({
     loading,
-    size = "md",
+    size,
     chain,
     token0,
     token1,
     className,
 }: PoolRemoteLogoProps) {
     return (
-        <div className={`${styles.root} ${styles[size]} ${className?.root}`}>
+        <div
+            className={classNames(
+                styles.root,
+                size ? styles[size] : styles.selfAdjust,
+                className?.root,
+            )}
+        >
             <RemoteLogo
                 loading={loading}
                 chain={chain}
