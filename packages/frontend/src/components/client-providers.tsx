@@ -24,7 +24,7 @@ dayjs.extend(relativeTime);
 
 const config = getDefaultConfig({
     appName: "Metrom",
-    projectId: WALLETCONNECT_PROJECT_ID,
+    projectId: WALLETCONNECT_PROJECT_ID || "PROJECT_ID",
     chains: SUPPORTED_CHAINS,
     ssr: true,
 });
