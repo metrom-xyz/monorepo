@@ -2,10 +2,10 @@ import React, { useCallback, useMemo, useState } from "react";
 import Image from "next/image";
 import { type Address } from "viem";
 import classNames from "@/src/utils/classes";
-import { CHAIN_DATA } from "@/src/commons";
 import type { SupportedChain } from "@metrom-xyz/contracts";
 import { Skeleton } from "../skeleton";
 import { Typography } from "../typography";
+import { useChainData } from "@/src/hooks/useChainData";
 
 import styles from "./styles.module.css";
 
@@ -32,15 +32,27 @@ export const RemoteLogo = ({
 }: RemoteLogoProps) => {
     const [imageError, setImageError] = useState(false);
     const sizeClass = size ? styles[size] : styles.selfAdjust;
+    const chainData = useChainData(chain as SupportedChain);
+
     const resolvedSrc = useMemo(() => {
         if (src) return src;
-        if (!address || !chain) return "";
+        if (!address || !chain || !chainData) return "";
 
         return (
-            CHAIN_DATA[chain as SupportedChain].rewardTokenIcons[address] ||
+            chainData.rewardTokenIcons[address] ||
             `https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/${chain}/assets/${address}/logo.png`
         );
-    }, [address, chain, src]);
+    }, [address, chain, chainData, src]);
+
+    const SpecialToken = useMemo(() => {
+        if (!address || !chain || !chainData) return null;
+
+        const specialToken =
+            chainData.specialTokens?.[address.toLowerCase() as Address];
+        if (!specialToken) return null;
+
+        return specialToken;
+    }, [address, chain, chainData]);
 
     const validResolvedSrc = useMemo(() => {
         if (!resolvedSrc || BAD_SRC[resolvedSrc] || imageError) return null;
@@ -57,6 +69,14 @@ export const RemoteLogo = ({
     if (loading) {
         return (
             <Skeleton circular className={classNames(sizeClass, className)} />
+        );
+    }
+
+    if (SpecialToken) {
+        return (
+            <div className={classNames(styles.root, sizeClass, className)}>
+                <SpecialToken className={classNames(styles.image, sizeClass)} />
+            </div>
         );
     }
 

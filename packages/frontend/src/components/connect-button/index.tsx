@@ -80,6 +80,7 @@ export function ConnectButton() {
                                 )}
                             </div>
                             <Popover
+                                placement="bottom"
                                 anchor={networkWrapper}
                                 open={networkPopoverOpen}
                                 ref={networksPopoverRef}
