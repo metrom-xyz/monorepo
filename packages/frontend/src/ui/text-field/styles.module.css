@@ -3,7 +3,7 @@
 }
 
 .boxed {
-    @apply px-5 py-4 bg-white rounded-2xl;
+    @apply p-4 bg-white rounded-2xl;
 }
 
 .alignCenter {
