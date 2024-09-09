@@ -50,9 +50,9 @@ export function Reward({
 
         const error =
             reward.amount > balance
-                ? "errors.insufficientBalance"
+                ? "newCampaign.form.rewards.errors.insufficientBalance"
                 : distributionRate < reward.minimumRate
-                  ? "errors.lowDistributionRate"
+                  ? "newCampaign.form.rewards.errors.lowDistributionRate"
                   : "";
 
         onError(reward.token.address, error);
