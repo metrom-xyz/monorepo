@@ -29,6 +29,7 @@ export interface ChainData {
     amms: Amm[];
     baseTokens: Token[];
     rewardTokenIcons: Record<Address, string>;
+    specialTokens?: Record<Address, FunctionComponent<SVGIcon>>;
 }
 
 export const METROM_DATA_MANAGER_JWT_ISSUER = "metrom-data-manager";

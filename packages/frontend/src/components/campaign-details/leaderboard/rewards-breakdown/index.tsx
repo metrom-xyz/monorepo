@@ -37,6 +37,7 @@ export function RewardsBreakdown({
     return (
         <>
             <Popover
+                placement="top"
                 anchor={rewardedAmountWrapper}
                 open={popoverOpen}
                 ref={rewardsPopoverRef}
