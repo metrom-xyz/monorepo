@@ -82,11 +82,12 @@ export function RewardsStep({
 
     const rewardsError = useMemo(() => {
         if (!!rewardAmountError) return rewardAmountError;
+        if (!rewards || rewards.length === 0) return "";
 
         return existingRewardsErrors.length > 0
             ? existingRewardsErrors[0].error
             : "";
-    }, [existingRewardsErrors, rewardAmountError]);
+    }, [existingRewardsErrors, rewardAmountError, rewards]);
 
     useEffect(() => {
         onError({ rewards: !!rewardsError });
@@ -214,7 +215,7 @@ export function RewardsStep({
                                 [styles.errorVisible]: !!rewardsError,
                             })}
                         >
-                            {t(rewardsError)}
+                            {rewardsError && t(rewardsError)}
                         </ErrorText>
                     </div>
                 }

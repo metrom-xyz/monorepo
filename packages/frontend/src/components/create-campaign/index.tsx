@@ -79,6 +79,7 @@ export function CreateCampaign() {
             pool: undefined,
             rewards: undefined,
         }));
+        setPayloadErrors({});
         setView(View.form);
     }
 
