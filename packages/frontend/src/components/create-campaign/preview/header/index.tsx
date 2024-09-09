@@ -4,13 +4,11 @@ import { Button } from "@/src/ui/button";
 import { PoolRemoteLogo } from "@/src/ui/pool-remote-logo";
 import { TextField } from "@/src/ui/text-field";
 import { Typography } from "@/src/ui/typography";
-import dayjs from "dayjs";
 import { useTranslations } from "next-intl";
-import numeral from "numeral";
 import { useChainId } from "wagmi";
+import { formatDateTime, formatPercentage } from "@/src/utils/format";
 
 import styles from "./styles.module.css";
-import { formatPercentage } from "@/src/utils/format";
 
 interface HeaderProps {
     payload: CampaignPayload;
@@ -63,9 +61,7 @@ export function Header({ payload, backDisabled, onBack }: HeaderProps) {
                 <TextField
                     uppercase
                     label={t("startDate")}
-                    value={dayjs(payload.startDate).format(
-                        "DD MMM YYYY | HH:mm",
-                    )}
+                    value={formatDateTime(payload.startDate)}
                 />
                 <TextField
                     alignment="center"
@@ -80,7 +76,7 @@ export function Header({ payload, backDisabled, onBack }: HeaderProps) {
                     uppercase
                     alignment="right"
                     label={t("endDate")}
-                    value={dayjs(payload.endDate).format("DD MMM YYYY | HH:mm")}
+                    value={formatDateTime(payload.endDate)}
                 />
             </div>
         </div>

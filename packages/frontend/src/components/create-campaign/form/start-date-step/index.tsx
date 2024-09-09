@@ -17,6 +17,7 @@ import { DateTimePicker } from "@/src/ui/date-time-picker";
 import { ErrorText } from "@/src/ui/error-text";
 import { getClosestAvailableDateTime } from "@/src/utils/date";
 import { useTransition, animated } from "@react-spring/web";
+import { formatDateTime } from "@/src/utils/format";
 
 import styles from "./styles.module.css";
 
@@ -134,7 +135,7 @@ export function StartDateStep({
                     weight="medium"
                     className={styles.dateText}
                 >
-                    {dayjs(date || startDate).format("DD MMM YYYY | HH:mm")}
+                    {formatDateTime(date || startDate)}
                 </Typography>
             </StepPreview>
             <StepContent>
