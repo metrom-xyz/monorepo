@@ -29,12 +29,7 @@ export function PoolStepPreview({ pool }: PoolStepPreviewProps) {
                         {pool.token0.symbol} / {pool.token1.symbol}
                     </Typography>
                     {pool.fee && (
-                        <Typography
-                            variant="xs"
-                            light
-                            weight="medium"
-                            className={styles.fee}
-                        >
+                        <Typography variant="sm" light weight="medium">
                             {formatPercentage(pool.fee)}
                         </Typography>
                     )}

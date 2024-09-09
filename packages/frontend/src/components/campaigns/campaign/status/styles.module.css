@@ -23,5 +23,5 @@
 }
 
 .statusDuration {
-    @apply !text-[9px] md:!text-xs whitespace-nowrap;
+    @apply whitespace-nowrap;
 }

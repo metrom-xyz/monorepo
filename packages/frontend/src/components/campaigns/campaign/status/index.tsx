@@ -53,8 +53,9 @@ export function Status({
                 </Typography>
                 <Typography
                     className={styles.statusDuration}
-                    variant="xs"
                     light
+                    variant="sm"
+                    weight="medium"
                 >
                     {duration}
                 </Typography>
@@ -68,10 +69,10 @@ export function SkeletonStatus() {
         <div className={styles.statusRoot}>
             <Skeleton className={styles.statusDot} />
             <div className={styles.statusText}>
-                <Typography variant="sm" weight="medium">
+                <Typography variant="sm">
                     <Skeleton width={50} />
                 </Typography>
-                <Typography variant="xs" light>
+                <Typography variant="sm">
                     <Skeleton width={30} />
                 </Typography>
             </div>
