@@ -21,7 +21,8 @@ import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
 import { ApproveRewardsButton } from "../approve-rewards-button";
 import { Rewards } from "./rewards";
 import { Header } from "./header";
-import { formatUsdAmount } from "@/src/utils/format";
+import { formatPercentage, formatUsdAmount } from "@/src/utils/format";
+import { getCampaignPreviewApr } from "@/src/utils/campaign";
 
 import styles from "./styles.module.css";
 
@@ -165,8 +166,13 @@ export function CampaignPreview({
                             label={t("tvl")}
                             value={formatUsdAmount(payload.pool?.tvl)}
                         />
-                        {/* TODO: add apr */}
-                        <TextField boxed label={t("apr")} value={"-"} />
+                        <TextField
+                            boxed
+                            label={t("apr")}
+                            value={formatPercentage(
+                                getCampaignPreviewApr(payload),
+                            )}
+                        />
                     </div>
                     <Rewards
                         rewards={payload.rewards}
