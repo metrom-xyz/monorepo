@@ -5,6 +5,7 @@ import { KimLogo } from "../../assets/logos/amms/kim";
 import { KimToken } from "@/src/assets/logos/tokens/kim";
 import { UsdcToken } from "@/src/assets/logos/tokens/usdc";
 import { UsdtToken } from "@/src/assets/logos/tokens/usdt";
+import { ModeToken } from "@/src/assets/logos/tokens/mode";
 import { ENVIRONMENT } from "../env";
 import { type ChainData } from "..";
 
@@ -39,7 +40,7 @@ export const modeData: ChainData = {
     },
     specialTokens: {
         "0x6863fb62ed27a9ddf458105b507c15b5d741d62e": KimToken,
-        "0xdfc7c877a950e49d2610114102175a06c2e3167a": ModeLogo,
+        "0xdfc7c877a950e49d2610114102175a06c2e3167a": ModeToken,
         "0xd988097fb8612cc24eec14542bc03424c656005f": UsdcToken,
         "0xf0f161fda2712db8b566946122a5af183995e2ed": UsdtToken,
     },
