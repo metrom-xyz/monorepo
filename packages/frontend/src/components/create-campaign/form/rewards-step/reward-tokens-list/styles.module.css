@@ -1,5 +1,6 @@
 .root {
-    @apply h-64
+    @apply h-20
+        max-h-[19rem]
         w-full
         overflow-hidden;
 }
@@ -8,6 +9,7 @@
     @apply flex
         justify-between
         items-center
+        py-1
         px-4;
 }
 
