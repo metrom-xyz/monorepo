@@ -10,6 +10,7 @@ import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
 import type { Locale } from "@rainbow-me/rainbowkit";
 import { ClientProviders } from "../../components/client-providers";
+import Fathom from "@/src/components/fathom";
 
 import styles from "./styles.module.css";
 
@@ -32,6 +33,7 @@ export default async function Layout({
             <body>
                 <NextIntlClientProvider messages={messages}>
                     <ClientProviders locale={locale as Locale}>
+                        <Fathom />
                         {children}
                     </ClientProviders>
                 </NextIntlClientProvider>

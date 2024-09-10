@@ -23,6 +23,7 @@ import { Rewards } from "./rewards";
 import { Header } from "./header";
 import { formatPercentage, formatUsdAmount } from "@/src/utils/format";
 import { getCampaignPreviewApr } from "@/src/utils/campaign";
+import { trackFathomEvent } from "@/src/utils/fathom";
 
 import styles from "./styles.module.css";
 
@@ -131,6 +132,7 @@ export function CampaignPreview({
                 }
 
                 setCreated(true);
+                trackFathomEvent("CLICK_DEPLOY_CAMPAIGN");
             } catch (error) {
                 console.warn("could not create kpi token", error);
             } finally {

@@ -17,6 +17,7 @@ import type { TokenClaims } from "..";
 import { Skeleton } from "@/src/ui/skeleton";
 import { useChainData } from "@/src/hooks/useChainData";
 import { formatTokenAmount } from "@/src/utils/format";
+import { trackFathomEvent } from "@/src/utils/fathom";
 
 import styles from "./styles.module.css";
 
@@ -85,6 +86,7 @@ export function TokenClaim({ chainId, chainClaims }: TokenClaimProps) {
                 }
 
                 setClaimed(true);
+                trackFathomEvent("CLICK_CLAIM_SINGLE");
             } catch (error) {
                 console.warn("Could not claim", error);
             } finally {
