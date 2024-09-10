@@ -1,5 +1,5 @@
 .root {
-    @apply h-96
+    @apply h-64
         w-full
         overflow-hidden;
 }

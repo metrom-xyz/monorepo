@@ -132,6 +132,7 @@ export const DatePicker = ({
                                         "days",
                                     ),
                                     [styles.cellDisabled]: disabled,
+                                    [styles.cellSelectable]: !disabled,
                                     [styles.cellSelected]: selected,
                                     [styles.cellInRange]: isDateInRange(
                                         dayjs(cell.value),
