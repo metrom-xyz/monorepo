@@ -15,13 +15,28 @@ export function Empty() {
 
     return (
         <div className={styles.root}>
-            <Typography weight="medium" uppercase>
-                {t("title")}
-            </Typography>
-            <Typography>{t("body")}</Typography>
-            <Link href="/">
-                <Button>{t("action")}</Button>
-            </Link>
+            <div className={styles.subContainer}>
+                <Typography
+                    className={styles.title}
+                    variant="base"
+                    weight="medium"
+                    uppercase
+                >
+                    {t("title")}
+                </Typography>
+                <Typography
+                    className={styles.body}
+                    variant="lg"
+                    weight="medium"
+                >
+                    {t("body")}
+                </Typography>
+                <Link href="/">
+                    <Button className={{ root: styles.button }}>
+                        {t("action")}
+                    </Button>
+                </Link>
+            </div>
         </div>
     );
 }
