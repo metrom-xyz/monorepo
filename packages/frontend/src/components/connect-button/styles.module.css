@@ -35,10 +35,9 @@
 }
 
 .networkRow {
-    @apply h-9
-        flex
+    @apply flex
         items-center
-        px-2
+        p-3
         gap-2
         cursor-pointer
         hover:bg-gray-200
@@ -48,7 +47,15 @@
 }
 
 .networksWrapper {
-    @apply flex flex-col py-2;
+    @apply flex flex-col;
+}
+
+.networksWrapper :first-child {
+    @apply rounded-t-xl;
+}
+
+.networksWrapper :last-child {
+    @apply rounded-b-xl;
 }
 
 .overlay {
@@ -89,7 +96,7 @@
     @apply bg-white
         pl-1
         pr-3
-        h-9
+        h-10
         rounded-md
         flex
         gap-3
