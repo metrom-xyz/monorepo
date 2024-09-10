@@ -14,6 +14,7 @@ import {
     holesky,
     mantleSepoliaTestnet,
     mode,
+    mantle,
 } from "viem/chains";
 
 import {
@@ -21,6 +22,7 @@ import {
     holeskyData,
     mantleSepoliaData,
     modeData,
+    mantleData,
 } from "./chains";
 
 export interface ChainData {
@@ -38,7 +40,7 @@ export const MAXIMUM_REWARDS_RESTRICTIONS = 20;
 
 export const SUPPORTED_CHAINS: [Chain, ...Chain[]] =
     ENVIRONMENT === Environment.Production
-        ? [mode]
+        ? [mode, mantle]
         : [celoAlfajores, holesky, mantleSepoliaTestnet];
 
 export const CHAIN_DATA: Record<SupportedChain, ChainData> = {
@@ -46,6 +48,7 @@ export const CHAIN_DATA: Record<SupportedChain, ChainData> = {
     [SupportedChain.CeloAlfajores]: celoAlfajoresData,
     [SupportedChain.MantleSepolia]: mantleSepoliaData,
     [SupportedChain.Mode]: modeData,
+    [SupportedChain.Mantle]: mantleData,
 };
 
 export const metromApiClient = new MetromApiClient(
