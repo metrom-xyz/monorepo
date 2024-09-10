@@ -5,6 +5,7 @@ export const SUPPORTED_CHAIN_NAMES: Record<SupportedChain, string> = {
     [SupportedChain.CeloAlfajores]: "celo-alfajores",
     [SupportedChain.MantleSepolia]: "mantle-sepolia",
     [SupportedChain.Mode]: "mode",
+    [SupportedChain.Mantle]: "mantle",
 };
 
 export enum SupportedAmm {
