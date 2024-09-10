@@ -69,12 +69,8 @@ export function SkeletonStatus() {
         <div className={styles.statusRoot}>
             <Skeleton className={styles.statusDot} />
             <div className={styles.statusText}>
-                <Typography variant="sm">
-                    <Skeleton width={50} />
-                </Typography>
-                <Typography variant="sm">
-                    <Skeleton width={30} />
-                </Typography>
+                <Skeleton width={50} />
+                <Skeleton width={30} />
             </div>
         </div>
     );
