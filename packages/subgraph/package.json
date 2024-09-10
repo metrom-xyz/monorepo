@@ -12,7 +12,7 @@
         "deploy:mantle-sepolia:dev": "pnpm prepare:deploy development mantle-sepolia && pnpm codegen && graph build && graph deploy metrom-mantle-sepolia-dev -l 0.0.4 --node https://subgraph-api.mantle.xyz/deploy --ipfs https://subgraph-api.mantle.xyz/ipfs",
         "deploy:mantle-sepolia:staging": "pnpm prepare:deploy staging mantle-sepolia && pnpm codegen && graph build && graph deploy metrom-mantle-sepolia-staging -l 0.0.4 --node https://subgraph-api.mantle.xyz/deploy --ipfs https://subgraph-api.mantle.xyz/ipfs",
         "deploy:mode:prod": "pnpm prepare:deploy production mode-mainnet && pnpm codegen && graph build && graph deploy --studio metrom-mode -l 0.0.3",
-        "deploy:mantle:prod": "pnpm prepare:deploy production mantle && pnpm codegen && graph build && graph deploy metrom-mantle -l 0.0.1 --node https://subgraph-api.mantle.xyz/deploy --ipfs https://subgraph-api.mantle.xyz/ipfs",
+        "deploy:mantle:prod": "pnpm prepare:deploy production mantle && pnpm codegen && graph build && graph deploy metrom-mantle -l 0.0.2 --node https://subgraph-api.mantle.xyz/deploy --ipfs https://subgraph-api.mantle.xyz/ipfs",
         "lint": "eslint .",
         "format": "eslint --fix ."
     },
@@ -22,7 +22,7 @@
     },
     "devDependencies": {
         "@eslint/js": "^9.10.0",
-        "@metrom-xyz/contracts": "^0.19.0",
+        "@metrom-xyz/contracts": "^0.20.0",
         "@types/eslint__js": "^8.42.3",
         "@types/mustache": "^4.2.5",
         "@types/node": "^22.5.4",
