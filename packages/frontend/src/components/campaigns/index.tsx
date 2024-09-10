@@ -213,8 +213,6 @@ export function Campaigns() {
         localizedRouter.push("/campaigns/create");
     }, [localizedRouter]);
 
-    console.log({ loading, pagedCampaigns });
-
     return (
         <div className={styles.root}>
             <div className={styles.filters}>
