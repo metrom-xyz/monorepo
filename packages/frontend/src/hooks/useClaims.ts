@@ -18,7 +18,7 @@ export function useClaims(): {
 
     const [rawClaims, setRawClaims] = useState<Claim[]>([]);
     const [claims, setClaims] = useState<ClaimWithRemaining[]>([]);
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         let cancelled = false;

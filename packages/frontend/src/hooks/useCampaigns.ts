@@ -12,7 +12,7 @@ export function useCampaigns(): {
     campaigns: NamedCampaign[];
 } {
     const [campaigns, setCampaigns] = useState<NamedCampaign[]>([]);
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         let cancelled = false;
