@@ -7,6 +7,12 @@ import { useTranslations } from "next-intl";
 export function Empty() {
     const t = useTranslations("claims.empty");
 
+    // FIXME: fix the empty being rendered before the loading is done to avoid
+    // tracking wrong events
+    // useEffect(() => {
+    //     trackFathomEvent("NO_REWARDS_CLAIM");
+    // }, []);
+
     return (
         <div className={styles.root}>
             <Typography weight="medium" uppercase>

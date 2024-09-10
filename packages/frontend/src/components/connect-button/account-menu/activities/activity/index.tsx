@@ -9,6 +9,7 @@ import { Skeleton } from "@/src/ui/skeleton";
 import classNames from "@/src/utils/classes";
 import { RemoteLogo } from "@/src/ui/remote-logo";
 import { formatTokenAmount } from "@/src/utils/format";
+import { trackFathomEvent } from "@/src/utils/fathom";
 
 import styles from "./styles.module.css";
 
@@ -33,6 +34,10 @@ export function Activity({ chainId, transaction, payload }: ActivityProps) {
                   title: t("claimReward"),
               };
 
+    function handleActivityOnClick() {
+        trackFathomEvent("CLICK_ACTIVITY");
+    }
+
     return (
         <div className={styles.root}>
             <div className={styles.leftWrapper}>
@@ -44,7 +49,10 @@ export function Activity({ chainId, transaction, payload }: ActivityProps) {
                         {title}
                     </Typography>
                     {payload.type === "createCampaign" ? (
-                        <Link href={`/campaigns/${chainId}/${payload.id}`}>
+                        <Link
+                            href={`/campaigns/${chainId}/${payload.id}`}
+                            onClick={handleActivityOnClick}
+                        >
                             <Typography className={styles.seeCampaignLink}>
                                 {t("seeCampaign")}
                             </Typography>

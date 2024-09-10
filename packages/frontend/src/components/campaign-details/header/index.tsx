@@ -9,6 +9,7 @@ import { useRouter } from "@/src/i18n/routing";
 import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
 import { getPoolAddLiquidityLink, getPoolExplorerLink } from "@/src/utils/amm";
 import { formatPercentage } from "@/src/utils/format";
+import { trackFathomEvent } from "@/src/utils/fathom";
 
 import styles from "./styles.module.css";
 
@@ -34,6 +35,14 @@ export function Header({ campaign }: HeaderProps) {
         campaign.pool.amm,
         campaign.pool,
     );
+
+    function handleAddLiquidityOnClick() {
+        trackFathomEvent("CLICK_POOL_DEPOSIT");
+    }
+
+    function handleExploreOnClick() {
+        trackFathomEvent("CLICK_AMM_EXPLORE");
+    }
 
     return (
         <div className={styles.root}>
@@ -68,6 +77,7 @@ export function Header({ campaign }: HeaderProps) {
                         size="xsmall"
                         href={depositLink}
                         disabled={!depositLink}
+                        onClick={handleAddLiquidityOnClick}
                         target="_blank"
                         rel="noopener noreferrer"
                         className={{ root: styles.button }}
@@ -88,6 +98,7 @@ export function Header({ campaign }: HeaderProps) {
                         icon={ArrowRightIcon}
                         href={exploreLink}
                         disabled={!exploreLink}
+                        onClick={handleExploreOnClick}
                         target="_blank"
                         rel="noopener noreferrer"
                         className={{ icon: styles.externalLinkIcon }}

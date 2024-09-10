@@ -27,6 +27,7 @@ import { ErrorText } from "@/src/ui/error-text";
 import { useWatchBalance } from "@/src/hooks/useWatchBalance";
 import { formatUsdAmount } from "@/src/utils/format";
 import classNames from "@/src/utils/classes";
+import { trackFathomEvent } from "@/src/utils/fathom";
 
 import styles from "./styles.module.css";
 
@@ -175,6 +176,7 @@ export function RewardsStep({
         setOpen(false);
         setRewardAmount(undefined);
         setRewardToken(undefined);
+        trackFathomEvent("PICK_REWARD");
     }, [onRewardsChange, rewardAmount, rewardToken, rewards]);
 
     const handleRewardTokenOnRemove = useCallback(
