@@ -12,12 +12,14 @@ import type { ChainData } from "@/src/commons";
 import {
     celoAlfajores,
     holesky,
+    mantle,
     mantleSepoliaTestnet,
     mode,
 } from "viem/chains";
 import {
     celoAlfajoresData,
     holeskyData,
+    mantleData,
     mantleSepoliaData,
     modeData,
 } from "@/src/commons/chains";
@@ -56,6 +58,11 @@ export function Claims() {
                 [SupportedChain.Mode]: {
                     chain: mode,
                     chainData: modeData,
+                    claims: [],
+                },
+                [SupportedChain.Mantle]: {
+                    chain: mantle,
+                    chainData: mantleData,
                     claims: [],
                 },
                 [SupportedChain.CeloAlfajores]: {
