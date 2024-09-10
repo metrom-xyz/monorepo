@@ -23,7 +23,19 @@
 }
 
 .body {
-    @apply w-full mt-4 flex flex-col gap-2 mb-7;
+    @apply w-full md:h-[700px] mt-4 flex flex-col gap-2 mb-7;
+}
+
+.empty {
+    @apply w-full
+        h-[700px]
+        flex
+        flex-col
+        items-center
+        justify-center
+        gap-9
+        bg-white
+        rounded-2xl;
 }
 
 .paginationWrapper {

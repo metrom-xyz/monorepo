@@ -48,6 +48,11 @@
                 "text": "Ended",
                 "duration": "{days} ago"
             }
+        },
+        "empty": {
+            "title": "No campaigns found",
+            "description": "No campaigns found on Metrom.",
+            "create": "Create campaign"
         }
     },
     "newCampaign": {

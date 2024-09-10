@@ -19,10 +19,12 @@ import { useDebounce } from "react-use";
 import { filterCampaigns, sortCampaigns } from "@/src/utils/filtering";
 import { Pagination } from "@/src/ui/pagination";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
+import { useRouter as useLocalizedRouter } from "@/i18n/routing";
 import { Select, type SelectOption } from "@/src/ui/select";
 import { Status } from "@metrom-xyz/sdk";
 import { useChains } from "wagmi";
 import classNames from "@/src/utils/classes";
+import { Button } from "@/src/ui/button";
 
 import styles from "./styles.module.css";
 
@@ -45,6 +47,7 @@ export function Campaigns() {
     const t = useTranslations("allCampaigns");
     const chains = useChains();
     const router = useRouter();
+    const localizedRouter = useLocalizedRouter();
     const pathname = usePathname();
     const searchParams = useSearchParams();
 
@@ -206,6 +209,12 @@ export function Campaigns() {
         setPageNumber(page);
     }
 
+    const handleCreateCampaign = useCallback(() => {
+        localizedRouter.push("/campaigns/create");
+    }, [localizedRouter]);
+
+    console.log({ loading, pagedCampaigns });
+
     return (
         <div className={styles.root}>
             <div className={styles.filters}>
@@ -275,6 +284,18 @@ export function Campaigns() {
                         <SkeletonCampaign />
                         <SkeletonCampaign />
                     </>
+                ) : pagedCampaigns.length === 0 ? (
+                    <div className={styles.empty}>
+                        <Typography uppercase variant="lg" weight="medium">
+                            {t("empty.title")}
+                        </Typography>
+                        <Typography variant="xl" weight="medium">
+                            {t("empty.description")}
+                        </Typography>
+                        <Button size="small" onClick={handleCreateCampaign}>
+                            {t("empty.create")}
+                        </Button>
+                    </div>
                 ) : (
                     pagedCampaigns.map((campaign) => {
                         return (

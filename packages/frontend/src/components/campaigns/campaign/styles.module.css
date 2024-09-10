@@ -6,7 +6,8 @@
         transition-colors
         duration-200
         ease-in-out
-        rounded-xl 
+        rounded-xl
+        min-h-16
         px-3
         py-4;
 }

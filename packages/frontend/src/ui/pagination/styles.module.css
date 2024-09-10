@@ -2,10 +2,6 @@
     @apply w-full md:w-auto justify-between flex gap-2;
 }
 
-.arrow {
-    @apply mx-2;
-}
-
 .arrowIcon {
     @apply w-5 h-5;
 }
