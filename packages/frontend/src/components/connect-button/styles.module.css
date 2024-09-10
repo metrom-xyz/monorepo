@@ -35,9 +35,10 @@
 }
 
 .networkRow {
-    @apply flex
+    @apply h-9
+        flex
         items-center
-        p-3
+        px-3
         gap-2
         cursor-pointer
         hover:bg-gray-200
