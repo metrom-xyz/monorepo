@@ -1,7 +1,7 @@
 "use client";
 
 import { Link, usePathname } from "@/src/i18n/routing";
-import { MetromLogo } from "../../../assets/metrom-logo";
+import { MetromSquareLogo } from "@/src/assets/metrom-square-logo";
 import { useTranslations } from "next-intl";
 import { ConnectButton } from "../../connect-button";
 import { Typography } from "@/src/ui/typography";
@@ -34,7 +34,7 @@ export function Nav({ header }: NavProps) {
         >
             <div className={styles.main}>
                 <Link href="/">
-                    <MetromLogo className={styles.metromLogo} />
+                    <MetromSquareLogo className={styles.metromLogo} />
                 </Link>
                 <div className={styles.tabs}>
                     {ROUTES.map(({ path, label, icon: Icon }) => (

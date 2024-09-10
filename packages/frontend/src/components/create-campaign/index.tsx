@@ -32,7 +32,6 @@ export function CreateCampaign() {
 
     const chainId = useChainId();
 
-    // TODO: add complete validation
     const malformedPayload = useMemo(() => {
         return (
             !payload.amm ||
@@ -75,6 +74,12 @@ export function CreateCampaign() {
     }
 
     function handleBackOnClick() {
+        setPayload((prevState) => ({
+            ...prevState,
+            pool: undefined,
+            rewards: undefined,
+        }));
+        setPayloadErrors({});
         setView(View.form);
     }
 
