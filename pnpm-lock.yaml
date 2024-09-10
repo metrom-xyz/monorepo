@@ -183,8 +183,8 @@ importers:
         specifier: ^5.0.22
         version: 5.0.22
       '@metrom-xyz/contracts':
-        specifier: ^0.19.0
-        version: 0.19.0(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@6.0.4)(zod@3.23.8)
+        specifier: ^0.20.0
+        version: 0.20.0(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@6.0.4)(zod@3.23.8)
       '@metrom-xyz/sdk':
         specifier: workspace:*
         version: link:../sdk
@@ -307,8 +307,8 @@ importers:
         specifier: ^9.10.0
         version: 9.10.0
       '@metrom-xyz/contracts':
-        specifier: ^0.19.0
-        version: 0.19.0(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@6.0.4)(zod@3.23.8)
+        specifier: ^0.20.0
+        version: 0.20.0(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@6.0.4)(zod@3.23.8)
       '@tsconfig/node20':
         specifier: ^20.1.4
         version: 20.1.4
@@ -362,8 +362,8 @@ importers:
         specifier: ^9.10.0
         version: 9.10.0
       '@metrom-xyz/contracts':
-        specifier: ^0.19.0
-        version: 0.19.0(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@6.0.4)(zod@3.23.8)
+        specifier: ^0.20.0
+        version: 0.20.0(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@6.0.4)(zod@3.23.8)
       '@types/eslint__js':
         specifier: ^8.42.3
         version: 8.42.3
@@ -1892,8 +1892,8 @@ packages:
     resolution: {integrity: sha512-/u663aUaB6+Xe75i3Mt/1cCljm41HDYIsna5oBrwGvgkY2zH7/9k9Zjd706cxoAbxN7QgLSVAReUiGnuxCuXrQ==}
     engines: {node: '>=16.0.0'}
 
-  '@metrom-xyz/contracts@0.19.0':
-    resolution: {integrity: sha512-vRR1aTszxuRfLUmAjbV3/vc35iFbr3eAaV5c8n/c/CgdLRFS3gNDTi9F70E6UnZpw1eJL0TIRIcKxoGAAAs9ZA==}
+  '@metrom-xyz/contracts@0.20.0':
+    resolution: {integrity: sha512-VVvWiAi+2iDmaK1wYqc/wJjQTkyGN4wAMhWmJRwGt/4lrz8RsgWsRXqy0/xuyXVdemK1i83baqH2WJsDznGD+Q==}
 
   '@motionone/animation@10.18.0':
     resolution: {integrity: sha512-9z2p5GFGCm0gBsZbi8rVMOAJCtw1WqBTIPw3ozk06gDvZInBPIsQcHgYogEJ4yuHJ+akuW8g1SEIOpTOvYs8hw==}
@@ -9707,7 +9707,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@metrom-xyz/contracts@0.19.0(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@6.0.4)(zod@3.23.8)':
+  '@metrom-xyz/contracts@0.20.0(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@6.0.4)(zod@3.23.8)':
     dependencies:
       viem: 2.21.4(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@6.0.4)(zod@3.23.8)
     transitivePeerDependencies:
