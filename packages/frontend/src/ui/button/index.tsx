@@ -68,7 +68,7 @@ const Component = (props: ButtonProps, ref: RefType<typeof props>) => {
     };
     const [Root, rootProps]: [ElementType, any] =
         "href" in rest
-            ? ["a", { href: rest.href }]
+            ? ["a", { href: rest.href, onClick }]
             : ["button", { onClick, disabled: disabled || loading }];
 
     const hasIcon = !!Icon;

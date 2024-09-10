@@ -3,17 +3,17 @@
 }
 
 .connectButton {
-    @apply h-9 rounded-lg;
+    @apply h-10 rounded-lg;
 }
 
 .wrapper {
-    @apply flex gap-3;
+    @apply flex items-center gap-3;
 }
 
 .networkWrapper {
     @apply bg-white
-        w-9
-        h-9
+        w-10
+        h-10
         rounded-md
         flex
         gap-3
@@ -38,7 +38,7 @@
     @apply h-9
         flex
         items-center
-        px-2
+        px-3
         gap-2
         cursor-pointer
         hover:bg-gray-200
@@ -48,7 +48,15 @@
 }
 
 .networksWrapper {
-    @apply flex flex-col py-2;
+    @apply flex flex-col;
+}
+
+.networksWrapper :first-child {
+    @apply rounded-t-xl;
+}
+
+.networksWrapper :last-child {
+    @apply rounded-b-xl;
 }
 
 .overlay {
@@ -89,7 +97,7 @@
     @apply bg-white
         pl-1
         pr-3
-        h-9
+        h-10
         rounded-md
         flex
         gap-3

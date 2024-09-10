@@ -13,6 +13,7 @@ import { AccountMenu } from "./account-menu";
 import { zeroAddress } from "viem";
 import classNames from "@/src/utils/classes";
 import { CHAIN_DATA } from "@/src/commons";
+import { trackFathomEvent } from "@/src/utils/fathom";
 
 import styles from "./styles.module.css";
 
@@ -46,6 +47,7 @@ export function ConnectButton() {
 
     function handleAccountMenuOpen() {
         setAccountMenuOpen(true);
+        trackFathomEvent("OPEN_SIDEBAR");
     }
 
     function handleAccountMenuClose() {
@@ -80,6 +82,7 @@ export function ConnectButton() {
                                 )}
                             </div>
                             <Popover
+                                placement="bottom"
                                 anchor={networkWrapper}
                                 open={networkPopoverOpen}
                                 ref={networksPopoverRef}

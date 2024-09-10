@@ -6,7 +6,7 @@ import dayjs from "dayjs";
 import { Status } from "@metrom-xyz/sdk";
 import { Typography } from "@/src/ui/typography";
 import { useMemo } from "react";
-import { formatUsdAmount } from "@/src/utils/format";
+import { formatDateTime, formatUsdAmount } from "@/src/utils/format";
 
 interface DetailsProps {
     campaign?: NamedCampaign;
@@ -83,10 +83,7 @@ export function Details({ campaign, loading }: DetailsProps) {
                     uppercase
                     label={t("startDate")}
                     loading={detailsLoading}
-                    value={
-                        campaign &&
-                        dayjs.unix(campaign.from).format("DD/MMM/YY HH:mm")
-                    }
+                    value={campaign && formatDateTime(campaign.from)}
                 />
                 <TextField
                     boxed
@@ -94,10 +91,7 @@ export function Details({ campaign, loading }: DetailsProps) {
                     uppercase
                     label={t("endDate")}
                     loading={detailsLoading}
-                    value={
-                        campaign &&
-                        dayjs.unix(campaign.to).format("DD/MMM/YY HH:mm")
-                    }
+                    value={campaign && formatDateTime(campaign.to)}
                 />
                 <TextField
                     boxed

@@ -101,7 +101,7 @@ export function Rewards({ from, to, rewards, chainId }: RewardsProps) {
                     );
                 })}
             </div>
-            <Typography weight="medium">
+            <Typography className={styles.textRewards} weight="medium">
                 {formatUsdAmount(perDayUsdValue)}
             </Typography>
         </div>

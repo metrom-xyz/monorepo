@@ -6,8 +6,7 @@
     @apply flex
         flex-col
         gap-7
-        px-5
-        py-4
+        p-4
         bg-white
         rounded-2xl;
 }

@@ -1,9 +1,5 @@
 .root {
-    @apply flex gap-2;
-}
-
-.arrow {
-    @apply mx-2;
+    @apply w-full md:w-auto justify-between flex gap-2;
 }
 
 .arrowIcon {

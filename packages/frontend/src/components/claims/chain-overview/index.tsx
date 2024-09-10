@@ -12,8 +12,9 @@ import {
 } from "wagmi";
 import { metromAbi } from "@metrom-xyz/contracts/abi";
 import { parseUnits } from "viem";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 import { Skeleton } from "@/src/ui/skeleton";
+import { trackFathomEvent } from "@/src/utils/fathom";
 
 import styles from "./styles.module.css";
 
@@ -88,6 +89,7 @@ export function ChainOverview({
                 }
 
                 setClaimed(true);
+                trackFathomEvent("CLICK_CLAIM_ALL");
             } catch (error) {
                 console.warn("Could not claim", error);
             } finally {

@@ -43,11 +43,7 @@ export function Pagination({
     return (
         <div className={styles.root}>
             <button
-                className={classNames(
-                    styles.item,
-                    styles.arrowItem,
-                    styles.arrow,
-                )}
+                className={classNames(styles.item, styles.arrowItem)}
                 onClick={onPrevious}
                 disabled={page === 1}
             >
@@ -77,11 +73,7 @@ export function Pagination({
                 );
             })}
             <button
-                className={classNames(
-                    styles.item,
-                    styles.arrowItem,
-                    styles.arrow,
-                )}
+                className={classNames(styles.item, styles.arrowItem)}
                 onClick={onNext}
                 disabled={page === totalPages}
             >

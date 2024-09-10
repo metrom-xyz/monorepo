@@ -5,10 +5,10 @@ import styles from "./styles.module.css";
 
 interface ErrorTextProps extends TypographyProps {}
 
-export function ErrorText({ children, ...rest }: ErrorTextProps) {
+export function ErrorText({ children, className, ...rest }: ErrorTextProps) {
     return (
-        <div className={styles.root}>
-            <ErrorIcon className={styles.icon} />
+        <div className={`root ${styles.root} ${className}`}>
+            <ErrorIcon className={`icon ${styles.icon}`} />
             <Typography uppercase {...rest} className={styles.text}>
                 {children}
             </Typography>

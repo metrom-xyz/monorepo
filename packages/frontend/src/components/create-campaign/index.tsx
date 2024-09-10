@@ -13,6 +13,7 @@ import { CampaignPreview } from "./preview";
 import { Button } from "@/src/ui/button";
 import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
 import { useTranslations } from "next-intl";
+import { trackFathomEvent } from "@/src/utils/fathom";
 
 import styles from "./styles.module.css";
 
@@ -32,7 +33,6 @@ export function CreateCampaign() {
 
     const chainId = useChainId();
 
-    // TODO: add complete validation
     const malformedPayload = useMemo(() => {
         return (
             !payload.amm ||
@@ -72,9 +72,16 @@ export function CreateCampaign() {
 
     function handlePreviewOnClick() {
         setView(View.preview);
+        trackFathomEvent("CLICK_CAMPAIGN_PREVIEW");
     }
 
     function handleBackOnClick() {
+        setPayload((prevState) => ({
+            ...prevState,
+            pool: undefined,
+            rewards: undefined,
+        }));
+        setPayloadErrors({});
         setView(View.form);
     }
 

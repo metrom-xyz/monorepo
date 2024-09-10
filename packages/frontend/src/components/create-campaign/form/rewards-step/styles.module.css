@@ -12,6 +12,14 @@
     @apply !text-inherit;
 }
 
+.error {
+    @apply transition-opacity duration-200 ease-in-out opacity-0;
+}
+
+.errorVisible {
+    @apply opacity-100;
+}
+
 .previewWrapper {
     @apply w-full flex flex-col gap-3;
 }

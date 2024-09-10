@@ -17,6 +17,7 @@ import { Chip } from "@/src/ui/chip/chip";
 import { ErrorText } from "@/src/ui/error-text";
 import { useTransition, animated } from "@react-spring/web";
 import { useCampaignDurationLimits } from "@/src/hooks/useCampaignDurationLimits";
+import { formatDateTime } from "@/src/utils/format";
 
 import styles from "./styles.module.css";
 
@@ -187,9 +188,7 @@ export function EndDateStep({
                     weight="medium"
                     className={styles.dateText}
                 >
-                    {dayjs(date || endDate)
-                        .format("DD MMM YYYY | HH:mm")
-                        .toUpperCase()}
+                    {formatDateTime(date || endDate).toUpperCase()}
                 </Typography>
             </StepPreview>
             <StepContent>

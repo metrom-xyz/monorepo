@@ -1,5 +1,5 @@
 .rewardsPopover {
-    @apply flex flex-col gap-3 px-5 py-4;
+    @apply flex flex-col gap-3 p-3;
 }
 
 .rewardsPopoverRow {

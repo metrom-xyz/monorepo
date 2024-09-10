@@ -25,8 +25,9 @@ import { ChevronDown } from "@/src/assets/chevron-down";
 import { RewardsPreview } from "./preview";
 import { ErrorText } from "@/src/ui/error-text";
 import { useWatchBalance } from "@/src/hooks/useWatchBalance";
-import { useTransition, animated } from "@react-spring/web";
 import { formatUsdAmount } from "@/src/utils/format";
+import classNames from "@/src/utils/classes";
+import { trackFathomEvent } from "@/src/utils/fathom";
 
 import styles from "./styles.module.css";
 
@@ -47,7 +48,7 @@ export function RewardsStep({
     onRewardsChange,
     onError,
 }: RewardsStepProps) {
-    const t = useTranslations("newCampaign.form.rewards");
+    const t = useTranslations();
     const [open, setOpen] = useState(false);
     const [rewardAmount, setRewardAmount] = useState<number | undefined>();
     const [rewardToken, setRewardToken] = useState<WhitelistedErc20Token>();
@@ -82,20 +83,12 @@ export function RewardsStep({
 
     const rewardsError = useMemo(() => {
         if (!!rewardAmountError) return rewardAmountError;
+        if (!rewards || rewards.length === 0) return "";
 
         return existingRewardsErrors.length > 0
             ? existingRewardsErrors[0].error
             : "";
-    }, [existingRewardsErrors, rewardAmountError]);
-
-    const transition = useTransition(rewardsError, {
-        exitBeforeEnter: true,
-        trail: 100,
-        from: { opacity: 0 },
-        enter: { opacity: 1 },
-        leave: { opacity: 0 },
-        config: { duration: 100 },
-    });
+    }, [existingRewardsErrors, rewardAmountError, rewards]);
 
     useEffect(() => {
         onError({ rewards: !!rewardsError });
@@ -126,9 +119,9 @@ export function RewardsStep({
 
         const error =
             rewardAmount > balance
-                ? "errors.insufficientBalance"
+                ? "newCampaign.form.rewards.errors.insufficientBalance"
                 : distributionRate < rewardToken.minimumRate
-                  ? "errors.lowDistributionRate"
+                  ? "newCampaign.form.rewards.errors.lowDistributionRate"
                   : "";
 
         setRewardAmountError(error);
@@ -183,6 +176,7 @@ export function RewardsStep({
         setOpen(false);
         setRewardAmount(undefined);
         setRewardToken(undefined);
+        trackFathomEvent("PICK_REWARD");
     }, [onRewardsChange, rewardAmount, rewardToken, rewards]);
 
     const handleRewardTokenOnRemove = useCallback(
@@ -214,18 +208,17 @@ export function RewardsStep({
                             variant="sm"
                             className={styles.previewLabel}
                         >
-                            {t("title")}
+                            {t("newCampaign.form.rewards.title")}
                         </Typography>
-                        {transition(
-                            (styles, error) =>
-                                !!error && (
-                                    <animated.div style={styles}>
-                                        <ErrorText variant="xs" weight="medium">
-                                            {t(error)}
-                                        </ErrorText>
-                                    </animated.div>
-                                ),
-                        )}
+                        <ErrorText
+                            variant="xs"
+                            weight="medium"
+                            className={classNames(styles.error, {
+                                [styles.errorVisible]: !!rewardsError,
+                            })}
+                        >
+                            {rewardsError && t(rewardsError)}
+                        </ErrorText>
                     </div>
                 }
                 decorator={disabled}
@@ -255,7 +248,10 @@ export function RewardsStep({
                                 chain={chainId}
                             />
                             <Typography weight="medium">
-                                {rewardToken?.symbol || t("selectPlaceholder")}
+                                {rewardToken?.symbol ||
+                                    t(
+                                        "newCampaign.form.rewards.selectPlaceholder",
+                                    )}
                             </Typography>
                             <ChevronDown />
                         </div>
@@ -277,10 +273,10 @@ export function RewardsStep({
                             icon: styles.addRewardButtonIcon,
                         }}
                     >
-                        {t("add")}
+                        {t("newCampaign.form.rewards.add")}
                     </Button>
                     <Typography uppercase variant="sm" weight="medium" light>
-                        {t("totalUsd")}
+                        {t("newCampaign.form.rewards.totalUsd")}
                     </Typography>
                     <Typography uppercase weight="bold" light>
                         {formatUsdAmount(totalRewardsUsdAmount)}

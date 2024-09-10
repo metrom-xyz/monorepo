@@ -1,494 +1,164 @@
 export function SwapsicleLogo(props: any) {
     return (
         <svg
-            viewBox="0 0 1920 1080"
-            width="1920"
-            height="1080"
-            version="1.1"
-            id="svg88"
             xmlns="http://www.w3.org/2000/svg"
+            xmlnsXlink="http://www.w3.org/1999/xlink"
+            width="736.524"
+            height="738.182"
+            viewBox="0 0 736.524 738.182"
+            preserveAspectRatio="xMidYMid"
             {...props}
         >
-            <defs id="defs82">
-                <clipPath id="__lottie_element_19">
-                    <rect width="1920" height="1080" x="0" y="0" id="rect1" />
-                </clipPath>
-                <g id="__lottie_element_20">
-                    <g
-                        style={{
-                            display: "block",
-                        }}
-                        transform="matrix(6.6996899,0,0,6.6996899,609.90149,159.50134)"
-                        opacity="1"
-                        id="g5"
-                    >
-                        <g
-                            opacity="1"
-                            transform="translate(99.099998,99.997002)"
-                            id="g1"
-                        >
-                            <path
-                                fill="#7f7f7f"
-                                fillOpacity="1"
-                                d="M -9.5349998,-9.5349998 C -10.482,-8.5719995 -11.013,-7.276 -11.013,-5.9250002 c 0,1.3510003 0.531,2.6470001 1.4780002,3.6100001 0,0 0,0 0,0 0,0 12.0129997,12.0119996 12.0129997,12.0119996 C 3.454,10.557 4.7210002,11.013 6.0209999,10.971 7.3210001,10.93 8.5570002,10.395 9.4759998,9.4759998 10.396,8.5559998 10.931,7.3200002 10.972,6.02 11.013,4.7199998 10.557,3.4530001 9.698,2.477 c 0,0 0,0 0,0 0,0 -12.0130001,-12.0119998 -12.0130001,-12.0119998 C -3.2780001,-10.482 -4.5739999,-11.013 -5.9250002,-11.013 c -1.3509998,0 -2.6469993,0.531 -3.6099996,1.4780002 z"
-                                id="path1"
-                            />
-                        </g>
-                        <g
-                            opacity="1"
-                            transform="translate(68.533997,73.792)"
-                            id="g2"
-                        >
-                            <path
-                                fill="#7f7f7f"
-                                fillOpacity="1"
-                                d="M 9.3780003,-29.306 C -41.451,-2.0050001 -42.737999,-0.23199999 -45.312,-2.8429999 c 0,0 -0.353001,0.2259998 -0.353001,0.2259998 0,0 5.049999,5.0600002 5.049999,5.0600002 C -35.436001,7.632 -36.432999,6.2140002 10.407,-18.733999 23.275,-25.632 31.704,0.38100001 18.385,13.725 c -2.19,2.201 -4.792,3.946 -7.657,5.137 -2.8650001,1.190999 -5.9370001,1.805 -9.039,1.805 -3.102,0 -6.1730002,-0.614001 -9.038,-1.805 -2.865,-1.191 -5.467,-2.936 -7.658,-5.137 0,0 0,0 0,0 -5.018999,-4.9959999 -5.018999,-5.0280005 -14.348,0 0,0 7.109999,7.091 7.109999,7.091 6.358001,6.365999 14.9780008,9.941 23.966001,9.941 8.988,0 17.609,-3.575001 23.967,-9.941 0,0 0,0 0,0 19.977001,-20.11299999 6.210001,-51.573 -9.876,-51.573 -2.161,0.009 -4.435,0.358 -6.3259999,1.407"
-                                id="path2"
-                            />
-                        </g>
-                        <g
-                            opacity="1"
-                            transform="translate(41.450001,31.798)"
-                            id="g4"
-                        >
-                            <path
-                                fill="#7f7f7f"
-                                fillOpacity="1"
-                                d="M -6.5739999,-31.007999 C -11.167,-31 -15.712,-30.094 -19.950001,-28.343 c -4.237999,1.751001 -8.085998,4.314001 -11.323,7.541 C -54.173,1.8789999 -33.236,39.206001 -14.687,29.388 37.098999,1.9119999 38.407001,0.227 41.09,2.7869999 c 0,0 0.360001,-0.2599999 0.360001,-0.2599999 0,0 -5.136002,-5.0869999 -5.136002,-5.0869999 C 31.047001,-7.777 32.062,-6.3189998 -15.57,18.76 -28.655001,25.662001 -37.227001,-0.486 -23.683001,-13.9 -21.455,-16.112 -18.809,-17.867001 -15.896,-19.065001 -12.983,-20.263 -9.8590002,-20.879 -6.7049999,-20.879 c 3.1539998,0 6.27799991,0.616 9.191,1.813999 2.9130001,1.198 5.5609998,2.953001 7.7879999,5.165001 5.103,5.0219997 5.103,5.0549997 14.59,0 0,0 -7.229999,-7.225999 -7.229999,-7.225999 C 14.46,-24.24 10.697,-26.702 6.559,-28.370001 2.421,-30.038 -2.0739999,-31.041 -6.5409999,-31.007999"
-                                id="path3"
-                            />
-                            <g opacity="1" id="g3" />
-                        </g>
-                    </g>
-                </g>
-                <clipPath id="__lottie_element_24">
-                    <path d="M 0,0 H 1920 V 1080 H 0 Z" id="path5" />
-                </clipPath>
+            <defs>
                 <radialGradient
-                    id="__lottie_element_30"
-                    spreadMethod="pad"
+                    id="f"
+                    cx={-3803.751}
+                    cy={4.899}
+                    r={13838.682}
+                    fx={-3803.751}
+                    fy={4.899}
                     gradientUnits="userSpaceOnUse"
-                    cx="-3410.0842"
-                    cy="4.7916183"
-                    r="13951.689"
-                    fx="-3410.0842"
-                    fy="4.7916183"
+                    spreadMethod="pad"
                 >
-                    <stop offset="0%" stopColor="rgb(79,200,218)" id="stop5" />
-                    <stop offset="0%" stopColor="rgb(40,100,109)" id="stop6" />
-                    <stop offset="0%" stopColor="rgb(0,0,0)" id="stop7" />
-                    <stop offset="0%" stopColor="rgb(126,96,54)" id="stop8" />
-                    <stop offset="0%" stopColor="rgb(253,193,108)" id="stop9" />
-                    <stop
-                        offset="4%"
-                        stopColor="rgb(253,162,161)"
-                        id="stop10"
-                    />
-                    <stop
-                        offset="7%"
-                        stopColor="rgb(253,132,214)"
-                        id="stop11"
-                    />
-                    <stop
-                        offset="9%"
-                        stopColor="rgb(253,162,161)"
-                        id="stop12"
-                    />
-                    <stop
-                        offset="11%"
-                        stopColor="rgb(253,193,108)"
-                        id="stop13"
-                    />
-                    <stop
-                        offset="14%"
-                        stopColor="rgb(253,224,61)"
-                        id="stop14"
-                    />
-                    <stop
-                        offset="17%"
-                        stopColor="rgb(252,255,14)"
-                        id="stop15"
-                    />
-                    <stop
-                        offset="19%"
-                        stopColor="rgb(155,240,131)"
-                        id="stop16"
-                    />
-                    <stop
-                        offset="21%"
-                        stopColor="rgb(57,225,248)"
-                        id="stop17"
-                    />
-                    <stop
-                        offset="23%"
-                        stopColor="rgb(83,240,242)"
-                        id="stop18"
-                    />
-                    <stop
-                        offset="25%"
-                        stopColor="rgb(108,255,236)"
-                        id="stop19"
-                    />
-                    <stop
-                        offset="28%"
-                        stopColor="rgb(83,240,242)"
-                        id="stop20"
-                    />
-                    <stop
-                        offset="31%"
-                        stopColor="rgb(57,225,248)"
-                        id="stop21"
-                    />
-                    <stop
-                        offset="34%"
-                        stopColor="rgb(74,187,251)"
-                        id="stop22"
-                    />
-                    <stop
-                        offset="37%"
-                        stopColor="rgb(91,149,255)"
-                        id="stop23"
-                    />
-                    <stop
-                        offset="40%"
-                        stopColor="rgb(116,148,254)"
-                        id="stop24"
-                    />
-                    <stop
-                        offset="43%"
-                        stopColor="rgb(141,147,253)"
-                        id="stop25"
-                    />
-                    <stop
-                        offset="46%"
-                        stopColor="rgb(180,138,246)"
-                        id="stop26"
-                    />
-                    <stop
-                        offset="49%"
-                        stopColor="rgb(219,129,238)"
-                        id="stop27"
-                    />
-                    <stop
-                        offset="52%"
-                        stopColor="rgb(213,129,239)"
-                        id="stop28"
-                    />
-                    <stop
-                        offset="55%"
-                        stopColor="rgb(207,129,240)"
-                        id="stop29"
-                    />
-                    <stop
-                        offset="58%"
-                        stopColor="rgb(231,126,240)"
-                        id="stop30"
-                    />
-                    <stop
-                        offset="60%"
-                        stopColor="rgb(255,123,240)"
-                        id="stop31"
-                    />
-                    <stop
-                        offset="64%"
-                        stopColor="rgb(238,127,241)"
-                        id="stop32"
-                    />
-                    <stop
-                        offset="68%"
-                        stopColor="rgb(221,131,243)"
-                        id="stop33"
-                    />
-                    <stop
-                        offset="71%"
-                        stopColor="rgb(238,150,200)"
-                        id="stop34"
-                    />
-                    <stop
-                        offset="74%"
-                        stopColor="rgb(255,169,157)"
-                        id="stop35"
-                    />
-                    <stop
-                        offset="78%"
-                        stopColor="rgb(254,149,188)"
-                        id="stop36"
-                    />
-                    <stop
-                        offset="82%"
-                        stopColor="rgb(253,129,219)"
-                        id="stop37"
-                    />
-                    <stop
-                        offset="84%"
-                        stopColor="rgb(253,162,160)"
-                        id="stop38"
-                    />
-                    <stop
-                        offset="86%"
-                        stopColor="rgb(253,196,102)"
-                        id="stop39"
-                    />
-                    <stop
-                        offset="88%"
-                        stopColor="rgb(253,159,162)"
-                        id="stop40"
-                    />
-                    <stop
-                        offset="90%"
-                        stopColor="rgb(254,122,223)"
-                        id="stop41"
-                    />
-                    <stop
-                        offset="93%"
-                        stopColor="rgb(254,159,163)"
-                        id="stop42"
-                    />
-                    <stop
-                        offset="94%"
-                        stopColor="rgb(255,195,104)"
-                        id="stop43"
-                    />
-                    <stop
-                        offset="97%"
-                        stopColor="rgb(255,157,167)"
-                        id="stop44"
-                    />
-                    <stop
-                        offset="100%"
-                        stopColor="rgb(255,118,229)"
-                        id="stop45"
-                    />
+                    <stop offset="0%" stopColor="#4FC8DA" />
+                    <stop offset="0%" stopColor="#28646D" />
+                    <stop offset="0%" />
+                    <stop offset="0%" stopColor="#7E6036" />
+                    <stop offset="0%" stopColor="#FDC16C" />
+                    <stop offset="4%" stopColor="#FDA2A1" />
+                    <stop offset="7%" stopColor="#FD84D6" />
+                    <stop offset="9%" stopColor="#FDA2A1" />
+                    <stop offset="11%" stopColor="#FDC16C" />
+                    <stop offset="14%" stopColor="#FDE03D" />
+                    <stop offset="17%" stopColor="#FCFF0E" />
+                    <stop offset="19%" stopColor="#9BF083" />
+                    <stop offset="21%" stopColor="#39E1F8" />
+                    <stop offset="23%" stopColor="#53F0F2" />
+                    <stop offset="25%" stopColor="#6CFFEC" />
+                    <stop offset="28%" stopColor="#53F0F2" />
+                    <stop offset="31%" stopColor="#39E1F8" />
+                    <stop offset="34%" stopColor="#4ABBFB" />
+                    <stop offset="37%" stopColor="#5B95FF" />
+                    <stop offset="40%" stopColor="#7494FE" />
+                    <stop offset="43%" stopColor="#8D93FD" />
+                    <stop offset="46%" stopColor="#B48AF6" />
+                    <stop offset="49%" stopColor="#DB81EE" />
+                    <stop offset="52%" stopColor="#D581EF" />
+                    <stop offset="55%" stopColor="#CF81F0" />
+                    <stop offset="58%" stopColor="#E77EF0" />
+                    <stop offset="60%" stopColor="#FF7BF0" />
+                    <stop offset="64%" stopColor="#EE7FF1" />
+                    <stop offset="68%" stopColor="#DD83F3" />
+                    <stop offset="71%" stopColor="#EE96C8" />
+                    <stop offset="74%" stopColor="#FFA99D" />
+                    <stop offset="78%" stopColor="#FE95BC" />
+                    <stop offset="82%" stopColor="#FD81DB" />
+                    <stop offset="84%" stopColor="#FDA2A0" />
+                    <stop offset="86%" stopColor="#FDC466" />
+                    <stop offset="88%" stopColor="#FD9FA2" />
+                    <stop offset="90%" stopColor="#FE7ADF" />
+                    <stop offset="93%" stopColor="#FE9FA3" />
+                    <stop offset="94%" stopColor="#FFC368" />
+                    <stop offset="97%" stopColor="#FF9DA7" />
+                    <stop offset="100%" stopColor="#FF76E5" />
                 </radialGradient>
                 <radialGradient
-                    id="__lottie_element_34"
-                    spreadMethod="pad"
+                    id="e"
+                    cx={-12134.35}
+                    cy={100.563}
+                    r={15230.942}
+                    fx={-12134.35}
+                    fy={100.563}
                     gradientUnits="userSpaceOnUse"
-                    cx="-14218"
-                    cy="102"
-                    r="16314.653"
-                    fx="-14218"
-                    fy="102"
+                    spreadMethod="pad"
                 >
-                    <stop offset="0%" stopColor="rgb(79,200,218)" id="stop46" />
-                    <stop offset="0%" stopColor="rgb(40,100,109)" id="stop47" />
-                    <stop offset="0%" stopColor="rgb(0,0,0)" id="stop48" />
-                    <stop offset="0%" stopColor="rgb(6,128,107)" id="stop49" />
-                    <stop offset="0%" stopColor="rgb(12,255,213)" id="stop50" />
-                    <stop offset="4%" stopColor="rgb(37,214,234)" id="stop51" />
-                    <stop offset="7%" stopColor="rgb(63,174,255)" id="stop52" />
-                    <stop
-                        offset="11%"
-                        stopColor="rgb(43,214,241)"
-                        id="stop53"
-                    />
-                    <stop
-                        offset="16%"
-                        stopColor="rgb(22,254,228)"
-                        id="stop54"
-                    />
-                    <stop
-                        offset="19%"
-                        stopColor="rgb(65,254,232)"
-                        id="stop55"
-                    />
-                    <stop
-                        offset="23%"
-                        stopColor="rgb(108,255,236)"
-                        id="stop56"
-                    />
-                    <stop
-                        offset="27%"
-                        stopColor="rgb(83,240,242)"
-                        id="stop57"
-                    />
-                    <stop
-                        offset="31%"
-                        stopColor="rgb(57,225,248)"
-                        id="stop58"
-                    />
-                    <stop
-                        offset="34%"
-                        stopColor="rgb(74,187,251)"
-                        id="stop59"
-                    />
-                    <stop
-                        offset="37%"
-                        stopColor="rgb(91,149,255)"
-                        id="stop60"
-                    />
-                    <stop
-                        offset="40%"
-                        stopColor="rgb(116,148,254)"
-                        id="stop61"
-                    />
-                    <stop
-                        offset="43%"
-                        stopColor="rgb(141,147,253)"
-                        id="stop62"
-                    />
-                    <stop
-                        offset="46%"
-                        stopColor="rgb(180,138,246)"
-                        id="stop63"
-                    />
-                    <stop
-                        offset="49%"
-                        stopColor="rgb(219,129,238)"
-                        id="stop64"
-                    />
-                    <stop
-                        offset="51%"
-                        stopColor="rgb(174,185,237)"
-                        id="stop65"
-                    />
-                    <stop
-                        offset="54%"
-                        stopColor="rgb(129,240,236)"
-                        id="stop66"
-                    />
-                    <stop
-                        offset="56%"
-                        stopColor="rgb(192,182,238)"
-                        id="stop67"
-                    />
-                    <stop
-                        offset="59%"
-                        stopColor="rgb(255,123,240)"
-                        id="stop68"
-                    />
-                    <stop
-                        offset="62%"
-                        stopColor="rgb(189,159,248)"
-                        id="stop69"
-                    />
-                    <stop
-                        offset="64%"
-                        stopColor="rgb(123,194,255)"
-                        id="stop70"
-                    />
-                    <stop
-                        offset="67%"
-                        stopColor="rgb(172,163,249)"
-                        id="stop71"
-                    />
-                    <stop
-                        offset="69%"
-                        stopColor="rgb(221,131,243)"
-                        id="stop72"
-                    />
-                    <stop
-                        offset="73%"
-                        stopColor="rgb(238,150,200)"
-                        id="stop73"
-                    />
-                    <stop
-                        offset="77%"
-                        stopColor="rgb(255,169,157)"
-                        id="stop74"
-                    />
-                    <stop
-                        offset="80%"
-                        stopColor="rgb(254,149,188)"
-                        id="stop75"
-                    />
-                    <stop
-                        offset="82%"
-                        stopColor="rgb(253,129,219)"
-                        id="stop76"
-                    />
-                    <stop
-                        offset="84%"
-                        stopColor="rgb(253,162,160)"
-                        id="stop77"
-                    />
-                    <stop
-                        offset="86%"
-                        stopColor="rgb(253,196,102)"
-                        id="stop78"
-                    />
-                    <stop
-                        offset="90%"
-                        stopColor="rgb(254,196,103)"
-                        id="stop79"
-                    />
-                    <stop
-                        offset="94%"
-                        stopColor="rgb(255,195,104)"
-                        id="stop80"
-                    />
-                    <stop
-                        offset="97%"
-                        stopColor="rgb(255,157,167)"
-                        id="stop81"
-                    />
-                    <stop
-                        offset="100%"
-                        stopColor="rgb(255,118,229)"
-                        id="stop82"
-                    />
+                    <stop offset="0%" stopColor="#4FC8DA" />
+                    <stop offset="0%" stopColor="#28646D" />
+                    <stop offset="0%" />
+                    <stop offset="0%" stopColor="#06806B" />
+                    <stop offset="0%" stopColor="#0CFFD5" />
+                    <stop offset="4%" stopColor="#25D6EA" />
+                    <stop offset="7%" stopColor="#3FAEFF" />
+                    <stop offset="11%" stopColor="#2BD6F1" />
+                    <stop offset="16%" stopColor="#16FEE4" />
+                    <stop offset="19%" stopColor="#41FEE8" />
+                    <stop offset="23%" stopColor="#6CFFEC" />
+                    <stop offset="27%" stopColor="#53F0F2" />
+                    <stop offset="31%" stopColor="#39E1F8" />
+                    <stop offset="34%" stopColor="#4ABBFB" />
+                    <stop offset="37%" stopColor="#5B95FF" />
+                    <stop offset="40%" stopColor="#7494FE" />
+                    <stop offset="43%" stopColor="#8D93FD" />
+                    <stop offset="46%" stopColor="#B48AF6" />
+                    <stop offset="49%" stopColor="#DB81EE" />
+                    <stop offset="51%" stopColor="#AEB9ED" />
+                    <stop offset="54%" stopColor="#81F0EC" />
+                    <stop offset="56%" stopColor="#C0B6EE" />
+                    <stop offset="59%" stopColor="#FF7BF0" />
+                    <stop offset="62%" stopColor="#BD9FF8" />
+                    <stop offset="64%" stopColor="#7BC2FF" />
+                    <stop offset="67%" stopColor="#ACA3F9" />
+                    <stop offset="69%" stopColor="#DD83F3" />
+                    <stop offset="73%" stopColor="#EE96C8" />
+                    <stop offset="77%" stopColor="#FFA99D" />
+                    <stop offset="80%" stopColor="#FE95BC" />
+                    <stop offset="82%" stopColor="#FD81DB" />
+                    <stop offset="84%" stopColor="#FDA2A0" />
+                    <stop offset="86%" stopColor="#FDC466" />
+                    <stop offset="90%" stopColor="#FEC467" />
+                    <stop offset="94%" stopColor="#FFC368" />
+                    <stop offset="97%" stopColor="#FF9DA7" />
+                    <stop offset="100%" stopColor="#FF76E5" />
                 </radialGradient>
-                <mask id="__lottie_element_20_1" mask-type="alpha">
-                    <use xlinkHref="#__lottie_element_20" id="use82" />
+                <clipPath id="b">
+                    <path d="M0 0h1920v1080H0z" />
+                </clipPath>
+                <clipPath id="d">
+                    <path d="M0 0h1920v1080H0Z" />
+                </clipPath>
+                <mask id="c" mask-type="alpha">
+                    <use xlinkHref="#a" />
                 </mask>
-            </defs>
-            <g
-                clipPath="url(#__lottie_element_19)"
-                id="g88"
-                transform="translate(-610.84239,-164.78881)"
-            >
                 <g
+                    id="a"
                     style={{
                         display: "block",
                     }}
-                    mask="url(#__lottie_element_20_1)"
-                    id="g87"
+                >
+                    <path
+                        fill="#7f7f7f"
+                        d="M1209.96 765.569a34.49 34.49 0 0 0 0 48.371l80.483 80.477a34.235 34.235 0 0 0 23.737 8.536 34.27 34.27 0 0 0 33.17-33.17 34.298 34.298 0 0 0-8.536-23.738l-80.483-80.476a34.49 34.49 0 0 0-48.372 0z"
+                    />
+                    <path
+                        fill="#7f7f7f"
+                        d="M1131.888 457.544C791.349 640.452 782.727 652.33 765.482 634.838l-2.365 1.514 33.833 33.9c34.698 34.765 28.018 25.265 341.832-141.88 86.211-46.214 142.683 128.065 53.45 217.466a157.82 157.82 0 0 1-51.3 34.416 157.773 157.773 0 0 1-60.558 12.093 157.74 157.74 0 0 1-60.552-12.093 157.92 157.92 0 0 1-51.306-34.416c-33.626-33.472-33.626-33.686-96.127 0l47.634 47.508c42.597 42.65 100.348 66.601 160.565 66.601s117.975-23.951 160.572-66.601c133.84-134.751 41.605-345.524-66.166-345.524-14.479.06-29.714 2.399-42.383 9.427M843.56 164.794a235.78 235.78 0 0 0-89.615 17.855c-28.393 11.73-54.174 28.902-75.86 50.522-153.424 151.956-13.152 402.035 111.12 336.258 346.95-184.081 355.714-195.37 373.689-178.219l2.412-1.742-34.41-34.081c-35.287-34.952-28.487-25.184-347.607 142.837-87.665 46.242-145.095-128.942-54.354-218.812a160.891 160.891 0 0 1 52.17-34.604 161.929 161.929 0 0 1 61.577-12.153c21.131 0 42.06 4.127 61.577 12.153 19.516 8.027 37.257 19.785 52.177 34.604 34.189 33.646 34.189 33.867 97.749 0L1005.746 231a227.241 227.241 0 0 0-74.2-48.532c-27.722-11.175-57.838-17.895-87.765-17.674"
+                    />
+                </g>
+            </defs>
+            <g clipPath="url(#b)" transform="translate(-610.842 -164.789)">
+                <g
+                    mask="url(#c)"
+                    style={{
+                        display: "block",
+                    }}
                 >
                     <g
-                        clipPath="url(#__lottie_element_24)"
-                        transform="matrix(0.46182406,0.46253392,-0.46253392,0.46182406,808.41724,-141.4176)"
-                        opacity="1"
-                        id="g86"
+                        clipPath="url(#d)"
+                        transform="rotate(45.044 574.73 904.078) scale(.65362)"
                     >
                         <g
                             style={{
                                 display: "block",
                             }}
-                            transform="translate(960,540)"
-                            opacity="1"
-                            id="g83"
                         >
-                            <g opacity="1" id="g82">
-                                <path
-                                    fill="url(#__lottie_element_34)"
-                                    fillOpacity="1"
-                                    d="m 960,-540 c 0,0 0,1080 0,1080 0,0 -1920,0 -1920,0 0,0 0,-1080 0,-1080 z"
-                                    id="path82"
-                                    style={{
-                                        fill: "url(#__lottie_element_34)",
-                                    }}
-                                />
-                            </g>
-                        </g>
-                        <g
-                            style={{
-                                display: "block",
-                            }}
-                            transform="translate(960,540)"
-                            opacity="1"
-                            id="g85"
-                        >
-                            <g opacity="1" id="g84">
-                                <path
-                                    fill="url(#__lottie_element_30)"
-                                    fillOpacity="1"
-                                    d="m 960,-540 c 0,0 0,1080 0,1080 0,0 -1920,0 -1920,0 0,0 0,-1080 0,-1080 z"
-                                    id="path83"
-                                    style={{
-                                        fill: "url(#__lottie_element_30)",
-                                    }}
-                                />
-                            </g>
+                            <path
+                                fill="url(#e)"
+                                d="M960-540V540H-960V-540z"
+                                style={{
+                                    fill: "url(#e)",
+                                }}
+                                transform="translate(960 540)"
+                            />
                         </g>
                     </g>
                 </g>

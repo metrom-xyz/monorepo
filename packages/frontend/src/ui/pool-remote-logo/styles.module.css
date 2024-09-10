@@ -21,3 +21,7 @@
 .xl {
     @apply w-[5.25rem] h-11;
 }
+
+.selfAdjust {
+    @apply w-11 h-6 md:w-[3.25rem] md:h-7;
+}
