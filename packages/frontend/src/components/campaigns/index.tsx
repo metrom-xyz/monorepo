@@ -21,12 +21,13 @@ import { Pagination } from "@/src/ui/pagination";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import { useRouter as useLocalizedRouter } from "@/i18n/routing";
 import { Select, type SelectOption } from "@/src/ui/select";
-import { Status } from "@metrom-xyz/sdk";
+import { Status, SupportedChain } from "@metrom-xyz/sdk";
 import { useChains } from "wagmi";
 import classNames from "@/src/utils/classes";
 import { Button } from "@/src/ui/button";
 
 import styles from "./styles.module.css";
+import { CHAIN_DATA } from "@/src/commons";
 
 const PAGE_SIZE = 10;
 const QUERY_PARAM_PAGE_NUMBER = "page";
@@ -75,14 +76,17 @@ export function Campaigns() {
             {
                 label: t("filters.status.live"),
                 value: FilterableStatus.Live,
+                color: "bg-green-500",
             },
             {
                 label: t("filters.status.upcoming"),
                 value: FilterableStatus.Upcoming,
+                color: "bg-blue-500",
             },
             {
                 label: t("filters.status.ended"),
                 value: FilterableStatus.Ended,
+                color: "bg-gray-500",
             },
         ];
     }, [t]);
@@ -208,11 +212,45 @@ export function Campaigns() {
     function handlePage(page: number) {
         setPageNumber(page);
     }
-
     const handleCreateCampaign = useCallback(() => {
         localizedRouter.push("/campaigns/create");
     }, [localizedRouter]);
 
+    const statusSelectRenderOption = (option: {
+        label: string;
+        color?: string;
+    }) => {
+        return (
+            <div className={styles.customOptionContainer}>
+                {option.label.toLowerCase() !== "all" && (
+                    <span className={classNames(styles.dot, option.color)} />
+                )}
+                <Typography weight="medium">{option.label}</Typography>
+            </div>
+        );
+    };
+    const chainSelectRenderOption = (option: {
+        label: string;
+        value: number;
+    }) => {
+        if (option.value === 0)
+            return (
+                <div className={styles.statusOptionContainer}>
+                    <Typography weight="medium">{option.label}</Typography>
+                </div>
+            );
+        const ChainIcon = CHAIN_DATA[option.value as SupportedChain].icon;
+        return (
+            <div className={styles.customOptionContainer}>
+                <div>
+                    <ChainIcon className="w-5 h-5 mr-3" />
+                </div>
+                <Typography className="truncate" weight="medium">
+                    {option.label}
+                </Typography>
+            </div>
+        );
+    };
     return (
         <div className={styles.root}>
             <div className={styles.filters}>
@@ -238,6 +276,7 @@ export function Campaigns() {
                             noResults: "",
                         }}
                         className={styles.filterInput}
+                        renderOption={statusSelectRenderOption}
                     />
                     <Select
                         options={chainOptions}
@@ -248,6 +287,7 @@ export function Campaigns() {
                             noResults: "",
                         }}
                         className={styles.filterInput}
+                        renderOption={chainSelectRenderOption}
                     />
                 </div>
             </div>

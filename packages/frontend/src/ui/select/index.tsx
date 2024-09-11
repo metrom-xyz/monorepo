@@ -26,6 +26,7 @@ export type ValueType = string | number | null;
 
 export interface SelectOption<V extends ValueType> {
     label: string;
+    color?: string;
     value: V;
     disabled?: boolean;
 }

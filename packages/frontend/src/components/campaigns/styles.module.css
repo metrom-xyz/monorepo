@@ -7,7 +7,7 @@
 }
 
 .filterInput :global(.input) {
-    @apply bg-gray-200 py-2;
+    @apply bg-gray-200 py-2 font-[500];
 }
 
 .selectionFilters {
@@ -44,4 +44,12 @@
 
 .searchFilter :global(.label) {
     @apply invisible md:visible;
+}
+
+.customOptionContainer {
+    @apply flex items-center;
+}
+
+.dot {
+    @apply mr-3 rounded-full w-3 h-3;
 }
