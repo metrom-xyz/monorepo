@@ -49,6 +49,12 @@
                 "duration": "{days} ago"
             }
         },
+        "rewards": {
+            "tooltip": {
+                "rewards": "rewards",
+                "totalUsdValue": "Total USD value"
+            }
+        },
         "empty": {
             "title": "No campaigns found",
             "description": "No campaigns found on Metrom.",

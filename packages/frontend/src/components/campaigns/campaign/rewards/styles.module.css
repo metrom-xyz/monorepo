@@ -11,7 +11,7 @@
 }
 
 .breakdownContainer {
-    @apply flex flex-col gap-3 p-3;
+    @apply flex flex-col gap-3 p-3 shadow-lg px-4 py-4;
 }
 
 .breakdownRow {
@@ -24,4 +24,16 @@
 
 .textRewards {
     @apply !text-sm md:!text-base;
+}
+
+.tooltipTriangle {
+    @apply absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-full w-0 h-0 border-l-[12px] border-r-[12px] border-t-[14px] border-transparent border-t-white shadow-lg;
+}
+
+.tooltipTitle {
+    @apply text-gray-500 pt-1;
+}
+
+.tooltipText {
+    @apply text-gray-900;
 }
