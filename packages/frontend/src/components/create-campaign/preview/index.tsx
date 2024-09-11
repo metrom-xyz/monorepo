@@ -31,12 +31,14 @@ interface CampaignPreviewProps {
     malformedPayload: boolean;
     payload: CampaignPayload;
     onBack: () => void;
+    onCreateNew: () => void;
 }
 
 export function CampaignPreview({
     malformedPayload,
     payload,
     onBack,
+    onCreateNew,
 }: CampaignPreviewProps) {
     const t = useTranslations("campaignPreview");
     const [deploying, setDeploying] = useState(false);
@@ -225,7 +227,7 @@ export function CampaignPreview({
                     {t("allCampaigns")}
                 </Button>
                 <Button
-                    onClick={onBack}
+                    onClick={onCreateNew}
                     className={{ root: styles.feedbackButton }}
                 >
                     {t("newCampaign")}
