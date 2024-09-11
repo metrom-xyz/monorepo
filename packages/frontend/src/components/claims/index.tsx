@@ -25,6 +25,8 @@ import {
 } from "@/src/commons/chains";
 
 import styles from "./styles.module.css";
+import { useSearchParams } from "next/navigation";
+import { RewardsClaimed } from "./rewards-claimed";
 
 export interface ChainWithClaimsData {
     chain: Chain;
@@ -33,6 +35,9 @@ export interface ChainWithClaimsData {
 }
 
 export function Claims() {
+    const searchParams = useSearchParams();
+    const rewardsClaimed = searchParams.get("rewardsClaimed");
+
     const [chainWithClaimsData, setChainWithClaimsData] =
         useState<ChainWithClaimsData | null>(null);
     const [initializing, setInitializing] = useState(false);
@@ -116,7 +121,7 @@ export function Claims() {
         return (
             <div className={styles.root}>
                 <div className={styles.fullSideCardWrapper}>
-                    <Empty />
+                    {rewardsClaimed === "true" ? <RewardsClaimed /> : <Empty />}
                 </div>
             </div>
         );

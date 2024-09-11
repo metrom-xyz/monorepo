@@ -22,7 +22,7 @@ export function Header({ campaign }: HeaderProps) {
     const router = useRouter();
 
     const handleClaimOnClick = useCallback(() => {
-        router.push("/claims");
+        router.push("/claims?rewardsClaimed=true");
     }, [router]);
 
     const depositLink = getPoolAddLiquidityLink(
