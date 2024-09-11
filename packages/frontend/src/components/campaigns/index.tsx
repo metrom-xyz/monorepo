@@ -68,10 +68,13 @@ const chainSelectRenderOption = (option: { label: string; value: number }) => {
         <div className={styles.customOptionContainer}>
             {ChainIcon && (
                 <div>
-                    <ChainIcon className="w-5 h-5 mr-3" />
+                    <ChainIcon className={styles.chainIcon} />
                 </div>
             )}
-            <Typography className="truncate" weight="medium">
+            <Typography
+                className={styles.chainSelectOptionText}
+                weight="medium"
+            >
                 {option.label}
             </Typography>
         </div>

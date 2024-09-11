@@ -53,3 +53,11 @@
 .dot {
     @apply mr-3 rounded-full w-3 h-3;
 }
+
+.chainIcon {
+    @apply w-5 h-5 mr-3;
+}
+
+.chainSelectOptionText {
+    @apply truncate;
+}
