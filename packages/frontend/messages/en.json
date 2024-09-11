@@ -207,7 +207,7 @@
             "action": "All campaigns"
         },
         "rewardsClaimed": {
-            "title": "all rewards claimed !",
+            "title": "All rewards claimed!",
             "body": "You have claimed all of your rewards currently. If you are providing liquidity to any more of the currently active campaigns, you can come back here to claim the rewards once its distributed.",
             "action": "All campaigns"
         }

@@ -1,8 +1,9 @@
 import { Typography } from "@/src/ui/typography";
-import styles from "./styles.module.css";
 import { Link } from "@/src/i18n/routing";
 import { Button } from "@/src/ui/button";
 import { useTranslations } from "next-intl";
+
+import styles from "./styles.module.css";
 
 export function RewardsClaimed() {
     const t = useTranslations("claims.rewardsClaimed");

@@ -23,11 +23,10 @@ import {
     mantleSepoliaData,
     modeData,
 } from "@/src/commons/chains";
-
-import styles from "./styles.module.css";
 import { useSearchParams } from "next/navigation";
 import { RewardsClaimed } from "./rewards-claimed";
 
+import styles from "./styles.module.css";
 export interface ChainWithClaimsData {
     chain: Chain;
     chainData: ChainData;
@@ -35,9 +34,6 @@ export interface ChainWithClaimsData {
 }
 
 export function Claims() {
-    const searchParams = useSearchParams();
-    const rewardsClaimed = searchParams.get("rewardsClaimed");
-
     const [chainWithClaimsData, setChainWithClaimsData] =
         useState<ChainWithClaimsData | null>(null);
     const [initializing, setInitializing] = useState(false);
@@ -121,7 +117,7 @@ export function Claims() {
         return (
             <div className={styles.root}>
                 <div className={styles.fullSideCardWrapper}>
-                    {rewardsClaimed === "true" ? <RewardsClaimed /> : <Empty />}
+                    <Empty />
                 </div>
             </div>
         );
