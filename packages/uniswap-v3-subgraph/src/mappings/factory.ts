@@ -11,7 +11,7 @@ import { IndexedBlock, Pool } from "../../generated/schema";
 import { BD_0, BI_0, getOrCreateToken } from "../commons";
 
 export function handleBlock(block: ethereum.Block): void {
-    let id = Bytes.fromI32(1);
+    let id = Bytes.fromHexString("0x01");
     let indexedBlock = IndexedBlock.load(id);
     if (indexedBlock === null) indexedBlock = new IndexedBlock(id);
 
