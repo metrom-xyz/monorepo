@@ -1,9 +1,13 @@
 .root {
-    @apply flex items-center justify-center max-w-screen-sm h-[55vh];
-}
-
-.subContainer {
-    @apply flex flex-col items-center justify-center text-center gap-7 px-4;
+    @apply flex
+        flex-col
+        items-center
+        text-center
+        justify-center
+        gap-7
+        px-4
+        max-w-screen-sm
+        h-[55vh];
 }
 
 .body {

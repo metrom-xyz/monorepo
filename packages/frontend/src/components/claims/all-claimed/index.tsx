@@ -10,21 +10,15 @@ export function AllClaimed() {
 
     return (
         <div className={styles.root}>
-            <div className={styles.subContainer}>
-                <Typography weight="medium" uppercase className={styles.title}>
-                    {t("title")}
-                </Typography>
-                <Typography
-                    variant="lg"
-                    weight="medium"
-                    className={styles.body}
-                >
-                    {t("body")}
-                </Typography>
-                <Link href="/">
-                    <Button size="small">{t("action")}</Button>
-                </Link>
-            </div>
+            <Typography weight="medium" uppercase className={styles.title}>
+                {t("title")}
+            </Typography>
+            <Typography variant="lg" weight="medium" className={styles.body}>
+                {t("body")}
+            </Typography>
+            <Link href="/">
+                <Button size="small">{t("action")}</Button>
+            </Link>
         </div>
     );
 }
