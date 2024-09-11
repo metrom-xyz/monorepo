@@ -8,9 +8,9 @@ import { Skeleton } from "@/src/ui/skeleton";
 import { formatTokenAmount, formatUsdAmount } from "@/src/utils/format";
 import { Popover } from "@/src/ui/popover";
 import { useRef, useState } from "react";
+import { useTranslations } from "next-intl";
 
 import styles from "./styles.module.css";
-import { useTranslations } from "next-intl";
 
 interface RewardsProps {
     from: number;
@@ -21,10 +21,6 @@ interface RewardsProps {
 
 export function Rewards({ from, to, rewards, chainId }: RewardsProps) {
     const t = useTranslations("allCampaigns.rewards");
-
-    const totalUsdValue = rewards.reduce((sum, reward) => {
-        return sum + (reward.usdValue || 0);
-    }, 0);
 
     const [popoverOpen, setPopoverOpen] = useState(false);
     const [rewardsBreakdown, setRewardsBreakdown] =
@@ -108,10 +104,11 @@ export function Rewards({ from, to, rewards, chainId }: RewardsProps) {
                         variant="lg"
                         weight="medium"
                     >
-                        {totalUsdValue ? formatUsdAmount(totalUsdValue) : "-"}
+                        {rewards.usdValue
+                            ? formatUsdAmount(rewards.usdValue)
+                            : "-"}
                     </Typography>
                 </div>
-                <div className={styles.tooltipTriangle} />
             </Popover>
             <div
                 ref={setRewardsBreakdown}

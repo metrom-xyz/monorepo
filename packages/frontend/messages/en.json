@@ -51,7 +51,7 @@
         },
         "rewards": {
             "tooltip": {
-                "rewards": "rewards",
+                "rewards": "Rewards",
                 "totalUsdValue": "Total USD value"
             }
         },
