@@ -1,3 +1,10 @@
+type IndexedBlock @entity {
+    id: Bytes!
+    hash: Bytes!
+    number: BigInt!
+    timestamp: BigInt!
+}
+
 type Token @entity(immutable: true) {
     id: Bytes!
     name: String!
