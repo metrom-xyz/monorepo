@@ -36,5 +36,5 @@
 }
 
 .pickedOption {
-    @apply bg-gray-300 hover:bg-gray-300;
+    @apply bg-gray-100 hover:bg-gray-300;
 }
