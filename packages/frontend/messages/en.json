@@ -211,6 +211,11 @@
             "title": "No claims found",
             "body": "There are currently no claims associated with the connected wallet. Explore the available opportunities on the all campaigns page.",
             "action": "All campaigns"
+        },
+        "allClaimed": {
+            "title": "All rewards claimed",
+            "body": "You've claimed all of your current rewards. If you're providing liquidity to any ongoing campaigns, you can return here to claim additional rewards once they're distributed.",
+            "action": "All campaigns"
         }
     },
     "accountMenu": {

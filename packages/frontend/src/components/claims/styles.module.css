@@ -10,7 +10,9 @@
     @apply bg-white
         rounded-xl
         w-full
+        h-[55vh]
         flex
         justify-center
+        items-center
         p-10;
 }

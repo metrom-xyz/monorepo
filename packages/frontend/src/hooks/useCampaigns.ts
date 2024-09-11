@@ -1,7 +1,7 @@
 import { metromApiClient } from "../commons";
 import { type Campaign } from "@metrom-xyz/sdk";
-import { useEffect, useState } from "react";
 import { getCampaignName } from "../utils/campaign";
+import { useQuery } from "@tanstack/react-query";
 
 export interface NamedCampaign extends Campaign {
     name: string;
@@ -9,20 +9,12 @@ export interface NamedCampaign extends Campaign {
 
 export function useCampaigns(): {
     loading: boolean;
-    campaigns: NamedCampaign[];
+    campaigns?: NamedCampaign[];
 } {
-    const [campaigns, setCampaigns] = useState<NamedCampaign[]>([]);
-    const [loading, setLoading] = useState(true);
-
-    useEffect(() => {
-        let cancelled = false;
-
-        async function fetchData() {
-            if (!cancelled) setLoading(false);
-            if (!cancelled) setCampaigns([]);
-
+    const { data: campaigns, isPending: loading } = useQuery({
+        queryKey: ["campaigns"],
+        queryFn: async () => {
             try {
-                if (!cancelled) setLoading(true);
                 const fetchedCampaigns = await metromApiClient.fetchCampaigns();
                 const namedCampaigns: NamedCampaign[] = [];
                 for (const campaign of fetchedCampaigns) {
@@ -31,18 +23,12 @@ export function useCampaigns(): {
                         name: getCampaignName(campaign),
                     });
                 }
-                if (!cancelled) setCampaigns(namedCampaigns);
+                return namedCampaigns;
             } catch (error) {
-                console.error(`Could not fetch campaigns: ${error}`);
-            } finally {
-                if (!cancelled) setLoading(false);
+                throw new Error(`Could not fetch campaigns: ${error}`);
             }
-        }
-        fetchData();
-        return () => {
-            cancelled = true;
-        };
-    }, []);
+        },
+    });
 
     return {
         loading,

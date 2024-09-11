@@ -18,6 +18,7 @@ import { Skeleton } from "@/src/ui/skeleton";
 import { useChainData } from "@/src/hooks/useChainData";
 import { formatTokenAmount } from "@/src/utils/format";
 import { trackFathomEvent } from "@/src/utils/fathom";
+import { useQueryClient } from "@tanstack/react-query";
 
 import styles from "./styles.module.css";
 
@@ -33,6 +34,7 @@ export function TokenClaim({ chainId, chainClaims }: TokenClaimProps) {
     const { switchChainAsync } = useSwitchChain();
     const { writeContractAsync } = useWriteContract();
     const chainData = useChainData(chainId);
+    const queryClient = useQueryClient();
 
     const [claiming, setClaiming] = useState(false);
     const [claimed, setClaimed] = useState(false);
@@ -63,7 +65,8 @@ export function TokenClaim({ chainId, chainClaims }: TokenClaimProps) {
                   }),
         ],
         query: {
-            enabled: account && chainClaims.claims.length > 0,
+            refetchOnMount: false,
+            enabled: !!account && chainClaims.claims.length > 0,
         },
     });
 
@@ -85,6 +88,7 @@ export function TokenClaim({ chainId, chainClaims }: TokenClaimProps) {
                     return;
                 }
 
+                queryClient.invalidateQueries({ queryKey: ["claims"] });
                 setClaimed(true);
                 trackFathomEvent("CLICK_CLAIM_SINGLE");
             } catch (error) {
@@ -97,6 +101,7 @@ export function TokenClaim({ chainId, chainClaims }: TokenClaimProps) {
     }, [
         chainId,
         publicClient,
+        queryClient,
         simulatedClaimAll,
         switchChainAsync,
         writeContractAsync,

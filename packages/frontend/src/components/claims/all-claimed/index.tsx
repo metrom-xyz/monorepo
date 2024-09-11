@@ -5,14 +5,8 @@ import { useTranslations } from "next-intl";
 
 import styles from "./styles.module.css";
 
-export function Empty() {
-    const t = useTranslations("claims.empty");
-
-    // FIXME: fix the empty being rendered before the loading is done to avoid
-    // tracking wrong events
-    // useEffect(() => {
-    //     trackFathomEvent("NO_REWARDS_CLAIM");
-    // }, []);
+export function AllClaimed() {
+    const t = useTranslations("claims.allClaimed");
 
     return (
         <div className={styles.root}>

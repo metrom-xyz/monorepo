@@ -2,46 +2,35 @@ import type { SupportedChain } from "@metrom-xyz/contracts";
 import { useChainId } from "wagmi";
 import { metromApiClient } from "../commons";
 import { SupportedAmm, type Pool } from "@metrom-xyz/sdk";
-import { useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 
 export function usePools(ammSlug?: SupportedAmm): {
     loading: boolean;
-    pools: Pool[];
+    pools?: Pool[];
 } {
     const chainId: SupportedChain = useChainId();
 
-    const [pools, setPools] = useState<Pool[]>([]);
-    const [loading, setLoading] = useState(false);
-
-    useEffect(() => {
-        let cancelled = false;
-
-        async function fetchData() {
-            if (!cancelled) setLoading(false);
-            if (!cancelled) setPools([]);
-
-            if (!ammSlug) return;
+    const { data: pools, isPending: loading } = useQuery({
+        queryKey: ["pools", ammSlug],
+        queryFn: async ({ queryKey }) => {
+            const amm = queryKey[1];
+            if (!amm) return undefined;
 
             try {
-                if (!cancelled) setLoading(true);
                 const pools = await metromApiClient.fetchPools({
                     chainId,
-                    amm: ammSlug,
+                    amm: amm as SupportedAmm,
                 });
-                if (!cancelled) setPools(pools);
+                return pools;
             } catch (error) {
-                console.error(
+                throw new Error(
                     `Could not fetch pools for amm ${ammSlug}: ${error}`,
                 );
-            } finally {
-                if (!cancelled) setLoading(false);
             }
-        }
-        fetchData();
-        return () => {
-            cancelled = true;
-        };
-    }, [ammSlug, chainId]);
+        },
+        refetchOnMount: false,
+        enabled: !!ammSlug,
+    });
 
     return {
         loading,
