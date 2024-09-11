@@ -58,7 +58,7 @@ export function Footer() {
                     <Typography weight="medium">{t("support")}</Typography>
                 </a>
                 <a
-                    href="https://metrom.gitbook.io/metrom"
+                    href="https://docs.metrom.xyz"
                     target="_blank"
                     rel="noopener noreferrer"
                     onClick={() => trackFathomEvent("CLICK_DOCUMENTATION_LINK")}
