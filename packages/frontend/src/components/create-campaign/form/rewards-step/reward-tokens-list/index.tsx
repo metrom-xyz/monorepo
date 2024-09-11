@@ -42,14 +42,7 @@ export function RewardTokensList({
         <div
             className={styles.root}
             style={{
-                height:
-                    whitelistedTokensWithBalance.length === 2
-                        ? "9rem"
-                        : whitelistedTokensWithBalance.length === 3
-                          ? "12rem"
-                          : whitelistedTokensWithBalance.length === 4
-                            ? "16rem"
-                            : "19rem",
+                height: `${Math.min(whitelistedTokensWithBalance.length - 1, 4) * 3.3 + 6}rem`,
             }}
         >
             <div className={styles.listHeader}>
