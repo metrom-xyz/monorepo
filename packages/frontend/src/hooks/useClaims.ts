@@ -13,10 +13,8 @@ interface ClaimWithRemaining extends Claim {
 export function useClaims(): {
     loading: boolean;
     claims: Claim[];
-    claimed: Claim[];
 } {
     const [claims, setClaims] = useState<ClaimWithRemaining[]>([]);
-    const [claimed, setClaimed] = useState<ClaimWithRemaining[]>([]);
 
     const queryClient = useQueryClient();
     const { address } = useAccount();
@@ -86,7 +84,6 @@ export function useClaims(): {
         }
         if (!rawClaims || !claimedData) {
             setClaims([]);
-            setClaimed([]);
             return;
         }
 
@@ -110,7 +107,6 @@ export function useClaims(): {
         }
 
         setClaims(claims);
-        setClaimed(alreadyClaimed);
     }, [
         address,
         claimedData,
@@ -124,6 +120,5 @@ export function useClaims(): {
     return {
         loading: loadingClaims || loadingClaimed,
         claims,
-        claimed,
     };
 }

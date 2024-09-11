@@ -23,7 +23,6 @@ import {
     mantleSepoliaData,
     modeData,
 } from "@/src/commons/chains";
-import { AllClaimed } from "./all-claimed";
 
 import styles from "./styles.module.css";
 
@@ -38,7 +37,7 @@ export function Claims() {
         useState<ChainWithClaimsData | null>(null);
     const [initializing, setInitializing] = useState(false);
 
-    const { loading, claims, claimed } = useClaims();
+    const { loading, claims } = useClaims();
 
     const chainsWithClaimsData = useMemo(() => {
         if (loading || claims.length === 0) return [];
@@ -107,16 +106,6 @@ export function Claims() {
                 <div className={styles.rightWrapper}>
                     <SkeletonChainOverview />
                     <SkeletonChainClaims />
-                </div>
-            </div>
-        );
-    }
-
-    if (claims.length === 0 && claimed.length > 0) {
-        return (
-            <div className={styles.root}>
-                <div className={styles.fullSideCardWrapper}>
-                    <AllClaimed />
                 </div>
             </div>
         );
