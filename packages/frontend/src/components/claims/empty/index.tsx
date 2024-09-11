@@ -32,7 +32,7 @@ export function Empty() {
                     {t("body")}
                 </Typography>
                 <Link href="/">
-                    <Button className={{ root: styles.button }}>
+                    <Button size="small" variant="primary">
                         {t("action")}
                     </Button>
                 </Link>

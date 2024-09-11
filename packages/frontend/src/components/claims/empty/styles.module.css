@@ -6,10 +6,6 @@
     @apply flex flex-col items-center justify-center text-center gap-7 px-4;
 }
 
-.button {
-    @apply bg-gray-900 !px-12 !py-3 text-sm;
-}
-
 .body {
     @apply leading-tight !text-gray-900;
 }

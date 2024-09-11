@@ -52,7 +52,7 @@
 }
 
 .primary.small {
-    @apply px-5 py-4;
+    @apply px-5 py-3 text-sm;
 }
 
 .primary.xsmall {
