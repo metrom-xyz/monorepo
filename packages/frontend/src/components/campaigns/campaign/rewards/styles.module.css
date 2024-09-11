@@ -25,3 +25,11 @@
 .textRewards {
     @apply !text-sm md:!text-base;
 }
+
+.tooltipTitle {
+    @apply text-gray-500 pt-1;
+}
+
+.tooltipText {
+    @apply text-gray-900;
+}

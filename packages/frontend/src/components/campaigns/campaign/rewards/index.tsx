@@ -8,6 +8,7 @@ import { Skeleton } from "@/src/ui/skeleton";
 import { formatTokenAmount, formatUsdAmount } from "@/src/utils/format";
 import { Popover } from "@/src/ui/popover";
 import { useRef, useState } from "react";
+import { useTranslations } from "next-intl";
 
 import styles from "./styles.module.css";
 
@@ -19,6 +20,8 @@ interface RewardsProps {
 }
 
 export function Rewards({ from, to, rewards, chainId }: RewardsProps) {
+    const t = useTranslations("allCampaigns.rewards");
+
     const [popoverOpen, setPopoverOpen] = useState(false);
     const [rewardsBreakdown, setRewardsBreakdown] =
         useState<HTMLDivElement | null>(null);
@@ -47,6 +50,14 @@ export function Rewards({ from, to, rewards, chainId }: RewardsProps) {
                 placement="top"
             >
                 <div className={styles.breakdownContainer}>
+                    <Typography
+                        variant="sm"
+                        className={styles.tooltipTitle}
+                        weight="medium"
+                        uppercase
+                    >
+                        {t("tooltip.rewards")}
+                    </Typography>
                     {rewards.map((reward, i) => {
                         return (
                             <div
@@ -60,23 +71,43 @@ export function Rewards({ from, to, rewards, chainId }: RewardsProps) {
                                         address={reward.address}
                                         defaultText={reward.symbol}
                                     />
-                                    <Typography weight="medium">
+                                    <Typography
+                                        className={styles.tooltipText}
+                                        weight="medium"
+                                        variant="sm"
+                                    >
                                         {reward.symbol}
                                     </Typography>
                                 </div>
                                 <div>
-                                    <Typography weight="medium">
+                                    <Typography
+                                        className={styles.tooltipText}
+                                        weight="medium"
+                                        variant="sm"
+                                    >
                                         {formatTokenAmount(reward.amount)}
-                                    </Typography>
-                                    <Typography weight="medium">
-                                        {reward.usdValue
-                                            ? formatUsdAmount(reward.usdValue)
-                                            : "-"}
                                     </Typography>
                                 </div>
                             </div>
                         );
                     })}
+                    <Typography
+                        className={styles.tooltipTitle}
+                        weight="medium"
+                        variant="sm"
+                        uppercase
+                    >
+                        {t("tooltip.totalUsdValue")}
+                    </Typography>
+                    <Typography
+                        className={styles.tooltipText}
+                        variant="lg"
+                        weight="medium"
+                    >
+                        {rewards.usdValue
+                            ? formatUsdAmount(rewards.usdValue)
+                            : "-"}
+                    </Typography>
                 </div>
             </Popover>
             <div
