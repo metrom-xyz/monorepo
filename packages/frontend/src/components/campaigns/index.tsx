@@ -1,6 +1,13 @@
 "use client";
 
-import { Typography } from "@/src/ui/typography";
+import {
+    Typography,
+    TextInput,
+    Pagination,
+    Select,
+    Button,
+    type SelectOption,
+} from "@metrom-xyz/ui";
 import { useCampaigns } from "@/src/hooks/useCampaigns";
 import { Campaign, SkeletonCampaign } from "./campaign";
 
@@ -13,18 +20,14 @@ import {
     useState,
     type ChangeEvent,
 } from "react";
-import { TextInput } from "@/src/ui/text-input";
 import { SearchIcon } from "@/src/assets/search-icon";
 import { useDebounce } from "react-use";
 import { filterCampaigns, sortCampaigns } from "@/src/utils/filtering";
-import { Pagination } from "@/src/ui/pagination";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import { useRouter as useLocalizedRouter } from "@/i18n/routing";
-import { Select, type SelectOption } from "@/src/ui/select";
 import { Status, SupportedChain } from "@metrom-xyz/sdk";
 import { useChains } from "wagmi";
-import classNames from "@/src/utils/classes";
-import { Button } from "@/src/ui/button";
+import classNames from "classnames";
 import { CHAIN_DATA } from "@/src/commons";
 
 import styles from "./styles.module.css";

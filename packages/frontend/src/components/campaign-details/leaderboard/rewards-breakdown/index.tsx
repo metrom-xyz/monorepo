@@ -1,6 +1,4 @@
-import { Popover } from "@/src/ui/popover";
-import { RemoteLogo } from "@/src/ui/remote-logo";
-import { Typography } from "@/src/ui/typography";
+import { Popover, RemoteLogo, Typography } from "@metrom-xyz/ui";
 import type { SupportedChain, UsdPricedTokenAmount } from "@metrom-xyz/sdk";
 import { useTranslations } from "next-intl";
 import { useRef, useState } from "react";

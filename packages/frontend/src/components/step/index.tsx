@@ -1,5 +1,5 @@
 import React, { type ReactElement, useRef, useEffect } from "react";
-import classNames from "@/src/utils/classes";
+import classNames from "classnames";
 import { animated, easings, useSpring, useTransition } from "@react-spring/web";
 import { matchChildByType } from "@/src/utils/components";
 import { StepPreview, type StepPreviewProps } from "./preview";

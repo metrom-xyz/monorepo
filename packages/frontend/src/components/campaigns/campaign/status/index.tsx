@@ -1,10 +1,9 @@
 "use client";
 
-import { Typography } from "@/src/ui/typography";
+import { Typography, Skeleton } from "@metrom-xyz/ui";
 import dayjs from "dayjs";
-import classNames from "@/src/utils/classes";
+import classNames from "classnames";
 import { useTranslations } from "next-intl";
-import { Skeleton } from "@/src/ui/skeleton";
 import { Status as StatusState } from "@metrom-xyz/sdk";
 
 import styles from "./styles.module.css";

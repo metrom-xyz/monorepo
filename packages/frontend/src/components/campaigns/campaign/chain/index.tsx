@@ -1,6 +1,6 @@
 "use client";
 
-import { Skeleton } from "@/src/ui/skeleton";
+import { Skeleton } from "@metrom-xyz/ui";
 import { CHAIN_DATA } from "@/src/commons";
 import type { SupportedChain } from "@metrom-xyz/contracts";
 

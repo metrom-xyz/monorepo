@@ -1,8 +1,6 @@
 "use client";
 
-import { Typography } from "@/src/ui/typography";
-import { PoolRemoteLogo } from "@/src/ui/pool-remote-logo";
-import { Skeleton } from "@/src/ui/skeleton";
+import { Typography, PoolRemoteLogo, Skeleton } from "@metrom-xyz/ui";
 import type { NamedCampaign } from "@/src/hooks/useCampaigns";
 import { formatPercentage } from "@/src/utils/format";
 

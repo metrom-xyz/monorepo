@@ -1,10 +1,7 @@
 import { useCallback } from "react";
 import type { NamedCampaign } from "@/src/hooks/useCampaign";
-import { Typography } from "@/src/ui/typography";
-import { PoolRemoteLogo } from "@/src/ui/pool-remote-logo";
-import { Skeleton } from "@/src/ui/skeleton";
+import { Skeleton, Typography, PoolRemoteLogo, Button } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
-import { Button } from "@/src/ui/button";
 import { useRouter } from "@/src/i18n/routing";
 import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
 import { getPoolAddLiquidityLink, getPoolExplorerLink } from "@/src/utils/amm";

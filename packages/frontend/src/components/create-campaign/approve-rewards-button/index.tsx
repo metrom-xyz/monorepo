@@ -1,7 +1,7 @@
 import { useTranslations } from "next-intl";
 import { usePrevious } from "react-use";
 import { useAccount, useChainId } from "wagmi";
-import { Button } from "@/src/ui/button";
+import { Button } from "@metrom-xyz/ui";
 import { WalletIcon } from "@/src/assets/wallet-icon";
 import { useConnectModal } from "@rainbow-me/rainbowkit";
 import { useCallback, useEffect, useState } from "react";

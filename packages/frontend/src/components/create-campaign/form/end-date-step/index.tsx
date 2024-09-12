@@ -10,11 +10,13 @@ import type {
     CampaignPayloadErrors,
     CampaignPayloadPart,
 } from "@/src/types";
-import { Typography } from "@/src/ui/typography";
-import { DateTimePicker } from "@/src/ui/date-time-picker";
-import { Button } from "@/src/ui/button";
-import { Chip } from "@/src/ui/chip/chip";
-import { ErrorText } from "@/src/ui/error-text";
+import {
+    Typography,
+    DateTimePicker,
+    Button,
+    Chip,
+    ErrorText,
+} from "@metrom-xyz/ui";
 import { useTransition, animated } from "@react-spring/web";
 import { useCampaignDurationLimits } from "@/src/hooks/useCampaignDurationLimits";
 import { formatDateTime } from "@/src/utils/format";

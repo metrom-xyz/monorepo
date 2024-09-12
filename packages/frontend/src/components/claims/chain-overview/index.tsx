@@ -1,7 +1,6 @@
-import classNames from "@/src/utils/classes";
+import classNames from "classnames";
 import type { ChainWithClaimsData } from "..";
-import { Typography } from "@/src/ui/typography";
-import { Button } from "@/src/ui/button";
+import { Typography, Button, Skeleton } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
 import {
     useAccount,
@@ -13,7 +12,6 @@ import {
 import { metromAbi } from "@metrom-xyz/contracts/abi";
 import { parseUnits } from "viem";
 import { useCallback, useState } from "react";
-import { Skeleton } from "@/src/ui/skeleton";
 import { trackFathomEvent } from "@/src/utils/fathom";
 
 import styles from "./styles.module.css";
