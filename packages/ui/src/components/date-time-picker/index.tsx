@@ -23,11 +23,8 @@ export type DateTimePickerProps = DatePickerProps;
 const HOURS = new Array(24).fill(null).map((_, index) => {
     return enforceDoubleDigits(index);
 });
-const MINUTES_INTERVALS =
-    process.env.NEXT_PUBLIC_ENVIRONMENT &&
-    process.env.NEXT_PUBLIC_ENVIRONMENT !== "production"
-        ? new Array(60).fill(null).map((_, index) => enforceDoubleDigits(index))
-        : ["00", "15", "30", "45"];
+
+const MINUTES_INTERVALS = ["00", "15", "30", "45"];
 
 export const DateTimePicker = ({
     value,
@@ -127,7 +124,12 @@ export const DateTimePicker = ({
                     </Typography>
                 </div>
                 <div className={styles.wheelsWrapper}>
-                    <div className={styles.cellList}>
+                    <div
+                        className={classNames(
+                            styles.cellList,
+                            styles.noScrollbar,
+                        )}
+                    >
                         {HOURS.map((hour) => {
                             const selected =
                                 value && dayjs(value).format("HH") === hour;
@@ -153,6 +155,8 @@ export const DateTimePicker = ({
                                             styles.cell,
                                             {
                                                 [styles.cellDisabled]: disabled,
+                                                [styles.cellSelectable]:
+                                                    !disabled,
                                                 [styles.cellSelected]: selected,
                                             },
                                         )}
@@ -169,7 +173,12 @@ export const DateTimePicker = ({
                             );
                         })}
                     </div>
-                    <div className={styles.cellList}>
+                    <div
+                        className={classNames(
+                            styles.cellList,
+                            styles.noScrollbar,
+                        )}
+                    >
                         {MINUTES_INTERVALS.map((minute) => {
                             const selected =
                                 value && dayjs(value).format("mm") === minute;
@@ -195,6 +204,8 @@ export const DateTimePicker = ({
                                             styles.cell,
                                             {
                                                 [styles.cellDisabled]: disabled,
+                                                [styles.cellSelectable]:
+                                                    !disabled,
                                                 [styles.cellSelected]: selected,
                                             },
                                         )}

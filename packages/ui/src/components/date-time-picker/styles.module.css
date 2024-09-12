@@ -28,7 +28,12 @@
         overflow-y-auto
         overflow-x-hidden
         scroll-pt-0.5
+        px-1
         snap-y;
+}
+
+.noScrollbar {
+    @apply [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none];
 }
 
 .cell {
@@ -50,9 +55,13 @@
 .cellDisabled {
     @apply cursor-not-allowed
         hover:bg-transparent
-        opacity-40;
+        text-gray-300;
 }
 
 .cellSelected {
-    @apply bg-gray-200;
+    @apply bg-gray-200 !text-black;
+}
+
+.cellSelectable {
+    @apply text-gray-400;
 }

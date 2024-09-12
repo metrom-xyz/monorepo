@@ -70,17 +70,21 @@
 }
 
 .cellToday {
-    @apply bg-gray-100;
+    @apply bg-gray-50;
 }
 
 .cellDisabled {
     @apply cursor-not-allowed
         hover:bg-transparent
-        opacity-40;
+        text-gray-300;
 }
 
 .cellSelected {
-    @apply bg-gray-200;
+    @apply bg-gray-50 !text-gray-900;
+}
+
+.cellSelectable {
+    @apply text-gray-400;
 }
 
 .cellInRange {
@@ -88,11 +92,11 @@
 }
 
 .cellRangeBoundStart {
-    @apply bg-gray-200 rounded-r-none;
+    @apply bg-gray-200 rounded-r-none !text-gray-900;
 }
 
 .cellRangeBoundEnd {
-    @apply bg-gray-200 rounded-l-none;
+    @apply bg-gray-200 rounded-l-none !text-gray-900;
 }
 
 .cellInRange.startOfWeek {

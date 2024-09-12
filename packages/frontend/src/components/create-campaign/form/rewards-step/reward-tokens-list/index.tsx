@@ -37,9 +37,15 @@ export function RewardTokensList({
         tokensWithBalance: whitelistedTokensWithBalance,
         loading: loadingBalances,
     } = useWatchBalances(address, whitelistedTokens);
-
     return (
-        <div className={styles.root}>
+        <div
+            className={styles.root}
+            style={{
+                height: loading
+                    ? "22.5rem"
+                    : `${Math.min(whitelistedTokensWithBalance.length - 1, 5) * 3.3 + 6}rem`,
+            }}
+        >
             <div className={styles.listHeader}>
                 <Typography uppercase variant="sm" weight="medium" light>
                     {t("list.token")}
