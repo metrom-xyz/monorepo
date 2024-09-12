@@ -25,11 +25,31 @@ export function PoolRemoteLogo({
               ]
             : [undefined, undefined];
 
+    const [token0ResolvedSrc, token1ResolvedSrc] =
+        chainData && token0?.address && token1?.address
+            ? [
+                  chainData.rewardTokenIcons[
+                      token0.address.toLowerCase() as Address
+                  ],
+                  chainData.rewardTokenIcons[
+                      token1.address.toLowerCase() as Address
+                  ],
+              ]
+            : [undefined, undefined];
+
     return (
         <UiPoolRemoteLogo
             chain={chain}
-            token0={{ ...token0, icon: Token0Icon }}
-            token1={{ ...token1, icon: Token1Icon }}
+            token0={{
+                ...token0,
+                icon: Token0Icon,
+                src: token0?.src || token0ResolvedSrc,
+            }}
+            token1={{
+                ...token1,
+                icon: Token1Icon,
+                src: token1?.src || token1ResolvedSrc,
+            }}
             {...rest}
         />
     );
