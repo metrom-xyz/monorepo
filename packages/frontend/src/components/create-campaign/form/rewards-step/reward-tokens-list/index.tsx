@@ -8,7 +8,7 @@ import {
     type TokenAmount,
     type WhitelistedErc20Token,
 } from "@metrom-xyz/sdk";
-import { Typography } from "@/src/ui/typography";
+import { Typography } from "@metrom-xyz/ui";
 import { useWhitelistedRewardsTokens } from "@/src/hooks/useWhitelistedRewardsTokens";
 import { useWatchBalances } from "@/src/hooks/useWatchBalances";
 import { Row } from "./row";

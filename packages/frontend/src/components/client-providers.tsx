@@ -29,6 +29,7 @@ const config = getDefaultConfig({
     ssr: true,
 });
 
+// TODO: if we need to have SSR prefetching https://tanstack.com/query/latest/docs/framework/react/guides/advanced-ssr#server-components--nextjs-app-router
 const queryClient = new QueryClient();
 
 export function ClientProviders({

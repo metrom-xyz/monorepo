@@ -3,11 +3,9 @@ import { NewCampaignIcon } from "@/src/assets/new-campaign-icon";
 import type { Activity } from "@metrom-xyz/sdk";
 import dayjs from "dayjs";
 import { useTranslations } from "next-intl";
-import { Typography } from "@/src/ui/typography";
+import { Typography, Skeleton, RemoteLogo } from "@metrom-xyz/ui";
 import { Link } from "@/src/i18n/routing";
-import { Skeleton } from "@/src/ui/skeleton";
-import classNames from "@/src/utils/classes";
-import { RemoteLogo } from "@/src/ui/remote-logo";
+import classNames from "classnames";
 import { formatTokenAmount } from "@/src/utils/format";
 import { trackFathomEvent } from "@/src/utils/fathom";
 

@@ -1,19 +1,5 @@
 import { type Config } from "tailwindcss";
-
-const SANS_FONT_FAMILY = ["IBM Plex Sans", "ui-sans-serif", "sans-serif"];
-const MONO_FONT_FAMILY = ["IBM Plex Mono", "ui-monospace", "monospace"];
-
-const BODY_TEXT_SIZES_REM = {
-    // TODO: add missing sizes
-    xl5: "3rem",
-    xl4: "2.25rem",
-    xl2: "1.5rem",
-    xl: "1.25rem",
-    lg: "1.125rem",
-    base: "1rem",
-    sm: "0.875rem",
-    xs: "0.75rem",
-};
+import { tailwindPreset } from "@metrom-xyz/ui";
 
 const config: Config = {
     content: [
@@ -22,20 +8,9 @@ const config: Config = {
         "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
     ],
     darkMode: "class",
-    plugins: [],
+    presets: [tailwindPreset],
     theme: {
         extend: {
-            fontFamily: {
-                sans: SANS_FONT_FAMILY,
-                mono: MONO_FONT_FAMILY,
-            },
-            fontSize: { ...BODY_TEXT_SIZES_REM, inherit: "inherit" },
-            colors: {
-                "brand-green": "#6CFF95",
-                "brand-blue": "#3C82F6",
-                black: "#000000",
-                white: "#FFFFFF",
-            },
             transitionProperty: {
                 colors: "border-radius, color, background-color, border-color, text-decoration-color, fill, stroke",
             },

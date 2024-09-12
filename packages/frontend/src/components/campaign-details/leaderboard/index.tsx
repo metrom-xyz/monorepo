@@ -1,8 +1,7 @@
 import { useDistributionBreakdown } from "@/src/hooks/useDistributionBreakdown";
 import { shortenAddress, type Campaign } from "@metrom-xyz/sdk";
-import { Typography } from "@/src/ui/typography";
+import { Typography, Skeleton } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
-import { Skeleton } from "@/src/ui/skeleton";
 import dayjs from "dayjs";
 import { PersonalRank } from "./personal-rank";
 import { RepartitionChart } from "./repartition-chart";

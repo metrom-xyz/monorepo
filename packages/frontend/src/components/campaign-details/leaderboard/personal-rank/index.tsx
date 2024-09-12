@@ -1,10 +1,9 @@
 import { useAccount } from "wagmi";
 import { useMemo } from "react";
-import { Typography } from "@/src/ui/typography";
+import { Typography, Button } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
 import type { DistributionBreakdown } from "@/src/hooks/useDistributionBreakdown";
 import { shortenAddress, SupportedChain } from "@metrom-xyz/sdk";
-import { Button } from "@/src/ui/button";
 import { WalletIcon } from "@/src/assets/wallet-icon";
 import { useConnectModal } from "@rainbow-me/rainbowkit";
 import { SkeletonRow } from "..";

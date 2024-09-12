@@ -7,10 +7,9 @@ import type {
     CampaignPayloadPart,
 } from "@/src/types";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { Modal } from "@/src/ui/modal";
+import { Modal, Button } from "@metrom-xyz/ui";
 import { CreateCampaignForm } from "./form";
 import { CampaignPreview } from "./preview";
-import { Button } from "@/src/ui/button";
 import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
 import { useTranslations } from "next-intl";
 import { trackFathomEvent } from "@/src/utils/fathom";
@@ -76,6 +75,10 @@ export function CreateCampaign() {
     }
 
     function handleBackOnClick() {
+        setView(View.form);
+    }
+
+    function handleCreateNewOnClick() {
         setPayload((prevState) => ({
             ...prevState,
             pool: undefined,
@@ -95,6 +98,7 @@ export function CreateCampaign() {
             <Modal open={view === View.preview}>
                 <CampaignPreview
                     onBack={handleBackOnClick}
+                    onCreateNew={handleCreateNewOnClick}
                     payload={payload}
                     malformedPayload={malformedPayload}
                 />

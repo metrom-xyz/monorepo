@@ -1,8 +1,8 @@
-import { Typography } from "@/src/ui/typography";
-import styles from "./styles.module.css";
+import { Typography, Button } from "@metrom-xyz/ui";
 import { Link } from "@/src/i18n/routing";
-import { Button } from "@/src/ui/button";
 import { useTranslations } from "next-intl";
+
+import styles from "./styles.module.css";
 
 export function Empty() {
     const t = useTranslations("claims.empty");
@@ -15,12 +15,14 @@ export function Empty() {
 
     return (
         <div className={styles.root}>
-            <Typography weight="medium" uppercase>
+            <Typography weight="medium" uppercase className={styles.title}>
                 {t("title")}
             </Typography>
-            <Typography>{t("body")}</Typography>
+            <Typography variant="lg" weight="medium" className={styles.body}>
+                {t("body")}
+            </Typography>
             <Link href="/">
-                <Button>{t("action")}</Button>
+                <Button size="small">{t("action")}</Button>
             </Link>
         </div>
     );

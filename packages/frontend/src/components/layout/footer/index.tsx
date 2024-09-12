@@ -4,7 +4,7 @@ import { GithubLogo } from "@/src/assets/logos/socials/github";
 import { XLogo } from "@/src/assets/logos/socials/x";
 import { DiscordLogo } from "@/src/assets/logos/socials/discord";
 import { TelegramLogo } from "@/src/assets/logos/socials/telegram";
-import { Typography } from "@/src/ui/typography";
+import { Typography } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
 import { trackFathomEvent } from "@/src/utils/fathom";
 
@@ -58,7 +58,7 @@ export function Footer() {
                     <Typography weight="medium">{t("support")}</Typography>
                 </a>
                 <a
-                    href="https://metrom.gitbook.io/metrom"
+                    href="https://docs.metrom.xyz"
                     target="_blank"
                     rel="noopener noreferrer"
                     onClick={() => trackFathomEvent("CLICK_DOCUMENTATION_LINK")}

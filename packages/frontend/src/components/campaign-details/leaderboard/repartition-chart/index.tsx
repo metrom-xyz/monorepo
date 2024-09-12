@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { useTranslations } from "next-intl";
 import type { DistributionBreakdown } from "@/src/hooks/useDistributionBreakdown";
-import { Typography } from "@/src/ui/typography";
+import { Typography } from "@metrom-xyz/ui";
 import { Cell, Pie, PieChart, Tooltip } from "recharts";
 import type { Address } from "viem";
 import { getAddressColor } from "@/src/utils/address";

@@ -1,6 +1,6 @@
 import { Nav } from "./nav";
 import { Footer } from "./footer";
-import classNames from "@/src/utils/classes";
+import classNames from "classnames";
 import type { ReactNode } from "react";
 
 import styles from "./styles.module.css";

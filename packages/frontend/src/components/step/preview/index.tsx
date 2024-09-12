@@ -7,8 +7,8 @@ import {
     useTransition,
 } from "@react-spring/web";
 import { ChevronDown } from "@/src/assets/chevron-down";
-import classNames from "@/src/utils/classes";
-import { Typography } from "@/src/ui/typography";
+import classNames from "classnames";
+import { Typography } from "@metrom-xyz/ui";
 
 import styles from "./styles.module.css";
 

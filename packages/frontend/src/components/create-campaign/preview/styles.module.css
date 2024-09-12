@@ -1,6 +1,7 @@
 .root {
     @apply flex
         flex-col
+        md:min-w-[750px]
         bg-gray-100
         rounded-3xl;
 }

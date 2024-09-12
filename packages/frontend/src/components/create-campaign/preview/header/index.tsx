@@ -1,9 +1,6 @@
 import { CircledXIcon } from "@/src/assets/circled-x-icon";
 import type { CampaignPayload } from "@/src/types";
-import { Button } from "@/src/ui/button";
-import { PoolRemoteLogo } from "@/src/ui/pool-remote-logo";
-import { TextField } from "@/src/ui/text-field";
-import { Typography } from "@/src/ui/typography";
+import { Button, PoolRemoteLogo, TextField, Typography } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
 import { useChainId } from "wagmi";
 import { formatDateTime, formatPercentage } from "@/src/utils/format";

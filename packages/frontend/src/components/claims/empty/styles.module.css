@@ -1,3 +1,19 @@
 .root {
-    @apply flex flex-col items-center gap-4 text-center max-w-screen-sm;
+    @apply flex
+        flex-col
+        items-center
+        text-center
+        justify-center
+        gap-7
+        px-4
+        max-w-screen-sm
+        h-[55vh];
+}
+
+.body {
+    @apply leading-tight !text-gray-900;
+}
+
+.title {
+    @apply text-gray-900;
 }
