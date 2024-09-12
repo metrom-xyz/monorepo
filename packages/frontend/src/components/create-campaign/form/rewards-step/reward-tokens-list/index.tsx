@@ -93,7 +93,7 @@ export function RewardTokensList({
                                             active={
                                                 !!whitelistedToken &&
                                                 whitelistedToken.address ===
-                                                value?.address
+                                                    value?.address
                                             }
                                             token={whitelistedToken}
                                             onClick={onRewardTokenClick}
