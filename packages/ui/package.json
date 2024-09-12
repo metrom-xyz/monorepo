@@ -1,7 +1,7 @@
 {
     "type": "module",
     "name": "@metrom-xyz/ui",
-    "version": "0.1.0",
+    "version": "0.4.6",
     "main": "./dist/index.js",
     "types": "./dist/index.d.ts",
     "exports": {
