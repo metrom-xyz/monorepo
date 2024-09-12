@@ -37,12 +37,13 @@ export function RewardTokensList({
         tokensWithBalance: whitelistedTokensWithBalance,
         loading: loadingBalances,
     } = useWatchBalances(address, whitelistedTokens);
-
     return (
         <div
             className={styles.root}
             style={{
-                height: `${Math.min(whitelistedTokensWithBalance.length - 1, 4) * 3.3 + 6}rem`,
+                height: loading
+                    ? "22.5rem"
+                    : `${Math.min(whitelistedTokensWithBalance.length - 1, 5) * 3.3 + 6}rem`,
             }}
         >
             <div className={styles.listHeader}>
@@ -92,7 +93,7 @@ export function RewardTokensList({
                                             active={
                                                 !!whitelistedToken &&
                                                 whitelistedToken.address ===
-                                                    value?.address
+                                                value?.address
                                             }
                                             token={whitelistedToken}
                                             onClick={onRewardTokenClick}

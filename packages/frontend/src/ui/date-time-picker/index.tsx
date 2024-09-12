@@ -173,7 +173,12 @@ export const DateTimePicker = ({
                             );
                         })}
                     </div>
-                    <div className={styles.cellList}>
+                    <div
+                        className={classNames(
+                            styles.cellList,
+                            styles.noScrollbar,
+                        )}
+                    >
                         {MINUTES_INTERVALS.map((minute) => {
                             const selected =
                                 value && dayjs(value).format("mm") === minute;

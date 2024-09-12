@@ -1,6 +1,5 @@
 .root {
-    @apply h-20
-        max-h-[19rem]
+    @apply max-h-[22.5rem]
         w-full
         overflow-hidden;
 }

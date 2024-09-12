@@ -55,7 +55,7 @@
 .cellDisabled {
     @apply cursor-not-allowed
         hover:bg-transparent
-        opacity-40;
+        text-gray-300;
 }
 
 .cellSelected {
@@ -63,5 +63,5 @@
 }
 
 .cellSelectable {
-    @apply text-gray-300;
+    @apply text-gray-400;
 }
