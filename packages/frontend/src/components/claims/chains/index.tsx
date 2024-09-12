@@ -1,8 +1,7 @@
-import classNames from "@/src/utils/classes";
-import { Typography } from "@/src/ui/typography";
+import classNames from "classnames";
+import { Typography, Skeleton } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
 import type { ChainWithClaimsData } from "..";
-import { Skeleton } from "@/src/ui/skeleton";
 
 import styles from "./styles.module.css";
 

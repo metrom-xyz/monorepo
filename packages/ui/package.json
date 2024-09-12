@@ -1,0 +1,61 @@
+{
+    "type": "module",
+    "name": "@metrom-xyz/ui",
+    "version": "0.1.0",
+    "main": "./dist/index.js",
+    "types": "./dist/index.d.ts",
+    "exports": {
+        ".": "./dist/index.js",
+        "./style.css": "./dist/style.css"
+    },
+    "publishConfig": {
+        "access": "public"
+    },
+    "scripts": {
+        "dev": "vite",
+        "build": "vite build && tsc",
+        "lint": "eslint .",
+        "format": "eslint --fix ."
+    },
+    "dependencies": {
+        "@popperjs/core": "^2.11.8",
+        "@react-spring/web": "^9.7.4",
+        "dayjs": "^1.11.13",
+        "react-number-format": "^5.4.2",
+        "react-popper": "^2.3.0",
+        "react-use": "^17.5.1",
+        "react-window": "^1.8.10"
+    },
+    "peerDependencies": {
+        "@fontsource/ibm-plex-mono": "^5.0.15",
+        "@fontsource/ibm-plex-sans": "^5.0.22",
+        "react": "^18",
+        "react-dom": "^18"
+    },
+    "devDependencies": {
+        "@eslint/js": "^9.10.0",
+        "@fontsource/ibm-plex-mono": "^5.0.15",
+        "@fontsource/ibm-plex-sans": "^5.0.22",
+        "@types/eslint__js": "^8.42.3",
+        "@types/node": "^22.5.4",
+        "@types/react": "^18.3.5",
+        "@types/react-dom": "^18",
+        "@types/react-window": "^1.8.8",
+        "@types/tailwindcss": "^3.1.0",
+        "autoprefixer": "^10.4.20",
+        "classnames": "^2.5.1",
+        "eslint": "^9.10.0",
+        "eslint-config-next": "14.2.10",
+        "eslint-config-prettier": "^9.1.0",
+        "eslint-plugin-prettier": "^5.2.1",
+        "postcss": "^8.4.45",
+        "prettier": "^3.3.3",
+        "react": "^18",
+        "react-dom": "^18",
+        "tailwindcss": "^3.4.11",
+        "typescript": "^5.6.2",
+        "typescript-eslint": "^8.5.0",
+        "viem": "^2.21.6",
+        "vite": "^5.4.4"
+    }
+}

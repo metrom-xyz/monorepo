@@ -1,6 +1,5 @@
 import type { Pool } from "@metrom-xyz/sdk";
-import { PoolRemoteLogo } from "@/src/ui/pool-remote-logo";
-import { Typography } from "@/src/ui/typography";
+import { PoolRemoteLogo, Typography } from "@metrom-xyz/ui";
 import { formatPercentage, formatUsdAmount } from "@/src/utils/format";
 
 import styles from "./styles.module.css";

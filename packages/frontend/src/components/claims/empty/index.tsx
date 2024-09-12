@@ -1,6 +1,5 @@
-import { Typography } from "@/src/ui/typography";
+import { Typography, Button } from "@metrom-xyz/ui";
 import { Link } from "@/src/i18n/routing";
-import { Button } from "@/src/ui/button";
 import { useTranslations } from "next-intl";
 
 import styles from "./styles.module.css";

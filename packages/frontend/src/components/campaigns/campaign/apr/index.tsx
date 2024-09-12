@@ -1,7 +1,6 @@
 "use client";
 
-import { Typography } from "@/src/ui/typography";
-import { Skeleton } from "@/src/ui/skeleton";
+import { Typography, Skeleton } from "@metrom-xyz/ui";
 import { formatPercentage } from "@/src/utils/format";
 
 import styles from "./styles.module.css";

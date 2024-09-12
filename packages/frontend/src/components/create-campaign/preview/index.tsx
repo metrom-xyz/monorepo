@@ -1,4 +1,4 @@
-import { Button } from "@/src/ui/button";
+import { Button, Typography, TextField } from "@metrom-xyz/ui";
 import type { CampaignPayload } from "@/src/types";
 import {
     useChainId,
@@ -12,10 +12,8 @@ import { parseUnits } from "viem";
 import { metromAbi } from "@metrom-xyz/contracts/abi";
 import { useCallback, useMemo, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
-import { Typography } from "@/src/ui/typography";
 import { MetromLightLogo } from "@/src/assets/metrom-light-logo";
 import { useRouter } from "@/src/i18n/routing";
-import { TextField } from "@/src/ui/text-field";
 import { useChainData } from "@/src/hooks/useChainData";
 import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
 import { ApproveRewardsButton } from "../approve-rewards-button";

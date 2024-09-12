@@ -9,17 +9,14 @@ import {
 import { useDebounce } from "react-use";
 import type { Token, Pool } from "@metrom-xyz/sdk";
 import { useChainId } from "wagmi";
-import { TextInput } from "@/src/ui/text-input";
+import { TextInput, Chip, RemoteLogo, Typography } from "@metrom-xyz/ui";
 import AutoSizer from "react-virtualized-auto-sizer";
 import { FixedSizeList } from "react-window";
 import { SearchIcon } from "@/src/assets/search-icon";
 import { useTranslations } from "next-intl";
 import type { CampaignPayload } from "@/src/types";
 import { usePools } from "@/src/hooks/usePools";
-import { Chip } from "@/src/ui/chip/chip";
 import { useBaseTokens } from "@/src/hooks/useBaseTokens";
-import { RemoteLogo } from "@/src/ui/remote-logo";
-import { Typography } from "@/src/ui/typography";
 import { filterPools } from "@/src/utils/filtering";
 import { Row } from "./row";
 

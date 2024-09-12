@@ -1,8 +1,6 @@
 import { ConnectButton as RainbowConnectButton } from "@rainbow-me/rainbowkit";
-import { Typography } from "@/src/ui/typography";
-import { Button } from "@/src/ui/button";
+import { Typography, Button, Popover } from "@metrom-xyz/ui";
 import type { SupportedChain } from "@metrom-xyz/contracts";
-import { Popover } from "@/src/ui/popover";
 import { useRef, useState } from "react";
 import { useChainId, useChains, useSwitchChain } from "wagmi";
 import { useClickAway } from "react-use";
@@ -11,7 +9,7 @@ import { ErrorIcon } from "@/src/assets/error-icon";
 import { blo, type Address } from "blo";
 import { AccountMenu } from "./account-menu";
 import { zeroAddress } from "viem";
-import classNames from "@/src/utils/classes";
+import classNames from "classnames";
 import { CHAIN_DATA } from "@/src/commons";
 import { trackFathomEvent } from "@/src/utils/fathom";
 

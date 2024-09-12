@@ -11,11 +11,8 @@ import type {
     CampaignPayloadErrors,
     CampaignPayloadPart,
 } from "@/src/types";
-import { Typography } from "@/src/ui/typography";
-import { Button } from "@/src/ui/button";
-import { DateTimePicker } from "@/src/ui/date-time-picker";
-import { ErrorText } from "@/src/ui/error-text";
-import { getClosestAvailableDateTime } from "@/src/utils/date";
+import { Typography, Button, DateTimePicker, ErrorText } from "@metrom-xyz/ui";
+import { getClosestAvailableDateTime } from "../../../../utils/date";
 import { useTransition, animated } from "@react-spring/web";
 import { formatDateTime } from "@/src/utils/format";
 

@@ -7,7 +7,7 @@ import { StepPreview } from "@/src/components/step/preview";
 import { StepContent } from "@/src/components/step/content";
 import type { CampaignPayload, CampaignPayloadPart } from "@/src/types";
 import { PoolPicker } from "./picker";
-import { Typography } from "@/src/ui/typography";
+import { Typography } from "@metrom-xyz/ui";
 import { PoolStepPreview } from "./preview";
 
 import styles from "./styles.module.css";

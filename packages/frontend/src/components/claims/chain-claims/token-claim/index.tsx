@@ -1,6 +1,5 @@
-import classNames from "@/src/utils/classes";
-import { Typography } from "@/src/ui/typography";
-import { Button } from "@/src/ui/button";
+import classNames from "classnames";
+import { Typography, Button, RemoteLogo, Skeleton } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
 import {
     useAccount,
@@ -12,9 +11,7 @@ import {
 import { metromAbi } from "@metrom-xyz/contracts/abi";
 import { parseUnits } from "viem";
 import { useCallback, useState } from "react";
-import { RemoteLogo } from "@/src/ui/remote-logo";
 import type { TokenClaims } from "..";
-import { Skeleton } from "@/src/ui/skeleton";
 import { useChainData } from "@/src/hooks/useChainData";
 import { formatTokenAmount } from "@/src/utils/format";
 import { trackFathomEvent } from "@/src/utils/fathom";

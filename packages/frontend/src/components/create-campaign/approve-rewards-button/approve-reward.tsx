@@ -7,7 +7,7 @@ import {
 } from "wagmi";
 import { erc20Abi, type Address, parseUnits } from "viem";
 import type { TokenAmount } from "@metrom-xyz/sdk";
-import { Button } from "@/src/ui/button";
+import { Button } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
 import { RewardIcon } from "@/src/assets/reward-icon";
 

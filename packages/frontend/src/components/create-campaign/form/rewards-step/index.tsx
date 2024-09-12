@@ -1,6 +1,12 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { formatUnits, type Address } from "viem";
-import { Button } from "@/src/ui/button";
+import {
+    Button,
+    NumberInput,
+    RemoteLogo,
+    Typography,
+    ErrorText,
+} from "@metrom-xyz/ui";
 import { useAccount, useChainId } from "wagmi";
 import { useTranslations } from "next-intl";
 import type {
@@ -17,16 +23,12 @@ import type {
     CampaignPayloadErrors,
 } from "@/src/types";
 import { RewardTokensList } from "./reward-tokens-list";
-import { NumberInput, type NumberFormatValues } from "@/src/ui/number-input";
-import { RemoteLogo } from "@/src/ui/remote-logo";
-import { Typography } from "@/src/ui/typography";
 import { PlusIcon } from "@/src/assets/plus-icon";
 import { ChevronDown } from "@/src/assets/chevron-down";
 import { RewardsPreview } from "./preview";
-import { ErrorText } from "@/src/ui/error-text";
 import { useWatchBalance } from "@/src/hooks/useWatchBalance";
 import { formatUsdAmount } from "@/src/utils/format";
-import classNames from "@/src/utils/classes";
+import classNames from "classnames";
 import { trackFathomEvent } from "@/src/utils/fathom";
 
 import styles from "./styles.module.css";
