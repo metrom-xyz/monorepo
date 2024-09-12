@@ -14,7 +14,7 @@ export function PoolRemoteLogo({
     const chainData = useChainData(chain);
 
     const [Token0Icon, Token1Icon] =
-        chainData?.specialTokens && token0 && token1
+        chainData?.specialTokens && token0?.address && token1?.address
             ? [
                   chainData.specialTokens[
                       token0.address.toLowerCase() as Address
