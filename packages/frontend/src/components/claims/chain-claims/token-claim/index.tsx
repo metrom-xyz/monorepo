@@ -63,7 +63,8 @@ export function TokenClaim({ chainId, chainClaims }: TokenClaimProps) {
                   }),
         ],
         query: {
-            enabled: account && chainClaims.claims.length > 0,
+            refetchOnMount: false,
+            enabled: !!account && chainClaims.claims.length > 0,
         },
     });
 

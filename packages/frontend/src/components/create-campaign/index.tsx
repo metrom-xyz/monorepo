@@ -76,6 +76,10 @@ export function CreateCampaign() {
     }
 
     function handleBackOnClick() {
+        setView(View.form);
+    }
+
+    function handleCreateNewOnClick() {
         setPayload((prevState) => ({
             ...prevState,
             pool: undefined,
@@ -95,6 +99,7 @@ export function CreateCampaign() {
             <Modal open={view === View.preview}>
                 <CampaignPreview
                     onBack={handleBackOnClick}
+                    onCreateNew={handleCreateNewOnClick}
                     payload={payload}
                     malformedPayload={malformedPayload}
                 />

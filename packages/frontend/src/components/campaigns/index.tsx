@@ -165,7 +165,7 @@ export function Campaigns() {
         () =>
             sortCampaigns(
                 filterCampaigns(
-                    campaigns,
+                    campaigns || [],
                     status || FilterableStatus.All,
                     chain,
                     debouncedSearch,
@@ -326,10 +326,10 @@ export function Campaigns() {
                     </>
                 ) : pagedCampaigns.length === 0 ? (
                     <div className={styles.empty}>
-                        <Typography uppercase variant="lg" weight="medium">
+                        <Typography uppercase weight="medium">
                             {t("empty.title")}
                         </Typography>
-                        <Typography variant="xl" weight="medium">
+                        <Typography variant="lg" weight="medium">
                             {t("empty.description")}
                         </Typography>
                         <Button size="small" onClick={handleCreateCampaign}>

@@ -1,10 +1,10 @@
 import { useAccount, useBlockNumber, useReadContracts } from "wagmi";
-import { formatUnits } from "viem";
+import { formatUnits, type Address } from "viem";
 import { CHAIN_DATA, metromApiClient } from "../commons";
 import { type Claim } from "@metrom-xyz/sdk";
 import { useEffect, useState } from "react";
 import { metromAbi } from "@metrom-xyz/contracts/abi";
-import { useQueryClient } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 
 interface ClaimWithRemaining extends Claim {
     remaining: number;
@@ -14,44 +14,33 @@ export function useClaims(): {
     loading: boolean;
     claims: Claim[];
 } {
-    const { address } = useAccount();
-
-    const [rawClaims, setRawClaims] = useState<Claim[]>([]);
     const [claims, setClaims] = useState<ClaimWithRemaining[]>([]);
-    const [loading, setLoading] = useState(true);
-
-    useEffect(() => {
-        let cancelled = false;
-
-        async function fetchData() {
-            if (!address) return;
-
-            if (!cancelled) setLoading(false);
-            if (!cancelled) setRawClaims([]);
-            if (!cancelled) setClaims([]);
-
-            try {
-                if (!cancelled) setLoading(true);
-                const rawClaims = await metromApiClient.fetchClaims({
-                    address,
-                });
-                if (!cancelled) setRawClaims(rawClaims);
-            } catch (error) {
-                console.error(
-                    `Could not fetch raw claims for address ${address}: ${error}`,
-                );
-            } finally {
-                if (!cancelled) setLoading(false);
-            }
-        }
-        fetchData();
-        return () => {
-            cancelled = true;
-        };
-    }, [address]);
 
     const queryClient = useQueryClient();
+    const { address } = useAccount();
     const { data: blockNumber } = useBlockNumber({ watch: true });
+
+    const { data: rawClaims, isPending: loadingClaims } = useQuery({
+        queryKey: ["claims", address],
+        queryFn: async ({ queryKey }) => {
+            const account = queryKey[1];
+            if (!account) return undefined;
+
+            try {
+                const rawClaims = await metromApiClient.fetchClaims({
+                    address: account as Address,
+                });
+                return rawClaims;
+            } catch (error) {
+                throw new Error(
+                    `Could not fetch raw claims for address ${address}: ${error}`,
+                );
+            }
+        },
+        refetchOnMount: false,
+        enabled: !!address,
+    });
+
     const {
         isLoading: loadingClaimed,
         data: claimedData,
@@ -60,15 +49,25 @@ export function useClaims(): {
         queryKey,
     } = useReadContracts({
         allowFailure: false,
-        contracts: rawClaims.map((rawClaim) => {
-            return {
-                chainId: rawClaim.chainId,
-                address: CHAIN_DATA[rawClaim.chainId]?.metromContract.address,
-                abi: metromAbi,
-                functionName: "claimedCampaignReward",
-                args: [rawClaim.campaignId, rawClaim.token.address, address],
-            };
-        }),
+        contracts:
+            rawClaims &&
+            rawClaims.map((rawClaim) => {
+                return {
+                    chainId: rawClaim.chainId,
+                    address:
+                        CHAIN_DATA[rawClaim.chainId]?.metromContract.address,
+                    abi: metromAbi,
+                    functionName: "claimedCampaignReward",
+                    args: [
+                        rawClaim.campaignId,
+                        rawClaim.token.address,
+                        address,
+                    ],
+                };
+            }),
+        query: {
+            enabled: !!rawClaims,
+        },
     });
 
     useEffect(() => {
@@ -76,16 +75,20 @@ export function useClaims(): {
     }, [blockNumber, queryClient, queryKey]);
 
     useEffect(() => {
-        if (loadingClaimed) return;
+        if (loadingClaims || loadingClaimed) return;
         if (claimedErrored) {
             console.error(
                 `Could not fetch claimed data for address ${address}: ${claimedError}`,
             );
             return;
         }
-        if (!claimedData) return;
+        if (!rawClaims || !claimedData) {
+            setClaims([]);
+            return;
+        }
 
         const claims = [];
+        const alreadyClaimed = [];
         for (let i = 0; i < claimedData.length; i++) {
             const rawClaimed = claimedData[i] as unknown as bigint;
             const rawClaim = rawClaims[i];
@@ -96,8 +99,10 @@ export function useClaims(): {
             if (remaining > 0) {
                 claims.push({
                     ...rawClaim,
-                    remaining: rawClaim.amount - claimed,
+                    remaining,
                 });
+            } else {
+                alreadyClaimed.push({ ...rawClaim, remaining });
             }
         }
 
@@ -108,11 +113,12 @@ export function useClaims(): {
         claimedError,
         claimedErrored,
         loadingClaimed,
+        loadingClaims,
         rawClaims,
     ]);
 
     return {
-        loading: loading || loadingClaimed,
+        loading: loadingClaims || loadingClaimed,
         claims,
     };
 }

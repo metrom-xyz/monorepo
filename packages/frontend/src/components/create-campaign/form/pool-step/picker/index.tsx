@@ -43,11 +43,16 @@ export function PoolPicker({ value, amm, onChange }: PoolPickerProps) {
     const { pools, loading } = usePools(amm?.slug);
 
     const filteredPools = useMemo(
-        () => filterPools(pools, baseTokenFilter?.address || debouncedSearch),
+        () =>
+            filterPools(
+                pools || [],
+                baseTokenFilter?.address || debouncedSearch,
+            ),
         [baseTokenFilter?.address, debouncedSearch, pools],
     );
 
     const selectedIndex = useMemo(() => {
+        if (!pools) return 0;
         return pools.findIndex((pool) => pool.address === value?.address);
     }, [pools, value?.address]);
 
@@ -129,7 +134,7 @@ export function PoolPicker({ value, amm, onChange }: PoolPickerProps) {
                         {t("list.tvl")}
                     </Typography>
                 </div>
-                {loading || pools.length > 0 ? (
+                {loading || (pools && pools.length > 0) ? (
                     <AutoSizer>
                         {({ height, width }) => {
                             return (
