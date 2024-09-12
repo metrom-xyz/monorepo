@@ -1,11 +1,12 @@
 "use client";
 
-import { Typography, RemoteLogo, Skeleton, Popover } from "@metrom-xyz/ui";
+import { Typography, Skeleton, Popover } from "@metrom-xyz/ui";
 import { SupportedChain, type Rewards as RewardsType } from "@metrom-xyz/sdk";
 import dayjs from "dayjs";
 import { formatTokenAmount, formatUsdAmount } from "@/src/utils/format";
 import { useRef, useState } from "react";
 import { useTranslations } from "next-intl";
+import { RemoteLogo } from "@/src/components/remote-logo";
 
 import styles from "./styles.module.css";
 

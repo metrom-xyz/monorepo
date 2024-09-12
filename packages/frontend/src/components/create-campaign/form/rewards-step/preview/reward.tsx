@@ -1,5 +1,5 @@
 import { XIcon } from "@/src/assets/x-icon";
-import { RemoteLogo, Typography } from "@metrom-xyz/ui";
+import { Typography } from "@metrom-xyz/ui";
 import type { Token, WhitelistedErc20TokenAmount } from "@metrom-xyz/sdk";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useWatchBalance } from "@/src/hooks/useWatchBalance";
@@ -8,6 +8,7 @@ import { formatUnits } from "viem/utils";
 import type { Address } from "viem";
 import classNames from "classnames";
 import { formatTokenAmount, formatUsdAmount } from "@/src/utils/format";
+import { RemoteLogo } from "@/src/components/remote-logo";
 
 import styles from "./styles.module.css";
 

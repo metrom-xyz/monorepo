@@ -1,22 +1,28 @@
-import React, { useCallback, useMemo, useState } from "react";
+import { useCallback, useMemo, useState, type FunctionComponent } from "react";
 import { type Address } from "viem";
 import classNames from "classnames";
 import { Skeleton } from "../skeleton";
 import { Typography } from "../typography";
 
 import styles from "./styles.module.css";
+import type { SVGIcon } from "../../assets/types";
 
 export interface RemoteLogoProps {
     loading?: boolean;
     src?: string;
     address?: Address;
-    chain?: number | string;
+    chain?: number;
     size?: "xs" | "sm" | "md" | "lg" | "xl";
     defaultText?: string;
     className?: string;
+    icon?: FunctionComponent<SVGIcon>;
 }
 
 const BAD_SRC: Record<string, boolean> = {};
+
+const CHAIN_ID_TO_NAME: Record<number, string> = {
+    5000: "mantle",
+};
 
 export const RemoteLogo = ({
     loading,
@@ -26,6 +32,7 @@ export const RemoteLogo = ({
     size,
     defaultText = "?",
     className,
+    icon: Icon,
 }: RemoteLogoProps) => {
     const [imageError, setImageError] = useState(false);
     const sizeClass = size ? styles[size] : styles.selfAdjust;
@@ -34,7 +41,7 @@ export const RemoteLogo = ({
         if (src) return src;
         return !address || !chain
             ? ""
-            : `https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/${chain}/assets/${address}/logo.png`;
+            : `https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/${CHAIN_ID_TO_NAME[chain]}/assets/${address}/logo.png`;
     }, [address, chain, src]);
 
     const validResolvedSrc = useMemo(() => {
@@ -52,6 +59,14 @@ export const RemoteLogo = ({
     if (loading) {
         return (
             <Skeleton circular className={classNames(sizeClass, className)} />
+        );
+    }
+
+    if (Icon) {
+        return (
+            <div className={classNames(styles.root, sizeClass, className)}>
+                <Icon className={classNames(styles.image, sizeClass)} />
+            </div>
         );
     }
 

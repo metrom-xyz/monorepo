@@ -1,12 +1,13 @@
 import { useCallback } from "react";
 import type { NamedCampaign } from "@/src/hooks/useCampaign";
-import { Skeleton, Typography, PoolRemoteLogo, Button } from "@metrom-xyz/ui";
+import { Skeleton, Typography, Button } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
 import { useRouter } from "@/src/i18n/routing";
 import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
 import { getPoolAddLiquidityLink, getPoolExplorerLink } from "@/src/utils/amm";
 import { formatPercentage } from "@/src/utils/format";
 import { trackFathomEvent } from "@/src/utils/fathom";
+import { PoolRemoteLogo } from "../../pool-remote-logo";
 
 import styles from "./styles.module.css";
 

@@ -9,7 +9,7 @@ import {
 import { useDebounce } from "react-use";
 import type { Token, Pool } from "@metrom-xyz/sdk";
 import { useChainId } from "wagmi";
-import { TextInput, Chip, RemoteLogo, Typography } from "@metrom-xyz/ui";
+import { TextInput, Chip, Typography } from "@metrom-xyz/ui";
 import AutoSizer from "react-virtualized-auto-sizer";
 import { FixedSizeList } from "react-window";
 import { SearchIcon } from "@/src/assets/search-icon";
@@ -19,6 +19,7 @@ import { usePools } from "@/src/hooks/usePools";
 import { useBaseTokens } from "@/src/hooks/useBaseTokens";
 import { filterPools } from "@/src/utils/filtering";
 import { Row } from "./row";
+import { RemoteLogo } from "@/src/components/remote-logo";
 
 import styles from "./styles.module.css";
 

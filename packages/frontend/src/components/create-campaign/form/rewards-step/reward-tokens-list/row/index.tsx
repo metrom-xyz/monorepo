@@ -5,8 +5,9 @@ import {
     type WhitelistedErc20TokenWithBalance,
 } from "@metrom-xyz/sdk";
 import classNames from "classnames";
-import { Typography, Skeleton, RemoteLogo } from "@metrom-xyz/ui";
+import { Typography, Skeleton } from "@metrom-xyz/ui";
 import { formatTokenAmount } from "@/src/utils/format";
+import { RemoteLogo } from "@/src/components/remote-logo";
 
 import styles from "./styles.module.css";
 
