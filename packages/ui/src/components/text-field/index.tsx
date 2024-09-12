@@ -5,7 +5,8 @@ import { Skeleton } from "../skeleton";
 
 import styles from "./styles.module.css";
 
-interface TextFieldProps extends Omit<TypographyProps, "children"> {
+interface TextFieldProps
+    extends Omit<TypographyProps, "children" | "className"> {
     alignment?: "left" | "center" | "right";
     boxed?: boolean;
     label: string;

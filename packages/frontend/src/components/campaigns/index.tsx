@@ -6,6 +6,7 @@ import {
     Pagination,
     Select,
     Button,
+    type SelectOption,
 } from "@metrom-xyz/ui";
 import { useCampaigns } from "@/src/hooks/useCampaigns";
 import { Campaign, SkeletonCampaign } from "./campaign";

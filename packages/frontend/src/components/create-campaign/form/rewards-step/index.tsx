@@ -6,6 +6,7 @@ import {
     RemoteLogo,
     Typography,
     ErrorText,
+    type NumberFormatValues,
 } from "@metrom-xyz/ui";
 import { useAccount, useChainId } from "wagmi";
 import { useTranslations } from "next-intl";
