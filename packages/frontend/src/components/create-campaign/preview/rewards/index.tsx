@@ -1,11 +1,12 @@
 import type { CampaignPayload } from "@/src/types";
-import { RemoteLogo, TextField, Typography } from "@metrom-xyz/ui";
+import { TextField, Typography } from "@metrom-xyz/ui";
 import type { SupportedChain } from "@metrom-xyz/contracts";
 import { useTranslations } from "next-intl";
 import { useChainId } from "wagmi";
 import dayjs from "dayjs";
 import { useMemo } from "react";
 import { formatTokenAmount, formatUsdAmount } from "@/src/utils/format";
+import { RemoteLogo } from "@/src/components/remote-logo";
 
 import styles from "./styles.module.css";
 

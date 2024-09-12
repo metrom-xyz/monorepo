@@ -1,9 +1,10 @@
-import { RemoteLogo, TextField, Typography, Skeleton } from "@metrom-xyz/ui";
+import { TextField, Typography, Skeleton } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
 import dayjs from "dayjs";
 import { useMemo } from "react";
 import type { NamedCampaign } from "@/src/hooks/useCampaign";
 import { formatTokenAmount, formatUsdAmount } from "@/src/utils/format";
+import { RemoteLogo } from "../../remote-logo";
 
 import styles from "./styles.module.css";
 

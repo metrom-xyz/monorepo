@@ -1,11 +1,12 @@
 import { CircledXIcon } from "@/src/assets/circled-x-icon";
 import type { CampaignPayload } from "@/src/types";
-import { Button, PoolRemoteLogo, TextField, Typography } from "@metrom-xyz/ui";
+import { Button, TextField, Typography } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
 import { useChainId } from "wagmi";
 import { formatDateTime, formatPercentage } from "@/src/utils/format";
 
 import styles from "./styles.module.css";
+import { PoolRemoteLogo } from "@/src/components/pool-remote-logo";
 
 interface HeaderProps {
     payload: CampaignPayload;

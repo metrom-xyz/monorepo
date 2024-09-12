@@ -3,7 +3,6 @@ import { formatUnits, type Address } from "viem";
 import {
     Button,
     NumberInput,
-    RemoteLogo,
     Typography,
     ErrorText,
     type NumberFormatValues,
@@ -31,6 +30,7 @@ import { useWatchBalance } from "@/src/hooks/useWatchBalance";
 import { formatUsdAmount } from "@/src/utils/format";
 import classNames from "classnames";
 import { trackFathomEvent } from "@/src/utils/fathom";
+import { RemoteLogo } from "@/src/components/remote-logo";
 
 import styles from "./styles.module.css";
 

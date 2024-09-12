@@ -1,5 +1,5 @@
 import classNames from "classnames";
-import { Typography, Button, RemoteLogo, Skeleton } from "@metrom-xyz/ui";
+import { Typography, Button, Skeleton } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
 import {
     useAccount,
@@ -15,6 +15,7 @@ import type { TokenClaims } from "..";
 import { useChainData } from "@/src/hooks/useChainData";
 import { formatTokenAmount } from "@/src/utils/format";
 import { trackFathomEvent } from "@/src/utils/fathom";
+import { RemoteLogo } from "@/src/components/remote-logo";
 
 import styles from "./styles.module.css";
 

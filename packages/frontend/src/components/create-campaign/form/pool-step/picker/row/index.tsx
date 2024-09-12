@@ -1,8 +1,9 @@
 import type { Pool } from "@metrom-xyz/sdk";
 import { useCallback } from "react";
-import { Typography, PoolRemoteLogo, Skeleton } from "@metrom-xyz/ui";
+import { Typography, Skeleton } from "@metrom-xyz/ui";
 import classNames from "classnames";
 import { formatPercentage, formatUsdAmount } from "@/src/utils/format";
+import { PoolRemoteLogo } from "@/src/components/pool-remote-logo";
 
 import styles from "./styles.module.css";
 
