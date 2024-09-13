@@ -7,7 +7,6 @@ import Mustache from "mustache";
 
 const ENVIRONMENT_NAME: Record<Environment, string> = {
     [Environment.Development]: "development",
-    [Environment.Staging]: "staging",
     [Environment.Production]: "production",
 };
 

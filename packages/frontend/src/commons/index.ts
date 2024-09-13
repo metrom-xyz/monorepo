@@ -54,6 +54,7 @@ export const CHAIN_DATA: Record<SupportedChain, ChainData> = {
 export const metromApiClient = new MetromApiClient(
     SERVICE_URLS[ENVIRONMENT].metrom,
 );
+
 export const dataManagerClient = new DataManagerClient(
     SERVICE_URLS[ENVIRONMENT].dataManager,
 );

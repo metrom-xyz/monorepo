@@ -25,10 +25,6 @@ export const SERVICE_URLS: Record<Environment, ServiceUrls> = {
         dataManager: "https://data-manager.dev.metrom.xyz",
         metrom: "https://api.dev.metrom.xyz",
     },
-    [Environment.Staging]: {
-        dataManager: "https://data-manager.staging.metrom.xyz",
-        metrom: "https://api.staging.metrom.xyz",
-    },
     [Environment.Production]: {
         dataManager: "https://data-manager.metrom.xyz",
         metrom: "https://api.metrom.xyz",
