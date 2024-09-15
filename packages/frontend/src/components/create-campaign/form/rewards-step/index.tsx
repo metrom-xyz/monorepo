@@ -103,12 +103,6 @@ export function RewardsStep({
     }, [chainId]);
 
     useEffect(() => {
-        if (!!rewardToken) {
-            setOpen(false);
-        }
-    }, [rewardToken]);
-
-    useEffect(() => {
         if (!campaignDuration || !rewardToken) return;
 
         if (rewardAmount === undefined) {
@@ -162,6 +156,14 @@ export function RewardsStep({
         [],
     );
 
+    const handleRewardTokenChange = useCallback(
+        (newToken: WhitelistedErc20Token) => {
+            setRewardToken(newToken);
+            setOpen(false);
+        },
+        [],
+    );
+
     const handleRewardTokenOnAdd = useCallback(() => {
         if (!rewardAmount || !rewardToken) return;
 
@@ -177,8 +179,8 @@ export function RewardsStep({
             ? [...rewards, reward]
             : [reward];
 
-        onRewardsChange({ rewards: newRewards });
         setOpen(false);
+        onRewardsChange({ rewards: newRewards });
         setRewardAmount(undefined);
         setRewardToken(undefined);
         trackFathomEvent("PICK_REWARD");
@@ -331,7 +333,7 @@ export function RewardsStep({
                 <RewardTokensList
                     unavailable={rewards}
                     value={rewardToken}
-                    onRewardTokenClick={setRewardToken}
+                    onRewardTokenClick={handleRewardTokenChange}
                 />
             </StepContent>
         </Step>

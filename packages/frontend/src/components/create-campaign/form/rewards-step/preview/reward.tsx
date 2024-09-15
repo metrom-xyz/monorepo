@@ -155,6 +155,7 @@ export function Reward({
                         onValueChange={handleRewardAmountOnChange}
                         className={styles.rewardTokenAmountInput}
                         onBlur={handleRewardAmountOnBlur}
+                        //FIXME: onBlur should not be used, the ideal way is to use a button to submit the value
                     />
                     <Typography weight="medium" light variant="xs">
                         {tokenUsdValue ? formatUsdAmount(tokenUsdValue) : "-"}
