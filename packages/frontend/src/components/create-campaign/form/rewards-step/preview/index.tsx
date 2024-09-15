@@ -1,6 +1,6 @@
-import { type Token } from "@metrom-xyz/sdk";
+import { type Token, type WhitelistedErc20TokenAmount } from "@metrom-xyz/sdk";
 import type { CampaignPayload } from "@/src/types";
-import { Reward } from "./reward";
+import { Reward, RewardSkeleton } from "./reward";
 import type { Address } from "viem";
 import { useTransition, animated } from "@react-spring/web";
 
@@ -11,6 +11,10 @@ interface RewardsPreviewProps {
     campaignDuration?: number;
     onRemove: (reward: Token) => void;
     onError: (address: Address, error?: string) => void;
+    onUpdate: (
+        oldReward: WhitelistedErc20TokenAmount,
+        newReward: WhitelistedErc20TokenAmount,
+    ) => void;
 }
 
 export function RewardsPreview({
@@ -18,6 +22,7 @@ export function RewardsPreview({
     campaignDuration,
     onRemove,
     onError,
+    onUpdate,
 }: RewardsPreviewProps) {
     const transitions = useTransition(rewards || [], {
         from: { opacity: 0 },
@@ -26,7 +31,7 @@ export function RewardsPreview({
         config: { duration: 100 },
     });
 
-    if (!rewards || rewards.length === 0) return;
+    if (!rewards || rewards.length === 0) return <RewardSkeleton />;
 
     return (
         <div className={styles.root}>
@@ -37,7 +42,9 @@ export function RewardsPreview({
                         reward={reward}
                         campaignDuration={campaignDuration}
                         onRemove={onRemove}
+                        onUpdate={onUpdate}
                         onError={onError}
+                        rewards={rewards}
                     />
                 </animated.div>
             ))}

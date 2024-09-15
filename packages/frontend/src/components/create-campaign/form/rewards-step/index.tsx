@@ -31,6 +31,7 @@ import { formatUsdAmount } from "@/src/utils/format";
 import classNames from "classnames";
 import { trackFathomEvent } from "@/src/utils/fathom";
 import { RemoteLogo } from "@/src/components/remote-logo";
+import { BorderedPlusIcon } from "@/src/assets/bordered-plus-icon";
 
 import styles from "./styles.module.css";
 
@@ -102,9 +103,10 @@ export function RewardsStep({
     }, [chainId]);
 
     useEffect(() => {
-        if (disabled || !!rewards) return;
-        setOpen(true);
-    }, [rewards, disabled]);
+        if (!!rewardToken) {
+            setOpen(false);
+        }
+    }, [rewardToken]);
 
     useEffect(() => {
         if (!campaignDuration || !rewardToken) return;
@@ -195,6 +197,23 @@ export function RewardsStep({
         [onRewardsChange, rewards],
     );
 
+    const handleRewardTokenOnUpdate = useCallback(
+        (
+            oldReward: WhitelistedErc20TokenAmount,
+            newReward: WhitelistedErc20TokenAmount,
+        ) => {
+            if (!rewards) return;
+            onRewardsChange({
+                rewards: rewards.map((reward) => {
+                    if (reward.token.address === oldReward.token.address) {
+                        return newReward;
+                    }
+                    return reward;
+                }),
+            });
+        },
+        [onRewardsChange, rewards],
+    );
     return (
         <Step
             disabled={disabled}
@@ -211,7 +230,7 @@ export function RewardsStep({
                             variant="sm"
                             className={styles.previewLabel}
                         >
-                            {t("newCampaign.form.rewards.title")}
+                            {t("newCampaign.form.rewards.title.rewardsBox")}
                         </Typography>
                         <ErrorText
                             variant="xs"
@@ -233,7 +252,35 @@ export function RewardsStep({
                         campaignDuration={campaignDuration}
                         onRemove={handleRewardTokenOnRemove}
                         onError={handleExistingRewardsValidation}
+                        onUpdate={handleRewardTokenOnUpdate}
                     />
+                    <div className={styles.totalValueWrapper}>
+                        <Typography
+                            uppercase
+                            variant="xs"
+                            weight="medium"
+                            light
+                        >
+                            {formatUsdAmount(totalRewardsUsdAmount)}
+                        </Typography>
+                        <Typography
+                            uppercase
+                            variant="xs"
+                            weight="medium"
+                            light
+                        >
+                            {t("newCampaign.form.rewards.totalUsd")}
+                        </Typography>
+                    </div>
+                    <hr className={styles.horizontalDivider} />
+                    <Typography
+                        uppercase
+                        weight="medium"
+                        variant="sm"
+                        className={styles.inputLabel}
+                    >
+                        {t("newCampaign.form.rewards.title.add")}
+                    </Typography>
                     <div className={styles.rewardPickerWrapper}>
                         <NumberInput
                             placeholder="0"
@@ -256,13 +303,13 @@ export function RewardsStep({
                                         "newCampaign.form.rewards.selectPlaceholder",
                                     )}
                             </Typography>
-                            <ChevronDown />
+                            <ChevronDown className={styles.chevronDown} />
                         </div>
                     </div>
                     <Button
                         variant="secondary"
-                        size="xsmall"
-                        icon={PlusIcon}
+                        size="big"
+                        icon={BorderedPlusIcon}
                         disabled={
                             rewards?.length === 5 ||
                             !rewardAmount ||
@@ -278,12 +325,6 @@ export function RewardsStep({
                     >
                         {t("newCampaign.form.rewards.add")}
                     </Button>
-                    <Typography uppercase variant="sm" weight="medium" light>
-                        {t("newCampaign.form.rewards.totalUsd")}
-                    </Typography>
-                    <Typography uppercase weight="bold" light>
-                        {formatUsdAmount(totalRewardsUsdAmount)}
-                    </Typography>
                 </div>
             </StepPreview>
             <StepContent>

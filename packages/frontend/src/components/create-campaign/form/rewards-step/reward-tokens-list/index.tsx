@@ -16,12 +16,14 @@ import { Row } from "./row";
 import styles from "./styles.module.css";
 
 interface RewardTokensListProps {
+    isOpen?: boolean;
     value?: Token;
     unavailable?: TokenAmount[];
     onRewardTokenClick: (token: WhitelistedErc20Token) => void;
 }
 
 export function RewardTokensList({
+    isOpen,
     value,
     unavailable,
     onRewardTokenClick,
@@ -41,16 +43,19 @@ export function RewardTokensList({
         <div
             className={styles.root}
             style={{
-                height: loading
-                    ? "22.5rem"
-                    : `${Math.min(whitelistedTokensWithBalance.length - 1, 5) * 3.3 + 6}rem`,
+                height:
+                    isOpen === false
+                        ? "0rem"
+                        : loading
+                          ? "22.5rem"
+                          : `${Math.min(whitelistedTokensWithBalance.length - 1, 5) * 3.3 + 6}rem`,
             }}
         >
             <div className={styles.listHeader}>
-                <Typography uppercase variant="sm" weight="medium" light>
+                <Typography uppercase variant="xs" weight="medium" light>
                     {t("list.token")}
                 </Typography>
-                <Typography uppercase variant="sm" weight="medium" light>
+                <Typography uppercase variant="xs" weight="medium" light>
                     {t("list.balance")}
                 </Typography>
             </div>

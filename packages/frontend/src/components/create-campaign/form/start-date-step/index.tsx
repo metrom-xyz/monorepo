@@ -74,6 +74,12 @@ export function StartDateStep({
     }, [date, minDate]);
 
     useEffect(() => {
+        if (open && !startDate) {
+            setDate(dayjs());
+        }
+    }, [open, startDate]);
+
+    useEffect(() => {
         if (!date || !minDate || !previousDate) return;
 
         let dateError = "";
