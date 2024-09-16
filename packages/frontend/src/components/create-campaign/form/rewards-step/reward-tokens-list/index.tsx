@@ -55,7 +55,7 @@ export function RewardTokensList({
                     height={
                         loading
                             ? TOKENS_LIMIT * 57
-                            : Math.min(whitelistedTokensWithBalance.length) * 57
+                            : whitelistedTokensWithBalance.length * 57
                     }
                     width={"100%"}
                     itemCount={
