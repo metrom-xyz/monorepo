@@ -48,15 +48,7 @@
 }
 
 .addRewardButton {
-    @apply h-11 w-full px-1.5 !py-0 text-sm rounded-md;
-}
-
-.addRewardButtonIcon {
-    @apply h-6 w-6;
-}
-
-.addRewardButtonContent {
-    @apply !ml-3 text-lg;
+    @apply w-full;
 }
 
 .rewardTokenSelect {

@@ -102,12 +102,12 @@
             "rewards": {
                 "title": {
                     "add": "Enter Reward",
-                    "rewardsBox": "Reward box"
+                    "rewards": "Rewards"
                 },
                 "rewardsPreviewList": {
-                    "empty": "No Rewards Yet"
+                    "empty": "No rewards yet"
                 },
-                "add": "Add to reward box",
+                "add": "Add to rewards",
                 "selectPlaceholder": "TOKEN",
                 "totalUsd": "Total value usd",
                 "errors": {

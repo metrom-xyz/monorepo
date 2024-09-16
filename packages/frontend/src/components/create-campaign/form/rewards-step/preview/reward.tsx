@@ -4,35 +4,25 @@ import {
     Typography,
     type NumberFormatValues,
 } from "@metrom-xyz/ui";
-import type {
-    Token,
-    WhitelistedErc20Token,
-    WhitelistedErc20TokenAmount,
-} from "@metrom-xyz/sdk";
+import type { Token, WhitelistedErc20TokenAmount } from "@metrom-xyz/sdk";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useWatchBalance } from "@/src/hooks/useWatchBalance";
 import { useAccount, useChainId } from "wagmi";
 import { formatUnits } from "viem/utils";
 import type { Address } from "viem";
 import classNames from "classnames";
-import { formatTokenAmount, formatUsdAmount } from "@/src/utils/format";
+import { formatUsdAmount } from "@/src/utils/format";
 import { RemoteLogo } from "@/src/components/remote-logo";
-import { ChevronDown } from "@/src/assets/chevron-down";
-import { RewardTokensList } from "../reward-tokens-list";
 import { useTranslations } from "next-intl";
 
 import styles from "./styles.module.css";
 
 interface RewardProps {
-    rewards: WhitelistedErc20TokenAmount[];
     reward: WhitelistedErc20TokenAmount;
     campaignDuration?: number;
     onRemove: (reward: Token) => void;
     onError: (address: Address, error?: string) => void;
-    onUpdate: (
-        oldReward: WhitelistedErc20TokenAmount,
-        newReward: WhitelistedErc20TokenAmount,
-    ) => void;
+    onUpdate: (updatedReward: WhitelistedErc20TokenAmount) => void;
 }
 
 export function Reward({
@@ -41,29 +31,22 @@ export function Reward({
     onRemove,
     onError,
     onUpdate,
-    rewards,
 }: RewardProps) {
     const [error, setError] = useState(false);
-    const [open, setOpen] = useState(false);
     const [rewardAmount, setRewardAmount] = useState<number | undefined>(
         reward.amount,
     );
-    const [rewardToken, setRewardToken] = useState<WhitelistedErc20Token>({
-        ...reward.token,
-        usdPrice: reward.usdPrice,
-        minimumRate: reward.minimumRate,
-    });
     const { address } = useAccount();
     const chain = useChainId();
     const { balance: rewardTokenBalance } = useWatchBalance(
         address,
-        rewardToken.address,
+        reward.token.address,
     );
 
     const tokenUsdValue = useMemo(() => {
-        if (!rewardToken.usdPrice || !rewardAmount) return null;
-        return rewardAmount * rewardToken.usdPrice;
-    }, [rewardAmount, rewardToken.usdPrice]);
+        if (!reward.usdPrice || !rewardAmount) return null;
+        return rewardAmount * reward.usdPrice;
+    }, [reward.usdPrice, rewardAmount]);
 
     useEffect(() => {
         if (!rewardAmount || !campaignDuration || !reward) return;
@@ -71,65 +54,28 @@ export function Reward({
         const distributionRate = (rewardAmount * 3_600) / campaignDuration;
         const balance =
             rewardTokenBalance !== undefined
-                ? Number(formatUnits(rewardTokenBalance, rewardToken.decimals))
+                ? Number(formatUnits(rewardTokenBalance, reward.token.decimals))
                 : Number.MAX_SAFE_INTEGER;
 
         const error =
             rewardAmount > balance
                 ? "newCampaign.form.rewards.errors.insufficientBalance"
-                : distributionRate < rewardToken.minimumRate
+                : distributionRate < reward.minimumRate
                   ? "newCampaign.form.rewards.errors.lowDistributionRate"
                   : "";
 
-        onError(rewardToken.address, error);
+        onError(reward.token.address, error);
         setError(!!error);
-    }, [
-        campaignDuration,
-        onError,
-        reward,
-        rewardAmount,
-        rewardToken.address,
-        rewardToken.decimals,
-        rewardToken.minimumRate,
-        rewardTokenBalance,
-    ]);
+    }, [campaignDuration, onError, reward, rewardAmount, rewardTokenBalance]);
 
-    const getRewardOnRemoveHandler = useCallback(
-        (reward: Token) => () => {
-            onError(rewardToken.address, "");
-            onRemove(reward);
-        },
-        [onError, onRemove, rewardToken.address],
-    );
+    const handleRewardOnRemove = useCallback(() => {
+        onError(reward.token.address, "");
+        onRemove(reward.token);
+    }, [onError, onRemove, reward]);
+
     const handleRewardAmountOnBlur = useCallback(() => {
-        const { address, decimals, name, symbol, minimumRate, usdPrice } =
-            rewardToken;
-        const newReward: WhitelistedErc20TokenAmount = {
-            token: { address, decimals, name, symbol },
-            amount: rewardAmount ?? 0,
-            usdPrice,
-            minimumRate,
-        };
-        onUpdate(reward, newReward);
-    }, [onUpdate, reward, rewardAmount, rewardToken]);
-
-    const handleRewardTokenOnChange = useCallback(
-        (newToken: WhitelistedErc20Token) => {
-            const { address, decimals, name, symbol, minimumRate, usdPrice } =
-                newToken;
-            const newReward: WhitelistedErc20TokenAmount = {
-                token: { address, decimals, name, symbol },
-                amount: rewardAmount ?? 0,
-                usdPrice,
-                minimumRate,
-            };
-            setOpen(false);
-            setRewardToken(newToken);
-            onError(reward.token.address, "");
-            onUpdate(reward, newReward);
-        },
-        [onError, onUpdate, reward, rewardAmount],
-    );
+        onUpdate({ ...reward, amount: rewardAmount || 0 });
+    }, [onUpdate, reward, rewardAmount]);
 
     const handleRewardAmountOnChange = useCallback(
         (rawNewAmount: NumberFormatValues) => {
@@ -138,13 +84,9 @@ export function Reward({
         [],
     );
 
-    function handleRewardTokenButtonOnClick() {
-        setOpen((open) => !open);
-    }
-
     return (
         <div
-            key={rewardToken.address}
+            key={reward.token.address}
             className={classNames(styles.reward, { [styles.error]: error })}
         >
             <div className={styles.rewardPreviewWrapper}>
@@ -155,41 +97,28 @@ export function Reward({
                         onValueChange={handleRewardAmountOnChange}
                         className={styles.rewardTokenAmountInput}
                         onBlur={handleRewardAmountOnBlur}
-                        //FIXME: onBlur should not be used, the ideal way is to use a button to submit the value
                     />
                     <Typography weight="medium" light variant="xs">
                         {tokenUsdValue ? formatUsdAmount(tokenUsdValue) : "-"}
                     </Typography>
                 </div>
                 <div className={styles.rewardTokenWrapper}>
-                    <div
-                        className={styles.rewardToken}
-                        onClick={handleRewardTokenButtonOnClick}
-                    >
-                        <RemoteLogo
-                            size="xs"
-                            address={rewardToken.address}
-                            chain={chain}
-                        />
-                        <Typography weight="medium">
-                            {rewardToken.symbol}
-                        </Typography>
-                        <ChevronDown className={styles.chevronDown} />
-                    </div>
+                    <RemoteLogo
+                        size="sm"
+                        address={reward.token.address}
+                        chain={chain}
+                    />
+                    <Typography variant="lg" weight="medium">
+                        {reward.token.symbol}
+                    </Typography>
                     <div
                         className={styles.removeIconWrapper}
-                        onClick={getRewardOnRemoveHandler(rewardToken)}
+                        onClick={handleRewardOnRemove}
                     >
                         <XIcon className={styles.removeIcon} />
                     </div>
                 </div>
             </div>
-            <RewardTokensList
-                unavailable={rewards}
-                value={rewardToken}
-                onRewardTokenClick={handleRewardTokenOnChange}
-                isOpen={open}
-            />
         </div>
     );
 }

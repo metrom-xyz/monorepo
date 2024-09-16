@@ -1,5 +1,6 @@
 .root {
     @apply max-h-[22.5rem]
+        h-full
         w-full
         transition-[height]
         overflow-hidden;

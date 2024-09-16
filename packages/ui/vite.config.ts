@@ -4,6 +4,7 @@ import { peerDependencies } from "./package.json";
 export default defineConfig({
     build: {
         cssCodeSplit: false,
+        emptyOutDir: false,
         lib: {
             entry: "src/index.ts",
             formats: ["es"],

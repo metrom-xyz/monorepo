@@ -1,6 +1,5 @@
 import { useRef } from "react";
 import { useAccount, useChainId } from "wagmi";
-import AutoSizer from "react-virtualized-auto-sizer";
 import { FixedSizeList } from "react-window";
 import { useTranslations } from "next-intl";
 import {
@@ -15,15 +14,15 @@ import { Row } from "./row";
 
 import styles from "./styles.module.css";
 
+const TOKENS_LIMIT = 6;
+
 interface RewardTokensListProps {
-    isOpen?: boolean;
     value?: Token;
     unavailable?: TokenAmount[];
     onRewardTokenClick: (token: WhitelistedErc20Token) => void;
 }
 
 export function RewardTokensList({
-    isOpen,
     value,
     unavailable,
     onRewardTokenClick,
@@ -39,18 +38,9 @@ export function RewardTokensList({
         tokensWithBalance: whitelistedTokensWithBalance,
         loading: loadingBalances,
     } = useWatchBalances(address, whitelistedTokens);
+
     return (
-        <div
-            className={styles.root}
-            style={{
-                height:
-                    isOpen === false
-                        ? "0rem"
-                        : loading
-                          ? "22.5rem"
-                          : `${Math.min(whitelistedTokensWithBalance.length - 1, 5) * 3.3 + 6}rem`,
-            }}
-        >
+        <div className={styles.root}>
             <div className={styles.listHeader}>
                 <Typography uppercase variant="xs" weight="medium" light>
                     {t("list.token")}
@@ -60,55 +50,52 @@ export function RewardTokensList({
                 </Typography>
             </div>
             {loading || whitelistedTokensWithBalance.length > 0 ? (
-                <AutoSizer>
-                    {({ height, width }) => {
+                <FixedSizeList
+                    ref={listRef}
+                    height={
+                        loading
+                            ? TOKENS_LIMIT * 57
+                            : Math.min(whitelistedTokensWithBalance.length) * 57
+                    }
+                    width={"100%"}
+                    itemCount={
+                        loading
+                            ? TOKENS_LIMIT
+                            : whitelistedTokensWithBalance.length
+                    }
+                    itemData={
+                        loading
+                            ? new Array(TOKENS_LIMIT).fill(null)
+                            : whitelistedTokensWithBalance
+                    }
+                    itemSize={57}
+                    className={styles.list}
+                >
+                    {({ index, style, data }) => {
+                        const whitelistedToken: WhitelistedErc20Token | null =
+                            data[index];
                         return (
-                            <FixedSizeList
-                                ref={listRef}
-                                height={height}
-                                width={width}
-                                itemCount={
-                                    loading
-                                        ? 6
-                                        : whitelistedTokensWithBalance.length
+                            <Row
+                                style={style}
+                                chain={chainId}
+                                loading={loading || loadingBalances}
+                                disabled={
+                                    !!unavailable?.find(
+                                        ({ token: { address } }) =>
+                                            address ===
+                                            whitelistedToken?.address,
+                                    )
                                 }
-                                itemData={
-                                    loading
-                                        ? new Array(6).fill(null)
-                                        : whitelistedTokensWithBalance
+                                active={
+                                    !!whitelistedToken &&
+                                    whitelistedToken.address === value?.address
                                 }
-                                itemSize={57}
-                                className={styles.list}
-                            >
-                                {({ index, style, data }) => {
-                                    const whitelistedToken: WhitelistedErc20Token | null =
-                                        data[index];
-                                    return (
-                                        <Row
-                                            style={style}
-                                            chain={chainId}
-                                            loading={loading || loadingBalances}
-                                            disabled={
-                                                !!unavailable?.find(
-                                                    ({ token: { address } }) =>
-                                                        address ===
-                                                        whitelistedToken?.address,
-                                                )
-                                            }
-                                            active={
-                                                !!whitelistedToken &&
-                                                whitelistedToken.address ===
-                                                    value?.address
-                                            }
-                                            token={whitelistedToken}
-                                            onClick={onRewardTokenClick}
-                                        />
-                                    );
-                                }}
-                            </FixedSizeList>
+                                token={whitelistedToken}
+                                onClick={onRewardTokenClick}
+                            />
                         );
                     }}
-                </AutoSizer>
+                </FixedSizeList>
             ) : (
                 <div className={styles.emptyList}>
                     {/* TODO: add illustration */}

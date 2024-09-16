@@ -200,22 +200,20 @@ export function RewardsStep({
     );
 
     const handleRewardTokenOnUpdate = useCallback(
-        (
-            oldReward: WhitelistedErc20TokenAmount,
-            newReward: WhitelistedErc20TokenAmount,
-        ) => {
+        (updatedReward: WhitelistedErc20TokenAmount) => {
             if (!rewards) return;
+
             onRewardsChange({
                 rewards: rewards.map((reward) => {
-                    if (reward.token.address === oldReward.token.address) {
-                        return newReward;
-                    }
+                    if (reward.token.address === updatedReward.token.address)
+                        return updatedReward;
                     return reward;
                 }),
             });
         },
         [onRewardsChange, rewards],
     );
+
     return (
         <Step
             disabled={disabled}
@@ -232,7 +230,7 @@ export function RewardsStep({
                             variant="sm"
                             className={styles.previewLabel}
                         >
-                            {t("newCampaign.form.rewards.title.rewardsBox")}
+                            {t("newCampaign.form.rewards.title.rewards")}
                         </Typography>
                         <ErrorText
                             variant="xs"
@@ -310,7 +308,7 @@ export function RewardsStep({
                     </div>
                     <Button
                         variant="secondary"
-                        size="big"
+                        size="small"
                         icon={BorderedPlusIcon}
                         disabled={
                             rewards?.length === 5 ||
