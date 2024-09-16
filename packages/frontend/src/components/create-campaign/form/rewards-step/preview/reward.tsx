@@ -122,19 +122,3 @@ export function Reward({
         </div>
     );
 }
-
-export function RewardSkeleton() {
-    const t = useTranslations();
-    return (
-        <div className={styles.rewardSkeleton}>
-            <Typography
-                className={styles.rewardSkeletonText}
-                weight="medium"
-                variant="xs"
-                uppercase
-            >
-                {t("newCampaign.form.rewards.rewardsPreviewList.empty")}
-            </Typography>
-        </div>
-    );
-}
