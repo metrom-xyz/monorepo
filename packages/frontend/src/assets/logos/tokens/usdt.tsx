@@ -7,7 +7,7 @@ export function UsdtToken(props: any) {
             viewBox="0 0 32 32"
             {...props}
         >
-            <g fill="none" fill-rule="evenodd">
+            <g fill="none" fillRule="evenodd">
                 <circle cx="16" cy="16" r="16" fill="#26A17B" />
                 <path
                     fill="#FFF"

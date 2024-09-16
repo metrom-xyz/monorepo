@@ -1,5 +1,9 @@
 import { XIcon } from "@/src/assets/x-icon";
-import { Typography } from "@metrom-xyz/ui";
+import {
+    NumberInput,
+    Typography,
+    type NumberFormatValues,
+} from "@metrom-xyz/ui";
 import type { Token, WhitelistedErc20TokenAmount } from "@metrom-xyz/sdk";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useWatchBalance } from "@/src/hooks/useWatchBalance";
@@ -7,8 +11,9 @@ import { useAccount, useChainId } from "wagmi";
 import { formatUnits } from "viem/utils";
 import type { Address } from "viem";
 import classNames from "classnames";
-import { formatTokenAmount, formatUsdAmount } from "@/src/utils/format";
+import { formatUsdAmount } from "@/src/utils/format";
 import { RemoteLogo } from "@/src/components/remote-logo";
+import { useTranslations } from "next-intl";
 
 import styles from "./styles.module.css";
 
@@ -17,6 +22,7 @@ interface RewardProps {
     campaignDuration?: number;
     onRemove: (reward: Token) => void;
     onError: (address: Address, error?: string) => void;
+    onUpdate: (updatedReward: WhitelistedErc20TokenAmount) => void;
 }
 
 export function Reward({
@@ -24,9 +30,12 @@ export function Reward({
     campaignDuration,
     onRemove,
     onError,
+    onUpdate,
 }: RewardProps) {
     const [error, setError] = useState(false);
-
+    const [rewardAmount, setRewardAmount] = useState<number | undefined>(
+        reward.amount,
+    );
     const { address } = useAccount();
     const chain = useChainId();
     const { balance: rewardTokenBalance } = useWatchBalance(
@@ -35,21 +44,21 @@ export function Reward({
     );
 
     const tokenUsdValue = useMemo(() => {
-        if (!reward.usdPrice) return null;
-        return reward.amount * reward.usdPrice;
-    }, [reward.amount, reward.usdPrice]);
+        if (!reward.usdPrice || !rewardAmount) return null;
+        return rewardAmount * reward.usdPrice;
+    }, [reward.usdPrice, rewardAmount]);
 
     useEffect(() => {
-        if (!reward.amount || !campaignDuration || !reward) return;
+        if (!rewardAmount || !campaignDuration || !reward) return;
 
-        const distributionRate = (reward.amount * 3_600) / campaignDuration;
+        const distributionRate = (rewardAmount * 3_600) / campaignDuration;
         const balance =
             rewardTokenBalance !== undefined
                 ? Number(formatUnits(rewardTokenBalance, reward.token.decimals))
                 : Number.MAX_SAFE_INTEGER;
 
         const error =
-            reward.amount > balance
+            rewardAmount > balance
                 ? "newCampaign.form.rewards.errors.insufficientBalance"
                 : distributionRate < reward.minimumRate
                   ? "newCampaign.form.rewards.errors.lowDistributionRate"
@@ -57,14 +66,22 @@ export function Reward({
 
         onError(reward.token.address, error);
         setError(!!error);
-    }, [campaignDuration, onError, reward, rewardTokenBalance]);
+    }, [campaignDuration, onError, reward, rewardAmount, rewardTokenBalance]);
 
-    const getRewardOnRemoveHandler = useCallback(
-        (reward: Token) => () => {
-            onError(reward.address, "");
-            onRemove(reward);
+    const handleRewardOnRemove = useCallback(() => {
+        onError(reward.token.address, "");
+        onRemove(reward.token);
+    }, [onError, onRemove, reward]);
+
+    const handleRewardAmountOnBlur = useCallback(() => {
+        onUpdate({ ...reward, amount: rewardAmount || 0 });
+    }, [onUpdate, reward, rewardAmount]);
+
+    const handleRewardAmountOnChange = useCallback(
+        (rawNewAmount: NumberFormatValues) => {
+            setRewardAmount(rawNewAmount.floatValue);
         },
-        [onError, onRemove],
+        [],
     );
 
     return (
@@ -72,31 +89,35 @@ export function Reward({
             key={reward.token.address}
             className={classNames(styles.reward, { [styles.error]: error })}
         >
-            <Typography
-                variant="lg"
-                weight="medium"
-                className={styles.rewardAmount}
-            >
-                {formatTokenAmount(reward.amount)}
-            </Typography>
-            <Typography weight="medium" light variant="sm">
-                {tokenUsdValue ? formatUsdAmount(tokenUsdValue) : "-"}
-            </Typography>
-            <div className={styles.rewardName}>
-                <RemoteLogo
-                    size="sm"
-                    address={reward.token.address}
-                    chain={chain}
-                />
-                <Typography variant="lg" weight="medium">
-                    {reward.token.symbol}
-                </Typography>
-            </div>
-            <div
-                className={styles.removeIconWrapper}
-                onClick={getRewardOnRemoveHandler(reward.token)}
-            >
-                <XIcon className={styles.removeIcon} />
+            <div className={styles.rewardPreviewWrapper}>
+                <div>
+                    <NumberInput
+                        placeholder="0"
+                        value={rewardAmount ? rewardAmount.toString() : ""}
+                        onValueChange={handleRewardAmountOnChange}
+                        className={styles.rewardTokenAmountInput}
+                        onBlur={handleRewardAmountOnBlur}
+                    />
+                    <Typography weight="medium" light variant="xs">
+                        {tokenUsdValue ? formatUsdAmount(tokenUsdValue) : "-"}
+                    </Typography>
+                </div>
+                <div className={styles.rewardTokenWrapper}>
+                    <RemoteLogo
+                        size="sm"
+                        address={reward.token.address}
+                        chain={chain}
+                    />
+                    <Typography variant="lg" weight="medium">
+                        {reward.token.symbol}
+                    </Typography>
+                    <div
+                        className={styles.removeIconWrapper}
+                        onClick={handleRewardOnRemove}
+                    >
+                        <XIcon className={styles.removeIcon} />
+                    </div>
+                </div>
             </div>
         </div>
     );

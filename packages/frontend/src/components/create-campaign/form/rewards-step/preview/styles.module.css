@@ -2,25 +2,26 @@
     @apply flex
         flex-col
         gap-2.5
-        mb-3
         w-full;
 }
 
 .reward {
-    @apply w-full
-        grid
-        gap-3
-        items-center
-        grid-cols-rewardRow
-        border
+    @apply border
         border-transparent
         transition-colors
         duration-200
         ease-in-out
         bg-gray-100
-        rounded-lg
-        px-3
-        py-4;
+        rounded-lg;
+}
+
+.rewardPreviewWrapper {
+    @apply w-full
+    flex
+    gap-3
+    items-center
+    justify-between
+    p-3;
 }
 
 .error {
@@ -31,10 +32,38 @@
     @apply w-28;
 }
 
-.rewardName {
+.rewardToken {
     @apply flex
+        gap-1
         items-center
-        gap-1;
+        justify-between
+        rounded-md
+        bg-gray-100
+        pl-2.5
+        pr-1
+        py-1.5
+        hover:bg-white
+        hover:cursor-pointer
+        transition-colors
+        duration-200
+        ease-in-out;
+}
+
+.rewardTokenWrapper {
+    @apply flex gap-3 items-center;
+}
+
+.rewardTokenAmountInput :global(.input),
+.rewardTokenAmountInput :global(.inputWrapper) {
+    @apply w-full
+        max-w-44
+        bg-transparent
+        h-8
+        leading-6
+        font-medium
+        text-3xl
+        p-0
+        mb-1;
 }
 
 .removeIconWrapper {
@@ -42,5 +71,23 @@
 }
 
 .removeIcon {
-    @apply w-2.5 h-2.5;
+    @apply w-2 h-2;
+}
+
+.chevronDown {
+    @apply h-3 w-3;
+}
+
+.rewardSkeleton {
+    @apply h-[72px]
+        w-full 
+        bg-gray-100
+        rounded-lg
+        flex
+        items-center
+        justify-center;
+}
+
+.rewardSkeletonText {
+    @apply text-gray-400;
 }

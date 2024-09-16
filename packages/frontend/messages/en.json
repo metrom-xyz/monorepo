@@ -100,8 +100,14 @@
                 }
             },
             "rewards": {
-                "title": "Rewards",
-                "add": "Add reward",
+                "title": {
+                    "add": "Enter Reward",
+                    "rewards": "Rewards"
+                },
+                "rewardsPreviewList": {
+                    "empty": "No rewards yet"
+                },
+                "add": "Add to rewards",
                 "selectPlaceholder": "TOKEN",
                 "totalUsd": "Total value usd",
                 "errors": {

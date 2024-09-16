@@ -12,6 +12,10 @@
     @apply !text-inherit;
 }
 
+.inputLabel {
+    @apply text-xs text-gray-400;
+}
+
 .error {
     @apply transition-opacity duration-200 ease-in-out opacity-0;
 }
@@ -21,7 +25,7 @@
 }
 
 .previewWrapper {
-    @apply w-full flex flex-col gap-3;
+    @apply w-full flex flex-col gap-2.5;
 }
 
 .rewardPickerWrapper {
@@ -37,23 +41,14 @@
     @apply w-full
         max-w-56
         bg-transparent
-        h-6
+        h-8
         leading-6
-        p-0
-        font-bold
-        text-2xl;
+        font-medium
+        text-3xl;
 }
 
 .addRewardButton {
-    @apply px-1.5 !py-0 text-sm rounded-md;
-}
-
-.addRewardButtonIcon {
-    @apply h-4 w-4;
-}
-
-.addRewardButtonContent {
-    @apply !ml-1;
+    @apply w-full;
 }
 
 .rewardTokenSelect {
@@ -63,12 +58,24 @@
         justify-between
         rounded-md
         bg-gray-100
-        px-0.5
-        py-1
-        pr-1.5
+        pl-2.5
+        pr-1
+        py-1.5
         hover:bg-gray-200
         hover:cursor-pointer
         transition-colors
         duration-200
         ease-in-out;
+}
+
+.chevronDown {
+    @apply h-3 w-3;
+}
+
+.horizontalDivider {
+    @apply border-0 h-[1.5px] bg-gray-300 -mx-4;
+}
+
+.totalValueWrapper {
+    @apply flex items-center gap-3 px-2;
 }
