@@ -20,7 +20,7 @@ export function useClaims(): {
     const { address } = useAccount();
     const { data: blockNumber } = useBlockNumber({ watch: true });
 
-    const { data: rawClaims, isPending: loadingClaims } = useQuery({
+    const { data: rawClaims, isLoading: loadingClaims } = useQuery({
         queryKey: ["claims", address],
         queryFn: async ({ queryKey }) => {
             const account = queryKey[1];

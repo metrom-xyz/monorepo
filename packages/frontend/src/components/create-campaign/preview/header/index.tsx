@@ -4,9 +4,9 @@ import { Button, TextField, Typography } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
 import { useChainId } from "wagmi";
 import { formatDateTime, formatPercentage } from "@/src/utils/format";
+import { PoolRemoteLogo } from "@/src/components/pool-remote-logo";
 
 import styles from "./styles.module.css";
-import { PoolRemoteLogo } from "@/src/components/pool-remote-logo";
 
 interface HeaderProps {
     payload: CampaignPayload;

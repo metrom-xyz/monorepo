@@ -1,6 +1,5 @@
 .root {
     @apply w-full
-        pr-4
         flex
         items-center
         justify-between;
