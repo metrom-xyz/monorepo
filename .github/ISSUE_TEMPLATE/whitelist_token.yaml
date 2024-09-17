@@ -44,18 +44,10 @@ body:
     validations:
       required: true
   - type: input
-    id: defillama-id
+    id: coingecko-id
     attributes:
-      label: DefiLlama id
-      description: The token's identifier on DefiLlama.
+      label: Coingecko id
+      description: The token's identifier on Coingecko.
       placeholder: "coingecko:ethereum"
-    validations:
-      required: true
-  - type: input
-    id: usd-hourly-rate
-    attributes:
-      label: Desired USD hourly rate
-      description: The desired hourly rate in USD for the token.
-      placeholder: "10"
     validations:
       required: true
