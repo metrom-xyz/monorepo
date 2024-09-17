@@ -23,7 +23,6 @@ import type {
     CampaignPayloadErrors,
 } from "@/src/types";
 import { RewardTokensList } from "./reward-tokens-list";
-import { PlusIcon } from "@/src/assets/plus-icon";
 import { ChevronDown } from "@/src/assets/chevron-down";
 import { RewardsPreview } from "./preview";
 import { useWatchBalance } from "@/src/hooks/useWatchBalance";
