@@ -114,7 +114,7 @@ export function TokenClaim({ chainId, chainClaims }: TokenClaimProps) {
                     {chainClaims.token.symbol}
                 </Typography>
                 <Typography variant="lg" weight="medium">
-                    {formatTokenAmount(chainClaims.totalAmount)}
+                    {formatTokenAmount({ amount: chainClaims.totalAmount })}
                 </Typography>
             </div>
             <Button

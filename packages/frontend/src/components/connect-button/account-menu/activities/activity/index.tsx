@@ -66,7 +66,7 @@ export function Activity({ chainId, transaction, payload }: ActivityProps) {
                             />
                             <Typography>{payload.token.symbol}</Typography>
                             <Typography>
-                                {formatTokenAmount(payload.amount)}
+                                {formatTokenAmount({ amount: payload.amount })}
                             </Typography>
                         </div>
                     )}

@@ -68,11 +68,11 @@ export function Row({
             ) : (
                 <Typography variant="xs" weight="medium" light>
                     {token.balance
-                        ? formatTokenAmount(
-                              Number(
+                        ? formatTokenAmount({
+                              amount: Number(
                                   formatUnits(token.balance, token.decimals),
                               ),
-                          )
+                          })
                         : "-"}
                 </Typography>
             )}
