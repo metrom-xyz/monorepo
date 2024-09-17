@@ -83,7 +83,9 @@ export function Rewards({ from, to, rewards, chainId }: RewardsProps) {
                                         weight="medium"
                                         variant="sm"
                                     >
-                                        {formatTokenAmount(reward.amount)}
+                                        {formatTokenAmount({
+                                            amount: reward.amount,
+                                        })}
                                     </Typography>
                                 </div>
                             </div>

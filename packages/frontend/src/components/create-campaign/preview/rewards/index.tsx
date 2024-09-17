@@ -66,7 +66,10 @@ export function Rewards({ rewards, campaignDurationSeconds }: RewardsProps) {
                         )}
                     </Typography>
                     <Typography uppercase weight="medium" variant="lg">
-                        {formatTokenAmount(reward.amount)}
+                        {formatTokenAmount({
+                            amount: reward.amount,
+                            humanize: false,
+                        })}
                     </Typography>
                 </div>
             ))}

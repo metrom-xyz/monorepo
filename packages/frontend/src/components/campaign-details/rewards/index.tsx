@@ -72,7 +72,9 @@ export function Rewards({ campaign, loading }: RewardsProps) {
                                 )}
                             </Typography>
                             <Typography uppercase weight="medium" variant="lg">
-                                {formatTokenAmount(reward.remaining)}
+                                {formatTokenAmount({
+                                    amount: reward.remaining,
+                                })}
                             </Typography>
                         </div>
                     ))
@@ -91,7 +93,9 @@ export function Rewards({ campaign, loading }: RewardsProps) {
                         variant="xl"
                         label={t("total")}
                         loading={loading || !campaign}
-                        value={formatTokenAmount(campaign?.rewards.usdValue)}
+                        value={formatTokenAmount({
+                            amount: campaign?.rewards.usdValue,
+                        })}
                         className={styles.summaryBox}
                     />
                 </div>

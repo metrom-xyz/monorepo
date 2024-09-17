@@ -60,7 +60,9 @@ export function RewardsBreakdown({
                             </div>
                             <div>
                                 <Typography weight="medium">
-                                    {formatTokenAmount(accruedReward.amount)}
+                                    {formatTokenAmount({
+                                        amount: accruedReward.amount,
+                                    })}
                                 </Typography>
                                 <Typography weight="medium">
                                     {accruedReward.usdValue
