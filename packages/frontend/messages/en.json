@@ -108,7 +108,7 @@
                     "empty": "No rewards yet"
                 },
                 "add": "Add to rewards",
-                "selectPlaceholder": "TOKEN",
+                "selectPlaceholder": "Choose Token",
                 "totalUsd": "Total value usd",
                 "errors": {
                     "insufficientBalance": "Insufficient balance",
