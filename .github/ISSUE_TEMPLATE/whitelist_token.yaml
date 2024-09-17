@@ -1,7 +1,7 @@
 name: Whitelist token request
 description: Submit a request to add a new token to the rewards whitelist.
 title: "[Whitelist Request]: <Token Name>"
-labels: ["token", "whitelist"]
+labels: ["token whitelist request"]
 body:
   - type: markdown
     attributes:
