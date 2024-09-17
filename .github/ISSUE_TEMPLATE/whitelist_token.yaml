@@ -1,4 +1,4 @@
-name: Whitelist Token Request
+name: Whitelist token request
 description: Submit a request to add a new token to the rewards whitelist.
 title: "[Whitelist Request]: <Token Name>"
 labels: ["token", "whitelist"]
@@ -17,28 +17,28 @@ body:
   - type: input
     id: address
     attributes:
-      label: Token Address
+      label: Token address
       description: The contract address of the token.
     validations:
       required: true
   - type: input
     id: symbol
     attributes:
-      label: Token Symbol
+      label: Token symbol
       description: The token's symbol.
     validations:
       required: true
   - type: input
     id: name
     attributes:
-      label: Token Name
+      label: Token name
       description: The full name of the token.
     validations:
       required: true
   - type: input
     id: decimals
     attributes:
-      label: Token Decimals
+      label: Token decimals
       description: The token's decimals.
       placeholder: "18"
     validations:
@@ -46,7 +46,7 @@ body:
   - type: input
     id: defillama-id
     attributes:
-      label: DefiLlama ID
+      label: DefiLlama id
       description: The token's identifier on DefiLlama.
       placeholder: "coingecko:ethereum"
     validations:
@@ -54,7 +54,7 @@ body:
   - type: input
     id: usd-hourly-rate
     attributes:
-      label: Desired USD Hourly Rate
+      label: Desired USD hourly rate
       description: The desired hourly rate in USD for the token.
       placeholder: "10"
     validations:
