@@ -28,10 +28,10 @@ export function RewardsPreview({
         return (
             <div className={styles.rewardSkeleton}>
                 <Typography
-                    className={styles.rewardSkeletonText}
                     weight="medium"
                     variant="xs"
                     uppercase
+                    className={styles.rewardSkeletonText}
                 >
                     {t("rewardsPreviewList.empty")}
                 </Typography>
