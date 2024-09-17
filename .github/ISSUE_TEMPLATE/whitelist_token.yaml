@@ -1,0 +1,61 @@
+name: Whitelist Token Request
+description: Submit a request to add a new token to the rewards whitelist.
+title: "[Whitelist Request]: <Token Name>"
+labels: ["token", "whitelist"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        To whitelist a new token for rewards, please provide the following details:
+  - type: input
+    id: chain
+    attributes:
+      label: Chain
+      description: The chain on which the token exists.
+    validations:
+      required: true
+  - type: input
+    id: address
+    attributes:
+      label: Token Address
+      description: The contract address of the token.
+    validations:
+      required: true
+  - type: input
+    id: symbol
+    attributes:
+      label: Token Symbol
+      description: The token's symbol.
+    validations:
+      required: true
+  - type: input
+    id: name
+    attributes:
+      label: Token Name
+      description: The full name of the token.
+    validations:
+      required: true
+  - type: input
+    id: decimals
+    attributes:
+      label: Token Decimals
+      description: The token's decimals.
+      placeholder: "18"
+    validations:
+      required: true
+  - type: input
+    id: defillama-id
+    attributes:
+      label: DefiLlama ID
+      description: The token's identifier on DefiLlama.
+      placeholder: "coingecko:ethereum"
+    validations:
+      required: true
+  - type: input
+    id: usd-hourly-rate
+    attributes:
+      label: Desired USD Hourly Rate
+      description: The desired hourly rate in USD for the token.
+      placeholder: "10"
+    validations:
+      required: true
