@@ -1,15 +1,15 @@
 import classNames from "classnames";
 import { useClickAway } from "react-use";
 import { useRef, useState } from "react";
-import { Typography } from "@metrom-xyz/ui";
+import { Button, Typography } from "@metrom-xyz/ui";
 import { shortenAddress } from "@metrom-xyz/sdk";
 import { type Address } from "viem";
 import { Disconnect } from "@/src/assets/disconnect";
 import { Activities } from "./activities";
 import { useDisconnect } from "wagmi";
+import { useTranslations } from "next-intl";
 
 import styles from "./styles.module.css";
-import { useTranslations } from "next-intl";
 
 interface AccountMenuProps {
     className?: string;
@@ -46,6 +46,15 @@ export function AccountMenu({
     const rootRef = useRef(null);
     const { disconnect } = useDisconnect();
 
+    const [copied, setCopied] = useState(false);
+
+    const handleCopyClick = () => {
+        navigator.clipboard.writeText(account.address).then(() => {
+            setCopied(true);
+            setTimeout(() => setCopied(false), 500);
+        });
+    };
+
     useClickAway(rootRef, onClose);
 
     const [tab, setTab] = useState(Tab.Activity);
@@ -66,7 +75,12 @@ export function AccountMenu({
     return (
         <div className={classNames(styles.root, className)} ref={rootRef}>
             <div className={styles.headerWrapper}>
-                <div className={styles.accountContainer}>
+                <div
+                    className={classNames(styles.accountContainer, {
+                        [styles.copied]: copied,
+                    })}
+                    onClick={handleCopyClick}
+                >
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
                         alt="Avatar"
@@ -76,6 +90,16 @@ export function AccountMenu({
                     <Typography variant="lg" weight="medium">
                         {shortenAddress(account.address as Address)}
                     </Typography>
+                    <Button
+                        size="xsmall"
+                        variant="secondary"
+                        className={{ root: styles.copyButton }}
+                    >
+                        {/* {copied
+                            ? t("activities.copyButton.copied")
+                            : t("activities.copyButton.copy")} */}
+                        {/* FIXME: add icons */}
+                    </Button>
                 </div>
                 <Disconnect
                     className={styles.disconnectIcon}
