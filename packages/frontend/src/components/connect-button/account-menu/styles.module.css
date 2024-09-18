@@ -14,7 +14,7 @@
     @apply flex items-center gap-3 hover:bg-gray-200 p-2 rounded-md cursor-pointer;
 }
 
-.accountContainer:hover .copyButton {
+.accountContainer:hover .copyIcon {
     @apply visible;
 }
 
@@ -54,9 +54,13 @@
 }
 
 .copied {
-    @apply outline-green-400 outline outline-1;
+    @apply outline-green-600 outline outline-1;
 }
 
-.copyButton {
-    @apply invisible;
+.copyIcon {
+    @apply invisible w-5 h-5;
+}
+
+.tickIcon {
+    @apply w-7 h-7 text-green-600;
 }
