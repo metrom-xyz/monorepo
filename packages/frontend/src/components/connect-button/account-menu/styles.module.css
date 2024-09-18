@@ -11,7 +11,19 @@
 }
 
 .accountContainer {
-    @apply flex items-center gap-3 hover:bg-gray-200 p-2 rounded-md cursor-pointer;
+    @apply flex 
+        items-center 
+        gap-3 
+        hover:bg-gray-200 
+        p-2 
+        rounded-md 
+        cursor-pointer 
+        transition-[outline] 
+        duration-200 
+        ease-in-out 
+        outline 
+        outline-1 
+        outline-transparent;
 }
 
 .accountContainer:hover .copyIcon {
@@ -54,7 +66,7 @@
 }
 
 .copied {
-    @apply outline-green-600 outline outline-1;
+    @apply outline-green-600;
 }
 
 .copyIcon {
