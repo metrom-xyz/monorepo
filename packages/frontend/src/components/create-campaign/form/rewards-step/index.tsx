@@ -335,7 +335,7 @@ export function RewardsStep({
                         }}
                     >
                         {feedbackVisible
-                            ? t("newCampaign.form.rewards.addButton.add")
+                            ? t("newCampaign.form.rewards.addButton.added")
                             : t("newCampaign.form.rewards.addButton.add")}
                     </Button>
                 </div>
