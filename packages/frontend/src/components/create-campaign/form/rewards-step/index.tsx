@@ -31,7 +31,7 @@ import classNames from "classnames";
 import { trackFathomEvent } from "@/src/utils/fathom";
 import { RemoteLogo } from "@/src/components/remote-logo";
 import { BorderedPlusIcon } from "@/src/assets/bordered-plus-icon";
-import { BorderedTickIcon } from "@/src/assets/bordered-tick.icon";
+import { BorderedTickIcon } from "@/src/assets/bordered-tick-icon";
 
 import styles from "./styles.module.css";
 
@@ -102,6 +102,16 @@ export function RewardsStep({
     useEffect(() => {
         setOpen(false);
     }, [chainId]);
+
+    useEffect(() => {
+        if (!feedbackVisible) return;
+
+        const timeout = setTimeout(() => {
+            setFeedbackVisible(false);
+        }, 1000);
+
+        return () => clearTimeout(timeout);
+    }, [feedbackVisible]);
 
     useEffect(() => {
         if (!campaignDuration || !rewardToken) return;
@@ -182,9 +192,6 @@ export function RewardsStep({
 
         setOpen(false);
         setFeedbackVisible(true);
-        setTimeout(() => {
-            setFeedbackVisible(false);
-        }, 1000);
 
         onRewardsChange({ rewards: newRewards });
         setRewardAmount(undefined);
