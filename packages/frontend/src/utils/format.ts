@@ -13,10 +13,7 @@ export function formatPercentage(amount?: number | null): string {
 
 export function formatTokenAmount(amount?: number | null): string {
     if (amount && amount < 0.0001) return "<0.0001";
-    if (amount && amount < 1) {
-        return `${numeral(amount).format("0,0.0000")}`;
-    }
-    return `${numeral(amount).format("0,0.0[0][0][0]a")}`;
+    return `${numeral(amount).format("0,0.0[000]a")}`;
 }
 
 export function formatDateTime(dateTime?: Dayjs | number): string {
