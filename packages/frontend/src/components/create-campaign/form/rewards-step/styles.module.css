@@ -52,7 +52,9 @@
 }
 
 .rewardTokenSelect {
-    @apply flex
+    @apply w-fit
+        max-w-40
+        flex
         gap-1
         items-center
         justify-between
@@ -66,6 +68,10 @@
         transition-colors
         duration-200
         ease-in-out;
+}
+
+.rewardTokenSymbol {
+    @apply text-nowrap;
 }
 
 .chevronDown {

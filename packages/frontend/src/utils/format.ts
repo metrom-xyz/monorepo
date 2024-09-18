@@ -11,9 +11,15 @@ export function formatPercentage(amount?: number | null): string {
     return `${numeral(amount).format("0,0.0[0]a")}%`;
 }
 
-export function formatTokenAmount(amount?: number | null): string {
+export function formatTokenAmount({
+    amount,
+    humanize = true,
+}: {
+    amount?: number | null;
+    humanize?: boolean;
+}): string {
     if (amount && amount < 0.0001) return "<0.0001";
-    return `${numeral(amount).format("0,0.0[000]a")}`;
+    return `${numeral(amount).format(`0,0.0[000]${humanize ? "a" : ""}`)}`;
 }
 
 export function formatDateTime(dateTime?: Dayjs | number): string {

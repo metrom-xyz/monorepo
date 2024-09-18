@@ -1,9 +1,6 @@
 import dayjs, { Dayjs } from "dayjs";
 
 export const getClosestAvailableDateTime = (date?: Dayjs | Date | null) => {
-    // FIXME: check issue with min date here
-    // if (process.env.NEXT_PUBLIC_ENVIRONMENT !== "production") return dayjs();
-
     const minutes = dayjs(date).get("minutes");
     if (minutes < 15) return dayjs(date).set("minutes", 15).set("seconds", 0);
     if (minutes < 30) return dayjs(date).set("minutes", 30).set("seconds", 0);
