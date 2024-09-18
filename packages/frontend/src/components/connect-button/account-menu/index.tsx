@@ -1,6 +1,6 @@
 import classNames from "classnames";
 import { useClickAway } from "react-use";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Button, Typography } from "@metrom-xyz/ui";
 import { shortenAddress } from "@metrom-xyz/sdk";
 import { type Address } from "viem";
@@ -8,6 +8,8 @@ import { Disconnect } from "@/src/assets/disconnect";
 import { Activities } from "./activities";
 import { useDisconnect } from "wagmi";
 import { useTranslations } from "next-intl";
+import { TickIcon } from "@/src/assets/tick-icon";
+import { LinkIcon } from "@/src/assets/link-icon";
 
 import styles from "./styles.module.css";
 
@@ -51,7 +53,6 @@ export function AccountMenu({
     const handleCopyClick = () => {
         navigator.clipboard.writeText(account.address).then(() => {
             setCopied(true);
-            setTimeout(() => setCopied(false), 500);
         });
     };
 
@@ -72,6 +73,14 @@ export function AccountMenu({
         setTab(Tab.Campaigns);
     }
 
+    useEffect(() => {
+        if (!copied) return;
+
+        const timeout = setTimeout(() => setCopied(false), 500);
+
+        return () => clearTimeout(timeout);
+    }, [copied]);
+
     return (
         <div className={classNames(styles.root, className)} ref={rootRef}>
             <div className={styles.headerWrapper}>
@@ -90,16 +99,16 @@ export function AccountMenu({
                     <Typography variant="lg" weight="medium">
                         {shortenAddress(account.address as Address)}
                     </Typography>
-                    <Button
-                        size="xsmall"
-                        variant="secondary"
-                        className={{ root: styles.copyButton }}
-                    >
-                        {/* {copied
-                            ? t("activities.copyButton.copied")
-                            : t("activities.copyButton.copy")} */}
-                        {/* FIXME: add icons */}
-                    </Button>
+                    {copied ? (
+                        <TickIcon
+                            className={classNames(
+                                styles.copyIcon,
+                                styles.tickIcon,
+                            )}
+                        />
+                    ) : (
+                        <LinkIcon className={styles.copyIcon} />
+                    )}
                 </div>
                 <Disconnect
                     className={styles.disconnectIcon}
