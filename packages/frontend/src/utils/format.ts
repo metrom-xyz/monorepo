@@ -19,7 +19,7 @@ export function formatTokenAmount({
     humanize?: boolean;
 }): string {
     if (amount && amount < 0.0001) return "<0.0001";
-    return `${numeral(amount).format(`0,0.0[0][0][0]${humanize ? "a" : ""}`)}`;
+    return `${numeral(amount).format(`0,0.0[000]${humanize ? "a" : ""}`)}`;
 }
 
 export function formatDateTime(dateTime?: Dayjs | number): string {
