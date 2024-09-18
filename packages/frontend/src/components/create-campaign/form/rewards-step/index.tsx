@@ -31,6 +31,7 @@ import classNames from "classnames";
 import { trackFathomEvent } from "@/src/utils/fathom";
 import { RemoteLogo } from "@/src/components/remote-logo";
 import { BorderedPlusIcon } from "@/src/assets/bordered-plus-icon";
+import { BorderedTickIcon } from "@/src/assets/bordered-tick.icon";
 
 import styles from "./styles.module.css";
 
@@ -62,6 +63,7 @@ export function RewardsStep({
             error?: string;
         }[]
     >([]);
+    const [feedbackVisible, setFeedbackVisible] = useState(false);
 
     const { address } = useAccount();
     const chainId = useChainId();
@@ -179,6 +181,11 @@ export function RewardsStep({
             : [reward];
 
         setOpen(false);
+        setFeedbackVisible(true);
+        setTimeout(() => {
+            setFeedbackVisible(false);
+        }, 1000);
+
         onRewardsChange({ rewards: newRewards });
         setRewardAmount(undefined);
         setRewardToken(undefined);
@@ -308,12 +315,17 @@ export function RewardsStep({
                     <Button
                         variant="secondary"
                         size="small"
-                        icon={BorderedPlusIcon}
+                        icon={
+                            feedbackVisible
+                                ? BorderedTickIcon
+                                : BorderedPlusIcon
+                        }
                         disabled={
-                            rewards?.length === 5 ||
-                            !rewardAmount ||
-                            !rewardToken ||
-                            !!rewardAmountError
+                            !feedbackVisible &&
+                            (rewards?.length === 5 ||
+                                !rewardAmount ||
+                                !rewardToken ||
+                                !!rewardAmountError)
                         }
                         onClick={handleRewardTokenOnAdd}
                         className={{
@@ -322,7 +334,9 @@ export function RewardsStep({
                             icon: styles.addRewardButtonIcon,
                         }}
                     >
-                        {t("newCampaign.form.rewards.add")}
+                        {feedbackVisible
+                            ? t("newCampaign.form.rewards.addButton.add")
+                            : t("newCampaign.form.rewards.addButton.add")}
                     </Button>
                 </div>
             </StepPreview>
