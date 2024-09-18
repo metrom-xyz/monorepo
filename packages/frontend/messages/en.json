@@ -105,13 +105,13 @@
                     "rewards": "Rewards"
                 },
                 "rewardsPreviewList": {
-                    "empty": "No rewards yet"
+                    "empty": "No rewards added yet"
                 },
                 "addButton": {
                     "add": "Add to rewards",
                     "added": "Reward added"
                 },
-                "selectPlaceholder": "TOKEN",
+                "selectPlaceholder": "Choose Token",
                 "totalUsd": "Total value usd",
                 "errors": {
                     "insufficientBalance": "Insufficient balance",
