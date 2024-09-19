@@ -108,7 +108,7 @@ export function RewardsStep({
 
         const timeout = setTimeout(() => {
             setFeedbackVisible(false);
-        }, 1000);
+        }, 1500);
 
         return () => clearTimeout(timeout);
     }, [feedbackVisible]);
