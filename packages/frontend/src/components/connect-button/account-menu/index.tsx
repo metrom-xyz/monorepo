@@ -76,7 +76,7 @@ export function AccountMenu({
     useEffect(() => {
         if (!copied) return;
 
-        const timeout = setTimeout(() => setCopied(false), 500);
+        const timeout = setTimeout(() => setCopied(false), 1500);
 
         return () => clearTimeout(timeout);
     }, [copied]);
