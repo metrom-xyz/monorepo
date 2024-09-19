@@ -107,7 +107,10 @@
                 "rewardsPreviewList": {
                     "empty": "No rewards added yet"
                 },
-                "add": "Add to rewards",
+                "addButton": {
+                    "add": "Add to rewards",
+                    "added": "Reward added"
+                },
                 "selectPlaceholder": "Choose Token",
                 "totalUsd": "Total value usd",
                 "errors": {
