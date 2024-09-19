@@ -18,7 +18,7 @@
         p-2 
         rounded-md 
         cursor-pointer 
-        transition-[outline] 
+        transition-[outline,background-color]
         duration-200 
         ease-in-out 
         outline 
