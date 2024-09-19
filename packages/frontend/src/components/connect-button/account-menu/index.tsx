@@ -99,16 +99,13 @@ export function AccountMenu({
                     <Typography variant="lg" weight="medium">
                         {shortenAddress(account.address as Address)}
                     </Typography>
-                    {copied ? (
-                        <TickIcon
-                            className={classNames(
-                                styles.copyIcon,
-                                styles.tickIcon,
-                            )}
-                        />
-                    ) : (
-                        <LinkIcon className={styles.copyIcon} />
-                    )}
+                    <div className={styles.iconContainer}>
+                        {copied ? (
+                            <TickIcon className={styles.tickIcon} />
+                        ) : (
+                            <LinkIcon className={styles.copyIcon} />
+                        )}
+                    </div>
                 </div>
                 <Disconnect
                     className={styles.disconnectIcon}

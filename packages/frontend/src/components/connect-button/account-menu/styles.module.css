@@ -26,7 +26,7 @@
         outline-transparent;
 }
 
-.accountContainer:hover .copyIcon {
+.accountContainer:hover .iconContainer {
     @apply visible;
 }
 
@@ -70,9 +70,13 @@
 }
 
 .copyIcon {
-    @apply invisible w-5 h-5;
+    @apply w-5 h-5;
 }
 
 .tickIcon {
     @apply w-7 h-7 text-green-600;
+}
+
+.iconContainer {
+    @apply invisible flex items-center justify-center w-7 h-7;
 }
