@@ -6,4 +6,5 @@ export const START_BLOCKS: { [network: string]: number } = {
     "mantle-sepolia": 9873155,
     mantle: 67227224,
     "mode-mainnet": 12569458,
+    sonic: 73323411,
 };

@@ -22,9 +22,11 @@ import {
     mantleData,
     mantleSepoliaData,
     modeData,
+    sonicTestnetData,
 } from "@/src/commons/chains";
 
 import styles from "./styles.module.css";
+import { sonicTestnet } from "@/src/commons/chains/sonic-testnet";
 
 export interface ChainWithClaimsData {
     chain: Chain;
@@ -55,16 +57,6 @@ export function Claims() {
                 return acc;
             },
             {
-                [SupportedChain.Mode]: {
-                    chain: mode,
-                    chainData: modeData,
-                    claims: [],
-                },
-                [SupportedChain.Mantle]: {
-                    chain: mantle,
-                    chainData: mantleData,
-                    claims: [],
-                },
                 [SupportedChain.CeloAlfajores]: {
                     chain: celoAlfajores,
                     chainData: celoAlfajoresData,
@@ -78,6 +70,22 @@ export function Claims() {
                 [SupportedChain.MantleSepolia]: {
                     chain: mantleSepoliaTestnet,
                     chainData: mantleSepoliaData,
+                    claims: [],
+                },
+                [SupportedChain.SonicTestnet]: {
+                    chain: sonicTestnet,
+                    chainData: sonicTestnetData,
+                    claims: [],
+                },
+
+                [SupportedChain.Mode]: {
+                    chain: mode,
+                    chainData: modeData,
+                    claims: [],
+                },
+                [SupportedChain.Mantle]: {
+                    chain: mantle,
+                    chainData: mantleData,
                     claims: [],
                 },
             } as Record<SupportedChain, ChainWithClaimsData>,

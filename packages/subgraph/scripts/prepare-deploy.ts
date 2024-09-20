@@ -14,6 +14,8 @@ const NETWORK_NAME: Record<SupportedChain, string> = {
     [SupportedChain.Holesky]: "holesky",
     [SupportedChain.CeloAlfajores]: "celo-alfajores",
     [SupportedChain.MantleSepolia]: "mantle-sepolia",
+    [SupportedChain.SonicTestnet]: "sonic",
+
     [SupportedChain.Mode]: "mode-mainnet",
     [SupportedChain.Mantle]: "mantle",
 };
