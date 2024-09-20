@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import {
     RemoteLogo as UiRemoteLogo,
     type RemoteLogoProps,
@@ -14,6 +15,10 @@ export function RemoteLogo({
 }: RemoteLogoProps) {
     const chainData = useChainData(chain);
 
+    const [localTokenLogoSrc, setLocalTokenLogoSrc] = useState<string | null>(
+        null,
+    );
+
     const resolvedIcon =
         !icon && chainData?.specialTokens && address
             ? chainData.specialTokens[address.toLowerCase() as Address]
@@ -24,12 +29,29 @@ export function RemoteLogo({
             ? chainData.rewardTokenIcons[address.toLowerCase() as Address]
             : undefined;
 
+    useEffect(() => {
+        if (!!icon || !!src || !address || !chain) {
+            return;
+        }
+
+        const TokenLogoKey = `${address.toLowerCase()}-${chain}`;
+        const tokenLogoMap = JSON.parse(
+            localStorage.getItem("tokenLogos") || "{}",
+        );
+
+        if (!tokenLogoMap || !tokenLogoMap[TokenLogoKey]) {
+            return;
+        }
+
+        setLocalTokenLogoSrc(tokenLogoMap[TokenLogoKey]);
+    }, [address, chain, icon, src]);
+
     return (
         <UiRemoteLogo
             address={address}
             {...rest}
             icon={icon || resolvedIcon}
-            src={src || resolvedSrc}
+            src={src || localTokenLogoSrc || resolvedSrc}
         />
     );
 }

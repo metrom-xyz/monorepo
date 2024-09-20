@@ -13,6 +13,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { WagmiProvider } from "wagmi";
 import { SUPPORTED_CHAINS } from "../commons";
 import { WALLETCONNECT_PROJECT_ID } from "../commons/env";
+import { useTokenLogoStorage } from "../hooks/useTokenLogoStorage";
 import duration from "dayjs/plugin/duration";
 import localizedFormat from "dayjs/plugin/localizedFormat";
 import relativeTime from "dayjs/plugin/relativeTime";
@@ -39,6 +40,8 @@ export function ClientProviders({
     locale: Locale;
     children: ReactNode;
 }>) {
+    useTokenLogoStorage();
+
     return (
         <WagmiProvider config={config}>
             <QueryClientProvider client={queryClient}>
