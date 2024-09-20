@@ -7,7 +7,7 @@
 <br />
 
 <p align="center">
-    Metrom is a flexible liquidity mining platform designed to help AMMs and projects efficiently launch and manage multiple incentivisation campaigns.
+    MDesign your incentives to AMMplify liquidity
 </p>
 
 <br />
@@ -26,16 +26,15 @@ workspaces and `turborepo`.
 
 The monorepo contains the following packages under the `packages` folder:
 
-- `@monorepo/frontend`: The official Metrom frontend built with Next.js.
-- `@monorepo/sdk`: A general-purpose SDK for interacting with Metrom. It
-  provides interfaces for Metrom entities, clients to fetch protocol data from
-  services like `backend` and `data-manager`, and utility functions.
-- `@monorepo/ui`: A React-based implementation of the Metrom design system,
-  developed in TypeScript and documented with Storybook. Widely used in the
-  frontend for UI components.
-- `@monorepo/subgraph`: The official Metrom subgraph implementation.
-- `@monorepo/blocks-subgraphs`: Block subgraphs for each Metrom-supported
-  network.
+- `frontend`: The official Metrom frontend built with Next.js.
+- `sdk`: A general-purpose SDK for interacting with Metrom. It provides
+  interfaces for Metrom entities, clients to fetch protocol data from services
+  like `backend` and `data-manager`, and utility functions.
+- `ui`: A React-based implementation of the Metrom design system, developed in
+  TypeScript and documented with Storybook. Widely used in the frontend for UI
+  components.
+- `subgraph`: The official Metrom subgraph implementation.
+- `blocks-subgraphs`: Block subgraphs for each Metrom-supported network.
 
 Additionally, there are subgraph packages for different AMM variants supported
 by Metrom.
