@@ -37,9 +37,9 @@ export function Reward({
     onUpdate,
 }: RewardProps) {
     const [error, setError] = useState(false);
-    const [rewardAmount, setRewardAmount] = useState<UsdPricedOnChainAmount>(
-        reward.amount,
-    );
+    const [rewardAmount, setRewardAmount] = useState<
+        UsdPricedOnChainAmount | undefined
+    >(reward.amount);
     const { address } = useAccount();
     const chain = useChainId();
     const { balance: rewardTokenBalance } = useWatchBalance(
@@ -71,7 +71,14 @@ export function Reward({
     }, [onError, onRemove, reward]);
 
     const handleRewardAmountOnBlur = useCallback(() => {
-        onUpdate({ ...reward, amount: rewardAmount });
+        onUpdate({
+            ...reward,
+            amount: rewardAmount || {
+                raw: 0n,
+                formatted: 0,
+                usdValue: null,
+            },
+        });
     }, [onUpdate, reward, rewardAmount]);
 
     const handleRewardAmountOnChange = useCallback(
