@@ -5,7 +5,7 @@ import {
 } from "@metrom-xyz/ui";
 import { type Address } from "viem";
 import { useChainData } from "@/src/hooks/useChainData";
-import { useTokenLogoStorage } from "../hooks/useTokenLogoStorage";
+import { useTokenLogoStorage } from "@/src/hooks/useTokenLogoStorage";
 
 export function RemoteLogo({
     address,
