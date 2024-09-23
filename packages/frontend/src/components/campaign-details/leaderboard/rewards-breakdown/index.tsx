@@ -1,5 +1,8 @@
 import { Popover, Typography } from "@metrom-xyz/ui";
-import type { SupportedChain, UsdPricedTokenAmount } from "@metrom-xyz/sdk";
+import type {
+    SupportedChain,
+    UsdPricedErc20TokenAmount,
+} from "@metrom-xyz/sdk";
 import { useTranslations } from "next-intl";
 import { useRef, useState } from "react";
 import { formatTokenAmount, formatUsdAmount } from "@/src/utils/format";
@@ -10,7 +13,7 @@ import styles from "./styles.module.css";
 interface RewardsBreakdownProps {
     chain?: SupportedChain;
     usdValue: number | null;
-    accrued: UsdPricedTokenAmount[];
+    accrued: UsdPricedErc20TokenAmount[];
 }
 
 export function RewardsBreakdown({
@@ -44,30 +47,30 @@ export function RewardsBreakdown({
                 <div className={styles.rewardsPopover}>
                     {accrued.map((accruedReward) => (
                         <div
-                            key={accruedReward.address}
+                            key={accruedReward.token.address}
                             className={styles.rewardsPopoverRow}
                         >
                             <div>
                                 <RemoteLogo
                                     chain={chain}
                                     size="sm"
-                                    address={accruedReward.address}
-                                    defaultText={accruedReward.symbol}
+                                    address={accruedReward.token.address}
+                                    defaultText={accruedReward.token.symbol}
                                 />
                                 <Typography weight="medium">
-                                    {accruedReward.symbol}
+                                    {accruedReward.token.symbol}
                                 </Typography>
                             </div>
                             <div>
                                 <Typography weight="medium">
                                     {formatTokenAmount({
-                                        amount: accruedReward.amount,
+                                        amount: accruedReward.amount.formatted,
                                     })}
                                 </Typography>
                                 <Typography weight="medium">
-                                    {accruedReward.usdValue
+                                    {accruedReward.amount.usdValue
                                         ? formatUsdAmount(
-                                              accruedReward.usdValue,
+                                              accruedReward.amount.usdValue,
                                           )
                                         : "-"}
                                 </Typography>
