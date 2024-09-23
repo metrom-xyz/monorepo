@@ -110,7 +110,11 @@ export function Reward({
                 <div>
                     <NumberInput
                         placeholder="0"
-                        value={rewardAmount ? rewardAmount.formatted : ""}
+                        value={
+                            rewardAmount
+                                ? rewardAmount.formatted.toString()
+                                : ""
+                        }
                         onValueChange={handleRewardAmountOnChange}
                         className={styles.rewardTokenAmountInput}
                         onBlur={handleRewardAmountOnBlur}
