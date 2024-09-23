@@ -3,13 +3,16 @@ import { useAccount, useChainId } from "wagmi";
 import { FixedSizeList } from "react-window";
 import { useTranslations } from "next-intl";
 import {
-    type Token,
-    type TokenAmount,
+    type Erc20Token,
+    type Erc20TokenAmount,
     type WhitelistedErc20Token,
 } from "@metrom-xyz/sdk";
 import { Typography } from "@metrom-xyz/ui";
 import { useWhitelistedRewardsTokens } from "@/src/hooks/useWhitelistedRewardsTokens";
-import { useWatchBalances } from "@/src/hooks/useWatchBalances";
+import {
+    useWatchBalances,
+    type Erc20TokenWithBalance,
+} from "@/src/hooks/useWatchBalances";
 import { Row } from "./row";
 
 import styles from "./styles.module.css";
@@ -17,8 +20,8 @@ import styles from "./styles.module.css";
 const TOKENS_LIMIT = 6;
 
 interface RewardTokensListProps {
-    value?: Token;
-    unavailable?: TokenAmount[];
+    value?: Erc20Token;
+    unavailable?: Erc20TokenAmount[];
     onRewardTokenClick: (token: WhitelistedErc20Token) => void;
 }
 
@@ -75,7 +78,7 @@ export function RewardTokensList({
                     className={styles.list}
                 >
                     {({ index, style, data }) => {
-                        const whitelistedToken: WhitelistedErc20Token | null =
+                        const whitelistedToken: Erc20TokenWithBalance<WhitelistedErc20Token> | null =
                             data[index];
                         return (
                             <Row
@@ -86,14 +89,15 @@ export function RewardTokensList({
                                     !!unavailable?.find(
                                         ({ token: { address } }) =>
                                             address ===
-                                            whitelistedToken?.address,
+                                            whitelistedToken?.token.address,
                                     )
                                 }
                                 active={
                                     !!whitelistedToken &&
-                                    whitelistedToken.address === value?.address
+                                    whitelistedToken.token.address ===
+                                        value?.address
                                 }
-                                token={whitelistedToken}
+                                tokenWithBalance={whitelistedToken}
                                 onClick={onRewardTokenClick}
                             />
                         );

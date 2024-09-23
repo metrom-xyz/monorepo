@@ -1,10 +1,11 @@
-import { type Address, type Hex } from "viem";
-import type {
-    FetchCampaignsResponse,
-    FetchClaimsResponse,
-    FetchPoolsResponse,
-    FetchWhitelistedRewardTokensResponse,
-    RawCampaign,
+import { formatUnits, type Address, type Hex } from "viem";
+import {
+    type BackendCampaign,
+    type BackendErc20Token,
+    type FetchCampaignsResponse,
+    type FetchClaimsResponse,
+    type FetchPoolsResponse,
+    type FetchWhitelistedRewardTokensResponse,
 } from "./types";
 import type { SupportedChain } from "@metrom-xyz/contracts";
 import { SupportedAmm } from "../commons";
@@ -13,10 +14,12 @@ import {
     type Activity,
     type Campaign,
     type Claim,
+    type Erc20Token,
     type Pool,
     type Rewards,
+    type UsdPricedOnChainAmount,
     type WhitelistedErc20Token,
-} from "../entities";
+} from "../types";
 
 export interface FetchCampaignParams {
     chainId: number;
@@ -55,10 +58,10 @@ export class MetromApiClient {
                 `response not ok while fetching campaigns: ${await response.text()}`,
             );
 
-        const rawCampaignsResponse =
+        const backendCampaigns =
             (await response.json()) as FetchCampaignsResponse;
 
-        return rawCampaignsResponse.campaigns.map(processCampaign);
+        return backendCampaigns.campaigns.map(processCampaign);
     }
 
     async fetchCampaign(params: FetchCampaignParams): Promise<Campaign> {
@@ -73,9 +76,7 @@ export class MetromApiClient {
                 `response not ok while fetching campaign with id ${params.id} on chain id ${params.chainId}: ${await response.text()}`,
             );
 
-        const rawCampaign = (await response.json()) as RawCampaign;
-
-        return processCampaign(rawCampaign);
+        return processCampaign((await response.json()) as BackendCampaign);
     }
 
     async fetchPools(params: FetchPoolsParams): Promise<Pool[]> {
@@ -90,12 +91,16 @@ export class MetromApiClient {
                 `response not ok while fetching pools: ${await response.text()}`,
             );
 
-        const rawPoolsResponse = (await response.json()) as FetchPoolsResponse;
+        const backendPools = (await response.json()) as FetchPoolsResponse;
 
-        return rawPoolsResponse.pools.map((pool) => ({
-            ...pool,
-            chainId: params.chainId,
-            amm: pool.amm as SupportedAmm,
+        return backendPools.pools.map((pool) => ({
+            chainId: Number(params.chainId),
+            address: pool.address,
+            amm: params.amm,
+            fee: Number(pool.fee),
+            token0: processErc20Token(pool.token0),
+            token1: processErc20Token(pool.token1),
+            tvl: toNumberOrNull(pool.tvl),
         }));
     }
 
@@ -110,10 +115,23 @@ export class MetromApiClient {
                 `response not ok while fetching claimable rewards: ${await response.text()}`,
             );
 
-        const { claims: rawClaims } =
-            (await response.json()) as FetchClaimsResponse;
+        const { claims } = (await response.json()) as FetchClaimsResponse;
 
-        return rawClaims;
+        return claims.map((claim) => {
+            const token = processErc20Token(claim.token);
+            const rawAmount = BigInt(claim.amount);
+
+            return {
+                chainId: Number(claim.chainId),
+                campaignId: claim.campaignId,
+                token,
+                amount: {
+                    raw: rawAmount,
+                    formatted: Number(formatUnits(rawAmount, token.decimals)),
+                },
+                proof: claim.proof,
+            };
+        });
     }
 
     async fetchWhitelistedRewardTokens(
@@ -129,14 +147,22 @@ export class MetromApiClient {
                 `response not ok while fetching whitelisted reward tokens: ${await response.text()}`,
             );
 
-        const rawWhitelistedTokens =
+        const whitelistedTokens =
             (await response.json()) as FetchWhitelistedRewardTokensResponse;
 
-        return rawWhitelistedTokens.tokens.map((token) => {
-            const { price, ...rest } = token;
+        return whitelistedTokens.tokens.map((token) => {
+            const processedToken = processErc20Token(token);
+            const rawMinimumRate = BigInt(token.minimumRate);
+
             return {
-                ...rest,
-                usdPrice: price,
+                ...processedToken,
+                minimumRate: {
+                    raw: rawMinimumRate,
+                    formatted: Number(
+                        formatUnits(rawMinimumRate, processedToken.decimals),
+                    ),
+                },
+                usdPrice: Number(token.price),
             };
         });
     }
@@ -157,38 +183,88 @@ export class MetromApiClient {
     }
 }
 
-function processCampaign(rawCampaign: RawCampaign) {
+function toNumberOrNull(maybeNumber: string | bigint | null): number | null {
+    return maybeNumber ? Number(maybeNumber) : null;
+}
+
+function processCampaign(backendCampaign: BackendCampaign): Campaign {
     let status;
     const now = Math.floor(Date.now() / 1000);
-    if (now < rawCampaign.from) {
+    if (now < backendCampaign.from) {
         status = Status.Upcoming;
-    } else if (now > rawCampaign.to) {
+    } else if (now > backendCampaign.to) {
         status = Status.Ended;
     } else {
         status = Status.Live;
     }
 
-    const rewards: Rewards = Object.assign([], { usdValue: 0 });
-    for (const rawReward of rawCampaign.rewards) {
-        let usdValue = null;
-        if (rewards.usdValue !== null && rawReward.usdPrice) {
-            usdValue = rawReward.amount * rawReward.usdPrice;
-            rewards.usdValue += usdValue;
+    const rewards: Rewards = Object.assign([], {
+        amountUsdValue: 0,
+        remainingUsdValue: 0,
+    });
+    for (const backendReward of backendCampaign.rewards) {
+        const decimals = Number(backendReward.decimals);
+
+        const rawAmount = BigInt(backendReward.amount);
+        const amount: UsdPricedOnChainAmount = {
+            raw: rawAmount,
+            formatted: Number(formatUnits(rawAmount, decimals)),
+            usdValue: null,
+        };
+
+        const rawRemaining = BigInt(backendReward.remaining);
+        const remaining: UsdPricedOnChainAmount = {
+            raw: rawRemaining,
+            formatted: Number(formatUnits(rawRemaining, decimals)),
+            usdValue: null,
+        };
+
+        if (
+            rewards.amountUsdValue !== null &&
+            rewards.remainingUsdValue !== null &&
+            backendReward.usdPrice
+        ) {
+            const usdPrice = Number(backendReward.usdPrice);
+
+            amount.usdValue = amount.formatted * usdPrice;
+            remaining.usdValue = remaining.formatted * usdPrice;
+
+            rewards.amountUsdValue += amount.usdValue;
+            rewards.remainingUsdValue += remaining.usdValue;
+        } else {
+            rewards.amountUsdValue = null;
+            rewards.remainingUsdValue = null;
         }
+
         rewards.push({
-            ...rawReward,
-            usdValue,
+            token: {
+                ...processErc20Token(backendReward),
+                usdPrice: toNumberOrNull(backendReward.usdPrice),
+            },
+            amount,
+            remaining,
         });
     }
 
-    return {
-        ...rawCampaign,
+    return <Campaign>{
+        ...backendCampaign,
+        chainId: toNumberOrNull(backendCampaign.chainId),
         status,
         pool: {
-            ...rawCampaign.pool,
-            chainId: rawCampaign.chainId,
-            amm: rawCampaign.pool.amm as SupportedAmm,
+            ...backendCampaign.pool,
+            amm: backendCampaign.pool.amm as SupportedAmm,
+            fee: toNumberOrNull(backendCampaign.pool.fee),
+            tvl: toNumberOrNull(backendCampaign.pool.tvl),
+            token0: processErc20Token(backendCampaign.pool.token0),
+            token1: processErc20Token(backendCampaign.pool.token1),
         },
         rewards,
+    };
+}
+
+function processErc20Token(backendErc20Token: BackendErc20Token): Erc20Token {
+    return {
+        ...backendErc20Token,
+        decimals: Number(backendErc20Token.decimals),
     };
 }

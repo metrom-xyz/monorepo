@@ -23,8 +23,8 @@ export function Rewards({ campaign, loading }: RewardsProps) {
             .unix(campaign.to)
             .diff(dayjs.unix(campaign.from), "days", false);
 
-        return daysDuration > 0 && !!campaign.rewards.usdValue
-            ? campaign.rewards.usdValue / daysDuration
+        return daysDuration > 0 && !!campaign.rewards.amountUsdValue
+            ? campaign.rewards.amountUsdValue / daysDuration
             : 0;
     }, [campaign]);
 
@@ -49,31 +49,29 @@ export function Rewards({ campaign, loading }: RewardsProps) {
                     <SkeletonReward />
                 ) : (
                     campaign.rewards.map((reward) => (
-                        <div key={reward.address} className={styles.row}>
+                        <div key={reward.token.address} className={styles.row}>
                             <div className={styles.nameContainer}>
                                 <RemoteLogo
                                     chain={campaign.chainId}
-                                    address={reward.address}
-                                    defaultText={reward.symbol}
+                                    address={reward.token.address}
+                                    defaultText={reward.token.symbol}
                                 />
                                 <Typography
                                     uppercase
                                     weight="medium"
                                     variant="lg"
                                 >
-                                    {reward.symbol}
+                                    {reward.token.symbol}
                                 </Typography>
                             </div>
                             <Typography uppercase weight="medium" light>
-                                {formatUsdAmount(
-                                    reward.usdPrice
-                                        ? reward.amount * reward.usdPrice
-                                        : 0,
-                                )}
+                                {reward.amount.usdValue
+                                    ? formatUsdAmount(reward.amount.usdValue)
+                                    : "-"}
                             </Typography>
                             <Typography uppercase weight="medium" variant="lg">
                                 {formatTokenAmount({
-                                    amount: reward.remaining,
+                                    amount: reward.amount.formatted,
                                 })}
                             </Typography>
                         </div>
@@ -93,9 +91,9 @@ export function Rewards({ campaign, loading }: RewardsProps) {
                         variant="xl"
                         label={t("total")}
                         loading={loading || !campaign}
-                        value={formatTokenAmount({
-                            amount: campaign?.rewards.usdValue,
-                        })}
+                        value={formatUsdAmount(
+                            campaign?.rewards.amountUsdValue,
+                        )}
                         className={styles.summaryBox}
                     />
                 </div>

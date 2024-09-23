@@ -1,5 +1,5 @@
 import {
-    type Token,
+    type Erc20Token,
     MetromApiClient,
     SERVICE_URLS,
     DataManagerClient,
@@ -29,10 +29,13 @@ export interface ChainData {
     metromContract: ChainContract;
     icon: FunctionComponent<SVGIcon>;
     amms: Amm[];
-    baseTokens: Token[];
+    baseTokens: Erc20Token[];
     rewardTokenIcons: Record<Address, string>;
     specialTokens?: Record<Address, FunctionComponent<SVGIcon>>;
 }
+
+export const MAX_U256 =
+    0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffn;
 
 export const METROM_DATA_MANAGER_JWT_ISSUER = "metrom-data-manager";
 

@@ -2,7 +2,7 @@ import classNames from "classnames";
 import { useClickAway } from "react-use";
 import { useEffect, useRef, useState } from "react";
 import { Typography } from "@metrom-xyz/ui";
-import { shortenAddress } from "@metrom-xyz/sdk";
+import { shortenAddress } from "@/src/utils/address";
 import { type Address } from "viem";
 import { Disconnect } from "@/src/assets/disconnect";
 import { Activities } from "./activities";

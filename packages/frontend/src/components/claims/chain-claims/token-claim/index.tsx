@@ -9,7 +9,6 @@ import {
     useWriteContract,
 } from "wagmi";
 import { metromAbi } from "@metrom-xyz/contracts/abi";
-import { parseUnits } from "viem";
 import { useCallback, useState } from "react";
 import type { TokenClaims } from "..";
 import { useChainData } from "@/src/hooks/useChainData";
@@ -52,10 +51,7 @@ export function TokenClaim({ chainId, chainClaims }: TokenClaimProps) {
                           campaignId: claim.campaignId,
                           proof: claim.proof,
                           token: claim.token.address,
-                          amount: parseUnits(
-                              claim.amount.toFixed(claim.token.decimals),
-                              claim.token.decimals,
-                          ),
+                          amount: claim.amount.raw,
                           receiver: account,
                       };
                   }),

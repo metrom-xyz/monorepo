@@ -25,10 +25,11 @@ export const getCampaignPreviewApr = (campaign: CampaignPayload) => {
     )
         return null;
 
-    const rewardsUsdValue = campaign.rewards.reduce((acc, reward) => {
-        if (!reward.usdPrice) return 0;
-        return (acc += reward.usdPrice * reward.amount);
-    }, 0);
+    let rewardsUsdValue = 0;
+    for (const reward of campaign.rewards) {
+        if (!reward.amount.usdValue) return null;
+        rewardsUsdValue += reward.amount.usdValue;
+    }
 
     const duration = campaign.endDate.unix() - campaign.startDate.unix();
     if (duration <= 0) return null;

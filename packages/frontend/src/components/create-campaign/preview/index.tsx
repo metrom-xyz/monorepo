@@ -8,7 +8,6 @@ import {
 } from "wagmi";
 import Confetti from "react-confetti";
 import { useWindowSize } from "react-use";
-import { parseUnits } from "viem";
 import { metromAbi } from "@metrom-xyz/contracts/abi";
 import { useCallback, useMemo, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
@@ -82,10 +81,7 @@ export function CampaignPreview({
                               "0x0000000000000000000000000000000000000000000000000000000000000000",
                           rewards: payload.rewards.map((reward) => ({
                               token: reward.token.address,
-                              amount: parseUnits(
-                                  reward.amount.toFixed(reward.token.decimals),
-                                  reward.token.decimals,
-                              ),
+                              amount: reward.amount.raw,
                           })),
                       },
                   ]
