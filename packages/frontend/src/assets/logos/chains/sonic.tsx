@@ -9,7 +9,7 @@ export function SonicLogo(props: any) {
             id="svg20"
             {...props}
         >
-            <g clip-path="url(#clip0_1_2618)" id="g20">
+            <g clipPath="url(#clip0_1_2618)" id="g20">
                 <path
                     d="m 33.6781,34.7914 0.0068,-0.0045 c 0,0 -0.0068,0.0045 -0.0113,0.0067 0.0022,0 0.0045,0 0.0068,0 z"
                     fill="currentColor"
