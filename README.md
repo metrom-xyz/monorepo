@@ -7,7 +7,7 @@
 <br />
 
 <p align="center">
-    MDesign your incentives to AMMplify liquidity
+    Design your incentives to AMMplify liquidity.
 </p>
 
 <br />
