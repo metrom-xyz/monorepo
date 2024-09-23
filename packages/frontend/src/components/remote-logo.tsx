@@ -5,6 +5,7 @@ import {
 } from "@metrom-xyz/ui";
 import { type Address } from "viem";
 import { useChainData } from "@/src/hooks/useChainData";
+import { useTokenLogoStorage } from "../hooks/useTokenLogoStorage";
 
 export function RemoteLogo({
     address,
@@ -14,7 +15,7 @@ export function RemoteLogo({
     ...rest
 }: RemoteLogoProps) {
     const chainData = useChainData(chain);
-
+    const tokenLogoMap = useTokenLogoStorage();
     const [localTokenLogoSrc, setLocalTokenLogoSrc] = useState<string | null>(
         null,
     );
@@ -35,16 +36,13 @@ export function RemoteLogo({
         }
 
         const TokenLogoKey = `${address.toLowerCase()}-${chain}`;
-        const tokenLogoMap = JSON.parse(
-            localStorage.getItem("tokenLogos") || "{}",
-        );
 
         if (!tokenLogoMap || !tokenLogoMap[TokenLogoKey]) {
             return;
         }
 
         setLocalTokenLogoSrc(tokenLogoMap[TokenLogoKey]);
-    }, [address, chain, icon, src]);
+    }, [address, chain, icon, src, tokenLogoMap]);
 
     return (
         <UiRemoteLogo
