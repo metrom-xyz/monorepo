@@ -10,7 +10,6 @@ import {
     useWriteContract,
 } from "wagmi";
 import { metromAbi } from "@metrom-xyz/contracts/abi";
-import { parseUnits } from "viem";
 import { useCallback, useState } from "react";
 import { trackFathomEvent } from "@/src/utils/fathom";
 
@@ -53,10 +52,7 @@ export function ChainOverview({
                           campaignId: claim.campaignId,
                           proof: claim.proof,
                           token: claim.token.address,
-                          amount: parseUnits(
-                              claim.amount.toFixed(claim.token.decimals),
-                              claim.token.decimals,
-                          ),
+                          amount: claim.amount.raw,
                           receiver: account,
                       };
                   }),

@@ -27,8 +27,8 @@ export function Rewards({ from, to, rewards, chainId }: RewardsProps) {
 
     const daysDuration = dayjs.unix(to).diff(dayjs.unix(from), "days", false);
     const perDayUsdValue =
-        rewards.usdValue && daysDuration > 0
-            ? rewards.usdValue / daysDuration
+        rewards.amountUsdValue && daysDuration > 0
+            ? rewards.amountUsdValue / daysDuration
             : 0;
 
     function handleRewardsBreakdownPopoverOpen() {
@@ -59,22 +59,22 @@ export function Rewards({ from, to, rewards, chainId }: RewardsProps) {
                     {rewards.map((reward, i) => {
                         return (
                             <div
-                                key={reward.address}
+                                key={reward.token.address}
                                 className={styles.breakdownRow}
                             >
                                 <div>
                                     <RemoteLogo
                                         chain={chainId}
                                         size="sm"
-                                        address={reward.address}
-                                        defaultText={reward.symbol}
+                                        address={reward.token.address}
+                                        defaultText={reward.token.symbol}
                                     />
                                     <Typography
                                         className={styles.tooltipText}
                                         weight="medium"
                                         variant="sm"
                                     >
-                                        {reward.symbol}
+                                        {reward.token.symbol}
                                     </Typography>
                                 </div>
                                 <div>
@@ -84,7 +84,7 @@ export function Rewards({ from, to, rewards, chainId }: RewardsProps) {
                                         variant="sm"
                                     >
                                         {formatTokenAmount({
-                                            amount: reward.amount,
+                                            amount: reward.amount.formatted,
                                         })}
                                     </Typography>
                                 </div>
@@ -104,8 +104,8 @@ export function Rewards({ from, to, rewards, chainId }: RewardsProps) {
                         variant="lg"
                         weight="medium"
                     >
-                        {rewards.usdValue
-                            ? formatUsdAmount(rewards.usdValue)
+                        {rewards.amountUsdValue
+                            ? formatUsdAmount(rewards.amountUsdValue)
                             : "-"}
                     </Typography>
                 </div>
@@ -119,14 +119,14 @@ export function Rewards({ from, to, rewards, chainId }: RewardsProps) {
                 {rewards.map((reward, i) => {
                     return (
                         <div
-                            key={reward.address}
+                            key={reward.token.address}
                             className={styles.tokenIcon}
                             style={{ left: i * 10 }}
                         >
                             <RemoteLogo
                                 chain={chainId}
-                                address={reward.address}
-                                defaultText={reward.symbol}
+                                address={reward.token.address}
+                                defaultText={reward.token.symbol}
                             />
                         </div>
                     );

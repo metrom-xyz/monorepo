@@ -2,6 +2,14 @@
     @apply my-10 w-full flex justify-between gap-5 px-10 max-w-screen-xl;
 }
 
+.leftContent {
+    @apply flex flex-col gap-11;
+}
+
+.logo {
+    @apply max-w-36;
+}
+
 .socials {
     @apply flex gap-5;
 }

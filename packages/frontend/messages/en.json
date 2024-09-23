@@ -8,7 +8,17 @@
     "footer": {
         "support": "Support",
         "documentation": "Documentation",
-        "contactUs": "Contact us"
+        "contactUs": "Contact us",
+        "socials": {
+            "github": "Github",
+            "x": "Follow us on X",
+            "discord": "Join our Discord server",
+            "telegram": "Join our Telegram chat"
+        }
+    },
+    "notFound": {
+        "title": "Page not found!",
+        "button": "Take me back to Campaigns"
     },
     "allCampaigns": {
         "title": "all campaigns",

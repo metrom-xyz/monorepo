@@ -7,7 +7,7 @@ import {
     useEffect,
 } from "react";
 import { useDebounce } from "react-use";
-import type { Token, Pool } from "@metrom-xyz/sdk";
+import type { Erc20Token, Pool } from "@metrom-xyz/sdk";
 import { useChainId } from "wagmi";
 import { TextInput, Chip, Typography } from "@metrom-xyz/ui";
 import AutoSizer from "react-virtualized-auto-sizer";
@@ -33,7 +33,7 @@ export function PoolPicker({ value, amm, onChange }: PoolPickerProps) {
     const t = useTranslations("newCampaign.form.pool");
     const [search, setSearch] = useState("");
     const [debouncedSearch, setDebouncedSearch] = useState(search);
-    const [baseTokenFilter, setBaseTokenFilter] = useState<Token>();
+    const [baseTokenFilter, setBaseTokenFilter] = useState<Erc20Token>();
     const listRef = useRef(null);
 
     const chain = useChainId();
@@ -68,7 +68,7 @@ export function PoolPicker({ value, amm, onChange }: PoolPickerProps) {
     );
 
     const getBaseTokenChangeHandler = useCallback(
-        (token: Token) => {
+        (token: Erc20Token) => {
             return () => {
                 if (token.address === baseTokenFilter?.address)
                     setBaseTokenFilter(undefined);

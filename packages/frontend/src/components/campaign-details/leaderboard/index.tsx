@@ -1,5 +1,6 @@
 import { useDistributionBreakdown } from "@/src/hooks/useDistributionBreakdown";
-import { shortenAddress, type Campaign } from "@metrom-xyz/sdk";
+import { type Campaign } from "@metrom-xyz/sdk";
+import { shortenAddress } from "@/src/utils/address";
 import { Typography, Skeleton } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
 import dayjs from "dayjs";

@@ -21,7 +21,7 @@
 }
 
 .metromLogo {
-    @apply h-8 w-36 dark:text-white;
+    @apply h-10 w-10 dark:text-white;
 }
 
 .tabs {

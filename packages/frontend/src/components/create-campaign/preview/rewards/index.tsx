@@ -21,10 +21,12 @@ export function Rewards({ rewards, campaignDurationSeconds }: RewardsProps) {
 
     const totalRewardsUsdAmount = useMemo(() => {
         if (!rewards) return 0;
-        return rewards.reduce((accumulator, reward) => {
-            if (!reward.usdPrice) return 0;
-            return (accumulator += reward.amount * reward.usdPrice);
-        }, 0);
+        let total = 0;
+        for (const reward of rewards) {
+            if (!reward.amount.usdValue) return 0;
+            total += reward.amount.usdValue;
+        }
+        return total;
     }, [rewards]);
 
     const dailyRewards = useMemo(() => {
@@ -59,15 +61,11 @@ export function Rewards({ rewards, campaignDurationSeconds }: RewardsProps) {
                         </Typography>
                     </div>
                     <Typography uppercase weight="medium" light>
-                        {formatUsdAmount(
-                            reward.usdPrice
-                                ? reward.amount * reward.usdPrice
-                                : 0,
-                        )}
+                        {formatUsdAmount(reward.amount.usdValue || 0)}
                     </Typography>
                     <Typography uppercase weight="medium" variant="lg">
                         {formatTokenAmount({
-                            amount: reward.amount,
+                            amount: reward.amount.formatted,
                             humanize: false,
                         })}
                     </Typography>

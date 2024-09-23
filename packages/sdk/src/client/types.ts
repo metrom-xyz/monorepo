@@ -1,83 +1,85 @@
-import type { Address } from "viem";
+import type { Address, Hex } from "viem";
 
-interface RawClaim {
-    chainId: number;
-    campaignId: Address;
-    token: RawToken;
-    amount: number;
-    remaining: number;
-    proof: Address[];
-}
-
-interface RawToken {
+export interface BackendErc20Token {
     address: Address;
     symbol: string;
     name: string;
-    decimals: number;
+    decimals: string;
 }
 
-interface RawWhitelistedToken extends RawToken {
-    minimumRate: number;
-    price: number | null;
+export interface BackendReward extends BackendErc20Token {
+    amount: string;
+    remaining: string;
+    usdPrice: string | null;
 }
 
-interface RawPool {
+export interface BackendPool {
     address: Address;
+    token0: BackendErc20Token;
+    token1: BackendErc20Token;
+    fee: string;
+    tvl: string;
+}
+
+export interface BackendCampaignPool {
     amm: string;
-    fee: number;
-    tvl: number;
-    token0: RawToken;
-    token1: RawToken;
-}
-
-interface RawReward {
     address: Address;
-    decimals: number;
-    symbol: string;
-    name: string;
-    amount: number;
-    remaining: number;
-    usdPrice: number | null;
+    token0: BackendErc20Token;
+    token1: BackendErc20Token;
+    fee: string;
+    tvl: string | null;
 }
 
-export interface RawCampaign {
-    chainId: number;
-    id: Address;
+export interface BackendCampaign {
+    chainId: string;
+    id: Hex;
     from: number;
     to: number;
     createdAt: number;
     snapshottedAt: number | null;
-    pool: RawPool;
-    rewards: RawReward[];
+    pool: BackendCampaignPool;
+    rewards: BackendReward[];
     whitelist: Address[] | null;
     blacklist: Address[] | null;
-    apr: number | null;
+    apr: string | null;
 }
 
-export interface FetchCampaignsResponse {
-    campaigns: RawCampaign[];
-    amount: number;
+export interface BackendClaim {
+    chainId: string;
+    campaignId: Hex;
+    token: BackendErc20Token;
+    amount: string;
+    proof: Hex[];
 }
 
-export interface FetchClaimsResponse {
-    claims: RawClaim[];
+export interface BackendWhitelistedToken extends BackendErc20Token {
+    minimumRate: string;
+    price: string;
 }
 
-export interface FetchPoolsResponse {
-    pools: RawPool[];
-}
-
-export interface FetchWhitelistedRewardTokensResponse {
-    tokens: RawWhitelistedToken[];
-}
-
-export interface RawLeaf {
+export interface BackendLeaf {
     account: Address;
     tokenAddress: Address;
     amount: string;
 }
 
+export interface FetchCampaignsResponse {
+    campaigns: BackendCampaign[];
+}
+
+export interface FetchClaimsResponse {
+    claims: BackendClaim[];
+}
+
+export interface FetchPoolsResponse {
+    pools: BackendPool[];
+}
+
+export interface FetchWhitelistedRewardTokensResponse {
+    tokens: BackendWhitelistedToken[];
+}
+
 export interface FetchSnapshotResponse {
     timestamp: number;
-    leaves: RawLeaf[];
+    leaves: BackendLeaf[];
 }

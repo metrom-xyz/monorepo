@@ -5,8 +5,8 @@ import {
     useChainId,
     useSimulateContract,
 } from "wagmi";
-import { erc20Abi, type Address, parseUnits } from "viem";
-import type { TokenAmount } from "@metrom-xyz/sdk";
+import { erc20Abi, type Address } from "viem";
+import type { Erc20TokenAmount } from "@metrom-xyz/sdk";
 import { Button } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
 import { RewardIcon } from "@/src/assets/reward-icon";
@@ -17,7 +17,7 @@ interface ApproveRewardProps {
     fee?: number;
     loading: boolean;
     disabled: boolean;
-    reward: TokenAmount;
+    reward: Erc20TokenAmount;
     index: number;
     totalAmount: number;
     spender?: Address;
@@ -47,13 +47,7 @@ export function ApproveReward({
                 address: reward.token.address,
                 abi: erc20Abi,
                 functionName: "approve",
-                args: [
-                    spender,
-                    parseUnits(
-                        reward.amount.toFixed(reward.token.decimals),
-                        reward.token.decimals,
-                    ),
-                ],
+                args: [spender, reward.amount.raw],
                 query: {
                     enabled: !!spender && !!reward.token.address,
                 },
@@ -99,13 +93,13 @@ export function ApproveReward({
         >
             {signingTransaction || approving
                 ? t("approving", {
-                      amount: reward.amount,
+                      amount: reward.amount.formatted,
                       symbol: reward.token.symbol,
                       currentIndex: index,
                       totalAmount,
                   })
                 : t("approve", {
-                      amount: reward.amount,
+                      amount: reward.amount.formatted,
                       symbol: reward.token.symbol,
                       currentIndex: index,
                       totalAmount,

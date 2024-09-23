@@ -1,5 +1,5 @@
 import {
-    type Token,
+    type Erc20Token,
     MetromApiClient,
     SERVICE_URLS,
     DataManagerClient,
@@ -23,16 +23,21 @@ import {
     mantleSepoliaData,
     modeData,
     mantleData,
+    sonicTestnet,
+    sonicTestnetData,
 } from "./chains";
 
 export interface ChainData {
     metromContract: ChainContract;
     icon: FunctionComponent<SVGIcon>;
     amms: Amm[];
-    baseTokens: Token[];
+    baseTokens: Erc20Token[];
     rewardTokenIcons: Record<Address, string>;
     specialTokens?: Record<Address, FunctionComponent<SVGIcon>>;
 }
+
+export const MAX_U256 =
+    0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffn;
 
 export const METROM_DATA_MANAGER_JWT_ISSUER = "metrom-data-manager";
 
@@ -41,12 +46,14 @@ export const MAXIMUM_REWARDS_RESTRICTIONS = 20;
 export const SUPPORTED_CHAINS: [Chain, ...Chain[]] =
     ENVIRONMENT === Environment.Production
         ? [mode, mantle]
-        : [celoAlfajores, holesky, mantleSepoliaTestnet];
+        : [celoAlfajores, holesky, mantleSepoliaTestnet, sonicTestnet];
 
 export const CHAIN_DATA: Record<SupportedChain, ChainData> = {
     [SupportedChain.Holesky]: holeskyData,
     [SupportedChain.CeloAlfajores]: celoAlfajoresData,
     [SupportedChain.MantleSepolia]: mantleSepoliaData,
+    [SupportedChain.SonicTestnet]: sonicTestnetData,
+
     [SupportedChain.Mode]: modeData,
     [SupportedChain.Mantle]: mantleData,
 };

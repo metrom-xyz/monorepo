@@ -1,4 +1,7 @@
-import { type Token, type WhitelistedErc20TokenAmount } from "@metrom-xyz/sdk";
+import {
+    type Erc20Token,
+    type WhitelistedErc20TokenAmount,
+} from "@metrom-xyz/sdk";
 import type { CampaignPayload } from "@/src/types";
 import { Reward } from "./reward";
 import type { Address } from "viem";
@@ -10,7 +13,7 @@ import { useTranslations } from "next-intl";
 interface RewardsPreviewProps {
     rewards?: CampaignPayload["rewards"];
     campaignDuration?: number;
-    onRemove: (reward: Token) => void;
+    onRemove: (reward: Erc20Token) => void;
     onError: (address: Address, error?: string) => void;
     onUpdate: (updatedReward: WhitelistedErc20TokenAmount) => void;
 }
