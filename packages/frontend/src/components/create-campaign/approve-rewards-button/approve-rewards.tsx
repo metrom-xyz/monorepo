@@ -8,7 +8,7 @@ import {
 import { type Address, erc20Abi, formatUnits } from "viem";
 import type { CampaignPayload } from "@/src/types";
 import { ApproveReward } from "./approve-reward";
-import type { TokenAmount } from "@metrom-xyz/sdk";
+import type { Erc20TokenAmount } from "@metrom-xyz/sdk";
 import { metromAbi } from "@metrom-xyz/contracts/abi";
 import { useChainData } from "@/src/hooks/useChainData";
 
@@ -32,7 +32,7 @@ export function ApproveRewards({
     const [currentIndex, setCurrentIndex] = useState(0);
     const [checkingApprovals, setCheckingApprovals] = useState(false);
     const [toApprove, setToApprove] = useState(rewards || []);
-    const currentlyApprovingReward: TokenAmount | undefined =
+    const currentlyApprovingReward: Erc20TokenAmount | undefined =
         toApprove[currentIndex];
 
     const { data: fee, isLoading: loadingGlobalFee } = useReadContract({
@@ -73,15 +73,7 @@ export function ApproveRewards({
                 allowances[i]?.result === undefined
             )
                 return;
-            if (
-                Number(
-                    formatUnits(
-                        allowances[i].result as bigint,
-                        reward.token.decimals,
-                    ),
-                ) >= reward.amount
-            )
-                continue;
+            if ((allowances[i].result as bigint) >= reward.amount.raw) continue;
             newToApprove.push(reward);
         }
         if (newToApprove.length === 0) {
