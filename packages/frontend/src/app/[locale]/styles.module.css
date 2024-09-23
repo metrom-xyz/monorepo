@@ -1,3 +1,7 @@
 .root {
     @apply bg-gray-100;
 }
+
+.notFound {
+    @apply flex flex-col justify-center items-center gap-10;
+}
