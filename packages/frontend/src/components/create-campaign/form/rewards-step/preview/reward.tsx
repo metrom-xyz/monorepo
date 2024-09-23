@@ -84,16 +84,19 @@ export function Reward({
     const handleRewardAmountOnChange = useCallback(
         (newAmount: NumberFormatValues) => {
             const formattedNewAmount = newAmount.floatValue;
-            const rawNewAmount = parseUnits(
-                formattedNewAmount.toString(),
-                reward.token.decimals,
-            );
+            if (!formattedNewAmount) setRewardAmount(undefined);
+            else {
+                const rawNewAmount = parseUnits(
+                    formattedNewAmount.toString(),
+                    reward.token.decimals,
+                );
 
-            setRewardAmount({
-                raw: rawNewAmount,
-                formatted: formattedNewAmount,
-                usdValue: formattedNewAmount * reward.token.usdPrice,
-            });
+                setRewardAmount({
+                    raw: rawNewAmount,
+                    formatted: formattedNewAmount,
+                    usdValue: formattedNewAmount * reward.token.usdPrice,
+                });
+            }
         },
         [reward.token.decimals, reward.token.usdPrice],
     );
