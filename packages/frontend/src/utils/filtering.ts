@@ -1,5 +1,5 @@
 import { isAddress } from "viem";
-import { type Token, type Pool, Status } from "@metrom-xyz/sdk";
+import { type Erc20Token, type Pool, Status } from "@metrom-xyz/sdk";
 import type { NamedCampaign } from "../hooks/useCampaigns";
 import { FilterableStatus } from "../components/campaigns";
 
@@ -124,7 +124,7 @@ export const filterPools = (pools: Pool[], searchQuery: string) => {
     });
 };
 
-export const filterTokens = (tokens: Token[], searchQuery: string) => {
+export const filterTokens = (tokens: Erc20Token[], searchQuery: string) => {
     if (tokens.length === 0) return [];
     if (!searchQuery) return tokens;
     if (isAddress(searchQuery)) {

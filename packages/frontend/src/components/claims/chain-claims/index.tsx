@@ -1,4 +1,4 @@
-import { type Claim, type Token } from "@metrom-xyz/sdk";
+import { type Claim, type Erc20Token } from "@metrom-xyz/sdk";
 import { useMemo } from "react";
 import { type Address } from "viem";
 import { SkeletonTokenClaim, TokenClaim } from "./token-claim";
@@ -9,7 +9,7 @@ interface ChainOverviewProps {
 }
 
 export interface TokenClaims {
-    token: Token;
+    token: Erc20Token;
     claims: Claim[];
     totalAmount: number;
 }
@@ -26,7 +26,7 @@ export function ChainClaims({ chainWithClaimsData }: ChainOverviewProps) {
                     };
                 }
                 acc[claim.token.address].claims.push(claim);
-                acc[claim.token.address].totalAmount += claim.amount;
+                acc[claim.token.address].totalAmount += claim.amount.formatted;
                 return acc;
             },
             {} as Record<Address, TokenClaims>,
