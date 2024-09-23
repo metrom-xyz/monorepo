@@ -23,6 +23,8 @@ import {
     mantleSepoliaData,
     modeData,
     mantleData,
+    sonicTestnet,
+    sonicTestnetData,
 } from "./chains";
 
 export interface ChainData {
@@ -44,12 +46,14 @@ export const MAXIMUM_REWARDS_RESTRICTIONS = 20;
 export const SUPPORTED_CHAINS: [Chain, ...Chain[]] =
     ENVIRONMENT === Environment.Production
         ? [mode, mantle]
-        : [celoAlfajores, holesky, mantleSepoliaTestnet];
+        : [celoAlfajores, holesky, mantleSepoliaTestnet, sonicTestnet];
 
 export const CHAIN_DATA: Record<SupportedChain, ChainData> = {
     [SupportedChain.Holesky]: holeskyData,
     [SupportedChain.CeloAlfajores]: celoAlfajoresData,
     [SupportedChain.MantleSepolia]: mantleSepoliaData,
+    [SupportedChain.SonicTestnet]: sonicTestnetData,
+
     [SupportedChain.Mode]: modeData,
     [SupportedChain.Mantle]: mantleData,
 };
