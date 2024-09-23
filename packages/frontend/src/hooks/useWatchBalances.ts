@@ -1,13 +1,18 @@
-import type { TokenWithBalance, Token } from "@metrom-xyz/sdk";
+import type { Erc20Token, OnChainAmount } from "@metrom-xyz/sdk";
 import { useEffect, useMemo } from "react";
-import { type Address, erc20Abi } from "viem";
+import { type Address, erc20Abi, formatUnits } from "viem";
 import { useBlockNumber, useReadContracts } from "wagmi";
 
-export function useWatchBalances<T extends Token>(
+export interface Erc20TokenWithBalance<T extends Erc20Token> {
+    token: T;
+    balance: OnChainAmount | null;
+}
+
+export function useWatchBalances<T extends Erc20Token>(
     address?: Address,
     tokens?: T[],
 ): {
-    tokensWithBalance: TokenWithBalance[];
+    tokensWithBalance: Erc20TokenWithBalance<T>[];
     loading: boolean;
 } {
     const { data: blockNumber } = useBlockNumber({ watch: true });
@@ -39,24 +44,38 @@ export function useWatchBalances<T extends Token>(
             !rewardTokenRawBalances ||
             rewardTokenRawBalances.length !== tokens.length
         )
-            return tokens;
+            return tokens.map((token) => {
+                return {
+                    token,
+                    balance: null,
+                };
+            });
 
-        const tokensInChainWithBalance = tokens.reduce(
-            (accumulator: Record<string, TokenWithBalance>, token, i) => {
-                const rawBalance = rewardTokenRawBalances[i];
-                accumulator[`${token.address.toLowerCase()}`] =
-                    rawBalance.status !== "failure"
-                        ? {
-                              ...token,
-                              balance: rawBalance.result as bigint,
-                          }
-                        : { ...token, balance: undefined };
+        return tokens.reduce(
+            (accumulator: Erc20TokenWithBalance<T>[], token, i) => {
+                let balance = null;
+
+                const rawBalanceResponse = rewardTokenRawBalances[i];
+                if (rawBalanceResponse.status !== "failure") {
+                    const rawBalance = rawBalanceResponse.result as bigint;
+                    const formattedBalance = Number(
+                        formatUnits(rawBalance, token.decimals),
+                    );
+                    balance = {
+                        raw: rawBalance,
+                        formatted: formattedBalance,
+                    };
+                }
+
+                accumulator.push({
+                    token,
+                    balance,
+                });
+
                 return accumulator;
             },
-            {},
+            [],
         );
-
-        return Object.values(tokensInChainWithBalance);
     }, [rewardTokenRawBalances, tokens]);
 
     return { tokensWithBalance, loading };

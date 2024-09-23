@@ -1,9 +1,6 @@
 import { useCallback } from "react";
-import { formatUnits } from "viem";
-import {
-    type WhitelistedErc20Token,
-    type WhitelistedErc20TokenWithBalance,
-} from "@metrom-xyz/sdk";
+import { type WhitelistedErc20Token } from "@metrom-xyz/sdk";
+import type { Erc20TokenWithBalance } from "@/src/hooks/useWatchBalances";
 import classNames from "classnames";
 import { Typography, Skeleton } from "@metrom-xyz/ui";
 import { formatTokenAmount } from "@/src/utils/format";
@@ -12,7 +9,7 @@ import { RemoteLogo } from "@/src/components/remote-logo";
 import styles from "./styles.module.css";
 
 interface PickerRowProps {
-    token: WhitelistedErc20TokenWithBalance | null;
+    tokenWithBalance: Erc20TokenWithBalance<WhitelistedErc20Token> | null;
     chain: number;
     style?: any;
     loading?: boolean;
@@ -22,7 +19,7 @@ interface PickerRowProps {
 }
 
 export function Row({
-    token,
+    tokenWithBalance,
     chain,
     style,
     loading,
@@ -31,9 +28,9 @@ export function Row({
     onClick,
 }: PickerRowProps) {
     const handleRewardTokenOnClick = useCallback(() => {
-        if (!token || disabled) return;
-        onClick(token);
-    }, [disabled, onClick, token]);
+        if (!tokenWithBalance || disabled) return;
+        onClick(tokenWithBalance.token);
+    }, [disabled, onClick, tokenWithBalance]);
 
     return (
         <div
@@ -51,7 +48,7 @@ export function Row({
                 ) : (
                     <RemoteLogo
                         size="sm"
-                        address={token?.address}
+                        address={tokenWithBalance?.token.address}
                         chain={chain}
                     />
                 )}
@@ -59,19 +56,17 @@ export function Row({
                     <Skeleton width="40px" variant="xs" />
                 ) : (
                     <Typography weight="medium" variant="lg">
-                        {token?.name}
+                        {tokenWithBalance?.token.name}
                     </Typography>
                 )}
             </div>
-            {loading || !token ? (
+            {loading || !tokenWithBalance ? (
                 <Skeleton width="32px" variant="xs" />
             ) : (
                 <Typography variant="xs" weight="medium" light>
-                    {token.balance
+                    {tokenWithBalance.balance
                         ? formatTokenAmount({
-                              amount: Number(
-                                  formatUnits(token.balance, token.decimals),
-                              ),
+                              amount: tokenWithBalance.balance.formatted,
                           })
                         : "-"}
                 </Typography>

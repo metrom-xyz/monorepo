@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { formatUnits, type Address } from "viem";
+import { formatUnits, parseUnits, type Address } from "viem";
 import {
     Button,
     NumberInput,
@@ -10,7 +10,7 @@ import {
 import { useAccount, useChainId } from "wagmi";
 import { useTranslations } from "next-intl";
 import type {
-    Token,
+    Erc20Token,
     WhitelistedErc20Token,
     WhitelistedErc20TokenAmount,
 } from "@metrom-xyz/sdk";
@@ -75,10 +75,12 @@ export function RewardsStep({
 
     const totalRewardsUsdAmount = useMemo(() => {
         if (!rewards) return 0;
-        return rewards.reduce((accumulator, reward) => {
-            if (!reward.usdPrice) return 0;
-            return (accumulator += reward.amount * reward.usdPrice);
-        }, 0);
+        let total = 0;
+        for (const reward of rewards) {
+            if (!reward.amount.usdValue) return 0;
+            total += reward.amount.usdValue;
+        }
+        return total;
     }, [rewards]);
 
     const campaignDuration = useMemo(() => {
@@ -130,7 +132,7 @@ export function RewardsStep({
         const error =
             rewardAmount > balance
                 ? "newCampaign.form.rewards.errors.insufficientBalance"
-                : distributionRate < rewardToken.minimumRate
+                : distributionRate < rewardToken.minimumRate.formatted
                   ? "newCampaign.form.rewards.errors.lowDistributionRate"
                   : "";
 
@@ -178,13 +180,13 @@ export function RewardsStep({
     const handleRewardTokenOnAdd = useCallback(() => {
         if (!rewardAmount || !rewardToken) return;
 
-        const { address, decimals, name, symbol, minimumRate, usdPrice } =
-            rewardToken;
         const reward: WhitelistedErc20TokenAmount = {
-            token: { address, decimals, name, symbol },
-            amount: rewardAmount,
-            usdPrice,
-            minimumRate,
+            token: rewardToken,
+            amount: {
+                raw: parseUnits(rewardAmount.toString(), rewardToken.decimals),
+                formatted: rewardAmount,
+                usdValue: rewardAmount * rewardToken.usdPrice,
+            },
         };
         const newRewards: CampaignPayload["rewards"] = rewards
             ? [...rewards, reward]
@@ -200,7 +202,7 @@ export function RewardsStep({
     }, [onRewardsChange, rewardAmount, rewardToken, rewards]);
 
     const handleRewardTokenOnRemove = useCallback(
-        (token: Token) => {
+        (token: Erc20Token) => {
             if (!rewards) return;
 
             onRewardsChange({

@@ -4,7 +4,7 @@ import { formatUnits, zeroHash } from "viem";
 import {
     type Snapshot,
     type Campaign,
-    type UsdPricedTokenAmount,
+    type UsdPricedErc20TokenAmount,
 } from "@metrom-xyz/sdk";
 import { dataManagerClient } from "../commons";
 import { useReadContract } from "wagmi";
@@ -14,7 +14,7 @@ import { metromAbi } from "@metrom-xyz/contracts/abi";
 export interface Distribution {
     percentage: number;
     usdValue: number | null;
-    accrued: UsdPricedTokenAmount[];
+    accrued: UsdPricedErc20TokenAmount[];
 }
 
 export interface DistributionBreakdown {
@@ -88,8 +88,12 @@ export function useDistributionBreakdown(campaign?: Campaign): {
 
         // quick lookup map for reward tokens
         const tokenAddressToReward = campaign.rewards.reduce(
-            (accumulator: Record<Address, UsdPricedTokenAmount>, reward) => {
-                accumulator[reward.address.toLowerCase() as Address] = reward;
+            (
+                accumulator: Record<Address, UsdPricedErc20TokenAmount>,
+                reward,
+            ) => {
+                accumulator[reward.token.address.toLowerCase() as Address] =
+                    reward;
                 return accumulator;
             },
             {},
@@ -126,24 +130,24 @@ export function useDistributionBreakdown(campaign?: Campaign): {
                         tokenAddressToReward[
                             tokenAddress.toLowerCase() as Address
                         ];
-                    const amount = Number(
-                        formatUnits(
-                            (percentage * totalAmount) / BI_UNIT,
-                            reward.decimals,
-                        ),
+                    const rawAmount = (percentage * totalAmount) / BI_UNIT;
+                    const formattedAmount = Number(
+                        formatUnits(rawAmount, reward.token.decimals),
                     );
 
-                    const usdValue = reward.usdPrice
-                        ? reward.usdPrice * amount
+                    const usdValue = reward.token.usdPrice
+                        ? reward.token.usdPrice * formattedAmount
                         : null;
                     if (!usdValue) totalUsdValue = null;
                     else if (totalUsdValue !== null) totalUsdValue += usdValue;
 
-                    return <UsdPricedTokenAmount>{
+                    return <UsdPricedErc20TokenAmount>{
                         ...reward,
-                        amount,
-                        usdValue,
-                        usdPrice: reward.usdPrice,
+                        amount: {
+                            raw: rawAmount,
+                            formatted: formattedAmount,
+                            usdValue,
+                        },
                     };
                 },
             );

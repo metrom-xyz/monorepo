@@ -4,23 +4,27 @@ import {
     Typography,
     type NumberFormatValues,
 } from "@metrom-xyz/ui";
-import type { Token, WhitelistedErc20TokenAmount } from "@metrom-xyz/sdk";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import type {
+    Erc20Token,
+    UsdPricedOnChainAmount,
+    WhitelistedErc20TokenAmount,
+} from "@metrom-xyz/sdk";
+import { useCallback, useEffect, useState } from "react";
 import { useWatchBalance } from "@/src/hooks/useWatchBalance";
 import { useAccount, useChainId } from "wagmi";
-import { formatUnits } from "viem/utils";
+import { parseUnits } from "viem/utils";
 import type { Address } from "viem";
 import classNames from "classnames";
 import { formatUsdAmount } from "@/src/utils/format";
 import { RemoteLogo } from "@/src/components/remote-logo";
-import { useTranslations } from "next-intl";
+import { MAX_U256 } from "@/src/commons";
 
 import styles from "./styles.module.css";
 
 interface RewardProps {
     reward: WhitelistedErc20TokenAmount;
     campaignDuration?: number;
-    onRemove: (reward: Token) => void;
+    onRemove: (reward: Erc20Token) => void;
     onError: (address: Address, error?: string) => void;
     onUpdate: (updatedReward: WhitelistedErc20TokenAmount) => void;
 }
@@ -33,7 +37,7 @@ export function Reward({
     onUpdate,
 }: RewardProps) {
     const [error, setError] = useState(false);
-    const [rewardAmount, setRewardAmount] = useState<number | undefined>(
+    const [rewardAmount, setRewardAmount] = useState<UsdPricedOnChainAmount>(
         reward.amount,
     );
     const { address } = useAccount();
@@ -43,24 +47,17 @@ export function Reward({
         reward.token.address,
     );
 
-    const tokenUsdValue = useMemo(() => {
-        if (!reward.usdPrice || !rewardAmount) return null;
-        return rewardAmount * reward.usdPrice;
-    }, [reward.usdPrice, rewardAmount]);
-
     useEffect(() => {
         if (!rewardAmount || !campaignDuration || !reward) return;
 
-        const distributionRate = (rewardAmount * 3_600) / campaignDuration;
-        const balance =
-            rewardTokenBalance !== undefined
-                ? Number(formatUnits(rewardTokenBalance, reward.token.decimals))
-                : Number.MAX_SAFE_INTEGER;
+        const distributionRate =
+            (rewardAmount.formatted * 3_600) / campaignDuration;
+        const balance = rewardTokenBalance || MAX_U256;
 
         const error =
-            rewardAmount > balance
+            rewardAmount.raw > balance
                 ? "newCampaign.form.rewards.errors.insufficientBalance"
-                : distributionRate < reward.minimumRate
+                : distributionRate < reward.token.minimumRate.formatted
                   ? "newCampaign.form.rewards.errors.lowDistributionRate"
                   : "";
 
@@ -74,14 +71,24 @@ export function Reward({
     }, [onError, onRemove, reward]);
 
     const handleRewardAmountOnBlur = useCallback(() => {
-        onUpdate({ ...reward, amount: rewardAmount || 0 });
+        onUpdate({ ...reward, amount: rewardAmount });
     }, [onUpdate, reward, rewardAmount]);
 
     const handleRewardAmountOnChange = useCallback(
-        (rawNewAmount: NumberFormatValues) => {
-            setRewardAmount(rawNewAmount.floatValue);
+        (newAmount: NumberFormatValues) => {
+            const formattedNewAmount = newAmount.floatValue;
+            const rawNewAmount = parseUnits(
+                formattedNewAmount.toString(),
+                reward.token.decimals,
+            );
+
+            setRewardAmount({
+                raw: rawNewAmount,
+                formatted: formattedNewAmount,
+                usdValue: formattedNewAmount * reward.token.usdPrice,
+            });
         },
-        [],
+        [reward.token.decimals, reward.token.usdPrice],
     );
 
     return (
@@ -93,13 +100,15 @@ export function Reward({
                 <div>
                     <NumberInput
                         placeholder="0"
-                        value={rewardAmount ? rewardAmount.toString() : ""}
+                        value={rewardAmount ? rewardAmount.formatted : ""}
                         onValueChange={handleRewardAmountOnChange}
                         className={styles.rewardTokenAmountInput}
                         onBlur={handleRewardAmountOnBlur}
                     />
                     <Typography weight="medium" light variant="xs">
-                        {tokenUsdValue ? formatUsdAmount(tokenUsdValue) : "-"}
+                        {reward.amount.usdValue
+                            ? formatUsdAmount(reward.amount.usdValue)
+                            : "-"}
                     </Typography>
                 </div>
                 <div className={styles.rewardTokenWrapper}>

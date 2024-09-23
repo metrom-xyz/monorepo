@@ -1,13 +1,17 @@
 import { useAccount, useBlockNumber, useReadContracts } from "wagmi";
 import { formatUnits, type Address } from "viem";
 import { CHAIN_DATA, metromApiClient } from "../commons";
-import { type Claim } from "@metrom-xyz/sdk";
+import {
+    SupportedChain,
+    type Claim,
+    type OnChainAmount,
+} from "@metrom-xyz/sdk";
 import { useEffect, useState } from "react";
 import { metromAbi } from "@metrom-xyz/contracts/abi";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 
 interface ClaimWithRemaining extends Claim {
-    remaining: number;
+    remaining: OnChainAmount;
 }
 
 export function useClaims(): {
@@ -55,7 +59,8 @@ export function useClaims(): {
                 return {
                     chainId: rawClaim.chainId,
                     address:
-                        CHAIN_DATA[rawClaim.chainId]?.metromContract.address,
+                        CHAIN_DATA[rawClaim.chainId as SupportedChain]
+                            ?.metromContract.address,
                     abi: metromAbi,
                     functionName: "claimedCampaignReward",
                     args: [
@@ -88,21 +93,23 @@ export function useClaims(): {
         }
 
         const claims = [];
-        const alreadyClaimed = [];
         for (let i = 0; i < claimedData.length; i++) {
             const rawClaimed = claimedData[i] as unknown as bigint;
             const rawClaim = rawClaims[i];
-            const claimed = Number(
-                formatUnits(rawClaimed, rawClaim.token.decimals),
+
+            const rawRemaining = rawClaim.amount.raw - rawClaimed;
+            const formattedRemaining = Number(
+                formatUnits(rawRemaining, rawClaim.token.decimals),
             );
-            const remaining = rawClaim.amount - claimed;
-            if (remaining > 0) {
+
+            if (formattedRemaining > 0) {
                 claims.push({
                     ...rawClaim,
-                    remaining,
+                    remaining: <OnChainAmount>{
+                        raw: rawRemaining,
+                        formatted: formattedRemaining,
+                    },
                 });
-            } else {
-                alreadyClaimed.push({ ...rawClaim, remaining });
             }
         }
 
