@@ -9,6 +9,7 @@
         "deploy:celo-alfajores": "pnpm prepare:deploy development celo-alfajores && pnpm codegen && graph deploy --studio metrom-celo-alfajores -l=v0.0.20",
         "deploy:mantle-sepolia": "pnpm prepare:deploy development mantle-sepolia && pnpm codegen && graph build && graph deploy metrom-mantle-sepolia -l 0.0.1 --node https://subgraph-api.mantle.xyz/deploy --ipfs https://subgraph-api.mantle.xyz/ipfs",
         "deploy:sonic-testnet": "pnpm prepare:deploy development sonic && pnpm codegen && graph build && graph deploy luzzif/metrom-sonic-testnet -l 0.0.1 --node https://graph.testnet.soniclabs.com/service --ipfs https://graph.testnet.soniclabs.com/",
+        "deploy:base": "pnpm prepare:deploy development base && pnpm codegen && graph build && graph deploy --studio metrom-base -l 0.0.1",
         "deploy:mode": "pnpm prepare:deploy production mode-mainnet && pnpm codegen && graph build && graph deploy --studio metrom-mode -l 0.0.3",
         "deploy:mantle": "pnpm prepare:deploy production mantle && pnpm codegen && graph build && graph deploy metrom-mantle -l 0.0.2 --node https://subgraph-api.mantle.xyz/deploy --ipfs https://subgraph-api.mantle.xyz/ipfs",
         "lint": "eslint .",
@@ -20,7 +21,7 @@
     },
     "devDependencies": {
         "@eslint/js": "^9.10.0",
-        "@metrom-xyz/contracts": "^0.22.0",
+        "@metrom-xyz/contracts": "^0.23.0",
         "@types/eslint__js": "^8.42.3",
         "@types/mustache": "^4.2.5",
         "@types/node": "^22.5.4",

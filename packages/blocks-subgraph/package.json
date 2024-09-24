@@ -13,6 +13,7 @@
         "deploy:sonic-testnet": "pnpm prepare:deploy sonic && pnpm codegen && graph build && graph deploy luzzif/metrom-sonic-testnet-blocks -l 0.0.1 --node https://graph.testnet.soniclabs.com/service --ipfs https://graph.testnet.soniclabs.com/",
         "deploy:mantle": "pnpm prepare:deploy mantle && pnpm codegen && graph build && graph deploy metrom-mantle-blocks -l 0.0.1 --node https://subgraph-api.mantle.xyz/deploy --ipfs https://subgraph-api.mantle.xyz/ipfs",
         "deploy:mode": "pnpm prepare:deploy mode-mainnet && pnpm codegen && graph build && graph deploy --studio metrom-mode-blocks -l 0.0.1",
+        "deploy:base": "pnpm prepare:deploy base && pnpm codegen && graph build && graph deploy --studio metrom-base-blocks -l 0.0.1",
         "lint": "eslint .",
         "format": "eslint --fix ."
     },

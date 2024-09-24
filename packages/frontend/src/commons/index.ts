@@ -4,7 +4,7 @@ import {
     SERVICE_URLS,
     DataManagerClient,
 } from "@metrom-xyz/sdk";
-import { type Address, type ChainContract, type Chain } from "viem";
+import { type ChainContract, type Chain } from "viem";
 import { type Amm, type SVGIcon } from "../types";
 import type { FunctionComponent } from "react";
 import { Environment, SupportedChain } from "@metrom-xyz/contracts";
@@ -15,6 +15,7 @@ import {
     mantleSepoliaTestnet,
     mode,
     mantle,
+    base,
 } from "viem/chains";
 
 import {
@@ -25,6 +26,7 @@ import {
     mantleData,
     sonicTestnet,
     sonicTestnetData,
+    baseData,
 } from "./chains";
 
 export interface ChainData {
@@ -32,8 +34,6 @@ export interface ChainData {
     icon: FunctionComponent<SVGIcon>;
     amms: Amm[];
     baseTokens: Erc20Token[];
-    rewardTokenIcons: Record<Address, string>;
-    specialTokens?: Record<Address, FunctionComponent<SVGIcon>>;
 }
 
 export const MAX_U256 =
@@ -46,7 +46,9 @@ export const MAXIMUM_REWARDS_RESTRICTIONS = 20;
 export const SUPPORTED_CHAINS: [Chain, ...Chain[]] =
     ENVIRONMENT === Environment.Production
         ? [mode, mantle]
-        : [celoAlfajores, holesky, mantleSepoliaTestnet, sonicTestnet];
+        : [celoAlfajores, holesky, mantleSepoliaTestnet, sonicTestnet, base];
+
+export const TOKEN_ICONS_URL = `https://raw.githubusercontent.com/metrom-xyz/token-icons/refs/heads/main/${ENVIRONMENT === Environment.Production ? "mainnet" : "testnet"}-icons.json`;
 
 export const CHAIN_DATA: Record<SupportedChain, ChainData> = {
     [SupportedChain.Holesky]: holeskyData,
@@ -56,6 +58,7 @@ export const CHAIN_DATA: Record<SupportedChain, ChainData> = {
 
     [SupportedChain.Mode]: modeData,
     [SupportedChain.Mantle]: mantleData,
+    [SupportedChain.Base]: baseData,
 };
 
 export const metromApiClient = new MetromApiClient(

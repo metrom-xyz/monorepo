@@ -7,4 +7,5 @@ export const START_BLOCKS: { [network: string]: number } = {
     mantle: 67227224,
     "mode-mainnet": 12569458,
     sonic: 73323411,
+    base: 20192397,
 };

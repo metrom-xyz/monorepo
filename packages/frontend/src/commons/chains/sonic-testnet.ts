@@ -37,5 +37,4 @@ export const sonicTestnetData: ChainData = {
     icon: SonicLogo,
     amms: [],
     baseTokens: [],
-    rewardTokenIcons: {},
 };

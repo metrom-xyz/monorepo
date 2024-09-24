@@ -10,6 +10,7 @@ import { ChainClaims, SkeletonChainClaims } from "./chain-claims";
 import { Empty } from "./empty";
 import type { ChainData } from "@/src/commons";
 import {
+    base,
     celoAlfajores,
     holesky,
     mantle,
@@ -17,6 +18,7 @@ import {
     mode,
 } from "viem/chains";
 import {
+    baseData,
     celoAlfajoresData,
     holeskyData,
     mantleData,
@@ -86,6 +88,11 @@ export function Claims() {
                 [SupportedChain.Mantle]: {
                     chain: mantle,
                     chainData: mantleData,
+                    claims: [],
+                },
+                [SupportedChain.Base]: {
+                    chain: base,
+                    chainData: baseData,
                     claims: [],
                 },
             } as Record<SupportedChain, ChainWithClaimsData>,

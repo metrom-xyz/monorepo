@@ -2,34 +2,23 @@ import {
     RemoteLogo as UiRemoteLogo,
     type RemoteLogoProps,
 } from "@metrom-xyz/ui";
-import { type Address } from "viem";
-import { useChainData } from "@/src/hooks/useChainData";
+import { useTokenIconUri } from "../hooks/useTokenIconUri";
 
 export function RemoteLogo({
     address,
     chain,
-    icon,
     src,
+    loading,
     ...rest
 }: RemoteLogoProps) {
-    const chainData = useChainData(chain);
-
-    const resolvedIcon =
-        !icon && chainData?.specialTokens && address
-            ? chainData.specialTokens[address.toLowerCase() as Address]
-            : undefined;
-
-    const resolvedSrc =
-        chainData && address
-            ? chainData.rewardTokenIcons[address.toLowerCase() as Address]
-            : undefined;
+    const { loading: loadingUri, uri } = useTokenIconUri(chain, address);
 
     return (
         <UiRemoteLogo
             address={address}
             {...rest}
-            icon={icon || resolvedIcon}
-            src={src || resolvedSrc}
+            src={src || uri}
+            loading={loadingUri || loading}
         />
     );
 }
