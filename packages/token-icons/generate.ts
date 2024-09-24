@@ -20,6 +20,7 @@ type TokenIcons = Record<number, Record<Address, string>>;
 const TOKEN_LIST_URLS = [
     "https://raw.githubusercontent.com/ethereum-optimism/ethereum-optimism.github.io/refs/heads/master/optimism.tokenlist.json",
     "https://tokens.coingecko.com/uniswap/all.json",
+    "https://raw.githubusercontent.com/mantlenetworkio/mantle-token-lists/refs/heads/main/mantle.tokenlist.json",
 ];
 
 const testnetIcons: TokenIcons = {
