@@ -17,6 +17,7 @@ import duration from "dayjs/plugin/duration";
 import localizedFormat from "dayjs/plugin/localizedFormat";
 import relativeTime from "dayjs/plugin/relativeTime";
 import dayjs from "dayjs";
+import { TokenIconsProvider } from "./token-icon-provider";
 
 dayjs.extend(duration);
 dayjs.extend(localizedFormat);
@@ -42,18 +43,20 @@ export function ClientProviders({
     return (
         <WagmiProvider config={config}>
             <QueryClientProvider client={queryClient}>
-                <RainbowKitProvider
-                    appInfo={{
-                        appName: "Metrom",
-                        learnMoreUrl: "https://www.metrom.xyz",
-                    }}
-                    locale={locale}
-                    theme={lightTheme({
-                        accentColor: "#000",
-                    })}
-                >
-                    {children}
-                </RainbowKitProvider>
+                <TokenIconsProvider>
+                    <RainbowKitProvider
+                        appInfo={{
+                            appName: "Metrom",
+                            learnMoreUrl: "https://www.metrom.xyz",
+                        }}
+                        locale={locale}
+                        theme={lightTheme({
+                            accentColor: "#000",
+                        })}
+                    >
+                        {children}
+                    </RainbowKitProvider>
+                </TokenIconsProvider>
             </QueryClientProvider>
         </WagmiProvider>
     );

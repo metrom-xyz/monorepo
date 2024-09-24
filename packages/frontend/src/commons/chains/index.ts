@@ -4,3 +4,4 @@ export { mantleSepoliaData } from "./mantle-sepolia";
 export { holeskyData } from "./holesky";
 export { mantleData } from "./mantle";
 export { sonicTestnetData, sonicTestnet } from "./sonic-testnet";
+export { baseData } from "./base";

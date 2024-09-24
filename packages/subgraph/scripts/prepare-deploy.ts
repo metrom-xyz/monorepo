@@ -18,6 +18,7 @@ const NETWORK_NAME: Record<SupportedChain, string> = {
 
     [SupportedChain.Mode]: "mode-mainnet",
     [SupportedChain.Mantle]: "mantle",
+    [SupportedChain.Base]: "base",
 };
 
 const [, , rawEnvironment, rawNetwork = ""] = process.argv;

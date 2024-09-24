@@ -3,7 +3,6 @@ import type {
     SupportedChain,
     UsdPricedErc20TokenAmount,
 } from "@metrom-xyz/sdk";
-import { useTranslations } from "next-intl";
 import { useRef, useState } from "react";
 import { formatTokenAmount, formatUsdAmount } from "@/src/utils/format";
 import { RemoteLogo } from "@/src/components/remote-logo";
@@ -21,8 +20,6 @@ export function RewardsBreakdown({
     usdValue,
     accrued,
 }: RewardsBreakdownProps) {
-    const t = useTranslations("campaignDetails.leaderboard.personalRank");
-
     const [popoverOpen, setPopoverOpen] = useState(false);
     const [rewardedAmountWrapper, setRewardedAmountWrapper] =
         useState<HTMLDivElement | null>(null);

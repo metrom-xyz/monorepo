@@ -33,12 +33,4 @@ export const holeskyData: ChainData = {
             symbol: "USDT",
         },
     ],
-    rewardTokenIcons: {
-        "0x94373a4919b3240d86ea41593d5eba789fef3848":
-            "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png",
-        "0x0fe5a93b63accf31679321dd0daf341c037a1187":
-            "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0x6B175474E89094C44Da98b954EedeAC495271d0F/logo.png",
-        "0xa5ba8636a78bbf1910430d0368c0175ef5a1845b":
-            "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48/logo.png",
-    },
 };
