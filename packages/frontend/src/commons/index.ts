@@ -15,6 +15,7 @@ import {
     mantleSepoliaTestnet,
     mode,
     mantle,
+    base,
 } from "viem/chains";
 
 import {
@@ -45,7 +46,7 @@ export const MAXIMUM_REWARDS_RESTRICTIONS = 20;
 export const SUPPORTED_CHAINS: [Chain, ...Chain[]] =
     ENVIRONMENT === Environment.Production
         ? [mode, mantle]
-        : [celoAlfajores, holesky, mantleSepoliaTestnet, sonicTestnet];
+        : [celoAlfajores, holesky, mantleSepoliaTestnet, sonicTestnet, base];
 
 export const TOKEN_ICONS_URL = `https://raw.githubusercontent.com/metrom-xyz/token-icons/refs/heads/main/${ENVIRONMENT === Environment.Production ? "mainnet" : "testnet"}-icons.json`;
 
