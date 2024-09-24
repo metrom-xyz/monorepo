@@ -1,0 +1,27 @@
+{
+    "type": "module",
+    "private": true,
+    "name": "token-icons",
+    "version": "0.0.1",
+    "scripts": {
+        "generate": "tsx ./generate.ts",
+        "lint": "eslint .",
+        "format": "eslint --fix ."
+    },
+    "devDependencies": {
+        "@eslint/js": "^9.10.0",
+        "@metrom-xyz/contracts": "^0.23.0",
+        "@tsconfig/node20": "^20.1.4",
+        "@types/eslint__js": "^8.42.3",
+        "@types/node": "^22.5.4",
+        "@uniswap/token-lists": "1.0.0-beta.34",
+        "eslint": "^8",
+        "eslint-config-prettier": "^9.1.0",
+        "eslint-plugin-prettier": "^5.2.1",
+        "prettier": "^3.3.3",
+        "tsx": "^4.19.1",
+        "typescript": "^5.5.4",
+        "typescript-eslint": "^8.4.0",
+        "viem": "^2.21.14"
+    }
+}
