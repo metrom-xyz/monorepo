@@ -132,6 +132,21 @@
                     "balance": "Balance",
                     "empty": "Nothing here"
                 }
+            },
+            "kpi": {
+                "title": "Set KPI",
+                "currentTvl": "Current tvl",
+                "rangedTvl": {
+                    "lowerBound": "Lower bound",
+                    "upperBound": "Upper bound"
+                },
+                "errors": {
+                    "missing": "Bound missing",
+                    "malformed": "Wrong bound values"
+                },
+                "minimumPayout": "Minimum payout",
+                "apply": "Apply",
+                "applied": "KPI added"
             }
         },
         "submit": {
@@ -157,6 +172,9 @@
             "total": "Total rewards",
             "token": "Reward token",
             "amount": "Amount"
+        },
+        "errors": {
+            "kpiUpload": "Something went wrong when processing the KPI"
         },
         "deploy": "Launch campaign",
         "connectWallet": "Connect wallet",
@@ -225,7 +243,10 @@
     "claims": {
         "chain": "Chain",
         "claimAll": "Claim all",
+        "claimingAll": "Claiming all",
         "claimByToken": "Claim all {tokenSymbol}",
+        "loading": "Loading",
+        "claiming": "Claiming",
         "empty": {
             "title": "No claims found",
             "body": "There are currently no claims associated with the connected wallet. Explore the available opportunities on the all campaigns page.",

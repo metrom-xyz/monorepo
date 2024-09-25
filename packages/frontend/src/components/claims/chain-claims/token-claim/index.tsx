@@ -15,6 +15,7 @@ import { useChainData } from "@/src/hooks/useChainData";
 import { formatTokenAmount } from "@/src/utils/format";
 import { trackFathomEvent } from "@/src/utils/fathom";
 import { RemoteLogo } from "@/src/components/remote-logo";
+import { SpinnerIcon } from "@/src/assets/spinner-icon";
 
 import styles from "./styles.module.css";
 
@@ -118,9 +119,17 @@ export function TokenClaim({ chainId, chainClaims }: TokenClaimProps) {
                 size="small"
                 disabled={simulateClaimAllError || claimed}
                 loading={simulatingClaimAll || claiming}
+                icon={simulatingClaimAll || claiming ? SpinnerIcon : undefined}
+                iconPlacement="right"
                 onClick={handleClaim}
             >
-                {t("claimByToken", { tokenSymbol: chainClaims.token.symbol })}
+                {simulatingClaimAll
+                    ? t("loading")
+                    : claiming
+                      ? t("claiming")
+                      : t("claimByToken", {
+                            tokenSymbol: chainClaims.token.symbol,
+                        })}
             </Button>
         </div>
     );

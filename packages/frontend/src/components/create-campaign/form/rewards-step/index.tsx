@@ -63,7 +63,7 @@ export function RewardsStep({
             error?: string;
         }[]
     >([]);
-    const [feedbackVisible, setFeedbackVisible] = useState(false);
+    const [feedback, setFeedback] = useState(false);
 
     const { address } = useAccount();
     const chainId = useChainId();
@@ -106,14 +106,14 @@ export function RewardsStep({
     }, [chainId]);
 
     useEffect(() => {
-        if (!feedbackVisible) return;
+        if (!feedback) return;
 
         const timeout = setTimeout(() => {
-            setFeedbackVisible(false);
+            setFeedback(false);
         }, 1500);
 
         return () => clearTimeout(timeout);
-    }, [feedbackVisible]);
+    }, [feedback]);
 
     useEffect(() => {
         if (!campaignDuration || !rewardToken) return;
@@ -188,7 +188,7 @@ export function RewardsStep({
             : [reward];
 
         setOpen(false);
-        setFeedbackVisible(true);
+        setFeedback(true);
 
         onRewardsChange({ rewards: newRewards });
         setRewardAmount({
@@ -323,11 +323,7 @@ export function RewardsStep({
                     <Button
                         variant="secondary"
                         size="small"
-                        icon={
-                            feedbackVisible
-                                ? BorderedTickIcon
-                                : BorderedPlusIcon
-                        }
+                        icon={feedback ? BorderedTickIcon : BorderedPlusIcon}
                         disabled={
                             rewards?.length === 5 ||
                             !rewardAmount ||
@@ -339,7 +335,8 @@ export function RewardsStep({
                             root: styles.addRewardButton,
                         }}
                     >
-                        {feedbackVisible
+                        {/* TODO: add proper feedback */}
+                        {feedback
                             ? t("newCampaign.form.rewards.addButton.added")
                             : t("newCampaign.form.rewards.addButton.add")}
                     </Button>

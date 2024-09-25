@@ -1,4 +1,5 @@
 import type {
+    KpiSpecification,
     Pool,
     SupportedAmm,
     WhitelistedErc20TokenAmount,
@@ -27,6 +28,7 @@ export interface CampaignPayload {
     startDate?: Dayjs;
     endDate?: Dayjs;
     rewards?: WhitelistedErc20TokenAmount[];
+    kpiSpecification?: KpiSpecification;
     // restrictions?: {
     //     type: "blacklist" | "whitelist";
     //     list: Address[];
@@ -37,6 +39,7 @@ export interface CampaignPayloadErrors {
     startDate?: boolean;
     endDate?: boolean;
     rewards?: boolean;
+    kpiSpecification?: boolean;
 }
 
 export type AmmInfo = Pick<Amm, "slug" | "name" | "logo">;

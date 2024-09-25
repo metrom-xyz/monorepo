@@ -10,6 +10,7 @@ import { PoolStep } from "./pool-step";
 import { StartDateStep } from "./start-date-step";
 import { EndDateStep } from "./end-date-step";
 import { RewardsStep } from "./rewards-step";
+import { KpiStep } from "./kpi-step";
 
 import styles from "./styles.module.css";
 
@@ -69,6 +70,13 @@ export function CreateCampaignForm({
                 startDate={payload?.startDate}
                 endDate={payload?.endDate}
                 onRewardsChange={onPayloadChange}
+                onError={onPayloadError}
+            />
+            <KpiStep
+                disabled={!payload?.rewards || unsupportedChain}
+                pool={payload?.pool}
+                kpiSpecification={payload?.kpiSpecification}
+                onKpiChange={onPayloadChange}
                 onError={onPayloadError}
             />
         </div>
