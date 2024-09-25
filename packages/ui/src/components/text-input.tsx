@@ -1,4 +1,4 @@
-import React, { forwardRef, useId } from "react";
+import { forwardRef, useId } from "react";
 import type { ReactElement } from "react";
 import type { BaseInputProps } from "./commons/input";
 import { BaseInputWrapper } from "./commons/input";

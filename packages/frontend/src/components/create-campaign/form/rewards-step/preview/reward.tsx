@@ -37,6 +37,11 @@ export function Reward({
     onUpdate,
 }: RewardProps) {
     const [error, setError] = useState(false);
+    const [rewardRawValue, setRewardRawValue] = useState<NumberFormatValues>({
+        floatValue: reward.amount.formatted,
+        formattedValue: reward.amount.formatted.toString(),
+        value: reward.amount.formatted.toString(),
+    });
     const [rewardAmount, setRewardAmount] = useState<
         UsdPricedOnChainAmount | undefined
     >(reward.amount);
@@ -48,7 +53,16 @@ export function Reward({
     );
 
     useEffect(() => {
-        if (!rewardAmount || !campaignDuration || !reward) return;
+        if (!campaignDuration || !reward) return;
+
+        if (!rewardAmount) {
+            onError(
+                reward.token.address,
+                "newCampaign.form.rewards.errors.lowDistributionRate",
+            );
+            setError(true);
+            return;
+        }
 
         const distributionRate =
             (rewardAmount.formatted * 3_600) / campaignDuration;
@@ -64,6 +78,25 @@ export function Reward({
         onError(reward.token.address, error);
         setError(!!error);
     }, [campaignDuration, onError, reward, rewardAmount, rewardTokenBalance]);
+
+    useEffect(() => {
+        if (!rewardRawValue) return;
+
+        const formattedNewAmount = rewardRawValue.floatValue;
+        if (!formattedNewAmount) setRewardAmount(undefined);
+        else {
+            const rawNewAmount = parseUnits(
+                formattedNewAmount.toString(),
+                reward.token.decimals,
+            );
+
+            setRewardAmount({
+                raw: rawNewAmount,
+                formatted: formattedNewAmount,
+                usdValue: formattedNewAmount * reward.token.usdPrice,
+            });
+        }
+    }, [reward.token.decimals, reward.token.usdPrice, rewardRawValue]);
 
     const handleRewardOnRemove = useCallback(() => {
         onError(reward.token.address, "");
@@ -81,26 +114,6 @@ export function Reward({
         });
     }, [onUpdate, reward, rewardAmount]);
 
-    const handleRewardAmountOnChange = useCallback(
-        (newAmount: NumberFormatValues) => {
-            const formattedNewAmount = newAmount.floatValue;
-            if (!formattedNewAmount) setRewardAmount(undefined);
-            else {
-                const rawNewAmount = parseUnits(
-                    formattedNewAmount.toString(),
-                    reward.token.decimals,
-                );
-
-                setRewardAmount({
-                    raw: rawNewAmount,
-                    formatted: formattedNewAmount,
-                    usdValue: formattedNewAmount * reward.token.usdPrice,
-                });
-            }
-        },
-        [reward.token.decimals, reward.token.usdPrice],
-    );
-
     return (
         <div
             key={reward.token.address}
@@ -110,12 +123,9 @@ export function Reward({
                 <div>
                     <NumberInput
                         placeholder="0"
-                        value={
-                            rewardAmount
-                                ? rewardAmount.formatted.toString()
-                                : ""
-                        }
-                        onValueChange={handleRewardAmountOnChange}
+                        value={rewardRawValue?.formattedValue}
+                        onValueChange={setRewardRawValue}
+                        allowNegative={false}
                         className={styles.rewardTokenAmountInput}
                         onBlur={handleRewardAmountOnBlur}
                     />

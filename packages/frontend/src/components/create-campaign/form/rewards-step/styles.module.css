@@ -29,7 +29,7 @@
 }
 
 .rewardPickerWrapper {
-    @apply flex items-center justify-between;
+    @apply flex items-end justify-between;
 }
 
 .inputWrapper {
