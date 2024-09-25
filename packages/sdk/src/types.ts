@@ -117,3 +117,24 @@ export interface Snapshot {
     timestamp: number;
     leaves: Leaf[];
 }
+
+export enum KpiMetric {
+    RangePoolTvl = "range-pool-tvl",
+}
+
+export interface RangePoolKpiGoal {
+    metric: KpiMetric.RangePoolTvl;
+    lowerUsdTarget: number;
+    upperUsdTarget: number;
+}
+
+export interface KpiSpecification {
+    minimumPayoutPercentage?: number;
+    goal: RangePoolKpiGoal;
+}
+
+export interface FullSpecification {
+    whitelist?: Address[];
+    blacklist?: Address[];
+    kpi?: KpiSpecification;
+}
