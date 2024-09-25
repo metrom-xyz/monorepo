@@ -1,0 +1,37 @@
+.root {
+    @apply bg-gray-200 border-none;
+}
+
+.root:global(.rc-switch-checked) {
+    @apply bg-black border-none;
+}
+
+.root:global(.rc-switch-unchecked) {
+    @apply border-none;
+}
+
+.root:global(.rc-switch::after) {
+    @apply transform-none animate-none;
+}
+
+.root:global(.rc-switch:focus) {
+    @apply shadow-none;
+}
+
+.root.big {
+    @apply w-14 h-8;
+}
+
+.root.big:global(.rc-switch::after) {
+    @apply w-6 h-6 left-1 top-1 shadow-none;
+}
+
+.root.big:global(.rc-switch-checked::after) {
+    @apply left-7;
+}
+
+/* TODO: add styles for other sizes */
+/* .root.small {
+}
+.root.xsmall {
+} */
