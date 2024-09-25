@@ -53,7 +53,7 @@ export const NumberInput = forwardRef<HTMLInputElement, NumberInputProps>(
                 <NumericFormat
                     type="text"
                     defaultValue=""
-                    thousandSeparator=","
+                    thousandSeparator=" "
                     decimalSeparator="."
                     value={value}
                     disabled={disabled || loading}

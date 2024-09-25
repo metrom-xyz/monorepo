@@ -124,10 +124,10 @@ export function Reward({
                     <NumberInput
                         placeholder="0"
                         value={rewardRawValue?.formattedValue}
-                        onValueChange={setRewardRawValue}
                         allowNegative={false}
-                        className={styles.rewardTokenAmountInput}
+                        onValueChange={setRewardRawValue}
                         onBlur={handleRewardAmountOnBlur}
+                        className={styles.rewardTokenAmountInput}
                     />
                     <Typography weight="medium" light variant="xs">
                         {reward.amount.usdValue
