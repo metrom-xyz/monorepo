@@ -83,6 +83,7 @@ export function CreateCampaign() {
             ...prevState,
             pool: undefined,
             rewards: undefined,
+            kpiSpecification: undefined,
         }));
         setPayloadErrors({});
         setView(View.form);

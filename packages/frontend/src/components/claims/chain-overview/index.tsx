@@ -12,6 +12,7 @@ import {
 import { metromAbi } from "@metrom-xyz/contracts/abi";
 import { useCallback, useState } from "react";
 import { trackFathomEvent } from "@/src/utils/fathom";
+import { SpinnerIcon } from "@/src/assets/spinner-icon";
 
 import styles from "./styles.module.css";
 
@@ -111,9 +112,15 @@ export function ChainOverview({
                 size="xsmall"
                 disabled={simulateClaimAllErrored || claimed}
                 loading={simulatingClaimAll || claiming}
+                icon={simulatingClaimAll || claiming ? SpinnerIcon : undefined}
+                iconPlacement="right"
                 onClick={handleClaimAll}
             >
-                {t("claimAll")}
+                {simulatingClaimAll
+                    ? t("loading")
+                    : claiming
+                      ? t("claimingAll")
+                      : t("claimAll")}
             </Button>
         </div>
     );

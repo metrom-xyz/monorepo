@@ -9,7 +9,7 @@ import {
 import Confetti from "react-confetti";
 import { useWindowSize } from "react-use";
 import { metromAbi } from "@metrom-xyz/contracts/abi";
-import { useCallback, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 import { MetromLightLogo } from "@/src/assets/metrom-light-logo";
 import { useRouter } from "@/src/i18n/routing";
@@ -21,6 +21,9 @@ import { Header } from "./header";
 import { formatPercentage, formatUsdAmount } from "@/src/utils/format";
 import { getCampaignPreviewApr } from "@/src/utils/campaign";
 import { trackFathomEvent } from "@/src/utils/fathom";
+import { type Hex, zeroHash } from "viem";
+import { SERVICE_URLS, type FullSpecification } from "@metrom-xyz/sdk";
+import { ENVIRONMENT } from "@/src/commons/env";
 
 import styles from "./styles.module.css";
 
@@ -39,8 +42,11 @@ export function CampaignPreview({
 }: CampaignPreviewProps) {
     const t = useTranslations("campaignPreview");
     const [deploying, setDeploying] = useState(false);
+    const [uploadingSpecification, setUploadingSpecification] = useState(false);
     const [created, setCreated] = useState(false);
     const [rewardsApproved, setRewardsApproved] = useState(false);
+    const [specificationHash, setSpecificationHash] = useState<Hex>(zeroHash);
+    const [error, setError] = useState("");
 
     const feedback = useRef<HTMLDivElement>(null);
     const router = useRouter();
@@ -76,9 +82,7 @@ export function CampaignPreview({
                           pool: payload.pool.address,
                           from: payload.startDate.unix(),
                           to: payload.endDate.unix(),
-                          // TODO: add specification
-                          specification:
-                              "0x0000000000000000000000000000000000000000000000000000000000000000",
+                          specification: specificationHash,
                           rewards: payload.rewards.map((reward) => ({
                               token: reward.token.address,
                               amount: reward.amount.raw,
@@ -98,6 +102,49 @@ export function CampaignPreview({
                 payload.rewards.length > 0,
         },
     });
+
+    useEffect(() => {
+        const uploadSpecification = async () => {
+            setUploadingSpecification(true);
+
+            const specification: FullSpecification = {
+                // TODO: add restrictions
+                kpi: payload.kpiSpecification,
+            };
+
+            // FIXME: remove
+            console.log(JSON.stringify(specification));
+
+            try {
+                const response = await fetch(
+                    `${SERVICE_URLS[ENVIRONMENT].dataManager}/data/temporary`,
+                    {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify(specification),
+                    },
+                );
+
+                if (!response.ok) throw new Error(await response.text());
+
+                const { hash } = (await response.json()) as { hash: Hex };
+                setSpecificationHash(`0x${hash}`);
+            } catch (error) {
+                console.error(
+                    `Could not upload specification to data-manager: ${JSON.stringify(specification)}`,
+                    error,
+                );
+                setError("kpiUpload");
+            } finally {
+                setUploadingSpecification(false);
+            }
+        };
+
+        // TODO: add restrictions check
+        if (payload.kpiSpecification && rewardsApproved) uploadSpecification();
+    }, [payload.kpiSpecification, rewardsApproved]);
 
     function handleOnRewardsApproved() {
         setRewardsApproved(true);
@@ -182,9 +229,11 @@ export function CampaignPreview({
                                 icon={ArrowRightIcon}
                                 iconPlacement="right"
                                 disabled={
-                                    malformedPayload || simulateCreateErrored
+                                    !!error ||
+                                    malformedPayload ||
+                                    simulateCreateErrored
                                 }
-                                loading={deploying}
+                                loading={uploadingSpecification || deploying}
                                 className={{ root: styles.deployButton }}
                                 onClick={handleOnDeploy}
                             >

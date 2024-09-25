@@ -1,13 +1,14 @@
-import { type Activity } from "@metrom-xyz/sdk";
+import { SupportedChain, type Activity } from "@metrom-xyz/sdk";
 import { useEffect, useState } from "react";
 import { metromApiClient } from "../commons";
-import { useAccount } from "wagmi";
+import { useAccount, useChainId } from "wagmi";
 
 export function useActivities(): {
     loading: boolean;
     activities: Activity[];
 } {
-    const { chainId, address } = useAccount();
+    const chainId: SupportedChain = useChainId();
+    const { address } = useAccount();
 
     const [activities, setActivities] = useState<Activity[]>([]);
     const [loading, setLoading] = useState(false);

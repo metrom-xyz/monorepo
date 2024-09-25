@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import type { Address } from "blo";
-import { formatUnits, zeroHash } from "viem";
+import { formatUnits, zeroHash, zeroAddress } from "viem";
 import {
     type Snapshot,
     type Campaign,
@@ -106,6 +106,8 @@ export function useDistributionBreakdown(campaign?: Campaign): {
         const weightByAccount: Record<Address, bigint> = {};
         for (const leaf of snapshot.leaves) {
             totalWeight += leaf.amount;
+
+            if (leaf.account === zeroAddress) continue;
 
             if (!totalDistributedAmountByToken[leaf.tokenAddress])
                 totalDistributedAmountByToken[leaf.tokenAddress] = leaf.amount;
