@@ -54,7 +54,7 @@ export function RewardsStep({
 }: RewardsStepProps) {
     const t = useTranslations();
     const [open, setOpen] = useState(false);
-    const [rewardAmount, setRewardAmount] = useState<number | undefined>();
+    const [rewardAmount, setRewardAmount] = useState<NumberFormatValues>();
     const [rewardToken, setRewardToken] = useState<WhitelistedErc20Token>();
     const [rewardAmountError, setRewardAmountError] = useState("");
     const [existingRewardsErrors, setExistingRewardsErrors] = useState<
@@ -118,19 +118,20 @@ export function RewardsStep({
     useEffect(() => {
         if (!campaignDuration || !rewardToken) return;
 
-        if (rewardAmount === undefined) {
+        if (!rewardAmount || rewardAmount.floatValue === undefined) {
             setRewardAmountError("");
             return;
         }
 
-        const distributionRate = (rewardAmount * 3_600) / campaignDuration;
+        const distributionRate =
+            (rewardAmount.floatValue * 3_600) / campaignDuration;
         const balance =
             rewardTokenBalance !== undefined
                 ? Number(formatUnits(rewardTokenBalance, rewardToken.decimals))
                 : Number.MAX_SAFE_INTEGER;
 
         const error =
-            rewardAmount > balance
+            rewardAmount.floatValue > balance
                 ? "newCampaign.form.rewards.errors.insufficientBalance"
                 : distributionRate < rewardToken.minimumRate.formatted
                   ? "newCampaign.form.rewards.errors.lowDistributionRate"
@@ -162,13 +163,6 @@ export function RewardsStep({
         setOpen((open) => !open);
     }
 
-    const handleRewardAmountOnChange = useCallback(
-        (rawNewAmount: NumberFormatValues) => {
-            setRewardAmount(rawNewAmount.floatValue);
-        },
-        [],
-    );
-
     const handleRewardTokenChange = useCallback(
         (newToken: WhitelistedErc20Token) => {
             setRewardToken(newToken);
@@ -178,16 +172,17 @@ export function RewardsStep({
     );
 
     const handleRewardTokenOnAdd = useCallback(() => {
-        if (!rewardAmount || !rewardToken) return;
+        if (!rewardAmount || !rewardAmount.floatValue || !rewardToken) return;
 
         const reward: WhitelistedErc20TokenAmount = {
             token: rewardToken,
             amount: {
-                raw: parseUnits(rewardAmount.toString(), rewardToken.decimals),
-                formatted: rewardAmount,
-                usdValue: rewardAmount * rewardToken.usdPrice,
+                raw: parseUnits(rewardAmount.value, rewardToken.decimals),
+                formatted: rewardAmount.floatValue,
+                usdValue: rewardAmount.floatValue * rewardToken.usdPrice,
             },
         };
+
         const newRewards: CampaignPayload["rewards"] = rewards
             ? [...rewards, reward]
             : [reward];
@@ -196,8 +191,13 @@ export function RewardsStep({
         setFeedbackVisible(true);
 
         onRewardsChange({ rewards: newRewards });
-        setRewardAmount(undefined);
+        setRewardAmount({
+            floatValue: undefined,
+            formattedValue: "",
+            value: "",
+        });
         setRewardToken(undefined);
+
         trackFathomEvent("PICK_REWARD");
     }, [onRewardsChange, rewardAmount, rewardToken, rewards]);
 
@@ -259,7 +259,7 @@ export function RewardsStep({
                     </div>
                 }
                 decorator={disabled}
-                className={{ root: styles.stepPreview }}
+                className={{ root: !disabled ? styles.stepPreview : "" }}
             >
                 <div className={styles.previewWrapper}>
                     <RewardsPreview
@@ -288,19 +288,13 @@ export function RewardsStep({
                         </Typography>
                     </div>
                     <hr className={styles.horizontalDivider} />
-                    <Typography
-                        uppercase
-                        weight="medium"
-                        variant="sm"
-                        className={styles.inputLabel}
-                    >
-                        {t("newCampaign.form.rewards.title.add")}
-                    </Typography>
                     <div className={styles.rewardPickerWrapper}>
                         <NumberInput
                             placeholder="0"
-                            value={rewardAmount ? rewardAmount.toString() : ""}
-                            onValueChange={handleRewardAmountOnChange}
+                            label={t("newCampaign.form.rewards.title.add")}
+                            value={rewardAmount?.formattedValue}
+                            allowNegative={false}
+                            onValueChange={setRewardAmount}
                             className={styles.rewardTokenAmountInput}
                         />
                         <div
@@ -343,8 +337,6 @@ export function RewardsStep({
                         onClick={handleRewardTokenOnAdd}
                         className={{
                             root: styles.addRewardButton,
-                            contentWrapper: styles.addRewardButtonContent,
-                            icon: styles.addRewardButtonIcon,
                         }}
                     >
                         {feedbackVisible

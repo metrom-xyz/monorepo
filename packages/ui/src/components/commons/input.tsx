@@ -91,8 +91,10 @@ export const BaseInputWrapper = ({
                     htmlFor={id}
                 >
                     <Typography
+                        uppercase
                         variant="xs"
                         weight="medium"
+                        light
                         className="labelText"
                     >
                         {label}

@@ -1,4 +1,4 @@
-import React, { forwardRef, useId } from "react";
+import { forwardRef, useId } from "react";
 import type { ReactElement } from "react";
 import { NumericFormat, type NumericFormatProps } from "react-number-format";
 import { type BaseInputProps, BaseInputWrapper } from "./commons/input";
