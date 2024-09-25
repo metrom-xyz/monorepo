@@ -235,6 +235,7 @@ export function RewardsStep({
             open={open}
             completed={!disabled}
             error={!!rewardsError}
+            className={styles.step}
         >
             <StepPreview
                 label={
@@ -328,11 +329,10 @@ export function RewardsStep({
                                 : BorderedPlusIcon
                         }
                         disabled={
-                            !feedbackVisible &&
-                            (rewards?.length === 5 ||
-                                !rewardAmount ||
-                                !rewardToken ||
-                                !!rewardAmountError)
+                            rewards?.length === 5 ||
+                            !rewardAmount ||
+                            !rewardToken ||
+                            !!rewardAmountError
                         }
                         onClick={handleRewardTokenOnAdd}
                         className={{

@@ -1,3 +1,7 @@
+.step {
+    @apply hover:border-white;
+}
+
 .stepPreview {
     @apply hover:cursor-default hover:bg-inherit h-full;
 }

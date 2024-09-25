@@ -12,8 +12,9 @@ interface StepProps {
     completed?: boolean;
     open?: boolean;
     error?: boolean;
-    onPreviewClick?: () => void;
     children: ReactElement[];
+    className?: string;
+    onPreviewClick?: () => void;
 }
 
 export function Step({
@@ -21,8 +22,9 @@ export function Step({
     completed,
     open,
     error,
-    onPreviewClick,
     children,
+    className,
+    onPreviewClick,
 }: StepProps) {
     const rootRef = useRef<HTMLDivElement>(null);
     const wrapperRef = useRef<HTMLDivElement>(null);
@@ -61,7 +63,7 @@ export function Step({
     return (
         <animated.div
             style={springStyles}
-            className={classNames(styles.root, {
+            className={classNames(className, styles.root, {
                 [styles.disabled]: disabled,
                 [styles.error]: error,
                 [styles.open]: open,
