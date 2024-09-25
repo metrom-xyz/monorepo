@@ -21,6 +21,7 @@
         "@popperjs/core": "^2.11.8",
         "@react-spring/web": "^9.7.4",
         "dayjs": "^1.11.13",
+        "rc-switch": "^4.1.0",
         "react-number-format": "^5.4.2",
         "react-popper": "^2.3.0",
         "react-use": "^17.5.1",

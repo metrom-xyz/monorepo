@@ -1,0 +1,9 @@
+.wrapper {
+    composes: input from "../commons/styles.module.css";
+    @apply flex flex-col gap-0.5 items-center;
+}
+
+/* TODO: improve styles */
+.slider {
+    @apply w-full h-5 bg-white accent-black rounded-2xl cursor-pointer;
+}
