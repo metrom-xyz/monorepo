@@ -164,7 +164,11 @@ export function SimulationChart({
     )
         return (
             <div className={styles.root}>
-                <Typography>{t("missingData")}</Typography>
+                <div className={styles.emptyContainer}>
+                    <Typography uppercase variant="sm" light weight="medium">
+                        {t("missingData")}
+                    </Typography>
+                </div>
             </div>
         );
 

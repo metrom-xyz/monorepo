@@ -6,6 +6,10 @@
     @apply bg-[#F7F7F8] rounded-lg;
 }
 
+.emptyContainer {
+    @apply w-full h-[270px] flex justify-center items-center bg-[#F7F7F8] rounded-lg;
+}
+
 .axisLabel {
     @apply font-sans
         uppercase
