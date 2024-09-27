@@ -165,7 +165,10 @@ export function KpiStep({
     }
 
     const handleOnApply = useCallback(() => {
-        if (!lowerUsdTargetRaw?.floatValue || !upperUsdTargetRaw?.floatValue)
+        if (
+            lowerUsdTargetRaw?.floatValue === undefined ||
+            upperUsdTargetRaw?.floatValue === undefined
+        )
             return;
 
         const { floatValue: lowerUsdTarget } = lowerUsdTargetRaw;
