@@ -3,7 +3,7 @@ export function ClaimReward(props: any) {
         <svg
             width="24"
             height="24"
-            viewBox="0 0 24 24"
+            viewBox="0 0 20 20"
             fill="none"
             version="1.1"
             id="svg3"
