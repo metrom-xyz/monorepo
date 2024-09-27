@@ -1,5 +1,6 @@
 import { formatUnits, type Address, type Hex } from "viem";
 import {
+    type BackendActivity,
     type BackendCampaign,
     type BackendErc20Token,
     type FetchCampaignsResponse,
@@ -179,7 +180,31 @@ export class MetromApiClient {
                 `response not ok while fetching activity for address ${params.address}: ${await response.text()}`,
             );
 
-        return (await response.json()) as Activity[];
+        const activities = (await response.json()) as BackendActivity[];
+
+        return activities.map((activity) => {
+            if (activity.payload.type === "claimReward") {
+                const processedToken = processErc20Token(
+                    activity.payload.token,
+                );
+                const rawAmount = BigInt(activity.payload.amount);
+
+                return {
+                    ...activity,
+                    payload: {
+                        ...activity.payload,
+                        amount: {
+                            raw: activity.payload.amount,
+                            formatted: Number(
+                                formatUnits(rawAmount, processedToken.decimals),
+                            ),
+                        },
+                    },
+                };
+            }
+
+            return activity;
+        }) as Activity[];
     }
 }
 

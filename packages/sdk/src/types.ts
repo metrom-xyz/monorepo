@@ -98,7 +98,7 @@ export interface Activity {
         | {
               type: "claimReward";
               token: Erc20Token;
-              amount: number;
+              amount: OnChainAmount;
               receiver: Address;
           }
         | {

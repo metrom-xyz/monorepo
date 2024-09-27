@@ -1,4 +1,4 @@
-import type { Address, Hex } from "viem";
+import type { Address, Hash, Hex } from "viem";
 
 export interface BackendErc20Token {
     address: Address;
@@ -55,6 +55,24 @@ export interface BackendClaim {
 export interface BackendWhitelistedToken extends BackendErc20Token {
     minimumRate: string;
     price: string;
+}
+
+export interface BackendActivity {
+    transaction: {
+        hash: Hash;
+        timestamp: number;
+    };
+    payload:
+        | {
+              type: "claimReward";
+              token: BackendErc20Token;
+              amount: string;
+              receiver: Address;
+          }
+        | {
+              type: "createCampaign";
+              id: Hash;
+          };
 }
 
 export interface BackendLeaf {
