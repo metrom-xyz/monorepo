@@ -75,6 +75,7 @@ export function CreateCampaignForm({
             <KpiStep
                 disabled={!payload?.rewards || unsupportedChain}
                 pool={payload?.pool}
+                rewards={payload?.rewards}
                 kpiSpecification={payload?.kpiSpecification}
                 onKpiChange={onPayloadChange}
                 onError={onPayloadError}

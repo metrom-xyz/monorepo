@@ -45,6 +45,11 @@
         font-sans
         font-normal
         outline-none
+        border
+        border-transparent
+        transition-colors
+        duration-200
+        ease-out
         placeholder:text-gray-400
         placeholder:select-none
         bg-gray-100
@@ -69,7 +74,7 @@
 }
 
 .inputError {
-    @apply bg-red-200;
+    @apply border-red-600;
 }
 
 .inputLoading {
