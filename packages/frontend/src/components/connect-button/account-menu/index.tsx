@@ -121,14 +121,15 @@ export function AccountMenu({
                 >
                     <Typography>{t("tabs.activity")}</Typography>
                 </div>
-                <div
+                {/* TODO: add once we have a proper design */}
+                {/* <div
                     onClick={handleCampaignsClick}
                     className={classNames(styles.tab, {
                         [styles.tabActive]: tab === Tab.Campaigns,
                     })}
                 >
                     <Typography>{t("tabs.campaigns")}</Typography>
-                </div>
+                </div> */}
             </div>
             {tab === Tab.Activity && <Activities chainId={chainId} />}
         </div>
