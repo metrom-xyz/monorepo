@@ -144,6 +144,11 @@
                     "missing": "Bound missing",
                     "malformed": "Wrong bound values"
                 },
+                "simulation": {
+                    "error": "Wrong data, cant't run the simulation",
+                    "title": "KPI simulation",
+                    "description": "Disclaimer: this is a simulation"
+                },
                 "minimumPayout": "Minimum payout",
                 "apply": "Apply",
                 "applied": "KPI added"
@@ -263,6 +268,23 @@
             "createCampaign": "Create campaign",
             "timeAgo": "{time} ago",
             "seeCampaign": "See campaign"
+        }
+    },
+    "simulationChart": {
+        "missingData": "Missing data for the simulation",
+        "inconsitentData": "Inconsitent data, can't run simulation, try to change the bound values",
+        "error": "",
+        "currentTvl": "Pool",
+        "lowerBound": "Low bd",
+        "upperBound": "Up bd",
+        "labels": {
+            "tvl": "TVL",
+            "reward": "Reward"
+        },
+        "tooltip": {
+            "tvl": "TVL",
+            "payout": "Payout",
+            "kpiReached": "KPI reached"
         }
     }
 }

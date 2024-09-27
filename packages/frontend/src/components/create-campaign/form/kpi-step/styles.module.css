@@ -41,3 +41,11 @@
 .applyButton {
     @apply w-full;
 }
+
+.simulationTitleWrapper {
+    @apply flex flex-col gap-1.5;
+}
+
+.chartWrapper {
+    @apply flex flex-col gap-3;
+}

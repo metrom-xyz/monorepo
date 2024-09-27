@@ -16,17 +16,25 @@ import {
     type NumberFormatValues,
 } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
-import { useCallback, useEffect, useState, type ChangeEvent } from "react";
+import {
+    useCallback,
+    useEffect,
+    useMemo,
+    useState,
+    type ChangeEvent,
+} from "react";
 import { formatUsdAmount } from "@/src/utils/format";
 import classNames from "classnames";
 import { KpiMetric, type KpiSpecification } from "@metrom-xyz/sdk";
-import { usePrevious } from "react-use";
+import { useDebounce, usePrevious } from "react-use";
+import { SimulationChart } from "./simulation-chart";
 
 import styles from "./styles.module.css";
 
 interface KpiStepProps {
     disabled?: boolean;
     pool?: CampaignPayload["pool"];
+    rewards?: CampaignPayload["rewards"];
     kpiSpecification?: CampaignPayload["kpiSpecification"];
     onKpiChange: (amm: CampaignPayloadPart) => void;
     onError: (errors: CampaignPayloadErrors) => void;
@@ -35,6 +43,7 @@ interface KpiStepProps {
 export function KpiStep({
     disabled,
     pool,
+    rewards,
     kpiSpecification,
     onKpiChange,
     onError,
@@ -72,6 +81,16 @@ export function KpiStep({
     });
 
     const prevKpiSpecification = usePrevious(kpiSpecification);
+
+    const totalRewardsUsdAmount = useMemo(() => {
+        if (!rewards) return 0;
+        let total = 0;
+        for (const reward of rewards) {
+            if (!reward.amount.usdValue) return 0;
+            total += reward.amount.usdValue;
+        }
+        return total;
+    }, [rewards]);
 
     // this hooks is used to disable and close the step when
     // the kpi specification gets disabled, after the campaign creation
@@ -122,11 +141,7 @@ export function KpiStep({
         if (
             lowerUsdTarget !== undefined &&
             upperUsdTarget !== undefined &&
-            (lowerUsdTarget > upperUsdTarget ||
-                lowerUsdTarget === upperUsdTarget ||
-                lowerUsdTarget === 0 ||
-                lowerUsdTarget <= 0 ||
-                upperUsdTarget <= 0)
+            lowerUsdTarget >= upperUsdTarget
         ) {
             setBoundsError("errors.malformed");
             return;
@@ -157,7 +172,9 @@ export function KpiStep({
         const { floatValue: upperUsdTarget } = upperUsdTargetRaw;
 
         const kpiSpecification: KpiSpecification = {
-            ...(minimumPayoutPercentage > 0 ? { minimumPayoutPercentage } : {}),
+            ...(minimumPayoutPercentage > 0
+                ? { minimumPayoutPercentage: minimumPayoutPercentage / 100 }
+                : {}),
             goal: {
                 metric: KpiMetric.RangePoolTvl,
                 lowerUsdTarget,
@@ -228,6 +245,7 @@ export function KpiStep({
                             label={t("rangedTvl.lowerBound")}
                             placeholder="$0"
                             prefix="$"
+                            error={!!boundsError}
                             allowNegative={false}
                             value={lowerUsdTargetRaw?.formattedValue}
                             onValueChange={setLowerUsdTargetRaw}
@@ -236,6 +254,7 @@ export function KpiStep({
                             label={t("rangedTvl.upperBound")}
                             placeholder="$0"
                             prefix="$"
+                            error={!!boundsError}
                             allowNegative={false}
                             value={upperUsdTargetRaw?.formattedValue}
                             onValueChange={setUpperUsdTargetRaw}
@@ -247,6 +266,37 @@ export function KpiStep({
                         onChange={handleMinimumPayoutOnChange}
                         className={styles.minimumPayoutSlider}
                     />
+                    <div className={styles.chartWrapper}>
+                        <div className={styles.simulationTitleWrapper}>
+                            <Typography
+                                uppercase
+                                weight="medium"
+                                light
+                                variant="xs"
+                            >
+                                {t("simulation.title")}
+                            </Typography>
+                            <Typography weight="medium" light variant="xs">
+                                {/* TODO: add proper disclaimer description */}
+                                {t("simulation.description")}
+                            </Typography>
+                        </div>
+                        {boundsError ? (
+                            <ErrorText variant="xs" weight="medium">
+                                {t("simulation.error")}
+                            </ErrorText>
+                        ) : (
+                            <SimulationChart
+                                lowerUsdTarget={lowerUsdTargetRaw?.floatValue}
+                                upperUsdTarget={upperUsdTargetRaw?.floatValue}
+                                totalRewardsUsd={totalRewardsUsdAmount}
+                                minimumPayoutPercentage={
+                                    minimumPayoutPercentage
+                                }
+                                poolUsdTvl={pool?.tvl}
+                            />
+                        )}
+                    </div>
                     <Button
                         variant="secondary"
                         size="small"
