@@ -301,8 +301,8 @@ export function KpiStep({
                         variant="secondary"
                         size="small"
                         disabled={
-                            !upperUsdTargetRaw ||
-                            !lowerUsdTargetRaw ||
+                            upperUsdTargetRaw === undefined ||
+                            lowerUsdTargetRaw === undefined ||
                             !!boundsError
                         }
                         onClick={handleOnApply}
