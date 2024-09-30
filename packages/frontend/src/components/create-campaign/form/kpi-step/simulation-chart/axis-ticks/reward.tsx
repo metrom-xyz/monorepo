@@ -2,11 +2,15 @@ import numeral from "numeral";
 
 import styles from "./styles.module.css";
 
-interface RewardTickProps {}
+interface RewardTickProps {
+    payload?: {
+        value?: number;
+    };
+    x?: number;
+    y?: number;
+}
 
-export function RewardTick({ ...rest }: RewardTickProps) {
-    const { payload, x, y } = rest as any;
-
+export function RewardTick({ payload, x, y }: RewardTickProps) {
     if (!payload || payload.value === 0) return null;
 
     return (

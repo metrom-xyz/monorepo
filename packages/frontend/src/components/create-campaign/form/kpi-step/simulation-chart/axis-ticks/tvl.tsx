@@ -7,6 +7,11 @@ interface TvlTickProps {
     poolUsdTvl: number;
     lowerUsdTarget: number;
     upperUsdTarget: number;
+    payload?: {
+        value?: number;
+    };
+    x?: number;
+    y?: number;
 }
 
 // this component specific to the TVL axis for the simulation chart, and it's
@@ -16,11 +21,11 @@ export function TvlTick({
     poolUsdTvl,
     lowerUsdTarget,
     upperUsdTarget,
-    ...rest
+    payload,
+    y,
+    x,
 }: TvlTickProps) {
     const t = useTranslations("simulationChart");
-
-    const { payload, x, y } = rest as any;
 
     if (!payload || payload.value === 0) return null;
 
