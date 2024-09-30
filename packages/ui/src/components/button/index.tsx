@@ -95,9 +95,6 @@ const Component = (props: ButtonProps, ref: RefType<typeof props>) => {
                     className={classNames(
                         className?.contentWrapper,
                         styles.wrapper,
-                        {
-                            [styles.wrapperLoadingNoIcon]: loading && !hasIcon,
-                        },
                     )}
                 >
                     {children}

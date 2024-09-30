@@ -250,8 +250,8 @@
         "claimAll": "Claim all",
         "claimingAll": "Claiming all",
         "claimByToken": "Claim all {tokenSymbol}",
+        "claimingByToken": "Claiming {tokenSymbol}",
         "loading": "Loading",
-        "claiming": "Claiming",
         "empty": {
             "title": "No claims found",
             "body": "There are currently no claims associated with the connected wallet. Explore the available opportunities on the all campaigns page.",

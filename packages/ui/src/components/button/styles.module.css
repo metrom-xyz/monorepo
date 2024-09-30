@@ -87,7 +87,3 @@
         last:ml-2
         only:m-0;
 }
-
-.wrapperLoadingNoIcon {
-    @apply hidden;
-}
