@@ -69,7 +69,7 @@ export function SimulationChart({
     );
     useDebounce(
         () => {
-            setMinimumPayoutPercentage(minPayoutPercentage / 100);
+            setMinimumPayoutPercentage(minPayoutPercentage);
         },
         500,
         [minPayoutPercentage],

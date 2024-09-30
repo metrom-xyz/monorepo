@@ -175,7 +175,7 @@ export function KpiStep({
     }
 
     function handleMinimumPayoutOnChange(event: ChangeEvent<HTMLInputElement>) {
-        setMinimumPayoutPercentage(Number(event.target.value));
+        setMinimumPayoutPercentage(Number(event.target.value) / 100);
     }
 
     const handleOnApply = useCallback(() => {
@@ -279,7 +279,7 @@ export function KpiStep({
                     </div>
                     <SliderInput
                         label={t("minimumPayout")}
-                        value={minimumPayoutPercentage}
+                        value={minimumPayoutPercentage * 100}
                         onChange={handleMinimumPayoutOnChange}
                         className={styles.minimumPayoutSlider}
                     />
