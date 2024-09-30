@@ -15,7 +15,6 @@ import { useChainData } from "@/src/hooks/useChainData";
 import { formatTokenAmount } from "@/src/utils/format";
 import { trackFathomEvent } from "@/src/utils/fathom";
 import { RemoteLogo } from "@/src/components/remote-logo";
-import { SpinnerIcon } from "@/src/assets/spinner-icon";
 
 import styles from "./styles.module.css";
 
@@ -66,7 +65,7 @@ export function TokenClaim({ chainId, chainClaims }: TokenClaimProps) {
     const handleClaim = useCallback(() => {
         if (!writeContractAsync || !publicClient || !simulatedClaimAll?.request)
             return;
-        const create = async () => {
+        const claim = async () => {
             setClaiming(true);
             try {
                 await switchChainAsync({ chainId });
@@ -89,7 +88,7 @@ export function TokenClaim({ chainId, chainClaims }: TokenClaimProps) {
                 setClaiming(false);
             }
         };
-        void create();
+        void claim();
     }, [
         chainId,
         publicClient,
@@ -119,14 +118,15 @@ export function TokenClaim({ chainId, chainClaims }: TokenClaimProps) {
                 size="small"
                 disabled={simulateClaimAllError || claimed}
                 loading={simulatingClaimAll || claiming}
-                icon={simulatingClaimAll || claiming ? SpinnerIcon : undefined}
                 iconPlacement="right"
                 onClick={handleClaim}
             >
                 {simulatingClaimAll
                     ? t("loading")
                     : claiming
-                      ? t("claiming")
+                      ? t("claimingByToken", {
+                            tokenSymbol: chainClaims.token.symbol,
+                        })
                       : t("claimByToken", {
                             tokenSymbol: chainClaims.token.symbol,
                         })}
