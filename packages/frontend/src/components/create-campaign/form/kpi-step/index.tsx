@@ -26,7 +26,7 @@ import {
 import { formatUsdAmount } from "@/src/utils/format";
 import classNames from "classnames";
 import { KpiMetric, type KpiSpecification } from "@metrom-xyz/sdk";
-import { useDebounce, usePrevious } from "react-use";
+import { usePrevious } from "react-use";
 import { SimulationChart } from "./simulation-chart";
 
 import styles from "./styles.module.css";
@@ -38,6 +38,11 @@ interface KpiStepProps {
     kpiSpecification?: CampaignPayload["kpiSpecification"];
     onKpiChange: (amm: CampaignPayloadPart) => void;
     onError: (errors: CampaignPayloadErrors) => void;
+}
+
+interface NumberInputValues {
+    raw?: NumberFormatValues["floatValue"];
+    formatted?: NumberFormatValues["formattedValue"];
 }
 
 export function KpiStep({
@@ -56,25 +61,23 @@ export function KpiStep({
         kpiSpecification?.minimumPayoutPercentage || 0,
     );
     const [lowerUsdTargetRaw, setLowerUsdTargetRaw] = useState<
-        NumberFormatValues | undefined
+        NumberInputValues | undefined
     >(() => {
         if (kpiSpecification) {
             return {
-                floatValue: kpiSpecification.goal.lowerUsdTarget,
-                formattedValue: kpiSpecification.goal.lowerUsdTarget.toString(),
-                value: kpiSpecification.goal.lowerUsdTarget.toString(),
+                raw: kpiSpecification.goal.lowerUsdTarget,
+                formatted: kpiSpecification.goal.lowerUsdTarget.toString(),
             };
         }
         return undefined;
     });
     const [upperUsdTargetRaw, setUpperUsdTargetRaw] = useState<
-        NumberFormatValues | undefined
+        NumberInputValues | undefined
     >(() => {
         if (kpiSpecification) {
             return {
-                floatValue: kpiSpecification.goal.upperUsdTarget,
-                formattedValue: kpiSpecification.goal.upperUsdTarget.toString(),
-                value: kpiSpecification.goal.upperUsdTarget.toString(),
+                raw: kpiSpecification.goal.upperUsdTarget,
+                formatted: kpiSpecification.goal.upperUsdTarget.toString(),
             };
         }
         return undefined;
@@ -135,19 +138,16 @@ export function KpiStep({
 
         if (!lowerUsdTargetRaw || !upperUsdTargetRaw) return;
 
-        const { floatValue: lowerUsdTarget } = lowerUsdTargetRaw;
-        const { floatValue: upperUsdTarget } = upperUsdTargetRaw;
+        const { raw: lowerUsdTarget } = lowerUsdTargetRaw;
+        const { raw: upperUsdTarget } = upperUsdTargetRaw;
 
         if (
             lowerUsdTarget !== undefined &&
             upperUsdTarget !== undefined &&
             lowerUsdTarget >= upperUsdTarget
-        ) {
+        )
             setBoundsError("errors.malformed");
-            return;
-        }
-
-        setBoundsError("");
+        else setBoundsError("");
     }, [lowerUsdTargetRaw, upperUsdTargetRaw]);
 
     useEffect(() => {
@@ -160,30 +160,46 @@ export function KpiStep({
         setEnabled((enabled) => !enabled);
     }
 
+    function handleUpperUsdTargetOnChange(value: NumberFormatValues) {
+        setUpperUsdTargetRaw({
+            raw: value.floatValue,
+            formatted: value.formattedValue,
+        });
+    }
+
+    function handleLowerUsdTargetOnChange(value: NumberFormatValues) {
+        setLowerUsdTargetRaw({
+            raw: value.floatValue,
+            formatted: value.formattedValue,
+        });
+    }
+
     function handleMinimumPayoutOnChange(event: ChangeEvent<HTMLInputElement>) {
         setMinimumPayoutPercentage(Number(event.target.value));
     }
 
     const handleOnApply = useCallback(() => {
         if (
-            lowerUsdTargetRaw?.floatValue === undefined ||
-            upperUsdTargetRaw?.floatValue === undefined
+            lowerUsdTargetRaw?.raw === undefined ||
+            upperUsdTargetRaw?.raw === undefined
         )
             return;
 
-        const { floatValue: lowerUsdTarget } = lowerUsdTargetRaw;
-        const { floatValue: upperUsdTarget } = upperUsdTargetRaw;
+        const { raw: lowerUsdTarget } = lowerUsdTargetRaw;
+        const { raw: upperUsdTarget } = upperUsdTargetRaw;
 
         const kpiSpecification: KpiSpecification = {
-            ...(minimumPayoutPercentage > 0
-                ? { minimumPayoutPercentage: minimumPayoutPercentage / 100 }
-                : {}),
             goal: {
                 metric: KpiMetric.RangePoolTvl,
                 lowerUsdTarget,
                 upperUsdTarget,
             },
         };
+
+        if (minimumPayoutPercentage) {
+            kpiSpecification.minimumPayoutPercentage =
+                minimumPayoutPercentage / 100;
+        }
 
         setFeedback(true);
         onKpiChange({ kpiSpecification });
@@ -250,8 +266,8 @@ export function KpiStep({
                             prefix="$"
                             error={!!boundsError}
                             allowNegative={false}
-                            value={lowerUsdTargetRaw?.formattedValue}
-                            onValueChange={setLowerUsdTargetRaw}
+                            value={lowerUsdTargetRaw?.formatted}
+                            onValueChange={handleLowerUsdTargetOnChange}
                         />
                         <NumberInput
                             label={t("rangedTvl.upperBound")}
@@ -259,8 +275,8 @@ export function KpiStep({
                             prefix="$"
                             error={!!boundsError}
                             allowNegative={false}
-                            value={upperUsdTargetRaw?.formattedValue}
-                            onValueChange={setUpperUsdTargetRaw}
+                            value={upperUsdTargetRaw?.formatted}
+                            onValueChange={handleUpperUsdTargetOnChange}
                         />
                     </div>
                     <SliderInput
@@ -290,8 +306,8 @@ export function KpiStep({
                             </ErrorText>
                         ) : (
                             <SimulationChart
-                                lowerUsdTarget={lowerUsdTargetRaw?.floatValue}
-                                upperUsdTarget={upperUsdTargetRaw?.floatValue}
+                                lowerUsdTarget={lowerUsdTargetRaw?.raw}
+                                upperUsdTarget={upperUsdTargetRaw?.raw}
                                 totalRewardsUsd={totalRewardsUsdAmount}
                                 minimumPayoutPercentage={
                                     minimumPayoutPercentage
