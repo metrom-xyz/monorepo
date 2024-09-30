@@ -35,6 +35,7 @@ export function Campaign({ campaign }: CampaignProps) {
             />
             <Apr apr={campaign.apr} />
             <Rewards
+                status={campaign.status}
                 from={campaign.from}
                 to={campaign.to}
                 rewards={campaign.rewards}
