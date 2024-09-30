@@ -3,6 +3,9 @@ import { useEffect, useState } from "react";
 import { metromApiClient } from "../commons";
 import { useAccount, useChainId } from "wagmi";
 
+const TIME_RANGE = 60 * 60 * 60 * 24 * 7; // 1 week
+
+// TODO: dynamic from and to
 export function useActivities(): {
     loading: boolean;
     activities: Activity[];
@@ -24,9 +27,13 @@ export function useActivities(): {
 
             try {
                 if (!cancelled) setLoading(true);
+
+                const to = Math.floor(Date.now() / 1000);
                 const activities = await metromApiClient.fetchActivities({
                     chainId,
                     address,
+                    from: to - TIME_RANGE,
+                    to,
                 });
 
                 if (!cancelled) setActivities(activities);

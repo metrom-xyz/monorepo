@@ -96,13 +96,13 @@ export interface Activity {
     };
     payload:
         | {
-              type: "claimReward";
+              type: "claim-reward";
               token: Erc20Token;
               amount: OnChainAmount;
               receiver: Address;
           }
         | {
-              type: "createCampaign";
+              type: "create-campaign";
               id: Hash;
           };
 }

@@ -9,6 +9,7 @@
         "deploy:swapsicle:mantle-sepolia": "pnpm prepare:deploy mantle-sepolia swapsicle && pnpm codegen && graph build && graph deploy metrom-swapsicle-mantle-sepolia -l 0.0.3 --node https://subgraph-api.mantle.xyz/deploy --ipfs https://subgraph-api.mantle.xyz/ipfs",
         "deploy:swapsicle:mantle": "pnpm prepare:deploy mantle swapsicle && pnpm codegen && graph build && graph deploy metrom-swapsicle-mantle -l 0.0.2 --node https://subgraph-api.mantle.xyz/deploy --ipfs https://subgraph-api.mantle.xyz/ipfs",
         "deploy:kim:mode": "pnpm prepare:deploy mode-mainnet kim && pnpm codegen && graph build && graph deploy --studio metrom-kim-mode -l 0.0.4",
+        "deploy:kim:base": "pnpm prepare:deploy base kim && pnpm codegen && graph build && graph deploy --studio metrom-kim-base -l 0.0.1",
         "lint": "eslint .",
         "format": "eslint --fix ."
     },

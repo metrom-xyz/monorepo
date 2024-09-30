@@ -64,13 +64,13 @@ export interface BackendActivity {
     };
     payload:
         | {
-              type: "claimReward";
+              type: "claim-reward";
               token: BackendErc20Token;
               amount: string;
               receiver: Address;
           }
         | {
-              type: "createCampaign";
+              type: "create-campaign";
               id: Hash;
           };
 }
@@ -83,10 +83,6 @@ export interface BackendLeaf {
 
 export interface FetchCampaignsResponse {
     campaigns: BackendCampaign[];
-}
-
-export interface FetchClaimsResponse {
-    claims: BackendClaim[];
 }
 
 export interface FetchPoolsResponse {
