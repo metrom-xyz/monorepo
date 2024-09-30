@@ -23,7 +23,7 @@ export function Activity({ chainId, transaction, payload }: ActivityProps) {
     const timeAgo = t("timeAgo", { time });
 
     const { Icon, title } =
-        payload.type === "createCampaign"
+        payload.type === "create-campaign"
             ? {
                   Icon: NewCampaignIcon,
                   title: t("createCampaign"),
