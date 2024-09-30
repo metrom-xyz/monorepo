@@ -11,6 +11,7 @@ import { StartDateStep } from "./start-date-step";
 import { EndDateStep } from "./end-date-step";
 import { RewardsStep } from "./rewards-step";
 import { KpiStep } from "./kpi-step";
+import { KPI } from "@/src/commons/env";
 
 import styles from "./styles.module.css";
 
@@ -72,14 +73,16 @@ export function CreateCampaignForm({
                 onRewardsChange={onPayloadChange}
                 onError={onPayloadError}
             />
-            <KpiStep
-                disabled={!payload?.rewards || unsupportedChain}
-                pool={payload?.pool}
-                rewards={payload?.rewards}
-                kpiSpecification={payload?.kpiSpecification}
-                onKpiChange={onPayloadChange}
-                onError={onPayloadError}
-            />
+            {KPI && (
+                <KpiStep
+                    disabled={!payload?.rewards || unsupportedChain}
+                    pool={payload?.pool}
+                    rewards={payload?.rewards}
+                    kpiSpecification={payload?.kpiSpecification}
+                    onKpiChange={onPayloadChange}
+                    onError={onPayloadError}
+                />
+            )}
         </div>
     );
 }
