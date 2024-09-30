@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { metromApiClient } from "../commons";
 import { useAccount, useChainId } from "wagmi";
 
-const TIME_RANGE = 60 * 60 * 60 * 24 * 7; // 1 week
+const TIME_RANGE = 60 * 60 * 24 * 7; // 1 week
 
 // TODO: dynamic from and to
 export function useActivities(): {
