@@ -11,12 +11,12 @@ export const getReachedGoalPercentage = (
         return 0;
 
     if (tvl < lowerBound) return 0;
-    if (tvl >= upperBound) return 100;
+    if (tvl >= upperBound) return 1;
 
     const totalRange = upperBound - lowerBound;
     const reachedRange = tvl - lowerBound;
     const reachedPercentage = reachedRange / totalRange;
-    return reachedPercentage * 100;
+    return reachedPercentage;
 };
 
 export const getDistributableRewardsPercentage = (
@@ -32,9 +32,8 @@ export const getDistributableRewardsPercentage = (
     );
 
     let minPayoutPercentage = minimumPayoutPercentage || 0;
-    const goalBoundPercentage = 100 - minPayoutPercentage;
-    const goalReachedPercentage =
-        (goalBoundPercentage * reachedPercentage) / 100;
+    const goalBoundPercentage = 1 - minPayoutPercentage;
+    const goalReachedPercentage = goalBoundPercentage * reachedPercentage;
 
     return minPayoutPercentage + goalReachedPercentage;
 };

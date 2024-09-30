@@ -196,10 +196,8 @@ export function KpiStep({
             },
         };
 
-        if (minimumPayoutPercentage) {
-            kpiSpecification.minimumPayoutPercentage =
-                minimumPayoutPercentage / 100;
-        }
+        if (minimumPayoutPercentage)
+            kpiSpecification.minimumPayoutPercentage = minimumPayoutPercentage;
 
         setFeedback(true);
         onKpiChange({ kpiSpecification });
