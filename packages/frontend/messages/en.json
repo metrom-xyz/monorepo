@@ -135,7 +135,7 @@
             },
             "kpi": {
                 "title": "Set KPI",
-                "currentTvl": "Current tvl",
+                "currentTvl": "Current TVL",
                 "rangedTvl": {
                     "lowerBound": "Lower bound",
                     "upperBound": "Upper bound"
@@ -272,11 +272,10 @@
     },
     "simulationChart": {
         "missingData": "Missing data for the simulation",
-        "inconsitentData": "Inconsitent data, can't run simulation, try to change the bound values",
-        "error": "",
-        "currentTvl": "Pool",
-        "lowerBound": "Low bd",
-        "upperBound": "Up bd",
+        "inconsitentData": "Inconsistent data, can't run simulation, try to change the bound values",
+        "pool": "Pool",
+        "lowerBound": "Lower bd",
+        "upperBound": "Upper bd",
         "labels": {
             "tvl": "TVL",
             "reward": "Reward"
