@@ -9,9 +9,9 @@ import {
     XAxis,
     YAxis,
 } from "recharts";
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import { useTranslations } from "next-intl";
-import { Typography } from "@metrom-xyz/ui";
+import { ErrorText, Typography } from "@metrom-xyz/ui";
 import { TvlTick } from "./axis-ticks/tvl";
 import { RewardTick } from "./axis-ticks/reward";
 import { TooltipContent, TooltipCursor } from "./tooltip";
@@ -21,7 +21,6 @@ import {
 } from "@/src/utils/kpi";
 
 import styles from "./styles.module.css";
-import { useDebounce } from "react-use";
 
 export interface ChartData {
     tvl: number;
@@ -35,45 +34,20 @@ interface SimulationChartProps {
     upperUsdTarget?: number;
     totalRewardsUsd?: number;
     poolUsdTvl?: number | null;
+    error?: boolean;
 }
 
 const POINTS_COUNT = 1000;
 
 export function SimulationChart({
-    minimumPayoutPercentage: minPayoutPercentage = 0,
-    lowerUsdTarget: lowerBound,
-    upperUsdTarget: upperBound,
+    minimumPayoutPercentage = 0,
+    lowerUsdTarget,
+    upperUsdTarget,
     totalRewardsUsd,
     poolUsdTvl,
+    error,
 }: SimulationChartProps) {
     const t = useTranslations("simulationChart");
-
-    const [lowerUsdTarget, setLowerUsdTarget] = useState(lowerBound);
-    const [upperUsdTarget, setUpperUsdTarget] = useState(upperBound);
-    const [minimumPayoutPercentage, setMinimumPayoutPercentage] =
-        useState(minPayoutPercentage);
-
-    useDebounce(
-        () => {
-            setLowerUsdTarget(lowerBound);
-        },
-        500,
-        [lowerBound],
-    );
-    useDebounce(
-        () => {
-            setUpperUsdTarget(upperBound);
-        },
-        500,
-        [upperBound],
-    );
-    useDebounce(
-        () => {
-            setMinimumPayoutPercentage(minPayoutPercentage);
-        },
-        500,
-        [minPayoutPercentage],
-    );
 
     // rewards USD payout based on the current pool tvl
     const currentPayout = useMemo(() => {
@@ -154,6 +128,18 @@ export function SimulationChart({
         totalRewardsUsd,
         upperUsdTarget,
     ]);
+
+    if (error) {
+        return (
+            <div className={styles.root}>
+                <div className={styles.emptyContainer}>
+                    <ErrorText variant="xs" weight="medium">
+                        {t("errors.wrongData")}
+                    </ErrorText>
+                </div>
+            </div>
+        );
+    }
 
     if (
         upperUsdTarget === undefined ||

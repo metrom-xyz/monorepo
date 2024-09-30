@@ -145,13 +145,11 @@
                     "malformed": "Wrong bound values"
                 },
                 "simulation": {
-                    "error": "Wrong data, cant't run the simulation",
                     "title": "KPI simulation",
                     "description": "Disclaimer: this is a simulation"
                 },
                 "minimumPayout": "Minimum payout",
-                "apply": "Apply",
-                "applied": "KPI added"
+                "apply": "Apply"
             }
         },
         "submit": {
@@ -279,6 +277,9 @@
         "labels": {
             "tvl": "TVL",
             "reward": "Reward"
+        },
+        "errors": {
+            "wrongData": "Wrong data, cant't run the simulation"
         },
         "tooltip": {
             "tvl": "TVL",

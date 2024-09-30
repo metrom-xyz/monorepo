@@ -18,10 +18,6 @@
     @apply hover:cursor-not-allowed hover:border-white;
 }
 
-/* .disabled :global(.preview):not(input) {
-    @apply select-none;
-} */
-
 .disabled > * {
     @apply pointer-events-none opacity-40 select-none;
 }
