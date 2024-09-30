@@ -112,9 +112,6 @@ export function CampaignPreview({
                 kpi: payload.kpiSpecification,
             };
 
-            // FIXME: remove
-            console.log(JSON.stringify(specification));
-
             try {
                 const response = await fetch(
                     `${SERVICE_URLS[ENVIRONMENT].dataManager}/data/temporary`,

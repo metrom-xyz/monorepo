@@ -5,30 +5,25 @@ import { Typography } from "@metrom-xyz/ui";
 import { ReferenceLine } from "recharts";
 import type { ChartData } from "..";
 
-interface TooltipProps {
-    totalRewardsUsd: number;
-    lowerUsdTarget: number;
-    upperUsdTarget: number;
-    minimumPayoutPercentage: number;
+interface Payload {
+    payload: ChartData;
 }
 
-interface TooltipCursorProps {}
+interface TooltipProps {
+    active?: boolean;
+    payload?: Payload[];
+}
 
-export function TooltipContent({
-    totalRewardsUsd,
-    lowerUsdTarget,
-    upperUsdTarget,
-    minimumPayoutPercentage,
-    ...rest
-}: TooltipProps) {
+interface TooltipCursorProps {
+    payload?: Payload[];
+}
+
+export function TooltipContent({ active, payload }: TooltipProps) {
     const t = useTranslations("simulationChart.tooltip");
-
-    const { active, payload } = rest as any;
 
     if (!active || !payload || !payload.length) return null;
 
-    const { tvl, reward, goalReachedPercentage } = payload[0]
-        .payload as ChartData;
+    const { tvl, reward, goalReachedPercentage } = payload[0].payload;
 
     return (
         <div className={styles.root}>
@@ -58,9 +53,10 @@ export function TooltipContent({
     );
 }
 
-export function TooltipCursor({ ...rest }: TooltipCursorProps) {
-    const { payload } = rest as any;
-    const { tvl, reward } = payload[0].payload as ChartData;
+export function TooltipCursor({ payload }: TooltipCursorProps) {
+    if (!payload || !payload.length) return null;
+
+    const { tvl, reward } = payload[0].payload;
 
     return (
         <>

@@ -48,21 +48,21 @@ export function SimulationChart({
 }: SimulationChartProps) {
     const t = useTranslations("simulationChart");
 
-    const [lowerUsdTarget, setlowerUsdTarget] = useState(lowerBound);
-    const [upperUsdTarget, setupperUsdTarget] = useState(upperBound);
+    const [lowerUsdTarget, setLowerUsdTarget] = useState(lowerBound);
+    const [upperUsdTarget, setUpperUsdTarget] = useState(upperBound);
     const [minimumPayoutPercentage, setMinimumPayoutPercentage] =
         useState(minPayoutPercentage);
 
     useDebounce(
         () => {
-            setlowerUsdTarget(lowerBound);
+            setLowerUsdTarget(lowerBound);
         },
         500,
         [lowerBound],
     );
     useDebounce(
         () => {
-            setupperUsdTarget(upperBound);
+            setUpperUsdTarget(upperBound);
         },
         500,
         [upperBound],
@@ -294,16 +294,7 @@ export function SimulationChart({
 
                     <Tooltip
                         isAnimationActive={false}
-                        content={
-                            <TooltipContent
-                                totalRewardsUsd={totalRewardsUsd}
-                                lowerUsdTarget={lowerUsdTarget}
-                                upperUsdTarget={upperUsdTarget}
-                                minimumPayoutPercentage={
-                                    minimumPayoutPercentage
-                                }
-                            />
-                        }
+                        content={<TooltipContent />}
                         cursor={<TooltipCursor />}
                     />
                 </ComposedChart>
