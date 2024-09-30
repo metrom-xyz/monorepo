@@ -45,7 +45,7 @@ export function TvlTick({
                 fontSize={12}
                 className={styles.axis}
             >
-                {payload.value === poolUsdTvl && t("currentTvl")}
+                {payload.value === poolUsdTvl && t("pool")}
                 {payload.value === lowerUsdTarget && t("lowerBound")}
                 {payload.value === upperUsdTarget && t("upperBound")}
             </text>

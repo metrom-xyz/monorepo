@@ -234,7 +234,7 @@ export function KpiStep({
             >
                 <div className={styles.tvlWrapper}>
                     <Typography uppercase weight="medium" light variant="sm">
-                        {t.rich("currentTvl")}
+                        {t("currentTvl")}
                     </Typography>
                     <Typography weight="medium" variant="sm">
                         {formatUsdAmount(pool?.tvl)}
