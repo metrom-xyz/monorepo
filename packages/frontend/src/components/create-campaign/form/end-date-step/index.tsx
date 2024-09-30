@@ -20,6 +20,7 @@ import {
 import { useTransition, animated } from "@react-spring/web";
 import { useCampaignDurationLimits } from "@/src/hooks/useCampaignDurationLimits";
 import { formatDateTime } from "@/src/utils/format";
+import { usePrevious } from "react-use";
 
 import styles from "./styles.module.css";
 
@@ -80,6 +81,13 @@ export function EndDateStep({
         leave: { opacity: 0 },
         config: { duration: 100 },
     });
+
+    const prevDate = usePrevious(endDate);
+
+    const unsavedChanges = useMemo(() => {
+        if (!prevDate) return true;
+        return !prevDate.isSame(date);
+    }, [date, prevDate]);
 
     useEffect(() => {
         setOpen(false);
@@ -230,7 +238,7 @@ export function EndDateStep({
                     <Button
                         variant="secondary"
                         size="small"
-                        disabled={!date || !!dateError}
+                        disabled={!unsavedChanges || !date || !!dateError}
                         onClick={handleDateOnApply}
                         className={{ root: styles.applyButton }}
                     >
