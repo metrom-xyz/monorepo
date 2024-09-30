@@ -1,39 +1,33 @@
 export function ClaimReward(props: any) {
     return (
         <svg
+            xmlns="http://www.w3.org/2000/svg"
             width="24"
             height="24"
-            viewBox="0 0 20 20"
+            viewBox="0 0 24 24"
             fill="none"
-            version="1.1"
-            id="svg3"
-            xmlns="http://www.w3.org/2000/svg"
             {...props}
         >
-            <defs id="defs3" />
             <path
-                d="m 14.71002,7.1499889 c 3.6,0.31 5.07,2.15998 5.07,6.2099801 v 0.13 c 0,4.47 -1.79,6.26 -6.26,6.26 H 7.01 c -4.47,0 -6.26,-1.79 -6.26,-6.26 v -0.13 C 0.75,9.3399689 2.2,7.4899889 5.74,7.1599889"
+                d="M16.44 8.8999C20.04 9.2099 21.51 11.0599 21.51 15.1099V15.2399C21.51 19.7099 19.72 21.4999 15.25 21.4999H8.73998C4.26998 21.4999 2.47998 19.7099 2.47998 15.2399V15.1099C2.47998 11.0899 3.92998 9.2399 7.46998 8.9099"
                 stroke="currentColor"
                 strokeWidth="1.5"
                 strokeLinecap="round"
                 strokeLinejoin="round"
-                id="path1"
             />
             <path
-                d="M 10.27002,13.249969 V 1.8699689"
+                d="M12 15.0001V3.62012"
                 stroke="currentColor"
                 strokeWidth="1.5"
                 strokeLinecap="round"
                 strokeLinejoin="round"
-                id="path2"
             />
             <path
-                d="m 13.61992,4.0999689 -3.35,-3.34999996 -3.35,3.34999996"
+                d="M15.35 5.85L12 2.5L8.65002 5.85"
                 stroke="currentColor"
                 strokeWidth="1.5"
                 strokeLinecap="round"
                 strokeLinejoin="round"
-                id="path3"
             />
         </svg>
     );
