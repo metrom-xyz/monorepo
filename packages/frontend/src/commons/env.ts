@@ -15,3 +15,4 @@ if (ENVIRONMENT !== Environment.Development && !WALLETCONNECT_PROJECT_ID)
     );
 
 export const FATHOM_SITE_ID: string = process.env.NEXT_PUBLIC_FATHOM_SITE_ID!;
+export const KPI: boolean = process.env.NEXT_PUBLIC_KPI === "true";
