@@ -44,7 +44,7 @@ export function Activity({ chainId, transaction, payload }: ActivityProps) {
                     <Icon className={styles.icon} />
                 </div>
                 <div className={styles.leftBodyWrapper}>
-                    <Typography light weight="medium">
+                    <Typography light weight="medium" uppercase variant="sm">
                         {title}
                     </Typography>
                     {payload.type === "createCampaign" ? (
