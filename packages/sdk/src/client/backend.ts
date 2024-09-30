@@ -193,8 +193,9 @@ export class MetromApiClient {
                     ...activity,
                     payload: {
                         ...activity.payload,
+                        token: processedToken,
                         amount: {
-                            raw: activity.payload.amount,
+                            raw: rawAmount,
                             formatted: Number(
                                 formatUnits(rawAmount, processedToken.decimals),
                             ),
@@ -203,8 +204,8 @@ export class MetromApiClient {
                 };
             }
 
-            return activity;
-        }) as Activity[];
+            return activity as Activity;
+        });
     }
 }
 
