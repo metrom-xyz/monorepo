@@ -10,7 +10,11 @@
     @apply !text-inherit;
 }
 
-.preview {
+.step {
+    @apply hover:border-transparent;
+}
+
+.previewDisabled {
     @apply hover:cursor-default hover:bg-white;
 }
 

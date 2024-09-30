@@ -26,7 +26,7 @@ import {
 import { formatUsdAmount } from "@/src/utils/format";
 import classNames from "classnames";
 import { KpiMetric, type KpiSpecification } from "@metrom-xyz/sdk";
-import { usePrevious } from "react-use";
+import { useDebounce, usePrevious } from "react-use";
 import { SimulationChart } from "./simulation-chart";
 
 import styles from "./styles.module.css";
@@ -54,9 +54,10 @@ export function KpiStep({
     onError,
 }: KpiStepProps) {
     const t = useTranslations("newCampaign.form.kpi");
+    const [open, setOpen] = useState(false);
     const [enabled, setEnabled] = useState(false);
     const [boundsError, setBoundsError] = useState("");
-    const [feedback, setFeedback] = useState(false);
+
     const [minimumPayoutPercentage, setMinimumPayoutPercentage] = useState(
         kpiSpecification?.minimumPayoutPercentage || 0,
     );
@@ -83,6 +84,37 @@ export function KpiStep({
         return undefined;
     });
 
+    const [lowerUsdTargetDebounced, setLowerUsdTargetDebounced] =
+        useState(lowerUsdTargetRaw);
+    const [upperUsdTargetDebounced, setUpperUsdTargetDebounced] =
+        useState(upperUsdTargetRaw);
+    const [
+        minimumPayoutPercentageDebounced,
+        setMinimumPayoutPercentageDebounced,
+    ] = useState(minimumPayoutPercentage);
+
+    useDebounce(
+        () => {
+            setLowerUsdTargetDebounced(lowerUsdTargetRaw);
+        },
+        500,
+        [lowerUsdTargetRaw],
+    );
+    useDebounce(
+        () => {
+            setUpperUsdTargetDebounced(upperUsdTargetRaw);
+        },
+        500,
+        [upperUsdTargetRaw],
+    );
+    useDebounce(
+        () => {
+            setMinimumPayoutPercentageDebounced(minimumPayoutPercentage);
+        },
+        500,
+        [minimumPayoutPercentage],
+    );
+
     const prevKpiSpecification = usePrevious(kpiSpecification);
 
     const totalRewardsUsdAmount = useMemo(() => {
@@ -95,22 +127,35 @@ export function KpiStep({
         return total;
     }, [rewards]);
 
+    const unsavedChanges = useMemo(() => {
+        if (!prevKpiSpecification) return true;
+
+        const {
+            minimumPayoutPercentage: prevMinPayout = 0,
+            goal: {
+                lowerUsdTarget: prevLowerTarget,
+                upperUsdTarget: prevUpperTarget,
+            },
+        } = prevKpiSpecification;
+
+        return (
+            prevMinPayout !== minimumPayoutPercentage ||
+            prevLowerTarget !== lowerUsdTargetRaw?.raw ||
+            prevUpperTarget !== upperUsdTargetRaw?.raw
+        );
+    }, [
+        lowerUsdTargetRaw,
+        minimumPayoutPercentage,
+        prevKpiSpecification,
+        upperUsdTargetRaw,
+    ]);
+
     // this hooks is used to disable and close the step when
     // the kpi specification gets disabled, after the campaign creation
     useEffect(() => {
         if (enabled && !!prevKpiSpecification && !kpiSpecification)
             setEnabled(false);
     }, [enabled, kpiSpecification, prevKpiSpecification]);
-
-    useEffect(() => {
-        if (!feedback) return;
-
-        const timeout = setTimeout(() => {
-            setFeedback(false);
-        }, 1500);
-
-        return () => clearTimeout(timeout);
-    }, [feedback]);
 
     useEffect(() => {
         if (enabled) return;
@@ -123,23 +168,23 @@ export function KpiStep({
     }, [enabled, kpiSpecification, onKpiChange]);
 
     useEffect(() => {
-        if (!lowerUsdTargetRaw && !upperUsdTargetRaw) {
+        if (!lowerUsdTargetDebounced && !upperUsdTargetDebounced) {
             setBoundsError("");
             return;
         }
 
         if (
-            (!lowerUsdTargetRaw && upperUsdTargetRaw) ||
-            (!upperUsdTargetRaw && lowerUsdTargetRaw)
+            (!lowerUsdTargetDebounced && upperUsdTargetDebounced) ||
+            (!upperUsdTargetDebounced && lowerUsdTargetDebounced)
         ) {
             setBoundsError("errors.missing");
             return;
         }
 
-        if (!lowerUsdTargetRaw || !upperUsdTargetRaw) return;
+        if (!lowerUsdTargetDebounced || !upperUsdTargetDebounced) return;
 
-        const { raw: lowerUsdTarget } = lowerUsdTargetRaw;
-        const { raw: upperUsdTarget } = upperUsdTargetRaw;
+        const { raw: lowerUsdTarget } = lowerUsdTargetDebounced;
+        const { raw: upperUsdTarget } = upperUsdTargetDebounced;
 
         if (
             lowerUsdTarget !== undefined &&
@@ -148,7 +193,7 @@ export function KpiStep({
         )
             setBoundsError("errors.malformed");
         else setBoundsError("");
-    }, [lowerUsdTargetRaw, upperUsdTargetRaw]);
+    }, [lowerUsdTargetDebounced, upperUsdTargetDebounced]);
 
     useEffect(() => {
         onError({
@@ -156,8 +201,17 @@ export function KpiStep({
         });
     }, [boundsError, enabled, kpiSpecification, onError]);
 
+    useEffect(() => {
+        setOpen(enabled);
+    }, [enabled]);
+
     function handleSwitchOnClick() {
         setEnabled((enabled) => !enabled);
+    }
+
+    function handleStepOnClick() {
+        if (!enabled) return;
+        setOpen((open) => !open);
     }
 
     function handleUpperUsdTargetOnChange(value: NumberFormatValues) {
@@ -180,13 +234,13 @@ export function KpiStep({
 
     const handleOnApply = useCallback(() => {
         if (
-            lowerUsdTargetRaw?.raw === undefined ||
-            upperUsdTargetRaw?.raw === undefined
+            lowerUsdTargetDebounced?.raw === undefined ||
+            upperUsdTargetDebounced?.raw === undefined
         )
             return;
 
-        const { raw: lowerUsdTarget } = lowerUsdTargetRaw;
-        const { raw: upperUsdTarget } = upperUsdTargetRaw;
+        const { raw: lowerUsdTarget } = lowerUsdTargetDebounced;
+        const { raw: upperUsdTarget } = upperUsdTargetDebounced;
 
         const kpiSpecification: KpiSpecification = {
             goal: {
@@ -196,16 +250,17 @@ export function KpiStep({
             },
         };
 
-        if (minimumPayoutPercentage)
-            kpiSpecification.minimumPayoutPercentage = minimumPayoutPercentage;
+        if (minimumPayoutPercentageDebounced)
+            kpiSpecification.minimumPayoutPercentage =
+                minimumPayoutPercentageDebounced;
 
-        setFeedback(true);
+        setOpen(false);
         onKpiChange({ kpiSpecification });
     }, [
-        lowerUsdTargetRaw,
-        minimumPayoutPercentage,
+        lowerUsdTargetDebounced,
+        minimumPayoutPercentageDebounced,
         onKpiChange,
-        upperUsdTargetRaw,
+        upperUsdTargetDebounced,
     ]);
 
     return (
@@ -213,7 +268,9 @@ export function KpiStep({
             disabled={disabled}
             error={!!boundsError}
             completed={enabled}
-            open={enabled}
+            open={open}
+            onPreviewClick={handleStepOnClick}
+            className={styles.step}
         >
             <StepPreview
                 label={
@@ -244,7 +301,9 @@ export function KpiStep({
                     </div>
                 }
                 decorator={false}
-                className={{ root: styles.preview }}
+                className={{
+                    root: !enabled ? styles.previewDisabled : "",
+                }}
             >
                 <div className={styles.tvlWrapper}>
                     <Typography uppercase weight="medium" light variant="sm">
@@ -264,7 +323,7 @@ export function KpiStep({
                             prefix="$"
                             error={!!boundsError}
                             allowNegative={false}
-                            value={lowerUsdTargetRaw?.formatted}
+                            value={lowerUsdTargetDebounced?.formatted}
                             onValueChange={handleLowerUsdTargetOnChange}
                         />
                         <NumberInput
@@ -273,7 +332,7 @@ export function KpiStep({
                             prefix="$"
                             error={!!boundsError}
                             allowNegative={false}
-                            value={upperUsdTargetRaw?.formatted}
+                            value={upperUsdTargetDebounced?.formatted}
                             onValueChange={handleUpperUsdTargetOnChange}
                         />
                     </div>
@@ -298,34 +357,30 @@ export function KpiStep({
                                 {t("simulation.description")}
                             </Typography>
                         </div>
-                        {boundsError ? (
-                            <ErrorText variant="xs" weight="medium">
-                                {t("simulation.error")}
-                            </ErrorText>
-                        ) : (
-                            <SimulationChart
-                                lowerUsdTarget={lowerUsdTargetRaw?.raw}
-                                upperUsdTarget={upperUsdTargetRaw?.raw}
-                                totalRewardsUsd={totalRewardsUsdAmount}
-                                minimumPayoutPercentage={
-                                    minimumPayoutPercentage
-                                }
-                                poolUsdTvl={pool?.tvl}
-                            />
-                        )}
+                        <SimulationChart
+                            lowerUsdTarget={lowerUsdTargetDebounced?.raw}
+                            upperUsdTarget={upperUsdTargetDebounced?.raw}
+                            totalRewardsUsd={totalRewardsUsdAmount}
+                            minimumPayoutPercentage={
+                                minimumPayoutPercentageDebounced
+                            }
+                            poolUsdTvl={pool?.tvl}
+                            error={!!boundsError}
+                        />
                     </div>
                     <Button
                         variant="secondary"
                         size="small"
                         disabled={
-                            upperUsdTargetRaw === undefined ||
-                            lowerUsdTargetRaw === undefined ||
+                            !unsavedChanges ||
+                            upperUsdTargetDebounced === undefined ||
+                            lowerUsdTargetDebounced === undefined ||
                             !!boundsError
                         }
                         onClick={handleOnApply}
                         className={{ root: styles.applyButton }}
                     >
-                        {feedback ? t("applied") : t("apply")}
+                        {t("apply")}
                     </Button>
                 </div>
             </StepContent>

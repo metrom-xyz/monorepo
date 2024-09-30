@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { usePrevious } from "react-use";
 import { useChainId } from "wagmi";
 import dayjs, { type Dayjs } from "dayjs";
@@ -48,6 +48,13 @@ export function StartDateStep({
         leave: { opacity: 0 },
         config: { duration: 200 },
     });
+
+    const prevDate = usePrevious(startDate);
+
+    const unsavedChanges = useMemo(() => {
+        if (!prevDate) return true;
+        return !prevDate.isSame(date);
+    }, [date, prevDate]);
 
     useEffect(() => {
         setOpen(false);
@@ -152,7 +159,7 @@ export function StartDateStep({
                     <Button
                         variant="secondary"
                         size="small"
-                        disabled={!date}
+                        disabled={!unsavedChanges || !date}
                         onClick={handleDateOnApply}
                         className={{ root: styles.applyButton }}
                     >
