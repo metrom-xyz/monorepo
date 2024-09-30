@@ -69,7 +69,7 @@ export function SimulationChart({
     );
     useDebounce(
         () => {
-            setMinimumPayoutPercentage(minPayoutPercentage);
+            setMinimumPayoutPercentage(minPayoutPercentage / 100);
         },
         500,
         [minPayoutPercentage],
@@ -95,7 +95,7 @@ export function SimulationChart({
                 minimumPayoutPercentage,
             );
 
-        return (totalRewardsUsd * distributableRewardsPercentage) / 100;
+        return totalRewardsUsd * distributableRewardsPercentage;
     }, [
         lowerUsdTarget,
         minimumPayoutPercentage,
@@ -139,8 +139,7 @@ export function SimulationChart({
                     minimumPayoutPercentage,
                 );
 
-            const reward =
-                (totalRewardsUsd * distributableRewardsPercentage) / 100;
+            const reward = totalRewardsUsd * distributableRewardsPercentage;
 
             return {
                 tvl,

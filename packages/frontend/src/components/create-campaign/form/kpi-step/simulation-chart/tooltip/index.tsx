@@ -46,7 +46,7 @@ export function TooltipContent({ active, payload }: TooltipProps) {
                     {t("kpiReached")}
                 </Typography>
                 <Typography weight="medium">
-                    {formatPercentage(goalReachedPercentage)}
+                    {formatPercentage(goalReachedPercentage * 100)}
                 </Typography>
             </div>
         </div>
