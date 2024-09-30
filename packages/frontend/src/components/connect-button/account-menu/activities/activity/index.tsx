@@ -9,7 +9,6 @@ import classNames from "classnames";
 import { formatTokenAmount } from "@/src/utils/format";
 import { trackFathomEvent } from "@/src/utils/fathom";
 import { RemoteLogo } from "@/src/components/remote-logo";
-import { formatUnits } from "viem";
 
 import styles from "./styles.module.css";
 
