@@ -37,3 +37,18 @@ export const getDistributableRewardsPercentage = (
 
     return minPayoutPercentage + goalReachedPercentage;
 };
+
+// Manually calculate the Y coordinates on the chart based on the axis value.
+// This is necessary to correctly position the circle in the tooltip cursor.
+export const getChartYScale = (
+    value: number,
+    minValue: number,
+    maxValue: number,
+    minHeight: number,
+    maxHeight: number,
+) => {
+    return (
+        ((value - minValue) / (maxValue - minValue)) * (maxHeight - minHeight) +
+        minHeight
+    );
+};

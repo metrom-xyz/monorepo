@@ -3,6 +3,7 @@ import {
     CartesianGrid,
     ComposedChart,
     Label,
+    ReferenceDot,
     ReferenceLine,
     ResponsiveContainer,
     Tooltip,
@@ -38,6 +39,7 @@ interface SimulationChartProps {
 }
 
 const POINTS_COUNT = 1000;
+export const CHART_MARGINS = { top: 42, right: 16, bottom: 30, left: 16 };
 
 export function SimulationChart({
     minimumPayoutPercentage = 0,
@@ -129,6 +131,18 @@ export function SimulationChart({
         upperUsdTarget,
     ]);
 
+    const tvlTicks = useMemo(() => {
+        if (
+            poolUsdTvl === null ||
+            poolUsdTvl === undefined ||
+            lowerUsdTarget === undefined ||
+            upperUsdTarget === undefined
+        )
+            return [];
+
+        return [poolUsdTvl, lowerUsdTarget, upperUsdTarget];
+    }, [lowerUsdTarget, poolUsdTvl, upperUsdTarget]);
+
     if (error) {
         return (
             <div className={styles.root}>
@@ -166,13 +180,16 @@ export function SimulationChart({
             >
                 <ComposedChart
                     data={chartData}
-                    margin={{ top: 42, right: 16, bottom: 30, left: 16 }}
+                    margin={CHART_MARGINS}
                     style={{ cursor: "pointer" }}
                 >
                     <CartesianGrid
                         fill="#F7F7F8"
+                        stroke="white"
+                        strokeWidth={2}
                         vertical={false}
-                        horizontal={false}
+                        horizontal={true}
+                        horizontalPoints={[42, 84, 126, 168]}
                     />
 
                     {/* area for the values before the current TVL */}
@@ -217,21 +234,15 @@ export function SimulationChart({
                         format="number"
                         dataKey="tvl"
                         tickSize={4}
-                        allowDataOverflow
                         tick={
                             <TvlTick
-                                lowerUsdTarget={lowerUsdTarget}
                                 poolUsdTvl={poolUsdTvl}
+                                lowerUsdTarget={lowerUsdTarget}
                                 upperUsdTarget={upperUsdTarget}
                             />
                         }
                         domain={[0, "dataMax"]}
-                        interval={0}
-                        ticks={[
-                            poolUsdTvl,
-                            lowerUsdTarget,
-                            upperUsdTarget,
-                        ].sort((a, b) => a - b)}
+                        ticks={tvlTicks.sort((a, b) => a - b)}
                     >
                         <Label
                             value={t("labels.tvl")}
@@ -249,7 +260,6 @@ export function SimulationChart({
                         axisLine={false}
                         tickLine={false}
                         mirror
-                        allowDataOverflow
                         tick={<RewardTick />}
                         domain={[0, "dataMax"]}
                         ticks={[currentPayout, totalRewardsUsd]}
@@ -264,23 +274,68 @@ export function SimulationChart({
                         />
                     </YAxis>
 
+                    <ReferenceDot
+                        x={
+                            minimumPayoutPercentage > 0
+                                ? 0
+                                : Math.min(...tvlTicks)
+                        }
+                        y={totalRewardsUsd * minimumPayoutPercentage}
+                        r={4}
+                        fill="#6CFF95"
+                        stroke="white"
+                        strokeWidth={1}
+                        isFront
+                    />
+
+                    <ReferenceDot
+                        x={Math.max(...tvlTicks)}
+                        y={totalRewardsUsd}
+                        r={4}
+                        fill="#000"
+                        stroke="white"
+                        strokeWidth={1}
+                        isFront
+                    />
+
+                    <ReferenceDot
+                        x={0}
+                        y={currentPayout}
+                        r={3}
+                        fill="#6CFF95"
+                        stroke="none"
+                        isFront
+                    />
+
                     {currentPayout > 0 && (
-                        <ReferenceLine
-                            strokeDasharray={"3 3"}
-                            ifOverflow="visible"
-                            isFront
-                            stroke="#6CFF95"
-                            segment={[
-                                { x: 0, y: currentPayout },
-                                { x: poolUsdTvl, y: currentPayout },
-                            ]}
-                        />
+                        <>
+                            <ReferenceLine
+                                strokeDasharray={"3 3"}
+                                ifOverflow="visible"
+                                isFront
+                                stroke="#6CFF95"
+                                segment={[
+                                    { x: 0, y: currentPayout },
+                                    { x: poolUsdTvl, y: currentPayout },
+                                ]}
+                            />
+                            <ReferenceDot
+                                x={poolUsdTvl}
+                                y={currentPayout}
+                                r={4}
+                                fill="#6CFF95"
+                                stroke="white"
+                                strokeWidth={1}
+                            />
+                        </>
                     )}
 
                     <Tooltip
                         isAnimationActive={false}
                         content={<TooltipContent />}
-                        cursor={<TooltipCursor />}
+                        cursor={
+                            <TooltipCursor totalRewardsUsd={totalRewardsUsd} />
+                        }
                     />
                 </ComposedChart>
             </ResponsiveContainer>
