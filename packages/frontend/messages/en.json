@@ -146,7 +146,7 @@
                 },
                 "simulation": {
                     "title": "KPI simulation",
-                    "description": "Disclaimer: this is a simulation"
+                    "description": "Disclaimer: This is an interactive simulation tool that allows you to explore how incentives are distributed based on different TVL scenarios. The values you input will be used to calculate potential payouts, and these figures will be applied if finalized. Please review carefully before submitting."
                 },
                 "minimumPayout": "Minimum payout",
                 "apply": "Apply"
@@ -223,6 +223,13 @@
             "amount": "Amount",
             "daily": "Daily rewards",
             "total": "Total value usd"
+        },
+        "kpi": {
+            "title": "KPI",
+            "lowerBound": "Lower bound",
+            "upperBound": "Upper bound",
+            "goalReached": "Goal reached",
+            "minimumPayout": "Minimum payout"
         },
         "leaderboard": {
             "title": "Leaderboard",
