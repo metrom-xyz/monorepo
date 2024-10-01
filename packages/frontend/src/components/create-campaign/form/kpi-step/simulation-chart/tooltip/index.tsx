@@ -3,7 +3,8 @@ import styles from "./styles.module.css";
 import { useTranslations } from "next-intl";
 import { Typography } from "@metrom-xyz/ui";
 import { ReferenceLine } from "recharts";
-import type { ChartData } from "..";
+import { CHART_MARGINS, type ChartData } from "..";
+import { getChartYScale } from "@/src/utils/kpi";
 
 interface Payload {
     payload: ChartData;
@@ -15,7 +16,10 @@ interface TooltipProps {
 }
 
 interface TooltipCursorProps {
+    totalRewardsUsd: number;
+    height?: number;
     payload?: Payload[];
+    points?: { x: number; y: number }[];
 }
 
 export function TooltipContent({ active, payload }: TooltipProps) {
@@ -53,10 +57,23 @@ export function TooltipContent({ active, payload }: TooltipProps) {
     );
 }
 
-export function TooltipCursor({ payload }: TooltipCursorProps) {
-    if (!payload || !payload.length) return null;
+export function TooltipCursor({
+    totalRewardsUsd,
+    height,
+    payload,
+    points,
+}: TooltipCursorProps) {
+    if (!payload || !payload.length || !points || !height) return null;
 
     const { tvl, reward } = payload[0].payload;
+
+    // ReferenceDot cannot be used because it lacks access to Recharts' internal scale functions.
+    // Instead, we use a standard SVG circle element. This requires manually calculating the Y position
+    // based on the chart scale, while the X position can directly use the value from the data points.
+    // This also takes into account the chart top margin.
+    const cy =
+        getChartYScale(reward, 0, totalRewardsUsd, height, 0) +
+        CHART_MARGINS.top;
 
     return (
         <>
@@ -79,6 +96,14 @@ export function TooltipCursor({ payload }: TooltipCursorProps) {
                     { x: tvl, y: reward },
                     { x: tvl, y: 0 },
                 ]}
+            />
+            <circle
+                cx={points[0].x}
+                cy={cy}
+                r={4}
+                fill="#B2B2B2"
+                stroke="white"
+                strokeWidth={1}
             />
         </>
     );
