@@ -2,9 +2,9 @@ import { formatUnits, type Address, type Hex } from "viem";
 import {
     type BackendActivity,
     type BackendCampaign,
+    type BackendClaim,
     type BackendErc20Token,
     type FetchCampaignsResponse,
-    type FetchClaimsResponse,
     type FetchPoolsResponse,
     type FetchWhitelistedRewardTokensResponse,
 } from "./types";
@@ -43,6 +43,8 @@ export interface FetchWhitelistedRewardTokensParams {
 export interface FetchActivitiesParams {
     chainId: number;
     address: Address;
+    from: number;
+    to: number;
 }
 
 export interface FetchWhitelistedRewardTokensResult {
@@ -116,7 +118,7 @@ export class MetromApiClient {
                 `response not ok while fetching claimable rewards: ${await response.text()}`,
             );
 
-        const { claims } = (await response.json()) as FetchClaimsResponse;
+        const claims = (await response.json()) as BackendClaim[];
 
         return claims.map((claim) => {
             const token = processErc20Token(claim.token);
@@ -173,17 +175,19 @@ export class MetromApiClient {
 
         url.searchParams.set("chainId", params.chainId.toString());
         url.searchParams.set("address", params.address.toString());
+        url.searchParams.set("from", params.from.toString());
+        url.searchParams.set("to", params.to.toString());
 
         const response = await fetch(url);
         if (!response.ok)
             throw new Error(
-                `response not ok while fetching activity for address ${params.address}: ${await response.text()}`,
+                `response not ok while fetching activity for address ${params.address} from ${params.from} to ${params.to}: ${await response.text()}`,
             );
 
         const activities = (await response.json()) as BackendActivity[];
 
         return activities.map((activity) => {
-            if (activity.payload.type === "claimReward") {
+            if (activity.payload.type === "claim-reward") {
                 const processedToken = processErc20Token(
                     activity.payload.token,
                 );

@@ -23,7 +23,7 @@ export function Activity({ chainId, transaction, payload }: ActivityProps) {
     const timeAgo = t("timeAgo", { time });
 
     const { Icon, title } =
-        payload.type === "createCampaign"
+        payload.type === "create-campaign"
             ? {
                   Icon: NewCampaignIcon,
                   title: t("createCampaign"),
@@ -47,7 +47,7 @@ export function Activity({ chainId, transaction, payload }: ActivityProps) {
                     <Typography light weight="medium" uppercase variant="sm">
                         {title}
                     </Typography>
-                    {payload.type === "createCampaign" ? (
+                    {payload.type === "create-campaign" ? (
                         <Link
                             href={`/campaigns/${chainId}/${payload.id}`}
                             onClick={handleActivityOnClick}

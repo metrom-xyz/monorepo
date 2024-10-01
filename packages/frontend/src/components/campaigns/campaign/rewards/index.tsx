@@ -1,7 +1,11 @@
 "use client";
 
 import { Typography, Skeleton, Popover } from "@metrom-xyz/ui";
-import { SupportedChain, type Rewards as RewardsType } from "@metrom-xyz/sdk";
+import {
+    Status,
+    SupportedChain,
+    type Rewards as RewardsType,
+} from "@metrom-xyz/sdk";
 import dayjs from "dayjs";
 import { formatTokenAmount, formatUsdAmount } from "@/src/utils/format";
 import { useRef, useState } from "react";
@@ -11,13 +15,14 @@ import { RemoteLogo } from "@/src/components/remote-logo";
 import styles from "./styles.module.css";
 
 interface RewardsProps {
+    status: Status;
     from: number;
     to: number;
     rewards: RewardsType;
     chainId: SupportedChain;
 }
 
-export function Rewards({ from, to, rewards, chainId }: RewardsProps) {
+export function Rewards({ status, from, to, rewards, chainId }: RewardsProps) {
     const t = useTranslations("allCampaigns.rewards");
 
     const [popoverOpen, setPopoverOpen] = useState(false);
@@ -133,7 +138,9 @@ export function Rewards({ from, to, rewards, chainId }: RewardsProps) {
                 })}
             </div>
             <Typography className={styles.textRewards} weight="medium">
-                {formatUsdAmount(perDayUsdValue)}
+                {status === Status.Ended
+                    ? "-"
+                    : formatUsdAmount(perDayUsdValue)}
             </Typography>
         </div>
     );
