@@ -1,5 +1,10 @@
 import { type Address, type Hash } from "viem";
 import type { SupportedAmm } from "./commons";
+import type { BackendKpiSpecification } from "./client/types";
+
+export type { BackendSpecification as Specification } from "./client/types";
+export type { BackendKpiSpecification as KpiSpecification } from "./client/types";
+export { BackendKpiMetric as KpiMetric } from "./client/types";
 
 export interface OnChainAmount {
     raw: bigint;
@@ -39,7 +44,7 @@ export interface Pool {
     chainId: number;
     address: Address;
     amm: SupportedAmm;
-    fee: number;
+    fee: number | null;
     token0: Erc20Token;
     token1: Erc20Token;
     tvl: number | null;
@@ -65,10 +70,11 @@ export interface Campaign {
     createdAt: number;
     snapshottedAt: number | null;
     pool: Pool;
-    whitelist: Address[] | null;
-    blacklist: Address[] | null;
     rewards: Rewards;
     apr: number | null;
+    whitelist: Address[] | null;
+    blacklist: Address[] | null;
+    kpi: BackendKpiSpecification | null;
 }
 
 export interface Claim extends Erc20TokenAmount {
@@ -116,25 +122,4 @@ export interface Leaf {
 export interface Snapshot {
     timestamp: number;
     leaves: Leaf[];
-}
-
-export enum KpiMetric {
-    RangePoolTvl = "range-pool-tvl",
-}
-
-export interface RangePoolKpiGoal {
-    metric: KpiMetric.RangePoolTvl;
-    lowerUsdTarget: number;
-    upperUsdTarget: number;
-}
-
-export interface KpiSpecification {
-    minimumPayoutPercentage?: number;
-    goal: RangePoolKpiGoal;
-}
-
-export interface FullSpecification {
-    whitelist?: Address[];
-    blacklist?: Address[];
-    kpi?: KpiSpecification;
 }

@@ -1,0 +1,31 @@
+.root {
+    @apply h-full flex items-center justify-center text-center;
+}
+
+.container {
+    @apply h-full min-h-[270px] bg-gray-100 rounded-lg;
+}
+
+.emptyContainer {
+    @apply w-full
+        h-full
+        min-h-[270px]
+        flex
+        justify-center
+        items-center
+        bg-gray-100
+        rounded-lg;
+}
+
+.loading {
+    @apply animate-pulse;
+}
+
+.axisLabel {
+    @apply font-sans
+        uppercase
+        text-xs
+        leading-none
+        font-medium
+        fill-black;
+}

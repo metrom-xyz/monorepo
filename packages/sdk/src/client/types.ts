@@ -30,6 +30,27 @@ export interface BackendCampaignPool {
     tvl: string | null;
 }
 
+export enum BackendKpiMetric {
+    RangePoolTvl = "range-pool-tvl",
+}
+
+export interface BackendRangePoolKpiGoal {
+    metric: BackendKpiMetric.RangePoolTvl;
+    lowerUsdTarget: number;
+    upperUsdTarget: number;
+}
+
+export interface BackendKpiSpecification {
+    minimumPayoutPercentage?: number;
+    goal: BackendRangePoolKpiGoal;
+}
+
+export interface BackendSpecification {
+    whitelist?: Address[];
+    blacklist?: Address[];
+    kpi?: BackendKpiSpecification;
+}
+
 export interface BackendCampaign {
     chainId: string;
     id: Hex;
@@ -39,9 +60,8 @@ export interface BackendCampaign {
     snapshottedAt: number | null;
     pool: BackendCampaignPool;
     rewards: BackendReward[];
-    whitelist: Address[] | null;
-    blacklist: Address[] | null;
     apr: string | null;
+    specification: BackendSpecification | null;
 }
 
 export interface BackendClaim {

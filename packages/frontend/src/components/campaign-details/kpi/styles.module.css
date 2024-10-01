@@ -1,0 +1,29 @@
+.root {
+    @apply flex flex-col gap-4;
+}
+
+.card {
+    @apply w-full
+        flex
+        gap-4
+        p-4
+        bg-white
+        rounded-2xl;
+}
+
+.leftContentWrapper {
+    @apply w-full flex flex-col gap-4;
+}
+
+.textField {
+    @apply bg-gray-100;
+}
+
+.chartWrapper {
+    @apply w-full;
+}
+
+.chartContainer :global(.container),
+.chartContainer :global(.emptyContainer) {
+    @apply rounded-2xl;
+}
