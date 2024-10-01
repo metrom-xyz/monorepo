@@ -1,5 +1,5 @@
-import numeral from "numeral";
 import { useTranslations } from "next-intl";
+import { formatUsdAmount } from "@/src/utils/format";
 
 import styles from "./styles.module.css";
 
@@ -35,18 +35,18 @@ export function TvlTick({
                 x={0}
                 y={0}
                 dy={12}
-                textAnchor="end"
+                textAnchor="middle"
                 fontSize={12}
                 className={styles.axis}
             >
-                {numeral(payload.value).format("($0,0a)")}
+                {formatUsdAmount(payload.value)}
             </text>
             {/* TODO: handle issue where the ticks are too close to eachothers */}
             <text
                 x={0}
                 y={0}
                 dy={24}
-                textAnchor="end"
+                textAnchor="middle"
                 fontSize={12}
                 className={styles.axis}
             >
