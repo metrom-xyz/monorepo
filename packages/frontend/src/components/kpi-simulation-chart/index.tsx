@@ -22,6 +22,7 @@ import {
 } from "@/src/utils/kpi";
 
 import styles from "./styles.module.css";
+import classNames from "classnames";
 
 export interface ChartData {
     tvl: number;
@@ -33,21 +34,26 @@ interface SimulationChartProps {
     minimumPayoutPercentage?: number;
     lowerUsdTarget?: number;
     upperUsdTarget?: number;
-    totalRewardsUsd?: number;
+    totalRewardsUsd?: number | null;
     poolUsdTvl?: number | null;
     error?: boolean;
+    loading?: boolean;
+    className?: string;
 }
 
 const POINTS_COUNT = 1000;
+const BASE_HEIGHT = 270;
 export const CHART_MARGINS = { top: 42, right: 16, bottom: 30, left: 16 };
 
-export function SimulationChart({
+export function KpiSimulationChart({
     minimumPayoutPercentage = 0,
     lowerUsdTarget,
     upperUsdTarget,
     totalRewardsUsd,
     poolUsdTvl,
     error,
+    loading,
+    className,
 }: SimulationChartProps) {
     const t = useTranslations("simulationChart");
 
@@ -145,12 +151,22 @@ export function SimulationChart({
 
     if (error) {
         return (
-            <div className={styles.root}>
-                <div className={styles.emptyContainer}>
+            <div className={`root ${styles.root} ${className}`}>
+                <div className={`emptyContainer ${styles.emptyContainer}`}>
                     <ErrorText variant="xs" weight="medium">
                         {t("errors.wrongData")}
                     </ErrorText>
                 </div>
+            </div>
+        );
+    }
+
+    if (loading) {
+        return (
+            <div className={`root ${styles.root} ${className}`}>
+                <div
+                    className={`emptyContainer ${styles.emptyContainer} ${styles.loading}`}
+                ></div>
             </div>
         );
     }
@@ -162,8 +178,8 @@ export function SimulationChart({
         !poolUsdTvl
     )
         return (
-            <div className={styles.root}>
-                <div className={styles.emptyContainer}>
+            <div className={`root ${styles.root} ${className}`}>
+                <div className={`emptyContainer ${styles.emptyContainer}`}>
                     <Typography uppercase variant="sm" light weight="medium">
                         {t("missingData")}
                     </Typography>
@@ -172,11 +188,10 @@ export function SimulationChart({
         );
 
     return (
-        <div className={styles.root}>
+        <div className={`root ${styles.root} ${className}`}>
             <ResponsiveContainer
                 width="100%"
-                height={270}
-                className={styles.container}
+                className={`container ${styles.container}`}
             >
                 <ComposedChart
                     data={chartData}
@@ -184,12 +199,16 @@ export function SimulationChart({
                     style={{ cursor: "pointer" }}
                 >
                     <CartesianGrid
-                        fill="#F7F7F8"
+                        fill="#F3F4F6"
                         stroke="white"
                         strokeWidth={2}
                         vertical={false}
                         horizontal={true}
-                        horizontalPoints={[42, 84, 126, 168]}
+                        horizontalCoordinatesGenerator={({ height }) =>
+                            height > BASE_HEIGHT
+                                ? [42, 126, 210, 294]
+                                : [42, 84, 126, 168]
+                        }
                     />
 
                     {/* area for the values before the current TVL */}

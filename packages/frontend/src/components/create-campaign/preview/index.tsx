@@ -22,7 +22,7 @@ import { formatPercentage, formatUsdAmount } from "@/src/utils/format";
 import { getCampaignPreviewApr } from "@/src/utils/campaign";
 import { trackFathomEvent } from "@/src/utils/fathom";
 import { type Hex, zeroHash } from "viem";
-import { SERVICE_URLS, type FullSpecification } from "@metrom-xyz/sdk";
+import { SERVICE_URLS, type Specification } from "@metrom-xyz/sdk";
 import { ENVIRONMENT } from "@/src/commons/env";
 
 import styles from "./styles.module.css";
@@ -107,7 +107,7 @@ export function CampaignPreview({
         const uploadSpecification = async () => {
             setUploadingSpecification(true);
 
-            const specification: FullSpecification = {
+            const specification: Specification = {
                 // TODO: add restrictions
                 kpi: payload.kpiSpecification,
             };

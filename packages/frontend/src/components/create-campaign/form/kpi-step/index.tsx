@@ -27,7 +27,7 @@ import { formatUsdAmount } from "@/src/utils/format";
 import classNames from "classnames";
 import { KpiMetric, type KpiSpecification } from "@metrom-xyz/sdk";
 import { useDebounce, usePrevious } from "react-use";
-import { SimulationChart } from "./simulation-chart";
+import { KpiSimulationChart } from "../../../kpi-simulation-chart";
 
 import styles from "./styles.module.css";
 
@@ -357,7 +357,7 @@ export function KpiStep({
                                 {t("simulation.description")}
                             </Typography>
                         </div>
-                        <SimulationChart
+                        <KpiSimulationChart
                             lowerUsdTarget={lowerUsdTargetDebounced?.raw}
                             upperUsdTarget={upperUsdTargetDebounced?.raw}
                             totalRewardsUsd={totalRewardsUsdAmount}

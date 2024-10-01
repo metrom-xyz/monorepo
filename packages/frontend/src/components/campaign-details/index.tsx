@@ -7,6 +7,8 @@ import { Header, SkeletonHeader } from "./header";
 import { Details } from "./details";
 import { Rewards } from "./rewards";
 import { Leaderboard } from "./leaderboard";
+import { KPI } from "@/src/commons/env";
+import { Kpi } from "./kpi";
 
 import styles from "./styles.module.css";
 
@@ -34,6 +36,7 @@ export function CampaignDetails({ chain, campaignId }: CampaignDetailsProps) {
             <div className={styles.contentWrapper}>
                 <Details campaign={campaign} loading={loadingCampaign} />
                 <Rewards campaign={campaign} loading={loadingCampaign} />
+                {KPI && <Kpi campaign={campaign} loading={loadingCampaign} />}
                 <Leaderboard campaign={campaign} loading={loadingCampaign} />
             </div>
         </div>
