@@ -1,4 +1,5 @@
-import { SupportedChain, type Activity } from "@metrom-xyz/sdk";
+import { type Activity } from "@metrom-xyz/sdk";
+import { SupportedChain } from "@metrom-xyz/contracts";
 import { useEffect, useState } from "react";
 import { metromApiClient } from "../commons";
 import { useAccount, useChainId } from "wagmi";

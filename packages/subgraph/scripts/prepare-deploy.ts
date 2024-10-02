@@ -1,14 +1,9 @@
 import { existsSync, writeFileSync, rmSync, readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
-import { ADDRESS, SupportedChain, Environment } from "@metrom-xyz/contracts";
+import { ADDRESS, SupportedChain } from "@metrom-xyz/contracts";
 import { fileURLToPath } from "node:url";
 import { exec } from "node:child_process";
 import Mustache from "mustache";
-
-const ENVIRONMENT_NAME: Record<Environment, string> = {
-    [Environment.Development]: "development",
-    [Environment.Production]: "production",
-};
 
 const NETWORK_NAME: Record<SupportedChain, string> = {
     [SupportedChain.Holesky]: "holesky",
@@ -16,24 +11,13 @@ const NETWORK_NAME: Record<SupportedChain, string> = {
     [SupportedChain.MantleSepolia]: "mantle-sepolia",
     [SupportedChain.SonicTestnet]: "sonic",
 
+    [SupportedChain.Base]: "base",
     [SupportedChain.Mode]: "mode-mainnet",
     [SupportedChain.Mantle]: "mantle",
-    [SupportedChain.Base]: "base",
 };
 
-const [, , rawEnvironment, rawNetwork = ""] = process.argv;
-const environment = rawEnvironment.toLowerCase();
+const [, , rawNetwork = ""] = process.argv;
 const network = rawNetwork.toLowerCase();
-
-const environmentExists = !!Object.values(ENVIRONMENT_NAME).find(
-    (name) => name === environment,
-);
-if (!environmentExists) {
-    console.error(
-        `"${environment}" is not a valid environment. Valid values are: ${Object.values(ENVIRONMENT_NAME).join(", ")}`,
-    );
-    process.exit(1);
-}
 
 const resolvedNetwork = Object.entries(NETWORK_NAME).find(([, name]) => {
     return name === network;
@@ -45,23 +29,13 @@ if (!resolvedNetwork) {
     process.exit(1);
 }
 
-const metrom =
-    ADDRESS[environment as Environment][
-        parseInt(resolvedNetwork[0]) as SupportedChain
-    ];
+const metrom = ADDRESS[parseInt(resolvedNetwork[0]) as SupportedChain];
 if (!metrom) {
     console.error(
-        `"${environment}/${network}" is not a valid environment/network combination. Valid values are:\n\n${Object.entries(
+        `"${network}" is not a valid network. Valid values are:\n\n${Object.keys(
             ADDRESS,
         )
-            .map(([validEnvironment, deployments]) => {
-                return `${validEnvironment}: ${Object.keys(deployments)
-                    .map(
-                        (chainId) =>
-                            NETWORK_NAME[parseInt(chainId) as SupportedChain],
-                    )
-                    .join(", ")}`;
-            })
+            .map((chainId) => NETWORK_NAME[parseInt(chainId) as SupportedChain])
             .join("\n")}`,
     );
     process.exit(1);

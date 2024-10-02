@@ -1,12 +1,11 @@
-import { SupportedChain, SupportedAmm } from "@metrom-xyz/sdk";
-import { ADDRESS } from "@metrom-xyz/contracts";
+import { SupportedAmm } from "@metrom-xyz/sdk";
+import { SupportedChain, ADDRESS } from "@metrom-xyz/contracts";
 import { MantleLogo } from "../../assets/logos/chains/mantle";
 import { SwapsicleLogo } from "../../assets/logos/amms/swapsicle";
-import { ENVIRONMENT } from "../env";
 import { type ChainData } from "..";
 
 export const mantleData: ChainData = {
-    metromContract: ADDRESS[ENVIRONMENT][SupportedChain.Mantle]!,
+    metromContract: ADDRESS[SupportedChain.Mantle],
     icon: MantleLogo,
     amms: [
         {

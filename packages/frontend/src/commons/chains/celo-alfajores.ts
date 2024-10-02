@@ -1,12 +1,11 @@
-import { SupportedChain, SupportedAmm } from "@metrom-xyz/sdk";
-import { ADDRESS } from "@metrom-xyz/contracts";
+import { SupportedAmm } from "@metrom-xyz/sdk";
+import { SupportedChain, ADDRESS } from "@metrom-xyz/contracts";
 import { type ChainData } from "../index";
 import { UniswapLogo } from "../../assets/logos/amms/uniswap";
 import { CeloLogo } from "../../assets/logos/chains/celo";
-import { ENVIRONMENT } from "../env";
 
 export const celoAlfajoresData: ChainData = {
-    metromContract: ADDRESS[ENVIRONMENT][SupportedChain.CeloAlfajores]!,
+    metromContract: ADDRESS[SupportedChain.CeloAlfajores],
     icon: CeloLogo,
     amms: [
         {
