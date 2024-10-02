@@ -146,7 +146,7 @@
                 },
                 "simulation": {
                     "title": "KPI simulation",
-                    "description": "Disclaimer: This is an interactive simulation tool that allows you to explore how incentives are distributed based on different TVL scenarios. The values you input will be used to calculate potential payouts, and these figures will be applied if finalized. Please review carefully before submitting."
+                    "description": "Disclaimer: This is an interactive simulation tool to visualize how incentives are distributed for different TVL scenarios. Please review the values you entered carefully before submitting."
                 },
                 "minimumPayout": "Minimum payout",
                 "apply": "Apply"

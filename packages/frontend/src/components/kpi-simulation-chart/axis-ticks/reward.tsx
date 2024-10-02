@@ -1,4 +1,4 @@
-import numeral from "numeral";
+import { formatUsdAmount } from "@/src/utils/format";
 
 import styles from "./styles.module.css";
 
@@ -16,7 +16,7 @@ export function RewardTick({ payload, x, y }: RewardTickProps) {
     return (
         <g transform={`translate(${x},${y})`}>
             <text x={-10} y={-3} dy={0} fontSize={12} className={styles.axis}>
-                {numeral(payload.value).format("($0,0a)")}
+                {formatUsdAmount(payload.value)}
             </text>
         </g>
     );

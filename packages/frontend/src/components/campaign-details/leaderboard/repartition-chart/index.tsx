@@ -70,6 +70,7 @@ export function RepartitionChart({
                             data={chartData}
                             innerRadius={70}
                             outerRadius={120}
+                            minAngle={5}
                         >
                             {chartData.map((entry, index) => (
                                 <Cell
