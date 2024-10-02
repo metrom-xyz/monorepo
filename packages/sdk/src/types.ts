@@ -1,6 +1,6 @@
 import { type Address, type Hash } from "viem";
 import type { SupportedAmm } from "./commons";
-import type { BackendKpiSpecification } from "./client/types";
+import type { BackendSpecification } from "./client/types";
 
 export type { BackendSpecification as Specification } from "./client/types";
 export type { BackendKpiSpecification as KpiSpecification } from "./client/types";
@@ -44,7 +44,7 @@ export interface Pool {
     chainId: number;
     address: Address;
     amm: SupportedAmm;
-    fee: number | null;
+    fee: number;
     token0: Erc20Token;
     token1: Erc20Token;
     tvl: number | null;
@@ -72,9 +72,7 @@ export interface Campaign {
     pool: Pool;
     rewards: Rewards;
     apr: number | null;
-    whitelist: Address[] | null;
-    blacklist: Address[] | null;
-    kpi: BackendKpiSpecification | null;
+    specification: BackendSpecification | null;
 }
 
 export interface Claim extends Erc20TokenAmount {

@@ -151,8 +151,13 @@ export function KpiSimulationChart({
 
     if (error) {
         return (
-            <div className={`root ${styles.root} ${className}`}>
-                <div className={`emptyContainer ${styles.emptyContainer}`}>
+            <div className={classNames("root", styles.root, className)}>
+                <div
+                    className={classNames(
+                        "emptyContainer",
+                        styles.emptyContainer,
+                    )}
+                >
                     <ErrorText variant="xs" weight="medium">
                         {t("errors.wrongData")}
                     </ErrorText>
@@ -163,9 +168,13 @@ export function KpiSimulationChart({
 
     if (loading) {
         return (
-            <div className={`root ${styles.root} ${className}`}>
+            <div className={classNames("root", styles.root, className)}>
                 <div
-                    className={`emptyContainer ${styles.emptyContainer} ${styles.loading}`}
+                    className={classNames(
+                        "emptyContainer",
+                        styles.emptyContainer,
+                        styles.loading,
+                    )}
                 ></div>
             </div>
         );
@@ -178,8 +187,13 @@ export function KpiSimulationChart({
         !poolUsdTvl
     )
         return (
-            <div className={`root ${styles.root} ${className}`}>
-                <div className={`emptyContainer ${styles.emptyContainer}`}>
+            <div className={classNames("root", styles.root, className)}>
+                <div
+                    className={classNames(
+                        "emptyContainer",
+                        styles.emptyContainer,
+                    )}
+                >
                     <Typography uppercase variant="sm" light weight="medium">
                         {t("missingData")}
                     </Typography>
@@ -188,10 +202,10 @@ export function KpiSimulationChart({
         );
 
     return (
-        <div className={`root ${styles.root} ${className}`}>
+        <div className={classNames("root", styles.root, className)}>
             <ResponsiveContainer
                 width="100%"
-                className={`container ${styles.container}`}
+                className={classNames("container", styles.container)}
             >
                 <ComposedChart
                     data={chartData}
