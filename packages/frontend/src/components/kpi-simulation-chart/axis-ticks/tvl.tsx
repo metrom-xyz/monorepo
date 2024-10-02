@@ -35,7 +35,7 @@ export function TvlTick({
                 x={0}
                 y={0}
                 dy={12}
-                textAnchor="middle"
+                textAnchor="end"
                 fontSize={12}
                 className={styles.axis}
             >
@@ -46,7 +46,7 @@ export function TvlTick({
                 x={0}
                 y={0}
                 dy={24}
-                textAnchor="middle"
+                textAnchor="end"
                 fontSize={12}
                 className={styles.axis}
             >
