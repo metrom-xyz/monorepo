@@ -110,7 +110,7 @@ export class MetromApiClient {
     async fetchClaims(params: FetchClaimsParams): Promise<Claim[]> {
         const url = new URL("claims", this.baseUrl);
 
-        url.searchParams.set("address", params.address);
+        url.searchParams.set("user", params.address);
 
         const response = await fetch(url);
         if (!response.ok)
