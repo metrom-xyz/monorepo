@@ -276,34 +276,22 @@ function processCampaign(backendCampaign: BackendCampaign): Campaign {
         });
     }
 
-    const { specification, ...rest } = backendCampaign;
-
     const campaign: Campaign = {
-        ...rest,
+        ...backendCampaign,
         chainId: Number(backendCampaign.chainId),
         status,
         pool: {
             ...backendCampaign.pool,
-            // FIXME: we should return the pool chain id from the backend
             chainId: Number(backendCampaign.chainId),
             amm: backendCampaign.pool.amm as SupportedAmm,
-            fee: toNumberOrNull(backendCampaign.pool.fee),
+            fee: Number(backendCampaign.pool.fee),
             tvl: toNumberOrNull(backendCampaign.pool.tvl),
             token0: processErc20Token(backendCampaign.pool.token0),
             token1: processErc20Token(backendCampaign.pool.token1),
         },
         apr: toNumberOrNull(backendCampaign.apr),
         rewards,
-        whitelist: null,
-        blacklist: null,
-        kpi: null,
     };
-
-    if (specification) {
-        campaign.blacklist = specification.blacklist ?? campaign.blacklist;
-        campaign.whitelist = specification.whitelist ?? campaign.whitelist;
-        campaign.kpi = specification.kpi ?? campaign.kpi;
-    }
 
     return campaign;
 }

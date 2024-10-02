@@ -23,7 +23,7 @@ export function Kpi({ campaign, loading }: KpiProps) {
         goal: { lowerUsdTarget, upperUsdTarget },
         minimumPayoutPercentage,
     } = useMemo<KpiSpecification>(() => {
-        if (!campaign?.kpi)
+        if (!campaign?.specification?.kpi)
             return {
                 goal: {
                     metric: KpiMetric.RangePoolTvl,
@@ -32,7 +32,7 @@ export function Kpi({ campaign, loading }: KpiProps) {
                 },
             };
 
-        const { goal, minimumPayoutPercentage } = campaign.kpi;
+        const { goal, minimumPayoutPercentage } = campaign.specification.kpi;
 
         return { goal, minimumPayoutPercentage };
     }, [campaign]);
@@ -47,7 +47,7 @@ export function Kpi({ campaign, loading }: KpiProps) {
         );
     }, [campaign, lowerUsdTarget, upperUsdTarget]);
 
-    if (!campaign?.kpi) return null;
+    if (!campaign?.specification?.kpi) return null;
 
     return (
         <div className={styles.root}>
