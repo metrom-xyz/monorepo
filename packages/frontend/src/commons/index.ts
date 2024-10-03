@@ -51,8 +51,6 @@ export const SUPPORTED_CHAINS: [Chain, ...Chain[]] =
 
 export const TOKEN_ICONS_URL = `https://raw.githubusercontent.com/metrom-xyz/token-icons/refs/heads/main/${ENVIRONMENT === Environment.Production ? "mainnet" : "testnet"}-icons.json`;
 
-export const TOKEN_ICONS_URL = `https://raw.githubusercontent.com/metrom-xyz/monorepo/refs/heads/main/packages/token-icons/${ENVIRONMENT === Environment.Production ? "mainnet" : "testnet"}-icons.json`;
-
 export const CHAIN_DATA: Record<SupportedChain, ChainData> = {
     [SupportedChain.Holesky]: holeskyData,
     [SupportedChain.CeloAlfajores]: celoAlfajoresData,
