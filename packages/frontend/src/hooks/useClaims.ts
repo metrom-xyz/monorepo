@@ -1,13 +1,10 @@
 import { useAccount, useBlockNumber, useReadContracts } from "wagmi";
 import { formatUnits, type Address } from "viem";
 import { CHAIN_DATA, metromApiClient } from "../commons";
-import {
-    SupportedChain,
-    type Claim,
-    type OnChainAmount,
-} from "@metrom-xyz/sdk";
-import { useEffect, useState } from "react";
+import { type Claim, type OnChainAmount } from "@metrom-xyz/sdk";
+import { SupportedChain } from "@metrom-xyz/contracts";
 import { metromAbi } from "@metrom-xyz/contracts/abi";
+import { useEffect, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 
 interface ClaimWithRemaining extends Claim {

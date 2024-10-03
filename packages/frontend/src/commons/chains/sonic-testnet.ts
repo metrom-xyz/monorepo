@@ -1,7 +1,5 @@
-import { SupportedChain } from "@metrom-xyz/sdk";
-import { ADDRESS } from "@metrom-xyz/contracts";
+import { SupportedChain, ADDRESS } from "@metrom-xyz/contracts";
 import { SonicLogo } from "@/src/assets/logos/chains/sonic";
-import { ENVIRONMENT } from "../env";
 import { type ChainData } from "..";
 import { defineChain } from "viem";
 
@@ -33,7 +31,7 @@ export const sonicTestnet = defineChain({
 });
 
 export const sonicTestnetData: ChainData = {
-    metromContract: ADDRESS[ENVIRONMENT][SupportedChain.SonicTestnet]!,
+    metromContract: ADDRESS[SupportedChain.SonicTestnet]!,
     icon: SonicLogo,
     amms: [],
     baseTokens: [],

@@ -1,12 +1,11 @@
-import { SupportedChain, SupportedAmm } from "@metrom-xyz/sdk";
-import { ADDRESS } from "@metrom-xyz/contracts";
+import { SupportedAmm } from "@metrom-xyz/sdk";
+import { SupportedChain, ADDRESS } from "@metrom-xyz/contracts";
 import { BaseLogo } from "../../assets/logos/chains/base";
 import { KimLogo } from "../../assets/logos/amms/kim";
-import { ENVIRONMENT } from "../env";
 import { type ChainData } from "..";
 
 export const baseData: ChainData = {
-    metromContract: ADDRESS[ENVIRONMENT][SupportedChain.Base]!,
+    metromContract: ADDRESS[SupportedChain.Base],
     icon: BaseLogo,
     amms: [
         {
@@ -24,22 +23,28 @@ export const baseData: ChainData = {
             symbol: "WETH",
         },
         {
-            address: "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913",
+            address: "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
             decimals: 6,
             name: "USDC",
             symbol: "USDC",
+        },
+        {
+            address: "0x0555E30da8f98308EdB960aa94C0Db47230d2B9c",
+            decimals: 8,
+            name: "Wrapped BTC",
+            symbol: "BTC",
+        },
+        {
+            address: "0x5dC25aA049837B696d1dc0F966aC8DF1491f819B",
+            decimals: 18,
+            name: "KIM",
+            symbol: "KIM",
         },
         {
             address: "0x50c5725949a6f0c72e6c4a641f24049a917db0cb",
             decimals: 18,
             name: "DAI Stablecoin",
             symbol: "DAI",
-        },
-        {
-            address: "0x0555E30da8f98308EdB960aa94C0Db47230d2B9c",
-            decimals: 8,
-            name: "Wrapped BTC",
-            symbol: "WBTC",
         },
     ],
 };

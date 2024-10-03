@@ -1,4 +1,4 @@
-import { Environment } from "@metrom-xyz/contracts";
+import { Environment } from "@metrom-xyz/sdk";
 
 export const ENVIRONMENT = process.env.NEXT_PUBLIC_ENVIRONMENT as Environment;
 if (

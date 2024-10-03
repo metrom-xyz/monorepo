@@ -3,11 +3,12 @@ import {
     MetromApiClient,
     SERVICE_URLS,
     DataManagerClient,
+    Environment,
 } from "@metrom-xyz/sdk";
 import { type ChainContract, type Chain } from "viem";
 import { type Amm, type SVGIcon } from "../types";
 import type { FunctionComponent } from "react";
-import { Environment, SupportedChain } from "@metrom-xyz/contracts";
+import { SupportedChain } from "@metrom-xyz/contracts";
 import { ENVIRONMENT } from "./env";
 import {
     celoAlfajores,
@@ -56,9 +57,9 @@ export const CHAIN_DATA: Record<SupportedChain, ChainData> = {
     [SupportedChain.MantleSepolia]: mantleSepoliaData,
     [SupportedChain.SonicTestnet]: sonicTestnetData,
 
+    [SupportedChain.Base]: baseData,
     [SupportedChain.Mode]: modeData,
     [SupportedChain.Mantle]: mantleData,
-    [SupportedChain.Base]: baseData,
 };
 
 export const metromApiClient = new MetromApiClient(

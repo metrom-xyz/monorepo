@@ -1,8 +1,6 @@
 import { Popover, Typography } from "@metrom-xyz/ui";
-import type {
-    SupportedChain,
-    UsdPricedErc20TokenAmount,
-} from "@metrom-xyz/sdk";
+import type { UsdPricedErc20TokenAmount } from "@metrom-xyz/sdk";
+import { SupportedChain } from "@metrom-xyz/contracts";
 import { useRef, useState } from "react";
 import { formatTokenAmount, formatUsdAmount } from "@/src/utils/format";
 import { RemoteLogo } from "@/src/components/remote-logo";

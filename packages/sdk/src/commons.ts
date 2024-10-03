@@ -1,4 +1,7 @@
-import { Environment } from "@metrom-xyz/contracts";
+export enum Environment {
+    Development = "development",
+    Production = "production",
+}
 
 export enum SupportedAmm {
     Univ3 = "uniswap-v3",

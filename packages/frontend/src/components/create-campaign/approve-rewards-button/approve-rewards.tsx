@@ -5,7 +5,7 @@ import {
     useReadContract,
     useChainId,
 } from "wagmi";
-import { type Address, erc20Abi, formatUnits } from "viem";
+import { type Address, erc20Abi } from "viem";
 import type { CampaignPayload } from "@/src/types";
 import { ApproveReward } from "./approve-reward";
 import type { Erc20TokenAmount } from "@metrom-xyz/sdk";
