@@ -1,0 +1,12 @@
+{
+    "placeholder": {
+        "Factory": {
+            "address": "0x0000000000000000000000000000000000000000",
+            "startBlock": -1
+        },
+        "NonFungiblePositionManager": {
+            "address": "0x0000000000000000000000000000000000000000",
+            "startBlock": -1
+        }
+    }
+}
