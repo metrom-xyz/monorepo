@@ -261,6 +261,18 @@
             "title": "No claims found",
             "body": "There are currently no claims associated with the connected wallet. Explore the available opportunities on the all campaigns page.",
             "action": "All campaigns"
+        },
+        "notification": {
+            "success": {
+                "single": "Claim successful",
+                "all": "Claim all successful",
+                "message": "All rewards claimed"
+            },
+            "fail": {
+                "single": "Claim failed",
+                "all": "Claim all failed",
+                "message": "Something went wrong"
+            }
         }
     },
     "accountMenu": {

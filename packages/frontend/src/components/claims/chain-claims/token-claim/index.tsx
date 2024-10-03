@@ -11,19 +11,23 @@ import {
 import { metromAbi } from "@metrom-xyz/contracts/abi";
 import { useCallback, useState } from "react";
 import type { TokenClaims } from "..";
+import { toast } from "sonner";
 import { useChainData } from "@/src/hooks/useChainData";
 import { formatTokenAmount } from "@/src/utils/format";
 import { trackFathomEvent } from "@/src/utils/fathom";
 import { RemoteLogo } from "@/src/components/remote-logo";
+import { ClaimSuccess } from "../../notification/claim-success";
+import { ClaimFail } from "../../notification/claim-fail";
+import type { WriteContractErrorType } from "viem";
 
 import styles from "./styles.module.css";
 
 interface TokenClaimProps {
     chainId: number;
-    chainClaims: TokenClaims;
+    tokenClaims: TokenClaims;
 }
 
-export function TokenClaim({ chainId, chainClaims }: TokenClaimProps) {
+export function TokenClaim({ chainId, tokenClaims }: TokenClaimProps) {
     const t = useTranslations("claims");
     const { address: account } = useAccount();
     const publicClient = usePublicClient();
@@ -46,7 +50,7 @@ export function TokenClaim({ chainId, chainClaims }: TokenClaimProps) {
         args: [
             !account
                 ? []
-                : chainClaims.claims.map((claim) => {
+                : tokenClaims.claims.map((claim) => {
                       return {
                           campaignId: claim.campaignId,
                           proof: claim.proof,
@@ -58,7 +62,7 @@ export function TokenClaim({ chainId, chainClaims }: TokenClaimProps) {
         ],
         query: {
             refetchOnMount: false,
-            enabled: !!account && chainClaims.claims.length > 0,
+            enabled: !!account && tokenClaims.claims.length > 0,
         },
     });
 
@@ -77,12 +81,27 @@ export function TokenClaim({ chainId, chainClaims }: TokenClaimProps) {
 
                 if (receipt.status === "reverted") {
                     console.warn("Claim transaction reverted");
-                    return;
+                    throw new Error("Transaction reverted");
                 }
 
+                toast.custom((toastId) => (
+                    <ClaimSuccess
+                        toastId={toastId}
+                        chain={chainId}
+                        token={tokenClaims.token}
+                        amount={tokenClaims.totalAmount}
+                    />
+                ));
                 setClaimed(true);
                 trackFathomEvent("CLICK_CLAIM_SINGLE");
             } catch (error) {
+                if (
+                    !(error as WriteContractErrorType).message.includes(
+                        "User rejected",
+                    )
+                )
+                    toast.custom((toastId) => <ClaimFail toastId={toastId} />);
+
                 console.warn("Could not claim", error);
             } finally {
                 setClaiming(false);
@@ -93,6 +112,8 @@ export function TokenClaim({ chainId, chainClaims }: TokenClaimProps) {
         chainId,
         publicClient,
         simulatedClaimAll,
+        tokenClaims.token,
+        tokenClaims.totalAmount,
         switchChainAsync,
         writeContractAsync,
     ]);
@@ -103,14 +124,14 @@ export function TokenClaim({ chainId, chainClaims }: TokenClaimProps) {
                 <RemoteLogo
                     size="lg"
                     chain={chainId}
-                    address={chainClaims.token.address}
-                    defaultText={chainClaims.token.symbol}
+                    address={tokenClaims.token.address}
+                    defaultText={tokenClaims.token.symbol}
                 />
                 <Typography variant="lg" weight="medium">
-                    {chainClaims.token.symbol}
+                    {tokenClaims.token.symbol}
                 </Typography>
                 <Typography variant="lg" weight="medium">
-                    {formatTokenAmount({ amount: chainClaims.totalAmount })}
+                    {formatTokenAmount({ amount: tokenClaims.totalAmount })}
                 </Typography>
             </div>
             <Button
@@ -125,10 +146,10 @@ export function TokenClaim({ chainId, chainClaims }: TokenClaimProps) {
                     ? t("loading")
                     : claiming
                       ? t("claimingByToken", {
-                            tokenSymbol: chainClaims.token.symbol,
+                            tokenSymbol: tokenClaims.token.symbol,
                         })
                       : t("claimByToken", {
-                            tokenSymbol: chainClaims.token.symbol,
+                            tokenSymbol: tokenClaims.token.symbol,
                         })}
             </Button>
         </div>

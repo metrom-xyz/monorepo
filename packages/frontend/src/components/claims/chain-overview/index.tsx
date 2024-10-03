@@ -12,6 +12,10 @@ import {
 import { metromAbi } from "@metrom-xyz/contracts/abi";
 import { useCallback, useState } from "react";
 import { trackFathomEvent } from "@/src/utils/fathom";
+import { toast } from "sonner";
+import { ClaimSuccess } from "../notification/claim-success";
+import type { WriteContractErrorType } from "viem";
+import { ClaimFail } from "../notification/claim-fail";
 
 import styles from "./styles.module.css";
 
@@ -79,12 +83,25 @@ export function ChainOverview({
 
                 if (receipt.status === "reverted") {
                     console.warn("Claim transaction reverted");
-                    return;
+                    throw new Error("Transaction reverted");
                 }
 
+                toast.custom((toastId) => <ClaimSuccess toastId={toastId} />);
                 setClaimed(true);
                 trackFathomEvent("CLICK_CLAIM_ALL");
             } catch (error) {
+                if (
+                    !(error as WriteContractErrorType).message.includes(
+                        "User rejected",
+                    )
+                )
+                    toast.custom((toastId) => (
+                        <ClaimFail
+                            toastId={toastId}
+                            message={t("notification.fail.message")}
+                        />
+                    ));
+
                 console.warn("Could not claim", error);
             } finally {
                 setClaiming(false);
@@ -92,6 +109,7 @@ export function ChainOverview({
         };
         void create();
     }, [
+        t,
         chainWithClaimsData.chain.id,
         publicClient,
         simulatedClaimAll,
