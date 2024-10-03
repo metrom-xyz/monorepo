@@ -45,6 +45,7 @@ export function useDistributionBreakdown(campaign?: Campaign): {
             args: campaign && [campaign.id],
             query: {
                 enabled: !!campaign,
+                refetchOnWindowFocus: false,
             },
         });
 
