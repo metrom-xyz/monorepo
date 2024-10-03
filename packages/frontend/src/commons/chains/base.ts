@@ -15,7 +15,6 @@ export const baseData: ChainData = {
             addLiquidityUrl: "https://app.kim.exchange/pools/v4/{target_pool}",
         },
     ],
-    // TODO: add DAI
     baseTokens: [
         {
             address: "0x4200000000000000000000000000000000000006",
@@ -40,6 +39,12 @@ export const baseData: ChainData = {
             decimals: 18,
             name: "KIM",
             symbol: "KIM",
+        },
+        {
+            address: "0x50c5725949a6f0c72e6c4a641f24049a917db0cb",
+            decimals: 18,
+            name: "DAI Stablecoin",
+            symbol: "DAI",
         },
     ],
 };
