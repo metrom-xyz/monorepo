@@ -1,11 +1,8 @@
 "use client";
 
 import { Typography, Skeleton, Popover } from "@metrom-xyz/ui";
-import {
-    Status,
-    SupportedChain,
-    type Rewards as RewardsType,
-} from "@metrom-xyz/sdk";
+import { Status, type Rewards as RewardsType } from "@metrom-xyz/sdk";
+import { SupportedChain } from "@metrom-xyz/contracts";
 import dayjs from "dayjs";
 import { formatTokenAmount, formatUsdAmount } from "@/src/utils/format";
 import { useRef, useState } from "react";
