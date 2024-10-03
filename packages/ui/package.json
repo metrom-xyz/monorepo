@@ -30,6 +30,7 @@
     "peerDependencies": {
         "@fontsource/ibm-plex-mono": "^5.0.15",
         "@fontsource/ibm-plex-sans": "^5.0.22",
+        "sonner": "^1.5.0",
         "react": "^18",
         "react-dom": "^18"
     },
@@ -45,6 +46,7 @@
         "@types/tailwindcss": "^3.1.0",
         "autoprefixer": "^10.4.20",
         "classnames": "^2.5.1",
+        "sonner": "^1.5.0",
         "eslint": "^9.10.0",
         "eslint-config-next": "14.2.10",
         "eslint-config-prettier": "^9.1.0",

@@ -1,0 +1,27 @@
+.root {
+    @apply w-full min-w-72 flex items-center justify-between gap-4;
+}
+
+.wrapper {
+    @apply flex items-center gap-4;
+}
+
+.iconWrapper {
+    @apply p-4 bg-gray-200 rounded-lg;
+}
+
+.iconWrapper.error {
+    @apply bg-red-600;
+}
+
+.icon.error {
+    @apply stroke-white;
+}
+
+.contentWrapper {
+    @apply flex flex-col gap-2;
+}
+
+.dismissIcon {
+    @apply w-2.5 h-2.5;
+}
