@@ -83,14 +83,14 @@
         fixed
         top-0
         bottom-0
-        -right-96
+        -right-[28rem]
         transition-transform
         ease-in-out
         duration-200;
 }
 
 .accountMenuOpen {
-    @apply transform -translate-x-96;
+    @apply transform -translate-x-[28rem];
 }
 
 .walletWrapper {
