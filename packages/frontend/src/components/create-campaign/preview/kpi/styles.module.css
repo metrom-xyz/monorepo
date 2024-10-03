@@ -1,0 +1,19 @@
+.root {
+    @apply flex flex-col gap-4;
+}
+
+.header {
+    @apply flex gap-4;
+}
+
+.textField {
+    @apply bg-gray-100;
+}
+
+.chartWrapper :global(.preview) {
+    @apply bg-gray-100;
+}
+
+.chartWrapper :global(.content) {
+    @apply px-3 bg-gray-100;
+}

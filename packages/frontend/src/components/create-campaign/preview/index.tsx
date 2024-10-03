@@ -23,7 +23,8 @@ import { getCampaignPreviewApr } from "@/src/utils/campaign";
 import { trackFathomEvent } from "@/src/utils/fathom";
 import { type Hex, zeroHash } from "viem";
 import { SERVICE_URLS, type Specification } from "@metrom-xyz/sdk";
-import { ENVIRONMENT } from "@/src/commons/env";
+import { ENVIRONMENT, KPI } from "@/src/commons/env";
+import { Kpi } from "./kpi";
 
 import styles from "./styles.module.css";
 
@@ -202,6 +203,13 @@ export function CampaignPreview({
                     onBack={onBack}
                 />
                 <div className={styles.content}>
+                    {KPI && !!payload.kpiSpecification && (
+                        <Kpi
+                            poolUsdTvl={payload.pool?.tvl}
+                            rewards={payload.rewards}
+                            specification={payload.kpiSpecification}
+                        />
+                    )}
                     <div className={styles.contentGrid}>
                         <TextField
                             boxed

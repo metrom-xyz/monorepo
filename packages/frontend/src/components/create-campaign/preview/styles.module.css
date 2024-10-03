@@ -3,11 +3,12 @@
         flex-col
         md:min-w-[750px]
         bg-gray-100
+        overflow-hidden
         rounded-3xl;
 }
 
 .content {
-    @apply flex flex-col gap-5 px-6 py-4;
+    @apply flex overflow-y-auto max-h-[650px] flex-col gap-5 px-6 py-4;
 }
 
 .contentGrid {

@@ -170,6 +170,13 @@
         },
         "tvl": "TVL",
         "apr": "APR",
+        "kpi": {
+            "title": "KPI",
+            "simulation": "KPI simulation",
+            "lowerBound": "Lower bound",
+            "upperBound": "Upper bound",
+            "minimumPayout": "Minimum payout"
+        },
         "rewards": {
             "daily": "Daily rewards",
             "total": "Total rewards",
