@@ -2,7 +2,8 @@
 
 import { useClaims } from "@/src/hooks/useClaims";
 import { Chains, ChainsSkeleton } from "./chains";
-import { SupportedChain, type Claim } from "@metrom-xyz/sdk";
+import { SupportedChain } from "@metrom-xyz/contracts";
+import { type Claim } from "@metrom-xyz/sdk";
 import { useEffect, useMemo, useState } from "react";
 import { type Chain } from "viem";
 import { ChainOverview, SkeletonChainOverview } from "./chain-overview";

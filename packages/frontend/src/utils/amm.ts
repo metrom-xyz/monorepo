@@ -1,4 +1,5 @@
-import { SupportedAmm, type Pool, SupportedChain } from "@metrom-xyz/sdk";
+import { SupportedAmm, type Pool } from "@metrom-xyz/sdk";
+import { SupportedChain } from "@metrom-xyz/contracts";
 import type { Amm } from "../types";
 import { CHAIN_DATA } from "../commons";
 
