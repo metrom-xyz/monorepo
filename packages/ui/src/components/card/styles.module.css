@@ -1,0 +1,6 @@
+.root {
+    @apply w-full
+        p-4
+        bg-white
+        rounded-2xl;
+}
