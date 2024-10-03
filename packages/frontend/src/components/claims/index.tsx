@@ -9,27 +9,9 @@ import { type Chain } from "viem";
 import { ChainOverview, SkeletonChainOverview } from "./chain-overview";
 import { ChainClaims, SkeletonChainClaims } from "./chain-claims";
 import { Empty } from "./empty";
-import type { ChainData } from "@/src/commons";
-import {
-    base,
-    celoAlfajores,
-    holesky,
-    mantle,
-    mantleSepoliaTestnet,
-    mode,
-} from "viem/chains";
-import {
-    baseData,
-    celoAlfajoresData,
-    holeskyData,
-    mantleData,
-    mantleSepoliaData,
-    modeData,
-    sonicTestnetData,
-} from "@/src/commons/chains";
+import { CHAIN_DATA, SUPPORTED_CHAINS, type ChainData } from "@/src/commons";
 
 import styles from "./styles.module.css";
-import { sonicTestnet } from "@/src/commons/chains/sonic-testnet";
 
 export interface ChainWithClaimsData {
     chain: Chain;
@@ -49,7 +31,19 @@ export function Claims() {
         setInitializing(true);
         const reduced = claims.reduce(
             (acc, claim) => {
-                const data = acc[claim.chainId as SupportedChain];
+                const claimChainId = claim.chainId as SupportedChain;
+                const claimChain = SUPPORTED_CHAINS.find(
+                    ({ id }) => id === claimChainId,
+                );
+
+                if (!acc[claimChainId] && claimChain)
+                    acc[claimChainId] = {
+                        chain: claimChain,
+                        chainData: CHAIN_DATA[claimChainId],
+                        claims: [],
+                    };
+
+                const data = acc[claimChainId];
                 if (!data) {
                     console.warn(
                         `Claim detected on non-supported chain with id ${claim.chainId}`,
@@ -59,44 +53,7 @@ export function Claims() {
                 data.claims.push(claim);
                 return acc;
             },
-            {
-                [SupportedChain.CeloAlfajores]: {
-                    chain: celoAlfajores,
-                    chainData: celoAlfajoresData,
-                    claims: [],
-                },
-                [SupportedChain.Holesky]: {
-                    chain: holesky,
-                    chainData: holeskyData,
-                    claims: [],
-                },
-                [SupportedChain.MantleSepolia]: {
-                    chain: mantleSepoliaTestnet,
-                    chainData: mantleSepoliaData,
-                    claims: [],
-                },
-                [SupportedChain.SonicTestnet]: {
-                    chain: sonicTestnet,
-                    chainData: sonicTestnetData,
-                    claims: [],
-                },
-
-                [SupportedChain.Mode]: {
-                    chain: mode,
-                    chainData: modeData,
-                    claims: [],
-                },
-                [SupportedChain.Mantle]: {
-                    chain: mantle,
-                    chainData: mantleData,
-                    claims: [],
-                },
-                [SupportedChain.Base]: {
-                    chain: base,
-                    chainData: baseData,
-                    claims: [],
-                },
-            } as Record<SupportedChain, ChainWithClaimsData>,
+            {} as Record<SupportedChain, ChainWithClaimsData>,
         );
 
         return Object.values(reduced).sort(

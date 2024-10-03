@@ -39,7 +39,7 @@ export function ChainClaims({ chainWithClaimsData }: ChainOverviewProps) {
             <TokenClaim
                 key={tokenClaims.token.address}
                 chainId={chainWithClaimsData.chain.id}
-                chainClaims={tokenClaims}
+                tokenClaims={tokenClaims}
             />
         );
     });
