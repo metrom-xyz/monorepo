@@ -28,8 +28,6 @@ dataSources:
           file: ./abis/Erc20BytesName.json
         - name: Erc20BytesSymbol
           file: ./abis/Erc20BytesSymbol.json
-      blockHandlers:
-        - handler: handleBlock
       eventHandlers:
         - event: PoolCreated(indexed address,indexed address,indexed uint24,int24,address)
           handler: handlePoolCreated

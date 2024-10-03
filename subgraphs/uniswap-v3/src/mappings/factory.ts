@@ -1,25 +1,8 @@
-import {
-    BigInt,
-    Bytes,
-    DataSourceContext,
-    ethereum,
-    log,
-} from "@graphprotocol/graph-ts";
+import { BigInt, DataSourceContext, log } from "@graphprotocol/graph-ts";
 import { PoolCreated as PoolCreatedEvent } from "../../generated/Factory/Factory";
 import { Pool as PoolTemplate } from "../../generated/templates";
-import { IndexedBlock, Pool } from "../../generated/schema";
+import { Pool } from "../../generated/schema";
 import { BD_0, BI_0, getOrCreateToken } from "../commons";
-
-export function handleBlock(block: ethereum.Block): void {
-    let id = Bytes.fromHexString("0x01");
-    let indexedBlock = IndexedBlock.load(id);
-    if (indexedBlock === null) indexedBlock = new IndexedBlock(id);
-
-    indexedBlock.hash = block.hash;
-    indexedBlock.number = block.number;
-    indexedBlock.timestamp = block.timestamp;
-    indexedBlock.save();
-}
 
 export function handlePoolCreated(event: PoolCreatedEvent): void {
     let token0 = getOrCreateToken(event.params.token0);
