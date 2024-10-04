@@ -28,6 +28,7 @@ import {
     sonicTestnet,
     sonicTestnetData,
     baseData,
+    baseSepoliaData,
 } from "./chains";
 
 export interface ChainData {
@@ -56,6 +57,7 @@ export const CHAIN_DATA: Record<SupportedChain, ChainData> = {
     [SupportedChain.CeloAlfajores]: celoAlfajoresData,
     [SupportedChain.MantleSepolia]: mantleSepoliaData,
     [SupportedChain.SonicTestnet]: sonicTestnetData,
+    [SupportedChain.BaseSepolia]: baseSepoliaData,
 
     [SupportedChain.Base]: baseData,
     [SupportedChain.Mode]: modeData,

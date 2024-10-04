@@ -10,6 +10,7 @@ const NETWORK_NAME: Record<SupportedChain, string> = {
     [SupportedChain.CeloAlfajores]: "celo-alfajores",
     [SupportedChain.MantleSepolia]: "mantle-sepolia",
     [SupportedChain.SonicTestnet]: "sonic",
+    [SupportedChain.BaseSepolia]: "base-sepolia",
 
     [SupportedChain.Base]: "base",
     [SupportedChain.Mode]: "mode-mainnet",
