@@ -9,25 +9,18 @@ import type {
 import {
     Button,
     ErrorText,
-    NumberInput,
-    SliderInput,
     Switch,
     Typography,
     type NumberFormatValues,
 } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
-import {
-    useCallback,
-    useEffect,
-    useMemo,
-    useState,
-    type ChangeEvent,
-} from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { formatUsdAmount } from "@/src/utils/format";
 import classNames from "classnames";
 import { KpiMetric, type KpiSpecification } from "@metrom-xyz/sdk";
-import { useDebounce, usePrevious } from "react-use";
+import { usePrevious } from "react-use";
 import { KpiSimulationChart } from "../../../kpi-simulation-chart";
+import { GoalInputs } from "./goal-inputs";
 
 import styles from "./styles.module.css";
 
@@ -58,62 +51,10 @@ export function KpiStep({
     const [enabled, setEnabled] = useState(false);
     const [boundsError, setBoundsError] = useState("");
 
-    const [minimumPayoutPercentage, setMinimumPayoutPercentage] = useState(
-        kpiSpecification?.minimumPayoutPercentage || 0,
-    );
-    const [lowerUsdTargetRaw, setLowerUsdTargetRaw] = useState<
-        NumberInputValues | undefined
-    >(() => {
-        if (kpiSpecification) {
-            return {
-                raw: kpiSpecification.goal.lowerUsdTarget,
-                formatted: kpiSpecification.goal.lowerUsdTarget.toString(),
-            };
-        }
-        return undefined;
-    });
-    const [upperUsdTargetRaw, setUpperUsdTargetRaw] = useState<
-        NumberInputValues | undefined
-    >(() => {
-        if (kpiSpecification) {
-            return {
-                raw: kpiSpecification.goal.upperUsdTarget,
-                formatted: kpiSpecification.goal.upperUsdTarget.toString(),
-            };
-        }
-        return undefined;
-    });
-
-    const [lowerUsdTargetDebounced, setLowerUsdTargetDebounced] =
-        useState(lowerUsdTargetRaw);
-    const [upperUsdTargetDebounced, setUpperUsdTargetDebounced] =
-        useState(upperUsdTargetRaw);
-    const [
-        minimumPayoutPercentageDebounced,
-        setMinimumPayoutPercentageDebounced,
-    ] = useState(minimumPayoutPercentage);
-
-    useDebounce(
-        () => {
-            setLowerUsdTargetDebounced(lowerUsdTargetRaw);
-        },
-        500,
-        [lowerUsdTargetRaw],
-    );
-    useDebounce(
-        () => {
-            setUpperUsdTargetDebounced(upperUsdTargetRaw);
-        },
-        500,
-        [upperUsdTargetRaw],
-    );
-    useDebounce(
-        () => {
-            setMinimumPayoutPercentageDebounced(minimumPayoutPercentage);
-        },
-        500,
-        [minimumPayoutPercentage],
-    );
+    const [minimumPayoutPercentage, setMinimumPayoutPercentage] =
+        useState<number>(0);
+    const [lowerUsdTargetRaw, setLowerUsdTargetRaw] = useState<number>();
+    const [upperUsdTargetRaw, setUpperUsdTargetRaw] = useState<number>();
 
     const prevKpiSpecification = usePrevious(kpiSpecification);
 
@@ -140,8 +81,8 @@ export function KpiStep({
 
         return (
             prevMinPayout !== minimumPayoutPercentage ||
-            prevLowerTarget !== lowerUsdTargetRaw?.raw ||
-            prevUpperTarget !== upperUsdTargetRaw?.raw
+            prevLowerTarget !== lowerUsdTargetRaw ||
+            prevUpperTarget !== upperUsdTargetRaw
         );
     }, [
         lowerUsdTargetRaw,
@@ -168,32 +109,30 @@ export function KpiStep({
     }, [enabled, kpiSpecification, onKpiChange]);
 
     useEffect(() => {
-        if (!lowerUsdTargetDebounced && !upperUsdTargetDebounced) {
+        if (
+            lowerUsdTargetRaw === undefined &&
+            upperUsdTargetRaw === undefined
+        ) {
             setBoundsError("");
             return;
         }
 
         if (
-            (!lowerUsdTargetDebounced && upperUsdTargetDebounced) ||
-            (!upperUsdTargetDebounced && lowerUsdTargetDebounced)
+            (lowerUsdTargetRaw === undefined && upperUsdTargetRaw) ||
+            (upperUsdTargetRaw === undefined && lowerUsdTargetRaw)
         ) {
             setBoundsError("errors.missing");
             return;
         }
 
-        if (!lowerUsdTargetDebounced || !upperUsdTargetDebounced) return;
-
-        const { raw: lowerUsdTarget } = lowerUsdTargetDebounced;
-        const { raw: upperUsdTarget } = upperUsdTargetDebounced;
-
         if (
-            lowerUsdTarget !== undefined &&
-            upperUsdTarget !== undefined &&
-            lowerUsdTarget >= upperUsdTarget
+            lowerUsdTargetRaw !== undefined &&
+            upperUsdTargetRaw !== undefined &&
+            lowerUsdTargetRaw >= upperUsdTargetRaw
         )
             setBoundsError("errors.malformed");
         else setBoundsError("");
-    }, [lowerUsdTargetDebounced, upperUsdTargetDebounced]);
+    }, [lowerUsdTargetRaw, upperUsdTargetRaw]);
 
     useEffect(() => {
         onError({
@@ -214,53 +153,28 @@ export function KpiStep({
         setOpen((open) => !open);
     }
 
-    function handleUpperUsdTargetOnChange(value: NumberFormatValues) {
-        setUpperUsdTargetRaw({
-            raw: value.floatValue,
-            formatted: value.formattedValue,
-        });
-    }
-
-    function handleLowerUsdTargetOnChange(value: NumberFormatValues) {
-        setLowerUsdTargetRaw({
-            raw: value.floatValue,
-            formatted: value.formattedValue,
-        });
-    }
-
-    function handleMinimumPayoutOnChange(event: ChangeEvent<HTMLInputElement>) {
-        setMinimumPayoutPercentage(Number(event.target.value) / 100);
-    }
-
     const handleOnApply = useCallback(() => {
-        if (
-            lowerUsdTargetDebounced?.raw === undefined ||
-            upperUsdTargetDebounced?.raw === undefined
-        )
+        if (lowerUsdTargetRaw === undefined || upperUsdTargetRaw === undefined)
             return;
-
-        const { raw: lowerUsdTarget } = lowerUsdTargetDebounced;
-        const { raw: upperUsdTarget } = upperUsdTargetDebounced;
 
         const kpiSpecification: KpiSpecification = {
             goal: {
                 metric: KpiMetric.RangePoolTvl,
-                lowerUsdTarget,
-                upperUsdTarget,
+                lowerUsdTarget: lowerUsdTargetRaw,
+                upperUsdTarget: upperUsdTargetRaw,
             },
         };
 
-        if (minimumPayoutPercentageDebounced)
-            kpiSpecification.minimumPayoutPercentage =
-                minimumPayoutPercentageDebounced;
+        if (minimumPayoutPercentage)
+            kpiSpecification.minimumPayoutPercentage = minimumPayoutPercentage;
 
         setOpen(false);
         onKpiChange({ kpiSpecification });
     }, [
-        lowerUsdTargetDebounced,
-        minimumPayoutPercentageDebounced,
+        lowerUsdTargetRaw,
+        minimumPayoutPercentage,
         onKpiChange,
-        upperUsdTargetDebounced,
+        upperUsdTargetRaw,
     ]);
 
     return (
@@ -316,31 +230,14 @@ export function KpiStep({
             </StepPreview>
             <StepContent>
                 <div className={styles.stepContent}>
-                    <div className={styles.boundInputs}>
-                        <NumberInput
-                            label={t("rangedTvl.lowerBound")}
-                            placeholder="$0"
-                            prefix="$"
-                            error={!!boundsError}
-                            allowNegative={false}
-                            value={lowerUsdTargetDebounced?.formatted}
-                            onValueChange={handleLowerUsdTargetOnChange}
-                        />
-                        <NumberInput
-                            label={t("rangedTvl.upperBound")}
-                            placeholder="$0"
-                            prefix="$"
-                            error={!!boundsError}
-                            allowNegative={false}
-                            value={upperUsdTargetDebounced?.formatted}
-                            onValueChange={handleUpperUsdTargetOnChange}
-                        />
-                    </div>
-                    <SliderInput
-                        label={t("minimumPayout")}
-                        value={minimumPayoutPercentage * 100}
-                        onChange={handleMinimumPayoutOnChange}
-                        className={styles.minimumPayoutSlider}
+                    <GoalInputs
+                        kpiSpecification={kpiSpecification}
+                        error={!!boundsError}
+                        onLowerUsdTargetChange={setLowerUsdTargetRaw}
+                        onUpperUsdTargetChange={setUpperUsdTargetRaw}
+                        onMinimumPayoutPercentageChange={
+                            setMinimumPayoutPercentage
+                        }
                     />
                     <div className={styles.chartWrapper}>
                         <div className={styles.simulationTitleWrapper}>
@@ -358,12 +255,10 @@ export function KpiStep({
                             </Typography>
                         </div>
                         <KpiSimulationChart
-                            lowerUsdTarget={lowerUsdTargetDebounced?.raw}
-                            upperUsdTarget={upperUsdTargetDebounced?.raw}
+                            lowerUsdTarget={lowerUsdTargetRaw}
+                            upperUsdTarget={upperUsdTargetRaw}
                             totalRewardsUsd={totalRewardsUsdAmount}
-                            minimumPayoutPercentage={
-                                minimumPayoutPercentageDebounced
-                            }
+                            minimumPayoutPercentage={minimumPayoutPercentage}
                             poolUsdTvl={pool?.tvl}
                             error={!!boundsError}
                         />
@@ -373,8 +268,8 @@ export function KpiStep({
                         size="small"
                         disabled={
                             !unsavedChanges ||
-                            upperUsdTargetDebounced === undefined ||
-                            lowerUsdTargetDebounced === undefined ||
+                            upperUsdTargetRaw === undefined ||
+                            lowerUsdTargetRaw === undefined ||
                             !!boundsError
                         }
                         onClick={handleOnApply}
