@@ -37,7 +37,7 @@ export interface ChainData {
     baseTokens: Erc20Token[];
 }
 
-export const FEE_UNIT = 10000;
+export const FEE_UNIT = 1_000_000;
 
 export const MAX_U256 =
     0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffn;
