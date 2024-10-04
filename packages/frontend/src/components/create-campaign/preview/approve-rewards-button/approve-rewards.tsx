@@ -1,16 +1,9 @@
 import { useCallback, useState, useEffect } from "react";
-import {
-    useReadContracts,
-    useAccount,
-    useReadContract,
-    useChainId,
-} from "wagmi";
+import { useReadContracts, useAccount, useChainId } from "wagmi";
 import { type Address, erc20Abi } from "viem";
 import type { CampaignPayload } from "@/src/types";
 import { ApproveReward } from "./approve-reward";
 import type { Erc20TokenAmount } from "@metrom-xyz/sdk";
-import { metromAbi } from "@metrom-xyz/contracts/abi";
-import { useChainData } from "@/src/hooks/useChainData";
 
 interface ApproveRewardsProps {
     rewards?: CampaignPayload["rewards"];
@@ -26,7 +19,6 @@ export function ApproveRewards({
     onApprove,
 }: ApproveRewardsProps) {
     const chainId = useChainId();
-    const chainData = useChainData(chainId);
     const { address: connectedAddress } = useAccount();
 
     const [currentIndex, setCurrentIndex] = useState(0);
@@ -34,12 +26,6 @@ export function ApproveRewards({
     const [toApprove, setToApprove] = useState(rewards || []);
     const currentlyApprovingReward: Erc20TokenAmount | undefined =
         toApprove[currentIndex];
-
-    const { data: fee, isLoading: loadingGlobalFee } = useReadContract({
-        address: chainData?.metromContract.address,
-        abi: metromAbi,
-        functionName: "fee",
-    });
 
     const { data: allowances, isLoading: loadingAllowances } = useReadContracts(
         {
@@ -104,12 +90,10 @@ export function ApproveRewards({
             loading={
                 checkingApprovals ||
                 loadingAllowances ||
-                loadingGlobalFee ||
                 !currentlyApprovingReward ||
                 !spender
             }
             disabled={disabled}
-            fee={fee}
             reward={currentlyApprovingReward}
             index={currentIndex + 1}
             totalAmount={rewards?.length || 0}

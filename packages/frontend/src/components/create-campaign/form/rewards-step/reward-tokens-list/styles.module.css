@@ -14,5 +14,5 @@
 }
 
 .emptyList {
-    @apply flex justify-center pt-4;
+    @apply flex justify-center py-4;
 }

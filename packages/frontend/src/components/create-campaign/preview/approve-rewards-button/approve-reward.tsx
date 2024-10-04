@@ -14,7 +14,6 @@ import { RewardIcon } from "@/src/assets/reward-icon";
 import styles from "./styles.module.css";
 
 interface ApproveRewardProps {
-    fee?: number;
     loading: boolean;
     disabled: boolean;
     reward: Erc20TokenAmount;
@@ -25,8 +24,6 @@ interface ApproveRewardProps {
 }
 
 export function ApproveReward({
-    // TODO: show fee somewhere
-    fee,
     loading,
     disabled,
     reward,

@@ -58,11 +58,13 @@ export function Header({ payload, backDisabled, onBack }: HeaderProps) {
             <div className={styles.durationContainer}>
                 <TextField
                     uppercase
+                    variant="xl"
                     label={t("startDate")}
                     value={formatDateTime(payload.startDate)}
                 />
                 <TextField
                     alignment="center"
+                    variant="xl"
                     label={t("runTimeLabel")}
                     value={
                         payload.startDate && payload.endDate
@@ -72,6 +74,7 @@ export function Header({ payload, backDisabled, onBack }: HeaderProps) {
                 />
                 <TextField
                     uppercase
+                    variant="xl"
                     alignment="right"
                     label={t("endDate")}
                     value={formatDateTime(payload.endDate)}
