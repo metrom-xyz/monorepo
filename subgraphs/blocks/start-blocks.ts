@@ -4,6 +4,7 @@ export const START_BLOCKS: { [network: string]: number } = {
     holesky: 1468000,
     "arbitrum-one": 154000000,
     "mantle-sepolia": 9873155,
+    "base-sepolia": 16132650,
     mantle: 67227224,
     "mode-mainnet": 12569458,
     sonic: 73323411,
