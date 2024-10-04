@@ -12,11 +12,11 @@
 }
 
 .nameContainer {
-    @apply flex w-full max-w-32 gap-1.5 items-center;
+    @apply flex w-full max-w-36 gap-1.5 items-center;
 }
 
 .row {
-    @apply grid grid-cols-3;
+    @apply grid items-center grid-cols-3;
 }
 
 .row :nth-child(2) {
@@ -28,9 +28,13 @@
 }
 
 .summary {
-    @apply flex justify-between gap-4;
+    @apply flex justify-between gap-4 mt-2;
 }
 
 .summaryBox {
     @apply bg-gray-100;
+}
+
+.feeText {
+    @apply flex items-baseline gap-2;
 }

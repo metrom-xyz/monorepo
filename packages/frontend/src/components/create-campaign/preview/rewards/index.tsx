@@ -2,11 +2,18 @@ import type { CampaignPayload } from "@/src/types";
 import { TextField, Typography } from "@metrom-xyz/ui";
 import type { SupportedChain } from "@metrom-xyz/contracts";
 import { useTranslations } from "next-intl";
-import { useChainId } from "wagmi";
+import { useChainId, useReadContract } from "wagmi";
 import dayjs from "dayjs";
 import { useMemo } from "react";
-import { formatTokenAmount, formatUsdAmount } from "@/src/utils/format";
+import {
+    formatPercentage,
+    formatTokenAmount,
+    formatUsdAmount,
+} from "@/src/utils/format";
 import { RemoteLogo } from "@/src/components/remote-logo";
+import { useChainData } from "@/src/hooks/useChainData";
+import { metromAbi } from "@metrom-xyz/contracts/abi";
+import { FEE_UNIT } from "@/src/commons";
 
 import styles from "./styles.module.css";
 
@@ -18,6 +25,7 @@ interface RewardsProps {
 export function Rewards({ rewards, campaignDurationSeconds }: RewardsProps) {
     const t = useTranslations("campaignPreview.rewards");
     const chain: SupportedChain = useChainId();
+    const chainData = useChainData(chain);
 
     const totalRewardsUsdAmount = useMemo(() => {
         if (!rewards) return 0;
@@ -39,6 +47,12 @@ export function Rewards({ rewards, campaignDurationSeconds }: RewardsProps) {
         return daysDuration > 0 ? totalRewardsUsdAmount / daysDuration : 0;
     }, [campaignDurationSeconds, totalRewardsUsdAmount]);
 
+    const { data: fee, isLoading: loadingGlobalFee } = useReadContract({
+        address: chainData?.metromContract.address,
+        abi: metromAbi,
+        functionName: "fee",
+    });
+
     return (
         <div className={styles.root}>
             <div className={styles.header}>
@@ -56,14 +70,14 @@ export function Rewards({ rewards, campaignDurationSeconds }: RewardsProps) {
                             chain={chain}
                             address={reward.token.address}
                         />
-                        <Typography uppercase weight="medium" variant="lg">
+                        <Typography uppercase weight="medium" variant="xl">
                             {reward.token.symbol}
                         </Typography>
                     </div>
-                    <Typography uppercase weight="medium" light>
+                    <Typography uppercase weight="medium" light variant="lg">
                         {formatUsdAmount(reward.amount.usdValue || 0)}
                     </Typography>
-                    <Typography uppercase weight="medium" variant="lg">
+                    <Typography uppercase weight="medium" variant="xl">
                         {formatTokenAmount({
                             amount: reward.amount.formatted,
                             humanize: false,
@@ -74,16 +88,38 @@ export function Rewards({ rewards, campaignDurationSeconds }: RewardsProps) {
             <div className={styles.summary}>
                 <TextField
                     boxed
+                    variant="xl"
                     label={t("daily")}
                     value={formatUsdAmount(dailyRewards)}
                     className={styles.summaryBox}
                 />
                 <TextField
                     boxed
+                    variant="xl"
                     label={t("total")}
                     value={formatUsdAmount(totalRewardsUsdAmount)}
                     className={styles.summaryBox}
                 />
+                {fee && (
+                    <TextField
+                        boxed
+                        label={t("fee")}
+                        value={
+                            <div className={styles.feeText}>
+                                <Typography weight="medium" variant="xl">
+                                    {formatPercentage(fee / FEE_UNIT)}
+                                </Typography>
+                                <Typography weight="medium" light>
+                                    {formatUsdAmount(
+                                        (totalRewardsUsdAmount * fee) /
+                                            (FEE_UNIT / 100),
+                                    )}
+                                </Typography>
+                            </div>
+                        }
+                        className={styles.summaryBox}
+                    />
+                )}
             </div>
         </div>
     );

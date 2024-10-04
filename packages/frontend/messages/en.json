@@ -181,7 +181,8 @@
             "daily": "Daily rewards",
             "total": "Total rewards",
             "token": "Reward token",
-            "amount": "Amount"
+            "amount": "Amount",
+            "fee": "Protocol fee"
         },
         "errors": {
             "kpiUpload": "Something went wrong when processing the KPI"

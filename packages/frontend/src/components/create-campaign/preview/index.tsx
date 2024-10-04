@@ -15,7 +15,7 @@ import { MetromLightLogo } from "@/src/assets/metrom-light-logo";
 import { useRouter } from "@/src/i18n/routing";
 import { useChainData } from "@/src/hooks/useChainData";
 import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
-import { ApproveRewardsButton } from "../approve-rewards-button";
+import { ApproveRewardsButton } from "./approve-rewards-button";
 import { Rewards } from "./rewards";
 import { Header } from "./header";
 import { formatPercentage, formatUsdAmount } from "@/src/utils/format";
@@ -213,11 +213,13 @@ export function CampaignPreview({
                     <div className={styles.contentGrid}>
                         <TextField
                             boxed
+                            variant="xl"
                             label={t("tvl")}
                             value={formatUsdAmount(payload.pool?.tvl)}
                         />
                         <TextField
                             boxed
+                            variant="xl"
                             label={t("apr")}
                             value={formatPercentage(
                                 getCampaignPreviewApr(payload),
