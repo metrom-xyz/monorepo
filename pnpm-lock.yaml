@@ -39,8 +39,8 @@ importers:
         specifier: ^5.0.22
         version: 5.0.22
       '@metrom-xyz/contracts':
-        specifier: ^0.25.1
-        version: 0.25.1(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.23.8)
+        specifier: ^0.26.0
+        version: 0.26.0(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.23.8)
       '@metrom-xyz/sdk':
         specifier: workspace:*
         version: link:../sdk
@@ -175,8 +175,8 @@ importers:
         specifier: ^9.10.0
         version: 9.10.0
       '@metrom-xyz/contracts':
-        specifier: ^0.25.1
-        version: 0.25.1(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@6.0.4)(zod@3.23.8)
+        specifier: ^0.26.0
+        version: 0.26.0(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@6.0.4)(zod@3.23.8)
       '@tsconfig/node20':
         specifier: ^20.1.4
         version: 20.1.4
@@ -477,8 +477,8 @@ importers:
         specifier: ^9.10.0
         version: 9.10.0
       '@metrom-xyz/contracts':
-        specifier: ^0.25.1
-        version: 0.25.1(bufferutil@4.0.8)(typescript@5.6.2)(utf-8-validate@5.0.10)(zod@3.23.8)
+        specifier: ^0.26.0
+        version: 0.26.0(bufferutil@4.0.8)(typescript@5.6.2)(utf-8-validate@5.0.10)(zod@3.23.8)
       '@types/eslint__js':
         specifier: ^8.42.3
         version: 8.42.3
@@ -2044,8 +2044,8 @@ packages:
     resolution: {integrity: sha512-/u663aUaB6+Xe75i3Mt/1cCljm41HDYIsna5oBrwGvgkY2zH7/9k9Zjd706cxoAbxN7QgLSVAReUiGnuxCuXrQ==}
     engines: {node: '>=16.0.0'}
 
-  '@metrom-xyz/contracts@0.25.1':
-    resolution: {integrity: sha512-y3RJTXHuIlXdt4Z55l5bm4ofs6HlOPG2BYDWxmCaltlolBqHsX8bjXUb+h7ZLl2nYyWxwwJmHPDtphb5rA96IA==}
+  '@metrom-xyz/contracts@0.26.0':
+    resolution: {integrity: sha512-IlhJJDyCX6AcAoIJsGZlrdP5y3eau8jxwX9MXTW19HVNakqM5cT7jZ+8D2/O12pPFxGC4iV2Z46M0IVAt6x+mg==}
 
   '@motionone/animation@10.18.0':
     resolution: {integrity: sha512-9z2p5GFGCm0gBsZbi8rVMOAJCtw1WqBTIPw3ozk06gDvZInBPIsQcHgYogEJ4yuHJ+akuW8g1SEIOpTOvYs8hw==}
@@ -10321,7 +10321,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@metrom-xyz/contracts@0.25.1(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.23.8)':
+  '@metrom-xyz/contracts@0.26.0(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.23.8)':
     dependencies:
       viem: 2.21.18(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.23.8)
     transitivePeerDependencies:
@@ -10330,7 +10330,7 @@ snapshots:
       - utf-8-validate
       - zod
 
-  '@metrom-xyz/contracts@0.25.1(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@6.0.4)(zod@3.23.8)':
+  '@metrom-xyz/contracts@0.26.0(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@6.0.4)(zod@3.23.8)':
     dependencies:
       viem: 2.21.18(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@6.0.4)(zod@3.23.8)
     transitivePeerDependencies:
@@ -10339,7 +10339,7 @@ snapshots:
       - utf-8-validate
       - zod
 
-  '@metrom-xyz/contracts@0.25.1(bufferutil@4.0.8)(typescript@5.6.2)(utf-8-validate@5.0.10)(zod@3.23.8)':
+  '@metrom-xyz/contracts@0.26.0(bufferutil@4.0.8)(typescript@5.6.2)(utf-8-validate@5.0.10)(zod@3.23.8)':
     dependencies:
       viem: 2.21.18(bufferutil@4.0.8)(typescript@5.6.2)(utf-8-validate@5.0.10)(zod@3.23.8)
     transitivePeerDependencies:
