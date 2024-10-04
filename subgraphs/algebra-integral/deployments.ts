@@ -36,6 +36,18 @@ export const DEPLOYMENTS: {
             },
         },
     },
+    "base-sepolia": {
+        kim: {
+            Factory: {
+                address: "0x2F0d41f94d5D1550b79A83D2fe85C82d68c5a3ca",
+                startBlock: 10903972,
+            },
+            NonFungiblePositionManager: {
+                address: "0xB7cF725E5b697F8338B929e6A52df823F2120a6A",
+                startBlock: 10904014,
+            },
+        },
+    },
     mantle: {
         swapsicle: {
             Factory: {

@@ -17,6 +17,7 @@ import {
     mode,
     mantle,
     base,
+    baseSepolia,
 } from "viem/chains";
 
 import {
@@ -28,6 +29,7 @@ import {
     sonicTestnet,
     sonicTestnetData,
     baseData,
+    baseSepoliaData,
 } from "./chains";
 
 export interface ChainData {
@@ -46,8 +48,14 @@ export const MAXIMUM_REWARDS_RESTRICTIONS = 20;
 
 export const SUPPORTED_CHAINS: [Chain, ...Chain[]] =
     ENVIRONMENT === Environment.Production
-        ? [mode, mantle]
-        : [celoAlfajores, holesky, mantleSepoliaTestnet, sonicTestnet, base];
+        ? [mode, mantle, base]
+        : [
+              celoAlfajores,
+              holesky,
+              mantleSepoliaTestnet,
+              sonicTestnet,
+              baseSepolia,
+          ];
 
 export const TOKEN_ICONS_URL = `https://raw.githubusercontent.com/metrom-xyz/token-icons/refs/heads/main/${ENVIRONMENT === Environment.Production ? "mainnet" : "testnet"}-icons.json`;
 
@@ -56,6 +64,7 @@ export const CHAIN_DATA: Record<SupportedChain, ChainData> = {
     [SupportedChain.CeloAlfajores]: celoAlfajoresData,
     [SupportedChain.MantleSepolia]: mantleSepoliaData,
     [SupportedChain.SonicTestnet]: sonicTestnetData,
+    [SupportedChain.BaseSepolia]: baseSepoliaData,
 
     [SupportedChain.Base]: baseData,
     [SupportedChain.Mode]: modeData,
