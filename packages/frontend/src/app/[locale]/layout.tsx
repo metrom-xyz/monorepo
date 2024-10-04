@@ -43,7 +43,7 @@ export default async function Layout({
                             toastOptions={{
                                 unstyled: true,
                                 classNames: {
-                                    toast: "absolute right-0 rounded-2xl bg-white p-3",
+                                    toast: styles.toast,
                                 },
                             }}
                         />
