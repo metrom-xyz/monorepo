@@ -302,12 +302,14 @@ export function RewardsStep({
                             onClick={handleRewardTokenButtonOnClick}
                             className={styles.rewardTokenSelect}
                         >
-                            <RemoteLogo
-                                size="xs"
-                                address={rewardToken?.address}
-                                chain={chainId}
-                                defaultText=" "
-                            />
+                            {rewardToken && (
+                                <RemoteLogo
+                                    size="xs"
+                                    address={rewardToken.address}
+                                    chain={chainId}
+                                    defaultText=" "
+                                />
+                            )}
                             <Typography
                                 weight="medium"
                                 className={styles.rewardTokenSymbol}
