@@ -25,7 +25,11 @@ export function PoolStepPreview({ pool }: PoolStepPreviewProps) {
                     }}
                 />
                 <div className={styles.poolInfo}>
-                    <Typography weight="medium" variant="lg">
+                    <Typography
+                        weight="medium"
+                        variant="lg"
+                        className={styles.poolName}
+                    >
                         {pool.token0.symbol} / {pool.token1.symbol}
                     </Typography>
                     {pool.fee && (

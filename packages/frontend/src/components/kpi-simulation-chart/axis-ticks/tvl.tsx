@@ -37,18 +37,18 @@ export function TvlTick({
                 x={0}
                 y={0}
                 dy={12}
-                textAnchor={index === 0 ? "start" : "end"}
+                textAnchor={index === 2 ? "end" : "start"}
                 fontSize={12}
                 className={styles.axis}
             >
                 {formatUsdAmount(payload.value)}
             </text>
-            {/* TODO: handle issue where the ticks are too close to eachothers */}
+            {/* TODO: handle issue where the ticks are too close to each others */}
             <text
                 x={0}
                 y={0}
                 dy={24}
-                textAnchor={index === 0 ? "start" : "end"}
+                textAnchor={index === 2 ? "end" : "start"}
                 fontSize={12}
                 className={styles.axis}
             >
