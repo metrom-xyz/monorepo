@@ -11,6 +11,7 @@ import {
 } from "@rainbow-me/rainbowkit";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { WagmiProvider } from "wagmi";
+import { hashFn } from "wagmi/query";
 import { SUPPORTED_CHAINS } from "../commons";
 import { WALLETCONNECT_PROJECT_ID } from "../commons/env";
 import duration from "dayjs/plugin/duration";
@@ -31,7 +32,15 @@ const config = getDefaultConfig({
 });
 
 // TODO: if we need to have SSR prefetching https://tanstack.com/query/latest/docs/framework/react/guides/advanced-ssr#server-components--nextjs-app-router
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+    defaultOptions: {
+        queries: {
+            // FIXME: not sure why, but this is required after upgrading wagmi to the latest version to avoid
+            // issues when serializing Bigint values in the react query queries. Remove this on next wagmi update.
+            queryKeyHashFn: hashFn,
+        },
+    },
+});
 
 export function ClientProviders({
     locale,
