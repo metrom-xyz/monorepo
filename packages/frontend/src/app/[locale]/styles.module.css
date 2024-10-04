@@ -5,3 +5,7 @@
 .notFound {
     @apply flex flex-col justify-center items-center gap-10;
 }
+
+.toast {
+    @apply absolute right-0 rounded-2xl bg-white p-3;
+}
