@@ -148,12 +148,12 @@ export function CampaignPreview({
         if (payload.kpiSpecification && rewardsApproved) uploadSpecification();
     }, [payload.kpiSpecification, rewardsApproved]);
 
-    const handleSafeTransaction = useCallback((tx: BaseTransaction) => {
-        setSafeTxs((txs) => {
-            txs.push(tx);
-            return txs;
-        });
-    }, []);
+    const handleSafeTransaction = useCallback(
+        (tx: BaseTransaction) => {
+            setSafeTxs([...safeTxs, tx]);
+        },
+        [safeTxs],
+    );
 
     function handleOnRewardsApproved() {
         setRewardsApproved(true);
@@ -186,7 +186,7 @@ export function CampaignPreview({
                 setCreated(true);
                 trackFathomEvent("CLICK_DEPLOY_CAMPAIGN");
             } catch (error) {
-                console.warn("could not create kpi token", error);
+                console.warn("Could not create campaign", error);
             } finally {
                 setDeploying(false);
             }
@@ -245,7 +245,7 @@ export function CampaignPreview({
                 await safeSdk.txs.send({ txs: safeTxs });
                 trackFathomEvent("CLICK_DEPLOY_CAMPAIGN");
             } catch (error) {
-                console.warn("could not create kpi token", error);
+                console.warn("Could not create campaign", error);
             } finally {
                 setDeploying(false);
             }
