@@ -87,3 +87,6 @@ export const metromApiClient = new MetromApiClient(
 export const dataManagerClient = new DataManagerClient(
     SERVICE_URLS[ENVIRONMENT].dataManager,
 );
+
+// taken from https://github.com/wevm/wagmi/blob/80326815bea2f175623157f57465f9dfae1f4c5c/packages/connectors/src/safe.ts#L45
+export const SAFE_CONNECTOR_ID = "safe";

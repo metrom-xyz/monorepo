@@ -406,5 +406,11 @@
     "apr": {
         "upTo": "up to",
         "apr": "APR"
+    },
+    "notifications": {
+        "multisig": {
+            "title": "Multisig connected",
+            "content": "Please notify other multisig wallet participants to sign before the transactions expire."
+        }
     }
 }

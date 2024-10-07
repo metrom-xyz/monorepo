@@ -8,6 +8,7 @@ import { useCallback, useEffect, useState } from "react";
 import { ApproveRewards } from "./approve-rewards";
 import type { CampaignPayload } from "@/src/types";
 import { useChainData } from "@/src/hooks/useChainData";
+import type { BaseTransaction } from "@safe-global/safe-apps-sdk";
 
 import styles from "./styles.module.css";
 
@@ -15,12 +16,14 @@ interface SubmitButtonProps {
     malformedPayload: boolean;
     payload: CampaignPayload;
     onApproved: () => void;
+    onSafeTx: (tx: BaseTransaction) => void;
 }
 
 export function ApproveRewardsButton({
     malformedPayload,
     payload,
     onApproved,
+    onSafeTx,
 }: SubmitButtonProps) {
     const t = useTranslations("campaignPreview");
     const [approved, setApproved] = useState(false);
@@ -65,6 +68,7 @@ export function ApproveRewardsButton({
                 disabled={malformedPayload}
                 rewards={payload?.rewards}
                 spender={chainData?.metromContract.address}
+                onSafeTx={onSafeTx}
             />
         );
 
