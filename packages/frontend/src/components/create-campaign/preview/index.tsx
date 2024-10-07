@@ -22,11 +22,16 @@ import { formatPercentage, formatUsdAmount } from "@/src/utils/format";
 import { getCampaignPreviewApr } from "@/src/utils/campaign";
 import { trackFathomEvent } from "@/src/utils/fathom";
 import { type Hex, zeroHash } from "viem";
+import { encodeFunctionData } from "viem/utils";
 import { SERVICE_URLS, type Specification } from "@metrom-xyz/sdk";
 import { ENVIRONMENT, KPI } from "@/src/commons/env";
 import { Kpi } from "./kpi";
+import { useIsSafe } from "@/src/hooks/useIsSafe";
+import SafeAppsSdk, { type BaseTransaction } from "@safe-global/safe-apps-sdk";
 
 import styles from "./styles.module.css";
+
+const safeSdk = new SafeAppsSdk();
 
 interface CampaignPreviewProps {
     malformedPayload: boolean;
@@ -42,20 +47,23 @@ export function CampaignPreview({
     onCreateNew,
 }: CampaignPreviewProps) {
     const t = useTranslations("campaignPreview");
-    const [deploying, setDeploying] = useState(false);
-    const [uploadingSpecification, setUploadingSpecification] = useState(false);
-    const [created, setCreated] = useState(false);
-    const [rewardsApproved, setRewardsApproved] = useState(false);
-    const [specificationHash, setSpecificationHash] = useState<Hex>(zeroHash);
-    const [error, setError] = useState("");
-
-    const feedback = useRef<HTMLDivElement>(null);
     const router = useRouter();
     const { width, height } = useWindowSize();
     const chainId = useChainId();
     const chainData = useChainData(chainId);
     const publicClient = usePublicClient();
     const { writeContractAsync } = useWriteContract();
+    const safeContext = useIsSafe();
+
+    const feedback = useRef<HTMLDivElement>(null);
+
+    const [deploying, setDeploying] = useState(false);
+    const [uploadingSpecification, setUploadingSpecification] = useState(false);
+    const [created, setCreated] = useState(false);
+    const [rewardsApproved, setRewardsApproved] = useState(false);
+    const [specificationHash, setSpecificationHash] = useState<Hex>(zeroHash);
+    const [error, setError] = useState("");
+    const [safeTxs, setSafeTxs] = useState<BaseTransaction[]>([]);
 
     const secondsDuration = useMemo(() => {
         if (!payload.endDate) return 0;
@@ -94,6 +102,7 @@ export function CampaignPreview({
         ],
         query: {
             enabled:
+                !safeContext &&
                 rewardsApproved &&
                 !malformedPayload &&
                 !!payload.pool &&
@@ -144,11 +153,75 @@ export function CampaignPreview({
         if (payload.kpiSpecification && rewardsApproved) uploadSpecification();
     }, [payload.kpiSpecification, rewardsApproved]);
 
+    const handleSafeTransaction = useCallback((tx: BaseTransaction) => {
+        setSafeTxs((txs) => {
+            txs.push(tx);
+            return txs;
+        });
+    }, []);
+
     function handleOnRewardsApproved() {
         setRewardsApproved(true);
     }
 
+    // TODO: separate logic and function for Safe context and standard context
     const handleOnDeploy = useCallback(() => {
+        if (safeContext) {
+            if (
+                !rewardsApproved ||
+                !chainData?.metromContract.address ||
+                !payload.pool ||
+                !payload.startDate ||
+                !payload.endDate ||
+                !payload.rewards ||
+                payload.rewards.length === 0
+            ) {
+                console.warn(
+                    "Missing parameters to deploy campaign through Safe: aborting",
+                );
+                return;
+            }
+
+            safeTxs.push({
+                to: chainData.metromContract.address,
+                data: encodeFunctionData({
+                    abi: metromAbi,
+                    functionName: "createCampaigns",
+                    args: [
+                        [
+                            {
+                                pool: payload.pool.address,
+                                from: payload.startDate.unix(),
+                                to: payload.endDate.unix(),
+                                specification: specificationHash,
+                                rewards: payload.rewards.map((reward) => ({
+                                    token: reward.token.address,
+                                    amount: reward.amount.raw,
+                                })),
+                            },
+                        ],
+                    ],
+                }),
+                value: "0",
+            });
+
+            const create = async () => {
+                setDeploying(true);
+                try {
+                    await safeSdk.txs.send({ txs: safeTxs });
+                    trackFathomEvent("CLICK_DEPLOY_CAMPAIGN");
+                } catch (error) {
+                    console.warn("could not create kpi token", error);
+                } finally {
+                    setDeploying(false);
+                }
+            };
+
+            void create();
+
+            return;
+        }
+
         if (simulateCreateErrored) {
             console.warn(
                 `Could not deploy the campaign: ${simulateCreateError}`,
@@ -182,10 +255,19 @@ export function CampaignPreview({
         };
         void create();
     }, [
+        chainData?.metromContract.address,
+        safeTxs,
+        payload.endDate,
+        payload.pool,
+        payload.rewards,
+        payload.startDate,
         publicClient,
+        rewardsApproved,
+        safeContext,
         simulateCreateError,
         simulateCreateErrored,
-        simulatedCreate,
+        simulatedCreate?.request,
+        specificationHash,
         writeContractAsync,
     ]);
 
@@ -251,6 +333,7 @@ export function CampaignPreview({
                                 malformedPayload={malformedPayload}
                                 payload={payload}
                                 onApproved={handleOnRewardsApproved}
+                                onSafeTx={handleSafeTransaction}
                             />
                         )}
                     </div>
@@ -259,6 +342,10 @@ export function CampaignPreview({
         );
     }
 
+    // TODO: this must be reviewed for the Safe app, as the Safe app doesn't really
+    // create the campaign immediately, and instead prepares the tx batch to be signed
+    // by multisig participants, so we need a new screen or at the very least a different
+    // text
     return (
         <div className={styles.feedback}>
             <MetromLightLogo className={styles.metromLogo} />
