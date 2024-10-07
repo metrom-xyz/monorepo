@@ -61,23 +61,7 @@ export function ApproveReward({
     const { writeContractAsync: approveAsync, isPending: signingTransaction } =
         useWriteContract();
 
-    // TODO: separate logic and function for Safe context and standard context
-    const handleClick = useCallback(() => {
-        if (safeContext && spender) {
-            onSafeTx({
-                to: reward.token.address,
-                data: encodeFunctionData({
-                    abi: erc20Abi,
-                    functionName: "approve",
-                    args: [spender, reward.amount.raw],
-                }),
-                value: "0",
-            });
-            setApproving(false);
-            onApprove();
-            return;
-        }
-
+    const handleStandardApprove = useCallback(() => {
         if (!approveAsync || !publicClient || !simulatedApprove?.request)
             return;
         let cancelled = false;
@@ -99,23 +83,33 @@ export function ApproveReward({
         return () => {
             cancelled = true;
         };
-    }, [
-        safeContext,
-        approveAsync,
-        publicClient,
-        simulatedApprove?.request,
-        onSafeTx,
-        reward.token.address,
-        reward.amount.raw,
-        spender,
-        onApprove,
-    ]);
+    }, [approveAsync, publicClient, simulatedApprove?.request, onApprove]);
+
+    const handleSafeApprove = useCallback(() => {
+        if (!spender) {
+            console.warn();
+            return;
+        }
+
+        onSafeTx({
+            to: reward.token.address,
+            data: encodeFunctionData({
+                abi: erc20Abi,
+                functionName: "approve",
+                args: [spender, reward.amount.raw],
+            }),
+            value: "0",
+        });
+
+        onApprove();
+        return;
+    }, [onSafeTx, reward.token.address, reward.amount.raw, spender, onApprove]);
 
     return (
         <Button
             icon={RewardIcon}
             iconPlacement="right"
-            onClick={handleClick}
+            onClick={safeContext ? handleSafeApprove : handleStandardApprove}
             disabled={!approveAsync || disabled}
             loading={
                 loading || simulatingApprove || signingTransaction || approving

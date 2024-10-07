@@ -167,64 +167,7 @@ export function CampaignPreview({
         setRewardsApproved(true);
     }
 
-    // TODO: separate logic and function for Safe context and standard context
-    const handleOnDeploy = useCallback(() => {
-        if (safeContext) {
-            if (
-                !rewardsApproved ||
-                !chainData?.metromContract.address ||
-                !payload.pool ||
-                !payload.startDate ||
-                !payload.endDate ||
-                !payload.rewards ||
-                payload.rewards.length === 0
-            ) {
-                console.warn(
-                    "Missing parameters to deploy campaign through Safe: aborting",
-                );
-                return;
-            }
-
-            safeTxs.push({
-                to: chainData.metromContract.address,
-                data: encodeFunctionData({
-                    abi: metromAbi,
-                    functionName: "createCampaigns",
-                    args: [
-                        [
-                            {
-                                pool: payload.pool.address,
-                                from: payload.startDate.unix(),
-                                to: payload.endDate.unix(),
-                                specification: specificationHash,
-                                rewards: payload.rewards.map((reward) => ({
-                                    token: reward.token.address,
-                                    amount: reward.amount.raw,
-                                })),
-                            },
-                        ],
-                    ],
-                }),
-                value: "0",
-            });
-
-            const create = async () => {
-                setDeploying(true);
-                try {
-                    await safeSdk.txs.send({ txs: safeTxs });
-                    trackFathomEvent("CLICK_DEPLOY_CAMPAIGN");
-                } catch (error) {
-                    console.warn("could not create kpi token", error);
-                } finally {
-                    setDeploying(false);
-                }
-            };
-
-            void create();
-
-            return;
-        }
-
+    const handleStandardDeploy = useCallback(() => {
         if (simulateCreateErrored) {
             console.warn(
                 `Could not deploy the campaign: ${simulateCreateError}`,
@@ -258,20 +201,74 @@ export function CampaignPreview({
         };
         void create();
     }, [
+        publicClient,
+        simulateCreateError,
+        simulateCreateErrored,
+        simulatedCreate?.request,
+        writeContractAsync,
+    ]);
+
+    const handleSafeDeploy = useCallback(() => {
+        if (
+            !rewardsApproved ||
+            !chainData?.metromContract.address ||
+            !payload.pool ||
+            !payload.startDate ||
+            !payload.endDate ||
+            !payload.rewards ||
+            payload.rewards.length === 0
+        ) {
+            console.warn(
+                "Missing parameters to deploy campaign through Safe: aborting",
+            );
+            return;
+        }
+
+        safeTxs.push({
+            to: chainData.metromContract.address,
+            data: encodeFunctionData({
+                abi: metromAbi,
+                functionName: "createCampaigns",
+                args: [
+                    [
+                        {
+                            pool: payload.pool.address,
+                            from: payload.startDate.unix(),
+                            to: payload.endDate.unix(),
+                            specification: specificationHash,
+                            rewards: payload.rewards.map((reward) => ({
+                                token: reward.token.address,
+                                amount: reward.amount.raw,
+                            })),
+                        },
+                    ],
+                ],
+            }),
+            value: "0",
+        });
+
+        const create = async () => {
+            setDeploying(true);
+            try {
+                await safeSdk.txs.send({ txs: safeTxs });
+                trackFathomEvent("CLICK_DEPLOY_CAMPAIGN");
+            } catch (error) {
+                console.warn("could not create kpi token", error);
+            } finally {
+                setDeploying(false);
+            }
+        };
+
+        void create();
+    }, [
         chainData?.metromContract.address,
-        safeTxs,
         payload.endDate,
         payload.pool,
         payload.rewards,
         payload.startDate,
-        publicClient,
         rewardsApproved,
-        safeContext,
-        simulateCreateError,
-        simulateCreateErrored,
-        simulatedCreate?.request,
+        safeTxs,
         specificationHash,
-        writeContractAsync,
     ]);
 
     function handleGoToAllCampaigns() {
@@ -333,7 +330,11 @@ export function CampaignPreview({
                                 }
                                 loading={uploadingSpecification || deploying}
                                 className={{ root: styles.deployButton }}
-                                onClick={handleOnDeploy}
+                                onClick={
+                                    safeContext
+                                        ? handleSafeDeploy
+                                        : handleStandardDeploy
+                                }
                             >
                                 {t("deploy")}
                             </Button>
