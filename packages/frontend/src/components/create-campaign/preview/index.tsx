@@ -354,10 +354,6 @@ export function CampaignPreview({
         );
     }
 
-    // TODO: this must be reviewed for the Safe app, as the Safe app doesn't really
-    // create the campaign immediately, and instead prepares the tx batch to be signed
-    // by multisig participants, so we need a new screen or at the very least a different
-    // text
     return (
         <div className={styles.feedback}>
             <MetromLightLogo className={styles.metromLogo} />
