@@ -2,11 +2,13 @@ import { useTranslations } from "next-intl";
 import { ToastNotification, Typography } from "@metrom-xyz/ui";
 import { SafeLogo } from "@/src/assets/logos/safe";
 
-interface ConnectedNotificationProps {
+interface SafeConnectedNotificationProps {
     toastId: string | number;
 }
 
-export function ConnectedNotification({ toastId }: ConnectedNotificationProps) {
+export function SafeConnectedNotification({
+    toastId,
+}: SafeConnectedNotificationProps) {
     const t = useTranslations("notifications.safe");
 
     return (

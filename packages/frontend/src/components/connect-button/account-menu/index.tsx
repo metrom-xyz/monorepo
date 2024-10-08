@@ -10,7 +10,7 @@ import { useDisconnect } from "wagmi";
 import { useTranslations } from "next-intl";
 import { TickIcon } from "@/src/assets/tick-icon";
 import { LinkIcon } from "@/src/assets/link-icon";
-import { useIsSafe } from "@/src/hooks/useIsSafe";
+import { SAFE } from "@/src/commons/env";
 import { SafeLogo } from "@/src/assets/logos/safe";
 
 import styles from "./styles.module.css";
@@ -49,7 +49,6 @@ export function AccountMenu({
     const t = useTranslations("accountMenu");
     const rootRef = useRef(null);
     const { disconnect } = useDisconnect();
-    const safeContext = useIsSafe();
 
     const [copied, setCopied] = useState(false);
 
@@ -89,7 +88,7 @@ export function AccountMenu({
                     })}
                     onClick={handleCopyClick}
                 >
-                    {safeContext ? (
+                    {SAFE ? (
                         <div
                             className={classNames(
                                 styles.avatar,
@@ -117,10 +116,12 @@ export function AccountMenu({
                         )}
                     </div>
                 </div>
-                <Disconnect
-                    className={styles.disconnectIcon}
-                    onClick={handleDisconnect}
-                />
+                {!SAFE && (
+                    <Disconnect
+                        className={styles.disconnectIcon}
+                        onClick={handleDisconnect}
+                    />
+                )}
             </div>
             <div className={styles.tabs}>
                 <div
