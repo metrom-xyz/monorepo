@@ -3,7 +3,7 @@
 }
 
 .toast {
-    @apply absolute right-0 rounded-2xl bg-white p-3;
+    @apply absolute right-0 top-16 rounded-2xl bg-white p-3;
 }
 
 .layout {
