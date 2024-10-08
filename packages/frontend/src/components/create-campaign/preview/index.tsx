@@ -365,7 +365,8 @@ export function CampaignPreview({
                 {t("congratulations")}
             </Typography>
             <Typography variant="xl2" weight="medium">
-                {safeContext ? t("launched.safe") : t("launched.standard")}
+                {safeContext ? t("launched.safe.1") : t("launched.standard")}
+                {safeContext && t("launched.safe.2")}
             </Typography>
             <div className={styles.feedbackActionsContainer}>
                 <Button

@@ -231,7 +231,10 @@
         "congratulations": "Congratulations",
         "launched": {
             "standard": "The campaign was successfully created.",
-            "safe": "The campaign creation transactions bundle is now ready to be signed. Please notify the other Safe participants."
+            "safe": {
+                "1": "The campaign creation transactions bundle is now ready to be signed.",
+                "2": "Please notify the other Safe participants"
+            }
         },
         "allCampaigns": "All campaigns",
         "newCampaign": "New campaign"
