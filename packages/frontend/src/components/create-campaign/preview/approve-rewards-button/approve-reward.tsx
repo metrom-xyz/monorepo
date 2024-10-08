@@ -12,7 +12,7 @@ import { Button } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
 import { RewardIcon } from "@/src/assets/reward-icon";
 import type { BaseTransaction } from "@safe-global/safe-apps-sdk";
-import { useIsSafe } from "@/src/hooks/useIsSafe";
+import { SAFE } from "@/src/commons/env";
 
 import styles from "./styles.module.css";
 
@@ -40,7 +40,6 @@ export function ApproveReward({
     const t = useTranslations("newCampaign.submit.approveRewards");
     const publicClient = usePublicClient();
     const chainId = useChainId();
-    const safeContext = useIsSafe();
 
     const [approving, setApproving] = useState(false);
 
@@ -53,8 +52,7 @@ export function ApproveReward({
                 functionName: "approve",
                 args: [spender, reward.amount.raw],
                 query: {
-                    enabled:
-                        !safeContext && !!spender && !!reward.token.address,
+                    enabled: !SAFE && !!spender && !!reward.token.address,
                 },
             },
         );
@@ -109,7 +107,7 @@ export function ApproveReward({
         <Button
             icon={RewardIcon}
             iconPlacement="right"
-            onClick={safeContext ? handleSafeApprove : handleStandardApprove}
+            onClick={SAFE ? handleSafeApprove : handleStandardApprove}
             disabled={!approveAsync || disabled}
             loading={
                 loading || simulatingApprove || signingTransaction || approving
