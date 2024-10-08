@@ -50,7 +50,7 @@ export default async function Layout({
                             duration={5000}
                             visibleToasts={5}
                             expand
-                            position="bottom-right"
+                            position="top-right"
                             toastOptions={{
                                 unstyled: true,
                                 classNames: {
