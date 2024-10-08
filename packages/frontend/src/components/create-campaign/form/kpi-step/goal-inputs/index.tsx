@@ -65,6 +65,7 @@ export function GoalInputs({
         500,
         [lowerUsdTargetRaw],
     );
+
     useDebounce(
         () => {
             onUpperUsdTargetChange(upperUsdTargetRaw?.raw);
@@ -72,6 +73,7 @@ export function GoalInputs({
         500,
         [upperUsdTargetRaw],
     );
+
     useDebounce(
         () => {
             onMinimumPayoutPercentageChange(minimumPayoutPercentage);
