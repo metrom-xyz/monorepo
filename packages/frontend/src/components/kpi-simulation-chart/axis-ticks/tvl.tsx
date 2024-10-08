@@ -35,16 +35,12 @@ export function TvlTick({
     const textAnchor = useMemo(() => {
         if (x === undefined) return;
 
-        if (visibleTicksCount === 3) {
-            return index === 2 ? "end" : "start";
-        }
-
         // align the text to the right of the tick line if
         // it's too close to the axis origin
         if (x < 64) return "start";
 
         return "end";
-    }, [index, visibleTicksCount, x]);
+    }, [x]);
 
     if (!payload || payload.value === 0) return null;
 
