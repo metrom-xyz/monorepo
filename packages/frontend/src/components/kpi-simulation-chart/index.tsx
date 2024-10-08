@@ -275,7 +275,6 @@ export function KpiSimulationChart({
                             />
                         }
                         domain={[0, "dataMax"]}
-                        interval="preserveStart"
                         ticks={tvlTicks.sort((a, b) => a - b)}
                     >
                         <Label
