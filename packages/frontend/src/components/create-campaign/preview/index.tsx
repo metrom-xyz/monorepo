@@ -6,7 +6,6 @@ import {
     useSimulateContract,
     useWriteContract,
 } from "wagmi";
-import Confetti from "react-confetti";
 import { useWindowSize } from "react-use";
 import { metromAbi } from "@metrom-xyz/contracts/abi";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
@@ -367,21 +366,6 @@ export function CampaignPreview({
                     {t("newCampaign")}
                 </Button>
             </div>
-            <Confetti
-                numberOfPieces={600}
-                confettiSource={{
-                    x: 0,
-                    y: 0,
-                    w: width,
-                    h: height,
-                }}
-                run={true}
-                width={width}
-                height={height}
-                recycle={false}
-                initialVelocityY={30}
-                colors={["#163A5F", "#45EBA5", "#21ABA5", "#1D566E", "#163A5F"]}
-            />
         </div>
     );
 }
