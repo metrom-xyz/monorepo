@@ -251,6 +251,8 @@ export function CampaignPreview({
             setDeploying(true);
             try {
                 await safeSdk.txs.send({ txs: safeTxs });
+
+                setCreated(true);
                 trackFathomEvent("CLICK_DEPLOY_CAMPAIGN");
             } catch (error) {
                 console.warn("Could not create campaign", error);
@@ -363,7 +365,7 @@ export function CampaignPreview({
                 {t("congratulations")}
             </Typography>
             <Typography variant="xl2" weight="medium">
-                {t("launched")}
+                {safeContext ? t("launched.safe") : t("launched.standard")}
             </Typography>
             <div className={styles.feedbackActionsContainer}>
                 <Button

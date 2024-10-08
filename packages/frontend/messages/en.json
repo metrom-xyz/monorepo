@@ -228,8 +228,11 @@
         },
         "deploy": "Launch campaign",
         "connectWallet": "Connect wallet",
-        "congratulations": "Congratulations!",
-        "launched": "Campaign successfully launched!",
+        "congratulations": "Congratulations",
+        "launched": {
+            "standard": "The campaign was successfully created.",
+            "safe": "The campaign creation transactions bundle is now ready to be signed. Please notify the other Safe participants."
+        },
         "allCampaigns": "All campaigns",
         "newCampaign": "New campaign"
     },
