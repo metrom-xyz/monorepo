@@ -47,6 +47,10 @@
         ease-in-out;
 }
 
+.networkRowActive {
+    @apply bg-gray-200;
+}
+
 .networksWrapper {
     @apply flex flex-col;
 }

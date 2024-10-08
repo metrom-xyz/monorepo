@@ -22,9 +22,8 @@ import { trackFathomEvent } from "@/src/utils/fathom";
 import { type Hex, zeroHash } from "viem";
 import { encodeFunctionData } from "viem/utils";
 import { SERVICE_URLS, type Specification } from "@metrom-xyz/sdk";
-import { ENVIRONMENT, KPI } from "@/src/commons/env";
+import { ENVIRONMENT, KPI, SAFE } from "@/src/commons/env";
 import { Kpi } from "./kpi";
-import { useIsSafe } from "@/src/hooks/useIsSafe";
 import SafeAppsSdk, { type BaseTransaction } from "@safe-global/safe-apps-sdk";
 
 import styles from "./styles.module.css";
@@ -50,7 +49,6 @@ export function CampaignPreview({
     const chainData = useChainData(chainId);
     const publicClient = usePublicClient();
     const { writeContractAsync } = useWriteContract();
-    const safeContext = useIsSafe();
 
     const feedback = useRef<HTMLDivElement>(null);
 
@@ -94,7 +92,7 @@ export function CampaignPreview({
         ],
         query: {
             enabled:
-                !safeContext &&
+                !SAFE &&
                 rewardsApproved &&
                 !malformedPayload &&
                 !!payload.pool &&
@@ -333,7 +331,7 @@ export function CampaignPreview({
                                 loading={uploadingSpecification || deploying}
                                 className={{ root: styles.deployButton }}
                                 onClick={
-                                    safeContext
+                                    SAFE
                                         ? handleSafeDeploy
                                         : handleStandardDeploy
                                 }
@@ -361,9 +359,9 @@ export function CampaignPreview({
                 {t("congratulations")}
             </Typography>
             <Typography variant="xl2" weight="medium">
-                {safeContext ? t("launched.safe.1") : t("launched.standard")}
+                {SAFE ? t("launched.safe.1") : t("launched.standard")}
             </Typography>
-            {safeContext && (
+            {SAFE && (
                 <>
                     <br />
                     <Typography variant="xl2" weight="medium">
