@@ -12,6 +12,8 @@ import { zeroAddress } from "viem";
 import classNames from "classnames";
 import { CHAIN_DATA } from "@/src/commons";
 import { trackFathomEvent } from "@/src/utils/fathom";
+import { useIsSafe } from "@/src/hooks/useIsSafe";
+import { SafeLogo } from "@/src/assets/logos/safe";
 
 import styles from "./styles.module.css";
 
@@ -20,6 +22,7 @@ export function ConnectButton() {
     const chains = useChains();
     const currentChainId = useChainId();
     const { switchChain } = useSwitchChain();
+    const safeContext = useIsSafe();
 
     const [networkWrapper, setNetworkWrapper] = useState<HTMLDivElement | null>(
         null,
@@ -147,14 +150,33 @@ export function ConnectButton() {
                                         onClick={handleAccountMenuOpen}
                                     >
                                         <div className={styles.account}>
-                                            {/* eslint-disable-next-line @next/next/no-img-element */}
-                                            <img
-                                                alt="Avatar"
-                                                src={
-                                                    account.ensAvatar || blockie
-                                                }
-                                                className={styles.avatar}
-                                            />
+                                            {safeContext ? (
+                                                <div
+                                                    className={classNames(
+                                                        styles.avatar,
+                                                        {
+                                                            [styles.safeAvatar]:
+                                                                safeContext,
+                                                        },
+                                                    )}
+                                                >
+                                                    <SafeLogo
+                                                        className={
+                                                            styles.safeLogo
+                                                        }
+                                                    />
+                                                </div>
+                                            ) : (
+                                                // eslint-disable-next-line @next/next/no-img-element
+                                                <img
+                                                    alt="Avatar"
+                                                    src={
+                                                        account.ensAvatar ||
+                                                        blockie
+                                                    }
+                                                    className={styles.avatar}
+                                                />
+                                            )}
                                             <Typography>
                                                 {account.ensName ||
                                                     account.displayName}
