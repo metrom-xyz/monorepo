@@ -233,7 +233,7 @@
             "standard": "The campaign was successfully created.",
             "safe": {
                 "1": "The campaign creation transactions bundle is now ready to be signed.",
-                "2": "Please notify the other Safe participants."
+                "2": "Please collect signatures and execute it before the campaign start date."
             }
         },
         "allCampaigns": "All campaigns",
