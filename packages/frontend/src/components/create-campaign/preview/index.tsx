@@ -6,7 +6,6 @@ import {
     useSimulateContract,
     useWriteContract,
 } from "wagmi";
-import { useWindowSize } from "react-use";
 import { metromAbi } from "@metrom-xyz/contracts/abi";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
@@ -47,7 +46,6 @@ export function CampaignPreview({
 }: CampaignPreviewProps) {
     const t = useTranslations("campaignPreview");
     const router = useRouter();
-    const { width, height } = useWindowSize();
     const chainId = useChainId();
     const chainData = useChainData(chainId);
     const publicClient = usePublicClient();
