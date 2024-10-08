@@ -10,6 +10,8 @@ import { useDisconnect } from "wagmi";
 import { useTranslations } from "next-intl";
 import { TickIcon } from "@/src/assets/tick-icon";
 import { LinkIcon } from "@/src/assets/link-icon";
+import { useIsSafe } from "@/src/hooks/useIsSafe";
+import { SafeLogo } from "@/src/assets/logos/safe";
 
 import styles from "./styles.module.css";
 
@@ -47,6 +49,7 @@ export function AccountMenu({
     const t = useTranslations("accountMenu");
     const rootRef = useRef(null);
     const { disconnect } = useDisconnect();
+    const safeContext = useIsSafe();
 
     const [copied, setCopied] = useState(false);
 
@@ -69,10 +72,6 @@ export function AccountMenu({
         setTab(Tab.Activity);
     }
 
-    function handleCampaignsClick() {
-        setTab(Tab.Campaigns);
-    }
-
     useEffect(() => {
         if (!copied) return;
 
@@ -90,12 +89,23 @@ export function AccountMenu({
                     })}
                     onClick={handleCopyClick}
                 >
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                        alt="Avatar"
-                        src={account.ensAvatar || blockie}
-                        className={styles.avatar}
-                    />
+                    {safeContext ? (
+                        <div
+                            className={classNames(
+                                styles.avatar,
+                                styles.safeAvatar,
+                            )}
+                        >
+                            <SafeLogo className={styles.safeLogo} />
+                        </div>
+                    ) : (
+                        // eslint-disable-next-line @next/next/no-img-element
+                        <img
+                            alt="Avatar"
+                            src={account.ensAvatar || blockie}
+                            className={styles.avatar}
+                        />
+                    )}
                     <Typography variant="lg" weight="medium">
                         {shortenAddress(account.address as Address)}
                     </Typography>
