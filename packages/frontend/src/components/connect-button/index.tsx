@@ -3,7 +3,7 @@ import { Typography, Button, Popover } from "@metrom-xyz/ui";
 import type { SupportedChain } from "@metrom-xyz/contracts";
 import { useRef, useState } from "react";
 import { useChainId, useChains, useSwitchChain } from "wagmi";
-import { useClickAway } from "react-use";
+import { useClickAway, useWindowSize } from "react-use";
 import { useTranslations } from "next-intl";
 import { ErrorIcon } from "@/src/assets/error-icon";
 import { blo, type Address } from "blo";
@@ -12,7 +12,7 @@ import { zeroAddress } from "viem";
 import classNames from "classnames";
 import { CHAIN_DATA } from "@/src/commons";
 import { trackFathomEvent } from "@/src/utils/fathom";
-import { useTransition, animated } from "@react-spring/web";
+import { useTransition, animated, easings } from "@react-spring/web";
 
 import styles from "./styles.module.css";
 
@@ -21,6 +21,7 @@ export function ConnectButton() {
     const chains = useChains();
     const currentChainId = useChainId();
     const { switchChain } = useSwitchChain();
+    const { width } = useWindowSize();
 
     const [networkWrapper, setNetworkWrapper] = useState<HTMLDivElement | null>(
         null,
@@ -29,11 +30,18 @@ export function ConnectButton() {
     const [accountMenuOpen, setAccountMenuOpen] = useState(false);
     const networksPopoverRef = useRef<HTMLDivElement>(null);
 
-    const transition = useTransition(accountMenuOpen, {
+    const transitionHorizontal = useTransition(accountMenuOpen, {
         from: { transform: "translateX(448px)" },
         enter: { transform: "translateX(-448px)" },
         leave: { transform: "translateX(448px)" },
-        config: { duration: 200 },
+        config: { duration: 250, easing: easings.easeInOutCubic },
+    });
+
+    const transitionVertical = useTransition(accountMenuOpen, {
+        from: { transform: "translateY(448px)" },
+        enter: { transform: "translateY(-448px)" },
+        leave: { transform: "translateY(448px)" },
+        config: { duration: 250, easing: easings.easeInOutCubic },
     });
 
     function handleOpenNetworkPopover() {
@@ -137,26 +145,47 @@ export function ConnectButton() {
                                                 accountMenuOpen,
                                         })}
                                     />
-                                    {transition(
-                                        (style, open) =>
-                                            open && (
-                                                <animated.div
-                                                    style={style}
-                                                    className={
-                                                        styles.accountMenu
-                                                    }
-                                                >
-                                                    <AccountMenu
-                                                        account={account}
-                                                        blockie={blockie}
-                                                        chainId={chain.id}
-                                                        onClose={
-                                                            handleAccountMenuClose
-                                                        }
-                                                    />
-                                                </animated.div>
-                                            ),
-                                    )}
+                                    {width > 640
+                                        ? transitionHorizontal(
+                                              (style, open) =>
+                                                  open && (
+                                                      <animated.div
+                                                          style={style}
+                                                          className={
+                                                              styles.accountMenuHorizontal
+                                                          }
+                                                      >
+                                                          <AccountMenu
+                                                              account={account}
+                                                              blockie={blockie}
+                                                              chainId={chain.id}
+                                                              onClose={
+                                                                  handleAccountMenuClose
+                                                              }
+                                                          />
+                                                      </animated.div>
+                                                  ),
+                                          )
+                                        : transitionVertical(
+                                              (style, open) =>
+                                                  open && (
+                                                      <animated.div
+                                                          style={style}
+                                                          className={
+                                                              styles.accountMenuVertical
+                                                          }
+                                                      >
+                                                          <AccountMenu
+                                                              account={account}
+                                                              blockie={blockie}
+                                                              chainId={chain.id}
+                                                              onClose={
+                                                                  handleAccountMenuClose
+                                                              }
+                                                          />
+                                                      </animated.div>
+                                                  ),
+                                          )}
                                     <div
                                         className={styles.walletWrapper}
                                         onClick={handleAccountMenuOpen}
