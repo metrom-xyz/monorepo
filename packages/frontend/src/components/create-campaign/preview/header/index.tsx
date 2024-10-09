@@ -47,7 +47,7 @@ export function Header({ payload, backDisabled, onBack }: HeaderProps) {
                         defaultText: payload.pool?.token1.symbol,
                     }}
                 />
-                <Typography variant="xl4" weight="medium" noWrap>
+                <Typography variant="xl4" weight="medium" noWrap truncate>
                     {payload.amm?.name} {payload.pool?.token0.symbol} /{" "}
                     {payload.pool?.token1.symbol}
                 </Typography>
@@ -61,9 +61,9 @@ export function Header({ payload, backDisabled, onBack }: HeaderProps) {
                     variant="xl"
                     label={t("startDate")}
                     value={formatDateTime(payload.startDate)}
+                    className={styles.textField}
                 />
                 <TextField
-                    alignment="center"
                     variant="xl"
                     label={t("runTimeLabel")}
                     value={
@@ -71,13 +71,14 @@ export function Header({ payload, backDisabled, onBack }: HeaderProps) {
                             ? payload.startDate.to(payload.endDate, true)
                             : "-"
                     }
+                    className={styles.textField}
                 />
                 <TextField
                     uppercase
                     variant="xl"
-                    alignment="right"
                     label={t("endDate")}
                     value={formatDateTime(payload.endDate)}
+                    className={styles.textField}
                 />
             </div>
         </div>

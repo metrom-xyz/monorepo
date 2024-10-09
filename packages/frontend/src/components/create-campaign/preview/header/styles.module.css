@@ -11,9 +11,21 @@
 }
 
 .titleContainer {
-    @apply flex items-center gap-4 mb-8;
+    @apply flex flex-wrap justify-center items-center gap-4 sm:mb-8;
 }
 
 .durationContainer {
-    @apply flex justify-between;
+    @apply flex flex-col sm:flex-row items-start justify-between;
+}
+
+.textField {
+    @apply items-center;
+}
+
+.textField:nth-child(2) {
+    @apply sm:items-center;
+}
+
+.textField:last-child {
+    @apply sm:items-end;
 }

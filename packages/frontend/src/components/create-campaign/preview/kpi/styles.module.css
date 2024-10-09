@@ -3,7 +3,7 @@
 }
 
 .header {
-    @apply flex gap-4;
+    @apply flex flex-wrap sm:flex-nowrap gap-4;
 }
 
 .textField {

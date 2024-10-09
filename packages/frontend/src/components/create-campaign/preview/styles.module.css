@@ -4,11 +4,12 @@
         sm:min-w-[750px]
         bg-gray-100
         overflow-hidden
+        mx-5
         rounded-3xl;
 }
 
 .content {
-    @apply flex overflow-y-auto max-h-[650px] flex-col gap-5 px-6 py-4;
+    @apply flex overflow-y-auto max-h-[400px] sm:max-h-[650px] flex-col gap-5 px-5 sm:px-6 py-4;
 }
 
 .contentGrid {
@@ -24,12 +25,18 @@
 }
 
 .feedback {
-    @apply min-w-[40rem]
+    @apply w-full
+        sm:w-auto
+        sm:min-w-[40rem]
+        text-center
         flex
         flex-col
         items-center
         gap-3
-        px-6 py-4
+        px-5
+        sm:px-6
+        py-4
+        mx-5
         bg-brand-green
         rounded-3xl;
 }
@@ -40,8 +47,11 @@
 
 .feedbackActionsContainer {
     @apply flex
+        flex-wrap
+        sm:flex-nowrap
         w-full
-        gap-6
+        gap-3
+        sm:gap-6
         justify-between
         items-center
         mt-4;
