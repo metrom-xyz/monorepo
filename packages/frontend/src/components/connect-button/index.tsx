@@ -12,6 +12,7 @@ import { zeroAddress } from "viem";
 import classNames from "classnames";
 import { CHAIN_DATA } from "@/src/commons";
 import { trackFathomEvent } from "@/src/utils/fathom";
+import { useTransition, animated } from "@react-spring/web";
 
 import styles from "./styles.module.css";
 
@@ -27,6 +28,13 @@ export function ConnectButton() {
     const [networkPopoverOpen, setNetworkPopoverOpen] = useState(false);
     const [accountMenuOpen, setAccountMenuOpen] = useState(false);
     const networksPopoverRef = useRef<HTMLDivElement>(null);
+
+    const transition = useTransition(accountMenuOpen, {
+        from: { transform: "translateX(448px)" },
+        enter: { transform: "translateX(-448px)" },
+        leave: { transform: "translateX(448px)" },
+        config: { duration: 200 },
+    });
 
     function handleOpenNetworkPopover() {
         setNetworkPopoverOpen(true);
@@ -129,19 +137,26 @@ export function ConnectButton() {
                                                 accountMenuOpen,
                                         })}
                                     />
-                                    <AccountMenu
-                                        account={account}
-                                        blockie={blockie}
-                                        chainId={chain.id}
-                                        className={classNames(
-                                            styles.accountMenu,
-                                            {
-                                                [styles.accountMenuOpen]:
-                                                    accountMenuOpen,
-                                            },
-                                        )}
-                                        onClose={handleAccountMenuClose}
-                                    />
+                                    {transition(
+                                        (style, open) =>
+                                            open && (
+                                                <animated.div
+                                                    style={style}
+                                                    className={
+                                                        styles.accountMenu
+                                                    }
+                                                >
+                                                    <AccountMenu
+                                                        account={account}
+                                                        blockie={blockie}
+                                                        chainId={chain.id}
+                                                        onClose={
+                                                            handleAccountMenuClose
+                                                        }
+                                                    />
+                                                </animated.div>
+                                            ),
+                                    )}
                                     <div
                                         className={styles.walletWrapper}
                                         onClick={handleAccountMenuOpen}
@@ -155,7 +170,9 @@ export function ConnectButton() {
                                                 }
                                                 className={styles.avatar}
                                             />
-                                            <Typography>
+                                            <Typography
+                                                className={styles.displayName}
+                                            >
                                                 {account.ensName ||
                                                     account.displayName}
                                             </Typography>

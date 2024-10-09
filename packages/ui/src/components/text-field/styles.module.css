@@ -1,5 +1,5 @@
 .root {
-    @apply w-full flex flex-col gap-3;
+    @apply w-full min-w-36 flex flex-col gap-3;
 }
 
 .boxed {

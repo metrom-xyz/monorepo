@@ -57,9 +57,10 @@ export function Rewards({ campaign, loading }: RewardsProps) {
                                     defaultText={reward.token.symbol}
                                 />
                                 <Typography
-                                    uppercase
                                     weight="medium"
                                     variant="lg"
+                                    truncate
+                                    className={styles.tokenName}
                                 >
                                     {reward.token.symbol}
                                 </Typography>

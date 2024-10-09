@@ -36,6 +36,9 @@ export function Nav({ header }: NavProps) {
                 <Link href="/">
                     <MetromSquareLogo className={styles.metromLogo} />
                 </Link>
+                <div className={styles.chainStuffContainer}>
+                    <ConnectButton />
+                </div>
                 <div className={styles.tabs}>
                     {ROUTES.map(({ path, label, icon: Icon }) => (
                         <Link key={path} href={path}>
@@ -50,9 +53,6 @@ export function Nav({ header }: NavProps) {
                             </div>
                         </Link>
                     ))}
-                </div>
-                <div className={styles.chainStuffContainer}>
-                    <ConnectButton />
                 </div>
             </div>
         </div>

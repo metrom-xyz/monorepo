@@ -121,7 +121,7 @@ export function ChainOverview({
         <div className={classNames(styles.root, className)}>
             <div className={styles.chainNameWrapper}>
                 <ChainIcon className={styles.chainIcon} />
-                <Typography variant="xl4">
+                <Typography variant="xl4" truncate>
                     {chainWithClaimsData.chain.name}
                 </Typography>
             </div>

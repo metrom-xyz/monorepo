@@ -1,19 +1,15 @@
 .root {
-    @apply flex items-center gap-3;
+    @apply w-full flex items-center gap-3;
 }
 
 .poolContainer {
-    @apply flex items-center gap-2;
+    @apply w-full flex items-center gap-2;
 }
 
 .titleContainer {
-    @apply flex items-end gap-1.5;
-}
-
-.campaignName {
-    @apply md:!text-lg truncate max-w-[180px] md:!overflow-visible md:max-w-full;
+    @apply w-full max-w-[180px] sm:max-w-full flex items-end gap-1.5;
 }
 
 .campaignFee {
-    @apply md:!text-sm;
+    @apply hidden sm:flex;
 }

@@ -1,5 +1,5 @@
 .inputWrapper {
-    @apply w-full md:w-fit relative;
+    @apply w-full sm:w-fit relative;
 }
 
 .inputIconWrapper {

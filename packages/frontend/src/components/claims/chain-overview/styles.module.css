@@ -1,14 +1,19 @@
 .root {
     @apply w-full
         flex
+        gap-2
+        flex-col
+        sm:flex-row
         justify-between
-        items-center
+        items-start
+        sm:items-center
         bg-white
-        rounded-xl p-4;
+        rounded-xl
+        p-4;
 }
 
 .chainNameWrapper {
-    @apply flex gap-3;
+    @apply w-full flex-1 flex gap-3;
 }
 
 .chainIcon {

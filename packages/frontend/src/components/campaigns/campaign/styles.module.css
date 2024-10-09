@@ -13,12 +13,12 @@
 }
 
 .poolContainer {
-    @apply flex md:justify-start items-center gap-2 col-span-11 md:col-span-1;
+    @apply flex sm:justify-start items-center gap-2 col-span-11 sm:col-span-1;
 }
 
 .externalLink {
     @apply hidden
-        md:flex
+        sm:flex
         bg-white
         h-7
         w-7

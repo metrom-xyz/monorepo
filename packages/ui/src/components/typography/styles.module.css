@@ -6,6 +6,10 @@
     @apply whitespace-nowrap;
 }
 
+.truncate {
+    @apply overflow-hidden whitespace-nowrap text-ellipsis;
+}
+
 .rootUppercase {
     @apply uppercase;
 }
