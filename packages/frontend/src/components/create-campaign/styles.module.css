@@ -4,8 +4,8 @@
         gap-11
         max-w-[410px]
         w-full
-        mb-5
-        my-12;
+        sm:px-0
+        px-5;
 }
 
 .button {
