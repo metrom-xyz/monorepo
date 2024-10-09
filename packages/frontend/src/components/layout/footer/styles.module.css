@@ -1,13 +1,14 @@
 .root {
-    @apply my-10
-        w-full
+    @apply w-full
         flex
         flex-col
         sm:flex-row
         justify-between
         items-center
         gap-5
-        px-10
+        p-10
+        mb-10
+        sm:mb-0
         max-w-screen-xl;
 }
 

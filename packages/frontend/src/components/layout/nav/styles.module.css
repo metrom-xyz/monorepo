@@ -1,20 +1,24 @@
 .root {
-    @apply h-20
+    @apply sm:h-20
         w-full
         flex
-        justify-center;
+        justify-center
+        mb-6
+        sm:mb-12;
 }
 
 .header {
-    @apply bg-white;
+    @apply bg-white mb-0;
 }
 
 .main {
-    @apply relative
-        h-20
+    @apply sm:relative
+        sm:h-20
+        flex-wrap
         w-full
         max-w-screen-xl
         px-5
+        pt-5
         flex
         justify-between
         items-center;
@@ -25,11 +29,23 @@
 }
 
 .tabs {
-    @apply hidden sm:flex flex-col sm:flex-row gap-2 sm:absolute sm:left-1/2 sm:-translate-x-1/2;
+    @apply flex
+        flex-wrap
+        w-full
+        sm:w-fit
+        flex-row
+        gap-2
+        mt-3
+        sm:mt-0
+        justify-center
+        sm:absolute
+        sm:left-1/2
+        sm:-translate-x-1/2;
 }
 
 .tab {
     @apply flex
+        w-fit
         items-center
         gap-2
         h-10

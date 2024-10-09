@@ -267,7 +267,6 @@ export function Campaigns() {
                     )}
                     icon={SearchIcon}
                     iconPlacement="right"
-                    label={t("filters.search.label")}
                     placeholder={t("filters.search.label")}
                     value={search}
                     onChange={handleSearchChange}
