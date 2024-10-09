@@ -1,9 +1,13 @@
 .root {
-    @apply w-full flex flex-col gap-4 mt-4;
+    @apply flex flex-col gap-4 mt-4;
 }
 
 .root > div {
-    @apply w-full flex justify-between gap-4;
+    @apply flex justify-between gap-4;
+}
+
+.root > div:nth-child(2) {
+    @apply flex-wrap sm:flex-nowrap;
 }
 
 .statusWrapper {

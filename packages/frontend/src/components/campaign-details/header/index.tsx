@@ -58,7 +58,7 @@ export function Header({ campaign }: HeaderProps) {
                             defaultText: campaign.pool.token1.symbol,
                         }}
                     />
-                    <Typography variant="xl4" weight="medium" noWrap>
+                    <Typography variant="xl4" weight="medium">
                         {campaign.name}
                     </Typography>
                     <Typography variant="lg" weight="medium" light>
@@ -99,7 +99,11 @@ export function Header({ campaign }: HeaderProps) {
                         onClick={handleExploreOnClick}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className={{ icon: styles.externalLinkIcon }}
+                        className={{
+                            root: styles.exploreButton,
+                            contentWrapper: styles.exploreButton,
+                            icon: styles.externalLinkIcon,
+                        }}
                     >
                         {t("explorer")}
                     </Button>

@@ -1,5 +1,5 @@
 .root {
-    @apply flex items-center justify-between col-span-4 md:col-span-1;
+    @apply flex items-center justify-between col-span-4 sm:col-span-1;
 }
 
 .tokenIcons {
@@ -23,7 +23,7 @@
 }
 
 .textRewards {
-    @apply !text-sm md:!text-base;
+    @apply !text-sm sm:!text-base;
 }
 
 .tooltipTitle {

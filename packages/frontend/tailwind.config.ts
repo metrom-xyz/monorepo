@@ -16,6 +16,7 @@ const config: Config = {
             },
             gridTemplateColumns: {
                 "campaigns-table": "auto 3.5fr 1.4fr 0.8fr 1fr",
+                "rewards-mobile-table": "1.5fr 1fr 1fr",
             },
             backgroundImage: {
                 dots:

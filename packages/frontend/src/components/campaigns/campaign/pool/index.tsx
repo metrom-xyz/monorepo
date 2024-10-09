@@ -27,15 +27,15 @@ export function Pool({ campaign }: PoolProps) {
             />
             <div className={styles.titleContainer}>
                 <Typography
-                    variant="sm"
+                    variant="lg"
                     weight="medium"
                     className={styles.campaignName}
-                    noWrap
+                    truncate
                 >
                     {campaign.name}
                 </Typography>
                 <Typography
-                    variant="xs"
+                    variant="sm"
                     weight="medium"
                     className={styles.campaignFee}
                     light

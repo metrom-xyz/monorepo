@@ -119,10 +119,9 @@ export function TokenClaim({ chainId, tokenClaims }: TokenClaimProps) {
     ]);
 
     return (
-        <div className={classNames(styles.root)}>
+        <div className={styles.root}>
             <div className={styles.leftWrapper}>
                 <RemoteLogo
-                    size="lg"
                     chain={chainId}
                     address={tokenClaims.token.address}
                     defaultText={tokenClaims.token.symbol}
@@ -160,7 +159,7 @@ export function SkeletonTokenClaim() {
     return (
         <div className={classNames(styles.root)}>
             <div className={styles.leftWrapper}>
-                <RemoteLogo loading size="lg" />
+                <RemoteLogo loading />
                 <Skeleton width={60} variant="lg" />
                 <Skeleton width={70} variant="lg" />
             </div>

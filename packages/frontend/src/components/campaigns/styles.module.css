@@ -3,7 +3,7 @@
 }
 
 .filters {
-    @apply max-w-screen-lg w-full flex-col md:flex-row flex gap-3 mb-7;
+    @apply max-w-screen-lg w-full flex-col sm:flex-row flex gap-3 mb-7;
 }
 
 .filterInput :global(.input) {
@@ -15,15 +15,15 @@
 }
 
 .row {
-    @apply grid grid-cols-12 md:grid-cols-campaigns-table gap-5 px-2 md:px-6 items-center;
+    @apply grid grid-cols-12 sm:grid-cols-campaigns-table gap-5 px-2 sm:px-6 items-center;
 }
 
 .header {
-    @apply md:grid hidden;
+    @apply sm:grid hidden;
 }
 
 .body {
-    @apply w-full md:h-[700px] mt-4 flex flex-col gap-2 mb-7;
+    @apply w-full sm:h-[700px] mt-4 flex flex-col gap-2 mb-7;
 }
 
 .empty {
@@ -43,7 +43,7 @@
 }
 
 .searchFilter :global(.label) {
-    @apply invisible md:visible;
+    @apply invisible sm:visible;
 }
 
 .customOptionContainer {

@@ -1,8 +1,11 @@
 .root {
     @apply w-full
         flex
+        flex-col
+        sm:flex-row
         justify-between
-        items-center
+        items-start
+        sm:items-center
         gap-3
         bg-white
         rounded-xl

@@ -1,9 +1,9 @@
 .statusRoot {
-    @apply flex items-center gap-2 col-span-4 md:col-span-1;
+    @apply flex items-center gap-2 col-span-4 sm:col-span-1;
 }
 
 .statusText {
-    @apply flex items-center md:items-end gap-2;
+    @apply flex items-center sm:items-end gap-2;
 }
 
 .statusDot {
@@ -23,5 +23,5 @@
 }
 
 .statusDuration {
-    @apply whitespace-nowrap;
+    @apply hidden sm:flex whitespace-nowrap;
 }

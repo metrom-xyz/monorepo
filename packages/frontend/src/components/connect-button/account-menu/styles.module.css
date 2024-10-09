@@ -1,5 +1,6 @@
 .root {
     @apply bg-gray-100
+        h-full    
         w-[28rem]
         flex
         flex-col
