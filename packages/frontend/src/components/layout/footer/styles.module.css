@@ -7,8 +7,9 @@
         items-center
         gap-5
         p-10
-        mb-10
-        sm:mb-0
+        my-10
+        sm:my-0
+        sm:mt-10
         max-w-screen-xl;
 }
 

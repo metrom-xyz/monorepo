@@ -69,7 +69,7 @@ export function SkeletonStatus() {
             <Skeleton className={styles.statusDot} />
             <div className={styles.statusText}>
                 <Skeleton width={50} />
-                <Skeleton width={30} />
+                <Skeleton width={30} className={styles.statusDuration} />
             </div>
         </div>
     );

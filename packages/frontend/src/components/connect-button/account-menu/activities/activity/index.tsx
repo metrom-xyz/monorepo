@@ -64,7 +64,9 @@ export function Activity({ chainId, transaction, payload }: ActivityProps) {
                                 address={payload.token.address}
                                 defaultText={payload.token.symbol}
                             />
-                            <Typography>{payload.token.symbol}</Typography>
+                            <Typography noWrap>
+                                {payload.token.symbol}
+                            </Typography>
                             <Typography>
                                 {formatTokenAmount({
                                     amount: payload.amount.formatted,
@@ -74,7 +76,9 @@ export function Activity({ chainId, transaction, payload }: ActivityProps) {
                     )}
                 </div>
             </div>
-            <Typography light>{timeAgo}</Typography>
+            <Typography light truncate>
+                {timeAgo}
+            </Typography>
         </div>
     );
 }
@@ -88,7 +92,11 @@ export function SkeletonActivity() {
                 />
                 <div className={styles.leftBodyWrapper}>
                     <Skeleton width={60} className={styles.skeleton} />
-                    <Skeleton width={140} className={styles.skeleton} />
+                    <Skeleton
+                        width={140}
+                        variant="lg"
+                        className={styles.skeleton}
+                    />
                 </div>
             </div>
             <Skeleton width={50} className={styles.skeleton} />

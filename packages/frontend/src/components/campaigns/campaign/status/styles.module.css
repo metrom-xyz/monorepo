@@ -3,7 +3,7 @@
 }
 
 .statusText {
-    @apply flex items-center sm:items-end gap-2;
+    @apply w-full flex items-center sm:items-end gap-2;
 }
 
 .statusDot {
