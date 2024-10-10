@@ -1,5 +1,7 @@
 .root {
-    @apply flex
+    @apply h-full
+        sm:h-auto
+        flex
         flex-col
         sm:min-w-[750px]
         bg-gray-100
