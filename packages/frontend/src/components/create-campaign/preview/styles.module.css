@@ -4,12 +4,20 @@
         sm:min-w-[750px]
         bg-gray-100
         overflow-hidden
-        mx-5
+        m-5
         rounded-3xl;
 }
 
 .content {
-    @apply flex overflow-y-auto max-h-[400px] sm:max-h-[650px] flex-col gap-5 px-5 sm:px-6 py-4;
+    @apply flex
+        overflow-y-auto
+        max-h-[400px]
+        sm:max-h-[650px]
+        flex-col
+        gap-5
+        px-5
+        sm:px-6
+        py-4;
 }
 
 .contentGrid {
