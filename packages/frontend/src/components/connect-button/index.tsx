@@ -34,14 +34,14 @@ export function ConnectButton() {
         from: { transform: "translateX(448px)" },
         enter: { transform: "translateX(-448px)" },
         leave: { transform: "translateX(448px)" },
-        config: { duration: 250, easing: easings.easeInOutCubic },
+        config: { duration: 200, easing: easings.easeInOutCubic },
     });
 
     const transitionVertical = useTransition(accountMenuOpen, {
         from: { transform: "translateY(448px)" },
         enter: { transform: "translateY(-448px)" },
         leave: { transform: "translateY(448px)" },
-        config: { duration: 250, easing: easings.easeInOutCubic },
+        config: { duration: 200, easing: easings.easeInOutCubic },
     });
 
     function handleOpenNetworkPopover() {

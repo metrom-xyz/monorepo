@@ -3,11 +3,11 @@
 }
 
 .tokenIcons {
-    @apply relative flex flex-1 items-center gap-[1px];
+    @apply min-h-full flex flex-1 items-center gap-[1px];
 }
 
 .tokenIcon {
-    @apply absolute cursor-pointer;
+    @apply cursor-pointer -mr-4;
 }
 
 .breakdownContainer {

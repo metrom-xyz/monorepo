@@ -15,7 +15,7 @@
 }
 
 .durationContainer {
-    @apply flex flex-col sm:flex-row items-start justify-between;
+    @apply flex flex-col sm:flex-row gap-4 sm:gap-0 items-start justify-between;
 }
 
 .textField {

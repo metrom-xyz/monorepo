@@ -26,12 +26,7 @@ export function Pool({ campaign }: PoolProps) {
                 }}
             />
             <div className={styles.titleContainer}>
-                <Typography
-                    variant="lg"
-                    weight="medium"
-                    className={styles.campaignName}
-                    truncate
-                >
+                <Typography variant="lg" weight="medium" truncate>
                     {campaign.name}
                 </Typography>
                 <Typography
@@ -53,7 +48,11 @@ export function SkeletonPool() {
             <PoolRemoteLogo loading />
             <div className={styles.titleContainer}>
                 <Skeleton variant="lg" width={180} />
-                <Skeleton variant="sm" width={50} />
+                <Skeleton
+                    variant="sm"
+                    width={50}
+                    className={styles.campaignFee}
+                />
             </div>
         </div>
     );

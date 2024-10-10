@@ -23,7 +23,7 @@ export function Skeleton({
     return (
         <div
             style={{
-                width,
+                maxWidth: width,
                 height: circular ? width : variant ? undefined : height,
             }}
             className={`${styles.root} ${styles[variant]} ${circular ? styles.circular : ""} ${className}`}

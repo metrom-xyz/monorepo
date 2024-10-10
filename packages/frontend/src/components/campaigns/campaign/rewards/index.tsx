@@ -52,13 +52,13 @@ export function Rewards({ status, from, to, rewards, chainId }: RewardsProps) {
                 <div className={styles.breakdownContainer}>
                     <Typography
                         variant="sm"
-                        className={styles.tooltipTitle}
                         weight="medium"
                         uppercase
+                        className={styles.tooltipTitle}
                     >
                         {t("tooltip.rewards")}
                     </Typography>
-                    {rewards.map((reward, i) => {
+                    {rewards.map((reward) => {
                         return (
                             <div
                                 key={reward.token.address}
@@ -72,18 +72,18 @@ export function Rewards({ status, from, to, rewards, chainId }: RewardsProps) {
                                         defaultText={reward.token.symbol}
                                     />
                                     <Typography
-                                        className={styles.tooltipText}
                                         weight="medium"
                                         variant="sm"
+                                        className={styles.tooltipText}
                                     >
                                         {reward.token.symbol}
                                     </Typography>
                                 </div>
                                 <div>
                                     <Typography
-                                        className={styles.tooltipText}
                                         weight="medium"
                                         variant="sm"
+                                        className={styles.tooltipText}
                                     >
                                         {formatTokenAmount({
                                             amount: reward.amount.formatted,
@@ -94,17 +94,17 @@ export function Rewards({ status, from, to, rewards, chainId }: RewardsProps) {
                         );
                     })}
                     <Typography
-                        className={styles.tooltipTitle}
                         weight="medium"
                         variant="sm"
                         uppercase
+                        className={styles.tooltipTitle}
                     >
                         {t("tooltip.totalUsdValue")}
                     </Typography>
                     <Typography
-                        className={styles.tooltipText}
                         variant="lg"
                         weight="medium"
+                        className={styles.tooltipText}
                     >
                         {rewards.amountUsdValue
                             ? formatUsdAmount(rewards.amountUsdValue)
@@ -114,16 +114,15 @@ export function Rewards({ status, from, to, rewards, chainId }: RewardsProps) {
             </Popover>
             <div
                 ref={setRewardsBreakdown}
-                className={styles.tokenIcons}
                 onMouseEnter={handleRewardsBreakdownPopoverOpen}
                 onMouseLeave={handleRewardsBreakdownPopoverClose}
+                className={styles.tokenIcons}
             >
                 {rewards.map((reward, i) => {
                     return (
                         <div
                             key={reward.token.address}
                             className={styles.tokenIcon}
-                            style={{ left: i * 10 }}
                         >
                             <RemoteLogo
                                 chain={chainId}
@@ -134,7 +133,7 @@ export function Rewards({ status, from, to, rewards, chainId }: RewardsProps) {
                     );
                 })}
             </div>
-            <Typography className={styles.textRewards} weight="medium">
+            <Typography weight="medium" className={styles.textRewards}>
                 {status === Status.Ended
                     ? "-"
                     : formatUsdAmount(perDayUsdValue)}
@@ -149,11 +148,7 @@ export function SkeletonRewards() {
             <div className={styles.tokenIcons}>
                 {new Array(5).fill(null).map((_, i) => {
                     return (
-                        <div
-                            key={i}
-                            className={styles.tokenIcon}
-                            style={{ left: i * 10 }}
-                        >
+                        <div key={i} className={styles.tokenIcon}>
                             <RemoteLogo loading />
                         </div>
                     );
