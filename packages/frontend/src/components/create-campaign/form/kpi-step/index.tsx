@@ -250,7 +250,6 @@ export function KpiStep({
                                 {t("simulation.title")}
                             </Typography>
                             <Typography weight="medium" light variant="xs">
-                                {/* TODO: add proper disclaimer description */}
                                 {t("simulation.description")}
                             </Typography>
                         </div>
