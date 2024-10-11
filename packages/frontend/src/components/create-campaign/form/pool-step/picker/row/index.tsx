@@ -39,7 +39,7 @@ export function Row({
         >
             <div className={styles.pool}>
                 {loading ? (
-                    <Skeleton circular width="36px" />
+                    <Skeleton circular width={36} />
                 ) : (
                     <PoolRemoteLogo
                         chain={chain}
@@ -55,14 +55,14 @@ export function Row({
                 )}
                 <div className={styles.poolInfo}>
                     {loading ? (
-                        <Skeleton width="64px" variant="sm" />
+                        <Skeleton width={64} variant="sm" />
                     ) : (
-                        <Typography weight="medium" variant="lg">
+                        <Typography weight="medium" variant="lg" truncate>
                             {pool.token0.symbol} / {pool.token1.symbol}
                         </Typography>
                     )}
                     {loading ? (
-                        <Skeleton width="32px" variant="xs" />
+                        <Skeleton width={32} variant="xs" />
                     ) : pool.fee ? (
                         <Typography
                             variant="xs"
@@ -76,7 +76,7 @@ export function Row({
                 </div>
             </div>
             {loading ? (
-                <Skeleton width="64px" variant="sm" />
+                <Skeleton width={64} variant="sm" />
             ) : (
                 <Typography weight="medium" variant="sm" light>
                     {formatUsdAmount(pool.tvl)}

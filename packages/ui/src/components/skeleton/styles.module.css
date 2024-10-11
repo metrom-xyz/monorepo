@@ -1,5 +1,5 @@
 .root {
-    @apply bg-gray-200 animate-pulse rounded-md;
+    @apply w-full bg-gray-200 animate-pulse rounded-md;
 }
 
 .circular {
@@ -19,7 +19,7 @@
 }
 
 .lg {
-    @apply h-7;
+    @apply h-6;
 }
 
 .xl {

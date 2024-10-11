@@ -1,5 +1,5 @@
 .root {
-    @apply w-full md:w-auto justify-between flex gap-2;
+    @apply w-full sm:w-auto justify-between flex gap-2;
 }
 
 .arrowIcon {

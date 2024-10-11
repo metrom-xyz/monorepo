@@ -1,13 +1,13 @@
 .root {
-    @apply flex items-center justify-between col-span-4 md:col-span-1;
+    @apply flex items-center justify-between col-span-4 sm:col-span-1;
 }
 
 .tokenIcons {
-    @apply relative flex flex-1 items-center gap-[1px];
+    @apply min-h-full flex flex-1 items-center gap-[1px];
 }
 
 .tokenIcon {
-    @apply absolute cursor-pointer;
+    @apply cursor-pointer -mr-4;
 }
 
 .breakdownContainer {
@@ -23,7 +23,7 @@
 }
 
 .textRewards {
-    @apply !text-sm md:!text-base;
+    @apply !text-sm sm:!text-base;
 }
 
 .tooltipTitle {

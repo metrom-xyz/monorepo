@@ -149,6 +149,42 @@ export function KpiSimulationChart({
         return [poolUsdTvl, lowerUsdTarget, upperUsdTarget];
     }, [lowerUsdTarget, poolUsdTvl, upperUsdTarget]);
 
+    if (
+        upperUsdTarget === undefined ||
+        lowerUsdTarget === undefined ||
+        !totalRewardsUsd ||
+        !poolUsdTvl
+    )
+        return (
+            <div className={classNames("root", styles.root, className)}>
+                <div
+                    className={classNames(
+                        "emptyContainer",
+                        styles.emptyContainer,
+                    )}
+                >
+                    {error ? (
+                        <ErrorText
+                            variant="xs"
+                            weight="medium"
+                            className={styles.errorText}
+                        >
+                            {t("errors.missingData")}
+                        </ErrorText>
+                    ) : (
+                        <Typography
+                            uppercase
+                            variant="sm"
+                            light
+                            weight="medium"
+                        >
+                            {t("emptyData")}
+                        </Typography>
+                    )}
+                </div>
+            </div>
+        );
+
     if (error) {
         return (
             <div className={classNames("root", styles.root, className)}>
@@ -158,7 +194,11 @@ export function KpiSimulationChart({
                         styles.emptyContainer,
                     )}
                 >
-                    <ErrorText variant="xs" weight="medium">
+                    <ErrorText
+                        variant="xs"
+                        weight="medium"
+                        className={styles.errorText}
+                    >
                         {t("errors.wrongData")}
                     </ErrorText>
                 </div>
@@ -179,27 +219,6 @@ export function KpiSimulationChart({
             </div>
         );
     }
-
-    if (
-        upperUsdTarget === undefined ||
-        lowerUsdTarget === undefined ||
-        !totalRewardsUsd ||
-        !poolUsdTvl
-    )
-        return (
-            <div className={classNames("root", styles.root, className)}>
-                <div
-                    className={classNames(
-                        "emptyContainer",
-                        styles.emptyContainer,
-                    )}
-                >
-                    <Typography uppercase variant="sm" light weight="medium">
-                        {t("missingData")}
-                    </Typography>
-                </div>
-            </div>
-        );
 
     return (
         <div className={classNames("root", styles.root, className)}>

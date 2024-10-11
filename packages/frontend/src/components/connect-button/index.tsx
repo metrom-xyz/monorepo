@@ -11,7 +11,7 @@ import {
     useAccount,
     useDisconnect,
 } from "wagmi";
-import { useClickAway } from "react-use";
+import { useClickAway, useWindowSize } from "react-use";
 import { useTranslations } from "next-intl";
 import { ErrorIcon } from "@/src/assets/error-icon";
 import { blo, type Address } from "blo";
@@ -24,6 +24,7 @@ import { SafeLogo } from "@/src/assets/logos/safe";
 import { SAFE } from "@/src/commons/env";
 import { toast } from "sonner";
 import { SafeConnectedNotification } from "./safe-connected-notification";
+import { useTransition, animated, easings } from "@react-spring/web";
 
 import styles from "./styles.module.css";
 
@@ -36,6 +37,7 @@ export function ConnectButton() {
     const { connector } = useAccount();
     const { connect } = useConnect();
     const { disconnect } = useDisconnect();
+    const { width } = useWindowSize();
 
     const [networkWrapper, setNetworkWrapper] = useState<HTMLDivElement | null>(
         null,
@@ -43,6 +45,20 @@ export function ConnectButton() {
     const [networkPopoverOpen, setNetworkPopoverOpen] = useState(false);
     const [accountMenuOpen, setAccountMenuOpen] = useState(false);
     const networksPopoverRef = useRef<HTMLDivElement>(null);
+
+    const transitionHorizontal = useTransition(accountMenuOpen, {
+        from: { transform: "translateX(448px)" },
+        enter: { transform: "translateX(-448px)" },
+        leave: { transform: "translateX(448px)" },
+        config: { duration: 200, easing: easings.easeInOutCubic },
+    });
+
+    const transitionVertical = useTransition(accountMenuOpen, {
+        from: { transform: "translateY(448px)" },
+        enter: { transform: "translateY(-448px)" },
+        leave: { transform: "translateY(448px)" },
+        config: { duration: 200, easing: easings.easeInOutCubic },
+    });
 
     useEffect(() => {
         if (!SAFE) return;
@@ -185,19 +201,47 @@ export function ConnectButton() {
                                                 accountMenuOpen,
                                         })}
                                     />
-                                    <AccountMenu
-                                        account={account}
-                                        blockie={blockie}
-                                        chainId={chain.id}
-                                        className={classNames(
-                                            styles.accountMenu,
-                                            {
-                                                [styles.accountMenuOpen]:
-                                                    accountMenuOpen,
-                                            },
-                                        )}
-                                        onClose={handleAccountMenuClose}
-                                    />
+                                    {width > 640
+                                        ? transitionHorizontal(
+                                              (style, open) =>
+                                                  open && (
+                                                      <animated.div
+                                                          style={style}
+                                                          className={
+                                                              styles.accountMenuHorizontal
+                                                          }
+                                                      >
+                                                          <AccountMenu
+                                                              account={account}
+                                                              blockie={blockie}
+                                                              chainId={chain.id}
+                                                              onClose={
+                                                                  handleAccountMenuClose
+                                                              }
+                                                          />
+                                                      </animated.div>
+                                                  ),
+                                          )
+                                        : transitionVertical(
+                                              (style, open) =>
+                                                  open && (
+                                                      <animated.div
+                                                          style={style}
+                                                          className={
+                                                              styles.accountMenuVertical
+                                                          }
+                                                      >
+                                                          <AccountMenu
+                                                              account={account}
+                                                              blockie={blockie}
+                                                              chainId={chain.id}
+                                                              onClose={
+                                                                  handleAccountMenuClose
+                                                              }
+                                                          />
+                                                      </animated.div>
+                                                  ),
+                                          )}
                                     <div
                                         className={styles.walletWrapper}
                                         onClick={handleAccountMenuOpen}
@@ -227,7 +271,9 @@ export function ConnectButton() {
                                                     className={styles.avatar}
                                                 />
                                             )}
-                                            <Typography>
+                                            <Typography
+                                                className={styles.displayName}
+                                            >
                                                 {account.ensName ||
                                                     account.displayName}
                                             </Typography>

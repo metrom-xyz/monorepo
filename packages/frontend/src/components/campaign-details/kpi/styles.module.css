@@ -5,6 +5,8 @@
 .card {
     @apply w-full
         flex
+        flex-col
+        sm:flex-row
         gap-4
         p-4
         bg-white

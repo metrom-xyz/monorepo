@@ -1,0 +1,11 @@
+.root {
+    @apply flex flex-col gap-3;
+}
+
+.boundInputs {
+    @apply flex gap-3;
+}
+
+.minimumPayoutSlider :global(.inputWrapper) {
+    @apply w-full;
+}

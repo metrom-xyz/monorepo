@@ -23,5 +23,5 @@
 }
 
 .selfAdjust {
-    @apply w-11 h-6 md:w-[3.25rem] md:h-7;
+    @apply w-11 h-6 sm:w-[3.25rem] sm:h-7;
 }

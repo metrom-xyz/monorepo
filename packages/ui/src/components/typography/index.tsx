@@ -27,6 +27,7 @@ interface BaseTypographyProps {
     light?: boolean;
     uppercase?: boolean;
     noWrap?: boolean;
+    truncate?: boolean;
     mono?: boolean;
     className?: string;
     children: ReactNode;
@@ -62,6 +63,7 @@ const Component = <V extends TypographyVariant>(
         light,
         uppercase,
         noWrap,
+        truncate,
         mono,
         className,
         children,
@@ -93,6 +95,7 @@ const Component = <V extends TypographyVariant>(
                 [styles[variant]]: true,
                 [styles[weight]]: true,
                 [styles.noWrap]: noWrap,
+                [styles.truncate]: truncate,
                 [styles.mono]: mono,
             })}
             {...rest}

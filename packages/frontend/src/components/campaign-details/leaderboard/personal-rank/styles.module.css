@@ -21,11 +21,11 @@
 }
 
 .row {
-    @apply grid grid-cols-3 items-center;
+    @apply grid grid-cols-3 items-end sm:items-center;
 }
 
 .row > :first-child {
-    @apply flex items-center gap-4;
+    @apply flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4;
 }
 
 .row > :nth-child(2) {

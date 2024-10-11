@@ -1,5 +1,5 @@
 import classNames from "classnames";
-import { Typography, Skeleton } from "@metrom-xyz/ui";
+import { Typography, Skeleton, Select } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
 import type { ChainWithClaimsData } from "..";
 
@@ -20,25 +20,31 @@ export function Chains({ className, options, value, onChange }: ChainsProps) {
             <Typography light weight="medium" className={styles.header}>
                 {t("chain")}
             </Typography>
-            {options.map((option) => {
-                if (option.claims.length === 0) return null;
+            <div className={styles.chainsWrapper}>
+                {options.map((option) => {
+                    if (option.claims.length === 0) return null;
 
-                const ChainIcon = option.chainData.icon;
+                    const ChainIcon = option.chainData.icon;
 
-                return (
-                    <div
-                        key={option.chain.id}
-                        className={classNames(styles.row, styles.rowAnimated, {
-                            [styles.rowActive]:
-                                option.chain.id === value?.chain.id,
-                        })}
-                        onClick={() => onChange(option)}
-                    >
-                        <ChainIcon className={styles.chainIcon} />
-                        <Typography>{option.chain.name}</Typography>
-                    </div>
-                );
-            })}
+                    return (
+                        <div
+                            key={option.chain.id}
+                            className={classNames(
+                                styles.row,
+                                styles.rowAnimated,
+                                {
+                                    [styles.rowActive]:
+                                        option.chain.id === value?.chain.id,
+                                },
+                            )}
+                            onClick={() => onChange(option)}
+                        >
+                            <ChainIcon className={styles.chainIcon} />
+                            <Typography>{option.chain.name}</Typography>
+                        </div>
+                    );
+                })}
+            </div>
         </div>
     );
 }

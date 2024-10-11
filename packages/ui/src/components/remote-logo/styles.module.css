@@ -63,9 +63,9 @@
 }
 
 .selfAdjust {
-    @apply w-6 h-6 md:w-7 md:h-7;
+    @apply w-6 h-6 sm:w-7 sm:h-7;
 }
 
 .selfAdjust > p {
-    @apply text-[0.4rem] md:text-[0.5rem];
+    @apply text-[0.4rem] sm:text-[0.5rem];
 }

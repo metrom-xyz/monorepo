@@ -17,7 +17,6 @@ export function useActivities(): {
 
     const { data: activities, isPending: loading } = useQuery({
         queryKey: ["activities", address, chainId],
-        initialData: [],
         queryFn: async ({ queryKey }) => {
             const [_, account, chainId] = queryKey;
             if (!account || !chainId) return [];
@@ -43,6 +42,6 @@ export function useActivities(): {
 
     return {
         loading,
-        activities,
+        activities: activities || [],
     };
 }

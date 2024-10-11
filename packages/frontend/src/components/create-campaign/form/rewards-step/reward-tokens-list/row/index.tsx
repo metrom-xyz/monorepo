@@ -44,7 +44,7 @@ export function Row({
         >
             <div className={styles.token}>
                 {loading ? (
-                    <Skeleton circular width="36px" />
+                    <Skeleton circular width={36} />
                 ) : (
                     <RemoteLogo
                         size="sm"
@@ -53,7 +53,7 @@ export function Row({
                     />
                 )}
                 {loading ? (
-                    <Skeleton width="40px" variant="xs" />
+                    <Skeleton width={80} />
                 ) : (
                     <Typography weight="medium" variant="lg">
                         {tokenWithBalance?.token.name}
@@ -61,7 +61,7 @@ export function Row({
                 )}
             </div>
             {loading || !tokenWithBalance ? (
-                <Skeleton width="32px" variant="xs" />
+                <Skeleton width={32} variant="xs" />
             ) : (
                 <Typography variant="xs" weight="medium" light>
                     {tokenWithBalance.balance
