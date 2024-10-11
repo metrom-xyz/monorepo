@@ -112,11 +112,17 @@ export function EndDateStep({
         else if (date.isBefore(dayjs())) dateError = t("errors.dateInThePast");
         else if (campaignDuration < limits.minimumSeconds)
             dateError = t("errors.minimumDate", {
-                duration: Math.floor(limits.minimumSeconds / 60),
+                duration: dayjs(startDate).to(
+                    startDate.add(limits.minimumSeconds, "second"),
+                    true,
+                ),
             });
         else if (campaignDuration > limits.maximumSeconds)
             dateError = t("errors.maximumDate", {
-                duration: Math.floor(limits.maximumSeconds / 60 / 60 / 24),
+                duration: dayjs(startDate).to(
+                    startDate.add(limits.maximumSeconds, "second"),
+                    true,
+                ),
             });
 
         onError({ endDate: !!dateError });
