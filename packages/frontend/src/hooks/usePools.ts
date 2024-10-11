@@ -11,7 +11,7 @@ export function usePools(ammSlug?: SupportedAmm): {
     const chainId: SupportedChain = useChainId();
 
     const { data: pools, isPending: loading } = useQuery({
-        queryKey: ["pools", ammSlug],
+        queryKey: ["pools", ammSlug, chainId],
         queryFn: async ({ queryKey }) => {
             const amm = queryKey[1];
             if (!amm) return undefined;
