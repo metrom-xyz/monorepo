@@ -293,7 +293,7 @@ export function KpiSimulationChart({
                                 upperUsdTarget={upperUsdTarget}
                             />
                         }
-                        domain={[0, "dataMax"]}
+                        domain={["dataMin", "dataMax"]}
                         ticks={tvlTicks.sort((a, b) => a - b)}
                     >
                         <Label
