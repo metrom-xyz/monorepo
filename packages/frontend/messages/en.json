@@ -296,8 +296,7 @@
         }
     },
     "simulationChart": {
-        "missingData": "Missing data for the simulation",
-        "inconsitentData": "Inconsistent data, can't run simulation, try to change the bound values",
+        "emptyData": "Missing data for the simulation",
         "pool": "Pool",
         "lowerBound": "Lower bd",
         "upperBound": "Upper bd",
@@ -306,7 +305,8 @@
             "reward": "Reward"
         },
         "errors": {
-            "wrongData": "Wrong data, cant't run the simulation"
+            "wrongData": "Wrong data, cant't run the simulation",
+            "missingData": "Fill both lower and upper bound values for the simulation"
         },
         "tooltip": {
             "tvl": "TVL",

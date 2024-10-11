@@ -9,12 +9,17 @@
 .emptyContainer {
     @apply w-full
         h-full
+        px-3
         min-h-[270px]
         flex
         justify-center
         items-center
         bg-gray-100
         rounded-lg;
+}
+
+.errorText {
+    @apply flex-col;
 }
 
 .loading {
