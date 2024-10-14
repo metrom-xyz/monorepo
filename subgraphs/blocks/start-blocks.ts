@@ -9,4 +9,5 @@ export const START_BLOCKS: { [network: string]: number } = {
     "mode-mainnet": 12569458,
     sonic: 73323411,
     base: 20192397,
+    taiko: 460103,
 };

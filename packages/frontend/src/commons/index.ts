@@ -18,6 +18,7 @@ import {
     mantle,
     base,
     baseSepolia,
+    taiko,
 } from "viem/chains";
 
 import {
@@ -30,6 +31,7 @@ import {
     sonicTestnetData,
     baseData,
     baseSepoliaData,
+    taikoData,
 } from "./chains";
 
 export interface ChainData {
@@ -50,7 +52,7 @@ export const MAXIMUM_REWARDS_RESTRICTIONS = 20;
 
 export const SUPPORTED_CHAINS: [Chain, ...Chain[]] =
     ENVIRONMENT === Environment.Production
-        ? [mode, mantle, base]
+        ? [mode, mantle, base, taiko]
         : [
               celoAlfajores,
               holesky,
@@ -71,6 +73,7 @@ export const CHAIN_DATA: Record<SupportedChain, ChainData> = {
     [SupportedChain.Base]: baseData,
     [SupportedChain.Mode]: modeData,
     [SupportedChain.Mantle]: mantleData,
+    [SupportedChain.Taiko]: taikoData,
 };
 
 export const metromApiClient = new MetromApiClient(

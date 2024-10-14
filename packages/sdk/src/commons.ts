@@ -8,6 +8,7 @@ export enum SupportedAmm {
     TestIntegral = "test-integral",
     Swapsicle = "swapsicle",
     Kim = "kim",
+    Panko = "panko",
 }
 
 export interface ServiceUrls {
