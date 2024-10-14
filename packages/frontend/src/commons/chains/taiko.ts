@@ -11,7 +11,7 @@ export const taikoData: ChainData = {
         {
             slug: SupportedAmm.Panko,
             logo: PankoLogo,
-            name: "Kim",
+            name: "Panko",
             // TODO: update this
             addLiquidityUrl: "https://panko.finance",
         },
