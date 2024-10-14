@@ -3,6 +3,7 @@ import { SupportedChain, ADDRESS } from "@metrom-xyz/contracts";
 import { BaseLogo } from "../../assets/logos/chains/base";
 import { KimLogo } from "../../assets/logos/amms/kim";
 import { type ChainData } from "..";
+import { UniswapLogo } from "@/src/assets/logos/amms/uniswap";
 
 export const baseSepoliaData: ChainData = {
     metromContract: ADDRESS[SupportedChain.BaseSepolia],
@@ -13,6 +14,13 @@ export const baseSepoliaData: ChainData = {
             logo: KimLogo,
             name: "Kim",
             addLiquidityUrl: "https://app.kim.exchange/pools/v4/{target_pool}",
+        },
+        {
+            slug: SupportedAmm.Univ3,
+            logo: UniswapLogo,
+            name: "Uniswap v3",
+            addLiquidityUrl:
+                "https://app.uniswap.org/explore/pools/base_sepolia/{target_pool}",
         },
     ],
     baseTokens: [
