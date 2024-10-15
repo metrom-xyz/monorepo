@@ -51,11 +51,11 @@
     @apply flex flex-col;
 }
 
-.networksWrapper :first-child {
+.networksWrapper > :first-child {
     @apply rounded-t-xl;
 }
 
-.networksWrapper :last-child {
+.networksWrapper > :last-child {
     @apply rounded-b-xl;
 }
 
