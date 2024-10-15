@@ -24,11 +24,7 @@
 }
 
 .nameContainer {
-    @apply flex w-full max-w-32 gap-1.5 items-center;
-}
-
-.tokenName {
-    @apply max-w-24;
+    @apply flex w-full max-w-60 gap-1.5 items-center;
 }
 
 .row {

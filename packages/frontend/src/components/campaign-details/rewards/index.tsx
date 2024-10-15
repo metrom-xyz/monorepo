@@ -60,7 +60,6 @@ export function Rewards({ campaign, loading }: RewardsProps) {
                                     weight="medium"
                                     variant="lg"
                                     truncate
-                                    className={styles.tokenName}
                                 >
                                     {reward.token.symbol}
                                 </Typography>
