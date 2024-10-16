@@ -1,4 +1,4 @@
-import React, { type ReactNode, useEffect, useRef } from "react";
+import { type ReactNode, useEffect, useRef } from "react";
 import { useTransition, animated } from "@react-spring/web";
 
 import styles from "./styles.module.css";

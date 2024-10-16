@@ -1,0 +1,18 @@
+.root {
+    @apply flex
+        items-center
+        justify-center
+        w-full
+        p-3
+        rounded-md
+        cursor-pointer
+        transition-colors
+        duration-200
+        ease-in-out
+        bg-gray-100
+        opacity-50;
+}
+
+.active {
+    @apply bg-white opacity-100;
+}
