@@ -83,7 +83,7 @@
 }
 
 .horizontalDivider {
-    @apply border-0 h-[1.5px] bg-gray-300 -mx-4;
+    @apply h-[1.5px] bg-gray-100;
 }
 
 .totalValueWrapper {
