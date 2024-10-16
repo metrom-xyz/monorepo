@@ -121,7 +121,9 @@ export function ConnectButton() {
                                                         styles.networkIcon
                                                     }
                                                 />
-                                                {chain.name}
+                                                <Typography>
+                                                    {chain.name}
+                                                </Typography>
                                             </div>
                                         );
                                     })}

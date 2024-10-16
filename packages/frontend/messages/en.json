@@ -133,6 +133,26 @@
                     "empty": "Nothing here"
                 }
             },
+            "restrictions": {
+                "title": "Restrictions",
+                "description": "Blacklist addresses that shouldn't receive rewards, or whitelist only those that should be eligible to receive rewards.",
+                "errors": {
+                    "notAnAddress": "Not a valid address",
+                    "alreadyRestricted": "Address already restricted"
+                },
+                "warnings": {
+                    "notApplied": "Changes not applied"
+                },
+                "type": "Type",
+                "whitelist": "Whitelist",
+                "blacklist": "Blacklist",
+                "input": {
+                    "label": "Address",
+                    "placeholder": "Enter wallet address"
+                },
+                "addTo": "Add to {type}",
+                "apply": "Apply"
+            },
             "kpi": {
                 "title": "Set KPI",
                 "currentTvl": "Current TVL",

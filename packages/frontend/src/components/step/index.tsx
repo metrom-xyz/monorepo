@@ -12,6 +12,7 @@ interface StepProps {
     completed?: boolean;
     open?: boolean;
     error?: boolean;
+    errorLevel?: "warning" | "error";
     children: ReactElement[];
     className?: string;
     onPreviewClick?: () => void;
@@ -22,6 +23,7 @@ export function Step({
     completed,
     open,
     error,
+    errorLevel = "error",
     children,
     className,
     onPreviewClick,
@@ -65,7 +67,8 @@ export function Step({
             style={springStyles}
             className={classNames(className, styles.root, {
                 [styles.disabled]: disabled,
-                [styles.error]: error,
+                [styles.error]: error && errorLevel === "error",
+                [styles.warning]: error && errorLevel === "warning",
                 [styles.open]: open,
             })}
         >

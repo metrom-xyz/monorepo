@@ -6,6 +6,7 @@ import type {
 } from "@metrom-xyz/sdk";
 import type { Dayjs } from "dayjs";
 import type { SVGProps, FunctionComponent } from "react";
+import type { Address } from "viem";
 
 type PropertyUnion<T> = {
     [K in keyof T]: { [P in K]: T[K] };
@@ -20,6 +21,11 @@ export interface Dex {
     logo: FunctionComponent;
 }
 
+export enum RestrictionType {
+    blacklist = "blacklist",
+    whitelist = "whitelist",
+}
+
 // TODO: define state
 export interface CampaignPayload {
     network?: number;
@@ -29,10 +35,10 @@ export interface CampaignPayload {
     endDate?: Dayjs;
     rewards?: WhitelistedErc20TokenAmount[];
     kpiSpecification?: KpiSpecification;
-    // restrictions?: {
-    //     type: "blacklist" | "whitelist";
-    //     list: Address[];
-    // };
+    restrictions?: {
+        type: RestrictionType;
+        list: Address[];
+    };
 }
 
 export interface CampaignPayloadErrors {
@@ -40,6 +46,7 @@ export interface CampaignPayloadErrors {
     endDate?: boolean;
     rewards?: boolean;
     kpiSpecification?: boolean;
+    restrictions?: boolean;
 }
 
 export type DexInfo = Pick<Dex, "slug" | "name" | "logo">;
