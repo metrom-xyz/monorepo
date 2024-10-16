@@ -58,9 +58,17 @@
     @apply bg-red-600;
 }
 
+.textInputWrapper {
+    @apply relative mt-3;
+}
+
 .textInput :global(.inputWrapper),
 .textInput :global(.inputWrapper) :global(.input) {
     @apply w-full;
+}
+
+.importCsvInput {
+    @apply absolute right-0 bottom-[57px];
 }
 
 .divider {
@@ -68,7 +76,11 @@
 }
 
 .listWrapper {
-    @apply h-64 overflow-y-auto snap-y flex flex-col gap-2;
+    @apply flex flex-col gap-1.5;
+}
+
+.list {
+    @apply max-h-64 overflow-y-auto snap-y flex flex-col gap-2;
 }
 
 .row {
