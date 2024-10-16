@@ -150,7 +150,23 @@
                     "label": "Address",
                     "placeholder": "Enter wallet address"
                 },
-                "addTo": "Add to {type}",
+                "import": {
+                    "label": "Import CSV",
+                    "notification": {
+                        "success": {
+                            "title": "Successful",
+                            "message": "Addresses imported"
+                        },
+                        "fail": {
+                            "title": "Failed",
+                            "malformed": "Malformed csv",
+                            "duplicated": "Duplicated addresses",
+                            "tooMany": "Too many addresses: max {max}"
+                        }
+                    }
+                },
+                "add": "Add",
+                "list": "List",
                 "apply": "Apply"
             },
             "kpi": {
