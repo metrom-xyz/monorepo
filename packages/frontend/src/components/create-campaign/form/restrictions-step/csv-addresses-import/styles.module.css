@@ -1,0 +1,21 @@
+.root {
+    @apply w-fit
+        max-w-40
+        flex
+        gap-1
+        items-center
+        justify-between
+        rounded-md
+        bg-gray-100
+        px-2.5
+        py-1.5
+        hover:bg-gray-200
+        hover:cursor-pointer
+        transition-colors
+        duration-200
+        ease-in-out;
+}
+
+.input {
+    @apply hidden;
+}
