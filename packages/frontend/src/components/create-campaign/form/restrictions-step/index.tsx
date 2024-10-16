@@ -31,10 +31,11 @@ import { blo } from "blo";
 import { shortenAddress } from "@/src/utils/address";
 import { XIcon } from "@/src/assets/x-icon";
 import { Dot } from "./dot";
+import { CsvAddressesImport } from "./csv-addresses-import";
 
 import styles from "./styles.module.css";
 
-const MAXIMUM_RESTRICTIONS = 20;
+export const MAXIMUM_RESTRICTIONS = 20;
 
 interface RestrictionsStepProps {
     disabled?: boolean;
@@ -243,13 +244,19 @@ export function RestrictionsStep({
                                 </div>
                             </Tab>
                         </Tabs>
-                        <TextInput
-                            label={t("input.label")}
-                            placeholder={t("input.placeholder")}
-                            value={address}
-                            onChange={handleAddressOnChange}
-                            className={styles.textInput}
-                        />
+                        <div className={styles.textInputWrapper}>
+                            <CsvAddressesImport
+                                onImport={setAddresses}
+                                className={styles.importCsvInput}
+                            />
+                            <TextInput
+                                label={t("input.label")}
+                                placeholder={t("input.placeholder")}
+                                value={address}
+                                onChange={handleAddressOnChange}
+                                className={styles.textInput}
+                            />
+                        </div>
                         <Button
                             variant="secondary"
                             size="small"
@@ -261,42 +268,56 @@ export function RestrictionsStep({
                             onClick={handleOnAdd}
                             className={{ root: styles.applyButton }}
                         >
-                            {t("addTo", { type })}
+                            {t("add")}
                         </Button>
                     </div>
                     <hr className={styles.divider}></hr>
-                    {addresses.length > 0 && (
-                        <div className={styles.listWrapper}>
-                            {addresses.map((address) => (
-                                <div key={address} className={styles.row}>
-                                    <div className={styles.accountWrapper}>
-                                        {/* eslint-disable-next-line @next/next/no-img-element */}
-                                        <img
-                                            alt="Avatar"
-                                            src={blo(address || zeroAddress)}
-                                            className={styles.avatar}
+                    <div className={styles.listWrapper}>
+                        <Typography
+                            weight="medium"
+                            light
+                            variant="xs"
+                            uppercase
+                        >
+                            {t("list")}
+                        </Typography>
+                        {addresses.length > 0 && (
+                            <div className={styles.list}>
+                                {addresses.map((address) => (
+                                    <div key={address} className={styles.row}>
+                                        <div className={styles.accountWrapper}>
+                                            {/* eslint-disable-next-line @next/next/no-img-element */}
+                                            <img
+                                                alt="Avatar"
+                                                src={blo(
+                                                    address || zeroAddress,
+                                                )}
+                                                className={styles.avatar}
+                                            />
+                                            <Typography weight="medium">
+                                                {shortenAddress(address, true)}
+                                            </Typography>
+                                        </div>
+                                        <XIcon
+                                            onClick={getRemoveHandler(address)}
+                                            className={styles.removeIcon}
                                         />
-                                        <Typography weight="medium">
-                                            {shortenAddress(address, true)}
-                                        </Typography>
                                     </div>
-                                    <XIcon
-                                        onClick={getRemoveHandler(address)}
-                                        className={styles.removeIcon}
-                                    />
-                                </div>
-                            ))}
-                        </div>
+                                ))}
+                            </div>
+                        )}
+                    </div>
+                    {(unsavedChanges || addresses.length > 0) && (
+                        <Button
+                            variant="secondary"
+                            size="small"
+                            disabled={!unsavedChanges}
+                            onClick={handleOnApply}
+                            className={{ root: styles.applyButton }}
+                        >
+                            {t("apply")}
+                        </Button>
                     )}
-                    <Button
-                        variant="secondary"
-                        size="small"
-                        disabled={!unsavedChanges}
-                        onClick={handleOnApply}
-                        className={{ root: styles.applyButton }}
-                    >
-                        {t("apply")}
-                    </Button>
                 </div>
             </StepContent>
         </Step>
