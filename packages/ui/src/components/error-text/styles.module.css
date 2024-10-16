@@ -3,9 +3,21 @@
 }
 
 .icon {
-    @apply w-3.5 h-3.5 text-red-600;
+    @apply w-3.5 h-3.5;
 }
 
-.text {
+.icon.error {
+    @apply text-red-600;
+}
+
+.icon.warning {
+    @apply text-yellow-600;
+}
+
+.text.error {
     @apply !text-red-600;
+}
+
+.text.warning {
+    @apply !text-yellow-600;
 }

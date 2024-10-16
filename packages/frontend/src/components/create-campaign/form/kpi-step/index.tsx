@@ -33,11 +33,6 @@ interface KpiStepProps {
     onError: (errors: CampaignPayloadErrors) => void;
 }
 
-interface NumberInputValues {
-    raw?: NumberFormatValues["floatValue"];
-    formatted?: NumberFormatValues["formattedValue"];
-}
-
 export function KpiStep({
     disabled,
     pool,

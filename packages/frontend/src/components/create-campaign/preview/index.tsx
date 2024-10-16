@@ -6,8 +6,6 @@ import {
     useSimulateContract,
     useWriteContract,
 } from "wagmi";
-import Confetti from "react-confetti";
-import { useWindowSize } from "react-use";
 import { metromAbi } from "@metrom-xyz/contracts/abi";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
@@ -51,7 +49,6 @@ export function CampaignPreview({
 
     const feedback = useRef<HTMLDivElement>(null);
     const router = useRouter();
-    const { width, height } = useWindowSize();
     const chainId = useChainId();
     const chainData = useChainData(chainId);
     const publicClient = usePublicClient();
@@ -103,10 +100,13 @@ export function CampaignPreview({
         const uploadSpecification = async () => {
             setUploadingSpecification(true);
 
-            const specification: Specification = {
-                // TODO: add restrictions
-                kpi: payload.kpiSpecification,
+            const { restrictions, kpiSpecification } = payload;
+
+            let specification: Specification = {
+                kpi: kpiSpecification,
             };
+            if (restrictions)
+                specification[restrictions.type] = restrictions?.list;
 
             try {
                 const response = await fetch(
@@ -135,9 +135,17 @@ export function CampaignPreview({
             }
         };
 
-        // TODO: add restrictions check
-        if (payload.kpiSpecification && rewardsApproved) uploadSpecification();
-    }, [payload.kpiSpecification, rewardsApproved]);
+        if (
+            (payload.kpiSpecification || payload.restrictions) &&
+            rewardsApproved
+        )
+            uploadSpecification();
+    }, [
+        payload,
+        payload.kpiSpecification,
+        payload.restrictions,
+        rewardsApproved,
+    ]);
 
     function handleOnRewardsApproved() {
         setRewardsApproved(true);
@@ -279,21 +287,6 @@ export function CampaignPreview({
                     {t("newCampaign")}
                 </Button>
             </div>
-            <Confetti
-                numberOfPieces={600}
-                confettiSource={{
-                    x: 0,
-                    y: 0,
-                    w: width,
-                    h: height,
-                }}
-                run={true}
-                width={width}
-                height={height}
-                recycle={false}
-                initialVelocityY={30}
-                colors={["#163A5F", "#45EBA5", "#21ABA5", "#1D566E", "#163A5F"]}
-            />
         </div>
     );
 }

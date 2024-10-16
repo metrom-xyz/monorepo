@@ -14,6 +14,8 @@ export * from "./components/select";
 export * from "./components/skeleton";
 export * from "./components/slider";
 export * from "./components/switch";
+export * from "./components/tabs";
+export * from "./components/tabs/tab";
 export * from "./components/text-field";
 export * from "./components/toast-notification";
 export * from "./components/typography";

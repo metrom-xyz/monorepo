@@ -26,6 +26,10 @@
     @apply border-red-600 hover:!border-red-600;
 }
 
+.warning {
+    @apply border-yellow-600 hover:!border-yellow-600;
+}
+
 .open {
     @apply hover:border-transparent;
 }

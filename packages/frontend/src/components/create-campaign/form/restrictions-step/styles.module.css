@@ -1,0 +1,92 @@
+.previewLabelWrapper {
+    @apply w-full flex justify-between items-center;
+}
+
+.previewTextWrapper {
+    @apply flex items-center gap-2;
+}
+
+.previewLabel {
+    @apply !text-inherit;
+}
+
+.step {
+    @apply hover:border-transparent;
+}
+
+.previewDisabled {
+    @apply hover:cursor-default hover:bg-white;
+}
+
+.typeWrapper {
+    @apply flex gap-1;
+}
+
+.error {
+    @apply transition-opacity duration-200 ease-in-out opacity-0;
+}
+
+.errorVisible {
+    @apply opacity-100;
+}
+
+.stepContent {
+    @apply flex flex-col gap-3 p-4;
+}
+
+.inputsWrapper {
+    @apply flex flex-col gap-3;
+}
+
+.dotWrapper {
+    @apply flex items-center justify-center bg-gray-100 h-5 w-5 rounded-full;
+}
+
+.tab {
+    @apply flex items-center gap-2;
+}
+
+.dot {
+    @apply h-3 w-3 rounded-full;
+}
+
+.dot.green {
+    @apply bg-brand-green;
+}
+
+.dot.red {
+    @apply bg-red-600;
+}
+
+.textInput :global(.inputWrapper),
+.textInput :global(.inputWrapper) :global(.input) {
+    @apply w-full;
+}
+
+.divider {
+    @apply h-[1.5px] bg-gray-100;
+}
+
+.listWrapper {
+    @apply h-64 overflow-y-auto snap-y flex flex-col gap-2;
+}
+
+.row {
+    @apply flex items-center justify-between snap-start px-4 py-5 bg-gray-100 rounded-lg;
+}
+
+.accountWrapper {
+    @apply flex items-center gap-2;
+}
+
+.removeIcon {
+    @apply cursor-pointer;
+}
+
+.avatar {
+    @apply h-5 w-5 rounded-full;
+}
+
+.applyButton {
+    @apply w-full;
+}
