@@ -27,7 +27,7 @@ export function TooltipContent({ active, payload }: TooltipProps) {
 
     if (!active || !payload || !payload.length) return null;
 
-    const { tvl, reward, goalReachedPercentage } = payload[0].payload;
+    const { usdTvl, reward, goalReachedPercentage } = payload[0].payload;
 
     return (
         <div className={styles.root}>
@@ -35,7 +35,9 @@ export function TooltipContent({ active, payload }: TooltipProps) {
                 <Typography weight="medium" light>
                     {t("tvl")}
                 </Typography>
-                <Typography weight="medium">{formatUsdAmount(tvl)}</Typography>
+                <Typography weight="medium">
+                    {formatUsdAmount(usdTvl)}
+                </Typography>
             </div>
             <div className={styles.row}>
                 <Typography weight="medium" light>
@@ -65,7 +67,7 @@ export function TooltipCursor({
 }: TooltipCursorProps) {
     if (!payload || !payload.length || !points || !height) return null;
 
-    const { tvl, reward } = payload[0].payload;
+    const { usdTvl, reward } = payload[0].payload;
 
     // ReferenceDot cannot be used because it lacks access to Recharts' internal scale functions.
     // Instead, we use a standard SVG circle element. This requires manually calculating the Y position
@@ -83,7 +85,7 @@ export function TooltipCursor({
                 isFront
                 stroke="#B2B2B2"
                 segment={[
-                    { x: tvl, y: reward },
+                    { x: usdTvl, y: reward },
                     { x: 0, y: reward },
                 ]}
             />
@@ -93,8 +95,8 @@ export function TooltipCursor({
                 isFront
                 stroke="#B2B2B2"
                 segment={[
-                    { x: tvl, y: reward },
-                    { x: tvl, y: 0 },
+                    { x: usdTvl, y: reward },
+                    { x: usdTvl, y: 0 },
                 ]}
             />
             <circle

@@ -205,7 +205,7 @@ export function CampaignPreview({
                 <div className={styles.content}>
                     {KPI && !!payload.kpiSpecification && (
                         <Kpi
-                            poolUsdTvl={payload.pool?.tvl}
+                            poolUsdTvl={payload.pool?.usdTvl}
                             rewards={payload.rewards}
                             specification={payload.kpiSpecification}
                         />
@@ -215,7 +215,7 @@ export function CampaignPreview({
                             boxed
                             variant="xl"
                             label={t("tvl")}
-                            value={formatUsdAmount(payload.pool?.tvl)}
+                            value={formatUsdAmount(payload.pool?.usdTvl)}
                         />
                         <TextField
                             boxed

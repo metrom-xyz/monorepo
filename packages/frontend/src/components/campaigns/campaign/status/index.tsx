@@ -9,8 +9,8 @@ import { Status as StatusState } from "@metrom-xyz/sdk";
 import styles from "./styles.module.css";
 
 interface CampaignStatusProps {
-    from: number;
-    to: number;
+    from: Date;
+    to: Date;
     status: StatusState;
 }
 
@@ -21,8 +21,8 @@ export function Status({
 }: CampaignStatusProps) {
     const t = useTranslations("allCampaigns.status");
     const now = dayjs();
-    const from = dayjs.unix(rawFrom);
-    const to = dayjs.unix(rawTo);
+    const from = dayjs(rawFrom);
+    const to = dayjs(rawTo);
 
     let text;
     let duration;

@@ -224,7 +224,7 @@ export function KpiStep({
                         {t("currentTvl")}
                     </Typography>
                     <Typography weight="medium" variant="sm">
-                        {formatUsdAmount(pool?.tvl)}
+                        {formatUsdAmount(pool?.usdTvl)}
                     </Typography>
                 </div>
             </StepPreview>
@@ -258,7 +258,7 @@ export function KpiStep({
                             upperUsdTarget={upperUsdTargetRaw}
                             totalRewardsUsd={totalRewardsUsdAmount}
                             minimumPayoutPercentage={minimumPayoutPercentage}
-                            poolUsdTvl={pool?.tvl}
+                            poolUsdTvl={pool?.usdTvl}
                             error={!!boundsError}
                         />
                     </div>

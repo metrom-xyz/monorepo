@@ -25,7 +25,7 @@ import styles from "./styles.module.css";
 import classNames from "classnames";
 
 export interface ChartData {
-    tvl: number;
+    usdTvl: number;
     reward: number;
     goalReachedPercentage: number;
 }
@@ -106,16 +106,16 @@ export function KpiSimulationChart({
         // green area for the minimum rewards to fill the whole chart
         if (minimumPayoutPercentage) points.unshift(0);
 
-        return points.map((tvl) => {
+        return points.map((usdTvl) => {
             const goalReachedPercentage = getReachedGoalPercentage(
-                tvl,
+                usdTvl,
                 lowerUsdTarget,
                 upperUsdTarget,
             );
 
             const distributableRewardsPercentage =
                 getDistributableRewardsPercentage(
-                    tvl,
+                    usdTvl,
                     lowerUsdTarget,
                     upperUsdTarget,
                     minimumPayoutPercentage,
@@ -124,7 +124,7 @@ export function KpiSimulationChart({
             const reward = totalRewardsUsd * distributableRewardsPercentage;
 
             return {
-                tvl,
+                usdTvl,
                 reward,
                 goalReachedPercentage,
             };
@@ -264,7 +264,7 @@ export function KpiSimulationChart({
                             return {
                                 ...point,
                                 reward:
-                                    point.tvl >
+                                    point.usdTvl >
                                     Math.max(poolUsdTvl, lowerUsdTarget)
                                         ? point.reward
                                         : 0,

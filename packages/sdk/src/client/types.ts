@@ -1,91 +1,55 @@
+import type {
+    Erc20Token,
+    Pool,
+    PoolWithTvl,
+    Specification,
+    UsdPricedErc20Token,
+} from "../types";
 import type { Address, Hash, Hex } from "viem";
 
-export interface BackendErc20Token {
-    address: Address;
-    symbol: string;
-    name: string;
-    decimals: string;
-}
-
-export interface BackendReward extends BackendErc20Token {
+export interface BackendReward extends UsdPricedErc20Token {
     amount: string;
     remaining: string;
-    usdPrice: string | null;
 }
 
-export interface BackendPool {
-    address: Address;
-    token0: BackendErc20Token;
-    token1: BackendErc20Token;
-    fee: string;
-    tvl: string;
-}
+export type BackendPool = Omit<Pool, "chainId">;
 
-export interface BackendCampaignPool {
-    amm: string;
-    address: Address;
-    token0: BackendErc20Token;
-    token1: BackendErc20Token;
-    fee: string;
-    tvl: string | null;
-}
-
-export enum BackendKpiMetric {
-    RangePoolTvl = "range-pool-tvl",
-}
-
-export interface BackendRangePoolKpiGoal {
-    metric: BackendKpiMetric.RangePoolTvl;
-    lowerUsdTarget: number;
-    upperUsdTarget: number;
-}
-
-export interface BackendKpiSpecification {
-    minimumPayoutPercentage?: number;
-    goal: BackendRangePoolKpiGoal;
-}
-
-export interface BackendSpecification {
-    whitelist?: Address[];
-    blacklist?: Address[];
-    kpi?: BackendKpiSpecification;
-}
+export type BackendPoolWithTvl = Omit<PoolWithTvl, "chainId">;
 
 export interface BackendCampaign {
-    chainId: string;
+    chainId: number;
     id: Hex;
-    from: number;
-    to: number;
-    createdAt: number;
-    snapshottedAt: number | null;
-    pool: BackendCampaignPool;
+    from: string;
+    to: string;
+    createdAt: string;
+    snapshottedAt: string | null;
+    pool: BackendPoolWithTvl;
+    specification: Specification | null;
     rewards: BackendReward[];
-    apr: string | null;
-    specification: BackendSpecification | null;
+    apr: number | null;
 }
 
 export interface BackendClaim {
-    chainId: string;
+    chainId: number;
     campaignId: Hex;
-    token: BackendErc20Token;
+    token: UsdPricedErc20Token;
     amount: string;
     proof: Hex[];
 }
 
-export interface BackendWhitelistedToken extends BackendErc20Token {
+export interface BackendWhitelistedErc20Token extends UsdPricedErc20Token {
     minimumRate: string;
-    price: string;
 }
 
 export interface BackendActivity {
     transaction: {
         hash: Hash;
-        timestamp: number;
+        timestamp: string;
     };
     payload:
         | {
               type: "claim-reward";
-              token: BackendErc20Token;
+              token: Erc20Token;
               amount: string;
               receiver: Address;
           }
@@ -99,21 +63,4 @@ export interface BackendLeaf {
     account: Address;
     tokenAddress: Address;
     amount: string;
-}
-
-export interface FetchCampaignsResponse {
-    campaigns: BackendCampaign[];
-}
-
-export interface FetchPoolsResponse {
-    pools: BackendPool[];
-}
-
-export interface FetchWhitelistedRewardTokensResponse {
-    tokens: BackendWhitelistedToken[];
-}
-
-export interface FetchSnapshotResponse {
-    timestamp: number;
-    leaves: BackendLeaf[];
 }

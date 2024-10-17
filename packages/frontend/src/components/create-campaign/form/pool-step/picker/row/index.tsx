@@ -1,4 +1,4 @@
-import type { Pool } from "@metrom-xyz/sdk";
+import type { PoolWithTvl } from "@metrom-xyz/sdk";
 import { useCallback } from "react";
 import { Typography, Skeleton } from "@metrom-xyz/ui";
 import classNames from "classnames";
@@ -9,11 +9,11 @@ import styles from "./styles.module.css";
 
 interface PickerRowProps {
     style?: any;
-    pool: Pool;
+    pool: PoolWithTvl;
     chain: number;
     loading?: boolean;
     active?: boolean;
-    onClick: (pool: Pool) => void;
+    onClick: (pool: PoolWithTvl) => void;
 }
 
 export function Row({
@@ -79,7 +79,7 @@ export function Row({
                 <Skeleton width={64} variant="sm" />
             ) : (
                 <Typography weight="medium" variant="sm" light>
-                    {formatUsdAmount(pool.tvl)}
+                    {formatUsdAmount(pool.usdTvl)}
                 </Typography>
             )}
         </div>

@@ -7,7 +7,7 @@ import {
     useEffect,
 } from "react";
 import { useDebounce } from "react-use";
-import type { Erc20Token, Pool } from "@metrom-xyz/sdk";
+import type { Erc20Token, PoolWithTvl } from "@metrom-xyz/sdk";
 import { useChainId } from "wagmi";
 import { TextInput, Chip, Typography } from "@metrom-xyz/ui";
 import AutoSizer from "react-virtualized-auto-sizer";
@@ -24,9 +24,9 @@ import { RemoteLogo } from "@/src/components/remote-logo";
 import styles from "./styles.module.css";
 
 interface PoolPickerProps {
-    value?: Pool;
+    value?: PoolWithTvl;
     amm?: CampaignPayload["amm"];
-    onChange: (pool: Pool) => void;
+    onChange: (pool: PoolWithTvl) => void;
 }
 
 export function PoolPicker({ value, amm, onChange }: PoolPickerProps) {
@@ -152,7 +152,7 @@ export function PoolPicker({ value, amm, onChange }: PoolPickerProps) {
                                     className={styles.list}
                                 >
                                     {({ index, style, data }) => {
-                                        const pool: Pool = data[index];
+                                        const pool: PoolWithTvl = data[index];
                                         return (
                                             <Row
                                                 style={style}
