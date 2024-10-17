@@ -65,7 +65,10 @@ export class MetromApiClient {
 
     async fetchCampaign(params: FetchCampaignParams): Promise<Campaign> {
         const response = await fetch(
-            new URL(`v1/campaign/${params.chainId}/${params.id}`, this.baseUrl),
+            new URL(
+                `v1/campaigns/${params.chainId}/${params.id}`,
+                this.baseUrl,
+            ),
         );
         if (!response.ok)
             throw new Error(
@@ -76,10 +79,10 @@ export class MetromApiClient {
     }
 
     async fetchPools(params: FetchPoolsParams): Promise<Pool[]> {
-        const url = new URL("v1/pools", this.baseUrl);
-
-        url.searchParams.set("chainId", params.chainId.toString());
-        url.searchParams.set("amm", params?.amm);
+        const url = new URL(
+            `v1/pools/${params.chainId}/${params.amm}`,
+            this.baseUrl,
+        );
 
         const response = await fetch(url);
         if (!response.ok)
@@ -96,9 +99,7 @@ export class MetromApiClient {
     }
 
     async fetchClaims(params: FetchClaimsParams): Promise<Claim[]> {
-        const url = new URL("v1/claims", this.baseUrl);
-
-        url.searchParams.set("user", params.address);
+        const url = new URL(`v1/claims/${params.address}`, this.baseUrl);
 
         const response = await fetch(url);
         if (!response.ok)
@@ -126,9 +127,7 @@ export class MetromApiClient {
     async fetchWhitelistedRewardTokens(
         params: FetchWhitelistedRewardTokensParams,
     ): Promise<WhitelistedErc20Token[]> {
-        const url = new URL("v1/whitelisted-reward-tokens", this.baseUrl);
-
-        url.searchParams.set("chainId", params.chainId.toString());
+        const url = new URL(`v1/reward-tokens/${params.chainId}`, this.baseUrl);
 
         const response = await fetch(url);
         if (!response.ok)
@@ -155,10 +154,11 @@ export class MetromApiClient {
     }
 
     async fetchActivities(params: FetchActivitiesParams): Promise<Activity[]> {
-        const url = new URL("v1/activities", this.baseUrl);
+        const url = new URL(
+            `v1/activities/${params.chainId}/${params.address}`,
+            this.baseUrl,
+        );
 
-        url.searchParams.set("chainId", params.chainId.toString());
-        url.searchParams.set("address", params.address.toString());
         url.searchParams.set("from", params.from.toString());
         url.searchParams.set("to", params.to.toString());
 
