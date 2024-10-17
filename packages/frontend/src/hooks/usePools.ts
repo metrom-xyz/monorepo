@@ -1,35 +1,39 @@
 import type { SupportedChain } from "@metrom-xyz/contracts";
-import { useChainId } from "wagmi";
 import { metromApiClient } from "../commons";
 import { SupportedAmm, type Pool } from "@metrom-xyz/sdk";
 import { useQuery } from "@tanstack/react-query";
+import { useAmmsInChain } from "./useAmmsInChain";
 
-export function usePools(ammSlug?: SupportedAmm): {
+export function usePools(
+    chainId: SupportedChain,
+    amm?: SupportedAmm,
+): {
     loading: boolean;
     pools?: Pool[];
 } {
-    const chainId: SupportedChain = useChainId();
+    const availableAmms = useAmmsInChain(chainId);
 
     const { data: pools, isPending: loading } = useQuery({
-        queryKey: ["pools", ammSlug, chainId],
+        queryKey: ["pools", amm, chainId],
         queryFn: async ({ queryKey }) => {
             const amm = queryKey[1];
+            const chainId = queryKey[2];
             if (!amm) return undefined;
 
             try {
                 const pools = await metromApiClient.fetchPools({
-                    chainId,
+                    chainId: chainId as SupportedChain,
                     amm: amm as SupportedAmm,
                 });
                 return pools;
             } catch (error) {
                 throw new Error(
-                    `Could not fetch pools for amm ${ammSlug}: ${error}`,
+                    `Could not fetch pools for amm ${amm}: ${error}`,
                 );
             }
         },
         refetchOnMount: false,
-        enabled: !!ammSlug,
+        enabled: !!amm && !!availableAmms.find(({ slug }) => slug === amm),
     });
 
     return {
