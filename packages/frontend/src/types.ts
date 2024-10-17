@@ -1,6 +1,6 @@
 import type {
     KpiSpecification,
-    Pool,
+    PoolWithTvl,
     SupportedAmm,
     WhitelistedErc20TokenAmount,
 } from "@metrom-xyz/sdk";
@@ -24,7 +24,7 @@ export interface Amm {
 export interface CampaignPayload {
     network?: number;
     amm?: AmmInfo;
-    pool?: Pool;
+    pool?: PoolWithTvl;
     startDate?: Dayjs;
     endDate?: Dayjs;
     rewards?: WhitelistedErc20TokenAmount[];

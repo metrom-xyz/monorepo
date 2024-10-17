@@ -1,32 +1,32 @@
 export const getReachedGoalPercentage = (
-    tvl?: number,
+    usdTvl?: number,
     lowerBound?: number,
     upperBound?: number,
 ) => {
     if (
-        tvl === undefined ||
+        usdTvl === undefined ||
         lowerBound === undefined ||
         upperBound === undefined
     )
         return 0;
 
-    if (tvl < lowerBound) return 0;
-    if (tvl >= upperBound) return 1;
+    if (usdTvl < lowerBound) return 0;
+    if (usdTvl >= upperBound) return 1;
 
     const totalRange = upperBound - lowerBound;
-    const reachedRange = tvl - lowerBound;
+    const reachedRange = usdTvl - lowerBound;
     const reachedPercentage = reachedRange / totalRange;
     return reachedPercentage;
 };
 
 export const getDistributableRewardsPercentage = (
-    tvl?: number,
+    usdTvl?: number,
     lowerBound?: number,
     upperBound?: number,
     minimumPayoutPercentage?: number,
 ) => {
     const reachedPercentage = getReachedGoalPercentage(
-        tvl,
+        usdTvl,
         lowerBound,
         upperBound,
     );

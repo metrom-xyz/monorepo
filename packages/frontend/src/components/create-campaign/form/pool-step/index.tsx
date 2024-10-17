@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { useChainId } from "wagmi";
 import { useTranslations } from "next-intl";
-import type { Pool } from "@metrom-xyz/sdk";
+import type { PoolWithTvl } from "@metrom-xyz/sdk";
 import { Step } from "@/src/components/step";
 import { StepPreview } from "@/src/components/step/preview";
 import { StepContent } from "@/src/components/step/content";
@@ -34,7 +34,7 @@ export function PoolStep({ disabled, pool, amm, onPoolChange }: PoolStepProps) {
     }, [pool, disabled]);
 
     const handlePoolOnChange = useCallback(
-        (newPool: Pool) => {
+        (newPool: PoolWithTvl) => {
             if (pool && pool.address === newPool.address) return;
             onPoolChange({ pool: newPool });
             setOpen(false);
@@ -77,7 +77,7 @@ export function PoolStep({ disabled, pool, amm, onPoolChange }: PoolStepProps) {
                     )
                 }
             >
-                {pool && <PoolStepPreview pool={pool} />}
+                {pool && <PoolStepPreview {...pool} />}
             </StepPreview>
             <StepContent>
                 <PoolPicker

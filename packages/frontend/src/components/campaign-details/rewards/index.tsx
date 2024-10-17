@@ -19,9 +19,11 @@ export function Rewards({ campaign, loading }: RewardsProps) {
     const dailyRewards = useMemo(() => {
         if (!campaign) return 0;
 
-        const daysDuration = dayjs
-            .unix(campaign.to)
-            .diff(dayjs.unix(campaign.from), "days", false);
+        const daysDuration = dayjs(campaign.to).diff(
+            dayjs(campaign.from),
+            "days",
+            false,
+        );
 
         return daysDuration > 0 && !!campaign.rewards.amountUsdValue
             ? campaign.rewards.amountUsdValue / daysDuration

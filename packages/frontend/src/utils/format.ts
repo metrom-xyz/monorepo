@@ -22,8 +22,8 @@ export function formatTokenAmount({
     return `${numeral(amount).format(`0,0.0[000]${humanize ? "a" : ""}`)}`;
 }
 
-export function formatDateTime(dateTime?: Dayjs | number): string {
+export function formatDateTime(dateTime?: Dayjs | Date): string {
     if (!dateTime) return "-";
-    if (typeof dateTime === "number") dateTime = dayjs.unix(dateTime);
+    if (dateTime instanceof Date) dateTime = dayjs(dateTime);
     return dateTime.format("DD MMM YYYY | HH:mm");
 }

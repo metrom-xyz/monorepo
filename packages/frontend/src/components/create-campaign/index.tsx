@@ -55,12 +55,9 @@ export function CreateCampaign() {
         setPayload({});
     }, [chainId]);
 
-    const handlePayloadOnChange = useCallback(
-        (part: CampaignPayloadPart) => {
-            setPayload({ ...payload, ...part });
-        },
-        [payload],
-    );
+    function handlePayloadOnChange(part: CampaignPayloadPart) {
+        setPayload((prev) => ({ ...prev, ...part }));
+    }
 
     const handlePayloadOnError = useCallback(
         (errors: CampaignPayloadErrors) => {
