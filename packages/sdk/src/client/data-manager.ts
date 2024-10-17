@@ -1,6 +1,6 @@
 import type { Snapshot } from "src";
 import type { Hex } from "viem";
-import type { FetchSnapshotResponse } from "./types";
+import type { BackendLeaf } from "./types";
 
 export interface FetchSnapshotParams {
     hash: Hex;
@@ -9,9 +9,7 @@ export interface FetchSnapshotParams {
 export class DataManagerClient {
     constructor(public readonly baseUrl: string) {}
 
-    async fetchSnapshot(
-        params: FetchSnapshotParams,
-    ): Promise<Snapshot> {
+    async fetchSnapshot(params: FetchSnapshotParams): Promise<Snapshot> {
         const url = new URL("data", this.baseUrl);
 
         const sanitizedHash = params.hash.startsWith("0x")
@@ -25,7 +23,10 @@ export class DataManagerClient {
                 `response not ok while fetching distribution data for hash ${params.hash}: ${await response.text()}`,
             );
 
-        const json = (await response.json()) as FetchSnapshotResponse;
+        const json = (await response.json()) as {
+            timestamp: number;
+            leaves: BackendLeaf[];
+        };
 
         if (json instanceof Array)
             throw new Error(

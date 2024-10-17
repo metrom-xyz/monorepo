@@ -13,8 +13,8 @@ import styles from "./styles.module.css";
 
 interface RewardsProps {
     status: Status;
-    from: number;
-    to: number;
+    from: Date;
+    to: Date;
     rewards: RewardsType;
     chainId: SupportedChain;
 }
@@ -27,7 +27,7 @@ export function Rewards({ status, from, to, rewards, chainId }: RewardsProps) {
         useState<HTMLDivElement | null>(null);
     const breakdownPopoverRef = useRef<HTMLDivElement>(null);
 
-    const daysDuration = dayjs.unix(to).diff(dayjs.unix(from), "days", false);
+    const daysDuration = dayjs(to).diff(dayjs(from), "days", false);
     const perDayUsdValue =
         rewards.amountUsdValue && daysDuration > 0
             ? rewards.amountUsdValue / daysDuration
