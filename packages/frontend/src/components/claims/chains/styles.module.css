@@ -11,7 +11,8 @@
 }
 
 .row {
-    @apply flex
+    @apply w-full 
+        flex
         items-center
         p-3
         gap-3
