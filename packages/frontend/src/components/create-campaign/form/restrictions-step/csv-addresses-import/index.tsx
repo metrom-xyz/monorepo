@@ -31,7 +31,9 @@ export function CsvAddressesImport({
         Papa.parse(csv, {
             skipEmptyLines: true,
             complete: (result) => {
-                const addresses = result.data.flat() as string[];
+                const addresses = result.data
+                    .flat()
+                    .filter((data) => !!data) as string[];
                 setAddresses(Array.from(new Set(addresses)));
             },
             error: (error) => {
