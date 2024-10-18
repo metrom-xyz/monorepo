@@ -19,10 +19,10 @@ export type BackendPoolWithTvl = Omit<PoolWithTvl, "chainId">;
 export interface BackendCampaign {
     chainId: number;
     id: Hex;
-    from: string;
-    to: string;
-    createdAt: string;
-    snapshottedAt: string | null;
+    from: number;
+    to: number;
+    createdAt: number;
+    snapshottedAt: number | null;
     pool: BackendPoolWithTvl;
     specification: Specification | null;
     rewards: BackendReward[];
@@ -44,7 +44,7 @@ export interface BackendWhitelistedErc20Token extends UsdPricedErc20Token {
 export interface BackendActivity {
     transaction: {
         hash: Hash;
-        timestamp: string;
+        timestamp: number;
     };
     payload:
         | {

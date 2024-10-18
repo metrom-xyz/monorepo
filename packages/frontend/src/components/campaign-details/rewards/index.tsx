@@ -25,7 +25,7 @@ export function Rewards({ campaign, loading }: RewardsProps) {
             false,
         );
 
-        return daysDuration > 0 && !!campaign.rewards.amountUsdValue
+        return daysDuration > 0
             ? campaign.rewards.amountUsdValue / daysDuration
             : 0;
     }, [campaign]);

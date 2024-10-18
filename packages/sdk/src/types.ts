@@ -49,8 +49,8 @@ export interface PoolWithTvl extends Pool {
 }
 
 export interface Rewards extends Array<Reward> {
-    amountUsdValue: number | null;
-    remainingUsdValue: number | null;
+    amountUsdValue: number;
+    remainingUsdValue: number;
 }
 
 export enum Status {
@@ -83,11 +83,11 @@ export interface Specification {
 export interface Campaign {
     chainId: number;
     id: Address;
-    from: Date;
-    to: Date;
+    from: number;
+    to: number;
     status: Status;
-    createdAt: Date;
-    snapshottedAt: Date | null;
+    createdAt: number;
+    snapshottedAt: number | null;
     pool: PoolWithTvl;
     rewards: Rewards;
     apr: number | null;
@@ -115,7 +115,7 @@ export interface WhitelistedErc20TokenAmount {
 export interface Activity {
     transaction: {
         hash: Hash;
-        timestamp: Date;
+        timestamp: number;
     };
     payload:
         | {

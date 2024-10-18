@@ -171,15 +171,10 @@ export class MetromApiClient {
         const activities = (await response.json()) as BackendActivity[];
 
         return activities.map((activity) => {
-            const transaction = {
-                ...activity.transaction,
-                timestamp: new Date(activity.transaction.timestamp),
-            };
-
             if (activity.payload.type === "claim-reward") {
                 const rawAmount = BigInt(activity.payload.amount);
                 return {
-                    transaction,
+                    ...activity,
                     payload: {
                         ...activity.payload,
                         amount: {
@@ -194,18 +189,18 @@ export class MetromApiClient {
                     },
                 };
             } else {
-                return { ...activity, transaction } as Activity;
+                return activity as Activity;
             }
         });
     }
 }
 
 function processCampaign(backendCampaign: BackendCampaign): Campaign {
-    const from = new Date(backendCampaign.from);
-    const to = new Date(backendCampaign.to);
+    const from = Number(backendCampaign.from);
+    const to = Number(backendCampaign.to);
 
     let status;
-    const now = new Date();
+    const now = Number(Math.floor(Date.now() / 1000));
     if (now < from) {
         status = Status.Upcoming;
     } else if (now > to) {
@@ -257,9 +252,9 @@ function processCampaign(backendCampaign: BackendCampaign): Campaign {
         ...backendCampaign,
         from,
         to,
-        createdAt: new Date(backendCampaign.createdAt),
+        createdAt: Number(backendCampaign.createdAt),
         snapshottedAt: backendCampaign.snapshottedAt
-            ? new Date(backendCampaign.snapshottedAt)
+            ? Number(backendCampaign.snapshottedAt)
             : null,
         status,
         pool: {

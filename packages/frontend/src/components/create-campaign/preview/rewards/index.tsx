@@ -70,14 +70,14 @@ export function Rewards({ rewards, campaignDurationSeconds }: RewardsProps) {
                             chain={chain}
                             address={reward.token.address}
                         />
-                        <Typography uppercase weight="medium" variant="xl">
+                        <Typography weight="medium" variant="xl">
                             {reward.token.symbol}
                         </Typography>
                     </div>
-                    <Typography uppercase weight="medium" light variant="lg">
+                    <Typography weight="medium" light variant="lg">
                         {formatUsdAmount(reward.amount.usdValue || 0)}
                     </Typography>
-                    <Typography uppercase weight="medium" variant="xl">
+                    <Typography weight="medium" variant="xl">
                         {formatTokenAmount({
                             amount: reward.amount.formatted,
                             humanize: false,

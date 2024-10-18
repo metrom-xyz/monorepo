@@ -17,15 +17,13 @@ export const sortCampaigns = (campaigns: NamedCampaign[]) => {
     );
 
     clusteredCampaigns[Status.Live].sort((a, b) => {
-        return !a.apr || !b.apr
-            ? b.from.getTime() - a.from.getTime()
-            : b.apr - a.apr;
+        return !a.apr || !b.apr ? b.from - a.from : b.apr - a.apr;
     });
     clusteredCampaigns[Status.Upcoming].sort((a, b) => {
-        return a.from.getTime() - b.from.getTime();
+        return a.from - b.from;
     });
     clusteredCampaigns[Status.Ended].sort((a, b) => {
-        return b.to.getTime() - a.to.getTime();
+        return b.to - a.to;
     });
 
     const sorted = clusteredCampaigns[Status.Live];
