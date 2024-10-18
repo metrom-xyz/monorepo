@@ -34,8 +34,8 @@ interface SimulationChartProps {
     minimumPayoutPercentage?: number;
     lowerUsdTarget?: number;
     upperUsdTarget?: number;
-    totalRewardsUsd: number;
-    poolUsdTvl: number;
+    totalRewardsUsd?: number | null;
+    poolUsdTvl?: number | null;
     error?: boolean;
     loading?: boolean;
     className?: string;
@@ -59,7 +59,12 @@ export function KpiSimulationChart({
 
     // rewards USD payout based on the current pool tvl
     const currentPayout = useMemo(() => {
-        if (upperUsdTarget === undefined || lowerUsdTarget === undefined)
+        if (
+            upperUsdTarget === undefined ||
+            lowerUsdTarget === undefined ||
+            !poolUsdTvl ||
+            !totalRewardsUsd
+        )
             return 0;
 
         if (lowerUsdTarget > poolUsdTvl) return 0;
@@ -82,7 +87,12 @@ export function KpiSimulationChart({
     ]);
 
     const chartData: ChartData[] = useMemo(() => {
-        if (upperUsdTarget === undefined || lowerUsdTarget === undefined)
+        if (
+            upperUsdTarget === undefined ||
+            lowerUsdTarget === undefined ||
+            !totalRewardsUsd ||
+            !poolUsdTvl
+        )
             return [];
 
         const points = Array.from(
@@ -122,6 +132,7 @@ export function KpiSimulationChart({
     }, [
         lowerUsdTarget,
         minimumPayoutPercentage,
+        poolUsdTvl,
         totalRewardsUsd,
         upperUsdTarget,
     ]);
@@ -138,7 +149,12 @@ export function KpiSimulationChart({
         return [poolUsdTvl, lowerUsdTarget, upperUsdTarget];
     }, [lowerUsdTarget, poolUsdTvl, upperUsdTarget]);
 
-    if (upperUsdTarget === undefined || lowerUsdTarget === undefined)
+    if (
+        upperUsdTarget === undefined ||
+        lowerUsdTarget === undefined ||
+        !totalRewardsUsd ||
+        !poolUsdTvl
+    )
         return (
             <div className={classNames("root", styles.root, className)}>
                 <div
