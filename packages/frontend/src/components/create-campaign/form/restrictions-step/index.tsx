@@ -76,7 +76,7 @@ export function RestrictionsStep({
     }, [addresses, prevRestrictions, type]);
 
     // this hooks is used to disable and close the step when
-    // the kpi specification gets disabled, after the campaign creation
+    // the restrictions gets disabled, after the campaign creation
     useEffect(() => {
         if (enabled && !!prevRestrictions && !restrictions) setEnabled(false);
     }, [enabled, restrictions, prevRestrictions]);
