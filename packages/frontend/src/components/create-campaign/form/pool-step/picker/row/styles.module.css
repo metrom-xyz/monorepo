@@ -17,7 +17,7 @@
 }
 
 .poolInfo {
-    @apply w-full flex items-end gap-3 max-w-48 sm:max-w-60;
+    @apply w-full sm:w-fit flex items-end gap-3 max-w-48 sm:max-w-60;
 }
 
 .fee {

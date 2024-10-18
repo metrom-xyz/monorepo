@@ -23,12 +23,12 @@
 }
 
 .body {
-    @apply w-full sm:h-[700px] mt-4 flex flex-col gap-2 mb-7;
+    @apply w-full sm:h-[780px] mt-4 flex flex-col gap-2 mb-7;
 }
 
 .empty {
     @apply w-full
-        h-[700px]
+        h-[780px]
         flex
         flex-col
         items-center

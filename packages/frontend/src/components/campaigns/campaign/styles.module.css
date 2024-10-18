@@ -7,7 +7,7 @@
         duration-200
         ease-in-out
         rounded-xl
-        min-h-16
+        min-h-[72px]
         px-3
         py-4;
 }

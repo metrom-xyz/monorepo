@@ -101,7 +101,9 @@ export function CsvAddressesImport({
             onClick={handleInputOnClick}
             className={classNames(styles.root, className)}
         >
-            <Typography weight="medium">{t("label")}</Typography>
+            <Typography weight="medium" variant="sm">
+                {t("label")}
+            </Typography>
             <input
                 ref={inputRef}
                 accept=".csv"
