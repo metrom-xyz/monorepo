@@ -57,11 +57,6 @@ export function CampaignPreview({
     const publicClient = usePublicClient();
     const { writeContractAsync } = useWriteContract();
 
-    const secondsDuration = useMemo(() => {
-        if (!payload.endDate) return 0;
-        return payload.endDate.diff(payload.startDate, "seconds", false);
-    }, [payload.endDate, payload.startDate]);
-
     const {
         data: simulatedCreate,
         isLoading: simulatingCreate,
@@ -228,7 +223,8 @@ export function CampaignPreview({
                     </div>
                     <Rewards
                         rewards={payload.rewards}
-                        campaignDurationSeconds={secondsDuration}
+                        startDate={payload.startDate}
+                        endDate={payload.endDate}
                     />
                     <div className={styles.deployButtonContainer}>
                         {rewardsApproved ? (
