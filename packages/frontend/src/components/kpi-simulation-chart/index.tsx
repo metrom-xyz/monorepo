@@ -86,6 +86,20 @@ export function KpiSimulationChart({
         upperUsdTarget,
     ]);
 
+    const tvlTicks = useMemo(() => {
+        if (
+            poolUsdTvl === null ||
+            poolUsdTvl === undefined ||
+            lowerUsdTarget === undefined ||
+            upperUsdTarget === undefined
+        )
+            return [];
+
+        return [poolUsdTvl, lowerUsdTarget, upperUsdTarget];
+    }, [lowerUsdTarget, poolUsdTvl, upperUsdTarget]);
+
+    const xDataMin = useMemo(() => Math.min(...tvlTicks) * 0.8, [tvlTicks]);
+
     const chartData: ChartData[] = useMemo(() => {
         if (
             upperUsdTarget === undefined ||
@@ -104,7 +118,7 @@ export function KpiSimulationChart({
 
         // if there is a minimum payout add 0 to the points to make the
         // green area for the minimum rewards to fill the whole chart
-        if (minimumPayoutPercentage) points.unshift(0);
+        if (minimumPayoutPercentage) points.unshift(xDataMin);
 
         return points.map((usdTvl) => {
             const goalReachedPercentage = getReachedGoalPercentage(
@@ -130,24 +144,13 @@ export function KpiSimulationChart({
             };
         });
     }, [
+        xDataMin,
         lowerUsdTarget,
         minimumPayoutPercentage,
         poolUsdTvl,
         totalRewardsUsd,
         upperUsdTarget,
     ]);
-
-    const tvlTicks = useMemo(() => {
-        if (
-            poolUsdTvl === null ||
-            poolUsdTvl === undefined ||
-            lowerUsdTarget === undefined ||
-            upperUsdTarget === undefined
-        )
-            return [];
-
-        return [poolUsdTvl, lowerUsdTarget, upperUsdTarget];
-    }, [lowerUsdTarget, poolUsdTvl, upperUsdTarget]);
 
     if (
         upperUsdTarget === undefined ||
@@ -293,7 +296,7 @@ export function KpiSimulationChart({
                                 upperUsdTarget={upperUsdTarget}
                             />
                         }
-                        domain={[(dataMin: number) => dataMin * 0.8, "dataMax"]}
+                        domain={[xDataMin, "dataMax"]}
                         ticks={tvlTicks.sort((a, b) => a - b)}
                     >
                         <Label
