@@ -29,9 +29,7 @@ export function Rewards({ status, from, to, rewards, chainId }: RewardsProps) {
 
     const daysDuration = dayjs.unix(to).diff(dayjs.unix(from), "days", false);
     const perDayUsdValue =
-        rewards.amountUsdValue && daysDuration > 0
-            ? rewards.amountUsdValue / daysDuration
-            : 0;
+        daysDuration > 0 ? rewards.amountUsdValue / daysDuration : 0;
 
     function handleRewardsBreakdownPopoverOpen() {
         setPopoverOpen(true);
@@ -106,9 +104,7 @@ export function Rewards({ status, from, to, rewards, chainId }: RewardsProps) {
                         weight="medium"
                         className={styles.tooltipText}
                     >
-                        {rewards.amountUsdValue
-                            ? formatUsdAmount(rewards.amountUsdValue)
-                            : "-"}
+                        {formatUsdAmount(rewards.amountUsdValue)}
                     </Typography>
                 </div>
             </Popover>

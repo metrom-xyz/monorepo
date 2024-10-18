@@ -1,10 +1,5 @@
 import { type Address, type Hash } from "viem";
 import type { SupportedAmm } from "./commons";
-import type { BackendSpecification } from "./client/types";
-
-export type { BackendSpecification as Specification } from "./client/types";
-export type { BackendKpiSpecification as KpiSpecification } from "./client/types";
-export { BackendKpiMetric as KpiMetric } from "./client/types";
 
 export interface OnChainAmount {
     raw: bigint;
@@ -23,7 +18,7 @@ export interface Erc20Token {
 }
 
 export interface UsdPricedErc20Token extends Erc20Token {
-    usdPrice: number | null;
+    usdPrice: number;
 }
 
 export interface Erc20TokenAmount {
@@ -44,21 +39,45 @@ export interface Pool {
     chainId: number;
     address: Address;
     amm: SupportedAmm;
-    fee: number;
     token0: Erc20Token;
     token1: Erc20Token;
-    tvl: number | null;
+    fee: number | null;
+}
+
+export interface PoolWithTvl extends Pool {
+    usdTvl: number;
 }
 
 export interface Rewards extends Array<Reward> {
-    amountUsdValue: number | null;
-    remainingUsdValue: number | null;
+    amountUsdValue: number;
+    remainingUsdValue: number;
 }
 
 export enum Status {
     Live = "live",
     Upcoming = "upcoming",
     Ended = "ended",
+}
+
+export enum KpiMetric {
+    RangePoolTvl = "range-pool-tvl",
+}
+
+export interface RangePoolTvlKpiGoal {
+    metric: KpiMetric.RangePoolTvl;
+    lowerUsdTarget: number;
+    upperUsdTarget: number;
+}
+
+export interface KpiSpecification {
+    minimumPayoutPercentage?: number;
+    goal: RangePoolTvlKpiGoal;
+}
+
+export interface Specification {
+    whitelist?: Address[];
+    blacklist?: Address[];
+    kpi?: KpiSpecification;
 }
 
 export interface Campaign {
@@ -69,10 +88,10 @@ export interface Campaign {
     status: Status;
     createdAt: number;
     snapshottedAt: number | null;
-    pool: Pool;
+    pool: PoolWithTvl;
     rewards: Rewards;
     apr: number | null;
-    specification: BackendSpecification | null;
+    specification: Specification | null;
 }
 
 export interface Claim extends Erc20TokenAmount {

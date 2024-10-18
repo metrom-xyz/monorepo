@@ -61,9 +61,11 @@ export function Header({ campaign }: HeaderProps) {
                     <Typography variant="xl4" weight="medium">
                         {campaign.name}
                     </Typography>
-                    <Typography variant="lg" weight="medium" light>
-                        {formatPercentage(campaign.pool.fee)}
-                    </Typography>
+                    {campaign.pool.fee && (
+                        <Typography variant="lg" weight="medium" light>
+                            {formatPercentage(campaign.pool.fee)}
+                        </Typography>
+                    )}
                 </div>
                 <Typography variant="sm" weight="medium" light>
                     {t("rewardsMayVary")}

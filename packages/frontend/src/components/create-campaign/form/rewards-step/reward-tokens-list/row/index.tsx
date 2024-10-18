@@ -56,7 +56,7 @@ export function Row({
                     <Skeleton width={80} />
                 ) : (
                     <Typography weight="medium" variant="lg">
-                        {tokenWithBalance?.token.name}
+                        {tokenWithBalance?.token.symbol}
                     </Typography>
                 )}
             </div>

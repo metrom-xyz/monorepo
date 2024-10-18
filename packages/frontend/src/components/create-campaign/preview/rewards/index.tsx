@@ -3,7 +3,7 @@ import { TextField, Typography } from "@metrom-xyz/ui";
 import type { SupportedChain } from "@metrom-xyz/contracts";
 import { useTranslations } from "next-intl";
 import { useChainId, useReadContract } from "wagmi";
-import dayjs from "dayjs";
+import { Dayjs } from "dayjs";
 import { useMemo } from "react";
 import {
     formatPercentage,
@@ -19,10 +19,11 @@ import styles from "./styles.module.css";
 
 interface RewardsProps {
     rewards: CampaignPayload["rewards"];
-    campaignDurationSeconds: number;
+    startDate?: Dayjs;
+    endDate?: Dayjs;
 }
 
-export function Rewards({ rewards, campaignDurationSeconds }: RewardsProps) {
+export function Rewards({ rewards, startDate, endDate }: RewardsProps) {
     const t = useTranslations("campaignPreview.rewards");
     const chain: SupportedChain = useChainId();
     const chainData = useChainData(chain);
@@ -38,16 +39,14 @@ export function Rewards({ rewards, campaignDurationSeconds }: RewardsProps) {
     }, [rewards]);
 
     const dailyRewards = useMemo(() => {
-        if (!totalRewardsUsdAmount) return 0;
+        if (!endDate || !startDate || !totalRewardsUsdAmount) return 0;
 
-        const daysDuration = dayjs
-            .duration(campaignDurationSeconds, "seconds")
-            .get("days");
+        const daysDuration = endDate.diff(startDate, "days", false);
 
         return daysDuration > 0 ? totalRewardsUsdAmount / daysDuration : 0;
-    }, [campaignDurationSeconds, totalRewardsUsdAmount]);
+    }, [startDate, endDate, totalRewardsUsdAmount]);
 
-    const { data: fee, isLoading: loadingGlobalFee } = useReadContract({
+    const { data: fee } = useReadContract({
         address: chainData?.metromContract.address,
         abi: metromAbi,
         functionName: "fee",
@@ -70,14 +69,14 @@ export function Rewards({ rewards, campaignDurationSeconds }: RewardsProps) {
                             chain={chain}
                             address={reward.token.address}
                         />
-                        <Typography uppercase weight="medium" variant="xl">
+                        <Typography weight="medium" variant="xl">
                             {reward.token.symbol}
                         </Typography>
                     </div>
-                    <Typography uppercase weight="medium" light variant="lg">
+                    <Typography weight="medium" light variant="lg">
                         {formatUsdAmount(reward.amount.usdValue || 0)}
                     </Typography>
-                    <Typography uppercase weight="medium" variant="xl">
+                    <Typography weight="medium" variant="xl">
                         {formatTokenAmount({
                             amount: reward.amount.formatted,
                             humanize: false,

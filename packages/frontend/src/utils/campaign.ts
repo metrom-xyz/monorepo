@@ -19,7 +19,7 @@ export const getCampaignName = (campaign: Campaign) => {
 export const getCampaignPreviewApr = (campaign: CampaignPayload) => {
     if (
         !campaign.rewards ||
-        !campaign.pool?.tvl ||
+        !campaign.pool?.usdTvl ||
         !campaign.startDate ||
         !campaign.endDate
     )
@@ -34,7 +34,7 @@ export const getCampaignPreviewApr = (campaign: CampaignPayload) => {
     const duration = campaign.endDate.unix() - campaign.startDate.unix();
     if (duration <= 0) return null;
 
-    const rewardsTvlRatio = rewardsUsdValue / campaign.pool.tvl;
+    const rewardsTvlRatio = rewardsUsdValue / campaign.pool.usdTvl;
     const yearMultiplier = SECONDS_IN_YEAR / duration;
     const apr = rewardsTvlRatio * yearMultiplier * 100;
 

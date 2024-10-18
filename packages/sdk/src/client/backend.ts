@@ -3,10 +3,8 @@ import {
     type BackendActivity,
     type BackendCampaign,
     type BackendClaim,
-    type BackendErc20Token,
-    type FetchCampaignsResponse,
-    type FetchPoolsResponse,
-    type FetchWhitelistedRewardTokensResponse,
+    type BackendPool,
+    type BackendWhitelistedErc20Token,
 } from "./types";
 import type { SupportedChain } from "@metrom-xyz/contracts";
 import { SupportedAmm } from "../commons";
@@ -15,7 +13,6 @@ import {
     type Activity,
     type Campaign,
     type Claim,
-    type Erc20Token,
     type Pool,
     type Rewards,
     type UsdPricedOnChainAmount,
@@ -55,25 +52,24 @@ export class MetromApiClient {
     constructor(public readonly baseUrl: string) {}
 
     async fetchCampaigns(): Promise<Campaign[]> {
-        const response = await fetch(new URL("campaigns", this.baseUrl));
+        const response = await fetch(new URL("v1/campaigns", this.baseUrl));
         if (!response.ok)
             throw new Error(
                 `response not ok while fetching campaigns: ${await response.text()}`,
             );
 
-        const backendCampaigns =
-            (await response.json()) as FetchCampaignsResponse;
+        const backendCampaigns = (await response.json()) as BackendCampaign[];
 
-        return backendCampaigns.campaigns.map(processCampaign);
+        return backendCampaigns.map(processCampaign);
     }
 
     async fetchCampaign(params: FetchCampaignParams): Promise<Campaign> {
-        const url = new URL("campaign", this.baseUrl);
-
-        url.searchParams.set("chainId", params.chainId.toString());
-        url.searchParams.set("id", params.id.toString());
-
-        const response = await fetch(url);
+        const response = await fetch(
+            new URL(
+                `v1/campaigns/${params.chainId}/${params.id}`,
+                this.baseUrl,
+            ),
+        );
         if (!response.ok)
             throw new Error(
                 `response not ok while fetching campaign with id ${params.id} on chain id ${params.chainId}: ${await response.text()}`,
@@ -83,10 +79,10 @@ export class MetromApiClient {
     }
 
     async fetchPools(params: FetchPoolsParams): Promise<Pool[]> {
-        const url = new URL("pools", this.baseUrl);
-
-        url.searchParams.set("chainId", params.chainId.toString());
-        url.searchParams.set("amm", params?.amm);
+        const url = new URL(
+            `v1/pools/${params.chainId}/${params.amm}`,
+            this.baseUrl,
+        );
 
         const response = await fetch(url);
         if (!response.ok)
@@ -94,23 +90,16 @@ export class MetromApiClient {
                 `response not ok while fetching pools: ${await response.text()}`,
             );
 
-        const backendPools = (await response.json()) as FetchPoolsResponse;
+        const backendPools = (await response.json()) as BackendPool[];
 
-        return backendPools.pools.map((pool) => ({
-            chainId: Number(params.chainId),
-            address: pool.address,
-            amm: params.amm,
-            fee: Number(pool.fee),
-            token0: processErc20Token(pool.token0),
-            token1: processErc20Token(pool.token1),
-            tvl: toNumberOrNull(pool.tvl),
+        return backendPools.map((pool) => ({
+            ...pool,
+            chainId: params.chainId,
         }));
     }
 
     async fetchClaims(params: FetchClaimsParams): Promise<Claim[]> {
-        const url = new URL("claims", this.baseUrl);
-
-        url.searchParams.set("user", params.address);
+        const url = new URL(`v1/claims/${params.address}`, this.baseUrl);
 
         const response = await fetch(url);
         if (!response.ok)
@@ -121,18 +110,16 @@ export class MetromApiClient {
         const claims = (await response.json()) as BackendClaim[];
 
         return claims.map((claim) => {
-            const token = processErc20Token(claim.token);
             const rawAmount = BigInt(claim.amount);
 
             return {
-                chainId: Number(claim.chainId),
-                campaignId: claim.campaignId,
-                token,
+                ...claim,
                 amount: {
                     raw: rawAmount,
-                    formatted: Number(formatUnits(rawAmount, token.decimals)),
+                    formatted: Number(
+                        formatUnits(rawAmount, claim.token.decimals),
+                    ),
                 },
-                proof: claim.proof,
             };
         });
     }
@@ -140,9 +127,7 @@ export class MetromApiClient {
     async fetchWhitelistedRewardTokens(
         params: FetchWhitelistedRewardTokensParams,
     ): Promise<WhitelistedErc20Token[]> {
-        const url = new URL("whitelisted-reward-tokens", this.baseUrl);
-
-        url.searchParams.set("chainId", params.chainId.toString());
+        const url = new URL(`v1/reward-tokens/${params.chainId}`, this.baseUrl);
 
         const response = await fetch(url);
         if (!response.ok)
@@ -151,30 +136,29 @@ export class MetromApiClient {
             );
 
         const whitelistedTokens =
-            (await response.json()) as FetchWhitelistedRewardTokensResponse;
+            (await response.json()) as BackendWhitelistedErc20Token[];
 
-        return whitelistedTokens.tokens.map((token) => {
-            const processedToken = processErc20Token(token);
+        return whitelistedTokens.map((token) => {
             const rawMinimumRate = BigInt(token.minimumRate);
 
             return {
-                ...processedToken,
+                ...token,
                 minimumRate: {
                     raw: rawMinimumRate,
                     formatted: Number(
-                        formatUnits(rawMinimumRate, processedToken.decimals),
+                        formatUnits(rawMinimumRate, token.decimals),
                     ),
                 },
-                usdPrice: Number(token.price),
             };
         });
     }
 
     async fetchActivities(params: FetchActivitiesParams): Promise<Activity[]> {
-        const url = new URL("activities", this.baseUrl);
+        const url = new URL(
+            `v1/activities/${params.chainId}/${params.address}`,
+            this.baseUrl,
+        );
 
-        url.searchParams.set("chainId", params.chainId.toString());
-        url.searchParams.set("address", params.address.toString());
         url.searchParams.set("from", params.from.toString());
         url.searchParams.set("to", params.to.toString());
 
@@ -188,41 +172,38 @@ export class MetromApiClient {
 
         return activities.map((activity) => {
             if (activity.payload.type === "claim-reward") {
-                const processedToken = processErc20Token(
-                    activity.payload.token,
-                );
                 const rawAmount = BigInt(activity.payload.amount);
-
                 return {
                     ...activity,
                     payload: {
                         ...activity.payload,
-                        token: processedToken,
                         amount: {
                             raw: rawAmount,
                             formatted: Number(
-                                formatUnits(rawAmount, processedToken.decimals),
+                                formatUnits(
+                                    rawAmount,
+                                    activity.payload.token.decimals,
+                                ),
                             ),
                         },
                     },
                 };
+            } else {
+                return activity as Activity;
             }
-
-            return activity as Activity;
         });
     }
 }
 
-function toNumberOrNull(maybeNumber: string | bigint | null): number | null {
-    return maybeNumber ? Number(maybeNumber) : null;
-}
-
 function processCampaign(backendCampaign: BackendCampaign): Campaign {
+    const from = Number(backendCampaign.from);
+    const to = Number(backendCampaign.to);
+
     let status;
-    const now = Math.floor(Date.now() / 1000);
-    if (now < backendCampaign.from) {
+    const now = Number(Math.floor(Date.now() / 1000));
+    if (now < from) {
         status = Status.Upcoming;
-    } else if (now > backendCampaign.to) {
+    } else if (now > to) {
         status = Status.Ended;
     } else {
         status = Status.Live;
@@ -233,44 +214,35 @@ function processCampaign(backendCampaign: BackendCampaign): Campaign {
         remainingUsdValue: 0,
     });
     for (const backendReward of backendCampaign.rewards) {
-        const decimals = Number(backendReward.decimals);
-
         const rawAmount = BigInt(backendReward.amount);
         const amount: UsdPricedOnChainAmount = {
             raw: rawAmount,
-            formatted: Number(formatUnits(rawAmount, decimals)),
+            formatted: Number(formatUnits(rawAmount, backendReward.decimals)),
             usdValue: null,
         };
 
         const rawRemaining = BigInt(backendReward.remaining);
         const remaining: UsdPricedOnChainAmount = {
             raw: rawRemaining,
-            formatted: Number(formatUnits(rawRemaining, decimals)),
+            formatted: Number(
+                formatUnits(rawRemaining, backendReward.decimals),
+            ),
             usdValue: null,
         };
 
+        amount.usdValue = amount.formatted * backendReward.usdPrice;
+        remaining.usdValue = remaining.formatted * backendReward.usdPrice;
+
         if (
             rewards.amountUsdValue !== null &&
-            rewards.remainingUsdValue !== null &&
-            backendReward.usdPrice
+            rewards.remainingUsdValue !== null
         ) {
-            const usdPrice = Number(backendReward.usdPrice);
-
-            amount.usdValue = amount.formatted * usdPrice;
-            remaining.usdValue = remaining.formatted * usdPrice;
-
             rewards.amountUsdValue += amount.usdValue;
             rewards.remainingUsdValue += remaining.usdValue;
-        } else {
-            rewards.amountUsdValue = null;
-            rewards.remainingUsdValue = null;
         }
 
         rewards.push({
-            token: {
-                ...processErc20Token(backendReward),
-                usdPrice: toNumberOrNull(backendReward.usdPrice),
-            },
+            token: backendReward,
             amount,
             remaining,
         });
@@ -278,27 +250,19 @@ function processCampaign(backendCampaign: BackendCampaign): Campaign {
 
     const campaign: Campaign = {
         ...backendCampaign,
-        chainId: Number(backendCampaign.chainId),
+        from,
+        to,
+        createdAt: Number(backendCampaign.createdAt),
+        snapshottedAt: backendCampaign.snapshottedAt
+            ? Number(backendCampaign.snapshottedAt)
+            : null,
         status,
         pool: {
+            chainId: backendCampaign.chainId,
             ...backendCampaign.pool,
-            chainId: Number(backendCampaign.chainId),
-            amm: backendCampaign.pool.amm as SupportedAmm,
-            fee: Number(backendCampaign.pool.fee),
-            tvl: toNumberOrNull(backendCampaign.pool.tvl),
-            token0: processErc20Token(backendCampaign.pool.token0),
-            token1: processErc20Token(backendCampaign.pool.token1),
         },
-        apr: toNumberOrNull(backendCampaign.apr),
         rewards,
     };
 
     return campaign;
-}
-
-function processErc20Token(backendErc20Token: BackendErc20Token): Erc20Token {
-    return {
-        ...backendErc20Token,
-        decimals: Number(backendErc20Token.decimals),
-    };
 }

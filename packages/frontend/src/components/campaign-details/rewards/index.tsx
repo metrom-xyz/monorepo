@@ -23,7 +23,7 @@ export function Rewards({ campaign, loading }: RewardsProps) {
             .unix(campaign.to)
             .diff(dayjs.unix(campaign.from), "days", false);
 
-        return daysDuration > 0 && !!campaign.rewards.amountUsdValue
+        return daysDuration > 0
             ? campaign.rewards.amountUsdValue / daysDuration
             : 0;
     }, [campaign]);

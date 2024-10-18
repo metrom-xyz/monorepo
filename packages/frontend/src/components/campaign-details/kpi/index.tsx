@@ -38,10 +38,10 @@ export function Kpi({ campaign, loading }: KpiProps) {
     }, [campaign]);
 
     const reachedGoalPercentage = useMemo(() => {
-        if (!campaign?.pool.tvl) return 0;
+        if (!campaign?.pool.usdTvl) return 0;
 
         return getReachedGoalPercentage(
-            campaign.pool.tvl,
+            campaign.pool.usdTvl,
             lowerUsdTarget,
             upperUsdTarget,
         );
@@ -96,7 +96,7 @@ export function Kpi({ campaign, loading }: KpiProps) {
                 <div className={styles.chartWrapper}>
                     <KpiSimulationChart
                         loading={specificationLoading}
-                        poolUsdTvl={campaign?.pool.tvl}
+                        poolUsdTvl={campaign?.pool.usdTvl}
                         totalRewardsUsd={campaign?.rewards.amountUsdValue}
                         lowerUsdTarget={lowerUsdTarget}
                         upperUsdTarget={upperUsdTarget}

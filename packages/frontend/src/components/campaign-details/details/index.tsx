@@ -52,7 +52,7 @@ export function Details({ campaign, loading }: DetailsProps) {
                     variant="xl"
                     label={t("tvl")}
                     loading={detailsLoading}
-                    value={formatUsdAmount(campaign?.pool.tvl)}
+                    value={formatUsdAmount(campaign?.pool.usdTvl)}
                 />
                 <TextField
                     boxed

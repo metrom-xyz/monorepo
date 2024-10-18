@@ -74,7 +74,6 @@ export function useClaims(): {
 
     useEffect(() => {
         queryClient.invalidateQueries({ queryKey });
-        queryClient.invalidateQueries({ queryKey: ["claims"] });
     }, [blockNumber, queryClient, queryKey]);
 
     useEffect(() => {

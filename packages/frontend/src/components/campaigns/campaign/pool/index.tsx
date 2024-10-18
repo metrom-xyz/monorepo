@@ -29,14 +29,16 @@ export function Pool({ campaign }: PoolProps) {
                 <Typography variant="lg" weight="medium" truncate>
                     {campaign.name}
                 </Typography>
-                <Typography
-                    variant="sm"
-                    weight="medium"
-                    className={styles.campaignFee}
-                    light
-                >
-                    {formatPercentage(campaign.pool.fee)}
-                </Typography>
+                {campaign.pool.fee && (
+                    <Typography
+                        variant="sm"
+                        weight="medium"
+                        className={styles.campaignFee}
+                        light
+                    >
+                        {formatPercentage(campaign.pool.fee)}
+                    </Typography>
+                )}
             </div>
         </div>
     );

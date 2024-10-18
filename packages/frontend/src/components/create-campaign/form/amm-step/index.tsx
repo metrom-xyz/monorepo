@@ -33,7 +33,7 @@ export function AmmStep({ disabled, amm, onAmmChange }: AmmStepProps) {
     }, [chainId]);
 
     useEffect(() => {
-        if (amm || availableAmms.length > 1) return;
+        if (!!amm || availableAmms.length !== 1) return;
         onAmmChange({ amm: availableAmms[0] });
         setOpen(false);
     }, [amm, availableAmms, onAmmChange]);
