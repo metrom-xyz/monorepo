@@ -134,7 +134,7 @@
                 }
             },
             "restrictions": {
-                "title": "Restrictions",
+                "title": "Filter addresses",
                 "description": "Blacklist addresses that shouldn't receive rewards, or whitelist only those that should be eligible to receive rewards.",
                 "errors": {
                     "notAnAddress": "Not a valid address",
@@ -143,7 +143,8 @@
                 "warnings": {
                     "notApplied": "Changes not applied"
                 },
-                "type": "Type",
+                "blocks": "Blocks {count, plural, =0 {} =1 {# address} other {# adresses}}",
+                "allows": "Allows {count, plural, =0 {} =1 {# address} other {# adresses}}",
                 "whitelist": "Whitelist",
                 "blacklist": "Blacklist",
                 "input": {
