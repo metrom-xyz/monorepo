@@ -312,6 +312,7 @@ export function RewardsStep({
                             )}
                             <Typography
                                 weight="medium"
+                                variant="sm"
                                 className={styles.rewardTokenSymbol}
                             >
                                 {rewardToken?.symbol ||
