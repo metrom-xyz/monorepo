@@ -206,17 +206,11 @@ export function RestrictionsStep({
                 }}
             >
                 <div className={styles.typeWrapper}>
-                    <Typography uppercase weight="medium" light variant="sm">
-                        {t("type")}
-                    </Typography>
                     <Typography weight="medium" variant="sm" uppercase>
-                        {type}
-                    </Typography>
-                    <Typography variant="sm" uppercase light>
-                        -
-                    </Typography>
-                    <Typography weight="medium" variant="sm" uppercase>
-                        {addresses.length}
+                        {type === RestrictionType.blacklist &&
+                            t("blocks", { count: addresses.length })}
+                        {type === RestrictionType.whitelist &&
+                            t("allows", { count: addresses.length })}
                     </Typography>
                 </div>
             </StepPreview>
