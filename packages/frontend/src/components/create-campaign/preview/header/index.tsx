@@ -51,9 +51,11 @@ export function Header({ payload, backDisabled, onBack }: HeaderProps) {
                     {payload.amm?.name} {payload.pool?.token0.symbol} /{" "}
                     {payload.pool?.token1.symbol}
                 </Typography>
-                <Typography variant="lg" weight="medium" light>
-                    {formatPercentage(payload.pool?.fee)}
-                </Typography>
+                {payload.pool?.fee && (
+                    <Typography variant="lg" weight="medium" light>
+                        {formatPercentage(payload.pool.fee)}
+                    </Typography>
+                )}
             </div>
             <div className={styles.durationContainer}>
                 <TextField

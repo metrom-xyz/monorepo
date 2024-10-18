@@ -284,7 +284,7 @@ export function KpiSimulationChart({
                     <XAxis
                         type="number"
                         format="number"
-                        dataKey="tvl"
+                        dataKey="usdTvl"
                         tickSize={4}
                         tick={
                             <TvlTick
