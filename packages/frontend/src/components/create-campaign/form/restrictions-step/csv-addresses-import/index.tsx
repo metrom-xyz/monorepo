@@ -32,7 +32,7 @@ export function CsvAddressesImport({
             skipEmptyLines: true,
             complete: (result) => {
                 const addresses = result.data.flat() as string[];
-                setAddresses(addresses);
+                setAddresses(Array.from(new Set(addresses)));
             },
             error: (error) => {
                 console.error("Error parsing csv: ", error);
@@ -51,15 +51,6 @@ export function CsvAddressesImport({
                 <ImportFail
                     toastId={toastId}
                     message={t("notification.fail.malformed")}
-                />
-            ));
-            return;
-        }
-        if (new Set(addresses).size !== addresses.length) {
-            toast.custom((toastId) => (
-                <ImportFail
-                    toastId={toastId}
-                    message={t("notification.fail.duplicated")}
                 />
             ));
             return;
@@ -94,6 +85,7 @@ export function CsvAddressesImport({
         target: { files },
     }: ChangeEvent<HTMLInputElement>) {
         if (files && files[0]) setCsv(files[0]);
+        if (inputRef.current) inputRef.current.value = "";
     }
 
     return (
