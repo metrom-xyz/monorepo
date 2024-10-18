@@ -45,9 +45,10 @@
     @apply w-full
         max-w-56
         bg-transparent
-        h-8
+        h-7
         leading-6
         font-medium
+        px-0
         text-[1.75rem];
 }
 
@@ -83,7 +84,7 @@
 }
 
 .horizontalDivider {
-    @apply border-0 h-[1.5px] bg-gray-300 -mx-4;
+    @apply h-[1.5px] bg-gray-100;
 }
 
 .totalValueWrapper {

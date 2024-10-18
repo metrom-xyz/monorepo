@@ -53,7 +53,11 @@ export function Row({
                         }}
                     />
                 )}
-                <div className={styles.poolInfo}>
+                <div
+                    className={classNames(styles.poolInfo, {
+                        [styles.loading]: loading,
+                    })}
+                >
                     {loading ? (
                         <Skeleton width={64} variant="sm" />
                     ) : (
