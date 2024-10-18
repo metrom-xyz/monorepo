@@ -116,7 +116,7 @@ export function KpiSimulationChart({
                 (i * (upperUsdTarget - lowerUsdTarget)) / (POINTS_COUNT - 1),
         );
 
-        // if there is a minimum payout add 0 to the points to make the
+        // if there is a minimum payout add the min data to the points to make the
         // green area for the minimum rewards to fill the whole chart
         if (minimumPayoutPercentage) points.unshift(xDataMin);
 
