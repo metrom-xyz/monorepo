@@ -6,10 +6,13 @@ import {
     useSimulateContract,
 } from "wagmi";
 import { erc20Abi, type Address } from "viem";
+import { encodeFunctionData } from "viem/utils";
 import type { Erc20TokenAmount } from "@metrom-xyz/sdk";
 import { Button } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
 import { RewardIcon } from "@/src/assets/reward-icon";
+import type { BaseTransaction } from "@safe-global/safe-apps-sdk";
+import { SAFE } from "@/src/commons/env";
 
 import styles from "./styles.module.css";
 
@@ -21,6 +24,7 @@ interface ApproveRewardProps {
     totalAmount: number;
     spender?: Address;
     onApprove: () => void;
+    onSafeTx: (tx: BaseTransaction) => void;
 }
 
 export function ApproveReward({
@@ -31,10 +35,12 @@ export function ApproveReward({
     totalAmount,
     spender,
     onApprove,
+    onSafeTx,
 }: ApproveRewardProps) {
     const t = useTranslations("newCampaign.submit.approveRewards");
     const publicClient = usePublicClient();
     const chainId = useChainId();
+
     const [approving, setApproving] = useState(false);
 
     const { data: simulatedApprove, isLoading: simulatingApprove } =
@@ -46,14 +52,14 @@ export function ApproveReward({
                 functionName: "approve",
                 args: [spender, reward.amount.raw],
                 query: {
-                    enabled: !!spender && !!reward.token.address,
+                    enabled: !SAFE && !!spender && !!reward.token.address,
                 },
             },
         );
     const { writeContractAsync: approveAsync, isPending: signingTransaction } =
         useWriteContract();
 
-    const handleClick = useCallback(() => {
+    const handleStandardApprove = useCallback(() => {
         if (!approveAsync || !publicClient || !simulatedApprove?.request)
             return;
         let cancelled = false;
@@ -75,13 +81,33 @@ export function ApproveReward({
         return () => {
             cancelled = true;
         };
-    }, [approveAsync, simulatedApprove?.request, onApprove, publicClient]);
+    }, [approveAsync, publicClient, simulatedApprove?.request, onApprove]);
+
+    const handleSafeApprove = useCallback(() => {
+        if (!spender) {
+            console.warn();
+            return;
+        }
+
+        onSafeTx({
+            to: reward.token.address,
+            data: encodeFunctionData({
+                abi: erc20Abi,
+                functionName: "approve",
+                args: [spender, reward.amount.raw],
+            }),
+            value: "0",
+        });
+
+        onApprove();
+        return;
+    }, [onSafeTx, reward.token.address, reward.amount.raw, spender, onApprove]);
 
     return (
         <Button
             icon={RewardIcon}
             iconPlacement="right"
-            onClick={handleClick}
+            onClick={SAFE ? handleSafeApprove : handleStandardApprove}
             disabled={!approveAsync || disabled}
             loading={
                 loading || simulatingApprove || signingTransaction || approving

@@ -6,8 +6,6 @@ import {
     useSimulateContract,
     useWriteContract,
 } from "wagmi";
-import Confetti from "react-confetti";
-import { useWindowSize } from "react-use";
 import { metromAbi } from "@metrom-xyz/contracts/abi";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
@@ -22,11 +20,15 @@ import { formatPercentage, formatUsdAmount } from "@/src/utils/format";
 import { getCampaignPreviewApr } from "@/src/utils/campaign";
 import { trackFathomEvent } from "@/src/utils/fathom";
 import { type Hex, zeroHash } from "viem";
+import { encodeFunctionData } from "viem/utils";
 import { SERVICE_URLS, type Specification } from "@metrom-xyz/sdk";
-import { ENVIRONMENT, KPI } from "@/src/commons/env";
+import { ENVIRONMENT, KPI, SAFE } from "@/src/commons/env";
 import { Kpi } from "./kpi";
+import SafeAppsSdk, { type BaseTransaction } from "@safe-global/safe-apps-sdk";
 
 import styles from "./styles.module.css";
+
+const safeSdk = new SafeAppsSdk();
 
 interface CampaignPreviewProps {
     malformedPayload: boolean;
@@ -42,20 +44,21 @@ export function CampaignPreview({
     onCreateNew,
 }: CampaignPreviewProps) {
     const t = useTranslations("campaignPreview");
+    const router = useRouter();
+    const chainId = useChainId();
+    const chainData = useChainData(chainId);
+    const publicClient = usePublicClient();
+    const { writeContractAsync } = useWriteContract();
+
+    const feedback = useRef<HTMLDivElement>(null);
+
     const [deploying, setDeploying] = useState(false);
     const [uploadingSpecification, setUploadingSpecification] = useState(false);
     const [created, setCreated] = useState(false);
     const [rewardsApproved, setRewardsApproved] = useState(false);
     const [specificationHash, setSpecificationHash] = useState<Hex>(zeroHash);
     const [error, setError] = useState("");
-
-    const feedback = useRef<HTMLDivElement>(null);
-    const router = useRouter();
-    const { width, height } = useWindowSize();
-    const chainId = useChainId();
-    const chainData = useChainData(chainId);
-    const publicClient = usePublicClient();
-    const { writeContractAsync } = useWriteContract();
+    const [safeTxs, setSafeTxs] = useState<BaseTransaction[]>([]);
 
     const {
         data: simulatedCreate,
@@ -89,6 +92,7 @@ export function CampaignPreview({
         ],
         query: {
             enabled:
+                !SAFE &&
                 rewardsApproved &&
                 !malformedPayload &&
                 !!payload.pool &&
@@ -139,11 +143,18 @@ export function CampaignPreview({
         if (payload.kpiSpecification && rewardsApproved) uploadSpecification();
     }, [payload.kpiSpecification, rewardsApproved]);
 
+    const handleSafeTransaction = useCallback(
+        (tx: BaseTransaction) => {
+            setSafeTxs([...safeTxs, tx]);
+        },
+        [safeTxs],
+    );
+
     function handleOnRewardsApproved() {
         setRewardsApproved(true);
     }
 
-    const handleOnDeploy = useCallback(() => {
+    const handleStandardDeploy = useCallback(() => {
         if (simulateCreateErrored) {
             console.warn(
                 `Could not deploy the campaign: ${simulateCreateError}`,
@@ -170,7 +181,7 @@ export function CampaignPreview({
                 setCreated(true);
                 trackFathomEvent("CLICK_DEPLOY_CAMPAIGN");
             } catch (error) {
-                console.warn("could not create kpi token", error);
+                console.warn("Could not create campaign", error);
             } finally {
                 setDeploying(false);
             }
@@ -180,8 +191,73 @@ export function CampaignPreview({
         publicClient,
         simulateCreateError,
         simulateCreateErrored,
-        simulatedCreate,
+        simulatedCreate?.request,
         writeContractAsync,
+    ]);
+
+    const handleSafeDeploy = useCallback(() => {
+        if (
+            !rewardsApproved ||
+            !chainData?.metromContract.address ||
+            !payload.pool ||
+            !payload.startDate ||
+            !payload.endDate ||
+            !payload.rewards ||
+            payload.rewards.length === 0
+        ) {
+            console.warn(
+                "Missing parameters to deploy campaign through Safe: aborting",
+            );
+            return;
+        }
+
+        safeTxs.push({
+            to: chainData.metromContract.address,
+            data: encodeFunctionData({
+                abi: metromAbi,
+                functionName: "createCampaigns",
+                args: [
+                    [
+                        {
+                            pool: payload.pool.address,
+                            from: payload.startDate.unix(),
+                            to: payload.endDate.unix(),
+                            specification: specificationHash,
+                            rewards: payload.rewards.map((reward) => ({
+                                token: reward.token.address,
+                                amount: reward.amount.raw,
+                            })),
+                        },
+                    ],
+                ],
+            }),
+            value: "0",
+        });
+
+        const create = async () => {
+            setDeploying(true);
+            try {
+                await safeSdk.txs.send({ txs: safeTxs });
+
+                setCreated(true);
+                trackFathomEvent("CLICK_DEPLOY_CAMPAIGN");
+            } catch (error) {
+                console.warn("Could not create campaign", error);
+            } finally {
+                setDeploying(false);
+            }
+        };
+
+        void create();
+    }, [
+        chainData?.metromContract.address,
+        payload.endDate,
+        payload.pool,
+        payload.rewards,
+        payload.startDate,
+        rewardsApproved,
+        safeTxs,
+        specificationHash,
     ]);
 
     function handleGoToAllCampaigns() {
@@ -238,7 +314,11 @@ export function CampaignPreview({
                                 }
                                 loading={uploadingSpecification || deploying}
                                 className={{ root: styles.deployButton }}
-                                onClick={handleOnDeploy}
+                                onClick={
+                                    SAFE
+                                        ? handleSafeDeploy
+                                        : handleStandardDeploy
+                                }
                             >
                                 {t("deploy")}
                             </Button>
@@ -247,6 +327,7 @@ export function CampaignPreview({
                                 malformedPayload={malformedPayload}
                                 payload={payload}
                                 onApproved={handleOnRewardsApproved}
+                                onSafeTx={handleSafeTransaction}
                             />
                         )}
                     </div>
@@ -262,8 +343,13 @@ export function CampaignPreview({
                 {t("congratulations")}
             </Typography>
             <Typography variant="xl2" weight="medium">
-                {t("launched")}
+                {SAFE ? t("launched.safe.1") : t("launched.standard")}
             </Typography>
+            {SAFE && (
+                <Typography variant="xl2" weight="medium">
+                    {t("launched.safe.2")}
+                </Typography>
+            )}
             <div className={styles.feedbackActionsContainer}>
                 <Button
                     onClick={handleGoToAllCampaigns}
@@ -279,21 +365,6 @@ export function CampaignPreview({
                     {t("newCampaign")}
                 </Button>
             </div>
-            <Confetti
-                numberOfPieces={600}
-                confettiSource={{
-                    x: 0,
-                    y: 0,
-                    w: width,
-                    h: height,
-                }}
-                run={true}
-                width={width}
-                height={height}
-                recycle={false}
-                initialVelocityY={30}
-                colors={["#163A5F", "#45EBA5", "#21ABA5", "#1D566E", "#163A5F"]}
-            />
         </div>
     );
 }
