@@ -7,7 +7,7 @@
 }
 
 .titleContainer {
-    @apply w-full max-w-[180px] sm:max-w-full flex items-end gap-1.5;
+    @apply w-full max-w-[180px] sm:max-w-full flex items-center gap-1.5;
 }
 
 .campaignFee {

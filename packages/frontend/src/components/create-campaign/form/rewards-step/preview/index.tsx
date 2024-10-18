@@ -5,10 +5,10 @@ import {
 import type { CampaignPayload } from "@/src/types";
 import { Reward } from "./reward";
 import type { Address } from "viem";
-
-import styles from "./styles.module.css";
 import { Typography } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
+
+import styles from "./styles.module.css";
 
 interface RewardsPreviewProps {
     rewards?: CampaignPayload["rewards"];
