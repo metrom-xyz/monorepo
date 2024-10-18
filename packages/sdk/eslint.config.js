@@ -3,10 +3,10 @@ import tseslint from "typescript-eslint";
 import prettier from "eslint-config-prettier";
 
 export default [
-    eslint.configs.recommended,
-    ...tseslint.configs.recommended,
-    prettier,
     {
         ignores: ["dist/**"],
     },
+    eslint.configs.recommended,
+    ...tseslint.configs.recommended,
+    prettier,
 ];
