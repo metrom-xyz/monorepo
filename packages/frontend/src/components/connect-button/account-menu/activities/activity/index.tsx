@@ -19,7 +19,7 @@ interface ActivityProps extends Activity {
 export function Activity({ chainId, transaction, payload }: ActivityProps) {
     const t = useTranslations("accountMenu.activities");
 
-    const time = dayjs(transaction.timestamp).to(dayjs(), true);
+    const time = dayjs.unix(transaction.timestamp).to(dayjs(), true);
     const timeAgo = t("timeAgo", { time });
 
     const { Icon, title } =

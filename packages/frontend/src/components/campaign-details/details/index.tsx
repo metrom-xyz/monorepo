@@ -23,7 +23,7 @@ export function Details({ campaign, loading }: DetailsProps) {
             return {
                 text: t("status.upcoming.text"),
                 duration: t("status.upcoming.duration", {
-                    days: dayjs(campaign.from).to(dayjs(), true),
+                    days: dayjs.unix(campaign.from).to(dayjs(), true),
                 }),
             };
         }
@@ -31,7 +31,7 @@ export function Details({ campaign, loading }: DetailsProps) {
             return {
                 text: t("status.ended.text"),
                 duration: t("status.ended.duration", {
-                    days: dayjs().to(dayjs(campaign.to), true),
+                    days: dayjs().to(dayjs.unix(campaign.to), true),
                 }),
             };
         }
@@ -39,7 +39,7 @@ export function Details({ campaign, loading }: DetailsProps) {
         return {
             text: t("status.live.text"),
             duration: t("status.live.duration", {
-                days: dayjs().to(dayjs(campaign.to), true),
+                days: dayjs().to(dayjs.unix(campaign.to), true),
             }),
         };
     }, [campaign, t]);
