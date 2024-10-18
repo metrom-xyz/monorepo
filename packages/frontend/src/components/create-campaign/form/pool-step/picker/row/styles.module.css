@@ -20,6 +20,10 @@
     @apply w-full sm:w-fit flex items-end gap-3 max-w-48 sm:max-w-60;
 }
 
+.poolInfo.loading {
+    @apply w-full;
+}
+
 .fee {
     @apply !leading-[1.125rem];
 }
