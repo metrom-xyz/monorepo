@@ -160,7 +160,6 @@
                         "fail": {
                             "title": "Failed",
                             "malformed": "Malformed csv",
-                            "duplicated": "Duplicated addresses",
                             "tooMany": "Too many addresses: max {max}"
                         }
                     }
