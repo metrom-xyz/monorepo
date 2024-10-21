@@ -43,14 +43,10 @@ export function Row({
                 ) : (
                     <PoolRemoteLogo
                         chain={chain}
-                        token0={{
-                            address: pool.token0.address,
-                            defaultText: pool.token0.symbol,
-                        }}
-                        token1={{
-                            address: pool.token1.address,
-                            defaultText: pool.token1.symbol,
-                        }}
+                        tokens={pool.tokens.map((token) => ({
+                            address: token.address,
+                            defaultText: token.symbol,
+                        }))}
                     />
                 )}
                 <div className={styles.poolInfo}>
@@ -58,7 +54,9 @@ export function Row({
                         <Skeleton width={64} variant="sm" />
                     ) : (
                         <Typography weight="medium" variant="lg" truncate>
-                            {pool.token0.symbol} / {pool.token1.symbol}
+                            {pool.tokens
+                                .map((token) => token.symbol)
+                                .join(" / ")}
                         </Typography>
                     )}
                     {loading ? (

@@ -1,15 +1,15 @@
-import { SupportedAmm } from "@metrom-xyz/sdk";
+import { SupportedDex } from "@metrom-xyz/sdk";
 import { SupportedChain, ADDRESS } from "@metrom-xyz/contracts";
 import { type ChainData } from "../index";
-import { UniswapLogo } from "../../assets/logos/amms/uniswap";
+import { UniswapLogo } from "../../assets/logos/dexes/uniswap";
 import { CeloLogo } from "../../assets/logos/chains/celo";
 
 export const celoAlfajoresData: ChainData = {
     metromContract: ADDRESS[SupportedChain.CeloAlfajores],
     icon: CeloLogo,
-    amms: [
+    dexes: [
         {
-            slug: SupportedAmm.Univ3,
+            slug: SupportedDex.Univ3,
             logo: UniswapLogo,
             name: "Uniswap v3",
             addLiquidityUrl: "https://app.uniswap.org/add/{target_pool}",

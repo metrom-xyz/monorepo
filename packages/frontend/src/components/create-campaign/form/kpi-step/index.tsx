@@ -29,7 +29,7 @@ interface KpiStepProps {
     pool?: CampaignPayload["pool"];
     rewards?: CampaignPayload["rewards"];
     kpiSpecification?: CampaignPayload["kpiSpecification"];
-    onKpiChange: (amm: CampaignPayloadPart) => void;
+    onKpiChange: (kpi: CampaignPayloadPart) => void;
     onError: (errors: CampaignPayloadErrors) => void;
 }
 

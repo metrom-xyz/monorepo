@@ -4,7 +4,7 @@ import { Skeleton, Typography, Button } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
 import { useRouter } from "@/src/i18n/routing";
 import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
-import { getPoolAddLiquidityLink, getPoolExplorerLink } from "@/src/utils/amm";
+import { getPoolAddLiquidityLink, getPoolExplorerLink } from "@/src/utils/dex";
 import { formatPercentage } from "@/src/utils/format";
 import { trackFathomEvent } from "@/src/utils/fathom";
 import { PoolRemoteLogo } from "../../pool-remote-logo";
@@ -25,12 +25,12 @@ export function Header({ campaign }: HeaderProps) {
 
     const depositLink = getPoolAddLiquidityLink(
         campaign.chainId,
-        campaign.pool.amm,
+        campaign.pool.dex,
         campaign.pool,
     );
     const exploreLink = getPoolExplorerLink(
         campaign.chainId,
-        campaign.pool.amm,
+        campaign.pool.dex,
         campaign.pool,
     );
 
@@ -39,7 +39,7 @@ export function Header({ campaign }: HeaderProps) {
     }
 
     function handleExploreOnClick() {
-        trackFathomEvent("CLICK_AMM_EXPLORE");
+        trackFathomEvent("CLICK_DEX_EXPLORE");
     }
 
     return (
@@ -49,14 +49,10 @@ export function Header({ campaign }: HeaderProps) {
                     <PoolRemoteLogo
                         chain={campaign.chainId}
                         size="xl"
-                        token0={{
-                            address: campaign.pool.token0.address,
-                            defaultText: campaign.pool.token0.symbol,
-                        }}
-                        token1={{
-                            address: campaign.pool.token1.address,
-                            defaultText: campaign.pool.token1.symbol,
-                        }}
+                        tokens={campaign.pool.tokens.map((token) => ({
+                            address: token.address,
+                            defaultText: token.symbol,
+                        }))}
                     />
                     <Typography variant="xl4" weight="medium">
                         {campaign.name}
@@ -136,7 +132,7 @@ export function SkeletonHeader() {
         <div className={styles.root}>
             <div className={styles.titleContainer}>
                 <div className={styles.title}>
-                    <PoolRemoteLogo loading size="xl" />
+                    <PoolRemoteLogo tokens={[{}, {}]} loading size="xl" />
                     <Skeleton variant="xl2" width={400} />
                     <Skeleton variant="lg" width={60} />
                 </div>

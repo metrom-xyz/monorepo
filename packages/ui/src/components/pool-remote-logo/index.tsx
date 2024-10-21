@@ -6,8 +6,7 @@ export interface PoolRemoteLogoProps {
     loading?: boolean;
     size?: "sm" | "md" | "lg" | "xl";
     chain?: number;
-    token0?: Omit<RemoteLogoProps, "size" | "chain">;
-    token1?: Omit<RemoteLogoProps, "size" | "chain">;
+    tokens: Omit<RemoteLogoProps, "size" | "chain">[];
     className?: {
         root?: string;
     };
@@ -17,8 +16,7 @@ export function PoolRemoteLogo({
     loading,
     size,
     chain,
-    token0,
-    token1,
+    tokens,
     className,
 }: PoolRemoteLogoProps) {
     return (
@@ -29,20 +27,18 @@ export function PoolRemoteLogo({
                 className?.root,
             )}
         >
-            <RemoteLogo
-                loading={loading}
-                chain={chain}
-                size={size}
-                {...token0}
-                defaultText={token0?.defaultText}
-            />
-            <RemoteLogo
-                loading={loading}
-                chain={chain}
-                size={size}
-                {...token1}
-                defaultText={token1?.defaultText}
-            />
+            {tokens.map((token) => {
+                return (
+                    <RemoteLogo
+                        key={token.address}
+                        loading={loading}
+                        chain={chain}
+                        size={size}
+                        {...token}
+                        defaultText={token?.defaultText}
+                    />
+                );
+            })}
         </div>
     );
 }

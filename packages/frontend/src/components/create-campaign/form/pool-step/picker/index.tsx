@@ -25,11 +25,11 @@ import styles from "./styles.module.css";
 
 interface PoolPickerProps {
     value?: PoolWithTvl;
-    amm?: CampaignPayload["amm"];
+    dex?: CampaignPayload["dex"];
     onChange: (pool: PoolWithTvl) => void;
 }
 
-export function PoolPicker({ value, amm, onChange }: PoolPickerProps) {
+export function PoolPicker({ value, dex, onChange }: PoolPickerProps) {
     const t = useTranslations("newCampaign.form.pool");
     const [search, setSearch] = useState("");
     const [debouncedSearch, setDebouncedSearch] = useState(search);
@@ -38,7 +38,7 @@ export function PoolPicker({ value, amm, onChange }: PoolPickerProps) {
 
     const chain = useChainId();
     const baseTokens = useBaseTokens(chain);
-    const { pools, loading } = usePools(chain, amm?.slug);
+    const { pools, loading } = usePools(chain, dex?.slug);
 
     const filteredPools = useMemo(
         () =>

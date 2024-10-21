@@ -1,7 +1,7 @@
 import type {
     KpiSpecification,
     PoolWithTvl,
-    SupportedAmm,
+    SupportedDex,
     WhitelistedErc20TokenAmount,
 } from "@metrom-xyz/sdk";
 import type { Dayjs } from "dayjs";
@@ -12,8 +12,8 @@ type PropertyUnion<T> = {
 }[keyof T];
 export type SVGIcon = Omit<SVGProps<SVGSVGElement>, "dangerouslySetInnerHTML">;
 
-export interface Amm {
-    slug: SupportedAmm;
+export interface Dex {
+    slug: SupportedDex;
     name: string;
     addLiquidityUrl: string;
     poolExplorerUrl?: string;
@@ -23,7 +23,7 @@ export interface Amm {
 // TODO: define state
 export interface CampaignPayload {
     network?: number;
-    amm?: AmmInfo;
+    dex?: DexInfo;
     pool?: PoolWithTvl;
     startDate?: Dayjs;
     endDate?: Dayjs;
@@ -42,6 +42,6 @@ export interface CampaignPayloadErrors {
     kpiSpecification?: boolean;
 }
 
-export type AmmInfo = Pick<Amm, "slug" | "name" | "logo">;
+export type DexInfo = Pick<Dex, "slug" | "name" | "logo">;
 
 export type CampaignPayloadPart = PropertyUnion<CampaignPayload>;

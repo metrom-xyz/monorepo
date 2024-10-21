@@ -1,5 +1,5 @@
 import { type Address, type Hash } from "viem";
-import type { SupportedAmm } from "./commons";
+import type { SupportedAmm, SupportedDex } from "./commons";
 
 export interface OnChainAmount {
     raw: bigint;
@@ -38,9 +38,9 @@ export interface Reward extends UsdPricedErc20TokenAmount {
 export interface Pool {
     chainId: number;
     address: Address;
+    dex: SupportedDex;
     amm: SupportedAmm;
-    token0: Erc20Token;
-    token1: Erc20Token;
+    tokens: Erc20Token[];
     fee: number | null;
 }
 

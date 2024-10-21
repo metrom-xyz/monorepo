@@ -1,15 +1,15 @@
-import { SupportedAmm } from "@metrom-xyz/sdk";
+import { SupportedDex } from "@metrom-xyz/sdk";
 import { EthLogo } from "../../assets/logos/chains/eth";
-import { AlgebraIntegralLogo } from "../../assets/logos/amms/algebra-integral";
+import { AlgebraIntegralLogo } from "../../assets/logos/dexes/algebra-integral";
 import { SupportedChain, ADDRESS } from "@metrom-xyz/contracts";
 import { type ChainData } from "../index";
 
 export const holeskyData: ChainData = {
     metromContract: ADDRESS[SupportedChain.Holesky],
     icon: EthLogo,
-    amms: [
+    dexes: [
         {
-            slug: SupportedAmm.TestIntegral,
+            slug: SupportedDex.TestIntegral,
             logo: AlgebraIntegralLogo,
             name: "Algebra integral",
             addLiquidityUrl:

@@ -14,12 +14,12 @@ import styles from "./styles.module.css";
 
 interface PoolStepProps {
     disabled?: boolean;
-    amm?: CampaignPayload["amm"];
+    dex?: CampaignPayload["dex"];
     pool?: CampaignPayload["pool"];
     onPoolChange: (pool: CampaignPayloadPart) => void;
 }
 
-export function PoolStep({ disabled, pool, amm, onPoolChange }: PoolStepProps) {
+export function PoolStep({ disabled, pool, dex, onPoolChange }: PoolStepProps) {
     const t = useTranslations("newCampaign.form.pool");
     const [open, setOpen] = useState(false);
     const chainId = useChainId();
@@ -81,7 +81,7 @@ export function PoolStep({ disabled, pool, amm, onPoolChange }: PoolStepProps) {
             </StepPreview>
             <StepContent>
                 <PoolPicker
-                    amm={amm}
+                    dex={dex}
                     value={pool}
                     onChange={handlePoolOnChange}
                 />

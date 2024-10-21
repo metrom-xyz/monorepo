@@ -6,7 +6,7 @@ import {
     Environment,
 } from "@metrom-xyz/sdk";
 import { type ChainContract, type Chain } from "viem";
-import { type Amm, type SVGIcon } from "../types";
+import { type Dex, type SVGIcon } from "../types";
 import type { FunctionComponent } from "react";
 import { SupportedChain } from "@metrom-xyz/contracts";
 import { ENVIRONMENT } from "./env";
@@ -37,7 +37,7 @@ import {
 export interface ChainData {
     metromContract: ChainContract;
     icon: FunctionComponent<SVGIcon>;
-    amms: Amm[];
+    dexes: Dex[];
     baseTokens: Erc20Token[];
 }
 

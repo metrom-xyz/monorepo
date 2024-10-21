@@ -1,8 +1,8 @@
-.ammPreview {
+.dexPreview {
     @apply flex gap-2 items-center;
 }
 
-.ammWrapper {
+.dexWrapper {
     @apply max-h-96
         overflow-y-auto
         rounded-b-2xl
@@ -10,7 +10,7 @@
         snap-y;
 }
 
-.ammRow {
+.dexRow {
     @apply flex
         gap-2
         items-center
@@ -25,16 +25,16 @@
         hover:bg-gray-200;
 }
 
-.ammRowSelected {
+.dexRowSelected {
     @apply bg-gray-200;
 }
 
-.ammRow:only-child,
-.ammRow:last-child {
+.dexRow:only-child,
+.dexRow:last-child {
     @apply rounded-b-2xl;
 }
 
-.ammRow > * {
+.dexRow > * {
     @apply pointer-events-none;
 }
 
