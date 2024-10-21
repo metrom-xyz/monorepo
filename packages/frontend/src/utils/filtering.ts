@@ -112,14 +112,15 @@ export const filterPools = (pools: Pool[], searchQuery: string) => {
         .filter((s) => s.length > 0 && s !== "/");
     if (lowercaseSearchParts.length === 0) return pools;
     return pools.filter((pool) => {
-        const { token0, token1 } = pool;
-
         return (
             matchesSearch(
-                `${token0.symbol} ${token1.symbol}`,
+                pool.tokens.map((token) => token.symbol).join(" "),
                 lowercaseSearchParts,
             ) ||
-            matchesSearch(`${token0.name} ${token1.name}`, lowercaseSearchParts)
+            matchesSearch(
+                pool.tokens.map((token) => token.name).join(" "),
+                lowercaseSearchParts,
+            )
         );
     });
 };
