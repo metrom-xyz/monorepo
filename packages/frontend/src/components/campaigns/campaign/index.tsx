@@ -5,6 +5,7 @@ import { Rewards, SkeletonRewards } from "./rewards";
 import { Chain, SkeletonChain } from "./chain";
 import type { NamedCampaign } from "@/src/hooks/useCampaigns";
 import { Link } from "@/src/i18n/routing";
+import { Card } from "@metrom-xyz/ui";
 // import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
 
 import styles from "./styles.module.css";
@@ -17,37 +18,36 @@ interface CampaignProps {
 // to the provide liquidity page for the targeted dex
 export function Campaign({ campaign }: CampaignProps) {
     return (
-        <Link
-            href={`/campaigns/${campaign.chainId}/${campaign.id}`}
-            className={styles.root}
-        >
-            <Chain id={campaign.chainId} />
-            <div className={styles.poolContainer}>
-                <Pool campaign={campaign} />
-                {/* <div className={styles.externalLink}>
+        <Link href={`/campaigns/${campaign.chainId}/${campaign.id}`}>
+            <Card className={styles.root}>
+                <Chain id={campaign.chainId} />
+                <div className={styles.poolContainer}>
+                    <Pool campaign={campaign} />
+                    {/* <div className={styles.externalLink}>
                     <ArrowRightIcon className={styles.externalLinkIcon} />
                 </div> */}
-            </div>
-            <Status
-                from={campaign.from}
-                to={campaign.to}
-                status={campaign.status}
-            />
-            <Apr apr={campaign.apr} />
-            <Rewards
-                status={campaign.status}
-                from={campaign.from}
-                to={campaign.to}
-                rewards={campaign.rewards}
-                chainId={campaign.chainId}
-            />
+                </div>
+                <Status
+                    from={campaign.from}
+                    to={campaign.to}
+                    status={campaign.status}
+                />
+                <Apr apr={campaign.apr} />
+                <Rewards
+                    status={campaign.status}
+                    from={campaign.from}
+                    to={campaign.to}
+                    rewards={campaign.rewards}
+                    chainId={campaign.chainId}
+                />
+            </Card>
         </Link>
     );
 }
 
 export function SkeletonCampaign() {
     return (
-        <div className={styles.root}>
+        <Card className={styles.root}>
             <SkeletonChain />
             <div className={styles.poolContainer}>
                 <SkeletonPool />
@@ -55,6 +55,6 @@ export function SkeletonCampaign() {
             <SkeletonStatus />
             <SkeletonApr />
             <SkeletonRewards />
-        </div>
+        </Card>
     );
 }

@@ -1,6 +1,6 @@
 import classNames from "classnames";
 import type { ChainWithClaimsData } from "..";
-import { Typography, Button, Skeleton } from "@metrom-xyz/ui";
+import { Typography, Button, Skeleton, Card } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
 import {
     useAccount,
@@ -118,7 +118,7 @@ export function ChainOverview({
     ]);
 
     return (
-        <div className={classNames(styles.root, className)}>
+        <Card className={classNames(styles.root, className)}>
             <div className={styles.chainNameWrapper}>
                 <ChainIcon className={styles.chainIcon} />
                 <Typography variant="xl4" truncate>
@@ -138,18 +138,18 @@ export function ChainOverview({
                       ? t("claimingAll")
                       : t("claimAll")}
             </Button>
-        </div>
+        </Card>
     );
 }
 
 export function SkeletonChainOverview() {
     return (
-        <div className={styles.root}>
+        <Card className={styles.root}>
             <div className={styles.chainNameWrapper}>
                 <Skeleton className={styles.chainIcon} />
                 <Skeleton width={100} variant="xl2" />
             </div>
             <Button size="xsmall" loading />
-        </div>
+        </Card>
     );
 }

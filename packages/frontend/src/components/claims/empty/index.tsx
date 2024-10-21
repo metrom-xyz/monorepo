@@ -1,4 +1,4 @@
-import { Typography, Button } from "@metrom-xyz/ui";
+import { Typography, Button, Card } from "@metrom-xyz/ui";
 import { Link } from "@/src/i18n/routing";
 import { useTranslations } from "next-intl";
 
@@ -14,7 +14,7 @@ export function Empty() {
     // }, []);
 
     return (
-        <div className={styles.root}>
+        <Card className={styles.root}>
             <Typography weight="medium" uppercase className={styles.title}>
                 {t("title")}
             </Typography>
@@ -24,6 +24,6 @@ export function Empty() {
             <Link href="/">
                 <Button size="small">{t("action")}</Button>
             </Link>
-        </div>
+        </Card>
     );
 }

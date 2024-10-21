@@ -7,7 +7,6 @@
         justify-between
         items-start
         sm:items-center
-        bg-white
         rounded-xl
         p-4;
 }
