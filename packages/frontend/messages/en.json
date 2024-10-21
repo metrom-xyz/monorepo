@@ -221,7 +221,7 @@
             "fee": "Protocol fee"
         },
         "errors": {
-            "kpiUpload": "Something went wrong when processing the KPI"
+            "specification": "An error occurred while processing the campaign specification"
         },
         "deploy": "Launch campaign",
         "connectWallet": "Connect wallet",

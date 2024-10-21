@@ -1,4 +1,4 @@
-import { Button, Typography, TextField } from "@metrom-xyz/ui";
+import { Button, Typography, TextField, ErrorText } from "@metrom-xyz/ui";
 import type { CampaignPayload } from "@/src/types";
 import {
     useChainId,
@@ -129,7 +129,7 @@ export function CampaignPreview({
                     `Could not upload specification to data-manager: ${JSON.stringify(specification)}`,
                     error,
                 );
-                setError("kpiUpload");
+                setError("errors.specification");
             } finally {
                 setUploadingSpecification(false);
             }
@@ -235,6 +235,11 @@ export function CampaignPreview({
                         endDate={payload.endDate}
                     />
                     <div className={styles.deployButtonContainer}>
+                        {error && (
+                            <ErrorText variant="xs" weight="medium">
+                                {t(error)}
+                            </ErrorText>
+                        )}
                         {rewardsApproved ? (
                             <Button
                                 icon={ArrowRightIcon}
