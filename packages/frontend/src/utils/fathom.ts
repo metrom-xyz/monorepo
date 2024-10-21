@@ -4,7 +4,7 @@ type RegisteredEvents =
     | "PICK_REWARD"
     | "CLICK_CAMPAIGN_PREVIEW"
     | "CLICK_DEPLOY_CAMPAIGN"
-    | "CLICK_AMM_EXPLORE"
+    | "CLICK_DEX_EXPLORE"
     | "NO_REWARDS_CLAIM"
     | "CLICK_CLAIM_ALL"
     | "CLICK_CLAIM_SINGLE"

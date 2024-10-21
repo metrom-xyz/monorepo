@@ -1,15 +1,15 @@
-import { SupportedAmm } from "@metrom-xyz/sdk";
+import { SupportedDex } from "@metrom-xyz/sdk";
 import { SupportedChain, ADDRESS } from "@metrom-xyz/contracts";
 import { BaseLogo } from "../../assets/logos/chains/base";
-import { KimLogo } from "../../assets/logos/amms/kim";
+import { KimLogo } from "../../assets/logos/dexes/kim";
 import { type ChainData } from "..";
 
 export const baseData: ChainData = {
     metromContract: ADDRESS[SupportedChain.Base],
     icon: BaseLogo,
-    amms: [
+    dexes: [
         {
-            slug: SupportedAmm.Kim,
+            slug: SupportedDex.Kim,
             logo: KimLogo,
             name: "Kim",
             addLiquidityUrl: "https://app.kim.exchange/pools/v4/{target_pool}",

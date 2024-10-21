@@ -7,7 +7,7 @@ import {
     type BackendWhitelistedErc20Token,
 } from "./types";
 import type { SupportedChain } from "@metrom-xyz/contracts";
-import { SupportedAmm } from "../commons";
+import { SupportedDex } from "../commons";
 import {
     Status,
     type Activity,
@@ -26,7 +26,7 @@ export interface FetchCampaignParams {
 
 export interface FetchPoolsParams {
     chainId: SupportedChain;
-    amm: SupportedAmm;
+    dex: SupportedDex;
 }
 
 export interface FetchClaimsParams {
@@ -80,7 +80,7 @@ export class MetromApiClient {
 
     async fetchPools(params: FetchPoolsParams): Promise<Pool[]> {
         const url = new URL(
-            `v1/pools/${params.chainId}/${params.amm}`,
+            `v1/pools/${params.chainId}/${params.dex}`,
             this.baseUrl,
         );
 

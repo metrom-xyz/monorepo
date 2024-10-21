@@ -33,6 +33,6 @@ export const sonicTestnet = defineChain({
 export const sonicTestnetData: ChainData = {
     metromContract: ADDRESS[SupportedChain.SonicTestnet]!,
     icon: SonicLogo,
-    amms: [],
+    dexes: [],
     baseTokens: [],
 };

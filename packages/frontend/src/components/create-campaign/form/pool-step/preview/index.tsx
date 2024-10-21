@@ -5,26 +5,16 @@ import { PoolRemoteLogo } from "@/src/components/pool-remote-logo";
 
 import styles from "./styles.module.css";
 
-export function PoolStepPreview({
-    chainId,
-    token0,
-    token1,
-    fee,
-    usdTvl,
-}: PoolWithTvl) {
+export function PoolStepPreview({ chainId, tokens, fee, usdTvl }: PoolWithTvl) {
     return (
         <div className={styles.root}>
             <div className={styles.pool}>
                 <PoolRemoteLogo
                     chain={chainId}
-                    token0={{
-                        address: token0.address,
-                        defaultText: token0.symbol,
-                    }}
-                    token1={{
-                        address: token1.address,
-                        defaultText: token1.symbol,
-                    }}
+                    tokens={tokens.map((token) => ({
+                        address: token.address,
+                        defaultText: token.symbol,
+                    }))}
                 />
                 <div className={styles.poolInfo}>
                     <Typography
@@ -32,7 +22,7 @@ export function PoolStepPreview({
                         variant="lg"
                         className={styles.poolName}
                     >
-                        {token0.symbol} / {token1.symbol}
+                        {tokens.map((token) => token.symbol).join(" / ")}
                     </Typography>
                     {fee && (
                         <Typography variant="sm" light weight="medium">

@@ -20,7 +20,6 @@ export const BI_0 = BigInt.zero();
 export const BI_1 = BigInt.fromI32(1);
 export const BD_0 = BigDecimal.zero();
 export const BD_10 = BigDecimal.fromString("10");
-const BD_Q192 = BigDecimal.fromString(Math.pow(2, 192).toString());
 
 export const NonFungiblePositionManagerContract =
     NonFungiblePositionManager.bind(NON_FUNGIBLE_POSITION_MANAGER_ADDRESS);
@@ -117,35 +116,12 @@ export function getOrCreateToken(address: Address): Token | null {
     return token;
 }
 
-export function sqrtPriceToTokenPrices(
-    sqrtPrice: BigInt,
-    token0Decimals: BigInt,
-    token1Decimals: BigInt,
-): BigDecimal[] {
-    let price = sqrtPrice.pow(2).toBigDecimal();
-    let price1 = price
-        .div(BD_Q192)
-        .times(exponentToBigDecimal(token0Decimals))
-        .div(exponentToBigDecimal(token1Decimals));
-
-    let price0 = safeDiv(BigDecimal.fromString("1"), price1);
-    return [price0, price1];
-}
-
 function exponentToBigDecimal(decimals: BigInt): BigDecimal {
     let bd = BigDecimal.fromString("1");
     for (let i = BI_0; i.lt(decimals as BigInt); i = i.plus(BI_1)) {
         bd = bd.times(BD_10);
     }
     return bd;
-}
-
-function safeDiv(amount0: BigDecimal, amount1: BigDecimal): BigDecimal {
-    if (amount1.equals(BD_0)) {
-        return BD_0;
-    } else {
-        return amount0.div(amount1);
-    }
 }
 
 export function convertTokenToDecimal(

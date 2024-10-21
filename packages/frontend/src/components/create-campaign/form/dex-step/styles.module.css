@@ -1,0 +1,43 @@
+.dexPreview {
+    @apply flex gap-2 items-center;
+}
+
+.dexWrapper {
+    @apply max-h-96
+        overflow-y-auto
+        rounded-b-2xl
+        scroll-pt-0.5
+        snap-y;
+}
+
+.dexRow {
+    @apply flex
+        gap-2
+        items-center
+        px-4
+        py-5
+        select-none
+        snap-start
+        transition-colors
+        duration-200
+        ease-in-out
+        hover:cursor-pointer
+        hover:bg-gray-200;
+}
+
+.dexRowSelected {
+    @apply bg-gray-200;
+}
+
+.dexRow:only-child,
+.dexRow:last-child {
+    @apply rounded-b-2xl;
+}
+
+.dexRow > * {
+    @apply pointer-events-none;
+}
+
+.logo > svg {
+    @apply w-6 h-6;
+}

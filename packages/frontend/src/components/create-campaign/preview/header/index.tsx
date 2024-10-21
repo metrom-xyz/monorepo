@@ -38,18 +38,18 @@ export function Header({ payload, backDisabled, onBack }: HeaderProps) {
                 <PoolRemoteLogo
                     chain={chainId}
                     size="xl"
-                    token0={{
-                        address: payload.pool?.token0.address,
-                        defaultText: payload.pool?.token0.symbol,
-                    }}
-                    token1={{
-                        address: payload.pool?.token1.address,
-                        defaultText: payload.pool?.token1.symbol,
-                    }}
+                    tokens={
+                        payload.pool?.tokens.map((token) => ({
+                            address: token.address,
+                            defaultText: token.symbol,
+                        })) || []
+                    }
                 />
                 <Typography variant="xl4" weight="medium" noWrap truncate>
-                    {payload.amm?.name} {payload.pool?.token0.symbol} /{" "}
-                    {payload.pool?.token1.symbol}
+                    {payload.dex?.name}{" "}
+                    {payload.pool?.tokens
+                        .map((token) => token.symbol)
+                        .join(" / ")}
                 </Typography>
                 {payload.pool?.fee && (
                     <Typography variant="lg" weight="medium" light>

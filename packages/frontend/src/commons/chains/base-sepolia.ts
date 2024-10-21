@@ -1,22 +1,22 @@
-import { SupportedAmm } from "@metrom-xyz/sdk";
+import { SupportedDex } from "@metrom-xyz/sdk";
 import { SupportedChain, ADDRESS } from "@metrom-xyz/contracts";
 import { BaseLogo } from "../../assets/logos/chains/base";
-import { KimLogo } from "../../assets/logos/amms/kim";
+import { KimLogo } from "../../assets/logos/dexes/kim";
 import { type ChainData } from "..";
-import { UniswapLogo } from "@/src/assets/logos/amms/uniswap";
+import { UniswapLogo } from "@/src/assets/logos/dexes/uniswap";
 
 export const baseSepoliaData: ChainData = {
     metromContract: ADDRESS[SupportedChain.BaseSepolia],
     icon: BaseLogo,
-    amms: [
+    dexes: [
         {
-            slug: SupportedAmm.Kim,
+            slug: SupportedDex.Kim,
             logo: KimLogo,
             name: "Kim",
             addLiquidityUrl: "https://app.kim.exchange/pools/v4/{target_pool}",
         },
         {
-            slug: SupportedAmm.Univ3,
+            slug: SupportedDex.Univ3,
             logo: UniswapLogo,
             name: "Uniswap v3",
             addLiquidityUrl:

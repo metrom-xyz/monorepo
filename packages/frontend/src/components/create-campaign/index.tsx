@@ -34,7 +34,7 @@ export function CreateCampaign() {
 
     const malformedPayload = useMemo(() => {
         return (
-            !payload.amm ||
+            !payload.dex ||
             !payload.pool ||
             !payload.startDate ||
             !payload.endDate ||
@@ -43,7 +43,7 @@ export function CreateCampaign() {
             Object.values(payloadErrors).some((error) => !!error)
         );
     }, [
-        payload.amm,
+        payload.dex,
         payload.endDate,
         payload.pool,
         payload.rewards,

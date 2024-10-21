@@ -16,14 +16,10 @@ export function Pool({ campaign }: PoolProps) {
         <div className={styles.root}>
             <PoolRemoteLogo
                 chain={campaign.chainId}
-                token0={{
-                    address: campaign.pool.token0.address,
-                    defaultText: campaign.pool.token0.symbol,
-                }}
-                token1={{
-                    address: campaign.pool.token1.address,
-                    defaultText: campaign.pool.token1.symbol,
-                }}
+                tokens={campaign.pool.tokens.map((token) => ({
+                    address: token.address,
+                    defaultText: token.symbol,
+                }))}
             />
             <div className={styles.titleContainer}>
                 <Typography variant="lg" weight="medium" truncate>
@@ -47,7 +43,7 @@ export function Pool({ campaign }: PoolProps) {
 export function SkeletonPool() {
     return (
         <div className={styles.root}>
-            <PoolRemoteLogo loading />
+            <PoolRemoteLogo tokens={[{}, {}]} loading />
             <div className={styles.titleContainer}>
                 <Skeleton variant="lg" width={180} />
                 <Skeleton

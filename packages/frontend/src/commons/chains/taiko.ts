@@ -1,15 +1,15 @@
-import { SupportedAmm } from "@metrom-xyz/sdk";
+import { SupportedDex } from "@metrom-xyz/sdk";
 import { SupportedChain, ADDRESS } from "@metrom-xyz/contracts";
 import { type ChainData } from "..";
 import { TaikoLogo } from "@/src/assets/logos/chains/taiko";
-import { PankoLogo } from "@/src/assets/logos/amms/panko";
+import { PankoLogo } from "@/src/assets/logos/dexes/panko";
 
 export const taikoData: ChainData = {
     metromContract: ADDRESS[SupportedChain.Taiko],
     icon: TaikoLogo,
-    amms: [
+    dexes: [
         {
-            slug: SupportedAmm.Panko,
+            slug: SupportedDex.Panko,
             logo: PankoLogo,
             name: "Panko",
             // TODO: update this

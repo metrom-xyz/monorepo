@@ -2,36 +2,32 @@ import {
     PoolRemoteLogo as UiPoolRemoteLogo,
     type PoolRemoteLogoProps,
 } from "@metrom-xyz/ui";
-import { useTokenIconUri } from "../hooks/useTokenIconUri";
+import { useTokenIconUris } from "../hooks/useTokenIconUris";
 
 export function PoolRemoteLogo({
     chain,
-    token0,
-    token1,
+    tokens,
     ...rest
 }: PoolRemoteLogoProps) {
-    const { loading: loadingToken0Uri, uri: token0Uri } = useTokenIconUri(
+    const { loading, uris } = useTokenIconUris(
         chain,
-        token0?.address,
-    );
-
-    const { loading: loadingToken1Uri, uri: token1Uri } = useTokenIconUri(
-        chain,
-        token1?.address,
+        tokens?.map((token) => token.address) || [],
     );
 
     return (
         <UiPoolRemoteLogo
             chain={chain}
-            token0={{
-                ...token0,
-                src: token0?.src || token0Uri,
-            }}
-            token1={{
-                ...token1,
-                src: token1?.src || token1Uri,
-            }}
-            loading={loadingToken0Uri || loadingToken1Uri}
+            tokens={tokens.map((token) => {
+                let resolvedUri = token.address
+                    ? uris?.[token.address]
+                    : undefined;
+
+                return {
+                    ...token,
+                    src: token?.src || resolvedUri,
+                };
+            })}
+            loading={rest.loading || loading}
             {...rest}
         />
     );

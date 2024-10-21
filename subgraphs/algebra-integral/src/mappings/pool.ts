@@ -1,10 +1,4 @@
-import {
-    Address,
-    BigInt,
-    Bytes,
-    crypto,
-    dataSource,
-} from "@graphprotocol/graph-ts";
+import { Address, BigInt, Bytes, crypto } from "@graphprotocol/graph-ts";
 import {
     Initialize as InitializeEvent,
     Swap as SwapEvent,
@@ -14,13 +8,11 @@ import {
 } from "../../generated/templates/Pool/Pool";
 import { Position, Pool } from "../../generated/schema";
 import {
-    BD_0,
     BI_0,
     convertTokenToDecimal,
     createBaseEvent,
     getPoolOrThrow,
     getTokenOrThrow,
-    sqrtPriceToTokenPrices,
 } from "../commons";
 import { NON_FUNGIBLE_POSITION_MANAGER_ADDRESS } from "../addresses";
 
@@ -31,14 +23,6 @@ export function handleInitialize(event: InitializeEvent): void {
             `Could not find pool with address ${event.address.toHexString()}`,
         );
 
-    let context = dataSource.context();
-    let prices = sqrtPriceToTokenPrices(
-        event.params.price,
-        context.getBigInt("token0Decimals"),
-        context.getBigInt("token1Decimals"),
-    );
-    pool.token0Price = prices[0];
-    pool.token1Price = prices[1];
     pool.tick = BigInt.fromI32(event.params.tick);
     pool.save();
 }
@@ -73,13 +57,6 @@ export function handleSwap(event: SwapEvent): void {
 
     pool.token0Tvl = pool.token0Tvl.plus(amount0);
     pool.token1Tvl = pool.token1Tvl.plus(amount1);
-    let prices = sqrtPriceToTokenPrices(
-        event.params.price,
-        token0.decimals,
-        token1.decimals,
-    );
-    pool.token0Price = prices[0];
-    pool.token1Price = prices[1];
     pool.tick = newTick;
     pool.save();
 }
@@ -117,8 +94,6 @@ function getOrCreateDirectPosition(
     position.lowerTick = lowerTick;
     position.upperTick = upperTick;
     position.liquidity = BI_0;
-    position.token0Tvl = BD_0;
-    position.token1Tvl = BD_0;
     position.direct = true;
     position.pool = pool.id;
     position.save();
@@ -143,8 +118,6 @@ function getDirectPositionOrThrow(
 }
 
 export function handleMint(event: MintEvent): void {
-    if (event.params.owner == NON_FUNGIBLE_POSITION_MANAGER_ADDRESS) return;
-
     let pool = getPoolOrThrow(event.address);
 
     let amount0 = convertTokenToDecimal(
@@ -160,6 +133,8 @@ export function handleMint(event: MintEvent): void {
     pool.token1Tvl = pool.token1Tvl.plus(amount1);
     pool.save();
 
+    if (event.params.owner == NON_FUNGIBLE_POSITION_MANAGER_ADDRESS) return;
+
     let position = getOrCreateDirectPosition(
         event.address,
         event.params.owner,
@@ -167,23 +142,17 @@ export function handleMint(event: MintEvent): void {
         BigInt.fromI32(event.params.topTick),
     );
     position.liquidity = position.liquidity.plus(event.params.liquidityAmount);
-    position.token0Tvl = position.token0Tvl.plus(amount0);
-    position.token1Tvl = position.token1Tvl.plus(amount1);
     position.save();
 
     if (!event.params.liquidityAmount.isZero()) {
         let nonZeroLiquidityChange = createBaseEvent(event, position.pool);
         nonZeroLiquidityChange.liquidityDelta = event.params.liquidityAmount;
-        nonZeroLiquidityChange.token0TvlDelta = amount0;
-        nonZeroLiquidityChange.token1TvlDelta = amount1;
         nonZeroLiquidityChange.position = position.id;
         nonZeroLiquidityChange.save();
     }
 }
 
 export function handleBurn(event: BurnEvent): void {
-    if (event.params.owner == NON_FUNGIBLE_POSITION_MANAGER_ADDRESS) return;
-
     let pool = getPoolOrThrow(event.address);
 
     let amount0 = convertTokenToDecimal(
@@ -199,6 +168,8 @@ export function handleBurn(event: BurnEvent): void {
     pool.token1Tvl = pool.token1Tvl.minus(amount1);
     pool.save();
 
+    if (event.params.owner == NON_FUNGIBLE_POSITION_MANAGER_ADDRESS) return;
+
     let position = getDirectPositionOrThrow(
         event.address,
         event.params.owner,
@@ -206,27 +177,12 @@ export function handleBurn(event: BurnEvent): void {
         BigInt.fromI32(event.params.topTick),
     );
     position.liquidity = position.liquidity.minus(event.params.liquidityAmount);
-
-    let newToken0Tvl = position.token0Tvl.minus(amount0);
-    let token0TvlDelta = newToken0Tvl.lt(BD_0)
-        ? position.token0Tvl.neg()
-        : amount0.neg();
-    position.token0Tvl = newToken0Tvl.lt(BD_0) ? BD_0 : newToken0Tvl;
-
-    let newToken1Tvl = position.token1Tvl.minus(amount1);
-    let token1TvlDelta = newToken1Tvl.lt(BD_0)
-        ? position.token1Tvl.neg()
-        : amount1.neg();
-    position.token1Tvl = newToken1Tvl.lt(BD_0) ? BD_0 : newToken1Tvl;
-
     position.save();
 
     if (!event.params.liquidityAmount.isZero()) {
         let nonZeroLiquidityChange = createBaseEvent(event, position.pool);
         nonZeroLiquidityChange.liquidityDelta =
             event.params.liquidityAmount.neg();
-        nonZeroLiquidityChange.token0TvlDelta = token0TvlDelta;
-        nonZeroLiquidityChange.token1TvlDelta = token1TvlDelta;
         nonZeroLiquidityChange.position = position.id;
         nonZeroLiquidityChange.save();
     }

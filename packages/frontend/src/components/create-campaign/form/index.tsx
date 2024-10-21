@@ -5,7 +5,7 @@ import type {
 } from "@/src/types";
 import { useAccount, useChainId, useChains } from "wagmi";
 import { useMemo } from "react";
-import { AmmStep } from "./amm-step";
+import { DexStep } from "./dex-step";
 import { PoolStep } from "./pool-step";
 import { StartDateStep } from "./start-date-step";
 import { EndDateStep } from "./end-date-step";
@@ -40,14 +40,14 @@ export function CreateCampaignForm({
 
     return (
         <div className={styles.root}>
-            <AmmStep
+            <DexStep
                 disabled={unsupportedChain}
-                amm={payload?.amm}
-                onAmmChange={onPayloadChange}
+                dex={payload?.dex}
+                onDexChange={onPayloadChange}
             />
             <PoolStep
-                disabled={!payload?.amm || unsupportedChain}
-                amm={payload?.amm}
+                disabled={!payload?.dex || unsupportedChain}
+                dex={payload?.dex}
                 pool={payload?.pool}
                 onPoolChange={onPayloadChange}
             />

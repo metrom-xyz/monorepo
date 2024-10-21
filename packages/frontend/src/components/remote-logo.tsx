@@ -2,7 +2,7 @@ import {
     RemoteLogo as UiRemoteLogo,
     type RemoteLogoProps,
 } from "@metrom-xyz/ui";
-import { useTokenIconUri } from "../hooks/useTokenIconUri";
+import { useTokenIconUris } from "../hooks/useTokenIconUris";
 
 export function RemoteLogo({
     address,
@@ -11,13 +11,13 @@ export function RemoteLogo({
     loading,
     ...rest
 }: RemoteLogoProps) {
-    const { loading: loadingUri, uri } = useTokenIconUri(chain, address);
+    const { loading: loadingUri, uris } = useTokenIconUris(chain, [address]);
 
     return (
         <UiRemoteLogo
             address={address}
             {...rest}
-            src={src || uri}
+            src={src || (address && uris?.[address])}
             loading={loadingUri || loading}
         />
     );

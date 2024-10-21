@@ -3,12 +3,18 @@ export enum Environment {
     Production = "production",
 }
 
-export enum SupportedAmm {
+export enum SupportedDex {
     Univ3 = "uniswap-v3",
     TestIntegral = "test-integral",
     Swapsicle = "swapsicle",
     Kim = "kim",
     Panko = "panko",
+}
+
+export enum SupportedAmm {
+    ConcentratedLiquidityV3 = "concentrated-liquidity-v3",
+    StableSwap2 = "stable-swap-2",
+    StableSwap3 = "stable-swap-3",
 }
 
 export interface ServiceUrls {

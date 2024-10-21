@@ -1,0 +1,64 @@
+specVersion: 1.0.0
+indexerHints:
+  prune: never
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum
+    name: Factory
+    network: {{network}}
+    source:
+      abi: Factory
+      address: "{{FactoryAddress}}"
+      startBlock: {{FactoryStartBlock}}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      file: ./src/mappings/factory.ts
+      entities:
+        - Pool
+        - Token
+      abis:
+        - name: Factory
+          file: ../abis/StableSwapFactory.json
+        - name: Pool
+          file: ../abis/StableSwap3Pool.json
+        - name: Erc20
+          file: ../abis/Erc20.json
+        - name: Erc20BytesName
+          file: ../abis/Erc20BytesName.json
+        - name: Erc20BytesSymbol
+          file: ../abis/Erc20BytesSymbol.json
+      eventHandlers:
+        - event: NewStableSwapPair(indexed address,address,address,address,address)
+          handler: handleNewStableSwapPair
+templates:
+  - kind: ethereum/contract
+    name: Pool
+    network: {{network}}
+    source:
+      abi: Pool
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      file: ./src/mappings/pool.ts
+      entities:
+        - Pool
+        - Position
+        - Event
+      abis:
+        - name: Pool
+          file: ../abis/StableSwap3Pool.json
+      eventHandlers:
+        - event: TokenExchange(indexed address,uint256,uint256,uint256,uint256)
+          handler: handleTokenExchange
+        - event: AddLiquidity(indexed address,uint256[3],uint256[3],uint256,uint256)
+          handler: handleAddLiquidity
+        - event: RemoveLiquidity(indexed address,uint256[3],uint256[3],uint256)
+          handler: handleRemoveLiquidity
+        - event: RemoveLiquidityOne(indexed address,uint256,uint256,uint256)
+          handler: handleRemoveLiquidityOne
+        - event: RemoveLiquidityImbalance(indexed address,uint256[3],uint256[3],uint256,uint256)
+          handler: handleRemoveLiquidityImbalance
