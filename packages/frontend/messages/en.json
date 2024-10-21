@@ -292,7 +292,8 @@
             "noRewards": "No rewards distributed",
             "repartition": "Source repartition",
             "others": "Others"
-        }
+        },
+        "notFound": "Campaign not found!"
     },
     "claims": {
         "chain": "Chain",

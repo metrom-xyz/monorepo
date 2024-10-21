@@ -1,5 +1,7 @@
 "use client";
 
+import { usePrevious } from "react-use";
+import { useTranslations } from "next-intl";
 import type { SupportedChain } from "@metrom-xyz/contracts";
 import { useCampaign } from "@/src/hooks/useCampaign";
 import type { Hex } from "viem";
@@ -9,6 +11,7 @@ import { Rewards } from "./rewards";
 import { Leaderboard } from "./leaderboard";
 import { KPI } from "@/src/commons/env";
 import { Kpi } from "./kpi";
+import { PageNotFound } from "../page-not-found";
 
 import styles from "./styles.module.css";
 
@@ -18,11 +21,16 @@ interface CampaignDetailsProps {
 }
 
 export function CampaignDetails({ chain, campaignId }: CampaignDetailsProps) {
-    // TODO: add watch to hook to fetch live updates every distribution snapshot
+    const t = useTranslations("campaignDetails");
+
     const { loading: loadingCampaign, campaign } = useCampaign(
         chain,
         campaignId,
     );
+
+    const prevLoadingCampaign = usePrevious(loadingCampaign);
+    if (prevLoadingCampaign && !loadingCampaign && !campaign)
+        return <PageNotFound message={t("notFound")} />;
 
     return (
         <div className={styles.root}>
