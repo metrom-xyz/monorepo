@@ -96,10 +96,10 @@ export const filterPools = (pools: Pool[], searchQuery: string) => {
 
         if (poolByAddress) return [poolByAddress];
 
-        const poolByToken = pools.filter(
-            (pool) =>
-                pool.token0.address.toLowerCase() === lowercaseSearchQuery ||
-                pool.token1.address.toLowerCase() === lowercaseSearchQuery,
+        const poolByToken = pools.filter((pool) =>
+            pool.tokens.some(
+                (token) => token.address.toLowerCase() === lowercaseSearchQuery,
+            ),
         );
 
         return poolByToken;
