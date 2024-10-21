@@ -10,7 +10,7 @@
 }
 
 .leftWrapper {
-    @apply w-full flex flex-1 gap-3;
+    @apply w-full flex flex-1 gap-3 items-center;
 }
 
 .iconWrapper {

@@ -1,5 +1,5 @@
 import classNames from "classnames";
-import { Typography, Button, Skeleton } from "@metrom-xyz/ui";
+import { Typography, Button, Skeleton, Card } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
 import {
     useAccount,
@@ -119,7 +119,7 @@ export function TokenClaim({ chainId, tokenClaims }: TokenClaimProps) {
     ]);
 
     return (
-        <div className={styles.root}>
+        <Card className={styles.root}>
             <div className={styles.leftWrapper}>
                 <RemoteLogo
                     chain={chainId}
@@ -151,19 +151,19 @@ export function TokenClaim({ chainId, tokenClaims }: TokenClaimProps) {
                             tokenSymbol: tokenClaims.token.symbol,
                         })}
             </Button>
-        </div>
+        </Card>
     );
 }
 
 export function SkeletonTokenClaim() {
     return (
-        <div className={classNames(styles.root)}>
+        <Card className={classNames(styles.root)}>
             <div className={styles.leftWrapper}>
                 <RemoteLogo loading />
                 <Skeleton width={60} variant="lg" />
                 <Skeleton width={70} variant="lg" />
             </div>
             <Button variant="secondary" size="small" loading />
-        </div>
+        </Card>
     );
 }

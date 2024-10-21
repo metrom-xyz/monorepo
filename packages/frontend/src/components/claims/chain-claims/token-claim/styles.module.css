@@ -7,7 +7,6 @@
         items-start
         sm:items-center
         gap-3
-        bg-white
         rounded-xl
         p-4;
 }

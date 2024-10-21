@@ -1,5 +1,5 @@
 import classNames from "classnames";
-import { Typography, Skeleton, Select } from "@metrom-xyz/ui";
+import { Typography, Skeleton, Select, Card } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
 import type { ChainWithClaimsData } from "..";
 
@@ -16,7 +16,7 @@ export function Chains({ className, options, value, onChange }: ChainsProps) {
     const t = useTranslations("claims");
 
     return (
-        <div className={classNames(styles.root, className)}>
+        <Card className={classNames(styles.root, className)}>
             <Typography light weight="medium" className={styles.header}>
                 {t("chain")}
             </Typography>
@@ -45,7 +45,7 @@ export function Chains({ className, options, value, onChange }: ChainsProps) {
                     );
                 })}
             </div>
-        </div>
+        </Card>
     );
 }
 
@@ -53,7 +53,7 @@ const PLACEHOLDER = new Array(3).fill(null);
 
 export function ChainsSkeleton() {
     return (
-        <div className={styles.root}>
+        <Card className={styles.root}>
             <Skeleton width={60} className={styles.header} />
             {PLACEHOLDER.map((_, i) => {
                 return (
@@ -63,6 +63,6 @@ export function ChainsSkeleton() {
                     </div>
                 );
             })}
-        </div>
+        </Card>
     );
 }
