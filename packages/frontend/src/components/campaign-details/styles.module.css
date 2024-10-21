@@ -13,3 +13,7 @@
 .contentWrapper {
     @apply w-full max-w-screen-lg flex flex-col gap-16 px-5;
 }
+
+.notFound {
+    @apply flex flex-col justify-center items-center gap-10;
+}
