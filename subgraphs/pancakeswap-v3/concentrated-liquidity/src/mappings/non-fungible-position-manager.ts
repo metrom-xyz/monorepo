@@ -29,9 +29,10 @@ function getOrCreateNftPosition(tokenId: BigInt): Position | null {
     // (e.g. 0xf7867fa19aa65298fadb8d4f72d0daed5e836f3ba01f0b9b9631cdc6c36bed40)
     if (result.reverted) return null;
 
-    let poolAddress = FactoryContract.poolByPair(
+    let poolAddress = FactoryContract.getPool(
         result.value.getToken0(),
         result.value.getToken1(),
+        result.value.getFee(),
     );
 
     position = new Position(id);
@@ -55,12 +56,12 @@ export function handleIncreaseLiquidity(event: IncreaseLiquidityEvent): void {
     let position = getOrCreateNftPosition(event.params.tokenId);
     if (position == null) return;
 
-    position.liquidity = position.liquidity.plus(event.params.actualLiquidity);
+    position.liquidity = position.liquidity.plus(event.params.liquidity);
     position.save();
 
-    if (!event.params.actualLiquidity.isZero()) {
+    if (!event.params.liquidity.isZero()) {
         let nonZeroLiquidityChange = createBaseEvent(event, position.pool);
-        nonZeroLiquidityChange.liquidityDelta = event.params.actualLiquidity;
+        nonZeroLiquidityChange.liquidityDelta = event.params.liquidity;
         nonZeroLiquidityChange.position = position.id;
         nonZeroLiquidityChange.save();
     }

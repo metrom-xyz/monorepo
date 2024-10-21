@@ -5,25 +5,22 @@ import {
     Bytes,
     ethereum,
 } from "@graphprotocol/graph-ts";
-import { Block, Event, Pool, Token } from "../generated/schema";
-import { NonFungiblePositionManager } from "../generated/NonFungiblePositionManager/NonFungiblePositionManager";
-import { Factory } from "../generated/Factory/Factory";
-import {
-    FACTORY_ADDRESS,
-    NON_FUNGIBLE_POSITION_MANAGER_ADDRESS,
-} from "./addresses";
+import { Block, Event, Pool, Position, Token } from "../generated/schema";
 import { Erc20 } from "../generated/Factory/Erc20";
 import { Erc20BytesSymbol } from "../generated/Factory/Erc20BytesSymbol";
 import { Erc20BytesName } from "../generated/Factory/Erc20BytesName";
+import {
+    NATIVE_TOKEN_ADDRESS,
+    NATIVE_TOKEN_DECIMALS,
+    NATIVE_TOKEN_NAME,
+    NATIVE_TOKEN_SYMBOL,
+} from "./addresses";
 
+export const ADDRESS_ZERO = Address.zero();
 export const BI_0 = BigInt.zero();
 export const BI_1 = BigInt.fromI32(1);
 export const BD_0 = BigDecimal.zero();
 export const BD_10 = BigDecimal.fromString("10");
-
-export const NonFungiblePositionManagerContract =
-    NonFungiblePositionManager.bind(NON_FUNGIBLE_POSITION_MANAGER_ADDRESS);
-export const FactoryContract = Factory.bind(FACTORY_ADDRESS);
 
 export function getOrCreateBlock(event: ethereum.Event): Block {
     let block = Block.load(event.block.hash);
@@ -37,7 +34,10 @@ export function getOrCreateBlock(event: ethereum.Event): Block {
     return block;
 }
 
-export function createBaseEvent(event: ethereum.Event, poolId: Bytes): Event {
+export function createBaseEventEvent(
+    event: ethereum.Event,
+    poolId: Bytes,
+): Event {
     let id = changetype<Bytes>(
         event.block.number.leftShift(40).plus(event.logIndex).reverse(),
     );
@@ -55,6 +55,38 @@ export function getPoolOrThrow(address: Address): Pool {
     if (pool != null) return pool;
 
     throw new Error(`Could not find pool with address ${address.toHex()}`);
+}
+
+export function getOrCreatePosition(
+    poolAddress: Address,
+    owner: Address,
+): Position {
+    let id = poolAddress.concat(owner);
+    let position = Position.load(id);
+    if (position != null) return position;
+
+    let pool = getPoolOrThrow(poolAddress);
+
+    position = new Position(id);
+    position.owner = owner;
+    position.liquidity = BI_0;
+    position.pool = pool.id;
+    position.save();
+
+    return position;
+}
+
+export function getPositionOrThrow(
+    poolAddress: Address,
+    owner: Address,
+): Position {
+    let id = poolAddress.concat(owner);
+    let position = Position.load(id);
+    if (position != null) return position;
+
+    throw new Error(
+        `Could not find position on pool ${poolAddress.toHex()} for owner ${owner.toHex()}`,
+    );
 }
 
 export function getTokenOrThrow(address: Address): Token {
@@ -98,6 +130,15 @@ export function getOrCreateToken(address: Address): Token | null {
     let token = Token.load(address);
     if (token !== null) return token;
 
+    if (address == NATIVE_TOKEN_ADDRESS) {
+        token = new Token(NATIVE_TOKEN_ADDRESS);
+        token.symbol = NATIVE_TOKEN_SYMBOL;
+        token.name = NATIVE_TOKEN_NAME;
+        token.decimals = NATIVE_TOKEN_DECIMALS;
+        token.save();
+        return token;
+    }
+
     let symbol = fetchTokenSymbol(address);
     if (symbol === null) return null;
 
@@ -116,7 +157,7 @@ export function getOrCreateToken(address: Address): Token | null {
     return token;
 }
 
-function exponentToBigDecimal(decimals: BigInt): BigDecimal {
+export function exponentToBigDecimal(decimals: BigInt): BigDecimal {
     let bd = BigDecimal.fromString("1");
     for (let i = BI_0; i.lt(decimals as BigInt); i = i.plus(BI_1)) {
         bd = bd.times(BD_10);

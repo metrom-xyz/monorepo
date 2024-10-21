@@ -1,4 +1,4 @@
-import { DataSourceContext, log } from "@graphprotocol/graph-ts";
+import { log } from "@graphprotocol/graph-ts";
 import { Pool as PoolCreatedEvent } from "../../generated/Factory/Factory";
 import { Pool as PoolTemplate } from "../../generated/templates";
 import { Pool } from "../../generated/schema";
@@ -31,17 +31,10 @@ export function handlePoolCreated(event: PoolCreatedEvent): void {
     pool.token0Tvl = BD_0;
     pool.token1Tvl = BD_0;
 
-    pool.token0Price = BD_0;
-    pool.token1Price = BD_0;
-
     pool.tick = BI_0;
     pool.fee = BI_100;
 
     pool.save();
 
-    let context = new DataSourceContext();
-    context.setBigInt("token0Decimals", token0.decimals);
-    context.setBigInt("token1Decimals", token1.decimals);
-
-    PoolTemplate.createWithContext(event.params.pool, context);
+    PoolTemplate.create(event.params.pool);
 }

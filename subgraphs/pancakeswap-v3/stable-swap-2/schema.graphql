@@ -5,13 +5,19 @@ type Token @entity(immutable: true) {
     decimals: BigInt!
 }
 
+type Block @entity(immutable: true) {
+    id: Bytes!
+    number: BigInt!
+    timestamp: BigInt!
+}
+
 type Pool @entity {
     id: Bytes!
+    liquidity: BigInt!
     token0: Token!
     token1: Token!
     token0Tvl: BigDecimal!
     token1Tvl: BigDecimal!
-    tick: BigInt!
     fee: BigInt!
     positions: [Position!]! @derivedFrom(field: "pool")
     events: [Event!]! @derivedFrom(field: "pool")
@@ -20,18 +26,9 @@ type Pool @entity {
 type Position @entity {
     id: Bytes!
     owner: Bytes!
-    lowerTick: BigInt!
-    upperTick: BigInt!
     liquidity: BigInt!
-    direct: Boolean!
     pool: Pool!
     events: [Event!]! @derivedFrom(field: "position")
-}
-
-type Block @entity(immutable: true) {
-    id: Bytes!
-    number: BigInt!
-    timestamp: BigInt!
 }
 
 type Event @entity(immutable: true) {
@@ -40,11 +37,6 @@ type Event @entity(immutable: true) {
     block: Block!
     logIndex: BigInt!
     pool: Pool!
-
-    # non zero liquidity change fields
     liquidityDelta: BigInt
     position: Position
-
-    # tick moving swap fields
-    newTick: BigInt
 }

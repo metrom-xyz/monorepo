@@ -11,8 +11,6 @@ type Pool @entity {
     token1: Token!
     token0Tvl: BigDecimal!
     token1Tvl: BigDecimal!
-    token0Price: BigDecimal!
-    token1Price: BigDecimal!
     tick: BigInt!
     fee: BigInt!
     positions: [Position!]! @derivedFrom(field: "pool")
@@ -25,8 +23,6 @@ type Position @entity {
     lowerTick: BigInt!
     upperTick: BigInt!
     liquidity: BigInt!
-    token0Tvl: BigDecimal!
-    token1Tvl: BigDecimal!
     direct: Boolean!
     pool: Pool!
     events: [Event!]! @derivedFrom(field: "position")
@@ -47,8 +43,6 @@ type Event @entity(immutable: true) {
 
     # non zero liquidity change fields
     liquidityDelta: BigInt
-    token0TvlDelta: BigDecimal
-    token1TvlDelta: BigDecimal
     position: Position
 
     # tick moving swap fields

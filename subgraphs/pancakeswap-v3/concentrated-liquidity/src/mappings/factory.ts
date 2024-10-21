@@ -1,8 +1,8 @@
-import { BigInt, DataSourceContext, log } from "@graphprotocol/graph-ts";
+import { log } from "@graphprotocol/graph-ts";
 import { PoolCreated as PoolCreatedEvent } from "../../generated/Factory/Factory";
 import { Pool as PoolTemplate } from "../../generated/templates";
 import { Pool } from "../../generated/schema";
-import { BD_0, BI_0, getOrCreateToken } from "../commons";
+import { BD_0, BI_0, BI_100, getOrCreateToken } from "../commons";
 
 export function handlePoolCreated(event: PoolCreatedEvent): void {
     let token0 = getOrCreateToken(event.params.token0);
@@ -32,13 +32,9 @@ export function handlePoolCreated(event: PoolCreatedEvent): void {
     pool.token1Tvl = BD_0;
 
     pool.tick = BI_0;
-    pool.fee = BigInt.fromU32(event.params.fee);
+    pool.fee = BI_100;
 
     pool.save();
 
-    let context = new DataSourceContext();
-    context.setBigInt("token0Decimals", token0.decimals);
-    context.setBigInt("token1Decimals", token1.decimals);
-
-    PoolTemplate.createWithContext(event.params.pool, context);
+    PoolTemplate.create(event.params.pool);
 }
