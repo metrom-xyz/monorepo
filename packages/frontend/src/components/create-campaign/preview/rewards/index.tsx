@@ -41,8 +41,8 @@ export function Rewards({ rewards, startDate, endDate }: RewardsProps) {
     const dailyRewards = useMemo(() => {
         if (!endDate || !startDate || !totalRewardsUsdAmount) return 0;
 
-        const daysDuration = endDate.diff(startDate, "days", false);
-
+        const hoursDuration = endDate.diff(startDate, "hours", false);
+        const daysDuration = hoursDuration / 24;
         return daysDuration > 0 ? totalRewardsUsdAmount / daysDuration : 0;
     }, [startDate, endDate, totalRewardsUsdAmount]);
 
