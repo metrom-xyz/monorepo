@@ -37,14 +37,14 @@ export const taikoData: ChainData = {
         },
         {
             address: "0xA9d23408b9bA935c230493c40C73824Df71A0975",
-            symbol: "Taiko Token",
-            name: "TAIKO",
+            symbol: "TAIKO",
+            name: "Taiko Token",
             decimals: 18,
         },
         {
             address: "0xA51894664A773981C6C112C43ce576f315d5b1B6",
-            symbol: "Wrapped Ether",
-            name: "WETH",
+            symbol: "WETH",
+            name: "Wrapped Ether",
             decimals: 18,
         },
     ],
