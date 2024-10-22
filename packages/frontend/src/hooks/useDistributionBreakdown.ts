@@ -106,9 +106,9 @@ export function useDistributionBreakdown(campaign?: Campaign): {
         const totalDistributedAmountByToken: Record<Address, bigint> = {};
         const weightByAccount: Record<Address, bigint> = {};
         for (const leaf of snapshot.leaves) {
-            totalWeight += leaf.amount;
-
             if (leaf.account === zeroAddress) continue;
+
+            totalWeight += leaf.amount;
 
             if (!totalDistributedAmountByToken[leaf.tokenAddress])
                 totalDistributedAmountByToken[leaf.tokenAddress] = leaf.amount;
