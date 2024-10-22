@@ -24,7 +24,7 @@ export function Rewards({ campaign, loading }: RewardsProps) {
             .diff(dayjs.unix(campaign.from), "hours", false);
         const daysDuration = hoursDuration / 24;
 
-        return daysDuration > 0
+        return daysDuration >= 1
             ? campaign.rewards.amountUsdValue / daysDuration
             : 0;
     }, [campaign]);

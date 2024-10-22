@@ -43,7 +43,8 @@ export function Rewards({ rewards, startDate, endDate }: RewardsProps) {
 
         const hoursDuration = endDate.diff(startDate, "hours", false);
         const daysDuration = hoursDuration / 24;
-        return daysDuration > 0 ? totalRewardsUsdAmount / daysDuration : 0;
+
+        return daysDuration >= 1 ? totalRewardsUsdAmount / daysDuration : 0;
     }, [startDate, endDate, totalRewardsUsdAmount]);
 
     const { data: fee } = useReadContract({
