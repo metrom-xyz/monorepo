@@ -163,12 +163,8 @@ function RankTooltip({ active, payload }: any) {
 
     if (!payload || !payload.length) return null;
 
-    console.log(payload);
-
     const name = payload[0].payload.name || payload[0].name;
     const color = payload[0].payload.color;
-
-    console.log({ color });
 
     return transition(
         (style, active) =>
