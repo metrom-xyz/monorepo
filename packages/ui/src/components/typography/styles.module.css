@@ -27,7 +27,7 @@
 }
 
 .lg {
-    @apply font-normal font-sans text-lg leading-5;
+    @apply font-normal font-sans text-lg;
 }
 
 .xl {
