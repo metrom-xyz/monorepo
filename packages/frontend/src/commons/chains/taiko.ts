@@ -3,9 +3,11 @@ import { SupportedChain, ADDRESS } from "@metrom-xyz/contracts";
 import { type ChainData } from "..";
 import { TaikoLogo } from "@/src/assets/logos/chains/taiko";
 import { PankoLogo } from "@/src/assets/logos/dexes/panko";
+import { taiko } from "viem/chains";
 
 export const taikoData: ChainData = {
     metromContract: ADDRESS[SupportedChain.Taiko],
+    blockExplorers: taiko.blockExplorers,
     icon: TaikoLogo,
     dexes: [
         {

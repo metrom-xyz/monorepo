@@ -3,9 +3,11 @@ import { SupportedChain, ADDRESS } from "@metrom-xyz/contracts";
 import { type ChainData } from "../index";
 import { UniswapLogo } from "../../assets/logos/dexes/uniswap";
 import { CeloLogo } from "../../assets/logos/chains/celo";
+import { celoAlfajores } from "viem/chains";
 
 export const celoAlfajoresData: ChainData = {
     metromContract: ADDRESS[SupportedChain.CeloAlfajores],
+    blockExplorers: celoAlfajores.blockExplorers,
     icon: CeloLogo,
     dexes: [
         {
@@ -13,8 +15,6 @@ export const celoAlfajoresData: ChainData = {
             logo: UniswapLogo,
             name: "Uniswap v3",
             addLiquidityUrl: "https://app.uniswap.org/add/{target_pool}",
-            poolExplorerUrl:
-                "https://app.uniswap.org/explore/pools/celo_alfajores/{target_pool}",
         },
     ],
     baseTokens: [

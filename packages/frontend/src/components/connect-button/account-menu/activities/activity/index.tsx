@@ -3,12 +3,14 @@ import { NewCampaignIcon } from "@/src/assets/new-campaign-icon";
 import type { Activity } from "@metrom-xyz/sdk";
 import dayjs from "dayjs";
 import { useTranslations } from "next-intl";
-import { Typography, Skeleton } from "@metrom-xyz/ui";
+import { Typography, Skeleton, Button } from "@metrom-xyz/ui";
 import { Link } from "@/src/i18n/routing";
 import classNames from "classnames";
 import { formatTokenAmount } from "@/src/utils/format";
 import { trackFathomEvent } from "@/src/utils/fathom";
 import { RemoteLogo } from "@/src/components/remote-logo";
+import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
+import { getTxExplorerLink } from "@/src/utils/dex";
 
 import styles from "./styles.module.css";
 
@@ -21,6 +23,7 @@ export function Activity({ chainId, transaction, payload }: ActivityProps) {
 
     const time = dayjs.unix(transaction.timestamp).to(dayjs(), true);
     const timeAgo = t("timeAgo", { time });
+    const explorerLink = getTxExplorerLink(chainId, transaction.hash);
 
     const { Icon, title } =
         payload.type === "create-campaign"
@@ -44,9 +47,27 @@ export function Activity({ chainId, transaction, payload }: ActivityProps) {
                     <Icon className={styles.icon} />
                 </div>
                 <div className={styles.leftBodyWrapper}>
-                    <Typography light weight="medium" uppercase variant="sm">
-                        {title}
-                    </Typography>
+                    <div className={styles.titleWrapper}>
+                        <Typography
+                            light
+                            weight="medium"
+                            uppercase
+                            variant="sm"
+                        >
+                            {title}
+                        </Typography>
+                        {explorerLink && (
+                            <a
+                                href={explorerLink}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >
+                                <ArrowRightIcon
+                                    className={styles.externalLinkIcon}
+                                />
+                            </a>
+                        )}
+                    </div>
                     {payload.type === "create-campaign" ? (
                         <Link
                             href={`/campaigns/${chainId}/${payload.id}`}
