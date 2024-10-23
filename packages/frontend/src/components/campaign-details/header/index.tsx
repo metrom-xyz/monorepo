@@ -128,7 +128,11 @@ export function SkeletonHeader() {
         <div className={styles.root}>
             <div className={styles.titleContainer}>
                 <div className={styles.title}>
-                    <PoolRemoteLogo tokens={[{}, {}]} loading size="xl" />
+                    <PoolRemoteLogo
+                        tokens={[{ address: "0x1" }, { address: "0x2" }]}
+                        loading
+                        size="xl"
+                    />
                     <Skeleton variant="xl2" width={400} />
                     <Skeleton variant="lg" width={60} />
                 </div>

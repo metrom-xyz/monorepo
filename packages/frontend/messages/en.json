@@ -290,7 +290,7 @@
             "account": "Account",
             "rewardsDistributed": "Distributed",
             "noRewards": "No rewards distributed",
-            "repartition": "Source repartition",
+            "repartition": "LP distribution",
             "others": "Others"
         },
         "notFound": "Campaign not found!"
@@ -317,6 +317,17 @@
                 "single": "Claim failed",
                 "all": "Claim all failed",
                 "message": "Something went wrong"
+            }
+        }
+    },
+    "reimbursements": {
+        "title": "Reimbursements",
+        "recoverByToken": "Recover all {tokenSymbol}",
+        "recoveringByToken": "Recovering {tokenSymbol}",
+        "loading": "Loading",
+        "notification": {
+            "success": {
+                "message": ""
             }
         }
     },
