@@ -6,7 +6,7 @@ import { Cell, Pie, PieChart, Tooltip } from "recharts";
 import type { Address } from "viem";
 import { useTransition, animated } from "@react-spring/web";
 import { formatPercentage } from "@/src/utils/format";
-import { shuffleArray } from "@/src/utils/common";
+import { shuffle } from "@/src/utils/common";
 import type { PersonalRank } from "..";
 
 import styles from "./styles.module.css";
@@ -25,7 +25,7 @@ interface ChartData {
 }
 
 const CELLS_LIMIT = 5;
-const CELLS_COLORS = shuffleArray([
+const CELLS_COLORS = shuffle([
     "#f87171", // red-400
     "#fb923c", // orange-400
     "#facc15", // amber-400
