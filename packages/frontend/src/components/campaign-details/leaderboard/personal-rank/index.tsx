@@ -1,14 +1,11 @@
 import { useAccount } from "wagmi";
-import { useMemo } from "react";
 import { Typography, Button } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
-import type { DistributionBreakdown } from "@/src/hooks/useDistributionBreakdown";
 import { SupportedChain } from "@metrom-xyz/contracts";
 import { shortenAddress } from "@/src/utils/address";
 import { WalletIcon } from "@/src/assets/wallet-icon";
 import { useConnectModal } from "@rainbow-me/rainbowkit";
-import { SkeletonRow } from "..";
-import type { Address } from "viem";
+import { SkeletonRow, type PersonalRank } from "..";
 import { RewardsBreakdown } from "../rewards-breakdown";
 import { formatPercentage } from "@/src/utils/format";
 
@@ -17,13 +14,13 @@ import styles from "./styles.module.css";
 interface PersonalRankProps {
     chain?: SupportedChain;
     loading: boolean;
-    distributionBreakdown?: DistributionBreakdown;
+    personalRank?: PersonalRank;
 }
 
 export function PersonalRank({
     chain,
     loading,
-    distributionBreakdown,
+    personalRank,
 }: PersonalRankProps) {
     const t = useTranslations("campaignDetails.leaderboard.personalRank");
 
@@ -33,23 +30,6 @@ export function PersonalRank({
         isReconnecting: accountReconnecting,
     } = useAccount();
     const { openConnectModal } = useConnectModal();
-
-    const personalDistribution = useMemo(() => {
-        if (!connectedAddress || !distributionBreakdown) return undefined;
-
-        const personalDistributionIndex = Object.keys(
-            distributionBreakdown.sortedDistributionsByAccount,
-        ).findIndex((account) => account === connectedAddress.toLowerCase());
-
-        return personalDistributionIndex < 0
-            ? null
-            : {
-                  ...distributionBreakdown.sortedDistributionsByAccount[
-                      connectedAddress.toLowerCase() as Address
-                  ],
-                  position: personalDistributionIndex + 1,
-              };
-    }, [connectedAddress, distributionBreakdown]);
 
     return (
         <div className={styles.root}>
@@ -75,7 +55,7 @@ export function PersonalRank({
                 >
                     {t("connect")}
                 </Button>
-            ) : !personalDistribution ? (
+            ) : !personalRank ? (
                 <Typography weight="medium" light>
                     {t("noRewards")}
                 </Typography>
@@ -83,10 +63,10 @@ export function PersonalRank({
                 <div className={styles.row}>
                     <div>
                         <Typography weight="medium" light>
-                            # {personalDistribution.position}
+                            # {personalRank.position}
                         </Typography>
                         <Typography weight="medium">
-                            {formatPercentage(personalDistribution.percentage)}
+                            {formatPercentage(personalRank.percentage)}
                         </Typography>
                     </div>
                     <Typography weight="medium">
@@ -94,8 +74,8 @@ export function PersonalRank({
                     </Typography>
                     <RewardsBreakdown
                         chain={chain}
-                        accrued={personalDistribution.accrued}
-                        usdValue={personalDistribution.usdValue}
+                        accrued={personalRank.accrued}
+                        usdValue={personalRank.usdValue}
                     />
                 </div>
             )}

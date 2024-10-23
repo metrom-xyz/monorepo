@@ -1,14 +1,16 @@
 import { useDistributionBreakdown } from "@/src/hooks/useDistributionBreakdown";
-import { type Campaign } from "@metrom-xyz/sdk";
+import { type Campaign, type UsdPricedErc20TokenAmount } from "@metrom-xyz/sdk";
 import { shortenAddress } from "@/src/utils/address";
 import { Typography, Skeleton } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
 import dayjs from "dayjs";
 import { PersonalRank } from "./personal-rank";
 import { RepartitionChart } from "./repartition-chart";
+import { useAccount } from "wagmi";
 import type { Address } from "viem";
 import { RewardsBreakdown } from "./rewards-breakdown";
 import { formatPercentage } from "@/src/utils/format";
+import { useMemo } from "react";
 
 import styles from "./styles.module.css";
 
@@ -17,13 +19,40 @@ interface LeaderboardProps {
     loading: boolean;
 }
 
+export interface PersonalRank {
+    account: Address;
+    position: number;
+    percentage: number;
+    usdValue: number | null;
+    accrued: UsdPricedErc20TokenAmount[];
+}
+
 export function Leaderboard({ campaign, loading }: LeaderboardProps) {
     const t = useTranslations("campaignDetails.leaderboard");
 
+    const { address: connectedAddress } = useAccount();
     const {
         loading: loadingDistributionBreakdown,
         breakdown: distributionBreakdown,
     } = useDistributionBreakdown(campaign);
+
+    const personalRank: PersonalRank | undefined = useMemo(() => {
+        if (!connectedAddress || !distributionBreakdown) return undefined;
+
+        const personalRankIndex = Object.keys(
+            distributionBreakdown.sortedDistributionsByAccount,
+        ).findIndex((account) => account === connectedAddress.toLowerCase());
+
+        return personalRankIndex < 0
+            ? undefined
+            : {
+                  ...distributionBreakdown.sortedDistributionsByAccount[
+                      connectedAddress.toLowerCase() as Address
+                  ],
+                  account: connectedAddress,
+                  position: personalRankIndex + 1,
+              };
+    }, [connectedAddress, distributionBreakdown]);
 
     return (
         <div className={styles.root}>
@@ -57,7 +86,7 @@ export function Leaderboard({ campaign, loading }: LeaderboardProps) {
                     <PersonalRank
                         chain={campaign?.chainId}
                         loading={loadingDistributionBreakdown}
-                        distributionBreakdown={distributionBreakdown}
+                        personalRank={personalRank}
                     />
                     <div className={styles.tableWrapper}>
                         <div className={styles.header}>
@@ -137,6 +166,7 @@ export function Leaderboard({ campaign, loading }: LeaderboardProps) {
                     <RepartitionChart
                         loading={loading}
                         distributionBreakdown={distributionBreakdown}
+                        personalRank={personalRank}
                     />
                 </div>
             </div>
