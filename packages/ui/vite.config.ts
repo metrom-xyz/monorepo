@@ -1,9 +1,5 @@
 import { defineConfig } from "vite";
-import {
-    peerDependencies,
-    dependencies,
-    devDependencies,
-} from "./package.json";
+import { peerDependencies, devDependencies } from "./package.json";
 
 export default defineConfig({
     build: {
@@ -16,7 +12,6 @@ export default defineConfig({
         rollupOptions: {
             external: [
                 ...Object.keys(peerDependencies),
-                ...Object.keys(dependencies),
                 ...Object.keys(devDependencies),
                 "react/jsx-runtime",
             ],
