@@ -12,7 +12,7 @@ import { EndDateStep } from "./end-date-step";
 import { RewardsStep } from "./rewards-step";
 import { RestrictionsStep } from "./restrictions-step";
 import { KpiStep } from "./kpi-step";
-import { KPI, RESTRICTIONS } from "@/src/commons/env";
+import { KPI } from "@/src/commons/env";
 
 import styles from "./styles.module.css";
 
@@ -84,14 +84,12 @@ export function CreateCampaignForm({
                     onError={onPayloadError}
                 />
             )}
-            {RESTRICTIONS && (
-                <RestrictionsStep
-                    disabled={!payload?.rewards || unsupportedChain}
-                    restrictions={payload?.restrictions}
-                    onRestrictionsChange={onPayloadChange}
-                    onError={onPayloadError}
-                />
-            )}
+            <RestrictionsStep
+                disabled={!payload?.rewards || unsupportedChain}
+                restrictions={payload?.restrictions}
+                onRestrictionsChange={onPayloadChange}
+                onError={onPayloadError}
+            />
         </div>
     );
 }
