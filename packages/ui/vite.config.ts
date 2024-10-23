@@ -10,7 +10,7 @@ export default defineConfig({
             formats: ["es"],
         },
         rollupOptions: {
-            external: Object.keys(peerDependencies),
+            external: [...Object.keys(peerDependencies), "react/jsx-runtime"],
             output: {
                 preserveModules: true,
                 preserveModulesRoot: "src",
