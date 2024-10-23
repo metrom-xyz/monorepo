@@ -7,6 +7,10 @@ export interface ChainConfig {
         address: string;
         startBlock: number;
     };
+    MasterChefV3: {
+        address: string;
+        startBlock: number;
+    };
 }
 
 export const DEPLOYMENTS: {
@@ -21,6 +25,10 @@ export const DEPLOYMENTS: {
             NonFungiblePositionManager: {
                 address: "0xbbD6db7cDb3C3a0Ce26c89918D7ce99FB2d403aF",
                 startBlock: 433334,
+            },
+            MasterChefV3: {
+                address: "0x2E47e7e2d7A75D1473995441BbcE7888DC035E74",
+                startBlock: 433363,
             },
         },
     },

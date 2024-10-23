@@ -11,6 +11,7 @@ import {
     NonFungiblePositionManagerContract,
     createBaseEvent,
 } from "../commons";
+import { MASTERCHEF_V3_ADDRESS } from "../addresses";
 
 function getNftPositionId(tokenId: BigInt): Bytes {
     return Bytes.fromByteArray(Bytes.fromBigInt(tokenId));
@@ -88,6 +89,12 @@ export function handleTransfer(event: TransferEvent): void {
     // event is always emitted, so we register the position there if non-zero
     // liquidity is added
     if (event.params.from == Address.zero()) return;
+
+    if (
+        event.params.from == MASTERCHEF_V3_ADDRESS ||
+        event.params.to == MASTERCHEF_V3_ADDRESS
+    )
+        return;
 
     let position = getNftPosition(event.params.tokenId);
     if (position == null) return;
