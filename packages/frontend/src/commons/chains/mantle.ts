@@ -3,9 +3,11 @@ import { SupportedChain, ADDRESS } from "@metrom-xyz/contracts";
 import { MantleLogo } from "../../assets/logos/chains/mantle";
 import { SwapsicleLogo } from "../../assets/logos/dexes/swapsicle";
 import { type ChainData } from "..";
+import { mantle } from "viem/chains";
 
 export const mantleData: ChainData = {
     metromContract: ADDRESS[SupportedChain.Mantle],
+    blockExplorers: mantle.blockExplorers,
     icon: MantleLogo,
     dexes: [
         {

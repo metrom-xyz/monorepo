@@ -3,9 +3,11 @@ import { EthLogo } from "../../assets/logos/chains/eth";
 import { AlgebraIntegralLogo } from "../../assets/logos/dexes/algebra-integral";
 import { SupportedChain, ADDRESS } from "@metrom-xyz/contracts";
 import { type ChainData } from "../index";
+import { holesky } from "viem/chains";
 
 export const holeskyData: ChainData = {
     metromContract: ADDRESS[SupportedChain.Holesky],
+    blockExplorers: holesky.blockExplorers,
     icon: EthLogo,
     dexes: [
         {
@@ -14,8 +16,6 @@ export const holeskyData: ChainData = {
             name: "Algebra integral",
             addLiquidityUrl:
                 "https://integral.algebra.finance/pool/{target_pool}/new-position",
-            poolExplorerUrl:
-                "https://integral.algebra.finance/pool/{target_pool}",
         },
     ],
     baseTokens: [

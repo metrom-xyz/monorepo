@@ -3,9 +3,11 @@ import { SupportedChain, ADDRESS } from "@metrom-xyz/contracts";
 import { BaseLogo } from "../../assets/logos/chains/base";
 import { KimLogo } from "../../assets/logos/dexes/kim";
 import { type ChainData } from "..";
+import { base } from "viem/chains";
 
 export const baseData: ChainData = {
     metromContract: ADDRESS[SupportedChain.Base],
+    blockExplorers: base.blockExplorers,
     icon: BaseLogo,
     dexes: [
         {

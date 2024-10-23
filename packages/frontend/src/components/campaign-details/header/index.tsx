@@ -28,11 +28,7 @@ export function Header({ campaign }: HeaderProps) {
         campaign.pool.dex,
         campaign.pool,
     );
-    const exploreLink = getPoolExplorerLink(
-        campaign.chainId,
-        campaign.pool.dex,
-        campaign.pool,
-    );
+    const explorerLink = getPoolExplorerLink(campaign.chainId, campaign.pool);
 
     function handleAddLiquidityOnClick() {
         trackFathomEvent("CLICK_POOL_DEPOSIT");
@@ -92,8 +88,8 @@ export function Header({ campaign }: HeaderProps) {
                         variant="secondary"
                         border={false}
                         icon={ArrowRightIcon}
-                        href={exploreLink}
-                        disabled={!exploreLink}
+                        href={explorerLink}
+                        disabled={!explorerLink}
                         onClick={handleExploreOnClick}
                         target="_blank"
                         rel="noopener noreferrer"

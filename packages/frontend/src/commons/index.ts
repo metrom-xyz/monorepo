@@ -36,6 +36,7 @@ import {
 
 export interface ChainData {
     metromContract: ChainContract;
+    blockExplorers: Chain["blockExplorers"];
     icon: FunctionComponent<SVGIcon>;
     dexes: Dex[];
     baseTokens: Erc20Token[];

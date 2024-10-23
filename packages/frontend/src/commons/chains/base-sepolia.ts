@@ -4,9 +4,11 @@ import { BaseLogo } from "../../assets/logos/chains/base";
 import { KimLogo } from "../../assets/logos/dexes/kim";
 import { type ChainData } from "..";
 import { UniswapLogo } from "@/src/assets/logos/dexes/uniswap";
+import { baseSepolia } from "viem/chains";
 
 export const baseSepoliaData: ChainData = {
     metromContract: ADDRESS[SupportedChain.BaseSepolia],
+    blockExplorers: baseSepolia.blockExplorers,
     icon: BaseLogo,
     dexes: [
         {

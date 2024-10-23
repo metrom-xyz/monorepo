@@ -32,6 +32,12 @@ export const sonicTestnet = defineChain({
 
 export const sonicTestnetData: ChainData = {
     metromContract: ADDRESS[SupportedChain.SonicTestnet]!,
+    blockExplorers: {
+        default: {
+            name: "Sonic Testnet",
+            url: "https://testnet.soniclabs.com",
+        },
+    },
     icon: SonicLogo,
     dexes: [],
     baseTokens: [],
