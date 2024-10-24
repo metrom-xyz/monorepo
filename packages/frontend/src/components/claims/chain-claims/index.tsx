@@ -4,10 +4,9 @@ import { type Address } from "viem";
 import { SkeletonTokenClaim, TokenClaim } from "./token-claim";
 import type { ChainWithRewardsData } from "..";
 
-type ChainOverviewProps = Omit<
-    ChainWithRewardsData,
-    "reimbursements" | "chainData"
->;
+type ChainOverviewProps = {
+    claimingAll?: boolean;
+} & Omit<ChainWithRewardsData, "reimbursements" | "chainData">;
 
 export interface TokenClaims {
     token: Erc20Token;
@@ -15,7 +14,11 @@ export interface TokenClaims {
     totalAmount: number;
 }
 
-export function ChainClaims({ chain, claims }: ChainOverviewProps) {
+export function ChainClaims({
+    chain,
+    claims,
+    claimingAll,
+}: ChainOverviewProps) {
     const perToken = useMemo(() => {
         const reduced = claims.reduce(
             (acc, claim) => {
@@ -41,6 +44,7 @@ export function ChainClaims({ chain, claims }: ChainOverviewProps) {
                 key={tokenClaims.token.address}
                 chainId={chain.id}
                 tokenClaims={tokenClaims}
+                disabled={claimingAll}
             />
         );
     });

@@ -10,7 +10,7 @@ import {
     useWriteContract,
 } from "wagmi";
 import { metromAbi } from "@metrom-xyz/contracts/abi";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { trackFathomEvent } from "@/src/utils/fathom";
 import { toast } from "sonner";
 import { ClaimSuccess } from "../notification/claim-success";
@@ -24,11 +24,15 @@ import styles from "./styles.module.css";
 interface ChainOverviewProps {
     className?: string;
     chainWithRewardsData: ChainWithRewardsData;
+    onClaiming?: (value: boolean) => void;
+    onRecovering?: (value: boolean) => void;
 }
 
 export function ChainOverview({
     className,
     chainWithRewardsData,
+    onClaiming,
+    onRecovering,
 }: ChainOverviewProps) {
     const t = useTranslations("rewards");
     const { address: account } = useAccount();
@@ -98,6 +102,14 @@ export function ChainOverview({
             enabled: account && chainWithRewardsData.claims.length > 0,
         },
     });
+
+    useEffect(() => {
+        if (onClaiming) onClaiming(claiming);
+    }, [claiming, onClaiming]);
+
+    useEffect(() => {
+        if (onRecovering) onRecovering(recovering);
+    }, [recovering, onRecovering]);
 
     const handleRecoverAll = useCallback(() => {
         if (

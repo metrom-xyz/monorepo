@@ -31,6 +31,8 @@ export function Claims() {
     const [chainWithRewardsData, setChainWithRewardsData] =
         useState<ChainWithRewardsData | null>(null);
     const [initializing, setInitializing] = useState(false);
+    const [claimingAll, setClaimingAll] = useState(false);
+    const [recoveringAll, setRecoveringAll] = useState(false);
 
     const { loading: loadingClaims, claims } = useClaims();
     const { loading: loadingReimbursements, reimbursements } =
@@ -129,15 +131,21 @@ export function Claims() {
                 onChange={setChainWithRewardsData}
             />
             <div className={styles.rightWrapper}>
-                <ChainOverview chainWithRewardsData={chainWithRewardsData} />
+                <ChainOverview
+                    chainWithRewardsData={chainWithRewardsData}
+                    onClaiming={setClaimingAll}
+                    onRecovering={setRecoveringAll}
+                />
                 <ChainClaims
                     chain={chainWithRewardsData.chain}
                     claims={chainWithRewardsData.claims}
+                    claimingAll={claimingAll}
                 />
                 {chainWithRewardsData.reimbursements.length > 0 && (
                     <ChainReimbursements
                         chain={chainWithRewardsData.chain}
                         reimbursements={chainWithRewardsData.reimbursements}
+                        recoveringAll={recoveringAll}
                     />
                 )}
             </div>

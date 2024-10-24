@@ -8,7 +8,7 @@ import { useTranslations } from "next-intl";
 
 import styles from "./styles.module.css";
 
-type ChainReimbursementProps = Omit<
+type ChainReimbursementProps = { recoveringAll?: boolean } & Omit<
     ChainWithRewardsData,
     "claims" | "chainData"
 >;
@@ -22,6 +22,7 @@ export interface TokenReimbursements {
 export function ChainReimbursements({
     chain,
     reimbursements,
+    recoveringAll,
 }: ChainReimbursementProps) {
     const t = useTranslations("rewards.reimbursements");
 
@@ -59,6 +60,7 @@ export function ChainReimbursements({
                             key={tokenReimbursement.token.address}
                             chainId={chain.id}
                             tokenReimbursements={tokenReimbursement}
+                            disabled={recoveringAll}
                         />
                     );
                 })}
