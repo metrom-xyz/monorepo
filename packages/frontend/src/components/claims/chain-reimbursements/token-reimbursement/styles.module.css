@@ -1,0 +1,17 @@
+.root {
+    @apply w-full
+        flex
+        flex-col
+        sm:flex-row
+        justify-between
+        items-start
+        sm:items-center
+        gap-3
+        bg-white
+        rounded-xl
+        p-4;
+}
+
+.leftWrapper {
+    @apply w-full max-w-96 flex items-center gap-3;
+}

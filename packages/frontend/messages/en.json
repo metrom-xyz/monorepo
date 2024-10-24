@@ -295,28 +295,47 @@
         },
         "notFound": "Campaign not found!"
     },
-    "claims": {
-        "chain": "Chain",
-        "claimAll": "Claim all",
-        "claimingAll": "Claiming all",
-        "claimByToken": "Claim all {tokenSymbol}",
-        "claimingByToken": "Claiming {tokenSymbol}",
-        "loading": "Loading",
-        "empty": {
-            "title": "No claims found",
-            "body": "There are currently no claims associated with the connected wallet. Explore the available opportunities on the all campaigns page.",
-            "action": "All campaigns"
-        },
-        "notification": {
-            "success": {
-                "single": "Claim successful",
-                "all": "Claim all successful",
-                "message": "All rewards claimed"
+    "rewards": {
+        "claims": {
+            "chain": "Chain",
+            "claimAll": "Claim all",
+            "claimingAll": "Claiming all",
+            "claimByToken": "Claim all {tokenSymbol}",
+            "claimingByToken": "Claiming {tokenSymbol}",
+            "loading": "Loading",
+            "empty": {
+                "title": "No claims found",
+                "body": "There are currently no claims associated with the connected wallet. Explore the available opportunities on the all campaigns page.",
+                "action": "All campaigns"
             },
-            "fail": {
-                "single": "Claim failed",
-                "all": "Claim all failed",
-                "message": "Something went wrong"
+            "notification": {
+                "success": {
+                    "single": "Claim successful",
+                    "all": "Claim all successful",
+                    "message": "All rewards claimed"
+                },
+                "fail": {
+                    "single": "Claim failed",
+                    "all": "Claim all failed",
+                    "message": "Something went wrong"
+                }
+            }
+        },
+        "reimbursements": {
+            "title": "Reimbursements",
+            "loading": "Loading",
+            "recoverAll": "Recover all",
+            "recoveringAll": "Recovering all",
+            "recoverByToken": "Recover all {tokenSymbol}",
+            "recoveringByToken": "Recovering {tokenSymbol}",
+            "notification": {
+                "success": {
+                    "message": "Recover successful"
+                },
+                "fail": {
+                    "title": "Recover failed",
+                    "message": "Something went wrong"
+                }
             }
         }
     },
