@@ -1,19 +1,20 @@
 import classNames from "classnames";
-import { Typography, Skeleton, Select, Card } from "@metrom-xyz/ui";
+import { Typography, Skeleton, Card } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
-import type { ChainWithClaimsData } from "..";
+import type { ChainWithRewardsData } from "..";
+import { useSwitchChain } from "wagmi";
 
 import styles from "./styles.module.css";
 
 interface ChainsProps {
     className?: string;
-    options: ChainWithClaimsData[];
-    value: ChainWithClaimsData | null;
-    onChange: (value: ChainWithClaimsData) => void;
+    options: ChainWithRewardsData[];
+    value: ChainWithRewardsData | null;
+    onChange: (value: ChainWithRewardsData) => void;
 }
 
 export function Chains({ className, options, value, onChange }: ChainsProps) {
-    const t = useTranslations("claims");
+    const t = useTranslations("rewards.claims");
 
     return (
         <Card className={classNames(styles.root, className)}>
@@ -22,7 +23,11 @@ export function Chains({ className, options, value, onChange }: ChainsProps) {
             </Typography>
             <div className={styles.chainsWrapper}>
                 {options.map((option) => {
-                    if (option.claims.length === 0) return null;
+                    if (
+                        option.claims.length === 0 &&
+                        option.reimbursements.length === 0
+                    )
+                        return null;
 
                     const ChainIcon = option.chainData.icon;
 

@@ -2,24 +2,21 @@ import { Error } from "@/src/assets/error";
 import { ToastNotification, Typography } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
 
-interface ClaimFailProps {
+interface RecoverFailProps {
     toastId: string | number;
-    message?: string;
 }
 
-export function ClaimFail({ toastId, message }: ClaimFailProps) {
-    const t = useTranslations("rewards.claims.notification.fail");
+export function RecoverFail({ toastId }: RecoverFailProps) {
+    const t = useTranslations("rewards.reimbursements.notification.fail");
 
     return (
         <ToastNotification
             toastId={toastId}
-            title={t("single")}
+            title={t("title")}
             icon={Error}
             variant="fail"
         >
-            <Typography weight="medium">
-                {message ? message : t("message")}
-            </Typography>
+            <Typography weight="medium">{t("message")}</Typography>
         </ToastNotification>
     );
 }

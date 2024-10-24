@@ -43,7 +43,10 @@ export function Pool({ campaign }: PoolProps) {
 export function SkeletonPool() {
     return (
         <div className={styles.root}>
-            <PoolRemoteLogo tokens={[{}, {}]} loading />
+            <PoolRemoteLogo
+                tokens={[{ address: "0x1" }, { address: "0x2" }]}
+                loading
+            />
             <div className={styles.titleContainer}>
                 <Skeleton variant="lg" width={180} />
                 <Skeleton

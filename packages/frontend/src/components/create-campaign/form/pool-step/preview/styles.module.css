@@ -16,7 +16,3 @@
 .poolName {
     @apply overflow-hidden text-nowrap text-ellipsis;
 }
-
-.fee {
-    @apply !leading-[1.125rem];
-}

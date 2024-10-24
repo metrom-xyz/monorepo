@@ -102,6 +102,8 @@ export interface Claim extends Erc20TokenAmount {
     proof: Address[];
 }
 
+export type Reimbursement = Claim;
+
 export interface WhitelistedErc20Token extends Erc20Token {
     minimumRate: OnChainAmount;
     usdPrice: number;

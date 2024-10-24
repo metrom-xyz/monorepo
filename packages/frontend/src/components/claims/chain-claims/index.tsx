@@ -2,11 +2,11 @@ import { type Claim, type Erc20Token } from "@metrom-xyz/sdk";
 import { useMemo } from "react";
 import { type Address } from "viem";
 import { SkeletonTokenClaim, TokenClaim } from "./token-claim";
-import type { ChainWithClaimsData } from "..";
+import type { ChainWithRewardsData } from "..";
 
-interface ChainOverviewProps {
-    chainWithClaimsData: ChainWithClaimsData;
-}
+type ChainOverviewProps = {
+    claimingAll?: boolean;
+} & Omit<ChainWithRewardsData, "reimbursements" | "chainData">;
 
 export interface TokenClaims {
     token: Erc20Token;
@@ -14,9 +14,13 @@ export interface TokenClaims {
     totalAmount: number;
 }
 
-export function ChainClaims({ chainWithClaimsData }: ChainOverviewProps) {
+export function ChainClaims({
+    chain,
+    claims,
+    claimingAll,
+}: ChainOverviewProps) {
     const perToken = useMemo(() => {
-        const reduced = chainWithClaimsData.claims.reduce(
+        const reduced = claims.reduce(
             (acc, claim) => {
                 if (!acc[claim.token.address]) {
                     acc[claim.token.address] = {
@@ -32,14 +36,15 @@ export function ChainClaims({ chainWithClaimsData }: ChainOverviewProps) {
             {} as Record<Address, TokenClaims>,
         );
         return Object.values(reduced);
-    }, [chainWithClaimsData]);
+    }, [claims]);
 
     return perToken.map((tokenClaims) => {
         return (
             <TokenClaim
                 key={tokenClaims.token.address}
-                chainId={chainWithClaimsData.chain.id}
+                chainId={chain.id}
                 tokenClaims={tokenClaims}
+                disabled={claimingAll}
             />
         );
     });

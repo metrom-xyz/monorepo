@@ -5,7 +5,7 @@ import { useTranslations } from "next-intl";
 import styles from "./styles.module.css";
 
 export function Empty() {
-    const t = useTranslations("claims.empty");
+    const t = useTranslations("rewards.claims.empty");
 
     // FIXME: fix the empty being rendered before the loading is done to avoid
     // tracking wrong events

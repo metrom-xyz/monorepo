@@ -41,6 +41,8 @@ export interface BackendWhitelistedErc20Token extends UsdPricedErc20Token {
     minimumRate: string;
 }
 
+export type BackendReimbursement = BackendClaim;
+
 export interface BackendActivity {
     transaction: {
         hash: Hash;
