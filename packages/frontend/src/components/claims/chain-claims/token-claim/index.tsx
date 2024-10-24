@@ -25,9 +25,14 @@ import styles from "./styles.module.css";
 interface TokenClaimProps {
     chainId: number;
     tokenClaims: TokenClaims;
+    disabled?: boolean;
 }
 
-export function TokenClaim({ chainId, tokenClaims }: TokenClaimProps) {
+export function TokenClaim({
+    chainId,
+    tokenClaims,
+    disabled,
+}: TokenClaimProps) {
     const t = useTranslations("rewards.claims");
     const { address: account } = useAccount();
     const publicClient = usePublicClient();
@@ -136,7 +141,7 @@ export function TokenClaim({ chainId, tokenClaims }: TokenClaimProps) {
             <Button
                 variant="secondary"
                 size="small"
-                disabled={simulateClaimAllError || claimed}
+                disabled={simulateClaimAllError || claimed || disabled}
                 loading={simulatingClaimAll || claiming}
                 iconPlacement="right"
                 onClick={handleClaim}

@@ -25,11 +25,13 @@ import styles from "./styles.module.css";
 interface TokenReimbursementProps {
     chainId: number;
     tokenReimbursements: TokenReimbursements;
+    disabled?: boolean;
 }
 
 export function TokenReimbursement({
     chainId,
     tokenReimbursements,
+    disabled,
 }: TokenReimbursementProps) {
     const t = useTranslations("rewards.reimbursements");
     const { address: account } = useAccount();
@@ -143,7 +145,7 @@ export function TokenReimbursement({
             <Button
                 variant="secondary"
                 size="small"
-                disabled={simulateRecoverErrored || recovered}
+                disabled={simulateRecoverErrored || recovered || disabled}
                 loading={simulatingRecover || recovering}
                 iconPlacement="right"
                 onClick={handleRecover}
