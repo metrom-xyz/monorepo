@@ -8,6 +8,8 @@ type RegisteredEvents =
     | "NO_REWARDS_CLAIM"
     | "CLICK_CLAIM_ALL"
     | "CLICK_CLAIM_SINGLE"
+    | "CLICK_RECOVER_ALL"
+    | "CLICK_RECOVER_SINGLE"
     | "CLICK_POOL_DEPOSIT"
     | "OPEN_SIDEBAR"
     | "CLICK_ACTIVITY"

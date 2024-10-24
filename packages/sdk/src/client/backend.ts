@@ -5,6 +5,7 @@ import {
     type BackendClaim,
     type BackendPool,
     type BackendWhitelistedErc20Token,
+    type BackendReimbursement,
 } from "./types";
 import type { SupportedChain } from "@metrom-xyz/contracts";
 import { SupportedDex } from "../commons";
@@ -14,6 +15,7 @@ import {
     type Campaign,
     type Claim,
     type Pool,
+    type Reimbursement,
     type Rewards,
     type UsdPricedOnChainAmount,
     type WhitelistedErc20Token,
@@ -30,6 +32,10 @@ export interface FetchPoolsParams {
 }
 
 export interface FetchClaimsParams {
+    address: Address;
+}
+
+export interface FetchReimbursementsParams {
     address: Address;
 }
 
@@ -120,6 +126,39 @@ export class MetromApiClient {
                         formatUnits(rawAmount, claim.token.decimals),
                     ),
                 },
+            };
+        });
+    }
+
+    async fetchReimbursements(
+        params: FetchReimbursementsParams,
+    ): Promise<Reimbursement[]> {
+        const url = new URL(
+            `v1/reimbursements/${params.address}`,
+            this.baseUrl,
+        );
+
+        const response = await fetch(url);
+        if (!response.ok)
+            throw new Error(
+                `response not ok while fetching reimbursements: ${await response.text()}`,
+            );
+
+        const reimbursements =
+            (await response.json()) as BackendReimbursement[];
+
+        return reimbursements.map((reimbursement) => {
+            const rawAmount = BigInt(reimbursement.amount);
+
+            return {
+                ...reimbursement,
+                amount: {
+                    raw: rawAmount,
+                    formatted: Number(
+                        formatUnits(rawAmount, reimbursement.token.decimals),
+                    ),
+                },
+                proof: reimbursement.proof,
             };
         });
     }

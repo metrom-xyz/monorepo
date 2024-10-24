@@ -8,28 +8,29 @@ import type { SupportedChain } from "@metrom-xyz/contracts";
 
 import styles from "./styles.module.css";
 
-interface ClaimSuccessProps {
+interface RecoverSuccessProps {
     toastId: string | number;
     chain?: SupportedChain;
     token?: Erc20Token;
     amount?: number;
 }
 
-export function ClaimSuccess({
+export function RecoverSuccess({
     toastId,
     chain,
     token,
     amount,
-}: ClaimSuccessProps) {
-    const t = useTranslations("rewards.claims.notification.success");
+}: RecoverSuccessProps) {
+    const t = useTranslations("rewards.reimbursements.notification.success");
 
     return (
         <ToastNotification
             toastId={toastId}
-            title={t("single")}
+            title={t("message")}
+            // TODO: add different icon?
             icon={ClaimReward}
         >
-            {!!chain && !!token && !!amount ? (
+            {!!chain && !!token && !!amount && (
                 <div className={styles.contentWrapper}>
                     <RemoteLogo
                         size="sm"
@@ -44,8 +45,6 @@ export function ClaimSuccess({
                         {formatTokenAmount({ amount })}
                     </Typography>
                 </div>
-            ) : (
-                <Typography weight="medium">{t("message")}</Typography>
             )}
         </ToastNotification>
     );

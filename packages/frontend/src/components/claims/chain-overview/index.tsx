@@ -1,6 +1,6 @@
 import classNames from "classnames";
-import type { ChainWithClaimsData } from "..";
 import { Typography, Button, Skeleton, Card } from "@metrom-xyz/ui";
+import type { ChainWithRewardsData } from "..";
 import { useTranslations } from "next-intl";
 import {
     useAccount,
@@ -16,19 +16,21 @@ import { toast } from "sonner";
 import { ClaimSuccess } from "../notification/claim-success";
 import type { WriteContractErrorType } from "viem";
 import { ClaimFail } from "../notification/claim-fail";
+import { RecoverSuccess } from "../notification/recover-success";
+import { RecoverFail } from "../notification/recover-fail";
 
 import styles from "./styles.module.css";
 
 interface ChainOverviewProps {
     className?: string;
-    chainWithClaimsData: ChainWithClaimsData;
+    chainWithRewardsData: ChainWithRewardsData;
 }
 
 export function ChainOverview({
     className,
-    chainWithClaimsData,
+    chainWithRewardsData,
 }: ChainOverviewProps) {
-    const t = useTranslations("claims");
+    const t = useTranslations("rewards");
     const { address: account } = useAccount();
     const publicClient = usePublicClient();
     const { switchChainAsync } = useSwitchChain();
@@ -36,22 +38,53 @@ export function ChainOverview({
 
     const [claiming, setClaiming] = useState(false);
     const [claimed, setClaimed] = useState(false);
+    const [recovering, setRecovering] = useState(false);
+    const [recovered, setRecovered] = useState(false);
 
-    const ChainIcon = chainWithClaimsData.chainData.icon;
+    const ChainIcon = chainWithRewardsData.chainData.icon;
+
+    const {
+        data: simulatedRecoverAll,
+        isLoading: simulatingRecoverAll,
+        isError: simulateRecoverAllErrored,
+    } = useSimulateContract({
+        chainId: chainWithRewardsData.chain.id,
+        abi: metromAbi,
+        address: chainWithRewardsData.chainData.metromContract.address,
+        functionName: "recoverRewards",
+        args: [
+            !account
+                ? []
+                : chainWithRewardsData.reimbursements.map((reimbursement) => {
+                      return {
+                          campaignId: reimbursement.campaignId,
+                          proof: reimbursement.proof,
+                          token: reimbursement.token.address,
+                          amount: reimbursement.amount.raw,
+                          receiver: account,
+                      };
+                  }),
+        ],
+        query: {
+            refetchOnMount: false,
+            enabled:
+                !!account && chainWithRewardsData.reimbursements.length > 0,
+        },
+    });
 
     const {
         data: simulatedClaimAll,
         isLoading: simulatingClaimAll,
         isError: simulateClaimAllErrored,
     } = useSimulateContract({
-        chainId: chainWithClaimsData.chain.id,
+        chainId: chainWithRewardsData.chain.id,
         abi: metromAbi,
-        address: chainWithClaimsData.chainData.metromContract.address,
+        address: chainWithRewardsData.chainData.metromContract.address,
         functionName: "claimRewards",
         args: [
             !account
                 ? []
-                : chainWithClaimsData.claims.map((claim) => {
+                : chainWithRewardsData.claims.map((claim) => {
                       return {
                           campaignId: claim.campaignId,
                           proof: claim.proof,
@@ -62,9 +95,62 @@ export function ChainOverview({
                   }),
         ],
         query: {
-            enabled: account && chainWithClaimsData.claims.length > 0,
+            enabled: account && chainWithRewardsData.claims.length > 0,
         },
     });
+
+    const handleRecoverAll = useCallback(() => {
+        if (
+            !writeContractAsync ||
+            !publicClient ||
+            !simulatedRecoverAll?.request
+        )
+            return;
+        const create = async () => {
+            setRecovering(true);
+            try {
+                await switchChainAsync({
+                    chainId: chainWithRewardsData.chain.id,
+                });
+
+                const tx = await writeContractAsync(
+                    simulatedRecoverAll.request,
+                );
+                const receipt = await publicClient.waitForTransactionReceipt({
+                    hash: tx,
+                });
+
+                if (receipt.status === "reverted") {
+                    console.warn("Recover transaction reverted");
+                    throw new Error("Transaction reverted");
+                }
+
+                toast.custom((toastId) => <RecoverSuccess toastId={toastId} />);
+                setRecovered(true);
+                trackFathomEvent("CLICK_RECOVER_ALL");
+            } catch (error) {
+                if (
+                    !(error as WriteContractErrorType).message.includes(
+                        "User rejected",
+                    )
+                )
+                    toast.custom((toastId) => (
+                        <RecoverFail toastId={toastId} />
+                    ));
+
+                console.warn("Could not recover", error);
+            } finally {
+                setRecovering(false);
+            }
+        };
+        void create();
+    }, [
+        chainWithRewardsData.chain.id,
+        publicClient,
+        simulatedRecoverAll,
+        switchChainAsync,
+        writeContractAsync,
+    ]);
 
     const handleClaimAll = useCallback(() => {
         if (!writeContractAsync || !publicClient || !simulatedClaimAll?.request)
@@ -73,7 +159,7 @@ export function ChainOverview({
             setClaiming(true);
             try {
                 await switchChainAsync({
-                    chainId: chainWithClaimsData.chain.id,
+                    chainId: chainWithRewardsData.chain.id,
                 });
 
                 const tx = await writeContractAsync(simulatedClaimAll.request);
@@ -110,7 +196,7 @@ export function ChainOverview({
         void create();
     }, [
         t,
-        chainWithClaimsData.chain.id,
+        chainWithRewardsData.chain.id,
         publicClient,
         simulatedClaimAll,
         switchChainAsync,
@@ -122,9 +208,24 @@ export function ChainOverview({
             <div className={styles.chainNameWrapper}>
                 <ChainIcon className={styles.chainIcon} />
                 <Typography variant="xl4" truncate>
-                    {chainWithClaimsData.chain.name}
+                    {chainWithRewardsData.chain.name}
                 </Typography>
             </div>
+            {chainWithRewardsData.reimbursements.length > 0 && (
+                <Button
+                    size="xsmall"
+                    disabled={simulateRecoverAllErrored || recovered}
+                    loading={simulatingRecoverAll || recovering}
+                    iconPlacement="right"
+                    onClick={handleRecoverAll}
+                >
+                    {simulatingClaimAll
+                        ? t("reimbursements.loading")
+                        : recovering
+                          ? t("reimbursements.recoveringAll")
+                          : t("reimbursements.recoverAll")}
+                </Button>
+            )}
             <Button
                 size="xsmall"
                 disabled={simulateClaimAllErrored || claimed}
@@ -133,10 +234,10 @@ export function ChainOverview({
                 onClick={handleClaimAll}
             >
                 {simulatingClaimAll
-                    ? t("loading")
+                    ? t("claims.loading")
                     : claiming
-                      ? t("claimingAll")
-                      : t("claimAll")}
+                      ? t("claims.claimingAll")
+                      : t("claims.claimAll")}
             </Button>
         </Card>
     );
