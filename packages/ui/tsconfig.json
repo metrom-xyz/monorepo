@@ -15,11 +15,6 @@
         "jsx": "react-jsx",
         "incremental": true,
         "verbatimModuleSyntax": true,
-        "plugins": [
-            {
-                "name": "next"
-            }
-        ],
         "declaration": true,
         "emitDeclarationOnly": true,
         "declarationDir": "./dist",
