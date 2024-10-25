@@ -18,7 +18,7 @@ export const baseSepoliaData: ChainData = {
             addLiquidityUrl: "https://app.kim.exchange/pools/v4/{target_pool}",
         },
         {
-            slug: SupportedDex.Univ3,
+            slug: SupportedDex.UniswapV3,
             logo: UniswapLogo,
             name: "Uniswap v3",
             addLiquidityUrl:
