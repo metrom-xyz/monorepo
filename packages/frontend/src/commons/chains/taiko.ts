@@ -4,6 +4,7 @@ import { type ChainData } from "..";
 import { TaikoLogo } from "@/src/assets/logos/chains/taiko";
 import { PankoLogo } from "@/src/assets/logos/dexes/panko";
 import { taiko } from "viem/chains";
+import { UniswapLogo } from "@/src/assets/logos/dexes/uniswap";
 
 export const taikoData: ChainData = {
     metromContract: ADDRESS[SupportedChain.Taiko],
@@ -16,6 +17,13 @@ export const taikoData: ChainData = {
             name: "Panko",
             // TODO: update this
             addLiquidityUrl: "https://panko.finance",
+        },
+        {
+            slug: SupportedDex.UniswapV3,
+            logo: UniswapLogo,
+            name: "Uniswap v3",
+            addLiquidityUrl:
+                "https://app.uniswap.org/explore/pools/taiko/{target_pool}",
         },
     ],
     baseTokens: [

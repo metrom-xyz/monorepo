@@ -11,7 +11,7 @@ export const celoAlfajoresData: ChainData = {
     icon: CeloLogo,
     dexes: [
         {
-            slug: SupportedDex.Univ3,
+            slug: SupportedDex.UniswapV3,
             logo: UniswapLogo,
             name: "Uniswap v3",
             addLiquidityUrl: "https://app.uniswap.org/add/{target_pool}",

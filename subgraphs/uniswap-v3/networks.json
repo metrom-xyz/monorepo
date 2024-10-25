@@ -28,5 +28,15 @@
             "address": "0x27F971cb582BF9E50F397e4d29a5C7A34f11faA2",
             "startBlock": 5190606
         }
+    },
+    "taiko": {
+        "Factory": {
+            "address": "0x75FC67473A91335B5b8F8821277262a13B38c9b3",
+            "startBlock": 961
+        },
+        "NonFungiblePositionManager": {
+            "address": "0x8B3c541c30f9b29560f56B9E44b59718916B69EF",
+            "startBlock": 980
+        }
     }
 }

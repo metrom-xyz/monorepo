@@ -4,7 +4,7 @@ export enum Environment {
 }
 
 export enum SupportedDex {
-    Univ3 = "uniswap-v3",
+    UniswapV3 = "uniswap-v3",
     TestIntegral = "test-integral",
     Swapsicle = "swapsicle",
     Kim = "kim",
