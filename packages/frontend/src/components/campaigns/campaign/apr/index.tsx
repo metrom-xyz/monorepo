@@ -1,28 +1,23 @@
 "use client";
 
-import { Typography, Skeleton } from "@metrom-xyz/ui";
-import { formatPercentage } from "@/src/utils/format";
+import { Skeleton } from "@metrom-xyz/ui";
+import { AprChip } from "@/src/components/apr-chip";
 
 import styles from "./styles.module.css";
 
 interface AprProps {
     apr: number | null;
+    kpi?: boolean;
 }
 
-export function Apr({ apr }: AprProps) {
-    return apr ? (
+export function Apr({ apr, kpi }: AprProps) {
+    return (
         <div className={styles.root}>
-            <Typography weight="medium" className={styles.text}>
-                {formatPercentage(apr)}
-            </Typography>
+            <AprChip apr={apr} kpi={kpi} placeholder />
         </div>
-    ) : (
-        <Typography className={styles.emptyAPR} weight="medium">
-            -
-        </Typography>
     );
 }
 
 export function SkeletonApr() {
-    return <Skeleton className={styles.emptyAPR} variant="lg" width={60} />;
+    return <Skeleton className={styles.skeleton} variant="lg" width={90} />;
 }

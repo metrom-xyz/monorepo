@@ -8,6 +8,7 @@ import { getPoolAddLiquidityLink, getPoolExplorerLink } from "@/src/utils/dex";
 import { formatPercentage } from "@/src/utils/format";
 import { trackFathomEvent } from "@/src/utils/fathom";
 import { PoolRemoteLogo } from "../../pool-remote-logo";
+import { AprChip } from "../../apr-chip";
 
 import styles from "./styles.module.css";
 
@@ -103,18 +104,12 @@ export function Header({ campaign }: HeaderProps) {
                     </Button>
                 </div>
                 {campaign.apr && (
-                    <div className={styles.aprContainer}>
-                        <Typography
-                            uppercase
-                            weight="medium"
-                            variant="lg"
-                            className={styles.aprText}
-                        >
-                            {t("apr", {
-                                value: formatPercentage(campaign.apr),
-                            })}
-                        </Typography>
-                    </div>
+                    <AprChip
+                        prefix
+                        size="lg"
+                        apr={campaign.apr}
+                        kpi={!!campaign.specification?.kpi}
+                    />
                 )}
             </div>
         </div>

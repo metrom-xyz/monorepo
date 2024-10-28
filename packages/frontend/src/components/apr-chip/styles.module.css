@@ -1,0 +1,25 @@
+.root {
+    @apply flex
+        w-fit
+        items-center
+        bg-brand-blue
+        rounded-lg
+        col-span-4
+        sm:col-span-1;
+}
+
+.wrapper {
+    @apply flex gap-1 py-2 px-2 items-baseline whitespace-nowrap;
+}
+
+.witkKpi {
+    @apply bg-carrot-orange;
+}
+
+.text {
+    @apply !text-white;
+}
+
+.empty {
+    @apply w-full col-span-4 sm:col-span-1 text-center;
+}

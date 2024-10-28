@@ -45,6 +45,9 @@
             "apr": "APR",
             "rewards": "Daily rewards"
         },
+        "pool": {
+            "kpi": "KPI"
+        },
         "status": {
             "live": {
                 "text": "Live",
@@ -235,8 +238,7 @@
             "rewardsMayVary": "Rewards may vary",
             "deposit": "Deposit",
             "explorer": "Explorer",
-            "claim": "Claim",
-            "apr": "Apr {value}"
+            "claim": "Claim"
         },
         "details": {
             "tvl": "Tvl",
@@ -380,5 +382,9 @@
             "payout": "Payout",
             "kpiReached": "KPI reached"
         }
+    },
+    "apr": {
+        "upTo": "up to",
+        "apr": "APR"
     }
 }
