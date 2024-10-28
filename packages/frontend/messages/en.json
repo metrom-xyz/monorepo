@@ -310,6 +310,11 @@
                 "body": "There are currently no claims associated with the connected wallet. Explore the available opportunities on the all campaigns page.",
                 "action": "All campaigns"
             },
+            "walletNotConnected": {
+                "title": "Wallet not connected",
+                "body": "Connect your wallet to check if you have any claimable rewards.",
+                "action": "Connect wallet"
+            },
             "notification": {
                 "success": {
                     "single": "Claim successful",

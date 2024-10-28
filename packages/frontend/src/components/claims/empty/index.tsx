@@ -1,11 +1,15 @@
 import { Typography, Button, Card } from "@metrom-xyz/ui";
 import { Link } from "@/src/i18n/routing";
 import { useTranslations } from "next-intl";
+import { useAccount } from "wagmi";
+import { useConnectModal } from "@rainbow-me/rainbowkit";
 
 import styles from "./styles.module.css";
 
 export function Empty() {
-    const t = useTranslations("rewards.claims.empty");
+    const t = useTranslations("rewards.claims");
+    const { address } = useAccount();
+    const { openConnectModal } = useConnectModal();
 
     // FIXME: fix the empty being rendered before the loading is done to avoid
     // tracking wrong events
@@ -13,17 +17,29 @@ export function Empty() {
     //     trackFathomEvent("NO_REWARDS_CLAIM");
     // }, []);
 
-    return (
+    return address ? (
         <Card className={styles.root}>
             <Typography weight="medium" uppercase className={styles.title}>
-                {t("title")}
+                {t("empty.title")}
             </Typography>
             <Typography variant="lg" weight="medium" className={styles.body}>
-                {t("body")}
+                {t("empty.body")}
             </Typography>
             <Link href="/">
-                <Button size="small">{t("action")}</Button>
+                <Button size="small">{t("empty.action")}</Button>
             </Link>
+        </Card>
+    ) : (
+        <Card className={styles.root}>
+            <Typography weight="medium" uppercase className={styles.title}>
+                {t("walletNotConnected.title")}
+            </Typography>
+            <Typography variant="lg" weight="medium" className={styles.body}>
+                {t("walletNotConnected.body")}
+            </Typography>
+            <Button onClick={openConnectModal} size="small">
+                {t("walletNotConnected.action")}
+            </Button>
         </Card>
     );
 }
