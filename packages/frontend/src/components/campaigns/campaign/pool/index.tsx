@@ -1,6 +1,7 @@
 "use client";
 
-import { Typography, Skeleton } from "@metrom-xyz/ui";
+import { Typography, Skeleton, Chip } from "@metrom-xyz/ui";
+import { useTranslations } from "next-intl";
 import type { NamedCampaign } from "@/src/hooks/useCampaigns";
 import { formatPercentage } from "@/src/utils/format";
 import { PoolRemoteLogo } from "@/src/components/pool-remote-logo";
@@ -12,6 +13,8 @@ interface PoolProps {
 }
 
 export function Pool({ campaign }: PoolProps) {
+    const t = useTranslations("allCampaigns.pool");
+
     return (
         <div className={styles.root}>
             <PoolRemoteLogo
@@ -34,6 +37,13 @@ export function Pool({ campaign }: PoolProps) {
                     >
                         {formatPercentage(campaign.pool.fee)}
                     </Typography>
+                )}
+                {campaign.specification?.kpi && (
+                    <div className={styles.kpi}>
+                        <Typography variant="sm" weight="medium">
+                            {t("kpi")}
+                        </Typography>
+                    </div>
                 )}
             </div>
         </div>

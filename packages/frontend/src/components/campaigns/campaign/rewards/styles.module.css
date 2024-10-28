@@ -2,12 +2,20 @@
     @apply flex items-center justify-between col-span-4 sm:col-span-1;
 }
 
+.rewardsWrapper {
+    @apply w-full flex items-center gap-3;
+}
+
 .tokenIcons {
     @apply min-h-full flex flex-1 items-center gap-[1px];
 }
 
 .tokenIcon {
-    @apply cursor-pointer -mr-4;
+    @apply cursor-pointer;
+}
+
+.tokenIcon:not(:first-child) {
+    @apply -ml-4;
 }
 
 .breakdownContainer {

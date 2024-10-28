@@ -23,6 +23,7 @@ export const tailwindPreset: Partial<Config> = {
             colors: {
                 "brand-green": "#6CFF95",
                 "brand-blue": "#3C82F6",
+                "carrot-orange": "#EF802B",
                 black: "#000000",
                 white: "#FFFFFF",
             },

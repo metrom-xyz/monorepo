@@ -1,5 +1,5 @@
 .statusRoot {
-    @apply flex items-center gap-2 col-span-4 sm:col-span-1;
+    @apply max-w-28 w-full flex items-center gap-2 col-span-4 sm:col-span-1;
 }
 
 .statusText {

@@ -108,32 +108,34 @@ export function Rewards({ status, from, to, rewards, chainId }: RewardsProps) {
                     </Typography>
                 </div>
             </Popover>
-            <div
-                ref={setRewardsBreakdown}
-                onMouseEnter={handleRewardsBreakdownPopoverOpen}
-                onMouseLeave={handleRewardsBreakdownPopoverClose}
-                className={styles.tokenIcons}
-            >
-                {rewards.map((reward, i) => {
-                    return (
-                        <div
-                            key={reward.token.address}
-                            className={styles.tokenIcon}
-                        >
-                            <RemoteLogo
-                                chain={chainId}
-                                address={reward.token.address}
-                                defaultText={reward.token.symbol}
-                            />
-                        </div>
-                    );
-                })}
+            <div className={styles.rewardsWrapper}>
+                <div
+                    ref={setRewardsBreakdown}
+                    onMouseEnter={handleRewardsBreakdownPopoverOpen}
+                    onMouseLeave={handleRewardsBreakdownPopoverClose}
+                    className={styles.tokenIcons}
+                >
+                    {rewards.map((reward, i) => {
+                        return (
+                            <div
+                                key={reward.token.address}
+                                className={styles.tokenIcon}
+                            >
+                                <RemoteLogo
+                                    chain={chainId}
+                                    address={reward.token.address}
+                                    defaultText={reward.token.symbol}
+                                />
+                            </div>
+                        );
+                    })}
+                </div>
+                <Typography weight="medium" className={styles.textRewards}>
+                    {status === Status.Ended
+                        ? "-"
+                        : formatUsdAmount(perDayUsdValue)}
+                </Typography>
             </div>
-            <Typography weight="medium" className={styles.textRewards}>
-                {status === Status.Ended
-                    ? "-"
-                    : formatUsdAmount(perDayUsdValue)}
-            </Typography>
         </div>
     );
 }

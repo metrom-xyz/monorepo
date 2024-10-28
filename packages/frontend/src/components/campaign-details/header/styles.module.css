@@ -36,9 +36,5 @@
 }
 
 .aprContainer {
-    @apply flex items-center bg-brand-blue rounded-lg px-4 py-3 h-12 w-fit;
-}
-
-.aprText {
-    @apply !text-white;
+    @apply px-4 py-3 h-12 w-fit;
 }
