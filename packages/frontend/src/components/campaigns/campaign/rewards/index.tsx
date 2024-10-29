@@ -8,6 +8,7 @@ import { formatTokenAmount, formatUsdAmount } from "@/src/utils/format";
 import { useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 import { RemoteLogo } from "@/src/components/remote-logo";
+import classNames from "classnames";
 
 import styles from "./styles.module.css";
 
@@ -142,7 +143,7 @@ export function Rewards({ status, from, to, rewards, chainId }: RewardsProps) {
 
 export function SkeletonRewards() {
     return (
-        <div className={styles.root}>
+        <div className={classNames(styles.root, styles.loading)}>
             <div className={styles.tokenIcons}>
                 {new Array(5).fill(null).map((_, i) => {
                     return (
