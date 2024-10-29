@@ -4,12 +4,13 @@ import {
     DecreaseLiquidity as DecreaseLiquidityEvent,
     Transfer as TransferEvent,
 } from "../../generated/NonFungiblePositionManager/NonFungiblePositionManager";
-import { Position } from "../../generated/schema";
+import { LiquidityChange, Position } from "../../generated/schema";
 import {
     BI_0,
     FactoryContract,
+    getEventId,
+    getOrCreateTransaction,
     NonFungiblePositionManagerContract,
-    createBaseEvent,
 } from "../commons";
 
 function getNftPositionId(tokenId: BigInt): Bytes {
@@ -39,8 +40,7 @@ function getOrCreateNftPosition(tokenId: BigInt): Position | null {
     position.owner = NonFungiblePositionManagerContract.ownerOf(tokenId);
     position.lowerTick = BigInt.fromI32(result.value.getTickLower());
     position.upperTick = BigInt.fromI32(result.value.getTickUpper());
-    // updated in increase liquidity handler
-    position.liquidity = BI_0;
+    position.liquidity = BI_0; // updated in increase liquidity handler
     position.direct = false;
     position.pool = Bytes.fromHexString(poolAddress.toHex());
     position.save();
@@ -60,14 +60,15 @@ export function handleIncreaseLiquidity(event: IncreaseLiquidityEvent): void {
     let position = getOrCreateNftPosition(event.params.tokenId);
     if (position == null) return;
 
-    position.liquidity = position.liquidity.plus(event.params.liquidity);
-    position.save();
-
     if (!event.params.liquidity.isZero()) {
-        let nonZeroLiquidityChange = createBaseEvent(event, position.pool);
-        nonZeroLiquidityChange.liquidityDelta = event.params.liquidity;
-        nonZeroLiquidityChange.position = position.id;
-        nonZeroLiquidityChange.save();
+        position.liquidity = position.liquidity.plus(event.params.liquidity);
+        position.save();
+
+        let liquidityChange = new LiquidityChange(getEventId(event));
+        liquidityChange.transaction = getOrCreateTransaction(event).id;
+        liquidityChange.delta = event.params.liquidity;
+        liquidityChange.position = position.id;
+        liquidityChange.save();
     }
 }
 
@@ -75,14 +76,15 @@ export function handleDecreaseLiquidity(event: DecreaseLiquidityEvent): void {
     let position = getNftPositionOrThrow(event.params.tokenId);
     if (position == null) return;
 
-    position.liquidity = position.liquidity.minus(event.params.liquidity);
-    position.save();
-
     if (!event.params.liquidity.isZero()) {
-        let nonZeroLiquidityChange = createBaseEvent(event, position.pool);
-        nonZeroLiquidityChange.liquidityDelta = event.params.liquidity.neg();
-        nonZeroLiquidityChange.position = position.id;
-        nonZeroLiquidityChange.save();
+        position.liquidity = position.liquidity.minus(event.params.liquidity);
+        position.save();
+
+        let liquidityChange = new LiquidityChange(getEventId(event));
+        liquidityChange.transaction = getOrCreateTransaction(event).id;
+        liquidityChange.delta = event.params.liquidity.neg();
+        liquidityChange.position = position.id;
+        liquidityChange.save();
     }
 }
 

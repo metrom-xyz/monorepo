@@ -22,8 +22,10 @@ dataSources:
       abis:
         - name: Factory
           file: ../abis/StableSwapFactory.json
-        - name: Pool
+        - name: Pool2
           file: ../abis/StableSwap2Pool.json
+        - name: Pool3
+          file: ../abis/StableSwap3Pool.json
         - name: Erc20
           file: ../abis/Erc20.json
         - name: Erc20BytesName
@@ -35,21 +37,21 @@ dataSources:
           handler: handleNewStableSwapPair
 templates:
   - kind: ethereum/contract
-    name: Pool
+    name: Pool2
     network: {{network}}
     source:
-      abi: Pool
+      abi: Pool2
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
       language: wasm/assemblyscript
-      file: ./src/mappings/pool.ts
+      file: ./src/mappings/pool2.ts
       entities:
         - Pool
         - Position
         - Event
       abis:
-        - name: Pool
+        - name: Pool2
           file: ../abis/StableSwap2Pool.json
       eventHandlers:
         - event: TokenExchange(indexed address,uint256,uint256,uint256,uint256)
@@ -61,4 +63,32 @@ templates:
         - event: RemoveLiquidityOne(indexed address,uint256,uint256,uint256)
           handler: handleRemoveLiquidityOne
         - event: RemoveLiquidityImbalance(indexed address,uint256[2],uint256[2],uint256,uint256)
+          handler: handleRemoveLiquidityImbalance
+  - kind: ethereum/contract
+    name: Pool3
+    network: {{network}}
+    source:
+      abi: Pool3
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      file: ./src/mappings/pool3.ts
+      entities:
+        - Pool
+        - Position
+        - Event
+      abis:
+        - name: Pool3
+          file: ../abis/StableSwap3Pool.json
+      eventHandlers:
+        - event: TokenExchange(indexed address,uint256,uint256,uint256,uint256)
+          handler: handleTokenExchange
+        - event: AddLiquidity(indexed address,uint256[3],uint256[3],uint256,uint256)
+          handler: handleAddLiquidity
+        - event: RemoveLiquidity(indexed address,uint256[3],uint256[3],uint256)
+          handler: handleRemoveLiquidity
+        - event: RemoveLiquidityOne(indexed address,uint256,uint256,uint256)
+          handler: handleRemoveLiquidityOne
+        - event: RemoveLiquidityImbalance(indexed address,uint256[3],uint256[3],uint256,uint256)
           handler: handleRemoveLiquidityImbalance

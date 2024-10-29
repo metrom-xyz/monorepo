@@ -6,13 +6,18 @@ import {
     Burn as BurnEvent,
     Fee as FeeEvent,
 } from "../../generated/templates/Pool/Pool";
-import { Position, Pool } from "../../generated/schema";
+import {
+    Position,
+    Pool,
+    TickMovingSwap,
+    LiquidityChange,
+} from "../../generated/schema";
 import {
     BI_0,
-    convertTokenToDecimal,
-    createBaseEvent,
+    getEventId,
+    getOrCreateTransaction,
     getPoolOrThrow,
-    getTokenOrThrow,
+    getSortedPoolTokens,
 } from "../commons";
 import { NON_FUNGIBLE_POSITION_MANAGER_ADDRESS } from "../addresses";
 
@@ -38,27 +43,23 @@ export function handleSwap(event: SwapEvent): void {
 
     let newTick = BigInt.fromI32(event.params.tick);
     if (newTick != pool.tick) {
-        let tickMovingSwap = createBaseEvent(event, pool.id);
+        let tickMovingSwap = new TickMovingSwap(getEventId(event));
+        tickMovingSwap.transaction = getOrCreateTransaction(event).id;
+        tickMovingSwap.pool = pool.id;
         tickMovingSwap.newTick = newTick;
         tickMovingSwap.save();
+
+        pool.tick = newTick;
+        pool.save();
     }
 
-    let token0 = getTokenOrThrow(Address.fromBytes(pool.token0));
-    let token1 = getTokenOrThrow(Address.fromBytes(pool.token1));
+    let poolTokens = getSortedPoolTokens(pool);
 
-    let amount0 = convertTokenToDecimal(
-        event.params.amount0,
-        Address.fromBytes(token0.id),
-    );
-    let amount1 = convertTokenToDecimal(
-        event.params.amount1,
-        Address.fromBytes(token1.id),
-    );
+    poolTokens[0].tvl = poolTokens[0].tvl.plus(event.params.amount0);
+    poolTokens[0].save();
 
-    pool.token0Tvl = pool.token0Tvl.plus(amount0);
-    pool.token1Tvl = pool.token1Tvl.plus(amount1);
-    pool.tick = newTick;
-    pool.save();
+    poolTokens[1].tvl = poolTokens[1].tvl.plus(event.params.amount1);
+    poolTokens[1].save();
 }
 
 function getDirectPositionId(
@@ -119,19 +120,13 @@ function getDirectPositionOrThrow(
 
 export function handleMint(event: MintEvent): void {
     let pool = getPoolOrThrow(event.address);
+    let poolTokens = getSortedPoolTokens(pool);
 
-    let amount0 = convertTokenToDecimal(
-        event.params.amount0,
-        Address.fromBytes(pool.token0),
-    );
-    let amount1 = convertTokenToDecimal(
-        event.params.amount1,
-        Address.fromBytes(pool.token1),
-    );
+    poolTokens[0].tvl = poolTokens[0].tvl.plus(event.params.amount0);
+    poolTokens[0].save();
 
-    pool.token0Tvl = pool.token0Tvl.plus(amount0);
-    pool.token1Tvl = pool.token1Tvl.plus(amount1);
-    pool.save();
+    poolTokens[1].tvl = poolTokens[1].tvl.plus(event.params.amount1);
+    poolTokens[1].save();
 
     if (event.params.owner == NON_FUNGIBLE_POSITION_MANAGER_ADDRESS) return;
 
@@ -141,32 +136,30 @@ export function handleMint(event: MintEvent): void {
         BigInt.fromI32(event.params.bottomTick),
         BigInt.fromI32(event.params.topTick),
     );
-    position.liquidity = position.liquidity.plus(event.params.liquidityAmount);
-    position.save();
 
     if (!event.params.liquidityAmount.isZero()) {
-        let nonZeroLiquidityChange = createBaseEvent(event, position.pool);
-        nonZeroLiquidityChange.liquidityDelta = event.params.liquidityAmount;
-        nonZeroLiquidityChange.position = position.id;
-        nonZeroLiquidityChange.save();
+        position.liquidity = position.liquidity.plus(
+            event.params.liquidityAmount,
+        );
+        position.save();
+
+        let liquidityChange = new LiquidityChange(getEventId(event));
+        liquidityChange.transaction = getOrCreateTransaction(event).id;
+        liquidityChange.delta = event.params.liquidityAmount;
+        liquidityChange.position = position.id;
+        liquidityChange.save();
     }
 }
 
 export function handleBurn(event: BurnEvent): void {
     let pool = getPoolOrThrow(event.address);
+    let poolTokens = getSortedPoolTokens(pool);
 
-    let amount0 = convertTokenToDecimal(
-        event.params.amount0,
-        Address.fromBytes(pool.token0),
-    );
-    let amount1 = convertTokenToDecimal(
-        event.params.amount1,
-        Address.fromBytes(pool.token1),
-    );
+    poolTokens[0].tvl = poolTokens[0].tvl.minus(event.params.amount0);
+    poolTokens[0].save();
 
-    pool.token0Tvl = pool.token0Tvl.minus(amount0);
-    pool.token1Tvl = pool.token1Tvl.minus(amount1);
-    pool.save();
+    poolTokens[1].tvl = poolTokens[1].tvl.minus(event.params.amount1);
+    poolTokens[1].save();
 
     if (event.params.owner == NON_FUNGIBLE_POSITION_MANAGER_ADDRESS) return;
 
@@ -176,14 +169,17 @@ export function handleBurn(event: BurnEvent): void {
         BigInt.fromI32(event.params.bottomTick),
         BigInt.fromI32(event.params.topTick),
     );
-    position.liquidity = position.liquidity.minus(event.params.liquidityAmount);
-    position.save();
 
     if (!event.params.liquidityAmount.isZero()) {
-        let nonZeroLiquidityChange = createBaseEvent(event, position.pool);
-        nonZeroLiquidityChange.liquidityDelta =
-            event.params.liquidityAmount.neg();
-        nonZeroLiquidityChange.position = position.id;
-        nonZeroLiquidityChange.save();
+        position.liquidity = position.liquidity.minus(
+            event.params.liquidityAmount,
+        );
+        position.save();
+
+        let liquidityChange = new LiquidityChange(getEventId(event));
+        liquidityChange.transaction = getOrCreateTransaction(event).id;
+        liquidityChange.delta = event.params.liquidityAmount.neg();
+        liquidityChange.position = position.id;
+        liquidityChange.save();
     }
 }
