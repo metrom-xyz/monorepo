@@ -16,8 +16,8 @@ import { ChainReimbursements } from "./chain-reimbursements";
 import styles from "./styles.module.css";
 
 enum RewardType {
-    claim = "claim",
-    reimbursement = "reimbursement",
+    Claim = "Claim",
+    Reimbursement = "Reimbursement",
 }
 
 export interface ChainWithRewardsData {
@@ -49,10 +49,10 @@ export function Claims() {
         setInitializing(true);
 
         const rewards = [
-            ...claims.map((claim) => ({ ...claim, type: RewardType.claim })),
+            ...claims.map((claim) => ({ ...claim, type: RewardType.Claim })),
             ...reimbursements.map((reimbursement) => ({
                 ...reimbursement,
-                type: RewardType.reimbursement,
+                type: RewardType.Reimbursement,
             })),
         ];
 
@@ -77,7 +77,7 @@ export function Claims() {
                     return acc;
                 }
 
-                if (reward.type === RewardType.claim) data.claims.push(reward);
+                if (reward.type === RewardType.Claim) data.claims.push(reward);
                 else data.reimbursements.push(reward);
                 return acc;
             },
