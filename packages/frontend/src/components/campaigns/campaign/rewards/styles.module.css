@@ -2,6 +2,10 @@
     @apply flex items-center justify-between col-span-4 sm:col-span-1;
 }
 
+.loading {
+    @apply w-full;
+}
+
 .rewardsWrapper {
     @apply w-full flex items-center gap-3;
 }
