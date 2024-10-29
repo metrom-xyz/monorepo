@@ -3,5 +3,5 @@
 }
 
 .skeleton {
-    @apply h-10;
+    @apply max-w-32 w-full h-10;
 }

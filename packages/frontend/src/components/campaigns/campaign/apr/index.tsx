@@ -13,11 +13,11 @@ interface AprProps {
 export function Apr({ apr, kpi }: AprProps) {
     return (
         <div className={styles.root}>
-            <AprChip apr={apr} kpi={kpi} placeholder />
+            <AprChip apr={apr} kpi={kpi} placeholder fill />
         </div>
     );
 }
 
 export function SkeletonApr() {
-    return <Skeleton className={styles.skeleton} variant="lg" width={90} />;
+    return <Skeleton className={styles.skeleton} variant="lg" />;
 }

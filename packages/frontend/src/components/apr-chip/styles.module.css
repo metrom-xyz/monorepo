@@ -1,11 +1,16 @@
 .root {
     @apply flex
         w-fit
+        justify-center
         items-center
         bg-brand-blue
         rounded-lg
         col-span-4
         sm:col-span-1;
+}
+
+.fill {
+    @apply max-w-32 w-full;
 }
 
 .wrapper {
