@@ -131,7 +131,7 @@ export function SkeletonHeader() {
                     <Skeleton variant="xl2" width={400} />
                     <Skeleton variant="lg" width={60} />
                 </div>
-                <Skeleton variant="sm" width={125} />
+                <Skeleton width={125} />
             </div>
             <div className={styles.actionsContainer}>
                 <div className={styles.leftActions}>
