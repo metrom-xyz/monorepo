@@ -11,12 +11,12 @@
         rounded-2xl;
 }
 
-.loadingTable {
-    @apply w-full h-56 rounded-2xl;
-}
-
 .loadingTitle {
     @apply font-sans font-medium text-lg uppercase;
+}
+
+.loadingTableHeader {
+    @apply font-sans font-medium text-sm text-gray-400 uppercase;
 }
 
 .header {

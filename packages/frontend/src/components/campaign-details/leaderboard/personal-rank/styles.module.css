@@ -12,6 +12,10 @@
     @apply grid grid-cols-3;
 }
 
+.loadingTableHeader {
+    @apply font-sans font-medium text-sm text-gray-400 uppercase;
+}
+
 .header > :nth-child(2) {
     @apply justify-self-center;
 }

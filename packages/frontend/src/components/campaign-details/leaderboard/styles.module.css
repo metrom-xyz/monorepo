@@ -39,6 +39,10 @@
     @apply font-sans font-medium text-lg uppercase;
 }
 
+.loadingTableHeader {
+    @apply font-sans font-medium text-sm text-gray-400 uppercase;
+}
+
 .loadingCard {
     @apply w-full rounded-2xl min-h-[352px];
 }

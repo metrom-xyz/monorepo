@@ -41,3 +41,7 @@
 .chartContainer {
     @apply h-[240px] w-[240px];
 }
+
+.loadingTitle {
+    @apply font-sans font-medium text-sm text-gray-400 uppercase;
+}
