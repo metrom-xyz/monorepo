@@ -5,7 +5,14 @@ import {
     Bytes,
     ethereum,
 } from "@graphprotocol/graph-ts";
-import { Block, Event, Pool, Position, Token } from "../generated/schema";
+import {
+    Pool,
+    Position,
+    Token,
+    Transaction,
+    PoolToken,
+    Block,
+} from "../generated/schema";
 import { Erc20 } from "../generated/Factory/Erc20";
 import { Erc20BytesSymbol } from "../generated/Factory/Erc20BytesSymbol";
 import { Erc20BytesName } from "../generated/Factory/Erc20BytesName";
@@ -22,7 +29,13 @@ export const BI_1 = BigInt.fromI32(1);
 export const BD_0 = BigDecimal.zero();
 export const BD_10 = BigDecimal.fromString("10");
 
-export function getOrCreateBlock(event: ethereum.Event): Block {
+export function getEventId(event: ethereum.Event): Bytes {
+    return changetype<Bytes>(
+        event.block.number.leftShift(40).plus(event.logIndex).reverse(),
+    );
+}
+
+function getOrCreateBlock(event: ethereum.Event): Block {
     let block = Block.load(event.block.hash);
     if (block !== null) return block;
 
@@ -34,20 +47,16 @@ export function getOrCreateBlock(event: ethereum.Event): Block {
     return block;
 }
 
-export function createBaseEventEvent(
-    event: ethereum.Event,
-    poolId: Bytes,
-): Event {
-    let id = changetype<Bytes>(
-        event.block.number.leftShift(40).plus(event.logIndex).reverse(),
-    );
-    let baseEvent = new Event(id);
-    baseEvent.transactionHash = event.transaction.hash;
-    baseEvent.block = getOrCreateBlock(event).id;
-    baseEvent.logIndex = event.logIndex;
-    baseEvent.pool = poolId;
-    baseEvent.save();
-    return baseEvent;
+export function getOrCreateTransaction(event: ethereum.Event): Transaction {
+    let id = event.transaction.hash;
+    let transaction = Transaction.load(id);
+    if (transaction != null) return transaction;
+
+    transaction = new Transaction(id);
+    transaction.block = getOrCreateBlock(event).id;
+    transaction.save();
+
+    return transaction;
 }
 
 export function getPoolOrThrow(address: Address): Pool {
@@ -94,6 +103,45 @@ export function getTokenOrThrow(address: Address): Token {
     if (token != null) return token;
 
     throw new Error(`Could not find token with address ${address.toHex()}`);
+}
+
+function getPoolTokenId(poolAddress: Address, tokenAddress: Address): Bytes {
+    return poolAddress.concat(tokenAddress);
+}
+
+export function getSortedPoolTokens(pool: Pool): PoolToken[] {
+    let sortedPoolTokenIds = pool.tokens.sort((a, b) => {
+        for (let i = 0; i < 40; i++) {
+            let aByte = a[i];
+            let bByte = b[i];
+
+            if (aByte < bByte) {
+                return -1;
+            } else if (aByte > bByte) {
+                return 1;
+            }
+        }
+        return 0;
+    });
+
+    let poolToken0Id = sortedPoolTokenIds[0];
+    let poolToken0 = PoolToken.load(poolToken0Id);
+    if (poolToken0 == null)
+        throw new Error(`Could not find pool token 0 with id ${poolToken0Id}`);
+
+    let poolToken1Id = sortedPoolTokenIds[1];
+    let poolToken1 = PoolToken.load(poolToken1Id);
+    if (poolToken1 == null)
+        throw new Error(`Could not find pool token 1 with id ${poolToken1Id}`);
+
+    if (sortedPoolTokenIds.length === 2) return [poolToken0, poolToken1];
+
+    let poolToken2Id = sortedPoolTokenIds[2];
+    let poolToken2 = PoolToken.load(poolToken2Id);
+    if (poolToken2 == null)
+        throw new Error(`Could not find pool token 2 with id ${poolToken2Id}`);
+
+    return [poolToken0, poolToken1, poolToken2];
 }
 
 export function fetchTokenSymbol(address: Address): string | null {
@@ -157,26 +205,18 @@ export function getOrCreateToken(address: Address): Token | null {
     return token;
 }
 
-export function exponentToBigDecimal(decimals: BigInt): BigDecimal {
-    let bd = BigDecimal.fromString("1");
-    for (let i = BI_0; i.lt(decimals as BigInt); i = i.plus(BI_1)) {
-        bd = bd.times(BD_10);
-    }
-    return bd;
-}
-
-export function safeDiv(amount0: BigDecimal, amount1: BigDecimal): BigDecimal {
-    if (amount1.equals(BD_0)) {
-        return BD_0;
-    } else {
-        return amount0.div(amount1);
-    }
-}
-
-export function convertTokenToDecimal(
-    tokenAmount: BigInt,
+export function getOrCreatePoolToken(
+    poolAddress: Address,
     tokenAddress: Address,
-): BigDecimal {
-    let token = getTokenOrThrow(tokenAddress);
-    return tokenAmount.toBigDecimal().div(exponentToBigDecimal(token.decimals));
+): PoolToken | null {
+    let id = getPoolTokenId(poolAddress, tokenAddress);
+    let poolToken = PoolToken.load(id);
+    if (poolToken !== null) return poolToken;
+
+    poolToken = new PoolToken(id);
+    poolToken.data = tokenAddress;
+    poolToken.tvl = BI_0;
+    poolToken.save();
+
+    return poolToken;
 }

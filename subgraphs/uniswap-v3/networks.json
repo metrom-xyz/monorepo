@@ -19,6 +19,26 @@
             "startBlock": 173
         }
     },
+    "scroll": {
+        "Factory": {
+            "address": "0x70C62C8b8e801124A4Aa81ce07b637A3e83cb919",
+            "startBlock": 1367
+        },
+        "NonFungiblePositionManager": {
+            "address": "0xB39002E4033b162fAc607fc3471E205FA2aE5967",
+            "startBlock": 1375
+        }
+    },
+    "taiko": {
+        "Factory": {
+            "address": "0x75FC67473A91335B5b8F8821277262a13B38c9b3",
+            "startBlock": 961
+        },
+        "NonFungiblePositionManager": {
+            "address": "0x8B3c541c30f9b29560f56B9E44b59718916B69EF",
+            "startBlock": 980
+        }
+    },
     "base-sepolia": {
         "Factory": {
             "address": "0x4752ba5DBc23f44D87826276BF6Fd6b1C372aD24",

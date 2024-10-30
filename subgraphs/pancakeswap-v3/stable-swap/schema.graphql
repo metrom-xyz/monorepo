@@ -14,19 +14,15 @@ type PoolToken @entity {
 type Pool @entity {
     id: Bytes!
     tokens: [PoolToken!]!
-    tick: BigInt!
     fee: BigInt!
+    liquidity: BigInt!
     positions: [Position!]! @derivedFrom(field: "pool")
-    tickMovingSwaps: [TickMovingSwap!]! @derivedFrom(field: "pool")
 }
 
 type Position @entity {
     id: Bytes!
     owner: Bytes!
-    lowerTick: BigInt!
-    upperTick: BigInt!
     liquidity: BigInt!
-    direct: Boolean!
     pool: Pool!
     liquidityChanges: [LiquidityChange!]! @derivedFrom(field: "position")
 }
@@ -47,11 +43,4 @@ type LiquidityChange @entity(immutable: true) {
     transaction: Transaction!
     delta: BigInt!
     position: Position!
-}
-
-type TickMovingSwap @entity(immutable: true) {
-    id: Bytes!
-    transaction: Transaction!
-    pool: Pool!
-    newTick: BigInt!
 }

@@ -1,8 +1,8 @@
-import { BigInt, DataSourceContext, log } from "@graphprotocol/graph-ts";
+import { BigInt, Address, log } from "@graphprotocol/graph-ts";
 import { PoolCreated as PoolCreatedEvent } from "../../generated/Factory/Factory";
-import { Pool as PoolTemplate } from "../../generated/templates";
 import { Pool } from "../../generated/schema";
-import { BD_0, BI_0, getOrCreateToken } from "../commons";
+import { Pool as PoolTemplate } from "../../generated/templates";
+import { BI_0, getOrCreatePoolToken, getOrCreateToken } from "../commons";
 
 export function handlePoolCreated(event: PoolCreatedEvent): void {
     let token0 = getOrCreateToken(event.params.token0);
@@ -23,22 +23,35 @@ export function handlePoolCreated(event: PoolCreatedEvent): void {
         return;
     }
 
+    let poolToken0 = getOrCreatePoolToken(
+        event.params.pool,
+        changetype<Address>(token0.id),
+    );
+    if (poolToken0 === null) {
+        log.warning(
+            "Could not create pool token object for token 0 at address {}, skipping pool indexing",
+            [event.params.token0.toString()],
+        );
+        return;
+    }
+
+    let poolToken1 = getOrCreatePoolToken(
+        event.params.pool,
+        changetype<Address>(token1.id),
+    );
+    if (poolToken1 === null) {
+        log.warning(
+            "Could not create pool token object for token 1 at address {}, skipping pool indexing",
+            [event.params.token1.toString()],
+        );
+        return;
+    }
+
     let pool = new Pool(event.params.pool);
-
-    pool.token0 = token0.id;
-    pool.token1 = token1.id;
-
-    pool.token0Tvl = BD_0;
-    pool.token1Tvl = BD_0;
-
+    pool.tokens = [poolToken0.id, poolToken1.id];
     pool.tick = BI_0;
     pool.fee = BigInt.fromU32(event.params.fee);
-
     pool.save();
 
-    let context = new DataSourceContext();
-    context.setBigInt("token0Decimals", token0.decimals);
-    context.setBigInt("token1Decimals", token1.decimals);
-
-    PoolTemplate.createWithContext(event.params.pool, context);
+    PoolTemplate.create(event.params.pool);
 }
