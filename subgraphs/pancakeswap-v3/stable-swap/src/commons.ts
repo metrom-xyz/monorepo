@@ -5,14 +5,7 @@ import {
     Bytes,
     ethereum,
 } from "@graphprotocol/graph-ts";
-import {
-    Pool,
-    Position,
-    Token,
-    Transaction,
-    PoolToken,
-    Block,
-} from "../generated/schema";
+import { Pool, Position, Token, PoolToken } from "../generated/schema";
 import { Erc20 } from "../generated/Factory/Erc20";
 import { Erc20BytesSymbol } from "../generated/Factory/Erc20BytesSymbol";
 import { Erc20BytesName } from "../generated/Factory/Erc20BytesName";
@@ -33,30 +26,6 @@ export function getEventId(event: ethereum.Event): Bytes {
     return changetype<Bytes>(
         event.block.number.leftShift(40).plus(event.logIndex).reverse(),
     );
-}
-
-function getOrCreateBlock(event: ethereum.Event): Block {
-    let block = Block.load(event.block.hash);
-    if (block !== null) return block;
-
-    block = new Block(event.block.hash);
-    block.number = event.block.number;
-    block.timestamp = event.block.timestamp;
-    block.save();
-
-    return block;
-}
-
-export function getOrCreateTransaction(event: ethereum.Event): Transaction {
-    let id = event.transaction.hash;
-    let transaction = Transaction.load(id);
-    if (transaction != null) return transaction;
-
-    transaction = new Transaction(id);
-    transaction.block = getOrCreateBlock(event).id;
-    transaction.save();
-
-    return transaction;
 }
 
 export function getPoolOrThrow(address: Address): Pool {

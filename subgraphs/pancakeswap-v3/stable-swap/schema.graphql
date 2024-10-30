@@ -27,20 +27,11 @@ type Position @entity {
     liquidityChanges: [LiquidityChange!]! @derivedFrom(field: "position")
 }
 
-type Block @entity(immutable: true) {
-    id: Bytes!
-    number: BigInt!
-    timestamp: BigInt!
-}
-
-type Transaction @entity(immutable: true) {
-    id: Bytes!
-    block: Block!
-}
-
 type LiquidityChange @entity(immutable: true) {
     id: Bytes!
-    transaction: Transaction!
+    timestamp: BigInt!
+    blockNumber: BigInt!
+    transactionHash: Bytes!
     delta: BigInt!
     position: Position!
 }

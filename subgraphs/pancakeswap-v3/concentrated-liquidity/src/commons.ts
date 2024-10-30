@@ -5,13 +5,7 @@ import {
     Bytes,
     ethereum,
 } from "@graphprotocol/graph-ts";
-import {
-    Block,
-    Pool,
-    PoolToken,
-    Token,
-    Transaction,
-} from "../generated/schema";
+import { Pool, PoolToken, Token } from "../generated/schema";
 import { NonFungiblePositionManager } from "../generated/NonFungiblePositionManager/NonFungiblePositionManager";
 import { Factory } from "../generated/Factory/Factory";
 import {
@@ -35,30 +29,6 @@ export function getEventId(event: ethereum.Event): Bytes {
     return changetype<Bytes>(
         event.block.number.leftShift(40).plus(event.logIndex).reverse(),
     );
-}
-
-function getOrCreateBlock(event: ethereum.Event): Block {
-    let block = Block.load(event.block.hash);
-    if (block !== null) return block;
-
-    block = new Block(event.block.hash);
-    block.number = event.block.number;
-    block.timestamp = event.block.timestamp;
-    block.save();
-
-    return block;
-}
-
-export function getOrCreateTransaction(event: ethereum.Event): Transaction {
-    let id = event.transaction.hash;
-    let transaction = Transaction.load(id);
-    if (transaction != null) return transaction;
-
-    transaction = new Transaction(id);
-    transaction.block = getOrCreateBlock(event).id;
-    transaction.save();
-
-    return transaction;
 }
 
 export function getPoolOrThrow(address: Address): Pool {

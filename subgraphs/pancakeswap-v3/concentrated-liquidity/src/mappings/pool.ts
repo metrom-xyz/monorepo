@@ -14,7 +14,6 @@ import {
 import {
     BI_0,
     getEventId,
-    getOrCreateTransaction,
     getPoolOrThrow,
     getSortedPoolTokens,
 } from "../commons";
@@ -37,7 +36,9 @@ export function handleSwap(event: SwapEvent): void {
     let newTick = BigInt.fromI32(event.params.tick);
     if (newTick != pool.tick) {
         let tickMovingSwap = new TickMovingSwap(getEventId(event));
-        tickMovingSwap.transaction = getOrCreateTransaction(event).id;
+        tickMovingSwap.timestamp = event.block.timestamp;
+        tickMovingSwap.blockNumber = event.block.number;
+        tickMovingSwap.transactionHash = event.transaction.hash;
         tickMovingSwap.pool = pool.id;
         tickMovingSwap.newTick = newTick;
         tickMovingSwap.save();
@@ -135,7 +136,9 @@ export function handleMint(event: MintEvent): void {
         position.save();
 
         let liquidityChange = new LiquidityChange(getEventId(event));
-        liquidityChange.transaction = getOrCreateTransaction(event).id;
+        liquidityChange.timestamp = event.block.timestamp;
+        liquidityChange.blockNumber = event.block.number;
+        liquidityChange.transactionHash = event.transaction.hash;
         liquidityChange.delta = event.params.amount;
         liquidityChange.position = position.id;
         liquidityChange.save();
@@ -166,7 +169,9 @@ export function handleBurn(event: BurnEvent): void {
         position.save();
 
         let liquidityChange = new LiquidityChange(getEventId(event));
-        liquidityChange.transaction = getOrCreateTransaction(event).id;
+        liquidityChange.timestamp = event.block.timestamp;
+        liquidityChange.blockNumber = event.block.number;
+        liquidityChange.transactionHash = event.transaction.hash;
         liquidityChange.delta = event.params.amount.neg();
         liquidityChange.position = position.id;
         liquidityChange.save();

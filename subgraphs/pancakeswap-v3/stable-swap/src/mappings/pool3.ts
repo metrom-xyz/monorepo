@@ -8,7 +8,6 @@ import {
 import {
     getEventId,
     getOrCreatePosition,
-    getOrCreateTransaction,
     getPoolOrThrow,
     getPositionOrThrow,
     getSortedPoolTokens,
@@ -60,7 +59,9 @@ export function handleAddLiquidity(event: AddLiquidityEvent): void {
     position.save();
 
     let liquidityChange = new LiquidityChange(getEventId(event));
-    liquidityChange.transaction = getOrCreateTransaction(event).id;
+    liquidityChange.timestamp = event.block.timestamp;
+    liquidityChange.blockNumber = event.block.number;
+    liquidityChange.transactionHash = event.transaction.hash;
     liquidityChange.delta = addedLiquidity;
     liquidityChange.position = position.id;
     liquidityChange.save();
@@ -92,7 +93,9 @@ export function handleRemoveLiquidity(event: RemoveLiquidityEvent): void {
     position.save();
 
     let liquidityChange = new LiquidityChange(getEventId(event));
-    liquidityChange.transaction = getOrCreateTransaction(event).id;
+    liquidityChange.timestamp = event.block.timestamp;
+    liquidityChange.blockNumber = event.block.number;
+    liquidityChange.transactionHash = event.transaction.hash;
     liquidityChange.delta = removedLiquidity.neg();
     liquidityChange.position = position.id;
     liquidityChange.save();
@@ -120,7 +123,9 @@ export function handleRemoveLiquidityOne(event: RemoveLiquidityOneEvent): void {
     position.save();
 
     let liquidityChange = new LiquidityChange(getEventId(event));
-    liquidityChange.transaction = getOrCreateTransaction(event).id;
+    liquidityChange.timestamp = event.block.timestamp;
+    liquidityChange.blockNumber = event.block.number;
+    liquidityChange.transactionHash = event.transaction.hash;
     liquidityChange.delta = event.params.token_amount.neg();
     liquidityChange.position = position.id;
     liquidityChange.save();
@@ -154,7 +159,9 @@ export function handleRemoveLiquidityImbalance(
     position.save();
 
     let liquidityChange = new LiquidityChange(getEventId(event));
-    liquidityChange.transaction = getOrCreateTransaction(event).id;
+    liquidityChange.timestamp = event.block.timestamp;
+    liquidityChange.blockNumber = event.block.number;
+    liquidityChange.transactionHash = event.transaction.hash;
     liquidityChange.delta = removedLiquidity.neg();
     liquidityChange.position = position.id;
     liquidityChange.save();

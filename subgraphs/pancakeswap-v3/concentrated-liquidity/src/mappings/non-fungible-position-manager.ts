@@ -9,7 +9,6 @@ import {
     BI_0,
     FactoryContract,
     getEventId,
-    getOrCreateTransaction,
     NonFungiblePositionManagerContract,
 } from "../commons";
 import { MASTERCHEF_V3_ADDRESS } from "../addresses";
@@ -63,7 +62,9 @@ export function handleIncreaseLiquidity(event: IncreaseLiquidityEvent): void {
         position.save();
 
         let liquidityChange = new LiquidityChange(getEventId(event));
-        liquidityChange.transaction = getOrCreateTransaction(event).id;
+        liquidityChange.timestamp = event.block.timestamp;
+        liquidityChange.blockNumber = event.block.number;
+        liquidityChange.transactionHash = event.transaction.hash;
         liquidityChange.delta = event.params.liquidity;
         liquidityChange.position = position.id;
         liquidityChange.save();
@@ -79,7 +80,9 @@ export function handleDecreaseLiquidity(event: DecreaseLiquidityEvent): void {
         position.save();
 
         let liquidityChange = new LiquidityChange(getEventId(event));
-        liquidityChange.transaction = getOrCreateTransaction(event).id;
+        liquidityChange.timestamp = event.block.timestamp;
+        liquidityChange.blockNumber = event.block.number;
+        liquidityChange.transactionHash = event.transaction.hash;
         liquidityChange.delta = event.params.liquidity.neg();
         liquidityChange.position = position.id;
         liquidityChange.save();
