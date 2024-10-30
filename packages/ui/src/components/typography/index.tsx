@@ -18,6 +18,7 @@ export type TypographyVariant =
     | "lg"
     | "xl"
     | "xl2"
+    | "xl3"
     | "xl4"
     | "xl5";
 
@@ -52,6 +53,7 @@ const COMPONENT_MAP: Record<TypographyVariant, ElementType> = {
     lg: "p",
     xl: "p",
     xl2: "h1",
+    xl3: "h1",
     xl4: "h1",
     xl5: "h1",
 };

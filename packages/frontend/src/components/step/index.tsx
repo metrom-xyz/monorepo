@@ -9,6 +9,7 @@ import styles from "./styles.module.css";
 
 interface StepProps {
     disabled?: boolean;
+    loading?: boolean;
     completed?: boolean;
     open?: boolean;
     error?: boolean;
@@ -20,6 +21,7 @@ interface StepProps {
 
 export function Step({
     disabled,
+    loading,
     completed,
     open,
     error,
@@ -66,7 +68,8 @@ export function Step({
         <animated.div
             style={springStyles}
             className={classNames(className, styles.root, {
-                [styles.disabled]: disabled,
+                [styles.disabled]: disabled || loading,
+                [styles.loading]: loading,
                 [styles.error]: error && errorLevel === "error",
                 [styles.warning]: error && errorLevel === "warning",
                 [styles.open]: open,

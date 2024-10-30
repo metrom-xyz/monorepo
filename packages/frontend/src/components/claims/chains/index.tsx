@@ -2,7 +2,6 @@ import classNames from "classnames";
 import { Typography, Skeleton, Card } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
 import type { ChainWithRewardsData } from "..";
-import { useSwitchChain } from "wagmi";
 
 import styles from "./styles.module.css";
 

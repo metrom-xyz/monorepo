@@ -1,3 +1,5 @@
+"use client";
+
 import dayjs, { Dayjs } from "dayjs";
 import React, { useCallback, useMemo, useState } from "react";
 import { Typography } from "../typography";

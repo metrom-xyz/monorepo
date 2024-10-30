@@ -11,7 +11,7 @@
 }
 
 .contentWrapper {
-    @apply w-full max-w-screen-lg flex flex-col gap-16 px-5;
+    @apply w-full max-w-screen-lg flex flex-col gap-16 px-5 mt-4;
 }
 
 .notFound {

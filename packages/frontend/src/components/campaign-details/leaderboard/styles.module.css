@@ -35,6 +35,22 @@
         rounded-2xl;
 }
 
+.loadingTitle {
+    @apply font-sans font-medium text-lg uppercase;
+}
+
+.loadingCard {
+    @apply w-full rounded-2xl min-h-[352px];
+}
+
+.loadingCard:first-child {
+    @apply flex-[2];
+}
+
+.loadingCard:last-child {
+    @apply flex-[1];
+}
+
 .tableWrapper {
     @apply flex flex-col gap-7 sm:px-4;
 }

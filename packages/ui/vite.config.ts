@@ -3,13 +3,18 @@ import { peerDependencies, devDependencies } from "./package.json";
 
 export default defineConfig({
     build: {
+        ssr: true,
         cssCodeSplit: false,
-        emptyOutDir: false,
+        emptyOutDir: true,
         lib: {
             entry: "src/index.ts",
             formats: ["es"],
         },
         rollupOptions: {
+            input: {
+                index: "./src/index.ts",
+                server: "./src/server.ts",
+            },
             external: [
                 ...Object.keys(peerDependencies),
                 ...Object.keys(devDependencies),

@@ -12,6 +12,7 @@ export const tailwindPreset: Partial<Config> = {
                 // TODO: add missing sizes
                 xl5: "3rem",
                 xl4: "2.25rem",
+                xl3: "1.875rem",
                 xl2: "1.5rem",
                 xl: "1.25rem",
                 lg: "1.125rem",

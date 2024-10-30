@@ -1,0 +1,20 @@
+.root {
+    composes: root from "../text-field/styles.module.css";
+}
+
+.boxed {
+    composes: boxed from "../text-field/styles.module.css";
+}
+
+.alignCenter {
+    composes: alignCenter from "../text-field/styles.module.css";
+}
+
+.alignRight {
+    composes: alignRight from "../text-field/styles.module.css";
+}
+
+.label {
+    composes: sm from "../typography/styles.module.css";
+    @apply font-medium text-gray-400 uppercase;
+}

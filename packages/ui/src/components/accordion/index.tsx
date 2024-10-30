@@ -1,3 +1,5 @@
+"use client";
+
 import { easings, useSpring, animated, useTransition } from "@react-spring/web";
 import { type ReactNode, useEffect, useRef, useState } from "react";
 import { ChevronDown } from "../../assets/chevron-down";

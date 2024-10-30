@@ -1,5 +1,5 @@
 .root {
-    @apply flex flex-col gap-4;
+    @apply w-full flex flex-col gap-4;
 }
 
 .table {
@@ -9,6 +9,14 @@
         p-4
         bg-white
         rounded-2xl;
+}
+
+.loadingTable {
+    @apply w-full h-56 rounded-2xl;
+}
+
+.loadingTitle {
+    @apply font-sans font-medium text-lg uppercase;
 }
 
 .header {

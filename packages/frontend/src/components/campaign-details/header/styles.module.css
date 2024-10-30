@@ -23,6 +23,22 @@
     @apply flex flex-wrap gap-3;
 }
 
+.leftActions.loading {
+    @apply w-full;
+}
+
+.loadingLogosWrapper {
+    @apply w-[84px] flex gap-1 relative;
+}
+
+.loadingLogo:last-child {
+    @apply absolute right-1;
+}
+
+.loadingLogo {
+    @apply w-11;
+}
+
 .exploreButton {
     @apply h-12;
 }

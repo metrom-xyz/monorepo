@@ -1,3 +1,5 @@
+"use client";
+
 import dayjs, { Dayjs, type UnitType } from "dayjs";
 import React, {
     useCallback,

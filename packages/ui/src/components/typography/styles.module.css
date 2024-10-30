@@ -38,6 +38,10 @@
     @apply font-normal font-sans text-xl2 leading-8;
 }
 
+.xl3 {
+    @apply font-normal font-sans text-xl3 leading-9;
+}
+
 .xl4 {
     @apply font-normal font-sans text-xl4 leading-10;
 }

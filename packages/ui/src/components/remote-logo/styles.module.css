@@ -12,6 +12,7 @@
 
 .fallback {
     @apply bg-gray-800
+        relative
         rounded-full
         flex
         justify-center

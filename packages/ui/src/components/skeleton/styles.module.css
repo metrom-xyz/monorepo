@@ -30,6 +30,10 @@
     @apply h-10;
 }
 
+.xl3 {
+    @apply h-12;
+}
+
 .xl4 {
     @apply h-14;
 }

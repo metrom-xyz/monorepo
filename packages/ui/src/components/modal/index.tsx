@@ -1,3 +1,5 @@
+"use client";
+
 import { type ReactNode, useEffect, useRef } from "react";
 import { useTransition, animated } from "@react-spring/web";
 

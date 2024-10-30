@@ -22,6 +22,10 @@
     @apply pointer-events-none opacity-40 select-none;
 }
 
+.loading.disabled {
+    @apply animate-pulse;
+}
+
 .error {
     @apply border-red-600 hover:!border-red-600;
 }

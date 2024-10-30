@@ -48,3 +48,7 @@
 .iconOpen {
     @apply rotate-180;
 }
+
+.previewLabel {
+    @apply font-sans font-medium text-base uppercase;
+}
