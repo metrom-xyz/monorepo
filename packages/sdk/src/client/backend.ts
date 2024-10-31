@@ -251,7 +251,7 @@ export class MetromApiClient {
             !params.campaign.specification.kpi
         )
             throw new Error(
-                `Tried to fetch KPI measurements for campaign with id ${params.campaign.id} in chain with id ${params.campaign.chainId} with no attached KPI`,
+                `tried to fetch kpi measurements for campaign with id ${params.campaign.id} in chain with id ${params.campaign.chainId} with no attached kpi`,
             );
 
         const url = new URL(
