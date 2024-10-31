@@ -19,6 +19,7 @@ import { RemoteLogo } from "@/src/components/remote-logo";
 import { ClaimSuccess } from "../../notification/claim-success";
 import { ClaimFail } from "../../notification/claim-fail";
 import type { WriteContractErrorType } from "viem";
+import type { Erc20Token } from "@metrom-xyz/sdk";
 
 import styles from "./styles.module.css";
 
@@ -26,9 +27,11 @@ interface TokenClaimProps {
     chainId: number;
     tokenClaims: TokenClaims;
     disabled?: boolean;
+    onClaim: (token: Erc20Token) => void;
 }
 
 export function TokenClaim({
+    onClaim,
     chainId,
     tokenClaims,
     disabled,
@@ -98,6 +101,7 @@ export function TokenClaim({
                     />
                 ));
                 setClaimed(true);
+                onClaim(tokenClaims.token);
                 trackFathomEvent("CLICK_CLAIM_SINGLE");
             } catch (error) {
                 if (
@@ -119,8 +123,9 @@ export function TokenClaim({
         simulatedClaimAll,
         tokenClaims.token,
         tokenClaims.totalAmount,
-        switchChainAsync,
+        onClaim,
         writeContractAsync,
+        switchChainAsync,
     ]);
 
     return (

@@ -14,7 +14,7 @@ import { useCallback, useEffect, useState } from "react";
 import { trackFathomEvent } from "@/src/utils/fathom";
 import { toast } from "sonner";
 import { ClaimSuccess } from "../notification/claim-success";
-import type { WriteContractErrorType } from "viem";
+import type { WriteContractErrorType, Chain } from "viem";
 import { ClaimFail } from "../notification/claim-fail";
 import { RecoverSuccess } from "../notification/recover-success";
 import { RecoverFail } from "../notification/recover-fail";
@@ -24,6 +24,8 @@ import styles from "./styles.module.css";
 interface ChainOverviewProps {
     className?: string;
     chainWithRewardsData: ChainWithRewardsData;
+    onClaimAll: (chain: Chain) => void;
+    onRecoverAll: (chain: Chain) => void;
     onClaiming?: (value: boolean) => void;
     onRecovering?: (value: boolean) => void;
 }
@@ -31,6 +33,8 @@ interface ChainOverviewProps {
 export function ChainOverview({
     className,
     chainWithRewardsData,
+    onClaimAll,
+    onRecoverAll,
     onClaiming,
     onRecovering,
 }: ChainOverviewProps) {
@@ -41,9 +45,7 @@ export function ChainOverview({
     const { writeContractAsync } = useWriteContract();
 
     const [claiming, setClaiming] = useState(false);
-    const [claimed, setClaimed] = useState(false);
     const [recovering, setRecovering] = useState(false);
-    const [recovered, setRecovered] = useState(false);
 
     const ChainIcon = chainWithRewardsData.chainData.icon;
 
@@ -138,7 +140,7 @@ export function ChainOverview({
                 }
 
                 toast.custom((toastId) => <RecoverSuccess toastId={toastId} />);
-                setRecovered(true);
+                onRecoverAll(chainWithRewardsData.chain);
                 trackFathomEvent("CLICK_RECOVER_ALL");
             } catch (error) {
                 if (
@@ -157,9 +159,10 @@ export function ChainOverview({
         };
         void create();
     }, [
-        chainWithRewardsData.chain.id,
+        chainWithRewardsData.chain,
         publicClient,
         simulatedRecoverAll,
+        onRecoverAll,
         switchChainAsync,
         writeContractAsync,
     ]);
@@ -185,7 +188,7 @@ export function ChainOverview({
                 }
 
                 toast.custom((toastId) => <ClaimSuccess toastId={toastId} />);
-                setClaimed(true);
+                onClaimAll(chainWithRewardsData.chain);
                 trackFathomEvent("CLICK_CLAIM_ALL");
             } catch (error) {
                 if (
@@ -208,9 +211,10 @@ export function ChainOverview({
         void create();
     }, [
         t,
-        chainWithRewardsData.chain.id,
+        chainWithRewardsData.chain,
         publicClient,
         simulatedClaimAll,
+        onClaimAll,
         switchChainAsync,
         writeContractAsync,
     ]);
@@ -226,7 +230,7 @@ export function ChainOverview({
             {chainWithRewardsData.reimbursements.length > 0 && (
                 <Button
                     size="xsmall"
-                    disabled={simulateRecoverAllErrored || recovered}
+                    disabled={simulateRecoverAllErrored}
                     loading={simulatingRecoverAll || recovering}
                     iconPlacement="right"
                     onClick={handleRecoverAll}
@@ -238,19 +242,21 @@ export function ChainOverview({
                           : t("reimbursements.recoverAll")}
                 </Button>
             )}
-            <Button
-                size="xsmall"
-                disabled={simulateClaimAllErrored || claimed}
-                loading={simulatingClaimAll || claiming}
-                iconPlacement="right"
-                onClick={handleClaimAll}
-            >
-                {simulatingClaimAll
-                    ? t("claims.loading")
-                    : claiming
-                      ? t("claims.claimingAll")
-                      : t("claims.claimAll")}
-            </Button>
+            {chainWithRewardsData.claims.length > 0 && (
+                <Button
+                    size="xsmall"
+                    disabled={simulateClaimAllErrored}
+                    loading={simulatingClaimAll || claiming}
+                    iconPlacement="right"
+                    onClick={handleClaimAll}
+                >
+                    {simulatingClaimAll
+                        ? t("claims.loading")
+                        : claiming
+                          ? t("claims.claimingAll")
+                          : t("claims.claimAll")}
+                </Button>
+            )}
         </Card>
     );
 }
