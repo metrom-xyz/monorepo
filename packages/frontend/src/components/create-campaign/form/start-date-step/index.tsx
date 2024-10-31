@@ -106,8 +106,6 @@ export function StartDateStep({
         setOpen(false);
     }, [date, onStartDateChange]);
 
-    console.log({ date, startDate });
-
     return (
         <Step
             disabled={disabled}
