@@ -99,6 +99,10 @@ export function EndDateStep({
     }, [disabled]);
 
     useEffect(() => {
+        if (!endDate) setDate(undefined);
+    }, [endDate]);
+
+    useEffect(() => {
         if (!date || !startDate || !limits) {
             onError({ endDate: false });
             setDateError("");
