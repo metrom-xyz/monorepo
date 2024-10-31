@@ -132,6 +132,20 @@ export interface Activity {
           };
 }
 
+export interface KpiRewardDistribution {
+    token: Erc20Token;
+    distributed: UsdPricedOnChainAmount;
+    reimbursed: UsdPricedOnChainAmount;
+}
+
+export interface KpiMeasurement {
+    from: number;
+    to: number;
+    percentage: number;
+    value: number;
+    distributions: KpiRewardDistribution[];
+}
+
 export interface Leaf {
     account: Address;
     tokenAddress: Address;

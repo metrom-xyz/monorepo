@@ -61,6 +61,12 @@ export interface BackendActivity {
           };
 }
 
+export interface BackendKpiMeasurement {
+    from: number;
+    to: number;
+    percentage: number;
+}
+
 export interface BackendLeaf {
     account: Address;
     tokenAddress: Address;
