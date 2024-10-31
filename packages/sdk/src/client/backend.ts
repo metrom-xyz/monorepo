@@ -6,6 +6,7 @@ import {
     type BackendPool,
     type BackendWhitelistedErc20Token,
     type BackendReimbursement,
+    type BackendKpiMeasurement,
 } from "./types";
 import type { SupportedChain } from "@metrom-xyz/contracts";
 import { SupportedDex } from "../commons";
@@ -14,12 +15,15 @@ import {
     type Activity,
     type Campaign,
     type Claim,
+    type KpiMeasurement,
     type Pool,
     type Reimbursement,
     type Rewards,
     type UsdPricedOnChainAmount,
     type WhitelistedErc20Token,
 } from "../types";
+
+const BI_1_000_000 = BigInt(1_000_000);
 
 export interface FetchCampaignParams {
     chainId: number;
@@ -52,6 +56,12 @@ export interface FetchActivitiesParams {
 
 export interface FetchWhitelistedRewardTokensResult {
     tokens: Address;
+}
+
+export interface FetchKpiMeasurementsResult {
+    campaign: Campaign;
+    from: number;
+    to: number;
 }
 
 export class MetromApiClient {
@@ -230,6 +240,108 @@ export class MetromApiClient {
             } else {
                 return activity as Activity;
             }
+        });
+    }
+
+    async fetchKpiMeasurements(
+        params: FetchKpiMeasurementsResult,
+    ): Promise<KpiMeasurement[]> {
+        if (
+            !params.campaign.specification ||
+            !params.campaign.specification.kpi
+        )
+            throw new Error(
+                `tried to fetch kpi measurements for campaign with id ${params.campaign.id} in chain with id ${params.campaign.chainId} with no attached kpi`,
+            );
+
+        const url = new URL(
+            `v1/kpi-measurements/${params.campaign.chainId}/${params.campaign.id}`,
+            this.baseUrl,
+        );
+
+        url.searchParams.set("from", params.from.toString());
+        url.searchParams.set("to", params.to.toString());
+
+        const response = await fetch(url);
+        if (!response.ok)
+            throw new Error(
+                `response not ok while fetching kpi measurements for campaign with id ${params.campaign.id} in chain with id ${params.campaign.chainId} from ${params.from} to ${params.to}: ${await response.text()}`,
+            );
+
+        const measurements = (await response.json()) as BackendKpiMeasurement[];
+
+        const totalCampaignDuration = params.campaign.to - params.campaign.from;
+        return measurements.map((measurement) => {
+            const measuredPeriodDuration = measurement.to - measurement.from;
+            const periodDurationMultiplier = {
+                standard: measuredPeriodDuration / totalCampaignDuration,
+                get scaled() {
+                    return BigInt(Math.floor(this.standard * 1_000_000));
+                },
+            };
+
+            const distributions = params.campaign.rewards.map((reward) => {
+                const boundPercentage = {
+                    standard: Math.min(Math.max(measurement.percentage, 0), 1),
+                    get scaled() {
+                        return BigInt(Math.floor(this.standard * 1_000_000));
+                    },
+                };
+
+                const totalDistributedInPeriodFormatted =
+                    reward.amount.formatted * periodDurationMultiplier.standard;
+                const totalDistributedInPeriodRaw =
+                    (reward.amount.raw * periodDurationMultiplier.scaled) /
+                    BI_1_000_000;
+
+                const distributedToLpsInPeriodFormatted =
+                    totalDistributedInPeriodFormatted *
+                    boundPercentage.standard;
+
+                const distributedToLpsInPeriodRaw =
+                    (totalDistributedInPeriodRaw * boundPercentage.scaled) /
+                    BI_1_000_000;
+
+                const distributedInPeriod: UsdPricedOnChainAmount = {
+                    raw: distributedToLpsInPeriodRaw,
+                    formatted: distributedToLpsInPeriodFormatted,
+                    usdValue:
+                        distributedToLpsInPeriodFormatted *
+                        reward.token.usdPrice,
+                };
+
+                const reimbursedInPeriodFormatted =
+                    totalDistributedInPeriodFormatted -
+                    distributedToLpsInPeriodFormatted;
+                const reimbursedInPeriod: UsdPricedOnChainAmount = {
+                    raw:
+                        totalDistributedInPeriodRaw -
+                        distributedToLpsInPeriodRaw,
+                    formatted: reimbursedInPeriodFormatted,
+                    usdValue:
+                        reimbursedInPeriodFormatted * reward.token.usdPrice,
+                };
+
+                return {
+                    token: reward.token,
+                    distributed: distributedInPeriod,
+                    reimbursed: reimbursedInPeriod,
+                };
+            });
+
+            const goalLowerTarget =
+                params.campaign.specification!.kpi!.goal.lowerUsdTarget;
+            const goalUpperTarget =
+                params.campaign.specification!.kpi!.goal.upperUsdTarget;
+            const goalRange = goalUpperTarget - goalLowerTarget;
+
+            return {
+                from: measurement.from,
+                to: measurement.to,
+                percentage: measurement.percentage,
+                value: goalLowerTarget + goalRange * measurement.percentage,
+                distributions,
+            };
         });
     }
 }

@@ -6,6 +6,7 @@ import { KpiMetric, type KpiSpecification } from "@metrom-xyz/sdk";
 import { useMemo } from "react";
 import { KpiSimulationChart } from "../../kpi-simulation-chart";
 import { getReachedGoalPercentage } from "@/src/utils/kpi";
+import { useKpiMeasurements } from "@/src/hooks/useKpiMeasurements";
 
 import styles from "./styles.module.css";
 
@@ -18,6 +19,11 @@ export function Kpi({ campaign, loading }: KpiProps) {
     const t = useTranslations("campaignDetails.kpi");
 
     const specificationLoading = loading || !campaign;
+
+    const { kpiMeasurements, loading: loadingKpiMeasurements } =
+        useKpiMeasurements(campaign);
+    // TODO: remove this when the values are actually used in the chart
+    console.log({ kpiMeasurements, loadingKpiMeasurements });
 
     const {
         goal: { lowerUsdTarget, upperUsdTarget },
