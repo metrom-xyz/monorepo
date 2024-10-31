@@ -23,7 +23,7 @@ import {
 import { SearchIcon } from "@/src/assets/search-icon";
 import { useDebounce } from "react-use";
 import { filterCampaigns, sortCampaigns } from "@/src/utils/filtering";
-import { useRouter, usePathname, useSearchParams } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { useRouter as useLocalizedRouter } from "@/i18n/routing";
 import { SupportedChain } from "@metrom-xyz/contracts";
 import { Status } from "@metrom-xyz/sdk";
@@ -91,22 +91,14 @@ export function Campaigns() {
     const router = useRouter();
     const localizedRouter = useLocalizedRouter();
     const pathname = usePathname();
-    const searchParams = useSearchParams();
 
-    const [search, setSearch] = useState(
-        searchParams.get(QUERY_PARAM_SEARCH) || "",
+    const [search, setSearch] = useState("");
+    const [status, setStatus] = useState<FilterableStatus>(
+        FilterableStatus.All,
     );
-    const [status, setStatus] = useState<FilterableStatus>(() => {
-        const fromQuery = searchParams.get(QUERY_PARAM_STATUS);
-        return fromQuery
-            ? (fromQuery as FilterableStatus)
-            : FilterableStatus.All;
-    });
     const [chain, setChain] = useState(CHAIN_ALL);
     const [debouncedSearch, setDebouncedSearch] = useState(search);
-    const [pageNumber, setPageNumber] = useState(
-        Number(searchParams.get(QUERY_PARAM_PAGE_NUMBER)) || 1,
-    );
+    const [pageNumber, setPageNumber] = useState(1);
 
     const statusOptions = useMemo(() => {
         return [
@@ -153,13 +145,6 @@ export function Campaigns() {
     useDebounce(
         () => {
             setDebouncedSearch(search);
-            const params = new URLSearchParams(searchParams.toString());
-            if (search)
-                if (params.has(QUERY_PARAM_SEARCH))
-                    params.set(QUERY_PARAM_SEARCH, search);
-                else params.append(QUERY_PARAM_SEARCH, search);
-            else params.delete(QUERY_PARAM_SEARCH);
-            router.push(`${pathname}?${params.toString()}`);
         },
         300,
         [search],
@@ -185,30 +170,12 @@ export function Campaigns() {
     });
 
     useEffect(() => {
-        const params = new URLSearchParams(searchParams.toString());
-
         let updatedPageNumber = pageNumber;
         if (pageNumber > totalPages) {
             updatedPageNumber = totalPages || 1;
             setPageNumber(updatedPageNumber);
         }
-
-        if (updatedPageNumber !== 1) {
-            if (params.has(QUERY_PARAM_PAGE_NUMBER))
-                params.set(
-                    QUERY_PARAM_PAGE_NUMBER,
-                    updatedPageNumber.toString(),
-                );
-            else
-                params.append(
-                    QUERY_PARAM_PAGE_NUMBER,
-                    updatedPageNumber.toString(),
-                );
-        } else {
-            params.delete(QUERY_PARAM_PAGE_NUMBER);
-        }
-        router.push(`${pathname}?${params.toString()}`);
-    }, [pageNumber, pathname, router, searchParams, totalPages]);
+    }, [pageNumber, pathname, router, totalPages]);
 
     function handleSearchChange(event: ChangeEvent<HTMLInputElement>) {
         setSearch(event.target.value);
@@ -216,31 +183,14 @@ export function Campaigns() {
 
     const handleStatusChange = useCallback(
         (status: SelectOption<FilterableStatus>) => {
-            const params = new URLSearchParams(searchParams.toString());
-            if (status.value)
-                if (params.has(QUERY_PARAM_STATUS))
-                    params.set(QUERY_PARAM_STATUS, status.value.toString());
-                else params.append(QUERY_PARAM_STATUS, status.value.toString());
-            else params.delete(QUERY_PARAM_STATUS);
-            router.push(`${pathname}?${params.toString()}`);
             setStatus(status.value);
         },
-        [pathname, router, searchParams],
+        [],
     );
 
-    const handleChainChange = useCallback(
-        (chain: SelectOption<number>) => {
-            const params = new URLSearchParams(searchParams.toString());
-            if (chain.value)
-                if (params.has(QUERY_PARAM_CHAIN))
-                    params.set(QUERY_PARAM_CHAIN, chain.value.toString());
-                else params.append(QUERY_PARAM_CHAIN, chain.value.toString());
-            else params.delete(QUERY_PARAM_CHAIN);
-            router.push(`${pathname}?${params.toString()}`);
-            setChain(chain.value);
-        },
-        [pathname, router, searchParams],
-    );
+    const handleChainChange = useCallback((chain: SelectOption<number>) => {
+        setChain(chain.value);
+    }, []);
 
     function handlePreviousPage() {
         setPageNumber((page) => page - 1);
