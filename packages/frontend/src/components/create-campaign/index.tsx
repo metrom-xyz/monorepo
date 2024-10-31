@@ -55,6 +55,10 @@ export function CreateCampaign() {
         setPayload({});
     }, [chainId]);
 
+    useEffect(() => {
+        setPayload({ dex: payload.dex });
+    }, [payload.dex]);
+
     function handlePayloadOnChange(part: CampaignPayloadPart) {
         setPayload((prev) => ({ ...prev, ...part }));
     }
