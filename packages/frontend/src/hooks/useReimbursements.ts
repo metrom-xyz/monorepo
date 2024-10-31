@@ -41,8 +41,8 @@ export function useReimbursements(): {
                     );
                 }
             },
-            refetchOnMount: false,
             refetchOnWindowFocus: false,
+            staleTime: 60000,
             enabled: !!address,
         });
 
@@ -72,8 +72,9 @@ export function useReimbursements(): {
                     ],
                 };
             }),
-
         query: {
+            refetchOnWindowFocus: false,
+            staleTime: 60000,
             enabled: !!rawReimbursements,
         },
     });
@@ -102,8 +103,9 @@ export function useReimbursements(): {
                     ],
                 };
             }),
-
         query: {
+            refetchOnWindowFocus: false,
+            staleTime: 60000,
             enabled: !!rawReimbursements,
         },
     });

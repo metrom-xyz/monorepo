@@ -36,8 +36,8 @@ export function useClaims(): {
                 );
             }
         },
-        refetchOnMount: false,
         refetchOnWindowFocus: false,
+        staleTime: 60000,
         enabled: !!address,
     });
 
@@ -66,8 +66,8 @@ export function useClaims(): {
                 };
             }),
         query: {
-            refetchOnMount: false,
             refetchOnWindowFocus: false,
+            staleTime: 60000,
             enabled: !!rawClaims,
         },
     });
