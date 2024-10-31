@@ -1,11 +1,17 @@
+import { useTranslations } from "next-intl";
 import { type Claim, type Erc20Token } from "@metrom-xyz/sdk";
 import { useMemo } from "react";
 import { type Address } from "viem";
 import { SkeletonTokenClaim, TokenClaim } from "./token-claim";
 import type { ChainWithRewardsData } from "..";
+import { Card, Typography } from "@metrom-xyz/ui";
+import classNames from "classnames";
+
+import styles from "./token-claim/styles.module.css";
 
 type ChainOverviewProps = {
     claimingAll?: boolean;
+    onClaim: (token: Erc20Token) => void;
 } & Omit<ChainWithRewardsData, "reimbursements" | "chainData">;
 
 export interface TokenClaims {
@@ -15,10 +21,13 @@ export interface TokenClaims {
 }
 
 export function ChainClaims({
+    onClaim,
     chain,
     claims,
     claimingAll,
 }: ChainOverviewProps) {
+    const t = useTranslations("rewards.claims");
+
     const perToken = useMemo(() => {
         const reduced = claims.reduce(
             (acc, claim) => {
@@ -38,6 +47,15 @@ export function ChainClaims({
         return Object.values(reduced);
     }, [claims]);
 
+    if (perToken.length === 0)
+        return (
+            <Card className={classNames(styles.root, styles.noClaimsCard)}>
+                <Typography weight="medium" uppercase>
+                    {t("empty.title")}
+                </Typography>
+            </Card>
+        );
+
     return perToken.map((tokenClaims) => {
         return (
             <TokenClaim
@@ -45,6 +63,7 @@ export function ChainClaims({
                 chainId={chain.id}
                 tokenClaims={tokenClaims}
                 disabled={claimingAll}
+                onClaim={onClaim}
             />
         );
     });

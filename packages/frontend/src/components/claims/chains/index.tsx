@@ -1,16 +1,21 @@
 import classNames from "classnames";
 import { Typography, Skeleton, Card } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
-import type { ChainWithRewardsData } from "..";
-import { useSwitchChain } from "wagmi";
+import type { Chain } from "viem";
+import type { ChainData } from "@/src/commons";
 
 import styles from "./styles.module.css";
 
+export interface ChainOption {
+    chain: Chain;
+    data: ChainData;
+}
+
 interface ChainsProps {
     className?: string;
-    options: ChainWithRewardsData[];
-    value: ChainWithRewardsData | null;
-    onChange: (value: ChainWithRewardsData) => void;
+    options: ChainOption[];
+    value: Chain | null;
+    onChange: (value: Chain) => void;
 }
 
 export function Chains({ className, options, value, onChange }: ChainsProps) {
@@ -23,13 +28,7 @@ export function Chains({ className, options, value, onChange }: ChainsProps) {
             </Typography>
             <div className={styles.chainsWrapper}>
                 {options.map((option) => {
-                    if (
-                        option.claims.length === 0 &&
-                        option.reimbursements.length === 0
-                    )
-                        return null;
-
-                    const ChainIcon = option.chainData.icon;
+                    const ChainIcon = option.data.icon;
 
                     return (
                         <div
@@ -39,10 +38,10 @@ export function Chains({ className, options, value, onChange }: ChainsProps) {
                                 styles.rowAnimated,
                                 {
                                     [styles.rowActive]:
-                                        option.chain.id === value?.chain.id,
+                                        option.chain.id === value?.id,
                                 },
                             )}
-                            onClick={() => onChange(option)}
+                            onClick={() => onChange(option.chain)}
                         >
                             <ChainIcon className={styles.chainIcon} />
                             <Typography>{option.chain.name}</Typography>

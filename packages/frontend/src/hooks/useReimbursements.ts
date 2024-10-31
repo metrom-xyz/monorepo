@@ -1,11 +1,11 @@
-import { useAccount, useBlockNumber, useReadContracts } from "wagmi";
+import { useAccount, useReadContracts } from "wagmi";
 import { formatUnits, type Address, zeroAddress } from "viem";
 import { CHAIN_DATA, metromApiClient } from "../commons";
 import { type OnChainAmount, type Reimbursement } from "@metrom-xyz/sdk";
 import { SupportedChain } from "@metrom-xyz/contracts";
 import { metromAbi } from "@metrom-xyz/contracts/abi";
 import { useEffect, useState } from "react";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 
 interface ReimbursementsWithRemaining extends Reimbursement {
     remaining: OnChainAmount;
@@ -19,9 +19,7 @@ export function useReimbursements(): {
         ReimbursementsWithRemaining[]
     >([]);
 
-    const queryClient = useQueryClient();
     const { address } = useAccount();
-    const { data: blockNumber } = useBlockNumber({ watch: true });
 
     const { data: rawReimbursements, isLoading: loadingReimbursements } =
         useQuery({
@@ -44,6 +42,7 @@ export function useReimbursements(): {
                 }
             },
             refetchOnMount: false,
+            refetchOnWindowFocus: false,
             enabled: !!address,
         });
 
@@ -54,7 +53,6 @@ export function useReimbursements(): {
         data: recoveredData,
         isError: recoveredErrored,
         error: recoveredError,
-        queryKey: recoveredQueryKey,
     } = useReadContracts({
         allowFailure: false,
         contracts:
@@ -85,7 +83,6 @@ export function useReimbursements(): {
         data: claimedData,
         isError: claimedErrored,
         error: claimedError,
-        queryKey: claimedQueryKey,
     } = useReadContracts({
         allowFailure: false,
         contracts:
@@ -110,11 +107,6 @@ export function useReimbursements(): {
             enabled: !!rawReimbursements,
         },
     });
-
-    useEffect(() => {
-        queryClient.invalidateQueries({ queryKey: recoveredQueryKey });
-        queryClient.invalidateQueries({ queryKey: claimedQueryKey });
-    }, [blockNumber, queryClient, recoveredQueryKey, claimedQueryKey]);
 
     useEffect(() => {
         if (loadingReimbursements || loadingRecovered || loadingClaimed) return;

@@ -8,10 +8,10 @@ import { useTranslations } from "next-intl";
 
 import styles from "./styles.module.css";
 
-type ChainReimbursementProps = { recoveringAll?: boolean } & Omit<
-    ChainWithRewardsData,
-    "claims" | "chainData"
->;
+type ChainReimbursementProps = {
+    recoveringAll?: boolean;
+    onRecover: (token: Erc20Token) => void;
+} & Omit<ChainWithRewardsData, "claims" | "chainData">;
 
 export interface TokenReimbursements {
     token: Erc20Token;
@@ -20,6 +20,7 @@ export interface TokenReimbursements {
 }
 
 export function ChainReimbursements({
+    onRecover,
     chain,
     reimbursements,
     recoveringAll,
@@ -61,6 +62,7 @@ export function ChainReimbursements({
                             chainId={chain.id}
                             tokenReimbursements={tokenReimbursement}
                             disabled={recoveringAll}
+                            onRecover={onRecover}
                         />
                     );
                 })}

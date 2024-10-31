@@ -1,11 +1,11 @@
-import { useAccount, useBlockNumber, useReadContracts } from "wagmi";
+import { useAccount, useReadContracts } from "wagmi";
 import { formatUnits, type Address } from "viem";
 import { CHAIN_DATA, metromApiClient } from "../commons";
 import { type Claim, type OnChainAmount } from "@metrom-xyz/sdk";
 import { SupportedChain } from "@metrom-xyz/contracts";
 import { metromAbi } from "@metrom-xyz/contracts/abi";
 import { useEffect, useState } from "react";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 
 interface ClaimWithRemaining extends Claim {
     remaining: OnChainAmount;
@@ -17,9 +17,7 @@ export function useClaims(): {
 } {
     const [claims, setClaims] = useState<ClaimWithRemaining[]>([]);
 
-    const queryClient = useQueryClient();
     const { address } = useAccount();
-    const { data: blockNumber } = useBlockNumber({ watch: true });
 
     const { data: rawClaims, isLoading: loadingClaims } = useQuery({
         queryKey: ["claims", address],
@@ -39,6 +37,7 @@ export function useClaims(): {
             }
         },
         refetchOnMount: false,
+        refetchOnWindowFocus: false,
         enabled: !!address,
     });
 
@@ -47,7 +46,6 @@ export function useClaims(): {
         data: claimedData,
         isError: claimedErrored,
         error: claimedError,
-        queryKey,
     } = useReadContracts({
         allowFailure: false,
         contracts:
@@ -68,13 +66,11 @@ export function useClaims(): {
                 };
             }),
         query: {
+            refetchOnMount: false,
+            refetchOnWindowFocus: false,
             enabled: !!rawClaims,
         },
     });
-
-    useEffect(() => {
-        queryClient.invalidateQueries({ queryKey });
-    }, [blockNumber, queryClient, queryKey]);
 
     useEffect(() => {
         if (loadingClaims || loadingClaimed) return;

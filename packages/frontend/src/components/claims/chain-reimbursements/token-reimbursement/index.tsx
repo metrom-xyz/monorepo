@@ -17,6 +17,7 @@ import { formatTokenAmount } from "@/src/utils/format";
 import { trackFathomEvent } from "@/src/utils/fathom";
 import { RemoteLogo } from "@/src/components/remote-logo";
 import type { WriteContractErrorType } from "viem";
+import type { Erc20Token } from "@metrom-xyz/sdk";
 import { RecoverSuccess } from "../../notification/recover-success";
 import { RecoverFail } from "../../notification/recover-fail";
 
@@ -26,9 +27,11 @@ interface TokenReimbursementProps {
     chainId: number;
     tokenReimbursements: TokenReimbursements;
     disabled?: boolean;
+    onRecover: (token: Erc20Token) => void;
 }
 
 export function TokenReimbursement({
+    onRecover,
     chainId,
     tokenReimbursements,
     disabled,
@@ -98,6 +101,7 @@ export function TokenReimbursement({
                     />
                 ));
                 setRecovered(true);
+                onRecover(tokenReimbursements.token);
                 trackFathomEvent("CLICK_RECOVER_SINGLE");
             } catch (error) {
                 if (
@@ -121,6 +125,7 @@ export function TokenReimbursement({
         simulatedRecover,
         tokenReimbursements.token,
         tokenReimbursements.totalAmount,
+        onRecover,
         switchChainAsync,
         writeContractAsync,
     ]);
