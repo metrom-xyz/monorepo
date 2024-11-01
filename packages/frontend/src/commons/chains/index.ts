@@ -7,3 +7,4 @@ export { sonicTestnetData, sonicTestnet } from "./sonic-testnet";
 export { baseData } from "./base";
 export { baseSepoliaData } from "./base-sepolia";
 export { taikoData } from "./taiko";
+export { scrollData } from "./scroll";

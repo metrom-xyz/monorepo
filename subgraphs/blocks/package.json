@@ -16,6 +16,7 @@
         "deploy:mode": "pnpm prepare:deploy mode-mainnet && pnpm codegen && graph build && graph deploy --studio metrom-mode-blocks -l 0.0.1",
         "deploy:base": "pnpm prepare:deploy base && pnpm codegen && graph build && graph deploy --studio metrom-base-blocks -l 0.0.1",
         "deploy:taiko": "pnpm prepare:deploy taiko && pnpm codegen && graph build && goldsky subgraph deploy metrom-taiko-blocks/0.0.1",
+        "deploy:scroll": "pnpm prepare:deploy scroll && pnpm codegen && graph build && graph deploy --studio metrom-scroll-blocks -l 0.0.1",
         "lint": "eslint .",
         "format": "eslint --fix ."
     },
