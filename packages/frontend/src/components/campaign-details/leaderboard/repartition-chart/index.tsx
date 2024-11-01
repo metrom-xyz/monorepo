@@ -77,26 +77,24 @@ export function RepartitionChart({
                 0,
             );
 
-        const data = topRepartitions;
-
-        if (otherRepartitions > 0)
-            data.push({
-                value: otherRepartitions,
-            });
-
         if (personalRank && personalRank.position > CELLS_LIMIT)
-            data.push({
+            topRepartitions.push({
                 name: personalRank.account,
                 position: personalRank.position,
                 value: personalRank.percentage,
             });
 
-        return data
-            .sort((a, b) => b.value - a.value)
-            .map((rank, index) => ({
-                ...rank,
-                color: CELLS_COLORS[index],
-            }));
+        const sorted = topRepartitions.sort((a, b) => b.value - a.value);
+
+        if (otherRepartitions > 0)
+            topRepartitions.push({
+                value: otherRepartitions,
+            });
+
+        return sorted.map((rank, index) => ({
+            ...rank,
+            color: CELLS_COLORS[index],
+        }));
     }, [distributionBreakdown, personalRank]);
 
     useEffect(() => {
