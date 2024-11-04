@@ -84,4 +84,16 @@ export const DEPLOYMENTS: {
             },
         },
     },
+    scroll: {
+        scribe: {
+            Factory: {
+                address: "0xDc62aCDF75cc7EA4D93C69B2866d9642E79d5e2e",
+                startBlock: 7680915,
+            },
+            NonFungiblePositionManager: {
+                address: "0x8b370dc23bE270a7FA78aD3803fCaAe549Ac21fc",
+                startBlock: 7680956,
+            },
+        },
+    },
 };

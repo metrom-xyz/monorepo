@@ -9,12 +9,12 @@ export enum SupportedDex {
     Swapsicle = "swapsicle",
     Kim = "kim",
     Panko = "panko",
+    Scribe = "scribe",
 }
 
 export enum SupportedAmm {
     ConcentratedLiquidityV3 = "concentrated-liquidity-v3",
-    StableSwap2 = "stable-swap-2",
-    StableSwap3 = "stable-swap-3",
+    StableSwap = "stable-swap",
 }
 
 export interface ServiceUrls {

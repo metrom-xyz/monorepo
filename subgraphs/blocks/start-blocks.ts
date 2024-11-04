@@ -10,4 +10,5 @@ export const START_BLOCKS: { [network: string]: number } = {
     sonic: 73323411,
     base: 20192397,
     taiko: 460103,
+    scroll: 10721133,
 };
