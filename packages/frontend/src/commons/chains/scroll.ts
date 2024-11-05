@@ -4,6 +4,7 @@ import { ScrollLogo } from "../../assets/logos/chains/scroll";
 import { ScribeLogo } from "../../assets/logos/dexes/scribe";
 import { type ChainData } from "..";
 import { scroll } from "viem/chains";
+import { UniswapLogo } from "@/src/assets/logos/dexes/uniswap";
 
 export const scrollData: ChainData = {
     metromContract: ADDRESS[SupportedChain.Scroll],
@@ -16,6 +17,13 @@ export const scrollData: ChainData = {
             name: "Scribe",
             addLiquidityUrl:
                 "https://app.scribe.exchange/pools/v4/{target_pool}",
+        },
+        {
+            slug: SupportedDex.UniswapV3,
+            logo: UniswapLogo,
+            name: "Uniswap v3",
+            addLiquidityUrl:
+                "https://app.uniswap.org/explore/pools/scroll/{target_pool}",
         },
     ],
     baseTokens: [
