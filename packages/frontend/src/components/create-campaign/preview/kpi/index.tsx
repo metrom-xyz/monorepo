@@ -1,4 +1,4 @@
-import { Accordion, Card, TextField, Typography } from "@metrom-xyz/ui";
+import { Accordion, TextField, Typography } from "@metrom-xyz/ui";
 import { KpiSimulationChart } from "@/src/components/kpi-simulation-chart";
 import { useTranslations } from "next-intl";
 import { formatPercentage, formatUsdAmount } from "@/src/utils/format";
@@ -34,7 +34,7 @@ export function Kpi({ poolUsdTvl, rewards, specification }: KpiProps) {
     } = specification;
 
     return (
-        <Card>
+        <div>
             <div className={styles.root}>
                 <Typography uppercase weight="medium">
                     {t("title")}
@@ -45,14 +45,12 @@ export function Kpi({ poolUsdTvl, rewards, specification }: KpiProps) {
                         variant="xl"
                         label={t("lowerBound")}
                         value={formatUsdAmount(lowerUsdTarget)}
-                        className={styles.textField}
                     />
                     <TextField
                         boxed
                         variant="xl"
                         label={t("upperBound")}
                         value={formatUsdAmount(upperUsdTarget)}
-                        className={styles.textField}
                     />
                     <TextField
                         boxed
@@ -65,7 +63,6 @@ export function Kpi({ poolUsdTvl, rewards, specification }: KpiProps) {
                                   )
                                 : "-"
                         }
-                        className={styles.textField}
                     />
                 </div>
                 <Accordion
@@ -81,6 +78,6 @@ export function Kpi({ poolUsdTvl, rewards, specification }: KpiProps) {
                     />
                 </Accordion>
             </div>
-        </Card>
+        </div>
     );
 }
