@@ -48,5 +48,15 @@
             "address": "0x8B3c541c30f9b29560f56B9E44b59718916B69EF",
             "startBlock": 980
         }
+    },
+    "base": {
+        "Factory": {
+            "address": "0x33128a8fC17869897dcE68Ed026d694621f6FDfD",
+            "startBlock": 1371680 
+        },
+        "NonFungiblePositionManager": {
+            "address": "0x03a520b32C04BF3bEEf7BEb72E919cf822Ed34f1",
+            "startBlock": 1371714
+        }
     }
 }
