@@ -7,7 +7,7 @@ export interface OnChainAmount {
 }
 
 export interface UsdPricedOnChainAmount extends OnChainAmount {
-    usdValue: number | null;
+    usdValue: number;
 }
 
 export interface Erc20Token {
