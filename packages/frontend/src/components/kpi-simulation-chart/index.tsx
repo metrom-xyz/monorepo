@@ -295,7 +295,6 @@ export function KpiSimulationChart({
                                 poolUsdTvl={poolUsdTvl}
                                 lowerUsdTarget={lowerUsdTarget}
                                 upperUsdTarget={upperUsdTarget}
-                                dataMin={xDataMin}
                             />
                         }
                         domain={[xDataMin, "dataMax"]}
