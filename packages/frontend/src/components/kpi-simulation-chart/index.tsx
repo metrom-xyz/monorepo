@@ -20,9 +20,9 @@ import {
     getDistributableRewardsPercentage,
     getReachedGoalPercentage,
 } from "@/src/utils/kpi";
+import classNames from "classnames";
 
 import styles from "./styles.module.css";
-import classNames from "classnames";
 
 export interface ChartData {
     usdTvl: number;
@@ -38,12 +38,13 @@ interface SimulationChartProps {
     poolUsdTvl?: number | null;
     error?: boolean;
     loading?: boolean;
+    rounded?: "base" | "lg";
     className?: string;
 }
 
 const POINTS_COUNT = 1000;
 const BASE_HEIGHT = 270;
-export const CHART_MARGINS = { top: 42, right: 16, bottom: 30, left: 16 };
+export const CHART_MARGINS = { top: 30, right: 4, bottom: 18, left: 2 };
 
 export function KpiSimulationChart({
     minimumPayoutPercentage = 0,
@@ -53,6 +54,7 @@ export function KpiSimulationChart({
     poolUsdTvl,
     error,
     loading,
+    rounded = "base",
     className,
 }: SimulationChartProps) {
     const t = useTranslations("simulationChart");
@@ -159,7 +161,11 @@ export function KpiSimulationChart({
         !poolUsdTvl
     )
         return (
-            <div className={classNames("root", styles.root, className)}>
+            <div
+                className={classNames("root", styles.root, className, {
+                    [styles.roundedLg]: rounded === "lg",
+                })}
+            >
                 <div
                     className={classNames(
                         "emptyContainer",
@@ -190,7 +196,11 @@ export function KpiSimulationChart({
 
     if (error) {
         return (
-            <div className={classNames("root", styles.root, className)}>
+            <div
+                className={classNames("root", styles.root, className, {
+                    [styles.roundedLg]: rounded === "lg",
+                })}
+            >
                 <div
                     className={classNames(
                         "emptyContainer",
@@ -211,7 +221,11 @@ export function KpiSimulationChart({
 
     if (loading) {
         return (
-            <div className={classNames("root", styles.root, className)}>
+            <div
+                className={classNames("root", styles.root, className, {
+                    [styles.roundedLg]: rounded === "lg",
+                })}
+            >
                 <div
                     className={classNames(
                         "emptyContainer",
@@ -224,7 +238,11 @@ export function KpiSimulationChart({
     }
 
     return (
-        <div className={classNames("root", styles.root, className)}>
+        <div
+            className={classNames("root", styles.root, className, {
+                [styles.roundedLg]: rounded === "lg",
+            })}
+        >
             <ResponsiveContainer
                 width="100%"
                 className={classNames("container", styles.container)}

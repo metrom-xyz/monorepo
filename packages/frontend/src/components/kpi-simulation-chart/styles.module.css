@@ -1,9 +1,20 @@
 .root {
-    @apply h-full flex items-center justify-center text-center;
+    @apply h-full
+        flex
+        items-center
+        justify-center
+        text-center
+        p-4
+        bg-gray-100
+        rounded-lg;
+}
+
+.roundedLg {
+    @apply rounded-2xl;
 }
 
 .container {
-    @apply h-full min-h-[270px] bg-gray-100 rounded-lg;
+    @apply h-full min-h-[270px];
 }
 
 .emptyContainer {

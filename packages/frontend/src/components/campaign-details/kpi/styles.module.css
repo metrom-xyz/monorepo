@@ -6,15 +6,22 @@
     @apply w-full
         flex
         flex-col
-        sm:flex-row
         gap-4
         p-4
         bg-white
         rounded-2xl;
 }
 
+.wrapper {
+    @apply w-full
+        flex
+        flex-col
+        sm:flex-row
+        gap-4;
+}
+
 .leftContentWrapper {
-    @apply w-full flex flex-col gap-4;
+    @apply w-full flex-[1] flex flex-col justify-between gap-4;
 }
 
 .textField {
@@ -22,10 +29,22 @@
 }
 
 .chartWrapper {
-    @apply w-full;
+    @apply w-full flex-[2];
 }
 
 .chartContainer :global(.container),
 .chartContainer :global(.emptyContainer) {
     @apply rounded-2xl;
+}
+
+.distributionChartsWrapper {
+    @apply flex flex-col sm:flex-row justify-between gap-4;
+}
+
+.distributionChartsWrapper > :first-child {
+    @apply flex-[2];
+}
+
+.distributionChartsWrapper > :last-child {
+    @apply flex-[1];
 }
