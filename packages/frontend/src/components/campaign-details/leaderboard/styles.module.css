@@ -3,7 +3,7 @@
 }
 
 .titleContainer {
-    @apply flex flex-col gap-2;
+    @apply flex flex-col gap-1;
 }
 
 .subtitleContainer {
@@ -20,10 +20,7 @@
         flex-col
         flex-[2]
         min-h-[352px]
-        gap-7
-        p-4
-        bg-white
-        rounded-2xl;
+        gap-4;
 }
 
 .repartion {
@@ -36,7 +33,7 @@
 }
 
 .tableWrapper {
-    @apply flex flex-col gap-7 sm:px-4;
+    @apply flex flex-col gap-7 sm:px-4 bg-white rounded-2xl p-4;
 }
 
 .header {

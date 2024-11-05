@@ -274,6 +274,7 @@
             "title": "KPI",
             "lowerBound": "Lower bound",
             "upperBound": "Upper bound",
+            "chart": "Rewards payout over TVL",
             "goalReached": "Goal reached",
             "minimumPayout": "Minimum payout",
             "charts": {
@@ -377,9 +378,9 @@
     },
     "simulationChart": {
         "emptyData": "Missing data for the simulation",
-        "pool": "Pool",
-        "lowerBound": "Lower bd",
-        "upperBound": "Upper bd",
+        "pool": "Current TVL",
+        "lowerBound": "Lower TVL",
+        "upperBound": "Upper TVL",
         "labels": {
             "tvl": "TVL",
             "reward": "Reward"

@@ -32,7 +32,7 @@ export function AverageDistributionChart({
             {
                 type: "reimbursed",
                 value: 30,
-                color: "#9CA3AF",
+                color: "#d1d5db",
             },
             {
                 type: "distributed",
