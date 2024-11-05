@@ -289,11 +289,13 @@ export function KpiSimulationChart({
                         format="number"
                         dataKey="usdTvl"
                         tickSize={4}
+                        padding={{ left: 24, right: 8 }}
                         tick={
                             <TvlTick
                                 poolUsdTvl={poolUsdTvl}
                                 lowerUsdTarget={lowerUsdTarget}
                                 upperUsdTarget={upperUsdTarget}
+                                dataMin={xDataMin}
                             />
                         }
                         domain={[xDataMin, "dataMax"]}
