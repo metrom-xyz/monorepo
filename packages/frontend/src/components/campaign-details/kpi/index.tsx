@@ -7,6 +7,8 @@ import { useMemo } from "react";
 import { KpiSimulationChart } from "../../kpi-simulation-chart";
 import { getReachedGoalPercentage } from "@/src/utils/kpi";
 import { useKpiMeasurements } from "@/src/hooks/useKpiMeasurements";
+import { DistributionChart } from "./distribution-chart";
+import { AverageDistributionChart } from "./average-distribution-chart";
 
 import styles from "./styles.module.css";
 
@@ -22,8 +24,6 @@ export function Kpi({ campaign, loading }: KpiProps) {
 
     const { kpiMeasurements, loading: loadingKpiMeasurements } =
         useKpiMeasurements(campaign);
-    // TODO: remove this when the values are actually used in the chart
-    console.log({ kpiMeasurements, loadingKpiMeasurements });
 
     const {
         goal: { lowerUsdTarget, upperUsdTarget },
@@ -61,54 +61,67 @@ export function Kpi({ campaign, loading }: KpiProps) {
                 {t("title")}
             </Typography>
             <div className={styles.card}>
-                <div className={styles.leftContentWrapper}>
-                    <TextField
-                        boxed
-                        variant="xl"
-                        label={t("lowerBound")}
-                        loading={specificationLoading}
-                        value={formatUsdAmount(lowerUsdTarget)}
-                        className={styles.textField}
-                    />
-                    <TextField
-                        boxed
-                        variant="xl"
-                        label={t("upperBound")}
-                        loading={specificationLoading}
-                        value={formatUsdAmount(upperUsdTarget)}
-                        className={styles.textField}
-                    />
-                    {!!minimumPayoutPercentage && (
+                <div className={styles.wrapper}>
+                    <div className={styles.leftContentWrapper}>
+                        <TextField
+                            boxed
+                            variant="xl"
+                            label={t("lowerBound")}
+                            loading={specificationLoading}
+                            value={formatUsdAmount(lowerUsdTarget)}
+                            className={styles.textField}
+                        />
+                        <TextField
+                            boxed
+                            variant="xl"
+                            label={t("upperBound")}
+                            loading={specificationLoading}
+                            value={formatUsdAmount(upperUsdTarget)}
+                            className={styles.textField}
+                        />
                         <TextField
                             boxed
                             variant="xl"
                             label={t("minimumPayout")}
                             loading={specificationLoading}
                             value={formatPercentage(
-                                minimumPayoutPercentage * 100,
+                                minimumPayoutPercentage
+                                    ? minimumPayoutPercentage * 100
+                                    : 0,
                             )}
                             className={styles.textField}
                         />
-                    )}
-                    <TextField
-                        boxed
-                        variant="xl"
-                        label={t("goalReached")}
-                        loading={specificationLoading}
-                        value={formatPercentage(reachedGoalPercentage * 100)}
-                        className={styles.textField}
-                    />
+                        <TextField
+                            boxed
+                            variant="xl"
+                            label={t("goalReached")}
+                            loading={specificationLoading}
+                            value={formatPercentage(
+                                reachedGoalPercentage * 100,
+                            )}
+                            className={styles.textField}
+                        />
+                    </div>
+                    <div className={styles.chartWrapper}>
+                        <KpiSimulationChart
+                            rounded="lg"
+                            loading={specificationLoading}
+                            poolUsdTvl={campaign?.pool.usdTvl}
+                            totalRewardsUsd={campaign?.rewards.amountUsdValue}
+                            lowerUsdTarget={lowerUsdTarget}
+                            upperUsdTarget={upperUsdTarget}
+                            minimumPayoutPercentage={minimumPayoutPercentage}
+                            className={styles.chartContainer}
+                        />
+                    </div>
                 </div>
-                <div className={styles.chartWrapper}>
-                    <KpiSimulationChart
-                        loading={specificationLoading}
-                        poolUsdTvl={campaign?.pool.usdTvl}
-                        totalRewardsUsd={campaign?.rewards.amountUsdValue}
-                        lowerUsdTarget={lowerUsdTarget}
-                        upperUsdTarget={upperUsdTarget}
-                        minimumPayoutPercentage={minimumPayoutPercentage}
-                        className={styles.chartContainer}
+                <div className={styles.distributionChartsWrapper}>
+                    <DistributionChart
+                        chain={campaign?.chainId}
+                        loading={loadingKpiMeasurements}
+                        kpiMeasurements={kpiMeasurements}
                     />
+                    <AverageDistributionChart loading={false} />
                 </div>
             </div>
         </div>

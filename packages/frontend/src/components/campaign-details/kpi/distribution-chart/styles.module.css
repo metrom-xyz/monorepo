@@ -1,0 +1,13 @@
+.root {
+    @apply h-full
+        flex
+        flex-col
+        gap-3
+        p-4
+        bg-gray-100
+        rounded-2xl;
+}
+
+.container {
+    @apply h-full min-h-80;
+}

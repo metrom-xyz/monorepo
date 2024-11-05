@@ -1,8 +1,12 @@
-import { type Campaign, type KpiMeasurement } from "@metrom-xyz/sdk";
+import { Status, type Campaign, type KpiMeasurement } from "@metrom-xyz/sdk";
 import { metromApiClient } from "../commons";
 import { useQuery } from "@tanstack/react-query";
+import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
 
-const TIME_RANGE = 60 * 60 * 4; // 4 hours
+dayjs.extend(utc);
+
+const MAX_DAYS_RANGE = 7;
 
 // TODO: dynamic from and to
 export function useKpiMeasurements(campaign?: Campaign): {
@@ -15,11 +19,24 @@ export function useKpiMeasurements(campaign?: Campaign): {
             const campaign = queryKey[1] as Campaign;
             if (!campaign) return [];
 
+            const from =
+                campaign.status === Status.Ended
+                    ? dayjs
+                          .unix(campaign.to)
+                          .utc()
+                          .subtract(MAX_DAYS_RANGE, "days")
+                          .unix()
+                    : dayjs().utc().subtract(MAX_DAYS_RANGE, "days").unix();
+
+            const to =
+                campaign.status === Status.Ended
+                    ? dayjs.unix(campaign.to).utc().unix()
+                    : dayjs().utc().unix();
+
             try {
-                const to = Math.floor(Date.now() / 1000);
                 return metromApiClient.fetchKpiMeasurements({
                     campaign,
-                    from: to - TIME_RANGE,
+                    from,
                     to,
                 });
             } catch (error) {

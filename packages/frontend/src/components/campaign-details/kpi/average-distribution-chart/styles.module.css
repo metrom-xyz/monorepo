@@ -1,0 +1,43 @@
+.root {
+    @apply flex flex-col gap-6 w-full p-4 bg-gray-100 rounded-2xl;
+}
+
+.tooltipWrapper {
+    @apply absolute
+        select-none
+        flex
+        flex-col
+        items-center
+        justify-center
+        top-[90px]
+        w-[240px];
+}
+
+.chartWrapper {
+    @apply flex
+        items-center
+        justify-center
+        self-center
+        mt-4
+        w-[280px]
+        h-[280px]
+        bg-white
+        rounded-full;
+}
+
+.cell {
+    @apply cursor-pointer
+        outline-none
+        hover:opacity-85
+        transition-opacity
+        duration-200
+        ease-in-out;
+}
+
+.chartWrapperLoading {
+    @apply animate-pulse;
+}
+
+.chartContainer {
+    @apply h-[240px] w-[240px];
+}

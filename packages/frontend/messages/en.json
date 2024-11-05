@@ -275,7 +275,13 @@
             "lowerBound": "Lower bound",
             "upperBound": "Upper bound",
             "goalReached": "Goal reached",
-            "minimumPayout": "Minimum payout"
+            "minimumPayout": "Minimum payout",
+            "charts": {
+                "distributions": "Distributions",
+                "averageDistribution": "Average distribution",
+                "reimbursed": "Reimbursed",
+                "distributed": "Distributed"
+            }
         },
         "leaderboard": {
             "title": "Leaderboard",
@@ -386,6 +392,14 @@
             "tvl": "TVL",
             "payout": "Payout",
             "kpiReached": "KPI reached"
+        }
+    },
+    "distributionChart": {
+        "tooltip": {
+            "distributionTime": "Distribution time",
+            "token": "Token",
+            "distributed": "Distributed",
+            "reimbursed": "Reimbursed"
         }
     },
     "apr": {
