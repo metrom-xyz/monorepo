@@ -202,160 +202,158 @@ export function KpiSimulationChart({
     }
 
     return (
-        <div className={classNames("root", styles.root, className)}>
-            <ResponsiveContainer
-                width="100%"
-                className={classNames("container", styles.container)}
+        <ResponsiveContainer
+            width="100%"
+            height="100%"
+            minHeight={270}
+            className={classNames("container", styles.container)}
+        >
+            <ComposedChart
+                data={areaChartData}
+                margin={CHART_MARGINS}
+                style={{ cursor: "pointer" }}
             >
-                <ComposedChart
-                    data={areaChartData}
-                    margin={CHART_MARGINS}
-                    style={{ cursor: "pointer" }}
-                >
-                    <XAxis
-                        type="number"
-                        format="number"
-                        dataKey="usdTvl"
-                        tick={
-                            <TvlTick
-                                poolUsdTvl={poolUsdTvl}
-                                lowerUsdTarget={lowerUsdTarget}
-                                upperUsdTarget={upperUsdTarget}
-                            />
-                        }
-                        ticks={sortedSignificantUsdTvls.slice(1, 4)}
-                        interval={0}
-                        tickFormatter={(value) => formatUsdAmount(value)}
-                        domain={[
-                            sortedSignificantUsdTvls[0],
-                            sortedSignificantUsdTvls[4],
-                        ]}
-                    />
-                    <YAxis
-                        type="number"
-                        format="number"
-                        axisLine={false}
-                        tickLine={false}
-                        mirror
-                        tick={<RewardTick />}
-                        domain={[0, "dataMax"]}
-                        ticks={[currentPayoutUsd, totalRewardsUsd]}
-                    />
+                <XAxis
+                    type="number"
+                    format="number"
+                    dataKey="usdTvl"
+                    tick={
+                        <TvlTick
+                            poolUsdTvl={poolUsdTvl}
+                            lowerUsdTarget={lowerUsdTarget}
+                            upperUsdTarget={upperUsdTarget}
+                        />
+                    }
+                    ticks={sortedSignificantUsdTvls.slice(1, 4)}
+                    interval={0}
+                    tickFormatter={(value) => formatUsdAmount(value)}
+                    domain={[
+                        sortedSignificantUsdTvls[0],
+                        sortedSignificantUsdTvls[4],
+                    ]}
+                />
+                <YAxis
+                    type="number"
+                    format="number"
+                    axisLine={false}
+                    tickLine={false}
+                    mirror
+                    tick={<RewardTick />}
+                    domain={[0, "dataMax"]}
+                    ticks={[currentPayoutUsd, totalRewardsUsd]}
+                />
 
-                    <Area
-                        type="monotone"
-                        dataKey="currentlyDistributing"
-                        fill="#6CFF95"
-                        stroke="none"
-                        fillOpacity={1}
-                        animationEasing="ease-in-out"
-                        animationDuration={200}
-                        isAnimationActive={true}
-                        activeDot={false}
-                    />
+                <Area
+                    type="monotone"
+                    dataKey="currentlyDistributing"
+                    fill="#6CFF95"
+                    stroke="none"
+                    fillOpacity={1}
+                    animationEasing="ease-in-out"
+                    animationDuration={200}
+                    isAnimationActive={true}
+                    activeDot={false}
+                />
 
-                    <Area
-                        type="monotone"
-                        dataKey="currentlyNotDistributing"
-                        fill="#d1d5db"
-                        stroke="none"
-                        fillOpacity={1}
-                        animationEasing="ease-in-out"
-                        animationDuration={200}
-                        isAnimationActive={true}
-                        activeDot={false}
-                    />
+                <Area
+                    type="monotone"
+                    dataKey="currentlyNotDistributing"
+                    fill="#d1d5db"
+                    stroke="none"
+                    fillOpacity={1}
+                    animationEasing="ease-in-out"
+                    animationDuration={200}
+                    isAnimationActive={true}
+                    activeDot={false}
+                />
 
-                    <ReferenceLine
-                        strokeDasharray={"3 3"}
-                        ifOverflow="visible"
-                        isFront
-                        stroke="#000"
-                        segment={[
-                            {
-                                x: poolUsdTvl,
-                                y: 0,
-                            },
-                            {
-                                x: poolUsdTvl,
-                                y: totalRewardsUsd,
-                            },
-                        ]}
-                    />
+                <ReferenceLine
+                    strokeDasharray={"3 3"}
+                    ifOverflow="visible"
+                    isFront
+                    stroke="#000"
+                    segment={[
+                        {
+                            x: poolUsdTvl,
+                            y: 0,
+                        },
+                        {
+                            x: poolUsdTvl,
+                            y: totalRewardsUsd,
+                        },
+                    ]}
+                />
 
-                    <ReferenceLine
-                        strokeDasharray={"3 3"}
-                        ifOverflow="visible"
-                        isFront
-                        stroke="#000"
-                        segment={[
-                            {
-                                x: lowerUsdTarget,
-                                y: 0,
-                            },
-                            {
-                                x: lowerUsdTarget,
-                                y: totalRewardsUsd,
-                            },
-                        ]}
-                    />
+                <ReferenceLine
+                    strokeDasharray={"3 3"}
+                    ifOverflow="visible"
+                    isFront
+                    stroke="#000"
+                    segment={[
+                        {
+                            x: lowerUsdTarget,
+                            y: 0,
+                        },
+                        {
+                            x: lowerUsdTarget,
+                            y: totalRewardsUsd,
+                        },
+                    ]}
+                />
 
-                    <ReferenceLine
-                        strokeDasharray={"3 3"}
-                        ifOverflow="visible"
-                        isFront
-                        stroke="#000"
-                        segment={[
-                            {
-                                x: upperUsdTarget,
-                                y: 0,
-                            },
-                            {
-                                x: upperUsdTarget,
-                                y: totalRewardsUsd,
-                            },
-                        ]}
-                    />
+                <ReferenceLine
+                    strokeDasharray={"3 3"}
+                    ifOverflow="visible"
+                    isFront
+                    stroke="#000"
+                    segment={[
+                        {
+                            x: upperUsdTarget,
+                            y: 0,
+                        },
+                        {
+                            x: upperUsdTarget,
+                            y: totalRewardsUsd,
+                        },
+                    ]}
+                />
 
-                    {currentPayoutUsd > 0 && (
-                        <>
-                            <ReferenceLine
-                                strokeDasharray={"3 3"}
-                                ifOverflow="visible"
-                                isFront
-                                stroke="#000"
-                                segment={[
-                                    { x: 0, y: currentPayoutUsd },
-                                    { x: poolUsdTvl, y: currentPayoutUsd },
-                                ]}
-                            />
-                            <ReferenceDot
-                                x={poolUsdTvl}
-                                y={currentPayoutUsd}
-                                r={4}
-                                fill="#6CFF95"
-                                stroke="#000"
-                                strokeWidth={1}
-                            />
-                        </>
-                    )}
+                {currentPayoutUsd > 0 && (
+                    <>
+                        <ReferenceLine
+                            strokeDasharray={"3 3"}
+                            ifOverflow="visible"
+                            isFront
+                            stroke="#000"
+                            segment={[
+                                { x: 0, y: currentPayoutUsd },
+                                { x: poolUsdTvl, y: currentPayoutUsd },
+                            ]}
+                        />
+                        <ReferenceDot
+                            x={poolUsdTvl}
+                            y={currentPayoutUsd}
+                            r={4}
+                            fill="#6CFF95"
+                            stroke="#000"
+                            strokeWidth={1}
+                        />
+                    </>
+                )}
 
-                    <Tooltip
-                        isAnimationActive={false}
-                        content={
-                            <TooltipContent
-                                lowerUsdTarget={lowerUsdTarget}
-                                upperUsdTarget={upperUsdTarget}
-                                totalRewardsUsd={totalRewardsUsd}
-                                minimumPayouPercentage={minimumPayoutPercentage}
-                            />
-                        }
-                        cursor={
-                            <TooltipCursor totalRewardsUsd={totalRewardsUsd} />
-                        }
-                    />
-                </ComposedChart>
-            </ResponsiveContainer>
-        </div>
+                <Tooltip
+                    isAnimationActive={false}
+                    content={
+                        <TooltipContent
+                            lowerUsdTarget={lowerUsdTarget}
+                            upperUsdTarget={upperUsdTarget}
+                            totalRewardsUsd={totalRewardsUsd}
+                            minimumPayouPercentage={minimumPayoutPercentage}
+                        />
+                    }
+                    cursor={<TooltipCursor totalRewardsUsd={totalRewardsUsd} />}
+                />
+            </ComposedChart>
+        </ResponsiveContainer>
     );
 }

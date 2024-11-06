@@ -98,7 +98,7 @@ export function Kpi({ campaign, loading }: KpiProps) {
                             )}
                         />
                     </div>
-                    <div className={styles.chartWrapper}>
+                    <div className={styles.chart}>
                         <Typography
                             variant="sm"
                             uppercase
@@ -107,7 +107,7 @@ export function Kpi({ campaign, loading }: KpiProps) {
                         >
                             {t("chart")}
                         </Typography>
-                        <div>
+                        <div className={styles.chartWrapper}>
                             <KpiSimulationChart
                                 loading={specificationLoading}
                                 poolUsdTvl={campaign.pool.usdTvl}
