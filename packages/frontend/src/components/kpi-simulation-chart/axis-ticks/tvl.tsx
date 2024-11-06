@@ -27,8 +27,6 @@ export function TvlTick({
     payload,
     y,
     x,
-    index,
-    visibleTicksCount,
 }: TvlTickProps) {
     const t = useTranslations("simulationChart");
 

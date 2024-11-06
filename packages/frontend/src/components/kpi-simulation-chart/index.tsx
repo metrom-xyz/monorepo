@@ -2,6 +2,7 @@ import {
     Area,
     CartesianGrid,
     ComposedChart,
+    ReferenceArea,
     ReferenceDot,
     ReferenceLine,
     ResponsiveContainer,
@@ -17,6 +18,7 @@ import { RewardTick } from "./axis-ticks/reward";
 import { TooltipContent, TooltipCursor } from "./tooltip";
 import { getDistributableRewardsPercentage } from "@/src/utils/kpi";
 import classNames from "classnames";
+import { formatUsdAmount } from "@/src/utils/format";
 
 import styles from "./styles.module.css";
 
@@ -221,8 +223,13 @@ export function KpiSimulationChart({
                                 upperUsdTarget={upperUsdTarget}
                             />
                         }
-                        ticks={[upperUsdTarget, poolUsdTvl, lowerUsdTarget]}
-                        domain={["dataMin", "dataMax"]}
+                        ticks={sortedSignificantUsdTvls.slice(1, 4)}
+                        interval={0}
+                        tickFormatter={(value) => formatUsdAmount(value)}
+                        domain={[
+                            sortedSignificantUsdTvls[0],
+                            sortedSignificantUsdTvls[4],
+                        ]}
                     />
                     <YAxis
                         type="number"
@@ -263,14 +270,14 @@ export function KpiSimulationChart({
                         strokeDasharray={"3 3"}
                         ifOverflow="visible"
                         isFront
-                        stroke="#6CFF95"
+                        stroke="#000"
                         segment={[
                             {
-                                x: sortedSignificantUsdTvls[1],
+                                x: poolUsdTvl,
                                 y: 0,
                             },
                             {
-                                x: sortedSignificantUsdTvls[3],
+                                x: poolUsdTvl,
                                 y: totalRewardsUsd,
                             },
                         ]}
@@ -280,36 +287,34 @@ export function KpiSimulationChart({
                         strokeDasharray={"3 3"}
                         ifOverflow="visible"
                         isFront
-                        stroke="#6CFF95"
+                        stroke="#000"
                         segment={[
                             {
-                                x: sortedSignificantUsdTvls[3],
+                                x: lowerUsdTarget,
                                 y: 0,
                             },
                             {
-                                x: sortedSignificantUsdTvls[3],
+                                x: lowerUsdTarget,
                                 y: totalRewardsUsd,
                             },
                         ]}
                     />
 
-                    <ReferenceDot
-                        x={upperUsdTarget}
-                        y={totalRewardsUsd}
-                        r={4}
-                        fill="#6CFF95"
-                        stroke="white"
-                        strokeWidth={1}
+                    <ReferenceLine
+                        strokeDasharray={"3 3"}
+                        ifOverflow="visible"
                         isFront
-                    />
-
-                    <ReferenceDot
-                        x={0}
-                        y={currentPayoutUsd}
-                        r={3}
-                        fill="#6CFF95"
-                        stroke="none"
-                        isFront
+                        stroke="#000"
+                        segment={[
+                            {
+                                x: upperUsdTarget,
+                                y: 0,
+                            },
+                            {
+                                x: upperUsdTarget,
+                                y: totalRewardsUsd,
+                            },
+                        ]}
                     />
 
                     {currentPayoutUsd > 0 && (
@@ -318,7 +323,7 @@ export function KpiSimulationChart({
                                 strokeDasharray={"3 3"}
                                 ifOverflow="visible"
                                 isFront
-                                stroke="#6CFF95"
+                                stroke="#000"
                                 segment={[
                                     { x: 0, y: currentPayoutUsd },
                                     { x: poolUsdTvl, y: currentPayoutUsd },
@@ -329,7 +334,7 @@ export function KpiSimulationChart({
                                 y={currentPayoutUsd}
                                 r={4}
                                 fill="#6CFF95"
-                                stroke="white"
+                                stroke="#000"
                                 strokeWidth={1}
                             />
                         </>

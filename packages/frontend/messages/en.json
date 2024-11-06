@@ -379,8 +379,8 @@
     "simulationChart": {
         "emptyData": "Missing data for the simulation",
         "pool": "Current TVL",
-        "lowerBound": "Lower TVL",
-        "upperBound": "Upper TVL",
+        "lowerBound": "Lower bound",
+        "upperBound": "Upper bound",
         "labels": {
             "tvl": "TVL",
             "reward": "Reward"

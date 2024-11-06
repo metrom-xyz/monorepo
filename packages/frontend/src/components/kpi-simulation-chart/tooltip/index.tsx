@@ -118,7 +118,7 @@ export function TooltipCursor({
                 strokeDasharray={"3 3"}
                 ifOverflow="visible"
                 isFront
-                stroke="#B2B2B2"
+                stroke="#000"
                 segment={[
                     { x: usdTvl, y: reward },
                     { x: 0, y: reward },
@@ -128,7 +128,7 @@ export function TooltipCursor({
                 strokeDasharray={"3 3"}
                 ifOverflow="visible"
                 isFront
-                stroke="#B2B2B2"
+                stroke="#000"
                 segment={[
                     { x: usdTvl, y: reward },
                     { x: usdTvl, y: 0 },
@@ -138,7 +138,7 @@ export function TooltipCursor({
                 cx={points[0].x}
                 cy={cy}
                 r={4}
-                fill="#B2B2B2"
+                fill="#000"
                 stroke="white"
                 strokeWidth={1}
             />
