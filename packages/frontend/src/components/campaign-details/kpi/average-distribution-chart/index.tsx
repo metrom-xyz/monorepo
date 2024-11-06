@@ -1,16 +1,15 @@
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { useTranslations } from "next-intl";
-import type { DistributionBreakdown } from "@/src/hooks/useDistributionBreakdown";
 import { Typography } from "@metrom-xyz/ui";
 import { Cell, Pie, PieChart, Tooltip } from "recharts";
-import type { Address } from "viem";
 import { useTransition, animated } from "@react-spring/web";
 import { formatPercentage } from "@/src/utils/format";
 
 import styles from "./styles.module.css";
 
 interface AverageDistributionChartProps {
-    loading: boolean;
+    kpiMeasurementPercentage: number;
+    minimumPayoutPercentage?: number;
 }
 
 interface ChartData {
@@ -20,31 +19,30 @@ interface ChartData {
 }
 
 export function AverageDistributionChart({
-    loading,
+    kpiMeasurementPercentage,
+    minimumPayoutPercentage = 0,
 }: AverageDistributionChartProps) {
     const t = useTranslations("campaignDetails.kpi.charts");
 
-    const [activeIndex, setActiveIndex] = useState(0);
-
-    // TODO: add average distribution data
     const chartData = useMemo(() => {
+        const distributedPercentage =
+            (minimumPayoutPercentage +
+                (1 - minimumPayoutPercentage) * kpiMeasurementPercentage) *
+            100;
         const data: ChartData[] = [
             {
-                type: "reimbursed",
-                value: 30,
-                color: "#d1d5db",
+                type: "distributed",
+                value: distributedPercentage,
+                color: "#6CFF95",
             },
             {
-                type: "distributed",
-                value: 70,
-                color: "#6CFF95",
+                type: "reimbursed",
+                value: 100 - distributedPercentage,
+                color: "#d1d5db",
             },
         ];
         return data;
-    }, []);
-
-    // TODO: return null if data is empty
-    // TODO: add loading state?
+    }, [kpiMeasurementPercentage, minimumPayoutPercentage]);
 
     return (
         <div className={styles.root}>
@@ -52,38 +50,33 @@ export function AverageDistributionChart({
                 {t("averageDistribution")}
             </Typography>
             <div className={styles.chartWrapper}>
-                {!chartData || loading ? (
-                    <div className={styles.chartWrapperLoading}></div>
-                ) : (
-                    <PieChart height={240} width={240}>
-                        <Pie
-                            dataKey="value"
-                            animationEasing="ease-in-out"
-                            animationDuration={500}
-                            data={chartData}
-                            activeIndex={activeIndex}
-                            innerRadius={70}
-                            outerRadius={120}
-                            startAngle={90}
-                            endAngle={450}
-                            minAngle={5}
-                        >
-                            {chartData.map((entry, index) => (
-                                <Cell
-                                    key={`cell-${index}`}
-                                    fill={entry.color}
-                                    strokeWidth={4}
-                                    className={styles.cell}
-                                />
-                            ))}
-                        </Pie>
-                        <Tooltip
-                            active
-                            defaultIndex={activeIndex}
-                            content={<RankTooltip />}
-                        />
-                    </PieChart>
-                )}
+                <PieChart height={240} width={240}>
+                    <Pie
+                        dataKey="value"
+                        animationEasing="ease-in-out"
+                        animationDuration={500}
+                        data={chartData}
+                        innerRadius={70}
+                        outerRadius={120}
+                        startAngle={90}
+                        endAngle={450}
+                        minAngle={5}
+                    >
+                        {chartData.map((entry, index) => (
+                            <Cell
+                                key={`cell-${index}`}
+                                fill={entry.color}
+                                strokeWidth={4}
+                                className={styles.cell}
+                            />
+                        ))}
+                    </Pie>
+                    <Tooltip
+                        active
+                        defaultIndex={0}
+                        content={<RankTooltip />}
+                    />
+                </PieChart>
             </div>
         </div>
     );
