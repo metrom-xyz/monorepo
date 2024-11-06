@@ -272,7 +272,10 @@ export class MetromApiClient {
 
         const totalCampaignDuration = params.campaign.to - params.campaign.from;
         return measurements.map((measurement) => {
-            const measuredPeriodDuration = measurement.to - measurement.from;
+            const measuredPeriodDuration = Math.min(
+                measurement.to - measurement.from,
+                params.campaign.to - params.campaign.from,
+            );
             const periodDurationMultiplier = {
                 standard: measuredPeriodDuration / totalCampaignDuration,
                 get scaled() {
