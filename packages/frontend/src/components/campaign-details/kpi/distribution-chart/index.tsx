@@ -63,9 +63,9 @@ export function DistributionChart({
         // TODO: not too sure about this
         // add placeholder data to fill a day of distributions,
         // ensuring the chart doesn’t appear too empty
-        const emptyHours = WEEK_HOURS - data.length;
+        const emptyHours = 23 - data.length;
         for (let hour = 0; hour < emptyHours; hour++) {
-            data.push({
+            data.unshift({
                 from: dayjs
                     .unix(data[data.length - 1].from)
                     .add(1, "hours")
@@ -77,19 +77,6 @@ export function DistributionChart({
                 distributions: [],
             });
         }
-
-        // add hours before the measurements
-        // const emptyHours = DAY_HOURS - data.length;
-        // for (let hour = 0; hour < emptyHours; hour++) {
-        //     data.unshift({
-        //         from: dayjs.unix(data[0].from).subtract(1, "hours").unix(),
-        //         to: 0,
-        //         distributed: 0,
-        //         reimbursed: 0,
-        //         empty: 1,
-        //         distributions: [],
-        //     });
-        // }
 
         return data;
     }, [kpiMeasurements]);
@@ -109,6 +96,21 @@ export function DistributionChart({
                     margin={{ top: 0, right: 0, bottom: 0, left: 0 }}
                     style={{ cursor: "pointer" }}
                 >
+                    <YAxis ticks={[0, 1]} hide />
+                    <XAxis
+                        type="category"
+                        dataKey="to"
+                        height={20}
+                        padding={{ left: 0, right: 0 }}
+                        tickSize={4}
+                        minTickGap={50}
+                        axisLine={false}
+                        // TODO: add typography
+                        tickFormatter={(timestamp: number) =>
+                            dayjs.unix(timestamp).format("DD MMM HH:mm")
+                        }
+                    />
+
                     <Bar
                         dataKey="distributed"
                         stackId="distribution"
@@ -118,30 +120,14 @@ export function DistributionChart({
                     <Bar
                         dataKey="reimbursed"
                         stackId="distribution"
-                        fill="#9CA3AF"
+                        fill="#d1d5db"
                         barSize={50}
                     />
                     <Bar
                         dataKey="empty"
                         stackId="distribution"
-                        fill="#FFF"
+                        fill="#fff"
                         barSize={50}
-                    />
-
-                    <YAxis ticks={[0, 1]} hide />
-
-                    <XAxis
-                        type="category"
-                        dataKey="from"
-                        height={20}
-                        padding={{ left: 0, right: 0 }}
-                        tickSize={4}
-                        minTickGap={50}
-                        axisLine={false}
-                        // TODO: add typography
-                        tickFormatter={(timestamp: number) =>
-                            dayjs.unix(timestamp).format("DD MMM")
-                        }
                     />
 
                     <Tooltip

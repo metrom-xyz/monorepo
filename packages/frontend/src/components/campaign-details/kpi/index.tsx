@@ -69,7 +69,6 @@ export function Kpi({ campaign, loading }: KpiProps) {
                             label={t("lowerBound")}
                             loading={specificationLoading}
                             value={formatUsdAmount(lowerUsdTarget)}
-                            className={styles.textField}
                         />
                         <TextField
                             boxed
@@ -77,7 +76,6 @@ export function Kpi({ campaign, loading }: KpiProps) {
                             label={t("upperBound")}
                             loading={specificationLoading}
                             value={formatUsdAmount(upperUsdTarget)}
-                            className={styles.textField}
                         />
                         <TextField
                             boxed
@@ -89,7 +87,6 @@ export function Kpi({ campaign, loading }: KpiProps) {
                                     ? minimumPayoutPercentage * 100
                                     : 0,
                             )}
-                            className={styles.textField}
                         />
                         <TextField
                             boxed
@@ -99,25 +96,37 @@ export function Kpi({ campaign, loading }: KpiProps) {
                             value={formatPercentage(
                                 reachedGoalPercentage * 100,
                             )}
-                            className={styles.textField}
                         />
                     </div>
-                    <div className={styles.chartWrapper}>
-                        <KpiSimulationChart
-                            rounded="lg"
-                            loading={specificationLoading}
-                            poolUsdTvl={campaign?.pool.usdTvl}
-                            totalRewardsUsd={campaign?.rewards.amountUsdValue}
-                            lowerUsdTarget={lowerUsdTarget}
-                            upperUsdTarget={upperUsdTarget}
-                            minimumPayoutPercentage={minimumPayoutPercentage}
-                            className={styles.chartContainer}
-                        />
+                    <div className={styles.chart}>
+                        <Typography
+                            variant="sm"
+                            uppercase
+                            light
+                            weight="medium"
+                        >
+                            {t("chart")}
+                        </Typography>
+                        <div className={styles.chartWrapper}>
+                            <KpiSimulationChart
+                                loading={specificationLoading}
+                                poolUsdTvl={campaign.pool.usdTvl}
+                                totalRewardsUsd={
+                                    campaign.rewards.amountUsdValue
+                                }
+                                lowerUsdTarget={lowerUsdTarget}
+                                upperUsdTarget={upperUsdTarget}
+                                minimumPayoutPercentage={
+                                    minimumPayoutPercentage
+                                }
+                                className={styles.chartContainer}
+                            />
+                        </div>
                     </div>
                 </div>
                 <div className={styles.distributionChartsWrapper}>
                     <DistributionChart
-                        chain={campaign?.chainId}
+                        chain={campaign.chainId}
                         loading={loadingKpiMeasurements}
                         kpiMeasurements={kpiMeasurements}
                     />

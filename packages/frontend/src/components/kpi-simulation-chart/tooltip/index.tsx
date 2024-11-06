@@ -3,31 +3,39 @@ import styles from "./styles.module.css";
 import { useTranslations } from "next-intl";
 import { Typography } from "@metrom-xyz/ui";
 import { ReferenceLine } from "recharts";
-import { CHART_MARGINS, type ChartData } from "..";
-import { getChartYScale } from "@/src/utils/kpi";
-
-interface Payload {
-    payload: ChartData;
-}
+import { CHART_MARGINS, type DistributedAreaDataPoint } from "..";
+import {
+    getChartYScale,
+    getDistributableRewardsPercentage,
+    getReachedGoalPercentage,
+} from "@/src/utils/kpi";
 
 interface TooltipProps {
     active?: boolean;
-    payload?: Payload[];
-}
-
-interface TooltipCursorProps {
+    payload?: [
+        {
+            payload: DistributedAreaDataPoint;
+        },
+    ];
+    lowerUsdTarget: number;
+    upperUsdTarget: number;
     totalRewardsUsd: number;
-    height?: number;
-    payload?: Payload[];
-    points?: { x: number; y: number }[];
+    minimumPayouPercentage?: number;
 }
 
-export function TooltipContent({ active, payload }: TooltipProps) {
+export function TooltipContent({
+    active,
+    payload,
+    lowerUsdTarget,
+    upperUsdTarget,
+    totalRewardsUsd,
+    minimumPayouPercentage,
+}: TooltipProps) {
     const t = useTranslations("simulationChart.tooltip");
 
     if (!active || !payload || !payload.length) return null;
 
-    const { usdTvl, reward, goalReachedPercentage } = payload[0].payload;
+    const { usdTvl } = payload[0].payload;
 
     return (
         <div className={styles.root}>
@@ -44,7 +52,15 @@ export function TooltipContent({ active, payload }: TooltipProps) {
                     {t("payout")}
                 </Typography>
                 <Typography weight="medium">
-                    {formatUsdAmount(reward)}
+                    {formatUsdAmount(
+                        totalRewardsUsd *
+                            getDistributableRewardsPercentage(
+                                usdTvl,
+                                lowerUsdTarget,
+                                upperUsdTarget,
+                                minimumPayouPercentage,
+                            ),
+                    )}
                 </Typography>
             </div>
             <div className={styles.row}>
@@ -52,11 +68,28 @@ export function TooltipContent({ active, payload }: TooltipProps) {
                     {t("kpiReached")}
                 </Typography>
                 <Typography weight="medium">
-                    {formatPercentage(goalReachedPercentage * 100)}
+                    {formatPercentage(
+                        getReachedGoalPercentage(
+                            usdTvl,
+                            lowerUsdTarget,
+                            upperUsdTarget,
+                        ) * 100,
+                    )}
                 </Typography>
             </div>
         </div>
     );
+}
+
+interface TooltipCursorProps {
+    totalRewardsUsd: number;
+    height?: number;
+    payload?: [
+        {
+            payload: DistributedAreaDataPoint;
+        },
+    ];
+    points?: { x: number; y: number }[];
 }
 
 export function TooltipCursor({
@@ -67,7 +100,9 @@ export function TooltipCursor({
 }: TooltipCursorProps) {
     if (!payload || !payload.length || !points || !height) return null;
 
-    const { usdTvl, reward } = payload[0].payload;
+    const { usdTvl, currentlyDistributing, currentlyNotDistributing } =
+        payload[0].payload;
+    const reward = currentlyDistributing || currentlyNotDistributing;
 
     // ReferenceDot cannot be used because it lacks access to Recharts' internal scale functions.
     // Instead, we use a standard SVG circle element. This requires manually calculating the Y position
@@ -83,7 +118,7 @@ export function TooltipCursor({
                 strokeDasharray={"3 3"}
                 ifOverflow="visible"
                 isFront
-                stroke="#B2B2B2"
+                stroke="#000"
                 segment={[
                     { x: usdTvl, y: reward },
                     { x: 0, y: reward },
@@ -93,7 +128,7 @@ export function TooltipCursor({
                 strokeDasharray={"3 3"}
                 ifOverflow="visible"
                 isFront
-                stroke="#B2B2B2"
+                stroke="#000"
                 segment={[
                     { x: usdTvl, y: reward },
                     { x: usdTvl, y: 0 },
@@ -103,7 +138,7 @@ export function TooltipCursor({
                 cx={points[0].x}
                 cy={cy}
                 r={4}
-                fill="#B2B2B2"
+                fill="#000"
                 stroke="white"
                 strokeWidth={1}
             />

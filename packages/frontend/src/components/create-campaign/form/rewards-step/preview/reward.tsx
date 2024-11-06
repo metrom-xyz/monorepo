@@ -109,7 +109,7 @@ export function Reward({
             amount: rewardAmount || {
                 raw: 0n,
                 formatted: 0,
-                usdValue: null,
+                usdValue: 0,
             },
         });
     }, [onUpdate, reward, rewardAmount]);

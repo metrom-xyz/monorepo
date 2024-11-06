@@ -78,26 +78,22 @@ export function Rewards({ campaign, loading }: RewardsProps) {
                         </div>
                     ))
                 )}
-                <div className={styles.summary}>
-                    <TextField
-                        boxed
-                        variant="xl"
-                        label={t("daily")}
-                        loading={loading || !campaign}
-                        value={formatUsdAmount(dailyRewards)}
-                        className={styles.summaryBox}
-                    />
-                    <TextField
-                        boxed
-                        variant="xl"
-                        label={t("total")}
-                        loading={loading || !campaign}
-                        value={formatUsdAmount(
-                            campaign?.rewards.amountUsdValue,
-                        )}
-                        className={styles.summaryBox}
-                    />
-                </div>
+            </div>
+            <div className={styles.summary}>
+                <TextField
+                    boxed
+                    variant="xl"
+                    label={t("daily")}
+                    loading={loading || !campaign}
+                    value={formatUsdAmount(dailyRewards)}
+                />
+                <TextField
+                    boxed
+                    variant="xl"
+                    label={t("total")}
+                    loading={loading || !campaign}
+                    value={formatUsdAmount(campaign?.rewards.amountUsdValue)}
+                />
             </div>
         </div>
     );

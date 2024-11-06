@@ -61,7 +61,7 @@ export function Leaderboard({ campaign, loading }: LeaderboardProps) {
                     {t("title")}
                 </Typography>
                 <div className={styles.subtitleContainer}>
-                    <Typography weight="medium" light uppercase>
+                    <Typography weight="medium" variant="sm" light uppercase>
                         {t("subtitle")}
                     </Typography>
                     {loading || loadingDistributionBreakdown ? (
@@ -69,6 +69,7 @@ export function Leaderboard({ campaign, loading }: LeaderboardProps) {
                     ) : (
                         <Typography
                             weight="medium"
+                            variant="sm"
                             light
                             uppercase={!!distributionBreakdown}
                         >

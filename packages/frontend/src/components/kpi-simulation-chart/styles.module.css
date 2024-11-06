@@ -3,14 +3,7 @@
         flex
         items-center
         justify-center
-        text-center
-        p-4
-        bg-gray-100
-        rounded-lg;
-}
-
-.roundedLg {
-    @apply rounded-2xl;
+        text-center;
 }
 
 .container {
@@ -25,8 +18,8 @@
         flex
         justify-center
         items-center
-        bg-gray-100
-        rounded-lg;
+        bg-white
+        rounded-2xl;
 }
 
 .errorText {

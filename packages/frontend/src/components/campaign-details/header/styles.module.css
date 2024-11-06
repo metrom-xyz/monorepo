@@ -1,5 +1,5 @@
 .root {
-    @apply flex flex-col gap-3 sm:gap-8 w-full max-w-screen-lg p-3;
+    @apply flex flex-col gap-3 sm:gap-8 w-full max-w-screen-lg py-3;
 }
 
 .titleContainer {
@@ -11,7 +11,7 @@
 }
 
 .actionsContainer {
-    @apply flex flex-col-reverse sm:flex-row gap-3 flex-wrap justify-between sm:mb-8;
+    @apply flex flex-col-reverse sm:flex-row gap-3 flex-wrap justify-between sm:mb-2;
 }
 
 .actionsContainer button,

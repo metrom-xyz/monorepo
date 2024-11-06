@@ -55,50 +55,50 @@ export function Rewards({ rewards, startDate, endDate }: RewardsProps) {
 
     return (
         <div className={styles.root}>
-            <div className={styles.header}>
-                <Typography uppercase weight="medium" light variant="sm">
-                    {t("token")}
-                </Typography>
-                <Typography uppercase weight="medium" light variant="sm">
-                    {t("amount")}
-                </Typography>
-            </div>
-            {rewards?.map((reward) => (
-                <div key={reward.token.address} className={styles.row}>
-                    <div className={styles.nameContainer}>
-                        <RemoteLogo
-                            chain={chain}
-                            address={reward.token.address}
-                        />
-                        <Typography weight="medium" variant="xl">
-                            {reward.token.symbol}
-                        </Typography>
-                    </div>
-                    <Typography weight="medium" light variant="lg">
-                        {formatUsdAmount(reward.amount.usdValue || 0)}
+            <div className={styles.table}>
+                <div className={styles.header}>
+                    <Typography uppercase weight="medium" light variant="sm">
+                        {t("token")}
                     </Typography>
-                    <Typography weight="medium" variant="xl">
-                        {formatTokenAmount({
-                            amount: reward.amount.formatted,
-                            humanize: false,
-                        })}
+                    <Typography uppercase weight="medium" light variant="sm">
+                        {t("amount")}
                     </Typography>
                 </div>
-            ))}
+                {rewards?.map((reward) => (
+                    <div key={reward.token.address} className={styles.row}>
+                        <div className={styles.nameContainer}>
+                            <RemoteLogo
+                                chain={chain}
+                                address={reward.token.address}
+                            />
+                            <Typography weight="medium" variant="xl">
+                                {reward.token.symbol}
+                            </Typography>
+                        </div>
+                        <Typography weight="medium" light variant="lg">
+                            {formatUsdAmount(reward.amount.usdValue || 0)}
+                        </Typography>
+                        <Typography weight="medium" variant="xl">
+                            {formatTokenAmount({
+                                amount: reward.amount.formatted,
+                                humanize: false,
+                            })}
+                        </Typography>
+                    </div>
+                ))}
+            </div>
             <div className={styles.summary}>
                 <TextField
                     boxed
                     variant="xl"
                     label={t("daily")}
                     value={formatUsdAmount(dailyRewards)}
-                    className={styles.summaryBox}
                 />
                 <TextField
                     boxed
                     variant="xl"
                     label={t("total")}
                     value={formatUsdAmount(totalRewardsUsdAmount)}
-                    className={styles.summaryBox}
                 />
                 {fee && (
                     <TextField
@@ -117,7 +117,6 @@ export function Rewards({ rewards, startDate, endDate }: RewardsProps) {
                                 </Typography>
                             </div>
                         }
-                        className={styles.summaryBox}
                     />
                 )}
             </div>

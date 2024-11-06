@@ -15,6 +15,9 @@ import Fathom from "@/src/components/fathom";
 import { Toaster } from "sonner";
 import { routing } from "@/src/i18n/routing";
 import { notFound } from "next/navigation";
+import classNames from "classnames";
+import { Nav } from "@/src/components/layout/nav";
+import { Footer } from "@/src/components/layout/footer";
 
 import styles from "./styles.module.css";
 
@@ -56,7 +59,11 @@ export default async function Layout({
                             }}
                         />
                         <Fathom />
-                        {children}
+                        <div className={classNames(styles.root, styles.layout)}>
+                            <Nav />
+                            <div className={styles.main}>{children}</div>
+                            <Footer />
+                        </div>
                     </ClientProviders>
                 </NextIntlClientProvider>
             </body>
