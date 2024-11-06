@@ -7,7 +7,6 @@ import styles from "./styles.module.css";
 
 interface AprChipProps {
     apr: number | null;
-    fill?: boolean;
     size?: "sm" | "lg";
     prefix?: boolean;
     placeholder?: boolean;
@@ -17,7 +16,6 @@ interface AprChipProps {
 
 export function AprChip({
     apr,
-    fill,
     size = "sm",
     prefix = false,
     placeholder,
@@ -37,7 +35,6 @@ export function AprChip({
                 <div
                     className={classNames(styles.root, className, {
                         [styles.witkKpi]: kpi,
-                        [styles.fill]: fill,
                     })}
                 >
                     <div className={classNames(styles.wrapper)}>
