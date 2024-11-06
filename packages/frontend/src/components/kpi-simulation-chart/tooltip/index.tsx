@@ -5,7 +5,7 @@ import { Typography } from "@metrom-xyz/ui";
 import { ReferenceLine } from "recharts";
 import { CHART_MARGINS, type DistributedAreaDataPoint } from "..";
 import {
-    getChartYScale,
+    getChartAxisScale,
     getDistributableRewardsPercentage,
     getReachedGoalPercentage,
 } from "@/src/utils/kpi";
@@ -109,7 +109,7 @@ export function TooltipCursor({
     // based on the chart scale, while the X position can directly use the value from the data points.
     // This also takes into account the chart top margin.
     const cy =
-        getChartYScale(reward, 0, totalRewardsUsd, height, 0) +
+        getChartAxisScale(reward, 0, totalRewardsUsd, height, 0) +
         CHART_MARGINS.top;
 
     return (
