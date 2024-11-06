@@ -1,7 +1,7 @@
 .root {
     @apply flex
         flex-col
-        gap-3
+        gap-2
         p-2
         rounded-lg
         bg-white
@@ -9,16 +9,12 @@
         border-gray-200;
 }
 
-.section {
-    @apply flex flex-col gap-1 bg-gray-100 p-2 rounded-md;
-}
-
 .fieldWrapper {
     @apply flex items-center justify-between;
 }
 
 .breakdownWrapper {
-    @apply flex flex-col gap-2;
+    @apply mt-3;
 }
 
 .row {
