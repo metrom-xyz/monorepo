@@ -11,6 +11,8 @@ import type { Address } from "viem";
 import { RewardsBreakdown } from "./rewards-breakdown";
 import { formatPercentage } from "@/src/utils/format";
 import { useMemo } from "react";
+import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
+import { getAddressExplorerLink } from "@/src/utils/dex";
 
 import styles from "./styles.module.css";
 
@@ -144,9 +146,27 @@ export function Leaderboard({ campaign, loading }: LeaderboardProps) {
                                                 )}
                                             </Typography>
                                         </div>
-                                        <Typography weight="medium">
-                                            {shortenAddress(account as Address)}
-                                        </Typography>
+                                        <div className={styles.accountWrapper}>
+                                            <Typography weight="medium">
+                                                {shortenAddress(
+                                                    account as Address,
+                                                )}
+                                            </Typography>
+                                            <a
+                                                href={getAddressExplorerLink(
+                                                    account as Address,
+                                                    campaign?.chainId,
+                                                )}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                            >
+                                                <ArrowRightIcon
+                                                    className={
+                                                        styles.externalLinkIcon
+                                                    }
+                                                />
+                                            </a>
+                                        </div>
                                         <div>
                                             <RewardsBreakdown
                                                 chain={campaign?.chainId}

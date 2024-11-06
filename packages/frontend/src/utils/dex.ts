@@ -3,19 +3,20 @@ import { SupportedChain } from "@metrom-xyz/contracts";
 import type { Dex } from "../types";
 import { CHAIN_DATA } from "../commons";
 import type { Hex } from "viem";
+import type { Address } from "blo";
 
-export const getDex = (
+export function getDex(
     chainId: SupportedChain,
     dexSlug: string,
-): Dex | undefined => {
+): Dex | undefined {
     return CHAIN_DATA[chainId].dexes.find((dex) => dex.slug === dexSlug);
-};
+}
 
-export const getPoolAddLiquidityLink = (
+export function getPoolAddLiquidityLink(
     chainId: SupportedChain,
     dexSlug: string,
     pool: Pool,
-): string | undefined => {
+): string | undefined {
     const dex = getDex(chainId, dexSlug);
     if (!dex || !dex.addLiquidityUrl) return;
 
@@ -26,24 +27,28 @@ export const getPoolAddLiquidityLink = (
         );
 
     return dex.addLiquidityUrl.replace("{target_pool}", `${pool.address}`);
-};
+}
 
-export const getPoolExplorerLink = (
-    chainId: SupportedChain,
-    pool: Pool,
-): string | undefined => {
+export function getAddressExplorerLink(
+    address: Address,
+    chainId?: SupportedChain,
+): string | undefined {
+    if (!chainId) return;
+
     const explorer = CHAIN_DATA[chainId].blockExplorers?.default;
     if (!explorer) return;
 
-    return `${explorer.url}/address/${pool.address}`;
-};
+    return `${explorer.url}/address/${address}`;
+}
 
-export const getTxExplorerLink = (
-    chainId: SupportedChain,
+export function getTxExplorerLink(
     hash: Hex,
-): string | undefined => {
+    chainId?: SupportedChain,
+): string | undefined {
+    if (!chainId) return;
+
     const explorer = CHAIN_DATA[chainId].blockExplorers?.default;
     if (!explorer) return;
 
     return `${explorer.url}/tx/${hash}`;
-};
+}
