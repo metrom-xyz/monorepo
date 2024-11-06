@@ -27,7 +27,8 @@ export function AverageDistributionChart({
     const chartData = useMemo(() => {
         const distributedPercentage =
             (minimumPayoutPercentage +
-                (1 - minimumPayoutPercentage) * kpiMeasurementPercentage) *
+                (1 - minimumPayoutPercentage) *
+                    Math.max(kpiMeasurementPercentage, 0)) *
             100;
         const data: ChartData[] = [
             {

@@ -79,13 +79,12 @@ export function DistributionChart({
 
             const distributedPercentage =
                 minimumPayoutPercentage +
-                (1 - minimumPayoutPercentage) * percentage;
-            const reimbursedPercentage = 1 - distributedPercentage;
+                (1 - minimumPayoutPercentage) * Math.max(percentage, 0);
 
             return {
                 ...measurement,
                 distributed: distributedPercentage,
-                reimbursed: reimbursedPercentage,
+                reimbursed: 1 - distributedPercentage,
             };
         });
     }, [kpiMeasurements, minimumPayoutPercentage]);
@@ -100,11 +99,7 @@ export function DistributionChart({
                 {t("distributions")}
             </Typography>
             <ResponsiveContainer width="100%" className={styles.container}>
-                <BarChart
-                    data={chartData}
-                    // margin={{ top: 0, right: 0, bottom: 0, left: 0 }}
-                    style={{ cursor: "pointer" }}
-                >
+                <BarChart data={chartData} style={{ cursor: "pointer" }}>
                     <YAxis ticks={[0, 1]} hide />
                     <XAxis
                         type="category"
