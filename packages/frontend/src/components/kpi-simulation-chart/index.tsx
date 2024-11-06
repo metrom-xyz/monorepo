@@ -1,8 +1,7 @@
 import {
     Area,
-    CartesianGrid,
     ComposedChart,
-    ReferenceArea,
+    Label,
     ReferenceDot,
     ReferenceLine,
     ResponsiveContainer,
@@ -16,9 +15,13 @@ import { ErrorText, Typography } from "@metrom-xyz/ui";
 import { TvlTick } from "./axis-ticks/tvl";
 import { RewardTick } from "./axis-ticks/reward";
 import { TooltipContent, TooltipCursor } from "./tooltip";
-import { getDistributableRewardsPercentage } from "@/src/utils/kpi";
+import {
+    getChartAxisScale,
+    getDistributableRewardsPercentage,
+} from "@/src/utils/kpi";
 import classNames from "classnames";
 import { formatUsdAmount } from "@/src/utils/format";
+import { useMeasure } from "react-use";
 
 import styles from "./styles.module.css";
 
@@ -40,6 +43,8 @@ interface KpiSimulationChartProps {
     className?: string;
 }
 
+const REFERENCE_LINE_PROXIMITY_THRESHOLD = 16;
+const REFERENCE_LINE_LABEL_DX = 8;
 const POINTS_COUNT = 1000;
 export const CHART_MARGINS = { top: 30, right: 4, bottom: 4, left: 2 };
 
@@ -55,6 +60,7 @@ export function KpiSimulationChart({
     className,
 }: KpiSimulationChartProps) {
     const t = useTranslations("simulationChart");
+    const [chartRef, { width }] = useMeasure<HTMLDivElement>();
 
     const currentPayoutUsd =
         poolUsdTvl && lowerUsdTarget && upperUsdTarget
@@ -64,6 +70,7 @@ export function KpiSimulationChart({
                   lowerUsdTarget,
                   upperUsdTarget,
                   minimumPayoutPercentage,
+                  // FIXME: check dot issue
                   kpiMeasurement,
               )
             : 0;
@@ -84,6 +91,95 @@ export function KpiSimulationChart({
 
         return [tvls[0] - padding, ...tvls, tvls[2] + padding];
     }, [lowerUsdTarget, poolUsdTvl, upperUsdTarget]);
+
+    const { poolTvlScale, lowerBoundScale, upperBoundScale } = useMemo(() => {
+        if (
+            poolUsdTvl === null ||
+            poolUsdTvl === undefined ||
+            lowerUsdTarget === undefined ||
+            upperUsdTarget === undefined
+        )
+            return {};
+
+        const chartWidth = width - CHART_MARGINS.left - CHART_MARGINS.right;
+        const tvls = [poolUsdTvl, lowerUsdTarget, upperUsdTarget];
+        const [poolTvlScale, lowerBoundScale, upperBoundScale] = tvls.map(
+            (tvl) =>
+                getChartAxisScale(
+                    tvl,
+                    sortedSignificantUsdTvls[0],
+                    sortedSignificantUsdTvls[
+                        sortedSignificantUsdTvls.length - 1
+                    ],
+                    0,
+                    chartWidth,
+                ) + CHART_MARGINS.left,
+        );
+
+        return { poolTvlScale, lowerBoundScale, upperBoundScale };
+    }, [
+        lowerUsdTarget,
+        poolUsdTvl,
+        sortedSignificantUsdTvls,
+        upperUsdTarget,
+        width,
+    ]);
+
+    const { poolTvlDx, lowerBoundDx, upperBoundDx } = useMemo(() => {
+        if (
+            poolTvlScale === undefined ||
+            lowerBoundScale === undefined ||
+            upperBoundScale == undefined
+        )
+            return {
+                poolTvlDx: REFERENCE_LINE_LABEL_DX,
+                lowerBoundDx: REFERENCE_LINE_LABEL_DX,
+                upperBoundDx: REFERENCE_LINE_LABEL_DX,
+            };
+
+        const closeToLowerBound =
+            Math.abs(poolTvlScale - lowerBoundScale) <=
+            REFERENCE_LINE_PROXIMITY_THRESHOLD;
+        const closeToUpperBound =
+            Math.abs(poolTvlScale - upperBoundScale) <=
+            REFERENCE_LINE_PROXIMITY_THRESHOLD;
+
+        if (closeToLowerBound) {
+            if (poolTvlScale <= lowerBoundScale)
+                return {
+                    poolTvlDx: -REFERENCE_LINE_LABEL_DX,
+                    lowerBoundDx: REFERENCE_LINE_LABEL_DX,
+                    upperBoundDx: REFERENCE_LINE_LABEL_DX,
+                };
+
+            return {
+                poolTvlDx: REFERENCE_LINE_LABEL_DX,
+                lowerBoundDx: -REFERENCE_LINE_LABEL_DX,
+                upperBoundDx: REFERENCE_LINE_LABEL_DX,
+            };
+        }
+
+        if (closeToUpperBound) {
+            if (poolTvlScale >= upperBoundScale)
+                return {
+                    poolTvlDx: REFERENCE_LINE_LABEL_DX,
+                    lowerBoundDx: REFERENCE_LINE_LABEL_DX,
+                    upperBoundDx: -REFERENCE_LINE_LABEL_DX,
+                };
+
+            return {
+                poolTvlDx: -REFERENCE_LINE_LABEL_DX,
+                lowerBoundDx: REFERENCE_LINE_LABEL_DX,
+                upperBoundDx: REFERENCE_LINE_LABEL_DX,
+            };
+        }
+
+        return {
+            poolTvlDx: REFERENCE_LINE_LABEL_DX,
+            lowerBoundDx: REFERENCE_LINE_LABEL_DX,
+            upperBoundDx: REFERENCE_LINE_LABEL_DX,
+        };
+    }, [lowerBoundScale, poolTvlScale, upperBoundScale]);
 
     const areaChartData: DistributedAreaDataPoint[] = useMemo(() => {
         if (
@@ -207,6 +303,7 @@ export function KpiSimulationChart({
 
     return (
         <ResponsiveContainer
+            ref={chartRef}
             width="100%"
             height="100%"
             minHeight={270}
@@ -221,11 +318,12 @@ export function KpiSimulationChart({
                     type="number"
                     format="number"
                     dataKey="usdTvl"
+                    interval={0}
                     tick={
                         <TvlTick
-                            poolUsdTvl={poolUsdTvl}
-                            lowerUsdTarget={lowerUsdTarget}
-                            upperUsdTarget={upperUsdTarget}
+                            poolTvlScale={poolTvlScale}
+                            lowerBoundScale={lowerBoundScale}
+                            upperBoundScale={upperBoundScale}
                         />
                     }
                     ticks={sortedSignificantUsdTvls.slice(1, 4)}
@@ -285,7 +383,14 @@ export function KpiSimulationChart({
                             y: totalRewardsUsd,
                         },
                     ]}
-                />
+                >
+                    <Label
+                        value={t("pool")}
+                        dx={poolTvlDx}
+                        angle={90}
+                        className={styles.axisLabel}
+                    />
+                </ReferenceLine>
 
                 <ReferenceLine
                     strokeDasharray={"3 3"}
@@ -302,7 +407,14 @@ export function KpiSimulationChart({
                             y: totalRewardsUsd,
                         },
                     ]}
-                />
+                >
+                    <Label
+                        value={t("lowerBound")}
+                        dx={lowerBoundDx}
+                        angle={270}
+                        className={styles.axisLabel}
+                    />
+                </ReferenceLine>
 
                 <ReferenceLine
                     strokeDasharray={"3 3"}
@@ -319,7 +431,14 @@ export function KpiSimulationChart({
                             y: totalRewardsUsd,
                         },
                     ]}
-                />
+                >
+                    <Label
+                        value={t("upperBound")}
+                        dx={upperBoundDx}
+                        angle={90}
+                        className={styles.axisLabel}
+                    />
+                </ReferenceLine>
 
                 {currentPayoutUsd > 0 && (
                     <>
