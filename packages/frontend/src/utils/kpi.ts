@@ -1,3 +1,5 @@
+import type { KpiMeasurement } from "@metrom-xyz/sdk";
+
 export function getReachedGoalPercentage(
     usdTvl: number,
     lowerUsdTarget: number,
@@ -41,4 +43,40 @@ export function getChartYScale(
         ((value - minValue) / (maxValue - minValue)) * (maxHeight - minHeight) +
         minHeight
     );
+}
+
+export function getAggregatedKpiMeasurements(
+    kpiMeasurements: KpiMeasurement[],
+    seconds: number,
+): KpiMeasurement[] {
+    if (kpiMeasurements.length === 0) return kpiMeasurements;
+
+    let window = [];
+    const aggregated: KpiMeasurement[] = [];
+    for (const measurement of kpiMeasurements) {
+        if (window.length === 0 || measurement.to - window[0].from < seconds) {
+            window.push(measurement);
+            continue;
+        }
+
+        let distributions = [];
+        let percentageSum = 0;
+        let valueSum = 0;
+        for (const item of window) {
+            distributions.push(...item.distributions);
+            percentageSum += item.percentage;
+            valueSum += item.value;
+        }
+
+        aggregated.push({
+            from: window[0].from,
+            to: window[window.length - 1].to,
+            distributions,
+            percentage: percentageSum / window.length,
+            value: valueSum / window.length,
+        });
+        window = [];
+    }
+
+    return aggregated;
 }

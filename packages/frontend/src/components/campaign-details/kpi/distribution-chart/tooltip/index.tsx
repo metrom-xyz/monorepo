@@ -23,7 +23,7 @@ export function TooltipContent({ chain, active, payload }: TooltipProps) {
 
     if (!active || !payload || !payload.length) return null;
 
-    const { distributions, from, distributed, reimbursed } = payload[0].payload;
+    const { distributions, to, distributed, reimbursed } = payload[0].payload;
 
     if (distributions.length === 0) return null;
 
@@ -35,7 +35,7 @@ export function TooltipContent({ chain, active, payload }: TooltipProps) {
                         {t("distributionTime")}
                     </Typography>
                     <Typography weight="medium" uppercase>
-                        {dayjs.unix(from).format("DD MMM HH:mm")}
+                        {dayjs.unix(to).format("DD MMM HH:mm")}
                     </Typography>
                 </div>
             </div>

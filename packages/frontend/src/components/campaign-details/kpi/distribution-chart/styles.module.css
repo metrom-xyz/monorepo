@@ -11,3 +11,12 @@
 .container {
     @apply h-full min-h-80;
 }
+
+.timeTick {
+    @apply font-sans
+        uppercase
+        text-xs
+        leading-none
+        font-medium
+        fill-black;
+}

@@ -76,9 +76,11 @@ export function KpiSimulationChart({
             return [];
 
         const tvls = [poolUsdTvl, lowerUsdTarget, upperUsdTarget];
-        tvls.sort();
+        tvls.sort((a, b) => a - b);
+        const fullRange = tvls[2] - tvls[0];
+        const padding = fullRange * 0.2;
 
-        return [tvls[0] * 0.9, ...tvls, tvls[2] * 1.1];
+        return [tvls[0] - padding, ...tvls, tvls[2] + padding];
     }, [lowerUsdTarget, poolUsdTvl, upperUsdTarget]);
 
     const areaChartData: DistributedAreaDataPoint[] = useMemo(() => {

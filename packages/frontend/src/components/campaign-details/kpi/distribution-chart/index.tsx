@@ -13,6 +13,7 @@ import { TooltipContent } from "./tooltip";
 import type { SupportedChain } from "@metrom-xyz/contracts";
 import { Typography } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
+import { getAggregatedKpiMeasurements } from "@/src/utils/kpi";
 
 import styles from "./styles.module.css";
 
@@ -28,14 +29,21 @@ export interface DistributionChartData {
 interface DistributionChartProps {
     chain?: SupportedChain;
     kpiMeasurements?: KpiMeasurement[];
+    minimumPayoutPercentage?: number;
     loading?: boolean;
 }
 
-const WEEK_HOURS = 24 * 7;
+const TWO_HOURS_SECONDS = 60 * 60 * 2;
+const FOUR_HOURS_SECONDS = TWO_HOURS_SECONDS * 2;
+const TWELVE_HOURS_SECONDS = FOUR_HOURS_SECONDS * 3;
+const ONE_DAY_SECONDS = 60 * 60 * 24;
+const TWO_DAYS_SECONDS = ONE_DAY_SECONDS * 2;
+const FOUR_DAYS_SECONDS = ONE_DAY_SECONDS * 4;
 
 export function DistributionChart({
     chain,
     kpiMeasurements,
+    minimumPayoutPercentage = 0,
     loading,
 }: DistributionChartProps) {
     const t = useTranslations("campaignDetails.kpi.charts");
@@ -43,34 +51,58 @@ export function DistributionChart({
     const chartData = useMemo(() => {
         if (!kpiMeasurements || kpiMeasurements.length === 0) return [];
 
-        const data: DistributionChartData[] = kpiMeasurements.map(
-            (measurement) => {
-                const { from, to, distributions, percentage } = measurement;
+        const fullTimeRange =
+            kpiMeasurements[kpiMeasurements.length - 1].to -
+            kpiMeasurements[0].from;
 
-                const distributedPercentage = percentage;
-                const reimbursedPercentage = 1 - percentage;
+        let requiredBars = 23;
+        let aggregatedMeasurements;
+        if (fullTimeRange < ONE_DAY_SECONDS) {
+            aggregatedMeasurements = kpiMeasurements;
+        } else if (fullTimeRange < TWO_DAYS_SECONDS) {
+            aggregatedMeasurements = getAggregatedKpiMeasurements(
+                kpiMeasurements,
+                TWO_HOURS_SECONDS,
+            );
+        } else if (fullTimeRange < FOUR_DAYS_SECONDS) {
+            aggregatedMeasurements = getAggregatedKpiMeasurements(
+                kpiMeasurements,
+                FOUR_HOURS_SECONDS,
+            );
+        } else {
+            requiredBars = 14;
+            aggregatedMeasurements = getAggregatedKpiMeasurements(
+                kpiMeasurements,
+                TWELVE_HOURS_SECONDS,
+            );
+        }
+
+        const chartData: DistributionChartData[] = aggregatedMeasurements.map(
+            (measurement) => {
+                const { percentage } = measurement;
+
+                const distributedPercentage =
+                    minimumPayoutPercentage +
+                    (1 - minimumPayoutPercentage) * percentage;
+                const reimbursedPercentage = 1 - distributedPercentage;
 
                 return {
-                    from,
-                    to,
-                    distributions,
+                    ...measurement,
                     distributed: distributedPercentage,
                     reimbursed: reimbursedPercentage,
                 };
             },
         );
 
-        // TODO: not too sure about this
-        // add placeholder data to fill a day of distributions,
-        // ensuring the chart doesn’t appear too empty
-        const emptyHours = 23 - data.length;
-        for (let hour = 0; hour < emptyHours; hour++) {
-            data.unshift({
-                from: dayjs
-                    .unix(data[data.length - 1].from)
-                    .add(1, "hours")
-                    .unix(),
-                to: 0,
+        const paddingMeasurements = Math.max(
+            0,
+            requiredBars - aggregatedMeasurements.length,
+        );
+        for (let i = 0; i < paddingMeasurements; i++) {
+            const lastDataPoint = chartData[chartData.length - 1];
+            chartData.push({
+                from: dayjs.unix(lastDataPoint.from).add(1, "hour").unix(),
+                to: dayjs.unix(lastDataPoint.to).add(1, "hour").unix(),
                 distributed: 0,
                 reimbursed: 0,
                 empty: 1,
@@ -78,8 +110,8 @@ export function DistributionChart({
             });
         }
 
-        return data;
-    }, [kpiMeasurements]);
+        return chartData;
+    }, [kpiMeasurements, minimumPayoutPercentage]);
 
     // TODO: add loading state?
     if (loading || !kpiMeasurements || kpiMeasurements.length === 0)
@@ -105,10 +137,7 @@ export function DistributionChart({
                         tickSize={4}
                         minTickGap={50}
                         axisLine={false}
-                        // TODO: add typography
-                        tickFormatter={(timestamp: number) =>
-                            dayjs.unix(timestamp).format("DD MMM HH:mm")
-                        }
+                        tick={<Tick />}
                     />
 
                     <Bar
@@ -139,5 +168,32 @@ export function DistributionChart({
                 </ComposedChart>
             </ResponsiveContainer>
         </div>
+    );
+}
+
+interface TickProps {
+    payload?: {
+        value: number;
+    };
+    x?: number;
+    y?: number;
+}
+
+function Tick({ payload, x, y }: TickProps) {
+    if (!payload?.value) return null;
+
+    return (
+        <g transform={`translate(${x},${y})`}>
+            <text
+                x={0}
+                y={0}
+                dy={12}
+                fontSize={12}
+                textAnchor="middle"
+                className={styles.timeTick}
+            >
+                {dayjs.unix(payload.value).format("DD MMM HH:mm")}
+            </text>
+        </g>
     );
 }
