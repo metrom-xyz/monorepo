@@ -132,8 +132,12 @@ export function Kpi({ campaign, loading }: KpiProps) {
                             kpiMeasurements={kpiMeasurements}
                         />
                         <AverageDistributionChart
-                            distributedPercentage={
+                            kpiMeasurementPercentage={
                                 campaign.specification.kpi.measurement
+                            }
+                            minimumPayoutPercentage={
+                                campaign.specification.kpi
+                                    .minimumPayoutPercentage
                             }
                         />
                     </div>

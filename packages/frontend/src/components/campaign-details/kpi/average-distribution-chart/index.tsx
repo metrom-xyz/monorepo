@@ -8,7 +8,8 @@ import { formatPercentage } from "@/src/utils/format";
 import styles from "./styles.module.css";
 
 interface AverageDistributionChartProps {
-    distributedPercentage: number;
+    kpiMeasurementPercentage: number;
+    minimumPayoutPercentage?: number;
 }
 
 interface ChartData {
@@ -18,26 +19,30 @@ interface ChartData {
 }
 
 export function AverageDistributionChart({
-    distributedPercentage,
+    kpiMeasurementPercentage,
+    minimumPayoutPercentage = 0,
 }: AverageDistributionChartProps) {
     const t = useTranslations("campaignDetails.kpi.charts");
 
     const chartData = useMemo(() => {
-        const scaledPercentage = distributedPercentage * 100;
+        const distributedPercentage =
+            (minimumPayoutPercentage +
+                (1 - minimumPayoutPercentage) * kpiMeasurementPercentage) *
+            100;
         const data: ChartData[] = [
             {
                 type: "distributed",
-                value: scaledPercentage,
+                value: distributedPercentage,
                 color: "#6CFF95",
             },
             {
                 type: "reimbursed",
-                value: 100 - scaledPercentage,
+                value: 100 - distributedPercentage,
                 color: "#d1d5db",
             },
         ];
         return data;
-    }, [distributedPercentage]);
+    }, [kpiMeasurementPercentage, minimumPayoutPercentage]);
 
     return (
         <div className={styles.root}>
