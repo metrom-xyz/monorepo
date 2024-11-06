@@ -40,8 +40,7 @@ interface KpiSimulationChartProps {
 }
 
 const POINTS_COUNT = 1000;
-// const BASE_HEIGHT = 270;
-export const CHART_MARGINS = { top: 30, right: 4, bottom: 18, left: 2 };
+export const CHART_MARGINS = { top: 30, right: 4, bottom: 4, left: 2 };
 
 export function KpiSimulationChart({
     minimumPayoutPercentage = 0,
@@ -227,7 +226,6 @@ export function KpiSimulationChart({
                         />
                     }
                     ticks={sortedSignificantUsdTvls.slice(1, 4)}
-                    interval={0}
                     tickFormatter={(value) => formatUsdAmount(value)}
                     domain={[
                         sortedSignificantUsdTvls[0],
