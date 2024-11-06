@@ -40,7 +40,7 @@ export function TooltipContent({
     return (
         <div className={styles.root}>
             <div className={styles.row}>
-                <Typography weight="medium" light>
+                <Typography weight="medium" light uppercase>
                     {t("tvl")}
                 </Typography>
                 <Typography weight="medium">
@@ -48,7 +48,7 @@ export function TooltipContent({
                 </Typography>
             </div>
             <div className={styles.row}>
-                <Typography weight="medium" light>
+                <Typography weight="medium" light uppercase>
                     {t("payout")}
                 </Typography>
                 <Typography weight="medium">
@@ -64,7 +64,7 @@ export function TooltipContent({
                 </Typography>
             </div>
             <div className={styles.row}>
-                <Typography weight="medium" light>
+                <Typography weight="medium" light uppercase>
                     {t("kpiReached")}
                 </Typography>
                 <Typography weight="medium">
