@@ -18,12 +18,16 @@ export function getDistributableRewardsPercentage(
     lowerUsdTarget: number,
     upperUsdTarget: number,
     minimumPayoutPercentage?: number,
+    kpiMeasurement?: number,
 ) {
-    const reachedPercentage = getReachedGoalPercentage(
+    let reachedPercentage = getReachedGoalPercentage(
         usdTvl,
         lowerUsdTarget,
         upperUsdTarget,
     );
+
+    if (kpiMeasurement) reachedPercentage = kpiMeasurement;
+
     let minPayoutPercentage = minimumPayoutPercentage || 0;
     const goalBoundPercentage = 1 - minPayoutPercentage;
     const goalReachedPercentage = goalBoundPercentage * reachedPercentage;
@@ -70,12 +74,10 @@ export function getAggregatedKpiMeasurements(
         }
 
         const distributionsByToken = distributions.reduce(
-            (acc: Record<Address, KpiRewardDistribution>, distribution) => {
-                const {
-                    distributed,
-                    reimbursed,
-                    token: { address },
-                } = distribution;
+            (acc: Record<string, KpiRewardDistribution>, distribution) => {
+                const { distributed, reimbursed, token } = distribution;
+
+                const address = token.address.toLowerCase();
 
                 if (!acc[address]) {
                     acc[address] = {
