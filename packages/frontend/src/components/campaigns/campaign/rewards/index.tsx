@@ -121,6 +121,7 @@ export function Rewards({ status, from, to, rewards, chainId }: RewardsProps) {
                             <div
                                 key={reward.token.address}
                                 className={styles.tokenIcon}
+                                style={{ zIndex: i }}
                             >
                                 <RemoteLogo
                                     chain={chainId}
