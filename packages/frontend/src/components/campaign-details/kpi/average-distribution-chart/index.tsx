@@ -25,23 +25,34 @@ export function AverageDistributionChart({
     const t = useTranslations("campaignDetails.kpi.charts");
 
     const chartData = useMemo(() => {
+        const normalizedKpiMeasurementPercentage = Math.max(
+            Math.min(kpiMeasurementPercentage, 1),
+            0,
+        );
         const distributedPercentage =
             (minimumPayoutPercentage +
                 (1 - minimumPayoutPercentage) *
-                    Math.max(kpiMeasurementPercentage, 0)) *
+                    normalizedKpiMeasurementPercentage) *
             100;
-        const data: ChartData[] = [
-            {
+        const reimbursedPercentage = 100 - distributedPercentage;
+
+        const data: ChartData[] = [];
+        if (distributedPercentage > 0) {
+            data.push({
                 type: "distributed",
                 value: distributedPercentage,
                 color: "#6CFF95",
-            },
-            {
+            });
+        }
+
+        if (reimbursedPercentage > 0) {
+            data.push({
                 type: "reimbursed",
-                value: 100 - distributedPercentage,
+                value: reimbursedPercentage,
                 color: "#d1d5db",
-            },
-        ];
+            });
+        }
+
         return data;
     }, [kpiMeasurementPercentage, minimumPayoutPercentage]);
 

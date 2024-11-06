@@ -11,7 +11,7 @@ interface RewardTickProps {
 }
 
 export function RewardTick({ payload, x, y }: RewardTickProps) {
-    if (!payload || payload.value === 0) return null;
+    if (!payload || payload.value === undefined) return null;
 
     return (
         <g transform={`translate(${x},${y})`}>

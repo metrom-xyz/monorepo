@@ -77,9 +77,10 @@ export function DistributionChart({
         return aggregatedMeasurements.map((measurement) => {
             const { percentage } = measurement;
 
+            const normalizedPercentage = Math.max(Math.min(percentage, 1), 0);
             const distributedPercentage =
                 minimumPayoutPercentage +
-                (1 - minimumPayoutPercentage) * Math.max(percentage, 0);
+                (1 - minimumPayoutPercentage) * normalizedPercentage;
 
             return {
                 ...measurement,
