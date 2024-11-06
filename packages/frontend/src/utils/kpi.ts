@@ -1,4 +1,5 @@
-import type { KpiMeasurement } from "@metrom-xyz/sdk";
+import type { KpiMeasurement, KpiRewardDistribution } from "@metrom-xyz/sdk";
+import type { Address } from "viem";
 
 export function getReachedGoalPercentage(
     usdTvl: number,
@@ -68,10 +69,39 @@ export function getAggregatedKpiMeasurements(
             valueSum += item.value;
         }
 
+        const distributionsByToken = distributions.reduce(
+            (acc: Record<Address, KpiRewardDistribution>, distribution) => {
+                const {
+                    distributed,
+                    reimbursed,
+                    token: { address },
+                } = distribution;
+
+                if (!acc[address]) {
+                    acc[address] = {
+                        ...distribution,
+                        distributed: { ...distributed },
+                        reimbursed: { ...reimbursed },
+                    };
+                } else {
+                    acc[address].distributed.raw += distributed.raw;
+                    acc[address].distributed.formatted += distributed.formatted;
+                    acc[address].distributed.usdValue += distributed.usdValue;
+
+                    acc[address].reimbursed.raw += reimbursed.raw;
+                    acc[address].reimbursed.formatted += reimbursed.formatted;
+                    acc[address].reimbursed.usdValue += reimbursed.usdValue;
+                }
+
+                return acc;
+            },
+            {},
+        );
+
         aggregated.push({
             from: window[0].from,
             to: window[window.length - 1].to,
-            distributions,
+            distributions: Object.values(distributionsByToken),
             percentage: percentageSum / window.length,
             value: valueSum / window.length,
         });
