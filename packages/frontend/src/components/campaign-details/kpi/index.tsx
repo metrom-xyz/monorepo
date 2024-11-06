@@ -2,10 +2,12 @@ import type { NamedCampaign } from "@/src/hooks/useCampaign";
 import { TextField, Typography } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
 import { formatPercentage, formatUsdAmount } from "@/src/utils/format";
-import { KpiMetric, type KpiSpecification } from "@metrom-xyz/sdk";
+import {
+    KpiMetric,
+    type KpiSpecificationWithMeasurement,
+} from "@metrom-xyz/sdk";
 import { useMemo } from "react";
 import { KpiSimulationChart } from "../../kpi-simulation-chart";
-import { getReachedGoalPercentage } from "@/src/utils/kpi";
 import { useKpiMeasurements } from "@/src/hooks/useKpiMeasurements";
 import { DistributionChart } from "./distribution-chart";
 import { AverageDistributionChart } from "./average-distribution-chart";
@@ -27,8 +29,9 @@ export function Kpi({ campaign, loading }: KpiProps) {
 
     const {
         goal: { lowerUsdTarget, upperUsdTarget },
+        measurement,
         minimumPayoutPercentage,
-    } = useMemo<KpiSpecification>(() => {
+    } = useMemo<KpiSpecificationWithMeasurement>(() => {
         if (!campaign?.specification?.kpi)
             return {
                 goal: {
@@ -38,20 +41,14 @@ export function Kpi({ campaign, loading }: KpiProps) {
                 },
             };
 
-        const { goal, minimumPayoutPercentage } = campaign.specification.kpi;
+        const { goal, measurement, minimumPayoutPercentage } =
+            campaign.specification.kpi;
 
-        return { goal, minimumPayoutPercentage };
+        return { goal, measurement, minimumPayoutPercentage };
     }, [campaign]);
 
-    const reachedGoalPercentage = useMemo(() => {
-        if (!campaign?.pool.usdTvl) return 0;
-
-        return getReachedGoalPercentage(
-            campaign.pool.usdTvl,
-            lowerUsdTarget,
-            upperUsdTarget,
-        );
-    }, [campaign, lowerUsdTarget, upperUsdTarget]);
+    const reachedGoalPercentage =
+        campaign?.specification?.kpi?.measurement || 0;
 
     if (!campaign?.specification?.kpi) return null;
 
@@ -116,6 +113,7 @@ export function Kpi({ campaign, loading }: KpiProps) {
                                 }
                                 lowerUsdTarget={lowerUsdTarget}
                                 upperUsdTarget={upperUsdTarget}
+                                kpiMeasurement={measurement}
                                 minimumPayoutPercentage={
                                     minimumPayoutPercentage
                                 }

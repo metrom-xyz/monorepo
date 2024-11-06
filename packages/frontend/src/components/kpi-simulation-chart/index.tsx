@@ -29,6 +29,7 @@ export interface DistributedAreaDataPoint {
 }
 
 interface KpiSimulationChartProps {
+    kpiMeasurement?: number;
     minimumPayoutPercentage?: number;
     lowerUsdTarget?: number;
     upperUsdTarget?: number;
@@ -43,6 +44,7 @@ const POINTS_COUNT = 1000;
 export const CHART_MARGINS = { top: 30, right: 4, bottom: 4, left: 2 };
 
 export function KpiSimulationChart({
+    kpiMeasurement,
     minimumPayoutPercentage = 0,
     lowerUsdTarget,
     upperUsdTarget,
@@ -62,6 +64,7 @@ export function KpiSimulationChart({
                   lowerUsdTarget,
                   upperUsdTarget,
                   minimumPayoutPercentage,
+                  kpiMeasurement,
               )
             : 0;
 
