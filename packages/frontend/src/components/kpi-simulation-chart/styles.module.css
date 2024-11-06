@@ -1,9 +1,13 @@
 .root {
-    @apply h-full flex items-center justify-center text-center;
+    @apply h-full
+        flex
+        items-center
+        justify-center
+        text-center;
 }
 
 .container {
-    @apply h-full min-h-[270px] bg-gray-100 rounded-lg;
+    @apply h-full min-h-[270px];
 }
 
 .emptyContainer {
@@ -14,8 +18,8 @@
         flex
         justify-center
         items-center
-        bg-gray-100
-        rounded-lg;
+        bg-white
+        rounded-2xl;
 }
 
 .errorText {

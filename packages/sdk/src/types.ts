@@ -7,7 +7,7 @@ export interface OnChainAmount {
 }
 
 export interface UsdPricedOnChainAmount extends OnChainAmount {
-    usdValue: number | null;
+    usdValue: number;
 }
 
 export interface Erc20Token {
@@ -80,6 +80,14 @@ export interface Specification {
     kpi?: KpiSpecification;
 }
 
+export interface KpiSpecificationWithMeasurement extends KpiSpecification {
+    measurement?: number;
+}
+
+export interface SpecificationWithKpiMeasurement extends Specification {
+    kpi?: KpiSpecificationWithMeasurement;
+}
+
 export interface Campaign {
     chainId: number;
     id: Address;
@@ -91,7 +99,7 @@ export interface Campaign {
     pool: PoolWithTvl;
     rewards: Rewards;
     apr: number | null;
-    specification: Specification | null;
+    specification: SpecificationWithKpiMeasurement | null;
 }
 
 export interface Claim extends Erc20TokenAmount {

@@ -1,9 +1,5 @@
 .root {
-    @apply flex flex-col gap-6 h-full w-full;
-}
-
-.container {
-    @apply flex items-center justify-center h-full;
+    @apply flex flex-col gap-6 w-full p-4 bg-white rounded-2xl;
 }
 
 .tooltipWrapper {
@@ -22,9 +18,10 @@
         items-center
         justify-center
         self-center
+        mt-4
         w-[280px]
         h-[280px]
-        bg-gray-100
+        bg-white
         rounded-full;
 }
 

@@ -366,31 +366,30 @@ function processCampaign(backendCampaign: BackendCampaign): Campaign {
     });
     for (const backendReward of backendCampaign.rewards) {
         const rawAmount = BigInt(backendReward.amount);
+        const formattedAmount = Number(
+            formatUnits(rawAmount, backendReward.decimals),
+        );
         const amount: UsdPricedOnChainAmount = {
             raw: rawAmount,
-            formatted: Number(formatUnits(rawAmount, backendReward.decimals)),
-            usdValue: null,
+            formatted: formattedAmount,
+            usdValue: formattedAmount * backendReward.usdPrice,
         };
 
         const rawRemaining = BigInt(backendReward.remaining);
+        const formattedRemaining = Number(
+            formatUnits(rawRemaining, backendReward.decimals),
+        );
         const remaining: UsdPricedOnChainAmount = {
             raw: rawRemaining,
-            formatted: Number(
-                formatUnits(rawRemaining, backendReward.decimals),
-            ),
-            usdValue: null,
+            formatted: formattedRemaining,
+            usdValue: formattedRemaining * backendReward.usdPrice,
         };
 
         amount.usdValue = amount.formatted * backendReward.usdPrice;
         remaining.usdValue = remaining.formatted * backendReward.usdPrice;
 
-        if (
-            rewards.amountUsdValue !== null &&
-            rewards.remainingUsdValue !== null
-        ) {
-            rewards.amountUsdValue += amount.usdValue;
-            rewards.remainingUsdValue += remaining.usdValue;
-        }
+        rewards.amountUsdValue += amount.usdValue;
+        rewards.remainingUsdValue += remaining.usdValue;
 
         rewards.push({
             token: backendReward,

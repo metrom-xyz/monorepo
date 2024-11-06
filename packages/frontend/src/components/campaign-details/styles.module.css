@@ -3,15 +3,15 @@
 }
 
 .headerWrapper {
-    @apply flex flex-col items-center w-full bg-white gap-10 pt-6 sm:pt-12;
+    @apply flex flex-col items-center w-full max-w-screen-lg px-5 gap-10;
 }
 
 .header {
-    @apply bg-white w-full;
+    @apply w-full;
 }
 
 .contentWrapper {
-    @apply w-full max-w-screen-lg flex flex-col gap-16 px-5;
+    @apply w-full max-w-screen-lg flex flex-col gap-8 px-5;
 }
 
 .notFound {

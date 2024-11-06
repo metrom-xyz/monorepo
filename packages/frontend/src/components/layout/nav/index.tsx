@@ -18,20 +18,12 @@ const ROUTES = [
     { path: "/claims", label: "claims", icon: ClaimsIcon },
 ];
 
-interface NavProps {
-    header?: boolean;
-}
-
-export function Nav({ header }: NavProps) {
+export function Nav() {
     const t = useTranslations("navigation");
     const pathname = usePathname();
 
     return (
-        <div
-            className={classNames(styles.root, {
-                [styles.header]: header,
-            })}
-        >
+        <div className={classNames(styles.root)}>
             <div className={styles.main}>
                 <Link href="/">
                     <MetromSquareLogo className={styles.metromLogo} />
@@ -45,7 +37,6 @@ export function Nav({ header }: NavProps) {
                             <div
                                 className={classNames(styles.tab, {
                                     [styles.tabActive]: pathname === path,
-                                    [styles.header]: header,
                                 })}
                             >
                                 {Icon && <Icon className={styles.tabIcon} />}

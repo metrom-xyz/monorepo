@@ -1,6 +1,12 @@
 .root {
     @apply flex
         flex-col
+        gap-4;
+}
+
+.table {
+    @apply flex
+        flex-col
         gap-4
         p-4
         bg-white
@@ -29,10 +35,6 @@
 
 .summary {
     @apply flex flex-wrap sm:flex-nowrap justify-between gap-4 mt-2;
-}
-
-.summaryBox {
-    @apply bg-gray-100;
 }
 
 .feeText {

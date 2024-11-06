@@ -1,6 +1,5 @@
 "use client";
 
-import { Layout as DefaultLayout } from "@/src/components/layout";
 import { PageNotFound } from "@/src/components/page-not-found";
 import { routing } from "@/src/i18n/routing";
 import { useTranslations } from "next-intl";
@@ -20,11 +19,7 @@ export default function NotFound({
 
     const t = useTranslations("notFound");
 
-    return (
-        <DefaultLayout>
-            <PageNotFound message={t("title")} />
-        </DefaultLayout>
-    );
+    return <PageNotFound message={t("title")} />;
 }
 
 export function generateStaticParams() {

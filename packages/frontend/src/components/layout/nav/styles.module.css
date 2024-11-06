@@ -7,10 +7,6 @@
         sm:mb-12;
 }
 
-.header {
-    @apply bg-white mb-0;
-}
-
 .main {
     @apply sm:relative
         sm:h-20

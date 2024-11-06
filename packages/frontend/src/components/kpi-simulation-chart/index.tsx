@@ -2,7 +2,7 @@ import {
     Area,
     CartesianGrid,
     ComposedChart,
-    Label,
+    ReferenceArea,
     ReferenceDot,
     ReferenceLine,
     ResponsiveContainer,
@@ -16,25 +16,23 @@ import { ErrorText, Typography } from "@metrom-xyz/ui";
 import { TvlTick } from "./axis-ticks/tvl";
 import { RewardTick } from "./axis-ticks/reward";
 import { TooltipContent, TooltipCursor } from "./tooltip";
-import {
-    getDistributableRewardsPercentage,
-    getReachedGoalPercentage,
-} from "@/src/utils/kpi";
+import { getDistributableRewardsPercentage } from "@/src/utils/kpi";
+import classNames from "classnames";
+import { formatUsdAmount } from "@/src/utils/format";
 
 import styles from "./styles.module.css";
-import classNames from "classnames";
 
-export interface ChartData {
+export interface DistributedAreaDataPoint {
     usdTvl: number;
-    reward: number;
-    goalReachedPercentage: number;
+    currentlyDistributing: number;
+    currentlyNotDistributing: number;
 }
 
-interface SimulationChartProps {
+interface KpiSimulationChartProps {
     minimumPayoutPercentage?: number;
     lowerUsdTarget?: number;
     upperUsdTarget?: number;
-    totalRewardsUsd?: number | null;
+    totalRewardsUsd: number;
     poolUsdTvl?: number | null;
     error?: boolean;
     loading?: boolean;
@@ -42,8 +40,8 @@ interface SimulationChartProps {
 }
 
 const POINTS_COUNT = 1000;
-const BASE_HEIGHT = 270;
-export const CHART_MARGINS = { top: 42, right: 16, bottom: 30, left: 16 };
+// const BASE_HEIGHT = 270;
+export const CHART_MARGINS = { top: 30, right: 4, bottom: 18, left: 2 };
 
 export function KpiSimulationChart({
     minimumPayoutPercentage = 0,
@@ -54,80 +52,60 @@ export function KpiSimulationChart({
     error,
     loading,
     className,
-}: SimulationChartProps) {
+}: KpiSimulationChartProps) {
     const t = useTranslations("simulationChart");
 
-    // rewards USD payout based on the current pool tvl
-    const currentPayout = useMemo(() => {
+    const currentPayoutUsd =
+        poolUsdTvl && lowerUsdTarget && upperUsdTarget
+            ? totalRewardsUsd *
+              getDistributableRewardsPercentage(
+                  poolUsdTvl,
+                  lowerUsdTarget,
+                  upperUsdTarget,
+                  minimumPayoutPercentage,
+              )
+            : 0;
+
+    const sortedSignificantUsdTvls = useMemo(() => {
         if (
+            lowerUsdTarget === undefined ||
             upperUsdTarget === undefined ||
-            lowerUsdTarget === undefined ||
-            !poolUsdTvl ||
-            !totalRewardsUsd
-        )
-            return 0;
-
-        if (lowerUsdTarget > poolUsdTvl) return 0;
-
-        const distributableRewardsPercentage =
-            getDistributableRewardsPercentage(
-                poolUsdTvl,
-                lowerUsdTarget,
-                upperUsdTarget,
-                minimumPayoutPercentage,
-            );
-
-        return totalRewardsUsd * distributableRewardsPercentage;
-    }, [
-        lowerUsdTarget,
-        minimumPayoutPercentage,
-        poolUsdTvl,
-        totalRewardsUsd,
-        upperUsdTarget,
-    ]);
-
-    const tvlTicks = useMemo(() => {
-        if (
             poolUsdTvl === null ||
-            poolUsdTvl === undefined ||
-            lowerUsdTarget === undefined ||
-            upperUsdTarget === undefined
+            poolUsdTvl === undefined
         )
             return [];
 
-        return [poolUsdTvl, lowerUsdTarget, upperUsdTarget];
+        const tvls = [poolUsdTvl, lowerUsdTarget, upperUsdTarget];
+        tvls.sort((a, b) => a - b);
+        const fullRange = tvls[2] - tvls[0];
+        const padding = fullRange * 0.2;
+
+        return [tvls[0] - padding, ...tvls, tvls[2] + padding];
     }, [lowerUsdTarget, poolUsdTvl, upperUsdTarget]);
 
-    const xDataMin = useMemo(() => Math.min(...tvlTicks) * 0.8, [tvlTicks]);
-
-    const chartData: ChartData[] = useMemo(() => {
+    const areaChartData: DistributedAreaDataPoint[] = useMemo(() => {
         if (
             upperUsdTarget === undefined ||
             lowerUsdTarget === undefined ||
-            !totalRewardsUsd ||
-            !poolUsdTvl
+            poolUsdTvl === null ||
+            poolUsdTvl === undefined ||
+            sortedSignificantUsdTvls.length === 0
         )
             return [];
 
-        const points = Array.from(
-            { length: POINTS_COUNT },
-            (_, i) =>
-                lowerUsdTarget +
-                (i * (upperUsdTarget - lowerUsdTarget)) / (POINTS_COUNT - 1),
-        );
+        const lowerUsdTvl = sortedSignificantUsdTvls[0];
+        const upperUsdTvl = sortedSignificantUsdTvls[4];
+        const usdTvlRange = upperUsdTvl - lowerUsdTvl;
+        const domainStep = usdTvlRange / POINTS_COUNT;
 
-        // if there is a minimum payout add the min data to the points to make the
-        // green area for the minimum rewards to fill the whole chart
-        if (minimumPayoutPercentage) points.unshift(xDataMin);
-
-        return points.map((usdTvl) => {
-            const goalReachedPercentage = getReachedGoalPercentage(
-                usdTvl,
-                lowerUsdTarget,
-                upperUsdTarget,
-            );
-
-            const distributableRewardsPercentage =
+        const points: DistributedAreaDataPoint[] = [];
+        for (
+            let usdTvl = lowerUsdTvl;
+            usdTvl <= upperUsdTvl;
+            usdTvl += domainStep
+        ) {
+            const distributedRewards =
+                totalRewardsUsd *
                 getDistributableRewardsPercentage(
                     usdTvl,
                     lowerUsdTarget,
@@ -135,19 +113,21 @@ export function KpiSimulationChart({
                     minimumPayoutPercentage,
                 );
 
-            const reward = totalRewardsUsd * distributableRewardsPercentage;
-
-            return {
+            points.push({
                 usdTvl,
-                reward,
-                goalReachedPercentage,
-            };
-        });
+                currentlyDistributing:
+                    usdTvl <= poolUsdTvl ? distributedRewards : 0,
+                currentlyNotDistributing:
+                    usdTvl > poolUsdTvl ? distributedRewards : 0,
+            });
+        }
+
+        return points;
     }, [
-        xDataMin,
         lowerUsdTarget,
         minimumPayoutPercentage,
         poolUsdTvl,
+        sortedSignificantUsdTvls,
         totalRewardsUsd,
         upperUsdTarget,
     ]);
@@ -155,8 +135,8 @@ export function KpiSimulationChart({
     if (
         upperUsdTarget === undefined ||
         lowerUsdTarget === undefined ||
-        !totalRewardsUsd ||
-        !poolUsdTvl
+        poolUsdTvl === null ||
+        poolUsdTvl === undefined
     )
         return (
             <div className={classNames("root", styles.root, className)}>
@@ -224,176 +204,158 @@ export function KpiSimulationChart({
     }
 
     return (
-        <div className={classNames("root", styles.root, className)}>
-            <ResponsiveContainer
-                width="100%"
-                className={classNames("container", styles.container)}
+        <ResponsiveContainer
+            width="100%"
+            height="100%"
+            minHeight={270}
+            className={classNames("container", styles.container)}
+        >
+            <ComposedChart
+                data={areaChartData}
+                margin={CHART_MARGINS}
+                style={{ cursor: "pointer" }}
             >
-                <ComposedChart
-                    data={chartData}
-                    margin={CHART_MARGINS}
-                    style={{ cursor: "pointer" }}
-                >
-                    <CartesianGrid
-                        fill="#F3F4F6"
-                        stroke="white"
-                        strokeWidth={2}
-                        vertical={false}
-                        horizontal={true}
-                        horizontalCoordinatesGenerator={({ height }) =>
-                            height > BASE_HEIGHT
-                                ? [42, 126, 210, 294]
-                                : [42, 84, 126, 168]
-                        }
-                    />
-
-                    {/* area for the values before the current TVL */}
-                    <Area
-                        type="monotone"
-                        dataKey="reward"
-                        fill="#6CFF95"
-                        stroke="none"
-                        fillOpacity={1}
-                        animationEasing="ease-in-out"
-                        animationDuration={200}
-                        isAnimationActive={true}
-                        activeDot={false}
-                    />
-
-                    {/* area for the values after the lower USD target or the current pool TVL */}
-                    <Area
-                        type="monotone"
-                        data={chartData.map((point) => {
-                            return {
-                                ...point,
-                                reward:
-                                    point.usdTvl >
-                                    Math.max(poolUsdTvl, lowerUsdTarget)
-                                        ? point.reward
-                                        : 0,
-                            };
-                        })}
-                        dataKey="reward"
-                        fill="white"
-                        stroke="white"
-                        strokeWidth={2}
-                        fillOpacity={1}
-                        animationEasing="ease-in-out"
-                        animationDuration={200}
-                        isAnimationActive={true}
-                        activeDot={false}
-                    />
-
-                    <XAxis
-                        type="number"
-                        format="number"
-                        dataKey="usdTvl"
-                        tickSize={4}
-                        tick={
-                            <TvlTick
-                                poolUsdTvl={poolUsdTvl}
-                                lowerUsdTarget={lowerUsdTarget}
-                                upperUsdTarget={upperUsdTarget}
-                            />
-                        }
-                        domain={[xDataMin, "dataMax"]}
-                        ticks={tvlTicks.sort((a, b) => a - b)}
-                    >
-                        <Label
-                            value={t("labels.tvl")}
-                            dy={28}
-                            offset={0}
-                            position="insideRight"
-                            className={styles.axisLabel}
+                <XAxis
+                    type="number"
+                    format="number"
+                    dataKey="usdTvl"
+                    tick={
+                        <TvlTick
+                            poolUsdTvl={poolUsdTvl}
+                            lowerUsdTarget={lowerUsdTarget}
+                            upperUsdTarget={upperUsdTarget}
                         />
-                    </XAxis>
+                    }
+                    ticks={sortedSignificantUsdTvls.slice(1, 4)}
+                    interval={0}
+                    tickFormatter={(value) => formatUsdAmount(value)}
+                    domain={[
+                        sortedSignificantUsdTvls[0],
+                        sortedSignificantUsdTvls[4],
+                    ]}
+                />
+                <YAxis
+                    type="number"
+                    format="number"
+                    axisLine={false}
+                    tickLine={false}
+                    mirror
+                    tick={<RewardTick />}
+                    domain={[0, "dataMax"]}
+                    ticks={[currentPayoutUsd, totalRewardsUsd]}
+                />
 
-                    <YAxis
-                        type="number"
-                        format="number"
-                        dataKey="reward"
-                        axisLine={false}
-                        tickLine={false}
-                        mirror
-                        tick={<RewardTick />}
-                        domain={[0, "dataMax"]}
-                        ticks={[currentPayout, totalRewardsUsd]}
-                    >
-                        <Label
-                            value={t("labels.reward")}
-                            dy={-20}
-                            dx={-6}
-                            offset={0}
-                            position="top"
-                            className={styles.axisLabel}
+                <Area
+                    type="monotone"
+                    dataKey="currentlyDistributing"
+                    fill="#6CFF95"
+                    stroke="none"
+                    fillOpacity={1}
+                    animationEasing="ease-in-out"
+                    animationDuration={200}
+                    isAnimationActive={true}
+                    activeDot={false}
+                />
+
+                <Area
+                    type="monotone"
+                    dataKey="currentlyNotDistributing"
+                    fill="#d1d5db"
+                    stroke="none"
+                    fillOpacity={1}
+                    animationEasing="ease-in-out"
+                    animationDuration={200}
+                    isAnimationActive={true}
+                    activeDot={false}
+                />
+
+                <ReferenceLine
+                    strokeDasharray={"3 3"}
+                    ifOverflow="visible"
+                    isFront
+                    stroke="#000"
+                    segment={[
+                        {
+                            x: poolUsdTvl,
+                            y: 0,
+                        },
+                        {
+                            x: poolUsdTvl,
+                            y: totalRewardsUsd,
+                        },
+                    ]}
+                />
+
+                <ReferenceLine
+                    strokeDasharray={"3 3"}
+                    ifOverflow="visible"
+                    isFront
+                    stroke="#000"
+                    segment={[
+                        {
+                            x: lowerUsdTarget,
+                            y: 0,
+                        },
+                        {
+                            x: lowerUsdTarget,
+                            y: totalRewardsUsd,
+                        },
+                    ]}
+                />
+
+                <ReferenceLine
+                    strokeDasharray={"3 3"}
+                    ifOverflow="visible"
+                    isFront
+                    stroke="#000"
+                    segment={[
+                        {
+                            x: upperUsdTarget,
+                            y: 0,
+                        },
+                        {
+                            x: upperUsdTarget,
+                            y: totalRewardsUsd,
+                        },
+                    ]}
+                />
+
+                {currentPayoutUsd > 0 && (
+                    <>
+                        <ReferenceLine
+                            strokeDasharray={"3 3"}
+                            ifOverflow="visible"
+                            isFront
+                            stroke="#000"
+                            segment={[
+                                { x: 0, y: currentPayoutUsd },
+                                { x: poolUsdTvl, y: currentPayoutUsd },
+                            ]}
                         />
-                    </YAxis>
+                        <ReferenceDot
+                            x={poolUsdTvl}
+                            y={currentPayoutUsd}
+                            r={4}
+                            fill="#6CFF95"
+                            stroke="#000"
+                            strokeWidth={1}
+                        />
+                    </>
+                )}
 
-                    <ReferenceDot
-                        x={
-                            minimumPayoutPercentage > 0
-                                ? 0
-                                : Math.min(...tvlTicks)
-                        }
-                        y={totalRewardsUsd * minimumPayoutPercentage}
-                        r={4}
-                        fill="#6CFF95"
-                        stroke="white"
-                        strokeWidth={1}
-                        isFront
-                    />
-
-                    <ReferenceDot
-                        x={Math.max(...tvlTicks)}
-                        y={totalRewardsUsd}
-                        r={4}
-                        fill="#000"
-                        stroke="white"
-                        strokeWidth={1}
-                        isFront
-                    />
-
-                    <ReferenceDot
-                        x={0}
-                        y={currentPayout}
-                        r={3}
-                        fill="#6CFF95"
-                        stroke="none"
-                        isFront
-                    />
-
-                    {currentPayout > 0 && (
-                        <>
-                            <ReferenceLine
-                                strokeDasharray={"3 3"}
-                                ifOverflow="visible"
-                                isFront
-                                stroke="#6CFF95"
-                                segment={[
-                                    { x: 0, y: currentPayout },
-                                    { x: poolUsdTvl, y: currentPayout },
-                                ]}
-                            />
-                            <ReferenceDot
-                                x={poolUsdTvl}
-                                y={currentPayout}
-                                r={4}
-                                fill="#6CFF95"
-                                stroke="white"
-                                strokeWidth={1}
-                            />
-                        </>
-                    )}
-
-                    <Tooltip
-                        isAnimationActive={false}
-                        content={<TooltipContent />}
-                        cursor={
-                            <TooltipCursor totalRewardsUsd={totalRewardsUsd} />
-                        }
-                    />
-                </ComposedChart>
-            </ResponsiveContainer>
-        </div>
+                <Tooltip
+                    isAnimationActive={false}
+                    content={
+                        <TooltipContent
+                            lowerUsdTarget={lowerUsdTarget}
+                            upperUsdTarget={upperUsdTarget}
+                            totalRewardsUsd={totalRewardsUsd}
+                            minimumPayouPercentage={minimumPayoutPercentage}
+                        />
+                    }
+                    cursor={<TooltipCursor totalRewardsUsd={totalRewardsUsd} />}
+                />
+            </ComposedChart>
+        </ResponsiveContainer>
     );
 }

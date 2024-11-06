@@ -13,8 +13,6 @@ interface TvlTickProps {
     };
     x?: number;
     y?: number;
-    index?: number;
-    visibleTicksCount?: number;
 }
 
 // this component specific to the TVL axis for the simulation chart, and it's
@@ -27,20 +25,8 @@ export function TvlTick({
     payload,
     y,
     x,
-    index,
-    visibleTicksCount,
 }: TvlTickProps) {
     const t = useTranslations("simulationChart");
-
-    const textAnchor = useMemo(() => {
-        if (x === undefined) return;
-
-        // align the text to the right of the tick line if
-        // it's too close to the axis origin
-        if (x < 64) return "start";
-
-        return "end";
-    }, [x]);
 
     if (!payload || payload.value === 0) return null;
 
@@ -50,7 +36,7 @@ export function TvlTick({
                 x={0}
                 y={0}
                 dy={12}
-                textAnchor={textAnchor}
+                textAnchor="middle"
                 fontSize={12}
                 className={styles.axis}
             >
@@ -60,7 +46,7 @@ export function TvlTick({
                 x={0}
                 y={0}
                 dy={24}
-                textAnchor={textAnchor}
+                textAnchor="middle"
                 fontSize={12}
                 className={styles.axis}
             >

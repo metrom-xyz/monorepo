@@ -1,7 +1,15 @@
 .root {
-    @apply bg-gray-100;
+    @apply bg-gray-100 min-h-screen;
 }
 
 .toast {
     @apply absolute right-0 rounded-2xl bg-white p-3;
+}
+
+.layout {
+    @apply flex flex-col items-center;
+}
+
+.main {
+    @apply w-full flex justify-center flex-1;
 }

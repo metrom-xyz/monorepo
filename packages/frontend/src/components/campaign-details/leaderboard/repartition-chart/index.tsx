@@ -113,37 +113,41 @@ export function RepartitionChart({
             <Typography uppercase weight="medium" light variant="sm">
                 {t("repartition")}
             </Typography>
-            <div className={styles.chartWrapper}>
-                {!chartData || loading ? (
-                    <div className={styles.chartWrapperLoading}></div>
-                ) : (
-                    <PieChart height={240} width={240}>
-                        <Pie
-                            dataKey="value"
-                            animationEasing="ease-in-out"
-                            animationDuration={500}
-                            data={chartData}
-                            activeIndex={activeIndex}
-                            innerRadius={70}
-                            outerRadius={120}
-                            minAngle={5}
-                        >
-                            {chartData.map((entry, index) => (
-                                <Cell
-                                    key={`cell-${index}`}
-                                    fill={entry.color}
-                                    strokeWidth={4}
-                                    className={styles.cell}
-                                />
-                            ))}
-                        </Pie>
-                        <Tooltip
-                            active
-                            defaultIndex={activeIndex}
-                            content={<RankTooltip />}
-                        />
-                    </PieChart>
-                )}
+            <div className={styles.container}>
+                <div className={styles.chartWrapper}>
+                    {!chartData || loading ? (
+                        <div className={styles.chartWrapperLoading}></div>
+                    ) : (
+                        <PieChart height={240} width={240}>
+                            <Pie
+                                dataKey="value"
+                                animationEasing="ease-in-out"
+                                animationDuration={500}
+                                data={chartData}
+                                activeIndex={activeIndex}
+                                innerRadius={70}
+                                outerRadius={120}
+                                startAngle={90}
+                                endAngle={450}
+                                minAngle={5}
+                            >
+                                {chartData.map((entry, index) => (
+                                    <Cell
+                                        key={`cell-${index}`}
+                                        fill={entry.color}
+                                        strokeWidth={4}
+                                        className={styles.cell}
+                                    />
+                                ))}
+                            </Pie>
+                            <Tooltip
+                                active
+                                defaultIndex={activeIndex}
+                                content={<RankTooltip />}
+                            />
+                        </PieChart>
+                    )}
+                </div>
             </div>
         </div>
     );

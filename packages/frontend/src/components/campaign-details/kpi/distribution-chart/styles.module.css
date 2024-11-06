@@ -1,0 +1,22 @@
+.root {
+    @apply h-full
+        flex
+        flex-col
+        gap-3
+        p-4
+        bg-white
+        rounded-2xl;
+}
+
+.container {
+    @apply h-full min-h-80;
+}
+
+.timeTick {
+    @apply font-sans
+        uppercase
+        text-xs
+        leading-none
+        font-medium
+        fill-black;
+}

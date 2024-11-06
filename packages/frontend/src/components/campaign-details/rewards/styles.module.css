@@ -3,12 +3,7 @@
 }
 
 .table {
-    @apply flex
-        flex-col
-        gap-7
-        p-4
-        bg-white
-        rounded-2xl;
+    @apply flex flex-col gap-7 bg-white rounded-2xl p-4;
 }
 
 .header {
@@ -41,8 +36,4 @@
 
 .summary {
     @apply flex flex-col sm:flex-row justify-between gap-4;
-}
-
-.summaryBox {
-    @apply bg-gray-100;
 }
