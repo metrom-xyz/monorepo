@@ -124,14 +124,20 @@ export function Kpi({ campaign, loading }: KpiProps) {
                         </div>
                     </div>
                 </div>
-                <div className={styles.distributionChartsWrapper}>
-                    <DistributionChart
-                        chain={campaign.chainId}
-                        loading={loadingKpiMeasurements}
-                        kpiMeasurements={kpiMeasurements}
-                    />
-                    <AverageDistributionChart loading={false} />
-                </div>
+                {campaign.specification.kpi.measurement && (
+                    <div className={styles.distributionChartsWrapper}>
+                        <DistributionChart
+                            chain={campaign.chainId}
+                            loading={loadingKpiMeasurements}
+                            kpiMeasurements={kpiMeasurements}
+                        />
+                        <AverageDistributionChart
+                            distributedPercentage={
+                                campaign.specification.kpi.measurement
+                            }
+                        />
+                    </div>
+                )}
             </div>
         </div>
     );
