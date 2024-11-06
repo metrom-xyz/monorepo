@@ -1,6 +1,6 @@
 import {
     Bar,
-    ComposedChart,
+    BarChart,
     ResponsiveContainer,
     Tooltip,
     XAxis,
@@ -23,7 +23,6 @@ export interface DistributionChartData {
     distributions: KpiRewardDistribution[];
     distributed: number;
     reimbursed: number;
-    empty?: number;
 }
 
 interface DistributionChartProps {
@@ -48,14 +47,13 @@ export function DistributionChart({
 }: DistributionChartProps) {
     const t = useTranslations("campaignDetails.kpi.charts");
 
-    const chartData = useMemo(() => {
+    const chartData: DistributionChartData[] = useMemo(() => {
         if (!kpiMeasurements || kpiMeasurements.length === 0) return [];
 
         const fullTimeRange =
             kpiMeasurements[kpiMeasurements.length - 1].to -
             kpiMeasurements[0].from;
 
-        let requiredBars = 23;
         let aggregatedMeasurements;
         if (fullTimeRange < ONE_DAY_SECONDS) {
             aggregatedMeasurements = kpiMeasurements;
@@ -70,47 +68,26 @@ export function DistributionChart({
                 FOUR_HOURS_SECONDS,
             );
         } else {
-            requiredBars = 14;
             aggregatedMeasurements = getAggregatedKpiMeasurements(
                 kpiMeasurements,
                 TWELVE_HOURS_SECONDS,
             );
         }
 
-        const chartData: DistributionChartData[] = aggregatedMeasurements.map(
-            (measurement) => {
-                const { percentage } = measurement;
+        return aggregatedMeasurements.map((measurement) => {
+            const { percentage } = measurement;
 
-                const distributedPercentage =
-                    minimumPayoutPercentage +
-                    (1 - minimumPayoutPercentage) * percentage;
-                const reimbursedPercentage = 1 - distributedPercentage;
+            const distributedPercentage =
+                minimumPayoutPercentage +
+                (1 - minimumPayoutPercentage) * percentage;
+            const reimbursedPercentage = 1 - distributedPercentage;
 
-                return {
-                    ...measurement,
-                    distributed: distributedPercentage,
-                    reimbursed: reimbursedPercentage,
-                };
-            },
-        );
-
-        const paddingMeasurements = Math.max(
-            0,
-            requiredBars - aggregatedMeasurements.length,
-        );
-        for (let i = 0; i < paddingMeasurements; i++) {
-            const lastDataPoint = chartData[chartData.length - 1];
-            chartData.push({
-                from: dayjs.unix(lastDataPoint.from).add(1, "hour").unix(),
-                to: dayjs.unix(lastDataPoint.to).add(1, "hour").unix(),
-                distributed: 0,
-                reimbursed: 0,
-                empty: 1,
-                distributions: [],
-            });
-        }
-
-        return chartData;
+            return {
+                ...measurement,
+                distributed: distributedPercentage,
+                reimbursed: reimbursedPercentage,
+            };
+        });
     }, [kpiMeasurements, minimumPayoutPercentage]);
 
     // TODO: add loading state?
@@ -123,9 +100,9 @@ export function DistributionChart({
                 {t("distributions")}
             </Typography>
             <ResponsiveContainer width="100%" className={styles.container}>
-                <ComposedChart
+                <BarChart
                     data={chartData}
-                    margin={{ top: 0, right: 0, bottom: 0, left: 0 }}
+                    // margin={{ top: 0, right: 0, bottom: 0, left: 0 }}
                     style={{ cursor: "pointer" }}
                 >
                     <YAxis ticks={[0, 1]} hide />
@@ -152,12 +129,6 @@ export function DistributionChart({
                         fill="#d1d5db"
                         barSize={50}
                     />
-                    <Bar
-                        dataKey="empty"
-                        stackId="distribution"
-                        fill="#fff"
-                        barSize={50}
-                    />
 
                     <Tooltip
                         position={{ y: -100 }}
@@ -165,7 +136,7 @@ export function DistributionChart({
                         cursor={false}
                         content={<TooltipContent chain={chain} />}
                     />
-                </ComposedChart>
+                </BarChart>
             </ResponsiveContainer>
         </div>
     );
