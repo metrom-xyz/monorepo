@@ -4,7 +4,10 @@ import { Skeleton, Typography, Button } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
 import { useRouter } from "@/src/i18n/routing";
 import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
-import { getPoolAddLiquidityLink, getPoolExplorerLink } from "@/src/utils/dex";
+import {
+    getPoolAddLiquidityLink,
+    getAddressExplorerLink,
+} from "@/src/utils/dex";
 import { formatPercentage } from "@/src/utils/format";
 import { trackFathomEvent } from "@/src/utils/fathom";
 import { PoolRemoteLogo } from "../../pool-remote-logo";
@@ -29,7 +32,10 @@ export function Header({ campaign }: HeaderProps) {
         campaign.pool.dex,
         campaign.pool,
     );
-    const explorerLink = getPoolExplorerLink(campaign.chainId, campaign.pool);
+    const explorerLink = getAddressExplorerLink(
+        campaign.pool.address,
+        campaign.chainId,
+    );
 
     function handleAddLiquidityOnClick() {
         trackFathomEvent("CLICK_POOL_DEPOSIT");

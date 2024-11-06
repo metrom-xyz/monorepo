@@ -63,3 +63,11 @@
 .row > :last-child {
     @apply flex items-center gap-4 justify-self-end;
 }
+
+.accountWrapper {
+    @apply flex items-center gap-1;
+}
+
+.externalLinkIcon {
+    @apply h-4 w-4 transform -rotate-45;
+}
