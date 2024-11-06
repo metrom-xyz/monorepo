@@ -64,6 +64,8 @@ export function AverageDistributionChart({
                             activeIndex={activeIndex}
                             innerRadius={70}
                             outerRadius={120}
+                            startAngle={90}
+                            endAngle={450}
                             minAngle={5}
                         >
                             {chartData.map((entry, index) => (
