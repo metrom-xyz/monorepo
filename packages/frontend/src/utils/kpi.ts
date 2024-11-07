@@ -19,7 +19,7 @@ export function getDistributableRewardsPercentage(
     upperUsdTarget: number,
     minimumPayoutPercentage?: number,
 ) {
-    let reachedPercentage = getReachedGoalPercentage(
+    const reachedPercentage = getReachedGoalPercentage(
         usdTvl,
         lowerUsdTarget,
         upperUsdTarget,
