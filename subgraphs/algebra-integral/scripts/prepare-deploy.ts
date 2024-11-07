@@ -1,6 +1,6 @@
 import { existsSync, writeFileSync, rmSync, readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
-import { DEPLOYMENTS } from "../deployments";
+import { DEPLOYMENTS, NonFungiblePositionManagerVersion } from "../deployments";
 import { fileURLToPath } from "node:url";
 import { exec } from "node:child_process";
 import Mustache from "mustache";
@@ -61,7 +61,7 @@ try {
             readFileSync(
                 join(
                     fileURLToPath(dirname(import.meta.url)),
-                    "../subgraph.template.yaml",
+                    "../subgraph.template.mustache",
                 ),
             ).toString(),
             {
@@ -72,6 +72,12 @@ try {
                     contracts.NonFungiblePositionManager.address,
                 nftPositionManagerStartBlock:
                     contracts.NonFungiblePositionManager.startBlock,
+                v1_0:
+                    contracts.NonFungiblePositionManager.version ===
+                    NonFungiblePositionManagerVersion.V1_0,
+                v1_1:
+                    contracts.NonFungiblePositionManager.version ===
+                    NonFungiblePositionManagerVersion.V1_1,
             },
         ),
     );
