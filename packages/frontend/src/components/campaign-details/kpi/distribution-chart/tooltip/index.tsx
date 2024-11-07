@@ -38,19 +38,35 @@ export function TooltipContent({ chain, active, payload }: TooltipProps) {
                 </Typography>
             </div>
             <div className={styles.fieldWrapper}>
-                <Typography weight="medium" light uppercase>
-                    {t("distributed")}
-                </Typography>
+                <div className={styles.textWrapper}>
+                    <div
+                        className={classNames(
+                            styles.legendDot,
+                            styles.reimbursed,
+                        )}
+                    ></div>
+                    <Typography weight="medium" light uppercase>
+                        {t("reimbursed")}
+                    </Typography>
+                </div>
                 <Typography weight="medium" uppercase>
-                    {formatPercentage(distributed * 100)}
+                    {formatPercentage(reimbursed * 100)}
                 </Typography>
             </div>
             <div className={styles.fieldWrapper}>
-                <Typography weight="medium" light uppercase>
-                    {t("reimbursed")}
-                </Typography>
+                <div className={styles.textWrapper}>
+                    <div
+                        className={classNames(
+                            styles.legendDot,
+                            styles.distributed,
+                        )}
+                    ></div>
+                    <Typography weight="medium" light uppercase>
+                        {t("distributed")}
+                    </Typography>
+                </div>
                 <Typography weight="medium" uppercase>
-                    {formatPercentage(reimbursed * 100)}
+                    {formatPercentage(distributed * 100)}
                 </Typography>
             </div>
             <div className={classNames(styles.row, styles.breakdownWrapper)}>

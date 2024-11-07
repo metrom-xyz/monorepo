@@ -122,7 +122,7 @@ export function DistributionChart({
                     <Bar
                         dataKey="reimbursed"
                         stackId="distribution"
-                        fill="#d1d5db"
+                        fill="#D1D5DB"
                         barSize={50}
                     />
 
