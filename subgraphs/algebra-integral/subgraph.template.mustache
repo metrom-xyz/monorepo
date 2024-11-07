@@ -51,7 +51,12 @@ dataSources:
         - PoolToken
       abis:
         - name: NonFungiblePositionManager
-          file: ./abis/NonFungiblePositionManager.json
+          {{#v1_0}}
+          file: ./abis/NonFungiblePositionManagerV1.0.json
+          {{/v1_0}}
+          {{#v1_1}}
+          file: ./abis/NonFungiblePositionManagerV1.1.json
+          {{/v1_1}}
         - name: Factory
           file: ./abis/Factory.json
       eventHandlers:
