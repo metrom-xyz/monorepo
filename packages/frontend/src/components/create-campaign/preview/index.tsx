@@ -7,7 +7,7 @@ import {
     useWriteContract,
 } from "wagmi";
 import { metromAbi } from "@metrom-xyz/contracts/abi";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 import { MetromLightLogo } from "@/src/assets/metrom-light-logo";
 import { useRouter } from "@/src/i18n/routing";
@@ -16,13 +16,14 @@ import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
 import { ApproveRewardsButton } from "./approve-rewards-button";
 import { Rewards } from "./rewards";
 import { Header } from "./header";
-import { formatPercentage, formatUsdAmount } from "@/src/utils/format";
+import { formatUsdAmount } from "@/src/utils/format";
 import { getCampaignPreviewApr } from "@/src/utils/campaign";
 import { trackFathomEvent } from "@/src/utils/fathom";
 import { type Hex, zeroHash } from "viem";
 import { SERVICE_URLS, type Specification } from "@metrom-xyz/sdk";
 import { ENVIRONMENT, KPI } from "@/src/commons/env";
 import { Kpi } from "./kpi";
+import { AprChip } from "../../apr-chip";
 
 import styles from "./styles.module.css";
 
@@ -224,9 +225,13 @@ export function CampaignPreview({
                             boxed
                             variant="xl"
                             label={t("apr")}
-                            value={formatPercentage(
-                                getCampaignPreviewApr(payload),
-                            )}
+                            value={
+                                <AprChip
+                                    size="lg"
+                                    apr={getCampaignPreviewApr(payload)}
+                                    kpi={!!payload.kpiSpecification}
+                                />
+                            }
                         />
                     </div>
                     <Rewards
