@@ -270,6 +270,9 @@ export class MetromApiClient {
 
         const measurements = (await response.json()) as BackendKpiMeasurement[];
 
+        const minimumPayoutPercentage =
+            params.campaign.specification!.kpi!.minimumPayoutPercentage || 0;
+
         const totalCampaignDuration = params.campaign.to - params.campaign.from;
         return measurements.map((measurement) => {
             const measuredPeriodDuration = Math.min(
@@ -284,8 +287,15 @@ export class MetromApiClient {
             };
 
             const distributions = params.campaign.rewards.map((reward) => {
+                const normalizedKpiMeasurementPercentage = Math.min(
+                    Math.max(measurement.percentage, 0),
+                    1,
+                );
                 const boundPercentage = {
-                    standard: Math.min(Math.max(measurement.percentage, 0), 1),
+                    standard:
+                        minimumPayoutPercentage +
+                        (1 - minimumPayoutPercentage) *
+                            normalizedKpiMeasurementPercentage,
                     get scaled() {
                         return BigInt(Math.floor(this.standard * 1_000_000));
                     },
