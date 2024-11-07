@@ -18,16 +18,12 @@ export function getDistributableRewardsPercentage(
     lowerUsdTarget: number,
     upperUsdTarget: number,
     minimumPayoutPercentage?: number,
-    kpiMeasurement?: number,
 ) {
     let reachedPercentage = getReachedGoalPercentage(
         usdTvl,
         lowerUsdTarget,
         upperUsdTarget,
     );
-
-    if (kpiMeasurement)
-        reachedPercentage = Math.min(Math.max(kpiMeasurement, 0), 1);
 
     let minPayoutPercentage = minimumPayoutPercentage || 0;
     const goalBoundPercentage = 1 - minPayoutPercentage;

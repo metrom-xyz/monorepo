@@ -38,6 +38,7 @@ interface KpiSimulationChartProps {
     upperUsdTarget?: number;
     totalRewardsUsd: number;
     poolUsdTvl?: number | null;
+    campaignEnded?: boolean;
     error?: boolean;
     loading?: boolean;
     className?: string;
@@ -55,6 +56,7 @@ export function KpiSimulationChart({
     upperUsdTarget,
     totalRewardsUsd,
     poolUsdTvl,
+    campaignEnded,
     error,
     loading,
     className,
@@ -70,8 +72,6 @@ export function KpiSimulationChart({
                   lowerUsdTarget,
                   upperUsdTarget,
                   minimumPayoutPercentage,
-                  // FIXME: check dot issue
-                  kpiMeasurement,
               )
             : 0;
 
@@ -385,7 +385,11 @@ export function KpiSimulationChart({
                     ]}
                 >
                     <Label
-                        value={t("pool")}
+                        value={
+                            campaignEnded
+                                ? t("tvl.campaignEnded")
+                                : t("tvl.campaignActive")
+                        }
                         dx={poolTvlDx}
                         angle={90}
                         className={styles.axisLabel}

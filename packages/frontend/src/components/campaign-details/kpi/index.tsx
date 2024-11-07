@@ -4,6 +4,7 @@ import { useTranslations } from "next-intl";
 import { formatPercentage, formatUsdAmount } from "@/src/utils/format";
 import {
     KpiMetric,
+    Status,
     type KpiSpecificationWithMeasurement,
 } from "@metrom-xyz/sdk";
 import { useMemo } from "react";
@@ -51,6 +52,16 @@ export function Kpi({ campaign, loading }: KpiProps) {
         campaign?.specification?.kpi?.measurement || 0;
 
     if (!campaign?.specification?.kpi) return null;
+
+    let poolUsdTvl;
+    if (campaign.status === Status.Ended) {
+        poolUsdTvl =
+            loadingKpiMeasurements || kpiMeasurements.length === 0
+                ? undefined
+                : kpiMeasurements[kpiMeasurements.length - 1].value;
+    } else {
+        poolUsdTvl = campaign.pool.usdTvl;
+    }
 
     return (
         <div className={styles.root}>
@@ -107,7 +118,8 @@ export function Kpi({ campaign, loading }: KpiProps) {
                         <div className={styles.chartWrapper}>
                             <KpiSimulationChart
                                 loading={specificationLoading}
-                                poolUsdTvl={campaign.pool.usdTvl}
+                                poolUsdTvl={poolUsdTvl}
+                                campaignEnded={campaign.status === Status.Ended}
                                 totalRewardsUsd={
                                     campaign.rewards.amountUsdValue
                                 }

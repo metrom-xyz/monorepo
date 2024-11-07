@@ -378,7 +378,10 @@
     },
     "simulationChart": {
         "emptyData": "Missing data for the simulation",
-        "pool": "Current TVL",
+        "tvl": {
+            "campaignActive": "Current TVL",
+            "campaignEnded": "Final TVL"
+        },
         "lowerBound": "Lower bound",
         "upperBound": "Upper bound",
         "labels": {
