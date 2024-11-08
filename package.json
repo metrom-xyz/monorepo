@@ -8,6 +8,7 @@
         "lint": "turbo run lint",
         "format": "turbo run format",
         "build": "turbo run build",
+        "build:fleek": "turbo run build:fleek",
         "test": "turbo run test",
         "commitlint": "commitlint -e",
         "prepare": "husky"
