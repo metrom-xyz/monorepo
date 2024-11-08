@@ -32,7 +32,6 @@ export interface DistributedAreaDataPoint {
 }
 
 interface KpiSimulationChartProps {
-    kpiMeasurement?: number;
     minimumPayoutPercentage?: number;
     lowerUsdTarget?: number;
     upperUsdTarget?: number;
@@ -50,7 +49,6 @@ const POINTS_COUNT = 1000;
 export const CHART_MARGINS = { top: 30, right: 4, bottom: 4, left: 2 };
 
 export function KpiSimulationChart({
-    kpiMeasurement,
     minimumPayoutPercentage = 0,
     lowerUsdTarget,
     upperUsdTarget,
@@ -143,6 +141,17 @@ export function KpiSimulationChart({
         const closeToUpperBound =
             Math.abs(poolTvlScale - upperBoundScale) <=
             REFERENCE_LINE_PROXIMITY_THRESHOLD;
+        const closeBounds =
+            upperBoundScale - lowerBoundScale <=
+            REFERENCE_LINE_PROXIMITY_THRESHOLD;
+
+        if (closeBounds) {
+            return {
+                poolTvlDx: REFERENCE_LINE_LABEL_DX,
+                lowerBoundDx: -REFERENCE_LINE_LABEL_DX,
+                upperBoundDx: REFERENCE_LINE_LABEL_DX,
+            };
+        }
 
         if (closeToLowerBound) {
             if (poolTvlScale <= lowerBoundScale)
@@ -314,6 +323,30 @@ export function KpiSimulationChart({
                 margin={CHART_MARGINS}
                 style={{ cursor: "pointer" }}
             >
+                <Area
+                    type="monotone"
+                    dataKey="currentlyDistributing"
+                    fill="#6CFF95"
+                    stroke="none"
+                    fillOpacity={1}
+                    animationEasing="ease-in-out"
+                    animationDuration={200}
+                    isAnimationActive={true}
+                    activeDot={false}
+                />
+
+                <Area
+                    type="monotone"
+                    dataKey="currentlyNotDistributing"
+                    fill="#d1d5db"
+                    stroke="none"
+                    fillOpacity={1}
+                    animationEasing="ease-in-out"
+                    animationDuration={200}
+                    isAnimationActive={true}
+                    activeDot={false}
+                />
+
                 <XAxis
                     type="number"
                     format="number"
@@ -342,30 +375,6 @@ export function KpiSimulationChart({
                     tick={<RewardTick />}
                     domain={[0, "dataMax"]}
                     ticks={[currentPayoutUsd, totalRewardsUsd]}
-                />
-
-                <Area
-                    type="monotone"
-                    dataKey="currentlyDistributing"
-                    fill="#6CFF95"
-                    stroke="none"
-                    fillOpacity={1}
-                    animationEasing="ease-in-out"
-                    animationDuration={200}
-                    isAnimationActive={true}
-                    activeDot={false}
-                />
-
-                <Area
-                    type="monotone"
-                    dataKey="currentlyNotDistributing"
-                    fill="#d1d5db"
-                    stroke="none"
-                    fillOpacity={1}
-                    animationEasing="ease-in-out"
-                    animationDuration={200}
-                    isAnimationActive={true}
-                    activeDot={false}
                 />
 
                 <ReferenceLine
