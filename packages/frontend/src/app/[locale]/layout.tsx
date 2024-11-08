@@ -21,8 +21,6 @@ import { Footer } from "@/src/components/layout/footer";
 
 import styles from "./styles.module.css";
 
-export const runtime = "edge";
-
 export const metadata: Metadata = {
     title: "Metrom",
     description: "Design your incentives to AMMplify liquidity.",
