@@ -44,7 +44,15 @@ export function TvlTick({
             Math.abs(x - lowerBoundScale) <= TICK_PROXIMITY_THRESHOLD;
         const closeToUpperBound =
             Math.abs(x - upperBoundScale) <= TICK_PROXIMITY_THRESHOLD;
+        const closeBounds =
+            upperBoundScale - lowerBoundScale <= TICK_PROXIMITY_THRESHOLD;
 
+        if (closeBounds) {
+            if (lowerBound) return "end";
+            if (upperBound) return "start";
+        }
+
+        // FIXME: check issue on align, also on mobile
         if (closeToLowerBound) {
             if (poolTvl) return x <= lowerBoundScale ? "end" : "start";
             if (lowerBound) return x <= poolTvlScale ? "end" : "start";

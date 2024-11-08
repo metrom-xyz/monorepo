@@ -125,7 +125,6 @@ export function Kpi({ campaign, loading }: KpiProps) {
                                 }
                                 lowerUsdTarget={lowerUsdTarget}
                                 upperUsdTarget={upperUsdTarget}
-                                kpiMeasurement={measurement}
                                 minimumPayoutPercentage={
                                     minimumPayoutPercentage
                                 }
