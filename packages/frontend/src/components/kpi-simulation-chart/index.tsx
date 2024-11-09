@@ -63,7 +63,9 @@ export function KpiSimulationChart({
     const [chartRef, { width }] = useMeasure<HTMLDivElement>();
 
     const currentPayoutUsd =
-        poolUsdTvl && lowerUsdTarget && upperUsdTarget
+        poolUsdTvl &&
+        lowerUsdTarget !== undefined &&
+        upperUsdTarget !== undefined
             ? totalRewardsUsd *
               getDistributableRewardsPercentage(
                   poolUsdTvl,
