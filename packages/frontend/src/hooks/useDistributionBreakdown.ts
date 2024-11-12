@@ -31,7 +31,7 @@ export function useDistributionBreakdown(campaign?: Campaign): {
     loading: boolean;
     breakdown?: DistributionBreakdown;
 } {
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
     const [snapshot, setSnapshot] = useState<Snapshot | null>(null);
 
     const chainData = useChainData(campaign?.chainId);

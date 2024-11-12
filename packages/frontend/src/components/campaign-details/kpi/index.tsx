@@ -48,10 +48,9 @@ export function Kpi({ campaign, loading }: KpiProps) {
         return { goal, measurement, minimumPayoutPercentage };
     }, [campaign]);
 
-    const reachedGoalPercentage =
-        campaign?.specification?.kpi?.measurement || 0;
-
     if (!campaign?.specification?.kpi) return null;
+
+    const reachedGoalPercentage = measurement || 0;
 
     let poolUsdTvl;
     if (campaign.status === Status.Ended) {

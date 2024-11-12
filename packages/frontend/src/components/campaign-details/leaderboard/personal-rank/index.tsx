@@ -47,14 +47,14 @@ export function PersonalRank({
             {loading || accountConnecting || accountReconnecting ? (
                 <SkeletonRow />
             ) : !connectedAddress ? (
-                <Button
+                <button
                     onClick={openConnectModal}
-                    size="xsmall"
-                    icon={WalletIcon}
-                    variant="secondary"
+                    className={styles.connectWallet}
                 >
-                    {t("connect")}
-                </Button>
+                    <Typography weight="medium" variant="sm">
+                        {t("connect")}
+                    </Typography>
+                </button>
             ) : !personalRank ? (
                 <Typography weight="medium" light>
                     {t("noRewards")}

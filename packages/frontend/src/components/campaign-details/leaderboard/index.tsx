@@ -88,7 +88,7 @@ export function Leaderboard({ campaign, loading }: LeaderboardProps) {
                 <div className={styles.card}>
                     <PersonalRank
                         chain={campaign?.chainId}
-                        loading={loadingDistributionBreakdown}
+                        loading={loading || loadingDistributionBreakdown}
                         personalRank={personalRank}
                     />
                     <div className={styles.tableWrapper}>
@@ -118,7 +118,7 @@ export function Leaderboard({ campaign, loading }: LeaderboardProps) {
                                 {t("rewardsDistributed")}
                             </Typography>
                         </div>
-                        {loadingDistributionBreakdown ? (
+                        {loading || loadingDistributionBreakdown ? (
                             <>
                                 <SkeletonRow />
                                 <SkeletonRow />
@@ -198,9 +198,9 @@ export function Leaderboard({ campaign, loading }: LeaderboardProps) {
 export function SkeletonRow() {
     return (
         <div className={styles.row}>
-            <Skeleton width={80} />
-            <Skeleton width={120} />
-            <Skeleton width={120} />
+            <Skeleton variant="lg" width={80} />
+            <Skeleton variant="lg" width={120} />
+            <Skeleton variant="lg" width={120} />
         </div>
     );
 }
