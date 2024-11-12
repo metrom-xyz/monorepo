@@ -19,8 +19,12 @@
         flex
         flex-col
         flex-[2]
-        min-h-[352px]
+        min-h-[424px]
         gap-4;
+}
+
+.card.noDistribution {
+    @apply bg-white items-center justify-center gap-2;
 }
 
 .repartion {
