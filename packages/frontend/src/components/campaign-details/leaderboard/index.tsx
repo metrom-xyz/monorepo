@@ -1,7 +1,7 @@
 import { useDistributionBreakdown } from "@/src/hooks/useDistributionBreakdown";
 import { type Campaign, type UsdPricedErc20TokenAmount } from "@metrom-xyz/sdk";
 import { shortenAddress } from "@/src/utils/address";
-import { Typography, Skeleton } from "@metrom-xyz/ui";
+import { Typography, Skeleton, Card } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
 import dayjs from "dayjs";
 import { PersonalRank } from "./personal-rank";
@@ -9,10 +9,12 @@ import { RepartitionChart } from "./repartition-chart";
 import { useAccount } from "wagmi";
 import type { Address } from "viem";
 import { RewardsBreakdown } from "./rewards-breakdown";
-import { formatPercentage } from "@/src/utils/format";
+import { formatDateTime, formatPercentage } from "@/src/utils/format";
 import { useMemo } from "react";
 import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
 import { getAddressExplorerLink } from "@/src/utils/dex";
+import classNames from "classnames";
+import { NoDistributionsIcon } from "@/src/assets/no-distributions-icon";
 
 import styles from "./styles.module.css";
 
@@ -56,6 +58,44 @@ export function Leaderboard({ campaign, loading }: LeaderboardProps) {
               };
     }, [connectedAddress, distributionBreakdown]);
 
+    if (!loading && !loadingDistributionBreakdown && !distributionBreakdown) {
+        return (
+            <div className={styles.root}>
+                <div className={styles.titleContainer}>
+                    <Typography variant="lg" weight="medium" uppercase>
+                        {t("title")}
+                    </Typography>
+                    <div className={styles.subtitleContainer}>
+                        <Typography
+                            weight="medium"
+                            variant="sm"
+                            light
+                            uppercase
+                        >
+                            {t("subtitleFirst")}
+                        </Typography>
+                        <Typography
+                            weight="medium"
+                            variant="sm"
+                            light
+                            uppercase
+                        >
+                            {formatDateTime(dayjs.unix(campaign!.from))}
+                        </Typography>
+                    </div>
+                </div>
+                <Card
+                    className={classNames(styles.card, styles.noDistribution)}
+                >
+                    <NoDistributionsIcon />
+                    <Typography uppercase weight="medium" variant="sm">
+                        {t("noDistribution")}
+                    </Typography>
+                </Card>
+            </div>
+        );
+    }
+
     return (
         <div className={styles.root}>
             <div className={styles.titleContainer}>
@@ -64,7 +104,7 @@ export function Leaderboard({ campaign, loading }: LeaderboardProps) {
                 </Typography>
                 <div className={styles.subtitleContainer}>
                     <Typography weight="medium" variant="sm" light uppercase>
-                        {t("subtitle")}
+                        {distributionBreakdown && t("subtitleLatest")}
                     </Typography>
                     {loading || loadingDistributionBreakdown ? (
                         <Skeleton width={130} />
@@ -73,7 +113,7 @@ export function Leaderboard({ campaign, loading }: LeaderboardProps) {
                             weight="medium"
                             variant="sm"
                             light
-                            uppercase={!!distributionBreakdown}
+                            uppercase
                         >
                             {distributionBreakdown
                                 ? dayjs
