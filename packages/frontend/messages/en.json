@@ -287,7 +287,6 @@
         "leaderboard": {
             "title": "Leaderboard",
             "subtitleLatest": "As of the latest distribution:",
-            "subtitleFirst": "First rewards distribution:",
             "noDistribution": "No distribution yet",
             "personalRank": {
                 "connect": "View your rank",

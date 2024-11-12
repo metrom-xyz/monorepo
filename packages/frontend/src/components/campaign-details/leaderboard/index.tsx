@@ -72,15 +72,7 @@ export function Leaderboard({ campaign, loading }: LeaderboardProps) {
                             light
                             uppercase
                         >
-                            {t("subtitleFirst")}
-                        </Typography>
-                        <Typography
-                            weight="medium"
-                            variant="sm"
-                            light
-                            uppercase
-                        >
-                            {formatDateTime(dayjs.unix(campaign!.from))}
+                            {t("noDistribution")}
                         </Typography>
                     </div>
                 </div>
