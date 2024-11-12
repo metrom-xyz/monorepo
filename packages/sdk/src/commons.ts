@@ -10,6 +10,7 @@ export enum SupportedDex {
     Kim = "kim",
     Panko = "panko",
     Scribe = "scribe",
+    BaseSwap = "baseswap",
 }
 
 export enum SupportedAmm {

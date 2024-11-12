@@ -38,6 +38,7 @@
     @apply pointer-events-none;
 }
 
+.logo,
 .logo > svg {
     @apply w-6 h-6;
 }
