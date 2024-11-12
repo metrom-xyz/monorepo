@@ -1,7 +1,13 @@
-import { Address, Bytes, log } from "@graphprotocol/graph-ts";
+import {
+    Address,
+    Bytes,
+    DataSourceContext,
+    log,
+} from "@graphprotocol/graph-ts";
 import { NewStableSwapPair } from "../../generated/Factory/Factory";
 import { Pool2 as Pool2Template } from "../../generated/templates";
 import { Pool3 as Pool3Template } from "../../generated/templates";
+import { LPToken as LPTokenTemplate } from "../../generated/templates";
 import { Pool2 as Pool2Contract } from "../../generated/templates/Pool2/Pool2";
 import { Pool3 as Pool3Contract } from "../../generated/templates/Pool3/Pool3";
 import { Pool } from "../../generated/schema";
@@ -88,6 +94,13 @@ export function handleNewStableSwapPair(event: NewStableSwapPair): void {
             : Pool2Contract.bind(event.params.swapContract).fee();
     pool.liquidity = BI_0;
     pool.save();
+
+    let lpTokenContext = new DataSourceContext();
+    lpTokenContext.setBytes(
+        "pool-address",
+        changetype<Bytes>(event.params.swapContract),
+    );
+    LPTokenTemplate.createWithContext(event.params.LP, lpTokenContext);
 
     if (tokens.length === 3) Pool3Template.create(event.params.swapContract);
     else Pool2Template.create(event.params.swapContract);
