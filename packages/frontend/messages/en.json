@@ -182,6 +182,9 @@
                     "missing": "Bound missing",
                     "malformed": "Wrong bound values"
                 },
+                "warnings": {
+                    "notApplied": "Changes not applied"
+                },
                 "simulation": {
                     "title": "KPI simulation",
                     "description": "Disclaimer: This is an interactive simulation tool to visualize how incentives are distributed for different TVL scenarios. Please review the values you entered carefully before submitting."
