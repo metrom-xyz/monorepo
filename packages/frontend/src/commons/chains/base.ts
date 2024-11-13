@@ -2,6 +2,7 @@ import { SupportedDex } from "@metrom-xyz/sdk";
 import { SupportedChain, ADDRESS } from "@metrom-xyz/contracts";
 import { BaseLogo } from "../../assets/logos/chains/base";
 import { KimLogo } from "../../assets/logos/dexes/kim";
+import { BaseSwapLogo } from "@/src/assets/logos/dexes/baseswap";
 import { type ChainData } from "..";
 import { base } from "viem/chains";
 
@@ -15,6 +16,12 @@ export const baseData: ChainData = {
             logo: KimLogo,
             name: "Kim",
             addLiquidityUrl: "https://app.kim.exchange/pools/v4/{target_pool}",
+        },
+        {
+            slug: SupportedDex.BaseSwap,
+            logo: BaseSwapLogo,
+            name: "BaseSwap",
+            addLiquidityUrl: "https://baseswap.fi/pool/v3/{target_pool}",
         },
     ],
     baseTokens: [
