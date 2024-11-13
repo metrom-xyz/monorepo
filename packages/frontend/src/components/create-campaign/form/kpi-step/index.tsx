@@ -44,12 +44,17 @@ export function KpiStep({
     const t = useTranslations("newCampaign.form.kpi");
     const [open, setOpen] = useState(false);
     const [enabled, setEnabled] = useState(false);
-    const [boundsError, setBoundsError] = useState("");
+    const [error, setError] = useState("");
+    const [warning, setWarning] = useState("");
 
     const [minimumPayoutPercentage, setMinimumPayoutPercentage] =
-        useState<number>(0);
-    const [lowerUsdTargetRaw, setLowerUsdTargetRaw] = useState<number>();
-    const [upperUsdTargetRaw, setUpperUsdTargetRaw] = useState<number>();
+        useState<number>(kpiSpecification?.minimumPayoutPercentage || 0);
+    const [lowerUsdTargetRaw, setLowerUsdTargetRaw] = useState<
+        number | undefined
+    >(kpiSpecification?.goal.lowerUsdTarget);
+    const [upperUsdTargetRaw, setUpperUsdTargetRaw] = useState<
+        number | undefined
+    >(kpiSpecification?.goal.upperUsdTarget);
 
     const prevKpiSpecification = usePrevious(kpiSpecification);
 
@@ -86,6 +91,18 @@ export function KpiStep({
         upperUsdTargetRaw,
     ]);
 
+    const newKpiSpecification: KpiSpecification | undefined =
+        lowerUsdTargetRaw !== undefined && upperUsdTargetRaw !== undefined
+            ? {
+                  goal: {
+                      metric: KpiMetric.RangePoolTvl,
+                      lowerUsdTarget: lowerUsdTargetRaw,
+                      upperUsdTarget: upperUsdTargetRaw,
+                  },
+                  minimumPayoutPercentage,
+              }
+            : undefined;
+
     // this hooks is used to disable and close the step when
     // the kpi specification gets disabled, after the campaign creation
     useEffect(() => {
@@ -100,7 +117,7 @@ export function KpiStep({
         setMinimumPayoutPercentage(0);
         setLowerUsdTargetRaw(undefined);
         setUpperUsdTargetRaw(undefined);
-        setBoundsError("");
+        setError("");
     }, [enabled, kpiSpecification, onKpiChange]);
 
     useEffect(() => {
@@ -108,7 +125,7 @@ export function KpiStep({
             lowerUsdTargetRaw === undefined &&
             upperUsdTargetRaw === undefined
         ) {
-            setBoundsError("");
+            setError("");
             return;
         }
 
@@ -116,7 +133,7 @@ export function KpiStep({
             (lowerUsdTargetRaw === undefined && upperUsdTargetRaw) ||
             (upperUsdTargetRaw === undefined && lowerUsdTargetRaw)
         ) {
-            setBoundsError("errors.missing");
+            setError("errors.missing");
             return;
         }
 
@@ -125,15 +142,21 @@ export function KpiStep({
             upperUsdTargetRaw !== undefined &&
             lowerUsdTargetRaw >= upperUsdTargetRaw
         )
-            setBoundsError("errors.malformed");
-        else setBoundsError("");
+            setError("errors.malformed");
+        else setError("");
     }, [lowerUsdTargetRaw, upperUsdTargetRaw]);
 
     useEffect(() => {
+        if (enabled && !open && unsavedChanges)
+            setWarning("warnings.notApplied");
+        else setWarning("");
+    }, [enabled, open, unsavedChanges]);
+
+    useEffect(() => {
         onError({
-            kpiSpecification: !!boundsError || (enabled && !kpiSpecification),
+            kpiSpecification: !!error || (enabled && !kpiSpecification),
         });
-    }, [boundsError, enabled, kpiSpecification, onError]);
+    }, [error, enabled, kpiSpecification, onError]);
 
     useEffect(() => {
         setOpen(enabled);
@@ -175,7 +198,8 @@ export function KpiStep({
     return (
         <Step
             disabled={disabled}
-            error={!!boundsError}
+            error={!!error || !!warning}
+            errorLevel={!!error ? "error" : "warning"}
             completed={enabled}
             open={open}
             onPreviewClick={handleStepOnClick}
@@ -195,11 +219,16 @@ export function KpiStep({
                             <ErrorText
                                 variant="xs"
                                 weight="medium"
+                                level={!!error ? "error" : "warning"}
                                 className={classNames(styles.error, {
-                                    [styles.errorVisible]: !!boundsError,
+                                    [styles.errorVisible]: !!error || !!warning,
                                 })}
                             >
-                                {boundsError && t(boundsError)}
+                                {!!error
+                                    ? t(error)
+                                    : !!warning
+                                      ? t(warning)
+                                      : null}
                             </ErrorText>
                         </div>
                         <Switch
@@ -227,8 +256,8 @@ export function KpiStep({
             <StepContent>
                 <div className={styles.stepContent}>
                     <GoalInputs
-                        kpiSpecification={kpiSpecification}
-                        error={!!boundsError}
+                        kpiSpecification={newKpiSpecification}
+                        error={!!error}
                         onLowerUsdTargetChange={setLowerUsdTargetRaw}
                         onUpperUsdTargetChange={setUpperUsdTargetRaw}
                         onMinimumPayoutPercentageChange={
@@ -255,7 +284,7 @@ export function KpiStep({
                             totalRewardsUsd={totalRewardsUsdAmount}
                             minimumPayoutPercentage={minimumPayoutPercentage}
                             poolUsdTvl={pool?.usdTvl}
-                            error={!!boundsError}
+                            error={!!error}
                         />
                     </div>
                     <Button
@@ -265,7 +294,7 @@ export function KpiStep({
                             !unsavedChanges ||
                             upperUsdTargetRaw === undefined ||
                             lowerUsdTargetRaw === undefined ||
-                            !!boundsError
+                            !!error
                         }
                         onClick={handleOnApply}
                         className={{ root: styles.applyButton }}
