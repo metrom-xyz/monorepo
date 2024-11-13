@@ -121,8 +121,7 @@
                     "empty": "No rewards added yet"
                 },
                 "addButton": {
-                    "add": "Add to rewards",
-                    "added": "Reward added"
+                    "add": "Add to rewards"
                 },
                 "selectPlaceholder": "Choose Token",
                 "totalUsd": "Total value usd",
