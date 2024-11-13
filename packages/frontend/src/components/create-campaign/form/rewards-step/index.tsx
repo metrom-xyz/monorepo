@@ -31,7 +31,6 @@ import classNames from "classnames";
 import { trackFathomEvent } from "@/src/utils/fathom";
 import { RemoteLogo } from "@/src/components/remote-logo";
 import { BorderedPlusIcon } from "@/src/assets/bordered-plus-icon";
-import { BorderedTickIcon } from "@/src/assets/bordered-tick-icon";
 
 import styles from "./styles.module.css";
 
@@ -63,7 +62,6 @@ export function RewardsStep({
             error?: string;
         }[]
     >([]);
-    const [feedback, setFeedback] = useState(false);
 
     const { address } = useAccount();
     const chainId = useChainId();
@@ -104,16 +102,6 @@ export function RewardsStep({
     useEffect(() => {
         setOpen(false);
     }, [chainId]);
-
-    useEffect(() => {
-        if (!feedback) return;
-
-        const timeout = setTimeout(() => {
-            setFeedback(false);
-        }, 1500);
-
-        return () => clearTimeout(timeout);
-    }, [feedback]);
 
     useEffect(() => {
         if (!campaignDuration || !rewardToken) return;
@@ -188,7 +176,6 @@ export function RewardsStep({
             : [reward];
 
         setOpen(false);
-        setFeedback(true);
 
         onRewardsChange({ rewards: newRewards });
         setRewardAmount({
@@ -326,7 +313,7 @@ export function RewardsStep({
                     <Button
                         variant="secondary"
                         size="small"
-                        icon={feedback ? BorderedTickIcon : BorderedPlusIcon}
+                        icon={BorderedPlusIcon}
                         disabled={
                             rewards?.length === 5 ||
                             !rewardAmount ||
@@ -338,10 +325,7 @@ export function RewardsStep({
                             root: styles.addRewardButton,
                         }}
                     >
-                        {/* TODO: add proper feedback */}
-                        {feedback
-                            ? t("newCampaign.form.rewards.addButton.added")
-                            : t("newCampaign.form.rewards.addButton.add")}
+                        {t("newCampaign.form.rewards.addButton.add")}
                     </Button>
                 </div>
             </StepPreview>
