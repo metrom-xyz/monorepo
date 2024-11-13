@@ -3,7 +3,7 @@ import { type WhitelistedErc20Token } from "@metrom-xyz/sdk";
 import type { Erc20TokenWithBalance } from "@/src/hooks/useWatchBalances";
 import classNames from "classnames";
 import { Typography, Skeleton } from "@metrom-xyz/ui";
-import { formatTokenAmount } from "@/src/utils/format";
+import { formatTokenAmount, formatUsdAmount } from "@/src/utils/format";
 import { RemoteLogo } from "@/src/components/remote-logo";
 
 import styles from "./styles.module.css";
@@ -61,15 +61,28 @@ export function Row({
                 )}
             </div>
             {loading || !tokenWithBalance ? (
-                <Skeleton width={32} variant="xs" />
+                <div className={styles.balanceWrapper}>
+                    <Skeleton width={36} variant="sm" />
+                    <Skeleton width={36} variant="xs" />
+                </div>
             ) : (
-                <Typography variant="xs" weight="medium" light>
-                    {tokenWithBalance.balance
-                        ? formatTokenAmount({
-                              amount: tokenWithBalance.balance.formatted,
-                          })
-                        : "-"}
-                </Typography>
+                <div className={styles.balanceWrapper}>
+                    <Typography variant="sm" weight="medium">
+                        {tokenWithBalance.balance
+                            ? formatTokenAmount({
+                                  amount: tokenWithBalance.balance.formatted,
+                              })
+                            : "-"}
+                    </Typography>
+                    <Typography variant="xs" weight="medium" light>
+                        {tokenWithBalance.balance
+                            ? formatUsdAmount(
+                                  tokenWithBalance.balance.formatted *
+                                      tokenWithBalance.token.usdPrice,
+                              )
+                            : "-"}
+                    </Typography>
+                </div>
             )}
         </div>
     );

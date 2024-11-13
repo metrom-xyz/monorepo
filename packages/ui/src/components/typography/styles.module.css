@@ -15,7 +15,7 @@
 }
 
 .xs {
-    @apply font-normal font-sans text-xs leading-3;
+    @apply font-normal font-sans text-xs leading-[0.875rem];
 }
 
 .sm {
