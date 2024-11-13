@@ -19,7 +19,7 @@
 }
 
 .header {
-    @apply sm:grid hidden;
+    @apply sm:grid hidden px-0;
 }
 
 .body {
