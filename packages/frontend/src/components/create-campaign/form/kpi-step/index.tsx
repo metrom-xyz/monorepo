@@ -203,6 +203,7 @@ export function KpiStep({
                             </ErrorText>
                         </div>
                         <Switch
+                            tabIndex={-1}
                             size="big"
                             checked={enabled}
                             onClick={handleSwitchOnClick}

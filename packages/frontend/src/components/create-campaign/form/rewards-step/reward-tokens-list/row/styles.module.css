@@ -16,6 +16,10 @@
     @apply w-full flex items-center gap-3;
 }
 
+.balanceWrapper {
+    @apply w-full flex flex-col gap-1 items-end;
+}
+
 .active {
     @apply bg-gray-200;
 }

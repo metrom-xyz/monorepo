@@ -112,7 +112,7 @@ export interface Claim extends Erc20TokenAmount {
 
 export type Reimbursement = Claim;
 
-export interface WhitelistedErc20Token extends Erc20Token {
+export interface WhitelistedErc20Token extends UsdPricedErc20Token {
     minimumRate: OnChainAmount;
     usdPrice: number;
 }

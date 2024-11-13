@@ -1,14 +1,16 @@
-import type { Erc20Token, OnChainAmount } from "@metrom-xyz/sdk";
+import type { OnChainAmount, UsdPricedErc20Token } from "@metrom-xyz/sdk";
 import { useEffect, useMemo } from "react";
 import { type Address, erc20Abi, formatUnits } from "viem";
 import { useBlockNumber, useReadContracts } from "wagmi";
 
-export interface Erc20TokenWithBalance<T extends Erc20Token> {
+export interface Erc20TokenWithBalance<T extends UsdPricedErc20Token> {
     token: T;
     balance: OnChainAmount | null;
 }
 
-export function useWatchBalances<T extends Erc20Token>(
+const collator = new Intl.Collator();
+
+export function useWatchBalances<T extends UsdPricedErc20Token>(
     address?: Address,
     tokens?: T[],
 ): {
@@ -78,5 +80,20 @@ export function useWatchBalances<T extends Erc20Token>(
         );
     }, [rewardTokenRawBalances, tokens]);
 
-    return { tokensWithBalance, loading };
+    const sortedTokensWithBalance = [...tokensWithBalance].sort((a, b) => {
+        if (!a.balance && !b.balance)
+            return collator.compare(
+                a.token.symbol.toLowerCase(),
+                b.token.symbol.toLowerCase(),
+            );
+
+        if (!a.balance) return 1;
+        if (!b.balance) return -1;
+
+        const aUsdAmount = a.balance.formatted * a.token.usdPrice;
+        const bUsdAmount = b.balance.formatted * b.token.usdPrice;
+        return bUsdAmount - aUsdAmount;
+    });
+
+    return { tokensWithBalance: sortedTokensWithBalance, loading };
 }
