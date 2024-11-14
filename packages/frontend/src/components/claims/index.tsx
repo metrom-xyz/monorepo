@@ -44,14 +44,10 @@ export function Claims() {
         useReimbursements();
 
     useEffect(() => {
-        if (
-            loadingClaims ||
-            loadingReimbursements ||
-            (claims.length === 0 && reimbursements.length === 0)
-        )
+        if (loadingClaims || loadingReimbursements) {
+            setInitializing(true);
             return;
-
-        setInitializing(true);
+        }
 
         const rewards = [
             ...claims.map((claim) => ({ ...claim, type: RewardType.Claim })),
@@ -111,7 +107,27 @@ export function Claims() {
     }, [chain, chainsWithRewardsData]);
 
     useEffect(() => {
-        if (!loadingClaims && !loadingReimbursements && chainsData) {
+        if (
+            !loadingClaims &&
+            !loadingReimbursements &&
+            claims.length === 0 &&
+            reimbursements.length === 0
+        )
+            setInitializing(false);
+    }, [
+        claims.length,
+        loadingClaims,
+        loadingReimbursements,
+        reimbursements.length,
+    ]);
+
+    useEffect(() => {
+        if (
+            !loadingClaims &&
+            !loadingReimbursements &&
+            chainsData &&
+            chainsData.length > 0
+        ) {
             if (!chain) setChain(chainsData[0].chain);
             setInitializing(false);
         }
@@ -179,7 +195,6 @@ export function Claims() {
         );
     }
 
-    // FIXME: fix the empty state flickering after the loading is completed
     if (!chainsWithRewardsData || !chainsData || !chainWithRewardsData) {
         return (
             <div className={styles.root}>

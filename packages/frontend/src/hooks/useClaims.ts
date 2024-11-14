@@ -16,10 +16,15 @@ export function useClaims(): {
     claims: Claim[];
 } {
     const [claims, setClaims] = useState<ClaimWithRemaining[]>([]);
+    const [loading, setLoading] = useState(true);
 
     const { address } = useAccount();
 
-    const { data: rawClaims, isLoading: loadingClaims } = useQuery({
+    const {
+        data: rawClaims,
+        isError: claimsErrored,
+        isLoading: loadingClaims,
+    } = useQuery({
         queryKey: ["claims", address],
         queryFn: async ({ queryKey }) => {
             const account = queryKey[1];
@@ -42,10 +47,10 @@ export function useClaims(): {
     });
 
     const {
-        isLoading: loadingClaimed,
         data: claimedData,
-        isError: claimedErrored,
         error: claimedError,
+        isError: claimedErrored,
+        isLoading: loadingClaimed,
     } = useReadContracts({
         allowFailure: false,
         contracts:
@@ -73,15 +78,20 @@ export function useClaims(): {
     });
 
     useEffect(() => {
-        if (loadingClaims || loadingClaimed) return;
-        if (claimedErrored) {
+        if (loadingClaims || loadingClaimed) {
+            setLoading(true);
+            return;
+        }
+        if (claimsErrored || claimedErrored) {
             console.error(
                 `Could not fetch claimed data for address ${address}: ${claimedError}`,
             );
+            setLoading(false);
             return;
         }
         if (!rawClaims || !claimedData) {
             setClaims([]);
+            setLoading(false);
             return;
         }
 
@@ -107,18 +117,20 @@ export function useClaims(): {
         }
 
         setClaims(claims);
+        setLoading(false);
     }, [
         address,
         claimedData,
         claimedError,
         claimedErrored,
+        claimsErrored,
         loadingClaimed,
         loadingClaims,
         rawClaims,
     ]);
 
     return {
-        loading: loadingClaims || loadingClaimed,
+        loading: loading || loadingClaims || loadingClaimed,
         claims,
     };
 }
