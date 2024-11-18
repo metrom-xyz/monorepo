@@ -18,7 +18,7 @@ export interface Dex {
     name: string;
     addLiquidityUrl: string;
     poolExplorerUrl?: string;
-    logo: FunctionComponent;
+    logo: FunctionComponent<SVGIcon>;
 }
 
 export enum RestrictionType {

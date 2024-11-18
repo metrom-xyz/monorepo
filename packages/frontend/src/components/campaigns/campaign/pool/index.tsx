@@ -1,10 +1,12 @@
 "use client";
 
-import { Typography, Skeleton, Chip } from "@metrom-xyz/ui";
+import { Typography, Skeleton } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
 import type { NamedCampaign } from "@/src/hooks/useCampaigns";
 import { formatPercentage } from "@/src/utils/format";
 import { PoolRemoteLogo } from "@/src/components/pool-remote-logo";
+import classNames from "classnames";
+import { getCampaigPoolName } from "@/src/utils/campaign";
 
 import styles from "./styles.module.css";
 
@@ -26,7 +28,7 @@ export function Pool({ campaign }: PoolProps) {
             />
             <div className={styles.titleContainer}>
                 <Typography variant="lg" weight="medium" truncate>
-                    {campaign.name}
+                    {getCampaigPoolName(campaign)}
                 </Typography>
                 {campaign.pool.fee && (
                     <Typography
@@ -57,7 +59,12 @@ export function SkeletonPool() {
                 tokens={[{ address: "0x1" }, { address: "0x2" }]}
                 loading
             />
-            <div className={styles.titleContainer}>
+            <div
+                className={classNames(
+                    styles.titleContainer,
+                    styles.titleContainerLoading,
+                )}
+            >
                 <Skeleton variant="lg" width={180} />
                 <Skeleton
                     variant="sm"

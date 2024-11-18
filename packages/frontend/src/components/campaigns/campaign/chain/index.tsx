@@ -13,9 +13,17 @@ interface ChainProps {
 export function Chain({ id }: ChainProps) {
     const ChainIcon = CHAIN_DATA[id as SupportedChain].icon;
 
-    return <ChainIcon className={styles.root} />;
+    return (
+        <div className={styles.root}>
+            <ChainIcon className={styles.icon} />
+        </div>
+    );
 }
 
 export function SkeletonChain() {
-    return <Skeleton circular className={styles.root} />;
+    return (
+        <div className={styles.root}>
+            <Skeleton circular className={styles.root} />
+        </div>
+    );
 }

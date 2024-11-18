@@ -13,7 +13,11 @@ const SUPPORTED_DEX_SLUG_TO_NAME = Object.values(CHAIN_DATA).reduce(
 );
 
 export const getCampaignName = (campaign: Campaign) => {
-    return `${SUPPORTED_DEX_SLUG_TO_NAME[campaign.pool.dex] || "-"} ${campaign.pool.tokens.map((token) => token.symbol).join(" / ")}`;
+    return `${SUPPORTED_DEX_SLUG_TO_NAME[campaign.pool.dex] || "-"} ${getCampaigPoolName(campaign)}`;
+};
+
+export const getCampaigPoolName = (campaign: Campaign) => {
+    return `${campaign.pool.tokens.map((token) => token.symbol).join(" / ")}`;
 };
 
 export const getCampaignPreviewApr = (campaign: CampaignPayload) => {
