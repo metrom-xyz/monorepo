@@ -15,8 +15,7 @@ export const taikoData: ChainData = {
             slug: SupportedDex.Panko,
             logo: PankoLogo,
             name: "Panko",
-            // TODO: update this
-            addLiquidityUrl: "https://panko.finance",
+            addLiquidityUrl: "https://panko.finance/add/{target_pool}",
         },
         {
             slug: SupportedDex.UniswapV3,

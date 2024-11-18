@@ -20,7 +20,7 @@ export function getPoolAddLiquidityLink(
     const dex = getDex(chainId, dexSlug);
     if (!dex || !dex.addLiquidityUrl) return;
 
-    if (dex.slug === SupportedDex.UniswapV3)
+    if ([SupportedDex.UniswapV3, SupportedDex.Panko].includes(dex.slug))
         return dex.addLiquidityUrl.replace(
             "{target_pool}",
             `${pool.tokens.map((token) => token.address).join("/")}`,
