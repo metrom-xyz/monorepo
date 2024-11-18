@@ -251,6 +251,9 @@ export function Campaigns() {
                     {t("header.chain")}
                 </Typography>
                 <Typography variant="sm" weight="medium">
+                    {t("header.dex")}
+                </Typography>
+                <Typography variant="sm" weight="medium">
                     {t("header.pool")}
                 </Typography>
                 <Typography variant="sm" weight="medium">

@@ -7,6 +7,7 @@ import type { NamedCampaign } from "@/src/hooks/useCampaigns";
 import { Link } from "@/src/i18n/routing";
 import { Card } from "@metrom-xyz/ui";
 import classNames from "classnames";
+import { Dex, SkeletonDex } from "./dex";
 
 import styles from "./styles.module.css";
 
@@ -21,6 +22,7 @@ export function Campaign({ campaign }: CampaignProps) {
         <Link href={`/campaigns/${campaign.chainId}/${campaign.id}`}>
             <Card className={classNames(styles.root, styles.noMobile)}>
                 <Chain id={campaign.chainId} />
+                <Dex chain={campaign.chainId} slug={campaign.pool.dex} />
                 <div className={styles.poolContainer}>
                     <Pool campaign={campaign} />
                 </div>
@@ -41,6 +43,7 @@ export function Campaign({ campaign }: CampaignProps) {
             <Card className={styles.mobileCard}>
                 <div className={styles.topRow}>
                     <Chain id={campaign.chainId} />
+                    <Dex chain={campaign.chainId} slug={campaign.pool.dex} />
                     <Pool campaign={campaign} />
                 </div>
                 <div className={styles.bottomRow}>
@@ -71,6 +74,7 @@ export function SkeletonCampaign() {
         <>
             <Card className={classNames(styles.root, styles.noMobile)}>
                 <SkeletonChain />
+                <SkeletonDex />
                 <div className={styles.poolContainer}>
                     <SkeletonPool />
                 </div>
@@ -81,6 +85,7 @@ export function SkeletonCampaign() {
             <Card className={styles.mobileCard}>
                 <div className={styles.topRow}>
                     <SkeletonChain />
+                    <SkeletonDex />
                     <SkeletonPool />
                 </div>
                 <div className={styles.bottomRow}>

@@ -1,3 +1,7 @@
 .root {
-    @apply w-4 h-4 text-gray-400 col-span-1;
+    @apply w-6 h-4;
+}
+
+.icon {
+    @apply w-4 h-4 text-gray-400 fill-gray-400 col-span-1;
 }

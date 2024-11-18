@@ -73,7 +73,6 @@ export const RemoteLogo = ({
     if (validResolvedSrc) {
         return (
             <div className={classNames(styles.root, sizeClass, className)}>
-                <Skeleton circular width="100%" className={styles.skeleton} />
                 <img
                     src={validResolvedSrc}
                     alt={defaultText}
