@@ -21,7 +21,7 @@ export const baseData: ChainData = {
             slug: SupportedDex.BaseSwap,
             logo: BaseSwapLogo,
             name: "BaseSwap",
-            addLiquidityUrl: "https://baseswap.fi/pool/v3/{target_pool}",
+            addLiquidityUrl: `https://baseswap.fi/pool/v3/${SupportedChain.Base}-{target_pool}`,
         },
     ],
     baseTokens: [
