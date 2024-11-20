@@ -70,6 +70,7 @@ export function Kpi({ poolUsdTvl, rewards, specification }: KpiProps) {
                     className={styles.chartWrapper}
                 >
                     <KpiSimulationChart
+                        tooltipSize="xs"
                         poolUsdTvl={poolUsdTvl}
                         totalRewardsUsd={totalRewardsUsdAmount}
                         lowerUsdTarget={lowerUsdTarget}

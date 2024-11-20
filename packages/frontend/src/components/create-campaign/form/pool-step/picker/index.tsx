@@ -88,7 +88,6 @@ export function PoolPicker({ value, dex, onChange }: PoolPickerProps) {
                 <TextInput
                     value={search}
                     onChange={handleSearchOnChange}
-                    variant="lg"
                     placeholder={t("searchLabel")}
                     icon={SearchIcon}
                     className={styles.searchInput}
