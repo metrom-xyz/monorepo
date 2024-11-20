@@ -65,7 +65,7 @@ export function SkeletonPool() {
                     styles.titleContainerLoading,
                 )}
             >
-                <Skeleton variant="lg" width={180} />
+                <Skeleton variant="lg" width={120} />
                 <Skeleton
                     variant="sm"
                     width={50}

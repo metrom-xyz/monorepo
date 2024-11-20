@@ -23,7 +23,7 @@ export function Chain({ id }: ChainProps) {
 export function SkeletonChain() {
     return (
         <div className={styles.root}>
-            <Skeleton circular className={styles.root} />
+            <Skeleton circular className={styles.icon} />
         </div>
     );
 }

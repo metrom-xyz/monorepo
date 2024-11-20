@@ -279,6 +279,7 @@ export function KpiStep({
                             </Typography>
                         </div>
                         <KpiSimulationChart
+                            tooltipSize="xs"
                             lowerUsdTarget={lowerUsdTargetRaw}
                             upperUsdTarget={upperUsdTargetRaw}
                             totalRewardsUsd={totalRewardsUsdAmount}
