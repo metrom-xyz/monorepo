@@ -11,7 +11,7 @@ import {
 } from "recharts";
 import { useMemo } from "react";
 import { useTranslations } from "next-intl";
-import { ErrorText, Typography } from "@metrom-xyz/ui";
+import { ErrorText, Typography, type TypographyVariant } from "@metrom-xyz/ui";
 import { TvlTick } from "./axis-ticks/tvl";
 import { RewardTick } from "./axis-ticks/reward";
 import { TooltipContent, TooltipCursor } from "./tooltip";
@@ -40,6 +40,7 @@ interface KpiSimulationChartProps {
     campaignEnded?: boolean;
     error?: boolean;
     loading?: boolean;
+    tooltipSize?: TypographyVariant;
     className?: string;
 }
 
@@ -57,6 +58,7 @@ export function KpiSimulationChart({
     campaignEnded,
     error,
     loading,
+    tooltipSize,
     className,
 }: KpiSimulationChartProps) {
     const t = useTranslations("simulationChart");
@@ -482,6 +484,7 @@ export function KpiSimulationChart({
                     isAnimationActive={false}
                     content={
                         <TooltipContent
+                            size={tooltipSize}
                             lowerUsdTarget={lowerUsdTarget}
                             upperUsdTarget={upperUsdTarget}
                             totalRewardsUsd={totalRewardsUsd}

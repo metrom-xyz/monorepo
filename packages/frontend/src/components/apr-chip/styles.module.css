@@ -22,5 +22,5 @@
 }
 
 .empty {
-    @apply w-full col-span-4 sm:col-span-1 text-center;
+    @apply w-full col-span-4 sm:col-span-1 text-left;
 }
