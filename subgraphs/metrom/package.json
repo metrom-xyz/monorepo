@@ -10,6 +10,7 @@
         "deploy:mantle-sepolia": "pnpm prepare:deploy mantle-sepolia && pnpm codegen && graph build && graph deploy metrom-mantle-sepolia -l 0.0.1 --node https://subgraph-api.mantle.xyz/deploy --ipfs https://subgraph-api.mantle.xyz/ipfs",
         "deploy:sonic-testnet": "pnpm prepare:deploy sonic && pnpm codegen && graph build && graph deploy luzzif/metrom-sonic-testnet -l 0.0.1 --node https://graph.testnet.soniclabs.com/service --ipfs https://graph.testnet.soniclabs.com/",
         "deploy:base-sepolia": "pnpm prepare:deploy base-sepolia && pnpm codegen && graph deploy --studio metrom-base-sepolia -l=v0.0.1",
+        "deploy:form-testnet": "pnpm prepare:deploy form-testnet && pnpm codegen && graph deploy metrom-form-testnet -l=v0.0.1 --node https://formapi.0xgraph.xyz/deploy --ipfs https://formapi.0xgraph.xyz/ipfs",
         "deploy:base": "pnpm prepare:deploy base && pnpm codegen && graph build && graph deploy --studio metrom-base -l 0.0.2",
         "deploy:mode": "pnpm prepare:deploy mode-mainnet && pnpm codegen && graph build && graph deploy --studio metrom-mode -l 0.0.3",
         "deploy:mantle": "pnpm prepare:deploy mantle && pnpm codegen && graph build && graph deploy metrom-mantle -l 0.0.2 --node https://subgraph-api.mantle.xyz/deploy --ipfs https://subgraph-api.mantle.xyz/ipfs",
@@ -24,7 +25,7 @@
     },
     "devDependencies": {
         "@eslint/js": "^9.14.0",
-        "@metrom-xyz/contracts": "^0.28.0",
+        "@metrom-xyz/contracts": "^0.29.0",
         "@types/eslint__js": "^8.42.3",
         "@types/mustache": "^4.2.5",
         "@types/node": "^22.9.0",

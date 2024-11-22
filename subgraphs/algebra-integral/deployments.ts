@@ -57,6 +57,19 @@ export const DEPLOYMENTS: {
             },
         },
     },
+    "form-testnet": {
+        fibonacci: {
+            Factory: {
+                address: "0xd1c4026C9C15492bb523D17d3cA88E6217cb4402",
+                startBlock: 3642890,
+            },
+            NonFungiblePositionManager: {
+                address: "0xDEf094355f33999Fc0f079940524A8763ACA7c95",
+                startBlock: 3642936,
+                version: NonFungiblePositionManagerVersion.V1_0,
+            },
+        },
+    },
     mantle: {
         swapsicle: {
             Factory: {
