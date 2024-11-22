@@ -97,7 +97,9 @@ export function GoalInputs({
     }
 
     function handleMinimumPayoutOnChange(event: ChangeEvent<HTMLInputElement>) {
-        setMinimumPayoutPercentage(Number(event.target.value) / 100);
+        // TODO: add this to the slider component as max value
+        if (Number(event.target.value) < 100)
+            setMinimumPayoutPercentage(Number(event.target.value) / 100);
     }
 
     return (
