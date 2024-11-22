@@ -11,6 +11,7 @@ export enum SupportedDex {
     Panko = "panko",
     Scribe = "scribe",
     BaseSwap = "baseswap",
+    Fibonacci = "fibonacci",
 }
 
 export enum SupportedAmm {
