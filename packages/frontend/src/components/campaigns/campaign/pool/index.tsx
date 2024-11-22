@@ -27,12 +27,12 @@ export function Pool({ campaign }: PoolProps) {
                 }))}
             />
             <div className={styles.titleContainer}>
-                <Typography variant="lg" weight="medium" truncate>
+                <Typography size="lg" weight="medium" truncate>
                     {getCampaigPoolName(campaign)}
                 </Typography>
                 {campaign.pool.fee && (
                     <Typography
-                        variant="sm"
+                        size="sm"
                         weight="medium"
                         className={styles.campaignFee}
                         light
@@ -42,7 +42,7 @@ export function Pool({ campaign }: PoolProps) {
                 )}
                 {campaign.specification?.kpi && (
                     <div className={styles.kpi}>
-                        <Typography variant="sm" weight="medium">
+                        <Typography size="sm" weight="medium">
                             {t("kpi")}
                         </Typography>
                     </div>
@@ -65,12 +65,8 @@ export function SkeletonPool() {
                     styles.titleContainerLoading,
                 )}
             >
-                <Skeleton variant="lg" width={120} />
-                <Skeleton
-                    variant="sm"
-                    width={50}
-                    className={styles.campaignFee}
-                />
+                <Skeleton size="lg" width={120} />
+                <Skeleton size="sm" width={50} className={styles.campaignFee} />
             </div>
         </div>
     );

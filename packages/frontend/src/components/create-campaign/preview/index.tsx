@@ -217,13 +217,13 @@ export function CampaignPreview({
                     <div className={styles.contentGrid}>
                         <TextField
                             boxed
-                            variant="xl"
+                            size="xl"
                             label={t("tvl")}
                             value={formatUsdAmount(payload.pool?.usdTvl)}
                         />
                         <TextField
                             boxed
-                            variant="xl"
+                            size="xl"
                             label={t("apr")}
                             value={
                                 <AprChip
@@ -241,7 +241,7 @@ export function CampaignPreview({
                     />
                     <div className={styles.deployButtonContainer}>
                         {error && (
-                            <ErrorText variant="xs" weight="medium">
+                            <ErrorText size="xs" weight="medium">
                                 {t(error)}
                             </ErrorText>
                         )}
@@ -279,7 +279,7 @@ export function CampaignPreview({
             <Typography uppercase weight="medium">
                 {t("congratulations")}
             </Typography>
-            <Typography variant="xl2" weight="medium">
+            <Typography size="xl2" weight="medium">
                 {t("launched")}
             </Typography>
             <div className={styles.feedbackActionsContainer}>

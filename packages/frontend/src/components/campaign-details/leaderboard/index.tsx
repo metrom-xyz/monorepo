@@ -1,7 +1,7 @@
 import { useDistributionBreakdown } from "@/src/hooks/useDistributionBreakdown";
 import { type Campaign, type UsdPricedErc20TokenAmount } from "@metrom-xyz/sdk";
 import { shortenAddress } from "@/src/utils/address";
-import { Typography, Skeleton, Card } from "@metrom-xyz/ui";
+import { Typography, Skeleton, Card, type SkeletonProps } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
 import dayjs from "dayjs";
 import { PersonalRank } from "./personal-rank";
@@ -62,16 +62,11 @@ export function Leaderboard({ campaign, loading }: LeaderboardProps) {
         return (
             <div className={styles.root}>
                 <div className={styles.titleContainer}>
-                    <Typography variant="lg" weight="medium" uppercase>
+                    <Typography size="lg" weight="medium" uppercase>
                         {t("title")}
                     </Typography>
                     <div className={styles.subtitleContainer}>
-                        <Typography
-                            weight="medium"
-                            variant="sm"
-                            light
-                            uppercase
-                        >
+                        <Typography weight="medium" size="sm" light uppercase>
                             {t("noDistribution")}
                         </Typography>
                     </div>
@@ -80,7 +75,7 @@ export function Leaderboard({ campaign, loading }: LeaderboardProps) {
                     className={classNames(styles.card, styles.noDistribution)}
                 >
                     <NoDistributionsIcon />
-                    <Typography uppercase weight="medium" variant="sm">
+                    <Typography uppercase weight="medium" size="sm">
                         {t("noDistribution")}
                     </Typography>
                 </Card>
@@ -91,22 +86,17 @@ export function Leaderboard({ campaign, loading }: LeaderboardProps) {
     return (
         <div className={styles.root}>
             <div className={styles.titleContainer}>
-                <Typography variant="lg" weight="medium" uppercase>
+                <Typography size="lg" weight="medium" uppercase>
                     {t("title")}
                 </Typography>
                 <div className={styles.subtitleContainer}>
-                    <Typography weight="medium" variant="sm" light uppercase>
+                    <Typography weight="medium" size="sm" light uppercase>
                         {distributionBreakdown && t("subtitleLatest")}
                     </Typography>
                     {loading || loadingDistributionBreakdown ? (
                         <Skeleton width={130} />
                     ) : (
-                        <Typography
-                            weight="medium"
-                            variant="sm"
-                            light
-                            uppercase
-                        >
+                        <Typography weight="medium" size="sm" light uppercase>
                             {distributionBreakdown
                                 ? dayjs
                                       .unix(distributionBreakdown.timestamp)
@@ -129,7 +119,7 @@ export function Leaderboard({ campaign, loading }: LeaderboardProps) {
                                 uppercase
                                 weight="medium"
                                 light
-                                variant="sm"
+                                size="sm"
                             >
                                 {t("rank")}
                             </Typography>
@@ -137,7 +127,7 @@ export function Leaderboard({ campaign, loading }: LeaderboardProps) {
                                 uppercase
                                 weight="medium"
                                 light
-                                variant="sm"
+                                size="sm"
                             >
                                 {t("account")}
                             </Typography>
@@ -145,7 +135,7 @@ export function Leaderboard({ campaign, loading }: LeaderboardProps) {
                                 uppercase
                                 weight="medium"
                                 light
-                                variant="sm"
+                                size="sm"
                             >
                                 {t("rewardsDistributed")}
                             </Typography>
@@ -227,12 +217,16 @@ export function Leaderboard({ campaign, loading }: LeaderboardProps) {
     );
 }
 
-export function SkeletonRow() {
+export function SkeletonRow({
+    size = "base",
+}: {
+    size?: SkeletonProps["size"];
+}) {
     return (
         <div className={styles.row}>
-            <Skeleton variant="lg" width={80} />
-            <Skeleton variant="lg" width={120} />
-            <Skeleton variant="lg" width={120} />
+            <Skeleton size={size} width={80} />
+            <Skeleton size={size} width={120} />
+            <Skeleton size={size} width={120} />
         </div>
     );
 }

@@ -66,7 +66,7 @@ export function DexStep({ disabled, dex, onDexChange }: DexStepProps) {
                         <div className={styles.logo}>
                             <dex.logo />
                         </div>
-                        <Typography variant="lg" weight="medium">
+                        <Typography size="lg" weight="medium">
                             {dex.name}
                         </Typography>
                     </div>
@@ -86,7 +86,7 @@ export function DexStep({ disabled, dex, onDexChange }: DexStepProps) {
                             <div className={styles.logo}>
                                 <availableDex.logo />
                             </div>
-                            <Typography variant="lg" weight="medium">
+                            <Typography size="lg" weight="medium">
                                 {availableDex.name}
                             </Typography>
                         </div>

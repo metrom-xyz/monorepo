@@ -16,8 +16,11 @@
 .primary {
     @apply rounded-xl
         text-white
+        dark:text-black
         bg-black
-        hover:bg-gray-800;
+        dark:bg-white
+        hover:bg-gray-800
+        dark:hover:bg-gray-300;
 }
 
 .primary.disabled {
@@ -47,32 +50,40 @@
     @apply border-transparent;
 }
 
-.primary.big {
+.primary.lg {
     @apply px-6 py-5;
 }
 
-.primary.small {
+.primary.sm {
     @apply px-5 py-3 text-sm;
 }
 
-.primary.xsmall {
-    @apply px-4 py-3;
+.primary.xs {
+    @apply px-4 py-2 text-xs;
 }
 
-.secondary.big {
+.secondary.lg {
     @apply px-4 py-4;
 }
 
-.secondary.small {
+.secondary.sm {
     @apply px-4 py-2.5;
 }
 
-.secondary.xsmall {
+.secondary.xs {
     @apply px-2 py-1;
 }
 
-.icon {
-    @apply w-6 h-6;
+.icon.lg {
+    @apply w-5 h-5;
+}
+
+.icon.sm {
+    @apply w-4 h-4;
+}
+
+.icon.xs {
+    @apply w-3.5 h-3.5;
 }
 
 .spinner {

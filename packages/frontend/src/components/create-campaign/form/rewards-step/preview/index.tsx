@@ -32,7 +32,7 @@ export function RewardsPreview({
             <div className={styles.rewardSkeleton}>
                 <Typography
                     weight="medium"
-                    variant="xs"
+                    size="xs"
                     uppercase
                     className={styles.rewardSkeletonText}
                 >

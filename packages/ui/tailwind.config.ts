@@ -3,11 +3,11 @@ import { tailwindPreset } from "./src/tailwind-preset";
 
 const config: Config = {
     content: [
+        ".storybook/preview.ts",
         "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
         "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
         "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
     ],
-    darkMode: "class",
     presets: [tailwindPreset],
     theme: {
         extend: {

@@ -45,10 +45,10 @@ export function RewardTokensList({
     return (
         <div className={styles.root}>
             <div className={styles.listHeader}>
-                <Typography uppercase variant="xs" weight="medium" light>
+                <Typography uppercase size="xs" weight="medium" light>
                     {t("list.token")}
                 </Typography>
-                <Typography uppercase variant="xs" weight="medium" light>
+                <Typography uppercase size="xs" weight="medium" light>
                     {t("list.balance")}
                 </Typography>
             </div>

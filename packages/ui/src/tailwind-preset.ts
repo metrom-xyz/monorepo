@@ -1,7 +1,7 @@
 import type { Config } from "tailwindcss";
 
 export const tailwindPreset: Partial<Config> = {
-    darkMode: "class",
+    darkMode: ["class", '[data-mode="dark"]'],
     theme: {
         extend: {
             fontFamily: {

@@ -1,7 +1,7 @@
 import { formatPercentage, formatUsdAmount } from "@/src/utils/format";
 import styles from "./styles.module.css";
 import { useTranslations } from "next-intl";
-import { Typography, type TypographyVariant } from "@metrom-xyz/ui";
+import { Typography, type TypographySize } from "@metrom-xyz/ui";
 import { ReferenceLine } from "recharts";
 import { CHART_MARGINS, type DistributedAreaDataPoint } from "..";
 import {
@@ -17,7 +17,7 @@ interface TooltipProps {
             payload: DistributedAreaDataPoint;
         },
     ];
-    size?: TypographyVariant;
+    size?: TypographySize;
     lowerUsdTarget: number;
     upperUsdTarget: number;
     totalRewardsUsd: number;
@@ -42,18 +42,18 @@ export function TooltipContent({
     return (
         <div className={styles.root}>
             <div className={styles.row}>
-                <Typography weight="medium" light uppercase variant={size}>
+                <Typography weight="medium" light uppercase size={size}>
                     {t("tvl")}
                 </Typography>
-                <Typography weight="medium" variant={size}>
+                <Typography weight="medium" size={size}>
                     {formatUsdAmount(usdTvl)}
                 </Typography>
             </div>
             <div className={styles.row}>
-                <Typography weight="medium" light uppercase variant={size}>
+                <Typography weight="medium" light uppercase size={size}>
                     {t("payout")}
                 </Typography>
-                <Typography weight="medium" variant={size}>
+                <Typography weight="medium" size={size}>
                     {formatUsdAmount(
                         totalRewardsUsd *
                             getDistributableRewardsPercentage(
@@ -66,10 +66,10 @@ export function TooltipContent({
                 </Typography>
             </div>
             <div className={styles.row}>
-                <Typography weight="medium" light uppercase variant={size}>
+                <Typography weight="medium" light uppercase size={size}>
                     {t("kpiReached")}
                 </Typography>
-                <Typography weight="medium" variant={size}>
+                <Typography weight="medium" size={size}>
                     {formatPercentage(
                         getReachedGoalPercentage(
                             usdTvl,

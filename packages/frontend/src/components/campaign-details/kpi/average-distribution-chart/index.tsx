@@ -58,7 +58,7 @@ export function AverageDistributionChart({
 
     return (
         <div className={styles.root}>
-            <Typography uppercase weight="medium" light variant="sm">
+            <Typography uppercase weight="medium" light size="sm">
                 {t("averageDistribution")}
             </Typography>
             <div className={styles.chartWrapper}>
@@ -121,7 +121,7 @@ function RankTooltip({ active, payload }: any) {
                     >
                         {t(payload[0].payload.type)}
                     </Typography>
-                    <Typography weight="bold" variant="xl2">
+                    <Typography weight="bold" size="xl2">
                         {formatPercentage(payload[0].value)}
                     </Typography>
                 </animated.div>

@@ -20,6 +20,10 @@
     @apply justify-self-end;
 }
 
+.rowWrapper {
+    @apply flex items-center h-6;
+}
+
 .row {
     @apply grid grid-cols-3 items-end sm:items-center;
 }

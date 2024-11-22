@@ -50,7 +50,7 @@ export function Rewards({ status, from, to, rewards, chainId }: RewardsProps) {
             >
                 <div className={styles.breakdownContainer}>
                     <Typography
-                        variant="sm"
+                        size="sm"
                         weight="medium"
                         uppercase
                         className={styles.tooltipTitle}
@@ -72,7 +72,7 @@ export function Rewards({ status, from, to, rewards, chainId }: RewardsProps) {
                                     />
                                     <Typography
                                         weight="medium"
-                                        variant="sm"
+                                        size="sm"
                                         className={styles.tooltipText}
                                     >
                                         {reward.token.symbol}
@@ -81,7 +81,7 @@ export function Rewards({ status, from, to, rewards, chainId }: RewardsProps) {
                                 <div>
                                     <Typography
                                         weight="medium"
-                                        variant="sm"
+                                        size="sm"
                                         className={styles.tooltipText}
                                     >
                                         {formatTokenAmount({
@@ -94,14 +94,14 @@ export function Rewards({ status, from, to, rewards, chainId }: RewardsProps) {
                     })}
                     <Typography
                         weight="medium"
-                        variant="sm"
+                        size="sm"
                         uppercase
                         className={styles.tooltipTitle}
                     >
                         {t("tooltip.totalUsdValue")}
                     </Typography>
                     <Typography
-                        variant="lg"
+                        size="lg"
                         weight="medium"
                         className={styles.tooltipText}
                     >
@@ -144,7 +144,7 @@ export function Rewards({ status, from, to, rewards, chainId }: RewardsProps) {
 
 export function SkeletonRewards() {
     return (
-        <div className={classNames(styles.root, styles.loading)}>
+        <div className={classNames(styles.rewardsWrapper, styles.loading)}>
             <div className={styles.tokenIcons}>
                 {new Array(5).fill(null).map((_, i) => {
                     return (
@@ -154,7 +154,7 @@ export function SkeletonRewards() {
                     );
                 })}
             </div>
-            <Skeleton width={40} />
+            <Skeleton className={styles.textRewards} />
         </div>
     );
 }

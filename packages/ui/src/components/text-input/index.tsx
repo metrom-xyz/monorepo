@@ -1,10 +1,8 @@
 import { forwardRef, useId } from "react";
 import type { ReactElement } from "react";
-import type { BaseInputProps } from "./commons/input";
-import { BaseInputWrapper } from "./commons/input";
+import type { BaseInputProps } from "../commons/input";
+import { BaseInputWrapper } from "../commons/input";
 import classNames from "classnames";
-
-import styles from "./commons/styles.module.css";
 
 export type TextInputProps = Omit<BaseInputProps<string>, "id"> & {
     id?: string;
@@ -15,12 +13,10 @@ export const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
         {
             id,
             label,
-            variant = "base",
+            size = "base",
             errorText,
             icon,
             iconPlacement,
-            action,
-            actionPlacement,
             error = false,
             className,
             value,
@@ -38,12 +34,12 @@ export const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
             <BaseInputWrapper
                 id={resolvedId}
                 label={label}
+                size={size}
+                loading={loading}
                 error={error}
                 errorText={errorText}
                 icon={icon}
                 iconPlacement={iconPlacement}
-                action={action}
-                actionPlacement={actionPlacement}
                 className={className}
             >
                 <input
@@ -53,15 +49,7 @@ export const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
                     value={value}
                     disabled={loading || disabled}
                     {...rest}
-                    className={classNames("input", styles.input, {
-                        [styles.inputError]: error,
-                        [styles[
-                            `input${variant[0].toUpperCase()}${variant.slice(1)}`
-                        ]]: true,
-                        [styles.inputLoading]: loading,
-                        [styles.hasLeftIcon]:
-                            !!icon && iconPlacement === "left",
-                    })}
+                    className={classNames("input", className)}
                 />
             </BaseInputWrapper>
         );

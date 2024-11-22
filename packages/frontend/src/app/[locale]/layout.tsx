@@ -12,7 +12,6 @@ import { getMessages, unstable_setRequestLocale } from "next-intl/server";
 import type { Locale } from "@rainbow-me/rainbowkit";
 import { ClientProviders } from "../../components/client-providers";
 import Fathom from "@/src/components/fathom";
-import { Toaster } from "sonner";
 import { routing } from "@/src/i18n/routing";
 import { notFound } from "next/navigation";
 import classNames from "classnames";
@@ -46,18 +45,6 @@ export default async function Layout({
             <body>
                 <NextIntlClientProvider messages={messages}>
                     <ClientProviders locale={locale as Locale}>
-                        <Toaster
-                            duration={5000}
-                            visibleToasts={5}
-                            expand
-                            position="bottom-right"
-                            toastOptions={{
-                                unstyled: true,
-                                classNames: {
-                                    toast: styles.toast,
-                                },
-                            }}
-                        />
                         <Fathom />
                         <div className={classNames(styles.root, styles.layout)}>
                             <Nav />

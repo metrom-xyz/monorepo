@@ -1,11 +1,12 @@
-import type { TypographyVariant } from "../typography";
+import classNames from "classnames";
+import type { TypographySize } from "../typography";
 
 import styles from "./styles.module.css";
 
-type SkeletonVariant = TypographyVariant;
+type Skeletonsize = TypographySize;
 
 export interface SkeletonProps {
-    variant?: SkeletonVariant;
+    size?: Skeletonsize;
     circular?: boolean;
     width?: number | string;
     height?: number | string;
@@ -13,7 +14,7 @@ export interface SkeletonProps {
 }
 
 export function Skeleton({
-    variant = "base",
+    size = "base",
     circular,
     width,
     height,
@@ -21,13 +22,21 @@ export function Skeleton({
     ...rest
 }: SkeletonProps) {
     return (
-        <div
+        <span
             style={{
                 maxWidth: width,
-                height: circular ? width : variant ? undefined : height,
+                height: circular ? width : size ? undefined : height,
             }}
-            className={`${styles.root} ${styles[variant]} ${circular ? styles.circular : ""} ${className}`}
+            className={classNames(styles.root, className, {
+                [styles[size]]: true,
+            })}
             {...rest}
-        />
+        >
+            <span
+                className={classNames("skeleton", styles.skeleton, {
+                    [styles.circular]: circular,
+                })}
+            ></span>
+        </span>
     );
 }

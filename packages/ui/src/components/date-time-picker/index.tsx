@@ -116,10 +116,10 @@ export const DateTimePicker = ({
             <div className={styles.divider} />
             <div className={styles.timeWrapper}>
                 <div className={styles.header}>
-                    <Typography uppercase variant="lg" weight="medium">
+                    <Typography uppercase size="lg" weight="medium">
                         HH
                     </Typography>
-                    <Typography uppercase variant="lg" weight="medium">
+                    <Typography uppercase size="lg" weight="medium">
                         MM
                     </Typography>
                 </div>

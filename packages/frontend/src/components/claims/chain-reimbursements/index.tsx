@@ -51,7 +51,7 @@ export function ChainReimbursements({
 
     return (
         <div className={styles.root}>
-            <Typography weight="medium" variant="xl" uppercase>
+            <Typography weight="medium" size="xl" uppercase>
                 {t("title")}
             </Typography>
             <div className={styles.listWrapper}>

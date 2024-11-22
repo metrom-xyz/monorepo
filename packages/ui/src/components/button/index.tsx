@@ -24,7 +24,7 @@ export interface BaseButtonProps {
     };
     icon?: FunctionComponent<SVGProps<SVGSVGElement>>;
     iconPlacement?: "left" | "right";
-    size?: "big" | "small" | "xsmall";
+    size?: "lg" | "sm" | "xs";
     variant?: "primary" | "secondary";
     border?: boolean;
     children?: ReactNode;
@@ -44,7 +44,7 @@ export type RefType<P extends ButtonProps> = ForwardedRef<
 const Component = (props: ButtonProps, ref: RefType<typeof props>) => {
     const {
         variant = "primary",
-        size = "big",
+        size = "lg",
         disabled,
         onClick,
         loading,
@@ -79,12 +79,19 @@ const Component = (props: ButtonProps, ref: RefType<typeof props>) => {
                     className?.icon,
                     styles.spinner,
                     styles.icon,
+                    {
+                        [styles[size]]: true,
+                    },
                 )}
             />
         );
     else if (hasIcon)
         resolvedIcon = (
-            <Icon className={classNames(className?.icon, styles.icon)} />
+            <Icon
+                className={classNames(className?.icon, styles.icon, {
+                    [styles[size]]: true,
+                })}
+            />
         );
 
     return (

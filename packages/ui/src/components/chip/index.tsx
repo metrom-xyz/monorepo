@@ -1,11 +1,11 @@
-import React, { type HTMLAttributes, type ReactNode } from "react";
+import { type HTMLAttributes, type ReactNode } from "react";
 import classNames from "classnames";
 import { Typography } from "../typography";
 
 import styles from "./styles.module.css";
 
 export interface BaseChipsProps {
-    size?: "big" | "small";
+    size?: "xs" | "sm";
     clickable?: boolean;
     active?: boolean;
     className?: { root?: string };
@@ -16,7 +16,7 @@ export type ChipProps = BaseChipsProps &
     Omit<HTMLAttributes<HTMLDivElement>, keyof BaseChipsProps>;
 
 export const Chip = ({
-    size = "small",
+    size = "sm",
     clickable,
     active,
     children,
@@ -32,7 +32,7 @@ export const Chip = ({
         })}
     >
         {typeof children === "string" ? (
-            <Typography variant="sm" weight="medium">
+            <Typography size={size} weight="medium">
                 {children}
             </Typography>
         ) : (

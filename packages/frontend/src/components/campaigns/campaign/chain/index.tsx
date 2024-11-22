@@ -1,8 +1,5 @@
-"use client";
-
+import { useChainData } from "@/src/hooks/useChainData";
 import { Skeleton } from "@metrom-xyz/ui";
-import { CHAIN_DATA } from "@/src/commons";
-import type { SupportedChain } from "@metrom-xyz/contracts";
 
 import styles from "./styles.module.css";
 
@@ -11,11 +8,12 @@ interface ChainProps {
 }
 
 export function Chain({ id }: ChainProps) {
-    const ChainIcon = CHAIN_DATA[id as SupportedChain].icon;
+    const chainData = useChainData(id);
+    const ChainIcon = chainData?.icon;
 
     return (
         <div className={styles.root}>
-            <ChainIcon className={styles.icon} />
+            {ChainIcon && <ChainIcon className={styles.icon} />}
         </div>
     );
 }

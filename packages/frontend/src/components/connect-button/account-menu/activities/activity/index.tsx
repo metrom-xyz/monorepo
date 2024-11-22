@@ -48,12 +48,7 @@ export function Activity({ chainId, transaction, payload }: ActivityProps) {
                 </div>
                 <div className={styles.leftBodyWrapper}>
                     <div className={styles.titleWrapper}>
-                        <Typography
-                            light
-                            weight="medium"
-                            uppercase
-                            variant="sm"
-                        >
+                        <Typography light weight="medium" uppercase size="sm">
                             {title}
                         </Typography>
                         {explorerLink && (
@@ -115,7 +110,7 @@ export function SkeletonActivity() {
                     <Skeleton width={60} className={styles.skeleton} />
                     <Skeleton
                         width={140}
-                        variant="lg"
+                        size="lg"
                         className={styles.skeleton}
                     />
                 </div>

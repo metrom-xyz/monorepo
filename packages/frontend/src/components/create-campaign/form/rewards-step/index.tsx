@@ -230,13 +230,13 @@ export function RewardsStep({
                         <Typography
                             uppercase
                             weight="medium"
-                            variant="sm"
+                            size="sm"
                             className={styles.previewLabel}
                         >
                             {t("newCampaign.form.rewards.title.rewards")}
                         </Typography>
                         <ErrorText
-                            variant="xs"
+                            size="xs"
                             weight="medium"
                             className={classNames(styles.error, {
                                 [styles.errorVisible]: !!rewardsError,
@@ -258,20 +258,10 @@ export function RewardsStep({
                         onUpdate={handleRewardTokenOnUpdate}
                     />
                     <div className={styles.totalValueWrapper}>
-                        <Typography
-                            uppercase
-                            variant="xs"
-                            weight="medium"
-                            light
-                        >
+                        <Typography uppercase size="xs" weight="medium" light>
                             {formatUsdAmount(totalRewardsUsdAmount)}
                         </Typography>
-                        <Typography
-                            uppercase
-                            variant="xs"
-                            weight="medium"
-                            light
-                        >
+                        <Typography uppercase size="xs" weight="medium" light>
                             {t("newCampaign.form.rewards.totalUsd")}
                         </Typography>
                     </div>
@@ -299,7 +289,7 @@ export function RewardsStep({
                             )}
                             <Typography
                                 weight="medium"
-                                variant="sm"
+                                size="sm"
                                 className={styles.rewardTokenSymbol}
                             >
                                 {rewardToken?.symbol ||
@@ -312,7 +302,7 @@ export function RewardsStep({
                     </div>
                     <Button
                         variant="secondary"
-                        size="small"
+                        size="sm"
                         icon={BorderedPlusIcon}
                         disabled={
                             rewards?.length === 5 ||

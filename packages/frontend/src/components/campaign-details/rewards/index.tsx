@@ -31,18 +31,18 @@ export function Rewards({ campaign, loading }: RewardsProps) {
 
     return (
         <div className={styles.root}>
-            <Typography variant="lg" weight="medium" uppercase>
+            <Typography size="lg" weight="medium" uppercase>
                 {t("title")}
             </Typography>
             <div className={styles.table}>
                 <div className={styles.header}>
-                    <Typography uppercase weight="medium" light variant="sm">
+                    <Typography uppercase weight="medium" light size="sm">
                         {t("token")}
                     </Typography>
-                    <Typography uppercase weight="medium" light variant="sm">
+                    <Typography uppercase weight="medium" light size="sm">
                         {t("inUsd")}
                     </Typography>
-                    <Typography uppercase weight="medium" light variant="sm">
+                    <Typography uppercase weight="medium" light size="sm">
                         {t("amount")}
                     </Typography>
                 </div>
@@ -57,11 +57,7 @@ export function Rewards({ campaign, loading }: RewardsProps) {
                                     address={reward.token.address}
                                     defaultText={reward.token.symbol}
                                 />
-                                <Typography
-                                    weight="medium"
-                                    variant="lg"
-                                    truncate
-                                >
+                                <Typography weight="medium" size="lg" truncate>
                                     {reward.token.symbol}
                                 </Typography>
                             </div>
@@ -70,7 +66,7 @@ export function Rewards({ campaign, loading }: RewardsProps) {
                                     ? formatUsdAmount(reward.amount.usdValue)
                                     : "-"}
                             </Typography>
-                            <Typography uppercase weight="medium" variant="lg">
+                            <Typography uppercase weight="medium" size="lg">
                                 {formatTokenAmount({
                                     amount: reward.amount.formatted,
                                 })}
@@ -82,14 +78,14 @@ export function Rewards({ campaign, loading }: RewardsProps) {
             <div className={styles.summary}>
                 <TextField
                     boxed
-                    variant="xl"
+                    size="xl"
                     label={t("daily")}
                     loading={loading || !campaign}
                     value={formatUsdAmount(dailyRewards)}
                 />
                 <TextField
                     boxed
-                    variant="xl"
+                    size="xl"
                     label={t("total")}
                     loading={loading || !campaign}
                     value={formatUsdAmount(campaign?.rewards.amountUsdValue)}
@@ -104,10 +100,10 @@ function SkeletonReward() {
         <div className={styles.row}>
             <div className={styles.nameContainer}>
                 <RemoteLogo loading />
-                <Skeleton variant="lg" width={80} />
+                <Skeleton size="lg" width={80} />
             </div>
             <Skeleton width={80} />
-            <Skeleton variant="lg" width={80} />
+            <Skeleton size="lg" width={80} />
         </div>
     );
 }

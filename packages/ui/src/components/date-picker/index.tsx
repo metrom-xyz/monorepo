@@ -74,7 +74,7 @@ export const DatePicker = ({
                 </div>
                 <Typography
                     uppercase
-                    variant="lg"
+                    size="lg"
                     weight="medium"
                     className={styles.headerMonth}
                 >
@@ -93,7 +93,7 @@ export const DatePicker = ({
                     return (
                         <Typography
                             key={dayOfWeek}
-                            variant="sm"
+                            size="sm"
                             uppercase
                             className={styles.weekDay}
                             weight="medium"

@@ -12,6 +12,7 @@ interface TextFieldProps
     label: string;
     value?: ReactNode;
     loading?: boolean;
+    skeletonWidth?: number;
     className?: string;
 }
 
@@ -21,8 +22,9 @@ export function TextField({
     label,
     value,
     loading,
+    skeletonWidth = 125,
+    size = "lg",
     className,
-    variant = "lg",
     ...rest
 }: TextFieldProps) {
     return (
@@ -33,13 +35,13 @@ export function TextField({
                 [styles.alignRight]: alignment === "right",
             })}
         >
-            <Typography uppercase weight="medium" light variant="sm">
+            <Typography uppercase weight="medium" light size="sm">
                 {label}
             </Typography>
             {loading ? (
-                <Skeleton variant={variant} width={125} />
+                <Skeleton size={size} width={skeletonWidth} />
             ) : typeof value === "string" ? (
-                <Typography weight="medium" variant={variant} {...rest}>
+                <Typography weight="medium" size={size} {...rest}>
                     {value}
                 </Typography>
             ) : (

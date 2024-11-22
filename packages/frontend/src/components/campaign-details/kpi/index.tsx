@@ -64,7 +64,7 @@ export function Kpi({ campaign, loading }: KpiProps) {
 
     return (
         <div className={styles.root}>
-            <Typography variant="lg" weight="medium" uppercase>
+            <Typography size="lg" weight="medium" uppercase>
                 {t("title")}
             </Typography>
             <div className={styles.card}>
@@ -72,21 +72,21 @@ export function Kpi({ campaign, loading }: KpiProps) {
                     <div className={styles.leftContentWrapper}>
                         <TextField
                             boxed
-                            variant="xl"
+                            size="xl"
                             label={t("lowerBound")}
                             loading={specificationLoading}
                             value={formatUsdAmount(lowerUsdTarget)}
                         />
                         <TextField
                             boxed
-                            variant="xl"
+                            size="xl"
                             label={t("upperBound")}
                             loading={specificationLoading}
                             value={formatUsdAmount(upperUsdTarget)}
                         />
                         <TextField
                             boxed
-                            variant="xl"
+                            size="xl"
                             label={t("minimumPayout")}
                             loading={specificationLoading}
                             value={formatPercentage(
@@ -97,7 +97,7 @@ export function Kpi({ campaign, loading }: KpiProps) {
                         />
                         <TextField
                             boxed
-                            variant="xl"
+                            size="xl"
                             label={t("goalReached")}
                             loading={specificationLoading}
                             value={formatPercentage(
@@ -106,12 +106,7 @@ export function Kpi({ campaign, loading }: KpiProps) {
                         />
                     </div>
                     <div className={styles.chart}>
-                        <Typography
-                            variant="sm"
-                            uppercase
-                            light
-                            weight="medium"
-                        >
+                        <Typography size="sm" uppercase light weight="medium">
                             {t("chart")}
                         </Typography>
                         <div className={styles.chartWrapper}>

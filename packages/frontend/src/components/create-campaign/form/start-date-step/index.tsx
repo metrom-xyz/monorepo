@@ -120,7 +120,7 @@ export function StartDateStep({
                         <Typography
                             uppercase
                             weight="medium"
-                            variant="sm"
+                            size="sm"
                             className={styles.previewLabel}
                         >
                             {t("title")}
@@ -129,7 +129,7 @@ export function StartDateStep({
                             (styles, error) =>
                                 !!error && (
                                     <animated.div style={styles}>
-                                        <ErrorText variant="xs" weight="medium">
+                                        <ErrorText size="xs" weight="medium">
                                             {t(error)}
                                         </ErrorText>
                                     </animated.div>
@@ -140,7 +140,7 @@ export function StartDateStep({
             >
                 <Typography
                     uppercase
-                    variant="lg"
+                    size="lg"
                     weight="medium"
                     className={styles.dateText}
                 >
@@ -157,7 +157,7 @@ export function StartDateStep({
                     />
                     <Button
                         variant="secondary"
-                        size="small"
+                        size="sm"
                         disabled={!unsavedChanges || !date}
                         onClick={handleDateOnApply}
                         className={{ root: styles.applyButton }}

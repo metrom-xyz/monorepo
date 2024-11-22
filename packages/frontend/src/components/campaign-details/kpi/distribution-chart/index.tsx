@@ -96,7 +96,7 @@ export function DistributionChart({
 
     return (
         <div className={styles.root}>
-            <Typography weight="medium" light uppercase variant="sm">
+            <Typography weight="medium" light uppercase size="sm">
                 {t("distributions")}
             </Typography>
             <ResponsiveContainer width="100%" className={styles.container}>
