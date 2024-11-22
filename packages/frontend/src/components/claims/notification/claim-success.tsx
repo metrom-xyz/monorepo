@@ -37,10 +37,10 @@ export function ClaimSuccess({
                         address={token.address}
                         defaultText={token.symbol}
                     />
-                    <Typography variant="lg" weight="medium">
+                    <Typography size="lg" weight="medium">
                         {token.symbol}
                     </Typography>
-                    <Typography variant="lg" weight="medium">
+                    <Typography size="lg" weight="medium">
                         {formatTokenAmount({ amount })}
                     </Typography>
                 </div>

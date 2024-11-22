@@ -136,16 +136,16 @@ export function TokenClaim({
                     address={tokenClaims.token.address}
                     defaultText={tokenClaims.token.symbol}
                 />
-                <Typography variant="lg" weight="medium">
+                <Typography size="lg" weight="medium">
                     {tokenClaims.token.symbol}
                 </Typography>
-                <Typography variant="lg" weight="medium">
+                <Typography size="lg" weight="medium">
                     {formatTokenAmount({ amount: tokenClaims.totalAmount })}
                 </Typography>
             </div>
             <Button
                 variant="secondary"
-                size="small"
+                size="sm"
                 disabled={simulateClaimAllError || claimed || disabled}
                 loading={simulatingClaimAll || claiming}
                 iconPlacement="right"
@@ -170,10 +170,10 @@ export function SkeletonTokenClaim() {
         <Card className={classNames(styles.root)}>
             <div className={styles.leftWrapper}>
                 <RemoteLogo loading />
-                <Skeleton width={60} variant="lg" />
-                <Skeleton width={70} variant="lg" />
+                <Skeleton width={60} size="lg" />
+                <Skeleton width={70} size="lg" />
             </div>
-            <Button variant="secondary" size="small" loading />
+            <Button variant="secondary" size="sm" loading />
         </Card>
     );
 }

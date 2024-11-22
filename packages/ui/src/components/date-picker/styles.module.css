@@ -70,7 +70,7 @@
 }
 
 .cellToday {
-    @apply bg-gray-50;
+    @apply bg-gray-100;
 }
 
 .cellDisabled {
@@ -80,7 +80,7 @@
 }
 
 .cellSelected {
-    @apply bg-gray-50 !text-gray-900;
+    @apply bg-gray-100 !text-gray-900;
 }
 
 .cellSelectable {

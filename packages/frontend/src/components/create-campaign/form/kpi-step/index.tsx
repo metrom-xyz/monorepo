@@ -217,7 +217,7 @@ export function KpiStep({
                                 {t("title")}
                             </Typography>
                             <ErrorText
-                                variant="xs"
+                                size="xs"
                                 weight="medium"
                                 level={!!error ? "error" : "warning"}
                                 className={classNames(styles.error, {
@@ -233,7 +233,7 @@ export function KpiStep({
                         </div>
                         <Switch
                             tabIndex={-1}
-                            size="big"
+                            size="lg"
                             checked={enabled}
                             onClick={handleSwitchOnClick}
                         />
@@ -245,10 +245,10 @@ export function KpiStep({
                 }}
             >
                 <div className={styles.tvlWrapper}>
-                    <Typography uppercase weight="medium" light variant="sm">
+                    <Typography uppercase weight="medium" light size="sm">
                         {t("currentTvl")}
                     </Typography>
-                    <Typography weight="medium" variant="sm">
+                    <Typography weight="medium" size="sm">
                         {formatUsdAmount(pool?.usdTvl)}
                     </Typography>
                 </div>
@@ -270,11 +270,11 @@ export function KpiStep({
                                 uppercase
                                 weight="medium"
                                 light
-                                variant="xs"
+                                size="xs"
                             >
                                 {t("simulation.title")}
                             </Typography>
-                            <Typography weight="medium" light variant="xs">
+                            <Typography weight="medium" light size="xs">
                                 {t("simulation.description")}
                             </Typography>
                         </div>
@@ -290,7 +290,7 @@ export function KpiStep({
                     </div>
                     <Button
                         variant="secondary"
-                        size="small"
+                        size="sm"
                         disabled={
                             !unsavedChanges ||
                             upperUsdTargetRaw === undefined ||

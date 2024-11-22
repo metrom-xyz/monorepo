@@ -55,19 +55,19 @@ export function Row({
                     })}
                 >
                     {loading ? (
-                        <Skeleton width={64} variant="sm" />
+                        <Skeleton width={64} size="sm" />
                     ) : (
-                        <Typography weight="medium" variant="lg" truncate>
+                        <Typography weight="medium" size="lg" truncate>
                             {pool.tokens
                                 .map((token) => token.symbol)
                                 .join(" / ")}
                         </Typography>
                     )}
                     {loading ? (
-                        <Skeleton width={32} variant="xs" />
+                        <Skeleton width={32} size="xs" />
                     ) : pool.fee ? (
                         <Typography
-                            variant="xs"
+                            size="xs"
                             weight="medium"
                             light
                             className={styles.fee}
@@ -78,9 +78,9 @@ export function Row({
                 </div>
             </div>
             {loading ? (
-                <Skeleton width={64} variant="sm" />
+                <Skeleton width={64} size="sm" />
             ) : (
-                <Typography weight="medium" variant="sm" light>
+                <Typography weight="medium" size="sm" light>
                     {formatUsdAmount(pool.usdTvl)}
                 </Typography>
             )}

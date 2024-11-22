@@ -110,7 +110,7 @@ export function RepartitionChart({
 
     return (
         <div className={styles.root}>
-            <Typography uppercase weight="medium" light variant="sm">
+            <Typography uppercase weight="medium" light size="sm">
                 {t("repartition")}
             </Typography>
             <div className={styles.container}>
@@ -173,7 +173,7 @@ function RankTooltip({ active, payload }: any) {
                 <animated.div style={style} className={styles.tooltipWrapper}>
                     <Typography
                         weight="bold"
-                        variant="xl"
+                        size="xl"
                         style={{
                             color,
                         }}
@@ -182,7 +182,7 @@ function RankTooltip({ active, payload }: any) {
                             ? `#${payload[0].payload.position}`
                             : t("others")}
                     </Typography>
-                    <Typography weight="bold" variant="xl2">
+                    <Typography weight="bold" size="xl2">
                         {formatPercentage(payload[0].value)}
                     </Typography>
                 </animated.div>

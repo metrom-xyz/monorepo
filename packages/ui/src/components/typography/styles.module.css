@@ -1,5 +1,5 @@
 .root {
-    @apply text-black font-sans;
+    @apply text-black font-normal font-sans;
 }
 
 .noWrap {
@@ -15,35 +15,35 @@
 }
 
 .xs {
-    @apply font-normal font-sans text-xs leading-[0.875rem];
+    @apply text-xs leading-4;
 }
 
 .sm {
-    @apply font-normal font-sans text-sm leading-4;
+    @apply text-xs leading-4 sm:text-sm;
 }
 
 .base {
-    @apply font-normal font-sans text-base;
+    @apply text-sm leading-5 sm:text-base;
 }
 
 .lg {
-    @apply font-normal font-sans text-lg;
+    @apply text-base leading-6 sm:text-lg;
 }
 
 .xl {
-    @apply font-normal font-sans text-xl leading-7;
+    @apply text-lg leading-6 sm:text-xl sm:leading-7;
 }
 
 .xl2 {
-    @apply font-normal font-sans text-xl2 leading-8;
+    @apply text-xl leading-7 sm:text-xl2 sm:leading-8;
 }
 
 .xl4 {
-    @apply font-normal font-sans text-xl4 leading-10;
+    @apply text-xl2 leading-8 sm:text-xl4 sm:leading-10;
 }
 
 .xl5 {
-    @apply font-normal font-sans text-xl5 leading-[3rem];
+    @apply text-xl4 leading-10 sm:text-xl5 sm:leading-[3rem];
 }
 
 .light {

@@ -47,13 +47,13 @@ export function Status({
                 })}
             />
             <div className={styles.statusText}>
-                <Typography variant="sm" weight="medium">
+                <Typography size="sm" weight="medium">
                     {text}
                 </Typography>
                 <Typography
                     className={styles.statusDuration}
                     light
-                    variant="sm"
+                    size="sm"
                     weight="medium"
                 >
                     {duration}

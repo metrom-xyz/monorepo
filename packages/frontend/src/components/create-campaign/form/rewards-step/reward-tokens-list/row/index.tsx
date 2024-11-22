@@ -55,26 +55,26 @@ export function Row({
                 {loading ? (
                     <Skeleton width={80} />
                 ) : (
-                    <Typography weight="medium" variant="lg">
+                    <Typography weight="medium" size="lg">
                         {tokenWithBalance?.token.symbol}
                     </Typography>
                 )}
             </div>
             {loading || !tokenWithBalance ? (
                 <div className={styles.balanceWrapper}>
-                    <Skeleton width={36} variant="sm" />
-                    <Skeleton width={36} variant="xs" />
+                    <Skeleton width={36} size="sm" />
+                    <Skeleton width={36} size="xs" />
                 </div>
             ) : (
                 <div className={styles.balanceWrapper}>
-                    <Typography variant="sm" weight="medium">
+                    <Typography size="sm" weight="medium">
                         {tokenWithBalance.balance
                             ? formatTokenAmount({
                                   amount: tokenWithBalance.balance.formatted,
                               })
                             : "-"}
                     </Typography>
-                    <Typography variant="xs" weight="medium" light>
+                    <Typography size="xs" weight="medium" light>
                         {tokenWithBalance.balance
                             ? formatUsdAmount(
                                   tokenWithBalance.balance.formatted *

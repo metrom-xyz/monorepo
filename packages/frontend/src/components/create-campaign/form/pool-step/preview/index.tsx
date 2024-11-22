@@ -19,19 +19,19 @@ export function PoolStepPreview({ chainId, tokens, fee, usdTvl }: PoolWithTvl) {
                 <div className={styles.poolInfo}>
                     <Typography
                         weight="medium"
-                        variant="lg"
+                        size="lg"
                         className={styles.poolName}
                     >
                         {tokens.map((token) => token.symbol).join(" / ")}
                     </Typography>
                     {fee && (
-                        <Typography variant="sm" light weight="medium">
+                        <Typography size="sm" light weight="medium">
                             {formatPercentage(fee)}
                         </Typography>
                     )}
                 </div>
             </div>
-            <Typography weight="medium" variant="sm" light>
+            <Typography weight="medium" size="sm" light>
                 {formatUsdAmount(usdTvl)}
             </Typography>
         </div>

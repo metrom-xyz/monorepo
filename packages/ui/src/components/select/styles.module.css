@@ -25,6 +25,8 @@
     @apply cursor-pointer
         p-3
         h-12
+        flex
+        items-center
         outline-none
         placeholder-opacity-20
         text-black

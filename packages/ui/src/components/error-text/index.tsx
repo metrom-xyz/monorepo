@@ -10,6 +10,7 @@ type ErrorTextProps = TypographyProps & {
 
 export function ErrorText({
     level = "error",
+    size = "base",
     children,
     className,
     ...rest
@@ -18,12 +19,14 @@ export function ErrorText({
         <div className={classNames("root", styles.root, className)}>
             <ErrorIcon
                 className={classNames("icon", styles.icon, {
+                    [styles[size]]: true,
                     [styles[level]]: true,
                 })}
             />
             <Typography
                 uppercase
                 {...rest}
+                size={size}
                 className={classNames("text", styles.text, {
                     [styles[level]]: true,
                 })}

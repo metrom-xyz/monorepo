@@ -129,7 +129,7 @@ export function Reward({
                         onBlur={handleRewardAmountOnBlur}
                         className={styles.rewardTokenAmountInput}
                     />
-                    <Typography weight="medium" light variant="xs">
+                    <Typography weight="medium" light size="xs">
                         {reward.amount.usdValue
                             ? formatUsdAmount(reward.amount.usdValue)
                             : "-"}
@@ -141,7 +141,7 @@ export function Reward({
                         address={reward.token.address}
                         chain={chain}
                     />
-                    <Typography variant="lg" weight="medium">
+                    <Typography size="lg" weight="medium">
                         {reward.token.symbol}
                     </Typography>
                     <div

@@ -42,19 +42,19 @@ export function Kpi({ poolUsdTvl, rewards, specification }: KpiProps) {
                 <div className={styles.header}>
                     <TextField
                         boxed
-                        variant="xl"
+                        size="xl"
                         label={t("lowerBound")}
                         value={formatUsdAmount(lowerUsdTarget)}
                     />
                     <TextField
                         boxed
-                        variant="xl"
+                        size="xl"
                         label={t("upperBound")}
                         value={formatUsdAmount(upperUsdTarget)}
                     />
                     <TextField
                         boxed
-                        variant="xl"
+                        size="xl"
                         label={t("minimumPayout")}
                         value={
                             minimumPayoutPercentage

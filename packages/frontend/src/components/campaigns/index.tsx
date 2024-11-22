@@ -247,22 +247,22 @@ export function Campaigns() {
                 </div>
             </div>
             <div className={classNames(styles.row, styles.header)}>
-                <Typography variant="sm" weight="medium">
+                <Typography size="sm" weight="medium">
                     {t("header.chain")}
                 </Typography>
-                <Typography variant="sm" weight="medium">
+                <Typography size="sm" weight="medium">
                     {t("header.dex")}
                 </Typography>
-                <Typography variant="sm" weight="medium">
+                <Typography size="sm" weight="medium">
                     {t("header.pool")}
                 </Typography>
-                <Typography variant="sm" weight="medium">
+                <Typography size="sm" weight="medium">
                     {t("header.status")}
                 </Typography>
-                <Typography variant="sm" weight="medium">
+                <Typography size="sm" weight="medium">
                     {t("header.apr")}
                 </Typography>
-                <Typography variant="sm" weight="medium">
+                <Typography size="sm" weight="medium">
                     {t("header.rewards")}
                 </Typography>
             </div>
@@ -285,10 +285,10 @@ export function Campaigns() {
                         <Typography uppercase weight="medium">
                             {t("empty.title")}
                         </Typography>
-                        <Typography variant="lg" weight="medium">
+                        <Typography size="lg" weight="medium">
                             {t("empty.description")}
                         </Typography>
-                        <Button size="small" onClick={handleCreateCampaign}>
+                        <Button size="sm" onClick={handleCreateCampaign}>
                             {t("empty.create")}
                         </Button>
                     </div>

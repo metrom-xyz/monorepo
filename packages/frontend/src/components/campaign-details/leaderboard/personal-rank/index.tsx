@@ -34,51 +34,53 @@ export function PersonalRank({
     return (
         <div className={styles.root}>
             <div className={styles.header}>
-                <Typography uppercase weight="medium" light variant="sm">
+                <Typography uppercase weight="medium" light size="sm">
                     {t("yourRank")}
                 </Typography>
-                <Typography uppercase weight="medium" light variant="sm">
+                <Typography uppercase weight="medium" light size="sm">
                     {t("account")}
                 </Typography>
-                <Typography uppercase weight="medium" light variant="sm">
+                <Typography uppercase weight="medium" light size="sm">
                     {t("rewardsDistributed")}
                 </Typography>
             </div>
-            {loading || accountConnecting || accountReconnecting ? (
-                <SkeletonRow />
-            ) : !connectedAddress ? (
-                <button
-                    onClick={openConnectModal}
-                    className={styles.connectWallet}
-                >
-                    <Typography weight="medium" variant="sm">
-                        {t("connect")}
+            <div className={styles.rowWrapper}>
+                {loading || accountConnecting || accountReconnecting ? (
+                    <SkeletonRow size="lg" />
+                ) : !connectedAddress ? (
+                    <button
+                        onClick={openConnectModal}
+                        className={styles.connectWallet}
+                    >
+                        <Typography weight="medium" size="sm">
+                            {t("connect")}
+                        </Typography>
+                    </button>
+                ) : !personalRank ? (
+                    <Typography weight="medium" light>
+                        {t("noRewards")}
                     </Typography>
-                </button>
-            ) : !personalRank ? (
-                <Typography weight="medium" light>
-                    {t("noRewards")}
-                </Typography>
-            ) : (
-                <div className={styles.row}>
-                    <div>
-                        <Typography weight="medium" light>
-                            # {personalRank.position}
+                ) : (
+                    <div className={styles.row}>
+                        <div>
+                            <Typography size="lg" weight="medium" light>
+                                # {personalRank.position}
+                            </Typography>
+                            <Typography size="lg" weight="medium">
+                                {formatPercentage(personalRank.percentage)}
+                            </Typography>
+                        </div>
+                        <Typography size="lg" weight="medium">
+                            {shortenAddress(connectedAddress)}
                         </Typography>
-                        <Typography weight="medium">
-                            {formatPercentage(personalRank.percentage)}
-                        </Typography>
+                        <RewardsBreakdown
+                            chain={chain}
+                            accrued={personalRank.accrued}
+                            usdValue={personalRank.usdValue}
+                        />
                     </div>
-                    <Typography weight="medium">
-                        {shortenAddress(connectedAddress)}
-                    </Typography>
-                    <RewardsBreakdown
-                        chain={chain}
-                        accrued={personalRank.accrued}
-                        usdValue={personalRank.usdValue}
-                    />
-                </div>
-            )}
+                )}
+            </div>
         </div>
     );
 }

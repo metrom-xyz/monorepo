@@ -223,13 +223,13 @@ export function ChainOverview({
         <Card className={classNames(styles.root, className)}>
             <div className={styles.chainNameWrapper}>
                 <ChainIcon className={styles.chainIcon} />
-                <Typography variant="xl4" truncate>
+                <Typography size="xl4" truncate>
                     {chainWithRewardsData.chain.name}
                 </Typography>
             </div>
             {chainWithRewardsData.reimbursements.length > 0 && (
                 <Button
-                    size="xsmall"
+                    size="xs"
                     disabled={simulateRecoverAllErrored}
                     loading={simulatingRecoverAll || recovering}
                     iconPlacement="right"
@@ -244,7 +244,7 @@ export function ChainOverview({
             )}
             {chainWithRewardsData.claims.length > 0 && (
                 <Button
-                    size="xsmall"
+                    size="xs"
                     disabled={simulateClaimAllErrored}
                     loading={simulatingClaimAll || claiming}
                     iconPlacement="right"
@@ -266,9 +266,9 @@ export function SkeletonChainOverview() {
         <Card className={styles.root}>
             <div className={styles.chainNameWrapper}>
                 <Skeleton className={styles.chainIcon} />
-                <Skeleton width={100} variant="xl2" />
+                <Skeleton width={100} size="xl2" />
             </div>
-            <Button size="xsmall" loading />
+            <Button size="xs" loading />
         </Card>
     );
 }
