@@ -1,5 +1,12 @@
 .root {
-    @apply flex flex-col gap-6 w-full p-4 bg-white rounded-2xl;
+    @apply flex
+        flex-col
+        gap-6
+        w-full
+        sm:max-w-80
+        p-4
+        bg-white
+        rounded-2xl;
 }
 
 .tooltipWrapper {

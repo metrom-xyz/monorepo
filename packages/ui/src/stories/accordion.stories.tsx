@@ -3,8 +3,6 @@ import { Accordion } from "../components/accordion/index";
 import { Typography } from "../components/typography";
 import { TextInput } from "../components/text-input";
 
-import styles from "./styles.module.css";
-
 const meta: Meta = {
     title: "Surfaces/Accordion",
     component: Accordion,
@@ -25,7 +23,7 @@ export const Base: Story = {
     render: (args) => {
         return (
             <Accordion {...args}>
-                <div className={styles.accordionContent}>
+                <div className="flex flex-col gap-4 p-4">
                     <Typography uppercase>
                         My custom accordion content
                     </Typography>

@@ -94,7 +94,7 @@ export function Leaderboard({ campaign, loading }: LeaderboardProps) {
                         {distributionBreakdown && t("subtitleLatest")}
                     </Typography>
                     {loading || loadingDistributionBreakdown ? (
-                        <Skeleton width={130} />
+                        <Skeleton width={130} size="sm" />
                     ) : (
                         <Typography weight="medium" size="sm" light uppercase>
                             {distributionBreakdown
@@ -107,13 +107,13 @@ export function Leaderboard({ campaign, loading }: LeaderboardProps) {
                 </div>
             </div>
             <div className={styles.cardsWrapper}>
-                <div className={styles.card}>
+                <div className={styles.leaderboardWrapper}>
                     <PersonalRank
                         chain={campaign?.chainId}
                         loading={loading || loadingDistributionBreakdown}
                         personalRank={personalRank}
                     />
-                    <div className={styles.tableWrapper}>
+                    <Card className={styles.tableWrapper}>
                         <div className={styles.header}>
                             <Typography
                                 uppercase
@@ -203,15 +203,13 @@ export function Leaderboard({ campaign, loading }: LeaderboardProps) {
                                 {t("noRewards")}
                             </Typography>
                         )}
-                    </div>
+                    </Card>
                 </div>
-                <div className={styles.repartion}>
-                    <RepartitionChart
-                        loading={loading}
-                        distributionBreakdown={distributionBreakdown}
-                        personalRank={personalRank}
-                    />
-                </div>
+                <RepartitionChart
+                    loading={loading}
+                    distributionBreakdown={distributionBreakdown}
+                    personalRank={personalRank}
+                />
             </div>
         </div>
     );
