@@ -65,7 +65,7 @@
 }
 
 .inputIcon {
-    @apply h-5 w-5 text-black;
+    @apply text-black;
 }
 
 .inputIcon.xs {
@@ -76,7 +76,10 @@
     @apply h-4 w-4;
 }
 
-.inputIcon.base,
+.inputIcon.base {
+    @apply h-[1.125rem] w-[1.125rem];
+}
+
 .inputIcon.lg {
     @apply h-5 w-5;
 }

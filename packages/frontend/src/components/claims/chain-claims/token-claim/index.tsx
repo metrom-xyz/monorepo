@@ -166,6 +166,8 @@ export function TokenClaim({
 }
 
 export function SkeletonTokenClaim() {
+    const t = useTranslations("rewards.claims");
+
     return (
         <Card className={classNames(styles.root)}>
             <div className={styles.leftWrapper}>
@@ -173,7 +175,9 @@ export function SkeletonTokenClaim() {
                 <Skeleton width={60} size="lg" />
                 <Skeleton width={70} size="lg" />
             </div>
-            <Button variant="secondary" size="sm" loading />
+            <Button variant="secondary" size="sm" loading>
+                {t("loading")}
+            </Button>
         </Card>
     );
 }

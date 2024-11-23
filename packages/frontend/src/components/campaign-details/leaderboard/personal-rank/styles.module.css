@@ -21,7 +21,7 @@
 }
 
 .rowWrapper {
-    @apply flex items-center h-6;
+    @apply w-full flex items-center h-6;
 }
 
 .row {

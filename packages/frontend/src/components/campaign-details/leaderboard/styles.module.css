@@ -11,33 +11,27 @@
 }
 
 .cardsWrapper {
-    @apply flex flex-col sm:flex-row gap-4;
+    @apply flex flex-col sm:flex-row justify-between gap-4;
 }
 
-.card {
-    @apply w-full
-        flex
-        flex-col
-        flex-[2]
-        min-h-[424px]
-        gap-4;
+.cardsWrapper > :first-child {
+    @apply flex-[2];
 }
 
-.card.noDistribution {
+.cardsWrapper > :last-child {
+    @apply flex-[1];
+}
+
+.leaderboardWrapper {
+    @apply w-full flex flex-col gap-4;
+}
+
+.leaderboardWrapper.noDistribution {
     @apply bg-white items-center justify-center gap-2;
 }
 
-.repartion {
-    @apply w-full
-        flex-[1]
-        px-4
-        py-3.5
-        bg-white
-        rounded-2xl;
-}
-
 .tableWrapper {
-    @apply flex flex-col gap-7 sm:px-4 bg-white rounded-2xl p-4;
+    @apply flex flex-col gap-7 sm:px-4;
 }
 
 .header {
@@ -53,7 +47,7 @@
 }
 
 .row {
-    @apply grid grid-cols-3 items-end sm:items-center;
+    @apply w-full grid grid-cols-3 items-end sm:items-center;
 }
 
 .row > :first-child {

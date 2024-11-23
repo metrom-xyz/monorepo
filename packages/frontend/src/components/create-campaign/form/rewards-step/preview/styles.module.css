@@ -80,7 +80,7 @@
 }
 
 .rewardSkeleton {
-    @apply h-[68px]
+    @apply h-[70px]
         w-full 
         bg-gray-100
         rounded-lg

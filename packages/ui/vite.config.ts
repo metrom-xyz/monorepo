@@ -4,7 +4,7 @@ import { peerDependencies, devDependencies } from "./package.json";
 export default defineConfig({
     build: {
         cssCodeSplit: false,
-        emptyOutDir: false,
+        emptyOutDir: true,
         lib: {
             entry: "src/index.ts",
             formats: ["es"],

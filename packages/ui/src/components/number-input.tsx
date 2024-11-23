@@ -1,7 +1,7 @@
 import { forwardRef, useId } from "react";
 import type { ReactElement } from "react";
 import { type NumericFormatProps, NumericFormat } from "react-number-format";
-import { type BaseInputProps, BaseInputWrapper } from "../commons/input";
+import { type BaseInputProps, BaseInputWrapper } from "./commons/input";
 
 export { type NumberFormatValues } from "react-number-format";
 

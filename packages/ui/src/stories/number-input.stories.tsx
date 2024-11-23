@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { NumberInput } from "../components/number-input/index";
+import { NumberInput } from "../components/number-input";
 import { SettingsIcon } from "../assets/settings";
 
 const meta: Meta = {

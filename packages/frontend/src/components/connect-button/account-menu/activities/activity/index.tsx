@@ -67,6 +67,7 @@ export function Activity({ chainId, transaction, payload }: ActivityProps) {
                         <Link
                             href={`/campaigns/${chainId}/${payload.id}`}
                             onClick={handleActivityOnClick}
+                            className={styles.campaignLink}
                         >
                             <Typography className={styles.seeCampaignLink}>
                                 {t("seeCampaign")}
@@ -103,16 +104,16 @@ export function SkeletonActivity() {
     return (
         <div className={styles.root}>
             <div className={styles.leftWrapper}>
-                <Skeleton
-                    className={classNames(styles.iconWrapper, styles.skeleton)}
-                />
+                <div className={styles.iconWrapper}>
+                    <Skeleton className={styles.skeleton} />
+                </div>
                 <div className={styles.leftBodyWrapper}>
-                    <Skeleton width={60} className={styles.skeleton} />
                     <Skeleton
-                        width={140}
-                        size="lg"
+                        width={60}
+                        size="sm"
                         className={styles.skeleton}
                     />
+                    <Skeleton width={140} className={styles.skeleton} />
                 </div>
             </div>
             <Skeleton width={50} className={styles.skeleton} />

@@ -18,3 +18,7 @@
 .chainIcon {
     @apply w-10 !h-10;
 }
+
+.buttonsWrapper {
+    @apply flex gap-2;
+}
