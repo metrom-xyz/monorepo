@@ -117,13 +117,13 @@ export function DistributionChart({
                         dataKey="distributed"
                         stackId="distribution"
                         fill="#6CFF95"
-                        barSize={50}
+                        maxBarSize={50}
                     />
                     <Bar
                         dataKey="reimbursed"
                         stackId="distribution"
                         fill="#D1D5DB"
-                        barSize={50}
+                        maxBarSize={50}
                     />
 
                     <Tooltip

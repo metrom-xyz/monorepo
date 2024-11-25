@@ -30,6 +30,10 @@
     @apply bg-white items-center justify-center gap-2;
 }
 
+.noDistribution {
+    @apply min-h-[380px] flex flex-col items-center justify-center gap-2;
+}
+
 .tableWrapper {
     @apply flex flex-col gap-7 sm:px-4;
 }

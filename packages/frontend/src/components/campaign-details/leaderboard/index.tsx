@@ -9,7 +9,7 @@ import { RepartitionChart } from "./repartition-chart";
 import { useAccount } from "wagmi";
 import type { Address } from "viem";
 import { RewardsBreakdown } from "./rewards-breakdown";
-import { formatDateTime, formatPercentage } from "@/src/utils/format";
+import { formatPercentage } from "@/src/utils/format";
 import { useMemo } from "react";
 import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
 import { getAddressExplorerLink } from "@/src/utils/dex";
@@ -71,9 +71,7 @@ export function Leaderboard({ campaign, loading }: LeaderboardProps) {
                         </Typography>
                     </div>
                 </div>
-                <Card
-                    className={classNames(styles.card, styles.noDistribution)}
-                >
+                <Card className={classNames(styles.noDistribution)}>
                     <NoDistributionsIcon />
                     <Typography uppercase weight="medium" size="sm">
                         {t("noDistribution")}

@@ -72,7 +72,13 @@ export function Campaign({ campaign }: CampaignProps) {
 export function SkeletonCampaign() {
     return (
         <>
-            <Card className={classNames(styles.root, styles.noMobile)}>
+            <Card
+                className={classNames(
+                    styles.root,
+                    styles.loading,
+                    styles.noMobile,
+                )}
+            >
                 <SkeletonChain />
                 <SkeletonDex />
                 <div className={styles.poolContainer}>
