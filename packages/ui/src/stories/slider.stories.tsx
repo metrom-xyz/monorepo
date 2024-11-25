@@ -9,6 +9,21 @@ const meta: Meta = {
     parameters: {
         layout: "centered",
     },
+    decorators: [
+        (Story) => (
+            <div className="w-full sm:w-96">
+                <Story />
+            </div>
+        ),
+    ],
+    argTypes: {
+        min: {
+            type: "number",
+        },
+        max: {
+            type: "number",
+        },
+    },
     tags: ["autodocs"],
 } satisfies Meta<typeof SliderInput>;
 
@@ -27,6 +42,8 @@ export const Base: Story = {
             <SliderInput
                 {...args}
                 value={value}
+                max={args.max || 80}
+                formattedValue={`${((value / Number(100)) * 100).toFixed(0)}%`}
                 onChange={handleValueOnChange}
             />
         );
