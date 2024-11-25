@@ -10,6 +10,7 @@ export type SliderInputProps = Omit<
     "id" | "icon" | "iconPlacement" | "action" | "actionPlacement"
 > & {
     id?: string;
+    formattedValue?: string | number;
 };
 
 export const SliderInput = forwardRef<HTMLInputElement, SliderInputProps>(
@@ -18,16 +19,17 @@ export const SliderInput = forwardRef<HTMLInputElement, SliderInputProps>(
             id,
             label,
             size,
+            disabled,
             errorText,
             error = false,
-            className,
             value = 0,
+            formattedValue,
             min = 0,
             max = 100,
             loading,
-            disabled,
+            className,
             ...rest
-        },
+        }: SliderInputProps,
         ref,
     ): ReactElement {
         const generatedId = useId();
@@ -52,7 +54,7 @@ export const SliderInput = forwardRef<HTMLInputElement, SliderInputProps>(
                             [styles.loading]: loading,
                         })}
                     >
-                        {((value / Number(max)) * 100).toFixed(0)}%
+                        {formattedValue || value}
                     </Typography>
                     <input
                         id={resolvedId}
