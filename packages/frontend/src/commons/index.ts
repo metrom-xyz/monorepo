@@ -39,6 +39,7 @@ import {
 } from "./chains";
 
 export interface ChainData {
+    name: string;
     metromContract: ChainContract;
     blockExplorers: Chain["blockExplorers"];
     icon: FunctionComponent<SVGIcon>;

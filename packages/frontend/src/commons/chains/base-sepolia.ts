@@ -7,6 +7,7 @@ import { UniswapLogo } from "@/src/assets/logos/dexes/uniswap";
 import { baseSepolia } from "viem/chains";
 
 export const baseSepoliaData: ChainData = {
+    name: baseSepolia.name,
     metromContract: ADDRESS[SupportedChain.BaseSepolia],
     blockExplorers: baseSepolia.blockExplorers,
     icon: BaseLogo,

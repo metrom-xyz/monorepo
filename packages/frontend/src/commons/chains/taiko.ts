@@ -7,6 +7,7 @@ import { taiko } from "viem/chains";
 import { UniswapLogo } from "@/src/assets/logos/dexes/uniswap";
 
 export const taikoData: ChainData = {
+    name: taiko.name,
     metromContract: ADDRESS[SupportedChain.Taiko],
     blockExplorers: taiko.blockExplorers,
     icon: TaikoLogo,

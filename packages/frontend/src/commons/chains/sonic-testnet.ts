@@ -31,6 +31,7 @@ export const sonicTestnet = defineChain({
 });
 
 export const sonicTestnetData: ChainData = {
+    name: sonicTestnet.name,
     metromContract: ADDRESS[SupportedChain.SonicTestnet]!,
     blockExplorers: {
         default: {

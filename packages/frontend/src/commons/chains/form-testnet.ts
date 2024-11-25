@@ -33,6 +33,7 @@ export const formTestnet = defineChain({
 });
 
 export const formTestnetData: ChainData = {
+    name: formTestnet.name,
     metromContract: ADDRESS[SupportedChain.FormTestnet],
     blockExplorers: formTestnet.blockExplorers,
     icon: FormLogo,

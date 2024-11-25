@@ -7,6 +7,7 @@ import { scroll } from "viem/chains";
 import { UniswapLogo } from "@/src/assets/logos/dexes/uniswap";
 
 export const scrollData: ChainData = {
+    name: scroll.name,
     metromContract: ADDRESS[SupportedChain.Scroll],
     blockExplorers: scroll.blockExplorers,
     icon: ScrollLogo,

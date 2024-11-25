@@ -8,6 +8,7 @@ import { base } from "viem/chains";
 // import { UniswapLogo } from "@/src/assets/logos/dexes/uniswap";
 
 export const baseData: ChainData = {
+    name: base.name,
     metromContract: ADDRESS[SupportedChain.Base],
     blockExplorers: base.blockExplorers,
     icon: BaseLogo,

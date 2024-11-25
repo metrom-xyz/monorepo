@@ -6,6 +6,7 @@ import { type ChainData } from "..";
 import { mode } from "viem/chains";
 
 export const modeData: ChainData = {
+    name: mode.name,
     metromContract: ADDRESS[SupportedChain.Mode],
     blockExplorers: mode.blockExplorers,
     icon: ModeLogo,
