@@ -6,6 +6,7 @@ import { type ChainData } from "../index";
 import { holesky } from "viem/chains";
 
 export const holeskyData: ChainData = {
+    name: holesky.name,
     metromContract: ADDRESS[SupportedChain.Holesky],
     blockExplorers: holesky.blockExplorers,
     icon: EthLogo,

@@ -6,6 +6,7 @@ import { CeloLogo } from "../../assets/logos/chains/celo";
 import { celoAlfajores } from "viem/chains";
 
 export const celoAlfajoresData: ChainData = {
+    name: celoAlfajores.name,
     metromContract: ADDRESS[SupportedChain.CeloAlfajores],
     blockExplorers: celoAlfajores.blockExplorers,
     icon: CeloLogo,

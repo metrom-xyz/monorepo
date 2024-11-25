@@ -3,9 +3,10 @@ import { SupportedChain, ADDRESS } from "@metrom-xyz/contracts";
 import { MantleLogo } from "../../assets/logos/chains/mantle";
 import { SwapsicleLogo } from "../../assets/logos/dexes/swapsicle";
 import { type ChainData } from "..";
-import { mantleSepoliaTestnet } from "viem/chains";
+import { mantaSepoliaTestnet, mantleSepoliaTestnet } from "viem/chains";
 
 export const mantleSepoliaData: ChainData = {
+    name: mantaSepoliaTestnet.name,
     metromContract: ADDRESS[SupportedChain.MantleSepolia],
     blockExplorers: mantleSepoliaTestnet.blockExplorers,
     icon: MantleLogo,
