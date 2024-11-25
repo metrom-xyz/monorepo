@@ -176,8 +176,8 @@
                 "title": "Set KPI",
                 "currentTvl": "Current TVL",
                 "rangedTvl": {
-                    "lowerBound": "Lower bound",
-                    "upperBound": "Upper bound"
+                    "lowerBound": "Lower TVL bound",
+                    "upperBound": "Upper TVL bound"
                 },
                 "errors": {
                     "missing": "Bound missing",
