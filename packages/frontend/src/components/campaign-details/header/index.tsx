@@ -1,5 +1,4 @@
 import { useCallback } from "react";
-import type { NamedCampaign } from "@/src/hooks/useCampaign";
 import { Skeleton, Typography, Button } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
 import { useRouter } from "@/src/i18n/routing";
@@ -12,6 +11,7 @@ import { formatPercentage } from "@/src/utils/format";
 import { trackFathomEvent } from "@/src/utils/fathom";
 import { PoolRemoteLogo } from "../../pool-remote-logo";
 import { AprChip } from "../../apr-chip";
+import type { NamedCampaign } from "@/src/hooks/useCampaigns";
 
 import styles from "./styles.module.css";
 

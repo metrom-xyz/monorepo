@@ -1,4 +1,3 @@
-import type { NamedCampaign } from "@/src/hooks/useCampaign";
 import { TextField, Typography } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
 import { formatPercentage, formatUsdAmount } from "@/src/utils/format";
@@ -12,6 +11,7 @@ import { KpiSimulationChart } from "../../kpi-simulation-chart";
 import { useKpiMeasurements } from "@/src/hooks/useKpiMeasurements";
 import { DistributionChart } from "./distribution-chart";
 import { AverageDistributionChart } from "./average-distribution-chart";
+import type { NamedCampaign } from "@/src/hooks/useCampaigns";
 
 import styles from "./styles.module.css";
 
