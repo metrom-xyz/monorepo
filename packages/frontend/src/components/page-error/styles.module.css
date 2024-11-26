@@ -1,0 +1,7 @@
+.root {
+    @apply flex flex-col justify-center items-center gap-10;
+}
+
+.buttonsWrapper {
+    @apply flex gap-2;
+}
