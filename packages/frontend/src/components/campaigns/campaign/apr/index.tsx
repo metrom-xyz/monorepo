@@ -19,5 +19,5 @@ export function Apr({ apr, kpi }: AprProps) {
 }
 
 export function SkeletonApr() {
-    return <Skeleton className={styles.skeleton} />;
+    return <Skeleton width={80} size="xl" />;
 }

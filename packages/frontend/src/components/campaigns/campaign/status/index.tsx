@@ -66,7 +66,7 @@ export function Status({
 export function SkeletonStatus() {
     return (
         <div className={styles.statusRoot}>
-            <Skeleton className={styles.statusDot} />
+            <Skeleton width={8} circular />
             <div className={styles.statusText}>
                 <Skeleton width={50} />
                 <Skeleton width={30} className={styles.statusDuration} />
