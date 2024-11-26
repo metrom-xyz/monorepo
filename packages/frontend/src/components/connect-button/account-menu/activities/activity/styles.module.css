@@ -44,12 +44,24 @@
     @apply w-fit;
 }
 
-.campaignLink > p {
-    @apply no-underline;
+.campaignNameWrapper {
+    @apply w-full
+        flex
+        items-center
+        gap-2
+        transition-opacity
+        duration-200
+        ease-in-out
+        hover:opacity-70;
+}
+
+.dexIcon,
+.dexIcon > svg {
+    @apply w-4 h-4;
 }
 
 .seeCampaignLink {
-    @apply underline;
+    @apply no-underline;
 }
 
 .claimRewardWrapper {

@@ -3,14 +3,17 @@ import { NewCampaignIcon } from "@/src/assets/new-campaign-icon";
 import type { Activity } from "@metrom-xyz/sdk";
 import dayjs from "dayjs";
 import { useTranslations } from "next-intl";
-import { Typography, Skeleton, Button } from "@metrom-xyz/ui";
+import { Typography, Skeleton } from "@metrom-xyz/ui";
 import { Link } from "@/src/i18n/routing";
-import classNames from "classnames";
 import { formatTokenAmount } from "@/src/utils/format";
 import { trackFathomEvent } from "@/src/utils/fathom";
 import { RemoteLogo } from "@/src/components/remote-logo";
 import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
 import { getTxExplorerLink } from "@/src/utils/dex";
+import { useCampaign } from "@/src/hooks/useCampaign";
+import { getCampaigPoolName } from "@/src/utils/campaign";
+import { PoolRemoteLogo } from "@/src/components/pool-remote-logo";
+import { useDexesInChain } from "@/src/hooks/useDexesInChain";
 
 import styles from "./styles.module.css";
 
@@ -20,6 +23,12 @@ interface ActivityProps extends Activity {
 
 export function Activity({ chainId, transaction, payload }: ActivityProps) {
     const t = useTranslations("accountMenu.activities");
+
+    const dexes = useDexesInChain(chainId);
+    const { campaign, loading } = useCampaign(
+        chainId,
+        payload.type === "create-campaign" ? payload.id : undefined,
+    );
 
     const time = dayjs.unix(transaction.timestamp).to(dayjs(), true);
     const timeAgo = t("timeAgo", { time });
@@ -35,6 +44,9 @@ export function Activity({ chainId, transaction, payload }: ActivityProps) {
                   Icon: ClaimReward,
                   title: t("claimReward"),
               };
+
+    const dex = dexes.find((dex) => dex.slug === campaign?.pool.dex);
+    const DexLogo = dex?.logo;
 
     function handleActivityOnClick() {
         trackFathomEvent("CLICK_ACTIVITY");
@@ -64,15 +76,59 @@ export function Activity({ chainId, transaction, payload }: ActivityProps) {
                         )}
                     </div>
                     {payload.type === "create-campaign" ? (
-                        <Link
-                            href={`/campaigns/${chainId}/${payload.id}`}
-                            onClick={handleActivityOnClick}
-                            className={styles.campaignLink}
-                        >
-                            <Typography className={styles.seeCampaignLink}>
-                                {t("seeCampaign")}
-                            </Typography>
-                        </Link>
+                        <>
+                            {!loading && campaign ? (
+                                <Link
+                                    href={`/campaigns/${chainId}/${payload.id}`}
+                                    onClick={handleActivityOnClick}
+                                >
+                                    <div className={styles.campaignNameWrapper}>
+                                        {DexLogo && (
+                                            <DexLogo
+                                                className={styles.dexIcon}
+                                            />
+                                        )}
+                                        <PoolRemoteLogo
+                                            size="sm"
+                                            chain={campaign.chainId}
+                                            tokens={campaign.pool.tokens.map(
+                                                (token) => ({
+                                                    address: token.address,
+                                                    defaultText: token.symbol,
+                                                }),
+                                            )}
+                                        />
+                                        <Typography
+                                            className={styles.seeCampaignLink}
+                                            weight="medium"
+                                        >
+                                            {getCampaigPoolName(campaign)}
+                                        </Typography>
+                                    </div>
+                                </Link>
+                            ) : (
+                                <div className={styles.campaignNameWrapper}>
+                                    <Skeleton
+                                        width={16}
+                                        circular
+                                        className={styles.skeleton}
+                                    />
+                                    <PoolRemoteLogo
+                                        size="sm"
+                                        tokens={[
+                                            { address: "0x1" },
+                                            { address: "0x2" },
+                                        ]}
+                                        loading
+                                        className={{ root: styles.skeleton }}
+                                    />
+                                    <Skeleton
+                                        width={90}
+                                        className={styles.skeleton}
+                                    />
+                                </div>
+                            )}
+                        </>
                     ) : (
                         <div className={styles.claimRewardWrapper}>
                             <RemoteLogo
