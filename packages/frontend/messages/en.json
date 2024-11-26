@@ -18,7 +18,12 @@
     },
     "notFound": {
         "title": "Page not found!",
-        "button": "Take me back to Campaigns"
+        "button": "Back to Campaigns"
+    },
+    "error": {
+        "title": "Something went wrong!",
+        "home": "Back to Campaigns",
+        "retry": "Try again"
     },
     "allCampaigns": {
         "title": "all campaigns",

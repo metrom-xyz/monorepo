@@ -7,7 +7,7 @@ import { FibonacciLogo } from "@/src/assets/logos/dexes/fibonacci";
 
 export const formTestnet = defineChain({
     id: 132_902,
-    name: "Form testnet",
+    name: "Form Testnet",
     nativeCurrency: {
         decimals: 18,
         name: "Ether",
