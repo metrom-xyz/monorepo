@@ -380,8 +380,7 @@
         "activities": {
             "claimReward": "Claim reward",
             "createCampaign": "Create campaign",
-            "timeAgo": "{time} ago",
-            "seeCampaign": "See campaign"
+            "timeAgo": "{time} ago"
         }
     },
     "simulationChart": {
