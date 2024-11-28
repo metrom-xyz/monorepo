@@ -18,7 +18,6 @@ export function PageError({ error, reset }: PageErrorProps) {
             <Typography size="xl4" weight="medium">
                 {t("title")}
             </Typography>
-            <Typography>{error.message}</Typography>
             <div className={styles.buttonsWrapper}>
                 <Link href="/">
                     <Button size="sm">{t("home")}</Button>

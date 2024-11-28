@@ -67,8 +67,8 @@ export const DatePicker = ({
         <div className={classNames(styles.root)}>
             <div className={classNames(styles.header)}>
                 <div
-                    className={styles.headerIconWrapper}
                     onClick={handlePreviousMonth}
+                    className={styles.headerIconWrapper}
                 >
                     <ChevronLeft />
                 </div>
@@ -81,8 +81,8 @@ export const DatePicker = ({
                     {lookupDate.format("MMM YYYY")}
                 </Typography>
                 <div
-                    className={styles.headerIconWrapper}
                     onClick={handleNextMonth}
+                    className={styles.headerIconWrapper}
                 >
                     <ChevronRight />
                 </div>
