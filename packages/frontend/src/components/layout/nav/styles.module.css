@@ -25,7 +25,7 @@
 }
 
 .menuIconWrapper {
-    @apply sm:hidden
+    @apply md:hidden
         bg-white
         rounded-md
         p-1.5
@@ -62,7 +62,7 @@
     @apply flex-wrap
         w-full
         hidden
-        sm:flex
+        md:flex
         sm:w-fit
         flex-row
         gap-2
@@ -70,7 +70,8 @@
         sm:mt-0
         justify-center
         sm:absolute
-        sm:left-1/2
+        sm:left-[42%]
+        lg:left-1/2
         sm:-translate-x-1/2;
 }
 
