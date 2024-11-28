@@ -237,7 +237,7 @@ export function EndDateStep({
                             {t("campaignDuration")}
                         </Typography>
                         <Typography uppercase size="sm" weight="medium">
-                            {startDate ? startDate.to(date, true) : "-"}
+                            {startDate ? dayjs(startDate).to(date, true) : "-"}
                         </Typography>
                     </div>
                     <Button
