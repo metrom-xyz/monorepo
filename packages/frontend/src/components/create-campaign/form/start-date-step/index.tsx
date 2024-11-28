@@ -81,8 +81,9 @@ export function StartDateStep({
     }, [date, minDate]);
 
     useEffect(() => {
-        if (!startDate) setDate(undefined);
-    }, [startDate]);
+        if (open && !startDate) setDate(dayjs());
+        else if (!open && !startDate) setDate(undefined);
+    }, [open, startDate]);
 
     useEffect(() => {
         if (!date || !minDate || !previousDate) return;
