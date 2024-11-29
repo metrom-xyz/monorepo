@@ -13,6 +13,7 @@
         "deploy:kim:mode": "pnpm prepare:deploy mode-mainnet kim && pnpm codegen && graph build && graph deploy --studio metrom-kim-mode -l 0.0.7",
         "deploy:kim:base": "pnpm prepare:deploy base kim && pnpm codegen && graph build && graph deploy --studio metrom-kim-base -l 0.0.7",
         "deploy:scribe:scroll": "pnpm prepare:deploy scroll scribe && pnpm codegen && graph build && graph deploy --studio metrom-scribe-scroll -l 0.0.5",
+        "deploy:third-trade:arthera-testnet": "pnpm prepare:deploy arthera-testnet third-trade && pnpm codegen && graph build",
         "lint": "eslint .",
         "format": "eslint --fix ."
     },
