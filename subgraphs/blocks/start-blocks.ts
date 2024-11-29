@@ -5,11 +5,12 @@ export const START_BLOCKS: { [network: string]: number } = {
     "arbitrum-one": 154000000,
     "mantle-sepolia": 9873155,
     "base-sepolia": 16132650,
+    "form-testnet": 14587009,
+    "arthera-testnet": 74682,
     mantle: 67227224,
     "mode-mainnet": 12569458,
     sonic: 73323411,
     base: 20192397,
     taiko: 460103,
     scroll: 10721133,
-    "form-testnet": 14587009,
 };
