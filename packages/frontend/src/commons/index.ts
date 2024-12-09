@@ -36,6 +36,8 @@ import {
     scrollData,
     formTestnet,
     formTestnetData,
+    artheraTestnet,
+    artheraTestnetData,
 } from "./chains";
 
 export interface ChainData {
@@ -66,6 +68,7 @@ export const SUPPORTED_CHAINS: [Chain, ...Chain[]] =
               sonicTestnet,
               baseSepolia,
               formTestnet,
+              artheraTestnet,
           ];
 
 export const TOKEN_ICONS_URL = `https://raw.githubusercontent.com/metrom-xyz/token-icons/refs/heads/main/${ENVIRONMENT === Environment.Production ? "mainnet" : "testnet"}-icons.json`;
@@ -77,6 +80,7 @@ export const CHAIN_DATA: Record<SupportedChain, ChainData> = {
     [SupportedChain.SonicTestnet]: sonicTestnetData,
     [SupportedChain.BaseSepolia]: baseSepoliaData,
     [SupportedChain.FormTestnet]: formTestnetData,
+    [SupportedChain.ArtheraTestnet]: artheraTestnetData,
 
     [SupportedChain.Base]: baseData,
     [SupportedChain.Mode]: modeData,
