@@ -67,10 +67,16 @@ export interface KpiSpecification {
     goal: RangePoolTvlKpiGoal;
 }
 
+export interface PriceRangeSpecification {
+    from: number;
+    to: number;
+}
+
 export interface Specification {
     whitelist?: Address[];
     blacklist?: Address[];
     kpi?: KpiSpecification;
+    priceRange?: PriceRangeSpecification;
 }
 
 export enum Status {

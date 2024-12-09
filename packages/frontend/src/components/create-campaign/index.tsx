@@ -52,6 +52,7 @@ function validatePayload(
         payload.endDate,
         distributables,
         payload.kpiSpecification,
+        payload.priceRangeSpecification,
         payload.restrictions,
     );
 }
@@ -108,6 +109,7 @@ export function CreateCampaign() {
             points: undefined,
             feeToken: undefined,
             kpiSpecification: undefined,
+            rangeSpecification: undefined,
         }));
         setPayloadErrors({});
         setView(View.Form);
