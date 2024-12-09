@@ -5,10 +5,10 @@ schema:
   file: ./schema.graphql
 dataSources:
   - kind: ethereum
-    name: Metrom
+    name: MetromV1
     network: {{network}}
     source:
-      abi: Metrom
+      abi: MetromV1
       address: "{{address}}"
       startBlock: {{startBlock}}
     mapping:
@@ -19,10 +19,10 @@ dataSources:
       entities:
         - AcceptOwnershipEvent
         - AcceptCampaignOwnershipEvent
-        - Campaign
+        - RewardsCampaign
         - ClaimRewardEvent
         - ClaimFeeEvent
-        - CreateCampaignEvent
+        - CreateRewardsCampaignEvent
         - DistributeRewardEvent
         - Metrom
         - OssifyEvent
@@ -31,15 +31,16 @@ dataSources:
         - Reward
         - SetFeeEvent
         - SetMinimumCampaignDurationEvent
-        - SetMinimumRewardTokenRateEvent
+        - SetMinimumTokenRateEvent
+        - SetMinimumFeeTokenRateEvent
         - SetUpdaterEvent
         - Token
         - TransferOwnershipEvent
         - TransferCampaignOwnershipEvent
         - Transaction
       abis:
-        - name: Metrom
-          file: ./node_modules/@metrom-xyz/contracts/dist/abis/Metrom.json
+        - name: MetromV1
+          file: ./abis/MetromV1.json
         - name: Erc20
           file: ./abis/Erc20.json
         - name: Erc20BytesName
@@ -80,3 +81,57 @@ dataSources:
           handler: handleSetUpdater
         - event: Ossify()
           handler: handleOssify
+  - kind: ethereum
+    name: MetromV2
+    network: {{network}}
+    source:
+      abi: MetromV2
+      address: "{{address}}"
+      startBlock: {{startBlock}}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      file: ./src/mappings/metrom.ts
+      entities:
+        - AcceptOwnershipEvent
+        - AcceptCampaignOwnershipEvent
+        - RewardsCampaign
+        - PointsCampaign
+        - ClaimRewardEvent
+        - ClaimFeeEvent
+        - CreateRewardsCampaignEvent
+        - CreatePointsCampaignEvent
+        - DistributeRewardEvent
+        - Metrom
+        - OssifyEvent
+        - InitializeEvent
+        - RecoverRewardEvent
+        - Reward
+        - SetFeeEvent
+        - SetMinimumCampaignDurationEvent
+        - SetMinimumRewardTokenRateEvent
+        - SetMinimumFeeTokenRateEvent
+        - SetUpdaterEvent
+        - Token
+        - TransferOwnershipEvent
+        - TransferCampaignOwnershipEvent
+        - Transaction
+      abis:
+        - name: MetromV2
+          file: ./abis/MetromV2.json
+        - name: Erc20
+          file: ./abis/Erc20.json
+        - name: Erc20BytesName
+          file: ./abis/Erc20BytesName.json
+        - name: Erc20BytesSymbol
+          file: ./abis/Erc20BytesSymbol.json
+      eventHandlers:
+        - event: CreateRewardsCampaign(indexed bytes32,indexed
+            address,address,uint32,uint32,bytes32,(address,uint256,uint256)[])
+          handler: handleCreateRewardsCampaign
+        - event: CreatePointsCampaign(indexed bytes32,indexed
+            address,address,uint32,uint32,bytes32,uint256,address,uint256)
+          handler: handleCreatePointsCampaign
+        - event: SetMinimumFeeTokenRate(indexed address,uint256)
+          handler: handleSetMinimumFeeTokenRate
