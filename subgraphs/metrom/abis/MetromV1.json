@@ -1,0 +1,1190 @@
+[
+    {
+        "type": "function",
+        "name": "acceptCampaignOwnership",
+        "inputs": [
+            {
+                "name": "id",
+                "type": "bytes32",
+                "internalType": "bytes32"
+            }
+        ],
+        "outputs": [],
+        "stateMutability": "nonpayable"
+    },
+    {
+        "type": "function",
+        "name": "acceptOwnership",
+        "inputs": [],
+        "outputs": [],
+        "stateMutability": "nonpayable"
+    },
+    {
+        "type": "function",
+        "name": "campaignById",
+        "inputs": [
+            {
+                "name": "id",
+                "type": "bytes32",
+                "internalType": "bytes32"
+            }
+        ],
+        "outputs": [
+            {
+                "name": "campaign",
+                "type": "tuple",
+                "internalType": "struct ReadonlyCampaign",
+                "components": [
+                    {
+                        "name": "owner",
+                        "type": "address",
+                        "internalType": "address"
+                    },
+                    {
+                        "name": "pendingOwner",
+                        "type": "address",
+                        "internalType": "address"
+                    },
+                    {
+                        "name": "pool",
+                        "type": "address",
+                        "internalType": "address"
+                    },
+                    {
+                        "name": "from",
+                        "type": "uint32",
+                        "internalType": "uint32"
+                    },
+                    {
+                        "name": "to",
+                        "type": "uint32",
+                        "internalType": "uint32"
+                    },
+                    {
+                        "name": "specification",
+                        "type": "bytes32",
+                        "internalType": "bytes32"
+                    },
+                    {
+                        "name": "root",
+                        "type": "bytes32",
+                        "internalType": "bytes32"
+                    },
+                    {
+                        "name": "data",
+                        "type": "bytes32",
+                        "internalType": "bytes32"
+                    }
+                ]
+            }
+        ],
+        "stateMutability": "view"
+    },
+    {
+        "type": "function",
+        "name": "campaignOwner",
+        "inputs": [
+            {
+                "name": "id",
+                "type": "bytes32",
+                "internalType": "bytes32"
+            }
+        ],
+        "outputs": [
+            {
+                "name": "owner",
+                "type": "address",
+                "internalType": "address"
+            }
+        ],
+        "stateMutability": "view"
+    },
+    {
+        "type": "function",
+        "name": "campaignPendingOwner",
+        "inputs": [
+            {
+                "name": "id",
+                "type": "bytes32",
+                "internalType": "bytes32"
+            }
+        ],
+        "outputs": [
+            {
+                "name": "pendingOwner",
+                "type": "address",
+                "internalType": "address"
+            }
+        ],
+        "stateMutability": "view"
+    },
+    {
+        "type": "function",
+        "name": "campaignReward",
+        "inputs": [
+            {
+                "name": "id",
+                "type": "bytes32",
+                "internalType": "bytes32"
+            },
+            {
+                "name": "token",
+                "type": "address",
+                "internalType": "address"
+            }
+        ],
+        "outputs": [
+            {
+                "name": "reward",
+                "type": "uint256",
+                "internalType": "uint256"
+            }
+        ],
+        "stateMutability": "view"
+    },
+    {
+        "type": "function",
+        "name": "claimFees",
+        "inputs": [
+            {
+                "name": "bundles",
+                "type": "tuple[]",
+                "internalType": "struct ClaimFeeBundle[]",
+                "components": [
+                    {
+                        "name": "token",
+                        "type": "address",
+                        "internalType": "address"
+                    },
+                    {
+                        "name": "receiver",
+                        "type": "address",
+                        "internalType": "address"
+                    }
+                ]
+            }
+        ],
+        "outputs": [],
+        "stateMutability": "nonpayable"
+    },
+    {
+        "type": "function",
+        "name": "claimRewards",
+        "inputs": [
+            {
+                "name": "bundles",
+                "type": "tuple[]",
+                "internalType": "struct ClaimRewardBundle[]",
+                "components": [
+                    {
+                        "name": "campaignId",
+                        "type": "bytes32",
+                        "internalType": "bytes32"
+                    },
+                    {
+                        "name": "proof",
+                        "type": "bytes32[]",
+                        "internalType": "bytes32[]"
+                    },
+                    {
+                        "name": "token",
+                        "type": "address",
+                        "internalType": "address"
+                    },
+                    {
+                        "name": "amount",
+                        "type": "uint256",
+                        "internalType": "uint256"
+                    },
+                    {
+                        "name": "receiver",
+                        "type": "address",
+                        "internalType": "address"
+                    }
+                ]
+            }
+        ],
+        "outputs": [],
+        "stateMutability": "nonpayable"
+    },
+    {
+        "type": "function",
+        "name": "claimableFees",
+        "inputs": [
+            {
+                "name": "token",
+                "type": "address",
+                "internalType": "address"
+            }
+        ],
+        "outputs": [
+            {
+                "name": "claimable",
+                "type": "uint256",
+                "internalType": "uint256"
+            }
+        ],
+        "stateMutability": "nonpayable"
+    },
+    {
+        "type": "function",
+        "name": "claimedCampaignReward",
+        "inputs": [
+            {
+                "name": "id",
+                "type": "bytes32",
+                "internalType": "bytes32"
+            },
+            {
+                "name": "token",
+                "type": "address",
+                "internalType": "address"
+            },
+            {
+                "name": "account",
+                "type": "address",
+                "internalType": "address"
+            }
+        ],
+        "outputs": [
+            {
+                "name": "claimed",
+                "type": "uint256",
+                "internalType": "uint256"
+            }
+        ],
+        "stateMutability": "view"
+    },
+    {
+        "type": "function",
+        "name": "createCampaigns",
+        "inputs": [
+            {
+                "name": "bundles",
+                "type": "tuple[]",
+                "internalType": "struct CreateBundle[]",
+                "components": [
+                    {
+                        "name": "pool",
+                        "type": "address",
+                        "internalType": "address"
+                    },
+                    {
+                        "name": "from",
+                        "type": "uint32",
+                        "internalType": "uint32"
+                    },
+                    {
+                        "name": "to",
+                        "type": "uint32",
+                        "internalType": "uint32"
+                    },
+                    {
+                        "name": "specification",
+                        "type": "bytes32",
+                        "internalType": "bytes32"
+                    },
+                    {
+                        "name": "rewards",
+                        "type": "tuple[]",
+                        "internalType": "struct RewardAmount[]",
+                        "components": [
+                            {
+                                "name": "token",
+                                "type": "address",
+                                "internalType": "address"
+                            },
+                            {
+                                "name": "amount",
+                                "type": "uint256",
+                                "internalType": "uint256"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ],
+        "outputs": [],
+        "stateMutability": "nonpayable"
+    },
+    {
+        "type": "function",
+        "name": "distributeRewards",
+        "inputs": [
+            {
+                "name": "bundles",
+                "type": "tuple[]",
+                "internalType": "struct DistributeRewardsBundle[]",
+                "components": [
+                    {
+                        "name": "campaignId",
+                        "type": "bytes32",
+                        "internalType": "bytes32"
+                    },
+                    {
+                        "name": "root",
+                        "type": "bytes32",
+                        "internalType": "bytes32"
+                    },
+                    {
+                        "name": "data",
+                        "type": "bytes32",
+                        "internalType": "bytes32"
+                    }
+                ]
+            }
+        ],
+        "outputs": [],
+        "stateMutability": "nonpayable"
+    },
+    {
+        "type": "function",
+        "name": "fee",
+        "inputs": [],
+        "outputs": [
+            {
+                "name": "fee",
+                "type": "uint32",
+                "internalType": "uint32"
+            }
+        ],
+        "stateMutability": "view"
+    },
+    {
+        "type": "function",
+        "name": "feeRebate",
+        "inputs": [
+            {
+                "name": "account",
+                "type": "address",
+                "internalType": "address"
+            }
+        ],
+        "outputs": [
+            {
+                "name": "rebate",
+                "type": "uint32",
+                "internalType": "uint32"
+            }
+        ],
+        "stateMutability": "view"
+    },
+    {
+        "type": "function",
+        "name": "initialize",
+        "inputs": [
+            {
+                "name": "owner",
+                "type": "address",
+                "internalType": "address"
+            },
+            {
+                "name": "updater",
+                "type": "address",
+                "internalType": "address"
+            },
+            {
+                "name": "fee",
+                "type": "uint32",
+                "internalType": "uint32"
+            },
+            {
+                "name": "minimumCampaignDuration",
+                "type": "uint32",
+                "internalType": "uint32"
+            },
+            {
+                "name": "maximumCampaignDuration",
+                "type": "uint32",
+                "internalType": "uint32"
+            }
+        ],
+        "outputs": [],
+        "stateMutability": "nonpayable"
+    },
+    {
+        "type": "function",
+        "name": "maximumCampaignDuration",
+        "inputs": [],
+        "outputs": [
+            {
+                "name": "maximumCampaignDuration",
+                "type": "uint32",
+                "internalType": "uint32"
+            }
+        ],
+        "stateMutability": "view"
+    },
+    {
+        "type": "function",
+        "name": "minimumCampaignDuration",
+        "inputs": [],
+        "outputs": [
+            {
+                "name": "minimumCampaignDuration",
+                "type": "uint32",
+                "internalType": "uint32"
+            }
+        ],
+        "stateMutability": "view"
+    },
+    {
+        "type": "function",
+        "name": "minimumRewardTokenRate",
+        "inputs": [
+            {
+                "name": "token",
+                "type": "address",
+                "internalType": "address"
+            }
+        ],
+        "outputs": [
+            {
+                "name": "minimumRate",
+                "type": "uint256",
+                "internalType": "uint256"
+            }
+        ],
+        "stateMutability": "view"
+    },
+    {
+        "type": "function",
+        "name": "ossified",
+        "inputs": [],
+        "outputs": [
+            {
+                "name": "ossified",
+                "type": "bool",
+                "internalType": "bool"
+            }
+        ],
+        "stateMutability": "nonpayable"
+    },
+    {
+        "type": "function",
+        "name": "ossify",
+        "inputs": [],
+        "outputs": [],
+        "stateMutability": "nonpayable"
+    },
+    {
+        "type": "function",
+        "name": "owner",
+        "inputs": [],
+        "outputs": [
+            {
+                "name": "owner",
+                "type": "address",
+                "internalType": "address"
+            }
+        ],
+        "stateMutability": "view"
+    },
+    {
+        "type": "function",
+        "name": "pendingOwner",
+        "inputs": [],
+        "outputs": [
+            {
+                "name": "pendingOwner",
+                "type": "address",
+                "internalType": "address"
+            }
+        ],
+        "stateMutability": "view"
+    },
+    {
+        "type": "function",
+        "name": "recoverRewards",
+        "inputs": [
+            {
+                "name": "bundles",
+                "type": "tuple[]",
+                "internalType": "struct ClaimRewardBundle[]",
+                "components": [
+                    {
+                        "name": "campaignId",
+                        "type": "bytes32",
+                        "internalType": "bytes32"
+                    },
+                    {
+                        "name": "proof",
+                        "type": "bytes32[]",
+                        "internalType": "bytes32[]"
+                    },
+                    {
+                        "name": "token",
+                        "type": "address",
+                        "internalType": "address"
+                    },
+                    {
+                        "name": "amount",
+                        "type": "uint256",
+                        "internalType": "uint256"
+                    },
+                    {
+                        "name": "receiver",
+                        "type": "address",
+                        "internalType": "address"
+                    }
+                ]
+            }
+        ],
+        "outputs": [],
+        "stateMutability": "nonpayable"
+    },
+    {
+        "type": "function",
+        "name": "setFee",
+        "inputs": [
+            {
+                "name": "fee",
+                "type": "uint32",
+                "internalType": "uint32"
+            }
+        ],
+        "outputs": [],
+        "stateMutability": "nonpayable"
+    },
+    {
+        "type": "function",
+        "name": "setFeeRebate",
+        "inputs": [
+            {
+                "name": "account",
+                "type": "address",
+                "internalType": "address"
+            },
+            {
+                "name": "rebate",
+                "type": "uint32",
+                "internalType": "uint32"
+            }
+        ],
+        "outputs": [],
+        "stateMutability": "nonpayable"
+    },
+    {
+        "type": "function",
+        "name": "setMaximumCampaignDuration",
+        "inputs": [
+            {
+                "name": "maximumCampaignDuration",
+                "type": "uint32",
+                "internalType": "uint32"
+            }
+        ],
+        "outputs": [],
+        "stateMutability": "nonpayable"
+    },
+    {
+        "type": "function",
+        "name": "setMinimumCampaignDuration",
+        "inputs": [
+            {
+                "name": "minimumCampaignDuration",
+                "type": "uint32",
+                "internalType": "uint32"
+            }
+        ],
+        "outputs": [],
+        "stateMutability": "nonpayable"
+    },
+    {
+        "type": "function",
+        "name": "setMinimumRewardTokenRates",
+        "inputs": [
+            {
+                "name": "bundles",
+                "type": "tuple[]",
+                "internalType": "struct SetMinimumRewardTokenRateBundle[]",
+                "components": [
+                    {
+                        "name": "token",
+                        "type": "address",
+                        "internalType": "address"
+                    },
+                    {
+                        "name": "minimumRate",
+                        "type": "uint256",
+                        "internalType": "uint256"
+                    }
+                ]
+            }
+        ],
+        "outputs": [],
+        "stateMutability": "nonpayable"
+    },
+    {
+        "type": "function",
+        "name": "setUpdater",
+        "inputs": [
+            {
+                "name": "updater",
+                "type": "address",
+                "internalType": "address"
+            }
+        ],
+        "outputs": [],
+        "stateMutability": "nonpayable"
+    },
+    {
+        "type": "function",
+        "name": "transferCampaignOwnership",
+        "inputs": [
+            {
+                "name": "id",
+                "type": "bytes32",
+                "internalType": "bytes32"
+            },
+            {
+                "name": "owner",
+                "type": "address",
+                "internalType": "address"
+            }
+        ],
+        "outputs": [],
+        "stateMutability": "nonpayable"
+    },
+    {
+        "type": "function",
+        "name": "transferOwnership",
+        "inputs": [
+            {
+                "name": "owner",
+                "type": "address",
+                "internalType": "address"
+            }
+        ],
+        "outputs": [],
+        "stateMutability": "nonpayable"
+    },
+    {
+        "type": "function",
+        "name": "updater",
+        "inputs": [],
+        "outputs": [
+            {
+                "name": "updater",
+                "type": "address",
+                "internalType": "address"
+            }
+        ],
+        "stateMutability": "view"
+    },
+    {
+        "type": "event",
+        "name": "AcceptCampaignOwnership",
+        "inputs": [
+            {
+                "name": "id",
+                "type": "bytes32",
+                "indexed": true,
+                "internalType": "bytes32"
+            },
+            {
+                "name": "owner",
+                "type": "address",
+                "indexed": true,
+                "internalType": "address"
+            }
+        ],
+        "anonymous": false
+    },
+    {
+        "type": "event",
+        "name": "AcceptOwnership",
+        "inputs": [
+            {
+                "name": "owner",
+                "type": "address",
+                "indexed": true,
+                "internalType": "address"
+            }
+        ],
+        "anonymous": false
+    },
+    {
+        "type": "event",
+        "name": "ClaimFee",
+        "inputs": [
+            {
+                "name": "token",
+                "type": "address",
+                "indexed": false,
+                "internalType": "address"
+            },
+            {
+                "name": "amount",
+                "type": "uint256",
+                "indexed": false,
+                "internalType": "uint256"
+            },
+            {
+                "name": "receiver",
+                "type": "address",
+                "indexed": true,
+                "internalType": "address"
+            }
+        ],
+        "anonymous": false
+    },
+    {
+        "type": "event",
+        "name": "ClaimReward",
+        "inputs": [
+            {
+                "name": "campaignId",
+                "type": "bytes32",
+                "indexed": true,
+                "internalType": "bytes32"
+            },
+            {
+                "name": "token",
+                "type": "address",
+                "indexed": false,
+                "internalType": "address"
+            },
+            {
+                "name": "amount",
+                "type": "uint256",
+                "indexed": false,
+                "internalType": "uint256"
+            },
+            {
+                "name": "receiver",
+                "type": "address",
+                "indexed": true,
+                "internalType": "address"
+            }
+        ],
+        "anonymous": false
+    },
+    {
+        "type": "event",
+        "name": "CreateCampaign",
+        "inputs": [
+            {
+                "name": "id",
+                "type": "bytes32",
+                "indexed": true,
+                "internalType": "bytes32"
+            },
+            {
+                "name": "owner",
+                "type": "address",
+                "indexed": true,
+                "internalType": "address"
+            },
+            {
+                "name": "pool",
+                "type": "address",
+                "indexed": false,
+                "internalType": "address"
+            },
+            {
+                "name": "from",
+                "type": "uint32",
+                "indexed": false,
+                "internalType": "uint32"
+            },
+            {
+                "name": "to",
+                "type": "uint32",
+                "indexed": false,
+                "internalType": "uint32"
+            },
+            {
+                "name": "specification",
+                "type": "bytes32",
+                "indexed": false,
+                "internalType": "bytes32"
+            },
+            {
+                "name": "rewards",
+                "type": "tuple[]",
+                "indexed": false,
+                "internalType": "struct CreatedCampaignReward[]",
+                "components": [
+                    {
+                        "name": "token",
+                        "type": "address",
+                        "internalType": "address"
+                    },
+                    {
+                        "name": "amount",
+                        "type": "uint256",
+                        "internalType": "uint256"
+                    },
+                    {
+                        "name": "fee",
+                        "type": "uint256",
+                        "internalType": "uint256"
+                    }
+                ]
+            }
+        ],
+        "anonymous": false
+    },
+    {
+        "type": "event",
+        "name": "DistributeReward",
+        "inputs": [
+            {
+                "name": "campaignId",
+                "type": "bytes32",
+                "indexed": true,
+                "internalType": "bytes32"
+            },
+            {
+                "name": "root",
+                "type": "bytes32",
+                "indexed": false,
+                "internalType": "bytes32"
+            },
+            {
+                "name": "data",
+                "type": "bytes32",
+                "indexed": false,
+                "internalType": "bytes32"
+            }
+        ],
+        "anonymous": false
+    },
+    {
+        "type": "event",
+        "name": "Initialize",
+        "inputs": [
+            {
+                "name": "owner",
+                "type": "address",
+                "indexed": true,
+                "internalType": "address"
+            },
+            {
+                "name": "updater",
+                "type": "address",
+                "indexed": false,
+                "internalType": "address"
+            },
+            {
+                "name": "fee",
+                "type": "uint32",
+                "indexed": false,
+                "internalType": "uint32"
+            },
+            {
+                "name": "minimumCampaignDuration",
+                "type": "uint32",
+                "indexed": false,
+                "internalType": "uint32"
+            },
+            {
+                "name": "maximumCampaignDuration",
+                "type": "uint32",
+                "indexed": false,
+                "internalType": "uint32"
+            }
+        ],
+        "anonymous": false
+    },
+    {
+        "type": "event",
+        "name": "Ossify",
+        "inputs": [],
+        "anonymous": false
+    },
+    {
+        "type": "event",
+        "name": "RecoverReward",
+        "inputs": [
+            {
+                "name": "campaignId",
+                "type": "bytes32",
+                "indexed": true,
+                "internalType": "bytes32"
+            },
+            {
+                "name": "token",
+                "type": "address",
+                "indexed": false,
+                "internalType": "address"
+            },
+            {
+                "name": "amount",
+                "type": "uint256",
+                "indexed": false,
+                "internalType": "uint256"
+            },
+            {
+                "name": "receiver",
+                "type": "address",
+                "indexed": true,
+                "internalType": "address"
+            }
+        ],
+        "anonymous": false
+    },
+    {
+        "type": "event",
+        "name": "SetFee",
+        "inputs": [
+            {
+                "name": "fee",
+                "type": "uint32",
+                "indexed": false,
+                "internalType": "uint32"
+            }
+        ],
+        "anonymous": false
+    },
+    {
+        "type": "event",
+        "name": "SetFeeRebate",
+        "inputs": [
+            {
+                "name": "account",
+                "type": "address",
+                "indexed": false,
+                "internalType": "address"
+            },
+            {
+                "name": "rebate",
+                "type": "uint32",
+                "indexed": false,
+                "internalType": "uint32"
+            }
+        ],
+        "anonymous": false
+    },
+    {
+        "type": "event",
+        "name": "SetMaximumCampaignDuration",
+        "inputs": [
+            {
+                "name": "maximumCampaignDuration",
+                "type": "uint32",
+                "indexed": false,
+                "internalType": "uint32"
+            }
+        ],
+        "anonymous": false
+    },
+    {
+        "type": "event",
+        "name": "SetMinimumCampaignDuration",
+        "inputs": [
+            {
+                "name": "minimumCampaignDuration",
+                "type": "uint32",
+                "indexed": false,
+                "internalType": "uint32"
+            }
+        ],
+        "anonymous": false
+    },
+    {
+        "type": "event",
+        "name": "SetMinimumRewardTokenRate",
+        "inputs": [
+            {
+                "name": "token",
+                "type": "address",
+                "indexed": true,
+                "internalType": "address"
+            },
+            {
+                "name": "minimumRate",
+                "type": "uint256",
+                "indexed": false,
+                "internalType": "uint256"
+            }
+        ],
+        "anonymous": false
+    },
+    {
+        "type": "event",
+        "name": "SetUpdater",
+        "inputs": [
+            {
+                "name": "updater",
+                "type": "address",
+                "indexed": true,
+                "internalType": "address"
+            }
+        ],
+        "anonymous": false
+    },
+    {
+        "type": "event",
+        "name": "TransferCampaignOwnership",
+        "inputs": [
+            {
+                "name": "id",
+                "type": "bytes32",
+                "indexed": true,
+                "internalType": "bytes32"
+            },
+            {
+                "name": "owner",
+                "type": "address",
+                "indexed": true,
+                "internalType": "address"
+            }
+        ],
+        "anonymous": false
+    },
+    {
+        "type": "event",
+        "name": "TransferOwnership",
+        "inputs": [
+            {
+                "name": "owner",
+                "type": "address",
+                "indexed": true,
+                "internalType": "address"
+            }
+        ],
+        "anonymous": false
+    },
+    {
+        "type": "error",
+        "name": "AlreadyExists",
+        "inputs": []
+    },
+    {
+        "type": "error",
+        "name": "DisallowedRewardToken",
+        "inputs": []
+    },
+    {
+        "type": "error",
+        "name": "DurationTooLong",
+        "inputs": []
+    },
+    {
+        "type": "error",
+        "name": "DurationTooShort",
+        "inputs": []
+    },
+    {
+        "type": "error",
+        "name": "Forbidden",
+        "inputs": []
+    },
+    {
+        "type": "error",
+        "name": "InvalidFee",
+        "inputs": []
+    },
+    {
+        "type": "error",
+        "name": "InvalidMaximumCampaignDuration",
+        "inputs": []
+    },
+    {
+        "type": "error",
+        "name": "InvalidMinimumCampaignDuration",
+        "inputs": []
+    },
+    {
+        "type": "error",
+        "name": "InvalidProof",
+        "inputs": []
+    },
+    {
+        "type": "error",
+        "name": "NoRewards",
+        "inputs": []
+    },
+    {
+        "type": "error",
+        "name": "NonExistentCampaign",
+        "inputs": []
+    },
+    {
+        "type": "error",
+        "name": "NonExistentReward",
+        "inputs": []
+    },
+    {
+        "type": "error",
+        "name": "Ossified",
+        "inputs": []
+    },
+    {
+        "type": "error",
+        "name": "RebateTooHigh",
+        "inputs": []
+    },
+    {
+        "type": "error",
+        "name": "RewardAmountTooLow",
+        "inputs": []
+    },
+    {
+        "type": "error",
+        "name": "StartTimeInThePast",
+        "inputs": []
+    },
+    {
+        "type": "error",
+        "name": "TooManyRewards",
+        "inputs": []
+    },
+    {
+        "type": "error",
+        "name": "TooMuchClaimedAmount",
+        "inputs": []
+    },
+    {
+        "type": "error",
+        "name": "ZeroAddressAccount",
+        "inputs": []
+    },
+    {
+        "type": "error",
+        "name": "ZeroAddressOwner",
+        "inputs": []
+    },
+    {
+        "type": "error",
+        "name": "ZeroAddressPool",
+        "inputs": []
+    },
+    {
+        "type": "error",
+        "name": "ZeroAddressReceiver",
+        "inputs": []
+    },
+    {
+        "type": "error",
+        "name": "ZeroAddressRewardToken",
+        "inputs": []
+    },
+    {
+        "type": "error",
+        "name": "ZeroAddressUpdater",
+        "inputs": []
+    },
+    {
+        "type": "error",
+        "name": "ZeroAmount",
+        "inputs": []
+    },
+    {
+        "type": "error",
+        "name": "ZeroData",
+        "inputs": []
+    },
+    {
+        "type": "error",
+        "name": "ZeroRewardAmount",
+        "inputs": []
+    },
+    {
+        "type": "error",
+        "name": "ZeroRoot",
+        "inputs": []
+    }
+]

@@ -17,13 +17,20 @@ import {
     AcceptCampaignOwnership,
     Ossify,
     SetMinimumRewardTokenRate,
-} from "../../generated/Metrom/Metrom";
+} from "../../generated/MetromV1/MetromV1";
+import {
+    CreateRewardsCampaign,
+    CreatePointsCampaign,
+    SetMinimumFeeTokenRate,
+} from "../../generated/MetromV2/MetromV2";
 import {
     AcceptOwnershipEvent,
-    Campaign,
+    RewardsCampaign,
+    PointsCampaign,
     ClaimRewardEvent,
     ClaimFeeEvent,
-    CreateCampaignEvent,
+    CreateRewardsCampaignEvent,
+    CreatePointsCampaignEvent,
     DistributeRewardEvent,
     InitializeEvent,
     Metrom,
@@ -35,16 +42,19 @@ import {
     SetUpdaterEvent,
     TransferOwnershipEvent,
     RecoverRewardEvent,
-    TransferCampaignOwnershipEvent,
-    AcceptCampaignOwnershipEvent,
+    TransferRewardsCampaignOwnershipEvent,
+    AcceptRewardsCampaignOwnershipEvent,
+    TransferPointsCampaignOwnershipEvent,
+    AcceptPointsCampaignOwnershipEvent,
     OssifyEvent,
     CreatedCampaignReward,
     SetMinimumRewardTokenRateEvent,
+    SetMinimumFeeTokenRateEvent,
 } from "../../generated/schema";
 import { METROM_ADDRESS } from "../addresses";
 import {
     getClaimableFeeOrThrow,
-    getCampaignOrThrow,
+    getRewardsCampaignOrThrow,
     getEventId,
     getMetromOrThrow,
     getOrCreateClaimableFee,
@@ -56,6 +66,7 @@ import {
     getOrCreateClaimedByAccount,
     getOrCreateRecoveredByAccount,
     getOrCreateWhitelistedRewardToken,
+    getOrCreateWhitelistedFeeToken,
     BI_1,
     BI_0,
 } from "../commons";
@@ -100,7 +111,7 @@ export function handleCreateCampaign(event: CreateCampaign): void {
 
     let transaction = getOrCreateTransaction(event);
 
-    let campaign = new Campaign(event.params.id);
+    let campaign = new RewardsCampaign(event.params.id);
     campaign.transaction = transaction.id;
     campaign.metrom = metrom.id;
     campaign.creationBlockNumber = event.block.number;
@@ -136,11 +147,10 @@ export function handleCreateCampaign(event: CreateCampaign): void {
         rewardTokensBytes.push(rewardToken.id);
     }
 
-    let createCampaignEvent = new CreateCampaignEvent(getEventId(event));
+    let createCampaignEvent = new CreateRewardsCampaignEvent(getEventId(event));
     createCampaignEvent.transaction = transaction.id;
     createCampaignEvent.metrom = METROM_ADDRESS;
     createCampaignEvent.campaign = event.params.id;
-    createCampaignEvent.owner = event.params.owner;
     createCampaignEvent.owner = event.params.owner;
     createCampaignEvent.pool = event.params.pool;
     createCampaignEvent.from = event.params.from;
@@ -156,7 +166,7 @@ export function handleCreateCampaign(event: CreateCampaign): void {
                 Bytes.fromByteArray(Bytes.fromBigInt(BigInt.fromU32(i))),
             ),
         );
-        eventReward.createCampaignEvent = createCampaignEvent.id;
+        eventReward.createRewardsCampaignEvent = createCampaignEvent.id;
         eventReward.token = reward.token;
         eventReward.amount = reward.amount;
         eventReward.fee = reward.fee;
@@ -164,8 +174,118 @@ export function handleCreateCampaign(event: CreateCampaign): void {
     }
 }
 
+export function handleCreateRewardsCampaign(
+    event: CreateRewardsCampaign,
+): void {
+    let metrom = getMetromOrThrow();
+    metrom.campaignsAmount = metrom.campaignsAmount.plus(BI_1);
+    metrom.save();
+
+    let transaction = getOrCreateTransaction(event);
+
+    let campaign = new RewardsCampaign(event.params.id);
+    campaign.transaction = transaction.id;
+    campaign.metrom = metrom.id;
+    campaign.creationBlockNumber = event.block.number;
+    campaign.creationTimestamp = event.block.timestamp;
+    campaign.owner = event.params.owner;
+    campaign.pendingOwner = Address.zero();
+    campaign.pool = event.params.pool;
+    campaign.from = event.params.from;
+    campaign.to = event.params.to;
+    campaign.specification = event.params.specification;
+    campaign.root = Bytes.empty();
+    campaign.data = Bytes.empty();
+    campaign.save();
+
+    let rewardTokensBytes: Bytes[] = [];
+    for (let i = 0; i < event.params.rewards.length; i++) {
+        let eventReward = event.params.rewards[i];
+        let rewardToken = getOrCreateToken(eventReward.token);
+        let rewardAmount = eventReward.amount;
+
+        let reward = new Reward(getRewardId(campaign.id, rewardToken.id));
+        reward.campaign = campaign.id;
+        reward.token = rewardToken.id;
+        reward.amount = rewardAmount;
+        reward.claimed = BI_0;
+        reward.recovered = BI_0;
+        reward.save();
+
+        let claimableFee = getOrCreateClaimableFee(rewardToken);
+        claimableFee.amount = claimableFee.amount.plus(eventReward.fee);
+        claimableFee.save();
+
+        rewardTokensBytes.push(rewardToken.id);
+    }
+
+    let createCampaignEvent = new CreateRewardsCampaignEvent(getEventId(event));
+    createCampaignEvent.transaction = transaction.id;
+    createCampaignEvent.metrom = METROM_ADDRESS;
+    createCampaignEvent.campaign = event.params.id;
+    createCampaignEvent.owner = event.params.owner;
+    createCampaignEvent.pool = event.params.pool;
+    createCampaignEvent.from = event.params.from;
+    createCampaignEvent.to = event.params.to;
+    createCampaignEvent.specification = event.params.specification;
+    createCampaignEvent.save();
+
+    for (let i = 0; i < event.params.rewards.length; i++) {
+        let reward = event.params.rewards[i];
+
+        let eventReward = new CreatedCampaignReward(
+            getEventId(event).concat(
+                Bytes.fromByteArray(Bytes.fromBigInt(BigInt.fromU32(i))),
+            ),
+        );
+        eventReward.createRewardsCampaignEvent = createCampaignEvent.id;
+        eventReward.token = reward.token;
+        eventReward.amount = reward.amount;
+        eventReward.fee = reward.fee;
+        eventReward.save();
+    }
+}
+
+export function handleCreatePointsCampaign(event: CreatePointsCampaign): void {
+    let metrom = getMetromOrThrow();
+    metrom.campaignsAmount = metrom.campaignsAmount.plus(BI_1);
+    metrom.save();
+
+    let transaction = getOrCreateTransaction(event);
+
+    let campaign = new PointsCampaign(event.params.id);
+    campaign.transaction = transaction.id;
+    campaign.metrom = metrom.id;
+    campaign.creationBlockNumber = event.block.number;
+    campaign.creationTimestamp = event.block.timestamp;
+    campaign.owner = event.params.owner;
+    campaign.pendingOwner = Address.zero();
+    campaign.pool = event.params.pool;
+    campaign.from = event.params.from;
+    campaign.to = event.params.to;
+    campaign.specification = event.params.specification;
+    campaign.points = event.params.points;
+    campaign.save();
+
+    let createCampaignEvent = new CreatePointsCampaignEvent(getEventId(event));
+    createCampaignEvent.transaction = transaction.id;
+    createCampaignEvent.metrom = METROM_ADDRESS;
+    createCampaignEvent.campaign = event.params.id;
+    createCampaignEvent.owner = event.params.owner;
+    createCampaignEvent.pool = event.params.pool;
+    createCampaignEvent.from = event.params.from;
+    createCampaignEvent.to = event.params.to;
+    createCampaignEvent.specification = event.params.specification;
+    createCampaignEvent.points = event.params.points;
+    createCampaignEvent.feeToken = getOrCreateWhitelistedFeeToken(
+        event.params.feeToken,
+    ).id;
+    createCampaignEvent.fee = event.params.fee;
+    createCampaignEvent.save();
+}
+
 export function handleDistributeReward(event: DistributeReward): void {
-    let campaign = getCampaignOrThrow(event.params.campaignId);
+    let campaign = getRewardsCampaignOrThrow(event.params.campaignId);
     campaign.root = event.params.root;
     campaign.data = event.params.data;
     campaign.save();
@@ -201,8 +321,27 @@ export function handleSetMinimumRewardTokenRate(
     setMinimumRewardTokenRateEvent.save();
 }
 
+export function handleSetMinimumFeeTokenRate(
+    event: SetMinimumFeeTokenRate,
+): void {
+    let whitelistedFeeToken = getOrCreateWhitelistedFeeToken(
+        event.params.token,
+    );
+    whitelistedFeeToken.minimumRate = event.params.minimumRate;
+    whitelistedFeeToken.save();
+
+    let setMinimumFeeTokenRateEvent = new SetMinimumFeeTokenRateEvent(
+        getEventId(event),
+    );
+    setMinimumFeeTokenRateEvent.transaction = getOrCreateTransaction(event).id;
+    setMinimumFeeTokenRateEvent.metrom = METROM_ADDRESS;
+    setMinimumFeeTokenRateEvent.token = getOrCreateToken(event.params.token).id;
+    setMinimumFeeTokenRateEvent.minimumRate = event.params.minimumRate;
+    setMinimumFeeTokenRateEvent.save();
+}
+
 export function handleClaimReward(event: ClaimReward): void {
-    let campaign = getCampaignOrThrow(event.params.campaignId);
+    let campaign = getRewardsCampaignOrThrow(event.params.campaignId);
     let reward = getRewardOrThrow(campaign.id, event.params.token);
     let claimedByAccount = getOrCreateClaimedByAccount(
         campaign.id,
@@ -227,7 +366,7 @@ export function handleClaimReward(event: ClaimReward): void {
 }
 
 export function handleRecoverReward(event: RecoverReward): void {
-    let campaign = getCampaignOrThrow(event.params.campaignId);
+    let campaign = getRewardsCampaignOrThrow(event.params.campaignId);
     let reward = getRewardOrThrow(campaign.id, event.params.token);
     let recoveredByAccount = getOrCreateRecoveredByAccount(
         campaign.id,
@@ -271,37 +410,81 @@ export function handleClaimFee(event: ClaimFee): void {
 export function handleTransferCampaignOwnership(
     event: TransferCampaignOwnership,
 ): void {
-    let campaign = getCampaignOrThrow(event.params.id);
-    campaign.pendingOwner = event.params.owner;
-    campaign.save();
+    let rewardsCampaign = RewardsCampaign.load(event.params.id);
+    if (rewardsCampaign != null) {
+        rewardsCampaign.pendingOwner = event.params.owner;
+        rewardsCampaign.save();
 
-    let transferCampaignOwnershipEvent = new TransferCampaignOwnershipEvent(
-        getEventId(event),
+        let transferCampaignOwnershipEvent =
+            new TransferRewardsCampaignOwnershipEvent(getEventId(event));
+        transferCampaignOwnershipEvent.transaction =
+            getOrCreateTransaction(event).id;
+        transferCampaignOwnershipEvent.metrom = METROM_ADDRESS;
+        transferCampaignOwnershipEvent.campaign = rewardsCampaign.id;
+        transferCampaignOwnershipEvent.owner = event.params.owner;
+        transferCampaignOwnershipEvent.save();
+        return;
+    }
+
+    let pointsCampaign = PointsCampaign.load(event.params.id);
+    if (pointsCampaign != null) {
+        pointsCampaign.pendingOwner = event.params.owner;
+        pointsCampaign.save();
+
+        let transferCampaignOwnershipEvent =
+            new TransferPointsCampaignOwnershipEvent(getEventId(event));
+        transferCampaignOwnershipEvent.transaction =
+            getOrCreateTransaction(event).id;
+        transferCampaignOwnershipEvent.metrom = METROM_ADDRESS;
+        transferCampaignOwnershipEvent.campaign = pointsCampaign.id;
+        transferCampaignOwnershipEvent.owner = event.params.owner;
+        transferCampaignOwnershipEvent.save();
+        return;
+    }
+
+    throw new Error(
+        `Could not find campaign with id ${event.params.id.toHex()}`,
     );
-    transferCampaignOwnershipEvent.transaction =
-        getOrCreateTransaction(event).id;
-    transferCampaignOwnershipEvent.metrom = METROM_ADDRESS;
-    transferCampaignOwnershipEvent.campaign = campaign.id;
-    transferCampaignOwnershipEvent.owner = event.params.owner;
-    transferCampaignOwnershipEvent.save();
 }
 
 export function handleAcceptCampaignOwnership(
     event: AcceptCampaignOwnership,
 ): void {
-    let campaign = getCampaignOrThrow(event.params.id);
-    campaign.owner = campaign.pendingOwner;
-    campaign.pendingOwner = Address.zero();
-    campaign.save();
+    let rewardsCampaign = RewardsCampaign.load(event.params.id);
+    if (rewardsCampaign != null) {
+        rewardsCampaign.owner = rewardsCampaign.pendingOwner;
+        rewardsCampaign.pendingOwner = Address.zero();
+        rewardsCampaign.save();
 
-    let acceptCampaignOwnershipEvent = new AcceptCampaignOwnershipEvent(
-        getEventId(event),
+        let acceptCampaignOwnershipEvent =
+            new AcceptRewardsCampaignOwnershipEvent(getEventId(event));
+        acceptCampaignOwnershipEvent.transaction =
+            getOrCreateTransaction(event).id;
+        acceptCampaignOwnershipEvent.metrom = METROM_ADDRESS;
+        acceptCampaignOwnershipEvent.campaign = rewardsCampaign.id;
+        acceptCampaignOwnershipEvent.owner = rewardsCampaign.owner;
+        acceptCampaignOwnershipEvent.save();
+    }
+
+    let pointsCampaign = PointsCampaign.load(event.params.id);
+    if (pointsCampaign != null) {
+        pointsCampaign.owner = pointsCampaign.pendingOwner;
+        pointsCampaign.pendingOwner = Address.zero();
+        pointsCampaign.save();
+
+        let acceptCampaignOwnershipEvent =
+            new AcceptPointsCampaignOwnershipEvent(getEventId(event));
+        acceptCampaignOwnershipEvent.transaction =
+            getOrCreateTransaction(event).id;
+        acceptCampaignOwnershipEvent.metrom = METROM_ADDRESS;
+        acceptCampaignOwnershipEvent.campaign = pointsCampaign.id;
+        acceptCampaignOwnershipEvent.owner = pointsCampaign.owner;
+        acceptCampaignOwnershipEvent.save();
+    }
+
+    throw new Error(
+        `Could not find campaign with id ${event.params.id.toHex()}`,
     );
-    acceptCampaignOwnershipEvent.transaction = getOrCreateTransaction(event).id;
-    acceptCampaignOwnershipEvent.metrom = METROM_ADDRESS;
-    acceptCampaignOwnershipEvent.campaign = campaign.id;
-    acceptCampaignOwnershipEvent.owner = campaign.owner;
-    acceptCampaignOwnershipEvent.save();
 }
 
 export function handleTransferOwnership(event: TransferOwnership): void {
