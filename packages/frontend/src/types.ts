@@ -1,6 +1,7 @@
 import type {
     KpiSpecification,
     PoolWithTvl,
+    RangeSpecification,
     SupportedDex,
     WhitelistedErc20TokenAmount,
 } from "@metrom-xyz/sdk";
@@ -26,7 +27,6 @@ export enum RestrictionType {
     whitelist = "whitelist",
 }
 
-// TODO: define state
 export interface CampaignPayload {
     network?: number;
     dex?: DexInfo;
@@ -35,6 +35,7 @@ export interface CampaignPayload {
     endDate?: Dayjs;
     rewards?: WhitelistedErc20TokenAmount[];
     kpiSpecification?: KpiSpecification;
+    rangeSpecification?: RangeSpecification;
     restrictions?: {
         type: RestrictionType;
         list: Address[];
@@ -46,6 +47,7 @@ export interface CampaignPayloadErrors {
     endDate?: boolean;
     rewards?: boolean;
     kpiSpecification?: boolean;
+    rangeSpecification?: boolean;
     restrictions?: boolean;
 }
 
