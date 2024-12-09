@@ -13,6 +13,7 @@ import { EndDateStep } from "./end-date-step";
 import { RewardsStep } from "./rewards-step";
 import { RestrictionsStep } from "./restrictions-step";
 import { KpiStep } from "./kpi-step";
+import { RangeStep } from "./range-step";
 
 import styles from "./styles.module.css";
 
@@ -89,6 +90,12 @@ export function CreateCampaignForm({
                 rewards={payload?.tokens}
                 kpiSpecification={payload?.kpiSpecification}
                 onKpiChange={onPayloadChange}
+                onError={onPayloadError}
+            />
+            <RangeStep
+                disabled={false}
+                rangeSpecification={payload?.priceRangeSpecification}
+                onRangeChange={onPayloadChange}
                 onError={onPayloadError}
             />
             <RestrictionsStep

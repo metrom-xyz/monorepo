@@ -157,10 +157,12 @@ export function CampaignPreview({
         const uploadSpecification = async () => {
             setUploadingSpecification(true);
 
-            const { restrictions, kpiSpecification } = payload;
+            const { restrictions, kpiSpecification, priceRangeSpecification } =
+                payload;
 
             let specification: Specification = {
                 kpi: kpiSpecification,
+                priceRange: priceRangeSpecification,
             };
             if (restrictions)
                 specification[restrictions.type] = restrictions?.list;
