@@ -11,6 +11,7 @@ import {
     type TokenDistributables,
     type UsdPricedOnChainAmount,
     type WhitelistedErc20Token,
+    type PriceRangeSpecification,
 } from "@metrom-xyz/sdk";
 import type { Dayjs } from "dayjs";
 import type { SVGProps, FunctionComponent } from "react";
@@ -54,6 +55,7 @@ export interface CampaignPayload {
     tokens?: WhitelistedErc20TokenAmount[];
     fee?: WhitelistedErc20TokenAmount;
     kpiSpecification?: KpiSpecification;
+    priceRangeSpecification?: PriceRangeSpecification;
     restrictions?: {
         type: RestrictionType;
         list: Address[];
@@ -81,6 +83,7 @@ export class CampaignPreviewPayload {
             | CampaignPreviewTokenDistributables
             | CampaignPreviewPointDistributables,
         public readonly kpiSpecification?: KpiSpecification,
+        public readonly priceRangeSpecification?: PriceRangeSpecification,
         public readonly restrictions?: {
             type: RestrictionType;
             list: Address[];
@@ -109,6 +112,7 @@ export interface CampaignPayloadErrors {
     endDate?: boolean;
     rewards?: boolean;
     kpiSpecification?: boolean;
+    rangeSpecification?: boolean;
     restrictions?: boolean;
 }
 
