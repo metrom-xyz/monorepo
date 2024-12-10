@@ -12,18 +12,26 @@ type Transaction @entity(immutable: true) {
     timestamp: BigInt!
     initializeEvent: [InitializeEvent!]! @derivedFrom(field: "transaction")
     ossifyEvents: [OssifyEvent!]! @derivedFrom(field: "transaction")
-    createCampaignEvents: [CreateCampaignEvent!]!
+    createRewardsCampaignEvents: [CreateRewardsCampaignEvent!]!
+        @derivedFrom(field: "transaction")
+    createPointsCampaignEvents: [CreatePointsCampaignEvent!]!
         @derivedFrom(field: "transaction")
     distributeRewardEvents: [DistributeRewardEvent!]!
         @derivedFrom(field: "transaction")
     setMinimumRewardTokenRateEvents: [SetMinimumRewardTokenRateEvent!]!
         @derivedFrom(field: "transaction")
+    setMinimumFeeTokenRateEvents: [SetMinimumFeeTokenRateEvent!]!
+        @derivedFrom(field: "transaction")
     claimRewardEvent: ClaimRewardEvent! @derivedFrom(field: "transaction")
     recoverRewardEvent: RecoverRewardEvent! @derivedFrom(field: "transaction")
     claimFee: ClaimFeeEvent! @derivedFrom(field: "transaction")
-    transferCampaignOwnershipEvents: [TransferCampaignOwnershipEvent!]!
+    transferRewardsCampaignOwnershipEvents: [TransferRewardsCampaignOwnershipEvent!]!
         @derivedFrom(field: "transaction")
-    acceptCampaignOwnershipEvents: [AcceptCampaignOwnershipEvent!]!
+    acceptRewardsCampaignOwnershipEvents: [AcceptRewardsCampaignOwnershipEvent!]!
+        @derivedFrom(field: "transaction")
+    transferPointsCampaignOwnershipEvents: [TransferPointsCampaignOwnershipEvent!]!
+        @derivedFrom(field: "transaction")
+    acceptPointsCampaignOwnershipEvents: [AcceptPointsCampaignOwnershipEvent!]!
         @derivedFrom(field: "transaction")
     transferOwnershipEvents: [TransferOwnershipEvent!]!
         @derivedFrom(field: "transaction")
@@ -50,25 +58,35 @@ type Metrom @entity {
     maximumCampaignDuration: BigInt!
     campaignsAmount: BigInt!
 
-    whitelistedRewardTokens: [WhitelistedRewardToken!]!
-        @derivedFrom(field: "metrom")
+    rewardTokens: [WhitelistedRewardToken!]! @derivedFrom(field: "metrom")
+    feeTokens: [WhitelistedFeeToken!]! @derivedFrom(field: "metrom")
     claimableFees: [ClaimableFee!]! @derivedFrom(field: "metrom")
     feeRebates: [FeeRebate!]! @derivedFrom(field: "metrom")
-    campaigns: [Campaign!]! @derivedFrom(field: "metrom")
+    rewardsCampaigns: [RewardsCampaign!]! @derivedFrom(field: "metrom")
+    pointsCampaigns: [PointsCampaign!]! @derivedFrom(field: "metrom")
 
     initializeEvents: [InitializeEvent!]! @derivedFrom(field: "metrom")
     ossifyEvents: [OssifyEvent!]! @derivedFrom(field: "metrom")
-    createCampaignEvents: [CreateCampaignEvent!]! @derivedFrom(field: "metrom")
+    createRewardsCampaignEvents: [CreateRewardsCampaignEvent!]!
+        @derivedFrom(field: "metrom")
+    createPointsCampaignEvents: [CreatePointsCampaignEvent!]!
+        @derivedFrom(field: "metrom")
     distributeRewardEvents: [DistributeRewardEvent!]!
         @derivedFrom(field: "metrom")
     setMinimumRewardTokenRateEvents: [SetMinimumRewardTokenRateEvent!]!
         @derivedFrom(field: "metrom")
+    setMinimumFeeTokenRateEvents: [SetMinimumFeeTokenRateEvent!]!
+        @derivedFrom(field: "metrom")
     claimRewardEvent: ClaimRewardEvent! @derivedFrom(field: "metrom")
     recoverRewardEvent: RecoverRewardEvent! @derivedFrom(field: "metrom")
     claimFee: ClaimFeeEvent! @derivedFrom(field: "metrom")
-    transferCampaignOwnershipEvents: [TransferCampaignOwnershipEvent!]!
+    transferRewardsCampaignOwnershipEvents: [TransferRewardsCampaignOwnershipEvent!]!
         @derivedFrom(field: "metrom")
-    acceptCampaignOwnershipEvents: [AcceptCampaignOwnershipEvent!]!
+    acceptRewardsCampaignOwnershipEvents: [AcceptRewardsCampaignOwnershipEvent!]!
+        @derivedFrom(field: "metrom")
+    transferPointsCampaignOwnershipEvents: [TransferPointsCampaignOwnershipEvent!]!
+        @derivedFrom(field: "metrom")
+    acceptPointsCampaignOwnershipEvents: [AcceptPointsCampaignOwnershipEvent!]!
         @derivedFrom(field: "metrom")
     transferOwnershipEvents: [TransferOwnershipEvent!]!
         @derivedFrom(field: "metrom")
@@ -100,25 +118,40 @@ type OssifyEvent @entity(immutable: true) {
     metrom: Metrom!
 }
 
-type CreateCampaignEvent @entity(immutable: true) {
+type CreateRewardsCampaignEvent @entity(immutable: true) {
     id: Bytes!
     transaction: Transaction!
     metrom: Metrom!
-    campaign: Campaign!
+    campaign: RewardsCampaign!
     owner: Bytes!
     pool: Bytes!
     from: BigInt!
     to: BigInt!
     specification: Bytes!
     rewards: [CreatedCampaignReward!]!
-        @derivedFrom(field: "createCampaignEvent")
+        @derivedFrom(field: "createRewardsCampaignEvent")
 }
 
 type CreatedCampaignReward @entity(immutable: true) {
     id: Bytes!
-    createCampaignEvent: CreateCampaignEvent!
+    createRewardsCampaignEvent: CreateRewardsCampaignEvent!
     token: Token!
     amount: BigInt!
+    fee: BigInt!
+}
+
+type CreatePointsCampaignEvent @entity(immutable: true) {
+    id: Bytes!
+    transaction: Transaction!
+    metrom: Metrom!
+    campaign: PointsCampaign!
+    owner: Bytes!
+    pool: Bytes!
+    from: BigInt!
+    to: BigInt!
+    specification: Bytes!
+    points: BigInt!
+    feeToken: WhitelistedFeeToken!
     fee: BigInt!
 }
 
@@ -126,7 +159,7 @@ type DistributeRewardEvent @entity(immutable: true) {
     id: Bytes!
     transaction: Transaction!
     metrom: Metrom!
-    campaign: Campaign!
+    campaign: RewardsCampaign!
     root: Bytes!
     data: Bytes!
 }
@@ -139,11 +172,19 @@ type SetMinimumRewardTokenRateEvent @entity(immutable: true) {
     minimumRate: BigInt!
 }
 
+type SetMinimumFeeTokenRateEvent @entity(immutable: true) {
+    id: Bytes!
+    transaction: Transaction!
+    metrom: Metrom!
+    token: Token!
+    minimumRate: BigInt!
+}
+
 type ClaimRewardEvent @entity(immutable: true) {
     id: Bytes!
     transaction: Transaction!
     metrom: Metrom!
-    campaign: Campaign!
+    campaign: RewardsCampaign!
     token: Token!
     amount: BigInt!
     receiver: Bytes!
@@ -153,7 +194,7 @@ type RecoverRewardEvent @entity(immutable: true) {
     id: Bytes!
     transaction: Transaction!
     metrom: Metrom!
-    campaign: Campaign!
+    campaign: RewardsCampaign!
     token: Token!
     amount: BigInt!
     receiver: Bytes!
@@ -168,19 +209,35 @@ type ClaimFeeEvent @entity(immutable: true) {
     receiver: Bytes!
 }
 
-type TransferCampaignOwnershipEvent @entity(immutable: true) {
+type TransferRewardsCampaignOwnershipEvent @entity(immutable: true) {
     id: Bytes!
     transaction: Transaction!
     metrom: Metrom!
-    campaign: Campaign!
+    campaign: RewardsCampaign!
     owner: Bytes!
 }
 
-type AcceptCampaignOwnershipEvent @entity(immutable: true) {
+type AcceptRewardsCampaignOwnershipEvent @entity(immutable: true) {
     id: Bytes!
     transaction: Transaction!
     metrom: Metrom!
-    campaign: Campaign!
+    campaign: RewardsCampaign!
+    owner: Bytes!
+}
+
+type TransferPointsCampaignOwnershipEvent @entity(immutable: true) {
+    id: Bytes!
+    transaction: Transaction!
+    metrom: Metrom!
+    campaign: PointsCampaign!
+    owner: Bytes!
+}
+
+type AcceptPointsCampaignOwnershipEvent @entity(immutable: true) {
+    id: Bytes!
+    transaction: Transaction!
+    metrom: Metrom!
+    campaign: PointsCampaign!
     owner: Bytes!
 }
 
@@ -255,7 +312,14 @@ type WhitelistedRewardToken @entity {
     minimumRate: BigInt!
 }
 
-type Campaign @entity {
+type WhitelistedFeeToken @entity {
+    id: Bytes!
+    metrom: Metrom!
+    token: Token!
+    minimumRate: BigInt!
+}
+
+type RewardsCampaign @entity {
     id: Bytes!
     transaction: Transaction!
     metrom: Metrom!
@@ -272,10 +336,10 @@ type Campaign @entity {
 
     rewards: [Reward!]! @derivedFrom(field: "campaign")
 
-    createEvent: CreateCampaignEvent! @derivedFrom(field: "campaign")
-    transferOwnershipEvents: [TransferCampaignOwnershipEvent!]!
+    createEvent: CreateRewardsCampaignEvent! @derivedFrom(field: "campaign")
+    transferOwnershipEvents: [TransferRewardsCampaignOwnershipEvent!]!
         @derivedFrom(field: "campaign")
-    acceptOwnershipEvents: [AcceptCampaignOwnershipEvent!]!
+    acceptOwnershipEvents: [AcceptRewardsCampaignOwnershipEvent!]!
         @derivedFrom(field: "campaign")
     distributeRewardEvents: [DistributeRewardEvent!]!
         @derivedFrom(field: "campaign")
@@ -285,7 +349,7 @@ type Campaign @entity {
 
 type Reward @entity {
     id: Bytes!
-    campaign: Campaign!
+    campaign: RewardsCampaign!
     token: Token!
     amount: BigInt!
     claimed: BigInt!
@@ -307,4 +371,25 @@ type RecoveredByAccount @entity {
     reward: Reward!
     account: Bytes!
     amount: BigInt!
+}
+
+type PointsCampaign @entity {
+    id: Bytes!
+    transaction: Transaction!
+    metrom: Metrom!
+    creationBlockNumber: BigInt!
+    creationTimestamp: BigInt!
+    owner: Bytes!
+    pendingOwner: Bytes!
+    pool: Bytes!
+    from: BigInt!
+    to: BigInt!
+    specification: Bytes!
+    points: BigInt!
+
+    createEvent: CreatePointsCampaignEvent! @derivedFrom(field: "campaign")
+    transferOwnershipEvents: [TransferPointsCampaignOwnershipEvent!]!
+        @derivedFrom(field: "campaign")
+    acceptOwnershipEvents: [AcceptPointsCampaignOwnershipEvent!]!
+        @derivedFrom(field: "campaign")
 }
