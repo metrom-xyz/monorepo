@@ -82,9 +82,11 @@ export function Header({ campaign }: HeaderProps) {
                     >
                         {t("deposit")}
                     </Button>
-                    <Button size="sm" onClick={handleClaimOnClick}>
-                        {t("claim")}
-                    </Button>
+                    {campaign.rewards.length > 0 && (
+                        <Button size="sm" onClick={handleClaimOnClick}>
+                            {t("claim")}
+                        </Button>
+                    )}
                     <Button
                         size="sm"
                         variant="secondary"
