@@ -1,7 +1,7 @@
 import { CampaignDetails } from "@/src/components/campaign-details";
 import { routing } from "@/src/i18n/routing";
 import type { SupportedChain } from "@metrom-xyz/contracts";
-import { unstable_setRequestLocale } from "next-intl/server";
+import { setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
 import type { Hex } from "viem";
 
@@ -14,7 +14,7 @@ export default function CampaignDetailsPage({
         notFound();
     }
 
-    unstable_setRequestLocale(params.locale);
+    setRequestLocale(params.locale);
 
     return (
         <CampaignDetails chain={params.chain} campaignId={params.campaignId} />

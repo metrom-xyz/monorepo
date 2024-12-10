@@ -8,7 +8,7 @@ import "./globals.css";
 import type { Metadata } from "next";
 import { type ReactNode } from "react";
 import { NextIntlClientProvider } from "next-intl";
-import { getMessages, unstable_setRequestLocale } from "next-intl/server";
+import { getMessages, setRequestLocale } from "next-intl/server";
 import type { Locale } from "@rainbow-me/rainbowkit";
 import { ClientProviders } from "../../components/client-providers";
 import Fathom from "@/src/components/fathom";
@@ -36,7 +36,7 @@ export default async function Layout({
         notFound();
     }
 
-    unstable_setRequestLocale(locale);
+    setRequestLocale(locale);
 
     const messages = await getMessages();
 
