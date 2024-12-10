@@ -16,6 +16,7 @@ import {
     type Campaign,
     type Claim,
     type KpiMeasurement,
+    type OnChainAmount,
     type Pool,
     type Reimbursement,
     type Rewards,
@@ -43,7 +44,7 @@ export interface FetchReimbursementsParams {
     address: Address;
 }
 
-export interface FetchWhitelistedRewardTokensParams {
+export interface FetchWhitelistedTokensParams {
     chainId: SupportedChain;
 }
 
@@ -174,32 +175,19 @@ export class MetromApiClient {
     }
 
     async fetchWhitelistedRewardTokens(
-        params: FetchWhitelistedRewardTokensParams,
+        params: FetchWhitelistedTokensParams,
     ): Promise<WhitelistedErc20Token[]> {
-        const url = new URL(`v1/reward-tokens/${params.chainId}`, this.baseUrl);
+        return fetchWhitelistedTokens(
+            new URL(`v1/reward-tokens/${params.chainId}`, this.baseUrl),
+        );
+    }
 
-        const response = await fetch(url);
-        if (!response.ok)
-            throw new Error(
-                `response not ok while fetching whitelisted reward tokens: ${await response.text()}`,
-            );
-
-        const whitelistedTokens =
-            (await response.json()) as BackendWhitelistedErc20Token[];
-
-        return whitelistedTokens.map((token) => {
-            const rawMinimumRate = BigInt(token.minimumRate);
-
-            return {
-                ...token,
-                minimumRate: {
-                    raw: rawMinimumRate,
-                    formatted: Number(
-                        formatUnits(rawMinimumRate, token.decimals),
-                    ),
-                },
-            };
-        });
+    async fetchWhitelistedFeeTokens(
+        params: FetchWhitelistedTokensParams,
+    ): Promise<WhitelistedErc20Token[]> {
+        return fetchWhitelistedTokens(
+            new URL(`v1/fee-tokens/${params.chainId}`, this.baseUrl),
+        );
     }
 
     async fetchActivities(params: FetchActivitiesParams): Promise<Activity[]> {
@@ -411,6 +399,16 @@ function processCampaign(backendCampaign: BackendCampaign): Campaign {
         });
     }
 
+    let points: OnChainAmount | null = null;
+    if (backendCampaign.points) {
+        const rawAmount = BigInt(backendCampaign.points);
+        const formattedAmount = Number(formatUnits(rawAmount, 18));
+        points = {
+            raw: rawAmount,
+            formatted: formattedAmount,
+        };
+    }
+
     const campaign: Campaign = {
         ...backendCampaign,
         from,
@@ -425,7 +423,33 @@ function processCampaign(backendCampaign: BackendCampaign): Campaign {
             ...backendCampaign.pool,
         },
         rewards,
+        points,
     };
 
     return campaign;
+}
+
+async function fetchWhitelistedTokens(
+    url: URL,
+): Promise<WhitelistedErc20Token[]> {
+    const response = await fetch(url);
+    if (!response.ok)
+        throw new Error(
+            `response not ok while fetching whitelisted tokens: ${await response.text()}`,
+        );
+
+    const whitelistedTokens =
+        (await response.json()) as BackendWhitelistedErc20Token[];
+
+    return whitelistedTokens.map((token) => {
+        const rawMinimumRate = BigInt(token.minimumRate);
+
+        return {
+            ...token,
+            minimumRate: {
+                raw: rawMinimumRate,
+                formatted: Number(formatUnits(rawMinimumRate, token.decimals)),
+            },
+        };
+    });
 }

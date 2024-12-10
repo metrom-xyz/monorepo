@@ -4,7 +4,12 @@ import { metromApiClient } from "../commons";
 import { useEffect, useState } from "react";
 import type { WhitelistedErc20Token } from "@metrom-xyz/sdk";
 
-export function useWhitelistedRewardsTokens(): {
+enum WhitelistedTokenType {
+    Rewards,
+    Fees,
+}
+
+function useWhitelistedTokens(type: WhitelistedTokenType): {
     loading: boolean;
     whitelistedTokens: WhitelistedErc20Token[];
 } {
@@ -25,9 +30,13 @@ export function useWhitelistedRewardsTokens(): {
             try {
                 if (!cancelled) setLoading(true);
                 const tokens =
-                    await metromApiClient.fetchWhitelistedRewardTokens({
-                        chainId,
-                    });
+                    type === WhitelistedTokenType.Rewards
+                        ? await metromApiClient.fetchWhitelistedRewardTokens({
+                              chainId,
+                          })
+                        : await metromApiClient.fetchWhitelistedFeeTokens({
+                              chainId,
+                          });
                 if (!cancelled) setWhitelistedTokens(tokens);
             } catch (error) {
                 console.error(`Could not fetch whitelisted tokens: ${error}`);
@@ -39,10 +48,24 @@ export function useWhitelistedRewardsTokens(): {
         return () => {
             cancelled = true;
         };
-    }, [chainId]);
+    }, [chainId, type]);
 
     return {
         loading,
         whitelistedTokens,
     };
+}
+
+export function useWhitelistedRewardTokens(): {
+    loading: boolean;
+    whitelistedTokens: WhitelistedErc20Token[];
+} {
+    return useWhitelistedTokens(WhitelistedTokenType.Rewards);
+}
+
+export function useWhitelistedFeeTokens(): {
+    loading: boolean;
+    whitelistedTokens: WhitelistedErc20Token[];
+} {
+    return useWhitelistedTokens(WhitelistedTokenType.Fees);
 }

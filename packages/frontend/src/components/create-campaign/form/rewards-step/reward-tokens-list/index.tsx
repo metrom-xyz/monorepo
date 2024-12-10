@@ -8,7 +8,7 @@ import {
     type WhitelistedErc20Token,
 } from "@metrom-xyz/sdk";
 import { Typography } from "@metrom-xyz/ui";
-import { useWhitelistedRewardsTokens } from "@/src/hooks/useWhitelistedRewardsTokens";
+import { useWhitelistedRewardTokens } from "@/src/hooks/useWhitelistedTokens";
 import {
     useWatchBalances,
     type Erc20TokenWithBalance,
@@ -35,7 +35,7 @@ export function RewardTokensList({
 
     const { address } = useAccount();
     const chainId = useChainId();
-    const { whitelistedTokens, loading } = useWhitelistedRewardsTokens();
+    const { whitelistedTokens, loading } = useWhitelistedRewardTokens();
 
     const {
         tokensWithBalance: whitelistedTokensWithBalance,

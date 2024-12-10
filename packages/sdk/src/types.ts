@@ -98,6 +98,7 @@ export interface Campaign {
     snapshottedAt: number | null;
     pool: PoolWithTvl;
     rewards: Rewards;
+    points: OnChainAmount | null;
     apr: number | null;
     specification: SpecificationWithKpiMeasurement | null;
 }
