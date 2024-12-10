@@ -26,6 +26,7 @@ export interface BackendCampaign {
     pool: BackendPoolWithTvl;
     specification: Specification | null;
     rewards: BackendReward[];
+    points: string | null;
     apr: number | null;
 }
 

@@ -38,6 +38,7 @@
         "react-virtualized-auto-sizer": "^1.0.24",
         "react-window": "^1.8.10",
         "recharts": "^2.14.1",
+        "sharp": "^0.33.5",
         "sonner": "^1.7.1",
         "viem": "^2.21.54",
         "wagmi": "^2.13.4"
