@@ -104,7 +104,7 @@ export function Header({ campaign }: HeaderProps) {
                         {t("explorer")}
                     </Button>
                 </div>
-                {campaign.apr && (
+                {campaign.apr && campaign.rewards.length > 0 && (
                     <AprChip
                         prefix
                         size="lg"
