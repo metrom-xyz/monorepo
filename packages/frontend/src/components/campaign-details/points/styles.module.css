@@ -1,0 +1,7 @@
+.root {
+    @apply flex flex-col gap-4;
+}
+
+.summary {
+    @apply flex flex-col sm:flex-row justify-between gap-4;
+}

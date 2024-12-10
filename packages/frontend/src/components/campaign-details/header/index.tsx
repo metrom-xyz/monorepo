@@ -82,9 +82,11 @@ export function Header({ campaign }: HeaderProps) {
                     >
                         {t("deposit")}
                     </Button>
-                    <Button size="sm" onClick={handleClaimOnClick}>
-                        {t("claim")}
-                    </Button>
+                    {campaign.rewards.length > 0 && (
+                        <Button size="sm" onClick={handleClaimOnClick}>
+                            {t("claim")}
+                        </Button>
+                    )}
                     <Button
                         size="sm"
                         variant="secondary"
@@ -104,7 +106,7 @@ export function Header({ campaign }: HeaderProps) {
                         {t("explorer")}
                     </Button>
                 </div>
-                {campaign.apr && (
+                {campaign.apr && campaign.rewards.length > 0 && (
                     <AprChip
                         prefix
                         size="lg"

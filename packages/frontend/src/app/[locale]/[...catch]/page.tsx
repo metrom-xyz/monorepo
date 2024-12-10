@@ -1,5 +1,5 @@
 import { routing } from "@/src/i18n/routing";
-import { unstable_setRequestLocale } from "next-intl/server";
+import { setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
 
 export default function NotFoundCatchAll({
@@ -11,7 +11,7 @@ export default function NotFoundCatchAll({
         notFound();
     }
 
-    unstable_setRequestLocale(locale);
+    setRequestLocale(locale);
 
     notFound();
 }
