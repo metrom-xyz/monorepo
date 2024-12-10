@@ -278,6 +278,11 @@
             "daily": "Daily rewards",
             "total": "Total value usd"
         },
+        "points": {
+            "title": "Points",
+            "total": "Total",
+            "daily": "Daily"
+        },
         "kpi": {
             "title": "KPI",
             "lowerBound": "Lower bound",
