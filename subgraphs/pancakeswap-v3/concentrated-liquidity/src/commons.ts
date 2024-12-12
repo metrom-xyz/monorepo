@@ -5,7 +5,7 @@ import {
     Bytes,
     ethereum,
 } from "@graphprotocol/graph-ts";
-import { Pool, PoolToken, Token } from "../generated/schema";
+import { Pool, PoolToken, Tick, Token } from "../generated/schema";
 import { NonFungiblePositionManager } from "../generated/NonFungiblePositionManager/NonFungiblePositionManager";
 import { Factory } from "../generated/Factory/Factory";
 import {
@@ -143,4 +143,21 @@ export function getOrCreatePoolToken(
     poolToken.save();
 
     return poolToken;
+}
+
+export function getOrCreateTick(poolAddress: Bytes, idx: i32): Tick {
+    let id = poolAddress.concat(Bytes.fromI32(idx));
+    let tick = Tick.load(id);
+    if (tick !== null) {
+        return tick;
+    }
+
+    tick = new Tick(id);
+    tick.idx = BigInt.fromI32(idx);
+    tick.pool = poolAddress;
+    tick.liquidityGross = BI_0;
+    tick.liquidityNet = BI_0;
+    tick.save();
+
+    return tick;
 }

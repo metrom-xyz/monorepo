@@ -14,6 +14,7 @@ import {
 import {
     BI_0,
     getEventId,
+    getOrCreateTick,
     getPoolOrThrow,
     getSortedPoolTokens,
 } from "../commons";
@@ -122,6 +123,20 @@ export function handleMint(event: MintEvent): void {
     poolTokens[1].tvl = poolTokens[1].tvl.plus(event.params.amount1);
     poolTokens[1].save();
 
+    let lowerTick = getOrCreateTick(pool.id, event.params.tickLower);
+    lowerTick.liquidityGross = lowerTick.liquidityGross.plus(
+        event.params.amount,
+    );
+    lowerTick.liquidityNet = lowerTick.liquidityNet.plus(event.params.amount);
+    lowerTick.save();
+
+    let upperTick = getOrCreateTick(pool.id, event.params.tickUpper);
+    upperTick.liquidityGross = upperTick.liquidityGross.plus(
+        event.params.amount,
+    );
+    upperTick.liquidityNet = upperTick.liquidityNet.minus(event.params.amount);
+    upperTick.save();
+
     if (event.params.owner == NON_FUNGIBLE_POSITION_MANAGER_ADDRESS) return;
 
     let position = getOrCreateDirectPosition(
@@ -154,6 +169,20 @@ export function handleBurn(event: BurnEvent): void {
 
     poolTokens[1].tvl = poolTokens[1].tvl.minus(event.params.amount1);
     poolTokens[1].save();
+
+    let lowerTick = getOrCreateTick(pool.id, event.params.tickLower);
+    lowerTick.liquidityGross = lowerTick.liquidityGross.minus(
+        event.params.amount,
+    );
+    lowerTick.liquidityNet = lowerTick.liquidityNet.minus(event.params.amount);
+    lowerTick.save();
+
+    let upperTick = getOrCreateTick(pool.id, event.params.tickUpper);
+    upperTick.liquidityGross = upperTick.liquidityGross.minus(
+        event.params.amount,
+    );
+    upperTick.liquidityNet = upperTick.liquidityNet.plus(event.params.amount);
+    upperTick.save();
 
     if (event.params.owner == NON_FUNGIBLE_POSITION_MANAGER_ADDRESS) return;
 

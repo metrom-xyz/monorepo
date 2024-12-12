@@ -35,3 +35,13 @@ type LiquidityChange @entity(immutable: true) {
     delta: BigInt!
     position: Position!
 }
+
+type LiquidityTransfer @entity(immutable: true) {
+    id: Bytes!
+    timestamp: BigInt!
+    blockNumber: BigInt!
+    transactionHash: Bytes!
+    from: Bytes!
+    to: Bytes!
+    amount: BigInt!
+}
