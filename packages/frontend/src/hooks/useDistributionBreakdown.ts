@@ -41,7 +41,8 @@ export function useDistributionBreakdown(campaign?: Campaign): {
             chainId: campaign?.chainId,
             address: chainData?.metromContract.address,
             abi: metromAbi,
-            functionName: "campaignById",
+            // FIXME: fetch distributions for points campaign
+            functionName: "rewardsCampaignById",
             args: campaign && [campaign.id],
             query: {
                 enabled: !!campaign,

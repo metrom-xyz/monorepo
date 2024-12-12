@@ -6,13 +6,7 @@ import type {
     CampaignPayloadErrors,
     CampaignPayloadPart,
 } from "@/src/types";
-import {
-    Button,
-    ErrorText,
-    Switch,
-    Typography,
-    type NumberFormatValues,
-} from "@metrom-xyz/ui";
+import { Button, ErrorText, Switch, Typography } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { formatUsdAmount } from "@/src/utils/format";
@@ -27,7 +21,7 @@ import styles from "./styles.module.css";
 interface KpiStepProps {
     disabled?: boolean;
     pool?: CampaignPayload["pool"];
-    rewards?: CampaignPayload["rewards"];
+    rewards?: CampaignPayload["tokens"];
     kpiSpecification?: CampaignPayload["kpiSpecification"];
     onKpiChange: (kpi: CampaignPayloadPart) => void;
     onError: (errors: CampaignPayloadErrors) => void;

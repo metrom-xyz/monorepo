@@ -1,5 +1,4 @@
 import type { KpiMeasurement, KpiRewardDistribution } from "@metrom-xyz/sdk";
-import type { Address } from "viem";
 
 export function getReachedGoalPercentage(
     usdTvl: number,

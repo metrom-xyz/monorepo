@@ -18,7 +18,7 @@ import { FEE_UNIT } from "@/src/commons";
 import styles from "./styles.module.css";
 
 interface RewardsProps {
-    rewards: CampaignPayload["rewards"];
+    rewards: CampaignPayload["tokens"];
     startDate?: Dayjs;
     endDate?: Dayjs;
 }

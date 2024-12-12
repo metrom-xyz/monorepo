@@ -1,15 +1,17 @@
 .step {
-    @apply hover:border-white;
+    @apply hover:border-white !h-auto;
 }
 
 .stepPreview {
-    @apply hover:cursor-default hover:bg-inherit h-full;
+    @apply hover:cursor-default hover:bg-inherit h-full p-0;
 }
 
 .previewLabelWrapper {
-    @apply flex
-        items-center
-        gap-2;
+    @apply flex items-center gap-2 px-4 pt-4;
+}
+
+.previewLabelWrapper.disabled {
+    @apply p-0;
 }
 
 .previewLabel {
@@ -29,64 +31,5 @@
 }
 
 .previewWrapper {
-    @apply w-full flex flex-col gap-2.5;
-}
-
-.rewardPickerWrapper {
-    @apply flex items-end justify-between;
-}
-
-.inputWrapper {
-    @apply flex flex-col gap-1;
-}
-
-.rewardTokenAmountInput :global(.input),
-.rewardTokenAmountInput :global(.inputWrapper) {
-    @apply w-full
-        max-w-56
-        bg-transparent
-        h-7
-        leading-6
-        font-medium
-        px-0
-        text-[1.75rem];
-}
-
-.addRewardButton {
-    @apply w-full;
-}
-
-.rewardTokenSelect {
-    @apply w-fit
-        max-w-40
-        flex
-        gap-1
-        items-center
-        justify-between
-        rounded-md
-        bg-gray-100
-        pl-2.5
-        pr-1
-        py-1.5
-        hover:bg-gray-200
-        hover:cursor-pointer
-        transition-colors
-        duration-200
-        ease-in-out;
-}
-
-.rewardTokenSymbol {
-    @apply text-nowrap;
-}
-
-.chevronDown {
-    @apply h-3 w-3;
-}
-
-.horizontalDivider {
-    @apply h-[1.5px] bg-gray-100;
-}
-
-.totalValueWrapper {
-    @apply flex items-center gap-3 px-2;
+    @apply h-full w-full flex flex-col gap-2.5;
 }

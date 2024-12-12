@@ -120,25 +120,41 @@
             },
             "rewards": {
                 "title": {
-                    "add": "Enter Reward",
                     "rewards": "Rewards"
                 },
-                "rewardsPreviewList": {
-                    "empty": "No rewards added yet"
+                "tabs": {
+                    "tokens": "Tokens",
+                    "points": "Points"
                 },
-                "addButton": {
-                    "add": "Add to rewards"
-                },
-                "selectPlaceholder": "Choose Token",
-                "totalUsd": "Total value usd",
-                "errors": {
-                    "insufficientBalance": "Insufficient balance",
-                    "lowDistributionRate": "Low distribution rate"
+                "tokens": {
+                    "enterReward": "Enter Reward",
+                    "rewardsPreviewList": {
+                        "empty": "No rewards added yet"
+                    },
+                    "addButton": {
+                        "add": "Add to rewards"
+                    },
+                    "selectPlaceholder": "Choose Token",
+                    "totalUsd": "Total value usd",
+                    "errors": {
+                        "insufficientBalance": "Insufficient balance",
+                        "lowDistributionRate": "Low distribution rate"
+                    }
                 },
                 "list": {
                     "token": "Token",
                     "balance": "Balance",
                     "empty": "Nothing here"
+                },
+                "points": {
+                    "amount": "Points amount",
+                    "pickFeeToken": "Pick fee token",
+                    "select": "Select",
+                    "usdCost": "{usd} total USD cost",
+                    "apply": "Apply",
+                    "errors": {
+                        "costChanged": "Cost changed, apply to confirm"
+                    }
                 }
             },
             "restrictions": {
@@ -217,6 +233,7 @@
         },
         "tvl": "TVL",
         "apr": "APR",
+        "points": "Points",
         "kpi": {
             "title": "KPI",
             "simulation": "KPI simulation",

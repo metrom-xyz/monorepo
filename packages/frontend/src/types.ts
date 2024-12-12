@@ -2,6 +2,7 @@ import type {
     KpiSpecification,
     PoolWithTvl,
     SupportedDex,
+    WhitelistedErc20Token,
     WhitelistedErc20TokenAmount,
 } from "@metrom-xyz/sdk";
 import type { Dayjs } from "dayjs";
@@ -26,14 +27,21 @@ export enum RestrictionType {
     whitelist = "whitelist",
 }
 
-// TODO: define state
+export enum RewardType {
+    points = "points",
+    tokens = "tokens",
+}
+
 export interface CampaignPayload {
     network?: number;
+    rewardType?: RewardType;
     dex?: DexInfo;
     pool?: PoolWithTvl;
     startDate?: Dayjs;
     endDate?: Dayjs;
-    rewards?: WhitelistedErc20TokenAmount[];
+    points?: number;
+    tokens?: WhitelistedErc20TokenAmount[];
+    feeToken?: WhitelistedErc20TokenAmount;
     kpiSpecification?: KpiSpecification;
     restrictions?: {
         type: RestrictionType;
