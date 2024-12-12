@@ -40,7 +40,7 @@ export function TextField({
             </Typography>
             {loading ? (
                 <Skeleton size={size} width={skeletonWidth} />
-            ) : typeof value === "string" ? (
+            ) : typeof value === "string" || typeof value === "number" ? (
                 <Typography weight="medium" size={size} {...rest}>
                     {value}
                 </Typography>
