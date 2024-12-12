@@ -11,5 +11,5 @@ export const START_BLOCKS: { [network: string]: number } = {
     base: 20192397,
     taiko: 460103,
     scroll: 10721133,
-    "form-testnet": 14587009,
+    "form-testnet": 14587762,
 };
