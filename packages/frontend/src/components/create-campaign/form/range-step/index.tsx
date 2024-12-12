@@ -12,7 +12,11 @@ import type {
     CampaignPayloadPart,
 } from "@/src/types";
 import { PriceRangeChart } from "@/src/components/price-range-chart";
-import { type PriceRangeSpecification } from "@metrom-xyz/sdk";
+// import { PriceRangeChart } from "@/src/components/price-range-chart";
+import {
+    type PoolWithTvl,
+    type PriceRangeSpecification,
+} from "@metrom-xyz/sdk";
 import classNames from "classnames";
 import { usePrevious } from "react-use";
 
@@ -20,14 +24,16 @@ import styles from "./styles.module.css";
 
 interface RangeStepProps {
     disabled?: boolean;
-    rangeSpecification?: CampaignPayload["priceRangeSpecification"];
+    pool?: PoolWithTvl;
+    priceRangeSpecification?: CampaignPayload["priceRangeSpecification"];
     onRangeChange: (range: CampaignPayloadPart) => void;
     onError: (errors: CampaignPayloadErrors) => void;
 }
 
 export function RangeStep({
     disabled,
-    rangeSpecification,
+    pool,
+    priceRangeSpecification,
     onRangeChange,
     onError,
 }: RangeStepProps) {
@@ -36,34 +42,24 @@ export function RangeStep({
     const [enabled, setEnabled] = useState(false);
     const [error, setError] = useState("");
     const [warning, setWarning] = useState("");
-    const [activeTokenIndex, setActiveTokenIndex] = useState<number>(0);
 
-    const [fromRaw, setFromRaw] = useState<number | undefined>(
-        rangeSpecification?.from,
+    const [from, setFrom] = useState<number | undefined>(
+        priceRangeSpecification?.from,
     );
-    const [toRaw, setToRaw] = useState<number | undefined>(
-        rangeSpecification?.to,
+    const [to, setTo] = useState<number | undefined>(
+        priceRangeSpecification?.to,
     );
 
-    const prevRangeSpecification = usePrevious(rangeSpecification);
+    const prevRangeSpecification = usePrevious(priceRangeSpecification);
     const chainId = useChainId();
 
     const unsavedChanges = useMemo(() => {
-        if (!prevRangeSpecification) return true;
-
-        // FIXME: we should have tick values in the spec, no?
-        const { from: prevFrom, to: prevTo } = prevRangeSpecification;
-
-        return prevFrom !== fromRaw || prevTo !== toRaw;
-    }, [fromRaw, prevRangeSpecification, toRaw]);
-
-    const newRangeSpecification: PriceRangeSpecification | undefined =
-        fromRaw !== undefined && toRaw !== undefined
-            ? {
-                  from: fromRaw,
-                  to: toRaw,
-              }
-            : undefined;
+        return (
+            !prevRangeSpecification ||
+            prevRangeSpecification.from !== from ||
+            prevRangeSpecification.to !== to
+        );
+    }, [from, prevRangeSpecification, to]);
 
     useEffect(() => {
         setOpen(false);
@@ -72,42 +68,29 @@ export function RangeStep({
     // this hooks is used to disable and close the step when
     // the range specification gets disabled, after the campaign creation
     useEffect(() => {
-        if (enabled && !!prevRangeSpecification && !rangeSpecification)
+        if (enabled && !!prevRangeSpecification && !priceRangeSpecification)
             setEnabled(false);
-    }, [enabled, prevRangeSpecification, rangeSpecification]);
+    }, [enabled, prevRangeSpecification, priceRangeSpecification]);
 
+    // reset state once the step gets disabled
     useEffect(() => {
         if (enabled) return;
-        if (rangeSpecification)
+        if (priceRangeSpecification)
             onRangeChange({ priceRangeSpecification: undefined });
 
-        setFromRaw(undefined);
-        setToRaw(undefined);
+        setFrom(undefined);
+        setTo(undefined);
         setError("");
-    }, [enabled, onRangeChange, rangeSpecification]);
+    }, [enabled, onRangeChange, priceRangeSpecification]);
 
     useEffect(() => {
-        if (fromRaw === undefined && toRaw === undefined) {
-            setError("");
-            return;
-        }
-
-        if (
-            (fromRaw === undefined && toRaw) ||
-            (toRaw === undefined && fromRaw)
-        ) {
+        if (from === undefined && to === undefined) setError("");
+        else if ((from === undefined && to) || (to === undefined && from))
             setError("errors.missing");
-            return;
-        }
-
-        if (
-            fromRaw !== undefined &&
-            toRaw !== undefined &&
-            (fromRaw >= toRaw || fromRaw === toRaw)
-        )
+        else if (from !== undefined && to !== undefined && from >= to)
             setError("errors.malformed");
         else setError("");
-    }, [fromRaw, toRaw]);
+    }, [from, to]);
 
     useEffect(() => {
         setOpen(enabled);
@@ -121,9 +104,10 @@ export function RangeStep({
 
     useEffect(() => {
         onError({
-            rangeSpecification: !!error || (enabled && !rangeSpecification),
+            priceRangeSpecification:
+                !!error || (enabled && !priceRangeSpecification),
         });
-    }, [error, enabled, rangeSpecification, onError]);
+    }, [error, enabled, priceRangeSpecification, onError]);
 
     function handleSwitchOnClick() {
         setEnabled((enabled) => !enabled);
@@ -134,26 +118,17 @@ export function RangeStep({
         setOpen((open) => !open);
     }
 
-    function handleTokenPriceOnFlip() {
-        if (activeTokenIndex === 0) setActiveTokenIndex(1);
-        if (activeTokenIndex === 1) setActiveTokenIndex(0);
-
-        setFromRaw(undefined);
-        setToRaw(undefined);
-        onRangeChange({ priceRangeSpecification: undefined });
-    }
-
-    const handleOnApply = useCallback(() => {
-        if (fromRaw === undefined || toRaw === undefined) return;
+    const handleApply = useCallback(() => {
+        if (from === undefined || to === undefined) return;
 
         const priceRangeSpecification: PriceRangeSpecification = {
-            from: fromRaw,
-            to: toRaw,
+            from,
+            to,
         };
 
         setOpen(false);
         onRangeChange({ priceRangeSpecification });
-    }, [fromRaw, onRangeChange, toRaw]);
+    }, [from, onRangeChange, to]);
 
     return (
         <Step
@@ -217,31 +192,30 @@ export function RangeStep({
             <StepContent>
                 <div className={styles.stepContent}>
                     <RangeInputs
-                        // TODO: use real tick spacing
+                        pool={pool}
                         error={!!error}
-                        tickPriceSpacing={15}
-                        rangeSpecification={newRangeSpecification}
-                        onTokenPriceFlip={handleTokenPriceOnFlip}
-                        onFromChange={setFromRaw}
-                        onToChange={setToRaw}
+                        from={from}
+                        onFromChange={setFrom}
+                        to={to}
+                        onToChange={setTo}
                     />
-                    <PriceRangeChart
+                    {/*<PriceRangeChart
                         error={!!error}
                         poolTick={40}
                         activeTokenIndex={activeTokenIndex}
-                        from={fromRaw}
-                        to={toRaw}
-                    />
+                        lowerUsdPrice={from}
+                        upperUsdPrice={to}
+                    />*/}
                     <Button
                         variant="secondary"
                         size="sm"
                         disabled={
                             !unsavedChanges ||
-                            toRaw === undefined ||
-                            fromRaw === undefined ||
+                            to === undefined ||
+                            from === undefined ||
                             !!error
                         }
-                        onClick={handleOnApply}
+                        onClick={handleApply}
                         className={{ root: styles.applyButton }}
                     >
                         {t("apply")}

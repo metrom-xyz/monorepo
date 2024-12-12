@@ -93,7 +93,8 @@ export function CreateCampaignForm({
                 onError={onPayloadError}
             />
             <RangeStep
-                disabled={false}
+                disabled={!payload?.tokens || unsupportedChain}
+                pool={payload?.pool}
                 rangeSpecification={payload?.priceRangeSpecification}
                 onRangeChange={onPayloadChange}
                 onError={onPayloadError}
