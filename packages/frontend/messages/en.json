@@ -74,6 +74,11 @@
                 "totalUsdValue": "Total USD value"
             }
         },
+        "points": {
+            "tooltip": {
+                "points": "Points"
+            }
+        },
         "empty": {
             "title": "No campaigns found",
             "description": "No campaigns found on Metrom.",

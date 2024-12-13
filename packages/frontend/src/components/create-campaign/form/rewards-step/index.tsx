@@ -104,15 +104,17 @@ export function RewardsStep({
                             >
                                 {t("title.rewards")}
                             </Typography>
-                            <ErrorText
-                                size="xs"
-                                weight="medium"
-                                className={classNames(styles.error, {
-                                    [styles.errorVisible]: !!error,
-                                })}
-                            >
-                                {error}
-                            </ErrorText>
+                            {!disabled && (
+                                <ErrorText
+                                    size="xs"
+                                    weight="medium"
+                                    className={classNames(styles.error, {
+                                        [styles.errorVisible]: !!error,
+                                    })}
+                                >
+                                    {error}
+                                </ErrorText>
+                            )}
                         </div>
                         <Tabs
                             size="sm"
