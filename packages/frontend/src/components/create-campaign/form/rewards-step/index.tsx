@@ -95,51 +95,59 @@ export function RewardsStep({
                             [styles.disabled]: disabled,
                         })}
                     >
-                        <Typography
-                            uppercase
-                            weight="medium"
-                            size="sm"
-                            className={styles.previewLabel}
-                        >
-                            {t("title.rewards")}
-                        </Typography>
-                        <ErrorText
-                            size="xs"
-                            weight="medium"
-                            className={classNames(styles.error, {
-                                [styles.errorVisible]: !!error,
-                            })}
-                        >
-                            {error}
-                        </ErrorText>
-                    </div>
-                }
-                decorator={disabled}
-                className={{ root: !disabled ? styles.stepPreview : "" }}
-            >
-                <div className={styles.previewWrapper}>
-                    <div className="px-4">
+                        <div className={styles.previewTextWrapper}>
+                            <Typography
+                                uppercase
+                                weight="medium"
+                                size="sm"
+                                className={styles.previewLabel}
+                            >
+                                {t("title.rewards")}
+                            </Typography>
+                            <ErrorText
+                                size="xs"
+                                weight="medium"
+                                className={classNames(styles.error, {
+                                    [styles.errorVisible]: !!error,
+                                })}
+                            >
+                                {error}
+                            </ErrorText>
+                        </div>
                         <Tabs
                             size="sm"
                             value={type}
                             onChange={handleOnRewardTypeSwitch}
                         >
-                            <Tab value={RewardType.tokens}>
-                                <div className={styles.tab}>
-                                    <Typography weight="medium">
-                                        {t("tabs.tokens")}
-                                    </Typography>
-                                </div>
+                            <Tab
+                                value={RewardType.tokens}
+                                className={classNames(styles.tab, {
+                                    [styles.activeTab]:
+                                        type === RewardType.tokens,
+                                })}
+                            >
+                                <Typography weight="medium" size="sm">
+                                    {t("tabs.tokens")}
+                                </Typography>
                             </Tab>
-                            <Tab value={RewardType.points}>
-                                <div className={styles.tab}>
-                                    <Typography weight="medium">
-                                        {t("tabs.points")}
-                                    </Typography>
-                                </div>
+                            <Tab
+                                value={RewardType.points}
+                                className={classNames(styles.tab, {
+                                    [styles.activeTab]:
+                                        type === RewardType.points,
+                                })}
+                            >
+                                <Typography weight="medium" size="sm">
+                                    {t("tabs.points")}
+                                </Typography>
                             </Tab>
                         </Tabs>
                     </div>
+                }
+                decorator={false}
+                className={{ root: !disabled ? styles.stepPreview : "" }}
+            >
+                <div className={styles.previewWrapper}>
                     {type === RewardType.points && (
                         <RewardPoints
                             campaignDuration={campaignDuration}

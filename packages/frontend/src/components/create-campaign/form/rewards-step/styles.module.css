@@ -7,11 +7,15 @@
 }
 
 .previewLabelWrapper {
-    @apply flex items-center gap-2 px-4 pt-4;
+    @apply w-full flex items-start justify-between gap-2 px-4 pt-5;
 }
 
 .previewLabelWrapper.disabled {
-    @apply p-0;
+    @apply p-0 items-center;
+}
+
+.previewTextWrapper {
+    @apply flex flex-col gap-1;
 }
 
 .previewLabel {
@@ -32,4 +36,28 @@
 
 .previewWrapper {
     @apply h-full w-full flex flex-col gap-2.5;
+}
+
+.tab {
+    @apply bg-white opacity-100 transition-colors duration-200 ease-in-out;
+}
+
+.tab > p {
+    @apply text-gray-400 transition-colors duration-200 ease-in-out;
+}
+
+.tab:first-child {
+    @apply rounded-r-none;
+}
+
+.tab:last-child {
+    @apply rounded-l-none;
+}
+
+.activeTab {
+    @apply bg-black;
+}
+
+.activeTab > p {
+    @apply text-white;
 }
