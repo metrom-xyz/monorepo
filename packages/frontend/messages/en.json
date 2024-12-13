@@ -158,7 +158,8 @@
                     "usdCost": "{usd} total USD cost",
                     "apply": "Apply",
                     "errors": {
-                        "costChanged": "Cost changed, apply to confirm"
+                        "costChanged": "Cost changed, apply to confirm",
+                        "wrongAmount": "Wrong points amount"
                     }
                 }
             },

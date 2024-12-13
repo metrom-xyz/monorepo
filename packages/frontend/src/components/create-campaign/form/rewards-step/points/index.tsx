@@ -45,7 +45,8 @@ export function RewardPoints({
 }: RewardPointsProps) {
     const t = useTranslations("newCampaign.form.rewards.points");
     const [open, setOpen] = useState(false);
-    const [error, setError] = useState("");
+    const [costError, setCostError] = useState("");
+    const [amountError, setAmountError] = useState("");
     const [amount, setAmount] = useState<NumberInputValues | undefined>(() => {
         if (points !== undefined)
             return {
@@ -72,7 +73,7 @@ export function RewardPoints({
     }, [campaignDuration, token]);
 
     const unsavedChanges = useMemo(() => {
-        if (!amount || !token || !!error) return true;
+        if (!amount || !token || !!costError) return true;
 
         if (prevRewardPoints?.feeToken && prevRewardPoints.points !== undefined)
             return (
@@ -90,22 +91,27 @@ export function RewardPoints({
         points,
         feeToken?.token.address,
         token,
-        error,
+        costError,
     ]);
 
     useEffect(() => {
         if (
-            !fee ||
-            !campaignDuration ||
-            campaignDuration === prevCampaignDuration
+            fee &&
+            campaignDuration &&
+            campaignDuration !== prevCampaignDuration
         )
-            return;
-        setError("errors.costChanged");
+            setCostError("errors.costChanged");
     }, [campaignDuration, fee, prevCampaignDuration]);
 
     useEffect(() => {
+        if (amount?.raw === 0) setAmountError("errors.wrongAmount");
+        else setAmountError("");
+    }, [amount?.raw]);
+
+    useEffect(() => {
+        const error = costError || amountError;
         onError({ rewards: !!error }, error ? t(error) : "");
-    }, [onError, error, t]);
+    }, [onError, costError, t, amountError]);
 
     function handlePointsAmountOnChange(value: NumberFormatValues) {
         setAmount({
@@ -129,7 +135,7 @@ export function RewardPoints({
     const handleOnApply = useCallback(() => {
         if (!amount || !token || !fee) return;
 
-        setError("");
+        setCostError("");
         setOpen(false);
         onPointsChange({
             feeToken: {
@@ -150,6 +156,7 @@ export function RewardPoints({
                 <NumberInput
                     label={t("amount")}
                     placeholder="0"
+                    error={!!amountError}
                     value={amount?.formatted}
                     allowNegative={false}
                     onValueChange={handlePointsAmountOnChange}
@@ -196,7 +203,12 @@ export function RewardPoints({
                 <Button
                     variant="secondary"
                     size="sm"
-                    disabled={!unsavedChanges || !amount || !token}
+                    disabled={
+                        !unsavedChanges ||
+                        !amount?.raw ||
+                        !token ||
+                        !!amountError
+                    }
                     onClick={handleOnApply}
                     className={{
                         root: styles.applyButton,
