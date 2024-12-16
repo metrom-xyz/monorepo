@@ -44,4 +44,5 @@ type LiquidityTransfer @entity(immutable: true) {
     from: Bytes!
     to: Bytes!
     amount: BigInt!
+    pool: Pool!
 }
