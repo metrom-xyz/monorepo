@@ -61,7 +61,6 @@ export function RewardPoints({
 
     const chainId = useChainId();
     const prevCampaignDuration = usePrevious(campaignDuration);
-    const prevRewardPoints = usePrevious({ points, feeToken });
 
     const fee = useMemo(() => {
         if (!token || !campaignDuration) return undefined;
@@ -75,24 +74,16 @@ export function RewardPoints({
     const unsavedChanges = useMemo(() => {
         if (!amount || !token || !!costError) return true;
 
-        if (prevRewardPoints?.feeToken && prevRewardPoints.points !== undefined)
+        if (feeToken && points !== undefined)
             return (
-                amount.raw !== prevRewardPoints.points ||
-                token.address !== prevRewardPoints.feeToken.token.address
+                amount.raw !== points ||
+                token.address !== feeToken.token.address
             );
 
         return (
             amount.raw !== points || token.address !== feeToken?.token.address
         );
-    }, [
-        prevRewardPoints?.points,
-        prevRewardPoints?.feeToken,
-        amount,
-        points,
-        feeToken?.token.address,
-        token,
-        costError,
-    ]);
+    }, [amount, costError, feeToken, points, token]);
 
     useEffect(() => {
         if (
