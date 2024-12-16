@@ -5,7 +5,12 @@ import {
     DataManagerClient,
     Environment,
 } from "@metrom-xyz/sdk";
-import { type ChainContract, type Chain } from "viem";
+import {
+    type ChainContract,
+    type Chain,
+    type Address,
+    zeroAddress,
+} from "viem";
 import { type Dex, type SVGIcon } from "../types";
 import type { FunctionComponent } from "react";
 import { SupportedChain } from "@metrom-xyz/contracts";
@@ -50,6 +55,11 @@ export interface ChainData {
 }
 
 export const FEE_UNIT = 1_000_000;
+
+export const BLACKLISTED_ADDRESSES: Address[] = [
+    zeroAddress,
+    "0x000000000000000000000000000000000000dead",
+];
 
 export const MAX_U256 =
     0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffn;

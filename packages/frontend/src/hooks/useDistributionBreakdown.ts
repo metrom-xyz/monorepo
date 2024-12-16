@@ -1,12 +1,12 @@
 import { useEffect, useMemo, useState } from "react";
 import type { Address } from "blo";
-import { formatUnits, zeroHash, zeroAddress } from "viem";
+import { formatUnits, zeroHash } from "viem";
 import {
     type Snapshot,
     type Campaign,
     type UsdPricedErc20TokenAmount,
 } from "@metrom-xyz/sdk";
-import { dataManagerClient } from "../commons";
+import { BLACKLISTED_ADDRESSES, dataManagerClient } from "../commons";
 import { useReadContract } from "wagmi";
 import { useChainData } from "./useChainData";
 import { metromAbi } from "@metrom-xyz/contracts/abi";
@@ -107,7 +107,7 @@ export function useDistributionBreakdown(campaign?: Campaign): {
         const totalDistributedAmountByToken: Record<Address, bigint> = {};
         const weightByAccount: Record<Address, bigint> = {};
         for (const leaf of snapshot.leaves) {
-            if (leaf.account === zeroAddress) continue;
+            if (BLACKLISTED_ADDRESSES.includes(leaf.account)) continue;
 
             totalWeight += leaf.amount;
 
