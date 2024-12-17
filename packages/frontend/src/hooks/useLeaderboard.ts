@@ -35,7 +35,6 @@ export function useLeaderboard(campaign?: Campaign): {
             if (!campaign) return undefined;
 
             const account = queryKey[2] as Address;
-            if (!account) return undefined;
 
             try {
                 const rawLeaderboard = await metromApiClient.fetchLeaderboard({
@@ -43,9 +42,7 @@ export function useLeaderboard(campaign?: Campaign): {
                     account,
                 });
 
-                if (!rawLeaderboard) {
-                    return undefined;
-                }
+                if (!rawLeaderboard) return undefined;
 
                 const connectedAccountRankIndex =
                     rawLeaderboard.ranks.findIndex((rank) => {
