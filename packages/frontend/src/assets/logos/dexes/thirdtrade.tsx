@@ -10,7 +10,7 @@ export function ThirdTradeLogo(props: any) {
             <g
                 id="logo"
                 stroke="none"
-                stroke-width="1"
+                strokeWidth="1"
                 fill="none"
                 fillRule="evenodd"
                 transform="translate(5.83101,-144.124)"

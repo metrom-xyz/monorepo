@@ -1,20 +1,19 @@
 import { useEffect, useMemo, useState } from "react";
 import { useTranslations } from "next-intl";
-import type { DistributionBreakdown } from "@/src/hooks/useDistributionBreakdown";
+import type { Leaderboard, Rank } from "@/src/hooks/useLeaderboard";
 import { Typography } from "@metrom-xyz/ui";
 import { Cell, Pie, PieChart, Tooltip } from "recharts";
 import type { Address } from "viem";
 import { useTransition, animated } from "@react-spring/web";
 import { formatPercentage } from "@/src/utils/format";
 import { shuffle } from "@/src/utils/common";
-import type { PersonalRank } from "..";
 
 import styles from "./styles.module.css";
 
 interface RepartitionChartProps {
     loading: boolean;
-    distributionBreakdown?: DistributionBreakdown;
-    personalRank?: PersonalRank;
+    leaderboard?: Leaderboard;
+    connectedAccountRank?: Rank;
 }
 
 interface ChartData {
@@ -47,41 +46,35 @@ const CELLS_COLORS = shuffle([
 
 export function RepartitionChart({
     loading,
-    distributionBreakdown,
-    personalRank,
+    leaderboard,
+    connectedAccountRank,
 }: RepartitionChartProps) {
     const t = useTranslations("campaignDetails.leaderboard");
 
     const [activeIndex, setActiveIndex] = useState(0);
 
     const chartData = useMemo(() => {
-        if (!distributionBreakdown) return undefined;
+        if (!leaderboard) return undefined;
 
-        const distributionBreakdownEntries = Object.entries(
-            distributionBreakdown.sortedDistributionsByAccount,
-        );
+        const leaderboardEntries = Object.entries(leaderboard.sortedRanks);
 
-        const topRepartitions: ChartData[] = distributionBreakdownEntries
+        const topRepartitions: ChartData[] = leaderboardEntries
             .slice(0, CELLS_LIMIT)
             .map(([account, distribution], i) => ({
                 name: account as Address,
                 position: i + 1,
-                value: distribution.percentage,
+                value: distribution.weight,
             }));
 
-        const otherRepartitions = distributionBreakdownEntries
-            .slice(CELLS_LIMIT + 1, distributionBreakdownEntries.length)
-            .reduce(
-                (accumulator, [_account, distribution]) =>
-                    (accumulator += distribution.percentage),
-                0,
-            );
+        const otherRepartitions =
+            100 -
+            leaderboardEntries.reduce((acc, entry) => acc + entry[1].weight, 0);
 
-        if (personalRank && personalRank.position > CELLS_LIMIT)
+        if (connectedAccountRank && connectedAccountRank.position > CELLS_LIMIT)
             topRepartitions.push({
-                name: personalRank.account,
-                position: personalRank.position,
-                value: personalRank.percentage,
+                name: connectedAccountRank.account,
+                position: connectedAccountRank.position,
+                value: connectedAccountRank.weight,
             });
 
         const sorted = topRepartitions.sort((a, b) => b.value - a.value);
@@ -95,18 +88,18 @@ export function RepartitionChart({
             ...rank,
             color: CELLS_COLORS[index],
         }));
-    }, [distributionBreakdown, personalRank]);
+    }, [leaderboard, connectedAccountRank]);
 
     useEffect(() => {
         if (!chartData) return;
 
-        if (personalRank) {
+        if (connectedAccountRank) {
             const index = chartData.findIndex(
-                (data) => data.name === personalRank.account,
+                (data) => data.name === connectedAccountRank.account,
             );
             setActiveIndex(index);
         }
-    }, [chartData, personalRank]);
+    }, [chartData, connectedAccountRank]);
 
     return (
         <div className={styles.root}>

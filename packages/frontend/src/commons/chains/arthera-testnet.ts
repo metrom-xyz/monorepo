@@ -47,7 +47,7 @@ export const artheraTestnetData: ChainData = {
             slug: SupportedDex.ThirdTrade,
             logo: ThirdTradeLogo,
             name: "Third Trade",
-            addLiquidityUrl: "https://third.trade/pool/{target_pool}",
+            addLiquidityUrl: "https://testnet.third.trade/pool/{target_pool}",
         },
     ],
     baseTokens: [

@@ -9,7 +9,7 @@ import styles from "./styles.module.css";
 
 interface KpiProps {
     poolUsdTvl?: number | null;
-    rewards: CampaignPayload["rewards"];
+    rewards: CampaignPayload["tokens"];
     specification: CampaignPayload["kpiSpecification"];
 }
 

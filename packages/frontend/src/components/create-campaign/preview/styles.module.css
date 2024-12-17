@@ -1,6 +1,5 @@
 .root {
-    @apply h-full
-        sm:h-auto
+    @apply h-auto
         flex
         flex-col
         sm:min-w-[750px]

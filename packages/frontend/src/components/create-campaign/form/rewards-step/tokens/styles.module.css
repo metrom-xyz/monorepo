@@ -1,0 +1,62 @@
+.root {
+    @apply h-full w-full flex flex-col;
+}
+
+.wrapper {
+    @apply flex flex-col gap-2.5 px-4 pb-4;
+}
+
+.horizontalDivider {
+    @apply h-[1.5px] bg-gray-100;
+}
+
+.totalValueWrapper {
+    @apply flex items-center gap-3 px-2;
+}
+
+.rewardPickerWrapper {
+    @apply flex items-end justify-between;
+}
+
+.rewardTokenAmountInput :global(.input),
+.rewardTokenAmountInput :global(.inputWrapper) {
+    @apply w-full
+        max-w-56
+        bg-transparent
+        h-7
+        leading-6
+        font-medium
+        px-0
+        text-[1.75rem];
+}
+
+.rewardTokenSymbol {
+    @apply text-nowrap;
+}
+
+.chevronDown {
+    @apply h-3 w-3;
+}
+
+.addRewardButton {
+    @apply w-full;
+}
+
+.rewardTokenSelect {
+    @apply w-fit
+        max-w-40
+        flex
+        gap-1
+        items-center
+        justify-between
+        rounded-md
+        bg-gray-100
+        pl-2.5
+        pr-1
+        py-1.5
+        hover:bg-gray-200
+        hover:cursor-pointer
+        transition-colors
+        duration-200
+        ease-in-out;
+}

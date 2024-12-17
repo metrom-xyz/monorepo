@@ -2,10 +2,14 @@ import {
     type Erc20Token,
     MetromApiClient,
     SERVICE_URLS,
-    DataManagerClient,
     Environment,
 } from "@metrom-xyz/sdk";
-import { type ChainContract, type Chain } from "viem";
+import {
+    type ChainContract,
+    type Chain,
+    type Address,
+    zeroAddress,
+} from "viem";
 import { type Dex, type SVGIcon } from "../types";
 import type { FunctionComponent } from "react";
 import { SupportedChain } from "@metrom-xyz/contracts";
@@ -91,8 +95,4 @@ export const CHAIN_DATA: Record<SupportedChain, ChainData> = {
 
 export const metromApiClient = new MetromApiClient(
     SERVICE_URLS[ENVIRONMENT].metrom,
-);
-
-export const dataManagerClient = new DataManagerClient(
-    SERVICE_URLS[ENVIRONMENT].dataManager,
 );

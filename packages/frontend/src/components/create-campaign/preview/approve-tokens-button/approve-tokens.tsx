@@ -2,22 +2,22 @@ import { useCallback, useState, useEffect } from "react";
 import { useReadContracts, useAccount, useChainId } from "wagmi";
 import { type Address, erc20Abi } from "viem";
 import type { CampaignPayload } from "@/src/types";
-import { ApproveReward } from "./approve-reward";
+import { ApproveToken } from "./approve-token";
 import type { Erc20TokenAmount } from "@metrom-xyz/sdk";
 
-interface ApproveRewardsProps {
-    rewards?: CampaignPayload["rewards"];
+interface ApproveTokensProps {
+    rewards?: CampaignPayload["tokens"];
     spender?: Address;
     disabled: boolean;
     onApprove: () => void;
 }
 
-export function ApproveRewards({
+export function ApproveTokens({
     rewards,
     spender,
     disabled,
     onApprove,
-}: ApproveRewardsProps) {
+}: ApproveTokensProps) {
     const chainId = useChainId();
     const { address: connectedAddress } = useAccount();
 
@@ -86,7 +86,7 @@ export function ApproveRewards({
     }, [currentIndex, onApprove, spender, toApprove]);
 
     return (
-        <ApproveReward
+        <ApproveToken
             loading={
                 checkingApprovals ||
                 loadingAllowances ||

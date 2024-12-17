@@ -4,12 +4,12 @@ import { metromApiClient } from "../commons";
 import { useEffect, useState } from "react";
 import type { WhitelistedErc20Token } from "@metrom-xyz/sdk";
 
-enum WhitelistedTokenType {
+export enum WhitelistedTokenType {
     Rewards,
     Fees,
 }
 
-function useWhitelistedTokens(type: WhitelistedTokenType): {
+export function useWhitelistedTokens(type: WhitelistedTokenType): {
     loading: boolean;
     whitelistedTokens: WhitelistedErc20Token[];
 } {
