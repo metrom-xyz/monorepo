@@ -239,6 +239,12 @@ export class MetromApiClient {
                 `tried to fetch kpi measurements for campaign with id ${params.campaign.id} in chain with id ${params.campaign.chainId} with no attached kpi`,
             );
 
+        const rewards = params.campaign.rewards;
+        if (!rewards)
+            throw new Error(
+                `tried to fetch kpi measurements for campaign with id ${params.campaign.id} in chain with id ${params.campaign.chainId} with no rewards`,
+            );
+
         const url = new URL(
             `v1/kpi-measurements/${params.campaign.chainId}/${params.campaign.id}`,
             this.baseUrl,
@@ -271,7 +277,7 @@ export class MetromApiClient {
                 },
             };
 
-            const distributions = params.campaign.rewards.map((reward) => {
+            const distributions = rewards.map((reward) => {
                 const normalizedKpiMeasurementPercentage = Math.min(
                     Math.max(measurement.percentage, 0),
                     1,
@@ -422,7 +428,7 @@ function processCampaign(backendCampaign: BackendCampaign): Campaign {
         amountUsdValue: 0,
         remainingUsdValue: 0,
     });
-    for (const backendReward of backendCampaign.rewards) {
+    for (const backendReward of backendCampaign.rewards || []) {
         const amount = stringToUsdPricedOnChainAmount(
             backendReward.amount,
             backendReward.decimals,

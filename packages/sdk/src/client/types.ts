@@ -25,7 +25,7 @@ export interface BackendCampaign {
     snapshottedAt: number | null;
     pool: BackendPoolWithTvl;
     specification: Specification | null;
-    rewards: BackendReward[];
+    rewards?: BackendReward[];
     points: string | null;
     apr: number | null;
 }
