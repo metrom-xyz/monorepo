@@ -67,7 +67,7 @@ export function CampaignPreview({
         if (payload.rewardType === RewardType.points && payload.feeToken) {
             const { amount, token } = payload.feeToken;
 
-            const newRaw = amount.raw + (amount.raw * 15n) / 100n;
+            const newRaw = (amount.raw * 115n) / 100n;
 
             const newFormatted = Number(formatUnits(newRaw, token.decimals));
             const feeToken: WhitelistedErc20TokenAmount = {
