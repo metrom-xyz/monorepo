@@ -55,11 +55,6 @@ export interface ChainData {
 
 export const FEE_UNIT = 1_000_000;
 
-export const BLACKLISTED_ADDRESSES: Address[] = [
-    zeroAddress,
-    "0x000000000000000000000000000000000000dead",
-];
-
 export const MAX_U256 =
     0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffn;
 
