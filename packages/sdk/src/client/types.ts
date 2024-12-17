@@ -68,8 +68,30 @@ export interface BackendKpiMeasurement {
     percentage: number;
 }
 
-export interface BackendLeaf {
+export interface BackendRewardsCampaignLeaderboardRank {
     account: Address;
-    tokenAddress: Address;
-    amount: string;
+    weight: number;
+    position: number;
+    distributed: {
+        address: Address;
+        decimals: number;
+        symbol: string;
+        name: string;
+        amount: string;
+        usdPrice: number;
+    }[];
+}
+
+export interface BackendPointsCampaignLeaderboardRank {
+    account: Address;
+    weight: number;
+    position: number;
+    distributed: string;
+}
+
+export interface BackendLeaderboard {
+    updatedAt?: number;
+    ranks?:
+        | BackendRewardsCampaignLeaderboardRank[]
+        | BackendPointsCampaignLeaderboardRank[];
 }

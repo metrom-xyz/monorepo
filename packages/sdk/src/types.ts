@@ -155,13 +155,21 @@ export interface KpiMeasurement {
     distributions: KpiRewardDistribution[];
 }
 
-export interface Leaf {
+export interface RewardsCampaignLeaderboardRank {
     account: Address;
-    tokenAddress: Address;
-    amount: bigint;
+    weight: number;
+    position: number;
+    distributed: UsdPricedErc20TokenAmount[];
 }
 
-export interface Snapshot {
-    timestamp: number;
-    leaves: Leaf[];
+export interface PointsCampaignLeaderboardRank {
+    account: Address;
+    weight: number;
+    position: number;
+    distributed: OnChainAmount;
+}
+
+export interface Leaderboard {
+    updatedAt: number;
+    ranks: RewardsCampaignLeaderboardRank[] | PointsCampaignLeaderboardRank[];
 }

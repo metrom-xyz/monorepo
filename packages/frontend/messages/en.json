@@ -324,7 +324,7 @@
             "title": "Leaderboard",
             "subtitleLatest": "As of the latest distribution:",
             "noDistribution": "No distribution yet",
-            "personalRank": {
+            "connectedAccountRank": {
                 "connect": "View your rank",
                 "noRewards": "You don't have any rewards",
                 "yourRank": "Your rank",
