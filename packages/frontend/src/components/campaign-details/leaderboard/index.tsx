@@ -36,8 +36,6 @@ export function Leaderboard({ campaign, loading }: LeaderboardProps) {
     const { loading: loadingLeaderboard, leaderboard } =
         useLeaderboard(campaign);
 
-    console.log({ loadingLeaderboard, leaderboard });
-
     if (!loading && !loadingLeaderboard && !leaderboard) {
         return (
             <div className={styles.root}>
