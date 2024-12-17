@@ -44,43 +44,38 @@ export function useLeaderboard(campaign?: Campaign): {
 
                 if (!rawLeaderboard) return undefined;
 
-                const connectedAccountRankIndex =
-                    rawLeaderboard.ranks.findIndex((rank) => {
-                        rank.account === account;
-                    });
+                const sortedRanks = rawLeaderboard.ranks.map((rank) => {
+                    return <Rank>{
+                        ...rank,
+                        usdValue:
+                            rank.distributed instanceof Array
+                                ? rank.distributed.reduce(
+                                      (acc, distributed) => {
+                                          return (
+                                              acc + distributed.amount.usdValue
+                                          );
+                                      },
+                                      0,
+                                  )
+                                : null,
+                        distributed: rank.distributed,
+                    };
+                });
+                sortedRanks.sort((a, b) => b.weight - a.weight);
+
+                const connectedAccountRankIndex = sortedRanks.findIndex(
+                    (rank) => rank.account === account.toLowerCase(),
+                );
 
                 const connectedAccountRank =
                     connectedAccountRankIndex !== -1
-                        ? rawLeaderboard.ranks.splice(
-                              connectedAccountRankIndex,
-                              1,
-                          )[0]
+                        ? sortedRanks.splice(connectedAccountRankIndex, 1)[0]
                         : undefined;
-
-                const sortedRanks = rawLeaderboard.ranks;
-                sortedRanks.sort((a, b) => b.weight - a.weight);
 
                 return <Leaderboard>{
                     timestamp: rawLeaderboard.updatedAt,
                     connectedAccountRank,
-                    sortedRanks: sortedRanks.map((rank) => {
-                        return <Rank>{
-                            ...rank,
-                            usdValue:
-                                rank.distributed instanceof Array
-                                    ? rank.distributed.reduce(
-                                          (acc, distributed) => {
-                                              return (
-                                                  acc +
-                                                  distributed.amount.usdValue
-                                              );
-                                          },
-                                          0,
-                                      )
-                                    : null,
-                            distributed: rank.distributed,
-                        };
-                    }),
+                    sortedRanks,
                 };
             } catch (error) {
                 throw new Error(
