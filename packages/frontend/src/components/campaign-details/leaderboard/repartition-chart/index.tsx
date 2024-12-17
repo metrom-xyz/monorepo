@@ -66,13 +66,9 @@ export function RepartitionChart({
                 value: distribution.weight,
             }));
 
-        const otherRepartitions = leaderboardEntries
-            .slice(CELLS_LIMIT + 1, leaderboardEntries.length)
-            .reduce(
-                (accumulator, [_account, distribution]) =>
-                    (accumulator += distribution.weight),
-                0,
-            );
+        const otherRepartitions =
+            100 -
+            leaderboardEntries.reduce((acc, entry) => acc + entry[1].weight, 0);
 
         if (connectedAccountRank && connectedAccountRank.position > CELLS_LIMIT)
             topRepartitions.push({
