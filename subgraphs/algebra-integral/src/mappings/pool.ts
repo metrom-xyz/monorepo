@@ -15,6 +15,7 @@ import {
 import {
     BI_0,
     getEventId,
+    getOrCreateTick,
     getPoolOrThrow,
     getSortedPoolTokens,
 } from "../commons";
@@ -129,16 +130,34 @@ export function handleMint(event: MintEvent): void {
     poolTokens[1].tvl = poolTokens[1].tvl.plus(event.params.amount1);
     poolTokens[1].save();
 
+    let lowerTick = getOrCreateTick(pool.id, event.params.bottomTick);
+    lowerTick.liquidityGross = lowerTick.liquidityGross.plus(
+        event.params.liquidityAmount,
+    );
+    lowerTick.liquidityNet = lowerTick.liquidityNet.plus(
+        event.params.liquidityAmount,
+    );
+    lowerTick.save();
+
+    let upperTick = getOrCreateTick(pool.id, event.params.topTick);
+    upperTick.liquidityGross = upperTick.liquidityGross.plus(
+        event.params.liquidityAmount,
+    );
+    upperTick.liquidityNet = upperTick.liquidityNet.minus(
+        event.params.liquidityAmount,
+    );
+    upperTick.save();
+
     if (event.params.owner == NON_FUNGIBLE_POSITION_MANAGER_ADDRESS) return;
 
-    let position = getOrCreateDirectPosition(
-        event.address,
-        event.params.owner,
-        BigInt.fromI32(event.params.bottomTick),
-        BigInt.fromI32(event.params.topTick),
-    );
-
     if (!event.params.liquidityAmount.isZero()) {
+        let position = getOrCreateDirectPosition(
+            event.address,
+            event.params.owner,
+            BigInt.fromI32(event.params.bottomTick),
+            BigInt.fromI32(event.params.topTick),
+        );
+
         position.liquidity = position.liquidity.plus(
             event.params.liquidityAmount,
         );
@@ -164,16 +183,34 @@ export function handleBurn(event: BurnEvent): void {
     poolTokens[1].tvl = poolTokens[1].tvl.minus(event.params.amount1);
     poolTokens[1].save();
 
+    let lowerTick = getOrCreateTick(pool.id, event.params.bottomTick);
+    lowerTick.liquidityGross = lowerTick.liquidityGross.minus(
+        event.params.liquidityAmount,
+    );
+    lowerTick.liquidityNet = lowerTick.liquidityNet.minus(
+        event.params.liquidityAmount,
+    );
+    lowerTick.save();
+
+    let upperTick = getOrCreateTick(pool.id, event.params.topTick);
+    upperTick.liquidityGross = upperTick.liquidityGross.minus(
+        event.params.liquidityAmount,
+    );
+    upperTick.liquidityNet = upperTick.liquidityNet.plus(
+        event.params.liquidityAmount,
+    );
+    upperTick.save();
+
     if (event.params.owner == NON_FUNGIBLE_POSITION_MANAGER_ADDRESS) return;
 
-    let position = getDirectPositionOrThrow(
-        event.address,
-        event.params.owner,
-        BigInt.fromI32(event.params.bottomTick),
-        BigInt.fromI32(event.params.topTick),
-    );
-
     if (!event.params.liquidityAmount.isZero()) {
+        let position = getDirectPositionOrThrow(
+            event.address,
+            event.params.owner,
+            BigInt.fromI32(event.params.bottomTick),
+            BigInt.fromI32(event.params.topTick),
+        );
+
         position.liquidity = position.liquidity.minus(
             event.params.liquidityAmount,
         );

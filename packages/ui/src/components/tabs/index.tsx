@@ -5,8 +5,11 @@ import { Tab, type TabProps } from "./tab";
 
 import styles from "./styles.module.css";
 
+export type TabsSize = "xs" | "sm" | "base" | "lg" | "xl";
+
 export interface TabsProps<T> {
     onChange: (value: T) => void;
+    size?: TabsSize;
     value?: T;
     children: ReactElement[];
     className?: string;
@@ -14,6 +17,7 @@ export interface TabsProps<T> {
 
 export function Tabs<T>({
     onChange,
+    size = "base",
     value,
     children,
     className,
@@ -28,10 +32,15 @@ export function Tabs<T>({
     }
 
     return (
-        <div className={classNames(styles.root, className)}>
+        <div
+            className={classNames(styles.root, className, {
+                [styles[size]]: true,
+            })}
+        >
             {Children.map(tabsChildren, (child) =>
                 cloneElement<TabProps<T>>(child, {
                     ...child.props,
+                    size,
                     active: value,
                     onClick: handleOnChange,
                 }),

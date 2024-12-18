@@ -79,7 +79,8 @@ export function RestrictionsStep({
     // the restrictions gets disabled, after the campaign creation
     useEffect(() => {
         if (enabled && !!prevRestrictions && !restrictions) setEnabled(false);
-    }, [enabled, restrictions, prevRestrictions]);
+        if (disabled) setEnabled(false);
+    }, [enabled, restrictions, prevRestrictions, disabled]);
 
     useEffect(() => {
         if (enabled) return;

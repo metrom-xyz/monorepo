@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react";
 import { useState } from "@storybook/preview-api";
 import { Tabs } from "../components/tabs/index";
 import { Tab } from "../components/tabs/tab";
+import { Typography } from "../components/typography";
 
 const meta: Meta = {
     title: "Input/Tabs",
@@ -22,9 +23,15 @@ export const Base: Story = {
         return (
             <div className="w-96">
                 <Tabs {...args} value={value} onChange={setValue}>
-                    <Tab value={0}>First tab</Tab>
-                    <Tab value={1}>Second tab</Tab>
-                    <Tab value={2}>Third tab</Tab>
+                    <Tab value={0}>
+                        <Typography>First tab</Typography>
+                    </Tab>
+                    <Tab value={1}>
+                        <Typography>Second tab</Typography>
+                    </Tab>
+                    <Tab value={2}>
+                        <Typography>Third tab</Typography>
+                    </Tab>
                 </Tabs>
             </div>
         );

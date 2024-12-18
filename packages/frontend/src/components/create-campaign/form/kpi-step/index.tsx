@@ -22,7 +22,7 @@ import styles from "./styles.module.css";
 interface KpiStepProps {
     disabled?: boolean;
     pool?: CampaignPayload["pool"];
-    rewards?: CampaignPayload["rewards"];
+    rewards?: CampaignPayload["tokens"];
     kpiSpecification?: CampaignPayload["kpiSpecification"];
     onKpiChange: (kpi: CampaignPayloadPart) => void;
     onError: (errors: CampaignPayloadErrors) => void;

@@ -27,13 +27,21 @@ export enum RestrictionType {
     whitelist = "whitelist",
 }
 
+export enum RewardType {
+    points = "points",
+    tokens = "tokens",
+}
+
 export interface CampaignPayload {
     network?: number;
+    rewardType?: RewardType;
     dex?: DexInfo;
     pool?: PoolWithTvl;
     startDate?: Dayjs;
     endDate?: Dayjs;
-    rewards?: WhitelistedErc20TokenAmount[];
+    points?: number;
+    tokens?: WhitelistedErc20TokenAmount[];
+    feeToken?: WhitelistedErc20TokenAmount;
     kpiSpecification?: KpiSpecification;
     rangeSpecification?: RangeSpecification;
     restrictions?: {

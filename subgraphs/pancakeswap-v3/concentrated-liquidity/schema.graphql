@@ -40,6 +40,16 @@ type LiquidityChange @entity(immutable: true) {
     position: Position!
 }
 
+type LiquidityTransfer @entity(immutable: true) {
+    id: Bytes!
+    timestamp: BigInt!
+    blockNumber: BigInt!
+    transactionHash: Bytes!
+    from: Bytes!
+    to: Bytes!
+    position: Position!
+}
+
 type TickMovingSwap @entity(immutable: true) {
     id: Bytes!
     timestamp: BigInt!
@@ -47,4 +57,12 @@ type TickMovingSwap @entity(immutable: true) {
     transactionHash: Bytes!
     pool: Pool!
     newTick: BigInt!
+}
+
+type Tick @entity {
+    id: Bytes!
+    idx: BigInt!
+    pool: Pool!
+    liquidityGross: BigInt!
+    liquidityNet: BigInt!
 }

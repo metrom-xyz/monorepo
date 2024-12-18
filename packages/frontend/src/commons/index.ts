@@ -2,11 +2,15 @@ import {
     type Erc20Token,
     MetromApiClient,
     SERVICE_URLS,
-    DataManagerClient,
     Environment,
     SupportedAmm,
 } from "@metrom-xyz/sdk";
-import { type ChainContract, type Chain } from "viem";
+import {
+    type ChainContract,
+    type Chain,
+    type Address,
+    zeroAddress,
+} from "viem";
 import { type Dex, type SVGIcon } from "../types";
 import type { FunctionComponent } from "react";
 import { SupportedChain } from "@metrom-xyz/contracts";
@@ -29,14 +33,16 @@ import {
     mantleSepoliaData,
     modeData,
     mantleData,
-    sonicTestnet,
-    sonicTestnetData,
+    sonicBlazeTestnet,
+    sonicBlazeTestnetData,
     baseData,
     baseSepoliaData,
     taikoData,
     scrollData,
     formTestnet,
     formTestnetData,
+    artheraTestnet,
+    artheraTestnetData,
 } from "./chains";
 
 export interface ChainData {
@@ -64,9 +70,10 @@ export const SUPPORTED_CHAINS: [Chain, ...Chain[]] =
               celoAlfajores,
               holesky,
               mantleSepoliaTestnet,
-              sonicTestnet,
+              sonicBlazeTestnet,
               baseSepolia,
               formTestnet,
+              artheraTestnet,
           ];
 
 export const TOKEN_ICONS_URL = `https://raw.githubusercontent.com/metrom-xyz/token-icons/refs/heads/main/${ENVIRONMENT === Environment.Production ? "mainnet" : "testnet"}-icons.json`;
@@ -75,9 +82,10 @@ export const CHAIN_DATA: Record<SupportedChain, ChainData> = {
     [SupportedChain.Holesky]: holeskyData,
     [SupportedChain.CeloAlfajores]: celoAlfajoresData,
     [SupportedChain.MantleSepolia]: mantleSepoliaData,
-    [SupportedChain.SonicTestnet]: sonicTestnetData,
     [SupportedChain.BaseSepolia]: baseSepoliaData,
     [SupportedChain.FormTestnet]: formTestnetData,
+    [SupportedChain.ArtheraTestnet]: artheraTestnetData,
+    [SupportedChain.SonicBlazeTestnet]: sonicBlazeTestnetData,
 
     [SupportedChain.Base]: baseData,
     [SupportedChain.Mode]: modeData,
@@ -93,8 +101,4 @@ export const AMM_SUPPORTS_RANGE_INCENTIVES: Record<SupportedAmm, boolean> = {
 
 export const metromApiClient = new MetromApiClient(
     SERVICE_URLS[ENVIRONMENT].metrom,
-);
-
-export const dataManagerClient = new DataManagerClient(
-    SERVICE_URLS[ENVIRONMENT].dataManager,
 );

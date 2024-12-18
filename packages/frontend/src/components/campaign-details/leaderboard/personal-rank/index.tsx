@@ -1,28 +1,31 @@
 import { useAccount } from "wagmi";
-import { Typography, Button } from "@metrom-xyz/ui";
+import { Typography } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
 import { SupportedChain } from "@metrom-xyz/contracts";
 import { shortenAddress } from "@/src/utils/address";
-import { WalletIcon } from "@/src/assets/wallet-icon";
 import { useConnectModal } from "@rainbow-me/rainbowkit";
 import { SkeletonRow, type PersonalRank } from "..";
 import { RewardsBreakdown } from "../rewards-breakdown";
 import { formatPercentage } from "@/src/utils/format";
+import type { Rank } from "@/src/hooks/useLeaderboard";
+import { PointsBreakdown } from "../points-breakdown";
 
 import styles from "./styles.module.css";
 
 interface PersonalRankProps {
     chain?: SupportedChain;
     loading: boolean;
-    personalRank?: PersonalRank;
+    connectedAccountRank?: Rank;
 }
 
 export function PersonalRank({
     chain,
     loading,
-    personalRank,
+    connectedAccountRank,
 }: PersonalRankProps) {
-    const t = useTranslations("campaignDetails.leaderboard.personalRank");
+    const t = useTranslations(
+        "campaignDetails.leaderboard.connectedAccountRank",
+    );
 
     const {
         address: connectedAddress,
@@ -56,7 +59,7 @@ export function PersonalRank({
                             {t("connect")}
                         </Typography>
                     </button>
-                ) : !personalRank ? (
+                ) : !connectedAccountRank ? (
                     <Typography weight="medium" light>
                         {t("noRewards")}
                     </Typography>
@@ -64,20 +67,26 @@ export function PersonalRank({
                     <div className={styles.row}>
                         <div>
                             <Typography size="lg" weight="medium" light>
-                                # {personalRank.position}
+                                # {connectedAccountRank.position}
                             </Typography>
                             <Typography size="lg" weight="medium">
-                                {formatPercentage(personalRank.percentage)}
+                                {formatPercentage(connectedAccountRank.weight)}
                             </Typography>
                         </div>
                         <Typography size="lg" weight="medium">
                             {shortenAddress(connectedAddress)}
                         </Typography>
-                        <RewardsBreakdown
-                            chain={chain}
-                            accrued={personalRank.accrued}
-                            usdValue={personalRank.usdValue}
-                        />
+                        {connectedAccountRank.distributed instanceof Array ? (
+                            <RewardsBreakdown
+                                chain={chain}
+                                distributed={connectedAccountRank.distributed}
+                                usdValue={connectedAccountRank.usdValue}
+                            />
+                        ) : (
+                            <PointsBreakdown
+                                distributed={connectedAccountRank.distributed}
+                            />
+                        )}
                     </div>
                 )}
             </div>

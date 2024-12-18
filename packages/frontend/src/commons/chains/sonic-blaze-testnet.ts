@@ -3,9 +3,9 @@ import { SonicLogo } from "@/src/assets/logos/chains/sonic";
 import { type ChainData } from "..";
 import { defineChain } from "viem";
 
-export const sonicTestnet = defineChain({
-    id: 64_165,
-    name: "Sonic Testnet",
+export const sonicBlazeTestnet = defineChain({
+    id: 57_054,
+    name: "Sonic Blaze Testnet",
     nativeCurrency: {
         decimals: 18,
         name: "Sonic",
@@ -13,30 +13,30 @@ export const sonicTestnet = defineChain({
     },
     rpcUrls: {
         default: {
-            http: ["https://rpc.testnet.soniclabs.com"],
+            http: ["https://rpc.blaze.soniclabs.com"],
         },
     },
     blockExplorers: {
         default: {
-            name: "Sonic testnet",
-            url: "https://testnet.soniclabs.com",
+            name: "Sonicscan",
+            url: "https://testnet.sonicscan.org",
         },
     },
     contracts: {
         multicall3: {
             address: "0xcA11bde05977b3631167028862bE2a173976CA11",
-            blockCreated: 71_624_484,
+            blockCreated: 1100,
         },
     },
 });
 
-export const sonicTestnetData: ChainData = {
-    name: sonicTestnet.name,
-    metromContract: ADDRESS[SupportedChain.SonicTestnet]!,
+export const sonicBlazeTestnetData: ChainData = {
+    name: sonicBlazeTestnet.name,
+    metromContract: ADDRESS[SupportedChain.SonicBlazeTestnet],
     blockExplorers: {
         default: {
-            name: "Sonic Testnet",
-            url: "https://testnet.soniclabs.com",
+            name: "Sonicscan",
+            url: "https://testnet.sonicscan.org",
         },
     },
     icon: SonicLogo,

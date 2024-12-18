@@ -40,7 +40,7 @@ export function StepPreview({
         color: "black",
         fontSize: "1rem",
         to: {
-            y: completed ? -8 : 0,
+            y: completed ? -6 : 0,
             color: completed ? "#9CA3AF" : "black",
             fontSize: completed ? "0.75rem" : "1rem",
         },

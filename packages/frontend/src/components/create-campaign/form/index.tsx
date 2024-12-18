@@ -1,7 +1,8 @@
-import type {
-    CampaignPayload,
-    CampaignPayloadPart,
-    CampaignPayloadErrors,
+import {
+    type CampaignPayload,
+    type CampaignPayloadPart,
+    type CampaignPayloadErrors,
+    RewardType,
 } from "@/src/types";
 import { useAccount, useChainId, useChains } from "wagmi";
 import { useMemo } from "react";
@@ -40,6 +41,13 @@ export function CreateCampaignForm({
         );
     }, [chains, connectedChain, isConnected, selectedChain]);
 
+    const { pointsCampaign, malformedPoints } = useMemo(() => {
+        return {
+            pointsCampaign: payload?.rewardType === RewardType.points,
+            malformedPoints: !payload?.feeToken || payload.points === undefined,
+        };
+    }, [payload?.feeToken, payload?.points, payload?.rewardType]);
+
     return (
         <div className={styles.root}>
             <DexStep
@@ -69,16 +77,22 @@ export function CreateCampaignForm({
             />
             <RewardsStep
                 disabled={!payload?.endDate || unsupportedChain}
-                rewards={payload?.rewards}
+                rewardType={payload?.rewardType}
+                pool={payload?.pool}
+                tokens={payload?.tokens}
+                points={payload?.points}
+                feeToken={payload?.feeToken}
                 startDate={payload?.startDate}
                 endDate={payload?.endDate}
                 onRewardsChange={onPayloadChange}
                 onError={onPayloadError}
             />
             <KpiStep
-                disabled={!payload?.rewards || unsupportedChain}
+                disabled={
+                    !payload?.tokens || pointsCampaign || unsupportedChain
+                }
                 pool={payload?.pool}
-                rewards={payload?.rewards}
+                rewards={payload?.tokens}
                 kpiSpecification={payload?.kpiSpecification}
                 onKpiChange={onPayloadChange}
                 onError={onPayloadError}
@@ -86,7 +100,11 @@ export function CreateCampaignForm({
             {payload?.pool &&
                 AMM_SUPPORTS_RANGE_INCENTIVES[payload.pool.amm] && (
                     <RangeStep
-                        disabled={!payload?.rewards || unsupportedChain}
+                        disabled={
+                            !payload?.tokens ||
+                            pointsCampaign ||
+                            unsupportedChain
+                        }
                         pool={payload?.pool}
                         rangeSpecification={payload?.rangeSpecification}
                         onRangeChange={onPayloadChange}
@@ -94,7 +112,9 @@ export function CreateCampaignForm({
                     />
                 )}
             <RestrictionsStep
-                disabled={!payload?.rewards || unsupportedChain}
+                disabled={
+                    (!payload?.tokens && malformedPoints) || unsupportedChain
+                }
                 restrictions={payload?.restrictions}
                 onRestrictionsChange={onPayloadChange}
                 onError={onPayloadError}

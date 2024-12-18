@@ -1,0 +1,19 @@
+.root {
+    @apply flex items-center justify-between col-span-4 sm:col-span-1;
+}
+
+.breakdownContainer {
+    @apply flex flex-col gap-3 p-3;
+}
+
+.iconWrapper {
+    @apply flex flex-1 items-center justify-end mr-1;
+}
+
+.icon {
+    @apply w-7 h-8;
+}
+
+.textPoints {
+    @apply !text-sm sm:!text-base sm:min-w-[72px] sm:text-right;
+}

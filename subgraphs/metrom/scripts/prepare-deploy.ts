@@ -9,8 +9,9 @@ const NETWORK_NAME: Record<SupportedChain, string> = {
     [SupportedChain.Holesky]: "holesky",
     [SupportedChain.CeloAlfajores]: "celo-alfajores",
     [SupportedChain.MantleSepolia]: "mantle-sepolia",
-    [SupportedChain.SonicTestnet]: "sonic",
+    [SupportedChain.SonicBlazeTestnet]: "sonic-blaze-testnet",
     [SupportedChain.BaseSepolia]: "base-sepolia",
+    [SupportedChain.ArtheraTestnet]: "", // no hosting provider here...
     [SupportedChain.FormTestnet]: "form-testnet",
 
     [SupportedChain.Base]: "base",

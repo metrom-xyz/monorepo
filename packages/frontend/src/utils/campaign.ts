@@ -22,7 +22,7 @@ export const getCampaigPoolName = (campaign: Campaign) => {
 
 export const getCampaignPreviewApr = (campaign: CampaignPayload) => {
     if (
-        !campaign.rewards ||
+        !campaign.tokens ||
         !campaign.pool?.usdTvl ||
         !campaign.startDate ||
         !campaign.endDate
@@ -30,7 +30,7 @@ export const getCampaignPreviewApr = (campaign: CampaignPayload) => {
         return null;
 
     let rewardsUsdValue = 0;
-    for (const reward of campaign.rewards) {
+    for (const reward of campaign.tokens) {
         if (!reward.amount.usdValue) return null;
         rewardsUsdValue += reward.amount.usdValue;
     }

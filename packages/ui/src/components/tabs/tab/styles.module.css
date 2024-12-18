@@ -3,7 +3,6 @@
         items-center
         justify-center
         w-full
-        p-3
         rounded-md
         cursor-pointer
         transition-colors
@@ -15,4 +14,24 @@
 
 .active {
     @apply bg-white opacity-100;
+}
+
+.xs {
+    @apply p-1;
+}
+
+.sm {
+    @apply p-2;
+}
+
+.base {
+    @apply p-3;
+}
+
+.lg {
+    @apply p-4;
+}
+
+.xl {
+    @apply p-5;
 }

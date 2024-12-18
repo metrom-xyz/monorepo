@@ -4,7 +4,11 @@ import {
     DecreaseLiquidity as DecreaseLiquidityEvent,
     Transfer as TransferEvent,
 } from "../../generated/NonFungiblePositionManager/NonFungiblePositionManager";
-import { LiquidityChange, Position } from "../../generated/schema";
+import {
+    LiquidityChange,
+    Position,
+    LiquidityTransfer,
+} from "../../generated/schema";
 import {
     BI_0,
     FactoryContract,
@@ -101,4 +105,13 @@ export function handleTransfer(event: TransferEvent): void {
 
     position.owner = event.params.to;
     position.save();
+
+    let liquidityTransfer = new LiquidityTransfer(getEventId(event));
+    liquidityTransfer.timestamp = event.block.timestamp;
+    liquidityTransfer.blockNumber = event.block.number;
+    liquidityTransfer.transactionHash = event.transaction.hash;
+    liquidityTransfer.from = event.params.from;
+    liquidityTransfer.to = event.params.to;
+    liquidityTransfer.position = position.id;
+    liquidityTransfer.save();
 }

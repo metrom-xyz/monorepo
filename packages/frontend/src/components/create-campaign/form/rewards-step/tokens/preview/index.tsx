@@ -11,7 +11,7 @@ import { useTranslations } from "next-intl";
 import styles from "./styles.module.css";
 
 interface RewardsPreviewProps {
-    rewards?: CampaignPayload["rewards"];
+    rewards?: CampaignPayload["tokens"];
     campaignDuration?: number;
     onRemove: (reward: Erc20Token) => void;
     onError: (address: Address, error?: string) => void;
@@ -25,7 +25,7 @@ export function RewardsPreview({
     onError,
     onUpdate,
 }: RewardsPreviewProps) {
-    const t = useTranslations("newCampaign.form.rewards");
+    const t = useTranslations("newCampaign.form.rewards.tokens");
 
     if (!rewards || rewards.length === 0)
         return (

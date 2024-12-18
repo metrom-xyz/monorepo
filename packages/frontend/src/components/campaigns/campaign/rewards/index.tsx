@@ -3,7 +3,6 @@
 import { Typography, Skeleton, Popover } from "@metrom-xyz/ui";
 import { Status, type Rewards as RewardsType } from "@metrom-xyz/sdk";
 import { SupportedChain } from "@metrom-xyz/contracts";
-import dayjs from "dayjs";
 import { formatTokenAmount, formatUsdAmount } from "@/src/utils/format";
 import { useRef, useState } from "react";
 import { useTranslations } from "next-intl";
@@ -14,13 +13,17 @@ import styles from "./styles.module.css";
 
 interface RewardsProps {
     status: Status;
-    from: number;
-    to: number;
+    daysDuration: number;
     rewards: RewardsType;
     chainId: SupportedChain;
 }
 
-export function Rewards({ status, from, to, rewards, chainId }: RewardsProps) {
+export function Rewards({
+    status,
+    daysDuration,
+    rewards,
+    chainId,
+}: RewardsProps) {
     const t = useTranslations("allCampaigns.rewards");
 
     const [popoverOpen, setPopoverOpen] = useState(false);
@@ -28,7 +31,6 @@ export function Rewards({ status, from, to, rewards, chainId }: RewardsProps) {
         useState<HTMLDivElement | null>(null);
     const breakdownPopoverRef = useRef<HTMLDivElement>(null);
 
-    const daysDuration = dayjs.unix(to).diff(dayjs.unix(from), "days", false);
     const perDayUsdValue =
         daysDuration > 0 ? rewards.amountUsdValue / daysDuration : 0;
 
@@ -49,12 +51,7 @@ export function Rewards({ status, from, to, rewards, chainId }: RewardsProps) {
                 placement="top"
             >
                 <div className={styles.breakdownContainer}>
-                    <Typography
-                        size="sm"
-                        weight="medium"
-                        uppercase
-                        className={styles.tooltipTitle}
-                    >
+                    <Typography size="sm" weight="medium" uppercase light>
                         {t("tooltip.rewards")}
                     </Typography>
                     {rewards.map((reward) => {
@@ -70,20 +67,12 @@ export function Rewards({ status, from, to, rewards, chainId }: RewardsProps) {
                                         address={reward.token.address}
                                         defaultText={reward.token.symbol}
                                     />
-                                    <Typography
-                                        weight="medium"
-                                        size="sm"
-                                        className={styles.tooltipText}
-                                    >
+                                    <Typography weight="medium" size="sm">
                                         {reward.token.symbol}
                                     </Typography>
                                 </div>
                                 <div>
-                                    <Typography
-                                        weight="medium"
-                                        size="sm"
-                                        className={styles.tooltipText}
-                                    >
+                                    <Typography weight="medium" size="sm">
                                         {formatTokenAmount({
                                             amount: reward.amount.formatted,
                                         })}
@@ -92,19 +81,10 @@ export function Rewards({ status, from, to, rewards, chainId }: RewardsProps) {
                             </div>
                         );
                     })}
-                    <Typography
-                        weight="medium"
-                        size="sm"
-                        uppercase
-                        className={styles.tooltipTitle}
-                    >
+                    <Typography weight="medium" size="sm" uppercase light>
                         {t("tooltip.totalUsdValue")}
                     </Typography>
-                    <Typography
-                        size="lg"
-                        weight="medium"
-                        className={styles.tooltipText}
-                    >
+                    <Typography size="lg" weight="medium">
                         {formatUsdAmount(rewards.amountUsdValue)}
                     </Typography>
                 </div>

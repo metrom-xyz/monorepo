@@ -12,8 +12,9 @@ import { useTranslations } from "next-intl";
 import { RewardIcon } from "@/src/assets/reward-icon";
 
 import styles from "./styles.module.css";
+import { formatTokenAmount } from "@/src/utils/format";
 
-interface ApproveRewardProps {
+interface ApproveTokenProps {
     loading: boolean;
     disabled: boolean;
     reward: Erc20TokenAmount;
@@ -23,7 +24,7 @@ interface ApproveRewardProps {
     onApprove: () => void;
 }
 
-export function ApproveReward({
+export function ApproveToken({
     loading,
     disabled,
     reward,
@@ -31,7 +32,7 @@ export function ApproveReward({
     totalAmount,
     spender,
     onApprove,
-}: ApproveRewardProps) {
+}: ApproveTokenProps) {
     const t = useTranslations("newCampaign.submit.approveRewards");
     const publicClient = usePublicClient();
     const chainId = useChainId();
@@ -90,13 +91,17 @@ export function ApproveReward({
         >
             {signingTransaction || approving
                 ? t("approving", {
-                      amount: reward.amount.formatted,
+                      amount: formatTokenAmount({
+                          amount: reward.amount.formatted,
+                      }),
                       symbol: reward.token.symbol,
                       currentIndex: index,
                       totalAmount,
                   })
                 : t("approve", {
-                      amount: reward.amount.formatted,
+                      amount: formatTokenAmount({
+                          amount: reward.amount.formatted,
+                      }),
                       symbol: reward.token.symbol,
                       currentIndex: index,
                       totalAmount,
