@@ -16,15 +16,13 @@ import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
 import { ApproveTokensButton } from "./approve-tokens-button";
 import { Rewards } from "./rewards";
 import { Header } from "./header";
-import { formatUsdAmount } from "@/src/utils/format";
+import { formatTokenAmount, formatUsdAmount } from "@/src/utils/format";
 import { getCampaignPreviewApr } from "@/src/utils/campaign";
 import { trackFathomEvent } from "@/src/utils/fathom";
 import { type Hex, zeroHash, parseUnits, formatUnits } from "viem";
 import {
     SERVICE_URLS,
     type Specification,
-    type UsdPricedErc20TokenAmount,
-    type UsdPricedOnChainAmount,
     type WhitelistedErc20TokenAmount,
 } from "@metrom-xyz/sdk";
 import { ENVIRONMENT, KPI } from "@/src/commons/env";
@@ -288,7 +286,9 @@ export function CampaignPreview({
                                 boxed
                                 size="xl"
                                 label={t("points")}
-                                value={payload.points}
+                                value={formatTokenAmount({
+                                    amount: payload.points,
+                                })}
                             />
                         )}
                     </div>
