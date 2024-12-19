@@ -12,10 +12,12 @@
         "deploy:uni-v3:taiko": "pnpm prepare:deploy taiko uni-v3 && pnpm codegen && graph build && goldsky subgraph deploy metrom-uni-v3-taiko/0.0.4",
         "deploy:uni-v3:base": "pnpm prepare:deploy base uni-v3 && pnpm codegen && graph build && graph deploy metrom-uni-v3-base -l 0.0.3",
         "deploy:baseswap:base": "pnpm prepare:deploy base baseswap && pnpm codegen && graph build && graph deploy metrom-baseswap-base -l 0.0.2",
+        "deploy:uni-v3:sonic": "pnpm prepare:deploy sonic uni-v3 && pnpm codegen && 0xgraph build && 0xgraph deploy metrom-uni-v3-sonic -l 0.0.1",
         "lint": "eslint .",
         "format": "eslint --fix ."
     },
     "dependencies": {
+        "@0xgraph/cli": "^0.2.1",
         "@graphprotocol/graph-cli": "0.91.1",
         "@graphprotocol/graph-ts": "0.36.0"
     },
