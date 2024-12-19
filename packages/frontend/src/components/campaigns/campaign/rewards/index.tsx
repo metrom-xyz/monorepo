@@ -32,7 +32,7 @@ export function Rewards({
     const breakdownPopoverRef = useRef<HTMLDivElement>(null);
 
     const perDayUsdValue =
-        daysDuration > 0 ? rewards.amountUsdValue / daysDuration : 0;
+        daysDuration >= 1 ? rewards.amountUsdValue / daysDuration : 0;
 
     function handleRewardsBreakdownPopoverOpen() {
         setPopoverOpen(true);

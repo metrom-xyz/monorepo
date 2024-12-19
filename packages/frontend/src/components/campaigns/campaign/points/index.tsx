@@ -20,7 +20,8 @@ export function Points({ status, amount, daysDuration }: PointsProps) {
     const [breakdown, setBreakdown] = useState<HTMLDivElement | null>(null);
     const popoverRef = useRef<HTMLDivElement>(null);
 
-    const perDayPoints = daysDuration > 0 ? amount.formatted / daysDuration : 0;
+    const perDayPoints =
+        daysDuration >= 1 ? amount.formatted / daysDuration : 0;
 
     function handleBreakdownPopoverOpen() {
         setPopover(true);
@@ -56,7 +57,9 @@ export function Points({ status, amount, daysDuration }: PointsProps) {
                 <PointsIcon className={styles.icon} />
             </div>
             <Typography weight="medium" className={styles.textPoints}>
-                {status === Status.Ended ? "-" : perDayPoints}
+                {status === Status.Ended
+                    ? "-"
+                    : formatTokenAmount({ amount: perDayPoints })}
             </Typography>
         </div>
     );
