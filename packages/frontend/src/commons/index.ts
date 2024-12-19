@@ -4,12 +4,7 @@ import {
     SERVICE_URLS,
     Environment,
 } from "@metrom-xyz/sdk";
-import {
-    type ChainContract,
-    type Chain,
-    type Address,
-    zeroAddress,
-} from "viem";
+import { type ChainContract, type Chain } from "viem";
 import { type Dex, type SVGIcon } from "../types";
 import type { FunctionComponent } from "react";
 import { SupportedChain } from "@metrom-xyz/contracts";
@@ -24,6 +19,7 @@ import {
     baseSepolia,
     taiko,
     scroll,
+    sonic,
 } from "viem/chains";
 
 import {
@@ -32,8 +28,7 @@ import {
     mantleSepoliaData,
     modeData,
     mantleData,
-    sonicBlazeTestnet,
-    sonicBlazeTestnetData,
+    sonicData,
     baseData,
     baseSepoliaData,
     taikoData,
@@ -64,12 +59,11 @@ export const MAXIMUM_REWARDS_RESTRICTIONS = 20;
 
 export const SUPPORTED_CHAINS: [Chain, ...Chain[]] =
     ENVIRONMENT === Environment.Production
-        ? [mode, mantle, base, taiko, scroll]
+        ? [mode, mantle, base, taiko, scroll, sonic]
         : [
               celoAlfajores,
               holesky,
               mantleSepoliaTestnet,
-              sonicBlazeTestnet,
               baseSepolia,
               formTestnet,
               artheraTestnet,
@@ -84,13 +78,13 @@ export const CHAIN_DATA: Record<SupportedChain, ChainData> = {
     [SupportedChain.BaseSepolia]: baseSepoliaData,
     [SupportedChain.FormTestnet]: formTestnetData,
     [SupportedChain.ArtheraTestnet]: artheraTestnetData,
-    [SupportedChain.SonicBlazeTestnet]: sonicBlazeTestnetData,
 
     [SupportedChain.Base]: baseData,
     [SupportedChain.Mode]: modeData,
     [SupportedChain.Mantle]: mantleData,
     [SupportedChain.Taiko]: taikoData,
     [SupportedChain.Scroll]: scrollData,
+    [SupportedChain.Sonic]: sonicData,
 };
 
 export const metromApiClient = new MetromApiClient(
