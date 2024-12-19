@@ -19,15 +19,13 @@ import { Header } from "./header";
 import { formatUsdAmount } from "@/src/utils/format";
 import { getCampaignPreviewApr } from "@/src/utils/campaign";
 import { trackFathomEvent } from "@/src/utils/fathom";
+import { ENVIRONMENT } from "@/src/commons/env";
 import { type Hex, zeroHash, parseUnits, formatUnits } from "viem";
 import {
     SERVICE_URLS,
     type Specification,
-    type UsdPricedErc20TokenAmount,
-    type UsdPricedOnChainAmount,
     type WhitelistedErc20TokenAmount,
 } from "@metrom-xyz/sdk";
-import { ENVIRONMENT, KPI } from "@/src/commons/env";
 import { Kpi } from "./kpi";
 import { AprChip } from "../../apr-chip";
 
@@ -255,7 +253,7 @@ export function CampaignPreview({
                     onBack={onBack}
                 />
                 <div className={styles.content}>
-                    {KPI && !!payload.kpiSpecification && (
+                    {!!payload.kpiSpecification && (
                         <Kpi
                             poolUsdTvl={payload.pool?.usdTvl}
                             rewards={payload.tokens}

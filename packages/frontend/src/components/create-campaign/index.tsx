@@ -93,6 +93,7 @@ export function CreateCampaign() {
             points: undefined,
             feeToken: undefined,
             kpiSpecification: undefined,
+            rangeSpecification: undefined,
         }));
         setPayloadErrors({});
         setView(View.form);
