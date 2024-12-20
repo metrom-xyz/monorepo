@@ -122,4 +122,17 @@ export const DEPLOYMENTS: {
             },
         },
     },
+    arthera: {
+        "third-trade": {
+            Factory: {
+                address: "0x10253594A832f967994b44f33411940533302ACb",
+                startBlock: 138104,
+            },
+            NonFungiblePositionManager: {
+                address: "0x0BFaCE9a5c9F884a4f09fadB83b69e81EA41424B",
+                startBlock: 138126,
+                version: NonFungiblePositionManagerVersion.V1_0,
+            },
+        },
+    },
 };
