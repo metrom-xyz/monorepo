@@ -166,7 +166,13 @@ function Component<V extends ValueType, O extends SelectOption<V>>(
                 id={resolvedId}
                 readOnly={!search}
                 icon={open ? ChevronUp : ChevronDown}
-                value={open && search ? query : selectedOption?.label}
+                value={
+                    open && search
+                        ? query
+                        : selectedOption
+                          ? selectedOption.label
+                          : ""
+                }
                 disabled={disabled}
                 loading={loading}
                 {...rest}
