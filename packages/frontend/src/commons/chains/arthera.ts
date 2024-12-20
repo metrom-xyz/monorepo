@@ -5,9 +5,9 @@ import { defineChain } from "viem";
 import { SupportedDex } from "@metrom-xyz/sdk";
 import { ThirdTradeLogo } from "@/src/assets/logos/dexes/thirdtrade";
 
-export const artheraTestnet = defineChain({
-    id: 10_243,
-    name: "Arthera Testnet",
+export const arthera = defineChain({
+    id: 10_242,
+    name: "Arthera",
     nativeCurrency: {
         decimals: 18,
         name: "AA",
@@ -15,30 +15,30 @@ export const artheraTestnet = defineChain({
     },
     rpcUrls: {
         default: {
-            http: ["https://rpc-test.arthera.net"],
+            http: ["https://rpc.arthera.net"],
         },
     },
     blockExplorers: {
         default: {
-            name: "Arthera testnet",
-            url: "https://explorer-test.arthera.net",
+            name: "Arthera",
+            url: "https://explorer.arthera.net",
         },
     },
     contracts: {
         multicall3: {
             address: "0xcA11bde05977b3631167028862bE2a173976CA11",
-            blockCreated: 22_051,
+            blockCreated: 4_502_791,
         },
     },
 });
 
-export const artheraTestnetData: ChainData = {
-    name: artheraTestnet.name,
-    metromContract: ADDRESS[SupportedChain.ArtheraTestnet],
+export const artheraData: ChainData = {
+    name: arthera.name,
+    metromContract: ADDRESS[SupportedChain.Arthera],
     blockExplorers: {
         default: {
-            name: "Arthera Testnet",
-            url: "https://explorer-test.arthera.net",
+            name: "Arthera",
+            url: "https://explorer.arthera.net",
         },
     },
     icon: ArtheraLogo,
@@ -47,21 +47,27 @@ export const artheraTestnetData: ChainData = {
             slug: SupportedDex.ThirdTrade,
             logo: ThirdTradeLogo,
             name: "Third Trade",
-            addLiquidityUrl: "https://testnet.third.trade/pool/{target_pool}",
+            addLiquidityUrl: "https://third.trade/pool/{target_pool}",
         },
     ],
     baseTokens: [
         {
-            address: "0xa98Af7f325207BD96070E2BdCf2b7267e88330Dd",
+            address: "0x69D349E2009Af35206EFc3937BaD6817424729F7",
             decimals: 18,
-            name: "Wrapped Ether",
-            symbol: "WETH",
+            name: "Wrapped Arthera",
+            symbol: "WAA",
         },
         {
-            address: "0x95Bf186929194099899139Ff79998cC147290F28",
-            decimals: 18,
-            name: "Test DAI",
-            symbol: "tDAI",
+            address: "0x6C45E28A76977a96e263f84F95912B47F927B687",
+            decimals: 6,
+            name: "Tether USD",
+            symbol: "USDT",
+        },
+        {
+            address: "0x8C4aCd74Ff4385f3B7911432FA6787Aa14406f8B",
+            decimals: 6,
+            name: "USDC",
+            symbol: "USDC",
         },
     ],
 };
