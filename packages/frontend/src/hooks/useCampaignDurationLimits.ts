@@ -1,6 +1,6 @@
 import { metromAbi } from "@metrom-xyz/contracts/abi";
 import { useMemo } from "react";
-import { useChainId, useReadContract } from "wagmi";
+import { useChainId, useReadContracts } from "wagmi";
 import { useChainData } from "./useChainData";
 
 interface CampaignDurationLimits {
@@ -15,42 +15,35 @@ export function useCampaignDurationLimits(): {
     const chainId = useChainId();
     const chainData = useChainData(chainId);
 
-    // TODO: fetching these in one single call would be better
-    const { data: minimumSeconds, isLoading: loadingMinimumDuration } =
-        useReadContract({
-            address: chainData?.metromContract.address,
-            abi: metromAbi,
-            functionName: "minimumCampaignDuration",
-        });
-    const { data: maximumSeconds, isLoading: loadingMaximumDuration } =
-        useReadContract({
-            address: chainData?.metromContract.address,
-            abi: metromAbi,
-            functionName: "maximumCampaignDuration",
-        });
+    const { data, isLoading: loadingDurationLimits } = useReadContracts({
+        contracts: [
+            {
+                abi: metromAbi,
+                address: chainData?.metromContract.address,
+                functionName: "minimumCampaignDuration",
+            },
+            {
+                abi: metromAbi,
+                address: chainData?.metromContract.address,
+                functionName: "maximumCampaignDuration",
+            },
+        ],
+    });
+    const minimumSeconds = data?.[0].result;
+    const maximumSeconds = data?.[1].result;
 
     const limits: CampaignDurationLimits | undefined = useMemo(() => {
-        if (
-            loadingMinimumDuration ||
-            loadingMaximumDuration ||
-            !minimumSeconds ||
-            !maximumSeconds
-        )
+        if (loadingDurationLimits || !minimumSeconds || !maximumSeconds)
             return undefined;
 
         return {
             minimumSeconds,
             maximumSeconds,
         };
-    }, [
-        loadingMaximumDuration,
-        loadingMinimumDuration,
-        maximumSeconds,
-        minimumSeconds,
-    ]);
+    }, [loadingDurationLimits, maximumSeconds, minimumSeconds]);
 
     return {
-        loading: loadingMinimumDuration || loadingMaximumDuration,
+        loading: loadingDurationLimits,
         limits,
     };
 }
