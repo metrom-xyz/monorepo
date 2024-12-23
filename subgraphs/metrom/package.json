@@ -13,7 +13,7 @@
         "deploy:base": "pnpm prepare:deploy base && pnpm codegen && graph deploy metrom-base -l 0.0.14",
         "deploy:mode": "pnpm prepare:deploy mode-mainnet && pnpm codegen && graph deploy metrom-mode -l 0.0.5",
         "deploy:mantle": "pnpm prepare:deploy mantle && pnpm codegen && graph deploy metrom-mantle -l 0.0.3 --node https://subgraph-api.mantle.xyz/deploy --ipfs https://subgraph-api.mantle.xyz/ipfs",
-        "deploy:taiko": "pnpm prepare:deploy taiko && pnpm codegen && goldsky subgraph deploy metrom-taiko/0.0.2",
+        "deploy:taiko": "pnpm prepare:deploy taiko && pnpm codegen && graph build && goldsky subgraph deploy metrom-taiko/0.0.2",
         "deploy:scroll": "pnpm prepare:deploy scroll && pnpm codegen && graph deploy metrom-scroll -l 0.0.2",
         "deploy:sonic": "pnpm prepare:deploy sonic && pnpm codegen && 0xgraph deploy metrom-sonic -l 0.0.1",
         "lint": "eslint .",
