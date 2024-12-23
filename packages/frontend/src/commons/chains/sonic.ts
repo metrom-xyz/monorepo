@@ -1,5 +1,7 @@
 import { SupportedChain, ADDRESS } from "@metrom-xyz/contracts";
+import { SupportedDex } from "@metrom-xyz/sdk";
 import { SonicLogo } from "@/src/assets/logos/chains/sonic";
+import { UniswapLogo } from "@/src/assets/logos/dexes/uniswap";
 import { type ChainData } from "..";
 import { sonic } from "viem/chains";
 
@@ -13,7 +15,15 @@ export const sonicData: ChainData = {
         },
     },
     icon: SonicLogo,
-    dexes: [],
+    dexes: [
+        {
+            slug: SupportedDex.UniswapV3,
+            logo: UniswapLogo,
+            name: "Uniswap v3",
+            addLiquidityUrl:
+                "https://app.uniswap.org/explore/pools/sonic/{target_pool}",
+        },
+    ],
     baseTokens: [
         {
             address: "0x309C92261178fA0CF748A855e90Ae73FDb79EBc7",
