@@ -122,4 +122,30 @@ export const DEPLOYMENTS: {
             },
         },
     },
+    arthera: {
+        "third-trade": {
+            Factory: {
+                address: "0x10253594A832f967994b44f33411940533302ACb",
+                startBlock: 138104,
+            },
+            NonFungiblePositionManager: {
+                address: "0x0BFaCE9a5c9F884a4f09fadB83b69e81EA41424B",
+                startBlock: 138126,
+                version: NonFungiblePositionManagerVersion.V1_0,
+            },
+        },
+    },
+    sonic: {
+        silverswap: {
+            Factory: {
+                address: "0xb860200BD68dc39cEAfd6ebb82883f189f4CdA76",
+                startBlock: 186117,
+            },
+            NonFungiblePositionManager: {
+                address: "0x5084E9fDF9264489A14E77c011073D757e572bB4",
+                startBlock: 268579,
+                version: NonFungiblePositionManagerVersion.V1_0,
+            },
+        },
+    },
 };

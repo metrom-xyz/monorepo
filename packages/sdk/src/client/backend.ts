@@ -378,6 +378,7 @@ export class MetromApiClient {
                 ? rawRanks.map((rawRank) => {
                       return <PointsCampaignLeaderboardRank>{
                           ...rawRank,
+                          weight: rawRank.weight * 100,
                           distributed: stringToOnChainAmount(
                               rawRank.distributed as string,
                               18,

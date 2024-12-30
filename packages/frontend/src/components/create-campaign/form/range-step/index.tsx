@@ -188,8 +188,8 @@ export function RangeStep({
                         pool={pool}
                         error={!!error}
                         from={from}
-                        onFromChange={setFrom}
                         to={to}
+                        onFromChange={setFrom}
                         onToChange={setTo}
                     />
                     {/*<PriceRangeChart

@@ -7,6 +7,7 @@ export default defineConfig({
         emptyOutDir: true,
         lib: {
             entry: "src/index.ts",
+            cssFileName: "style",
             formats: ["es"],
         },
         rollupOptions: {

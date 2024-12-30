@@ -94,4 +94,16 @@ export const DEPLOYMENTS: {
             },
         },
     },
+    sonic: {
+        "uni-v3": {
+            Factory: {
+                address: "0xcb2436774C3e191c85056d248EF4260ce5f27A9D",
+                startBlock: 322744,
+            },
+            NonFungiblePositionManager: {
+                address: "0x743E03cceB4af2efA3CC76838f6E8B50B63F184c",
+                startBlock: 322763,
+            },
+        },
+    },
 };

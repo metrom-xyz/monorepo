@@ -1,9 +1,9 @@
 import { NumberInput, type NumberFormatValues } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
-
-import styles from "./styles.module.css";
 import { priceToTick, tickToPrice } from "@/src/utils/price-range";
 import type { PoolWithTvl } from "@metrom-xyz/sdk";
+
+import styles from "./styles.module.css";
 
 interface RangeInputsProps {
     pool?: PoolWithTvl;

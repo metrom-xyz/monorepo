@@ -10,7 +10,6 @@ import {
 } from "@metrom-xyz/ui";
 import { useCampaigns } from "@/src/hooks/useCampaigns";
 import { Campaign, SkeletonCampaign } from "./campaign";
-
 import { useTranslations } from "next-intl";
 import { usePagination } from "@/src/hooks/usePagination";
 import {
@@ -34,10 +33,6 @@ import { CHAIN_DATA } from "@/src/commons";
 import styles from "./styles.module.css";
 
 const PAGE_SIZE = 10;
-const QUERY_PARAM_PAGE_NUMBER = "page";
-const QUERY_PARAM_SEARCH = "search";
-const QUERY_PARAM_STATUS = "status";
-const QUERY_PARAM_CHAIN = "chainId";
 
 export const CHAIN_ALL = 0;
 

@@ -20,9 +20,10 @@ interface CampaignProps {
 // TODO: reinstate the arrow on hover, but on click, bring the user
 // to the provide liquidity page for the targeted dex
 export function Campaign({ campaign }: CampaignProps) {
-    const daysDuration = dayjs
+    const hoursDuration = dayjs
         .unix(campaign.to)
-        .diff(dayjs.unix(campaign.from), "days", false);
+        .diff(dayjs.unix(campaign.from), "hours", false);
+    const daysDuration = hoursDuration / 24;
 
     return (
         <Link href={`/campaigns/${campaign.chainId}/${campaign.id}`}>
