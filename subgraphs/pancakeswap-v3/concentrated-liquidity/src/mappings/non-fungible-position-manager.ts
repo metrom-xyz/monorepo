@@ -15,6 +15,7 @@ import {
     getEventId,
     NonFungiblePositionManagerContract,
 } from "../commons";
+import { MASTERCHEF_V3_ADDRESS } from "../addresses";
 
 function getNftPositionId(tokenId: BigInt): Bytes {
     return Bytes.fromByteArray(Bytes.fromBigInt(tokenId));
@@ -102,9 +103,6 @@ export function handleTransfer(event: TransferEvent): void {
     let position = getNftPosition(event.params.tokenId);
     if (position == null) return;
 
-    position.owner = event.params.to;
-    position.save();
-
     let liquidityTransfer = new LiquidityTransfer(getEventId(event));
     liquidityTransfer.timestamp = event.block.timestamp;
     liquidityTransfer.blockNumber = event.block.number;
@@ -113,4 +111,11 @@ export function handleTransfer(event: TransferEvent): void {
     liquidityTransfer.to = event.params.to;
     liquidityTransfer.position = position.id;
     liquidityTransfer.save();
+
+    // do not update the position's owner if staking in the
+    // masterchef contract
+    if (event.params.to == MASTERCHEF_V3_ADDRESS) return;
+
+    position.owner = event.params.to;
+    position.save();
 }
