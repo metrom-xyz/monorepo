@@ -59,7 +59,7 @@ export const MAXIMUM_REWARDS_RESTRICTIONS = 20;
 
 export const SUPPORTED_CHAINS: [Chain, ...Chain[]] =
     ENVIRONMENT === Environment.Production
-        ? [mode, mantle, base, taiko, scroll, sonic /* , arthera */]
+        ? [mode, mantle, base, taiko, scroll, sonic, arthera]
         : [
               celoAlfajores,
               holesky,
