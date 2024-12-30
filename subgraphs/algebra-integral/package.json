@@ -14,10 +14,12 @@
         "deploy:kim:base": "pnpm prepare:deploy base kim && pnpm codegen && graph build && graph deploy metrom-kim-base -l 0.0.8",
         "deploy:scribe:scroll": "pnpm prepare:deploy scroll scribe && pnpm codegen && graph build && graph deploy metrom-scribe-scroll -l 0.0.6",
         "deploy:third-trade:arthera": "pnpm prepare:deploy arthera third-trade && pnpm codegen && graph build",
+        "deploy:silverswap:sonic": "pnpm prepare:deploy sonic silverswap && pnpm codegen && 0xgraph deploy metrom-silverswap-sonic -l 0.0.1",
         "lint": "eslint .",
         "format": "eslint --fix ."
     },
     "dependencies": {
+        "@0xgraph/cli": "^0.2.1",
         "@graphprotocol/graph-cli": "^0.91.1",
         "@graphprotocol/graph-ts": "0.36.0"
     },

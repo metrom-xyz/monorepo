@@ -2,6 +2,7 @@ import { SupportedChain, ADDRESS } from "@metrom-xyz/contracts";
 import { SupportedDex } from "@metrom-xyz/sdk";
 import { SonicLogo } from "@/src/assets/logos/chains/sonic";
 import { UniswapLogo } from "@/src/assets/logos/dexes/uniswap";
+import { SilverSwapLogo } from "@/src/assets/logos/dexes/silverswap";
 import { type ChainData } from "..";
 import { sonic } from "viem/chains";
 
@@ -22,6 +23,13 @@ export const sonicData: ChainData = {
             name: "Uniswap v3",
             addLiquidityUrl:
                 "https://app.uniswap.org/explore/pools/sonic/{target_pool}",
+        },
+        {
+            slug: SupportedDex.SilverSwap,
+            logo: SilverSwapLogo,
+            name: "SilverSwap",
+            addLiquidityUrl:
+                "https://silverswap.io/chain/sonic/liquidity/add-v3",
         },
     ],
     baseTokens: [
