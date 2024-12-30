@@ -24,7 +24,7 @@
         "@react-spring/web": "^9.7.5",
         "dayjs": "^1.11.13",
         "rc-switch": "^4.1.0",
-        "react-number-format": "^5.4.2",
+        "react-number-format": "^5.4.3",
         "react-popper": "^2.3.0",
         "react-use": "^17.5.1",
         "react-window": "^1.8.10"
@@ -39,8 +39,8 @@
     "devDependencies": {
         "@chromatic-com/storybook": "^3.2.2",
         "@eslint/js": "^9.16.0",
-        "@fontsource/ibm-plex-mono": "^5.1.0",
-        "@fontsource/ibm-plex-sans": "^5.1.0",
+        "@fontsource/ibm-plex-mono": "^5.1.1",
+        "@fontsource/ibm-plex-sans": "^5.1.1",
         "@storybook/addon-essentials": "^8.4.7",
         "@storybook/addon-interactions": "^8.4.7",
         "@storybook/addon-onboarding": "^8.4.7",
@@ -70,9 +70,9 @@
         "storybook": "^8.4.7",
         "tailwindcss": "^3.4.16",
         "typescript": "^5.7.2",
-        "typescript-eslint": "^8.17.0",
-        "viem": "^2.21.54",
-        "vite": "^5.4.11"
+        "typescript-eslint": "^8.18.2",
+        "viem": "^2.21.59",
+        "vite": "^6.0.6"
     },
     "eslintConfig": {
         "extends": [
