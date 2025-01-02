@@ -56,10 +56,7 @@ export function Reward({
         if (!campaignDuration || !reward) return;
 
         if (!rewardAmount) {
-            onError(
-                reward.token.address,
-                "newCampaign.form.rewards.errors.lowDistributionRate",
-            );
+            onError(reward.token.address, "errors.lowDistributionRate");
             setError(true);
             return;
         }
@@ -70,9 +67,9 @@ export function Reward({
 
         const error =
             rewardAmount.raw > balance
-                ? "newCampaign.form.rewards.errors.insufficientBalance"
+                ? "errors.insufficientBalance"
                 : distributionRate < reward.token.minimumRate.formatted
-                  ? "newCampaign.form.rewards.errors.lowDistributionRate"
+                  ? "errors.lowDistributionRate"
                   : "";
 
         onError(reward.token.address, error);
