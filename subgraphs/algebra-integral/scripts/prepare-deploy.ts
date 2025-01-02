@@ -78,6 +78,9 @@ try {
                 v1_1:
                     contracts.NonFungiblePositionManager.version ===
                     NonFungiblePositionManagerVersion.V1_1,
+                v1_2:
+                    contracts.NonFungiblePositionManager.version ===
+                    NonFungiblePositionManagerVersion.V1_2,
             },
         ),
     );

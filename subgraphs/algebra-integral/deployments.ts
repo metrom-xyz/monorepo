@@ -1,6 +1,7 @@
 export enum NonFungiblePositionManagerVersion {
     V1_0,
     V1_1,
+    V1_2,
 }
 
 export interface ChainConfig {
@@ -145,6 +146,19 @@ export const DEPLOYMENTS: {
                 address: "0x5084E9fDF9264489A14E77c011073D757e572bB4",
                 startBlock: 268579,
                 version: NonFungiblePositionManagerVersion.V1_0,
+            },
+        },
+    },
+    form: {
+        fibonacci: {
+            Factory: {
+                address: "0xbd799BE84dd34B1242e1f7736A6441d6b1540e8b",
+                startBlock: 520745,
+            },
+            NonFungiblePositionManager: {
+                address: "0x3FE6BA6D9aBeBb6d853891b2bda8C4A59C688457",
+                startBlock: 520866,
+                version: NonFungiblePositionManagerVersion.V1_2,
             },
         },
     },
