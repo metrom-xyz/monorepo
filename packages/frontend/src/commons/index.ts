@@ -3,6 +3,7 @@ import {
     MetromApiClient,
     SERVICE_URLS,
     Environment,
+    SupportedAmm,
 } from "@metrom-xyz/sdk";
 import { type ChainContract, type Chain } from "viem";
 import { type Dex, type SVGIcon } from "../types";
@@ -84,6 +85,11 @@ export const CHAIN_DATA: Record<SupportedChain, ChainData> = {
     [SupportedChain.Scroll]: scrollData,
     [SupportedChain.Sonic]: sonicData,
     [SupportedChain.Arthera]: artheraData,
+};
+
+export const AMM_SUPPORTS_RANGE_INCENTIVES: Record<SupportedAmm, boolean> = {
+    [SupportedAmm.ConcentratedLiquidityV3]: true,
+    [SupportedAmm.StableSwap]: false,
 };
 
 export const metromApiClient = new MetromApiClient(

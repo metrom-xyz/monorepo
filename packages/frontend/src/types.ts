@@ -1,8 +1,8 @@
 import type {
     KpiSpecification,
     PoolWithTvl,
+    RangeSpecification,
     SupportedDex,
-    WhitelistedErc20Token,
     WhitelistedErc20TokenAmount,
 } from "@metrom-xyz/sdk";
 import type { Dayjs } from "dayjs";
@@ -43,6 +43,7 @@ export interface CampaignPayload {
     tokens?: WhitelistedErc20TokenAmount[];
     feeToken?: WhitelistedErc20TokenAmount;
     kpiSpecification?: KpiSpecification;
+    rangeSpecification?: RangeSpecification;
     restrictions?: {
         type: RestrictionType;
         list: Address[];
@@ -54,6 +55,7 @@ export interface CampaignPayloadErrors {
     endDate?: boolean;
     rewards?: boolean;
     kpiSpecification?: boolean;
+    rangeSpecification?: boolean;
     restrictions?: boolean;
 }
 

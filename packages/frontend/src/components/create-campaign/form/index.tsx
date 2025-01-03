@@ -13,7 +13,8 @@ import { EndDateStep } from "./end-date-step";
 import { RewardsStep } from "./rewards-step";
 import { RestrictionsStep } from "./restrictions-step";
 import { KpiStep } from "./kpi-step";
-import { KPI } from "@/src/commons/env";
+import { RangeStep } from "./range-step";
+import { AMM_SUPPORTS_RANGE_INCENTIVES } from "@/src/commons";
 
 import styles from "./styles.module.css";
 
@@ -39,6 +40,13 @@ export function CreateCampaignForm({
                 !chains.some((chain) => chain.id === selectedChain))
         );
     }, [chains, connectedChain, isConnected, selectedChain]);
+
+    const { pointsCampaign, malformedPoints } = useMemo(() => {
+        return {
+            pointsCampaign: payload?.rewardType === RewardType.points,
+            malformedPoints: !payload?.feeToken || payload.points === undefined,
+        };
+    }, [payload?.feeToken, payload?.points, payload?.rewardType]);
 
     return (
         <div className={styles.root}>
@@ -79,22 +87,34 @@ export function CreateCampaignForm({
                 onRewardsChange={onPayloadChange}
                 onError={onPayloadError}
             />
-            {KPI && (
-                <KpiStep
-                    disabled={
-                        !payload?.tokens ||
-                        payload.rewardType === RewardType.points ||
-                        unsupportedChain
-                    }
-                    pool={payload?.pool}
-                    rewards={payload?.tokens}
-                    kpiSpecification={payload?.kpiSpecification}
-                    onKpiChange={onPayloadChange}
-                    onError={onPayloadError}
-                />
-            )}
+            <KpiStep
+                disabled={
+                    !payload?.tokens || pointsCampaign || unsupportedChain
+                }
+                pool={payload?.pool}
+                rewards={payload?.tokens}
+                kpiSpecification={payload?.kpiSpecification}
+                onKpiChange={onPayloadChange}
+                onError={onPayloadError}
+            />
+            {payload?.pool &&
+                AMM_SUPPORTS_RANGE_INCENTIVES[payload.pool.amm] && (
+                    <RangeStep
+                        disabled={
+                            !payload?.tokens ||
+                            pointsCampaign ||
+                            unsupportedChain
+                        }
+                        pool={payload?.pool}
+                        rangeSpecification={payload?.rangeSpecification}
+                        onRangeChange={onPayloadChange}
+                        onError={onPayloadError}
+                    />
+                )}
             <RestrictionsStep
-                disabled={!payload?.tokens || unsupportedChain}
+                disabled={
+                    (!payload?.tokens && malformedPoints) || unsupportedChain
+                }
                 restrictions={payload?.restrictions}
                 onRestrictionsChange={onPayloadChange}
                 onError={onPayloadError}

@@ -74,10 +74,16 @@ export interface KpiSpecification {
     goal: RangePoolTvlKpiGoal;
 }
 
+export interface RangeSpecification {
+    from: number;
+    to: number;
+}
+
 export interface Specification {
     whitelist?: Address[];
     blacklist?: Address[];
     kpi?: KpiSpecification;
+    priceRange?: RangeSpecification;
 }
 
 export interface KpiSpecificationWithMeasurement extends KpiSpecification {
