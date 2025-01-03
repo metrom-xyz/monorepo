@@ -37,6 +37,8 @@ import {
     formTestnetData,
     arthera,
     artheraData,
+    form,
+    formData,
 } from "./chains";
 
 export interface ChainData {
@@ -59,7 +61,7 @@ export const MAXIMUM_REWARDS_RESTRICTIONS = 20;
 
 export const SUPPORTED_CHAINS: [Chain, ...Chain[]] =
     ENVIRONMENT === Environment.Production
-        ? [mode, mantle, base, taiko, scroll, sonic, arthera]
+        ? [mode, mantle, base, taiko, scroll, sonic, arthera, form]
         : [
               celoAlfajores,
               holesky,
@@ -84,6 +86,7 @@ export const CHAIN_DATA: Record<SupportedChain, ChainData> = {
     [SupportedChain.Scroll]: scrollData,
     [SupportedChain.Sonic]: sonicData,
     [SupportedChain.Arthera]: artheraData,
+    [SupportedChain.Form]: formData,
 };
 
 export const metromApiClient = new MetromApiClient(
