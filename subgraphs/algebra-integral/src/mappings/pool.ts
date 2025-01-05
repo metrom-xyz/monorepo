@@ -40,6 +40,7 @@ export function handleFee(event: FeeEvent): void {
 
 export function handleSwap(event: SwapEvent): void {
     let pool = getPoolOrThrow(event.address);
+    pool.liquidity = event.params.liquidity;
 
     let newTick = BigInt.fromI32(event.params.tick);
     if (newTick != pool.tick) {
@@ -52,8 +53,9 @@ export function handleSwap(event: SwapEvent): void {
         tickMovingSwap.save();
 
         pool.tick = newTick;
-        pool.save();
     }
+
+    pool.save();
 
     let poolTokens = getSortedPoolTokens(pool);
 
@@ -122,6 +124,16 @@ function getDirectPositionOrThrow(
 
 export function handleMint(event: MintEvent): void {
     let pool = getPoolOrThrow(event.address);
+
+    if (
+        pool.tick !== null &&
+        BigInt.fromI32(event.params.bottomTick).le(pool.tick) &&
+        BigInt.fromI32(event.params.topTick).gt(pool.tick)
+    ) {
+        pool.liquidity = pool.liquidity.plus(event.params.liquidityAmount);
+        pool.save();
+    }
+
     let poolTokens = getSortedPoolTokens(pool);
 
     poolTokens[0].tvl = poolTokens[0].tvl.plus(event.params.amount0);
@@ -175,6 +187,16 @@ export function handleMint(event: MintEvent): void {
 
 export function handleBurn(event: BurnEvent): void {
     let pool = getPoolOrThrow(event.address);
+
+    if (
+        pool.tick !== null &&
+        BigInt.fromI32(event.params.bottomTick).le(pool.tick) &&
+        BigInt.fromI32(event.params.topTick).gt(pool.tick)
+    ) {
+        pool.liquidity = pool.liquidity.plus(event.params.liquidityAmount);
+        pool.save();
+    }
+
     let poolTokens = getSortedPoolTokens(pool);
 
     poolTokens[0].tvl = poolTokens[0].tvl.minus(event.params.amount0);
