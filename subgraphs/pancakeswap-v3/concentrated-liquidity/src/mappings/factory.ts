@@ -51,6 +51,7 @@ export function handlePoolCreated(event: PoolCreatedEvent): void {
     pool.tokens = [poolToken0.id, poolToken1.id];
     pool.tick = BI_0;
     pool.fee = BigInt.fromU32(event.params.fee);
+    pool.liquidity = BI_0;
     pool.save();
 
     PoolTemplate.create(event.params.pool);
