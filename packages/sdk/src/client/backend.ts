@@ -46,7 +46,12 @@ import type {
 } from "../types/leaderboards";
 import type { BackendLeaderboardResponse } from "./types/leaderboards";
 import type { FeeToken } from "src/types/fee-tokens";
+import { tickToPrice } from "../utils";
+import type { Tick } from "src/types/initialized-ticks";
+import type { BackendInitializedTicksResponse } from "./types/initialized-ticks";
 
+const MIN_TICK = -887272;
+const MAX_TICK = -MIN_TICK;
 const BI_1_000_000 = BigInt(1_000_000);
 
 export interface FetchCampaignParams {
@@ -96,6 +101,36 @@ export interface FetchKpiMeasurementsParams {
 export interface FetchLeaderboardParams {
     campaign: Campaign;
     account?: Address;
+}
+
+export interface FetchTicksParams {
+    chainId: number;
+    poolAddress: Address;
+    surroundingAmount: number;
+}
+
+interface InitializedTick {
+    idx: number;
+    liquidity: {
+        gross: bigint;
+        net: bigint;
+    };
+}
+
+interface ProcessedTick {
+    idx: number;
+    liquidity: {
+        gross: bigint;
+        net: bigint;
+        active: bigint;
+    };
+    price0: number;
+    price1: number;
+}
+
+enum Direction {
+    Asc,
+    Desc,
 }
 
 export class MetromApiClient {
@@ -561,6 +596,88 @@ export class MetromApiClient {
             }
         }
     }
+
+    async fetchTicks(params: FetchTicksParams): Promise<Tick[]> {
+        const url = new URL(
+            `v1/initialized-ticks/${params.chainId}/${params.poolAddress}`,
+            this.baseUrl,
+        );
+
+        if (params.surroundingAmount)
+            url.searchParams.set(
+                "surroundingTicksAmount",
+                params.surroundingAmount.toString(),
+            );
+
+        const response = await fetch(url);
+        if (!response.ok)
+            throw new Error(
+                `response not ok while fetching ${params.surroundingAmount} surrounding initialized ticks for pool ${params.poolAddress} in chain with id ${params.chainId}: ${await response.text()}`,
+            );
+
+        const { activeTick, ticks: initializedTicks } =
+            (await response.json()) as BackendInitializedTicksResponse;
+
+        const initializedTicksByIdx = initializedTicks.reduce(
+            (acc: Record<number, InitializedTick>, tick) => {
+                acc[tick.idx] = {
+                    idx: tick.idx,
+                    liquidity: {
+                        gross: BigInt(tick.liquidityGross),
+                        net: BigInt(tick.liquidityNet),
+                    },
+                };
+                return acc;
+            },
+            {},
+        );
+
+        const price0 = tickToPrice(activeTick.idx);
+        const activeTickProcessed: ProcessedTick = {
+            idx: activeTick.idx,
+            liquidity: {
+                active: BigInt(activeTick.liquidity),
+                net: 0n,
+                gross: 0n,
+            },
+            price0,
+            price1: 1 / price0,
+        };
+
+        // If our active tick happens to be initialized (i.e. there is a position that starts or
+        // ends at that tick), ensure we set the gross and net.
+        // correctly.
+        const initializedActiveTick = initializedTicksByIdx[activeTick.idx];
+        if (initializedActiveTick) {
+            activeTickProcessed.liquidity.gross =
+                initializedActiveTick.liquidity.gross;
+            activeTickProcessed.liquidity.net =
+                initializedActiveTick.liquidity.net;
+        }
+
+        const subsequentTicks = computeSurroundingTicks(
+            initializedTicksByIdx,
+            activeTickProcessed,
+            params.surroundingAmount,
+            Direction.Asc,
+        );
+
+        const previousTicks = computeSurroundingTicks(
+            initializedTicksByIdx,
+            activeTickProcessed,
+            params.surroundingAmount,
+            Direction.Desc,
+        );
+
+        return previousTicks
+            .concat({
+                idx: activeTickProcessed.idx,
+                liquidity: activeTickProcessed.liquidity.active,
+                price0: activeTickProcessed.price0,
+                price1: activeTickProcessed.price1,
+            })
+            .concat(subsequentTicks);
+    }
 }
 
 function processCampaignsResponse(
@@ -797,4 +914,85 @@ function stringToUsdPricedOnChainAmount(
         formatted,
         usdValue: formatted * usdPrice,
     };
+}
+
+function computeSurroundingTicks(
+    initializedTicksByIdx: Record<number, InitializedTick>,
+    activeTickProcessed: ProcessedTick,
+    numSurroundingTicks: number,
+    direction: Direction,
+): Tick[] {
+    let previousTickProcessed: ProcessedTick = {
+        ...activeTickProcessed,
+    };
+
+    // Iterate outwards (either up or down depending on 'Direction') from the active tick,
+    // building active liquidity for every tick.
+    let processedTicks: ProcessedTick[] = [];
+    for (let i = 0; i < numSurroundingTicks; i++) {
+        const currentTickIdx =
+            direction == Direction.Asc
+                ? previousTickProcessed.idx + 1
+                : previousTickProcessed.idx - 1;
+
+        if (currentTickIdx < MIN_TICK || currentTickIdx > MAX_TICK) {
+            break;
+        }
+
+        const price0 = tickToPrice(currentTickIdx);
+        const currentTickProcessed: ProcessedTick = {
+            idx: currentTickIdx,
+            liquidity: {
+                active: previousTickProcessed.liquidity.active,
+                net: 0n,
+                gross: 0n,
+            },
+            price0: price0,
+            price1: 1 / price0,
+        };
+
+        // Check if there is an initialized tick at our current tick.
+        // If so copy the gross and net liquidity from the initialized tick.
+        const initializedCurrentTick = initializedTicksByIdx[currentTickIdx];
+        if (initializedCurrentTick) {
+            currentTickProcessed.liquidity.gross =
+                initializedCurrentTick.liquidity.gross;
+            currentTickProcessed.liquidity.net =
+                initializedCurrentTick.liquidity.net;
+        }
+
+        // Update the active liquidity.
+        // If we are iterating ascending and we found an initialized tick we immediately apply
+        // it to the current processed tick we are building.
+        // If we are iterating descending, we don't want to apply the net liquidity until the following tick.
+        if (direction == Direction.Asc && initializedCurrentTick) {
+            currentTickProcessed.liquidity.active =
+                previousTickProcessed.liquidity.active +
+                initializedCurrentTick.liquidity.net;
+        } else if (
+            direction == Direction.Desc &&
+            previousTickProcessed.liquidity.net != 0n
+        ) {
+            // We are iterating descending, so look at the previous tick and apply any net liquidity.
+            currentTickProcessed.liquidity.active =
+                previousTickProcessed.liquidity.active -
+                previousTickProcessed.liquidity.net;
+        }
+
+        processedTicks.push(currentTickProcessed);
+        previousTickProcessed = currentTickProcessed;
+    }
+
+    if (direction == Direction.Desc) {
+        processedTicks = processedTicks.reverse();
+    }
+
+    return processedTicks.map((tick) => {
+        return <Tick>{
+            idx: tick.idx,
+            liquidity: tick.liquidity.active,
+            price0: tick.price0,
+            price1: tick.price1,
+        };
+    });
 }
