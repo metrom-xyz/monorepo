@@ -16,7 +16,7 @@ import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
 import { ApproveTokensButton } from "./approve-tokens-button";
 import { Rewards } from "./rewards";
 import { Header } from "./header";
-import { formatTokenAmount, formatUsdAmount } from "@/src/utils/format";
+import { formatAmount, formatUsdAmount } from "@/src/utils/format";
 import { getCampaignPreviewApr } from "@/src/utils/campaign";
 import { trackFathomEvent } from "@/src/utils/fathom";
 import {
@@ -162,8 +162,14 @@ export function CampaignPreview({
 
             let specification: Specification = {
                 kpi: kpiSpecification,
-                priceRange: priceRangeSpecification,
             };
+
+            if (priceRangeSpecification)
+                specification.priceRange = {
+                    from: priceRangeSpecification.from.tick,
+                    to: priceRangeSpecification.to.tick,
+                };
+
             if (restrictions)
                 specification[restrictions.type] = restrictions?.list;
 
@@ -195,7 +201,9 @@ export function CampaignPreview({
         };
 
         if (
-            (payload.kpiSpecification || payload.restrictions) &&
+            (payload.kpiSpecification ||
+                payload.restrictions ||
+                payload.priceRangeSpecification) &&
             tokensApproved
         )
             uploadSpecification();
@@ -301,7 +309,7 @@ export function CampaignPreview({
                                 boxed
                                 size="xl"
                                 label={t("points")}
-                                value={formatTokenAmount({
+                                value={formatAmount({
                                     amount: payload.distributables.points,
                                 })}
                             />

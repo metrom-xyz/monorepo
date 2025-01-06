@@ -46,12 +46,13 @@ import type {
 } from "../types/leaderboards";
 import type { BackendLeaderboardResponse } from "./types/leaderboards";
 import type { FeeToken } from "src/types/fee-tokens";
-import { tickToPrice } from "../utils";
-import type { Tick } from "src/types/initialized-ticks";
+import type { InitializedTicks, Tick } from "src/types/initialized-ticks";
 import type { BackendInitializedTicksResponse } from "./types/initialized-ticks";
+import { getPrice } from "../utils";
 
 const MIN_TICK = -887272;
 const MAX_TICK = -MIN_TICK;
+const COMPUTE_TICKS_AMPUNT = 1500;
 const BI_1_000_000 = BigInt(1_000_000);
 
 export interface FetchCampaignParams {
@@ -103,9 +104,9 @@ export interface FetchLeaderboardParams {
     account?: Address;
 }
 
-export interface FetchTicksParams {
+export interface FetchInitializedTicksParams {
     chainId: number;
-    poolAddress: Address;
+    pool: AmmPool;
     surroundingAmount: number;
 }
 
@@ -597,9 +598,11 @@ export class MetromApiClient {
         }
     }
 
-    async fetchTicks(params: FetchTicksParams): Promise<Tick[]> {
+    async fetchInitializedTicks(
+        params: FetchInitializedTicksParams,
+    ): Promise<InitializedTicks> {
         const url = new URL(
-            `v1/initialized-ticks/${params.chainId}/${params.poolAddress}`,
+            `v1/initialized-ticks/${params.chainId}/${params.pool.address}`,
             this.baseUrl,
         );
 
@@ -612,7 +615,7 @@ export class MetromApiClient {
         const response = await fetch(url);
         if (!response.ok)
             throw new Error(
-                `response not ok while fetching ${params.surroundingAmount} surrounding initialized ticks for pool ${params.poolAddress} in chain with id ${params.chainId}: ${await response.text()}`,
+                `response not ok while fetching ${params.surroundingAmount} surrounding initialized ticks for pool ${params.pool.address} in chain with id ${params.chainId}: ${await response.text()}`,
             );
 
         const { activeTick, ticks: initializedTicks } =
@@ -632,7 +635,7 @@ export class MetromApiClient {
             {},
         );
 
-        const price0 = tickToPrice(activeTick.idx);
+        const price0 = getPrice(activeTick.idx, params.pool);
         const activeTickProcessed: ProcessedTick = {
             idx: activeTick.idx,
             liquidity: {
@@ -658,18 +661,20 @@ export class MetromApiClient {
         const subsequentTicks = computeSurroundingTicks(
             initializedTicksByIdx,
             activeTickProcessed,
-            params.surroundingAmount,
+            params.pool,
+            COMPUTE_TICKS_AMPUNT,
             Direction.Asc,
         );
 
         const previousTicks = computeSurroundingTicks(
             initializedTicksByIdx,
             activeTickProcessed,
-            params.surroundingAmount,
+            params.pool,
+            COMPUTE_TICKS_AMPUNT,
             Direction.Desc,
         );
 
-        return previousTicks
+        const ticks = previousTicks
             .concat({
                 idx: activeTickProcessed.idx,
                 liquidity: activeTickProcessed.liquidity.active,
@@ -677,6 +682,43 @@ export class MetromApiClient {
                 price1: activeTickProcessed.price1,
             })
             .concat(subsequentTicks);
+
+        const aggregatedAverages = ticks
+            .reduce(
+                (
+                    acc: { totalLiquidity: bigint; count: bigint }[],
+                    tick,
+                    index,
+                ) => {
+                    const chunkIndex = Math.floor(index / 100);
+
+                    if (!acc[chunkIndex])
+                        acc[chunkIndex] = { totalLiquidity: 0n, count: 0n };
+
+                    acc[chunkIndex].totalLiquidity += tick.liquidity;
+                    acc[chunkIndex].count += 1n;
+
+                    return acc;
+                },
+                [],
+            )
+            .map((chunk) => chunk.totalLiquidity / chunk.count);
+
+        const aggregatedTicks = ticks
+            .map((tick, index) => {
+                if (index % 100 !== 0) return;
+
+                return {
+                    ...tick,
+                    liquidity: aggregatedAverages[Math.floor(index / 100)],
+                };
+            })
+            .filter((tick) => !!tick);
+
+        return {
+            activeIdx: activeTick.idx,
+            ticks: aggregatedTicks,
+        };
     }
 }
 
@@ -919,6 +961,7 @@ function stringToUsdPricedOnChainAmount(
 function computeSurroundingTicks(
     initializedTicksByIdx: Record<number, InitializedTick>,
     activeTickProcessed: ProcessedTick,
+    pool: AmmPool,
     numSurroundingTicks: number,
     direction: Direction,
 ): Tick[] {
@@ -939,7 +982,7 @@ function computeSurroundingTicks(
             break;
         }
 
-        const price0 = tickToPrice(currentTickIdx);
+        const price0 = getPrice(currentTickIdx, pool);
         const currentTickProcessed: ProcessedTick = {
             idx: currentTickIdx,
             liquidity: {
