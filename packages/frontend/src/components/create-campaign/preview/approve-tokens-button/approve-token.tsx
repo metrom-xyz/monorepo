@@ -12,7 +12,7 @@ import { useTranslations } from "next-intl";
 import { RewardIcon } from "@/src/assets/reward-icon";
 
 import styles from "./styles.module.css";
-import { formatTokenAmount } from "@/src/utils/format";
+import { formatAmount } from "@/src/utils/format";
 
 interface ApproveTokenProps {
     loading: boolean;
@@ -86,7 +86,7 @@ export function ApproveToken({
         >
             {signingTransaction || approving
                 ? t("approving", {
-                      amount: formatTokenAmount({
+                      amount: formatAmount({
                           amount: tokenAmount.amount.formatted,
                       }),
                       symbol: tokenAmount.token.symbol,
@@ -94,7 +94,7 @@ export function ApproveToken({
                       totalAmount,
                   })
                 : t("approve", {
-                      amount: formatTokenAmount({
+                      amount: formatAmount({
                           amount: tokenAmount.amount.formatted,
                       }),
                       symbol: tokenAmount.token.symbol,
