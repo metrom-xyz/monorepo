@@ -45,6 +45,16 @@ export interface WhitelistedErc20TokenAmount {
     amount: UsdPricedOnChainAmount;
 }
 
+export interface TickedPriceRangeBound {
+    tick: number;
+    price: number;
+}
+
+export interface TickedPriceRangeSpecification {
+    from: TickedPriceRangeBound;
+    to: TickedPriceRangeBound;
+}
+
 export interface CampaignPayload {
     rewardType?: RewardType;
     dex?: DexInfo;
@@ -55,7 +65,7 @@ export interface CampaignPayload {
     tokens?: WhitelistedErc20TokenAmount[];
     fee?: WhitelistedErc20TokenAmount;
     kpiSpecification?: KpiSpecification;
-    priceRangeSpecification?: PriceRangeSpecification;
+    priceRangeSpecification?: TickedPriceRangeSpecification;
     restrictions?: {
         type: RestrictionType;
         list: Address[];
@@ -83,7 +93,7 @@ export class CampaignPreviewPayload {
             | CampaignPreviewTokenDistributables
             | CampaignPreviewPointDistributables,
         public readonly kpiSpecification?: KpiSpecification,
-        public readonly priceRangeSpecification?: PriceRangeSpecification,
+        public readonly priceRangeSpecification?: TickedPriceRangeSpecification,
         public readonly restrictions?: {
             type: RestrictionType;
             list: Address[];

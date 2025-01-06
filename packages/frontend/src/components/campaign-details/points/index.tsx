@@ -2,7 +2,7 @@ import { TextField, Typography } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
 import dayjs from "dayjs";
 import { useMemo } from "react";
-import { formatTokenAmount } from "@/src/utils/format";
+import { formatAmount } from "@/src/utils/format";
 import type {
     DistributablesCampaign,
     DistributablesType,
@@ -42,7 +42,7 @@ export function Points({ campaign, loading }: PointsProps) {
                     size="xl"
                     label={t("total")}
                     loading={loading || !campaign}
-                    value={formatTokenAmount({
+                    value={formatAmount({
                         amount: campaign.distributables.amount.formatted,
                     })}
                 />
@@ -51,7 +51,7 @@ export function Points({ campaign, loading }: PointsProps) {
                     size="xl"
                     label={t("daily")}
                     loading={loading || !campaign}
-                    value={formatTokenAmount({
+                    value={formatAmount({
                         amount: dailyPoints,
                     })}
                 />

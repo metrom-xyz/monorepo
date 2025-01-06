@@ -2,7 +2,7 @@ import { TextField, Typography } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
 import dayjs from "dayjs";
 import { useMemo } from "react";
-import { formatTokenAmount, formatUsdAmount } from "@/src/utils/format";
+import { formatAmount, formatUsdAmount } from "@/src/utils/format";
 import { RemoteLogo } from "../../remote-logo";
 import type {
     DistributablesCampaign,
@@ -65,7 +65,7 @@ export function Rewards({ campaign, loading }: RewardsProps) {
                                 : "-"}
                         </Typography>
                         <Typography uppercase weight="medium" size="lg">
-                            {formatTokenAmount({
+                            {formatAmount({
                                 amount: reward.amount.formatted,
                             })}
                         </Typography>

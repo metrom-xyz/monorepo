@@ -1,5 +1,5 @@
 import { CircledXIcon } from "@/src/assets/circled-x-icon";
-import type { CampaignPayload } from "@/src/types";
+import type { CampaignPreviewPayload } from "@/src/types";
 import { Button, TextField, Typography } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
 import { useChainId } from "wagmi";
@@ -9,7 +9,7 @@ import { PoolRemoteLogo } from "@/src/components/pool-remote-logo";
 import styles from "./styles.module.css";
 
 interface HeaderProps {
-    payload: CampaignPayload;
+    payload: CampaignPreviewPayload;
     backDisabled: boolean;
     onBack: () => void;
 }
