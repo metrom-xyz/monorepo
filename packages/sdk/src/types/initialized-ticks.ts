@@ -4,3 +4,8 @@ export interface Tick {
     price0: number;
     price1: number;
 }
+
+export interface InitializedTicks {
+    activeIdx: number;
+    ticks: Tick[]
+}
