@@ -125,6 +125,7 @@ export function handleCreatePointsCampaign(event: CreatePointsCampaign): void {
         ethereum.Value.fromAddress(event.params.pool),
     )!;
     campaign.specificationHash = event.params.specification;
+    campaign.dataHash = Bytes.empty();
     campaign.points = event.params.points;
     campaign.save();
 
