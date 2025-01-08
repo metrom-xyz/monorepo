@@ -45,8 +45,8 @@ export function handleCreateRewardsCampaign(
     campaign.kind = event.params.kind;
     campaign.data = event.params.data;
     campaign.specificationHash = event.params.specificationHash;
+    campaign.dataHash = Bytes.empty();
     campaign.root = Bytes.empty();
-    campaign.data = Bytes.empty();
     campaign.save();
 
     let rewardTokensBytes: Bytes[] = [];

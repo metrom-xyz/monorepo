@@ -117,8 +117,8 @@ export function handleCreateCampaign(event: CreateCampaign): void {
         ethereum.Value.fromAddress(event.params.pool),
     )!;
     campaign.specificationHash = event.params.specification;
+    campaign.dataHash = Bytes.empty();
     campaign.root = Bytes.empty();
-    campaign.data = Bytes.empty();
     campaign.save();
 
     let rewardTokensBytes: Bytes[] = [];
