@@ -117,6 +117,7 @@ export function handleCreatePointsCampaign(event: CreatePointsCampaign): void {
     campaign.kind = event.params.kind;
     campaign.data = event.params.data;
     campaign.specificationHash = event.params.specificationHash;
+    campaign.dataHash = Bytes.empty();
     campaign.points = event.params.points;
     campaign.save();
 
