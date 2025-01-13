@@ -20,6 +20,7 @@ import {
     taiko,
     scroll,
     sonic,
+    gnosis,
 } from "viem/chains";
 
 import {
@@ -39,6 +40,7 @@ import {
     artheraData,
     form,
     formData,
+    gnosisData,
 } from "./chains";
 
 export interface ChainData {
@@ -61,7 +63,7 @@ export const MAXIMUM_REWARDS_RESTRICTIONS = 20;
 
 export const SUPPORTED_CHAINS: [Chain, ...Chain[]] =
     ENVIRONMENT === Environment.Production
-        ? [mode, mantle, base, taiko, scroll, sonic, arthera, form]
+        ? [mode, mantle, base, taiko, scroll, sonic, arthera, form, gnosis]
         : [
               celoAlfajores,
               holesky,
@@ -87,6 +89,7 @@ export const CHAIN_DATA: Record<SupportedChain, ChainData> = {
     [SupportedChain.Sonic]: sonicData,
     [SupportedChain.Arthera]: artheraData,
     [SupportedChain.Form]: formData,
+    [SupportedChain.Gnosis]: gnosisData,
 };
 
 export const metromApiClient = new MetromApiClient(

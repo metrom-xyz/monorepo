@@ -11,3 +11,4 @@ export { scrollData } from "./scroll";
 export { formTestnetData, formTestnet } from "./form-testnet";
 export { artheraData, arthera } from "./arthera";
 export { formData, form } from "./form";
+export { gnosisData } from "./gnosis";
