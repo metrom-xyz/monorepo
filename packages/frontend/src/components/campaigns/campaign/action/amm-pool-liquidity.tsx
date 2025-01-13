@@ -39,9 +39,16 @@ export function AmmPoolLiquidity({ campaign }: AmmPoolLiquidityProps) {
                     </Typography>
                 )}
                 {campaign.specification?.kpi && (
-                    <div className={styles.kpi}>
-                        <Typography size="sm" weight="medium">
+                    <div className={styles.chip}>
+                        <Typography size="sm" weight="medium" uppercase>
                             {t("kpi")}
+                        </Typography>
+                    </div>
+                )}
+                {campaign.specification?.priceRange && (
+                    <div className={styles.chip}>
+                        <Typography size="sm" weight="medium" uppercase>
+                            {t("range")}
                         </Typography>
                     </div>
                 )}
