@@ -21,6 +21,7 @@ import {
     scroll,
     sonic,
     gnosis,
+    sepolia,
 } from "viem/chains";
 
 import {
@@ -41,6 +42,7 @@ import {
     form,
     formData,
     gnosisData,
+    sepoliaData,
 } from "./chains";
 
 export interface ChainData {
@@ -70,6 +72,7 @@ export const SUPPORTED_CHAINS: [Chain, ...Chain[]] =
               mantleSepoliaTestnet,
               baseSepolia,
               formTestnet,
+              sepolia,
           ];
 
 export const TOKEN_ICONS_URL = `https://raw.githubusercontent.com/metrom-xyz/token-icons/refs/heads/main/${ENVIRONMENT === Environment.Production ? "mainnet" : "testnet"}-icons.json`;
@@ -81,6 +84,7 @@ export const CHAIN_DATA: Record<number, ChainData> = {
     [SupportedChain.MantleSepolia]: mantleSepoliaData,
     [SupportedChain.BaseSepolia]: baseSepoliaData,
     [SupportedChain.FormTestnet]: formTestnetData,
+    [SupportedChain.Sepolia]: sepoliaData,
 
     [SupportedChain.Base]: baseData,
     [SupportedChain.Mode]: modeData,
