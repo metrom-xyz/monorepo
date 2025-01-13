@@ -11,6 +11,7 @@
         "deploy:uni-v3:taiko": "pnpm prepare:deploy taiko uni-v3 && pnpm codegen && graph build && goldsky subgraph deploy metrom-uni-v3-taiko/0.0.6",
         "deploy:baseswap:base": "pnpm prepare:deploy base baseswap && pnpm codegen && graph deploy metrom-baseswap-base -l 0.0.4",
         "deploy:uni-v3:sonic": "pnpm prepare:deploy sonic uni-v3 && pnpm codegen && 0xgraph deploy metrom-uni-v3-sonic -l 0.0.3",
+        "deploy:unagi:taiko": "pnpm prepare:deploy taiko unagi && pnpm codegen && graph build && goldsky subgraph deploy metrom-unagi-taiko/0.0.1",
         "lint": "eslint .",
         "format": "eslint --fix ."
     },
