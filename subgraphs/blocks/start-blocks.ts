@@ -5,6 +5,7 @@ export const START_BLOCKS: { [network: string]: number } = {
     "mantle-sepolia": 15873155,
     "base-sepolia": 16132650,
     "form-testnet": 16265700,
+    sepolia: 7483369,
     mantle: 67227224,
     "mode-mainnet": 12569458,
     base: 20192397,
