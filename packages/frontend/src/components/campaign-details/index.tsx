@@ -13,6 +13,7 @@ import { Leaderboard } from "./leaderboard";
 import { Kpi } from "./kpi";
 import { PageNotFound } from "../page-not-found";
 import { DistributablesType } from "@metrom-xyz/sdk";
+import { PriceRange } from "./price-range";
 
 import styles from "./styles.module.css";
 
@@ -53,6 +54,7 @@ export function CampaignDetails({ chain, campaignId }: CampaignDetailsProps) {
                 {pointsCampaign && (
                     <Points campaign={campaign} loading={loadingCampaign} />
                 )}
+                <PriceRange campaign={campaign} />
                 {tokensCampaign && (
                     <Kpi campaign={campaign} loading={loadingCampaign} />
                 )}
