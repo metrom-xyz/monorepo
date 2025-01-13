@@ -1,6 +1,5 @@
 export const START_BLOCKS: { [network: string]: number } = {
     "celo-alfajores": 23112411,
-    gnosis: 32892235,
     holesky: 1468000,
     "arbitrum-one": 154000000,
     "mantle-sepolia": 15873155,
@@ -13,4 +12,5 @@ export const START_BLOCKS: { [network: string]: number } = {
     scroll: 10721133,
     sonic: 685175,
     form: 1214174,
+    gnosis: 38018174,
 };
