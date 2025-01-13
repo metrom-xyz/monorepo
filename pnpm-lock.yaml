@@ -39,8 +39,8 @@ importers:
         specifier: ^5.1.1
         version: 5.1.1
       '@metrom-xyz/contracts':
-        specifier: ^0.36.0
-        version: 0.36.0(bufferutil@4.0.9)(typescript@5.7.2)(utf-8-validate@6.0.5)(zod@3.24.1)
+        specifier: ^0.38.0
+        version: 0.38.0(bufferutil@4.0.9)(typescript@5.7.2)(utf-8-validate@6.0.5)(zod@3.24.1)
       '@metrom-xyz/sdk':
         specifier: workspace:*
         version: link:../sdk
@@ -184,8 +184,8 @@ importers:
         specifier: ^9.17.0
         version: 9.17.0
       '@metrom-xyz/contracts':
-        specifier: ^0.36.0
-        version: 0.36.0(bufferutil@4.0.9)(typescript@5.7.2)(utf-8-validate@6.0.5)(zod@3.24.1)
+        specifier: ^0.38.0
+        version: 0.38.0(bufferutil@4.0.9)(typescript@5.7.2)(utf-8-validate@6.0.5)(zod@3.24.1)
       '@tsconfig/node20':
         specifier: ^20.1.4
         version: 20.1.4
@@ -1890,9 +1890,6 @@ packages:
   '@metamask/utils@9.3.0':
     resolution: {integrity: sha512-w8CVbdkDrVXFJbfBSlDfafDR6BAkpDmv1bC1UJVCoVny5tW2RKAdn9i68Xf7asYT4TnUhl/hN4zfUiKQq9II4g==}
     engines: {node: '>=16.0.0'}
-
-  '@metrom-xyz/contracts@0.36.0':
-    resolution: {integrity: sha512-VduJ/SXaARUJHQp2YwnWdrFyqvwZYj3BDGChzRRMc0sykfrG1K2IAIfqChScGKB902CdZV8XvwozobmOm5QU/w==}
 
   '@metrom-xyz/contracts@0.38.0':
     resolution: {integrity: sha512-WMK4IyxtQTxCbQ41Sm9ig/RixgLyO5K7Q9awtn7fW2b6kA8RhAuXNq1R4AOke2iNkJJXvadmCuBfDURUcxCw7g==}
@@ -8471,14 +8468,6 @@ packages:
       typescript:
         optional: true
 
-  viem@2.22.8:
-    resolution: {integrity: sha512-iB3PW/a/qzpYbpjo3R662u6a/zo6piZHez/N/bOC25C79FYXBCs8mQDqwiHk3FYErUhS4KVZLabKV9zGMd+EgQ==}
-    peerDependencies:
-      typescript: '>=5.0.4'
-    peerDependenciesMeta:
-      typescript:
-        optional: true
-
   vite@6.0.6:
     resolution: {integrity: sha512-NSjmUuckPmDU18bHz7QZ+bTYhRR0iA72cs2QAxCqDpafJ0S6qetco0LB3WW2OxlMHS0JmAv+yZ/R3uPmMyGTjQ==}
     engines: {node: ^18.0.0 || ^20.0.0 || >=22.0.0}
@@ -10529,18 +10518,9 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@metrom-xyz/contracts@0.36.0(bufferutil@4.0.9)(typescript@5.7.2)(utf-8-validate@6.0.5)(zod@3.24.1)':
-    dependencies:
-      viem: 2.22.2(bufferutil@4.0.9)(typescript@5.7.2)(utf-8-validate@6.0.5)(zod@3.24.1)
-    transitivePeerDependencies:
-      - bufferutil
-      - typescript
-      - utf-8-validate
-      - zod
-
   '@metrom-xyz/contracts@0.38.0(bufferutil@4.0.9)(typescript@5.7.2)(utf-8-validate@6.0.5)(zod@3.24.1)':
     dependencies:
-      viem: 2.22.8(bufferutil@4.0.9)(typescript@5.7.2)(utf-8-validate@6.0.5)(zod@3.24.1)
+      viem: 2.22.2(bufferutil@4.0.9)(typescript@5.7.2)(utf-8-validate@6.0.5)(zod@3.24.1)
     transitivePeerDependencies:
       - bufferutil
       - typescript
@@ -18704,24 +18684,6 @@ snapshots:
       - zod
 
   viem@2.22.4(bufferutil@4.0.9)(typescript@5.7.2)(utf-8-validate@6.0.5)(zod@3.24.1):
-    dependencies:
-      '@noble/curves': 1.7.0
-      '@noble/hashes': 1.6.1
-      '@scure/bip32': 1.6.0
-      '@scure/bip39': 1.5.0
-      abitype: 1.0.7(typescript@5.7.2)(zod@3.24.1)
-      isows: 1.0.6(ws@8.18.0(bufferutil@4.0.9)(utf-8-validate@6.0.5))
-      ox: 0.6.0(typescript@5.7.2)(zod@3.24.1)
-      webauthn-p256: 0.0.10
-      ws: 8.18.0(bufferutil@4.0.9)(utf-8-validate@6.0.5)
-    optionalDependencies:
-      typescript: 5.7.2
-    transitivePeerDependencies:
-      - bufferutil
-      - utf-8-validate
-      - zod
-
-  viem@2.22.8(bufferutil@4.0.9)(typescript@5.7.2)(utf-8-validate@6.0.5)(zod@3.24.1):
     dependencies:
       '@noble/curves': 1.7.0
       '@noble/hashes': 1.6.1
