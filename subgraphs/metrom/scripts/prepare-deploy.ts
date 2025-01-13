@@ -11,6 +11,7 @@ const NETWORK_NAME: Record<SupportedChain, string> = {
     [SupportedChain.MantleSepolia]: "mantle-sepolia",
     [SupportedChain.BaseSepolia]: "base-sepolia",
     [SupportedChain.FormTestnet]: "form-testnet",
+    [SupportedChain.Sepolia]: "sepolia",
 
     [SupportedChain.Base]: "base",
     [SupportedChain.Mode]: "mode-mainnet",
@@ -20,6 +21,7 @@ const NETWORK_NAME: Record<SupportedChain, string> = {
     [SupportedChain.Sonic]: "sonic",
     [SupportedChain.Arthera]: "", // no hosting provider here...
     [SupportedChain.Form]: "form",
+    [SupportedChain.Gnosis]: "gnosis",
 };
 
 const [, , rawNetwork = ""] = process.argv;

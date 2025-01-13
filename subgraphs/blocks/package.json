@@ -10,6 +10,7 @@
         "deploy:mantle-sepolia": "pnpm prepare:deploy mantle-sepolia && pnpm codegen && graph deploy metrom-mantle-sepolia-blocks -l 0.0.1 --node https://subgraph-api.mantle.xyz/deploy --ipfs https://subgraph-api.mantle.xyz/ipfs",
         "deploy:base-sepolia": "pnpm prepare:deploy base-sepolia && pnpm codegen && graph deploy metrom-base-sepolia-blocks -l 0.0.2",
         "deploy:form-testnet": "pnpm prepare:deploy form-testnet && pnpm codegen && 0xgraph deploy metrom-form-testnet-blocks -l 0.0.1",
+        "deploy:sepolia": "pnpm prepare:deploy sepolia && pnpm codegen && graph deploy metrom-sepolia-blocks -l 0.0.1",
         "deploy:mantle": "pnpm prepare:deploy mantle && pnpm codegen && 0xgraph deploy metrom-mantle-blocks -l 0.0.1",
         "deploy:mode": "pnpm prepare:deploy mode-mainnet && pnpm codegen && graph deploy metrom-mode-blocks -l 0.0.1",
         "deploy:base": "pnpm prepare:deploy base && pnpm codegen && graph deploy --studio metrom-base-blocks -l 0.0.1",
