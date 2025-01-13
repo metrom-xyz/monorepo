@@ -15,6 +15,7 @@ export enum SupportedDex {
     ThirdTrade = "third-trade",
     SilverSwap = "silverswap",
     Swapr = "swapr",
+    Unagi = "unagi",
 }
 
 export enum SupportedAmm {
