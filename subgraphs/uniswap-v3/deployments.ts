@@ -71,6 +71,16 @@ export const DEPLOYMENTS: {
                 startBlock: 980,
             },
         },
+        unagi: {
+            Factory: {
+                address: "0x78172691DD3B8ADa7aEbd9bFfB487FB11D735DB2",
+                startBlock: 749458,
+            },
+            NonFungiblePositionManager: {
+                address: "0x2623281DdcC34A73a9e8898f2c57A32A860903f1",
+                startBlock: 750056,
+            },
+        },
     },
     base: {
         "uni-v3": {
