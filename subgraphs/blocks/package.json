@@ -17,6 +17,7 @@
         "deploy:scroll": "pnpm prepare:deploy scroll && pnpm codegen && graph deploy --studio metrom-scroll-blocks -l 0.0.1",
         "deploy:sonic": "pnpm prepare:deploy sonic && 0xgraph codegen && 0xgraph deploy metrom-sonic-blocks -l 0.0.2",
         "deploy:form": "pnpm prepare:deploy form && pnpm codegen && graph deploy metrom-form-blocks -l 0.0.1 --node https://formapi.0xgraph.xyz/deploy --ipfs https://formapi.0xgraph.xyz/ipfs",
+        "deploy:gnosis": "pnpm prepare:deploy gnosis && pnpm codegen && graph deploy metrom-gnosis-blocks -l 0.0.1",
         "lint": "eslint .",
         "format": "eslint --fix ."
     },
