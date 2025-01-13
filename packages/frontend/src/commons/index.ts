@@ -20,6 +20,7 @@ import {
     taiko,
     scroll,
     sonic,
+    gnosis,
 } from "viem/chains";
 
 import {
@@ -39,6 +40,7 @@ import {
     artheraData,
     form,
     formData,
+    gnosisData,
 } from "./chains";
 
 export interface ChainData {
@@ -61,7 +63,7 @@ export const MAXIMUM_REWARDS_RESTRICTIONS = 20;
 
 export const SUPPORTED_CHAINS: [Chain, ...Chain[]] =
     ENVIRONMENT === Environment.Production
-        ? [mode, mantle, base, taiko, scroll, sonic, arthera, form]
+        ? [mode, mantle, base, taiko, scroll, sonic, arthera, form, gnosis]
         : [
               celoAlfajores,
               holesky,
@@ -72,7 +74,8 @@ export const SUPPORTED_CHAINS: [Chain, ...Chain[]] =
 
 export const TOKEN_ICONS_URL = `https://raw.githubusercontent.com/metrom-xyz/token-icons/refs/heads/main/${ENVIRONMENT === Environment.Production ? "mainnet" : "testnet"}-icons.json`;
 
-export const CHAIN_DATA: Record<SupportedChain, ChainData> = {
+// TODO: when upgrading the contracts library change this to be Record<SupportedChain, ChainData>
+export const CHAIN_DATA: Record<number, ChainData> = {
     [SupportedChain.Holesky]: holeskyData,
     [SupportedChain.CeloAlfajores]: celoAlfajoresData,
     [SupportedChain.MantleSepolia]: mantleSepoliaData,
@@ -87,6 +90,7 @@ export const CHAIN_DATA: Record<SupportedChain, ChainData> = {
     [SupportedChain.Sonic]: sonicData,
     [SupportedChain.Arthera]: artheraData,
     [SupportedChain.Form]: formData,
+    100: gnosisData,
 };
 
 export const metromApiClient = new MetromApiClient(

@@ -14,6 +14,7 @@ export enum SupportedDex {
     Fibonacci = "fibonacci",
     ThirdTrade = "third-trade",
     SilverSwap = "silverswap",
+    Swapr = "swapr",
 }
 
 export enum SupportedAmm {
