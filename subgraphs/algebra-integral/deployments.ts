@@ -162,4 +162,17 @@ export const DEPLOYMENTS: {
             },
         },
     },
+    gnosis: {
+        swapr: {
+            Factory: {
+                address: "0xA0864cCA6E114013AB0e27cbd5B6f4c8947da766",
+                startBlock: 30096645,
+            },
+            NonFungiblePositionManager: {
+                address: "0x91fD594c46D8B01E62dBDeBed2401dde01817834",
+                startBlock: 30096660,
+                version: NonFungiblePositionManagerVersion.V1_0,
+            },
+        },
+    },
 };
