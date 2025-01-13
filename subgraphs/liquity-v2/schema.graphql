@@ -1,0 +1,66 @@
+type CollateralChangeEvent @entity(immutable: true) {
+    id: Bytes!
+    timestamp: BigInt!
+    blockNumber: BigInt!
+    collateral: Collateral!
+    trove: Trove!
+    delta: BigInt!
+}
+
+type Collateral @entity {
+    id: Bytes!
+    name: String!
+    symbol: String!
+    decimals: BigInt!
+    index: Int!
+    deposited: BigInt!
+    debt: BigInt!
+
+    troves: [Trove!]! @derivedFrom(field: "collateral")
+    changeEvents: [CollateralChangeEvent!]! @derivedFrom(field: "collateral")
+}
+
+type DebtChangeEvent @entity(immutable: true) {
+    id: Bytes!
+    timestamp: BigInt!
+    blockNumber: BigInt!
+    trove: Trove!
+    delta: BigInt!
+}
+
+type Trove @entity {
+    id: Bytes!
+    owner: Bytes!
+    collateral: Collateral!
+    debt: BigInt!
+    deposit: BigInt!
+    interestRate: BigInt!
+
+    depositChangeEvents: [CollateralChangeEvent!]! @derivedFrom(field: "trove")
+    debtChangeEvents: [DebtChangeEvent!]! @derivedFrom(field: "trove")
+}
+
+type StabilityPoolPosition @entity {
+    id: Bytes!
+    pool: StabilityPool!
+    owner: Bytes!
+    deposited: BigInt!
+}
+
+type DepositedDebtChangeEvent @entity(immutable: true) {
+    id: Bytes!
+    timestamp: BigInt!
+    blockNumber: BigInt!
+    pool: StabilityPool!
+    account: Bytes!
+    delta: BigInt!
+}
+
+type StabilityPool @entity {
+    id: Bytes!
+    collateral: Collateral!
+    deposited: BigInt!
+
+    positions: [StabilityPoolPosition!]! @derivedFrom(field: "pool")
+    deposits: [DepositedDebtChangeEvent!]! @derivedFrom(field: "pool")
+}
