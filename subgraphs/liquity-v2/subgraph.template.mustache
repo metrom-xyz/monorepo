@@ -1,0 +1,83 @@
+specVersion: 1.2.0
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum/contract
+    name: DebtToken
+    network: {{network}}
+    source:
+      abi: DebtToken
+      address: "{{debtTokenAddress}}"
+      startBlock: {{debtTokenStartBlock}}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.9
+      language: wasm/assemblyscript
+      file: ./src/mappings/debt-token.ts
+      entities:
+        - Collateral
+        - CollateralAddresses
+        - Token
+      abis:
+        - name: Erc20
+          file: ./abis/Erc20.json
+        - name: Erc20BytesName
+          file: ./abis/Erc20BytesName.json
+        - name: Erc20BytesSymbol
+          file: ./abis/Erc20BytesSymbol.json
+        - name: DebtToken
+          file: ./abis/BoldToken.json
+        - name: CollateralRegistry
+          file: ./abis/CollateralRegistry.json
+        - name: TroveManager
+          file: ./abis/TroveManager.json
+      eventHandlers:
+        - event: CollateralRegistryAddressChanged(address)
+          handler: handleCollateralRegistryAddressChanged
+templates:
+  - name: TroveManager
+    kind: ethereum/contract
+    network: {{network}}
+    source:
+      abi: TroveManager
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.9
+      language: wasm/assemblyscript
+      file: ./src/mappings/trove-manager.ts
+      entities:
+        - Trove
+        - Collateral
+        - DepositCollateralEvent
+        - MintDebtEvent
+      abis:
+        - name: TroveManager
+          file: ./abis/TroveManager.json
+        - name: TroveNFT
+          file: ./abis/TroveNFT.json
+      eventHandlers:
+        - event: TroveOperation(indexed
+            uint256,uint8,uint256,uint256,uint256,int256,uint256,int256)
+          handler: handleTroveOperation
+          receipt: true
+  - name: StabilityPool
+    kind: ethereum/contract
+    network: {{network}}
+    source:
+      abi: StabilityPool
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.9
+      language: wasm/assemblyscript
+      file: ./src/mappings/stability-pool.ts
+      entities:
+        - StabilityPool
+        - StabilityPoolPosition
+        - DepositDebtEvent
+      abis:
+        - name: StabilityPool
+          file: ./abis/StabilityPool.json
+      eventHandlers:
+        - event: DepositUpdated(indexed
+            address,uint256,uint256,uint256,uint256,uint256,uint256,uint256)
+          handler: handleDepositUpdated
