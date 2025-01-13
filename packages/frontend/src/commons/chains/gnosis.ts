@@ -1,5 +1,4 @@
 import { SupportedDex } from "@metrom-xyz/sdk";
-import { SupportedChain, ADDRESS } from "@metrom-xyz/contracts";
 import { type ChainData } from "..";
 import { GnosisLogo } from "@/src/assets/logos/chains/gnosis";
 import { gnosis } from "viem/chains";
@@ -7,7 +6,11 @@ import { SwaprLogo } from "@/src/assets/logos/dexes/swapr";
 
 export const gnosisData: ChainData = {
     name: gnosis.name,
-    metromContract: ADDRESS[SupportedChain.Taiko],
+    // TODO: once the contracts library is upgraded use ADDRESS[SupportedChain.Gnosis]
+    metromContract: {
+        address: "0x9430990117A7451e3d0a3d89796FC0b0c294Da9c",
+        blockCreated: 38018174,
+    },
     blockExplorers: gnosis.blockExplorers,
     icon: GnosisLogo,
     dexes: [
