@@ -18,7 +18,7 @@ import { FEE_UNIT } from "@/src/commons";
 import styles from "./styles.module.css";
 
 interface RewardsProps {
-    rewards: CampaignPayload["rewards"];
+    rewards: CampaignPayload["tokens"];
     startDate?: Dayjs;
     endDate?: Dayjs;
 }
@@ -57,10 +57,10 @@ export function Rewards({ rewards, startDate, endDate }: RewardsProps) {
         <div className={styles.root}>
             <div className={styles.table}>
                 <div className={styles.header}>
-                    <Typography uppercase weight="medium" light variant="sm">
+                    <Typography uppercase weight="medium" light size="sm">
                         {t("token")}
                     </Typography>
-                    <Typography uppercase weight="medium" light variant="sm">
+                    <Typography uppercase weight="medium" light size="sm">
                         {t("amount")}
                     </Typography>
                 </div>
@@ -71,14 +71,14 @@ export function Rewards({ rewards, startDate, endDate }: RewardsProps) {
                                 chain={chain}
                                 address={reward.token.address}
                             />
-                            <Typography weight="medium" variant="xl">
+                            <Typography weight="medium" size="xl">
                                 {reward.token.symbol}
                             </Typography>
                         </div>
-                        <Typography weight="medium" light variant="lg">
+                        <Typography weight="medium" light size="lg">
                             {formatUsdAmount(reward.amount.usdValue || 0)}
                         </Typography>
-                        <Typography weight="medium" variant="xl">
+                        <Typography weight="medium" size="xl">
                             {formatTokenAmount({
                                 amount: reward.amount.formatted,
                                 humanize: false,
@@ -90,13 +90,13 @@ export function Rewards({ rewards, startDate, endDate }: RewardsProps) {
             <div className={styles.summary}>
                 <TextField
                     boxed
-                    variant="xl"
+                    size="xl"
                     label={t("daily")}
                     value={formatUsdAmount(dailyRewards)}
                 />
                 <TextField
                     boxed
-                    variant="xl"
+                    size="xl"
                     label={t("total")}
                     value={formatUsdAmount(totalRewardsUsdAmount)}
                 />
@@ -106,7 +106,7 @@ export function Rewards({ rewards, startDate, endDate }: RewardsProps) {
                         label={t("fee")}
                         value={
                             <div className={styles.feeText}>
-                                <Typography weight="medium" variant="xl">
+                                <Typography weight="medium" size="xl">
                                     {formatPercentage((fee / FEE_UNIT) * 100)}
                                 </Typography>
                                 <Typography weight="medium" light>

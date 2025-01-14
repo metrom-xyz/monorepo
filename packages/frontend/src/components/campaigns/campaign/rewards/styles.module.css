@@ -7,11 +7,11 @@
 }
 
 .rewardsWrapper {
-    @apply w-full flex items-center gap-3;
+    @apply w-full flex items-center gap-1;
 }
 
 .tokenIcons {
-    @apply min-h-full flex flex-1 items-center gap-[1px];
+    @apply min-h-full flex flex-1 items-center justify-end gap-[1px];
 }
 
 .tokenIcon {
@@ -35,13 +35,5 @@
 }
 
 .textRewards {
-    @apply !text-sm sm:!text-base;
-}
-
-.tooltipTitle {
-    @apply text-gray-500 pt-1;
-}
-
-.tooltipText {
-    @apply text-gray-900;
+    @apply !text-sm sm:!text-base sm:min-w-[72px] sm:text-right;
 }

@@ -18,7 +18,12 @@
     },
     "notFound": {
         "title": "Page not found!",
-        "button": "Take me back to Campaigns"
+        "button": "Back to Campaigns"
+    },
+    "error": {
+        "title": "Something went wrong!",
+        "home": "Back to Campaigns",
+        "retry": "Try again"
     },
     "allCampaigns": {
         "title": "all campaigns",
@@ -40,6 +45,7 @@
         },
         "header": {
             "chain": "Chain",
+            "dex": "DEX",
             "pool": "Pool",
             "status": "Status",
             "apr": "APR",
@@ -66,6 +72,11 @@
             "tooltip": {
                 "rewards": "Rewards",
                 "totalUsdValue": "Total USD value"
+            }
+        },
+        "points": {
+            "tooltip": {
+                "points": "Points"
             }
         },
         "empty": {
@@ -114,26 +125,42 @@
             },
             "rewards": {
                 "title": {
-                    "add": "Enter Reward",
                     "rewards": "Rewards"
                 },
-                "rewardsPreviewList": {
-                    "empty": "No rewards added yet"
+                "tabs": {
+                    "tokens": "Tokens",
+                    "points": "Points"
                 },
-                "addButton": {
-                    "add": "Add to rewards",
-                    "added": "Reward added"
-                },
-                "selectPlaceholder": "Choose Token",
-                "totalUsd": "Total value usd",
-                "errors": {
-                    "insufficientBalance": "Insufficient balance",
-                    "lowDistributionRate": "Low distribution rate"
+                "tokens": {
+                    "enterReward": "Enter Reward",
+                    "rewardsPreviewList": {
+                        "empty": "No rewards added yet"
+                    },
+                    "addButton": {
+                        "add": "Add to rewards"
+                    },
+                    "selectPlaceholder": "Choose Token",
+                    "totalUsd": "Total value usd",
+                    "errors": {
+                        "insufficientBalance": "Insufficient balance",
+                        "lowDistributionRate": "Low distribution rate"
+                    }
                 },
                 "list": {
                     "token": "Token",
                     "balance": "Balance",
                     "empty": "Nothing here"
+                },
+                "points": {
+                    "amount": "Points amount",
+                    "pickFeeToken": "Pick fee token",
+                    "select": "Select",
+                    "usdCost": "{usd} total USD cost",
+                    "apply": "Apply",
+                    "errors": {
+                        "costChanged": "Cost changed, apply to confirm",
+                        "wrongAmount": "Wrong points amount"
+                    }
                 }
             },
             "restrictions": {
@@ -176,12 +203,15 @@
                 "title": "Set KPI",
                 "currentTvl": "Current TVL",
                 "rangedTvl": {
-                    "lowerBound": "Lower bound",
-                    "upperBound": "Upper bound"
+                    "lowerBound": "Lower TVL bound",
+                    "upperBound": "Upper TVL bound"
                 },
                 "errors": {
                     "missing": "Bound missing",
                     "malformed": "Wrong bound values"
+                },
+                "warnings": {
+                    "notApplied": "Changes not applied"
                 },
                 "simulation": {
                     "title": "KPI simulation",
@@ -209,6 +239,7 @@
         },
         "tvl": "TVL",
         "apr": "APR",
+        "points": "Points",
         "kpi": {
             "title": "KPI",
             "simulation": "KPI simulation",
@@ -276,6 +307,11 @@
             "daily": "Daily rewards",
             "total": "Total value usd"
         },
+        "points": {
+            "title": "Points",
+            "total": "Total",
+            "daily": "Daily"
+        },
         "kpi": {
             "title": "KPI",
             "lowerBound": "Lower bound",
@@ -292,9 +328,9 @@
         },
         "leaderboard": {
             "title": "Leaderboard",
-            "subtitle": "As of the latest distribution:",
-            "noDistribution": "Not yet distributed",
-            "personalRank": {
+            "subtitleLatest": "As of the latest distribution:",
+            "noDistribution": "No distribution yet",
+            "connectedAccountRank": {
                 "connect": "View your rank",
                 "noRewards": "You don't have any rewards",
                 "yourRank": "Your rank",
@@ -378,13 +414,15 @@
         "activities": {
             "claimReward": "Claim reward",
             "createCampaign": "Create campaign",
-            "timeAgo": "{time} ago",
-            "seeCampaign": "See campaign"
+            "timeAgo": "{time} ago"
         }
     },
     "simulationChart": {
         "emptyData": "Missing data for the simulation",
-        "pool": "Current TVL",
+        "tvl": {
+            "campaignActive": "Current TVL",
+            "campaignEnded": "Final TVL"
+        },
         "lowerBound": "Lower bound",
         "upperBound": "Upper bound",
         "labels": {
@@ -403,7 +441,7 @@
     },
     "distributionChart": {
         "tooltip": {
-            "distributionTime": "Distribution time",
+            "time": "Time",
             "token": "Token",
             "distributed": "Distributed",
             "reimbursed": "Reimbursed"

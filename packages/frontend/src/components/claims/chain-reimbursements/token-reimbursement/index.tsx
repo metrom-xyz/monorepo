@@ -138,10 +138,10 @@ export function TokenReimbursement({
                     address={tokenReimbursements.token.address}
                     defaultText={tokenReimbursements.token.symbol}
                 />
-                <Typography variant="lg" weight="medium">
+                <Typography size="lg" weight="medium">
                     {tokenReimbursements.token.symbol}
                 </Typography>
-                <Typography variant="lg" weight="medium">
+                <Typography size="lg" weight="medium">
                     {formatTokenAmount({
                         amount: tokenReimbursements.totalAmount,
                     })}
@@ -149,7 +149,7 @@ export function TokenReimbursement({
             </div>
             <Button
                 variant="secondary"
-                size="small"
+                size="sm"
                 disabled={simulateRecoverErrored || recovered || disabled}
                 loading={simulatingRecover || recovering}
                 iconPlacement="right"
@@ -174,10 +174,10 @@ export function SkeletonTokenReimbursement() {
         <div className={classNames(styles.root)}>
             <div className={styles.leftWrapper}>
                 <RemoteLogo loading />
-                <Skeleton width={60} variant="lg" />
-                <Skeleton width={70} variant="lg" />
+                <Skeleton width={60} size="lg" />
+                <Skeleton width={70} size="lg" />
             </div>
-            <Button variant="secondary" size="small" loading />
+            <Button variant="secondary" size="sm" loading />
         </div>
     );
 }

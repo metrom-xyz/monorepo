@@ -1,13 +1,13 @@
 import { useMemo } from "react";
-import { useTranslations } from "next-intl";
 import { formatUsdAmount } from "@/src/utils/format";
+import { isChartAxisTickActive } from "@/src/utils/kpi";
 
 import styles from "./styles.module.css";
 
 interface TvlTickProps {
-    poolUsdTvl: number;
-    lowerUsdTarget: number;
-    upperUsdTarget: number;
+    poolTvlScale?: number;
+    lowerBoundScale?: number;
+    upperBoundScale?: number;
     payload?: {
         value?: number;
     };
@@ -15,20 +15,58 @@ interface TvlTickProps {
     y?: number;
 }
 
+const TICK_PROXIMITY_THRESHOLD = 64;
+
 // this component specific to the TVL axis for the simulation chart, and it's
-// used to customize the tick label based on the tick index
-// (the first being the lower USD target, then current TVL, and the last the upper USD target)
+// used to customize the tick label
 export function TvlTick({
-    poolUsdTvl,
-    lowerUsdTarget,
-    upperUsdTarget,
+    poolTvlScale,
+    lowerBoundScale,
+    upperBoundScale,
     payload,
     y,
     x,
 }: TvlTickProps) {
-    const t = useTranslations("simulationChart");
+    const textAnchor = useMemo(() => {
+        if (
+            x === undefined ||
+            poolTvlScale === undefined ||
+            lowerBoundScale === undefined ||
+            upperBoundScale === undefined
+        )
+            return "middle";
 
-    if (!payload || payload.value === 0) return null;
+        const poolTvl = isChartAxisTickActive(x, poolTvlScale);
+        const lowerBound = isChartAxisTickActive(x, lowerBoundScale);
+        const upperBound = isChartAxisTickActive(x, upperBoundScale);
+
+        const closeToLowerBound =
+            Math.abs(x - lowerBoundScale) <= TICK_PROXIMITY_THRESHOLD;
+        const closeToUpperBound =
+            Math.abs(x - upperBoundScale) <= TICK_PROXIMITY_THRESHOLD;
+        const closeBounds =
+            upperBoundScale - lowerBoundScale <= TICK_PROXIMITY_THRESHOLD;
+
+        if (closeBounds) {
+            if (lowerBound) return "end";
+            if (upperBound) return "start";
+        }
+
+        // FIXME: check issue on align, also on mobile
+        if (closeToLowerBound) {
+            if (poolTvl) return x <= lowerBoundScale ? "end" : "start";
+            if (lowerBound) return x <= poolTvlScale ? "end" : "start";
+        }
+
+        if (closeToUpperBound) {
+            if (poolTvl) return x >= upperBoundScale ? "start" : "end";
+            if (upperBound) return x >= poolTvlScale ? "start" : "end";
+        }
+
+        return "middle";
+    }, [lowerBoundScale, poolTvlScale, upperBoundScale, x]);
+
+    if (!payload || payload.value === undefined) return null;
 
     return (
         <g transform={`translate(${x},${y})`}>
@@ -36,23 +74,11 @@ export function TvlTick({
                 x={0}
                 y={0}
                 dy={12}
-                textAnchor="middle"
+                textAnchor={textAnchor}
                 fontSize={12}
                 className={styles.axis}
             >
                 {formatUsdAmount(payload.value)}
-            </text>
-            <text
-                x={0}
-                y={0}
-                dy={24}
-                textAnchor="middle"
-                fontSize={12}
-                className={styles.axis}
-            >
-                {payload.value === poolUsdTvl && t("pool")}
-                {payload.value === lowerUsdTarget && t("lowerBound")}
-                {payload.value === upperUsdTarget && t("upperBound")}
             </text>
         </g>
     );

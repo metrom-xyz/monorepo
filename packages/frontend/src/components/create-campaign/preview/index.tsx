@@ -1,5 +1,5 @@
 import { Button, Typography, TextField, ErrorText } from "@metrom-xyz/ui";
-import type { CampaignPayload } from "@/src/types";
+import { RewardType, type CampaignPayload } from "@/src/types";
 import {
     useChainId,
     usePublicClient,
@@ -13,18 +13,29 @@ import { MetromLightLogo } from "@/src/assets/metrom-light-logo";
 import { useRouter } from "@/src/i18n/routing";
 import { useChainData } from "@/src/hooks/useChainData";
 import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
-import { ApproveRewardsButton } from "./approve-rewards-button";
+import { ApproveTokensButton } from "./approve-tokens-button";
 import { Rewards } from "./rewards";
 import { Header } from "./header";
-import { formatPercentage, formatUsdAmount } from "@/src/utils/format";
+import { formatTokenAmount, formatUsdAmount } from "@/src/utils/format";
 import { getCampaignPreviewApr } from "@/src/utils/campaign";
 import { trackFathomEvent } from "@/src/utils/fathom";
-import { type Hex, zeroHash } from "viem";
+import {
+    type Hex,
+    zeroHash,
+    parseUnits,
+    formatUnits,
+    encodeAbiParameters,
+} from "viem";
 import { encodeFunctionData } from "viem/utils";
-import { SERVICE_URLS, type Specification } from "@metrom-xyz/sdk";
+import {
+    SERVICE_URLS,
+    type Specification,
+    type WhitelistedErc20TokenAmount,
+} from "@metrom-xyz/sdk";
 import { ENVIRONMENT, KPI, SAFE } from "@/src/commons/env";
-import { Kpi } from "./kpi";
 import SafeAppsSdk, { type BaseTransaction } from "@safe-global/safe-apps-sdk";
+import { Kpi } from "./kpi";
+import { AprChip } from "../../apr-chip";
 
 import styles from "./styles.module.css";
 
@@ -55,10 +66,84 @@ export function CampaignPreview({
     const [deploying, setDeploying] = useState(false);
     const [uploadingSpecification, setUploadingSpecification] = useState(false);
     const [created, setCreated] = useState(false);
-    const [rewardsApproved, setRewardsApproved] = useState(false);
+    const [tokensApproved, setTokensApproved] = useState(false);
     const [specificationHash, setSpecificationHash] = useState<Hex>(zeroHash);
     const [error, setError] = useState("");
     const [safeTxs, setSafeTxs] = useState<BaseTransaction[]>([]);
+
+    const tokensToApprove = useMemo(() => {
+        if (payload.rewardType === RewardType.tokens) return payload.tokens;
+
+        if (payload.rewardType === RewardType.points && payload.feeToken) {
+            const { amount, token } = payload.feeToken;
+
+            const newRaw = (amount.raw * 115n) / 100n;
+
+            const newFormatted = Number(formatUnits(newRaw, token.decimals));
+            const feeToken: WhitelistedErc20TokenAmount = {
+                token,
+                amount: {
+                    raw: newRaw,
+                    formatted: newFormatted,
+                    usdValue: newFormatted * token.usdPrice,
+                },
+            };
+
+            return [feeToken];
+        }
+    }, [payload.feeToken, payload.rewardType, payload.tokens]);
+
+    const [tokensCampaignArgs, pointsCampaignArgs] = useMemo(() => {
+        const { pool, startDate, endDate, tokens, points, feeToken } = payload;
+
+        if (!tokensApproved || !pool || !startDate || !endDate) return [[], []];
+
+        if (
+            payload.rewardType === RewardType.tokens &&
+            tokens &&
+            tokens.length > 0
+        )
+            return [
+                [
+                    {
+                        from: startDate.unix(),
+                        to: endDate.unix(),
+                        kind: 1,
+                        data: encodeAbiParameters(
+                            [{ name: "poolAddress", type: "address" }],
+                            [pool.address],
+                        ),
+                        specificationHash,
+                        rewards: tokens.map((token) => ({
+                            token: token.token.address,
+                            amount: token.amount.raw,
+                        })),
+                    },
+                ],
+                [],
+            ];
+
+        if (payload.rewardType === RewardType.points && points && feeToken)
+            return [
+                [],
+                [
+                    {
+                        from: startDate.unix(),
+                        to: endDate.unix(),
+                        kind: 1,
+                        data: encodeAbiParameters(
+                            [{ name: "poolAddress", type: "address" }],
+                            [pool.address],
+                        ),
+                        specificationHash,
+                        points: parseUnits(points.toString(), 18),
+                        feeToken: feeToken.token.address,
+                    },
+                ],
+            ];
+
+        return [[], []];
+    }, [payload, specificationHash, tokensApproved]);
 
     const {
         data: simulatedCreate,
@@ -69,37 +154,13 @@ export function CampaignPreview({
         abi: metromAbi,
         address: chainData?.metromContract.address,
         functionName: "createCampaigns",
-        args: [
-            rewardsApproved &&
-            payload.pool &&
-            payload.startDate &&
-            payload.endDate &&
-            payload.rewards &&
-            payload.rewards.length > 0
-                ? [
-                      {
-                          pool: payload.pool.address,
-                          from: payload.startDate.unix(),
-                          to: payload.endDate.unix(),
-                          specification: specificationHash,
-                          rewards: payload.rewards.map((reward) => ({
-                              token: reward.token.address,
-                              amount: reward.amount.raw,
-                          })),
-                      },
-                  ]
-                : [],
-        ],
+        args: [tokensCampaignArgs, pointsCampaignArgs],
         query: {
             enabled:
                 !SAFE &&
-                rewardsApproved &&
                 !malformedPayload &&
-                !!payload.pool &&
-                !!payload.startDate &&
-                !!payload.endDate &&
-                !!payload.rewards &&
-                payload.rewards.length > 0,
+                (tokensCampaignArgs.length > 0 ||
+                    pointsCampaignArgs.length > 0),
         },
     });
 
@@ -144,14 +205,14 @@ export function CampaignPreview({
 
         if (
             (payload.kpiSpecification || payload.restrictions) &&
-            rewardsApproved
+            tokensApproved
         )
             uploadSpecification();
     }, [
         payload,
         payload.kpiSpecification,
         payload.restrictions,
-        rewardsApproved,
+        tokensApproved,
     ]);
 
     const handleSafeTransaction = useCallback(
@@ -162,7 +223,7 @@ export function CampaignPreview({
     );
 
     function handleOnRewardsApproved() {
-        setRewardsApproved(true);
+        setTokensApproved(true);
     }
 
     const handleStandardDeploy = useCallback(() => {
@@ -208,13 +269,11 @@ export function CampaignPreview({
 
     const handleSafeDeploy = useCallback(() => {
         if (
-            !rewardsApproved ||
             !chainData?.metromContract.address ||
             !payload.pool ||
             !payload.startDate ||
             !payload.endDate ||
-            !payload.rewards ||
-            payload.rewards.length === 0
+            (payload.tokens?.length === 0 && payload.points === undefined)
         ) {
             console.warn(
                 "Missing parameters to deploy campaign through Safe: aborting",
@@ -227,20 +286,7 @@ export function CampaignPreview({
             data: encodeFunctionData({
                 abi: metromAbi,
                 functionName: "createCampaigns",
-                args: [
-                    [
-                        {
-                            pool: payload.pool.address,
-                            from: payload.startDate.unix(),
-                            to: payload.endDate.unix(),
-                            specification: specificationHash,
-                            rewards: payload.rewards.map((reward) => ({
-                                token: reward.token.address,
-                                amount: reward.amount.raw,
-                            })),
-                        },
-                    ],
-                ],
+                args: [tokensCampaignArgs, pointsCampaignArgs],
             }),
             value: "0",
         });
@@ -261,14 +307,15 @@ export function CampaignPreview({
 
         void create();
     }, [
-        chainData?.metromContract.address,
-        payload.endDate,
+        chainData,
         payload.pool,
-        payload.rewards,
         payload.startDate,
-        rewardsApproved,
+        payload.endDate,
+        payload.tokens?.length,
+        payload.points,
         safeTxs,
-        specificationHash,
+        tokensCampaignArgs,
+        pointsCampaignArgs,
     ]);
 
     function handleGoToAllCampaigns() {
@@ -288,38 +335,56 @@ export function CampaignPreview({
                     {KPI && !!payload.kpiSpecification && (
                         <Kpi
                             poolUsdTvl={payload.pool?.usdTvl}
-                            rewards={payload.rewards}
+                            rewards={payload.tokens}
                             specification={payload.kpiSpecification}
                         />
                     )}
                     <div className={styles.contentGrid}>
                         <TextField
                             boxed
-                            variant="xl"
+                            size="xl"
                             label={t("tvl")}
                             value={formatUsdAmount(payload.pool?.usdTvl)}
                         />
-                        <TextField
-                            boxed
-                            variant="xl"
-                            label={t("apr")}
-                            value={formatPercentage(
-                                getCampaignPreviewApr(payload),
-                            )}
-                        />
+                        {payload.rewardType === RewardType.tokens && (
+                            <TextField
+                                boxed
+                                size="xl"
+                                label={t("apr")}
+                                value={
+                                    <AprChip
+                                        size="lg"
+                                        apr={getCampaignPreviewApr(payload)}
+                                        kpi={!!payload.kpiSpecification}
+                                    />
+                                }
+                            />
+                        )}
+                        {payload.rewardType === RewardType.points && (
+                            <TextField
+                                boxed
+                                size="xl"
+                                label={t("points")}
+                                value={formatTokenAmount({
+                                    amount: payload.points,
+                                })}
+                            />
+                        )}
                     </div>
-                    <Rewards
-                        rewards={payload.rewards}
-                        startDate={payload.startDate}
-                        endDate={payload.endDate}
-                    />
+                    {payload.rewardType === RewardType.tokens && (
+                        <Rewards
+                            rewards={payload.tokens}
+                            startDate={payload.startDate}
+                            endDate={payload.endDate}
+                        />
+                    )}
                     <div className={styles.deployButtonContainer}>
                         {error && (
-                            <ErrorText variant="xs" weight="medium">
+                            <ErrorText size="xs" weight="medium">
                                 {t(error)}
                             </ErrorText>
                         )}
-                        {rewardsApproved ? (
+                        {tokensApproved && (
                             <Button
                                 icon={ArrowRightIcon}
                                 iconPlacement="right"
@@ -328,7 +393,11 @@ export function CampaignPreview({
                                     malformedPayload ||
                                     simulateCreateErrored
                                 }
-                                loading={uploadingSpecification || deploying}
+                                loading={
+                                    uploadingSpecification ||
+                                    simulatingCreate ||
+                                    deploying
+                                }
                                 className={{ root: styles.deployButton }}
                                 onClick={
                                     SAFE
@@ -338,14 +407,13 @@ export function CampaignPreview({
                             >
                                 {t("deploy")}
                             </Button>
-                        ) : (
-                            <ApproveRewardsButton
-                                malformedPayload={malformedPayload}
-                                payload={payload}
-                                onApproved={handleOnRewardsApproved}
-                                onSafeTx={handleSafeTransaction}
-                            />
                         )}
+                        <ApproveTokensButton
+                            malformedPayload={malformedPayload}
+                            tokens={tokensToApprove}
+                            onApproved={handleOnRewardsApproved}
+                            onSafeTx={handleSafeTransaction}
+                        />
                     </div>
                 </div>
             </div>
@@ -358,11 +426,11 @@ export function CampaignPreview({
             <Typography uppercase weight="medium">
                 {t("congratulations")}
             </Typography>
-            <Typography variant="xl2" weight="medium">
+            <Typography size="xl2" weight="medium">
                 {SAFE ? t("launched.safe.1") : t("launched.standard")}
             </Typography>
             {SAFE && (
-                <Typography variant="xl2" weight="medium">
+                <Typography size="xl2" weight="medium">
                     {t("launched.safe.2")}
                 </Typography>
             )}

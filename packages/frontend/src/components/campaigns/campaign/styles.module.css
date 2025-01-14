@@ -12,6 +12,10 @@
         py-4;
 }
 
+.root.loading {
+    @apply pointer-events-none;
+}
+
 .noMobile {
     @apply hidden sm:grid;
 }

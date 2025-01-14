@@ -1,11 +1,11 @@
 import { formatPercentage, formatUsdAmount } from "@/src/utils/format";
 import styles from "./styles.module.css";
 import { useTranslations } from "next-intl";
-import { Typography } from "@metrom-xyz/ui";
+import { Typography, type TypographySize } from "@metrom-xyz/ui";
 import { ReferenceLine } from "recharts";
 import { CHART_MARGINS, type DistributedAreaDataPoint } from "..";
 import {
-    getChartYScale,
+    getChartAxisScale,
     getDistributableRewardsPercentage,
     getReachedGoalPercentage,
 } from "@/src/utils/kpi";
@@ -17,6 +17,7 @@ interface TooltipProps {
             payload: DistributedAreaDataPoint;
         },
     ];
+    size?: TypographySize;
     lowerUsdTarget: number;
     upperUsdTarget: number;
     totalRewardsUsd: number;
@@ -26,6 +27,7 @@ interface TooltipProps {
 export function TooltipContent({
     active,
     payload,
+    size = "base",
     lowerUsdTarget,
     upperUsdTarget,
     totalRewardsUsd,
@@ -40,18 +42,18 @@ export function TooltipContent({
     return (
         <div className={styles.root}>
             <div className={styles.row}>
-                <Typography weight="medium" light>
+                <Typography weight="medium" light uppercase size={size}>
                     {t("tvl")}
                 </Typography>
-                <Typography weight="medium">
+                <Typography weight="medium" size={size}>
                     {formatUsdAmount(usdTvl)}
                 </Typography>
             </div>
             <div className={styles.row}>
-                <Typography weight="medium" light>
+                <Typography weight="medium" light uppercase size={size}>
                     {t("payout")}
                 </Typography>
-                <Typography weight="medium">
+                <Typography weight="medium" size={size}>
                     {formatUsdAmount(
                         totalRewardsUsd *
                             getDistributableRewardsPercentage(
@@ -64,10 +66,10 @@ export function TooltipContent({
                 </Typography>
             </div>
             <div className={styles.row}>
-                <Typography weight="medium" light>
+                <Typography weight="medium" light uppercase size={size}>
                     {t("kpiReached")}
                 </Typography>
-                <Typography weight="medium">
+                <Typography weight="medium" size={size}>
                     {formatPercentage(
                         getReachedGoalPercentage(
                             usdTvl,
@@ -109,7 +111,7 @@ export function TooltipCursor({
     // based on the chart scale, while the X position can directly use the value from the data points.
     // This also takes into account the chart top margin.
     const cy =
-        getChartYScale(reward, 0, totalRewardsUsd, height, 0) +
+        getChartAxisScale(reward, 0, totalRewardsUsd, height, 0) +
         CHART_MARGINS.top;
 
     return (

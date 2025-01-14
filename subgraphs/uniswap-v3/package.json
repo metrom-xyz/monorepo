@@ -5,32 +5,34 @@
     "scripts": {
         "prepare:deploy": "tsx ./scripts/prepare-deploy.ts",
         "codegen": "graph codegen",
-        "deploy:celo-alfajores": "pnpm prepare:deploy celo-alfajores && pnpm codegen && graph build && graph deploy --studio metrom-uni-v3-celo-alfajores -l 0.29.0",
-        "deploy:base-sepolia": "pnpm prepare:deploy base-sepolia && pnpm codegen && graph build && graph deploy --studio metrom-uni-v3-base-sepolia -l 0.0.4",
-        "deploy:arbitrum": "pnpm prepare:deploy arbitrum-one && pnpm codegen && graph build && graph deploy --studio metrom-uni-v3-arbitrum -l 0.0.11",
-        "deploy:scroll": "pnpm prepare:deploy scroll && pnpm codegen && graph build && graph deploy --studio metrom-uni-v3-scroll -l 0.0.6",
-        "deploy:taiko": "pnpm prepare:deploy taiko && pnpm codegen && graph build && goldsky subgraph deploy metrom-uni-v3-taiko/0.0.3",
-        "deploy:base": "pnpm prepare:deploy base && pnpm codegen && graph build && graph deploy --studio metrom-uni-v3-base -l 0.0.2",
+        "deploy:uni-v3:celo-alfajores": "pnpm prepare:deploy celo-alfajores uni-v3 && pnpm codegen && graph deploy metrom-uni-v3-celo-alfajores -l 0.35.0",
+        "deploy:uni-v3:base-sepolia": "pnpm prepare:deploy base-sepolia uni-v3 && pnpm codegen && graph deploy metrom-uni-v3-base-sepolia -l 0.0.9",
+        "deploy:uni-v3:scroll": "pnpm prepare:deploy scroll uni-v3 && pnpm codegen && graph deploy metrom-uni-v3-scroll -l 0.0.9",
+        "deploy:uni-v3:taiko": "pnpm prepare:deploy taiko uni-v3 && pnpm codegen && graph build && goldsky subgraph deploy metrom-uni-v3-taiko/0.0.6",
+        "deploy:baseswap:base": "pnpm prepare:deploy base baseswap && pnpm codegen && graph deploy metrom-baseswap-base -l 0.0.4",
+        "deploy:uni-v3:sonic": "pnpm prepare:deploy sonic uni-v3 && pnpm codegen && 0xgraph deploy metrom-uni-v3-sonic -l 0.0.3",
+        "deploy:unagi:taiko": "pnpm prepare:deploy taiko unagi && pnpm codegen && graph build && goldsky subgraph deploy metrom-unagi-taiko/0.0.1",
         "lint": "eslint .",
         "format": "eslint --fix ."
     },
     "dependencies": {
-        "@graphprotocol/graph-cli": "0.85.0",
-        "@graphprotocol/graph-ts": "0.35.1"
+        "@0xgraph/cli": "^0.2.1",
+        "@graphprotocol/graph-cli": "0.91.1",
+        "@graphprotocol/graph-ts": "0.36.0"
     },
     "devDependencies": {
-        "@eslint/js": "^9.11.1",
+        "@eslint/js": "^9.16.0",
         "@types/eslint__js": "^8.42.3",
         "@types/mustache": "^4.2.5",
-        "@types/node": "^22.7.4",
-        "eslint": "^8",
+        "@types/node": "^22.10.1",
+        "eslint": "^9.14.0",
         "eslint-config-prettier": "^9.1.0",
-        "eslint-config-turbo": "^2.1.3",
+        "eslint-config-turbo": "^2.3.3",
         "eslint-plugin-prettier": "^5.2.1",
         "mustache": "^4.2.0",
-        "prettier": "^3.3.3",
-        "tsx": "^4.19.1",
-        "typescript": "^5.6.2",
-        "typescript-eslint": "^8.8.0"
+        "prettier": "^3.4.2",
+        "tsx": "^4.19.2",
+        "typescript": "^5.7.2",
+        "typescript-eslint": "^8.18.2"
     }
 }

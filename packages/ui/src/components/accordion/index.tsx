@@ -48,7 +48,7 @@ export function Accordion({ title, children, className }: AccordionProps) {
     return (
         <animated.div
             style={springStyles}
-            className={classNames("root", styles.rootm, className)}
+            className={classNames("root", styles.root, className)}
         >
             <div ref={wrapperRef}>
                 <div

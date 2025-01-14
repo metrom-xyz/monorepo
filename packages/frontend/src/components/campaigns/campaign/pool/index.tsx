@@ -1,10 +1,12 @@
 "use client";
 
-import { Typography, Skeleton, Chip } from "@metrom-xyz/ui";
+import { Typography, Skeleton } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
 import type { NamedCampaign } from "@/src/hooks/useCampaigns";
 import { formatPercentage } from "@/src/utils/format";
 import { PoolRemoteLogo } from "@/src/components/pool-remote-logo";
+import classNames from "classnames";
+import { getCampaigPoolName } from "@/src/utils/campaign";
 
 import styles from "./styles.module.css";
 
@@ -25,12 +27,12 @@ export function Pool({ campaign }: PoolProps) {
                 }))}
             />
             <div className={styles.titleContainer}>
-                <Typography variant="lg" weight="medium" truncate>
-                    {campaign.name}
+                <Typography size="lg" weight="medium" truncate>
+                    {getCampaigPoolName(campaign)}
                 </Typography>
                 {campaign.pool.fee && (
                     <Typography
-                        variant="sm"
+                        size="sm"
                         weight="medium"
                         className={styles.campaignFee}
                         light
@@ -40,7 +42,7 @@ export function Pool({ campaign }: PoolProps) {
                 )}
                 {campaign.specification?.kpi && (
                     <div className={styles.kpi}>
-                        <Typography variant="sm" weight="medium">
+                        <Typography size="sm" weight="medium">
                             {t("kpi")}
                         </Typography>
                     </div>
@@ -57,13 +59,14 @@ export function SkeletonPool() {
                 tokens={[{ address: "0x1" }, { address: "0x2" }]}
                 loading
             />
-            <div className={styles.titleContainer}>
-                <Skeleton variant="lg" width={180} />
-                <Skeleton
-                    variant="sm"
-                    width={50}
-                    className={styles.campaignFee}
-                />
+            <div
+                className={classNames(
+                    styles.titleContainer,
+                    styles.titleContainerLoading,
+                )}
+            >
+                <Skeleton size="lg" width={120} />
+                <Skeleton size="sm" width={50} className={styles.campaignFee} />
             </div>
         </div>
     );

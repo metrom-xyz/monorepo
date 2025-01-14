@@ -3,7 +3,11 @@
 }
 
 .filters {
-    @apply max-w-screen-lg w-full sm:items-end flex-col sm:flex-row flex gap-3 mb-7;
+    @apply max-w-screen-lg w-full sm:items-end flex-col sm:flex-row flex gap-3 sm:mb-7;
+}
+
+.searchFilter :global(.label) {
+    @apply invisible sm:visible;
 }
 
 .filterInput :global(.input) {
@@ -19,7 +23,7 @@
 }
 
 .header {
-    @apply sm:grid hidden;
+    @apply sm:grid hidden px-0;
 }
 
 .body {
@@ -40,10 +44,6 @@
 
 .paginationWrapper {
     @apply w-full h-8 flex justify-end;
-}
-
-.searchFilter :global(.label) {
-    @apply invisible sm:visible;
 }
 
 .customOptionContainer {

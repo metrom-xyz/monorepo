@@ -223,52 +223,58 @@ export function ChainOverview({
         <Card className={classNames(styles.root, className)}>
             <div className={styles.chainNameWrapper}>
                 <ChainIcon className={styles.chainIcon} />
-                <Typography variant="xl4" truncate>
+                <Typography size="xl4" truncate>
                     {chainWithRewardsData.chain.name}
                 </Typography>
             </div>
-            {chainWithRewardsData.reimbursements.length > 0 && (
-                <Button
-                    size="xsmall"
-                    disabled={simulateRecoverAllErrored}
-                    loading={simulatingRecoverAll || recovering}
-                    iconPlacement="right"
-                    onClick={handleRecoverAll}
-                >
-                    {simulatingClaimAll
-                        ? t("reimbursements.loading")
-                        : recovering
-                          ? t("reimbursements.recoveringAll")
-                          : t("reimbursements.recoverAll")}
-                </Button>
-            )}
-            {chainWithRewardsData.claims.length > 0 && (
-                <Button
-                    size="xsmall"
-                    disabled={simulateClaimAllErrored}
-                    loading={simulatingClaimAll || claiming}
-                    iconPlacement="right"
-                    onClick={handleClaimAll}
-                >
-                    {simulatingClaimAll
-                        ? t("claims.loading")
-                        : claiming
-                          ? t("claims.claimingAll")
-                          : t("claims.claimAll")}
-                </Button>
-            )}
+            <div className={styles.buttonsWrapper}>
+                {chainWithRewardsData.reimbursements.length > 0 && (
+                    <Button
+                        size="sm"
+                        disabled={simulateRecoverAllErrored}
+                        loading={simulatingRecoverAll || recovering}
+                        iconPlacement="right"
+                        onClick={handleRecoverAll}
+                    >
+                        {simulatingClaimAll
+                            ? t("reimbursements.loading")
+                            : recovering
+                              ? t("reimbursements.recoveringAll")
+                              : t("reimbursements.recoverAll")}
+                    </Button>
+                )}
+                {chainWithRewardsData.claims.length > 0 && (
+                    <Button
+                        size="sm"
+                        disabled={simulateClaimAllErrored}
+                        loading={simulatingClaimAll || claiming}
+                        iconPlacement="right"
+                        onClick={handleClaimAll}
+                    >
+                        {simulatingClaimAll
+                            ? t("claims.loading")
+                            : claiming
+                              ? t("claims.claimingAll")
+                              : t("claims.claimAll")}
+                    </Button>
+                )}
+            </div>
         </Card>
     );
 }
 
 export function SkeletonChainOverview() {
+    const t = useTranslations("rewards");
+
     return (
         <Card className={styles.root}>
             <div className={styles.chainNameWrapper}>
                 <Skeleton className={styles.chainIcon} />
-                <Skeleton width={100} variant="xl2" />
+                <Skeleton width={100} size="xl4" />
             </div>
-            <Button size="xsmall" loading />
+            <Button size="sm" loading>
+                {t("claims.loading")}
+            </Button>
         </Card>
     );
 }

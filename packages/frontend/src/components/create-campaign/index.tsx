@@ -1,10 +1,11 @@
 "use client";
 
 import { useChainId } from "wagmi";
-import type {
-    CampaignPayload,
-    CampaignPayloadErrors,
-    CampaignPayloadPart,
+import {
+    RewardType,
+    type CampaignPayload,
+    type CampaignPayloadErrors,
+    type CampaignPayloadPart,
 } from "@/src/types";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { Modal, Button } from "@metrom-xyz/ui";
@@ -38,16 +39,21 @@ export function CreateCampaign() {
             !payload.pool ||
             !payload.startDate ||
             !payload.endDate ||
-            !payload.rewards ||
-            payload.rewards.length === 0 ||
+            (payload.rewardType === RewardType.tokens &&
+                (!payload.tokens || payload.tokens.length === 0)) ||
+            (payload.rewardType === RewardType.points &&
+                (!payload.feeToken || !payload.points)) ||
             Object.values(payloadErrors).some((error) => !!error)
         );
     }, [
         payload.dex,
-        payload.endDate,
         payload.pool,
-        payload.rewards,
         payload.startDate,
+        payload.endDate,
+        payload.rewardType,
+        payload.tokens,
+        payload.points,
+        payload.feeToken,
         payloadErrors,
     ]);
 
@@ -83,7 +89,9 @@ export function CreateCampaign() {
         setPayload((prevState) => ({
             ...prevState,
             pool: undefined,
-            rewards: undefined,
+            tokens: undefined,
+            points: undefined,
+            feeToken: undefined,
             kpiSpecification: undefined,
         }));
         setPayloadErrors({});

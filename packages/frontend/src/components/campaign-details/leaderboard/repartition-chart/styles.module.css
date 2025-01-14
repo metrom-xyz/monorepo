@@ -1,5 +1,11 @@
 .root {
-    @apply flex flex-col gap-6 h-full w-full;
+    @apply sm:max-w-80
+        flex
+        flex-col
+        gap-3
+        p-4
+        bg-white
+        rounded-2xl;
 }
 
 .container {

@@ -105,7 +105,7 @@ export function AccountMenu({
                             className={styles.avatar}
                         />
                     )}
-                    <Typography variant="lg" weight="medium">
+                    <Typography size="lg" weight="medium">
                         {shortenAddress(account.address as Address)}
                     </Typography>
                     <div className={styles.iconContainer}>

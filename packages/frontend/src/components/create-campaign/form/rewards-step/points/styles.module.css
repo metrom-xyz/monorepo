@@ -1,0 +1,46 @@
+.root {
+    @apply h-full w-full flex flex-col;
+}
+
+.feeTokenSelectWrapper {
+    @apply flex items-center justify-between;
+}
+
+.feeTokenWrapper {
+    @apply flex items-center gap-1;
+}
+
+.wrapper {
+    @apply flex flex-col gap-2.5 px-4 pb-4;
+}
+
+.chevronDown {
+    @apply h-3 w-3;
+}
+
+.horizontalDivider {
+    @apply h-[1.5px] bg-gray-100;
+}
+
+.feeTokenSelect {
+    @apply w-fit
+        max-w-40
+        flex
+        gap-1
+        items-center
+        justify-between
+        rounded-md
+        bg-gray-100
+        pl-2.5
+        pr-1
+        py-1.5
+        hover:bg-gray-200
+        hover:cursor-pointer
+        transition-colors
+        duration-200
+        ease-in-out;
+}
+
+.applyButton {
+    @apply w-full;
+}

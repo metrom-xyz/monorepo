@@ -1,16 +1,19 @@
-import { useDistributionBreakdown } from "@/src/hooks/useDistributionBreakdown";
+import { useLeaderboard } from "@/src/hooks/useLeaderboard";
 import { type Campaign, type UsdPricedErc20TokenAmount } from "@metrom-xyz/sdk";
 import { shortenAddress } from "@/src/utils/address";
-import { Typography, Skeleton } from "@metrom-xyz/ui";
+import { Typography, Skeleton, Card, type SkeletonProps } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
 import dayjs from "dayjs";
 import { PersonalRank } from "./personal-rank";
 import { RepartitionChart } from "./repartition-chart";
-import { useAccount } from "wagmi";
 import type { Address } from "viem";
 import { RewardsBreakdown } from "./rewards-breakdown";
 import { formatPercentage } from "@/src/utils/format";
-import { useMemo } from "react";
+import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
+import { getAddressExplorerLink } from "@/src/utils/dex";
+import classNames from "classnames";
+import { NoDistributionsIcon } from "@/src/assets/no-distributions-icon";
+import { PointsBreakdown } from "./points-breakdown";
 
 import styles from "./styles.module.css";
 
@@ -30,52 +33,49 @@ export interface PersonalRank {
 export function Leaderboard({ campaign, loading }: LeaderboardProps) {
     const t = useTranslations("campaignDetails.leaderboard");
 
-    const { address: connectedAddress } = useAccount();
-    const {
-        loading: loadingDistributionBreakdown,
-        breakdown: distributionBreakdown,
-    } = useDistributionBreakdown(campaign);
+    const { loading: loadingLeaderboard, leaderboard } =
+        useLeaderboard(campaign);
 
-    const personalRank: PersonalRank | undefined = useMemo(() => {
-        if (!connectedAddress || !distributionBreakdown) return undefined;
-
-        const personalRankIndex = Object.keys(
-            distributionBreakdown.sortedDistributionsByAccount,
-        ).findIndex((account) => account === connectedAddress.toLowerCase());
-
-        return personalRankIndex < 0
-            ? undefined
-            : {
-                  ...distributionBreakdown.sortedDistributionsByAccount[
-                      connectedAddress.toLowerCase() as Address
-                  ],
-                  account: connectedAddress,
-                  position: personalRankIndex + 1,
-              };
-    }, [connectedAddress, distributionBreakdown]);
+    if (!loading && !loadingLeaderboard && !leaderboard) {
+        return (
+            <div className={styles.root}>
+                <div className={styles.titleContainer}>
+                    <Typography size="lg" weight="medium" uppercase>
+                        {t("title")}
+                    </Typography>
+                    <div className={styles.subtitleContainer}>
+                        <Typography weight="medium" size="sm" light uppercase>
+                            {t("noDistribution")}
+                        </Typography>
+                    </div>
+                </div>
+                <Card className={classNames(styles.noDistribution)}>
+                    <NoDistributionsIcon />
+                    <Typography uppercase weight="medium" size="sm">
+                        {t("noDistribution")}
+                    </Typography>
+                </Card>
+            </div>
+        );
+    }
 
     return (
         <div className={styles.root}>
             <div className={styles.titleContainer}>
-                <Typography variant="lg" weight="medium" uppercase>
+                <Typography size="lg" weight="medium" uppercase>
                     {t("title")}
                 </Typography>
                 <div className={styles.subtitleContainer}>
-                    <Typography weight="medium" variant="sm" light uppercase>
-                        {t("subtitle")}
+                    <Typography weight="medium" size="sm" light uppercase>
+                        {leaderboard && t("subtitleLatest")}
                     </Typography>
-                    {loading || loadingDistributionBreakdown ? (
-                        <Skeleton width={130} />
+                    {loading || loadingLeaderboard ? (
+                        <Skeleton width={130} size="sm" />
                     ) : (
-                        <Typography
-                            weight="medium"
-                            variant="sm"
-                            light
-                            uppercase={!!distributionBreakdown}
-                        >
-                            {distributionBreakdown
+                        <Typography weight="medium" size="sm" light uppercase>
+                            {leaderboard
                                 ? dayjs
-                                      .unix(distributionBreakdown.timestamp)
+                                      .unix(leaderboard.timestamp)
                                       .format("DD/MMM/YY HH:mm")
                                 : t("noDistribution")}
                         </Typography>
@@ -83,19 +83,19 @@ export function Leaderboard({ campaign, loading }: LeaderboardProps) {
                 </div>
             </div>
             <div className={styles.cardsWrapper}>
-                <div className={styles.card}>
+                <div className={styles.leaderboardWrapper}>
                     <PersonalRank
                         chain={campaign?.chainId}
-                        loading={loadingDistributionBreakdown}
-                        personalRank={personalRank}
+                        loading={loading || loadingLeaderboard}
+                        connectedAccountRank={leaderboard?.connectedAccountRank}
                     />
-                    <div className={styles.tableWrapper}>
+                    <Card className={styles.tableWrapper}>
                         <div className={styles.header}>
                             <Typography
                                 uppercase
                                 weight="medium"
                                 light
-                                variant="sm"
+                                size="sm"
                             >
                                 {t("rank")}
                             </Typography>
@@ -103,7 +103,7 @@ export function Leaderboard({ campaign, loading }: LeaderboardProps) {
                                 uppercase
                                 weight="medium"
                                 light
-                                variant="sm"
+                                size="sm"
                             >
                                 {t("account")}
                             </Typography>
@@ -111,12 +111,12 @@ export function Leaderboard({ campaign, loading }: LeaderboardProps) {
                                 uppercase
                                 weight="medium"
                                 light
-                                variant="sm"
+                                size="sm"
                             >
                                 {t("rewardsDistributed")}
                             </Typography>
                         </div>
-                        {loadingDistributionBreakdown ? (
+                        {loading || loadingLeaderboard ? (
                             <>
                                 <SkeletonRow />
                                 <SkeletonRow />
@@ -124,63 +124,91 @@ export function Leaderboard({ campaign, loading }: LeaderboardProps) {
                                 <SkeletonRow />
                                 <SkeletonRow />
                             </>
-                        ) : distributionBreakdown &&
-                          Object.keys(
-                              distributionBreakdown.sortedDistributionsByAccount,
-                          ).length > 0 ? (
-                            Object.entries(
-                                distributionBreakdown.sortedDistributionsByAccount,
-                            )
-                                .slice(0, 5)
-                                .map(([account, distribution], i) => (
-                                    <div key={account} className={styles.row}>
-                                        <div>
-                                            <Typography weight="medium" light>
-                                                #{i + 1}
-                                            </Typography>
-                                            <Typography weight="medium">
-                                                {formatPercentage(
-                                                    distribution.percentage,
-                                                )}
-                                            </Typography>
-                                        </div>
-                                        <Typography weight="medium">
-                                            {shortenAddress(account as Address)}
+                        ) : leaderboard &&
+                          Object.keys(leaderboard.sortedRanks).length > 0 ? (
+                            leaderboard.sortedRanks.map((distribution, i) => (
+                                <div
+                                    key={distribution.account}
+                                    className={styles.row}
+                                >
+                                    <div>
+                                        <Typography weight="medium" light>
+                                            #{i + 1}
                                         </Typography>
-                                        <div>
+                                        <Typography weight="medium">
+                                            {formatPercentage(
+                                                distribution.weight,
+                                            )}
+                                        </Typography>
+                                    </div>
+                                    <div className={styles.accountWrapper}>
+                                        <Typography weight="medium">
+                                            {shortenAddress(
+                                                distribution.account,
+                                            )}
+                                        </Typography>
+                                        <a
+                                            href={getAddressExplorerLink(
+                                                distribution.account,
+                                                campaign?.chainId,
+                                            )}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                        >
+                                            <ArrowRightIcon
+                                                className={
+                                                    styles.externalLinkIcon
+                                                }
+                                            />
+                                        </a>
+                                    </div>
+                                    <div>
+                                        {distribution.distributed instanceof
+                                        Array ? (
                                             <RewardsBreakdown
                                                 chain={campaign?.chainId}
-                                                accrued={distribution.accrued}
+                                                distributed={
+                                                    distribution.distributed
+                                                }
                                                 usdValue={distribution.usdValue}
                                             />
-                                        </div>
+                                        ) : (
+                                            <PointsBreakdown
+                                                distributed={
+                                                    distribution.distributed
+                                                }
+                                            />
+                                        )}
                                     </div>
-                                ))
+                                </div>
+                            ))
                         ) : (
                             <Typography weight="medium" light>
                                 {t("noRewards")}
                             </Typography>
                         )}
-                    </div>
+                    </Card>
                 </div>
-                <div className={styles.repartion}>
-                    <RepartitionChart
-                        loading={loading}
-                        distributionBreakdown={distributionBreakdown}
-                        personalRank={personalRank}
-                    />
-                </div>
+                <RepartitionChart
+                    loading={loading}
+                    leaderboard={leaderboard}
+                    connectedAccountRank={leaderboard?.connectedAccountRank}
+                />
             </div>
         </div>
     );
 }
 
-export function SkeletonRow() {
+export function SkeletonRow({
+    size = "base",
+}: {
+    size?: SkeletonProps["size"];
+}) {
     return (
         <div className={styles.row}>
-            <Skeleton width={80} />
-            <Skeleton width={120} />
-            <Skeleton width={120} />
+            <Skeleton size={size} width={80} />
+            <Skeleton size={size} width={120} />
+            <Skeleton size={size} width={120} />
         </div>
     );
 }

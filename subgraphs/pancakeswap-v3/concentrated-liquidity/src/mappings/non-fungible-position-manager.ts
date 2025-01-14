@@ -4,7 +4,11 @@ import {
     DecreaseLiquidity as DecreaseLiquidityEvent,
     Transfer as TransferEvent,
 } from "../../generated/NonFungiblePositionManager/NonFungiblePositionManager";
-import { LiquidityChange, Position } from "../../generated/schema";
+import {
+    LiquidityChange,
+    Position,
+    LiquidityTransfer,
+} from "../../generated/schema";
 import {
     BI_0,
     FactoryContract,
@@ -96,14 +100,21 @@ export function handleTransfer(event: TransferEvent): void {
     // liquidity is added
     if (event.params.from == Address.zero()) return;
 
-    if (
-        event.params.from == MASTERCHEF_V3_ADDRESS ||
-        event.params.to == MASTERCHEF_V3_ADDRESS
-    )
-        return;
-
     let position = getNftPosition(event.params.tokenId);
     if (position == null) return;
+
+    let liquidityTransfer = new LiquidityTransfer(getEventId(event));
+    liquidityTransfer.timestamp = event.block.timestamp;
+    liquidityTransfer.blockNumber = event.block.number;
+    liquidityTransfer.transactionHash = event.transaction.hash;
+    liquidityTransfer.from = event.params.from;
+    liquidityTransfer.to = event.params.to;
+    liquidityTransfer.position = position.id;
+    liquidityTransfer.save();
+
+    // do not update the position's owner if staking in the
+    // masterchef contract
+    if (event.params.to == MASTERCHEF_V3_ADDRESS) return;
 
     position.owner = event.params.to;
     position.save();

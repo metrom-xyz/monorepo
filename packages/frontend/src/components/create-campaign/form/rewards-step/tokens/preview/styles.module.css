@@ -1,0 +1,94 @@
+.root {
+    @apply flex
+        flex-col
+        gap-2.5
+        w-full;
+}
+
+.reward {
+    @apply border
+        border-transparent
+        transition-colors
+        duration-200
+        ease-in-out
+        bg-gray-100
+        rounded-lg;
+}
+
+.rewardPreviewWrapper {
+    @apply w-full
+    flex
+    gap-3
+    items-center
+    justify-between
+    py-3
+    px-4;
+}
+
+.error {
+    @apply border border-red-600;
+}
+
+.rewardAmount {
+    @apply w-28;
+}
+
+.rewardToken {
+    @apply flex
+        gap-1
+        items-center
+        justify-between
+        rounded-md
+        bg-gray-100
+        pl-2.5
+        pr-1
+        py-1.5
+        hover:bg-white
+        hover:cursor-pointer
+        transition-colors
+        duration-200
+        ease-in-out;
+}
+
+.rewardTokenWrapper {
+    @apply flex gap-3 items-center;
+}
+
+.rewardTokenAmountInput :global(.input),
+.rewardTokenAmountInput :global(.inputWrapper) {
+    @apply w-full
+        max-w-44
+        bg-transparent
+        h-6
+        leading-6
+        font-medium
+        text-2xl
+        p-0
+        mb-1;
+}
+
+.removeIconWrapper {
+    @apply justify-self-end cursor-pointer;
+}
+
+.removeIcon {
+    @apply w-2 h-2;
+}
+
+.chevronDown {
+    @apply h-3 w-3;
+}
+
+.rewardSkeleton {
+    @apply h-[70px]
+        w-full 
+        bg-gray-100
+        rounded-lg
+        flex
+        items-center
+        justify-center;
+}
+
+.rewardSkeletonText {
+    @apply text-gray-400;
+}

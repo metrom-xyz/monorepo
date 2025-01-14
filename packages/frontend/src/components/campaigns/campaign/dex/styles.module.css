@@ -1,0 +1,12 @@
+.root {
+    @apply w-6 h-4;
+}
+
+.icon,
+.icon > svg {
+    @apply w-4 h-4 col-span-1;
+}
+
+.dexDetailsContainer {
+    @apply p-3;
+}

@@ -79,7 +79,8 @@ export function RestrictionsStep({
     // the restrictions gets disabled, after the campaign creation
     useEffect(() => {
         if (enabled && !!prevRestrictions && !restrictions) setEnabled(false);
-    }, [enabled, restrictions, prevRestrictions]);
+        if (disabled) setEnabled(false);
+    }, [enabled, restrictions, prevRestrictions, disabled]);
 
     useEffect(() => {
         if (enabled) return;
@@ -179,7 +180,7 @@ export function RestrictionsStep({
                                 {t("title")}
                             </Typography>
                             <ErrorText
-                                variant="xs"
+                                size="xs"
                                 weight="medium"
                                 level={!!error ? "error" : "warning"}
                                 className={classNames(styles.error, {
@@ -194,7 +195,8 @@ export function RestrictionsStep({
                             </ErrorText>
                         </div>
                         <Switch
-                            size="big"
+                            tabIndex={-1}
+                            size="lg"
                             checked={enabled}
                             onClick={handleSwitchOnClick}
                         />
@@ -206,7 +208,7 @@ export function RestrictionsStep({
                 }}
             >
                 <div className={styles.typeWrapper}>
-                    <Typography weight="medium" variant="sm" uppercase>
+                    <Typography weight="medium" size="sm" uppercase>
                         {type === RestrictionType.blacklist &&
                             t("blocks", { count: addresses.length })}
                         {type === RestrictionType.whitelist &&
@@ -216,7 +218,7 @@ export function RestrictionsStep({
             </StepPreview>
             <StepContent>
                 <div className={styles.stepContent}>
-                    <Typography light variant="xs">
+                    <Typography light size="xs">
                         {t("description")}
                     </Typography>
                     <div className={styles.inputsWrapper}>
@@ -253,7 +255,7 @@ export function RestrictionsStep({
                         </div>
                         <Button
                             variant="secondary"
-                            size="small"
+                            size="sm"
                             disabled={
                                 !!error ||
                                 !address ||
@@ -267,12 +269,7 @@ export function RestrictionsStep({
                     </div>
                     <hr className={styles.divider}></hr>
                     <div className={styles.listWrapper}>
-                        <Typography
-                            weight="medium"
-                            light
-                            variant="xs"
-                            uppercase
-                        >
+                        <Typography weight="medium" light size="xs" uppercase>
                             {t("list")}
                         </Typography>
                         {addresses.length > 0 && (
@@ -304,7 +301,7 @@ export function RestrictionsStep({
                     {(unsavedChanges || addresses.length > 0) && (
                         <Button
                             variant="secondary"
-                            size="small"
+                            size="sm"
                             disabled={!unsavedChanges}
                             onClick={handleOnApply}
                             className={{ root: styles.applyButton }}

@@ -24,7 +24,7 @@ export function Header({ payload, backDisabled, onBack }: HeaderProps) {
                 icon={CircledXIcon}
                 iconPlacement="right"
                 variant="secondary"
-                size="xsmall"
+                size="xs"
                 onClick={onBack}
                 disabled={backDisabled}
                 className={{
@@ -45,14 +45,14 @@ export function Header({ payload, backDisabled, onBack }: HeaderProps) {
                         })) || []
                     }
                 />
-                <Typography variant="xl4" weight="medium" noWrap truncate>
+                <Typography size="xl4" weight="medium" noWrap truncate>
                     {payload.dex?.name}{" "}
                     {payload.pool?.tokens
                         .map((token) => token.symbol)
                         .join(" / ")}
                 </Typography>
                 {payload.pool?.fee && (
-                    <Typography variant="lg" weight="medium" light>
+                    <Typography size="lg" weight="medium" light>
                         {formatPercentage(payload.pool.fee)}
                     </Typography>
                 )}
@@ -60,13 +60,13 @@ export function Header({ payload, backDisabled, onBack }: HeaderProps) {
             <div className={styles.durationContainer}>
                 <TextField
                     uppercase
-                    variant="xl"
+                    size="xl"
                     label={t("startDate")}
                     value={formatDateTime(payload.startDate)}
                     className={styles.textField}
                 />
                 <TextField
-                    variant="xl"
+                    size="xl"
                     label={t("runTimeLabel")}
                     value={
                         payload.startDate && payload.endDate
@@ -77,7 +77,7 @@ export function Header({ payload, backDisabled, onBack }: HeaderProps) {
                 />
                 <TextField
                     uppercase
-                    variant="xl"
+                    size="xl"
                     label={t("endDate")}
                     value={formatDateTime(payload.endDate)}
                     className={styles.textField}

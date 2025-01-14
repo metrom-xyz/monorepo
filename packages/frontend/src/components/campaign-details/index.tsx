@@ -8,6 +8,7 @@ import type { Hex } from "viem";
 import { Header, SkeletonHeader } from "./header";
 import { Details } from "./details";
 import { Rewards } from "./rewards";
+import { Points } from "./points";
 import { Leaderboard } from "./leaderboard";
 import { KPI } from "@/src/commons/env";
 import { Kpi } from "./kpi";
@@ -43,7 +44,12 @@ export function CampaignDetails({ chain, campaignId }: CampaignDetailsProps) {
             </div>
             <div className={styles.contentWrapper}>
                 <Details campaign={campaign} loading={loadingCampaign} />
-                <Rewards campaign={campaign} loading={loadingCampaign} />
+                {campaign && campaign.rewards.length > 0 && (
+                    <Rewards campaign={campaign} loading={loadingCampaign} />
+                )}
+                {campaign && campaign.points && (
+                    <Points campaign={campaign} loading={loadingCampaign} />
+                )}
                 {KPI && <Kpi campaign={campaign} loading={loadingCampaign} />}
                 <Leaderboard campaign={campaign} loading={loadingCampaign} />
             </div>

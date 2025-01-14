@@ -1,6 +1,5 @@
 .wrapper {
-    composes: input from "../commons/styles.module.css";
-    @apply flex flex-col gap-0.5 items-center;
+    @apply w-full flex flex-col gap-0.5 items-center;
 }
 
 /* TODO: improve styles */

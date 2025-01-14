@@ -10,7 +10,6 @@ import {
 } from "@metrom-xyz/ui";
 import { useCampaigns } from "@/src/hooks/useCampaigns";
 import { Campaign, SkeletonCampaign } from "./campaign";
-
 import { useTranslations } from "next-intl";
 import { usePagination } from "@/src/hooks/usePagination";
 import {
@@ -34,10 +33,6 @@ import { CHAIN_DATA } from "@/src/commons";
 import styles from "./styles.module.css";
 
 const PAGE_SIZE = 10;
-const QUERY_PARAM_PAGE_NUMBER = "page";
-const QUERY_PARAM_SEARCH = "search";
-const QUERY_PARAM_STATUS = "status";
-const QUERY_PARAM_CHAIN = "chainId";
 
 export const CHAIN_ALL = 0;
 
@@ -247,19 +242,22 @@ export function Campaigns() {
                 </div>
             </div>
             <div className={classNames(styles.row, styles.header)}>
-                <Typography variant="sm" weight="medium">
+                <Typography size="sm" weight="medium">
                     {t("header.chain")}
                 </Typography>
-                <Typography variant="sm" weight="medium">
+                <Typography size="sm" weight="medium">
+                    {t("header.dex")}
+                </Typography>
+                <Typography size="sm" weight="medium">
                     {t("header.pool")}
                 </Typography>
-                <Typography variant="sm" weight="medium">
+                <Typography size="sm" weight="medium">
                     {t("header.status")}
                 </Typography>
-                <Typography variant="sm" weight="medium">
+                <Typography size="sm" weight="medium">
                     {t("header.apr")}
                 </Typography>
-                <Typography variant="sm" weight="medium">
+                <Typography size="sm" weight="medium">
                     {t("header.rewards")}
                 </Typography>
             </div>
@@ -282,10 +280,10 @@ export function Campaigns() {
                         <Typography uppercase weight="medium">
                             {t("empty.title")}
                         </Typography>
-                        <Typography variant="lg" weight="medium">
+                        <Typography size="lg" weight="medium">
                             {t("empty.description")}
                         </Typography>
-                        <Button size="small" onClick={handleCreateCampaign}>
+                        <Button size="sm" onClick={handleCreateCampaign}>
                             {t("empty.create")}
                         </Button>
                     </div>

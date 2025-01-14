@@ -20,8 +20,12 @@
     @apply justify-self-end;
 }
 
+.rowWrapper {
+    @apply w-full flex items-center h-6;
+}
+
 .row {
-    @apply grid grid-cols-3 items-end sm:items-center;
+    @apply w-full grid grid-cols-3 items-end sm:items-center;
 }
 
 .row > :first-child {
@@ -34,4 +38,17 @@
 
 .row > :last-child {
     @apply flex items-center gap-4 justify-self-end;
+}
+
+.connectWallet {
+    @apply w-fit
+        h-6
+        rounded-md
+        bg-gray-100
+        px-2.5
+        hover:bg-gray-200
+        hover:cursor-pointer
+        transition-colors
+        duration-200
+        ease-in-out;
 }

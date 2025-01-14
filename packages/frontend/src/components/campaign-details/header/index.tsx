@@ -1,14 +1,17 @@
 import { useCallback } from "react";
-import type { NamedCampaign } from "@/src/hooks/useCampaign";
 import { Skeleton, Typography, Button } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
 import { useRouter } from "@/src/i18n/routing";
 import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
-import { getPoolAddLiquidityLink, getPoolExplorerLink } from "@/src/utils/dex";
+import {
+    getPoolAddLiquidityLink,
+    getAddressExplorerLink,
+} from "@/src/utils/dex";
 import { formatPercentage } from "@/src/utils/format";
 import { trackFathomEvent } from "@/src/utils/fathom";
 import { PoolRemoteLogo } from "../../pool-remote-logo";
 import { AprChip } from "../../apr-chip";
+import type { NamedCampaign } from "@/src/hooks/useCampaigns";
 
 import styles from "./styles.module.css";
 
@@ -29,7 +32,10 @@ export function Header({ campaign }: HeaderProps) {
         campaign.pool.dex,
         campaign.pool,
     );
-    const explorerLink = getPoolExplorerLink(campaign.chainId, campaign.pool);
+    const explorerLink = getAddressExplorerLink(
+        campaign.pool.address,
+        campaign.chainId,
+    );
 
     function handleAddLiquidityOnClick() {
         trackFathomEvent("CLICK_POOL_DEPOSIT");
@@ -51,41 +57,38 @@ export function Header({ campaign }: HeaderProps) {
                             defaultText: token.symbol,
                         }))}
                     />
-                    <Typography variant="xl4" weight="medium">
+                    <Typography size="xl4" weight="medium">
                         {campaign.name}
                     </Typography>
                     {campaign.pool.fee && (
-                        <Typography variant="lg" weight="medium" light>
+                        <Typography size="lg" weight="medium" light>
                             {formatPercentage(campaign.pool.fee)}
                         </Typography>
                     )}
                 </div>
-                <Typography variant="sm" weight="medium" light>
+                <Typography size="sm" weight="medium" light>
                     {t("rewardsMayVary")}
                 </Typography>
             </div>
             <div className={styles.actionsContainer}>
                 <div className={styles.leftActions}>
                     <Button
-                        size="xsmall"
+                        size="sm"
                         href={depositLink}
                         disabled={!depositLink}
                         onClick={handleAddLiquidityOnClick}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className={{ root: styles.button }}
                     >
                         {t("deposit")}
                     </Button>
+                    {campaign.rewards.length > 0 && (
+                        <Button size="sm" onClick={handleClaimOnClick}>
+                            {t("claim")}
+                        </Button>
+                    )}
                     <Button
-                        size="xsmall"
-                        className={{ root: styles.claimButton }}
-                        onClick={handleClaimOnClick}
-                    >
-                        {t("claim")}
-                    </Button>
-                    <Button
-                        size="xsmall"
+                        size="sm"
                         variant="secondary"
                         border={false}
                         icon={ArrowRightIcon}
@@ -103,7 +106,7 @@ export function Header({ campaign }: HeaderProps) {
                         {t("explorer")}
                     </Button>
                 </div>
-                {campaign.apr && (
+                {campaign.apr && campaign.rewards.length > 0 && (
                     <AprChip
                         prefix
                         size="lg"
@@ -128,25 +131,21 @@ export function SkeletonHeader() {
                         loading
                         size="xl"
                     />
-                    <Skeleton variant="xl2" width={400} />
-                    <Skeleton variant="lg" width={60} />
+                    <Skeleton size="xl4" width={400} />
+                    <Skeleton size="lg" width={60} />
                 </div>
-                <Skeleton width={125} />
+                <Skeleton size="sm" width={125} />
             </div>
             <div className={styles.actionsContainer}>
                 <div className={styles.leftActions}>
-                    <Button size="xsmall" loading>
+                    <Button size="sm" loading>
                         {t("deposit")}
                     </Button>
-                    <Button
-                        size="xsmall"
-                        className={{ root: styles.claimButton }}
-                        loading
-                    >
+                    <Button size="sm" loading>
                         {t("claim")}
                     </Button>
                     <Button
-                        size="xsmall"
+                        size="sm"
                         variant="secondary"
                         border={false}
                         loading

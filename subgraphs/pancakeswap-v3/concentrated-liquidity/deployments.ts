@@ -9,7 +9,6 @@ export interface ChainConfig {
     };
     MasterChefV3: {
         address: string;
-        startBlock: number;
     };
 }
 
@@ -28,7 +27,6 @@ export const DEPLOYMENTS: {
             },
             MasterChefV3: {
                 address: "0x2E47e7e2d7A75D1473995441BbcE7888DC035E74",
-                startBlock: 433363,
             },
         },
     },

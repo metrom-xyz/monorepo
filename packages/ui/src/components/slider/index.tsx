@@ -1,15 +1,16 @@
 import { forwardRef, useId, type ReactElement } from "react";
 import { BaseInputWrapper, type BaseInputProps } from "../commons/input";
 import classNames from "classnames";
+import { Typography } from "../typography";
 
 import styles from "./styles.module.css";
-import { Typography } from "../typography";
 
 export type SliderInputProps = Omit<
     BaseInputProps<number>,
     "id" | "icon" | "iconPlacement" | "action" | "actionPlacement"
 > & {
     id?: string;
+    formattedValue?: string | number;
 };
 
 export const SliderInput = forwardRef<HTMLInputElement, SliderInputProps>(
@@ -17,16 +18,18 @@ export const SliderInput = forwardRef<HTMLInputElement, SliderInputProps>(
         {
             id,
             label,
+            size,
+            disabled,
             errorText,
             error = false,
-            className,
             value = 0,
+            formattedValue,
             min = 0,
             max = 100,
             loading,
-            disabled,
+            className,
             ...rest
-        },
+        }: SliderInputProps,
         ref,
     ): ReactElement {
         const generatedId = useId();
@@ -36,14 +39,22 @@ export const SliderInput = forwardRef<HTMLInputElement, SliderInputProps>(
         return (
             <BaseInputWrapper
                 id={resolvedId}
+                size={size}
+                loading={loading}
                 label={label}
                 error={error}
                 errorText={errorText}
                 className={className}
             >
-                <div className={classNames("slider-wrapper", styles.wrapper)}>
-                    <Typography weight="medium">
-                        {((value / Number(max)) * 100).toFixed(0)}%
+                <div className={classNames("sliderWrapper", styles.wrapper)}>
+                    <Typography
+                        size={size}
+                        weight="medium"
+                        className={classNames("value", {
+                            [styles.loading]: loading,
+                        })}
+                    >
+                        {formattedValue || value}
                     </Typography>
                     <input
                         id={resolvedId}
@@ -54,7 +65,7 @@ export const SliderInput = forwardRef<HTMLInputElement, SliderInputProps>(
                         max={max}
                         disabled={loading || disabled}
                         {...rest}
-                        className={classNames("input", styles.slider)}
+                        className={styles.slider}
                     />
                 </div>
             </BaseInputWrapper>

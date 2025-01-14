@@ -22,11 +22,11 @@ export function Empty() {
             <Typography weight="medium" uppercase className={styles.title}>
                 {t("empty.title")}
             </Typography>
-            <Typography variant="lg" weight="medium" className={styles.body}>
+            <Typography size="lg" weight="medium" className={styles.body}>
                 {t("empty.body")}
             </Typography>
             <Link href="/">
-                <Button size="small">{t("empty.action")}</Button>
+                <Button size="sm">{t("empty.action")}</Button>
             </Link>
         </Card>
     ) : (
@@ -34,10 +34,10 @@ export function Empty() {
             <Typography weight="medium" uppercase className={styles.title}>
                 {t("walletNotConnected.title")}
             </Typography>
-            <Typography variant="lg" weight="medium" className={styles.body}>
+            <Typography size="lg" weight="medium" className={styles.body}>
                 {t("walletNotConnected.body")}
             </Typography>
-            <Button onClick={openConnectModal} size="small">
+            <Button onClick={openConnectModal} size="sm">
                 {t("walletNotConnected.action")}
             </Button>
         </Card>

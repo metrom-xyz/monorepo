@@ -1,5 +1,5 @@
 .inputWrapper {
-    @apply w-full sm:w-fit relative;
+    @apply w-full relative;
 }
 
 .inputIconWrapper {
@@ -14,28 +14,19 @@
 }
 
 .placeLeft {
-    @apply left-0;
+    @apply -left-1;
 }
 
 .placeRight {
-    @apply right-0;
+    @apply -right-1;
 }
 
-.hasLeftIcon {
-    @apply pl-12;
+.hasLeftIcon input {
+    @apply pl-9;
 }
 
-.inputActionWrapper {
-    @apply absolute
-        top-0
-        h-full
-        flex
-        justify-center
-        items-center;
-}
-
-.inputIcon {
-    @apply w-5 text-black;
+.hasRightIcon input {
+    @apply pr-9;
 }
 
 .input {
@@ -57,28 +48,52 @@
         w-full;
 }
 
-.inputXs {
+.xs {
     @apply text-xs;
 }
 
-.inputSm {
+.sm {
     @apply text-sm;
 }
 
-.inputBase {
+.base {
     @apply text-base;
 }
 
-.inputLg {
+.lg {
     @apply text-lg;
+}
+
+.inputIcon {
+    @apply text-black;
+}
+
+.inputIcon.xs {
+    @apply h-3 w-3;
+}
+
+.inputIcon.sm {
+    @apply h-4 w-4;
+}
+
+.inputIcon.base {
+    @apply h-[1.125rem] w-[1.125rem];
+}
+
+.inputIcon.lg {
+    @apply h-5 w-5;
 }
 
 .inputError {
     @apply border-red-600;
 }
 
+.errorText {
+    @apply mt-1;
+}
+
 .inputLoading {
-    @apply bg-gray-200 animate-pulse;
+    @apply animate-pulse;
 }
 
 .label {

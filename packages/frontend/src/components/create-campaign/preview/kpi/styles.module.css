@@ -6,10 +6,10 @@
     @apply flex flex-wrap sm:flex-nowrap gap-4;
 }
 
-.chartWrapper :global(.preview) {
+/* .chartWrapper :global(.preview) {
     @apply bg-white;
-}
+} */
 
 .chartWrapper :global(.content) {
-    @apply px-3 bg-white;
+    @apply px-3;
 }

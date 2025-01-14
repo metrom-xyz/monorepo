@@ -1,11 +1,11 @@
 import { useTranslations } from "next-intl";
 import styles from "./styles.module.css";
 import { TextField, Typography } from "@metrom-xyz/ui";
-import type { NamedCampaign } from "@/src/hooks/useCampaign";
 import dayjs from "dayjs";
 import { Status } from "@metrom-xyz/sdk";
 import { useMemo } from "react";
 import { formatDateTime, formatUsdAmount } from "@/src/utils/format";
+import type { NamedCampaign } from "@/src/hooks/useCampaigns";
 
 interface DetailsProps {
     campaign?: NamedCampaign;
@@ -49,14 +49,14 @@ export function Details({ campaign, loading }: DetailsProps) {
             <div>
                 <TextField
                     boxed
-                    variant="xl"
+                    size="xl"
                     label={t("tvl")}
                     loading={detailsLoading}
                     value={formatUsdAmount(campaign?.pool.usdTvl)}
                 />
                 <TextField
                     boxed
-                    variant="xl"
+                    size="xl"
                     label={t("status.text")}
                     loading={detailsLoading}
                     value={
@@ -68,7 +68,7 @@ export function Details({ campaign, loading }: DetailsProps) {
                                     }
                                 ></div>
                             </div>
-                            <Typography weight="medium" variant="xl">
+                            <Typography weight="medium" size="xl">
                                 {duration?.text}
                             </Typography>
                         </div>
@@ -78,7 +78,7 @@ export function Details({ campaign, loading }: DetailsProps) {
             <div>
                 <TextField
                     boxed
-                    variant="xl"
+                    size="xl"
                     uppercase
                     label={t("startDate")}
                     loading={detailsLoading}
@@ -86,7 +86,7 @@ export function Details({ campaign, loading }: DetailsProps) {
                 />
                 <TextField
                     boxed
-                    variant="xl"
+                    size="xl"
                     uppercase
                     label={t("endDate")}
                     loading={detailsLoading}
@@ -94,7 +94,7 @@ export function Details({ campaign, loading }: DetailsProps) {
                 />
                 <TextField
                     boxed
-                    variant="xl"
+                    size="xl"
                     label={duration?.text || t("status.duration")}
                     loading={detailsLoading}
                     value={duration?.duration || "-"}

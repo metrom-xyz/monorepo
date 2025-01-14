@@ -184,7 +184,7 @@ export function EndDateStep({
                         <Typography
                             uppercase
                             weight="medium"
-                            variant="sm"
+                            size="sm"
                             className={styles.previewLabel}
                         >
                             {t("title")}
@@ -193,7 +193,7 @@ export function EndDateStep({
                             (styles, error) =>
                                 !!error && (
                                     <animated.div style={styles}>
-                                        <ErrorText variant="xs" weight="medium">
+                                        <ErrorText size="xs" weight="medium">
                                             {error}
                                         </ErrorText>
                                     </animated.div>
@@ -204,7 +204,7 @@ export function EndDateStep({
             >
                 <Typography
                     uppercase
-                    variant="lg"
+                    size="lg"
                     weight="medium"
                     className={styles.dateText}
                 >
@@ -233,21 +233,16 @@ export function EndDateStep({
                         onChange={setDate}
                     />
                     <div className={styles.campaignDuration}>
-                        <Typography
-                            uppercase
-                            variant="sm"
-                            weight="medium"
-                            light
-                        >
+                        <Typography uppercase size="sm" weight="medium" light>
                             {t("campaignDuration")}
                         </Typography>
-                        <Typography uppercase variant="sm" weight="medium">
-                            {startDate ? startDate.to(date, true) : "-"}
+                        <Typography uppercase size="sm" weight="medium">
+                            {startDate ? dayjs(startDate).to(date, true) : "-"}
                         </Typography>
                     </div>
                     <Button
                         variant="secondary"
-                        size="small"
+                        size="sm"
                         disabled={!unsavedChanges || !date || !!dateError}
                         onClick={handleDateOnApply}
                         className={{ root: styles.applyButton }}

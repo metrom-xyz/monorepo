@@ -7,6 +7,7 @@ import {
 import { useState, type ChangeEvent } from "react";
 import { useTranslations } from "next-intl";
 import { useDebounce } from "react-use";
+import numeral from "numeral";
 
 import styles from "./styles.module.css";
 
@@ -124,7 +125,9 @@ export function GoalInputs({
             </div>
             <SliderInput
                 label={t("minimumPayout")}
+                max={99}
                 value={minimumPayoutPercentage * 100}
+                formattedValue={`${numeral(minimumPayoutPercentage * 100).format("0,0")}%`}
                 onChange={handleMinimumPayoutOnChange}
                 className={styles.minimumPayoutSlider}
             />

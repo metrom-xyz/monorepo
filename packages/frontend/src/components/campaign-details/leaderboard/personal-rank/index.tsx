@@ -1,28 +1,31 @@
 import { useAccount } from "wagmi";
-import { Typography, Button } from "@metrom-xyz/ui";
+import { Typography } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
 import { SupportedChain } from "@metrom-xyz/contracts";
 import { shortenAddress } from "@/src/utils/address";
-import { WalletIcon } from "@/src/assets/wallet-icon";
 import { useConnectModal } from "@rainbow-me/rainbowkit";
 import { SkeletonRow, type PersonalRank } from "..";
 import { RewardsBreakdown } from "../rewards-breakdown";
 import { formatPercentage } from "@/src/utils/format";
+import type { Rank } from "@/src/hooks/useLeaderboard";
+import { PointsBreakdown } from "../points-breakdown";
 
 import styles from "./styles.module.css";
 
 interface PersonalRankProps {
     chain?: SupportedChain;
     loading: boolean;
-    personalRank?: PersonalRank;
+    connectedAccountRank?: Rank;
 }
 
 export function PersonalRank({
     chain,
     loading,
-    personalRank,
+    connectedAccountRank,
 }: PersonalRankProps) {
-    const t = useTranslations("campaignDetails.leaderboard.personalRank");
+    const t = useTranslations(
+        "campaignDetails.leaderboard.connectedAccountRank",
+    );
 
     const {
         address: connectedAddress,
@@ -34,51 +37,59 @@ export function PersonalRank({
     return (
         <div className={styles.root}>
             <div className={styles.header}>
-                <Typography uppercase weight="medium" light variant="sm">
+                <Typography uppercase weight="medium" light size="sm">
                     {t("yourRank")}
                 </Typography>
-                <Typography uppercase weight="medium" light variant="sm">
+                <Typography uppercase weight="medium" light size="sm">
                     {t("account")}
                 </Typography>
-                <Typography uppercase weight="medium" light variant="sm">
+                <Typography uppercase weight="medium" light size="sm">
                     {t("rewardsDistributed")}
                 </Typography>
             </div>
-            {loading || accountConnecting || accountReconnecting ? (
-                <SkeletonRow />
-            ) : !connectedAddress ? (
-                <Button
-                    onClick={openConnectModal}
-                    size="xsmall"
-                    icon={WalletIcon}
-                    variant="secondary"
-                >
-                    {t("connect")}
-                </Button>
-            ) : !personalRank ? (
-                <Typography weight="medium" light>
-                    {t("noRewards")}
-                </Typography>
-            ) : (
-                <div className={styles.row}>
-                    <div>
-                        <Typography weight="medium" light>
-                            # {personalRank.position}
+            <div className={styles.rowWrapper}>
+                {loading || accountConnecting || accountReconnecting ? (
+                    <SkeletonRow size="lg" />
+                ) : !connectedAddress ? (
+                    <button
+                        onClick={openConnectModal}
+                        className={styles.connectWallet}
+                    >
+                        <Typography weight="medium" size="sm">
+                            {t("connect")}
                         </Typography>
-                        <Typography weight="medium">
-                            {formatPercentage(personalRank.percentage)}
-                        </Typography>
-                    </div>
-                    <Typography weight="medium">
-                        {shortenAddress(connectedAddress)}
+                    </button>
+                ) : !connectedAccountRank ? (
+                    <Typography weight="medium" light>
+                        {t("noRewards")}
                     </Typography>
-                    <RewardsBreakdown
-                        chain={chain}
-                        accrued={personalRank.accrued}
-                        usdValue={personalRank.usdValue}
-                    />
-                </div>
-            )}
+                ) : (
+                    <div className={styles.row}>
+                        <div>
+                            <Typography size="lg" weight="medium" light>
+                                # {connectedAccountRank.position}
+                            </Typography>
+                            <Typography size="lg" weight="medium">
+                                {formatPercentage(connectedAccountRank.weight)}
+                            </Typography>
+                        </div>
+                        <Typography size="lg" weight="medium">
+                            {shortenAddress(connectedAddress)}
+                        </Typography>
+                        {connectedAccountRank.distributed instanceof Array ? (
+                            <RewardsBreakdown
+                                chain={chain}
+                                distributed={connectedAccountRank.distributed}
+                                usdValue={connectedAccountRank.usdValue}
+                            />
+                        ) : (
+                            <PointsBreakdown
+                                distributed={connectedAccountRank.distributed}
+                            />
+                        )}
+                    </div>
+                )}
+            </div>
         </div>
     );
 }

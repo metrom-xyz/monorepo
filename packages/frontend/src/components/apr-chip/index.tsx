@@ -1,4 +1,4 @@
-import { Typography, type TypographyVariant } from "@metrom-xyz/ui";
+import { Typography, type TypographySize } from "@metrom-xyz/ui";
 import { formatPercentage } from "@/src/utils/format";
 import classNames from "classnames";
 import { useTranslations } from "next-intl";
@@ -7,7 +7,6 @@ import styles from "./styles.module.css";
 
 interface AprChipProps {
     apr: number | null;
-    fill?: boolean;
     size?: "sm" | "lg";
     prefix?: boolean;
     placeholder?: boolean;
@@ -17,7 +16,6 @@ interface AprChipProps {
 
 export function AprChip({
     apr,
-    fill,
     size = "sm",
     prefix = false,
     placeholder,
@@ -26,7 +24,7 @@ export function AprChip({
 }: AprChipProps) {
     const t = useTranslations("apr");
 
-    const sizes: Record<typeof size, TypographyVariant[]> = {
+    const sizes: Record<typeof size, TypographySize[]> = {
         sm: ["xs", "base"],
         lg: ["base", "lg"],
     };
@@ -37,13 +35,12 @@ export function AprChip({
                 <div
                     className={classNames(styles.root, className, {
                         [styles.witkKpi]: kpi,
-                        [styles.fill]: fill,
                     })}
                 >
                     <div className={classNames(styles.wrapper)}>
                         {prefix && (
                             <Typography
-                                variant={sizes[size][0]}
+                                size={sizes[size][0]}
                                 weight="medium"
                                 className={classNames(styles.text)}
                             >
@@ -52,7 +49,7 @@ export function AprChip({
                         )}
                         {kpi && (
                             <Typography
-                                variant={sizes[size][0]}
+                                size={sizes[size][0]}
                                 weight="medium"
                                 className={classNames(styles.text)}
                             >
@@ -60,7 +57,7 @@ export function AprChip({
                             </Typography>
                         )}
                         <Typography
-                            variant={sizes[size][1]}
+                            size={sizes[size][1]}
                             weight="medium"
                             className={styles.text}
                         >
@@ -71,7 +68,7 @@ export function AprChip({
             )}
             {!apr && placeholder && (
                 <Typography
-                    variant={sizes[size][1]}
+                    size={sizes[size][1]}
                     className={styles.empty}
                     weight="medium"
                 >

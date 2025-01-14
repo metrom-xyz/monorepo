@@ -20,14 +20,49 @@
         items-center;
 }
 
+.leftContent {
+    @apply flex items-center gap-3;
+}
+
+.menuIconWrapper {
+    @apply md:hidden
+        bg-white
+        rounded-md
+        p-1.5
+        transition-colors
+        duration-200
+        ease-in-out;
+}
+
+.menuOpen {
+    @apply bg-gray-200;
+}
+
+.menuIconWrapper > svg {
+    @apply h-7 w-7;
+}
+
+.mobileNavigationWrapper {
+    @apply flex flex-col;
+}
+
+.mobileNavLink {
+    @apply h-9
+        flex
+        items-center
+        px-3
+        gap-2;
+}
+
 .metromLogo {
     @apply h-10 w-10 dark:text-white;
 }
 
 .tabs {
-    @apply flex
-        flex-wrap
+    @apply flex-wrap
         w-full
+        hidden
+        md:flex
         sm:w-fit
         flex-row
         gap-2
@@ -35,7 +70,8 @@
         sm:mt-0
         justify-center
         sm:absolute
-        sm:left-1/2
+        sm:left-[42%]
+        lg:left-1/2
         sm:-translate-x-1/2;
 }
 

@@ -14,8 +14,11 @@
 }
 
 .headerIconWrapper {
-    @apply px-2
-        py-2.5
+    @apply flex
+        items-center
+        justify-center
+        h-9
+        w-9
         cursor-pointer
         rounded-md
         bg-gray-50
@@ -70,7 +73,7 @@
 }
 
 .cellToday {
-    @apply bg-gray-50;
+    @apply bg-gray-100;
 }
 
 .cellDisabled {
@@ -80,7 +83,7 @@
 }
 
 .cellSelected {
-    @apply bg-gray-50 !text-gray-900;
+    @apply bg-gray-100 !text-gray-900;
 }
 
 .cellSelectable {
@@ -97,6 +100,10 @@
 
 .cellRangeBoundEnd {
     @apply bg-gray-200 rounded-l-none !text-gray-900;
+}
+
+.cellRangeBoundStart.cellRangeBoundEnd {
+    @apply rounded-md;
 }
 
 .cellInRange.startOfWeek {

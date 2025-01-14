@@ -1,7 +1,8 @@
-import type {
-    CampaignPayload,
-    CampaignPayloadPart,
-    CampaignPayloadErrors,
+import {
+    type CampaignPayload,
+    type CampaignPayloadPart,
+    type CampaignPayloadErrors,
+    RewardType,
 } from "@/src/types";
 import { useAccount, useChainId, useChains } from "wagmi";
 import { useMemo } from "react";
@@ -68,7 +69,11 @@ export function CreateCampaignForm({
             />
             <RewardsStep
                 disabled={!payload?.endDate || unsupportedChain}
-                rewards={payload?.rewards}
+                rewardType={payload?.rewardType}
+                pool={payload?.pool}
+                tokens={payload?.tokens}
+                points={payload?.points}
+                feeToken={payload?.feeToken}
                 startDate={payload?.startDate}
                 endDate={payload?.endDate}
                 onRewardsChange={onPayloadChange}
@@ -76,16 +81,20 @@ export function CreateCampaignForm({
             />
             {KPI && (
                 <KpiStep
-                    disabled={!payload?.rewards || unsupportedChain}
+                    disabled={
+                        !payload?.tokens ||
+                        payload.rewardType === RewardType.points ||
+                        unsupportedChain
+                    }
                     pool={payload?.pool}
-                    rewards={payload?.rewards}
+                    rewards={payload?.tokens}
                     kpiSpecification={payload?.kpiSpecification}
                     onKpiChange={onPayloadChange}
                     onError={onPayloadError}
                 />
             )}
             <RestrictionsStep
-                disabled={!payload?.rewards || unsupportedChain}
+                disabled={!payload?.tokens || unsupportedChain}
                 restrictions={payload?.restrictions}
                 onRestrictionsChange={onPayloadChange}
                 onError={onPayloadError}

@@ -11,7 +11,7 @@ import classNames from "classnames";
 
 import styles from "./styles.module.css";
 
-export type TypographyVariant =
+export type TypographySize =
     | "xs"
     | "sm"
     | "base"
@@ -22,7 +22,7 @@ export type TypographyVariant =
     | "xl5";
 
 interface BaseTypographyProps {
-    variant?: TypographyVariant;
+    size?: TypographySize;
     weight?: "normal" | "medium" | "bold";
     light?: boolean;
     uppercase?: boolean;
@@ -33,7 +33,7 @@ interface BaseTypographyProps {
     children: ReactNode;
 }
 
-type HTMLElementFromVariant<V extends TypographyVariant> = V extends
+type HTMLElementFromSize<V extends TypographySize> = V extends
     | "h4"
     | "h3"
     | "h2"
@@ -41,11 +41,13 @@ type HTMLElementFromVariant<V extends TypographyVariant> = V extends
     ? HTMLHeadingElement
     : HTMLParagraphElement;
 
-export type TypographyProps<V extends TypographyVariant = TypographyVariant> =
-    Omit<HTMLAttributes<HTMLElementFromVariant<V>>, keyof BaseTypographyProps> &
-        BaseTypographyProps;
+export type TypographyProps<V extends TypographySize = TypographySize> = Omit<
+    HTMLAttributes<HTMLElementFromSize<V>>,
+    keyof BaseTypographyProps
+> &
+    BaseTypographyProps;
 
-const COMPONENT_MAP: Record<TypographyVariant, ElementType> = {
+const COMPONENT_MAP: Record<TypographySize, ElementType> = {
     xs: "p",
     sm: "p",
     base: "p",
@@ -56,9 +58,9 @@ const COMPONENT_MAP: Record<TypographyVariant, ElementType> = {
     xl5: "h1",
 };
 
-const Component = <V extends TypographyVariant>(
+const Component = <V extends TypographySize>(
     {
-        variant = "base",
+        size = "base",
         weight = "normal",
         light,
         uppercase,
@@ -69,30 +71,30 @@ const Component = <V extends TypographyVariant>(
         children,
         ...rest
     }: TypographyProps<V>,
-    ref: ForwardedRef<HTMLElementFromVariant<V>>,
+    ref: ForwardedRef<HTMLElementFromSize<V>>,
 ): ReactElement => {
     const handleMouseEnter = useCallback(
-        (event: React.MouseEvent<HTMLElementFromVariant<V>, MouseEvent>) => {
+        (event: React.MouseEvent<HTMLElementFromSize<V>, MouseEvent>) => {
             if (rest.onMouseEnter) rest.onMouseEnter(event);
         },
         [rest],
     );
 
     const handleMouseLeave = useCallback(
-        (event: React.MouseEvent<HTMLElementFromVariant<V>, MouseEvent>) => {
+        (event: React.MouseEvent<HTMLElementFromSize<V>, MouseEvent>) => {
             if (rest.onMouseLeave) rest.onMouseLeave(event);
         },
         [rest],
     );
 
-    const Root = COMPONENT_MAP[variant];
+    const Root = COMPONENT_MAP[size];
 
     return (
         <Root
             className={classNames(className, styles.root, {
                 [styles.rootUppercase]: uppercase,
                 [styles.light]: light,
-                [styles[variant]]: true,
+                [styles[size]]: true,
                 [styles[weight]]: true,
                 [styles.noWrap]: noWrap,
                 [styles.truncate]: truncate,
@@ -101,7 +103,7 @@ const Component = <V extends TypographyVariant>(
             {...rest}
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
-            ref={(element: HTMLElementFromVariant<V>) => {
+            ref={(element: HTMLElementFromSize<V>) => {
                 if (ref) {
                     if (typeof ref === "function") ref(element);
                     else ref.current = element;
@@ -113,10 +115,8 @@ const Component = <V extends TypographyVariant>(
     );
 };
 
-export const Typography = forwardRef(Component) as <
-    V extends TypographyVariant,
->(
+export const Typography = forwardRef(Component) as <V extends TypographySize>(
     props: TypographyProps<V> & {
-        ref?: React.ForwardedRef<HTMLElementFromVariant<V>>;
+        ref?: React.ForwardedRef<HTMLElementFromSize<V>>;
     },
 ) => ReturnType<typeof Component>;

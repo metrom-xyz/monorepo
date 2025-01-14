@@ -14,7 +14,7 @@ export interface SwitchProps
         "onChange" | "onClick" | "dangerouslySetInnerHTML"
     > {
     className?: string;
-    size?: "big" | "small" | "xsmall";
+    size?: "lg" | "sm" | "xs";
     disabled?: boolean;
     checkedChildren?: React.ReactNode;
     unCheckedChildren?: React.ReactNode;
@@ -24,16 +24,12 @@ export interface SwitchProps
     tabIndex?: number;
     checked?: boolean;
     defaultChecked?: boolean;
-    loadingIcon?: React.ReactNode;
     style?: React.CSSProperties;
     title?: string;
 }
 
 export const Switch = forwardRef<HTMLButtonElement, SwitchProps>(
-    function Switch(
-        { size = "small", className, ...props },
-        ref,
-    ): ReactElement {
+    function Switch({ size = "sm", className, ...props }, ref): ReactElement {
         return (
             <RcSwitch
                 {...props}

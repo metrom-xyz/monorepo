@@ -10,6 +10,12 @@ export enum SupportedDex {
     Kim = "kim",
     Panko = "panko",
     Scribe = "scribe",
+    BaseSwap = "baseswap",
+    Fibonacci = "fibonacci",
+    ThirdTrade = "third-trade",
+    SilverSwap = "silverswap",
+    Swapr = "swapr",
+    Unagi = "unagi",
 }
 
 export enum SupportedAmm {

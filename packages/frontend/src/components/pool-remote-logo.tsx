@@ -11,7 +11,7 @@ export function PoolRemoteLogo({
 }: PoolRemoteLogoProps) {
     const { loading, uris } = useTokenIconUris(
         chain,
-        tokens?.map((token) => token.address) || [],
+        tokens.map((token) => token.address) || [],
     );
 
     return (

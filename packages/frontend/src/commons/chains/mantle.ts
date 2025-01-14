@@ -6,6 +6,7 @@ import { type ChainData } from "..";
 import { mantle } from "viem/chains";
 
 export const mantleData: ChainData = {
+    name: mantle.name,
     metromContract: ADDRESS[SupportedChain.Mantle],
     blockExplorers: mantle.blockExplorers,
     icon: MantleLogo,

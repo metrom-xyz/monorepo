@@ -2,10 +2,13 @@ import { SupportedDex } from "@metrom-xyz/sdk";
 import { SupportedChain, ADDRESS } from "@metrom-xyz/contracts";
 import { BaseLogo } from "../../assets/logos/chains/base";
 import { KimLogo } from "../../assets/logos/dexes/kim";
+import { BaseSwapLogo } from "@/src/assets/logos/dexes/baseswap";
 import { type ChainData } from "..";
 import { base } from "viem/chains";
+// import { UniswapLogo } from "@/src/assets/logos/dexes/uniswap";
 
 export const baseData: ChainData = {
+    name: base.name,
     metromContract: ADDRESS[SupportedChain.Base],
     blockExplorers: base.blockExplorers,
     icon: BaseLogo,
@@ -16,6 +19,19 @@ export const baseData: ChainData = {
             name: "Kim",
             addLiquidityUrl: "https://app.kim.exchange/pools/v4/{target_pool}",
         },
+        {
+            slug: SupportedDex.BaseSwap,
+            logo: BaseSwapLogo,
+            name: "BaseSwap",
+            addLiquidityUrl: `https://baseswap.fi/pool/v3/${SupportedChain.Base}-{target_pool}`,
+        },
+        // TODO: enable
+        // {
+        //     slug: SupportedDex.UniswapV3,
+        //     logo: UniswapLogo,
+        //     name: "Uniswap v3",
+        //     addLiquidityUrl: `https://app.uniswap.org/explore/pools/${SupportedChain.Base}/{target_pool}`,
+        // },
     ],
     baseTokens: [
         {

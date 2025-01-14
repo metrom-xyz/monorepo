@@ -1,21 +1,22 @@
 .root {
-    @apply w-full bg-gray-200 animate-pulse rounded-md;
+    @apply w-full h-full flex items-center;
+}
+
+.skeleton {
+    @apply h-full w-full bg-gray-200 animate-pulse rounded-md;
 }
 
 .circular {
     @apply rounded-full;
 }
 
-.xs {
-    @apply h-3;
-}
-
+.xs,
 .sm {
-    @apply h-3.5;
+    @apply h-4;
 }
 
 .base {
-    @apply h-4;
+    @apply h-5;
 }
 
 .lg {
@@ -23,17 +24,17 @@
 }
 
 .xl {
-    @apply h-7;
+    @apply h-6 sm:h-7;
 }
 
 .xl2 {
-    @apply h-10;
+    @apply h-7 sm:h-8;
 }
 
 .xl4 {
-    @apply h-14;
+    @apply h-8 sm:h-10;
 }
 
 .xl5 {
-    @apply h-20;
+    @apply h-10 sm:h-12;
 }

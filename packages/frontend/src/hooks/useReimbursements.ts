@@ -18,41 +18,43 @@ export function useReimbursements(): {
     const [reimbursements, setReimbursements] = useState<
         ReimbursementsWithRemaining[]
     >([]);
+    const [loading, setLoading] = useState(true);
 
     const { address } = useAccount();
 
-    const { data: rawReimbursements, isLoading: loadingReimbursements } =
-        useQuery({
-            queryKey: ["reimbursements", address],
-            queryFn: async ({ queryKey }) => {
-                const account = queryKey[1];
-                if (!account) return undefined;
+    const {
+        data: rawReimbursements,
+        isError: reimbursementsErrored,
+        isLoading: loadingReimbursements,
+    } = useQuery({
+        queryKey: ["reimbursements", address],
+        queryFn: async ({ queryKey }) => {
+            const account = queryKey[1];
+            if (!account) return undefined;
 
-                try {
-                    const rawClaims = await metromApiClient.fetchReimbursements(
-                        {
-                            address: account as Address,
-                        },
-                    );
-                    return rawClaims;
-                } catch (error) {
-                    throw new Error(
-                        `Could not fetch raw reimbursements for address ${address}: ${error}`,
-                    );
-                }
-            },
-            refetchOnWindowFocus: false,
-            staleTime: 60000,
-            enabled: !!address,
-        });
+            try {
+                const rawClaims = await metromApiClient.fetchReimbursements({
+                    address: account as Address,
+                });
+                return rawClaims;
+            } catch (error) {
+                throw new Error(
+                    `Could not fetch raw reimbursements for address ${address}: ${error}`,
+                );
+            }
+        },
+        refetchOnWindowFocus: false,
+        staleTime: 60000,
+        enabled: !!address,
+    });
 
     // reimbursements recovered are assigned to the zero address,
     // so we have to fetch them separately
     const {
-        isLoading: loadingRecovered,
         data: recoveredData,
-        isError: recoveredErrored,
         error: recoveredError,
+        isError: recoveredErrored,
+        isLoading: loadingRecovered,
     } = useReadContracts({
         allowFailure: false,
         contracts:
@@ -80,10 +82,10 @@ export function useReimbursements(): {
     });
 
     const {
-        isLoading: loadingClaimed,
         data: claimedData,
-        isError: claimedErrored,
         error: claimedError,
+        isError: claimedErrored,
+        isLoading: loadingClaimed,
     } = useReadContracts({
         allowFailure: false,
         contracts:
@@ -111,15 +113,20 @@ export function useReimbursements(): {
     });
 
     useEffect(() => {
-        if (loadingReimbursements || loadingRecovered || loadingClaimed) return;
-        if (recoveredErrored || claimedErrored) {
+        if (loadingReimbursements || loadingRecovered || loadingClaimed) {
+            setLoading(true);
+            return;
+        }
+        if (reimbursementsErrored || recoveredErrored || claimedErrored) {
             console.error(
                 `Could not fetch claimed data for address ${address}: ${recoveredError} ${claimedError}`,
             );
+            setLoading(false);
             return;
         }
         if (!rawReimbursements || !recoveredData || !claimedData) {
             setReimbursements([]);
+            setLoading(false);
             return;
         }
 
@@ -147,6 +154,7 @@ export function useReimbursements(): {
         }
 
         setReimbursements(reimbursements);
+        setLoading(false);
     }, [
         address,
         recoveredData,
@@ -159,10 +167,11 @@ export function useReimbursements(): {
         loadingClaimed,
         claimedErrored,
         claimedError,
+        reimbursementsErrored,
     ]);
 
     return {
-        loading: loadingReimbursements || loadingRecovered,
+        loading: loading || loadingReimbursements || loadingRecovered,
         reimbursements,
     };
 }

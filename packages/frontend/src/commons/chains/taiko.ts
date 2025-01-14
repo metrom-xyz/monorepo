@@ -5,8 +5,10 @@ import { TaikoLogo } from "@/src/assets/logos/chains/taiko";
 import { PankoLogo } from "@/src/assets/logos/dexes/panko";
 import { taiko } from "viem/chains";
 import { UniswapLogo } from "@/src/assets/logos/dexes/uniswap";
+import { UnagiLogo } from "@/src/assets/logos/dexes/unagi";
 
 export const taikoData: ChainData = {
+    name: taiko.name,
     metromContract: ADDRESS[SupportedChain.Taiko],
     blockExplorers: taiko.blockExplorers,
     icon: TaikoLogo,
@@ -15,8 +17,7 @@ export const taikoData: ChainData = {
             slug: SupportedDex.Panko,
             logo: PankoLogo,
             name: "Panko",
-            // TODO: update this
-            addLiquidityUrl: "https://panko.finance",
+            addLiquidityUrl: "https://panko.finance/add/{target_pool}",
         },
         {
             slug: SupportedDex.UniswapV3,
@@ -24,6 +25,12 @@ export const taikoData: ChainData = {
             name: "Uniswap v3",
             addLiquidityUrl:
                 "https://app.uniswap.org/explore/pools/taiko/{target_pool}",
+        },
+        {
+            slug: SupportedDex.Unagi,
+            logo: UnagiLogo,
+            name: "Unagi",
+            addLiquidityUrl: "https://unagiswap.xyz/pool",
         },
     ],
     baseTokens: [

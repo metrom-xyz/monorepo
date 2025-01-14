@@ -87,7 +87,7 @@ export function ConnectButton() {
     }, [connect, connector?.id, connectors, disconnect]);
 
     function handleOpenNetworkPopover() {
-        setNetworkPopoverOpen(true);
+        setNetworkPopoverOpen((prev) => !prev);
     }
 
     useClickAway(networksPopoverRef, () => {
@@ -131,60 +131,64 @@ export function ConnectButton() {
                 return (
                     <div className={styles.root}>
                         <div className={styles.wrapper}>
-                            <div
-                                className={classNames(styles.networkWrapper, {
-                                    [styles.wrongNetwork]: chain?.unsupported,
-                                })}
-                                ref={setNetworkWrapper}
-                                onClick={handleOpenNetworkPopover}
-                            >
-                                {chain?.unsupported ? (
-                                    <ErrorIcon className={styles.networkIcon} />
-                                ) : (
-                                    <ChainIcon className={styles.networkIcon} />
-                                )}
-                            </div>
-                            <Popover
-                                placement="bottom"
-                                anchor={networkWrapper}
-                                open={networkPopoverOpen}
-                                ref={networksPopoverRef}
-                            >
-                                <div className={styles.networksWrapper}>
-                                    {chains.map((availableChain) => {
-                                        const ChainIcon =
-                                            CHAIN_DATA[
-                                                availableChain.id as SupportedChain
-                                            ].icon;
-
-                                        return (
-                                            <div
-                                                key={availableChain.id}
-                                                className={classNames(
-                                                    styles.networkRow,
-                                                    {
-                                                        [styles.networkRowActive]:
-                                                            availableChain.id ===
-                                                            chain?.id,
-                                                    },
-                                                )}
-                                                onClick={getSwitchChainHandler(
-                                                    availableChain.id,
-                                                )}
-                                            >
-                                                <ChainIcon
-                                                    className={
-                                                        styles.networkIcon
-                                                    }
-                                                />
-                                                <Typography>
-                                                    {availableChain.name}
-                                                </Typography>
-                                            </div>
-                                        );
-                                    })}
+                            <div ref={networksPopoverRef}>
+                                <div
+                                    ref={setNetworkWrapper}
+                                    className={classNames(
+                                        styles.networkWrapper,
+                                        {
+                                            [styles.wrongNetwork]:
+                                                chain?.unsupported,
+                                        },
+                                    )}
+                                    onClick={handleOpenNetworkPopover}
+                                >
+                                    {chain?.unsupported ? (
+                                        <ErrorIcon
+                                            className={styles.networkIcon}
+                                        />
+                                    ) : (
+                                        <ChainIcon
+                                            className={styles.networkIcon}
+                                        />
+                                    )}
                                 </div>
-                            </Popover>
+                                <Popover
+                                    placement="bottom"
+                                    anchor={networkWrapper}
+                                    open={networkPopoverOpen}
+                                >
+                                    <div className={styles.networksWrapper}>
+                                        {chains.map((chain) => {
+                                            const ChainIcon =
+                                                CHAIN_DATA[
+                                                    chain.id as SupportedChain
+                                                ].icon;
+
+                                            return (
+                                                <div
+                                                    key={chain.id}
+                                                    className={
+                                                        styles.networkRow
+                                                    }
+                                                    onClick={getSwitchChainHandler(
+                                                        chain.id,
+                                                    )}
+                                                >
+                                                    <ChainIcon
+                                                        className={
+                                                            styles.networkIcon
+                                                        }
+                                                    />
+                                                    <Typography>
+                                                        {chain.name}
+                                                    </Typography>
+                                                </div>
+                                            );
+                                        })}
+                                    </div>
+                                </Popover>
+                            </div>
                             {!connected ? (
                                 <Button
                                     onClick={openConnectModal}

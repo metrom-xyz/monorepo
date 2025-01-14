@@ -1,0 +1,36 @@
+.root {
+    @apply flex
+        items-center
+        justify-between
+        snap-start
+        px-4
+        select-none
+        transition-colors
+        duration-200
+        ease-in-out
+        cursor-pointer
+        hover:bg-gray-200;
+}
+
+.token {
+    @apply w-full flex items-center gap-3;
+}
+
+.balanceWrapper {
+    @apply w-full flex flex-col gap-1 items-end;
+}
+
+.active {
+    @apply bg-gray-200;
+}
+
+.disabled {
+    @apply opacity-40
+        cursor-not-allowed
+        bg-transparent
+        hover:bg-transparent;
+}
+
+.loading {
+    @apply pointer-events-none;
+}

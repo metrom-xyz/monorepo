@@ -1,7 +1,7 @@
 import { Address, BigInt, Bytes, ethereum } from "@graphprotocol/graph-ts";
 import {
     ClaimableFee,
-    Campaign,
+    RewardsCampaign,
     Metrom,
     Reward,
     Token,
@@ -10,11 +10,12 @@ import {
     RecoveredByAccount,
     FeeRebate,
     WhitelistedRewardToken,
+    WhitelistedFeeToken,
 } from "../generated/schema";
 import { METROM_ADDRESS } from "./addresses";
-import { Erc20 } from "../generated/Metrom/Erc20";
-import { Erc20BytesName } from "../generated/Metrom/Erc20BytesName";
-import { Erc20BytesSymbol } from "../generated/Metrom/Erc20BytesSymbol";
+import { Erc20 } from "../generated/MetromV1/Erc20";
+import { Erc20BytesName } from "../generated/MetromV1/Erc20BytesName";
+import { Erc20BytesSymbol } from "../generated/MetromV1/Erc20BytesSymbol";
 
 export const BI_MINUS_1 = BigInt.fromI32(-1);
 export const BI_0 = BigInt.zero();
@@ -29,11 +30,11 @@ export function getMetromOrThrow(): Metrom {
     );
 }
 
-export function getCampaignOrThrow(id: Bytes): Campaign {
-    let campaign = Campaign.load(id);
+export function getRewardsCampaignOrThrow(id: Bytes): RewardsCampaign {
+    let campaign = RewardsCampaign.load(id);
     if (campaign != null) return campaign;
 
-    throw new Error(`Could not find campaign with id ${id.toHex()}`);
+    throw new Error(`Could not find rewards campaign with id ${id.toHex()}`);
 }
 
 export function getRewardId(campaignId: Bytes, token: Bytes): Bytes {
@@ -77,17 +78,29 @@ export function getOrCreateClaimedByAccount(
 export function getOrCreateWhitelistedRewardToken(
     token: Bytes,
 ): WhitelistedRewardToken {
-    let whitelistedRewardToken = WhitelistedRewardToken.load(token);
-    if (whitelistedRewardToken !== null) return whitelistedRewardToken;
+    let whitelistedToken = WhitelistedRewardToken.load(token);
+    if (whitelistedToken !== null) return whitelistedToken;
 
-    whitelistedRewardToken = new WhitelistedRewardToken(token);
-    whitelistedRewardToken.metrom = METROM_ADDRESS;
-    whitelistedRewardToken.token = getOrCreateToken(
-        Address.fromBytes(token),
-    ).id;
-    whitelistedRewardToken.minimumRate = BI_0;
-    whitelistedRewardToken.save();
-    return whitelistedRewardToken;
+    whitelistedToken = new WhitelistedRewardToken(token);
+    whitelistedToken.metrom = METROM_ADDRESS;
+    whitelistedToken.token = getOrCreateToken(Address.fromBytes(token)).id;
+    whitelistedToken.minimumRate = BI_0;
+    whitelistedToken.save();
+    return whitelistedToken;
+}
+
+export function getOrCreateWhitelistedFeeToken(
+    token: Bytes,
+): WhitelistedFeeToken {
+    let whitelistedToken = WhitelistedFeeToken.load(token);
+    if (whitelistedToken !== null) return whitelistedToken;
+
+    whitelistedToken = new WhitelistedFeeToken(token);
+    whitelistedToken.metrom = METROM_ADDRESS;
+    whitelistedToken.token = getOrCreateToken(Address.fromBytes(token)).id;
+    whitelistedToken.minimumRate = BI_0;
+    whitelistedToken.save();
+    return whitelistedToken;
 }
 
 export function getRecoveredByAccountId(

@@ -3,16 +3,18 @@ import { type Address } from "viem";
 import classNames from "classnames";
 import { Skeleton } from "../skeleton";
 import { Typography } from "../typography";
+import type { SVGIcon } from "../../assets/types";
 
 import styles from "./styles.module.css";
-import type { SVGIcon } from "../../assets/types";
+
+export type RemoteLogoSize = "xs" | "sm" | "base" | "lg" | "xl";
 
 export interface RemoteLogoProps {
     loading?: boolean;
     src?: string;
     address?: Address;
     chain?: number;
-    size?: "xs" | "sm" | "md" | "lg" | "xl";
+    size?: RemoteLogoSize;
     defaultText?: string;
     className?: string;
     icon?: FunctionComponent<SVGIcon>;
@@ -29,13 +31,12 @@ export const RemoteLogo = ({
     src,
     address,
     chain,
-    size,
+    size = "base",
     defaultText = "?",
     className,
     icon: Icon,
 }: RemoteLogoProps) => {
     const [imageError, setImageError] = useState(false);
-    const sizeClass = size ? styles[size] : styles.selfAdjust;
 
     const resolvedSrc = useMemo(() => {
         if (src) return src;
@@ -58,26 +59,30 @@ export const RemoteLogo = ({
 
     if (loading) {
         return (
-            <Skeleton circular className={classNames(sizeClass, className)} />
+            <div className={classNames(styles.root, styles[size], className)}>
+                <Skeleton
+                    circular
+                    className={classNames(styles[size], className)}
+                />
+            </div>
         );
     }
 
     if (Icon) {
         return (
-            <div className={classNames(styles.root, sizeClass, className)}>
-                <Icon className={classNames(styles.image, sizeClass)} />
+            <div className={classNames(styles.root, styles[size], className)}>
+                <Icon className={classNames(styles.image, styles[size])} />
             </div>
         );
     }
 
     if (validResolvedSrc) {
         return (
-            <div className={classNames(styles.root, sizeClass, className)}>
-                <Skeleton circular width="100%" className={styles.skeleton} />
+            <div className={classNames(styles.root, styles[size], className)}>
                 <img
                     src={validResolvedSrc}
                     alt={defaultText}
-                    className={classNames(styles.image, sizeClass)}
+                    className={classNames(styles.image, styles[size])}
                     onError={handleImageError}
                 />
             </div>
@@ -85,7 +90,7 @@ export const RemoteLogo = ({
     }
 
     return (
-        <div className={classNames(styles.fallback, sizeClass, className)}>
+        <div className={classNames(styles.fallback, styles[size], className)}>
             <Typography uppercase className={styles.fallbackText}>
                 {defaultText
                     ? defaultText.length > 4

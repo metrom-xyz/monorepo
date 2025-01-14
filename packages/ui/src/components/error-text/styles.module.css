@@ -21,3 +21,23 @@
 .text.warning {
     @apply !text-yellow-600;
 }
+
+.xs {
+    @apply w-3 h-3;
+}
+
+.sm,
+.base {
+    @apply w-4 h-4;
+}
+
+.lg,
+.xl,
+.xl2 {
+    @apply w-5 h-5;
+}
+
+.xl4,
+.xl5 {
+    @apply w-7 h-7;
+}

@@ -8,16 +8,17 @@
         "lint": "turbo run lint",
         "format": "turbo run format",
         "build": "turbo run build",
+        "build:fleek": "turbo run build:fleek",
         "test": "turbo run test",
         "commitlint": "commitlint -e",
         "prepare": "husky"
     },
     "devDependencies": {
-        "@changesets/cli": "^2.27.9",
-        "@commitlint/cli": "^19.5.0",
-        "@commitlint/config-conventional": "^19.5.0",
-        "husky": "^9.1.6",
-        "prettier": "^3.3.3",
-        "turbo": "^2.1.3"
+        "@changesets/cli": "^2.27.10",
+        "@commitlint/cli": "^19.6.0",
+        "@commitlint/config-conventional": "^19.6.0",
+        "husky": "^9.1.7",
+        "prettier": "^3.4.2",
+        "turbo": "^2.3.3"
     }
 }

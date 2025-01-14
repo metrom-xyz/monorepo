@@ -25,6 +25,7 @@ import localizedFormat from "dayjs/plugin/localizedFormat";
 import relativeTime from "dayjs/plugin/relativeTime";
 import dayjs from "dayjs";
 import { TokenIconsProvider } from "./token-icon-provider";
+import { Toaster } from "@metrom-xyz/ui";
 
 dayjs.extend(duration);
 dayjs.extend(localizedFormat);
@@ -76,6 +77,7 @@ export function ClientProviders({
         <WagmiProvider config={config}>
             <QueryClientProvider client={queryClient}>
                 <TokenIconsProvider>
+                    <Toaster />
                     <RainbowKitProvider
                         appInfo={{
                             appName: "Metrom",

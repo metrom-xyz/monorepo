@@ -9,7 +9,7 @@ import styles from "./styles.module.css";
 
 interface KpiProps {
     poolUsdTvl?: number | null;
-    rewards: CampaignPayload["rewards"];
+    rewards: CampaignPayload["tokens"];
     specification: CampaignPayload["kpiSpecification"];
 }
 
@@ -42,19 +42,19 @@ export function Kpi({ poolUsdTvl, rewards, specification }: KpiProps) {
                 <div className={styles.header}>
                     <TextField
                         boxed
-                        variant="xl"
+                        size="xl"
                         label={t("lowerBound")}
                         value={formatUsdAmount(lowerUsdTarget)}
                     />
                     <TextField
                         boxed
-                        variant="xl"
+                        size="xl"
                         label={t("upperBound")}
                         value={formatUsdAmount(upperUsdTarget)}
                     />
                     <TextField
                         boxed
-                        variant="xl"
+                        size="xl"
                         label={t("minimumPayout")}
                         value={
                             minimumPayoutPercentage
@@ -70,6 +70,7 @@ export function Kpi({ poolUsdTvl, rewards, specification }: KpiProps) {
                     className={styles.chartWrapper}
                 >
                     <KpiSimulationChart
+                        tooltipSize="xs"
                         poolUsdTvl={poolUsdTvl}
                         totalRewardsUsd={totalRewardsUsdAmount}
                         lowerUsdTarget={lowerUsdTarget}

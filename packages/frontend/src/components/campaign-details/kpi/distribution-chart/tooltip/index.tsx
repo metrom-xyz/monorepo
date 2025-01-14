@@ -29,69 +29,75 @@ export function TooltipContent({ chain, active, payload }: TooltipProps) {
 
     return (
         <div className={styles.root}>
-            <div className={styles.section}>
-                <div className={styles.fieldWrapper}>
-                    <Typography weight="medium" light uppercase>
-                        {t("distributionTime")}
-                    </Typography>
-                    <Typography weight="medium" uppercase>
-                        {dayjs.unix(to).format("DD MMM HH:mm")}
-                    </Typography>
-                </div>
+            <div className={styles.fieldWrapper}>
+                <Typography weight="medium" light uppercase>
+                    {t("time")}
+                </Typography>
+                <Typography weight="medium" uppercase>
+                    {dayjs.unix(to).format("DD MMM HH:mm")}
+                </Typography>
             </div>
-            <div className={styles.section}>
-                <div className={styles.fieldWrapper}>
-                    <Typography weight="medium" light uppercase>
-                        {t("distributed")}
-                    </Typography>
-                    <Typography weight="medium" uppercase>
-                        {formatPercentage(distributed * 100)}
-                    </Typography>
-                </div>
-                <div className={styles.fieldWrapper}>
-                    <Typography weight="medium" light uppercase>
-                        {t("reimbursed")}
-                    </Typography>
-                    <Typography weight="medium" uppercase>
-                        {formatPercentage(reimbursed * 100)}
-                    </Typography>
-                </div>
-            </div>
-            <div
-                className={classNames(styles.breakdownWrapper, styles.section)}
-            >
-                <div className={styles.row}>
-                    <Typography weight="medium" light uppercase>
-                        {t("token")}
-                    </Typography>
-                    <Typography weight="medium" light uppercase>
-                        {t("distributed")}
-                    </Typography>
+            <div className={styles.fieldWrapper}>
+                <div className={styles.textWrapper}>
+                    <div
+                        className={classNames(
+                            styles.legendDot,
+                            styles.reimbursed,
+                        )}
+                    ></div>
                     <Typography weight="medium" light uppercase>
                         {t("reimbursed")}
                     </Typography>
                 </div>
-                {distributions.map(({ distributed, reimbursed, token }) => (
-                    <div key={token.address} className={styles.row}>
-                        <div className={styles.tokenWrapper}>
-                            <RemoteLogo address={token.address} chain={chain} />
-                            <Typography weight="medium">
-                                {token.symbol}
-                            </Typography>
-                        </div>
-                        <Typography weight="medium">
-                            {formatTokenAmount({
-                                amount: distributed.formatted,
-                            })}
-                        </Typography>
-                        <Typography weight="medium">
-                            {formatTokenAmount({
-                                amount: reimbursed.formatted,
-                            })}
-                        </Typography>
+                <Typography weight="medium" uppercase>
+                    {formatPercentage(reimbursed * 100)}
+                </Typography>
+            </div>
+            <div className={styles.fieldWrapper}>
+                <div className={styles.textWrapper}>
+                    <div
+                        className={classNames(
+                            styles.legendDot,
+                            styles.distributed,
+                        )}
+                    ></div>
+                    <Typography weight="medium" light uppercase>
+                        {t("distributed")}
+                    </Typography>
+                </div>
+                <Typography weight="medium" uppercase>
+                    {formatPercentage(distributed * 100)}
+                </Typography>
+            </div>
+            <div className={classNames(styles.row, styles.breakdownWrapper)}>
+                <Typography weight="medium" light uppercase>
+                    {t("token")}
+                </Typography>
+                <Typography weight="medium" light uppercase>
+                    {t("distributed")}
+                </Typography>
+                <Typography weight="medium" light uppercase>
+                    {t("reimbursed")}
+                </Typography>
+            </div>
+            {distributions.map(({ distributed, reimbursed, token }) => (
+                <div key={token.address} className={styles.row}>
+                    <div className={styles.tokenWrapper}>
+                        <RemoteLogo address={token.address} chain={chain} />
+                        <Typography weight="medium">{token.symbol}</Typography>
                     </div>
-                ))}
-            </div>
+                    <Typography weight="medium">
+                        {formatTokenAmount({
+                            amount: distributed.formatted,
+                        })}
+                    </Typography>
+                    <Typography weight="medium">
+                        {formatTokenAmount({
+                            amount: reimbursed.formatted,
+                        })}
+                    </Typography>
+                </div>
+            ))}
         </div>
     );
 }

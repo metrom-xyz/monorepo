@@ -67,22 +67,22 @@ export const DatePicker = ({
         <div className={classNames(styles.root)}>
             <div className={classNames(styles.header)}>
                 <div
-                    className={styles.headerIconWrapper}
                     onClick={handlePreviousMonth}
+                    className={styles.headerIconWrapper}
                 >
                     <ChevronLeft />
                 </div>
                 <Typography
                     uppercase
-                    variant="lg"
+                    size="lg"
                     weight="medium"
                     className={styles.headerMonth}
                 >
                     {lookupDate.format("MMM YYYY")}
                 </Typography>
                 <div
-                    className={styles.headerIconWrapper}
                     onClick={handleNextMonth}
+                    className={styles.headerIconWrapper}
                 >
                     <ChevronRight />
                 </div>
@@ -93,7 +93,7 @@ export const DatePicker = ({
                     return (
                         <Typography
                             key={dayOfWeek}
-                            variant="sm"
+                            size="sm"
                             uppercase
                             className={styles.weekDay}
                             weight="medium"

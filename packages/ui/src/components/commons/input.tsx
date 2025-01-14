@@ -4,17 +4,19 @@ import type {
     FunctionComponent,
     InputHTMLAttributes,
     ReactElement,
-    ReactNode,
 } from "react";
 import classNames from "classnames";
 import { Typography } from "../typography";
+import { ErrorText } from "../error-text";
 
 import styles from "./styles.module.css";
+
+export type BaseInputSize = "xs" | "sm" | "base" | "lg";
 
 export interface PartialBaseInputProps<V> {
     error?: boolean;
     errorText?: string;
-    variant?: "xs" | "sm" | "base" | "lg";
+    size?: BaseInputSize;
     placeholder?: string;
     loading?: boolean;
     onChange?: ChangeEventHandler<HTMLInputElement>;
@@ -23,7 +25,7 @@ export interface PartialBaseInputProps<V> {
 }
 
 export type BaseInputProps<V> = PartialBaseInputProps<V> &
-    BaseInputWrapperProps &
+    Omit<BaseInputWrapperProps, "children"> &
     Omit<
         InputHTMLAttributes<HTMLInputElement>,
         keyof PartialBaseInputProps<V> | keyof BaseInputWrapperProps | "ref"
@@ -32,59 +34,52 @@ export type BaseInputProps<V> = PartialBaseInputProps<V> &
 export interface BaseInputWrapperProps {
     id: string;
     label?: string;
-    variant?: "xs" | "sm" | "base" | "lg";
+    size?: BaseInputSize;
+    loading?: boolean;
     error?: boolean;
     border?: boolean;
     errorText?: string;
     icon?: FunctionComponent<React.SVGProps<SVGSVGElement>>;
     iconPlacement?: "left" | "right";
-    action?: ReactNode;
-    actionPlacement?: "left" | "right";
     className?: string;
-    children?: ReactNode;
+    children: ReactElement;
 }
 
 export const BaseInputWrapper = ({
     id,
     label,
-    // TODO: implement error
-    // error,
-    // errorText,
+    size = "base",
+    loading,
+    error,
+    errorText,
     icon: Icon,
     iconPlacement = "right",
-    action: Action,
-    actionPlacement = "right",
     className,
     children,
 }: BaseInputWrapperProps): ReactElement => {
-    const icon = !Action && Icon && (
+    const icon = Icon && (
         <div
             className={classNames("inputIconWrapper", styles.inputIconWrapper, {
                 [styles.placeLeft]: iconPlacement === "left",
                 [styles.placeRight]: iconPlacement === "right",
             })}
         >
-            <Icon className={classNames("inputIcon", styles.inputIcon)} />
-        </div>
-    );
-
-    const action = Action && (
-        <div
-            className={classNames(
-                "inputActionWrapper",
-                styles.inputActionWrapper,
-                {
-                    [styles.placeLeft]: actionPlacement === "left",
-                    [styles.placeRight]: actionPlacement === "right",
-                },
-            )}
-        >
-            {Action}
+            <Icon
+                className={classNames("inputIcon", styles.inputIcon, {
+                    [styles[size]]: true,
+                })}
+            />
         </div>
     );
 
     return (
-        <div className={className}>
+        <div
+            className={classNames("root", className, {
+                [styles[size]]: true,
+                [styles.hasLeftIcon]: !!icon && iconPlacement === "left",
+                [styles.hasRightIcon]: !!icon && iconPlacement === "right",
+            })}
+        >
             {!!label && (
                 <label
                     className={classNames("label", styles.label)}
@@ -92,7 +87,7 @@ export const BaseInputWrapper = ({
                 >
                     <Typography
                         uppercase
-                        variant="xs"
+                        size="xs"
                         weight="medium"
                         light
                         className="labelText"
@@ -103,12 +98,28 @@ export const BaseInputWrapper = ({
             )}
             <div className={classNames("inputWrapper", styles.inputWrapper)}>
                 {iconPlacement === "left" && icon}
-                {actionPlacement === "left" && action}
-                {children}
+                {React.cloneElement(children, {
+                    className: classNames(
+                        "input",
+                        styles.input,
+                        children.props.className,
+                        {
+                            [styles.inputError]: !!error,
+                            [styles.inputLoading]: !!loading,
+                        },
+                    ),
+                })}
                 {iconPlacement === "right" && icon}
-                {actionPlacement === "right" && action}
             </div>
-            {/* {error && errorText && <ErrorText>{errorText}</ErrorText>} */}
+            {error && errorText && (
+                <ErrorText
+                    size="xs"
+                    weight="medium"
+                    className={styles.errorText}
+                >
+                    {errorText}
+                </ErrorText>
+            )}
         </div>
     );
 };

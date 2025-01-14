@@ -24,49 +24,41 @@
 }
 
 .xs {
-    @apply w-4 h-4;
+    @apply w-3.5 h-3.5 sm:w-4 sm:h-4;
 }
 
 .xs > p {
-    @apply text-[0.3rem];
+    @apply text-[0.2rem] sm:text-[0.3rem];
 }
 
 .sm {
-    @apply w-6 h-6;
+    @apply w-4 h-4 sm:w-6 sm:h-6;
 }
 
 .sm > p {
-    @apply text-[0.4rem];
+    @apply text-[0.3rem] sm:text-[0.4rem];
 }
 
-.md {
-    @apply w-7 h-7;
+.base {
+    @apply w-5 h-5 sm:w-7 sm:h-7;
 }
 
-.md > p {
-    @apply text-[0.5rem];
+.base > p {
+    @apply text-[0.4rem] sm:text-[0.5rem];
 }
 
 .lg {
-    @apply w-9 h-9;
+    @apply w-6 h-6 sm:w-9 sm:h-9;
 }
 
 .lg > p {
-    @apply text-[0.6rem];
+    @apply text-[0.5rem] sm:text-[0.6rem];
 }
 
 .xl {
-    @apply w-11 h-11;
+    @apply w-8 h-8 sm:w-11 sm:h-11;
 }
 
 .xl > p {
-    @apply text-base;
-}
-
-.selfAdjust {
-    @apply w-6 h-6 sm:w-7 sm:h-7;
-}
-
-.selfAdjust > p {
-    @apply text-[0.4rem] sm:text-[0.5rem];
+    @apply text-[0.7rem] sm:text-base;
 }

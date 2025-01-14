@@ -27,10 +27,6 @@
     @apply h-12;
 }
 
-.claimButton {
-    @apply self-end;
-}
-
 .externalLinkIcon {
     @apply h-4 w-4 transform -rotate-45;
 }

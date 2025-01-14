@@ -1,7 +1,3 @@
 .root {
     @apply w-full;
 }
-
-.skeleton {
-    @apply max-w-32 w-full h-10;
-}

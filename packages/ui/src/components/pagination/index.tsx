@@ -6,7 +6,7 @@ import { Typography } from "../typography";
 
 import styles from "./styles.module.css";
 
-const PAGES_THRESHOLD = 5;
+const PAGES_THRESHOLD = 3;
 
 export interface PaginationProps {
     page: number;

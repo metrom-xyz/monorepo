@@ -7,6 +7,8 @@ import {
     type BackendWhitelistedErc20Token,
     type BackendReimbursement,
     type BackendKpiMeasurement,
+    type BackendLeaderboard,
+    type BackendRewardsCampaignLeaderboardRank,
 } from "./types";
 import type { SupportedChain } from "@metrom-xyz/contracts";
 import { SupportedDex } from "../commons";
@@ -16,9 +18,14 @@ import {
     type Campaign,
     type Claim,
     type KpiMeasurement,
+    type Leaderboard,
+    type OnChainAmount,
+    type PointsCampaignLeaderboardRank,
     type Pool,
     type Reimbursement,
     type Rewards,
+    type RewardsCampaignLeaderboardRank,
+    type UsdPricedErc20TokenAmount,
     type UsdPricedOnChainAmount,
     type WhitelistedErc20Token,
 } from "../types";
@@ -43,7 +50,7 @@ export interface FetchReimbursementsParams {
     address: Address;
 }
 
-export interface FetchWhitelistedRewardTokensParams {
+export interface FetchWhitelistedTokensParams {
     chainId: SupportedChain;
 }
 
@@ -54,14 +61,19 @@ export interface FetchActivitiesParams {
     to: number;
 }
 
-export interface FetchWhitelistedRewardTokensResult {
+export interface FetchWhitelistedRewardTokensParams {
     tokens: Address;
 }
 
-export interface FetchKpiMeasurementsResult {
+export interface FetchKpiMeasurementsParams {
     campaign: Campaign;
     from: number;
     to: number;
+}
+
+export interface FetchLeaderboardParams {
+    campaign: Campaign;
+    account?: Address;
 }
 
 export class MetromApiClient {
@@ -126,16 +138,12 @@ export class MetromApiClient {
         const claims = (await response.json()) as BackendClaim[];
 
         return claims.map((claim) => {
-            const rawAmount = BigInt(claim.amount);
-
             return {
                 ...claim,
-                amount: {
-                    raw: rawAmount,
-                    formatted: Number(
-                        formatUnits(rawAmount, claim.token.decimals),
-                    ),
-                },
+                amount: stringToOnChainAmount(
+                    claim.amount,
+                    claim.token.decimals,
+                ),
             };
         });
     }
@@ -158,48 +166,31 @@ export class MetromApiClient {
             (await response.json()) as BackendReimbursement[];
 
         return reimbursements.map((reimbursement) => {
-            const rawAmount = BigInt(reimbursement.amount);
-
             return {
                 ...reimbursement,
-                amount: {
-                    raw: rawAmount,
-                    formatted: Number(
-                        formatUnits(rawAmount, reimbursement.token.decimals),
-                    ),
-                },
+                amount: stringToOnChainAmount(
+                    reimbursement.amount,
+                    reimbursement.token.decimals,
+                ),
                 proof: reimbursement.proof,
             };
         });
     }
 
     async fetchWhitelistedRewardTokens(
-        params: FetchWhitelistedRewardTokensParams,
+        params: FetchWhitelistedTokensParams,
     ): Promise<WhitelistedErc20Token[]> {
-        const url = new URL(`v1/reward-tokens/${params.chainId}`, this.baseUrl);
+        return fetchWhitelistedTokens(
+            new URL(`v1/reward-tokens/${params.chainId}`, this.baseUrl),
+        );
+    }
 
-        const response = await fetch(url);
-        if (!response.ok)
-            throw new Error(
-                `response not ok while fetching whitelisted reward tokens: ${await response.text()}`,
-            );
-
-        const whitelistedTokens =
-            (await response.json()) as BackendWhitelistedErc20Token[];
-
-        return whitelistedTokens.map((token) => {
-            const rawMinimumRate = BigInt(token.minimumRate);
-
-            return {
-                ...token,
-                minimumRate: {
-                    raw: rawMinimumRate,
-                    formatted: Number(
-                        formatUnits(rawMinimumRate, token.decimals),
-                    ),
-                },
-            };
-        });
+    async fetchWhitelistedFeeTokens(
+        params: FetchWhitelistedTokensParams,
+    ): Promise<WhitelistedErc20Token[]> {
+        return fetchWhitelistedTokens(
+            new URL(`v1/fee-tokens/${params.chainId}`, this.baseUrl),
+        );
     }
 
     async fetchActivities(params: FetchActivitiesParams): Promise<Activity[]> {
@@ -221,20 +212,14 @@ export class MetromApiClient {
 
         return activities.map((activity) => {
             if (activity.payload.type === "claim-reward") {
-                const rawAmount = BigInt(activity.payload.amount);
                 return {
                     ...activity,
                     payload: {
                         ...activity.payload,
-                        amount: {
-                            raw: rawAmount,
-                            formatted: Number(
-                                formatUnits(
-                                    rawAmount,
-                                    activity.payload.token.decimals,
-                                ),
-                            ),
-                        },
+                        amount: stringToOnChainAmount(
+                            activity.payload.amount,
+                            activity.payload.token.decimals,
+                        ),
                     },
                 };
             } else {
@@ -244,7 +229,7 @@ export class MetromApiClient {
     }
 
     async fetchKpiMeasurements(
-        params: FetchKpiMeasurementsResult,
+        params: FetchKpiMeasurementsParams,
     ): Promise<KpiMeasurement[]> {
         if (
             !params.campaign.specification ||
@@ -252,6 +237,12 @@ export class MetromApiClient {
         )
             throw new Error(
                 `tried to fetch kpi measurements for campaign with id ${params.campaign.id} in chain with id ${params.campaign.chainId} with no attached kpi`,
+            );
+
+        const rewards = params.campaign.rewards;
+        if (!rewards)
+            throw new Error(
+                `tried to fetch kpi measurements for campaign with id ${params.campaign.id} in chain with id ${params.campaign.chainId} with no rewards`,
             );
 
         const url = new URL(
@@ -270,9 +261,15 @@ export class MetromApiClient {
 
         const measurements = (await response.json()) as BackendKpiMeasurement[];
 
+        const minimumPayoutPercentage =
+            params.campaign.specification!.kpi!.minimumPayoutPercentage || 0;
+
         const totalCampaignDuration = params.campaign.to - params.campaign.from;
         return measurements.map((measurement) => {
-            const measuredPeriodDuration = measurement.to - measurement.from;
+            const measuredPeriodDuration = Math.min(
+                measurement.to - measurement.from,
+                params.campaign.to - params.campaign.from,
+            );
             const periodDurationMultiplier = {
                 standard: measuredPeriodDuration / totalCampaignDuration,
                 get scaled() {
@@ -280,9 +277,16 @@ export class MetromApiClient {
                 },
             };
 
-            const distributions = params.campaign.rewards.map((reward) => {
+            const distributions = rewards.map((reward) => {
+                const normalizedKpiMeasurementPercentage = Math.min(
+                    Math.max(measurement.percentage, 0),
+                    1,
+                );
                 const boundPercentage = {
-                    standard: Math.min(Math.max(measurement.percentage, 0), 1),
+                    standard:
+                        minimumPayoutPercentage +
+                        (1 - minimumPayoutPercentage) *
+                            normalizedKpiMeasurementPercentage,
                     get scaled() {
                         return BigInt(Math.floor(this.standard * 1_000_000));
                     },
@@ -344,6 +348,67 @@ export class MetromApiClient {
             };
         });
     }
+
+    async fetchLeaderboard(
+        params: FetchLeaderboardParams,
+    ): Promise<Leaderboard | null> {
+        const url = new URL(
+            `v1/leaderboards/${params.campaign.chainId}/${params.campaign.id}`,
+            this.baseUrl,
+        );
+
+        if (params.account)
+            url.searchParams.set("account", params.account.toString());
+
+        const response = await fetch(url);
+        if (!response.ok)
+            throw new Error(
+                `response not ok while fetching leaderboard for campaign with id ${params.campaign.id} in chain with id ${params.campaign.chainId}: ${await response.text()}`,
+            );
+
+        const { updatedAt, ranks: rawRanks } =
+            (await response.json()) as BackendLeaderboard;
+
+        if (!updatedAt || !rawRanks || rawRanks.length === 0) {
+            return null;
+        }
+
+        const ranks =
+            typeof rawRanks[0].distributed === "string"
+                ? rawRanks.map((rawRank) => {
+                      return <PointsCampaignLeaderboardRank>{
+                          ...rawRank,
+                          weight: rawRank.weight * 100,
+                          distributed: stringToOnChainAmount(
+                              rawRank.distributed as string,
+                              18,
+                          ),
+                      };
+                  })
+                : rawRanks.map((rawRank) => {
+                      return <RewardsCampaignLeaderboardRank>{
+                          ...rawRank,
+                          weight: rawRank.weight * 100,
+                          distributed: (
+                              rawRank.distributed as BackendRewardsCampaignLeaderboardRank["distributed"]
+                          ).map((distributed) => {
+                              return <UsdPricedErc20TokenAmount>{
+                                  token: distributed,
+                                  amount: stringToUsdPricedOnChainAmount(
+                                      distributed.amount,
+                                      distributed.decimals,
+                                      distributed.usdPrice,
+                                  ),
+                              };
+                          }),
+                      };
+                  });
+
+        return {
+            updatedAt,
+            ranks,
+        };
+    }
 }
 
 function processCampaign(backendCampaign: BackendCampaign): Campaign {
@@ -364,29 +429,17 @@ function processCampaign(backendCampaign: BackendCampaign): Campaign {
         amountUsdValue: 0,
         remainingUsdValue: 0,
     });
-    for (const backendReward of backendCampaign.rewards) {
-        const rawAmount = BigInt(backendReward.amount);
-        const formattedAmount = Number(
-            formatUnits(rawAmount, backendReward.decimals),
+    for (const backendReward of backendCampaign.rewards || []) {
+        const amount = stringToUsdPricedOnChainAmount(
+            backendReward.amount,
+            backendReward.decimals,
+            backendReward.usdPrice,
         );
-        const amount: UsdPricedOnChainAmount = {
-            raw: rawAmount,
-            formatted: formattedAmount,
-            usdValue: formattedAmount * backendReward.usdPrice,
-        };
-
-        const rawRemaining = BigInt(backendReward.remaining);
-        const formattedRemaining = Number(
-            formatUnits(rawRemaining, backendReward.decimals),
+        const remaining = stringToUsdPricedOnChainAmount(
+            backendReward.remaining,
+            backendReward.decimals,
+            backendReward.usdPrice,
         );
-        const remaining: UsdPricedOnChainAmount = {
-            raw: rawRemaining,
-            formatted: formattedRemaining,
-            usdValue: formattedRemaining * backendReward.usdPrice,
-        };
-
-        amount.usdValue = amount.formatted * backendReward.usdPrice;
-        remaining.usdValue = remaining.formatted * backendReward.usdPrice;
 
         rewards.amountUsdValue += amount.usdValue;
         rewards.remainingUsdValue += remaining.usdValue;
@@ -412,7 +465,55 @@ function processCampaign(backendCampaign: BackendCampaign): Campaign {
             ...backendCampaign.pool,
         },
         rewards,
+        points: backendCampaign.points
+            ? stringToOnChainAmount(backendCampaign.points, 18)
+            : null,
     };
 
     return campaign;
+}
+
+function stringToOnChainAmount(value: string, decimals: number): OnChainAmount {
+    const rawAmount = BigInt(value);
+    const formattedAmount = Number(formatUnits(rawAmount, decimals));
+    return {
+        raw: rawAmount,
+        formatted: formattedAmount,
+    };
+}
+
+function stringToUsdPricedOnChainAmount(
+    value: string,
+    decimals: number,
+    usdPrice: number,
+): UsdPricedOnChainAmount {
+    const { raw, formatted } = stringToOnChainAmount(value, decimals);
+    return {
+        raw,
+        formatted,
+        usdValue: formatted * usdPrice,
+    };
+}
+
+async function fetchWhitelistedTokens(
+    url: URL,
+): Promise<WhitelistedErc20Token[]> {
+    const response = await fetch(url);
+    if (!response.ok)
+        throw new Error(
+            `response not ok while fetching whitelisted tokens: ${await response.text()}`,
+        );
+
+    const whitelistedTokens =
+        (await response.json()) as BackendWhitelistedErc20Token[];
+
+    return whitelistedTokens.map((token) => {
+        return {
+            ...token,
+            minimumRate: stringToOnChainAmount(
+                token.minimumRate,
+                token.decimals,
+            ),
+        };
+    });
 }
