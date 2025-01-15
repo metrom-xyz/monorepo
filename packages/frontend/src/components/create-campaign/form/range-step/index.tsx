@@ -63,7 +63,7 @@ export function RangeStep({
     const prevRangeSpecification = usePrevious(priceRangeSpecification);
     const chainId = useChainId();
     const { liquidityDensity, loading: loadingLiquidityDensity } =
-        useLiquidityDensity(pool, chainId, enabled);
+        useLiquidityDensity(pool, chainId, 3000, enabled);
 
     const unsavedChanges = useMemo(() => {
         return (
@@ -112,6 +112,11 @@ export function RangeStep({
             setError("errors.malformed");
         else setError("");
     }, [from, to]);
+
+    useEffect(() => {
+        setFrom(undefined);
+        setTo(undefined);
+    }, [pool]);
 
     useEffect(() => {
         setOpen(enabled);

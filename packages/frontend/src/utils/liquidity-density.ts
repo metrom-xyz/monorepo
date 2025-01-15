@@ -1,3 +1,5 @@
+import type { LiquidityDensityChartData } from "../components/liquidity-density-chart";
+
 export function zoom<T>(
     chartData: T[],
     activeIndex: number,
@@ -15,4 +17,14 @@ export function zoom<T>(
     );
 
     return chartData.slice(sliceStart, sliceEnd);
+}
+
+export function closestTick(data: LiquidityDensityChartData[], tick: number) {
+    return data.reduce(
+        (closest: number, current) =>
+            Math.abs(current.idx - tick) < Math.abs(closest - tick)
+                ? current.idx
+                : closest,
+        0,
+    );
 }

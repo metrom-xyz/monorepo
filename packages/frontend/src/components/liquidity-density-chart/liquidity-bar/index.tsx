@@ -1,3 +1,4 @@
+import { closestTick } from "@/src/utils/liquidity-density";
 import type { LiquidityDensityChartData } from "..";
 
 import styles from "./styles.module.css";
@@ -62,27 +63,20 @@ export function LiquidityBar({
         const chartDataInRange = chartData.filter(
             (data) => data.idx >= from && data.idx < to,
         );
-        const closestFrom = chartDataInRange.reduce(
-            (closest: number, current) =>
-                Math.abs(current.idx - from) < Math.abs(closest - from)
-                    ? current.idx
-                    : closest,
-            0,
-        );
-        const closestTo = chartDataInRange.reduce(
-            (closest: number, current) =>
-                Math.abs(current.idx - to) < Math.abs(closest - to)
-                    ? current.idx
-                    : closest,
-            0,
-        );
+        const closestFrom = closestTick(chartDataInRange, from);
+        const closestTo = closestTick(chartDataInRange, to);
 
-        if (closestFrom === idx || closestTo === idx) {
+        // display the price % change only for the range bounds
+        // and hide it if it goes out of chart bounds
+        if (
+            (closestFrom === idx || closestTo === idx) &&
+            index !== 0 &&
+            index !== chartData.length - 1
+        )
             percentage =
                 (idx < activeIdx ? -1 : 1) *
                 (Math.abs(price0 - currentPrice) / currentPrice) *
                 100;
-        }
     }
 
     let opacity = 1;

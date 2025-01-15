@@ -17,7 +17,7 @@ export function PriceRange({ campaign }: PriceRangeProps) {
     const t = useTranslations("campaignDetails.priceRange");
 
     const { liquidityDensity, loading: loadingLiquidityDensity } =
-        useLiquidityDensity(campaign?.pool, campaign?.chainId);
+        useLiquidityDensity(campaign?.pool, campaign?.chainId, 3000);
 
     if (!campaign?.specification?.priceRange) return null;
 
