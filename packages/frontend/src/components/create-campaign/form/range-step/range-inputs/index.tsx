@@ -6,7 +6,7 @@ import {
     priceToTick,
     getTick,
 } from "@metrom-xyz/sdk";
-import { useCallback } from "react";
+import { useCallback, useEffect } from "react";
 
 import styles from "./styles.module.css";
 
@@ -37,6 +37,11 @@ export function RangeInputs({
     onToChange,
 }: RangeInputsProps) {
     const t = useTranslations("newCampaign.form.range");
+
+    useEffect(() => {
+        onFromChange(undefined);
+        onToChange(undefined);
+    }, [onFromChange, onToChange, pool]);
 
     const handleFromOnChange = useCallback(
         (value: number | undefined) => {
