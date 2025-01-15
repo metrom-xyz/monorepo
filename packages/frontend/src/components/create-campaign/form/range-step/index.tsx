@@ -114,11 +114,6 @@ export function RangeStep({
     }, [from, to]);
 
     useEffect(() => {
-        setFrom(undefined);
-        setTo(undefined);
-    }, [pool]);
-
-    useEffect(() => {
         setOpen(enabled);
     }, [enabled]);
 
@@ -274,6 +269,7 @@ export function RangeStep({
                             {t("chart")}
                         </Typography>
                         <LiquidityDensityChart
+                            header
                             error={!!error}
                             loading={loadingLiquidityDensity}
                             from={from?.tick}

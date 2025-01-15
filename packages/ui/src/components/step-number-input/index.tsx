@@ -57,7 +57,7 @@ export const StepNumberInput = forwardRef<
         type: "text",
         thousandSeparator: " ",
         decimalSeparator: ".",
-        value,
+        value: value === undefined ? "" : value,
         allowNegative,
         ...rest,
     });
