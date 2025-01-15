@@ -9,6 +9,7 @@ const SURROUNDING_AMOUNT = 200;
 export function useLiquidityDensity(
     pool?: Pool,
     chainId?: SupportedChain,
+    computeAmount?: number,
     enabled: boolean = true,
 ): {
     loading: boolean;
@@ -28,6 +29,7 @@ export function useLiquidityDensity(
                     chainId,
                     pool,
                     surroundingAmount: SURROUNDING_AMOUNT,
+                    computeAmount,
                 });
             } catch (error) {
                 throw new Error(
