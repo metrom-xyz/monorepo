@@ -52,7 +52,6 @@ import { getPrice } from "../utils";
 
 const MIN_TICK = -887272;
 const MAX_TICK = -MIN_TICK;
-const COMPUTE_TICKS_AMOUNT = 1500;
 const TICK_AVERAGE_FACTOR = 100;
 const BI_1_000_000 = BigInt(1_000_000);
 
@@ -104,6 +103,7 @@ export interface FetchInitializedTicksParams {
     chainId: number;
     pool: AmmPool;
     surroundingAmount: number;
+    computeAmount?: number;
 }
 
 interface InitializedTick {
@@ -630,7 +630,7 @@ export class MetromApiClient {
             initializedTicksByIdx,
             activeTickProcessed,
             params.pool,
-            COMPUTE_TICKS_AMOUNT,
+            params.computeAmount,
             Direction.Asc,
         );
 
@@ -638,7 +638,7 @@ export class MetromApiClient {
             initializedTicksByIdx,
             activeTickProcessed,
             params.pool,
-            COMPUTE_TICKS_AMOUNT,
+            params.computeAmount,
             Direction.Desc,
         );
 
@@ -900,7 +900,7 @@ function computeSurroundingTicks(
     initializedTicksByIdx: Record<number, InitializedTick>,
     activeTickProcessed: ProcessedTick,
     pool: AmmPool,
-    numSurroundingTicks: number,
+    numSurroundingTicks: number = 1000,
     direction: Direction,
 ): Tick[] {
     let previousTickProcessed: ProcessedTick = {
