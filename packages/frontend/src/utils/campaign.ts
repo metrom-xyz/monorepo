@@ -48,14 +48,7 @@ export const getCampaignPreviewApr = (campaign: CampaignPayload) => {
     const duration = campaign.endDate.unix() - campaign.startDate.unix();
     if (duration <= 0) return null;
 
-    const { kpiSpecification } = campaign;
-
-    const tvl = kpiSpecification
-        ? kpiSpecification.goal.upperUsdTarget
-        : campaign.pool.usdTvl;
-    if (tvl <= 0) return null;
-
-    const rewardsTvlRatio = rewardsUsdValue / tvl;
+    const rewardsTvlRatio = rewardsUsdValue / campaign.pool.usdTvl;
     const yearMultiplier = SECONDS_IN_YEAR / duration;
     const apr = rewardsTvlRatio * yearMultiplier * 100;
 
