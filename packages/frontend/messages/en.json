@@ -441,8 +441,5 @@
             "reimbursed": "Reimbursed"
         }
     },
-    "apr": {
-        "upTo": "up to",
-        "apr": "APR"
-    }
+    "apr": "APR"
 }
