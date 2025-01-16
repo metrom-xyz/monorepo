@@ -1,42 +1,26 @@
 import type { SupportedChain } from "@metrom-xyz/contracts";
 import { useChainId } from "wagmi";
 import { metromApiClient } from "../commons";
-import { useEffect, useState } from "react";
 import type { FeeToken } from "@metrom-xyz/sdk";
+import { useQuery } from "@tanstack/react-query";
 
 export function useFeeTokens(): {
     loading: boolean;
-    tokens: FeeToken[];
+    tokens: FeeToken[] | undefined;
 } {
     const chainId: SupportedChain = useChainId();
 
-    const [tokens, setTokens] = useState<FeeToken[]>([]);
-    const [loading, setLoading] = useState(false);
-
-    useEffect(() => {
-        let cancelled = false;
-
-        async function fetchData() {
-            if (!cancelled) setLoading(false);
-            if (!cancelled) setTokens([]);
-
+    const { data: tokens, isPending: loading } = useQuery({
+        queryKey: ["fee-tokens", chainId],
+        queryFn: async ({ queryKey }) => {
+            const chainId = queryKey[1] as SupportedChain;
             try {
-                if (!cancelled) setLoading(true);
-                const tokens = await metromApiClient.fetchFeeTokens({
-                    chainId,
-                });
-                if (!cancelled) setTokens(tokens);
+                return await metromApiClient.fetchFeeTokens({ chainId });
             } catch (error) {
-                console.error(`Could not fetch fee tokens: ${error}`);
-            } finally {
-                if (!cancelled) setLoading(false);
+                throw new Error(`Could not fetch fee tokens: ${error}`);
             }
-        }
-        fetchData();
-        return () => {
-            cancelled = true;
-        };
-    }, [chainId]);
+        },
+    });
 
     return {
         loading,
