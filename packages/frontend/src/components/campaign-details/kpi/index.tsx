@@ -2,10 +2,12 @@ import { TextField, Typography } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
 import { formatPercentage, formatUsdAmount } from "@/src/utils/format";
 import {
+    DistributablesType,
     KpiMetric,
     Status,
+    TargetType,
+    type DistributablesCampaign,
     type KpiSpecification,
-    type TokensCampaign,
 } from "@metrom-xyz/sdk";
 import { useMemo } from "react";
 import { KpiSimulationChart } from "../../kpi-simulation-chart";
@@ -16,7 +18,7 @@ import { AverageDistributionChart } from "./average-distribution-chart";
 import styles from "./styles.module.css";
 
 interface KpiProps {
-    campaign?: TokensCampaign;
+    campaign?: DistributablesCampaign<DistributablesType.Tokens>;
     loading: boolean;
 }
 
@@ -50,7 +52,7 @@ export function Kpi({ campaign, loading }: KpiProps) {
 
     if (
         !campaign?.specification?.kpi ||
-        campaign.target.type !== "amm-pool-liquidity"
+        !campaign.isTargeting(TargetType.AmmPoolLiquidity)
     )
         return null;
 

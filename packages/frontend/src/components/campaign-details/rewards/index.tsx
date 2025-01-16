@@ -4,12 +4,15 @@ import dayjs from "dayjs";
 import { useMemo } from "react";
 import { formatTokenAmount, formatUsdAmount } from "@/src/utils/format";
 import { RemoteLogo } from "../../remote-logo";
-import type { TokensCampaign } from "@metrom-xyz/sdk";
+import type {
+    DistributablesCampaign,
+    DistributablesType,
+} from "@metrom-xyz/sdk";
 
 import styles from "./styles.module.css";
 
 interface RewardsProps {
-    campaign: TokensCampaign;
+    campaign: DistributablesCampaign<DistributablesType.Tokens>;
     loading: boolean;
 }
 

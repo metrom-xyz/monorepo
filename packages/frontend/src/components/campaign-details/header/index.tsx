@@ -11,12 +11,13 @@ import { formatPercentage } from "@/src/utils/format";
 import { trackFathomEvent } from "@/src/utils/fathom";
 import { PoolRemoteLogo } from "../../pool-remote-logo";
 import { AprChip } from "../../apr-chip";
-import type { NamedCampaign } from "@/src/hooks/useCampaigns";
+import { Campaign, DistributablesType, TargetType } from "@metrom-xyz/sdk";
 
 import styles from "./styles.module.css";
+import { getCampaigName } from "@/src/utils/campaign";
 
 interface HeaderProps {
-    campaign: NamedCampaign;
+    campaign: Campaign;
 }
 
 export function Header({ campaign }: HeaderProps) {
@@ -27,10 +28,13 @@ export function Header({ campaign }: HeaderProps) {
         router.push("/claims");
     }, [router]);
 
+    if (!campaign.isTargeting(TargetType.AmmPoolLiquidity)) return null;
+
     const depositLink = getPoolAddLiquidityLink(campaign);
-    const explorerLink =
-        campaign.target.type === "amm-pool-liquidity" &&
-        getAddressExplorerLink(campaign.target.pool.address, campaign.chainId);
+    const explorerLink = getAddressExplorerLink(
+        campaign.target.pool.address,
+        campaign.chainId,
+    );
 
     function handleAddLiquidityOnClick() {
         trackFathomEvent("CLICK_POOL_DEPOSIT");
@@ -39,9 +43,6 @@ export function Header({ campaign }: HeaderProps) {
     function handleExploreOnClick() {
         trackFathomEvent("CLICK_DEX_EXPLORE");
     }
-
-    // TODO: implement header for different campaign types
-    if (campaign.target.type !== "amm-pool-liquidity") return null;
 
     return (
         <div className={styles.root}>
@@ -56,7 +57,7 @@ export function Header({ campaign }: HeaderProps) {
                         }))}
                     />
                     <Typography size="xl4" weight="medium">
-                        {campaign.name}
+                        {getCampaigName(campaign)}
                     </Typography>
                     {campaign.target.pool.fee && (
                         <Typography size="lg" weight="medium" light>
@@ -80,7 +81,7 @@ export function Header({ campaign }: HeaderProps) {
                     >
                         {t("deposit")}
                     </Button>
-                    {campaign.distributables.type === "tokens" && (
+                    {campaign.isDistributing(DistributablesType.Tokens) && (
                         <Button size="sm" onClick={handleClaimOnClick}>
                             {t("claim")}
                         </Button>
@@ -104,14 +105,15 @@ export function Header({ campaign }: HeaderProps) {
                         {t("explorer")}
                     </Button>
                 </div>
-                {campaign.apr && campaign.distributables.type === "tokens" && (
-                    <AprChip
-                        prefix
-                        size="lg"
-                        apr={campaign.apr}
-                        kpi={!!campaign.specification?.kpi}
-                    />
-                )}
+                {campaign.apr &&
+                    campaign.isDistributing(DistributablesType.Tokens) && (
+                        <AprChip
+                            prefix
+                            size="lg"
+                            apr={campaign.apr}
+                            kpi={!!campaign.specification?.kpi}
+                        />
+                    )}
             </div>
         </div>
     );

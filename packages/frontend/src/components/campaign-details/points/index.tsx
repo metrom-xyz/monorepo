@@ -3,12 +3,15 @@ import { useTranslations } from "next-intl";
 import dayjs from "dayjs";
 import { useMemo } from "react";
 import { formatTokenAmount } from "@/src/utils/format";
-import type { PointsCampaign } from "@metrom-xyz/sdk";
+import type {
+    DistributablesCampaign,
+    DistributablesType,
+} from "@metrom-xyz/sdk";
 
 import styles from "./styles.module.css";
 
 interface PointsProps {
-    campaign: PointsCampaign;
+    campaign: DistributablesCampaign<DistributablesType.Points>;
     loading: boolean;
 }
 

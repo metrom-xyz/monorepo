@@ -1,4 +1,8 @@
-import { SupportedDex, type Campaign } from "@metrom-xyz/sdk";
+import {
+    SupportedDex,
+    TargetType,
+    type TargetedCampaign,
+} from "@metrom-xyz/sdk";
 import { SupportedChain } from "@metrom-xyz/contracts";
 import type { Dex } from "../types";
 import { CHAIN_DATA } from "../commons";
@@ -13,10 +17,8 @@ export function getDex(
 }
 
 export function getPoolAddLiquidityLink(
-    campaign: Campaign,
+    campaign: TargetedCampaign<TargetType.AmmPoolLiquidity>,
 ): string | undefined {
-    if (campaign.target.type !== "amm-pool-liquidity") return undefined;
-
     const { chainId, target } = campaign;
 
     const dex = getDex(chainId, target.pool.dex);

@@ -1,16 +1,15 @@
 import type { SupportedChain } from "@metrom-xyz/contracts";
 import type { Hex } from "viem";
 import { metromApiClient } from "../commons";
-import { getCampaignName } from "../utils/campaign";
-import type { NamedCampaign } from "./useCampaigns";
 import { useQuery } from "@tanstack/react-query";
+import type { Campaign } from "@metrom-xyz/sdk";
 
 export function useCampaign(
     chainId?: SupportedChain,
     id?: Hex,
 ): {
     loading: boolean;
-    campaign?: NamedCampaign;
+    campaign?: Campaign;
 } {
     const { data: campaign, isPending: loading } = useQuery({
         queryKey: ["campaign", chainId, id],
@@ -20,15 +19,10 @@ export function useCampaign(
             if (!chainId || !id) return undefined;
 
             try {
-                const campaign = await metromApiClient.fetchCampaign({
+                return await metromApiClient.fetchCampaign({
                     chainId,
                     id,
                 });
-
-                return {
-                    ...campaign,
-                    name: getCampaignName(campaign),
-                };
             } catch (error) {
                 throw new Error(
                     `Could not fetch campaign ${id} for chain with id ${chainId}: ${error}`,

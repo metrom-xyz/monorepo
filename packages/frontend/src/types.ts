@@ -24,8 +24,8 @@ export interface Dex {
 }
 
 export enum RestrictionType {
-    blacklist = "blacklist",
-    whitelist = "whitelist",
+    Blacklist = "blacklist",
+    Whitelist = "whitelist",
 }
 
 export enum RewardType {

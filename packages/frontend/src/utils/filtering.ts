@@ -1,11 +1,17 @@
 import { isAddress } from "viem";
-import { type AmmPool, type Erc20Token, Status } from "@metrom-xyz/sdk";
-import type { NamedCampaign } from "../hooks/useCampaigns";
+import {
+    type AmmPool,
+    Campaign,
+    type Erc20Token,
+    Status,
+    TargetType,
+} from "@metrom-xyz/sdk";
 import { FilterableStatus } from "../components/campaigns";
+import { getCampaigName } from "./campaign";
 
-export const sortCampaigns = (campaigns: NamedCampaign[]) => {
+export const sortCampaigns = (campaigns: Campaign[]) => {
     const clusteredCampaigns = campaigns.reduce(
-        (clustered: Record<Status, NamedCampaign[]>, campaign) => {
+        (clustered: Record<Status, Campaign[]>, campaign) => {
             clustered[campaign.status].push(campaign);
             return clustered;
         },
@@ -34,7 +40,7 @@ export const sortCampaigns = (campaigns: NamedCampaign[]) => {
 };
 
 export const filterCampaigns = (
-    campaigns: NamedCampaign[],
+    campaigns: Campaign[],
     status: FilterableStatus,
     chainId: number | null,
     searchQuery: string,
@@ -66,14 +72,14 @@ export const filterCampaigns = (
     if (isAddress(searchQuery)) {
         const lowercaseSearchQuery = searchQuery.toLowerCase();
 
-        const campaignByPool = filteredCampaigns.filter(
+        const campaignByAddress = filteredCampaigns.filter(
             (campaign) =>
-                campaign.target.type === "amm-pool-liquidity" &&
+                campaign.isTargeting(TargetType.AmmPoolLiquidity) &&
                 campaign.target.pool.address.toLowerCase() ===
                     lowercaseSearchQuery,
         );
 
-        return campaignByPool;
+        return campaignByAddress;
     }
 
     const lowercaseSearchParts = searchQuery
@@ -83,7 +89,7 @@ export const filterCampaigns = (
         .filter((s) => s.length > 0 && s !== "/");
     if (lowercaseSearchParts.length === 0) return filteredCampaigns;
     return filteredCampaigns.filter((campaign) => {
-        return matchesSearch(campaign.name, lowercaseSearchParts);
+        return matchesSearch(getCampaigName(campaign), lowercaseSearchParts);
     });
 };
 

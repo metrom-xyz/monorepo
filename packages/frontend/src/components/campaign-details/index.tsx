@@ -10,9 +10,9 @@ import { Details } from "./details";
 import { Rewards } from "./rewards";
 import { Points } from "./points";
 import { Leaderboard } from "./leaderboard";
-import type { PointsCampaign, TokensCampaign } from "@metrom-xyz/sdk";
 import { Kpi } from "./kpi";
 import { PageNotFound } from "../page-not-found";
+import { DistributablesType } from "@metrom-xyz/sdk";
 
 import styles from "./styles.module.css";
 
@@ -33,8 +33,8 @@ export function CampaignDetails({ chain, campaignId }: CampaignDetailsProps) {
     if (prevLoadingCampaign && !loadingCampaign && !campaign)
         return <PageNotFound message={t("notFound")} />;
 
-    const tokensCampaign = campaign?.distributables.type === "tokens";
-    const pointsCampaign = campaign?.distributables.type === "points";
+    const tokensCampaign = campaign?.isDistributing(DistributablesType.Tokens);
+    const pointsCampaign = campaign?.isDistributing(DistributablesType.Points);
 
     return (
         <div className={styles.root}>
@@ -48,22 +48,13 @@ export function CampaignDetails({ chain, campaignId }: CampaignDetailsProps) {
             <div className={styles.contentWrapper}>
                 <Details campaign={campaign} loading={loadingCampaign} />
                 {tokensCampaign && (
-                    <Rewards
-                        campaign={campaign as TokensCampaign}
-                        loading={loadingCampaign}
-                    />
+                    <Rewards campaign={campaign} loading={loadingCampaign} />
                 )}
                 {pointsCampaign && (
-                    <Points
-                        campaign={campaign as PointsCampaign}
-                        loading={loadingCampaign}
-                    />
+                    <Points campaign={campaign} loading={loadingCampaign} />
                 )}
                 {tokensCampaign && (
-                    <Kpi
-                        campaign={campaign as TokensCampaign}
-                        loading={loadingCampaign}
-                    />
+                    <Kpi campaign={campaign} loading={loadingCampaign} />
                 )}
                 <Leaderboard campaign={campaign} loading={loadingCampaign} />
             </div>

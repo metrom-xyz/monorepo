@@ -12,9 +12,8 @@ import type {
     BackendUsdPricedErc20Token,
 } from "./types/commons";
 import {
-    Status,
     type AmmPoolLiquidityTarget,
-    type Campaign,
+    Campaign,
     type LiquityV2DebtBrand,
     type LiquityV2DebtTarget,
     type PointDistributables,
@@ -531,19 +530,6 @@ function processCampaignsResponse(
     const campaigns = [];
 
     for (const backendCampaign of response.campaigns) {
-        const from = Number(backendCampaign.from);
-        const to = Number(backendCampaign.to);
-
-        let status;
-        const now = Number(Math.floor(Date.now() / 1000));
-        if (now < from) {
-            status = Status.Upcoming;
-        } else if (now > to) {
-            status = Status.Ended;
-        } else {
-            status = Status.Live;
-        }
-
         let target;
         switch (backendCampaign.target.type) {
             case "amm-pool-liquidity": {
@@ -623,12 +609,20 @@ function processCampaignsResponse(
             }
         }
 
-        campaigns.push({
-            ...backendCampaign,
-            status,
-            target,
-            distributables,
-        });
+        campaigns.push(
+            new Campaign(
+                backendCampaign.chainId,
+                backendCampaign.id,
+                backendCampaign.from,
+                backendCampaign.to,
+                backendCampaign.createdAt,
+                target,
+                distributables,
+                backendCampaign.snapshottedAt,
+                backendCampaign.specification,
+                backendCampaign.apr,
+            ),
+        );
     }
 
     return campaigns;

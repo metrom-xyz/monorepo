@@ -3,18 +3,22 @@ import { Pool, SkeletonPool } from "./pool";
 import { SkeletonStatus, Status } from "./status";
 import { Rewards, SkeletonRewards } from "./rewards";
 import { Chain, SkeletonChain } from "./chain";
-import type { NamedCampaign } from "@/src/hooks/useCampaigns";
 import { Link } from "@/src/i18n/routing";
 import { Card } from "@metrom-xyz/ui";
 import classNames from "classnames";
 import { Dex, SkeletonDex } from "./dex";
 import { Points } from "./points";
 import dayjs from "dayjs";
+import {
+    DistributablesType,
+    Campaign as SdkCampaign,
+    TargetType,
+} from "@metrom-xyz/sdk";
 
 import styles from "./styles.module.css";
 
 interface CampaignProps {
-    campaign: NamedCampaign;
+    campaign: SdkCampaign;
 }
 
 // TODO: reinstate the arrow on hover, but on click, bring the user
@@ -25,28 +29,42 @@ export function Campaign({ campaign }: CampaignProps) {
         .diff(dayjs.unix(campaign.from), "hours", false);
     const daysDuration = hoursDuration / 24;
 
+    const distributesTokens = campaign.isDistributing(
+        DistributablesType.Tokens,
+    );
+    const distributesPoints = campaign.isDistributing(
+        DistributablesType.Points,
+    );
+    const targetsAmmPoolLiquidity = campaign.isTargeting(
+        TargetType.AmmPoolLiquidity,
+    );
+
     return (
         <Link href={`/campaigns/${campaign.chainId}/${campaign.id}`}>
             <Card className={classNames(styles.root, styles.noMobile)}>
                 <Chain id={campaign.chainId} />
-                <Dex campaign={campaign} />
-                <div className={styles.poolContainer}>
-                    <Pool campaign={campaign} />
-                </div>
+                {targetsAmmPoolLiquidity && (
+                    <>
+                        <Dex campaign={campaign} />
+                        <div className={styles.poolContainer}>
+                            <Pool campaign={campaign} />
+                        </div>
+                    </>
+                )}
                 <Status
                     from={campaign.from}
                     to={campaign.to}
                     status={campaign.status}
                 />
                 <Apr apr={campaign.apr} kpi={!!campaign.specification?.kpi} />
-                {campaign.distributables.type === "points" && (
+                {distributesPoints && (
                     <Points
                         status={campaign.status}
                         amount={campaign.distributables.amount}
                         daysDuration={daysDuration}
                     />
                 )}
-                {campaign.distributables.type === "tokens" && (
+                {distributesTokens && (
                     <Rewards
                         status={campaign.status}
                         daysDuration={daysDuration}
@@ -58,8 +76,12 @@ export function Campaign({ campaign }: CampaignProps) {
             <Card className={styles.mobileCard}>
                 <div className={styles.topRow}>
                     <Chain id={campaign.chainId} />
-                    <Dex campaign={campaign} />
-                    <Pool campaign={campaign} />
+                    {targetsAmmPoolLiquidity && (
+                        <>
+                            <Dex campaign={campaign} />
+                            <Pool campaign={campaign} />
+                        </>
+                    )}
                 </div>
                 <div className={styles.bottomRow}>
                     <Status
@@ -71,14 +93,14 @@ export function Campaign({ campaign }: CampaignProps) {
                         apr={campaign.apr}
                         kpi={!!campaign.specification?.kpi}
                     />
-                    {campaign.distributables.type === "points" && (
+                    {distributesPoints && (
                         <Points
                             status={campaign.status}
                             amount={campaign.distributables.amount}
                             daysDuration={daysDuration}
                         />
                     )}
-                    {campaign.distributables.type === "tokens" && (
+                    {distributesTokens && (
                         <Rewards
                             status={campaign.status}
                             daysDuration={daysDuration}
