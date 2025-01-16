@@ -39,10 +39,10 @@ export function CreateCampaign() {
             !payload.pool ||
             !payload.startDate ||
             !payload.endDate ||
-            (payload.rewardType === RewardType.tokens &&
+            (payload.rewardType === RewardType.Tokens &&
                 (!payload.tokens || payload.tokens.length === 0)) ||
-            (payload.rewardType === RewardType.points &&
-                (!payload.feeToken || !payload.points)) ||
+            (payload.rewardType === RewardType.Points &&
+                (!payload.fee || !payload.points)) ||
             Object.values(payloadErrors).some((error) => !!error)
         );
     }, [
@@ -53,7 +53,7 @@ export function CreateCampaign() {
         payload.rewardType,
         payload.tokens,
         payload.points,
-        payload.feeToken,
+        payload.fee,
         payloadErrors,
     ]);
 

@@ -12,7 +12,6 @@ import { trackFathomEvent } from "@/src/utils/fathom";
 import { PoolRemoteLogo } from "../../pool-remote-logo";
 import { AprChip } from "../../apr-chip";
 import type { NamedCampaign } from "@/src/hooks/useCampaigns";
-import { CampaignType } from "@metrom-xyz/sdk";
 
 import styles from "./styles.module.css";
 
@@ -30,8 +29,8 @@ export function Header({ campaign }: HeaderProps) {
 
     const depositLink = getPoolAddLiquidityLink(campaign);
     const explorerLink =
-        campaign.type === CampaignType.AmmPoolLiquidity &&
-        getAddressExplorerLink(campaign.target.address, campaign.chainId);
+        campaign.target.type === "amm-pool-liquidity" &&
+        getAddressExplorerLink(campaign.target.pool.address, campaign.chainId);
 
     function handleAddLiquidityOnClick() {
         trackFathomEvent("CLICK_POOL_DEPOSIT");
@@ -42,7 +41,7 @@ export function Header({ campaign }: HeaderProps) {
     }
 
     // TODO: implement header for different campaign types
-    if (campaign.type !== CampaignType.AmmPoolLiquidity) return null;
+    if (campaign.target.type !== "amm-pool-liquidity") return null;
 
     return (
         <div className={styles.root}>
@@ -51,7 +50,7 @@ export function Header({ campaign }: HeaderProps) {
                     <PoolRemoteLogo
                         chain={campaign.chainId}
                         size="xl"
-                        tokens={campaign.target.tokens.map((token) => ({
+                        tokens={campaign.target.pool.tokens.map((token) => ({
                             address: token.address,
                             defaultText: token.symbol,
                         }))}
@@ -59,9 +58,9 @@ export function Header({ campaign }: HeaderProps) {
                     <Typography size="xl4" weight="medium">
                         {campaign.name}
                     </Typography>
-                    {campaign.target.fee && (
+                    {campaign.target.pool.fee && (
                         <Typography size="lg" weight="medium" light>
-                            {formatPercentage(campaign.target.fee)}
+                            {formatPercentage(campaign.target.pool.fee)}
                         </Typography>
                     )}
                 </div>
@@ -81,7 +80,7 @@ export function Header({ campaign }: HeaderProps) {
                     >
                         {t("deposit")}
                     </Button>
-                    {campaign.rewards.length > 0 && (
+                    {campaign.distributables.type === "tokens" && (
                         <Button size="sm" onClick={handleClaimOnClick}>
                             {t("claim")}
                         </Button>
@@ -105,7 +104,7 @@ export function Header({ campaign }: HeaderProps) {
                         {t("explorer")}
                     </Button>
                 </div>
-                {campaign.apr && campaign.rewards.length > 0 && (
+                {campaign.apr && campaign.distributables.type === "tokens" && (
                     <AprChip
                         prefix
                         size="lg"

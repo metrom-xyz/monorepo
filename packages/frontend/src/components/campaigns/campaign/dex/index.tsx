@@ -4,7 +4,6 @@ import { Popover, Skeleton, Typography } from "@metrom-xyz/ui";
 import { useDexesInChain } from "@/src/hooks/useDexesInChain";
 import type { NamedCampaign } from "@/src/hooks/useCampaigns";
 import { useRef, useState } from "react";
-import { CampaignType } from "@metrom-xyz/sdk";
 
 import styles from "./styles.module.css";
 
@@ -19,9 +18,11 @@ export function Dex({ campaign }: DexProps) {
     const [dexDetails, setDexDetails] = useState<HTMLDivElement | null>(null);
     const dexDetailsPopoverRef = useRef<HTMLDivElement>(null);
 
-    if (campaign.type !== CampaignType.AmmPoolLiquidity) return null;
+    let campaignDex;
+    if (campaign.target.type !== "amm-pool-liquidity") return null;
+    else campaignDex = campaign.target.pool.dex;
 
-    const dex = dexes.find((dex) => dex.slug === campaign.target.dex);
+    const dex = dexes.find((dex) => dex.slug === campaignDex);
     const DexLogo = dex?.logo;
 
     function handleDexDetailsPopoverOpen() {

@@ -1,9 +1,4 @@
-import {
-    CampaignType,
-    SupportedDex,
-    type Campaign,
-    type Pool,
-} from "@metrom-xyz/sdk";
+import { SupportedDex, type Campaign } from "@metrom-xyz/sdk";
 import { SupportedChain } from "@metrom-xyz/contracts";
 import type { Dex } from "../types";
 import { CHAIN_DATA } from "../commons";
@@ -20,20 +15,23 @@ export function getDex(
 export function getPoolAddLiquidityLink(
     campaign: Campaign,
 ): string | undefined {
-    if (campaign.type !== CampaignType.AmmPoolLiquidity) return undefined;
+    if (campaign.target.type !== "amm-pool-liquidity") return undefined;
 
     const { chainId, target } = campaign;
 
-    const dex = getDex(chainId, target.dex);
+    const dex = getDex(chainId, target.pool.dex);
     if (!dex || !dex.addLiquidityUrl) return;
 
     if ([SupportedDex.UniswapV3, SupportedDex.Panko].includes(dex.slug))
         return dex.addLiquidityUrl.replace(
             "{target_pool}",
-            `${target.tokens.map((token) => token.address).join("/")}`,
+            `${target.pool.tokens.map((token) => token.address).join("/")}`,
         );
 
-    return dex.addLiquidityUrl.replace("{target_pool}", `${target.address}`);
+    return dex.addLiquidityUrl.replace(
+        "{target_pool}",
+        `${target.pool.address}`,
+    );
 }
 
 export function getAddressExplorerLink(

@@ -4,11 +4,7 @@ import {
     Typography,
     type NumberFormatValues,
 } from "@metrom-xyz/ui";
-import type {
-    Erc20Token,
-    UsdPricedOnChainAmount,
-    WhitelistedErc20TokenAmount,
-} from "@metrom-xyz/sdk";
+import type { Erc20Token, UsdPricedOnChainAmount } from "@metrom-xyz/sdk";
 import { useCallback, useEffect, useState } from "react";
 import { useWatchBalance } from "@/src/hooks/useWatchBalance";
 import { useAccount, useChainId } from "wagmi";
@@ -18,6 +14,7 @@ import classNames from "classnames";
 import { formatUsdAmount } from "@/src/utils/format";
 import { RemoteLogo } from "@/src/components/remote-logo";
 import { MAX_U256 } from "@/src/commons";
+import type { WhitelistedErc20TokenAmount } from "@/src/types";
 
 import styles from "./styles.module.css";
 

@@ -22,7 +22,7 @@ interface RewardsStepProps {
     rewardType?: CampaignPayload["rewardType"];
     tokens?: CampaignPayload["tokens"];
     points?: CampaignPayload["points"];
-    feeToken?: CampaignPayload["feeToken"];
+    fee?: CampaignPayload["fee"];
     startDate?: CampaignPayload["startDate"];
     endDate?: CampaignPayload["endDate"];
     onRewardsChange: (rewards: CampaignPayloadPart) => void;
@@ -35,14 +35,14 @@ export function RewardsStep({
     rewardType,
     tokens,
     points,
-    feeToken,
+    fee,
     startDate,
     endDate,
     onRewardsChange,
     onError,
 }: RewardsStepProps) {
     const t = useTranslations("newCampaign.form.rewards");
-    const [type, setType] = useState(rewardType || RewardType.tokens);
+    const [type, setType] = useState(rewardType || RewardType.Tokens);
     const [error, setError] = useState("");
 
     const campaignDuration = useMemo(() => {
@@ -60,12 +60,12 @@ export function RewardsStep({
 
     useEffect(() => {
         if (rewardType) return;
-        onRewardsChange({ rewardType: RewardType.tokens });
+        onRewardsChange({ rewardType: RewardType.Tokens });
     }, [rewardType, onRewardsChange]);
 
     useEffect(() => {
         if (pool) return;
-        setType(RewardType.tokens);
+        setType(RewardType.Tokens);
     }, [pool]);
 
     const handleOnRewardTypeSwitch = useCallback(
@@ -75,7 +75,7 @@ export function RewardsStep({
                 rewardType: type,
                 tokens: undefined,
                 points: undefined,
-                feeToken: undefined,
+                fee: undefined,
             });
         },
         [onRewardsChange],
@@ -122,10 +122,10 @@ export function RewardsStep({
                             onChange={handleOnRewardTypeSwitch}
                         >
                             <Tab
-                                value={RewardType.tokens}
+                                value={RewardType.Tokens}
                                 className={classNames(styles.tab, {
                                     [styles.activeTab]:
-                                        type === RewardType.tokens,
+                                        type === RewardType.Tokens,
                                 })}
                             >
                                 <Typography weight="medium" size="sm">
@@ -133,10 +133,10 @@ export function RewardsStep({
                                 </Typography>
                             </Tab>
                             <Tab
-                                value={RewardType.points}
+                                value={RewardType.Points}
                                 className={classNames(styles.tab, {
                                     [styles.activeTab]:
-                                        type === RewardType.points,
+                                        type === RewardType.Points,
                                 })}
                             >
                                 <Typography weight="medium" size="sm">
@@ -150,16 +150,16 @@ export function RewardsStep({
                 className={{ root: !disabled ? styles.stepPreview : "" }}
             >
                 <div className={styles.previewWrapper}>
-                    {type === RewardType.points && (
+                    {type === RewardType.Points && (
                         <RewardPoints
                             campaignDuration={campaignDuration}
                             points={points}
-                            feeToken={feeToken}
+                            fee={fee}
                             onError={handleOnError}
                             onPointsChange={onRewardsChange}
                         />
                     )}
-                    {type === RewardType.tokens && (
+                    {type === RewardType.Tokens && (
                         <RewardTokens
                             campaignDuration={campaignDuration}
                             tokens={tokens}

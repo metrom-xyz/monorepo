@@ -6,7 +6,7 @@ import { AprChip } from "@/src/components/apr-chip";
 import styles from "./styles.module.css";
 
 interface AprProps {
-    apr: number | null;
+    apr?: number;
     kpi?: boolean;
 }
 

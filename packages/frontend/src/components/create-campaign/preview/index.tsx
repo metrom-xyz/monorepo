@@ -1,5 +1,9 @@
 import { Button, Typography, TextField, ErrorText } from "@metrom-xyz/ui";
-import { RewardType, type CampaignPayload } from "@/src/types";
+import {
+    RewardType,
+    type CampaignPayload,
+    type FeeTokenAmount,
+} from "@/src/types";
 import {
     useChainId,
     usePublicClient,
@@ -26,12 +30,8 @@ import {
     formatUnits,
     encodeAbiParameters,
 } from "viem";
-import {
-    SERVICE_URLS,
-    type Specification,
-    type WhitelistedErc20TokenAmount,
-} from "@metrom-xyz/sdk";
-import { ENVIRONMENT, KPI } from "@/src/commons/env";
+import { SERVICE_URLS, type Specification } from "@metrom-xyz/sdk";
+import { ENVIRONMENT } from "@/src/commons/env";
 import { Kpi } from "./kpi";
 import { AprChip } from "../../apr-chip";
 
@@ -66,15 +66,15 @@ export function CampaignPreview({
     const { writeContractAsync } = useWriteContract();
 
     const tokensToApprove = useMemo(() => {
-        if (payload.rewardType === RewardType.tokens) return payload.tokens;
+        if (payload.rewardType === RewardType.Tokens) return payload.tokens;
 
-        if (payload.rewardType === RewardType.points && payload.feeToken) {
-            const { amount, token } = payload.feeToken;
+        if (payload.rewardType === RewardType.Points && payload.fee) {
+            const { amount, token } = payload.fee;
 
             const newRaw = (amount.raw * 115n) / 100n;
 
             const newFormatted = Number(formatUnits(newRaw, token.decimals));
-            const feeToken: WhitelistedErc20TokenAmount = {
+            const fee: FeeTokenAmount = {
                 token,
                 amount: {
                     raw: newRaw,
@@ -83,17 +83,17 @@ export function CampaignPreview({
                 },
             };
 
-            return [feeToken];
+            return [fee];
         }
-    }, [payload.feeToken, payload.rewardType, payload.tokens]);
+    }, [payload.fee, payload.rewardType, payload.tokens]);
 
     const [tokensCampaignArgs, pointsCampaignArgs] = useMemo(() => {
-        const { pool, startDate, endDate, tokens, points, feeToken } = payload;
+        const { pool, startDate, endDate, tokens, points, fee } = payload;
 
         if (!tokensApproved || !pool || !startDate || !endDate) return [[], []];
 
         if (
-            payload.rewardType === RewardType.tokens &&
+            payload.rewardType === RewardType.Tokens &&
             tokens &&
             tokens.length > 0
         )
@@ -117,7 +117,7 @@ export function CampaignPreview({
                 [],
             ];
 
-        if (payload.rewardType === RewardType.points && points && feeToken)
+        if (payload.rewardType === RewardType.Points && points && fee)
             return [
                 [],
                 [
@@ -131,7 +131,7 @@ export function CampaignPreview({
                         ),
                         specificationHash,
                         points: parseUnits(points.toString(), 18),
-                        feeToken: feeToken.token.address,
+                        feeToken: fee.token.address,
                     },
                 ],
             ];
@@ -267,7 +267,7 @@ export function CampaignPreview({
                     onBack={onBack}
                 />
                 <div className={styles.content}>
-                    {KPI && !!payload.kpiSpecification && (
+                    {!!payload.kpiSpecification && (
                         <Kpi
                             poolUsdTvl={payload.pool?.usdTvl}
                             rewards={payload.tokens}
@@ -281,7 +281,7 @@ export function CampaignPreview({
                             label={t("tvl")}
                             value={formatUsdAmount(payload.pool?.usdTvl)}
                         />
-                        {payload.rewardType === RewardType.tokens && (
+                        {payload.rewardType === RewardType.Tokens && (
                             <TextField
                                 boxed
                                 size="xl"
@@ -295,7 +295,7 @@ export function CampaignPreview({
                                 }
                             />
                         )}
-                        {payload.rewardType === RewardType.points && (
+                        {payload.rewardType === RewardType.Points && (
                             <TextField
                                 boxed
                                 size="xl"
@@ -306,7 +306,7 @@ export function CampaignPreview({
                             />
                         )}
                     </div>
-                    {payload.rewardType === RewardType.tokens && (
+                    {payload.rewardType === RewardType.Tokens && (
                         <Rewards
                             rewards={payload.tokens}
                             startDate={payload.startDate}

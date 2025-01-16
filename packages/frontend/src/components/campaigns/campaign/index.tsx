@@ -39,18 +39,18 @@ export function Campaign({ campaign }: CampaignProps) {
                     status={campaign.status}
                 />
                 <Apr apr={campaign.apr} kpi={!!campaign.specification?.kpi} />
-                {campaign.points && (
+                {campaign.distributables.type === "points" && (
                     <Points
                         status={campaign.status}
-                        amount={campaign.points}
+                        amount={campaign.distributables.amount}
                         daysDuration={daysDuration}
                     />
                 )}
-                {campaign.rewards.length > 0 && (
+                {campaign.distributables.type === "tokens" && (
                     <Rewards
                         status={campaign.status}
                         daysDuration={daysDuration}
-                        rewards={campaign.rewards}
+                        rewards={campaign.distributables}
                         chainId={campaign.chainId}
                     />
                 )}
@@ -71,18 +71,18 @@ export function Campaign({ campaign }: CampaignProps) {
                         apr={campaign.apr}
                         kpi={!!campaign.specification?.kpi}
                     />
-                    {campaign.points && (
+                    {campaign.distributables.type === "points" && (
                         <Points
                             status={campaign.status}
-                            amount={campaign.points}
+                            amount={campaign.distributables.amount}
                             daysDuration={daysDuration}
                         />
                     )}
-                    {campaign.rewards.length > 0 && (
+                    {campaign.distributables.type === "tokens" && (
                         <Rewards
                             status={campaign.status}
                             daysDuration={daysDuration}
-                            rewards={campaign.rewards}
+                            rewards={campaign.distributables}
                             chainId={campaign.chainId}
                         />
                     )}

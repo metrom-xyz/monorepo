@@ -2,14 +2,14 @@ import { TextField, Typography } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
 import dayjs from "dayjs";
 import { useMemo } from "react";
-import type { NamedCampaign } from "@/src/hooks/useCampaigns";
 import { formatTokenAmount, formatUsdAmount } from "@/src/utils/format";
 import { RemoteLogo } from "../../remote-logo";
+import type { TokensCampaign } from "@metrom-xyz/sdk";
 
 import styles from "./styles.module.css";
 
 interface RewardsProps {
-    campaign: NamedCampaign;
+    campaign: TokensCampaign;
     loading: boolean;
 }
 
@@ -23,7 +23,7 @@ export function Rewards({ campaign, loading }: RewardsProps) {
         const daysDuration = hoursDuration / 24;
 
         return daysDuration >= 1
-            ? campaign.rewards.amountUsdValue / daysDuration
+            ? campaign.distributables.amountUsdValue / daysDuration
             : 0;
     }, [campaign]);
 
@@ -44,7 +44,7 @@ export function Rewards({ campaign, loading }: RewardsProps) {
                         {t("amount")}
                     </Typography>
                 </div>
-                {campaign.rewards.map((reward) => (
+                {campaign.distributables.list.map((reward) => (
                     <div key={reward.token.address} className={styles.row}>
                         <div className={styles.nameContainer}>
                             <RemoteLogo
@@ -82,7 +82,9 @@ export function Rewards({ campaign, loading }: RewardsProps) {
                     size="xl"
                     label={t("total")}
                     loading={loading}
-                    value={formatUsdAmount(campaign.rewards.amountUsdValue)}
+                    value={formatUsdAmount(
+                        campaign.distributables.amountUsdValue,
+                    )}
                 />
             </div>
         </div>

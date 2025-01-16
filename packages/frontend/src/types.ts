@@ -1,9 +1,10 @@
 import type {
+    AmmPool,
+    FeeToken,
     KpiSpecification,
-    PoolWithTvl,
     SupportedDex,
+    UsdPricedOnChainAmount,
     WhitelistedErc20Token,
-    WhitelistedErc20TokenAmount,
 } from "@metrom-xyz/sdk";
 import type { Dayjs } from "dayjs";
 import type { SVGProps, FunctionComponent } from "react";
@@ -28,20 +29,25 @@ export enum RestrictionType {
 }
 
 export enum RewardType {
-    points = "points",
-    tokens = "tokens",
+    Points = "points",
+    Tokens = "tokens",
+}
+
+export interface WhitelistedErc20TokenAmount {
+    token: WhitelistedErc20Token;
+    amount: UsdPricedOnChainAmount;
 }
 
 export interface CampaignPayload {
     network?: number;
     rewardType?: RewardType;
     dex?: DexInfo;
-    pool?: PoolWithTvl;
+    pool?: AmmPool;
     startDate?: Dayjs;
     endDate?: Dayjs;
     points?: number;
     tokens?: WhitelistedErc20TokenAmount[];
-    feeToken?: WhitelistedErc20TokenAmount;
+    fee?: WhitelistedErc20TokenAmount;
     kpiSpecification?: KpiSpecification;
     restrictions?: {
         type: RestrictionType;

@@ -1,4 +1,4 @@
-import { CampaignType, type Campaign } from "@metrom-xyz/sdk";
+import { type Campaign } from "@metrom-xyz/sdk";
 import { CHAIN_DATA } from "../commons";
 import type { CampaignPayload } from "../types";
 import { getDistributableRewardsPercentage } from "./kpi";
@@ -15,30 +15,32 @@ const SUPPORTED_DEX_SLUG_TO_NAME = Object.values(CHAIN_DATA).reduce(
 
 export const getCampaignName = (campaign: Campaign) => {
     // TODO: handle other campaign types
-    if (campaign.type === CampaignType.AmmPoolLiquidity)
-        return `${SUPPORTED_DEX_SLUG_TO_NAME[campaign.target.dex] || "-"} ${getCampaigPoolName(campaign)}`;
+    if (campaign.target.type === "amm-pool-liquidity")
+        return `${SUPPORTED_DEX_SLUG_TO_NAME[campaign.target.pool.dex] || "-"} ${getCampaigPoolName(campaign)}`;
     return "";
 };
 
 export const getCampaigPoolName = (campaign: Campaign) => {
     // TODO: handle other campaign types
-    if (campaign.type === CampaignType.AmmPoolLiquidity)
-        return `${campaign.target.tokens.map((token) => token.symbol).join(" / ")}`;
+    if (campaign.target.type === "amm-pool-liquidity")
+        return `${campaign.target.pool.tokens.map((token) => token.symbol).join(" / ")}`;
     return "";
 };
 
-export const getCampaignPreviewApr = (campaign: CampaignPayload) => {
+export const getCampaignPreviewApr = (
+    campaign: CampaignPayload,
+): number | undefined => {
     if (
         !campaign.tokens ||
         !campaign.pool?.usdTvl ||
         !campaign.startDate ||
         !campaign.endDate
     )
-        return null;
+        return undefined;
 
     let rewardsUsdValue = 0;
     for (const reward of campaign.tokens) {
-        if (!reward.amount.usdValue) return null;
+        if (!reward.amount.usdValue) return undefined;
         rewardsUsdValue += reward.amount.usdValue;
     }
 
@@ -52,11 +54,11 @@ export const getCampaignPreviewApr = (campaign: CampaignPayload) => {
     }
 
     const duration = campaign.endDate.unix() - campaign.startDate.unix();
-    if (duration <= 0) return null;
+    if (duration <= 0) return undefined;
 
     const rewardsTvlRatio = rewardsUsdValue / campaign.pool.usdTvl;
     const yearMultiplier = SECONDS_IN_YEAR / duration;
     const apr = rewardsTvlRatio * yearMultiplier * 100;
 
-    return apr || null;
+    return apr || undefined;
 };

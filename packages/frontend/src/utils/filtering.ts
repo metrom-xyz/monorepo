@@ -1,10 +1,5 @@
 import { isAddress } from "viem";
-import {
-    CampaignType,
-    type Erc20Token,
-    type Pool,
-    Status,
-} from "@metrom-xyz/sdk";
+import { type AmmPool, type Erc20Token, Status } from "@metrom-xyz/sdk";
 import type { NamedCampaign } from "../hooks/useCampaigns";
 import { FilterableStatus } from "../components/campaigns";
 
@@ -73,8 +68,9 @@ export const filterCampaigns = (
 
         const campaignByPool = filteredCampaigns.filter(
             (campaign) =>
-                campaign.type === CampaignType.AmmPoolLiquidity &&
-                campaign.target.address.toLowerCase() === lowercaseSearchQuery,
+                campaign.target.type === "amm-pool-liquidity" &&
+                campaign.target.pool.address.toLowerCase() ===
+                    lowercaseSearchQuery,
         );
 
         return campaignByPool;
@@ -91,7 +87,7 @@ export const filterCampaigns = (
     });
 };
 
-export const filterPools = (pools: Pool[], searchQuery: string) => {
+export const filterPools = (pools: AmmPool[], searchQuery: string) => {
     if (pools.length === 0) return [];
     if (!searchQuery) return pools;
     if (isAddress(searchQuery)) {
