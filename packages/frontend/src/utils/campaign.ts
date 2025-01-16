@@ -3,9 +3,9 @@ import { getDistributableRewardsPercentage } from "./kpi";
 
 const SECONDS_IN_YEAR = 60 * 60 * 24 * 365;
 
-export const getCampaignPreviewApr = (
+export function getCampaignPreviewApr(
     campaign: CampaignPayload,
-): number | undefined => {
+): number | undefined {
     if (
         !campaign.tokens ||
         !campaign.pool?.usdTvl ||
@@ -37,4 +37,4 @@ export const getCampaignPreviewApr = (
     const apr = rewardsTvlRatio * yearMultiplier * 100;
 
     return apr || undefined;
-};
+}
