@@ -154,6 +154,8 @@ export class MetromApiClient {
         return parsedResponse.ammPools.map((ammPool) => {
             return {
                 ...ammPool,
+                // FIXME: it's probably better to have this in the response
+                chainId: params.chainId,
                 dex: ammPool.dex as SupportedDex,
                 amm: ammPool.amm as SupportedAmm,
                 tokens: ammPool.tokens.map((address) =>
@@ -485,15 +487,19 @@ export class MetromApiClient {
                                 weight: rank.weight * 100,
                                 distributed: rank.distributed.map(
                                     (distributed) => {
-                                        return {
-                                            amount: stringToOnChainAmount(
-                                                distributed.amount,
-                                                18,
-                                            ),
-                                            token: resolvePricedToken(
+                                        const resolvedToken =
+                                            resolvePricedToken(
                                                 resolvedPricedTokens,
                                                 distributed.address,
+                                            );
+
+                                        return {
+                                            amount: stringToUsdPricedOnChainAmount(
+                                                distributed.amount,
+                                                resolvedToken.decimals,
+                                                resolvedToken.usdPrice,
                                             ),
+                                            token: resolvedToken,
                                         };
                                     },
                                 ),
@@ -642,6 +648,7 @@ function resolveAmmPool(
 
     return {
         ...resolvedPool,
+        chainId,
         address,
         dex: resolvedPool.dex as SupportedDex,
         amm: resolvedPool.amm as SupportedAmm,

@@ -17,7 +17,6 @@ export interface BackendWhitelistedErc20Token
 }
 
 export interface BackendAmmPool {
-    chainId: number;
     dex: string;
     amm: string;
     tokens: Address[];
