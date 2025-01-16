@@ -21,10 +21,7 @@ export const getCampaigPoolName = (campaign: Campaign) => {
     return `${campaign.pool.tokens.map((token) => token.symbol).join(" / ")}`;
 };
 
-export const getCampaignPreviewApr = (
-    campaign: CampaignPayload,
-    poolUsdTvl: number,
-) => {
+export const getCampaignPreviewApr = (campaign: CampaignPayload) => {
     if (
         !campaign.tokens ||
         !campaign.pool?.usdTvl ||
@@ -41,7 +38,7 @@ export const getCampaignPreviewApr = (
 
     if (campaign.kpiSpecification) {
         rewardsUsdValue *= getDistributableRewardsPercentage(
-            poolUsdTvl,
+            campaign.pool.usdTvl,
             campaign.kpiSpecification.goal.lowerUsdTarget,
             campaign.kpiSpecification.goal.upperUsdTarget,
             campaign.kpiSpecification.minimumPayoutPercentage,
