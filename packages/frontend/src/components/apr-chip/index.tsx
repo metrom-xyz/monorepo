@@ -22,7 +22,7 @@ export function AprChip({
     kpi,
     className,
 }: AprChipProps) {
-    const t = useTranslations("apr");
+    const t = useTranslations();
 
     const sizes: Record<typeof size, TypographySize[]> = {
         sm: ["xs", "base"],
@@ -45,15 +45,6 @@ export function AprChip({
                                 className={classNames(styles.text)}
                             >
                                 {t("apr")}
-                            </Typography>
-                        )}
-                        {kpi && (
-                            <Typography
-                                size={sizes[size][0]}
-                                weight="medium"
-                                className={classNames(styles.text)}
-                            >
-                                {t("upTo")}
                             </Typography>
                         )}
                         <Typography

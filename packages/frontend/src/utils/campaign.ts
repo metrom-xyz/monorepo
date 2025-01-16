@@ -1,6 +1,7 @@
 import type { Campaign } from "@metrom-xyz/sdk";
 import { CHAIN_DATA } from "../commons";
 import type { CampaignPayload } from "../types";
+import { getDistributableRewardsPercentage } from "./kpi";
 
 const SECONDS_IN_YEAR = 60 * 60 * 24 * 365;
 
@@ -20,7 +21,10 @@ export const getCampaigPoolName = (campaign: Campaign) => {
     return `${campaign.pool.tokens.map((token) => token.symbol).join(" / ")}`;
 };
 
-export const getCampaignPreviewApr = (campaign: CampaignPayload) => {
+export const getCampaignPreviewApr = (
+    campaign: CampaignPayload,
+    poolUsdTvl: number,
+) => {
     if (
         !campaign.tokens ||
         !campaign.pool?.usdTvl ||
@@ -33,6 +37,15 @@ export const getCampaignPreviewApr = (campaign: CampaignPayload) => {
     for (const reward of campaign.tokens) {
         if (!reward.amount.usdValue) return null;
         rewardsUsdValue += reward.amount.usdValue;
+    }
+
+    if (campaign.kpiSpecification) {
+        rewardsUsdValue *= getDistributableRewardsPercentage(
+            poolUsdTvl,
+            campaign.kpiSpecification.goal.lowerUsdTarget,
+            campaign.kpiSpecification.goal.upperUsdTarget,
+            campaign.kpiSpecification.minimumPayoutPercentage,
+        );
     }
 
     const duration = campaign.endDate.unix() - campaign.startDate.unix();
