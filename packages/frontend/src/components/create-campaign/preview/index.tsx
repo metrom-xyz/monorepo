@@ -2,7 +2,7 @@ import { Button, Typography, TextField, ErrorText } from "@metrom-xyz/ui";
 import {
     RewardType,
     type CampaignPayload,
-    type FeeTokenAmount,
+    type WhitelistedErc20TokenAmount,
 } from "@/src/types";
 import {
     useChainId,
@@ -74,7 +74,7 @@ export function CampaignPreview({
             const newRaw = (amount.raw * 115n) / 100n;
 
             const newFormatted = Number(formatUnits(newRaw, token.decimals));
-            const fee: FeeTokenAmount = {
+            const fee: WhitelistedErc20TokenAmount = {
                 token,
                 amount: {
                     raw: newRaw,
