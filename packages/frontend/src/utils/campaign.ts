@@ -1,21 +1,14 @@
-import type { CampaignPayload } from "../types";
+import type { DistributablesType } from "@metrom-xyz/sdk";
+import type { DistributablesCampaignPreviewPayload } from "../types";
 import { getDistributableRewardsPercentage } from "./kpi";
 
 const SECONDS_IN_YEAR = 60 * 60 * 24 * 365;
 
 export function getCampaignPreviewApr(
-    campaign: CampaignPayload,
+    campaign: DistributablesCampaignPreviewPayload<DistributablesType.Tokens>,
 ): number | undefined {
-    if (
-        !campaign.tokens ||
-        !campaign.pool?.usdTvl ||
-        !campaign.startDate ||
-        !campaign.endDate
-    )
-        return undefined;
-
     let rewardsUsdValue = 0;
-    for (const reward of campaign.tokens) {
+    for (const reward of campaign.distributables.tokens) {
         if (!reward.amount.usdValue) return undefined;
         rewardsUsdValue += reward.amount.usdValue;
     }

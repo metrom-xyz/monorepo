@@ -7,25 +7,23 @@ import { useConnectModal } from "@rainbow-me/rainbowkit";
 import { useCallback, useEffect, useState } from "react";
 import { ApproveTokens } from "./approve-tokens";
 import { useChainData } from "@/src/hooks/useChainData";
-import type { WhitelistedErc20TokenAmount } from "@/src/types";
+import type { UsdPricedErc20TokenAmount } from "@metrom-xyz/sdk";
 
 import styles from "./styles.module.css";
 
 interface ApproveTokensButtonProps {
-    malformedPayload: boolean;
-    tokens?: WhitelistedErc20TokenAmount[];
+    tokenAmounts: [UsdPricedErc20TokenAmount, ...UsdPricedErc20TokenAmount[]];
     onApproved: () => void;
 }
 
 export function ApproveTokensButton({
-    malformedPayload,
-    tokens,
+    tokenAmounts,
     onApproved,
 }: ApproveTokensButtonProps) {
     const t = useTranslations("campaignPreview");
     const [approved, setApproved] = useState(false);
 
-    const previousRewards = usePrevious(tokens);
+    const previousRewards = usePrevious(tokenAmounts);
 
     const chainId = useChainId();
     const { openConnectModal } = useConnectModal();
@@ -33,9 +31,9 @@ export function ApproveTokensButton({
     const { address: connectedAddress } = useAccount();
 
     useEffect(() => {
-        if (previousRewards && previousRewards.length !== tokens?.length)
+        if (previousRewards && previousRewards.length !== tokenAmounts.length)
             setApproved(false);
-    }, [tokens?.length, previousRewards]);
+    }, [tokenAmounts.length, previousRewards]);
 
     const handleOnApprove = useCallback(() => {
         setApproved(true);
@@ -47,7 +45,6 @@ export function ApproveTokensButton({
             <Button
                 icon={WalletIcon}
                 iconPlacement="right"
-                disabled={malformedPayload}
                 className={{ root: styles.button }}
                 onClick={openConnectModal}
             >
@@ -55,12 +52,11 @@ export function ApproveTokensButton({
             </Button>
         );
 
-    if (!approved && !!tokens && tokens.length > 0)
+    if (!approved)
         return (
             <ApproveTokens
                 onApprove={handleOnApprove}
-                disabled={malformedPayload}
-                rewards={tokens}
+                tokenAmounts={tokenAmounts}
                 spender={chainData?.metromContract.address}
             />
         );
