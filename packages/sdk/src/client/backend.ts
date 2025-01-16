@@ -475,7 +475,7 @@ export class MetromApiClient {
         }
 
         switch (leaderboard.type) {
-            case "rewards": {
+            case "tokens": {
                 return {
                     updatedAt,
                     leaderboard: {

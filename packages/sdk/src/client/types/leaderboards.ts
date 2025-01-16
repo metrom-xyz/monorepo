@@ -14,7 +14,7 @@ export interface BackendRewardsLeaderboardRank {
 }
 
 export interface BackendRewardsLeaderboard {
-    type: "rewards";
+    type: "tokens";
     ranks: BackendRewardsLeaderboardRank[];
 }
 
