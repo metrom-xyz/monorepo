@@ -11,7 +11,6 @@ import { RemoteLogo } from "@/src/components/remote-logo";
 import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
 import { getTxExplorerLink } from "@/src/utils/dex";
 import { useCampaign } from "@/src/hooks/useCampaign";
-import { getCampaigName } from "@/src/utils/campaign";
 import { PoolRemoteLogo } from "@/src/components/pool-remote-logo";
 import { useDexesInChain } from "@/src/hooks/useDexesInChain";
 
@@ -111,7 +110,7 @@ export function Activity({ chainId, transaction, payload }: ActivityProps) {
                                             className={styles.seeCampaignLink}
                                             weight="medium"
                                         >
-                                            {getCampaigName(campaign)}
+                                            {campaign.name}
                                         </Typography>
                                     </div>
                                 </Link>

@@ -7,7 +7,6 @@ import {
     TargetType,
 } from "@metrom-xyz/sdk";
 import { FilterableStatus } from "../components/campaigns";
-import { getCampaigName } from "./campaign";
 
 export const sortCampaigns = (campaigns: Campaign[]) => {
     const clusteredCampaigns = campaigns.reduce(
@@ -89,7 +88,7 @@ export const filterCampaigns = (
         .filter((s) => s.length > 0 && s !== "/");
     if (lowercaseSearchParts.length === 0) return filteredCampaigns;
     return filteredCampaigns.filter((campaign) => {
-        return matchesSearch(getCampaigName(campaign), lowercaseSearchParts);
+        return matchesSearch(campaign.name, lowercaseSearchParts);
     });
 };
 

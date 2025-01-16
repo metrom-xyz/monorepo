@@ -80,6 +80,9 @@ export enum Status {
 }
 
 export class Campaign {
+    public readonly status;
+    public readonly name;
+
     constructor(
         public readonly chainId: number,
         public readonly id: Hex,
@@ -93,13 +96,26 @@ export class Campaign {
         public readonly snapshottedAt?: number,
         public readonly specification?: Specification,
         public readonly apr?: number,
-    ) {}
-
-    get status(): Status {
+    ) {
         const now = Number(Math.floor(Date.now() / 1000));
-        if (now < this.from) return Status.Upcoming;
-        if (now > this.to) return Status.Ended;
-        return Status.Live;
+        this.status =
+            now < this.from
+                ? Status.Upcoming
+                : now > this.to
+                  ? Status.Ended
+                  : Status.Live;
+
+        switch (target.type) {
+            case TargetType.AmmPoolLiquidity: {
+                this.name = `${target.pool.tokens.map((token) => token.symbol).join(" / ")}`;
+                break;
+            }
+            case TargetType.LiquityV2Debt: {
+                // TODO: implement
+                this.name = "";
+                break;
+            }
+        }
     }
 
     isDistributing<T extends DistributablesType>(

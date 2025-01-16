@@ -5,7 +5,6 @@ import { useTranslations } from "next-intl";
 import { formatPercentage } from "@/src/utils/format";
 import { PoolRemoteLogo } from "@/src/components/pool-remote-logo";
 import classNames from "classnames";
-import { getCampaigName } from "@/src/utils/campaign";
 import type { TargetedCampaign, TargetType } from "@metrom-xyz/sdk";
 
 import styles from "./styles.module.css";
@@ -28,7 +27,7 @@ export function Pool({ campaign }: PoolProps) {
             />
             <div className={styles.titleContainer}>
                 <Typography size="lg" weight="medium" truncate>
-                    {getCampaigName(campaign)}
+                    {campaign.name}
                 </Typography>
                 {campaign.target.pool.fee && (
                     <Typography

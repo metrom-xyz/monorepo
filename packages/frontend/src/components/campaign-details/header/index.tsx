@@ -14,7 +14,6 @@ import { AprChip } from "../../apr-chip";
 import { Campaign, DistributablesType, TargetType } from "@metrom-xyz/sdk";
 
 import styles from "./styles.module.css";
-import { getCampaigName } from "@/src/utils/campaign";
 
 interface HeaderProps {
     campaign: Campaign;
@@ -57,7 +56,7 @@ export function Header({ campaign }: HeaderProps) {
                         }))}
                     />
                     <Typography size="xl4" weight="medium">
-                        {getCampaigName(campaign)}
+                        {campaign.name}
                     </Typography>
                     {campaign.target.pool.fee && (
                         <Typography size="lg" weight="medium" light>

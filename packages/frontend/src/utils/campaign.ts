@@ -1,20 +1,7 @@
-import { TargetType, type Campaign } from "@metrom-xyz/sdk";
 import type { CampaignPayload } from "../types";
 import { getDistributableRewardsPercentage } from "./kpi";
 
 const SECONDS_IN_YEAR = 60 * 60 * 24 * 365;
-
-export function getCampaigName(campaign: Campaign): string {
-    switch (campaign.target.type) {
-        case TargetType.AmmPoolLiquidity: {
-            return `${campaign.target.pool.tokens.map((token) => token.symbol).join(" / ")}`;
-        }
-        case TargetType.LiquityV2Debt: {
-            // TODO: implement
-            return "";
-        }
-    }
-}
 
 export const getCampaignPreviewApr = (
     campaign: CampaignPayload,
