@@ -246,10 +246,10 @@ export function Campaigns() {
                     {t("header.chain")}
                 </Typography>
                 <Typography size="sm" weight="medium">
-                    {t("header.dex")}
+                    {t("header.protocol")}
                 </Typography>
                 <Typography size="sm" weight="medium">
-                    {t("header.pool")}
+                    {t("header.action")}
                 </Typography>
                 <Typography size="sm" weight="medium">
                     {t("header.status")}

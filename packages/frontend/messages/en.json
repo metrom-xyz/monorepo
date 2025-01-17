@@ -45,8 +45,8 @@
         },
         "header": {
             "chain": "Chain",
-            "dex": "DEX",
-            "pool": "Pool",
+            "protocol": "Protocol",
+            "action": "Action",
             "status": "Status",
             "apr": "APR",
             "rewards": "Daily rewards"
@@ -448,5 +448,9 @@
             "reimbursed": "Reimbursed"
         }
     },
-    "apr": "APR"
+    "apr": "APR",
+    "campaignActions": {
+        "lp": "LP on {name}",
+        "takeLoan": "Take loan on {name}"
+    }
 }
