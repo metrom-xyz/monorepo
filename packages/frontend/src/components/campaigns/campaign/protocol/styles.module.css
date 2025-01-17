@@ -1,5 +1,5 @@
 .root {
-    @apply w-[1.25rem] h-[1.25rem];
+    @apply w-full flex justify-center;
 }
 
 .icon,

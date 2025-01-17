@@ -1,5 +1,3 @@
-"use client";
-
 import { Popover, Skeleton, Typography } from "@metrom-xyz/ui";
 import { useDexesInChain } from "@/src/hooks/useDexesInChain";
 import { useRef, useState } from "react";
