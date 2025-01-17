@@ -1,16 +1,16 @@
 import { isAddress } from "viem";
 import {
     type AmmPool,
-    Campaign,
     type Erc20Token,
     Status,
     TargetType,
 } from "@metrom-xyz/sdk";
 import { FilterableStatus } from "../components/campaigns";
+import type { NamedCampaign } from "../types";
 
-export const sortCampaigns = (campaigns: Campaign[]) => {
+export function sortCampaigns(campaigns: NamedCampaign[]): NamedCampaign[] {
     const clusteredCampaigns = campaigns.reduce(
-        (clustered: Record<Status, Campaign[]>, campaign) => {
+        (clustered: Record<Status, NamedCampaign[]>, campaign) => {
             clustered[campaign.status].push(campaign);
             return clustered;
         },
@@ -36,14 +36,14 @@ export const sortCampaigns = (campaigns: Campaign[]) => {
     sorted.push(...clusteredCampaigns[Status.Ended]);
 
     return sorted;
-};
+}
 
-export const filterCampaigns = (
-    campaigns: Campaign[],
+export function filterCampaigns(
+    campaigns: NamedCampaign[],
     status: FilterableStatus,
     chainId: number | null,
     searchQuery: string,
-) => {
+): NamedCampaign[] {
     if (campaigns.length === 0) return [];
     if (!searchQuery && status === FilterableStatus.All && !chainId)
         return campaigns;
@@ -90,7 +90,7 @@ export const filterCampaigns = (
     return filteredCampaigns.filter((campaign) => {
         return matchesSearch(campaign.name, lowercaseSearchParts);
     });
-};
+}
 
 export const filterPools = (pools: AmmPool[], searchQuery: string) => {
     if (pools.length === 0) return [];

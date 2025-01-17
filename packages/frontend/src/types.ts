@@ -1,10 +1,16 @@
-import type {
-    AmmPool,
-    DistributablesType,
-    KpiSpecification,
-    SupportedDex,
-    UsdPricedOnChainAmount,
-    WhitelistedErc20Token,
+import {
+    Campaign,
+    TargetType,
+    type AmmPool,
+    type AmmPoolLiquidityTarget,
+    type DistributablesType,
+    type KpiSpecification,
+    type LiquityV2DebtTarget,
+    type PointDistributables,
+    type SupportedDex,
+    type TokenDistributables,
+    type UsdPricedOnChainAmount,
+    type WhitelistedErc20Token,
 } from "@metrom-xyz/sdk";
 import type { Dayjs } from "dayjs";
 import type { SVGProps, FunctionComponent } from "react";
@@ -113,3 +119,53 @@ export type DexInfo = Pick<
 >;
 
 export type CampaignPayloadPart = PropertyUnion<CampaignPayload>;
+
+export class NamedCampaign extends Campaign {
+    constructor(
+        campaign: Campaign,
+        public readonly name: string,
+    ) {
+        super(
+            campaign.chainId,
+            campaign.id,
+            campaign.from,
+            campaign.to,
+            campaign.createdAt,
+            campaign.target,
+            campaign.distributables,
+            campaign.snapshottedAt,
+            campaign.specification,
+            campaign.apr,
+        );
+    }
+
+    isDistributing<T extends DistributablesType>(
+        type: T,
+    ): this is DistributablesNamedCampaign<T> {
+        return this.distributables.type === type;
+    }
+
+    isTargeting<T extends TargetType>(
+        type: T,
+    ): this is TargetedNamedCampaign<T> {
+        return this.target.type === type;
+    }
+}
+
+export interface DistributablesNamedCampaign<T extends DistributablesType>
+    extends NamedCampaign {
+    distributables: T extends DistributablesType.Tokens
+        ? TokenDistributables
+        : T extends DistributablesType.Points
+          ? PointDistributables
+          : never;
+}
+
+export interface TargetedNamedCampaign<T extends TargetType>
+    extends NamedCampaign {
+    target: T extends TargetType.AmmPoolLiquidity
+        ? AmmPoolLiquidityTarget
+        : T extends TargetType.LiquityV2Debt
+          ? LiquityV2DebtTarget
+          : never;
+}

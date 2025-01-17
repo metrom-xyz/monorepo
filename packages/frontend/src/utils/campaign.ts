@@ -1,8 +1,29 @@
-import type { DistributablesType } from "@metrom-xyz/sdk";
+import { Campaign, TargetType, type DistributablesType } from "@metrom-xyz/sdk";
 import type { DistributablesCampaignPreviewPayload } from "../types";
 import { getDistributableRewardsPercentage } from "./kpi";
+import type { TranslationValues } from "next-intl";
 
 const SECONDS_IN_YEAR = 60 * 60 * 24 * 365;
+
+export function getCampaignName(
+    t: (key: string, values?: TranslationValues) => string,
+    campaign: Campaign,
+): string {
+    switch (campaign.target.type) {
+        case TargetType.AmmPoolLiquidity: {
+            return t("campaignActions.lp", {
+                name: campaign.target.pool.tokens
+                    .map((token) => token.symbol)
+                    .join("/"),
+            });
+        }
+        case TargetType.LiquityV2Debt: {
+            return t("campaignActions.takeLoan", {
+                name: campaign.target.liquityV2Brand.name,
+            });
+        }
+    }
+}
 
 export function getCampaignPreviewApr(
     campaign: DistributablesCampaignPreviewPayload<DistributablesType.Tokens>,

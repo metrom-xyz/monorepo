@@ -81,7 +81,6 @@ export enum Status {
 
 export class Campaign {
     public readonly status;
-    public readonly name;
 
     constructor(
         public readonly chainId: number,
@@ -104,18 +103,6 @@ export class Campaign {
                 : now > this.to
                   ? Status.Ended
                   : Status.Live;
-
-        switch (target.type) {
-            case TargetType.AmmPoolLiquidity: {
-                this.name = `${target.pool.tokens.map((token) => token.symbol).join(" / ")}`;
-                break;
-            }
-            case TargetType.LiquityV2Debt: {
-                // TODO: implement
-                this.name = "";
-                break;
-            }
-        }
     }
 
     isDistributing<T extends DistributablesType>(
