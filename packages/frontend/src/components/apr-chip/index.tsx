@@ -6,7 +6,7 @@ import { useTranslations } from "next-intl";
 import styles from "./styles.module.css";
 
 interface AprChipProps {
-    apr: number | null;
+    apr?: number;
     size?: "sm" | "lg";
     prefix?: boolean;
     placeholder?: boolean;

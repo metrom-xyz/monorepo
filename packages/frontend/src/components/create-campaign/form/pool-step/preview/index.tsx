@@ -1,11 +1,11 @@
-import type { Pool, PoolWithTvl } from "@metrom-xyz/sdk";
+import type { AmmPool } from "@metrom-xyz/sdk";
 import { Typography } from "@metrom-xyz/ui";
 import { formatPercentage, formatUsdAmount } from "@/src/utils/format";
 import { PoolRemoteLogo } from "@/src/components/pool-remote-logo";
 
 import styles from "./styles.module.css";
 
-export function PoolStepPreview({ chainId, tokens, fee, usdTvl }: PoolWithTvl) {
+export function PoolStepPreview({ chainId, tokens, fee, usdTvl }: AmmPool) {
     return (
         <div className={styles.root}>
             <div className={styles.pool}>

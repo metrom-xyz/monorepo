@@ -2,13 +2,12 @@ import { useTranslations } from "next-intl";
 import styles from "./styles.module.css";
 import { TextField, Typography } from "@metrom-xyz/ui";
 import dayjs from "dayjs";
-import { Status } from "@metrom-xyz/sdk";
+import { Campaign, Status, TargetType } from "@metrom-xyz/sdk";
 import { useMemo } from "react";
 import { formatDateTime, formatUsdAmount } from "@/src/utils/format";
-import type { NamedCampaign } from "@/src/hooks/useCampaigns";
 
 interface DetailsProps {
-    campaign?: NamedCampaign;
+    campaign?: Campaign;
     loading: boolean;
 }
 
@@ -47,13 +46,15 @@ export function Details({ campaign, loading }: DetailsProps) {
     return (
         <div className={styles.root}>
             <div>
-                <TextField
-                    boxed
-                    size="xl"
-                    label={t("tvl")}
-                    loading={detailsLoading}
-                    value={formatUsdAmount(campaign?.pool.usdTvl)}
-                />
+                {campaign?.isTargeting(TargetType.AmmPoolLiquidity) && (
+                    <TextField
+                        boxed
+                        size="xl"
+                        label={t("tvl")}
+                        loading={detailsLoading}
+                        value={formatUsdAmount(campaign.target.pool.usdTvl)}
+                    />
+                )}
                 <TextField
                     boxed
                     size="xl"
