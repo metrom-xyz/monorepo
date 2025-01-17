@@ -6,7 +6,7 @@ import {
     useSimulateContract,
 } from "wagmi";
 import { erc20Abi, type Address } from "viem";
-import type { Erc20TokenAmount } from "@metrom-xyz/sdk";
+import type { UsdPricedErc20TokenAmount } from "@metrom-xyz/sdk";
 import { Button } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
 import { RewardIcon } from "@/src/assets/reward-icon";
@@ -16,8 +16,7 @@ import { formatTokenAmount } from "@/src/utils/format";
 
 interface ApproveTokenProps {
     loading: boolean;
-    disabled: boolean;
-    reward: Erc20TokenAmount;
+    tokenAmount: UsdPricedErc20TokenAmount;
     index: number;
     totalAmount: number;
     spender?: Address;
@@ -26,8 +25,7 @@ interface ApproveTokenProps {
 
 export function ApproveToken({
     loading,
-    disabled,
-    reward,
+    tokenAmount,
     index,
     totalAmount,
     spender,
@@ -42,13 +40,10 @@ export function ApproveToken({
         useSimulateContract(
             spender && {
                 chainId,
-                address: reward.token.address,
+                address: tokenAmount.token.address,
                 abi: erc20Abi,
                 functionName: "approve",
-                args: [spender, reward.amount.raw],
-                query: {
-                    enabled: !!spender && !!reward.token.address,
-                },
+                args: [spender, tokenAmount.amount.raw],
             },
         );
     const { writeContractAsync: approveAsync, isPending: signingTransaction } =
@@ -67,7 +62,7 @@ export function ApproveToken({
                 });
                 if (!cancelled) onApprove();
             } catch (error) {
-                console.warn("could not approve reward", error);
+                console.warn("could not approve token", error);
             } finally {
                 setApproving(false);
             }
@@ -83,7 +78,7 @@ export function ApproveToken({
             icon={RewardIcon}
             iconPlacement="right"
             onClick={handleClick}
-            disabled={!approveAsync || disabled}
+            disabled={!approveAsync}
             loading={
                 loading || simulatingApprove || signingTransaction || approving
             }
@@ -92,17 +87,17 @@ export function ApproveToken({
             {signingTransaction || approving
                 ? t("approving", {
                       amount: formatTokenAmount({
-                          amount: reward.amount.formatted,
+                          amount: tokenAmount.amount.formatted,
                       }),
-                      symbol: reward.token.symbol,
+                      symbol: tokenAmount.token.symbol,
                       currentIndex: index,
                       totalAmount,
                   })
                 : t("approve", {
                       amount: formatTokenAmount({
-                          amount: reward.amount.formatted,
+                          amount: tokenAmount.amount.formatted,
                       }),
-                      symbol: reward.token.symbol,
+                      symbol: tokenAmount.token.symbol,
                       currentIndex: index,
                       totalAmount,
                   })}

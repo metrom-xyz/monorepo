@@ -1,30 +1,26 @@
 import { useCallback, useState, useEffect } from "react";
-import { useReadContracts, useAccount, useChainId } from "wagmi";
+import { useReadContracts, useAccount } from "wagmi";
 import { type Address, erc20Abi } from "viem";
-import type { CampaignPayload } from "@/src/types";
 import { ApproveToken } from "./approve-token";
-import type { Erc20TokenAmount } from "@metrom-xyz/sdk";
+import type { UsdPricedErc20TokenAmount } from "@metrom-xyz/sdk";
 
 interface ApproveTokensProps {
-    rewards?: CampaignPayload["tokens"];
+    tokenAmounts: [UsdPricedErc20TokenAmount, ...UsdPricedErc20TokenAmount[]];
     spender?: Address;
-    disabled: boolean;
     onApprove: () => void;
 }
 
 export function ApproveTokens({
-    rewards,
+    tokenAmounts,
     spender,
-    disabled,
     onApprove,
 }: ApproveTokensProps) {
-    const chainId = useChainId();
     const { address: connectedAddress } = useAccount();
 
     const [currentIndex, setCurrentIndex] = useState(0);
     const [checkingApprovals, setCheckingApprovals] = useState(false);
-    const [toApprove, setToApprove] = useState(rewards || []);
-    const currentlyApprovingReward: Erc20TokenAmount | undefined =
+    const [toApprove, setToApprove] = useState(tokenAmounts);
+    const currentlyApprovingTokenAmount: UsdPricedErc20TokenAmount =
         toApprove[currentIndex];
 
     const { data: allowances, isLoading: loadingAllowances } = useReadContracts(
@@ -32,35 +28,35 @@ export function ApproveTokens({
             contracts:
                 connectedAddress &&
                 spender &&
-                rewards?.map((reward) => {
+                tokenAmounts.map((token) => {
                     return {
-                        address: reward.token.address,
+                        address: token.token.address,
                         abi: erc20Abi,
                         functionName: "allowance",
                         args: [connectedAddress, spender],
                     };
                 }),
             query: {
-                enabled: !!connectedAddress && !!rewards && !!spender,
+                enabled:
+                    !!connectedAddress && tokenAmounts.length > 0 && !!spender,
             },
         },
     );
 
     useEffect(() => {
-        if (!allowances || !rewards || allowances.length !== rewards.length)
-            return;
+        if (!allowances || allowances.length !== tokenAmounts.length) return;
 
         setCheckingApprovals(true);
-        const newToApprove = [];
-        for (let i = 0; i < rewards.length; i++) {
-            const reward = rewards[i];
+        const newToApprove: UsdPricedErc20TokenAmount[] = [];
+        for (let i = 0; i < tokenAmounts.length; i++) {
+            const token = tokenAmounts[i];
             if (
                 allowances[i]?.result === null ||
                 allowances[i]?.result === undefined
             )
                 return;
-            if ((allowances[i].result as bigint) >= reward.amount.raw) continue;
-            newToApprove.push(reward);
+            if ((allowances[i].result as bigint) >= token.amount.raw) continue;
+            newToApprove.push(token);
         }
         if (newToApprove.length === 0) {
             onApprove();
@@ -68,8 +64,13 @@ export function ApproveTokens({
             return;
         }
         setCheckingApprovals(false);
-        setToApprove(newToApprove);
-    }, [allowances, onApprove, rewards]);
+        setToApprove(
+            newToApprove as [
+                UsdPricedErc20TokenAmount,
+                ...UsdPricedErc20TokenAmount[],
+            ],
+        );
+    }, [allowances, onApprove, tokenAmounts]);
 
     const handleApprove = useCallback(() => {
         if (!spender) {
@@ -90,13 +91,12 @@ export function ApproveTokens({
             loading={
                 checkingApprovals ||
                 loadingAllowances ||
-                !currentlyApprovingReward ||
+                !currentlyApprovingTokenAmount ||
                 !spender
             }
-            disabled={disabled}
-            reward={currentlyApprovingReward}
+            tokenAmount={currentlyApprovingTokenAmount}
             index={currentIndex + 1}
-            totalAmount={rewards?.length || 0}
+            totalAmount={tokenAmounts.length}
             spender={spender}
             onApprove={handleApprove}
         />

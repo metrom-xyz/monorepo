@@ -2,24 +2,23 @@
 
 import { Popover, Skeleton, Typography } from "@metrom-xyz/ui";
 import { useDexesInChain } from "@/src/hooks/useDexesInChain";
-import type { SupportedDex } from "@metrom-xyz/sdk";
 import { useRef, useState } from "react";
+import type { TargetedCampaign, TargetType } from "@metrom-xyz/sdk";
 
 import styles from "./styles.module.css";
 
 interface DexProps {
-    chain: number;
-    slug: SupportedDex;
+    campaign: TargetedCampaign<TargetType.AmmPoolLiquidity>;
 }
 
-export function Dex({ chain, slug }: DexProps) {
-    const dexes = useDexesInChain(chain);
+export function Dex({ campaign }: DexProps) {
+    const dexes = useDexesInChain(campaign.chainId);
 
     const [popoverOpen, setPopoverOpen] = useState(false);
     const [dexDetails, setDexDetails] = useState<HTMLDivElement | null>(null);
     const dexDetailsPopoverRef = useRef<HTMLDivElement>(null);
 
-    const dex = dexes.find((dex) => dex.slug === slug);
+    const dex = dexes.find((dex) => dex.slug === campaign.target.pool.dex);
     const DexLogo = dex?.logo;
 
     function handleDexDetailsPopoverOpen() {
@@ -41,7 +40,7 @@ export function Dex({ chain, slug }: DexProps) {
                 placement="top"
             >
                 <div className={styles.dexDetailsContainer}>
-                    <Typography weight="medium" size="sm" uppercase>
+                    <Typography weight="medium" size="sm">
                         {dex.name}
                     </Typography>
                 </div>

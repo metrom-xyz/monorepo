@@ -2,16 +2,15 @@
 
 import { Typography, Skeleton } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
-import type { NamedCampaign } from "@/src/hooks/useCampaigns";
 import { formatPercentage } from "@/src/utils/format";
 import { PoolRemoteLogo } from "@/src/components/pool-remote-logo";
 import classNames from "classnames";
-import { getCampaigPoolName } from "@/src/utils/campaign";
+import type { TargetedCampaign, TargetType } from "@metrom-xyz/sdk";
 
 import styles from "./styles.module.css";
 
 interface PoolProps {
-    campaign: NamedCampaign;
+    campaign: TargetedCampaign<TargetType.AmmPoolLiquidity>;
 }
 
 export function Pool({ campaign }: PoolProps) {
@@ -21,23 +20,23 @@ export function Pool({ campaign }: PoolProps) {
         <div className={styles.root}>
             <PoolRemoteLogo
                 chain={campaign.chainId}
-                tokens={campaign.pool.tokens.map((token) => ({
+                tokens={campaign.target.pool.tokens.map((token) => ({
                     address: token.address,
                     defaultText: token.symbol,
                 }))}
             />
             <div className={styles.titleContainer}>
                 <Typography size="lg" weight="medium" truncate>
-                    {getCampaigPoolName(campaign)}
+                    {campaign.name}
                 </Typography>
-                {campaign.pool.fee && (
+                {campaign.target.pool.fee && (
                     <Typography
                         size="sm"
                         weight="medium"
                         className={styles.campaignFee}
                         light
                     >
-                        {formatPercentage(campaign.pool.fee)}
+                        {formatPercentage(campaign.target.pool.fee)}
                     </Typography>
                 )}
                 {campaign.specification?.kpi && (

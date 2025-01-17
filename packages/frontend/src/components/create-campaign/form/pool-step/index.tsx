@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { useChainId } from "wagmi";
 import { useTranslations } from "next-intl";
+import type { AmmPool } from "@metrom-xyz/sdk";
 import { Step } from "@/src/components/step";
 import { StepPreview } from "@/src/components/step/preview";
 import { StepContent } from "@/src/components/step/content";
@@ -12,7 +13,6 @@ import type {
 import { ErrorText, Typography } from "@metrom-xyz/ui";
 import { PoolStepPreview } from "./preview";
 import classNames from "classnames";
-import type { PoolWithTvl } from "@metrom-xyz/sdk";
 import { AddressPoolPicker } from "./address-picker";
 import { ListPoolPicker } from "./list";
 
@@ -52,7 +52,7 @@ export function PoolStep({
     }, [onError, error]);
 
     const handlePoolOnChange = useCallback(
-        (newPool: PoolWithTvl) => {
+        (newPool: AmmPool) => {
             if (pool && pool.address === newPool.address) return;
             onPoolChange({ pool: newPool });
             setOpen(false);

@@ -10,9 +10,9 @@ import { Details } from "./details";
 import { Rewards } from "./rewards";
 import { Points } from "./points";
 import { Leaderboard } from "./leaderboard";
-import { KPI } from "@/src/commons/env";
 import { Kpi } from "./kpi";
 import { PageNotFound } from "../page-not-found";
+import { DistributablesType } from "@metrom-xyz/sdk";
 
 import styles from "./styles.module.css";
 
@@ -33,6 +33,9 @@ export function CampaignDetails({ chain, campaignId }: CampaignDetailsProps) {
     if (prevLoadingCampaign && !loadingCampaign && !campaign)
         return <PageNotFound message={t("notFound")} />;
 
+    const tokensCampaign = campaign?.isDistributing(DistributablesType.Tokens);
+    const pointsCampaign = campaign?.isDistributing(DistributablesType.Points);
+
     return (
         <div className={styles.root}>
             <div className={styles.headerWrapper}>
@@ -44,13 +47,15 @@ export function CampaignDetails({ chain, campaignId }: CampaignDetailsProps) {
             </div>
             <div className={styles.contentWrapper}>
                 <Details campaign={campaign} loading={loadingCampaign} />
-                {campaign && campaign.rewards.length > 0 && (
+                {tokensCampaign && (
                     <Rewards campaign={campaign} loading={loadingCampaign} />
                 )}
-                {campaign && campaign.points && (
+                {pointsCampaign && (
                     <Points campaign={campaign} loading={loadingCampaign} />
                 )}
-                {KPI && <Kpi campaign={campaign} loading={loadingCampaign} />}
+                {tokensCampaign && (
+                    <Kpi campaign={campaign} loading={loadingCampaign} />
+                )}
                 <Leaderboard campaign={campaign} loading={loadingCampaign} />
             </div>
         </div>

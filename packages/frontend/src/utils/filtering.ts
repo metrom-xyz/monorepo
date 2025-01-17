@@ -1,11 +1,16 @@
 import { isAddress } from "viem";
-import { type Erc20Token, type Pool, Status } from "@metrom-xyz/sdk";
-import type { NamedCampaign } from "../hooks/useCampaigns";
+import {
+    type AmmPool,
+    Campaign,
+    type Erc20Token,
+    Status,
+    TargetType,
+} from "@metrom-xyz/sdk";
 import { FilterableStatus } from "../components/campaigns";
 
-export const sortCampaigns = (campaigns: NamedCampaign[]) => {
+export const sortCampaigns = (campaigns: Campaign[]) => {
     const clusteredCampaigns = campaigns.reduce(
-        (clustered: Record<Status, NamedCampaign[]>, campaign) => {
+        (clustered: Record<Status, Campaign[]>, campaign) => {
             clustered[campaign.status].push(campaign);
             return clustered;
         },
@@ -34,7 +39,7 @@ export const sortCampaigns = (campaigns: NamedCampaign[]) => {
 };
 
 export const filterCampaigns = (
-    campaigns: NamedCampaign[],
+    campaigns: Campaign[],
     status: FilterableStatus,
     chainId: number | null,
     searchQuery: string,
@@ -66,12 +71,14 @@ export const filterCampaigns = (
     if (isAddress(searchQuery)) {
         const lowercaseSearchQuery = searchQuery.toLowerCase();
 
-        const campaignByPool = filteredCampaigns.filter(
+        const campaignByAddress = filteredCampaigns.filter(
             (campaign) =>
-                campaign.pool.address.toLowerCase() === lowercaseSearchQuery,
+                campaign.isTargeting(TargetType.AmmPoolLiquidity) &&
+                campaign.target.pool.address.toLowerCase() ===
+                    lowercaseSearchQuery,
         );
 
-        return campaignByPool;
+        return campaignByAddress;
     }
 
     const lowercaseSearchParts = searchQuery
@@ -85,7 +92,7 @@ export const filterCampaigns = (
     });
 };
 
-export const filterPools = (pools: Pool[], searchQuery: string) => {
+export const filterPools = (pools: AmmPool[], searchQuery: string) => {
     if (pools.length === 0) return [];
     if (!searchQuery) return pools;
     if (isAddress(searchQuery)) {

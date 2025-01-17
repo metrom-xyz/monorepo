@@ -1,4 +1,4 @@
-import type { PoolWithTvl } from "@metrom-xyz/sdk";
+import type { AmmPool } from "@metrom-xyz/sdk";
 import { useCallback } from "react";
 import { Typography, Skeleton } from "@metrom-xyz/ui";
 import classNames from "classnames";
@@ -9,11 +9,11 @@ import styles from "./styles.module.css";
 
 interface PickerRowProps {
     style?: any;
-    pool: PoolWithTvl;
+    pool: AmmPool;
     chain: number;
     loading?: boolean;
     active?: boolean;
-    onClick: (pool: PoolWithTvl) => void;
+    onClick: (pool: AmmPool) => void;
 }
 
 export function Row({
