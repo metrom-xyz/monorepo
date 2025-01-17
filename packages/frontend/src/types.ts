@@ -1,9 +1,10 @@
 import type {
+    AmmPool,
+    DistributablesType,
     KpiSpecification,
-    PoolWithTvl,
     SupportedDex,
+    UsdPricedOnChainAmount,
     WhitelistedErc20Token,
-    WhitelistedErc20TokenAmount,
 } from "@metrom-xyz/sdk";
 import type { Dayjs } from "dayjs";
 import type { SVGProps, FunctionComponent } from "react";
@@ -23,30 +24,78 @@ export interface Dex {
 }
 
 export enum RestrictionType {
-    blacklist = "blacklist",
-    whitelist = "whitelist",
+    Blacklist = "blacklist",
+    Whitelist = "whitelist",
 }
 
 export enum RewardType {
-    points = "points",
-    tokens = "tokens",
+    Points = "points",
+    Tokens = "tokens",
+}
+
+export interface WhitelistedErc20TokenAmount {
+    token: WhitelistedErc20Token;
+    amount: UsdPricedOnChainAmount;
 }
 
 export interface CampaignPayload {
-    network?: number;
     rewardType?: RewardType;
     dex?: DexInfo;
-    pool?: PoolWithTvl;
+    pool?: AmmPool;
     startDate?: Dayjs;
     endDate?: Dayjs;
     points?: number;
     tokens?: WhitelistedErc20TokenAmount[];
-    feeToken?: WhitelistedErc20TokenAmount;
+    fee?: WhitelistedErc20TokenAmount;
     kpiSpecification?: KpiSpecification;
     restrictions?: {
         type: RestrictionType;
         list: Address[];
     };
+}
+
+export interface CampaignPreviewTokenDistributables {
+    type: DistributablesType.Tokens;
+    tokens: [WhitelistedErc20TokenAmount, ...WhitelistedErc20TokenAmount[]];
+}
+
+export interface CampaignPreviewPointDistributables {
+    type: DistributablesType.Points;
+    fee: WhitelistedErc20TokenAmount;
+    points: number;
+}
+
+export class CampaignPreviewPayload {
+    constructor(
+        public readonly dex: DexInfo,
+        public readonly pool: AmmPool,
+        public readonly startDate: Dayjs,
+        public readonly endDate: Dayjs,
+        public readonly distributables:
+            | CampaignPreviewTokenDistributables
+            | CampaignPreviewPointDistributables,
+        public readonly kpiSpecification?: KpiSpecification,
+        public readonly restrictions?: {
+            type: RestrictionType;
+            list: Address[];
+        },
+    ) {}
+
+    isDistributing<T extends DistributablesType>(
+        type: T,
+    ): this is DistributablesCampaignPreviewPayload<T> {
+        return this.distributables.type === type;
+    }
+}
+
+export interface DistributablesCampaignPreviewPayload<
+    T extends DistributablesType,
+> extends CampaignPreviewPayload {
+    distributables: T extends DistributablesType.Tokens
+        ? CampaignPreviewTokenDistributables
+        : T extends DistributablesType.Points
+          ? CampaignPreviewPointDistributables
+          : never;
 }
 
 export interface CampaignPayloadErrors {

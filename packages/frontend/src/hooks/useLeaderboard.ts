@@ -37,14 +37,16 @@ export function useLeaderboard(campaign?: Campaign): {
             const account = queryKey[2] as Address | undefined;
 
             try {
-                const rawLeaderboard = await metromApiClient.fetchLeaderboard({
+                const response = await metromApiClient.fetchLeaderboard({
                     campaign,
                     account,
                 });
 
-                if (!rawLeaderboard) return undefined;
+                if (!response) return undefined;
 
-                const sortedRanks = rawLeaderboard.ranks.map((rank) => {
+                const { updatedAt, leaderboard } = response;
+
+                const sortedRanks = leaderboard.ranks.map((rank) => {
                     return <Rank>{
                         ...rank,
                         usdValue:
@@ -73,7 +75,7 @@ export function useLeaderboard(campaign?: Campaign): {
                         : undefined;
 
                 return <Leaderboard>{
-                    timestamp: rawLeaderboard.updatedAt,
+                    timestamp: updatedAt,
                     connectedAccountRank,
                     sortedRanks,
                 };

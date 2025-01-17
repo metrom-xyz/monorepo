@@ -1,38 +1,15 @@
-import type { Campaign } from "@metrom-xyz/sdk";
-import { CHAIN_DATA } from "../commons";
-import type { CampaignPayload } from "../types";
+import type { DistributablesType } from "@metrom-xyz/sdk";
+import type { DistributablesCampaignPreviewPayload } from "../types";
 import { getDistributableRewardsPercentage } from "./kpi";
 
 const SECONDS_IN_YEAR = 60 * 60 * 24 * 365;
 
-const SUPPORTED_DEX_SLUG_TO_NAME = Object.values(CHAIN_DATA).reduce(
-    (acc: Record<string, string>, chainData) => {
-        for (const dex of chainData.dexes) acc[dex.slug] = dex.name;
-        return acc;
-    },
-    {},
-);
-
-export const getCampaignName = (campaign: Campaign) => {
-    return `${SUPPORTED_DEX_SLUG_TO_NAME[campaign.pool.dex] || "-"} ${getCampaigPoolName(campaign)}`;
-};
-
-export const getCampaigPoolName = (campaign: Campaign) => {
-    return `${campaign.pool.tokens.map((token) => token.symbol).join(" / ")}`;
-};
-
-export const getCampaignPreviewApr = (campaign: CampaignPayload) => {
-    if (
-        !campaign.tokens ||
-        !campaign.pool?.usdTvl ||
-        !campaign.startDate ||
-        !campaign.endDate
-    )
-        return null;
-
+export function getCampaignPreviewApr(
+    campaign: DistributablesCampaignPreviewPayload<DistributablesType.Tokens>,
+): number | undefined {
     let rewardsUsdValue = 0;
-    for (const reward of campaign.tokens) {
-        if (!reward.amount.usdValue) return null;
+    for (const reward of campaign.distributables.tokens) {
+        if (!reward.amount.usdValue) return undefined;
         rewardsUsdValue += reward.amount.usdValue;
     }
 
@@ -46,11 +23,11 @@ export const getCampaignPreviewApr = (campaign: CampaignPayload) => {
     }
 
     const duration = campaign.endDate.unix() - campaign.startDate.unix();
-    if (duration <= 0) return null;
+    if (duration <= 0) return undefined;
 
     const rewardsTvlRatio = rewardsUsdValue / campaign.pool.usdTvl;
     const yearMultiplier = SECONDS_IN_YEAR / duration;
     const apr = rewardsTvlRatio * yearMultiplier * 100;
 
-    return apr || null;
-};
+    return apr || undefined;
+}

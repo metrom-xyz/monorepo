@@ -1,7 +1,7 @@
 "use client";
 
 import { Typography, Skeleton, Popover } from "@metrom-xyz/ui";
-import { Status, type Rewards as RewardsType } from "@metrom-xyz/sdk";
+import { Status, type TokenDistributables } from "@metrom-xyz/sdk";
 import { SupportedChain } from "@metrom-xyz/contracts";
 import { formatTokenAmount, formatUsdAmount } from "@/src/utils/format";
 import { useRef, useState } from "react";
@@ -14,7 +14,7 @@ import styles from "./styles.module.css";
 interface RewardsProps {
     status: Status;
     daysDuration: number;
-    rewards: RewardsType;
+    rewards: TokenDistributables;
     chainId: SupportedChain;
 }
 
@@ -54,7 +54,7 @@ export function Rewards({
                     <Typography size="sm" weight="medium" uppercase light>
                         {t("tooltip.rewards")}
                     </Typography>
-                    {rewards.map((reward) => {
+                    {rewards.list.map((reward) => {
                         return (
                             <div
                                 key={reward.token.address}
@@ -96,7 +96,7 @@ export function Rewards({
                     onMouseLeave={handleRewardsBreakdownPopoverClose}
                     className={styles.tokenIcons}
                 >
-                    {rewards.map((reward, i) => {
+                    {rewards.list.map((reward, i) => {
                         return (
                             <div
                                 key={reward.token.address}

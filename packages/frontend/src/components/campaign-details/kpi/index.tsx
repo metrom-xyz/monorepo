@@ -2,21 +2,23 @@ import { TextField, Typography } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
 import { formatPercentage, formatUsdAmount } from "@/src/utils/format";
 import {
+    DistributablesType,
     KpiMetric,
     Status,
-    type KpiSpecificationWithMeasurement,
+    TargetType,
+    type DistributablesCampaign,
+    type KpiSpecification,
 } from "@metrom-xyz/sdk";
 import { useMemo } from "react";
 import { KpiSimulationChart } from "../../kpi-simulation-chart";
 import { useKpiMeasurements } from "@/src/hooks/useKpiMeasurements";
 import { DistributionChart } from "./distribution-chart";
 import { AverageDistributionChart } from "./average-distribution-chart";
-import type { NamedCampaign } from "@/src/hooks/useCampaigns";
 
 import styles from "./styles.module.css";
 
 interface KpiProps {
-    campaign?: NamedCampaign;
+    campaign?: DistributablesCampaign<DistributablesType.Tokens>;
     loading: boolean;
 }
 
@@ -32,7 +34,7 @@ export function Kpi({ campaign, loading }: KpiProps) {
         goal: { lowerUsdTarget, upperUsdTarget },
         measurement,
         minimumPayoutPercentage,
-    } = useMemo<KpiSpecificationWithMeasurement>(() => {
+    } = useMemo<KpiSpecification>(() => {
         if (!campaign?.specification?.kpi)
             return {
                 goal: {
@@ -48,7 +50,11 @@ export function Kpi({ campaign, loading }: KpiProps) {
         return { goal, measurement, minimumPayoutPercentage };
     }, [campaign]);
 
-    if (!campaign?.specification?.kpi) return null;
+    if (
+        !campaign?.specification?.kpi ||
+        !campaign.isTargeting(TargetType.AmmPoolLiquidity)
+    )
+        return null;
 
     const reachedGoalPercentage = measurement || 0;
 
@@ -59,7 +65,7 @@ export function Kpi({ campaign, loading }: KpiProps) {
                 ? undefined
                 : kpiMeasurements[kpiMeasurements.length - 1].value;
     } else {
-        poolUsdTvl = campaign.pool.usdTvl;
+        poolUsdTvl = campaign.target.pool.usdTvl;
     }
 
     return (
@@ -115,7 +121,7 @@ export function Kpi({ campaign, loading }: KpiProps) {
                                 poolUsdTvl={poolUsdTvl}
                                 campaignEnded={campaign.status === Status.Ended}
                                 totalRewardsUsd={
-                                    campaign.rewards.amountUsdValue
+                                    campaign.distributables.amountUsdValue
                                 }
                                 lowerUsdTarget={lowerUsdTarget}
                                 upperUsdTarget={upperUsdTarget}
@@ -127,7 +133,7 @@ export function Kpi({ campaign, loading }: KpiProps) {
                         </div>
                     </div>
                 </div>
-                {campaign.specification.kpi.measurement && (
+                {measurement && (
                     <div className={styles.distributionChartsWrapper}>
                         <DistributionChart
                             chain={campaign.chainId}
@@ -136,9 +142,7 @@ export function Kpi({ campaign, loading }: KpiProps) {
                             minimumPayoutPercentage={minimumPayoutPercentage}
                         />
                         <AverageDistributionChart
-                            kpiMeasurementPercentage={
-                                campaign.specification.kpi.measurement
-                            }
+                            kpiMeasurementPercentage={measurement}
                             minimumPayoutPercentage={
                                 campaign.specification.kpi
                                     .minimumPayoutPercentage

@@ -1,8 +1,4 @@
-import type {
-    Erc20Token,
-    WhitelistedErc20Token,
-    WhitelistedErc20TokenAmount,
-} from "@metrom-xyz/sdk";
+import type { Erc20Token, RewardToken } from "@metrom-xyz/sdk";
 import { type Address, parseUnits, formatUnits } from "viem";
 import { RewardsPreview } from "./preview";
 import {
@@ -22,13 +18,14 @@ import type {
     CampaignPayload,
     CampaignPayloadErrors,
     CampaignPayloadPart,
+    WhitelistedErc20TokenAmount,
 } from "@/src/types";
 import { trackFathomEvent } from "@/src/utils/fathom";
 import { useWatchBalance } from "@/src/hooks/useWatchBalance";
+import { WhitelistedTokensList } from "../whitelisted-tokens-list";
+import { useRewardTokens } from "@/src/hooks/useRewardTokens";
 
 import styles from "./styles.module.css";
-import { WhitelistedTokensList } from "../whitelisted-tokens-list";
-import { WhitelistedTokenType } from "@/src/hooks/useWhitelistedTokens";
 
 interface RewardTokensProps {
     tokens?: WhitelistedErc20TokenAmount[];
@@ -46,7 +43,7 @@ export function RewardTokens({
     const t = useTranslations("newCampaign.form.rewards.tokens");
     const [open, setOpen] = useState(false);
     const [amount, setAmount] = useState<NumberFormatValues>();
-    const [token, setToken] = useState<WhitelistedErc20Token>();
+    const [token, setToken] = useState<RewardToken>();
     const [amountError, setAmountError] = useState("");
     const [existingTokensErrors, setExistingTokensErrors] = useState<
         {
@@ -58,6 +55,8 @@ export function RewardTokens({
     const { address } = useAccount();
     const chainId = useChainId();
     const { balance: tokenBalance } = useWatchBalance(address, token?.address);
+
+    const { tokens: rewardTokens, loading } = useRewardTokens();
 
     const rewardsError = useMemo(() => {
         if (!!amountError) return amountError;
@@ -189,13 +188,10 @@ export function RewardTokens({
         setOpen((prev) => !prev);
     }
 
-    const handleRewardTokenChange = useCallback(
-        (newToken: WhitelistedErc20Token) => {
-            setToken(newToken);
-            setOpen(false);
-        },
-        [],
-    );
+    const handleRewardTokenChange = useCallback((newToken: RewardToken) => {
+        setToken(newToken);
+        setOpen(false);
+    }, []);
 
     return (
         <div className={styles.root}>
@@ -266,11 +262,12 @@ export function RewardTokens({
                 </Button>
             </div>
             <WhitelistedTokensList
-                type={WhitelistedTokenType.Rewards}
                 open={open}
+                loading={loading}
                 value={token}
+                values={rewardTokens}
                 unavailable={tokens}
-                onRewardTokenClick={handleRewardTokenChange}
+                onClick={handleRewardTokenChange}
             />
         </div>
     );

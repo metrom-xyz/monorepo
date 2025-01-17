@@ -1,6 +1,6 @@
 import { ClaimReward } from "@/src/assets/claim-reward";
 import { NewCampaignIcon } from "@/src/assets/new-campaign-icon";
-import type { Activity } from "@metrom-xyz/sdk";
+import { TargetType, type Activity } from "@metrom-xyz/sdk";
 import dayjs from "dayjs";
 import { useTranslations } from "next-intl";
 import { Typography, Skeleton } from "@metrom-xyz/ui";
@@ -11,7 +11,6 @@ import { RemoteLogo } from "@/src/components/remote-logo";
 import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
 import { getTxExplorerLink } from "@/src/utils/dex";
 import { useCampaign } from "@/src/hooks/useCampaign";
-import { getCampaigPoolName } from "@/src/utils/campaign";
 import { PoolRemoteLogo } from "@/src/components/pool-remote-logo";
 import { useDexesInChain } from "@/src/hooks/useDexesInChain";
 
@@ -45,7 +44,12 @@ export function Activity({ chainId, transaction, payload }: ActivityProps) {
                   title: t("claimReward"),
               };
 
-    const dex = dexes.find((dex) => dex.slug === campaign?.pool.dex);
+    const dex = campaign?.isTargeting(TargetType.AmmPoolLiquidity)
+        ? dexes.find((dex) => {
+              // FIXME: better way to handle this
+              return dex.slug === campaign.target.pool.dex;
+          })
+        : undefined;
     const DexLogo = dex?.logo;
 
     function handleActivityOnClick() {
@@ -88,21 +92,25 @@ export function Activity({ chainId, transaction, payload }: ActivityProps) {
                                                 className={styles.dexIcon}
                                             />
                                         )}
-                                        <PoolRemoteLogo
-                                            size="sm"
-                                            chain={campaign.chainId}
-                                            tokens={campaign.pool.tokens.map(
-                                                (token) => ({
-                                                    address: token.address,
-                                                    defaultText: token.symbol,
-                                                }),
-                                            )}
-                                        />
+                                        {campaign.target.type ===
+                                            "amm-pool-liquidity" && (
+                                            <PoolRemoteLogo
+                                                size="sm"
+                                                chain={campaign.chainId}
+                                                tokens={campaign.target.pool.tokens.map(
+                                                    (token) => ({
+                                                        address: token.address,
+                                                        defaultText:
+                                                            token.symbol,
+                                                    }),
+                                                )}
+                                            />
+                                        )}
                                         <Typography
                                             className={styles.seeCampaignLink}
                                             weight="medium"
                                         >
-                                            {getCampaigPoolName(campaign)}
+                                            {campaign.name}
                                         </Typography>
                                     </div>
                                 </Link>

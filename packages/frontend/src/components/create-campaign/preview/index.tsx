@@ -1,5 +1,5 @@
 import { Button, Typography, TextField, ErrorText } from "@metrom-xyz/ui";
-import { RewardType, type CampaignPayload } from "@/src/types";
+import { type CampaignPreviewPayload } from "@/src/types";
 import {
     useChainId,
     usePublicClient,
@@ -27,25 +27,24 @@ import {
     encodeAbiParameters,
 } from "viem";
 import {
+    DistributablesType,
     SERVICE_URLS,
     type Specification,
-    type WhitelistedErc20TokenAmount,
+    type UsdPricedErc20TokenAmount,
 } from "@metrom-xyz/sdk";
-import { ENVIRONMENT, KPI } from "@/src/commons/env";
+import { ENVIRONMENT } from "@/src/commons/env";
 import { Kpi } from "./kpi";
 import { AprChip } from "../../apr-chip";
 
 import styles from "./styles.module.css";
 
 interface CampaignPreviewProps {
-    malformedPayload: boolean;
-    payload: CampaignPayload;
+    payload: CampaignPreviewPayload;
     onBack: () => void;
     onCreateNew: () => void;
 }
 
 export function CampaignPreview({
-    malformedPayload,
     payload,
     onBack,
     onCreateNew,
@@ -65,78 +64,77 @@ export function CampaignPreview({
     const publicClient = usePublicClient();
     const { writeContractAsync } = useWriteContract();
 
-    const tokensToApprove = useMemo(() => {
-        if (payload.rewardType === RewardType.tokens) return payload.tokens;
-
-        if (payload.rewardType === RewardType.points && payload.feeToken) {
-            const { amount, token } = payload.feeToken;
-
-            const newRaw = (amount.raw * 115n) / 100n;
-
-            const newFormatted = Number(formatUnits(newRaw, token.decimals));
-            const feeToken: WhitelistedErc20TokenAmount = {
-                token,
-                amount: {
-                    raw: newRaw,
-                    formatted: newFormatted,
-                    usdValue: newFormatted * token.usdPrice,
-                },
-            };
-
-            return [feeToken];
+    const tokensToApprove: [
+        UsdPricedErc20TokenAmount,
+        ...UsdPricedErc20TokenAmount[],
+    ] = useMemo(() => {
+        switch (payload.distributables.type) {
+            case DistributablesType.Tokens: {
+                return payload.distributables.tokens;
+            }
+            case DistributablesType.Points: {
+                const { amount, token } = payload.distributables.fee;
+                const adjustedFeeAmountRaw = (amount.raw * 115n) / 100n;
+                const adjustedFeeAmountFormatted = Number(
+                    formatUnits(adjustedFeeAmountRaw, token.decimals),
+                );
+                return [
+                    {
+                        token,
+                        amount: {
+                            raw: adjustedFeeAmountRaw,
+                            formatted: adjustedFeeAmountFormatted,
+                            usdValue:
+                                adjustedFeeAmountFormatted * token.usdPrice,
+                        },
+                    },
+                ];
+            }
         }
-    }, [payload.feeToken, payload.rewardType, payload.tokens]);
+    }, [payload.distributables]);
 
     const [tokensCampaignArgs, pointsCampaignArgs] = useMemo(() => {
-        const { pool, startDate, endDate, tokens, points, feeToken } = payload;
+        const { pool, startDate, endDate } = payload;
 
         if (!tokensApproved || !pool || !startDate || !endDate) return [[], []];
 
-        if (
-            payload.rewardType === RewardType.tokens &&
-            tokens &&
-            tokens.length > 0
-        )
-            return [
-                [
-                    {
-                        from: startDate.unix(),
-                        to: endDate.unix(),
-                        kind: 1,
-                        data: encodeAbiParameters(
-                            [{ name: "poolAddress", type: "address" }],
-                            [pool.address],
-                        ),
-                        specificationHash,
-                        rewards: tokens.map((token) => ({
-                            token: token.token.address,
-                            amount: token.amount.raw,
-                        })),
-                    },
-                ],
-                [],
-            ];
+        let tokenArgs = [];
+        let pointArgs = [];
 
-        if (payload.rewardType === RewardType.points && points && feeToken)
-            return [
-                [],
-                [
-                    {
-                        from: startDate.unix(),
-                        to: endDate.unix(),
-                        kind: 1,
-                        data: encodeAbiParameters(
-                            [{ name: "poolAddress", type: "address" }],
-                            [pool.address],
-                        ),
-                        specificationHash,
-                        points: parseUnits(points.toString(), 18),
-                        feeToken: feeToken.token.address,
-                    },
-                ],
-            ];
+        if (payload.isDistributing(DistributablesType.Tokens))
+            tokenArgs.push({
+                from: startDate.unix(),
+                to: endDate.unix(),
+                kind: 1,
+                data: encodeAbiParameters(
+                    [{ name: "poolAddress", type: "address" }],
+                    [pool.address],
+                ),
+                specificationHash,
+                rewards: payload.distributables.tokens.map((token) => ({
+                    token: token.token.address,
+                    amount: token.amount.raw,
+                })),
+            });
 
-        return [[], []];
+        if (payload.isDistributing(DistributablesType.Points))
+            pointArgs.push({
+                from: startDate.unix(),
+                to: endDate.unix(),
+                kind: 1,
+                data: encodeAbiParameters(
+                    [{ name: "poolAddress", type: "address" }],
+                    [pool.address],
+                ),
+                specificationHash,
+                points: parseUnits(
+                    payload.distributables.points.toString(),
+                    18,
+                ),
+                feeToken: payload.distributables.fee.token.address,
+            });
+
+        return [tokenArgs, pointArgs];
     }, [payload, specificationHash, tokensApproved]);
 
     const {
@@ -151,9 +149,7 @@ export function CampaignPreview({
         args: [tokensCampaignArgs, pointsCampaignArgs],
         query: {
             enabled:
-                !malformedPayload &&
-                (tokensCampaignArgs.length > 0 ||
-                    pointsCampaignArgs.length > 0),
+                tokensCampaignArgs.length > 0 || pointsCampaignArgs.length > 0,
         },
     });
 
@@ -257,6 +253,9 @@ export function CampaignPreview({
         router.push("/");
     }
 
+    const pointsCampaign = payload.isDistributing(DistributablesType.Points);
+    const tokensCampaign = payload.isDistributing(DistributablesType.Tokens);
+
     // TODO: add notification toast in case of errors
     if (!created) {
         return (
@@ -267,10 +266,10 @@ export function CampaignPreview({
                     onBack={onBack}
                 />
                 <div className={styles.content}>
-                    {KPI && !!payload.kpiSpecification && (
+                    {!!payload.kpiSpecification && tokensCampaign && (
                         <Kpi
-                            poolUsdTvl={payload.pool?.usdTvl}
-                            rewards={payload.tokens}
+                            poolUsdTvl={payload.pool.usdTvl}
+                            rewards={payload.distributables.tokens}
                             specification={payload.kpiSpecification}
                         />
                     )}
@@ -279,9 +278,9 @@ export function CampaignPreview({
                             boxed
                             size="xl"
                             label={t("tvl")}
-                            value={formatUsdAmount(payload.pool?.usdTvl)}
+                            value={formatUsdAmount(payload.pool.usdTvl)}
                         />
-                        {payload.rewardType === RewardType.tokens && (
+                        {tokensCampaign && (
                             <TextField
                                 boxed
                                 size="xl"
@@ -295,20 +294,20 @@ export function CampaignPreview({
                                 }
                             />
                         )}
-                        {payload.rewardType === RewardType.points && (
+                        {pointsCampaign && (
                             <TextField
                                 boxed
                                 size="xl"
                                 label={t("points")}
                                 value={formatTokenAmount({
-                                    amount: payload.points,
+                                    amount: payload.distributables.points,
                                 })}
                             />
                         )}
                     </div>
-                    {payload.rewardType === RewardType.tokens && (
+                    {tokensCampaign && (
                         <Rewards
-                            rewards={payload.tokens}
+                            rewards={payload.distributables.tokens}
                             startDate={payload.startDate}
                             endDate={payload.endDate}
                         />
@@ -323,11 +322,7 @@ export function CampaignPreview({
                             <Button
                                 icon={ArrowRightIcon}
                                 iconPlacement="right"
-                                disabled={
-                                    !!error ||
-                                    malformedPayload ||
-                                    simulateCreateErrored
-                                }
+                                disabled={!!error || simulateCreateErrored}
                                 loading={
                                     uploadingSpecification ||
                                     simulatingCreate ||
@@ -340,8 +335,7 @@ export function CampaignPreview({
                             </Button>
                         )}
                         <ApproveTokensButton
-                            malformedPayload={malformedPayload}
-                            tokens={tokensToApprove}
+                            tokenAmounts={tokensToApprove}
                             onApproved={handleOnRewardsApproved}
                         />
                     </div>

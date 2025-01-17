@@ -1,34 +1,51 @@
 import { formatUnits, type Address, type Hex } from "viem";
-import {
-    type BackendActivity,
-    type BackendCampaign,
-    type BackendClaim,
-    type BackendPool,
-    type BackendWhitelistedErc20Token,
-    type BackendReimbursement,
-    type BackendKpiMeasurement,
-    type BackendLeaderboard,
-    type BackendRewardsCampaignLeaderboardRank,
-} from "./types";
 import type { SupportedChain } from "@metrom-xyz/contracts";
-import { SupportedDex } from "../commons";
+import { SupportedAmm, SupportedDex } from "../commons";
+import type {
+    BackendCampaignResponse,
+    BackendCampaignsResponse,
+    BackendLiquityV2DebtBrand,
+} from "./types/campaigns";
+import type {
+    BackendAmmPool,
+    BackendErc20Token,
+    BackendUsdPricedErc20Token,
+} from "./types/commons";
 import {
-    Status,
-    type Activity,
-    type Campaign,
-    type Claim,
-    type KpiMeasurement,
-    type Leaderboard,
-    type OnChainAmount,
-    type PointsCampaignLeaderboardRank,
-    type Pool,
-    type Reimbursement,
-    type Rewards,
-    type RewardsCampaignLeaderboardRank,
-    type UsdPricedErc20TokenAmount,
-    type UsdPricedOnChainAmount,
-    type WhitelistedErc20Token,
-} from "../types";
+    type AmmPoolLiquidityTarget,
+    Campaign,
+    type LiquityV2DebtBrand,
+    type LiquityV2DebtTarget,
+    type PointDistributables,
+    type TokenDistributable,
+    type TokenDistributables,
+} from "../types/campaigns";
+import type {
+    AmmPool,
+    Erc20Token,
+    OnChainAmount,
+    UsdPricedErc20Token,
+    UsdPricedOnChainAmount,
+} from "../types/commons";
+import type { BackendPoolsResponse } from "./types/pools";
+import type { Claim, Reimbursement } from "../types/claims";
+import type {
+    BackendClaimsResponse,
+    BackendReimbursementsResponse,
+} from "./types/claims";
+import type { RewardToken } from "../types/reward-tokens";
+import type { BackendRewardTokensResponse } from "./types/reward-tokens";
+import type { Activity } from "../types/activities";
+import type { BackendActivitiesResponse } from "./types/activities";
+import type { KpiMeasurement } from "../types/kpi-measurements";
+import type { BackendKpiMeasurementResponse } from "./types/kpi-measurements";
+import type {
+    Leaderboard,
+    PointsLeaderboardRank,
+    TokensLeaderboardRank,
+} from "../types/leaderboards";
+import type { BackendLeaderboardResponse } from "./types/leaderboards";
+import type { FeeToken } from "src/types/fee-tokens";
 
 const BI_1_000_000 = BigInt(1_000_000);
 
@@ -86,9 +103,10 @@ export class MetromApiClient {
                 `response not ok while fetching campaigns: ${await response.text()}`,
             );
 
-        const backendCampaigns = (await response.json()) as BackendCampaign[];
+        const parsedResponse =
+            (await response.json()) as BackendCampaignsResponse;
 
-        return backendCampaigns.map(processCampaign);
+        return processCampaignsResponse(parsedResponse);
     }
 
     async fetchCampaign(params: FetchCampaignParams): Promise<Campaign> {
@@ -103,10 +121,23 @@ export class MetromApiClient {
                 `response not ok while fetching campaign with id ${params.id} on chain id ${params.chainId}: ${await response.text()}`,
             );
 
-        return processCampaign((await response.json()) as BackendCampaign);
+        const parsedResponse =
+            (await response.json()) as BackendCampaignResponse;
+
+        const processedCampaigns = processCampaignsResponse({
+            ...parsedResponse,
+            campaigns: [parsedResponse.campaign],
+        });
+
+        if (processedCampaigns.length != 1)
+            throw new Error(
+                `Inconsistent campaigns response processing length ${processedCampaigns.length}: 1 expected`,
+            );
+
+        return processedCampaigns[0];
     }
 
-    async fetchPools(params: FetchPoolsParams): Promise<Pool[]> {
+    async fetchAmmPools(params: FetchPoolsParams): Promise<AmmPool[]> {
         const url = new URL(
             `v1/pools/${params.chainId}/${params.dex}`,
             this.baseUrl,
@@ -118,12 +149,20 @@ export class MetromApiClient {
                 `response not ok while fetching pools: ${await response.text()}`,
             );
 
-        const backendPools = (await response.json()) as BackendPool[];
+        const parsedResponse = (await response.json()) as BackendPoolsResponse;
 
-        return backendPools.map((pool) => ({
-            ...pool,
-            chainId: params.chainId,
-        }));
+        return parsedResponse.ammPools.map((ammPool) => {
+            return {
+                ...ammPool,
+                // FIXME: it's probably better to have this in the response
+                chainId: params.chainId,
+                dex: ammPool.dex as SupportedDex,
+                amm: ammPool.amm as SupportedAmm,
+                tokens: ammPool.tokens.map((address) =>
+                    resolveToken(parsedResponse.resolvedTokens, address),
+                ),
+            };
+        });
     }
 
     async fetchClaims(params: FetchClaimsParams): Promise<Claim[]> {
@@ -135,14 +174,22 @@ export class MetromApiClient {
                 `response not ok while fetching claimable rewards: ${await response.text()}`,
             );
 
-        const claims = (await response.json()) as BackendClaim[];
+        const parsedResponse = (await response.json()) as BackendClaimsResponse;
 
-        return claims.map((claim) => {
+        return parsedResponse.claims.map((claim) => {
+            const resolvedToken = resolvePricedTokenInChain(
+                parsedResponse.resolvedPricedTokens,
+                claim.chainId,
+                claim.token,
+            );
+
             return {
                 ...claim,
-                amount: stringToOnChainAmount(
+                token: resolvedToken,
+                amount: stringToUsdPricedOnChainAmount(
                     claim.amount,
-                    claim.token.decimals,
+                    resolvedToken.decimals,
+                    resolvedToken.usdPrice,
                 ),
             };
         });
@@ -162,35 +209,76 @@ export class MetromApiClient {
                 `response not ok while fetching reimbursements: ${await response.text()}`,
             );
 
-        const reimbursements =
-            (await response.json()) as BackendReimbursement[];
+        const parsedResponse =
+            (await response.json()) as BackendReimbursementsResponse;
 
-        return reimbursements.map((reimbursement) => {
+        return parsedResponse.reimbursements.map((reimbursement) => {
+            const resolvedToken = resolvePricedTokenInChain(
+                parsedResponse.resolvedPricedTokens,
+                reimbursement.chainId,
+                reimbursement.token,
+            );
+
             return {
                 ...reimbursement,
-                amount: stringToOnChainAmount(
+                token: resolvedToken,
+                amount: stringToUsdPricedOnChainAmount(
                     reimbursement.amount,
-                    reimbursement.token.decimals,
+                    resolvedToken.decimals,
+                    resolvedToken.usdPrice,
                 ),
-                proof: reimbursement.proof,
             };
         });
     }
 
-    async fetchWhitelistedRewardTokens(
+    async fetchRewardTokens(
         params: FetchWhitelistedTokensParams,
-    ): Promise<WhitelistedErc20Token[]> {
-        return fetchWhitelistedTokens(
+    ): Promise<RewardToken[]> {
+        const response = await fetch(
             new URL(`v1/reward-tokens/${params.chainId}`, this.baseUrl),
         );
+        if (!response.ok)
+            throw new Error(
+                `response not ok while fetching reward tokens: ${await response.text()}`,
+            );
+
+        const parsedResponse =
+            (await response.json()) as BackendRewardTokensResponse;
+
+        return parsedResponse.tokens.map((token) => {
+            return {
+                ...token,
+                minimumRate: stringToOnChainAmount(
+                    token.minimumRate,
+                    token.decimals,
+                ),
+            };
+        });
     }
 
-    async fetchWhitelistedFeeTokens(
+    async fetchFeeTokens(
         params: FetchWhitelistedTokensParams,
-    ): Promise<WhitelistedErc20Token[]> {
-        return fetchWhitelistedTokens(
+    ): Promise<FeeToken[]> {
+        const response = await fetch(
             new URL(`v1/fee-tokens/${params.chainId}`, this.baseUrl),
         );
+        if (!response.ok)
+            throw new Error(
+                `response not ok while fetching reward tokens: ${await response.text()}`,
+            );
+
+        const parsedResponse =
+            (await response.json()) as BackendRewardTokensResponse;
+
+        return parsedResponse.tokens.map((token) => {
+            return {
+                ...token,
+                minimumRate: stringToOnChainAmount(
+                    token.minimumRate,
+                    token.decimals,
+                ),
+            };
+        });
     }
 
     async fetchActivities(params: FetchActivitiesParams): Promise<Activity[]> {
@@ -208,22 +296,31 @@ export class MetromApiClient {
                 `response not ok while fetching activity for address ${params.address} from ${params.from} to ${params.to}: ${await response.text()}`,
             );
 
-        const activities = (await response.json()) as BackendActivity[];
+        const parsedResponse =
+            (await response.json()) as BackendActivitiesResponse;
 
-        return activities.map((activity) => {
-            if (activity.payload.type === "claim-reward") {
-                return {
-                    ...activity,
-                    payload: {
-                        ...activity.payload,
-                        amount: stringToOnChainAmount(
-                            activity.payload.amount,
-                            activity.payload.token.decimals,
-                        ),
-                    },
-                };
-            } else {
-                return activity as Activity;
+        return parsedResponse.activities.map((activity) => {
+            switch (activity.payload.type) {
+                case "claim-reward": {
+                    const resolvedToken = resolveToken(
+                        parsedResponse.resolvedTokens,
+                        activity.payload.token,
+                    );
+
+                    return {
+                        ...activity,
+                        payload: {
+                            ...activity.payload,
+                            token: resolvedToken,
+                            amount: stringToOnChainAmount(
+                                activity.payload.amount,
+                                resolvedToken.decimals,
+                            ),
+                        },
+                    };
+                }
+                case "create-campaign":
+                    return activity as Activity;
             }
         });
     }
@@ -236,13 +333,12 @@ export class MetromApiClient {
             !params.campaign.specification.kpi
         )
             throw new Error(
-                `tried to fetch kpi measurements for campaign with id ${params.campaign.id} in chain with id ${params.campaign.chainId} with no attached kpi`,
+                `Tried to fetch KPI measurements for campaign with id ${params.campaign.id} in chain with id ${params.campaign.chainId} with no attached KPI`,
             );
 
-        const rewards = params.campaign.rewards;
-        if (!rewards)
+        if (params.campaign.distributables.type != "tokens")
             throw new Error(
-                `tried to fetch kpi measurements for campaign with id ${params.campaign.id} in chain with id ${params.campaign.chainId} with no rewards`,
+                `Tried to fetch KPI measurements for ampaign with id ${params.campaign.id} in chain with id ${params.campaign.chainId} not distributing tokens`,
             );
 
         const url = new URL(
@@ -259,13 +355,14 @@ export class MetromApiClient {
                 `response not ok while fetching kpi measurements for campaign with id ${params.campaign.id} in chain with id ${params.campaign.chainId} from ${params.from} to ${params.to}: ${await response.text()}`,
             );
 
-        const measurements = (await response.json()) as BackendKpiMeasurement[];
+        const parsedResponse =
+            (await response.json()) as BackendKpiMeasurementResponse;
 
         const minimumPayoutPercentage =
             params.campaign.specification!.kpi!.minimumPayoutPercentage || 0;
 
         const totalCampaignDuration = params.campaign.to - params.campaign.from;
-        return measurements.map((measurement) => {
+        return parsedResponse.measurements.map((measurement) => {
             const measuredPeriodDuration = Math.min(
                 measurement.to - measurement.from,
                 params.campaign.to - params.campaign.from,
@@ -277,7 +374,9 @@ export class MetromApiClient {
                 },
             };
 
-            const distributions = rewards.map((reward) => {
+            const distributions = (
+                params.campaign.distributables as TokenDistributables
+            ).list.map((distributable) => {
                 const normalizedKpiMeasurementPercentage = Math.min(
                     Math.max(measurement.percentage, 0),
                     1,
@@ -293,9 +392,11 @@ export class MetromApiClient {
                 };
 
                 const totalDistributedInPeriodFormatted =
-                    reward.amount.formatted * periodDurationMultiplier.standard;
+                    distributable.amount.formatted *
+                    periodDurationMultiplier.standard;
                 const totalDistributedInPeriodRaw =
-                    (reward.amount.raw * periodDurationMultiplier.scaled) /
+                    (distributable.amount.raw *
+                        periodDurationMultiplier.scaled) /
                     BI_1_000_000;
 
                 const distributedToLpsInPeriodFormatted =
@@ -311,7 +412,7 @@ export class MetromApiClient {
                     formatted: distributedToLpsInPeriodFormatted,
                     usdValue:
                         distributedToLpsInPeriodFormatted *
-                        reward.token.usdPrice,
+                        distributable.token.usdPrice,
                 };
 
                 const reimbursedInPeriodFormatted =
@@ -323,11 +424,12 @@ export class MetromApiClient {
                         distributedToLpsInPeriodRaw,
                     formatted: reimbursedInPeriodFormatted,
                     usdValue:
-                        reimbursedInPeriodFormatted * reward.token.usdPrice,
+                        reimbursedInPeriodFormatted *
+                        distributable.token.usdPrice,
                 };
 
                 return {
-                    token: reward.token,
+                    token: distributable.token,
                     distributed: distributedInPeriod,
                     reimbursed: reimbursedInPeriod,
                 };
@@ -366,111 +468,280 @@ export class MetromApiClient {
                 `response not ok while fetching leaderboard for campaign with id ${params.campaign.id} in chain with id ${params.campaign.chainId}: ${await response.text()}`,
             );
 
-        const { updatedAt, ranks: rawRanks } =
-            (await response.json()) as BackendLeaderboard;
+        const { resolvedPricedTokens, updatedAt, leaderboard } =
+            (await response.json()) as BackendLeaderboardResponse;
 
-        if (!updatedAt || !rawRanks || rawRanks.length === 0) {
+        if (!updatedAt || !leaderboard || leaderboard.ranks.length === 0) {
             return null;
         }
 
-        const ranks =
-            typeof rawRanks[0].distributed === "string"
-                ? rawRanks.map((rawRank) => {
-                      return <PointsCampaignLeaderboardRank>{
-                          ...rawRank,
-                          weight: rawRank.weight * 100,
-                          distributed: stringToOnChainAmount(
-                              rawRank.distributed as string,
-                              18,
-                          ),
-                      };
-                  })
-                : rawRanks.map((rawRank) => {
-                      return <RewardsCampaignLeaderboardRank>{
-                          ...rawRank,
-                          weight: rawRank.weight * 100,
-                          distributed: (
-                              rawRank.distributed as BackendRewardsCampaignLeaderboardRank["distributed"]
-                          ).map((distributed) => {
-                              return <UsdPricedErc20TokenAmount>{
-                                  token: distributed,
-                                  amount: stringToUsdPricedOnChainAmount(
-                                      distributed.amount,
-                                      distributed.decimals,
-                                      distributed.usdPrice,
-                                  ),
-                              };
-                          }),
-                      };
-                  });
+        switch (leaderboard.type) {
+            case "tokens": {
+                return {
+                    updatedAt,
+                    leaderboard: {
+                        type: "tokens",
+                        ranks: leaderboard.ranks.map((rank) => {
+                            return <TokensLeaderboardRank>{
+                                ...rank,
+                                weight: rank.weight * 100,
+                                distributed: rank.distributed.map(
+                                    (distributed) => {
+                                        const resolvedToken =
+                                            resolvePricedToken(
+                                                resolvedPricedTokens,
+                                                distributed.address,
+                                            );
 
-        return {
-            updatedAt,
-            ranks,
-        };
+                                        return {
+                                            amount: stringToUsdPricedOnChainAmount(
+                                                distributed.amount,
+                                                resolvedToken.decimals,
+                                                resolvedToken.usdPrice,
+                                            ),
+                                            token: resolvedToken,
+                                        };
+                                    },
+                                ),
+                            };
+                        }),
+                    },
+                };
+            }
+            case "points": {
+                return {
+                    updatedAt,
+                    leaderboard: {
+                        type: "points",
+                        ranks: leaderboard.ranks.map((rank) => {
+                            return <PointsLeaderboardRank>{
+                                ...rank,
+                                weight: rank.weight * 100,
+                                distributed: stringToOnChainAmount(
+                                    rank.distributed,
+                                    18,
+                                ),
+                            };
+                        }),
+                    },
+                };
+            }
+        }
     }
 }
 
-function processCampaign(backendCampaign: BackendCampaign): Campaign {
-    const from = Number(backendCampaign.from);
-    const to = Number(backendCampaign.to);
+function processCampaignsResponse(
+    response: BackendCampaignsResponse,
+): Campaign[] {
+    const campaigns = [];
 
-    let status;
-    const now = Number(Math.floor(Date.now() / 1000));
-    if (now < from) {
-        status = Status.Upcoming;
-    } else if (now > to) {
-        status = Status.Ended;
-    } else {
-        status = Status.Live;
+    for (const backendCampaign of response.campaigns) {
+        let target;
+        switch (backendCampaign.target.type) {
+            case "amm-pool-liquidity": {
+                target = <AmmPoolLiquidityTarget>{
+                    ...backendCampaign.target,
+                    pool: resolveAmmPool(
+                        response.resolvedAmmPools,
+                        response.resolvedTokens,
+                        backendCampaign.target.chainId,
+                        backendCampaign.target.poolAddress,
+                    ),
+                };
+                break;
+            }
+            case "liquity-v2-debt": {
+                target = <LiquityV2DebtTarget>{
+                    ...backendCampaign.target,
+                    liquityV2Brand: resolveLiquityV2DebtBrand(
+                        response.resolvedLiquityV2Debts,
+                        backendCampaign.target.chainId,
+                        backendCampaign.target.liquityV2Brand,
+                    ),
+                };
+                break;
+            }
+        }
+
+        let distributables;
+        switch (backendCampaign.distributables.type) {
+            case "tokens": {
+                distributables = <TokenDistributables>{
+                    type: "tokens",
+                    list: [],
+                    amountUsdValue: 0,
+                    remainingUsdValue: 0,
+                };
+
+                for (const backendReward of backendCampaign.distributables
+                    .list) {
+                    const resolvedToken = resolvePricedTokenInChain(
+                        response.resolvedPricedTokens,
+                        backendCampaign.chainId,
+                        backendReward.token,
+                    );
+
+                    const amount = stringToUsdPricedOnChainAmount(
+                        backendReward.amount,
+                        resolvedToken.decimals,
+                        resolvedToken.usdPrice,
+                    );
+                    const remaining = stringToUsdPricedOnChainAmount(
+                        backendReward.remaining,
+                        resolvedToken.decimals,
+                        resolvedToken.usdPrice,
+                    );
+
+                    distributables.amountUsdValue += amount.usdValue;
+                    distributables.remainingUsdValue += remaining.usdValue;
+
+                    distributables.list.push(<TokenDistributable>{
+                        amount,
+                        remaining,
+                        token: resolvedToken,
+                    });
+                }
+                break;
+            }
+            case "points": {
+                distributables = <PointDistributables>{
+                    type: "points",
+                    amount: stringToOnChainAmount(
+                        backendCampaign.distributables.amount,
+                        18,
+                    ),
+                };
+                break;
+            }
+        }
+
+        campaigns.push(
+            new Campaign(
+                backendCampaign.chainId,
+                backendCampaign.id,
+                backendCampaign.from,
+                backendCampaign.to,
+                backendCampaign.createdAt,
+                target,
+                distributables,
+                backendCampaign.snapshottedAt,
+                backendCampaign.specification,
+                backendCampaign.apr,
+            ),
+        );
     }
 
-    const rewards: Rewards = Object.assign([], {
-        amountUsdValue: 0,
-        remainingUsdValue: 0,
-    });
-    for (const backendReward of backendCampaign.rewards || []) {
-        const amount = stringToUsdPricedOnChainAmount(
-            backendReward.amount,
-            backendReward.decimals,
-            backendReward.usdPrice,
+    return campaigns;
+}
+
+function resolveAmmPool(
+    poolsRegistry: Record<number, Record<Address, BackendAmmPool>>,
+    tokensRegistry: Record<number, Record<Address, BackendErc20Token>>,
+    chainId: number,
+    address: Address,
+): AmmPool {
+    const resolvedPool = poolsRegistry[chainId][address];
+    if (!resolvedPool)
+        throw new Error(
+            `Could not find resolved pool with address ${address} in chain with id ${chainId}`,
         );
-        const remaining = stringToUsdPricedOnChainAmount(
-            backendReward.remaining,
-            backendReward.decimals,
-            backendReward.usdPrice,
-        );
 
-        rewards.amountUsdValue += amount.usdValue;
-        rewards.remainingUsdValue += remaining.usdValue;
-
-        rewards.push({
-            token: backendReward,
-            amount,
-            remaining,
-        });
-    }
-
-    const campaign: Campaign = {
-        ...backendCampaign,
-        from,
-        to,
-        createdAt: Number(backendCampaign.createdAt),
-        snapshottedAt: backendCampaign.snapshottedAt
-            ? Number(backendCampaign.snapshottedAt)
-            : null,
-        status,
-        pool: {
-            chainId: backendCampaign.chainId,
-            ...backendCampaign.pool,
-        },
-        rewards,
-        points: backendCampaign.points
-            ? stringToOnChainAmount(backendCampaign.points, 18)
-            : null,
+    return {
+        ...resolvedPool,
+        chainId,
+        address,
+        dex: resolvedPool.dex as SupportedDex,
+        amm: resolvedPool.amm as SupportedAmm,
+        tokens: resolvedPool.tokens.map((address) =>
+            resolveTokenInChain(tokensRegistry, chainId, address),
+        ),
     };
+}
 
-    return campaign;
+function resolveLiquityV2DebtBrand(
+    liquityV2DebtBrandsRegistry: Record<
+        number,
+        Record<string, BackendLiquityV2DebtBrand>
+    >,
+    chainId: number,
+    brand: string,
+): LiquityV2DebtBrand {
+    const resolved = liquityV2DebtBrandsRegistry[chainId][brand];
+    if (!resolved)
+        throw new Error(
+            `Could not find resolved Liquity v2 debt brand with name ${brand} in chain with id ${chainId}`,
+        );
+
+    return {
+        ...resolved,
+        name: resolved.brand,
+    };
+}
+
+function resolveTokenInChain(
+    registry: Record<number, Record<Address, BackendErc20Token>>,
+    chainId: number,
+    address: Address,
+): Erc20Token {
+    const resolved = registry[chainId][address];
+    if (!resolved)
+        throw new Error(
+            `Could not find resolved token with address ${address} in chain with id ${chainId}`,
+        );
+
+    return {
+        ...resolved,
+        address,
+    };
+}
+
+function resolveToken(
+    registry: Record<Address, BackendErc20Token>,
+    address: Address,
+): Erc20Token {
+    const resolved = registry[address];
+    if (!resolved)
+        throw new Error(
+            `Could not find resolved token with address ${address}`,
+        );
+
+    return {
+        ...resolved,
+        address,
+    };
+}
+
+function resolvePricedTokenInChain(
+    registry: Record<number, Record<Address, BackendUsdPricedErc20Token>>,
+    chainId: number,
+    address: Address,
+): UsdPricedErc20Token {
+    const resolved = registry[chainId][address];
+    if (!resolved)
+        throw new Error(
+            `Could not find resolved priced token with address ${address} in chain with id ${chainId}`,
+        );
+
+    return {
+        ...resolved,
+        address,
+    };
+}
+
+function resolvePricedToken(
+    registry: Record<Address, BackendUsdPricedErc20Token>,
+    address: Address,
+): UsdPricedErc20Token {
+    const resolved = registry[address];
+    if (!resolved)
+        throw new Error(
+            `Could not find resolved priced token with address ${address}`,
+        );
+
+    return {
+        ...resolved,
+        address,
+    };
 }
 
 function stringToOnChainAmount(value: string, decimals: number): OnChainAmount {
@@ -493,27 +764,4 @@ function stringToUsdPricedOnChainAmount(
         formatted,
         usdValue: formatted * usdPrice,
     };
-}
-
-async function fetchWhitelistedTokens(
-    url: URL,
-): Promise<WhitelistedErc20Token[]> {
-    const response = await fetch(url);
-    if (!response.ok)
-        throw new Error(
-            `response not ok while fetching whitelisted tokens: ${await response.text()}`,
-        );
-
-    const whitelistedTokens =
-        (await response.json()) as BackendWhitelistedErc20Token[];
-
-    return whitelistedTokens.map((token) => {
-        return {
-            ...token,
-            minimumRate: stringToOnChainAmount(
-                token.minimumRate,
-                token.decimals,
-            ),
-        };
-    });
 }

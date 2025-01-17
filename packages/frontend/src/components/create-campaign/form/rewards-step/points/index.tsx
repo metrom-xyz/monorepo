@@ -1,7 +1,5 @@
-import { WhitelistedTokenType } from "@/src/hooks/useWhitelistedTokens";
 import { WhitelistedTokensList } from "../whitelisted-tokens-list";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import type { WhitelistedErc20Token } from "@metrom-xyz/sdk";
 import {
     Button,
     type NumberFormatValues,
@@ -20,6 +18,8 @@ import type {
 } from "@/src/types";
 import { formatUsdAmount } from "@/src/utils/format";
 import { usePrevious } from "react-use";
+import type { FeeToken } from "@metrom-xyz/sdk";
+import { useFeeTokens } from "@/src/hooks/useFeeTokens";
 
 import styles from "./styles.module.css";
 
@@ -31,7 +31,7 @@ export interface NumberInputValues {
 interface RewardPointsProps {
     campaignDuration?: number;
     points?: CampaignPayload["points"];
-    feeToken?: CampaignPayload["feeToken"];
+    fee?: CampaignPayload["fee"];
     onError: (errors: CampaignPayloadErrors, error?: string) => void;
     onPointsChange: (points: CampaignPayloadPart) => void;
 }
@@ -39,7 +39,7 @@ interface RewardPointsProps {
 export function RewardPoints({
     campaignDuration,
     points,
-    feeToken,
+    fee,
     onError,
     onPointsChange,
 }: RewardPointsProps) {
@@ -55,14 +55,14 @@ export function RewardPoints({
             };
         return undefined;
     });
-    const [token, setToken] = useState<WhitelistedErc20Token | undefined>(
-        feeToken?.token,
-    );
+    const [token, setToken] = useState<FeeToken | undefined>(fee?.token);
 
     const chainId = useChainId();
     const prevCampaignDuration = usePrevious(campaignDuration);
 
-    const fee = useMemo(() => {
+    const { tokens: feeTokens, loading } = useFeeTokens();
+
+    const resolvedFee = useMemo(() => {
         if (!token || !campaignDuration) return undefined;
 
         const amount = (token.minimumRate.formatted * campaignDuration) / 3_600;
@@ -74,25 +74,20 @@ export function RewardPoints({
     const unsavedChanges = useMemo(() => {
         if (!amount || !token || !!costError) return true;
 
-        if (feeToken && points !== undefined)
-            return (
-                amount.raw !== points ||
-                token.address !== feeToken.token.address
-            );
+        if (fee && points !== undefined)
+            return amount.raw !== points || token.address !== fee.token.address;
 
-        return (
-            amount.raw !== points || token.address !== feeToken?.token.address
-        );
-    }, [amount, costError, feeToken, points, token]);
+        return amount.raw !== points || token.address !== fee?.token.address;
+    }, [amount, costError, fee, points, token]);
 
     useEffect(() => {
         if (
-            fee &&
+            resolvedFee &&
             campaignDuration &&
             campaignDuration !== prevCampaignDuration
         )
             setCostError("errors.costChanged");
-    }, [campaignDuration, fee, prevCampaignDuration]);
+    }, [campaignDuration, resolvedFee, prevCampaignDuration]);
 
     useEffect(() => {
         if (amount?.raw === 0) setAmountError("errors.wrongAmount");
@@ -115,31 +110,31 @@ export function RewardPoints({
         setOpen((prev) => !prev);
     }
 
-    const handleFeedTokenOnChange = useCallback(
-        (newToken: WhitelistedErc20Token) => {
-            setToken(newToken);
-            setOpen(false);
-        },
-        [],
-    );
+    const handleFeedTokenOnChange = useCallback((newToken: FeeToken) => {
+        setToken(newToken);
+        setOpen(false);
+    }, []);
 
     const handleOnApply = useCallback(() => {
-        if (!amount || !token || !fee) return;
+        if (!amount || !token || !resolvedFee) return;
 
         setCostError("");
         setOpen(false);
         onPointsChange({
-            feeToken: {
+            fee: {
                 token,
                 amount: {
-                    raw: parseUnits(fee.amount.toString(), token.decimals),
-                    formatted: fee.amount,
-                    usdValue: fee.usd,
+                    raw: parseUnits(
+                        resolvedFee.amount.toString(),
+                        token.decimals,
+                    ),
+                    formatted: resolvedFee.amount,
+                    usdValue: resolvedFee.usd,
                 },
             },
             points: amount?.raw,
         });
-    }, [token, amount, fee, onPointsChange]);
+    }, [token, amount, resolvedFee, onPointsChange]);
 
     return (
         <div className={styles.root}>
@@ -189,7 +184,7 @@ export function RewardPoints({
                 </div>
                 <hr className={styles.horizontalDivider} />
                 <Typography light weight="medium" size="xs" uppercase>
-                    {t("usdCost", { usd: formatUsdAmount(fee?.usd) })}
+                    {t("usdCost", { usd: formatUsdAmount(resolvedFee?.usd) })}
                 </Typography>
                 <Button
                     variant="secondary"
@@ -209,10 +204,11 @@ export function RewardPoints({
                 </Button>
             </div>
             <WhitelistedTokensList
-                type={WhitelistedTokenType.Rewards}
                 open={open}
-                value={token || feeToken?.token}
-                onRewardTokenClick={handleFeedTokenOnChange}
+                loading={loading}
+                value={token || fee?.token}
+                values={feeTokens}
+                onClick={handleFeedTokenOnChange}
             />
         </div>
     );

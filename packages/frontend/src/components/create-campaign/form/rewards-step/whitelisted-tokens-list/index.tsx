@@ -2,16 +2,8 @@ import { useEffect, useRef } from "react";
 import { useAccount, useChainId } from "wagmi";
 import { FixedSizeList } from "react-window";
 import { useTranslations } from "next-intl";
-import {
-    type Erc20Token,
-    type Erc20TokenAmount,
-    type WhitelistedErc20Token,
-} from "@metrom-xyz/sdk";
+import { type WhitelistedErc20Token } from "@metrom-xyz/sdk";
 import { Typography } from "@metrom-xyz/ui";
-import {
-    useWhitelistedTokens,
-    WhitelistedTokenType,
-} from "@/src/hooks/useWhitelistedTokens";
 import {
     useWatchBalances,
     type Erc20TokenWithBalance,
@@ -21,23 +13,26 @@ import { easings, useSpring, animated, useTransition } from "@react-spring/web";
 import classNames from "classnames";
 
 import styles from "./styles.module.css";
+import type { WhitelistedErc20TokenAmount } from "@/src/types";
 
 const TOKENS_LIMIT = 6;
 
 interface WhitelistedTokensListProps {
-    type: WhitelistedTokenType;
     open?: boolean;
-    value?: Erc20Token;
-    unavailable?: Erc20TokenAmount[];
-    onRewardTokenClick: (token: WhitelistedErc20Token) => void;
+    loading?: boolean;
+    values?: WhitelistedErc20Token[];
+    value?: WhitelistedErc20Token;
+    unavailable?: WhitelistedErc20TokenAmount[];
+    onClick: (token: WhitelistedErc20Token) => void;
 }
 
 export function WhitelistedTokensList({
-    type,
     open = false,
+    loading,
     value,
+    values,
     unavailable,
-    onRewardTokenClick,
+    onClick,
 }: WhitelistedTokensListProps) {
     const t = useTranslations("newCampaign.form.rewards");
     const rootRef = useRef<HTMLDivElement>(null);
@@ -45,12 +40,9 @@ export function WhitelistedTokensList({
 
     const { address } = useAccount();
     const chainId = useChainId();
-    const { whitelistedTokens, loading } = useWhitelistedTokens(type);
 
-    const {
-        tokensWithBalance: whitelistedTokensWithBalance,
-        loading: loadingBalances,
-    } = useWatchBalances(address, whitelistedTokens);
+    const { tokensWithBalance: tokensWithBalance, loading: loadingBalances } =
+        useWatchBalances<WhitelistedErc20Token>(address, values);
 
     const [springStyles, springApi] = useSpring(
         () => ({
@@ -99,15 +91,14 @@ export function WhitelistedTokensList({
                                     {t("list.balance")}
                                 </Typography>
                             </div>
-                            {loading ||
-                            whitelistedTokensWithBalance.length > 0 ? (
+                            {loading || tokensWithBalance.length > 0 ? (
                                 <FixedSizeList
                                     ref={listRef}
                                     height={
                                         loading
                                             ? TOKENS_LIMIT * 57
                                             : Math.min(
-                                                  whitelistedTokensWithBalance.length,
+                                                  tokensWithBalance.length,
                                                   TOKENS_LIMIT,
                                               ) * 57
                                     }
@@ -115,12 +106,12 @@ export function WhitelistedTokensList({
                                     itemCount={
                                         loading
                                             ? TOKENS_LIMIT
-                                            : whitelistedTokensWithBalance.length
+                                            : tokensWithBalance.length
                                     }
                                     itemData={
                                         loading
                                             ? new Array(TOKENS_LIMIT).fill(null)
-                                            : whitelistedTokensWithBalance
+                                            : tokensWithBalance
                                     }
                                     itemSize={57}
                                     className={styles.list}
@@ -154,7 +145,7 @@ export function WhitelistedTokensList({
                                                 tokenWithBalance={
                                                     whitelistedToken
                                                 }
-                                                onClick={onRewardTokenClick}
+                                                onClick={onClick}
                                             />
                                         );
                                     }}
