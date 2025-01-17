@@ -11,12 +11,13 @@ import { formatPercentage } from "@/src/utils/format";
 import { trackFathomEvent } from "@/src/utils/fathom";
 import { PoolRemoteLogo } from "../../pool-remote-logo";
 import { AprChip } from "../../apr-chip";
-import { Campaign, DistributablesType, TargetType } from "@metrom-xyz/sdk";
+import { DistributablesType, TargetType } from "@metrom-xyz/sdk";
+import type { NamedCampaign } from "@/src/types";
 
 import styles from "./styles.module.css";
 
 interface HeaderProps {
-    campaign: Campaign;
+    campaign: NamedCampaign;
 }
 
 export function Header({ campaign }: HeaderProps) {

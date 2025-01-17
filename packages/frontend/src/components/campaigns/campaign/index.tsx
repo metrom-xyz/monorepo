@@ -1,24 +1,21 @@
 import { Apr, SkeletonApr } from "./apr";
-import { Pool, SkeletonPool } from "./pool";
+import { Action, SkeletonAction } from "./action";
 import { SkeletonStatus, Status } from "./status";
 import { Rewards, SkeletonRewards } from "./rewards";
 import { Chain, SkeletonChain } from "./chain";
 import { Link } from "@/src/i18n/routing";
 import { Card } from "@metrom-xyz/ui";
 import classNames from "classnames";
-import { Dex, SkeletonDex } from "./dex";
+import { Protocol, SkeletonProtocol } from "./protocol";
 import { Points } from "./points";
 import dayjs from "dayjs";
-import {
-    DistributablesType,
-    Campaign as SdkCampaign,
-    TargetType,
-} from "@metrom-xyz/sdk";
+import { DistributablesType } from "@metrom-xyz/sdk";
+import type { NamedCampaign } from "@/src/types";
 
 import styles from "./styles.module.css";
 
 interface CampaignProps {
-    campaign: SdkCampaign;
+    campaign: NamedCampaign;
 }
 
 // TODO: reinstate the arrow on hover, but on click, bring the user
@@ -35,22 +32,15 @@ export function Campaign({ campaign }: CampaignProps) {
     const distributesPoints = campaign.isDistributing(
         DistributablesType.Points,
     );
-    const targetsAmmPoolLiquidity = campaign.isTargeting(
-        TargetType.AmmPoolLiquidity,
-    );
 
     return (
         <Link href={`/campaigns/${campaign.chainId}/${campaign.id}`}>
             <Card className={classNames(styles.root, styles.noMobile)}>
                 <Chain id={campaign.chainId} />
-                {targetsAmmPoolLiquidity && (
-                    <>
-                        <Dex campaign={campaign} />
-                        <div className={styles.poolContainer}>
-                            <Pool campaign={campaign} />
-                        </div>
-                    </>
-                )}
+                <Protocol campaign={campaign} />
+                <div className={styles.poolContainer}>
+                    <Action campaign={campaign} />
+                </div>
                 <Status
                     from={campaign.from}
                     to={campaign.to}
@@ -76,12 +66,8 @@ export function Campaign({ campaign }: CampaignProps) {
             <Card className={styles.mobileCard}>
                 <div className={styles.topRow}>
                     <Chain id={campaign.chainId} />
-                    {targetsAmmPoolLiquidity && (
-                        <>
-                            <Dex campaign={campaign} />
-                            <Pool campaign={campaign} />
-                        </>
-                    )}
+                    <Protocol campaign={campaign} />
+                    <Action campaign={campaign} />
                 </div>
                 <div className={styles.bottomRow}>
                     <Status
@@ -125,9 +111,9 @@ export function SkeletonCampaign() {
                 )}
             >
                 <SkeletonChain />
-                <SkeletonDex />
+                <SkeletonProtocol />
                 <div className={styles.poolContainer}>
-                    <SkeletonPool />
+                    <SkeletonAction />
                 </div>
                 <SkeletonStatus />
                 <SkeletonApr />
@@ -136,8 +122,8 @@ export function SkeletonCampaign() {
             <Card className={styles.mobileCard}>
                 <div className={styles.topRow}>
                     <SkeletonChain />
-                    <SkeletonDex />
-                    <SkeletonPool />
+                    <SkeletonProtocol />
+                    <SkeletonAction />
                 </div>
                 <div className={styles.bottomRow}>
                     <SkeletonStatus />

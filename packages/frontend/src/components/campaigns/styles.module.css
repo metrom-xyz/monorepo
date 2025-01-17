@@ -27,7 +27,7 @@
 }
 
 .body {
-    @apply w-full sm:h-[720px] mt-4 flex flex-col mb-7 rounded-xl overflow-hidden;
+    @apply w-full sm:h-[720px] mt-4 flex flex-col mb-7 rounded-xl overflow-hidden gap-2 sm:gap-0;
 }
 
 .body > :last-child > div {

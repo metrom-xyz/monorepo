@@ -1,19 +1,18 @@
-"use client";
-
 import { Typography, Skeleton } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
 import { formatPercentage } from "@/src/utils/format";
 import { PoolRemoteLogo } from "@/src/components/pool-remote-logo";
 import classNames from "classnames";
-import type { TargetedCampaign, TargetType } from "@metrom-xyz/sdk";
+import type { TargetType } from "@metrom-xyz/sdk";
+import type { TargetedNamedCampaign } from "@/src/types";
 
 import styles from "./styles.module.css";
 
-interface PoolProps {
-    campaign: TargetedCampaign<TargetType.AmmPoolLiquidity>;
+interface AmmPoolLiquidityProps {
+    campaign: TargetedNamedCampaign<TargetType.AmmPoolLiquidity>;
 }
 
-export function Pool({ campaign }: PoolProps) {
+export function AmmPoolLiquidity({ campaign }: AmmPoolLiquidityProps) {
     const t = useTranslations("allCampaigns.pool");
 
     return (
@@ -51,7 +50,7 @@ export function Pool({ campaign }: PoolProps) {
     );
 }
 
-export function SkeletonPool() {
+export function SkeletonAmmPoolLiquidity() {
     return (
         <div className={styles.root}>
             <PoolRemoteLogo
