@@ -149,22 +149,30 @@ export function RangeStep({
     const handleOnFlipPrice = useCallback(() => {
         if (!pool) return;
 
-        setToken0To1((prev) => !prev);
+        setToken0To1((token0To1) => {
+            const newToken0ToToken1 = !token0To1;
 
-        if (from && to) {
-            const newFromTick = -to.tick;
-            const newFromPrice = tickToScaledPrice(
-                newFromTick,
-                pool,
-                token0To1,
-            );
-            setFrom({ tick: newFromTick, price: newFromPrice });
+            if (from && to) {
+                const newFromTick = -to.tick;
+                const newFromPrice = tickToScaledPrice(
+                    newFromTick,
+                    pool,
+                    newToken0ToToken1,
+                );
+                setFrom({ tick: newFromTick, price: newFromPrice });
 
-            const newToTick = -from.tick;
-            const newToPrice = tickToScaledPrice(newToTick, pool, token0To1);
-            setTo({ tick: newToTick, price: newToPrice });
-        }
-    }, [from, pool, to, token0To1]);
+                const newToTick = -from.tick;
+                const newToPrice = tickToScaledPrice(
+                    newToTick,
+                    pool,
+                    newToken0ToToken1,
+                );
+                setTo({ tick: newToTick, price: newToPrice });
+            }
+
+            return newToken0ToToken1;
+        });
+    }, [from, pool, to]);
 
     const handleApply = useCallback(() => {
         if (from === undefined || to === undefined) return;
