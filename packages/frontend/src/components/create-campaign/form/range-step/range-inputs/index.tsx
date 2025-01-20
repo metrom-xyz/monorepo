@@ -61,9 +61,12 @@ export function RangeInputs({
 
                 const value = type === "from" ? from : to;
                 const base = value?.price;
+                const pride = base || currentPrice;
                 const newPrice =
-                    (base || currentPrice) +
-                    (delta === "increment" ? PRICE_STEP : -PRICE_STEP);
+                    pride +
+                    (delta === "increment"
+                        ? pride * PRICE_STEP
+                        : pride * -PRICE_STEP);
                 const newTick = scaledPriceToTick(newPrice, pool, token0To1);
 
                 const onChange = type === "from" ? onFromChange : onToChange;
