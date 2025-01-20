@@ -1,7 +1,7 @@
 import styles from "./styles.module.css";
 import { useTranslations } from "next-intl";
 import { Typography } from "@metrom-xyz/ui";
-import type { Pool } from "@metrom-xyz/sdk";
+import type { AmmPool } from "@metrom-xyz/sdk";
 import { formatAmount } from "@/src/utils/format";
 import type { LiquidityDensityChartData } from "..";
 
@@ -11,7 +11,7 @@ interface Payload {
 
 interface TooltipProps {
     active?: boolean;
-    pool?: Pool;
+    pool?: AmmPool;
     payload?: Payload[];
 }
 

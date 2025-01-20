@@ -2,6 +2,10 @@
     @apply flex flex-col gap-3 p-4;
 }
 
+.flipPriceButton {
+    @apply rounded-md;
+}
+
 .previewLabelWrapper {
     @apply w-full flex justify-between items-center;
 }
