@@ -215,7 +215,7 @@ export function LiquidityDensityChart({
                         dataKey="liquidity"
                         maxBarSize={50}
                         minPointSize={10}
-                        isAnimationActive={false}
+                        isAnimationActive={!header}
                         shape={
                             <LiquidityBar
                                 token0To1={token0To1}

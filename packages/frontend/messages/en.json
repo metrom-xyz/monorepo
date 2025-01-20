@@ -235,7 +235,7 @@
                     "label": "Range",
                     "value": "{lowerPrice} - {upperPrice} {token1} PER {token0}"
                 },
-                "price": "1 {token0} - {price} {token1}",
+                "price": "1 {token0} = {price} {token1}",
                 "minPrice": "Min price ({token1} per {token0})",
                 "maxPrice": "Max price ({token1} per {token0})",
                 "apply": "Apply",
