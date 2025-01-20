@@ -13,11 +13,7 @@ import { useChainId } from "wagmi";
 import { useTranslations } from "next-intl";
 import { RangeInputs } from "./range-inputs";
 import { LiquidityDensityChart } from "@/src/components/liquidity-density-chart";
-import {
-    scaledPriceToTick,
-    tickToScaledPrice,
-    type AmmPool,
-} from "@metrom-xyz/sdk";
+import { tickToScaledPrice, type AmmPool } from "@metrom-xyz/sdk";
 import classNames from "classnames";
 import { usePrevious } from "react-use";
 import { useLiquidityDensity } from "@/src/hooks/useLiquidityDensity";
