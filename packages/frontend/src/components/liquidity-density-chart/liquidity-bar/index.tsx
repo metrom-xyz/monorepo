@@ -82,7 +82,7 @@ export function LiquidityBar({
             const price = token0To1 ? price0 : price1;
 
             percentage =
-                (index < activeTickIndex ? 1 : -1) *
+                (index < activeTickIndex ? -1 : 1) *
                 (Math.abs(price - currentPrice) / currentPrice) *
                 100;
         }
