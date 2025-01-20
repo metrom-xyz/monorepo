@@ -324,7 +324,7 @@ export function CampaignPreview({
                     </div>
                     {tokensCampaign && (
                         <Rewards
-                            rewards={payload.distributables.tokens}
+                            rewards={payload.distributables}
                             startDate={payload.startDate}
                             endDate={payload.endDate}
                         />
