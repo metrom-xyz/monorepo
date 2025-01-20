@@ -52,12 +52,7 @@ function validatePayload(
         payload.endDate,
         distributables,
         payload.kpiSpecification,
-        payload.priceRangeSpecification
-            ? {
-                  from: payload.priceRangeSpecification.from.tick,
-                  to: payload.priceRangeSpecification.to.tick,
-              }
-            : undefined,
+        payload.priceRangeSpecification,
         payload.restrictions,
     );
 }

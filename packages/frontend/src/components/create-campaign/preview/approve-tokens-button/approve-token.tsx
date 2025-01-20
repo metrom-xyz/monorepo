@@ -10,9 +10,9 @@ import type { UsdPricedErc20TokenAmount } from "@metrom-xyz/sdk";
 import { Button } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
 import { RewardIcon } from "@/src/assets/reward-icon";
+import { formatAmount } from "@/src/utils/format";
 
 import styles from "./styles.module.css";
-import { formatAmount } from "@/src/utils/format";
 
 interface ApproveTokenProps {
     loading: boolean;
