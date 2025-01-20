@@ -6,6 +6,8 @@ import {
     ErrorText,
     Skeleton,
     Switch,
+    Tab,
+    Tabs,
     Typography,
 } from "@metrom-xyz/ui";
 import { useCallback, useEffect, useMemo, useState } from "react";
@@ -233,33 +235,7 @@ export function RangeStep({
                 }}
             >
                 <div className={styles.priceWrapper}>
-                    {open || from === undefined || to === undefined ? (
-                        <>
-                            <Typography
-                                uppercase
-                                weight="medium"
-                                light
-                                size="sm"
-                            >
-                                {t("currentPrice")}
-                            </Typography>
-                            {!currentPrice ? (
-                                <Skeleton size="sm" width={50} />
-                            ) : (
-                                <Typography weight="medium" size="sm">
-                                    {t("price", {
-                                        token0: pool?.tokens[token0To1 ? 0 : 1]
-                                            .symbol,
-                                        token1: pool?.tokens[token0To1 ? 1 : 0]
-                                            .symbol,
-                                        price: formatAmount({
-                                            amount: currentPrice,
-                                        }),
-                                    })}
-                                </Typography>
-                            )}
-                        </>
-                    ) : (
+                    {!open && from !== undefined && to !== undefined && (
                         <>
                             <Typography
                                 uppercase
@@ -285,14 +261,60 @@ export function RangeStep({
             </StepPreview>
             <StepContent>
                 <div className={styles.stepContent}>
-                    <Button
-                        variant="secondary"
-                        size="xs"
-                        onClick={handleOnFlipPrice}
-                        className={{ root: styles.flipPriceButton }}
-                    >
-                        <Typography>Flip price</Typography>
-                    </Button>
+                    <div className={styles.priceHeader}>
+                        <div className={styles.currentPrice}>
+                            <Typography
+                                uppercase
+                                weight="medium"
+                                light
+                                size="sm"
+                            >
+                                {t("currentPrice")}
+                            </Typography>
+                            {!currentPrice ? (
+                                <Skeleton size="sm" width={50} />
+                            ) : (
+                                <Typography weight="medium" size="sm">
+                                    {t("price", {
+                                        token0: pool?.tokens[token0To1 ? 0 : 1]
+                                            .symbol,
+                                        token1: pool?.tokens[token0To1 ? 1 : 0]
+                                            .symbol,
+                                        price: formatAmount({
+                                            amount: currentPrice,
+                                        }),
+                                    })}
+                                </Typography>
+                            )}
+                        </div>
+                        <Tabs
+                            size="sm"
+                            value={token0To1}
+                            onChange={handleOnFlipPrice}
+                            className={styles.priceTabs}
+                        >
+                            <Tab
+                                value={token0To1}
+                                className={classNames(styles.priceTab, {
+                                    [styles.activePriceTab]: token0To1,
+                                })}
+                            >
+                                <Typography weight="medium" size="sm">
+                                    {pool?.tokens[0].symbol}
+                                </Typography>
+                            </Tab>
+                            <Tab
+                                value={!token0To1}
+                                className={classNames(styles.priceTab, {
+                                    [styles.activePriceTab]: !token0To1,
+                                })}
+                            >
+                                <Typography weight="medium" size="sm">
+                                    {pool?.tokens[1].symbol}
+                                </Typography>
+                            </Tab>
+                        </Tabs>
+                    </div>
                     <RangeInputs
                         pool={pool}
                         error={!!error}
