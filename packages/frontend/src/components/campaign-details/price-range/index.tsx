@@ -1,27 +1,40 @@
-import { getPrice } from "@metrom-xyz/sdk";
-import type { NamedCampaign } from "@/src/hooks/useCampaigns";
+import {
+    Campaign,
+    TargetType,
+    tickToScaledPrice,
+    type TargetedCampaign,
+} from "@metrom-xyz/sdk";
 import { useTranslations } from "next-intl";
 import { TextField, Typography } from "@metrom-xyz/ui";
 import { formatAmount } from "@/src/utils/format";
-import { useLiquidityDensity } from "@/src/hooks/useLiquidityDensity";
+import { useTicks } from "@/src/hooks/useTicks";
 import { LiquidityDensityChart } from "../../liquidity-density-chart";
 import classNames from "classnames";
 
 import styles from "./styles.module.css";
 
+const COMPUTE_TICKS_AMOUNT = 3000;
+
 interface PriceRangeProps {
-    campaign?: NamedCampaign;
+    campaign?: TargetedCampaign<TargetType.AmmPoolLiquidity>;
 }
 
 export function PriceRange({ campaign }: PriceRangeProps) {
     const t = useTranslations("campaignDetails.priceRange");
 
-    const { liquidityDensity, loading: loadingLiquidityDensity } =
-        useLiquidityDensity(campaign?.pool, campaign?.chainId, 3000);
+    const { ticks, loading: loadingTicks } = useTicks(
+        campaign?.target.pool,
+        COMPUTE_TICKS_AMOUNT,
+    );
 
-    if (!campaign?.specification?.priceRange) return null;
+    if (
+        !campaign?.isTargeting(TargetType.AmmPoolLiquidity) ||
+        !campaign?.specification?.priceRange
+    )
+        return null;
 
     const { priceRange } = campaign.specification;
+    const { pool } = campaign.target;
 
     return (
         <div className={styles.root}>
@@ -35,12 +48,12 @@ export function PriceRange({ campaign }: PriceRangeProps) {
                         size="xl"
                         label={t("lowerPrice.label")}
                         value={t("lowerPrice.value", {
-                            token0: campaign.pool.tokens[0].symbol,
-                            token1: campaign.pool.tokens[1].symbol,
+                            token0: pool.tokens[0].symbol,
+                            token1: pool.tokens[1].symbol,
                             price: formatAmount({
-                                amount: getPrice(
+                                amount: tickToScaledPrice(
                                     priceRange.from,
-                                    campaign.pool,
+                                    pool,
                                 ),
                             }),
                         })}
@@ -50,10 +63,10 @@ export function PriceRange({ campaign }: PriceRangeProps) {
                         size="xl"
                         label={t("upperPrice.label")}
                         value={t("upperPrice.value", {
-                            token0: campaign.pool.tokens[0].symbol,
-                            token1: campaign.pool.tokens[1].symbol,
+                            token0: pool.tokens[0].symbol,
+                            token1: pool.tokens[1].symbol,
                             price: formatAmount({
-                                amount: getPrice(priceRange.to, campaign.pool),
+                                amount: tickToScaledPrice(priceRange.to, pool),
                             }),
                         })}
                     />
@@ -64,11 +77,11 @@ export function PriceRange({ campaign }: PriceRangeProps) {
                     </Typography>
                     <div className={classNames(styles.chartWrapper)}>
                         <LiquidityDensityChart
-                            pool={campaign.pool}
+                            pool={pool}
                             from={priceRange.from}
                             to={priceRange.to}
-                            liquidityDensity={liquidityDensity}
-                            loading={loadingLiquidityDensity}
+                            ticks={ticks}
+                            loading={loadingTicks}
                         />
                     </div>
                 </div>

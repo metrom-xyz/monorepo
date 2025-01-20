@@ -31,7 +31,7 @@
 }
 
 .header {
-    @apply flex items-center justify-end rounded-md;
+    @apply flex items-center justify-end rounded-md mt-2;
 }
 
 .zoomButtons {

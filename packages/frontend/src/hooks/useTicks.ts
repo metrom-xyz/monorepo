@@ -1,31 +1,26 @@
-import { type LiquidityDensity } from "@metrom-xyz/sdk";
+import { type AmmPool, type InitializedTicks } from "@metrom-xyz/sdk";
 import { metromApiClient } from "../commons";
 import { useQuery } from "@tanstack/react-query";
-import type { SupportedChain } from "@metrom-xyz/contracts";
-import type { Pool } from "../../../sdk/dist/types";
 
 const SURROUNDING_AMOUNT = 200;
 
-export function useLiquidityDensity(
-    pool?: Pool,
-    chainId?: SupportedChain,
+export function useTicks(
+    pool?: AmmPool,
     computeAmount?: number,
-    enabled: boolean = true,
 ): {
     loading: boolean;
-    liquidityDensity?: LiquidityDensity;
+    ticks?: InitializedTicks;
 } {
     const { data, isPending } = useQuery({
-        queryKey: ["ticks", chainId, pool],
+        queryKey: ["ticks", pool],
         queryFn: async ({ queryKey }) => {
-            const chainId = queryKey[1] as SupportedChain;
-            if (!chainId) return undefined;
-
-            const pool = queryKey[2] as Pool;
+            const pool = queryKey[1] as AmmPool;
             if (!pool) return undefined;
 
+            const chainId = pool.chainId;
+
             try {
-                return metromApiClient.fetchLiquidityDensity({
+                return metromApiClient.fetchInitializedTicks({
                     chainId,
                     pool,
                     surroundingAmount: SURROUNDING_AMOUNT,
@@ -37,12 +32,12 @@ export function useLiquidityDensity(
                 );
             }
         },
-        enabled: enabled && !!chainId && !!pool,
+        enabled: !!pool,
         refetchOnWindowFocus: false,
     });
 
     return {
         loading: isPending,
-        liquidityDensity: data,
+        ticks: data,
     };
 }

@@ -236,7 +236,7 @@ export function ChainOverview({
                         iconPlacement="right"
                         onClick={handleRecoverAll}
                     >
-                        {simulatingClaimAll
+                        {simulatingRecoverAll
                             ? t("reimbursements.loading")
                             : recovering
                               ? t("reimbursements.recoveringAll")

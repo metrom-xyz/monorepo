@@ -10,7 +10,11 @@ import {
     YAxis,
 } from "recharts";
 import type { CategoricalChartState } from "recharts/types/chart/types";
-import { getPrice, type LiquidityDensity, type Pool } from "@metrom-xyz/sdk";
+import {
+    tickToScaledPrice,
+    type AmmPool,
+    type InitializedTicks,
+} from "@metrom-xyz/sdk";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { TooltipContent } from "./tooltip";
 import { formatUnits } from "viem";
@@ -25,10 +29,11 @@ import styles from "./styles.module.css";
 interface LiquidityDensityProps {
     error?: boolean;
     loading?: boolean;
-    pool?: Pool;
-    liquidityDensity?: LiquidityDensity;
+    pool?: AmmPool;
+    ticks?: InitializedTicks;
     from?: number;
     to?: number;
+    flipPrice?: boolean;
     header?: boolean;
     className?: string;
 }
@@ -48,42 +53,55 @@ export function LiquidityDensityChart({
     error,
     loading,
     pool,
-    liquidityDensity,
+    ticks,
     from,
     to,
+    flipPrice,
     header,
     className,
 }: LiquidityDensityProps) {
     const t = useTranslations("liquidityDensityChart");
-    const [poolTickIndex, setPoolTickIndex] = useState<number>(-1);
+    const [activeTickIndex, setActiveTickIndex] = useState<number>(-1);
     const [tooltipIndex, setTooltipIndex] = useState<number>();
     const [zoomLevel, setZoomLevel] = useState<number>(MAX_ZOOM_LEVEL / 2);
 
     const chartData: LiquidityDensityChartData[] = useMemo(() => {
-        if (!liquidityDensity || !pool) return [];
-        return liquidityDensity.ticks
-            .map((tick) => ({
-                ...tick,
-                liquidity: Number(formatUnits(tick.liquidity, 18)),
-            }))
-            .reverse();
-    }, [liquidityDensity, pool]);
+        if (!ticks || !pool) return [];
+        const list = ticks.list.map((tick) => ({
+            ...tick,
+            // FIXME: flip the ticks?
+            // idx: flipPrice ? -tick.idx : tick.idx,
+            liquidity: Number(formatUnits(tick.liquidity, 18)),
+        }));
+
+        // FIXME: ok to reverse?
+        if (flipPrice) return list;
+        return list.reverse();
+    }, [ticks, pool, flipPrice]);
+
+    const activeTick = useMemo(() => {
+        if (!ticks) return null;
+        return ticks.activeIdx;
+    }, [ticks]);
 
     const activeChartData = useMemo(() => {
-        return zoom(chartData, poolTickIndex, zoomLevel, ZOOM_FACTOR);
-    }, [chartData, poolTickIndex, zoomLevel]);
+        return zoom(chartData, activeTickIndex, zoomLevel, ZOOM_FACTOR);
+    }, [chartData, activeTickIndex, zoomLevel]);
 
     const currentPrice = useMemo(() => {
-        if (!liquidityDensity || !pool) return null;
-        return getPrice(liquidityDensity.activeIdx, pool);
-    }, [liquidityDensity, pool]);
+        if (!pool || activeTick === null) return null;
+        const price = tickToScaledPrice(activeTick, pool);
+        if (flipPrice) return 1 / price;
+        return price;
+    }, [pool, activeTick, flipPrice]);
 
     useEffect(() => {
+        if (activeTick === null) return;
         const index = chartData.findIndex(
-            (data) => data.idx === liquidityDensity?.activeIdx,
+            (data) => Math.abs(data.idx) === Math.abs(activeTick),
         );
-        setPoolTickIndex(index);
-    }, [chartData, liquidityDensity?.activeIdx]);
+        setActiveTickIndex(index);
+    }, [chartData, activeTick, activeChartData]);
 
     function handleOnMouseMove(state: CategoricalChartState) {
         if (state.isTooltipActive) setTooltipIndex(state.activeTooltipIndex);
@@ -94,11 +112,11 @@ export function LiquidityDensityChart({
         setTooltipIndex(undefined);
     }
 
-    const handleZoomOut = useCallback(() => {
+    const handleOnZoomOut = useCallback(() => {
         setZoomLevel((prev) => Math.max(prev - 1, MIN_ZOOM_LEVEL));
     }, []);
 
-    const handleZoomIn = useCallback(() => {
+    const handleOnZoomIn = useCallback(() => {
         setZoomLevel((prev) => Math.min(prev + 1, MAX_ZOOM_LEVEL));
     }, []);
 
@@ -116,7 +134,7 @@ export function LiquidityDensityChart({
         );
     }
 
-    if (!liquidityDensity || liquidityDensity.ticks.length === 0)
+    if (!ticks || ticks.list.length === 0)
         return (
             <div className={classNames("root", styles.root, className)}>
                 <div
@@ -173,7 +191,7 @@ export function LiquidityDensityChart({
                             size="xs"
                             icon={ZoomOutIcon}
                             disabled={zoomLevel === MIN_ZOOM_LEVEL}
-                            onClick={handleZoomOut}
+                            onClick={handleOnZoomOut}
                             className={{ root: styles.zoomButton }}
                         />
                         <div className={styles.divider}></div>
@@ -182,7 +200,7 @@ export function LiquidityDensityChart({
                             size="xs"
                             icon={ZoomInIcon}
                             disabled={zoomLevel === MAX_ZOOM_LEVEL}
-                            onClick={handleZoomIn}
+                            onClick={handleOnZoomIn}
                             className={{ root: styles.zoomButton }}
                         />
                     </div>
@@ -200,7 +218,11 @@ export function LiquidityDensityChart({
                     style={{ cursor: "pointer" }}
                 >
                     <YAxis hide domain={[0, "dataMax"]} />
-                    <XAxis reversed hide dataKey="price0" />
+                    <XAxis
+                        reversed
+                        hide
+                        dataKey={flipPrice ? "price1" : "price0"}
+                    />
 
                     <Bar
                         dataKey="liquidity"
@@ -209,9 +231,10 @@ export function LiquidityDensityChart({
                         isAnimationActive={false}
                         shape={
                             <LiquidityBar
+                                flipPrice={flipPrice}
                                 from={from}
                                 to={to}
-                                activeIdx={liquidityDensity.activeIdx}
+                                activeTick={activeTick}
                                 chartData={activeChartData}
                                 currentPrice={currentPrice}
                                 tooltipIndex={tooltipIndex}

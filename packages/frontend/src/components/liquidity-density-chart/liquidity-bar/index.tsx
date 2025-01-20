@@ -11,11 +11,12 @@ interface LiquidityBarProps {
     height?: number;
     price0?: number;
     price1?: number;
+    flipPrice?: boolean;
     from?: number;
     to?: number;
     chartData: LiquidityDensityChartData[];
     idx?: number;
-    activeIdx?: number;
+    activeTick: number | null;
     currentPrice: number | null;
     tooltipIndex?: number;
 }
@@ -28,11 +29,12 @@ export function LiquidityBar({
     height,
     price0,
     price1,
+    flipPrice,
     from,
     to,
     chartData,
     idx,
-    activeIdx,
+    activeTick,
     currentPrice,
     tooltipIndex,
 }: LiquidityBarProps) {
@@ -43,6 +45,7 @@ export function LiquidityBar({
         height === undefined ||
         price0 === undefined ||
         price1 === undefined ||
+        activeTick === null ||
         x === undefined ||
         y === undefined
     )
@@ -51,15 +54,22 @@ export function LiquidityBar({
     const inRange =
         from !== undefined && to !== undefined && idx >= from && idx < to;
     const fill =
-        idx === activeIdx ? "#6CFF95" : inRange ? "#6CFF9566" : "#E5E7EB";
+        Math.abs(idx) === Math.abs(activeTick)
+            ? "#6CFF95"
+            : inRange
+              ? "#6CFF9566"
+              : "#E5E7EB";
 
     let percentage = 0;
     if (
         from !== undefined &&
         to !== undefined &&
-        activeIdx !== undefined &&
+        activeTick !== null &&
         currentPrice
     ) {
+        const activeTickIndex = chartData.findIndex(
+            (data) => Math.abs(data.idx) === Math.abs(activeTick),
+        );
         const chartDataInRange = chartData.filter(
             (data) => data.idx >= from && data.idx < to,
         );
@@ -72,11 +82,14 @@ export function LiquidityBar({
             (closestFrom === idx || closestTo === idx) &&
             index !== 0 &&
             index !== chartData.length - 1
-        )
+        ) {
+            const price = flipPrice ? price1 : price0;
+
             percentage =
-                (idx < activeIdx ? -1 : 1) *
-                (Math.abs(price0 - currentPrice) / currentPrice) *
+                (index < activeTickIndex ? 1 : -1) *
+                (Math.abs(price - currentPrice) / currentPrice) *
                 100;
+        }
     }
 
     let opacity = 1;
