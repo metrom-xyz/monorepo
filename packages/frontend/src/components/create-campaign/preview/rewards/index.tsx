@@ -1,4 +1,4 @@
-import type { CampaignPayload } from "@/src/types";
+import type { CampaignPreviewTokenDistributables } from "@/src/types";
 import { TextField, Typography } from "@metrom-xyz/ui";
 import type { SupportedChain } from "@metrom-xyz/contracts";
 import { useTranslations } from "next-intl";
@@ -18,7 +18,7 @@ import { FEE_UNIT } from "@/src/commons";
 import styles from "./styles.module.css";
 
 interface RewardsProps {
-    rewards: CampaignPayload["tokens"];
+    rewards: CampaignPreviewTokenDistributables;
     startDate?: Dayjs;
     endDate?: Dayjs;
 }
@@ -34,7 +34,7 @@ export function Rewards({ rewards, startDate, endDate }: RewardsProps) {
     const totalRewardsUsdAmount = useMemo(() => {
         if (!rewards) return 0;
         let total = 0;
-        for (const reward of rewards) {
+        for (const reward of rewards.tokens) {
             if (!reward.amount.usdValue) return 0;
             total += reward.amount.usdValue;
         }
@@ -81,7 +81,7 @@ export function Rewards({ rewards, startDate, endDate }: RewardsProps) {
                         {t("amount")}
                     </Typography>
                 </div>
-                {rewards?.map((reward) => (
+                {rewards?.tokens.map((reward) => (
                     <div key={reward.token.address} className={styles.row}>
                         <div className={styles.nameContainer}>
                             <RemoteLogo

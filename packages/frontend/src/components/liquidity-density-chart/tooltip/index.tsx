@@ -3,10 +3,10 @@ import { useTranslations } from "next-intl";
 import { Typography } from "@metrom-xyz/ui";
 import type { AmmPool } from "@metrom-xyz/sdk";
 import { formatAmount } from "@/src/utils/format";
-import type { LiquidityDensityChartData } from "..";
+import type { ScaledLiquidityTick } from "..";
 
 interface Payload {
-    payload: LiquidityDensityChartData;
+    payload: ScaledLiquidityTick;
 }
 
 interface TooltipProps {

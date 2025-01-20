@@ -93,7 +93,7 @@ export class CampaignPreviewPayload {
             | CampaignPreviewTokenDistributables
             | CampaignPreviewPointDistributables,
         public readonly kpiSpecification?: KpiSpecification,
-        public readonly priceRangeSpecification?: PriceRangeSpecification,
+        public readonly priceRangeSpecification?: AugmentedPriceRangeSpecification,
         public readonly restrictions?: {
             type: RestrictionType;
             list: Address[];
