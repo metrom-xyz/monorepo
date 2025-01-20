@@ -27,7 +27,8 @@
         leading-6
         font-medium
         px-0
-        text-[1.75rem];
+        text-[1.75rem]
+        rounded-none;
 }
 
 .rewardTokenSymbol {

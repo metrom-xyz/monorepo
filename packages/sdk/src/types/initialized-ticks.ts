@@ -5,7 +5,7 @@ export interface Tick {
     price1: number;
 }
 
-export interface InitializedTicks {
+export interface LiquidityDensity {
     activeIdx: number;
-    ticks: Tick[]
+    ticks: Tick[];
 }

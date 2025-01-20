@@ -1,18 +1,19 @@
-import { type AmmPool, type InitializedTicks } from "@metrom-xyz/sdk";
+import { type AmmPool, type LiquidityDensity } from "@metrom-xyz/sdk";
 import { metromApiClient } from "../commons";
 import { useQuery } from "@tanstack/react-query";
+import type { Address } from "viem";
 
 const SURROUNDING_AMOUNT = 200;
 
-export function useTicks(
+export function useLiquidityDensity(
     pool?: AmmPool,
     computeAmount?: number,
 ): {
     loading: boolean;
-    ticks?: InitializedTicks;
+    liquidityDensity?: LiquidityDensity;
 } {
     const { data, isPending } = useQuery({
-        queryKey: ["ticks", pool],
+        queryKey: ["liquidity-density", pool],
         queryFn: async ({ queryKey }) => {
             const pool = queryKey[1] as AmmPool;
             if (!pool) return undefined;
@@ -20,7 +21,7 @@ export function useTicks(
             const chainId = pool.chainId;
 
             try {
-                return metromApiClient.fetchInitializedTicks({
+                return metromApiClient.fetchLiquidityDensity({
                     chainId,
                     pool,
                     surroundingAmount: SURROUNDING_AMOUNT,
@@ -28,7 +29,7 @@ export function useTicks(
                 });
             } catch (error) {
                 throw new Error(
-                    `Could not fetch initialized ticks for pool with address ${pool.address} in chain with id ${chainId}: ${error}`,
+                    `Could not fetch liquidity density for pool with address ${pool.address} in chain with id ${chainId}: ${error}`,
                 );
             }
         },
@@ -38,6 +39,6 @@ export function useTicks(
 
     return {
         loading: isPending,
-        ticks: data,
+        liquidityDensity: data,
     };
 }

@@ -46,7 +46,7 @@ import type {
 } from "../types/leaderboards";
 import type { BackendLeaderboardResponse } from "./types/leaderboards";
 import type { FeeToken } from "../types/fee-tokens";
-import type { InitializedTicks, Tick } from "../types/initialized-ticks";
+import type { LiquidityDensity, Tick } from "../types/initialized-ticks";
 import type { BackendInitializedTicksResponse } from "./types/initialized-ticks";
 import { tickToScaledPrice } from "../utils";
 
@@ -566,9 +566,9 @@ export class MetromApiClient {
         }
     }
 
-    async fetchInitializedTicks(
+    async fetchLiquidityDensity(
         params: FetchInitializedTicksParams,
-    ): Promise<InitializedTicks> {
+    ): Promise<LiquidityDensity> {
         const url = new URL(
             `v1/initialized-ticks/${params.chainId}/${params.pool.address}`,
             this.baseUrl,
@@ -603,7 +603,7 @@ export class MetromApiClient {
             {},
         );
 
-        const price0 = tickToScaledPrice(activeTick.idx, params.pool);
+        const price0 = tickToScaledPrice(activeTick.idx, params.pool, true);
         const activeTickProcessed: ProcessedTick = {
             idx: activeTick.idx,
             liquidity: {
@@ -920,7 +920,7 @@ function computeSurroundingTicks(
             break;
         }
 
-        const price0 = tickToScaledPrice(currentTickIdx, pool);
+        const price0 = tickToScaledPrice(currentTickIdx, pool, true);
         const currentTickProcessed: ProcessedTick = {
             idx: currentTickIdx,
             liquidity: {
