@@ -13,7 +13,7 @@ import { formatUsdAmount } from "@/src/utils/format";
 import classNames from "classnames";
 import { KpiMetric, type KpiSpecification } from "@metrom-xyz/sdk";
 import { usePrevious } from "react-use";
-import { KpiSimulationChart } from "../../../kpi-simulation-chart";
+import { KpiSimulationChart } from "../../../../kpi-simulation-chart";
 import { GoalInputs } from "./goal-inputs";
 import { useChainId } from "wagmi";
 

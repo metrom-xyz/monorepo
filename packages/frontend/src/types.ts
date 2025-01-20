@@ -11,7 +11,7 @@ import {
     type TokenDistributables,
     type UsdPricedOnChainAmount,
     type WhitelistedErc20Token,
-    type PriceRangeSpecification,
+    type LiquityV2DebtBrand,
 } from "@metrom-xyz/sdk";
 import type { Dayjs } from "dayjs";
 import type { SVGProps, FunctionComponent } from "react";
@@ -58,8 +58,10 @@ export interface AugmentedPriceRangeSpecification {
 
 export interface CampaignPayload {
     rewardType?: RewardType;
+    // TODO: define target type and different types for deex/pool and brand?
     dex?: DexInfo;
     pool?: AmmPool;
+    brand?: LiquityV2DebtBrand;
     startDate?: Dayjs;
     endDate?: Dayjs;
     points?: number;

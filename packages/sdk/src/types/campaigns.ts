@@ -28,6 +28,8 @@ export interface LiquityV2DebtTarget {
     liquityV2Brand: LiquityV2DebtBrand;
 }
 
+export type CampaignTarget = AmmPoolLiquidityTarget | LiquityV2DebtTarget;
+
 export interface TokenDistributable {
     token: UsdPricedErc20Token;
     amount: UsdPricedOnChainAmount;

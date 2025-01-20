@@ -1,38 +1,127 @@
+"use client";
+
 import {
     type CampaignPayload,
     type CampaignPayloadPart,
     type CampaignPayloadErrors,
-    RewardType,
+    CampaignPreviewPayload,
+    type CampaignPreviewPointDistributables,
+    type CampaignPreviewTokenDistributables,
 } from "@/src/types";
 import { useAccount, useChainId, useChains } from "wagmi";
-import { useMemo } from "react";
-import { DexStep } from "./dex-step";
-import { PoolStep } from "./pool-step";
-import { StartDateStep } from "./start-date-step";
-import { EndDateStep } from "./end-date-step";
-import { RewardsStep } from "./rewards-step";
-import { RestrictionsStep } from "./restrictions-step";
-import { KpiStep } from "./kpi-step";
-import { RangeStep } from "./range-step";
-import { AMM_SUPPORTS_RANGE_INCENTIVES } from "@/src/commons";
-import type { SupportedAmm } from "@metrom-xyz/sdk";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { DistributablesType, TargetType } from "@metrom-xyz/sdk";
+import { useTranslations } from "next-intl";
+import { trackFathomEvent } from "@/src/utils/fathom";
+import { AmmForm } from "./amm";
+import { Button, Modal } from "@metrom-xyz/ui";
+import { LiquidityV2Form } from "./liquidity-v2";
+import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
+import { CampaignPreview } from "../preview";
 
 import styles from "./styles.module.css";
 
-export interface CreateCampaignFormProps {
-    payload?: CampaignPayload;
-    onPayloadChange: (part: CampaignPayloadPart) => void;
-    onPayloadError: (errors: CampaignPayloadErrors) => void;
+export enum View {
+    Form = "form",
+    Preview = "preview",
 }
 
-export function CreateCampaignForm({
-    payload,
-    onPayloadChange,
-    onPayloadError,
-}: CreateCampaignFormProps) {
+export interface CreateCampaignFormProps {
+    target: TargetType;
+}
+
+function validatePayload(
+    payload: CampaignPayload,
+): CampaignPreviewPayload | null {
+    if (!payload.dex || !payload.pool || !payload.startDate || !payload.endDate)
+        return null;
+
+    let distributables;
+    if (payload.points && payload.fee) {
+        distributables = {
+            type: DistributablesType.Points,
+            fee: payload.fee,
+            points: payload.points,
+        } as CampaignPreviewPointDistributables;
+    } else if (payload.tokens && payload.tokens.length > 0) {
+        distributables = {
+            type: DistributablesType.Tokens,
+            tokens: payload.tokens,
+        } as CampaignPreviewTokenDistributables;
+    } else return null;
+
+    return new CampaignPreviewPayload(
+        payload.dex,
+        payload.pool,
+        payload.startDate,
+        payload.endDate,
+        distributables,
+        payload.kpiSpecification,
+        payload.priceRangeSpecification,
+        payload.restrictions,
+    );
+}
+
+export function CreateCampaignForm({ target }: CreateCampaignFormProps) {
+    const t = useTranslations("newCampaign");
     const { chain: connectedChain, isConnected } = useAccount();
     const selectedChain = useChainId();
     const chains = useChains();
+
+    const [payload, setPayload] = useState<CampaignPayload>({});
+    const [payloadErrors, setPayloadErrors] = useState<CampaignPayloadErrors>(
+        {},
+    );
+    const [view, setView] = useState<View>(View.Form);
+
+    const chainId = useChainId();
+
+    const previewPayload = useMemo(() => {
+        if (Object.values(payloadErrors).some((error) => !!error)) return null;
+        return validatePayload(payload);
+    }, [payload, payloadErrors]);
+
+    useEffect(() => {
+        setPayload({});
+    }, [chainId]);
+
+    useEffect(() => {
+        setPayload({ dex: payload.dex });
+    }, [payload.dex]);
+
+    function handlePayloadOnChange(part: CampaignPayloadPart) {
+        setPayload((prev) => ({ ...prev, ...part }));
+    }
+
+    const handlePayloadOnError = useCallback(
+        (errors: CampaignPayloadErrors) => {
+            setPayloadErrors((state) => ({ ...state, ...errors }));
+        },
+        [],
+    );
+
+    function handlePreviewOnClick() {
+        setView(View.Preview);
+        trackFathomEvent("CLICK_CAMPAIGN_PREVIEW");
+    }
+
+    function handleBackOnClick() {
+        setView(View.Form);
+    }
+
+    function handleCreateNewOnClick() {
+        setPayload((prevState) => ({
+            ...prevState,
+            pool: undefined,
+            tokens: undefined,
+            points: undefined,
+            feeToken: undefined,
+            kpiSpecification: undefined,
+            priceRangeSpecification: undefined,
+        }));
+        setPayloadErrors({});
+        setView(View.Form);
+    }
 
     const unsupportedChain = useMemo(() => {
         return (
@@ -44,75 +133,40 @@ export function CreateCampaignForm({
 
     return (
         <div className={styles.root}>
-            <DexStep
-                disabled={unsupportedChain}
-                dex={payload?.dex}
-                onDexChange={onPayloadChange}
-            />
-            <PoolStep
-                disabled={!payload?.dex || unsupportedChain}
-                dex={payload?.dex}
-                pool={payload?.pool}
-                onPoolChange={onPayloadChange}
-            />
-            <StartDateStep
-                disabled={!payload?.pool || unsupportedChain}
-                startDate={payload?.startDate}
-                endDate={payload?.endDate}
-                onStartDateChange={onPayloadChange}
-                onError={onPayloadError}
-            />
-            <EndDateStep
-                disabled={!payload?.startDate || unsupportedChain}
-                startDate={payload?.startDate}
-                endDate={payload?.endDate}
-                onEndDateChange={onPayloadChange}
-                onError={onPayloadError}
-            />
-            <RewardsStep
-                disabled={!payload?.endDate || unsupportedChain}
-                rewardType={payload?.rewardType}
-                pool={payload?.pool}
-                tokens={payload?.tokens}
-                points={payload?.points}
-                fee={payload?.fee}
-                startDate={payload?.startDate}
-                endDate={payload?.endDate}
-                onRewardsChange={onPayloadChange}
-                onError={onPayloadError}
-            />
-            <KpiStep
-                disabled={
-                    !payload?.tokens ||
-                    payload.rewardType === RewardType.Points ||
-                    unsupportedChain
-                }
-                pool={payload?.pool}
-                rewards={payload?.tokens}
-                kpiSpecification={payload?.kpiSpecification}
-                onKpiChange={onPayloadChange}
-                onError={onPayloadError}
-            />
-            {payload?.pool &&
-                AMM_SUPPORTS_RANGE_INCENTIVES[
-                    payload.pool.amm as SupportedAmm
-                ] && (
-                    <RangeStep
-                        disabled={!payload?.tokens || unsupportedChain}
-                        pool={payload.pool}
-                        priceRangeSpecification={
-                            payload?.priceRangeSpecification
-                        }
-                        onRangeChange={onPayloadChange}
-                        onError={onPayloadError}
+            {target === TargetType.AmmPoolLiquidity && (
+                <AmmForm
+                    unsupportedChain={unsupportedChain}
+                    payload={payload}
+                    onPayloadChange={handlePayloadOnChange}
+                    onPayloadError={handlePayloadOnError}
+                />
+            )}
+            {target === TargetType.LiquityV2Debt && (
+                <LiquidityV2Form
+                    unsupportedChain={unsupportedChain}
+                    payload={payload}
+                    onPayloadChange={handlePayloadOnChange}
+                    onPayloadError={handlePayloadOnError}
+                />
+            )}
+            <Button
+                icon={ArrowRightIcon}
+                iconPlacement="right"
+                disabled={!previewPayload}
+                className={{ root: styles.button }}
+                onClick={handlePreviewOnClick}
+            >
+                {t("submit.preview")}
+            </Button>
+            {previewPayload && (
+                <Modal open={view === View.Preview}>
+                    <CampaignPreview
+                        onBack={handleBackOnClick}
+                        onCreateNew={handleCreateNewOnClick}
+                        payload={previewPayload}
                     />
-                )}
-            <RestrictionsStep
-                disabled={!payload?.tokens || unsupportedChain}
-                restrictions={payload?.restrictions}
-                onRestrictionsChange={onPayloadChange}
-                onError={onPayloadError}
-            />
+                </Modal>
+            )}
         </div>
     );
 }
