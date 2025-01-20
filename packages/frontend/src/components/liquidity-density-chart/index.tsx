@@ -13,16 +13,16 @@ import type { CategoricalChartState } from "recharts/types/chart/types";
 import {
     tickToScaledPrice,
     type AmmPool,
-    type InitializedTicks,
+    type LiquidityDensity,
 } from "@metrom-xyz/sdk";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { TooltipContent } from "./tooltip";
-import { formatUnits } from "viem";
 import classNames from "classnames";
 import { LiquidityBar } from "./liquidity-bar";
 import { zoom } from "@/src/utils/liquidity-density";
 import { ZoomOutIcon } from "@/src/assets/zoom-out-icon";
 import { ZoomInIcon } from "@/src/assets/zoom-in-icon";
+import { formatUnits } from "viem";
 
 import styles from "./styles.module.css";
 
@@ -30,15 +30,15 @@ interface LiquidityDensityProps {
     error?: boolean;
     loading?: boolean;
     pool?: AmmPool;
-    ticks?: InitializedTicks;
+    density?: LiquidityDensity;
     from?: number;
     to?: number;
-    flipPrice?: boolean;
+    token0To1: boolean;
     header?: boolean;
     className?: string;
 }
 
-export interface LiquidityDensityChartData {
+export interface ScaledLiquidityTick {
     idx: number;
     liquidity: number;
     price0: number;
@@ -53,55 +53,46 @@ export function LiquidityDensityChart({
     error,
     loading,
     pool,
-    ticks,
+    density,
     from,
     to,
-    flipPrice,
+    token0To1,
     header,
     className,
 }: LiquidityDensityProps) {
     const t = useTranslations("liquidityDensityChart");
-    const [activeTickIndex, setActiveTickIndex] = useState<number>(-1);
     const [tooltipIndex, setTooltipIndex] = useState<number>();
     const [zoomLevel, setZoomLevel] = useState<number>(MAX_ZOOM_LEVEL / 2);
 
-    const chartData: LiquidityDensityChartData[] = useMemo(() => {
-        if (!ticks || !pool) return [];
-        const list = ticks.list.map((tick) => ({
+    const { ticks, activeTickIdx } = useMemo(() => {
+        if (!density) return { ticks: [], activeTickIdx: null };
+
+        const ticks: ScaledLiquidityTick[] = density.ticks.map((tick) => ({
             ...tick,
-            // FIXME: flip the ticks?
-            // idx: flipPrice ? -tick.idx : tick.idx,
+            idx: token0To1 ? tick.idx : -tick.idx,
             liquidity: Number(formatUnits(tick.liquidity, 18)),
         }));
 
-        // FIXME: ok to reverse?
-        if (flipPrice) return list;
-        return list.reverse();
-    }, [ticks, pool, flipPrice]);
+        if (!token0To1) ticks.reverse();
 
-    const activeTick = useMemo(() => {
-        if (!ticks) return null;
-        return ticks.activeIdx;
-    }, [ticks]);
+        return {
+            ticks,
+            activeTickIdx: token0To1 ? density.activeIdx : -density.activeIdx,
+        };
+    }, [density, token0To1]);
 
-    const activeChartData = useMemo(() => {
-        return zoom(chartData, activeTickIndex, zoomLevel, ZOOM_FACTOR);
-    }, [chartData, activeTickIndex, zoomLevel]);
+    const visibleTicks = useMemo(() => {
+        return activeTickIdx === null
+            ? []
+            : zoom(ticks, activeTickIdx, zoomLevel, ZOOM_FACTOR);
+    }, [ticks, activeTickIdx, zoomLevel]);
 
     const currentPrice = useMemo(() => {
-        if (!pool || activeTick === null) return null;
-        const price = tickToScaledPrice(activeTick, pool);
-        if (flipPrice) return 1 / price;
+        if (!pool || activeTickIdx === null) return null;
+        const price = tickToScaledPrice(activeTickIdx, pool, token0To1);
+        if (token0To1) return 1 / price;
         return price;
-    }, [pool, activeTick, flipPrice]);
-
-    useEffect(() => {
-        if (activeTick === null) return;
-        const index = chartData.findIndex(
-            (data) => Math.abs(data.idx) === Math.abs(activeTick),
-        );
-        setActiveTickIndex(index);
-    }, [chartData, activeTick, activeChartData]);
+    }, [pool, activeTickIdx, token0To1]);
 
     function handleOnMouseMove(state: CategoricalChartState) {
         if (state.isTooltipActive) setTooltipIndex(state.activeTooltipIndex);
@@ -134,7 +125,7 @@ export function LiquidityDensityChart({
         );
     }
 
-    if (!ticks || ticks.list.length === 0)
+    if (!density || density.ticks.length === 0)
         return (
             <div className={classNames("root", styles.root, className)}>
                 <div
@@ -211,7 +202,7 @@ export function LiquidityDensityChart({
                 className={classNames("container", styles.container, className)}
             >
                 <BarChart
-                    data={activeChartData}
+                    data={visibleTicks}
                     onMouseMove={handleOnMouseMove}
                     onMouseLeave={handleOnMouseLeave}
                     margin={{ top: 24 }}
@@ -221,7 +212,7 @@ export function LiquidityDensityChart({
                     <XAxis
                         reversed
                         hide
-                        dataKey={flipPrice ? "price1" : "price0"}
+                        dataKey={token0To1 ? "price0" : "price1"}
                     />
 
                     <Bar
@@ -231,17 +222,17 @@ export function LiquidityDensityChart({
                         isAnimationActive={false}
                         shape={
                             <LiquidityBar
-                                flipPrice={flipPrice}
+                                token0To1={token0To1}
                                 from={from}
                                 to={to}
-                                activeTick={activeTick}
-                                chartData={activeChartData}
+                                activeTickIdx={activeTickIdx}
+                                ticks={visibleTicks}
                                 currentPrice={currentPrice}
                                 tooltipIndex={tooltipIndex}
                             />
                         }
                     >
-                        {chartData?.map((_, index) => {
+                        {ticks?.map((_, index) => {
                             return (
                                 <Cell key={`cell-${index}`} cursor="pointer" />
                             );

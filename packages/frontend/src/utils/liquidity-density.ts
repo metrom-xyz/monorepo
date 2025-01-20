@@ -1,30 +1,36 @@
-import type { LiquidityDensityChartData } from "../components/liquidity-density-chart";
+import type { ScaledLiquidityTick } from "../components/liquidity-density-chart";
 
-export function zoom<T>(
-    chartData: T[],
-    activeIndex: number,
+export function zoom(
+    ticks: ScaledLiquidityTick[],
+    activeTickIdx: number,
     zoomLevel: number,
     baseZoomFactor: number,
 ) {
-    if (zoomLevel === 0) return chartData;
+    if (zoomLevel === 0) return ticks;
 
     const zoomFactor = Math.max(baseZoomFactor / zoomLevel, 1);
 
-    const sliceStart = Math.max(activeIndex - Math.floor(zoomFactor), 0);
+    // TODO: check if it's possible to calculate the index of the active
+    // tick in the ticks array by considering the idx of the first element
+    // of the array and the currently active idx in the pool
+    const activeTickIndex = ticks.findIndex((tick) => {
+        return tick.idx === activeTickIdx;
+    });
+    if (activeTickIndex < 0) return [];
+
+    const sliceStart = Math.max(activeTickIndex - Math.floor(zoomFactor), 0);
     const sliceEnd = Math.min(
-        activeIndex + Math.ceil(zoomFactor),
-        chartData.length,
+        activeTickIndex + Math.ceil(zoomFactor),
+        ticks.length,
     );
 
-    return chartData.slice(sliceStart, sliceEnd);
+    return ticks.slice(sliceStart, sliceEnd);
 }
 
-export function closestTick(data: LiquidityDensityChartData[], tick: number) {
-    return data.reduce(
+export function closestTick(ticks: ScaledLiquidityTick[], tick: number) {
+    return ticks.reduce(
         (closest: number, current) =>
-            Math.abs(current.idx - tick) < Math.abs(closest - tick)
-                ? current.idx
-                : closest,
+            current.idx - tick < closest - tick ? current.idx : closest,
         0,
     );
 }

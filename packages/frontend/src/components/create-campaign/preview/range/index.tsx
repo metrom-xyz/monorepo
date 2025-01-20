@@ -2,13 +2,12 @@ import type { CampaignPayload } from "@/src/types";
 import { useTranslations } from "next-intl";
 import { TextField, Typography } from "@metrom-xyz/ui";
 import { formatAmount } from "@/src/utils/format";
-import { tickToScaledPrice } from "@metrom-xyz/sdk";
 
 import styles from "./styles.module.css";
 
 interface RangeProps {
     pool: CampaignPayload["pool"];
-    specification: CampaignPayload["rangeSpecification"];
+    specification: CampaignPayload["priceRangeSpecification"];
 }
 
 export function Range({ pool, specification }: RangeProps) {

@@ -11,19 +11,23 @@ import {
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useChainId } from "wagmi";
 import { useTranslations } from "next-intl";
-import { RangeInputs, type RangeBound } from "./range-inputs";
+import { RangeInputs } from "./range-inputs";
 import { LiquidityDensityChart } from "@/src/components/liquidity-density-chart";
-import { priceToTick, tickToScaledPrice, type AmmPool } from "@metrom-xyz/sdk";
+import {
+    scaledPriceToTick,
+    tickToScaledPrice,
+    type AmmPool,
+} from "@metrom-xyz/sdk";
 import classNames from "classnames";
 import { usePrevious } from "react-use";
-import { useTicks } from "@/src/hooks/useTicks";
+import { useLiquidityDensity } from "@/src/hooks/useLiquidityDensity";
 import { formatAmount } from "@/src/utils/format";
 import type {
+    AugmentedPriceRangeBound,
+    AugmentedPriceRangeSpecification,
     CampaignPayload,
     CampaignPayloadErrors,
     CampaignPayloadPart,
-    TickedPriceRangeBound,
-    TickedPriceRangeSpecification,
 } from "@/src/types";
 
 import styles from "./styles.module.css";
@@ -48,24 +52,22 @@ export function RangeStep({
 }: RangeStepProps) {
     const t = useTranslations("newCampaign.form.range");
     const [open, setOpen] = useState(false);
-    const [flipPrice, setFlipPrice] = useState(false);
+    const [token0To1, setToken0To1] = useState(true);
     const [enabled, setEnabled] = useState(false);
     const [error, setError] = useState("");
     const [warning, setWarning] = useState("");
 
-    const [from, setFrom] = useState<TickedPriceRangeBound | undefined>(
+    const [from, setFrom] = useState<AugmentedPriceRangeBound | undefined>(
         priceRangeSpecification?.from,
     );
-    const [to, setTo] = useState<TickedPriceRangeBound | undefined>(
+    const [to, setTo] = useState<AugmentedPriceRangeBound | undefined>(
         priceRangeSpecification?.to,
     );
 
     const prevRangeSpecification = usePrevious(priceRangeSpecification);
     const chainId = useChainId();
-    const { ticks, loading: loadingTicks } = useTicks(
-        pool,
-        COMPUTE_TICKS_AMOUNT,
-    );
+    const { liquidityDensity, loading: loadingLiquidityDensity } =
+        useLiquidityDensity(pool, COMPUTE_TICKS_AMOUNT);
 
     const unsavedChanges = useMemo(() => {
         return (
@@ -76,17 +78,12 @@ export function RangeStep({
     }, [from, prevRangeSpecification, to]);
 
     const currentPrice = useMemo(() => {
-        if (!ticks || !pool) return undefined;
-        const price = tickToScaledPrice(ticks.activeIdx, pool);
-
-        if (flipPrice) return 1 / price;
-        return price;
-    }, [flipPrice, ticks, pool]);
-
-    const priceStep = useMemo(() => {
-        if (!currentPrice) return undefined;
-        return currentPrice * PRICE_STEP_FACTOR;
-    }, [currentPrice]);
+        if (!liquidityDensity || !pool) return undefined;
+        const activeTickIdx = token0To1
+            ? liquidityDensity.activeIdx
+            : -liquidityDensity.activeIdx;
+        return tickToScaledPrice(activeTickIdx, pool, token0To1);
+    }, [liquidityDensity, token0To1, pool]);
 
     useEffect(() => {
         setFrom(undefined);
@@ -118,7 +115,7 @@ export function RangeStep({
     useEffect(() => {
         if (!from && !to) setError("");
         else if ((!from && to) || (!to && from)) setError("errors.missing");
-        else if (!!from && !!to && from.price >= to.price)
+        else if (!!from && !!to && from.tick >= to.tick)
             setError("errors.malformed");
         else setError("");
     }, [from, to]);
@@ -150,28 +147,29 @@ export function RangeStep({
     }
 
     const handleOnFlipPrice = useCallback(() => {
-        setFlipPrice((prev) => !prev);
-        // TODO: convert the prices instead of clearing them
+        if (!pool) return;
+
+        setToken0To1((prev) => !prev);
+
         if (from && to) {
-            const newFrom: RangeBound = {
-                price: 1 / from.price,
-                tick: priceToTick(1 / from.tick),
-            };
+            const newFromTick = -to.tick;
+            const newFromPrice = tickToScaledPrice(
+                newFromTick,
+                pool,
+                token0To1,
+            );
+            setFrom({ tick: newFromTick, price: newFromPrice });
 
-            const newTo: RangeBound = {
-                price: 1 / to.price,
-                tick: priceToTick(1 / to.tick),
-            };
-
-            setFrom(newTo);
-            setTo(newFrom);
+            const newToTick = -from.tick;
+            const newToPrice = tickToScaledPrice(newToTick, pool, token0To1);
+            setTo({ tick: newToTick, price: newToPrice });
         }
-    }, [from, to]);
+    }, [from, pool, to, token0To1]);
 
     const handleApply = useCallback(() => {
         if (from === undefined || to === undefined) return;
 
-        const priceRangeSpecification: TickedPriceRangeSpecification = {
+        const priceRangeSpecification: AugmentedPriceRangeSpecification = {
             from,
             to,
         };
@@ -231,9 +229,7 @@ export function RangeStep({
                 }}
             >
                 <div className={styles.priceWrapper}>
-                    {open ||
-                    from?.price === undefined ||
-                    to?.price === undefined ? (
+                    {open || from === undefined || to === undefined ? (
                         <>
                             <Typography
                                 uppercase
@@ -243,14 +239,14 @@ export function RangeStep({
                             >
                                 {t("currentPrice")}
                             </Typography>
-                            {!ticks || !pool || loadingTicks ? (
+                            {!currentPrice ? (
                                 <Skeleton size="sm" width={50} />
                             ) : (
                                 <Typography weight="medium" size="sm">
                                     {t("price", {
-                                        token0: pool?.tokens[flipPrice ? 1 : 0]
+                                        token0: pool?.tokens[token0To1 ? 0 : 1]
                                             .symbol,
-                                        token1: pool?.tokens[flipPrice ? 0 : 1]
+                                        token1: pool?.tokens[token0To1 ? 1 : 0]
                                             .symbol,
                                         price: formatAmount({
                                             amount: currentPrice,
@@ -271,12 +267,12 @@ export function RangeStep({
                             </Typography>
                             <Typography weight="medium" size="sm">
                                 {t("range.value", {
-                                    token0: pool?.tokens[flipPrice ? 1 : 0]
+                                    token0: pool?.tokens[token0To1 ? 0 : 1]
                                         .symbol,
-                                    token1: pool?.tokens[flipPrice ? 0 : 1]
+                                    token1: pool?.tokens[token0To1 ? 1 : 0]
                                         .symbol,
-                                    lowerPrice: from?.price.toFixed(4),
-                                    upperPrice: to?.price.toFixed(4),
+                                    lowerPrice: from.price.toFixed(4),
+                                    upperPrice: to.price.toFixed(4),
                                 })}
                             </Typography>
                         </>
@@ -297,10 +293,9 @@ export function RangeStep({
                         pool={pool}
                         error={!!error}
                         currentPrice={currentPrice}
-                        priceStep={priceStep}
-                        flipPrice={flipPrice}
-                        from={from?.price}
-                        to={to?.price}
+                        token0To1={token0To1}
+                        from={from}
+                        to={to}
                         onFromChange={setFrom}
                         onToChange={setTo}
                     />
@@ -310,13 +305,13 @@ export function RangeStep({
                         </Typography>
                         <LiquidityDensityChart
                             header
-                            flipPrice={flipPrice}
+                            token0To1={token0To1}
                             error={!!error}
-                            loading={loadingTicks}
+                            loading={loadingLiquidityDensity}
                             from={from?.tick}
                             to={to?.tick}
                             pool={pool}
-                            ticks={ticks}
+                            density={liquidityDensity}
                         />
                     </div>
                     <Button
