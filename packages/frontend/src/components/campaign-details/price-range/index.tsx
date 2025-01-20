@@ -1,5 +1,4 @@
 import {
-    Campaign,
     TargetType,
     tickToScaledPrice,
     type TargetedCampaign,
@@ -7,7 +6,7 @@ import {
 import { useTranslations } from "next-intl";
 import { TextField, Typography } from "@metrom-xyz/ui";
 import { formatAmount } from "@/src/utils/format";
-import { useTicks } from "@/src/hooks/useTicks";
+import { useLiquidityDensity } from "@/src/hooks/useLiquidityDensity";
 import { LiquidityDensityChart } from "../../liquidity-density-chart";
 import classNames from "classnames";
 
@@ -22,10 +21,8 @@ interface PriceRangeProps {
 export function PriceRange({ campaign }: PriceRangeProps) {
     const t = useTranslations("campaignDetails.priceRange");
 
-    const { ticks, loading: loadingTicks } = useTicks(
-        campaign?.target.pool,
-        COMPUTE_TICKS_AMOUNT,
-    );
+    const { liquidityDensity, loading: loadingLiquidityDensity } =
+        useLiquidityDensity(campaign?.target.pool, COMPUTE_TICKS_AMOUNT);
 
     if (
         !campaign?.isTargeting(TargetType.AmmPoolLiquidity) ||
@@ -54,6 +51,7 @@ export function PriceRange({ campaign }: PriceRangeProps) {
                                 amount: tickToScaledPrice(
                                     priceRange.from,
                                     pool,
+                                    true,
                                 ),
                             }),
                         })}
@@ -66,7 +64,11 @@ export function PriceRange({ campaign }: PriceRangeProps) {
                             token0: pool.tokens[0].symbol,
                             token1: pool.tokens[1].symbol,
                             price: formatAmount({
-                                amount: tickToScaledPrice(priceRange.to, pool),
+                                amount: tickToScaledPrice(
+                                    priceRange.to,
+                                    pool,
+                                    true,
+                                ),
                             }),
                         })}
                     />
@@ -80,8 +82,9 @@ export function PriceRange({ campaign }: PriceRangeProps) {
                             pool={pool}
                             from={priceRange.from}
                             to={priceRange.to}
-                            ticks={ticks}
-                            loading={loadingTicks}
+                            density={liquidityDensity}
+                            loading={loadingLiquidityDensity}
+                            token0To1
                         />
                     </div>
                 </div>

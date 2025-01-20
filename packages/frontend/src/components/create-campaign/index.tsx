@@ -52,7 +52,12 @@ function validatePayload(
         payload.endDate,
         distributables,
         payload.kpiSpecification,
-        payload.priceRangeSpecification,
+        payload.priceRangeSpecification
+            ? {
+                  from: payload.priceRangeSpecification.from.tick,
+                  to: payload.priceRangeSpecification.to.tick,
+              }
+            : undefined,
         payload.restrictions,
     );
 }
@@ -109,7 +114,7 @@ export function CreateCampaign() {
             points: undefined,
             feeToken: undefined,
             kpiSpecification: undefined,
-            rangeSpecification: undefined,
+            priceRangeSpecification: undefined,
         }));
         setPayloadErrors({});
         setView(View.Form);

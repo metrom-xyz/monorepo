@@ -15,6 +15,7 @@ import { RestrictionsStep } from "./restrictions-step";
 import { KpiStep } from "./kpi-step";
 import { RangeStep } from "./range-step";
 import { AMM_SUPPORTS_RANGE_INCENTIVES } from "@/src/commons";
+import type { SupportedAmm } from "@metrom-xyz/sdk";
 
 import styles from "./styles.module.css";
 
@@ -94,7 +95,9 @@ export function CreateCampaignForm({
                 onError={onPayloadError}
             />
             {payload?.pool &&
-                AMM_SUPPORTS_RANGE_INCENTIVES[payload.pool.amm] && (
+                AMM_SUPPORTS_RANGE_INCENTIVES[
+                    payload.pool.amm as SupportedAmm
+                ] && (
                     <RangeStep
                         disabled={!payload?.tokens || unsupportedChain}
                         pool={payload.pool}

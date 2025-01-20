@@ -1,25 +1,26 @@
 import { StepNumberInput } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
-import { type AmmPool, tickToPrice, priceToTick } from "@metrom-xyz/sdk";
+import {
+    type AmmPool,
+    scaledPriceToTick,
+    tickToScaledPrice,
+} from "@metrom-xyz/sdk";
 import { useCallback } from "react";
+import type { AugmentedPriceRangeBound } from "@/src/types";
 
 import styles from "./styles.module.css";
 
-export interface RangeBound {
-    price: number;
-    tick: number;
-}
+const PRICE_STEP = 0.01;
 
 interface RangeInputsProps {
     pool?: AmmPool;
     error?: boolean;
     currentPrice?: number;
-    from?: number;
-    to?: number;
-    priceStep?: number;
-    flipPrice?: boolean;
-    onFromChange: (value: RangeBound | undefined) => void;
-    onToChange: (value: RangeBound | undefined) => void;
+    from?: AugmentedPriceRangeBound;
+    to?: AugmentedPriceRangeBound;
+    token0To1: boolean;
+    onFromChange: (value: AugmentedPriceRangeBound | undefined) => void;
+    onToChange: (value: AugmentedPriceRangeBound | undefined) => void;
 }
 
 export function RangeInputs({
@@ -28,123 +29,101 @@ export function RangeInputs({
     currentPrice,
     from,
     to,
-    priceStep,
-    flipPrice = false,
+    token0To1,
     onFromChange,
     onToChange,
 }: RangeInputsProps) {
     const t = useTranslations("newCampaign.form.range");
 
-    const handleFromOnChange = useCallback(
-        (value: number | undefined) => {
-            if (value === undefined || !pool) {
-                onFromChange(undefined);
-                return;
-            }
+    const getChangeHandler = useCallback(
+        (type: "from" | "to") => {
+            return (value?: number) => {
+                const onChange = type === "from" ? onFromChange : onToChange;
 
-            onFromChange({
-                price: value,
-                tick: priceToTick(value),
-            });
-        },
-        [pool, onFromChange],
-    );
+                if (value === undefined || !pool) {
+                    onChange(undefined);
+                    return;
+                }
 
-    const handleToOnChange = useCallback(
-        (value: number | undefined) => {
-            if (value === undefined || !pool) {
-                onToChange(undefined);
-                return;
-            }
-
-            onToChange({
-                price: value,
-                tick: priceToTick(value),
-            });
-        },
-        [pool, onToChange],
-    );
-
-    const getFromStepHandler = useCallback(
-        (type: "increment" | "decrement") => {
-            return () => {
-                if (!priceStep || !currentPrice) return;
-                const delta = type === "increment" ? priceStep : -priceStep;
-                const base = from || currentPrice;
-                handleFromOnChange(base + delta);
+                onChange({
+                    price: value,
+                    tick: scaledPriceToTick(value, pool, token0To1),
+                });
             };
         },
-        [currentPrice, from, priceStep, handleFromOnChange],
+        [onFromChange, onToChange, pool, token0To1],
     );
 
-    const getToStepHandler = useCallback(
-        (type: "increment" | "decrement") => {
+    const getStepHandler = useCallback(
+        (type: "from" | "to", delta: "increment" | "decrement") => {
             return () => {
-                if (!priceStep || !currentPrice) return;
-                const delta = type === "increment" ? priceStep : -priceStep;
-                const base = to || currentPrice;
-                handleToOnChange(base + delta);
+                if (currentPrice === undefined || !pool) return;
+
+                const value = type === "from" ? from : to;
+                if (!value) return;
+
+                const base = value.price;
+                const newPrice =
+                    (base || currentPrice) +
+                    (delta === "increment" ? PRICE_STEP : -PRICE_STEP);
+                const newTick = scaledPriceToTick(newPrice, pool, token0To1);
+
+                const onChange = type === "from" ? onFromChange : onToChange;
+                onChange({ price: newPrice, tick: newTick });
             };
         },
-        [currentPrice, to, priceStep, handleToOnChange],
+        [currentPrice, from, onFromChange, onToChange, pool, to, token0To1],
     );
 
-    const handleFromOnBlur = useCallback(() => {
-        if (!pool || from === undefined) return;
+    const getBlurHandler = useCallback(
+        (type: "from" | "to") => {
+            return () => {
+                if (!pool) return;
 
-        const price = tickToPrice(priceToTick(from));
-        const tick = priceToTick(price);
+                const value = type === "from" ? from : to;
+                if (value === undefined) return;
 
-        onFromChange({
-            price,
-            tick,
-        });
-    }, [from, pool, onFromChange]);
+                const newTick = scaledPriceToTick(value.price, pool, token0To1);
+                const newPrice = tickToScaledPrice(newTick, pool, token0To1);
 
-    const handleToOnBlur = useCallback(() => {
-        if (!pool || to === undefined) return;
-
-        const price = tickToPrice(priceToTick(to));
-        const tick = priceToTick(price);
-
-        onToChange({
-            price,
-            tick,
-        });
-    }, [to, pool, onToChange]);
+                const onChange = type === "from" ? onFromChange : onToChange;
+                onChange({ price: newPrice, tick: newTick });
+            };
+        },
+        [from, onFromChange, onToChange, pool, to, token0To1],
+    );
 
     // TODO: handle pools with more than 2 tokens (such as stableswap3 pools)
     return (
         <div className={styles.root}>
             <StepNumberInput
                 label={t("minPrice", {
-                    token0: pool?.tokens[flipPrice ? 1 : 0].symbol,
-                    token1: pool?.tokens[flipPrice ? 0 : 1].symbol,
+                    token0: pool?.tokens[token0To1 ? 0 : 1].symbol,
+                    token1: pool?.tokens[token0To1 ? 1 : 0].symbol,
                 })}
                 placeholder="0.0"
-                step={priceStep}
+                step={1}
                 error={!!error}
                 allowNegative={false}
-                value={from}
-                onChange={handleFromOnChange}
-                onDecrement={getFromStepHandler("decrement")}
-                onIncrement={getFromStepHandler("increment")}
-                onBlur={handleFromOnBlur}
+                value={from?.price}
+                onChange={getChangeHandler("from")}
+                onDecrement={getStepHandler("from", "decrement")}
+                onIncrement={getStepHandler("from", "increment")}
+                onBlur={getBlurHandler("from")}
             />
             <StepNumberInput
                 label={t("maxPrice", {
-                    token0: pool?.tokens[flipPrice ? 1 : 0].symbol,
-                    token1: pool?.tokens[flipPrice ? 0 : 1].symbol,
+                    token0: pool?.tokens[token0To1 ? 0 : 1].symbol,
+                    token1: pool?.tokens[token0To1 ? 1 : 0].symbol,
                 })}
                 placeholder="0.0"
-                step={priceStep}
                 error={!!error}
                 allowNegative={false}
-                value={to}
-                onChange={handleToOnChange}
-                onDecrement={getToStepHandler("decrement")}
-                onIncrement={getToStepHandler("increment")}
-                onBlur={handleToOnBlur}
+                value={to?.price}
+                onChange={getChangeHandler("to")}
+                onDecrement={getStepHandler("to", "decrement")}
+                onIncrement={getStepHandler("to", "increment")}
+                onBlur={getBlurHandler("to")}
             />
         </div>
     );
