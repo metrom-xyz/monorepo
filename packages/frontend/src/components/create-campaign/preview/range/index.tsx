@@ -1,4 +1,4 @@
-import type { CampaignPayload } from "@/src/types";
+import type { CampaignPreviewPayload } from "@/src/types";
 import { useTranslations } from "next-intl";
 import { TextField, Typography } from "@metrom-xyz/ui";
 import { formatAmount } from "@/src/utils/format";
@@ -6,8 +6,8 @@ import { formatAmount } from "@/src/utils/format";
 import styles from "./styles.module.css";
 
 interface RangeProps {
-    pool: CampaignPayload["pool"];
-    specification: CampaignPayload["priceRangeSpecification"];
+    pool: CampaignPreviewPayload["pool"];
+    specification: CampaignPreviewPayload["priceRangeSpecification"];
 }
 
 export function Range({ pool, specification }: RangeProps) {
