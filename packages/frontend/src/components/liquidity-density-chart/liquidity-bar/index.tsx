@@ -1,5 +1,5 @@
 import { closestTick } from "@/src/utils/liquidity-density";
-import type { LiquidityDensityChartData } from "..";
+import type { ScaledLiquidityTick } from "..";
 
 import styles from "./styles.module.css";
 
@@ -11,12 +11,12 @@ interface LiquidityBarProps {
     height?: number;
     price0?: number;
     price1?: number;
-    flipPrice?: boolean;
+    token0To1: boolean;
     from?: number;
     to?: number;
-    chartData: LiquidityDensityChartData[];
+    ticks: ScaledLiquidityTick[];
     idx?: number;
-    activeTick: number | null;
+    activeTickIdx: number | null;
     currentPrice: number | null;
     tooltipIndex?: number;
 }
@@ -29,12 +29,12 @@ export function LiquidityBar({
     height,
     price0,
     price1,
-    flipPrice,
+    token0To1,
     from,
     to,
-    chartData,
+    ticks,
     idx,
-    activeTick,
+    activeTickIdx,
     currentPrice,
     tooltipIndex,
 }: LiquidityBarProps) {
@@ -45,7 +45,7 @@ export function LiquidityBar({
         height === undefined ||
         price0 === undefined ||
         price1 === undefined ||
-        activeTick === null ||
+        activeTickIdx === null ||
         x === undefined ||
         y === undefined
     )
@@ -54,24 +54,20 @@ export function LiquidityBar({
     const inRange =
         from !== undefined && to !== undefined && idx >= from && idx < to;
     const fill =
-        Math.abs(idx) === Math.abs(activeTick)
-            ? "#6CFF95"
-            : inRange
-              ? "#6CFF9566"
-              : "#E5E7EB";
+        idx === activeTickIdx ? "#6CFF95" : inRange ? "#6CFF9566" : "#E5E7EB";
 
     let percentage = 0;
     if (
         from !== undefined &&
         to !== undefined &&
-        activeTick !== null &&
+        activeTickIdx !== null &&
         currentPrice
     ) {
-        const activeTickIndex = chartData.findIndex(
-            (data) => Math.abs(data.idx) === Math.abs(activeTick),
+        const activeTickIndex = ticks.findIndex(
+            (tick) => tick.idx === activeTickIdx,
         );
-        const chartDataInRange = chartData.filter(
-            (data) => data.idx >= from && data.idx < to,
+        const chartDataInRange = ticks.filter(
+            (tick) => tick.idx >= from && tick.idx < to,
         );
         const closestFrom = closestTick(chartDataInRange, from);
         const closestTo = closestTick(chartDataInRange, to);
@@ -81,9 +77,9 @@ export function LiquidityBar({
         if (
             (closestFrom === idx || closestTo === idx) &&
             index !== 0 &&
-            index !== chartData.length - 1
+            index !== ticks.length - 1
         ) {
-            const price = flipPrice ? price1 : price0;
+            const price = token0To1 ? price0 : price1;
 
             percentage =
                 (index < activeTickIndex ? 1 : -1) *
