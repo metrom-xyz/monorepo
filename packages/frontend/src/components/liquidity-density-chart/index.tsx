@@ -88,10 +88,9 @@ export function LiquidityDensityChart({
     }, [ticks, activeTickIdx, zoomLevel]);
 
     const currentPrice = useMemo(() => {
-        if (!pool || activeTickIdx === null) return null;
-        const price = tickToScaledPrice(activeTickIdx, pool, token0To1);
-        if (token0To1) return 1 / price;
-        return price;
+        return !pool || activeTickIdx === null
+            ? null
+            : tickToScaledPrice(activeTickIdx, pool, token0To1);
     }, [pool, activeTickIdx, token0To1]);
 
     function handleOnMouseMove(state: CategoricalChartState) {
