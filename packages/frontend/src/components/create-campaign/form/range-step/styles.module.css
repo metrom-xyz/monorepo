@@ -1,9 +1,41 @@
 .stepContent {
-    @apply flex flex-col gap-3 p-4;
+    @apply flex flex-col gap-3 p-4 pt-0;
 }
 
-.flipPriceButton {
-    @apply rounded-md;
+.priceHeader {
+    @apply flex justify-between items-center mb-1;
+}
+
+.currentPrice {
+    @apply flex flex-col gap-1;
+}
+
+.priceTabs {
+    @apply w-fit self-end;
+}
+
+.priceTab {
+    @apply bg-white opacity-100 transition-colors duration-200 ease-in-out w-auto;
+}
+
+.priceTab > p {
+    @apply text-gray-400 transition-colors duration-200 ease-in-out;
+}
+
+.priceTab:first-child {
+    @apply rounded-r-none;
+}
+
+.priceTab:last-child {
+    @apply rounded-l-none;
+}
+
+.activePriceTab {
+    @apply bg-black;
+}
+
+.activePriceTab > p {
+    @apply text-white;
 }
 
 .previewLabelWrapper {
