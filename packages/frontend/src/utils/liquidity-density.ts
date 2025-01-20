@@ -30,7 +30,9 @@ export function zoom(
 export function closestTick(ticks: ScaledLiquidityTick[], tick: number) {
     return ticks.reduce(
         (closest: number, current) =>
-            current.idx - tick < closest - tick ? current.idx : closest,
+            Math.abs(current.idx - tick) < Math.abs(closest - tick)
+                ? current.idx
+                : closest,
         0,
     );
 }
