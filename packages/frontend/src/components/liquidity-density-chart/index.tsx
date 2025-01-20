@@ -90,7 +90,7 @@ export function LiquidityDensityChart({
     const currentPrice = useMemo(() => {
         if (!pool || activeTickIdx === null) return null;
         const price = tickToScaledPrice(activeTickIdx, pool, token0To1);
-        if (!token0To1) return 1 / price;
+        if (token0To1) return 1 / price;
         return price;
     }, [pool, activeTickIdx, token0To1]);
 
