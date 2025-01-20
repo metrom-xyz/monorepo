@@ -60,9 +60,7 @@ export function RangeInputs({
                 if (currentPrice === undefined || !pool) return;
 
                 const value = type === "from" ? from : to;
-                if (!value) return;
-
-                const base = value.price;
+                const base = value?.price;
                 const newPrice =
                     (base || currentPrice) +
                     (delta === "increment" ? PRICE_STEP : -PRICE_STEP);
