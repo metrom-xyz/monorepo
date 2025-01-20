@@ -1,12 +1,7 @@
 import { StepNumberInput } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
-import {
-    type AmmPool,
-    tickToPrice,
-    priceToTick,
-    getTick,
-} from "@metrom-xyz/sdk";
-import { useCallback, useEffect } from "react";
+import { type AmmPool, tickToPrice, priceToTick } from "@metrom-xyz/sdk";
+import { useCallback } from "react";
 
 import styles from "./styles.module.css";
 
@@ -22,6 +17,7 @@ interface RangeInputsProps {
     from?: number;
     to?: number;
     priceStep?: number;
+    flipPrice?: boolean;
     onFromChange: (value: RangeBound | undefined) => void;
     onToChange: (value: RangeBound | undefined) => void;
 }
@@ -33,15 +29,11 @@ export function RangeInputs({
     from,
     to,
     priceStep,
+    flipPrice = false,
     onFromChange,
     onToChange,
 }: RangeInputsProps) {
     const t = useTranslations("newCampaign.form.range");
-
-    useEffect(() => {
-        onFromChange(undefined);
-        onToChange(undefined);
-    }, [onFromChange, onToChange, pool]);
 
     const handleFromOnChange = useCallback(
         (value: number | undefined) => {
@@ -52,7 +44,7 @@ export function RangeInputs({
 
             onFromChange({
                 price: value,
-                tick: getTick(value, pool),
+                tick: priceToTick(value),
             });
         },
         [pool, onFromChange],
@@ -67,7 +59,7 @@ export function RangeInputs({
 
             onToChange({
                 price: value,
-                tick: getTick(value, pool),
+                tick: priceToTick(value),
             });
         },
         [pool, onToChange],
@@ -101,9 +93,11 @@ export function RangeInputs({
         if (!pool || from === undefined) return;
 
         const price = tickToPrice(priceToTick(from));
+        const tick = priceToTick(price);
+
         onFromChange({
             price,
-            tick: getTick(price, pool),
+            tick,
         });
     }, [from, pool, onFromChange]);
 
@@ -111,9 +105,11 @@ export function RangeInputs({
         if (!pool || to === undefined) return;
 
         const price = tickToPrice(priceToTick(to));
+        const tick = priceToTick(price);
+
         onToChange({
             price,
-            tick: getTick(price, pool),
+            tick,
         });
     }, [to, pool, onToChange]);
 
@@ -122,8 +118,8 @@ export function RangeInputs({
         <div className={styles.root}>
             <StepNumberInput
                 label={t("minPrice", {
-                    token0: pool?.tokens[0].symbol,
-                    token1: pool?.tokens[1].symbol,
+                    token0: pool?.tokens[flipPrice ? 1 : 0].symbol,
+                    token1: pool?.tokens[flipPrice ? 0 : 1].symbol,
                 })}
                 placeholder="0.0"
                 step={priceStep}
@@ -137,8 +133,8 @@ export function RangeInputs({
             />
             <StepNumberInput
                 label={t("maxPrice", {
-                    token0: pool?.tokens[0].symbol,
-                    token1: pool?.tokens[1].symbol,
+                    token0: pool?.tokens[flipPrice ? 1 : 0].symbol,
+                    token1: pool?.tokens[flipPrice ? 0 : 1].symbol,
                 })}
                 placeholder="0.0"
                 step={priceStep}

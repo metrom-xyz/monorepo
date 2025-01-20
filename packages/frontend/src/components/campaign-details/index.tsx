@@ -3,6 +3,7 @@
 import { usePrevious } from "react-use";
 import { useTranslations } from "next-intl";
 import type { SupportedChain } from "@metrom-xyz/contracts";
+import { DistributablesType, TargetType } from "@metrom-xyz/sdk";
 import { useCampaign } from "@/src/hooks/useCampaign";
 import type { Hex } from "viem";
 import { Header, SkeletonHeader } from "./header";
@@ -12,7 +13,6 @@ import { Points } from "./points";
 import { Leaderboard } from "./leaderboard";
 import { Kpi } from "./kpi";
 import { PageNotFound } from "../page-not-found";
-import { DistributablesType } from "@metrom-xyz/sdk";
 import { PriceRange } from "./price-range";
 
 import styles from "./styles.module.css";
@@ -36,6 +36,7 @@ export function CampaignDetails({ chain, campaignId }: CampaignDetailsProps) {
 
     const tokensCampaign = campaign?.isDistributing(DistributablesType.Tokens);
     const pointsCampaign = campaign?.isDistributing(DistributablesType.Points);
+    const ammPoolCampaign = campaign?.isTargeting(TargetType.AmmPoolLiquidity);
 
     return (
         <div className={styles.root}>
@@ -54,7 +55,7 @@ export function CampaignDetails({ chain, campaignId }: CampaignDetailsProps) {
                 {pointsCampaign && (
                     <Points campaign={campaign} loading={loadingCampaign} />
                 )}
-                <PriceRange campaign={campaign} />
+                {ammPoolCampaign && <PriceRange campaign={campaign} />}
                 {tokensCampaign && (
                     <Kpi campaign={campaign} loading={loadingCampaign} />
                 )}

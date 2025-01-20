@@ -45,10 +45,10 @@ import type {
     TokensLeaderboardRank,
 } from "../types/leaderboards";
 import type { BackendLeaderboardResponse } from "./types/leaderboards";
-import type { FeeToken } from "src/types/fee-tokens";
-import type { InitializedTicks, Tick } from "src/types/initialized-ticks";
+import type { FeeToken } from "../types/fee-tokens";
+import type { InitializedTicks, Tick } from "../types/initialized-ticks";
 import type { BackendInitializedTicksResponse } from "./types/initialized-ticks";
-import { getPrice } from "../utils";
+import { tickToScaledPrice } from "../utils";
 
 const MIN_TICK = -887272;
 const MAX_TICK = -MIN_TICK;
@@ -636,7 +636,7 @@ export class MetromApiClient {
             {},
         );
 
-        const price0 = getPrice(activeTick.idx, params.pool);
+        const price0 = tickToScaledPrice(activeTick.idx, params.pool);
         const activeTickProcessed: ProcessedTick = {
             idx: activeTick.idx,
             liquidity: {
@@ -953,7 +953,7 @@ function computeSurroundingTicks(
             break;
         }
 
-        const price0 = getPrice(currentTickIdx, pool);
+        const price0 = tickToScaledPrice(currentTickIdx, pool);
         const currentTickProcessed: ProcessedTick = {
             idx: currentTickIdx,
             liquidity: {
