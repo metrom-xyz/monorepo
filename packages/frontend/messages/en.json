@@ -87,6 +87,22 @@
         }
     },
     "newCampaign": {
+        "pickType": {
+            "title": "Pick a campaign type",
+            "description": "Run efficient incentive strategies for your liquidity providers. Reduce leakage and maximize returns by using Metrom.",
+            "amm": {
+                "title": "AMM",
+                "description": "Incentivize users that provide liquidity to a concentrated liquidity AMM or a simple Uni V2 fork."
+            },
+            "liquityV2": {
+                "title": "LIQUITY V2 FORKs",
+                "description": "Incentivize users depositing collateral and borrowing on Liquity V2 forks."
+            }
+        },
+        "type": {
+            "amm": "AMM Campaign",
+            "liquityV2": "Liquidity v2 campaign"
+        },
         "form": {
             "dex": { "title": "Dex" },
             "pool": {
