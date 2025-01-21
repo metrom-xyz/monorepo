@@ -30,7 +30,6 @@ import type {
 
 import styles from "./styles.module.css";
 
-const PRICE_STEP_FACTOR = 0.01;
 const COMPUTE_TICKS_AMOUNT = 3000;
 
 interface RangeStepProps {
@@ -176,13 +175,14 @@ export function RangeStep({
         if (from === undefined || to === undefined) return;
 
         const priceRangeSpecification: AugmentedPriceRangeSpecification = {
+            token0To1,
             from,
             to,
         };
 
         setOpen(false);
         onRangeChange({ priceRangeSpecification });
-    }, [from, onRangeChange, to]);
+    }, [from, onRangeChange, to, token0To1]);
 
     return (
         <Step
