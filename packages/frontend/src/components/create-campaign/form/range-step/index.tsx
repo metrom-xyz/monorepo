@@ -235,7 +235,33 @@ export function RangeStep({
                 }}
             >
                 <div className={styles.priceWrapper}>
-                    {!open && from !== undefined && to !== undefined && (
+                    {open || from === undefined || to === undefined ? (
+                        <>
+                            <Typography
+                                uppercase
+                                weight="medium"
+                                light
+                                size="sm"
+                            >
+                                {t("currentPrice")}
+                            </Typography>
+                            {!currentPrice ? (
+                                <Skeleton size="sm" width={50} />
+                            ) : (
+                                <Typography weight="medium" size="sm">
+                                    {t("price", {
+                                        token0: pool?.tokens[token0To1 ? 0 : 1]
+                                            .symbol,
+                                        token1: pool?.tokens[token0To1 ? 1 : 0]
+                                            .symbol,
+                                        price: formatAmount({
+                                            amount: currentPrice,
+                                        }),
+                                    })}
+                                </Typography>
+                            )}
+                        </>
+                    ) : (
                         <>
                             <Typography
                                 uppercase
@@ -262,31 +288,6 @@ export function RangeStep({
             <StepContent>
                 <div className={styles.stepContent}>
                     <div className={styles.priceHeader}>
-                        <div className={styles.currentPrice}>
-                            <Typography
-                                uppercase
-                                weight="medium"
-                                light
-                                size="sm"
-                            >
-                                {t("currentPrice")}
-                            </Typography>
-                            {!currentPrice ? (
-                                <Skeleton size="sm" width={50} />
-                            ) : (
-                                <Typography weight="medium" size="sm">
-                                    {t("price", {
-                                        token0: pool?.tokens[token0To1 ? 0 : 1]
-                                            .symbol,
-                                        token1: pool?.tokens[token0To1 ? 1 : 0]
-                                            .symbol,
-                                        price: formatAmount({
-                                            amount: currentPrice,
-                                        }),
-                                    })}
-                                </Typography>
-                            )}
-                        </div>
                         <Tabs
                             size="sm"
                             value={token0To1}
