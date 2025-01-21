@@ -29,6 +29,7 @@ import {
 import {
     DistributablesType,
     SERVICE_URLS,
+    TargetType,
     type Specification,
     type UsdPricedErc20TokenAmount,
 } from "@metrom-xyz/sdk";
@@ -95,12 +96,16 @@ export function CampaignPreview({
     }, [payload.distributables]);
 
     const [tokensCampaignArgs, pointsCampaignArgs] = useMemo(() => {
-        const { pool, startDate, endDate } = payload;
+        const { target, startDate, endDate } = payload;
 
-        if (!tokensApproved || !pool || !startDate || !endDate) return [[], []];
+        if (!tokensApproved || !target || !startDate || !endDate)
+            return [[], []];
 
         let tokenArgs = [];
         let pointArgs = [];
+
+        // TODO: implement
+        if (!payload.isTargeting(TargetType.AmmPoolLiquidity)) return [[], []];
 
         if (payload.isDistributing(DistributablesType.Tokens))
             tokenArgs.push({
@@ -109,7 +114,7 @@ export function CampaignPreview({
                 kind: 1,
                 data: encodeAbiParameters(
                     [{ name: "poolAddress", type: "address" }],
-                    [pool.address],
+                    [payload.target.pool.address],
                 ),
                 specificationHash,
                 rewards: payload.distributables.tokens.map((token) => ({
@@ -125,7 +130,7 @@ export function CampaignPreview({
                 kind: 1,
                 data: encodeAbiParameters(
                     [{ name: "poolAddress", type: "address" }],
-                    [pool.address],
+                    [payload.target.pool.address],
                 ),
                 specificationHash,
                 points: parseUnits(
@@ -274,6 +279,7 @@ export function CampaignPreview({
 
     const pointsCampaign = payload.isDistributing(DistributablesType.Points);
     const tokensCampaign = payload.isDistributing(DistributablesType.Tokens);
+    const ammCampaign = payload.isTargeting(TargetType.AmmPoolLiquidity);
 
     // TODO: add notification toast in case of errors
     if (!created) {
@@ -285,26 +291,32 @@ export function CampaignPreview({
                     onBack={onBack}
                 />
                 <div className={styles.content}>
-                    {!!payload.priceRangeSpecification && (
+                    {!!payload.priceRangeSpecification && ammCampaign && (
                         <Range
-                            pool={payload.pool}
+                            pool={payload.target.pool}
                             specification={payload.priceRangeSpecification}
                         />
                     )}
-                    {!!payload.kpiSpecification && tokensCampaign && (
-                        <Kpi
-                            poolUsdTvl={payload.pool.usdTvl}
-                            rewards={payload.distributables.tokens}
-                            specification={payload.kpiSpecification}
-                        />
-                    )}
+                    {!!payload.kpiSpecification &&
+                        tokensCampaign &&
+                        ammCampaign && (
+                            <Kpi
+                                poolUsdTvl={payload.target.pool.usdTvl}
+                                rewards={payload.distributables.tokens}
+                                specification={payload.kpiSpecification}
+                            />
+                        )}
                     <div className={styles.contentGrid}>
-                        <TextField
-                            boxed
-                            size="xl"
-                            label={t("tvl")}
-                            value={formatUsdAmount(payload.pool.usdTvl)}
-                        />
+                        {ammCampaign && (
+                            <TextField
+                                boxed
+                                size="xl"
+                                label={t("tvl")}
+                                value={formatUsdAmount(
+                                    payload.target.pool.usdTvl,
+                                )}
+                            />
+                        )}
                         {tokensCampaign && (
                             <TextField
                                 boxed

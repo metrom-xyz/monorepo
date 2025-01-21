@@ -11,7 +11,7 @@ import { useTranslations } from "next-intl";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { formatUsdAmount } from "@/src/utils/format";
 import classNames from "classnames";
-import { KpiMetric, type KpiSpecification } from "@metrom-xyz/sdk";
+import { KpiMetric, TargetType, type KpiSpecification } from "@metrom-xyz/sdk";
 import { usePrevious } from "react-use";
 import { KpiSimulationChart } from "../../../../kpi-simulation-chart";
 import { GoalInputs } from "./goal-inputs";
@@ -21,7 +21,7 @@ import styles from "./styles.module.css";
 
 interface KpiStepProps {
     disabled?: boolean;
-    pool?: CampaignPayload["pool"];
+    target?: CampaignPayload["target"];
     rewards?: CampaignPayload["tokens"];
     kpiSpecification?: CampaignPayload["kpiSpecification"];
     onKpiChange: (kpi: CampaignPayloadPart) => void;
@@ -30,7 +30,7 @@ interface KpiStepProps {
 
 export function KpiStep({
     disabled,
-    pool,
+    target,
     rewards,
     kpiSpecification,
     onKpiChange,
@@ -195,6 +195,9 @@ export function KpiStep({
         upperUsdTargetRaw,
     ]);
 
+    // TODO: kpi for liquity v2?
+    if (target?.type !== TargetType.AmmPoolLiquidity) return null;
+
     return (
         <Step
             disabled={disabled}
@@ -249,7 +252,7 @@ export function KpiStep({
                         {t("currentTvl")}
                     </Typography>
                     <Typography weight="medium" size="sm">
-                        {formatUsdAmount(pool?.usdTvl)}
+                        {formatUsdAmount(target.pool.usdTvl)}
                     </Typography>
                 </div>
             </StepPreview>
@@ -284,7 +287,7 @@ export function KpiStep({
                             upperUsdTarget={upperUsdTargetRaw}
                             totalRewardsUsd={totalRewardsUsdAmount}
                             minimumPayoutPercentage={minimumPayoutPercentage}
-                            poolUsdTvl={pool?.usdTvl}
+                            poolUsdTvl={target.pool.usdTvl}
                             error={!!error}
                         />
                     </div>

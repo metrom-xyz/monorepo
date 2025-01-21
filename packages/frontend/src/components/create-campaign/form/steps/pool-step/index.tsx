@@ -1,25 +1,36 @@
 import { useCallback, useEffect, useState } from "react";
 import { useChainId } from "wagmi";
 import { useTranslations } from "next-intl";
-import type { AmmPool } from "@metrom-xyz/sdk";
+import {
+    type AmmPool,
+    type AmmPoolLiquidityTarget,
+    TargetType,
+} from "@metrom-xyz/sdk";
 import { Step } from "@/src/components/step";
 import { StepPreview } from "@/src/components/step/preview";
 import { StepContent } from "@/src/components/step/content";
-import type { CampaignPayload, CampaignPayloadPart } from "@/src/types";
 import { PoolPicker } from "./picker";
 import { Typography } from "@metrom-xyz/ui";
 import { PoolStepPreview } from "./preview";
+import type { CampaignPayload, TargetedCampaignPayloadPart } from "@/src/types";
 
 import styles from "./styles.module.css";
 
 interface PoolStepProps {
     disabled?: boolean;
-    dex?: CampaignPayload["dex"];
-    pool?: CampaignPayload["pool"];
-    onPoolChange: (pool: CampaignPayloadPart) => void;
+    protocol?: CampaignPayload["protocol"];
+    target?: AmmPoolLiquidityTarget;
+    onTargetChange: (
+        target: TargetedCampaignPayloadPart<TargetType.AmmPoolLiquidity>,
+    ) => void;
 }
 
-export function PoolStep({ disabled, pool, dex, onPoolChange }: PoolStepProps) {
+export function PoolStep({
+    disabled,
+    protocol,
+    target,
+    onTargetChange,
+}: PoolStepProps) {
     const t = useTranslations("newCampaign.form.pool");
     const [open, setOpen] = useState(false);
     const chainId = useChainId();
@@ -29,17 +40,23 @@ export function PoolStep({ disabled, pool, dex, onPoolChange }: PoolStepProps) {
     }, [chainId]);
 
     useEffect(() => {
-        if (disabled || !!pool) return;
+        if (disabled || !!target?.pool?.address) return;
         setOpen(true);
-    }, [pool, disabled]);
+    }, [disabled, target]);
 
     const handlePoolOnChange = useCallback(
         (newPool: AmmPool) => {
-            if (pool && pool.address === newPool.address) return;
-            onPoolChange({ pool: newPool });
+            if (target?.pool && target.pool.address === newPool.address) return;
+            onTargetChange({
+                target: {
+                    chainId,
+                    type: TargetType.AmmPoolLiquidity,
+                    pool: newPool,
+                },
+            });
             setOpen(false);
         },
-        [pool, onPoolChange],
+        [target, chainId, onTargetChange],
     );
 
     function handleStepOnClick() {
@@ -50,12 +67,12 @@ export function PoolStep({ disabled, pool, dex, onPoolChange }: PoolStepProps) {
         <Step
             disabled={disabled}
             open={open}
-            completed={!!pool}
+            completed={!!target?.pool}
             onPreviewClick={handleStepOnClick}
         >
             <StepPreview
                 label={
-                    !pool ? (
+                    !target?.pool ? (
                         t("title")
                     ) : (
                         <div className={styles.previewCompletedLabel}>
@@ -77,12 +94,12 @@ export function PoolStep({ disabled, pool, dex, onPoolChange }: PoolStepProps) {
                     )
                 }
             >
-                {pool && <PoolStepPreview {...pool} />}
+                {target?.pool && <PoolStepPreview {...target.pool} />}
             </StepPreview>
             <StepContent>
                 <PoolPicker
-                    dex={dex}
-                    value={pool}
+                    protocol={protocol}
+                    value={target?.pool}
                     onChange={handlePoolOnChange}
                 />
             </StepContent>

@@ -14,7 +14,7 @@ const CAMPAIGN_TYPES = [
     },
     {
         path: `/campaigns/create/${TargetType.LiquityV2Debt}`,
-        label: "liquidityV2",
+        label: "liquityV2",
         icon: "",
     },
 ];

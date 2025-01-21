@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useChainId } from "wagmi";
 import { useTranslations } from "next-intl";
 import { Step } from "@/src/components/step";
@@ -8,45 +8,61 @@ import { useDexesInChain } from "@/src/hooks/useDexesInChain";
 import classNames from "classnames";
 import { Typography } from "@metrom-xyz/ui";
 import type {
-    DexInfo,
     CampaignPayload,
-    CampaignPayloadPart,
+    DexInfo,
+    TargetedCampaignPayloadPart,
 } from "@/src/types";
+import { TargetType } from "@metrom-xyz/sdk";
 
 import styles from "./styles.module.css";
 
 interface DexStepProps {
     disabled?: boolean;
-    dex?: CampaignPayload["dex"];
-    onDexChange: (dex: CampaignPayloadPart) => void;
+    protocol?: CampaignPayload["protocol"];
+    onProtocolChange: (
+        protocol: TargetedCampaignPayloadPart<TargetType.AmmPoolLiquidity>,
+    ) => void;
 }
 
-export function DexStep({ disabled, dex, onDexChange }: DexStepProps) {
+export function DexStep({
+    disabled,
+    protocol,
+    onProtocolChange,
+}: DexStepProps) {
     const t = useTranslations("newCampaign.form.dex");
     const [open, setOpen] = useState(true);
 
     const chainId = useChainId();
     const availableDexes = useDexesInChain(chainId);
 
+    const selectedDex = useMemo(() => {
+        if (!protocol) return undefined;
+        return availableDexes.find((dex) => dex.slug === protocol);
+    }, [availableDexes, protocol]);
+
     useEffect(() => {
         setOpen(false);
     }, [chainId]);
 
     useEffect(() => {
-        if (!!dex || availableDexes.length !== 1) return;
-        onDexChange({ dex: availableDexes[0] });
+        if (!!protocol || availableDexes.length !== 1) return;
+        onProtocolChange({
+            protocol: availableDexes[0].slug,
+        });
         setOpen(false);
-    }, [dex, availableDexes, onDexChange]);
+    }, [availableDexes, protocol, onProtocolChange]);
 
     const getDexChangeHandler = useCallback(
         (newDex: DexInfo) => {
             return () => {
-                if (dex && dex.slug === newDex.slug) return;
-                onDexChange({ dex: newDex });
+                if (protocol && protocol === newDex.slug) return;
+                onProtocolChange({
+                    protocol: newDex.slug,
+                });
                 setOpen(false);
             };
         },
-        [dex, onDexChange],
+        [protocol, onProtocolChange],
     );
 
     function handleStepOnClick() {
@@ -57,17 +73,17 @@ export function DexStep({ disabled, dex, onDexChange }: DexStepProps) {
         <Step
             disabled={disabled}
             open={open}
-            completed={!!dex}
+            completed={!!selectedDex}
             onPreviewClick={handleStepOnClick}
         >
             <StepPreview label={t("title")}>
-                {dex && (
+                {!!selectedDex && (
                     <div className={styles.dexPreview}>
                         <div className={styles.logo}>
-                            <dex.logo />
+                            <selectedDex.logo />
                         </div>
                         <Typography size="lg" weight="medium">
-                            {dex.name}
+                            {selectedDex.name}
                         </Typography>
                     </div>
                 )}
@@ -79,7 +95,7 @@ export function DexStep({ disabled, dex, onDexChange }: DexStepProps) {
                             key={availableDex.slug}
                             className={classNames(styles.dexRow, {
                                 [styles.dexRowSelected]:
-                                    dex?.slug === availableDex.slug,
+                                    selectedDex?.slug === availableDex.slug,
                             })}
                             onClick={getDexChangeHandler(availableDex)}
                         >

@@ -3,6 +3,7 @@ import {
     type CampaignPayloadPart,
     type CampaignPayloadErrors,
     RewardType,
+    type TargetedCampaignPayload,
 } from "@/src/types";
 import { DexStep } from "../steps/dex-step";
 import { PoolStep } from "../steps/pool-step";
@@ -13,13 +14,13 @@ import { RestrictionsStep } from "../steps/restrictions-step";
 import { KpiStep } from "../steps/kpi-step";
 import { RangeStep } from "../steps/range-step";
 import { AMM_SUPPORTS_RANGE_INCENTIVES } from "@/src/commons";
-import type { SupportedAmm } from "@metrom-xyz/sdk";
+import type { SupportedAmm, TargetType } from "@metrom-xyz/sdk";
 
 import styles from "./styles.module.css";
 
 export interface AmmFormProps {
     unsupportedChain?: boolean;
-    payload?: CampaignPayload;
+    payload?: TargetedCampaignPayload<TargetType.AmmPoolLiquidity>;
     onPayloadChange: (part: CampaignPayloadPart) => void;
     onPayloadError: (errors: CampaignPayloadErrors) => void;
 }
@@ -34,17 +35,17 @@ export function AmmForm({
         <div className={styles.root}>
             <DexStep
                 disabled={unsupportedChain}
-                dex={payload?.dex}
-                onDexChange={onPayloadChange}
+                protocol={payload?.protocol}
+                onProtocolChange={onPayloadChange}
             />
             <PoolStep
-                disabled={!payload?.dex || unsupportedChain}
-                dex={payload?.dex}
-                pool={payload?.pool}
-                onPoolChange={onPayloadChange}
+                disabled={!payload?.protocol || unsupportedChain}
+                protocol={payload?.protocol}
+                target={payload?.target}
+                onTargetChange={onPayloadChange}
             />
             <StartDateStep
-                disabled={!payload?.pool || unsupportedChain}
+                disabled={!payload?.target?.pool || unsupportedChain}
                 startDate={payload?.startDate}
                 endDate={payload?.endDate}
                 onStartDateChange={onPayloadChange}
@@ -60,7 +61,6 @@ export function AmmForm({
             <RewardsStep
                 disabled={!payload?.endDate || unsupportedChain}
                 rewardType={payload?.rewardType}
-                pool={payload?.pool}
                 tokens={payload?.tokens}
                 points={payload?.points}
                 fee={payload?.fee}
@@ -75,19 +75,19 @@ export function AmmForm({
                     payload.rewardType === RewardType.Points ||
                     unsupportedChain
                 }
-                pool={payload?.pool}
+                target={payload?.target}
                 rewards={payload?.tokens}
                 kpiSpecification={payload?.kpiSpecification}
                 onKpiChange={onPayloadChange}
                 onError={onPayloadError}
             />
-            {payload?.pool &&
+            {payload?.target?.pool &&
                 AMM_SUPPORTS_RANGE_INCENTIVES[
-                    payload.pool.amm as SupportedAmm
+                    payload?.target.pool.amm as SupportedAmm
                 ] && (
                     <RangeStep
                         disabled={!payload?.tokens || unsupportedChain}
-                        pool={payload.pool}
+                        target={payload.target}
                         priceRangeSpecification={
                             payload?.priceRangeSpecification
                         }

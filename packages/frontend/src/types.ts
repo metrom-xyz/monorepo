@@ -1,8 +1,8 @@
 import {
     Campaign,
     TargetType,
-    type AmmPool,
     type AmmPoolLiquidityTarget,
+    type CampaignTarget,
     type DistributablesType,
     type KpiSpecification,
     type LiquityV2DebtTarget,
@@ -11,7 +11,6 @@ import {
     type TokenDistributables,
     type UsdPricedOnChainAmount,
     type WhitelistedErc20Token,
-    type LiquityV2DebtBrand,
 } from "@metrom-xyz/sdk";
 import type { Dayjs } from "dayjs";
 import type { SVGProps, FunctionComponent } from "react";
@@ -57,11 +56,10 @@ export interface AugmentedPriceRangeSpecification {
 }
 
 export interface CampaignPayload {
+    targetType?: TargetType;
     rewardType?: RewardType;
-    // TODO: define target type and different types for deex/pool and brand?
-    dex?: DexInfo;
-    pool?: AmmPool;
-    brand?: LiquityV2DebtBrand;
+    protocol?: string;
+    target?: CampaignTarget;
     startDate?: Dayjs;
     endDate?: Dayjs;
     points?: number;
@@ -73,6 +71,15 @@ export interface CampaignPayload {
         type: RestrictionType;
         list: Address[];
     };
+}
+
+export interface TargetedCampaignPayload<T extends TargetType>
+    extends CampaignPayload {
+    target?: T extends TargetType.AmmPoolLiquidity
+        ? AmmPoolLiquidityTarget
+        : T extends TargetType.LiquityV2Debt
+          ? LiquityV2DebtTarget
+          : never;
 }
 
 export interface CampaignPreviewTokenDistributables {
@@ -88,8 +95,7 @@ export interface CampaignPreviewPointDistributables {
 
 export class CampaignPreviewPayload {
     constructor(
-        public readonly dex: DexInfo,
-        public readonly pool: AmmPool,
+        public readonly target: CampaignTarget,
         public readonly startDate: Dayjs,
         public readonly endDate: Dayjs,
         public readonly distributables:
@@ -108,6 +114,12 @@ export class CampaignPreviewPayload {
     ): this is DistributablesCampaignPreviewPayload<T> {
         return this.distributables.type === type;
     }
+
+    isTargeting<T extends TargetType>(
+        type: T,
+    ): this is TargetedCampaignPreviewPayload<T> {
+        return this.target.type === type;
+    }
 }
 
 export interface DistributablesCampaignPreviewPayload<
@@ -117,6 +129,15 @@ export interface DistributablesCampaignPreviewPayload<
         ? CampaignPreviewTokenDistributables
         : T extends DistributablesType.Points
           ? CampaignPreviewPointDistributables
+          : never;
+}
+
+export interface TargetedCampaignPreviewPayload<T extends TargetType>
+    extends CampaignPreviewPayload {
+    target: T extends TargetType.AmmPoolLiquidity
+        ? AmmPoolLiquidityTarget
+        : T extends TargetType.LiquityV2Debt
+          ? LiquityV2DebtTarget
           : never;
 }
 
@@ -132,6 +153,9 @@ export interface CampaignPayloadErrors {
 export type DexInfo = Pick<Dex, "slug" | "name" | "logo">;
 
 export type CampaignPayloadPart = PropertyUnion<CampaignPayload>;
+export type TargetedCampaignPayloadPart<T extends TargetType> = PropertyUnion<
+    Partial<TargetedCampaignPayload<T>>
+>;
 
 export class NamedCampaign extends Campaign {
     constructor(

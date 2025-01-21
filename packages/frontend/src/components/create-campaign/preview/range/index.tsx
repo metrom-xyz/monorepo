@@ -2,11 +2,12 @@ import type { CampaignPreviewPayload } from "@/src/types";
 import { useTranslations } from "next-intl";
 import { TextField, Typography } from "@metrom-xyz/ui";
 import { formatAmount } from "@/src/utils/format";
+import type { AmmPool } from "@metrom-xyz/sdk";
 
 import styles from "./styles.module.css";
 
 interface RangeProps {
-    pool: CampaignPreviewPayload["pool"];
+    pool: AmmPool;
     specification: CampaignPreviewPayload["priceRangeSpecification"];
 }
 

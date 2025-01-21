@@ -7,14 +7,13 @@ import {
     useEffect,
 } from "react";
 import { useDebounce } from "react-use";
-import type { Erc20Token, AmmPool } from "@metrom-xyz/sdk";
+import type { Erc20Token, AmmPool, SupportedDex } from "@metrom-xyz/sdk";
 import { useChainId } from "wagmi";
 import { TextInput, Chip, Typography } from "@metrom-xyz/ui";
 import AutoSizer from "react-virtualized-auto-sizer";
 import { FixedSizeList } from "react-window";
 import { SearchIcon } from "@/src/assets/search-icon";
 import { useTranslations } from "next-intl";
-import type { CampaignPayload } from "@/src/types";
 import { usePools } from "@/src/hooks/usePools";
 import { useBaseTokens } from "@/src/hooks/useBaseTokens";
 import { filterPools } from "@/src/utils/filtering";
@@ -25,11 +24,11 @@ import styles from "./styles.module.css";
 
 interface PoolPickerProps {
     value?: AmmPool;
-    dex?: CampaignPayload["dex"];
+    protocol?: string;
     onChange: (pool: AmmPool) => void;
 }
 
-export function PoolPicker({ value, dex, onChange }: PoolPickerProps) {
+export function PoolPicker({ value, protocol, onChange }: PoolPickerProps) {
     const t = useTranslations("newCampaign.form.pool");
     const [search, setSearch] = useState("");
     const [debouncedSearch, setDebouncedSearch] = useState(search);
@@ -38,7 +37,7 @@ export function PoolPicker({ value, dex, onChange }: PoolPickerProps) {
 
     const chain = useChainId();
     const baseTokens = useBaseTokens(chain);
-    const { pools, loading } = usePools(chain, dex?.slug);
+    const { pools, loading } = usePools(chain, protocol as SupportedDex);
 
     const filteredPools = useMemo(
         () =>

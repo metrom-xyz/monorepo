@@ -3,32 +3,35 @@ import {
     type CampaignPayloadPart,
     type CampaignPayloadErrors,
     RewardType,
+    type TargetedCampaignPayload,
 } from "@/src/types";
 import { StartDateStep } from "../steps/start-date-step";
 import { EndDateStep } from "../steps/end-date-step";
 import { RewardsStep } from "../steps/rewards-step";
 import { RestrictionsStep } from "../steps/restrictions-step";
 import { KpiStep } from "../steps/kpi-step";
+import type { TargetType } from "@metrom-xyz/sdk";
 
 import styles from "./styles.module.css";
 
-export interface LiquidityV2FormProps {
+export interface LiquityV2FormProps {
     unsupportedChain?: boolean;
-    payload?: CampaignPayload;
+    payload?: TargetedCampaignPayload<TargetType.LiquityV2Debt>;
     onPayloadChange: (part: CampaignPayloadPart) => void;
     onPayloadError: (errors: CampaignPayloadErrors) => void;
 }
 
-export function LiquidityV2Form({
+export function LiquityV2Form({
     unsupportedChain,
     payload,
     onPayloadChange,
     onPayloadError,
-}: LiquidityV2FormProps) {
+}: LiquityV2FormProps) {
     return (
         <div className={styles.root}>
+            {/* TODO: implement protocol and action steps */}
             <StartDateStep
-                disabled={!payload?.pool || unsupportedChain}
+                disabled={!payload?.target?.liquityV2Brand || unsupportedChain}
                 startDate={payload?.startDate}
                 endDate={payload?.endDate}
                 onStartDateChange={onPayloadChange}
@@ -44,7 +47,6 @@ export function LiquidityV2Form({
             <RewardsStep
                 disabled={!payload?.endDate || unsupportedChain}
                 rewardType={payload?.rewardType}
-                pool={payload?.pool}
                 tokens={payload?.tokens}
                 points={payload?.points}
                 fee={payload?.fee}
@@ -53,7 +55,7 @@ export function LiquidityV2Form({
                 onRewardsChange={onPayloadChange}
                 onError={onPayloadError}
             />
-            <KpiStep
+            {/* <KpiStep
                 disabled={
                     !payload?.tokens ||
                     payload.rewardType === RewardType.Points ||
@@ -64,7 +66,7 @@ export function LiquidityV2Form({
                 kpiSpecification={payload?.kpiSpecification}
                 onKpiChange={onPayloadChange}
                 onError={onPayloadError}
-            />
+            /> */}
             <RestrictionsStep
                 disabled={!payload?.tokens || unsupportedChain}
                 restrictions={payload?.restrictions}

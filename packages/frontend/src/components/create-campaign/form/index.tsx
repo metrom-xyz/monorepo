@@ -7,6 +7,7 @@ import {
     CampaignPreviewPayload,
     type CampaignPreviewPointDistributables,
     type CampaignPreviewTokenDistributables,
+    type TargetedCampaignPayload,
 } from "@/src/types";
 import { useAccount, useChainId, useChains } from "wagmi";
 import { useCallback, useEffect, useMemo, useState } from "react";
@@ -15,26 +16,26 @@ import { useTranslations } from "next-intl";
 import { trackFathomEvent } from "@/src/utils/fathom";
 import { AmmForm } from "./amm";
 import { Button, Modal } from "@metrom-xyz/ui";
-import { LiquidityV2Form } from "./liquidity-v2";
+import { LiquityV2Form } from "./liquity-v2";
 import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
 import { CampaignPreview } from "../preview";
 
 import styles from "./styles.module.css";
+import { isTargeting } from "@/src/utils/campaign";
 
 export enum View {
     Form = "form",
     Preview = "preview",
 }
 
-export interface CreateCampaignFormProps {
-    target: TargetType;
+export interface CreateCampaignFormProps<T> {
+    target: T;
 }
 
 function validatePayload(
     payload: CampaignPayload,
 ): CampaignPreviewPayload | null {
-    if (!payload.dex || !payload.pool || !payload.startDate || !payload.endDate)
-        return null;
+    if (!payload.target || !payload.startDate || !payload.endDate) return null;
 
     let distributables;
     if (payload.points && payload.fee) {
@@ -51,8 +52,7 @@ function validatePayload(
     } else return null;
 
     return new CampaignPreviewPayload(
-        payload.dex,
-        payload.pool,
+        payload.target,
         payload.startDate,
         payload.endDate,
         distributables,
@@ -62,17 +62,21 @@ function validatePayload(
     );
 }
 
-export function CreateCampaignForm({ target }: CreateCampaignFormProps) {
+export function CreateCampaignForm<T extends TargetType>({
+    target,
+}: CreateCampaignFormProps<T>) {
     const t = useTranslations("newCampaign");
     const { chain: connectedChain, isConnected } = useAccount();
     const selectedChain = useChainId();
     const chains = useChains();
 
-    const [payload, setPayload] = useState<CampaignPayload>({});
+    const [payload, setPayload] = useState<CampaignPayload>({
+        targetType: target,
+    });
     const [payloadErrors, setPayloadErrors] = useState<CampaignPayloadErrors>(
         {},
     );
-    const [view, setView] = useState<View>(View.Form);
+    const [view, setView] = useState(View.Form);
 
     const chainId = useChainId();
 
@@ -82,12 +86,13 @@ export function CreateCampaignForm({ target }: CreateCampaignFormProps) {
     }, [payload, payloadErrors]);
 
     useEffect(() => {
-        setPayload({});
-    }, [chainId]);
+        setPayload({ targetType: target });
+    }, [chainId, target]);
 
-    useEffect(() => {
-        setPayload({ dex: payload.dex });
-    }, [payload.dex]);
+    // TODO: enable auto fill based on target
+    // useEffect(() => {
+    //     setPayload({ dex: payload.dex });
+    // }, [payload.dex]);
 
     function handlePayloadOnChange(part: CampaignPayloadPart) {
         setPayload((prev) => ({ ...prev, ...part }));
@@ -133,7 +138,7 @@ export function CreateCampaignForm({ target }: CreateCampaignFormProps) {
 
     return (
         <div className={styles.root}>
-            {target === TargetType.AmmPoolLiquidity && (
+            {isTargeting(payload, TargetType.AmmPoolLiquidity) && (
                 <AmmForm
                     unsupportedChain={unsupportedChain}
                     payload={payload}
@@ -141,8 +146,8 @@ export function CreateCampaignForm({ target }: CreateCampaignFormProps) {
                     onPayloadError={handlePayloadOnError}
                 />
             )}
-            {target === TargetType.LiquityV2Debt && (
-                <LiquidityV2Form
+            {isTargeting(payload, TargetType.LiquityV2Debt) && (
+                <LiquityV2Form
                     unsupportedChain={unsupportedChain}
                     payload={payload}
                     onPayloadChange={handlePayloadOnChange}

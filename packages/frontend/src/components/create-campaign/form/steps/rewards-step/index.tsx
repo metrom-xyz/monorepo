@@ -13,12 +13,12 @@ import {
 import classNames from "classnames";
 import { RewardTokens } from "./tokens";
 import { RewardPoints } from "./points";
+import { TargetType } from "@metrom-xyz/sdk";
 
 import styles from "./styles.module.css";
 
 interface RewardsStepProps {
     disabled?: boolean;
-    pool?: CampaignPayload["pool"];
     rewardType?: CampaignPayload["rewardType"];
     tokens?: CampaignPayload["tokens"];
     points?: CampaignPayload["points"];
@@ -31,7 +31,6 @@ interface RewardsStepProps {
 
 export function RewardsStep({
     disabled,
-    pool,
     rewardType,
     tokens,
     points,
@@ -62,11 +61,6 @@ export function RewardsStep({
         if (rewardType) return;
         onRewardsChange({ rewardType: RewardType.Tokens });
     }, [rewardType, onRewardsChange]);
-
-    useEffect(() => {
-        if (pool) return;
-        setType(RewardType.Tokens);
-    }, [pool]);
 
     const handleOnRewardTypeSwitch = useCallback(
         (type: RewardType) => {

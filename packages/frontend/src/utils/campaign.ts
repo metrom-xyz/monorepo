@@ -1,5 +1,12 @@
-import { Campaign, TargetType, type DistributablesType } from "@metrom-xyz/sdk";
-import type { DistributablesCampaignPreviewPayload } from "../types";
+import { Campaign, TargetType, DistributablesType } from "@metrom-xyz/sdk";
+import type {
+    CampaignPayload,
+    CampaignPreviewPayload,
+    CampaignPreviewTokenDistributables,
+    DistributablesCampaignPreviewPayload,
+    TargetedCampaignPayload,
+    TargetedCampaignPreviewPayload,
+} from "../types";
 import { getDistributableRewardsPercentage } from "./kpi";
 import type { TranslationValues } from "next-intl";
 
@@ -26,7 +33,26 @@ export function getCampaignName(
 }
 
 export function getCampaignPreviewApr(
-    campaign: DistributablesCampaignPreviewPayload<DistributablesType.Tokens>,
+    campaign: CampaignPreviewPayload,
+): number | undefined {
+    if (
+        campaign.isTargeting(TargetType.AmmPoolLiquidity) &&
+        campaign.isDistributing(DistributablesType.Tokens)
+    )
+        return getAmmLiquidityPreviewApr(campaign);
+
+    if (
+        campaign.isTargeting(TargetType.LiquityV2Debt) &&
+        campaign.isDistributing(DistributablesType.Tokens)
+    )
+        // TODO: implement APR for liquity v2 campaign
+        return 0;
+}
+
+export function getAmmLiquidityPreviewApr(
+    campaign: TargetedCampaignPreviewPayload<TargetType.AmmPoolLiquidity> & {
+        distributables: CampaignPreviewTokenDistributables;
+    },
 ): number | undefined {
     let rewardsUsdValue = 0;
     for (const reward of campaign.distributables.tokens) {
@@ -36,7 +62,7 @@ export function getCampaignPreviewApr(
 
     if (campaign.kpiSpecification) {
         rewardsUsdValue *= getDistributableRewardsPercentage(
-            campaign.pool.usdTvl,
+            campaign.target.pool.usdTvl,
             campaign.kpiSpecification.goal.lowerUsdTarget,
             campaign.kpiSpecification.goal.upperUsdTarget,
             campaign.kpiSpecification.minimumPayoutPercentage,
@@ -46,9 +72,16 @@ export function getCampaignPreviewApr(
     const duration = campaign.endDate.unix() - campaign.startDate.unix();
     if (duration <= 0) return undefined;
 
-    const rewardsTvlRatio = rewardsUsdValue / campaign.pool.usdTvl;
+    const rewardsTvlRatio = rewardsUsdValue / campaign.target.pool.usdTvl;
     const yearMultiplier = SECONDS_IN_YEAR / duration;
     const apr = rewardsTvlRatio * yearMultiplier * 100;
 
-    return apr || undefined;
+    return apr;
+}
+
+export function isTargeting<T extends TargetType>(
+    payload: CampaignPayload,
+    type: T,
+): payload is TargetedCampaignPayload<T> {
+    return payload.targetType === type;
 }

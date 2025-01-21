@@ -15,7 +15,11 @@ import { useChainId } from "wagmi";
 import { useTranslations } from "next-intl";
 import { RangeInputs } from "./range-inputs";
 import { LiquidityDensityChart } from "@/src/components/liquidity-density-chart";
-import { tickToScaledPrice, type AmmPool } from "@metrom-xyz/sdk";
+import {
+    tickToScaledPrice,
+    type AmmPool,
+    type AmmPoolLiquidityTarget,
+} from "@metrom-xyz/sdk";
 import classNames from "classnames";
 import { usePrevious } from "react-use";
 import { useLiquidityDensity } from "@/src/hooks/useLiquidityDensity";
@@ -34,7 +38,7 @@ const COMPUTE_TICKS_AMOUNT = 3000;
 
 interface RangeStepProps {
     disabled?: boolean;
-    pool?: AmmPool;
+    target?: AmmPoolLiquidityTarget;
     priceRangeSpecification?: CampaignPayload["priceRangeSpecification"];
     onRangeChange: (range: CampaignPayloadPart) => void;
     onError: (errors: CampaignPayloadErrors) => void;
@@ -42,7 +46,7 @@ interface RangeStepProps {
 
 export function RangeStep({
     disabled,
-    pool,
+    target,
     priceRangeSpecification,
     onRangeChange,
     onError,
@@ -64,7 +68,7 @@ export function RangeStep({
     const prevRangeSpecification = usePrevious(priceRangeSpecification);
     const chainId = useChainId();
     const { liquidityDensity, loading: loadingLiquidityDensity } =
-        useLiquidityDensity(pool, COMPUTE_TICKS_AMOUNT);
+        useLiquidityDensity(target?.pool, COMPUTE_TICKS_AMOUNT);
 
     const unsavedChanges = useMemo(() => {
         return (
@@ -75,17 +79,17 @@ export function RangeStep({
     }, [from, prevRangeSpecification, to]);
 
     const currentPrice = useMemo(() => {
-        if (!liquidityDensity || !pool) return undefined;
+        if (!liquidityDensity || !target?.pool) return undefined;
         const activeTickIdx = token0To1
             ? liquidityDensity.activeIdx
             : -liquidityDensity.activeIdx;
-        return tickToScaledPrice(activeTickIdx, pool, token0To1);
-    }, [liquidityDensity, token0To1, pool]);
+        return tickToScaledPrice(activeTickIdx, target.pool, token0To1);
+    }, [liquidityDensity, token0To1, target?.pool]);
 
     useEffect(() => {
         setFrom(undefined);
         setTo(undefined);
-    }, [pool?.address]);
+    }, [target?.pool.address]);
 
     useEffect(() => {
         setOpen(false);
@@ -144,7 +148,7 @@ export function RangeStep({
     }
 
     const handleOnFlipPrice = useCallback(() => {
-        if (!pool) return;
+        if (!target) return;
 
         setToken0To1((token0To1) => {
             const newToken0ToToken1 = !token0To1;
@@ -153,7 +157,7 @@ export function RangeStep({
                 const newFromTick = -to.tick;
                 const newFromPrice = tickToScaledPrice(
                     newFromTick,
-                    pool,
+                    target.pool,
                     newToken0ToToken1,
                 );
                 setFrom({ tick: newFromTick, price: newFromPrice });
@@ -161,7 +165,7 @@ export function RangeStep({
                 const newToTick = -from.tick;
                 const newToPrice = tickToScaledPrice(
                     newToTick,
-                    pool,
+                    target.pool,
                     newToken0ToToken1,
                 );
                 setTo({ tick: newToTick, price: newToPrice });
@@ -169,7 +173,7 @@ export function RangeStep({
 
             return newToken0ToToken1;
         });
-    }, [from, pool, to]);
+    }, [from, target, to]);
 
     const handleApply = useCallback(() => {
         if (from === undefined || to === undefined) return;
@@ -250,10 +254,12 @@ export function RangeStep({
                             ) : (
                                 <Typography weight="medium" size="sm">
                                     {t("price", {
-                                        token0: pool?.tokens[token0To1 ? 0 : 1]
-                                            .symbol,
-                                        token1: pool?.tokens[token0To1 ? 1 : 0]
-                                            .symbol,
+                                        token0: target?.pool.tokens[
+                                            token0To1 ? 0 : 1
+                                        ].symbol,
+                                        token1: target?.pool.tokens[
+                                            token0To1 ? 1 : 0
+                                        ].symbol,
                                         price: formatAmount({
                                             amount: currentPrice,
                                         }),
@@ -273,10 +279,12 @@ export function RangeStep({
                             </Typography>
                             <Typography weight="medium" size="sm">
                                 {t("range.value", {
-                                    token0: pool?.tokens[token0To1 ? 0 : 1]
-                                        .symbol,
-                                    token1: pool?.tokens[token0To1 ? 1 : 0]
-                                        .symbol,
+                                    token0: target?.pool.tokens[
+                                        token0To1 ? 0 : 1
+                                    ].symbol,
+                                    token1: target?.pool.tokens[
+                                        token0To1 ? 1 : 0
+                                    ].symbol,
                                     lowerPrice: from.price.toFixed(4),
                                     upperPrice: to.price.toFixed(4),
                                 })}
@@ -300,7 +308,7 @@ export function RangeStep({
                             })}
                         >
                             <Typography weight="medium" size="sm">
-                                {pool?.tokens[0].symbol}
+                                {target?.pool.tokens[0].symbol}
                             </Typography>
                         </Tab>
                         <Tab
@@ -310,12 +318,12 @@ export function RangeStep({
                             })}
                         >
                             <Typography weight="medium" size="sm">
-                                {pool?.tokens[1].symbol}
+                                {target?.pool.tokens[1].symbol}
                             </Typography>
                         </Tab>
                     </Tabs>
                     <RangeInputs
-                        pool={pool}
+                        pool={target?.pool}
                         error={!!error}
                         currentPrice={currentPrice}
                         token0To1={token0To1}
@@ -335,7 +343,7 @@ export function RangeStep({
                             loading={loadingLiquidityDensity}
                             from={from?.tick}
                             to={to?.tick}
-                            pool={pool}
+                            pool={target?.pool}
                             density={liquidityDensity}
                         />
                     </div>
