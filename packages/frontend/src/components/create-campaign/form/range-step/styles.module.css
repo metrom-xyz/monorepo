@@ -2,12 +2,8 @@
     @apply flex flex-col gap-3 p-4 pt-0;
 }
 
-.priceHeader {
-    @apply flex justify-end mb-1;
-}
-
 .priceTabs {
-    @apply w-fit self-end;
+    @apply w-fit self-end mt-1;
 }
 
 .priceTab {

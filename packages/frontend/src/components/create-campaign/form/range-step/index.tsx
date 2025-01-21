@@ -287,35 +287,33 @@ export function RangeStep({
             </StepPreview>
             <StepContent>
                 <div className={styles.stepContent}>
-                    <div className={styles.priceHeader}>
-                        <Tabs
-                            size="sm"
+                    <Tabs
+                        size="sm"
+                        value={token0To1}
+                        onChange={handleOnFlipPrice}
+                        className={styles.priceTabs}
+                    >
+                        <Tab
                             value={token0To1}
-                            onChange={handleOnFlipPrice}
-                            className={styles.priceTabs}
+                            className={classNames(styles.priceTab, {
+                                [styles.activePriceTab]: token0To1,
+                            })}
                         >
-                            <Tab
-                                value={token0To1}
-                                className={classNames(styles.priceTab, {
-                                    [styles.activePriceTab]: token0To1,
-                                })}
-                            >
-                                <Typography weight="medium" size="sm">
-                                    {pool?.tokens[0].symbol}
-                                </Typography>
-                            </Tab>
-                            <Tab
-                                value={!token0To1}
-                                className={classNames(styles.priceTab, {
-                                    [styles.activePriceTab]: !token0To1,
-                                })}
-                            >
-                                <Typography weight="medium" size="sm">
-                                    {pool?.tokens[1].symbol}
-                                </Typography>
-                            </Tab>
-                        </Tabs>
-                    </div>
+                            <Typography weight="medium" size="sm">
+                                {pool?.tokens[0].symbol}
+                            </Typography>
+                        </Tab>
+                        <Tab
+                            value={!token0To1}
+                            className={classNames(styles.priceTab, {
+                                [styles.activePriceTab]: !token0To1,
+                            })}
+                        >
+                            <Typography weight="medium" size="sm">
+                                {pool?.tokens[1].symbol}
+                            </Typography>
+                        </Tab>
+                    </Tabs>
                     <RangeInputs
                         pool={pool}
                         error={!!error}
