@@ -18,19 +18,19 @@ import type { SupportedAmm, TargetType } from "@metrom-xyz/sdk";
 
 import styles from "./styles.module.css";
 
-export interface AmmFormProps {
+export interface AmmPoolLiquidityProps {
     unsupportedChain?: boolean;
     payload?: TargetedCampaignPayload<TargetType.AmmPoolLiquidity>;
     onPayloadChange: (part: CampaignPayloadPart) => void;
     onPayloadError: (errors: CampaignPayloadErrors) => void;
 }
 
-export function AmmForm({
+export function AmmPoolLiquidity({
     unsupportedChain,
     payload,
     onPayloadChange,
     onPayloadError,
-}: AmmFormProps) {
+}: AmmPoolLiquidityProps) {
     return (
         <div className={styles.root}>
             <DexStep

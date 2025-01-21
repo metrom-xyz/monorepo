@@ -14,9 +14,9 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { DistributablesType, TargetType } from "@metrom-xyz/sdk";
 import { useTranslations } from "next-intl";
 import { trackFathomEvent } from "@/src/utils/fathom";
-import { AmmForm } from "./amm";
+import { AmmPoolLiquidity } from "./amm-pool-liquidity";
 import { Button, Modal } from "@metrom-xyz/ui";
-import { LiquityV2Form } from "./liquity-v2";
+import { LiquityV2 } from "./liquity-v2";
 import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
 import { CampaignPreview } from "../preview";
 
@@ -89,11 +89,6 @@ export function CreateCampaignForm<T extends TargetType>({
         setPayload({ targetType: target });
     }, [chainId, target]);
 
-    // TODO: enable auto fill based on target
-    // useEffect(() => {
-    //     setPayload({ dex: payload.dex });
-    // }, [payload.dex]);
-
     function handlePayloadOnChange(part: CampaignPayloadPart) {
         setPayload((prev) => ({ ...prev, ...part }));
     }
@@ -139,7 +134,7 @@ export function CreateCampaignForm<T extends TargetType>({
     return (
         <div className={styles.root}>
             {isTargeting(payload, TargetType.AmmPoolLiquidity) && (
-                <AmmForm
+                <AmmPoolLiquidity
                     unsupportedChain={unsupportedChain}
                     payload={payload}
                     onPayloadChange={handlePayloadOnChange}
@@ -147,7 +142,7 @@ export function CreateCampaignForm<T extends TargetType>({
                 />
             )}
             {isTargeting(payload, TargetType.LiquityV2Debt) && (
-                <LiquityV2Form
+                <LiquityV2
                     unsupportedChain={unsupportedChain}
                     payload={payload}
                     onPayloadChange={handlePayloadOnChange}

@@ -1,32 +1,29 @@
 import {
-    type CampaignPayload,
     type CampaignPayloadPart,
     type CampaignPayloadErrors,
-    RewardType,
     type TargetedCampaignPayload,
 } from "@/src/types";
 import { StartDateStep } from "../steps/start-date-step";
 import { EndDateStep } from "../steps/end-date-step";
 import { RewardsStep } from "../steps/rewards-step";
 import { RestrictionsStep } from "../steps/restrictions-step";
-import { KpiStep } from "../steps/kpi-step";
 import type { TargetType } from "@metrom-xyz/sdk";
 
 import styles from "./styles.module.css";
 
-export interface LiquityV2FormProps {
+export interface LiquityV2Props {
     unsupportedChain?: boolean;
     payload?: TargetedCampaignPayload<TargetType.LiquityV2Debt>;
     onPayloadChange: (part: CampaignPayloadPart) => void;
     onPayloadError: (errors: CampaignPayloadErrors) => void;
 }
 
-export function LiquityV2Form({
+export function LiquityV2({
     unsupportedChain,
     payload,
     onPayloadChange,
     onPayloadError,
-}: LiquityV2FormProps) {
+}: LiquityV2Props) {
     return (
         <div className={styles.root}>
             {/* TODO: implement protocol and action steps */}
