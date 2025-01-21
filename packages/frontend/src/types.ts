@@ -51,6 +51,7 @@ export interface AugmentedPriceRangeBound {
 }
 
 export interface AugmentedPriceRangeSpecification {
+    token0To1: boolean;
     from: AugmentedPriceRangeBound;
     to: AugmentedPriceRangeBound;
 }

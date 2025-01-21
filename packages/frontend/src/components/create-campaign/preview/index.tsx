@@ -165,11 +165,19 @@ export function CampaignPreview({
                 kpi: kpiSpecification,
             };
 
-            if (priceRangeSpecification)
-                specification.priceRange = {
-                    from: priceRangeSpecification.from.tick,
-                    to: priceRangeSpecification.to.tick,
-                };
+            if (priceRangeSpecification) {
+                let from;
+                let to;
+                if (priceRangeSpecification.token0To1) {
+                    from = priceRangeSpecification.from.tick;
+                    to = priceRangeSpecification.to.tick;
+                } else {
+                    from = -priceRangeSpecification.to.tick;
+                    to = -priceRangeSpecification.from.tick;
+                }
+
+                specification.priceRange = { from, to };
+            }
 
             if (restrictions)
                 specification[restrictions.type] = restrictions?.list;
