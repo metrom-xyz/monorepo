@@ -1,5 +1,5 @@
-import { PickCampaignType } from "@/src/components/create-campaign";
+import { CreateCampaign } from "@/src/components/create-campaign";
 
 export default function PickCampaignTypePage() {
-    return <PickCampaignType />;
+    return <CreateCampaign />;
 }

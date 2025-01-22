@@ -13,14 +13,13 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { DistributablesType, TargetType } from "@metrom-xyz/sdk";
 import { useTranslations } from "next-intl";
 import { trackFathomEvent } from "@/src/utils/fathom";
-import { Button, Modal, Typography } from "@metrom-xyz/ui";
+import { Button, Modal } from "@metrom-xyz/ui";
 import { LiquityV2 } from "./liquity-v2";
 import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
 import { CampaignPreview } from "../preview";
 import { isTargeting } from "@/src/utils/campaign";
-import { useRouter } from "@/src/i18n/routing";
-import { ChevronLeft } from "@/src/assets/chevron-left";
 import { AmmPoolLiquidity } from "./amm-pool-liquidity";
+import { FormHeader } from "./header";
 
 import styles from "./styles.module.css";
 
@@ -63,11 +62,6 @@ function validatePayload(
     );
 }
 
-const CAMPAIGN_TYPE_TITLE: Record<TargetType, string> = {
-    "amm-pool-liquidity": "type.amm",
-    "liquity-v2-debt": "type.liquityV2",
-};
-
 export function CreateCampaignForm<T extends TargetType>({
     target,
 }: CreateCampaignFormProps<T>) {
@@ -75,7 +69,6 @@ export function CreateCampaignForm<T extends TargetType>({
     const { chain: connectedChain, isConnected } = useAccount();
     const selectedChain = useChainId();
     const chains = useChains();
-    const router = useRouter();
 
     const [payload, setPayload] = useState<CampaignPayload>({
         targetType: target,
@@ -116,10 +109,6 @@ export function CreateCampaignForm<T extends TargetType>({
         setView(View.Form);
     }
 
-    function handleOnBackToCampaignTypes() {
-        router.back();
-    }
-
     function handleCreateNewOnClick() {
         setPayload((prevState) => ({
             ...prevState,
@@ -144,22 +133,7 @@ export function CreateCampaignForm<T extends TargetType>({
 
     return (
         <div className={styles.root}>
-            <div className={styles.header}>
-                <div
-                    onClick={handleOnBackToCampaignTypes}
-                    className={styles.backButton}
-                >
-                    <ChevronLeft />
-                </div>
-                <Typography
-                    weight="medium"
-                    size="xl"
-                    uppercase
-                    className={styles.title}
-                >
-                    {t(CAMPAIGN_TYPE_TITLE[target])}
-                </Typography>
-            </div>
+            <FormHeader target={target} />
             <div className={styles.formWrapper}>
                 {isTargeting(payload, TargetType.AmmPoolLiquidity) && (
                     <AmmPoolLiquidity

@@ -24,7 +24,7 @@ const CAMPAIGN_TYPES = [
     },
 ];
 
-export function PickCampaignType() {
+export function CreateCampaign() {
     const t = useTranslations("newCampaign.pickType");
 
     return (

@@ -1,0 +1,18 @@
+.root {
+    @apply w-full flex items-center;
+}
+
+.back {
+    @apply p-1.5
+        mr-auto
+        rounded-lg
+        bg-white
+        hover:cursor-pointer
+        hover:bg-gray-200
+        duration-200
+        ease-in-out;
+}
+
+.title {
+    @apply mr-auto -translate-x-3;
+}
