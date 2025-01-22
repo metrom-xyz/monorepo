@@ -18,6 +18,7 @@ export const celoAlfajoresData: ChainData = {
             addLiquidityUrl: "https://app.uniswap.org/add/{target_pool}",
         },
     ],
+    liquityV2Brands: [],
     baseTokens: [
         {
             address: "0xF194afDf50B03e69Bd7D057c1Aa9e10c9954E4C9",

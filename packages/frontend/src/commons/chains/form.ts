@@ -45,6 +45,7 @@ export const formData: ChainData = {
             addLiquidityUrl: "https://www.fibonacci-dex.xyz/pool/{target_pool}",
         },
     ],
+    liquityV2Brands: [],
     baseTokens: [
         {
             address: "0xFBf489bb4783D4B1B2e7D07ba39873Fb8068507D",

@@ -18,6 +18,11 @@ export enum SupportedDex {
     Unagi = "unagi",
 }
 
+export enum SupportedLiquityV2Brand {
+    Ebisu = "ebisu",
+    Liquity = "liquity",
+}
+
 export enum SupportedAmm {
     ConcentratedLiquidityV3 = "concentrated-liquidity-v3",
     StableSwap = "stable-swap",

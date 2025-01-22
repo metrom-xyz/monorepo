@@ -33,6 +33,7 @@ export const baseData: ChainData = {
         //     addLiquidityUrl: `https://app.uniswap.org/explore/pools/${SupportedChain.Base}/{target_pool}`,
         // },
     ],
+    liquityV2Brands: [],
     baseTokens: [
         {
             address: "0x4200000000000000000000000000000000000006",

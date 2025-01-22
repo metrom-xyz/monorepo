@@ -1,18 +1,20 @@
 import { CircledXIcon } from "@/src/assets/circled-x-icon";
-import type { CampaignPreviewPayload } from "@/src/types";
+import {
+    AmmPoolLiquidityCampaignPreviewPayload,
+    type BaseCampaignPreviewPayload,
+} from "@/src/types";
 import { Button, TextField, Typography } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
 import { useChainId } from "wagmi";
 import { formatDateTime, formatPercentage } from "@/src/utils/format";
 import { PoolRemoteLogo } from "@/src/components/pool-remote-logo";
-import { TargetType } from "@metrom-xyz/sdk";
-
-import styles from "./styles.module.css";
 import { useDexesInChain } from "@/src/hooks/useDexesInChain";
 import { useMemo } from "react";
 
+import styles from "./styles.module.css";
+
 interface HeaderProps {
-    payload: CampaignPreviewPayload;
+    payload: BaseCampaignPreviewPayload;
     backDisabled: boolean;
     onBack: () => void;
 }
@@ -22,14 +24,15 @@ export function Header({ payload, backDisabled, onBack }: HeaderProps) {
     const chainId = useChainId();
 
     const availableDexes = useDexesInChain(chainId);
-    const ammCampaign = payload.isTargeting(TargetType.AmmPoolLiquidity);
+
+    // TODO: add header for LiquityV2 campaign payload
+    const ammPoolLiquidityCampaigns =
+        payload instanceof AmmPoolLiquidityCampaignPreviewPayload;
 
     const selectedDex = useMemo(() => {
-        if (!ammCampaign) return undefined;
-        return availableDexes.find(
-            (dex) => dex.slug === payload.target.pool.dex,
-        );
-    }, [ammCampaign, availableDexes, payload.target]);
+        if (!ammPoolLiquidityCampaigns) return undefined;
+        return availableDexes.find((dex) => dex.slug === payload.pool.dex);
+    }, [ammPoolLiquidityCampaigns, availableDexes, payload]);
 
     return (
         <div className={styles.root}>
@@ -48,27 +51,25 @@ export function Header({ payload, backDisabled, onBack }: HeaderProps) {
                 {t("back")}
             </Button>
             <div className={styles.titleContainer}>
-                {ammCampaign && (
+                {ammPoolLiquidityCampaigns && (
                     <>
                         <PoolRemoteLogo
                             chain={chainId}
                             size="xl"
-                            tokens={
-                                payload.target.pool.tokens.map((token) => ({
-                                    address: token.address,
-                                    defaultText: token.symbol,
-                                })) || []
-                            }
+                            tokens={payload.pool.tokens.map((token) => ({
+                                address: token.address,
+                                defaultText: token.symbol,
+                            }))}
                         />
                         <Typography size="xl4" weight="medium" noWrap truncate>
                             {selectedDex?.name}{" "}
-                            {payload.target.pool.tokens
+                            {payload.pool.tokens
                                 .map((token) => token.symbol)
                                 .join(" / ")}
                         </Typography>
-                        {payload.target.pool.fee && (
+                        {payload.pool.fee && (
                             <Typography size="lg" weight="medium" light>
-                                {formatPercentage(payload.target.pool.fee)}
+                                {formatPercentage(payload.pool.fee)}
                             </Typography>
                         )}
                     </>

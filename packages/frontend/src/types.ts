@@ -1,8 +1,9 @@
 import {
     Campaign,
-    TargetType,
+    type SupportedLiquityV2Brand,
+    type TargetType,
+    type AmmPool,
     type AmmPoolLiquidityTarget,
-    type CampaignTarget,
     type DistributablesType,
     type KpiSpecification,
     type LiquityV2DebtTarget,
@@ -26,6 +27,13 @@ export interface Dex {
     name: string;
     addLiquidityUrl: string;
     poolExplorerUrl?: string;
+    logo: FunctionComponent<SVGIcon>;
+}
+
+// TODO: have a common type for both this and dex, like protocols?
+export interface LiquityV2Brand {
+    slug: SupportedLiquityV2Brand;
+    name: string;
     logo: FunctionComponent<SVGIcon>;
 }
 
@@ -55,32 +63,65 @@ export interface AugmentedPriceRangeSpecification {
     to: AugmentedPriceRangeBound;
 }
 
-export interface CampaignPayload {
-    targetType?: TargetType;
+export interface BaseCampaignPayload {
     rewardType?: RewardType;
-    protocol?: string;
-    target?: CampaignTarget;
     startDate?: Dayjs;
     endDate?: Dayjs;
     points?: number;
     tokens?: WhitelistedErc20TokenAmount[];
     fee?: WhitelistedErc20TokenAmount;
     kpiSpecification?: KpiSpecification;
-    priceRangeSpecification?: AugmentedPriceRangeSpecification;
     restrictions?: {
         type: RestrictionType;
         list: Address[];
     };
 }
 
-export interface TargetedCampaignPayload<T extends TargetType>
-    extends CampaignPayload {
-    target?: T extends TargetType.AmmPoolLiquidity
-        ? AmmPoolLiquidityTarget
-        : T extends TargetType.LiquityV2Debt
-          ? LiquityV2DebtTarget
-          : never;
+export interface AmmPoolLiquidityCampaignPayload extends BaseCampaignPayload {
+    dex?: DexInfo;
+    pool?: AmmPool;
+    priceRangeSpecification?: AugmentedPriceRangeSpecification;
 }
+
+export enum LiquityV2Action {
+    Debt = "debt",
+    Collateral = "collateral",
+    StabilityPool = "stabilty-pool",
+}
+
+export interface LiquityV2CampaignPayload extends BaseCampaignPayload {
+    brand?: LiquityV2BrandInfo;
+    action?: LiquityV2Action;
+    collaterals?: Address[];
+}
+
+// export interface CampaignPayload {
+//     // TODO: improve type and remove the unnecessary top level fields
+//     targetType?: TargetType;
+//     rewardType?: RewardType;
+//     protocol?: string;
+//     target?: CampaignTarget;
+//     startDate?: Dayjs;
+//     endDate?: Dayjs;
+//     points?: number;
+//     tokens?: WhitelistedErc20TokenAmount[];
+//     fee?: WhitelistedErc20TokenAmount;
+//     kpiSpecification?: KpiSpecification;
+//     priceRangeSpecification?: AugmentedPriceRangeSpecification;
+//     restrictions?: {
+//         type: RestrictionType;
+//         list: Address[];
+//     };
+// }
+
+// export interface TargetedCampaignPayload<T extends TargetType>
+//     extends CampaignPayload {
+//     target?: T extends TargetType.AmmPoolLiquidity
+//         ? AmmPoolLiquidityTarget
+//         : T extends TargetType.LiquityV2Debt
+//           ? LiquityV2DebtTarget
+//           : never;
+// }
 
 export interface CampaignPreviewTokenDistributables {
     type: DistributablesType.Tokens;
@@ -93,16 +134,14 @@ export interface CampaignPreviewPointDistributables {
     points: number;
 }
 
-export class CampaignPreviewPayload {
+export class BaseCampaignPreviewPayload {
     constructor(
-        public readonly target: CampaignTarget,
         public readonly startDate: Dayjs,
         public readonly endDate: Dayjs,
         public readonly distributables:
             | CampaignPreviewTokenDistributables
             | CampaignPreviewPointDistributables,
         public readonly kpiSpecification?: KpiSpecification,
-        public readonly priceRangeSpecification?: AugmentedPriceRangeSpecification,
         public readonly restrictions?: {
             type: RestrictionType;
             list: Address[];
@@ -114,17 +153,37 @@ export class CampaignPreviewPayload {
     ): this is DistributablesCampaignPreviewPayload<T> {
         return this.distributables.type === type;
     }
+}
 
-    isTargeting<T extends TargetType>(
-        type: T,
-    ): this is TargetedCampaignPreviewPayload<T> {
-        return this.target.type === type;
+export class AmmPoolLiquidityCampaignPreviewPayload extends BaseCampaignPreviewPayload {
+    constructor(
+        public readonly dex: DexInfo,
+        public readonly pool: AmmPool,
+        public readonly priceRangeSpecification?: AugmentedPriceRangeSpecification,
+        ...baseArgs: ConstructorParameters<typeof BaseCampaignPreviewPayload>
+    ) {
+        super(...baseArgs);
     }
 }
 
+export class LiquityV2CampaignPreviewPayload extends BaseCampaignPreviewPayload {
+    constructor(
+        public readonly brand: LiquityV2BrandInfo,
+        public readonly action: string,
+        public readonly collaterals: Address[],
+        ...baseArgs: ConstructorParameters<typeof BaseCampaignPreviewPayload>
+    ) {
+        super(...baseArgs);
+    }
+}
+
+export type CampaignPreviewPayload =
+    | AmmPoolLiquidityCampaignPreviewPayload
+    | LiquityV2CampaignPreviewPayload;
+
 export interface DistributablesCampaignPreviewPayload<
     T extends DistributablesType,
-> extends CampaignPreviewPayload {
+> extends BaseCampaignPreviewPayload {
     distributables: T extends DistributablesType.Tokens
         ? CampaignPreviewTokenDistributables
         : T extends DistributablesType.Points
@@ -133,7 +192,7 @@ export interface DistributablesCampaignPreviewPayload<
 }
 
 export interface TargetedCampaignPreviewPayload<T extends TargetType>
-    extends CampaignPreviewPayload {
+    extends BaseCampaignPreviewPayload {
     target: T extends TargetType.AmmPoolLiquidity
         ? AmmPoolLiquidityTarget
         : T extends TargetType.LiquityV2Debt
@@ -151,11 +210,18 @@ export interface CampaignPayloadErrors {
 }
 
 export type DexInfo = Pick<Dex, "slug" | "name" | "logo">;
+export type LiquityV2BrandInfo = Pick<LiquityV2Brand, "slug" | "name" | "logo">;
 
-export type CampaignPayloadPart = PropertyUnion<CampaignPayload>;
-export type TargetedCampaignPayloadPart<T extends TargetType> = PropertyUnion<
-    Partial<TargetedCampaignPayload<T>>
->;
+export type BaseCampaignPayloadPart = PropertyUnion<BaseCampaignPayload>;
+
+export type AmmPoolLiquidityCampaignPayloadPart =
+    PropertyUnion<AmmPoolLiquidityCampaignPayload>;
+export type LiquityV2CampaignPayloadPart =
+    PropertyUnion<LiquityV2CampaignPayload>;
+
+// export type TargetedCampaignPayloadPart<T extends TargetType> = PropertyUnion<
+//     Partial<TargetedCampaignPayload<T>>
+// >;
 
 export class NamedCampaign extends Campaign {
     constructor(

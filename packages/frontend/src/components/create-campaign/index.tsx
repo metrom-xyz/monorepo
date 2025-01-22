@@ -5,6 +5,7 @@ import { TargetType } from "@metrom-xyz/sdk";
 import { Link } from "@/src/i18n/routing";
 import { useTranslations } from "next-intl";
 import { LiquityV2CampaignIcon } from "@/src/assets/liquity-v2-campaign-icon";
+import { AmmCampaignIcon } from "@/src/assets/amm-campaign-icon";
 
 import styles from "./styles.module.css";
 
@@ -13,8 +14,7 @@ const CAMPAIGN_TYPES = [
         path: `/campaigns/create/${TargetType.AmmPoolLiquidity}`,
         title: "amm.title",
         description: "amm.description",
-        // TODO: add icon
-        icon: "",
+        icon: <AmmCampaignIcon />,
     },
     {
         path: `/campaigns/create/${TargetType.LiquityV2Debt}`,

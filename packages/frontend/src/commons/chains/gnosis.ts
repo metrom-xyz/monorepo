@@ -22,6 +22,7 @@ export const gnosisData: ChainData = {
                 "https://v3.swapr.eth.limo/#/info/pools/{target_pool}",
         },
     ],
+    liquityV2Brands: [],
     baseTokens: [
         {
             address: "0x9C58BAcC331c9aa871AFD802DB6379a98e80CEdb",

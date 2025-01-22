@@ -9,5 +9,7 @@ export const sepoliaData: ChainData = {
     blockExplorers: sepolia.blockExplorers,
     icon: EthLogo,
     dexes: [],
+    // TODO: add brands
+    liquityV2Brands: [],
     baseTokens: [],
 };

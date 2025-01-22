@@ -1,4 +1,4 @@
-import type { CampaignPreviewPayload } from "@/src/types";
+import type { AmmPoolLiquidityCampaignPayload } from "@/src/types";
 import { useTranslations } from "next-intl";
 import { TextField, Typography } from "@metrom-xyz/ui";
 import { formatAmount } from "@/src/utils/format";
@@ -8,7 +8,7 @@ import styles from "./styles.module.css";
 
 interface RangeProps {
     pool: AmmPool;
-    specification: CampaignPreviewPayload["priceRangeSpecification"];
+    specification: AmmPoolLiquidityCampaignPayload["priceRangeSpecification"];
 }
 
 export function Range({ pool, specification }: RangeProps) {

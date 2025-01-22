@@ -27,6 +27,7 @@ export const scrollData: ChainData = {
                 "https://app.uniswap.org/explore/pools/scroll/{target_pool}",
         },
     ],
+    liquityV2Brands: [],
     baseTokens: [
         {
             address: "0xf55bec9cafdbe8730f096aa55dad6d22d44099df",

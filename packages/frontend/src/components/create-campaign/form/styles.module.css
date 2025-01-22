@@ -7,11 +7,3 @@
         sm:px-0
         px-5;
 }
-
-.formWrapper {
-    @apply flex flex-col gap-11 w-full;
-}
-
-.button {
-    @apply w-full;
-}

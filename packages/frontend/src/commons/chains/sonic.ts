@@ -32,6 +32,7 @@ export const sonicData: ChainData = {
                 "https://silverswap.io/chain/sonic/liquidity/add-v3",
         },
     ],
+    liquityV2Brands: [],
     baseTokens: [
         {
             address: "0x309C92261178fA0CF748A855e90Ae73FDb79EBc7",

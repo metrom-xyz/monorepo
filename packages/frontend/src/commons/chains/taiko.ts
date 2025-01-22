@@ -33,6 +33,7 @@ export const taikoData: ChainData = {
             addLiquidityUrl: "https://unagiswap.xyz/pool",
         },
     ],
+    liquityV2Brands: [],
     baseTokens: [
         {
             address: "0xc4C410459fbaF8f7F86b6cEE52b4fA1282FF9704",

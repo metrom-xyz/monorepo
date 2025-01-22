@@ -1,9 +1,10 @@
-import { SupportedDex } from "@metrom-xyz/sdk";
+import { SupportedDex, SupportedLiquityV2Brand } from "@metrom-xyz/sdk";
 import { EthLogo } from "../../assets/logos/chains/eth";
 import { AlgebraIntegralLogo } from "../../assets/logos/dexes/algebra-integral";
 import { SupportedChain, ADDRESS } from "@metrom-xyz/contracts";
 import { type ChainData } from "../index";
 import { holesky } from "viem/chains";
+import { EbisuLogo } from "@/src/assets/logos/liquity-v2-platforms/ebisu";
 
 export const holeskyData: ChainData = {
     name: holesky.name,
@@ -17,6 +18,14 @@ export const holeskyData: ChainData = {
             name: "Algebra integral",
             addLiquidityUrl:
                 "https://integral.algebra.finance/pool/{target_pool}/new-position",
+        },
+    ],
+    liquityV2Brands: [
+        // TODO: remove
+        {
+            slug: SupportedLiquityV2Brand.Ebisu,
+            logo: EbisuLogo,
+            name: "Ebisu",
         },
     ],
     baseTokens: [

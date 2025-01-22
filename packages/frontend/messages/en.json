@@ -226,10 +226,19 @@
                 }
             },
             "liquityV2": {
-                "protocol": { "title": "Protocol" }
+                "brand": { "title": "Protocol" },
+                "action": {
+                    "title": "Action",
+                    "list": {
+                        "debt": {
+                            "title": "Deposit collateral",
+                            "description": "Description"
+                        }
+                    }
+                }
             },
             "ammPoolLiquidity": {
-                "protocol": { "title": "Dex" },
+                "dex": { "title": "Dex" },
                 "pool": {
                     "title": "Pool",
                     "searchLabel": "Search for pool",

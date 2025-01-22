@@ -19,6 +19,7 @@ export const mantleSepoliaData: ChainData = {
                 "https://app.swapsicle.io/liquidity/v3/mantle-testnet/{target_pool}",
         },
     ],
+    liquityV2Brands: [],
     baseTokens: [
         {
             address: "0xb1eda18c1b730a973dac2ec37cfd5685d7de10dd",

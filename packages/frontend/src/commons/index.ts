@@ -6,7 +6,7 @@ import {
     SupportedAmm,
 } from "@metrom-xyz/sdk";
 import { type ChainContract, type Chain } from "viem";
-import { type Dex, type SVGIcon } from "../types";
+import { type Dex, type LiquityV2Brand, type SVGIcon } from "../types";
 import type { FunctionComponent } from "react";
 import { SupportedChain } from "@metrom-xyz/contracts";
 import { ENVIRONMENT } from "./env";
@@ -24,7 +24,6 @@ import {
     gnosis,
     sepolia,
 } from "viem/chains";
-
 import {
     celoAlfajoresData,
     holeskyData,
@@ -51,7 +50,9 @@ export interface ChainData {
     metromContract: ChainContract;
     blockExplorers: Chain["blockExplorers"];
     icon: FunctionComponent<SVGIcon>;
+    // TODO: merge dexes and liquity in protocols Record<ProtocolType, Type[]>
     dexes: Dex[];
+    liquityV2Brands: LiquityV2Brand[];
     baseTokens: Erc20Token[];
 }
 
@@ -78,8 +79,7 @@ export const SUPPORTED_CHAINS: [Chain, ...Chain[]] =
 
 export const TOKEN_ICONS_URL = `https://raw.githubusercontent.com/metrom-xyz/token-icons/refs/heads/main/${ENVIRONMENT === Environment.Production ? "mainnet" : "testnet"}-icons.json`;
 
-// TODO: when upgrading the contracts library change this to be Record<SupportedChain, ChainData>
-export const CHAIN_DATA: Record<number, ChainData> = {
+export const CHAIN_DATA: Record<SupportedChain, ChainData> = {
     [SupportedChain.Holesky]: holeskyData,
     [SupportedChain.CeloAlfajores]: celoAlfajoresData,
     [SupportedChain.MantleSepolia]: mantleSepoliaData,
@@ -95,7 +95,7 @@ export const CHAIN_DATA: Record<number, ChainData> = {
     [SupportedChain.Sonic]: sonicData,
     [SupportedChain.Arthera]: artheraData,
     [SupportedChain.Form]: formData,
-    100: gnosisData,
+    [SupportedChain.Gnosis]: gnosisData,
 };
 
 export const AMM_SUPPORTS_RANGE_INCENTIVES: Record<SupportedAmm, boolean> = {

@@ -50,6 +50,7 @@ export const artheraData: ChainData = {
             addLiquidityUrl: "https://third.trade/pool/{target_pool}",
         },
     ],
+    liquityV2Brands: [],
     baseTokens: [
         {
             address: "0x69D349E2009Af35206EFc3937BaD6817424729F7",

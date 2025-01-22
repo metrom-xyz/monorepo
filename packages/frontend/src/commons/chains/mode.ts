@@ -18,6 +18,7 @@ export const modeData: ChainData = {
             addLiquidityUrl: "https://app.kim.exchange/pools/v4/{target_pool}",
         },
     ],
+    liquityV2Brands: [],
     baseTokens: [
         {
             address: "0x4200000000000000000000000000000000000006",

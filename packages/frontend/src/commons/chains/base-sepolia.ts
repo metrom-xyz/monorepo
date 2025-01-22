@@ -26,6 +26,7 @@ export const baseSepoliaData: ChainData = {
                 "https://app.uniswap.org/explore/pools/base_sepolia/{target_pool}",
         },
     ],
+    liquityV2Brands: [],
     baseTokens: [
         {
             address: "0x4200000000000000000000000000000000000006",
