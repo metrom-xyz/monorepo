@@ -9,7 +9,7 @@ interface ImportFailProps {
 
 export function ImportFail({ toastId, message }: ImportFailProps) {
     const t = useTranslations(
-        "newCampaign.form.restrictions.import.notification",
+        "newCampaign.form.base.restrictions.import.notification",
     );
 
     return (

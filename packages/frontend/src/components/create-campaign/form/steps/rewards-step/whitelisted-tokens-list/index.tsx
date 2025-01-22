@@ -10,10 +10,10 @@ import {
 } from "@/src/hooks/useWatchBalances";
 import { Row } from "./row";
 import { easings, useSpring, animated, useTransition } from "@react-spring/web";
+import type { WhitelistedErc20TokenAmount } from "@/src/types";
 import classNames from "classnames";
 
 import styles from "./styles.module.css";
-import type { WhitelistedErc20TokenAmount } from "@/src/types";
 
 const TOKENS_LIMIT = 6;
 
@@ -34,7 +34,7 @@ export function WhitelistedTokensList({
     unavailable,
     onClick,
 }: WhitelistedTokensListProps) {
-    const t = useTranslations("newCampaign.form.rewards");
+    const t = useTranslations("newCampaign.form.base.rewards");
     const rootRef = useRef<HTMLDivElement>(null);
     const listRef = useRef(null);
 

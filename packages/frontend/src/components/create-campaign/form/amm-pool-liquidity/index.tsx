@@ -1,11 +1,10 @@
 import {
-    type CampaignPayload,
     type CampaignPayloadPart,
     type CampaignPayloadErrors,
     RewardType,
     type TargetedCampaignPayload,
 } from "@/src/types";
-import { DexStep } from "../steps/dex-step";
+import { ProtocolStep } from "../steps/protocol-step";
 import { PoolStep } from "../steps/pool-step";
 import { StartDateStep } from "../steps/start-date-step";
 import { EndDateStep } from "../steps/end-date-step";
@@ -15,6 +14,7 @@ import { KpiStep } from "../steps/kpi-step";
 import { RangeStep } from "../steps/range-step";
 import { AMM_SUPPORTS_RANGE_INCENTIVES } from "@/src/commons";
 import type { SupportedAmm, TargetType } from "@metrom-xyz/sdk";
+import { useTranslations } from "next-intl";
 
 import styles from "./styles.module.css";
 
@@ -31,9 +31,12 @@ export function AmmPoolLiquidity({
     onPayloadChange,
     onPayloadError,
 }: AmmPoolLiquidityProps) {
+    const t = useTranslations("newCampaign.form.ammPoolLiquidity");
+
     return (
         <div className={styles.root}>
-            <DexStep
+            <ProtocolStep
+                title={t("protocol.title")}
                 disabled={unsupportedChain}
                 protocol={payload?.protocol}
                 onProtocolChange={onPayloadChange}

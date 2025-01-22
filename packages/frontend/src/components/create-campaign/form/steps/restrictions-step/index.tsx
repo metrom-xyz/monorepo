@@ -50,7 +50,7 @@ export function RestrictionsStep({
     onRestrictionsChange,
     onError,
 }: RestrictionsStepProps) {
-    const t = useTranslations("newCampaign.form.restrictions");
+    const t = useTranslations("newCampaign.form.base.restrictions");
     const [open, setOpen] = useState(false);
     const [enabled, setEnabled] = useState(false);
     const [error, setError] = useState("");

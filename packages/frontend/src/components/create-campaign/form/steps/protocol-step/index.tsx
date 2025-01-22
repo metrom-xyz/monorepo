@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useChainId } from "wagmi";
-import { useTranslations } from "next-intl";
 import { Step } from "@/src/components/step";
 import { StepPreview } from "@/src/components/step/preview";
 import { StepContent } from "@/src/components/step/content";
@@ -16,7 +15,8 @@ import { TargetType } from "@metrom-xyz/sdk";
 
 import styles from "./styles.module.css";
 
-interface DexStepProps {
+interface ProtocolStepProps {
+    title?: string;
     disabled?: boolean;
     protocol?: CampaignPayload["protocol"];
     onProtocolChange: (
@@ -24,12 +24,12 @@ interface DexStepProps {
     ) => void;
 }
 
-export function DexStep({
+export function ProtocolStep({
+    title,
     disabled,
     protocol,
     onProtocolChange,
-}: DexStepProps) {
-    const t = useTranslations("newCampaign.form.dex");
+}: ProtocolStepProps) {
     const [open, setOpen] = useState(true);
 
     const chainId = useChainId();
@@ -76,7 +76,7 @@ export function DexStep({
             completed={!!selectedDex}
             onPreviewClick={handleStepOnClick}
         >
-            <StepPreview label={t("title")}>
+            <StepPreview label={title}>
                 {!!selectedDex && (
                     <div className={styles.dexPreview}>
                         <div className={styles.logo}>

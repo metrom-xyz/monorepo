@@ -51,7 +51,7 @@ export function RangeStep({
     onRangeChange,
     onError,
 }: RangeStepProps) {
-    const t = useTranslations("newCampaign.form.range");
+    const t = useTranslations("newCampaign.form.ammPoolLiquidity.range");
     const [open, setOpen] = useState(false);
     const [token0To1, setToken0To1] = useState(true);
     const [enabled, setEnabled] = useState(false);

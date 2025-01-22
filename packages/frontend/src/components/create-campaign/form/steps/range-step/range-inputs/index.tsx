@@ -33,7 +33,7 @@ export function RangeInputs({
     onFromChange,
     onToChange,
 }: RangeInputsProps) {
-    const t = useTranslations("newCampaign.form.range");
+    const t = useTranslations("newCampaign.form.ammPoolLiquidity.range");
 
     const getChangeHandler = useCallback(
         (type: "from" | "to") => {

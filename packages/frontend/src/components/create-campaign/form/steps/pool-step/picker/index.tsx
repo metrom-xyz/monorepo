@@ -24,12 +24,12 @@ import styles from "./styles.module.css";
 
 interface PoolPickerProps {
     value?: AmmPool;
-    protocol?: string;
+    protocol?: SupportedDex;
     onChange: (pool: AmmPool) => void;
 }
 
 export function PoolPicker({ value, protocol, onChange }: PoolPickerProps) {
-    const t = useTranslations("newCampaign.form.pool");
+    const t = useTranslations("newCampaign.form.ammPoolLiquidity.pool");
     const [search, setSearch] = useState("");
     const [debouncedSearch, setDebouncedSearch] = useState(search);
     const [baseTokenFilter, setBaseTokenFilter] = useState<Erc20Token>();
@@ -37,7 +37,7 @@ export function PoolPicker({ value, protocol, onChange }: PoolPickerProps) {
 
     const chain = useChainId();
     const baseTokens = useBaseTokens(chain);
-    const { pools, loading } = usePools(chain, protocol as SupportedDex);
+    const { pools, loading } = usePools(chain, protocol);
 
     const filteredPools = useMemo(
         () =>

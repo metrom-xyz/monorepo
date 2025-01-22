@@ -4,6 +4,7 @@ import { useTranslations } from "next-intl";
 import {
     type AmmPool,
     type AmmPoolLiquidityTarget,
+    SupportedDex,
     TargetType,
 } from "@metrom-xyz/sdk";
 import { Step } from "@/src/components/step";
@@ -31,7 +32,7 @@ export function PoolStep({
     target,
     onTargetChange,
 }: PoolStepProps) {
-    const t = useTranslations("newCampaign.form.pool");
+    const t = useTranslations("newCampaign.form.ammPoolLiquidity.pool");
     const [open, setOpen] = useState(false);
     const chainId = useChainId();
 
@@ -98,7 +99,7 @@ export function PoolStep({
             </StepPreview>
             <StepContent>
                 <PoolPicker
-                    protocol={protocol}
+                    protocol={protocol as SupportedDex}
                     value={target?.pool}
                     onChange={handlePoolOnChange}
                 />

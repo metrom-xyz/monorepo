@@ -33,7 +33,7 @@ export function StartDateStep({
     onStartDateChange,
     onError,
 }: StartDateStepProps) {
-    const t = useTranslations("newCampaign.form.startDate");
+    const t = useTranslations("newCampaign.form.base.startDate");
     const [open, setOpen] = useState(false);
     const [date, setDate] = useState<Dayjs | undefined>(startDate);
     const [minDate, setMinDate] = useState<Dayjs | undefined>();

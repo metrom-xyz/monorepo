@@ -40,7 +40,7 @@ export function RewardTokens({
     onError,
     onTokensChange,
 }: RewardTokensProps) {
-    const t = useTranslations("newCampaign.form.rewards.tokens");
+    const t = useTranslations("newCampaign.form.base.rewards.tokens");
     const [open, setOpen] = useState(false);
     const [amount, setAmount] = useState<NumberFormatValues>();
     const [token, setToken] = useState<RewardToken>();

@@ -43,7 +43,7 @@ export function RewardPoints({
     onError,
     onPointsChange,
 }: RewardPointsProps) {
-    const t = useTranslations("newCampaign.form.rewards.points");
+    const t = useTranslations("newCampaign.form.base.rewards.points");
     const [open, setOpen] = useState(false);
     const [costError, setCostError] = useState("");
     const [amountError, setAmountError] = useState("");

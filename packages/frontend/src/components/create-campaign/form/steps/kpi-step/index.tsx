@@ -36,7 +36,7 @@ export function KpiStep({
     onKpiChange,
     onError,
 }: KpiStepProps) {
-    const t = useTranslations("newCampaign.form.kpi");
+    const t = useTranslations("newCampaign.form.base.kpi");
     const [open, setOpen] = useState(false);
     const [enabled, setEnabled] = useState(false);
     const [error, setError] = useState("");

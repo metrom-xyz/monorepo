@@ -104,157 +104,164 @@
             "liquityV2": "Liquidity v2 campaign"
         },
         "form": {
-            "dex": { "title": "Dex" },
-            "pool": {
-                "title": "Pool",
-                "searchLabel": "Search for pool",
-                "list": {
-                    "pool": "Pool",
-                    "tvl": "Tvl",
-                    "empty": "Nothing here"
-                },
-                "preview": {
-                    "pool": "Pool",
-                    "tvl": "Tvl"
-                }
-            },
-            "startDate": {
-                "title": "Start date",
-                "apply": "Apply",
-                "errors": { "dateInThePast": "Date can't be in the past" }
-            },
-            "endDate": {
-                "title": "End date",
-                "apply": "Apply",
-                "durations": {
-                    "1week": "1 week",
-                    "2weeks": "2 weeks",
-                    "1month": "1 month"
-                },
-                "campaignDuration": "Campaign duration",
-                "days": "{count} days",
-                "errors": {
-                    "endBeforeStart": "End date can't be before start date",
-                    "dateInThePast": "Date can't be in the past",
-                    "minimumDate": "The campaign must exceed {duration}",
-                    "maximumDate": "The campaign must be under {duration}"
-                }
-            },
-            "rewards": {
-                "title": {
-                    "rewards": "Rewards"
-                },
-                "tabs": {
-                    "tokens": "Tokens",
-                    "points": "Points"
-                },
-                "tokens": {
-                    "enterReward": "Enter Reward",
-                    "rewardsPreviewList": {
-                        "empty": "No rewards added yet"
-                    },
-                    "addButton": {
-                        "add": "Add to rewards"
-                    },
-                    "selectPlaceholder": "Choose Token",
-                    "totalUsd": "Total value usd",
-                    "errors": {
-                        "insufficientBalance": "Insufficient balance",
-                        "lowDistributionRate": "Low distribution rate"
-                    }
-                },
-                "list": {
-                    "token": "Token",
-                    "balance": "Balance",
-                    "empty": "Nothing here"
-                },
-                "points": {
-                    "amount": "Points amount",
-                    "pickFeeToken": "Pick fee token",
-                    "select": "Select",
-                    "usdCost": "{usd} total USD cost",
+            "base": {
+                "startDate": {
+                    "title": "Start date",
                     "apply": "Apply",
+                    "errors": { "dateInThePast": "Date can't be in the past" }
+                },
+                "endDate": {
+                    "title": "End date",
+                    "apply": "Apply",
+                    "durations": {
+                        "1week": "1 week",
+                        "2weeks": "2 weeks",
+                        "1month": "1 month"
+                    },
+                    "campaignDuration": "Campaign duration",
+                    "days": "{count} days",
                     "errors": {
-                        "costChanged": "Cost changed, apply to confirm",
-                        "wrongAmount": "Wrong points amount"
+                        "endBeforeStart": "End date can't be before start date",
+                        "dateInThePast": "Date can't be in the past",
+                        "minimumDate": "The campaign must exceed {duration}",
+                        "maximumDate": "The campaign must be under {duration}"
                     }
-                }
-            },
-            "restrictions": {
-                "title": "Filter addresses",
-                "description": "Blacklist addresses that shouldn't receive rewards, or whitelist only those that should be eligible to receive rewards.",
-                "errors": {
-                    "notAnAddress": "Not a valid address",
-                    "alreadyRestricted": "Address already restricted"
                 },
-                "warnings": {
-                    "notApplied": "Changes not applied"
-                },
-                "blocks": "Blocks {count, plural, =0 {} =1 {# address} other {# adresses}}",
-                "allows": "Allows {count, plural, =0 {} =1 {# address} other {# adresses}}",
-                "whitelist": "Whitelist",
-                "blacklist": "Blacklist",
-                "input": {
-                    "label": "Address",
-                    "placeholder": "Enter wallet address"
-                },
-                "import": {
-                    "label": "Import CSV",
-                    "notification": {
-                        "success": {
-                            "title": "Successful",
-                            "message": "Addresses imported"
+                "rewards": {
+                    "title": {
+                        "rewards": "Rewards"
+                    },
+                    "tabs": {
+                        "tokens": "Tokens",
+                        "points": "Points"
+                    },
+                    "tokens": {
+                        "enterReward": "Enter Reward",
+                        "rewardsPreviewList": {
+                            "empty": "No rewards added yet"
                         },
-                        "fail": {
-                            "title": "Failed",
-                            "malformed": "Malformed csv",
-                            "tooMany": "Too many addresses: max {max}"
+                        "addButton": {
+                            "add": "Add to rewards"
+                        },
+                        "selectPlaceholder": "Choose Token",
+                        "totalUsd": "Total value usd",
+                        "errors": {
+                            "insufficientBalance": "Insufficient balance",
+                            "lowDistributionRate": "Low distribution rate"
+                        }
+                    },
+                    "list": {
+                        "token": "Token",
+                        "balance": "Balance",
+                        "empty": "Nothing here"
+                    },
+                    "points": {
+                        "amount": "Points amount",
+                        "pickFeeToken": "Pick fee token",
+                        "select": "Select",
+                        "usdCost": "{usd} total USD cost",
+                        "apply": "Apply",
+                        "errors": {
+                            "costChanged": "Cost changed, apply to confirm",
+                            "wrongAmount": "Wrong points amount"
                         }
                     }
                 },
-                "add": "Add",
-                "list": "List",
-                "apply": "Apply"
+                "restrictions": {
+                    "title": "Filter addresses",
+                    "description": "Blacklist addresses that shouldn't receive rewards, or whitelist only those that should be eligible to receive rewards.",
+                    "errors": {
+                        "notAnAddress": "Not a valid address",
+                        "alreadyRestricted": "Address already restricted"
+                    },
+                    "warnings": {
+                        "notApplied": "Changes not applied"
+                    },
+                    "blocks": "Blocks {count, plural, =0 {} =1 {# address} other {# adresses}}",
+                    "allows": "Allows {count, plural, =0 {} =1 {# address} other {# adresses}}",
+                    "whitelist": "Whitelist",
+                    "blacklist": "Blacklist",
+                    "input": {
+                        "label": "Address",
+                        "placeholder": "Enter wallet address"
+                    },
+                    "import": {
+                        "label": "Import CSV",
+                        "notification": {
+                            "success": {
+                                "title": "Successful",
+                                "message": "Addresses imported"
+                            },
+                            "fail": {
+                                "title": "Failed",
+                                "malformed": "Malformed csv",
+                                "tooMany": "Too many addresses: max {max}"
+                            }
+                        }
+                    },
+                    "add": "Add",
+                    "list": "List",
+                    "apply": "Apply"
+                },
+                "kpi": {
+                    "title": "Set KPI",
+                    "currentTvl": "Current TVL",
+                    "rangedTvl": {
+                        "lowerBound": "Lower TVL bound",
+                        "upperBound": "Upper TVL bound"
+                    },
+                    "errors": {
+                        "missing": "Bound missing",
+                        "malformed": "Wrong bound values"
+                    },
+                    "warnings": {
+                        "notApplied": "Changes not applied"
+                    },
+                    "simulation": {
+                        "title": "KPI simulation",
+                        "description": "Disclaimer: This is an interactive simulation tool to visualize how incentives are distributed for different TVL scenarios. Please review the values you entered carefully before submitting."
+                    },
+                    "minimumPayout": "Minimum payout",
+                    "apply": "Apply"
+                }
             },
-            "kpi": {
-                "title": "Set KPI",
-                "currentTvl": "Current TVL",
-                "rangedTvl": {
-                    "lowerBound": "Lower TVL bound",
-                    "upperBound": "Upper TVL bound"
-                },
-                "errors": {
-                    "missing": "Bound missing",
-                    "malformed": "Wrong bound values"
-                },
-                "warnings": {
-                    "notApplied": "Changes not applied"
-                },
-                "simulation": {
-                    "title": "KPI simulation",
-                    "description": "Disclaimer: This is an interactive simulation tool to visualize how incentives are distributed for different TVL scenarios. Please review the values you entered carefully before submitting."
-                },
-                "minimumPayout": "Minimum payout",
-                "apply": "Apply"
+            "liquityV2": {
+                "protocol": { "title": "Protocol" }
             },
-            "range": {
-                "title": "Set range to reward",
-                "currentPrice": "Current price",
+            "ammPoolLiquidity": {
+                "protocol": { "title": "Dex" },
+                "pool": {
+                    "title": "Pool",
+                    "searchLabel": "Search for pool",
+                    "list": {
+                        "pool": "Pool",
+                        "tvl": "Tvl",
+                        "empty": "Nothing here"
+                    },
+                    "preview": {
+                        "pool": "Pool",
+                        "tvl": "Tvl"
+                    }
+                },
                 "range": {
-                    "label": "Range",
-                    "value": "{lowerPrice} - {upperPrice} {token1} PER {token0}"
-                },
-                "price": "1 {token0} = {price} {token1}",
-                "minPrice": "Min price ({token1} per {token0})",
-                "maxPrice": "Max price ({token1} per {token0})",
-                "apply": "Apply",
-                "chart": "Range visualizer",
-                "errors": {
-                    "missing": "Bound missing",
-                    "malformed": "Wrong bound values"
-                },
-                "warnings": {
-                    "notApplied": "Changes not applied"
+                    "title": "Set range to reward",
+                    "currentPrice": "Current price",
+                    "range": {
+                        "label": "Range",
+                        "value": "{lowerPrice} - {upperPrice} {token1} PER {token0}"
+                    },
+                    "price": "1 {token0} = {price} {token1}",
+                    "minPrice": "Min price ({token1} per {token0})",
+                    "maxPrice": "Max price ({token1} per {token0})",
+                    "apply": "Apply",
+                    "chart": "Range visualizer",
+                    "errors": {
+                        "missing": "Bound missing",
+                        "malformed": "Wrong bound values"
+                    },
+                    "warnings": {
+                        "notApplied": "Changes not applied"
+                    }
                 }
             }
         },

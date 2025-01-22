@@ -31,7 +31,7 @@ export function GoalInputs({
     onUpperUsdTargetChange,
     onMinimumPayoutPercentageChange,
 }: GoalInputsProps) {
-    const t = useTranslations("newCampaign.form.kpi");
+    const t = useTranslations("newCampaign.form.base.kpi");
 
     const [minimumPayoutPercentage, setMinimumPayoutPercentage] = useState(
         kpiSpecification?.minimumPayoutPercentage || 0,

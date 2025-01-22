@@ -20,7 +20,7 @@ export function CsvAddressesImport({
     onImport,
     className,
 }: CsvAddressesImportProps) {
-    const t = useTranslations("newCampaign.form.restrictions.import");
+    const t = useTranslations("newCampaign.form.base.restrictions.import");
     const [csv, setCsv] = useState<File | null>(null);
     const [addresses, setAddresses] = useState<string[]>([]);
     const inputRef = useRef<HTMLInputElement>(null);

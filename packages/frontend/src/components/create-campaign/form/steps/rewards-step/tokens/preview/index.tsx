@@ -22,7 +22,7 @@ export function RewardsPreview({
     onError,
     onUpdate,
 }: RewardsPreviewProps) {
-    const t = useTranslations("newCampaign.form.rewards.tokens");
+    const t = useTranslations("newCampaign.form.base.rewards.tokens");
 
     if (!rewards || rewards.length === 0)
         return (

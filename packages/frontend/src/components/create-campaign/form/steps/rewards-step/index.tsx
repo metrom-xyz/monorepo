@@ -13,7 +13,6 @@ import {
 import classNames from "classnames";
 import { RewardTokens } from "./tokens";
 import { RewardPoints } from "./points";
-import { TargetType } from "@metrom-xyz/sdk";
 
 import styles from "./styles.module.css";
 
@@ -40,7 +39,7 @@ export function RewardsStep({
     onRewardsChange,
     onError,
 }: RewardsStepProps) {
-    const t = useTranslations("newCampaign.form.rewards");
+    const t = useTranslations("newCampaign.form.base.rewards");
     const [type, setType] = useState(rewardType || RewardType.Tokens);
     const [error, setError] = useState("");
 
