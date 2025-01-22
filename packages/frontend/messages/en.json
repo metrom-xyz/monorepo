@@ -101,7 +101,7 @@
         },
         "type": {
             "amm": "AMM Campaign",
-            "liquityV2": "Liquidity v2 campaign"
+            "liquityV2": "Liquity v2 campaign"
         },
         "form": {
             "base": {
