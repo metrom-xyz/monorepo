@@ -3,15 +3,15 @@ import {
     type BackendActivity,
     type BackendCampaign,
     type BackendClaim,
-    type BackendPool,
     type BackendWhitelistedErc20Token,
     type BackendReimbursement,
     type BackendKpiMeasurement,
     type BackendLeaderboard,
     type BackendRewardsCampaignLeaderboardRank,
+    type BackendPoolWithTvl,
 } from "./types";
 import type { SupportedChain } from "@metrom-xyz/contracts";
-import { SupportedDex } from "../commons";
+import type { SupportedDex } from "../commons";
 import {
     Status,
     type Activity,
@@ -21,7 +21,7 @@ import {
     type Leaderboard,
     type OnChainAmount,
     type PointsCampaignLeaderboardRank,
-    type Pool,
+    type PoolWithTvl,
     type Reimbursement,
     type Rewards,
     type RewardsCampaignLeaderboardRank,
@@ -40,6 +40,11 @@ export interface FetchCampaignParams {
 export interface FetchPoolsParams {
     chainId: SupportedChain;
     dex: SupportedDex;
+}
+
+export interface FetchPoolParams {
+    chainId: SupportedChain;
+    address: Address;
 }
 
 export interface FetchClaimsParams {
@@ -106,7 +111,7 @@ export class MetromApiClient {
         return processCampaign((await response.json()) as BackendCampaign);
     }
 
-    async fetchPools(params: FetchPoolsParams): Promise<Pool[]> {
+    async fetchPools(params: FetchPoolsParams): Promise<PoolWithTvl[]> {
         const url = new URL(
             `v1/pools/${params.chainId}/${params.dex}`,
             this.baseUrl,
@@ -118,12 +123,34 @@ export class MetromApiClient {
                 `response not ok while fetching pools: ${await response.text()}`,
             );
 
-        const backendPools = (await response.json()) as BackendPool[];
+        const backendPools = (await response.json()) as BackendPoolWithTvl[];
 
         return backendPools.map((pool) => ({
             ...pool,
             chainId: params.chainId,
         }));
+    }
+
+    async fetchPool(params: FetchPoolParams): Promise<PoolWithTvl | null> {
+        const url = new URL(
+            `v1/pools/${params.chainId}/${params.address}`,
+            this.baseUrl,
+        );
+
+        const response = await fetch(url);
+        if (response.status === 404) return null;
+
+        if (!response.ok)
+            throw new Error(
+                `response not ok while fetching pools: ${await response.text()}`,
+            );
+
+        const pool = (await response.json()) as BackendPoolWithTvl;
+
+        return {
+            ...pool,
+            chainId: params.chainId,
+        };
     }
 
     async fetchClaims(params: FetchClaimsParams): Promise<Claim[]> {

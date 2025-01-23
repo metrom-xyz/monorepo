@@ -1,14 +1,20 @@
 import { useCallback, useEffect, useState } from "react";
 import { useChainId } from "wagmi";
 import { useTranslations } from "next-intl";
-import type { PoolWithTvl } from "@metrom-xyz/sdk";
 import { Step } from "@/src/components/step";
 import { StepPreview } from "@/src/components/step/preview";
 import { StepContent } from "@/src/components/step/content";
-import type { CampaignPayload, CampaignPayloadPart } from "@/src/types";
-import { PoolPicker } from "./picker";
-import { Typography } from "@metrom-xyz/ui";
+import type {
+    CampaignPayload,
+    CampaignPayloadErrors,
+    CampaignPayloadPart,
+} from "@/src/types";
+import { ErrorText, Typography } from "@metrom-xyz/ui";
 import { PoolStepPreview } from "./preview";
+import classNames from "classnames";
+import type { PoolWithTvl } from "@metrom-xyz/sdk";
+import { AddressPoolPicker } from "./address-picker";
+import { ListPoolPicker } from "./list";
 
 import styles from "./styles.module.css";
 
@@ -17,11 +23,19 @@ interface PoolStepProps {
     dex?: CampaignPayload["dex"];
     pool?: CampaignPayload["pool"];
     onPoolChange: (pool: CampaignPayloadPart) => void;
+    onError: (errors: CampaignPayloadErrors) => void;
 }
 
-export function PoolStep({ disabled, pool, dex, onPoolChange }: PoolStepProps) {
+export function PoolStep({
+    disabled,
+    pool,
+    dex,
+    onPoolChange,
+    onError,
+}: PoolStepProps) {
     const t = useTranslations("newCampaign.form.pool");
     const [open, setOpen] = useState(false);
+    const [error, setError] = useState("");
     const chainId = useChainId();
 
     useEffect(() => {
@@ -32,6 +46,10 @@ export function PoolStep({ disabled, pool, dex, onPoolChange }: PoolStepProps) {
         if (disabled || !!pool) return;
         setOpen(true);
     }, [pool, disabled]);
+
+    useEffect(() => {
+        onError({ pool: !!error });
+    }, [onError, error]);
 
     const handlePoolOnChange = useCallback(
         (newPool: PoolWithTvl) => {
@@ -52,11 +70,34 @@ export function PoolStep({ disabled, pool, dex, onPoolChange }: PoolStepProps) {
             open={open}
             completed={!!pool}
             onPreviewClick={handleStepOnClick}
+            error={!!error}
         >
             <StepPreview
                 label={
                     !pool ? (
-                        t("title")
+                        <div className={styles.previewLabelWrapper}>
+                            <div className={styles.previewTextWrapper}>
+                                <Typography
+                                    uppercase
+                                    weight="medium"
+                                    className={styles.previewLabel}
+                                >
+                                    {t("title")}
+                                </Typography>
+                                {error && (
+                                    <ErrorText
+                                        size="xs"
+                                        weight="medium"
+                                        level="error"
+                                        className={classNames(styles.error, {
+                                            [styles.errorVisible]: error,
+                                        })}
+                                    >
+                                        {error}
+                                    </ErrorText>
+                                )}
+                            </div>
+                        </div>
                     ) : (
                         <div className={styles.previewCompletedLabel}>
                             <Typography
@@ -80,11 +121,19 @@ export function PoolStep({ disabled, pool, dex, onPoolChange }: PoolStepProps) {
                 {pool && <PoolStepPreview {...pool} />}
             </StepPreview>
             <StepContent>
-                <PoolPicker
-                    dex={dex}
-                    value={pool}
-                    onChange={handlePoolOnChange}
-                />
+                {dex?.supportsFetchAllPools ? (
+                    <ListPoolPicker
+                        value={pool}
+                        dex={dex}
+                        onChange={handlePoolOnChange}
+                    />
+                ) : (
+                    <AddressPoolPicker
+                        dex={dex}
+                        onChange={handlePoolOnChange}
+                        onError={setError}
+                    />
+                )}
             </StepContent>
         </Step>
     );

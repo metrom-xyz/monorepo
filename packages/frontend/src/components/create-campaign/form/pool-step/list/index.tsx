@@ -23,13 +23,13 @@ import { RemoteLogo } from "@/src/components/remote-logo";
 
 import styles from "./styles.module.css";
 
-interface PoolPickerProps {
+interface ListPoolPickerProps {
     value?: PoolWithTvl;
     dex?: CampaignPayload["dex"];
     onChange: (pool: PoolWithTvl) => void;
 }
 
-export function PoolPicker({ value, dex, onChange }: PoolPickerProps) {
+export function ListPoolPicker({ value, dex, onChange }: ListPoolPickerProps) {
     const t = useTranslations("newCampaign.form.pool");
     const [search, setSearch] = useState("");
     const [debouncedSearch, setDebouncedSearch] = useState(search);
@@ -88,7 +88,7 @@ export function PoolPicker({ value, dex, onChange }: PoolPickerProps) {
                 <TextInput
                     value={search}
                     onChange={handleSearchOnChange}
-                    placeholder={t("searchLabel")}
+                    placeholder={t("list.label")}
                     icon={SearchIcon}
                     className={styles.searchInput}
                 />

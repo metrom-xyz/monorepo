@@ -23,6 +23,7 @@ export const sonicData: ChainData = {
             name: "Uniswap v3",
             addLiquidityUrl:
                 "https://app.uniswap.org/explore/pools/sonic/{target_pool}",
+            supportsFetchAllPools: true,
         },
         {
             slug: SupportedDex.SilverSwap,
@@ -30,6 +31,7 @@ export const sonicData: ChainData = {
             name: "SilverSwap",
             addLiquidityUrl:
                 "https://silverswap.io/chain/sonic/liquidity/add-v3",
+            supportsFetchAllPools: true,
         },
     ],
     baseTokens: [

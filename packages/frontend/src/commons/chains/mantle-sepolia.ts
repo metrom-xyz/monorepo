@@ -17,6 +17,7 @@ export const mantleSepoliaData: ChainData = {
             name: "Swapsicle",
             addLiquidityUrl:
                 "https://app.swapsicle.io/liquidity/v3/mantle-testnet/{target_pool}",
+            supportsFetchAllPools: true,
         },
     ],
     baseTokens: [

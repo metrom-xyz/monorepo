@@ -20,6 +20,7 @@ export const gnosisData: ChainData = {
             name: "Swapr",
             addLiquidityUrl:
                 "https://v3.swapr.eth.limo/#/info/pools/{target_pool}",
+            supportsFetchAllPools: true,
         },
     ],
     baseTokens: [

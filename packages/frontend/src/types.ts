@@ -2,7 +2,6 @@ import type {
     KpiSpecification,
     PoolWithTvl,
     SupportedDex,
-    WhitelistedErc20Token,
     WhitelistedErc20TokenAmount,
 } from "@metrom-xyz/sdk";
 import type { Dayjs } from "dayjs";
@@ -18,7 +17,7 @@ export interface Dex {
     slug: SupportedDex;
     name: string;
     addLiquidityUrl: string;
-    poolExplorerUrl?: string;
+    supportsFetchAllPools: boolean;
     logo: FunctionComponent<SVGIcon>;
 }
 
@@ -50,6 +49,7 @@ export interface CampaignPayload {
 }
 
 export interface CampaignPayloadErrors {
+    pool?: boolean;
     startDate?: boolean;
     endDate?: boolean;
     rewards?: boolean;
@@ -57,6 +57,9 @@ export interface CampaignPayloadErrors {
     restrictions?: boolean;
 }
 
-export type DexInfo = Pick<Dex, "slug" | "name" | "logo">;
+export type DexInfo = Pick<
+    Dex,
+    "slug" | "name" | "logo" | "supportsFetchAllPools"
+>;
 
 export type CampaignPayloadPart = PropertyUnion<CampaignPayload>;
