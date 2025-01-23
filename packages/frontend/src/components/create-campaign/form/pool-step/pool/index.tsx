@@ -1,4 +1,4 @@
-import type { PoolWithTvl } from "@metrom-xyz/sdk";
+import type { AmmPool } from "@metrom-xyz/sdk";
 import { Typography, Skeleton } from "@metrom-xyz/ui";
 import classNames from "classnames";
 import { formatPercentage, formatUsdAmount } from "@/src/utils/format";
@@ -7,7 +7,7 @@ import { PoolRemoteLogo } from "@/src/components/pool-remote-logo";
 import styles from "./styles.module.css";
 
 interface PoolProps {
-    pool: PoolWithTvl;
+    pool: AmmPool;
     chain: number;
     onClick: () => void;
 }

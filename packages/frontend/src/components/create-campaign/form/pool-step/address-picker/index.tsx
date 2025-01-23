@@ -8,13 +8,13 @@ import { useDebounce } from "react-use";
 import { TextInput, Typography } from "@metrom-xyz/ui";
 import { SearchIcon } from "@/src/assets/search-icon";
 import { Pool, SkeletonPool } from "../pool";
-import type { PoolWithTvl } from "@metrom-xyz/sdk";
+import type { AmmPool } from "@metrom-xyz/sdk";
 
 import styles from "./styles.module.css";
 
 export interface AddressPoolPickerProps {
     dex?: CampaignPayload["dex"];
-    onChange: (pool: PoolWithTvl) => void;
+    onChange: (pool: AmmPool) => void;
     onError: (error: string) => void;
 }
 
