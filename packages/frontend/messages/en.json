@@ -231,8 +231,7 @@
                     "title": "Action",
                     "list": {
                         "debt": {
-                            "title": "Deposit collateral",
-                            "description": "Description"
+                            "title": "Deposit collateral"
                         }
                     }
                 }
@@ -292,8 +291,7 @@
             "liquityV2Actions": {
                 "list": {
                     "debt": {
-                        "title": "Deposit collateral",
-                        "description": "Description"
+                        "title": "Deposit collateral"
                     }
                 }
             }

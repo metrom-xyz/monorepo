@@ -26,7 +26,7 @@
 }
 
 .deployButtonContainer {
-    @apply w-full mt-8 flex flex-col gap-2 items-center justify-center;
+    @apply w-full flex flex-col gap-2 items-center justify-center;
 }
 
 .deployButton {

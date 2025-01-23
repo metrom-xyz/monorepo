@@ -37,7 +37,7 @@ export function Dex({ campaign }: DexProps) {
                 ref={dexDetailsPopoverRef}
                 placement="top"
             >
-                <div className={styles.dexDetailsContainer}>
+                <div className={styles.detailsContainer}>
                     <Typography weight="medium" size="sm">
                         {dex.name}
                     </Typography>

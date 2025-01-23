@@ -207,12 +207,9 @@ export type BaseCampaignPayloadPart = PropertyUnion<BaseCampaignPayload>;
 
 export type AmmPoolLiquidityCampaignPayloadPart =
     PropertyUnion<AmmPoolLiquidityCampaignPayload>;
+
 export type LiquityV2CampaignPayloadPart =
     PropertyUnion<LiquityV2CampaignPayload>;
-
-// export type TargetedCampaignPayloadPart<T extends TargetType> = PropertyUnion<
-//     Partial<TargetedCampaignPayload<T>>
-// >;
 
 export class NamedCampaign extends Campaign {
     constructor(

@@ -1,6 +1,7 @@
 import { CircledXIcon } from "@/src/assets/circled-x-icon";
 import {
     AmmPoolLiquidityCampaignPreviewPayload,
+    LiquityV2CampaignPreviewPayload,
     type BaseCampaignPreviewPayload,
 } from "@/src/types";
 import { Button, TextField, Typography } from "@metrom-xyz/ui";
@@ -10,6 +11,7 @@ import { formatDateTime, formatPercentage } from "@/src/utils/format";
 import { PoolRemoteLogo } from "@/src/components/pool-remote-logo";
 import { useDexesInChain } from "@/src/hooks/useDexesInChain";
 import { useMemo } from "react";
+import { LIQUITY_V2_SUPPORTED_ACTIONS } from "../../steps/liquity-v2-action-step";
 
 import styles from "./styles.module.css";
 
@@ -25,14 +27,22 @@ export function Header({ payload, backDisabled, onBack }: HeaderProps) {
 
     const availableDexes = useDexesInChain(chainId);
 
-    // TODO: add header for LiquityV2 campaign payload
-    const ammPoolLiquidityCampaigns =
+    const ammPoolLiquidityCampaign =
         payload instanceof AmmPoolLiquidityCampaignPreviewPayload;
+    const liquityV2Campaign =
+        payload instanceof LiquityV2CampaignPreviewPayload;
 
     const selectedDex = useMemo(() => {
-        if (!ammPoolLiquidityCampaigns) return undefined;
+        if (!ammPoolLiquidityCampaign) return undefined;
         return availableDexes.find((dex) => dex.slug === payload.pool.dex);
-    }, [ammPoolLiquidityCampaigns, availableDexes, payload]);
+    }, [ammPoolLiquidityCampaign, availableDexes, payload]);
+
+    const liquityV2Action = useMemo(() => {
+        if (!liquityV2Campaign) return undefined;
+        return LIQUITY_V2_SUPPORTED_ACTIONS.find(
+            (action) => action.value === payload.action,
+        );
+    }, [liquityV2Campaign, payload]);
 
     return (
         <div className={styles.root}>
@@ -51,7 +61,7 @@ export function Header({ payload, backDisabled, onBack }: HeaderProps) {
                 {t("back")}
             </Button>
             <div className={styles.titleContainer}>
-                {ammPoolLiquidityCampaigns && (
+                {ammPoolLiquidityCampaign && (
                     <>
                         <PoolRemoteLogo
                             chain={chainId}
@@ -73,6 +83,14 @@ export function Header({ payload, backDisabled, onBack }: HeaderProps) {
                             </Typography>
                         )}
                     </>
+                )}
+                {liquityV2Campaign && (
+                    <div className={styles.liquityV2Action}>
+                        {liquityV2Action?.logo}
+                        <Typography weight="medium" size="xl">
+                            {t(`liquityV2Actions.${liquityV2Action?.title}`)}
+                        </Typography>
+                    </div>
                 )}
             </div>
             <div className={styles.durationContainer}>

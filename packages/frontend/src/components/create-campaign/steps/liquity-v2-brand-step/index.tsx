@@ -11,7 +11,7 @@ import type {
     LiquityV2CampaignPayloadPart,
     LiquityV2BrandInfo,
 } from "@/src/types";
-import { useLiquityV2PlatformsInChain } from "@/src/hooks/useLiquityV2PlatformsInChain";
+import { useLiquityV2BrandsInChain } from "@/src/hooks/useLiquityV2PlatformsInChain";
 
 import styles from "./styles.module.css";
 
@@ -30,7 +30,7 @@ export function LiquityV2BrandStep({
     const [open, setOpen] = useState(true);
 
     const chainId = useChainId();
-    const availablePlatforms = useLiquityV2PlatformsInChain(chainId);
+    const availablePlatforms = useLiquityV2BrandsInChain(chainId);
 
     const selectedBrand = useMemo(() => {
         if (!brand) return undefined;

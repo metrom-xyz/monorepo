@@ -26,13 +26,7 @@ import {
     getCampaignPreviewApr,
 } from "@/src/utils/campaign";
 import { trackFathomEvent } from "@/src/utils/fathom";
-import {
-    type Hex,
-    zeroHash,
-    parseUnits,
-    formatUnits,
-    encodeAbiParameters,
-} from "viem";
+import { type Hex, zeroHash, parseUnits, formatUnits } from "viem";
 import {
     DistributablesType,
     SERVICE_URLS,

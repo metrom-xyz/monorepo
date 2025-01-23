@@ -17,7 +17,6 @@ import styles from "./styles.module.css";
 export const LIQUITY_V2_SUPPORTED_ACTIONS = [
     {
         title: "list.debt.title",
-        description: "list.debt.description",
         logo: <LiquityDepositActionIcon />,
         value: LiquityV2Action.Debt,
     },
@@ -88,7 +87,7 @@ export function LiquityV2ActionStep({
             <StepContent>
                 <div className={styles.actionsWrapper}>
                     {LIQUITY_V2_SUPPORTED_ACTIONS.map(
-                        ({ title, description, logo, value }) => (
+                        ({ title, logo, value }) => (
                             <div
                                 key={value}
                                 className={styles.action}
@@ -104,9 +103,6 @@ export function LiquityV2ActionStep({
                                         uppercase
                                     >
                                         {t(title)}
-                                    </Typography>
-                                    <Typography weight="medium" light>
-                                        {t(description)}
                                     </Typography>
                                 </div>
                             </div>
