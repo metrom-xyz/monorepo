@@ -288,7 +288,15 @@
             "back": "Close",
             "startDate": "Start date",
             "runTimeLabel": "Run time",
-            "endDate": "End date"
+            "endDate": "End date",
+            "liquityV2Actions": {
+                "list": {
+                    "debt": {
+                        "title": "Deposit collateral",
+                        "description": "Description"
+                    }
+                }
+            }
         },
         "tvl": "TVL",
         "apr": "APR",

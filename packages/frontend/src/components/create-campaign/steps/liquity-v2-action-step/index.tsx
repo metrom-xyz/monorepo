@@ -14,14 +14,14 @@ import { Typography } from "@metrom-xyz/ui";
 
 import styles from "./styles.module.css";
 
-const ACTIONS = [
+export const LIQUITY_V2_SUPPORTED_ACTIONS = [
     {
         title: "list.debt.title",
         description: "list.debt.description",
         logo: <LiquityDepositActionIcon />,
         value: LiquityV2Action.Debt,
     },
-];
+] as const;
 
 interface LiquityV2ActionStepProps {
     disabled?: boolean;
@@ -42,7 +42,7 @@ export function LiquityV2ActionStep({
 
     const selectedAction = useMemo(() => {
         if (!action) return undefined;
-        return ACTIONS.find(
+        return LIQUITY_V2_SUPPORTED_ACTIONS.find(
             (supportedAction) => supportedAction.value === action,
         );
     }, [action]);
@@ -87,25 +87,31 @@ export function LiquityV2ActionStep({
             </StepPreview>
             <StepContent>
                 <div className={styles.actionsWrapper}>
-                    {ACTIONS.map(({ title, description, logo, value }) => (
-                        <div
-                            key={value}
-                            className={styles.action}
-                            onClick={getActionChangeHandler(value)}
-                        >
-                            <div className={styles.actionIconWrapper}>
-                                {logo}
+                    {LIQUITY_V2_SUPPORTED_ACTIONS.map(
+                        ({ title, description, logo, value }) => (
+                            <div
+                                key={value}
+                                className={styles.action}
+                                onClick={getActionChangeHandler(value)}
+                            >
+                                <div className={styles.actionIconWrapper}>
+                                    {logo}
+                                </div>
+                                <div className={styles.textWrapper}>
+                                    <Typography
+                                        weight="medium"
+                                        size="lg"
+                                        uppercase
+                                    >
+                                        {t(title)}
+                                    </Typography>
+                                    <Typography weight="medium" light>
+                                        {t(description)}
+                                    </Typography>
+                                </div>
                             </div>
-                            <div className={styles.textWrapper}>
-                                <Typography weight="medium" size="lg" uppercase>
-                                    {t(title)}
-                                </Typography>
-                                <Typography weight="medium" light>
-                                    {t(description)}
-                                </Typography>
-                            </div>
-                        </div>
-                    ))}
+                        ),
+                    )}
                 </div>
             </StepContent>
         </Step>

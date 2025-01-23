@@ -2,6 +2,8 @@ import { EthLogo } from "../../assets/logos/chains/eth";
 import { SupportedChain, ADDRESS } from "@metrom-xyz/contracts";
 import { type ChainData } from "../index";
 import { sepolia } from "viem/chains";
+import { SupportedLiquityV2Brand } from "@metrom-xyz/sdk";
+import { LiquityLogo } from "@/src/assets/logos/liquity-v2-platforms/liquity";
 
 export const sepoliaData: ChainData = {
     name: sepolia.name,
@@ -9,7 +11,12 @@ export const sepoliaData: ChainData = {
     blockExplorers: sepolia.blockExplorers,
     icon: EthLogo,
     dexes: [],
-    // TODO: add brands
-    liquityV2Brands: [],
+    liquityV2Brands: [
+        {
+            slug: SupportedLiquityV2Brand.Liquity,
+            logo: LiquityLogo,
+            name: "Liquity",
+        },
+    ],
     baseTokens: [],
 };

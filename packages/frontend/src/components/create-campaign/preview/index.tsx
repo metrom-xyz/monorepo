@@ -102,7 +102,7 @@ export function CampaignPreview({
     }, [payload.distributables]);
 
     const [tokensCampaignArgs, pointsCampaignArgs] = useMemo(() => {
-        const { startDate, endDate } = payload;
+        const { kind, startDate, endDate } = payload;
 
         if (!tokensApproved || !startDate || !endDate) return [[], []];
 
@@ -116,8 +116,7 @@ export function CampaignPreview({
             tokenArgs.push({
                 from: startDate.unix(),
                 to: endDate.unix(),
-                // TODO: map proper kind
-                kind: 1,
+                kind,
                 data,
                 specificationHash,
                 rewards: payload.distributables.tokens.map((token) => ({
@@ -130,7 +129,7 @@ export function CampaignPreview({
             pointArgs.push({
                 from: startDate.unix(),
                 to: endDate.unix(),
-                kind: 1,
+                kind,
                 data,
                 specificationHash,
                 points: parseUnits(
@@ -253,7 +252,7 @@ export function CampaignPreview({
     const pointsCampaign = payload.isDistributing(DistributablesType.Points);
     const tokensCampaign = payload.isDistributing(DistributablesType.Tokens);
 
-    const ammPoolLiquidityCampaigns =
+    const ammPoolLiquidityCampaign =
         payload instanceof AmmPoolLiquidityCampaignPreviewPayload;
 
     // TODO: add notification toast in case of errors
@@ -266,14 +265,14 @@ export function CampaignPreview({
                     onBack={onBack}
                 />
                 <div className={styles.content}>
-                    {ammPoolLiquidityCampaigns &&
+                    {ammPoolLiquidityCampaign &&
                         !!payload.priceRangeSpecification && (
                             <Range
                                 pool={payload.pool}
                                 specification={payload.priceRangeSpecification}
                             />
                         )}
-                    {ammPoolLiquidityCampaigns &&
+                    {ammPoolLiquidityCampaign &&
                         !!payload.kpiSpecification &&
                         tokensCampaign && (
                             <Kpi
@@ -283,7 +282,7 @@ export function CampaignPreview({
                             />
                         )}
                     <div className={styles.contentGrid}>
-                        {ammPoolLiquidityCampaigns && (
+                        {ammPoolLiquidityCampaign && (
                             <TextField
                                 boxed
                                 size="xl"
@@ -291,7 +290,7 @@ export function CampaignPreview({
                                 value={formatUsdAmount(payload.pool.usdTvl)}
                             />
                         )}
-                        {tokensCampaign && (
+                        {ammPoolLiquidityCampaign && tokensCampaign && (
                             <TextField
                                 boxed
                                 size="xl"

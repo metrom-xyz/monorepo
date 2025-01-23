@@ -12,7 +12,7 @@ import {
 } from "../types";
 import { getDistributableRewardsPercentage } from "./kpi";
 import type { TranslationValues } from "next-intl";
-import { encodeAbiParameters, zeroAddress } from "viem";
+import { encodeAbiParameters } from "viem";
 
 const SECONDS_IN_YEAR = 60 * 60 * 24 * 365;
 
@@ -23,10 +23,13 @@ export function buildCampaignDataBundle(payload: CampaignPreviewPayload) {
             [payload.pool.address],
         );
     else if (payload instanceof LiquityV2CampaignPreviewPayload)
-        // TODO: have proper parameters
         return encodeAbiParameters(
-            [{ name: "poolAddress", type: "address" }],
-            [zeroAddress],
+            [
+                { name: "brandSlug", type: "string" },
+                // TODO: enable collarelas once supported
+                // { name: "collaterals", type: "address[]" },
+            ],
+            [payload.brand.slug],
         );
     else return null;
 }

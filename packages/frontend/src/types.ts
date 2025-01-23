@@ -63,6 +63,19 @@ export interface AugmentedPriceRangeSpecification {
     to: AugmentedPriceRangeBound;
 }
 
+export enum CampaignKind {
+    AmmPoolLiquidity = 1,
+    LiquityV2Debt = 2,
+    LiquityV2Collateral = 3,
+    LiquityV2StabilityPool = 4,
+}
+
+export enum LiquityV2Action {
+    Debt = "debt",
+    Collateral = "collateral",
+    StabilityPool = "stabilty-pool",
+}
+
 export interface BaseCampaignPayload {
     rewardType?: RewardType;
     startDate?: Dayjs;
@@ -83,45 +96,11 @@ export interface AmmPoolLiquidityCampaignPayload extends BaseCampaignPayload {
     priceRangeSpecification?: AugmentedPriceRangeSpecification;
 }
 
-export enum LiquityV2Action {
-    Debt = "debt",
-    Collateral = "collateral",
-    StabilityPool = "stabilty-pool",
-}
-
 export interface LiquityV2CampaignPayload extends BaseCampaignPayload {
     brand?: LiquityV2BrandInfo;
     action?: LiquityV2Action;
     collaterals?: Address[];
 }
-
-// export interface CampaignPayload {
-//     // TODO: improve type and remove the unnecessary top level fields
-//     targetType?: TargetType;
-//     rewardType?: RewardType;
-//     protocol?: string;
-//     target?: CampaignTarget;
-//     startDate?: Dayjs;
-//     endDate?: Dayjs;
-//     points?: number;
-//     tokens?: WhitelistedErc20TokenAmount[];
-//     fee?: WhitelistedErc20TokenAmount;
-//     kpiSpecification?: KpiSpecification;
-//     priceRangeSpecification?: AugmentedPriceRangeSpecification;
-//     restrictions?: {
-//         type: RestrictionType;
-//         list: Address[];
-//     };
-// }
-
-// export interface TargetedCampaignPayload<T extends TargetType>
-//     extends CampaignPayload {
-//     target?: T extends TargetType.AmmPoolLiquidity
-//         ? AmmPoolLiquidityTarget
-//         : T extends TargetType.LiquityV2Debt
-//           ? LiquityV2DebtTarget
-//           : never;
-// }
 
 export interface CampaignPreviewTokenDistributables {
     type: DistributablesType.Tokens;
@@ -156,6 +135,7 @@ export class BaseCampaignPreviewPayload {
 }
 
 export class AmmPoolLiquidityCampaignPreviewPayload extends BaseCampaignPreviewPayload {
+    public readonly kind: CampaignKind = CampaignKind.AmmPoolLiquidity;
     constructor(
         public readonly dex: DexInfo,
         public readonly pool: AmmPool,
@@ -167,13 +147,24 @@ export class AmmPoolLiquidityCampaignPreviewPayload extends BaseCampaignPreviewP
 }
 
 export class LiquityV2CampaignPreviewPayload extends BaseCampaignPreviewPayload {
+    public readonly kind: CampaignKind;
+
     constructor(
         public readonly brand: LiquityV2BrandInfo,
-        public readonly action: string,
+        public readonly action: LiquityV2Action,
         public readonly collaterals: Address[],
         ...baseArgs: ConstructorParameters<typeof BaseCampaignPreviewPayload>
     ) {
         super(...baseArgs);
+
+        switch (action) {
+            case LiquityV2Action.StabilityPool:
+                this.kind = CampaignKind.LiquityV2StabilityPool;
+            case LiquityV2Action.Collateral:
+                this.kind = CampaignKind.LiquityV2Collateral;
+            default:
+                this.kind = CampaignKind.LiquityV2Debt;
+        }
     }
 }
 
