@@ -52,6 +52,7 @@ export function CreateCampaignForm({
                 dex={payload?.dex}
                 pool={payload?.pool}
                 onPoolChange={onPayloadChange}
+                onError={onPayloadError}
             />
             <StartDateStep
                 disabled={!payload?.pool || unsupportedChain}

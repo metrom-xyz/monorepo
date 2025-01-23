@@ -90,15 +90,16 @@
             "dex": { "title": "Dex" },
             "pool": {
                 "title": "Pool",
-                "searchLabel": "Search for pool",
-                "list": {
-                    "pool": "Pool",
-                    "tvl": "Tvl",
-                    "empty": "Nothing here"
-                },
+                "label": "Enter pool address",
+                "empty": "Enter a pool address to import a pool",
                 "preview": {
                     "pool": "Pool",
-                    "tvl": "Tvl"
+                    "tvl": "TVL"
+                },
+                "errors": {
+                    "invalidAddress": "Invalid address",
+                    "invalidPool": "Invalid pool",
+                    "inconsistentDex": "The pool doesn't belong to {dex}"
                 }
             },
             "startDate": {

@@ -1,3 +1,11 @@
+.previewLabelWrapper {
+    @apply w-full flex justify-between items-center;
+}
+
+.previewTextWrapper {
+    @apply flex items-center gap-2;
+}
+
 .previewCompletedLabel {
     @apply w-full
         flex
@@ -8,4 +16,25 @@
 
 .previewLabel {
     @apply !text-inherit;
+}
+
+.root {
+    @apply flex flex-col gap-6;
+}
+
+.header {
+    @apply flex
+        flex-col
+        gap-3
+        px-4
+        pt-4;
+}
+
+.searchInput :global(.inputWrapper),
+.searchInput :global(.inputWrapper) :global(.input) {
+    @apply w-full;
+}
+
+.wrapper {
+    @apply h-16 w-full flex items-center justify-center;
 }
