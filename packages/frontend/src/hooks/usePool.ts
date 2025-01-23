@@ -1,6 +1,6 @@
 import type { SupportedChain } from "@metrom-xyz/contracts";
 import { metromApiClient } from "../commons";
-import { type PoolWithTvl } from "@metrom-xyz/sdk";
+import { type AmmPool } from "@metrom-xyz/sdk";
 import { useQuery } from "@tanstack/react-query";
 import type { Address } from "viem";
 
@@ -9,7 +9,7 @@ export function usePool(
     address?: Address,
 ): {
     loading: boolean;
-    pool?: PoolWithTvl | null;
+    pool?: AmmPool | null;
 } {
     const { data: pool, isFetching: loading } = useQuery({
         queryKey: ["pool", chainId, address],
