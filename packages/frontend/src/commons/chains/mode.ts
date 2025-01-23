@@ -16,6 +16,7 @@ export const modeData: ChainData = {
             logo: KimLogo,
             name: "Kim",
             addLiquidityUrl: "https://app.kim.exchange/pools/v4/{target_pool}",
+            supportsFetchAllPools: true,
         },
     ],
     baseTokens: [

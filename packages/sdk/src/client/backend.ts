@@ -11,6 +11,7 @@ import {
     type BackendPoolWithTvl,
 } from "./types";
 import type { SupportedChain } from "@metrom-xyz/contracts";
+import type { SupportedDex } from "../commons";
 import {
     Status,
     type Activity,
@@ -34,6 +35,11 @@ const BI_1_000_000 = BigInt(1_000_000);
 export interface FetchCampaignParams {
     chainId: number;
     id: Hex;
+}
+
+export interface FetchPoolsParams {
+    chainId: SupportedChain;
+    dex: SupportedDex;
 }
 
 export interface FetchPoolParams {
@@ -103,6 +109,26 @@ export class MetromApiClient {
             );
 
         return processCampaign((await response.json()) as BackendCampaign);
+    }
+
+    async fetchPools(params: FetchPoolsParams): Promise<PoolWithTvl[]> {
+        const url = new URL(
+            `v1/pools/${params.chainId}/${params.dex}`,
+            this.baseUrl,
+        );
+
+        const response = await fetch(url);
+        if (!response.ok)
+            throw new Error(
+                `response not ok while fetching pools: ${await response.text()}`,
+            );
+
+        const backendPools = (await response.json()) as BackendPoolWithTvl[];
+
+        return backendPools.map((pool) => ({
+            ...pool,
+            chainId: params.chainId,
+        }));
     }
 
     async fetchPool(params: FetchPoolParams): Promise<PoolWithTvl | null> {

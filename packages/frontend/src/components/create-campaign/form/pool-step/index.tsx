@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState, type ChangeEvent } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useChainId } from "wagmi";
 import { useTranslations } from "next-intl";
 import { Step } from "@/src/components/step";
@@ -9,16 +9,14 @@ import type {
     CampaignPayloadErrors,
     CampaignPayloadPart,
 } from "@/src/types";
-import { ErrorText, TextInput, Typography } from "@metrom-xyz/ui";
+import { ErrorText, Typography } from "@metrom-xyz/ui";
 import { PoolStepPreview } from "./preview";
 import classNames from "classnames";
-import { type Address, isAddress } from "viem";
-import { useDebounce } from "react-use";
+import type { PoolWithTvl } from "@metrom-xyz/sdk";
+import { AddressPoolPicker } from "./address-picker";
+import { ListPoolPicker } from "./list";
 
 import styles from "./styles.module.css";
-import { usePool } from "@/src/hooks/usePool";
-import { SearchIcon } from "@/src/assets/search-icon";
-import { Pool, SkeletonPool } from "./pool";
 
 interface PoolStepProps {
     disabled?: boolean;
@@ -38,14 +36,7 @@ export function PoolStep({
     const t = useTranslations("newCampaign.form.pool");
     const [open, setOpen] = useState(false);
     const [error, setError] = useState("");
-    const [search, setSearch] = useState("");
-    const [address, setAddress] = useState<Address>();
     const chainId = useChainId();
-
-    const { pool: importedPool, loading: loadingImportedPool } = usePool(
-        chainId,
-        address,
-    );
 
     useEffect(() => {
         setOpen(false);
@@ -56,41 +47,21 @@ export function PoolStep({
         setOpen(true);
     }, [pool, disabled]);
 
-    useDebounce(
-        () => {
-            setAddress(isAddress(search) ? search : undefined);
-        },
-        300,
-        [search],
-    );
-
-    useEffect(() => {
-        if (search && !address) setError("errors.invalidAddress");
-        else if (address && !loadingImportedPool && importedPool === null)
-            setError("errors.invalidPool");
-        else if (dex && pool && pool.dex !== dex.slug)
-            setError(t("errors.inconsistentDex", { dex: dex.name }));
-        else setError("");
-    }, [address, dex, pool, loadingImportedPool, importedPool, search, t]);
-
     useEffect(() => {
         onError({ pool: !!error });
     }, [onError, error]);
 
-    const handlePoolOnChange = useCallback(() => {
-        if (!importedPool) return;
-        if (pool && pool.address === importedPool.address) return;
-        onPoolChange({ pool: importedPool });
-        setSearch("");
-        setOpen(false);
-    }, [importedPool, pool, onPoolChange]);
+    const handlePoolOnChange = useCallback(
+        (newPool: PoolWithTvl) => {
+            if (pool && pool.address === newPool.address) return;
+            onPoolChange({ pool: newPool });
+            setOpen(false);
+        },
+        [pool, onPoolChange],
+    );
 
     function handleStepOnClick() {
         setOpen((open) => !open);
-    }
-
-    function handleSearchOnChange(event: ChangeEvent<HTMLInputElement>) {
-        setSearch(event.target.value);
     }
 
     return (
@@ -113,16 +84,16 @@ export function PoolStep({
                                 >
                                     {t("title")}
                                 </Typography>
-                                {!!error && (
+                                {error && (
                                     <ErrorText
                                         size="xs"
                                         weight="medium"
                                         level="error"
                                         className={classNames(styles.error, {
-                                            [styles.errorVisible]: !!error,
+                                            [styles.errorVisible]: error,
                                         })}
                                     >
-                                        {!!error ? t(error) : null}
+                                        {error}
                                     </ErrorText>
                                 )}
                             </div>
@@ -150,30 +121,19 @@ export function PoolStep({
                 {pool && <PoolStepPreview {...pool} />}
             </StepPreview>
             <StepContent>
-                <div className={styles.root}>
-                    <div className={styles.header}>
-                        <TextInput
-                            value={search}
-                            onChange={handleSearchOnChange}
-                            placeholder={t("label")}
-                            icon={SearchIcon}
-                            className={styles.searchInput}
-                        />
-                    </div>
-                    <div className={styles.wrapper}>
-                        {!loadingImportedPool && !importedPool && (
-                            <Typography>{t("empty")}</Typography>
-                        )}
-                        {loadingImportedPool && <SkeletonPool />}
-                        {importedPool && (
-                            <Pool
-                                chain={chainId}
-                                pool={importedPool}
-                                onClick={handlePoolOnChange}
-                            />
-                        )}
-                    </div>
-                </div>
+                {dex?.supportsFetchAllPools ? (
+                    <ListPoolPicker
+                        value={pool}
+                        dex={dex}
+                        onChange={handlePoolOnChange}
+                    />
+                ) : (
+                    <AddressPoolPicker
+                        dex={dex}
+                        onChange={handlePoolOnChange}
+                        onError={setError}
+                    />
+                )}
             </StepContent>
         </Step>
     );

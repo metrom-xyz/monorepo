@@ -90,6 +90,12 @@
             "dex": { "title": "Dex" },
             "pool": {
                 "title": "Pool",
+                "list": {
+                    "label": "Search for pool",
+                    "pool": "Pool",
+                    "tvl": "Tvl",
+                    "empty": "Nothing here"
+                },
                 "label": "Enter pool address",
                 "empty": "Enter a pool address to import a pool",
                 "preview": {

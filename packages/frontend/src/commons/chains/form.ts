@@ -43,6 +43,7 @@ export const formData: ChainData = {
             logo: FibonacciLogo,
             name: "Fibonacci",
             addLiquidityUrl: "https://www.fibonacci-dex.xyz/pool/{target_pool}",
+            supportsFetchAllPools: true,
         },
     ],
     baseTokens: [

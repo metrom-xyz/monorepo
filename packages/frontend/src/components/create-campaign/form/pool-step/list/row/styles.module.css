@@ -1,0 +1,33 @@
+.root {
+    @apply flex
+        items-center
+        justify-between
+        snap-start
+        px-4
+        select-none
+        transition-colors
+        duration-200
+        ease-in-out
+        hover:cursor-pointer
+        hover:bg-gray-200;
+}
+
+.pool {
+    @apply w-full flex items-center gap-3;
+}
+
+.poolInfo {
+    @apply w-full sm:w-fit flex items-center gap-3 max-w-48 sm:max-w-60;
+}
+
+.poolInfo.loading {
+    @apply w-full;
+}
+
+.active {
+    @apply bg-gray-200;
+}
+
+.loading {
+    @apply pointer-events-none;
+}

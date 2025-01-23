@@ -17,7 +17,7 @@ export interface Dex {
     slug: SupportedDex;
     name: string;
     addLiquidityUrl: string;
-    poolExplorerUrl?: string;
+    supportsFetchAllPools: boolean;
     logo: FunctionComponent<SVGIcon>;
 }
 
@@ -57,6 +57,9 @@ export interface CampaignPayloadErrors {
     restrictions?: boolean;
 }
 
-export type DexInfo = Pick<Dex, "slug" | "name" | "logo">;
+export type DexInfo = Pick<
+    Dex,
+    "slug" | "name" | "logo" | "supportsFetchAllPools"
+>;
 
 export type CampaignPayloadPart = PropertyUnion<CampaignPayload>;
