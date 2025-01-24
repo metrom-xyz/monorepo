@@ -533,7 +533,8 @@
     "apr": "APR",
     "campaignActions": {
         "lp": "LP on {name}",
-        "takeLoan": "Take loan on {name}"
+        "takeLoan": "Take loan on {name}",
+        "depositCollateral:": "Deposit collateral on {name}"
     },
     "liquidityDensityChart": {
         "tooltip": {

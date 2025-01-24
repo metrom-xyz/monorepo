@@ -724,6 +724,7 @@ function processCampaignsResponse(
                 };
                 break;
             }
+            // TODO: handle other target types
         }
 
         let distributables;

@@ -172,7 +172,7 @@ export class LiquityV2CampaignPreviewPayload extends BaseCampaignPreviewPayload 
                 this.kind = CampaignKind.LiquityV2StabilityPool;
             case LiquityV2Action.Collateral:
                 this.kind = CampaignKind.LiquityV2Collateral;
-            default:
+            case LiquityV2Action.Debt:
                 this.kind = CampaignKind.LiquityV2Debt;
         }
     }
