@@ -12,6 +12,8 @@ interface FormHeaderProps {
 const CAMPAIGN_TYPE_TITLE: Record<TargetType, string> = {
     "amm-pool-liquidity": "type.amm",
     "liquity-v2-debt": "type.liquityV2",
+    "liquity-v2-collateral": "type.liquityV2",
+    "liquity-v2-stability-pool": "type.liquityV2",
 };
 
 export function FormHeader({ target }: FormHeaderProps) {
