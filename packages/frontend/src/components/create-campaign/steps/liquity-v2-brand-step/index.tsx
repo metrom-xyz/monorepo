@@ -30,24 +30,24 @@ export function LiquityV2BrandStep({
     const [open, setOpen] = useState(true);
 
     const chainId = useChainId();
-    const availablePlatforms = useLiquityV2BrandsInChain(chainId);
+    const availableBrands = useLiquityV2BrandsInChain(chainId);
 
     const selectedBrand = useMemo(() => {
         if (!brand) return undefined;
-        return availablePlatforms.find((brand) => brand.slug === brand.slug);
-    }, [availablePlatforms, brand]);
+        return availableBrands.find((brand) => brand.slug === brand.slug);
+    }, [availableBrands, brand]);
 
     useEffect(() => {
         setOpen(false);
     }, [chainId]);
 
     useEffect(() => {
-        if (!!brand || availablePlatforms.length !== 1) return;
+        if (!!brand || availableBrands.length !== 1) return;
         onBrandChange({
-            brand: availablePlatforms[0],
+            brand: availableBrands[0],
         });
         setOpen(false);
-    }, [availablePlatforms, brand, onBrandChange]);
+    }, [availableBrands, brand, onBrandChange]);
 
     const getBrandChangeHandler = useCallback(
         (newPlatform: LiquityV2BrandInfo) => {
@@ -68,7 +68,7 @@ export function LiquityV2BrandStep({
 
     return (
         <Step
-            disabled={disabled}
+            disabled={disabled || availableBrands.length === 0}
             open={open}
             completed={!!selectedBrand}
             onPreviewClick={handleStepOnClick}
@@ -87,7 +87,7 @@ export function LiquityV2BrandStep({
             </StepPreview>
             <StepContent>
                 <div className={styles.brandWrapper}>
-                    {availablePlatforms.map((availablePlatform) => (
+                    {availableBrands.map((availablePlatform) => (
                         <div
                             key={availablePlatform.slug}
                             className={classNames(styles.brandRow, {

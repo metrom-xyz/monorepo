@@ -50,6 +50,11 @@ export function LiquityV2ActionStep({
         setOpen(false);
     }, [chainId]);
 
+    useEffect(() => {
+        if (disabled || !!action) return;
+        setOpen(true);
+    }, [disabled, action]);
+
     const getActionChangeHandler = useCallback(
         (newAction: LiquityV2Action) => {
             return () => {

@@ -66,7 +66,7 @@ export function DexStep({ disabled, dex, onDexChange }: DexStepProps) {
 
     return (
         <Step
-            disabled={disabled}
+            disabled={disabled || availableDexes.length === 0}
             open={open}
             completed={!!selectedDex}
             onPreviewClick={handleStepOnClick}

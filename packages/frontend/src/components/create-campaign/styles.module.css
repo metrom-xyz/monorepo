@@ -1,5 +1,5 @@
 .root {
-    @apply flex items-center flex-col gap-8 w-full;
+    @apply flex items-center flex-col gap-8 px-2 w-full;
 }
 
 .description {
