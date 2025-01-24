@@ -25,8 +25,8 @@ export function Range({ pool, specification }: RangeProps) {
                 <TextField
                     boxed
                     size="xl"
-                    label={t("upperPrice.label")}
-                    value={t("upperPrice.value", {
+                    label={t("lowerPrice.label")}
+                    value={t("lowerPrice.value", {
                         token0: pool?.tokens[0].symbol,
                         token1: pool?.tokens[1].symbol,
                         price: formatAmount({
