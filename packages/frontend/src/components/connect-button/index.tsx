@@ -119,9 +119,14 @@ export function ConnectButton() {
                                             return (
                                                 <div
                                                     key={chain.id}
-                                                    className={
-                                                        styles.networkRow
-                                                    }
+                                                    className={classNames(
+                                                        styles.networkRow,
+                                                        {
+                                                            [styles.activeNetwork]:
+                                                                currentChainId ===
+                                                                chain.id,
+                                                        },
+                                                    )}
                                                     onClick={getSwitchChainHandler(
                                                         chain.id,
                                                     )}
