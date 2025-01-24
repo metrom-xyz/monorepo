@@ -4,13 +4,14 @@ import { useTranslations } from "next-intl";
 import { Step } from "@/src/components/step";
 import { StepPreview } from "@/src/components/step/preview";
 import { StepContent } from "@/src/components/step/content";
-import { useDexesInChain } from "@/src/hooks/useDexesInChain";
+import { useProtocolsInChain } from "@/src/hooks/useProtocolsInChain";
 import classNames from "classnames";
 import { Typography } from "@metrom-xyz/ui";
-import type {
-    AmmPoolLiquidityCampaignPayload,
-    AmmPoolLiquidityCampaignPayloadPart,
-    DexInfo,
+import {
+    ProtocolType,
+    type AmmPoolLiquidityCampaignPayload,
+    type AmmPoolLiquidityCampaignPayloadPart,
+    type DexInfo,
 } from "@/src/types";
 
 import styles from "./styles.module.css";
@@ -26,13 +27,11 @@ export function DexStep({ disabled, dex, onDexChange }: DexStepProps) {
     const [open, setOpen] = useState(true);
 
     const chainId = useChainId();
-    const availableDexes = useDexesInChain(chainId);
+    const availableDexes = useProtocolsInChain(chainId, ProtocolType.Dex);
 
     const selectedDex = useMemo(() => {
         if (!dex) return undefined;
-        return availableDexes.find(
-            (availableDex) => availableDex.slug === dex.slug,
-        );
+        return availableDexes.find(({ slug }) => slug === dex.slug);
     }, [availableDexes, dex]);
 
     useEffect(() => {

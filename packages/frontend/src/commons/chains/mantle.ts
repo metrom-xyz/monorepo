@@ -4,23 +4,26 @@ import { MantleLogo } from "../../assets/logos/chains/mantle";
 import { SwapsicleLogo } from "../../assets/logos/dexes/swapsicle";
 import { type ChainData } from "..";
 import { mantle } from "viem/chains";
+import { ProtocolType } from "@/src/types";
 
 export const mantleData: ChainData = {
     name: mantle.name,
     metromContract: ADDRESS[SupportedChain.Mantle],
     blockExplorers: mantle.blockExplorers,
     icon: MantleLogo,
-    dexes: [
-        {
-            slug: SupportedDex.Swapsicle,
-            logo: SwapsicleLogo,
-            name: "Swapsicle",
-            addLiquidityUrl:
-                "https://app.swapsicle.io/liquidity/v3/mantle/{target_pool}",
-            supportsFetchAllPools: true,
-        },
-    ],
-    liquityV2Brands: [],
+    protocols: {
+        [ProtocolType.Dex]: [
+            {
+                slug: SupportedDex.Swapsicle,
+                logo: SwapsicleLogo,
+                name: "Swapsicle",
+                addLiquidityUrl:
+                    "https://app.swapsicle.io/liquidity/v3/mantle/{target_pool}",
+                supportsFetchAllPools: true,
+            },
+        ],
+        [ProtocolType.LiquityV2Brand]: [],
+    },
     baseTokens: [
         {
             address: "0x78c1b0c915c4faa5fffa6cabf0219da63d7f4cb8",

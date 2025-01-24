@@ -4,6 +4,7 @@ import { type ChainData } from "..";
 import { defineChain } from "viem";
 import { SupportedDex } from "@metrom-xyz/sdk";
 import { ThirdTradeLogo } from "@/src/assets/logos/dexes/thirdtrade";
+import { ProtocolType } from "@/src/types";
 
 export const arthera = defineChain({
     id: 10_242,
@@ -42,16 +43,18 @@ export const artheraData: ChainData = {
         },
     },
     icon: ArtheraLogo,
-    dexes: [
-        {
-            slug: SupportedDex.ThirdTrade,
-            logo: ThirdTradeLogo,
-            name: "Third Trade",
-            addLiquidityUrl: "https://third.trade/pool/{target_pool}",
-            supportsFetchAllPools: true,
-        },
-    ],
-    liquityV2Brands: [],
+    protocols: {
+        [ProtocolType.Dex]: [
+            {
+                slug: SupportedDex.ThirdTrade,
+                logo: ThirdTradeLogo,
+                name: "Third Trade",
+                addLiquidityUrl: "https://third.trade/pool/{target_pool}",
+                supportsFetchAllPools: true,
+            },
+        ],
+        [ProtocolType.LiquityV2Brand]: [],
+    },
     baseTokens: [
         {
             address: "0x69D349E2009Af35206EFc3937BaD6817424729F7",

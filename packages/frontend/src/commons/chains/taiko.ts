@@ -6,37 +6,40 @@ import { PankoLogo } from "@/src/assets/logos/dexes/panko";
 import { taiko } from "viem/chains";
 import { UniswapLogo } from "@/src/assets/logos/dexes/uniswap";
 import { UnagiLogo } from "@/src/assets/logos/dexes/unagi";
+import { ProtocolType } from "@/src/types";
 
 export const taikoData: ChainData = {
     name: taiko.name,
     metromContract: ADDRESS[SupportedChain.Taiko],
     blockExplorers: taiko.blockExplorers,
     icon: TaikoLogo,
-    dexes: [
-        {
-            slug: SupportedDex.Panko,
-            logo: PankoLogo,
-            name: "Panko",
-            addLiquidityUrl: "https://panko.finance/add/{target_pool}",
-            supportsFetchAllPools: true,
-        },
-        {
-            slug: SupportedDex.UniswapV3,
-            logo: UniswapLogo,
-            name: "Uniswap v3",
-            addLiquidityUrl:
-                "https://app.uniswap.org/explore/pools/taiko/{target_pool}",
-            supportsFetchAllPools: true,
-        },
-        {
-            slug: SupportedDex.Unagi,
-            logo: UnagiLogo,
-            name: "Unagi",
-            addLiquidityUrl: "https://unagiswap.xyz/pool",
-            supportsFetchAllPools: true,
-        },
-    ],
-    liquityV2Brands: [],
+    protocols: {
+        [ProtocolType.Dex]: [
+            {
+                slug: SupportedDex.Panko,
+                logo: PankoLogo,
+                name: "Panko",
+                addLiquidityUrl: "https://panko.finance/add/{target_pool}",
+                supportsFetchAllPools: true,
+            },
+            {
+                slug: SupportedDex.UniswapV3,
+                logo: UniswapLogo,
+                name: "Uniswap v3",
+                addLiquidityUrl:
+                    "https://app.uniswap.org/explore/pools/taiko/{target_pool}",
+                supportsFetchAllPools: true,
+            },
+            {
+                slug: SupportedDex.Unagi,
+                logo: UnagiLogo,
+                name: "Unagi",
+                addLiquidityUrl: "https://unagiswap.xyz/pool",
+                supportsFetchAllPools: true,
+            },
+        ],
+        [ProtocolType.LiquityV2Brand]: [],
+    },
     baseTokens: [
         {
             address: "0xc4C410459fbaF8f7F86b6cEE52b4fA1282FF9704",

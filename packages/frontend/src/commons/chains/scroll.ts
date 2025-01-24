@@ -5,31 +5,34 @@ import { ScribeLogo } from "../../assets/logos/dexes/scribe";
 import { type ChainData } from "..";
 import { scroll } from "viem/chains";
 import { UniswapLogo } from "@/src/assets/logos/dexes/uniswap";
+import { ProtocolType } from "@/src/types";
 
 export const scrollData: ChainData = {
     name: scroll.name,
     metromContract: ADDRESS[SupportedChain.Scroll],
     blockExplorers: scroll.blockExplorers,
     icon: ScrollLogo,
-    dexes: [
-        {
-            slug: SupportedDex.Scribe,
-            logo: ScribeLogo,
-            name: "Scribe",
-            addLiquidityUrl:
-                "https://app.scribe.exchange/pools/v4/{target_pool}",
-            supportsFetchAllPools: true,
-        },
-        {
-            slug: SupportedDex.UniswapV3,
-            logo: UniswapLogo,
-            name: "Uniswap v3",
-            addLiquidityUrl:
-                "https://app.uniswap.org/explore/pools/scroll/{target_pool}",
-            supportsFetchAllPools: true,
-        },
-    ],
-    liquityV2Brands: [],
+    protocols: {
+        [ProtocolType.Dex]: [
+            {
+                slug: SupportedDex.Scribe,
+                logo: ScribeLogo,
+                name: "Scribe",
+                addLiquidityUrl:
+                    "https://app.scribe.exchange/pools/v4/{target_pool}",
+                supportsFetchAllPools: true,
+            },
+            {
+                slug: SupportedDex.UniswapV3,
+                logo: UniswapLogo,
+                name: "Uniswap v3",
+                addLiquidityUrl:
+                    "https://app.uniswap.org/explore/pools/scroll/{target_pool}",
+                supportsFetchAllPools: true,
+            },
+        ],
+        [ProtocolType.LiquityV2Brand]: [],
+    },
     baseTokens: [
         {
             address: "0xf55bec9cafdbe8730f096aa55dad6d22d44099df",

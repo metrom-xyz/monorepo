@@ -22,6 +22,11 @@ type PropertyUnion<T> = {
 }[keyof T];
 export type SVGIcon = Omit<SVGProps<SVGSVGElement>, "dangerouslySetInnerHTML">;
 
+export enum ProtocolType {
+    Dex = "dex",
+    LiquityV2Brand = "liquity-v2-brand",
+}
+
 export interface Dex {
     slug: SupportedDex;
     name: string;
@@ -30,11 +35,15 @@ export interface Dex {
     logo: FunctionComponent<SVGIcon>;
 }
 
-// TODO: have a common type for both this and dex, like protocols?
 export interface LiquityV2Brand {
     slug: SupportedLiquityV2Brand;
     name: string;
     logo: FunctionComponent<SVGIcon>;
+}
+
+export interface Protocols {
+    [ProtocolType.Dex]: Dex[];
+    [ProtocolType.LiquityV2Brand]: LiquityV2Brand[];
 }
 
 export enum RestrictionType {

@@ -6,12 +6,13 @@ import { StepPreview } from "@/src/components/step/preview";
 import { StepContent } from "@/src/components/step/content";
 import classNames from "classnames";
 import { Typography } from "@metrom-xyz/ui";
-import type {
-    LiquityV2CampaignPayload,
-    LiquityV2CampaignPayloadPart,
-    LiquityV2BrandInfo,
+import {
+    type LiquityV2CampaignPayload,
+    type LiquityV2CampaignPayloadPart,
+    type LiquityV2BrandInfo,
+    ProtocolType,
 } from "@/src/types";
-import { useLiquityV2BrandsInChain } from "@/src/hooks/useLiquityV2PlatformsInChain";
+import { useProtocolsInChain } from "@/src/hooks/useProtocolsInChain";
 
 import styles from "./styles.module.css";
 
@@ -30,11 +31,14 @@ export function LiquityV2BrandStep({
     const [open, setOpen] = useState(true);
 
     const chainId = useChainId();
-    const availableBrands = useLiquityV2BrandsInChain(chainId);
+    const availableBrands = useProtocolsInChain(
+        chainId,
+        ProtocolType.LiquityV2Brand,
+    );
 
     const selectedBrand = useMemo(() => {
         if (!brand) return undefined;
-        return availableBrands.find((brand) => brand.slug === brand.slug);
+        return availableBrands.find(({ slug }) => slug === brand.slug);
     }, [availableBrands, brand]);
 
     useEffect(() => {

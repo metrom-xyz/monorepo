@@ -5,30 +5,34 @@ import { KimLogo } from "../../assets/logos/dexes/kim";
 import { type ChainData } from "..";
 import { UniswapLogo } from "@/src/assets/logos/dexes/uniswap";
 import { baseSepolia } from "viem/chains";
+import { ProtocolType } from "@/src/types";
 
 export const baseSepoliaData: ChainData = {
     name: baseSepolia.name,
     metromContract: ADDRESS[SupportedChain.BaseSepolia],
     blockExplorers: baseSepolia.blockExplorers,
     icon: BaseLogo,
-    dexes: [
-        {
-            slug: SupportedDex.Kim,
-            logo: KimLogo,
-            name: "Kim",
-            addLiquidityUrl: "https://app.kim.exchange/pools/v4/{target_pool}",
-            supportsFetchAllPools: true,
-        },
-        {
-            slug: SupportedDex.UniswapV3,
-            logo: UniswapLogo,
-            name: "Uniswap v3",
-            addLiquidityUrl:
-                "https://app.uniswap.org/explore/pools/base_sepolia/{target_pool}",
-            supportsFetchAllPools: true,
-        },
-    ],
-    liquityV2Brands: [],
+    protocols: {
+        [ProtocolType.Dex]: [
+            {
+                slug: SupportedDex.Kim,
+                logo: KimLogo,
+                name: "Kim",
+                addLiquidityUrl:
+                    "https://app.kim.exchange/pools/v4/{target_pool}",
+                supportsFetchAllPools: true,
+            },
+            {
+                slug: SupportedDex.UniswapV3,
+                logo: UniswapLogo,
+                name: "Uniswap v3",
+                addLiquidityUrl:
+                    "https://app.uniswap.org/explore/pools/base_sepolia/{target_pool}",
+                supportsFetchAllPools: true,
+            },
+        ],
+        [ProtocolType.LiquityV2Brand]: [],
+    },
     baseTokens: [
         {
             address: "0x4200000000000000000000000000000000000006",

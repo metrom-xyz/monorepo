@@ -6,36 +6,40 @@ import { BaseSwapLogo } from "@/src/assets/logos/dexes/baseswap";
 import { type ChainData } from "..";
 import { base } from "viem/chains";
 import { UniswapLogo } from "@/src/assets/logos/dexes/uniswap";
+import { ProtocolType } from "@/src/types";
 
 export const baseData: ChainData = {
     name: base.name,
     metromContract: ADDRESS[SupportedChain.Base],
     blockExplorers: base.blockExplorers,
     icon: BaseLogo,
-    dexes: [
-        {
-            slug: SupportedDex.Kim,
-            logo: KimLogo,
-            name: "Kim",
-            addLiquidityUrl: "https://app.kim.exchange/pools/v4/{target_pool}",
-            supportsFetchAllPools: true,
-        },
-        {
-            slug: SupportedDex.BaseSwap,
-            logo: BaseSwapLogo,
-            name: "BaseSwap",
-            addLiquidityUrl: `https://baseswap.fi/pool/v3/${SupportedChain.Base}-{target_pool}`,
-            supportsFetchAllPools: true,
-        },
-        {
-            slug: SupportedDex.UniswapV3,
-            logo: UniswapLogo,
-            name: "Uniswap v3",
-            addLiquidityUrl: `https://app.uniswap.org/explore/pools/${SupportedChain.Base}/{target_pool}`,
-            supportsFetchAllPools: false,
-        },
-    ],
-    liquityV2Brands: [],
+    protocols: {
+        [ProtocolType.Dex]: [
+            {
+                slug: SupportedDex.Kim,
+                logo: KimLogo,
+                name: "Kim",
+                addLiquidityUrl:
+                    "https://app.kim.exchange/pools/v4/{target_pool}",
+                supportsFetchAllPools: true,
+            },
+            {
+                slug: SupportedDex.BaseSwap,
+                logo: BaseSwapLogo,
+                name: "BaseSwap",
+                addLiquidityUrl: `https://baseswap.fi/pool/v3/${SupportedChain.Base}-{target_pool}`,
+                supportsFetchAllPools: true,
+            },
+            {
+                slug: SupportedDex.UniswapV3,
+                logo: UniswapLogo,
+                name: "Uniswap v3",
+                addLiquidityUrl: `https://app.uniswap.org/explore/pools/${SupportedChain.Base}/{target_pool}`,
+                supportsFetchAllPools: false,
+            },
+        ],
+        [ProtocolType.LiquityV2Brand]: [],
+    },
     baseTokens: [
         {
             address: "0x4200000000000000000000000000000000000006",

@@ -1,7 +1,8 @@
 import { Popover, Skeleton, Typography } from "@metrom-xyz/ui";
 import { useRef, useState } from "react";
 import type { TargetedCampaign, TargetType } from "@metrom-xyz/sdk";
-import { useLiquityV2BrandsInChain } from "@/src/hooks/useLiquityV2PlatformsInChain";
+import { ProtocolType } from "@/src/types";
+import { useProtocolsInChain } from "@/src/hooks/useProtocolsInChain";
 
 import styles from "./styles.module.css";
 
@@ -10,7 +11,7 @@ interface BrandProps {
 }
 
 export function Brand({ campaign }: BrandProps) {
-    const brands = useLiquityV2BrandsInChain(campaign.chainId);
+    const brands = useProtocolsInChain(campaign.chainId, ProtocolType.Dex);
 
     const [popoverOpen, setPopoverOpen] = useState(false);
     const [brandDetails, setBrandDetails] = useState<HTMLDivElement | null>(

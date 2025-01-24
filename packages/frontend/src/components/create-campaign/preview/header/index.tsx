@@ -2,6 +2,7 @@ import { CircledXIcon } from "@/src/assets/circled-x-icon";
 import {
     AmmPoolLiquidityCampaignPreviewPayload,
     LiquityV2CampaignPreviewPayload,
+    ProtocolType,
     type BaseCampaignPreviewPayload,
 } from "@/src/types";
 import { Button, TextField, Typography } from "@metrom-xyz/ui";
@@ -9,7 +10,7 @@ import { useTranslations } from "next-intl";
 import { useChainId } from "wagmi";
 import { formatDateTime, formatPercentage } from "@/src/utils/format";
 import { PoolRemoteLogo } from "@/src/components/pool-remote-logo";
-import { useDexesInChain } from "@/src/hooks/useDexesInChain";
+import { useProtocolsInChain } from "@/src/hooks/useProtocolsInChain";
 import { useMemo } from "react";
 import { LIQUITY_V2_SUPPORTED_ACTIONS } from "../../steps/liquity-v2-action-step";
 
@@ -25,7 +26,7 @@ export function Header({ payload, backDisabled, onBack }: HeaderProps) {
     const t = useTranslations("campaignPreview.header");
     const chainId = useChainId();
 
-    const availableDexes = useDexesInChain(chainId);
+    const availableDexes = useProtocolsInChain(chainId, ProtocolType.Dex);
 
     const ammPoolLiquidityCampaign =
         payload instanceof AmmPoolLiquidityCampaignPreviewPayload;
@@ -34,7 +35,7 @@ export function Header({ payload, backDisabled, onBack }: HeaderProps) {
 
     const selectedDex = useMemo(() => {
         if (!ammPoolLiquidityCampaign) return undefined;
-        return availableDexes.find((dex) => dex.slug === payload.pool.dex);
+        return availableDexes.find(({ slug }) => slug === payload.pool.dex);
     }, [ammPoolLiquidityCampaign, availableDexes, payload]);
 
     const liquityV2Action = useMemo(() => {

@@ -4,6 +4,7 @@ import { type ChainData } from "..";
 import { defineChain } from "viem";
 import { FormLogo } from "@/src/assets/logos/chains/form";
 import { FibonacciLogo } from "@/src/assets/logos/dexes/fibonacci";
+import { ProtocolType } from "@/src/types";
 
 export const formTestnet = defineChain({
     id: 132_902,
@@ -37,16 +38,19 @@ export const formTestnetData: ChainData = {
     metromContract: ADDRESS[SupportedChain.FormTestnet],
     blockExplorers: formTestnet.blockExplorers,
     icon: FormLogo,
-    dexes: [
-        {
-            slug: SupportedDex.Fibonacci,
-            logo: FibonacciLogo,
-            name: "Fibonacci",
-            addLiquidityUrl: "https://www.fibonacci-dex.xyz/pool/{target_pool}",
-            supportsFetchAllPools: true,
-        },
-    ],
-    liquityV2Brands: [],
+    protocols: {
+        [ProtocolType.Dex]: [
+            {
+                slug: SupportedDex.Fibonacci,
+                logo: FibonacciLogo,
+                name: "Fibonacci",
+                addLiquidityUrl:
+                    "https://www.fibonacci-dex.xyz/pool/{target_pool}",
+                supportsFetchAllPools: true,
+            },
+        ],
+        [ProtocolType.LiquityV2Brand]: [],
+    },
     baseTokens: [
         {
             address: "0xA65be6D7DE4A82Cc9638FB3Dbf8E68b7f2e757ab",

@@ -6,7 +6,12 @@ import {
     SupportedAmm,
 } from "@metrom-xyz/sdk";
 import { type ChainContract, type Chain } from "viem";
-import { type Dex, type LiquityV2Brand, type SVGIcon } from "../types";
+import {
+    type Dex,
+    type LiquityV2Brand,
+    type Protocols,
+    type SVGIcon,
+} from "../types";
 import type { FunctionComponent } from "react";
 import { SupportedChain } from "@metrom-xyz/contracts";
 import { ENVIRONMENT } from "./env";
@@ -50,9 +55,7 @@ export interface ChainData {
     metromContract: ChainContract;
     blockExplorers: Chain["blockExplorers"];
     icon: FunctionComponent<SVGIcon>;
-    // TODO: merge dexes and liquity in protocols Record<ProtocolType, Type[]>
-    dexes: Dex[];
-    liquityV2Brands: LiquityV2Brand[];
+    protocols: Protocols;
     baseTokens: Erc20Token[];
 }
 

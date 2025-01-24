@@ -4,23 +4,26 @@ import { AlgebraIntegralLogo } from "../../assets/logos/dexes/algebra-integral";
 import { SupportedChain, ADDRESS } from "@metrom-xyz/contracts";
 import { type ChainData } from "../index";
 import { holesky } from "viem/chains";
+import { ProtocolType } from "@/src/types";
 
 export const holeskyData: ChainData = {
     name: holesky.name,
     metromContract: ADDRESS[SupportedChain.Holesky],
     blockExplorers: holesky.blockExplorers,
     icon: EthLogo,
-    dexes: [
-        {
-            slug: SupportedDex.TestIntegral,
-            logo: AlgebraIntegralLogo,
-            name: "Algebra integral",
-            addLiquidityUrl:
-                "https://integral.algebra.finance/pool/{target_pool}/new-position",
-            supportsFetchAllPools: true,
-        },
-    ],
-    liquityV2Brands: [],
+    protocols: {
+        [ProtocolType.Dex]: [
+            {
+                slug: SupportedDex.TestIntegral,
+                logo: AlgebraIntegralLogo,
+                name: "Algebra integral",
+                addLiquidityUrl:
+                    "https://integral.algebra.finance/pool/{target_pool}/new-position",
+                supportsFetchAllPools: true,
+            },
+        ],
+        [ProtocolType.LiquityV2Brand]: [],
+    },
     baseTokens: [
         {
             address: "0x94373a4919b3240d86ea41593d5eba789fef3848",

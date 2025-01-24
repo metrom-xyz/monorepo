@@ -3,6 +3,7 @@ import { type ChainData } from "..";
 import { GnosisLogo } from "@/src/assets/logos/chains/gnosis";
 import { gnosis } from "viem/chains";
 import { SwaprLogo } from "@/src/assets/logos/dexes/swapr";
+import { ProtocolType } from "@/src/types";
 
 export const gnosisData: ChainData = {
     name: gnosis.name,
@@ -13,17 +14,19 @@ export const gnosisData: ChainData = {
     },
     blockExplorers: gnosis.blockExplorers,
     icon: GnosisLogo,
-    dexes: [
-        {
-            slug: SupportedDex.Swapr,
-            logo: SwaprLogo,
-            name: "Swapr",
-            addLiquidityUrl:
-                "https://v3.swapr.eth.limo/#/info/pools/{target_pool}",
-            supportsFetchAllPools: true,
-        },
-    ],
-    liquityV2Brands: [],
+    protocols: {
+        [ProtocolType.Dex]: [
+            {
+                slug: SupportedDex.Swapr,
+                logo: SwaprLogo,
+                name: "Swapr",
+                addLiquidityUrl:
+                    "https://v3.swapr.eth.limo/#/info/pools/{target_pool}",
+                supportsFetchAllPools: true,
+            },
+        ],
+        [ProtocolType.LiquityV2Brand]: [],
+    },
     baseTokens: [
         {
             address: "0x9C58BAcC331c9aa871AFD802DB6379a98e80CEdb",
