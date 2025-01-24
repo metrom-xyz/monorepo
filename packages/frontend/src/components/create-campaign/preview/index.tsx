@@ -26,7 +26,6 @@ import {
     getCampaignPreviewApr,
 } from "@/src/utils/campaign";
 import { trackFathomEvent } from "@/src/utils/fathom";
-import { type Hex, zeroHash, parseUnits, formatUnits } from "viem";
 import {
     DistributablesType,
     SERVICE_URLS,
@@ -37,6 +36,7 @@ import { ENVIRONMENT } from "@/src/commons/env";
 import { Kpi } from "./kpi";
 import { AprChip } from "../../apr-chip";
 import { Range } from "./range";
+import { formatUnits, parseUnits, zeroHash, type Hex } from "viem";
 
 import styles from "./styles.module.css";
 

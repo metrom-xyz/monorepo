@@ -1,3 +1,11 @@
+.previewLabelWrapper {
+    @apply w-full flex justify-between items-center;
+}
+
+.previewTextWrapper {
+    @apply flex items-center gap-2;
+}
+
 .previewCompletedLabel {
     @apply w-full
         flex

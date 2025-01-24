@@ -30,7 +30,9 @@ export function DexStep({ disabled, dex, onDexChange }: DexStepProps) {
 
     const selectedDex = useMemo(() => {
         if (!dex) return undefined;
-        return availableDexes.find((dex) => dex.slug === dex.slug);
+        return availableDexes.find(
+            (availableDex) => availableDex.slug === dex.slug,
+        );
     }, [availableDexes, dex]);
 
     useEffect(() => {

@@ -17,6 +17,7 @@ export const baseSepoliaData: ChainData = {
             logo: KimLogo,
             name: "Kim",
             addLiquidityUrl: "https://app.kim.exchange/pools/v4/{target_pool}",
+            supportsFetchAllPools: true,
         },
         {
             slug: SupportedDex.UniswapV3,
@@ -24,6 +25,7 @@ export const baseSepoliaData: ChainData = {
             name: "Uniswap v3",
             addLiquidityUrl:
                 "https://app.uniswap.org/explore/pools/base_sepolia/{target_pool}",
+            supportsFetchAllPools: true,
         },
     ],
     liquityV2Brands: [],

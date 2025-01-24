@@ -16,6 +16,7 @@ export const celoAlfajoresData: ChainData = {
             logo: UniswapLogo,
             name: "Uniswap v3",
             addLiquidityUrl: "https://app.uniswap.org/add/{target_pool}",
+            supportsFetchAllPools: true,
         },
     ],
     liquityV2Brands: [],

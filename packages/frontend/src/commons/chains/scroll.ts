@@ -18,6 +18,7 @@ export const scrollData: ChainData = {
             name: "Scribe",
             addLiquidityUrl:
                 "https://app.scribe.exchange/pools/v4/{target_pool}",
+            supportsFetchAllPools: true,
         },
         {
             slug: SupportedDex.UniswapV3,
@@ -25,6 +26,7 @@ export const scrollData: ChainData = {
             name: "Uniswap v3",
             addLiquidityUrl:
                 "https://app.uniswap.org/explore/pools/scroll/{target_pool}",
+            supportsFetchAllPools: true,
         },
     ],
     liquityV2Brands: [],

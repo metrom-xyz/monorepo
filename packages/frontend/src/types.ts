@@ -26,7 +26,7 @@ export interface Dex {
     slug: SupportedDex;
     name: string;
     addLiquidityUrl: string;
-    poolExplorerUrl?: string;
+    supportsFetchAllPools: boolean;
     logo: FunctionComponent<SVGIcon>;
 }
 
@@ -84,6 +84,7 @@ export interface BaseCampaignPayload {
     tokens?: WhitelistedErc20TokenAmount[];
     fee?: WhitelistedErc20TokenAmount;
     kpiSpecification?: KpiSpecification;
+    priceRangeSpecification?: AugmentedPriceRangeSpecification;
     restrictions?: {
         type: RestrictionType;
         list: Address[];
@@ -192,6 +193,7 @@ export interface TargetedCampaignPreviewPayload<T extends TargetType>
 }
 
 export interface CampaignPayloadErrors {
+    pool?: boolean;
     startDate?: boolean;
     endDate?: boolean;
     rewards?: boolean;
@@ -200,7 +202,10 @@ export interface CampaignPayloadErrors {
     restrictions?: boolean;
 }
 
-export type DexInfo = Pick<Dex, "slug" | "name" | "logo">;
+export type DexInfo = Pick<
+    Dex,
+    "slug" | "name" | "logo" | "supportsFetchAllPools"
+>;
 export type LiquityV2BrandInfo = Pick<LiquityV2Brand, "slug" | "name" | "logo">;
 
 export type BaseCampaignPayloadPart = PropertyUnion<BaseCampaignPayload>;

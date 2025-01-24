@@ -17,6 +17,7 @@ export const holeskyData: ChainData = {
             name: "Algebra integral",
             addLiquidityUrl:
                 "https://integral.algebra.finance/pool/{target_pool}/new-position",
+            supportsFetchAllPools: true,
         },
     ],
     liquityV2Brands: [],

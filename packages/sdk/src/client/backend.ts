@@ -27,7 +27,7 @@ import type {
     UsdPricedErc20Token,
     UsdPricedOnChainAmount,
 } from "../types/commons";
-import type { BackendPoolsResponse } from "./types/pools";
+import type { BackendPoolResponse, BackendPoolsResponse } from "./types/pools";
 import type { Claim, Reimbursement } from "../types/claims";
 import type {
     BackendClaimsResponse,
@@ -63,6 +63,11 @@ export interface FetchCampaignParams {
 export interface FetchPoolsParams {
     chainId: SupportedChain;
     dex: SupportedDex;
+}
+
+export interface FetchPoolParams {
+    chainId: SupportedChain;
+    address: Address;
 }
 
 export interface FetchClaimsParams {
@@ -200,6 +205,34 @@ export class MetromApiClient {
                 ),
             };
         });
+    }
+
+    async fetchPool(params: FetchPoolParams): Promise<AmmPool | null> {
+        const url = new URL(
+            `v1/pools/${params.chainId}/${params.address}`,
+            this.baseUrl,
+        );
+
+        const response = await fetch(url);
+        if (response.status === 404) return null;
+
+        if (!response.ok)
+            throw new Error(
+                `response not ok while fetching pools: ${await response.text()}`,
+            );
+
+        const parsedResponse = (await response.json()) as BackendPoolResponse;
+
+        return {
+            ...parsedResponse.ammPool,
+            // FIXME: it's probably better to have this in the response
+            chainId: params.chainId,
+            dex: parsedResponse.ammPool.dex as SupportedDex,
+            amm: parsedResponse.ammPool.amm as SupportedAmm,
+            tokens: parsedResponse.ammPool.tokens.map((address) =>
+                resolveToken(parsedResponse.resolvedTokens, address),
+            ),
+        };
     }
 
     async fetchClaims(params: FetchClaimsParams): Promise<Claim[]> {

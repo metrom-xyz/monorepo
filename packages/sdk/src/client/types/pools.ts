@@ -9,3 +9,8 @@ export interface BackendPoolsResponse {
     resolvedTokens: Record<Address, BackendErc20Token>;
     ammPools: BackendAmmPoolWithAddress[];
 }
+
+export interface BackendPoolResponse {
+    resolvedTokens: Record<Address, BackendErc20Token>;
+    ammPool: BackendAmmPoolWithAddress;
+}

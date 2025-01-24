@@ -17,6 +17,7 @@ export const mantleData: ChainData = {
             name: "Swapsicle",
             addLiquidityUrl:
                 "https://app.swapsicle.io/liquidity/v3/mantle/{target_pool}",
+            supportsFetchAllPools: true,
         },
     ],
     liquityV2Brands: [],

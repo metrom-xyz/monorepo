@@ -48,6 +48,7 @@ export const artheraData: ChainData = {
             logo: ThirdTradeLogo,
             name: "Third Trade",
             addLiquidityUrl: "https://third.trade/pool/{target_pool}",
+            supportsFetchAllPools: true,
         },
     ],
     liquityV2Brands: [],

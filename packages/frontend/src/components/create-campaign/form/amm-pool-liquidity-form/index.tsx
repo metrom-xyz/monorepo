@@ -124,6 +124,7 @@ export function AmmPoolLiquidityForm({
                     dex={payload?.dex}
                     pool={payload?.pool}
                     onPoolChange={handlePayloadOnChange}
+                    onError={handlePayloadOnError}
                 />
                 <StartDateStep
                     disabled={!payload?.pool || unsupportedChain}

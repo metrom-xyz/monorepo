@@ -18,6 +18,7 @@ export const taikoData: ChainData = {
             logo: PankoLogo,
             name: "Panko",
             addLiquidityUrl: "https://panko.finance/add/{target_pool}",
+            supportsFetchAllPools: true,
         },
         {
             slug: SupportedDex.UniswapV3,
@@ -25,12 +26,14 @@ export const taikoData: ChainData = {
             name: "Uniswap v3",
             addLiquidityUrl:
                 "https://app.uniswap.org/explore/pools/taiko/{target_pool}",
+            supportsFetchAllPools: true,
         },
         {
             slug: SupportedDex.Unagi,
             logo: UnagiLogo,
             name: "Unagi",
             addLiquidityUrl: "https://unagiswap.xyz/pool",
+            supportsFetchAllPools: true,
         },
     ],
     liquityV2Brands: [],
