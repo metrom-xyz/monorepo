@@ -177,8 +177,12 @@ export function AmmPoolLiquidityForm({
                             onError={handlePayloadOnError}
                         />
                     )}
+                {/* TODO: check if restrictions are enabled for all campaigns */}
                 <RestrictionsStep
-                    disabled={!payload?.tokens || unsupportedChain}
+                    disabled={
+                        (!payload?.tokens && !payload.points) ||
+                        unsupportedChain
+                    }
                     restrictions={payload?.restrictions}
                     onRestrictionsChange={handlePayloadOnChange}
                     onError={handlePayloadOnError}

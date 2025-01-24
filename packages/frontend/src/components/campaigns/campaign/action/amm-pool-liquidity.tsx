@@ -12,7 +12,7 @@ interface AmmPoolLiquidityProps {
 }
 
 export function AmmPoolLiquidity({ campaign }: AmmPoolLiquidityProps) {
-    const t = useTranslations("allCampaigns.pool");
+    const t = useTranslations("allCampaigns");
 
     return (
         <div className={styles.root}>
@@ -47,7 +47,7 @@ export function AmmPoolLiquidity({ campaign }: AmmPoolLiquidityProps) {
                 {campaign.specification?.priceRange && (
                     <div className={styles.chip}>
                         <Typography size="sm" weight="medium" uppercase>
-                            {t("range")}
+                            {t("pool.range")}
                         </Typography>
                     </div>
                 )}

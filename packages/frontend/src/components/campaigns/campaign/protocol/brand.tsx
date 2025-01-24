@@ -11,7 +11,10 @@ interface BrandProps {
 }
 
 export function Brand({ campaign }: BrandProps) {
-    const brands = useProtocolsInChain(campaign.chainId, ProtocolType.Dex);
+    const brands = useProtocolsInChain(
+        campaign.chainId,
+        ProtocolType.LiquityV2Brand,
+    );
 
     const [popoverOpen, setPopoverOpen] = useState(false);
     const [brandDetails, setBrandDetails] = useState<HTMLDivElement | null>(

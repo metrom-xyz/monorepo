@@ -27,6 +27,7 @@
     },
     "allCampaigns": {
         "title": "all campaigns",
+        "kpi": "KPI",
         "filters": {
             "search": {
                 "label": "Search"
@@ -52,7 +53,6 @@
             "rewards": "Daily rewards"
         },
         "pool": {
-            "kpi": "KPI",
             "range": "Range"
         },
         "status": {

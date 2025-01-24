@@ -11,6 +11,7 @@ import { CampaignPreview } from "../preview";
 import { FormHeader } from "./header";
 import { AmmPoolLiquidityForm } from "./amm-pool-liquidity-form";
 import { LiquityV2ForksForm } from "./liquity-v2-forks-form";
+import { useRouter } from "@/src/i18n/routing";
 
 import styles from "./styles.module.css";
 
@@ -30,6 +31,7 @@ export function CreateCampaignForm<T extends TargetType>({
     const { chain: connectedChain, isConnected } = useAccount();
     const selectedChain = useChainId();
     const chains = useChains();
+    const router = useRouter();
 
     const [view, setView] = useState(View.Form);
     const [payload, setPayload] = useState<CampaignPreviewPayload | null>(null);
@@ -45,7 +47,7 @@ export function CreateCampaignForm<T extends TargetType>({
     }
 
     function handleCreateNewOnClick() {
-        setView(View.Form);
+        router.push("/campaigns/create");
     }
 
     const unsupportedChain = useMemo(() => {

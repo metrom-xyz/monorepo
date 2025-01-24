@@ -10,7 +10,7 @@ interface LiquityV2Props {
 }
 
 export function LiquidityV2({ campaign }: LiquityV2Props) {
-    const t = useTranslations("allCampaigns.liquityV2");
+    const t = useTranslations("allCampaigns");
 
     return (
         <div className={styles.root}>
