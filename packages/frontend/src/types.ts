@@ -38,6 +38,12 @@ export interface Dex {
 export interface LiquityV2Brand {
     slug: SupportedLiquityV2Brand;
     name: string;
+    actionUrls: Record<
+        | TargetType.LiquityV2Debt
+        | TargetType.LiquityV2Collateral
+        | TargetType.LiquityV2StabilityPool,
+        string
+    >;
     logo: FunctionComponent<SVGIcon>;
 }
 

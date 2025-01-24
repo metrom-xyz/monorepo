@@ -344,9 +344,16 @@
     "campaignDetails": {
         "header": {
             "rewardsMayVary": "Rewards may vary",
-            "deposit": "Deposit",
             "explorer": "Explorer",
-            "claim": "Claim"
+            "claim": "Claim",
+            "ammPoolLiquidity": {
+                "deposit": "Deposit"
+            },
+            "liquityV2": {
+                "liquity-v2-debt": "Take loan",
+                "liquity-v2-collateral": "Deposit collateral",
+                "liquity-v2-stability-pool": "Deposit to SP"
+            }
         },
         "details": {
             "tvl": "Tvl",

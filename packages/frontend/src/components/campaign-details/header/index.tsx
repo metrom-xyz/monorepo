@@ -2,7 +2,7 @@ import { Skeleton, Button } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
 import { PoolRemoteLogo } from "../../pool-remote-logo";
 import type { NamedCampaign } from "@/src/types";
-import { AmmPoolLiquityHeader } from "./amm-pool-liquitidy copy";
+import { AmmPoolLiquityHeader } from "./amm-pool-liquitidy";
 import { TargetType } from "@metrom-xyz/sdk";
 import { LiquityV2Header } from "./liquity-v2";
 
@@ -44,20 +44,14 @@ export function SkeletonHeader() {
             </div>
             <div className={styles.actionsContainer}>
                 <div className={styles.leftActions}>
-                    <Button size="sm" loading>
-                        {t("deposit")}
-                    </Button>
-                    <Button size="sm" loading>
-                        {t("claim")}
-                    </Button>
+                    <Button size="sm" loading></Button>
+                    <Button size="sm" loading></Button>
                     <Button
                         size="sm"
                         variant="secondary"
                         border={false}
                         loading
-                    >
-                        {t("explorer")}
-                    </Button>
+                    ></Button>
                 </div>
             </div>
         </div>

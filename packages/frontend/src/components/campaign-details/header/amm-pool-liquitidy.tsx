@@ -77,7 +77,7 @@ export function AmmPoolLiquityHeader({ campaign }: AmmPoolLiquityHeaderProps) {
                         target="_blank"
                         rel="noopener noreferrer"
                     >
-                        {t("deposit")}
+                        {t("ammPoolLiquidity.deposit")}
                     </Button>
                     {campaign.isDistributing(DistributablesType.Tokens) && (
                         <Button size="sm" onClick={handleClaimOnClick}>

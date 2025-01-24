@@ -4,7 +4,8 @@ import { useTranslations } from "next-intl";
 import { useRouter } from "@/src/i18n/routing";
 import { AprChip } from "../../apr-chip";
 import { DistributablesType, TargetType } from "@metrom-xyz/sdk";
-import type { TargetedNamedCampaign } from "@/src/types";
+import { ProtocolType, type TargetedNamedCampaign } from "@/src/types";
+import { useProtocolsInChain } from "@/src/hooks/useProtocolsInChain";
 
 import styles from "./styles.module.css";
 
@@ -16,6 +17,13 @@ export function LiquityV2Header({ campaign }: LiquityV2HeaderProps) {
     const t = useTranslations("campaignDetails.header");
     const router = useRouter();
 
+    const brand = useProtocolsInChain(
+        campaign.chainId,
+        ProtocolType.LiquityV2Brand,
+    ).find((brand) => brand.slug === campaign.target.liquityV2Brand.name);
+
+    const actionLink = brand?.actionUrls[campaign.target.type];
+
     const handleClaimOnClick = useCallback(() => {
         router.push("/claims");
     }, [router]);
@@ -24,6 +32,7 @@ export function LiquityV2Header({ campaign }: LiquityV2HeaderProps) {
         <div className={styles.root}>
             <div className={styles.titleContainer}>
                 <div className={styles.title}>
+                    {brand && <brand.logo className={styles.logo} />}
                     <Typography size="xl4" weight="medium">
                         {campaign.name}
                     </Typography>
@@ -39,6 +48,15 @@ export function LiquityV2Header({ campaign }: LiquityV2HeaderProps) {
                             {t("claim")}
                         </Button>
                     )}
+                    <Button
+                        size="sm"
+                        href={actionLink}
+                        disabled={!actionLink}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        {t(`liquityV2.${campaign.target.type}`)}
+                    </Button>
                 </div>
                 {campaign.apr &&
                     campaign.isDistributing(DistributablesType.Tokens) && (
