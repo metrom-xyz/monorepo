@@ -21,6 +21,14 @@
         hover:bg-gray-200;
 }
 
+.active {
+    @apply bg-gray-200;
+}
+
+.active > .actionIconWrapper {
+    @apply bg-gray-100;
+}
+
 .textWrapper {
     @apply flex flex-col gap-1;
 }

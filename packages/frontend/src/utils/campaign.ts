@@ -74,7 +74,6 @@ export function getCampaignName(
                     .join("/"),
             });
         }
-        // TODO: are these description ok?
         case TargetType.LiquityV2Debt: {
             return t("campaignActions.takeLoan", {
                 name: campaign.target.liquityV2Brand.name,

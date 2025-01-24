@@ -231,7 +231,7 @@
                     "title": "Action",
                     "list": {
                         "debt": {
-                            "title": "Deposit collateral"
+                            "title": "Take loan"
                         }
                     }
                 }
@@ -298,7 +298,7 @@
             "liquityV2Actions": {
                 "list": {
                     "debt": {
-                        "title": "Deposit collateral"
+                        "title": "Take loan"
                     }
                 }
             }
@@ -541,7 +541,7 @@
     "campaignActions": {
         "lp": "LP on {name}",
         "takeLoan": "Take loan on {name}",
-        "depositCollateral:": "Deposit collateral on {name}"
+        "depositCollateral": "Deposit collateral on {name}"
     },
     "liquidityDensityChart": {
         "tooltip": {

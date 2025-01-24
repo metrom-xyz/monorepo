@@ -11,6 +11,7 @@ import {
 } from "@/src/types";
 import { LiquityDepositActionIcon } from "@/src/assets/liquity-deposit-action-icon";
 import { Typography } from "@metrom-xyz/ui";
+import classNames from "classnames";
 
 import styles from "./styles.module.css";
 
@@ -20,6 +21,7 @@ export const LIQUITY_V2_SUPPORTED_ACTIONS = [
         logo: <LiquityDepositActionIcon />,
         value: LiquityV2Action.Debt,
     },
+    // TODO: add missing actions
 ] as const;
 
 interface LiquityV2ActionStepProps {
@@ -95,8 +97,11 @@ export function LiquityV2ActionStep({
                         ({ title, logo, value }) => (
                             <div
                                 key={value}
-                                className={styles.action}
                                 onClick={getActionChangeHandler(value)}
+                                className={classNames(styles.action, {
+                                    [styles.active]:
+                                        selectedAction?.value === value,
+                                })}
                             >
                                 <div className={styles.actionIconWrapper}>
                                     {logo}
