@@ -2,16 +2,19 @@
 
 import { Card, Typography } from "@metrom-xyz/ui";
 import { TargetType } from "@metrom-xyz/sdk";
-import { Link } from "@/src/i18n/routing";
+import { Link, redirect } from "@/src/i18n/routing";
 import { useTranslations } from "next-intl";
 import { LiquityV2CampaignIcon } from "@/src/assets/liquity-v2-campaign-icon";
 import { AmmCampaignIcon } from "@/src/assets/amm-campaign-icon";
 import classNames from "classnames";
+import { LIQUITY_V2_CAMPAIGN } from "@/src/commons/env";
+import { RedirectType } from "next/navigation";
 
 import styles from "./styles.module.css";
 
 const CAMPAIGN_TYPES = [
     {
+        enabled: true,
         path: `/campaigns/create/${TargetType.AmmPoolLiquidity}`,
         title: "amm.title",
         description: "amm.description",
@@ -19,6 +22,7 @@ const CAMPAIGN_TYPES = [
         icon: <AmmCampaignIcon />,
     },
     {
+        enabled: LIQUITY_V2_CAMPAIGN,
         path: `/campaigns/create/${TargetType.LiquityV2Debt}`,
         title: "liquityV2.title",
         description: "liquityV2.description",
@@ -30,6 +34,9 @@ const CAMPAIGN_TYPES = [
 export function CreateCampaign() {
     const t = useTranslations("newCampaign.pickType");
 
+    if (!LIQUITY_V2_CAMPAIGN)
+        redirect(`${CAMPAIGN_TYPES[0].path}`, RedirectType.replace);
+
     return (
         <div className={styles.root}>
             <Typography weight="medium" size="lg" uppercase>
@@ -39,7 +46,7 @@ export function CreateCampaign() {
                 {t("description")}
             </Typography>
             <div className={styles.campaignCardsWrapper}>
-                {CAMPAIGN_TYPES.map(
+                {CAMPAIGN_TYPES.filter(({ enabled }) => enabled).map(
                     ({ path, title, description, icon, className }) => (
                         <Link key={path} href={path}>
                             <Card className={styles.campaignCard}>
