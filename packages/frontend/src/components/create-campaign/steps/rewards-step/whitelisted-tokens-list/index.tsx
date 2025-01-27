@@ -14,6 +14,7 @@ import type { WhitelistedErc20TokenAmount } from "@/src/types";
 import classNames from "classnames";
 
 import styles from "./styles.module.css";
+import type { WhitelistedErc20TokenAmount } from "@/src/types";
 
 const TOKENS_LIMIT = 6;
 

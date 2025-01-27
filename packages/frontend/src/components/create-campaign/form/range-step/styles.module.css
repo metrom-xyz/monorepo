@@ -1,0 +1,63 @@
+.stepContent {
+    @apply flex flex-col gap-3 p-4 pt-0;
+}
+
+.priceTabs {
+    @apply w-fit self-end mt-1;
+}
+
+.priceTab {
+    @apply bg-white opacity-100 transition-colors duration-200 ease-in-out w-auto;
+}
+
+.priceTab > p {
+    @apply text-gray-400 transition-colors duration-200 ease-in-out;
+}
+
+.priceTab:first-child {
+    @apply rounded-r-none;
+}
+
+.priceTab:last-child {
+    @apply rounded-l-none;
+}
+
+.activePriceTab {
+    @apply bg-black;
+}
+
+.activePriceTab > p {
+    @apply text-white;
+}
+
+.previewLabelWrapper {
+    @apply w-full flex justify-between items-center;
+}
+
+.previewTextWrapper {
+    @apply flex items-center gap-2;
+}
+
+.previewLabel {
+    @apply !text-inherit;
+}
+
+.previewDisabled {
+    @apply hover:cursor-default hover:bg-white;
+}
+
+.priceWrapper {
+    @apply w-full flex gap-1;
+}
+
+.error {
+    @apply transition-opacity duration-200 ease-in-out opacity-0;
+}
+
+.errorVisible {
+    @apply opacity-100;
+}
+
+.applyButton {
+    @apply w-full;
+}
