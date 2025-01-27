@@ -14,6 +14,7 @@ import {
 import {
     BI_0,
     getEventId,
+    getFeeAdjustedAmount,
     getOrCreateTick,
     getPoolOrThrow,
     getSortedPoolTokens,
@@ -52,10 +53,14 @@ export function handleSwap(event: SwapEvent): void {
 
     let poolTokens = getSortedPoolTokens(pool);
 
-    poolTokens[0].tvl = poolTokens[0].tvl.plus(event.params.amount0);
+    poolTokens[0].tvl = poolTokens[0].tvl.plus(
+        getFeeAdjustedAmount(event.params.amount0, pool.fee),
+    );
     poolTokens[0].save();
 
-    poolTokens[1].tvl = poolTokens[1].tvl.plus(event.params.amount1);
+    poolTokens[1].tvl = poolTokens[1].tvl.plus(
+        getFeeAdjustedAmount(event.params.amount1, pool.fee),
+    );
     poolTokens[1].save();
 }
 

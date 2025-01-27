@@ -55,7 +55,7 @@ try {
             readFileSync(
                 join(
                     fileURLToPath(dirname(import.meta.url)),
-                    "../subgraph.template.yaml",
+                    "../subgraph.template.mustache",
                 ),
             ).toString(),
             {
