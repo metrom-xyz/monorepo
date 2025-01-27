@@ -19,6 +19,8 @@ import { Erc20BytesName } from "../generated/Factory/Erc20BytesName";
 export const BI_0 = BigInt.zero();
 export const BI_1 = BigInt.fromI32(1);
 export const BI_100 = BigInt.fromI32(100);
+export const BI_1_000_000 = BigInt.fromI32(1_000_000);
+
 export const BD_10 = BigDecimal.fromString("10");
 
 export const NonFungiblePositionManagerContract =
@@ -160,4 +162,13 @@ export function getOrCreateTick(poolAddress: Bytes, idx: i32): Tick {
     tick.save();
 
     return tick;
+}
+
+export function getFeeAdjustedAmount(amount: BigInt, fee: BigInt): BigInt {
+    // fees are taken from the input amount, so if the given amount
+    // is negative (i.e. removing from pool, we just leave the
+    // amount unchanged)
+    return amount.lt(BI_0)
+        ? amount
+        : amount.times(BI_1_000_000.minus(fee)).div(BI_1_000_000);
 }
