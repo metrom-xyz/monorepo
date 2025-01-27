@@ -230,9 +230,9 @@
                 "action": {
                     "title": "Action",
                     "list": {
-                        "debt": {
-                            "title": "Take loan"
-                        }
+                        "takeLoan": "Take loan",
+                        "depositCollateral": "Deposit collateral",
+                        "depositToStabilityPool": "Deposit to SP"
                     }
                 }
             },

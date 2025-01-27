@@ -9,19 +9,30 @@ import {
     type LiquityV2CampaignPayload,
     type LiquityV2CampaignPayloadPart,
 } from "@/src/types";
-import { LiquityDepositActionIcon } from "@/src/assets/liquity-deposit-action-icon";
+import { DepositCollateralIcon } from "@/src/assets/deposit-collateral-icon";
 import { Typography } from "@metrom-xyz/ui";
 import classNames from "classnames";
+import { TakeLoanIcon } from "@/src/assets/take-loan-icon";
+import { DepositToSpIcon } from "@/src/assets/deposit-to-sp-icon";
 
 import styles from "./styles.module.css";
 
 export const LIQUITY_V2_SUPPORTED_ACTIONS = [
     {
-        title: "list.debt.title",
-        logo: <LiquityDepositActionIcon />,
+        title: "list.takeLoan",
+        logo: <TakeLoanIcon />,
         value: LiquityV2Action.Debt,
     },
-    // TODO: add missing actions
+    {
+        title: "list.depositCollateral",
+        logo: <DepositCollateralIcon />,
+        value: LiquityV2Action.Collateral,
+    },
+    {
+        title: "list.depositToStabilityPool",
+        logo: <DepositToSpIcon />,
+        value: LiquityV2Action.StabilityPool,
+    },
 ] as const;
 
 interface LiquityV2ActionStepProps {
