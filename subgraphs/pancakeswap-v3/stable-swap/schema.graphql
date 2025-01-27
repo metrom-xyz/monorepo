@@ -8,12 +8,16 @@ type Token @entity(immutable: true) {
 type PoolToken @entity {
     id: Bytes!
     data: Token!
-    tvl: BigInt!
 }
 
 type Pool @entity {
     id: Bytes!
-    tokens: [PoolToken!]!
+    token0: Token!
+    token1: Token!
+    token2: Token
+    token0Tvl: BigInt!
+    token1Tvl: BigInt!
+    token2Tvl: BigInt
     fee: BigInt!
     liquidity: BigInt!
     positions: [Position!]! @derivedFrom(field: "pool")
