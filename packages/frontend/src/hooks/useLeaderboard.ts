@@ -80,9 +80,10 @@ export function useLeaderboard(campaign?: Campaign): {
                     sortedRanks,
                 };
             } catch (error) {
-                throw new Error(
+                console.error(
                     `Could not fetch leaderboard for campaign with id ${campaign.id} in chain with id ${campaign.chainId}: ${error}`,
                 );
+                throw error;
             }
         },
         enabled: !!campaign,

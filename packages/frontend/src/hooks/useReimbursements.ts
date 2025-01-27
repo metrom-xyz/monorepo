@@ -38,9 +38,10 @@ export function useReimbursements(): {
                 });
                 return rawClaims;
             } catch (error) {
-                throw new Error(
+                console.error(
                     `Could not fetch raw reimbursements for address ${address}: ${error}`,
                 );
+                throw error;
             }
         },
         refetchOnWindowFocus: false,

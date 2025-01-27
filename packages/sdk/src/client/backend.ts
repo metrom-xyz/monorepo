@@ -716,10 +716,10 @@ function processCampaignsResponse(
             case "liquity-v2-debt": {
                 target = <LiquityV2DebtTarget>{
                     ...backendCampaign.target,
-                    liquityV2Brand: resolveLiquityV2DebtBrand(
+                    brand: resolveLiquityV2DebtBrand(
                         response.resolvedLiquityV2Debts,
                         backendCampaign.target.chainId,
-                        backendCampaign.target.liquityV2Brand,
+                        backendCampaign.target.brand,
                     ),
                 };
                 break;

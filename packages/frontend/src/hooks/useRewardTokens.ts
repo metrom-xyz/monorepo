@@ -17,7 +17,8 @@ export function useRewardTokens(): {
             try {
                 return await metromApiClient.fetchRewardTokens({ chainId });
             } catch (error) {
-                throw new Error(`Could not fetch reward tokens: ${error}`);
+                console.error(`Could not fetch reward tokens: ${error}`);
+                throw error;
             }
         },
     });

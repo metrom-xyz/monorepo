@@ -23,7 +23,7 @@ export function Brand({ campaign }: BrandProps) {
     const brandDetailsPopoverRef = useRef<HTMLDivElement>(null);
 
     const brand = brands.find(
-        (brand) => brand.slug === campaign.target.liquityV2Brand.name,
+        (brand) => brand.slug === campaign.target.brand.name,
     );
     const BrandLogo = brand?.logo;
 

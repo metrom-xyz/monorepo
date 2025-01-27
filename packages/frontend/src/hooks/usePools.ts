@@ -28,9 +28,8 @@ export function usePools(
                 });
                 return pools;
             } catch (error) {
-                throw new Error(
-                    `Could not fetch pools for dex ${dex}: ${error}`,
-                );
+                console.error(`Could not fetch pools for dex ${dex}: ${error}`);
+                throw error;
             }
         },
         refetchOnMount: false,

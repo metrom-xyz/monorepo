@@ -37,9 +37,10 @@ export function useKpiMeasurements(campaign?: Campaign): {
                     to,
                 });
             } catch (error) {
-                throw new Error(
+                console.error(
                     `Could not fetch KPI measurements for campaign with id ${campaign.id} in chain with id ${campaign.chainId}: ${error}`,
                 );
+                throw error;
             }
         },
         enabled: !!campaign && !!campaign.specification?.kpi,
