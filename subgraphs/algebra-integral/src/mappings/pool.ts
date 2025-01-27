@@ -18,7 +18,7 @@ import {
     getFeeAdjustedAmount,
     getOrCreateTick,
     getPoolOrThrow,
-    getSortedPoolTokens,
+    getPrice,
 } from "../commons";
 import { NON_FUNGIBLE_POSITION_MANAGER_ADDRESS } from "../addresses";
 
@@ -30,6 +30,7 @@ export function handleInitialize(event: InitializeEvent): void {
         );
 
     pool.tick = BigInt.fromI32(event.params.tick);
+    pool.price = getPrice(event.params.price, pool.token0, pool.token1);
     pool.save();
 }
 
@@ -42,6 +43,13 @@ export function handleFee(event: FeeEvent): void {
 export function handleSwap(event: SwapEvent): void {
     let pool = getPoolOrThrow(event.address);
     pool.liquidity = event.params.liquidity;
+    pool.token0Tvl = pool.token0Tvl.plus(
+        getFeeAdjustedAmount(event.params.amount0, pool.fee),
+    );
+    pool.token1Tvl = pool.token1Tvl.plus(
+        getFeeAdjustedAmount(event.params.amount1, pool.fee),
+    );
+    pool.price = getPrice(event.params.price, pool.token0, pool.token1);
 
     let newTick = BigInt.fromI32(event.params.tick);
     if (newTick != pool.tick) {
@@ -57,18 +65,6 @@ export function handleSwap(event: SwapEvent): void {
     }
 
     pool.save();
-
-    let poolTokens = getSortedPoolTokens(pool);
-
-    poolTokens[0].tvl = poolTokens[0].tvl.plus(
-        getFeeAdjustedAmount(event.params.amount0, pool.fee),
-    );
-    poolTokens[0].save();
-
-    poolTokens[1].tvl = poolTokens[1].tvl.plus(
-        getFeeAdjustedAmount(event.params.amount1, pool.fee),
-    );
-    poolTokens[1].save();
 }
 
 function getDirectPositionId(
@@ -129,23 +125,17 @@ function getDirectPositionOrThrow(
 
 export function handleMint(event: MintEvent): void {
     let pool = getPoolOrThrow(event.address);
+    pool.token0Tvl = pool.token0Tvl.plus(event.params.amount0);
+    pool.token1Tvl = pool.token1Tvl.plus(event.params.amount1);
 
     if (
         pool.tick !== null &&
         BigInt.fromI32(event.params.bottomTick).le(pool.tick) &&
         BigInt.fromI32(event.params.topTick).gt(pool.tick)
-    ) {
+    )
         pool.liquidity = pool.liquidity.plus(event.params.liquidityAmount);
-        pool.save();
-    }
 
-    let poolTokens = getSortedPoolTokens(pool);
-
-    poolTokens[0].tvl = poolTokens[0].tvl.plus(event.params.amount0);
-    poolTokens[0].save();
-
-    poolTokens[1].tvl = poolTokens[1].tvl.plus(event.params.amount1);
-    poolTokens[1].save();
+    pool.save();
 
     let lowerTick = getOrCreateTick(pool.id, event.params.bottomTick);
     lowerTick.liquidityGross = lowerTick.liquidityGross.plus(
@@ -192,23 +182,17 @@ export function handleMint(event: MintEvent): void {
 
 export function handleBurn(event: BurnEvent): void {
     let pool = getPoolOrThrow(event.address);
+    pool.token0Tvl = pool.token0Tvl.minus(event.params.amount0);
+    pool.token1Tvl = pool.token1Tvl.minus(event.params.amount1);
 
     if (
         pool.tick !== null &&
         BigInt.fromI32(event.params.bottomTick).le(pool.tick) &&
         BigInt.fromI32(event.params.topTick).gt(pool.tick)
-    ) {
+    )
         pool.liquidity = pool.liquidity.plus(event.params.liquidityAmount);
-        pool.save();
-    }
 
-    let poolTokens = getSortedPoolTokens(pool);
-
-    poolTokens[0].tvl = poolTokens[0].tvl.minus(event.params.amount0);
-    poolTokens[0].save();
-
-    poolTokens[1].tvl = poolTokens[1].tvl.minus(event.params.amount1);
-    poolTokens[1].save();
+    pool.save();
 
     let lowerTick = getOrCreateTick(pool.id, event.params.bottomTick);
     lowerTick.liquidityGross = lowerTick.liquidityGross.minus(
