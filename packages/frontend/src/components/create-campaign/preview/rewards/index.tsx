@@ -2,9 +2,9 @@ import type { CampaignPayload } from "@/src/types";
 import { TextField, Typography } from "@metrom-xyz/ui";
 import type { SupportedChain } from "@metrom-xyz/contracts";
 import { useTranslations } from "next-intl";
-import { useChainId, useReadContract } from "wagmi";
+import { useAccount, useChainId, useReadContract } from "wagmi";
 import { Dayjs } from "dayjs";
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
     formatPercentage,
     formatTokenAmount,
@@ -27,6 +27,9 @@ export function Rewards({ rewards, startDate, endDate }: RewardsProps) {
     const t = useTranslations("campaignPreview.rewards");
     const chain: SupportedChain = useChainId();
     const chainData = useChainData(chain);
+    const { address: connectedAccount } = useAccount();
+
+    const [resolvedFee, setResolvedFee] = useState<number>();
 
     const totalRewardsUsdAmount = useMemo(() => {
         if (!rewards) return 0;
@@ -47,11 +50,25 @@ export function Rewards({ rewards, startDate, endDate }: RewardsProps) {
         return daysDuration >= 1 ? totalRewardsUsdAmount / daysDuration : 0;
     }, [startDate, endDate, totalRewardsUsdAmount]);
 
-    const { data: fee } = useReadContract({
+    const { data: protocolFee } = useReadContract({
         address: chainData?.metromContract.address,
         abi: metromAbi,
         functionName: "fee",
     });
+
+    const { data: feeRebate } = useReadContract({
+        address: chainData?.metromContract.address,
+        abi: metromAbi,
+        functionName: "feeRebate",
+        args: connectedAccount && [connectedAccount],
+    });
+
+    useEffect(() => {
+        if (protocolFee !== undefined && feeRebate !== undefined) {
+            const resolvedFeeRebate = feeRebate / FEE_UNIT;
+            setResolvedFee(protocolFee - protocolFee * resolvedFeeRebate);
+        }
+    }, [feeRebate, protocolFee]);
 
     return (
         <div className={styles.root}>
@@ -100,18 +117,20 @@ export function Rewards({ rewards, startDate, endDate }: RewardsProps) {
                     label={t("total")}
                     value={formatUsdAmount(totalRewardsUsdAmount)}
                 />
-                {fee && (
+                {resolvedFee && (
                     <TextField
                         boxed
                         label={t("fee")}
                         value={
                             <div className={styles.feeText}>
                                 <Typography weight="medium" size="xl">
-                                    {formatPercentage((fee / FEE_UNIT) * 100)}
+                                    {formatPercentage(
+                                        (resolvedFee / FEE_UNIT) * 100,
+                                    )}
                                 </Typography>
                                 <Typography weight="medium" light>
                                     {formatUsdAmount(
-                                        (totalRewardsUsdAmount * fee) /
+                                        (totalRewardsUsdAmount * resolvedFee) /
                                             FEE_UNIT,
                                     )}
                                 </Typography>
