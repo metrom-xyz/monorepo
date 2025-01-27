@@ -5,7 +5,7 @@ import {
     Bytes,
     ethereum,
 } from "@graphprotocol/graph-ts";
-import { Pool, PoolToken, Tick, Token } from "../generated/schema";
+import { Pool, Tick, Token } from "../generated/schema";
 import { NonFungiblePositionManager } from "../generated/NonFungiblePositionManager/NonFungiblePositionManager";
 import { Factory } from "../generated/Factory/Factory";
 import {
@@ -18,11 +18,17 @@ import { Erc20BytesName } from "../generated/Factory/Erc20BytesName";
 
 export const BI_0 = BigInt.zero();
 export const BI_1 = BigInt.fromI32(1);
+export const BI_1_000_000 = BigInt.fromI32(1_000_000);
 
 export const BD_0 = BigDecimal.zero();
 export const BD_1 = BigDecimal.fromString("1");
 export const BD_10 = BigDecimal.fromString("10");
 export const BD_TICK_BASE = BigDecimal.fromString("1.0001");
+export const BD_Q192 = BigDecimal.fromString(
+    BigInt.fromI32(2)
+        .pow(192 as u8)
+        .toString(),
+);
 
 export const NonFungiblePositionManagerContract =
     NonFungiblePositionManager.bind(NON_FUNGIBLE_POSITION_MANAGER_ADDRESS);
@@ -46,38 +52,6 @@ export function getTokenOrThrow(address: Address): Token {
     if (token != null) return token;
 
     throw new Error(`Could not find token with address ${address.toHex()}`);
-}
-
-function getPoolTokenId(poolAddress: Address, tokenAddress: Address): Bytes {
-    return poolAddress.concat(tokenAddress);
-}
-
-export function getSortedPoolTokens(pool: Pool): PoolToken[] {
-    let sortedPoolTokenIds = pool.tokens.sort((a, b) => {
-        for (let i = 0; i < 40; i++) {
-            let aByte = a[i];
-            let bByte = b[i];
-
-            if (aByte < bByte) {
-                return -1;
-            } else if (aByte > bByte) {
-                return 1;
-            }
-        }
-        return 0;
-    });
-
-    let poolToken0Id = sortedPoolTokenIds[0];
-    let poolToken0 = PoolToken.load(poolToken0Id);
-    if (poolToken0 == null)
-        throw new Error(`Could not find pool token 0 with id ${poolToken0Id}`);
-
-    let poolToken1Id = sortedPoolTokenIds[1];
-    let poolToken1 = PoolToken.load(poolToken1Id);
-    if (poolToken1 == null)
-        throw new Error(`Could not find pool token 1 with id ${poolToken1Id}`);
-
-    return [poolToken0, poolToken1];
 }
 
 export function fetchTokenSymbol(address: Address): string | null {
@@ -132,22 +106,6 @@ export function getOrCreateToken(address: Address): Token | null {
     return token;
 }
 
-export function getOrCreatePoolToken(
-    poolAddress: Address,
-    tokenAddress: Address,
-): PoolToken | null {
-    let id = getPoolTokenId(poolAddress, tokenAddress);
-    let poolToken = PoolToken.load(id);
-    if (poolToken !== null) return poolToken;
-
-    poolToken = new PoolToken(id);
-    poolToken.data = tokenAddress;
-    poolToken.tvl = BI_0;
-    poolToken.save();
-
-    return poolToken;
-}
-
 export function getOrCreateTick(poolAddress: Bytes, idx: i32): Tick {
     let id = poolAddress.concat(Bytes.fromI32(idx));
     let tick = Tick.load(id);
@@ -163,4 +121,39 @@ export function getOrCreateTick(poolAddress: Bytes, idx: i32): Tick {
     tick.save();
 
     return tick;
+}
+
+export function getFeeAdjustedAmount(amount: BigInt, fee: BigInt): BigInt {
+    // fees are taken from the input amount, so if the given amount
+    // is negative (i.e. removing from pool, we just leave the
+    // amount unchanged)
+    return amount.lt(BI_0)
+        ? amount
+        : amount.times(BI_1_000_000.minus(fee)).div(BI_1_000_000);
+}
+
+function exponentToBigDecimal(decimals: BigInt): BigDecimal {
+    let result = "1";
+
+    for (let i = 0; i < decimals.toI32(); i++) {
+        result += "0";
+    }
+
+    return BigDecimal.fromString(result);
+}
+
+export function getPrice(
+    sqrtPriceX96: BigInt,
+    token0Id: Bytes,
+    token1Id: Bytes,
+): BigDecimal {
+    let token0 = getTokenOrThrow(changetype<Address>(token0Id));
+    let token1 = getTokenOrThrow(changetype<Address>(token1Id));
+
+    return sqrtPriceX96
+        .times(sqrtPriceX96)
+        .toBigDecimal()
+        .div(BD_Q192)
+        .times(exponentToBigDecimal(token0.decimals))
+        .div(exponentToBigDecimal(token1.decimals));
 }

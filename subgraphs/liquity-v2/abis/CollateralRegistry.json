@@ -201,5 +201,98 @@
             }
         ],
         "anonymous": false
+    },
+    {
+        "inputs": [
+            { "internalType": "address", "name": "_token", "type": "address" },
+            {
+                "internalType": "contract ITroveManager",
+                "name": "_troveManager",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "_stabilityPoolAddress",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "_borrowerOperationsAddress",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "_activePoolAddress",
+                "type": "address"
+            }
+        ],
+        "name": "addNewBranch",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "token",
+                "type": "address"
+            }
+        ],
+        "name": "TokenAdded",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "token",
+                "type": "address"
+            }
+        ],
+        "name": "TokenRemoved",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "token",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "contract ITroveManager",
+                "name": "troveManager",
+                "type": "address"
+            }
+        ],
+        "name": "TroveManagerAdded",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "token",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "contract ITroveManager",
+                "name": "troveManager",
+                "type": "address"
+            }
+        ],
+        "name": "TroveManagerRemoved",
+        "type": "event"
     }
 ]

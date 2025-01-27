@@ -10,7 +10,6 @@ import {
     getOrCreatePosition,
     getPoolOrThrow,
     getPositionOrThrow,
-    getSortedPoolTokens,
 } from "../commons";
 import { LiquidityChange } from "../../generated/schema";
 
@@ -19,16 +18,18 @@ export function handleTokenExchange(event: TokenExchangeEvent): void {
     let soldId = event.params.sold_id.toI32();
 
     let pool = getPoolOrThrow(event.address);
-    let poolTokens = getSortedPoolTokens(pool);
-    poolTokens[boughtId].tvl = poolTokens[boughtId].tvl.minus(
-        event.params.tokens_bought,
-    );
-    poolTokens[boughtId].save();
 
-    poolTokens[soldId].tvl = poolTokens[soldId].tvl.plus(
-        event.params.tokens_sold,
-    );
-    poolTokens[soldId].save();
+    if (boughtId === 0)
+        pool.token0Tvl = pool.token0Tvl.minus(event.params.tokens_bought);
+    else if (boughtId === 1)
+        pool.token1Tvl = pool.token1Tvl.minus(event.params.tokens_bought);
+    else throw new Error("Bought id greater than 1 for 2-token pool");
+
+    if (soldId === 0)
+        pool.token0Tvl = pool.token0Tvl.plus(event.params.tokens_sold);
+    else if (soldId === 1)
+        pool.token1Tvl = pool.token1Tvl.plus(event.params.tokens_sold);
+    else throw new Error("Sold id greater than 1 for 2-token pool");
 
     pool.save();
 }
@@ -40,16 +41,10 @@ export function handleAddLiquidity(event: AddLiquidityEvent): void {
         return;
     }
 
+    pool.token0Tvl = pool.token0Tvl.plus(event.params.token_amounts[0]);
+    pool.token1Tvl = pool.token1Tvl.plus(event.params.token_amounts[1]);
     pool.liquidity = event.params.token_supply;
     pool.save();
-
-    let poolTokens = getSortedPoolTokens(pool);
-
-    poolTokens[0].tvl = poolTokens[0].tvl.plus(event.params.token_amounts[0]);
-    poolTokens[0].save();
-
-    poolTokens[1].tvl = poolTokens[1].tvl.plus(event.params.token_amounts[1]);
-    poolTokens[1].save();
 
     let position = getOrCreatePosition(event.address, event.params.provider);
     position.liquidity = position.liquidity.plus(addedLiquidity);
@@ -72,15 +67,9 @@ export function handleRemoveLiquidity(event: RemoveLiquidityEvent): void {
     }
 
     pool.liquidity = event.params.token_supply;
+    pool.token0Tvl = pool.token0Tvl.minus(event.params.token_amounts[0]);
+    pool.token1Tvl = pool.token1Tvl.minus(event.params.token_amounts[1]);
     pool.save();
-
-    let poolTokens = getSortedPoolTokens(pool);
-
-    poolTokens[0].tvl = poolTokens[0].tvl.minus(event.params.token_amounts[0]);
-    poolTokens[0].save();
-
-    poolTokens[1].tvl = poolTokens[1].tvl.minus(event.params.token_amounts[1]);
-    poolTokens[1].save();
 
     let position = getPositionOrThrow(event.address, event.params.provider);
     position.liquidity = position.liquidity.minus(removedLiquidity);
@@ -104,13 +93,12 @@ export function handleRemoveLiquidityOne(event: RemoveLiquidityOneEvent): void {
     pool.liquidity = pool.liquidity.minus(event.params.token_amount);
     pool.save();
 
-    let poolTokens = getSortedPoolTokens(pool);
-
     let index = event.params.index.toI32();
-    poolTokens[index].tvl = poolTokens[index].tvl.minus(
-        event.params.coin_amount,
-    );
-    poolTokens[index].save();
+    if (index === 0)
+        pool.token0Tvl = pool.token0Tvl.minus(event.params.coin_amount);
+    else if (index === 1)
+        pool.token1Tvl = pool.token1Tvl.minus(event.params.coin_amount);
+    else throw new Error("Index greater than 1 for 2-token pool");
 
     let position = getPositionOrThrow(event.address, event.params.provider);
     position.liquidity = position.liquidity.minus(event.params.token_amount);
@@ -135,15 +123,9 @@ export function handleRemoveLiquidityImbalance(
     }
 
     pool.liquidity = event.params.token_supply;
+    pool.token0Tvl = pool.token0Tvl.minus(event.params.token_amounts[0]);
+    pool.token1Tvl = pool.token1Tvl.minus(event.params.token_amounts[1]);
     pool.save();
-
-    let poolTokens = getSortedPoolTokens(pool);
-
-    poolTokens[0].tvl = poolTokens[0].tvl.minus(event.params.token_amounts[0]);
-    poolTokens[0].save();
-
-    poolTokens[1].tvl = poolTokens[1].tvl.minus(event.params.token_amounts[1]);
-    poolTokens[1].save();
 
     let position = getPositionOrThrow(event.address, event.params.provider);
     position.liquidity = position.liquidity.minus(removedLiquidity);

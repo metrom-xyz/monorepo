@@ -16,7 +16,6 @@ dataSources:
       file: ./src/mappings/debt-token.ts
       entities:
         - Collateral
-        - CollateralAddresses
         - Token
       abis:
         - name: Erc20
@@ -35,6 +34,32 @@ dataSources:
         - event: CollateralRegistryAddressChanged(address)
           handler: handleCollateralRegistryAddressChanged
 templates:
+  - name: CollateralRegistry
+    kind: ethereum/contract
+    network: {{network}}
+    source:
+      abi: CollateralRegistry
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.9
+      language: wasm/assemblyscript
+      file: ./src/mappings/collateral-registry.ts
+      entities:
+        - Collateral
+      abis:
+        - name: Erc20
+          file: ./abis/Erc20.json
+        - name: Erc20BytesName
+          file: ./abis/Erc20BytesName.json
+        - name: Erc20BytesSymbol
+          file: ./abis/Erc20BytesSymbol.json
+        - name: TroveManager
+          file: ./abis/TroveManager.json
+        - name: CollateralRegistry
+          file: ./abis/CollateralRegistry.json
+      eventHandlers:
+        - event: TroveManagerAdded(address,address)
+          handler: handleTroveManagerAdded
   - name: TroveManager
     kind: ethereum/contract
     network: {{network}}

@@ -38,6 +38,10 @@
     @apply flex items-center gap-1;
 }
 
+.zoomButtons {
+    @apply flex items-center gap-1;
+}
+
 .zoomButton {
     @apply w-8 h-8 rounded-md;
 }

@@ -5,7 +5,7 @@ import {
     Bytes,
     ethereum,
 } from "@graphprotocol/graph-ts";
-import { Pool, Position, Token, PoolToken } from "../generated/schema";
+import { Pool, Position, Token } from "../generated/schema";
 import { Erc20 } from "../generated/Factory/Erc20";
 import { Erc20BytesSymbol } from "../generated/Factory/Erc20BytesSymbol";
 import { Erc20BytesName } from "../generated/Factory/Erc20BytesName";
@@ -74,45 +74,6 @@ export function getTokenOrThrow(address: Address): Token {
     throw new Error(`Could not find token with address ${address.toHex()}`);
 }
 
-function getPoolTokenId(poolAddress: Address, tokenAddress: Address): Bytes {
-    return poolAddress.concat(tokenAddress);
-}
-
-export function getSortedPoolTokens(pool: Pool): PoolToken[] {
-    let sortedPoolTokenIds = pool.tokens.sort((a, b) => {
-        for (let i = 0; i < 40; i++) {
-            let aByte = a[i];
-            let bByte = b[i];
-
-            if (aByte < bByte) {
-                return -1;
-            } else if (aByte > bByte) {
-                return 1;
-            }
-        }
-        return 0;
-    });
-
-    let poolToken0Id = sortedPoolTokenIds[0];
-    let poolToken0 = PoolToken.load(poolToken0Id);
-    if (poolToken0 == null)
-        throw new Error(`Could not find pool token 0 with id ${poolToken0Id}`);
-
-    let poolToken1Id = sortedPoolTokenIds[1];
-    let poolToken1 = PoolToken.load(poolToken1Id);
-    if (poolToken1 == null)
-        throw new Error(`Could not find pool token 1 with id ${poolToken1Id}`);
-
-    if (sortedPoolTokenIds.length === 2) return [poolToken0, poolToken1];
-
-    let poolToken2Id = sortedPoolTokenIds[2];
-    let poolToken2 = PoolToken.load(poolToken2Id);
-    if (poolToken2 == null)
-        throw new Error(`Could not find pool token 2 with id ${poolToken2Id}`);
-
-    return [poolToken0, poolToken1, poolToken2];
-}
-
 export function fetchTokenSymbol(address: Address): string | null {
     let contract = Erc20.bind(address);
     let result = contract.try_symbol();
@@ -172,20 +133,4 @@ export function getOrCreateToken(address: Address): Token | null {
     token.save();
 
     return token;
-}
-
-export function getOrCreatePoolToken(
-    poolAddress: Address,
-    tokenAddress: Address,
-): PoolToken | null {
-    let id = getPoolTokenId(poolAddress, tokenAddress);
-    let poolToken = PoolToken.load(id);
-    if (poolToken !== null) return poolToken;
-
-    poolToken = new PoolToken(id);
-    poolToken.data = tokenAddress;
-    poolToken.tvl = BI_0;
-    poolToken.save();
-
-    return poolToken;
 }

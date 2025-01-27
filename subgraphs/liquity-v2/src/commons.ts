@@ -1,6 +1,14 @@
-import { Address, BigInt, Bytes, ethereum } from "@graphprotocol/graph-ts";
+import {
+    Address,
+    BigInt,
+    Bytes,
+    DataSourceContext,
+    ethereum,
+    log,
+} from "@graphprotocol/graph-ts";
 import {
     Collateral,
+    CollateralRegistry,
     StabilityPool,
     StabilityPoolPosition,
     Trove,
@@ -9,6 +17,11 @@ import { TroveNFT as TroveNFTContract } from "../generated/templates/TroveManage
 import { Erc20 } from "../generated/DebtToken/Erc20";
 import { Erc20BytesSymbol } from "../generated/DebtToken/Erc20BytesSymbol";
 import { Erc20BytesName } from "../generated/DebtToken/Erc20BytesName";
+import { TroveManager as TroveManagerContract } from "../generated/DebtToken/TroveManager";
+import {
+    StabilityPool as StabilityPoolTemplate,
+    TroveManager as TroveManagerTemplate,
+} from "../generated/templates";
 
 export const ZERO_ADDRESS = Address.zero();
 export const BI_0 = BigInt.zero();
@@ -115,4 +128,81 @@ export function fetchTokenDecimals(address: Address): BigInt | null {
     let contract = Erc20.bind(address);
     let result = contract.try_decimals();
     return result.reverted ? null : result.value;
+}
+
+export function getOrCreateRegistry(address: Address): CollateralRegistry {
+    let registry = CollateralRegistry.load(address);
+    if (registry !== null) return registry;
+
+    registry = new CollateralRegistry(address);
+    registry.collateralsAmount = 0;
+    registry.save();
+
+    return registry;
+}
+
+export function getRegistryOrThrow(address: Address): CollateralRegistry {
+    let registry = CollateralRegistry.load(address);
+    if (registry !== null) return registry;
+
+    throw new Error(`Could not find registry with address ${address}`);
+}
+
+export function createCollateral(
+    index: i32,
+    tokenAddress: Address,
+    troveManagerAddress: Address,
+    regsitryAddress: Address,
+): void {
+    let collateral = Collateral.load(tokenAddress);
+    if (collateral !== null) return;
+
+    let tokenSymbol = fetchTokenSymbol(tokenAddress);
+    if (tokenSymbol === null) {
+        log.warning(
+            "Could not correctly resolve ERC20 collateral token symbol at address {}, skipping indexing",
+            [tokenAddress.toString()],
+        );
+        return;
+    }
+
+    let tokenName = fetchTokenName(tokenAddress);
+    if (tokenName === null) {
+        log.warning(
+            "Could not correctly resolve ERC20 collateral token name at address {}, skipping indexing",
+            [tokenAddress.toString()],
+        );
+        return;
+    }
+
+    let tokenDecimals = fetchTokenDecimals(tokenAddress);
+    if (tokenDecimals === null) {
+        log.warning(
+            "Could not correctly resolve ERC20 collateral token decimals at address {}, skipping indexing",
+            [tokenAddress.toString()],
+        );
+        return;
+    }
+
+    collateral = new Collateral(tokenAddress);
+    collateral.registry = regsitryAddress;
+    collateral.name = tokenName;
+    collateral.symbol = tokenSymbol;
+    collateral.decimals = tokenDecimals;
+    collateral.index = index;
+    collateral.deposited = BI_0;
+    collateral.debt = BI_0;
+    collateral.save();
+
+    let troveManagerContract = TroveManagerContract.bind(troveManagerAddress);
+
+    let context = new DataSourceContext();
+    context.setBytes("address:troveNft", troveManagerContract.troveNFT());
+    context.setBytes("collateralId", collateral.id);
+
+    TroveManagerTemplate.createWithContext(troveManagerAddress, context);
+    StabilityPoolTemplate.createWithContext(
+        Address.fromBytes(troveManagerContract.stabilityPool()),
+        context,
+    );
 }

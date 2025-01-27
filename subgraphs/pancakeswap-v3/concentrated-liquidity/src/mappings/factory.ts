@@ -1,8 +1,8 @@
-import { BigInt, Address, log } from "@graphprotocol/graph-ts";
+import { BigInt, log } from "@graphprotocol/graph-ts";
 import { PoolCreated as PoolCreatedEvent } from "../../generated/Factory/Factory";
 import { Pool } from "../../generated/schema";
 import { Pool as PoolTemplate } from "../../generated/templates";
-import { BI_0, getOrCreatePoolToken, getOrCreateToken } from "../commons";
+import { BD_0, BI_0, getOrCreateToken } from "../commons";
 
 export function handlePoolCreated(event: PoolCreatedEvent): void {
     let token0 = getOrCreateToken(event.params.token0);
@@ -23,33 +23,13 @@ export function handlePoolCreated(event: PoolCreatedEvent): void {
         return;
     }
 
-    let poolToken0 = getOrCreatePoolToken(
-        event.params.pool,
-        changetype<Address>(token0.id),
-    );
-    if (poolToken0 === null) {
-        log.warning(
-            "Could not create pool token object for token 0 at address {}, skipping pool indexing",
-            [event.params.token0.toString()],
-        );
-        return;
-    }
-
-    let poolToken1 = getOrCreatePoolToken(
-        event.params.pool,
-        changetype<Address>(token1.id),
-    );
-    if (poolToken1 === null) {
-        log.warning(
-            "Could not create pool token object for token 1 at address {}, skipping pool indexing",
-            [event.params.token1.toString()],
-        );
-        return;
-    }
-
     let pool = new Pool(event.params.pool);
-    pool.tokens = [poolToken0.id, poolToken1.id];
+    pool.token0 = token0.id;
+    pool.token1 = token1.id;
+    pool.token0Tvl = BI_0;
+    pool.token1Tvl = BI_0;
     pool.tick = BI_0;
+    pool.price = BD_0;
     pool.fee = BigInt.fromU32(event.params.fee);
     pool.liquidity = BI_0;
     pool.save();
