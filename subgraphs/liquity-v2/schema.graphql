@@ -1,14 +1,13 @@
-type CollateralChangeEvent @entity(immutable: true) {
+type CollateralRegistry @entity {
     id: Bytes!
-    timestamp: BigInt!
-    blockNumber: BigInt!
-    collateral: Collateral!
-    trove: Trove!
-    delta: BigInt!
+    collateralsAmount: Int!
+
+    collaterals: [Collateral!]! @derivedFrom(field: "registry")
 }
 
 type Collateral @entity {
     id: Bytes!
+    registry: CollateralRegistry!
     name: String!
     symbol: String!
     decimals: BigInt!
@@ -18,6 +17,15 @@ type Collateral @entity {
 
     troves: [Trove!]! @derivedFrom(field: "collateral")
     changeEvents: [CollateralChangeEvent!]! @derivedFrom(field: "collateral")
+}
+
+type CollateralChangeEvent @entity(immutable: true) {
+    id: Bytes!
+    timestamp: BigInt!
+    blockNumber: BigInt!
+    collateral: Collateral!
+    trove: Trove!
+    delta: BigInt!
 }
 
 type DebtChangeEvent @entity(immutable: true) {
