@@ -32,13 +32,13 @@ export interface LiquityV2CollateralBrand {
 export interface LiquityV2DebtTarget {
     type: TargetType.LiquityV2Debt;
     chainId: number;
-    liquityV2Brand: LiquityV2DebtBrand;
+    brand: LiquityV2DebtBrand;
 }
 
 export interface LiquityV2CollateralTarget {
     type: TargetType.LiquityV2Collateral;
     chainId: number;
-    liquityV2Brand: LiquityV2CollateralBrand;
+    brand: LiquityV2CollateralBrand;
 }
 
 export type CampaignTarget =

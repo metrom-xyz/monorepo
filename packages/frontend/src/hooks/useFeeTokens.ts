@@ -17,7 +17,8 @@ export function useFeeTokens(): {
             try {
                 return await metromApiClient.fetchFeeTokens({ chainId });
             } catch (error) {
-                throw new Error(`Could not fetch fee tokens: ${error}`);
+                console.error(`Could not fetch fee tokens: ${error}`);
+                throw error;
             }
         },
     });

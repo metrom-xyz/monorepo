@@ -22,7 +22,8 @@ export function useCampaigns(): {
                     );
                 });
             } catch (error) {
-                throw new Error(`Could not fetch campaigns: ${error}`);
+                console.error(`Could not fetch campaigns: ${error}`);
+                throw error;
             }
         },
     });

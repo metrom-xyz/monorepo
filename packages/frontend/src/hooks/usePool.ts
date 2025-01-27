@@ -24,9 +24,10 @@ export function usePool(
                     address,
                 });
             } catch (error) {
-                throw new Error(
+                console.error(
                     `Could not fetch pools with address ${address}: ${error}`,
                 );
+                throw error;
             }
         },
         enabled: !!address,

@@ -32,9 +32,10 @@ export function useActivities(): {
 
                 return activities;
             } catch (error) {
-                throw new Error(
+                console.error(
                     `Could not fetch activity for address ${address} in chain id ${chainId}: ${error}`,
                 );
+                throw error;
             }
         },
         enabled: !!chainId && !!address,

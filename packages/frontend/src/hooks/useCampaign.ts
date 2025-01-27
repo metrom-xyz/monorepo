@@ -32,9 +32,10 @@ export function useCampaign(
                     getCampaignName(t, campaign),
                 );
             } catch (error) {
-                throw new Error(
+                console.error(
                     `Could not fetch campaign ${id} for chain with id ${chainId}: ${error}`,
                 );
+                throw error;
             }
         },
         refetchOnMount: false,

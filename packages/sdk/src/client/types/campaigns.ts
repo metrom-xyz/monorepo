@@ -15,7 +15,7 @@ export interface BackendAmmPoolLiquidityTarget {
 export interface BackendLiquityV2DebtTarget {
     type: "liquity-v2-debt";
     chainId: number;
-    liquityV2Brand: string;
+    brand: string;
 }
 
 export interface BackendTokenDistributable {

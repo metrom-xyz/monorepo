@@ -36,9 +36,10 @@ export function useClaims(): {
                 });
                 return rawClaims;
             } catch (error) {
-                throw new Error(
+                console.error(
                     `Could not fetch raw claims for address ${address}: ${error}`,
                 );
+                throw error;
             }
         },
         refetchOnWindowFocus: false,
