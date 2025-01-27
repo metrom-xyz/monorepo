@@ -181,7 +181,7 @@ export class MetromApiClient {
 
     async fetchAmmPools(params: FetchPoolsParams): Promise<AmmPool[]> {
         const url = new URL(
-            `v1/pools/${params.chainId}/${params.dex}`,
+            `v1/amm-pools/${params.chainId}/${params.dex}`,
             this.baseUrl,
         );
 
@@ -209,7 +209,7 @@ export class MetromApiClient {
 
     async fetchPool(params: FetchPoolParams): Promise<AmmPool | null> {
         const url = new URL(
-            `v1/pools/${params.chainId}/${params.address}`,
+            `v1/amm-pools/${params.chainId}/${params.address}`,
             this.baseUrl,
         );
 
