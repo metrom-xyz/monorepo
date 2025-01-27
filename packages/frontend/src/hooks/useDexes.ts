@@ -1,8 +1,8 @@
 import { CHAIN_DATA } from "../commons";
-import type { DexInfo } from "../types";
+import { type DexInfo, ProtocolType } from "../types";
 
 export function useDexes(): DexInfo[] {
     return Object.values(CHAIN_DATA).flatMap((chainData) => {
-        return chainData.dexes.map((dex) => ({ ...dex }));
+        return chainData.protocols[ProtocolType.Dex].map((dex) => ({ ...dex }));
     });
 }

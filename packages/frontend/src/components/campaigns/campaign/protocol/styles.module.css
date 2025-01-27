@@ -7,6 +7,6 @@
     @apply w-[1.25rem] h-[1.25rem] col-span-1;
 }
 
-.dexDetailsContainer {
+.detailsContainer {
     @apply p-3;
 }

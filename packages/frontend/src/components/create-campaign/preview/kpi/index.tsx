@@ -2,15 +2,15 @@ import { Accordion, TextField, Typography } from "@metrom-xyz/ui";
 import { KpiSimulationChart } from "@/src/components/kpi-simulation-chart";
 import { useTranslations } from "next-intl";
 import { formatPercentage, formatUsdAmount } from "@/src/utils/format";
-import type { CampaignPayload } from "@/src/types";
+import type { BaseCampaignPayload } from "@/src/types";
 import { useMemo } from "react";
 
 import styles from "./styles.module.css";
 
 interface KpiProps {
     poolUsdTvl?: number | null;
-    rewards: CampaignPayload["tokens"];
-    specification: CampaignPayload["kpiSpecification"];
+    rewards: BaseCampaignPayload["tokens"];
+    specification: BaseCampaignPayload["kpiSpecification"];
 }
 
 export function Kpi({ poolUsdTvl, rewards, specification }: KpiProps) {

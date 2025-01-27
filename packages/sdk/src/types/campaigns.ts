@@ -9,6 +9,8 @@ import type {
 export enum TargetType {
     AmmPoolLiquidity = "amm-pool-liquidity",
     LiquityV2Debt = "liquity-v2-debt",
+    LiquityV2Collateral = "liquity-v2-collateral",
+    LiquityV2StabilityPool = "liquity-v2-stability-pool",
 }
 
 export interface AmmPoolLiquidityTarget {
@@ -22,11 +24,27 @@ export interface LiquityV2DebtBrand {
     usdDebt: number;
 }
 
+export interface LiquityV2CollateralBrand {
+    name: string;
+    // TODO: complete type
+}
+
 export interface LiquityV2DebtTarget {
     type: TargetType.LiquityV2Debt;
     chainId: number;
     liquityV2Brand: LiquityV2DebtBrand;
 }
+
+export interface LiquityV2CollateralTarget {
+    type: TargetType.LiquityV2Collateral;
+    chainId: number;
+    liquityV2Brand: LiquityV2CollateralBrand;
+}
+
+export type CampaignTarget =
+    | AmmPoolLiquidityTarget
+    | LiquityV2DebtTarget
+    | LiquityV2CollateralTarget;
 
 export interface TokenDistributable {
     token: UsdPricedErc20Token;
@@ -94,7 +112,7 @@ export class Campaign {
         public readonly from: number,
         public readonly to: number,
         public readonly createdAt: number,
-        public readonly target: AmmPoolLiquidityTarget | LiquityV2DebtTarget,
+        public readonly target: CampaignTarget,
         public readonly distributables:
             | TokenDistributables
             | PointDistributables,
@@ -136,5 +154,7 @@ export interface TargetedCampaign<T extends TargetType> extends Campaign {
         ? AmmPoolLiquidityTarget
         : T extends TargetType.LiquityV2Debt
           ? LiquityV2DebtTarget
-          : never;
+          : T extends TargetType.LiquityV2Collateral
+            ? LiquityV2CollateralTarget
+            : never;
 }

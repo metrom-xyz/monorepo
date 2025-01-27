@@ -1,6 +1,7 @@
 import {
     Campaign,
-    TargetType,
+    type SupportedLiquityV2Brand,
+    type TargetType,
     type AmmPool,
     type AmmPoolLiquidityTarget,
     type DistributablesType,
@@ -11,7 +12,6 @@ import {
     type TokenDistributables,
     type UsdPricedOnChainAmount,
     type WhitelistedErc20Token,
-    type PriceRangeSpecification,
 } from "@metrom-xyz/sdk";
 import type { Dayjs } from "dayjs";
 import type { SVGProps, FunctionComponent } from "react";
@@ -22,12 +22,34 @@ type PropertyUnion<T> = {
 }[keyof T];
 export type SVGIcon = Omit<SVGProps<SVGSVGElement>, "dangerouslySetInnerHTML">;
 
+export enum ProtocolType {
+    Dex = "dex",
+    LiquityV2Brand = "liquity-v2-brand",
+}
+
 export interface Dex {
     slug: SupportedDex;
     name: string;
     addLiquidityUrl: string;
     supportsFetchAllPools: boolean;
     logo: FunctionComponent<SVGIcon>;
+}
+
+export interface LiquityV2Brand {
+    slug: SupportedLiquityV2Brand;
+    name: string;
+    actionUrls: Record<
+        | TargetType.LiquityV2Debt
+        | TargetType.LiquityV2Collateral
+        | TargetType.LiquityV2StabilityPool,
+        string
+    >;
+    logo: FunctionComponent<SVGIcon>;
+}
+
+export interface Protocols {
+    [ProtocolType.Dex]: Dex[];
+    [ProtocolType.LiquityV2Brand]: LiquityV2Brand[];
 }
 
 export enum RestrictionType {
@@ -56,10 +78,21 @@ export interface AugmentedPriceRangeSpecification {
     to: AugmentedPriceRangeBound;
 }
 
-export interface CampaignPayload {
+export enum CampaignKind {
+    AmmPoolLiquidity = 1,
+    LiquityV2Debt = 2,
+    LiquityV2Collateral = 3,
+    LiquityV2StabilityPool = 4,
+}
+
+export enum LiquityV2Action {
+    Debt = "debt",
+    Collateral = "collateral",
+    StabilityPool = "stabilty-pool",
+}
+
+export interface BaseCampaignPayload {
     rewardType?: RewardType;
-    dex?: DexInfo;
-    pool?: AmmPool;
     startDate?: Dayjs;
     endDate?: Dayjs;
     points?: number;
@@ -73,6 +106,18 @@ export interface CampaignPayload {
     };
 }
 
+export interface AmmPoolLiquidityCampaignPayload extends BaseCampaignPayload {
+    dex?: DexInfo;
+    pool?: AmmPool;
+    priceRangeSpecification?: AugmentedPriceRangeSpecification;
+}
+
+export interface LiquityV2CampaignPayload extends BaseCampaignPayload {
+    brand?: LiquityV2BrandInfo;
+    action?: LiquityV2Action;
+    collaterals?: Address[];
+}
+
 export interface CampaignPreviewTokenDistributables {
     type: DistributablesType.Tokens;
     tokens: [WhitelistedErc20TokenAmount, ...WhitelistedErc20TokenAmount[]];
@@ -84,17 +129,14 @@ export interface CampaignPreviewPointDistributables {
     points: number;
 }
 
-export class CampaignPreviewPayload {
+export class BaseCampaignPreviewPayload {
     constructor(
-        public readonly dex: DexInfo,
-        public readonly pool: AmmPool,
         public readonly startDate: Dayjs,
         public readonly endDate: Dayjs,
         public readonly distributables:
             | CampaignPreviewTokenDistributables
             | CampaignPreviewPointDistributables,
         public readonly kpiSpecification?: KpiSpecification,
-        public readonly priceRangeSpecification?: AugmentedPriceRangeSpecification,
         public readonly restrictions?: {
             type: RestrictionType;
             list: Address[];
@@ -108,13 +150,60 @@ export class CampaignPreviewPayload {
     }
 }
 
+export class AmmPoolLiquidityCampaignPreviewPayload extends BaseCampaignPreviewPayload {
+    public readonly kind: CampaignKind = CampaignKind.AmmPoolLiquidity;
+    constructor(
+        public readonly dex: DexInfo,
+        public readonly pool: AmmPool,
+        public readonly priceRangeSpecification?: AugmentedPriceRangeSpecification,
+        ...baseArgs: ConstructorParameters<typeof BaseCampaignPreviewPayload>
+    ) {
+        super(...baseArgs);
+    }
+}
+
+export class LiquityV2CampaignPreviewPayload extends BaseCampaignPreviewPayload {
+    public readonly kind: CampaignKind;
+
+    constructor(
+        public readonly brand: LiquityV2BrandInfo,
+        public readonly action: LiquityV2Action,
+        public readonly collaterals: Address[],
+        ...baseArgs: ConstructorParameters<typeof BaseCampaignPreviewPayload>
+    ) {
+        super(...baseArgs);
+
+        switch (action) {
+            case LiquityV2Action.StabilityPool:
+                this.kind = CampaignKind.LiquityV2StabilityPool;
+            case LiquityV2Action.Collateral:
+                this.kind = CampaignKind.LiquityV2Collateral;
+            case LiquityV2Action.Debt:
+                this.kind = CampaignKind.LiquityV2Debt;
+        }
+    }
+}
+
+export type CampaignPreviewPayload =
+    | AmmPoolLiquidityCampaignPreviewPayload
+    | LiquityV2CampaignPreviewPayload;
+
 export interface DistributablesCampaignPreviewPayload<
     T extends DistributablesType,
-> extends CampaignPreviewPayload {
+> extends BaseCampaignPreviewPayload {
     distributables: T extends DistributablesType.Tokens
         ? CampaignPreviewTokenDistributables
         : T extends DistributablesType.Points
           ? CampaignPreviewPointDistributables
+          : never;
+}
+
+export interface TargetedCampaignPreviewPayload<T extends TargetType>
+    extends BaseCampaignPreviewPayload {
+    target: T extends TargetType.AmmPoolLiquidity
+        ? AmmPoolLiquidityTarget
+        : T extends TargetType.LiquityV2Debt
+          ? LiquityV2DebtTarget
           : never;
 }
 
@@ -132,8 +221,15 @@ export type DexInfo = Pick<
     Dex,
     "slug" | "name" | "logo" | "supportsFetchAllPools"
 >;
+export type LiquityV2BrandInfo = Pick<LiquityV2Brand, "slug" | "name" | "logo">;
 
-export type CampaignPayloadPart = PropertyUnion<CampaignPayload>;
+export type BaseCampaignPayloadPart = PropertyUnion<BaseCampaignPayload>;
+
+export type AmmPoolLiquidityCampaignPayloadPart =
+    PropertyUnion<AmmPoolLiquidityCampaignPayload>;
+
+export type LiquityV2CampaignPayloadPart =
+    PropertyUnion<LiquityV2CampaignPayload>;
 
 export class NamedCampaign extends Campaign {
     constructor(

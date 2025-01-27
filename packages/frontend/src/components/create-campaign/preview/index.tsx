@@ -1,5 +1,8 @@
 import { Button, Typography, TextField, ErrorText } from "@metrom-xyz/ui";
-import { type CampaignPreviewPayload } from "@/src/types";
+import {
+    AmmPoolLiquidityCampaignPreviewPayload,
+    type CampaignPreviewPayload,
+} from "@/src/types";
 import {
     useChainId,
     usePublicClient,
@@ -17,15 +20,12 @@ import { ApproveTokensButton } from "./approve-tokens-button";
 import { Rewards } from "./rewards";
 import { Header } from "./header";
 import { formatAmount, formatUsdAmount } from "@/src/utils/format";
-import { getCampaignPreviewApr } from "@/src/utils/campaign";
-import { trackFathomEvent } from "@/src/utils/fathom";
 import {
-    type Hex,
-    zeroHash,
-    parseUnits,
-    formatUnits,
-    encodeAbiParameters,
-} from "viem";
+    buildCampaignDataBundle,
+    buildSpecificationBundle,
+    getCampaignPreviewApr,
+} from "@/src/utils/campaign";
+import { trackFathomEvent } from "@/src/utils/fathom";
 import {
     DistributablesType,
     SERVICE_URLS,
@@ -36,6 +36,7 @@ import { ENVIRONMENT } from "@/src/commons/env";
 import { Kpi } from "./kpi";
 import { AprChip } from "../../apr-chip";
 import { Range } from "./range";
+import { formatUnits, parseUnits, zeroHash, type Hex } from "viem";
 
 import styles from "./styles.module.css";
 
@@ -95,22 +96,22 @@ export function CampaignPreview({
     }, [payload.distributables]);
 
     const [tokensCampaignArgs, pointsCampaignArgs] = useMemo(() => {
-        const { pool, startDate, endDate } = payload;
+        const { kind, startDate, endDate } = payload;
 
-        if (!tokensApproved || !pool || !startDate || !endDate) return [[], []];
+        if (!tokensApproved || !startDate || !endDate) return [[], []];
 
         let tokenArgs = [];
         let pointArgs = [];
+
+        const data = buildCampaignDataBundle(payload);
+        if (!data) return [[], []];
 
         if (payload.isDistributing(DistributablesType.Tokens))
             tokenArgs.push({
                 from: startDate.unix(),
                 to: endDate.unix(),
-                kind: 1,
-                data: encodeAbiParameters(
-                    [{ name: "poolAddress", type: "address" }],
-                    [pool.address],
-                ),
+                kind,
+                data,
                 specificationHash,
                 rewards: payload.distributables.tokens.map((token) => ({
                     token: token.token.address,
@@ -122,11 +123,8 @@ export function CampaignPreview({
             pointArgs.push({
                 from: startDate.unix(),
                 to: endDate.unix(),
-                kind: 1,
-                data: encodeAbiParameters(
-                    [{ name: "poolAddress", type: "address" }],
-                    [pool.address],
-                ),
+                kind,
+                data,
                 specificationHash,
                 points: parseUnits(
                     payload.distributables.points.toString(),
@@ -155,32 +153,10 @@ export function CampaignPreview({
     });
 
     useEffect(() => {
-        const uploadSpecification = async () => {
+        const specification = buildSpecificationBundle(payload);
+
+        const uploadSpecification = async (bundle: Specification) => {
             setUploadingSpecification(true);
-
-            const { restrictions, kpiSpecification, priceRangeSpecification } =
-                payload;
-
-            let specification: Specification = {
-                kpi: kpiSpecification,
-            };
-
-            if (priceRangeSpecification) {
-                let from;
-                let to;
-                if (priceRangeSpecification.token0To1) {
-                    from = priceRangeSpecification.from.tick;
-                    to = priceRangeSpecification.to.tick;
-                } else {
-                    from = -priceRangeSpecification.to.tick;
-                    to = -priceRangeSpecification.from.tick;
-                }
-
-                specification.priceRange = { from, to };
-            }
-
-            if (restrictions)
-                specification[restrictions.type] = restrictions?.list;
 
             try {
                 const response = await fetch(
@@ -190,7 +166,7 @@ export function CampaignPreview({
                         headers: {
                             "Content-Type": "application/json",
                         },
-                        body: JSON.stringify(specification),
+                        body: JSON.stringify(bundle),
                     },
                 );
 
@@ -200,7 +176,7 @@ export function CampaignPreview({
                 setSpecificationHash(`0x${hash}`);
             } catch (error) {
                 console.error(
-                    `Could not upload specification to data-manager: ${JSON.stringify(specification)}`,
+                    `Could not upload specification to data-manager: ${JSON.stringify(bundle)}`,
                     error,
                 );
                 setError("errors.specification");
@@ -209,13 +185,8 @@ export function CampaignPreview({
             }
         };
 
-        if (
-            (payload.kpiSpecification ||
-                payload.restrictions ||
-                payload.priceRangeSpecification) &&
-            tokensApproved
-        )
-            uploadSpecification();
+        if (Object.keys(specification).length > 0 && tokensApproved)
+            uploadSpecification(specification);
     }, [
         payload,
         payload.kpiSpecification,
@@ -275,6 +246,9 @@ export function CampaignPreview({
     const pointsCampaign = payload.isDistributing(DistributablesType.Points);
     const tokensCampaign = payload.isDistributing(DistributablesType.Tokens);
 
+    const ammPoolLiquidityCampaign =
+        payload instanceof AmmPoolLiquidityCampaignPreviewPayload;
+
     // TODO: add notification toast in case of errors
     if (!created) {
         return (
@@ -285,27 +259,32 @@ export function CampaignPreview({
                     onBack={onBack}
                 />
                 <div className={styles.content}>
-                    {!!payload.priceRangeSpecification && (
-                        <Range
-                            pool={payload.pool}
-                            specification={payload.priceRangeSpecification}
-                        />
-                    )}
-                    {!!payload.kpiSpecification && tokensCampaign && (
-                        <Kpi
-                            poolUsdTvl={payload.pool.usdTvl}
-                            rewards={payload.distributables.tokens}
-                            specification={payload.kpiSpecification}
-                        />
-                    )}
+                    {ammPoolLiquidityCampaign &&
+                        !!payload.priceRangeSpecification && (
+                            <Range
+                                pool={payload.pool}
+                                specification={payload.priceRangeSpecification}
+                            />
+                        )}
+                    {ammPoolLiquidityCampaign &&
+                        !!payload.kpiSpecification &&
+                        tokensCampaign && (
+                            <Kpi
+                                poolUsdTvl={payload.pool.usdTvl}
+                                rewards={payload.distributables.tokens}
+                                specification={payload.kpiSpecification}
+                            />
+                        )}
                     <div className={styles.contentGrid}>
-                        <TextField
-                            boxed
-                            size="xl"
-                            label={t("tvl")}
-                            value={formatUsdAmount(payload.pool.usdTvl)}
-                        />
-                        {tokensCampaign && (
+                        {ammPoolLiquidityCampaign && (
+                            <TextField
+                                boxed
+                                size="xl"
+                                label={t("tvl")}
+                                value={formatUsdAmount(payload.pool.usdTvl)}
+                            />
+                        )}
+                        {ammPoolLiquidityCampaign && tokensCampaign && (
                             <TextField
                                 boxed
                                 size="xl"

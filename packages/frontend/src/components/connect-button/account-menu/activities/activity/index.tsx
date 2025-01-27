@@ -12,7 +12,8 @@ import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
 import { getTxExplorerLink } from "@/src/utils/dex";
 import { useCampaign } from "@/src/hooks/useCampaign";
 import { PoolRemoteLogo } from "@/src/components/pool-remote-logo";
-import { useDexesInChain } from "@/src/hooks/useDexesInChain";
+import { useProtocolsInChain } from "@/src/hooks/useProtocolsInChain";
+import { ProtocolType } from "@/src/types";
 
 import styles from "./styles.module.css";
 
@@ -23,7 +24,7 @@ interface ActivityProps extends Activity {
 export function Activity({ chainId, transaction, payload }: ActivityProps) {
     const t = useTranslations("accountMenu.activities");
 
-    const dexes = useDexesInChain(chainId);
+    const dexes = useProtocolsInChain(chainId, ProtocolType.Dex);
     const { campaign, loading } = useCampaign(
         chainId,
         payload.type === "create-campaign" ? payload.id : undefined,

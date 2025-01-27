@@ -1,5 +1,5 @@
 .root {
-    @apply flex flex-col gap-4 bg-white p-5 px-6 rounded-t-3xl;
+    @apply flex flex-col gap-2 bg-white p-5 px-6 rounded-t-3xl;
 }
 
 .backButton {
@@ -12,6 +12,16 @@
 
 .titleContainer {
     @apply flex flex-wrap items-center gap-4 sm:mb-4;
+}
+
+.liquityV2Action {
+    @apply w-fit 
+        bg-gray-100
+        rounded-2xl
+        flex
+        gap-3
+        items-center
+        p-2.5;
 }
 
 .durationContainer {

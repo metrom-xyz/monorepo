@@ -4,6 +4,7 @@ import classNames from "classnames";
 import { TargetType } from "@metrom-xyz/sdk";
 import { AmmPoolLiquidity } from "./amm-pool-liquidity";
 import type { NamedCampaign } from "@/src/types";
+import { LiquidityV2 } from "./liquity-v2";
 
 import styles from "./styles.module.css";
 
@@ -16,6 +17,9 @@ export function Action({ campaign }: ActionProps) {
         <div className={styles.root}>
             {campaign.isTargeting(TargetType.AmmPoolLiquidity) && (
                 <AmmPoolLiquidity campaign={campaign} />
+            )}
+            {campaign.isTargeting(TargetType.LiquityV2Debt) && (
+                <LiquidityV2 campaign={campaign} />
             )}
         </div>
     );

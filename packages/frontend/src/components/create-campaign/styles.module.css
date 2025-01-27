@@ -1,13 +1,23 @@
 .root {
-    @apply flex
-        flex-col
-        gap-11
-        max-w-[410px]
-        w-full
-        sm:px-0
-        px-5;
+    @apply flex items-center flex-col gap-8 px-2 w-full;
 }
 
-.button {
-    @apply w-full;
+.description {
+    @apply text-center max-w-2xl;
+}
+
+.campaignCardsWrapper {
+    @apply flex flex-wrap justify-center gap-3 max-w-4xl;
+}
+
+.campaignCard {
+    @apply h-full max-w-96 hover:bg-gray-200 transition-colors duration-200 ease-in-out;
+}
+
+.campaignCardBody {
+    @apply flex flex-col gap-4;
+}
+
+.iconWrapper {
+    @apply flex items-center justify-center h-24 w-24 rounded-3xl bg-gray-100;
 }

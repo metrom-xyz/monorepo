@@ -1,7 +1,8 @@
 import { Popover, Skeleton, Typography } from "@metrom-xyz/ui";
-import { useDexesInChain } from "@/src/hooks/useDexesInChain";
+import { useProtocolsInChain } from "@/src/hooks/useProtocolsInChain";
 import { useRef, useState } from "react";
 import type { TargetedCampaign, TargetType } from "@metrom-xyz/sdk";
+import { ProtocolType } from "@/src/types";
 
 import styles from "./styles.module.css";
 
@@ -10,7 +11,7 @@ interface DexProps {
 }
 
 export function Dex({ campaign }: DexProps) {
-    const dexes = useDexesInChain(campaign.chainId);
+    const dexes = useProtocolsInChain(campaign.chainId, ProtocolType.Dex);
 
     const [popoverOpen, setPopoverOpen] = useState(false);
     const [dexDetails, setDexDetails] = useState<HTMLDivElement | null>(null);
@@ -37,7 +38,7 @@ export function Dex({ campaign }: DexProps) {
                 ref={dexDetailsPopoverRef}
                 placement="top"
             >
-                <div className={styles.dexDetailsContainer}>
+                <div className={styles.detailsContainer}>
                     <Typography weight="medium" size="sm">
                         {dex.name}
                     </Typography>

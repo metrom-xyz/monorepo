@@ -4,21 +4,26 @@ import { ModeLogo } from "../../assets/logos/chains/mode";
 import { KimLogo } from "../../assets/logos/dexes/kim";
 import { type ChainData } from "..";
 import { mode } from "viem/chains";
+import { ProtocolType } from "@/src/types";
 
 export const modeData: ChainData = {
     name: mode.name,
     metromContract: ADDRESS[SupportedChain.Mode],
     blockExplorers: mode.blockExplorers,
     icon: ModeLogo,
-    dexes: [
-        {
-            slug: SupportedDex.Kim,
-            logo: KimLogo,
-            name: "Kim",
-            addLiquidityUrl: "https://app.kim.exchange/pools/v4/{target_pool}",
-            supportsFetchAllPools: true,
-        },
-    ],
+    protocols: {
+        [ProtocolType.Dex]: [
+            {
+                slug: SupportedDex.Kim,
+                logo: KimLogo,
+                name: "Kim",
+                addLiquidityUrl:
+                    "https://app.kim.exchange/pools/v4/{target_pool}",
+                supportsFetchAllPools: true,
+            },
+        ],
+        [ProtocolType.LiquityV2Brand]: [],
+    },
     baseTokens: [
         {
             address: "0x4200000000000000000000000000000000000006",

@@ -1,38 +1,55 @@
-import {
-    type CampaignPayload,
-    type CampaignPayloadPart,
-    type CampaignPayloadErrors,
-    RewardType,
-} from "@/src/types";
+"use client";
+
+import { type CampaignPreviewPayload } from "@/src/types";
 import { useAccount, useChainId, useChains } from "wagmi";
-import { useMemo } from "react";
-import { DexStep } from "./dex-step";
-import { PoolStep } from "./pool-step";
-import { StartDateStep } from "./start-date-step";
-import { EndDateStep } from "./end-date-step";
-import { RewardsStep } from "./rewards-step";
-import { RestrictionsStep } from "./restrictions-step";
-import { KpiStep } from "./kpi-step";
-import { RangeStep } from "./range-step";
-import { AMM_SUPPORTS_RANGE_INCENTIVES } from "@/src/commons";
-import type { SupportedAmm } from "@metrom-xyz/sdk";
+import { useMemo, useState } from "react";
+import { TargetType } from "@metrom-xyz/sdk";
+import { useTranslations } from "next-intl";
+import { trackFathomEvent } from "@/src/utils/fathom";
+import { Modal } from "@metrom-xyz/ui";
+import { CampaignPreview } from "../preview";
+import { FormHeader } from "./header";
+import { AmmPoolLiquidityForm } from "./amm-pool-liquidity-form";
+import { LiquityV2ForksForm } from "./liquity-v2-forks-form";
+import { useRouter } from "@/src/i18n/routing";
+import { LIQUITY_V2_CAMPAIGN } from "@/src/commons/env";
 
 import styles from "./styles.module.css";
 
-export interface CreateCampaignFormProps {
-    payload?: CampaignPayload;
-    onPayloadChange: (part: CampaignPayloadPart) => void;
-    onPayloadError: (errors: CampaignPayloadErrors) => void;
+export enum View {
+    Form = "form",
+    Preview = "preview",
 }
 
-export function CreateCampaignForm({
-    payload,
-    onPayloadChange,
-    onPayloadError,
-}: CreateCampaignFormProps) {
+export interface CreateCampaignFormProps<T> {
+    target: T;
+}
+
+export function CreateCampaignForm<T extends TargetType>({
+    target,
+}: CreateCampaignFormProps<T>) {
+    const t = useTranslations("newCampaign");
     const { chain: connectedChain, isConnected } = useAccount();
     const selectedChain = useChainId();
     const chains = useChains();
+    const router = useRouter();
+
+    const [view, setView] = useState(View.Form);
+    const [payload, setPayload] = useState<CampaignPreviewPayload | null>(null);
+
+    function handlePreviewOnClick(payload: CampaignPreviewPayload | null) {
+        setPayload(payload);
+        setView(View.Preview);
+        trackFathomEvent("CLICK_CAMPAIGN_PREVIEW");
+    }
+
+    function handleBackOnClick() {
+        setView(View.Form);
+    }
+
+    function handleCreateNewOnClick() {
+        router.push("/campaigns/create");
+    }
 
     const unsupportedChain = useMemo(() => {
         return (
@@ -44,76 +61,28 @@ export function CreateCampaignForm({
 
     return (
         <div className={styles.root}>
-            <DexStep
-                disabled={unsupportedChain}
-                dex={payload?.dex}
-                onDexChange={onPayloadChange}
-            />
-            <PoolStep
-                disabled={!payload?.dex || unsupportedChain}
-                dex={payload?.dex}
-                pool={payload?.pool}
-                onPoolChange={onPayloadChange}
-                onError={onPayloadError}
-            />
-            <StartDateStep
-                disabled={!payload?.pool || unsupportedChain}
-                startDate={payload?.startDate}
-                endDate={payload?.endDate}
-                onStartDateChange={onPayloadChange}
-                onError={onPayloadError}
-            />
-            <EndDateStep
-                disabled={!payload?.startDate || unsupportedChain}
-                startDate={payload?.startDate}
-                endDate={payload?.endDate}
-                onEndDateChange={onPayloadChange}
-                onError={onPayloadError}
-            />
-            <RewardsStep
-                disabled={!payload?.endDate || unsupportedChain}
-                rewardType={payload?.rewardType}
-                pool={payload?.pool}
-                tokens={payload?.tokens}
-                points={payload?.points}
-                fee={payload?.fee}
-                startDate={payload?.startDate}
-                endDate={payload?.endDate}
-                onRewardsChange={onPayloadChange}
-                onError={onPayloadError}
-            />
-            <KpiStep
-                disabled={
-                    !payload?.tokens ||
-                    payload.rewardType === RewardType.Points ||
-                    unsupportedChain
-                }
-                pool={payload?.pool}
-                rewards={payload?.tokens}
-                kpiSpecification={payload?.kpiSpecification}
-                onKpiChange={onPayloadChange}
-                onError={onPayloadError}
-            />
-            {payload?.pool &&
-                AMM_SUPPORTS_RANGE_INCENTIVES[
-                    payload.pool.amm as SupportedAmm
-                ] && (
-                    <RangeStep
-                        disabled={!payload?.tokens || unsupportedChain}
-                        pool={payload.pool}
-                        priceRangeSpecification={
-                            payload?.priceRangeSpecification
-                        }
-                        onRangeChange={onPayloadChange}
-                        onError={onPayloadError}
+            {LIQUITY_V2_CAMPAIGN && <FormHeader target={target} />}
+            {target === TargetType.AmmPoolLiquidity && (
+                <AmmPoolLiquidityForm
+                    unsupportedChain={unsupportedChain}
+                    onPreviewClick={handlePreviewOnClick}
+                />
+            )}
+            {target === TargetType.LiquityV2Debt && (
+                <LiquityV2ForksForm
+                    unsupportedChain={unsupportedChain}
+                    onPreviewClick={handlePreviewOnClick}
+                />
+            )}
+            {!!payload && (
+                <Modal open={view === View.Preview}>
+                    <CampaignPreview
+                        onBack={handleBackOnClick}
+                        onCreateNew={handleCreateNewOnClick}
+                        payload={payload}
                     />
-                )}
-            <RestrictionsStep
-                disabled={!payload?.tokens || unsupportedChain}
-                restrictions={payload?.restrictions}
-                onRestrictionsChange={onPayloadChange}
-                onError={onPayloadError}
-            />
+                </Modal>
+            )}
         </div>
     );
 }

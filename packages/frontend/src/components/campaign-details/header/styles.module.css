@@ -10,6 +10,10 @@
     @apply flex flex-wrap items-center gap-5;
 }
 
+.logo {
+    @apply h-11 w-11;
+}
+
 .actionsContainer {
     @apply flex flex-col-reverse sm:flex-row gap-3 flex-wrap justify-between sm:mb-2;
 }
@@ -20,7 +24,7 @@
 }
 
 .leftActions {
-    @apply flex flex-wrap gap-3;
+    @apply flex flex-wrap gap-3 h-12;
 }
 
 .exploreButton {

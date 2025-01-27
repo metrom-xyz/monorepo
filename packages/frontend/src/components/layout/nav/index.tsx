@@ -91,7 +91,10 @@ export function Nav() {
                         <Link key={path} href={path}>
                             <div
                                 className={classNames(styles.tab, {
-                                    [styles.tabActive]: pathname === path,
+                                    [styles.tabActive]:
+                                        pathname === path ||
+                                        (path !== "/" &&
+                                            pathname.startsWith(path)),
                                 })}
                             >
                                 {Icon && <Icon className={styles.tabIcon} />}

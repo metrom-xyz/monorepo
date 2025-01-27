@@ -1,3 +1,9 @@
 .root {
-    @apply flex flex-col gap-1;
+    @apply flex
+        flex-col
+        gap-5
+        max-w-[410px]
+        w-full
+        sm:px-0
+        px-5;
 }

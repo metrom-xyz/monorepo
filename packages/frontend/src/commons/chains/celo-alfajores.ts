@@ -4,21 +4,25 @@ import { type ChainData } from "../index";
 import { UniswapLogo } from "../../assets/logos/dexes/uniswap";
 import { CeloLogo } from "../../assets/logos/chains/celo";
 import { celoAlfajores } from "viem/chains";
+import { ProtocolType } from "@/src/types";
 
 export const celoAlfajoresData: ChainData = {
     name: celoAlfajores.name,
     metromContract: ADDRESS[SupportedChain.CeloAlfajores],
     blockExplorers: celoAlfajores.blockExplorers,
     icon: CeloLogo,
-    dexes: [
-        {
-            slug: SupportedDex.UniswapV3,
-            logo: UniswapLogo,
-            name: "Uniswap v3",
-            addLiquidityUrl: "https://app.uniswap.org/add/{target_pool}",
-            supportsFetchAllPools: true,
-        },
-    ],
+    protocols: {
+        [ProtocolType.Dex]: [
+            {
+                slug: SupportedDex.UniswapV3,
+                logo: UniswapLogo,
+                name: "Uniswap v3",
+                addLiquidityUrl: "https://app.uniswap.org/add/{target_pool}",
+                supportsFetchAllPools: true,
+            },
+        ],
+        [ProtocolType.LiquityV2Brand]: [],
+    },
     baseTokens: [
         {
             address: "0xF194afDf50B03e69Bd7D057c1Aa9e10c9954E4C9",

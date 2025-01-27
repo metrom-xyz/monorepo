@@ -1,0 +1,11 @@
+.root {
+    @apply flex flex-col gap-5 w-full;
+}
+
+.stepsWrapper {
+    @apply flex flex-col gap-1;
+}
+
+.button {
+    @apply w-full;
+}

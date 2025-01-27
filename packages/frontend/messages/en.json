@@ -27,6 +27,7 @@
     },
     "allCampaigns": {
         "title": "all campaigns",
+        "kpi": "KPI",
         "filters": {
             "search": {
                 "label": "Search"
@@ -52,7 +53,6 @@
             "rewards": "Daily rewards"
         },
         "pool": {
-            "kpi": "KPI",
             "range": "Range"
         },
         "status": {
@@ -87,165 +87,196 @@
         }
     },
     "newCampaign": {
+        "pickType": {
+            "title": "Pick a campaign type",
+            "description": "Run efficient incentive strategies for your liquidity providers. Reduce leakage and maximize returns by using Metrom.",
+            "amm": {
+                "title": "AMM",
+                "description": "Incentivize users that provide liquidity to a concentrated liquidity AMM or a simple Uni V2 fork."
+            },
+            "liquityV2": {
+                "title": "LIQUITY V2 FORKs",
+                "description": "Incentivize users depositing collateral and borrowing on Liquity V2 forks."
+            }
+        },
+        "type": {
+            "amm": "AMM Campaign",
+            "liquityV2": "Liquity v2 campaign"
+        },
         "form": {
-            "dex": { "title": "Dex" },
-            "pool": {
-                "title": "Pool",
-                "list": {
-                    "label": "Search for pool",
-                    "pool": "Pool",
-                    "tvl": "Tvl",
-                    "empty": "Nothing here"
-                },
-                "label": "Enter pool address",
-                "empty": "Enter a pool address to import a pool",
-                "preview": {
-                    "pool": "Pool",
-                    "tvl": "TVL"
-                },
-                "errors": {
-                    "invalidAddress": "Invalid address",
-                    "invalidPool": "Invalid pool",
-                    "inconsistentDex": "The pool doesn't belong to {dex}"
-                }
-            },
-            "startDate": {
-                "title": "Start date",
-                "apply": "Apply",
-                "errors": { "dateInThePast": "Date can't be in the past" }
-            },
-            "endDate": {
-                "title": "End date",
-                "apply": "Apply",
-                "durations": {
-                    "1week": "1 week",
-                    "2weeks": "2 weeks",
-                    "1month": "1 month"
-                },
-                "campaignDuration": "Campaign duration",
-                "days": "{count} days",
-                "errors": {
-                    "endBeforeStart": "End date can't be before start date",
-                    "dateInThePast": "Date can't be in the past",
-                    "minimumDate": "The campaign must exceed {duration}",
-                    "maximumDate": "The campaign must be under {duration}"
-                }
-            },
-            "rewards": {
-                "title": {
-                    "rewards": "Rewards"
-                },
-                "tabs": {
-                    "tokens": "Tokens",
-                    "points": "Points"
-                },
-                "tokens": {
-                    "enterReward": "Enter Reward",
-                    "rewardsPreviewList": {
-                        "empty": "No rewards added yet"
-                    },
-                    "addButton": {
-                        "add": "Add to rewards"
-                    },
-                    "selectPlaceholder": "Choose Token",
-                    "totalUsd": "Total value usd",
-                    "errors": {
-                        "insufficientBalance": "Insufficient balance",
-                        "lowDistributionRate": "Low distribution rate"
-                    }
-                },
-                "list": {
-                    "token": "Token",
-                    "balance": "Balance",
-                    "empty": "Nothing here"
-                },
-                "points": {
-                    "amount": "Points amount",
-                    "pickFeeToken": "Pick fee token",
-                    "select": "Select",
-                    "usdCost": "{usd} total USD cost",
+            "base": {
+                "startDate": {
+                    "title": "Start date",
                     "apply": "Apply",
+                    "errors": { "dateInThePast": "Date can't be in the past" }
+                },
+                "endDate": {
+                    "title": "End date",
+                    "apply": "Apply",
+                    "durations": {
+                        "1week": "1 week",
+                        "2weeks": "2 weeks",
+                        "1month": "1 month"
+                    },
+                    "campaignDuration": "Campaign duration",
+                    "days": "{count} days",
                     "errors": {
-                        "costChanged": "Cost changed, apply to confirm",
-                        "wrongAmount": "Wrong points amount"
+                        "endBeforeStart": "End date can't be before start date",
+                        "dateInThePast": "Date can't be in the past",
+                        "minimumDate": "The campaign must exceed {duration}",
+                        "maximumDate": "The campaign must be under {duration}"
                     }
-                }
-            },
-            "restrictions": {
-                "title": "Filter addresses",
-                "description": "Blacklist addresses that shouldn't receive rewards, or whitelist only those that should be eligible to receive rewards.",
-                "errors": {
-                    "notAnAddress": "Not a valid address",
-                    "alreadyRestricted": "Address already restricted"
                 },
-                "warnings": {
-                    "notApplied": "Changes not applied"
-                },
-                "blocks": "Blocks {count, plural, =0 {} =1 {# address} other {# adresses}}",
-                "allows": "Allows {count, plural, =0 {} =1 {# address} other {# adresses}}",
-                "whitelist": "Whitelist",
-                "blacklist": "Blacklist",
-                "input": {
-                    "label": "Address",
-                    "placeholder": "Enter wallet address"
-                },
-                "import": {
-                    "label": "Import CSV",
-                    "notification": {
-                        "success": {
-                            "title": "Successful",
-                            "message": "Addresses imported"
+                "rewards": {
+                    "title": {
+                        "rewards": "Rewards"
+                    },
+                    "tabs": {
+                        "tokens": "Tokens",
+                        "points": "Points"
+                    },
+                    "tokens": {
+                        "enterReward": "Enter Reward",
+                        "rewardsPreviewList": {
+                            "empty": "No rewards added yet"
                         },
-                        "fail": {
-                            "title": "Failed",
-                            "malformed": "Malformed csv",
-                            "tooMany": "Too many addresses: max {max}"
+                        "addButton": {
+                            "add": "Add to rewards"
+                        },
+                        "selectPlaceholder": "Choose Token",
+                        "totalUsd": "Total value usd",
+                        "errors": {
+                            "insufficientBalance": "Insufficient balance",
+                            "lowDistributionRate": "Low distribution rate"
+                        }
+                    },
+                    "list": {
+                        "token": "Token",
+                        "balance": "Balance",
+                        "empty": "Nothing here"
+                    },
+                    "points": {
+                        "amount": "Points amount",
+                        "pickFeeToken": "Pick fee token",
+                        "select": "Select",
+                        "usdCost": "{usd} total USD cost",
+                        "apply": "Apply",
+                        "errors": {
+                            "costChanged": "Cost changed, apply to confirm",
+                            "wrongAmount": "Wrong points amount"
                         }
                     }
                 },
-                "add": "Add",
-                "list": "List",
-                "apply": "Apply"
+                "restrictions": {
+                    "title": "Filter addresses",
+                    "description": "Blacklist addresses that shouldn't receive rewards, or whitelist only those that should be eligible to receive rewards.",
+                    "errors": {
+                        "notAnAddress": "Not a valid address",
+                        "alreadyRestricted": "Address already restricted"
+                    },
+                    "warnings": {
+                        "notApplied": "Changes not applied"
+                    },
+                    "blocks": "Blocks {count, plural, =0 {} =1 {# address} other {# adresses}}",
+                    "allows": "Allows {count, plural, =0 {} =1 {# address} other {# adresses}}",
+                    "whitelist": "Whitelist",
+                    "blacklist": "Blacklist",
+                    "input": {
+                        "label": "Address",
+                        "placeholder": "Enter wallet address"
+                    },
+                    "import": {
+                        "label": "Import CSV",
+                        "notification": {
+                            "success": {
+                                "title": "Successful",
+                                "message": "Addresses imported"
+                            },
+                            "fail": {
+                                "title": "Failed",
+                                "malformed": "Malformed csv",
+                                "tooMany": "Too many addresses: max {max}"
+                            }
+                        }
+                    },
+                    "add": "Add",
+                    "list": "List",
+                    "apply": "Apply"
+                },
+                "kpi": {
+                    "title": "Set KPI",
+                    "currentTvl": "Current TVL",
+                    "rangedTvl": {
+                        "lowerBound": "Lower TVL bound",
+                        "upperBound": "Upper TVL bound"
+                    },
+                    "errors": {
+                        "missing": "Bound missing",
+                        "malformed": "Wrong bound values"
+                    },
+                    "warnings": {
+                        "notApplied": "Changes not applied"
+                    },
+                    "simulation": {
+                        "title": "KPI simulation",
+                        "description": "Disclaimer: This is an interactive simulation tool to visualize how incentives are distributed for different TVL scenarios. Please review the values you entered carefully before submitting."
+                    },
+                    "minimumPayout": "Minimum payout",
+                    "apply": "Apply"
+                }
             },
-            "kpi": {
-                "title": "Set KPI",
-                "currentTvl": "Current TVL",
-                "rangedTvl": {
-                    "lowerBound": "Lower TVL bound",
-                    "upperBound": "Upper TVL bound"
-                },
-                "errors": {
-                    "missing": "Bound missing",
-                    "malformed": "Wrong bound values"
-                },
-                "warnings": {
-                    "notApplied": "Changes not applied"
-                },
-                "simulation": {
-                    "title": "KPI simulation",
-                    "description": "Disclaimer: This is an interactive simulation tool to visualize how incentives are distributed for different TVL scenarios. Please review the values you entered carefully before submitting."
-                },
-                "minimumPayout": "Minimum payout",
-                "apply": "Apply"
+            "liquityV2": {
+                "brand": { "title": "Protocol" },
+                "action": {
+                    "title": "Action",
+                    "list": {
+                        "takeLoan": "Take loan",
+                        "depositCollateral": "Deposit collateral",
+                        "depositToStabilityPool": "Deposit to SP"
+                    }
+                }
             },
-            "range": {
-                "title": "Set range to reward",
-                "currentPrice": "Current price",
+            "ammPoolLiquidity": {
+                "dex": { "title": "Dex" },
+                "pool": {
+                    "title": "Pool",
+                    "list": {
+                        "label": "Search for pool",
+                        "pool": "Pool",
+                        "tvl": "Tvl",
+                        "empty": "Nothing here"
+                    },
+                    "label": "Enter pool address",
+                    "empty": "Enter a pool address to import a pool",
+                    "preview": {
+                        "pool": "Pool",
+                        "tvl": "TVL"
+                    },
+                    "errors": {
+                        "invalidAddress": "Invalid address",
+                        "invalidPool": "Invalid pool",
+                        "inconsistentDex": "The pool doesn't belong to {dex}"
+                    }
+                },
                 "range": {
-                    "label": "Range",
-                    "value": "{lowerPrice} - {upperPrice} {token1} PER {token0}"
-                },
-                "price": "1 {token0} = {price} {token1}",
-                "minPrice": "Min price ({token1} per {token0})",
-                "maxPrice": "Max price ({token1} per {token0})",
-                "apply": "Apply",
-                "chart": "Range visualizer",
-                "errors": {
-                    "missing": "Bound missing",
-                    "malformed": "Wrong bound values"
-                },
-                "warnings": {
-                    "notApplied": "Changes not applied"
+                    "title": "Set range to reward",
+                    "currentPrice": "Current price",
+                    "range": {
+                        "label": "Range",
+                        "value": "{lowerPrice} - {upperPrice} {token1} PER {token0}"
+                    },
+                    "price": "1 {token0} = {price} {token1}",
+                    "minPrice": "Min price ({token1} per {token0})",
+                    "maxPrice": "Max price ({token1} per {token0})",
+                    "apply": "Apply",
+                    "chart": "Range visualizer",
+                    "errors": {
+                        "missing": "Bound missing",
+                        "malformed": "Wrong bound values"
+                    },
+                    "warnings": {
+                        "notApplied": "Changes not applied"
+                    }
                 }
             }
         },
@@ -263,7 +294,14 @@
             "back": "Close",
             "startDate": "Start date",
             "runTimeLabel": "Run time",
-            "endDate": "End date"
+            "endDate": "End date",
+            "liquityV2Actions": {
+                "list": {
+                    "debt": {
+                        "title": "Take loan"
+                    }
+                }
+            }
         },
         "tvl": "TVL",
         "apr": "APR",
@@ -306,9 +344,16 @@
     "campaignDetails": {
         "header": {
             "rewardsMayVary": "Rewards may vary",
-            "deposit": "Deposit",
             "explorer": "Explorer",
-            "claim": "Claim"
+            "claim": "Claim",
+            "ammPoolLiquidity": {
+                "deposit": "Deposit"
+            },
+            "liquityV2": {
+                "liquity-v2-debt": "Take loan",
+                "liquity-v2-collateral": "Deposit collateral",
+                "liquity-v2-stability-pool": "Deposit to SP"
+            }
         },
         "details": {
             "tvl": "Tvl",
@@ -495,7 +540,8 @@
     "apr": "APR",
     "campaignActions": {
         "lp": "LP on {name}",
-        "takeLoan": "Take loan on {name}"
+        "takeLoan": "Take loan on {name}",
+        "depositCollateral": "Deposit collateral on {name}"
     },
     "liquidityDensityChart": {
         "tooltip": {
