@@ -1,7 +1,7 @@
 @reference "../../theme.css";
 
 .root {
-    @apply w-full flex flex-col bg-white rounded-2xl;
+    @apply w-full bg-white rounded-2xl;
 }
 
 .preview {
@@ -13,7 +13,7 @@
         select-none
         cursor-pointer
         rounded-2xl
-        transition-colors
+        transition-all
         duration-200
         ease-in-out
         hover:bg-gray-200;
@@ -24,7 +24,7 @@
 }
 
 .icon {
-    @apply w-4 h-4 stroke-2;
+    @apply w-4 h-4 stroke-2 transition-transform;
 }
 
 .icon.open {
@@ -32,5 +32,5 @@
 }
 
 .content {
-    @apply w-full rounded-b-2xl;
+    @apply w-full rounded-b-2xl overflow-hidden;
 }

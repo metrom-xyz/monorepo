@@ -6,7 +6,6 @@
         justify-between
         px-4
         py-7
-        rounded-2xl
         h-[5.25rem]
         hover:bg-gray-200
         hover:cursor-pointer
@@ -19,16 +18,16 @@
     @apply py-4;
 }
 
-.rootOpen {
-    @apply rounded-b-none;
-}
-
 .wrapper {
     @apply w-full select-none;
 }
 
 .label {
-    @apply flex items-center w-full min-h-6;
+    @apply flex items-center w-full min-h-6 text-base text-black transition;
+}
+
+.label.completed {
+    @apply -translate-y-2 text-[#9CA3AF] text-xs;
 }
 
 .children {

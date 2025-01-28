@@ -1,6 +1,8 @@
-import React, { type FC, type ReactNode } from "react";
+import React, { type FC, type ReactElement, type ReactNode } from "react";
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function matchChildByType<T extends FC<any>>(child: ReactNode, type: T) {
-    return React.isValidElement(child) && child.type === type;
+export function matchChildByType<P>(
+    child: ReactNode,
+    type: FC<P>,
+): child is ReactElement<P> {
+    return React.isValidElement<P>(child) && child.type === type;
 }

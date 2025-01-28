@@ -1,9 +1,9 @@
-import React, { type ReactElement, useRef, useEffect } from "react";
+import React, { type ReactElement, useRef } from "react";
 import classNames from "classnames";
-import { animated, easings, useSpring, useTransition } from "@react-spring/web";
-import { matchChildByType } from "@/src/utils/components";
+import { motion } from "framer-motion";
 import { StepPreview, type StepPreviewProps } from "./preview";
 import { StepContent } from "./content";
+import { matchChildByType } from "@metrom-xyz/ui";
 
 import styles from "./styles.module.css";
 
@@ -31,64 +31,37 @@ export function Step({
     const rootRef = useRef<HTMLDivElement>(null);
     const wrapperRef = useRef<HTMLDivElement>(null);
 
-    const [springStyles, springApi] = useSpring(
-        () => ({
-            height: "84px",
-        }),
-        [],
-    );
-    const transition = useTransition(open, {
-        from: { opacity: 0 },
-        enter: { opacity: 1 },
-        leave: { opacity: 0 },
-        config: { duration: 200, easing: easings.easeInOutCubic },
-    });
-
     const childrenArray = React.Children.toArray(children);
 
     const previewChildren = childrenArray.find((child) =>
         matchChildByType(child, StepPreview),
-    ) as ReactElement;
+    ) as ReactElement<StepPreviewProps>;
     const contentChildren = childrenArray.find((child) =>
         matchChildByType(child, StepContent),
     ) as ReactElement;
 
-    useEffect(() => {
-        springApi.start({
-            height:
-                (open
-                    ? wrapperRef?.current?.offsetHeight
-                    : rootRef.current?.offsetHeight) + "px",
-            config: { duration: 200, easing: easings.easeInOutCubic },
-        });
-    }, [springApi, open, previewChildren]);
-
     return (
-        <animated.div
-            style={springStyles}
-            className={classNames(className, styles.root, {
-                [styles.disabled]: disabled,
-                [styles.error]: error && errorLevel === "error",
-                [styles.warning]: error && errorLevel === "warning",
-                [styles.open]: open,
-            })}
-        >
-            <div ref={wrapperRef}>
-                <div ref={rootRef} onClick={onPreviewClick}>
-                    {React.cloneElement<StepPreviewProps>(previewChildren, {
-                        open,
-                        completed,
-                    })}
+        <div className={styles.root}>
+            <motion.div
+                initial={{ height: 84 }}
+                animate={{ height: open ? "auto" : 84 }}
+                className={classNames(className, styles.root, {
+                    [styles.disabled]: disabled,
+                    [styles.error]: error && errorLevel === "error",
+                    [styles.warning]: error && errorLevel === "warning",
+                    [styles.open]: open,
+                })}
+            >
+                <div ref={wrapperRef}>
+                    <div ref={rootRef} onClick={onPreviewClick}>
+                        {React.cloneElement<StepPreviewProps>(previewChildren, {
+                            open,
+                            completed,
+                        })}
+                    </div>
+                    {contentChildren}
                 </div>
-                {transition(
-                    (styles, open) =>
-                        open && (
-                            <animated.div style={styles}>
-                                {contentChildren}
-                            </animated.div>
-                        ),
-                )}
-            </div>
-        </animated.div>
+            </motion.div>
+        </div>
     );
 }

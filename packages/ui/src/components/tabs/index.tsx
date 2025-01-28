@@ -1,4 +1,4 @@
-import { Children, cloneElement, type ReactElement } from "react";
+import React, { type ReactElement } from "react";
 import classNames from "classnames";
 import { matchChildByType } from "../../utils/components";
 import { Tab, type TabProps } from "./tab";
@@ -22,11 +22,6 @@ export function Tabs<T>({
     children,
     className,
 }: TabsProps<T>) {
-    const childrenArray = Children.toArray(children);
-    const tabsChildren = childrenArray.filter((child) =>
-        matchChildByType(child, Tab),
-    ) as ReactElement[];
-
     function handleOnChange(value: T) {
         onChange(value);
     }
@@ -37,14 +32,16 @@ export function Tabs<T>({
                 [styles[size]]: true,
             })}
         >
-            {Children.map(tabsChildren, (child) =>
-                cloneElement<TabProps<T>>(child, {
-                    ...child.props,
-                    size,
-                    active: value,
-                    onClick: handleOnChange,
-                }),
-            )}
+            {React.Children.map(children, (child) => {
+                return matchChildByType<TabProps<T>>(child, Tab)
+                    ? React.cloneElement(child, {
+                          ...child.props,
+                          size,
+                          active: value,
+                          onClick: handleOnChange,
+                      })
+                    : null;
+            })}
         </div>
     );
 }

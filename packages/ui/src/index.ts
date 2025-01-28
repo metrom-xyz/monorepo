@@ -25,4 +25,5 @@ export * from "./components/scroll-into-view";
 export * from "./components/text-input";
 
 export * from "./utils/date";
+export * from "./utils/components";
 export * from "./utils/formatting";

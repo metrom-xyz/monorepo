@@ -7,7 +7,6 @@
 .dexWrapper {
     @apply max-h-96
         overflow-y-auto
-        rounded-b-2xl
         scroll-pt-0.5
         snap-y;
 }
@@ -29,11 +28,6 @@
 
 .dexRowSelected {
     @apply bg-gray-200;
-}
-
-.dexRow:only-child,
-.dexRow:last-child {
-    @apply rounded-b-2xl;
 }
 
 .dexRow > * {
