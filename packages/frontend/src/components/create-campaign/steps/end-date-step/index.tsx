@@ -175,7 +175,6 @@ export function EndDateStep({
                         <Typography
                             uppercase
                             weight="medium"
-                            size="sm"
                             className={styles.previewLabel}
                         >
                             {t("title")}

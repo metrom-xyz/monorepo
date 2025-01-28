@@ -267,7 +267,7 @@ export function RestrictionsStep({
                             {t("add")}
                         </Button>
                     </div>
-                    <hr className={styles.divider}></hr>
+                    <div className={styles.divider}></div>
                     <div className={styles.listWrapper}>
                         <Typography weight="medium" light size="xs" uppercase>
                             {t("list")}
