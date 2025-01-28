@@ -3,11 +3,18 @@ import { routing } from "@/src/i18n/routing";
 import type { TargetType } from "@metrom-xyz/sdk";
 import { setRequestLocale } from "next-intl/server";
 
+interface Params {
+    target: TargetType;
+    locale: string;
+}
+
+interface CampaignFormPageProps {
+    params: Promise<Params>;
+}
+
 export default async function CampaignFormPage({
     params,
-}: {
-    params: { target: TargetType; locale: string };
-}) {
+}: CampaignFormPageProps) {
     const { target, locale } = await params;
 
     setRequestLocale(locale);

@@ -19,18 +19,21 @@ import { Footer } from "@/src/components/layout/footer";
 
 import styles from "./styles.module.css";
 
+interface Params {
+    locale: string;
+}
+
+interface LayoutParams {
+    children: ReactNode;
+    params: Promise<Params>;
+}
+
 export const metadata: Metadata = {
     title: "Metrom",
     description: "Design your incentives to AMMplify liquidity.",
 };
 
-export default async function Layout({
-    children,
-    params,
-}: Readonly<{
-    children: ReactNode;
-    params: { locale: string };
-}>) {
+export default async function Layout({ children, params }: LayoutParams) {
     const { locale } = await params;
 
     if (!routing.locales.includes(locale as any)) {
