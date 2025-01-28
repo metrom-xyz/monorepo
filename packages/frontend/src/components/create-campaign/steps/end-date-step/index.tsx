@@ -17,7 +17,7 @@ import {
     Chip,
     ErrorText,
 } from "@metrom-xyz/ui";
-import { useTransition, animated } from "@react-spring/web";
+import { AnimatePresence, motion } from "framer-motion";
 import { useCampaignDurationLimits } from "@/src/hooks/useCampaignDurationLimits";
 import { formatDateTime } from "@/src/utils/format";
 import { usePrevious } from "react-use";
@@ -72,15 +72,6 @@ export function EndDateStep({
     const chainId = useChainId();
 
     const { limits } = useCampaignDurationLimits();
-
-    const transition = useTransition(dateError, {
-        exitBeforeEnter: true,
-        trail: 100,
-        from: { opacity: 0 },
-        enter: { opacity: 1 },
-        leave: { opacity: 0 },
-        config: { duration: 100 },
-    });
 
     const prevDate = usePrevious(endDate);
 
@@ -189,16 +180,23 @@ export function EndDateStep({
                         >
                             {t("title")}
                         </Typography>
-                        {transition(
-                            (styles, error) =>
-                                !!error && (
-                                    <animated.div style={styles}>
-                                        <ErrorText size="xs" weight="medium">
-                                            {error}
-                                        </ErrorText>
-                                    </animated.div>
-                                ),
-                        )}
+                        <AnimatePresence>
+                            {!!dateError && (
+                                <motion.div
+                                    initial="hide"
+                                    animate="show"
+                                    exit="hide"
+                                    variants={{
+                                        hide: { opacity: 0 },
+                                        show: { opacity: 1 },
+                                    }}
+                                >
+                                    <ErrorText size="xs" weight="medium">
+                                        {dateError}
+                                    </ErrorText>
+                                </motion.div>
+                            )}
+                        </AnimatePresence>
                     </div>
                 }
             >

@@ -12,7 +12,7 @@ import { zeroAddress } from "viem";
 import classNames from "classnames";
 import { CHAIN_DATA } from "@/src/commons";
 import { trackFathomEvent } from "@/src/utils/fathom";
-import { useTransition, animated, easings } from "@react-spring/web";
+import { AnimatePresence, motion } from "framer-motion";
 
 import styles from "./styles.module.css";
 
@@ -29,20 +29,6 @@ export function ConnectButton() {
     const [networkPopoverOpen, setNetworkPopoverOpen] = useState(false);
     const [accountMenuOpen, setAccountMenuOpen] = useState(false);
     const networksPopoverRef = useRef<HTMLDivElement>(null);
-
-    const transitionHorizontal = useTransition(accountMenuOpen, {
-        from: { transform: "translateX(448px)" },
-        enter: { transform: "translateX(-448px)" },
-        leave: { transform: "translateX(448px)" },
-        config: { duration: 200, easing: easings.easeInOutCubic },
-    });
-
-    const transitionVertical = useTransition(accountMenuOpen, {
-        from: { transform: "translateY(448px)" },
-        enter: { transform: "translateY(-448px)" },
-        leave: { transform: "translateY(448px)" },
-        config: { duration: 200, easing: easings.easeInOutCubic },
-    });
 
     function handleOpenNetworkPopover() {
         setNetworkPopoverOpen((prev) => !prev);
@@ -163,47 +149,41 @@ export function ConnectButton() {
                                                 accountMenuOpen,
                                         })}
                                     />
-                                    {width > 640
-                                        ? transitionHorizontal(
-                                              (style, open) =>
-                                                  open && (
-                                                      <animated.div
-                                                          style={style}
-                                                          className={
-                                                              styles.accountMenuHorizontal
-                                                          }
-                                                      >
-                                                          <AccountMenu
-                                                              account={account}
-                                                              blockie={blockie}
-                                                              chainId={chain.id}
-                                                              onClose={
-                                                                  handleAccountMenuClose
-                                                              }
-                                                          />
-                                                      </animated.div>
-                                                  ),
-                                          )
-                                        : transitionVertical(
-                                              (style, open) =>
-                                                  open && (
-                                                      <animated.div
-                                                          style={style}
-                                                          className={
-                                                              styles.accountMenuVertical
-                                                          }
-                                                      >
-                                                          <AccountMenu
-                                                              account={account}
-                                                              blockie={blockie}
-                                                              chainId={chain.id}
-                                                              onClose={
-                                                                  handleAccountMenuClose
-                                                              }
-                                                          />
-                                                      </animated.div>
-                                                  ),
-                                          )}
+                                    <AnimatePresence>
+                                        {accountMenuOpen && (
+                                            <motion.div
+                                                initial="hide"
+                                                animate="show"
+                                                exit="hide"
+                                                variants={{
+                                                    hide: {
+                                                        transform:
+                                                            width > 640
+                                                                ? "translateX(448px)"
+                                                                : "translateY(448px)",
+                                                    },
+                                                    show: {
+                                                        transform:
+                                                            width > 640
+                                                                ? "translateX(-448px)"
+                                                                : "translateY(-448px)",
+                                                    },
+                                                }}
+                                                className={
+                                                    styles.accountMenuHorizontal
+                                                }
+                                            >
+                                                <AccountMenu
+                                                    account={account}
+                                                    blockie={blockie}
+                                                    chainId={chain.id}
+                                                    onClose={
+                                                        handleAccountMenuClose
+                                                    }
+                                                />
+                                            </motion.div>
+                                        )}
+                                    </AnimatePresence>
                                     <div
                                         className={styles.walletWrapper}
                                         onClick={handleAccountMenuOpen}

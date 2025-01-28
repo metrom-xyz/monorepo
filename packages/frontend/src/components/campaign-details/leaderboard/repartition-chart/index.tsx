@@ -4,7 +4,6 @@ import type { Leaderboard, Rank } from "@/src/hooks/useLeaderboard";
 import { Typography } from "@metrom-xyz/ui";
 import { Cell, Pie, PieChart, Tooltip } from "recharts";
 import type { Address } from "viem";
-import { useTransition, animated } from "@react-spring/web";
 import { formatPercentage } from "@/src/utils/format";
 import { shuffle } from "@/src/utils/common";
 
@@ -146,39 +145,29 @@ export function RepartitionChart({
     );
 }
 
-function RankTooltip({ active, payload }: any) {
+function RankTooltip({ payload }: any) {
     const t = useTranslations("campaignDetails.leaderboard");
-
-    const transition = useTransition(active, {
-        from: { opacity: 0 },
-        enter: { opacity: 1 },
-        leave: { opacity: 0 },
-        config: { duration: 200 },
-    });
 
     if (!payload || !payload.length) return null;
 
     const color = payload[0].payload.color;
 
-    return transition(
-        (style, active) =>
-            !!active && (
-                <animated.div style={style} className={styles.tooltipWrapper}>
-                    <Typography
-                        weight="bold"
-                        size="xl"
-                        style={{
-                            color,
-                        }}
-                    >
-                        {payload[0].payload.position
-                            ? `#${payload[0].payload.position}`
-                            : t("others")}
-                    </Typography>
-                    <Typography weight="bold" size="xl2">
-                        {formatPercentage(payload[0].value)}
-                    </Typography>
-                </animated.div>
-            ),
+    return (
+        <div className={styles.tooltipWrapper}>
+            <Typography
+                weight="bold"
+                size="xl"
+                style={{
+                    color,
+                }}
+            >
+                {payload[0].payload.position
+                    ? `#${payload[0].payload.position}`
+                    : t("others")}
+            </Typography>
+            <Typography weight="bold" size="xl2">
+                {formatPercentage(payload[0].value)}
+            </Typography>
+        </div>
     );
 }

@@ -22,8 +22,8 @@
     },
     "dependencies": {
         "@popperjs/core": "^2.11.8",
-        "@react-spring/web": "^9.7.5",
         "dayjs": "^1.11.13",
+        "framer-motion": "^12.0.6",
         "rc-switch": "^4.1.0",
         "react-number-format": "^5.4.3",
         "react-popper": "^2.3.0",
@@ -33,8 +33,8 @@
     "peerDependencies": {
         "@fontsource/ibm-plex-mono": "^5.0.15",
         "@fontsource/ibm-plex-sans": "^5.0.22",
-        "react": "^18",
-        "react-dom": "^18",
+        "react": "^19",
+        "react-dom": "^19",
         "sonner": "^1.5.0"
     },
     "devDependencies": {
@@ -54,8 +54,8 @@
         "@tailwindcss/vite": "^4.0.0",
         "@types/eslint__js": "^8.42.3",
         "@types/node": "^22.12.0",
-        "@types/react": "^18.3.12",
-        "@types/react-dom": "^18.3.1",
+        "@types/react": "^19.0.8",
+        "@types/react-dom": "^19.0.3",
         "@types/react-window": "^1.8.8",
         "classnames": "^2.5.1",
         "eslint": "^9.19.0",
@@ -65,8 +65,8 @@
         "eslint-plugin-storybook": "^0.11.2",
         "postcss": "^8.5.1",
         "prettier": "^3.4.2",
-        "react": "^18",
-        "react-dom": "^18",
+        "react": "^19.0.0",
+        "react-dom": "^19.0.0",
         "sonner": "^1.7.2",
         "storybook": "^8.5.2",
         "tailwindcss": "^4.0.0",

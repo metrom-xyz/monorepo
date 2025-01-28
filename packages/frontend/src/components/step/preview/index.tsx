@@ -1,11 +1,5 @@
 import { type ReactNode } from "react";
-import {
-    animated,
-    useChain,
-    useSpring,
-    useSpringRef,
-    useTransition,
-} from "@react-spring/web";
+import { AnimatePresence, motion } from "framer-motion";
 import { ChevronDown } from "@/src/assets/chevron-down";
 import classNames from "classnames";
 import { Typography } from "@metrom-xyz/ui";
@@ -23,8 +17,6 @@ export interface StepPreviewProps {
     };
 }
 
-const AnimatedTypography = animated(Typography);
-
 export function StepPreview({
     label,
     open,
@@ -33,74 +25,50 @@ export function StepPreview({
     children,
     className,
 }: StepPreviewProps) {
-    const labelSpring = useSpringRef();
-    const labelSpringStyle = useSpring({
-        ref: labelSpring,
-        y: 0,
-        color: "black",
-        fontSize: "1rem",
-        to: {
-            y: completed ? -6 : 0,
-            color: completed ? "#9CA3AF" : "black",
-            fontSize: completed ? "0.75rem" : "1rem",
-        },
-        config: { duration: 100 },
-    });
-
-    const childrenTransitionSpring = useSpringRef();
-    const childrenTransition = useTransition(completed, {
-        ref: childrenTransitionSpring,
-        from: { opacity: 0 },
-        enter: { opacity: 1 },
-        leave: { opacity: 0 },
-        config: { duration: 100 },
-    });
-
-    useChain(
-        completed
-            ? [labelSpring, childrenTransitionSpring]
-            : [childrenTransitionSpring, labelSpring],
-        completed ? [0, 0.1] : [0, 0.1],
-    );
-
     return (
         <div
             className={classNames(className?.root, styles.root, {
                 [styles.rootCompleted]: completed,
-                [styles.rootOpen]: open,
             })}
         >
             <div className={styles.wrapper}>
                 {typeof label === "string" ? (
-                    <AnimatedTypography
-                        style={labelSpringStyle}
+                    <Typography
                         uppercase
                         weight="medium"
-                        className={styles.label}
+                        className={classNames(styles.label, {
+                            [styles.completed]: completed,
+                        })}
                     >
                         {label}
-                    </AnimatedTypography>
+                    </Typography>
                 ) : (
-                    <animated.div
-                        style={labelSpringStyle}
-                        className={styles.label}
+                    <div
+                        className={classNames(styles.label, {
+                            [styles.completed]: completed,
+                        })}
                     >
                         {label}
-                    </animated.div>
+                    </div>
                 )}
-                {childrenTransition(
-                    (style, item) =>
-                        item && (
-                            <animated.div
-                                style={style}
-                                className={classNames(styles.children, {
-                                    [styles.childrenShow]: item,
-                                })}
-                            >
-                                {children}
-                            </animated.div>
-                        ),
-                )}
+                <AnimatePresence>
+                    {completed && (
+                        <motion.div
+                            initial="hide"
+                            animate="show"
+                            exit="hide"
+                            variants={{
+                                hide: { opacity: 0 },
+                                show: { opacity: 1 },
+                            }}
+                            className={classNames(styles.children, {
+                                [styles.childrenShow]: completed,
+                            })}
+                        >
+                            {children}
+                        </motion.div>
+                    )}
+                </AnimatePresence>
             </div>
             {decorator && (
                 <div className={styles.iconWrapper}>

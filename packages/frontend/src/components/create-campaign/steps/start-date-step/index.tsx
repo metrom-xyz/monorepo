@@ -13,7 +13,7 @@ import type {
 } from "@/src/types";
 import { Typography, Button, DateTimePicker, ErrorText } from "@metrom-xyz/ui";
 import { getClosestAvailableDateTime } from "../../../../utils/date";
-import { useTransition, animated } from "@react-spring/web";
+import { AnimatePresence, m } from "framer-motion";
 import { formatDateTime } from "@/src/utils/format";
 
 import styles from "./styles.module.css";
@@ -41,13 +41,6 @@ export function StartDateStep({
 
     const previousDate = usePrevious(date);
     const chainId = useChainId();
-
-    const transition = useTransition(dateError, {
-        from: { opacity: 0 },
-        enter: { opacity: 1 },
-        leave: { opacity: 0 },
-        config: { duration: 200 },
-    });
 
     const prevDate = usePrevious(startDate);
 
@@ -125,16 +118,23 @@ export function StartDateStep({
                         >
                             {t("title")}
                         </Typography>
-                        {transition(
-                            (styles, error) =>
-                                !!error && (
-                                    <animated.div style={styles}>
-                                        <ErrorText size="xs" weight="medium">
-                                            {t(error)}
-                                        </ErrorText>
-                                    </animated.div>
-                                ),
-                        )}
+                        <AnimatePresence>
+                            {!!dateError && (
+                                <m.div
+                                    initial="hide"
+                                    animate="show"
+                                    exit="hide"
+                                    variants={{
+                                        hide: { opacity: 0 },
+                                        show: { opacity: 1 },
+                                    }}
+                                >
+                                    <ErrorText size="xs" weight="medium">
+                                        {t(dateError)}
+                                    </ErrorText>
+                                </m.div>
+                            )}
+                        </AnimatePresence>
                     </div>
                 }
             >

@@ -1,6 +1,2 @@
 @import "tailwindcss";
-@import "../../theme.css";
-
-.sb-show-main {
-    @apply dark:!bg-black;
-}
+@import "../src/theme.css";

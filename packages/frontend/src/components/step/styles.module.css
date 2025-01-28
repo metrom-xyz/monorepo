@@ -3,17 +3,10 @@
 .root {
     @apply bg-white
         rounded-2xl
-        border
-        border-transparent
-        hover:border-gray-200
         overflow-hidden
         transition-colors
         duration-200
         ease-in-out;
-}
-
-.root > * {
-    @apply transition-opacity duration-200 ease-in-out;
 }
 
 .disabled {

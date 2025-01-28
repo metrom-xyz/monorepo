@@ -1,8 +1,7 @@
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import { useTranslations } from "next-intl";
 import { Typography } from "@metrom-xyz/ui";
 import { Cell, Pie, PieChart, Tooltip } from "recharts";
-import { useTransition, animated } from "@react-spring/web";
 import { formatPercentage } from "@/src/utils/format";
 
 import styles from "./styles.module.css";
@@ -94,37 +93,27 @@ export function AverageDistributionChart({
     );
 }
 
-function RankTooltip({ active, payload }: any) {
+function RankTooltip({ payload }: any) {
     const t = useTranslations("campaignDetails.kpi.charts");
-
-    const transition = useTransition(active, {
-        from: { opacity: 0 },
-        enter: { opacity: 1 },
-        leave: { opacity: 0 },
-        config: { duration: 200 },
-    });
 
     if (!payload || !payload.length) return null;
 
     const color = payload[0].payload.color;
 
-    return transition(
-        (style, active) =>
-            !!active && (
-                <animated.div style={style} className={styles.tooltipWrapper}>
-                    <Typography
-                        weight="bold"
-                        uppercase
-                        style={{
-                            color,
-                        }}
-                    >
-                        {t(payload[0].payload.type)}
-                    </Typography>
-                    <Typography weight="bold" size="xl2">
-                        {formatPercentage(payload[0].value)}
-                    </Typography>
-                </animated.div>
-            ),
+    return (
+        <div className={styles.tooltipWrapper}>
+            <Typography
+                weight="bold"
+                uppercase
+                style={{
+                    color,
+                }}
+            >
+                {t(payload[0].payload.type)}
+            </Typography>
+            <Typography weight="bold" size="xl2">
+                {formatPercentage(payload[0].value)}
+            </Typography>
+        </div>
     );
 }

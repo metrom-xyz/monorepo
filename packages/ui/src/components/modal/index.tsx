@@ -1,5 +1,5 @@
 import { type ReactNode, useEffect, useRef } from "react";
-import { useTransition, animated } from "@react-spring/web";
+import { AnimatePresence, easeInOut, motion } from "framer-motion";
 
 import styles from "./styles.module.css";
 
@@ -11,13 +11,6 @@ interface ModalProps {
 
 export function Modal({ open, onDismiss, children, ...rest }: ModalProps) {
     const overlayRef = useRef<HTMLDivElement>(null);
-
-    const transition = useTransition(open, {
-        from: { opacity: 0 },
-        enter: { opacity: 1 },
-        leave: { opacity: 0 },
-        config: { duration: 200 },
-    });
 
     useEffect(() => {
         if (!open || !onDismiss) return;
@@ -40,17 +33,25 @@ export function Modal({ open, onDismiss, children, ...rest }: ModalProps) {
         };
     }, [onDismiss, open]);
 
-    return transition(
-        (style, modalOpen) =>
-            modalOpen && (
-                <animated.div
-                    style={style}
+    return (
+        <AnimatePresence>
+            {open && (
+                <motion.div
+                    initial="closed"
+                    animate="open"
+                    exit="closed"
+                    variants={{
+                        open: { opacity: 1 },
+                        closed: { opacity: 0 },
+                    }}
+                    transition={{ ease: easeInOut }}
                     className={`root ${styles.root}`}
                     ref={overlayRef}
                     {...rest}
                 >
                     {children}
-                </animated.div>
-            ),
+                </motion.div>
+            )}
+        </AnimatePresence>
     );
 }

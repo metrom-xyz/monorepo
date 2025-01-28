@@ -25,13 +25,13 @@ export interface PartialBaseInputProps<V> {
 }
 
 export type BaseInputProps<V> = PartialBaseInputProps<V> &
-    Omit<BaseInputWrapperProps, "children"> &
+    Omit<BaseInputWrapperProps<V>, "children"> &
     Omit<
         InputHTMLAttributes<HTMLInputElement>,
-        keyof PartialBaseInputProps<V> | keyof BaseInputWrapperProps | "ref"
+        keyof PartialBaseInputProps<V> | keyof BaseInputWrapperProps<V> | "ref"
     >;
 
-export interface BaseInputWrapperProps {
+export interface BaseInputWrapperProps<V> {
     id: string;
     label?: string;
     size?: BaseInputSize;
@@ -42,10 +42,10 @@ export interface BaseInputWrapperProps {
     icon?: FunctionComponent<React.SVGProps<SVGSVGElement>>;
     iconPlacement?: "left" | "right";
     className?: string;
-    children: ReactElement;
+    children: ReactElement<BaseInputProps<V>>;
 }
 
-export const BaseInputWrapper = ({
+export function BaseInputWrapper<V>({
     id,
     label,
     size = "base",
@@ -56,7 +56,7 @@ export const BaseInputWrapper = ({
     iconPlacement = "right",
     className,
     children,
-}: BaseInputWrapperProps): ReactElement => {
+}: BaseInputWrapperProps<V>): ReactElement {
     const icon = Icon && (
         <div
             className={classNames("inputIconWrapper", styles.inputIconWrapper, {
@@ -117,4 +117,4 @@ export const BaseInputWrapper = ({
             )}
         </div>
     );
-};
+}
