@@ -92,7 +92,6 @@ export function RewardsStep({
                             <Typography
                                 uppercase
                                 weight="medium"
-                                size="sm"
                                 className={styles.previewLabel}
                             >
                                 {t("title.rewards")}

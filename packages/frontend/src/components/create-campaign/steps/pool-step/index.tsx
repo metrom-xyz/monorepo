@@ -51,6 +51,10 @@ export function PoolStep({
         onError({ pool: !!error });
     }, [onError, error]);
 
+    useEffect(() => {
+        onPoolChange({ pool: undefined });
+    }, [dex?.slug]);
+
     const handlePoolOnChange = useCallback(
         (newPool: AmmPool) => {
             if (pool && pool.address === newPool.address) return;
