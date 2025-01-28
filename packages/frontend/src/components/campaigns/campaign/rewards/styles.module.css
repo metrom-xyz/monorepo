@@ -1,3 +1,5 @@
+@reference "../../../../app.css";
+
 .root {
     @apply flex items-center justify-between col-span-4 sm:col-span-1;
 }

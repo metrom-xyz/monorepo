@@ -1,3 +1,5 @@
+@reference "../../../../app.css";
+
 .previewLabelWrapper {
     @apply w-full flex justify-between items-center;
 }

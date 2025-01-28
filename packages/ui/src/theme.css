@@ -1,0 +1,27 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+    --font-sans: "IBM Plex Sans", ui-sans-serif, sans-serif;
+    --font-mono: "IBM Plex Mono", ui-monospace, monospace;
+
+    --text-xl5: 3rem;
+    --text-xl4: 2.25rem;
+    --text-xl2: 1.5rem;
+    --text-xl: 1.25rem;
+    --text-lg: 1.125rem;
+    --text-base: 1rem;
+    --text-sm: 0.875rem;
+    --text-xs: 0.75rem;
+    --text-inherit: inherit;
+
+    --color-brand-green: #6cff95;
+    --color-brand-blue: #3c82f6;
+    --color-carrot-orange: #ef802b;
+    --color-black: #000000;
+    --color-white: #ffffff;
+
+    --ease-colors: border-radius, color, background-color, border-color,
+        text-decoration-color, fill, stroke;
+}

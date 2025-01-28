@@ -1,3 +1,5 @@
+@reference "../../../../../app.css";
+
 .root {
     @apply h-full w-full flex flex-col;
 }

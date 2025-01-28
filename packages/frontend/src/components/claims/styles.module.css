@@ -1,3 +1,5 @@
+@reference "../../app.css";
+
 .root {
     @apply max-w-screen-lg w-full h-fit flex flex-col sm:flex-row gap-2 sm:px-0 px-5;
 }

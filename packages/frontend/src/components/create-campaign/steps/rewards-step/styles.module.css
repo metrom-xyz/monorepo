@@ -1,3 +1,5 @@
+@reference "../../../../app.css";
+
 .step {
     @apply hover:border-white !h-auto;
 }

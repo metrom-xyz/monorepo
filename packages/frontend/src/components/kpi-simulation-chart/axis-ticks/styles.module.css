@@ -1,3 +1,5 @@
+@reference "../../../app.css";
+
 .axis {
     @apply font-sans
         uppercase

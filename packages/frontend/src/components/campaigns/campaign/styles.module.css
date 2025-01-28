@@ -1,3 +1,5 @@
+@reference "../../../app.css";
+
 .root {
     composes: row from "../styles.module.css";
     @apply hover:bg-gray-200

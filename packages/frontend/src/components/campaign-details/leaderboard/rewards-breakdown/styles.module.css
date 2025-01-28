@@ -1,3 +1,5 @@
+@reference "../../../../app.css";
+
 .rewardsPopover {
     @apply flex flex-col gap-3 p-3;
 }
