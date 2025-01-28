@@ -1,3 +1,5 @@
+@reference "../../../app.css";
+
 .contentWrapper {
     @apply flex items-center gap-2;
 }

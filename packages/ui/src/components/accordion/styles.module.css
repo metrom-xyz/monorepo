@@ -1,3 +1,5 @@
+@reference "../../theme.css";
+
 .root {
     @apply w-full flex flex-col bg-white rounded-2xl;
 }

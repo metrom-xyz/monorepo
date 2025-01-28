@@ -5,7 +5,7 @@ import { useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 import { formatAmount } from "@/src/utils/format";
 
-import styles from "./syles.module.css";
+import styles from "./styles.module.css";
 
 interface PointsProps {
     status: Status;

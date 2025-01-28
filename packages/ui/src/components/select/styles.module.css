@@ -1,3 +1,5 @@
+@reference "../../theme.css";
+
 .input :global(.input) {
     @apply cursor-pointer;
 }
@@ -28,7 +30,7 @@
         flex
         items-center
         outline-none
-        placeholder-opacity-20
+        placeholder-black/20
         text-black
         box-border
         hover:bg-gray-200

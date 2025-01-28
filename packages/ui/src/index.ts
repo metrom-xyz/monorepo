@@ -26,5 +26,3 @@ export * from "./components/text-input";
 
 export * from "./utils/date";
 export * from "./utils/formatting";
-
-export * from "./tailwind-preset";

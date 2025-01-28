@@ -1,3 +1,5 @@
+@reference "../../../../../app.css";
+
 .root {
     @apply max-h-[22.5rem]
         h-full

@@ -1,3 +1,5 @@
+@reference "../../../../app.css";
+
 .rankWrapper {
     @apply cursor-pointer;
 }

@@ -1,5 +1,5 @@
 import type { Preview } from "@storybook/react";
-import { withThemeByDataAttribute } from "@storybook/addon-themes";
+import { withThemeByClassName } from "@storybook/addon-themes";
 
 import "@fontsource/ibm-plex-sans/400.css";
 import "@fontsource/ibm-plex-sans/500.css";
@@ -63,13 +63,13 @@ const preview: Preview = {
 };
 
 export const decorators = [
-    withThemeByDataAttribute({
+    withThemeByClassName({
         themes: {
             light: "light",
             dark: "dark",
         },
         defaultTheme: "light",
-        attributeName: "data-mode",
+        parentSelector: "dark",
     }),
 ];
 

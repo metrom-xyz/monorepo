@@ -1,3 +1,5 @@
+@reference "../../../../app.css";
+
 .root {
     @apply w-[1.25rem] h-[1.25rem];
 }

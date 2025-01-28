@@ -2,8 +2,7 @@ import "@fontsource/ibm-plex-sans/400.css";
 import "@fontsource/ibm-plex-sans/500.css";
 import "@fontsource/ibm-plex-sans/700.css";
 import "@fontsource/ibm-plex-mono/500.css";
-import "@metrom-xyz/ui/style.css";
-import "./globals.css";
+import "../../app.css";
 
 import type { Metadata } from "next";
 import { type ReactNode } from "react";
@@ -27,11 +26,13 @@ export const metadata: Metadata = {
 
 export default async function Layout({
     children,
-    params: { locale },
+    params,
 }: Readonly<{
     children: ReactNode;
     params: { locale: string };
 }>) {
+    const { locale } = await params;
+
     if (!routing.locales.includes(locale as any)) {
         notFound();
     }

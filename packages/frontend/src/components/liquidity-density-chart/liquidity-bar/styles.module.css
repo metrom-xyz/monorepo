@@ -1,3 +1,5 @@
+@reference "../../../app.css";
+
 .label {
     @apply font-sans
         uppercase

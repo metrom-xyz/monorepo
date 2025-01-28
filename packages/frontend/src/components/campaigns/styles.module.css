@@ -1,3 +1,5 @@
+@reference "../../app.css";
+
 .root {
     @apply max-w-screen-xl w-full flex flex-col px-5;
 }
@@ -19,7 +21,7 @@
 }
 
 .row {
-    @apply grid grid-cols-12 sm:grid-cols-campaigns-table gap-5 px-2 sm:px-7 items-center;
+    @apply grid-cols-12 sm:grid-cols-[0.1fr_0.4fr_3fr_1fr_1fr_1fr] gap-5 px-2 sm:px-7 items-center;
 }
 
 .header {

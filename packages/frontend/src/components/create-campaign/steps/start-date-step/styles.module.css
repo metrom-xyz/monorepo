@@ -1,3 +1,5 @@
+@reference "../../../../app.css";
+
 .previewLabelWrapper {
     @apply flex
         items-center
