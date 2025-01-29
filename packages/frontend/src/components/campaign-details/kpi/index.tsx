@@ -95,20 +95,20 @@ export function Kpi({ campaign, loading }: KpiProps) {
                             size="xl"
                             label={t("minimumPayout")}
                             loading={specificationLoading}
-                            value={formatPercentage(
-                                minimumPayoutPercentage
+                            value={formatPercentage({
+                                percentage: minimumPayoutPercentage
                                     ? minimumPayoutPercentage * 100
                                     : 0,
-                            )}
+                            })}
                         />
                         <TextField
                             boxed
                             size="xl"
                             label={t("goalReached")}
                             loading={specificationLoading}
-                            value={formatPercentage(
-                                reachedGoalPercentage * 100,
-                            )}
+                            value={formatPercentage({
+                                percentage: reachedGoalPercentage * 100,
+                            })}
                         />
                     </div>
                     <div className={styles.chart}>

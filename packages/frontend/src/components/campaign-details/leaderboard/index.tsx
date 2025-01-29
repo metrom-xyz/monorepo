@@ -136,9 +136,9 @@ export function Leaderboard({ campaign, loading }: LeaderboardProps) {
                                             #{i + 1}
                                         </Typography>
                                         <Typography weight="medium">
-                                            {formatPercentage(
-                                                distribution.weight,
-                                            )}
+                                            {formatPercentage({
+                                                percentage: distribution.weight,
+                                            })}
                                         </Typography>
                                     </div>
                                     <div className={styles.accountWrapper}>

@@ -166,7 +166,7 @@ function RankTooltip({ payload }: any) {
                     : t("others")}
             </Typography>
             <Typography weight="bold" size="xl2">
-                {formatPercentage(payload[0].value)}
+                {formatPercentage({ percentage: payload[0].value })}
             </Typography>
         </div>
     );

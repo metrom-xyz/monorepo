@@ -124,9 +124,10 @@ export function Rewards({ rewards, startDate, endDate }: RewardsProps) {
                         value={
                             <div className={styles.feeText}>
                                 <Typography weight="medium" size="xl">
-                                    {formatPercentage(
-                                        (resolvedFee / FEE_UNIT) * 100,
-                                    )}
+                                    {formatPercentage({
+                                        percentage:
+                                            (resolvedFee / FEE_UNIT) * 100,
+                                    })}
                                 </Typography>
                                 <Typography weight="medium" light>
                                     {formatUsdAmount(

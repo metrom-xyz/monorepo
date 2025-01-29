@@ -80,7 +80,10 @@ export function Header({ payload, backDisabled, onBack }: HeaderProps) {
                         </Typography>
                         {payload.pool.fee && (
                             <Typography size="lg" weight="medium" light>
-                                {formatPercentage(payload.pool.fee)}
+                                {formatPercentage({
+                                    percentage: payload.pool.fee,
+                                    keepDust: true,
+                                })}
                             </Typography>
                         )}
                     </>

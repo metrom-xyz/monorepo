@@ -50,7 +50,7 @@ export function TooltipContent({ chain, active, payload }: TooltipProps) {
                     </Typography>
                 </div>
                 <Typography weight="medium" uppercase>
-                    {formatPercentage(reimbursed * 100)}
+                    {formatPercentage({ percentage: reimbursed * 100 })}
                 </Typography>
             </div>
             <div className={styles.fieldWrapper}>
@@ -66,7 +66,7 @@ export function TooltipContent({ chain, active, payload }: TooltipProps) {
                     </Typography>
                 </div>
                 <Typography weight="medium" uppercase>
-                    {formatPercentage(distributed * 100)}
+                    {formatPercentage({ percentage: distributed * 100 })}
                 </Typography>
             </div>
             <div className={classNames(styles.row, styles.breakdownWrapper)}>

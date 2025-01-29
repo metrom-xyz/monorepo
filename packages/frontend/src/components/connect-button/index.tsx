@@ -97,10 +97,10 @@ export function ConnectButton() {
                                 >
                                     <div className={styles.networksWrapper}>
                                         {chains.map((chain) => {
-                                            const ChainIcon =
+                                            const { icon: ChainIcon, name } =
                                                 CHAIN_DATA[
                                                     chain.id as SupportedChain
-                                                ].icon;
+                                                ];
 
                                             return (
                                                 <div
@@ -123,7 +123,7 @@ export function ConnectButton() {
                                                         }
                                                     />
                                                     <Typography>
-                                                        {chain.name}
+                                                        {name}
                                                     </Typography>
                                                 </div>
                                             );

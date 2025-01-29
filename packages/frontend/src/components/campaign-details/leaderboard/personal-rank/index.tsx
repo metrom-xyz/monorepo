@@ -70,7 +70,9 @@ export function PersonalRank({
                                 # {connectedAccountRank.position}
                             </Typography>
                             <Typography size="lg" weight="medium">
-                                {formatPercentage(connectedAccountRank.weight)}
+                                {formatPercentage({
+                                    percentage: connectedAccountRank.weight,
+                                })}
                             </Typography>
                         </div>
                         <Typography size="lg" weight="medium">

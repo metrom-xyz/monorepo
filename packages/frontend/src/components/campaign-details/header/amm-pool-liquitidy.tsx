@@ -59,7 +59,10 @@ export function AmmPoolLiquityHeader({ campaign }: AmmPoolLiquityHeaderProps) {
                     </Typography>
                     {campaign.target.pool.fee && (
                         <Typography size="lg" weight="medium" light>
-                            {formatPercentage(campaign.target.pool.fee)}
+                            {formatPercentage({
+                                percentage: campaign.target.pool.fee,
+                                keepDust: true,
+                            })}
                         </Typography>
                     )}
                 </div>

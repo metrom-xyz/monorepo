@@ -34,7 +34,10 @@ export function AmmPoolLiquidity({ campaign }: AmmPoolLiquidityProps) {
                         className={styles.campaignFee}
                         light
                     >
-                        {formatPercentage(campaign.target.pool.fee)}
+                        {formatPercentage({
+                            percentage: campaign.target.pool.fee,
+                            keepDust: true,
+                        })}
                     </Typography>
                 )}
                 {campaign.specification?.kpi && (

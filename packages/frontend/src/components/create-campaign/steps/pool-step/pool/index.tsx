@@ -37,7 +37,10 @@ export function Pool({ pool, chain, onClick }: PoolProps) {
                             light
                             className={styles.fee}
                         >
-                            {formatPercentage(pool.fee)}
+                            {formatPercentage({
+                                percentage: pool.fee,
+                                keepDust: true,
+                            })}
                         </Typography>
                     ) : null}
                 </div>
