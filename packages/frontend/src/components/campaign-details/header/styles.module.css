@@ -8,7 +8,7 @@
 }
 
 .title {
-    @apply flex flex-wrap items-center gap-5;
+    @apply flex sm:flex-wrap items-center gap-5;
 }
 
 .logo {
@@ -25,7 +25,7 @@
 }
 
 .leftActions {
-    @apply flex flex-wrap gap-3 h-12;
+    @apply flex flex-wrap gap-3 min-h-12;
 }
 
 .exploreButton {
