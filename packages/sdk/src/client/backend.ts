@@ -1,10 +1,15 @@
 import { formatUnits, type Address, type Hex } from "viem";
 import type { SupportedChain } from "@metrom-xyz/contracts";
-import { SupportedAmm, SupportedDex } from "../commons";
+import {
+    SupportedAmm,
+    SupportedDex,
+    SupportedLiquityV2Brand,
+} from "../commons";
 import type {
     BackendCampaignResponse,
     BackendCampaignsResponse,
-    BackendLiquityV2DebtBrand,
+    BackendLiquityV2CollateralTarget,
+    BackendLiquityV2DebtTarget,
 } from "./types/campaigns";
 import type {
     BackendAmmPool,
@@ -14,9 +19,11 @@ import type {
 import {
     type AmmPoolLiquidityTarget,
     Campaign,
-    type LiquityV2DebtBrand,
+    type LiquityV2CollateralTarget,
+    type LiquityV2CollateralWithDebt,
     type LiquityV2DebtTarget,
     type PointDistributables,
+    TargetType,
     type TokenDistributable,
     type TokenDistributables,
 } from "../types/campaigns";
@@ -25,6 +32,7 @@ import type {
     Erc20Token,
     OnChainAmount,
     UsdPricedErc20Token,
+    UsdPricedErc20TokenAmount,
     UsdPricedOnChainAmount,
 } from "../types/commons";
 import type { BackendPoolResponse, BackendPoolsResponse } from "./types/pools";
@@ -54,6 +62,26 @@ const MIN_TICK = -887272;
 const MAX_TICK = -MIN_TICK;
 const TICK_AVERAGE_FACTOR = 100;
 const BI_1_000_000 = BigInt(1_000_000);
+
+const DEX_BRAND_NAME: Record<SupportedDex, string> = {
+    [SupportedDex.UniswapV3]: "Uniswap v3",
+    [SupportedDex.TestIntegral]: "Test Integral",
+    [SupportedDex.Swapsicle]: "Swapsicle",
+    [SupportedDex.Kim]: "Kim",
+    [SupportedDex.Panko]: "Panko",
+    [SupportedDex.Scribe]: "Scribe",
+    [SupportedDex.BaseSwap]: "BaseSwap",
+    [SupportedDex.Fibonacci]: "Fibonacci",
+    [SupportedDex.ThirdTrade]: "ThirdTrade",
+    [SupportedDex.SilverSwap]: "SilverSwap",
+    [SupportedDex.Swapr]: "Swapr",
+    [SupportedDex.Unagi]: "Unagi",
+};
+
+const LIQUITY_V2_BRAND_NAME: Record<SupportedLiquityV2Brand, string> = {
+    [SupportedLiquityV2Brand.Ebisu]: "Ebisu",
+    [SupportedLiquityV2Brand.Liquity]: "Liquity",
+};
 
 export interface FetchCampaignParams {
     chainId: number;
@@ -198,7 +226,10 @@ export class MetromApiClient {
                 ...ammPool,
                 // FIXME: it's probably better to have this in the response
                 chainId: params.chainId,
-                dex: ammPool.dex as SupportedDex,
+                dex: {
+                    slug: ammPool.dex as SupportedDex,
+                    name: DEX_BRAND_NAME[ammPool.dex as SupportedDex],
+                },
                 amm: ammPool.amm as SupportedAmm,
                 tokens: ammPool.tokens.map((address) =>
                     resolveToken(parsedResponse.resolvedTokens, address),
@@ -227,7 +258,12 @@ export class MetromApiClient {
             ...parsedResponse.ammPool,
             // FIXME: it's probably better to have this in the response
             chainId: params.chainId,
-            dex: parsedResponse.ammPool.dex as SupportedDex,
+            dex: {
+                slug: parsedResponse.ammPool.dex as SupportedDex,
+                name: DEX_BRAND_NAME[
+                    parsedResponse.ammPool.dex as SupportedDex
+                ],
+            },
             amm: parsedResponse.ammPool.amm as SupportedAmm,
             tokens: parsedResponse.ammPool.tokens.map((address) =>
                 resolveToken(parsedResponse.resolvedTokens, address),
@@ -714,17 +750,19 @@ function processCampaignsResponse(
                 break;
             }
             case "liquity-v2-debt": {
-                target = <LiquityV2DebtTarget>{
-                    ...backendCampaign.target,
-                    brand: resolveLiquityV2DebtBrand(
-                        response.resolvedLiquityV2Debts,
-                        backendCampaign.target.chainId,
-                        backendCampaign.target.brand,
-                    ),
-                };
+                target = resolveLiquityV2DebtTarget(
+                    response.resolvedTokens,
+                    backendCampaign.target,
+                );
                 break;
             }
-            // TODO: handle other target types
+            case "liquity-v2-collateral": {
+                target = resolveLiquityV2CollateralTarget(
+                    response.resolvedPricedTokens,
+                    backendCampaign.target,
+                );
+                break;
+            }
         }
 
         let distributables;
@@ -814,7 +852,10 @@ function resolveAmmPool(
         ...resolvedPool,
         chainId,
         address,
-        dex: resolvedPool.dex as SupportedDex,
+        dex: {
+            slug: resolvedPool.dex as SupportedDex,
+            name: DEX_BRAND_NAME[resolvedPool.dex as SupportedDex],
+        },
         amm: resolvedPool.amm as SupportedAmm,
         tokens: resolvedPool.tokens.map((address) =>
             resolveTokenInChain(tokensRegistry, chainId, address),
@@ -822,24 +863,74 @@ function resolveAmmPool(
     };
 }
 
-function resolveLiquityV2DebtBrand(
-    liquityV2DebtBrandsRegistry: Record<
+function resolveLiquityV2DebtTarget(
+    tokensRegistry: Record<number, Record<string, BackendErc20Token>>,
+    target: BackendLiquityV2DebtTarget,
+): LiquityV2DebtTarget {
+    const resolved = <LiquityV2DebtTarget>{
+        type: TargetType.LiquityV2Debt,
+        brand: {
+            slug: target.brand as SupportedLiquityV2Brand,
+            name: LIQUITY_V2_BRAND_NAME[
+                target.brand as SupportedLiquityV2Brand
+            ],
+        },
+        chainId: target.chainId,
+        debts: [],
+        totalUsdDebt: 0,
+    };
+
+    for (const [collateralAddress, usdDebt] of Object.entries(target.debts)) {
+        resolved.debts.push(<LiquityV2CollateralWithDebt>{
+            ...resolveTokenInChain(
+                tokensRegistry,
+                target.chainId,
+                collateralAddress as Address,
+            ),
+            usdDebt,
+        });
+        resolved.totalUsdDebt += usdDebt;
+    }
+
+    return resolved;
+}
+
+function resolveLiquityV2CollateralTarget(
+    pricedTokensRegistry: Record<
         number,
-        Record<string, BackendLiquityV2DebtBrand>
+        Record<string, BackendUsdPricedErc20Token>
     >,
-    chainId: number,
-    brand: string,
-): LiquityV2DebtBrand {
-    const resolved = liquityV2DebtBrandsRegistry[chainId][brand];
-    if (!resolved)
-        throw new Error(
-            `Could not find resolved Liquity v2 debt brand with name ${brand} in chain with id ${chainId}`,
+    target: BackendLiquityV2CollateralTarget,
+): LiquityV2CollateralTarget {
+    const resolved = <LiquityV2CollateralTarget>{
+        type: TargetType.LiquityV2Collateral,
+        brand: {
+            slug: target.brand as SupportedLiquityV2Brand,
+            name: LIQUITY_V2_BRAND_NAME[
+                target.brand as SupportedLiquityV2Brand
+            ],
+        },
+        chainId: target.chainId,
+        collaterals: [],
+    };
+
+    for (const [collateralAddress, tvl] of Object.entries(target.collaterals)) {
+        const resolvedCollateralToken = resolvePricedTokenInChain(
+            pricedTokensRegistry,
+            target.chainId,
+            collateralAddress as Address,
         );
 
-    return {
-        ...resolved,
-        name: resolved.brand,
-    };
+        resolved.collaterals.push(<UsdPricedErc20TokenAmount>{
+            token: resolvedCollateralToken,
+            amount: stringToOnChainAmount(
+                tvl,
+                resolvedCollateralToken.decimals,
+            ),
+        });
+    }
+
+    return resolved;
 }
 
 function resolveTokenInChain(

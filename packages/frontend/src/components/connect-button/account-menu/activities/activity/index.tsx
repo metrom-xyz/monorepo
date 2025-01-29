@@ -48,7 +48,7 @@ export function Activity({ chainId, transaction, payload }: ActivityProps) {
     const dex = campaign?.isTargeting(TargetType.AmmPoolLiquidity)
         ? dexes.find((dex) => {
               // FIXME: better way to handle this
-              return dex.slug === campaign.target.pool.dex;
+              return dex.slug === campaign.target.pool.dex.slug;
           })
         : undefined;
     const DexLogo = dex?.logo;

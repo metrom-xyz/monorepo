@@ -23,7 +23,7 @@ export function getPoolAddLiquidityLink(
 ): string | undefined {
     const { chainId, target } = campaign;
 
-    const dex = getDex(chainId, target.pool.dex);
+    const dex = getDex(chainId, target.pool.dex.slug);
     if (!dex || !dex.addLiquidityUrl) return;
 
     if ([SupportedDex.UniswapV3, SupportedDex.Panko].includes(dex.slug))

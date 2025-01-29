@@ -1,10 +1,14 @@
 import type { Address, Hex } from "viem";
 import type {
     AmmPool,
+    Brand,
+    Erc20Token,
     OnChainAmount,
     UsdPricedErc20Token,
+    UsdPricedErc20TokenAmount,
     UsdPricedOnChainAmount,
 } from "./commons";
+import type { SupportedLiquityV2Brand } from "src/commons";
 
 export enum TargetType {
     AmmPoolLiquidity = "amm-pool-liquidity",
@@ -19,26 +23,23 @@ export interface AmmPoolLiquidityTarget {
     pool: AmmPool;
 }
 
-export interface LiquityV2DebtBrand {
-    name: string;
+export interface LiquityV2CollateralWithDebt extends Erc20Token {
     usdDebt: number;
-}
-
-export interface LiquityV2CollateralBrand {
-    name: string;
-    // TODO: complete type
 }
 
 export interface LiquityV2DebtTarget {
     type: TargetType.LiquityV2Debt;
     chainId: number;
-    brand: LiquityV2DebtBrand;
+    brand: Brand<SupportedLiquityV2Brand>;
+    debts: LiquityV2CollateralWithDebt[];
+    totalUsdDebt: number;
 }
 
 export interface LiquityV2CollateralTarget {
     type: TargetType.LiquityV2Collateral;
     chainId: number;
-    brand: LiquityV2CollateralBrand;
+    brand: Brand<SupportedLiquityV2Brand>;
+    collaterals: UsdPricedErc20TokenAmount[];
 }
 
 export type CampaignTarget =

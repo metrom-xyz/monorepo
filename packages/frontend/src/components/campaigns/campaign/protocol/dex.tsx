@@ -17,7 +17,7 @@ export function Dex({ campaign }: DexProps) {
     const [dexDetails, setDexDetails] = useState<HTMLDivElement | null>(null);
     const dexDetailsPopoverRef = useRef<HTMLDivElement>(null);
 
-    const dex = dexes.find((dex) => dex.slug === campaign.target.pool.dex);
+    const dex = dexes.find((dex) => dex.slug === campaign.target.pool.dex.slug);
     const DexLogo = dex?.logo;
 
     function handleDexDetailsPopoverOpen() {

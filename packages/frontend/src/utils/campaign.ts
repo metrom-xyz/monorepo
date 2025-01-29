@@ -69,19 +69,19 @@ export function getCampaignName(
     switch (campaign.target.type) {
         case TargetType.AmmPoolLiquidity: {
             return t("campaignActions.lp", {
-                name: campaign.target.pool.tokens
+                pool: campaign.target.pool.tokens
                     .map((token) => token.symbol)
                     .join("/"),
             });
         }
         case TargetType.LiquityV2Debt: {
             return t("campaignActions.takeLoan", {
-                name: campaign.target.brand.name,
+                brand: campaign.target.brand.name,
             });
         }
         case TargetType.LiquityV2Collateral: {
             return t("campaignActions.depositCollateral", {
-                name: campaign.target.brand.name,
+                brand: campaign.target.brand.name,
             });
         }
     }
