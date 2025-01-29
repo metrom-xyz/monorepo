@@ -42,8 +42,8 @@ import {
     scrollData,
     formTestnet,
     formTestnetData,
-    arthera,
-    artheraData,
+    // arthera,
+    // artheraData,
     form,
     formData,
     gnosisData,
@@ -70,7 +70,16 @@ export const MAXIMUM_REWARDS_RESTRICTIONS = 20;
 
 export const SUPPORTED_CHAINS: [Chain, ...Chain[]] =
     ENVIRONMENT === Environment.Production
-        ? [mode, mantle, base, taiko, scroll, sonic, arthera, form, gnosis]
+        ? [
+              mode,
+              mantle,
+              base,
+              taiko,
+              scroll,
+              sonic,
+              /* arthera, */ form,
+              gnosis,
+          ]
         : [
               celoAlfajores,
               holesky,
@@ -96,7 +105,7 @@ export const CHAIN_DATA: Record<SupportedChain, ChainData> = {
     [SupportedChain.Taiko]: taikoData,
     [SupportedChain.Scroll]: scrollData,
     [SupportedChain.Sonic]: sonicData,
-    [SupportedChain.Arthera]: artheraData,
+    // [SupportedChain.Arthera]: artheraData,
     [SupportedChain.Form]: formData,
     [SupportedChain.Gnosis]: gnosisData,
 };

@@ -19,7 +19,7 @@ const NETWORK_NAME: Record<SupportedChain, string> = {
     [SupportedChain.Taiko]: "taiko",
     [SupportedChain.Scroll]: "scroll",
     [SupportedChain.Sonic]: "sonic",
-    [SupportedChain.Arthera]: "", // no hosting provider here...
+    // [SupportedChain.Arthera]: "", // no hosting provider here...
     [SupportedChain.Form]: "form",
     [SupportedChain.Gnosis]: "gnosis",
 };

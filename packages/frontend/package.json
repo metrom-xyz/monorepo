@@ -15,7 +15,7 @@
         "@floating-ui/vue": "^1.1.6",
         "@fontsource/ibm-plex-mono": "^5.1.1",
         "@fontsource/ibm-plex-sans": "^5.1.1",
-        "@metrom-xyz/contracts": "^0.38.0",
+        "@metrom-xyz/contracts": "^0.39.0",
         "@metrom-xyz/sdk": "workspace:*",
         "@metrom-xyz/ui": "workspace:*",
         "@popperjs/core": "^2.11.8",
@@ -39,7 +39,7 @@
         "recharts": "^2.15.1",
         "sharp": "^0.33.5",
         "sonner": "^1.7.2",
-        "viem": "^2.22.16",
+        "viem": "^2.22.17",
         "wagmi": "^2.14.9"
     },
     "devDependencies": {
