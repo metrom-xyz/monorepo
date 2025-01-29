@@ -175,7 +175,7 @@ export function handleCreateCampaign(event: CreateCampaign): void {
 export function handleDistributeReward(event: DistributeReward): void {
     let campaign = getRewardsCampaignOrThrow(event.params.campaignId);
     campaign.root = event.params.root;
-    campaign.data = event.params.data;
+    campaign.dataHash = event.params.data;
     campaign.save();
 
     let distributeRewardEvent = new DistributeRewardEvent(getEventId(event));
@@ -183,7 +183,7 @@ export function handleDistributeReward(event: DistributeReward): void {
     distributeRewardEvent.metrom = METROM_ADDRESS;
     distributeRewardEvent.campaign = campaign.id;
     distributeRewardEvent.root = event.params.root;
-    distributeRewardEvent.data = event.params.data;
+    distributeRewardEvent.dataHash = event.params.data;
     distributeRewardEvent.save();
 }
 

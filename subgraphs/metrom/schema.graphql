@@ -163,7 +163,7 @@ type DistributeRewardEvent @entity(immutable: true) {
     metrom: Metrom!
     campaign: RewardsCampaign!
     root: Bytes!
-    data: Bytes!
+    dataHash: Bytes!
 }
 
 type SetMinimumRewardTokenRateEvent @entity(immutable: true) {
