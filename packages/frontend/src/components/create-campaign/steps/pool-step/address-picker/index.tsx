@@ -45,7 +45,7 @@ export function AddressPoolPicker({
         if (search && !address) onError(t("errors.invalidAddress"));
         else if (address && !loadingImportedPool && importedPool === null)
             onError(t("errors.invalidPool"));
-        else if (dex && importedPool && importedPool.dex !== dex.slug)
+        else if (dex && importedPool && importedPool.dex.slug !== dex.slug)
             onError(t("errors.inconsistentDex", { dex: dex.name }));
         else onError("");
     }, [address, dex, loadingImportedPool, importedPool, search, t, onError]);
@@ -61,11 +61,11 @@ export function AddressPoolPicker({
     }
 
     const empty = !loadingImportedPool && !importedPool;
-    const validPool = !empty && dex && importedPool?.dex === dex?.slug;
+    const validPool = !empty && dex && importedPool?.dex.slug === dex?.slug;
     const invalidPool =
         address &&
         !loadingImportedPool &&
-        (importedPool === null || (dex && importedPool?.dex !== dex.slug));
+        (importedPool === null || (dex && importedPool?.dex.slug !== dex.slug));
 
     return (
         <div className={styles.root}>

@@ -35,7 +35,9 @@ export function Header({ payload, backDisabled, onBack }: HeaderProps) {
 
     const selectedDex = useMemo(() => {
         if (!ammPoolLiquidityCampaign) return undefined;
-        return availableDexes.find(({ slug }) => slug === payload.pool.dex);
+        return availableDexes.find(
+            ({ slug }) => slug === payload.pool.dex.slug,
+        );
     }, [ammPoolLiquidityCampaign, availableDexes, payload]);
 
     const liquityV2Action = useMemo(() => {
