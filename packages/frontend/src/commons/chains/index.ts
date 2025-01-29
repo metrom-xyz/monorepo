@@ -9,7 +9,7 @@ export { baseSepoliaData } from "./base-sepolia";
 export { taikoData } from "./taiko";
 export { scrollData } from "./scroll";
 export { formTestnetData, formTestnet } from "./form-testnet";
-export { artheraData, arthera } from "./arthera";
+// export { artheraData, arthera } from "./arthera";
 export { formData, form } from "./form";
 export { gnosisData } from "./gnosis";
 export { sepoliaData } from "./sepolia";
