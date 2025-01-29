@@ -52,7 +52,7 @@ export function AprChip({
                             weight="medium"
                             className={styles.text}
                         >
-                            {formatPercentage(apr)}
+                            {formatPercentage({ percentage: apr })}
                         </Typography>
                     </div>
                 </div>

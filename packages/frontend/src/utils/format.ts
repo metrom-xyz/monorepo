@@ -6,9 +6,17 @@ export function formatUsdAmount(amount?: number | null): string {
     return numeral(amount).format("($0,0.0[0]a)");
 }
 
-export function formatPercentage(amount?: number | null): string {
-    if (amount && amount < 0.01) return "<0.01%";
-    return `${numeral(amount).format("0,0.0[0]a")}%`;
+export function formatPercentage({
+    percentage,
+    keepDust,
+    humanize = true,
+}: {
+    percentage?: number | null;
+    keepDust?: boolean;
+    humanize?: boolean;
+}): string {
+    if (percentage && !keepDust && percentage < 0.01) return "<0.01%";
+    return `${numeral(percentage).format(`0,0.0[${keepDust ? "000" : "0"}]${humanize ? "a" : ""}`)}%`;
 }
 
 export function formatAmount({

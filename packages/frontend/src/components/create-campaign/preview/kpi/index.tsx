@@ -57,7 +57,9 @@ export function Kpi({ poolUsdTvl, rewards, specification }: KpiProps) {
                     label={t("minimumPayout")}
                     value={
                         minimumPayoutPercentage
-                            ? formatPercentage(minimumPayoutPercentage * 100)
+                            ? formatPercentage({
+                                  percentage: minimumPayoutPercentage * 100,
+                              })
                             : "-"
                     }
                 />

@@ -26,7 +26,10 @@ export function PoolStepPreview({ chainId, tokens, fee, usdTvl }: AmmPool) {
                     </Typography>
                     {fee && (
                         <Typography size="sm" light weight="medium">
-                            {formatPercentage(fee)}
+                            {formatPercentage({
+                                percentage: fee,
+                                keepDust: true,
+                            })}
                         </Typography>
                     )}
                 </div>

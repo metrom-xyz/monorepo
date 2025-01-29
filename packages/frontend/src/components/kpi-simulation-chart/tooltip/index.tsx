@@ -70,13 +70,14 @@ export function TooltipContent({
                     {t("kpiReached")}
                 </Typography>
                 <Typography weight="medium" size={size}>
-                    {formatPercentage(
-                        getReachedGoalPercentage(
-                            usdTvl,
-                            lowerUsdTarget,
-                            upperUsdTarget,
-                        ) * 100,
-                    )}
+                    {formatPercentage({
+                        percentage:
+                            getReachedGoalPercentage(
+                                usdTvl,
+                                lowerUsdTarget,
+                                upperUsdTarget,
+                            ) * 100,
+                    })}
                 </Typography>
             </div>
         </div>
