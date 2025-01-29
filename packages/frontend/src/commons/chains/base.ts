@@ -5,7 +5,7 @@ import { KimLogo } from "../../assets/logos/dexes/kim";
 import { BaseSwapLogo } from "@/src/assets/logos/dexes/baseswap";
 import { type ChainData } from "..";
 import { base } from "viem/chains";
-import { UniswapLogo } from "@/src/assets/logos/dexes/uniswap";
+// import { UniswapLogo } from "@/src/assets/logos/dexes/uniswap";
 import { ProtocolType } from "@/src/types";
 
 export const baseData: ChainData = {
@@ -30,13 +30,13 @@ export const baseData: ChainData = {
                 addLiquidityUrl: `https://baseswap.fi/pool/v3/${SupportedChain.Base}-{target_pool}`,
                 supportsFetchAllPools: true,
             },
-            {
-                slug: SupportedDex.UniswapV3,
-                logo: UniswapLogo,
-                name: "Uniswap v3",
-                addLiquidityUrl: `https://app.uniswap.org/explore/pools/${SupportedChain.Base}/{target_pool}`,
-                supportsFetchAllPools: false,
-            },
+            // {
+            //     slug: SupportedDex.UniswapV3,
+            //     logo: UniswapLogo,
+            //     name: "Uniswap v3",
+            //     addLiquidityUrl: `https://app.uniswap.org/explore/pools/${SupportedChain.Base}/{target_pool}`,
+            //     supportsFetchAllPools: false,
+            // },
         ],
         [ProtocolType.LiquityV2Brand]: [],
     },
