@@ -109,6 +109,17 @@ export const DEPLOYMENTS: {
                 version: NonFungiblePositionManagerVersion.V1_0,
             },
         },
+        "third-trade": {
+            Factory: {
+                address: "0x06621A0f74b4F3CdC2A3A0bbB3a969f27963Eb13",
+                startBlock: 23948951,
+            },
+            NonFungiblePositionManager: {
+                address: "0x4fE3703b20B78983f36A1faA5C304C48A5e2CDe9",
+                startBlock: 23949195,
+                version: NonFungiblePositionManagerVersion.V1_0,
+            },
+        },
     },
     scroll: {
         scribe: {
