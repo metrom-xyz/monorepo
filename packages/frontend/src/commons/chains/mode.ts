@@ -7,7 +7,7 @@ import { mode } from "viem/chains";
 import { ProtocolType } from "@/src/types";
 
 export const modeData: ChainData = {
-    name: mode.name,
+    name: "Mode",
     metromContract: ADDRESS[SupportedChain.Mode],
     blockExplorers: mode.blockExplorers,
     icon: ModeLogo,

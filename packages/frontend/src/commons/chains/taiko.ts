@@ -9,7 +9,7 @@ import { UnagiLogo } from "@/src/assets/logos/dexes/unagi";
 import { ProtocolType } from "@/src/types";
 
 export const taikoData: ChainData = {
-    name: taiko.name,
+    name: "Taiko",
     metromContract: ADDRESS[SupportedChain.Taiko],
     blockExplorers: taiko.blockExplorers,
     icon: TaikoLogo,
