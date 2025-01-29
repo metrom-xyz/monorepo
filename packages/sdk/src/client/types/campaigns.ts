@@ -16,6 +16,14 @@ export interface BackendLiquityV2DebtTarget {
     type: "liquity-v2-debt";
     chainId: number;
     brand: string;
+    debts: Record<Address, number>;
+}
+
+export interface BackendLiquityV2CollateralTarget {
+    type: "liquity-v2-collateral";
+    chainId: number;
+    brand: string;
+    collaterals: Record<Address, string>;
 }
 
 export interface BackendTokenDistributable {
@@ -41,7 +49,10 @@ export interface BackendCampaign {
     to: number;
     createdAt: number;
     snapshottedAt?: number;
-    target: BackendAmmPoolLiquidityTarget | BackendLiquityV2DebtTarget;
+    target:
+        | BackendAmmPoolLiquidityTarget
+        | BackendLiquityV2DebtTarget
+        | BackendLiquityV2CollateralTarget;
     specification?: Specification;
     distributables: BackendTokenDistributables | BackendPointDistributables;
     apr?: number;
@@ -59,10 +70,6 @@ export interface BackendCampaignsResponse {
         Record<Address, BackendUsdPricedErc20Token>
     >;
     resolvedAmmPools: Record<number, Record<Address, BackendAmmPool>>;
-    resolvedLiquityV2Debts: Record<
-        number,
-        Record<string, BackendLiquityV2DebtBrand>
-    >;
     campaigns: BackendCampaign[];
 }
 
@@ -73,9 +80,5 @@ export interface BackendCampaignResponse {
         Record<Address, BackendUsdPricedErc20Token>
     >;
     resolvedAmmPools: Record<number, Record<Address, BackendAmmPool>>;
-    resolvedLiquityV2Debts: Record<
-        number,
-        Record<string, BackendLiquityV2DebtBrand>
-    >;
     campaign: BackendCampaign;
 }

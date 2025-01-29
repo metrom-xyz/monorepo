@@ -23,7 +23,7 @@ export function Brand({ campaign }: BrandProps) {
     const brandDetailsPopoverRef = useRef<HTMLDivElement>(null);
 
     const brand = brands.find(
-        (brand) => brand.slug === campaign.target.brand.name,
+        (brand) => brand.slug === campaign.target.brand.slug,
     );
     const BrandLogo = brand?.logo;
 

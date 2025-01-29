@@ -1,6 +1,11 @@
 import type { SupportedAmm, SupportedDex } from "src/commons";
 import type { Address } from "viem";
 
+export interface Brand<S> {
+    slug: S;
+    name: string;
+}
+
 export interface OnChainAmount {
     raw: bigint;
     formatted: number;
@@ -38,7 +43,7 @@ export interface WhitelistedErc20Token extends UsdPricedErc20Token {
 export interface AmmPool {
     chainId: number;
     address: Address;
-    dex: SupportedDex;
+    dex: Brand<SupportedDex>;
     amm: SupportedAmm;
     tokens: Erc20Token[];
     usdTvl: number;
