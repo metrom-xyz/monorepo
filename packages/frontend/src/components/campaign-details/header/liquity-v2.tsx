@@ -6,7 +6,7 @@ import { AprChip } from "../../apr-chip";
 import { DistributablesType, type LiquityV2TargetType } from "@metrom-xyz/sdk";
 import { ProtocolType, type TargetedNamedCampaign } from "@/src/types";
 import { useProtocolsInChain } from "@/src/hooks/useProtocolsInChain";
-import { LiquityFilteredCollaterals } from "../../liquity-filtered-collaterals";
+import { LiquityV2FilteredCollaterals } from "../../liquity-v2-filtered-collaterals";
 
 import styles from "./styles.module.css";
 
@@ -37,7 +37,10 @@ export function LiquityV2Header({ campaign }: LiquityV2HeaderProps) {
                     <Typography size="xl4" weight="medium">
                         {campaign.name}
                     </Typography>
-                    <LiquityFilteredCollaterals size="xl" campaign={campaign} />
+                    <LiquityV2FilteredCollaterals
+                        size="xl"
+                        campaign={campaign}
+                    />
                 </div>
                 <Typography size="sm" weight="medium" light>
                     {t("rewardsMayVary")}

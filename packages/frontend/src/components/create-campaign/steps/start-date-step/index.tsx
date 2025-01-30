@@ -15,7 +15,7 @@ import type {
 } from "@/src/types";
 import { Typography, Button, DateTimePicker, ErrorText } from "@metrom-xyz/ui";
 import { getClosestAvailableDateTime } from "../../../../utils/date";
-import { AnimatePresence, m } from "motion/react";
+import { AnimatePresence, motion } from "motion/react";
 import { formatDateTime } from "@/src/utils/format";
 
 import styles from "./styles.module.css";
@@ -121,7 +121,7 @@ export function StartDateStep({
                         </Typography>
                         <AnimatePresence>
                             {!!dateError && (
-                                <m.div
+                                <motion.div
                                     initial="hide"
                                     animate="show"
                                     exit="hide"
@@ -133,7 +133,7 @@ export function StartDateStep({
                                     <ErrorText size="xs" weight="medium">
                                         {t(dateError)}
                                     </ErrorText>
-                                </m.div>
+                                </motion.div>
                             )}
                         </AnimatePresence>
                     </div>
