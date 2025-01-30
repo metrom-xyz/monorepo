@@ -6,7 +6,11 @@ import type { TargetedNamedCampaign } from "@/src/types";
 import styles from "./styles.module.css";
 
 interface LiquityV2Props {
-    campaign: TargetedNamedCampaign<TargetType.LiquityV2Debt>;
+    campaign: TargetedNamedCampaign<
+        | TargetType.LiquityV2Debt
+        | TargetType.LiquityV2Collateral
+        | TargetType.LiquityV2StabilityPool
+    >;
 }
 
 export function LiquidityV2({ campaign }: LiquityV2Props) {

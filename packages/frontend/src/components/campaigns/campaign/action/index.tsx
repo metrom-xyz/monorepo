@@ -13,14 +13,17 @@ interface ActionProps {
 }
 
 export function Action({ campaign }: ActionProps) {
+    const liquityV2Action =
+        campaign.isTargeting(TargetType.LiquityV2Debt) ||
+        campaign.isTargeting(TargetType.LiquityV2Collateral) ||
+        campaign.isTargeting(TargetType.LiquityV2StabilityPool);
+
     return (
         <div className={styles.root}>
             {campaign.isTargeting(TargetType.AmmPoolLiquidity) && (
                 <AmmPoolLiquidity campaign={campaign} />
             )}
-            {campaign.isTargeting(TargetType.LiquityV2Debt) && (
-                <LiquidityV2 campaign={campaign} />
-            )}
+            {liquityV2Action && <LiquidityV2 campaign={campaign} />}
         </div>
     );
 }

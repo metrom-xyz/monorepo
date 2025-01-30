@@ -1,3 +1,5 @@
+"use client";
+
 import { useTranslations } from "next-intl";
 import { useChainId } from "wagmi";
 import { useCallback, useEffect, useMemo, useState } from "react";

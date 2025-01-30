@@ -1,3 +1,5 @@
+"use client";
+
 import { type ReactNode } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { ChevronDown } from "@/src/assets/chevron-down";

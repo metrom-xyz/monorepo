@@ -31,27 +31,27 @@ export function LiquityV2BrandStep({
     const [open, setOpen] = useState(true);
 
     const chainId = useChainId();
-    const availableBrands = useProtocolsInChain(
+    const supportedBrands = useProtocolsInChain(
         chainId,
         ProtocolType.LiquityV2Brand,
     );
 
     const selectedBrand = useMemo(() => {
         if (!brand) return undefined;
-        return availableBrands.find(({ slug }) => slug === brand.slug);
-    }, [availableBrands, brand]);
+        return supportedBrands.find(({ slug }) => slug === brand.slug);
+    }, [supportedBrands, brand]);
 
     useEffect(() => {
         setOpen(false);
     }, [chainId]);
 
     useEffect(() => {
-        if (!!brand || availableBrands.length !== 1) return;
+        if (!!brand || supportedBrands.length !== 1) return;
         onBrandChange({
-            brand: availableBrands[0],
+            brand: supportedBrands[0],
         });
         setOpen(false);
-    }, [availableBrands, brand, onBrandChange]);
+    }, [supportedBrands, brand, onBrandChange]);
 
     const getBrandChangeHandler = useCallback(
         (newPlatform: LiquityV2BrandInfo) => {
@@ -72,7 +72,7 @@ export function LiquityV2BrandStep({
 
     return (
         <Step
-            disabled={disabled || availableBrands.length === 0}
+            disabled={disabled || supportedBrands.length === 0}
             open={open}
             completed={!!selectedBrand}
             onPreviewClick={handleStepOnClick}
@@ -91,7 +91,7 @@ export function LiquityV2BrandStep({
             </StepPreview>
             <StepContent>
                 <div className={styles.brandWrapper}>
-                    {availableBrands.map((availablePlatform) => (
+                    {supportedBrands.map((availablePlatform) => (
                         <div
                             key={availablePlatform.slug}
                             className={classNames(styles.brandRow, {

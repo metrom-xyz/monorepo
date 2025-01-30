@@ -3,6 +3,7 @@ import {
     TargetType,
     DistributablesType,
     type Specification,
+    SupportedLiquityV2Brand,
 } from "@metrom-xyz/sdk";
 import {
     AmmPoolLiquidityCampaignPreviewPayload,
@@ -12,7 +13,7 @@ import {
 } from "../types";
 import { getDistributableRewardsPercentage } from "./kpi";
 import type { TranslationValues } from "next-intl";
-import { encodeAbiParameters } from "viem";
+import { decodeAbiParameters, encodeAbiParameters, type Address } from "viem";
 
 const SECONDS_IN_YEAR = 60 * 60 * 24 * 365;
 
@@ -22,16 +23,19 @@ export function buildCampaignDataBundle(payload: CampaignPreviewPayload) {
             [{ name: "poolAddress", type: "address" }],
             [payload.pool.address],
         );
-    else if (payload instanceof LiquityV2CampaignPreviewPayload)
-        return encodeAbiParameters(
-            [
-                { name: "brandSlug", type: "string" },
-                // TODO: enable collarelas once supported
-                // { name: "collaterals", type: "address[]" },
-            ],
-            [payload.brand.slug],
-        );
-    else return null;
+    else if (payload instanceof LiquityV2CampaignPreviewPayload) {
+        const parameters = [{ name: "brandSlug", type: "string" }];
+        const values: [SupportedLiquityV2Brand, Address[]?] = [
+            payload.brand.slug,
+        ];
+
+        if (payload.collaterals.length > 0) {
+            parameters.push({ name: "collaterals", type: "address[]" });
+            values.push(payload.collaterals.map(({ token }) => token.address));
+        }
+
+        return encodeAbiParameters(parameters, values);
+    } else return null;
 }
 
 export function buildSpecificationBundle(
@@ -84,6 +88,7 @@ export function getCampaignName(
                 brand: campaign.target.brand.name,
             });
         }
+        // TODO: add missing type
     }
 }
 

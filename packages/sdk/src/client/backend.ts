@@ -57,6 +57,8 @@ import type { FeeToken } from "../types/fee-tokens";
 import type { LiquidityDensity, Tick } from "../types/initialized-ticks";
 import type { BackendInitializedTicksResponse } from "./types/initialized-ticks";
 import { tickToScaledPrice } from "../utils";
+import type { BackendLiquityV2CollateralsResponse } from "./types/liquity-v2";
+import type { LiquityV2Collateral } from "src/types/liquity-v2";
 
 const MIN_TICK = -887272;
 const MAX_TICK = -MIN_TICK;
@@ -137,6 +139,11 @@ export interface FetchInitializedTicksParams {
     pool: AmmPool;
     surroundingAmount: number;
     computeAmount?: number;
+}
+
+export interface FetchLiquityV2CollateralsParams {
+    chainId: number;
+    brand: SupportedLiquityV2Brand;
 }
 
 interface InitializedTick {
@@ -726,6 +733,34 @@ export class MetromApiClient {
             activeIdx: activeTick.idx,
             ticks,
         };
+    }
+
+    async fetchLiquityV2Collaterals(
+        params: FetchLiquityV2CollateralsParams,
+    ): Promise<LiquityV2Collateral[]> {
+        const url = new URL(
+            `v1/liquity-v2/${params.chainId}/${params.brand}/collaterals`,
+            this.baseUrl,
+        );
+
+        const response = await fetch(url);
+        if (!response.ok)
+            throw new Error(
+                `response not ok while fetching liquity v2 collaterals: ${await response.text()}`,
+            );
+
+        const parsedResponse =
+            (await response.json()) as BackendLiquityV2CollateralsResponse;
+
+        return parsedResponse.collaterals.map((collateral) => {
+            return {
+                ...collateral,
+                token: resolveToken(
+                    parsedResponse.resolvedTokens,
+                    collateral.address,
+                ),
+            };
+        });
     }
 }
 

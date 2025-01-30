@@ -204,7 +204,6 @@ export function KpiStep({
             completed={enabled}
             open={open}
             onPreviewClick={handleStepOnClick}
-            className={styles.step}
         >
             <StepPreview
                 label={

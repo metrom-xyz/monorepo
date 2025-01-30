@@ -1,0 +1,30 @@
+@reference "../../../../app.css";
+
+.preview {
+    @apply flex gap-2 items-center;
+}
+
+.previewLabelWrapper {
+    @apply w-full flex justify-between items-center;
+}
+
+.previewTextWrapper {
+    @apply flex items-center gap-2;
+}
+
+.previewLabel {
+    font-size: inherit;
+    color: inherit;
+}
+
+.previewWrapper {
+    @apply flex;
+}
+
+.collateralLogo:not(:first-child) {
+    @apply -ml-2;
+}
+
+.previewDisabled {
+    @apply hover:cursor-default hover:bg-white;
+}

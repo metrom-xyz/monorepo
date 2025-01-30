@@ -1,13 +1,17 @@
 import { Popover, Skeleton, Typography } from "@metrom-xyz/ui";
 import { useRef, useState } from "react";
-import type { TargetedCampaign, TargetType } from "@metrom-xyz/sdk";
-import { ProtocolType } from "@/src/types";
+import type { TargetType } from "@metrom-xyz/sdk";
+import { ProtocolType, type TargetedNamedCampaign } from "@/src/types";
 import { useProtocolsInChain } from "@/src/hooks/useProtocolsInChain";
 
 import styles from "./styles.module.css";
 
 interface BrandProps {
-    campaign: TargetedCampaign<TargetType.LiquityV2Debt>;
+    campaign: TargetedNamedCampaign<
+        | TargetType.LiquityV2Debt
+        | TargetType.LiquityV2Collateral
+        | TargetType.LiquityV2StabilityPool
+    >;
 }
 
 export function Brand({ campaign }: BrandProps) {

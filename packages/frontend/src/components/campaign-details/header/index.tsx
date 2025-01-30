@@ -13,14 +13,17 @@ interface HeaderProps {
 }
 
 export function Header({ campaign }: HeaderProps) {
+    const liquityV2Action =
+        campaign.isTargeting(TargetType.LiquityV2Debt) ||
+        campaign.isTargeting(TargetType.LiquityV2Collateral) ||
+        campaign.isTargeting(TargetType.LiquityV2StabilityPool);
+
     return (
         <div className={styles.root}>
             {campaign.isTargeting(TargetType.AmmPoolLiquidity) && (
                 <AmmPoolLiquityHeader campaign={campaign} />
             )}
-            {campaign.isTargeting(TargetType.LiquityV2Debt) && (
-                <LiquityV2Header campaign={campaign} />
-            )}
+            {liquityV2Action && <LiquityV2Header campaign={campaign} />}
         </div>
     );
 }
