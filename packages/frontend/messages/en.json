@@ -237,6 +237,7 @@
                 },
                 "collaterals": {
                     "title": "Collaterals",
+                    "filters": "Filters",
                     "list": {
                         "token": "Token",
                         "select": "Select",
@@ -307,7 +308,8 @@
             "liquityV2Actions": {
                 "list": {
                     "takeLoan": "Take loan",
-                    "depositCollateral": "Deposit collateral"
+                    "depositCollateral": "Deposit collateral",
+                    "depositToStabilityPool": "Deposit to stability pool"
                 }
             }
         },
