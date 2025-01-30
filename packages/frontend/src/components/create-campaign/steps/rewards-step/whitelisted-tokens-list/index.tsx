@@ -11,7 +11,7 @@ import {
     type Erc20TokenWithBalance,
 } from "@/src/hooks/useWatchBalances";
 import { Row } from "./row";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion } from "motion/react";
 import type { WhitelistedErc20TokenAmount } from "@/src/types";
 import classNames from "classnames";
 

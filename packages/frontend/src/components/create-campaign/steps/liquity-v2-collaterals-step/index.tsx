@@ -12,7 +12,7 @@ import { CollateralsList } from "./list";
 import { Button, Switch, Typography } from "@metrom-xyz/ui";
 import type { LiquityV2Collateral } from "@metrom-xyz/sdk";
 import { RemoteLogo } from "@/src/components/remote-logo";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion } from "motion/react";
 import { usePrevious } from "react-use";
 
 import styles from "./styles.module.css";

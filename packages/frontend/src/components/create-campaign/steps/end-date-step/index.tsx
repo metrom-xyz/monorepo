@@ -19,7 +19,7 @@ import {
     Chip,
     ErrorText,
 } from "@metrom-xyz/ui";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion } from "motion/react";
 import { useCampaignDurationLimits } from "@/src/hooks/useCampaignDurationLimits";
 import { formatDateTime } from "@/src/utils/format";
 import { usePrevious } from "react-use";
