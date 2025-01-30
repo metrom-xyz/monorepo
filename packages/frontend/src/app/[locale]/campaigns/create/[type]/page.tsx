@@ -1,10 +1,10 @@
 import { CreateCampaignForm } from "@/src/components/create-campaign/form";
 import { routing } from "@/src/i18n/routing";
-import type { TargetType } from "@metrom-xyz/sdk";
+import type { CampaignType } from "@/src/types";
 import { setRequestLocale } from "next-intl/server";
 
 interface Params {
-    target: TargetType;
+    type: CampaignType;
     locale: string;
 }
 
@@ -15,11 +15,11 @@ interface CampaignFormPageProps {
 export default async function CampaignFormPage({
     params,
 }: CampaignFormPageProps) {
-    const { target, locale } = await params;
+    const { type, locale } = await params;
 
     setRequestLocale(locale);
 
-    return <CreateCampaignForm target={target} />;
+    return <CreateCampaignForm type={type} />;
 }
 
 export function generateStaticParams() {

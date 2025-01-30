@@ -1,7 +1,6 @@
 "use client";
 
 import { Card, Typography } from "@metrom-xyz/ui";
-import { TargetType } from "@metrom-xyz/sdk";
 import { Link, redirect } from "@/src/i18n/routing";
 import { useTranslations } from "next-intl";
 import { LiquityV2CampaignIcon } from "@/src/assets/liquity-v2-campaign-icon";
@@ -9,13 +8,14 @@ import { AmmCampaignIcon } from "@/src/assets/amm-campaign-icon";
 import classNames from "classnames";
 import { LIQUITY_V2_CAMPAIGN } from "@/src/commons/env";
 import { RedirectType } from "next/navigation";
+import { CampaignType } from "@/src/types";
 
 import styles from "./styles.module.css";
 
 const CAMPAIGN_TYPES = [
     {
         enabled: true,
-        path: `/campaigns/create/${TargetType.AmmPoolLiquidity}`,
+        path: `/campaigns/create/${CampaignType.AmmPoolLiquidity}`,
         title: "amm.title",
         description: "amm.description",
         className: styles.ammFormIcon,
@@ -23,7 +23,7 @@ const CAMPAIGN_TYPES = [
     },
     {
         enabled: LIQUITY_V2_CAMPAIGN,
-        path: `/campaigns/create/liquity-v2`,
+        path: `/campaigns/create/${CampaignType.LiquityV2}`,
         title: "liquityV2.title",
         description: "liquityV2.description",
         className: styles.liquityV2FormIcon,

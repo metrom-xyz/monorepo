@@ -21,9 +21,17 @@
         bg-gray-100
         rounded-2xl
         flex
-        gap-3
+        gap-2.5
         items-center
         p-2.5;
+}
+
+.collateralsWrapper {
+    @apply flex items-center;
+}
+
+.collateralLogo:not(:first-child) {
+    @apply -ml-2;
 }
 
 .durationContainer {

@@ -1,0 +1,9 @@
+@reference "../../app.css";
+
+.root {
+    @apply flex;
+}
+
+.logo:not(:first-child) {
+    @apply -ml-2;
+}

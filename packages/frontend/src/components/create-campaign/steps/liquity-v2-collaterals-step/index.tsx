@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useChainId } from "wagmi";
 import { Step } from "@/src/components/step";
 import { StepPreview } from "@/src/components/step/preview";
@@ -9,10 +9,11 @@ import {
     type LiquityV2CampaignPayloadPart,
 } from "@/src/types";
 import { CollateralsList } from "./list";
-import { Switch, Typography } from "@metrom-xyz/ui";
+import { Button, Switch, Typography } from "@metrom-xyz/ui";
 import type { LiquityV2Collateral } from "@metrom-xyz/sdk";
 import { RemoteLogo } from "@/src/components/remote-logo";
 import { AnimatePresence, motion } from "framer-motion";
+import { usePrevious } from "react-use";
 
 import styles from "./styles.module.css";
 
@@ -34,8 +35,17 @@ export function LiquityV2CollateralsStep({
 
     const [open, setOpen] = useState(false);
     const [enabled, setEnabled] = useState(false);
+    const [selectedCollaterals, setSelectedCollaterals] = useState<
+        LiquityV2Collateral[] | undefined
+    >(collaterals);
 
     const chainId = useChainId();
+    const prevCollaterals = usePrevious(collaterals);
+
+    const unsavedChanges = useMemo(() => {
+        if (!prevCollaterals) return true;
+        return prevCollaterals !== selectedCollaterals;
+    }, [selectedCollaterals, prevCollaterals]);
 
     useEffect(() => {
         setEnabled(false);
@@ -52,31 +62,32 @@ export function LiquityV2CollateralsStep({
 
     const handleCollateralsOnAdd = useCallback(
         (newCollateral: LiquityV2Collateral) => {
-            const newCollaterals = collaterals
-                ? [...collaterals, newCollateral]
+            const newCollaterals = selectedCollaterals
+                ? [...selectedCollaterals, newCollateral]
                 : [newCollateral];
 
-            onCollateralsChange({
-                collaterals: newCollaterals,
-            });
+            setSelectedCollaterals(newCollaterals);
         },
-        [collaterals, onCollateralsChange],
+        [selectedCollaterals],
     );
 
     const handleCollateralsOnRemove = useCallback(
         (removedCollateral: LiquityV2Collateral) => {
-            const newCollaterals = collaterals?.filter(
+            const newCollaterals = selectedCollaterals?.filter(
                 (collateral) =>
                     collateral.token.address !==
                     removedCollateral.token.address,
             );
 
-            onCollateralsChange({
-                collaterals: newCollaterals,
-            });
+            setSelectedCollaterals(newCollaterals);
         },
-        [collaterals, onCollateralsChange],
+        [selectedCollaterals],
     );
+
+    const handleCollateralsOnApply = useCallback(() => {
+        onCollateralsChange({ collaterals: selectedCollaterals });
+        setOpen(false);
+    }, [selectedCollaterals, onCollateralsChange]);
 
     function handleSwitchOnClick() {
         setEnabled((enabled) => !enabled);
@@ -84,6 +95,8 @@ export function LiquityV2CollateralsStep({
 
     function handleStepOnClick() {
         if (!enabled) return;
+        if (open && !collaterals) setSelectedCollaterals(undefined);
+        if (open) setSelectedCollaterals(collaterals);
         setOpen((open) => !open);
     }
 
@@ -91,7 +104,7 @@ export function LiquityV2CollateralsStep({
         <Step
             disabled={disabled}
             open={open}
-            completed={!!collaterals && collaterals?.length > 0}
+            completed={!!selectedCollaterals && selectedCollaterals?.length > 0}
             onPreviewClick={handleStepOnClick}
         >
             <StepPreview
@@ -121,7 +134,7 @@ export function LiquityV2CollateralsStep({
             >
                 <div className={styles.previewWrapper}>
                     <AnimatePresence>
-                        {collaterals?.map((collateral) => (
+                        {selectedCollaterals?.map((collateral) => (
                             <motion.div
                                 key={collateral.token.address}
                                 initial="hide"
@@ -134,6 +147,7 @@ export function LiquityV2CollateralsStep({
                                 className={styles.collateralLogo}
                             >
                                 <RemoteLogo
+                                    size="sm"
                                     chain={chainId}
                                     address={collateral.token.address}
                                 />
@@ -143,13 +157,27 @@ export function LiquityV2CollateralsStep({
                 </div>
             </StepPreview>
             <StepContent>
-                <div className={styles.actionsWrapper}>
+                <div className={styles.contentWrapper}>
                     <CollateralsList
-                        collaterals={collaterals}
+                        collaterals={selectedCollaterals}
                         brand={brand}
                         onAdd={handleCollateralsOnAdd}
                         onRemove={handleCollateralsOnRemove}
                     />
+                    <Button
+                        variant="secondary"
+                        size="sm"
+                        disabled={
+                            !unsavedChanges ||
+                            !selectedCollaterals ||
+                            ((!collaterals || collaterals.length === 0) &&
+                                selectedCollaterals.length === 0)
+                        }
+                        onClick={handleCollateralsOnApply}
+                        className={{ root: styles.applyButton }}
+                    >
+                        {t("apply")}
+                    </Button>
                 </div>
             </StepContent>
         </Step>

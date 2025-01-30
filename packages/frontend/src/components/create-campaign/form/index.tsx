@@ -1,9 +1,8 @@
 "use client";
 
-import { type CampaignPreviewPayload } from "@/src/types";
+import { CampaignType, type CampaignPreviewPayload } from "@/src/types";
 import { useAccount, useChainId, useChains } from "wagmi";
 import { useMemo, useState } from "react";
-import { TargetType } from "@metrom-xyz/sdk";
 import { useTranslations } from "next-intl";
 import { trackFathomEvent } from "@/src/utils/fathom";
 import { Modal } from "@metrom-xyz/ui";
@@ -22,11 +21,11 @@ export enum View {
 }
 
 export interface CreateCampaignFormProps<T> {
-    target: T;
+    type: T;
 }
 
-export function CreateCampaignForm<T extends TargetType>({
-    target,
+export function CreateCampaignForm<T extends CampaignType>({
+    type,
 }: CreateCampaignFormProps<T>) {
     const t = useTranslations("newCampaign");
     const { chain: connectedChain, isConnected } = useAccount();
@@ -61,14 +60,14 @@ export function CreateCampaignForm<T extends TargetType>({
 
     return (
         <div className={styles.root}>
-            {LIQUITY_V2_CAMPAIGN && <FormHeader target={target} />}
-            {target === TargetType.AmmPoolLiquidity && (
+            {LIQUITY_V2_CAMPAIGN && <FormHeader type={type} />}
+            {type === CampaignType.AmmPoolLiquidity && (
                 <AmmPoolLiquidityForm
                     unsupportedChain={unsupportedChain}
                     onPreviewClick={handlePreviewOnClick}
                 />
             )}
-            {target === TargetType.LiquityV2Debt && (
+            {type === CampaignType.LiquityV2 && (
                 <LiquityV2ForksForm
                     unsupportedChain={unsupportedChain}
                     onPreviewClick={handlePreviewOnClick}

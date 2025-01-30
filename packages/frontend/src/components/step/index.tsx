@@ -43,27 +43,25 @@ export function Step({
     ) as ReactElement;
 
     return (
-        <div className={styles.root}>
-            <motion.div
-                initial={{ height: 84 }}
-                animate={{ height: open ? "auto" : 84 }}
-                className={classNames(className, styles.root, {
-                    [styles.disabled]: disabled,
-                    [styles.error]: error && errorLevel === "error",
-                    [styles.warning]: error && errorLevel === "warning",
-                    [styles.open]: open,
-                })}
-            >
-                <div ref={wrapperRef}>
-                    <div ref={rootRef} onClick={onPreviewClick}>
-                        {React.cloneElement<StepPreviewProps>(previewChildren, {
-                            open,
-                            completed,
-                        })}
-                    </div>
-                    {contentChildren}
+        <motion.div
+            initial={{ height: 84 }}
+            animate={{ height: open ? "fit-content" : 84 }}
+            className={classNames(className, styles.root, {
+                [styles.disabled]: disabled,
+                [styles.error]: error && errorLevel === "error",
+                [styles.warning]: error && errorLevel === "warning",
+                [styles.open]: open,
+            })}
+        >
+            <div ref={wrapperRef}>
+                <div ref={rootRef} onClick={onPreviewClick}>
+                    {React.cloneElement<StepPreviewProps>(previewChildren, {
+                        open,
+                        completed,
+                    })}
                 </div>
-            </motion.div>
-        </div>
+                {contentChildren}
+            </div>
+        </motion.div>
     );
 }

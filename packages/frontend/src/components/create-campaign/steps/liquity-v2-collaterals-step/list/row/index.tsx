@@ -25,10 +25,15 @@ export function Row({ selected, collateral, onAdd, onRemove }: RowProps) {
 
     return (
         <div
-            onClick={handleOnClick}
             className={classNames(styles.root, { [styles.selected]: selected })}
         >
-            <input type="checkbox" checked={selected} />
+            {/* TODO: add UI component */}
+            <input
+                type="checkbox"
+                checked={selected}
+                onChange={handleOnClick}
+                className={styles.checkbox}
+            />
             <div className={styles.collateralName}>
                 <RemoteLogo
                     chain={chainId}

@@ -3,18 +3,15 @@ import { Typography, Button } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
 import { useRouter } from "@/src/i18n/routing";
 import { AprChip } from "../../apr-chip";
-import { DistributablesType, TargetType } from "@metrom-xyz/sdk";
+import { DistributablesType, type LiquityV2TargetType } from "@metrom-xyz/sdk";
 import { ProtocolType, type TargetedNamedCampaign } from "@/src/types";
 import { useProtocolsInChain } from "@/src/hooks/useProtocolsInChain";
+import { LiquityFilteredCollaterals } from "../../liquity-filtered-collaterals";
 
 import styles from "./styles.module.css";
 
 interface LiquityV2HeaderProps {
-    campaign: TargetedNamedCampaign<
-        | TargetType.LiquityV2Debt
-        | TargetType.LiquityV2Collateral
-        | TargetType.LiquityV2StabilityPool
-    >;
+    campaign: TargetedNamedCampaign<LiquityV2TargetType>;
 }
 
 export function LiquityV2Header({ campaign }: LiquityV2HeaderProps) {
@@ -40,6 +37,7 @@ export function LiquityV2Header({ campaign }: LiquityV2HeaderProps) {
                     <Typography size="xl4" weight="medium">
                         {campaign.name}
                     </Typography>
+                    <LiquityFilteredCollaterals size="xl" campaign={campaign} />
                 </div>
                 <Typography size="sm" weight="medium" light>
                     {t("rewardsMayVary")}
