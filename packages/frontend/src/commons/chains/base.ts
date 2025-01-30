@@ -14,40 +14,39 @@ export const baseData: ChainData = {
     metromContract: ADDRESS[SupportedChain.Base],
     blockExplorers: base.blockExplorers,
     icon: BaseLogo,
-    protocols: {
-        [ProtocolType.Dex]: [
-            {
-                slug: SupportedDex.Kim,
-                logo: KimLogo,
-                name: "Kim",
-                addLiquidityUrl:
-                    "https://app.kim.exchange/pools/v4/{target_pool}",
-                supportsFetchAllPools: true,
-            },
-            {
-                slug: SupportedDex.BaseSwap,
-                logo: BaseSwapLogo,
-                name: "BaseSwap",
-                addLiquidityUrl: `https://baseswap.fi/pool/v3/${SupportedChain.Base}-{target_pool}`,
-                supportsFetchAllPools: true,
-            },
-            // {
-            //     slug: SupportedDex.UniswapV3,
-            //     logo: UniswapLogo,
-            //     name: "Uniswap v3",
-            //     addLiquidityUrl: `https://app.uniswap.org/explore/pools/${SupportedChain.Base}/{target_pool}`,
-            //     supportsFetchAllPools: false,
-            // },
-            {
-                slug: SupportedDex.ThirdTrade,
-                logo: ThirdTradeLogo,
-                name: "ThirdTrade",
-                addLiquidityUrl: `https://third.trade/pool/{target_pool}`,
-                supportsFetchAllPools: true,
-            },
-        ],
-        [ProtocolType.LiquityV2Brand]: [],
-    },
+    protocols: [
+        {
+            type: ProtocolType.Dex,
+            slug: SupportedDex.Kim,
+            logo: KimLogo,
+            name: "Kim",
+            addLiquidityUrl: "https://app.kim.exchange/pools/v4/{target_pool}",
+            supportsFetchAllPools: true,
+        },
+        {
+            type: ProtocolType.Dex,
+            slug: SupportedDex.BaseSwap,
+            logo: BaseSwapLogo,
+            name: "BaseSwap",
+            addLiquidityUrl: `https://baseswap.fi/pool/v3/${SupportedChain.Base}-{target_pool}`,
+            supportsFetchAllPools: true,
+        },
+        // {
+        //     slug: SupportedDex.UniswapV3,
+        //     logo: UniswapLogo,
+        //     name: "Uniswap v3",
+        //     addLiquidityUrl: `https://app.uniswap.org/explore/pools/${SupportedChain.Base}/{target_pool}`,
+        //     supportsFetchAllPools: false,
+        // },
+        {
+            type: ProtocolType.Dex,
+            slug: SupportedDex.ThirdTrade,
+            logo: ThirdTradeLogo,
+            name: "Third Trade",
+            addLiquidityUrl: "https://third.trade/pool/{target_pool}",
+            supportsFetchAllPools: true,
+        },
+    ],
     baseTokens: [
         {
             address: "0x4200000000000000000000000000000000000006",

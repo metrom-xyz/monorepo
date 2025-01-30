@@ -18,7 +18,7 @@ export enum SupportedDex {
     Unagi = "unagi",
 }
 
-export enum SupportedLiquityV2Brand {
+export enum SupportedLiquityV2 {
     Ebisu = "ebisu",
     Liquity = "liquity",
 }

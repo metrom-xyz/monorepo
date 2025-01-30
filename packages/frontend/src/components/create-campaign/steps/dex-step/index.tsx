@@ -11,7 +11,7 @@ import {
     ProtocolType,
     type AmmPoolLiquidityCampaignPayload,
     type AmmPoolLiquidityCampaignPayloadPart,
-    type DexInfo,
+    type DexProtocol,
 } from "@/src/types";
 
 import styles from "./styles.module.css";
@@ -47,7 +47,7 @@ export function DexStep({ disabled, dex, onDexChange }: DexStepProps) {
     }, [availableDexes, dex, onDexChange]);
 
     const getDexChangeHandler = useCallback(
-        (newDex: DexInfo) => {
+        (newDex: DexProtocol) => {
             return () => {
                 if (dex && dex.slug === newDex.slug) return;
                 onDexChange({

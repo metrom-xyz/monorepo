@@ -1,6 +1,6 @@
 import {
     Campaign,
-    type SupportedLiquityV2Brand,
+    type SupportedLiquityV2,
     type TargetType,
     type AmmPool,
     type AmmPoolLiquidityTarget,
@@ -13,6 +13,7 @@ import {
     type UsdPricedOnChainAmount,
     type WhitelistedErc20Token,
     type LiquityV2Collateral,
+    type LiquityV2CollateralTarget,
 } from "@metrom-xyz/sdk";
 import type { Dayjs } from "dayjs";
 import type { SVGProps, FunctionComponent } from "react";
@@ -25,33 +26,32 @@ export type SVGIcon = Omit<SVGProps<SVGSVGElement>, "dangerouslySetInnerHTML">;
 
 export enum ProtocolType {
     Dex = "dex",
-    LiquityV2Brand = "liquity-v2-brand",
+    LiquityV2 = "liquity-v2",
 }
 
-export interface Dex {
-    slug: SupportedDex;
+export interface ProtocolBase<S = string> {
+    slug: S;
     name: string;
-    addLiquidityUrl: string;
-    supportsFetchAllPools: boolean;
     logo: FunctionComponent<SVGIcon>;
 }
 
-export interface LiquityV2Brand {
-    slug: SupportedLiquityV2Brand;
-    name: string;
+export interface DexProtocol extends ProtocolBase<SupportedDex> {
+    type: ProtocolType.Dex;
+    addLiquidityUrl: string;
+    supportsFetchAllPools: boolean;
+}
+
+export interface LiquityV2Protocol extends ProtocolBase<SupportedLiquityV2> {
+    type: ProtocolType.LiquityV2;
     actionUrls: Record<
         | TargetType.LiquityV2Debt
         | TargetType.LiquityV2Collateral
         | TargetType.LiquityV2StabilityPool,
         string
     >;
-    logo: FunctionComponent<SVGIcon>;
 }
 
-export interface Protocols {
-    [ProtocolType.Dex]: Dex[];
-    [ProtocolType.LiquityV2Brand]: LiquityV2Brand[];
-}
+export type Protocol = DexProtocol | LiquityV2Protocol;
 
 export enum RestrictionType {
     Blacklist = "blacklist",
@@ -108,13 +108,13 @@ export interface BaseCampaignPayload {
 }
 
 export interface AmmPoolLiquidityCampaignPayload extends BaseCampaignPayload {
-    dex?: DexInfo;
+    dex?: DexProtocol;
     pool?: AmmPool;
     priceRangeSpecification?: AugmentedPriceRangeSpecification;
 }
 
 export interface LiquityV2CampaignPayload extends BaseCampaignPayload {
-    brand?: LiquityV2BrandInfo;
+    brand?: LiquityV2Protocol;
     action?: LiquityV2Action;
     collaterals?: LiquityV2Collateral[];
 }
@@ -154,7 +154,7 @@ export class BaseCampaignPreviewPayload {
 export class AmmPoolLiquidityCampaignPreviewPayload extends BaseCampaignPreviewPayload {
     public readonly kind: CampaignKind = CampaignKind.AmmPoolLiquidity;
     constructor(
-        public readonly dex: DexInfo,
+        public readonly dex: DexProtocol,
         public readonly pool: AmmPool,
         public readonly priceRangeSpecification?: AugmentedPriceRangeSpecification,
         ...baseArgs: ConstructorParameters<typeof BaseCampaignPreviewPayload>
@@ -167,7 +167,7 @@ export class LiquityV2CampaignPreviewPayload extends BaseCampaignPreviewPayload 
     public readonly kind: CampaignKind;
 
     constructor(
-        public readonly brand: LiquityV2BrandInfo,
+        public readonly brand: LiquityV2Protocol,
         public readonly action: LiquityV2Action,
         public readonly collaterals: LiquityV2Collateral[],
         ...baseArgs: ConstructorParameters<typeof BaseCampaignPreviewPayload>
@@ -211,7 +211,9 @@ export interface TargetedCampaignPreviewPayload<T extends TargetType>
         ? AmmPoolLiquidityTarget
         : T extends TargetType.LiquityV2Debt
           ? LiquityV2DebtTarget
-          : never;
+          : T extends TargetType.LiquityV2Collateral
+            ? LiquityV2CollateralTarget
+            : never;
 }
 
 export interface CampaignPayloadErrors {
@@ -223,12 +225,6 @@ export interface CampaignPayloadErrors {
     priceRangeSpecification?: boolean;
     restrictions?: boolean;
 }
-
-export type DexInfo = Pick<
-    Dex,
-    "slug" | "name" | "logo" | "supportsFetchAllPools"
->;
-export type LiquityV2BrandInfo = Pick<LiquityV2Brand, "slug" | "name" | "logo">;
 
 export type BaseCampaignPayloadPart = PropertyUnion<BaseCampaignPayload>;
 
@@ -285,5 +281,7 @@ export interface TargetedNamedCampaign<T extends TargetType>
         ? AmmPoolLiquidityTarget
         : T extends TargetType.LiquityV2Debt
           ? LiquityV2DebtTarget
-          : never;
+          : T extends TargetType.LiquityV2Collateral
+            ? LiquityV2CollateralTarget
+            : never;
 }

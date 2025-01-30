@@ -32,7 +32,7 @@ export function useLeaderboard(campaign?: Campaign): {
         queryKey: ["leaderboard", campaign, address],
         queryFn: async ({ queryKey }) => {
             const campaign = queryKey[1] as Campaign;
-            if (!campaign) return undefined;
+            if (!campaign) return null;
 
             const account = queryKey[2] as Address | undefined;
 
@@ -42,7 +42,7 @@ export function useLeaderboard(campaign?: Campaign): {
                     account,
                 });
 
-                if (!response) return undefined;
+                if (!response) return null;
 
                 const { updatedAt, leaderboard } = response;
 
@@ -92,6 +92,6 @@ export function useLeaderboard(campaign?: Campaign): {
 
     return {
         loading: isPending,
-        leaderboard: data,
+        leaderboard: data || undefined,
     };
 }

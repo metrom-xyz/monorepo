@@ -3,7 +3,7 @@ import {
     TargetType,
     DistributablesType,
     type Specification,
-    SupportedLiquityV2Brand,
+    SupportedLiquityV2,
 } from "@metrom-xyz/sdk";
 import {
     AmmPoolLiquidityCampaignPreviewPayload,
@@ -13,7 +13,7 @@ import {
 } from "../types";
 import { getDistributableRewardsPercentage } from "./kpi";
 import type { TranslationValues } from "next-intl";
-import { decodeAbiParameters, encodeAbiParameters, type Address } from "viem";
+import { encodeAbiParameters, type Address } from "viem";
 
 const SECONDS_IN_YEAR = 60 * 60 * 24 * 365;
 
@@ -25,9 +25,7 @@ export function buildCampaignDataBundle(payload: CampaignPreviewPayload) {
         );
     else if (payload instanceof LiquityV2CampaignPreviewPayload) {
         const parameters = [{ name: "brandSlug", type: "string" }];
-        const values: [SupportedLiquityV2Brand, Address[]?] = [
-            payload.brand.slug,
-        ];
+        const values: [SupportedLiquityV2, Address[]?] = [payload.brand.slug];
 
         if (payload.collaterals.length > 0) {
             parameters.push({ name: "collaterals", type: "address[]" });

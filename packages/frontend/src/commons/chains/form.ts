@@ -38,19 +38,16 @@ export const formData: ChainData = {
     metromContract: ADDRESS[SupportedChain.Form],
     blockExplorers: form.blockExplorers,
     icon: FormLogo,
-    protocols: {
-        [ProtocolType.Dex]: [
-            {
-                slug: SupportedDex.Fibonacci,
-                logo: FibonacciLogo,
-                name: "Fibonacci",
-                addLiquidityUrl:
-                    "https://www.fibonacci-dex.xyz/pool/{target_pool}",
-                supportsFetchAllPools: true,
-            },
-        ],
-        [ProtocolType.LiquityV2Brand]: [],
-    },
+    protocols: [
+        {
+            type: ProtocolType.Dex,
+            slug: SupportedDex.Fibonacci,
+            logo: FibonacciLogo,
+            name: "Fibonacci",
+            addLiquidityUrl: "https://www.fibonacci-dex.xyz/pool/{target_pool}",
+            supportsFetchAllPools: true,
+        },
+    ],
     baseTokens: [
         {
             address: "0xFBf489bb4783D4B1B2e7D07ba39873Fb8068507D",

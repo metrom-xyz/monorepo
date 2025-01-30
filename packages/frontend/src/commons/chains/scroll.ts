@@ -12,27 +12,26 @@ export const scrollData: ChainData = {
     metromContract: ADDRESS[SupportedChain.Scroll],
     blockExplorers: scroll.blockExplorers,
     icon: ScrollLogo,
-    protocols: {
-        [ProtocolType.Dex]: [
-            {
-                slug: SupportedDex.Scribe,
-                logo: ScribeLogo,
-                name: "Scribe",
-                addLiquidityUrl:
-                    "https://app.scribe.exchange/pools/v4/{target_pool}",
-                supportsFetchAllPools: true,
-            },
-            {
-                slug: SupportedDex.UniswapV3,
-                logo: UniswapLogo,
-                name: "Uniswap v3",
-                addLiquidityUrl:
-                    "https://app.uniswap.org/explore/pools/scroll/{target_pool}",
-                supportsFetchAllPools: true,
-            },
-        ],
-        [ProtocolType.LiquityV2Brand]: [],
-    },
+    protocols: [
+        {
+            type: ProtocolType.Dex,
+            slug: SupportedDex.Scribe,
+            logo: ScribeLogo,
+            name: "Scribe",
+            addLiquidityUrl:
+                "https://app.scribe.exchange/pools/v4/{target_pool}",
+            supportsFetchAllPools: true,
+        },
+        {
+            type: ProtocolType.Dex,
+            slug: SupportedDex.UniswapV3,
+            logo: UniswapLogo,
+            name: "Uniswap v3",
+            addLiquidityUrl:
+                "https://app.uniswap.org/explore/pools/scroll/{target_pool}",
+            supportsFetchAllPools: true,
+        },
+    ],
     baseTokens: [
         {
             address: "0xf55bec9cafdbe8730f096aa55dad6d22d44099df",

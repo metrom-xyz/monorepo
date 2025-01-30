@@ -1,24 +1,20 @@
 import type { SupportedChain } from "@metrom-xyz/contracts";
 import { metromApiClient } from "../commons";
-import {
-    SupportedDex,
-    SupportedLiquityV2Brand,
-    type LiquityV2Collateral,
-} from "@metrom-xyz/sdk";
+import { SupportedLiquityV2, type LiquityV2Collateral } from "@metrom-xyz/sdk";
 import { useQuery } from "@tanstack/react-query";
 import { useProtocolsInChain } from "./useProtocolsInChain";
 import { ProtocolType } from "../types";
 
 export function useLiquityV2Collaterals(
     chainId: SupportedChain,
-    brand?: SupportedLiquityV2Brand,
+    brand?: SupportedLiquityV2,
 ): {
     loading: boolean;
     collaterals?: LiquityV2Collateral[];
 } {
     const supportedBrands = useProtocolsInChain(
         chainId,
-        ProtocolType.LiquityV2Brand,
+        ProtocolType.LiquityV2,
     );
 
     const { data: collaterals, isPending: loading } = useQuery({
@@ -31,7 +27,7 @@ export function useLiquityV2Collaterals(
             try {
                 return await metromApiClient.fetchLiquityV2Collaterals({
                     chainId: chainId as SupportedChain,
-                    brand: brand as SupportedLiquityV2Brand,
+                    brand: brand as SupportedLiquityV2,
                 });
             } catch (error) {
                 console.error(

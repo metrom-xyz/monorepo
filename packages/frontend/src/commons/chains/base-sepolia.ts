@@ -12,27 +12,25 @@ export const baseSepoliaData: ChainData = {
     metromContract: ADDRESS[SupportedChain.BaseSepolia],
     blockExplorers: baseSepolia.blockExplorers,
     icon: BaseLogo,
-    protocols: {
-        [ProtocolType.Dex]: [
-            {
-                slug: SupportedDex.Kim,
-                logo: KimLogo,
-                name: "Kim",
-                addLiquidityUrl:
-                    "https://app.kim.exchange/pools/v4/{target_pool}",
-                supportsFetchAllPools: true,
-            },
-            {
-                slug: SupportedDex.UniswapV3,
-                logo: UniswapLogo,
-                name: "Uniswap v3",
-                addLiquidityUrl:
-                    "https://app.uniswap.org/explore/pools/base_sepolia/{target_pool}",
-                supportsFetchAllPools: true,
-            },
-        ],
-        [ProtocolType.LiquityV2Brand]: [],
-    },
+    protocols: [
+        {
+            type: ProtocolType.Dex,
+            slug: SupportedDex.Kim,
+            logo: KimLogo,
+            name: "Kim",
+            addLiquidityUrl: "https://app.kim.exchange/pools/v4/{target_pool}",
+            supportsFetchAllPools: true,
+        },
+        {
+            type: ProtocolType.Dex,
+            slug: SupportedDex.UniswapV3,
+            logo: UniswapLogo,
+            name: "Uniswap v3",
+            addLiquidityUrl:
+                "https://app.uniswap.org/explore/pools/base_sepolia/{target_pool}",
+            supportsFetchAllPools: true,
+        },
+    ],
     baseTokens: [
         {
             address: "0x4200000000000000000000000000000000000006",
