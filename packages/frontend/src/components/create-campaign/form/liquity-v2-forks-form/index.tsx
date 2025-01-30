@@ -18,6 +18,8 @@ import { Button } from "@metrom-xyz/ui";
 import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
 import { LiquityV2BrandStep } from "../../steps/liquity-v2-brand-step";
 import { LiquityV2ActionStep } from "../../steps/liquity-v2-action-step";
+import { LiquityV2CollateralsStep } from "../../steps/liquity-v2-collaterals-step";
+import { LIQUITY_V2_CAMPAIGN_COLLATERALS } from "@/src/commons/env";
 
 import styles from "./styles.module.css";
 
@@ -57,7 +59,7 @@ function validatePayload(
     return new LiquityV2CampaignPreviewPayload(
         brand,
         action,
-        [],
+        collaterals || [],
         startDate,
         endDate,
         distributables,
@@ -118,6 +120,14 @@ export function LiquityV2ForksForm({
                     action={payload.action}
                     onActionChange={handlePayloadOnChange}
                 />
+                {LIQUITY_V2_CAMPAIGN_COLLATERALS && (
+                    <LiquityV2CollateralsStep
+                        disabled={!payload?.action || unsupportedChain}
+                        brand={payload.brand}
+                        collaterals={payload.collaterals}
+                        onCollateralsChange={handlePayloadOnChange}
+                    />
+                )}
                 <StartDateStep
                     disabled={!payload?.action || unsupportedChain}
                     startDate={payload?.startDate}
@@ -156,7 +166,6 @@ export function LiquityV2ForksForm({
                     onKpiChange={handlePayloadOnChange}
                     onError={handlePayloadOnError}
                 /> */}
-                {/* TODO: check if restrictions are enabled for all campaigns */}
                 <RestrictionsStep
                     disabled={
                         (!payload?.tokens && !payload.points) ||

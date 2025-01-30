@@ -10,7 +10,11 @@ import { useProtocolsInChain } from "@/src/hooks/useProtocolsInChain";
 import styles from "./styles.module.css";
 
 interface LiquityV2HeaderProps {
-    campaign: TargetedNamedCampaign<TargetType.LiquityV2Debt>;
+    campaign: TargetedNamedCampaign<
+        | TargetType.LiquityV2Debt
+        | TargetType.LiquityV2Collateral
+        | TargetType.LiquityV2StabilityPool
+    >;
 }
 
 export function LiquityV2Header({ campaign }: LiquityV2HeaderProps) {

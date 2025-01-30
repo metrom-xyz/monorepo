@@ -234,6 +234,14 @@
                         "depositCollateral": "Deposit collateral",
                         "depositToStabilityPool": "Deposit to SP"
                     }
+                },
+                "collaterals": {
+                    "title": "Collaterals",
+                    "list": {
+                        "token": "Token",
+                        "tvl": "TVL",
+                        "empty": "Nothing here"
+                    }
                 }
             },
             "ammPoolLiquidity": {
@@ -297,9 +305,8 @@
             "endDate": "End date",
             "liquityV2Actions": {
                 "list": {
-                    "debt": {
-                        "title": "Take loan"
-                    }
+                    "takeLoan": "Take loan",
+                    "depositCollateral": "Deposit collateral"
                 }
             }
         },

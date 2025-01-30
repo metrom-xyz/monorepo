@@ -1,3 +1,5 @@
+"use client";
+
 import { ConnectButton as RainbowConnectButton } from "@rainbow-me/rainbowkit";
 import { Typography, Button, Popover } from "@metrom-xyz/ui";
 import type { SupportedChain } from "@metrom-xyz/contracts";

@@ -1,0 +1,24 @@
+@reference "../../../../../../app.css";
+
+.root {
+    @apply flex
+        gap-4
+        items-center
+        justify-between
+        snap-start
+        p-4
+        select-none
+        transition-colors
+        duration-200
+        ease-in-out
+        hover:cursor-pointer
+        hover:bg-gray-200;
+}
+
+.selected {
+    @apply bg-gray-200 hover:bg-gray-100;
+}
+
+.collateralName {
+    @apply w-full flex items-center gap-3;
+}

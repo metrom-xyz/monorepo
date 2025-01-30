@@ -13,10 +13,6 @@
     color: inherit;
 }
 
-.step {
-    @apply hover:border-transparent;
-}
-
 .previewDisabled {
     @apply hover:cursor-default hover:bg-white;
 }

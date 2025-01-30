@@ -1,9 +1,13 @@
 import dayjs, { Dayjs } from "dayjs";
 import numeral from "numeral";
 
+const HUMANIZE_CUTOFF = 100000;
+
 export function formatUsdAmount(amount?: number | null): string {
     if (amount && amount < 0.01) return "$<0.01";
-    return numeral(amount).format("($0,0.0[0]a)");
+    return numeral(amount).format(
+        `($0,0.0[0]${amount && amount > HUMANIZE_CUTOFF ? "a" : ""})`,
+    );
 }
 
 export function formatPercentage({
@@ -27,7 +31,9 @@ export function formatAmount({
     humanize?: boolean;
 }): string {
     if (amount && amount < 0.0001) return "<0.0001";
-    return `${numeral(amount).format(`0,0.0[000]${humanize ? "a" : ""}`)}`;
+    if (amount && amount > HUMANIZE_CUTOFF)
+        return numeral(amount).format(`0,0.0[000]`);
+    return numeral(amount).format(`0,0.0[000]${humanize ? "a" : ""}`);
 }
 
 export function formatDateTime(dateTime?: Dayjs | number): string {

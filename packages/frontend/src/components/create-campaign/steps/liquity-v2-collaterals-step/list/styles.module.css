@@ -1,0 +1,26 @@
+@reference "../../../../../app.css";
+
+.root {
+    @apply flex flex-col gap-6;
+}
+
+.listWrapper {
+    @apply h-96
+        w-full
+        overflow-hidden;
+}
+
+.listHeader {
+    @apply flex
+        justify-between
+        items-center
+        px-4;
+}
+
+.list {
+    @apply scroll-pt-1 pb-4 snap-y;
+}
+
+.emptyList {
+    @apply flex justify-center pt-4;
+}

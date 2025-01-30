@@ -12,6 +12,7 @@ import {
     type TokenDistributables,
     type UsdPricedOnChainAmount,
     type WhitelistedErc20Token,
+    type LiquityV2Collateral,
 } from "@metrom-xyz/sdk";
 import type { Dayjs } from "dayjs";
 import type { SVGProps, FunctionComponent } from "react";
@@ -115,7 +116,7 @@ export interface AmmPoolLiquidityCampaignPayload extends BaseCampaignPayload {
 export interface LiquityV2CampaignPayload extends BaseCampaignPayload {
     brand?: LiquityV2BrandInfo;
     action?: LiquityV2Action;
-    collaterals?: Address[];
+    collaterals?: LiquityV2Collateral[];
 }
 
 export interface CampaignPreviewTokenDistributables {
@@ -168,18 +169,24 @@ export class LiquityV2CampaignPreviewPayload extends BaseCampaignPreviewPayload 
     constructor(
         public readonly brand: LiquityV2BrandInfo,
         public readonly action: LiquityV2Action,
-        public readonly collaterals: Address[],
+        public readonly collaterals: LiquityV2Collateral[],
         ...baseArgs: ConstructorParameters<typeof BaseCampaignPreviewPayload>
     ) {
         super(...baseArgs);
 
         switch (action) {
-            case LiquityV2Action.StabilityPool:
+            case LiquityV2Action.StabilityPool: {
                 this.kind = CampaignKind.LiquityV2StabilityPool;
-            case LiquityV2Action.Collateral:
+                break;
+            }
+            case LiquityV2Action.Collateral: {
                 this.kind = CampaignKind.LiquityV2Collateral;
-            case LiquityV2Action.Debt:
+                break;
+            }
+            case LiquityV2Action.Debt: {
                 this.kind = CampaignKind.LiquityV2Debt;
+                break;
+            }
         }
     }
 }

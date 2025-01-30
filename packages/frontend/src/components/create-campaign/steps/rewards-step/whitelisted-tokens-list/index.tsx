@@ -1,3 +1,5 @@
+"use client";
+
 import { useRef } from "react";
 import { useAccount, useChainId } from "wagmi";
 import { FixedSizeList } from "react-window";

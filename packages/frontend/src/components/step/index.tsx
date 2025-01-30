@@ -1,3 +1,5 @@
+"use client";
+
 import React, { type ReactElement, useRef } from "react";
 import classNames from "classnames";
 import { motion } from "framer-motion";

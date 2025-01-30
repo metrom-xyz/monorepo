@@ -21,7 +21,8 @@
 }
 
 .previewLabel {
-    @apply !text-inherit;
+    font-size: inherit;
+    color: inherit;
 }
 
 .inputLabel {
