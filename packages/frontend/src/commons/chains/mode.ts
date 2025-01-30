@@ -11,19 +11,16 @@ export const modeData: ChainData = {
     metromContract: ADDRESS[SupportedChain.Mode],
     blockExplorers: mode.blockExplorers,
     icon: ModeLogo,
-    protocols: {
-        [ProtocolType.Dex]: [
-            {
-                slug: SupportedDex.Kim,
-                logo: KimLogo,
-                name: "Kim",
-                addLiquidityUrl:
-                    "https://app.kim.exchange/pools/v4/{target_pool}",
-                supportsFetchAllPools: true,
-            },
-        ],
-        [ProtocolType.LiquityV2Brand]: [],
-    },
+    protocols: [
+        {
+            type: ProtocolType.Dex,
+            slug: SupportedDex.Kim,
+            logo: KimLogo,
+            name: "Kim",
+            addLiquidityUrl: "https://app.kim.exchange/pools/v4/{target_pool}",
+            supportsFetchAllPools: true,
+        },
+    ],
     baseTokens: [
         {
             address: "0x4200000000000000000000000000000000000006",

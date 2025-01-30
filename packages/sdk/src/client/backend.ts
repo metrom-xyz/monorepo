@@ -3,7 +3,7 @@ import type { SupportedChain } from "@metrom-xyz/contracts";
 import {
     SupportedAmm,
     SupportedDex,
-    SupportedLiquityV2Brand,
+    SupportedLiquityV2,
 } from "../commons";
 import type {
     BackendCampaignResponse,
@@ -80,9 +80,9 @@ const DEX_BRAND_NAME: Record<SupportedDex, string> = {
     [SupportedDex.Unagi]: "Unagi",
 };
 
-const LIQUITY_V2_BRAND_NAME: Record<SupportedLiquityV2Brand, string> = {
-    [SupportedLiquityV2Brand.Ebisu]: "Ebisu",
-    [SupportedLiquityV2Brand.Liquity]: "Liquity",
+const LIQUITY_V2_BRAND_NAME: Record<SupportedLiquityV2, string> = {
+    [SupportedLiquityV2.Ebisu]: "Ebisu",
+    [SupportedLiquityV2.Liquity]: "Liquity",
 };
 
 export interface FetchCampaignParams {
@@ -143,7 +143,7 @@ export interface FetchInitializedTicksParams {
 
 export interface FetchLiquityV2CollateralsParams {
     chainId: number;
-    brand: SupportedLiquityV2Brand;
+    brand: SupportedLiquityV2;
 }
 
 interface InitializedTick {
@@ -905,9 +905,9 @@ function resolveLiquityV2DebtTarget(
     const resolved = <LiquityV2DebtTarget>{
         type: TargetType.LiquityV2Debt,
         brand: {
-            slug: target.brand as SupportedLiquityV2Brand,
+            slug: target.brand as SupportedLiquityV2,
             name: LIQUITY_V2_BRAND_NAME[
-                target.brand as SupportedLiquityV2Brand
+                target.brand as SupportedLiquityV2
             ],
         },
         chainId: target.chainId,
@@ -940,9 +940,9 @@ function resolveLiquityV2CollateralTarget(
     const resolved = <LiquityV2CollateralTarget>{
         type: TargetType.LiquityV2Collateral,
         brand: {
-            slug: target.brand as SupportedLiquityV2Brand,
+            slug: target.brand as SupportedLiquityV2,
             name: LIQUITY_V2_BRAND_NAME[
-                target.brand as SupportedLiquityV2Brand
+                target.brand as SupportedLiquityV2
             ],
         },
         chainId: target.chainId,

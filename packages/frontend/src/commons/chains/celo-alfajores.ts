@@ -11,18 +11,16 @@ export const celoAlfajoresData: ChainData = {
     metromContract: ADDRESS[SupportedChain.CeloAlfajores],
     blockExplorers: celoAlfajores.blockExplorers,
     icon: CeloLogo,
-    protocols: {
-        [ProtocolType.Dex]: [
-            {
-                slug: SupportedDex.UniswapV3,
-                logo: UniswapLogo,
-                name: "Uniswap v3",
-                addLiquidityUrl: "https://app.uniswap.org/add/{target_pool}",
-                supportsFetchAllPools: true,
-            },
-        ],
-        [ProtocolType.LiquityV2Brand]: [],
-    },
+    protocols: [
+        {
+            type: ProtocolType.Dex,
+            slug: SupportedDex.UniswapV3,
+            logo: UniswapLogo,
+            name: "Uniswap v3",
+            addLiquidityUrl: "https://app.uniswap.org/add/{target_pool}",
+            supportsFetchAllPools: true,
+        },
+    ],
     baseTokens: [
         {
             address: "0xF194afDf50B03e69Bd7D057c1Aa9e10c9954E4C9",

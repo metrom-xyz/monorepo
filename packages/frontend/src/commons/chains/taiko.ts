@@ -13,33 +13,33 @@ export const taikoData: ChainData = {
     metromContract: ADDRESS[SupportedChain.Taiko],
     blockExplorers: taiko.blockExplorers,
     icon: TaikoLogo,
-    protocols: {
-        [ProtocolType.Dex]: [
-            {
-                slug: SupportedDex.Panko,
-                logo: PankoLogo,
-                name: "Panko",
-                addLiquidityUrl: "https://panko.finance/add/{target_pool}",
-                supportsFetchAllPools: true,
-            },
-            {
-                slug: SupportedDex.UniswapV3,
-                logo: UniswapLogo,
-                name: "Uniswap v3",
-                addLiquidityUrl:
-                    "https://app.uniswap.org/explore/pools/taiko/{target_pool}",
-                supportsFetchAllPools: true,
-            },
-            {
-                slug: SupportedDex.Unagi,
-                logo: UnagiLogo,
-                name: "Unagi",
-                addLiquidityUrl: "https://unagiswap.xyz/pool",
-                supportsFetchAllPools: true,
-            },
-        ],
-        [ProtocolType.LiquityV2Brand]: [],
-    },
+    protocols: [
+        {
+            type: ProtocolType.Dex,
+            slug: SupportedDex.Panko,
+            logo: PankoLogo,
+            name: "Panko",
+            addLiquidityUrl: "https://panko.finance/add/{target_pool}",
+            supportsFetchAllPools: true,
+        },
+        {
+            type: ProtocolType.Dex,
+            slug: SupportedDex.UniswapV3,
+            logo: UniswapLogo,
+            name: "Uniswap v3",
+            addLiquidityUrl:
+                "https://app.uniswap.org/explore/pools/taiko/{target_pool}",
+            supportsFetchAllPools: true,
+        },
+        {
+            type: ProtocolType.Dex,
+            slug: SupportedDex.Unagi,
+            logo: UnagiLogo,
+            name: "Unagi",
+            addLiquidityUrl: "https://unagiswap.xyz/pool",
+            supportsFetchAllPools: true,
+        },
+    ],
     baseTokens: [
         {
             address: "0xc4C410459fbaF8f7F86b6cEE52b4fA1282FF9704",

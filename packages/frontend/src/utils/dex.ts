@@ -4,7 +4,7 @@ import {
     type TargetedCampaign,
 } from "@metrom-xyz/sdk";
 import { SupportedChain } from "@metrom-xyz/contracts";
-import { ProtocolType, type Dex } from "../types";
+import { ProtocolType, type DexProtocol } from "../types";
 import { CHAIN_DATA } from "../commons";
 import type { Hex } from "viem";
 import type { Address } from "blo";
@@ -12,10 +12,10 @@ import type { Address } from "blo";
 export function getDex(
     chainId: SupportedChain,
     dexSlug: string,
-): Dex | undefined {
-    return CHAIN_DATA[chainId].protocols[ProtocolType.Dex].find(
-        ({ slug }) => slug === dexSlug,
-    );
+): DexProtocol | undefined {
+    return CHAIN_DATA[chainId].protocols.find(
+        ({ type, slug }) => type === ProtocolType.Dex && slug === dexSlug,
+    ) as DexProtocol | undefined;
 }
 
 export function getPoolAddLiquidityLink(

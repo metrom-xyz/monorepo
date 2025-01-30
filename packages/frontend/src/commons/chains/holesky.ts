@@ -11,19 +11,17 @@ export const holeskyData: ChainData = {
     metromContract: ADDRESS[SupportedChain.Holesky],
     blockExplorers: holesky.blockExplorers,
     icon: EthLogo,
-    protocols: {
-        [ProtocolType.Dex]: [
-            {
-                slug: SupportedDex.TestIntegral,
-                logo: AlgebraIntegralLogo,
-                name: "Algebra integral",
-                addLiquidityUrl:
-                    "https://integral.algebra.finance/pool/{target_pool}/new-position",
-                supportsFetchAllPools: true,
-            },
-        ],
-        [ProtocolType.LiquityV2Brand]: [],
-    },
+    protocols: [
+        {
+            type: ProtocolType.Dex,
+            slug: SupportedDex.TestIntegral,
+            logo: AlgebraIntegralLogo,
+            name: "Algebra integral",
+            addLiquidityUrl:
+                "https://integral.algebra.finance/pool/{target_pool}/new-position",
+            supportsFetchAllPools: true,
+        },
+    ],
     baseTokens: [
         {
             address: "0x94373a4919b3240d86ea41593d5eba789fef3848",

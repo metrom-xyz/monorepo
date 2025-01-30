@@ -14,19 +14,17 @@ export const gnosisData: ChainData = {
     },
     blockExplorers: gnosis.blockExplorers,
     icon: GnosisLogo,
-    protocols: {
-        [ProtocolType.Dex]: [
-            {
-                slug: SupportedDex.Swapr,
-                logo: SwaprLogo,
-                name: "Swapr",
-                addLiquidityUrl:
-                    "https://v3.swapr.eth.limo/#/info/pools/{target_pool}",
-                supportsFetchAllPools: true,
-            },
-        ],
-        [ProtocolType.LiquityV2Brand]: [],
-    },
+    protocols: [
+        {
+            type: ProtocolType.Dex,
+            slug: SupportedDex.Swapr,
+            logo: SwaprLogo,
+            name: "Swapr",
+            addLiquidityUrl:
+                "https://v3.swapr.eth.limo/#/info/pools/{target_pool}",
+            supportsFetchAllPools: true,
+        },
+    ],
     baseTokens: [
         {
             address: "0x9C58BAcC331c9aa871AFD802DB6379a98e80CEdb",

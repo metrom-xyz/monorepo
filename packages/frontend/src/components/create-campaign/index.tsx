@@ -23,7 +23,7 @@ const CAMPAIGN_TYPES = [
     },
     {
         enabled: LIQUITY_V2_CAMPAIGN,
-        path: `/campaigns/create/${TargetType.LiquityV2Debt}`,
+        path: `/campaigns/create/liquity-v2`,
         title: "liquityV2.title",
         description: "liquityV2.description",
         className: styles.liquityV2FormIcon,

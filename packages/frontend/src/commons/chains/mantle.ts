@@ -11,19 +11,17 @@ export const mantleData: ChainData = {
     metromContract: ADDRESS[SupportedChain.Mantle],
     blockExplorers: mantle.blockExplorers,
     icon: MantleLogo,
-    protocols: {
-        [ProtocolType.Dex]: [
-            {
-                slug: SupportedDex.Swapsicle,
-                logo: SwapsicleLogo,
-                name: "Swapsicle",
-                addLiquidityUrl:
-                    "https://app.swapsicle.io/liquidity/v3/mantle/{target_pool}",
-                supportsFetchAllPools: true,
-            },
-        ],
-        [ProtocolType.LiquityV2Brand]: [],
-    },
+    protocols: [
+        {
+            type: ProtocolType.Dex,
+            slug: SupportedDex.Swapsicle,
+            logo: SwapsicleLogo,
+            name: "Swapsicle",
+            addLiquidityUrl:
+                "https://app.swapsicle.io/liquidity/v3/mantle/{target_pool}",
+            supportsFetchAllPools: true,
+        },
+    ],
     baseTokens: [
         {
             address: "0x78c1b0c915c4faa5fffa6cabf0219da63d7f4cb8",

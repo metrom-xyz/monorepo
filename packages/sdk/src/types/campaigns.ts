@@ -8,7 +8,7 @@ import type {
     UsdPricedErc20TokenAmount,
     UsdPricedOnChainAmount,
 } from "./commons";
-import type { SupportedLiquityV2Brand } from "src/commons";
+import type { SupportedLiquityV2 } from "src/commons";
 
 export enum TargetType {
     AmmPoolLiquidity = "amm-pool-liquidity",
@@ -30,7 +30,7 @@ export interface LiquityV2CollateralWithDebt extends Erc20Token {
 export interface LiquityV2DebtTarget {
     type: TargetType.LiquityV2Debt;
     chainId: number;
-    brand: Brand<SupportedLiquityV2Brand>;
+    brand: Brand<SupportedLiquityV2>;
     debts: LiquityV2CollateralWithDebt[];
     totalUsdDebt: number;
 }
@@ -38,7 +38,7 @@ export interface LiquityV2DebtTarget {
 export interface LiquityV2CollateralTarget {
     type: TargetType.LiquityV2Collateral;
     chainId: number;
-    brand: Brand<SupportedLiquityV2Brand>;
+    brand: Brand<SupportedLiquityV2>;
     collaterals: UsdPricedErc20TokenAmount[];
 }
 

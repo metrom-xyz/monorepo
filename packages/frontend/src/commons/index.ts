@@ -6,7 +6,7 @@ import {
     SupportedAmm,
 } from "@metrom-xyz/sdk";
 import { type ChainContract, type Chain } from "viem";
-import { type Protocols, type SVGIcon } from "../types";
+import { type Protocol, type SVGIcon } from "../types";
 import type { FunctionComponent } from "react";
 import { SupportedChain } from "@metrom-xyz/contracts";
 import { ENVIRONMENT } from "./env";
@@ -50,7 +50,7 @@ export interface ChainData {
     metromContract: ChainContract;
     blockExplorers: Chain["blockExplorers"];
     icon: FunctionComponent<SVGIcon>;
-    protocols: Protocols;
+    protocols: Protocol[];
     baseTokens: Erc20Token[];
 }
 

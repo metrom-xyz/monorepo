@@ -9,7 +9,7 @@ import { Typography } from "@metrom-xyz/ui";
 import {
     type LiquityV2CampaignPayload,
     type LiquityV2CampaignPayloadPart,
-    type LiquityV2BrandInfo,
+    type LiquityV2Protocol,
     ProtocolType,
 } from "@/src/types";
 import { useProtocolsInChain } from "@/src/hooks/useProtocolsInChain";
@@ -33,7 +33,7 @@ export function LiquityV2BrandStep({
     const chainId = useChainId();
     const supportedBrands = useProtocolsInChain(
         chainId,
-        ProtocolType.LiquityV2Brand,
+        ProtocolType.LiquityV2,
     );
 
     const selectedBrand = useMemo(() => {
@@ -54,7 +54,7 @@ export function LiquityV2BrandStep({
     }, [supportedBrands, brand, onBrandChange]);
 
     const getBrandChangeHandler = useCallback(
-        (newPlatform: LiquityV2BrandInfo) => {
+        (newPlatform: LiquityV2Protocol) => {
             return () => {
                 if (brand && brand.slug === newPlatform.slug) return;
                 onBrandChange({

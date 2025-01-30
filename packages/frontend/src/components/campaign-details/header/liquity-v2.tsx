@@ -23,7 +23,7 @@ export function LiquityV2Header({ campaign }: LiquityV2HeaderProps) {
 
     const brand = useProtocolsInChain(
         campaign.chainId,
-        ProtocolType.LiquityV2Brand,
+        ProtocolType.LiquityV2,
     ).find((brand) => brand.slug === campaign.target.brand.slug);
 
     const actionLink = brand?.actionUrls[campaign.target.type];

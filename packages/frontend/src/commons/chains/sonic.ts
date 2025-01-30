@@ -17,27 +17,26 @@ export const sonicData: ChainData = {
         },
     },
     icon: SonicLogo,
-    protocols: {
-        [ProtocolType.Dex]: [
-            {
-                slug: SupportedDex.UniswapV3,
-                logo: UniswapLogo,
-                name: "Uniswap v3",
-                addLiquidityUrl:
-                    "https://app.uniswap.org/explore/pools/sonic/{target_pool}",
-                supportsFetchAllPools: true,
-            },
-            {
-                slug: SupportedDex.SilverSwap,
-                logo: SilverSwapLogo,
-                name: "SilverSwap",
-                addLiquidityUrl:
-                    "https://silverswap.io/chain/sonic/liquidity/add-v3",
-                supportsFetchAllPools: true,
-            },
-        ],
-        [ProtocolType.LiquityV2Brand]: [],
-    },
+    protocols: [
+        {
+            type: ProtocolType.Dex,
+            slug: SupportedDex.UniswapV3,
+            logo: UniswapLogo,
+            name: "Uniswap v3",
+            addLiquidityUrl:
+                "https://app.uniswap.org/explore/pools/sonic/{target_pool}",
+            supportsFetchAllPools: true,
+        },
+        {
+            type: ProtocolType.Dex,
+            slug: SupportedDex.SilverSwap,
+            logo: SilverSwapLogo,
+            name: "SilverSwap",
+            addLiquidityUrl:
+                "https://silverswap.io/chain/sonic/liquidity/add-v3",
+            supportsFetchAllPools: true,
+        },
+    ],
     baseTokens: [
         {
             address: "0x309C92261178fA0CF748A855e90Ae73FDb79EBc7",
