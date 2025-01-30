@@ -28,3 +28,11 @@
 .previewDisabled {
     @apply hover:cursor-default hover:bg-white;
 }
+
+.contentWrapper {
+    @apply flex flex-col gap-4 p-4;
+}
+
+.applyButton {
+    @apply w-full;
+}

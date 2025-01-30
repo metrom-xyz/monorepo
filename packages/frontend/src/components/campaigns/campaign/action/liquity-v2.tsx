@@ -1,23 +1,23 @@
 import { Typography } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
-import type { TargetType } from "@metrom-xyz/sdk";
+import { type LiquityV2TargetType } from "@metrom-xyz/sdk";
 import type { TargetedNamedCampaign } from "@/src/types";
+import { LiquityFilteredCollaterals } from "@/src/components/liquity-filtered-collaterals";
 
 import styles from "./styles.module.css";
 
-interface LiquityV2Props {
-    campaign: TargetedNamedCampaign<
-        | TargetType.LiquityV2Debt
-        | TargetType.LiquityV2Collateral
-        | TargetType.LiquityV2StabilityPool
-    >;
+interface LiquityV2Props<T extends LiquityV2TargetType> {
+    campaign: TargetedNamedCampaign<T>;
 }
 
-export function LiquidityV2({ campaign }: LiquityV2Props) {
+export function LiquidityV2<T extends LiquityV2TargetType>({
+    campaign,
+}: LiquityV2Props<T>) {
     const t = useTranslations("allCampaigns");
 
     return (
         <div className={styles.root}>
+            <LiquityFilteredCollaterals campaign={campaign} />
             <div className={styles.titleContainer}>
                 <Typography size="lg" weight="medium" truncate>
                     {campaign.name}

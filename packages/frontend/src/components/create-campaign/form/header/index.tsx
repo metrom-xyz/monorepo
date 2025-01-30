@@ -3,20 +3,18 @@ import styles from "./styles.module.css";
 import { ChevronLeft } from "@/src/assets/chevron-left";
 import { useTranslations } from "next-intl";
 import { useRouter } from "@/src/i18n/routing";
-import type { TargetType } from "@metrom-xyz/sdk";
+import type { CampaignType } from "@/src/types";
 
 interface FormHeaderProps {
-    target: TargetType;
+    type: CampaignType;
 }
 
-const CAMPAIGN_TYPE_TITLE: Record<TargetType, string> = {
+const CAMPAIGN_TYPE_TITLE: Record<CampaignType, string> = {
     "amm-pool-liquidity": "type.amm",
-    "liquity-v2-debt": "type.liquityV2",
-    "liquity-v2-collateral": "type.liquityV2",
-    "liquity-v2-stability-pool": "type.liquityV2",
+    "liquity-v2": "type.liquityV2",
 };
 
-export function FormHeader({ target }: FormHeaderProps) {
+export function FormHeader({ type }: FormHeaderProps) {
     const t = useTranslations("newCampaign");
     const router = useRouter();
 
@@ -35,7 +33,7 @@ export function FormHeader({ target }: FormHeaderProps) {
                 uppercase
                 className={styles.title}
             >
-                {t(CAMPAIGN_TYPE_TITLE[target])}
+                {t(CAMPAIGN_TYPE_TITLE[type])}
             </Typography>
         </div>
     );

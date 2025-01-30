@@ -53,6 +53,11 @@ export interface LiquityV2Protocol extends ProtocolBase<SupportedLiquityV2> {
 
 export type Protocol = DexProtocol | LiquityV2Protocol;
 
+export enum CampaignType {
+    LiquityV2 = "liquity-v2",
+    AmmPoolLiquidity = "amm-pool-liquidity",
+}
+
 export enum RestrictionType {
     Blacklist = "blacklist",
     Whitelist = "whitelist",

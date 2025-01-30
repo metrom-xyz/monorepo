@@ -17,6 +17,11 @@ export enum TargetType {
     LiquityV2StabilityPool = "liquity-v2-stability-pool",
 }
 
+export type LiquityV2TargetType =
+    | TargetType.LiquityV2Debt
+    | TargetType.LiquityV2Collateral
+    | TargetType.LiquityV2StabilityPool;
+
 export interface AmmPoolLiquidityTarget {
     type: TargetType.AmmPoolLiquidity;
     chainId: number;

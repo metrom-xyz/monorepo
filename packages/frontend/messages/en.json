@@ -239,9 +239,10 @@
                     "title": "Collaterals",
                     "list": {
                         "token": "Token",
-                        "tvl": "TVL",
+                        "select": "Select",
                         "empty": "Nothing here"
-                    }
+                    },
+                    "apply": "Apply"
                 }
             },
             "ammPoolLiquidity": {
