@@ -2,7 +2,7 @@
 
 import React, { type ReactElement, useRef } from "react";
 import classNames from "classnames";
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 import { StepPreview, type StepPreviewProps } from "./preview";
 import { StepContent } from "./content";
 import { matchChildByType } from "@metrom-xyz/ui";

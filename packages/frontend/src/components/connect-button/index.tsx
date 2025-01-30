@@ -14,7 +14,7 @@ import { zeroAddress } from "viem";
 import classNames from "classnames";
 import { CHAIN_DATA } from "@/src/commons";
 import { trackFathomEvent } from "@/src/utils/fathom";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion } from "motion/react";
 
 import styles from "./styles.module.css";
 
