@@ -57,7 +57,10 @@ export function LiquityV2CollateralsStep({
 
     useEffect(() => {
         if (enabled) return;
-        if (collaterals) onCollateralsChange({ collaterals: undefined });
+        if (collaterals) {
+            setSelectedCollaterals(undefined);
+            onCollateralsChange({ collaterals: undefined });
+        }
     }, [collaterals, enabled, onCollateralsChange]);
 
     const handleCollateralsOnAdd = useCallback(
