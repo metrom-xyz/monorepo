@@ -2,7 +2,7 @@ import { Typography } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
 import { type LiquityV2TargetType } from "@metrom-xyz/sdk";
 import type { TargetedNamedCampaign } from "@/src/types";
-import { LiquityFilteredCollaterals } from "@/src/components/liquity-filtered-collaterals";
+import { LiquityV2FilteredCollaterals } from "@/src/components/liquity-v2-filtered-collaterals";
 
 import styles from "./styles.module.css";
 
@@ -17,7 +17,7 @@ export function LiquidityV2<T extends LiquityV2TargetType>({
 
     return (
         <div className={styles.root}>
-            <LiquityFilteredCollaterals campaign={campaign} />
+            <LiquityV2FilteredCollaterals campaign={campaign} />
             <div className={styles.titleContainer}>
                 <Typography size="lg" weight="medium" truncate>
                     {campaign.name}

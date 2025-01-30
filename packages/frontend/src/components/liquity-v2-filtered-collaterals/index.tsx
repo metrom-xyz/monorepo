@@ -5,15 +5,17 @@ import type { RemoteLogoProps } from "@metrom-xyz/ui";
 
 import styles from "./styles.module.css";
 
-interface LiquityFilteredCollateralsProps {
+interface LiquityV2FilteredCollateralsProps {
     size?: RemoteLogoProps["size"];
     campaign: NamedCampaign;
 }
 
-export function LiquityFilteredCollaterals({
+const collator = new Intl.Collator();
+
+export function LiquityV2FilteredCollaterals({
     size,
     campaign,
-}: LiquityFilteredCollateralsProps) {
+}: LiquityV2FilteredCollateralsProps) {
     const debt = campaign.isTargeting(TargetType.LiquityV2Debt);
     const collateral = campaign.isTargeting(TargetType.LiquityV2Collateral);
 
@@ -29,15 +31,22 @@ export function LiquityFilteredCollaterals({
 
     return (
         <div className={styles.root}>
-            {collateralTokens.map((token) => (
-                <RemoteLogo
-                    key={token.address}
-                    size={size}
-                    chain={campaign.chainId}
-                    address={token.address}
-                    className={styles.logo}
-                />
-            ))}
+            {collateralTokens
+                .sort((a, b) =>
+                    collator.compare(
+                        a.symbol.toLowerCase(),
+                        b.symbol.toLowerCase(),
+                    ),
+                )
+                .map((token) => (
+                    <RemoteLogo
+                        key={token.address}
+                        size={size}
+                        chain={campaign.chainId}
+                        address={token.address}
+                        className={styles.logo}
+                    />
+                ))}
         </div>
     );
 }
