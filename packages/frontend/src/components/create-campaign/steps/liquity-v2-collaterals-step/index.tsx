@@ -136,27 +136,32 @@ export function LiquityV2CollateralsStep({
                 }}
             >
                 <div className={styles.previewWrapper}>
-                    <AnimatePresence>
-                        {selectedCollaterals?.map((collateral) => (
-                            <motion.div
-                                key={collateral.token.address}
-                                initial="hide"
-                                animate="show"
-                                exit="hide"
-                                variants={{
-                                    hide: { opacity: 0 },
-                                    show: { opacity: 1 },
-                                }}
-                                className={styles.collateralLogo}
-                            >
-                                <RemoteLogo
-                                    size="sm"
-                                    chain={chainId}
-                                    address={collateral.token.address}
-                                />
-                            </motion.div>
-                        ))}
-                    </AnimatePresence>
+                    <Typography weight="medium" size="sm" uppercase>
+                        {t("filters")}
+                    </Typography>
+                    <div className={styles.collateralsWrapper}>
+                        <AnimatePresence>
+                            {selectedCollaterals?.map((collateral) => (
+                                <motion.div
+                                    key={collateral.token.address}
+                                    initial="hide"
+                                    animate="show"
+                                    exit="hide"
+                                    variants={{
+                                        hide: { opacity: 0 },
+                                        show: { opacity: 1 },
+                                    }}
+                                    className={styles.collateralLogo}
+                                >
+                                    <RemoteLogo
+                                        size="sm"
+                                        chain={chainId}
+                                        address={collateral.token.address}
+                                    />
+                                </motion.div>
+                            ))}
+                        </AnimatePresence>
+                    </div>
                 </div>
             </StepPreview>
             <StepContent>
