@@ -1,6 +1,9 @@
-import { log } from "@graphprotocol/graph-ts";
 import { TroveManagerAdded as TroveManagerAddedEvent } from "../../generated/templates/CollateralRegistry/CollateralRegistry";
-import { createCollateral, getRegistryOrThrow, ZERO_ADDRESS } from "../commons";
+import {
+    getOrCreateCollateral,
+    getRegistryOrThrow,
+    ZERO_ADDRESS,
+} from "../commons";
 
 export function handleTroveManagerAdded(event: TroveManagerAddedEvent): void {
     let registry = getRegistryOrThrow(event.address);
@@ -8,15 +11,12 @@ export function handleTroveManagerAdded(event: TroveManagerAddedEvent): void {
     let tokenAddress = event.params.token;
     let troveManagerAddress = event.params.troveManager;
 
-    if (tokenAddress === ZERO_ADDRESS || troveManagerAddress === ZERO_ADDRESS) {
-        log.warning(
+    if (tokenAddress === ZERO_ADDRESS || troveManagerAddress === ZERO_ADDRESS)
+        throw new Error(
             "Tried to add a trove manager with an invalid address on a token with an invalid address, skipping",
-            [],
         );
-        return;
-    }
 
-    createCollateral(
+    getOrCreateCollateral(
         registry.collateralsAmount,
         tokenAddress,
         troveManagerAddress,

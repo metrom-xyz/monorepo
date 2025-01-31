@@ -3,7 +3,7 @@ import { CollateralRegistryAddressChanged as CollateralRegistryAddressChangedEve
 import { CollateralRegistry as CollateralRegistryContract } from "../../generated/DebtToken/CollateralRegistry";
 import { CollateralRegistry as CollateralRegistryTemplate } from "../../generated/templates";
 import {
-    createCollateral,
+    getOrCreateCollateral,
     getOrCreateRegistry,
     ZERO_ADDRESS,
 } from "../commons";
@@ -34,12 +34,13 @@ export function handleCollateralRegistryAddressChanged(
         )
             break;
 
-        createCollateral(
+        getOrCreateCollateral(
             index,
             tokenAddress,
             troveManagerAddress,
             event.params._newCollateralRegistryAddress,
         );
+
         registry.collateralsAmount = registry.collateralsAmount + 1;
     }
 

@@ -1,7 +1,7 @@
 import { Address, dataSource } from "@graphprotocol/graph-ts";
 import {
-    CollateralChangeEvent,
-    DebtChangeEvent,
+    CollateralChange,
+    MintedDebtChange,
     Trove,
 } from "../../generated/schema";
 import {
@@ -29,7 +29,7 @@ export function handleTroveOperation(event: TroveOperationEvent): void {
     let trove = getOrCreateTrove(
         dataSource.context().getBytes("collateralId"),
         event.params._troveId,
-        Address.fromBytes(dataSource.context().getBytes("address:troveNft")),
+        Address.fromBytes(dataSource.context().getBytes("troveNftAddress")),
     );
 
     switch (operation) {
@@ -57,48 +57,51 @@ function updateTrove(
     event: TroveOperationEvent,
     troveManagerContract: TroveManagerContract,
 ): void {
-    let previousDebt = trove.debt;
-    let previousDeposit = trove.deposit;
+    let previousTvl = trove.tvl;
+    let previousMintedDebt = trove.mintedDebt;
 
     let troveData = troveManagerContract.getLatestTroveData(
         event.params._troveId,
     );
-    let newDebt = troveData.entireDebt;
-    let newDeposit = troveData.entireColl;
+    let newMintedDebt = troveData.entireDebt;
+    let newTvl = troveData.entireColl;
     let newInterestRate = troveData.annualInterestRate;
 
-    let collateralDelta = newDeposit.minus(previousDeposit);
-    if (!collateralDelta.isZero()) {
-        let collateralChangeEvent = new CollateralChangeEvent(
+    let tvlDelta = newTvl.minus(previousTvl);
+    if (!tvlDelta.isZero()) {
+        let collateralChange = new CollateralChange(
             getEventId(event),
         );
-        collateralChangeEvent.timestamp = event.block.timestamp;
-        collateralChangeEvent.blockNumber = event.block.number;
-        collateralChangeEvent.collateral = trove.collateral;
-        collateralChangeEvent.trove = trove.id;
-        collateralChangeEvent.delta = collateralDelta;
-        collateralChangeEvent.save();
+        collateralChange.timestamp = event.block.timestamp;
+        collateralChange.blockNumber = event.block.number;
+        collateralChange.collateral = trove.collateral;
+        collateralChange.trove = trove.id;
+        collateralChange.delta = tvlDelta;
+        collateralChange.save();
     }
 
-    let debtDelta = newDebt.minus(previousDebt);
-    if (!debtDelta.isZero()) {
-        let debtChangeEvent = new DebtChangeEvent(getEventId(event));
-        debtChangeEvent.timestamp = event.block.timestamp;
-        debtChangeEvent.blockNumber = event.block.number;
-        debtChangeEvent.trove = trove.id;
-        debtChangeEvent.delta = debtDelta;
-        debtChangeEvent.save();
+    let mintedDebtDelta = newMintedDebt.minus(previousMintedDebt);
+    if (!mintedDebtDelta.isZero()) {
+        let mintedDebtChange = new MintedDebtChange(
+            getEventId(event),
+        );
+        mintedDebtChange.timestamp = event.block.timestamp;
+        mintedDebtChange.blockNumber = event.block.number;
+        mintedDebtChange.trove = trove.id;
+        mintedDebtChange.collateral = trove.collateral;
+        mintedDebtChange.delta = mintedDebtDelta;
+        mintedDebtChange.save();
     }
 
     let collateral = getCollateralOrThrow(trove.collateral);
-    collateral.deposited = collateral.deposited
-        .minus(previousDeposit)
-        .plus(newDeposit);
-    collateral.debt = collateral.debt.minus(previousDebt).plus(newDebt);
+    collateral.tvl = collateral.tvl.minus(previousTvl).plus(newTvl);
+    collateral.mintedDebt = collateral.mintedDebt
+        .minus(previousMintedDebt)
+        .plus(newMintedDebt);
     collateral.save();
 
-    trove.debt = newDebt;
-    trove.deposit = newDeposit;
+    trove.tvl = newTvl;
+    trove.mintedDebt = newMintedDebt;
     trove.interestRate = newInterestRate;
     trove.save();
 }

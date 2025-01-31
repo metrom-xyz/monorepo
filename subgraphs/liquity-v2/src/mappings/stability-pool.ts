@@ -1,37 +1,37 @@
 import { dataSource } from "@graphprotocol/graph-ts";
-import { DepositedDebtChangeEvent } from "../../generated/schema";
 import { DepositUpdated as DepositUpdatedEvent } from "../../generated/templates/StabilityPool/StabilityPool";
 import {
+    getCollateralOrThrow,
     getEventId,
-    getOrCreateStabilityPool,
     getOrCreateStabilityPoolPosition,
 } from "../commons";
+import { StabilityPoolDebtChange } from "../../generated/schema";
 
 export function handleDepositUpdated(event: DepositUpdatedEvent): void {
     let collateralId = dataSource.context().getBytes("collateralId");
-    let pool = getOrCreateStabilityPool(collateralId);
 
     let position = getOrCreateStabilityPoolPosition(
-        pool.id,
+        collateralId,
         event.params._depositor,
     );
 
-    let delta = event.params._newDeposit.minus(position.deposited);
+    let delta = event.params._newDeposit.minus(position.tvl);
     if (!delta.isZero()) {
-        let depositedDebtChangeEvent = new DepositedDebtChangeEvent(
+        let stabilityPoolDebtChange = new StabilityPoolDebtChange(
             getEventId(event),
         );
-        depositedDebtChangeEvent.timestamp = event.block.timestamp;
-        depositedDebtChangeEvent.blockNumber = event.block.number;
-        depositedDebtChangeEvent.pool = pool.id;
-        depositedDebtChangeEvent.account = event.params._depositor;
-        depositedDebtChangeEvent.delta = delta;
-        depositedDebtChangeEvent.save();
+        stabilityPoolDebtChange.timestamp = event.block.timestamp;
+        stabilityPoolDebtChange.blockNumber = event.block.number;
+        stabilityPoolDebtChange.collateral = collateralId;
+        stabilityPoolDebtChange.position = position.id;
+        stabilityPoolDebtChange.delta = delta;
+        stabilityPoolDebtChange.save();
 
-        pool.deposited = pool.deposited.plus(delta);
-        pool.save();
+        let collateral = getCollateralOrThrow(collateralId);
+        collateral.stabilityPoolDebt = collateral.stabilityPoolDebt.plus(delta);
+        collateral.save();
+
+        position.tvl = event.params._newDeposit;
+        position.save();
     }
-
-    position.deposited = event.params._newDeposit;
-    position.save();
 }

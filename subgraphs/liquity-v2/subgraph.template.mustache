@@ -84,7 +84,25 @@ templates:
         - event: TroveOperation(indexed
             uint256,uint8,uint256,uint256,uint256,int256,uint256,int256)
           handler: handleTroveOperation
-          receipt: true
+  - name: TroveNFT
+    kind: ethereum/contract
+    network: {{network}}
+    source:
+      abi: TroveNFT
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.9
+      language: wasm/assemblyscript
+      file: ./src/mappings/trove-nft.ts
+      entities:
+        - Trove
+        - TroveTransfer
+      abis:
+        - name: TroveNFT
+          file: ./abis/TroveNFT.json
+      eventHandlers:
+        - event: Transfer(indexed address,indexed address,indexed uint256)
+          handler: handleTroveTransfer
   - name: StabilityPool
     kind: ethereum/contract
     network: {{network}}
