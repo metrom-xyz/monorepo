@@ -17,6 +17,12 @@ export const sepoliaData: ChainData = {
             slug: SupportedLiquityV2.Liquity,
             logo: LiquityLogo,
             name: "Liquity",
+            debtToken: {
+                address: "0xb01d32c05f4aa066eef2bfd4d461833fddd56d0a",
+                decimals: 18,
+                name: "Bold Stablecoin",
+                symbol: "BOLD",
+            },
             actionUrls: {
                 [TargetType.LiquityV2Debt]:
                     "https://liquity2-sepolia.vercel.app/borrow",

@@ -7,6 +7,7 @@ import {
 } from "@metrom-xyz/sdk";
 import {
     AmmPoolLiquidityCampaignPreviewPayload,
+    LiquityV2Action,
     LiquityV2CampaignPreviewPayload,
     type BaseCampaignPreviewPayload,
     type CampaignPreviewPayload,
@@ -27,9 +28,9 @@ export function buildCampaignDataBundle(payload: CampaignPreviewPayload) {
         const parameters = [{ name: "brandSlug", type: "string" }];
         const values: [SupportedLiquityV2, Address[]?] = [payload.brand.slug];
 
-        if (payload.collaterals.length > 0) {
+        if (payload.filters.length > 0) {
             parameters.push({ name: "collaterals", type: "address[]" });
-            values.push(payload.collaterals.map(({ token }) => token.address));
+            values.push(payload.filters.map(({ token }) => token.address));
         }
 
         return encodeAbiParameters(parameters, values);
@@ -93,6 +94,9 @@ export function getCampaignName(
 export function getCampaignPreviewApr(
     payload: BaseCampaignPreviewPayload,
 ): number | undefined {
+    const duration = payload.endDate.unix() - payload.startDate.unix();
+    if (duration <= 0) return undefined;
+
     if (
         payload instanceof AmmPoolLiquidityCampaignPreviewPayload &&
         payload.isDistributing(DistributablesType.Tokens)
@@ -112,9 +116,6 @@ export function getCampaignPreviewApr(
             );
         }
 
-        const duration = payload.endDate.unix() - payload.startDate.unix();
-        if (duration <= 0) return undefined;
-
         const rewardsTvlRatio = rewardsUsdValue / payload.pool.usdTvl;
         const yearMultiplier = SECONDS_IN_YEAR / duration;
         const apr = rewardsTvlRatio * yearMultiplier * 100;
@@ -125,7 +126,49 @@ export function getCampaignPreviewApr(
     if (
         payload instanceof LiquityV2CampaignPreviewPayload &&
         payload.isDistributing(DistributablesType.Tokens)
-    )
-        // TODO: implement APR for liquity v2 campaign
-        return 0;
+    ) {
+        let rewardsUsdValue = 0;
+        for (const reward of payload.distributables.tokens) {
+            if (!reward.amount.usdValue) return undefined;
+            rewardsUsdValue += reward.amount.usdValue;
+        }
+
+        const filteredCollaterals =
+            payload.filters.length === 0
+                ? payload.supportedCollaterals
+                : payload.filters;
+
+        let liquityUsdValue = 0;
+        switch (payload.action) {
+            case LiquityV2Action.Debt: {
+                liquityUsdValue = filteredCollaterals.reduce(
+                    (usd, collateral) => usd + collateral.usdMintedDebt,
+                    0,
+                );
+                break;
+            }
+            case LiquityV2Action.Collateral: {
+                liquityUsdValue = filteredCollaterals.reduce(
+                    (usd, collateral) => usd + collateral.usdTvlUsd,
+                    0,
+                );
+                break;
+            }
+            case LiquityV2Action.StabilityPool: {
+                liquityUsdValue = filteredCollaterals.reduce(
+                    (usd, collateral) => usd + collateral.usdStabilityPoolDebt,
+                    0,
+                );
+                break;
+            }
+        }
+
+        // TODO: add KPI once supported for liquity v2
+
+        const rewardsRatio = rewardsUsdValue / liquityUsdValue;
+        const yearMultiplier = SECONDS_IN_YEAR / duration;
+        const apr = rewardsRatio * yearMultiplier * 100;
+
+        return apr;
+    }
 }

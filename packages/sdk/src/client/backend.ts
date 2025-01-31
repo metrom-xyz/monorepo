@@ -1,10 +1,6 @@
 import { formatUnits, type Address, type Hex } from "viem";
 import type { SupportedChain } from "@metrom-xyz/contracts";
-import {
-    SupportedAmm,
-    SupportedDex,
-    SupportedLiquityV2,
-} from "../commons";
+import { SupportedAmm, SupportedDex, SupportedLiquityV2 } from "../commons";
 import type {
     BackendCampaignResponse,
     BackendCampaignsResponse,
@@ -754,7 +750,9 @@ export class MetromApiClient {
 
         return parsedResponse.collaterals.map((collateral) => {
             return {
-                ...collateral,
+                usdMintedDebt: collateral.mintedDebt,
+                usdTvlUsd: collateral.usdTvl,
+                usdStabilityPoolDebt: collateral.stabilityPoolDebt,
                 token: resolveToken(
                     parsedResponse.resolvedTokens,
                     collateral.address,
@@ -906,9 +904,7 @@ function resolveLiquityV2DebtTarget(
         type: TargetType.LiquityV2Debt,
         brand: {
             slug: target.brand as SupportedLiquityV2,
-            name: LIQUITY_V2_BRAND_NAME[
-                target.brand as SupportedLiquityV2
-            ],
+            name: LIQUITY_V2_BRAND_NAME[target.brand as SupportedLiquityV2],
         },
         chainId: target.chainId,
         debts: [],
@@ -941,9 +937,7 @@ function resolveLiquityV2CollateralTarget(
         type: TargetType.LiquityV2Collateral,
         brand: {
             slug: target.brand as SupportedLiquityV2,
-            name: LIQUITY_V2_BRAND_NAME[
-                target.brand as SupportedLiquityV2
-            ],
+            name: LIQUITY_V2_BRAND_NAME[target.brand as SupportedLiquityV2],
         },
         chainId: target.chainId,
         collaterals: [],

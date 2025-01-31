@@ -284,7 +284,7 @@ export function CampaignPreview({
                                 value={formatUsdAmount(payload.pool.usdTvl)}
                             />
                         )}
-                        {ammPoolLiquidityCampaign && tokensCampaign && (
+                        {tokensCampaign && (
                             <TextField
                                 boxed
                                 size="xl"

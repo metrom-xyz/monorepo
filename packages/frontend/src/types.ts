@@ -14,6 +14,7 @@ import {
     type WhitelistedErc20Token,
     type LiquityV2Collateral,
     type LiquityV2CollateralTarget,
+    type Erc20Token,
 } from "@metrom-xyz/sdk";
 import type { Dayjs } from "dayjs";
 import type { SVGProps, FunctionComponent } from "react";
@@ -43,6 +44,7 @@ export interface DexProtocol extends ProtocolBase<SupportedDex> {
 
 export interface LiquityV2Protocol extends ProtocolBase<SupportedLiquityV2> {
     type: ProtocolType.LiquityV2;
+    debtToken: Erc20Token;
     actionUrls: Record<
         | TargetType.LiquityV2Debt
         | TargetType.LiquityV2Collateral
@@ -121,7 +123,8 @@ export interface AmmPoolLiquidityCampaignPayload extends BaseCampaignPayload {
 export interface LiquityV2CampaignPayload extends BaseCampaignPayload {
     brand?: LiquityV2Protocol;
     action?: LiquityV2Action;
-    collaterals?: LiquityV2Collateral[];
+    filters?: LiquityV2Collateral[];
+    supportedCollaterals?: LiquityV2Collateral[];
 }
 
 export interface CampaignPreviewTokenDistributables {
@@ -174,7 +177,8 @@ export class LiquityV2CampaignPreviewPayload extends BaseCampaignPreviewPayload 
     constructor(
         public readonly brand: LiquityV2Protocol,
         public readonly action: LiquityV2Action,
-        public readonly collaterals: LiquityV2Collateral[],
+        public readonly filters: LiquityV2Collateral[],
+        public readonly supportedCollaterals: LiquityV2Collateral[],
         ...baseArgs: ConstructorParameters<typeof BaseCampaignPreviewPayload>
     ) {
         super(...baseArgs);

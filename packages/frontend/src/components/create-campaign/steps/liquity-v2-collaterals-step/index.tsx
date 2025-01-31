@@ -20,22 +20,22 @@ import styles from "./styles.module.css";
 interface LiquityV2CollateralsStepProps {
     disabled?: boolean;
     action?: LiquityV2CampaignPayload["action"];
-    brand?: LiquityV2CampaignPayload["brand"];
-    collaterals?: LiquityV2CampaignPayload["collaterals"];
+    collaterals?: LiquityV2CampaignPayload["filters"];
+    supportedCollaterals?: LiquityV2CampaignPayload["supportedCollaterals"];
     onCollateralsChange: (value: LiquityV2CampaignPayloadPart) => void;
 }
 
 export function LiquityV2CollateralsStep({
     disabled,
-    brand,
     collaterals,
+    supportedCollaterals,
     onCollateralsChange,
 }: LiquityV2CollateralsStepProps) {
     const t = useTranslations("newCampaign.form.liquityV2.collaterals");
 
     const [open, setOpen] = useState(false);
     const [enabled, setEnabled] = useState(false);
-    const [selectedCollaterals, setSelectedCollaterals] = useState<
+    const [filteredCollaterals, setFilteredCollaterals] = useState<
         LiquityV2Collateral[] | undefined
     >(collaterals);
 
@@ -44,8 +44,8 @@ export function LiquityV2CollateralsStep({
 
     const unsavedChanges = useMemo(() => {
         if (!prevCollaterals) return true;
-        return prevCollaterals !== selectedCollaterals;
-    }, [selectedCollaterals, prevCollaterals]);
+        return prevCollaterals !== filteredCollaterals;
+    }, [filteredCollaterals, prevCollaterals]);
 
     useEffect(() => {
         setEnabled(false);
@@ -58,39 +58,39 @@ export function LiquityV2CollateralsStep({
     useEffect(() => {
         if (enabled) return;
         if (collaterals) {
-            setSelectedCollaterals(undefined);
-            onCollateralsChange({ collaterals: undefined });
+            setFilteredCollaterals(undefined);
+            onCollateralsChange({ filters: undefined });
         }
     }, [collaterals, enabled, onCollateralsChange]);
 
     const handleCollateralsOnAdd = useCallback(
         (newCollateral: LiquityV2Collateral) => {
-            const newCollaterals = selectedCollaterals
-                ? [...selectedCollaterals, newCollateral]
+            const newCollaterals = filteredCollaterals
+                ? [...filteredCollaterals, newCollateral]
                 : [newCollateral];
 
-            setSelectedCollaterals(newCollaterals);
+            setFilteredCollaterals(newCollaterals);
         },
-        [selectedCollaterals],
+        [filteredCollaterals],
     );
 
     const handleCollateralsOnRemove = useCallback(
         (removedCollateral: LiquityV2Collateral) => {
-            const newCollaterals = selectedCollaterals?.filter(
+            const newCollaterals = filteredCollaterals?.filter(
                 (collateral) =>
                     collateral.token.address !==
                     removedCollateral.token.address,
             );
 
-            setSelectedCollaterals(newCollaterals);
+            setFilteredCollaterals(newCollaterals);
         },
-        [selectedCollaterals],
+        [filteredCollaterals],
     );
 
     const handleCollateralsOnApply = useCallback(() => {
-        onCollateralsChange({ collaterals: selectedCollaterals });
+        onCollateralsChange({ filters: filteredCollaterals });
         setOpen(false);
-    }, [selectedCollaterals, onCollateralsChange]);
+    }, [filteredCollaterals, onCollateralsChange]);
 
     function handleSwitchOnClick() {
         setEnabled((enabled) => !enabled);
@@ -98,8 +98,8 @@ export function LiquityV2CollateralsStep({
 
     function handleStepOnClick() {
         if (!enabled) return;
-        if (open && !collaterals) setSelectedCollaterals(undefined);
-        if (open) setSelectedCollaterals(collaterals);
+        if (open && !collaterals) setFilteredCollaterals(undefined);
+        if (open) setFilteredCollaterals(collaterals);
         setOpen((open) => !open);
     }
 
@@ -107,7 +107,7 @@ export function LiquityV2CollateralsStep({
         <Step
             disabled={disabled}
             open={open}
-            completed={!!selectedCollaterals && selectedCollaterals?.length > 0}
+            completed={!!filteredCollaterals && filteredCollaterals?.length > 0}
             onPreviewClick={handleStepOnClick}
         >
             <StepPreview
@@ -141,7 +141,7 @@ export function LiquityV2CollateralsStep({
                     </Typography>
                     <div className={styles.collateralsWrapper}>
                         <AnimatePresence>
-                            {selectedCollaterals?.map((collateral) => (
+                            {filteredCollaterals?.map((collateral) => (
                                 <motion.div
                                     key={collateral.token.address}
                                     initial="hide"
@@ -167,8 +167,8 @@ export function LiquityV2CollateralsStep({
             <StepContent>
                 <div className={styles.contentWrapper}>
                     <CollateralsList
-                        collaterals={selectedCollaterals}
-                        brand={brand}
+                        filters={filteredCollaterals}
+                        supported={supportedCollaterals}
                         onAdd={handleCollateralsOnAdd}
                         onRemove={handleCollateralsOnRemove}
                     />
@@ -177,9 +177,9 @@ export function LiquityV2CollateralsStep({
                         size="sm"
                         disabled={
                             !unsavedChanges ||
-                            !selectedCollaterals ||
+                            !filteredCollaterals ||
                             ((!collaterals || collaterals.length === 0) &&
-                                selectedCollaterals.length === 0)
+                                filteredCollaterals.length === 0)
                         }
                         onClick={handleCollateralsOnApply}
                         className={{ root: styles.applyButton }}
