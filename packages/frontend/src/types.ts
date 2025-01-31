@@ -15,6 +15,7 @@ import {
     type LiquityV2Collateral,
     type LiquityV2CollateralTarget,
     type Erc20Token,
+    type LiquityV2StabilityPoolTarget,
 } from "@metrom-xyz/sdk";
 import type { Dayjs } from "dayjs";
 import type { SVGProps, FunctionComponent } from "react";
@@ -222,7 +223,9 @@ export interface TargetedCampaignPreviewPayload<T extends TargetType>
           ? LiquityV2DebtTarget
           : T extends TargetType.LiquityV2Collateral
             ? LiquityV2CollateralTarget
-            : never;
+            : T extends TargetType.LiquityV2StabilityPool
+              ? LiquityV2StabilityPoolTarget
+              : never;
 }
 
 export interface CampaignPayloadErrors {
@@ -292,5 +295,7 @@ export interface TargetedNamedCampaign<T extends TargetType>
           ? LiquityV2DebtTarget
           : T extends TargetType.LiquityV2Collateral
             ? LiquityV2CollateralTarget
-            : never;
+            : T extends TargetType.LiquityV2StabilityPool
+              ? LiquityV2StabilityPoolTarget
+              : never;
 }

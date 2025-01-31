@@ -23,7 +23,8 @@ export function Protocol({ campaign }: ProtocolProps) {
                 return protocol.slug === campaign.target.pool.dex.slug;
             }
             case TargetType.LiquityV2Debt:
-            case TargetType.LiquityV2Collateral: {
+            case TargetType.LiquityV2Collateral:
+            case TargetType.LiquityV2StabilityPool: {
                 return protocol.slug === campaign.target.brand.slug;
             }
         }
@@ -38,31 +39,33 @@ export function Protocol({ campaign }: ProtocolProps) {
         setPopoverOpen(false);
     }
 
-    if (!Logo) return "-";
-
     return (
         <div className={styles.root}>
-            <div className={styles.root}>
-                <Popover
-                    open={popoverOpen}
-                    anchor={dexDetails}
-                    ref={dexDetailsPopoverRef}
-                    placement="top"
-                >
-                    <div className={styles.detailsContainer}>
-                        <Typography weight="medium" size="sm">
-                            {protocol.name}
-                        </Typography>
+            {Logo ? (
+                <div className={styles.root}>
+                    <Popover
+                        open={popoverOpen}
+                        anchor={dexDetails}
+                        ref={dexDetailsPopoverRef}
+                        placement="top"
+                    >
+                        <div className={styles.detailsContainer}>
+                            <Typography weight="medium" size="sm">
+                                {protocol.name}
+                            </Typography>
+                        </div>
+                    </Popover>
+                    <div
+                        ref={setDexDetails}
+                        onMouseEnter={handleDexDetailsPopoverOpen}
+                        onMouseLeave={handleDexDetailsPopoverClose}
+                    >
+                        <Logo className={styles.icon} />
                     </div>
-                </Popover>
-                <div
-                    ref={setDexDetails}
-                    onMouseEnter={handleDexDetailsPopoverOpen}
-                    onMouseLeave={handleDexDetailsPopoverClose}
-                >
-                    <Logo className={styles.icon} />
                 </div>
-            </div>
+            ) : (
+                "-"
+            )}
         </div>
     );
 }

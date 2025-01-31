@@ -551,7 +551,8 @@
     "campaignActions": {
         "lp": "LP on {pool}",
         "takeLoan": "Take loan on {brand}",
-        "depositCollateral": "Deposit collateral on {brand}"
+        "depositCollateral": "Deposit collateral on {brand}",
+        "depositStabilityPool": "Deposit to stability pool on {brand}"
     },
     "liquidityDensityChart": {
         "tooltip": {
