@@ -22,7 +22,7 @@ export function useLiquityV2Collaterals(
         queryFn: async ({ queryKey }) => {
             const brand = queryKey[1];
             const chainId = queryKey[2];
-            if (!brand) return undefined;
+            if (!brand) return null;
 
             try {
                 return await metromApiClient.fetchLiquityV2Collaterals({
@@ -43,6 +43,6 @@ export function useLiquityV2Collaterals(
 
     return {
         loading,
-        collaterals,
+        collaterals: collaterals || undefined,
     };
 }

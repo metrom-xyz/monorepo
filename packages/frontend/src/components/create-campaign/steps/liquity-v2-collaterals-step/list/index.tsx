@@ -1,30 +1,25 @@
-import { useLiquityV2Collaterals } from "@/src/hooks/useLiquityV2Collaterals";
 import type { LiquityV2Collateral } from "@metrom-xyz/sdk";
 import { Typography } from "@metrom-xyz/ui";
-import { useChainId } from "wagmi";
 import { useTranslations } from "next-intl";
 import type { LiquityV2CampaignPayload } from "@/src/types";
-import { Row, RowSkeleton } from "./row";
+import { Row } from "./row";
 
 import styles from "./styles.module.css";
 
 interface CollateralsListProps {
-    collaterals?: LiquityV2CampaignPayload["collaterals"];
-    brand?: LiquityV2CampaignPayload["brand"];
+    filters?: LiquityV2CampaignPayload["filters"];
+    supported?: LiquityV2CampaignPayload["supportedCollaterals"];
     onAdd: (collateral: LiquityV2Collateral) => void;
     onRemove: (collateral: LiquityV2Collateral) => void;
 }
 
 export function CollateralsList({
-    collaterals,
-    brand,
+    filters,
+    supported,
     onAdd,
     onRemove,
 }: CollateralsListProps) {
     const t = useTranslations("newCampaign.form.liquityV2.collaterals");
-    const chainId = useChainId();
-    const { collaterals: supportedCollaterals, loading } =
-        useLiquityV2Collaterals(chainId, brand?.slug);
 
     return (
         <div className={styles.root}>
@@ -36,15 +31,9 @@ export function CollateralsList({
                     {t("list.token")}
                 </Typography>
             </div>
-            {loading ? (
-                <>
-                    <RowSkeleton />
-                    <RowSkeleton />
-                    <RowSkeleton />
-                </>
-            ) : supportedCollaterals && supportedCollaterals.length > 0 ? (
-                supportedCollaterals.map((collateral) => {
-                    const selected = collaterals?.find(
+            {supported && supported.length > 0 ? (
+                supported.map((collateral) => {
+                    const selected = filters?.find(
                         ({ token }) =>
                             token.address === collateral.token.address,
                     );

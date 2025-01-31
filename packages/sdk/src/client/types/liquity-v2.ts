@@ -3,7 +3,8 @@ import type { BackendErc20Token } from "./commons";
 
 export interface BackendLiquityV2Collaterals {
     address: Address;
-    debt: number;
+    mintedDebt: number;
+    stabilityPoolDebt: number;
     tvl: string;
     usdTvl: number;
 }

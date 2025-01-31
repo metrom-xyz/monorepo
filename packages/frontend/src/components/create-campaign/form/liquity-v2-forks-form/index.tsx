@@ -29,7 +29,8 @@ function validatePayload(
     const {
         brand,
         action,
-        collaterals,
+        filters,
+        supportedCollaterals,
         startDate,
         endDate,
         points,
@@ -40,7 +41,8 @@ function validatePayload(
     } = payload;
 
     // TODO: handle collaterals
-    if (!brand || !action || !startDate || !endDate) return null;
+    if (!brand || !action || !startDate || !endDate || !supportedCollaterals)
+        return null;
 
     let distributables;
     if (points && fee) {
@@ -59,7 +61,8 @@ function validatePayload(
     return new LiquityV2CampaignPreviewPayload(
         brand,
         action,
-        collaterals || [],
+        filters || [],
+        supportedCollaterals,
         startDate,
         endDate,
         distributables,
@@ -113,7 +116,9 @@ export function LiquityV2ForksForm({
                 <LiquityV2BrandStep
                     disabled={unsupportedChain}
                     brand={payload.brand}
+                    supportedCollaterals={payload.supportedCollaterals}
                     onBrandChange={handlePayloadOnChange}
+                    onSupportedCollateralsChange={handlePayloadOnChange}
                 />
                 <LiquityV2ActionStep
                     disabled={!payload?.brand || unsupportedChain}
@@ -123,8 +128,8 @@ export function LiquityV2ForksForm({
                 {LIQUITY_V2_CAMPAIGN_COLLATERALS && (
                     <LiquityV2CollateralsStep
                         disabled={!payload?.action || unsupportedChain}
-                        brand={payload.brand}
-                        collaterals={payload.collaterals}
+                        collaterals={payload.filters}
+                        supportedCollaterals={payload.supportedCollaterals}
                         onCollateralsChange={handlePayloadOnChange}
                     />
                 )}

@@ -5,7 +5,6 @@ import { useMemo } from "react";
 import { LIQUITY_V2_SUPPORTED_ACTIONS } from "../../steps/liquity-v2-action-step";
 import { RemoteLogo } from "@/src/components/remote-logo";
 import { useChainId } from "wagmi";
-import { useLiquityV2Collaterals } from "@/src/hooks/useLiquityV2Collaterals";
 
 import styles from "./styles.module.css";
 
@@ -16,10 +15,6 @@ interface LiquityV2Props {
 export function LiquityV2({ payload }: LiquityV2Props) {
     const t = useTranslations("campaignPreview.header");
     const chainId = useChainId();
-    const { collaterals: supportedCollaterals } = useLiquityV2Collaterals(
-        chainId,
-        payload.brand.slug,
-    );
 
     const action = useMemo(() => {
         return LIQUITY_V2_SUPPORTED_ACTIONS.find(
@@ -28,11 +23,10 @@ export function LiquityV2({ payload }: LiquityV2Props) {
     }, [payload]);
 
     const filteredCollaterals = useMemo(() => {
-        if (!supportedCollaterals) return [];
-        return payload.collaterals.length === 0
-            ? supportedCollaterals
-            : payload.collaterals;
-    }, [payload.collaterals, supportedCollaterals]);
+        return payload.filters.length === 0
+            ? payload.supportedCollaterals
+            : payload.filters;
+    }, [payload.filters, payload.supportedCollaterals]);
 
     return (
         <div className={styles.titleContainer}>
