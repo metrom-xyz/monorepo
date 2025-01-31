@@ -96,9 +96,12 @@ export function AmmPoolLiquidityForm({
         setPayload({});
     }, [chainId]);
 
-    function handlePayloadOnChange(part: AmmPoolLiquidityCampaignPayloadPart) {
-        setPayload((prev) => ({ ...prev, ...part }));
-    }
+    const handlePayloadOnChange = useCallback(
+        (part: AmmPoolLiquidityCampaignPayloadPart) => {
+            setPayload((prev) => ({ ...prev, ...part }));
+        },
+        [],
+    );
 
     const handlePayloadOnError = useCallback(
         (errors: CampaignPayloadErrors) => {

@@ -53,7 +53,7 @@ export function PoolStep({
 
     useEffect(() => {
         onPoolChange({ pool: undefined });
-    }, [dex?.slug]);
+    }, [onPoolChange, dex?.slug]);
 
     const handlePoolOnChange = useCallback(
         (newPool: AmmPool) => {
