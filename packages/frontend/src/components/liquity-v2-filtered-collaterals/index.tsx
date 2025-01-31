@@ -18,6 +18,9 @@ export function LiquityV2FilteredCollaterals({
 }: LiquityV2FilteredCollateralsProps) {
     const debt = campaign.isTargeting(TargetType.LiquityV2Debt);
     const collateral = campaign.isTargeting(TargetType.LiquityV2Collateral);
+    const stabilityPool = campaign.isTargeting(
+        TargetType.LiquityV2StabilityPool,
+    );
 
     let collateralTokens: Erc20Token[] = [];
     if (debt)
@@ -27,6 +30,10 @@ export function LiquityV2FilteredCollaterals({
     if (collateral)
         collateralTokens = campaign.target.collaterals.map(
             ({ token }) => token,
+        );
+    if (stabilityPool)
+        collateralTokens = campaign.target.stabilityPools.map(
+            ({ usdDeposit, ...rest }) => ({ ...rest }),
         );
 
     return (

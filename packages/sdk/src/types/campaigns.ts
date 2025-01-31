@@ -32,6 +32,11 @@ export interface LiquityV2CollateralWithDebt extends Erc20Token {
     usdDebt: number;
 }
 
+export interface LiquityV2CollateralWithStabilityPoolDeposit
+    extends Erc20Token {
+    usdDeposit: number;
+}
+
 export interface LiquityV2DebtTarget {
     type: TargetType.LiquityV2Debt;
     chainId: number;
@@ -47,10 +52,19 @@ export interface LiquityV2CollateralTarget {
     collaterals: UsdPricedErc20TokenAmount[];
 }
 
+export interface LiquityV2StabilityPoolTarget {
+    type: TargetType.LiquityV2StabilityPool;
+    chainId: number;
+    brand: Brand<SupportedLiquityV2>;
+    stabilityPools: LiquityV2CollateralWithStabilityPoolDeposit[];
+    totalUsdDeposits: number;
+}
+
 export type CampaignTarget =
     | AmmPoolLiquidityTarget
     | LiquityV2DebtTarget
-    | LiquityV2CollateralTarget;
+    | LiquityV2CollateralTarget
+    | LiquityV2StabilityPoolTarget;
 
 export interface TokenDistributable {
     token: UsdPricedErc20Token;
@@ -162,5 +176,7 @@ export interface TargetedCampaign<T extends TargetType> extends Campaign {
           ? LiquityV2DebtTarget
           : T extends TargetType.LiquityV2Collateral
             ? LiquityV2CollateralTarget
-            : never;
+            : T extends TargetType.LiquityV2StabilityPool
+              ? LiquityV2StabilityPoolTarget
+              : never;
 }

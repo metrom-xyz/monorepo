@@ -26,6 +26,13 @@ export interface BackendLiquityV2CollateralTarget {
     collaterals: Record<Address, string>;
 }
 
+export interface BackendLiquityV2StabilityPoolTarget {
+    type: "liquity-v2-stability-pool";
+    chainId: number;
+    brand: string;
+    stabilityPools: Record<Address, number>;
+}
+
 export interface BackendTokenDistributable {
     token: Address;
     amount: string;
@@ -52,7 +59,8 @@ export interface BackendCampaign {
     target:
         | BackendAmmPoolLiquidityTarget
         | BackendLiquityV2DebtTarget
-        | BackendLiquityV2CollateralTarget;
+        | BackendLiquityV2CollateralTarget
+        | BackendLiquityV2StabilityPoolTarget;
     specification?: Specification;
     distributables: BackendTokenDistributables | BackendPointDistributables;
     apr?: number;

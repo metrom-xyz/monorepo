@@ -87,7 +87,11 @@ export function getCampaignName(
                 brand: campaign.target.brand.name,
             });
         }
-        // TODO: add missing type
+        case TargetType.LiquityV2StabilityPool: {
+            return t("campaignActions.depositStabilityPool", {
+                brand: campaign.target.brand.name,
+            });
+        }
     }
 }
 

@@ -6,6 +6,7 @@ import type {
     BackendCampaignsResponse,
     BackendLiquityV2CollateralTarget,
     BackendLiquityV2DebtTarget,
+    BackendLiquityV2StabilityPoolTarget,
 } from "./types/campaigns";
 import type {
     BackendAmmPool,
@@ -17,7 +18,9 @@ import {
     Campaign,
     type LiquityV2CollateralTarget,
     type LiquityV2CollateralWithDebt,
+    type LiquityV2CollateralWithStabilityPoolDeposit,
     type LiquityV2DebtTarget,
+    type LiquityV2StabilityPoolTarget,
     type PointDistributables,
     TargetType,
     type TokenDistributable,
@@ -796,6 +799,13 @@ function processCampaignsResponse(
                 );
                 break;
             }
+            case "liquity-v2-stability-pool": {
+                target = resolveLiquityV2StabilityPoolTarget(
+                    response.resolvedTokens,
+                    backendCampaign.target,
+                );
+                break;
+            }
         }
 
         let distributables;
@@ -957,6 +967,42 @@ function resolveLiquityV2CollateralTarget(
                 resolvedCollateralToken.decimals,
             ),
         });
+    }
+
+    return resolved;
+}
+
+function resolveLiquityV2StabilityPoolTarget(
+    tokensRegistry: Record<number, Record<string, BackendErc20Token>>,
+    target: BackendLiquityV2StabilityPoolTarget,
+): LiquityV2StabilityPoolTarget {
+    const resolved = <LiquityV2StabilityPoolTarget>{
+        type: TargetType.LiquityV2StabilityPool,
+        brand: {
+            slug: target.brand as SupportedLiquityV2,
+            name: LIQUITY_V2_BRAND_NAME[target.brand as SupportedLiquityV2],
+        },
+        chainId: target.chainId,
+        stabilityPools: [],
+        totalUsdDeposits: 0,
+    };
+
+    for (const [collateralAddress, deposit] of Object.entries(
+        target.stabilityPools,
+    )) {
+        const resolvedCollateralToken = resolveTokenInChain(
+            tokensRegistry,
+            target.chainId,
+            collateralAddress as Address,
+        );
+
+        resolved.stabilityPools.push(<
+            LiquityV2CollateralWithStabilityPoolDeposit
+        >{
+            ...resolvedCollateralToken,
+            usdDeposit: deposit,
+        });
+        resolved.totalUsdDeposits += deposit;
     }
 
     return resolved;
