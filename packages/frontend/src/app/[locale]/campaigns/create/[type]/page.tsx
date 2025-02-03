@@ -1,6 +1,6 @@
 import { CreateCampaignForm } from "@/src/components/create-campaign/form";
 import { routing } from "@/src/i18n/routing";
-import type { CampaignType } from "@/src/types";
+import { CampaignType } from "@/src/types";
 import { setRequestLocale } from "next-intl/server";
 
 interface Params {
@@ -22,6 +22,11 @@ export default async function CampaignFormPage({
     return <CreateCampaignForm type={type} />;
 }
 
-export function generateStaticParams() {
-    return routing.locales.map((locale) => ({ locale }));
+export async function generateStaticParams() {
+    return routing.locales.flatMap((locale) =>
+        [CampaignType.AmmPoolLiquidity, CampaignType.LiquityV2].map((type) => ({
+            locale,
+            type,
+        })),
+    );
 }

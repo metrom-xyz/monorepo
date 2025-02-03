@@ -1,7 +1,12 @@
 @reference "../../theme.css";
 
 .root {
-    @apply w-full bg-white rounded-2xl;
+    @apply w-full
+        rounded-2xl
+        bg-white dark:bg-slate-800
+        transition-all
+        duration-200
+        ease-in-out;
 }
 
 .preview {
@@ -13,10 +18,10 @@
         select-none
         cursor-pointer
         rounded-2xl
+        hover:bg-gray-200 hover:dark:bg-slate-700
         transition-all
         duration-200
-        ease-in-out
-        hover:bg-gray-200;
+        ease-in-out;
 }
 
 .preview.open {

@@ -6,5 +6,5 @@
         text-xs
         leading-none
         font-medium
-        fill-black;
+        fill-black dark:fill-slate-200;
 }

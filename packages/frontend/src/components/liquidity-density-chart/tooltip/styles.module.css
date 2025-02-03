@@ -6,7 +6,7 @@
         gap-2
         p-2
         rounded-lg
-        bg-white
+        bg-white dark:bg-slate-800
         border
         border-gray-200;
 }

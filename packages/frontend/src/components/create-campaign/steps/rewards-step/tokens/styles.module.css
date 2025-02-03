@@ -53,11 +53,11 @@
         items-center
         justify-between
         rounded-md
-        bg-gray-100
+        dark:bg-slate-950 bg-gray-100 dark:bg-slate-900
         pl-2.5
         pr-1
         py-1.5
-        hover:bg-gray-200
+        hover:bg-gray-200 hover:dark:bg-slate-200
         hover:cursor-pointer
         transition-colors
         duration-200

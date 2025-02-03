@@ -20,6 +20,11 @@ import type { Dayjs } from "dayjs";
 import type { SVGProps, FunctionComponent } from "react";
 import type { Address } from "viem";
 
+export enum Theme {
+    Dark = "dark",
+    Light = "light",
+}
+
 type PropertyUnion<T> = {
     [K in keyof T]: { [P in K]: T[K] };
 }[keyof T];

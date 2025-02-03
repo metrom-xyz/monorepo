@@ -18,7 +18,7 @@
 }
 
 .previewDisabled {
-    @apply hover:cursor-default hover:bg-white;
+    @apply hover:cursor-default hover:bg-white dark:bg-slate-800;
 }
 
 .typeWrapper {
@@ -42,7 +42,7 @@
 }
 
 .dotWrapper {
-    @apply flex items-center justify-center bg-gray-100 h-5 w-5 rounded-full;
+    @apply flex items-center justify-center dark:bg-slate-950 bg-gray-100 dark:bg-slate-900 h-5 w-5 rounded-full;
 }
 
 .tab {
@@ -75,7 +75,7 @@
 }
 
 .divider {
-    @apply h-[1.5px] bg-gray-100;
+    @apply h-[1.5px] dark:bg-slate-950 bg-gray-100 dark:bg-slate-900;
 }
 
 .listWrapper {
@@ -87,7 +87,7 @@
 }
 
 .row {
-    @apply flex items-center justify-between snap-start px-4 py-5 bg-gray-100 rounded-lg;
+    @apply flex items-center justify-between snap-start px-4 py-5 dark:bg-slate-950 bg-gray-100 dark:bg-slate-900 rounded-lg;
 }
 
 .accountWrapper {

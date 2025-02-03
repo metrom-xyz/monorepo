@@ -1,7 +1,13 @@
 @reference "../../theme.css";
 
 .root {
-    @apply text-black font-normal font-sans;
+    @apply text-black
+        dark:text-slate-200
+        font-normal
+        font-sans
+        transition-colors
+        duration-200
+        ease-in-out;
 }
 
 .noWrap {
@@ -49,7 +55,7 @@
 }
 
 .light {
-    @apply text-gray-400;
+    @apply text-neutral-gray dark:text-slate-400;
 }
 
 .normal {

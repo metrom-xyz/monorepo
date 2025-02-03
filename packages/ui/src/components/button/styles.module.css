@@ -19,10 +19,9 @@
     @apply rounded-xl
         text-white
         dark:text-black
-        bg-black
-        dark:bg-white
+        bg-black dark:bg-slate-200
         hover:bg-gray-800
-        dark:hover:bg-gray-300;
+        dark:hover:bg-slate-300;
 }
 
 .primary.disabled {
@@ -34,8 +33,10 @@
 
 .secondary {
     @apply rounded-xl
-        bg-gray-100
-        hover:bg-gray-200
+        text-black
+        dark:text-slate-200
+        bg-gray-100 dark:bg-slate-900
+        hover:bg-gray-200 hover:dark:bg-slate-700
         border
         border-gray-500;
 }
@@ -89,7 +90,7 @@
 }
 
 .spinner {
-    @apply text-black origin-center animate-spin;
+    @apply text-black dark:text-slate-200 origin-center animate-spin;
 }
 
 .wrapper {

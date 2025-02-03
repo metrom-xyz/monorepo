@@ -22,8 +22,10 @@ import {
 import classNames from "classnames";
 import { formatUsdAmount } from "@/src/utils/format";
 import { useMeasure } from "react-use";
+import { useTheme } from "../theme-provider";
 
 import styles from "./styles.module.css";
+import { Theme } from "@/src/types";
 
 export interface DistributedAreaDataPoint {
     usdTvl: number;
@@ -62,6 +64,7 @@ export function KpiSimulationChart({
     className,
 }: KpiSimulationChartProps) {
     const t = useTranslations("simulationChart");
+    const { theme } = useTheme();
     const [chartRef, { width }] = useMeasure<HTMLDivElement>();
 
     const currentPayoutUsd =
@@ -337,7 +340,7 @@ export function KpiSimulationChart({
                 <Area
                     type="monotone"
                     dataKey="currentlyNotDistributing"
-                    fill="#d1d5db"
+                    fill={theme === Theme.Light ? "#d1d5db" : "#0f172b"}
                     stroke="none"
                     fillOpacity={1}
                     animationEasing="ease-in-out"
@@ -380,7 +383,6 @@ export function KpiSimulationChart({
                     strokeDasharray={"3 3"}
                     ifOverflow="visible"
                     isFront
-                    stroke="#000"
                     segment={[
                         {
                             x: poolUsdTvl,
@@ -391,6 +393,7 @@ export function KpiSimulationChart({
                             y: totalRewardsUsd,
                         },
                     ]}
+                    className={styles.referenceLine}
                 >
                     <Label
                         value={
@@ -419,6 +422,7 @@ export function KpiSimulationChart({
                             y: totalRewardsUsd,
                         },
                     ]}
+                    className={styles.referenceLine}
                 >
                     <Label
                         value={t("lowerBound")}
@@ -432,7 +436,6 @@ export function KpiSimulationChart({
                     strokeDasharray={"3 3"}
                     ifOverflow="visible"
                     isFront
-                    stroke="#000"
                     segment={[
                         {
                             x: upperUsdTarget,
@@ -443,6 +446,7 @@ export function KpiSimulationChart({
                             y: totalRewardsUsd,
                         },
                     ]}
+                    className={styles.referenceLine}
                 >
                     <Label
                         value={t("upperBound")}
@@ -458,11 +462,11 @@ export function KpiSimulationChart({
                             strokeDasharray={"3 3"}
                             ifOverflow="visible"
                             isFront
-                            stroke="#000"
                             segment={[
                                 { x: 0, y: currentPayoutUsd },
                                 { x: poolUsdTvl, y: currentPayoutUsd },
                             ]}
+                            className={styles.referenceLine}
                         />
                         <ReferenceDot
                             x={poolUsdTvl}

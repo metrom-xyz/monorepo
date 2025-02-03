@@ -2,7 +2,7 @@
 
 import { Card, Typography } from "@metrom-xyz/ui";
 import { Link, redirect } from "@/src/i18n/routing";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { LiquityV2CampaignIcon } from "@/src/assets/liquity-v2-campaign-icon";
 import { AmmCampaignIcon } from "@/src/assets/amm-campaign-icon";
 import classNames from "classnames";
@@ -33,9 +33,18 @@ const CAMPAIGN_TYPES = [
 
 export function CreateCampaign() {
     const t = useTranslations("newCampaign.pickType");
+    const locale = useLocale();
 
     if (!LIQUITY_V2_CAMPAIGN)
-        redirect(`${CAMPAIGN_TYPES[0].path}`, RedirectType.replace);
+        redirect(
+            {
+                href: {
+                    pathname: `/campaigns/create/${CampaignType.AmmPoolLiquidity}`,
+                },
+                locale,
+            },
+            RedirectType.replace,
+        );
 
     return (
         <div className={styles.root}>

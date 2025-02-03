@@ -43,7 +43,7 @@ export const Loading: Story = {
 export const Sizes: Story = {
     render: (args) => {
         return (
-            <div className="flex gap-8">
+            <div className="flex gap-12">
                 <div className="flex flex-col gap-4">
                     <PoolRemoteLogo {...args} size="xs" />
                     <PoolRemoteLogo {...args} size="sm" />

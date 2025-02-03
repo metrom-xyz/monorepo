@@ -1,7 +1,7 @@
 @reference "../../../app.css";
 
 .root {
-    @apply bg-gray-100
+    @apply bg-gray-100 dark:bg-slate-900
         h-full
         w-full
         sm:w-[28rem]
@@ -18,15 +18,14 @@
     @apply flex 
         items-center 
         gap-3 
-        hover:bg-gray-200 
+        hover:bg-gray-200 hover:dark:bg-slate-700
         p-2 
         rounded-md 
         cursor-pointer 
         transition-[outline,background-color]
         duration-200 
         ease-in-out 
-        outline 
-        outline-1 
+        outline-1
         outline-transparent;
 }
 
@@ -58,7 +57,7 @@
         transition-colors
         duration-200
         ease-in-out
-        hover:bg-white;
+        hover:bg-white dark:bg-slate-800;
 }
 
 .tabIcon {
@@ -66,7 +65,7 @@
 }
 
 .tabActive {
-    @apply bg-gray-200 hover:bg-gray-200;
+    @apply bg-gray-200 hover:bg-gray-200 hover:dark:bg-slate-700;
 }
 
 .copied {

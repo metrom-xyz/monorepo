@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { useTranslations } from "next-intl";
-import { Typography } from "@metrom-xyz/ui";
+import { Card, Typography } from "@metrom-xyz/ui";
 import { Cell, Pie, PieChart, Tooltip } from "recharts";
 import { formatPercentage } from "@/src/utils/format";
 
@@ -56,12 +56,12 @@ export function AverageDistributionChart({
     }, [kpiMeasurementPercentage, minimumPayoutPercentage]);
 
     return (
-        <div className={styles.root}>
+        <Card className={styles.root}>
             <Typography uppercase weight="medium" light size="sm">
                 {t("averageDistribution")}
             </Typography>
             <div className={styles.chartWrapper}>
-                <PieChart height={240} width={240}>
+                <PieChart height={250} width={250}>
                     <Pie
                         dataKey="value"
                         animationEasing="ease-in-out"
@@ -89,7 +89,7 @@ export function AverageDistributionChart({
                     />
                 </PieChart>
             </div>
-        </div>
+        </Card>
     );
 }
 

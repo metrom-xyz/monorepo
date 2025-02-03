@@ -1,7 +1,13 @@
 @reference "../../theme.css";
 
 .root {
-    @apply flex items-center bg-gray-100 rounded-md;
+    @apply flex
+        items-center
+        rounded-md
+        bg-gray-100 dark:bg-slate-900
+        transition-colors
+        duration-200
+        ease-in-out;
 }
 
 .xs {

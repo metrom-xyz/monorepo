@@ -5,7 +5,7 @@ export function Minus(props: SVGIcon) {
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" {...props}>
             <path
                 d="M6 12H18"
-                stroke="#292D32"
+                stroke="currentColor"
                 strokeWidth="1.5"
                 strokeLinecap="round"
                 strokeLinejoin="round"

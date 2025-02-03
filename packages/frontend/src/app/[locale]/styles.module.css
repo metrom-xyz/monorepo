@@ -1,7 +1,11 @@
 @reference "../../app.css";
 
 .root {
-    @apply bg-gray-100 min-h-screen;
+    @apply dark:bg-slate-950 bg-gray-100
+        min-h-screen
+        transition-colors
+        duration-200
+        ease-in-out;
 }
 
 .layout {

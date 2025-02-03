@@ -28,7 +28,7 @@
 
 .menuIconWrapper {
     @apply md:hidden
-        bg-white
+        bg-white dark:bg-slate-800
         rounded-md
         p-1.5
         transition-colors
@@ -57,7 +57,7 @@
 }
 
 .metromLogo {
-    @apply h-10 w-10 dark:text-white;
+    @apply h-10 w-10;
 }
 
 .tabs {
@@ -90,17 +90,17 @@
         transition-colors
         duration-200
         ease-in-out
-        hover:bg-gray-200;
+        hover:bg-gray-200 hover:dark:bg-slate-700;
 }
 
 .tabIcon {
-    @apply w-5 h-5;
+    @apply w-5 h-5 text-black dark:text-slate-200;
 }
 
 .tabActive {
-    @apply bg-white hover:bg-white;
+    @apply bg-white dark:bg-slate-800 hover:bg-white hover:dark:bg-slate-800;
 }
 
-.chainStuffContainer {
-    @apply flex items-center gap-2;
+.rightContentContainer {
+    @apply flex items-center gap-3;
 }

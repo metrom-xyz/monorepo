@@ -10,7 +10,7 @@
 
 .action {
     @apply w-full 
-        bg-gray-100
+        dark:bg-slate-950 bg-gray-100 dark:bg-slate-900
         rounded-2xl
         flex
         gap-6
@@ -20,7 +20,7 @@
         duration-200
         ease-in-out
         hover:cursor-pointer
-        hover:bg-gray-200;
+        hover:bg-gray-200 hover:dark:bg-slate-200;
 }
 
 .active {
@@ -28,7 +28,7 @@
 }
 
 .active > .actionIconWrapper {
-    @apply bg-gray-100;
+    @apply dark:bg-slate-950 bg-gray-100 dark:bg-slate-900;
 }
 
 .textWrapper {
@@ -50,7 +50,7 @@
 }
 
 .action:hover .actionIconWrapper {
-    @apply bg-gray-100;
+    @apply dark:bg-slate-950 bg-gray-100 dark:bg-slate-900;
 }
 
 .actionRowSelected {

@@ -29,7 +29,7 @@
 }
 
 .leaderboardWrapper.noDistribution {
-    @apply bg-white items-center justify-center gap-2;
+    @apply bg-white dark:bg-slate-800 items-center justify-center gap-2;
 }
 
 .noDistribution {

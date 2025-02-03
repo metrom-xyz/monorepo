@@ -110,7 +110,7 @@ export function RepartitionChart({
                     {!chartData || loading ? (
                         <div className={styles.chartWrapperLoading}></div>
                     ) : (
-                        <PieChart height={240} width={240}>
+                        <PieChart height={250} width={250}>
                             <Pie
                                 dataKey="value"
                                 animationEasing="ease-in-out"

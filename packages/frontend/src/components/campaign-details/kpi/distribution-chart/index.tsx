@@ -11,7 +11,7 @@ import type { KpiMeasurement, KpiRewardDistribution } from "@metrom-xyz/sdk";
 import dayjs from "dayjs";
 import { TooltipContent } from "./tooltip";
 import type { SupportedChain } from "@metrom-xyz/contracts";
-import { Typography } from "@metrom-xyz/ui";
+import { Card, Typography } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
 import { getAggregatedKpiMeasurements } from "@/src/utils/kpi";
 
@@ -95,7 +95,7 @@ export function DistributionChart({
         return null;
 
     return (
-        <div className={styles.root}>
+        <Card className={styles.root}>
             <Typography weight="medium" light uppercase size="sm">
                 {t("distributions")}
             </Typography>
@@ -134,7 +134,7 @@ export function DistributionChart({
                     />
                 </BarChart>
             </ResponsiveContainer>
-        </div>
+        </Card>
     );
 }
 

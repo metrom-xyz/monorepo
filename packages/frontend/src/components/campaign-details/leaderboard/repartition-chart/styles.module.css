@@ -6,7 +6,7 @@
         flex-col
         gap-3
         p-4
-        bg-white
+        bg-white dark:bg-slate-800
         rounded-2xl;
 }
 
@@ -22,7 +22,8 @@
         items-center
         justify-center
         top-[90px]
-        w-[240px];
+        w-[240px]
+        left-1.5;
 }
 
 .chartWrapper {
@@ -32,8 +33,11 @@
         self-center
         w-[280px]
         h-[280px]
-        bg-gray-100
-        rounded-full;
+        rounded-full
+        bg-gray-100 dark:bg-slate-900
+        transition-colors
+        duration-200
+        ease-in-out;
 }
 
 .cell {

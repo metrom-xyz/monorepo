@@ -45,8 +45,8 @@
         ease-out
         placeholder:text-gray-400
         placeholder:select-none
-        bg-gray-100
-        text-black
+        bg-gray-100 dark:bg-slate-900
+        text-black dark:text-slate-200
         w-full;
 }
 
@@ -67,7 +67,7 @@
 }
 
 .inputIcon {
-    @apply text-black;
+    @apply text-black dark:text-slate-200;
 }
 
 .inputIcon.xs {

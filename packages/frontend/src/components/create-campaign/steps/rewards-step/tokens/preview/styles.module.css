@@ -13,7 +13,7 @@
         transition-colors
         duration-200
         ease-in-out
-        bg-gray-100
+        dark:bg-slate-950 bg-gray-100 dark:bg-slate-900
         rounded-lg;
 }
 
@@ -41,11 +41,11 @@
         items-center
         justify-between
         rounded-md
-        bg-gray-100
+        dark:bg-slate-950 bg-gray-100 dark:bg-slate-900
         pl-2.5
         pr-1
         py-1.5
-        hover:bg-white
+        hover:bg-white dark:bg-slate-800
         hover:cursor-pointer
         transition-colors
         duration-200
@@ -84,7 +84,7 @@
 .rewardSkeleton {
     @apply h-[70px]
         w-full 
-        bg-gray-100
+        dark:bg-slate-950 bg-gray-100 dark:bg-slate-900
         rounded-lg
         flex
         items-center

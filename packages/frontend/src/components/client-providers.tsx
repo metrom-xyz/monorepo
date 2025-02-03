@@ -21,6 +21,7 @@ import utc from "dayjs/plugin/utc";
 import dayjs from "dayjs";
 import { TokenIconsProvider } from "./token-icon-provider";
 import { Toaster } from "@metrom-xyz/ui";
+import { ThemeProvider } from "./theme-provider";
 
 dayjs.extend(duration);
 dayjs.extend(localizedFormat);
@@ -55,21 +56,23 @@ export function ClientProviders({
     return (
         <WagmiProvider config={config}>
             <QueryClientProvider client={queryClient}>
-                <TokenIconsProvider>
-                    <Toaster />
-                    <RainbowKitProvider
-                        appInfo={{
-                            appName: "Metrom",
-                            learnMoreUrl: "https://www.metrom.xyz",
-                        }}
-                        locale={locale}
-                        theme={lightTheme({
-                            accentColor: "#000",
-                        })}
-                    >
-                        {children}
-                    </RainbowKitProvider>
-                </TokenIconsProvider>
+                <ThemeProvider>
+                    <TokenIconsProvider>
+                        <Toaster />
+                        <RainbowKitProvider
+                            appInfo={{
+                                appName: "Metrom",
+                                learnMoreUrl: "https://www.metrom.xyz",
+                            }}
+                            locale={locale}
+                            theme={lightTheme({
+                                accentColor: "#000",
+                            })}
+                        >
+                            {children}
+                        </RainbowKitProvider>
+                    </TokenIconsProvider>
+                </ThemeProvider>
             </QueryClientProvider>
         </WagmiProvider>
     );

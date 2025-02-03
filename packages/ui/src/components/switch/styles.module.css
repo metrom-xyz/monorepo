@@ -1,19 +1,19 @@
 @reference "../../theme.css";
 
 .root {
-    @apply bg-gray-200 border-none;
+    @apply bg-gray-200 dark:bg-slate-800 border-none;
 }
 
 .root:global(.rc-switch-checked) {
-    @apply bg-black border-none;
+    @apply bg-black dark:bg-slate-500 border-none;
 }
 
 .root:global(.rc-switch-disabled) {
-    @apply bg-gray-100 border-none;
+    @apply bg-gray-100 dark:bg-slate-700 border-none;
 }
 
 .root:global(.rc-switch-disabled::after) {
-    @apply bg-gray-200;
+    @apply bg-gray-200 dark:bg-slate-800;
 }
 
 .root:global(.rc-switch-unchecked) {

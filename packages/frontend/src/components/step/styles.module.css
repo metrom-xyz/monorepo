@@ -1,7 +1,7 @@
 @reference "../../app.css";
 
 .root {
-    @apply bg-white
+    @apply bg-white dark:bg-slate-800
         rounded-2xl
         overflow-hidden
         transition-colors

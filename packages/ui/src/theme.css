@@ -1,6 +1,6 @@
 @import "tailwindcss";
 
-@custom-variant dark (&:where(.dark, .dark *));
+@variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
 
 @theme {
     --font-sans: "IBM Plex Sans", ui-sans-serif, sans-serif;
@@ -21,10 +21,10 @@
     --color-carrot-orange: #ef802b;
     --color-black: #000000;
     --color-white: #ffffff;
+    --color-neutral-gray: #9ca3af;
 }
 
-// the following is used to add the border-radius transition
-@utilityt transition-all {
+@utility transition-all {
     transition-property:
         color,
         background-color,
