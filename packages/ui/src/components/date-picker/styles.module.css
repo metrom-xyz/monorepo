@@ -23,15 +23,12 @@
         w-9
         cursor-pointer
         rounded-md
-        bg-gray-50
+        text-black dark:text-slate-200
+        bg-gray-50 dark:bg-slate-900
+        hover:bg-gray-100 hover:dark:bg-slate-800
         transition-colors
         duration-200
-        ease-in-out
-        hover:bg-gray-100;
-}
-
-.headerIcon {
-    @apply text-black;
+        ease-in-out;
 }
 
 .rotateRight {
@@ -68,40 +65,44 @@
         justify-center
         items-center
         rounded-md
+        hover:bg-gray-200 hover:dark:bg-slate-700
         transition-colors
         duration-200
-        ease-in-out
-        hover:bg-gray-200;
+        ease-in-out;
 }
 
 .cellToday {
-    @apply bg-gray-100;
+    @apply bg-gray-100 dark:bg-slate-800;
 }
 
 .cellDisabled {
     @apply cursor-not-allowed
         hover:bg-transparent
-        text-gray-300;
+        text-gray-300 dark:text-slate-800;
+}
+
+.cellToday.cellDisabled {
+    @apply dark:bg-slate-900;
 }
 
 .cellSelected {
-    @apply bg-gray-100 !text-gray-900;
+    @apply bg-gray-100 dark:bg-slate-900 !text-gray-900 dark:!text-slate-200;
 }
 
 .cellSelectable {
-    @apply text-gray-400;
+    @apply text-gray-400 dark:text-slate-300;
 }
 
 .cellInRange {
-    @apply bg-gray-100 rounded-none;
+    @apply bg-gray-100 dark:bg-slate-900 rounded-none;
 }
 
 .cellRangeBoundStart {
-    @apply bg-gray-200 rounded-r-none !text-gray-900;
+    @apply bg-gray-200 dark:bg-slate-800 rounded-r-none !text-gray-900 dark:!text-slate-200;
 }
 
 .cellRangeBoundEnd {
-    @apply bg-gray-200 rounded-l-none !text-gray-900;
+    @apply bg-gray-200 dark:bg-slate-800 rounded-l-none !text-gray-900 dark:!text-slate-200;
 }
 
 .cellRangeBoundStart.cellRangeBoundEnd {

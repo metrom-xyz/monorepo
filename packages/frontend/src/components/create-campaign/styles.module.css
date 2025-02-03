@@ -13,7 +13,12 @@
 }
 
 .campaignCard {
-    @apply h-full max-w-96 hover:bg-gray-200 transition-colors duration-200 ease-in-out;
+    @apply h-full
+        max-w-96
+        hover:bg-gray-200 hover:dark:bg-slate-700
+        transition-colors
+        duration-200
+        ease-in-out;
 }
 
 .campaignCardBody {
@@ -21,5 +26,11 @@
 }
 
 .iconWrapper {
-    @apply flex items-center justify-center h-24 w-24 rounded-3xl bg-gray-100;
+    @apply flex
+        items-center
+        justify-center
+        h-24
+        w-24
+        rounded-3xl
+        bg-gray-100 dark:bg-slate-900;
 }

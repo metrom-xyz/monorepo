@@ -3,10 +3,12 @@
 .root {
     @apply rounded-xl
         border
-        bg-white
-        border-gray-200
+        bg-white dark:bg-slate-800
+        border-gray-200 dark:border-slate-900
         z-10
-        transition-opacity
+        transition-all
+        duration-200
+        ease-in-out
         opacity-0
         pointer-events-none;
 }

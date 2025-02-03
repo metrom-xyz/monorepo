@@ -4,10 +4,7 @@
     @apply h-full
         flex
         flex-col
-        gap-3
-        p-4
-        bg-white
-        rounded-2xl;
+        gap-3;
 }
 
 .container {
@@ -20,5 +17,8 @@
         text-xs
         leading-none
         font-medium
-        fill-black;
+        fill-black dark:fill-slate-200
+        transition-colors
+        duration-200
+        ease-in-out;
 }

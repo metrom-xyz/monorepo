@@ -203,7 +203,7 @@ export function Campaigns() {
     }, [localizedRouter]);
 
     return (
-        <div className={styles.root}>
+        <div className={`${styles.root} dark`}>
             <div className={styles.filters}>
                 <TextInput
                     className={classNames(

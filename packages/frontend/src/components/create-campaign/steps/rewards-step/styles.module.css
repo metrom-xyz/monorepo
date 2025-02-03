@@ -42,7 +42,7 @@
 }
 
 .tab {
-    @apply bg-white opacity-100 transition-colors duration-200 ease-in-out;
+    @apply bg-white dark:bg-slate-800 opacity-100 transition-colors duration-200 ease-in-out;
 }
 
 .tab > p {
@@ -58,7 +58,7 @@
 }
 
 .activeTab {
-    @apply bg-black;
+    @apply bg-black dark:bg-slate-200;
 }
 
 .activeTab > p {

@@ -95,6 +95,7 @@ export const StepNumberInput = forwardRef<
                             styles.stepButton,
                             styles.stepDownButton,
                         ),
+                        icon: styles.icon,
                     }}
                 />
                 <NumberFormatBase
@@ -125,6 +126,7 @@ export const StepNumberInput = forwardRef<
                             styles.stepButton,
                             styles.stepUpButton,
                         ),
+                        icon: styles.icon,
                     }}
                 />
             </div>

@@ -12,6 +12,7 @@ import { ClaimsIcon } from "@/src/assets/claims";
 import { MenuIcon } from "@/src/assets/menu-icon";
 import { useRef, useState } from "react";
 import { useClickAway } from "react-use";
+import { ThemeSwitcher } from "../../theme-switcher";
 
 import styles from "./styles.module.css";
 
@@ -47,9 +48,7 @@ export function Nav() {
                     <div ref={menuPopoverRef}>
                         <div
                             ref={setMenuWrapper}
-                            className={classNames(styles.menuIconWrapper, {
-                                [styles.menuOpen]: mobileMenuOpen,
-                            })}
+                            className={classNames(styles.menuIconWrapper)}
                         >
                             <MenuIcon onClick={handleMobileMenuOnClick} />
                         </div>
@@ -75,7 +74,9 @@ export function Nav() {
                                                     className={styles.tabIcon}
                                                 />
                                             )}
-                                            <Typography>{t(label)}</Typography>
+                                            <Typography weight="medium">
+                                                {t(label)}
+                                            </Typography>
                                         </div>
                                     </Link>
                                 ))}
@@ -83,7 +84,8 @@ export function Nav() {
                         </Popover>
                     </div>
                 </div>
-                <div className={styles.chainStuffContainer}>
+                <div className={styles.rightContentContainer}>
+                    <ThemeSwitcher />
                     <ConnectButton />
                 </div>
                 <div className={styles.tabs}>
@@ -98,7 +100,9 @@ export function Nav() {
                                 })}
                             >
                                 {Icon && <Icon className={styles.tabIcon} />}
-                                <Typography>{t(label)}</Typography>
+                                <Typography weight="medium">
+                                    {t(label)}
+                                </Typography>
                             </div>
                         </Link>
                     ))}

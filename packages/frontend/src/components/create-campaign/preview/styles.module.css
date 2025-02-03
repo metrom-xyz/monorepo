@@ -5,7 +5,7 @@
         flex
         flex-col
         sm:min-w-[750px]
-        bg-gray-100
+        dark:bg-slate-950 bg-gray-100 dark:bg-slate-900
         overflow-hidden
         m-5
         rounded-3xl;

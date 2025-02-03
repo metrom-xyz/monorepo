@@ -6,5 +6,13 @@
 
 /* TODO: improve styles */
 .slider {
-    @apply w-full h-5 bg-white accent-black rounded-2xl cursor-pointer;
+    @apply w-full
+        h-5
+        bg-white dark:bg-slate-800
+        accent-black dark:accent-slate-200
+        rounded-2xl
+        cursor-pointer
+        transition-colors
+        duration-200
+        ease-in-out;
 }

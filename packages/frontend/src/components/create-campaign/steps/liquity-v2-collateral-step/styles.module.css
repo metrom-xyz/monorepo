@@ -28,3 +28,15 @@
 .collateralLogo:not(:first-child) {
     @apply -ml-2;
 }
+
+.previewDisabled {
+    @apply hover:cursor-default hover:bg-white dark:bg-slate-800;
+}
+
+.contentWrapper {
+    @apply flex flex-col gap-4 p-4;
+}
+
+.applyButton {
+    @apply w-full;
+}

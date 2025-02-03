@@ -15,14 +15,18 @@
 .fallback {
     @apply relative
         bg-gray-800
+        dark:bg-slate-900
         rounded-full
         flex
         justify-center
-        items-center;
+        items-center
+        transition-colors
+        duration-200
+        ease-in-out;
 }
 
 .fallbackText {
-    @apply select-none text-white;
+    @apply select-none text-white dark:text-slate-200 transition-colors duration-200 ease-in-out;
 }
 
 .xs {

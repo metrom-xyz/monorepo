@@ -10,6 +10,9 @@
         flex
         justify-center
         items-center
-        bg-black/65
-        backdrop-blur;
+        backdrop-blur
+        bg-black/65 dark:bg-slate-900/65
+        transition-colors
+        duration-200
+        ease-in-out;
 }

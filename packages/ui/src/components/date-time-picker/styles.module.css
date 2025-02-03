@@ -4,12 +4,14 @@
     @apply w-full
         flex
         justify-between
-        bg-white
-        rounded-md;
+        rounded-md
+        transition-colors
+        duration-200
+        ease-in-out;
 }
 
 .divider {
-    @apply w-[1px] ml-2 bg-gray-200;
+    @apply w-[1px] ml-2 bg-gray-200 dark:bg-slate-800;
 }
 
 .timeWrapper {
@@ -48,22 +50,22 @@
         justify-center
         items-center
         rounded-md
+        hover:bg-gray-200 hover:dark:bg-slate-700
         transition-colors
         duration-200
-        ease-in-out
-        hover:bg-gray-200;
+        ease-in-out;
 }
 
 .cellDisabled {
     @apply cursor-not-allowed
         hover:bg-transparent
-        text-gray-300;
+        text-gray-300 dark:text-slate-800;
 }
 
 .cellSelected {
-    @apply bg-gray-200 !text-black;
+    @apply bg-gray-100 dark:bg-slate-900 !text-gray-900 dark:!text-slate-200;
 }
 
 .cellSelectable {
-    @apply text-gray-400;
+    @apply text-gray-400 dark:text-slate-300;
 }

@@ -45,23 +45,30 @@ export default async function Layout({ children, params }: LayoutParams) {
     const messages = await getMessages();
 
     return (
-        <html lang={locale} className={styles.root}>
+        <html lang={locale} className="dark">
             <body>
-                <NextIntlClientProvider messages={messages}>
-                    <ClientProviders locale={locale as Locale}>
-                        <Fathom />
-                        <div className={classNames(styles.root, styles.layout)}>
-                            <Nav />
-                            <div className={styles.main}>{children}</div>
-                            <Footer />
-                        </div>
-                    </ClientProviders>
-                </NextIntlClientProvider>
+                <div className={styles.root}>
+                    <NextIntlClientProvider messages={messages}>
+                        <ClientProviders locale={locale as Locale}>
+                            <Fathom />
+                            <div
+                                className={classNames(
+                                    styles.root,
+                                    styles.layout,
+                                )}
+                            >
+                                <Nav />
+                                <div className={styles.main}>{children}</div>
+                                <Footer />
+                            </div>
+                        </ClientProviders>
+                    </NextIntlClientProvider>
+                </div>
             </body>
         </html>
     );
 }
 
-export function generateStaticParams() {
+export async function generateStaticParams() {
     return routing.locales.map((locale) => ({ locale }));
 }

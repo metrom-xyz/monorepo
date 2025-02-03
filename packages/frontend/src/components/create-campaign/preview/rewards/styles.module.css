@@ -11,7 +11,7 @@
         flex-col
         gap-4
         p-4
-        bg-white
+        bg-white dark:bg-slate-800
         rounded-2xl;
 }
 

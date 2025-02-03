@@ -20,8 +20,11 @@
         flex
         justify-center
         items-center
-        bg-white
-        rounded-2xl;
+        rounded-2xl
+        bg-white dark:bg-slate-800
+        transition-colors
+        duration-200
+        ease-in-out;
 }
 
 .errorText {
@@ -38,5 +41,12 @@
         text-xs
         leading-none
         font-medium
-        fill-black;
+        fill-black dark:fill-slate-200
+        transition-colors
+        duration-200
+        ease-in-out;
+}
+
+.referenceLine {
+    @apply stroke-0 stroke-black dark:stroke-slate-200 transition-colors duration-200 ease-in-out;
 }

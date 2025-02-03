@@ -6,7 +6,7 @@
         flex-col
         gap-7
         p-4
-        bg-white
+        bg-white dark:bg-slate-800
         rounded-2xl;
 }
 
@@ -46,9 +46,9 @@
     @apply w-fit
         h-6
         rounded-md
-        bg-gray-100
+        dark:bg-slate-950 bg-gray-100 dark:bg-slate-900
         px-2.5
-        hover:bg-gray-200
+        hover:bg-gray-200 hover:dark:bg-slate-200
         hover:cursor-pointer
         transition-colors
         duration-200

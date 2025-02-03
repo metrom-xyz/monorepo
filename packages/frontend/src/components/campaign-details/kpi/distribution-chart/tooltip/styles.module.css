@@ -6,9 +6,9 @@
         gap-2
         p-2
         rounded-lg
-        bg-white
         border
-        border-gray-200;
+        bg-white dark:bg-slate-800
+        border-gray-200 dark:border-slate-900;
 }
 
 .fieldWrapper {

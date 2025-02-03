@@ -24,7 +24,18 @@
 }
 
 .chart {
-    @apply w-full flex-[2] flex flex-col items-stretch bg-white rounded-2xl p-4;
+    @apply w-full
+        flex-[2]
+        flex 
+        flex-col
+        items-stretch
+        bg-white
+        dark:bg-slate-800
+        rounded-2xl
+        p-4
+        transition-colors
+        duration-200
+        ease-in-out;
 }
 
 .chartWrapper {
