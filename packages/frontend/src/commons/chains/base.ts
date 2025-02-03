@@ -7,6 +7,7 @@ import { type ChainData } from "..";
 import { base } from "viem/chains";
 // import { UniswapLogo } from "@/src/assets/logos/dexes/uniswap";
 import { ProtocolType } from "@/src/types";
+import { ThirdTradeLogo } from "@/src/assets/logos/dexes/thirdtrade";
 
 export const baseData: ChainData = {
     name: base.name,
@@ -37,6 +38,13 @@ export const baseData: ChainData = {
             //     addLiquidityUrl: `https://app.uniswap.org/explore/pools/${SupportedChain.Base}/{target_pool}`,
             //     supportsFetchAllPools: false,
             // },
+            {
+                slug: SupportedDex.ThirdTrade,
+                logo: ThirdTradeLogo,
+                name: "ThirdTrade",
+                addLiquidityUrl: `https://third.trade/pool/{target_pool}`,
+                supportsFetchAllPools: true,
+            },
         ],
         [ProtocolType.LiquityV2Brand]: [],
     },
