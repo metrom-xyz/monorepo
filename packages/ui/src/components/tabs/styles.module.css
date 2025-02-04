@@ -4,10 +4,7 @@
     @apply flex
         items-center
         rounded-md
-        bg-gray-100 dark:bg-slate-900
-        transition-colors
-        duration-200
-        ease-in-out;
+        bg-gray-100 dark:bg-slate-900;
 }
 
 .xs {

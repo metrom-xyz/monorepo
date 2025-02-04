@@ -4,10 +4,7 @@
     @apply w-full
         flex
         flex-col
-        gap-3
-        transition-colors
-        duration-200
-        ease-in-out;
+        gap-3;
 }
 
 .boxed {

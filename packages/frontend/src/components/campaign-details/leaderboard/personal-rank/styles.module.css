@@ -4,10 +4,7 @@
     @apply w-full
         flex
         flex-col
-        gap-7
-        p-4
-        bg-white dark:bg-slate-800
-        rounded-2xl;
+        gap-7;
 }
 
 .header {
@@ -46,9 +43,9 @@
     @apply w-fit
         h-6
         rounded-md
-        dark:bg-slate-950 bg-gray-100 dark:bg-slate-900
         px-2.5
-        hover:bg-gray-200 hover:dark:bg-slate-200
+        bg-gray-100 dark:bg-slate-900
+        hover:bg-gray-200 hover:dark:bg-slate-700
         hover:cursor-pointer
         transition-colors
         duration-200

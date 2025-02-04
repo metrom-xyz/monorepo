@@ -28,7 +28,7 @@
 }
 
 .legendDot.distributed {
-    @apply bg-[#6CFF95];
+    @apply bg-brand-green;
 }
 
 .breakdownWrapper {

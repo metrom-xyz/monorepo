@@ -19,7 +19,7 @@ const CAMPAIGN_TYPES = [
         title: "amm.title",
         description: "amm.description",
         className: styles.ammFormIcon,
-        icon: <AmmCampaignIcon />,
+        icon: <AmmCampaignIcon className={styles.ammIcon} />,
     },
     {
         enabled: LIQUITY_V2_CAMPAIGN,
@@ -27,7 +27,7 @@ const CAMPAIGN_TYPES = [
         title: "liquityV2.title",
         description: "liquityV2.description",
         className: styles.liquityV2FormIcon,
-        icon: <LiquityV2CampaignIcon />,
+        icon: <LiquityV2CampaignIcon className={styles.liquidityV2Icon} />,
     },
 ];
 

@@ -11,6 +11,10 @@
     @apply h-full min-h-80;
 }
 
+.reimbursedBar {
+    @apply fill-[#d1d5db] dark:fill-slate-900;
+}
+
 .timeTick {
     @apply font-sans
         uppercase

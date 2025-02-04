@@ -29,7 +29,14 @@
 }
 
 .leaderboardWrapper.noDistribution {
-    @apply bg-white dark:bg-slate-800 items-center justify-center gap-2;
+    @apply bg-white
+        dark:bg-slate-800
+        items-center
+        justify-center
+        gap-2
+        transition-colors
+        duration-200
+        ease-in-out;
 }
 
 .noDistribution {
@@ -73,5 +80,5 @@
 }
 
 .externalLinkIcon {
-    @apply h-4 w-4 transform -rotate-45;
+    @apply h-4 w-4 transform -rotate-45 text-black dark:text-slate-200;
 }

@@ -10,7 +10,7 @@
 }
 
 .disabled {
-    @apply hover:cursor-not-allowed hover:border-white;
+    @apply hover:cursor-not-allowed;
 }
 
 .disabled > * {

@@ -1,19 +1,25 @@
 import { Theme } from "@/src/types";
-import { useTheme } from "../theme-provider";
 import { Popover } from "@metrom-xyz/ui";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useClickAway } from "react-use";
 import { MoonIcon } from "@/src/assets/moon-icon";
 import { SunIcon } from "@/src/assets/sun-icon";
 import classNames from "classnames";
+import { useTheme } from "next-themes";
 
 import styles from "./styles.module.css";
 
 export function ThemeSwitcher() {
+    const [mounted, setMounted] = useState(false);
     const { theme, setTheme } = useTheme();
+
     const [popoverOpen, setPopoverOpen] = useState(false);
     const [wrapper, setWrapper] = useState<HTMLDivElement | null>(null);
     const popoverRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        setMounted(true);
+    }, []);
 
     useClickAway(popoverRef, () => {
         setPopoverOpen(false);
@@ -25,9 +31,20 @@ export function ThemeSwitcher() {
 
     function getThemeChangeHandler(value: Theme) {
         return () => {
+            const html = document.documentElement;
+            html.classList.add("no-transition");
+
             setTheme(value);
+
+            requestAnimationFrame(() => {
+                setTimeout(() => {
+                    html.classList.remove("no-transition");
+                }, 1);
+            });
         };
     }
+
+    if (!mounted) return null;
 
     return (
         <div ref={popoverRef} className={styles.root}>

@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { useTranslations } from "next-intl";
 import type { Leaderboard, Rank } from "@/src/hooks/useLeaderboard";
-import { Typography } from "@metrom-xyz/ui";
+import { Card, Typography } from "@metrom-xyz/ui";
 import { Cell, Pie, PieChart, Tooltip } from "recharts";
 import type { Address } from "viem";
 import { formatPercentage } from "@/src/utils/format";
@@ -101,7 +101,7 @@ export function RepartitionChart({
     }, [chartData, connectedAccountRank]);
 
     return (
-        <div className={styles.root}>
+        <Card className={styles.root}>
             <Typography uppercase weight="medium" light size="sm">
                 {t("repartition")}
             </Typography>
@@ -141,7 +141,7 @@ export function RepartitionChart({
                     )}
                 </div>
             </div>
-        </div>
+        </Card>
     );
 }
 

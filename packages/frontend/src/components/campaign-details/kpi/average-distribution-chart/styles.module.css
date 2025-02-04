@@ -38,9 +38,19 @@
     @apply cursor-pointer
         outline-none
         hover:opacity-85
-        transition-opacity
+        stroke-white
+        dark:stroke-slate-900
+        transition-all
         duration-200
         ease-in-out;
+}
+
+.cell.distributed {
+    @apply fill-brand-green;
+}
+
+.cell.reimbursed {
+    @apply fill-[#d1d5db] dark:fill-slate-800;
 }
 
 .chartWrapperLoading {

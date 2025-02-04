@@ -4,8 +4,5 @@
     @apply w-full
         p-4
         bg-white dark:bg-slate-800
-        rounded-2xl
-        transition-colors
-        duration-200
-        ease-in-out;
+        rounded-2xl;
 }

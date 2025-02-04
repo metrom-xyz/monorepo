@@ -1,5 +1,5 @@
 import { useAccount } from "wagmi";
-import { Typography } from "@metrom-xyz/ui";
+import { Card, Typography } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
 import { SupportedChain } from "@metrom-xyz/contracts";
 import { shortenAddress } from "@/src/utils/address";
@@ -35,7 +35,7 @@ export function PersonalRank({
     const { openConnectModal } = useConnectModal();
 
     return (
-        <div className={styles.root}>
+        <Card className={styles.root}>
             <div className={styles.header}>
                 <Typography uppercase weight="medium" light size="sm">
                     {t("yourRank")}
@@ -92,6 +92,6 @@ export function PersonalRank({
                     </div>
                 )}
             </div>
-        </div>
+        </Card>
     );
 }

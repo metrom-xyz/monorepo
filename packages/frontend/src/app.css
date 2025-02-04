@@ -1,3 +1,12 @@
 @import "tailwindcss";
 @import "@metrom-xyz/ui/style.css";
 @import "@metrom-xyz/ui/theme.css";
+
+/* Used to temporarily disable the css transition when switching theme,
+to ensure consistency. */
+html.no-transition *,
+html.no-transition *::before,
+html.no-transition *::after {
+    transition: none !important;
+    animation: none !important;
+}

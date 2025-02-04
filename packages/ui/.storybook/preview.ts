@@ -17,12 +17,12 @@ const preview: Preview = {
         },
         backgrounds: {
             values: [
-                { name: "Dark", value: "#000000" },
+                { name: "Dark", value: "#1e2939" },
                 { name: "Light", value: "#FFFFFF" },
                 { name: "Gray", value: "#F3F4F6" },
             ],
             options: [
-                { name: "Dark", value: "#000000" },
+                { name: "Dark", value: "#1e2939" },
                 { name: "Light", value: "#FFFFFF" },
                 { name: "Gray", value: "#F3F4F6" },
             ],

@@ -122,8 +122,8 @@ export function DistributionChart({
                     <Bar
                         dataKey="reimbursed"
                         stackId="distribution"
-                        fill="#D1D5DB"
                         maxBarSize={50}
+                        className={styles.reimbursedBar}
                     />
 
                     <Tooltip
