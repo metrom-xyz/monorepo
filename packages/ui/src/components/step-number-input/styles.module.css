@@ -19,10 +19,7 @@ input[type="number"] {
     @apply w-8
         h-8
         rounded-md
-        bg-white dark:bg-slate-800
-        transition-colors
-        duration-200
-        ease-in-out;
+        bg-white dark:bg-slate-800;
 }
 
 .icon {

@@ -23,14 +23,15 @@
 
 .rowAnimated {
     @apply cursor-pointer
-        hover:dark:bg-slate-950 bg-gray-100 dark:bg-slate-900
+        bg-gray-100 dark:bg-slate-900
+        hover:bg-gray-200 dark:hover:bg-slate-700
         transition-colors
         ease-in-out
         duration-200;
 }
 
 .rowActive {
-    @apply bg-gray-200 hover:bg-gray-200 hover:dark:bg-slate-200;
+    @apply bg-gray-200 dark:bg-slate-700 hover:bg-gray-200 hover:dark:bg-slate-700;
 }
 
 .chainIcon {

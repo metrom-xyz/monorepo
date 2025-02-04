@@ -23,7 +23,16 @@
 }
 
 .label {
-    @apply flex items-center w-full min-h-6 text-base text-black transition;
+    @apply flex
+        items-center
+        w-full
+        min-h-6
+        text-base
+        text-black
+        dark:text-slate-200
+        transition
+        duration-200
+        ease-in-out;
 }
 
 .label.completed {

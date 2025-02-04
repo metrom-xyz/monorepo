@@ -22,10 +22,8 @@ import {
 import classNames from "classnames";
 import { formatUsdAmount } from "@/src/utils/format";
 import { useMeasure } from "react-use";
-import { useTheme } from "../theme-provider";
 
 import styles from "./styles.module.css";
-import { Theme } from "@/src/types";
 
 export interface DistributedAreaDataPoint {
     usdTvl: number;
@@ -64,7 +62,7 @@ export function KpiSimulationChart({
     className,
 }: KpiSimulationChartProps) {
     const t = useTranslations("simulationChart");
-    const { theme } = useTheme();
+    // const { theme } = useTheme();
     const [chartRef, { width }] = useMeasure<HTMLDivElement>();
 
     const currentPayoutUsd =
@@ -340,13 +338,13 @@ export function KpiSimulationChart({
                 <Area
                     type="monotone"
                     dataKey="currentlyNotDistributing"
-                    fill={theme === Theme.Light ? "#d1d5db" : "#0f172b"}
                     stroke="none"
                     fillOpacity={1}
                     animationEasing="ease-in-out"
                     animationDuration={200}
                     isAnimationActive={true}
                     activeDot={false}
+                    className={styles.notDistributingArea}
                 />
 
                 <XAxis
@@ -367,6 +365,7 @@ export function KpiSimulationChart({
                         sortedSignificantUsdTvls[0],
                         sortedSignificantUsdTvls[4],
                     ]}
+                    className={styles.xAxis}
                 />
                 <YAxis
                     type="number"
@@ -411,7 +410,6 @@ export function KpiSimulationChart({
                     strokeDasharray={"3 3"}
                     ifOverflow="visible"
                     isFront
-                    stroke="#000"
                     segment={[
                         {
                             x: lowerUsdTarget,

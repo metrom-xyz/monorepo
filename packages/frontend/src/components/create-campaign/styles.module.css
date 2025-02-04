@@ -34,3 +34,11 @@
         rounded-3xl
         bg-gray-100 dark:bg-slate-900;
 }
+
+.ammIcon {
+    @apply text-black dark:text-slate-200;
+}
+
+.liquidityV2Icon {
+    @apply dark:stroke-slate-900;
+}

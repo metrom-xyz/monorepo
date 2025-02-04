@@ -6,10 +6,7 @@
         flex
         items-center
         justify-between
-        gap-4
-        transition-colors
-        duration-200
-        ease-in-out;
+        gap-4;
 }
 
 .toast {

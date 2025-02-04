@@ -40,9 +40,6 @@
         outline-none
         border
         border-transparent
-        transition-colors
-        duration-200
-        ease-out
         placeholder:text-gray-400
         placeholder:select-none
         bg-gray-100 dark:bg-slate-900

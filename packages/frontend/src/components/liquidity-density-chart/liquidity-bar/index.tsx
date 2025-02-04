@@ -1,5 +1,6 @@
 import { closestTick } from "@/src/utils/liquidity-density";
 import type { ScaledLiquidityTick } from "..";
+import classNames from "classnames";
 
 import styles from "./styles.module.css";
 
@@ -96,11 +97,14 @@ export function LiquidityBar({
             <rect
                 x={x}
                 y={y}
-                fill={fill}
                 fillOpacity={opacity}
                 width={width}
                 height={height}
                 rx={4}
+                className={classNames(styles.bar, {
+                    [styles.activeTick]: idx === activeTickIdx,
+                    [styles.inRange]: inRange,
+                })}
             />
             {percentage && (
                 <text

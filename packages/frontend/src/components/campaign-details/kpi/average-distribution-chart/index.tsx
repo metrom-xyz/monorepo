@@ -3,6 +3,7 @@ import { useTranslations } from "next-intl";
 import { Card, Typography } from "@metrom-xyz/ui";
 import { Cell, Pie, PieChart, Tooltip } from "recharts";
 import { formatPercentage } from "@/src/utils/format";
+import classNames from "classnames";
 
 import styles from "./styles.module.css";
 
@@ -40,7 +41,7 @@ export function AverageDistributionChart({
             data.push({
                 type: "distributed",
                 value: distributedPercentage,
-                color: "#6CFF95",
+                // color: "#6CFF95",
             });
         }
 
@@ -48,7 +49,7 @@ export function AverageDistributionChart({
             data.push({
                 type: "reimbursed",
                 value: reimbursedPercentage,
-                color: "#d1d5db",
+                // color: "#d1d5db",
             });
         }
 
@@ -76,9 +77,11 @@ export function AverageDistributionChart({
                         {chartData.map((entry, index) => (
                             <Cell
                                 key={`cell-${index}`}
-                                fill={entry.color}
+                                // fill={entry.color}
                                 strokeWidth={4}
-                                className={styles.cell}
+                                className={classNames(styles.cell, {
+                                    [styles[entry.type]]: true,
+                                })}
                             />
                         ))}
                     </Pie>

@@ -19,14 +19,11 @@
         rounded-full
         flex
         justify-center
-        items-center
-        transition-colors
-        duration-200
-        ease-in-out;
+        items-center;
 }
 
 .fallbackText {
-    @apply select-none text-white dark:text-slate-200 transition-colors duration-200 ease-in-out;
+    @apply select-none text-white dark:text-slate-200;
 }
 
 .xs {

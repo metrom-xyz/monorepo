@@ -4,10 +4,7 @@
     @apply text-black
         dark:text-slate-200
         font-normal
-        font-sans
-        transition-colors
-        duration-200
-        ease-in-out;
+        font-sans;
 }
 
 .noWrap {

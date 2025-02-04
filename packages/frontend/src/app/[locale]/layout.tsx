@@ -16,6 +16,7 @@ import { notFound } from "next/navigation";
 import classNames from "classnames";
 import { Nav } from "@/src/components/layout/nav";
 import { Footer } from "@/src/components/layout/footer";
+import { ThemeProvider } from "next-themes";
 
 import styles from "./styles.module.css";
 
@@ -45,25 +46,29 @@ export default async function Layout({ children, params }: LayoutParams) {
     const messages = await getMessages();
 
     return (
-        <html lang={locale} className="dark">
+        <html lang={locale} suppressHydrationWarning>
             <body>
-                <div className={styles.root}>
-                    <NextIntlClientProvider messages={messages}>
-                        <ClientProviders locale={locale as Locale}>
-                            <Fathom />
-                            <div
-                                className={classNames(
-                                    styles.root,
-                                    styles.layout,
-                                )}
-                            >
-                                <Nav />
-                                <div className={styles.main}>{children}</div>
-                                <Footer />
-                            </div>
-                        </ClientProviders>
-                    </NextIntlClientProvider>
-                </div>
+                <ThemeProvider attribute="data-theme">
+                    <div className={styles.root}>
+                        <NextIntlClientProvider messages={messages}>
+                            <ClientProviders locale={locale as Locale}>
+                                <Fathom />
+                                <div
+                                    className={classNames(
+                                        styles.root,
+                                        styles.layout,
+                                    )}
+                                >
+                                    <Nav />
+                                    <div className={styles.main}>
+                                        {children}
+                                    </div>
+                                    <Footer />
+                                </div>
+                            </ClientProviders>
+                        </NextIntlClientProvider>
+                    </div>
+                </ThemeProvider>
             </body>
         </html>
     );

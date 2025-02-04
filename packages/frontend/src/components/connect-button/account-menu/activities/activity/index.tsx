@@ -16,6 +16,7 @@ import { useProtocolsInChain } from "@/src/hooks/useProtocolsInChain";
 import { ProtocolType } from "@/src/types";
 
 import styles from "./styles.module.css";
+import classNames from "classnames";
 
 interface ActivityProps extends Activity {
     chainId: number;
@@ -169,9 +170,9 @@ export function SkeletonActivity() {
     return (
         <div className={styles.root}>
             <div className={styles.leftWrapper}>
-                <div className={styles.iconWrapper}>
-                    <Skeleton className={styles.skeleton} />
-                </div>
+                <div
+                    className={classNames(styles.iconWrapper, styles.loading)}
+                />
                 <div className={styles.leftBodyWrapper}>
                     <Skeleton
                         width={60}

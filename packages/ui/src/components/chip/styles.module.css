@@ -3,7 +3,7 @@
 .root {
     @apply flex
         justify-center
-        dark:bg-slate-950 bg-gray-100
+        dark:bg-slate-900 bg-gray-100
         rounded-[2.813rem]
         select-none
         transition-colors
@@ -20,9 +20,9 @@
 }
 
 .rootClickable {
-    @apply cursor-pointer hover:bg-gray-200 hover:dark:bg-slate-200;
+    @apply cursor-pointer hover:bg-gray-200 hover:dark:bg-gray-700;
 }
 
 .rootActive {
-    @apply bg-gray-200;
+    @apply bg-gray-200 dark:bg-gray-700;
 }

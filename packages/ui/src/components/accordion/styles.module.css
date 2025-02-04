@@ -3,10 +3,7 @@
 .root {
     @apply w-full
         rounded-2xl
-        bg-white dark:bg-slate-800
-        transition-all
-        duration-200
-        ease-in-out;
+        bg-white dark:bg-slate-800;
 }
 
 .preview {

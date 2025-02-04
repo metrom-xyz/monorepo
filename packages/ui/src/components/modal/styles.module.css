@@ -11,8 +11,5 @@
         justify-center
         items-center
         backdrop-blur
-        bg-black/65 dark:bg-slate-900/65
-        transition-colors
-        duration-200
-        ease-in-out;
+        bg-black/65 dark:bg-slate-900/65;
 }

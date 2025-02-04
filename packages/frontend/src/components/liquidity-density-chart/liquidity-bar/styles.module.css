@@ -6,5 +6,17 @@
         text-xs
         leading-none
         font-medium
-        fill-black;
+        fill-black dark:fill-slate-200;
+}
+
+.bar {
+    @apply fill-gray-200 dark:fill-slate-900;
+}
+
+.bar.activeTick {
+    @apply fill-brand-green;
+}
+
+.bar.inRange {
+    @apply fill-[#6CFF9566] dark:fill-brand-green/65;
 }
