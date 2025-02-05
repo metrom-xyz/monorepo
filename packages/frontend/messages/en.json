@@ -232,7 +232,7 @@
                     "list": {
                         "takeLoan": "Take loan",
                         "depositCollateral": "Deposit collateral",
-                        "depositToStabilityPool": "Deposit to SP"
+                        "depositToStabilityPool": "Deposit to stability pool"
                     }
                 },
                 "collaterals": {
@@ -362,7 +362,7 @@
             "liquityV2": {
                 "liquity-v2-debt": "Take loan",
                 "liquity-v2-collateral": "Deposit collateral",
-                "liquity-v2-stability-pool": "Deposit to SP"
+                "liquity-v2-stability-pool": "Deposit to stability pool"
             }
         },
         "details": {
@@ -550,9 +550,8 @@
     "apr": "APR",
     "campaignActions": {
         "lp": "LP on {pool}",
-        "takeLoan": "Take loan on {brand}",
-        "depositCollateral": "Deposit collateral on {brand}",
-        "depositStabilityPool": "Deposit to stability pool on {brand}"
+        "takeLoan": "Take loan on {brand} with {token}",
+        "depositStabilityPool": "Deposit to {token} stability pool on {brand}"
     },
     "liquidityDensityChart": {
         "tooltip": {

@@ -27,8 +27,6 @@ export const sepoliaData: ChainData = {
             actionUrls: {
                 [TargetType.LiquityV2Debt]:
                     "https://liquity2-sepolia.vercel.app/borrow",
-                [TargetType.LiquityV2Collateral]:
-                    "https://liquity2-sepolia.vercel.app/leverage",
                 [TargetType.LiquityV2StabilityPool]:
                     "https://liquity2-sepolia.vercel.app/earn",
             },
@@ -48,8 +46,6 @@ export const sepoliaData: ChainData = {
                 // TODO: fix
                 [TargetType.LiquityV2Debt]:
                     "https://liquity2-sepolia.vercel.app/borrow",
-                [TargetType.LiquityV2Collateral]:
-                    "https://liquity2-sepolia.vercel.app/leverage",
                 [TargetType.LiquityV2StabilityPool]:
                     "https://liquity2-sepolia.vercel.app/earn",
             },

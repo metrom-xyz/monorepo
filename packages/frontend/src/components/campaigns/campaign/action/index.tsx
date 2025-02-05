@@ -15,7 +15,6 @@ interface ActionProps {
 export function Action({ campaign }: ActionProps) {
     const liquityV2Action =
         campaign.isTargeting(TargetType.LiquityV2Debt) ||
-        campaign.isTargeting(TargetType.LiquityV2Collateral) ||
         campaign.isTargeting(TargetType.LiquityV2StabilityPool);
 
     return (

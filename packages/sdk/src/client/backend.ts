@@ -4,9 +4,6 @@ import { SupportedAmm, SupportedDex, SupportedLiquityV2 } from "../commons";
 import type {
     BackendCampaignResponse,
     BackendCampaignsResponse,
-    BackendLiquityV2CollateralTarget,
-    BackendLiquityV2DebtTarget,
-    BackendLiquityV2StabilityPoolTarget,
 } from "./types/campaigns";
 import type {
     BackendAmmPool,
@@ -16,9 +13,6 @@ import type {
 import {
     type AmmPoolLiquidityTarget,
     Campaign,
-    type LiquityV2CollateralTarget,
-    type LiquityV2CollateralWithDebt,
-    type LiquityV2CollateralWithStabilityPoolDeposit,
     type LiquityV2DebtTarget,
     type LiquityV2StabilityPoolTarget,
     type PointDistributables,
@@ -31,7 +25,6 @@ import type {
     Erc20Token,
     OnChainAmount,
     UsdPricedErc20Token,
-    UsdPricedErc20TokenAmount,
     UsdPricedOnChainAmount,
 } from "../types/commons";
 import type { BackendPoolResponse, BackendPoolsResponse } from "./types/pools";
@@ -786,24 +779,41 @@ function processCampaignsResponse(
                 break;
             }
             case "liquity-v2-debt": {
-                target = resolveLiquityV2DebtTarget(
-                    response.resolvedTokens,
-                    backendCampaign.target,
-                );
-                break;
-            }
-            case "liquity-v2-collateral": {
-                target = resolveLiquityV2CollateralTarget(
-                    response.resolvedPricedTokens,
-                    backendCampaign.target,
-                );
+                target = <LiquityV2DebtTarget>{
+                    type: TargetType.LiquityV2Debt,
+                    brand: {
+                        slug: backendCampaign.target
+                            .brand as SupportedLiquityV2,
+                        name: LIQUITY_V2_BRAND_NAME[
+                            backendCampaign.target.brand as SupportedLiquityV2
+                        ],
+                    },
+                    chainId: backendCampaign.target.chainId,
+                    collateral: resolveTokenInChain(
+                        response.resolvedPricedTokens,
+                        backendCampaign.target.chainId,
+                        backendCampaign.target.collateral as Address,
+                    ),
+                };
                 break;
             }
             case "liquity-v2-stability-pool": {
-                target = resolveLiquityV2StabilityPoolTarget(
-                    response.resolvedTokens,
-                    backendCampaign.target,
-                );
+                target = <LiquityV2StabilityPoolTarget>{
+                    type: TargetType.LiquityV2StabilityPool,
+                    brand: {
+                        slug: backendCampaign.target
+                            .brand as SupportedLiquityV2,
+                        name: LIQUITY_V2_BRAND_NAME[
+                            backendCampaign.target.brand as SupportedLiquityV2
+                        ],
+                    },
+                    chainId: backendCampaign.target.chainId,
+                    collateral: resolveTokenInChain(
+                        response.resolvedPricedTokens,
+                        backendCampaign.target.chainId,
+                        backendCampaign.target.collateral as Address,
+                    ),
+                };
                 break;
             }
         }
@@ -904,108 +914,6 @@ function resolveAmmPool(
             resolveTokenInChain(tokensRegistry, chainId, address),
         ),
     };
-}
-
-function resolveLiquityV2DebtTarget(
-    tokensRegistry: Record<number, Record<string, BackendErc20Token>>,
-    target: BackendLiquityV2DebtTarget,
-): LiquityV2DebtTarget {
-    const resolved = <LiquityV2DebtTarget>{
-        type: TargetType.LiquityV2Debt,
-        brand: {
-            slug: target.brand as SupportedLiquityV2,
-            name: LIQUITY_V2_BRAND_NAME[target.brand as SupportedLiquityV2],
-        },
-        chainId: target.chainId,
-        debts: [],
-        totalUsdDebt: 0,
-    };
-
-    for (const [collateralAddress, usdDebt] of Object.entries(target.debts)) {
-        resolved.debts.push(<LiquityV2CollateralWithDebt>{
-            ...resolveTokenInChain(
-                tokensRegistry,
-                target.chainId,
-                collateralAddress as Address,
-            ),
-            usdDebt,
-        });
-        resolved.totalUsdDebt += usdDebt;
-    }
-
-    return resolved;
-}
-
-function resolveLiquityV2CollateralTarget(
-    pricedTokensRegistry: Record<
-        number,
-        Record<string, BackendUsdPricedErc20Token>
-    >,
-    target: BackendLiquityV2CollateralTarget,
-): LiquityV2CollateralTarget {
-    const resolved = <LiquityV2CollateralTarget>{
-        type: TargetType.LiquityV2Collateral,
-        brand: {
-            slug: target.brand as SupportedLiquityV2,
-            name: LIQUITY_V2_BRAND_NAME[target.brand as SupportedLiquityV2],
-        },
-        chainId: target.chainId,
-        collaterals: [],
-    };
-
-    for (const [collateralAddress, tvl] of Object.entries(target.collaterals)) {
-        const resolvedCollateralToken = resolvePricedTokenInChain(
-            pricedTokensRegistry,
-            target.chainId,
-            collateralAddress as Address,
-        );
-
-        resolved.collaterals.push(<UsdPricedErc20TokenAmount>{
-            token: resolvedCollateralToken,
-            amount: stringToOnChainAmount(
-                tvl,
-                resolvedCollateralToken.decimals,
-            ),
-        });
-    }
-
-    return resolved;
-}
-
-function resolveLiquityV2StabilityPoolTarget(
-    tokensRegistry: Record<number, Record<string, BackendErc20Token>>,
-    target: BackendLiquityV2StabilityPoolTarget,
-): LiquityV2StabilityPoolTarget {
-    const resolved = <LiquityV2StabilityPoolTarget>{
-        type: TargetType.LiquityV2StabilityPool,
-        brand: {
-            slug: target.brand as SupportedLiquityV2,
-            name: LIQUITY_V2_BRAND_NAME[target.brand as SupportedLiquityV2],
-        },
-        chainId: target.chainId,
-        stabilityPools: [],
-        totalUsdDeposits: 0,
-    };
-
-    for (const [collateralAddress, deposit] of Object.entries(
-        target.stabilityPools,
-    )) {
-        const resolvedCollateralToken = resolveTokenInChain(
-            tokensRegistry,
-            target.chainId,
-            collateralAddress as Address,
-        );
-
-        resolved.stabilityPools.push(<
-            LiquityV2CollateralWithStabilityPoolDeposit
-        >{
-            ...resolvedCollateralToken,
-            usdDeposit: deposit,
-        });
-        resolved.totalUsdDeposits += deposit;
-    }
-
-    return resolved;
 }
 
 function resolveTokenInChain(

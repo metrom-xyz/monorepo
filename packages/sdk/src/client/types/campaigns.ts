@@ -12,26 +12,18 @@ export interface BackendAmmPoolLiquidityTarget {
     poolAddress: Address;
 }
 
-export interface BackendLiquityV2DebtTarget {
-    type: "liquity-v2-debt";
+export interface BaseBackendLiquityTarget<T> {
+    type: T;
     chainId: number;
     brand: string;
-    debts: Record<Address, number>;
+    collateral: Address;
 }
 
-export interface BackendLiquityV2CollateralTarget {
-    type: "liquity-v2-collateral";
-    chainId: number;
-    brand: string;
-    collaterals: Record<Address, string>;
-}
+export type BackendLiquityV2DebtTarget =
+    BaseBackendLiquityTarget<"liquity-v2-debt">;
 
-export interface BackendLiquityV2StabilityPoolTarget {
-    type: "liquity-v2-stability-pool";
-    chainId: number;
-    brand: string;
-    stabilityPools: Record<Address, number>;
-}
+export type BackendLiquityV2StabilityPoolTarget =
+    BaseBackendLiquityTarget<"liquity-v2-stability-pool">;
 
 export interface BackendTokenDistributable {
     token: Address;
@@ -59,16 +51,10 @@ export interface BackendCampaign {
     target:
         | BackendAmmPoolLiquidityTarget
         | BackendLiquityV2DebtTarget
-        | BackendLiquityV2CollateralTarget
         | BackendLiquityV2StabilityPoolTarget;
     specification?: Specification;
     distributables: BackendTokenDistributables | BackendPointDistributables;
     apr?: number;
-}
-
-export interface BackendLiquityV2DebtBrand {
-    brand: string;
-    usdDebt: number;
 }
 
 export interface BackendCampaignsResponse {

@@ -5,7 +5,6 @@ import type {
     Erc20Token,
     OnChainAmount,
     UsdPricedErc20Token,
-    UsdPricedErc20TokenAmount,
     UsdPricedOnChainAmount,
 } from "./commons";
 import type { SupportedLiquityV2 } from "src/commons";
@@ -13,13 +12,11 @@ import type { SupportedLiquityV2 } from "src/commons";
 export enum TargetType {
     AmmPoolLiquidity = "amm-pool-liquidity",
     LiquityV2Debt = "liquity-v2-debt",
-    LiquityV2Collateral = "liquity-v2-collateral",
     LiquityV2StabilityPool = "liquity-v2-stability-pool",
 }
 
 export type LiquityV2TargetType =
     | TargetType.LiquityV2Debt
-    | TargetType.LiquityV2Collateral
     | TargetType.LiquityV2StabilityPool;
 
 export interface AmmPoolLiquidityTarget {
@@ -28,42 +25,26 @@ export interface AmmPoolLiquidityTarget {
     pool: AmmPool;
 }
 
-export interface LiquityV2CollateralWithDebt extends Erc20Token {
-    usdDebt: number;
-}
-
 export interface LiquityV2CollateralWithStabilityPoolDeposit
     extends Erc20Token {
     usdDeposit: number;
 }
 
-export interface LiquityV2DebtTarget {
-    type: TargetType.LiquityV2Debt;
+export interface LiquityV2Target<T> {
+    type: T;
     chainId: number;
     brand: Brand<SupportedLiquityV2>;
-    debts: LiquityV2CollateralWithDebt[];
-    totalUsdDebt: number;
+    collateral: Erc20Token;
 }
 
-export interface LiquityV2CollateralTarget {
-    type: TargetType.LiquityV2Collateral;
-    chainId: number;
-    brand: Brand<SupportedLiquityV2>;
-    collaterals: UsdPricedErc20TokenAmount[];
-}
+export type LiquityV2DebtTarget = LiquityV2Target<TargetType.LiquityV2Debt>;
 
-export interface LiquityV2StabilityPoolTarget {
-    type: TargetType.LiquityV2StabilityPool;
-    chainId: number;
-    brand: Brand<SupportedLiquityV2>;
-    stabilityPools: LiquityV2CollateralWithStabilityPoolDeposit[];
-    totalUsdDeposits: number;
-}
+export type LiquityV2StabilityPoolTarget =
+    LiquityV2Target<TargetType.LiquityV2StabilityPool>;
 
 export type CampaignTarget =
     | AmmPoolLiquidityTarget
     | LiquityV2DebtTarget
-    | LiquityV2CollateralTarget
     | LiquityV2StabilityPoolTarget;
 
 export interface TokenDistributable {
@@ -174,9 +155,7 @@ export interface TargetedCampaign<T extends TargetType> extends Campaign {
         ? AmmPoolLiquidityTarget
         : T extends TargetType.LiquityV2Debt
           ? LiquityV2DebtTarget
-          : T extends TargetType.LiquityV2Collateral
-            ? LiquityV2CollateralTarget
-            : T extends TargetType.LiquityV2StabilityPool
-              ? LiquityV2StabilityPoolTarget
-              : never;
+          : T extends TargetType.LiquityV2StabilityPool
+            ? LiquityV2StabilityPoolTarget
+            : never;
 }
