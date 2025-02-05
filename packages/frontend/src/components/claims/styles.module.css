@@ -9,7 +9,7 @@
 }
 
 .fullSideCardWrapper {
-    @apply bg-white dark:bg-zinc-800
+    @apply theme-foreground
         rounded-xl
         w-full
         h-[55vh]
