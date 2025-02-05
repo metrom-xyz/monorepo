@@ -80,16 +80,13 @@ export function getCampaignName(
         case TargetType.LiquityV2Debt: {
             return t("campaignActions.takeLoan", {
                 brand: campaign.target.brand.name,
-            });
-        }
-        case TargetType.LiquityV2Collateral: {
-            return t("campaignActions.depositCollateral", {
-                brand: campaign.target.brand.name,
+                token: campaign.target.collateral.symbol,
             });
         }
         case TargetType.LiquityV2StabilityPool: {
             return t("campaignActions.depositStabilityPool", {
                 brand: campaign.target.brand.name,
+                token: campaign.target.collateral.symbol,
             });
         }
     }
@@ -147,13 +144,6 @@ export function getCampaignPreviewApr(
             case LiquityV2Action.Debt: {
                 liquityUsdValue = filteredCollaterals.reduce(
                     (usd, collateral) => usd + collateral.usdMintedDebt,
-                    0,
-                );
-                break;
-            }
-            case LiquityV2Action.Collateral: {
-                liquityUsdValue = filteredCollaterals.reduce(
-                    (usd, collateral) => usd + collateral.usdTvlUsd,
                     0,
                 );
                 break;

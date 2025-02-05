@@ -9,7 +9,6 @@ import {
     type LiquityV2CampaignPayload,
     type LiquityV2CampaignPayloadPart,
 } from "@/src/types";
-import { DepositCollateralIcon } from "@/src/assets/deposit-collateral-icon";
 import { Typography } from "@metrom-xyz/ui";
 import classNames from "classnames";
 import { TakeLoanIcon } from "@/src/assets/take-loan-icon";
@@ -22,11 +21,6 @@ export const LIQUITY_V2_SUPPORTED_ACTIONS = [
         title: "list.takeLoan",
         logo: <TakeLoanIcon />,
         value: LiquityV2Action.Debt,
-    },
-    {
-        title: "list.depositCollateral",
-        logo: <DepositCollateralIcon />,
-        value: LiquityV2Action.Collateral,
     },
     {
         title: "list.depositToStabilityPool",

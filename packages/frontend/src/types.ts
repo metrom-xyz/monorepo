@@ -13,7 +13,6 @@ import {
     type UsdPricedOnChainAmount,
     type WhitelistedErc20Token,
     type LiquityV2Collateral,
-    type LiquityV2CollateralTarget,
     type Erc20Token,
     type LiquityV2StabilityPoolTarget,
 } from "@metrom-xyz/sdk";
@@ -47,9 +46,7 @@ export interface LiquityV2Protocol extends ProtocolBase<SupportedLiquityV2> {
     type: ProtocolType.LiquityV2;
     debtToken: Erc20Token;
     actionUrls: Record<
-        | TargetType.LiquityV2Debt
-        | TargetType.LiquityV2Collateral
-        | TargetType.LiquityV2StabilityPool,
+        TargetType.LiquityV2Debt | TargetType.LiquityV2StabilityPool,
         string
     >;
 }
@@ -90,13 +87,11 @@ export interface AugmentedPriceRangeSpecification {
 export enum CampaignKind {
     AmmPoolLiquidity = 1,
     LiquityV2Debt = 2,
-    LiquityV2Collateral = 3,
-    LiquityV2StabilityPool = 4,
+    LiquityV2StabilityPool = 3,
 }
 
 export enum LiquityV2Action {
     Debt = "debt",
-    Collateral = "collateral",
     StabilityPool = "stabilty-pool",
 }
 
@@ -189,10 +184,6 @@ export class LiquityV2CampaignPreviewPayload extends BaseCampaignPreviewPayload 
                 this.kind = CampaignKind.LiquityV2StabilityPool;
                 break;
             }
-            case LiquityV2Action.Collateral: {
-                this.kind = CampaignKind.LiquityV2Collateral;
-                break;
-            }
             case LiquityV2Action.Debt: {
                 this.kind = CampaignKind.LiquityV2Debt;
                 break;
@@ -221,11 +212,9 @@ export interface TargetedCampaignPreviewPayload<T extends TargetType>
         ? AmmPoolLiquidityTarget
         : T extends TargetType.LiquityV2Debt
           ? LiquityV2DebtTarget
-          : T extends TargetType.LiquityV2Collateral
-            ? LiquityV2CollateralTarget
-            : T extends TargetType.LiquityV2StabilityPool
-              ? LiquityV2StabilityPoolTarget
-              : never;
+          : T extends TargetType.LiquityV2StabilityPool
+            ? LiquityV2StabilityPoolTarget
+            : never;
 }
 
 export interface CampaignPayloadErrors {
@@ -293,9 +282,7 @@ export interface TargetedNamedCampaign<T extends TargetType>
         ? AmmPoolLiquidityTarget
         : T extends TargetType.LiquityV2Debt
           ? LiquityV2DebtTarget
-          : T extends TargetType.LiquityV2Collateral
-            ? LiquityV2CollateralTarget
-            : T extends TargetType.LiquityV2StabilityPool
-              ? LiquityV2StabilityPoolTarget
-              : never;
+          : T extends TargetType.LiquityV2StabilityPool
+            ? LiquityV2StabilityPoolTarget
+            : never;
 }

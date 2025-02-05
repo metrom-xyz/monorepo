@@ -23,7 +23,6 @@ export function Protocol({ campaign }: ProtocolProps) {
                 return protocol.slug === campaign.target.pool.dex.slug;
             }
             case TargetType.LiquityV2Debt:
-            case TargetType.LiquityV2Collateral:
             case TargetType.LiquityV2StabilityPool: {
                 return protocol.slug === campaign.target.brand.slug;
             }
