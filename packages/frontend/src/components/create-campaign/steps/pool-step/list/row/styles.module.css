@@ -11,7 +11,7 @@
         duration-200
         ease-in-out
         hover:cursor-pointer
-        hover:bg-gray-200 hover:dark:bg-slate-700;
+        theme-foreground-hover;
 }
 
 .pool {
@@ -27,7 +27,7 @@
 }
 
 .active {
-    @apply bg-gray-200 dark:bg-slate-700;
+    @apply bg-zinc-200 dark:bg-zinc-800;
 }
 
 .loading {

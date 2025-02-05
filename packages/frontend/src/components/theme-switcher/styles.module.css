@@ -5,7 +5,7 @@
 }
 
 .wrapper {
-    @apply bg-white dark:bg-slate-800
+    @apply bg-white dark:bg-zinc-800
         w-10
         h-10
         rounded-lg
@@ -13,7 +13,7 @@
         items-center
         justify-center
         cursor-pointer
-        hover:bg-gray-200 hover:dark:bg-slate-700
+        hover:bg-zinc-200 hover:dark:bg-zinc-700
         transition-colors
         duration-200
         ease-in-out;
@@ -25,8 +25,8 @@
 
 .themeButton {
     @apply cursor-pointer
-        bg-white dark:bg-slate-900
-        hover:bg-gray-200 hover:dark:bg-slate-700
+        bg-white dark:bg-zinc-900
+        hover:bg-zinc-200 hover:dark:bg-zinc-700
         transition-colors
         duration-200
         ease-in-out
@@ -42,7 +42,7 @@
 }
 
 .themeButton.active {
-    @apply bg-black dark:bg-slate-800;
+    @apply bg-black dark:bg-zinc-800;
 }
 
 .themeButton.active > .themeIcon {
@@ -50,5 +50,5 @@
 }
 
 .themeIcon {
-    @apply h-6 w-6 dark:text-slate-200;
+    @apply h-6 w-6 dark:text-zinc-200;
 }

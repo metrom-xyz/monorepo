@@ -2,8 +2,7 @@
 
 .root {
     @apply overflow-y-hidden
-        bg-white
-        dark:bg-slate-800
+        theme-foreground
         rounded-b-2xl
         transition-colors
         duration-200

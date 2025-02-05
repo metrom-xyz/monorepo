@@ -8,10 +8,10 @@
         items-center
         justify-between
         rounded-md
-        dark:bg-slate-950 bg-gray-100 dark:bg-slate-900
         px-2.5
         py-1.5
-        hover:bg-gray-200 hover:dark:bg-slate-200
+        bg-zinc-100 dark:bg-zinc-800
+        hover:bg-zinc-200 hover:dark:bg-zinc-700
         hover:cursor-pointer
         transition-colors
         duration-200

@@ -1,7 +1,7 @@
 @reference "../../app.css";
 
 .root {
-    @apply bg-white dark:bg-slate-800
+    @apply theme-foreground
         rounded-2xl
         overflow-hidden
         transition-colors
@@ -14,7 +14,7 @@
 }
 
 .disabled > * {
-    @apply pointer-events-none opacity-40 select-none;
+    @apply pointer-events-none opacity-40 dark:opacity-20 select-none;
 }
 
 .error {

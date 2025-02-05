@@ -1,8 +1,7 @@
 @reference "../../theme.css";
 
 .root {
-    @apply text-black
-        dark:text-slate-200
+    @apply theme-text
         font-normal
         font-sans;
 }
@@ -52,7 +51,7 @@
 }
 
 .light {
-    @apply text-neutral-gray dark:text-slate-400;
+    @apply text-neutral-gray dark:text-zinc-400;
 }
 
 .normal {

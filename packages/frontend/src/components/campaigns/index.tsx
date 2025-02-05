@@ -114,7 +114,7 @@ export function Campaigns() {
             {
                 label: t("filters.status.ended"),
                 value: FilterableStatus.Ended,
-                color: "bg-gray-500",
+                color: "bg-zinc-500",
             },
         ];
     }, [t]);

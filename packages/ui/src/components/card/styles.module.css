@@ -3,6 +3,6 @@
 .root {
     @apply w-full
         p-4
-        bg-white dark:bg-slate-800
+        theme-foreground
         rounded-2xl;
 }

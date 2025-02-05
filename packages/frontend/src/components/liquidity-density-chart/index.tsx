@@ -184,7 +184,6 @@ export function LiquidityDensityChart({
                             onClick={handleOnZoomOut}
                             className={{ root: styles.zoomButton }}
                         />
-                        <div className={styles.divider}></div>
                         <Button
                             variant="secondary"
                             size="xs"

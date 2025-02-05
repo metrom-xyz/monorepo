@@ -1,7 +1,7 @@
 @reference "../../../../../app.css";
 
 .root {
-    @apply bg-gray-200 dark:bg-slate-800
+    @apply bg-zinc-200 dark:bg-zinc-800
         min-h-[66px]
         rounded-xl
         flex
@@ -16,7 +16,7 @@
 }
 
 .iconWrapper {
-    @apply bg-gray-300 dark:bg-slate-900
+    @apply bg-zinc-300 dark:bg-zinc-900
         rounded-lg
         flex
         justify-center
@@ -31,7 +31,7 @@
 }
 
 .icon {
-    @apply w-7 h-7 text-white dark:text-slate-200;
+    @apply w-7 h-7 text-white dark:text-zinc-200;
 }
 
 .leftBodyWrapper {
@@ -75,5 +75,5 @@
 }
 
 .skeleton :global(.skeleton) {
-    @apply bg-gray-300 dark:bg-gray-900;
+    @apply bg-zinc-300 dark:bg-zinc-900;
 }

@@ -13,7 +13,7 @@
 }
 
 .networkWrapper {
-    @apply bg-white dark:bg-slate-800
+    @apply bg-white dark:bg-zinc-800
         w-10
         h-10
         rounded-md
@@ -22,7 +22,7 @@
         items-center
         justify-center
         cursor-pointer
-        hover:bg-gray-200 hover:dark:bg-slate-700
+        hover:bg-zinc-200 hover:dark:bg-zinc-700
         transition-colors
         duration-200
         ease-in-out;
@@ -33,7 +33,7 @@
 }
 
 .networkIcon {
-    @apply w-5 h-5 transition-none text-black dark:text-slate-200;
+    @apply w-5 h-5 transition-none text-black dark:text-zinc-200;
 }
 
 .networkRow {
@@ -43,14 +43,14 @@
         px-3
         gap-2
         cursor-pointer
-        hover:bg-gray-200 hover:dark:bg-slate-600
+        hover:bg-zinc-200 hover:dark:bg-zinc-600
         transition-colors
         duration-200
         ease-in-out;
 }
 
 .activeNetwork {
-    @apply bg-gray-200 dark:bg-slate-600;
+    @apply bg-zinc-200 dark:bg-zinc-600;
 }
 
 .networksWrapper {
@@ -72,7 +72,7 @@
         bottom-0
         left-0
         right-0
-        bg-black dark:bg-slate-200
+        bg-black dark:bg-zinc-200
         opacity-0
         pointer-events-none
         transition-opacity
@@ -106,7 +106,7 @@
 }
 
 .walletWrapper {
-    @apply bg-white dark:bg-slate-800
+    @apply bg-white dark:bg-zinc-800
         sm:px-2
         h-10
         min-w-10
@@ -116,7 +116,7 @@
         sm:justify-between
         justify-center
         cursor-pointer
-        hover:bg-gray-200 hover:dark:bg-slate-700
+        hover:bg-zinc-200 hover:dark:bg-zinc-700
         transition-colors
         duration-200
         ease-in-out;

@@ -8,7 +8,7 @@
 }
 
 .divider {
-    @apply w-[1px] ml-2 bg-gray-200 dark:bg-slate-800;
+    @apply w-[1px] ml-2 bg-zinc-200 dark:bg-zinc-800;
 }
 
 .timeWrapper {
@@ -47,7 +47,7 @@
         justify-center
         items-center
         rounded-md
-        hover:bg-gray-200 hover:dark:bg-slate-700
+        hover:bg-zinc-200 hover:dark:bg-zinc-600
         transition-colors
         duration-200
         ease-in-out;
@@ -56,13 +56,13 @@
 .cellDisabled {
     @apply cursor-not-allowed
         hover:bg-transparent
-        text-gray-300 dark:text-slate-600;
+        text-zinc-300 dark:text-zinc-600;
 }
 
 .cellSelected {
-    @apply bg-gray-100 dark:bg-slate-900 !text-gray-900 dark:!text-slate-200;
+    @apply bg-zinc-100 dark:bg-zinc-800 !text-zinc-900 dark:!text-zinc-200;
 }
 
 .cellSelectable {
-    @apply text-gray-400 dark:text-slate-300;
+    @apply text-zinc-400 dark:text-zinc-300;
 }

@@ -40,10 +40,10 @@
         outline-none
         border
         border-transparent
-        placeholder:text-gray-400
+        placeholder:text-zinc-400
         placeholder:select-none
-        bg-gray-100 dark:bg-slate-900
-        text-black dark:text-slate-200
+        bg-zinc-100 dark:bg-zinc-800
+        theme-text
         w-full;
 }
 
@@ -64,7 +64,7 @@
 }
 
 .inputIcon {
-    @apply text-black dark:text-slate-200;
+    @apply theme-text;
 }
 
 .inputIcon.xs {

@@ -5,7 +5,7 @@
 }
 
 .arrowIcon {
-    @apply w-5 h-5 text-black dark:text-slate-200;
+    @apply w-5 h-5 theme-text;
 }
 
 .ellipsis {
@@ -20,32 +20,32 @@
         items-center
         justify-center
         cursor-pointer
-        hover:bg-gray-200 hover:dark:bg-slate-700
+        hover:bg-zinc-200 hover:dark:bg-zinc-800
         transition-colors
         duration-200
         ease-in-out;
 }
 
 .itemActive {
-    @apply bg-gray-200 dark:bg-slate-800 hover:bg-gray-200 hover:dark:bg-slate-700;
+    @apply bg-zinc-200 dark:bg-zinc-800 hover:bg-zinc-200 hover:dark:bg-zinc-800;
 }
 
 .clickable {
     @apply cursor-pointer
-        hover:bg-gray-200 hover:dark:bg-slate-700
+        hover:bg-zinc-200 hover:dark:bg-zinc-800
         transition-colors
         duration-200
         ease-in-out;
 }
 
 .arrowItem {
-    @apply bg-white dark:bg-slate-800;
+    @apply bg-white hover:bg-zinc-200 dark:bg-zinc-800 hover:dark:bg-zinc-700;
 }
 
 .arrowItem:disabled {
-    @apply bg-gray-200 dark:bg-slate-700 cursor-not-allowed;
+    @apply bg-zinc-200 dark:bg-zinc-700 cursor-not-allowed;
 }
 
 .arrowItem:disabled .arrowIcon {
-    @apply text-gray-400 dark:text-slate-800;
+    @apply text-zinc-400 dark:text-zinc-800;
 }

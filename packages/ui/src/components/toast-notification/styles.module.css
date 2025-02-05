@@ -10,7 +10,7 @@
 }
 
 .toast {
-    @apply absolute right-0 rounded-2xl bg-white dark:bg-slate-900 p-3;
+    @apply absolute right-0 rounded-2xl bg-white dark:bg-zinc-900 p-3;
 }
 
 .wrapper {
@@ -18,7 +18,7 @@
 }
 
 .iconWrapper {
-    @apply p-3.5 bg-gray-200 dark:bg-slate-800 rounded-lg;
+    @apply p-3.5 theme-foreground rounded-lg;
 }
 
 .iconWrapper.error {
@@ -26,11 +26,11 @@
 }
 
 .icon {
-    @apply w-6 h-6 text-black dark:text-slate-200;
+    @apply w-6 h-6 theme-text;
 }
 
 .icon.error {
-    @apply stroke-white text-white;
+    @apply stroke-white dark:stroke-zinc-100 text-white dark:text-zinc-100;
 }
 
 .contentWrapper {
@@ -38,5 +38,5 @@
 }
 
 .dismissIcon {
-    @apply w-2.5 h-2.5 cursor-pointer text-black dark:text-slate-200;
+    @apply w-2.5 h-2.5 cursor-pointer theme-text;
 }

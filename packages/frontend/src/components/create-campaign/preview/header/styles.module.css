@@ -1,7 +1,7 @@
 @reference "../../../../app.css";
 
 .root {
-    @apply flex flex-col gap-2 bg-white dark:bg-slate-800 p-5 px-6 rounded-t-3xl;
+    @apply flex flex-col gap-2 bg-white dark:bg-zinc-800 p-5 px-6 rounded-t-3xl;
 }
 
 .backButton {
@@ -18,7 +18,7 @@
 
 .liquityV2Action {
     @apply w-fit 
-        bg-gray-100 dark:bg-slate-900
+        bg-zinc-100 dark:bg-zinc-900
         rounded-2xl
         flex
         gap-2.5

@@ -12,7 +12,7 @@
 }
 
 .reimbursedBar {
-    @apply fill-[#d1d5db] dark:fill-slate-900;
+    @apply fill-[#d1d5db] dark:fill-zinc-900;
 }
 
 .timeTick {
@@ -21,7 +21,7 @@
         text-xs
         leading-none
         font-medium
-        fill-black dark:fill-slate-200
+        fill-black dark:fill-zinc-200
         transition-colors
         duration-200
         ease-in-out;

@@ -34,6 +34,7 @@ const COMPUTE_TICKS_AMOUNT = 3000;
 
 interface RangeStepProps {
     disabled?: boolean;
+    rewardType?: AmmPoolLiquidityCampaignPayload["rewardType"];
     pool?: AmmPoolLiquidityCampaignPayload["pool"];
     priceRangeSpecification?: AmmPoolLiquidityCampaignPayload["priceRangeSpecification"];
     onRangeChange: (value: AmmPoolLiquidityCampaignPayloadPart) => void;
@@ -42,6 +43,7 @@ interface RangeStepProps {
 
 export function RangeStep({
     disabled,
+    rewardType,
     pool,
     priceRangeSpecification,
     onRangeChange,
@@ -133,6 +135,16 @@ export function RangeStep({
                 !!error || (enabled && !priceRangeSpecification),
         });
     }, [error, enabled, priceRangeSpecification, onError]);
+
+    // TODO: avoid resetting when the range is enabled for points.
+    // This hook is used to reset and disable the range when changing reward type.
+    useEffect(() => {
+        onRangeChange({ priceRangeSpecification: undefined });
+        setFrom(undefined);
+        setTo(undefined);
+        setEnabled(false);
+        setError("");
+    }, [rewardType, onRangeChange]);
 
     function handleSwitchOnClick() {
         setEnabled((enabled) => !enabled);

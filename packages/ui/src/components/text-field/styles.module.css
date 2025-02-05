@@ -8,7 +8,7 @@
 }
 
 .boxed {
-    @apply p-4 bg-white dark:bg-slate-800 rounded-2xl;
+    @apply p-4 theme-foreground rounded-2xl;
 }
 
 .alignCenter {

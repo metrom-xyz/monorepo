@@ -23,6 +23,7 @@ interface KpiStepProps {
     disabled?: boolean;
     pool?: AmmPoolLiquidityCampaignPayload["pool"];
     rewards?: AmmPoolLiquidityCampaignPayload["tokens"];
+    rewardType?: AmmPoolLiquidityCampaignPayload["rewardType"];
     kpiSpecification?: AmmPoolLiquidityCampaignPayload["kpiSpecification"];
     onKpiChange: (value: BaseCampaignPayloadPart) => void;
     onError: (errors: CampaignPayloadErrors) => void;
@@ -33,6 +34,7 @@ export function KpiStep({
     disabled,
     pool,
     rewards,
+    rewardType,
     kpiSpecification,
     onKpiChange,
     onError,
@@ -163,6 +165,17 @@ export function KpiStep({
         setOpen(enabled);
     }, [enabled]);
 
+    // TODO: avoid resetting when the KPI is enabled for points.
+    // This hook is used to reset and disable the KPI when changing reward type.
+    useEffect(() => {
+        onKpiChange({ kpiSpecification: undefined });
+        setMinimumPayoutPercentage(0);
+        setLowerUsdTargetRaw(undefined);
+        setUpperUsdTargetRaw(undefined);
+        setEnabled(false);
+        setError("");
+    }, [rewardType, onKpiChange]);
+
     function handleSwitchOnClick() {
         setEnabled((enabled) => !enabled);
     }
@@ -256,6 +269,7 @@ export function KpiStep({
             <StepContent>
                 <div className={styles.stepContent}>
                     <GoalInputs
+                        enabled={enabled}
                         kpiSpecification={newKpiSpecification}
                         error={!!error}
                         onLowerUsdTargetChange={setLowerUsdTargetRaw}

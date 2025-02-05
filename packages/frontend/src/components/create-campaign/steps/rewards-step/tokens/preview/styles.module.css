@@ -13,7 +13,7 @@
         transition-colors
         duration-200
         ease-in-out
-        dark:bg-slate-950 bg-gray-100 dark:bg-slate-900
+        bg-zinc-100 dark:bg-zinc-800
         rounded-lg;
 }
 
@@ -41,11 +41,11 @@
         items-center
         justify-between
         rounded-md
-        dark:bg-slate-950 bg-gray-100 dark:bg-slate-900
+        bg-zinc-100 dark:bg-zinc-800
         pl-2.5
         pr-1
         py-1.5
-        hover:bg-white dark:bg-slate-800
+        hover:bg-white hover:dark:bg-zinc-700
         hover:cursor-pointer
         transition-colors
         duration-200
@@ -84,7 +84,7 @@
 .rewardSkeleton {
     @apply h-[70px]
         w-full 
-        dark:bg-slate-950 bg-gray-100 dark:bg-slate-900
+        bg-zinc-100 dark:bg-zinc-800
         rounded-lg
         flex
         items-center
@@ -92,5 +92,5 @@
 }
 
 .rewardSkeletonText {
-    @apply text-gray-400;
+    @apply text-zinc-400;
 }

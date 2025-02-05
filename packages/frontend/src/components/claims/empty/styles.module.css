@@ -13,9 +13,9 @@
 }
 
 .body {
-    @apply leading-tight !text-gray-900 dark:!text-slate-200;
+    @apply leading-tight !text-zinc-900 dark:!text-zinc-200;
 }
 
 .title {
-    @apply text-gray-900 dark:text-slate-200;
+    @apply text-zinc-900 dark:text-zinc-200;
 }

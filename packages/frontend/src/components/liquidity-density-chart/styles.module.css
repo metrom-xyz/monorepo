@@ -5,7 +5,7 @@
         flex
         flex-col
         rounded-2xl
-        bg-white dark:bg-slate-800
+        theme-foreground
         transition-colors
         duration-200
         ease-in-out;
@@ -19,7 +19,7 @@
         flex
         justify-center
         items-center
-        bg-white dark:bg-slate-800
+        theme-foreground
         rounded-2xl;
 }
 
@@ -28,7 +28,7 @@
 }
 
 .loading {
-    @apply bg-gray-100 dark:bg-slate-900 animate-pulse;
+    @apply bg-zinc-100 dark:bg-zinc-700 animate-pulse;
 }
 
 .container {
@@ -51,14 +51,10 @@
     @apply w-8 h-8 rounded-md;
 }
 
-.divider {
-    @apply w-[1px] h-full bg-gray-500;
-}
-
 .zoomButtons > svg {
     @apply w-5
         h-5
-        hover:text-gray-400
+        hover:text-zinc-400
         cursor-pointer
         transition-colors
         duration-200
