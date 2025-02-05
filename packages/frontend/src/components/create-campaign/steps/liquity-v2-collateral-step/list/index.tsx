@@ -1,50 +1,49 @@
 import type { LiquityV2Collateral } from "@metrom-xyz/sdk";
 import { Typography } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
-import type { LiquityV2CampaignPayload } from "@/src/types";
+import { LiquityV2Action, type LiquityV2CampaignPayload } from "@/src/types";
 import { Row } from "./row";
 
 import styles from "./styles.module.css";
 
 interface CollateralsListProps {
-    filters?: LiquityV2CampaignPayload["filters"];
+    action?: LiquityV2CampaignPayload["action"];
+    selected?: LiquityV2CampaignPayload["collateral"];
     supported?: LiquityV2CampaignPayload["supportedCollaterals"];
-    onAdd: (collateral: LiquityV2Collateral) => void;
-    onRemove: (collateral: LiquityV2Collateral) => void;
+    onChange: (collateral: LiquityV2Collateral) => void;
 }
 
 export function CollateralsList({
-    filters,
+    action,
+    selected,
     supported,
-    onAdd,
-    onRemove,
+    onChange,
 }: CollateralsListProps) {
     const t = useTranslations("newCampaign.form.liquityV2.collaterals");
 
     return (
         <div className={styles.root}>
-            <div className={styles.header}>
-                <Typography uppercase size="sm" weight="medium" light>
-                    {t("list.select")}
-                </Typography>
+            <div className={styles.listHeader}>
                 <Typography uppercase size="sm" weight="medium" light>
                     {t("list.token")}
+                </Typography>
+                <Typography uppercase size="sm" weight="medium" light>
+                    {t(
+                        action === LiquityV2Action.Debt
+                            ? "list.debt"
+                            : "list.deposits",
+                    )}
                 </Typography>
             </div>
             {supported && supported.length > 0 ? (
                 supported.map((collateral) => {
-                    const selected = filters?.find(
-                        ({ token }) =>
-                            token.address === collateral.token.address,
-                    );
-
                     return (
                         <Row
                             key={collateral.token.address}
-                            selected={!!selected}
+                            action={action}
+                            selected={collateral == selected}
                             collateral={collateral}
-                            onAdd={onAdd}
-                            onRemove={onRemove}
+                            onChange={onChange}
                         />
                     );
                 })

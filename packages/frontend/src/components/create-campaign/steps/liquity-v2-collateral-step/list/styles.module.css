@@ -8,9 +8,9 @@
         overflow-hidden;
 }
 
-.header {
+.listHeader {
     @apply flex
-        gap-4
+        justify-between
         items-center
         px-4;
 }

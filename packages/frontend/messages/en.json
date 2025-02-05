@@ -92,11 +92,11 @@
             "description": "Run efficient incentive strategies for your liquidity providers. Reduce leakage and maximize returns by using Metrom.",
             "amm": {
                 "title": "AMM",
-                "description": "Incentivize users that provide liquidity to a concentrated liquidity AMM or a simple Uni V2 fork."
+                "description": "Incentivize users that provide liquidity to a various types of AMMs (both full range and concentrated liquidity)."
             },
             "liquityV2": {
-                "title": "LIQUITY V2 FORKs",
-                "description": "Incentivize users depositing collateral and borrowing on Liquity V2 forks."
+                "title": "LIQUITY V2",
+                "description": "Incentivize users borrowing and other actions on Liquity V2 and its forks."
             }
         },
         "type": {
@@ -236,12 +236,13 @@
                     }
                 },
                 "collaterals": {
-                    "title": "Collaterals",
-                    "filters": "Filters",
+                    "title": "Collateral",
+                    "filters": "Collateral",
                     "list": {
                         "token": "Token",
-                        "select": "Select",
-                        "empty": "Nothing here"
+                        "empty": "Nothing here",
+                        "debt": "Debt",
+                        "deposits": "Deposits"
                     },
                     "apply": "Apply"
                 }

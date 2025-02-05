@@ -18,8 +18,7 @@ import { Button } from "@metrom-xyz/ui";
 import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
 import { LiquityV2BrandStep } from "../../steps/liquity-v2-brand-step";
 import { LiquityV2ActionStep } from "../../steps/liquity-v2-action-step";
-import { LiquityV2CollateralsStep } from "../../steps/liquity-v2-collaterals-step";
-import { LIQUITY_V2_CAMPAIGN_COLLATERALS } from "@/src/commons/env";
+import { LiquityV2CollateralStep } from "../../steps/liquity-v2-collateral-step";
 
 import styles from "./styles.module.css";
 
@@ -29,7 +28,7 @@ function validatePayload(
     const {
         brand,
         action,
-        filters,
+        collateral,
         supportedCollaterals,
         startDate,
         endDate,
@@ -40,8 +39,14 @@ function validatePayload(
         fee,
     } = payload;
 
-    // TODO: handle collaterals
-    if (!brand || !action || !startDate || !endDate || !supportedCollaterals)
+    if (
+        !brand ||
+        !collateral ||
+        !action ||
+        !startDate ||
+        !endDate ||
+        !supportedCollaterals
+    )
         return null;
 
     let distributables;
@@ -61,7 +66,7 @@ function validatePayload(
     return new LiquityV2CampaignPreviewPayload(
         brand,
         action,
-        filters || [],
+        collateral,
         supportedCollaterals,
         startDate,
         endDate,
@@ -125,16 +130,15 @@ export function LiquityV2ForksForm({
                     action={payload.action}
                     onActionChange={handlePayloadOnChange}
                 />
-                {LIQUITY_V2_CAMPAIGN_COLLATERALS && (
-                    <LiquityV2CollateralsStep
-                        disabled={!payload?.action || unsupportedChain}
-                        collaterals={payload.filters}
-                        supportedCollaterals={payload.supportedCollaterals}
-                        onCollateralsChange={handlePayloadOnChange}
-                    />
-                )}
+                <LiquityV2CollateralStep
+                    disabled={!payload.action || unsupportedChain}
+                    action={payload.action}
+                    collateral={payload.collateral}
+                    supportedCollaterals={payload.supportedCollaterals}
+                    onCollateralChange={handlePayloadOnChange}
+                />
                 <StartDateStep
-                    disabled={!payload?.action || unsupportedChain}
+                    disabled={!payload?.collateral || unsupportedChain}
                     startDate={payload?.startDate}
                     endDate={payload?.endDate}
                     onStartDateChange={handlePayloadOnChange}

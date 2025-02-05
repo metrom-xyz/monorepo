@@ -18,25 +18,13 @@
 }
 
 .previewWrapper {
-    @apply flex items-center gap-3;
+    @apply flex items-center gap-2;
 }
 
-.collateralsWrapper {
+.collateralWrapper {
     @apply flex;
 }
 
 .collateralLogo:not(:first-child) {
     @apply -ml-2;
-}
-
-.previewDisabled {
-    @apply hover:cursor-default hover:bg-white;
-}
-
-.contentWrapper {
-    @apply flex flex-col gap-4 p-4;
-}
-
-.applyButton {
-    @apply w-full;
 }
