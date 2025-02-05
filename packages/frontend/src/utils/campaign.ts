@@ -3,7 +3,6 @@ import {
     TargetType,
     DistributablesType,
     type Specification,
-    SupportedLiquityV2,
 } from "@metrom-xyz/sdk";
 import {
     AmmPoolLiquidityCampaignPreviewPayload,
@@ -14,7 +13,7 @@ import {
 } from "../types";
 import { getDistributableRewardsPercentage } from "./kpi";
 import type { TranslationValues } from "next-intl";
-import { encodeAbiParameters, type Address } from "viem";
+import { type Hex, encodeAbiParameters, stringToHex } from "viem";
 
 const SECONDS_IN_YEAR = 60 * 60 * 24 * 365;
 
@@ -25,15 +24,16 @@ export function buildCampaignDataBundle(payload: CampaignPreviewPayload) {
             [payload.pool.address],
         );
     else if (payload instanceof LiquityV2CampaignPreviewPayload) {
-        const parameters = [{ name: "brandSlug", type: "string" }];
-        const values: [SupportedLiquityV2, Address[]?] = [payload.brand.slug];
-
-        if (payload.filters.length > 0) {
-            parameters.push({ name: "collaterals", type: "address[]" });
-            values.push(payload.filters.map(({ token }) => token.address));
-        }
-
-        return encodeAbiParameters(parameters, values);
+        return encodeAbiParameters(
+            [
+                { name: "brand", type: "bytes32" },
+                { name: "collateral", type: "address" },
+            ],
+            [
+                stringToHex(payload.brand.slug).padEnd(66, "0") as Hex,
+                payload.collateral.token.address,
+            ],
+        );
     } else return null;
 }
 
@@ -134,25 +134,14 @@ export function getCampaignPreviewApr(
             rewardsUsdValue += reward.amount.usdValue;
         }
 
-        const filteredCollaterals =
-            payload.filters.length === 0
-                ? payload.supportedCollaterals
-                : payload.filters;
-
         let liquityUsdValue = 0;
         switch (payload.action) {
             case LiquityV2Action.Debt: {
-                liquityUsdValue = filteredCollaterals.reduce(
-                    (usd, collateral) => usd + collateral.usdMintedDebt,
-                    0,
-                );
+                liquityUsdValue = payload.collateral.usdMintedDebt;
                 break;
             }
             case LiquityV2Action.StabilityPool: {
-                liquityUsdValue = filteredCollaterals.reduce(
-                    (usd, collateral) => usd + collateral.usdStabilityPoolDebt,
-                    0,
-                );
+                liquityUsdValue = payload.collateral.usdStabilityPoolDebt;
                 break;
             }
         }

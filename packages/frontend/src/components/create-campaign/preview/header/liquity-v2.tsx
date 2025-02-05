@@ -22,12 +22,6 @@ export function LiquityV2({ payload }: LiquityV2Props) {
         );
     }, [payload]);
 
-    const filteredCollaterals = useMemo(() => {
-        return payload.filters.length === 0
-            ? payload.supportedCollaterals
-            : payload.filters;
-    }, [payload.filters, payload.supportedCollaterals]);
-
     return (
         <div className={styles.titleContainer}>
             <div className={styles.liquityV2Action}>
@@ -37,15 +31,15 @@ export function LiquityV2({ payload }: LiquityV2Props) {
                 </Typography>
             </div>
             <div className={styles.collateralsWrapper}>
-                {filteredCollaterals.map((collateral) => (
+                {payload.collateral && (
                     <RemoteLogo
-                        key={collateral.token.address}
+                        key={payload.collateral.token.address}
                         size="xl"
                         chain={chainId}
-                        address={collateral.token.address}
+                        address={payload.collateral.token.address}
                         className={styles.collateralLogo}
                     />
-                ))}
+                )}
             </div>
         </div>
     );

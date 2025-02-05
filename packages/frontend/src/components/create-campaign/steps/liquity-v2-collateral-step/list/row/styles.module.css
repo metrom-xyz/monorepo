@@ -1,0 +1,23 @@
+@reference "../../../../../../app.css";
+
+.root {
+    @apply h-14
+        flex
+        items-center
+        gap-3
+        px-4
+        select-none
+        transition-colors
+        duration-200
+        ease-in-out
+        hover:cursor-pointer
+        hover:bg-gray-200;
+}
+
+.collateral {
+    @apply w-full flex items-center gap-3;
+}
+
+.active {
+    @apply bg-gray-200;
+}

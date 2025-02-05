@@ -119,7 +119,7 @@ export interface AmmPoolLiquidityCampaignPayload extends BaseCampaignPayload {
 export interface LiquityV2CampaignPayload extends BaseCampaignPayload {
     brand?: LiquityV2Protocol;
     action?: LiquityV2Action;
-    filters?: LiquityV2Collateral[];
+    collateral?: LiquityV2Collateral;
     supportedCollaterals?: LiquityV2Collateral[];
 }
 
@@ -173,7 +173,7 @@ export class LiquityV2CampaignPreviewPayload extends BaseCampaignPreviewPayload 
     constructor(
         public readonly brand: LiquityV2Protocol,
         public readonly action: LiquityV2Action,
-        public readonly filters: LiquityV2Collateral[],
+        public readonly collateral: LiquityV2Collateral,
         public readonly supportedCollaterals: LiquityV2Collateral[],
         ...baseArgs: ConstructorParameters<typeof BaseCampaignPreviewPayload>
     ) {

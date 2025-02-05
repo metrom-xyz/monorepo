@@ -6,35 +6,30 @@ import { useChainId } from "wagmi";
 import classNames from "classnames";
 
 import styles from "./styles.module.css";
+import { LiquityV2Action, type LiquityV2CampaignPayload } from "@/src/types";
+import { formatUsdAmount } from "@/src/utils/format";
 
 interface RowProps {
+    action?: LiquityV2CampaignPayload["action"];
     selected?: boolean;
     collateral: LiquityV2Collateral;
-    onAdd: (collateral: LiquityV2Collateral) => void;
-    onRemove: (collateral: LiquityV2Collateral) => void;
+    onChange: (collateral: LiquityV2Collateral) => void;
 }
 
-export function Row({ selected, collateral, onAdd, onRemove }: RowProps) {
+// TODO: add some sort of TVL indicator
+export function Row({ action, selected, collateral, onChange }: RowProps) {
     const chainId = useChainId();
 
     const handleOnClick = useCallback(() => {
-        if (!collateral) return;
-        if (selected) onRemove(collateral);
-        else onAdd(collateral);
-    }, [collateral, selected, onRemove, onAdd]);
+        onChange(collateral);
+    }, [collateral, onChange]);
 
     return (
         <div
-            className={classNames(styles.root, { [styles.selected]: selected })}
+            className={classNames(styles.root, { [styles.active]: selected })}
+            onClick={handleOnClick}
         >
-            {/* TODO: add UI component */}
-            <input
-                type="checkbox"
-                checked={selected}
-                onChange={handleOnClick}
-                className={styles.checkbox}
-            />
-            <div className={styles.collateralName}>
+            <div className={styles.collateral}>
                 <RemoteLogo
                     chain={chainId}
                     address={collateral.token.address}
@@ -43,6 +38,13 @@ export function Row({ selected, collateral, onAdd, onRemove }: RowProps) {
                     {collateral.token.symbol}
                 </Typography>
             </div>
+            <Typography weight="medium" size="lg">
+                {formatUsdAmount(
+                    action === LiquityV2Action.Debt
+                        ? collateral.usdMintedDebt
+                        : collateral.usdStabilityPoolDebt,
+                )}
+            </Typography>
         </div>
     );
 }
