@@ -162,6 +162,7 @@ export function AmmPoolLiquidityForm({
                     }
                     pool={payload?.pool}
                     rewards={payload?.tokens}
+                    rewardType={payload.rewardType}
                     kpiSpecification={payload?.kpiSpecification}
                     onKpiChange={handlePayloadOnChange}
                     onError={handlePayloadOnError}
@@ -172,6 +173,7 @@ export function AmmPoolLiquidityForm({
                     ] && (
                         <RangeStep
                             disabled={!payload?.tokens || unsupportedChain}
+                            rewardType={payload.rewardType}
                             pool={payload.pool}
                             priceRangeSpecification={
                                 payload?.priceRangeSpecification

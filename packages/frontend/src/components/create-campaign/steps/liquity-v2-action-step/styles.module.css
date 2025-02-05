@@ -10,7 +10,7 @@
 
 .action {
     @apply w-full 
-        dark:bg-slate-950 bg-gray-100 dark:bg-slate-900
+        dark:bg-zinc-950 bg-zinc-100 dark:bg-zinc-900
         rounded-2xl
         flex
         gap-6
@@ -20,15 +20,15 @@
         duration-200
         ease-in-out
         hover:cursor-pointer
-        hover:bg-gray-200 hover:dark:bg-slate-200;
+        hover:bg-zinc-200 hover:dark:bg-zinc-200;
 }
 
 .active {
-    @apply bg-gray-200;
+    @apply bg-zinc-200;
 }
 
 .active > .actionIconWrapper {
-    @apply dark:bg-slate-950 bg-gray-100 dark:bg-slate-900;
+    @apply dark:bg-zinc-950 bg-zinc-100 dark:bg-zinc-900;
 }
 
 .textWrapper {
@@ -42,7 +42,7 @@
         items-center
         justify-center
         rounded-lg
-        bg-gray-200
+        bg-zinc-200
         transition-colors
         duration-200
         ease-in-out
@@ -50,11 +50,11 @@
 }
 
 .action:hover .actionIconWrapper {
-    @apply dark:bg-slate-950 bg-gray-100 dark:bg-slate-900;
+    @apply dark:bg-zinc-950 bg-zinc-100 dark:bg-zinc-900;
 }
 
 .actionRowSelected {
-    @apply bg-gray-200;
+    @apply bg-zinc-200;
 }
 
 .actionRow:only-child,

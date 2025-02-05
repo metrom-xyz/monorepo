@@ -4,7 +4,7 @@ import {
     SliderInput,
     type NumberFormatValues,
 } from "@metrom-xyz/ui";
-import { useState, type ChangeEvent } from "react";
+import { useEffect, useState, type ChangeEvent } from "react";
 import { useTranslations } from "next-intl";
 import { useDebounce } from "react-use";
 import numeral from "numeral";
@@ -13,6 +13,7 @@ import styles from "./styles.module.css";
 
 interface GoalInputsProps {
     error?: boolean;
+    enabled?: boolean;
     kpiSpecification?: BaseCampaignPayload["kpiSpecification"];
     onLowerUsdTargetChange: (value: number | undefined) => void;
     onUpperUsdTargetChange: (value: number | undefined) => void;
@@ -26,6 +27,7 @@ export interface NumberInputValues {
 
 export function GoalInputs({
     error,
+    enabled,
     kpiSpecification,
     onLowerUsdTargetChange,
     onUpperUsdTargetChange,
@@ -58,6 +60,14 @@ export function GoalInputs({
         }
         return undefined;
     });
+
+    useEffect(() => {
+        if (!enabled) {
+            setLowerUsdTargetRaw({ formatted: "", raw: undefined });
+            setUpperUsdTargetRaw({ formatted: "", raw: undefined });
+            setMinimumPayoutPercentage(0);
+        }
+    }, [enabled]);
 
     useDebounce(
         () => {

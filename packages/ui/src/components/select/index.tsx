@@ -153,7 +153,7 @@ function Component<V extends ValueType, O extends SelectOption<V>>(
     ]);
 
     return (
-        <div className={className}>
+        <div className={className} ref={dropdownRef}>
             <TextInput
                 data-testid={dataTestIds?.textInput}
                 ref={(element) => {
@@ -185,7 +185,6 @@ function Component<V extends ValueType, O extends SelectOption<V>>(
                 open={open}
                 placement="bottom-start"
                 className={styles.dropdownRoot}
-                ref={dropdownRef}
             >
                 {filteredOptions.length === 0 ? (
                     <div

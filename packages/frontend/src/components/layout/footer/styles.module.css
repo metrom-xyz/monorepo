@@ -20,7 +20,7 @@
 }
 
 .logo {
-    @apply max-w-36 dark:text-slate-200;
+    @apply max-w-36 dark:text-zinc-200;
 }
 
 .socials {
@@ -28,7 +28,7 @@
 }
 
 .socialIcon {
-    @apply w-5 h-5 text-gray-900 dark:text-slate-200 transition-colors duration-200 ease-in-out;
+    @apply w-5 h-5 text-zinc-900 dark:text-zinc-200 transition-colors duration-200 ease-in-out;
 }
 
 .support {

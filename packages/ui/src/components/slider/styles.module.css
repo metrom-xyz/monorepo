@@ -8,8 +8,8 @@
 .slider {
     @apply w-full
         h-5
-        bg-white dark:bg-slate-800
-        accent-black dark:accent-slate-200
+        bg-white dark:bg-zinc-800
+        accent-black dark:accent-zinc-400
         rounded-2xl
         cursor-pointer;
 }

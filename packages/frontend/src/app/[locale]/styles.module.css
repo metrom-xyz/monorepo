@@ -1,7 +1,7 @@
 @reference "../../app.css";
 
 .root {
-    @apply dark:bg-slate-950 bg-gray-100
+    @apply theme-background
         min-h-screen
         transition-colors
         duration-200

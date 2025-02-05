@@ -2,6 +2,22 @@
 
 @variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
 
+@utility theme-background {
+    @apply bg-theme-light-background dark:bg-theme-dark-background;
+}
+
+@utility theme-foreground {
+    @apply bg-theme-light-foreground dark:bg-theme-dark-foreground;
+}
+
+@utility theme-foreground-hover {
+    @apply hover:bg-zinc-200 hover:dark:bg-zinc-800;
+}
+
+@utility theme-text {
+    @apply text-theme-light-text dark:text-theme-dark-text;
+}
+
 @theme {
     --font-sans: "IBM Plex Sans", ui-sans-serif, sans-serif;
     --font-mono: "IBM Plex Mono", ui-monospace, monospace;
@@ -21,6 +37,15 @@
     --color-carrot-orange: #ef802b;
     --color-black: #000000;
     --color-white: #ffffff;
+
+    --color-theme-light-background: #f3f4f6;
+    --color-theme-light-foreground: #ffffff;
+    --color-theme-light-text: #000000;
+
+    --color-theme-dark-background: #000000;
+    --color-theme-dark-foreground: #1c1c1c;
+    --color-theme-dark-text: #e2e8f0;
+
     --color-neutral-gray: #9ca3af;
 }
 

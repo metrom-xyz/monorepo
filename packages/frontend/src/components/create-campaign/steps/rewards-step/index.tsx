@@ -69,6 +69,7 @@ export function RewardsStep({
                 tokens: undefined,
                 points: undefined,
                 fee: undefined,
+                kpiSpecification: undefined,
             });
         },
         [onRewardsChange],
@@ -79,6 +80,7 @@ export function RewardsStep({
             disabled={disabled}
             completed={!disabled}
             error={!!error}
+            open
             className={styles.step}
         >
             <StepPreview

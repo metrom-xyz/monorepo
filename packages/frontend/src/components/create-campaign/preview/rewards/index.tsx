@@ -1,5 +1,5 @@
 import type { CampaignPreviewTokenDistributables } from "@/src/types";
-import { TextField, Typography } from "@metrom-xyz/ui";
+import { Card, TextField, Typography } from "@metrom-xyz/ui";
 import type { SupportedChain } from "@metrom-xyz/contracts";
 import { useTranslations } from "next-intl";
 import { useAccount, useChainId, useReadContract } from "wagmi";
@@ -72,7 +72,7 @@ export function Rewards({ rewards, startDate, endDate }: RewardsProps) {
 
     return (
         <div className={styles.root}>
-            <div className={styles.table}>
+            <Card className={styles.table}>
                 <div className={styles.header}>
                     <Typography uppercase weight="medium" light size="sm">
                         {t("token")}
@@ -103,7 +103,7 @@ export function Rewards({ rewards, startDate, endDate }: RewardsProps) {
                         </Typography>
                     </div>
                 ))}
-            </div>
+            </Card>
             <div className={styles.summary}>
                 <TextField
                     boxed

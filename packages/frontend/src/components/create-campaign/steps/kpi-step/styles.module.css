@@ -14,7 +14,7 @@
 }
 
 .previewDisabled {
-    @apply hover:cursor-default hover:bg-white hover:dark:bg-slate-800;
+    @apply hover:cursor-default hover:bg-theme-light-foreground hover:dark:bg-theme-dark-foreground;
 }
 
 .tvlWrapper {

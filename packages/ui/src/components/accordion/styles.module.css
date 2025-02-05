@@ -3,7 +3,7 @@
 .root {
     @apply w-full
         rounded-2xl
-        bg-white dark:bg-slate-800;
+        theme-foreground;
 }
 
 .preview {
@@ -15,7 +15,7 @@
         select-none
         cursor-pointer
         rounded-2xl
-        hover:bg-gray-200 hover:dark:bg-slate-700
+        theme-foreground-hover
         transition-all
         duration-200
         ease-in-out;
@@ -26,7 +26,7 @@
 }
 
 .icon {
-    @apply w-4 h-4 stroke-2 transition-transform;
+    @apply w-4 h-4 stroke-2 transition-transform theme-text;
 }
 
 .icon.open {

@@ -21,7 +21,7 @@
 }
 
 .statusDotEnded {
-    @apply bg-gray-400;
+    @apply bg-zinc-400;
 }
 
 .statusDuration {

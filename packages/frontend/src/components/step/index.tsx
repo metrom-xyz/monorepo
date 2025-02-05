@@ -60,7 +60,7 @@ export function Step({
                         completed,
                     })}
                 </div>
-                {contentChildren}
+                <div inert={!open}>{contentChildren}</div>
             </div>
         </motion.div>
     );
