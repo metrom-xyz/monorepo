@@ -43,14 +43,14 @@
         px-3
         gap-2
         cursor-pointer
-        hover:bg-zinc-200 hover:dark:bg-zinc-600
+        hover:bg-zinc-200 hover:dark:bg-zinc-800
         transition-colors
         duration-200
         ease-in-out;
 }
 
 .activeNetwork {
-    @apply bg-zinc-200 dark:bg-zinc-600;
+    @apply bg-zinc-200 dark:bg-zinc-800;
 }
 
 .networksWrapper {

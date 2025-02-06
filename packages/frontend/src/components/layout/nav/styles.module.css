@@ -86,7 +86,7 @@
         transition-colors
         duration-200
         ease-in-out
-        hover:bg-zinc-200 hover:dark:bg-zinc-700;
+        hover:bg-zinc-200 hover:dark:bg-zinc-800;
 }
 
 .tabIcon {
