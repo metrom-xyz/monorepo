@@ -4,7 +4,7 @@
     @apply rounded-xl
         border
         theme-foreground
-        border-zinc-200 dark:border-zinc-900
+        border-zinc-200 dark:border-zinc-700
         z-10
         transition-opacity
         duration-200

@@ -341,6 +341,7 @@ export function RangeStep({
                             {t("chart")}
                         </Typography>
                         <LiquidityDensityChart
+                            tooltipSize="xs"
                             header
                             token0To1={token0To1}
                             error={!!error}

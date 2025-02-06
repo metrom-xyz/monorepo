@@ -1,4 +1,9 @@
-import { Button, ErrorText, Typography } from "@metrom-xyz/ui";
+import {
+    Button,
+    ErrorText,
+    Typography,
+    type TypographySize,
+} from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
 import {
     Bar,
@@ -35,6 +40,7 @@ interface LiquidityDensityProps {
     to?: number;
     token0To1: boolean;
     header?: boolean;
+    tooltipSize?: TypographySize;
     className?: string;
 }
 
@@ -58,6 +64,7 @@ export function LiquidityDensityChart({
     to,
     token0To1,
     header,
+    tooltipSize,
     className,
 }: LiquidityDensityProps) {
     const t = useTranslations("liquidityDensityChart");
@@ -236,7 +243,9 @@ export function LiquidityDensityChart({
                     <Tooltip
                         isAnimationActive={false}
                         cursor={false}
-                        content={<TooltipContent pool={pool} />}
+                        content={
+                            <TooltipContent size={tooltipSize} pool={pool} />
+                        }
                     />
                 </BarChart>
             </ResponsiveContainer>

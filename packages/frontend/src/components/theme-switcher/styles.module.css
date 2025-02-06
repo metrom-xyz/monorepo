@@ -30,7 +30,7 @@
         transition-colors
         duration-200
         ease-in-out
-        p-3.5;
+        p-2.5;
 }
 
 .themeButton:first-child {

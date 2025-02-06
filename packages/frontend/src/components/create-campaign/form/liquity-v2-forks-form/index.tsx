@@ -29,7 +29,6 @@ function validatePayload(
         brand,
         action,
         collateral,
-        supportedCollaterals,
         startDate,
         endDate,
         points,
@@ -39,15 +38,7 @@ function validatePayload(
         fee,
     } = payload;
 
-    if (
-        !brand ||
-        !collateral ||
-        !action ||
-        !startDate ||
-        !endDate ||
-        !supportedCollaterals
-    )
-        return null;
+    if (!brand || !collateral || !action || !startDate || !endDate) return null;
 
     let distributables;
     if (points && fee) {
@@ -67,7 +58,6 @@ function validatePayload(
         brand,
         action,
         collateral,
-        supportedCollaterals,
         startDate,
         endDate,
         distributables,
@@ -121,9 +111,7 @@ export function LiquityV2ForksForm({
                 <LiquityV2BrandStep
                     disabled={unsupportedChain}
                     brand={payload.brand}
-                    supportedCollaterals={payload.supportedCollaterals}
                     onBrandChange={handlePayloadOnChange}
-                    onSupportedCollateralsChange={handlePayloadOnChange}
                 />
                 <LiquityV2ActionStep
                     disabled={!payload?.brand || unsupportedChain}
@@ -132,9 +120,9 @@ export function LiquityV2ForksForm({
                 />
                 <LiquityV2CollateralStep
                     disabled={!payload.action || unsupportedChain}
+                    brand={payload.brand}
                     action={payload.action}
                     collateral={payload.collateral}
-                    supportedCollaterals={payload.supportedCollaterals}
                     onCollateralChange={handlePayloadOnChange}
                 />
                 <StartDateStep

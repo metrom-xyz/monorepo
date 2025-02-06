@@ -11,7 +11,7 @@ import styles from "./styles.module.css";
 
 export function ThemeSwitcher() {
     const [mounted, setMounted] = useState(false);
-    const { theme, setTheme } = useTheme();
+    const { resolvedTheme, setTheme } = useTheme();
 
     const [popoverOpen, setPopoverOpen] = useState(false);
     const [wrapper, setWrapper] = useState<HTMLDivElement | null>(null);
@@ -53,10 +53,10 @@ export function ThemeSwitcher() {
                 onClick={handlePopoverOpen}
                 className={classNames(styles.wrapper)}
             >
-                {theme === Theme.Dark && (
+                {resolvedTheme === Theme.Dark && (
                     <MoonIcon className={styles.themeIcon} />
                 )}
-                {theme === Theme.Light && (
+                {resolvedTheme === Theme.Light && (
                     <SunIcon className={styles.themeIcon} />
                 )}
             </div>
@@ -65,7 +65,7 @@ export function ThemeSwitcher() {
                     <div
                         onClick={getThemeChangeHandler(Theme.Dark)}
                         className={classNames(styles.themeButton, {
-                            [styles.active]: theme === Theme.Dark,
+                            [styles.active]: resolvedTheme === Theme.Dark,
                         })}
                     >
                         <MoonIcon className={styles.themeIcon} />
@@ -73,7 +73,7 @@ export function ThemeSwitcher() {
                     <div
                         onClick={getThemeChangeHandler(Theme.Light)}
                         className={classNames(styles.themeButton, {
-                            [styles.active]: theme === Theme.Light,
+                            [styles.active]: resolvedTheme === Theme.Light,
                         })}
                     >
                         <SunIcon className={styles.themeIcon} />

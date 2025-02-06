@@ -31,7 +31,7 @@
 }
 
 .icon {
-    @apply w-7 h-7 text-white dark:text-zinc-200;
+    @apply w-7 h-7 theme-text;
 }
 
 .leftBodyWrapper {

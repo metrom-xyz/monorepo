@@ -24,11 +24,11 @@
         duration-200
         ease-in-out
         hover:cursor-pointer
-        hover:bg-zinc-200 hover:dark:bg-zinc-200;
+        theme-foreground-hover;
 }
 
 .brandRowSelected {
-    @apply bg-zinc-200;
+    @apply bg-zinc-200 dark:bg-zinc-800;
 }
 
 .brandRow:only-child,

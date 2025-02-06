@@ -54,7 +54,7 @@
 }
 
 .chartWrapperLoading {
-    @apply animate-pulse;
+    @apply animate-pulse dark:bg-zinc-700;
 }
 
 .chartContainer {

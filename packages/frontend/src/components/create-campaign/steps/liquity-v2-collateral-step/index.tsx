@@ -12,22 +12,23 @@ import { CollateralsList } from "./list";
 import { Typography } from "@metrom-xyz/ui";
 import type { LiquityV2Collateral } from "@metrom-xyz/sdk";
 import { RemoteLogo } from "@/src/components/remote-logo";
+import { useLiquityV2Collaterals } from "@/src/hooks/useLiquityV2Collaterals";
 
 import styles from "./styles.module.css";
 
 interface LiquityV2CollateralStepProps {
     disabled?: boolean;
+    brand?: LiquityV2CampaignPayload["brand"];
     action?: LiquityV2CampaignPayload["action"];
     collateral?: LiquityV2CampaignPayload["collateral"];
-    supportedCollaterals?: LiquityV2CampaignPayload["supportedCollaterals"];
     onCollateralChange: (value: LiquityV2CampaignPayloadPart) => void;
 }
 
 export function LiquityV2CollateralStep({
     disabled,
+    brand,
     action,
     collateral,
-    supportedCollaterals,
     onCollateralChange,
 }: LiquityV2CollateralStepProps) {
     const t = useTranslations("newCampaign.form.liquityV2.collaterals");
@@ -35,10 +36,18 @@ export function LiquityV2CollateralStep({
     const [open, setOpen] = useState(true);
 
     const chainId = useChainId();
+    const { loading, collaterals } = useLiquityV2Collaterals(
+        chainId,
+        brand?.slug,
+    );
 
     useEffect(() => {
         setOpen(false);
     }, [chainId]);
+
+    useEffect(() => {
+        onCollateralChange({ collateral: undefined });
+    }, [brand, action]);
 
     const handleCollateralChange = useCallback(
         (collateral: LiquityV2Collateral) => {
@@ -54,7 +63,7 @@ export function LiquityV2CollateralStep({
 
     return (
         <Step
-            disabled={disabled || supportedCollaterals?.length === 0}
+            disabled={disabled}
             open={open}
             completed={!!collateral}
             onPreviewClick={handleStepOnClick}
@@ -83,7 +92,7 @@ export function LiquityV2CollateralStep({
                                 address={collateral.token.address}
                             />
                         </div>
-                        <Typography weight="medium" size="sm" uppercase>
+                        <Typography weight="medium" size="sm">
                             {collateral?.token.symbol}
                         </Typography>
                     </div>
@@ -91,9 +100,10 @@ export function LiquityV2CollateralStep({
             </StepPreview>
             <StepContent>
                 <CollateralsList
+                    loading={loading}
                     action={action}
                     selected={collateral}
-                    supported={supportedCollaterals}
+                    collaterals={collaterals}
                     onChange={handleCollateralChange}
                 />
             </StepContent>
