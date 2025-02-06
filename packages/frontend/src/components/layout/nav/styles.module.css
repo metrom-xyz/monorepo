@@ -41,15 +41,29 @@
 }
 
 .mobileNavigationWrapper {
-    @apply flex flex-col;
+    @apply sm:hidden
+        w-full
+        z-10
+        h-12
+        fixed
+        left-0
+        -bottom-0.5
+        flex
+        items-center
+        justify-between
+        border-t
+        border-gray-200 dark:border-zinc-700
+        theme-foreground;
 }
 
 .mobileNavLink {
-    @apply h-9
+    @apply h-full
+        w-full
         flex
+        flex-col
         items-center
-        px-3
-        gap-2;
+        justify-center
+        px-3;
 }
 
 .metromLogo {
