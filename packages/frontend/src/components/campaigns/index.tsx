@@ -127,8 +127,10 @@ export function Campaigns() {
             },
         ];
         for (const chain of chains) {
+            const { name } = CHAIN_DATA[chain.id as SupportedChain];
+
             options.push({
-                label: chain.name,
+                label: name,
                 value: chain.id,
             });
         }

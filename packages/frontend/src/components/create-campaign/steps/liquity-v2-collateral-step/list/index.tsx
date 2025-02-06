@@ -2,21 +2,23 @@ import type { LiquityV2Collateral } from "@metrom-xyz/sdk";
 import { Typography } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
 import { LiquityV2Action, type LiquityV2CampaignPayload } from "@/src/types";
-import { Row } from "./row";
+import { Row, RowSkeleton } from "./row";
 
 import styles from "./styles.module.css";
 
 interface CollateralsListProps {
+    loading?: boolean;
     action?: LiquityV2CampaignPayload["action"];
     selected?: LiquityV2CampaignPayload["collateral"];
-    supported?: LiquityV2CampaignPayload["supportedCollaterals"];
+    collaterals?: LiquityV2Collateral[];
     onChange: (collateral: LiquityV2Collateral) => void;
 }
 
 export function CollateralsList({
+    loading,
     action,
     selected,
-    supported,
+    collaterals,
     onChange,
 }: CollateralsListProps) {
     const t = useTranslations("newCampaign.form.liquityV2.collaterals");
@@ -35,8 +37,14 @@ export function CollateralsList({
                     )}
                 </Typography>
             </div>
-            {supported && supported.length > 0 ? (
-                supported.map((collateral) => {
+            {loading ? (
+                <>
+                    <RowSkeleton />
+                    <RowSkeleton />
+                    <RowSkeleton />
+                </>
+            ) : collaterals && collaterals.length > 0 ? (
+                collaterals.map((collateral) => {
                     return (
                         <Row
                             key={collateral.token.address}

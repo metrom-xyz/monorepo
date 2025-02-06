@@ -20,17 +20,13 @@ import styles from "./styles.module.css";
 interface LiquityV2BrandStepProps {
     disabled?: boolean;
     brand?: LiquityV2CampaignPayload["brand"];
-    supportedCollaterals?: LiquityV2CampaignPayload["supportedCollaterals"];
     onBrandChange: (value: LiquityV2CampaignPayloadPart) => void;
-    onSupportedCollateralsChange: (value: LiquityV2CampaignPayloadPart) => void;
 }
 
 export function LiquityV2BrandStep({
     disabled,
     brand,
-    supportedCollaterals,
     onBrandChange,
-    onSupportedCollateralsChange,
 }: LiquityV2BrandStepProps) {
     const t = useTranslations("newCampaign.form.liquityV2.brand");
     const [open, setOpen] = useState(true);
@@ -47,16 +43,6 @@ export function LiquityV2BrandStep({
         if (!brand) return undefined;
         return supportedBrands.find(({ slug }) => slug === brand.slug);
     }, [supportedBrands, brand]);
-
-    useEffect(() => {
-        if (!supportedCollaterals && collaterals)
-            onSupportedCollateralsChange({ supportedCollaterals: collaterals });
-    }, [
-        onSupportedCollateralsChange,
-        collaterals,
-        supportedCollaterals,
-        loadingCollaterals,
-    ]);
 
     useEffect(() => {
         setOpen(false);

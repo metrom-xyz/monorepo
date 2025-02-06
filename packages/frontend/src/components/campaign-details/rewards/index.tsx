@@ -1,4 +1,4 @@
-import { TextField, Typography } from "@metrom-xyz/ui";
+import { Card, TextField, Typography } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
 import dayjs from "dayjs";
 import { useMemo } from "react";
@@ -35,7 +35,7 @@ export function Rewards({ campaign, loading }: RewardsProps) {
             <Typography size="lg" weight="medium" uppercase>
                 {t("title")}
             </Typography>
-            <div className={styles.table}>
+            <Card className={styles.table}>
                 <div className={styles.header}>
                     <Typography uppercase weight="medium" light size="sm">
                         {t("token")}
@@ -71,7 +71,7 @@ export function Rewards({ campaign, loading }: RewardsProps) {
                         </Typography>
                     </div>
                 ))}
-            </div>
+            </Card>
             <div className={styles.summary}>
                 <TextField
                     boxed

@@ -8,6 +8,7 @@ import { formatPercentage } from "@/src/utils/format";
 import { shuffle } from "@/src/utils/common";
 
 import styles from "./styles.module.css";
+import classNames from "classnames";
 
 interface RepartitionChartProps {
     loading: boolean;
@@ -106,7 +107,11 @@ export function RepartitionChart({
                 {t("repartition")}
             </Typography>
             <div className={styles.container}>
-                <div className={styles.chartWrapper}>
+                <div
+                    className={classNames(styles.chartWrapper, {
+                        [styles.loading]: !chartData || loading,
+                    })}
+                >
                     {!chartData || loading ? (
                         <div className={styles.chartWrapperLoading}></div>
                     ) : (

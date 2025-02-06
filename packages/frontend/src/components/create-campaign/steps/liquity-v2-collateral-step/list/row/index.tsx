@@ -4,10 +4,10 @@ import { Skeleton, Typography } from "@metrom-xyz/ui";
 import { useCallback } from "react";
 import { useChainId } from "wagmi";
 import classNames from "classnames";
-
-import styles from "./styles.module.css";
 import { LiquityV2Action, type LiquityV2CampaignPayload } from "@/src/types";
 import { formatUsdAmount } from "@/src/utils/format";
+
+import styles from "./styles.module.css";
 
 interface RowProps {
     action?: LiquityV2CampaignPayload["action"];
@@ -38,7 +38,7 @@ export function Row({ action, selected, collateral, onChange }: RowProps) {
                     {collateral.token.symbol}
                 </Typography>
             </div>
-            <Typography weight="medium" size="lg">
+            <Typography weight="medium" size="sm" light>
                 {formatUsdAmount(
                     action === LiquityV2Action.Debt
                         ? collateral.usdMintedDebt
@@ -52,10 +52,11 @@ export function Row({ action, selected, collateral, onChange }: RowProps) {
 export function RowSkeleton() {
     return (
         <div className={classNames(styles.root)}>
-            <div className={styles.collateralName}>
+            <div className={styles.collateral}>
                 <Skeleton circular width={32} />
                 <Skeleton size="lg" width={40} />
             </div>
+            <Skeleton size="sm" width={40} />
         </div>
     );
 }

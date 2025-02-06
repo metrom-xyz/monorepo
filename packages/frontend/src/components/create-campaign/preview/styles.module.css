@@ -53,7 +53,11 @@
 }
 
 .metromLogo {
-    @apply m-7;
+    @apply m-7 text-black;
+}
+
+.feedbackText {
+    @apply dark:text-black;
 }
 
 .feedbackActionsContainer {

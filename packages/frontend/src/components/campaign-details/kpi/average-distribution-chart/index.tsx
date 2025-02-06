@@ -77,7 +77,6 @@ export function AverageDistributionChart({
                         {chartData.map((entry, index) => (
                             <Cell
                                 key={`cell-${index}`}
-                                // fill={entry.color}
                                 strokeWidth={4}
                                 className={classNames(styles.cell, {
                                     [styles[entry.type]]: true,

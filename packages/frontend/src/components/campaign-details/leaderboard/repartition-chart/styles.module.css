@@ -48,8 +48,8 @@
         ease-in-out;
 }
 
-.chartWrapperLoading {
-    @apply animate-pulse;
+.loading {
+    @apply animate-pulse dark:bg-zinc-700;
 }
 
 .chartContainer {

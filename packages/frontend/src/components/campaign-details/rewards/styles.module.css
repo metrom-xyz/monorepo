@@ -8,10 +8,6 @@
     @apply flex
         flex-col
         gap-7
-        bg-white
-        dark:bg-zinc-800
-        rounded-2xl
-        p-4
         transition-colors
         duration-200
         ease-in-out;

@@ -20,6 +20,7 @@ export function formatPercentage({
     humanize?: boolean;
 }): string {
     if (percentage && !keepDust && percentage < 0.01) return "<0.01%";
+    if (percentage && percentage > 10000) return ">10k%";
     return `${numeral(percentage).format(`0,0.0[${keepDust ? "000" : "0"}]${humanize ? "a" : ""}`)}%`;
 }
 

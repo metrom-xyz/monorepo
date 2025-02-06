@@ -351,10 +351,18 @@ export function CampaignPreview({
     return (
         <div className={styles.feedback}>
             <MetromLightLogo className={styles.metromLogo} />
-            <Typography uppercase weight="medium">
+            <Typography
+                uppercase
+                weight="medium"
+                className={styles.feedbackText}
+            >
                 {t("congratulations")}
             </Typography>
-            <Typography size="xl2" weight="medium">
+            <Typography
+                size="xl2"
+                weight="medium"
+                className={styles.feedbackText}
+            >
                 {t("launched")}
             </Typography>
             <div className={styles.feedbackActionsContainer}>

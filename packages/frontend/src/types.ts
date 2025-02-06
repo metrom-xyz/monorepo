@@ -125,7 +125,6 @@ export interface LiquityV2CampaignPayload extends BaseCampaignPayload {
     brand?: LiquityV2Protocol;
     action?: LiquityV2Action;
     collateral?: LiquityV2Collateral;
-    supportedCollaterals?: LiquityV2Collateral[];
 }
 
 export interface CampaignPreviewTokenDistributables {
@@ -179,7 +178,6 @@ export class LiquityV2CampaignPreviewPayload extends BaseCampaignPreviewPayload 
         public readonly brand: LiquityV2Protocol,
         public readonly action: LiquityV2Action,
         public readonly collateral: LiquityV2Collateral,
-        public readonly supportedCollaterals: LiquityV2Collateral[],
         ...baseArgs: ConstructorParameters<typeof BaseCampaignPreviewPayload>
     ) {
         super(...baseArgs);
