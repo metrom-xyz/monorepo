@@ -162,19 +162,21 @@ export function ConnectButton() {
                                                         transform:
                                                             width > 640
                                                                 ? "translateX(448px)"
-                                                                : "translateY(100%)",
+                                                                : "translateY(448px)",
                                                     },
                                                     show: {
                                                         transform:
                                                             width > 640
                                                                 ? "translateX(-448px)"
-                                                                : "translateY(25%)",
+                                                                : "translateY(-448px)",
                                                     },
                                                 }}
-                                                className={classNames(
-                                                    styles.accountMenuHorizontal,
-                                                    styles.accountMenuVertical,
-                                                )}
+                                                className={classNames({
+                                                    [styles.accountMenuHorizontal]:
+                                                        width > 640,
+                                                    [styles.accountMenuVertical]:
+                                                        width <= 640,
+                                                })}
                                             >
                                                 <AccountMenu
                                                     account={account}

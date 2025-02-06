@@ -36,12 +36,8 @@
         ease-in-out;
 }
 
-.menuOpen {
-    @apply bg-zinc-200;
-}
-
 .menuIconWrapper > svg {
-    @apply h-7 w-7;
+    @apply h-7 w-7 theme-text;
 }
 
 .mobileNavigationWrapper {
