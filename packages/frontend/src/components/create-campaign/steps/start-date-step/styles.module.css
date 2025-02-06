@@ -3,7 +3,7 @@
 .previewLabelWrapper {
     @apply flex
         items-center
-        gap-2;
+        gap-1;
 }
 
 .previewLabel {
