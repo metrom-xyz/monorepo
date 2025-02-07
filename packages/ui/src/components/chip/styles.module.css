@@ -3,7 +3,7 @@
 .root {
     @apply flex
         justify-center
-        dark:bg-zinc-800 bg-zinc-100
+        theme-surface-2
         rounded-[2.813rem]
         select-none
         transition-colors

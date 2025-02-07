@@ -52,8 +52,8 @@
         items-center
         justify-between
         border-t
-        border-gray-200 dark:border-zinc-700
-        theme-foreground;
+        border-gray-200 dark:border-zinc-600
+        theme-surface;
 }
 
 .mobileNavLink {
@@ -100,7 +100,7 @@
         transition-colors
         duration-200
         ease-in-out
-        hover:bg-zinc-200 hover:dark:bg-zinc-800;
+        theme-surface-hover
 }
 
 .tabIcon {

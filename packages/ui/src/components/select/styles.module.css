@@ -41,6 +41,6 @@
 }
 
 .pickedOption {
-    @apply bg-zinc-300 dark:bg-zinc-700
-        hover:bg-zinc-300 hover:dark:bg-zinc-700;
+    @apply bg-zinc-200 dark:bg-zinc-700
+        hover:bg-zinc-200 hover:dark:bg-zinc-700;
 }

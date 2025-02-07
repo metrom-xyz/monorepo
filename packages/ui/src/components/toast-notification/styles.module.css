@@ -10,7 +10,7 @@
 }
 
 .toast {
-    @apply absolute right-0 rounded-2xl bg-white dark:bg-zinc-900 p-3;
+    @apply absolute right-0 rounded-2xl theme-surface p-3;
 }
 
 .wrapper {
@@ -18,7 +18,7 @@
 }
 
 .iconWrapper {
-    @apply p-3.5 theme-foreground rounded-lg;
+    @apply p-3.5 theme-surface-2 rounded-lg;
 }
 
 .iconWrapper.error {

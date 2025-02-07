@@ -3,6 +3,7 @@
 .root {
     @apply flex
         flex-col
+        pt-4
         gap-1
         w-full
         overflow-hidden;

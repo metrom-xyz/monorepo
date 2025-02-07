@@ -1,7 +1,7 @@
 @reference "../../app.css";
 
 .root {
-    @apply theme-foreground
+    @apply theme-surface
         rounded-2xl
         overflow-hidden
         transition-colors

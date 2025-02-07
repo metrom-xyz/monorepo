@@ -11,5 +11,5 @@
         justify-center
         items-center
         backdrop-blur
-        bg-black/65 dark:bg-zinc-900;
+        bg-dark-bg/65 dark:bg-zinc-900/65;
 }

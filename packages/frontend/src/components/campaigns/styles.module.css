@@ -44,7 +44,7 @@
         items-center
         justify-center
         gap-7
-        theme-foreground
+        theme-surface
         rounded-2xl;
 }
 

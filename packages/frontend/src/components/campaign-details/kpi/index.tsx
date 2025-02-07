@@ -1,4 +1,4 @@
-import { TextField, Typography } from "@metrom-xyz/ui";
+import { Card, TextField, Typography } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
 import { formatPercentage, formatUsdAmount } from "@/src/utils/format";
 import {
@@ -111,7 +111,7 @@ export function Kpi({ campaign, loading }: KpiProps) {
                             })}
                         />
                     </div>
-                    <div className={styles.chart}>
+                    <Card className={styles.chart}>
                         <Typography size="sm" uppercase light weight="medium">
                             {t("chart")}
                         </Typography>
@@ -131,7 +131,7 @@ export function Kpi({ campaign, loading }: KpiProps) {
                                 className={styles.chartContainer}
                             />
                         </div>
-                    </div>
+                    </Card>
                 </div>
                 {measurement && (
                     <div className={styles.distributionChartsWrapper}>

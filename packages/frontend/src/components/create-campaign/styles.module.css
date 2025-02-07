@@ -15,7 +15,7 @@
 .campaignCard {
     @apply h-full
         max-w-96
-        theme-foreground-hover
+        theme-surface-hover
         transition-colors
         duration-200
         ease-in-out;
@@ -32,7 +32,7 @@
         h-24
         w-24
         rounded-3xl
-        bg-zinc-100 dark:bg-zinc-900;
+        bg-zinc-100 dark:bg-zinc-700/50;
 }
 
 .ammIcon {

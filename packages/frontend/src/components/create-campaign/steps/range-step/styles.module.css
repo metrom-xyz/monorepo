@@ -31,7 +31,7 @@
 }
 
 .activePriceTab {
-    @apply bg-black dark:bg-zinc-950;
+    @apply bg-black dark:bg-zinc-900;
 }
 
 .activePriceTab > p {
@@ -52,7 +52,7 @@
 }
 
 .previewDisabled {
-    @apply hover:cursor-default hover:bg-theme-light-foreground hover:dark:bg-theme-dark-foreground;
+    @apply hover:cursor-default hover:bg-light-surface hover:dark:bg-dark-surface;
 }
 
 .priceWrapper {

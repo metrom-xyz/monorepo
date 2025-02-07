@@ -1,7 +1,7 @@
 @reference "../../app.css";
 
 .root {
-    @apply theme-background
+    @apply theme-bg
         min-h-screen
         transition-colors
         duration-200

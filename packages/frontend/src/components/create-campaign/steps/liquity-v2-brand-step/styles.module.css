@@ -24,7 +24,7 @@
         duration-200
         ease-in-out
         hover:cursor-pointer
-        theme-foreground-hover;
+        theme-surface-hover;
 }
 
 .brandRowSelected {
