@@ -15,7 +15,7 @@
 .fallback {
     @apply relative
         bg-zinc-800
-        dark:bg-zinc-900
+        dark:bg-black
         rounded-full
         flex
         justify-center

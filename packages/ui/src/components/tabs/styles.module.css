@@ -4,7 +4,7 @@
     @apply flex
         items-center
         rounded-md
-        bg-zinc-100 dark:bg-zinc-900;
+        theme-surface-2;
 }
 
 .xs {

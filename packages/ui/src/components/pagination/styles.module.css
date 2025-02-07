@@ -20,7 +20,7 @@
         items-center
         justify-center
         cursor-pointer
-        hover:bg-zinc-200 hover:dark:bg-zinc-800
+        theme-surface-hover
         transition-colors
         duration-200
         ease-in-out;
@@ -32,7 +32,7 @@
 
 .clickable {
     @apply cursor-pointer
-        hover:bg-zinc-200 hover:dark:bg-zinc-800
+        theme-surface-hover
         transition-colors
         duration-200
         ease-in-out;
@@ -46,6 +46,6 @@
     @apply bg-zinc-200 dark:bg-zinc-700 cursor-not-allowed;
 }
 
-.arrowItem:disabled .arrowIcon {
-    @apply text-zinc-400 dark:text-zinc-800;
+.arrowItem:disabled > .arrowIcon {
+    @apply text-zinc-400;
 }

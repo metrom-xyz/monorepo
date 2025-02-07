@@ -28,14 +28,7 @@
         flex-[2]
         flex 
         flex-col
-        items-stretch
-        bg-white
-        dark:bg-zinc-800
-        rounded-2xl
-        p-4
-        transition-colors
-        duration-200
-        ease-in-out;
+        items-stretch;
 }
 
 .chartWrapper {

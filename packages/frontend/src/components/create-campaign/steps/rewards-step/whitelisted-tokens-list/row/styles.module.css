@@ -11,8 +11,8 @@
         duration-200
         ease-in-out
         cursor-pointer
-        theme-foreground
-        theme-foreground-hover;
+        theme-surface
+        theme-surface-hover;
 }
 
 .token {

@@ -18,7 +18,7 @@
 }
 
 .previewDisabled {
-    @apply hover:cursor-default hover:bg-theme-light-foreground hover:dark:bg-theme-dark-foreground;
+    @apply hover:cursor-default hover:bg-light-surface hover:dark:bg-dark-surface;
 }
 
 .typeWrapper {

@@ -10,12 +10,12 @@
         transition-colors
         duration-200
         ease-in-out
-        bg-zinc-100 dark:bg-zinc-900
+        theme-surface-2
         opacity-50;
 }
 
 .active {
-    @apply bg-white dark:bg-zinc-800 opacity-100;
+    @apply bg-white dark:bg-zinc-700 opacity-100;
 }
 
 .xs {

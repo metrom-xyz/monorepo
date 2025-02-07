@@ -42,7 +42,7 @@
         border-transparent
         placeholder:text-zinc-400
         placeholder:select-none
-        bg-zinc-100 dark:bg-zinc-800
+        theme-surface-2
         theme-text
         w-full;
 }

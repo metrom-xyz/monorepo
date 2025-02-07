@@ -63,7 +63,7 @@
 }
 
 .activeTab {
-    @apply bg-black dark:bg-zinc-950;
+    @apply bg-black dark:bg-zinc-900;
 }
 
 .activeTab > p {

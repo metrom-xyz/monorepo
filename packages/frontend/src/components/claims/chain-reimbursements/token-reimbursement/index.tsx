@@ -1,5 +1,5 @@
 import classNames from "classnames";
-import { Typography, Button, Skeleton } from "@metrom-xyz/ui";
+import { Typography, Button, Skeleton, Card } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
 import {
     useAccount,
@@ -131,7 +131,7 @@ export function TokenReimbursement({
     ]);
 
     return (
-        <div className={styles.root}>
+        <Card className={styles.root}>
             <div className={styles.leftWrapper}>
                 <RemoteLogo
                     chain={chainId}
@@ -165,7 +165,7 @@ export function TokenReimbursement({
                             tokenSymbol: tokenReimbursements.token.symbol,
                         })}
             </Button>
-        </div>
+        </Card>
     );
 }
 

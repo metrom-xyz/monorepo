@@ -3,7 +3,7 @@
 .root {
     @apply w-full
         rounded-2xl
-        theme-foreground;
+        theme-surface;
 }
 
 .preview {
@@ -15,7 +15,7 @@
         select-none
         cursor-pointer
         rounded-2xl
-        theme-foreground-hover
+        theme-surface-hover
         transition-all
         duration-200
         ease-in-out;

@@ -2,20 +2,23 @@
 
 @variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
 
-@utility theme-background {
-    @apply bg-theme-light-background dark:bg-theme-dark-background;
+@utility theme-bg {
+    @apply bg-light-bg dark:bg-dark-bg;
 }
 
-@utility theme-foreground {
-    @apply bg-theme-light-foreground dark:bg-theme-dark-foreground;
+@utility theme-surface {
+    @apply bg-light-surface dark:bg-dark-surface;
 }
-
-@utility theme-foreground-hover {
+@utility theme-surface-hover {
     @apply hover:bg-zinc-200 hover:dark:bg-zinc-800;
 }
 
+@utility theme-surface-2 {
+    @apply bg-light-surface-2 dark:bg-dark-surface-2;
+}
+
 @utility theme-text {
-    @apply text-theme-light-text dark:text-theme-dark-text;
+    @apply text-light-text dark:text-dark-text;
 }
 
 @theme {
@@ -38,13 +41,15 @@
     --color-black: #000000;
     --color-white: #ffffff;
 
-    --color-theme-light-background: #f3f4f6;
-    --color-theme-light-foreground: #ffffff;
-    --color-theme-light-text: #000000;
+    --color-light-bg: theme(colors.gray.100);
+    --color-light-surface: theme(colors.white);
+    --color-light-surface-2: theme(colors.zinc.100);
+    --color-light-text: theme(colors.black);
 
-    --color-theme-dark-background: #0f0f0f;
-    --color-theme-dark-foreground: #1c1c1c;
-    --color-theme-dark-text: #e2e8f0;
+    --color-dark-bg: theme(colors.zinc.950);
+    --color-dark-surface: theme(colors.zinc.900);
+    --color-dark-surface-2: theme(colors.zinc.800);
+    --color-dark-text: theme(colors.slate.300);
 
     --color-neutral-gray: #9ca3af;
 }

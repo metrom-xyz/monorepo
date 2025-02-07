@@ -17,14 +17,16 @@ const preview: Preview = {
         },
         backgrounds: {
             values: [
-                { name: "Dark", value: "#000000" },
-                { name: "Light", value: "#FFFFFF" },
-                { name: "Gray", value: "#F3F4F6" },
+                { name: "Dark", value: "#09090b" },
+                { name: "Surface dark", value: "#18181b" },
+                { name: "Light", value: "#f3f4f6" },
+                { name: "Surface light", value: "#ffffff" },
             ],
             options: [
-                { name: "Dark", value: "#000000" },
-                { name: "Light", value: "#FFFFFF" },
-                { name: "Gray", value: "#F3F4F6" },
+                { name: "Dark", value: "#09090b" },
+                { name: "Surface dark", value: "#18181b" },
+                { name: "Light", value: "#f3f4f6" },
+                { name: "Surface light", value: "#ffffff" },
             ],
             default: "Light",
         },

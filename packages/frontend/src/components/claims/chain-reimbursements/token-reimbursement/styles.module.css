@@ -8,10 +8,7 @@
         justify-between
         items-start
         sm:items-center
-        gap-3
-        bg-white dark:bg-zinc-800
-        rounded-xl
-        p-4;
+        gap-3;
 }
 
 .leftWrapper {
