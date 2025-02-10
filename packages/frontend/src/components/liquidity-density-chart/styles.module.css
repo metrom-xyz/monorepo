@@ -28,7 +28,7 @@
 }
 
 .loading {
-    @apply bg-zinc-200 dark:bg-zinc-800 animate-pulse;
+    @apply bg-zinc-200 dark:bg-zinc-900 animate-pulse;
 }
 
 .container {

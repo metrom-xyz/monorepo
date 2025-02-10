@@ -11,6 +11,14 @@
         border-zinc-200 dark:border-zinc-600;
 }
 
+.referenceLine line {
+    @apply stroke-black dark:stroke-zinc-400;
+}
+
+.referenceCircle {
+    @apply fill-black stroke-white dark:stroke-zinc-400;
+}
+
 .row {
-    @apply flex justify-between gap-4 items-center
+    @apply flex justify-between gap-4 items-center;
 }
