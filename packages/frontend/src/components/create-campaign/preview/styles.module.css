@@ -5,7 +5,7 @@
         flex
         flex-col
         sm:min-w-[750px]
-        bg-zinc-100 dark:bg-zinc-950
+        bg-zinc-100 dark:bg-dark-bg
         overflow-hidden
         m-5
         rounded-3xl;

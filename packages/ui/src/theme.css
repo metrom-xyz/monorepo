@@ -46,7 +46,7 @@
     --color-light-surface-2: theme(colors.zinc.100);
     --color-light-text: theme(colors.black);
 
-    --color-dark-bg: theme(colors.zinc.950);
+    --color-dark-bg: oklch(0.155 0.005 285.823);
     --color-dark-surface: theme(colors.zinc.900);
     --color-dark-surface-2: theme(colors.zinc.800);
     --color-dark-text: theme(colors.slate.300);
