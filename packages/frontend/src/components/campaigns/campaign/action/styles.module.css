@@ -21,5 +21,5 @@
 }
 
 .chip {
-    @apply bg-zinc-100 dark:bg-zinc-900 rounded-lg ml-2 py-1 px-1.5 w-fit;
+    @apply bg-zinc-100 dark:bg-zinc-700 rounded-lg ml-2 py-1 px-1.5 w-fit;
 }
