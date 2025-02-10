@@ -5,7 +5,6 @@
         w-fit
         font-sans
         font-medium
-        text-base
         leading-4
         flex
         items-center
@@ -35,8 +34,8 @@
     @apply rounded-xl
         text-black
         dark:text-zinc-200
-        bg-zinc-100 dark:bg-zinc-800
-        hover:bg-zinc-200 hover:dark:bg-zinc-700
+        bg-zinc-100 dark:bg-zinc-900
+        hover:bg-zinc-200 hover:dark:bg-zinc-800
         border
         border-zinc-500 dark:border-zinc-600;
 }
@@ -70,11 +69,11 @@
 }
 
 .secondary.sm {
-    @apply px-4 py-2.5;
+    @apply px-4 py-2.5 text-sm;
 }
 
 .secondary.xs {
-    @apply px-2 py-1;
+    @apply px-2 py-1 text-xs;
 }
 
 .icon.lg {

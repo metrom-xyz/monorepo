@@ -100,7 +100,7 @@ export function LiquidityBar({
                 fillOpacity={opacity}
                 width={width}
                 height={height}
-                rx={4}
+                rx={6}
                 className={classNames(styles.bar, {
                     [styles.activeTick]: idx === activeTickIdx,
                     [styles.inRange]: inRange,
