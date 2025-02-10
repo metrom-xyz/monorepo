@@ -120,6 +120,7 @@ export function RepartitionChart({
                                 dataKey="value"
                                 animationEasing="ease-in-out"
                                 animationDuration={500}
+                                cornerRadius={6}
                                 data={chartData}
                                 activeIndex={activeIndex}
                                 innerRadius={70}
@@ -132,7 +133,7 @@ export function RepartitionChart({
                                     <Cell
                                         key={`cell-${index}`}
                                         fill={entry.color}
-                                        strokeWidth={4}
+                                        strokeWidth={5}
                                         className={styles.cell}
                                     />
                                 ))}

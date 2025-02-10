@@ -117,12 +117,11 @@ export function DistributionChart({
                         dataKey="distributed"
                         stackId="distribution"
                         fill="#6CFF95"
-                        maxBarSize={50}
                     />
                     <Bar
                         dataKey="reimbursed"
                         stackId="distribution"
-                        maxBarSize={50}
+                        radius={[6, 6, 0, 0]}
                         className={styles.reimbursedBar}
                     />
 

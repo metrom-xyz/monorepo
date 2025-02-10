@@ -41,7 +41,6 @@ export function AverageDistributionChart({
             data.push({
                 type: "distributed",
                 value: distributedPercentage,
-                // color: "#6CFF95",
             });
         }
 
@@ -49,7 +48,6 @@ export function AverageDistributionChart({
             data.push({
                 type: "reimbursed",
                 value: reimbursedPercentage,
-                // color: "#d1d5db",
             });
         }
 
@@ -67,6 +65,7 @@ export function AverageDistributionChart({
                         dataKey="value"
                         animationEasing="ease-in-out"
                         animationDuration={500}
+                        cornerRadius={6}
                         data={chartData}
                         innerRadius={70}
                         outerRadius={120}
@@ -77,7 +76,7 @@ export function AverageDistributionChart({
                         {chartData.map((entry, index) => (
                             <Cell
                                 key={`cell-${index}`}
-                                strokeWidth={4}
+                                strokeWidth={5}
                                 className={classNames(styles.cell, {
                                     [styles[entry.type]]: true,
                                 })}
