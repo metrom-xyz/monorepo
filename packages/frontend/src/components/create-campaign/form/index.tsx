@@ -15,7 +15,7 @@ import { LIQUITY_V2_CAMPAIGN } from "@/src/commons/env";
 
 import styles from "./styles.module.css";
 
-export enum View {
+enum View {
     Form = "form",
     Preview = "preview",
 }

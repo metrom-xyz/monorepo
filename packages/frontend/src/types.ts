@@ -15,6 +15,7 @@ import {
     type LiquityV2Collateral,
     type Erc20Token,
     type LiquityV2StabilityPoolTarget,
+    Status,
 } from "@metrom-xyz/sdk";
 import type { Dayjs } from "dayjs";
 import type { SVGProps, FunctionComponent } from "react";
@@ -23,6 +24,13 @@ import type { Address } from "viem";
 export enum Theme {
     Dark = "dark",
     Light = "light",
+}
+
+export enum FilterableStatus {
+    All = "",
+    Live = Status.Live,
+    Upcoming = Status.Upcoming,
+    Ended = Status.Ended,
 }
 
 type PropertyUnion<T> = {

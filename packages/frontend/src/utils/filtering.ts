@@ -5,8 +5,7 @@ import {
     Status,
     TargetType,
 } from "@metrom-xyz/sdk";
-import { FilterableStatus } from "../components/campaigns";
-import type { NamedCampaign } from "../types";
+import { type NamedCampaign, FilterableStatus } from "../types";
 
 export function sortCampaigns(campaigns: NamedCampaign[]): NamedCampaign[] {
     const clusteredCampaigns = campaigns.reduce(

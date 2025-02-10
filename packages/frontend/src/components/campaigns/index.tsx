@@ -25,23 +25,16 @@ import { filterCampaigns, sortCampaigns } from "@/src/utils/filtering";
 import { useRouter, usePathname } from "next/navigation";
 import { useRouter as useLocalizedRouter } from "@/i18n/routing";
 import { SupportedChain } from "@metrom-xyz/contracts";
-import { Status } from "@metrom-xyz/sdk";
 import { useChains } from "wagmi";
 import classNames from "classnames";
 import { CHAIN_DATA } from "@/src/commons";
+import { FilterableStatus } from "@/src/types";
 
 import styles from "./styles.module.css";
 
 const PAGE_SIZE = 10;
 
-export const CHAIN_ALL = 0;
-
-export enum FilterableStatus {
-    All = "",
-    Live = Status.Live,
-    Upcoming = Status.Upcoming,
-    Ended = Status.Ended,
-}
+const CHAIN_ALL = 0;
 
 const statusSelectRenderOption = (option: {
     label: string;
@@ -205,7 +198,7 @@ export function Campaigns() {
     }, [localizedRouter]);
 
     return (
-        <div className={`${styles.root} dark`}>
+        <div className={styles.root}>
             <div className={styles.filters}>
                 <TextInput
                     className={classNames(

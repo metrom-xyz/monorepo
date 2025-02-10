@@ -6,19 +6,14 @@ import "../../app.css";
 
 import type { Metadata } from "next";
 import { type ReactNode } from "react";
-import { NextIntlClientProvider } from "next-intl";
 import { getMessages, setRequestLocale } from "next-intl/server";
 import type { Locale } from "@rainbow-me/rainbowkit";
 import { ClientProviders } from "../../components/client-providers";
-import Fathom from "@/src/components/fathom";
 import { routing } from "@/src/i18n/routing";
 import { notFound } from "next/navigation";
-import classNames from "classnames";
-import { Nav } from "@/src/components/layout/nav";
-import { Footer } from "@/src/components/layout/footer";
+import { Layout as AppLayout } from "../../components/layout";
+import { NextIntlClientProvider } from "next-intl";
 import { ThemeProvider } from "next-themes";
-
-import styles from "./styles.module.css";
 
 interface Params {
     locale: string;
@@ -48,27 +43,13 @@ export default async function Layout({ children, params }: LayoutParams) {
     return (
         <html lang={locale} suppressHydrationWarning>
             <body>
-                <ThemeProvider attribute="data-theme">
-                    <div className={styles.root}>
-                        <NextIntlClientProvider messages={messages}>
-                            <ClientProviders locale={locale as Locale}>
-                                <Fathom />
-                                <div
-                                    className={classNames(
-                                        styles.root,
-                                        styles.layout,
-                                    )}
-                                >
-                                    <Nav />
-                                    <div className={styles.main}>
-                                        {children}
-                                    </div>
-                                    <Footer />
-                                </div>
-                            </ClientProviders>
-                        </NextIntlClientProvider>
-                    </div>
-                </ThemeProvider>
+                <NextIntlClientProvider messages={messages}>
+                    <ThemeProvider attribute="data-theme">
+                        <ClientProviders locale={locale as Locale}>
+                            <AppLayout>{children}</AppLayout>
+                        </ClientProviders>
+                    </ThemeProvider>
+                </NextIntlClientProvider>
             </body>
         </html>
     );

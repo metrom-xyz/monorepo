@@ -90,9 +90,12 @@ export function LiquityV2ForksForm({
         setPayload({});
     }, [chainId]);
 
-    function handlePayloadOnChange(part: LiquityV2CampaignPayloadPart) {
-        setPayload((prev) => ({ ...prev, ...part }));
-    }
+    const handlePayloadOnChange = useCallback(
+        (part: LiquityV2CampaignPayloadPart) => {
+            setPayload((prev) => ({ ...prev, ...part }));
+        },
+        [],
+    );
 
     const handlePayloadOnError = useCallback(
         (errors: CampaignPayloadErrors) => {

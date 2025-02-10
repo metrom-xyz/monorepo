@@ -2,25 +2,22 @@
 
 import "@rainbow-me/rainbowkit/styles.css";
 
+import { getDefaultConfig, type Locale } from "@rainbow-me/rainbowkit";
 import { type ReactNode } from "react";
-import {
-    getDefaultConfig,
-    RainbowKitProvider,
-    type Locale,
-    lightTheme,
-} from "@rainbow-me/rainbowkit";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { WagmiProvider } from "wagmi";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { hashFn } from "wagmi/query";
-import { SUPPORTED_CHAINS } from "../commons";
-import { WALLETCONNECT_PROJECT_ID } from "../commons/env";
+import { TokenIconsProvider } from "./token-icon-provider";
+import { Toaster } from "@metrom-xyz/ui";
+import { lightTheme, RainbowKitProvider } from "@rainbow-me/rainbowkit";
+import dayjs from "dayjs";
 import duration from "dayjs/plugin/duration";
 import localizedFormat from "dayjs/plugin/localizedFormat";
 import relativeTime from "dayjs/plugin/relativeTime";
 import utc from "dayjs/plugin/utc";
-import dayjs from "dayjs";
-import { TokenIconsProvider } from "./token-icon-provider";
-import { Toaster } from "@metrom-xyz/ui";
+import { WALLETCONNECT_PROJECT_ID } from "../commons/env";
+import { SUPPORTED_CHAINS } from "../commons";
+import Fathom from "./fathom";
 
 dayjs.extend(duration);
 dayjs.extend(localizedFormat);
@@ -56,6 +53,7 @@ export function ClientProviders({
         <WagmiProvider config={config}>
             <QueryClientProvider client={queryClient}>
                 <TokenIconsProvider>
+                    <Fathom />
                     <Toaster />
                     <RainbowKitProvider
                         appInfo={{
