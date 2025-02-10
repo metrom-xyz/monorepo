@@ -47,7 +47,7 @@ export function LiquityV2CollateralStep({
 
     useEffect(() => {
         onCollateralChange({ collateral: undefined });
-    }, [brand, action]);
+    }, [brand, action, onCollateralChange]);
 
     const handleCollateralChange = useCallback(
         (collateral: LiquityV2Collateral) => {
