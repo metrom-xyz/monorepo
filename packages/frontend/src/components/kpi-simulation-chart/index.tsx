@@ -332,6 +332,7 @@ export function KpiSimulationChart({
                     animationDuration={200}
                     isAnimationActive={true}
                     activeDot={false}
+                    className={styles.distributingArea}
                 />
 
                 <Area

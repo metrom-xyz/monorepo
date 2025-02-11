@@ -46,7 +46,7 @@
 }
 
 .cell.distributed {
-    @apply fill-brand-green;
+    @apply fill-brand-green dark:fill-brand-green-dark;
 }
 
 .cell.reimbursed {

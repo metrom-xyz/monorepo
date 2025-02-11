@@ -116,7 +116,7 @@ export function DistributionChart({
                     <Bar
                         dataKey="distributed"
                         stackId="distribution"
-                        fill="#6CFF95"
+                        className={styles.distributedBar}
                     />
                     <Bar
                         dataKey="reimbursed"
