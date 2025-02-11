@@ -14,7 +14,7 @@ interface LayoutProps {
 export function Layout({ children }: LayoutProps) {
     return (
         <div className={styles.root}>
-            <div className={classNames(styles.root, styles.layout)}>
+            <div className={styles.layout}>
                 <Nav />
                 <div className={styles.main}>{children}</div>
                 <Footer />

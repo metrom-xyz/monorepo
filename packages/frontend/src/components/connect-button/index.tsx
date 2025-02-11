@@ -135,13 +135,13 @@ export function ConnectButton() {
                             </div>
                             {!connected ? (
                                 <Button
+                                    size="sm"
                                     onClick={openConnectModal}
-                                    type="button"
                                     className={{
                                         root: styles.connectButton,
                                     }}
                                 >
-                                    {t("navigation.connectWallet")}
+                                    {t("navigation.connect")}
                                 </Button>
                             ) : (
                                 <>

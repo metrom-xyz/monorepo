@@ -3,7 +3,7 @@
         "allCampaigns": "All campaigns",
         "newCampaign": "New campaign",
         "claims": "Claims",
-        "connectWallet": "Connect wallet"
+        "connect": "Connect"
     },
     "footer": {
         "support": "Support",

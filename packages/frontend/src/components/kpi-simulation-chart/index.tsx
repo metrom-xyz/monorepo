@@ -62,7 +62,6 @@ export function KpiSimulationChart({
     className,
 }: KpiSimulationChartProps) {
     const t = useTranslations("simulationChart");
-    // const { theme } = useTheme();
     const [chartRef, { width }] = useMeasure<HTMLDivElement>();
 
     const currentPayoutUsd =
