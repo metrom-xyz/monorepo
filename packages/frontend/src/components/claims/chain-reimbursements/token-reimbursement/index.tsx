@@ -158,12 +158,8 @@ export function TokenReimbursement({
                 {simulatingRecover
                     ? t("loading")
                     : recovering
-                      ? t("recoveringByToken", {
-                            tokenSymbol: tokenReimbursements.token.symbol,
-                        })
-                      : t("recoverByToken", {
-                            tokenSymbol: tokenReimbursements.token.symbol,
-                        })}
+                      ? t("recoveringByToken")
+                      : t("recoverByToken")}
             </Button>
         </Card>
     );

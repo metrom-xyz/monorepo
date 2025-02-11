@@ -154,12 +154,8 @@ export function TokenClaim({
                 {simulatingClaimAll
                     ? t("loading")
                     : claiming
-                      ? t("claimingByToken", {
-                            tokenSymbol: tokenClaims.token.symbol,
-                        })
-                      : t("claimByToken", {
-                            tokenSymbol: tokenClaims.token.symbol,
-                        })}
+                      ? t("claimingByToken")
+                      : t("claimByToken")}
             </Button>
         </Card>
     );

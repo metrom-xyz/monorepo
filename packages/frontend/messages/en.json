@@ -452,8 +452,8 @@
             "chain": "Chain",
             "claimAll": "Claim all",
             "claimingAll": "Claiming all",
-            "claimByToken": "Claim all {tokenSymbol}",
-            "claimingByToken": "Claiming {tokenSymbol}",
+            "claimByToken": "Claim reward",
+            "claimingByToken": "Claiming",
             "loading": "Loading",
             "empty": {
                 "title": "No claims found",
@@ -483,8 +483,8 @@
             "loading": "Loading",
             "recoverAll": "Recover all",
             "recoveringAll": "Recovering all",
-            "recoverByToken": "Recover all {tokenSymbol}",
-            "recoveringByToken": "Recovering {tokenSymbol}",
+            "recoverByToken": "Recover",
+            "recoveringByToken": "Recovering",
             "notification": {
                 "success": {
                     "message": "Recover successful"
