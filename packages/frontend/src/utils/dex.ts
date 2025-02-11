@@ -32,6 +32,15 @@ export function getPoolAddLiquidityLink(
             `${target.pool.tokens.map((token) => token.address).join("/")}`,
         );
 
+    if (SupportedDex.Unagi === dex.slug) {
+        const { tokens, fee } = target.pool;
+        const url = dex.addLiquidityUrl
+            .replace("{target_token_0}", tokens[0].address)
+            .replace("{target_token_1}", tokens[1].address);
+
+        return fee ? `${url}&fee=${fee * 10000}` : url;
+    }
+
     return dex.addLiquidityUrl.replace(
         "{target_pool}",
         `${target.pool.address}`,

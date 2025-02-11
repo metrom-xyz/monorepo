@@ -36,7 +36,8 @@ export const taikoData: ChainData = {
             slug: SupportedDex.Unagi,
             logo: UnagiLogo,
             name: "Unagi",
-            addLiquidityUrl: "https://unagiswap.xyz/pool",
+            addLiquidityUrl:
+                "https://unagiswap.xyz/pool/create/amm/v3?from={target_token_0}&to={target_token_1}",
             supportsFetchAllPools: true,
         },
     ],
