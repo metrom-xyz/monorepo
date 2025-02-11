@@ -79,7 +79,6 @@ export function RewardsStep({
         <Step
             disabled={disabled}
             completed={!disabled}
-            error={!!error}
             open
             className={styles.step}
         >
@@ -99,17 +98,9 @@ export function RewardsStep({
                             >
                                 {t("title.rewards")}
                             </Typography>
-                            {!disabled && (
-                                <ErrorText
-                                    size="xs"
-                                    weight="medium"
-                                    className={classNames(styles.error, {
-                                        [styles.errorVisible]: !!error,
-                                    })}
-                                >
-                                    {error}
-                                </ErrorText>
-                            )}
+                            <ErrorText size="xs" weight="medium">
+                                {!disabled ? error : null}
+                            </ErrorText>
                         </div>
                         <Tabs
                             size="sm"

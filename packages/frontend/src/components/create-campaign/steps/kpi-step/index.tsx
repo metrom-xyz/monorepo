@@ -8,9 +8,8 @@ import type {
 } from "@/src/types";
 import { Button, ErrorText, Switch, Typography } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { formatUsdAmount } from "@/src/utils/format";
-import classNames from "classnames";
 import { KpiMetric, type KpiSpecification } from "@metrom-xyz/sdk";
 import { usePrevious } from "react-use";
 import { KpiSimulationChart } from "../../../kpi-simulation-chart";
@@ -176,7 +175,13 @@ export function KpiStep({
         setError("");
     }, [rewardType, onKpiChange]);
 
-    function handleSwitchOnClick() {
+    function handleSwitchOnClick(
+        _: boolean,
+        event:
+            | React.MouseEvent<HTMLButtonElement>
+            | React.KeyboardEvent<HTMLButtonElement>,
+    ) {
+        event.stopPropagation();
         setEnabled((enabled) => !enabled);
     }
 
@@ -212,8 +217,6 @@ export function KpiStep({
     return (
         <Step
             disabled={disabled}
-            error={!!error || !!warning}
-            errorLevel={!!error ? "error" : "warning"}
             completed={enabled}
             open={open}
             onPreviewClick={handleStepOnClick}
@@ -233,9 +236,6 @@ export function KpiStep({
                                 size="xs"
                                 weight="medium"
                                 level={!!error ? "error" : "warning"}
-                                className={classNames(styles.error, {
-                                    [styles.errorVisible]: !!error || !!warning,
-                                })}
                             >
                                 {!!error
                                     ? t(error)

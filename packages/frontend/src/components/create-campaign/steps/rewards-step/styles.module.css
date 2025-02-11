@@ -29,14 +29,6 @@
     @apply text-xs text-zinc-400;
 }
 
-.error {
-    @apply transition-opacity duration-200 ease-in-out opacity-0;
-}
-
-.errorVisible {
-    @apply opacity-100;
-}
-
 .previewWrapper {
     @apply h-full w-full flex flex-col gap-2.5;
 }

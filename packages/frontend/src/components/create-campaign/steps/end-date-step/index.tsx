@@ -168,7 +168,6 @@ export function EndDateStep({
             disabled={disabled}
             open={open}
             completed={!!date || !!endDate}
-            error={!!dateError}
             onPreviewClick={handleStepOnClick}
         >
             <StepPreview
@@ -181,23 +180,9 @@ export function EndDateStep({
                         >
                             {t("title")}
                         </Typography>
-                        <AnimatePresence>
-                            {!!dateError && (
-                                <motion.div
-                                    initial="hide"
-                                    animate="show"
-                                    exit="hide"
-                                    variants={{
-                                        hide: { opacity: 0 },
-                                        show: { opacity: 1 },
-                                    }}
-                                >
-                                    <ErrorText size="xs" weight="medium">
-                                        {dateError}
-                                    </ErrorText>
-                                </motion.div>
-                            )}
-                        </AnimatePresence>
+                        <ErrorText size="xs" weight="medium">
+                            {dateError}
+                        </ErrorText>
                     </div>
                 }
             >

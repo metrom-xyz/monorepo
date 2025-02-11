@@ -21,14 +21,6 @@
     @apply flex gap-1;
 }
 
-.error {
-    @apply transition-opacity duration-200 ease-in-out opacity-0;
-}
-
-.errorVisible {
-    @apply opacity-100;
-}
-
 .stepContent {
     @apply flex flex-col gap-3 p-4;
 }

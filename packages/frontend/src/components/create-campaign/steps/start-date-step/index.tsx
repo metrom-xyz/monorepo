@@ -84,11 +84,11 @@ export function StartDateStep({
         if (!date || !minDate || !previousDate) return;
 
         let dateError = "";
-        if (date.isBefore(minDate)) dateError = "errors.dateInThePast";
+        if (date.isBefore(minDate)) dateError = t("errors.dateInThePast");
 
         onError({ startDate: !!dateError });
         setDateError(dateError);
-    }, [date, minDate, onError, previousDate]);
+    }, [date, minDate, previousDate, onError, t]);
 
     const handleStepOnClick = useCallback(() => {
         if (open && !startDate) setDate(undefined);
@@ -106,7 +106,6 @@ export function StartDateStep({
             disabled={disabled}
             open={open}
             completed={!!date || !!startDate}
-            error={!!dateError}
             onPreviewClick={handleStepOnClick}
         >
             <StepPreview
@@ -119,23 +118,9 @@ export function StartDateStep({
                         >
                             {t("title")}
                         </Typography>
-                        <AnimatePresence>
-                            {!!dateError && (
-                                <motion.div
-                                    initial="hide"
-                                    animate="show"
-                                    exit="hide"
-                                    variants={{
-                                        hide: { opacity: 0 },
-                                        show: { opacity: 1 },
-                                    }}
-                                >
-                                    <ErrorText size="xs" weight="medium">
-                                        {t(dateError)}
-                                    </ErrorText>
-                                </motion.div>
-                            )}
-                        </AnimatePresence>
+                        <ErrorText size="xs" weight="medium">
+                            {dateError}
+                        </ErrorText>
                     </div>
                 }
             >

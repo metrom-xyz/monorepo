@@ -59,14 +59,6 @@
     @apply w-full flex gap-1;
 }
 
-.error {
-    @apply transition-opacity duration-200 ease-in-out opacity-0;
-}
-
-.errorVisible {
-    @apply opacity-100;
-}
-
 .applyButton {
     @apply w-full;
 }

@@ -1,7 +1,7 @@
 "use client";
 
 import { type ReactNode } from "react";
-import { AnimatePresence, motion } from "motion/react";
+import { motion } from "motion/react";
 import { ChevronDown } from "@/src/assets/chevron-down";
 import classNames from "classnames";
 import { Typography } from "@metrom-xyz/ui";
@@ -53,24 +53,22 @@ export function StepPreview({
                         {label}
                     </div>
                 )}
-                <AnimatePresence>
-                    {completed && (
-                        <motion.div
-                            initial="hide"
-                            animate="show"
-                            exit="hide"
-                            variants={{
-                                hide: { opacity: 0 },
-                                show: { opacity: 1 },
-                            }}
-                            className={classNames(styles.children, {
-                                [styles.childrenShow]: completed,
-                            })}
-                        >
-                            {children}
-                        </motion.div>
-                    )}
-                </AnimatePresence>
+                {completed && (
+                    <motion.div
+                        initial="hide"
+                        animate="show"
+                        exit="hide"
+                        variants={{
+                            hide: { opacity: 0 },
+                            show: { opacity: 1 },
+                        }}
+                        className={classNames(styles.children, {
+                            [styles.childrenShow]: completed,
+                        })}
+                    >
+                        {children}
+                    </motion.div>
+                )}
             </div>
             {decorator && (
                 <div className={styles.iconWrapper}>

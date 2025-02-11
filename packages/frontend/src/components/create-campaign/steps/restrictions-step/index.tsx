@@ -119,7 +119,13 @@ export function RestrictionsStep({
         setOpen(enabled);
     }, [enabled]);
 
-    function handleSwitchOnClick() {
+    function handleSwitchOnClick(
+        _: boolean,
+        event:
+            | React.MouseEvent<HTMLButtonElement>
+            | React.KeyboardEvent<HTMLButtonElement>,
+    ) {
+        event.stopPropagation();
         setEnabled((enabled) => !enabled);
     }
 
@@ -161,8 +167,6 @@ export function RestrictionsStep({
     return (
         <Step
             disabled={disabled}
-            error={!!error || !!warning}
-            errorLevel={!!error ? "error" : "warning"}
             completed={enabled}
             open={open}
             onPreviewClick={handleStepOnClick}
@@ -183,9 +187,6 @@ export function RestrictionsStep({
                                 size="xs"
                                 weight="medium"
                                 level={!!error ? "error" : "warning"}
-                                className={classNames(styles.error, {
-                                    [styles.errorVisible]: !!error || !!warning,
-                                })}
                             >
                                 {!!error
                                     ? t(error)
