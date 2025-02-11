@@ -44,7 +44,14 @@ export function ThemeSwitcher() {
         };
     }
 
-    if (!mounted) return null;
+    if (!mounted)
+        return (
+            <div className={styles.root}>
+                <div
+                    className={classNames(styles.wrapper, styles.loading)}
+                ></div>
+            </div>
+        );
 
     return (
         <div ref={popoverRef} className={styles.root}>

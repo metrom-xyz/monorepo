@@ -2,8 +2,12 @@
 
 import "@rainbow-me/rainbowkit/styles.css";
 
-import { getDefaultConfig, type Locale } from "@rainbow-me/rainbowkit";
-import { type ReactNode } from "react";
+import {
+    darkTheme,
+    getDefaultConfig,
+    type Locale,
+} from "@rainbow-me/rainbowkit";
+import { useMemo, type ReactNode } from "react";
 import { WagmiProvider } from "wagmi";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { hashFn } from "wagmi/query";
@@ -18,6 +22,8 @@ import utc from "dayjs/plugin/utc";
 import { WALLETCONNECT_PROJECT_ID } from "../commons/env";
 import { SUPPORTED_CHAINS } from "../commons";
 import Fathom from "./fathom";
+import { useTheme } from "next-themes";
+import { Theme } from "../types";
 
 dayjs.extend(duration);
 dayjs.extend(localizedFormat);
@@ -49,6 +55,13 @@ export function ClientProviders({
     locale: Locale;
     children: ReactNode;
 }>) {
+    const { resolvedTheme } = useTheme();
+
+    const theme = useMemo(() => {
+        if (resolvedTheme === Theme.Light) return lightTheme();
+        return darkTheme();
+    }, [resolvedTheme]);
+
     return (
         <WagmiProvider config={config}>
             <QueryClientProvider client={queryClient}>
@@ -61,9 +74,7 @@ export function ClientProviders({
                             learnMoreUrl: "https://www.metrom.xyz",
                         }}
                         locale={locale}
-                        theme={lightTheme({
-                            accentColor: "#000",
-                        })}
+                        theme={theme}
                     >
                         {children}
                     </RainbowKitProvider>

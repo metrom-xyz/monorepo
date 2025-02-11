@@ -1,15 +1,11 @@
 @reference "../../app.css";
 
 .root {
-    @apply theme-bg
-        min-h-screen
-        transition-colors
-        duration-200
-        ease-in-out;
+    @apply theme-bg min-h-screen;
 }
 
 .layout {
-    @apply flex flex-col items-center;
+    @apply min-h-screen flex flex-col items-center;
 }
 
 .main {
