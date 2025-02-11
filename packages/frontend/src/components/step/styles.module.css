@@ -17,14 +17,6 @@
     @apply pointer-events-none opacity-40 dark:opacity-20 select-none;
 }
 
-.error {
-    @apply border-red-600 hover:!border-red-600;
-}
-
-.warning {
-    @apply border-yellow-600 hover:!border-yellow-600;
-}
-
 .open {
     @apply hover:border-transparent;
 }

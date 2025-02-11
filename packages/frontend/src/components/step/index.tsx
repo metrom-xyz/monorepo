@@ -13,8 +13,6 @@ interface StepProps {
     disabled?: boolean;
     completed?: boolean;
     open?: boolean;
-    error?: boolean;
-    errorLevel?: "warning" | "error";
     children: ReactElement[];
     className?: string;
     onPreviewClick?: () => void;
@@ -24,8 +22,6 @@ export function Step({
     disabled,
     completed,
     open,
-    error,
-    errorLevel = "error",
     children,
     className,
     onPreviewClick,
@@ -48,8 +44,6 @@ export function Step({
             animate={{ height: open ? "fit-content" : 84 }}
             className={classNames(className, styles.root, {
                 [styles.disabled]: disabled,
-                [styles.error]: error && errorLevel === "error",
-                [styles.warning]: error && errorLevel === "warning",
                 [styles.open]: open,
             })}
         >

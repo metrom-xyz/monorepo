@@ -146,7 +146,13 @@ export function RangeStep({
         setError("");
     }, [rewardType, onRangeChange]);
 
-    function handleSwitchOnClick() {
+    function handleSwitchOnClick(
+        _: boolean,
+        event:
+            | React.MouseEvent<HTMLButtonElement>
+            | React.KeyboardEvent<HTMLButtonElement>,
+    ) {
+        event.stopPropagation();
         setEnabled((enabled) => !enabled);
     }
 
@@ -199,8 +205,6 @@ export function RangeStep({
     return (
         <Step
             disabled={disabled}
-            error={!!error || !!warning}
-            errorLevel={!!error ? "error" : "warning"}
             completed={enabled}
             open={open}
             onPreviewClick={handleStepOnClick}
@@ -220,9 +224,6 @@ export function RangeStep({
                                 size="xs"
                                 weight="medium"
                                 level={!!error ? "error" : "warning"}
-                                className={classNames(styles.error, {
-                                    [styles.errorVisible]: !!error || !!warning,
-                                })}
                             >
                                 {!!error
                                     ? t(error)

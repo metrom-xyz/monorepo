@@ -29,14 +29,6 @@
     @apply transition-opacity duration-200 ease-in-out opacity-0;
 }
 
-.errorVisible {
-    @apply opacity-100;
-}
-
-.stepContent {
-    @apply flex flex-col gap-3 p-4;
-}
-
 .inputsWrapper {
     @apply flex flex-col gap-3;
 }

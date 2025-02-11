@@ -76,7 +76,6 @@ export function PoolStep({
             open={open}
             completed={!!pool}
             onPreviewClick={handleStepOnClick}
-            error={!!error}
         >
             <StepPreview
                 label={
@@ -90,18 +89,13 @@ export function PoolStep({
                                 >
                                     {t("title")}
                                 </Typography>
-                                {error && (
-                                    <ErrorText
-                                        size="xs"
-                                        weight="medium"
-                                        level="error"
-                                        className={classNames(styles.error, {
-                                            [styles.errorVisible]: error,
-                                        })}
-                                    >
-                                        {error}
-                                    </ErrorText>
-                                )}
+                                <ErrorText
+                                    size="xs"
+                                    weight="medium"
+                                    level="error"
+                                >
+                                    {error}
+                                </ErrorText>
                             </div>
                         </div>
                     ) : (
