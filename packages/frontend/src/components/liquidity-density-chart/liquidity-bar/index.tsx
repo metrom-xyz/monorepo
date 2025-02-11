@@ -22,6 +22,25 @@ interface LiquidityBarProps {
     tooltipIndex?: number;
 }
 
+function getTopRoundedPath(
+    x: number,
+    y: number,
+    width: number,
+    height: number,
+    radius: number = 6,
+) {
+    const r = Math.min(radius, width / 2, height);
+    return `
+      M${x},${y + height} 
+      L${x},${y + r} 
+      Q${x},${y} ${x + r},${y} 
+      L${x + width - r},${y} 
+      Q${x + width},${y} ${x + width},${y + r} 
+      L${x + width},${y + height} 
+      Z
+    `;
+}
+
 export function LiquidityBar({
     index,
     x,
@@ -94,13 +113,9 @@ export function LiquidityBar({
 
     return (
         <g>
-            <rect
-                x={x}
-                y={y}
+            <path
+                d={getTopRoundedPath(x, y, width, height)}
                 fillOpacity={opacity}
-                width={width}
-                height={height}
-                rx={6}
                 className={classNames(styles.bar, {
                     [styles.activeTick]: idx === activeTickIdx,
                     [styles.inRange]: inRange,

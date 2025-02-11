@@ -4,7 +4,7 @@ import {
     type TargetedCampaign,
 } from "@metrom-xyz/sdk";
 import { useTranslations } from "next-intl";
-import { TextField, Typography } from "@metrom-xyz/ui";
+import { Card, TextField, Typography } from "@metrom-xyz/ui";
 import { formatAmount } from "@/src/utils/format";
 import { useLiquidityDensity } from "@/src/hooks/useLiquidityDensity";
 import { LiquidityDensityChart } from "../../liquidity-density-chart";
@@ -35,11 +35,11 @@ export function PriceRange({ campaign }: PriceRangeProps) {
 
     return (
         <div className={styles.root}>
-            <div className={styles.card}>
-                <Typography size="lg" weight="medium" uppercase>
-                    {t("title")}
-                </Typography>
-                <div className={styles.topContent}>
+            <Typography size="lg" weight="medium" uppercase>
+                {t("title")}
+            </Typography>
+            <div className={styles.wrapper}>
+                <div className={styles.leftContent}>
                     <TextField
                         boxed
                         size="xl"
@@ -73,7 +73,7 @@ export function PriceRange({ campaign }: PriceRangeProps) {
                         })}
                     />
                 </div>
-                <div className={styles.chart}>
+                <Card className={styles.card}>
                     <Typography size="sm" uppercase light weight="medium">
                         {t("chart")}
                     </Typography>
@@ -87,7 +87,7 @@ export function PriceRange({ campaign }: PriceRangeProps) {
                             token0To1
                         />
                     </div>
-                </div>
+                </Card>
             </div>
         </div>
     );
