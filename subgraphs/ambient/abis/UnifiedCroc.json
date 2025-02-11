@@ -1,0 +1,1298 @@
+[
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "authority",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "coldPath",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "constructor"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "bytes32",
+                "name": "pool",
+                "type": "bytes32"
+            },
+            {
+                "indexed": true,
+                "internalType": "int24",
+                "name": "tick",
+                "type": "int24"
+            },
+            {
+                "indexed": false,
+                "internalType": "bool",
+                "name": "isBid",
+                "type": "bool"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint32",
+                "name": "pivotTime",
+                "type": "uint32"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint64",
+                "name": "feeMileage",
+                "type": "uint64"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint160",
+                "name": "commitEntropy",
+                "type": "uint160"
+            }
+        ],
+        "name": "CrocKnockoutCross",
+        "type": "event"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint16",
+                "name": "callpath",
+                "type": "uint16"
+            },
+            {
+                "internalType": "bytes",
+                "name": "cmd",
+                "type": "bytes"
+            },
+            {
+                "internalType": "bool",
+                "name": "sudo",
+                "type": "bool"
+            }
+        ],
+        "name": "protocolCmd",
+        "outputs": [
+            {
+                "internalType": "bytes",
+                "name": "",
+                "type": "bytes"
+            }
+        ],
+        "stateMutability": "payable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "slot",
+                "type": "uint256"
+            }
+        ],
+        "name": "readSlot",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "data",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "base",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "quote",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "poolIdx",
+                "type": "uint256"
+            },
+            {
+                "internalType": "bool",
+                "name": "isBuy",
+                "type": "bool"
+            },
+            {
+                "internalType": "bool",
+                "name": "inBaseQty",
+                "type": "bool"
+            },
+            {
+                "internalType": "uint128",
+                "name": "qty",
+                "type": "uint128"
+            },
+            {
+                "internalType": "uint16",
+                "name": "tip",
+                "type": "uint16"
+            },
+            {
+                "internalType": "uint128",
+                "name": "limitPrice",
+                "type": "uint128"
+            },
+            {
+                "internalType": "uint128",
+                "name": "minOut",
+                "type": "uint128"
+            },
+            {
+                "internalType": "uint8",
+                "name": "reserveFlags",
+                "type": "uint8"
+            }
+        ],
+        "name": "swap",
+        "outputs": [
+            {
+                "internalType": "int128",
+                "name": "baseQuote",
+                "type": "int128"
+            },
+            {
+                "internalType": "int128",
+                "name": "quoteFlow",
+                "type": "int128"
+            }
+        ],
+        "stateMutability": "payable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint16",
+                "name": "callpath",
+                "type": "uint16"
+            },
+            {
+                "internalType": "bytes",
+                "name": "cmd",
+                "type": "bytes"
+            }
+        ],
+        "name": "userCmd",
+        "outputs": [
+            {
+                "internalType": "bytes",
+                "name": "",
+                "type": "bytes"
+            }
+        ],
+        "stateMutability": "payable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint16",
+                "name": "callpath",
+                "type": "uint16"
+            },
+            {
+                "internalType": "bytes",
+                "name": "cmd",
+                "type": "bytes"
+            },
+            {
+                "internalType": "bytes",
+                "name": "conds",
+                "type": "bytes"
+            },
+            {
+                "internalType": "bytes",
+                "name": "relayerTip",
+                "type": "bytes"
+            },
+            {
+                "internalType": "bytes",
+                "name": "signature",
+                "type": "bytes"
+            }
+        ],
+        "name": "userCmdRelayer",
+        "outputs": [
+            {
+                "internalType": "bytes",
+                "name": "output",
+                "type": "bytes"
+            }
+        ],
+        "stateMutability": "payable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint16",
+                "name": "callpath",
+                "type": "uint16"
+            },
+            {
+                "internalType": "bytes",
+                "name": "cmd",
+                "type": "bytes"
+            },
+            {
+                "internalType": "address",
+                "name": "client",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "salt",
+                "type": "uint256"
+            }
+        ],
+        "name": "userCmdRouter",
+        "outputs": [
+            {
+                "internalType": "bytes",
+                "name": "",
+                "type": "bytes"
+            }
+        ],
+        "stateMutability": "payable",
+        "type": "function"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "base",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "quote",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "poolIdx",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "bool",
+                "name": "isBuy",
+                "type": "bool"
+            },
+            {
+                "indexed": false,
+                "internalType": "bool",
+                "name": "inBaseQty",
+                "type": "bool"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint128",
+                "name": "qty",
+                "type": "uint128"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint16",
+                "name": "tip",
+                "type": "uint16"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint128",
+                "name": "limitPrice",
+                "type": "uint128"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint128",
+                "name": "minOut",
+                "type": "uint128"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint8",
+                "name": "reserveFlags",
+                "type": "uint8"
+            },
+            {
+                "indexed": false,
+                "internalType": "int128",
+                "name": "baseFlow",
+                "type": "int128"
+            },
+            {
+                "indexed": false,
+                "internalType": "int128",
+                "name": "quoteFlow",
+                "type": "int128"
+            }
+        ],
+        "name": "CrocSwap",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "bytes32",
+                "name": "pool",
+                "type": "bytes32"
+            },
+            {
+                "indexed": true,
+                "internalType": "int24",
+                "name": "tick",
+                "type": "int24"
+            },
+            {
+                "indexed": false,
+                "internalType": "bool",
+                "name": "isBid",
+                "type": "bool"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint32",
+                "name": "pivotTime",
+                "type": "uint32"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint64",
+                "name": "feeMileage",
+                "type": "uint64"
+            }
+        ],
+        "name": "CrocKnockoutCross",
+        "type": "event"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes",
+                "name": "cmd",
+                "type": "bytes"
+            }
+        ],
+        "name": "protocolCmd",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes",
+                "name": "cmd",
+                "type": "bytes"
+            }
+        ],
+        "name": "userCmd",
+        "outputs": [],
+        "stateMutability": "payable",
+        "type": "function"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "bytes",
+                "name": "input",
+                "type": "bytes"
+            }
+        ],
+        "name": "CrocColdCmd",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "bytes",
+                "name": "input",
+                "type": "bytes"
+            }
+        ],
+        "name": "CrocColdProtocolCmd",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "bytes32",
+                "name": "pool",
+                "type": "bytes32"
+            },
+            {
+                "indexed": true,
+                "internalType": "int24",
+                "name": "tick",
+                "type": "int24"
+            },
+            {
+                "indexed": false,
+                "internalType": "bool",
+                "name": "isBid",
+                "type": "bool"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint32",
+                "name": "pivotTime",
+                "type": "uint32"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint64",
+                "name": "feeMileage",
+                "type": "uint64"
+            }
+        ],
+        "name": "CrocKnockoutCross",
+        "type": "event"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes",
+                "name": "input",
+                "type": "bytes"
+            }
+        ],
+        "name": "userCmd",
+        "outputs": [
+            {
+                "internalType": "int128",
+                "name": "baseFlow",
+                "type": "int128"
+            },
+            {
+                "internalType": "int128",
+                "name": "quoteFlow",
+                "type": "int128"
+            }
+        ],
+        "stateMutability": "payable",
+        "type": "function"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "bytes",
+                "name": "input",
+                "type": "bytes"
+            },
+            {
+                "indexed": false,
+                "internalType": "int128",
+                "name": "baseFlow",
+                "type": "int128"
+            },
+            {
+                "indexed": false,
+                "internalType": "int128",
+                "name": "quoteFlow",
+                "type": "int128"
+            }
+        ],
+        "name": "CrocHotCmd",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "bytes32",
+                "name": "pool",
+                "type": "bytes32"
+            },
+            {
+                "indexed": true,
+                "internalType": "int24",
+                "name": "tick",
+                "type": "int24"
+            },
+            {
+                "indexed": false,
+                "internalType": "bool",
+                "name": "isBid",
+                "type": "bool"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint32",
+                "name": "pivotTime",
+                "type": "uint32"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint64",
+                "name": "feeMileage",
+                "type": "uint64"
+            }
+        ],
+        "name": "CrocKnockoutCross",
+        "type": "event"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes",
+                "name": "cmd",
+                "type": "bytes"
+            }
+        ],
+        "name": "userCmd",
+        "outputs": [
+            {
+                "internalType": "int128",
+                "name": "baseFlow",
+                "type": "int128"
+            },
+            {
+                "internalType": "int128",
+                "name": "quoteFlow",
+                "type": "int128"
+            }
+        ],
+        "stateMutability": "payable",
+        "type": "function"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "bytes",
+                "name": "input",
+                "type": "bytes"
+            },
+            {
+                "indexed": false,
+                "internalType": "int128",
+                "name": "baseFlow",
+                "type": "int128"
+            },
+            {
+                "indexed": false,
+                "internalType": "int128",
+                "name": "quoteFlow",
+                "type": "int128"
+            }
+        ],
+        "name": "CrocKnockoutCmd",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "bytes32",
+                "name": "pool",
+                "type": "bytes32"
+            },
+            {
+                "indexed": true,
+                "internalType": "int24",
+                "name": "tick",
+                "type": "int24"
+            },
+            {
+                "indexed": false,
+                "internalType": "bool",
+                "name": "isBid",
+                "type": "bool"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint32",
+                "name": "pivotTime",
+                "type": "uint32"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint64",
+                "name": "feeMileage",
+                "type": "uint64"
+            }
+        ],
+        "name": "CrocKnockoutCross",
+        "type": "event"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint128",
+                "name": "price",
+                "type": "uint128"
+            },
+            {
+                "internalType": "uint128",
+                "name": "seed",
+                "type": "uint128"
+            },
+            {
+                "internalType": "uint128",
+                "name": "conc",
+                "type": "uint128"
+            },
+            {
+                "internalType": "uint64",
+                "name": "seedGrowth",
+                "type": "uint64"
+            },
+            {
+                "internalType": "uint64",
+                "name": "concGrowth",
+                "type": "uint64"
+            },
+            {
+                "internalType": "uint128",
+                "name": "liq",
+                "type": "uint128"
+            },
+            {
+                "internalType": "bytes32",
+                "name": "poolHash",
+                "type": "bytes32"
+            }
+        ],
+        "name": "burnAmbient",
+        "outputs": [
+            {
+                "internalType": "int128",
+                "name": "baseFlow",
+                "type": "int128"
+            },
+            {
+                "internalType": "int128",
+                "name": "quoteFlow",
+                "type": "int128"
+            },
+            {
+                "internalType": "uint128",
+                "name": "seedOut",
+                "type": "uint128"
+            }
+        ],
+        "stateMutability": "payable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint128",
+                "name": "price",
+                "type": "uint128"
+            },
+            {
+                "internalType": "int24",
+                "name": "priceTick",
+                "type": "int24"
+            },
+            {
+                "internalType": "uint128",
+                "name": "seed",
+                "type": "uint128"
+            },
+            {
+                "internalType": "uint128",
+                "name": "conc",
+                "type": "uint128"
+            },
+            {
+                "internalType": "uint64",
+                "name": "seedGrowth",
+                "type": "uint64"
+            },
+            {
+                "internalType": "uint64",
+                "name": "concGrowth",
+                "type": "uint64"
+            },
+            {
+                "internalType": "int24",
+                "name": "lowTick",
+                "type": "int24"
+            },
+            {
+                "internalType": "int24",
+                "name": "highTick",
+                "type": "int24"
+            },
+            {
+                "internalType": "uint128",
+                "name": "liq",
+                "type": "uint128"
+            },
+            {
+                "internalType": "bytes32",
+                "name": "poolHash",
+                "type": "bytes32"
+            }
+        ],
+        "name": "burnRange",
+        "outputs": [
+            {
+                "internalType": "int128",
+                "name": "baseFlow",
+                "type": "int128"
+            },
+            {
+                "internalType": "int128",
+                "name": "quoteFlow",
+                "type": "int128"
+            },
+            {
+                "internalType": "uint128",
+                "name": "seedOut",
+                "type": "uint128"
+            },
+            {
+                "internalType": "uint128",
+                "name": "concOut",
+                "type": "uint128"
+            }
+        ],
+        "stateMutability": "payable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint128",
+                "name": "price",
+                "type": "uint128"
+            },
+            {
+                "internalType": "uint128",
+                "name": "seed",
+                "type": "uint128"
+            },
+            {
+                "internalType": "uint128",
+                "name": "conc",
+                "type": "uint128"
+            },
+            {
+                "internalType": "uint64",
+                "name": "seedGrowth",
+                "type": "uint64"
+            },
+            {
+                "internalType": "uint64",
+                "name": "concGrowth",
+                "type": "uint64"
+            },
+            {
+                "internalType": "uint128",
+                "name": "liq",
+                "type": "uint128"
+            },
+            {
+                "internalType": "bytes32",
+                "name": "poolHash",
+                "type": "bytes32"
+            }
+        ],
+        "name": "mintAmbient",
+        "outputs": [
+            {
+                "internalType": "int128",
+                "name": "baseFlow",
+                "type": "int128"
+            },
+            {
+                "internalType": "int128",
+                "name": "quoteFlow",
+                "type": "int128"
+            },
+            {
+                "internalType": "uint128",
+                "name": "seedOut",
+                "type": "uint128"
+            }
+        ],
+        "stateMutability": "payable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint128",
+                "name": "price",
+                "type": "uint128"
+            },
+            {
+                "internalType": "int24",
+                "name": "priceTick",
+                "type": "int24"
+            },
+            {
+                "internalType": "uint128",
+                "name": "seed",
+                "type": "uint128"
+            },
+            {
+                "internalType": "uint128",
+                "name": "conc",
+                "type": "uint128"
+            },
+            {
+                "internalType": "uint64",
+                "name": "seedGrowth",
+                "type": "uint64"
+            },
+            {
+                "internalType": "uint64",
+                "name": "concGrowth",
+                "type": "uint64"
+            },
+            {
+                "internalType": "int24",
+                "name": "lowTick",
+                "type": "int24"
+            },
+            {
+                "internalType": "int24",
+                "name": "highTick",
+                "type": "int24"
+            },
+            {
+                "internalType": "uint128",
+                "name": "liq",
+                "type": "uint128"
+            },
+            {
+                "internalType": "bytes32",
+                "name": "poolHash",
+                "type": "bytes32"
+            }
+        ],
+        "name": "mintRange",
+        "outputs": [
+            {
+                "internalType": "int128",
+                "name": "baseFlow",
+                "type": "int128"
+            },
+            {
+                "internalType": "int128",
+                "name": "quoteFlow",
+                "type": "int128"
+            },
+            {
+                "internalType": "uint128",
+                "name": "seedOut",
+                "type": "uint128"
+            },
+            {
+                "internalType": "uint128",
+                "name": "concOut",
+                "type": "uint128"
+            }
+        ],
+        "stateMutability": "payable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "uint128",
+                        "name": "priceRoot_",
+                        "type": "uint128"
+                    },
+                    {
+                        "internalType": "uint128",
+                        "name": "ambientSeeds_",
+                        "type": "uint128"
+                    },
+                    {
+                        "internalType": "uint128",
+                        "name": "concLiq_",
+                        "type": "uint128"
+                    },
+                    {
+                        "internalType": "uint64",
+                        "name": "seedDeflator_",
+                        "type": "uint64"
+                    },
+                    {
+                        "internalType": "uint64",
+                        "name": "concGrowth_",
+                        "type": "uint64"
+                    }
+                ],
+                "internalType": "struct CurveMath.CurveState",
+                "name": "curve",
+                "type": "tuple"
+            },
+            {
+                "internalType": "int24",
+                "name": "midTick",
+                "type": "int24"
+            },
+            {
+                "components": [
+                    {
+                        "internalType": "bool",
+                        "name": "isBuy_",
+                        "type": "bool"
+                    },
+                    {
+                        "internalType": "bool",
+                        "name": "inBaseQty_",
+                        "type": "bool"
+                    },
+                    {
+                        "internalType": "uint8",
+                        "name": "rollType_",
+                        "type": "uint8"
+                    },
+                    {
+                        "internalType": "uint128",
+                        "name": "qty_",
+                        "type": "uint128"
+                    },
+                    {
+                        "internalType": "uint128",
+                        "name": "limitPrice_",
+                        "type": "uint128"
+                    }
+                ],
+                "internalType": "struct Directives.SwapDirective",
+                "name": "swap",
+                "type": "tuple"
+            },
+            {
+                "components": [
+                    {
+                        "components": [
+                            {
+                                "internalType": "uint8",
+                                "name": "schema_",
+                                "type": "uint8"
+                            },
+                            {
+                                "internalType": "uint16",
+                                "name": "feeRate_",
+                                "type": "uint16"
+                            },
+                            {
+                                "internalType": "uint8",
+                                "name": "protocolTake_",
+                                "type": "uint8"
+                            },
+                            {
+                                "internalType": "uint16",
+                                "name": "tickSize_",
+                                "type": "uint16"
+                            },
+                            {
+                                "internalType": "uint8",
+                                "name": "jitThresh_",
+                                "type": "uint8"
+                            },
+                            {
+                                "internalType": "uint8",
+                                "name": "knockoutBits_",
+                                "type": "uint8"
+                            },
+                            {
+                                "internalType": "uint8",
+                                "name": "oracleFlags_",
+                                "type": "uint8"
+                            }
+                        ],
+                        "internalType": "struct PoolSpecs.Pool",
+                        "name": "head_",
+                        "type": "tuple"
+                    },
+                    {
+                        "internalType": "bytes32",
+                        "name": "hash_",
+                        "type": "bytes32"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "oracle_",
+                        "type": "address"
+                    }
+                ],
+                "internalType": "struct PoolSpecs.PoolCursor",
+                "name": "pool",
+                "type": "tuple"
+            }
+        ],
+        "name": "sweepSwap",
+        "outputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "int128",
+                        "name": "baseFlow_",
+                        "type": "int128"
+                    },
+                    {
+                        "internalType": "int128",
+                        "name": "quoteFlow_",
+                        "type": "int128"
+                    },
+                    {
+                        "internalType": "uint128",
+                        "name": "baseProto_",
+                        "type": "uint128"
+                    },
+                    {
+                        "internalType": "uint128",
+                        "name": "quoteProto_",
+                        "type": "uint128"
+                    }
+                ],
+                "internalType": "struct Chaining.PairFlow",
+                "name": "accum",
+                "type": "tuple"
+            },
+            {
+                "internalType": "uint128",
+                "name": "priceOut",
+                "type": "uint128"
+            },
+            {
+                "internalType": "uint128",
+                "name": "seedOut",
+                "type": "uint128"
+            },
+            {
+                "internalType": "uint128",
+                "name": "concOut",
+                "type": "uint128"
+            },
+            {
+                "internalType": "uint64",
+                "name": "ambientOut",
+                "type": "uint64"
+            },
+            {
+                "internalType": "uint64",
+                "name": "concGrowthOut",
+                "type": "uint64"
+            }
+        ],
+        "stateMutability": "payable",
+        "type": "function"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "bytes",
+                "name": "input",
+                "type": "bytes"
+            },
+            {
+                "indexed": false,
+                "internalType": "bytes",
+                "name": "output",
+                "type": "bytes"
+            }
+        ],
+        "name": "CrocMicroBurnAmbient",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "bytes",
+                "name": "input",
+                "type": "bytes"
+            },
+            {
+                "indexed": false,
+                "internalType": "bytes",
+                "name": "output",
+                "type": "bytes"
+            }
+        ],
+        "name": "CrocMicroBurnRange",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "bytes",
+                "name": "input",
+                "type": "bytes"
+            },
+            {
+                "indexed": false,
+                "internalType": "bytes",
+                "name": "output",
+                "type": "bytes"
+            }
+        ],
+        "name": "CrocMicroMintAmbient",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "bytes",
+                "name": "input",
+                "type": "bytes"
+            },
+            {
+                "indexed": false,
+                "internalType": "bytes",
+                "name": "output",
+                "type": "bytes"
+            }
+        ],
+        "name": "CrocMicroMintRange",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "bytes",
+                "name": "input",
+                "type": "bytes"
+            },
+            {
+                "indexed": false,
+                "internalType": "bytes",
+                "name": "output",
+                "type": "bytes"
+            }
+        ],
+        "name": "CrocMicroSwap",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "bytes32",
+                "name": "pool",
+                "type": "bytes32"
+            },
+            {
+                "indexed": true,
+                "internalType": "int24",
+                "name": "tick",
+                "type": "int24"
+            },
+            {
+                "indexed": false,
+                "internalType": "bool",
+                "name": "isBid",
+                "type": "bool"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint32",
+                "name": "pivotTime",
+                "type": "uint32"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint64",
+                "name": "feeMileage",
+                "type": "uint64"
+            }
+        ],
+        "name": "CrocKnockoutCross",
+        "type": "event"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes",
+                "name": "input",
+                "type": "bytes"
+            }
+        ],
+        "name": "userCmd",
+        "outputs": [
+            {
+                "internalType": "int128",
+                "name": "baseFlow",
+                "type": "int128"
+            },
+            {
+                "internalType": "int128",
+                "name": "quoteFlow",
+                "type": "int128"
+            }
+        ],
+        "stateMutability": "payable",
+        "type": "function"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "bytes",
+                "name": "input",
+                "type": "bytes"
+            },
+            {
+                "indexed": false,
+                "internalType": "int128",
+                "name": "baseFlow",
+                "type": "int128"
+            },
+            {
+                "indexed": false,
+                "internalType": "int128",
+                "name": "quoteFlow",
+                "type": "int128"
+            }
+        ],
+        "name": "CrocWarmCmd",
+        "type": "event"
+    }
+]
