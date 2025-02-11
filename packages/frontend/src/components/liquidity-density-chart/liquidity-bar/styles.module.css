@@ -14,9 +14,9 @@
 }
 
 .bar.inRange {
-    @apply fill-[#6CFF9566] dark:fill-brand-green/65;
+    @apply fill-[#6CFF9566] dark:fill-brand-green-dark/65;
 }
 
 .bar.activeTick {
-    @apply fill-brand-green;
+    @apply fill-brand-green dark:fill-brand-green-dark;
 }

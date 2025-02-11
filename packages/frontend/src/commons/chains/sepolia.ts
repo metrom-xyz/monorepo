@@ -43,7 +43,6 @@ export const sepoliaData: ChainData = {
                 symbol: "ebUSD",
             },
             actionUrls: {
-                // TODO: fix
                 [TargetType.LiquityV2Debt]:
                     "https://liquity2-sepolia.vercel.app/borrow",
                 [TargetType.LiquityV2StabilityPool]:

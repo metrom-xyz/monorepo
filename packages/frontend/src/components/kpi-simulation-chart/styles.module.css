@@ -51,6 +51,10 @@
     @apply fill-[#d1d5db] dark:fill-zinc-700;
 }
 
+.distributingArea path {
+    @apply fill-brand-green dark:fill-brand-green-dark;
+}
+
 .xAxis > line {
     @apply stroke-1 stroke-zinc-400 dark:stroke-zinc-200 transition-colors duration-200 ease-in-out;
 }

@@ -15,6 +15,10 @@
     @apply fill-[#d1d5db] dark:fill-zinc-700;
 }
 
+.distributedBar {
+    @apply fill-brand-green dark:fill-brand-green-dark;
+}
+
 .timeTick {
     @apply font-sans
         uppercase
