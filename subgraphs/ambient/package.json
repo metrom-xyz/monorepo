@@ -7,7 +7,7 @@
         "codegen": "graph codegen",
         "create:local": "graph create metrom-croc-scroll --node http://localhost:8020",
         "deploy:local": "pnpm prepare:deploy scroll && pnpm codegen && graph deploy metrom-croc-scroll --node http://localhost:8020 --ipfs http://localhost:5001 -l 0.0.1",
-        "deploy:scroll": "pnpm prepare:deploy scroll && pnpm codegen && graph deploy metrom-croc-scroll -l 0.0.18",
+        "deploy:scroll": "pnpm prepare:deploy scroll && pnpm codegen && graph deploy metrom-croc-scroll -l 0.0.19",
         "lint": "eslint .",
         "format": "eslint --fix ."
     },

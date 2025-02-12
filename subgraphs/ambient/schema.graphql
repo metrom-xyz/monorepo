@@ -42,16 +42,6 @@ type LiquidityChange @entity(immutable: true) {
     position: Position!
 }
 
-type LiquidityTransfer @entity(immutable: true) {
-    id: Bytes!
-    timestamp: BigInt!
-    blockNumber: BigInt!
-    from: Bytes!
-    to: Bytes!
-    amount: BigInt
-    position: Position!
-}
-
 type TickChange @entity(immutable: true) {
     id: Bytes!
     timestamp: BigInt!

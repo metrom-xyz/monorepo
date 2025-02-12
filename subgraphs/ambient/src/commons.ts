@@ -164,8 +164,8 @@ export function getOrCreateToken(address: Address): Token {
     return token;
 }
 
-function getEventId(block: ethereum.Block): Bytes {
-    return Bytes.fromByteArray(Bytes.fromBigInt(block.number));
+function getBlockEventId(block: ethereum.Block, entityId: Bytes): Bytes {
+    return entityId.concat(Bytes.fromByteArray(Bytes.fromBigInt(block.number)));
 }
 
 export function handleSwap(
@@ -180,7 +180,7 @@ export function handleSwap(
     pool.token1Tvl = pool.token1Tvl.plus(token1Delta);
     pool.save();
 
-    let tickChangeId = getEventId(block);
+    let tickChangeId = getBlockEventId(block, pool.id);
     if (TickChange.loadInBlock(tickChangeId) === null) {
         let newTick = CrocQueryContract.queryCurveTick(
             changetype<Address>(pool.token0),
@@ -229,11 +229,7 @@ export function handleLiquidityChange(
 
     let positionId = Bytes.fromByteArray(
         crypto.keccak256(
-            getPoolId(
-                changetype<Address>(pool.token0),
-                changetype<Address>(pool.token1),
-                pool.idx,
-            )
+            pool.id
                 .concat(owner)
                 .concat(Bytes.fromI32(lowerTick))
                 .concat(Bytes.fromI32(upperTick)),
@@ -271,7 +267,7 @@ export function handleLiquidityChange(
 
     let liquidityDelta = newLiquidity.minus(position.concentratedLiquidity);
     if (!liquidityDelta.isZero()) {
-        let liquidityChangeId = getEventId(block);
+        let liquidityChangeId = getBlockEventId(block, position.id);
         if (LiquidityChange.loadInBlock(liquidityChangeId) === null) {
             let liquidityChange = new LiquidityChange(liquidityChangeId);
             liquidityChange.timestamp = block.timestamp;
