@@ -1,0 +1,29 @@
+{
+    "name": "@metrom-xyz/graph-cli",
+    "version": "0.1.0",
+    "publishConfig": {
+        "access": "public"
+    },
+    "type": "module",
+    "bin": {
+        "metrom-graph": "./src/index.js"
+    },
+    "scripts": {
+        "lint": "eslint .",
+        "format": "eslint --fix ."
+    },
+    "devDependencies": {
+        "@eslint/js": "^9.19.0",
+        "@metrom-xyz/sdk": "workspace:*",
+        "eslint": "^9.19.0",
+        "eslint-config-prettier": "^10.0.1",
+        "eslint-plugin-prettier": "^5.2.3",
+        "globals": "^15.14.0",
+        "prettier": "^3.4.2",
+        "vite": "^6.0.11"
+    },
+    "dependencies": {
+        "@graphprotocol/graph-cli": "^0.95.0",
+        "commander": "^13.1.0"
+    }
+}
