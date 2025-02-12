@@ -1,7 +1,7 @@
 import { run } from "@graphprotocol/graph-cli";
 import { Environment } from "@metrom-xyz/sdk";
 import { Argument, Command } from "commander";
-import { readAuthTokens, SERVICE_URLS } from "./commons";
+import { readAuthTokens, SERVICE_URLS } from "./commons.js";
 
 export const deploy = new Command("deploy")
     .addArgument(

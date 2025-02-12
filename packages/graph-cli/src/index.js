@@ -1,12 +1,12 @@
+#!/usr/bin/env node
+
 import { program } from "commander";
-import pkg from "../package.json";
-import { deploy } from "./deploy";
-import { auth } from "./auth";
+import { deploy } from "./deploy.js";
+import { auth } from "./auth.js";
 
 program
     .name("metrom-graph")
-    .description("A CLI to deploe Metrom subgraph")
-    .version(pkg.version)
+    .description("A CLI to deploy Metrom subgraphs")
     .addCommand(auth)
     .addCommand(deploy)
     .parse();

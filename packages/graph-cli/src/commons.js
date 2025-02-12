@@ -7,7 +7,7 @@ const AUTH_TOKENS_PATH = join(homedir(), "/.metrom-graph-cli.json");
 
 export async function readAuthTokens() {
     try {
-        return JSON.parse(await readFile(AUTH_TOKENS_PATH).toString());
+        return JSON.parse((await readFile(AUTH_TOKENS_PATH)).toString());
     } catch {
         return {};
     }

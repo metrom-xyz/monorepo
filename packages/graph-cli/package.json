@@ -9,12 +9,15 @@
         "metrom-graph": "./src/index.js"
     },
     "scripts": {
+        "auth": "node ./src/index.js auth",
+        "deploy": "node ./src/index.js deploy",
         "lint": "eslint .",
         "format": "eslint --fix ."
     },
     "devDependencies": {
         "@eslint/js": "^9.19.0",
         "@metrom-xyz/sdk": "workspace:*",
+        "@types/node": "^22.13.1",
         "eslint": "^9.19.0",
         "eslint-config-prettier": "^10.0.1",
         "eslint-plugin-prettier": "^5.2.3",

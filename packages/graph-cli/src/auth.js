@@ -1,6 +1,6 @@
 import { Environment } from "@metrom-xyz/sdk";
 import { Argument, Command } from "commander";
-import { readAuthTokens, writeAuthTokens } from "./commons";
+import { readAuthTokens, writeAuthTokens } from "./commons.js";
 
 export const auth = new Command("auth")
     .addArgument(
@@ -9,10 +9,10 @@ export const auth = new Command("auth")
             "The environment to set the auth token for.",
         ).choices([Environment.Development, Environment.Production]),
     )
-    .argument("<token>", "The auth token.")
-    .action(async function (_, args) {
-        const [environment, token] = args;
+    .addArgument(new Argument("<token>", "The auth token."))
+    .action(async function (environment, token) {
         const tokens = await readAuthTokens();
         tokens[environment] = token;
-        writeAuthTokens(tokens);
+        await writeAuthTokens(tokens);
+        console.log("Auth token successfully stored");
     });
