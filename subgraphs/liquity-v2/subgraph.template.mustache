@@ -60,6 +60,8 @@ templates:
       eventHandlers:
         - event: TroveManagerAdded(address,address)
           handler: handleTroveManagerAdded
+        - event: CollateralAdded(address,address)
+          handler: handleCollateralAdded
   - name: TroveManager
     kind: ethereum/contract
     network: {{network}}

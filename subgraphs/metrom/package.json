@@ -9,7 +9,7 @@
         "deploy:celo-alfajores": "pnpm prepare:deploy celo-alfajores && pnpm codegen && graph deploy metrom-celo-alfajores -l=v0.0.25",
         "deploy:mantle-sepolia": "pnpm prepare:deploy mantle-sepolia && pnpm codegen && graph deploy metrom-mantle-sepolia -l 0.0.6 --node https://subgraph-api.mantle.xyz/deploy --ipfs https://subgraph-api.mantle.xyz/ipfs",
         "deploy:base-sepolia": "pnpm prepare:deploy base-sepolia && pnpm codegen && graph deploy metrom-base-sepolia -l=v0.0.6",
-        "deploy:form-testnet": "pnpm prepare:deploy form-testnet && pnpm codegen && graph deploy metrom-form-testnet -l=v0.0.6 --node https://formapi.0xgraph.xyz/deploy --ipfs https://formapi.0xgraph.xyz/ipfs",
+        "deploy:form-testnet": "pnpm prepare:deploy form-testnet && pnpm codegen && metrom-graph deploy development metrom-form-testnet 0.0.1",
         "deploy:sepolia": "pnpm prepare:deploy sepolia && pnpm codegen && graph deploy metrom-sepolia -l=v0.0.4",
         "deploy:base": "pnpm prepare:deploy base && pnpm codegen && graph deploy metrom-base -l 0.0.20",
         "deploy:mode": "pnpm prepare:deploy mode-mainnet && pnpm codegen && graph deploy metrom-mode -l 0.0.11",
@@ -25,7 +25,8 @@
     "dependencies": {
         "@0xgraph/cli": "^0.2.1",
         "@graphprotocol/graph-cli": "0.95.0",
-        "@graphprotocol/graph-ts": "0.37.0"
+        "@graphprotocol/graph-ts": "0.37.0",
+        "@metrom-xyz/graph-cli": "workspace:*"
     },
     "devDependencies": {
         "@eslint/js": "^9.20.0",
