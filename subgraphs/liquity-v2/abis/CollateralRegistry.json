@@ -294,5 +294,24 @@
         ],
         "name": "TroveManagerRemoved",
         "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "contract IERC20Metadata",
+                "name": "_token",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "contract ITroveManager",
+                "name": "_troveManager",
+                "type": "address"
+            }
+        ],
+        "name": "CollateralAdded",
+        "type": "event"
     }
 ]

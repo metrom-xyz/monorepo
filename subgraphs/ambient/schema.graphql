@@ -1,0 +1,50 @@
+type Token @entity(immutable: true) {
+    id: Bytes!
+    name: String!
+    symbol: String!
+    decimals: BigInt!
+}
+
+type PoolTemplate @entity {
+    id: Bytes!
+    fee: Int!
+}
+
+type Pool @entity {
+    id: Bytes!
+    idx: BigInt!
+    token0: Token!
+    token1: Token!
+    token0Tvl: BigInt!
+    token1Tvl: BigInt!
+    tick: Int!
+    fee: Int!
+    positions: [Position!]! @derivedFrom(field: "pool")
+    tickChanges: [TickChange!]! @derivedFrom(field: "pool")
+}
+
+type Position @entity {
+    id: Bytes!
+    owner: Bytes!
+    lowerTick: Int
+    upperTick: Int
+    concentratedLiquidity: BigInt!
+    ambientLiquidity: BigInt!
+    pool: Pool!
+    liquidityChanges: [LiquidityChange!]! @derivedFrom(field: "position")
+}
+
+type LiquidityChange @entity(immutable: true) {
+    id: Bytes!
+    timestamp: BigInt!
+    concentratedDelta: BigInt!
+    ambientDelta: BigInt!
+    position: Position!
+}
+
+type TickChange @entity(immutable: true) {
+    id: Bytes!
+    timestamp: BigInt!
+    pool: Pool!
+    newTick: Int!
+}

@@ -22,4 +22,12 @@ export const DEPLOYMENTS: {
             },
         },
     },
+    scroll: {
+        quill: {
+            DebtToken: {
+                address: "0x6F2A1A886Dbf8E36C4fa9F25a517861A930fBF3A",
+                startBlock: 12913278,
+            },
+        },
+    },
 };

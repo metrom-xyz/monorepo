@@ -1,15 +1,20 @@
-import { TroveManagerAdded as TroveManagerAddedEvent } from "../../generated/templates/CollateralRegistry/CollateralRegistry";
+import { Address } from "@graphprotocol/graph-ts";
+import {
+    CollateralAdded as CollateralAddedEvent,
+    TroveManagerAdded as TroveManagerAddedEvent,
+} from "../../generated/templates/CollateralRegistry/CollateralRegistry";
 import {
     getOrCreateCollateral,
     getRegistryOrThrow,
     ZERO_ADDRESS,
 } from "../commons";
 
-export function handleTroveManagerAdded(event: TroveManagerAddedEvent): void {
-    let registry = getRegistryOrThrow(event.address);
-
-    let tokenAddress = event.params.token;
-    let troveManagerAddress = event.params.troveManager;
+function handleAddCollateral(
+    registryAddress: Address,
+    tokenAddress: Address,
+    troveManagerAddress: Address,
+): void {
+    let registry = getRegistryOrThrow(registryAddress);
 
     if (tokenAddress === ZERO_ADDRESS || troveManagerAddress === ZERO_ADDRESS)
         throw new Error(
@@ -20,9 +25,25 @@ export function handleTroveManagerAdded(event: TroveManagerAddedEvent): void {
         registry.collateralsAmount,
         tokenAddress,
         troveManagerAddress,
-        event.address,
+        registryAddress,
     );
 
     registry.collateralsAmount = registry.collateralsAmount + 1;
     registry.save();
+}
+
+export function handleTroveManagerAdded(event: TroveManagerAddedEvent): void {
+    handleAddCollateral(
+        event.address,
+        event.params.token,
+        event.params.troveManager,
+    );
+}
+
+export function handleCollateralAdded(event: CollateralAddedEvent): void {
+    handleAddCollateral(
+        event.address,
+        event.params._token,
+        event.params._troveManager,
+    );
 }

@@ -107,6 +107,12 @@ dataSources:
       abis:
         - name: MetromV2
           file: ./abis/MetromV2.json
+        - name: Erc20
+          file: ./abis/Erc20.json
+        - name: Erc20BytesName
+          file: ./abis/Erc20BytesName.json
+        - name: Erc20BytesSymbol
+          file: ./abis/Erc20BytesSymbol.json
       eventHandlers:
         - event: CreateRewardsCampaign(indexed bytes32,indexed
             address,address,uint32,uint32,bytes32,(address,uint256,uint256)[])
@@ -138,6 +144,12 @@ dataSources:
       abis:
         - name: MetromV3
           file: ./abis/MetromV3.json
+        - name: Erc20
+          file: ./abis/Erc20.json
+        - name: Erc20BytesName
+          file: ./abis/Erc20BytesName.json
+        - name: Erc20BytesSymbol
+          file: ./abis/Erc20BytesSymbol.json
       eventHandlers:
         - event: CreateRewardsCampaign(indexed bytes32,indexed
             address,uint32,uint32,uint32,bytes,bytes32,(address,uint256,uint256)[])
