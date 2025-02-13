@@ -1,6 +1,8 @@
-import { run } from "@graphprotocol/graph-cli";
+import { execSync } from "child_process";
 import { Environment } from "@metrom-xyz/sdk";
 import { Argument, Command } from "commander";
+import chalk from "chalk";
+import ora from "ora";
 import { readAuthTokens, SERVICE_URLS } from "./commons.js";
 
 export const deploy = new Command("deploy")
@@ -12,9 +14,7 @@ export const deploy = new Command("deploy")
     )
     .argument("<subgraphName>", "The subgraph name.")
     .argument("<label>", "The subgraph label.")
-    .action(async function (_, args) {
-        const [environment, subgraphName, label] = args;
-
+    .action(async function (environment, subgraphName, label) {
         const serviceUrls = SERVICE_URLS[environment];
         if (!serviceUrls) {
             console.error(`Invalid environment ${environment}`);
@@ -27,16 +27,38 @@ export const deploy = new Command("deploy")
             process.exit(1);
         }
 
-        run([
-            "deploy",
-            subgraphName,
-            "--node",
-            serviceUrls.graphNode,
-            "--deploy-key",
-            authToken,
-            "--ipfs",
-            serviceUrls.ipfs,
-            "--version-label",
-            label,
-        ]);
+        if (!/([0-9]+)\.([0-9]+)\.([0-9]+)/.test(label)) {
+            console.error(`The provided label ${label} is invalid`);
+            process.exit(1);
+        }
+
+        const resolvedSubgraphName = `${subgraphName}-${label.replaceAll(".", "-")}`;
+
+        const spinner = ora("Deploying").start();
+
+        try {
+            execSync(
+                `graph create ${resolvedSubgraphName} --node ${serviceUrls.graphNode.rpc} --access-token ${authToken}`,
+                { stdio: ["ignore", "ignore", "inherit"] },
+            );
+        } catch {
+            spinner.fail();
+        }
+
+        try {
+            execSync(
+                `graph deploy ${resolvedSubgraphName} --node ${serviceUrls.graphNode.rpc} --deploy-key ${authToken} --ipfs ${serviceUrls.ipfs} --headers '${JSON.stringify({ Authorization: `Bearer ${authToken}` })}' --version-label ${label}`,
+                { stdio: ["ignore", "ignore", "inherit"] },
+            );
+        } catch {
+            spinner.fail();
+        }
+
+        console.log();
+
+        spinner.succeed(
+            chalk.green(
+                `Subgraph successfully deployed. Query endpoint: ${serviceUrls.graphNode.queries}/name/${resolvedSubgraphName}`,
+            ),
+        );
     });

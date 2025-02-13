@@ -20,10 +20,16 @@ export async function writeAuthTokens(tokens) {
 export const SERVICE_URLS = {
     [Environment.Development]: {
         ipfs: "https://ipfs.dev.metrom.xyz",
-        graphNode: "https://graph-node.dev.metrom.xyz",
+        graphNode: {
+            rpc: "https://graph-node.dev.metrom.xyz/rpc",
+            queries: "https://api.dev.metrom.xyz/subgraphs",
+        },
     },
     [Environment.Production]: {
         ipfs: "https://ipfs.metrom.xyz",
-        graphNode: "https://graph-node.metrom.xyz",
+        graphNode: {
+            rpc: "https://graph-node.metrom.xyz/rpc",
+            queries: "https://api.metrom.xyz/subgraphs",
+        },
     },
 };
