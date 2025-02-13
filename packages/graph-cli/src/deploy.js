@@ -2,7 +2,6 @@ import { execSync } from "child_process";
 import { Environment } from "@metrom-xyz/sdk";
 import { Argument, Command } from "commander";
 import chalk from "chalk";
-import ora from "ora";
 import { readAuthTokens, SERVICE_URLS } from "./commons.js";
 
 export const deploy = new Command("deploy")
@@ -34,15 +33,13 @@ export const deploy = new Command("deploy")
 
         const resolvedSubgraphName = `${subgraphName}-${label.replaceAll(".", "-")}`;
 
-        const spinner = ora("Deploying").start();
-
         try {
             execSync(
                 `graph create ${resolvedSubgraphName} --node ${serviceUrls.graphNode.rpc} --access-token ${authToken}`,
-                { stdio: ["ignore", "ignore", "inherit"] },
+                { stdio: "ignore" },
             );
         } catch {
-            spinner.fail();
+            process.exit(1);
         }
 
         try {
@@ -51,12 +48,12 @@ export const deploy = new Command("deploy")
                 { stdio: ["ignore", "ignore", "inherit"] },
             );
         } catch {
-            spinner.fail();
+            process.exit(1);
         }
 
         console.log();
 
-        spinner.succeed(
+        console.log(
             chalk.green(
                 `Subgraph successfully deployed. Query endpoint: ${serviceUrls.graphNode.queries}/name/${resolvedSubgraphName}`,
             ),
