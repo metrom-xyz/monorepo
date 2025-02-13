@@ -7,7 +7,7 @@
         "codegen": "graph codegen",
         "deploy:celo-alfajores": "pnpm prepare:deploy celo-alfajores && pnpm codegen && graph deploy metrom-blocks-celo-alfajores -l 0.0.2",
         "deploy:holesky": "pnpm prepare:deploy holesky && pnpm codegen && graph deploy metrom-blocks-holesky -l 0.0.3",
-        "deploy:mantle-sepolia": "pnpm prepare:deploy mantle-sepolia && pnpm codegen && graph deploy metrom-mantle-sepolia-blocks -l 0.0.1 --node https://subgraph-api.mantle.xyz/deploy --ipfs https://subgraph-api.mantle.xyz/ipfs",
+        "deploy:mantle-sepolia": "pnpm prepare:deploy mantle-sepolia && pnpm codegen && metrom-graph deploy development mantle-sepolia-blocks 0.0.1",
         "deploy:base-sepolia": "pnpm prepare:deploy base-sepolia && pnpm codegen && graph deploy metrom-base-sepolia-blocks -l 0.0.2",
         "deploy:form-testnet": "pnpm prepare:deploy form-testnet && pnpm codegen && metrom-graph deploy development form-testnet-blocks 0.0.1",
         "deploy:sepolia": "pnpm prepare:deploy sepolia && pnpm codegen && graph deploy metrom-sepolia-blocks -l 0.0.1",

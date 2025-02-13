@@ -413,6 +413,9 @@ importers:
       '@graphprotocol/graph-ts':
         specifier: 0.37.0
         version: 0.37.0
+      '@metrom-xyz/graph-cli':
+        specifier: workspace:*
+        version: link:../../packages/graph-cli
     devDependencies:
       '@eslint/js':
         specifier: ^9.20.0
@@ -615,6 +618,9 @@ importers:
       '@graphprotocol/graph-ts':
         specifier: 0.37.0
         version: 0.37.0
+      '@metrom-xyz/graph-cli':
+        specifier: workspace:*
+        version: link:../../packages/graph-cli
     devDependencies:
       '@eslint/js':
         specifier: ^9.20.0

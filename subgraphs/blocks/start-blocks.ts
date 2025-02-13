@@ -2,7 +2,7 @@ export const START_BLOCKS: { [network: string]: number } = {
     "celo-alfajores": 23112411,
     holesky: 1468000,
     "arbitrum-one": 154000000,
-    "mantle-sepolia": 15873155,
+    "mantle-sepolia": 18954015,
     "base-sepolia": 16132650,
     "form-testnet": 18183630,
     sepolia: 7483369,
