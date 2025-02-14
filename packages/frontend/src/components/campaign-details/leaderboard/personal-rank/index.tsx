@@ -27,11 +27,7 @@ export function PersonalRank({
         "campaignDetails.leaderboard.connectedAccountRank",
     );
 
-    const {
-        address: connectedAddress,
-        isConnecting: accountConnecting,
-        isReconnecting: accountReconnecting,
-    } = useAccount();
+    const { address: connectedAddress } = useAccount();
     const { openConnectModal } = useConnectModal();
 
     return (
@@ -48,7 +44,7 @@ export function PersonalRank({
                 </Typography>
             </div>
             <div className={styles.rowWrapper}>
-                {loading || accountConnecting || accountReconnecting ? (
+                {loading ? (
                     <SkeletonRow size="lg" />
                 ) : !connectedAddress ? (
                     <button
