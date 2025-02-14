@@ -1,7 +1,6 @@
 "use client";
 
 import type { ReactNode } from "react";
-import classNames from "classnames";
 import { Nav } from "./nav";
 import { Footer } from "./footer";
 
