@@ -66,7 +66,9 @@ export function Nav() {
                             })}
                         >
                             {Icon && <Icon className={styles.tabIcon} />}
-                            <Typography weight="medium">{t(label)}</Typography>
+                            <Typography weight="medium" size="sm">
+                                {t(label)}
+                            </Typography>
                         </Link>
                     ))}
                 </div>
