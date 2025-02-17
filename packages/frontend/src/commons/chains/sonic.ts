@@ -23,8 +23,7 @@ export const sonicData: ChainData = {
             slug: SupportedDex.UniswapV3,
             logo: UniswapLogo,
             name: "Uniswap v3",
-            addLiquidityUrl:
-                "https://app.uniswap.org/explore/pools/sonic/{target_pool}",
+            addLiquidityUrl: "https://oku.trade/info/sonic/pool/{target_pool}",
             supportsFetchAllPools: true,
         },
         {

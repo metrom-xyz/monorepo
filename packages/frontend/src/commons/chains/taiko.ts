@@ -27,8 +27,7 @@ export const taikoData: ChainData = {
             slug: SupportedDex.UniswapV3,
             logo: UniswapLogo,
             name: "Uniswap v3",
-            addLiquidityUrl:
-                "https://app.uniswap.org/explore/pools/taiko/{target_pool}",
+            addLiquidityUrl: "https://oku.trade/info/taiko/pool/{target_pool}",
             supportsFetchAllPools: true,
         },
         {

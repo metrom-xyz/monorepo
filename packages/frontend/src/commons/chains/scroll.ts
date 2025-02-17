@@ -27,8 +27,7 @@ export const scrollData: ChainData = {
             slug: SupportedDex.UniswapV3,
             logo: UniswapLogo,
             name: "Uniswap v3",
-            addLiquidityUrl:
-                "https://app.uniswap.org/explore/pools/scroll/{target_pool}",
+            addLiquidityUrl: "https://oku.trade/info/scroll/pool/{target_pool}",
             supportsFetchAllPools: true,
         },
     ],
