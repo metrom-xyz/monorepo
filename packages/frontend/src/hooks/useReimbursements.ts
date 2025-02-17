@@ -12,13 +12,14 @@ interface ReimbursementsWithRemaining extends Reimbursement {
 }
 
 export function useReimbursements(): {
-    loading: boolean;
+    loadingReimbursements: boolean;
+    loadingRecovered: boolean;
+    loadingClaimed: boolean;
     reimbursements: Reimbursement[];
 } {
     const [reimbursements, setReimbursements] = useState<
         ReimbursementsWithRemaining[]
     >([]);
-    const [loading, setLoading] = useState(true);
 
     const { address } = useAccount();
 
@@ -115,19 +116,16 @@ export function useReimbursements(): {
 
     useEffect(() => {
         if (loadingReimbursements || loadingRecovered || loadingClaimed) {
-            setLoading(true);
             return;
         }
         if (reimbursementsErrored || recoveredErrored || claimedErrored) {
             console.error(
                 `Could not fetch claimed data for address ${address}: ${recoveredError} ${claimedError}`,
             );
-            setLoading(false);
             return;
         }
         if (!rawReimbursements || !recoveredData || !claimedData) {
             setReimbursements([]);
-            setLoading(false);
             return;
         }
 
@@ -155,7 +153,6 @@ export function useReimbursements(): {
         }
 
         setReimbursements(reimbursements);
-        setLoading(false);
     }, [
         address,
         recoveredData,
@@ -172,7 +169,9 @@ export function useReimbursements(): {
     ]);
 
     return {
-        loading: loading || loadingReimbursements || loadingRecovered,
+        loadingReimbursements,
+        loadingRecovered,
+        loadingClaimed,
         reimbursements,
     };
 }

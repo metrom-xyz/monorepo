@@ -12,11 +12,11 @@ interface ClaimWithRemaining extends Claim {
 }
 
 export function useClaims(): {
-    loading: boolean;
+    loadingClaims: boolean;
+    loadingClaimed: boolean;
     claims: Claim[];
 } {
     const [claims, setClaims] = useState<ClaimWithRemaining[]>([]);
-    const [loading, setLoading] = useState(true);
 
     const { address } = useAccount();
 
@@ -80,19 +80,16 @@ export function useClaims(): {
 
     useEffect(() => {
         if (loadingClaims || loadingClaimed) {
-            setLoading(true);
             return;
         }
         if (claimsErrored || claimedErrored) {
             console.error(
                 `Could not fetch claimed data for address ${address}: ${claimedError}`,
             );
-            setLoading(false);
             return;
         }
         if (!rawClaims || !claimedData) {
             setClaims([]);
-            setLoading(false);
             return;
         }
 
@@ -118,7 +115,6 @@ export function useClaims(): {
         }
 
         setClaims(claims);
-        setLoading(false);
     }, [
         address,
         claimedData,
@@ -131,7 +127,8 @@ export function useClaims(): {
     ]);
 
     return {
-        loading: loading || loadingClaims || loadingClaimed,
+        loadingClaims,
+        loadingClaimed,
         claims,
     };
 }

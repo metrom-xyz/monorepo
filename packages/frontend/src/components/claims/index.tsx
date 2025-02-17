@@ -8,7 +8,7 @@ import {
     type Erc20Token,
     type Reimbursement,
 } from "@metrom-xyz/sdk";
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { type Chain } from "viem";
 import { ChainOverview, SkeletonChainOverview } from "./chain-overview";
 import { ChainClaims, SkeletonChainClaims } from "./chain-claims";
@@ -16,6 +16,7 @@ import { Empty } from "./empty";
 import { CHAIN_DATA, SUPPORTED_CHAINS, type ChainData } from "@/src/commons";
 import { useReimbursements } from "@/src/hooks/useReimbursements";
 import { ChainReimbursements } from "./chain-reimbursements";
+import { useSwitchChain } from "wagmi";
 
 import styles from "./styles.module.css";
 
@@ -39,9 +40,9 @@ export function Claims() {
     const [claimingAll, setClaimingAll] = useState(false);
     const [recoveringAll, setRecoveringAll] = useState(false);
 
-    const { loading: loadingClaims, claims } = useClaims();
-    const { loading: loadingReimbursements, reimbursements } =
-        useReimbursements();
+    const { switchChain } = useSwitchChain();
+    const { loadingClaims, claims } = useClaims();
+    const { loadingReimbursements, reimbursements } = useReimbursements();
 
     useEffect(() => {
         if (loadingClaims || loadingReimbursements) {
@@ -140,6 +141,14 @@ export function Claims() {
         chainsData,
     ]);
 
+    const onChainSwitch = useCallback(
+        (chain: Chain) => {
+            switchChain({ chainId: chain.id });
+            setChain(chain);
+        },
+        [switchChain],
+    );
+
     function onTokenAllClaimed(chain: Chain) {
         setChainsWithRewardsData((prev) =>
             prev?.map((data) => {
@@ -207,7 +216,11 @@ export function Claims() {
 
     return (
         <div className={styles.root}>
-            <Chains options={chainsData} value={chain} onChange={setChain} />
+            <Chains
+                options={chainsData}
+                value={chain}
+                onChange={onChainSwitch}
+            />
             <div className={styles.rightWrapper}>
                 <ChainOverview
                     chainWithRewardsData={chainWithRewardsData}
