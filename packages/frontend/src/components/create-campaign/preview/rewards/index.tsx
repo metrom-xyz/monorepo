@@ -98,7 +98,6 @@ export function Rewards({ rewards, startDate, endDate }: RewardsProps) {
                         <Typography weight="medium" size="xl">
                             {formatAmount({
                                 amount: reward.amount.formatted,
-                                humanize: false,
                             })}
                         </Typography>
                     </div>
