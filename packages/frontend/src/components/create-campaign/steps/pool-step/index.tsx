@@ -12,7 +12,6 @@ import type {
     AmmPoolLiquidityCampaignPayloadPart,
     CampaignPayloadErrors,
 } from "@/src/types";
-import classNames from "classnames";
 import { ListPoolPicker } from "./list";
 import { AddressPoolPicker } from "./address-picker";
 
