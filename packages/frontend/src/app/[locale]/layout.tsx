@@ -14,6 +14,7 @@ import { notFound } from "next/navigation";
 import { Layout as AppLayout } from "../../components/layout";
 import { NextIntlClientProvider } from "next-intl";
 import { ThemeProvider } from "next-themes";
+import { THEME_SWITCH } from "@/src/commons/env";
 
 interface Params {
     locale: string;
@@ -44,7 +45,10 @@ export default async function Layout({ children, params }: LayoutParams) {
         <html lang={locale} suppressHydrationWarning>
             <body>
                 <NextIntlClientProvider messages={messages}>
-                    <ThemeProvider attribute="data-theme">
+                    <ThemeProvider
+                        attribute={"data-theme"}
+                        forcedTheme={THEME_SWITCH ? undefined : "light"}
+                    >
                         <ClientProviders locale={locale as Locale}>
                             <AppLayout>{children}</AppLayout>
                         </ClientProviders>

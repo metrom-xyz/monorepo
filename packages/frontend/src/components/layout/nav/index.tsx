@@ -10,6 +10,7 @@ import { NewCampaignIcon } from "@/src/assets/new-campaign-icon";
 import { AllCampaignsIcon } from "@/src/assets/all-campaigns-icon";
 import { ClaimsIcon } from "@/src/assets/claims";
 import { ThemeSwitcher } from "../../theme-switcher";
+import { THEME_SWITCH } from "@/src/commons/env";
 
 import styles from "./styles.module.css";
 
@@ -32,7 +33,7 @@ export function Nav() {
                     </Link>
                 </div>
                 <div className={styles.rightContentContainer}>
-                    <ThemeSwitcher />
+                    {THEME_SWITCH && <ThemeSwitcher />}
                     <ConnectButton />
                 </div>
                 <div className={styles.tabs}>
