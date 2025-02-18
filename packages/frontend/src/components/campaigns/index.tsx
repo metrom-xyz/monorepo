@@ -9,7 +9,7 @@ import {
     type SelectOption,
 } from "@metrom-xyz/ui";
 import { useCampaigns } from "@/src/hooks/useCampaigns";
-import { Campaign, SkeletonCampaign } from "./campaign";
+import { CampaignRow, SkeletonCampaign } from "./campaign";
 import { useTranslations } from "next-intl";
 import { usePagination } from "@/src/hooks/usePagination";
 import {
@@ -285,7 +285,10 @@ export function Campaigns() {
                 ) : (
                     pagedCampaigns.map((campaign) => {
                         return (
-                            <Campaign key={campaign.id} campaign={campaign} />
+                            <CampaignRow
+                                key={campaign.id}
+                                campaign={campaign}
+                            />
                         );
                     })
                 )}

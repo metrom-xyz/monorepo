@@ -1,17 +1,17 @@
 import type { SupportedChain } from "@metrom-xyz/contracts";
 import type { Hex } from "viem";
-import { metromApiClient } from "../commons";
+import { CHAIN_DATA, metromApiClient } from "../commons";
 import { useQuery } from "@tanstack/react-query";
 import { getCampaignName } from "../utils/campaign";
 import { useTranslations } from "next-intl";
-import { NamedCampaign } from "../types";
+import { Campaign } from "../types";
 
 export function useCampaign(
     chainId?: SupportedChain,
     id?: Hex,
 ): {
     loading: boolean;
-    campaign?: NamedCampaign;
+    campaign?: Campaign;
 } {
     const t = useTranslations();
 
@@ -27,8 +27,9 @@ export function useCampaign(
                     chainId,
                     id,
                 });
-                return new NamedCampaign(
+                return new Campaign(
                     campaign,
+                    CHAIN_DATA[chainId],
                     getCampaignName(t, campaign),
                 );
             } catch (error) {
