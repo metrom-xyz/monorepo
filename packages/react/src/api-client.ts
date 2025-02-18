@@ -1,1 +1,4 @@
-export { MetromApiClient, SERVICE_URLS } from "@metrom-xyz/sdk";
+export {
+    metromDevelopmentApiClient,
+    metromProductionApiClient,
+} from "@metrom-xyz/sdk";

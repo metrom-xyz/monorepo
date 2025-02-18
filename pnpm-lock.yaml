@@ -227,8 +227,8 @@ importers:
         specifier: ^0.39.0
         version: 0.39.0(bufferutil@4.0.9)(typescript@5.7.3)(utf-8-validate@5.0.10)(zod@3.24.1)
       '@metrom-xyz/sdk':
-        specifier: ^0.3.0
-        version: 0.3.0
+        specifier: workspace:*
+        version: link:../sdk
       '@tanstack/react-query':
         specifier: ^5.66.0
         version: 5.66.0(react@19.0.0)
@@ -2032,9 +2032,6 @@ packages:
 
   '@metrom-xyz/contracts@0.39.0':
     resolution: {integrity: sha512-TE6D453/CxYzaV+3lRgcfQqDTh2lo4uHeNq/5yXbzxuMiOCTrEaitqzbnwV57GIbB0W+RQLD1lqr35rUVp9swQ==}
-
-  '@metrom-xyz/sdk@0.3.0':
-    resolution: {integrity: sha512-tAhI6+xnDT4ZbQonEMcGLbaAg8V86xkog2UC5K4tP+CjJg3Ea8IaHxVLieqfC5PI7xldoMKB6Hp5LruBgV9KlQ==}
 
   '@microsoft/api-extractor-model@7.30.3':
     resolution: {integrity: sha512-yEAvq0F78MmStXdqz9TTT4PZ05Xu5R8nqgwI5xmUmQjWBQ9E6R2n8HB/iZMRciG4rf9iwI2mtuQwIzDXBvHn1w==}
@@ -10556,8 +10553,6 @@ snapshots:
       - typescript
       - utf-8-validate
       - zod
-
-  '@metrom-xyz/sdk@0.3.0': {}
 
   '@microsoft/api-extractor-model@7.30.3(@types/node@22.13.1)':
     dependencies:
