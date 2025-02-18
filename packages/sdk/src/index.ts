@@ -1,3 +1,13 @@
+import { MetromApiClient } from "./client/backend";
+import { SERVICE_URLS } from "./commons";
+
+export const metromDevelopmentApiClient = new MetromApiClient(
+    SERVICE_URLS["development"].metrom,
+);
+export const metromProductionApiClient = new MetromApiClient(
+    SERVICE_URLS["production"].metrom,
+);
+
 export { MetromApiClient } from "./client/backend";
 
 export * from "./types/activities";

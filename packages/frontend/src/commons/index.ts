@@ -1,9 +1,9 @@
 import {
     type Erc20Token,
-    MetromApiClient,
-    SERVICE_URLS,
     Environment,
     SupportedAmm,
+    metromDevelopmentApiClient,
+    metromProductionApiClient,
 } from "@metrom-xyz/sdk";
 import { type ChainContract, type Chain } from "viem";
 import { type Protocol, type SVGIcon } from "../types";
@@ -85,6 +85,7 @@ export const AMM_SUPPORTS_RANGE_INCENTIVES: Record<SupportedAmm, boolean> = {
     [SupportedAmm.StableSwap]: false,
 };
 
-export const metromApiClient = new MetromApiClient(
-    SERVICE_URLS[ENVIRONMENT].metrom,
-);
+export const metromApiClient =
+    ENVIRONMENT === Environment.Production
+        ? metromProductionApiClient
+        : metromDevelopmentApiClient;

@@ -18,12 +18,11 @@ npm add @metrom-xyz/react wagmi viem @tanstack/react-query
 
 ## Setup
 
-Once installed setup the wagmi and tanstack configuration and wrap your React
-app with the context providers by following the official
+Once installed, set up the Wagmi and TanStack configuration, then wrap your
+React app with the required context providers by following the official
 [wagmi documentation](https://wagmi.sh/react/getting-started#manual-installation).
 
-One last thing to do before using the hooks is to instantiate the
-`MetromApiClient` that will be passed to the hooks:
+Before using the hooks, instantiate the `MetromApiClient` and pass it to them:
 
 ```tsx
 import { MetromApiClient } from "@metrom-xyz/react";
@@ -43,15 +42,24 @@ const metromApiClient = new MetromApiClient(
 
 ## Usage
 
-Once the setup is done, the hooks can be used in any React component, for
-example:
+Once the setup is done, the hooks can be used in any React component, just
+import the desired Metrom api client (development or production):
 
 ```tsx
-import { metromApiClient } from ".";
+import {
+  metromDevelopmentApiClient,
+  metromProductionApiClient,
+} from "@metrom-xyz/react";
+```
+
+and then use the hook, for example:
+
+```tsx
+import { metromDevelopmentApiClient } from "@metrom-xyz/react";
 
 function MyReactComponent() {
   const { claims, loading } = useClaims({
-    apiClient: metromApiClient,
+    apiClient: metromDevelopmentApiClient,
     address: "...",
   });
 

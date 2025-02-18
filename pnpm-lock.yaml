@@ -227,8 +227,8 @@ importers:
         specifier: ^0.39.0
         version: 0.39.0(bufferutil@4.0.9)(typescript@5.7.3)(utf-8-validate@5.0.10)(zod@3.24.1)
       '@metrom-xyz/sdk':
-        specifier: ^0.3.0
-        version: 0.3.0
+        specifier: workspace:*
+        version: link:../sdk
       '@tanstack/react-query':
         specifier: ^5.66.0
         version: 5.66.0(react@19.0.0)
@@ -10568,8 +10568,6 @@ snapshots:
       - typescript
       - utf-8-validate
       - zod
-
-  '@metrom-xyz/sdk@0.3.0': {}
 
   '@microsoft/api-extractor-model@7.30.3(@types/node@22.13.1)':
     dependencies:

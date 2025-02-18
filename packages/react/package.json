@@ -18,7 +18,7 @@
     },
     "dependencies": {
         "@metrom-xyz/contracts": "^0.39.0",
-        "@metrom-xyz/sdk": "^0.3.0"
+        "@metrom-xyz/sdk": "workspace:*"
     },
     "devDependencies": {
         "@eslint/js": "^9.19.0",
