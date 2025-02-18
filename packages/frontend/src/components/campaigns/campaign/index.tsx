@@ -10,17 +10,17 @@ import { Protocol, SkeletonProtocol } from "./protocol";
 import { Points } from "./points";
 import dayjs from "dayjs";
 import { DistributablesType } from "@metrom-xyz/sdk";
-import type { NamedCampaign } from "@/src/types";
+import { type Campaign } from "@/src/types";
 
 import styles from "./styles.module.css";
 
 interface CampaignProps {
-    campaign: NamedCampaign;
+    campaign: Campaign;
 }
 
 // TODO: reinstate the arrow on hover, but on click, bring the user
 // to the provide liquidity page for the targeted dex
-export function Campaign({ campaign }: CampaignProps) {
+export function CampaignRow({ campaign }: CampaignProps) {
     const hoursDuration = dayjs
         .unix(campaign.to)
         .diff(dayjs.unix(campaign.from), "hours", false);

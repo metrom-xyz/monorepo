@@ -1,13 +1,13 @@
 import { Popover, Skeleton, Typography } from "@metrom-xyz/ui";
 import { TargetType } from "@metrom-xyz/sdk";
-import type { NamedCampaign } from "@/src/types";
+import type { Campaign } from "@/src/types";
 import { useProtocolsInChain } from "@/src/hooks/useProtocolsInChain";
 import { useRef, useState } from "react";
 
 import styles from "./styles.module.css";
 
 interface ProtocolProps {
-    campaign: NamedCampaign;
+    campaign: Campaign;
 }
 
 export function Protocol({ campaign }: ProtocolProps) {

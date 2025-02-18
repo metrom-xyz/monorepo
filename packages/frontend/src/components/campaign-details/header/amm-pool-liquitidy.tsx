@@ -3,10 +3,7 @@ import { Typography, Button } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
 import { useRouter } from "@/src/i18n/routing";
 import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
-import {
-    getPoolAddLiquidityLink,
-    getAddressExplorerLink,
-} from "@/src/utils/dex";
+import { getAddressExplorerLink } from "@/src/utils/dex";
 import { formatPercentage } from "@/src/utils/format";
 import { trackFathomEvent } from "@/src/utils/fathom";
 import { PoolRemoteLogo } from "../../pool-remote-logo";
@@ -28,7 +25,7 @@ export function AmmPoolLiquityHeader({ campaign }: AmmPoolLiquityHeaderProps) {
         router.push("/claims");
     }, [router]);
 
-    const depositLink = getPoolAddLiquidityLink(campaign);
+    const depositLink = campaign.getDepositLiquidityUrl();
     const explorerLink = getAddressExplorerLink(
         campaign.target.pool.address,
         campaign.chainId,
