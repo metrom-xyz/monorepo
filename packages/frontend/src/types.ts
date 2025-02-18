@@ -1,7 +1,8 @@
 import {
-    Campaign,
+    TargetType,
+    Campaign as SdkCampaign,
+    Status,
     type SupportedLiquityV2,
-    type TargetType,
     type AmmPool,
     type AmmPoolLiquidityTarget,
     type DistributablesType,
@@ -15,11 +16,11 @@ import {
     type LiquityV2Collateral,
     type Erc20Token,
     type LiquityV2StabilityPoolTarget,
-    Status,
 } from "@metrom-xyz/sdk";
 import type { Dayjs } from "dayjs";
 import type { SVGProps, FunctionComponent } from "react";
 import type { Address } from "viem";
+import type { ChainData } from "./commons";
 
 export enum Theme {
     Dark = "dark",
@@ -49,9 +50,18 @@ export interface ProtocolBase<S = string> {
     logo: FunctionComponent<SVGIcon>;
 }
 
+export enum DepositUrlType {
+    PathPoolAddress = "path-pool-address",
+    PathTokenAddresses = "path-token-addresses",
+    QueryTokenAddresses = "query-pool-addresses",
+}
+
 export interface DexProtocol extends ProtocolBase<SupportedDex> {
     type: ProtocolType.Dex;
-    addLiquidityUrl: string;
+    depositUrl: {
+        type: DepositUrlType;
+        template: string;
+    };
     supportsFetchAllPools: boolean;
 }
 
@@ -246,9 +256,10 @@ export type AmmPoolLiquidityCampaignPayloadPart =
 export type LiquityV2CampaignPayloadPart =
     PropertyUnion<LiquityV2CampaignPayload>;
 
-export class NamedCampaign extends Campaign {
+export class Campaign extends SdkCampaign {
     constructor(
-        campaign: Campaign,
+        campaign: SdkCampaign,
+        public readonly chainData: ChainData,
         public readonly name: string,
     ) {
         super(
@@ -276,10 +287,47 @@ export class NamedCampaign extends Campaign {
     ): this is TargetedNamedCampaign<T> {
         return this.target.type === type;
     }
+
+    getDepositLiquidityUrl(): string | undefined {
+        if (!this.isTargeting(TargetType.AmmPoolLiquidity)) return undefined;
+
+        const pool = this.target.pool;
+        const dex = this.chainData.protocols.find(
+            (protocol) =>
+                protocol.type === ProtocolType.Dex &&
+                protocol.slug === pool.dex.slug,
+        );
+
+        if (!dex) return undefined;
+        const { depositUrl } = dex as DexProtocol;
+        const { template, type } = depositUrl;
+
+        switch (type) {
+            case DepositUrlType.PathPoolAddress: {
+                return template.replace("{pool}", `${pool.address}`);
+            }
+            case DepositUrlType.PathTokenAddresses: {
+                return template.replace(
+                    "{pool}",
+                    `${pool.tokens.map(({ address }) => address).join("/")}`,
+                );
+            }
+            case DepositUrlType.QueryTokenAddresses: {
+                const url = template
+                    .replace("{token_0}", pool.tokens[0].address)
+                    .replace("{token_1}", pool.tokens[1].address);
+
+                return pool.fee ? `${url}&fee=${pool.fee * 10000}` : url;
+            }
+            default: {
+                return undefined;
+            }
+        }
+    }
 }
 
 export interface DistributablesNamedCampaign<T extends DistributablesType>
-    extends NamedCampaign {
+    extends Campaign {
     distributables: T extends DistributablesType.Tokens
         ? TokenDistributables
         : T extends DistributablesType.Points
@@ -287,8 +335,7 @@ export interface DistributablesNamedCampaign<T extends DistributablesType>
           : never;
 }
 
-export interface TargetedNamedCampaign<T extends TargetType>
-    extends NamedCampaign {
+export interface TargetedNamedCampaign<T extends TargetType> extends Campaign {
     target: T extends TargetType.AmmPoolLiquidity
         ? AmmPoolLiquidityTarget
         : T extends TargetType.LiquityV2Debt

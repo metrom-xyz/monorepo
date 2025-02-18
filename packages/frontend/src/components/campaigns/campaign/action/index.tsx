@@ -3,13 +3,13 @@ import { PoolRemoteLogo } from "@/src/components/pool-remote-logo";
 import classNames from "classnames";
 import { TargetType } from "@metrom-xyz/sdk";
 import { AmmPoolLiquidity } from "./amm-pool-liquidity";
-import type { NamedCampaign } from "@/src/types";
+import type { Campaign } from "@/src/types";
 import { LiquidityV2 } from "./liquity-v2";
 
 import styles from "./styles.module.css";
 
 interface ActionProps {
-    campaign: NamedCampaign;
+    campaign: Campaign;
 }
 
 export function Action({ campaign }: ActionProps) {

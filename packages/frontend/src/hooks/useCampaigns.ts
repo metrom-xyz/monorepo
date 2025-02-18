@@ -1,12 +1,13 @@
-import { metromApiClient } from "../commons";
+import { CHAIN_DATA, metromApiClient } from "../commons";
 import { useQuery } from "@tanstack/react-query";
 import { useTranslations } from "next-intl";
 import { getCampaignName } from "../utils/campaign";
-import { NamedCampaign } from "../types";
+import { Campaign } from "../types";
+import type { SupportedChain } from "@metrom-xyz/contracts";
 
 export function useCampaigns(): {
     loading: boolean;
-    campaigns?: NamedCampaign[];
+    campaigns?: Campaign[];
 } {
     const t = useTranslations();
 
@@ -16,8 +17,9 @@ export function useCampaigns(): {
             try {
                 const campaigns = await metromApiClient.fetchCampaigns();
                 return campaigns.map((campaign) => {
-                    return new NamedCampaign(
+                    return new Campaign(
                         campaign,
+                        CHAIN_DATA[campaign.chainId as SupportedChain],
                         getCampaignName(t, campaign),
                     );
                 });

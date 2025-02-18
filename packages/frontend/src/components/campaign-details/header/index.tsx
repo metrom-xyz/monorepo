@@ -1,7 +1,7 @@
 import { Skeleton, Button } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
 import { PoolRemoteLogo } from "../../pool-remote-logo";
-import type { NamedCampaign } from "@/src/types";
+import type { Campaign } from "@/src/types";
 import { AmmPoolLiquityHeader } from "./amm-pool-liquitidy";
 import { TargetType } from "@metrom-xyz/sdk";
 import { LiquityV2Header } from "./liquity-v2";
@@ -9,7 +9,7 @@ import { LiquityV2Header } from "./liquity-v2";
 import styles from "./styles.module.css";
 
 interface HeaderProps {
-    campaign: NamedCampaign;
+    campaign: Campaign;
 }
 
 export function Header({ campaign }: HeaderProps) {
@@ -34,6 +34,7 @@ export function SkeletonHeader() {
         <div className={styles.root}>
             <div className={styles.titleContainer}>
                 <div className={styles.title}>
+                    <Skeleton circular width={32} />
                     <PoolRemoteLogo
                         tokens={[{ address: "0x1" }, { address: "0x2" }]}
                         loading

@@ -22,6 +22,7 @@ export function LiquityV2Header({ campaign }: LiquityV2HeaderProps) {
         ProtocolType.LiquityV2,
     ).find((brand) => brand.slug === campaign.target.brand.slug);
 
+    const ChainIcon = campaign.chainData.icon;
     const actionLink = brand?.actionUrls[campaign.target.type];
 
     const handleClaimOnClick = useCallback(() => {
@@ -32,6 +33,7 @@ export function LiquityV2Header({ campaign }: LiquityV2HeaderProps) {
         <div className={styles.root}>
             <div className={styles.titleContainer}>
                 <div className={styles.title}>
+                    <ChainIcon className={styles.chainLogo} />
                     {brand && <brand.logo className={styles.logo} />}
                     <Typography size="xl4" weight="medium">
                         {campaign.name}

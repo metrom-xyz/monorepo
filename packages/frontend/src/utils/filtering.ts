@@ -5,11 +5,11 @@ import {
     Status,
     TargetType,
 } from "@metrom-xyz/sdk";
-import { type NamedCampaign, FilterableStatus } from "../types";
+import { type Campaign, FilterableStatus } from "../types";
 
-export function sortCampaigns(campaigns: NamedCampaign[]): NamedCampaign[] {
+export function sortCampaigns(campaigns: Campaign[]): Campaign[] {
     const clusteredCampaigns = campaigns.reduce(
-        (clustered: Record<Status, NamedCampaign[]>, campaign) => {
+        (clustered: Record<Status, Campaign[]>, campaign) => {
             clustered[campaign.status].push(campaign);
             return clustered;
         },
@@ -38,11 +38,11 @@ export function sortCampaigns(campaigns: NamedCampaign[]): NamedCampaign[] {
 }
 
 export function filterCampaigns(
-    campaigns: NamedCampaign[],
+    campaigns: Campaign[],
     status: FilterableStatus,
     chainId: number | null,
     searchQuery: string,
-): NamedCampaign[] {
+): Campaign[] {
     if (campaigns.length === 0) return [];
     if (!searchQuery && status === FilterableStatus.All && !chainId)
         return campaigns;
