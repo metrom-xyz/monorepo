@@ -4,7 +4,7 @@ import { MantleLogo } from "../../assets/logos/chains/mantle";
 import { SwapsicleLogo } from "../../assets/logos/dexes/swapsicle";
 import { type ChainData } from "..";
 import { mantleSepoliaTestnet } from "viem/chains";
-import { ProtocolType } from "@/src/types";
+import { DepositUrlType, ProtocolType } from "@/src/types";
 
 export const mantleSepoliaData: ChainData = {
     name: "Mantle Sepolia",
@@ -17,8 +17,11 @@ export const mantleSepoliaData: ChainData = {
             slug: SupportedDex.Swapsicle,
             logo: SwapsicleLogo,
             name: "Swapsicle",
-            addLiquidityUrl:
-                "https://app.swapsicle.io/liquidity/v3/mantle-testnet/{target_pool}",
+            depositUrl: {
+                type: DepositUrlType.PathPoolAddress,
+                template:
+                    "https://app.swapsicle.io/liquidity/v3/mantle-testnet/{pool}",
+            },
             supportsFetchAllPools: true,
         },
     ],

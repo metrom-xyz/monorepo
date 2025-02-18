@@ -49,7 +49,7 @@
 //                 slug: SupportedDex.ThirdTrade,
 //                 logo: ThirdTradeLogo,
 //                 name: "Third Trade",
-//                 addLiquidityUrl: "https://third.trade/pool/{target_pool}",
+//                 addLiquidityUrl: "https://third.trade/pool/{pool}",
 //                 supportsFetchAllPools: true,
 //             },
 //         ],

@@ -5,7 +5,7 @@ import { UniswapLogo } from "@/src/assets/logos/dexes/uniswap";
 import { SilverSwapLogo } from "@/src/assets/logos/dexes/silverswap";
 import { type ChainData } from "..";
 import { sonic } from "viem/chains";
-import { ProtocolType } from "@/src/types";
+import { DepositUrlType, ProtocolType } from "@/src/types";
 
 export const sonicData: ChainData = {
     name: sonic.name,
@@ -23,8 +23,10 @@ export const sonicData: ChainData = {
             slug: SupportedDex.UniswapV3,
             logo: UniswapLogo,
             name: "Uniswap v3",
-            addLiquidityUrl:
-                "https://app.uniswap.org/explore/pools/sonic/{target_pool}",
+            depositUrl: {
+                type: DepositUrlType.PathPoolAddress,
+                template: "https://oku.trade/app/sonic/pool/{pool}",
+            },
             supportsFetchAllPools: true,
         },
         {
@@ -32,8 +34,10 @@ export const sonicData: ChainData = {
             slug: SupportedDex.SilverSwap,
             logo: SilverSwapLogo,
             name: "SilverSwap",
-            addLiquidityUrl:
-                "https://silverswap.io/chain/sonic/liquidity/add-v3",
+            depositUrl: {
+                type: DepositUrlType.PathPoolAddress,
+                template: "https://silverswap.io/chain/sonic/liquidity/add-v3",
+            },
             supportsFetchAllPools: true,
         },
     ],

@@ -1,10 +1,10 @@
 import {
-    SupportedDex,
     TargetType,
+    type AmmPool,
     type TargetedCampaign,
 } from "@metrom-xyz/sdk";
 import { SupportedChain } from "@metrom-xyz/contracts";
-import { ProtocolType, type DexProtocol } from "../types";
+import { DepositUrlType, ProtocolType, type DexProtocol } from "../types";
 import { CHAIN_DATA } from "../commons";
 import type { Hex } from "viem";
 import type { Address } from "blo";
@@ -18,32 +18,44 @@ export function getDex(
     ) as DexProtocol | undefined;
 }
 
+export function generateDepositUrl(
+    pool: AmmPool,
+    baseUrl: string,
+    type: DepositUrlType,
+) {
+    switch (type) {
+        case DepositUrlType.PathPoolAddress: {
+            return baseUrl.replace("{pool}", `${pool.address}`);
+        }
+        case DepositUrlType.PathTokenAddresses: {
+            return baseUrl.replace(
+                "{pool}",
+                `${pool.tokens.map(({ address }) => address).join("/")}`,
+            );
+        }
+        case DepositUrlType.QueryTokenAddresses: {
+            const { tokens, fee } = pool;
+            const url = baseUrl
+                .replace("{token_0}", tokens[0].address)
+                .replace("{token_1}", tokens[1].address);
+
+            return fee ? `${url}&fee=${fee * 10000}` : url;
+        }
+    }
+}
+
 export function getPoolAddLiquidityLink(
     campaign: TargetedCampaign<TargetType.AmmPoolLiquidity>,
 ): string | undefined {
     const { chainId, target } = campaign;
 
     const dex = getDex(chainId, target.pool.dex.slug);
-    if (!dex || !dex.addLiquidityUrl) return;
+    if (!dex) return undefined;
 
-    if ([SupportedDex.UniswapV3, SupportedDex.Panko].includes(dex.slug))
-        return dex.addLiquidityUrl.replace(
-            "{target_pool}",
-            `${target.pool.tokens.map((token) => token.address).join("/")}`,
-        );
-
-    if (SupportedDex.Unagi === dex.slug) {
-        const { tokens, fee } = target.pool;
-        const url = dex.addLiquidityUrl
-            .replace("{target_token_0}", tokens[0].address)
-            .replace("{target_token_1}", tokens[1].address);
-
-        return fee ? `${url}&fee=${fee * 10000}` : url;
-    }
-
-    return dex.addLiquidityUrl.replace(
-        "{target_pool}",
-        `${target.pool.address}`,
+    return generateDepositUrl(
+        campaign.target.pool,
+        dex.depositUrl.template,
+        dex.depositUrl.type,
     );
 }
 

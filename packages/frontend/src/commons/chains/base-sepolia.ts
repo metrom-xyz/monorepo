@@ -5,7 +5,7 @@ import { KimLogo } from "../../assets/logos/dexes/kim";
 import { type ChainData } from "..";
 import { UniswapLogo } from "@/src/assets/logos/dexes/uniswap";
 import { baseSepolia } from "viem/chains";
-import { ProtocolType } from "@/src/types";
+import { DepositUrlType, ProtocolType } from "@/src/types";
 
 export const baseSepoliaData: ChainData = {
     name: baseSepolia.name,
@@ -18,7 +18,10 @@ export const baseSepoliaData: ChainData = {
             slug: SupportedDex.Kim,
             logo: KimLogo,
             name: "Kim",
-            addLiquidityUrl: "https://app.kim.exchange/pools/v4/{target_pool}",
+            depositUrl: {
+                type: DepositUrlType.PathPoolAddress,
+                template: "https://app.kim.exchange/pools/v4/{pool}",
+            },
             supportsFetchAllPools: true,
         },
         {
@@ -26,8 +29,11 @@ export const baseSepoliaData: ChainData = {
             slug: SupportedDex.UniswapV3,
             logo: UniswapLogo,
             name: "Uniswap v3",
-            addLiquidityUrl:
-                "https://app.uniswap.org/explore/pools/base_sepolia/{target_pool}",
+            depositUrl: {
+                type: DepositUrlType.PathTokenAddresses,
+                template:
+                    "https://app.uniswap.org/explore/pools/base_sepolia/{pool}",
+            },
             supportsFetchAllPools: true,
         },
     ],

@@ -6,7 +6,7 @@ import { PankoLogo } from "@/src/assets/logos/dexes/panko";
 import { taiko } from "viem/chains";
 import { UniswapLogo } from "@/src/assets/logos/dexes/uniswap";
 import { UnagiLogo } from "@/src/assets/logos/dexes/unagi";
-import { ProtocolType } from "@/src/types";
+import { DepositUrlType, ProtocolType } from "@/src/types";
 
 export const taikoData: ChainData = {
     name: "Taiko",
@@ -19,7 +19,10 @@ export const taikoData: ChainData = {
             slug: SupportedDex.Panko,
             logo: PankoLogo,
             name: "Panko",
-            addLiquidityUrl: "https://panko.finance/add/{target_pool}",
+            depositUrl: {
+                type: DepositUrlType.PathTokenAddresses,
+                template: "https://panko.finance/add/{pool}",
+            },
             supportsFetchAllPools: true,
         },
         {
@@ -27,8 +30,10 @@ export const taikoData: ChainData = {
             slug: SupportedDex.UniswapV3,
             logo: UniswapLogo,
             name: "Uniswap v3",
-            addLiquidityUrl:
-                "https://app.uniswap.org/explore/pools/taiko/{target_pool}",
+            depositUrl: {
+                type: DepositUrlType.PathPoolAddress,
+                template: "https://oku.trade/app/sonic/pool/{pool}",
+            },
             supportsFetchAllPools: true,
         },
         {
@@ -36,8 +41,11 @@ export const taikoData: ChainData = {
             slug: SupportedDex.Unagi,
             logo: UnagiLogo,
             name: "Unagi",
-            addLiquidityUrl:
-                "https://unagiswap.xyz/pool/create/amm/v3?from={target_token_0}&to={target_token_1}",
+            depositUrl: {
+                type: DepositUrlType.QueryTokenAddresses,
+                template:
+                    "https://unagiswap.xyz/pool/create/amm/v3?from={token_0}&to={token_1}",
+            },
             supportsFetchAllPools: true,
         },
     ],

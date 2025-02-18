@@ -4,7 +4,7 @@ import { type ChainData } from "../index";
 import { UniswapLogo } from "../../assets/logos/dexes/uniswap";
 import { CeloLogo } from "../../assets/logos/chains/celo";
 import { celoAlfajores } from "viem/chains";
-import { ProtocolType } from "@/src/types";
+import { DepositUrlType, ProtocolType } from "@/src/types";
 
 export const celoAlfajoresData: ChainData = {
     name: celoAlfajores.name,
@@ -17,7 +17,10 @@ export const celoAlfajoresData: ChainData = {
             slug: SupportedDex.UniswapV3,
             logo: UniswapLogo,
             name: "Uniswap v3",
-            addLiquidityUrl: "https://app.uniswap.org/add/{target_pool}",
+            depositUrl: {
+                type: DepositUrlType.PathTokenAddresses,
+                template: "https://app.uniswap.org/add/{pool}",
+            },
             supportsFetchAllPools: true,
         },
     ],
