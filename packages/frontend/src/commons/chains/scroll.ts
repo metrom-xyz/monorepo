@@ -5,7 +5,7 @@ import { ScribeLogo } from "../../assets/logos/dexes/scribe";
 import { type ChainData } from "..";
 import { scroll } from "viem/chains";
 import { UniswapLogo } from "@/src/assets/logos/dexes/uniswap";
-import { ProtocolType } from "@/src/types";
+import { DepositUrlType, ProtocolType } from "@/src/types";
 
 export const scrollData: ChainData = {
     name: scroll.name,
@@ -18,8 +18,10 @@ export const scrollData: ChainData = {
             slug: SupportedDex.Scribe,
             logo: ScribeLogo,
             name: "Scribe",
-            addLiquidityUrl:
-                "https://app.scribe.exchange/pools/v4/{target_pool}",
+            depositUrl: {
+                type: DepositUrlType.PathPoolAddress,
+                template: "https://app.scribe.exchange/pools/v4/{pool}",
+            },
             supportsFetchAllPools: true,
         },
         {
@@ -27,8 +29,10 @@ export const scrollData: ChainData = {
             slug: SupportedDex.UniswapV3,
             logo: UniswapLogo,
             name: "Uniswap v3",
-            addLiquidityUrl:
-                "https://app.uniswap.org/explore/pools/scroll/{target_pool}",
+            depositUrl: {
+                type: DepositUrlType.PathPoolAddress,
+                template: "https://oku.trade/app/sonic/pool/{pool}",
+            },
             supportsFetchAllPools: true,
         },
     ],

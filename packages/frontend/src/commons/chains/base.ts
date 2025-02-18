@@ -6,7 +6,7 @@ import { BaseSwapLogo } from "@/src/assets/logos/dexes/baseswap";
 import { type ChainData } from "..";
 import { base } from "viem/chains";
 // import { UniswapLogo } from "@/src/assets/logos/dexes/uniswap";
-import { ProtocolType } from "@/src/types";
+import { DepositUrlType, ProtocolType } from "@/src/types";
 import { ThirdTradeLogo } from "@/src/assets/logos/dexes/thirdtrade";
 
 export const baseData: ChainData = {
@@ -20,7 +20,10 @@ export const baseData: ChainData = {
             slug: SupportedDex.Kim,
             logo: KimLogo,
             name: "Kim",
-            addLiquidityUrl: "https://app.kim.exchange/pools/v4/{target_pool}",
+            depositUrl: {
+                type: DepositUrlType.PathPoolAddress,
+                template: "https://app.kim.exchange/pools/v4/{pool}",
+            },
             supportsFetchAllPools: true,
         },
         {
@@ -28,14 +31,17 @@ export const baseData: ChainData = {
             slug: SupportedDex.BaseSwap,
             logo: BaseSwapLogo,
             name: "BaseSwap",
-            addLiquidityUrl: `https://baseswap.fi/pool/v3/${SupportedChain.Base}-{target_pool}`,
+            depositUrl: {
+                type: DepositUrlType.PathPoolAddress,
+                template: `https://baseswap.fi/pool/v3/${SupportedChain.Base}-{pool}`,
+            },
             supportsFetchAllPools: true,
         },
         // {
         //     slug: SupportedDex.UniswapV3,
         //     logo: UniswapLogo,
         //     name: "Uniswap v3",
-        //     addLiquidityUrl: `https://app.uniswap.org/explore/pools/${SupportedChain.Base}/{target_pool}`,
+        //     addLiquidityUrl: `https://app.uniswap.org/explore/pools/${SupportedChain.Base}/{pool}`,
         //     supportsFetchAllPools: false,
         // },
         {
@@ -43,7 +49,10 @@ export const baseData: ChainData = {
             slug: SupportedDex.ThirdTrade,
             logo: ThirdTradeLogo,
             name: "Third Trade",
-            addLiquidityUrl: "https://third.trade/pool/{target_pool}",
+            depositUrl: {
+                type: DepositUrlType.PathPoolAddress,
+                template: "https://third.trade/pool/{pool}",
+            },
             supportsFetchAllPools: true,
         },
     ],

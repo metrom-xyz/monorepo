@@ -4,7 +4,7 @@ import { ModeLogo } from "../../assets/logos/chains/mode";
 import { KimLogo } from "../../assets/logos/dexes/kim";
 import { type ChainData } from "..";
 import { mode } from "viem/chains";
-import { ProtocolType } from "@/src/types";
+import { DepositUrlType, ProtocolType } from "@/src/types";
 
 export const modeData: ChainData = {
     name: "Mode",
@@ -17,7 +17,10 @@ export const modeData: ChainData = {
             slug: SupportedDex.Kim,
             logo: KimLogo,
             name: "Kim",
-            addLiquidityUrl: "https://app.kim.exchange/pools/v4/{target_pool}",
+            depositUrl: {
+                type: DepositUrlType.PathPoolAddress,
+                template: "https://app.kim.exchange/pools/v4/{pool}",
+            },
             supportsFetchAllPools: true,
         },
     ],
