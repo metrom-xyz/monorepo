@@ -25,6 +25,7 @@ export function AmmPoolLiquityHeader({ campaign }: AmmPoolLiquityHeaderProps) {
         router.push("/claims");
     }, [router]);
 
+    const ChainIcon = campaign.chainData.icon;
     const depositLink = campaign.getDepositLiquidityUrl();
     const explorerLink = getAddressExplorerLink(
         campaign.target.pool.address,
@@ -43,6 +44,7 @@ export function AmmPoolLiquityHeader({ campaign }: AmmPoolLiquityHeaderProps) {
         <div className={styles.root}>
             <div className={styles.titleContainer}>
                 <div className={styles.title}>
+                    <ChainIcon className={styles.chainLogo} />
                     <PoolRemoteLogo
                         chain={campaign.chainId}
                         size="xl"

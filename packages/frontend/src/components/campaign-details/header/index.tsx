@@ -34,6 +34,7 @@ export function SkeletonHeader() {
         <div className={styles.root}>
             <div className={styles.titleContainer}>
                 <div className={styles.title}>
+                    <Skeleton circular width={32} />
                     <PoolRemoteLogo
                         tokens={[{ address: "0x1" }, { address: "0x2" }]}
                         loading
