@@ -4,7 +4,7 @@ import { AlgebraIntegralLogo } from "../../assets/logos/dexes/algebra-integral";
 import { SupportedChain, ADDRESS } from "@metrom-xyz/contracts";
 import { type ChainData } from "../index";
 import { holesky } from "viem/chains";
-import { ProtocolType } from "@/src/types";
+import { DepositUrlType, ProtocolType } from "@/src/types";
 
 export const holeskyData: ChainData = {
     name: holesky.name,
@@ -17,8 +17,11 @@ export const holeskyData: ChainData = {
             slug: SupportedDex.TestIntegral,
             logo: AlgebraIntegralLogo,
             name: "Algebra integral",
-            addLiquidityUrl:
-                "https://integral.algebra.finance/pool/{target_pool}/new-position",
+            depositUrl: {
+                type: DepositUrlType.PathPoolAddress,
+                template:
+                    "https://integral.algebra.finance/pool/{pool}/new-position",
+            },
             supportsFetchAllPools: true,
         },
     ],

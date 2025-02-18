@@ -16,6 +16,7 @@ import {
     type Erc20Token,
     type LiquityV2StabilityPoolTarget,
     Status,
+    type TargetedCampaign,
 } from "@metrom-xyz/sdk";
 import type { Dayjs } from "dayjs";
 import type { SVGProps, FunctionComponent } from "react";
@@ -49,9 +50,18 @@ export interface ProtocolBase<S = string> {
     logo: FunctionComponent<SVGIcon>;
 }
 
+export enum DepositUrlType {
+    PathPoolAddress = "path-pool-address",
+    PathTokenAddresses = "path-token-addresses",
+    QueryTokenAddresses = "query-pool-addresses",
+}
+
 export interface DexProtocol extends ProtocolBase<SupportedDex> {
     type: ProtocolType.Dex;
-    addLiquidityUrl: string;
+    depositUrl: {
+        type: DepositUrlType;
+        template: string;
+    };
     supportsFetchAllPools: boolean;
 }
 

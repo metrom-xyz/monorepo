@@ -4,7 +4,7 @@ import { type ChainData } from "..";
 import { defineChain } from "viem";
 import { FormLogo } from "@/src/assets/logos/chains/form";
 import { FibonacciLogo } from "@/src/assets/logos/dexes/fibonacci";
-import { ProtocolType } from "@/src/types";
+import { DepositUrlType, ProtocolType } from "@/src/types";
 
 export const form = defineChain({
     id: 478,
@@ -44,7 +44,10 @@ export const formData: ChainData = {
             slug: SupportedDex.Fibonacci,
             logo: FibonacciLogo,
             name: "Fibonacci",
-            addLiquidityUrl: "https://www.fibonacci-dex.xyz/pool/{target_pool}",
+            depositUrl: {
+                type: DepositUrlType.PathPoolAddress,
+                template: "https://www.fibonacci-dex.xyz/pool/{pool}",
+            },
             supportsFetchAllPools: true,
         },
     ],

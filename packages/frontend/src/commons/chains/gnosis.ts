@@ -3,7 +3,7 @@ import { type ChainData } from "..";
 import { GnosisLogo } from "@/src/assets/logos/chains/gnosis";
 import { gnosis } from "viem/chains";
 import { SwaprLogo } from "@/src/assets/logos/dexes/swapr";
-import { ProtocolType } from "@/src/types";
+import { DepositUrlType, ProtocolType } from "@/src/types";
 import { ADDRESS, SupportedChain } from "@metrom-xyz/contracts";
 
 export const gnosisData: ChainData = {
@@ -17,8 +17,10 @@ export const gnosisData: ChainData = {
             slug: SupportedDex.Swapr,
             logo: SwaprLogo,
             name: "Swapr",
-            addLiquidityUrl:
-                "https://v3.swapr.eth.limo/#/info/pools/{target_pool}",
+            depositUrl: {
+                type: DepositUrlType.PathPoolAddress,
+                template: "https://v3.swapr.eth.limo/#/info/pools/{pool}",
+            },
             supportsFetchAllPools: true,
         },
     ],
