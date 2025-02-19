@@ -5,18 +5,32 @@ import { SupportedChain, ADDRESS } from "@metrom-xyz/contracts";
 import { metromAbi } from "@metrom-xyz/contracts/abi";
 import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { BaseHookParams } from "../types";
-
-interface UseClaimsParams extends BaseHookParams {
-    address?: Address;
-}
+import { useMetromClient } from "./useMetromClient";
 
 interface ClaimWithRemaining extends Claim {
     remaining: OnChainAmount;
 }
 
-export function useClaims({ apiClient, address }: UseClaimsParams) {
+interface UseClaimsParams {
+    address?: Address;
+}
+
+interface UseClaimsReturnValue {
+    loading: boolean;
+    claims: ClaimWithRemaining[];
+}
+
+/**
+ * Fetches the available claims for an account.
+ *
+ * @param {Object} param - The parameters object.
+ * @param {string} param.address - The wallet address of the receiver account.
+ *
+ * @returns {UseClaimsReturnValue} Object including the available claims for the provided account.
+ */
+export function useClaims({ address }: UseClaimsParams): UseClaimsReturnValue {
     const [claims, setClaims] = useState<ClaimWithRemaining[]>([]);
+    const metromClient = useMetromClient();
 
     const {
         data: rawClaims,
@@ -29,7 +43,7 @@ export function useClaims({ apiClient, address }: UseClaimsParams) {
             if (!account) return undefined;
 
             try {
-                const rawClaims = await apiClient.fetchClaims({
+                const rawClaims = await metromClient.fetchClaims({
                     address: account as Address,
                 });
                 return rawClaims;
