@@ -248,22 +248,26 @@ export function handleLiquidityChange(
     }
 
     let newLiquidity: BigInt;
-    if (ambient)
-        newLiquidity = CrocQueryContract.queryAmbientTokens(
+    if (ambient) {
+        let call = CrocQueryContract.try_queryAmbientTokens(
             owner,
             changetype<Address>(pool.token0),
             changetype<Address>(pool.token1),
             pool.idx,
-        ).getLiq();
-    else
-        newLiquidity = CrocQueryContract.queryRangeTokens(
+        )
+        newLiquidity = call.reverted ? BI_0 : call.value.getLiq();
+    }
+    else {
+        let call = CrocQueryContract.try_queryRangeTokens(
             owner,
             changetype<Address>(pool.token0),
             changetype<Address>(pool.token1),
             pool.idx,
             lowerTick,
             upperTick,
-        ).getLiq();
+        );
+        newLiquidity = call.reverted ? BI_0 : call.value.getLiq();
+    }
 
     let liquidityDelta = newLiquidity.minus(position.concentratedLiquidity);
     if (!liquidityDelta.isZero()) {
