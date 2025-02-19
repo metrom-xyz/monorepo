@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { MetromContext } from "../context/metrom-provider";
+import { MetromContext } from "../context/metrom-context";
 
 export function useMetromClient() {
     const context = useContext(MetromContext);

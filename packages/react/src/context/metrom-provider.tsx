@@ -4,16 +4,13 @@ import {
     metromDevelopmentApiClient,
     metromProductionApiClient,
 } from "@metrom-xyz/sdk";
-import { createContext, PropsWithChildren } from "react";
+import { PropsWithChildren } from "react";
+import { MetromContext } from "./metrom-context";
 
 const METROM_CLIENTS: Record<Environment, MetromApiClient> = {
     [Environment.Development]: metromDevelopmentApiClient,
     [Environment.Production]: metromProductionApiClient,
 };
-
-export const MetromContext = createContext<
-    { client: MetromApiClient } | undefined
->(undefined);
 
 interface MetromProviderProps {
     environment?: Environment;
