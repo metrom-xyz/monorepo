@@ -5,7 +5,6 @@ export interface BackendInitializedTicksResponse {
     };
     ticks: {
         idx: number;
-        liquidityGross: string;
         liquidityNet: string;
     }[];
 }

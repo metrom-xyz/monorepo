@@ -140,16 +140,12 @@ export interface FetchLiquityV2CollateralsParams {
 
 interface InitializedTick {
     idx: number;
-    liquidity: {
-        gross: bigint;
-        net: bigint;
-    };
+    liquidityNet: bigint;
 }
 
 interface ProcessedTick {
     idx: number;
     liquidity: {
-        gross: bigint;
         net: bigint;
         active: bigint;
     };
@@ -661,10 +657,7 @@ export class MetromApiClient {
             (acc: Record<number, InitializedTick>, tick) => {
                 acc[tick.idx] = {
                     idx: tick.idx,
-                    liquidity: {
-                        gross: BigInt(tick.liquidityGross),
-                        net: BigInt(tick.liquidityNet),
-                    },
+                    liquidityNet: BigInt(tick.liquidityNet),
                 };
                 return acc;
             },
@@ -677,21 +670,17 @@ export class MetromApiClient {
             liquidity: {
                 active: BigInt(activeTick.liquidity),
                 net: 0n,
-                gross: 0n,
             },
             price0,
             price1: 1 / price0,
         };
 
         // If our active tick happens to be initialized (i.e. there is a position that starts or
-        // ends at that tick), ensure we set the gross and net.
-        // correctly.
+        // ends at that tick), ensure we set the net liquidity correctly.
         const initializedActiveTick = initializedTicksByIdx[activeTick.idx];
         if (initializedActiveTick) {
-            activeTickProcessed.liquidity.gross =
-                initializedActiveTick.liquidity.gross;
             activeTickProcessed.liquidity.net =
-                initializedActiveTick.liquidity.net;
+                initializedActiveTick.liquidityNet;
         }
 
         const subsequentTicks = computeSurroundingTicks(
@@ -1034,20 +1023,17 @@ function computeSurroundingTicks(
             liquidity: {
                 active: previousTickProcessed.liquidity.active,
                 net: 0n,
-                gross: 0n,
             },
             price0: price0,
             price1: 1 / price0,
         };
 
         // Check if there is an initialized tick at our current tick.
-        // If so copy the gross and net liquidity from the initialized tick.
+        // If so copy the net liquidity from the initialized tick.
         const initializedCurrentTick = initializedTicksByIdx[currentTickIdx];
         if (initializedCurrentTick) {
-            currentTickProcessed.liquidity.gross =
-                initializedCurrentTick.liquidity.gross;
             currentTickProcessed.liquidity.net =
-                initializedCurrentTick.liquidity.net;
+                initializedCurrentTick.liquidityNet;
         }
 
         // Update the active liquidity.
@@ -1057,7 +1043,7 @@ function computeSurroundingTicks(
         if (direction == Direction.Asc && initializedCurrentTick) {
             currentTickProcessed.liquidity.active =
                 previousTickProcessed.liquidity.active +
-                initializedCurrentTick.liquidity.net;
+                initializedCurrentTick.liquidityNet;
         } else if (
             direction == Direction.Desc &&
             previousTickProcessed.liquidity.net != 0n
