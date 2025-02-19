@@ -18,53 +18,119 @@ npm add @metrom-xyz/react wagmi viem @tanstack/react-query
 
 ## Setup
 
+A couple configuration steps are required before being able to use the Metrom
+hooks.
+
+### External dependencies
+
 Once installed, set up the Wagmi and TanStack configuration, then wrap your
 React app with the required context providers by following the official
 [wagmi documentation](https://wagmi.sh/react/getting-started#manual-installation).
 
-Before using the hooks, instantiate the `MetromApiClient` and pass it to them:
+### Wrap app in context provider
+
+Wrap your app with the `MetromProvider` React Context Provider and pass the
+environment you wish to target the `environment` property.
+
+The `Environment` is exported by the library.
 
 ```tsx
-import { MetromApiClient } from "@metrom-xyz/react";
+import { Environment, MetromProvider } from "@metrom-xyz/react";
 
-const metromApiClient = new MetromApiClient("base_url");
+function App() {
+  return (
+    <MetromProvider environment={Environment.Development}>
+      {/** ... */}
+    </MetromProvider>
+  );
+}
 ```
 
-The `base_url` can be obtained from the `SERVICE_URLS` mapping:
-
-```tsx
-import { MetromApiClient, SERVICE_URLS } from "@metrom-xyz/react";
-
-const metromApiClient = new MetromApiClient(
-  SERVICE_URLS["development|production"].metrom,
-);
-```
+> Omitting the environment will default to `production`.
 
 ## Usage
 
-Once the setup is done, the hooks can be used in any React component, just
-import the desired Metrom api client (development or production):
+Once the setup is done, the hooks can be used in any React component:
 
 ```tsx
-import {
-  metromDevelopmentApiClient,
-  metromProductionApiClient,
-} from "@metrom-xyz/react";
-```
+import { useClaims } from "@metrom-xyz/react";
 
-and then use the hook, for example:
-
-```tsx
-import { metromDevelopmentApiClient } from "@metrom-xyz/react";
-
-function MyReactComponent() {
-  const { claims, loading } = useClaims({
-    apiClient: metromDevelopmentApiClient,
-    address: "...",
-  });
+function Component() {
+  const { claims, loading } = useClaims({ address: "..." });
 
   if (loading) return <div>loading claims...</div>;
 
   return <div>...</div>;
+}
+```
+
+## Hooks
+
+### useClaims
+
+Hook for fetching the active claims (still with rewards to claim) for an
+account.
+
+#### Import
+
+```tsx
+import { useClaims } from "@metrom-xyz/react";
+```
+
+#### Usage
+
+```tsx
+import { useAccount } from "wagmi";
+import { useClaims } from "@metrom-xyz/react";
+
+function App() {
+  const { address } = useAccount();
+  const result = useClaims({ address });
+}
+```
+
+### useClaimsTransaction
+
+Hook for simulating/validating the contract interaction in order to claim the
+rewards for an account; it returns the raw claims and the simulation result that
+can be used to submit the transaction.
+
+#### Import
+
+```tsx
+import { useClaimsTransaction } from "@metrom-xyz/react";
+```
+
+#### Usage
+
+```tsx
+import { useAccount, useChainId, useWriteContract } from "wagmi";
+import { useClaimsTransaction } from "@metrom-xyz/react";
+
+function App() {
+  const { address } = useAccount();
+  const chainId = useChainId();
+  const { writeContractAsync } = useWriteContract();
+
+  const { loading, error, transaction } = useClaimsTransaction({
+    address,
+    chainId,
+  });
+
+  function claimRewards() {
+    if (loading || error || !transaction) return;
+
+    const submitTx = async () => {
+      const tx = await writeContractAsync(transaction.request);
+    };
+
+    void submitTx();
+  }
+
+  return (
+    <div>
+      <button onClick={claimRewards}>claim</button>
+    </div>
+  );
 }
 ```

@@ -1,5 +1,4 @@
 import { Address, Hex } from "viem";
-import { BaseHookParams } from "../types";
 import { useClaims } from "./useClaims";
 import { useSimulateContract } from "wagmi";
 import { ADDRESS, SupportedChain } from "@metrom-xyz/contracts";
@@ -11,20 +10,16 @@ import {
 } from "wagmi/actions";
 import { Claim } from "@metrom-xyz/sdk";
 
-interface UseClaimsTransactionParams extends BaseHookParams {
+interface UseClaimsTransactionParams {
     chainId: SupportedChain;
     address?: Address;
 }
 
-export function useClaimsTransaction({
-    apiClient,
-    address,
-    chainId,
-}: UseClaimsTransactionParams): {
+interface UseClaimsTransactionReturnValue {
     loading: boolean;
     error: SimulateContractErrorType | null;
     claims: Claim[];
-    data?: SimulateContractReturnType<
+    transaction?: SimulateContractReturnType<
         typeof metromAbi,
         "claimRewards",
         [
@@ -37,9 +32,24 @@ export function useClaimsTransaction({
             }[],
         ]
     >;
-} {
+}
+
+/**
+ * Fetches the available claims for an account and simulates/validates the contract interaction
+ * in order to perform the rewards claim.
+ *
+ * @param {Object} param - The parameters object.
+ * @param {string} param.address - The wallet address of the receiver account.
+ * @param {SupportedChain} param.chainId - The chain id.
+ *
+ * @returns {UseClaimsTransactionReturnValue} Object including the simulation result, that can be used to submit the transaction,
+ * using the useWriteContract hook from wagmi.
+ */
+export function useClaimsTransaction({
+    address,
+    chainId,
+}: UseClaimsTransactionParams): UseClaimsTransactionReturnValue {
     const { claims, loading: loadingClaims } = useClaims({
-        apiClient,
         address,
     });
 
@@ -48,8 +58,8 @@ export function useClaimsTransaction({
     }, [chainId, claims]);
 
     const {
-        data: simulatedClaim,
-        isLoading: simulatingClaim,
+        data: simulatedClaimRewards,
+        isLoading: simulatingClaimRewards,
         error: simulateError,
     } = useSimulateContract({
         chainId: chainId,
@@ -75,9 +85,9 @@ export function useClaimsTransaction({
     });
 
     return {
-        loading: loadingClaims || simulatingClaim,
+        loading: loadingClaims || simulatingClaimRewards,
         error: simulateError,
-        claims,
-        data: simulatedClaim,
+        claims: claimsInChain,
+        transaction: simulatedClaimRewards,
     };
 }
