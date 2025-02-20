@@ -2,7 +2,7 @@ import {
     Campaign,
     type SupportedLiquityV2,
     type TargetType,
-    type AmmPool,
+    type AmmPoolWithTvl,
     type AmmPoolLiquidityTarget,
     type DistributablesType,
     type KpiSpecification,
@@ -125,7 +125,7 @@ export interface BaseCampaignPayload {
 
 export interface AmmPoolLiquidityCampaignPayload extends BaseCampaignPayload {
     dex?: DexProtocol;
-    pool?: AmmPool;
+    pool?: AmmPoolWithTvl;
     priceRangeSpecification?: AugmentedPriceRangeSpecification;
 }
 
@@ -171,7 +171,7 @@ export class AmmPoolLiquidityCampaignPreviewPayload extends BaseCampaignPreviewP
     public readonly kind: CampaignKind = CampaignKind.AmmPoolLiquidity;
     constructor(
         public readonly dex: DexProtocol,
-        public readonly pool: AmmPool,
+        public readonly pool: AmmPoolWithTvl,
         public readonly priceRangeSpecification?: AugmentedPriceRangeSpecification,
         ...baseArgs: ConstructorParameters<typeof BaseCampaignPreviewPayload>
     ) {

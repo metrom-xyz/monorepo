@@ -12,6 +12,10 @@
     @apply flex-[1] flex flex-col gap-4;
 }
 
+.leftContentEnded {
+    @apply flex-row;
+}
+
 .card {
     @apply w-full flex-[2] flex flex-col items-stretch;
 }

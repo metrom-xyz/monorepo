@@ -1,4 +1,5 @@
 import {
+    Status,
     TargetType,
     tickToScaledPrice,
     type TargetedCampaign,
@@ -21,6 +22,10 @@ interface PriceRangeProps {
 export function PriceRange({ campaign }: PriceRangeProps) {
     const t = useTranslations("campaignDetails.priceRange");
 
+    // TODO: in case the campaign has ended this query gets fired
+    // while no liquidity density chart is shown. We need to address this somehow.
+    // One way could be to add to the hook an "enabled" param that gets passed
+    // to react-query. This could be a general thing to apply to react query based hooks
     const { liquidityDensity, loading: loadingLiquidityDensity } =
         useLiquidityDensity(campaign?.target.pool, COMPUTE_TICKS_AMOUNT);
 
@@ -39,7 +44,12 @@ export function PriceRange({ campaign }: PriceRangeProps) {
                 {t("title")}
             </Typography>
             <div className={styles.wrapper}>
-                <div className={styles.leftContent}>
+                <div
+                    className={classNames(styles.leftContent, {
+                        [styles.leftContentEnded]:
+                            campaign.status === Status.Ended,
+                    })}
+                >
                     <TextField
                         boxed
                         size="xl"
@@ -73,21 +83,23 @@ export function PriceRange({ campaign }: PriceRangeProps) {
                         })}
                     />
                 </div>
-                <Card className={styles.card}>
-                    <Typography size="sm" uppercase light weight="medium">
-                        {t("chart")}
-                    </Typography>
-                    <div className={classNames(styles.chartWrapper)}>
-                        <LiquidityDensityChart
-                            pool={pool}
-                            from={priceRange.from}
-                            to={priceRange.to}
-                            density={liquidityDensity}
-                            loading={loadingLiquidityDensity}
-                            token0To1
-                        />
-                    </div>
-                </Card>
+                {campaign.status !== Status.Ended && (
+                    <Card className={styles.card}>
+                        <Typography size="sm" uppercase light weight="medium">
+                            {t("chart")}
+                        </Typography>
+                        <div className={classNames(styles.chartWrapper)}>
+                            <LiquidityDensityChart
+                                pool={pool}
+                                from={priceRange.from}
+                                to={priceRange.to}
+                                density={liquidityDensity}
+                                loading={loadingLiquidityDensity}
+                                token0To1
+                            />
+                        </div>
+                    </Card>
+                )}
             </div>
         </div>
     );

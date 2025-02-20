@@ -7,7 +7,7 @@ import {
     useEffect,
 } from "react";
 import { useDebounce } from "react-use";
-import type { Erc20Token, AmmPool, SupportedDex } from "@metrom-xyz/sdk";
+import type { Erc20Token, SupportedDex, AmmPoolWithTvl } from "@metrom-xyz/sdk";
 import { useChainId } from "wagmi";
 import { TextInput, Chip, Typography } from "@metrom-xyz/ui";
 import AutoSizer from "react-virtualized-auto-sizer";
@@ -23,9 +23,9 @@ import { RemoteLogo } from "@/src/components/remote-logo";
 import styles from "./styles.module.css";
 
 interface ListPoolPickerProps {
-    value?: AmmPool;
+    value?: AmmPoolWithTvl;
     dex?: SupportedDex;
-    onChange: (pool: AmmPool) => void;
+    onChange: (pool: AmmPoolWithTvl) => void;
 }
 
 export function ListPoolPicker({ value, dex, onChange }: ListPoolPickerProps) {
@@ -150,7 +150,8 @@ export function ListPoolPicker({ value, dex, onChange }: ListPoolPickerProps) {
                                     className={styles.list}
                                 >
                                     {({ index, style, data }) => {
-                                        const pool: AmmPool = data[index];
+                                        const pool: AmmPoolWithTvl =
+                                            data[index];
                                         return (
                                             <Row
                                                 style={style}

@@ -20,6 +20,10 @@ export interface BackendAmmPool {
     dex: string;
     amm: string;
     tokens: Address[];
-    usdTvl: number;
+    usdTvl?: number;
     fee?: number;
+}
+
+export interface BackendAmmPoolWithTvl extends BackendAmmPool {
+    usdTvl: number;
 }

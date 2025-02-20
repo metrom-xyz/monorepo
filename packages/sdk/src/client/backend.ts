@@ -22,6 +22,7 @@ import {
 } from "../types/campaigns";
 import type {
     AmmPool,
+    AmmPoolWithTvl,
     Erc20Token,
     OnChainAmount,
     UsdPricedErc20Token,
@@ -202,7 +203,7 @@ export class MetromApiClient {
         return processedCampaigns[0];
     }
 
-    async fetchAmmPools(params: FetchPoolsParams): Promise<AmmPool[]> {
+    async fetchAmmPools(params: FetchPoolsParams): Promise<AmmPoolWithTvl[]> {
         const url = new URL(
             `v1/amm-pools/${params.chainId}/${params.dex}`,
             this.baseUrl,
@@ -233,7 +234,7 @@ export class MetromApiClient {
         });
     }
 
-    async fetchPool(params: FetchPoolParams): Promise<AmmPool | null> {
+    async fetchPool(params: FetchPoolParams): Promise<AmmPoolWithTvl | null> {
         const url = new URL(
             `v1/amm-pools/${params.chainId}/${params.address}`,
             this.baseUrl,
