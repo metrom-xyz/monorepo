@@ -46,7 +46,7 @@ function App() {
 }
 ```
 
-> Omitting the environment will default to `production`.
+> Omitting the environment will default to `development`.
 
 ## Usage
 

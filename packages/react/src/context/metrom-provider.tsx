@@ -7,7 +7,7 @@ interface MetromProviderProps {
 }
 
 export function MetromProvider({
-    environment = Environment.Production,
+    environment = Environment.Development,
     children,
 }: PropsWithChildren<MetromProviderProps>) {
     return (
