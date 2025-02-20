@@ -77,7 +77,7 @@ export function CampaignPreview({
         return {
             pool: payload.pool,
             from: payload.priceRangeSpecification.from.tick,
-            to: payload.priceRangeSpecification.from.tick,
+            to: payload.priceRangeSpecification.to.tick,
             enabled: true,
         };
     }, [ammPoolLiquidityCampaign, payload]);
