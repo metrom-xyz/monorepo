@@ -4,7 +4,7 @@ import { CHAIN_DATA, metromApiClient } from "../commons";
 import { useQuery } from "@tanstack/react-query";
 import { getCampaignName } from "../utils/campaign";
 import { useTranslations } from "next-intl";
-import { Campaign } from "../types";
+import { Campaign } from "../types/common";
 
 export function useCampaign(
     chainId?: SupportedChain,

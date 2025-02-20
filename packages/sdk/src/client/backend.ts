@@ -47,8 +47,15 @@ import type {
 } from "../types/leaderboards";
 import type { BackendLeaderboardResponse } from "./types/leaderboards";
 import type { FeeToken } from "../types/fee-tokens";
-import type { LiquidityDensity, Tick } from "../types/initialized-ticks";
-import type { BackendInitializedTicksResponse } from "./types/initialized-ticks";
+import type {
+    LiquidityDensity,
+    LiquidityInRange,
+    TickWithPrices,
+} from "../types/initialized-ticks";
+import type {
+    BackendInitializedTicksResponse,
+    BackendLiquiditiesInRangeResposne,
+} from "./types/initialized-ticks";
 import { tickToScaledPrice } from "../utils";
 import type { BackendLiquityV2CollateralsResponse } from "./types/liquity-v2";
 import type { LiquityV2Collateral } from "src/types/liquity-v2";
@@ -125,6 +132,13 @@ export interface FetchKpiMeasurementsParams {
 export interface FetchLeaderboardParams {
     campaign: Campaign;
     account?: Address;
+}
+
+export interface FetchLiquidityInRangeParams {
+    chainId: number;
+    pool: AmmPool;
+    from: number;
+    to: number;
 }
 
 export interface FetchInitializedTicksParams {
@@ -631,6 +645,35 @@ export class MetromApiClient {
         }
     }
 
+    async fetchLiquidityInRange(
+        params: FetchLiquidityInRangeParams,
+    ): Promise<LiquidityInRange> {
+        const url = new URL(
+            `v1/iliquidities-in-range/${params.chainId}/${params.pool.address}`,
+            this.baseUrl,
+        );
+
+        url.searchParams.set("from", params.from.toString());
+        url.searchParams.set("to", params.to.toString());
+
+        const response = await fetch(url);
+        if (!response.ok)
+            throw new Error(
+                `response not ok while fetching liquidity in range ${params.from}-${params.to} for pool ${params.pool.address} in chain with id ${params.chainId}: ${await response.text()}`,
+            );
+
+        const { activeTick, liquidity } =
+            (await response.json()) as BackendLiquiditiesInRangeResposne;
+
+        return {
+            activeTick: {
+                ...activeTick,
+                liquidity: BigInt(activeTick.liquidity),
+            },
+            liquidity: BigInt(liquidity),
+        };
+    }
+
     async fetchLiquidityDensity(
         params: FetchInitializedTicksParams,
     ): Promise<LiquidityDensity> {
@@ -1000,7 +1043,7 @@ function computeSurroundingTicks(
     pool: AmmPool,
     numSurroundingTicks: number = 1000,
     direction: Direction,
-): Tick[] {
+): TickWithPrices[] {
     let previousTickProcessed: ProcessedTick = {
         ...activeTickProcessed,
     };
@@ -1064,7 +1107,7 @@ function computeSurroundingTicks(
     }
 
     return processedTicks.map((tick) => {
-        return <Tick>{
+        return <TickWithPrices>{
             idx: tick.idx,
             liquidity: tick.liquidity.active,
             price0: tick.price0,
@@ -1073,8 +1116,8 @@ function computeSurroundingTicks(
     });
 }
 
-function averageTicks(ticks: Tick[]) {
-    const averagedTicks: Tick[] = [];
+function averageTicks(ticks: TickWithPrices[]) {
+    const averagedTicks: TickWithPrices[] = [];
     let averageLiquidity = 0n;
 
     ticks.forEach((tick, index) => {

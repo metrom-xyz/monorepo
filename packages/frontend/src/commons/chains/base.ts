@@ -6,7 +6,7 @@ import { BaseSwapLogo } from "@/src/assets/logos/dexes/baseswap";
 import { type ChainData } from "..";
 import { base } from "viem/chains";
 // import { UniswapLogo } from "@/src/assets/logos/dexes/uniswap";
-import { DepositUrlType, ProtocolType } from "@/src/types";
+import { DepositUrlType, ProtocolType } from "@/src/types/common";
 import { ThirdTradeLogo } from "@/src/assets/logos/dexes/thirdtrade";
 
 export const baseData: ChainData = {

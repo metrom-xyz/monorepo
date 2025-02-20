@@ -5,7 +5,7 @@ import type {
     AmmPoolLiquidityCampaignPayload,
     CampaignPayloadErrors,
     BaseCampaignPayloadPart,
-} from "@/src/types";
+} from "@/src/types/common";
 import { Button, ErrorText, Switch, Typography } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
 import React, { useCallback, useEffect, useMemo, useState } from "react";

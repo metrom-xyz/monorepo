@@ -1,6 +1,6 @@
 import { Popover, Skeleton, Typography } from "@metrom-xyz/ui";
 import { TargetType } from "@metrom-xyz/sdk";
-import type { Campaign } from "@/src/types";
+import type { Campaign } from "@/src/types/common";
 import { useProtocolsInChain } from "@/src/hooks/useProtocolsInChain";
 import { useRef, useState } from "react";
 

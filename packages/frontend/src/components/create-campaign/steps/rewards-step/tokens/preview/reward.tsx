@@ -14,7 +14,7 @@ import classNames from "classnames";
 import { formatUsdAmount } from "@/src/utils/format";
 import { RemoteLogo } from "@/src/components/remote-logo";
 import { MAX_U256 } from "@/src/commons";
-import type { WhitelistedErc20TokenAmount } from "@/src/types";
+import type { WhitelistedErc20TokenAmount } from "@/src/types/common";
 
 import styles from "./styles.module.css";
 

@@ -28,7 +28,7 @@ import { SupportedChain } from "@metrom-xyz/contracts";
 import { useChains } from "wagmi";
 import classNames from "classnames";
 import { CHAIN_DATA } from "@/src/commons";
-import { FilterableStatus } from "@/src/types";
+import { FilterableStatus } from "@/src/types/common";
 
 import styles from "./styles.module.css";
 

@@ -4,7 +4,7 @@ import { type ChainData } from "..";
 import { defineChain } from "viem";
 import { FormLogo } from "@/src/assets/logos/chains/form";
 import { FibonacciLogo } from "@/src/assets/logos/dexes/fibonacci";
-import { DepositUrlType, ProtocolType } from "@/src/types";
+import { DepositUrlType, ProtocolType } from "@/src/types/common";
 
 export const form = defineChain({
     id: 478,

@@ -4,7 +4,7 @@ import { type ChainData } from "../index";
 import { sepolia } from "viem/chains";
 import { SupportedLiquityV2, TargetType } from "@metrom-xyz/sdk";
 import { LiquityLogo } from "@/src/assets/logos/liquity-v2-platforms/liquity";
-import { ProtocolType } from "@/src/types";
+import { ProtocolType } from "@/src/types/common";
 import { EbisuLogo } from "@/src/assets/logos/liquity-v2-platforms/ebisu";
 
 export const sepoliaData: ChainData = {

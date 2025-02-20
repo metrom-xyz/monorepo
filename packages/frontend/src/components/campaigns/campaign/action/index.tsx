@@ -3,7 +3,7 @@ import { PoolRemoteLogo } from "@/src/components/pool-remote-logo";
 import classNames from "classnames";
 import { TargetType } from "@metrom-xyz/sdk";
 import { AmmPoolLiquidity } from "./amm-pool-liquidity";
-import type { Campaign } from "@/src/types";
+import type { Campaign } from "@/src/types/common";
 import { LiquidityV2 } from "./liquity-v2";
 
 import styles from "./styles.module.css";

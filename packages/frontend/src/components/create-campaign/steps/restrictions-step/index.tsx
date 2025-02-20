@@ -6,7 +6,7 @@ import {
     type BaseCampaignPayload,
     type CampaignPayloadErrors,
     type BaseCampaignPayloadPart,
-} from "@/src/types";
+} from "@/src/types/common";
 import {
     Button,
     ErrorText,
