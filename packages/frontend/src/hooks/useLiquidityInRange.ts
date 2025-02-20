@@ -24,7 +24,7 @@ export function useLiquidityInRange({
         queryFn: async ({ queryKey }) => {
             const pool = queryKey[1] as AmmPool;
             const from = queryKey[2] as number;
-            const to = queryKey[2] as number;
+            const to = queryKey[3] as number;
             if (!pool || !from || !to) return undefined;
 
             const chainId = pool.chainId;
