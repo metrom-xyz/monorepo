@@ -92,7 +92,7 @@ function App() {
 ### useClaimsTransaction
 
 Hook for simulating/validating the contract interaction in order to claim the
-rewards for an account; it returns the raw claims and the simulation result that
+rewards for an account on a given chain; it returns the simulation result that
 can be used to submit the transaction.
 
 #### Import
@@ -112,13 +112,19 @@ function App() {
   const chainId = useChainId();
   const { writeContractAsync } = useWriteContract();
 
-  const { loading, error, transaction } = useClaimsTransaction({
-    address,
+  const { loading: loadingClaims, claims } = useClaims({ address });
+  const {
+    loading: simulatingClaims,
+    error,
+    transaction,
+  } = useClaimsTransaction({
     chainId,
+    claims,
+    address,
   });
 
   function claimRewards() {
-    if (loading || error || !transaction) return;
+    if (loadingClaims || simulatingClaims || error || !transaction) return;
 
     const submitTx = async () => {
       const tx = await writeContractAsync(transaction.request);
