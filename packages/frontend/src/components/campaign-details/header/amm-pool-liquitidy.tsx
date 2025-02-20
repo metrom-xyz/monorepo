@@ -9,7 +9,7 @@ import { trackFathomEvent } from "@/src/utils/fathom";
 import { PoolRemoteLogo } from "../../pool-remote-logo";
 import { AprChip } from "../../apr-chip";
 import { DistributablesType, TargetType } from "@metrom-xyz/sdk";
-import type { TargetedNamedCampaign } from "@/src/types";
+import type { TargetedNamedCampaign } from "@/src/types/common";
 
 import styles from "./styles.module.css";
 

@@ -3,7 +3,7 @@ import {
     AmmPoolLiquidityCampaignPreviewPayload,
     LiquityV2CampaignPreviewPayload,
     type BaseCampaignPreviewPayload,
-} from "@/src/types";
+} from "@/src/types/common";
 import { Button, TextField } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
 import { formatDateTime } from "@/src/utils/format";

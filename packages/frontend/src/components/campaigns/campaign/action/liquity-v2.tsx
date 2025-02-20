@@ -1,7 +1,7 @@
 import { Typography } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
 import { type LiquityV2TargetType } from "@metrom-xyz/sdk";
-import { type TargetedNamedCampaign } from "@/src/types";
+import { type TargetedNamedCampaign } from "@/src/types/common";
 
 import styles from "./styles.module.css";
 

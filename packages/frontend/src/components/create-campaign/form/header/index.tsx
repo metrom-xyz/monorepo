@@ -3,7 +3,7 @@ import styles from "./styles.module.css";
 import { ChevronLeft } from "@/src/assets/chevron-left";
 import { useTranslations } from "next-intl";
 import { useRouter } from "@/src/i18n/routing";
-import type { CampaignType } from "@/src/types";
+import type { CampaignType } from "@/src/types/common";
 
 interface FormHeaderProps {
     type: CampaignType;

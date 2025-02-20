@@ -15,7 +15,7 @@ import type {
     BaseCampaignPayload,
     CampaignPayloadErrors,
     BaseCampaignPayloadPart,
-} from "@/src/types";
+} from "@/src/types/common";
 import { formatUsdAmount } from "@/src/utils/format";
 import { usePrevious } from "react-use";
 import type { FeeToken } from "@metrom-xyz/sdk";

@@ -3,7 +3,7 @@ import { useTranslations } from "next-intl";
 import { formatPercentage } from "@/src/utils/format";
 import { PoolRemoteLogo } from "@/src/components/pool-remote-logo";
 import type { TargetType } from "@metrom-xyz/sdk";
-import type { TargetedNamedCampaign } from "@/src/types";
+import type { TargetedNamedCampaign } from "@/src/types/common";
 
 import styles from "./styles.module.css";
 

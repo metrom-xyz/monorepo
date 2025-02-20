@@ -1,4 +1,4 @@
-import { Theme } from "@/src/types";
+import { Theme } from "@/src/types/common";
 import { Popover } from "@metrom-xyz/ui";
 import { useEffect, useRef, useState } from "react";
 import { useClickAway } from "react-use";
