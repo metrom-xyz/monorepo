@@ -1,6 +1,6 @@
 import type { SupportedChain } from "@metrom-xyz/contracts";
 import { metromApiClient } from "../commons";
-import { SupportedDex, type AmmPool } from "@metrom-xyz/sdk";
+import { SupportedDex, type AmmPoolWithTvl } from "@metrom-xyz/sdk";
 import { useQuery } from "@tanstack/react-query";
 import { useProtocolsInChain } from "./useProtocolsInChain";
 import { ProtocolType } from "../types";
@@ -10,7 +10,7 @@ export function usePools(
     dex?: SupportedDex,
 ): {
     loading: boolean;
-    pools?: AmmPool[];
+    pools?: AmmPoolWithTvl[];
 } {
     const availableDexes = useProtocolsInChain(chainId, ProtocolType.Dex);
 

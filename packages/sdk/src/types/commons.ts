@@ -46,6 +46,10 @@ export interface AmmPool {
     dex: Brand<SupportedDex>;
     amm: SupportedAmm;
     tokens: Erc20Token[];
-    usdTvl: number;
+    usdTvl?: number;
     fee?: number;
+}
+
+export interface AmmPoolWithTvl extends AmmPool {
+    usdTvl: number;
 }

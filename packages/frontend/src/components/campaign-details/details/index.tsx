@@ -46,15 +46,16 @@ export function Details({ campaign, loading }: DetailsProps) {
     return (
         <div className={styles.root}>
             <div>
-                {campaign?.isTargeting(TargetType.AmmPoolLiquidity) && (
-                    <TextField
-                        boxed
-                        size="xl"
-                        label={t("tvl")}
-                        loading={detailsLoading}
-                        value={formatUsdAmount(campaign.target.pool.usdTvl)}
-                    />
-                )}
+                {campaign?.isTargeting(TargetType.AmmPoolLiquidity) &&
+                    campaign.target.pool.usdTvl && (
+                        <TextField
+                            boxed
+                            size="xl"
+                            label={t("tvl")}
+                            loading={detailsLoading}
+                            value={formatUsdAmount(campaign.target.pool.usdTvl)}
+                        />
+                    )}
                 <TextField
                     boxed
                     size="xl"

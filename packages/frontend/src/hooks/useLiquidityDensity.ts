@@ -1,7 +1,6 @@
 import { type AmmPool, type LiquidityDensity } from "@metrom-xyz/sdk";
 import { metromApiClient } from "../commons";
 import { useQuery } from "@tanstack/react-query";
-import type { Address } from "viem";
 
 const SURROUNDING_AMOUNT = 200;
 
