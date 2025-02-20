@@ -1,6 +1,7 @@
 import { defineConfig } from "vite";
 import dts from "vite-plugin-dts";
 import react from "@vitejs/plugin-react-swc";
+import pkg from "./package.json";
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -14,7 +15,7 @@ export default defineConfig({
             formats: ["es"],
         },
         rollupOptions: {
-            external: ["react", "react-dom", "wagmi", "@tanstack/react-query"],
+            external: Object.keys(pkg.peerDependencies),
         },
     },
 });

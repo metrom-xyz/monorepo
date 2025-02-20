@@ -1,16 +1,6 @@
-import {
-    Environment,
-    MetromApiClient,
-    metromDevelopmentApiClient,
-    metromProductionApiClient,
-} from "@metrom-xyz/sdk";
+import { Environment, METROM_API_CLIENT } from "@metrom-xyz/sdk";
 import { PropsWithChildren } from "react";
 import { MetromContext } from "./metrom-context";
-
-const METROM_CLIENTS: Record<Environment, MetromApiClient> = {
-    [Environment.Development]: metromDevelopmentApiClient,
-    [Environment.Production]: metromProductionApiClient,
-};
 
 interface MetromProviderProps {
     environment?: Environment;
@@ -21,7 +11,9 @@ export function MetromProvider({
     children,
 }: PropsWithChildren<MetromProviderProps>) {
     return (
-        <MetromContext.Provider value={{ client: METROM_CLIENTS[environment] }}>
+        <MetromContext.Provider
+            value={{ client: METROM_API_CLIENT[environment] }}
+        >
             {children}
         </MetromContext.Provider>
     );

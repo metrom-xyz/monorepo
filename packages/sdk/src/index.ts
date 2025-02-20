@@ -1,14 +1,15 @@
 import { MetromApiClient } from "./client/backend";
-import { SERVICE_URLS } from "./commons";
-
-export const metromDevelopmentApiClient = new MetromApiClient(
-    SERVICE_URLS["development"].metrom,
-);
-export const metromProductionApiClient = new MetromApiClient(
-    SERVICE_URLS["production"].metrom,
-);
-
+import { Environment, SERVICE_URLS } from "./commons";
 export { MetromApiClient } from "./client/backend";
+
+export const METROM_API_CLIENT: Record<Environment, MetromApiClient> = {
+    [Environment.Development]: new MetromApiClient(
+        SERVICE_URLS["development"].metrom,
+    ),
+    [Environment.Production]: new MetromApiClient(
+        SERVICE_URLS["production"].metrom,
+    ),
+};
 
 export * from "./types/activities";
 export * from "./types/campaigns";

@@ -1,5 +1,4 @@
 import { Address, Hex } from "viem";
-import { useClaims } from "./useClaims";
 import { useSimulateContract } from "wagmi";
 import { ADDRESS, SupportedChain } from "@metrom-xyz/contracts";
 import { metromAbi } from "@metrom-xyz/contracts/abi";
@@ -12,13 +11,13 @@ import { Claim } from "@metrom-xyz/sdk";
 
 interface UseClaimsTransactionParams {
     chainId: SupportedChain;
+    claims: Claim[];
     address?: Address;
 }
 
 interface UseClaimsTransactionReturnValue {
     loading: boolean;
     error: SimulateContractErrorType | null;
-    claims: Claim[];
     transaction?: SimulateContractReturnType<
         typeof metromAbi,
         "claimRewards",
@@ -35,24 +34,21 @@ interface UseClaimsTransactionReturnValue {
 }
 
 /**
- * Fetches the available claims for an account and simulates/validates the contract interaction
- * in order to perform the rewards claim.
+ * Simulates and validates contract interactions to claim the specified rewards for an account on a given chain id.
  *
  * @param {Object} param - The parameters object.
- * @param {string} param.address - The wallet address of the receiver account.
  * @param {SupportedChain} param.chainId - The chain id.
+ * @param {SupportedChain} param.claims - The claims fetched using the useClaims hook.
+ * @param {string} param.address - The wallet address of the receiver account.
  *
  * @returns {UseClaimsTransactionReturnValue} Object including the simulation result, that can be used to submit the transaction,
  * using the useWriteContract hook from wagmi.
  */
 export function useClaimsTransaction({
-    address,
     chainId,
+    claims,
+    address,
 }: UseClaimsTransactionParams): UseClaimsTransactionReturnValue {
-    const { claims, loading: loadingClaims } = useClaims({
-        address,
-    });
-
     const claimsInChain = useMemo(() => {
         return claims.filter((claim) => claim.chainId === chainId);
     }, [chainId, claims]);
@@ -85,9 +81,8 @@ export function useClaimsTransaction({
     });
 
     return {
-        loading: loadingClaims || simulatingClaimRewards,
+        loading: simulatingClaimRewards,
         error: simulateError,
-        claims: claimsInChain,
         transaction: simulatedClaimRewards,
     };
 }
