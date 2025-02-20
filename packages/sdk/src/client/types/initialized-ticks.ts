@@ -8,3 +8,11 @@ export interface BackendInitializedTicksResponse {
         liquidityNet: string;
     }[];
 }
+
+export interface BackendLiquiditiesInRangeResposne {
+    activeTick: {
+        idx: number;
+        liquidity: string;
+    };
+    liquidity: string;
+}

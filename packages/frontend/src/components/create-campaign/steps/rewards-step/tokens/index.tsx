@@ -19,7 +19,7 @@ import type {
     CampaignPayloadErrors,
     BaseCampaignPayloadPart,
     WhitelistedErc20TokenAmount,
-} from "@/src/types";
+} from "@/src/types/common";
 import { trackFathomEvent } from "@/src/utils/fathom";
 import { useWatchBalance } from "@/src/hooks/useWatchBalance";
 import { WhitelistedTokensList } from "../whitelisted-tokens-list";

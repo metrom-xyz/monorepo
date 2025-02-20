@@ -11,7 +11,7 @@ import {
     type LiquityV2CampaignPayloadPart,
     type LiquityV2Protocol,
     ProtocolType,
-} from "@/src/types";
+} from "@/src/types/common";
 import { useProtocolsInChain } from "@/src/hooks/useProtocolsInChain";
 import { useLiquityV2Collaterals } from "@/src/hooks/useLiquityV2Collaterals";
 

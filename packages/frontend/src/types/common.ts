@@ -20,7 +20,7 @@ import {
 import type { Dayjs } from "dayjs";
 import type { SVGProps, FunctionComponent } from "react";
 import type { Address } from "viem";
-import type { ChainData } from "./commons";
+import type { ChainData } from "../commons";
 
 export enum Theme {
     Dark = "dark",
