@@ -32,19 +32,6 @@ export const DEPLOYMENTS: {
             },
         },
     },
-    "mantle-sepolia": {
-        swapsicle: {
-            Factory: {
-                address: "0x10253594A832f967994b44f33411940533302ACb",
-                startBlock: 4909023,
-            },
-            NonFungiblePositionManager: {
-                address: "0x0BFaCE9a5c9F884a4f09fadB83b69e81EA41424B",
-                startBlock: 4909108,
-                version: NonFungiblePositionManagerVersion.V1_0,
-            },
-        },
-    },
     "base-sepolia": {
         kim: {
             Factory: {
@@ -54,19 +41,6 @@ export const DEPLOYMENTS: {
             NonFungiblePositionManager: {
                 address: "0xB7cF725E5b697F8338B929e6A52df823F2120a6A",
                 startBlock: 10904014,
-                version: NonFungiblePositionManagerVersion.V1_0,
-            },
-        },
-    },
-    "form-testnet": {
-        fibonacci: {
-            Factory: {
-                address: "0xd1c4026C9C15492bb523D17d3cA88E6217cb4402",
-                startBlock: 3642890,
-            },
-            NonFungiblePositionManager: {
-                address: "0xDEf094355f33999Fc0f079940524A8763ACA7c95",
-                startBlock: 3642936,
                 version: NonFungiblePositionManagerVersion.V1_0,
             },
         },
@@ -131,19 +105,6 @@ export const DEPLOYMENTS: {
                 address: "0x8b370dc23bE270a7FA78aD3803fCaAe549Ac21fc",
                 startBlock: 7680956,
                 version: NonFungiblePositionManagerVersion.V1_1,
-            },
-        },
-    },
-    arthera: {
-        "third-trade": {
-            Factory: {
-                address: "0x10253594A832f967994b44f33411940533302ACb",
-                startBlock: 138104,
-            },
-            NonFungiblePositionManager: {
-                address: "0x0BFaCE9a5c9F884a4f09fadB83b69e81EA41424B",
-                startBlock: 138126,
-                version: NonFungiblePositionManagerVersion.V1_0,
             },
         },
     },

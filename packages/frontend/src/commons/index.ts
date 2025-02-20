@@ -13,7 +13,6 @@ import { ENVIRONMENT } from "./env";
 import {
     celoAlfajores,
     holesky,
-    mantleSepoliaTestnet,
     mode,
     mantle,
     base,
@@ -27,7 +26,6 @@ import {
 import {
     celoAlfajoresData,
     holeskyData,
-    mantleSepoliaData,
     modeData,
     mantleData,
     sonicData,
@@ -35,10 +33,6 @@ import {
     baseSepoliaData,
     taikoData,
     scrollData,
-    formTestnet,
-    formTestnetData,
-    // arthera,
-    // artheraData,
     form,
     formData,
     gnosisData,
@@ -65,33 +59,15 @@ export const MAXIMUM_REWARDS_RESTRICTIONS = 20;
 
 export const SUPPORTED_CHAINS: [Chain, ...Chain[]] =
     ENVIRONMENT === Environment.Production
-        ? [
-              mode,
-              mantle,
-              base,
-              taiko,
-              scroll,
-              sonic,
-              /* arthera, */ form,
-              gnosis,
-          ]
-        : [
-              celoAlfajores,
-              holesky,
-              mantleSepoliaTestnet,
-              baseSepolia,
-              formTestnet,
-              sepolia,
-          ];
+        ? [mode, mantle, base, taiko, scroll, sonic, form, gnosis]
+        : [celoAlfajores, holesky, baseSepolia, sepolia];
 
 export const TOKEN_ICONS_URL = `https://raw.githubusercontent.com/metrom-xyz/token-icons/refs/heads/main/${ENVIRONMENT === Environment.Production ? "mainnet" : "testnet"}-icons.json`;
 
 export const CHAIN_DATA: Record<SupportedChain, ChainData> = {
     [SupportedChain.Holesky]: holeskyData,
     [SupportedChain.CeloAlfajores]: celoAlfajoresData,
-    [SupportedChain.MantleSepolia]: mantleSepoliaData,
     [SupportedChain.BaseSepolia]: baseSepoliaData,
-    [SupportedChain.FormTestnet]: formTestnetData,
     [SupportedChain.Sepolia]: sepoliaData,
 
     [SupportedChain.Base]: baseData,
@@ -100,7 +76,6 @@ export const CHAIN_DATA: Record<SupportedChain, ChainData> = {
     [SupportedChain.Taiko]: taikoData,
     [SupportedChain.Scroll]: scrollData,
     [SupportedChain.Sonic]: sonicData,
-    // [SupportedChain.Arthera]: artheraData,
     [SupportedChain.Form]: formData,
     [SupportedChain.Gnosis]: gnosisData,
 };

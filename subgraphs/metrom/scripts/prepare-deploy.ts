@@ -8,9 +8,7 @@ import Mustache from "mustache";
 const NETWORK_NAME: Record<SupportedChain, string> = {
     [SupportedChain.Holesky]: "holesky",
     [SupportedChain.CeloAlfajores]: "celo-alfajores",
-    [SupportedChain.MantleSepolia]: "mantle-sepolia",
     [SupportedChain.BaseSepolia]: "base-sepolia",
-    [SupportedChain.FormTestnet]: "form-testnet",
     [SupportedChain.Sepolia]: "sepolia",
 
     [SupportedChain.Base]: "base",
@@ -19,7 +17,6 @@ const NETWORK_NAME: Record<SupportedChain, string> = {
     [SupportedChain.Taiko]: "taiko",
     [SupportedChain.Scroll]: "scroll",
     [SupportedChain.Sonic]: "sonic",
-    // [SupportedChain.Arthera]: "", // no hosting provider here...
     [SupportedChain.Form]: "form",
     [SupportedChain.Gnosis]: "gnosis",
 };

@@ -7,9 +7,7 @@
         "codegen": "graph codegen",
         "deploy:holesky": "pnpm prepare:deploy holesky && pnpm codegen && graph deploy metrom-holesky -l=v0.0.26",
         "deploy:celo-alfajores": "pnpm prepare:deploy celo-alfajores && pnpm codegen && graph deploy metrom-celo-alfajores -l=v0.0.25",
-        "deploy:mantle-sepolia": "pnpm prepare:deploy mantle-sepolia && pnpm codegen && metrom-graph deploy development metrom-mantle-sepolia 0.0.1",
         "deploy:base-sepolia": "pnpm prepare:deploy base-sepolia && pnpm codegen && graph deploy metrom-base-sepolia -l=v0.0.6",
-        "deploy:form-testnet": "pnpm prepare:deploy form-testnet && pnpm codegen && metrom-graph deploy development metrom-form-testnet 0.0.1",
         "deploy:sepolia": "pnpm prepare:deploy sepolia && pnpm codegen && graph deploy metrom-sepolia -l=v0.0.4",
         "deploy:base": "pnpm prepare:deploy base && pnpm codegen && graph deploy metrom-base -l 0.0.20",
         "deploy:mode": "pnpm prepare:deploy mode-mainnet && pnpm codegen && graph deploy metrom-mode -l 0.0.11",
@@ -30,7 +28,7 @@
     },
     "devDependencies": {
         "@eslint/js": "^9.20.0",
-        "@metrom-xyz/contracts": "^0.39.0",
+        "@metrom-xyz/contracts": "^0.40.0",
         "@types/eslint__js": "^8.42.3",
         "@types/mustache": "^4.2.5",
         "@types/node": "^22.13.1",
