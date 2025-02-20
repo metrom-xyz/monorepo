@@ -1,5 +1,11 @@
 # @metrom-xyz/react
 
+## 0.1.1
+
+### Patch Changes
+
+- Make package public
+
 ## 0.1.0
 
 ### Minor Changes
