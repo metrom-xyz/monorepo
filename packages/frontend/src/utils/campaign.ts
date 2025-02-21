@@ -72,6 +72,7 @@ export function getCampaignName(
     switch (campaign.target.type) {
         case TargetType.AmmPoolLiquidity: {
             return t("campaignActions.lp", {
+                dex: campaign.target.pool.dex.name,
                 pool: campaign.target.pool.tokens
                     .map((token) => token.symbol)
                     .join("/"),
