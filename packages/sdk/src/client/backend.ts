@@ -649,7 +649,7 @@ export class MetromApiClient {
         params: FetchLiquidityInRangeParams,
     ): Promise<LiquidityInRange> {
         const url = new URL(
-            `v1/iliquidities-in-range/${params.chainId}/${params.pool.address}`,
+            `v1/liquidities-in-range/${params.chainId}/${params.pool.address}`,
             this.baseUrl,
         );
 
