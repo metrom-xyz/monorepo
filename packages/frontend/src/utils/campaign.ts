@@ -14,7 +14,7 @@ import {
 } from "../types/common";
 import { getDistributableRewardsPercentage } from "./kpi";
 import type { TranslationValues } from "next-intl";
-import { type Hex, encodeAbiParameters, stringToHex, formatUnits } from "viem";
+import { type Hex, encodeAbiParameters, stringToHex } from "viem";
 
 const SECONDS_IN_YEAR = 60 * 60 * 24 * 365;
 
@@ -120,17 +120,13 @@ export function getCampaignPreviewApr(
             );
         }
 
-        let poolUsdTvl = payload.pool.usdTvl;
+        let poolUsdTvlFactor = payload.pool.usdTvl;
         if (range)
-            poolUsdTvl = Number(
-                formatUnits(
-                    (range.liquidity / range.activeTick.liquidity) *
-                        BigInt(payload.pool.usdTvl),
-                    18,
-                ),
-            );
+            poolUsdTvlFactor =
+                (Number(range.liquidity) / Number(range.activeTick.liquidity)) *
+                payload.pool.usdTvl;
 
-        const rewardsTvlRatio = rewardsUsdValue / poolUsdTvl;
+        const rewardsTvlRatio = rewardsUsdValue / poolUsdTvlFactor;
         const yearMultiplier = SECONDS_IN_YEAR / duration;
         const apr = rewardsTvlRatio * yearMultiplier * 100;
 
