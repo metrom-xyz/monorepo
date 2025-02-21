@@ -37,7 +37,7 @@ const FOUR_HOURS_SECONDS = TWO_HOURS_SECONDS * 2;
 const TWELVE_HOURS_SECONDS = FOUR_HOURS_SECONDS * 3;
 const ONE_DAY_SECONDS = 60 * 60 * 24;
 const TWO_DAYS_SECONDS = ONE_DAY_SECONDS * 2;
-const FOUR_DAYS_SECONDS = ONE_DAY_SECONDS * 4;
+const FOURTEEN_DAYS_SECONDS = ONE_DAY_SECONDS * 14;
 
 export function DistributionChart({
     chain,
@@ -62,7 +62,7 @@ export function DistributionChart({
                 kpiMeasurements,
                 TWO_HOURS_SECONDS,
             );
-        } else if (fullTimeRange < FOUR_DAYS_SECONDS) {
+        } else if (fullTimeRange < FOURTEEN_DAYS_SECONDS) {
             aggregatedMeasurements = getAggregatedKpiMeasurements(
                 kpiMeasurements,
                 FOUR_HOURS_SECONDS,
