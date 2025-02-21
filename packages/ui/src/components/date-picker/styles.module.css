@@ -25,7 +25,7 @@
         rounded-md
         theme-text
         theme-surface-2
-        hover:bg-zinc-200 hover:dark:bg-zinc-700
+        theme-surface-hover
         transition-colors
         duration-200
         ease-in-out;
@@ -65,14 +65,14 @@
         justify-center
         items-center
         rounded-md
-        hover:bg-zinc-200 hover:dark:bg-zinc-700
+        theme-surface-hover
         transition-colors
         duration-200
         ease-in-out;
 }
 
 .cellToday {
-    @apply bg-zinc-200 dark:bg-zinc-700;
+    @apply bg-zinc-200 dark:bg-zinc-600 dark:!text-zinc-400;
 }
 
 .cellDisabled {
@@ -86,7 +86,7 @@
 }
 
 .cellSelected {
-    @apply bg-zinc-100 dark:bg-zinc-800 !text-zinc-900 dark:!text-zinc-200;
+    @apply bg-zinc-100 dark:bg-zinc-700 !text-zinc-900 dark:!text-zinc-200;
 }
 
 .cellSelectable {
@@ -94,15 +94,15 @@
 }
 
 .cellInRange {
-    @apply bg-zinc-100 dark:bg-zinc-800 rounded-none;
+    @apply bg-zinc-100 dark:bg-zinc-700 rounded-none;
 }
 
 .cellRangeBoundStart {
-    @apply bg-zinc-200 dark:bg-zinc-700 rounded-r-none !text-zinc-900 dark:!text-zinc-200;
+    @apply bg-zinc-200 dark:bg-zinc-600 rounded-r-none !text-zinc-900 dark:!text-zinc-200;
 }
 
 .cellRangeBoundEnd {
-    @apply bg-zinc-200 dark:bg-zinc-700 rounded-l-none !text-zinc-900 dark:!text-zinc-200;
+    @apply bg-zinc-200 dark:bg-zinc-600 rounded-l-none !text-zinc-900 dark:!text-zinc-200;
 }
 
 .cellRangeBoundStart.cellRangeBoundEnd {

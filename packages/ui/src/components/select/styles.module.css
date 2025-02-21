@@ -34,13 +34,12 @@
         placeholder-black/20
         theme-text
         bg-white dark:bg-zinc-800
-        hover:bg-zinc-200 hover:dark:bg-zinc-700
+        theme-surface-hover
         transition-colors
         ease-in-out
         duration-200;
 }
 
 .pickedOption {
-    @apply bg-zinc-200 dark:bg-zinc-700
-        hover:bg-zinc-200 hover:dark:bg-zinc-700;
+    @apply theme-surface-active theme-surface-hover;
 }

@@ -1,5 +1,9 @@
 @reference "../../../../app.css";
 
+.stepContent {
+    @apply flex flex-col gap-3 p-4;
+}
+
 .previewLabelWrapper {
     @apply w-full flex justify-between items-center;
 }
