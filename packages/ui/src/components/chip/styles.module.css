@@ -20,9 +20,9 @@
 }
 
 .rootClickable {
-    @apply cursor-pointer hover:bg-zinc-200 hover:dark:bg-zinc-700;
+    @apply cursor-pointer theme-surface-hover;
 }
 
 .rootActive {
-    @apply bg-zinc-200 dark:bg-zinc-700;
+    @apply theme-surface-active;
 }

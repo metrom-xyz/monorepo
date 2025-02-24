@@ -9,12 +9,17 @@
 @utility theme-surface {
     @apply bg-light-surface dark:bg-dark-surface;
 }
-@utility theme-surface-hover {
-    @apply hover:bg-zinc-200 hover:dark:bg-zinc-800;
-}
 
 @utility theme-surface-2 {
     @apply bg-light-surface-2 dark:bg-dark-surface-2;
+}
+
+@utility theme-surface-hover {
+    @apply hover:bg-zinc-200 hover:dark:bg-zinc-700;
+}
+
+@utility theme-surface-active {
+    @apply bg-zinc-200 dark:bg-zinc-700;
 }
 
 @utility theme-text {
@@ -48,7 +53,7 @@
     --color-light-text: theme(colors.black);
 
     --color-dark-bg: oklch(0.155 0.005 285.823);
-    --color-dark-surface: theme(colors.zinc.900);
+    --color-dark-surface: #202024;
     --color-dark-surface-2: theme(colors.zinc.800);
     --color-dark-text: theme(colors.slate.300);
 

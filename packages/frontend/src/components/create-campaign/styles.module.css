@@ -32,7 +32,7 @@
         h-24
         w-24
         rounded-3xl
-        bg-zinc-100 dark:bg-zinc-700/50;
+        theme-surface-2;
 }
 
 .ammIcon {

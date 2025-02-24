@@ -33,8 +33,8 @@ export function Nav() {
                     </Link>
                 </div>
                 <div className={styles.rightContentContainer}>
-                    {THEME_SWITCH && <ThemeSwitcher />}
                     <ConnectButton />
+                    {THEME_SWITCH && <ThemeSwitcher />}
                 </div>
                 <div className={styles.tabs}>
                     {ROUTES.map(({ path, label, icon: Icon }) => (
