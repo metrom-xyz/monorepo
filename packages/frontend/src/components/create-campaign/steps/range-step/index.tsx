@@ -26,7 +26,7 @@ import type {
     AugmentedPriceRangeBound,
     AugmentedPriceRangeSpecification,
     CampaignPayloadErrors,
-} from "@/src/types";
+} from "@/src/types/common";
 
 import styles from "./styles.module.css";
 

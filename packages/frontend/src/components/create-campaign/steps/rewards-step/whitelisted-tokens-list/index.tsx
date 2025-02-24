@@ -12,7 +12,7 @@ import {
 } from "@/src/hooks/useWatchBalances";
 import { Row } from "./row";
 import { AnimatePresence, motion } from "motion/react";
-import type { WhitelistedErc20TokenAmount } from "@/src/types";
+import type { WhitelistedErc20TokenAmount } from "@/src/types/common";
 import classNames from "classnames";
 
 import styles from "./styles.module.css";

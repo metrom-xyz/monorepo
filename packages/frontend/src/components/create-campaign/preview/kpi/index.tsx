@@ -2,7 +2,7 @@ import { Accordion, TextField, Typography } from "@metrom-xyz/ui";
 import { KpiSimulationChart } from "@/src/components/kpi-simulation-chart";
 import { useTranslations } from "next-intl";
 import { formatPercentage, formatUsdAmount } from "@/src/utils/format";
-import type { BaseCampaignPayload } from "@/src/types";
+import type { BaseCampaignPayload } from "@/src/types/common";
 import { useMemo } from "react";
 
 import styles from "./styles.module.css";

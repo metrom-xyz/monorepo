@@ -5,7 +5,7 @@ import { UniswapLogo } from "@/src/assets/logos/dexes/uniswap";
 import { SilverSwapLogo } from "@/src/assets/logos/dexes/silverswap";
 import { type ChainData } from "..";
 import { sonic } from "viem/chains";
-import { DepositUrlType, ProtocolType } from "@/src/types";
+import { DepositUrlType, ProtocolType } from "@/src/types/common";
 
 export const sonicData: ChainData = {
     name: sonic.name,

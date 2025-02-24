@@ -3,6 +3,7 @@ import {
     TargetType,
     DistributablesType,
     type Specification,
+    type LiquidityInRange,
 } from "@metrom-xyz/sdk";
 import {
     AmmPoolLiquidityCampaignPreviewPayload,
@@ -10,7 +11,7 @@ import {
     LiquityV2CampaignPreviewPayload,
     type BaseCampaignPreviewPayload,
     type CampaignPreviewPayload,
-} from "../types";
+} from "../types/common";
 import { getDistributableRewardsPercentage } from "./kpi";
 import type { TranslationValues } from "next-intl";
 import { type Hex, encodeAbiParameters, stringToHex } from "viem";
@@ -95,6 +96,7 @@ export function getCampaignName(
 
 export function getCampaignPreviewApr(
     payload: BaseCampaignPreviewPayload,
+    range?: LiquidityInRange,
 ): number | undefined {
     const duration = payload.endDate.unix() - payload.startDate.unix();
     if (duration <= 0) return undefined;
@@ -118,7 +120,13 @@ export function getCampaignPreviewApr(
             );
         }
 
-        const rewardsTvlRatio = rewardsUsdValue / payload.pool.usdTvl;
+        let poolUsdTvlFactor = payload.pool.usdTvl;
+        if (range)
+            poolUsdTvlFactor =
+                (Number(range.liquidity) / Number(range.activeTick.liquidity)) *
+                payload.pool.usdTvl;
+
+        const rewardsTvlRatio = rewardsUsdValue / poolUsdTvlFactor;
         const yearMultiplier = SECONDS_IN_YEAR / duration;
         const apr = rewardsTvlRatio * yearMultiplier * 100;
 

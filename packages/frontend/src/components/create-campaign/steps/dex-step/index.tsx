@@ -12,7 +12,7 @@ import {
     type AmmPoolLiquidityCampaignPayload,
     type AmmPoolLiquidityCampaignPayloadPart,
     type DexProtocol,
-} from "@/src/types";
+} from "@/src/types/common";
 
 import styles from "./styles.module.css";
 

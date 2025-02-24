@@ -1,6 +1,6 @@
 "use client";
 
-import { CampaignType, type CampaignPreviewPayload } from "@/src/types";
+import { CampaignType, type CampaignPreviewPayload } from "@/src/types/common";
 import { useAccount, useChainId, useChains } from "wagmi";
 import { useMemo, useState } from "react";
 import { useTranslations } from "next-intl";

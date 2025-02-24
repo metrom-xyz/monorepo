@@ -4,7 +4,7 @@ import { ModeLogo } from "../../assets/logos/chains/mode";
 import { KimLogo } from "../../assets/logos/dexes/kim";
 import { type ChainData } from "..";
 import { mode } from "viem/chains";
-import { DepositUrlType, ProtocolType } from "@/src/types";
+import { DepositUrlType, ProtocolType } from "@/src/types/common";
 
 export const modeData: ChainData = {
     name: "Mode",

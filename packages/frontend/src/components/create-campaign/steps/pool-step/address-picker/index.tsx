@@ -2,7 +2,7 @@ import { useTranslations } from "next-intl";
 import { useCallback, useEffect, useState, type ChangeEvent } from "react";
 import { useChainId } from "wagmi";
 import { usePool } from "@/src/hooks/usePool";
-import type { AmmPoolLiquidityCampaignPayload } from "@/src/types";
+import type { AmmPoolLiquidityCampaignPayload } from "@/src/types/common";
 import { type Address, isAddress } from "viem";
 import { useDebounce } from "react-use";
 import { TextInput, Typography } from "@metrom-xyz/ui";
