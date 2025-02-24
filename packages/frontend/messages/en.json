@@ -550,7 +550,7 @@
     },
     "apr": "APR",
     "campaignActions": {
-        "lp": "LP on {pool}",
+        "lp": "LP on {dex} {pool}",
         "takeLoan": "Take loan on {brand} with {token}",
         "depositStabilityPool": "Deposit to {token} stability pool on {brand}"
     },
