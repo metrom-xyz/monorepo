@@ -16,17 +16,6 @@ export const taikoData: ChainData = {
     protocols: [
         {
             type: ProtocolType.Dex,
-            slug: SupportedDex.Panko,
-            logo: PankoLogo,
-            name: "Panko",
-            depositUrl: {
-                type: DepositUrlType.PathTokenAddresses,
-                template: "https://panko.finance/add/{pool}",
-            },
-            supportsFetchAllPools: true,
-        },
-        {
-            type: ProtocolType.Dex,
             slug: SupportedDex.UniswapV3,
             logo: UniswapLogo,
             name: "Uniswap v3",
