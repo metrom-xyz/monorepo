@@ -36,7 +36,7 @@ export const deploy = new Command("deploy")
         try {
             execSync(
                 `graph create ${resolvedSubgraphName} --node ${serviceUrls.graphNode.rpc} --access-token ${authToken}`,
-                { stdio: "ignore" },
+                { stdio: ["ignore", "ignore", "inherit"] },
             );
         } catch {
             process.exit(1);
@@ -55,7 +55,7 @@ export const deploy = new Command("deploy")
 
         console.log(
             chalk.green(
-                `Subgraph successfully deployed. Query endpoint: ${serviceUrls.graphNode.queries}/name/${resolvedSubgraphName}`,
+                `Subgraph successfully deployed. Query endpoint: ${serviceUrls.graphNode.queries}/name/${resolvedSubgraphName}/graphql`,
             ),
         );
     });
