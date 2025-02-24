@@ -27,7 +27,7 @@
 }
 
 .active {
-    @apply bg-zinc-200 dark:bg-zinc-800;
+    @apply theme-surface-active;
 }
 
 .loading {

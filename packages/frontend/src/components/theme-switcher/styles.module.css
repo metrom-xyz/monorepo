@@ -23,36 +23,6 @@
     @apply animate-pulse;
 }
 
-.themesContainer {
-    @apply flex items-center rounded-xl;
-}
-
-.themeButton {
-    @apply cursor-pointer
-        bg-white dark:bg-zinc-900
-        hover:bg-zinc-200 hover:dark:bg-zinc-700
-        transition-colors
-        duration-200
-        ease-in-out
-        p-2.5;
-}
-
-.themeButton:first-child {
-    @apply rounded-l-xl rounded-r-none;
-}
-
-.themeButton:last-child {
-    @apply rounded-l-none rounded-r-xl;
-}
-
-.themeButton.active {
-    @apply bg-black dark:bg-zinc-800;
-}
-
-.themeButton.active > .themeIcon {
-    @apply text-white;
-}
-
 .themeIcon {
     @apply h-6 w-6 dark:text-zinc-200;
 }

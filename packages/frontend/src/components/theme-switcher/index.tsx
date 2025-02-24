@@ -1,7 +1,5 @@
 import { Theme } from "@/src/types";
-import { Popover } from "@metrom-xyz/ui";
-import { useEffect, useRef, useState } from "react";
-import { useClickAway } from "react-use";
+import { useEffect, useState } from "react";
 import { MoonIcon } from "@/src/assets/moon-icon";
 import { SunIcon } from "@/src/assets/sun-icon";
 import classNames from "classnames";
@@ -13,35 +11,22 @@ export function ThemeSwitcher() {
     const [mounted, setMounted] = useState(false);
     const { resolvedTheme, setTheme } = useTheme();
 
-    const [popoverOpen, setPopoverOpen] = useState(false);
-    const [wrapper, setWrapper] = useState<HTMLDivElement | null>(null);
-    const popoverRef = useRef<HTMLDivElement>(null);
-
     useEffect(() => {
         setMounted(true);
     }, []);
 
-    useClickAway(popoverRef, () => {
-        setPopoverOpen(false);
-    });
+    function handleThemeOnChange() {
+        const html = document.documentElement;
+        html.classList.add("no-transition");
 
-    function handlePopoverOpen() {
-        setPopoverOpen((prev) => !prev);
-    }
+        if (resolvedTheme === Theme.Dark) setTheme(Theme.Light);
+        else setTheme(Theme.Dark);
 
-    function getThemeChangeHandler(value: Theme) {
-        return () => {
-            const html = document.documentElement;
-            html.classList.add("no-transition");
-
-            setTheme(value);
-
-            requestAnimationFrame(() => {
-                setTimeout(() => {
-                    html.classList.remove("no-transition");
-                }, 1);
-            });
-        };
+        requestAnimationFrame(() => {
+            setTimeout(() => {
+                html.classList.remove("no-transition");
+            }, 1);
+        });
     }
 
     if (!mounted)
@@ -54,12 +39,8 @@ export function ThemeSwitcher() {
         );
 
     return (
-        <div ref={popoverRef} className={styles.root}>
-            <div
-                ref={setWrapper}
-                onClick={handlePopoverOpen}
-                className={classNames(styles.wrapper)}
-            >
+        <div className={styles.root} onClick={handleThemeOnChange}>
+            <div className={classNames(styles.wrapper)}>
                 {resolvedTheme === Theme.Dark && (
                     <MoonIcon className={styles.themeIcon} />
                 )}
@@ -67,26 +48,6 @@ export function ThemeSwitcher() {
                     <SunIcon className={styles.themeIcon} />
                 )}
             </div>
-            <Popover placement="bottom" anchor={wrapper} open={popoverOpen}>
-                <div className={styles.themesContainer}>
-                    <div
-                        onClick={getThemeChangeHandler(Theme.Dark)}
-                        className={classNames(styles.themeButton, {
-                            [styles.active]: resolvedTheme === Theme.Dark,
-                        })}
-                    >
-                        <MoonIcon className={styles.themeIcon} />
-                    </div>
-                    <div
-                        onClick={getThemeChangeHandler(Theme.Light)}
-                        className={classNames(styles.themeButton, {
-                            [styles.active]: resolvedTheme === Theme.Light,
-                        })}
-                    >
-                        <SunIcon className={styles.themeIcon} />
-                    </div>
-                </div>
-            </Popover>
         </div>
     );
 }
