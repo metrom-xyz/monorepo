@@ -8,7 +8,9 @@
         justify-between
         items-center
         gap-5
-        p-10
+        py-10
+        px-2
+        sm:px-0
         my-10
         sm:my-0
         sm:mt-10
