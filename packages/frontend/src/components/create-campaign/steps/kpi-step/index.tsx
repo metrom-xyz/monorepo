@@ -23,6 +23,8 @@ interface KpiStepProps {
     pool?: AmmPoolLiquidityCampaignPayload["pool"];
     rewards?: AmmPoolLiquidityCampaignPayload["tokens"];
     rewardType?: AmmPoolLiquidityCampaignPayload["rewardType"];
+    startDate?: AmmPoolLiquidityCampaignPayload["startDate"];
+    endDate?: AmmPoolLiquidityCampaignPayload["endDate"];
     kpiSpecification?: AmmPoolLiquidityCampaignPayload["kpiSpecification"];
     onKpiChange: (value: BaseCampaignPayloadPart) => void;
     onError: (errors: CampaignPayloadErrors) => void;
@@ -34,6 +36,8 @@ export function KpiStep({
     pool,
     rewards,
     rewardType,
+    startDate,
+    endDate,
     kpiSpecification,
     onKpiChange,
     onError,
@@ -297,6 +301,11 @@ export function KpiStep({
                             lowerUsdTarget={lowerUsdTargetRaw}
                             upperUsdTarget={upperUsdTargetRaw}
                             totalRewardsUsd={totalRewardsUsdAmount}
+                            campaignDurationSeconds={
+                                startDate && endDate
+                                    ? endDate.unix() - startDate.unix()
+                                    : 1
+                            }
                             minimumPayoutPercentage={minimumPayoutPercentage}
                             poolUsdTvl={pool?.usdTvl}
                             error={!!error}

@@ -6,6 +6,7 @@
         gap-2
         p-2
         rounded-lg
+        min-w-56
         border
         bg-white dark:bg-zinc-900
         border-zinc-200 dark:border-zinc-600;

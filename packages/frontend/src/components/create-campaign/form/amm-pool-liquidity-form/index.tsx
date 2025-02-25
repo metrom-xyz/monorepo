@@ -163,6 +163,8 @@ export function AmmPoolLiquidityForm({
                     pool={payload?.pool}
                     rewards={payload?.tokens}
                     rewardType={payload.rewardType}
+                    startDate={payload.startDate}
+                    endDate={payload.endDate}
                     kpiSpecification={payload?.kpiSpecification}
                     onKpiChange={handlePayloadOnChange}
                     onError={handlePayloadOnError}

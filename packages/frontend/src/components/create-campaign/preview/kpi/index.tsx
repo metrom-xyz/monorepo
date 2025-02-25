@@ -9,11 +9,19 @@ import styles from "./styles.module.css";
 
 interface KpiProps {
     poolUsdTvl?: number | null;
+    from: BaseCampaignPayload["startDate"];
+    to: BaseCampaignPayload["endDate"];
     rewards: BaseCampaignPayload["tokens"];
     specification: BaseCampaignPayload["kpiSpecification"];
 }
 
-export function Kpi({ poolUsdTvl, rewards, specification }: KpiProps) {
+export function Kpi({
+    poolUsdTvl,
+    from,
+    to,
+    rewards,
+    specification,
+}: KpiProps) {
     const t = useTranslations("campaignPreview.kpi");
 
     const totalRewardsUsdAmount = useMemo(() => {
@@ -68,6 +76,11 @@ export function Kpi({ poolUsdTvl, rewards, specification }: KpiProps) {
                 <KpiSimulationChart
                     tooltipSize="xs"
                     poolUsdTvl={poolUsdTvl}
+                    campaignDurationSeconds={
+                        // we don't pass 0 as the default value to avoid potential 0
+                        // division issues
+                        from && to ? to.unix() - from.unix() : 1
+                    }
                     totalRewardsUsd={totalRewardsUsdAmount}
                     lowerUsdTarget={lowerUsdTarget}
                     upperUsdTarget={upperUsdTarget}

@@ -40,6 +40,8 @@ import {
     telosData,
 } from "./chains";
 
+export const SECONDS_IN_YEAR = 60 * 60 * 24 * 365;
+
 export interface ChainData {
     name: string;
     metromContract: ChainContract;
