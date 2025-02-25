@@ -6,6 +6,7 @@ import {
     ReferenceDot,
     ReferenceLine,
     ResponsiveContainer,
+    Scatter,
     Tooltip,
     XAxis,
     YAxis,
@@ -46,7 +47,7 @@ export interface DistributedAreaDataPoint {
     currentlyDistributing: number;
     currentlyNotDistributing: number;
     aprPercentage: number;
-    aprLinePoint: number;
+    aprLinePoint?: number;
 }
 
 interface KpiSimulationChartProps {
@@ -230,8 +231,11 @@ export function KpiSimulationChart({
         const domainStep = usdTvlRange / POINTS_COUNT;
 
         const chartData: DistributedAreaDataPoint[] = [];
-        let minAprPercentage = 0;
+
+        let minAprPercentage = Number.POSITIVE_INFINITY;
         let maxAprPercentage = 0;
+
+        const aprPercentages = [];
         for (
             let usdTvl = lowerUsdTvl;
             usdTvl <= upperUsdTvl;
@@ -253,9 +257,11 @@ export function KpiSimulationChart({
             const yearMultiplier = SECONDS_IN_YEAR / campaignDurationSeconds;
             const aprPercentage = rewardsRatio * yearMultiplier * 100;
 
-            if (maxAprPercentage < aprPercentage)
+            aprPercentages.push(aprPercentage);
+
+            if (aprPercentage > maxAprPercentage)
                 maxAprPercentage = aprPercentage;
-            if (minAprPercentage > aprPercentage)
+            if (aprPercentage < minAprPercentage)
                 minAprPercentage = aprPercentage;
 
             chartData.push({
@@ -265,11 +271,24 @@ export function KpiSimulationChart({
                 currentlyNotDistributing:
                     usdTvl > poolUsdTvl ? distributedRewardsUsd : 0,
                 aprPercentage,
-                aprLinePoint: 0, // will be populated later with scaled values
             });
         }
 
+        aprPercentages.sort();
+        const midAprIndex = Math.floor(aprPercentages.length / 2);
+        const medianApr =
+            aprPercentages.length % 2 === 0
+                ? (aprPercentages[midAprIndex - 1] +
+                      aprPercentages[midAprIndex]) /
+                  2
+                : aprPercentages[midAprIndex];
+
+        const cappedAprPercentage = medianApr * 4;
+        maxAprPercentage = Math.min(maxAprPercentage, cappedAprPercentage);
+
         for (const point of chartData) {
+            if (point.aprPercentage > cappedAprPercentage) continue;
+
             point.aprLinePoint = clampValue(
                 point.aprPercentage,
                 minAprPercentage,
