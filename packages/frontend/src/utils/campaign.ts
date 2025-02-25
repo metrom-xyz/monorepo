@@ -121,10 +121,18 @@ export function getCampaignPreviewApr(
         }
 
         let poolUsdTvlFactor = payload.pool.usdTvl;
-        if (range)
-            poolUsdTvlFactor =
-                (Number(range.liquidity) / Number(range.activeTick.liquidity)) *
-                payload.pool.usdTvl;
+        if (range) {
+            const ratio =
+                (range.liquidity * 1_000_000n) / range.activeTick.liquidity;
+            const adjustedRatio = ratio < 1_000_000n ? 1_000_000n : ratio;
+
+            const usdTvlScaled = BigInt(
+                Math.round(payload.pool.usdTvl * 1_000_000),
+            );
+            const adjustedUsdTvl = (adjustedRatio * usdTvlScaled) / 1_000_000n;
+
+            poolUsdTvlFactor = Number(adjustedUsdTvl) / 1_000_000;
+        }
 
         const rewardsTvlRatio = rewardsUsdValue / poolUsdTvlFactor;
         const yearMultiplier = SECONDS_IN_YEAR / duration;

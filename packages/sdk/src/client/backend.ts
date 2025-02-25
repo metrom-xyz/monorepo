@@ -54,7 +54,7 @@ import type {
 } from "../types/initialized-ticks";
 import type {
     BackendInitializedTicksResponse,
-    BackendLiquiditiesInRangeResposne,
+    BackendLiquidityInRangeResponse,
 } from "./types/initialized-ticks";
 import { tickToScaledPrice } from "../utils";
 import type { BackendLiquityV2CollateralsResponse } from "./types/liquity-v2";
@@ -663,7 +663,7 @@ export class MetromApiClient {
             );
 
         const { activeTick, liquidity } =
-            (await response.json()) as BackendLiquiditiesInRangeResposne;
+            (await response.json()) as BackendLiquidityInRangeResponse;
 
         return {
             activeTick: {

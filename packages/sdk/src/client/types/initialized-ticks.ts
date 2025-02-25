@@ -9,7 +9,7 @@ export interface BackendInitializedTicksResponse {
     }[];
 }
 
-export interface BackendLiquiditiesInRangeResposne {
+export interface BackendLiquidityInRangeResponse {
     activeTick: {
         idx: number;
         liquidity: string;
