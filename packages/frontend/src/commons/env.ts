@@ -15,7 +15,5 @@ if (ENVIRONMENT !== Environment.Development && !WALLETCONNECT_PROJECT_ID)
     );
 
 export const FATHOM_SITE_ID: string = process.env.NEXT_PUBLIC_FATHOM_SITE_ID!;
-export const THEME_SWITCH: boolean =
-    process.env.NEXT_PUBLIC_THEME_SWITCH === "true";
 export const LIQUITY_V2_CAMPAIGN: boolean =
     process.env.NEXT_PUBLIC_LIQUITY_V2_CAMPAIGN === "true";
