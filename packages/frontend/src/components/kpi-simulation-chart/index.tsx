@@ -274,6 +274,8 @@ export function KpiSimulationChart({
             });
         }
 
+        if (chartData.length === 0) return chartData;
+
         aprPercentages.sort();
         const midAprIndex = Math.floor(aprPercentages.length / 2);
         const medianApr =
