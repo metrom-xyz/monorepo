@@ -10,3 +10,4 @@ export { scrollData } from "./scroll";
 export { formData, form } from "./form";
 export { gnosisData } from "./gnosis";
 export { sepoliaData } from "./sepolia";
+export { telosData } from "./telos";
