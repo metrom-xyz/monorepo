@@ -23,7 +23,7 @@ import { WALLETCONNECT_PROJECT_ID } from "../commons/env";
 import { SUPPORTED_CHAINS } from "../commons";
 import Fathom from "./fathom";
 import { useTheme } from "next-themes";
-import { Theme } from "../types";
+import { Theme } from "../types/common";
 
 dayjs.extend(duration);
 dayjs.extend(localizedFormat);

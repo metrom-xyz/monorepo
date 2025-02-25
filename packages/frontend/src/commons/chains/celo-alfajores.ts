@@ -4,7 +4,7 @@ import { type ChainData } from "../index";
 import { UniswapLogo } from "../../assets/logos/dexes/uniswap";
 import { CeloLogo } from "../../assets/logos/chains/celo";
 import { celoAlfajores } from "viem/chains";
-import { DepositUrlType, ProtocolType } from "@/src/types";
+import { DepositUrlType, ProtocolType } from "@/src/types/common";
 
 export const celoAlfajoresData: ChainData = {
     name: celoAlfajores.name,

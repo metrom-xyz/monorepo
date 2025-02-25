@@ -5,7 +5,7 @@ import {
     SupportedAmm,
 } from "@metrom-xyz/sdk";
 import { type ChainContract, type Chain } from "viem";
-import { type Protocol, type SVGIcon } from "../types";
+import { type Protocol, type SVGIcon } from "../types/common";
 import type { FunctionComponent } from "react";
 import { SupportedChain } from "@metrom-xyz/contracts";
 import { ENVIRONMENT } from "./env";

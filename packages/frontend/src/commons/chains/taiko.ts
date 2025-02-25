@@ -6,7 +6,7 @@ import { PankoLogo } from "@/src/assets/logos/dexes/panko";
 import { taiko } from "viem/chains";
 import { UniswapLogo } from "@/src/assets/logos/dexes/uniswap";
 import { UnagiLogo } from "@/src/assets/logos/dexes/unagi";
-import { DepositUrlType, ProtocolType } from "@/src/types";
+import { DepositUrlType, ProtocolType } from "@/src/types/common";
 
 export const taikoData: ChainData = {
     name: "Taiko",

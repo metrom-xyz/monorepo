@@ -4,7 +4,10 @@ import { Skeleton, Typography } from "@metrom-xyz/ui";
 import { useCallback } from "react";
 import { useChainId } from "wagmi";
 import classNames from "classnames";
-import { LiquityV2Action, type LiquityV2CampaignPayload } from "@/src/types";
+import {
+    LiquityV2Action,
+    type LiquityV2CampaignPayload,
+} from "@/src/types/common";
 import { formatUsdAmount } from "@/src/utils/format";
 
 import styles from "./styles.module.css";

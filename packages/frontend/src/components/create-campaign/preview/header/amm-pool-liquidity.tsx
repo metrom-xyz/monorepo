@@ -3,7 +3,7 @@ import { PoolRemoteLogo, Typography } from "@metrom-xyz/ui";
 import {
     ProtocolType,
     type AmmPoolLiquidityCampaignPreviewPayload,
-} from "@/src/types";
+} from "@/src/types/common";
 import { useChainId } from "wagmi";
 import { useProtocolsInChain } from "@/src/hooks/useProtocolsInChain";
 import { useMemo } from "react";
