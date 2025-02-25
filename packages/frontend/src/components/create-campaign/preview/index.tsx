@@ -271,6 +271,8 @@ export function CampaignPreview({
                         tokensCampaign && (
                             <Kpi
                                 poolUsdTvl={payload.pool.usdTvl}
+                                from={payload.startDate}
+                                to={payload.endDate}
                                 rewards={payload.distributables.tokens}
                                 specification={payload.kpiSpecification}
                             />

@@ -417,7 +417,7 @@
             "title": "KPI",
             "lowerBound": "Lower bound",
             "upperBound": "Upper bound",
-            "chart": "Rewards payout over TVL",
+            "chart": "Rewards payout and APR over TVL",
             "goalReached": "Goal reached",
             "minimumPayout": "Minimum payout",
             "charts": {
@@ -537,7 +537,8 @@
         "tooltip": {
             "tvl": "TVL",
             "payout": "Payout",
-            "kpiReached": "KPI reached"
+            "kpiReached": "KPI reached",
+            "apr": "APR"
         }
     },
     "distributionChart": {

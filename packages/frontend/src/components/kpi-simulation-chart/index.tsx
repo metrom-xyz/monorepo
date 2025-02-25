@@ -2,6 +2,7 @@ import {
     Area,
     ComposedChart,
     Label,
+    Line,
     ReferenceDot,
     ReferenceLine,
     ResponsiveContainer,
@@ -22,13 +23,30 @@ import {
 import classNames from "classnames";
 import { formatUsdAmount } from "@/src/utils/format";
 import { useMeasure } from "react-use";
+import { SECONDS_IN_YEAR } from "@/src/commons";
 
 import styles from "./styles.module.css";
+
+function clampValue(
+    value: number,
+    originalMin: number,
+    originalMax: number,
+    newMin: number,
+    newMax: number,
+): number {
+    return (
+        ((value - originalMin) / (originalMax - originalMin)) *
+            (newMax - newMin) +
+        newMin
+    );
+}
 
 export interface DistributedAreaDataPoint {
     usdTvl: number;
     currentlyDistributing: number;
     currentlyNotDistributing: number;
+    aprPercentage: number;
+    aprLinePoint: number;
 }
 
 interface KpiSimulationChartProps {
@@ -37,6 +55,7 @@ interface KpiSimulationChartProps {
     upperUsdTarget?: number;
     totalRewardsUsd: number;
     poolUsdTvl?: number | null;
+    campaignDurationSeconds: number;
     campaignEnded?: boolean;
     error?: boolean;
     loading?: boolean;
@@ -55,6 +74,7 @@ export function KpiSimulationChart({
     upperUsdTarget,
     totalRewardsUsd,
     poolUsdTvl,
+    campaignDurationSeconds,
     campaignEnded,
     error,
     loading,
@@ -194,7 +214,7 @@ export function KpiSimulationChart({
         };
     }, [lowerBoundScale, poolTvlScale, upperBoundScale]);
 
-    const areaChartData: DistributedAreaDataPoint[] = useMemo(() => {
+    const chartData: DistributedAreaDataPoint[] = useMemo(() => {
         if (
             upperUsdTarget === undefined ||
             lowerUsdTarget === undefined ||
@@ -209,31 +229,57 @@ export function KpiSimulationChart({
         const usdTvlRange = upperUsdTvl - lowerUsdTvl;
         const domainStep = usdTvlRange / POINTS_COUNT;
 
-        const points: DistributedAreaDataPoint[] = [];
+        const chartData: DistributedAreaDataPoint[] = [];
+        let minAprPercentage = 0;
+        let maxAprPercentage = 0;
         for (
             let usdTvl = lowerUsdTvl;
             usdTvl <= upperUsdTvl;
             usdTvl += domainStep
         ) {
-            const distributedRewards =
-                totalRewardsUsd *
+            if (usdTvl <= 0) continue;
+
+            const distributaleRewardsPercentage =
                 getDistributableRewardsPercentage(
                     usdTvl,
                     lowerUsdTarget,
                     upperUsdTarget,
                     minimumPayoutPercentage,
                 );
+            const distributedRewardsUsd =
+                totalRewardsUsd * distributaleRewardsPercentage;
 
-            points.push({
+            const rewardsRatio = distributedRewardsUsd / usdTvl;
+            const yearMultiplier = SECONDS_IN_YEAR / campaignDurationSeconds;
+            const aprPercentage = rewardsRatio * yearMultiplier * 100;
+
+            if (maxAprPercentage < aprPercentage)
+                maxAprPercentage = aprPercentage;
+            if (minAprPercentage > aprPercentage)
+                minAprPercentage = aprPercentage;
+
+            chartData.push({
                 usdTvl,
                 currentlyDistributing:
-                    usdTvl <= poolUsdTvl ? distributedRewards : 0,
+                    usdTvl <= poolUsdTvl ? distributedRewardsUsd : 0,
                 currentlyNotDistributing:
-                    usdTvl > poolUsdTvl ? distributedRewards : 0,
+                    usdTvl > poolUsdTvl ? distributedRewardsUsd : 0,
+                aprPercentage,
+                aprLinePoint: 0, // will be populated later with scaled values
             });
         }
 
-        return points;
+        for (const point of chartData) {
+            point.aprLinePoint = clampValue(
+                point.aprPercentage,
+                minAprPercentage,
+                maxAprPercentage,
+                0,
+                totalRewardsUsd,
+            );
+        }
+
+        return chartData;
     }, [
         lowerUsdTarget,
         minimumPayoutPercentage,
@@ -318,7 +364,7 @@ export function KpiSimulationChart({
             className={classNames("container", styles.container)}
         >
             <ComposedChart
-                data={areaChartData}
+                data={chartData}
                 margin={CHART_MARGINS}
                 style={{ cursor: "pointer" }}
             >
@@ -345,6 +391,18 @@ export function KpiSimulationChart({
                     isAnimationActive={true}
                     activeDot={false}
                     className={styles.notDistributingArea}
+                />
+
+                <Line
+                    type="monotone"
+                    dataKey="aprLinePoint"
+                    fillOpacity={1}
+                    animationEasing="ease-in-out"
+                    animationDuration={200}
+                    isAnimationActive={true}
+                    activeDot={false}
+                    dot={false}
+                    className={styles.aprLine}
                 />
 
                 <XAxis

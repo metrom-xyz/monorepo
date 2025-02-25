@@ -14,8 +14,7 @@ import {
 import { getDistributableRewardsPercentage } from "./kpi";
 import type { TranslationValues } from "next-intl";
 import { type Hex, encodeAbiParameters, stringToHex } from "viem";
-
-const SECONDS_IN_YEAR = 60 * 60 * 24 * 365;
+import { SECONDS_IN_YEAR } from "../commons";
 
 export function buildCampaignDataBundle(payload: CampaignPreviewPayload) {
     if (payload instanceof AmmPoolLiquidityCampaignPreviewPayload)
