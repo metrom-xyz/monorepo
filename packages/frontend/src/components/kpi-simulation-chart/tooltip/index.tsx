@@ -85,7 +85,11 @@ export function TooltipContent({
                 <Typography weight="medium" light uppercase size={size}>
                     {t("apr")}
                 </Typography>
-                {aprPercentage ? <AprChip apr={aprPercentage} kpi /> : "-"}
+                {aprPercentage ? (
+                    <AprChip apr={aprPercentage} size={size} kpi />
+                ) : (
+                    "-"
+                )}
             </div>
         </div>
     );
