@@ -1,8 +1,15 @@
 @reference "../../../app.css";
 
 .root {
-    composes: row from "../styles.module.css";
-    @apply theme-surface-hover
+    @apply sm:grid sm:col-span-full sm:grid-cols-subgrid;
+}
+
+.card {
+    @apply col-span-full
+        grid
+        grid-cols-subgrid
+        items-center
+        theme-surface-hover
         cursor-pointer
         transition-colors
         duration-200
@@ -11,11 +18,17 @@
         bg-none
         min-h-[111px]
         sm:min-h-[72px]
-        px-3
+        sm:max-h-[72px]
+        px-7
         py-4;
 }
 
-.root.loading {
+.card > :nth-child(1),
+.card > :nth-child(2) {
+    @apply justify-self-center;
+}
+
+.card.loading {
     @apply pointer-events-none;
 }
 
@@ -39,6 +52,6 @@
     @apply flex sm:justify-start items-center gap-2 col-span-11 sm:col-span-1;
 }
 
-.root:hover .externalLink {
+.card:hover .externalLink {
     @apply opacity-100 scale-100;
 }

@@ -37,5 +37,5 @@
 }
 
 .textRewards {
-    @apply !text-sm sm:!text-base sm:min-w-[72px] sm:text-right;
+    @apply !text-sm sm:!text-base sm:min-w-[50px] sm:text-right;
 }

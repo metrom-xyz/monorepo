@@ -236,62 +236,69 @@ export function Campaigns() {
                     />
                 </div>
             </div>
-            <div className={classNames(styles.row, styles.header)}>
-                <Typography size="sm" weight="medium">
-                    {t("header.chain")}
-                </Typography>
-                <Typography size="sm" weight="medium">
-                    {t("header.protocol")}
-                </Typography>
-                <Typography size="sm" weight="medium">
-                    {t("header.action")}
-                </Typography>
-                <Typography size="sm" weight="medium">
-                    {t("header.status")}
-                </Typography>
-                <Typography size="sm" weight="medium">
-                    {t("header.apr")}
-                </Typography>
-                <Typography size="sm" weight="medium">
-                    {t("header.rewards")}
-                </Typography>
-            </div>
-            <div className={styles.body}>
-                {loading ? (
-                    <>
-                        <SkeletonCampaign />
-                        <SkeletonCampaign />
-                        <SkeletonCampaign />
-                        <SkeletonCampaign />
-                        <SkeletonCampaign />
-                        <SkeletonCampaign />
-                        <SkeletonCampaign />
-                        <SkeletonCampaign />
-                        <SkeletonCampaign />
-                        <SkeletonCampaign />
-                    </>
-                ) : pagedCampaigns.length === 0 ? (
-                    <div className={styles.empty}>
-                        <Typography uppercase weight="medium">
-                            {t("empty.title")}
+            <div className={styles.tableWrapper}>
+                <div className={styles.table}>
+                    <div className={styles.header}>
+                        <Typography size="sm" weight="medium">
+                            {t("header.chain")}
                         </Typography>
-                        <Typography size="lg" weight="medium">
-                            {t("empty.description")}
+                        <Typography size="sm" weight="medium">
+                            {t("header.protocol")}
                         </Typography>
-                        <Button size="sm" onClick={handleCreateCampaign}>
-                            {t("empty.create")}
-                        </Button>
+                        <Typography size="sm" weight="medium">
+                            {t("header.action")}
+                        </Typography>
+                        <Typography size="sm" weight="medium">
+                            {t("header.status")}
+                        </Typography>
+                        <Typography size="sm" weight="medium">
+                            {t("header.apr")}
+                        </Typography>
+                        <Typography size="sm" weight="medium">
+                            {t("header.rewards")}
+                        </Typography>
                     </div>
-                ) : (
-                    pagedCampaigns.map((campaign) => {
-                        return (
-                            <CampaignRow
-                                key={campaign.id}
-                                campaign={campaign}
-                            />
-                        );
-                    })
-                )}
+                    <div className={styles.body}>
+                        {loading ? (
+                            <>
+                                <SkeletonCampaign />
+                                <SkeletonCampaign />
+                                <SkeletonCampaign />
+                                <SkeletonCampaign />
+                                <SkeletonCampaign />
+                                <SkeletonCampaign />
+                                <SkeletonCampaign />
+                                <SkeletonCampaign />
+                                <SkeletonCampaign />
+                                <SkeletonCampaign />
+                            </>
+                        ) : pagedCampaigns.length === 0 ? (
+                            <div className={styles.empty}>
+                                <Typography uppercase weight="medium">
+                                    {t("empty.title")}
+                                </Typography>
+                                <Typography size="lg" weight="medium">
+                                    {t("empty.description")}
+                                </Typography>
+                                <Button
+                                    size="sm"
+                                    onClick={handleCreateCampaign}
+                                >
+                                    {t("empty.create")}
+                                </Button>
+                            </div>
+                        ) : (
+                            pagedCampaigns.map((campaign) => {
+                                return (
+                                    <CampaignRow
+                                        key={campaign.id}
+                                        campaign={campaign}
+                                    />
+                                );
+                            })
+                        )}
+                    </div>
+                </div>
             </div>
             <div className={styles.paginationWrapper}>
                 <Pagination
