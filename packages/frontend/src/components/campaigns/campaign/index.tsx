@@ -34,8 +34,11 @@ export function CampaignRow({ campaign }: CampaignProps) {
     );
 
     return (
-        <Link href={`/campaigns/${campaign.chainId}/${campaign.id}`}>
-            <Card className={classNames(styles.root, styles.noMobile)}>
+        <Link
+            href={`/campaigns/${campaign.chainId}/${campaign.id}`}
+            className={styles.root}
+        >
+            <Card className={classNames(styles.card, styles.noMobile)}>
                 <Chain id={campaign.chainId} />
                 <Protocol campaign={campaign} />
                 <div className={styles.poolContainer}>
@@ -102,10 +105,10 @@ export function CampaignRow({ campaign }: CampaignProps) {
 
 export function SkeletonCampaign() {
     return (
-        <>
+        <div className={styles.root}>
             <Card
                 className={classNames(
-                    styles.root,
+                    styles.card,
                     styles.loading,
                     styles.noMobile,
                 )}
@@ -131,6 +134,6 @@ export function SkeletonCampaign() {
                     <SkeletonRewards />
                 </div>
             </Card>
-        </>
+        </div>
     );
 }
