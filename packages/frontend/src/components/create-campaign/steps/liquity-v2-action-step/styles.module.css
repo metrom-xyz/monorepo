@@ -19,12 +19,12 @@
         duration-200
         ease-in-out
         hover:cursor-pointer
-        bg-zinc-100 dark:bg-zinc-800/50
-        hover:bg-zinc-200 hover:dark:bg-zinc-800;
+        theme-surface-2
+        theme-surface-hover;
 }
 
 .active {
-    @apply bg-zinc-200 dark:bg-zinc-800;
+    @apply theme-surface-active;
 }
 
 .active > .actionIconWrapper {
