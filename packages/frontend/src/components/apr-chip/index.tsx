@@ -7,7 +7,7 @@ import styles from "./styles.module.css";
 
 interface AprChipProps {
     apr?: number;
-    size?: "sm" | "lg";
+    size?: TypographySize;
     prefix?: boolean;
     placeholder?: boolean;
     kpi?: boolean;
@@ -25,8 +25,14 @@ export function AprChip({
     const t = useTranslations();
 
     const sizes: Record<typeof size, TypographySize[]> = {
+        xs: ["xs", "xs"],
         sm: ["xs", "base"],
+        base: ["base", "base"],
         lg: ["base", "lg"],
+        xl: ["lg", "xl"],
+        xl2: ["xl", "xl2"],
+        xl4: ["xl2", "xl4"],
+        xl5: ["xl4", "xl5"],
     };
 
     return (

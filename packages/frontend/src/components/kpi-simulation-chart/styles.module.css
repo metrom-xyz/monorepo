@@ -47,6 +47,10 @@
         ease-in-out;
 }
 
+.aprLine path {
+    @apply stroke-carrot-orange stroke-2;
+}
+
 .notDistributingArea path {
     @apply fill-[#d1d5db] dark:fill-zinc-700;
 }

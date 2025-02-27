@@ -120,6 +120,9 @@ export function Kpi({ campaign, loading }: KpiProps) {
                                 loading={specificationLoading}
                                 poolUsdTvl={poolUsdTvl}
                                 campaignEnded={campaign.status === Status.Ended}
+                                campaignDurationSeconds={
+                                    campaign.to - campaign.from
+                                }
                                 totalRewardsUsd={
                                     campaign.distributables.amountUsdValue
                                 }

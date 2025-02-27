@@ -9,6 +9,7 @@ import {
     getDistributableRewardsPercentage,
     getReachedGoalPercentage,
 } from "@/src/utils/kpi";
+import { AprChip } from "../../apr-chip";
 
 interface TooltipProps {
     active?: boolean;
@@ -37,7 +38,7 @@ export function TooltipContent({
 
     if (!active || !payload || !payload.length) return null;
 
-    const { usdTvl } = payload[0].payload;
+    const { usdTvl, aprPercentage } = payload[0].payload;
 
     return (
         <div className={styles.root}>
@@ -80,6 +81,16 @@ export function TooltipContent({
                     })}
                 </Typography>
             </div>
+            <div className={styles.row}>
+                <Typography weight="medium" light uppercase size={size}>
+                    {t("apr")}
+                </Typography>
+                {aprPercentage ? (
+                    <AprChip apr={aprPercentage} size={size} kpi />
+                ) : (
+                    "-"
+                )}
+            </div>
         </div>
     );
 }
@@ -103,16 +114,23 @@ export function TooltipCursor({
 }: TooltipCursorProps) {
     if (!payload || !payload.length || !points || !height) return null;
 
-    const { usdTvl, currentlyDistributing, currentlyNotDistributing } =
-        payload[0].payload;
+    const {
+        usdTvl,
+        currentlyDistributing,
+        currentlyNotDistributing,
+        aprLinePoint,
+    } = payload[0].payload;
     const reward = currentlyDistributing || currentlyNotDistributing;
 
     // ReferenceDot cannot be used because it lacks access to Recharts' internal scale functions.
     // Instead, we use a standard SVG circle element. This requires manually calculating the Y position
     // based on the chart scale, while the X position can directly use the value from the data points.
     // This also takes into account the chart top margin.
-    const cy =
+    const cyRewards =
         getChartAxisScale(reward, 0, totalRewardsUsd, height, 0) +
+        CHART_MARGINS.top;
+    const cyApr =
+        getChartAxisScale(aprLinePoint!, 0, totalRewardsUsd, height, 0) +
         CHART_MARGINS.top;
 
     return (
@@ -132,14 +150,18 @@ export function TooltipCursor({
                 ifOverflow="visible"
                 isFront
                 className={styles.referenceLine}
-                segment={[
-                    { x: usdTvl, y: reward },
-                    { x: usdTvl, y: 0 },
-                ]}
+                segment={[{ x: usdTvl }, { x: usdTvl, y: 0 }]}
             />
             <circle
                 cx={points[0].x}
-                cy={cy}
+                cy={cyRewards}
+                r={4}
+                className={styles.referenceCircle}
+                strokeWidth={1}
+            />
+            <circle
+                cx={points[0].x}
+                cy={cyApr}
                 r={4}
                 className={styles.referenceCircle}
                 strokeWidth={1}
