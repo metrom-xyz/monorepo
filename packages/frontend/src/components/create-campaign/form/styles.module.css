@@ -5,7 +5,5 @@
         flex-col
         gap-5
         max-w-[410px]
-        w-full
-        sm:px-0
-        px-2;
+        w-full;
 }

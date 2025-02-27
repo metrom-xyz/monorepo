@@ -12,60 +12,6 @@
     @apply flex items-center gap-3;
 }
 
-.networkWrapper {
-    @apply bg-white dark:bg-zinc-800
-        w-10
-        h-10
-        rounded-md
-        flex
-        gap-3
-        items-center
-        justify-center
-        cursor-pointer
-        hover:bg-zinc-200 hover:dark:bg-zinc-700
-        transition-colors
-        duration-200
-        ease-in-out;
-}
-
-.wrongNetwork {
-    @apply bg-red-300 dark:bg-red-700;
-}
-
-.networkIcon {
-    @apply w-5 h-5 transition-none text-black dark:text-zinc-200;
-}
-
-.networkRow {
-    @apply min-w-32
-        flex
-        items-center
-        px-3
-        py-3
-        gap-2
-        cursor-pointer
-        hover:bg-zinc-200 hover:dark:bg-zinc-700
-        transition-colors
-        duration-200
-        ease-in-out;
-}
-
-.activeNetwork {
-    @apply bg-zinc-200 dark:bg-zinc-700;
-}
-
-.networksWrapper {
-    @apply flex flex-col;
-}
-
-.networksWrapper > :first-child {
-    @apply rounded-t-xl;
-}
-
-.networksWrapper > :last-child {
-    @apply rounded-b-xl;
-}
-
 .overlay {
     @apply z-20
         fixed

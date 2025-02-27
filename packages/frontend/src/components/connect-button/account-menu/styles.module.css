@@ -2,16 +2,18 @@
 
 .root {
     @apply bg-zinc-100 dark:bg-zinc-900
+        rounded-t-4xl
+        sm:rounded-t-none
         h-full
         w-full
         sm:w-[28rem]
         flex
         flex-col
-        p-3;
+        p-6;
 }
 
 .headerWrapper {
-    @apply flex justify-between items-center mb-6;
+    @apply flex justify-between items-center;
 }
 
 .accountContainer {

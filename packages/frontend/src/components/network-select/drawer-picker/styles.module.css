@@ -1,0 +1,34 @@
+@reference "../../../app.css";
+
+.root {
+    @apply flex sm:hidden;
+}
+
+.wrapper {
+    @apply sm:hidden
+        flex
+        z-20
+        fixed
+        left-0
+        right-0
+        bottom-0
+        w-full;
+}
+
+.drawer {
+    @apply bg-zinc-100 dark:bg-zinc-900
+        rounded-t-4xl
+        h-full
+        w-full
+        flex
+        flex-col
+        p-6;
+}
+
+.networksWrapper {
+    @apply max-h-[80%] overflow-y-auto;
+}
+
+.row {
+    @apply flex items-center gap-4 p-4 rounded-lg;
+}
