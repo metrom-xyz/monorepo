@@ -130,7 +130,7 @@ export function TooltipCursor({
         getChartAxisScale(reward, 0, totalRewardsUsd, height, 0) +
         CHART_MARGINS.top;
     const cyApr =
-        getChartAxisScale(aprLinePoint, 0, totalRewardsUsd, height, 0) +
+        getChartAxisScale(aprLinePoint!, 0, totalRewardsUsd, height, 0) +
         CHART_MARGINS.top;
 
     return (
