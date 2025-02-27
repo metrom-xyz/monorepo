@@ -1,18 +1,14 @@
 "use client";
 
 import { ConnectButton as RainbowConnectButton } from "@rainbow-me/rainbowkit";
-import { Typography, Button, Popover } from "@metrom-xyz/ui";
-import type { SupportedChain } from "@metrom-xyz/contracts";
-import { useRef, useState } from "react";
-import { useChainId, useChains, useSwitchChain } from "wagmi";
-import { useClickAway, useWindowSize } from "react-use";
+import { Typography, Button } from "@metrom-xyz/ui";
+import { useState } from "react";
+import { useWindowSize } from "react-use";
 import { useTranslations } from "next-intl";
-import { ErrorIcon } from "@/src/assets/error-icon";
 import { blo, type Address } from "blo";
 import { AccountMenu } from "./account-menu";
 import { zeroAddress } from "viem";
 import classNames from "classnames";
-import { CHAIN_DATA } from "@/src/commons";
 import { trackFathomEvent } from "@/src/utils/fathom";
 import { AnimatePresence, motion } from "motion/react";
 
@@ -20,32 +16,9 @@ import styles from "./styles.module.css";
 
 export function ConnectButton() {
     const t = useTranslations();
-    const chains = useChains();
-    const currentChainId = useChainId();
-    const { switchChain } = useSwitchChain();
     const { width } = useWindowSize();
 
-    const [networkWrapper, setNetworkWrapper] = useState<HTMLDivElement | null>(
-        null,
-    );
-    const [networkPopoverOpen, setNetworkPopoverOpen] = useState(false);
     const [accountMenuOpen, setAccountMenuOpen] = useState(false);
-    const networksPopoverRef = useRef<HTMLDivElement>(null);
-
-    function handleOpenNetworkPopover() {
-        setNetworkPopoverOpen((prev) => !prev);
-    }
-
-    useClickAway(networksPopoverRef, () => {
-        setNetworkPopoverOpen(false);
-    });
-
-    function getSwitchChainHandler(chainId: number) {
-        return () => {
-            switchChain({ chainId });
-            setNetworkPopoverOpen(false);
-        };
-    }
 
     function handleAccountMenuOpen() {
         setAccountMenuOpen(true);
@@ -64,75 +37,10 @@ export function ConnectButton() {
                 const blockie = blo(
                     (account?.address as Address) || zeroAddress,
                 );
-                const ChainIcon =
-                    CHAIN_DATA[currentChainId as SupportedChain].icon;
 
                 return (
                     <div className={styles.root}>
                         <div className={styles.wrapper}>
-                            <div ref={networksPopoverRef}>
-                                <div
-                                    ref={setNetworkWrapper}
-                                    className={classNames(
-                                        styles.networkWrapper,
-                                        {
-                                            [styles.wrongNetwork]:
-                                                chain?.unsupported,
-                                        },
-                                    )}
-                                    onClick={handleOpenNetworkPopover}
-                                >
-                                    {chain?.unsupported ? (
-                                        <ErrorIcon
-                                            className={styles.networkIcon}
-                                        />
-                                    ) : (
-                                        <ChainIcon
-                                            className={styles.networkIcon}
-                                        />
-                                    )}
-                                </div>
-                                <Popover
-                                    placement="bottom"
-                                    anchor={networkWrapper}
-                                    open={networkPopoverOpen}
-                                >
-                                    <div className={styles.networksWrapper}>
-                                        {chains.map((chain) => {
-                                            const { icon: ChainIcon, name } =
-                                                CHAIN_DATA[
-                                                    chain.id as SupportedChain
-                                                ];
-
-                                            return (
-                                                <div
-                                                    key={chain.id}
-                                                    className={classNames(
-                                                        styles.networkRow,
-                                                        {
-                                                            [styles.activeNetwork]:
-                                                                currentChainId ===
-                                                                chain.id,
-                                                        },
-                                                    )}
-                                                    onClick={getSwitchChainHandler(
-                                                        chain.id,
-                                                    )}
-                                                >
-                                                    <ChainIcon
-                                                        className={
-                                                            styles.networkIcon
-                                                        }
-                                                    />
-                                                    <Typography>
-                                                        {name}
-                                                    </Typography>
-                                                </div>
-                                            );
-                                        })}
-                                    </div>
-                                </Popover>
-                            </div>
                             {!connected ? (
                                 <Button
                                     size="sm"
@@ -157,6 +65,10 @@ export function ConnectButton() {
                                                 initial="hide"
                                                 animate="show"
                                                 exit="hide"
+                                                transition={{
+                                                    ease: "easeInOut",
+                                                    duration: 0.2,
+                                                }}
                                                 variants={{
                                                     hide: {
                                                         transform:

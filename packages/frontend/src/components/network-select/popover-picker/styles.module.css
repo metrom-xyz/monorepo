@@ -1,0 +1,19 @@
+@reference "../../../app.css";
+
+.root {
+    @apply hidden sm:flex;
+}
+
+.row {
+    @apply min-w-32
+        flex
+        items-center
+        px-3
+        py-3
+        gap-2
+        cursor-pointer
+        hover:bg-zinc-200 hover:dark:bg-zinc-700
+        transition-colors
+        duration-200
+        ease-in-out;
+}

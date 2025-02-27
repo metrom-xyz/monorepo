@@ -10,6 +10,7 @@ import { useDisconnect } from "wagmi";
 import { useTranslations } from "next-intl";
 import { TickIcon } from "@/src/assets/tick-icon";
 import { LinkIcon } from "@/src/assets/link-icon";
+import { ThemeSwitcher } from "../../theme-switcher";
 
 import styles from "./styles.module.css";
 
@@ -112,6 +113,7 @@ export function AccountMenu({
                     onClick={handleDisconnect}
                 />
             </div>
+            <ThemeSwitcher />
             <div className={styles.tabs}>
                 <div
                     onClick={handleActivityClick}
