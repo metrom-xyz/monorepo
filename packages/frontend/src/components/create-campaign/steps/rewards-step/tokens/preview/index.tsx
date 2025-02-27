@@ -2,7 +2,7 @@ import { type Erc20Token } from "@metrom-xyz/sdk";
 import type {
     BaseCampaignPayload,
     WhitelistedErc20TokenAmount,
-} from "@/src/types";
+} from "@/src/types/common";
 import { Reward } from "./reward";
 import type { Address } from "viem";
 import { Typography } from "@metrom-xyz/ui";

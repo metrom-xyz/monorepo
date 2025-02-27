@@ -11,7 +11,7 @@ import type {
     BaseCampaignPayload,
     CampaignPayloadErrors,
     BaseCampaignPayloadPart,
-} from "@/src/types";
+} from "@/src/types/common";
 import {
     Typography,
     DateTimePicker,

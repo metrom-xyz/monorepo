@@ -8,7 +8,7 @@ import {
     LiquityV2Action,
     type LiquityV2CampaignPayload,
     type LiquityV2CampaignPayloadPart,
-} from "@/src/types";
+} from "@/src/types/common";
 import { Typography } from "@metrom-xyz/ui";
 import classNames from "classnames";
 import { TakeLoanIcon } from "@/src/assets/take-loan-icon";

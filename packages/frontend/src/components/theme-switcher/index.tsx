@@ -1,4 +1,4 @@
-import { Theme } from "@/src/types";
+import { Theme } from "@/src/types/common";
 import { useEffect, useState } from "react";
 import { MoonIcon } from "@/src/assets/moon-icon";
 import { SunIcon } from "@/src/assets/sun-icon";

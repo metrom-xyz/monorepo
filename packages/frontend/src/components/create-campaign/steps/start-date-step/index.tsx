@@ -12,7 +12,7 @@ import type {
     BaseCampaignPayload,
     CampaignPayloadErrors,
     BaseCampaignPayloadPart,
-} from "@/src/types";
+} from "@/src/types/common";
 import { Typography, Button, DateTimePicker, ErrorText } from "@metrom-xyz/ui";
 import { getClosestAvailableDateTime } from "../../../../utils/date";
 import { AnimatePresence, motion } from "motion/react";

@@ -4,7 +4,7 @@ import { useTranslations } from "next-intl";
 import { useRouter } from "@/src/i18n/routing";
 import { AprChip } from "../../apr-chip";
 import { DistributablesType, type LiquityV2TargetType } from "@metrom-xyz/sdk";
-import { ProtocolType, type TargetedNamedCampaign } from "@/src/types";
+import { ProtocolType, type TargetedNamedCampaign } from "@/src/types/common";
 import { useProtocolsInChain } from "@/src/hooks/useProtocolsInChain";
 
 import styles from "./styles.module.css";

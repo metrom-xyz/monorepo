@@ -3,7 +3,7 @@ import { metromApiClient } from "../commons";
 import { SupportedLiquityV2, type LiquityV2Collateral } from "@metrom-xyz/sdk";
 import { useQuery } from "@tanstack/react-query";
 import { useProtocolsInChain } from "./useProtocolsInChain";
-import { ProtocolType } from "../types";
+import { ProtocolType } from "../types/common";
 
 export function useLiquityV2Collaterals(
     chainId: SupportedChain,

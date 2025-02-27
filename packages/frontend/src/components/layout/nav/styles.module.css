@@ -15,7 +15,8 @@
         flex-wrap
         w-full
         max-w-screen-xl
-        px-5
+        px-2
+        sm:px-0
         pt-5
         flex
         justify-between
@@ -44,7 +45,7 @@
     @apply sm:hidden
         w-full
         z-10
-        h-12
+        h-16
         fixed
         left-0
         -bottom-0.5

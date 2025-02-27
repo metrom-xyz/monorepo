@@ -5,7 +5,7 @@ import { KimLogo } from "../../assets/logos/dexes/kim";
 import { type ChainData } from "..";
 import { UniswapLogo } from "@/src/assets/logos/dexes/uniswap";
 import { baseSepolia } from "viem/chains";
-import { DepositUrlType, ProtocolType } from "@/src/types";
+import { DepositUrlType, ProtocolType } from "@/src/types/common";
 
 export const baseSepoliaData: ChainData = {
     name: baseSepolia.name,

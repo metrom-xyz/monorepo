@@ -4,7 +4,7 @@ import { AlgebraIntegralLogo } from "../../assets/logos/dexes/algebra-integral";
 import { SupportedChain, ADDRESS } from "@metrom-xyz/contracts";
 import { type ChainData } from "../index";
 import { holesky } from "viem/chains";
-import { DepositUrlType, ProtocolType } from "@/src/types";
+import { DepositUrlType, ProtocolType } from "@/src/types/common";
 
 export const holeskyData: ChainData = {
     name: holesky.name,

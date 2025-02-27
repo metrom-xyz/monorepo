@@ -2,7 +2,7 @@ import { Button, Typography, TextField, ErrorText } from "@metrom-xyz/ui";
 import {
     AmmPoolLiquidityCampaignPreviewPayload,
     type CampaignPreviewPayload,
-} from "@/src/types";
+} from "@/src/types/common";
 import {
     useChainId,
     usePublicClient,
@@ -37,6 +37,7 @@ import { Kpi } from "./kpi";
 import { AprChip } from "../../apr-chip";
 import { Range } from "./range";
 import { formatUnits, parseUnits, zeroHash, type Hex } from "viem";
+import { useLiquidityInRange } from "@/src/hooks/useLiquidityInRange";
 
 import styles from "./styles.module.css";
 
@@ -65,6 +66,24 @@ export function CampaignPreview({
     const chainData = useChainData(chainId);
     const publicClient = usePublicClient();
     const { writeContractAsync } = useWriteContract();
+
+    const ammPoolLiquidityCampaign =
+        payload instanceof AmmPoolLiquidityCampaignPreviewPayload;
+
+    const liquidityInRangeParams = useMemo(() => {
+        if (!ammPoolLiquidityCampaign || !payload.priceRangeSpecification)
+            return { enabled: false };
+
+        return {
+            pool: payload.pool,
+            from: payload.priceRangeSpecification.from.tick,
+            to: payload.priceRangeSpecification.to.tick,
+            enabled: true,
+        };
+    }, [ammPoolLiquidityCampaign, payload]);
+
+    const { loading: loadingLiquidityInRange, liquidityInRange } =
+        useLiquidityInRange(liquidityInRangeParams);
 
     const tokensToApprove: [
         UsdPricedErc20TokenAmount,
@@ -246,9 +265,6 @@ export function CampaignPreview({
     const pointsCampaign = payload.isDistributing(DistributablesType.Points);
     const tokensCampaign = payload.isDistributing(DistributablesType.Tokens);
 
-    const ammPoolLiquidityCampaign =
-        payload instanceof AmmPoolLiquidityCampaignPreviewPayload;
-
     // TODO: add notification toast in case of errors
     if (!created) {
         return (
@@ -291,10 +307,14 @@ export function CampaignPreview({
                                 boxed
                                 size="xl"
                                 label={t("apr")}
+                                loading={loadingLiquidityInRange}
                                 value={
                                     <AprChip
                                         size="lg"
-                                        apr={getCampaignPreviewApr(payload)}
+                                        apr={getCampaignPreviewApr(
+                                            payload,
+                                            liquidityInRange,
+                                        )}
                                         kpi={!!payload.kpiSpecification}
                                     />
                                 }

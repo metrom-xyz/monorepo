@@ -9,7 +9,7 @@ import {
     type BaseCampaignPayloadPart,
     type CampaignPayloadErrors,
     RewardType,
-} from "@/src/types";
+} from "@/src/types/common";
 import classNames from "classnames";
 import { RewardTokens } from "./tokens";
 import { RewardPoints } from "./points";
