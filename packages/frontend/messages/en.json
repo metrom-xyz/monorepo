@@ -283,7 +283,8 @@
                     "chart": "Range visualizer",
                     "errors": {
                         "missing": "Bound missing",
-                        "malformed": "Wrong bound values"
+                        "malformed": "Wrong bound values",
+                        "rangeTooWide": "Range too wide"
                     },
                     "warnings": {
                         "notApplied": "Changes not applied"

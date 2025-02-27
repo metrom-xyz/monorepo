@@ -31,6 +31,7 @@ import type {
 import styles from "./styles.module.css";
 
 const COMPUTE_TICKS_AMOUNT = 3000;
+const RANGE_TICKS_LIMIT = 4000;
 
 interface RangeStepProps {
     disabled?: boolean;
@@ -116,6 +117,12 @@ export function RangeStep({
         else if ((!from && to) || (!to && from)) setError("errors.missing");
         else if (!!from && !!to && from.tick >= to.tick)
             setError("errors.malformed");
+        else if (
+            !!from &&
+            !!to &&
+            Math.abs(to.tick - from.tick) > RANGE_TICKS_LIMIT
+        )
+            setError("errors.rangeTooWide");
         else setError("");
     }, [from, to]);
 

@@ -4,7 +4,7 @@ import { TelosLogo } from "@/src/assets/logos/chains/telos";
 import { UniswapLogo } from "@/src/assets/logos/dexes/uniswap";
 import { type ChainData } from "..";
 import { telos } from "viem/chains";
-import { DepositUrlType, ProtocolType } from "@/src/types";
+import { DepositUrlType, ProtocolType } from "@/src/types/common";
 
 export const telosData: ChainData = {
     name: telos.name,
