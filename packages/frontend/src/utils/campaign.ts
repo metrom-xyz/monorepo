@@ -120,21 +120,20 @@ export function getCampaignPreviewApr(
             );
         }
 
-        let poolUsdTvlFactor = payload.pool.usdTvl;
+        let poolUsdTvl = payload.pool.usdTvl;
         if (range) {
-            const ratio =
-                (range.liquidity * 1_000_000n) / range.activeTick.liquidity;
-            const adjustedRatio = ratio < 1_000_000n ? 1_000_000n : ratio;
+            const { liquidity, activeTick } = range;
 
-            const usdTvlScaled = BigInt(
-                Math.round(payload.pool.usdTvl * 1_000_000),
-            );
-            const adjustedUsdTvl = (adjustedRatio * usdTvlScaled) / 1_000_000n;
+            const multiplier =
+                Math.min(
+                    Number((liquidity * 1_000_000n) / activeTick.liquidity),
+                    1_000_000,
+                ) / 1_000_000;
 
-            poolUsdTvlFactor = Number(adjustedUsdTvl) / 1_000_000;
+            poolUsdTvl = payload.pool.usdTvl * multiplier;
         }
 
-        const rewardsTvlRatio = rewardsUsdValue / poolUsdTvlFactor;
+        const rewardsTvlRatio = rewardsUsdValue / poolUsdTvl;
         const yearMultiplier = SECONDS_IN_YEAR / duration;
         const apr = rewardsTvlRatio * yearMultiplier * 100;
 
