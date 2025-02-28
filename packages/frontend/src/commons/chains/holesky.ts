@@ -7,6 +7,7 @@ import { holesky } from "viem/chains";
 import { DepositUrlType, ProtocolType } from "@/src/types/common";
 
 export const holeskyData: ChainData = {
+    testnet: true,
     name: holesky.name,
     metromContract: ADDRESS[SupportedChain.Holesky],
     blockExplorers: holesky.blockExplorers,

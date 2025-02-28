@@ -8,6 +8,7 @@ import { UniswapLogo } from "@/src/assets/logos/dexes/uniswap";
 import { DepositUrlType, ProtocolType } from "@/src/types/common";
 
 export const scrollData: ChainData = {
+    testnet: false,
     name: scroll.name,
     metromContract: ADDRESS[SupportedChain.Scroll],
     blockExplorers: scroll.blockExplorers,

@@ -8,6 +8,7 @@ import { sonic } from "viem/chains";
 import { DepositUrlType, ProtocolType } from "@/src/types/common";
 
 export const sonicData: ChainData = {
+    testnet: false,
     name: sonic.name,
     metromContract: ADDRESS[SupportedChain.Sonic],
     blockExplorers: {

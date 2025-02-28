@@ -8,6 +8,7 @@ import { baseSepolia } from "viem/chains";
 import { DepositUrlType, ProtocolType } from "@/src/types/common";
 
 export const baseSepoliaData: ChainData = {
+    testnet: true,
     name: baseSepolia.name,
     metromContract: ADDRESS[SupportedChain.BaseSepolia],
     blockExplorers: baseSepolia.blockExplorers,
