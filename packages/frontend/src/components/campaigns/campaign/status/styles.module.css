@@ -1,11 +1,11 @@
 @reference "../../../../app.css";
 
 .statusRoot {
-    @apply max-w-24 sm:max-w-28 w-full flex items-center gap-2 col-span-4 sm:col-span-1;
+    @apply max-w-28 w-full flex items-center gap-2 col-span-1;
 }
 
 .statusText {
-    @apply w-full flex flex-col justify-center sm:justify-end gap-1;
+    @apply w-full flex flex-col justify-end gap-1;
 }
 
 .statusDot {
@@ -25,5 +25,5 @@
 }
 
 .statusDuration {
-    @apply hidden sm:flex whitespace-nowrap;
+    @apply flex whitespace-nowrap;
 }

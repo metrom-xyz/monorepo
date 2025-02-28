@@ -9,7 +9,7 @@
 }
 
 .titleContainer {
-    @apply sm:w-fit w-full max-w-48 sm:max-w-full flex items-center gap-1.5;
+    @apply w-fit max-w-full flex items-center gap-1.5;
 }
 
 .titleContainerLoading {
@@ -17,7 +17,7 @@
 }
 
 .campaignFee {
-    @apply hidden sm:flex;
+    @apply flex;
 }
 
 .chip {

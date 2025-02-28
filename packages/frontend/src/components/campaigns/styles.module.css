@@ -5,7 +5,7 @@
 }
 
 .filters {
-    @apply max-w-screen-lg w-full sm:items-end flex-col sm:flex-row flex gap-3 sm:mb-7;
+    @apply max-w-screen-lg w-full sm:items-end flex-col sm:flex-row flex gap-3 mb-7;
 }
 
 .searchFilter :global(.label) {
@@ -20,20 +20,24 @@
     @apply flex justify-between items-center gap-3;
 }
 
+.scrollContainer {
+    @apply w-full mb-5;
+}
+
 .tableWrapper {
-    @apply sm:h-[776px];
+    @apply overflow-x-scroll sm:overflow-x-auto;
 }
 
 .table {
-    @apply grid
-        grid-cols-12
-        sm:grid-cols-[0.1fr_0.4fr_3fr_1fr_1fr_1fr]
+    @apply min-w-[800px] 
+        grid
+        grid-cols-[0.1fr_0.4fr_3fr_1fr_1fr_1fr]
         gap-5
         items-center;
 }
 
 .header {
-    @apply sm:grid hidden grid-cols-subgrid col-span-full px-7;
+    @apply grid grid-cols-subgrid col-span-full px-7;
 }
 
 .header > :nth-child(1),
@@ -42,15 +46,10 @@
 }
 
 .body {
-    @apply w-full
-        flex
-        flex-col
-        gap-y-2
-        my-5
-        sm:my-0
-        sm:gap-y-0
-        sm:grid
-        sm:grid-cols-subgrid
+    @apply sm:w-full
+        my-0
+        grid
+        grid-cols-subgrid
         col-span-full;
 }
 
@@ -64,7 +63,7 @@
 
 .empty {
     @apply w-full
-        sm:col-span-full
+        col-span-full
         h-[720px]
         flex
         flex-col

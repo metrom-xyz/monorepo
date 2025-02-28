@@ -1,7 +1,7 @@
 @reference "../../../../app.css";
 
 .root {
-    @apply flex items-center justify-between col-span-4 sm:col-span-1;
+    @apply flex items-center justify-between col-span-1;
 }
 
 .loading {
@@ -9,7 +9,7 @@
 }
 
 .rewardsWrapper {
-    @apply w-full flex items-center gap-1;
+    @apply w-full flex items-center gap-1 pointer-events-none sm:pointer-events-auto;
 }
 
 .tokenIcons {
@@ -37,5 +37,5 @@
 }
 
 .textRewards {
-    @apply !text-sm sm:!text-base sm:min-w-[50px] sm:text-right;
+    @apply text-base min-w-[50px] text-right;
 }

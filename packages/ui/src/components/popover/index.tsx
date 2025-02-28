@@ -7,6 +7,8 @@ import {
 } from "react";
 import { usePopper } from "react-popper";
 import { type Placement } from "@popperjs/core";
+import { AnimatePresence, motion } from "motion/react";
+import classNames from "classnames";
 
 import styles from "./styles.module.css";
 
@@ -52,20 +54,32 @@ export const Popover = forwardRef<HTMLDivElement, PopoverProps>(
         }, [open, update]);
 
         return (
-            <div
-                ref={(element) => {
-                    if (ref) {
-                        if (typeof ref === "function") ref(element);
-                        else ref.current = element;
-                    }
-                    setPopper(element);
-                }}
-                style={{ ...popperStyles.popper }}
-                className={`${styles.root} ${className} ${open ? styles.open : ""}`}
-                {...attributes.popper}
-            >
-                {children}
-            </div>
+            <AnimatePresence>
+                {open && (
+                    <motion.div
+                        ref={(element) => {
+                            if (ref) {
+                                if (typeof ref === "function") ref(element);
+                                else ref.current = element;
+                            }
+                            setPopper(element);
+                        }}
+                        initial="hide"
+                        animate="show"
+                        exit="hide"
+                        variants={{
+                            hide: { opacity: 0 },
+                            show: { opacity: 1 },
+                        }}
+                        transition={{ duration: 0.2 }}
+                        style={{ ...popperStyles.popper }}
+                        className={classNames(styles.root, className)}
+                        {...attributes.popper}
+                    >
+                        {children}
+                    </motion.div>
+                )}
+            </AnimatePresence>
         );
     },
 );
