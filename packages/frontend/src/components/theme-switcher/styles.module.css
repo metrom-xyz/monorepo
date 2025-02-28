@@ -1,28 +1,37 @@
 @reference "../../app.css";
 
 .root {
-    @apply flex items-center;
+    @apply w-full h-[60px] bg-white dark:bg-zinc-800;
 }
 
-.wrapper {
-    @apply bg-white dark:bg-zinc-800
-        w-10
-        h-10
-        rounded-lg
-        flex
-        items-center
-        justify-center
-        cursor-pointer
-        hover:bg-zinc-200 hover:dark:bg-zinc-700
-        transition-colors
-        duration-200
-        ease-in-out;
+.tab {
+    @apply w-full bg-white dark:bg-zinc-800 opacity-100;
+}
+
+.tab > p {
+    @apply text-zinc-400;
+}
+
+.tab:first-child {
+    @apply rounded-r-none;
+}
+
+.tab:last-child {
+    @apply rounded-l-none;
+}
+
+.active {
+    @apply bg-zinc-100 dark:bg-zinc-700;
+}
+
+.active > p {
+    @apply text-white;
 }
 
 .loading {
     @apply animate-pulse;
 }
 
-.themeIcon {
+.icon {
     @apply h-6 w-6 dark:text-zinc-200;
 }

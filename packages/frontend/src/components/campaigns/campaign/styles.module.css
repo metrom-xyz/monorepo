@@ -1,7 +1,7 @@
 @reference "../../../app.css";
 
 .root {
-    @apply sm:grid sm:col-span-full sm:grid-cols-subgrid;
+    @apply grid col-span-full grid-cols-subgrid;
 }
 
 .card {
@@ -16,9 +16,8 @@
         ease-in-out
         rounded-none
         bg-none
-        min-h-[111px]
-        sm:min-h-[72px]
-        sm:max-h-[72px]
+        min-h-[72px]
+        max-h-[72px]
         px-7
         py-4;
 }
@@ -29,27 +28,11 @@
 }
 
 .card.loading {
-    @apply pointer-events-none;
-}
-
-.noMobile {
-    @apply hidden sm:grid;
-}
-
-.mobileCard {
-    @apply flex sm:hidden flex-col justify-between min-h-[111px] gap-3;
-}
-
-.mobileCard .topRow {
-    @apply w-full flex items-center gap-2;
-}
-
-.mobileCard .bottomRow {
-    @apply flex justify-between items-center gap-2;
+    @apply w-full pointer-events-none;
 }
 
 .poolContainer {
-    @apply flex sm:justify-start items-center gap-2 col-span-11 sm:col-span-1;
+    @apply flex justify-start items-center gap-2 col-span-1;
 }
 
 .card:hover .externalLink {
