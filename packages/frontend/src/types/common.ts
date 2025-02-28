@@ -23,6 +23,7 @@ import type { Address } from "viem";
 import type { ChainData } from "../commons";
 
 export enum Theme {
+    System = "system",
     Dark = "dark",
     Light = "light",
 }

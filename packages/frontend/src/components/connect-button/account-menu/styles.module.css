@@ -9,7 +9,9 @@
         sm:w-[28rem]
         flex
         flex-col
-        p-6;
+        gap-6
+        p-6
+        sm:p-3;
 }
 
 .headerWrapper {
@@ -17,26 +19,51 @@
 }
 
 .accountContainer {
-    @apply flex 
-        items-center 
-        gap-3 
-        hover:bg-zinc-200 hover:dark:bg-zinc-700
-        p-2 
-        rounded-md 
-        cursor-pointer 
-        transition-[outline,background-color]
-        duration-200 
-        ease-in-out 
-        outline-1
-        outline-transparent;
+    @apply flex items-center gap-3;
 }
 
-.accountContainer:hover .iconContainer {
-    @apply visible;
+.topContent {
+    @apply flex items-center gap-3;
+}
+
+.avatarWrapper {
+    @apply p-2 rounded-lg bg-zinc-200 dark:bg-zinc-800;
+}
+
+.addressAndBalanceWrapper {
+    @apply flex flex-col;
 }
 
 .avatar {
-    @apply w-12 h-12 rounded-full;
+    @apply w-9 h-9 rounded-full;
+}
+
+.clipWrapper {
+    @apply flex
+        gap-1
+        items-center
+        cursor-pointer
+        transition-opacity
+        duration-200
+        ease-in-out;
+}
+
+.address {
+    @apply transition-opacity
+        duration-200
+        ease-in-out;
+}
+
+.address:hover {
+    @apply opacity-50;
+}
+
+.clipWrapper:hover .copyIconContainer {
+    @apply opacity-100;
+}
+
+.balanceWrapper {
+    @apply flex justify-between mr-8;
 }
 
 .disconnectIcon {
@@ -71,18 +98,26 @@
     @apply bg-zinc-200 dark:bg-zinc-700 hover:bg-zinc-200 hover:dark:bg-zinc-700;
 }
 
-.copied {
-    @apply outline-green-600;
-}
-
 .copyIcon {
-    @apply w-5 h-5;
+    @apply w-5 h-5 theme-text;
 }
 
 .tickIcon {
     @apply w-7 h-7 text-green-600;
 }
 
-.iconContainer {
-    @apply invisible flex items-center justify-center w-7 h-7;
+.disconnectWrapper {
+    @apply p-2 rounded-lg bg-zinc-200 dark:bg-zinc-800;
+}
+
+.copyIconContainer {
+    @apply opacity-0
+        flex
+        items-center
+        justify-center
+        w-7
+        h-7
+        transition-opacity
+        duration-200
+        ease-in-out;
 }
