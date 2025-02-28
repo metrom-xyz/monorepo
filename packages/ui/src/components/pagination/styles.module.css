@@ -1,7 +1,7 @@
 @reference "../../theme.css";
 
 .root {
-    @apply w-full sm:w-auto justify-between flex gap-1 sm:gap-2;
+    @apply w-full sm:w-auto justify-center flex gap-1 sm:gap-2;
 }
 
 .arrowIcon {

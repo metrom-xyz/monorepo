@@ -5,14 +5,9 @@
         border
         bg-white dark:bg-zinc-800
         border-zinc-200 dark:border-zinc-600
-        z-10
-        transition-opacity
-        duration-200
-        ease-in-out
-        opacity-0
-        pointer-events-none;
+        z-10;
 }
 
 .open {
-    @apply opacity-100 pointer-events-auto;
+    @apply pointer-events-auto;
 }

@@ -1,7 +1,7 @@
 @reference "../../../../app.css";
 
 .root {
-    @apply flex items-center justify-between col-span-4 sm:col-span-1;
+    @apply flex items-center justify-between col-span-1;
 }
 
 .breakdownContainer {
@@ -17,5 +17,5 @@
 }
 
 .textPoints {
-    @apply !text-sm sm:!text-base sm:min-w-[72px] sm:text-right;
+    @apply text-base min-w-[72px] text-right;
 }
