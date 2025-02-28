@@ -1,6 +1,6 @@
 import { AnimatePresence, motion } from "motion/react";
 import { useRef } from "react";
-import { useClickAway } from "react-use";
+import { useClickAway, useWindowSize } from "react-use";
 import type { Chain } from "viem";
 import { CHAIN_DATA } from "@/src/commons";
 import { type SupportedChain } from "@metrom-xyz/contracts";
@@ -27,7 +27,11 @@ export function DrawerPicker({
 }: DrawerPickerProps) {
     const pickerRef = useRef(null);
 
-    useClickAway(pickerRef, onClose);
+    const { width } = useWindowSize();
+    useClickAway(pickerRef, () => {
+        if (width > 640) return;
+        onClose();
+    });
 
     function getOnChangeHandler(chainId: number) {
         return () => {
