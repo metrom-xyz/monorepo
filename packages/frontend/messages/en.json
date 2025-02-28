@@ -5,6 +5,9 @@
         "claims": "Claims",
         "connect": "Connect"
     },
+    "theme": {
+        "auto": "Auto"
+    },
     "footer": {
         "support": "Support",
         "documentation": "Documentation",

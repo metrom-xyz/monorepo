@@ -66,7 +66,9 @@ export function DrawerPicker({
                                             <ChainIcon
                                                 className={commonStyles.icon}
                                             />
-                                            <Typography size="xl">{name}</Typography>
+                                            <Typography size="xl">
+                                                {name}
+                                            </Typography>
                                         </div>
                                     );
                                 })}
