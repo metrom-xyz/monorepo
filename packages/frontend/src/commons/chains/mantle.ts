@@ -7,6 +7,7 @@ import { mantle } from "viem/chains";
 import { DepositUrlType, ProtocolType } from "@/src/types/common";
 
 export const mantleData: ChainData = {
+    testnet: false,
     name: mantle.name,
     metromContract: ADDRESS[SupportedChain.Mantle],
     blockExplorers: mantle.blockExplorers,

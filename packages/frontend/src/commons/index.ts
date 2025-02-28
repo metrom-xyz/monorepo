@@ -43,6 +43,7 @@ import {
 export const SECONDS_IN_YEAR = 60 * 60 * 24 * 365;
 
 export interface ChainData {
+    testnet: boolean;
     name: string;
     metromContract: ChainContract;
     blockExplorers: Chain["blockExplorers"];

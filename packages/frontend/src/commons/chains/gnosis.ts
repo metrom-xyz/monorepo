@@ -7,6 +7,7 @@ import { DepositUrlType, ProtocolType } from "@/src/types/common";
 import { ADDRESS, SupportedChain } from "@metrom-xyz/contracts";
 
 export const gnosisData: ChainData = {
+    testnet: false,
     name: gnosis.name,
     metromContract: ADDRESS[SupportedChain.Gnosis],
     blockExplorers: gnosis.blockExplorers,

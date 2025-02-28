@@ -8,6 +8,7 @@ import { ProtocolType } from "@/src/types/common";
 import { EbisuLogo } from "@/src/assets/logos/liquity-v2-platforms/ebisu";
 
 export const sepoliaData: ChainData = {
+    testnet: true,
     name: sepolia.name,
     metromContract: ADDRESS[SupportedChain.Sepolia],
     blockExplorers: sepolia.blockExplorers,

@@ -308,6 +308,7 @@ export function KpiSimulationChart({
         sortedSignificantUsdTvls,
         totalRewardsUsd,
         upperUsdTarget,
+        campaignDurationSeconds,
     ]);
 
     if (

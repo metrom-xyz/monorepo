@@ -7,6 +7,7 @@ import { mode } from "viem/chains";
 import { DepositUrlType, ProtocolType } from "@/src/types/common";
 
 export const modeData: ChainData = {
+    testnet: false,
     name: "Mode",
     metromContract: ADDRESS[SupportedChain.Mode],
     blockExplorers: mode.blockExplorers,

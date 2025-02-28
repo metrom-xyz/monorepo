@@ -7,6 +7,7 @@ import { celoAlfajores } from "viem/chains";
 import { DepositUrlType, ProtocolType } from "@/src/types/common";
 
 export const celoAlfajoresData: ChainData = {
+    testnet: true,
     name: celoAlfajores.name,
     metromContract: ADDRESS[SupportedChain.CeloAlfajores],
     blockExplorers: celoAlfajores.blockExplorers,
