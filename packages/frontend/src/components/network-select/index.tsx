@@ -1,8 +1,6 @@
-import { Popover, Typography } from "@metrom-xyz/ui";
 import classNames from "classnames";
 import { ErrorIcon } from "@/src/assets/error-icon";
 import { useMemo, useRef, useState } from "react";
-import { useClickAway, useWindowSize } from "react-use";
 import { useAccount, useChainId, useChains, useSwitchChain } from "wagmi";
 import { CHAIN_DATA } from "@/src/commons";
 import type { SupportedChain } from "@metrom-xyz/contracts";
@@ -17,7 +15,6 @@ export function NetworkSelect() {
 
     const rootRef = useRef<HTMLDivElement>(null);
 
-    const { width } = useWindowSize();
     const supportedChains = useChains();
     const selectedChainId = useChainId();
     const { chain: connectedChain, isConnected } = useAccount();
@@ -31,10 +28,6 @@ export function NetworkSelect() {
                 !supportedChains.some(({ id }) => id === selectedChainId))
         );
     }, [supportedChains, connectedChain, isConnected, selectedChainId]);
-
-    useClickAway(rootRef, () => {
-        setPickerOpen(false);
-    });
 
     function handleToggleNetworkPicker() {
         setPickerOpen((prev) => !prev);
@@ -67,23 +60,20 @@ export function NetworkSelect() {
                     [styles.overlayOpen]: pickerOpen,
                 })}
             />
-            {width > 640 ? (
-                <PopoverPicker
-                    anchor={wrapper}
-                    chains={supportedChains}
-                    open={pickerOpen}
-                    value={selectedChainId}
-                    onChange={handleNetworkOnChange}
-                />
-            ) : (
-                <DrawerPicker
-                    chains={supportedChains}
-                    open={pickerOpen}
-                    value={selectedChainId}
-                    onChange={handleNetworkOnChange}
-                    onClose={handleToggleNetworkPicker}
-                />
-            )}
+            <PopoverPicker
+                anchor={wrapper}
+                chains={supportedChains}
+                open={pickerOpen}
+                value={selectedChainId}
+                onChange={handleNetworkOnChange}
+            />
+            <DrawerPicker
+                chains={supportedChains}
+                open={pickerOpen}
+                value={selectedChainId}
+                onChange={handleNetworkOnChange}
+                onClose={handleToggleNetworkPicker}
+            />
         </div>
     );
 }
