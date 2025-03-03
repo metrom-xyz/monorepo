@@ -54,7 +54,7 @@
 }
 
 .wrong {
-    @apply bg-red-300 dark:bg-red-700;
+    @apply bg-red-300 dark:bg-red-600;
 }
 
 .icon {

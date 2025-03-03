@@ -66,8 +66,16 @@
     @apply flex justify-between mr-8;
 }
 
-.disconnectIcon {
+.icon {
     @apply w-5 h-5 cursor-pointer;
+}
+
+.iconWrapper {
+    @apply p-2 rounded-lg bg-zinc-200 dark:bg-zinc-800;
+}
+
+.unsupportedChain {
+    @apply bg-red-300 dark:bg-red-600;
 }
 
 .tabs {
@@ -106,8 +114,8 @@
     @apply w-7 h-7 text-green-600;
 }
 
-.disconnectWrapper {
-    @apply p-2 rounded-lg bg-zinc-200 dark:bg-zinc-800;
+.rightContent {
+    @apply flex gap-2;
 }
 
 .copyIconContainer {
