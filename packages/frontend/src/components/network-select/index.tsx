@@ -1,12 +1,12 @@
 import classNames from "classnames";
 import { ErrorIcon } from "@/src/assets/error-icon";
-import { useMemo, useRef, useState } from "react";
-import { useAccount, useChainId, useChains, useSwitchChain } from "wagmi";
-import { CHAIN_DATA } from "@/src/commons";
-import type { SupportedChain } from "@metrom-xyz/contracts";
+import { useRef, useState } from "react";
+import { useChainId, useChains, useSwitchChain } from "wagmi";
 import { PopoverPicker } from "./popover-picker";
 import { DrawerPicker } from "./drawer-picker";
 import { useClickAway } from "react-use";
+import { useIsChainSupported } from "@/src/hooks/useIsChainSupported";
+import { useChainData } from "@/src/hooks/useChainData";
 
 import styles from "./styles.module.css";
 
@@ -18,17 +18,10 @@ export function NetworkSelect() {
 
     const supportedChains = useChains();
     const selectedChainId = useChainId();
-    const { chain: connectedChain, isConnected } = useAccount();
+    const chainData = useChainData(selectedChainId);
+    const chainSupported = useIsChainSupported(selectedChainId);
 
     const { switchChain } = useSwitchChain();
-
-    const unsupported = useMemo(() => {
-        return (
-            isConnected &&
-            (!connectedChain ||
-                !supportedChains.some(({ id }) => id === selectedChainId))
-        );
-    }, [supportedChains, connectedChain, isConnected, selectedChainId]);
 
     useClickAway(rootRef, () => {
         setPickerOpen(false);
@@ -43,21 +36,19 @@ export function NetworkSelect() {
         setPickerOpen(false);
     }
 
-    const ChainIcon = CHAIN_DATA[selectedChainId as SupportedChain].icon;
-
     return (
         <div ref={rootRef}>
             <div
                 ref={setWrapper}
                 className={classNames(styles.networkWrapper, {
-                    [styles.wrong]: unsupported,
+                    [styles.wrong]: !chainSupported,
                 })}
                 onClick={handleToggleNetworkPicker}
             >
-                {unsupported ? (
-                    <ErrorIcon className={styles.icon} />
+                {chainSupported && chainData ? (
+                    <chainData.icon className={styles.icon} />
                 ) : (
-                    <ChainIcon className={styles.icon} />
+                    <ErrorIcon className={styles.icon} />
                 )}
             </div>
             <div

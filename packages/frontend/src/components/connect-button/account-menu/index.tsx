@@ -12,6 +12,9 @@ import { TickIcon } from "@/src/assets/tick-icon";
 import { CopyIcon } from "@/src/assets/copy-icon";
 import { ThemeSwitcher } from "../../theme-switcher";
 import { formatAmount } from "@/src/utils/format";
+import { useChainData } from "@/src/hooks/useChainData";
+import { useIsChainSupported } from "@/src/hooks/useIsChainSupported";
+import { ErrorIcon } from "@/src/assets/error-icon";
 
 import styles from "./styles.module.css";
 
@@ -51,6 +54,8 @@ export function AccountMenu({
     const [copied, setCopied] = useState(false);
 
     const rootRef = useRef(null);
+    const chainData = useChainData(chainId);
+    const chainSupported = useIsChainSupported(chainId);
     const { disconnect } = useDisconnect();
 
     useClickAway(rootRef, onClose);
@@ -119,11 +124,24 @@ export function AccountMenu({
                         </div>
                     </div>
                 </div>
-                <div className={styles.disconnectWrapper}>
-                    <Disconnect
-                        className={styles.disconnectIcon}
-                        onClick={handleDisconnect}
-                    />
+                <div className={styles.rightContent}>
+                    <div
+                        className={classNames(styles.iconWrapper, {
+                            [styles.unsupportedChain]: !chainSupported,
+                        })}
+                    >
+                        {chainSupported && chainData ? (
+                            <chainData.icon className={styles.icon} />
+                        ) : (
+                            <ErrorIcon className={styles.icon} />
+                        )}
+                    </div>
+                    <div className={styles.iconWrapper}>
+                        <Disconnect
+                            className={styles.icon}
+                            onClick={handleDisconnect}
+                        />
+                    </div>
                 </div>
             </div>
             <ThemeSwitcher />
