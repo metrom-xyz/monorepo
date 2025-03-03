@@ -22,7 +22,7 @@ interface UseCampaignsReturnValue {
  * @returns {UseCampaignsReturnValue} Object including the campaigns.
  */
 export function useCampaigns(
-    params: UseCampaignsParams,
+    params?: UseCampaignsParams,
 ): UseCampaignsReturnValue {
     const metromClient = useMetromClient();
 
