@@ -19,7 +19,7 @@
         bottom-0
         left-0
         right-0
-        bg-black dark:bg-zinc-500
+        bg-light-overlay dark:bg-dark-overlay
         opacity-0
         pointer-events-none
         transition-opacity
@@ -28,7 +28,7 @@
 }
 
 .overlayOpen {
-    @apply opacity-30 pointer-events-auto;
+    @apply opacity-100;
 }
 
 .accountMenuHorizontal {
