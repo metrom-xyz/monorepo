@@ -62,26 +62,35 @@ export function ConnectButton() {
                                     <AnimatePresence>
                                         {accountMenuOpen && (
                                             <motion.div
-                                                initial="hide"
-                                                animate="show"
-                                                exit="hide"
+                                                initial={{
+                                                    x: width > 640 ? 448 : 0,
+                                                    y: width > 640 ? 0 : "100%",
+                                                }}
+                                                animate={{
+                                                    x: width > 640 ? -448 : 0,
+                                                    y: 0,
+                                                }}
+                                                exit={{
+                                                    x: width > 640 ? 448 : 0,
+                                                    y: width > 640 ? 0 : "100%",
+                                                }}
                                                 transition={{
                                                     ease: "easeInOut",
                                                     duration: 0.2,
                                                 }}
-                                                variants={{
-                                                    hide: {
-                                                        transform:
-                                                            width > 640
-                                                                ? "translateX(448px)"
-                                                                : "translateY(448px)",
-                                                    },
-                                                    show: {
-                                                        transform:
-                                                            width > 640
-                                                                ? "translateX(-448px)"
-                                                                : "translateY(-448px)",
-                                                    },
+                                                drag={
+                                                    width > 640
+                                                        ? undefined
+                                                        : "y"
+                                                }
+                                                dragConstraints={{
+                                                    top: 0,
+                                                    bottom: 0,
+                                                }}
+                                                dragElastic={1}
+                                                onDragEnd={(_, info) => {
+                                                    if (info.offset.y > 50)
+                                                        handleAccountMenuClose();
                                                 }}
                                                 className={classNames({
                                                     [styles.accountMenuHorizontal]:

@@ -1,5 +1,14 @@
 @reference "../../../../app.css";
 
 .root {
-    @apply flex flex-col gap-2 overflow-y-auto scroll-pt-1 sm:pb-4 snap-y;
+    @apply flex
+        max-h-[352px]
+        sm:max-h-max
+        flex-col
+        gap-2
+        overflow-y-auto
+        scroll-pt-1
+        pb-9
+        sm:pb-4
+        snap-y;
 }

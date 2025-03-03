@@ -13,6 +13,7 @@ interface DrawerPickerProps {
     chains: readonly Chain[];
     value: number;
     onChange: (chainId: number) => void;
+    onClose: () => void;
 }
 
 export function DrawerPicker({
@@ -20,6 +21,7 @@ export function DrawerPicker({
     chains,
     value,
     onChange,
+    onClose,
 }: DrawerPickerProps) {
     function getOnChangeHandler(chainId: number) {
         return () => {
@@ -36,9 +38,16 @@ export function DrawerPicker({
                         animate={{ y: 0 }}
                         exit={{ y: "100%" }}
                         transition={{ ease: "easeInOut", duration: 0.2 }}
+                        drag="y"
+                        dragConstraints={{ top: 0, bottom: 0 }}
+                        dragElastic={1}
+                        onDragEnd={(_, info) => {
+                            if (info.offset.y > 50) onClose();
+                        }}
                         className={styles.wrapper}
                     >
                         <div className={styles.drawer}>
+                            <div className={styles.drawBar}></div>
                             <div className={styles.networksWrapper}>
                                 {chains.map((chain) => {
                                     const { icon: ChainIcon, name } =
