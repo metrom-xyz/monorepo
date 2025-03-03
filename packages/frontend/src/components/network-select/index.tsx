@@ -6,6 +6,7 @@ import { CHAIN_DATA } from "@/src/commons";
 import type { SupportedChain } from "@metrom-xyz/contracts";
 import { PopoverPicker } from "./popover-picker";
 import { DrawerPicker } from "./drawer-picker";
+import { useClickAway } from "react-use";
 
 import styles from "./styles.module.css";
 
@@ -28,6 +29,10 @@ export function NetworkSelect() {
                 !supportedChains.some(({ id }) => id === selectedChainId))
         );
     }, [supportedChains, connectedChain, isConnected, selectedChainId]);
+
+    useClickAway(rootRef, () => {
+        setPickerOpen(false);
+    });
 
     function handleToggleNetworkPicker() {
         setPickerOpen((prev) => !prev);
@@ -72,7 +77,6 @@ export function NetworkSelect() {
                 open={pickerOpen}
                 value={selectedChainId}
                 onChange={handleNetworkOnChange}
-                onClose={handleToggleNetworkPicker}
             />
         </div>
     );

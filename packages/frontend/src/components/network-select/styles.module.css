@@ -46,7 +46,7 @@
 }
 
 .overlayOpen {
-    @apply opacity-30 pointer-events-auto;
+    @apply opacity-30;
 }
 
 .active {
