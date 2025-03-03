@@ -2,7 +2,7 @@
 
 import { ConnectButton as RainbowConnectButton } from "@rainbow-me/rainbowkit";
 import { Typography, Button } from "@metrom-xyz/ui";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useWindowSize } from "react-use";
 import { useTranslations } from "next-intl";
 import { blo, type Address } from "blo";
@@ -19,6 +19,13 @@ export function ConnectButton() {
     const { width } = useWindowSize();
 
     const [accountMenuOpen, setAccountMenuOpen] = useState(false);
+
+    useEffect(() => {
+        const html = document.documentElement;
+
+        if (accountMenuOpen) html.classList.add("no-scroll");
+        else html.classList.remove("no-scroll");
+    }, [accountMenuOpen]);
 
     function handleAccountMenuOpen() {
         setAccountMenuOpen(true);
