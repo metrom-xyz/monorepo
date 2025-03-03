@@ -66,6 +66,27 @@ function Component() {
 
 ## Hooks
 
+### useCampaigns
+
+Hook for fetching all the valid campaigns that have been created in Metrom, with
+support for optional filtering.
+
+#### Import
+
+```tsx
+import { useCampaigns } from "@metrom-xyz/react";
+```
+
+#### Usage
+
+```tsx
+import { useCampaigns } from "@metrom-xyz/react";
+
+function App() {
+  const result = useCampaigns();
+}
+```
+
 ### useClaims
 
 Hook for fetching the active claims (still with rewards to claim) for an

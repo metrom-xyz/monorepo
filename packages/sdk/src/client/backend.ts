@@ -4,6 +4,7 @@ import { SupportedAmm, SupportedDex, SupportedLiquityV2 } from "../commons";
 import type {
     BackendCampaignResponse,
     BackendCampaignsResponse,
+    BackendCampaignStatus,
 } from "./types/campaigns";
 import type {
     BackendAmmPool,
@@ -84,6 +85,13 @@ const LIQUITY_V2_BRAND_NAME: Record<SupportedLiquityV2, string> = {
     [SupportedLiquityV2.Ebisu]: "Ebisu",
     [SupportedLiquityV2.Liquity]: "Liquity",
 };
+
+export interface FetchCampaignsParams {
+    status?: BackendCampaignStatus;
+    owner?: Address;
+    chainId?: SupportedChain;
+    dex?: SupportedDex;
+}
 
 export interface FetchCampaignParams {
     chainId: number;
@@ -176,8 +184,19 @@ enum Direction {
 export class MetromApiClient {
     constructor(public readonly baseUrl: string) {}
 
-    async fetchCampaigns(): Promise<Campaign[]> {
-        const response = await fetch(new URL("v1/campaigns", this.baseUrl));
+    async fetchCampaigns(params?: FetchCampaignsParams): Promise<Campaign[]> {
+        const url = new URL("v1/campaigns", this.baseUrl);
+
+        if (params)
+            for (const param in params) {
+                url.searchParams.set(
+                    param,
+                    params[param as keyof FetchCampaignsParams]!.toString(),
+                );
+            }
+
+        const response = await fetch(url);
+
         if (!response.ok)
             throw new Error(
                 `response not ok while fetching campaigns: ${await response.text()}`,
