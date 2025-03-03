@@ -1,6 +1,4 @@
 import { AnimatePresence, motion } from "motion/react";
-import { useRef } from "react";
-import { useClickAway, useWindowSize } from "react-use";
 import type { Chain } from "viem";
 import { CHAIN_DATA } from "@/src/commons";
 import { type SupportedChain } from "@metrom-xyz/contracts";
@@ -15,7 +13,6 @@ interface DrawerPickerProps {
     chains: readonly Chain[];
     value: number;
     onChange: (chainId: number) => void;
-    onClose: () => void;
 }
 
 export function DrawerPicker({
@@ -23,16 +20,7 @@ export function DrawerPicker({
     chains,
     value,
     onChange,
-    onClose,
 }: DrawerPickerProps) {
-    const pickerRef = useRef(null);
-
-    const { width } = useWindowSize();
-    useClickAway(pickerRef, () => {
-        if (width > 640) return;
-        onClose();
-    });
-
     function getOnChangeHandler(chainId: number) {
         return () => {
             onChange(chainId);
@@ -50,7 +38,7 @@ export function DrawerPicker({
                         transition={{ ease: "easeInOut", duration: 0.2 }}
                         className={styles.wrapper}
                     >
-                        <div ref={pickerRef} className={styles.drawer}>
+                        <div className={styles.drawer}>
                             <div className={styles.networksWrapper}>
                                 {chains.map((chain) => {
                                     const { icon: ChainIcon, name } =
