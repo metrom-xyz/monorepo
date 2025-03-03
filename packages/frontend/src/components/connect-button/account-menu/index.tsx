@@ -83,6 +83,7 @@ export function AccountMenu({
 
     return (
         <div className={classNames(styles.root, className)} ref={rootRef}>
+            <div className={styles.drawBar}></div>
             <div className={styles.headerWrapper}>
                 <div className={styles.accountContainer}>
                     <div className={styles.avatarWrapper}>

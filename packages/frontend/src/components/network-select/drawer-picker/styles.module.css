@@ -22,7 +22,12 @@
         w-full
         flex
         flex-col
+        gap-6
         p-6;
+}
+
+.drawBar {
+    @apply self-center bg-zinc-500 h-1 w-9 rounded-xl;
 }
 
 .networksWrapper {

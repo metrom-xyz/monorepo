@@ -45,11 +45,12 @@
     @apply sm:hidden
         flex
         z-20
-        h-4/5
+        max-h-[600px]
         fixed
         left-0
-        w-full
-        -bottom-[28rem];
+        right-0
+        bottom-0
+        w-full;
 }
 
 .walletWrapper {

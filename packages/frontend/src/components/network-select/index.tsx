@@ -27,7 +27,11 @@ export function NetworkSelect() {
         setPickerOpen(false);
     });
 
-    function handleToggleNetworkPicker() {
+    function handleNetworkPickerOnToggle() {
+        setPickerOpen((prev) => !prev);
+    }
+
+    function handleNetworkPickerOnClose() {
         setPickerOpen((prev) => !prev);
     }
 
@@ -43,7 +47,7 @@ export function NetworkSelect() {
                 className={classNames(styles.networkWrapper, {
                     [styles.wrong]: !chainSupported,
                 })}
-                onClick={handleToggleNetworkPicker}
+                onClick={handleNetworkPickerOnToggle}
             >
                 {chainSupported && chainData ? (
                     <chainData.icon className={styles.icon} />
@@ -68,6 +72,7 @@ export function NetworkSelect() {
                 open={pickerOpen}
                 value={selectedChainId}
                 onChange={handleNetworkOnChange}
+                onClose={handleNetworkPickerOnClose}
             />
         </div>
     );
