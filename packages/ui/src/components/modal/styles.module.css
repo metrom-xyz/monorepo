@@ -10,6 +10,5 @@
         flex
         justify-center
         items-center
-        backdrop-blur
-        bg-dark-bg/65 dark:bg-zinc-800/65;
+        bg-light-overlay dark:bg-dark-overlay;
 }

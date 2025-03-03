@@ -51,11 +51,13 @@
     --color-light-surface: theme(colors.white);
     --color-light-surface-2: theme(colors.zinc.100);
     --color-light-text: theme(colors.black);
+    --color-light-overlay: oklch(0 0 0 / 0.3);
 
     --color-dark-bg: oklch(0.155 0.005 285.823);
     --color-dark-surface: #202024;
     --color-dark-surface-2: theme(colors.zinc.800);
     --color-dark-text: theme(colors.slate.300);
+    --color-dark-overlay: oklch(0 0 0 / 0.5);
 
     --color-neutral-gray: #9ca3af;
 
