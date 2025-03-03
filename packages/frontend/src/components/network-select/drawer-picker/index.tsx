@@ -4,6 +4,7 @@ import { CHAIN_DATA } from "@/src/commons";
 import { type SupportedChain } from "@metrom-xyz/contracts";
 import classNames from "classnames";
 import { Typography } from "@metrom-xyz/ui";
+import { useEffect } from "react";
 
 import styles from "./styles.module.css";
 import commonStyles from "../styles.module.css";
@@ -23,6 +24,13 @@ export function DrawerPicker({
     onChange,
     onClose,
 }: DrawerPickerProps) {
+    useEffect(() => {
+        const html = document.documentElement;
+
+        if (open) html.classList.add("no-scroll");
+        else html.classList.remove("no-scroll");
+    }, [open]);
+
     function getOnChangeHandler(chainId: number) {
         return () => {
             onChange(chainId);
