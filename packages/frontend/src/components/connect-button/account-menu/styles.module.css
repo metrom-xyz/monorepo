@@ -75,7 +75,13 @@
 }
 
 .iconWrapper {
-    @apply p-2 rounded-lg bg-zinc-200 dark:bg-zinc-800;
+    @apply p-2
+        rounded-lg
+        bg-zinc-200
+        dark:bg-zinc-800
+        transition-colors
+        duration-200
+        ease-in-out;
 }
 
 .unsupportedChain {
