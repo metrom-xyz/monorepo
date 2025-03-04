@@ -7,6 +7,7 @@ import { DrawerPicker } from "./drawer-picker";
 import { useClickAway } from "react-use";
 import { useIsChainSupported } from "@/src/hooks/useIsChainSupported";
 import { useChainData } from "@/src/hooks/useChainData";
+import { AnimatePresence, motion } from "motion/react";
 
 import styles from "./styles.module.css";
 
@@ -41,39 +42,46 @@ export function NetworkSelect() {
     }
 
     return (
-        <div ref={rootRef}>
-            <div
-                ref={setWrapper}
-                className={classNames(styles.networkWrapper, {
-                    [styles.wrong]: !chainSupported,
-                })}
-                onClick={handleNetworkPickerOnToggle}
-            >
-                {chainSupported && chainData ? (
-                    <chainData.icon className={styles.icon} />
-                ) : (
-                    <ErrorIcon className={styles.icon} />
+        <>
+            <AnimatePresence>
+                {pickerOpen && (
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        className={classNames(styles.overlay)}
+                    />
                 )}
+            </AnimatePresence>
+            <div ref={rootRef}>
+                <div
+                    ref={setWrapper}
+                    className={classNames(styles.networkWrapper, {
+                        [styles.wrong]: !chainSupported,
+                    })}
+                    onClick={handleNetworkPickerOnToggle}
+                >
+                    {!chainSupported ? (
+                        <ErrorIcon className={styles.icon} />
+                    ) : chainData ? (
+                        <chainData.icon className={styles.icon} />
+                    ) : null}
+                </div>
+                <PopoverPicker
+                    anchor={wrapper}
+                    chains={supportedChains}
+                    open={pickerOpen}
+                    value={selectedChainId}
+                    onChange={handleNetworkOnChange}
+                />
+                <DrawerPicker
+                    chains={supportedChains}
+                    open={pickerOpen}
+                    value={selectedChainId}
+                    onChange={handleNetworkOnChange}
+                    onClose={handleNetworkPickerOnClose}
+                />
             </div>
-            <div
-                className={classNames(styles.overlay, {
-                    [styles.overlayOpen]: pickerOpen,
-                })}
-            />
-            <PopoverPicker
-                anchor={wrapper}
-                chains={supportedChains}
-                open={pickerOpen}
-                value={selectedChainId}
-                onChange={handleNetworkOnChange}
-            />
-            <DrawerPicker
-                chains={supportedChains}
-                open={pickerOpen}
-                value={selectedChainId}
-                onChange={handleNetworkOnChange}
-                onClose={handleNetworkPickerOnClose}
-            />
-        </div>
+        </>
     );
 }

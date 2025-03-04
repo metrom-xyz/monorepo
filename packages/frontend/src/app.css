@@ -10,7 +10,3 @@ html.no-transition *::after {
     transition: none !important;
     animation: none !important;
 }
-
-html.no-scroll {
-    overflow-y: hidden;
-}
