@@ -54,7 +54,7 @@ export function DrawerPicker({
                         dragConstraints={{ top: 0, bottom: 0 }}
                         dragElastic={1}
                         onDragEnd={(_, info) => {
-                            if (info.offset.y > 50) onClose();
+                            if (info.offset.y > 100) onClose();
                         }}
                         className={styles.wrapper}
                     >

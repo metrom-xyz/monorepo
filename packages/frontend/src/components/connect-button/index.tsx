@@ -60,12 +60,18 @@ export function ConnectButton() {
                                 </Button>
                             ) : (
                                 <>
-                                    <div
-                                        className={classNames(styles.overlay, {
-                                            [styles.overlayOpen]:
-                                                accountMenuOpen,
-                                        })}
-                                    />
+                                    <AnimatePresence>
+                                        {accountMenuOpen && (
+                                            <motion.div
+                                                initial={{ opacity: 0 }}
+                                                animate={{ opacity: 1 }}
+                                                exit={{ opacity: 0 }}
+                                                className={classNames(
+                                                    styles.overlay,
+                                                )}
+                                            />
+                                        )}
+                                    </AnimatePresence>
                                     <AnimatePresence>
                                         {accountMenuOpen && (
                                             <motion.div
@@ -96,7 +102,7 @@ export function ConnectButton() {
                                                 }}
                                                 dragElastic={1}
                                                 onDragEnd={(_, info) => {
-                                                    if (info.offset.y > 50)
+                                                    if (info.offset.y > 100)
                                                         handleAccountMenuClose();
                                                 }}
                                                 className={classNames({
