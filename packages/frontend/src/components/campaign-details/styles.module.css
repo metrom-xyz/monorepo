@@ -1,7 +1,7 @@
 @reference "../../app.css";
 
 .root {
-    @apply w-full flex flex-col items-center px-2 sm:px-0;
+    @apply w-full flex flex-col items-center px-4 sm:px-0;
 }
 
 .headerWrapper {

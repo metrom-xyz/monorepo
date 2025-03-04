@@ -3,22 +3,24 @@
 .root {
     @apply w-full
         flex
-        flex-col
+        flex-row-reverse
         sm:flex-row
-        justify-between
+        justify-center
+        sm:justify-between
         items-center
-        gap-5
+        gap-10
         py-10
-        px-2
+        px-4
         sm:px-0
-        my-10
+        mt-10
+        mb-[63px]
         sm:my-0
         sm:mt-10
         max-w-screen-xl;
 }
 
 .leftContent {
-    @apply flex flex-col gap-11;
+    @apply flex flex-col-reverse sm:flex-col gap-6 sm:gap-11;
 }
 
 .logo {
@@ -34,5 +36,5 @@
 }
 
 .support {
-    @apply flex flex-col items-center sm:items-start gap-3;
+    @apply flex flex-col items-start gap-3;
 }

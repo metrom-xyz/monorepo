@@ -4,7 +4,7 @@
     @apply flex
         flex-col
         gap-5
-        px-2
+        px-4
         max-w-[410px]
         w-full;
 }
