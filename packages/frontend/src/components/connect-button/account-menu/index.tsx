@@ -15,6 +15,7 @@ import { formatAmount } from "@/src/utils/format";
 import { useChainData } from "@/src/hooks/useChainData";
 import { useIsChainSupported } from "@/src/hooks/useIsChainSupported";
 import { ErrorIcon } from "@/src/assets/error-icon";
+import { RemoveScroll } from "react-remove-scroll";
 
 import styles from "./styles.module.css";
 
@@ -82,7 +83,10 @@ export function AccountMenu({
     };
 
     return (
-        <div className={classNames(styles.root, className)} ref={rootRef}>
+        <RemoveScroll
+            ref={rootRef}
+            className={classNames(styles.root, className)}
+        >
             <div className={styles.drawBar}></div>
             <div className={styles.headerWrapper}>
                 <div className={styles.accountContainer}>
@@ -131,11 +135,11 @@ export function AccountMenu({
                             [styles.unsupportedChain]: !chainSupported,
                         })}
                     >
-                        {chainSupported && chainData ? (
-                            <chainData.icon className={styles.icon} />
-                        ) : (
+                        {!chainSupported ? (
                             <ErrorIcon className={styles.icon} />
-                        )}
+                        ) : chainData ? (
+                            <chainData.icon className={styles.icon} />
+                        ) : null}
                     </div>
                     <div className={styles.iconWrapper}>
                         <Disconnect
@@ -166,6 +170,6 @@ export function AccountMenu({
                 </div> */}
             </div>
             {tab === Tab.Activity && <Activities chainId={chainId} />}
-        </div>
+        </RemoveScroll>
     );
 }

@@ -4,8 +4,7 @@ import { CHAIN_DATA } from "@/src/commons";
 import { type SupportedChain } from "@metrom-xyz/contracts";
 import classNames from "classnames";
 import { Typography } from "@metrom-xyz/ui";
-import { useEffect } from "react";
-import { useWindowSize } from "react-use";
+import { RemoveScroll } from "react-remove-scroll";
 
 import styles from "./styles.module.css";
 import commonStyles from "../styles.module.css";
@@ -25,16 +24,6 @@ export function DrawerPicker({
     onChange,
     onClose,
 }: DrawerPickerProps) {
-    const { width } = useWindowSize();
-
-    useEffect(() => {
-        if (width > 640) return;
-        const html = document.documentElement;
-
-        if (open) html.classList.add("no-scroll");
-        else html.classList.remove("no-scroll");
-    }, [width, open]);
-
     function getOnChangeHandler(chainId: number) {
         return () => {
             onChange(chainId);
@@ -42,7 +31,7 @@ export function DrawerPicker({
     }
 
     return (
-        <div className={styles.root}>
+        <RemoveScroll enabled={open} className={styles.root}>
             <AnimatePresence>
                 {open && (
                     <motion.div
@@ -90,6 +79,6 @@ export function DrawerPicker({
                     </motion.div>
                 )}
             </AnimatePresence>
-        </div>
+        </RemoveScroll>
     );
 }

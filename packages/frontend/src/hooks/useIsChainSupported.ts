@@ -6,8 +6,9 @@ export function useIsChainSupported(chainId?: number) {
     const { chain: connectedChain, isConnected } = useAccount();
 
     return useMemo(() => {
+        if (!isConnected) return true;
+
         return (
-            isConnected &&
             !!connectedChain &&
             !!supportedChains.some(({ id }) => id === chainId)
         );
