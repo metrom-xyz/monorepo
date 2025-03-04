@@ -3,8 +3,7 @@
 .root {
     @apply w-full
         flex
-        flex-row-reverse
-        sm:flex-row
+        flex-row
         justify-center
         sm:justify-between
         items-center
