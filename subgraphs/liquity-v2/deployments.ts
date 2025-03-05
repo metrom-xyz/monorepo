@@ -11,8 +11,8 @@ export const DEPLOYMENTS: {
     sepolia: {
         liquity: {
             DebtToken: {
-                address: "0x620ce1130f7c63457784cdfa31cfccbfb6be5029",
-                startBlock: 7129282,
+                address: "0xb01D32c05f4aA066EeF2bFd4D461833fddD56D0A",
+                startBlock: 7532680,
             },
         },
         ebisu: {
