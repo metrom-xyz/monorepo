@@ -11,23 +11,16 @@ interface ClaimWithRemaining extends Claim {
     remaining: OnChainAmount;
 }
 
-interface UseClaimsParams {
+export interface UseClaimsParams {
     address?: Address;
 }
 
-interface UseClaimsReturnValue {
+export interface UseClaimsReturnValue {
     loading: boolean;
     claims: ClaimWithRemaining[];
 }
 
-/**
- * Fetches the available claims for an account.
- *
- * @param {Object} param - The parameters object.
- * @param {string} param.address - The wallet address of the receiver account.
- *
- * @returns {UseClaimsReturnValue} Object including the available claims for the provided account.
- */
+/** https://docs.metrom.xyz/react-library/use-claims */
 export function useClaims({ address }: UseClaimsParams): UseClaimsReturnValue {
     const [claims, setClaims] = useState<ClaimWithRemaining[]>([]);
     const metromClient = useMetromClient();
