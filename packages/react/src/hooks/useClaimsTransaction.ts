@@ -9,13 +9,13 @@ import {
 } from "wagmi/actions";
 import { Claim } from "@metrom-xyz/sdk";
 
-interface UseClaimsTransactionParams {
+export interface UseClaimsTransactionParams {
     chainId: SupportedChain;
     claims: Claim[];
     address?: Address;
 }
 
-interface UseClaimsTransactionReturnValue {
+export interface UseClaimsTransactionReturnValue {
     loading: boolean;
     error: SimulateContractErrorType | null;
     transaction?: SimulateContractReturnType<
@@ -33,17 +33,7 @@ interface UseClaimsTransactionReturnValue {
     >;
 }
 
-/**
- * Simulates and validates contract interactions to claim the specified rewards for an account on a given chain id.
- *
- * @param {Object} param - The parameters object.
- * @param {SupportedChain} param.chainId - The chain id.
- * @param {SupportedChain} param.claims - The claims fetched using the useClaims hook.
- * @param {string} param.address - The wallet address of the receiver account.
- *
- * @returns {UseClaimsTransactionReturnValue} Object including the simulation result, that can be used to submit the transaction,
- * using the useWriteContract hook from wagmi.
- */
+/** https://docs.metrom.xyz/react-library/use-claims-transaction */
 export function useClaimsTransaction({
     chainId,
     claims,
