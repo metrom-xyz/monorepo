@@ -63,3 +63,7 @@ function Component() {
   return <div>...</div>;
 }
 ```
+
+## Documentation
+
+For documentation and guides, visit [docs.metrom.xyz](https://docs.metrom.xyz/).
