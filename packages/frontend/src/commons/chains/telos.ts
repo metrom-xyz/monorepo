@@ -7,6 +7,7 @@ import { telos } from "viem/chains";
 import { DepositUrlType, ProtocolType } from "@/src/types/common";
 
 export const telosData: ChainData = {
+    testnet: false,
     name: telos.name,
     metromContract: ADDRESS[SupportedChain.Telos],
     blockExplorers: {

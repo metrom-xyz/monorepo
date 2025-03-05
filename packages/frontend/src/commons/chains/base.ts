@@ -10,6 +10,7 @@ import { DepositUrlType, ProtocolType } from "@/src/types/common";
 import { ThirdTradeLogo } from "@/src/assets/logos/dexes/thirdtrade";
 
 export const baseData: ChainData = {
+    testnet: false,
     name: base.name,
     metromContract: ADDRESS[SupportedChain.Base],
     blockExplorers: base.blockExplorers,
