@@ -41,6 +41,12 @@ export interface BackendPointDistributables {
     amount: string;
 }
 
+export enum BackendCampaignStatus {
+    Active = "active",
+    Upcoming = "upcoming",
+    Expired = "expired",
+}
+
 export interface BackendCampaign {
     chainId: number;
     id: Hex;
