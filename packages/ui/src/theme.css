@@ -18,9 +18,18 @@
     @apply hover:bg-zinc-200 hover:dark:bg-zinc-700;
 }
 
+@utility theme-surface-2-hover {
+    @apply hover:bg-zinc-250 hover:dark:bg-zinc-750;
+}
+
 @utility theme-surface-active {
     @apply bg-zinc-200 dark:bg-zinc-700;
 }
+
+@utility theme-surface-2-active {
+    @apply bg-zinc-250 dark:bg-zinc-750;
+}
+
 
 @utility theme-text {
     @apply text-light-text dark:text-dark-text;
@@ -47,6 +56,9 @@
     --color-black: #000000;
     --color-white: #ffffff;
 
+    --color-zinc-250: #e2e2e2;
+    --color-zinc-750: #5a5a5a;
+
     --color-light-bg: theme(colors.gray.100);
     --color-light-surface: theme(colors.white);
     --color-light-surface-2: theme(colors.zinc.100);
@@ -55,8 +67,8 @@
 
     --color-dark-bg: oklch(0.155 0.005 285.823);
     --color-dark-surface: #202024;
-    --color-dark-surface-2: theme(colors.zinc.800);
-    --color-dark-text: theme(colors.slate.300);
+    --color-dark-surface-2: theme(colors.zinc.700);
+    --color-dark-text: theme(colors.zinc.300);
     --color-dark-overlay: oklch(0 0 0 / 0.5);
 
     --color-neutral-gray: #9ca3af;
