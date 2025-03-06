@@ -21,7 +21,7 @@ built by running:
 pnpm build
 ```
 
-### Setting up unvironment uariables
+### Setting up environment variables
 
 After installing dependencies, configure the necessary environment variables to
 run the application locally. To do this, create a new `.env` file and copy the
