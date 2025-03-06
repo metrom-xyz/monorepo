@@ -5,6 +5,7 @@ import { type SupportedChain } from "@metrom-xyz/contracts";
 import classNames from "classnames";
 import { Typography } from "@metrom-xyz/ui";
 import { RemoveScroll } from "react-remove-scroll";
+import { useWindowSize } from "react-use";
 
 import styles from "./styles.module.css";
 import commonStyles from "../styles.module.css";
@@ -24,6 +25,8 @@ export function DrawerPicker({
     onChange,
     onClose,
 }: DrawerPickerProps) {
+    const { width } = useWindowSize();
+
     function getOnChangeHandler(chainId: number) {
         return () => {
             onChange(chainId);
@@ -31,7 +34,7 @@ export function DrawerPicker({
     }
 
     return (
-        <RemoveScroll enabled={open} className={styles.root}>
+        <RemoveScroll enabled={open && width < 640} className={styles.root}>
             <AnimatePresence>
                 {open && (
                     <motion.div
