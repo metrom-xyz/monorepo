@@ -305,7 +305,6 @@ export function KpiSimulationChart({
         lowerUsdTarget,
         minimumPayoutPercentage,
         poolUsdTvl,
-        campaignDurationSeconds,
         sortedSignificantUsdTvls,
         totalRewardsUsd,
         upperUsdTarget,
