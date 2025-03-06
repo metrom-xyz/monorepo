@@ -13,7 +13,7 @@
         transition-colors
         duration-200
         ease-in-out
-        bg-zinc-100 dark:bg-zinc-800
+        theme-surface-2
         rounded-lg;
 }
 
@@ -33,23 +33,6 @@
 
 .rewardAmount {
     @apply w-28;
-}
-
-.rewardToken {
-    @apply flex
-        gap-1
-        items-center
-        justify-between
-        rounded-md
-        bg-zinc-100 dark:bg-zinc-800
-        pl-2.5
-        pr-1
-        py-1.5
-        hover:bg-white hover:dark:bg-zinc-700
-        hover:cursor-pointer
-        transition-colors
-        duration-200
-        ease-in-out;
 }
 
 .rewardTokenWrapper {
@@ -84,7 +67,7 @@
 .rewardSkeleton {
     @apply h-[70px]
         w-full 
-        bg-zinc-100 dark:bg-zinc-800
+        theme-surface-2
         rounded-lg
         flex
         items-center

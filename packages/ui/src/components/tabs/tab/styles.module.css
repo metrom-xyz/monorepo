@@ -15,7 +15,7 @@
 }
 
 .active {
-    @apply bg-white dark:bg-zinc-700 opacity-100;
+    @apply theme-surface-2-active opacity-100;
 }
 
 .xs {
