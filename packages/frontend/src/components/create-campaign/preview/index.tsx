@@ -313,7 +313,8 @@ export function CampaignPreview({
                                         size="lg"
                                         apr={getCampaignPreviewApr(
                                             payload,
-                                            liquidityInRange,
+                                            // FIXME: add back once API is fixed
+                                            // liquidityInRange,
                                         )}
                                         kpi={!!payload.kpiSpecification}
                                     />
