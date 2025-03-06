@@ -178,7 +178,7 @@
                         "alreadyRestricted": "Address already restricted"
                     },
                     "warnings": {
-                        "notApplied": "Changes not applied"
+                        "notApplied": "Not applied"
                     },
                     "blocks": "Blocks {count, plural, =0 {} =1 {# address} other {# adresses}}",
                     "allows": "Allows {count, plural, =0 {} =1 {# address} other {# adresses}}",
@@ -218,7 +218,7 @@
                         "malformed": "Wrong bound values"
                     },
                     "warnings": {
-                        "notApplied": "Changes not applied"
+                        "notApplied": "Not applied"
                     },
                     "simulation": {
                         "title": "KPI simulation",
@@ -290,7 +290,7 @@
                         "rangeTooWide": "Range too wide"
                     },
                     "warnings": {
-                        "notApplied": "Changes not applied"
+                        "notApplied": "Not applied"
                     }
                 }
             }
