@@ -1,7 +1,7 @@
 @reference "../../theme.css";
 
 .root {
-    @apply bg-zinc-200 dark:bg-zinc-800 border-none;
+    @apply bg-zinc-200 dark:bg-zinc-700 border-none;
 }
 
 .root:global(.rc-switch-checked) {
@@ -12,16 +12,16 @@
     @apply bg-zinc-100 dark:bg-zinc-700 border-none;
 }
 
-.root:global(.rc-switch-disabled::after) {
-    @apply bg-zinc-200 dark:bg-zinc-800;
+.root:global(.rc-switch-disabled) {
+    @apply after:bg-zinc-200 dark:after:bg-zinc-800;
 }
 
 .root:global(.rc-switch-unchecked) {
     @apply border-none;
 }
 
-.root:global(.rc-switch::after) {
-    @apply transform-none animate-none;
+.root:global(.rc-switch) {
+    @apply after:transform-none after:animate-none dark:after:bg-zinc-300;
 }
 
 .root:global(.rc-switch:focus) {

@@ -2,6 +2,7 @@
 
 import { type ReactNode, useEffect, useRef } from "react";
 import { AnimatePresence, easeInOut, motion } from "motion/react";
+import { RemoveScroll } from "react-remove-scroll";
 
 import styles from "./styles.module.css";
 
@@ -38,21 +39,23 @@ export function Modal({ open, onDismiss, children, ...rest }: ModalProps) {
     return (
         <AnimatePresence>
             {open && (
-                <motion.div
-                    initial="closed"
-                    animate="open"
-                    exit="closed"
-                    variants={{
-                        open: { opacity: 1 },
-                        closed: { opacity: 0 },
-                    }}
-                    transition={{ ease: easeInOut }}
-                    className={`root ${styles.root}`}
-                    ref={overlayRef}
-                    {...rest}
-                >
-                    {children}
-                </motion.div>
+                <RemoveScroll>
+                    <motion.div
+                        initial="closed"
+                        animate="open"
+                        exit="closed"
+                        variants={{
+                            open: { opacity: 1 },
+                            closed: { opacity: 0 },
+                        }}
+                        transition={{ ease: easeInOut }}
+                        className={`root ${styles.root}`}
+                        ref={overlayRef}
+                        {...rest}
+                    >
+                        {children}
+                    </motion.div>
+                </RemoveScroll>
             )}
         </AnimatePresence>
     );

@@ -44,8 +44,8 @@
         h-6
         rounded-md
         px-2.5
-        bg-zinc-100 dark:bg-zinc-800
-        hover:bg-zinc-200 hover:dark:bg-zinc-700
+        theme-surface-2
+        theme-surface-2-hover
         hover:cursor-pointer
         transition-colors
         duration-200

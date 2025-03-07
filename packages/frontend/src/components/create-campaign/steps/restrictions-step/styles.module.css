@@ -38,7 +38,7 @@
 }
 
 .dotWrapper {
-    @apply flex items-center justify-center  bg-zinc-100 dark:bg-zinc-900 h-5 w-5 rounded-full;
+    @apply flex items-center justify-center bg-zinc-100 dark:bg-zinc-900 h-5 w-5 rounded-full;
 }
 
 .tab {

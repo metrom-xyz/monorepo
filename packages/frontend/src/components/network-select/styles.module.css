@@ -22,7 +22,7 @@
         items-center
         justify-center
         cursor-pointer
-        hover:bg-zinc-200 hover:dark:bg-zinc-700
+        theme-surface-hover
         transition-colors
         duration-200
         ease-in-out;
