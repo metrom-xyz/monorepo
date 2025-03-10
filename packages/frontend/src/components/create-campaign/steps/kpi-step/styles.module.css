@@ -33,6 +33,10 @@
     @apply flex flex-col gap-1.5;
 }
 
+.simulationText {
+    @apply dark:text-zinc-200;
+}
+
 .chartWrapper {
-    @apply flex flex-col;
+    @apply flex flex-col px-2 pt-3 rounded-md theme-surface-2;
 }

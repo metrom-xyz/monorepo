@@ -53,6 +53,10 @@
     @apply w-full flex gap-1;
 }
 
+.chartWrapper {
+    @apply flex flex-col px-2 pt-3 rounded-md theme-surface-2;
+}
+
 .applyButton {
     @apply w-full;
 }

@@ -86,6 +86,7 @@ export const StepNumberInput = forwardRef<
             <div className={styles.wrapper}>
                 <Button
                     variant="secondary"
+                    border={false}
                     size="xs"
                     icon={Minus}
                     disabled={disabled || loading}
@@ -117,6 +118,7 @@ export const StepNumberInput = forwardRef<
                 />
                 <Button
                     variant="secondary"
+                    border={false}
                     size="xs"
                     icon={Plus}
                     disabled={disabled || loading}
