@@ -1,0 +1,108 @@
+specVersion: 1.0.0
+indexerHints:
+  prune: never
+schema:
+  file: ./schema.graphql
+{{#grafting}}
+features:
+  - grafting
+graft:
+  base: {{base}}
+  block: {{block}} 
+{{/grafting}}
+dataSources:
+  - kind: ethereum
+    name: MainRegistry
+    network: {{network}}
+    source:
+      address: "{{MainRegistryAddress}}"
+      startBlock: {{MainRegistryStartBlock}}
+      abi: MainRegistry
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      file: ./src/mappings/registry.ts
+      entities:
+        - Pool
+      abis:
+        - name: MainRegistry
+          file: ./abis/MainRegistry.json
+        - name: Pool
+          file: ./abis/Pool.json
+        - name: Erc20
+          file: ./abis/Erc20.json
+        - name: Erc20BytesName
+          file: ./abis/Erc20BytesName.json
+        - name: Erc20BytesSymbol
+          file: ./abis/Erc20BytesSymbol.json
+      eventHandlers:
+        - event: PoolAdded(indexed address,bytes)
+          handler: handlePoolAdded
+        - event: PoolRemoved(indexed address)
+          handler: handlePoolRemoved
+  - name: GaugeController
+    kind: ethereum/contract
+    network: {{network}}
+    source:
+      abi: GaugeController
+      address: "{{GaugeControllerAddress}}"
+      startBlock: {{GaugeControllerStartBlock}}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      abis:
+        - name: GaugeController
+          file: ./abis/GaugeController.json
+        - name: MainRegistry
+          file: ./abis/MainRegistry.json
+        - name: Pool
+          file: ./abis/Pool.json
+        - name: Gauge
+          file: ./abis/Gauge.json
+        - name: Erc20
+          file: ./abis/Erc20.json
+        - name: Erc20BytesName
+          file: ./abis/Erc20BytesName.json
+        - name: Erc20BytesSymbol
+          file: ./abis/Erc20BytesSymbol.json
+      file: ./src/mappings/gauge-controller.ts
+      entities:
+        - Account
+      eventHandlers:
+        - event: NewGauge(address,int128,uint256)
+          handler: handleNewGauge
+templates:
+  - name: Pool
+    kind: ethereum
+    network: {{network}}
+    source:
+      abi: Pool
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - Pool
+        - Position
+        - LiquidityChange
+      abis:
+        - name: Pool
+          file: ./abis/Pool.json
+        - name: MainRegistry
+          file: ./abis/MainRegistry.json
+      file: ./src/mappings/pool.ts
+      eventHandlers:
+        - event: AddLiquidity(indexed address,uint256[2],uint256[2],uint256,uint256)
+          handler: handleAddLiquidity
+        - event: RemoveLiquidity(indexed address,uint256[2],uint256[2],uint256)
+          handler: handleRemoveLiquidity
+        - event: RemoveLiquidityImbalance(indexed address,uint256[2],uint256[2],uint256,uint256)
+          handler: handleRemoveLiquidityImbalance
+        - event: RemoveLiquidityOne(indexed address,uint256,uint256)
+          handler: handleRemoveLiquidityOne
+        - event: TokenExchange(indexed address,int128,uint256,int128,uint256)
+          handler: handleTokenExchange
+        - event: TokenExchangeUnderlying(indexed address,int128,uint256,int128,uint256)
+          handler: handleTokenExchangeUnderlying

@@ -5,11 +5,6 @@ type Token @entity(immutable: true) {
     decimals: BigInt!
 }
 
-type PoolToken @entity {
-    id: Bytes!
-    data: Token!
-}
-
 type Pool @entity {
     id: Bytes!
     token0: Token!
