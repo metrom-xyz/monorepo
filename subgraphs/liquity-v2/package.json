@@ -13,21 +13,21 @@
     },
     "dependencies": {
         "@0xgraph/cli": "^0.2.1",
-        "@graphprotocol/graph-cli": "^0.95.0",
-        "@graphprotocol/graph-ts": "0.37.0"
+        "@graphprotocol/graph-cli": "^0.96.0",
+        "@graphprotocol/graph-ts": "^0.36.0"
     },
     "devDependencies": {
-        "@eslint/js": "^9.20.0",
+        "@eslint/js": "^9.22.0",
         "@types/eslint__js": "^8.42.3",
         "@types/mustache": "^4.2.5",
-        "@types/node": "^22.13.1",
-        "eslint": "^9.20.0",
-        "eslint-config-prettier": "^10.0.1",
+        "@types/node": "^22.13.10",
+        "eslint": "^9.22.0",
+        "eslint-config-prettier": "^10.1.1",
         "eslint-plugin-prettier": "^5.2.3",
         "mustache": "^4.2.0",
-        "prettier": "^3.5.0",
-        "tsx": "^4.19.2",
-        "typescript": "^5.7.3",
-        "typescript-eslint": "^8.24.0"
+        "prettier": "^3.5.3",
+        "tsx": "^4.19.3",
+        "typescript": "^5.8.2",
+        "typescript-eslint": "^8.26.0"
     }
 }
