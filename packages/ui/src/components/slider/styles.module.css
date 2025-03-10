@@ -1,14 +1,21 @@
 @reference "../../theme.css";
 
 .wrapper {
-    @apply w-full flex flex-col gap-0.5 items-center;
+    @apply w-full
+        px-2
+        py-3
+        rounded-md
+        theme-surface-2
+        flex
+        flex-col
+        gap-0.5
+        items-center;
 }
 
 /* TODO: improve styles */
 .slider {
     @apply w-full
         h-5
-        theme-surface-2
         accent-black dark:accent-zinc-400
         rounded-2xl
         cursor-pointer;

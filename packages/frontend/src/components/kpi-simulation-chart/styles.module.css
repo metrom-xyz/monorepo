@@ -21,7 +21,7 @@
         justify-center
         items-center
         rounded-2xl
-        theme-surface
+        theme-surface-2
         transition-colors
         duration-200
         ease-in-out;
@@ -41,7 +41,7 @@
         text-xs
         leading-none
         font-medium
-        fill-black dark:fill-zinc-400
+        fill-black dark:fill-zinc-200
         transition-colors
         duration-200
         ease-in-out;
@@ -52,7 +52,7 @@
 }
 
 .notDistributingArea path {
-    @apply fill-[#d1d5db] dark:fill-zinc-700;
+    @apply fill-[#d1d5db] dark:fill-zinc-600;
 }
 
 .distributingArea path {
@@ -60,13 +60,13 @@
 }
 
 .xAxis > line {
-    @apply stroke-1 stroke-zinc-400 dark:stroke-zinc-200 transition-colors duration-200 ease-in-out;
+    @apply stroke-1 stroke-zinc-400 dark:stroke-white transition-colors duration-200 ease-in-out;
 }
 
 .referenceLine line {
     @apply stroke-1
         stroke-black
-        dark:stroke-zinc-400
+        dark:stroke-white
         font-sans
         uppercase
         text-xs

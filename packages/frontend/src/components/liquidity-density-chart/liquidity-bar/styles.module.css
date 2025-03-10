@@ -10,7 +10,7 @@
 }
 
 .bar {
-    @apply fill-[#d1d5db] dark:fill-zinc-700;
+    @apply fill-[#d1d5db] dark:fill-zinc-600;
 }
 
 .bar.inRange {

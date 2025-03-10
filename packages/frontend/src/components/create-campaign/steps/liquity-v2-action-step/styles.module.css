@@ -28,7 +28,7 @@
 }
 
 .active > .actionIconWrapper {
-    @apply bg-zinc-100 dark:bg-zinc-900;
+    @apply bg-zinc-100 dark:bg-zinc-800;
 }
 
 .textWrapper {
@@ -42,7 +42,7 @@
         items-center
         justify-center
         rounded-lg
-        bg-zinc-200 dark:bg-zinc-700
+        bg-zinc-200 dark:bg-zinc-800
         transition-colors
         duration-200
         ease-in-out
@@ -50,7 +50,7 @@
 }
 
 .action:hover .actionIconWrapper {
-    @apply bg-zinc-100 dark:bg-zinc-900;
+    @apply bg-zinc-100 dark:bg-zinc-800;
 }
 
 .actionRowSelected {

@@ -289,10 +289,16 @@ export function KpiStep({
                                 weight="medium"
                                 light
                                 size="xs"
+                                className={styles.simulationText}
                             >
                                 {t("simulation.title")}
                             </Typography>
-                            <Typography weight="medium" light size="xs">
+                            <Typography
+                                weight="medium"
+                                light
+                                size="xs"
+                                className={styles.simulationText}
+                            >
                                 {t("simulation.description")}
                             </Typography>
                         </div>

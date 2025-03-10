@@ -19,11 +19,13 @@ input[type="number"] {
     @apply w-8
         h-8
         rounded-md
-        bg-white dark:bg-zinc-900;
+        theme-surface
+        theme-surface-hover
+        dark:hover:bg-zinc-750;
 }
 
 .icon {
-    @apply theme-text;
+    @apply theme-text dark:text-zinc-200;
 }
 
 .stepDownButton {

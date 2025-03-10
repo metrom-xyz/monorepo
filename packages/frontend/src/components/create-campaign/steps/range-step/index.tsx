@@ -344,7 +344,7 @@ export function RangeStep({
                         onFromChange={setFrom}
                         onToChange={setTo}
                     />
-                    <div>
+                    <div className={styles.chartWrapper}>
                         <Typography weight="medium" light uppercase size="xs">
                             {t("chart")}
                         </Typography>
