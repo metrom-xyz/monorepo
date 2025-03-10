@@ -51,7 +51,7 @@ export function CreateCampaign() {
             <Typography weight="medium" size="lg" uppercase>
                 {t("title")}
             </Typography>
-            <Typography light size="xl2" className={styles.description}>
+            <Typography weight="medium" light className={styles.description}>
                 {t("description")}
             </Typography>
             <div className={styles.campaignCardsWrapper}>
@@ -68,12 +68,14 @@ export function CreateCampaign() {
                                     >
                                         {icon}
                                     </div>
-                                    <Typography weight="medium" size="xl">
-                                        {t(title)}
-                                    </Typography>
-                                    <Typography weight="medium" light>
-                                        {t(description)}
-                                    </Typography>
+                                    <div className={styles.rightContent}>
+                                        <Typography weight="medium" size="lg">
+                                            {t(title)}
+                                        </Typography>
+                                        <Typography weight="medium" light>
+                                            {t(description)}
+                                        </Typography>
+                                    </div>
                                 </div>
                             </Card>
                         </Link>

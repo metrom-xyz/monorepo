@@ -9,7 +9,7 @@
         mr-auto
         rounded-lg
         hover:cursor-pointer
-        bg-white dark:bg-zinc-800
+        theme-surface
         theme-surface-hover
         transition-colors
         duration-200
