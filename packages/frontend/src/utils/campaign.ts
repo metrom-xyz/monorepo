@@ -15,7 +15,8 @@ import {
 import { getDistributableRewardsPercentage } from "./kpi";
 import type { TranslationValues } from "next-intl";
 import { type Hex, encodeAbiParameters, stringToHex } from "viem";
-import { SECONDS_IN_YEAR } from "../commons";
+import { CHAIN_DATA, SECONDS_IN_YEAR } from "../commons";
+import type { SupportedChain } from "@metrom-xyz/contracts";
 
 export function buildCampaignDataBundle(payload: CampaignPreviewPayload) {
     if (payload instanceof AmmPoolLiquidityCampaignPreviewPayload)
@@ -88,6 +89,35 @@ export function getCampaignName(
             return t("campaignActions.depositStabilityPool", {
                 brand: campaign.target.brand.name,
                 token: campaign.target.collateral.symbol,
+            });
+        }
+    }
+}
+
+export function getSocialPreviewCampaignName(
+    t: (key: string, values?: TranslationValues) => string,
+    campaign: Campaign,
+): string {
+    const chain =
+        CHAIN_DATA[campaign.chainId as SupportedChain].name.toUpperCase();
+
+    switch (campaign.target.type) {
+        case TargetType.AmmPoolLiquidity: {
+            return t("socialCampaignPreview.lp", {
+                dex: campaign.target.pool.dex.name,
+                chain,
+            });
+        }
+        case TargetType.LiquityV2Debt: {
+            return t("socialCampaignPreview.takeLoan", {
+                brand: campaign.target.brand.name,
+                chain,
+            });
+        }
+        case TargetType.LiquityV2StabilityPool: {
+            return t("socialCampaignPreview.depositStabilityPool", {
+                brand: campaign.target.brand.name,
+                chain,
             });
         }
     }

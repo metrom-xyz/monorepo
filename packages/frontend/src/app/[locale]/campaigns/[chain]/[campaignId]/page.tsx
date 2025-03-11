@@ -5,13 +5,13 @@ import { setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
 import type { Hex } from "viem";
 
-interface Params {
+export interface Params {
     chain: SupportedChain;
     campaignId: Hex;
     locale: string;
 }
 
-interface CampaignDetailsPageProps {
+export interface CampaignDetailsPageProps {
     params: Promise<Params>;
 }
 
