@@ -103,20 +103,20 @@ export function getSocialPreviewCampaignName(
 
     switch (campaign.target.type) {
         case TargetType.AmmPoolLiquidity: {
-            return t("socialCampaignPreview.lp", {
-                dex: campaign.target.pool.dex.name,
+            return t("socialCampaignPreview.title", {
+                protocol: campaign.target.pool.dex.name,
                 chain,
             });
         }
         case TargetType.LiquityV2Debt: {
-            return t("socialCampaignPreview.takeLoan", {
-                brand: campaign.target.brand.name,
+            return t("socialCampaignPreview.title", {
+                protocol: campaign.target.brand.name,
                 chain,
             });
         }
         case TargetType.LiquityV2StabilityPool: {
-            return t("socialCampaignPreview.depositStabilityPool", {
-                brand: campaign.target.brand.name,
+            return t("socialCampaignPreview.title", {
+                protocol: campaign.target.brand.name,
                 chain,
             });
         }
