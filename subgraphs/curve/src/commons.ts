@@ -65,9 +65,12 @@ export function getOrCreatePool(blockNumber: BigInt, address: Address): Pool {
     PoolTemplate.create(address);
 
     let lpTokenAddress = MainRegistryContract.get_lp_token(address);
-    let lpToken = new LpToken(lpTokenAddress);
-    lpToken.pool = pool.id;
-    lpToken.save();
+    let lpToken = LpToken.load(lpTokenAddress);
+    if (lpToken === null) {
+        lpToken = new LpToken(lpTokenAddress);
+        lpToken.pool = pool.id;
+        lpToken.save();
+    }
 
     return pool;
 }
