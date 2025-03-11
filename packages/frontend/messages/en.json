@@ -560,9 +560,7 @@
         "depositStabilityPool": "Deposit to {token} stability pool on {brand}"
     },
     "socialCampaignPreview": {
-        "lp": "{dex} on {chain}",
-        "takeLoan": "{brand} on {chain}",
-        "depositStabilityPool": "{brand} on {chain}",
+        "title": "{protocol} on {chain}",
         "totalRewards": "Total rewards",
         "startDate": "Start date",
         "duration": "Duration"
