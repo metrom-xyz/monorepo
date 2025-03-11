@@ -126,8 +126,8 @@
                     "errors": {
                         "endBeforeStart": "End date can't be before start date",
                         "dateInThePast": "Date can't be in the past",
-                        "minimumDate": "The campaign must exceed {duration}",
-                        "maximumDate": "The campaign must be under {duration}"
+                        "minimumDate": "Campaign must exceed {duration}",
+                        "maximumDate": "Campaign must be under {duration}"
                     }
                 },
                 "rewards": {
@@ -558,6 +558,14 @@
         "lp": "LP on {dex} {pool}",
         "takeLoan": "Take loan on {brand} with {token}",
         "depositStabilityPool": "Deposit to {token} stability pool on {brand}"
+    },
+    "socialCampaignPreview": {
+        "lp": "{dex} on {chain}",
+        "takeLoan": "{brand} on {chain}",
+        "depositStabilityPool": "{brand} on {chain}",
+        "totalRewards": "Total rewards",
+        "startDate": "Start date",
+        "duration": "Duration"
     },
     "liquidityDensityChart": {
         "tooltip": {
