@@ -17,5 +17,5 @@
 }
 
 .textPoints {
-    @apply text-base min-w-[72px] text-right;
+    @apply text-base min-w-[50px] text-right;
 }
