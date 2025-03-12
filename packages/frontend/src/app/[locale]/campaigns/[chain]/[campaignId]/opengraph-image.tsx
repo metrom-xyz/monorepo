@@ -32,7 +32,7 @@ dayjs.extend(utc);
 export const alt = "Metrom campaign";
 export const size = {
     width: 1200,
-    height: 600,
+    height: 675,
 };
 export const contentType = "image/png";
 
@@ -130,7 +130,7 @@ export default async function Image({ params }: CampaignDetailsPageProps) {
     return new ImageResponse(
         (
             <div
-                tw="w-full h-full flex flex-col p-9 bg-gray-100"
+                tw="w-full h-full flex flex-col p-16 bg-gray-100"
                 style={{ gap: 4 }}
             >
                 <div
@@ -147,8 +147,8 @@ export default async function Image({ params }: CampaignDetailsPageProps) {
                     <span tw="text-[52px]">{campaign.name}</span>
                 </div>
                 <div
-                    tw="flex flex-col p-8 rounded-2xl mt-16 bg-white"
-                    style={{ gap: 60 }}
+                    tw="flex flex-col p-7 rounded-2xl mt-16 bg-white"
+                    style={{ gap: 64 }}
                 >
                     <div tw="flex items-center justify-between">
                         <div tw="flex items-center">
@@ -176,7 +176,7 @@ export default async function Image({ params }: CampaignDetailsPageProps) {
                                 title={t("socialCampaignPreview.totalRewards")}
                                 value={
                                     <div tw="flex items-center justify-between">
-                                        <span tw="text-[32px]">
+                                        <span tw="text-[30px]">
                                             {formatAmount({
                                                 amount: campaign.distributables
                                                     .amount.formatted,
@@ -202,7 +202,7 @@ export default async function Image({ params }: CampaignDetailsPageProps) {
                                 title={t("socialCampaignPreview.totalRewards")}
                                 value={
                                     <div tw="flex items-center justify-between">
-                                        <span tw="text-[32px]">
+                                        <span tw="text-[30px]">
                                             {formatUsdAmount(
                                                 campaign.distributables
                                                     .amountUsdValue,
