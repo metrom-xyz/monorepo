@@ -16,6 +16,8 @@ import { useChainData } from "@/src/hooks/useChainData";
 import { useIsChainSupported } from "@/src/hooks/useIsChainSupported";
 import { ErrorIcon } from "@/src/assets/error-icon";
 import { RemoveScroll } from "react-remove-scroll";
+import { SAFE } from "@/src/commons/env";
+import { SafeLogo } from "@/src/assets/logos/safe";
 
 import styles from "./styles.module.css";
 import Image from "next/image";
@@ -92,11 +94,23 @@ export function AccountMenu({
             <div className={styles.headerWrapper}>
                 <div className={styles.accountContainer}>
                     <div className={styles.avatarWrapper}>
-                        <Image
-                            alt="Avatar"
-                            src={account.ensAvatar || blockie}
-                            className={styles.avatar}
-                        />
+                        {SAFE ? (
+                            <div
+                                className={classNames(
+                                    styles.avatar,
+                                    styles.safeAvatar,
+                                )}
+                            >
+                                <SafeLogo className={styles.safeLogo} />
+                            </div>
+                        ) : (
+                            // eslint-disable-next-line @next/next/no-img-element
+                            <img
+                                alt="Avatar"
+                                src={account.ensAvatar || blockie}
+                                className={styles.avatar}
+                            />
+                        )}
                     </div>
                     <div className={styles.addressAndBalanceWrapper}>
                         <div
@@ -142,12 +156,14 @@ export function AccountMenu({
                             <chainData.icon className={styles.icon} />
                         ) : null}
                     </div>
-                    <div className={styles.iconWrapper}>
-                        <Disconnect
-                            className={styles.icon}
-                            onClick={handleDisconnect}
-                        />
-                    </div>
+                    {!SAFE && (
+                        <div className={styles.iconWrapper}>
+                            <Disconnect
+                                className={styles.icon}
+                                onClick={handleDisconnect}
+                            />
+                        </div>
+                    )}
                 </div>
             </div>
             <ThemeSwitcher />

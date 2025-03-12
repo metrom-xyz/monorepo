@@ -32,11 +32,13 @@ import {
     type Specification,
     type UsdPricedErc20TokenAmount,
 } from "@metrom-xyz/sdk";
-import { ENVIRONMENT } from "@/src/commons/env";
+import { ENVIRONMENT, SAFE } from "@/src/commons/env";
 import { Kpi } from "./kpi";
 import { AprChip } from "../../apr-chip";
 import { Range } from "./range";
 import { formatUnits, parseUnits, zeroHash, type Hex } from "viem";
+import { encodeFunctionData } from "viem/utils";
+import SafeAppsSdk, { type BaseTransaction } from "@safe-global/safe-apps-sdk";
 import { useLiquidityInRange } from "@/src/hooks/useLiquidityInRange";
 
 import styles from "./styles.module.css";
@@ -47,25 +49,29 @@ interface CampaignPreviewProps {
     onCreateNew: () => void;
 }
 
+const safeSdk = new SafeAppsSdk();
+
 export function CampaignPreview({
     payload,
     onBack,
     onCreateNew,
 }: CampaignPreviewProps) {
     const t = useTranslations("campaignPreview");
+    const router = useRouter();
+    const chainId = useChainId();
+    const chainData = useChainData(chainId);
+    const publicClient = usePublicClient();
+    const { writeContractAsync } = useWriteContract();
+
+    const feedback = useRef<HTMLDivElement>(null);
+
     const [deploying, setDeploying] = useState(false);
     const [uploadingSpecification, setUploadingSpecification] = useState(false);
     const [created, setCreated] = useState(false);
     const [tokensApproved, setTokensApproved] = useState(false);
     const [specificationHash, setSpecificationHash] = useState<Hex>(zeroHash);
     const [error, setError] = useState("");
-
-    const feedback = useRef<HTMLDivElement>(null);
-    const router = useRouter();
-    const chainId = useChainId();
-    const chainData = useChainData(chainId);
-    const publicClient = usePublicClient();
-    const { writeContractAsync } = useWriteContract();
+    const [safeTxs, setSafeTxs] = useState<BaseTransaction[]>([]);
 
     const ammPoolLiquidityCampaign =
         payload instanceof AmmPoolLiquidityCampaignPreviewPayload;
@@ -167,7 +173,9 @@ export function CampaignPreview({
         args: [tokensCampaignArgs, pointsCampaignArgs],
         query: {
             enabled:
-                tokensCampaignArgs.length > 0 || pointsCampaignArgs.length > 0,
+                !SAFE &&
+                (tokensCampaignArgs.length > 0 ||
+                    pointsCampaignArgs.length > 0),
         },
     });
 
@@ -213,11 +221,18 @@ export function CampaignPreview({
         tokensApproved,
     ]);
 
+    const handleSafeTransaction = useCallback(
+        (tx: BaseTransaction) => {
+            setSafeTxs([...safeTxs, tx]);
+        },
+        [safeTxs],
+    );
+
     function handleOnRewardsApproved() {
         setTokensApproved(true);
     }
 
-    const handleOnDeploy = useCallback(() => {
+    const handleOnStandardDeploy = useCallback(() => {
         if (simulateCreateErrored) {
             console.warn(
                 `Could not deploy the campaign: ${simulateCreateError}`,
@@ -244,7 +259,7 @@ export function CampaignPreview({
                 setCreated(true);
                 trackFathomEvent("CLICK_DEPLOY_CAMPAIGN");
             } catch (error) {
-                console.warn("could not create kpi token", error);
+                console.warn("Could not create campaign", error);
             } finally {
                 setDeploying(false);
             }
@@ -254,9 +269,47 @@ export function CampaignPreview({
         publicClient,
         simulateCreateError,
         simulateCreateErrored,
-        simulatedCreate,
+        simulatedCreate?.request,
         writeContractAsync,
     ]);
+
+    const handleOnSafeDeploy = useCallback(() => {
+        if (
+            !chainData ||
+            (tokensCampaignArgs.length === 0 && pointsCampaignArgs.length === 0)
+        ) {
+            console.warn(
+                "Missing parameters to deploy campaign through Safe: aborting",
+            );
+            return;
+        }
+
+        safeTxs.push({
+            to: chainData.metromContract.address,
+            data: encodeFunctionData({
+                abi: metromAbi,
+                functionName: "createCampaigns",
+                args: [tokensCampaignArgs, pointsCampaignArgs],
+            }),
+            value: "0",
+        });
+
+        const create = async () => {
+            setDeploying(true);
+            try {
+                await safeSdk.txs.send({ txs: safeTxs });
+
+                setCreated(true);
+                trackFathomEvent("CLICK_DEPLOY_CAMPAIGN");
+            } catch (error) {
+                console.warn("Could not create campaign", error);
+            } finally {
+                setDeploying(false);
+            }
+        };
+
+        void create();
+    }, [chainData, safeTxs, tokensCampaignArgs, pointsCampaignArgs]);
 
     function handleGoToAllCampaigns() {
         router.push("/");
@@ -355,7 +408,11 @@ export function CampaignPreview({
                                     deploying
                                 }
                                 className={{ root: styles.deployButton }}
-                                onClick={handleOnDeploy}
+                                onClick={
+                                    SAFE
+                                        ? handleOnSafeDeploy
+                                        : handleOnStandardDeploy
+                                }
                             >
                                 {t("deploy")}
                             </Button>
@@ -363,6 +420,7 @@ export function CampaignPreview({
                         <ApproveTokensButton
                             tokenAmounts={tokensToApprove}
                             onApproved={handleOnRewardsApproved}
+                            onSafeTx={handleSafeTransaction}
                         />
                     </div>
                 </div>
@@ -385,8 +443,13 @@ export function CampaignPreview({
                 weight="medium"
                 className={styles.feedbackText}
             >
-                {t("launched")}
+                {SAFE ? t("launched.safe.1") : t("launched.standard")}
             </Typography>
+            {SAFE && (
+                <Typography size="xl2" weight="medium">
+                    {t("launched.safe.2")}
+                </Typography>
+            )}
             <div className={styles.feedbackActionsContainer}>
                 <Button
                     onClick={handleGoToAllCampaigns}

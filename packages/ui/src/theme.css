@@ -30,7 +30,6 @@
     @apply bg-zinc-250 dark:bg-zinc-750;
 }
 
-
 @utility theme-text {
     @apply text-light-text dark:text-dark-text;
 }
@@ -49,6 +48,7 @@
     --text-xs: 0.75rem;
     --text-inherit: inherit;
 
+    --color-safe-brand: #12ff80;
     --color-brand-green: #6cff95;
     --color-brand-green-dark: #5bc97f;
     --color-brand-blue: #3c82f6;

@@ -3,17 +3,20 @@ import { useReadContracts, useAccount } from "wagmi";
 import { type Address, erc20Abi } from "viem";
 import { ApproveToken } from "./approve-token";
 import type { UsdPricedErc20TokenAmount } from "@metrom-xyz/sdk";
+import type { BaseTransaction } from "@safe-global/safe-apps-sdk";
 
 interface ApproveTokensProps {
     tokenAmounts: [UsdPricedErc20TokenAmount, ...UsdPricedErc20TokenAmount[]];
     spender?: Address;
     onApprove: () => void;
+    onSafeTx: (tx: BaseTransaction) => void;
 }
 
 export function ApproveTokens({
     tokenAmounts,
     spender,
     onApprove,
+    onSafeTx,
 }: ApproveTokensProps) {
     const { address: connectedAddress } = useAccount();
 
@@ -99,6 +102,7 @@ export function ApproveTokens({
             totalAmount={tokenAmounts.length}
             spender={spender}
             onApprove={handleApprove}
+            onSafeTx={onSafeTx}
         />
     );
 }

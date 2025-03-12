@@ -5,8 +5,15 @@ import "@rainbow-me/rainbowkit/styles.css";
 import {
     darkTheme,
     getDefaultConfig,
+    connectorsForWallets,
     type Locale,
 } from "@rainbow-me/rainbowkit";
+import {
+    safeWallet,
+    coinbaseWallet,
+    walletConnectWallet,
+    metaMaskWallet,
+} from "@rainbow-me/rainbowkit/wallets";
 import { useMemo, type ReactNode } from "react";
 import { WagmiProvider } from "wagmi";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -32,8 +39,19 @@ dayjs.extend(utc);
 
 const config = getDefaultConfig({
     appName: "Metrom",
-    projectId: WALLETCONNECT_PROJECT_ID || "PROJECT_ID",
+    projectId: WALLETCONNECT_PROJECT_ID,
     chains: SUPPORTED_CHAINS,
+    wallets: [
+        {
+            groupName: "Popular",
+            wallets: [
+                coinbaseWallet,
+                walletConnectWallet,
+                metaMaskWallet,
+                safeWallet,
+            ],
+        },
+    ],
     ssr: true,
 });
 
