@@ -14,6 +14,7 @@ import { notFound } from "next/navigation";
 import { Layout as AppLayout } from "../../components/layout";
 import { NextIntlClientProvider } from "next-intl";
 import { ThemeProvider } from "next-themes";
+import { BASE_URL } from "@/src/commons";
 
 interface Params {
     locale: string;
@@ -25,8 +26,29 @@ interface LayoutParams {
 }
 
 export const metadata: Metadata = {
-    title: "Metrom",
-    description: "Design your incentives to AMMplify liquidity.",
+    title: "Maximize your liquidity mining impact with precise incentives",
+    description:
+        "Metrom is a flexible liquidity mining platform designed to help AMMs and projects efficiently launch and manage multiple incentivisation campaigns.",
+    alternates: {
+        canonical: `${BASE_URL}/en`,
+        languages: {
+            en: `${BASE_URL}/en`,
+        },
+    },
+    openGraph: {
+        images: ["/images/opengraph-image.png"],
+    },
+    keywords: [
+        "kpi",
+        "metrom",
+        "precise",
+        "incentives",
+        "incentivisation",
+        "amm",
+        "liquidity",
+        "mining",
+        "efficiency",
+    ],
 };
 
 export default async function Layout({ children, params }: LayoutParams) {
