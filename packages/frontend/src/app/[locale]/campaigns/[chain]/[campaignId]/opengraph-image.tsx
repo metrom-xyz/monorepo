@@ -18,12 +18,13 @@ import { notFound } from "next/navigation";
 import { AmmLiquidityPool } from "@/src/components/campaign-social-preview/amm-liquidity-pool";
 import { KpiAndApr } from "@/src/components/campaign-social-preview/kpi-and-apr";
 import { TextField } from "@/src/components/campaign-social-preview/text-field";
-import { formatUsdAmount } from "@/src/utils/format";
+import { formatAmount, formatUsdAmount } from "@/src/utils/format";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import utc from "dayjs/plugin/utc";
 import { RemoteLogo } from "@/src/components/campaign-social-preview/remote-logo";
 import { LiquityV2 } from "@/src/components/campaign-social-preview/liquity-v2";
+import { PointsIcon } from "@/src/assets/points-icon";
 
 dayjs.extend(relativeTime);
 dayjs.extend(utc);
@@ -129,7 +130,7 @@ export default async function Image({ params }: CampaignDetailsPageProps) {
     return new ImageResponse(
         (
             <div
-                tw="w-full h-full flex flex-col p-9 bg-gray-100"
+                tw="w-full h-full flex flex-col p-9 bg-gray-100 dark:bg-red-500"
                 style={{ gap: 4 }}
             >
                 <div
@@ -170,6 +171,32 @@ export default async function Image({ params }: CampaignDetailsPageProps) {
                         />
                     </div>
                     <div tw="flex items-center" style={{ gap: 24 }}>
+                        {campaign.isDistributing(DistributablesType.Points) && (
+                            <TextField
+                                title={t("socialCampaignPreview.totalRewards")}
+                                value={
+                                    <div tw="flex items-center justify-between">
+                                        <span tw="text-[32px]">
+                                            {formatAmount({
+                                                amount: campaign.distributables
+                                                    .amount.formatted,
+                                            })}
+                                        </span>
+                                        <div
+                                            tw="relative flex"
+                                            style={{ gap: 1 }}
+                                        >
+                                            <PointsIcon
+                                                style={{
+                                                    height: 46,
+                                                    width: 46,
+                                                }}
+                                            />
+                                        </div>
+                                    </div>
+                                }
+                            />
+                        )}
                         {campaign.isDistributing(DistributablesType.Tokens) && (
                             <TextField
                                 title={t("socialCampaignPreview.totalRewards")}
