@@ -15,6 +15,10 @@ export interface CampaignDetailsPageProps {
     params: Promise<Params>;
 }
 
+export const metadata = {
+    title: "Campaign details",
+};
+
 export default async function CampaignDetailsPage({
     params,
 }: CampaignDetailsPageProps) {

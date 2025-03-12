@@ -13,6 +13,7 @@ interface CampaignFormPageProps {
 }
 
 export const metadata = {
+    title: "Create new campaign",
     openGraph: {
         images: ["/images/opengraph-image.png"],
     },

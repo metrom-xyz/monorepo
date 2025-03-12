@@ -39,8 +39,6 @@ import {
     telosData,
 } from "./chains";
 
-export const SECONDS_IN_YEAR = 60 * 60 * 24 * 365;
-
 export interface ChainData {
     testnet: boolean;
     name: string;
@@ -50,6 +48,10 @@ export interface ChainData {
     protocols: Protocol[];
     baseTokens: Erc20Token[];
 }
+
+export const BASE_URL = "https://app.metrom.xyz";
+
+export const SECONDS_IN_YEAR = 60 * 60 * 24 * 365;
 
 export const FEE_UNIT = 1_000_000;
 
