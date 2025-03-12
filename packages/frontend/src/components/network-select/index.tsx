@@ -37,7 +37,14 @@ export function NetworkSelect() {
     }
 
     function handleNetworkOnChange(chainId: number) {
-        switchChain({ chainId });
+        switchChain(
+            { chainId },
+            {
+                onError: (err) => {
+                    console.error(`Could not switch chain: ${err}`);
+                },
+            },
+        );
         setPickerOpen(false);
     }
 

@@ -6,11 +6,14 @@ import {
     useSimulateContract,
 } from "wagmi";
 import { erc20Abi, type Address } from "viem";
+import { encodeFunctionData } from "viem/utils";
 import type { UsdPricedErc20TokenAmount } from "@metrom-xyz/sdk";
 import { Button } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
 import { RewardIcon } from "@/src/assets/reward-icon";
 import { formatAmount } from "@/src/utils/format";
+import type { BaseTransaction } from "@safe-global/safe-apps-sdk";
+import { SAFE } from "@/src/commons/env";
 
 import styles from "./styles.module.css";
 
@@ -21,6 +24,7 @@ interface ApproveTokenProps {
     totalAmount: number;
     spender?: Address;
     onApprove: () => void;
+    onSafeTx: (tx: BaseTransaction) => void;
 }
 
 export function ApproveToken({
@@ -30,6 +34,7 @@ export function ApproveToken({
     totalAmount,
     spender,
     onApprove,
+    onSafeTx,
 }: ApproveTokenProps) {
     const t = useTranslations("newCampaign.submit.approveRewards");
     const publicClient = usePublicClient();
@@ -44,12 +49,15 @@ export function ApproveToken({
                 abi: erc20Abi,
                 functionName: "approve",
                 args: [spender, tokenAmount.amount.raw],
+                query: {
+                    enabled: !SAFE,
+                },
             },
         );
     const { writeContractAsync: approveAsync, isPending: signingTransaction } =
         useWriteContract();
 
-    const handleClick = useCallback(() => {
+    const handleStandardApprove = useCallback(() => {
         if (!approveAsync || !publicClient || !simulatedApprove?.request)
             return;
         let cancelled = false;
@@ -71,13 +79,39 @@ export function ApproveToken({
         return () => {
             cancelled = true;
         };
-    }, [approveAsync, simulatedApprove?.request, onApprove, publicClient]);
+    }, [simulatedApprove?.request, publicClient, approveAsync, onApprove]);
+
+    const handleSafeApprove = useCallback(() => {
+        if (!spender) {
+            console.warn("Missing spender");
+            return;
+        }
+
+        onSafeTx({
+            to: tokenAmount.token.address,
+            data: encodeFunctionData({
+                abi: erc20Abi,
+                functionName: "approve",
+                args: [spender, tokenAmount.amount.raw],
+            }),
+            value: "0",
+        });
+
+        onApprove();
+        return;
+    }, [
+        tokenAmount.token.address,
+        tokenAmount.amount.raw,
+        spender,
+        onSafeTx,
+        onApprove,
+    ]);
 
     return (
         <Button
             icon={RewardIcon}
             iconPlacement="right"
-            onClick={handleClick}
+            onClick={SAFE ? handleSafeApprove : handleStandardApprove}
             disabled={!approveAsync}
             loading={
                 loading || simulatingApprove || signingTransaction || approving

@@ -8,17 +8,20 @@ import { useCallback, useEffect, useState } from "react";
 import { ApproveTokens } from "./approve-tokens";
 import { useChainData } from "@/src/hooks/useChainData";
 import type { UsdPricedErc20TokenAmount } from "@metrom-xyz/sdk";
+import type { BaseTransaction } from "@safe-global/safe-apps-sdk";
 
 import styles from "./styles.module.css";
 
 interface ApproveTokensButtonProps {
     tokenAmounts: [UsdPricedErc20TokenAmount, ...UsdPricedErc20TokenAmount[]];
     onApproved: () => void;
+    onSafeTx: (tx: BaseTransaction) => void;
 }
 
 export function ApproveTokensButton({
     tokenAmounts,
     onApproved,
+    onSafeTx,
 }: ApproveTokensButtonProps) {
     const t = useTranslations("campaignPreview");
     const [approved, setApproved] = useState(false);
@@ -55,9 +58,10 @@ export function ApproveTokensButton({
     if (!approved)
         return (
             <ApproveTokens
-                onApprove={handleOnApprove}
                 tokenAmounts={tokenAmounts}
                 spender={chainData?.metromContract.address}
+                onApprove={handleOnApprove}
+                onSafeTx={onSafeTx}
             />
         );
 

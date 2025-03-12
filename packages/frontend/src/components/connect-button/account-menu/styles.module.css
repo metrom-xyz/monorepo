@@ -42,6 +42,14 @@
     @apply w-9 h-9 rounded-full;
 }
 
+.safeAvatar {
+    @apply bg-safe-brand flex items-center justify-center;
+}
+
+.safeLogo {
+    @apply w-6 h-6;
+}
+
 .clipWrapper {
     @apply flex
         gap-1
