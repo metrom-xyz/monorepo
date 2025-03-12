@@ -130,7 +130,7 @@ export default async function Image({ params }: CampaignDetailsPageProps) {
     return new ImageResponse(
         (
             <div
-                tw="w-full h-full flex flex-col p-9 bg-gray-100 dark:bg-red-500"
+                tw="w-full h-full flex flex-col p-9 bg-gray-100"
                 style={{ gap: 4 }}
             >
                 <div

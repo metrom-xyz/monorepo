@@ -12,6 +12,12 @@ interface CampaignFormPageProps {
     params: Promise<Params>;
 }
 
+export const metadata = {
+    openGraph: {
+        images: ["/images/opengraph-image.png"],
+    },
+};
+
 export default async function CampaignFormPage({
     params,
 }: CampaignFormPageProps) {
