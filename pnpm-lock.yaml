@@ -53,6 +53,9 @@ importers:
       '@rainbow-me/rainbowkit':
         specifier: ^2.2.4
         version: 2.2.4(@tanstack/react-query@5.67.2(react@19.0.0))(@types/react@19.0.10)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(viem@2.23.9(bufferutil@4.0.9)(typescript@5.8.2)(utf-8-validate@5.0.10)(zod@3.24.2))(wagmi@2.14.12(@tanstack/query-core@5.67.2)(@tanstack/react-query@5.67.2(react@19.0.0))(@types/react@19.0.10)(bufferutil@4.0.9)(encoding@0.1.13)(react@19.0.0)(typescript@5.8.2)(utf-8-validate@5.0.10)(viem@2.23.9(bufferutil@4.0.9)(typescript@5.8.2)(utf-8-validate@5.0.10)(zod@3.24.2))(zod@3.24.2))
+      '@safe-global/safe-apps-sdk':
+        specifier: ^9.1.0
+        version: 9.1.0(bufferutil@4.0.9)(typescript@5.8.2)(utf-8-validate@5.0.10)(zod@3.24.2)
       '@tanstack/react-query':
         specifier: ^5.67.2
         version: 5.67.2(react@19.0.0)
@@ -128,7 +131,7 @@ importers:
         version: 3.3.0
       '@fleek-platform/next':
         specifier: ^2.2.1
-        version: 2.2.1(bufferutil@4.0.9)(encoding@0.1.13)(utf-8-validate@5.0.10)(vercel@41.3.2(@swc/core@1.11.8)(encoding@0.1.13)(rollup@4.35.0))
+        version: 2.2.1(bufferutil@4.0.9)(encoding@0.1.13)(utf-8-validate@5.0.10)(vercel@41.3.2(@swc/core@1.11.8(@swc/helpers@0.5.15))(encoding@0.1.13)(rollup@4.35.0))
       '@tailwindcss/postcss':
         specifier: ^4.0.12
         version: 4.0.12
@@ -476,7 +479,7 @@ importers:
     dependencies:
       '@0xgraph/cli':
         specifier: ^0.2.1
-        version: 0.2.1(@swc/core@1.11.8)(@types/node@22.13.10)(bufferutil@4.0.9)(encoding@0.1.13)(node-fetch@2.7.0(encoding@0.1.13))(typescript@5.8.2)(utf-8-validate@5.0.10)
+        version: 0.2.1(@swc/core@1.11.8(@swc/helpers@0.5.15))(@types/node@22.13.10)(bufferutil@4.0.9)(encoding@0.1.13)(node-fetch@2.7.0(encoding@0.1.13))(typescript@5.8.2)(utf-8-validate@5.0.10)
       '@graphprotocol/graph-cli':
         specifier: ^0.96.0
         version: 0.96.0(@types/node@22.13.10)(bufferutil@4.0.9)(typescript@5.8.2)(utf-8-validate@5.0.10)(zod@3.24.2)
@@ -528,7 +531,7 @@ importers:
     dependencies:
       '@0xgraph/cli':
         specifier: ^0.2.1
-        version: 0.2.1(@swc/core@1.11.8)(@types/node@22.13.10)(bufferutil@4.0.9)(encoding@0.1.13)(node-fetch@2.7.0(encoding@0.1.13))(typescript@5.8.2)(utf-8-validate@5.0.10)
+        version: 0.2.1(@swc/core@1.11.8(@swc/helpers@0.5.15))(@types/node@22.13.10)(bufferutil@4.0.9)(encoding@0.1.13)(node-fetch@2.7.0(encoding@0.1.13))(typescript@5.8.2)(utf-8-validate@5.0.10)
       '@graphprotocol/graph-cli':
         specifier: ^0.96.0
         version: 0.96.0(@types/node@22.13.10)(bufferutil@4.0.9)(typescript@5.8.2)(utf-8-validate@5.0.10)(zod@3.24.2)
@@ -583,7 +586,7 @@ importers:
     dependencies:
       '@0xgraph/cli':
         specifier: ^0.2.1
-        version: 0.2.1(@swc/core@1.11.8)(@types/node@22.13.10)(bufferutil@4.0.9)(encoding@0.1.13)(node-fetch@2.7.0(encoding@0.1.13))(typescript@5.8.2)(utf-8-validate@5.0.10)
+        version: 0.2.1(@swc/core@1.11.8(@swc/helpers@0.5.15))(@types/node@22.13.10)(bufferutil@4.0.9)(encoding@0.1.13)(node-fetch@2.7.0(encoding@0.1.13))(typescript@5.8.2)(utf-8-validate@5.0.10)
       '@graphprotocol/graph-cli':
         specifier: ^0.96.0
         version: 0.96.0(@types/node@22.13.10)(bufferutil@4.0.9)(typescript@5.8.2)(utf-8-validate@5.0.10)(zod@3.24.2)
@@ -632,7 +635,7 @@ importers:
     dependencies:
       '@0xgraph/cli':
         specifier: ^0.2.1
-        version: 0.2.1(@swc/core@1.11.8)(@types/node@22.13.10)(bufferutil@4.0.9)(encoding@0.1.13)(node-fetch@2.7.0(encoding@0.1.13))(typescript@5.8.2)(utf-8-validate@5.0.10)
+        version: 0.2.1(@swc/core@1.11.8(@swc/helpers@0.5.15))(@types/node@22.13.10)(bufferutil@4.0.9)(encoding@0.1.13)(node-fetch@2.7.0(encoding@0.1.13))(typescript@5.8.2)(utf-8-validate@5.0.10)
       '@graphprotocol/graph-cli':
         specifier: ^0.96.0
         version: 0.96.0(@types/node@22.13.10)(bufferutil@4.0.9)(typescript@5.8.2)(utf-8-validate@5.0.10)(zod@3.24.2)
@@ -681,7 +684,7 @@ importers:
     dependencies:
       '@0xgraph/cli':
         specifier: ^0.2.1
-        version: 0.2.1(@swc/core@1.11.8)(@types/node@22.13.10)(bufferutil@4.0.9)(encoding@0.1.13)(node-fetch@2.7.0(encoding@0.1.13))(typescript@5.8.2)(utf-8-validate@5.0.10)
+        version: 0.2.1(@swc/core@1.11.8(@swc/helpers@0.5.15))(@types/node@22.13.10)(bufferutil@4.0.9)(encoding@0.1.13)(node-fetch@2.7.0(encoding@0.1.13))(typescript@5.8.2)(utf-8-validate@5.0.10)
       '@graphprotocol/graph-cli':
         specifier: ^0.96.0
         version: 0.96.0(@types/node@22.13.10)(bufferutil@4.0.9)(typescript@5.8.2)(utf-8-validate@5.0.10)(zod@3.24.2)
@@ -730,7 +733,7 @@ importers:
     dependencies:
       '@0xgraph/cli':
         specifier: ^0.2.1
-        version: 0.2.1(@swc/core@1.11.8)(@types/node@22.13.10)(bufferutil@4.0.9)(encoding@0.1.13)(node-fetch@2.7.0(encoding@0.1.13))(typescript@5.8.2)(utf-8-validate@5.0.10)
+        version: 0.2.1(@swc/core@1.11.8(@swc/helpers@0.5.15))(@types/node@22.13.10)(bufferutil@4.0.9)(encoding@0.1.13)(node-fetch@2.7.0(encoding@0.1.13))(typescript@5.8.2)(utf-8-validate@5.0.10)
       '@graphprotocol/graph-cli':
         specifier: ^0.96.0
         version: 0.96.0(@types/node@22.13.10)(bufferutil@4.0.9)(typescript@5.8.2)(utf-8-validate@5.0.10)(zod@3.24.2)
@@ -880,7 +883,7 @@ importers:
     dependencies:
       '@0xgraph/cli':
         specifier: ^0.2.1
-        version: 0.2.1(@swc/core@1.11.8)(@types/node@22.13.10)(bufferutil@4.0.9)(encoding@0.1.13)(node-fetch@2.7.0(encoding@0.1.13))(typescript@5.8.2)(utf-8-validate@5.0.10)
+        version: 0.2.1(@swc/core@1.11.8(@swc/helpers@0.5.15))(@types/node@22.13.10)(bufferutil@4.0.9)(encoding@0.1.13)(node-fetch@2.7.0(encoding@0.1.13))(typescript@5.8.2)(utf-8-validate@5.0.10)
       '@graphprotocol/graph-cli':
         specifier: ^0.96.0
         version: 0.96.0(@types/node@22.13.10)(bufferutil@4.0.9)(typescript@5.8.2)(utf-8-validate@5.0.10)(zod@3.24.2)
@@ -7166,14 +7169,6 @@ packages:
     resolution: {integrity: sha512-qFOyK5PjiWZd+QQIh+1jhdb9LpxTF0qs7Pm8o5QHYZ0M3vKqSqzsZaEB6oWlxZ+q2sJBMI/Ktgd2N5ZwQoRHfg==}
     engines: {node: '>= 0.4'}
 
-  ox@0.6.7:
-    resolution: {integrity: sha512-17Gk/eFsFRAZ80p5eKqv89a57uXjd3NgIf1CaXojATPBuujVc/fQSVhBeAU9JCRB+k7J50WQAyWTxK19T9GgbA==}
-    peerDependencies:
-      typescript: '>=5.4.0'
-    peerDependenciesMeta:
-      typescript:
-        optional: true
-
   ox@0.6.9:
     resolution: {integrity: sha512-wi5ShvzE4eOcTwQVsIPdFr+8ycyX+5le/96iAJutaZAvCes1J0+RvpEPg5QDPDiaR0XQQAvZVl7AwqQcINuUug==}
     peerDependencies:
@@ -8815,14 +8810,6 @@ packages:
   victory-vendor@36.9.2:
     resolution: {integrity: sha512-PnpQQMuxlwYdocC8fIJqVXvkeViHYzotI+NJrCuav0ZYFoq912ZHBk3mCeuj+5/VpodOjPe1z0Fk2ihgzlXqjQ==}
 
-  viem@2.23.2:
-    resolution: {integrity: sha512-NVmW/E0c5crMOtbEAqMF0e3NmvQykFXhLOc/CkLIXOlzHSA6KXVz3CYVmaKqBF8/xtjsjHAGjdJN3Ru1kFJLaA==}
-    peerDependencies:
-      typescript: '>=5.0.4'
-    peerDependenciesMeta:
-      typescript:
-        optional: true
-
   viem@2.23.9:
     resolution: {integrity: sha512-y8VLPfKukrstZKTerS9bm45ajZ22wUyStF+VquK3I2OovWLOyXSbQmJWei8syMFhp1uwhxh1tb0fAdx0WSRZWg==}
     peerDependencies:
@@ -9233,12 +9220,12 @@ packages:
 
 snapshots:
 
-  '@0xgraph/cli@0.2.1(@swc/core@1.11.8)(@types/node@22.13.10)(bufferutil@4.0.9)(encoding@0.1.13)(node-fetch@2.7.0(encoding@0.1.13))(typescript@5.8.2)(utf-8-validate@5.0.10)':
+  '@0xgraph/cli@0.2.1(@swc/core@1.11.8(@swc/helpers@0.5.15))(@types/node@22.13.10)(bufferutil@4.0.9)(encoding@0.1.13)(node-fetch@2.7.0(encoding@0.1.13))(typescript@5.8.2)(utf-8-validate@5.0.10)':
     dependencies:
       '@float-capital/float-subgraph-uncrashable': 0.0.0-internal-testing.5
-      '@oclif/core': 2.8.6(@swc/core@1.11.8)(@types/node@22.13.10)(typescript@5.8.2)
-      '@oclif/plugin-autocomplete': 2.3.10(@swc/core@1.11.8)(@types/node@22.13.10)(typescript@5.8.2)
-      '@oclif/plugin-not-found': 2.4.3(@swc/core@1.11.8)(@types/node@22.13.10)(typescript@5.8.2)
+      '@oclif/core': 2.8.6(@swc/core@1.11.8(@swc/helpers@0.5.15))(@types/node@22.13.10)(typescript@5.8.2)
+      '@oclif/plugin-autocomplete': 2.3.10(@swc/core@1.11.8(@swc/helpers@0.5.15))(@types/node@22.13.10)(typescript@5.8.2)
+      '@oclif/plugin-not-found': 2.4.3(@swc/core@1.11.8(@swc/helpers@0.5.15))(@types/node@22.13.10)(typescript@5.8.2)
       '@whatwg-node/fetch': 0.8.8
       assemblyscript: 0.19.23
       binary-install-raw: 0.0.13(debug@4.3.4)
@@ -10077,7 +10064,7 @@ snapshots:
     dependencies:
       esbuild: 0.24.2
 
-  '@fleek-platform/next-on-fleek@1.15.5(bufferutil@4.0.9)(utf-8-validate@5.0.10)(vercel@41.3.2(@swc/core@1.11.8)(encoding@0.1.13)(rollup@4.35.0))':
+  '@fleek-platform/next-on-fleek@1.15.5(bufferutil@4.0.9)(utf-8-validate@5.0.10)(vercel@41.3.2(@swc/core@1.11.8(@swc/helpers@0.5.15))(encoding@0.1.13)(rollup@4.35.0))':
     dependencies:
       acorn: 8.14.0
       ast-types: 0.14.2
@@ -10094,16 +10081,16 @@ snapshots:
       package-manager-manager: 0.2.0
       parallel-transform-web: 1.0.1
       semver: 7.6.3
-      vercel: 41.3.2(@swc/core@1.11.8)(encoding@0.1.13)(rollup@4.35.0)
+      vercel: 41.3.2(@swc/core@1.11.8(@swc/helpers@0.5.15))(encoding@0.1.13)(rollup@4.35.0)
     transitivePeerDependencies:
       - bufferutil
       - supports-color
       - utf-8-validate
 
-  '@fleek-platform/next@2.2.1(bufferutil@4.0.9)(encoding@0.1.13)(utf-8-validate@5.0.10)(vercel@41.3.2(@swc/core@1.11.8)(encoding@0.1.13)(rollup@4.35.0))':
+  '@fleek-platform/next@2.2.1(bufferutil@4.0.9)(encoding@0.1.13)(utf-8-validate@5.0.10)(vercel@41.3.2(@swc/core@1.11.8(@swc/helpers@0.5.15))(encoding@0.1.13)(rollup@4.35.0))':
     dependencies:
       '@fleek-platform/functions-esbuild-config': 0.0.19(esbuild@0.24.2)
-      '@fleek-platform/next-on-fleek': 1.15.5(bufferutil@4.0.9)(utf-8-validate@5.0.10)(vercel@41.3.2(@swc/core@1.11.8)(encoding@0.1.13)(rollup@4.35.0))
+      '@fleek-platform/next-on-fleek': 1.15.5(bufferutil@4.0.9)(utf-8-validate@5.0.10)(vercel@41.3.2(@swc/core@1.11.8(@swc/helpers@0.5.15))(encoding@0.1.13)(rollup@4.35.0))
       ansi-escapes: 7.0.0
       boxen: 7.1.1
       chalk: 5.4.0
@@ -10911,7 +10898,7 @@ snapshots:
 
   '@nolyfill/is-core-module@1.0.39': {}
 
-  '@oclif/core@2.16.0(@swc/core@1.11.8)(@types/node@22.13.10)(typescript@5.8.2)':
+  '@oclif/core@2.16.0(@swc/core@1.11.8(@swc/helpers@0.5.15))(@types/node@22.13.10)(typescript@5.8.2)':
     dependencies:
       '@types/cli-progress': 3.11.6
       ansi-escapes: 4.3.2
@@ -10936,7 +10923,7 @@ snapshots:
       strip-ansi: 6.0.1
       supports-color: 8.1.1
       supports-hyperlinks: 2.3.0
-      ts-node: 10.9.2(@swc/core@1.11.8)(@types/node@22.13.10)(typescript@5.8.2)
+      ts-node: 10.9.2(@swc/core@1.11.8(@swc/helpers@0.5.15))(@types/node@22.13.10)(typescript@5.8.2)
       tslib: 2.8.1
       widest-line: 3.1.0
       wordwrap: 1.0.0
@@ -10947,7 +10934,7 @@ snapshots:
       - '@types/node'
       - typescript
 
-  '@oclif/core@2.8.6(@swc/core@1.11.8)(@types/node@22.13.10)(typescript@5.8.2)':
+  '@oclif/core@2.8.6(@swc/core@1.11.8(@swc/helpers@0.5.15))(@types/node@22.13.10)(typescript@5.8.2)':
     dependencies:
       '@types/cli-progress': 3.11.6
       ansi-escapes: 4.3.2
@@ -10973,7 +10960,7 @@ snapshots:
       strip-ansi: 6.0.1
       supports-color: 8.1.1
       supports-hyperlinks: 2.3.0
-      ts-node: 10.9.2(@swc/core@1.11.8)(@types/node@22.13.10)(typescript@5.8.2)
+      ts-node: 10.9.2(@swc/core@1.11.8(@swc/helpers@0.5.15))(@types/node@22.13.10)(typescript@5.8.2)
       tslib: 2.8.1
       widest-line: 3.1.0
       wordwrap: 1.0.0
@@ -11005,9 +10992,9 @@ snapshots:
       wordwrap: 1.0.0
       wrap-ansi: 7.0.0
 
-  '@oclif/plugin-autocomplete@2.3.10(@swc/core@1.11.8)(@types/node@22.13.10)(typescript@5.8.2)':
+  '@oclif/plugin-autocomplete@2.3.10(@swc/core@1.11.8(@swc/helpers@0.5.15))(@types/node@22.13.10)(typescript@5.8.2)':
     dependencies:
-      '@oclif/core': 2.16.0(@swc/core@1.11.8)(@types/node@22.13.10)(typescript@5.8.2)
+      '@oclif/core': 2.16.0(@swc/core@1.11.8(@swc/helpers@0.5.15))(@types/node@22.13.10)(typescript@5.8.2)
       chalk: 4.1.2
       debug: 4.4.0(supports-color@8.1.1)
     transitivePeerDependencies:
@@ -11026,9 +11013,9 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@oclif/plugin-not-found@2.4.3(@swc/core@1.11.8)(@types/node@22.13.10)(typescript@5.8.2)':
+  '@oclif/plugin-not-found@2.4.3(@swc/core@1.11.8(@swc/helpers@0.5.15))(@types/node@22.13.10)(typescript@5.8.2)':
     dependencies:
-      '@oclif/core': 2.16.0(@swc/core@1.11.8)(@types/node@22.13.10)(typescript@5.8.2)
+      '@oclif/core': 2.16.0(@swc/core@1.11.8(@swc/helpers@0.5.15))(@types/node@22.13.10)(typescript@5.8.2)
       chalk: 4.1.2
       fast-levenshtein: 3.0.0
     transitivePeerDependencies:
@@ -11257,7 +11244,7 @@ snapshots:
   '@safe-global/safe-apps-sdk@9.1.0(bufferutil@4.0.9)(typescript@5.8.2)(utf-8-validate@5.0.10)(zod@3.24.2)':
     dependencies:
       '@safe-global/safe-gateway-typescript-sdk': 3.22.9
-      viem: 2.23.2(bufferutil@4.0.9)(typescript@5.8.2)(utf-8-validate@5.0.10)(zod@3.24.2)
+      viem: 2.23.9(bufferutil@4.0.9)(typescript@5.8.2)(utf-8-validate@5.0.10)(zod@3.24.2)
     transitivePeerDependencies:
       - bufferutil
       - typescript
@@ -11679,7 +11666,7 @@ snapshots:
       '@swc/core-win32-x64-msvc': 1.10.17
       '@swc/helpers': 0.5.15
 
-  '@swc/core@1.11.8':
+  '@swc/core@1.11.8(@swc/helpers@0.5.15)':
     dependencies:
       '@swc/counter': 0.1.3
       '@swc/types': 0.1.19
@@ -11694,6 +11681,7 @@ snapshots:
       '@swc/core-win32-arm64-msvc': 1.11.8
       '@swc/core-win32-ia32-msvc': 1.11.8
       '@swc/core-win32-x64-msvc': 1.11.8
+      '@swc/helpers': 0.5.15
     optional: true
 
   '@swc/counter@0.1.3': {}
@@ -12188,7 +12176,7 @@ snapshots:
       - rollup
       - supports-color
 
-  '@vercel/node@5.1.12(@swc/core@1.11.8)(encoding@0.1.13)(rollup@4.35.0)':
+  '@vercel/node@5.1.12(@swc/core@1.11.8(@swc/helpers@0.5.15))(encoding@0.1.13)(rollup@4.35.0)':
     dependencies:
       '@edge-runtime/node-utils': 2.3.0
       '@edge-runtime/primitives': 4.1.0
@@ -12208,7 +12196,7 @@ snapshots:
       path-to-regexp: 6.1.0
       path-to-regexp-updated: path-to-regexp@6.3.0
       ts-morph: 12.0.0
-      ts-node: 10.9.1(@swc/core@1.11.8)(@types/node@16.18.11)(typescript@4.9.5)
+      ts-node: 10.9.1(@swc/core@1.11.8(@swc/helpers@0.5.15))(@types/node@16.18.11)(typescript@4.9.5)
       typescript: 4.9.5
       undici: 5.28.4
     transitivePeerDependencies:
@@ -14545,7 +14533,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  eslint-module-utils@2.12.0(@typescript-eslint/parser@8.26.0(eslint@9.22.0(jiti@2.4.2))(typescript@5.8.2))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.8.3(eslint-plugin-import@2.31.0)(eslint@9.22.0(jiti@2.4.2)))(eslint@9.22.0(jiti@2.4.2)):
+  eslint-module-utils@2.12.0(@typescript-eslint/parser@8.26.0(eslint@9.22.0(jiti@2.4.2))(typescript@5.8.2))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.8.3)(eslint@9.22.0(jiti@2.4.2)):
     dependencies:
       debug: 3.2.7
     optionalDependencies:
@@ -14567,7 +14555,7 @@ snapshots:
       doctrine: 2.1.0
       eslint: 9.22.0(jiti@2.4.2)
       eslint-import-resolver-node: 0.3.9
-      eslint-module-utils: 2.12.0(@typescript-eslint/parser@8.26.0(eslint@9.22.0(jiti@2.4.2))(typescript@5.8.2))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.8.3(eslint-plugin-import@2.31.0)(eslint@9.22.0(jiti@2.4.2)))(eslint@9.22.0(jiti@2.4.2))
+      eslint-module-utils: 2.12.0(@typescript-eslint/parser@8.26.0(eslint@9.22.0(jiti@2.4.2))(typescript@5.8.2))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.8.3)(eslint@9.22.0(jiti@2.4.2))
       hasown: 2.0.2
       is-core-module: 2.16.1
       is-glob: 4.0.3
@@ -15828,10 +15816,6 @@ snapshots:
     dependencies:
       ws: 7.5.10(bufferutil@4.0.9)(utf-8-validate@5.0.10)
 
-  isows@1.0.6(ws@8.18.0(bufferutil@4.0.9)(utf-8-validate@5.0.10)):
-    dependencies:
-      ws: 8.18.0(bufferutil@4.0.9)(utf-8-validate@5.0.10)
-
   isows@1.0.6(ws@8.18.1(bufferutil@4.0.9)(utf-8-validate@5.0.10)):
     dependencies:
       ws: 8.18.1(bufferutil@4.0.9)(utf-8-validate@5.0.10)
@@ -16734,20 +16718,6 @@ snapshots:
       get-intrinsic: 1.3.0
       object-keys: 1.1.1
       safe-push-apply: 1.0.0
-
-  ox@0.6.7(typescript@5.8.2)(zod@3.24.2):
-    dependencies:
-      '@adraffy/ens-normalize': 1.11.0
-      '@noble/curves': 1.8.1
-      '@noble/hashes': 1.7.1
-      '@scure/bip32': 1.6.2
-      '@scure/bip39': 1.5.4
-      abitype: 1.0.8(typescript@5.8.2)(zod@3.24.2)
-      eventemitter3: 5.0.1
-    optionalDependencies:
-      typescript: 5.8.2
-    transitivePeerDependencies:
-      - zod
 
   ox@0.6.9(typescript@5.8.2)(zod@3.24.2):
     dependencies:
@@ -18127,7 +18097,7 @@ snapshots:
       '@ts-morph/common': 0.11.1
       code-block-writer: 10.1.1
 
-  ts-node@10.9.1(@swc/core@1.11.8)(@types/node@16.18.11)(typescript@4.9.5):
+  ts-node@10.9.1(@swc/core@1.11.8(@swc/helpers@0.5.15))(@types/node@16.18.11)(typescript@4.9.5):
     dependencies:
       '@cspotcode/source-map-support': 0.8.1
       '@tsconfig/node10': 1.0.11
@@ -18145,9 +18115,9 @@ snapshots:
       v8-compile-cache-lib: 3.0.1
       yn: 3.1.1
     optionalDependencies:
-      '@swc/core': 1.11.8
+      '@swc/core': 1.11.8(@swc/helpers@0.5.15)
 
-  ts-node@10.9.2(@swc/core@1.11.8)(@types/node@22.13.10)(typescript@5.8.2):
+  ts-node@10.9.2(@swc/core@1.11.8(@swc/helpers@0.5.15))(@types/node@22.13.10)(typescript@5.8.2):
     dependencies:
       '@cspotcode/source-map-support': 0.8.1
       '@tsconfig/node10': 1.0.11
@@ -18165,7 +18135,7 @@ snapshots:
       v8-compile-cache-lib: 3.0.1
       yn: 3.1.1
     optionalDependencies:
-      '@swc/core': 1.11.8
+      '@swc/core': 1.11.8(@swc/helpers@0.5.15)
 
   ts-toolbelt@6.15.5: {}
 
@@ -18483,14 +18453,14 @@ snapshots:
 
   varint@6.0.0: {}
 
-  vercel@41.3.2(@swc/core@1.11.8)(encoding@0.1.13)(rollup@4.35.0):
+  vercel@41.3.2(@swc/core@1.11.8(@swc/helpers@0.5.15))(encoding@0.1.13)(rollup@4.35.0):
     dependencies:
       '@vercel/build-utils': 10.4.0
       '@vercel/fun': 1.1.5(encoding@0.1.13)
       '@vercel/go': 3.2.1
       '@vercel/hydrogen': 1.2.0
       '@vercel/next': 4.7.3(encoding@0.1.13)(rollup@4.35.0)
-      '@vercel/node': 5.1.12(@swc/core@1.11.8)(encoding@0.1.13)(rollup@4.35.0)
+      '@vercel/node': 5.1.12(@swc/core@1.11.8(@swc/helpers@0.5.15))(encoding@0.1.13)(rollup@4.35.0)
       '@vercel/python': 4.7.1
       '@vercel/redwood': 2.3.0(encoding@0.1.13)(rollup@4.35.0)
       '@vercel/remix-builder': 5.4.2(encoding@0.1.13)(rollup@4.35.0)
@@ -18521,23 +18491,6 @@ snapshots:
       d3-shape: 3.2.0
       d3-time: 3.1.0
       d3-timer: 3.0.1
-
-  viem@2.23.2(bufferutil@4.0.9)(typescript@5.8.2)(utf-8-validate@5.0.10)(zod@3.24.2):
-    dependencies:
-      '@noble/curves': 1.8.1
-      '@noble/hashes': 1.7.1
-      '@scure/bip32': 1.6.2
-      '@scure/bip39': 1.5.4
-      abitype: 1.0.8(typescript@5.8.2)(zod@3.24.2)
-      isows: 1.0.6(ws@8.18.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))
-      ox: 0.6.7(typescript@5.8.2)(zod@3.24.2)
-      ws: 8.18.0(bufferutil@4.0.9)(utf-8-validate@5.0.10)
-    optionalDependencies:
-      typescript: 5.8.2
-    transitivePeerDependencies:
-      - bufferutil
-      - utf-8-validate
-      - zod
 
   viem@2.23.9(bufferutil@4.0.9)(typescript@5.8.2)(utf-8-validate@5.0.10)(zod@3.24.2):
     dependencies:

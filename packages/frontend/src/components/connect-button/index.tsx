@@ -2,7 +2,7 @@
 
 import { ConnectButton as RainbowConnectButton } from "@rainbow-me/rainbowkit";
 import { Typography, Button } from "@metrom-xyz/ui";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useWindowSize } from "react-use";
 import { useTranslations } from "next-intl";
 import { blo, type Address } from "blo";
@@ -11,14 +11,50 @@ import { zeroAddress } from "viem";
 import classNames from "classnames";
 import { trackFathomEvent } from "@/src/utils/fathom";
 import { AnimatePresence, motion } from "motion/react";
+import { useAccount, useConnect, useConnectors, useDisconnect } from "wagmi";
+import { SAFE } from "@/src/commons/env";
+import { SAFE_CONNECTOR_ID } from "@/src/commons";
+import { toast } from "sonner";
+import { SafeLogo } from "@/src/assets/logos/safe";
+import { SafeConnectedNotification } from "./safe-connected-notification";
 
 import styles from "./styles.module.css";
 
 export function ConnectButton() {
     const t = useTranslations();
     const { width } = useWindowSize();
+    const connectors = useConnectors();
+    const { connector } = useAccount();
+    const { connect } = useConnect();
+    const { disconnect } = useDisconnect();
 
     const [accountMenuOpen, setAccountMenuOpen] = useState(false);
+
+    useEffect(() => {
+        if (!SAFE) return;
+
+        const safeConnector = connectors.find(
+            (connector) => connector.id === SAFE_CONNECTOR_ID,
+        );
+        if (!safeConnector) return;
+
+        if (connector?.id !== SAFE_CONNECTOR_ID) disconnect();
+
+        connect(
+            { connector: safeConnector },
+            {
+                onSuccess: () =>
+                    toast.custom((toastId) => (
+                        <SafeConnectedNotification toastId={toastId} />
+                    )),
+                onError: (error) => {
+                    console.warn(
+                        `Could not connect with Safe connector: ${error}`,
+                    );
+                },
+            },
+        );
+    }, [connect, connector?.id, connectors, disconnect]);
 
     function handleAccountMenuOpen() {
         setAccountMenuOpen(true);
@@ -121,14 +157,30 @@ export function ConnectButton() {
                                         onClick={handleAccountMenuOpen}
                                     >
                                         <div className={styles.account}>
-                                            {/* eslint-disable-next-line @next/next/no-img-element */}
-                                            <img
-                                                alt="Avatar"
-                                                src={
-                                                    account.ensAvatar || blockie
-                                                }
-                                                className={styles.avatar}
-                                            />
+                                            {SAFE ? (
+                                                <div
+                                                    className={classNames(
+                                                        styles.avatar,
+                                                        styles.safeAvatar,
+                                                    )}
+                                                >
+                                                    <SafeLogo
+                                                        className={
+                                                            styles.safeLogo
+                                                        }
+                                                    />
+                                                </div>
+                                            ) : (
+                                                // eslint-disable-next-line @next/next/no-img-element
+                                                <img
+                                                    alt="Avatar"
+                                                    src={
+                                                        account.ensAvatar ||
+                                                        blockie
+                                                    }
+                                                    className={styles.avatar}
+                                                />
+                                            )}
                                             <Typography
                                                 className={styles.displayName}
                                             >
