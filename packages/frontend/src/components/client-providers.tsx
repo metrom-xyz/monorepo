@@ -26,7 +26,7 @@ import duration from "dayjs/plugin/duration";
 import localizedFormat from "dayjs/plugin/localizedFormat";
 import relativeTime from "dayjs/plugin/relativeTime";
 import utc from "dayjs/plugin/utc";
-import { WALLETCONNECT_PROJECT_ID } from "../commons/env";
+import { SAFE, WALLETCONNECT_PROJECT_ID } from "../commons/env";
 import { SUPPORTED_CHAINS } from "../commons";
 import Fathom from "./fathom";
 import { useTheme } from "next-themes";
@@ -44,12 +44,9 @@ const config = getDefaultConfig({
     wallets: [
         {
             groupName: "Popular",
-            wallets: [
-                coinbaseWallet,
-                walletConnectWallet,
-                metaMaskWallet,
-                safeWallet,
-            ],
+            wallets: SAFE
+                ? [safeWallet]
+                : [coinbaseWallet, walletConnectWallet, metaMaskWallet],
         },
     ],
     ssr: true,
