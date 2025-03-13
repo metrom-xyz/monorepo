@@ -9,6 +9,7 @@ import { type Protocol, type SVGIcon } from "../types/common";
 import type { FunctionComponent } from "react";
 import { SupportedChain } from "@metrom-xyz/contracts";
 import { ENVIRONMENT } from "./env";
+import SafeAppsSdk from "@safe-global/safe-apps-sdk";
 import {
     holesky,
     mode,
@@ -91,3 +92,5 @@ export const AMM_SUPPORTS_RANGE_INCENTIVES: Record<SupportedAmm, boolean> = {
 export const SAFE_CONNECTOR_ID = "safe";
 
 export const metromApiClient = METROM_API_CLIENT[ENVIRONMENT];
+
+export const safeSdk = new SafeAppsSdk();

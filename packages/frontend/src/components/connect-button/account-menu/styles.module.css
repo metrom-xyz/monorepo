@@ -47,7 +47,7 @@
 }
 
 .safeLogo {
-    @apply w-6 h-6;
+    @apply w-6 h-6 text-black;
 }
 
 .clipWrapper {
