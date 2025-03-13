@@ -10,14 +10,20 @@ import {
     useWriteContract,
 } from "wagmi";
 import { metromAbi } from "@metrom-xyz/contracts/abi";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { trackFathomEvent } from "@/src/utils/fathom";
 import { toast } from "sonner";
 import { ClaimSuccess } from "../notification/claim-success";
-import type { WriteContractErrorType, Chain } from "viem";
+import {
+    type WriteContractErrorType,
+    type Chain,
+    encodeFunctionData,
+} from "viem";
 import { ClaimFail } from "../notification/claim-fail";
 import { RecoverSuccess } from "../notification/recover-success";
 import { RecoverFail } from "../notification/recover-fail";
+import { SAFE } from "@/src/commons/env";
+import { safeSdk } from "@/src/commons";
 
 import styles from "./styles.module.css";
 
@@ -49,6 +55,34 @@ export function ChainOverview({
 
     const ChainIcon = chainWithRewardsData.chainData.icon;
 
+    const recoverRewardsArgs = useMemo(() => {
+        if (!account) return [];
+
+        return chainWithRewardsData.reimbursements.map((reimbursement) => {
+            return {
+                campaignId: reimbursement.campaignId,
+                proof: reimbursement.proof,
+                token: reimbursement.token.address,
+                amount: reimbursement.amount.raw,
+                receiver: account,
+            };
+        });
+    }, [account, chainWithRewardsData.reimbursements]);
+
+    const claimRewardsArgs = useMemo(() => {
+        if (!account) return [];
+
+        return chainWithRewardsData.claims.map((claim) => {
+            return {
+                campaignId: claim.campaignId,
+                proof: claim.proof,
+                token: claim.token.address,
+                amount: claim.amount.raw,
+                receiver: account,
+            };
+        });
+    }, [account, chainWithRewardsData.claims]);
+
     const {
         data: simulatedRecoverAll,
         isLoading: simulatingRecoverAll,
@@ -58,23 +92,13 @@ export function ChainOverview({
         abi: metromAbi,
         address: chainWithRewardsData.chainData.metromContract.address,
         functionName: "recoverRewards",
-        args: [
-            !account
-                ? []
-                : chainWithRewardsData.reimbursements.map((reimbursement) => {
-                      return {
-                          campaignId: reimbursement.campaignId,
-                          proof: reimbursement.proof,
-                          token: reimbursement.token.address,
-                          amount: reimbursement.amount.raw,
-                          receiver: account,
-                      };
-                  }),
-        ],
+        args: [recoverRewardsArgs],
         query: {
             refetchOnMount: false,
             enabled:
-                !!account && chainWithRewardsData.reimbursements.length > 0,
+                !SAFE &&
+                !!account &&
+                chainWithRewardsData.reimbursements.length > 0,
         },
     });
 
@@ -87,21 +111,9 @@ export function ChainOverview({
         abi: metromAbi,
         address: chainWithRewardsData.chainData.metromContract.address,
         functionName: "claimRewards",
-        args: [
-            !account
-                ? []
-                : chainWithRewardsData.claims.map((claim) => {
-                      return {
-                          campaignId: claim.campaignId,
-                          proof: claim.proof,
-                          token: claim.token.address,
-                          amount: claim.amount.raw,
-                          receiver: account,
-                      };
-                  }),
-        ],
+        args: [claimRewardsArgs],
         query: {
-            enabled: account && chainWithRewardsData.claims.length > 0,
+            enabled: !SAFE && account && chainWithRewardsData.claims.length > 0,
         },
     });
 
@@ -113,14 +125,14 @@ export function ChainOverview({
         if (onRecovering) onRecovering(recovering);
     }, [recovering, onRecovering]);
 
-    const handleRecoverAll = useCallback(() => {
+    const handleStandardRecoverAll = useCallback(() => {
         if (
             !writeContractAsync ||
             !publicClient ||
             !simulatedRecoverAll?.request
         )
             return;
-        const create = async () => {
+        const recover = async () => {
             setRecovering(true);
             try {
                 await switchChainAsync({
@@ -157,7 +169,7 @@ export function ChainOverview({
                 setRecovering(false);
             }
         };
-        void create();
+        void recover();
     }, [
         chainWithRewardsData.chain,
         publicClient,
@@ -167,10 +179,47 @@ export function ChainOverview({
         writeContractAsync,
     ]);
 
+    const handleSafeRecoverAll = useCallback(() => {
+        const recover = async () => {
+            setRecovering(true);
+
+            try {
+                await safeSdk.txs.send({
+                    txs: [
+                        {
+                            to: chainWithRewardsData.chainData.metromContract
+                                .address,
+                            data: encodeFunctionData({
+                                abi: metromAbi,
+                                functionName: "recoverRewards",
+                                args: [recoverRewardsArgs],
+                            }),
+                            value: "0",
+                        },
+                    ],
+                });
+
+                toast.custom((toastId) => <RecoverSuccess toastId={toastId} />);
+                onRecoverAll(chainWithRewardsData.chain);
+                trackFathomEvent("CLICK_RECOVER_ALL");
+            } catch (error) {
+                console.warn("Could not create campaign", error);
+            } finally {
+                setRecovering(false);
+            }
+        };
+
+        void recover();
+    }, [
+        chainWithRewardsData.chainData,
+        chainWithRewardsData.chain,
+        onRecoverAll,
+    ]);
+
     const handleClaimAll = useCallback(() => {
         if (!writeContractAsync || !publicClient || !simulatedClaimAll?.request)
             return;
-        const create = async () => {
+        const claim = async () => {
             setClaiming(true);
             try {
                 await switchChainAsync({
@@ -208,7 +257,7 @@ export function ChainOverview({
                 setClaiming(false);
             }
         };
-        void create();
+        void claim();
     }, [
         t,
         chainWithRewardsData.chain,
@@ -234,7 +283,11 @@ export function ChainOverview({
                         disabled={simulateRecoverAllErrored}
                         loading={simulatingRecoverAll || recovering}
                         iconPlacement="right"
-                        onClick={handleRecoverAll}
+                        onClick={
+                            SAFE
+                                ? handleSafeRecoverAll
+                                : handleStandardRecoverAll
+                        }
                     >
                         {simulatingRecoverAll
                             ? t("reimbursements.loading")

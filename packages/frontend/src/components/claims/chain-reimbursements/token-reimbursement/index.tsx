@@ -9,17 +9,19 @@ import {
     useWriteContract,
 } from "wagmi";
 import { metromAbi } from "@metrom-xyz/contracts/abi";
-import { useCallback, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import type { TokenReimbursements } from "..";
 import { toast } from "sonner";
 import { useChainData } from "@/src/hooks/useChainData";
 import { formatAmount } from "@/src/utils/format";
 import { trackFathomEvent } from "@/src/utils/fathom";
 import { RemoteLogo } from "@/src/components/remote-logo";
-import type { WriteContractErrorType } from "viem";
+import { type WriteContractErrorType, encodeFunctionData } from "viem";
 import type { Erc20Token } from "@metrom-xyz/sdk";
 import { RecoverSuccess } from "../../notification/recover-success";
 import { RecoverFail } from "../../notification/recover-fail";
+import { SAFE } from "@/src/commons/env";
+import { safeSdk } from "@/src/commons";
 
 import styles from "./styles.module.css";
 
@@ -46,6 +48,20 @@ export function TokenReimbursement({
     const [recovering, setRecovering] = useState(false);
     const [recovered, setRecovered] = useState(false);
 
+    const recoverRewardsArgs = useMemo(() => {
+        if (!account) return [];
+
+        return tokenReimbursements.reimbursements.map((reimbursement) => {
+            return {
+                campaignId: reimbursement.campaignId,
+                proof: reimbursement.proof,
+                token: reimbursement.token.address,
+                amount: reimbursement.amount.raw,
+                receiver: account,
+            };
+        });
+    }, [account, tokenReimbursements.reimbursements]);
+
     const {
         data: simulatedRecover,
         isLoading: simulatingRecover,
@@ -55,26 +71,17 @@ export function TokenReimbursement({
         abi: metromAbi,
         address: chainData?.metromContract.address,
         functionName: "recoverRewards",
-        args: [
-            !account
-                ? []
-                : tokenReimbursements.reimbursements.map((reimbursement) => {
-                      return {
-                          campaignId: reimbursement.campaignId,
-                          proof: reimbursement.proof,
-                          token: reimbursement.token.address,
-                          amount: reimbursement.amount.raw,
-                          receiver: account,
-                      };
-                  }),
-        ],
+        args: [recoverRewardsArgs],
         query: {
             refetchOnMount: false,
-            enabled: !!account && tokenReimbursements.reimbursements.length > 0,
+            enabled:
+                !SAFE &&
+                !!account &&
+                tokenReimbursements.reimbursements.length > 0,
         },
     });
 
-    const handleRecover = useCallback(() => {
+    const handleStandardRecover = useCallback(() => {
         if (!writeContractAsync || !publicClient || !simulatedRecover?.request)
             return;
         const recover = async () => {
@@ -118,6 +125,7 @@ export function TokenReimbursement({
                 setRecovering(false);
             }
         };
+
         void recover();
     }, [
         chainId,
@@ -128,6 +136,58 @@ export function TokenReimbursement({
         onRecover,
         switchChainAsync,
         writeContractAsync,
+    ]);
+
+    const handleSafeRecover = useCallback(() => {
+        if (!chainData) {
+            console.warn(
+                "Missing parameters to recover rewards through Safe: aborting",
+            );
+            return;
+        }
+
+        const recover = async () => {
+            setRecovering(true);
+
+            try {
+                await safeSdk.txs.send({
+                    txs: [
+                        {
+                            to: chainData.metromContract.address,
+                            data: encodeFunctionData({
+                                abi: metromAbi,
+                                functionName: "recoverRewards",
+                                args: [recoverRewardsArgs],
+                            }),
+                            value: "0",
+                        },
+                    ],
+                });
+
+                toast.custom((toastId) => (
+                    <RecoverSuccess
+                        toastId={toastId}
+                        chain={chainId}
+                        token={tokenReimbursements.token}
+                        amount={tokenReimbursements.totalAmount}
+                    />
+                ));
+                setRecovered(true);
+                onRecover(tokenReimbursements.token);
+                trackFathomEvent("CLICK_RECOVER_SINGLE");
+            } catch (error) {
+                console.warn("Could not recover", error);
+            } finally {
+                setRecovering(false);
+            }
+        };
+
+        void recover();
+    }, [
+        tokenReimbursements.token,
+        tokenReimbursements.totalAmount,
+        chainData?.metromContract,
+        onRecover,
     ]);
 
     return (
@@ -153,7 +213,7 @@ export function TokenReimbursement({
                 disabled={simulateRecoverErrored || recovered || disabled}
                 loading={simulatingRecover || recovering}
                 iconPlacement="right"
-                onClick={handleRecover}
+                onClick={SAFE ? handleSafeRecover : handleStandardRecover}
             >
                 {simulatingRecover
                     ? t("loading")

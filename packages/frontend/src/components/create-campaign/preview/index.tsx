@@ -38,8 +38,9 @@ import { AprChip } from "../../apr-chip";
 import { Range } from "./range";
 import { formatUnits, parseUnits, zeroHash, type Hex } from "viem";
 import { encodeFunctionData } from "viem/utils";
-import SafeAppsSdk, { type BaseTransaction } from "@safe-global/safe-apps-sdk";
+import { type BaseTransaction } from "@safe-global/safe-apps-sdk";
 import { useLiquidityInRange } from "@/src/hooks/useLiquidityInRange";
+import { safeSdk } from "@/src/commons";
 
 import styles from "./styles.module.css";
 
@@ -48,8 +49,6 @@ interface CampaignPreviewProps {
     onBack: () => void;
     onCreateNew: () => void;
 }
-
-const safeSdk = new SafeAppsSdk();
 
 export function CampaignPreview({
     payload,
