@@ -445,7 +445,11 @@ export function CampaignPreview({
                 {SAFE ? t("launched.safe.1") : t("launched.standard")}
             </Typography>
             {SAFE && (
-                <Typography size="xl2" weight="medium">
+                <Typography
+                    size="xl"
+                    weight="medium"
+                    className={styles.feedbackText}
+                >
                     {t("launched.safe.2")}
                 </Typography>
             )}
