@@ -203,7 +203,7 @@ export function ChainOverview({
                 onRecoverAll(chainWithRewardsData.chain);
                 trackFathomEvent("CLICK_RECOVER_ALL");
             } catch (error) {
-                console.warn("Could not create campaign", error);
+                console.warn("Could not recover", error);
             } finally {
                 setRecovering(false);
             }
@@ -216,7 +216,7 @@ export function ChainOverview({
         onRecoverAll,
     ]);
 
-    const handleClaimAll = useCallback(() => {
+    const handleStandardClaimAll = useCallback(() => {
         if (!writeContractAsync || !publicClient || !simulatedClaimAll?.request)
             return;
         const claim = async () => {
@@ -268,6 +268,43 @@ export function ChainOverview({
         writeContractAsync,
     ]);
 
+    const handleSafeClaimAll = useCallback(() => {
+        const claim = async () => {
+            setClaiming(true);
+
+            try {
+                await safeSdk.txs.send({
+                    txs: [
+                        {
+                            to: chainWithRewardsData.chainData.metromContract
+                                .address,
+                            data: encodeFunctionData({
+                                abi: metromAbi,
+                                functionName: "claimRewards",
+                                args: [claimRewardsArgs],
+                            }),
+                            value: "0",
+                        },
+                    ],
+                });
+
+                toast.custom((toastId) => <ClaimSuccess toastId={toastId} />);
+                onClaimAll(chainWithRewardsData.chain);
+                trackFathomEvent("CLICK_CLAIM_ALL");
+            } catch (error) {
+                console.warn("Could not claim", error);
+            } finally {
+                setClaiming(false);
+            }
+        };
+
+        void claim();
+    }, [
+        chainWithRewardsData.chainData,
+        chainWithRewardsData.chain,
+        onClaimAll,
+    ]);
+
     return (
         <Card className={classNames(styles.root, className)}>
             <div className={styles.chainNameWrapper}>
@@ -302,7 +339,9 @@ export function ChainOverview({
                         disabled={simulateClaimAllErrored}
                         loading={simulatingClaimAll || claiming}
                         iconPlacement="right"
-                        onClick={handleClaimAll}
+                        onClick={
+                            SAFE ? handleSafeClaimAll : handleStandardClaimAll
+                        }
                     >
                         {simulatingClaimAll
                             ? t("claims.loading")
