@@ -31,16 +31,22 @@ import { formatUnits } from "viem";
 
 import styles from "./styles.module.css";
 
+interface RangeBound {
+    tick?: number;
+    price?: number;
+}
+
 interface LiquidityDensityProps {
     error?: boolean;
     loading?: boolean;
     pool?: AmmPool;
     density?: LiquidityDensity;
-    from?: number;
-    to?: number;
+    from?: RangeBound;
+    to?: RangeBound;
     token0To1: boolean;
     header?: boolean;
     tooltipSize?: TypographySize;
+    showPriceRange?: boolean;
     className?: string;
 }
 
@@ -65,6 +71,7 @@ export function LiquidityDensityChart({
     token0To1,
     header,
     tooltipSize,
+    showPriceRange,
     className,
 }: LiquidityDensityProps) {
     const t = useTranslations("liquidityDensityChart");
@@ -212,12 +219,11 @@ export function LiquidityDensityChart({
                     data={visibleTicks}
                     onMouseMove={handleOnMouseMove}
                     onMouseLeave={handleOnMouseLeave}
-                    margin={{ top: 24 }}
+                    margin={{ top: 24, bottom: showPriceRange ? 20 : 0 }}
                     style={{ cursor: "pointer" }}
                 >
                     <YAxis hide domain={[0, "dataMax"]} />
                     <XAxis hide dataKey={token0To1 ? "price0" : "price1"} />
-
                     <Bar
                         dataKey="liquidity"
                         maxBarSize={50}
@@ -226,12 +232,15 @@ export function LiquidityDensityChart({
                         shape={
                             <LiquidityBar
                                 token0To1={token0To1}
-                                from={from}
-                                to={to}
+                                fromTick={from?.tick}
+                                fromPrice={from?.price}
+                                toTick={to?.tick}
+                                toPrice={to?.price}
                                 activeTickIdx={activeTickIdx}
                                 ticks={visibleTicks}
                                 currentPrice={currentPrice}
                                 tooltipIndex={tooltipIndex}
+                                showPriceRange={showPriceRange}
                             />
                         }
                     >
