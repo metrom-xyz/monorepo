@@ -16,15 +16,15 @@ export function useActivities(): {
     const { address } = useAccount();
 
     const { data: activities, isPending: loading } = useQuery({
-        queryKey: ["activities", address],
+        queryKey: ["activities", address, chainId],
         queryFn: async ({ queryKey }) => {
-            const account = queryKey[1];
+            const [_, account, chainId] = queryKey;
             if (!account) return [];
 
             try {
                 const to = Math.floor(Date.now() / 1000);
                 const activities = await metromApiClient.fetchActivities({
-                    chainId,
+                    chainId: chainId as SupportedChain,
                     address: account as Address,
                     from: to - TIME_RANGE,
                     to,

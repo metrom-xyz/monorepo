@@ -9,6 +9,7 @@ import { type Protocol, type SVGIcon } from "../types/common";
 import type { FunctionComponent } from "react";
 import { SupportedChain } from "@metrom-xyz/contracts";
 import { ENVIRONMENT } from "./env";
+import SafeAppsSdk from "@safe-global/safe-apps-sdk";
 import {
     celoAlfajores,
     holesky,
@@ -90,4 +91,9 @@ export const AMM_SUPPORTS_RANGE_INCENTIVES: Record<SupportedAmm, boolean> = {
     [SupportedAmm.StableSwap]: false,
 };
 
+// taken from https://github.com/wevm/wagmi/blob/80326815bea2f175623157f57465f9dfae1f4c5c/packages/connectors/src/safe.ts#L45
+export const SAFE_CONNECTOR_ID = "safe";
+
 export const metromApiClient = METROM_API_CLIENT[ENVIRONMENT];
+
+export const safeSdk = new SafeAppsSdk();

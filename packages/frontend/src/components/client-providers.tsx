@@ -5,8 +5,15 @@ import "@rainbow-me/rainbowkit/styles.css";
 import {
     darkTheme,
     getDefaultConfig,
+    connectorsForWallets,
     type Locale,
 } from "@rainbow-me/rainbowkit";
+import {
+    safeWallet,
+    coinbaseWallet,
+    walletConnectWallet,
+    metaMaskWallet,
+} from "@rainbow-me/rainbowkit/wallets";
 import { useMemo, type ReactNode } from "react";
 import { WagmiProvider } from "wagmi";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -19,7 +26,7 @@ import duration from "dayjs/plugin/duration";
 import localizedFormat from "dayjs/plugin/localizedFormat";
 import relativeTime from "dayjs/plugin/relativeTime";
 import utc from "dayjs/plugin/utc";
-import { WALLETCONNECT_PROJECT_ID } from "../commons/env";
+import { SAFE, WALLETCONNECT_PROJECT_ID } from "../commons/env";
 import { SUPPORTED_CHAINS } from "../commons";
 import Fathom from "./fathom";
 import { useTheme } from "next-themes";
@@ -32,8 +39,16 @@ dayjs.extend(utc);
 
 const config = getDefaultConfig({
     appName: "Metrom",
-    projectId: WALLETCONNECT_PROJECT_ID || "PROJECT_ID",
+    projectId: WALLETCONNECT_PROJECT_ID,
     chains: SUPPORTED_CHAINS,
+    wallets: [
+        {
+            groupName: "Popular",
+            wallets: SAFE
+                ? [safeWallet]
+                : [coinbaseWallet, walletConnectWallet, metaMaskWallet],
+        },
+    ],
     ssr: true,
 });
 
