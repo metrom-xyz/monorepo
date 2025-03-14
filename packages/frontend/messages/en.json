@@ -483,13 +483,18 @@
             },
             "notification": {
                 "success": {
-                    "single": "Claim successful",
-                    "all": "Claim all successful",
-                    "message": "All rewards claimed"
+                    "standard": {
+                        "title": "Claim successful",
+                        "message": "All rewards claimed"
+                    },
+                    "safe": {
+                        "title": "Claim transaction submitted",
+                        "message": "Collect signatures and execute"
+                    }
                 },
+
                 "fail": {
-                    "single": "Claim failed",
-                    "all": "Claim all failed",
+                    "title": "Claim failed",
                     "message": "Something went wrong"
                 }
             }
@@ -503,7 +508,8 @@
             "recoveringByToken": "Recovering",
             "notification": {
                 "success": {
-                    "message": "Recover successful"
+                    "standard": "Recover successful",
+                    "safe": "Recover transaction submitted, collect signatures"
                 },
                 "fail": {
                     "title": "Recover failed",

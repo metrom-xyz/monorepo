@@ -163,6 +163,7 @@ export function TokenClaim({
                         chain={chainId}
                         token={tokenClaims.token}
                         amount={tokenClaims.totalAmount}
+                        safe
                     />
                 ));
                 setClaimed(true);
@@ -176,7 +177,14 @@ export function TokenClaim({
         };
 
         void claim();
-    }, []);
+    }, [
+        chainData,
+        claimRewardsArgs,
+        chainId,
+        tokenClaims.token,
+        tokenClaims.totalAmount,
+        onClaim,
+    ]);
 
     return (
         <Card className={styles.root}>

@@ -13,6 +13,7 @@ interface RecoverSuccessProps {
     chain?: SupportedChain;
     token?: Erc20Token;
     amount?: number;
+    safe?: boolean;
 }
 
 export function RecoverSuccess({
@@ -20,13 +21,14 @@ export function RecoverSuccess({
     chain,
     token,
     amount,
+    safe,
 }: RecoverSuccessProps) {
     const t = useTranslations("rewards.reimbursements.notification.success");
 
     return (
         <ToastNotification
             toastId={toastId}
-            title={t("message")}
+            title={safe ? t("safe") : t("standard")}
             // TODO: add different icon?
             icon={ClaimReward}
         >
