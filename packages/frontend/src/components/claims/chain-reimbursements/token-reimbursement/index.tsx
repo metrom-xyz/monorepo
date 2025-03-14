@@ -170,6 +170,7 @@ export function TokenReimbursement({
                         chain={chainId}
                         token={tokenReimbursements.token}
                         amount={tokenReimbursements.totalAmount}
+                        safe
                     />
                 ));
                 setRecovered(true);
@@ -184,9 +185,11 @@ export function TokenReimbursement({
 
         void recover();
     }, [
+        chainId,
+        recoverRewardsArgs,
         tokenReimbursements.token,
         tokenReimbursements.totalAmount,
-        chainData?.metromContract,
+        chainData,
         onRecover,
     ]);
 

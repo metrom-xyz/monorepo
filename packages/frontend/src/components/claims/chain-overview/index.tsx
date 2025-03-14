@@ -199,7 +199,11 @@ export function ChainOverview({
                     ],
                 });
 
-                toast.custom((toastId) => <RecoverSuccess toastId={toastId} />);
+                // TODO: do we need to check the safe tx status and have a custom notification
+                // if the tx gets executed instantly (only 1 signer)?
+                toast.custom((toastId) => (
+                    <RecoverSuccess toastId={toastId} safe />
+                ));
                 onRecoverAll(chainWithRewardsData.chain);
                 trackFathomEvent("CLICK_RECOVER_ALL");
             } catch (error) {
@@ -211,6 +215,7 @@ export function ChainOverview({
 
         void recover();
     }, [
+        recoverRewardsArgs,
         chainWithRewardsData.chainData,
         chainWithRewardsData.chain,
         onRecoverAll,
@@ -288,7 +293,9 @@ export function ChainOverview({
                     ],
                 });
 
-                toast.custom((toastId) => <ClaimSuccess toastId={toastId} />);
+                toast.custom((toastId) => (
+                    <ClaimSuccess toastId={toastId} safe />
+                ));
                 onClaimAll(chainWithRewardsData.chain);
                 trackFathomEvent("CLICK_CLAIM_ALL");
             } catch (error) {
@@ -300,6 +307,7 @@ export function ChainOverview({
 
         void claim();
     }, [
+        claimRewardsArgs,
         chainWithRewardsData.chainData,
         chainWithRewardsData.chain,
         onClaimAll,

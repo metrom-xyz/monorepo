@@ -13,6 +13,7 @@ interface ClaimSuccessProps {
     chain?: SupportedChain;
     token?: Erc20Token;
     amount?: number;
+    safe?: boolean;
 }
 
 export function ClaimSuccess({
@@ -20,13 +21,14 @@ export function ClaimSuccess({
     chain,
     token,
     amount,
+    safe,
 }: ClaimSuccessProps) {
     const t = useTranslations("rewards.claims.notification.success");
 
     return (
         <ToastNotification
             toastId={toastId}
-            title={t("single")}
+            title={safe ? t("safe.title") : t("standard.title")}
             icon={ClaimReward}
         >
             {!!chain && !!token && !!amount ? (
@@ -45,7 +47,9 @@ export function ClaimSuccess({
                     </Typography>
                 </div>
             ) : (
-                <Typography weight="medium">{t("message")}</Typography>
+                <Typography weight="medium">
+                    {safe ? t("safe.message") : t("standard.message")}
+                </Typography>
             )}
         </ToastNotification>
     );
