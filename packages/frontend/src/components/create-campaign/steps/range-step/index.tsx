@@ -354,8 +354,8 @@ export function RangeStep({
                             token0To1={token0To1}
                             error={!!error}
                             loading={loadingLiquidityDensity}
-                            from={from?.tick}
-                            to={to?.tick}
+                            from={{ tick: from?.tick }}
+                            to={{ tick: to?.tick }}
                             pool={pool}
                             density={liquidityDensity}
                         />

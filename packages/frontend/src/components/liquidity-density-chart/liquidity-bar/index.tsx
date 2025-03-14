@@ -1,6 +1,7 @@
 import { closestTick } from "@/src/utils/liquidity-density";
 import type { ScaledLiquidityTick } from "..";
 import classNames from "classnames";
+import { formatAmount } from "@/src/utils/format";
 
 import styles from "./styles.module.css";
 
@@ -13,13 +14,16 @@ interface LiquidityBarProps {
     price0?: number;
     price1?: number;
     token0To1: boolean;
-    from?: number;
-    to?: number;
+    fromTick?: number;
+    fromPrice?: number;
+    toTick?: number;
+    toPrice?: number;
     ticks: ScaledLiquidityTick[];
     idx?: number;
     activeTickIdx: number | null;
     currentPrice: number | null;
     tooltipIndex?: number;
+    showPriceRange?: boolean;
 }
 
 function getTopRoundedPath(
@@ -50,13 +54,16 @@ export function LiquidityBar({
     price0,
     price1,
     token0To1,
-    from,
-    to,
+    fromTick,
+    fromPrice,
+    toTick,
+    toPrice,
     ticks,
     idx,
     activeTickIdx,
     currentPrice,
     tooltipIndex,
+    showPriceRange,
 }: LiquidityBarProps) {
     if (
         !idx ||
@@ -72,14 +79,17 @@ export function LiquidityBar({
         return null;
 
     const inRange =
-        from !== undefined && to !== undefined && idx >= from && idx < to;
-    const fill =
-        idx === activeTickIdx ? "#6CFF95" : inRange ? "#6CFF9566" : "#E5E7EB";
+        fromTick !== undefined &&
+        toTick !== undefined &&
+        idx >= fromTick &&
+        idx < toTick;
 
     let percentage = 0;
+    let closestFrom;
+    let closestTo;
     if (
-        from !== undefined &&
-        to !== undefined &&
+        fromTick !== undefined &&
+        toTick !== undefined &&
         activeTickIdx !== null &&
         currentPrice
     ) {
@@ -87,10 +97,10 @@ export function LiquidityBar({
             (tick) => tick.idx === activeTickIdx,
         );
         const chartDataInRange = ticks.filter(
-            (tick) => tick.idx >= from && tick.idx < to,
+            (tick) => tick.idx >= fromTick && tick.idx < toTick,
         );
-        const closestFrom = closestTick(chartDataInRange, from);
-        const closestTo = closestTick(chartDataInRange, to);
+        closestFrom = closestTick(chartDataInRange, fromTick);
+        closestTo = closestTick(chartDataInRange, toTick);
 
         // display the price % change only for the range bounds
         // and hide it if it goes out of chart bounds
@@ -122,15 +132,39 @@ export function LiquidityBar({
                 })}
             />
             {percentage && (
-                <text
-                    x={percentage > 0 ? x : x + 15}
-                    y={y - 8}
-                    fontSize={12}
-                    textAnchor={percentage > 0 ? "start" : "end"}
-                    className={styles.label}
-                >
-                    {`${percentage.toFixed(2)}%`}
-                </text>
+                <>
+                    <text
+                        x={percentage > 0 ? x : x + 15}
+                        y={y - 8}
+                        fontSize={12}
+                        textAnchor={percentage > 0 ? "start" : "end"}
+                        className={styles.label}
+                    >
+                        {`${percentage.toFixed(2)}%`}
+                    </text>
+                    {showPriceRange && closestFrom === idx && (
+                        <text
+                            x={x}
+                            y={320}
+                            fontSize={12}
+                            textAnchor="end"
+                            className={styles.label}
+                        >
+                            {formatAmount({ amount: fromPrice })}
+                        </text>
+                    )}
+                    {showPriceRange && closestTo === idx && (
+                        <text
+                            x={x}
+                            y={320}
+                            fontSize={12}
+                            textAnchor="start"
+                            className={styles.label}
+                        >
+                            {formatAmount({ amount: toPrice })}
+                        </text>
+                    )}
+                </>
             )}
         </g>
     );

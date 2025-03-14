@@ -38,6 +38,9 @@ export function PriceRange({ campaign }: PriceRangeProps) {
     const { priceRange } = campaign.specification;
     const { pool } = campaign.target;
 
+    const fromPrice = tickToScaledPrice(priceRange.from, pool, true);
+    const toPrice = tickToScaledPrice(priceRange.to, pool, true);
+
     return (
         <div className={styles.root}>
             <Typography size="lg" weight="medium" uppercase>
@@ -58,11 +61,7 @@ export function PriceRange({ campaign }: PriceRangeProps) {
                             token0: pool.tokens[0].symbol,
                             token1: pool.tokens[1].symbol,
                             price: formatAmount({
-                                amount: tickToScaledPrice(
-                                    priceRange.from,
-                                    pool,
-                                    true,
-                                ),
+                                amount: fromPrice,
                             }),
                         })}
                     />
@@ -74,11 +73,7 @@ export function PriceRange({ campaign }: PriceRangeProps) {
                             token0: pool.tokens[0].symbol,
                             token1: pool.tokens[1].symbol,
                             price: formatAmount({
-                                amount: tickToScaledPrice(
-                                    priceRange.to,
-                                    pool,
-                                    true,
-                                ),
+                                amount: toPrice,
                             }),
                         })}
                     />
@@ -91,11 +86,18 @@ export function PriceRange({ campaign }: PriceRangeProps) {
                         <div className={classNames(styles.chartWrapper)}>
                             <LiquidityDensityChart
                                 pool={pool}
-                                from={priceRange.from}
-                                to={priceRange.to}
+                                from={{
+                                    price: fromPrice,
+                                    tick: priceRange.from,
+                                }}
+                                to={{
+                                    price: toPrice,
+                                    tick: priceRange.to,
+                                }}
                                 density={liquidityDensity}
                                 loading={loadingLiquidityDensity}
                                 token0To1
+                                showPriceRange
                             />
                         </div>
                     </Card>

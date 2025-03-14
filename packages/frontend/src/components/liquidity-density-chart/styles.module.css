@@ -5,7 +5,6 @@
         flex
         flex-col
         rounded-2xl
-        theme-surface-2
         transition-colors
         duration-200
         ease-in-out;

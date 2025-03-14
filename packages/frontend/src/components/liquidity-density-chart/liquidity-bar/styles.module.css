@@ -6,7 +6,7 @@
         text-xs
         leading-none
         font-medium
-        fill-black dark:fill-zinc-200;
+        fill-black dark:fill-white;
 }
 
 .bar {
