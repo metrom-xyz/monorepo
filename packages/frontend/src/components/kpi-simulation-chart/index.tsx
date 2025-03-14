@@ -6,7 +6,6 @@ import {
     ReferenceDot,
     ReferenceLine,
     ResponsiveContainer,
-    Scatter,
     Tooltip,
     XAxis,
     YAxis,
