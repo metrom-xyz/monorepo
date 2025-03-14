@@ -9,7 +9,7 @@ import {
     useWriteContract,
 } from "wagmi";
 import { metromAbi } from "@metrom-xyz/contracts/abi";
-import { useCallback, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import type { TokenClaims } from "..";
 import { toast } from "sonner";
 import { useChainData } from "@/src/hooks/useChainData";
@@ -18,8 +18,10 @@ import { trackFathomEvent } from "@/src/utils/fathom";
 import { RemoteLogo } from "@/src/components/remote-logo";
 import { ClaimSuccess } from "../../notification/claim-success";
 import { ClaimFail } from "../../notification/claim-fail";
-import type { WriteContractErrorType } from "viem";
+import { type WriteContractErrorType, encodeFunctionData } from "viem";
 import type { Erc20Token } from "@metrom-xyz/sdk";
+import { SAFE } from "@/src/commons/env";
+import { safeSdk } from "@/src/commons";
 
 import styles from "./styles.module.css";
 
@@ -46,6 +48,20 @@ export function TokenClaim({
     const [claiming, setClaiming] = useState(false);
     const [claimed, setClaimed] = useState(false);
 
+    const claimRewardsArgs = useMemo(() => {
+        if (!account) return [];
+
+        return tokenClaims.claims.map((claim) => {
+            return {
+                campaignId: claim.campaignId,
+                proof: claim.proof,
+                token: claim.token.address,
+                amount: claim.amount.raw,
+                receiver: account,
+            };
+        });
+    }, [account, tokenClaims.claims]);
+
     const {
         data: simulatedClaimAll,
         isLoading: simulatingClaimAll,
@@ -55,26 +71,14 @@ export function TokenClaim({
         abi: metromAbi,
         address: chainData?.metromContract.address,
         functionName: "claimRewards",
-        args: [
-            !account
-                ? []
-                : tokenClaims.claims.map((claim) => {
-                      return {
-                          campaignId: claim.campaignId,
-                          proof: claim.proof,
-                          token: claim.token.address,
-                          amount: claim.amount.raw,
-                          receiver: account,
-                      };
-                  }),
-        ],
+        args: [claimRewardsArgs],
         query: {
             refetchOnMount: false,
-            enabled: !!account && tokenClaims.claims.length > 0,
+            enabled: !SAFE && !!account && tokenClaims.claims.length > 0,
         },
     });
 
-    const handleClaim = useCallback(() => {
+    const handleStandardClaim = useCallback(() => {
         if (!writeContractAsync || !publicClient || !simulatedClaimAll?.request)
             return;
         const claim = async () => {
@@ -128,6 +132,52 @@ export function TokenClaim({
         switchChainAsync,
     ]);
 
+    const handleSafeClaim = useCallback(() => {
+        if (!chainData) {
+            console.warn(
+                "Missing parameters to claim rewards through Safe: aborting",
+            );
+            return;
+        }
+
+        const claim = async () => {
+            setClaiming(true);
+            try {
+                await safeSdk.txs.send({
+                    txs: [
+                        {
+                            to: chainData.metromContract.address,
+                            data: encodeFunctionData({
+                                abi: metromAbi,
+                                functionName: "claimRewards",
+                                args: [claimRewardsArgs],
+                            }),
+                            value: "0",
+                        },
+                    ],
+                });
+
+                toast.custom((toastId) => (
+                    <ClaimSuccess
+                        toastId={toastId}
+                        chain={chainId}
+                        token={tokenClaims.token}
+                        amount={tokenClaims.totalAmount}
+                    />
+                ));
+                setClaimed(true);
+                onClaim(tokenClaims.token);
+                trackFathomEvent("CLICK_CLAIM_SINGLE");
+            } catch (error) {
+                console.warn("Could not claim", error);
+            } finally {
+                setClaiming(false);
+            }
+        };
+
+        void claim();
+    }, []);
+
     return (
         <Card className={styles.root}>
             <div className={styles.leftWrapper}>
@@ -149,7 +199,7 @@ export function TokenClaim({
                 disabled={simulateClaimAllError || claimed || disabled}
                 loading={simulatingClaimAll || claiming}
                 iconPlacement="right"
-                onClick={handleClaim}
+                onClick={SAFE ? handleSafeClaim : handleStandardClaim}
             >
                 {simulatingClaimAll
                     ? t("loading")
