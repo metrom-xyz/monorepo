@@ -4,11 +4,16 @@ import { METROM_API_CLIENT } from "../commons";
 import { useAccount, useChainId } from "wagmi";
 import { useQuery } from "@tanstack/react-query";
 import type { Address } from "viem";
+import type { HookBaseParams } from "../types/hooks";
+
+interface UseActivitiesParams extends HookBaseParams {}
+
+type QueryKey = [string, Address | undefined];
 
 const TIME_RANGE = 60 * 60 * 24 * 7; // 1 week
 
 // TODO: dynamic from and to
-export function useActivities(): {
+export function useActivities({ enabled = true }: UseActivitiesParams = {}): {
     loading: boolean;
     activities: Activity[];
 } {
@@ -18,14 +23,14 @@ export function useActivities(): {
     const { data: activities, isPending: loading } = useQuery({
         queryKey: ["activities", address, chainId],
         queryFn: async ({ queryKey }) => {
-            const [_, account, chainId] = queryKey;
+            const [, account] = queryKey as QueryKey;
             if (!account) return [];
 
             try {
                 const to = Math.floor(Date.now() / 1000);
                 const activities = await METROM_API_CLIENT.fetchActivities({
-                    chainId: chainId as SupportedChain,
-                    address: account as Address,
+                    chainId,
+                    address: account,
                     from: to - TIME_RANGE,
                     to,
                 });
@@ -38,7 +43,7 @@ export function useActivities(): {
                 throw error;
             }
         },
-        enabled: !!chainId && !!address,
+        enabled: enabled && !!chainId && !!address,
     });
 
     return {

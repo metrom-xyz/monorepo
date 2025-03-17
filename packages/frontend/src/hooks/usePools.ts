@@ -4,11 +4,16 @@ import { SupportedDex, type AmmPoolWithTvl } from "@metrom-xyz/sdk";
 import { useQuery } from "@tanstack/react-query";
 import { useProtocolsInChain } from "./useProtocolsInChain";
 import { ProtocolType } from "../types/common";
+import type { HookBaseParams } from "../types/hooks";
 
-export function usePools(
-    chainId: SupportedChain,
-    dex?: SupportedDex,
-): {
+interface UsePoolsParams extends HookBaseParams {
+    chainId: SupportedChain;
+    dex?: SupportedDex;
+}
+
+type QueryKey = [string, SupportedDex | undefined, SupportedChain];
+
+export function usePools({ chainId, dex, enabled = true }: UsePoolsParams): {
     loading: boolean;
     pools?: AmmPoolWithTvl[];
 } {
@@ -17,14 +22,13 @@ export function usePools(
     const { data: pools, isPending: loading } = useQuery({
         queryKey: ["pools", dex, chainId],
         queryFn: async ({ queryKey }) => {
-            const dex = queryKey[1];
-            const chainId = queryKey[2];
-            if (!dex) return undefined;
+            const [, dex, chainId] = queryKey as QueryKey;
+            if (!dex) return null;
 
             try {
                 const pools = await METROM_API_CLIENT.fetchAmmPools({
-                    chainId: chainId as SupportedChain,
-                    dex: dex as SupportedDex,
+                    chainId,
+                    dex,
                 });
                 return pools;
             } catch (error) {
@@ -33,11 +37,14 @@ export function usePools(
             }
         },
         refetchOnMount: false,
-        enabled: !!dex && !!availableDexes.find(({ slug }) => slug === dex),
+        enabled:
+            enabled &&
+            !!dex &&
+            !!availableDexes.find(({ slug }) => slug === dex),
     });
 
     return {
         loading,
-        pools,
+        pools: pools || undefined,
     };
 }

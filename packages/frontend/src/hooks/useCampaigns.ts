@@ -4,8 +4,11 @@ import { useTranslations } from "next-intl";
 import { getCampaignName } from "../utils/campaign";
 import { Campaign } from "../types/common";
 import type { SupportedChain } from "@metrom-xyz/contracts";
+import type { HookBaseParams } from "../types/hooks";
 
-export function useCampaigns(): {
+interface UseCampaignsParams extends HookBaseParams {}
+
+export function useCampaigns({ enabled = true }: UseCampaignsParams = {}): {
     loading: boolean;
     campaigns?: Campaign[];
 } {
@@ -28,6 +31,7 @@ export function useCampaigns(): {
                 throw error;
             }
         },
+        enabled,
     });
 
     return {

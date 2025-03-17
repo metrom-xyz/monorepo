@@ -9,36 +9,38 @@ interface UseLiquidityInRangeParams extends HookBaseParams {
     to?: number;
 }
 
-// TODO: maybe we could use this format for all the other hooks too
+type QueryKey = [
+    string,
+    AmmPool | undefined,
+    number | undefined,
+    number | undefined,
+];
+
 export function useLiquidityInRange({
     pool,
     from,
     to,
-    enabled,
-}: UseLiquidityInRangeParams): {
+    enabled = true,
+}: UseLiquidityInRangeParams = {}): {
     loading: boolean;
     liquidityInRange?: LiquidityInRange;
 } {
     const { data, isLoading } = useQuery({
         queryKey: ["liquidity-in-range", pool, from, to],
         queryFn: async ({ queryKey }) => {
-            const pool = queryKey[1] as AmmPool;
-            const from = queryKey[2] as number;
-            const to = queryKey[3] as number;
-            if (!pool || !from || !to) return undefined;
-
-            const chainId = pool.chainId;
+            const [, pool, from, to] = queryKey as QueryKey;
+            if (!pool || !from || !to) return null;
 
             try {
                 return METROM_API_CLIENT.fetchLiquidityInRange({
-                    chainId,
+                    chainId: pool.chainId,
                     pool,
                     from,
                     to,
                 });
             } catch (error) {
                 console.error(
-                    `Could not fetch liquidity in range ${from}-${to} for pool with address ${pool.address} in chain with id ${chainId}: ${error}`,
+                    `Could not fetch liquidity in range ${from}-${to} for pool with address ${pool.address} in chain with id ${pool.chainId}: ${error}`,
                 );
                 throw error;
             }
@@ -49,6 +51,6 @@ export function useLiquidityInRange({
 
     return {
         loading: isLoading,
-        liquidityInRange: data,
+        liquidityInRange: data || undefined,
     };
 }

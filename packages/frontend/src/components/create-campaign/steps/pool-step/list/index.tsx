@@ -35,9 +35,9 @@ export function ListPoolPicker({ value, dex, onChange }: ListPoolPickerProps) {
     const [baseTokenFilter, setBaseTokenFilter] = useState<Erc20Token>();
     const listRef = useRef(null);
 
-    const chain = useChainId();
-    const baseTokens = useBaseTokens(chain);
-    const { pools, loading } = usePools(chain, dex);
+    const chainId = useChainId();
+    const baseTokens = useBaseTokens(chainId);
+    const { pools, loading } = usePools({ chainId, dex });
 
     const filteredPools = useMemo(
         () =>
@@ -111,7 +111,7 @@ export function ListPoolPicker({ value, dex, onChange }: ListPoolPickerProps) {
                                     size="xs"
                                     defaultText={" "}
                                     address={token.address}
-                                    chain={chain}
+                                    chain={chainId}
                                 />
                                 <Typography weight="medium">
                                     {token.symbol}
@@ -155,7 +155,7 @@ export function ListPoolPicker({ value, dex, onChange }: ListPoolPickerProps) {
                                         return (
                                             <Row
                                                 style={style}
-                                                chain={chain}
+                                                chain={chainId}
                                                 loading={loading}
                                                 active={
                                                     pool &&

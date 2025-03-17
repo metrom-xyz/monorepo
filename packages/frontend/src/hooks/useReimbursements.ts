@@ -6,12 +6,19 @@ import { SupportedChain } from "@metrom-xyz/contracts";
 import { metromAbi } from "@metrom-xyz/contracts/abi";
 import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
+import type { HookBaseParams } from "../types/hooks";
 
 interface ReimbursementsWithRemaining extends Reimbursement {
     remaining: OnChainAmount;
 }
 
-export function useReimbursements(): {
+interface UseReimbursementsParams extends HookBaseParams {}
+
+type QueryKey = [string, Address | undefined];
+
+export function useReimbursements({
+    enabled = true,
+}: UseReimbursementsParams = {}): {
     loadingReimbursements: boolean;
     loadingRecovered: boolean;
     loadingClaimed: boolean;
@@ -30,12 +37,12 @@ export function useReimbursements(): {
     } = useQuery({
         queryKey: ["reimbursements", address],
         queryFn: async ({ queryKey }) => {
-            const account = queryKey[1];
-            if (!account) return undefined;
+            const [, address] = queryKey as QueryKey;
+            if (!address) return null;
 
             try {
                 const rawClaims = await METROM_API_CLIENT.fetchReimbursements({
-                    address: account as Address,
+                    address,
                 });
                 return rawClaims;
             } catch (error) {
@@ -47,7 +54,7 @@ export function useReimbursements(): {
         },
         refetchOnWindowFocus: false,
         staleTime: 60000,
-        enabled: !!address,
+        enabled: enabled && !!address,
     });
 
     // reimbursements recovered are assigned to the zero address,
@@ -59,23 +66,23 @@ export function useReimbursements(): {
         isLoading: loadingRecovered,
     } = useReadContracts({
         allowFailure: false,
-        contracts:
-            rawReimbursements &&
-            rawReimbursements.map((rawReimbursement) => {
-                return {
-                    chainId: rawReimbursement.chainId,
-                    address:
-                        CHAIN_DATA[rawReimbursement.chainId as SupportedChain]
-                            ?.metromContract.address,
-                    abi: metromAbi,
-                    functionName: "claimedCampaignReward",
-                    args: [
-                        rawReimbursement.campaignId,
-                        rawReimbursement.token.address,
-                        zeroAddress,
-                    ],
-                };
-            }),
+        contracts: rawReimbursements
+            ? rawReimbursements.map((rawReimbursement) => {
+                  return {
+                      chainId: rawReimbursement.chainId,
+                      address:
+                          CHAIN_DATA[rawReimbursement.chainId as SupportedChain]
+                              ?.metromContract.address,
+                      abi: metromAbi,
+                      functionName: "claimedCampaignReward",
+                      args: [
+                          rawReimbursement.campaignId,
+                          rawReimbursement.token.address,
+                          zeroAddress,
+                      ],
+                  };
+              })
+            : undefined,
         query: {
             refetchOnWindowFocus: false,
             staleTime: 60000,
@@ -90,23 +97,23 @@ export function useReimbursements(): {
         isLoading: loadingClaimed,
     } = useReadContracts({
         allowFailure: false,
-        contracts:
-            rawReimbursements &&
-            rawReimbursements.map((rawReimbursement) => {
-                return {
-                    chainId: rawReimbursement.chainId,
-                    address:
-                        CHAIN_DATA[rawReimbursement.chainId as SupportedChain]
-                            ?.metromContract.address,
-                    abi: metromAbi,
-                    functionName: "claimedCampaignReward",
-                    args: [
-                        rawReimbursement.campaignId,
-                        rawReimbursement.token.address,
-                        address,
-                    ],
-                };
-            }),
+        contracts: rawReimbursements
+            ? rawReimbursements.map((rawReimbursement) => {
+                  return {
+                      chainId: rawReimbursement.chainId,
+                      address:
+                          CHAIN_DATA[rawReimbursement.chainId as SupportedChain]
+                              ?.metromContract.address,
+                      abi: metromAbi,
+                      functionName: "claimedCampaignReward",
+                      args: [
+                          rawReimbursement.campaignId,
+                          rawReimbursement.token.address,
+                          address,
+                      ],
+                  };
+              })
+            : undefined,
         query: {
             refetchOnWindowFocus: false,
             staleTime: 60000,

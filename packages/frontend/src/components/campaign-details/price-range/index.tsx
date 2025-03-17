@@ -27,7 +27,10 @@ export function PriceRange({ campaign }: PriceRangeProps) {
     // One way could be to add to the hook an "enabled" param that gets passed
     // to react-query. This could be a general thing to apply to react query based hooks
     const { liquidityDensity, loading: loadingLiquidityDensity } =
-        useLiquidityDensity(campaign?.target.pool, COMPUTE_TICKS_AMOUNT);
+        useLiquidityDensity({
+            pool: campaign?.target.pool,
+            computeAmount: COMPUTE_TICKS_AMOUNT,
+        });
 
     if (
         !campaign?.isTargeting(TargetType.AmmPoolLiquidity) ||

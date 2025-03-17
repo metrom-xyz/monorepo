@@ -25,10 +25,10 @@ interface CampaignDetailsProps {
 export function CampaignDetails({ chain, campaignId }: CampaignDetailsProps) {
     const t = useTranslations("campaignDetails");
 
-    const { loading: loadingCampaign, campaign } = useCampaign(
-        chain,
-        campaignId,
-    );
+    const { loading: loadingCampaign, campaign } = useCampaign({
+        id: campaignId,
+        chainId: chain,
+    });
 
     const prevLoadingCampaign = usePrevious(loadingCampaign);
     if (prevLoadingCampaign && !loadingCampaign && !campaign)

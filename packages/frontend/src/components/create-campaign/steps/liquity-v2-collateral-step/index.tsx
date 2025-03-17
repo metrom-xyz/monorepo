@@ -36,10 +36,10 @@ export function LiquityV2CollateralStep({
     const [open, setOpen] = useState(true);
 
     const chainId = useChainId();
-    const { loading, collaterals } = useLiquityV2Collaterals(
+    const { loading, collaterals } = useLiquityV2Collaterals({
         chainId,
-        brand?.slug,
-    );
+        brand: brand?.slug,
+    });
 
     useEffect(() => {
         setOpen(false);

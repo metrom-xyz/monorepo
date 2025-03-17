@@ -2,13 +2,18 @@ import { metromAbi } from "@metrom-xyz/contracts/abi";
 import { useMemo } from "react";
 import { useChainId, useReadContracts } from "wagmi";
 import { useChainData } from "./useChainData";
+import type { HookBaseParams } from "../types/hooks";
 
 interface CampaignDurationLimits {
     minimumSeconds: number;
     maximumSeconds: number;
 }
 
-export function useCampaignDurationLimits(): {
+interface UseCampaignDurationLimitsParams extends HookBaseParams {}
+
+export function useCampaignDurationLimits({
+    enabled = true,
+}: UseCampaignDurationLimitsParams = {}): {
     loading: boolean;
     limits?: CampaignDurationLimits;
 } {
@@ -28,6 +33,9 @@ export function useCampaignDurationLimits(): {
                 functionName: "maximumCampaignDuration",
             },
         ],
+        query: {
+            enabled,
+        },
     });
     const minimumSeconds = data?.[0].result;
     const maximumSeconds = data?.[1].result;

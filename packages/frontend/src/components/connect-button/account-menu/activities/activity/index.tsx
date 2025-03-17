@@ -26,10 +26,10 @@ export function Activity({ chainId, transaction, payload }: ActivityProps) {
     const t = useTranslations("accountMenu.activities");
 
     const dexes = useProtocolsInChain(chainId, ProtocolType.Dex);
-    const { campaign, loading } = useCampaign(
+    const { campaign, loading } = useCampaign({
         chainId,
-        payload.type === "create-campaign" ? payload.id : undefined,
-    );
+        id: payload.type === "create-campaign" ? payload.id : undefined,
+    });
 
     const time = dayjs.unix(transaction.timestamp).to(dayjs(), true);
     const timeAgo = t("timeAgo", { time });
