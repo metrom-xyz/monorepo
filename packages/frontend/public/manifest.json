@@ -3,7 +3,6 @@
     "short_name": "Metrom",
     "description": "An efficient reward distribution platform for concentrated liquidity AMMs, with KPI support.",
     "theme_color": "#6cff95",
-    "categories": ["Tooling"],
     "background_color": "#f3f4f6",
     "display": "fullScreen",
     "orientation": "portrait",
