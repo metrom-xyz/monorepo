@@ -10,7 +10,6 @@ import type { FunctionComponent } from "react";
 import { SupportedChain } from "@metrom-xyz/contracts";
 import { ENVIRONMENT } from "./env";
 import {
-    celoAlfajores,
     holesky,
     mode,
     mantle,
@@ -24,7 +23,6 @@ import {
     telos,
 } from "viem/chains";
 import {
-    celoAlfajoresData,
     holeskyData,
     modeData,
     mantleData,
@@ -64,13 +62,12 @@ export const MAXIMUM_REWARDS_RESTRICTIONS = 20;
 export const SUPPORTED_CHAINS: [Chain, ...Chain[]] =
     ENVIRONMENT === Environment.Production
         ? [mode, mantle, base, taiko, scroll, sonic, form, gnosis, telos]
-        : [celoAlfajores, holesky, baseSepolia, sepolia];
+        : [holesky, baseSepolia, sepolia];
 
 export const TOKEN_ICONS_URL = `https://raw.githubusercontent.com/metrom-xyz/token-icons/refs/heads/main/${ENVIRONMENT === Environment.Production ? "mainnet" : "testnet"}-icons.json`;
 
 export const CHAIN_DATA: Record<SupportedChain, ChainData> = {
     [SupportedChain.Holesky]: holeskyData,
-    [SupportedChain.CeloAlfajores]: celoAlfajoresData,
     [SupportedChain.BaseSepolia]: baseSepoliaData,
     [SupportedChain.Sepolia]: sepoliaData,
 

@@ -7,7 +7,6 @@ import Mustache from "mustache";
 
 const NETWORK_NAME: Record<SupportedChain, string> = {
     [SupportedChain.Holesky]: "holesky",
-    [SupportedChain.CeloAlfajores]: "celo-alfajores",
     [SupportedChain.BaseSepolia]: "base-sepolia",
     [SupportedChain.Sepolia]: "sepolia",
 

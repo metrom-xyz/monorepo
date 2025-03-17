@@ -18,6 +18,7 @@ import { ErrorIcon } from "@/src/assets/error-icon";
 import { RemoveScroll } from "react-remove-scroll";
 
 import styles from "./styles.module.css";
+import Image from "next/image";
 
 interface AccountMenuProps {
     className?: string;
@@ -91,7 +92,7 @@ export function AccountMenu({
             <div className={styles.headerWrapper}>
                 <div className={styles.accountContainer}>
                     <div className={styles.avatarWrapper}>
-                        <img
+                        <Image
                             alt="Avatar"
                             src={account.ensAvatar || blockie}
                             className={styles.avatar}

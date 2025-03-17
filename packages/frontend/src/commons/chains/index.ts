@@ -1,5 +1,4 @@
 export { modeData } from "./mode";
-export { celoAlfajoresData } from "./celo-alfajores";
 export { holeskyData } from "./holesky";
 export { mantleData } from "./mantle";
 export { sonicData } from "./sonic";
