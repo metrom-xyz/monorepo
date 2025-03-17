@@ -1,5 +1,5 @@
 import type { SupportedChain } from "@metrom-xyz/contracts";
-import { metromApiClient } from "../commons";
+import { METROM_API_CLIENT } from "../commons";
 import { SupportedDex, type AmmPoolWithTvl } from "@metrom-xyz/sdk";
 import { useQuery } from "@tanstack/react-query";
 import { useProtocolsInChain } from "./useProtocolsInChain";
@@ -22,7 +22,7 @@ export function usePools(
             if (!dex) return undefined;
 
             try {
-                const pools = await metromApiClient.fetchAmmPools({
+                const pools = await METROM_API_CLIENT.fetchAmmPools({
                     chainId: chainId as SupportedChain,
                     dex: dex as SupportedDex,
                 });

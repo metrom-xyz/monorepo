@@ -1,5 +1,5 @@
 import { type AmmPool, type LiquidityInRange } from "@metrom-xyz/sdk";
-import { metromApiClient } from "../commons";
+import { METROM_API_CLIENT } from "../commons";
 import { useQuery } from "@tanstack/react-query";
 import type { HookBaseParams } from "../types/hooks";
 
@@ -30,7 +30,7 @@ export function useLiquidityInRange({
             const chainId = pool.chainId;
 
             try {
-                return metromApiClient.fetchLiquidityInRange({
+                return METROM_API_CLIENT.fetchLiquidityInRange({
                     chainId,
                     pool,
                     from,

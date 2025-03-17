@@ -1,5 +1,5 @@
 import { Status, type Campaign, type KpiMeasurement } from "@metrom-xyz/sdk";
-import { metromApiClient } from "../commons";
+import { METROM_API_CLIENT } from "../commons";
 import { useQuery } from "@tanstack/react-query";
 import dayjs from "dayjs";
 
@@ -31,7 +31,7 @@ export function useKpiMeasurements(campaign?: Campaign): {
                     : dayjs().utc().unix();
 
             try {
-                return metromApiClient.fetchKpiMeasurements({
+                return METROM_API_CLIENT.fetchKpiMeasurements({
                     campaign,
                     from,
                     to,

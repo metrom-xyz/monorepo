@@ -1,7 +1,7 @@
 import {
     type Erc20Token,
     Environment,
-    METROM_API_CLIENT,
+    METROM_API_CLIENT as METROM_API_CLIENTS,
     SupportedAmm,
 } from "@metrom-xyz/sdk";
 import { type ChainContract, type Chain } from "viem";
@@ -91,6 +91,6 @@ export const AMM_SUPPORTS_RANGE_INCENTIVES: Record<SupportedAmm, boolean> = {
 // taken from https://github.com/wevm/wagmi/blob/80326815bea2f175623157f57465f9dfae1f4c5c/packages/connectors/src/safe.ts#L45
 export const SAFE_CONNECTOR_ID = "safe";
 
-export const metromApiClient = METROM_API_CLIENT[ENVIRONMENT];
+export const METROM_API_CLIENT = METROM_API_CLIENTS[ENVIRONMENT];
 
-export const safeSdk = new SafeAppsSdk();
+export const SAFE_APP_SDK = new SafeAppsSdk();

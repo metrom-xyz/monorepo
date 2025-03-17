@@ -1,6 +1,6 @@
 import type { SupportedChain } from "@metrom-xyz/contracts";
 import { useChainId } from "wagmi";
-import { metromApiClient } from "../commons";
+import { METROM_API_CLIENT } from "../commons";
 import type { FeeToken } from "@metrom-xyz/sdk";
 import { useQuery } from "@tanstack/react-query";
 
@@ -15,7 +15,7 @@ export function useFeeTokens(): {
         queryFn: async ({ queryKey }) => {
             const chainId = queryKey[1] as SupportedChain;
             try {
-                return await metromApiClient.fetchFeeTokens({ chainId });
+                return await METROM_API_CLIENT.fetchFeeTokens({ chainId });
             } catch (error) {
                 console.error(`Could not fetch fee tokens: ${error}`);
                 throw error;

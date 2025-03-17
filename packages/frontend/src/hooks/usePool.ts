@@ -1,5 +1,5 @@
 import type { SupportedChain } from "@metrom-xyz/contracts";
-import { metromApiClient } from "../commons";
+import { METROM_API_CLIENT } from "../commons";
 import { type AmmPoolWithTvl } from "@metrom-xyz/sdk";
 import { useQuery } from "@tanstack/react-query";
 import type { Address } from "viem";
@@ -19,7 +19,7 @@ export function usePool(
             if (!chainId || !address) return undefined;
 
             try {
-                return await metromApiClient.fetchPool({
+                return await METROM_API_CLIENT.fetchPool({
                     chainId,
                     address,
                 });

@@ -1,5 +1,5 @@
 import type { SupportedChain } from "@metrom-xyz/contracts";
-import { metromApiClient } from "../commons";
+import { METROM_API_CLIENT } from "../commons";
 import { SupportedLiquityV2, type LiquityV2Collateral } from "@metrom-xyz/sdk";
 import { useQuery } from "@tanstack/react-query";
 import { useProtocolsInChain } from "./useProtocolsInChain";
@@ -25,7 +25,7 @@ export function useLiquityV2Collaterals(
             if (!brand) return null;
 
             try {
-                return await metromApiClient.fetchLiquityV2Collaterals({
+                return await METROM_API_CLIENT.fetchLiquityV2Collaterals({
                     chainId: chainId as SupportedChain,
                     brand: brand as SupportedLiquityV2,
                 });

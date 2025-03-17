@@ -21,7 +21,7 @@ import type { Erc20Token } from "@metrom-xyz/sdk";
 import { RecoverSuccess } from "../../notification/recover-success";
 import { RecoverFail } from "../../notification/recover-fail";
 import { SAFE } from "@/src/commons/env";
-import { safeSdk } from "@/src/commons";
+import { SAFE_APP_SDK } from "@/src/commons";
 
 import styles from "./styles.module.css";
 
@@ -150,7 +150,7 @@ export function TokenReimbursement({
             setRecovering(true);
 
             try {
-                await safeSdk.txs.send({
+                await SAFE_APP_SDK.txs.send({
                     txs: [
                         {
                             to: chainData.metromContract.address,
