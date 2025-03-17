@@ -13,7 +13,6 @@ import {
     ProtocolType,
 } from "@/src/types/common";
 import { useProtocolsInChain } from "@/src/hooks/useProtocolsInChain";
-import { useLiquityV2Collaterals } from "@/src/hooks/useLiquityV2Collaterals";
 
 import styles from "./styles.module.css";
 
@@ -36,8 +35,6 @@ export function LiquityV2BrandStep({
         chainId,
         ProtocolType.LiquityV2,
     );
-    const { collaterals, loading: loadingCollaterals } =
-        useLiquityV2Collaterals(chainId, brand?.slug);
 
     const selectedBrand = useMemo(() => {
         if (!brand) return undefined;

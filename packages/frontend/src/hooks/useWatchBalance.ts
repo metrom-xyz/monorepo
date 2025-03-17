@@ -1,11 +1,18 @@
 import { useBlockNumber, useReadContract } from "wagmi";
 import { erc20Abi, type Address } from "viem";
 import { useEffect } from "react";
+import type { HookBaseParams } from "../types/hooks";
 
-export function useWatchBalance(
-    address?: Address,
-    token?: Address,
-): {
+interface UseWatchBalanceParams extends HookBaseParams {
+    address?: Address;
+    token?: Address;
+}
+
+export function useWatchBalance({
+    address,
+    token,
+    enabled = true,
+}: UseWatchBalanceParams = {}): {
     balance?: bigint;
     loading: boolean;
 } {
@@ -19,7 +26,7 @@ export function useWatchBalance(
         abi: erc20Abi,
         functionName: "balanceOf",
         args: address ? [address] : undefined,
-        query: { enabled: !!address && !!token },
+        query: { enabled: enabled && !!address && !!token },
     });
 
     useEffect(() => {

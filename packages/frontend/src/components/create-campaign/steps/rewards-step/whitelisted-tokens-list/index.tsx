@@ -44,7 +44,7 @@ export function WhitelistedTokensList({
     const chainId = useChainId();
 
     const { tokensWithBalance: tokensWithBalance, loading: loadingBalances } =
-        useWatchBalances<WhitelistedErc20Token>(address, values);
+        useWatchBalances<WhitelistedErc20Token>({ address, tokens: values });
 
     return (
         <AnimatePresence>

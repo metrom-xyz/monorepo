@@ -2,18 +2,28 @@ import { Status, type Campaign, type KpiMeasurement } from "@metrom-xyz/sdk";
 import { METROM_API_CLIENT } from "../commons";
 import { useQuery } from "@tanstack/react-query";
 import dayjs from "dayjs";
+import type { HookBaseParams } from "../types/hooks";
+
+interface UseKpiMeasurementsParams extends HookBaseParams {
+    campaign?: Campaign;
+}
+
+type QueryKey = [string, Campaign | undefined];
 
 const MAX_DAYS_RANGE = 7;
 
 // TODO: dynamic from and to
-export function useKpiMeasurements(campaign?: Campaign): {
+export function useKpiMeasurements({
+    campaign,
+    enabled = true,
+}: UseKpiMeasurementsParams = {}): {
     loading: boolean;
     kpiMeasurements: KpiMeasurement[];
 } {
     const { data, isPending } = useQuery({
         queryKey: ["kpi-measurements", campaign],
         queryFn: async ({ queryKey }) => {
-            const campaign = queryKey[1] as Campaign;
+            const [, campaign] = queryKey as QueryKey;
             if (!campaign) return [];
 
             const from =
@@ -43,7 +53,7 @@ export function useKpiMeasurements(campaign?: Campaign): {
                 throw error;
             }
         },
-        enabled: !!campaign && !!campaign.specification?.kpi,
+        enabled: enabled && !!campaign && !!campaign.specification?.kpi,
     });
 
     return {

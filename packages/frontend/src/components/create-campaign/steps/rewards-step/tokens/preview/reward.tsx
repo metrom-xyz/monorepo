@@ -44,10 +44,10 @@ export function Reward({
     >(reward.amount);
     const { address } = useAccount();
     const chain = useChainId();
-    const { balance: rewardTokenBalance } = useWatchBalance(
+    const { balance: rewardTokenBalance } = useWatchBalance({
         address,
-        reward.token.address,
-    );
+        token: reward.token.address,
+    });
 
     useEffect(() => {
         if (!campaignDuration || !reward) return;

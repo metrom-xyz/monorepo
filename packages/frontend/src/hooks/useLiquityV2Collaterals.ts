@@ -4,11 +4,20 @@ import { SupportedLiquityV2, type LiquityV2Collateral } from "@metrom-xyz/sdk";
 import { useQuery } from "@tanstack/react-query";
 import { useProtocolsInChain } from "./useProtocolsInChain";
 import { ProtocolType } from "../types/common";
+import type { HookBaseParams } from "../types/hooks";
 
-export function useLiquityV2Collaterals(
-    chainId: SupportedChain,
-    brand?: SupportedLiquityV2,
-): {
+interface UseLiquityV2CollateralsParams extends HookBaseParams {
+    chainId: SupportedChain;
+    brand?: SupportedLiquityV2;
+}
+
+type QueryKey = [string, SupportedLiquityV2 | undefined, SupportedChain];
+
+export function useLiquityV2Collaterals({
+    chainId,
+    brand,
+    enabled = true,
+}: UseLiquityV2CollateralsParams): {
     loading: boolean;
     collaterals?: LiquityV2Collateral[];
 } {
@@ -20,8 +29,7 @@ export function useLiquityV2Collaterals(
     const { data: collaterals, isPending: loading } = useQuery({
         queryKey: ["liquity-v2-collaterals", brand, chainId],
         queryFn: async ({ queryKey }) => {
-            const brand = queryKey[1];
-            const chainId = queryKey[2];
+            const [, brand, chainId] = queryKey as QueryKey;
             if (!brand) return null;
 
             try {
@@ -38,7 +46,9 @@ export function useLiquityV2Collaterals(
         },
         refetchOnMount: false,
         enabled:
-            !!brand && !!supportedBrands.find(({ slug }) => slug === brand),
+            enabled &&
+            !!brand &&
+            !!supportedBrands.find(({ slug }) => slug === brand),
     });
 
     return {

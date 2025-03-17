@@ -13,12 +13,10 @@
 .emptyContainer {
     @apply w-full
         h-full
-        px-3
         min-h-[320px]
         flex
         justify-center
         items-center
-        theme-surface-2
         rounded-2xl;
 }
 

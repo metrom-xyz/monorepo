@@ -6,12 +6,17 @@ import { SupportedChain } from "@metrom-xyz/contracts";
 import { metromAbi } from "@metrom-xyz/contracts/abi";
 import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
+import type { HookBaseParams } from "../types/hooks";
 
 interface ClaimWithRemaining extends Claim {
     remaining: OnChainAmount;
 }
 
-export function useClaims(): {
+interface UseClaimsParams extends HookBaseParams {}
+
+type QueryKey = [string, Address | undefined];
+
+export function useClaims({ enabled = true }: UseClaimsParams = {}): {
     loadingClaims: boolean;
     loadingClaimed: boolean;
     claims: Claim[];
@@ -27,12 +32,12 @@ export function useClaims(): {
     } = useQuery({
         queryKey: ["claims", address],
         queryFn: async ({ queryKey }) => {
-            const account = queryKey[1];
-            if (!account) return undefined;
+            const [, account] = queryKey as QueryKey;
+            if (!account) return null;
 
             try {
                 const rawClaims = await METROM_API_CLIENT.fetchClaims({
-                    address: account as Address,
+                    address: account,
                 });
                 return rawClaims;
             } catch (error) {
@@ -44,7 +49,7 @@ export function useClaims(): {
         },
         refetchOnWindowFocus: false,
         staleTime: 60000,
-        enabled: !!address,
+        enabled: enabled && !!address,
     });
 
     const {
@@ -54,23 +59,23 @@ export function useClaims(): {
         isLoading: loadingClaimed,
     } = useReadContracts({
         allowFailure: false,
-        contracts:
-            rawClaims &&
-            rawClaims.map((rawClaim) => {
-                return {
-                    chainId: rawClaim.chainId,
-                    address:
-                        CHAIN_DATA[rawClaim.chainId as SupportedChain]
-                            ?.metromContract.address,
-                    abi: metromAbi,
-                    functionName: "claimedCampaignReward",
-                    args: [
-                        rawClaim.campaignId,
-                        rawClaim.token.address,
-                        address,
-                    ],
-                };
-            }),
+        contracts: rawClaims
+            ? rawClaims.map((rawClaim) => {
+                  return {
+                      chainId: rawClaim.chainId,
+                      address:
+                          CHAIN_DATA[rawClaim.chainId as SupportedChain]
+                              ?.metromContract.address,
+                      abi: metromAbi,
+                      functionName: "claimedCampaignReward",
+                      args: [
+                          rawClaim.campaignId,
+                          rawClaim.token.address,
+                          address,
+                      ],
+                  };
+              })
+            : undefined,
         query: {
             refetchOnWindowFocus: false,
             staleTime: 60000,

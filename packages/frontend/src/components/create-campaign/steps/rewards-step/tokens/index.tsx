@@ -54,7 +54,10 @@ export function RewardTokens({
 
     const { address } = useAccount();
     const chainId = useChainId();
-    const { balance: tokenBalance } = useWatchBalance(address, token?.address);
+    const { balance: tokenBalance } = useWatchBalance({
+        address,
+        token: token?.address,
+    });
     const { tokens: rewardTokens, loading } = useRewardTokens();
 
     const rewardsError = useMemo(() => {

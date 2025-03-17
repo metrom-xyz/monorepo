@@ -28,7 +28,7 @@ export function Kpi({ campaign, loading }: KpiProps) {
     const specificationLoading = loading || !campaign;
 
     const { kpiMeasurements, loading: loadingKpiMeasurements } =
-        useKpiMeasurements(campaign);
+        useKpiMeasurements({ campaign });
 
     const {
         goal: { lowerUsdTarget, upperUsdTarget },

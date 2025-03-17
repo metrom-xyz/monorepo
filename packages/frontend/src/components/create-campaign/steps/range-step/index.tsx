@@ -67,7 +67,11 @@ export function RangeStep({
     const prevRangeSpecification = usePrevious(priceRangeSpecification);
     const chainId = useChainId();
     const { liquidityDensity, loading: loadingLiquidityDensity } =
-        useLiquidityDensity(pool, COMPUTE_TICKS_AMOUNT);
+        useLiquidityDensity({
+            pool,
+            computeAmount: COMPUTE_TICKS_AMOUNT,
+            enabled,
+        });
 
     const unsavedChanges = useMemo(() => {
         return (

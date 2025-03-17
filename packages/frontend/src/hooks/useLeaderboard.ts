@@ -7,6 +7,7 @@ import {
 import { METROM_API_CLIENT } from "../commons";
 import { useQuery } from "@tanstack/react-query";
 import { useAccount } from "wagmi";
+import type { HookBaseParams } from "../types/hooks";
 
 export interface Rank {
     account: Address;
@@ -22,7 +23,16 @@ export interface Leaderboard {
     sortedRanks: Rank[];
 }
 
-export function useLeaderboard(campaign?: Campaign): {
+interface UseLeaderboardParams extends HookBaseParams {
+    campaign?: Campaign;
+}
+
+type QueryKey = [string, Campaign | undefined, Address | undefined];
+
+export function useLeaderboard({
+    campaign,
+    enabled = true,
+}: UseLeaderboardParams = {}): {
     loading: boolean;
     leaderboard?: Leaderboard;
 } {
@@ -31,10 +41,8 @@ export function useLeaderboard(campaign?: Campaign): {
     const { data, isPending } = useQuery({
         queryKey: ["leaderboard", campaign, address],
         queryFn: async ({ queryKey }) => {
-            const campaign = queryKey[1] as Campaign;
+            const [, campaign, account] = queryKey as QueryKey;
             if (!campaign) return null;
-
-            const account = queryKey[2] as Address | undefined;
 
             try {
                 const response = await METROM_API_CLIENT.fetchLeaderboard({
@@ -86,7 +94,7 @@ export function useLeaderboard(campaign?: Campaign): {
                 throw error;
             }
         },
-        enabled: !!campaign,
+        enabled: enabled && !!campaign,
         refetchOnWindowFocus: false,
     });
 

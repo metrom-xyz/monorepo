@@ -2,18 +2,25 @@ import type { OnChainAmount, UsdPricedErc20Token } from "@metrom-xyz/sdk";
 import { useEffect, useMemo } from "react";
 import { type Address, erc20Abi, formatUnits } from "viem";
 import { useBlockNumber, useReadContracts } from "wagmi";
+import type { HookBaseParams } from "../types/hooks";
 
 export interface Erc20TokenWithBalance<T extends UsdPricedErc20Token> {
     token: T;
     balance: OnChainAmount | null;
 }
 
+interface UseWatchBalancesParams<T> extends HookBaseParams {
+    address?: Address;
+    tokens?: T[];
+}
+
 const collator = new Intl.Collator();
 
-export function useWatchBalances<T extends UsdPricedErc20Token>(
-    address?: Address,
-    tokens?: T[],
-): {
+export function useWatchBalances<T extends UsdPricedErc20Token>({
+    address,
+    tokens,
+    enabled = true,
+}: UseWatchBalancesParams<T> = {}): {
     tokensWithBalance: Erc20TokenWithBalance<T>[];
     loading: boolean;
 } {
@@ -32,7 +39,7 @@ export function useWatchBalances<T extends UsdPricedErc20Token>(
             };
         }),
         allowFailure: true,
-        query: { enabled: !!address && !!tokens },
+        query: { enabled: enabled && !!address && !!tokens },
     });
 
     useEffect(() => {

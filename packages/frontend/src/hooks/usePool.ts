@@ -3,20 +3,24 @@ import { METROM_API_CLIENT } from "../commons";
 import { type AmmPoolWithTvl } from "@metrom-xyz/sdk";
 import { useQuery } from "@tanstack/react-query";
 import type { Address } from "viem";
+import type { HookBaseParams } from "../types/hooks";
 
-export function usePool(
-    chainId: SupportedChain,
-    address?: Address,
-): {
+interface UsePoolParams extends HookBaseParams {
+    chainId: SupportedChain;
+    address?: Address;
+}
+
+type QueryKey = [string, SupportedChain, Address | undefined];
+
+export function usePool({ chainId, address, enabled = true }: UsePoolParams): {
     loading: boolean;
     pool?: AmmPoolWithTvl | null;
 } {
     const { data: pool, isFetching: loading } = useQuery({
         queryKey: ["pool", chainId, address],
         queryFn: async ({ queryKey }) => {
-            const chainId = queryKey[1] as SupportedChain | undefined;
-            const address = queryKey[2] as Address | undefined;
-            if (!chainId || !address) return undefined;
+            const [, chainId, address] = queryKey as QueryKey;
+            if (!chainId || !address) return null;
 
             try {
                 return await METROM_API_CLIENT.fetchPool({
@@ -30,12 +34,12 @@ export function usePool(
                 throw error;
             }
         },
-        enabled: !!address,
+        enabled: enabled && !!address,
         staleTime: 0,
     });
 
     return {
         loading,
-        pool,
+        pool: pool || undefined,
     };
 }

@@ -33,8 +33,9 @@ export interface PersonalRank {
 export function Leaderboard({ campaign, loading }: LeaderboardProps) {
     const t = useTranslations("campaignDetails.leaderboard");
 
-    const { loading: loadingLeaderboard, leaderboard } =
-        useLeaderboard(campaign);
+    const { loading: loadingLeaderboard, leaderboard } = useLeaderboard({
+        campaign,
+    });
 
     if (!loading && !loadingLeaderboard && !leaderboard) {
         return (
