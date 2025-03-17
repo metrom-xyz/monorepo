@@ -1,4 +1,4 @@
-import { CHAIN_DATA, metromApiClient } from "../commons";
+import { CHAIN_DATA, METROM_API_CLIENT } from "../commons";
 import { useQuery } from "@tanstack/react-query";
 import { useTranslations } from "next-intl";
 import { getCampaignName } from "../utils/campaign";
@@ -15,7 +15,7 @@ export function useCampaigns(): {
         queryKey: ["campaigns"],
         queryFn: async () => {
             try {
-                const campaigns = await metromApiClient.fetchCampaigns();
+                const campaigns = await METROM_API_CLIENT.fetchCampaigns();
                 return campaigns.map((campaign) => {
                     return new Campaign(
                         campaign,

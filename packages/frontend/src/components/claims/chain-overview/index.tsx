@@ -23,7 +23,7 @@ import { ClaimFail } from "../notification/claim-fail";
 import { RecoverSuccess } from "../notification/recover-success";
 import { RecoverFail } from "../notification/recover-fail";
 import { SAFE } from "@/src/commons/env";
-import { safeSdk } from "@/src/commons";
+import { SAFE_APP_SDK } from "@/src/commons";
 
 import styles from "./styles.module.css";
 
@@ -184,7 +184,7 @@ export function ChainOverview({
             setRecovering(true);
 
             try {
-                await safeSdk.txs.send({
+                await SAFE_APP_SDK.txs.send({
                     txs: [
                         {
                             to: chainWithRewardsData.chainData.metromContract
@@ -278,7 +278,7 @@ export function ChainOverview({
             setClaiming(true);
 
             try {
-                await safeSdk.txs.send({
+                await SAFE_APP_SDK.txs.send({
                     txs: [
                         {
                             to: chainWithRewardsData.chainData.metromContract

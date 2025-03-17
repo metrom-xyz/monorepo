@@ -1,6 +1,6 @@
 import type { SupportedChain } from "@metrom-xyz/contracts";
 import type { Hex } from "viem";
-import { CHAIN_DATA, metromApiClient } from "../commons";
+import { CHAIN_DATA, METROM_API_CLIENT } from "../commons";
 import { useQuery } from "@tanstack/react-query";
 import { getCampaignName } from "../utils/campaign";
 import { useTranslations } from "next-intl";
@@ -23,7 +23,7 @@ export function useCampaign(
             if (!chainId || !id) return undefined;
 
             try {
-                const campaign = await metromApiClient.fetchCampaign({
+                const campaign = await METROM_API_CLIENT.fetchCampaign({
                     chainId,
                     id,
                 });

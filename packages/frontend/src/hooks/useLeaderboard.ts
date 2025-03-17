@@ -4,7 +4,7 @@ import {
     type OnChainAmount,
     type UsdPricedErc20TokenAmount,
 } from "@metrom-xyz/sdk";
-import { metromApiClient } from "../commons";
+import { METROM_API_CLIENT } from "../commons";
 import { useQuery } from "@tanstack/react-query";
 import { useAccount } from "wagmi";
 
@@ -37,7 +37,7 @@ export function useLeaderboard(campaign?: Campaign): {
             const account = queryKey[2] as Address | undefined;
 
             try {
-                const response = await metromApiClient.fetchLeaderboard({
+                const response = await METROM_API_CLIENT.fetchLeaderboard({
                     campaign,
                     account,
                 });

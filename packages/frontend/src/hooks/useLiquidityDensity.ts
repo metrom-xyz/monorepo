@@ -1,5 +1,5 @@
 import { type AmmPool, type LiquidityDensity } from "@metrom-xyz/sdk";
-import { metromApiClient } from "../commons";
+import { METROM_API_CLIENT } from "../commons";
 import { useQuery } from "@tanstack/react-query";
 
 const SURROUNDING_AMOUNT = 200;
@@ -20,7 +20,7 @@ export function useLiquidityDensity(
             const chainId = pool.chainId;
 
             try {
-                return metromApiClient.fetchLiquidityDensity({
+                return METROM_API_CLIENT.fetchLiquidityDensity({
                     chainId,
                     pool,
                     surroundingAmount: SURROUNDING_AMOUNT,

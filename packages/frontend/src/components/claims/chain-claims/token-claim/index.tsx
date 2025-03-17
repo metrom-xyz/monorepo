@@ -21,7 +21,7 @@ import { ClaimFail } from "../../notification/claim-fail";
 import { type WriteContractErrorType, encodeFunctionData } from "viem";
 import type { Erc20Token } from "@metrom-xyz/sdk";
 import { SAFE } from "@/src/commons/env";
-import { safeSdk } from "@/src/commons";
+import { SAFE_APP_SDK } from "@/src/commons";
 
 import styles from "./styles.module.css";
 
@@ -143,7 +143,7 @@ export function TokenClaim({
         const claim = async () => {
             setClaiming(true);
             try {
-                await safeSdk.txs.send({
+                await SAFE_APP_SDK.txs.send({
                     txs: [
                         {
                             to: chainData.metromContract.address,

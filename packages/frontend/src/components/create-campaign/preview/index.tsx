@@ -40,7 +40,7 @@ import { formatUnits, parseUnits, zeroHash, type Hex } from "viem";
 import { encodeFunctionData } from "viem/utils";
 import { type BaseTransaction } from "@safe-global/safe-apps-sdk";
 import { useLiquidityInRange } from "@/src/hooks/useLiquidityInRange";
-import { safeSdk } from "@/src/commons";
+import { SAFE_APP_SDK } from "@/src/commons";
 
 import styles from "./styles.module.css";
 
@@ -296,7 +296,7 @@ export function CampaignPreview({
         const create = async () => {
             setDeploying(true);
             try {
-                await safeSdk.txs.send({ txs: safeTxs });
+                await SAFE_APP_SDK.txs.send({ txs: safeTxs });
 
                 setCreated(true);
                 trackFathomEvent("CLICK_DEPLOY_CAMPAIGN");

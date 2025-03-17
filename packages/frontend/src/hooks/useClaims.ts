@@ -1,6 +1,6 @@
 import { useAccount, useReadContracts } from "wagmi";
 import { formatUnits, type Address } from "viem";
-import { CHAIN_DATA, metromApiClient } from "../commons";
+import { CHAIN_DATA, METROM_API_CLIENT } from "../commons";
 import { type Claim, type OnChainAmount } from "@metrom-xyz/sdk";
 import { SupportedChain } from "@metrom-xyz/contracts";
 import { metromAbi } from "@metrom-xyz/contracts/abi";
@@ -31,7 +31,7 @@ export function useClaims(): {
             if (!account) return undefined;
 
             try {
-                const rawClaims = await metromApiClient.fetchClaims({
+                const rawClaims = await METROM_API_CLIENT.fetchClaims({
                     address: account as Address,
                 });
                 return rawClaims;
