@@ -4,21 +4,25 @@ import {
     ByteArray,
     Bytes,
     crypto,
+    DataSourceContext,
     ethereum,
 } from "@graphprotocol/graph-ts";
-import { Pool, Position, Token, LpToken } from "../generated/schema";
-import { Erc20 } from "../generated/MainRegistry/Erc20";
-import { Erc20BytesSymbol } from "../generated/MainRegistry/Erc20BytesSymbol";
-import { Erc20BytesName } from "../generated/MainRegistry/Erc20BytesName";
-import { Pool as PoolTemplate } from "../generated/templates";
+import { Gauge, Pool, LpToken, Position, Token } from "../generated/schema";
+import { Erc20 } from "../generated/PoolRegistry/Erc20";
+import { Erc20BytesSymbol } from "../generated/PoolRegistry/Erc20BytesSymbol";
+import { Erc20BytesName } from "../generated/PoolRegistry/Erc20BytesName";
+import { UnifiedPool } from "../generated/GaugeController/UnifiedPool";
 import {
-    MAIN_REGISTRY_ADDRESS,
+    LEGACY_POOL_LP_TOKEN,
     NATIVE_TOKEN_ADDRESS,
     NATIVE_TOKEN_DECIMALS,
     NATIVE_TOKEN_NAME,
     NATIVE_TOKEN_SYMBOL,
 } from "./constants";
-import { MainRegistry } from "../generated/MainRegistry/MainRegistry";
+import {
+    LpToken as LpTokenTemplate,
+    UnifiedPool as UnifiedPoolTemplate,
+} from "../generated/templates";
 
 export const ADDRESS_ZERO = Address.zero();
 export const BI_0 = BigInt.zero();
@@ -28,51 +32,105 @@ export const ERC20_TRANSFER_EVENT_SIGNATURE = crypto.keccak256(
     ByteArray.fromUTF8("Transfer(address,address,uint256)"),
 );
 
-export const MainRegistryContract = MainRegistry.bind(MAIN_REGISTRY_ADDRESS);
-
 export function getEventId(event: ethereum.Event): Bytes {
     return changetype<Bytes>(
         event.block.number.leftShift(40).plus(event.logIndex).reverse(),
     );
 }
 
-export function getOrCreatePool(blockNumber: BigInt, address: Address): Pool {
+export function getOrCreatePool(
+    address: Address,
+    lpTokenAddress: Address | null,
+    basePoolAddress: Address | null,
+): Pool {
     let pool = Pool.load(address);
     if (pool !== null) return pool;
 
     pool = new Pool(address);
-    pool._tvlsUpdatedAtBlockNumber = BI_0;
+
+    let poolContract = UnifiedPool.bind(address);
 
     let tokens: Bytes[] = [];
-    let coins = MainRegistryContract.get_coins(address);
-    for (let i = 0; i < coins.length; i++) {
-        if (coins[i] == ADDRESS_ZERO) break;
-        tokens.push(getOrCreateToken(coins[i]).id);
+    let i = BI_0;
+    while (true) {
+        let token = poolContract.try_coins(i);
+        if (token.reverted) token = poolContract.try_coins1(i);
+        if (token.reverted || token.value == ADDRESS_ZERO) break;
+
+        tokens.push(getOrCreateToken(token.value).id);
+
+        i = i.plus(BI_1);
     }
+    if (tokens.length === 0)
+        throw new Error(
+            `Could not fetch tokens for pool with address ${address.toHex()}`,
+        );
     pool.tokens = tokens;
 
-    if (MainRegistryContract.is_meta(address)) {
-        let basePoolAddress = MainRegistryContract.get_pool_from_lp_token(
-            changetype<Address>(tokens[1]),
-        );
-        pool.base = getOrCreatePool(blockNumber, basePoolAddress).id;
-    }
+    let tvls: BigInt[] = [];
+    for (let i = 0; i < pool.tokens.length; i++) tvls.push(BI_0);
+    pool.tvls = tvls;
 
-    updateTokenTvls(blockNumber, pool);
     pool.liquidity = BI_0;
+
+    if (basePoolAddress !== null)
+        pool.base = getOrCreatePool(
+            basePoolAddress,
+            changetype<Address>(pool.tokens[1]),
+            null,
+        ).id;
+
+    pool._tvlsUpdatedAtBlock = BI_0;
+
     pool.save();
 
-    PoolTemplate.create(address);
+    let legacyPoolLpTokenAddress = LEGACY_POOL_LP_TOKEN.get(address);
+    if (legacyPoolLpTokenAddress === null)
+        // Avoids double tracking since legacy pools are directly hardcoded in the manifest
+        UnifiedPoolTemplate.createWithContext(address, new DataSourceContext());
 
-    let lpTokenAddress = MainRegistryContract.get_lp_token(address);
-    let lpToken = LpToken.load(lpTokenAddress);
-    if (lpToken === null) {
-        lpToken = new LpToken(lpTokenAddress);
-        lpToken.pool = pool.id;
-        lpToken.save();
+    let resolvedLpTokenAddress =
+        lpTokenAddress === null ? legacyPoolLpTokenAddress : lpTokenAddress;
+    if (resolvedLpTokenAddress === null)
+        throw new Error(`No LP token for pool with address ${address.toHex()}`);
+
+    if (legacyPoolLpTokenAddress === null) {
+        // Avoids double tracking since legacy pool LPs are directly hardcoded in the manifest
+        let lpTokenContext = new DataSourceContext();
+        lpTokenContext.setBytes("pool-address", address);
+        LpTokenTemplate.createWithContext(
+            resolvedLpTokenAddress,
+            lpTokenContext,
+        );
     }
 
+    let lpToken = new LpToken(resolvedLpTokenAddress);
+    lpToken.pool = address;
+    lpToken.save();
+
     return pool;
+}
+
+export function updateTokenTvls(blockNumber: BigInt, pool: Pool): void {
+    if (pool._tvlsUpdatedAtBlock == blockNumber) return;
+
+    let poolAddress = changetype<Address>(pool.id);
+    let poolContract = UnifiedPool.bind(poolAddress);
+
+    let tvls: BigInt[] = [];
+    for (let i = 0; i < pool.tokens.length; i++) {
+        let idx = BigInt.fromI32(i);
+        let tvl = poolContract.try_balances(idx);
+        if (tvl.reverted) tvl = poolContract.try_balances1(idx);
+        if (tvl.reverted)
+            throw new Error(
+                `Could not fetch token TVL at index ${i} for pool with address ${poolAddress.toHex()}`,
+            );
+        tvls.push(tvl.value);
+    }
+
+    pool.tvls = tvls;
+    pool._tvlsUpdatedAtBlock = blockNumber;
 }
 
 export function getPoolOrThrow(id: Bytes): Pool {
@@ -82,28 +140,22 @@ export function getPoolOrThrow(id: Bytes): Pool {
     throw new Error(`Could not find pool ${id.toHex()}`);
 }
 
-export function updateTokenTvls(blockNumber: BigInt, pool: Pool): void {
-    if (pool._tvlsUpdatedAtBlockNumber < blockNumber) {
-        let onChainTvls = MainRegistryContract.get_balances(
-            changetype<Address>(pool.id),
-        );
+export function createGauge(address: Address): void {
+    let gauge = Gauge.load(address);
+    if (gauge !== null) return;
 
-        let tvls: BigInt[] = [];
-        for (let i = 0; i < tvls.length; i++) {
-            if (onChainTvls[i].isZero()) break;
-            tvls.push(onChainTvls[i]);
-        }
+    new Gauge(address).save();
+}
 
-        pool.tvls = tvls;
-        pool._tvlsUpdatedAtBlockNumber = blockNumber;
-    }
+export function getPositionId(poolAddress: Address, owner: Address): Bytes {
+    return poolAddress.concat(owner);
 }
 
 export function getOrCreatePosition(
     poolAddress: Address,
     owner: Address,
 ): Position {
-    let id = poolAddress.concat(owner);
+    let id = getPositionId(poolAddress, owner);
     let position = Position.load(id);
     if (position !== null) return position;
 
@@ -114,19 +166,6 @@ export function getOrCreatePosition(
     position.save();
 
     return position;
-}
-
-export function getPositionOrThrow(
-    poolAddress: Address,
-    owner: Address,
-): Position {
-    let id = poolAddress.concat(owner);
-    let position = Position.load(id);
-    if (position !== null) return position;
-
-    throw new Error(
-        `Could not find position on pool ${poolAddress.toHex()} for owner ${owner.toHex()}`,
-    );
 }
 
 export function fetchTokenSymbol(address: Address): string | null {

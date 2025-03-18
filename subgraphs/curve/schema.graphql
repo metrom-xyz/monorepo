@@ -10,6 +10,11 @@ type Gauge @entity(immutable: true) {
     id: Bytes!
 }
 
+type LpToken @entity(immutable: true) {
+    id: Bytes!
+    pool: Pool!
+}
+
 type Pool @entity {
     id: Bytes!
     tokens: [Token!]!
@@ -17,16 +22,11 @@ type Pool @entity {
     liquidity: BigInt!
     base: Pool
     gauge: Gauge
-    lpToken: LpToken! @derivedFrom(field: "pool")
+    lpToken: [LpToken!]! @derivedFrom(field: "pool")
     positions: [Position!]! @derivedFrom(field: "pool")
     swaps: [Swap!]! @derivedFrom(field: "pool")
 
-    _tvlsUpdatedAtBlockNumber: BigInt!
-}
-
-type LpToken @entity(immutable: true) {
-    id: Bytes!
-    pool: Pool!
+    _tvlsUpdatedAtBlock: BigInt!
 }
 
 type Position @entity {
@@ -35,6 +35,8 @@ type Position @entity {
     liquidity: BigInt!
     pool: Pool!
     liquidityChanges: [LiquidityChange!]! @derivedFrom(field: "position")
+
+    # _initializedAtBlock: BigInt!
 }
 
 type Swap @entity(immutable: true) {
@@ -55,4 +57,14 @@ type LiquidityChange @entity(immutable: true) {
     blockNumber: BigInt!
     delta: BigInt!
     position: Position!
+}
+
+type LiquidityTransfer @entity(immutable: true) {
+    id: Bytes!
+    timestamp: BigInt!
+    blockNumber: BigInt!
+    from: Bytes!
+    to: Bytes!
+    amount: BigInt!
+    pool: Pool!
 }

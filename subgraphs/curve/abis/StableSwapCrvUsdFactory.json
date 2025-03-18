@@ -1,0 +1,85 @@
+[
+    {
+        "name": "BasePoolAdded",
+        "inputs": [
+            { "name": "base_pool", "type": "address", "indexed": false }
+        ],
+        "anonymous": false,
+        "type": "event"
+    },
+    {
+        "name": "PlainPoolDeployed",
+        "inputs": [
+            { "name": "coins", "type": "address[4]", "indexed": false },
+            { "name": "A", "type": "uint256", "indexed": false },
+            { "name": "fee", "type": "uint256", "indexed": false },
+            { "name": "deployer", "type": "address", "indexed": false },
+            { "name": "pool", "type": "address", "indexed": false }
+        ],
+        "anonymous": false,
+        "type": "event"
+    },
+    {
+        "name": "MetaPoolDeployed",
+        "inputs": [
+            { "name": "coin", "type": "address", "indexed": false },
+            { "name": "base_pool", "type": "address", "indexed": false },
+            { "name": "A", "type": "uint256", "indexed": false },
+            { "name": "fee", "type": "uint256", "indexed": false },
+            { "name": "deployer", "type": "address", "indexed": false }
+        ],
+        "anonymous": false,
+        "type": "event"
+    },
+    {
+        "name": "LiquidityGaugeDeployed",
+        "inputs": [
+            { "name": "pool", "type": "address", "indexed": false },
+            { "name": "gauge", "type": "address", "indexed": false }
+        ],
+        "anonymous": false,
+        "type": "event"
+    },
+    {
+        "stateMutability": "view",
+        "type": "function",
+        "name": "get_coins",
+        "inputs": [{ "name": "_pool", "type": "address" }],
+        "outputs": [{ "name": "", "type": "address[4]" }]
+    },
+    {
+        "stateMutability": "view",
+        "type": "function",
+        "name": "get_balances",
+        "inputs": [{ "name": "_pool", "type": "address" }],
+        "outputs": [{ "name": "", "type": "uint256[4]" }]
+    },
+    {
+        "stateMutability": "view",
+        "type": "function",
+        "name": "is_meta",
+        "inputs": [{ "name": "_pool", "type": "address" }],
+        "outputs": [{ "name": "", "type": "bool" }]
+    },
+    {
+        "stateMutability": "view",
+        "type": "function",
+        "name": "find_pool_for_coins",
+        "inputs": [
+            { "name": "_from", "type": "address" },
+            { "name": "_to", "type": "address" },
+            { "name": "i", "type": "uint256" }
+        ],
+        "outputs": [{ "name": "", "type": "address" }]
+    },
+    {
+        "stateMutability": "view",
+        "type": "function",
+        "name": "find_pool_for_coins",
+        "inputs": [
+            { "name": "_from", "type": "address" },
+            { "name": "_to", "type": "address" }
+        ],
+        "outputs": [{ "name": "", "type": "address" }]
+    }
+]

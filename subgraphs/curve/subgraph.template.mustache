@@ -11,25 +11,47 @@ graft:
   block: {{block}} 
 {{/grafting}}
 dataSources:
+  # - kind: ethereum
+  #   name: PoolRegistry
+  #   network: {{network}}
+  #   source:
+  #     address: "{{PoolRegistryAddress}}"
+  #     startBlock: {{PoolRegistryStartBlock}}
+  #     abi: PoolRegistry
+  #   mapping:
+  #     kind: ethereum/events
+  #     apiVersion: 0.0.7
+  #     language: wasm/assemblyscript
+  #     file: ./src/mappings/registries/stable-swap.ts
+  #     entities: []
+  #     abis:
+  #       - name: PoolRegistry
+  #         file: ./abis/PoolRegistry.json
+  #       - name: Erc20
+  #         file: ./abis/Erc20.json
+  #       - name: Erc20BytesName
+  #         file: ./abis/Erc20BytesName.json
+  #       - name: Erc20BytesSymbol
+  #         file: ./abis/Erc20BytesSymbol.json
+  #     eventHandlers:
+  #       - event: PoolAdded(indexed address,bytes)
+  #         handler: handlePoolAdded
   - kind: ethereum
-    name: MainRegistry
+    name: MetapoolFactory
     network: {{network}}
     source:
-      address: "{{MainRegistryAddress}}"
-      startBlock: {{MainRegistryStartBlock}}
-      abi: MainRegistry
+      address: "{{MetapoolFactoryAddress}}"
+      startBlock: {{MetapoolFactoryStartBlock}}
+      abi: MetapoolFactory
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
       language: wasm/assemblyscript
-      file: ./src/mappings/registry.ts
-      entities:
-        - Pool
+      file: ./src/mappings/registries/metapool.ts
+      entities: []
       abis:
-        - name: MainRegistry
-          file: ./abis/MainRegistry.json
-        - name: Pool
-          file: ./abis/Pool.json
+        - name: MetapoolFactory
+          file: ./abis/MetapoolFactory.json
         - name: Erc20
           file: ./abis/Erc20.json
         - name: Erc20BytesName
@@ -37,10 +59,184 @@ dataSources:
         - name: Erc20BytesSymbol
           file: ./abis/Erc20BytesSymbol.json
       eventHandlers:
-        - event: PoolAdded(indexed address,bytes)
-          handler: handlePoolAdded
-        - event: PoolRemoved(indexed address)
-          handler: handlePoolRemoved
+        # - event: BasePoolAdded(address)
+        #   handler: handleBasePoolAdded
+        - event: PlainPoolDeployed(address[4],uint256,uint256,address)
+          handler: handlePlainPoolDeployed
+        - event: MetaPoolDeployed(address,address,uint256,uint256,address)
+          handler: handleMetaPoolDeployed
+        - event: LiquidityGaugeDeployed(address,address)
+          handler: handleLiquidityGaugeDeployed
+  # - kind: ethereum
+  #   name: CryptoSwapRegistry
+  #   network: {{network}}
+  #   source:
+  #     address: "{{CryptoSwapRegistryAddress}}"
+  #     startBlock: {{CryptoSwapRegistryStartBlock}}
+  #     abi: CryptoSwapRegistry
+  #   mapping:
+  #     kind: ethereum/events
+  #     apiVersion: 0.0.7
+  #     language: wasm/assemblyscript
+  #     file: ./src/mappings/registries/crypto-swap.ts
+  #     entities: []
+  #     abis:
+  #       - name: CryptoSwapRegistry
+  #         file: ./abis/CryptoSwapRegistry.json
+  #       - name: Erc20
+  #         file: ./abis/Erc20.json
+  #       - name: Erc20BytesName
+  #         file: ./abis/Erc20BytesName.json
+  #       - name: Erc20BytesSymbol
+  #         file: ./abis/Erc20BytesSymbol.json
+  #     eventHandlers:
+  #       - event: PoolAdded(indexed address)
+  #         handler: handlePoolAdded
+  #       - event: BasePoolAdded(indexed address)
+  #         handler: handleBasePoolAdded
+  - kind: ethereum
+    name: TwoCryptoFactory
+    network: {{network}}
+    source:
+      address: "{{TwoCryptoFactoryAddress}}"
+      startBlock: {{TwoCryptoFactoryStartBlock}}
+      abi: TwoCryptoFactory
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      file: ./src/mappings/registries/two-crypto.ts
+      entities: []
+      abis:
+        - name: TwoCryptoFactory
+          file: ./abis/TwoCryptoFactory.json
+        - name: Erc20
+          file: ./abis/Erc20.json
+        - name: Erc20BytesName
+          file: ./abis/Erc20BytesName.json
+        - name: Erc20BytesSymbol
+          file: ./abis/Erc20BytesSymbol.json
+      eventHandlers:
+        - event: CryptoPoolDeployed(address,address[2],uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256,address)
+          handler: handleCryptoPoolDeployed
+        - event: LiquidityGaugeDeployed(address,address,address)
+          handler: handleLiquidityGaugeDeployed
+  - kind: ethereum
+    name: StableSwapCrvUsdFactory
+    network: {{network}}
+    source:
+      address: "{{StableSwapCrvUsdFactoryAddress}}"
+      startBlock: {{StableSwapCrvUsdFactoryStartBlock}}
+      abi: StableSwapCrvUsdFactory
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      file: ./src/mappings/registries/stable-swap-crv-usd.ts
+      entities: []
+      abis:
+        - name: StableSwapCrvUsdFactory
+          file: ./abis/StableSwapCrvUsdFactory.json
+        - name: Erc20
+          file: ./abis/Erc20.json
+        - name: Erc20BytesName
+          file: ./abis/Erc20BytesName.json
+        - name: Erc20BytesSymbol
+          file: ./abis/Erc20BytesSymbol.json
+      eventHandlers:
+        # - event: BasePoolAdded(address)
+        #   handler: handleBasePoolAdded
+        - event: PlainPoolDeployed(address[4],uint256,uint256,address,address)
+          handler: handlePlainPoolDeployed
+        - event: MetaPoolDeployed(address,address,uint256,uint256,address)
+          handler: handleMetaPoolDeployed
+        - event: LiquidityGaugeDeployed(address,address)
+          handler: handleLiquidityGaugeDeployed
+  - kind: ethereum
+    name: TriCryptoNGFactory
+    network: {{network}}
+    source:
+      address: "{{TriCryptoNGFactoryAddress}}"
+      startBlock: {{TriCryptoNGFactoryStartBlock}}
+      abi: TriCryptoNGFactory
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      file: ./src/mappings/registries/tri-crypto-ng.ts
+      entities: []
+      abis:
+        - name: TriCryptoNGFactory
+          file: ./abis/TriCryptoNGFactory.json
+        - name: Erc20
+          file: ./abis/Erc20.json
+        - name: Erc20BytesName
+          file: ./abis/Erc20BytesName.json
+        - name: Erc20BytesSymbol
+          file: ./abis/Erc20BytesSymbol.json
+      eventHandlers:
+        - event: TricryptoPoolDeployed(address,string,string,address,address[3],address,bytes32,uint256,uint256,uint256,uint256,uint256,address)
+          handler: handleTricryptoPoolDeployed
+        - event: LiquidityGaugeDeployed(address,address)
+          handler: handleLiquidityGaugeDeployed
+  - kind: ethereum
+    name: StableSwapNGFactory
+    network: {{network}}
+    source:
+      address: "{{StableSwapNGFactoryAddress}}"
+      startBlock: {{StableSwapNGFactoryStartBlock}}
+      abi: StableSwapNGFactory
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      file: ./src/mappings/registries/stable-swap-ng.ts
+      entities: []
+      abis:
+        - name: StableSwapNGFactory
+          file: ./abis/StableSwapNGFactory.json
+        - name: Erc20
+          file: ./abis/Erc20.json
+        - name: Erc20BytesName
+          file: ./abis/Erc20BytesName.json
+        - name: Erc20BytesSymbol
+          file: ./abis/Erc20BytesSymbol.json
+      eventHandlers:
+        # - event: BasePoolAdded(address)
+        #   handler: handleBasePoolAdded
+        - event: PlainPoolDeployed(address[],uint256,uint256,address)
+          handler: handlePlainPoolDeployed
+        - event: MetaPoolDeployed(address,address,uint256,uint256,address)
+          handler: handleMetaPoolDeployed
+        - event: LiquidityGaugeDeployed(address,address)
+          handler: handleLiquidityGaugeDeployed
+  - kind: ethereum
+    name: TwoCryptoNGFactory
+    network: {{network}}
+    source:
+      address: "{{TwoCryptoNGFactoryAddress}}"
+      startBlock: {{TwoCryptoNGFactoryStartBlock}}
+      abi: TwoCryptoNGFactory
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      file: ./src/mappings/registries/two-crypto-ng.ts
+      entities: []
+      abis:
+        - name: TwoCryptoNGFactory
+          file: ./abis/TwoCryptoNGFactory.json
+        - name: Erc20
+          file: ./abis/Erc20.json
+        - name: Erc20BytesName
+          file: ./abis/Erc20BytesName.json
+        - name: Erc20BytesSymbol
+          file: ./abis/Erc20BytesSymbol.json
+      eventHandlers:
+        - event: TwocryptoPoolDeployed(address,string,string,address[2],address,bytes32,uint256[2],uint256,uint256,uint256,uint256,address)
+          handler: handleTwocryptoPoolDeployed
+        - event: LiquidityGaugeDeployed(address,address)
+          handler: handleLiquidityGaugeDeployed
   - name: GaugeController
     kind: ethereum/contract
     network: {{network}}
@@ -52,13 +248,12 @@ dataSources:
       kind: ethereum/events
       apiVersion: 0.0.7
       language: wasm/assemblyscript
+      file: ./src/mappings/gauge-controller.ts
       abis:
         - name: GaugeController
           file: ./abis/GaugeController.json
-        - name: MainRegistry
-          file: ./abis/MainRegistry.json
-        - name: Pool
-          file: ./abis/Pool.json
+        - name: UnifiedPool
+          file: ./abis/UnifiedPool.json
         - name: Gauge
           file: ./abis/Gauge.json
         - name: Erc20
@@ -67,42 +262,210 @@ dataSources:
           file: ./abis/Erc20BytesName.json
         - name: Erc20BytesSymbol
           file: ./abis/Erc20BytesSymbol.json
-      file: ./src/mappings/gauge-controller.ts
-      entities:
-        - Account
+      entities: []
       eventHandlers:
         - event: NewGauge(address,int128,uint256)
           handler: handleNewGauge
-templates:
-  - name: Pool
+  {{#LegacyPools}}
+  - name: LegacyPool{{name}}
     kind: ethereum
     network: {{network}}
     source:
-      abi: Pool
+      address: "{{address}}"
+      startBlock: {{startBlock}}
+      abi: UnifiedPool
+    {{#basePoolAddress}}
+    context:
+      base-pool-address:
+        type: Bytes
+        data: "{{basePoolAddress}}"
+    {{/basePoolAddress}}
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
       language: wasm/assemblyscript
-      entities:
-        - Pool
-        - Position
-        - LiquidityChange
+      entities: []
       abis:
-        - name: Pool
-          file: ./abis/Pool.json
-        - name: MainRegistry
-          file: ./abis/MainRegistry.json
+        - name: UnifiedPool
+          file: ./abis/UnifiedPool.json
+        - name: Erc20
+          file: ./abis/Erc20.json
       file: ./src/mappings/pool.ts
       eventHandlers:
-        - event: AddLiquidity(indexed address,uint256[2],uint256[2],uint256,uint256)
-          handler: handleAddLiquidity
-        - event: RemoveLiquidity(indexed address,uint256[2],uint256[2],uint256)
-          handler: handleRemoveLiquidity
-        - event: RemoveLiquidityImbalance(indexed address,uint256[2],uint256[2],uint256,uint256)
-          handler: handleRemoveLiquidityImbalance
-        - event: RemoveLiquidityOne(indexed address,uint256,uint256)
-          handler: handleRemoveLiquidityOne
+        # StableSwap events
         - event: TokenExchange(indexed address,int128,uint256,int128,uint256)
-          handler: handleTokenExchange
+          handler: handleStableSwapTokenExchange
         - event: TokenExchangeUnderlying(indexed address,int128,uint256,int128,uint256)
-          handler: handleTokenExchangeUnderlying
+          handler: handleStableSwapTokenExchangeUnderlying
+        - event: AddLiquidity(indexed address,uint256[2],uint256[2],uint256,uint256)
+          handler: handleStableSwapAddLiquidity2
+        - event: AddLiquidity(indexed address,uint256[3],uint256[3],uint256,uint256)
+          handler: handleStableSwapAddLiquidity3
+        - event: AddLiquidity(indexed address,uint256[4],uint256[4],uint256,uint256)
+          handler: handleStableSwapAddLiquidity4
+        - event: RemoveLiquidity(indexed address,uint256[2],uint256[2],uint256)
+          handler: handleStableSwapRemoveLiquidity2
+        - event: RemoveLiquidity(indexed address,uint256[3],uint256[3],uint256)
+          handler: handleStableSwapRemoveLiquidity3
+        - event: RemoveLiquidity(indexed address,uint256[4],uint256[4],uint256)
+          handler: handleStableSwapRemoveLiquidity4
+        - event: RemoveLiquidityOne(indexed address,uint256,uint256)
+          handler: handleStableSwapRemoveLiquidityOne
+          receipt: true
+        - event: RemoveLiquidityImbalance(indexed address,uint256[2],uint256[2],uint256,uint256)
+          handler: handleStableSwapRemoveLiquidityImbalance2
+        - event: RemoveLiquidityImbalance(indexed address,uint256[3],uint256[3],uint256,uint256)
+          handler: handleStableSwapRemoveLiquidityImbalance3
+        - event: RemoveLiquidityImbalance(indexed address,uint256[4],uint256[4],uint256,uint256)
+          handler: handleStableSwapRemoveLiquidityImbalance4
+
+        # StableSwapNG events
+        - event: AddLiquidity(indexed address,uint256[],uint256[],uint256,uint256)
+          handler: handleStableSwapNgAddLiquidity
+        - event: RemoveLiquidity(indexed address,uint256[],uint256[],uint256)
+          handler: handleStableSwapNgRemoveLiquidity
+        - event: RemoveLiquidityOne(indexed address,int128,uint256,uint256,uint256)
+          handler: handleStableSwapNgRemoveLiquidityOne
+        - event: RemoveLiquidityImbalance(indexed address,uint256[],uint256[],uint256,uint256)
+          handler: handleStableSwapNgRemoveLiquidityImbalance
+
+        # CryptoSwap events
+        - event: TokenExchange(indexed address,uint256,uint256,uint256,uint256)
+          handler: handleCryptoSwapTokenExchange
+        - event: AddLiquidity(indexed address,uint256[2],uint256,uint256)
+          handler: handleCryptoSwapAddLiquidity2
+        - event: AddLiquidity(indexed address,uint256[3],uint256,uint256)
+          handler: handleCryptoSwapAddLiquidity3
+        - event: AddLiquidity(indexed address,uint256[4],uint256,uint256)
+          handler: handleCryptoSwapAddLiquidity4
+        - event: RemoveLiquidity(indexed address,uint256[2],uint256)
+          handler: handleCryptoSwapRemoveLiquidity2
+        - event: RemoveLiquidity(indexed address,uint256[3],uint256)
+          handler: handleCryptoSwapRemoveLiquidity3
+
+        # CryptoSwapNG events
+        - event: TokenExchange(indexed address,uint256,uint256,uint256,uint256,uint256,uint256)
+          handler: handleCryptoSwapNgTokenExchange
+        - event: AddLiquidity(indexed address,uint256[2],uint256,uint256,uint256)
+          handler: handleCryptoSwapNgAddLiquidity2
+        - event: AddLiquidity(indexed address,uint256[3],uint256,uint256,uint256)
+          handler: handleCryptoSwapNgAddLiquidity3
+        - event: RemoveLiquidityOne(indexed address,uint256,uint256,uint256,uint256,uint256)
+          handler: handleCryptoSwapNgRemoveLiquidityOne
+  - name: LegacyPool{{name}}LpToken
+    kind: ethereum
+    network: {{network}}
+    source:
+      address: "{{lpToken}}"
+      startBlock: {{startBlock}}
+      abi: Erc20
+    context:
+      pool-address:
+        type: Bytes
+        data: "{{address}}"
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities: []
+      abis:
+        - name: Erc20
+          file: ./abis/Erc20.json
+      file: ./src/mappings/lp-token.ts
+      eventHandlers:
+        - event: Transfer(indexed address,indexed address,uint256)
+          handler: handleTransfer
+  {{/LegacyPools}}
+templates:
+  - name: UnifiedPool
+    kind: ethereum
+    network: {{network}}
+    source:
+      abi: UnifiedPool
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities: []
+      abis:
+        - name: UnifiedPool
+          file: ./abis/UnifiedPool.json
+      file: ./src/mappings/pool.ts
+      eventHandlers:
+        # StableSwap events
+        - event: TokenExchange(indexed address,int128,uint256,int128,uint256)
+          handler: handleStableSwapTokenExchange
+        - event: TokenExchangeUnderlying(indexed address,int128,uint256,int128,uint256)
+          handler: handleStableSwapTokenExchangeUnderlying
+        - event: AddLiquidity(indexed address,uint256[2],uint256[2],uint256,uint256)
+          handler: handleStableSwapAddLiquidity2
+        - event: AddLiquidity(indexed address,uint256[3],uint256[3],uint256,uint256)
+          handler: handleStableSwapAddLiquidity3
+        - event: AddLiquidity(indexed address,uint256[4],uint256[4],uint256,uint256)
+          handler: handleStableSwapAddLiquidity4
+        - event: RemoveLiquidity(indexed address,uint256[2],uint256[2],uint256)
+          handler: handleStableSwapRemoveLiquidity2
+        - event: RemoveLiquidity(indexed address,uint256[3],uint256[3],uint256)
+          handler: handleStableSwapRemoveLiquidity3
+        - event: RemoveLiquidity(indexed address,uint256[4],uint256[4],uint256)
+          handler: handleStableSwapRemoveLiquidity4
+        - event: RemoveLiquidityOne(indexed address,uint256,uint256)
+          handler: handleStableSwapRemoveLiquidityOne
+          receipt: true
+        - event: RemoveLiquidityImbalance(indexed address,uint256[2],uint256[2],uint256,uint256)
+          handler: handleStableSwapRemoveLiquidityImbalance2
+        - event: RemoveLiquidityImbalance(indexed address,uint256[3],uint256[3],uint256,uint256)
+          handler: handleStableSwapRemoveLiquidityImbalance3
+        - event: RemoveLiquidityImbalance(indexed address,uint256[4],uint256[4],uint256,uint256)
+          handler: handleStableSwapRemoveLiquidityImbalance4
+
+        # StableSwapNG events
+        - event: AddLiquidity(indexed address,uint256[],uint256[],uint256,uint256)
+          handler: handleStableSwapNgAddLiquidity
+        - event: RemoveLiquidity(indexed address,uint256[],uint256[],uint256)
+          handler: handleStableSwapNgRemoveLiquidity
+        - event: RemoveLiquidityOne(indexed address,int128,uint256,uint256,uint256)
+          handler: handleStableSwapNgRemoveLiquidityOne
+        - event: RemoveLiquidityImbalance(indexed address,uint256[],uint256[],uint256,uint256)
+          handler: handleStableSwapNgRemoveLiquidityImbalance
+
+        # CryptoSwap events
+        - event: TokenExchange(indexed address,uint256,uint256,uint256,uint256)
+          handler: handleCryptoSwapTokenExchange
+        - event: AddLiquidity(indexed address,uint256[2],uint256,uint256)
+          handler: handleCryptoSwapAddLiquidity2
+        - event: AddLiquidity(indexed address,uint256[3],uint256,uint256)
+          handler: handleCryptoSwapAddLiquidity3
+        - event: AddLiquidity(indexed address,uint256[4],uint256,uint256)
+          handler: handleCryptoSwapAddLiquidity4
+        - event: RemoveLiquidity(indexed address,uint256[2],uint256)
+          handler: handleCryptoSwapRemoveLiquidity2
+        - event: RemoveLiquidity(indexed address,uint256[3],uint256)
+          handler: handleCryptoSwapRemoveLiquidity3
+
+        # CryptoSwapNG events
+        - event: TokenExchange(indexed address,uint256,uint256,uint256,uint256,uint256,uint256)
+          handler: handleCryptoSwapNgTokenExchange
+        - event: AddLiquidity(indexed address,uint256[2],uint256,uint256,uint256)
+          handler: handleCryptoSwapNgAddLiquidity2
+        - event: AddLiquidity(indexed address,uint256[3],uint256,uint256,uint256)
+          handler: handleCryptoSwapNgAddLiquidity3
+        - event: RemoveLiquidityOne(indexed address,uint256,uint256,uint256,uint256,uint256)
+          handler: handleCryptoSwapNgRemoveLiquidityOne
+  - name: LpToken
+    kind: ethereum
+    network: {{network}}
+    source:
+      abi: Erc20
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities: []
+      abis:
+        - name: Erc20
+          file: ./abis/Erc20.json
+      file: ./src/mappings/lp-token.ts
+      eventHandlers:
+        - event: Transfer(indexed address,indexed address,uint256)
+          handler: handleTransfer
