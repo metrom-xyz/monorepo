@@ -9,7 +9,7 @@ import { Typography } from "../typography";
 import styles from "./styles.module.css";
 
 export interface AccordionProps {
-    title: string;
+    title: ReactNode;
     children: ReactNode;
     className?: string;
 }
@@ -34,9 +34,13 @@ export function Accordion({ title, children, className }: AccordionProps) {
                         [styles.open]: open,
                     })}
                 />
-                <Typography uppercase weight="medium" light>
-                    {title}
-                </Typography>
+                {typeof title === "string" ? (
+                    <Typography uppercase weight="medium" light>
+                        {title}
+                    </Typography>
+                ) : (
+                    title
+                )}
             </div>
             <AnimatePresence>
                 <motion.div
