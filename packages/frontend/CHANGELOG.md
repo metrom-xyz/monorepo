@@ -1,5 +1,12 @@
 # frontend
 
+## 0.1.7
+
+### Patch Changes
+
+- Updated dependencies
+  - @metrom-xyz/ui@0.11.3
+
 ## 0.1.6
 
 ### Patch Changes

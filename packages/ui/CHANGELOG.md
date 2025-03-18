@@ -1,5 +1,11 @@
 # @metrom-xyz/ui
 
+## 0.11.3
+
+### Patch Changes
+
+- Add support for custom title for accordion component
+
 ## 0.11.2
 
 ### Patch Changes
