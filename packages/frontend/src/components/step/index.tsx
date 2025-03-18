@@ -2,7 +2,7 @@
 
 import React, { type ReactElement, useRef } from "react";
 import classNames from "classnames";
-import { motion } from "motion/react";
+import { AnimatePresence, motion } from "motion/react";
 import { StepPreview, type StepPreviewProps } from "./preview";
 import { StepContent } from "./content";
 import { matchChildByType } from "@metrom-xyz/ui";
@@ -54,7 +54,18 @@ export function Step({
                         completed,
                     })}
                 </div>
-                <div inert={!open}>{contentChildren}</div>
+                <AnimatePresence>
+                    {open && (
+                        <motion.div
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            inert={!open}
+                        >
+                            {contentChildren}
+                        </motion.div>
+                    )}
+                </AnimatePresence>
             </div>
         </motion.div>
     );
