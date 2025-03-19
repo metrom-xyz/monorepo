@@ -50,7 +50,16 @@ function handleSwap(
     soldId: i32,
     soldAmount: BigInt,
 ): void {
-    let pool = getPoolOrThrow(event.address);
+    let basePoolAddress: Address | null = null;
+    let context = dataSource.context();
+    if (context.isSet("base-pool-address")) {
+        // this is for standalone pools in the manifest, as those have the base
+        // pool hardcoded in the manifest itself
+        basePoolAddress = changetype<Address>(
+            context.getBytes("base-pool-address"),
+        );
+    }
+    let pool = getOrCreatePool(event.address, null, basePoolAddress);
 
     let tokenIn: Bytes;
     let tokenOut: Bytes;

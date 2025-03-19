@@ -1,0 +1,125 @@
+type Token @entity(immutable: true) {
+    id: Bytes!
+    name: String!
+    symbol: String!
+    decimals: Int!
+}
+
+type Gauge @entity(immutable: true) {
+    id: Bytes!
+    pool: Bytes!
+}
+
+type FullRangeFactory @entity {
+    id: Bytes!
+    stableFee: Int!
+    volatileFee: Int!
+}
+
+type FullRangePool @entity {
+    id: Bytes!
+    stable: Boolean!
+    token0: Token!
+    token1: Token!
+    token0Tvl: BigInt!
+    token1Tvl: BigInt!
+    price: BigDecimal!
+    fee: Int!
+    liquidity: BigInt!
+    positions: [FullRangePosition!]! @derivedFrom(field: "pool")
+    liquidityChanges: [FullRangeLiquidityChange!]! @derivedFrom(field: "pool")
+    liquidityTransfers: [FullRangeLiquidityTransfer!]!
+        @derivedFrom(field: "pool")
+}
+
+type FullRangePosition @entity {
+    id: Bytes!
+    owner: Bytes!
+    liquidity: BigInt!
+    pool: FullRangePool!
+    liquidityChanges: [FullRangeLiquidityChange!]!
+        @derivedFrom(field: "position")
+}
+
+type FullRangeLiquidityChange @entity(immutable: true) {
+    id: Bytes!
+    timestamp: BigInt!
+    blockNumber: BigInt!
+    delta: BigInt!
+    pool: FullRangePool!
+    position: FullRangePosition!
+}
+
+type FullRangeLiquidityTransfer @entity(immutable: true) {
+    id: Bytes!
+    timestamp: BigInt!
+    blockNumber: BigInt!
+    from: Bytes!
+    to: Bytes!
+    amount: BigInt!
+    pool: FullRangePool!
+}
+
+type ConcentratedPool @entity {
+    id: Bytes!
+    token0: Token!
+    token1: Token!
+    token0Tvl: BigInt!
+    token1Tvl: BigInt!
+    tick: Int!
+    price: BigDecimal!
+    fee: Int!
+    liquidity: BigInt!
+    positions: [ConcentratedPosition!]! @derivedFrom(field: "pool")
+    liquidityChanges: [ConcentratedLiquidityChange!]!
+        @derivedFrom(field: "pool")
+    liquidityTransfers: [ConcentratedLiquidityTransfer!]!
+        @derivedFrom(field: "pool")
+}
+
+type ConcentratedPosition @entity {
+    id: Bytes!
+    owner: Bytes!
+    lowerTick: Int!
+    upperTick: Int!
+    liquidity: BigInt!
+    direct: Boolean!
+    pool: ConcentratedPool!
+    liquidityChanges: [ConcentratedLiquidityChange!]!
+        @derivedFrom(field: "position")
+}
+
+type ConcentratedLiquidityChange @entity(immutable: true) {
+    id: Bytes!
+    timestamp: BigInt!
+    blockNumber: BigInt!
+    delta: BigInt!
+    pool: ConcentratedPool!
+    position: ConcentratedPosition!
+}
+
+type ConcentratedLiquidityTransfer @entity(immutable: true) {
+    id: Bytes!
+    timestamp: BigInt!
+    blockNumber: BigInt!
+    from: Bytes!
+    to: Bytes!
+    pool: ConcentratedPool!
+    position: ConcentratedPosition!
+}
+
+type TickMovingSwap @entity(immutable: true) {
+    id: Bytes!
+    timestamp: BigInt!
+    blockNumber: BigInt!
+    pool: ConcentratedPool!
+    newTick: Int!
+}
+
+type Tick @entity {
+    id: Bytes!
+    idx: Int!
+    pool: ConcentratedPool!
+    liquidityGross: BigInt!
+    liquidityNet: BigInt!
+}
