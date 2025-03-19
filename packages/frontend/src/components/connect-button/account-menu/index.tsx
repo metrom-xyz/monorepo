@@ -10,7 +10,7 @@ import { useDisconnect } from "wagmi";
 import { useTranslations } from "next-intl";
 import { TickIcon } from "@/src/assets/tick-icon";
 import { CopyIcon } from "@/src/assets/copy-icon";
-import { ThemeSwitcher } from "../../theme-switcher";
+import { ThemeSwitcherTabs } from "../../theme-switcher-tabs";
 import { formatAmount } from "@/src/utils/format";
 import { useChainData } from "@/src/hooks/useChainData";
 import { useIsChainSupported } from "@/src/hooks/useIsChainSupported";
@@ -157,7 +157,12 @@ export function AccountMenu({
                         ) : null}
                     </div>
                     {!SAFE && (
-                        <div className={styles.iconWrapper}>
+                        <div
+                            className={classNames(
+                                styles.iconWrapper,
+                                styles.disconnect,
+                            )}
+                        >
                             <Disconnect
                                 className={styles.icon}
                                 onClick={handleDisconnect}
@@ -166,7 +171,7 @@ export function AccountMenu({
                     )}
                 </div>
             </div>
-            <ThemeSwitcher />
+            <ThemeSwitcherTabs />
             <div className={styles.tabs}>
                 <div
                     onClick={handleActivityClick}

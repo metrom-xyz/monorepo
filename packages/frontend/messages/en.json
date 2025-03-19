@@ -6,7 +6,9 @@
         "connect": "Connect"
     },
     "theme": {
-        "auto": "Auto"
+        "auto": "Auto",
+        "dark": "Dark",
+        "light": "Light"
     },
     "footer": {
         "support": "Support",

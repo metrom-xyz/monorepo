@@ -4,8 +4,16 @@
     @apply w-full h-[60px] bg-white dark:bg-zinc-800;
 }
 
+.root.popover {
+    @apply rounded-xl p-0;
+}
+
+.tab.popover {
+    @apply rounded-xl;
+}
+
 .tab {
-    @apply w-full bg-white dark:bg-zinc-800 opacity-100;
+    @apply w-full min-h-12 bg-white dark:bg-zinc-800 opacity-100;
 }
 
 .tab > p {
@@ -14,6 +22,10 @@
 
 .tab:first-child {
     @apply rounded-r-none;
+}
+
+.tab:nth-child(2) {
+    @apply rounded-r-none rounded-l-none;
 }
 
 .tab:last-child {

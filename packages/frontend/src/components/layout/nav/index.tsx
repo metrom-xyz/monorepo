@@ -10,6 +10,8 @@ import { NewCampaignIcon } from "@/src/assets/new-campaign-icon";
 import { AllCampaignsIcon } from "@/src/assets/all-campaigns-icon";
 import { ClaimsIcon } from "@/src/assets/claims";
 import { NetworkSelect } from "../../network-select";
+import { useAccount } from "wagmi";
+import { NavThemeSwitcher } from "../../nav-theme-switcher";
 
 import styles from "./styles.module.css";
 
@@ -22,6 +24,7 @@ const ROUTES = [
 export function Nav() {
     const t = useTranslations("navigation");
     const pathname = usePathname();
+    const { address } = useAccount();
 
     return (
         <div className={classNames(styles.root)}>
@@ -33,6 +36,7 @@ export function Nav() {
                 </div>
                 <div className={styles.rightContentContainer}>
                     <NetworkSelect />
+                    {!address && <NavThemeSwitcher />}
                     <ConnectButton />
                 </div>
                 <div className={styles.tabs}>
