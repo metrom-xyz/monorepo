@@ -8,23 +8,31 @@ import {
 } from "../../../generated/MetapoolFactory/MetapoolFactory";
 import { ADDRESS_ZERO, createGauge, getOrCreatePool } from "../../commons";
 import { METAPOOL_FACTORY_ADDRESS } from "../../constants";
-import { LpToken, Pool } from "../../../generated/schema";
+import { LpToken } from "../../../generated/schema";
 
 let MetapoolFactoryContract = MetapoolFactory.bind(METAPOOL_FACTORY_ADDRESS);
 
 function getPoolAddressFromCoins(coins: Address[]): Address {
-    let i = 0;
+    let resolvedCoins: Address[] = [];
+    for (let i = 0; i < coins.length; i++)
+        if (coins[i] == ADDRESS_ZERO) {
+            break;
+        } else {
+            resolvedCoins.push(coins[i]);
+        }
+
+    let i = -1;
     while (true) {
+        i++;
         let poolAddress = MetapoolFactoryContract.find_pool_for_coins1(
-            coins[0],
-            coins[1],
-            BigInt.fromI32(i++),
+            resolvedCoins[0],
+            resolvedCoins[1],
+            BigInt.fromI32(i),
         );
         if (poolAddress == ADDRESS_ZERO)
             throw new Error(
-                `Could not fetch pool address from coins ${coins[0].toHex()} and ${coins[1].toHex()} with index ${i - 1}`,
+                `Could not fetch pool address from coins ${resolvedCoins[0].toHex()} and ${resolvedCoins[1].toHex()} with index ${i}`,
             );
-        if (Pool.load(poolAddress) !== null) continue;
 
         let onChainPoolCoins = MetapoolFactoryContract.get_coins(poolAddress);
         let poolCoins: Address[] = [];
@@ -35,11 +43,11 @@ function getPoolAddressFromCoins(coins: Address[]): Address {
                 poolCoins.push(onChainPoolCoins[i]);
             }
 
-        if (poolCoins.length !== coins.length) continue;
+        if (poolCoins.length != resolvedCoins.length) continue;
 
         let shouldContinue = false;
         for (let i = 0; i < poolCoins.length; i++) {
-            if (poolCoins[i] !== coins[i]) {
+            if (poolCoins[i] != resolvedCoins[i]) {
                 shouldContinue = true;
                 break;
             }

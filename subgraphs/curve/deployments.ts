@@ -39,7 +39,7 @@ export interface ChainConfig {
 export const DEPLOYMENTS: Record<string, ChainConfig> = {
     mainnet: {
         // grafting: {
-        //     base: "QmNr8LFShVDTzKm4ARj7fTvwyBqt1T94Aos2aRq2fM1S6r",
+        //     base: "QmNM8c2FVwck6NopfS49EJfg4yzkqpN1eG66BA2os2VFKj",
         //     block: 12913520,
         // },
         nativeToken: {

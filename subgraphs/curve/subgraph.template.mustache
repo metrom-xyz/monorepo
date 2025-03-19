@@ -52,6 +52,8 @@ dataSources:
       abis:
         - name: MetapoolFactory
           file: ./abis/MetapoolFactory.json
+        - name: UnifiedPool
+          file: ./abis/UnifiedPool.json
         - name: Erc20
           file: ./abis/Erc20.json
         - name: Erc20BytesName
@@ -110,6 +112,8 @@ dataSources:
       abis:
         - name: TwoCryptoFactory
           file: ./abis/TwoCryptoFactory.json
+        - name: UnifiedPool
+          file: ./abis/UnifiedPool.json
         - name: Erc20
           file: ./abis/Erc20.json
         - name: Erc20BytesName
@@ -137,6 +141,8 @@ dataSources:
       abis:
         - name: StableSwapCrvUsdFactory
           file: ./abis/StableSwapCrvUsdFactory.json
+        - name: UnifiedPool
+          file: ./abis/UnifiedPool.json
         - name: Erc20
           file: ./abis/Erc20.json
         - name: Erc20BytesName
@@ -168,6 +174,8 @@ dataSources:
       abis:
         - name: TriCryptoNGFactory
           file: ./abis/TriCryptoNGFactory.json
+        - name: UnifiedPool
+          file: ./abis/UnifiedPool.json
         - name: Erc20
           file: ./abis/Erc20.json
         - name: Erc20BytesName
@@ -195,6 +203,8 @@ dataSources:
       abis:
         - name: StableSwapNGFactory
           file: ./abis/StableSwapNGFactory.json
+        - name: UnifiedPool
+          file: ./abis/UnifiedPool.json
         - name: Erc20
           file: ./abis/Erc20.json
         - name: Erc20BytesName
@@ -202,8 +212,8 @@ dataSources:
         - name: Erc20BytesSymbol
           file: ./abis/Erc20BytesSymbol.json
       eventHandlers:
-        # - event: BasePoolAdded(address)
-        #   handler: handleBasePoolAdded
+        - event: BasePoolAdded(address)
+          handler: handleBasePoolAdded
         - event: PlainPoolDeployed(address[],uint256,uint256,address)
           handler: handlePlainPoolDeployed
         - event: MetaPoolDeployed(address,address,uint256,uint256,address)
@@ -226,6 +236,8 @@ dataSources:
       abis:
         - name: TwoCryptoNGFactory
           file: ./abis/TwoCryptoNGFactory.json
+        - name: UnifiedPool
+          file: ./abis/UnifiedPool.json
         - name: Erc20
           file: ./abis/Erc20.json
         - name: Erc20BytesName
