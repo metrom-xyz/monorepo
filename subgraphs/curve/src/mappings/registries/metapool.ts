@@ -1,6 +1,6 @@
 import { Address, BigInt } from "@graphprotocol/graph-ts";
 import {
-    // BasePoolAdded,
+    BasePoolAdded,
     LiquidityGaugeDeployed,
     MetaPoolDeployed,
     MetapoolFactory,
@@ -21,18 +21,29 @@ function getPoolAddressFromCoins(coins: Address[]): Address {
             BigInt.fromI32(i++),
         );
         if (poolAddress == ADDRESS_ZERO)
-            throw new Error(`Could not fetch pool address from coins`);
+            throw new Error(
+                `Could not fetch pool address from coins ${coins[0].toHex()} and ${coins[1].toHex()} with index ${i - 1}`,
+            );
         if (Pool.load(poolAddress) !== null) continue;
 
-        let poolCoins = MetapoolFactoryContract.get_coins(poolAddress);
+        let onChainPoolCoins = MetapoolFactoryContract.get_coins(poolAddress);
+        let poolCoins: Address[] = [];
+        for (let i = 0; i < onChainPoolCoins.length; i++)
+            if (onChainPoolCoins[i] == ADDRESS_ZERO) {
+                break;
+            } else {
+                poolCoins.push(onChainPoolCoins[i]);
+            }
+
         if (poolCoins.length !== coins.length) continue;
 
         let shouldContinue = false;
-        for (let i = 0; i < poolCoins.length; i++)
+        for (let i = 0; i < poolCoins.length; i++) {
             if (poolCoins[i] !== coins[i]) {
                 shouldContinue = true;
                 break;
             }
+        }
 
         if (shouldContinue) continue;
 
@@ -40,13 +51,9 @@ function getPoolAddressFromCoins(coins: Address[]): Address {
     }
 }
 
-// export function handleBasePoolAdded(event: BasePoolAdded): void {
-//     getOrCreatePool(
-//         event.params.base_pool,
-//         event.params.base_pool,
-//         null,
-//     );
-// }
+export function handleBasePoolAdded(event: BasePoolAdded): void {
+    getOrCreatePool(event.params.base_pool, event.params.base_pool, null);
+}
 
 export function handlePlainPoolDeployed(event: PlainPoolDeployed): void {
     let poolAddress = getPoolAddressFromCoins(event.params.coins);

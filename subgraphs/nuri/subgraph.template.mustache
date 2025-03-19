@@ -1,0 +1,160 @@
+specVersion: 1.0.0
+indexerHints:
+  prune: never
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum
+    name: FullRangeFactory
+    network: {{network}}
+    source:
+      abi: FullRangeFactory
+      address: "{{FullRangeFactoryAddress}}"
+      startBlock: {{FullRangeFactoryStartBlock}}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      file: ./src/mappings/full-range/factory.ts
+      entities: []
+      abis:
+        - name: FullRangeFactory
+          file: ./abis/FullRangeFactory.json
+        - name: Erc20
+          file: ./abis/Erc20.json
+        - name: Erc20BytesName
+          file: ./abis/Erc20BytesName.json
+        - name: Erc20BytesSymbol
+          file: ./abis/Erc20BytesSymbol.json
+      eventHandlers:
+        - event: Initialized(uint8)
+          handler: handleInitialized
+        - event: PairCreated(indexed address,indexed address,bool,address,uint256)
+          handler: handlePairCreated
+        - event: SetFee(bool,uint256)
+          handler: handleSetFee
+        - event: SetPairFee(address,uint256)
+          handler: handlePairFee
+  - kind: ethereum
+    name: ConcentratedFactory
+    network: {{network}}
+    source:
+      abi: ConcentratedFactory
+      address: "{{ConcentratedFactoryAddress}}"
+      startBlock: {{ConcentratedFactoryStartBlock}}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      file: ./src/mappings/concentrated/factory.ts
+      entities: []
+      abis:
+        - name: ConcentratedFactory
+          file: ./abis/ConcentratedFactory.json
+        - name: Erc20
+          file: ./abis/Erc20.json
+        - name: Erc20BytesName
+          file: ./abis/Erc20BytesName.json
+        - name: Erc20BytesSymbol
+          file: ./abis/Erc20BytesSymbol.json
+      eventHandlers:
+        - event: PoolCreated(indexed address,indexed address,indexed uint24,int24,address)
+          handler: handlePoolCreated
+  - kind: ethereum
+    name: Voter
+    network: {{network}}
+    source:
+      abi: Voter
+      address: "{{VoterAddress}}"
+      startBlock: {{VoterStartBlock}}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      file: ./src/mappings/voter.ts
+      entities: []
+      abis:
+        - name: Voter
+          file: ./abis/Voter.json
+        - name: Erc20
+          file: ./abis/Erc20.json
+        - name: Erc20BytesName
+          file: ./abis/Erc20BytesName.json
+        - name: Erc20BytesSymbol
+          file: ./abis/Erc20BytesSymbol.json
+      eventHandlers:
+        - event: GaugeCreated(indexed address,address,address,indexed address)
+          handler: handleGaugeCreated
+  - kind: ethereum/contract
+    name: NonFungiblePositionManager
+    network: {{network}}
+    source:
+      abi: NonFungiblePositionManager
+      address: "{{NonFungiblePositionManagerAddress}}"
+      startBlock: {{NonFungiblePositionManagerStartBlock}}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      file: ./src/mappings/non-fungible-position-manager.ts
+      entities: []
+      abis:
+        - name: NonFungiblePositionManager
+          file: ./abis/NonFungiblePositionManager.json
+        - name: ConcentratedFactory
+          file: ./abis/ConcentratedFactory.json
+      eventHandlers:
+        - event: IncreaseLiquidity(indexed uint256,uint128,uint256,uint256)
+          handler: handleIncreaseLiquidity
+        - event: DecreaseLiquidity(indexed uint256,uint128,uint256,uint256)
+          handler: handleDecreaseLiquidity
+        - event: Transfer(indexed address,indexed address,indexed uint256)
+          handler: handleTransfer
+templates:
+  - kind: ethereum/contract
+    name: FullRangePool
+    network: {{network}}
+    source:
+      abi: FullRangePool
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      file: ./src/mappings/full-range/pool.ts
+      entities: []
+      abis:
+        - name: FullRangePool
+          file: ./abis/FullRangePool.json
+      eventHandlers:
+        - event: Swap(indexed address,uint256,uint256,uint256,uint256,indexed address)
+          handler: handleSwap
+        - event: Mint(indexed address,uint256,uint256)
+          handler: handleMint
+        - event: Burn(indexed address,uint256,uint256,indexed address)
+          handler: handleBurn
+        - event: Transfer(indexed address,indexed address,uint256)
+          handler: handleTransfer
+  - kind: ethereum/contract
+    name: ConcentratedPool
+    network: {{network}}
+    source:
+      abi: ConcentratedPool
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      file: ./src/mappings/concentrated/pool.ts
+      entities: []
+      abis:
+        - name: ConcentratedPool
+          file: ./abis/ConcentratedPool.json
+      eventHandlers:
+        - event: Initialize(uint160,int24)
+          handler: handleInitialize
+        - event: Swap(indexed address,indexed address,int256,int256,uint160,uint128,int24)
+          handler: handleSwap
+        - event: Mint(address,indexed address,indexed int24,indexed
+            int24,uint128,uint256,uint256)
+          handler: handleMint
+        - event: Burn(indexed address,indexed int24,indexed int24,uint128,uint256,uint256)
+          handler: handleBurn
