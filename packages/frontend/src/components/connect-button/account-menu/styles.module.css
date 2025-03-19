@@ -79,7 +79,7 @@
 }
 
 .icon {
-    @apply w-5 h-5 cursor-pointer;
+    @apply w-5 h-5;
 }
 
 .iconWrapper {
@@ -90,6 +90,10 @@
         transition-colors
         duration-200
         ease-in-out;
+}
+
+.disconnect {
+    @apply cursor-pointer;
 }
 
 .unsupportedChain {

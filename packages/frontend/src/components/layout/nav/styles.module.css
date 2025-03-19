@@ -71,6 +71,21 @@
     @apply h-10 w-10;
 }
 
+.themePicker {
+    @apply bg-white dark:bg-zinc-800
+        h-10
+        px-3
+        rounded-md
+        flex
+        items-center
+        justify-center
+        cursor-pointer
+        theme-surface-hover
+        transition-colors
+        duration-200
+        ease-in-out;
+}
+
 .tabs {
     @apply flex-wrap
         w-full
@@ -101,7 +116,7 @@
         transition-colors
         duration-200
         ease-in-out
-        theme-surface-hover
+        theme-surface-hover;
 }
 
 .tabIcon {

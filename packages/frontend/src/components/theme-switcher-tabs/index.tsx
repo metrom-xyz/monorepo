@@ -1,5 +1,4 @@
 import { Theme } from "@/src/types/common";
-import { useEffect, useState } from "react";
 import { MoonIcon } from "@/src/assets/moon-icon";
 import { SunIcon } from "@/src/assets/sun-icon";
 import classNames from "classnames";
@@ -9,14 +8,17 @@ import { useTranslations } from "next-intl";
 
 import styles from "./styles.module.css";
 
-export function ThemeSwitcher() {
-    const t = useTranslations("theme");
-    const [mounted, setMounted] = useState(false);
-    const { theme, setTheme } = useTheme();
+interface ThemeSwitcherTabsProps {
+    popover?: boolean;
+    className?: string;
+}
 
-    useEffect(() => {
-        setMounted(true);
-    }, []);
+export function ThemeSwitcherTabs({
+    popover,
+    className,
+}: ThemeSwitcherTabsProps) {
+    const t = useTranslations("theme");
+    const { theme, setTheme } = useTheme();
 
     function handleThemeOnChange(value: Theme) {
         const html = document.documentElement;
@@ -31,33 +33,28 @@ export function ThemeSwitcher() {
         });
     }
 
-    if (!mounted)
-        return (
-            <div className={styles.root}>
-                <div
-                    className={classNames(styles.wrapper, styles.loading)}
-                ></div>
-            </div>
-        );
-
     return (
         <Tabs
             onChange={handleThemeOnChange}
             value={theme as Theme}
-            className={styles.root}
+            className={classNames(styles.root, className, {
+                [styles.popover]: popover,
+            })}
         >
             <Tab
                 value={Theme.System}
                 className={classNames(styles.tab, {
                     [styles.active]: theme === Theme.System,
+                    [styles.popover]: popover,
                 })}
             >
-                <Typography weight="medium">{t("auto")}</Typography>
+                <Typography weight="medium">{t("system")}</Typography>
             </Tab>
             <Tab
                 value={Theme.Dark}
                 className={classNames(styles.tab, {
                     [styles.active]: theme === Theme.Dark,
+                    [styles.popover]: popover,
                 })}
             >
                 <MoonIcon className={styles.icon} />
@@ -66,6 +63,7 @@ export function ThemeSwitcher() {
                 value={Theme.Light}
                 className={classNames(styles.tab, {
                     [styles.active]: theme === Theme.Light,
+                    [styles.popover]: popover,
                 })}
             >
                 <SunIcon className={styles.icon} />
