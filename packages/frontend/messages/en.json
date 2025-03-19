@@ -6,7 +6,7 @@
         "connect": "Connect"
     },
     "theme": {
-        "auto": "Auto",
+        "system": "System",
         "dark": "Dark",
         "light": "Light"
     },

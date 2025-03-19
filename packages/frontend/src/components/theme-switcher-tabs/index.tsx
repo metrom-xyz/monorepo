@@ -48,7 +48,7 @@ export function ThemeSwitcherTabs({
                     [styles.popover]: popover,
                 })}
             >
-                <Typography weight="medium">{t("auto")}</Typography>
+                <Typography weight="medium">{t("system")}</Typography>
             </Tab>
             <Tab
                 value={Theme.Dark}
