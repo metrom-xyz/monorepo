@@ -15,22 +15,24 @@ export interface UseClaimsTransactionParams {
     address?: Address;
 }
 
+export type ClaimRewardsSimulationResult = SimulateContractReturnType<
+    typeof metromAbi,
+    "claimRewards",
+    [
+        {
+            campaignId: Hex;
+            proof: Hex[];
+            token: Address;
+            amount: bigint;
+            receiver: Address;
+        }[],
+    ]
+>;
+
 export interface UseClaimsTransactionReturnValue {
     loading: boolean;
     error: SimulateContractErrorType | null;
-    transaction?: SimulateContractReturnType<
-        typeof metromAbi,
-        "claimRewards",
-        [
-            {
-                campaignId: Hex;
-                proof: Hex[];
-                token: Address;
-                amount: bigint;
-                receiver: Address;
-            }[],
-        ]
-    >;
+    transaction?: ClaimRewardsSimulationResult;
 }
 
 /** https://docs.metrom.xyz/react-library/use-claims-transaction */
@@ -45,8 +47,8 @@ export function useClaimsTransaction({
 
     const {
         data: simulatedClaimRewards,
-        isLoading: simulatingClaimRewards,
         error: simulateError,
+        isLoading: simulatingClaimRewards,
     } = useSimulateContract({
         chainId: chainId,
         abi: metromAbi,

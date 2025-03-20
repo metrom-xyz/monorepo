@@ -3,5 +3,6 @@ export {
     Environment,
     SupportedDex,
     BackendCampaignStatus as CampaignStatus,
+    Campaign,
 } from "@metrom-xyz/sdk";
 export * from "./hooks";

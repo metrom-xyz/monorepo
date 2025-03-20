@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useMetromClient } from "./useMetromClient";
 
-interface ClaimWithRemaining extends Claim {
+export interface ClaimWithRemaining extends Claim {
     remaining: OnChainAmount;
 }
 

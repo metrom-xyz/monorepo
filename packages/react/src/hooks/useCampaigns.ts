@@ -16,7 +16,7 @@ export function useCampaigns(
 ): UseCampaignsReturnValue {
     const metromClient = useMetromClient();
 
-    const { data: campaigns, isPending: loading } = useQuery({
+    const { data: campaigns, isLoading: loading } = useQuery({
         queryKey: ["campaigns", params],
         queryFn: async () => {
             try {
