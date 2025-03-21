@@ -1,9 +1,19 @@
+import type { Address } from "viem";
 import { useQuery } from "@tanstack/react-query";
 import { useMetromClient } from "./useMetromClient";
-import type { Campaign } from "@metrom-xyz/sdk";
-import { FetchCampaignParams } from "../../../sdk/dist/client/backend";
+import type {
+    BackendCampaignStatus,
+    Campaign,
+    SupportedDex,
+} from "@metrom-xyz/sdk";
+import type { SupportedChain } from "@metrom-xyz/contracts";
 
-export type UseCampaignsParams = FetchCampaignParams;
+export type UseCampaignsParams = {
+    status?: BackendCampaignStatus;
+    ownder?: Address;
+    chainId?: SupportedChain;
+    dex?: SupportedDex;
+};
 
 export interface UseCampaignsReturnValue {
     loading: boolean;

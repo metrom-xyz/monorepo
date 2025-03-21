@@ -39,9 +39,7 @@ import { Environment, MetromProvider } from "@metrom-xyz/react";
 
 function App() {
   return (
-    <MetromProvider environment={Environment.Development}>
-      {/** ... */}
-    </MetromProvider>
+    <MetromProvider environment={Environment.Development}>...</MetromProvider>
   );
 }
 ```
