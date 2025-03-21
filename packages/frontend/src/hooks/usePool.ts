@@ -36,6 +36,7 @@ export function usePool({ chainId, address, enabled = true }: UsePoolParams): {
         },
         enabled: enabled && !!address,
         staleTime: 0,
+        refetchOnWindowFocus: false,
     });
 
     return {

@@ -42,7 +42,7 @@ export function AddressPoolPicker({
     );
 
     useEffect(() => {
-        if (search && !address) onError(t("errors.invalidAddress"));
+        if (search && !isAddress(search)) onError(t("errors.invalidAddress"));
         else if (address && !loadingImportedPool && importedPool === null)
             onError(t("errors.invalidPool"));
         else if (dex && importedPool && importedPool.dex.slug !== dex.slug)
@@ -71,6 +71,7 @@ export function AddressPoolPicker({
         <div className={styles.root}>
             <div className={styles.header}>
                 <TextInput
+                    error={!!search && !isAddress(search)}
                     value={search}
                     onChange={handleSearchOnChange}
                     placeholder={t("label")}
@@ -79,18 +80,32 @@ export function AddressPoolPicker({
                 />
             </div>
             <div className={styles.wrapper}>
-                {search && !address && t("errors.invalidAddress")}
                 {loadingImportedPool && !importedPool && <SkeletonPool />}
-                {!search && empty && <Typography>{t("empty")}</Typography>}
+
+                {search && !address && (
+                    <Typography uppercase size="xs" weight="medium">
+                        {t("errors.enterValidAddress")}
+                    </Typography>
+                )}
+
+                {invalidPool && (
+                    <Typography uppercase size="xs" weight="medium">
+                        {t("errors.poolNotSupported")}
+                    </Typography>
+                )}
+
+                {!search && empty && (
+                    <Typography uppercase size="xs" weight="medium">
+                        {t("empty")}
+                    </Typography>
+                )}
+
                 {validPool && (
                     <Pool
                         chain={chainId}
                         pool={importedPool}
                         onClick={handlePoolOnChange}
                     />
-                )}
-                {invalidPool && (
-                    <Typography>{t("errors.invalidPool")}</Typography>
                 )}
             </div>
         </div>
