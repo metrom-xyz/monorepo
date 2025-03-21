@@ -5,4 +5,5 @@ export {
     BackendCampaignStatus as CampaignStatus,
     Campaign,
 } from "@metrom-xyz/sdk";
+export { SupportedChain } from "@metrom-xyz/contracts";
 export * from "./hooks";
