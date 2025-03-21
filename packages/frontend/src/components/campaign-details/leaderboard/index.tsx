@@ -34,7 +34,8 @@ export function Leaderboard({ campaign, loading }: LeaderboardProps) {
     const t = useTranslations("campaignDetails.leaderboard");
 
     const { loading: loadingLeaderboard, leaderboard } = useLeaderboard({
-        campaign,
+        campaignId: campaign?.id,
+        chainId: campaign?.chainId,
     });
 
     if (!loading && !loadingLeaderboard && !leaderboard) {

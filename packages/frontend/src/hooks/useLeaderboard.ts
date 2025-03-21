@@ -1,4 +1,4 @@
-import type { Address } from "blo";
+import type { Address, Hex } from "viem";
 import {
     type Campaign,
     type OnChainAmount,
@@ -8,6 +8,7 @@ import { METROM_API_CLIENT } from "../commons";
 import { useQuery } from "@tanstack/react-query";
 import { useAccount } from "wagmi";
 import type { HookBaseParams } from "../types/hooks";
+import type { SupportedChain } from "@metrom-xyz/contracts";
 
 export interface Rank {
     account: Address;
@@ -24,13 +25,20 @@ export interface Leaderboard {
 }
 
 interface UseLeaderboardParams extends HookBaseParams {
-    campaign?: Campaign;
+    campaignId?: Hex;
+    chainId?: SupportedChain;
 }
 
-type QueryKey = [string, Campaign | undefined, Address | undefined];
+type QueryKey = [
+    string,
+    Hex | undefined,
+    SupportedChain | undefined,
+    Address | undefined,
+];
 
 export function useLeaderboard({
-    campaign,
+    campaignId,
+    chainId,
     enabled = true,
 }: UseLeaderboardParams = {}): {
     loading: boolean;
@@ -39,14 +47,15 @@ export function useLeaderboard({
     const { address } = useAccount();
 
     const { data, isPending } = useQuery({
-        queryKey: ["leaderboard", campaign, address],
+        queryKey: ["leaderboard", campaignId, chainId, address],
         queryFn: async ({ queryKey }) => {
-            const [, campaign, account] = queryKey as QueryKey;
-            if (!campaign) return null;
+            const [, campaignId, chainId, account] = queryKey as QueryKey;
+            if (!campaignId || !chainId) return null;
 
             try {
                 const response = await METROM_API_CLIENT.fetchLeaderboard({
-                    campaign,
+                    campaignId,
+                    chainId,
                     account,
                 });
 
@@ -94,12 +103,12 @@ export function useLeaderboard({
                 };
             } catch (error) {
                 console.error(
-                    `Could not fetch leaderboard for campaign with id ${campaign.id} in chain with id ${campaign.chainId}: ${error}`,
+                    `Could not fetch leaderboard for campaign with id ${campaignId} in chain with id ${chainId}: ${error}`,
                 );
                 throw error;
             }
         },
-        enabled: enabled && !!campaign,
+        enabled: enabled && !!campaignId && !!chainId,
         refetchOnWindowFocus: false,
     });
 
