@@ -1,14 +1,11 @@
 import type { Address, Hex } from "viem";
 import {
-    type Campaign,
     type OnChainAmount,
     type UsdPricedErc20TokenAmount,
 } from "@metrom-xyz/sdk";
-import { METROM_API_CLIENT } from "../commons";
 import { useQuery } from "@tanstack/react-query";
-import { useAccount } from "wagmi";
-import type { HookBaseParams } from "../types/hooks";
-import type { SupportedChain } from "@metrom-xyz/contracts";
+import { useMetromClient } from "./useMetromClient";
+import { SupportedChain } from "@metrom-xyz/contracts";
 
 export interface Rank {
     account: Address;
@@ -24,9 +21,15 @@ export interface Leaderboard {
     sortedRanks: Rank[];
 }
 
-interface UseLeaderboardParams extends HookBaseParams {
+export interface UseLeaderboardParams {
+    address?: Address;
     campaignId?: Hex;
     chainId?: SupportedChain;
+}
+
+export interface UseLeaderboardReturnValue {
+    loading: boolean;
+    leaderboard?: Leaderboard;
 }
 
 type QueryKey = [
@@ -36,15 +39,13 @@ type QueryKey = [
     Address | undefined,
 ];
 
+/** https://docs.metrom.xyz/react-library/use-leaderboard */
 export function useLeaderboard({
     campaignId,
     chainId,
-    enabled = true,
-}: UseLeaderboardParams = {}): {
-    loading: boolean;
-    leaderboard?: Leaderboard;
-} {
-    const { address } = useAccount();
+    address,
+}: UseLeaderboardParams): UseLeaderboardReturnValue {
+    const metromClient = useMetromClient();
 
     const { data, isPending } = useQuery({
         queryKey: ["leaderboard", campaignId, chainId, address],
@@ -53,7 +54,7 @@ export function useLeaderboard({
             if (!campaignId || !chainId) return null;
 
             try {
-                const response = await METROM_API_CLIENT.fetchLeaderboard({
+                const response = await metromClient.fetchLeaderboard({
                     campaignId,
                     chainId,
                     account,
@@ -103,7 +104,7 @@ export function useLeaderboard({
                 throw error;
             }
         },
-        enabled: enabled && !!campaignId && !!chainId,
+        enabled: !!campaignId && !!chainId,
         refetchOnWindowFocus: false,
     });
 

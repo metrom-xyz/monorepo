@@ -138,7 +138,8 @@ export interface FetchKpiMeasurementsParams {
 }
 
 export interface FetchLeaderboardParams {
-    campaign: Campaign;
+    chainId: SupportedChain;
+    campaignId: Hex;
     account?: Address;
 }
 
@@ -590,7 +591,7 @@ export class MetromApiClient {
         params: FetchLeaderboardParams,
     ): Promise<Leaderboard | null> {
         const url = new URL(
-            `v1/leaderboards/${params.campaign.chainId}/${params.campaign.id}`,
+            `v1/leaderboards/${params.chainId}/${params.campaignId}`,
             this.baseUrl,
         );
 
@@ -600,7 +601,7 @@ export class MetromApiClient {
         const response = await fetch(url);
         if (!response.ok)
             throw new Error(
-                `response not ok while fetching leaderboard for campaign with id ${params.campaign.id} in chain with id ${params.campaign.chainId}: ${await response.text()}`,
+                `response not ok while fetching leaderboard for campaign with id ${params.campaignId} in chain with id ${params.chainId}: ${await response.text()}`,
             );
 
         const { resolvedPricedTokens, updatedAt, leaderboard } =

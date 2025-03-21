@@ -1,5 +1,5 @@
 import { useReadContracts } from "wagmi";
-import { formatUnits, type Address } from "viem";
+import { formatUnits, type Address, type Hex } from "viem";
 import { type Claim, type OnChainAmount } from "@metrom-xyz/sdk";
 import { SupportedChain, ADDRESS } from "@metrom-xyz/contracts";
 import { metromAbi } from "@metrom-xyz/contracts/abi";
@@ -20,6 +20,8 @@ export interface UseClaimsReturnValue {
     claims: ClaimWithRemaining[];
 }
 
+type QueryKey = [string, Hex | undefined];
+
 /** https://docs.metrom.xyz/react-library/use-claims */
 export function useClaims({ address }: UseClaimsParams): UseClaimsReturnValue {
     const [claims, setClaims] = useState<ClaimWithRemaining[]>([]);
@@ -32,7 +34,7 @@ export function useClaims({ address }: UseClaimsParams): UseClaimsReturnValue {
     } = useQuery({
         queryKey: ["claims", address],
         queryFn: async ({ queryKey }) => {
-            const account = queryKey[1];
+            const [, account] = queryKey as QueryKey;
             if (!account) return undefined;
 
             try {
