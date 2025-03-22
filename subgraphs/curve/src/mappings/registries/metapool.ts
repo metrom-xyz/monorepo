@@ -6,9 +6,13 @@ import {
     MetapoolFactory,
     PlainPoolDeployed,
 } from "../../../generated/MetapoolFactory/MetapoolFactory";
-import { ADDRESS_ZERO, createGauge, getOrCreatePool } from "../../commons";
+import {
+    ADDRESS_ZERO,
+    createGauge,
+    getOrCreatePool,
+    getPoolLpTokenAddressOrThrow,
+} from "../../commons";
 import { METAPOOL_FACTORY_ADDRESS } from "../../constants";
-import { LpToken } from "../../../generated/schema";
 
 let MetapoolFactoryContract = MetapoolFactory.bind(METAPOOL_FACTORY_ADDRESS);
 
@@ -60,7 +64,7 @@ function getPoolAddressFromCoins(coins: Address[]): Address {
 }
 
 export function handleBasePoolAdded(event: BasePoolAdded): void {
-    getOrCreatePool(event.params.base_pool, event.params.base_pool, null);
+    getOrCreatePool(event.params.base_pool, null, null);
 }
 
 export function handlePlainPoolDeployed(event: PlainPoolDeployed): void {
@@ -69,15 +73,10 @@ export function handlePlainPoolDeployed(event: PlainPoolDeployed): void {
 }
 
 export function handleMetaPoolDeployed(event: MetaPoolDeployed): void {
-    let lpToken = LpToken.load(event.params.base_pool);
-    if (lpToken === null)
-        throw new Error(
-            `Tried to create metapool with non-existent base pool ${event.params.base_pool.toHex()}`,
-        );
-
+    let lpTokenAddress = getPoolLpTokenAddressOrThrow(event.params.base_pool);
     let poolAddress = MetapoolFactoryContract.find_pool_for_coins(
         event.params.coin,
-        changetype<Address>(lpToken.pool),
+        lpTokenAddress,
     );
     if (poolAddress == ADDRESS_ZERO)
         throw new Error(
