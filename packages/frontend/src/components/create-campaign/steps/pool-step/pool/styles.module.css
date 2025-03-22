@@ -28,10 +28,6 @@
     @apply w-full;
 }
 
-.active {
-    @apply bg-zinc-200;
-}
-
 .loading {
     @apply pointer-events-none;
 }

@@ -14,10 +14,7 @@ interface PoolProps {
 
 export function Pool({ pool, chain, onClick }: PoolProps) {
     return (
-        <div
-            className={classNames(styles.root, styles.active)}
-            onClick={onClick}
-        >
+        <div onClick={onClick} className={styles.root}>
             <div className={styles.pool}>
                 <PoolRemoteLogo
                     chain={chain}
