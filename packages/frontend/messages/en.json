@@ -270,7 +270,9 @@
                     },
                     "errors": {
                         "invalidAddress": "Invalid address",
+                        "enterValidAddress": "Enter a valid pool address",
                         "invalidPool": "Invalid pool",
+                        "poolNotSupported": "Pool not supported",
                         "inconsistentDex": "The pool doesn't belong to {dex}"
                     }
                 },

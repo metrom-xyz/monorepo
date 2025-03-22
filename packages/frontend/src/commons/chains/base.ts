@@ -5,7 +5,7 @@ import { KimLogo } from "../../assets/logos/dexes/kim";
 import { BaseSwapLogo } from "@/src/assets/logos/dexes/baseswap";
 import { type ChainData } from "..";
 import { base } from "viem/chains";
-// import { UniswapLogo } from "@/src/assets/logos/dexes/uniswap";
+import { UniswapLogo } from "@/src/assets/logos/dexes/uniswap";
 import { DepositUrlType, ProtocolType } from "@/src/types/common";
 import { ThirdTradeLogo } from "@/src/assets/logos/dexes/thirdtrade";
 
@@ -38,13 +38,17 @@ export const baseData: ChainData = {
             },
             supportsFetchAllPools: true,
         },
-        // {
-        //     slug: SupportedDex.UniswapV3,
-        //     logo: UniswapLogo,
-        //     name: "Uniswap v3",
-        //     addLiquidityUrl: `https://app.uniswap.org/explore/pools/${SupportedChain.Base}/{pool}`,
-        //     supportsFetchAllPools: false,
-        // },
+        {
+            type: ProtocolType.Dex,
+            slug: SupportedDex.UniswapV3,
+            logo: UniswapLogo,
+            name: "Uniswap v3",
+            depositUrl: {
+                type: DepositUrlType.PathPoolAddress,
+                template: "https://oku.trade/app/base/pool/{pool}",
+            },
+            supportsFetchAllPools: false,
+        },
         {
             type: ProtocolType.Dex,
             slug: SupportedDex.ThirdTrade,
