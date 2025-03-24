@@ -19,6 +19,7 @@ const NETWORK_NAME: Record<SupportedChain, string> = {
     [SupportedChain.Form]: "form",
     [SupportedChain.Gnosis]: "gnosis",
     [SupportedChain.Telos]: "telos",
+    [SupportedChain.LightLinkPhoenix]: "lightlink-phoenix",
 };
 
 const [, , rawNetwork = ""] = process.argv;
@@ -83,7 +84,10 @@ try {
                 ),
             ).toString(),
             {
-                network: resolvedNetwork[1],
+                network:
+                    resolvedNetwork[1] === "lightlink-phoenix"
+                        ? "mainnet"
+                        : resolvedNetwork[1],
                 address: metrom.address,
                 startBlock: metrom.blockCreated,
             },

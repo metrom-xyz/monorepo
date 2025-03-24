@@ -18,6 +18,8 @@ if (!startBlock) {
 
 console.log(`Generating subgraph file for network ${network}`);
 
+let resolvedNetwork = network === "lightlink-phoenix" ? "mainnet" : network;
+
 try {
     const subgraphFileOut = join(
         fileURLToPath(dirname(import.meta.url)),
@@ -34,7 +36,7 @@ try {
                 ),
             ).toString(),
             {
-                network,
+                network: resolvedNetwork,
                 startBlock,
             },
         ),

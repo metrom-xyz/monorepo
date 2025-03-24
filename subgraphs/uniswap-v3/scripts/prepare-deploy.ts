@@ -43,6 +43,8 @@ try {
     process.exit(1);
 }
 
+let resolvedNetwork = network === "lightlink-phoenix" ? "mainnet" : network;
+
 try {
     const subgraphFileOut = join(
         fileURLToPath(dirname(import.meta.url)),
@@ -59,7 +61,7 @@ try {
                 ),
             ).toString(),
             {
-                network,
+                network: resolvedNetwork,
                 factoryAddress: contracts.Factory.address,
                 factoryStartBlock: contracts.Factory.startBlock,
                 nftPositionManagerAddress:
