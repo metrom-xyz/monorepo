@@ -9,7 +9,7 @@ import styles from "./commons/styles.module.css";
 export { type NumberFormatValues } from "react-number-format";
 
 export type NumberInputProps = Omit<
-    NumericFormatProps & BaseInputProps<string>,
+    NumericFormatProps & Omit<BaseInputProps<string>, "value">,
     "size" | "id" | "className"
 > & {
     id?: string;
@@ -26,6 +26,7 @@ export const NumberInput = forwardRef<HTMLInputElement, NumberInputProps>(
             label,
             placeholder,
             errorText,
+            prefixElement,
             icon,
             iconPlacement,
             error = false,
@@ -48,6 +49,7 @@ export const NumberInput = forwardRef<HTMLInputElement, NumberInputProps>(
                 loading={loading}
                 error={error}
                 errorText={errorText}
+                prefixElement={prefixElement}
                 icon={icon}
                 iconPlacement={iconPlacement}
                 className={className}

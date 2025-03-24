@@ -155,11 +155,15 @@
                             "add": "Add to rewards"
                         },
                         "selectPlaceholder": "Choose Token",
-                        "totalUsd": "Total value usd",
+                        "totalUsd": "Total value",
                         "errors": {
                             "insufficientBalance": "Insufficient balance",
                             "lowDistributionRate": "Low distribution rate"
                         }
+                    },
+                    "tokensRatio": {
+                        "title": "Tokens ratio",
+                        "fees": "Fees"
                     },
                     "list": {
                         "token": "Token",
@@ -446,7 +450,7 @@
             "inUsd": "In $",
             "amount": "Amount",
             "daily": "Daily rewards",
-            "total": "Total value usd"
+            "total": "Total value"
         },
         "points": {
             "title": "Points",

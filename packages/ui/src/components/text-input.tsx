@@ -17,6 +17,7 @@ export const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
             label,
             size = "base",
             errorText,
+            prefixElement,
             icon,
             iconPlacement,
             error = false,
@@ -40,6 +41,7 @@ export const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
                 loading={loading}
                 error={error}
                 errorText={errorText}
+                prefixElement={prefixElement}
                 icon={icon}
                 iconPlacement={iconPlacement}
                 className={className}

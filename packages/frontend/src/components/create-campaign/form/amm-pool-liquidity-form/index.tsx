@@ -32,6 +32,7 @@ function validatePayload(
         startDate,
         endDate,
         distributables,
+        tokensRatio,
         kpiSpecification,
         priceRangeSpecification,
         restrictions,
@@ -173,6 +174,7 @@ export function AmmPoolLiquidityForm({
                     startDate={payload.startDate}
                     endDate={payload.endDate}
                     onDistributablesChange={handlePayloadOnChange}
+                    onTokensRatioChange={handlePayloadOnChange}
                     onError={handlePayloadOnError}
                 />
                 <KpiStep

@@ -1,10 +1,12 @@
 import { useCallback, useMemo, useState } from "react";
-import { Typography, ErrorText, Tabs, Tab } from "@metrom-xyz/ui";
+import { Typography, ErrorText, Tabs, Tab, Switch } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
 import { Step } from "@/src/components/step";
 import { StepPreview } from "@/src/components/step/preview";
 import { StepContent } from "@/src/components/step/content";
 import {
+    type AmmPoolLiquidityCampaignPayload,
+    type AmmPoolLiquidityCampaignPayloadPart,
     type BaseCampaignPayload,
     type BaseCampaignPayloadPart,
     type CampaignPayloadErrors,
@@ -13,28 +15,40 @@ import classNames from "classnames";
 import { RewardTokens } from "./tokens";
 import { RewardPoints } from "./points";
 import { DistributablesType } from "@metrom-xyz/sdk";
+import { TokensRatio } from "./tokens-ratio";
+import { AMM_SUPPORTS_TOKENS_RATIO } from "@/src/commons";
+import type { SupportedAmm } from "@metrom-xyz/sdk";
 
 import styles from "./styles.module.css";
 
 interface RewardsStepProps {
     disabled?: boolean;
+    pool?: AmmPoolLiquidityCampaignPayload["pool"];
+    tokensRatio?: AmmPoolLiquidityCampaignPayload["tokensRatio"];
     distributables?: BaseCampaignPayload["distributables"];
     startDate?: BaseCampaignPayload["startDate"];
     endDate?: BaseCampaignPayload["endDate"];
     onDistributablesChange: (rewards: BaseCampaignPayloadPart) => void;
+    onTokensRatioChange?: (
+        tokensRatio: AmmPoolLiquidityCampaignPayloadPart,
+    ) => void;
     onError: (errors: CampaignPayloadErrors) => void;
 }
 
 export function RewardsStep({
     disabled,
+    pool,
+    tokensRatio,
     distributables,
     startDate,
     endDate,
     onDistributablesChange,
+    onTokensRatioChange,
     onError,
 }: RewardsStepProps) {
     const t = useTranslations("newCampaign.form.base.rewards");
     const [error, setError] = useState("");
+    const [tokensRatioOpen, setTokensRatioOpen] = useState(false);
 
     const campaignDuration = useMemo(() => {
         if (!startDate || !endDate) return undefined;
@@ -59,6 +73,15 @@ export function RewardsStep({
         },
         [onDistributablesChange],
     );
+
+    const tokensRatioSupported = useMemo(() => {
+        return (
+            !!pool &&
+            !disabled &&
+            !!onTokensRatioChange &&
+            AMM_SUPPORTS_TOKENS_RATIO[pool.amm as SupportedAmm]
+        );
+    }, [pool, disabled, onTokensRatioChange]);
 
     return (
         <Step
@@ -87,36 +110,55 @@ export function RewardsStep({
                                 {!disabled ? error : null}
                             </ErrorText>
                         </div>
-                        <Tabs
-                            size="sm"
-                            value={distributables?.type}
-                            onChange={handleOnRewardTypeSwitch}
-                        >
-                            <Tab
-                                value={DistributablesType.Tokens}
-                                className={classNames(styles.tab, {
-                                    [styles.activeTab]:
-                                        distributables?.type ===
-                                        DistributablesType.Tokens,
-                                })}
+                        <div className={styles.topRightContent}>
+                            <Tabs
+                                size="sm"
+                                value={distributables?.type}
+                                onChange={handleOnRewardTypeSwitch}
                             >
-                                <Typography weight="medium" size="sm">
-                                    {t("tabs.tokens")}
-                                </Typography>
-                            </Tab>
-                            <Tab
-                                value={DistributablesType.Points}
-                                className={classNames(styles.tab, {
-                                    [styles.activeTab]:
-                                        distributables?.type ===
-                                        DistributablesType.Points,
-                                })}
-                            >
-                                <Typography weight="medium" size="sm">
-                                    {t("tabs.points")}
-                                </Typography>
-                            </Tab>
-                        </Tabs>
+                                <Tab
+                                    value={DistributablesType.Tokens}
+                                    className={classNames(styles.tab, {
+                                        [styles.activeTab]:
+                                            distributables?.type ===
+                                            DistributablesType.Tokens,
+                                    })}
+                                >
+                                    <Typography weight="medium" size="sm">
+                                        {t("tabs.tokens")}
+                                    </Typography>
+                                </Tab>
+                                <Tab
+                                    value={DistributablesType.Points}
+                                    className={classNames(styles.tab, {
+                                        [styles.activeTab]:
+                                            distributables?.type ===
+                                            DistributablesType.Points,
+                                    })}
+                                >
+                                    <Typography weight="medium" size="sm">
+                                        {t("tabs.points")}
+                                    </Typography>
+                                </Tab>
+                            </Tabs>
+                            {tokensRatioSupported && (
+                                <div className={styles.tokensRatioToggle}>
+                                    <Typography
+                                        uppercase
+                                        weight="medium"
+                                        light
+                                        size="xs"
+                                    >
+                                        {t("tokensRatio.title")}:
+                                    </Typography>
+                                    <Switch
+                                        size="xs"
+                                        checked={tokensRatioOpen}
+                                        onClick={setTokensRatioOpen}
+                                    />
+                                </div>
+                            )}
+                        </div>
                     </div>
                 }
                 decorator={false}
@@ -138,6 +180,16 @@ export function RewardsStep({
                             onError={handleOnError}
                             onTokensChange={onDistributablesChange}
                         />
+                    )}
+                    {tokensRatioSupported && (
+                        <div className={styles.tokensRatioWrapper}>
+                            <TokensRatio
+                                open={tokensRatioOpen}
+                                pool={pool}
+                                tokensRatio={tokensRatio}
+                                onTokensRatioChange={onTokensRatioChange!}
+                            />
+                        </div>
                     )}
                 </div>
             </StepPreview>

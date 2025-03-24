@@ -1,0 +1,25 @@
+@reference "../../../../../app.css";
+
+.root {
+    @apply flex
+        flex-col
+        gap-1
+        h-full
+        overflow-hidden;
+}
+
+.title {
+    @apply pt-4;
+}
+
+.inputsWrapper {
+    @apply flex gap-3;
+}
+
+.input {
+    @apply flex-[1];
+}
+
+.input :global(.input) {
+    @apply text-right;
+}
