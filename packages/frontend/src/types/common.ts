@@ -113,6 +113,12 @@ export interface WhitelistedErc20TokenAmount {
     amount: UsdPricedOnChainAmount;
 }
 
+export interface TokensRatio {
+    token0: number;
+    token1: number;
+    fee: number;
+}
+
 export interface AugmentedPriceRangeBound {
     tick: number;
     price: number;
@@ -150,6 +156,7 @@ export interface BaseCampaignPayload {
 export interface AmmPoolLiquidityCampaignPayload extends BaseCampaignPayload {
     dex?: DexProtocol;
     pool?: AmmPoolWithTvl;
+    tokensRatio?: TokensRatio;
     priceRangeSpecification?: AugmentedPriceRangeSpecification;
 }
 

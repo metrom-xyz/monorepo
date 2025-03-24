@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { TextInput } from "../components/text-input";
 import { SettingsIcon } from "../assets/settings";
+import { Typography } from "../components/typography";
 
 const meta: Meta = {
     title: "Input/Text",
@@ -21,6 +22,12 @@ export const WithIcon: Story = {
     args: {
         icon: SettingsIcon,
         iconPlacement: "left",
+    },
+};
+
+export const WithPrefixElement: Story = {
+    args: {
+        prefixElement: <Typography>Prefix</Typography>,
     },
 };
 
