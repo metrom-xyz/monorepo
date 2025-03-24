@@ -124,8 +124,14 @@ function handleLiquidityChange(
             `No liquidity supply nor liquidity delta provided when processing liquidity change event on pool ${pool.id.toHex()}`,
         );
 
-    updateTokenTvls(event.block.number, pool);
     pool.liquidity = pool.liquidity.plus(liquidityDelta);
+    if (pool.liquidity.isZero()) {
+        let tvls: BigInt[] = [];
+        for (let i = 0; i < pool.tokens.length; i++) tvls.push(BI_0);
+        pool.tvls = tvls;
+    } else {
+        updateTokenTvls(event.block.number, pool);
+    }
     pool.save();
 
     if (liquidityDelta.isZero()) return;
