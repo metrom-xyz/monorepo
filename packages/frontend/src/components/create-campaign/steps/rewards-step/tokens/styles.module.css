@@ -5,7 +5,7 @@
 }
 
 .wrapper {
-    @apply flex flex-col gap-2.5 px-4 pb-4;
+    @apply flex flex-col gap-2.5 px-4;
 }
 
 .horizontalDivider {
@@ -13,7 +13,7 @@
 }
 
 .totalValueWrapper {
-    @apply flex items-center gap-3 px-2;
+    @apply flex items-center gap-3;
 }
 
 .rewardPickerWrapper {

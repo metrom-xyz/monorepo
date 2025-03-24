@@ -13,7 +13,7 @@
 }
 
 .previewLabelWrapper.disabled {
-    @apply p-0 items-center;
+    @apply p-0 flex-row items-center;
 }
 
 .previewTextWrapper {
@@ -25,12 +25,28 @@
     color: inherit;
 }
 
+.topRightContent {
+    @apply flex flex-col items-center gap-2;
+}
+
+.tokensRatioToggle {
+    @apply flex items-center self-end gap-1;
+}
+
 .inputLabel {
     @apply text-xs text-zinc-400;
 }
 
 .previewWrapper {
-    @apply h-full w-full flex flex-col gap-2.5;
+    @apply h-full w-full flex flex-col pb-4;
+}
+
+.tokensRatioWrapper {
+    @apply px-4;
+}
+
+.tabs {
+    @apply self-end;
 }
 
 .tab {

@@ -11,7 +11,8 @@
     @apply flex
         justify-between
         items-center
-        py-1
+        pt-4
+        pb-1
         px-4;
 }
 

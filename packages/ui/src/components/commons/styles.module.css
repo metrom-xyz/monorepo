@@ -15,6 +15,22 @@
         pointer-events-none;
 }
 
+.prefixElementWrapper {
+    @apply absolute
+        w-auto
+        top-0
+        left-2
+        h-full
+        flex
+        justify-center
+        items-center
+        pointer-events-none;
+}
+
+.prefixElementWrapper.hasLeftIcon {
+    @apply left-10;
+}
+
 .placeLeft {
     @apply -left-1;
 }
