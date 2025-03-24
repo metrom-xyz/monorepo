@@ -22,6 +22,7 @@ import {
     gnosis,
     sepolia,
     telos,
+    lightlinkPhoenix,
 } from "viem/chains";
 import {
     holeskyData,
@@ -37,6 +38,7 @@ import {
     gnosisData,
     sepoliaData,
     telosData,
+    lightlinkPhoenixData,
 } from "./chains";
 
 export interface ChainData {
@@ -64,7 +66,18 @@ export const MAXIMUM_REWARDS_RESTRICTIONS = 20;
 
 export const SUPPORTED_CHAINS: [Chain, ...Chain[]] =
     ENVIRONMENT === Environment.Production
-        ? [mode, mantle, base, taiko, scroll, sonic, form, gnosis, telos]
+        ? [
+              mode,
+              mantle,
+              base,
+              taiko,
+              scroll,
+              sonic,
+              form,
+              gnosis,
+              telos,
+              lightlinkPhoenix,
+          ]
         : [holesky, baseSepolia, sepolia];
 
 export const TOKEN_ICONS_URL = `https://raw.githubusercontent.com/metrom-xyz/token-icons/refs/heads/main/${ENVIRONMENT === Environment.Production ? "mainnet" : "testnet"}-icons.json`;
@@ -83,6 +96,7 @@ export const CHAIN_DATA: Record<SupportedChain, ChainData> = {
     [SupportedChain.Form]: formData,
     [SupportedChain.Gnosis]: gnosisData,
     [SupportedChain.Telos]: telosData,
+    [SupportedChain.LightLinkPhoenix]: lightlinkPhoenixData,
 };
 
 export const AMM_SUPPORTS_RANGE_INCENTIVES: Record<SupportedAmm, boolean> = {

@@ -11,4 +11,5 @@ export const START_BLOCKS: { [network: string]: number } = {
     sonic: 685175,
     form: 1214174,
     gnosis: 38018174,
+    "lightlink-phoenix": 134900345,
 };

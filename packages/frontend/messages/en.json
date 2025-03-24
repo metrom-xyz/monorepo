@@ -97,7 +97,7 @@
             "description": "Run efficient incentive strategies for your liquidity providers. Reduce leakage and maximize returns by using Metrom.",
             "amm": {
                 "title": "AMM",
-                "description": "Incentivize users that provide liquidity to a various types of AMMs (both full range and concentrated liquidity)."
+                "description": "Incentivize users that provide liquidity to various types of AMMs (both full range and concentrated liquidity)."
             },
             "liquityV2": {
                 "title": "LIQUITY V2",
