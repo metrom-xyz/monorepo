@@ -79,7 +79,12 @@ export function useLeaderboard({
 
                 const connectedAccountRank =
                     connectedAccountRankIndex !== -1
-                        ? sortedRanks.splice(connectedAccountRankIndex, 1)[0]
+                        ? sortedRanks.length < 5
+                            ? sortedRanks[connectedAccountRankIndex]
+                            : sortedRanks.splice(
+                                  connectedAccountRankIndex,
+                                  1,
+                              )[0]
                         : undefined;
 
                 return <Leaderboard>{
