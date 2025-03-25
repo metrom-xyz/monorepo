@@ -1,20 +1,17 @@
 import type { Hex } from "viem";
 import { useQuery } from "@tanstack/react-query";
 import { useMetromClient } from "./useMetromClient";
-import type { Campaign } from "@metrom-xyz/sdk";
-import { SupportedChain } from "@metrom-xyz/contracts";
+import { Campaign } from "@metrom-xyz/sdk";
+import type { QueryOptions, QueryResult } from "../types";
 
-export type UseCampaignParams = {
-    chainId?: SupportedChain;
+export interface UseCampaignParams extends QueryOptions<Campaign | undefined> {
+    chainId?: number;
     id?: Hex;
-};
-
-export interface UseCampaignReturnValue {
-    loading: boolean;
-    campaign?: Campaign;
 }
 
-type QueryKey = [string, SupportedChain | undefined, Hex | undefined];
+export type UseCampaignReturnValue = QueryResult<Campaign | undefined>;
+
+type QueryKey = [string, number, Hex];
 
 /** https://docs.metrom.xyz/react-library/use-campaign */
 export function useCampaign(
@@ -22,11 +19,11 @@ export function useCampaign(
 ): UseCampaignReturnValue {
     const metromClient = useMetromClient();
 
-    const { data: campaign, isLoading: loading } = useQuery({
+    const { data, isLoading, isPending, isFetching } = useQuery({
+        ...params?.options,
         queryKey: ["campaign", params?.chainId, params?.id],
         queryFn: async ({ queryKey }) => {
             const [, chainId, id] = queryKey as QueryKey;
-            if (!chainId || !id) return null;
 
             try {
                 return await metromClient.fetchCampaign({ chainId, id });
@@ -35,10 +32,11 @@ export function useCampaign(
                 throw error;
             }
         },
+        enabled:
+            !!params?.chainId &&
+            !!params?.id &&
+            (params.options?.enabled ?? true),
     });
 
-    return {
-        loading,
-        campaign: campaign || undefined,
-    };
+    return { data, isLoading, isPending, isFetching };
 }

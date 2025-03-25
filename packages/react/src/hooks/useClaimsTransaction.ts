@@ -8,9 +8,10 @@ import {
     SimulateContractReturnType,
 } from "wagmi/actions";
 import { Claim } from "@metrom-xyz/sdk";
+import { QueryResult } from "../types";
 
 export interface UseClaimsTransactionParams {
-    chainId: SupportedChain;
+    chainId: number;
     claims: Claim[];
     address?: Address;
 }
@@ -29,11 +30,11 @@ export type ClaimRewardsSimulationResult = SimulateContractReturnType<
     ]
 >;
 
-export interface UseClaimsTransactionReturnValue {
-    loading: boolean;
+export type UseClaimsTransactionReturnValue = QueryResult<
+    ClaimRewardsSimulationResult | undefined
+> & {
     error: SimulateContractErrorType | null;
-    transaction?: ClaimRewardsSimulationResult;
-}
+};
 
 /** https://docs.metrom.xyz/react-library/use-claims-transaction */
 export function useClaimsTransaction({
@@ -48,11 +49,13 @@ export function useClaimsTransaction({
     const {
         data: simulatedClaimRewards,
         error: simulateError,
-        isLoading: simulatingClaimRewards,
+        isLoading,
+        isFetching,
+        isPending,
     } = useSimulateContract({
         chainId: chainId,
         abi: metromAbi,
-        address: ADDRESS[chainId].address,
+        address: ADDRESS[chainId as SupportedChain].address,
         functionName: "claimRewards",
         args: [
             address
@@ -73,8 +76,10 @@ export function useClaimsTransaction({
     });
 
     return {
-        loading: simulatingClaimRewards,
+        data: simulatedClaimRewards,
         error: simulateError,
-        transaction: simulatedClaimRewards,
+        isLoading,
+        isFetching,
+        isPending,
     };
 }

@@ -5,7 +5,7 @@ import {
 } from "@metrom-xyz/sdk";
 import { useQuery } from "@tanstack/react-query";
 import { useMetromClient } from "./useMetromClient";
-import { SupportedChain } from "@metrom-xyz/contracts";
+import type { QueryOptions, QueryResult } from "../types";
 
 export interface Rank {
     account: Address;
@@ -21,37 +21,31 @@ export interface Leaderboard {
     sortedRanks: Rank[];
 }
 
-export interface UseLeaderboardParams {
+export interface UseLeaderboardParams
+    extends QueryOptions<Leaderboard | undefined> {
     address?: Address;
     campaignId?: Hex;
-    chainId?: SupportedChain;
+    chainId?: number;
 }
 
-export interface UseLeaderboardReturnValue {
-    loading: boolean;
-    leaderboard?: Leaderboard;
-}
+export type UseLeaderboardReturnValue = QueryResult<Leaderboard | undefined>;
 
-type QueryKey = [
-    string,
-    Hex | undefined,
-    SupportedChain | undefined,
-    Address | undefined,
-];
+type QueryKey = [string, Hex, number, Address | undefined];
 
 /** https://docs.metrom.xyz/react-library/use-leaderboard */
 export function useLeaderboard({
+    options,
     campaignId,
     chainId,
     address,
 }: UseLeaderboardParams): UseLeaderboardReturnValue {
     const metromClient = useMetromClient();
 
-    const { data, isPending } = useQuery({
+    const { data, isLoading, isPending, isFetching } = useQuery({
+        ...options,
         queryKey: ["leaderboard", campaignId, chainId, address],
         queryFn: async ({ queryKey }) => {
             const [, campaignId, chainId, account] = queryKey as QueryKey;
-            if (!campaignId || !chainId) return null;
 
             try {
                 const response = await metromClient.fetchLeaderboard({
@@ -60,7 +54,7 @@ export function useLeaderboard({
                     account,
                 });
 
-                if (!response) return null;
+                if (!response) return undefined;
 
                 const { updatedAt, leaderboard } = response;
 
@@ -108,8 +102,5 @@ export function useLeaderboard({
         refetchOnWindowFocus: false,
     });
 
-    return {
-        loading: isPending,
-        leaderboard: data || undefined,
-    };
+    return { data, isLoading, isPending, isFetching };
 }

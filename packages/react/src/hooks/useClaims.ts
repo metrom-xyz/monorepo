@@ -6,57 +6,63 @@ import { metromAbi } from "@metrom-xyz/contracts/abi";
 import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useMetromClient } from "./useMetromClient";
+import { QueryOptions, type QueryResult } from "../types";
 
 export interface ClaimWithRemaining extends Claim {
-    remaining: OnChainAmount;
+    remaining: OnChainAmount | null;
 }
 
-export interface UseClaimsParams {
+export interface UseClaimsParams
+    extends QueryOptions<ClaimWithRemaining[] | undefined> {
     address?: Address;
 }
 
-export interface UseClaimsReturnValue {
-    loading: boolean;
-    claims: ClaimWithRemaining[];
-}
+export type UseClaimsReturnValue = QueryResult<
+    ClaimWithRemaining[] | undefined
+>;
 
-type QueryKey = [string, Hex | undefined];
+type QueryKey = [string, Hex];
 
 /** https://docs.metrom.xyz/react-library/use-claims */
-export function useClaims({ address }: UseClaimsParams): UseClaimsReturnValue {
-    const [claims, setClaims] = useState<ClaimWithRemaining[]>([]);
+export function useClaims(params: UseClaimsParams): UseClaimsReturnValue {
+    const [claims, setClaims] = useState<ClaimWithRemaining[] | undefined>();
     const metromClient = useMetromClient();
 
     const {
         data: rawClaims,
-        isError: claimsErrored,
-        isLoading: loadingClaims,
+        isLoading: isLoadingClaims,
+        isPending: isPendingClaims,
+        isFetching: isFetchingClaims,
     } = useQuery({
-        queryKey: ["claims", address],
+        ...params.options,
+        queryKey: ["claims", params.address],
         queryFn: async ({ queryKey }) => {
             const [, account] = queryKey as QueryKey;
-            if (!account) return undefined;
 
             try {
-                const rawClaims = await metromClient.fetchClaims({
+                const claims = await metromClient.fetchClaims({
                     address: account as Address,
                 });
-                return rawClaims;
+
+                return claims.map((claim) => ({
+                    ...claim,
+                    remaining: null,
+                }));
             } catch (error) {
                 console.error(
-                    `Could not fetch raw claims for address ${address}: ${error}`,
+                    `Could not fetch raw claims for address ${params.address}: ${error}`,
                 );
                 throw error;
             }
         },
-        enabled: !!address,
+        enabled: !!params.address,
     });
 
     const {
         data: claimedData,
-        error: claimedError,
-        isError: claimedErrored,
-        isLoading: loadingClaimed,
+        isLoading: isLoadingClaimed,
+        isPending: isPendingClaimed,
+        isFetching: isFetchingClaimed,
     } = useReadContracts({
         allowFailure: false,
         contracts:
@@ -71,7 +77,7 @@ export function useClaims({ address }: UseClaimsParams): UseClaimsReturnValue {
                     args: [
                         rawClaim.campaignId,
                         rawClaim.token.address,
-                        address,
+                        params.address,
                     ],
                 };
             }),
@@ -79,17 +85,7 @@ export function useClaims({ address }: UseClaimsParams): UseClaimsReturnValue {
             enabled: !!rawClaims,
         },
     });
-
     useEffect(() => {
-        if (loadingClaims || loadingClaimed) {
-            return;
-        }
-        if (claimsErrored || claimedErrored) {
-            console.error(
-                `Could not fetch claimed data for address ${address}: ${claimedError}`,
-            );
-            return;
-        }
         if (!rawClaims || !claimedData) {
             setClaims([]);
             return;
@@ -117,22 +113,12 @@ export function useClaims({ address }: UseClaimsParams): UseClaimsReturnValue {
         }
 
         setClaims(claims);
-    }, [
-        address,
-        claimedData,
-        claimedError,
-        claimedErrored,
-        claimsErrored,
-        loadingClaimed,
-        loadingClaims,
-        rawClaims,
-    ]);
+    }, [claimedData, rawClaims]);
 
     return {
-        loading:
-            loadingClaims ||
-            loadingClaimed ||
-            (claims.length === 0 && !!rawClaims),
-        claims,
+        data: claims,
+        isFetching: isFetchingClaims || isFetchingClaimed,
+        isLoading: isLoadingClaims || isLoadingClaimed,
+        isPending: isPendingClaims || isPendingClaimed,
     };
 }

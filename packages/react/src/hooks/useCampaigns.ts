@@ -6,19 +6,17 @@ import type {
     Campaign,
     SupportedDex,
 } from "@metrom-xyz/sdk";
-import type { SupportedChain } from "@metrom-xyz/contracts";
+import { QueryOptions, type QueryResult } from "../types";
 
-export type UseCampaignsParams = {
+export interface UseCampaignsParams
+    extends QueryOptions<Campaign[] | undefined> {
     status?: BackendCampaignStatus;
-    ownder?: Address;
-    chainId?: SupportedChain;
+    owner?: Address;
+    chainId?: number;
     dex?: SupportedDex;
-};
-
-export interface UseCampaignsReturnValue {
-    loading: boolean;
-    campaigns?: Campaign[];
 }
+
+export type UseCampaignsReturnValue = QueryResult<Campaign[] | undefined>;
 
 /** https://docs.metrom.xyz/react-library/use-campaigns */
 export function useCampaigns(
@@ -26,11 +24,23 @@ export function useCampaigns(
 ): UseCampaignsReturnValue {
     const metromClient = useMetromClient();
 
-    const { data: campaigns, isLoading: loading } = useQuery({
-        queryKey: ["campaigns", params],
+    const { data, isLoading, isPending, isFetching } = useQuery({
+        ...params?.options,
+        queryKey: [
+            "campaigns",
+            params?.status,
+            params?.owner,
+            params?.chainId,
+            params?.dex,
+        ],
         queryFn: async () => {
             try {
-                return await metromClient.fetchCampaigns(params);
+                return await metromClient.fetchCampaigns({
+                    status: params?.status,
+                    owner: params?.owner,
+                    chainId: params?.chainId,
+                    dex: params?.dex,
+                });
             } catch (error) {
                 console.error(`Could not fetch campaigns: ${error}`);
                 throw error;
@@ -38,8 +48,5 @@ export function useCampaigns(
         },
     });
 
-    return {
-        loading,
-        campaigns,
-    };
+    return { data, isLoading, isPending, isFetching };
 }
