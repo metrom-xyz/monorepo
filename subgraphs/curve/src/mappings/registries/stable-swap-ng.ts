@@ -1,6 +1,5 @@
 import { Address, BigInt } from "@graphprotocol/graph-ts";
 import {
-    BasePoolAdded,
     PlainPoolDeployed,
     MetaPoolDeployed,
     LiquidityGaugeDeployed,
@@ -66,9 +65,9 @@ function getPoolAddressFromCoins(coins: Address[]): Address {
     }
 }
 
-export function handleBasePoolAdded(event: BasePoolAdded): void {
-    getOrCreatePool(event.params.base_pool, null, null);
-}
+// export function handleBasePoolAdded(event: BasePoolAdded): void {
+//     getOrCreatePool(event.params.base_pool, null, null);
+// }
 
 export function handlePlainPoolDeployed(event: PlainPoolDeployed): void {
     let poolAddress = getPoolAddressFromCoins(event.params.coins);

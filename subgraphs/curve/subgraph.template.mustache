@@ -212,8 +212,8 @@ dataSources:
         - name: Erc20BytesSymbol
           file: ./abis/Erc20BytesSymbol.json
       eventHandlers:
-        - event: BasePoolAdded(address)
-          handler: handleBasePoolAdded
+        # - event: BasePoolAdded(address)
+        #  handler: handleBasePoolAdded
         - event: PlainPoolDeployed(address[],uint256,uint256,address)
           handler: handlePlainPoolDeployed
         - event: MetaPoolDeployed(address,address,uint256,uint256,address)
