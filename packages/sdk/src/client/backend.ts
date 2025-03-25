@@ -105,7 +105,7 @@ export interface FetchPoolsParams {
 
 export interface FetchPoolParams {
     chainId: SupportedChain;
-    address: Address;
+    id: Hex;
 }
 
 export interface FetchClaimsParams {
@@ -270,7 +270,7 @@ export class MetromApiClient {
 
     async fetchPool(params: FetchPoolParams): Promise<AmmPoolWithTvl | null> {
         const url = new URL(
-            `v1/amm-pools/${params.chainId}/${params.address}`,
+            `v1/amm-pools/${params.chainId}/${params.id}`,
             this.baseUrl,
         );
 
@@ -669,7 +669,7 @@ export class MetromApiClient {
         params: FetchLiquidityInRangeParams,
     ): Promise<LiquidityInRange> {
         const url = new URL(
-            `v1/liquidities-in-range/${params.chainId}/${params.pool.address}`,
+            `v1/liquidities-in-range/${params.chainId}/${params.pool.id}`,
             this.baseUrl,
         );
 
@@ -679,7 +679,7 @@ export class MetromApiClient {
         const response = await fetch(url);
         if (!response.ok)
             throw new Error(
-                `response not ok while fetching liquidity in range ${params.from}-${params.to} for pool ${params.pool.address} in chain with id ${params.chainId}: ${await response.text()}`,
+                `response not ok while fetching liquidity in range ${params.from}-${params.to} for pool ${params.pool.id} in chain with id ${params.chainId}: ${await response.text()}`,
             );
 
         const { activeTick, liquidity } =
@@ -698,7 +698,7 @@ export class MetromApiClient {
         params: FetchInitializedTicksParams,
     ): Promise<LiquidityDensity> {
         const url = new URL(
-            `v1/initialized-ticks/${params.chainId}/${params.pool.address}`,
+            `v1/initialized-ticks/${params.chainId}/${params.pool.id}`,
             this.baseUrl,
         );
 
@@ -711,7 +711,7 @@ export class MetromApiClient {
         const response = await fetch(url);
         if (!response.ok)
             throw new Error(
-                `response not ok while fetching ${params.surroundingAmount} surrounding initialized ticks for pool ${params.pool.address} in chain with id ${params.chainId}: ${await response.text()}`,
+                `response not ok while fetching ${params.surroundingAmount} surrounding initialized ticks for pool ${params.pool.id} in chain with id ${params.chainId}: ${await response.text()}`,
             );
 
         const { activeTick, ticks: initializedTicks } =
@@ -826,7 +826,7 @@ function processCampaignsResponse(
                         response.resolvedAmmPools,
                         response.resolvedTokens,
                         backendCampaign.target.chainId,
-                        backendCampaign.target.poolAddress,
+                        backendCampaign.target.poolId,
                     ),
                 };
                 break;
@@ -946,18 +946,18 @@ function resolveAmmPool(
     poolsRegistry: Record<number, Record<Address, BackendAmmPool>>,
     tokensRegistry: Record<number, Record<Address, BackendErc20Token>>,
     chainId: number,
-    address: Address,
+    id: Hex,
 ): AmmPool {
-    const resolvedPool = poolsRegistry[chainId][address];
+    const resolvedPool = poolsRegistry[chainId][id];
     if (!resolvedPool)
         throw new Error(
-            `Could not find resolved pool with address ${address} in chain with id ${chainId}`,
+            `Could not find resolved pool with id ${id} in chain with id ${chainId}`,
         );
 
     return {
         ...resolvedPool,
         chainId,
-        address,
+        id,
         dex: {
             slug: resolvedPool.dex as SupportedDex,
             name: DEX_BRAND_NAME[resolvedPool.dex as SupportedDex],

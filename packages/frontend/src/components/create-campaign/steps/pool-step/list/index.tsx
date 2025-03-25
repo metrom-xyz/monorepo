@@ -50,8 +50,8 @@ export function ListPoolPicker({ value, dex, onChange }: ListPoolPickerProps) {
 
     const selectedIndex = useMemo(() => {
         if (!pools) return 0;
-        return pools.findIndex((pool) => pool.address === value?.address);
-    }, [pools, value?.address]);
+        return pools.findIndex((pool) => pool.id === value?.id);
+    }, [pools, value?.id]);
 
     useEffect(() => {
         if (!listRef.current) return;
@@ -159,8 +159,7 @@ export function ListPoolPicker({ value, dex, onChange }: ListPoolPickerProps) {
                                                 loading={loading}
                                                 active={
                                                     pool &&
-                                                    pool.address ===
-                                                        value?.address
+                                                    pool.id === value?.id
                                                 }
                                                 pool={pool}
                                                 onClick={onChange}

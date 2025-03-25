@@ -73,8 +73,7 @@ export function filterCampaigns(
         const campaignByAddress = filteredCampaigns.filter(
             (campaign) =>
                 campaign.isTargeting(TargetType.AmmPoolLiquidity) &&
-                campaign.target.pool.address.toLowerCase() ===
-                    lowercaseSearchQuery,
+                campaign.target.pool.id.toLowerCase() === lowercaseSearchQuery,
         );
 
         return campaignByAddress;
@@ -97,7 +96,7 @@ export const filterPools = (pools: AmmPool[], searchQuery: string) => {
     if (isAddress(searchQuery)) {
         const lowercaseSearchQuery = searchQuery.toLowerCase();
         const poolByAddress = pools.find(
-            (pool) => pool.address.toLowerCase() === lowercaseSearchQuery,
+            (pool) => pool.id.toLowerCase() === lowercaseSearchQuery,
         );
 
         if (poolByAddress) return [poolByAddress];

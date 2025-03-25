@@ -305,7 +305,7 @@ export class Campaign extends SdkCampaign {
 
         switch (type) {
             case DepositUrlType.PathPoolAddress: {
-                return template.replace("{pool}", `${pool.address}`);
+                return template.replace("{pool}", `${pool.id}`);
             }
             case DepositUrlType.PathTokenAddresses: {
                 return template.replace(

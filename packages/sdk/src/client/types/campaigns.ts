@@ -9,7 +9,7 @@ import type { Specification } from "src/types/campaigns";
 export interface BackendAmmPoolLiquidityTarget {
     type: "amm-pool-liquidity";
     chainId: number;
-    poolAddress: Address;
+    poolId: Hex;
 }
 
 export interface BaseBackendLiquityTarget<T> {
@@ -69,7 +69,7 @@ export interface BackendCampaignsResponse {
         number,
         Record<Address, BackendUsdPricedErc20Token>
     >;
-    resolvedAmmPools: Record<number, Record<Address, BackendAmmPool>>;
+    resolvedAmmPools: Record<number, Record<Hex, BackendAmmPool>>;
     campaigns: BackendCampaign[];
 }
 
@@ -79,6 +79,6 @@ export interface BackendCampaignResponse {
         number,
         Record<Address, BackendUsdPricedErc20Token>
     >;
-    resolvedAmmPools: Record<number, Record<Address, BackendAmmPool>>;
+    resolvedAmmPools: Record<number, Record<Hex, BackendAmmPool>>;
     campaign: BackendCampaign;
 }
