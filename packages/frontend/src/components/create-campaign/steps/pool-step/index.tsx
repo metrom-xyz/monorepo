@@ -42,7 +42,7 @@ export function PoolStep({
     }, [chainId]);
 
     useEffect(() => {
-        if (disabled || !!pool?.address) return;
+        if (disabled || !!pool?.id) return;
         setOpen(true);
     }, [disabled, pool]);
 
@@ -56,7 +56,7 @@ export function PoolStep({
 
     const handlePoolOnChange = useCallback(
         (newPool: AmmPoolWithTvl) => {
-            if (pool && pool.address === newPool.address) return;
+            if (pool && pool.id === newPool.id) return;
             onPoolChange({
                 pool: newPool,
             });

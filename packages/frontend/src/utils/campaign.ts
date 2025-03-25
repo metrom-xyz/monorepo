@@ -22,7 +22,7 @@ export function buildCampaignDataBundle(payload: CampaignPreviewPayload) {
     if (payload instanceof AmmPoolLiquidityCampaignPreviewPayload)
         return encodeAbiParameters(
             [{ name: "poolAddress", type: "address" }],
-            [payload.pool.address],
+            [payload.pool.id],
         );
     else if (payload instanceof LiquityV2CampaignPreviewPayload) {
         return encodeAbiParameters(

@@ -28,9 +28,10 @@ export function AddressPoolPicker({
     const [address, setAddress] = useState<Address>();
     const chainId = useChainId();
 
+    // TODO: a pool's is is not necessarily an address soooo...
     const { pool: importedPool, loading: loadingImportedPool } = usePool({
         chainId,
-        address,
+        id: address,
     });
 
     useDebounce(

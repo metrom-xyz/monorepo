@@ -92,7 +92,7 @@ export function RangeStep({
     useEffect(() => {
         setFrom(undefined);
         setTo(undefined);
-    }, [pool?.address]);
+    }, [pool?.id]);
 
     useEffect(() => {
         setOpen(false);

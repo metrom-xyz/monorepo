@@ -40,7 +40,7 @@ export function useLiquidityInRange({
                 });
             } catch (error) {
                 console.error(
-                    `Could not fetch liquidity in range ${from}-${to} for pool with address ${pool.address} in chain with id ${pool.chainId}: ${error}`,
+                    `Could not fetch liquidity in range ${from}-${to} for pool with id ${pool.id} in chain with id ${pool.chainId}: ${error}`,
                 );
                 throw error;
             }

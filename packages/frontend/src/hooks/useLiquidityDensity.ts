@@ -35,7 +35,7 @@ export function useLiquidityDensity({
                 });
             } catch (error) {
                 console.error(
-                    `Could not fetch liquidity density for pool with address ${pool.address} in chain with id ${pool.chainId}: ${error}`,
+                    `Could not fetch liquidity density for pool with id ${pool.id} in chain with id ${pool.chainId}: ${error}`,
                 );
                 throw error;
             }

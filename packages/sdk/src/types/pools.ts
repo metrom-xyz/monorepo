@@ -1,6 +1,6 @@
-import type { Address } from "viem";
+import type { Hex } from "viem";
 import type { AmmPool } from "./commons";
 
-export interface AmmPoolWithAddress extends AmmPool {
-    address: Address;
+export interface AmmPoolWithId extends AmmPool {
+    id: Hex;
 }

@@ -27,8 +27,9 @@ export function AmmPoolLiquityHeader({ campaign }: AmmPoolLiquityHeaderProps) {
 
     const ChainIcon = campaign.chainData.icon;
     const depositLink = campaign.getDepositLiquidityUrl();
+    // TODO: the pool's id is not always an address soooo...
     const explorerLink = getAddressExplorerLink(
-        campaign.target.pool.address,
+        campaign.target.pool.id,
         campaign.chainId,
     );
 

@@ -1,5 +1,5 @@
 import type { SupportedAmm, SupportedDex } from "src/commons";
-import type { Address } from "viem";
+import type { Address, Hex } from "viem";
 
 export interface Brand<S> {
     slug: S;
@@ -42,7 +42,7 @@ export interface WhitelistedErc20Token extends UsdPricedErc20Token {
 
 export interface AmmPool {
     chainId: number;
-    address: Address;
+    id: Hex;
     dex: Brand<SupportedDex>;
     amm: SupportedAmm;
     tokens: Erc20Token[];
