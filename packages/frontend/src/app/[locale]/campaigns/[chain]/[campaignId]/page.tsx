@@ -1,7 +1,9 @@
+import { METROM_API_CLIENT } from "@/src/commons";
 import { CampaignDetails } from "@/src/components/campaign-details";
 import { routing } from "@/src/i18n/routing";
+import { getCampaignName } from "@/src/utils/campaign";
 import type { SupportedChain } from "@metrom-xyz/contracts";
-import { setRequestLocale } from "next-intl/server";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
 import type { Hex } from "viem";
 
@@ -15,9 +17,26 @@ export interface CampaignDetailsPageProps {
     params: Promise<Params>;
 }
 
-export const metadata = {
-    title: "Campaign details",
-};
+export async function generateMetadata({ params }: CampaignDetailsPageProps) {
+    const { chain, campaignId } = await params;
+    const t = await getTranslations();
+
+    try {
+        const campaignData = await METROM_API_CLIENT.fetchCampaign({
+            id: campaignId,
+            chainId: chain,
+        });
+
+        return {
+            title:
+                getCampaignName(t, campaignData) || t("campaignDetails.title"),
+        };
+    } catch {
+        return {
+            title: t("campaignDetails.notFound"),
+        };
+    }
+}
 
 export default async function CampaignDetailsPage({
     params,
