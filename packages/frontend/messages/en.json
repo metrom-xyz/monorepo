@@ -373,6 +373,7 @@
         "newCampaign": "New campaign"
     },
     "campaignDetails": {
+        "title":  "Campaign details",
         "header": {
             "rewardsMayVary": "Rewards may vary",
             "explorer": "Explorer",
