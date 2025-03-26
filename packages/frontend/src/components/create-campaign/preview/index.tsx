@@ -2,6 +2,7 @@ import { Button, Typography, TextField, ErrorText } from "@metrom-xyz/ui";
 import {
     AmmPoolLiquidityCampaignPreviewPayload,
     type CampaignPreviewPayload,
+    type LocalizedMessage,
 } from "@/src/types/common";
 import {
     useChainId,
@@ -50,6 +51,8 @@ interface CampaignPreviewProps {
     onCreateNew: () => void;
 }
 
+type ErrorMessage = LocalizedMessage<"campaignPreview">;
+
 export function CampaignPreview({
     payload,
     onBack,
@@ -69,7 +72,7 @@ export function CampaignPreview({
     const [created, setCreated] = useState(false);
     const [tokensApproved, setTokensApproved] = useState(false);
     const [specificationHash, setSpecificationHash] = useState<Hex>(zeroHash);
-    const [error, setError] = useState("");
+    const [error, setError] = useState<ErrorMessage>("");
     const [safeTxs, setSafeTxs] = useState<BaseTransaction[]>([]);
 
     const ammPoolLiquidityCampaign =

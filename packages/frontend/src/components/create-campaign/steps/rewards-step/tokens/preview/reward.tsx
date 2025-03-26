@@ -15,6 +15,7 @@ import { formatUsdAmount } from "@/src/utils/format";
 import { RemoteLogo } from "@/src/components/remote-logo";
 import { MAX_U256 } from "@/src/commons";
 import type { WhitelistedErc20TokenAmount } from "@/src/types/common";
+import type { TokensErrorMessage } from "..";
 
 import styles from "./styles.module.css";
 
@@ -22,7 +23,7 @@ interface RewardProps {
     reward: WhitelistedErc20TokenAmount;
     campaignDuration?: number;
     onRemove: (reward: Erc20Token) => void;
-    onError: (address: Address, error?: string) => void;
+    onError: (address: Address, error?: TokensErrorMessage) => void;
     onUpdate: (updatedReward: WhitelistedErc20TokenAmount) => void;
 }
 

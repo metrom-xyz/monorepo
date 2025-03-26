@@ -1,5 +1,3 @@
-"use client";
-
 import { motion, easeInOut, AnimatePresence } from "motion/react";
 import { type ReactNode, useState } from "react";
 import { ChevronDown } from "../../assets/chevron-down";

@@ -6,10 +6,10 @@ import "../../app.css";
 
 import type { Metadata } from "next";
 import { type ReactNode } from "react";
-import { getMessages, setRequestLocale } from "next-intl/server";
-import type { Locale } from "@rainbow-me/rainbowkit";
+import { setRequestLocale } from "next-intl/server";
+import type { Locale as RainbowLocale } from "@rainbow-me/rainbowkit";
 import { ClientProviders } from "../../components/client-providers";
-import { routing } from "@/src/i18n/routing";
+import { routing, type Locale } from "@/src/i18n/routing";
 import { notFound } from "next/navigation";
 import { Layout as AppLayout } from "../../components/layout";
 import { NextIntlClientProvider } from "next-intl";
@@ -17,7 +17,7 @@ import { ThemeProvider } from "next-themes";
 import { BASE_URL } from "@/src/commons";
 
 interface Params {
-    locale: string;
+    locale: Locale;
 }
 
 interface LayoutParams {
@@ -54,20 +54,16 @@ export const metadata: Metadata = {
 export default async function Layout({ children, params }: LayoutParams) {
     const { locale } = await params;
 
-    if (!routing.locales.includes(locale as any)) {
-        notFound();
-    }
+    if (!routing.locales.includes(locale)) notFound();
 
     setRequestLocale(locale);
-
-    const messages = await getMessages();
 
     return (
         <html lang={locale} suppressHydrationWarning>
             <body>
-                <NextIntlClientProvider messages={messages}>
+                <NextIntlClientProvider>
                     <ThemeProvider attribute={"data-theme"}>
-                        <ClientProviders locale={locale as Locale}>
+                        <ClientProviders locale={locale as RainbowLocale}>
                             <AppLayout>{children}</AppLayout>
                         </ClientProviders>
                     </ThemeProvider>

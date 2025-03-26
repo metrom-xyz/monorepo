@@ -19,6 +19,7 @@ import type {
     CampaignPayloadErrors,
     BaseCampaignPayloadPart,
     WhitelistedErc20TokenAmount,
+    LocalizedMessage,
 } from "@/src/types/common";
 import { trackFathomEvent } from "@/src/utils/fathom";
 import { useWatchBalance } from "@/src/hooks/useWatchBalance";
@@ -34,6 +35,9 @@ interface RewardTokensProps {
     onTokensChange: (tokens: BaseCampaignPayloadPart) => void;
 }
 
+export type TokensErrorMessage =
+    LocalizedMessage<"newCampaign.form.base.rewards.tokens">;
+
 export function RewardTokens({
     tokens,
     campaignDuration,
@@ -44,11 +48,11 @@ export function RewardTokens({
     const [open, setOpen] = useState(false);
     const [amount, setAmount] = useState<NumberFormatValues>();
     const [token, setToken] = useState<RewardToken>();
-    const [amountError, setAmountError] = useState("");
+    const [amountError, setAmountError] = useState<TokensErrorMessage>("");
     const [existingTokensErrors, setExistingTokensErrors] = useState<
         {
             address: Address;
-            error?: string;
+            error?: TokensErrorMessage;
         }[]
     >([]);
 
@@ -168,7 +172,7 @@ export function RewardTokens({
     );
 
     const handleExistingTokensValidation = useCallback(
-        (address: Address, error?: string) => {
+        (address: Address, error?: TokensErrorMessage) => {
             if (!!error) {
                 setExistingTokensErrors((state) => [
                     ...state,

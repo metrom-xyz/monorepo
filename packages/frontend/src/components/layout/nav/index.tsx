@@ -12,10 +12,16 @@ import { ClaimsIcon } from "@/src/assets/claims";
 import { NetworkSelect } from "../../network-select";
 import { useAccount } from "wagmi";
 import { NavThemeSwitcher } from "../../nav-theme-switcher";
+import type { FunctionComponent } from "react";
+import type { SVGIcon, TranslationsKeys } from "@/src/types/common";
 
 import styles from "./styles.module.css";
 
-const ROUTES = [
+const ROUTES: {
+    path: string;
+    label: TranslationsKeys<"navigation">;
+    icon: FunctionComponent<SVGIcon>;
+}[] = [
     { path: "/", label: "allCampaigns", icon: AllCampaignsIcon },
     { path: "/campaigns/create", label: "newCampaign", icon: NewCampaignIcon },
     { path: "/claims", label: "claims", icon: ClaimsIcon },

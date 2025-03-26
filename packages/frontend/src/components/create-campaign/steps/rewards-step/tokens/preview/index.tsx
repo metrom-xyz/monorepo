@@ -7,6 +7,7 @@ import { Reward } from "./reward";
 import type { Address } from "viem";
 import { Typography } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
+import type { TokensErrorMessage } from "..";
 
 import styles from "./styles.module.css";
 
@@ -14,7 +15,7 @@ interface RewardsPreviewProps {
     rewards?: BaseCampaignPayload["tokens"];
     campaignDuration?: number;
     onRemove: (reward: Erc20Token) => void;
-    onError: (address: Address, error?: string) => void;
+    onError: (address: Address, error?: TokensErrorMessage) => void;
     onUpdate: (updatedReward: WhitelistedErc20TokenAmount) => void;
 }
 

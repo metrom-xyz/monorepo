@@ -253,7 +253,7 @@ export function ChainOverview({
                     toast.custom((toastId) => (
                         <ClaimFail
                             toastId={toastId}
-                            message={t("notification.fail.message")}
+                            message={t("claims.notification.fail.message")}
                         />
                     ));
 

@@ -24,12 +24,14 @@ export function LiquityV2({ payload }: LiquityV2Props) {
 
     return (
         <div className={styles.titleContainer}>
-            <div className={styles.liquityV2Action}>
-                {action?.logo}
-                <Typography weight="medium" size="xl">
-                    {t(`liquityV2Actions.${action?.title}`)}
-                </Typography>
-            </div>
+            {action && (
+                <div className={styles.liquityV2Action}>
+                    {action.logo}
+                    <Typography weight="medium" size="xl">
+                        {t(`liquityV2Actions.${action.title}`)}
+                    </Typography>
+                </div>
+            )}
             <div className={styles.collateralsWrapper}>
                 {payload.collateral && (
                     <RemoteLogo

@@ -1,9 +1,9 @@
-import { routing } from "@/src/i18n/routing";
+import { routing, type Locale } from "@/src/i18n/routing";
 import { setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
 
 interface Params {
-    locale: string;
+    locale: Locale;
 }
 
 interface NotFoundCatchAllProps {
@@ -15,12 +15,9 @@ export default async function NotFoundCatchAll({
 }: NotFoundCatchAllProps) {
     const { locale } = await params;
 
-    if (!routing.locales.includes(locale as any)) {
-        notFound();
-    }
+    if (!routing.locales.includes(locale)) notFound();
 
     setRequestLocale(locale);
-
     notFound();
 }
 

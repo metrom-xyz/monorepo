@@ -4,9 +4,6 @@
         "build": {
             "dependsOn": ["^build"]
         },
-        "build:fleek": {
-            "dependsOn": ["^build"]
-        },
         "test": {
             "dependsOn": ["^build"],
             "inputs": [

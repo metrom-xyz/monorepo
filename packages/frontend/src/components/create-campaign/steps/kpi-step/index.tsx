@@ -1,10 +1,11 @@
 import { Step } from "@/src/components/step";
 import { StepContent } from "@/src/components/step/content";
 import { StepPreview } from "@/src/components/step/preview";
-import type {
-    AmmPoolLiquidityCampaignPayload,
-    CampaignPayloadErrors,
-    BaseCampaignPayloadPart,
+import {
+    type AmmPoolLiquidityCampaignPayload,
+    type CampaignPayloadErrors,
+    type BaseCampaignPayloadPart,
+    type LocalizedMessage,
 } from "@/src/types/common";
 import { Button, ErrorText, Switch, Typography } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
@@ -30,6 +31,8 @@ interface KpiStepProps {
     onError: (errors: CampaignPayloadErrors) => void;
 }
 
+type ErrorMessage = LocalizedMessage<"newCampaign.form.base.kpi">;
+
 // TODO: make KPI step work with liquityv2 campaigns
 export function KpiStep({
     disabled,
@@ -45,8 +48,8 @@ export function KpiStep({
     const t = useTranslations("newCampaign.form.base.kpi");
     const [open, setOpen] = useState(false);
     const [enabled, setEnabled] = useState(false);
-    const [error, setError] = useState("");
-    const [warning, setWarning] = useState("");
+    const [error, setError] = useState<ErrorMessage>("");
+    const [warning, setWarning] = useState<ErrorMessage>("");
 
     const [minimumPayoutPercentage, setMinimumPayoutPercentage] =
         useState<number>(kpiSpecification?.minimumPayoutPercentage || 0);

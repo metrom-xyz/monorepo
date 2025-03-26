@@ -39,8 +39,6 @@ export const contentType = "image/png";
 type TokenIcons = Record<number, Record<Address, string>>;
 
 async function getCampaign(id: Address, chainId: SupportedChain) {
-    const t = await getTranslations();
-
     try {
         const campaign = await METROM_API_CLIENT.fetchCampaign({
             id,
@@ -49,7 +47,7 @@ async function getCampaign(id: Address, chainId: SupportedChain) {
         return new Campaign(
             campaign,
             CHAIN_DATA[chainId],
-            getSocialPreviewCampaignName(t, campaign),
+            await getSocialPreviewCampaignName(campaign),
         );
     } catch (error) {
         console.error(
