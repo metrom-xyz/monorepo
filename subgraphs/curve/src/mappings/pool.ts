@@ -29,7 +29,6 @@ import {
 import {
     Address,
     BigInt,
-    Bytes,
     dataSource,
     ethereum,
 } from "@graphprotocol/graph-ts";
