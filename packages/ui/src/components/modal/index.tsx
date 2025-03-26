@@ -1,5 +1,3 @@
-"use client";
-
 import { type ReactNode, useEffect, useRef } from "react";
 import { AnimatePresence, easeInOut, motion } from "motion/react";
 import { RemoveScroll } from "react-remove-scroll";

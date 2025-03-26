@@ -11,12 +11,13 @@ import {
     LiquityV2CampaignPreviewPayload,
     type BaseCampaignPreviewPayload,
     type CampaignPreviewPayload,
+    type TranslationsType,
 } from "../types/common";
 import { getDistributableRewardsPercentage } from "./kpi";
-import type { TranslationValues } from "next-intl";
 import { type Hex, encodeAbiParameters, stringToHex } from "viem";
 import { CHAIN_DATA, SECONDS_IN_YEAR } from "../commons";
 import type { SupportedChain } from "@metrom-xyz/contracts";
+import { getTranslations } from "next-intl/server";
 
 export function buildCampaignDataBundle(payload: CampaignPreviewPayload) {
     if (payload instanceof AmmPoolLiquidityCampaignPreviewPayload)
@@ -66,8 +67,9 @@ export function buildSpecificationBundle(
     return specification;
 }
 
+// TODO: Should maybe avoid passing the t function as a parameter https://github.com/amannn/next-intl/issues/1704#issuecomment-2643211585.
 export function getCampaignName(
-    t: (key: string, values?: TranslationValues) => string,
+    t: TranslationsType<never>,
     campaign: Campaign,
 ): string {
     switch (campaign.target.type) {
@@ -94,10 +96,11 @@ export function getCampaignName(
     }
 }
 
-export function getSocialPreviewCampaignName(
-    t: (key: string, values?: TranslationValues) => string,
+export async function getSocialPreviewCampaignName(
     campaign: Campaign,
-): string {
+): Promise<string> {
+    const t = await getTranslations();
+
     const chain =
         CHAIN_DATA[campaign.chainId as SupportedChain].name.toUpperCase();
 

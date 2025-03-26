@@ -1,6 +1,6 @@
 import { METROM_API_CLIENT } from "@/src/commons";
 import { CampaignDetails } from "@/src/components/campaign-details";
-import { routing } from "@/src/i18n/routing";
+import { routing, type Locale } from "@/src/i18n/routing";
 import { getCampaignName } from "@/src/utils/campaign";
 import type { SupportedChain } from "@metrom-xyz/contracts";
 import { getTranslations, setRequestLocale } from "next-intl/server";
@@ -10,7 +10,7 @@ import type { Hex } from "viem";
 export interface Params {
     chain: SupportedChain;
     campaignId: Hex;
-    locale: string;
+    locale: Locale;
 }
 
 export interface CampaignDetailsPageProps {
@@ -43,9 +43,7 @@ export default async function CampaignDetailsPage({
 }: CampaignDetailsPageProps) {
     const { locale, chain, campaignId } = await params;
 
-    if (!routing.locales.includes(locale as any)) {
-        notFound();
-    }
+    if (!routing.locales.includes(locale)) notFound();
 
     setRequestLocale(locale);
 

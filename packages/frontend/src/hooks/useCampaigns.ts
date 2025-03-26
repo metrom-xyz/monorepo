@@ -1,10 +1,10 @@
 import { CHAIN_DATA, METROM_API_CLIENT } from "../commons";
 import { useQuery } from "@tanstack/react-query";
-import { useTranslations } from "next-intl";
 import { getCampaignName } from "../utils/campaign";
 import { Campaign } from "../types/common";
 import type { SupportedChain } from "@metrom-xyz/contracts";
 import type { HookBaseParams } from "../types/hooks";
+import { useTranslations } from "next-intl";
 
 interface UseCampaignsParams extends HookBaseParams {}
 
@@ -19,13 +19,15 @@ export function useCampaigns({ enabled = true }: UseCampaignsParams = {}): {
         queryFn: async () => {
             try {
                 const campaigns = await METROM_API_CLIENT.fetchCampaigns();
-                return campaigns.map((campaign) => {
-                    return new Campaign(
-                        campaign,
-                        CHAIN_DATA[campaign.chainId as SupportedChain],
-                        getCampaignName(t, campaign),
-                    );
-                });
+                return await Promise.all(
+                    campaigns.map(async (campaign) => {
+                        return new Campaign(
+                            campaign,
+                            CHAIN_DATA[campaign.chainId as SupportedChain],
+                            getCampaignName(t, campaign),
+                        );
+                    }),
+                );
             } catch (error) {
                 console.error(`Could not fetch campaigns: ${error}`);
                 throw error;

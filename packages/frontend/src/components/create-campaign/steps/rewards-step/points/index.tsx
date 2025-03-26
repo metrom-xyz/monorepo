@@ -15,6 +15,7 @@ import type {
     BaseCampaignPayload,
     CampaignPayloadErrors,
     BaseCampaignPayloadPart,
+    LocalizedMessage,
 } from "@/src/types/common";
 import { formatUsdAmount } from "@/src/utils/format";
 import { usePrevious } from "react-use";
@@ -36,6 +37,8 @@ interface RewardPointsProps {
     onPointsChange: (points: BaseCampaignPayloadPart) => void;
 }
 
+type ErrorMessage = LocalizedMessage<"newCampaign.form.base.rewards.points">;
+
 export function RewardPoints({
     campaignDuration,
     points,
@@ -45,8 +48,8 @@ export function RewardPoints({
 }: RewardPointsProps) {
     const t = useTranslations("newCampaign.form.base.rewards.points");
     const [open, setOpen] = useState(false);
-    const [costError, setCostError] = useState("");
-    const [amountError, setAmountError] = useState("");
+    const [costError, setCostError] = useState<ErrorMessage>("");
+    const [amountError, setAmountError] = useState<ErrorMessage>("");
     const [amount, setAmount] = useState<NumberInputValues | undefined>(() => {
         if (points !== undefined)
             return {

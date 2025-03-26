@@ -1,11 +1,11 @@
 import { CreateCampaignForm } from "@/src/components/create-campaign/form";
-import { routing } from "@/src/i18n/routing";
+import { routing, type Locale } from "@/src/i18n/routing";
 import { CampaignType } from "@/src/types/common";
 import { setRequestLocale } from "next-intl/server";
 
 interface Params {
     type: CampaignType;
-    locale: string;
+    locale: Locale;
 }
 
 interface CampaignFormPageProps {

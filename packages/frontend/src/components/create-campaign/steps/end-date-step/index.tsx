@@ -11,6 +11,7 @@ import type {
     BaseCampaignPayload,
     CampaignPayloadErrors,
     BaseCampaignPayloadPart,
+    TranslationsKeys,
 } from "@/src/types/common";
 import {
     Typography,
@@ -34,7 +35,7 @@ interface EndDateStepProps {
 }
 
 interface DurationPreset {
-    label: string;
+    label: TranslationsKeys<"newCampaign.form.base.endDate">;
     unit: ManipulateType;
     value: number;
 }

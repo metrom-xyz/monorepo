@@ -6,6 +6,7 @@ import {
     type BaseCampaignPayload,
     type CampaignPayloadErrors,
     type BaseCampaignPayloadPart,
+    type LocalizedMessage,
 } from "@/src/types/common";
 import {
     Button,
@@ -24,7 +25,6 @@ import {
     useState,
     type ChangeEvent,
 } from "react";
-import classNames from "classnames";
 import { usePrevious } from "react-use";
 import { isAddress, zeroAddress, type Address } from "viem";
 import { blo } from "blo";
@@ -44,6 +44,8 @@ interface RestrictionsStepProps {
     onError: (errors: CampaignPayloadErrors) => void;
 }
 
+type ErrorMessage = LocalizedMessage<"newCampaign.form.base.restrictions">;
+
 export function RestrictionsStep({
     disabled,
     restrictions,
@@ -53,8 +55,8 @@ export function RestrictionsStep({
     const t = useTranslations("newCampaign.form.base.restrictions");
     const [open, setOpen] = useState(false);
     const [enabled, setEnabled] = useState(false);
-    const [error, setError] = useState("");
-    const [warning, setWarning] = useState("");
+    const [error, setError] = useState<ErrorMessage>("");
+    const [warning, setWarning] = useState<ErrorMessage>("");
     const [type, setType] = useState(
         restrictions?.type || RestrictionType.Blacklist,
     );

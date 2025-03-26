@@ -1,4 +1,3 @@
-import Image from "next/image";
 import type { CSSProperties } from "react";
 
 interface RemoteLogoProps {
@@ -11,7 +10,7 @@ export function RemoteLogo({ src, defaultText = "?", style }: RemoteLogoProps) {
     if (src) {
         return (
             <div tw="flex relative h-14 w-14" style={style}>
-                <Image src={src} tw="absolute" alt={defaultText} />
+                <img src={src} tw="absolute" alt={defaultText} />
             </div>
         );
     }

@@ -26,6 +26,7 @@ import type {
     AugmentedPriceRangeBound,
     AugmentedPriceRangeSpecification,
     CampaignPayloadErrors,
+    LocalizedMessage,
 } from "@/src/types/common";
 
 import styles from "./styles.module.css";
@@ -42,6 +43,8 @@ interface RangeStepProps {
     onError: (errors: CampaignPayloadErrors) => void;
 }
 
+type ErrorMessage = LocalizedMessage<"newCampaign.form.ammPoolLiquidity.range">;
+
 export function RangeStep({
     disabled,
     rewardType,
@@ -54,8 +57,8 @@ export function RangeStep({
     const [open, setOpen] = useState(false);
     const [token0To1, setToken0To1] = useState(true);
     const [enabled, setEnabled] = useState(false);
-    const [error, setError] = useState("");
-    const [warning, setWarning] = useState("");
+    const [error, setError] = useState<ErrorMessage>("");
+    const [warning, setWarning] = useState<ErrorMessage>("");
 
     const [from, setFrom] = useState<AugmentedPriceRangeBound | undefined>(
         priceRangeSpecification?.from,
@@ -269,14 +272,14 @@ export function RangeStep({
                             >
                                 {t("currentPrice")}
                             </Typography>
-                            {!currentPrice ? (
+                            {!currentPrice || !pool ? (
                                 <Skeleton size="sm" width={50} />
                             ) : (
                                 <Typography weight="medium" size="sm">
                                     {t("price", {
-                                        token0: pool?.tokens[token0To1 ? 0 : 1]
+                                        token0: pool.tokens[token0To1 ? 0 : 1]
                                             .symbol,
-                                        token1: pool?.tokens[token0To1 ? 1 : 0]
+                                        token1: pool.tokens[token0To1 ? 1 : 0]
                                             .symbol,
                                         price: formatAmount({
                                             amount: currentPrice,
@@ -297,10 +300,12 @@ export function RangeStep({
                             </Typography>
                             <Typography weight="medium" size="sm">
                                 {t("range.value", {
-                                    token0: pool?.tokens[token0To1 ? 0 : 1]
-                                        .symbol,
-                                    token1: pool?.tokens[token0To1 ? 1 : 0]
-                                        .symbol,
+                                    token0:
+                                        pool?.tokens[token0To1 ? 0 : 1]
+                                            .symbol || "",
+                                    token1:
+                                        pool?.tokens[token0To1 ? 1 : 0]
+                                            .symbol || "",
                                     lowerPrice: from.price.toFixed(4),
                                     upperPrice: to.price.toFixed(4),
                                 })}

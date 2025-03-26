@@ -24,7 +24,7 @@ export function TooltipContent({
 }: TooltipProps) {
     const t = useTranslations("liquidityDensityChart.tooltip");
 
-    if (!active || !payload || !payload.length) return null;
+    if (!active || !payload || !payload.length || !pool) return null;
 
     const { price0, price1 } = payload[0].payload;
 
@@ -33,8 +33,8 @@ export function TooltipContent({
             <div className={styles.row}>
                 <Typography weight="medium" size={size}>
                     {t("price", {
-                        token0: pool?.tokens[0].symbol,
-                        token1: pool?.tokens[1].symbol,
+                        token0: pool.tokens[0].symbol,
+                        token1: pool.tokens[1].symbol,
                         price: formatAmount({
                             amount: price0,
                         }),
@@ -44,8 +44,8 @@ export function TooltipContent({
             <div className={styles.row}>
                 <Typography weight="medium" size={size}>
                     {t("price", {
-                        token0: pool?.tokens[1].symbol,
-                        token1: pool?.tokens[0].symbol,
+                        token0: pool.tokens[1].symbol,
+                        token1: pool.tokens[0].symbol,
                         price: formatAmount({ amount: price1 }),
                     })}
                 </Typography>

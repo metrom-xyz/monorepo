@@ -3,19 +3,22 @@ import styles from "./styles.module.css";
 import { ChevronLeft } from "@/src/assets/chevron-left";
 import { useTranslations } from "next-intl";
 import { useRouter } from "@/src/i18n/routing";
-import type { CampaignType } from "@/src/types/common";
+import type { CampaignType, TranslationsKeys } from "@/src/types/common";
 
 interface FormHeaderProps {
     type: CampaignType;
 }
 
-const CAMPAIGN_TYPE_TITLE: Record<CampaignType, string> = {
-    "amm-pool-liquidity": "type.amm",
-    "liquity-v2": "type.liquityV2",
+const CAMPAIGN_TYPE_TITLE: Record<
+    CampaignType,
+    TranslationsKeys<"newCampaign.type">
+> = {
+    "amm-pool-liquidity": "amm",
+    "liquity-v2": "liquityV2",
 };
 
 export function FormHeader({ type }: FormHeaderProps) {
-    const t = useTranslations("newCampaign");
+    const t = useTranslations("newCampaign.type");
     const router = useRouter();
 
     function handleBackOnClick() {

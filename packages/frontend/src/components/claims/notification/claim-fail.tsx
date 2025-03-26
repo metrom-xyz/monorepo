@@ -8,7 +8,7 @@ interface ClaimFailProps {
 }
 
 export function ClaimFail({ toastId, message }: ClaimFailProps) {
-    const t = useTranslations("rewards.claims.notification");
+    const t = useTranslations("rewards.claims.notification.fail");
 
     return (
         <ToastNotification

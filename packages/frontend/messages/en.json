@@ -324,12 +324,6 @@
         },
         "tvl": "TVL",
         "apr": "APR",
-        "notifications": {
-            "safe": {
-                "title": "Safe connected",
-                "content": "Please notify the wallet participants to sign transactions."
-            }
-        },
         "points": "Points",
         "range": {
             "title": "Price range",
@@ -373,7 +367,7 @@
         "newCampaign": "New campaign"
     },
     "campaignDetails": {
-        "title":  "Campaign details",
+        "title": "Campaign details",
         "header": {
             "rewardsMayVary": "Rewards may vary",
             "explorer": "Explorer",
@@ -497,7 +491,6 @@
                         "message": "Collect signatures and execute"
                     }
                 },
-
                 "fail": {
                     "title": "Claim failed",
                     "message": "Something went wrong"
@@ -596,6 +589,12 @@
         "errors": {
             "wrongData": "Wrong data",
             "missingData": "Fill both min and max price values"
+        }
+    },
+    "notifications": {
+        "safe": {
+            "title": "Safe connected",
+            "content": "Please notify the wallet participants to sign transactions."
         }
     }
 }

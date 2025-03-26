@@ -94,13 +94,15 @@ export function RangeInputs({
         [from, onFromChange, onToChange, pool, to, token0To1],
     );
 
+    if (!pool) return;
+
     // TODO: handle pools with more than 2 tokens (such as stableswap3 pools)
     return (
         <div className={styles.root}>
             <StepNumberInput
                 label={t("minPrice", {
-                    token0: pool?.tokens[token0To1 ? 0 : 1].symbol,
-                    token1: pool?.tokens[token0To1 ? 1 : 0].symbol,
+                    token0: pool.tokens[token0To1 ? 0 : 1].symbol,
+                    token1: pool.tokens[token0To1 ? 1 : 0].symbol,
                 })}
                 placeholder="0.0"
                 step={1}
@@ -114,8 +116,8 @@ export function RangeInputs({
             />
             <StepNumberInput
                 label={t("maxPrice", {
-                    token0: pool?.tokens[token0To1 ? 0 : 1].symbol,
-                    token1: pool?.tokens[token0To1 ? 1 : 0].symbol,
+                    token0: pool.tokens[token0To1 ? 0 : 1].symbol,
+                    token1: pool.tokens[token0To1 ? 1 : 0].symbol,
                 })}
                 placeholder="0.0"
                 error={!!error}

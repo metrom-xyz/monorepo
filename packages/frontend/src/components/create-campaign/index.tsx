@@ -70,10 +70,10 @@ export function CreateCampaign() {
                                     </div>
                                     <div className={styles.rightContent}>
                                         <Typography weight="medium" size="lg">
-                                            {t(title)}
+                                            {t<any>(title)}
                                         </Typography>
                                         <Typography weight="medium" light>
-                                            {t(description)}
+                                            {t<any>(description)}
                                         </Typography>
                                     </div>
                                 </div>
