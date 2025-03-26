@@ -41,15 +41,9 @@ import {
     getPoolOrThrow,
     updateTokenTvls,
 } from "../commons";
-import { LiquidityChange, Swap } from "../../generated/schema";
+import { LiquidityChange } from "../../generated/schema";
 
-function handleSwap(
-    event: ethereum.Event,
-    boughtId: i32,
-    boughtAmount: BigInt,
-    soldId: i32,
-    soldAmount: BigInt,
-): void {
+function handleSwap(event: ethereum.Event): void {
     let basePoolAddress: Address | null = null;
     let context = dataSource.context();
     if (context.isSet("base-pool-address")) {
@@ -61,36 +55,15 @@ function handleSwap(
     }
     let pool = getOrCreatePool(event.address, null, basePoolAddress);
 
-    let tokenIn: Bytes;
-    let tokenOut: Bytes;
-
     if (pool.base !== null) {
         let basePool = getPoolOrThrow(changetype<Address>(pool.base));
 
-        tokenIn = soldId === 0 ? pool.tokens[0] : basePool.tokens[soldId - 1];
-        tokenOut =
-            boughtId === 0 ? pool.tokens[0] : basePool.tokens[boughtId - 1];
-
         updateTokenTvls(event.block.number, basePool);
         basePool.save();
-    } else {
-        tokenIn = pool.tokens[soldId];
-        tokenOut = pool.tokens[boughtId];
     }
 
     updateTokenTvls(event.block.number, pool);
     pool.save();
-
-    let swap = new Swap(getEventId(event));
-    swap.timestamp = event.block.timestamp;
-    swap.blockNumber = event.block.number;
-    swap.from = event.transaction.from;
-    swap.tokenIn = tokenIn;
-    swap.amountIn = soldAmount;
-    swap.tokenOut = tokenOut;
-    swap.amountOut = boughtAmount;
-    swap.pool = pool.id;
-    swap.save();
 }
 
 function handleLiquidityChange(
@@ -149,45 +122,21 @@ function handleLiquidityChange(
 }
 
 export function handleStableSwapTokenExchange(event: TokenExchange): void {
-    handleSwap(
-        event,
-        event.params.bought_id.toI32(),
-        event.params.tokens_bought,
-        event.params.sold_id.toI32(),
-        event.params.tokens_sold,
-    );
+    handleSwap(event);
 }
 
 export function handleCryptoSwapTokenExchange(event: TokenExchange1): void {
-    handleSwap(
-        event,
-        event.params.bought_id.toI32(),
-        event.params.tokens_bought,
-        event.params.sold_id.toI32(),
-        event.params.tokens_sold,
-    );
+    handleSwap(event);
 }
 
 export function handleCryptoSwapNgTokenExchange(event: TokenExchange2): void {
-    handleSwap(
-        event,
-        event.params.bought_id.toI32(),
-        event.params.tokens_bought,
-        event.params.sold_id.toI32(),
-        event.params.tokens_sold,
-    );
+    handleSwap(event);
 }
 
 export function handleStableSwapTokenExchangeUnderlying(
     event: TokenExchangeUnderlying,
 ): void {
-    handleSwap(
-        event,
-        event.params.bought_id.toI32(),
-        event.params.tokens_bought,
-        event.params.sold_id.toI32(),
-        event.params.tokens_sold,
-    );
+    handleSwap(event);
 }
 
 export function handleStableSwapAddLiquidity2(event: AddLiquidity): void {

@@ -24,7 +24,6 @@ type Pool @entity {
     gauge: Gauge
     lpToken: [LpToken!]! @derivedFrom(field: "pool")
     positions: [Position!]! @derivedFrom(field: "pool")
-    swaps: [Swap!]! @derivedFrom(field: "pool")
 
     _tvlsUpdatedAtBlock: BigInt!
 }
@@ -35,20 +34,6 @@ type Position @entity {
     liquidity: BigInt!
     pool: Pool!
     liquidityChanges: [LiquidityChange!]! @derivedFrom(field: "position")
-
-    # _initializedAtBlock: BigInt!
-}
-
-type Swap @entity(immutable: true) {
-    id: Bytes!
-    timestamp: BigInt!
-    blockNumber: BigInt!
-    from: Bytes!
-    tokenIn: Token!
-    amountIn: BigInt!
-    tokenOut: Token!
-    amountOut: BigInt!
-    pool: Pool!
 }
 
 type LiquidityChange @entity(immutable: true) {
