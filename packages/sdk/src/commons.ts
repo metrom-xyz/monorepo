@@ -24,8 +24,8 @@ export enum SupportedLiquityV2 {
 }
 
 export enum SupportedAmm {
-    ConcentratedLiquidityV3 = "concentrated-liquidity-v3",
-    StableSwap = "stable-swap",
+    AlgebraIntegral = "algebra-integral",
+    UniswapV3 = "uniswap-v3",
 }
 
 export interface ServiceUrls {
