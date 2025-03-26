@@ -54,9 +54,9 @@ Once the setup is done, the hooks can be used in any React component:
 import { useClaims } from "@metrom-xyz/react";
 
 function Component() {
-  const { claims, loading } = useClaims({ address: "..." });
+  const { data, isLoading } = useClaims({ address: "..." });
 
-  if (loading) return <div>loading claims...</div>;
+  if (isLoading) return <div>loading claims...</div>;
 
   return <div>...</div>;
 }
