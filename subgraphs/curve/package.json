@@ -8,7 +8,7 @@
         "build": "pnpm prepare:deploy mainnet && pnpm codegen && graph build",
         "create:local": "graph create metrom-curve-local --node http://localhost:8020",
         "deploy:local": "pnpm prepare:deploy mainnet && pnpm codegen && graph deploy metrom-curve-local --node http://localhost:8020 --ipfs http://localhost:5001 -l 0.0.1",
-        "deploy:mainnet": "pnpm prepare:deploy mainnet && pnpm codegen && graph deploy metrom-curve-mainnet -l 0.0.120",
+        "deploy:mainnet": "pnpm prepare:deploy mainnet && pnpm codegen && graph deploy metrom-curve-mainnet -l 0.0.122",
         "lint": "eslint .",
         "format": "eslint --fix ."
     },
