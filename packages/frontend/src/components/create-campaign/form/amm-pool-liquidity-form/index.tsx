@@ -34,6 +34,8 @@ function validatePayload(
         startDate,
         endDate,
         points,
+        // TODO: use tokens ratio
+        tokensRatio,
         tokens,
         kpiSpecification,
         priceRangeSpecification,
@@ -119,66 +121,68 @@ export function AmmPoolLiquidityForm({
             <div className={styles.stepsWrapper}>
                 <DexStep
                     disabled={unsupportedChain}
-                    dex={payload?.dex}
+                    dex={payload.dex}
                     onDexChange={handlePayloadOnChange}
                 />
                 <PoolStep
-                    disabled={!payload?.dex || unsupportedChain}
-                    dex={payload?.dex}
-                    pool={payload?.pool}
+                    disabled={!payload.dex || unsupportedChain}
+                    dex={payload.dex}
+                    pool={payload.pool}
                     onPoolChange={handlePayloadOnChange}
                     onError={handlePayloadOnError}
                 />
                 <StartDateStep
-                    disabled={!payload?.pool || unsupportedChain}
-                    startDate={payload?.startDate}
-                    endDate={payload?.endDate}
+                    disabled={!payload.pool || unsupportedChain}
+                    startDate={payload.startDate}
+                    endDate={payload.endDate}
                     onStartDateChange={handlePayloadOnChange}
                     onError={handlePayloadOnError}
                 />
                 <EndDateStep
-                    disabled={!payload?.startDate || unsupportedChain}
-                    startDate={payload?.startDate}
-                    endDate={payload?.endDate}
+                    disabled={!payload.startDate || unsupportedChain}
+                    startDate={payload.startDate}
+                    endDate={payload.endDate}
                     onEndDateChange={handlePayloadOnChange}
                     onError={handlePayloadOnError}
                 />
                 <RewardsStep
-                    disabled={!payload?.endDate || unsupportedChain}
-                    rewardType={payload?.rewardType}
-                    tokens={payload?.tokens}
-                    points={payload?.points}
-                    fee={payload?.fee}
-                    startDate={payload?.startDate}
-                    endDate={payload?.endDate}
+                    disabled={!payload.endDate || unsupportedChain}
+                    pool={payload.pool}
+                    rewardType={payload.rewardType}
+                    tokens={payload.tokens}
+                    points={payload.points}
+                    fee={payload.fee}
+                    startDate={payload.startDate}
+                    endDate={payload.endDate}
                     onRewardsChange={handlePayloadOnChange}
+                    onTokensRatioChange={handlePayloadOnChange}
                     onError={handlePayloadOnError}
                 />
                 <KpiStep
                     disabled={
-                        !payload?.tokens ||
+                        !payload.tokens ||
                         payload.rewardType === RewardType.Points ||
                         unsupportedChain
                     }
-                    pool={payload?.pool}
-                    rewards={payload?.tokens}
+                    pool={payload.pool}
+                    rewards={payload.tokens}
                     rewardType={payload.rewardType}
                     startDate={payload.startDate}
                     endDate={payload.endDate}
-                    kpiSpecification={payload?.kpiSpecification}
+                    kpiSpecification={payload.kpiSpecification}
                     onKpiChange={handlePayloadOnChange}
                     onError={handlePayloadOnError}
                 />
-                {payload?.pool &&
+                {payload.pool &&
                     AMM_SUPPORTS_RANGE_INCENTIVES[
-                        payload?.pool.amm as SupportedAmm
+                        payload.pool.amm as SupportedAmm
                     ] && (
                         <RangeStep
-                            disabled={!payload?.tokens || unsupportedChain}
+                            disabled={!payload.tokens || unsupportedChain}
                             rewardType={payload.rewardType}
                             pool={payload.pool}
                             priceRangeSpecification={
-                                payload?.priceRangeSpecification
+                                payload.priceRangeSpecification
                             }
                             onRangeChange={handlePayloadOnChange}
                             onError={handlePayloadOnError}
@@ -186,10 +190,9 @@ export function AmmPoolLiquidityForm({
                     )}
                 <RestrictionsStep
                     disabled={
-                        (!payload?.tokens && !payload.points) ||
-                        unsupportedChain
+                        (!payload.tokens && !payload.points) || unsupportedChain
                     }
-                    restrictions={payload?.restrictions}
+                    restrictions={payload.restrictions}
                     onRestrictionsChange={handlePayloadOnChange}
                     onError={handlePayloadOnError}
                 />
