@@ -31,7 +31,7 @@
 }
 
 .networksWrapper {
-    @apply max-h-[600px] overflow-y-auto;
+    @apply max-h-[400px] overflow-y-auto;
 }
 
 .row {
