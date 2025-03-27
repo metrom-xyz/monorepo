@@ -1,14 +1,12 @@
-import {
-    forwardRef,
-    type ReactElement,
-    type ReactNode,
-    useState,
-    useEffect,
-} from "react";
-import { usePopper } from "react-popper";
-import { type Placement } from "@popperjs/core";
+import { forwardRef, type ReactElement, type ReactNode, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import classNames from "classnames";
+import {
+    autoUpdate,
+    offset,
+    useFloating,
+    type Placement,
+} from "@floating-ui/react";
 
 import styles from "./styles.module.css";
 
@@ -16,42 +14,24 @@ export interface PopoverProps {
     open: boolean;
     anchor?: Element | null;
     placement?: Placement;
-    offset?: [number, number];
     className?: string;
     children?: ReactNode;
 }
 
 export const Popover = forwardRef<HTMLDivElement, PopoverProps>(
     function Popover(
-        {
-            open,
-            anchor,
-            placement = "auto",
-            offset = [0, 8],
-            className,
-            children,
-        },
+        { open, anchor, placement, className, children }: PopoverProps,
         ref,
     ): ReactElement {
         const [popper, setPopper] = useState<HTMLDivElement | null>(null);
 
-        const {
-            styles: popperStyles,
-            attributes,
-            update,
-        } = usePopper(anchor, popper, {
+        const { floatingStyles } = useFloating({
+            elements: { reference: anchor, floating: popper },
+            open,
+            middleware: [offset(8)],
             placement,
-            modifiers: [
-                {
-                    name: "offset",
-                    options: { offset },
-                },
-            ],
+            whileElementsMounted: autoUpdate,
         });
-
-        useEffect(() => {
-            if (open && update) update();
-        }, [open, update]);
 
         return (
             <AnimatePresence>
@@ -64,17 +44,12 @@ export const Popover = forwardRef<HTMLDivElement, PopoverProps>(
                             }
                             setPopper(element);
                         }}
-                        initial="hide"
-                        animate="show"
-                        exit="hide"
-                        variants={{
-                            hide: { opacity: 0 },
-                            show: { opacity: 1 },
-                        }}
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
                         transition={{ duration: 0.2 }}
-                        style={{ ...popperStyles.popper }}
+                        style={{ ...floatingStyles }}
                         className={classNames(styles.root, className)}
-                        {...attributes.popper}
                     >
                         {children}
                     </motion.div>

@@ -21,12 +21,11 @@
         "build-storybook": "storybook build"
     },
     "dependencies": {
-        "@popperjs/core": "^2.11.8",
+        "@floating-ui/react": "^0.27.5",
         "dayjs": "^1.11.13",
         "motion": "^12.6.2",
         "rc-switch": "^4.1.0",
         "react-number-format": "^5.4.3",
-        "react-popper": "^2.3.0",
         "react-remove-scroll": "^2.6.3",
         "react-use": "^17.5.1",
         "react-window": "^1.8.10"

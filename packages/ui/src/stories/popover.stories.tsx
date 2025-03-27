@@ -3,7 +3,7 @@ import { useRef, useState } from "@storybook/preview-api";
 import { Popover } from "../components/popover/index";
 import { Card } from "../components/card";
 import { Typography } from "../components/typography";
-import { TextInput } from "../components/text-input";
+import { TextField } from "../components/text-field";
 
 const meta: Meta = {
     title: "Utils/Popover",
@@ -52,10 +52,7 @@ export const Base: Story = {
                             <Typography uppercase>
                                 My custom popover content
                             </Typography>
-                            <TextInput
-                                label="Text input"
-                                placeholder="Placeholder"
-                            />
+                            <TextField label="Field" value="Description" />
                         </div>
                     </Card>
                 </Popover>
