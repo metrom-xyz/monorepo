@@ -19,14 +19,11 @@ type QueryKey = [string, Address | undefined];
 export function useReimbursements({
     enabled = true,
 }: UseReimbursementsParams = {}): {
-    loadingReimbursements: boolean;
-    loadingRecovered: boolean;
-    loadingClaimed: boolean;
-    reimbursements: Reimbursement[];
+    loading: boolean;
+    reimbursements?: Reimbursement[];
 } {
-    const [reimbursements, setReimbursements] = useState<
-        ReimbursementsWithRemaining[]
-    >([]);
+    const [reimbursements, setReimbursements] =
+        useState<ReimbursementsWithRemaining[]>();
 
     const { address } = useAccount();
 
@@ -122,15 +119,14 @@ export function useReimbursements({
     });
 
     useEffect(() => {
-        if (loadingReimbursements || loadingRecovered || loadingClaimed) {
-            return;
-        }
+        if (!address) return;
         if (reimbursementsErrored || recoveredErrored || claimedErrored) {
             console.error(
                 `Could not fetch claimed data for address ${address}: ${recoveredError} ${claimedError}`,
             );
             return;
         }
+        if (loadingReimbursements || loadingRecovered || loadingClaimed) return;
         if (!rawReimbursements || !recoveredData || !claimedData) {
             setReimbursements([]);
             return;
@@ -176,9 +172,11 @@ export function useReimbursements({
     ]);
 
     return {
-        loadingReimbursements,
-        loadingRecovered,
-        loadingClaimed,
+        loading:
+            loadingReimbursements ||
+            loadingClaimed ||
+            loadingRecovered ||
+            !reimbursements,
         reimbursements,
     };
 }

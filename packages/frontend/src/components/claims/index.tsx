@@ -36,19 +36,22 @@ export function Claims() {
     const [chain, setChain] = useState<Chain | null>(null);
     const [chainsWithRewardsData, setChainsWithRewardsData] =
         useState<ChainWithRewardsData[]>();
-    const [initializing, setInitializing] = useState(false);
     const [claimingAll, setClaimingAll] = useState(false);
     const [recoveringAll, setRecoveringAll] = useState(false);
 
     const { switchChain } = useSwitchChain();
-    const { loadingClaims, claims } = useClaims();
-    const { loadingReimbursements, reimbursements } = useReimbursements();
+    const { loading: loadingClaims, claims } = useClaims();
+    const { loading: loadingReimbursements, reimbursements } =
+        useReimbursements();
 
     useEffect(() => {
-        if (loadingClaims || loadingReimbursements) {
-            setInitializing(true);
+        if (
+            loadingClaims ||
+            loadingReimbursements ||
+            !claims ||
+            !reimbursements
+        )
             return;
-        }
 
         const rewards = [
             ...claims.map((claim) => ({ ...claim, type: RewardType.Claim })),
@@ -107,19 +110,27 @@ export function Claims() {
         return chainsWithRewardsData.find((data) => data.chain.id === chain.id);
     }, [chain, chainsWithRewardsData]);
 
-    useEffect(() => {
+    const initializing = useMemo(() => {
         if (
-            !loadingClaims &&
-            !loadingReimbursements &&
-            claims.length === 0 &&
-            reimbursements.length === 0
+            loadingClaims ||
+            loadingReimbursements ||
+            !claims ||
+            !reimbursements
         )
-            setInitializing(false);
+            return true;
+
+        return (
+            (claims.length > 0 || reimbursements.length > 0) &&
+            (!chainsWithRewardsData || !chainsData || !chainWithRewardsData)
+        );
     }, [
-        claims.length,
         loadingClaims,
         loadingReimbursements,
-        reimbursements.length,
+        claims,
+        reimbursements,
+        chainsData,
+        chainsWithRewardsData,
+        chainWithRewardsData,
     ]);
 
     useEffect(() => {
@@ -128,12 +139,9 @@ export function Claims() {
             !loadingReimbursements &&
             chainsData &&
             chainsData.length > 0
-        ) {
+        )
             if (!chain) setChain(chainsData[0].chain);
-            setInitializing(false);
-        }
     }, [
-        chainsWithRewardsData,
         loadingClaims,
         loadingReimbursements,
         chainWithRewardsData,
@@ -192,7 +200,7 @@ export function Claims() {
         );
     }
 
-    if (loadingClaims || loadingReimbursements || initializing) {
+    if (initializing) {
         return (
             <div className={styles.root}>
                 <ChainsSkeleton />
