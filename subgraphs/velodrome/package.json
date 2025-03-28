@@ -1,31 +1,31 @@
 {
     "type": "module",
     "private": true,
-    "name": "nuri-subgraph",
+    "name": "velodrome-subgraph",
     "scripts": {
         "prepare:deploy": "tsx ./scripts/prepare-deploy.ts",
         "codegen": "graph codegen",
-        "deploy:scroll": "pnpm prepare:deploy scroll && pnpm codegen && graph deploy metrom-nuri-scroll -l 0.0.16",
+        "deploy:velodrome:swell": "pnpm prepare:deploy swellchain velodrome && pnpm codegen && graph deploy metrom-velodrome-swell -l 0.0.9",
         "lint": "eslint .",
         "format": "eslint --fix ."
     },
     "dependencies": {
-        "@0xgraph/cli": "^0.2.1",
         "@graphprotocol/graph-cli": "^0.96.0",
-        "@graphprotocol/graph-ts": "^0.38.0"
+        "@graphprotocol/graph-ts": "^0.36.0"
     },
     "devDependencies": {
-        "@eslint/js": "^9.23.0",
+        "@eslint/js": "^9.22.0",
+        "@types/eslint__js": "^8.42.3",
         "@types/mustache": "^4.2.5",
-        "@types/node": "^22.13.13",
-        "eslint": "^9.23.0",
+        "@types/node": "^22.13.10",
+        "eslint": "^9.22.0",
         "eslint-config-prettier": "^10.1.1",
         "eslint-config-turbo": "^2.4.4",
-        "eslint-plugin-prettier": "^5.2.5",
+        "eslint-plugin-prettier": "^5.2.3",
         "mustache": "^4.2.0",
         "prettier": "^3.5.3",
         "tsx": "^4.19.3",
         "typescript": "^5.8.2",
-        "typescript-eslint": "^8.28.0"
+        "typescript-eslint": "^8.26.0"
     }
 }
