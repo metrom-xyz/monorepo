@@ -17,11 +17,10 @@ interface UseClaimsParams extends HookBaseParams {}
 type QueryKey = [string, Address | undefined];
 
 export function useClaims({ enabled = true }: UseClaimsParams = {}): {
-    loadingClaims: boolean;
-    loadingClaimed: boolean;
-    claims: Claim[];
+    loading: boolean;
+    claims?: Claim[];
 } {
-    const [claims, setClaims] = useState<ClaimWithRemaining[]>([]);
+    const [claims, setClaims] = useState<ClaimWithRemaining[]>();
 
     const { address } = useAccount();
 
@@ -47,8 +46,6 @@ export function useClaims({ enabled = true }: UseClaimsParams = {}): {
                 throw error;
             }
         },
-        refetchOnWindowFocus: false,
-        staleTime: 60000,
         enabled: enabled && !!address,
     });
 
@@ -77,22 +74,19 @@ export function useClaims({ enabled = true }: UseClaimsParams = {}): {
               })
             : undefined,
         query: {
-            refetchOnWindowFocus: false,
-            staleTime: 60000,
             enabled: !!rawClaims,
         },
     });
 
     useEffect(() => {
-        if (loadingClaims || loadingClaimed) {
-            return;
-        }
+        if (!address) return;
         if (claimsErrored || claimedErrored) {
             console.error(
                 `Could not fetch claimed data for address ${address}: ${claimedError}`,
             );
             return;
         }
+        if (loadingClaims || loadingClaimed) return;
         if (!rawClaims || !claimedData) {
             setClaims([]);
             return;
@@ -132,8 +126,7 @@ export function useClaims({ enabled = true }: UseClaimsParams = {}): {
     ]);
 
     return {
-        loadingClaims,
-        loadingClaimed,
+        loading: loadingClaims || loadingClaimed || !claims,
         claims,
     };
 }

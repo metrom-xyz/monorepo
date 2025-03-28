@@ -85,6 +85,7 @@ export function useClaims(params: UseClaimsParams): UseClaimsReturnValue {
             enabled: !!rawClaims,
         },
     });
+
     useEffect(() => {
         if (!rawClaims || !claimedData) {
             setClaims([]);
