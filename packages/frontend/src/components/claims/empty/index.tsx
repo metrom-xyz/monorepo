@@ -3,6 +3,8 @@ import { Link } from "@/src/i18n/routing";
 import { useTranslations } from "next-intl";
 import { useAccount } from "wagmi";
 import { useConnectModal } from "@rainbow-me/rainbowkit";
+import { useEffect } from "react";
+import { trackFathomEvent } from "@/src/utils/fathom";
 
 import styles from "./styles.module.css";
 
@@ -11,11 +13,9 @@ export function Empty() {
     const { address } = useAccount();
     const { openConnectModal } = useConnectModal();
 
-    // FIXME: fix the empty being rendered before the loading is done to avoid
-    // tracking wrong events
-    // useEffect(() => {
-    //     trackFathomEvent("NO_REWARDS_CLAIM");
-    // }, []);
+    useEffect(() => {
+        trackFathomEvent("NO_REWARDS_CLAIM");
+    }, []);
 
     return address ? (
         <Card className={styles.root}>
