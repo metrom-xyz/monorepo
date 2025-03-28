@@ -11,6 +11,7 @@ import {
     Pool,
     PoolTemplate,
     Position,
+    Tick,
     TickChange,
     Token,
 } from "../generated/schema";
@@ -204,8 +205,8 @@ export function handleLiquidityChange(
     block: ethereum.Block,
     transaction: ethereum.Transaction,
     poolId: Bytes,
-    lowerTick: i32,
-    upperTick: i32,
+    lowerTickIdx: i32,
+    upperTickIdx: i32,
     ambient: bool,
     token0Delta: BigInt,
     token1Delta: BigInt,
@@ -231,8 +232,8 @@ export function handleLiquidityChange(
         crypto.keccak256(
             pool.id
                 .concat(owner)
-                .concat(Bytes.fromI32(lowerTick))
-                .concat(Bytes.fromI32(upperTick)),
+                .concat(Bytes.fromI32(lowerTickIdx))
+                .concat(Bytes.fromI32(upperTickIdx)),
         ),
     );
 
@@ -240,36 +241,48 @@ export function handleLiquidityChange(
     if (position == null) {
         position = new Position(positionId);
         position.owner = owner;
-        position.lowerTick = ambient ? 0 : lowerTick;
-        position.upperTick = ambient ? 0 : upperTick;
+        position.lowerTick = ambient ? 0 : lowerTickIdx;
+        position.upperTick = ambient ? 0 : upperTickIdx;
         position.concentratedLiquidity = BI_0;
         position.ambientLiquidity = BI_0;
         position.pool = pool.id;
     }
 
-    let newLiquidity: BigInt;
+    let liquidityDelta: BigInt;
     if (ambient) {
         let call = CrocQueryContract.try_queryAmbientTokens(
             owner,
             changetype<Address>(pool.token0),
             changetype<Address>(pool.token1),
             pool.idx,
-        )
-        newLiquidity = call.reverted ? BI_0 : call.value.getLiq();
-    }
-    else {
+        );
+        let newLiquidity = call.reverted ? BI_0 : call.value.getLiq();
+        liquidityDelta = newLiquidity.minus(position.ambientLiquidity);
+    } else {
         let call = CrocQueryContract.try_queryRangeTokens(
             owner,
             changetype<Address>(pool.token0),
             changetype<Address>(pool.token1),
             pool.idx,
-            lowerTick,
-            upperTick,
+            lowerTickIdx,
+            upperTickIdx,
         );
-        newLiquidity = call.reverted ? BI_0 : call.value.getLiq();
+        let newLiquidity = call.reverted ? BI_0 : call.value.getLiq();
+        liquidityDelta = newLiquidity.minus(position.concentratedLiquidity);
+
+        let lowerTick = getOrCreateTick(pool.id, lowerTickIdx);
+        lowerTick.liquidityGross =
+            lowerTick.liquidityGross.plus(liquidityDelta);
+        lowerTick.liquidityNet = lowerTick.liquidityNet.plus(liquidityDelta);
+        lowerTick.save();
+
+        let upperTick = getOrCreateTick(pool.id, upperTickIdx);
+        upperTick.liquidityGross =
+            upperTick.liquidityGross.plus(liquidityDelta);
+        upperTick.liquidityNet = upperTick.liquidityNet.minus(liquidityDelta);
+        upperTick.save();
     }
 
-    let liquidityDelta = newLiquidity.minus(position.concentratedLiquidity);
     if (!liquidityDelta.isZero()) {
         let liquidityChangeId = getBlockEventId(block, position.id);
         if (LiquidityChange.loadInBlock(liquidityChangeId) === null) {
@@ -290,4 +303,21 @@ export function handleLiquidityChange(
 
         position.save();
     }
+}
+
+export function getOrCreateTick(poolAddress: Bytes, idx: i32): Tick {
+    let id = poolAddress.concat(Bytes.fromI32(idx));
+    let tick = Tick.load(id);
+    if (tick !== null) {
+        return tick;
+    }
+
+    tick = new Tick(id);
+    tick.idx = idx;
+    tick.pool = poolAddress;
+    tick.liquidityGross = BI_0;
+    tick.liquidityNet = BI_0;
+    tick.save();
+
+    return tick;
 }

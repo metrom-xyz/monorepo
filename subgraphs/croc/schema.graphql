@@ -48,3 +48,11 @@ type TickChange @entity(immutable: true) {
     pool: Pool!
     newTick: Int!
 }
+
+type Tick @entity {
+    id: Bytes!
+    idx: Int!
+    pool: Pool!
+    liquidityGross: BigInt!
+    liquidityNet: BigInt!
+}
