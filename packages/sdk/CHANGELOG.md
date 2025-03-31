@@ -1,5 +1,11 @@
 # @metrom-xyz/sdk
 
+## 0.5.0
+
+### Minor Changes
+
+- Minor changes
+
 ## 0.4.0
 
 ### Minor Changes

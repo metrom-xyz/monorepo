@@ -1,5 +1,16 @@
 # @metrom-xyz/react
 
+## 0.3.0
+
+### Minor Changes
+
+- Add `useCampaign` and `useLeaderboard` hooks, refactor hooks params
+
+### Patch Changes
+
+- Updated dependencies
+  - @metrom-xyz/sdk@0.5.0
+
 ## 0.2.1
 
 ### Patch Changes
