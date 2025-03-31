@@ -26,7 +26,7 @@ export const sonicData: ChainData = {
             name: "Uniswap v3",
             depositUrl: {
                 type: DepositUrlType.PathPoolAddress,
-                template: "https://oku.trade/app/sonic/pool/{pool}",
+                template: "https://oku.trade/app/sonic/liquidity/{pool}",
             },
             supportsFetchAllPools: true,
         },

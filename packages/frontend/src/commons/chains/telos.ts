@@ -25,7 +25,7 @@ export const telosData: ChainData = {
             name: "Uniswap v3",
             depositUrl: {
                 type: DepositUrlType.PathPoolAddress,
-                template: "https://oku.trade/app/telos/pool/{pool}",
+                template: "https://oku.trade/app/telos/liquidity/{pool}",
             },
             supportsFetchAllPools: true,
         },

@@ -45,7 +45,7 @@ export const baseData: ChainData = {
             name: "Uniswap v3",
             depositUrl: {
                 type: DepositUrlType.PathPoolAddress,
-                template: "https://oku.trade/app/base/pool/{pool}",
+                template: "https://oku.trade/app/base/liquidity/{pool}",
             },
             supportsFetchAllPools: false,
         },

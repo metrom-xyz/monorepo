@@ -21,7 +21,7 @@ export const taikoData: ChainData = {
             name: "Uniswap v3",
             depositUrl: {
                 type: DepositUrlType.PathPoolAddress,
-                template: "https://oku.trade/app/taiko/pool/{pool}",
+                template: "https://oku.trade/app/taiko/liquidity/{pool}",
             },
             supportsFetchAllPools: true,
         },
