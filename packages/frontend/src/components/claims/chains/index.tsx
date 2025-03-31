@@ -44,7 +44,7 @@ export function Chains({ className, options, value, onChange }: ChainsProps) {
                             onClick={() => onChange(option.chain)}
                         >
                             <ChainIcon className={styles.chainIcon} />
-                            <Typography>{option.chain.name}</Typography>
+                            <Typography>{option.data.name}</Typography>
                         </div>
                     );
                 })}
