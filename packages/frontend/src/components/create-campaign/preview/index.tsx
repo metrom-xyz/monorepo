@@ -344,7 +344,7 @@ export function CampaignPreview({
                                 poolUsdTvl={payload.pool.usdTvl}
                                 from={payload.startDate}
                                 to={payload.endDate}
-                                rewards={payload.distributables.tokens}
+                                distributables={payload.distributables}
                                 specification={payload.kpiSpecification}
                             />
                         )}

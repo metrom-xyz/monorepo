@@ -15,7 +15,7 @@ import { useChainId } from "wagmi";
 import { useTranslations } from "next-intl";
 import { RangeInputs } from "./range-inputs";
 import { LiquidityDensityChart } from "@/src/components/liquidity-density-chart";
-import { tickToScaledPrice } from "@metrom-xyz/sdk";
+import { DistributablesType, tickToScaledPrice } from "@metrom-xyz/sdk";
 import classNames from "classnames";
 import { usePrevious } from "react-use";
 import { useLiquidityDensity } from "@/src/hooks/useLiquidityDensity";
@@ -36,7 +36,7 @@ const RANGE_TICKS_LIMIT = 4000;
 
 interface RangeStepProps {
     disabled?: boolean;
-    rewardType?: AmmPoolLiquidityCampaignPayload["rewardType"];
+    distributablesType?: DistributablesType;
     pool?: AmmPoolLiquidityCampaignPayload["pool"];
     priceRangeSpecification?: AmmPoolLiquidityCampaignPayload["priceRangeSpecification"];
     onRangeChange: (value: AmmPoolLiquidityCampaignPayloadPart) => void;
@@ -47,7 +47,7 @@ type ErrorMessage = LocalizedMessage<"newCampaign.form.ammPoolLiquidity.range">;
 
 export function RangeStep({
     disabled,
-    rewardType,
+    distributablesType,
     pool,
     priceRangeSpecification,
     onRangeChange,
@@ -158,7 +158,7 @@ export function RangeStep({
         setTo(undefined);
         setEnabled(false);
         setError("");
-    }, [rewardType, onRangeChange]);
+    }, [distributablesType, onRangeChange]);
 
     function handleSwitchOnClick(
         _: boolean,

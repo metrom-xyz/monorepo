@@ -1,6 +1,6 @@
 import { type Erc20Token } from "@metrom-xyz/sdk";
 import type {
-    BaseCampaignPayload,
+    CampaignPayloadTokenDistributables,
     WhitelistedErc20TokenAmount,
 } from "@/src/types/common";
 import { Reward } from "./reward";
@@ -12,7 +12,7 @@ import type { TokensErrorMessage } from "..";
 import styles from "./styles.module.css";
 
 interface RewardsPreviewProps {
-    rewards?: BaseCampaignPayload["tokens"];
+    distributables?: CampaignPayloadTokenDistributables;
     campaignDuration?: number;
     onRemove: (reward: Erc20Token) => void;
     onError: (address: Address, error?: TokensErrorMessage) => void;
@@ -20,7 +20,7 @@ interface RewardsPreviewProps {
 }
 
 export function RewardsPreview({
-    rewards,
+    distributables,
     campaignDuration,
     onRemove,
     onError,
@@ -28,7 +28,11 @@ export function RewardsPreview({
 }: RewardsPreviewProps) {
     const t = useTranslations("newCampaign.form.base.rewards.tokens");
 
-    if (!rewards || rewards.length === 0)
+    if (
+        !distributables ||
+        !distributables.tokens ||
+        distributables.tokens.length === 0
+    )
         return (
             <div className={styles.rewardSkeleton}>
                 <Typography
@@ -44,7 +48,7 @@ export function RewardsPreview({
 
     return (
         <div className={styles.root}>
-            {rewards?.map((reward) => (
+            {distributables.tokens.map((reward) => (
                 <Reward
                     key={reward.token.address}
                     reward={reward}

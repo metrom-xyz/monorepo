@@ -8,39 +8,32 @@ import {
     type BaseCampaignPayload,
     type BaseCampaignPayloadPart,
     type CampaignPayloadErrors,
-    RewardType,
 } from "@/src/types/common";
 import classNames from "classnames";
 import { RewardTokens } from "./tokens";
 import { RewardPoints } from "./points";
+import { DistributablesType } from "@metrom-xyz/sdk";
 
 import styles from "./styles.module.css";
 
 interface RewardsStepProps {
     disabled?: boolean;
-    rewardType?: BaseCampaignPayload["rewardType"];
-    tokens?: BaseCampaignPayload["tokens"];
-    points?: BaseCampaignPayload["points"];
-    fee?: BaseCampaignPayload["fee"];
+    distributables?: BaseCampaignPayload["distributables"];
     startDate?: BaseCampaignPayload["startDate"];
     endDate?: BaseCampaignPayload["endDate"];
-    onRewardsChange: (rewards: BaseCampaignPayloadPart) => void;
+    onDistributablesChange: (rewards: BaseCampaignPayloadPart) => void;
     onError: (errors: CampaignPayloadErrors) => void;
 }
 
 export function RewardsStep({
     disabled,
-    rewardType,
-    tokens,
-    points,
-    fee,
+    distributables,
     startDate,
     endDate,
-    onRewardsChange,
+    onDistributablesChange,
     onError,
 }: RewardsStepProps) {
     const t = useTranslations("newCampaign.form.base.rewards");
-    const [type, setType] = useState(rewardType || RewardType.Tokens);
     const [error, setError] = useState("");
 
     const campaignDuration = useMemo(() => {
@@ -56,23 +49,15 @@ export function RewardsStep({
         [onError],
     );
 
-    useEffect(() => {
-        if (rewardType) return;
-        onRewardsChange({ rewardType: RewardType.Tokens });
-    }, [rewardType, onRewardsChange]);
-
     const handleOnRewardTypeSwitch = useCallback(
-        (type: RewardType) => {
-            setType(type);
-            onRewardsChange({
-                rewardType: type,
-                tokens: undefined,
-                points: undefined,
-                fee: undefined,
-                kpiSpecification: undefined,
+        (type: DistributablesType) => {
+            onDistributablesChange({
+                distributables: {
+                    type,
+                },
             });
         },
-        [onRewardsChange],
+        [onDistributablesChange],
     );
 
     return (
@@ -104,14 +89,15 @@ export function RewardsStep({
                         </div>
                         <Tabs
                             size="sm"
-                            value={type}
+                            value={distributables?.type}
                             onChange={handleOnRewardTypeSwitch}
                         >
                             <Tab
-                                value={RewardType.Tokens}
+                                value={DistributablesType.Tokens}
                                 className={classNames(styles.tab, {
                                     [styles.activeTab]:
-                                        type === RewardType.Tokens,
+                                        distributables?.type ===
+                                        DistributablesType.Tokens,
                                 })}
                             >
                                 <Typography weight="medium" size="sm">
@@ -119,10 +105,11 @@ export function RewardsStep({
                                 </Typography>
                             </Tab>
                             <Tab
-                                value={RewardType.Points}
+                                value={DistributablesType.Points}
                                 className={classNames(styles.tab, {
                                     [styles.activeTab]:
-                                        type === RewardType.Points,
+                                        distributables?.type ===
+                                        DistributablesType.Points,
                                 })}
                             >
                                 <Typography weight="medium" size="sm">
@@ -136,21 +123,20 @@ export function RewardsStep({
                 className={{ root: !disabled ? styles.stepPreview : "" }}
             >
                 <div className={styles.previewWrapper}>
-                    {type === RewardType.Points && (
+                    {distributables?.type === DistributablesType.Points && (
                         <RewardPoints
                             campaignDuration={campaignDuration}
-                            points={points}
-                            fee={fee}
+                            distributables={distributables}
                             onError={handleOnError}
-                            onPointsChange={onRewardsChange}
+                            onPointsChange={onDistributablesChange}
                         />
                     )}
-                    {type === RewardType.Tokens && (
+                    {distributables?.type === DistributablesType.Tokens && (
                         <RewardTokens
                             campaignDuration={campaignDuration}
-                            tokens={tokens}
+                            distributables={distributables}
                             onError={handleOnError}
-                            onTokensChange={onRewardsChange}
+                            onTokensChange={onDistributablesChange}
                         />
                     )}
                 </div>

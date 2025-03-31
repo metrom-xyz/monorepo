@@ -1,16 +1,16 @@
 import { SupportedChain } from "@metrom-xyz/contracts";
 import { CHAIN_DATA } from "../commons";
-import type { Hex } from "viem";
+import { type Hex, isAddress } from "viem";
 import type { Address } from "blo";
 
-export function getAddressExplorerLink(
+export function getExplorerLink(
     address: Address,
     chainId?: SupportedChain,
 ): string | undefined {
-    if (!chainId) return;
+    if (!chainId || !isAddress(address)) return undefined;
 
     const explorer = CHAIN_DATA[chainId].blockExplorers?.default;
-    if (!explorer) return;
+    if (!explorer) return undefined;
 
     return `${explorer.url}/address/${address}`;
 }

@@ -10,6 +10,7 @@ export function RemoteLogo({ src, defaultText = "?", style }: RemoteLogoProps) {
     if (src) {
         return (
             <div tw="flex relative h-14 w-14" style={style}>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src={src} tw="absolute" alt={defaultText} />
             </div>
         );

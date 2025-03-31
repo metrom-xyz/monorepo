@@ -52,7 +52,6 @@ export function TvlTick({
             if (upperBound) return "start";
         }
 
-        // FIXME: check issue on align, also on mobile
         if (closeToLowerBound) {
             if (poolTvl) return x <= lowerBoundScale ? "end" : "start";
             if (lowerBound) return x <= poolTvlScale ? "end" : "start";

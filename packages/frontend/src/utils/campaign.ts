@@ -10,7 +10,9 @@ import {
     LiquityV2Action,
     LiquityV2CampaignPreviewPayload,
     type BaseCampaignPreviewPayload,
+    type CampaignPayloadTokenDistributables,
     type CampaignPreviewPayload,
+    type CampaignPreviewTokenDistributables,
     type TranslationsType,
 } from "../types/common";
 import { getDistributableRewardsPercentage } from "./kpi";

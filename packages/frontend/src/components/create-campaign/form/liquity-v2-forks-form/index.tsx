@@ -1,10 +1,9 @@
 import {
     type CampaignPayloadErrors,
-    type CampaignPreviewPointDistributables,
-    type CampaignPreviewTokenDistributables,
     LiquityV2CampaignPreviewPayload,
     type LiquityV2CampaignPayload,
     type LiquityV2CampaignPayloadPart,
+    type CampaignPreviewDistributables,
 } from "@/src/types/common";
 import { useTranslations } from "next-intl";
 import { useCallback, useEffect, useMemo, useState } from "react";
@@ -31,28 +30,31 @@ function validatePayload(
         collateral,
         startDate,
         endDate,
-        points,
-        tokens,
+        distributables,
         kpiSpecification,
         restrictions,
-        fee,
     } = payload;
 
-    if (!brand || !collateral || !action || !startDate || !endDate) return null;
+    if (
+        !brand ||
+        !collateral ||
+        !action ||
+        !startDate ||
+        !endDate ||
+        !distributables
+    )
+        return null;
 
-    let distributables;
-    if (points && fee) {
-        distributables = {
-            type: DistributablesType.Points,
-            fee: fee,
-            points: points,
-        } as CampaignPreviewPointDistributables;
-    } else if (tokens && tokens.length > 0) {
-        distributables = {
-            type: DistributablesType.Tokens,
-            tokens: tokens,
-        } as CampaignPreviewTokenDistributables;
-    } else return null;
+    if (
+        distributables.type === DistributablesType.Points &&
+        (!distributables.fee || !distributables.type)
+    )
+        return null;
+    else if (
+        distributables.type === DistributablesType.Tokens &&
+        (!distributables.tokens || distributables.tokens.length === 0)
+    )
+        return null;
 
     return new LiquityV2CampaignPreviewPayload(
         brand,
@@ -60,7 +62,7 @@ function validatePayload(
         collateral,
         startDate,
         endDate,
-        distributables,
+        distributables as CampaignPreviewDistributables,
         kpiSpecification,
         restrictions,
     );
@@ -71,6 +73,10 @@ interface LiquityV2ForksFormProps {
     onPreviewClick: (payload: LiquityV2CampaignPreviewPayload | null) => void;
 }
 
+const initialPayload: LiquityV2CampaignPayload = {
+    distributables: { type: DistributablesType.Tokens },
+};
+
 export function LiquityV2ForksForm({
     unsupportedChain,
     onPreviewClick,
@@ -78,7 +84,7 @@ export function LiquityV2ForksForm({
     const t = useTranslations("newCampaign");
     const chainId = useChainId();
 
-    const [payload, setPayload] = useState<LiquityV2CampaignPayload>({});
+    const [payload, setPayload] = useState(initialPayload);
     const [errors, setErrors] = useState<CampaignPayloadErrors>({});
 
     const previewPayload = useMemo(() => {
@@ -86,8 +92,25 @@ export function LiquityV2ForksForm({
         return validatePayload(payload);
     }, [payload, errors]);
 
+    const missingDistributables = useMemo(() => {
+        if (!payload.distributables) return true;
+
+        const { type } = payload.distributables;
+
+        if (type === DistributablesType.Points)
+            return (
+                !payload.distributables.fee || !payload.distributables.points
+            );
+        else if (type === DistributablesType.Tokens)
+            return (
+                !payload.distributables.tokens ||
+                payload.distributables.tokens.length === 0
+            );
+        else return true;
+    }, [payload.distributables]);
+
     useEffect(() => {
-        setPayload({});
+        setPayload(initialPayload);
     }, [chainId]);
 
     const handlePayloadOnChange = useCallback(
@@ -117,7 +140,7 @@ export function LiquityV2ForksForm({
                     onBrandChange={handlePayloadOnChange}
                 />
                 <LiquityV2ActionStep
-                    disabled={!payload?.brand || unsupportedChain}
+                    disabled={!payload.brand || unsupportedChain}
                     action={payload.action}
                     onActionChange={handlePayloadOnChange}
                 />
@@ -129,49 +152,43 @@ export function LiquityV2ForksForm({
                     onCollateralChange={handlePayloadOnChange}
                 />
                 <StartDateStep
-                    disabled={!payload?.collateral || unsupportedChain}
-                    startDate={payload?.startDate}
-                    endDate={payload?.endDate}
+                    disabled={!payload.collateral || unsupportedChain}
+                    startDate={payload.startDate}
+                    endDate={payload.endDate}
                     onStartDateChange={handlePayloadOnChange}
                     onError={handlePayloadOnError}
                 />
                 <EndDateStep
-                    disabled={!payload?.startDate || unsupportedChain}
-                    startDate={payload?.startDate}
-                    endDate={payload?.endDate}
+                    disabled={!payload.startDate || unsupportedChain}
+                    startDate={payload.startDate}
+                    endDate={payload.endDate}
                     onEndDateChange={handlePayloadOnChange}
                     onError={handlePayloadOnError}
                 />
                 <RewardsStep
-                    disabled={!payload?.endDate || unsupportedChain}
-                    rewardType={payload?.rewardType}
-                    tokens={payload?.tokens}
-                    points={payload?.points}
-                    fee={payload?.fee}
-                    startDate={payload?.startDate}
-                    endDate={payload?.endDate}
-                    onRewardsChange={handlePayloadOnChange}
+                    disabled={!payload.endDate || unsupportedChain}
+                    distributables={payload.distributables}
+                    startDate={payload.startDate}
+                    endDate={payload.endDate}
+                    onDistributablesChange={handlePayloadOnChange}
                     onError={handlePayloadOnError}
                 />
                 {/* TODO: add support for KPIs to liquity campaign, how? */}
                 {/* <KpiStep
                     disabled={
-                        !payload?.tokens ||
+                        !payload.tokens ||
                         payload.rewardType === RewardType.Points ||
                         unsupportedChain
                     }
-                    pool={payload?.pool}
-                    rewards={payload?.tokens}
-                    kpiSpecification={payload?.kpiSpecification}
+                    pool={payload.pool}
+                    rewards={payload.tokens}
+                    kpiSpecification={payload.kpiSpecification}
                     onKpiChange={handlePayloadOnChange}
                     onError={handlePayloadOnError}
                 /> */}
                 <RestrictionsStep
-                    disabled={
-                        (!payload?.tokens && !payload.points) ||
-                        unsupportedChain
-                    }
-                    restrictions={payload?.restrictions}
+                    disabled={missingDistributables || unsupportedChain}
+                    restrictions={payload.restrictions}
                     onRestrictionsChange={handlePayloadOnChange}
                     onError={handlePayloadOnError}
                 />
