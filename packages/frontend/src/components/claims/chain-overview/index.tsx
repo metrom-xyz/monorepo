@@ -318,7 +318,7 @@ export function ChainOverview({
             <div className={styles.chainNameWrapper}>
                 <ChainIcon className={styles.chainIcon} />
                 <Typography size="xl4" truncate>
-                    {chainWithRewardsData.chain.name}
+                    {chainWithRewardsData.chainData.name}
                 </Typography>
             </div>
             <div className={styles.buttonsWrapper}>
