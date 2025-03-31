@@ -18,9 +18,9 @@ import { ErrorIcon } from "@/src/assets/error-icon";
 import { RemoveScroll } from "react-remove-scroll";
 import { SAFE } from "@/src/commons/env";
 import { SafeLogo } from "@/src/assets/logos/safe";
+import Image from "next/image";
 
 import styles from "./styles.module.css";
-import Image from "next/image";
 
 interface AccountMenuProps {
     className?: string;
@@ -104,7 +104,7 @@ export function AccountMenu({
                                 <SafeLogo className={styles.safeLogo} />
                             </div>
                         ) : (
-                            <img
+                            <Image
                                 alt="Avatar"
                                 src={account.ensAvatar || blockie}
                                 className={styles.avatar}
