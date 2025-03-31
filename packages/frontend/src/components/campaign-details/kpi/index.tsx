@@ -106,9 +106,14 @@ export function Kpi({ campaign, loading }: KpiProps) {
                             size="xl"
                             label={t("goalReached")}
                             loading={specificationLoading}
-                            value={formatPercentage({
-                                percentage: reachedGoalPercentage * 100,
-                            })}
+                            value={
+                                campaign.status === Status.Upcoming
+                                    ? "-"
+                                    : formatPercentage({
+                                          percentage:
+                                              reachedGoalPercentage * 100,
+                                      })
+                            }
                         />
                     </div>
                     <Card className={styles.chart}>
