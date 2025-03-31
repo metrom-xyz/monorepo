@@ -108,11 +108,6 @@ export enum RestrictionType {
     Whitelist = "whitelist",
 }
 
-export enum RewardType {
-    Points = "points",
-    Tokens = "tokens",
-}
-
 export interface WhitelistedErc20TokenAmount {
     token: WhitelistedErc20Token;
     amount: UsdPricedOnChainAmount;
@@ -141,12 +136,9 @@ export enum LiquityV2Action {
 }
 
 export interface BaseCampaignPayload {
-    rewardType?: RewardType;
     startDate?: Dayjs;
     endDate?: Dayjs;
-    points?: number;
-    tokens?: WhitelistedErc20TokenAmount[];
-    fee?: WhitelistedErc20TokenAmount;
+    distributables?: CampaignPayloadDistributables;
     kpiSpecification?: KpiSpecification;
     priceRangeSpecification?: AugmentedPriceRangeSpecification;
     restrictions?: {
@@ -167,6 +159,17 @@ export interface LiquityV2CampaignPayload extends BaseCampaignPayload {
     collateral?: LiquityV2Collateral;
 }
 
+export interface CampaignPayloadTokenDistributables {
+    type: DistributablesType.Tokens;
+    tokens?: WhitelistedErc20TokenAmount[];
+}
+
+export interface CampaignPayloadPointDistributables {
+    type: DistributablesType.Points;
+    fee?: WhitelistedErc20TokenAmount;
+    points?: number;
+}
+
 export interface CampaignPreviewTokenDistributables {
     type: DistributablesType.Tokens;
     tokens: [WhitelistedErc20TokenAmount, ...WhitelistedErc20TokenAmount[]];
@@ -178,13 +181,19 @@ export interface CampaignPreviewPointDistributables {
     points: number;
 }
 
+export type CampaignPayloadDistributables =
+    | CampaignPayloadTokenDistributables
+    | CampaignPayloadPointDistributables;
+
+export type CampaignPreviewDistributables =
+    | CampaignPreviewTokenDistributables
+    | CampaignPreviewPointDistributables;
+
 export class BaseCampaignPreviewPayload {
     constructor(
         public readonly startDate: Dayjs,
         public readonly endDate: Dayjs,
-        public readonly distributables:
-            | CampaignPreviewTokenDistributables
-            | CampaignPreviewPointDistributables,
+        public readonly distributables: CampaignPreviewDistributables,
         public readonly kpiSpecification?: KpiSpecification,
         public readonly restrictions?: {
             type: RestrictionType;

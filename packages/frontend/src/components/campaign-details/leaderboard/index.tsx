@@ -10,7 +10,7 @@ import type { Address } from "viem";
 import { RewardsBreakdown } from "./rewards-breakdown";
 import { formatPercentage } from "@/src/utils/format";
 import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
-import { getAddressExplorerLink } from "@/src/utils/dex";
+import { getExplorerLink } from "@/src/utils/dex";
 import classNames from "classnames";
 import { NoDistributionsIcon } from "@/src/assets/no-distributions-icon";
 import { PointsBreakdown } from "./points-breakdown";
@@ -150,7 +150,7 @@ export function Leaderboard({ campaign, loading }: LeaderboardProps) {
                                             )}
                                         </Typography>
                                         <a
-                                            href={getAddressExplorerLink(
+                                            href={getExplorerLink(
                                                 distribution.account,
                                                 campaign?.chainId,
                                             )}

@@ -1,11 +1,9 @@
 import {
     type AmmPoolLiquidityCampaignPayload,
     type CampaignPayloadErrors,
-    type CampaignPreviewPointDistributables,
-    type CampaignPreviewTokenDistributables,
     AmmPoolLiquidityCampaignPreviewPayload,
     type AmmPoolLiquidityCampaignPayloadPart,
-    RewardType,
+    type CampaignPreviewDistributables,
 } from "@/src/types/common";
 import { useTranslations } from "next-intl";
 import { useCallback, useEffect, useMemo, useState } from "react";
@@ -33,30 +31,24 @@ function validatePayload(
         pool,
         startDate,
         endDate,
-        points,
-        tokens,
+        distributables,
         kpiSpecification,
         priceRangeSpecification,
         restrictions,
-        fee,
     } = payload;
 
-    if (!dex || !pool || !startDate || !endDate) return null;
+    if (!dex || !pool || !startDate || !endDate || !distributables) return null;
 
-    // TODO: add distributables directly the base campaign state?
-    let distributables;
-    if (points && fee) {
-        distributables = {
-            type: DistributablesType.Points,
-            fee: fee,
-            points: points,
-        } as CampaignPreviewPointDistributables;
-    } else if (tokens && tokens.length > 0) {
-        distributables = {
-            type: DistributablesType.Tokens,
-            tokens: tokens,
-        } as CampaignPreviewTokenDistributables;
-    } else return null;
+    if (
+        distributables.type === DistributablesType.Points &&
+        (!distributables.fee || !distributables.type)
+    )
+        return null;
+    else if (
+        distributables.type === DistributablesType.Tokens &&
+        (!distributables.tokens || distributables.tokens.length === 0)
+    )
+        return null;
 
     return new AmmPoolLiquidityCampaignPreviewPayload(
         dex,
@@ -64,7 +56,7 @@ function validatePayload(
         priceRangeSpecification,
         startDate,
         endDate,
-        distributables,
+        distributables as CampaignPreviewDistributables,
         kpiSpecification,
         restrictions,
     );
@@ -77,6 +69,10 @@ interface AmmPoolLiquidityFormProps {
     ) => void;
 }
 
+const initialPayload: AmmPoolLiquidityCampaignPayload = {
+    distributables: { type: DistributablesType.Tokens },
+};
+
 export function AmmPoolLiquidityForm({
     unsupportedChain,
     onPreviewClick,
@@ -84,7 +80,7 @@ export function AmmPoolLiquidityForm({
     const t = useTranslations("newCampaign");
     const chainId = useChainId();
 
-    const [payload, setPayload] = useState<AmmPoolLiquidityCampaignPayload>({});
+    const [payload, setPayload] = useState(initialPayload);
     const [errors, setErrors] = useState<CampaignPayloadErrors>({});
 
     const previewPayload = useMemo(() => {
@@ -92,8 +88,35 @@ export function AmmPoolLiquidityForm({
         return validatePayload(payload);
     }, [payload, errors]);
 
+    const kpiAndRangeDisabled = useMemo(() => {
+        return (
+            !payload.distributables ||
+            payload.distributables.type === DistributablesType.Points ||
+            !payload.distributables.tokens ||
+            payload.distributables.tokens.length === 0 ||
+            unsupportedChain
+        );
+    }, [payload.distributables, unsupportedChain]);
+
+    const missingDistributables = useMemo(() => {
+        if (!payload.distributables) return true;
+
+        const { type } = payload.distributables;
+
+        if (type === DistributablesType.Points)
+            return (
+                !payload.distributables.fee || !payload.distributables.points
+            );
+        else if (type === DistributablesType.Tokens)
+            return (
+                !payload.distributables.tokens ||
+                payload.distributables.tokens.length === 0
+            );
+        else return true;
+    }, [payload.distributables]);
+
     useEffect(() => {
-        setPayload({});
+        setPayload(initialPayload);
     }, [chainId]);
 
     const handlePayloadOnChange = useCallback(
@@ -119,77 +142,71 @@ export function AmmPoolLiquidityForm({
             <div className={styles.stepsWrapper}>
                 <DexStep
                     disabled={unsupportedChain}
-                    dex={payload?.dex}
+                    dex={payload.dex}
                     onDexChange={handlePayloadOnChange}
                 />
                 <PoolStep
-                    disabled={!payload?.dex || unsupportedChain}
-                    dex={payload?.dex}
-                    pool={payload?.pool}
+                    disabled={!payload.dex || unsupportedChain}
+                    dex={payload.dex}
+                    pool={payload.pool}
                     onPoolChange={handlePayloadOnChange}
                     onError={handlePayloadOnError}
                 />
                 <StartDateStep
-                    disabled={!payload?.pool || unsupportedChain}
-                    startDate={payload?.startDate}
-                    endDate={payload?.endDate}
+                    disabled={!payload.pool || unsupportedChain}
+                    startDate={payload.startDate}
+                    endDate={payload.endDate}
                     onStartDateChange={handlePayloadOnChange}
                     onError={handlePayloadOnError}
                 />
                 <EndDateStep
-                    disabled={!payload?.startDate || unsupportedChain}
-                    startDate={payload?.startDate}
-                    endDate={payload?.endDate}
+                    disabled={!payload.startDate || unsupportedChain}
+                    startDate={payload.startDate}
+                    endDate={payload.endDate}
                     onEndDateChange={handlePayloadOnChange}
                     onError={handlePayloadOnError}
                 />
                 <RewardsStep
-                    disabled={!payload?.endDate || unsupportedChain}
-                    rewardType={payload?.rewardType}
-                    tokens={payload?.tokens}
-                    points={payload?.points}
-                    fee={payload?.fee}
-                    startDate={payload?.startDate}
-                    endDate={payload?.endDate}
-                    onRewardsChange={handlePayloadOnChange}
+                    disabled={!payload.endDate || unsupportedChain}
+                    distributables={payload.distributables}
+                    startDate={payload.startDate}
+                    endDate={payload.endDate}
+                    onDistributablesChange={handlePayloadOnChange}
                     onError={handlePayloadOnError}
                 />
                 <KpiStep
-                    disabled={
-                        !payload?.tokens ||
-                        payload.rewardType === RewardType.Points ||
-                        unsupportedChain
+                    disabled={kpiAndRangeDisabled}
+                    pool={payload.pool}
+                    distributables={
+                        payload.distributables?.type ===
+                        DistributablesType.Tokens
+                            ? payload.distributables
+                            : undefined
                     }
-                    pool={payload?.pool}
-                    rewards={payload?.tokens}
-                    rewardType={payload.rewardType}
                     startDate={payload.startDate}
                     endDate={payload.endDate}
-                    kpiSpecification={payload?.kpiSpecification}
+                    kpiSpecification={payload.kpiSpecification}
                     onKpiChange={handlePayloadOnChange}
                     onError={handlePayloadOnError}
                 />
-                {payload?.pool &&
+                {payload.pool &&
                     AMM_SUPPORTS_RANGE_INCENTIVES[
-                        payload?.pool.amm as SupportedAmm
+                        payload.pool.amm as SupportedAmm
                     ] && (
                         <RangeStep
-                            disabled={!payload?.tokens || unsupportedChain}
-                            rewardType={payload.rewardType}
+                            disabled={kpiAndRangeDisabled}
+                            distributablesType={payload.distributables?.type}
                             pool={payload.pool}
                             priceRangeSpecification={
-                                payload?.priceRangeSpecification
+                                payload.priceRangeSpecification
                             }
                             onRangeChange={handlePayloadOnChange}
                             onError={handlePayloadOnError}
                         />
                     )}
                 <RestrictionsStep
-                    disabled={
-                        (!payload?.tokens && !payload.points) ||
-                        unsupportedChain
-                    }
-                    restrictions={payload?.restrictions}
+                    disabled={missingDistributables || unsupportedChain}
+                    restrictions={payload.restrictions}
                     onRestrictionsChange={handlePayloadOnChange}
                     onError={handlePayloadOnError}
                 />

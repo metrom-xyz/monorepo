@@ -280,7 +280,7 @@ export function RestrictionsStep({
                                 {addresses.map((address) => (
                                     <div key={address} className={styles.row}>
                                         <div className={styles.accountWrapper}>
-                                            {/* eslint-disable-next-line @next/next/no-img-element */}
+                                            {}
                                             <img
                                                 alt="Avatar"
                                                 src={blo(

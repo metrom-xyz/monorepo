@@ -12,14 +12,14 @@ import { useChainId } from "wagmi";
 import { parseUnits } from "viem";
 import { RemoteLogo } from "@/src/components/remote-logo";
 import type {
-    BaseCampaignPayload,
     CampaignPayloadErrors,
     BaseCampaignPayloadPart,
     LocalizedMessage,
+    CampaignPayloadPointDistributables,
 } from "@/src/types/common";
 import { formatUsdAmount } from "@/src/utils/format";
 import { usePrevious } from "react-use";
-import type { FeeToken } from "@metrom-xyz/sdk";
+import { DistributablesType, type FeeToken } from "@metrom-xyz/sdk";
 import { useFeeTokens } from "@/src/hooks/useFeeTokens";
 
 import styles from "./styles.module.css";
@@ -31,8 +31,7 @@ export interface NumberInputValues {
 
 interface RewardPointsProps {
     campaignDuration?: number;
-    points?: BaseCampaignPayload["points"];
-    fee?: BaseCampaignPayload["fee"];
+    distributables: CampaignPayloadPointDistributables;
     onError: (errors: CampaignPayloadErrors, error?: string) => void;
     onPointsChange: (points: BaseCampaignPayloadPart) => void;
 }
@@ -41,8 +40,7 @@ type ErrorMessage = LocalizedMessage<"newCampaign.form.base.rewards.points">;
 
 export function RewardPoints({
     campaignDuration,
-    points,
-    fee,
+    distributables: { fee, points },
     onError,
     onPointsChange,
 }: RewardPointsProps) {
@@ -124,18 +122,21 @@ export function RewardPoints({
         setCostError("");
         setOpen(false);
         onPointsChange({
-            fee: {
-                token,
-                amount: {
-                    raw: parseUnits(
-                        resolvedFee.amount.toString(),
-                        token.decimals,
-                    ),
-                    formatted: resolvedFee.amount,
-                    usdValue: resolvedFee.usd,
+            distributables: {
+                type: DistributablesType.Points,
+                fee: {
+                    token,
+                    amount: {
+                        raw: parseUnits(
+                            resolvedFee.amount.toString(),
+                            token.decimals,
+                        ),
+                        formatted: resolvedFee.amount,
+                        usdValue: resolvedFee.usd,
+                    },
                 },
+                points: amount?.raw,
             },
-            points: amount?.raw,
         });
     }, [token, amount, resolvedFee, onPointsChange]);
 

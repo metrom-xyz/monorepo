@@ -22,14 +22,11 @@ interface PriceRangeProps {
 export function PriceRange({ campaign }: PriceRangeProps) {
     const t = useTranslations("campaignDetails.priceRange");
 
-    // TODO: in case the campaign has ended this query gets fired
-    // while no liquidity density chart is shown. We need to address this somehow.
-    // One way could be to add to the hook an "enabled" param that gets passed
-    // to react-query. This could be a general thing to apply to react query based hooks
     const { liquidityDensity, loading: loadingLiquidityDensity } =
         useLiquidityDensity({
             pool: campaign?.target.pool,
             computeAmount: COMPUTE_TICKS_AMOUNT,
+            enabled: campaign && campaign.status !== Status.Ended,
         });
 
     if (

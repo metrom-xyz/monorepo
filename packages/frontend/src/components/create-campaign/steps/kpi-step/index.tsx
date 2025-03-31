@@ -6,6 +6,7 @@ import {
     type CampaignPayloadErrors,
     type BaseCampaignPayloadPart,
     type LocalizedMessage,
+    type CampaignPayloadTokenDistributables,
 } from "@/src/types/common";
 import { Button, ErrorText, Switch, Typography } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
@@ -22,8 +23,7 @@ import styles from "./styles.module.css";
 interface KpiStepProps {
     disabled?: boolean;
     pool?: AmmPoolLiquidityCampaignPayload["pool"];
-    rewards?: AmmPoolLiquidityCampaignPayload["tokens"];
-    rewardType?: AmmPoolLiquidityCampaignPayload["rewardType"];
+    distributables?: CampaignPayloadTokenDistributables;
     startDate?: AmmPoolLiquidityCampaignPayload["startDate"];
     endDate?: AmmPoolLiquidityCampaignPayload["endDate"];
     kpiSpecification?: AmmPoolLiquidityCampaignPayload["kpiSpecification"];
@@ -37,8 +37,7 @@ type ErrorMessage = LocalizedMessage<"newCampaign.form.base.kpi">;
 export function KpiStep({
     disabled,
     pool,
-    rewards,
-    rewardType,
+    distributables,
     startDate,
     endDate,
     kpiSpecification,
@@ -64,14 +63,14 @@ export function KpiStep({
     const chainId = useChainId();
 
     const totalRewardsUsdAmount = useMemo(() => {
-        if (!rewards) return 0;
+        if (!distributables || !distributables.tokens) return 0;
         let total = 0;
-        for (const reward of rewards) {
+        for (const reward of distributables.tokens) {
             if (!reward.amount.usdValue) return 0;
             total += reward.amount.usdValue;
         }
         return total;
-    }, [rewards]);
+    }, [distributables]);
 
     const unsavedChanges = useMemo(() => {
         if (!prevKpiSpecification) return true;
@@ -180,7 +179,7 @@ export function KpiStep({
         setUpperUsdTargetRaw(undefined);
         setEnabled(false);
         setError("");
-    }, [rewardType, onKpiChange]);
+    }, [distributables?.type, onKpiChange]);
 
     function handleSwitchOnClick(
         _: boolean,

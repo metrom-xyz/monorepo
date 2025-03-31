@@ -3,7 +3,7 @@ import { Typography, Button } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
 import { useRouter } from "@/src/i18n/routing";
 import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
-import { getAddressExplorerLink } from "@/src/utils/dex";
+import { getExplorerLink } from "@/src/utils/dex";
 import { formatPercentage } from "@/src/utils/format";
 import { trackFathomEvent } from "@/src/utils/fathom";
 import { PoolRemoteLogo } from "../../pool-remote-logo";
@@ -27,8 +27,7 @@ export function AmmPoolLiquityHeader({ campaign }: AmmPoolLiquityHeaderProps) {
 
     const ChainIcon = campaign.chainData.icon;
     const depositLink = campaign.getDepositLiquidityUrl();
-    // TODO: the pool's id is not always an address soooo...
-    const explorerLink = getAddressExplorerLink(
+    const explorerLink = getExplorerLink(
         campaign.target.pool.id,
         campaign.chainId,
     );

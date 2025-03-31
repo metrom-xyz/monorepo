@@ -29,7 +29,6 @@ export function RecoverSuccess({
         <ToastNotification
             toastId={toastId}
             title={safe ? t("safe") : t("standard")}
-            // TODO: add different icon?
             icon={ClaimReward}
         >
             {!!chain && !!token && !!amount && (

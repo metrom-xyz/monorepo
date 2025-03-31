@@ -1,4 +1,8 @@
-import type { Erc20Token, RewardToken } from "@metrom-xyz/sdk";
+import {
+    DistributablesType,
+    type Erc20Token,
+    type RewardToken,
+} from "@metrom-xyz/sdk";
 import { type Address, parseUnits, formatUnits } from "viem";
 import { RewardsPreview } from "./preview";
 import {
@@ -20,6 +24,7 @@ import type {
     BaseCampaignPayloadPart,
     WhitelistedErc20TokenAmount,
     LocalizedMessage,
+    CampaignPayloadTokenDistributables,
 } from "@/src/types/common";
 import { trackFathomEvent } from "@/src/utils/fathom";
 import { useWatchBalance } from "@/src/hooks/useWatchBalance";
@@ -29,7 +34,7 @@ import { useRewardTokens } from "@/src/hooks/useRewardTokens";
 import styles from "./styles.module.css";
 
 interface RewardTokensProps {
-    tokens?: BaseCampaignPayload["tokens"];
+    distributables: CampaignPayloadTokenDistributables;
     campaignDuration?: number;
     onError: (errors: CampaignPayloadErrors, error?: string) => void;
     onTokensChange: (tokens: BaseCampaignPayloadPart) => void;
@@ -39,7 +44,7 @@ export type TokensErrorMessage =
     LocalizedMessage<"newCampaign.form.base.rewards.tokens">;
 
 export function RewardTokens({
-    tokens,
+    distributables,
     campaignDuration,
     onError,
     onTokensChange,
@@ -66,22 +71,23 @@ export function RewardTokens({
 
     const rewardsError = useMemo(() => {
         if (!!amountError) return amountError;
-        if (!tokens || tokens.length === 0) return "";
+        if (!distributables.tokens || distributables.tokens.length === 0)
+            return "";
 
         return existingTokensErrors.length > 0
             ? existingTokensErrors[0].error
             : "";
-    }, [existingTokensErrors, amountError, tokens]);
+    }, [existingTokensErrors, amountError, distributables.tokens]);
 
     const totalRewardsUsdAmount = useMemo(() => {
-        if (!tokens) return 0;
+        if (!distributables.tokens) return 0;
         let total = 0;
-        for (const token of tokens) {
+        for (const token of distributables.tokens) {
             if (!token.amount.usdValue) return 0;
             total += token.amount.usdValue;
         }
         return total;
-    }, [tokens]);
+    }, [distributables.tokens]);
 
     useEffect(() => {
         if (!campaignDuration || !token) return;
@@ -126,13 +132,18 @@ export function RewardTokens({
             },
         };
 
-        const newRewards: BaseCampaignPayload["tokens"] = tokens
-            ? [...tokens, reward]
+        const newRewards: WhitelistedErc20TokenAmount[] = distributables.tokens
+            ? [...distributables.tokens, reward]
             : [reward];
 
         setOpen(false);
 
-        onTokensChange({ tokens: newRewards });
+        onTokensChange({
+            distributables: {
+                type: DistributablesType.Tokens,
+                tokens: newRewards,
+            },
+        });
         setAmount({
             floatValue: undefined,
             formattedValue: "",
@@ -141,34 +152,42 @@ export function RewardTokens({
         setToken(undefined);
 
         trackFathomEvent("PICK_REWARD");
-    }, [amount, token, tokens, onTokensChange]);
+    }, [amount, token, distributables.tokens, onTokensChange]);
 
     const handleRewardTokenOnRemove = useCallback(
         (reward: Erc20Token) => {
-            if (!tokens) return;
+            if (!distributables.tokens) return;
 
             onTokensChange({
-                tokens: tokens.filter(
-                    ({ token }) => token.address !== reward.address,
-                ),
+                distributables: {
+                    type: DistributablesType.Tokens,
+                    tokens: distributables.tokens.filter(
+                        ({ token }) => token.address !== reward.address,
+                    ),
+                },
             });
         },
-        [onTokensChange, tokens],
+        [onTokensChange, distributables.tokens],
     );
 
     const handleRewardTokenOnUpdate = useCallback(
         (updatedReward: WhitelistedErc20TokenAmount) => {
-            if (!tokens) return;
+            if (!distributables.tokens) return;
 
             onTokensChange({
-                tokens: tokens.map((reward) => {
-                    if (reward.token.address === updatedReward.token.address)
-                        return updatedReward;
-                    return reward;
-                }),
+                distributables: {
+                    type: DistributablesType.Tokens,
+                    tokens: distributables.tokens.map((reward) => {
+                        if (
+                            reward.token.address === updatedReward.token.address
+                        )
+                            return updatedReward;
+                        return reward;
+                    }),
+                },
             });
         },
-        [onTokensChange, tokens],
+        [onTokensChange, distributables.tokens],
     );
 
     const handleExistingTokensValidation = useCallback(
@@ -203,7 +222,7 @@ export function RewardTokens({
         <div className={styles.root}>
             <div className={styles.wrapper}>
                 <RewardsPreview
-                    rewards={tokens}
+                    distributables={distributables}
                     campaignDuration={campaignDuration}
                     onRemove={handleRewardTokenOnRemove}
                     onUpdate={handleRewardTokenOnUpdate}
@@ -254,7 +273,7 @@ export function RewardTokens({
                     size="sm"
                     icon={BorderedPlusIcon}
                     disabled={
-                        tokens?.length === 5 ||
+                        distributables.tokens?.length === 5 ||
                         !amount ||
                         !token ||
                         !!amountError
@@ -272,7 +291,7 @@ export function RewardTokens({
                 loading={loading}
                 value={token}
                 values={rewardTokens}
-                unavailable={tokens}
+                unavailable={distributables.tokens}
                 onClick={handleRewardTokenChange}
             />
         </div>
