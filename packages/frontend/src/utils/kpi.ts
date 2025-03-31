@@ -1,5 +1,7 @@
 import type { KpiMeasurement, KpiRewardDistribution } from "@metrom-xyz/sdk";
 
+const TICK_ACTIVE_PROXIMITY_THRESHOLD = 1;
+
 export function getReachedGoalPercentage(
     usdTvl: number,
     lowerUsdTarget: number,
@@ -44,7 +46,9 @@ export function getChartAxisScale(
 }
 
 export function isChartAxisTickActive(value: number, scale: number) {
-    return Math.round(value * 100) / 100 === Math.round(scale * 100) / 100;
+    const original = Math.ceil(Math.round(value * 100) / 100);
+    const scaled = Math.ceil(Math.round(scale * 100) / 100);
+    return Math.abs(original - scaled) <= TICK_ACTIVE_PROXIMITY_THRESHOLD;
 }
 
 export function getAggregatedKpiMeasurements(
