@@ -2,7 +2,7 @@
 
 .root {
     @apply bg-zinc-200 dark:bg-zinc-800
-        min-h-[66px]
+        min-h-[68px]
         rounded-xl
         flex
         snap-start
@@ -11,34 +11,39 @@
         pr-5;
 }
 
-.leftWrapper {
+.wrapper {
     @apply w-full flex flex-1 gap-3 items-center;
 }
 
 .iconWrapper {
-    @apply bg-zinc-300 dark:bg-zinc-900
+    @apply theme-surface-2
         rounded-lg
         flex
         justify-center
         items-center
         p-1
-        w-10
+        w-full
+        max-w-10
         h-10;
 }
 
 .iconWrapper.loading {
-    @apply animate-pulse;
+    @apply animate-pulse bg-zinc-300 dark:bg-zinc-900;
 }
 
 .icon {
     @apply w-7 h-7 theme-text;
 }
 
-.leftBodyWrapper {
-    @apply w-full max-w-52 flex flex-col gap-1;
+.bodyWrapper {
+    @apply w-full flex flex-col gap-1;
 }
 
 .titleWrapper {
+    @apply flex w-full justify-between;
+}
+
+.title {
     @apply flex items-center gap-1;
 }
 
@@ -67,7 +72,7 @@
 }
 
 .seeCampaignLink {
-    @apply no-underline;
+    @apply no-underline max-w-60;
 }
 
 .claimRewardWrapper {
