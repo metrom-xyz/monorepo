@@ -140,18 +140,11 @@ export function Campaigns() {
         [search],
     );
 
-    const filteredCampaigns = useMemo(
-        () =>
-            sortCampaigns(
-                filterCampaigns(
-                    campaigns || [],
-                    status || FilterableStatus.All,
-                    chain,
-                    debouncedSearch,
-                ),
-            ),
-        [campaigns, status, chain, debouncedSearch],
-    );
+    const filteredCampaigns = useMemo(() => {
+        return sortCampaigns(
+            filterCampaigns(campaigns || [], status, chain, debouncedSearch),
+        );
+    }, [campaigns, status, chain, debouncedSearch]);
 
     const { data: pagedCampaigns, totalPages } = usePagination({
         data: filteredCampaigns,

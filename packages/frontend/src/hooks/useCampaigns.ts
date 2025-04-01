@@ -19,13 +19,15 @@ export function useCampaigns({ enabled = true }: UseCampaignsParams = {}): {
         queryFn: async () => {
             try {
                 const campaigns = await METROM_API_CLIENT.fetchCampaigns();
-                return campaigns.map((campaign) => {
-                    return new Campaign(
-                        campaign,
-                        CHAIN_DATA[campaign.chainId as SupportedChain],
-                        getCampaignName(t, campaign),
-                    );
-                });
+                return campaigns
+                    .map((campaign) => {
+                        return new Campaign(
+                            campaign,
+                            CHAIN_DATA[campaign.chainId as SupportedChain],
+                            getCampaignName(t, campaign),
+                        );
+                    })
+                    .sort((a, b) => a.createdAt - b.createdAt);
             } catch (error) {
                 console.error(`Could not fetch campaigns: ${error}`);
                 throw error;
