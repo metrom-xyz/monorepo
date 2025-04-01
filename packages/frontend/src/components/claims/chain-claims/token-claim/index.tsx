@@ -9,7 +9,7 @@ import {
     useWriteContract,
 } from "wagmi";
 import { metromAbi } from "@metrom-xyz/contracts/abi";
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import type { TokenClaims } from "..";
 import { toast } from "sonner";
 import { useChainData } from "@/src/hooks/useChainData";
@@ -65,6 +65,7 @@ export function TokenClaim({
     const {
         data: simulatedClaimAll,
         isLoading: simulatingClaimAll,
+        error: simulateError,
         isError: simulateClaimAllError,
     } = useSimulateContract({
         chainId,
@@ -77,6 +78,12 @@ export function TokenClaim({
             enabled: !SAFE && !!account && tokenClaims.claims.length > 0,
         },
     });
+
+    // FIXME: remove
+    useEffect(() => {
+        if (simulateError)
+            console.error("CLAIMS SIMULATION ERROR", simulateError);
+    }, [simulateError]);
 
     const handleStandardClaim = useCallback(() => {
         if (!writeContractAsync || !publicClient || !simulatedClaimAll?.request)
