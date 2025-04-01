@@ -83,7 +83,12 @@ export function TokenClaim({
     useEffect(() => {
         if (simulateError)
             console.error("CLAIMS SIMULATION ERROR", simulateError);
-    }, [simulateError]);
+        console.error("CLAIM DISABLED", {
+            simulateClaimAllError,
+            claimed,
+            disabled,
+        });
+    }, [simulateError, simulateClaimAllError, claimed, disabled]);
 
     const handleStandardClaim = useCallback(() => {
         if (!writeContractAsync || !publicClient || !simulatedClaimAll?.request)
