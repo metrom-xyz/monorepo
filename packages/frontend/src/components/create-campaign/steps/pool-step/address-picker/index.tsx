@@ -1,9 +1,15 @@
 import { useTranslations } from "next-intl";
-import { useCallback, useEffect, useState, type ChangeEvent } from "react";
+import {
+    useCallback,
+    useEffect,
+    useMemo,
+    useState,
+    type ChangeEvent,
+} from "react";
 import { useChainId } from "wagmi";
 import { usePool } from "@/src/hooks/usePool";
 import type { AmmPoolLiquidityCampaignPayload } from "@/src/types/common";
-import { type Address, isAddress } from "viem";
+import { type Address, type Hex, isAddress, isHash } from "viem";
 import { useDebounce } from "react-use";
 import { TextInput, Typography } from "@metrom-xyz/ui";
 import { SearchIcon } from "@/src/assets/search-icon";
@@ -25,31 +31,34 @@ export function AddressPoolPicker({
 }: AddressPoolPickerProps) {
     const t = useTranslations("newCampaign.form.ammPoolLiquidity.pool");
     const [search, setSearch] = useState("");
-    const [address, setAddress] = useState<Address>();
+    const [id, setId] = useState<Address | Hex>();
     const chainId = useChainId();
 
-    // TODO: a pool's is is not necessarily an address soooo...
     const { pool: importedPool, loading: loadingImportedPool } = usePool({
         chainId,
-        id: address,
+        id,
     });
+
+    const addressOrId = useMemo(() => {
+        return !!isAddress(search) || !!isHash(search);
+    }, [search]);
 
     useDebounce(
         () => {
-            setAddress(isAddress(search) ? search : undefined);
+            setId(addressOrId ? (search as Address) : undefined);
         },
         300,
-        [search],
+        [addressOrId, search],
     );
 
     useEffect(() => {
-        if (search && !isAddress(search)) onError(t("errors.invalidAddress"));
-        else if (address && !loadingImportedPool && importedPool === null)
+        if (search && !addressOrId) onError(t("errors.invalidAddress"));
+        else if (id && !loadingImportedPool && importedPool === null)
             onError(t("errors.invalidPool"));
         else if (dex && importedPool && importedPool.dex.slug !== dex.slug)
             onError(t("errors.inconsistentDex", { dex: dex.name }));
         else onError("");
-    }, [address, dex, loadingImportedPool, importedPool, search, t, onError]);
+    }, [id, dex, loadingImportedPool, importedPool, search, t, onError]);
 
     const handlePoolOnChange = useCallback(() => {
         if (!importedPool) return;
@@ -64,7 +73,7 @@ export function AddressPoolPicker({
     const empty = !loadingImportedPool && !importedPool;
     const validPool = !empty && dex && importedPool?.dex.slug === dex?.slug;
     const invalidPool =
-        address &&
+        id &&
         !loadingImportedPool &&
         (importedPool === null || (dex && importedPool?.dex.slug !== dex.slug));
 
@@ -72,7 +81,7 @@ export function AddressPoolPicker({
         <div className={styles.root}>
             <div className={styles.header}>
                 <TextInput
-                    error={!!search && !isAddress(search)}
+                    error={!!search && !addressOrId}
                     value={search}
                     onChange={handleSearchOnChange}
                     placeholder={t("label")}
@@ -83,7 +92,7 @@ export function AddressPoolPicker({
             <div className={styles.wrapper}>
                 {loadingImportedPool && !importedPool && <SkeletonPool />}
 
-                {search && !address && (
+                {search && !id && (
                     <Typography uppercase size="xs" weight="medium">
                         {t("errors.enterValidAddress")}
                     </Typography>

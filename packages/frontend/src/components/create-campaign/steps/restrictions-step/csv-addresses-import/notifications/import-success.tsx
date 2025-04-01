@@ -16,7 +16,6 @@ export function ImportSuccess({ toastId, message }: ImportSuccessProps) {
         <ToastNotification
             toastId={toastId}
             title={t("success.title")}
-            // TODO: find new icon
             icon={TickIcon}
             variant="success"
         >
