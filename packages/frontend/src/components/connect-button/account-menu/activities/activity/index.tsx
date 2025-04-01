@@ -60,26 +60,36 @@ export function Activity({ chainId, transaction, payload }: ActivityProps) {
 
     return (
         <div className={styles.root}>
-            <div className={styles.leftWrapper}>
+            <div className={styles.wrapper}>
                 <div className={styles.iconWrapper}>
                     <Icon className={styles.icon} />
                 </div>
-                <div className={styles.leftBodyWrapper}>
+                <div className={styles.bodyWrapper}>
                     <div className={styles.titleWrapper}>
-                        <Typography light weight="medium" uppercase size="sm">
-                            {title}
-                        </Typography>
-                        {explorerLink && (
-                            <a
-                                href={explorerLink}
-                                target="_blank"
-                                rel="noopener noreferrer"
+                        <div className={styles.title}>
+                            <Typography
+                                light
+                                weight="medium"
+                                uppercase
+                                size="sm"
                             >
-                                <ArrowRightIcon
-                                    className={styles.externalLinkIcon}
-                                />
-                            </a>
-                        )}
+                                {title}
+                            </Typography>
+                            {explorerLink && (
+                                <a
+                                    href={explorerLink}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                >
+                                    <ArrowRightIcon
+                                        className={styles.externalLinkIcon}
+                                    />
+                                </a>
+                            )}
+                        </div>
+                        <Typography light truncate weight="medium" size="sm">
+                            {timeAgo}
+                        </Typography>
                     </div>
                     {payload.type === "create-campaign" ? (
                         <>
@@ -109,8 +119,9 @@ export function Activity({ chainId, transaction, payload }: ActivityProps) {
                                             />
                                         )}
                                         <Typography
-                                            className={styles.seeCampaignLink}
                                             weight="medium"
+                                            truncate
+                                            className={styles.seeCampaignLink}
                                         >
                                             {campaign.name}
                                         </Typography>
@@ -159,9 +170,6 @@ export function Activity({ chainId, transaction, payload }: ActivityProps) {
                     )}
                 </div>
             </div>
-            <Typography light truncate>
-                {timeAgo}
-            </Typography>
         </div>
     );
 }
@@ -169,11 +177,11 @@ export function Activity({ chainId, transaction, payload }: ActivityProps) {
 export function SkeletonActivity() {
     return (
         <div className={styles.root}>
-            <div className={styles.leftWrapper}>
+            <div className={styles.wrapper}>
                 <div
                     className={classNames(styles.iconWrapper, styles.loading)}
                 />
-                <div className={styles.leftBodyWrapper}>
+                <div className={styles.bodyWrapper}>
                     <Skeleton
                         width={60}
                         size="sm"
