@@ -16,7 +16,7 @@ import { Empty } from "./empty";
 import { CHAIN_DATA, SUPPORTED_CHAINS, type ChainData } from "@/src/commons";
 import { useReimbursements } from "@/src/hooks/useReimbursements";
 import { ChainReimbursements } from "./chain-reimbursements";
-import { useSwitchChain } from "wagmi";
+import { useAccount, useSwitchChain } from "wagmi";
 
 import styles from "./styles.module.css";
 
@@ -39,6 +39,7 @@ export function Claims() {
     const [claimingAll, setClaimingAll] = useState(false);
     const [recoveringAll, setRecoveringAll] = useState(false);
 
+    const { address } = useAccount();
     const { switchChain } = useSwitchChain();
     const { loading: loadingClaims, claims } = useClaims();
     const { loading: loadingReimbursements, reimbursements } =
@@ -111,6 +112,8 @@ export function Claims() {
     }, [chain, chainsWithRewardsData]);
 
     const initializing = useMemo(() => {
+        if (!address) return false;
+
         if (
             loadingClaims ||
             loadingReimbursements ||
@@ -124,6 +127,7 @@ export function Claims() {
             (!chainsWithRewardsData || !chainsData || !chainWithRewardsData)
         );
     }, [
+        address,
         loadingClaims,
         loadingReimbursements,
         claims,
@@ -132,6 +136,10 @@ export function Claims() {
         chainsWithRewardsData,
         chainWithRewardsData,
     ]);
+
+    useEffect(() => {
+        if (!address) setChainsWithRewardsData(undefined);
+    }, [address]);
 
     useEffect(() => {
         if (
