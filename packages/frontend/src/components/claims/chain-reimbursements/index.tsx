@@ -1,4 +1,8 @@
-import { type Erc20Token, type Reimbursement } from "@metrom-xyz/sdk";
+import {
+    type Erc20Token,
+    type Reimbursement,
+    type UsdPricedErc20Token,
+} from "@metrom-xyz/sdk";
 import { useMemo } from "react";
 import { type Address } from "viem";
 import { TokenReimbursement } from "./token-reimbursement";
@@ -11,10 +15,10 @@ import styles from "./styles.module.css";
 type ChainReimbursementProps = {
     recoveringAll?: boolean;
     onRecover: (token: Erc20Token) => void;
-} & Omit<ChainWithRewardsData, "claims" | "chainData">;
+} & Omit<ChainWithRewardsData, "claims" | "chainData" | "totalUsdValue">;
 
 export interface TokenReimbursements {
-    token: Erc20Token;
+    token: UsdPricedErc20Token;
     reimbursements: Reimbursement[];
     totalAmount: number;
 }

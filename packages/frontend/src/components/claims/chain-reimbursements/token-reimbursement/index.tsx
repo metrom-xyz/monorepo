@@ -13,7 +13,7 @@ import { useCallback, useMemo, useState } from "react";
 import type { TokenReimbursements } from "..";
 import { toast } from "sonner";
 import { useChainData } from "@/src/hooks/useChainData";
-import { formatAmount } from "@/src/utils/format";
+import { formatAmount, formatUsdAmount } from "@/src/utils/format";
 import { trackFathomEvent } from "@/src/utils/fathom";
 import { RemoteLogo } from "@/src/components/remote-logo";
 import { type WriteContractErrorType, encodeFunctionData } from "viem";
@@ -204,11 +204,19 @@ export function TokenReimbursement({
                 <Typography size="lg" weight="medium">
                     {tokenReimbursements.token.symbol}
                 </Typography>
-                <Typography size="lg" weight="medium">
-                    {formatAmount({
-                        amount: tokenReimbursements.totalAmount,
-                    })}
-                </Typography>
+                <div className={styles.amountWrapper}>
+                    <Typography size="lg" weight="medium">
+                        {formatAmount({
+                            amount: tokenReimbursements.totalAmount,
+                        })}
+                    </Typography>
+                    <Typography size="sm" weight="medium" light>
+                        {formatUsdAmount(
+                            tokenReimbursements.totalAmount *
+                                tokenReimbursements.token.usdPrice,
+                        )}
+                    </Typography>
+                </div>
             </div>
             <Button
                 variant="secondary"
@@ -234,7 +242,10 @@ export function SkeletonTokenReimbursement() {
             <div className={styles.leftWrapper}>
                 <RemoteLogo loading />
                 <Skeleton width={60} size="lg" />
-                <Skeleton width={70} size="lg" />
+                <div className={styles.amountWrapper}>
+                    <Skeleton width={70} size="lg" />
+                    <Skeleton width={40} size="sm" />
+                </div>
             </div>
             <Button variant="secondary" size="sm" loading />
         </div>

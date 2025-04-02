@@ -13,7 +13,7 @@ import { useCallback, useMemo, useState } from "react";
 import type { TokenClaims } from "..";
 import { toast } from "sonner";
 import { useChainData } from "@/src/hooks/useChainData";
-import { formatAmount } from "@/src/utils/format";
+import { formatAmount, formatUsdAmount } from "@/src/utils/format";
 import { trackFathomEvent } from "@/src/utils/fathom";
 import { RemoteLogo } from "@/src/components/remote-logo";
 import { ClaimSuccess } from "../../notification/claim-success";
@@ -197,9 +197,17 @@ export function TokenClaim({
                 <Typography size="lg" weight="medium">
                     {tokenClaims.token.symbol}
                 </Typography>
-                <Typography size="lg" weight="medium">
-                    {formatAmount({ amount: tokenClaims.totalAmount })}
-                </Typography>
+                <div className={styles.amountWrapper}>
+                    <Typography size="lg" weight="medium">
+                        {formatAmount({ amount: tokenClaims.totalAmount })}
+                    </Typography>
+                    <Typography size="sm" weight="medium" light>
+                        {formatUsdAmount(
+                            tokenClaims.totalAmount *
+                                tokenClaims.token.usdPrice,
+                        )}
+                    </Typography>
+                </div>
             </div>
             <Button
                 variant="secondary"
@@ -224,10 +232,15 @@ export function SkeletonTokenClaim() {
 
     return (
         <Card className={classNames(styles.root)}>
-            <div className={styles.leftWrapper}>
+            <div className={classNames(styles.leftWrapper, styles.loading)}>
                 <RemoteLogo loading />
                 <Skeleton width={60} size="lg" />
-                <Skeleton width={70} size="lg" />
+                <div
+                    className={classNames(styles.amountWrapper, styles.loading)}
+                >
+                    <Skeleton width={70} size="lg" />
+                    <Skeleton width={40} size="sm" />
+                </div>
             </div>
             <Button variant="secondary" size="sm" loading>
                 {t("loading")}

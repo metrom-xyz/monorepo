@@ -3,12 +3,14 @@ import { Typography, Skeleton, Card } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
 import type { Chain } from "viem";
 import type { ChainData } from "@/src/commons";
+import { formatUsdAmount } from "@/src/utils/format";
 
 import styles from "./styles.module.css";
 
 export interface ChainOption {
     chain: Chain;
     data: ChainData;
+    totalUsdValue: number;
 }
 
 interface ChainsProps {
@@ -33,6 +35,7 @@ export function Chains({ className, options, value, onChange }: ChainsProps) {
                     return (
                         <div
                             key={option.chain.id}
+                            onClick={() => onChange(option.chain)}
                             className={classNames(
                                 styles.row,
                                 styles.rowAnimated,
@@ -41,10 +44,14 @@ export function Chains({ className, options, value, onChange }: ChainsProps) {
                                         option.chain.id === value?.id,
                                 },
                             )}
-                            onClick={() => onChange(option.chain)}
                         >
-                            <ChainIcon className={styles.chainIcon} />
-                            <Typography>{option.data.name}</Typography>
+                            <div className={styles.chainNameWrapper}>
+                                <ChainIcon className={styles.chainIcon} />
+                                <Typography>{option.data.name}</Typography>
+                            </div>
+                            <Typography weight="medium">
+                                {formatUsdAmount(option.totalUsdValue)}
+                            </Typography>
                         </div>
                     );
                 })}
@@ -62,8 +69,11 @@ export function ChainsSkeleton() {
             {PLACEHOLDER.map((_, i) => {
                 return (
                     <div key={i} className={styles.row}>
-                        <Skeleton className={styles.chainIcon} />
-                        <Skeleton width={70} />
+                        <div className={styles.chainNameWrapper}>
+                            <Skeleton className={styles.chainIcon} />
+                            <Skeleton width={70} />
+                        </div>
+                        <Skeleton width={40} />
                     </div>
                 );
             })}

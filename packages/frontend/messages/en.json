@@ -467,6 +467,7 @@
             "chain": "Chain",
             "claimAll": "Claim all",
             "claimingAll": "Claiming all",
+            "totalValueUsd": "Total value USD:",
             "claimByToken": "Claim reward",
             "claimingByToken": "Claiming",
             "loading": "Loading",

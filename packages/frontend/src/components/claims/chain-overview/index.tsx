@@ -24,6 +24,7 @@ import { RecoverSuccess } from "../notification/recover-success";
 import { RecoverFail } from "../notification/recover-fail";
 import { SAFE } from "@/src/commons/env";
 import { SAFE_APP_SDK } from "@/src/commons";
+import { formatUsdAmount } from "@/src/utils/format";
 
 import styles from "./styles.module.css";
 
@@ -320,6 +321,9 @@ export function ChainOverview({
                 <Typography size="xl4" truncate>
                     {chainWithRewardsData.chainData.name}
                 </Typography>
+                <Typography size="xl2" weight="medium" light>
+                    {formatUsdAmount(chainWithRewardsData.totalUsdValue)}
+                </Typography>
             </div>
             <div className={styles.buttonsWrapper}>
                 {chainWithRewardsData.reimbursements.length > 0 && (
@@ -371,6 +375,7 @@ export function SkeletonChainOverview() {
             <div className={styles.chainNameWrapper}>
                 <Skeleton className={styles.chainIcon} />
                 <Skeleton width={100} size="xl4" />
+                <Skeleton width={50} size="xl2" />
             </div>
             <Button size="sm" loading>
                 {t("claims.loading")}
