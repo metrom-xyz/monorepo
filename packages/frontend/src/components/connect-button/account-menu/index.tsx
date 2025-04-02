@@ -158,15 +158,13 @@ export function AccountMenu({
                     </div>
                     {!SAFE && (
                         <div
+                            onClick={handleDisconnect}
                             className={classNames(
                                 styles.iconWrapper,
                                 styles.disconnect,
                             )}
                         >
-                            <Disconnect
-                                className={styles.icon}
-                                onClick={handleDisconnect}
-                            />
+                            <Disconnect className={styles.icon} />
                         </div>
                     )}
                 </div>
