@@ -83,17 +83,15 @@
 }
 
 .iconWrapper {
-    @apply p-2
-        rounded-lg
-        bg-zinc-200
-        dark:bg-zinc-800
-        transition-colors
-        duration-200
-        ease-in-out;
+    @apply p-2 rounded-lg bg-zinc-200 dark:bg-zinc-800;
 }
 
 .disconnect {
-    @apply cursor-pointer;
+    @apply cursor-pointer
+        theme-surface-hover
+        transition-colors
+        duration-200
+        ease-in-out;
 }
 
 .unsupportedChain {
