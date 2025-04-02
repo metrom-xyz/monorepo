@@ -18,5 +18,17 @@
 }
 
 .leftWrapper {
-    @apply w-full max-w-96 flex items-center gap-3;
+    @apply flex items-center gap-3;
+}
+
+.leftWrapper.loading {
+    @apply w-full;
+}
+
+.amountWrapper {
+    @apply flex items-center gap-2;
+}
+
+.amountWrapper.loading {
+    @apply w-full;
 }

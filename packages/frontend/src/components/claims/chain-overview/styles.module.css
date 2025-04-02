@@ -14,7 +14,7 @@
 }
 
 .chainNameWrapper {
-    @apply w-full flex-1 flex gap-3;
+    @apply w-full flex-1 items-end flex gap-3;
 }
 
 .chainIcon {

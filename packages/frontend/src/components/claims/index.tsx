@@ -30,6 +30,7 @@ export interface ChainWithRewardsData {
     chainData: ChainData;
     claims: Claim[];
     reimbursements: Reimbursement[];
+    totalUsdValue: number;
 }
 
 export function Claims() {
@@ -73,6 +74,7 @@ export function Claims() {
                         chainData: CHAIN_DATA[chainId],
                         claims: [],
                         reimbursements: [],
+                        totalUsdValue: 0,
                     };
 
                 const data = acc[chainId];
@@ -82,6 +84,8 @@ export function Claims() {
                     );
                     return acc;
                 }
+
+                data.totalUsdValue += reward.amount.usdValue;
 
                 if (reward.type === RewardType.Claim) data.claims.push(reward);
                 else data.reimbursements.push(reward);
@@ -100,9 +104,10 @@ export function Claims() {
     const chainsData: ChainOption[] | undefined = useMemo(() => {
         if (!chainsWithRewardsData) return undefined;
 
-        return chainsWithRewardsData.map(({ chain }) => ({
+        return chainsWithRewardsData.map(({ chain, totalUsdValue }) => ({
             chain,
             data: CHAIN_DATA[chain.id as SupportedChain],
+            totalUsdValue,
         }));
     }, [chainsWithRewardsData]);
 
