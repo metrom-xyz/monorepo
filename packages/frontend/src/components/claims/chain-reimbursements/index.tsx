@@ -65,7 +65,7 @@ export function ChainReimbursements({
                             key={tokenReimbursement.token.address}
                             chainId={chain.id}
                             tokenReimbursements={tokenReimbursement}
-                            disabled={recoveringAll}
+                            recoveringAll={recoveringAll}
                             onRecover={onRecover}
                         />
                     );
