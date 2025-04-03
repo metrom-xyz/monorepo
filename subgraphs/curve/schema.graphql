@@ -22,7 +22,7 @@ type Pool @entity {
     liquidity: BigInt!
     base: Pool
     gauge: Gauge
-    lpToken: [LpToken!]! @derivedFrom(field: "pool")
+    lpToken: LpToken! @derivedFrom(field: "pool")
     positions: [Position!]! @derivedFrom(field: "pool")
 
     _tvlsUpdatedAtBlock: BigInt!

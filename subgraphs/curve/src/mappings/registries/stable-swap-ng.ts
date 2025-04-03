@@ -12,6 +12,7 @@ import {
     getPoolLpTokenAddressOrThrow,
 } from "../../commons";
 import { STABLE_SWAP_NG_FACTORY_ADDRESS } from "../../constants";
+import { Pool } from "../../../generated/schema";
 
 let StableSwapNgFactoryContract = StableSwapNGFactory.bind(
     STABLE_SWAP_NG_FACTORY_ADDRESS,
@@ -38,6 +39,10 @@ function getPoolAddressFromCoins(coins: Address[]): Address {
             throw new Error(
                 `Could not fetch pool address from coins ${resolvedCoins[0].toHex()} and ${resolvedCoins[1].toHex()} with index ${i}`,
             );
+
+        if (Pool.load(poolAddress) !== null) {
+            continue;
+        }
 
         let onChainPoolCoins =
             StableSwapNgFactoryContract.get_coins(poolAddress);

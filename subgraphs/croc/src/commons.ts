@@ -30,6 +30,7 @@ import { CrocQuery } from "../generated/CrocSwapDex/CrocQuery";
 export const BI_0 = BigInt.zero();
 export const BI_1_000_000 = BigInt.fromI32(1_000_000);
 
+export const BD_0 = BigDecimal.zero();
 export const BD_Q192 = BigDecimal.fromString(
     BigInt.fromI32(2)
         .pow(192 as u8)
@@ -179,6 +180,10 @@ export function handleSwap(
 
     pool.token0Tvl = pool.token0Tvl.plus(token0Delta);
     pool.token1Tvl = pool.token1Tvl.plus(token1Delta);
+    if (!token0Delta.isZero())
+        pool.price = BigDecimal.fromString(token1Delta.abs().toString()).div(
+            BigDecimal.fromString(token0Delta.abs().toString()),
+        );
     pool.save();
 
     let tickChangeId = getBlockEventId(block, pool.id);
@@ -212,10 +217,8 @@ export function handleLiquidityChange(
     token1Delta: BigInt,
 ): void {
     let pool = getPoolOrThrow(poolId);
-
     pool.token0Tvl = pool.token0Tvl.plus(token0Delta);
     pool.token1Tvl = pool.token1Tvl.plus(token1Delta);
-    pool.save();
 
     let transactionFrom = transaction.from;
     let transactionTo = transaction.to;
@@ -257,6 +260,7 @@ export function handleLiquidityChange(
             pool.idx,
         );
         let newLiquidity = call.reverted ? BI_0 : call.value.getLiq();
+        pool.ambientLiquidity = newLiquidity;
         liquidityDelta = newLiquidity.minus(position.ambientLiquidity);
     } else {
         let call = CrocQueryContract.try_queryRangeTokens(
@@ -268,6 +272,7 @@ export function handleLiquidityChange(
             upperTickIdx,
         );
         let newLiquidity = call.reverted ? BI_0 : call.value.getLiq();
+        pool.concentratedLiquidity = newLiquidity;
         liquidityDelta = newLiquidity.minus(position.concentratedLiquidity);
 
         let lowerTick = getOrCreateTick(pool.id, lowerTickIdx);
@@ -282,6 +287,8 @@ export function handleLiquidityChange(
         upperTick.liquidityNet = upperTick.liquidityNet.minus(liquidityDelta);
         upperTick.save();
     }
+
+    pool.save();
 
     if (!liquidityDelta.isZero()) {
         let liquidityChangeId = getBlockEventId(block, position.id);

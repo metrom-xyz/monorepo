@@ -18,7 +18,10 @@ type Pool @entity {
     token0Tvl: BigInt!
     token1Tvl: BigInt!
     tick: Int!
+    price: BigDecimal!
     fee: Int!
+    concentratedLiquidity: BigInt!
+    ambientLiquidity: BigInt!
     positions: [Position!]! @derivedFrom(field: "pool")
     tickChanges: [TickChange!]! @derivedFrom(field: "pool")
 }
