@@ -58,7 +58,16 @@ export function AddressPoolPicker({
         else if (dex && importedPool && importedPool.dex.slug !== dex.slug)
             onError(t("errors.inconsistentDex", { dex: dex.name }));
         else onError("");
-    }, [id, dex, loadingImportedPool, importedPool, search, t, onError]);
+    }, [
+        id,
+        dex,
+        addressOrId,
+        loadingImportedPool,
+        importedPool,
+        search,
+        t,
+        onError,
+    ]);
 
     const handlePoolOnChange = useCallback(() => {
         if (!importedPool) return;
