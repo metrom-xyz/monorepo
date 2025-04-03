@@ -44,7 +44,7 @@ function validatePayload(
         (!distributables.fee || !distributables.type)
     )
         return null;
-    else if (
+    if (
         distributables.type === DistributablesType.Tokens &&
         (!distributables.tokens || distributables.tokens.length === 0)
     )
@@ -107,12 +107,13 @@ export function AmmPoolLiquidityForm({
             return (
                 !payload.distributables.fee || !payload.distributables.points
             );
-        else if (type === DistributablesType.Tokens)
+        if (type === DistributablesType.Tokens)
             return (
                 !payload.distributables.tokens ||
                 payload.distributables.tokens.length === 0
             );
-        else return true;
+
+        return true;
     }, [payload.distributables]);
 
     useEffect(() => {
