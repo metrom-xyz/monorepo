@@ -4,8 +4,8 @@ import { CHAIN_DATA, METROM_API_CLIENT } from "../commons";
 import { type OnChainAmount, type Reimbursement } from "@metrom-xyz/sdk";
 import { SupportedChain } from "@metrom-xyz/contracts";
 import { metromAbi } from "@metrom-xyz/contracts/abi";
-import { useEffect, useState } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import type { HookBaseParams } from "../types/hooks";
 
 interface ReimbursementsWithRemaining extends Reimbursement {
@@ -14,17 +14,21 @@ interface ReimbursementsWithRemaining extends Reimbursement {
 
 interface UseReimbursementsParams extends HookBaseParams {}
 
+interface UseReimbursementsReturnValue {
+    loading: boolean;
+    invalidate: () => Promise<void>;
+    reimbursements?: Reimbursement[];
+}
+
 type QueryKey = [string, Address | undefined];
 
 export function useReimbursements({
     enabled = true,
-}: UseReimbursementsParams = {}): {
-    loading: boolean;
-    reimbursements?: Reimbursement[];
-} {
+}: UseReimbursementsParams = {}): UseReimbursementsReturnValue {
     const [reimbursements, setReimbursements] =
         useState<ReimbursementsWithRemaining[]>();
 
+    const queryClient = useQueryClient();
     const { address } = useAccount();
 
     const {
@@ -54,67 +58,77 @@ export function useReimbursements({
         enabled: enabled && !!address,
     });
 
+    const recoveredContracts = useMemo(() => {
+        if (!rawReimbursements) return undefined;
+
+        return rawReimbursements.map((rawReimbursement) => {
+            return {
+                chainId: rawReimbursement.chainId,
+                address:
+                    CHAIN_DATA[rawReimbursement.chainId as SupportedChain]
+                        ?.metromContract.address,
+                abi: metromAbi,
+                functionName: "claimedCampaignReward",
+                args: [
+                    rawReimbursement.campaignId,
+                    rawReimbursement.token.address,
+                    zeroAddress,
+                ],
+            };
+        });
+    }, [address, rawReimbursements]);
+
+    const claimedContracts = useMemo(() => {
+        if (!rawReimbursements) return undefined;
+
+        return rawReimbursements.map((rawReimbursement) => {
+            return {
+                chainId: rawReimbursement.chainId,
+                address:
+                    CHAIN_DATA[rawReimbursement.chainId as SupportedChain]
+                        ?.metromContract.address,
+                abi: metromAbi,
+                functionName: "claimedCampaignReward",
+                args: [
+                    rawReimbursement.campaignId,
+                    rawReimbursement.token.address,
+                    address,
+                ],
+            };
+        });
+    }, [address, rawReimbursements]);
+
     // reimbursements recovered are assigned to the zero address,
     // so we have to fetch them separately
     const {
         data: recoveredData,
+        queryKey: recoveredQueryKey,
         error: recoveredError,
         isError: recoveredErrored,
         isLoading: loadingRecovered,
     } = useReadContracts({
         allowFailure: false,
-        contracts: rawReimbursements
-            ? rawReimbursements.map((rawReimbursement) => {
-                  return {
-                      chainId: rawReimbursement.chainId,
-                      address:
-                          CHAIN_DATA[rawReimbursement.chainId as SupportedChain]
-                              ?.metromContract.address,
-                      abi: metromAbi,
-                      functionName: "claimedCampaignReward",
-                      args: [
-                          rawReimbursement.campaignId,
-                          rawReimbursement.token.address,
-                          zeroAddress,
-                      ],
-                  };
-              })
-            : undefined,
+        contracts: recoveredContracts,
         query: {
             refetchOnWindowFocus: false,
             staleTime: 60000,
-            enabled: !!rawReimbursements,
+            enabled: !!recoveredContracts,
         },
     });
 
     const {
         data: claimedData,
+        queryKey: claimedQueryKey,
         error: claimedError,
         isError: claimedErrored,
         isLoading: loadingClaimed,
     } = useReadContracts({
         allowFailure: false,
-        contracts: rawReimbursements
-            ? rawReimbursements.map((rawReimbursement) => {
-                  return {
-                      chainId: rawReimbursement.chainId,
-                      address:
-                          CHAIN_DATA[rawReimbursement.chainId as SupportedChain]
-                              ?.metromContract.address,
-                      abi: metromAbi,
-                      functionName: "claimedCampaignReward",
-                      args: [
-                          rawReimbursement.campaignId,
-                          rawReimbursement.token.address,
-                          address,
-                      ],
-                  };
-              })
-            : undefined,
+        contracts: claimedContracts,
         query: {
             refetchOnWindowFocus: false,
             staleTime: 60000,
-            enabled: !!rawReimbursements,
+            enabled: !!claimedContracts,
         },
     });
 
@@ -171,12 +185,20 @@ export function useReimbursements({
         reimbursementsErrored,
     ]);
 
+    // Can be used to invalide the contract queries, to update the reimbursements
+    // after a successful recovery.
+    const invalidate = useCallback(async () => {
+        await queryClient.invalidateQueries({ queryKey: recoveredQueryKey });
+        await queryClient.invalidateQueries({ queryKey: claimedQueryKey });
+    }, [queryClient, recoveredQueryKey, claimedQueryKey]);
+
     return {
         loading:
             loadingReimbursements ||
             loadingClaimed ||
             loadingRecovered ||
             !reimbursements,
+        invalidate,
         reimbursements,
     };
 }
