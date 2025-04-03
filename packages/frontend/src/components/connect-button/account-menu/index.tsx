@@ -103,6 +103,7 @@ export function AccountMenu({
                                 <SafeLogo className={styles.safeLogo} />
                             </div>
                         ) : (
+                            // eslint-disable-next-line @next/next/no-img-element
                             <img
                                 alt="Avatar"
                                 src={account.ensAvatar || blockie}

@@ -76,7 +76,7 @@ export function useReimbursements({
                 ],
             };
         });
-    }, [address, rawReimbursements]);
+    }, [rawReimbursements]);
 
     const claimedContracts = useMemo(() => {
         if (!rawReimbursements) return undefined;
