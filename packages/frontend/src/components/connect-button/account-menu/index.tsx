@@ -106,6 +106,8 @@ export function AccountMenu({
                         ) : (
                             <Image
                                 alt="Avatar"
+                                height={36}
+                                width={36}
                                 src={account.ensAvatar || blockie}
                                 className={styles.avatar}
                             />

@@ -4,8 +4,8 @@ import { CHAIN_DATA, METROM_API_CLIENT } from "../commons";
 import { type Claim, type OnChainAmount } from "@metrom-xyz/sdk";
 import { SupportedChain } from "@metrom-xyz/contracts";
 import { metromAbi } from "@metrom-xyz/contracts/abi";
-import { useEffect, useState } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import type { HookBaseParams } from "../types/hooks";
 
 interface ClaimWithRemaining extends Claim {
@@ -14,14 +14,20 @@ interface ClaimWithRemaining extends Claim {
 
 interface UseClaimsParams extends HookBaseParams {}
 
+interface UseClaimsReturnaValue {
+    loading: boolean;
+    invalidate: () => Promise<void>;
+    claims?: Claim[];
+}
+
 type QueryKey = [string, Address | undefined];
 
-export function useClaims({ enabled = true }: UseClaimsParams = {}): {
-    loading: boolean;
-    claims?: Claim[];
-} {
+export function useClaims({
+    enabled = true,
+}: UseClaimsParams = {}): UseClaimsReturnaValue {
     const [claims, setClaims] = useState<ClaimWithRemaining[]>();
 
+    const queryClient = useQueryClient();
     const { address } = useAccount();
 
     const {
@@ -46,35 +52,40 @@ export function useClaims({ enabled = true }: UseClaimsParams = {}): {
                 throw error;
             }
         },
+        refetchOnWindowFocus: false,
+        staleTime: 60000,
         enabled: enabled && !!address,
     });
 
+    const claimedContracts = useMemo(() => {
+        if (!rawClaims) return undefined;
+
+        return rawClaims.map((rawClaim) => {
+            return {
+                chainId: rawClaim.chainId,
+                address:
+                    CHAIN_DATA[rawClaim.chainId as SupportedChain]
+                        ?.metromContract.address,
+                abi: metromAbi,
+                functionName: "claimedCampaignReward",
+                args: [rawClaim.campaignId, rawClaim.token.address, address],
+            };
+        });
+    }, [address, rawClaims]);
+
     const {
         data: claimedData,
+        queryKey: claimedQueryKey,
         error: claimedError,
         isError: claimedErrored,
         isLoading: loadingClaimed,
     } = useReadContracts({
         allowFailure: false,
-        contracts: rawClaims
-            ? rawClaims.map((rawClaim) => {
-                  return {
-                      chainId: rawClaim.chainId,
-                      address:
-                          CHAIN_DATA[rawClaim.chainId as SupportedChain]
-                              ?.metromContract.address,
-                      abi: metromAbi,
-                      functionName: "claimedCampaignReward",
-                      args: [
-                          rawClaim.campaignId,
-                          rawClaim.token.address,
-                          address,
-                      ],
-                  };
-              })
-            : undefined,
+        contracts: claimedContracts,
         query: {
-            enabled: !!rawClaims,
+            refetchOnWindowFocus: false,
+            staleTime: 60000,
+            enabled: !!claimedContracts,
         },
     });
 
@@ -125,8 +136,15 @@ export function useClaims({ enabled = true }: UseClaimsParams = {}): {
         rawClaims,
     ]);
 
+    // Can be used to invalide the contract queries, to update the rewards
+    // after a successful claim.
+    const invalidate = useCallback(async () => {
+        await queryClient.invalidateQueries({ queryKey: claimedQueryKey });
+    }, [queryClient, claimedQueryKey]);
+
     return {
         loading: loadingClaims || loadingClaimed || !claims,
+        invalidate,
         claims,
     };
 }

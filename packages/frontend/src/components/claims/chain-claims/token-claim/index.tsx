@@ -28,7 +28,7 @@ import styles from "./styles.module.css";
 interface TokenClaimProps {
     chainId: number;
     tokenClaims: TokenClaims;
-    disabled?: boolean;
+    claimingAll?: boolean;
     onClaim: (token: Erc20Token) => void;
 }
 
@@ -36,7 +36,7 @@ export function TokenClaim({
     onClaim,
     chainId,
     tokenClaims,
-    disabled,
+    claimingAll,
 }: TokenClaimProps) {
     const t = useTranslations("rewards.claims");
     const { address: account } = useAccount();
@@ -212,14 +212,14 @@ export function TokenClaim({
             <Button
                 variant="secondary"
                 size="sm"
-                disabled={simulateClaimAllError || claimed || disabled}
-                loading={simulatingClaimAll || claiming}
+                disabled={simulateClaimAllError || claimed || claimingAll}
+                loading={simulatingClaimAll || claiming || claimingAll}
                 iconPlacement="right"
                 onClick={SAFE ? handleSafeClaim : handleStandardClaim}
             >
                 {simulatingClaimAll
                     ? t("loading")
-                    : claiming
+                    : claiming || claimingAll
                       ? t("claimingByToken")
                       : t("claimByToken")}
             </Button>

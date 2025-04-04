@@ -69,7 +69,7 @@ export function ChainClaims({
                 key={tokenClaims.token.address}
                 chainId={chain.id}
                 tokenClaims={tokenClaims}
-                disabled={claimingAll}
+                claimingAll={claimingAll}
                 onClaim={onClaim}
             />
         );

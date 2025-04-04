@@ -28,7 +28,7 @@ import styles from "./styles.module.css";
 interface TokenReimbursementProps {
     chainId: number;
     tokenReimbursements: TokenReimbursements;
-    disabled?: boolean;
+    recoveringAll?: boolean;
     onRecover: (token: Erc20Token) => void;
 }
 
@@ -36,7 +36,7 @@ export function TokenReimbursement({
     onRecover,
     chainId,
     tokenReimbursements,
-    disabled,
+    recoveringAll,
 }: TokenReimbursementProps) {
     const t = useTranslations("rewards.reimbursements");
     const { address: account } = useAccount();
@@ -221,14 +221,14 @@ export function TokenReimbursement({
             <Button
                 variant="secondary"
                 size="sm"
-                disabled={simulateRecoverErrored || recovered || disabled}
-                loading={simulatingRecover || recovering}
+                disabled={simulateRecoverErrored || recovered || recoveringAll}
+                loading={simulatingRecover || recovering || recoveringAll}
                 iconPlacement="right"
                 onClick={SAFE ? handleSafeRecover : handleStandardRecover}
             >
                 {simulatingRecover
                     ? t("loading")
-                    : recovering
+                    : recovering || recoveringAll
                       ? t("recoveringByToken")
                       : t("recoverByToken")}
             </Button>
