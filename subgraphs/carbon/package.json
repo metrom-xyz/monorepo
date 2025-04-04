@@ -1,0 +1,29 @@
+{
+    "type": "module",
+    "private": true,
+    "name": "carbon-subgraph",
+    "scripts": {
+        "codegen": "graph codegen",
+        "deploy:sepolia": "graph codegen && graph build --network sepolia && graph deploy metrom-carbon-sepolia -l 0.0.9",
+        "lint": "eslint .",
+        "format": "eslint --fix ."
+    },
+    "dependencies": {
+        "@graphprotocol/graph-cli": "^0.96.0",
+        "@graphprotocol/graph-ts": "^0.38.0"
+    },
+    "devDependencies": {
+        "@eslint/js": "^9.23.0",
+        "@types/mustache": "^4.2.5",
+        "@types/node": "^22.13.13",
+        "eslint": "^9.23.0",
+        "eslint-config-prettier": "^10.1.1",
+        "eslint-config-turbo": "^2.4.4",
+        "eslint-plugin-prettier": "^5.2.5",
+        "mustache": "^4.2.0",
+        "prettier": "^3.5.3",
+        "tsx": "^4.19.3",
+        "typescript": "^5.8.2",
+        "typescript-eslint": "^8.28.0"
+    }
+}

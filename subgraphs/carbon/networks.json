@@ -1,0 +1,12 @@
+{
+    "sepolia": {
+        "Controller": {
+            "address": "0x5bCA3389786385a35bca14C2D0582adC6cb2482e",
+            "startBlock": 6969415
+        },
+        "Voucher": {
+            "address": "0x59f21012B2E9BA67ce6a7605E74F945D0D4C84EA",
+            "startBlock": 6969374
+        }
+    }
+}
