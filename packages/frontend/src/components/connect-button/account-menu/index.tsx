@@ -18,6 +18,7 @@ import { ErrorIcon } from "@/src/assets/error-icon";
 import { RemoveScroll } from "react-remove-scroll";
 import { SAFE } from "@/src/commons/env";
 import { SafeLogo } from "@/src/assets/logos/safe";
+import Image from "next/image";
 
 import styles from "./styles.module.css";
 
@@ -103,9 +104,10 @@ export function AccountMenu({
                                 <SafeLogo className={styles.safeLogo} />
                             </div>
                         ) : (
-                            // eslint-disable-next-line @next/next/no-img-element
-                            <img
+                            <Image
                                 alt="Avatar"
+                                height={36}
+                                width={36}
                                 src={account.ensAvatar || blockie}
                                 className={styles.avatar}
                             />
