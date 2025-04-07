@@ -7,14 +7,14 @@
         "codegen": "graph codegen",
         "create:local": "graph create metrom-curve-local --node http://localhost:8020",
         "deploy:local": "pnpm prepare:deploy mainnet && pnpm codegen && graph deploy metrom-curve-local --node http://localhost:8020 --ipfs http://localhost:5001 -l 0.0.1",
-        "deploy:mainnet": "pnpm prepare:deploy mainnet && pnpm codegen && graph deploy metrom-curve-mainnet -l 0.0.126",
+        "deploy:mainnet": "pnpm prepare:deploy mainnet && pnpm codegen && graph deploy metrom-curve-mainnet -l 0.0.130",
         "lint": "eslint .",
         "format": "eslint --fix ."
     },
     "dependencies": {
         "@0xgraph/cli": "^0.2.1",
         "@graphprotocol/graph-cli": "^0.96.0",
-        "@graphprotocol/graph-ts": "^0.38.0"
+        "@graphprotocol/graph-ts": "0.36.0"
     },
     "devDependencies": {
         "@eslint/js": "^9.23.0",
