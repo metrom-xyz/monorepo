@@ -33,7 +33,7 @@ export function LiquityV2CollateralStep({
 }: LiquityV2CollateralStepProps) {
     const t = useTranslations("newCampaign.form.liquityV2.collaterals");
 
-    const [open, setOpen] = useState(true);
+    const [open, setOpen] = useState(false);
 
     const chainId = useChainId();
     const { loading, collaterals } = useLiquityV2Collaterals({
@@ -44,6 +44,11 @@ export function LiquityV2CollateralStep({
     useEffect(() => {
         setOpen(false);
     }, [chainId]);
+
+    useEffect(() => {
+        if (disabled || !!collateral) return;
+        setOpen(true);
+    }, [collateral, disabled, action]);
 
     useEffect(() => {
         onCollateralChange({ collateral: undefined });

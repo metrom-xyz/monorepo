@@ -42,7 +42,7 @@ export function LiquityV2ActionStep({
 }: LiquityV2ActionStepProps) {
     const t = useTranslations("newCampaign.form.liquityV2.action");
 
-    const [open, setOpen] = useState(true);
+    const [open, setOpen] = useState(false);
 
     const chainId = useChainId();
 
