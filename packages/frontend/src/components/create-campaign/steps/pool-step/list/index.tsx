@@ -28,6 +28,8 @@ interface ListPoolPickerProps {
     onChange: (pool: AmmPoolWithTvl) => void;
 }
 
+const LIST_ITEM_HEIGHT = 57;
+
 export function ListPoolPicker({ value, dex, onChange }: ListPoolPickerProps) {
     const t = useTranslations("newCampaign.form.ammPoolLiquidity.pool");
     const [search, setSearch] = useState("");
@@ -81,6 +83,8 @@ export function ListPoolPicker({ value, dex, onChange }: ListPoolPickerProps) {
         setSearch(event.target.value);
     }
 
+    const itemCount = loading ? 6 : filteredPools.length;
+
     return (
         <div className={styles.root}>
             <div className={styles.header}>
@@ -121,7 +125,13 @@ export function ListPoolPicker({ value, dex, onChange }: ListPoolPickerProps) {
                     ))}
                 </div>
             </div>
-            <div className={styles.listWrapper}>
+            <div
+                className={styles.listWrapper}
+                style={{
+                    maxHeight: 384,
+                    height: itemCount * LIST_ITEM_HEIGHT + 16,
+                }}
+            >
                 <div className={styles.listHeader}>
                     <Typography uppercase size="sm" weight="medium" light>
                         {t("list.pool")}
@@ -138,15 +148,13 @@ export function ListPoolPicker({ value, dex, onChange }: ListPoolPickerProps) {
                                     ref={listRef}
                                     height={height}
                                     width={width}
-                                    itemCount={
-                                        loading ? 6 : filteredPools.length
-                                    }
+                                    itemCount={itemCount}
                                     itemData={
                                         loading
                                             ? new Array(6).fill(null)
                                             : filteredPools
                                     }
-                                    itemSize={57}
+                                    itemSize={LIST_ITEM_HEIGHT}
                                     className={styles.list}
                                 >
                                     {({ index, style, data }) => {
