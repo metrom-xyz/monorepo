@@ -3,47 +3,40 @@ import {
     IncreaseLiquidity as IncreaseLiquidityEvent,
     DecreaseLiquidity as DecreaseLiquidityEvent,
     Transfer as TransferEvent,
-    NonFungiblePositionManager,
-} from "../../generated/NonFungiblePositionManager/NonFungiblePositionManager";
+} from "../../../generated/NonFungiblePositionManager/NonFungiblePositionManager";
 import {
     ConcentratedLiquidityChange,
     ConcentratedLiquidityTransfer,
     ConcentratedPosition,
     Gauge,
-} from "../../generated/schema";
-import { BI_0, getEventId } from "../commons";
+} from "../../../generated/schema";
 import {
-    FACTORY_ADDRESS,
-    NON_FUNGIBLE_POSITION_MANAGER_ADDRESS,
-} from "../addresses";
-import { ConcentratedFactory } from "../../generated/ConcentratedFactory/ConcentratedFactory";
+    BI_0,
+    ClFactoryContract,
+    getEventId,
+    NonFungiblePositionManagerContract,
+} from "../../commons";
+import { ALM_CORE_ADDRESS } from "../../addresses";
 
-const NonFungiblePositionManagerContract = NonFungiblePositionManager.bind(
-    NON_FUNGIBLE_POSITION_MANAGER_ADDRESS,
-);
-const ConcentratedFactoryContract = ConcentratedFactory.bind(FACTORY_ADDRESS);
-
-function getNftPositionId(tokenId: BigInt): Bytes {
+function getPositionId(tokenId: BigInt): Bytes {
     return Bytes.fromByteArray(Bytes.fromBigInt(tokenId));
 }
 
-function getOrCreateNftPosition(tokenId: BigInt): ConcentratedPosition | null {
-    let id = getNftPositionId(tokenId);
+function getOrCreatePosition(tokenId: BigInt): ConcentratedPosition | null {
+    let id = getPositionId(tokenId);
     let position = ConcentratedPosition.load(id);
     if (position != null) return position;
 
     let result = NonFungiblePositionManagerContract.try_positions(tokenId);
 
     // the following call reverts in situations where the position is minted
-    // and deleted in the same block - from my investigation this happens
-    // in calls from  BancorSwap
-    // (e.g. 0xf7867fa19aa65298fadb8d4f72d0daed5e836f3ba01f0b9b9631cdc6c36bed40)
+    // and deleted in the same block
     if (result.reverted) return null;
 
-    let poolAddress = ConcentratedFactoryContract.getPool(
+    let poolAddress = ClFactoryContract.getPool(
         result.value.getToken0(),
         result.value.getToken1(),
-        result.value.getFee(),
+        result.value.getTickSpacing(),
     );
 
     position = new ConcentratedPosition(id);
@@ -51,20 +44,18 @@ function getOrCreateNftPosition(tokenId: BigInt): ConcentratedPosition | null {
     position.lowerTick = result.value.getTickLower();
     position.upperTick = result.value.getTickUpper();
     position.liquidity = BI_0; // updated in increase liquidity handler
-    position.direct = false;
     position.pool = Bytes.fromHexString(poolAddress.toHex());
     position.save();
 
     return position;
 }
 
-function getNftPosition(tokenId: BigInt): ConcentratedPosition | null {
-    let id = getNftPositionId(tokenId);
-    return ConcentratedPosition.load(id);
+function getPosition(tokenId: BigInt): ConcentratedPosition | null {
+    return ConcentratedPosition.load(getPositionId(tokenId));
 }
 
 export function handleIncreaseLiquidity(event: IncreaseLiquidityEvent): void {
-    let position = getOrCreateNftPosition(event.params.tokenId);
+    let position = getOrCreatePosition(event.params.tokenId);
     if (position == null) return;
 
     if (!event.params.liquidity.isZero()) {
@@ -84,7 +75,7 @@ export function handleIncreaseLiquidity(event: IncreaseLiquidityEvent): void {
 }
 
 export function handleDecreaseLiquidity(event: DecreaseLiquidityEvent): void {
-    let position = getNftPosition(event.params.tokenId);
+    let position = getPosition(event.params.tokenId);
     if (position == null) return;
 
     if (!event.params.liquidity.isZero()) {
@@ -107,16 +98,17 @@ export function handleTransfer(event: TransferEvent): void {
     // We don't register the position at NFT mint time because at this point
     // it has 0 liquidity. When creating a new position the IncreaseLiquidity
     // event is always emitted, so we register the position there if non-zero
-    // liquidity is added. We also make gauge deposits/withdrawals transparent
+    // liquidity is added
     if (
         event.params.from == Address.zero() ||
         event.params.to == Address.zero() ||
         Gauge.load(event.params.from) !== null ||
-        Gauge.load(event.params.to) !== null
+        Gauge.load(event.params.to) !== null ||
+        event.params.to === ALM_CORE_ADDRESS
     )
         return;
 
-    let position = getNftPosition(event.params.tokenId);
+    let position = getPosition(event.params.tokenId);
     if (position == null) return;
 
     position.owner = event.params.to;
