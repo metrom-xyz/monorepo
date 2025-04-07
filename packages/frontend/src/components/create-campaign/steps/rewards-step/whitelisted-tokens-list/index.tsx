@@ -13,7 +13,6 @@ import {
 import { Row } from "./row";
 import { AnimatePresence, motion } from "motion/react";
 import type { WhitelistedErc20TokenAmount } from "@/src/types/common";
-import classNames from "classnames";
 
 import styles from "./styles.module.css";
 
@@ -57,7 +56,7 @@ export function WhitelistedTokensList({
                         hide: { height: 0 },
                         show: { height: "auto" },
                     }}
-                    className={classNames(styles.root)}
+                    className={styles.root}
                 >
                     <div ref={rootRef}>
                         <div className={styles.listHeader}>

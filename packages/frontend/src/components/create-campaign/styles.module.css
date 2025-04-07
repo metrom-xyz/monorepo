@@ -42,7 +42,7 @@
 }
 
 .ammIcon {
-    @apply h-10 w-10 text-black dark:text-zinc-200;
+    @apply h-10 w-10 text-black dark:text-white;
 }
 
 .liquidityV2Icon {
