@@ -34,9 +34,7 @@
 }
 
 .listWrapper {
-    @apply h-96
-        w-full
-        overflow-hidden;
+    @apply w-full overflow-hidden;
 }
 
 .listHeader {
