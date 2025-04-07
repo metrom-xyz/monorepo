@@ -132,3 +132,7 @@ dist
 .turbo
 generated
 build
+
+networks.json
+src/addresses.ts
+subgraph.yaml

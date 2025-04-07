@@ -7,11 +7,15 @@ import {
     TokensTraded,
     TradingFeePPMUpdated,
 } from "../../generated/Controller/Controller";
-import { Fee, LiquidityChange, Pool, TickChange } from "../../generated/schema";
+import {
+    Controller,
+    LiquidityChange,
+    Pool,
+    TickChange,
+} from "../../generated/schema";
 import {
     BD_0,
     BI_0,
-    FEE_ID,
     getEventId,
     getOrCreatePosition,
     getOrCreateToken,
@@ -19,16 +23,16 @@ import {
     getPoolId,
     getPoolOrThrow,
     getPositionOrThrow,
-    getTickFromEncodedRate,
     getTickFromPrice,
     updateTicks,
 } from "../commons";
+import { CONTROLLER_ADDRESS } from "../addresses";
 
 export function handleTradingFeePPMUpdated(event: TradingFeePPMUpdated): void {
-    let fee = Fee.load(FEE_ID);
-    if (fee === null) fee = new Fee(FEE_ID);
-    fee.value = event.params.newFeePPM.toI32();
-    fee.save();
+    let controller = Controller.load(CONTROLLER_ADDRESS);
+    if (controller === null) controller = new Controller(CONTROLLER_ADDRESS);
+    controller.fee = event.params.newFeePPM.toI32();
+    controller.save();
 }
 
 export function handlePairCreated(event: PairCreated): void {
@@ -58,7 +62,7 @@ export function handlePairCreated(event: PairCreated): void {
     pool.tick = 0;
     pool.price = BD_0;
     pool.liquidity = BI_0;
-    pool.fee = FEE_ID;
+    pool.controller = CONTROLLER_ADDRESS;
     pool.save();
 }
 
@@ -68,27 +72,17 @@ export function handleStrategyCreated(event: StrategyCreated): void {
     pool.token1Tvl = pool.token1Tvl.plus(event.params.order1.y);
     pool.save();
 
-    let order0LowerTickIdx = getTickFromEncodedRate(event.params.order0.B);
-    let order0UpperTickIdx = getTickFromEncodedRate(
-        event.params.order0.B.plus(event.params.order0.A),
-    );
-
-    let order1LowerTickIdx = getTickFromEncodedRate(event.params.order1.B);
-    let order1UpperTickIdx = getTickFromEncodedRate(
-        event.params.order1.B.plus(event.params.order1.A),
-    );
-
     updateTicks(
         pool.id,
-        order0LowerTickIdx,
-        order0UpperTickIdx,
+        event.params.order0.A,
+        event.params.order0.B,
         event.params.order0.y,
     );
 
     updateTicks(
         pool.id,
-        order1LowerTickIdx,
-        order1UpperTickIdx,
+        event.params.order1.A,
+        event.params.order1.B,
         event.params.order1.y,
     );
 
@@ -96,11 +90,11 @@ export function handleStrategyCreated(event: StrategyCreated): void {
         event.params.id,
         pool.id,
         event.params.owner,
-        order0LowerTickIdx,
-        order0UpperTickIdx,
+        event.params.order0.A,
+        event.params.order0.B,
         event.params.order0.y,
-        order1LowerTickIdx,
-        order1UpperTickIdx,
+        event.params.order1.A,
+        event.params.order1.B,
         event.params.order1.y,
     );
 }
@@ -121,18 +115,30 @@ export function handleStrategyDeleted(event: StrategyDeleted): void {
     order1.liquidity = BI_0;
     order1.save();
 
+    updateTicks(
+        pool.id,
+        event.params.order0.A,
+        event.params.order0.B,
+        event.params.order0.y.neg(),
+    );
+
+    updateTicks(
+        pool.id,
+        event.params.order1.A,
+        event.params.order1.B,
+        event.params.order1.y.neg(),
+    );
+
     let liquidityChange = new LiquidityChange(getEventId(event));
     liquidityChange.timestamp = event.block.timestamp;
     liquidityChange.blockNumber = event.block.number;
-    liquidityChange.delta0 = event.params.order0.y;
-    liquidityChange.delta1 = event.params.order1.y;
+    liquidityChange.delta0 = event.params.order0.y.neg();
+    liquidityChange.delta1 = event.params.order1.y.neg();
     liquidityChange.position = position.id;
     liquidityChange.save();
 }
 
 export function handleStrategyUpdated(event: StrategyUpdated): void {
-    if (event.params.reason !== 0) return; // trades are handled in the tokens traded handler
-
     let position = getPositionOrThrow(event.params.id);
 
     let order0 = getOrderOrThrow(position.order0);
@@ -152,20 +158,16 @@ export function handleStrategyUpdated(event: StrategyUpdated): void {
 
     updateTicks(
         pool.id,
-        getTickFromEncodedRate(event.params.order0.B),
-        getTickFromEncodedRate(
-            event.params.order0.B.plus(event.params.order0.A),
-        ),
-        event.params.order0.y.neg(),
+        event.params.order0.A,
+        event.params.order0.B,
+        token0Delta,
     );
 
     updateTicks(
         pool.id,
-        getTickFromEncodedRate(event.params.order1.B),
-        getTickFromEncodedRate(
-            event.params.order1.B.plus(event.params.order1.A),
-        ),
-        event.params.order1.y.neg(),
+        event.params.order1.A,
+        event.params.order1.B,
+        token1Delta,
     );
 
     let liquidityChange = new LiquidityChange(getEventId(event));

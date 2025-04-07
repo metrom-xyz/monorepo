@@ -5,9 +5,9 @@ type Token @entity(immutable: true) {
     decimals: BigInt!
 }
 
-type Fee @entity {
+type Controller @entity {
     id: Bytes!
-    value: Int!
+    fee: Int!
 }
 
 type Pool @entity {
@@ -19,7 +19,7 @@ type Pool @entity {
     tick: Int!
     price: BigDecimal!
     liquidity: BigInt!
-    fee: Fee!
+    controller: Controller!
     positions: [Position!]! @derivedFrom(field: "pool")
     tickChanges: [TickChange!]! @derivedFrom(field: "pool")
     ticks: [Tick!]! @derivedFrom(field: "pool")

@@ -9,13 +9,21 @@ import { Order, Pool, Position, Tick, Token } from "../generated/schema";
 import { Erc20 } from "../generated/Controller/Erc20";
 import { Erc20BytesSymbol } from "../generated/Controller/Erc20BytesSymbol";
 import { Erc20BytesName } from "../generated/Controller/Erc20BytesName";
-
-export const FEE_ID = Bytes.fromHexString("0x01");
+import {
+    NATIVE_TOKEN_ADDRESS,
+    NATIVE_TOKEN_DECIMALS,
+    NATIVE_TOKEN_NAME,
+    NATIVE_TOKEN_SYMBOL,
+} from "./addresses";
 
 export const BI_0 = BigInt.zero();
 export const BI_1 = BigInt.fromI32(1);
 export const BI_2 = BigInt.fromI32(2);
-export const BI_U256_MAX = BI_2.pow(256 as u8).minus(BI_1);
+export const BI_U256_MAX = BigInt.fromUnsignedBytes(
+    Bytes.fromHexString(
+        "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+    ),
+);
 export const CARBON_UNIT = BigInt.fromI32(2).pow(48);
 
 export const BD_0 = BigDecimal.zero();
@@ -27,15 +35,19 @@ export function getEventId(event: ethereum.Event): Bytes {
     );
 }
 
-export function getPoolId(token0: Bytes, token1: Bytes): Bytes {
+export function getPoolId(tokenA: Bytes, tokenB: Bytes): Bytes {
+    let token0 = tokenA;
+    let token1 = tokenB;
+    if (tokenA.toHex() > tokenB.toHex()) {
+        token0 = tokenB;
+        token1 = tokenA;
+    }
+
     return token0.concat(token1);
 }
 
 export function getPoolOrThrow(token0: Address, token1: Address): Pool {
-    let id = getPoolId(
-        changetype<Address>(token0),
-        changetype<Address>(token1),
-    );
+    let id = getPoolId(token0, token1);
     let pool = Pool.load(id);
     if (pool != null) return pool;
 
@@ -83,6 +95,15 @@ export function getOrCreateToken(address: Address): Token | null {
     let token = Token.load(address);
     if (token !== null) return token;
 
+    if (address == NATIVE_TOKEN_ADDRESS) {
+        token = new Token(NATIVE_TOKEN_ADDRESS);
+        token.symbol = NATIVE_TOKEN_SYMBOL;
+        token.name = NATIVE_TOKEN_NAME;
+        token.decimals = NATIVE_TOKEN_DECIMALS;
+        token.save();
+        return token;
+    }
+
     let symbol = fetchTokenSymbol(address);
     if (symbol === null) return null;
 
@@ -105,11 +126,11 @@ export function getOrCreatePosition(
     id: BigInt,
     poolId: Bytes,
     owner: Address,
-    order0LowerTickIdx: i32,
-    order0UpperTickIdx: i32,
+    A0: BigInt,
+    B0: BigInt,
     y0: BigInt,
-    order1LowerTickIdx: i32,
-    order1UpperTickIdx: i32,
+    A1: BigInt,
+    B1: BigInt,
     y1: BigInt,
 ): Position {
     let bytesId = Bytes.fromByteArray(Bytes.fromBigInt(id));
@@ -117,14 +138,14 @@ export function getOrCreatePosition(
     if (position !== null) return position;
 
     let order0 = new Order(bytesId.concat(Bytes.fromI32(0)));
-    order0.lowerTick = order0LowerTickIdx;
-    order0.upperTick = order0UpperTickIdx;
+    order0.lowerTick = getTickFromEncodedRate(B0);
+    order0.upperTick = getTickFromEncodedRate(B0.plus(A0));
     order0.liquidity = y0;
     order0.save();
 
     let order1 = new Order(bytesId.concat(Bytes.fromI32(1)));
-    order1.lowerTick = order1LowerTickIdx;
-    order1.upperTick = order1UpperTickIdx;
+    order1.lowerTick = getTickFromEncodedRate(B1);
+    order1.upperTick = getTickFromEncodedRate(B1.plus(A1));
     order1.liquidity = y1;
     order1.save();
 
@@ -174,38 +195,42 @@ function getOrCreateTick(poolId: Bytes, idx: i32): Tick {
 
 export function updateTicks(
     poolId: Bytes,
-    lowerIdx: i32,
-    upperIdx: i32,
-    y: BigInt,
+    A: BigInt,
+    B: BigInt,
+    delta: BigInt,
 ): void {
-    let lowerTick = getOrCreateTick(poolId, lowerIdx);
-    lowerTick.liquidityGross = lowerTick.liquidityGross.plus(y);
-    lowerTick.liquidityNet = lowerTick.liquidityNet.plus(y);
+    let lowerTick = getOrCreateTick(poolId, getTickFromEncodedRate(B));
+    lowerTick.liquidityGross = lowerTick.liquidityGross.plus(delta);
+    lowerTick.liquidityNet = lowerTick.liquidityNet.plus(delta);
     lowerTick.save();
 
-    let upperTick = getOrCreateTick(poolId, upperIdx);
-    upperTick.liquidityGross = upperTick.liquidityGross.plus(y);
-    upperTick.liquidityNet = upperTick.liquidityNet.minus(y);
+    let upperTick = getOrCreateTick(poolId, getTickFromEncodedRate(B.plus(A)));
+    upperTick.liquidityGross = upperTick.liquidityGross.plus(delta);
+    upperTick.liquidityNet = upperTick.liquidityNet.minus(delta);
     upperTick.save();
 }
 
-function decodeFloat(value: BigInt): BigDecimal {
-    let numerator = BigDecimal.fromString(value.mod(CARBON_UNIT).toString());
-    let denominator = BigDecimal.fromString(
-        BI_2.pow(value.div(CARBON_UNIT).toI32() as u8).toString(),
-    );
-
-    return numerator.div(denominator);
+function decodeFloatAndTruncate(value: BigInt): BigDecimal {
+    let numerator = value.mod(CARBON_UNIT);
+    let denominator = BI_2.pow(value.div(CARBON_UNIT).toI32() as u8);
+    let out = numerator.div(denominator);
+    return BigDecimal.fromString(out.toString()).truncate(6);
 }
 
-export function getTickFromEncodedRate(rate: BigInt): i32 {
-    let price = decodeFloat(rate);
-    return getTickFromPrice(price);
+function getTickFromEncodedRate(encodedRate: BigInt): i32 {
+    let decodedFloat = decodeFloatAndTruncate(encodedRate);
+    let decodedRate = decodedFloat.div(
+        BigDecimal.fromString(CARBON_UNIT.toString()),
+    );
+    decodedRate = decodedRate.times(decodedRate);
+    return getTickFromPrice(decodedRate);
 }
 
 export function getTickFromPrice(price: BigDecimal): i32 {
+    let float = parseFloat(price.toString());
+    if (float === 0.0) return 0;
+
     return NativeMath.round(
-        NativeMath.log10(parseFloat(price.toString())) /
-            NativeMath.log10(1.0001),
+        NativeMath.log10(float) / NativeMath.log10(1.0001),
     ) as i32;
 }
