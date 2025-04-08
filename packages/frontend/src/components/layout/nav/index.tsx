@@ -118,6 +118,24 @@ export function Nav() {
                             <Typography weight="medium" size="sm">
                                 {t(label)}
                             </Typography>
+                            <AnimatePresence>
+                                {label === "claims" && pendingClaimsCount && (
+                                    <motion.span
+                                        initial={{ scale: 0 }}
+                                        animate={{ scale: 1 }}
+                                        exit={{ scale: 0 }}
+                                        className={styles.claimsBadge}
+                                    >
+                                        <Typography
+                                            size="xs"
+                                            weight="medium"
+                                            className={styles.claimsBadgeText}
+                                        >
+                                            {pendingClaimsCount}
+                                        </Typography>
+                                    </motion.span>
+                                )}
+                            </AnimatePresence>
                         </Link>
                     ))}
                 </div>

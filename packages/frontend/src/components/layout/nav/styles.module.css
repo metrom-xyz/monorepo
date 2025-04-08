@@ -125,7 +125,19 @@
 }
 
 .claimsBadge {
-    @apply flex items-center justify-center absolute h-5 w-5 bg-brand-green rounded-md -right-1.5 -top-1.5;
+    @apply flex
+        items-center
+        justify-center
+        absolute
+        px-0.5
+        h-5
+        min-w-5
+        bg-brand-green
+        rounded-md
+        right-4
+        top-auto
+        md:-right-1.5
+        md:-top-1.5;
 }
 
 .claimsBadgeText {
