@@ -3,7 +3,7 @@
 .root {
     @apply w-full
         flex
-        gap-2
+        gap-3
         flex-col
         sm:flex-row
         justify-between
