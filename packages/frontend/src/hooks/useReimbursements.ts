@@ -110,7 +110,7 @@ export function useReimbursements({
         allowFailure: false,
         contracts: recoveredContracts,
         query: {
-            retryDelay: 3000,
+            retryDelay: 1000,
             refetchOnWindowFocus: false,
             staleTime: 60000,
             enabled: !!recoveredContracts,
@@ -127,7 +127,7 @@ export function useReimbursements({
         allowFailure: false,
         contracts: claimedContracts,
         query: {
-            retryDelay: 3000,
+            retryDelay: 1000,
             refetchOnWindowFocus: false,
             staleTime: 60000,
             enabled: !!claimedContracts,

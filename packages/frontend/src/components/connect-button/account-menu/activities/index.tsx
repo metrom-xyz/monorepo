@@ -20,7 +20,7 @@ export function Activities({ chainId }: ActivitiesProps) {
     });
 
     // TODO: add illustration
-    if (unsupportedChain || activities.length === 0)
+    if (!loading && (unsupportedChain || activities.length === 0))
         return <div className={styles.root}></div>;
 
     return (
