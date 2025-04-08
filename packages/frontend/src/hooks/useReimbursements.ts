@@ -110,6 +110,7 @@ export function useReimbursements({
         allowFailure: false,
         contracts: recoveredContracts,
         query: {
+            retryDelay: 3000,
             refetchOnWindowFocus: false,
             staleTime: 60000,
             enabled: !!recoveredContracts,
@@ -126,6 +127,7 @@ export function useReimbursements({
         allowFailure: false,
         contracts: claimedContracts,
         query: {
+            retryDelay: 3000,
             refetchOnWindowFocus: false,
             staleTime: 60000,
             enabled: !!claimedContracts,
@@ -138,6 +140,7 @@ export function useReimbursements({
             console.error(
                 `Could not fetch claimed data for address ${address}: ${recoveredError} ${claimedError}`,
             );
+            setReimbursements([]);
             return;
         }
         if (loadingReimbursements || loadingRecovered || loadingClaimed) return;

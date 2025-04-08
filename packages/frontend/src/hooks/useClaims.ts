@@ -83,6 +83,7 @@ export function useClaims({
         allowFailure: false,
         contracts: claimedContracts,
         query: {
+            retryDelay: 3000,
             refetchOnWindowFocus: false,
             staleTime: 60000,
             enabled: !!claimedContracts,
@@ -95,6 +96,7 @@ export function useClaims({
             console.error(
                 `Could not fetch claimed data for address ${address}: ${claimedError}`,
             );
+            setClaims([]);
             return;
         }
         if (loadingClaims || loadingClaimed) return;
