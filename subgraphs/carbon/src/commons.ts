@@ -5,7 +5,7 @@ import {
     Bytes,
     ethereum,
 } from "@graphprotocol/graph-ts";
-import { Order, Pool, Position, Tick, Token } from "../generated/schema";
+import { Pool, Strategy, Tick, Token } from "../generated/schema";
 import { Erc20 } from "../generated/Controller/Erc20";
 import { Erc20BytesSymbol } from "../generated/Controller/Erc20BytesSymbol";
 import { Erc20BytesName } from "../generated/Controller/Erc20BytesName";
@@ -19,6 +19,7 @@ import {
 export const BI_0 = BigInt.zero();
 export const BI_1 = BigInt.fromI32(1);
 export const BI_2 = BigInt.fromI32(2);
+export const BI_10 = BigInt.fromI32(10);
 export const BI_U256_MAX = BigInt.fromUnsignedBytes(
     Bytes.fromHexString(
         "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
@@ -28,6 +29,9 @@ export const CARBON_UNIT = BigInt.fromI32(2).pow(48);
 
 export const BD_0 = BigDecimal.zero();
 export const BD_TICK_BASE = BigDecimal.fromString("1.0001");
+
+export const BYTES_0 = Bytes.fromHexString("0x00");
+export const BYTES_1 = Bytes.fromHexString("0x01");
 
 export function getEventId(event: ethereum.Event): Bytes {
     return changetype<Bytes>(
@@ -116,15 +120,27 @@ export function getOrCreateToken(address: Address): Token | null {
     token = new Token(address);
     token.symbol = symbol;
     token.name = name;
-    token.decimals = decimals;
+    token.decimals = decimals.toI32();
     token.save();
 
     return token;
 }
 
-export function getOrCreatePosition(
+export function scaleToDecimals(
+    sourceDecimals: number,
+    targetDecimals: number,
+    amount: BigInt,
+): BigInt {
+    let scalingFactor = (targetDecimals - sourceDecimals) as u8;
+    if (scalingFactor === 0) return amount;
+    return scalingFactor > 0
+        ? amount.times(BI_10.pow(scalingFactor))
+        : amount.div(BI_10.pow(-scalingFactor));
+}
+
+export function getOrCreateStrategy(
     id: BigInt,
-    poolId: Bytes,
+    pool: Pool,
     owner: Address,
     A0: BigInt,
     B0: BigInt,
@@ -132,50 +148,42 @@ export function getOrCreatePosition(
     A1: BigInt,
     B1: BigInt,
     y1: BigInt,
-): Position {
+): Strategy {
     let bytesId = Bytes.fromByteArray(Bytes.fromBigInt(id));
-    let position = Position.load(bytesId);
-    if (position !== null) return position;
+    let strategy = Strategy.load(bytesId);
+    if (strategy !== null) return strategy;
 
-    let order0 = new Order(bytesId.concat(Bytes.fromI32(0)));
-    order0.lowerTick = getTickFromEncodedRate(B0);
-    order0.upperTick = getTickFromEncodedRate(B0.plus(A0));
-    order0.liquidity = y0;
-    order0.save();
+    strategy = new Strategy(bytesId);
+    strategy.owner = owner;
+    strategy.lowerTick0 = getTickFromEncodedRate(B0);
+    strategy.upperTick0 = getTickFromEncodedRate(B0.plus(A0));
+    strategy.liquidity0 = scaleToDecimals(
+        getTokenOrThrow(changetype<Address>(pool.token0)).decimals,
+        18,
+        y0,
+    );
+    strategy.lowerTick1 = getTickFromEncodedRate(B1);
+    strategy.upperTick1 = getTickFromEncodedRate(B1.plus(A1));
+    strategy.liquidity1 = scaleToDecimals(
+        getTokenOrThrow(changetype<Address>(pool.token1)).decimals,
+        18,
+        y1,
+    );
+    strategy.pool = pool.id;
+    strategy.save();
 
-    let order1 = new Order(bytesId.concat(Bytes.fromI32(1)));
-    order1.lowerTick = getTickFromEncodedRate(B1);
-    order1.upperTick = getTickFromEncodedRate(B1.plus(A1));
-    order1.liquidity = y1;
-    order1.save();
-
-    position = new Position(bytesId);
-    position.owner = owner;
-    position.order0 = order0.id;
-    position.order1 = order1.id;
-    position.pool = poolId;
-    position.save();
-
-    return position;
+    return strategy;
 }
 
-export function getPositionOrThrow(id: BigInt): Position {
+export function getStrategyOrThrow(id: BigInt): Strategy {
     let bytesId = Bytes.fromByteArray(Bytes.fromBigInt(id));
-    let position = Position.load(bytesId);
-    if (position === null)
+    let strategy = Strategy.load(bytesId);
+    if (strategy === null)
         throw new Error(
-            `Could not find position on pool with id ${bytesId.toHex()}`,
+            `Could not find strategy on pool with id ${bytesId.toHex()}`,
         );
 
-    return position;
-}
-
-export function getOrderOrThrow(id: Bytes): Order {
-    let order = Order.load(id);
-    if (order === null)
-        throw new Error(`Could not find order with id ${id.toHex()}`);
-
-    return order;
+    return strategy;
 }
 
 function getOrCreateTick(poolId: Bytes, idx: i32): Tick {
@@ -217,7 +225,7 @@ function decodeFloatAndTruncate(value: BigInt): BigDecimal {
     return BigDecimal.fromString(out.toString()).truncate(6);
 }
 
-function getTickFromEncodedRate(encodedRate: BigInt): i32 {
+export function getTickFromEncodedRate(encodedRate: BigInt): i32 {
     let decodedFloat = decodeFloatAndTruncate(encodedRate);
     let decodedRate = decodedFloat.div(
         BigDecimal.fromString(CARBON_UNIT.toString()),
