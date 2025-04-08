@@ -12,8 +12,11 @@ import { ClaimsIcon } from "@/src/assets/claims";
 import { NetworkSelect } from "../../network-select";
 import { useAccount } from "wagmi";
 import { NavThemeSwitcher } from "../../nav-theme-switcher";
-import type { FunctionComponent } from "react";
+import { useMemo, type FunctionComponent } from "react";
+import { AnimatePresence, motion } from "motion/react";
 import type { SVGIcon, TranslationsKeys } from "@/src/types/common";
+import { useClaims } from "@/src/hooks/useClaims";
+import type { Address } from "viem";
 
 import styles from "./styles.module.css";
 
@@ -31,6 +34,21 @@ export function Nav() {
     const t = useTranslations("navigation");
     const pathname = usePathname();
     const { address } = useAccount();
+
+    const { claims } = useClaims();
+
+    const pendingClaimsCount = useMemo(() => {
+        if (!claims) return undefined;
+
+        const reduced = claims.reduce(
+            (acc, claim) => {
+                if (!acc[claim.token.address]) acc[claim.token.address] = "";
+                return acc;
+            },
+            {} as Record<Address, string>,
+        );
+        return Object.values(reduced).length;
+    }, [claims]);
 
     return (
         <div className={classNames(styles.root)}>
@@ -60,6 +78,27 @@ export function Nav() {
                                 <Typography weight="medium">
                                     {t(label)}
                                 </Typography>
+                                <AnimatePresence>
+                                    {label === "claims" &&
+                                        pendingClaimsCount && (
+                                            <motion.span
+                                                initial={{ scale: 0 }}
+                                                animate={{ scale: 1 }}
+                                                exit={{ scale: 0 }}
+                                                className={styles.claimsBadge}
+                                            >
+                                                <Typography
+                                                    size="xs"
+                                                    weight="medium"
+                                                    className={
+                                                        styles.claimsBadgeText
+                                                    }
+                                                >
+                                                    {pendingClaimsCount}
+                                                </Typography>
+                                            </motion.span>
+                                        )}
+                                </AnimatePresence>
                             </div>
                         </Link>
                     ))}
