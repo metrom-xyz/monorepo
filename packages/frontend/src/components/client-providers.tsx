@@ -14,7 +14,7 @@ import {
     metaMaskWallet,
 } from "@rainbow-me/rainbowkit/wallets";
 import { useMemo, type ReactNode } from "react";
-import { WagmiProvider } from "wagmi";
+import { http, WagmiProvider } from "wagmi";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { hashFn } from "wagmi/query";
 import { TokenIconsProvider } from "./token-icon-provider";
@@ -30,6 +30,7 @@ import { SUPPORTED_CHAINS } from "../commons";
 import Fathom from "./fathom";
 import { useTheme } from "next-themes";
 import { Theme } from "../types/common";
+import { sepolia } from "viem/chains";
 
 dayjs.extend(duration);
 dayjs.extend(localizedFormat);
@@ -40,6 +41,11 @@ const config = getDefaultConfig({
     appName: "Metrom",
     projectId: WALLETCONNECT_PROJECT_ID,
     chains: SUPPORTED_CHAINS,
+    transports: {
+        [sepolia.id]: http(
+            "https://endpoints.omniatech.io/v1/eth/sepolia/public",
+        ),
+    },
     wallets: [
         {
             groupName: "Popular",
