@@ -76,6 +76,21 @@ export function handleStrategyCreated(event: StrategyCreated): void {
     let pool = getPoolOrThrow(event.params.token0, event.params.token1);
     pool.token0Tvl = pool.token0Tvl.plus(event.params.order0.y);
     pool.token1Tvl = pool.token1Tvl.plus(event.params.order1.y);
+    pool.liquidity = pool.liquidity
+        .plus(
+            scaleToDecimals(
+                getTokenOrThrow(changetype<Address>(pool.token0)).decimals,
+                18,
+                event.params.order0.y,
+            ),
+        )
+        .plus(
+            scaleToDecimals(
+                getTokenOrThrow(changetype<Address>(pool.token1)).decimals,
+                18,
+                event.params.order1.y,
+            ),
+        );
     pool.save();
 
     updateTicks(
@@ -122,6 +137,21 @@ export function handleStrategyDeleted(event: StrategyDeleted): void {
     let pool = getPoolOrThrow(event.params.token0, event.params.token1);
     pool.token0Tvl = pool.token0Tvl.minus(event.params.order0.y);
     pool.token1Tvl = pool.token1Tvl.minus(event.params.order1.y);
+    pool.liquidity = pool.liquidity
+        .minus(
+            scaleToDecimals(
+                getTokenOrThrow(changetype<Address>(pool.token0)).decimals,
+                18,
+                event.params.order0.y,
+            ),
+        )
+        .minus(
+            scaleToDecimals(
+                getTokenOrThrow(changetype<Address>(pool.token1)).decimals,
+                18,
+                event.params.order1.y,
+            ),
+        );
     pool.save();
 
     updateTicks(
@@ -190,6 +220,21 @@ export function handleStrategyUpdated(event: StrategyUpdated): void {
 
     pool.token0Tvl = pool.token0Tvl.plus(token0Delta);
     pool.token1Tvl = pool.token1Tvl.plus(token1Delta);
+    pool.liquidity = pool.liquidity
+        .plus(
+            scaleToDecimals(
+                getTokenOrThrow(changetype<Address>(pool.token0)).decimals,
+                18,
+                token0Delta,
+            ),
+        )
+        .plus(
+            scaleToDecimals(
+                getTokenOrThrow(changetype<Address>(pool.token1)).decimals,
+                18,
+                token1Delta,
+            ),
+        );
     pool.save();
 
     updateTicks(
