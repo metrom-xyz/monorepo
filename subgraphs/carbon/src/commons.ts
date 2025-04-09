@@ -47,14 +47,18 @@ export function getPoolId(tokenA: Bytes, tokenB: Bytes): Bytes {
         token0 = tokenB;
         token1 = tokenA;
     }
-
-    let tupleArray: Array<ethereum.Value> = [
-        ethereum.Value.fromAddress(changetype<Address>(token0)),
-        ethereum.Value.fromAddress(changetype<Address>(token1)),
-    ];
-    let tuple = tupleArray as ethereum.Tuple;
-    let encoded = ethereum.encode(ethereum.Value.fromTuple(tuple))!;
-    return Bytes.fromByteArray(crypto.keccak256(encoded));
+    return Bytes.fromByteArray(
+        crypto.keccak256(
+            ethereum.encode(
+                ethereum.Value.fromTuple(
+                    changetype<ethereum.Tuple>([
+                        ethereum.Value.fromAddress(changetype<Address>(token0)),
+                        ethereum.Value.fromAddress(changetype<Address>(token1)),
+                    ]),
+                ),
+            )!,
+        ),
+    );
 }
 
 export function getPoolOrThrow(token0: Address, token1: Address): Pool {
