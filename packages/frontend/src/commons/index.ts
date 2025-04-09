@@ -104,6 +104,7 @@ export const CHAIN_DATA: Record<SupportedChain, ChainData> = {
 export const AMM_SUPPORTS_RANGE_INCENTIVES: Record<SupportedAmm, boolean> = {
     [SupportedAmm.AlgebraIntegral]: true,
     [SupportedAmm.UniswapV3]: true,
+    [SupportedAmm.Carbon]: true,
 };
 
 export const AMM_SUPPORTS_TOKENS_RATIO: Record<SupportedAmm, boolean> = {
