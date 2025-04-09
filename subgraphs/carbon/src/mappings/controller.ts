@@ -57,6 +57,7 @@ export function handlePairCreated(event: PairCreated): void {
     }
 
     let pool = new Pool(getPoolId(event.params.token0, event.params.token1));
+    pool.onChainId = event.params.pairId;
     pool.token0 = token0.id;
     pool.token0Tvl = BI_0;
     pool.token1 = token1.id;

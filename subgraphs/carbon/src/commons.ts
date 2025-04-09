@@ -3,6 +3,7 @@ import {
     BigDecimal,
     BigInt,
     Bytes,
+    crypto,
     ethereum,
 } from "@graphprotocol/graph-ts";
 import { Pool, Strategy, Tick, Token } from "../generated/schema";
@@ -47,7 +48,13 @@ export function getPoolId(tokenA: Bytes, tokenB: Bytes): Bytes {
         token1 = tokenA;
     }
 
-    return token0.concat(token1);
+    let tupleArray: Array<ethereum.Value> = [
+        ethereum.Value.fromAddress(changetype<Address>(token0)),
+        ethereum.Value.fromAddress(changetype<Address>(token1)),
+    ];
+    let tuple = tupleArray as ethereum.Tuple;
+    let encoded = ethereum.encode(ethereum.Value.fromTuple(tuple))!;
+    return Bytes.fromByteArray(crypto.keccak256(encoded));
 }
 
 export function getPoolOrThrow(token0: Address, token1: Address): Pool {
