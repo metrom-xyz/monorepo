@@ -10,22 +10,22 @@
         "format": "eslint --fix ."
     },
     "dependencies": {
-        "@graphprotocol/graph-cli": "^0.96.0",
-        "@graphprotocol/graph-ts": "^0.36.0"
+        "@graphprotocol/graph-cli": "^0.97.0",
+        "@graphprotocol/graph-ts": "^0.38.0"
     },
     "devDependencies": {
-        "@eslint/js": "^9.22.0",
-        "@types/eslint__js": "^8.42.3",
+        "@eslint/js": "^9.24.0",
+        "@types/eslint__js": "^9.14.0",
         "@types/mustache": "^4.2.5",
-        "@types/node": "^22.13.10",
-        "eslint": "^9.22.0",
-        "eslint-config-prettier": "^10.1.1",
-        "eslint-config-turbo": "^2.4.4",
-        "eslint-plugin-prettier": "^5.2.3",
+        "@types/node": "^22.14.0",
+        "eslint": "^9.24.0",
+        "eslint-config-prettier": "^10.1.2",
+        "eslint-config-turbo": "^2.5.0",
+        "eslint-plugin-prettier": "^5.2.6",
         "mustache": "^4.2.0",
         "prettier": "^3.5.3",
         "tsx": "^4.19.3",
-        "typescript": "^5.8.2",
-        "typescript-eslint": "^8.26.0"
+        "typescript": "^5.8.3",
+        "typescript-eslint": "^8.29.1"
     }
 }

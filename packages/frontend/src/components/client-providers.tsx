@@ -5,7 +5,6 @@ import "@rainbow-me/rainbowkit/styles.css";
 import {
     darkTheme,
     getDefaultConfig,
-    connectorsForWallets,
     type Locale,
 } from "@rainbow-me/rainbowkit";
 import {
@@ -56,8 +55,7 @@ const config = getDefaultConfig({
 const queryClient = new QueryClient({
     defaultOptions: {
         queries: {
-            // FIXME: not sure why, but this is required after upgrading wagmi to the latest version to avoid
-            // issues when serializing Bigint values in the react query queries. Remove this on next wagmi update.
+            // Needed to issues when serializing Bigint values in the react query queries.
             queryKeyHashFn: hashFn,
         },
     },
