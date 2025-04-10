@@ -34,7 +34,6 @@ export function Nav() {
     const t = useTranslations("navigation");
     const pathname = usePathname();
     const { address } = useAccount();
-
     const { claims } = useClaims();
 
     const pendingClaimsCount = useMemo(() => {
