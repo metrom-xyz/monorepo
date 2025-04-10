@@ -41,10 +41,10 @@ export function Nav() {
 
         const reduced = claims.reduce(
             (acc, claim) => {
-                if (!acc[claim.token.address]) acc[claim.token.address] = "";
+                if (!acc[claim.token.address]) acc[claim.token.address] = true;
                 return acc;
             },
-            {} as Record<Address, string>,
+            {} as Record<Address, boolean>,
         );
         return Object.values(reduced).length;
     }, [claims]);
