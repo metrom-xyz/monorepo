@@ -6,7 +6,14 @@ import {
     crypto,
     ethereum,
 } from "@graphprotocol/graph-ts";
-import { Pool, Strategy, Tick, Token } from "../generated/schema";
+import {
+    Order,
+    Pool,
+    Strategy,
+    StrategyChange,
+    Tick,
+    Token,
+} from "../generated/schema";
 import { Erc20 } from "../generated/Controller/Erc20";
 import { Erc20BytesSymbol } from "../generated/Controller/Erc20BytesSymbol";
 import { Erc20BytesName } from "../generated/Controller/Erc20BytesName";
@@ -16,17 +23,9 @@ import {
     NATIVE_TOKEN_NAME,
     NATIVE_TOKEN_SYMBOL,
 } from "./addresses";
+import { UniV3Order } from "./conversion";
 
 export const BI_0 = BigInt.zero();
-export const BI_1 = BigInt.fromI32(1);
-export const BI_2 = BigInt.fromI32(2);
-export const BI_10 = BigInt.fromI32(10);
-export const BI_U256_MAX = BigInt.fromUnsignedBytes(
-    Bytes.fromHexString(
-        "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
-    ),
-);
-export const CARBON_UNIT = BigInt.fromI32(2).pow(48);
 
 export const BD_0 = BigDecimal.zero();
 export const BD_TICK_BASE = BigDecimal.fromString("1.0001");
@@ -137,53 +136,40 @@ export function getOrCreateToken(address: Address): Token | null {
     return token;
 }
 
-export function scaleToDecimals(
-    sourceDecimals: number,
-    targetDecimals: number,
-    amount: BigInt,
-): BigInt {
-    let scalingFactor = (targetDecimals - sourceDecimals) as u8;
-    if (scalingFactor === 0) return amount;
-    return scalingFactor > 0
-        ? amount.times(BI_10.pow(scalingFactor))
-        : amount.div(BI_10.pow(-scalingFactor));
+export function getOrderId(strategyId: Bytes, zero: bool): Bytes {
+    return strategyId.concat(zero ? BYTES_0 : BYTES_1);
 }
 
-export function getOrCreateStrategy(
-    id: BigInt,
-    pool: Pool,
-    owner: Address,
-    A0: BigInt,
-    B0: BigInt,
-    y0: BigInt,
-    A1: BigInt,
-    B1: BigInt,
-    y1: BigInt,
-): Strategy {
-    let bytesId = Bytes.fromByteArray(Bytes.fromBigInt(id));
-    let strategy = Strategy.load(bytesId);
-    if (strategy !== null) return strategy;
+export function updateOrCreateOrder(
+    id: Bytes,
+    poolId: Bytes,
+    uniV3Order: UniV3Order,
+): Order {
+    let order = Order.load(id);
+    if (order !== null) {
+        order.lowerTick = uniV3Order.lowerTick;
+        order.upperTick = uniV3Order.upperTick;
+        order.liquidity = uniV3Order.liquidity;
+        order.tokenTvl = uniV3Order.tokenTvl;
+        return order;
+    }
 
-    strategy = new Strategy(bytesId);
-    strategy.owner = owner;
-    strategy.lowerTick0 = getTickFromEncodedRate(B0);
-    strategy.upperTick0 = getTickFromEncodedRate(B0.plus(A0));
-    strategy.liquidity0 = scaleToDecimals(
-        getTokenOrThrow(changetype<Address>(pool.token0)).decimals,
-        18,
-        y0,
-    );
-    strategy.lowerTick1 = getTickFromEncodedRate(B1);
-    strategy.upperTick1 = getTickFromEncodedRate(B1.plus(A1));
-    strategy.liquidity1 = scaleToDecimals(
-        getTokenOrThrow(changetype<Address>(pool.token1)).decimals,
-        18,
-        y1,
-    );
-    strategy.pool = pool.id;
-    strategy.save();
+    order = new Order(id);
+    order.lowerTick = uniV3Order.lowerTick;
+    order.upperTick = uniV3Order.upperTick;
+    order.liquidity = uniV3Order.liquidity;
+    order.tokenTvl = uniV3Order.tokenTvl;
+    order.pool = poolId;
+    order.save();
 
-    return strategy;
+    return order;
+}
+
+export function getOrderOrThrow(id: Bytes): Order {
+    let order = Order.load(id);
+    if (order !== null) return order;
+
+    throw new Error(`Could not find order with id ${id.toHex()}`);
 }
 
 export function getStrategyOrThrow(id: BigInt): Strategy {
@@ -214,42 +200,55 @@ function getOrCreateTick(poolId: Bytes, idx: i32): Tick {
 
 export function updateTicks(
     poolId: Bytes,
-    A: BigInt,
-    B: BigInt,
-    delta: BigInt,
+    order: UniV3Order,
+    removing: bool,
 ): void {
-    let lowerTick = getOrCreateTick(poolId, getTickFromEncodedRate(B));
-    lowerTick.liquidityGross = lowerTick.liquidityGross.plus(delta);
-    lowerTick.liquidityNet = lowerTick.liquidityNet.plus(delta);
+    const liquidityDelta = removing ? order.liquidity.neg() : order.liquidity;
+
+    let lowerTick = getOrCreateTick(poolId, order.lowerTick);
+    lowerTick.liquidityGross = lowerTick.liquidityGross.plus(liquidityDelta);
+    lowerTick.liquidityNet = lowerTick.liquidityNet.plus(liquidityDelta);
     lowerTick.save();
 
-    let upperTick = getOrCreateTick(poolId, getTickFromEncodedRate(B.plus(A)));
-    upperTick.liquidityGross = upperTick.liquidityGross.plus(delta);
-    upperTick.liquidityNet = upperTick.liquidityNet.minus(delta);
+    let upperTick = getOrCreateTick(poolId, order.upperTick);
+    upperTick.liquidityGross = upperTick.liquidityGross.plus(liquidityDelta);
+    upperTick.liquidityNet = upperTick.liquidityNet.minus(liquidityDelta);
     upperTick.save();
 }
 
-function decodeFloatAndTruncate(value: BigInt): BigDecimal {
-    let numerator = value.mod(CARBON_UNIT);
-    let denominator = BI_2.pow(value.div(CARBON_UNIT).toI32() as u8);
-    let out = numerator.div(denominator);
-    return BigDecimal.fromString(out.toString()).truncate(6);
-}
+export function createStrategyChange(
+    event: ethereum.Event,
+    changedStrategy: Strategy,
+    order0: UniV3Order | null,
+    order1: UniV3Order | null,
+): StrategyChange {
+    const eventId = getEventId(event);
 
-export function getTickFromEncodedRate(encodedRate: BigInt): i32 {
-    let decodedFloat = decodeFloatAndTruncate(encodedRate);
-    let decodedRate = decodedFloat.div(
-        BigDecimal.fromString(CARBON_UNIT.toString()),
-    );
-    decodedRate = decodedRate.times(decodedRate);
-    return getTickFromPrice(decodedRate);
-}
+    const strategyChange = new StrategyChange(eventId);
+    strategyChange.timestamp = event.block.timestamp;
+    strategyChange.strategyId = changedStrategy.id;
+    strategyChange.owner = changedStrategy.owner;
 
-export function getTickFromPrice(price: BigDecimal): i32 {
-    let float = parseFloat(price.toString());
-    if (float === 0.0) return 0;
+    if (order0 !== null) {
+        // no update will ever happen here, just creation
+        strategyChange.order0 = updateOrCreateOrder(
+            eventId.concat(BYTES_0),
+            changedStrategy.pool,
+            order0,
+        ).id;
+    }
 
-    return NativeMath.round(
-        NativeMath.log10(float) / NativeMath.log10(1.0001),
-    ) as i32;
+    if (order1 !== null) {
+        // no update will ever happen here, just creation
+        strategyChange.order1 = updateOrCreateOrder(
+            eventId.concat(BYTES_1),
+            changedStrategy.pool,
+            order1,
+        ).id;
+    }
+
+    strategyChange.pool = changedStrategy.pool;
+    strategyChange.save();
+
+    return strategyChange;
 }

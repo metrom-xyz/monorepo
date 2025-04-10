@@ -6,11 +6,11 @@ import { getEventId, getStrategyOrThrow } from "../commons";
 export function handleTransfer(event: Transfer): void {
     if (event.params.from == Address.zero()) return;
 
-    let strategy = getStrategyOrThrow(event.params.tokenId);
+    const strategy = getStrategyOrThrow(event.params.tokenId);
     strategy.owner = event.params.to;
     strategy.save();
 
-    let liquidityTransfer = new StrategyTransfer(getEventId(event));
+    const liquidityTransfer = new StrategyTransfer(getEventId(event));
     liquidityTransfer.timestamp = event.block.timestamp;
     liquidityTransfer.from = event.params.from;
     liquidityTransfer.to = event.params.to;
