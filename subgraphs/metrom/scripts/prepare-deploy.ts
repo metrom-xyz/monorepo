@@ -20,7 +20,7 @@ const NETWORK_NAME: Record<SupportedChain, string> = {
     [SupportedChain.Gnosis]: "gnosis",
     [SupportedChain.Telos]: "telos",
     [SupportedChain.LightLinkPhoenix]: "lightlink-phoenix",
-    [SupportedChain.Sei]: "sei",
+    [SupportedChain.Sei]: "sei-mainnet",
     [SupportedChain.Swell]: "swellchain",
 };
 
