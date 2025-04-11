@@ -75,9 +75,6 @@ export function handlePairCreated(event: PairCreated): void {
 }
 
 export function handleStrategyCreated(event: StrategyCreated): void {
-    if (event.params.order0.y.isZero() && event.params.order1.y.isZero())
-        return;
-
     const order0 = decodeOrderToUniV3(
         new EncodedOrder(
             event.params.order0.y,
