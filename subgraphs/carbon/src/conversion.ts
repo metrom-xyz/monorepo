@@ -1,11 +1,8 @@
-import { BigDecimal, BigInt, Bytes, log } from "@graphprotocol/graph-ts";
+import { BigDecimal, BigInt } from "@graphprotocol/graph-ts";
 import { BD_0 } from "./commons";
 
 const MIN_TICK = -887272;
 const MAX_TICK = 887272;
-const MAX_LIQ = BigInt.fromUnsignedBytes(
-    Bytes.fromHexString("0xffffffffffffffffffffffffffffffff"),
-);
 
 const BI_2 = BigInt.fromI32(2);
 const CARBON_UNIT = BigInt.fromI32(2).pow(48);
@@ -53,26 +50,26 @@ export class DecodedOrder {
     }
 }
 
-function decodeOrder(order: EncodedOrder): DecodedOrder {
+function decodeOrder(order: EncodedOrder): DecodedOrder | null {
+    if (order.A.isZero() && order.B.isZero()) return null;
+
     const A = decodeFloat(order.A);
-    const B = decodeFloat(order.B);
+    const B = decodeRate(decodeFloat(order.B));
+
     return new DecodedOrder(decodeRate(B), decodeRate(B.plus(A)), order.y);
 }
 
-export function calculateImpliedTick(
-    decodedRate: BigDecimal,
-    roundUp: boolean,
-): i32 {
+export function calculateImpliedTick(decodedRate: BigDecimal): i32 {
     const float = parseFloat(decodedRate.toString());
-    if (float === 0.0) return MIN_TICK - 1; // invalid rate/tick
     const tick = NativeMath.log(float) / NativeMath.log(1.0001);
-    return (roundUp ? NativeMath.ceil(tick) : NativeMath.floor(tick)) as i32;
+    return NativeMath.round(tick) as i32;
 }
 
 function calculateLConstant(order: EncodedOrder): BigInt {
-    if (order.A.isZero()) return MAX_LIQ;
+    const decodedA = decodeFloat(order.A);
+    const A = decodedA.equals(BD_0) ? BD_1 : decodedA;
     const z = BigDecimal.fromString(order.z.toString());
-    const L = z.div(decodeFloat(order.A));
+    const L = z.div(A);
     return BigInt.fromString(L.truncate(0).toString());
 }
 
@@ -100,42 +97,25 @@ export function decodeOrderToUniV3(
     isZero: bool,
 ): UniV3Order | null {
     const decodedOrder = decodeOrder(order);
-
-    const priceLow = decodedOrder.lowestRate;
-    const priceHigh = decodedOrder.highestRate;
-
-    if (priceLow.equals(BD_0) || priceHigh.equals(BD_0)) return null;
+    if (decodedOrder === null) return null;
 
     let lowerTick: i32 = 0;
     let upperTick: i32 = 0;
 
     if (isZero) {
-        lowerTick = calculateImpliedTick(priceLow, false);
-        upperTick = calculateImpliedTick(priceHigh, true);
+        lowerTick = calculateImpliedTick(decodedOrder.lowestRate);
+        upperTick = calculateImpliedTick(decodedOrder.highestRate);
     } else {
         // For buy orders, invert the prices
-        const invertedPriceLow = BD_1.div(priceHigh);
-        const invertedPriceHigh = BD_1.div(priceLow);
+        const invertedPriceLow = BD_1.div(decodedOrder.highestRate);
+        const invertedPriceHigh = BD_1.div(decodedOrder.lowestRate);
 
-        lowerTick = calculateImpliedTick(invertedPriceLow, false);
-        upperTick = calculateImpliedTick(invertedPriceHigh, true);
+        lowerTick = calculateImpliedTick(invertedPriceLow);
+        upperTick = calculateImpliedTick(invertedPriceHigh);
     }
 
-    log.warning(
-        "y: {} - z: {} - A: {} - B: {} - price low: {} - price high: {} - lower tick: {} - upper tick: {}",
-        [
-            order.y.toString(),
-            order.z.toString(),
-            order.A.toString(),
-            order.B.toString(),
-            priceLow.toString(),
-            priceHigh.toString(),
-            lowerTick.toString(),
-            upperTick.toString(),
-        ],
-    );
-
     if (lowerTick < MIN_TICK || upperTick > MAX_TICK) return null;
+    if (lowerTick == upperTick) upperTick = lowerTick + 1;
 
     return new UniV3Order(
         lowerTick,

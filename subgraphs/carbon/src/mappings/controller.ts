@@ -290,7 +290,7 @@ export function handleTokensTraded(event: TokensTraded): void {
             BigDecimal.fromString(token0Delta.abs().toString()),
         );
 
-    const newTick = calculateImpliedTick(pool.price, false);
+    const newTick = calculateImpliedTick(pool.price);
     if (pool.tick !== newTick) {
         const tickChange = new TickChange(getEventId(event));
         tickChange.timestamp = event.block.timestamp;
