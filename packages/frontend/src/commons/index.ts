@@ -23,6 +23,7 @@ import {
     sepolia,
     telos,
     lightlinkPhoenix,
+    sei,
 } from "viem/chains";
 import {
     holeskyData,
@@ -39,6 +40,7 @@ import {
     sepoliaData,
     telosData,
     lightlinkPhoenixData,
+    seiData,
 } from "./chains";
 
 export interface ChainData {
@@ -78,7 +80,7 @@ export const SUPPORTED_CHAINS: [Chain, ...Chain[]] =
               telos,
               lightlinkPhoenix,
           ]
-        : [holesky, baseSepolia, sepolia];
+        : [holesky, baseSepolia, sepolia, sei];
 
 export const TOKEN_ICONS_URL = `https://raw.githubusercontent.com/metrom-xyz/token-icons/refs/heads/main/${ENVIRONMENT === Environment.Production ? "mainnet" : "testnet"}-icons.json`;
 
@@ -97,11 +99,13 @@ export const CHAIN_DATA: Record<SupportedChain, ChainData> = {
     [SupportedChain.Gnosis]: gnosisData,
     [SupportedChain.Telos]: telosData,
     [SupportedChain.LightLinkPhoenix]: lightlinkPhoenixData,
+    [SupportedChain.Sei]: seiData,
 };
 
 export const AMM_SUPPORTS_RANGE_INCENTIVES: Record<SupportedAmm, boolean> = {
     [SupportedAmm.AlgebraIntegral]: true,
     [SupportedAmm.UniswapV3]: true,
+    [SupportedAmm.Carbon]: true,
 };
 
 // taken from https://github.com/wevm/wagmi/blob/80326815bea2f175623157f57465f9dfae1f4c5c/packages/connectors/src/safe.ts#L45

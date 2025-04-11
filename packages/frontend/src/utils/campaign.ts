@@ -10,13 +10,11 @@ import {
     LiquityV2Action,
     LiquityV2CampaignPreviewPayload,
     type BaseCampaignPreviewPayload,
-    type CampaignPayloadTokenDistributables,
     type CampaignPreviewPayload,
-    type CampaignPreviewTokenDistributables,
     type TranslationsType,
 } from "../types/common";
 import { getDistributableRewardsPercentage } from "./kpi";
-import { type Hex, encodeAbiParameters, stringToHex } from "viem";
+import { type Hex, encodeAbiParameters, stringToHex, isAddress } from "viem";
 import { CHAIN_DATA, SECONDS_IN_YEAR } from "../commons";
 import type { SupportedChain } from "@metrom-xyz/contracts";
 import { getTranslations } from "next-intl/server";
@@ -24,7 +22,12 @@ import { getTranslations } from "next-intl/server";
 export function buildCampaignDataBundle(payload: CampaignPreviewPayload) {
     if (payload instanceof AmmPoolLiquidityCampaignPreviewPayload)
         return encodeAbiParameters(
-            [{ name: "poolAddress", type: "address" }],
+            [
+                {
+                    name: "poolAddress",
+                    type: isAddress(payload.pool.id) ? "address" : "bytes32",
+                },
+            ],
             [payload.pool.id],
         );
     else if (payload instanceof LiquityV2CampaignPreviewPayload) {
