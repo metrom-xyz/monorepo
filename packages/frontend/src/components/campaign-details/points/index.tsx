@@ -44,6 +44,7 @@ export function Points({ campaign, loading }: PointsProps) {
                     loading={loading || !campaign}
                     value={formatAmount({
                         amount: campaign.distributables.amount.formatted,
+                        cutoff: false,
                     })}
                 />
                 <TextField
@@ -53,6 +54,7 @@ export function Points({ campaign, loading }: PointsProps) {
                     loading={loading || !campaign}
                     value={formatAmount({
                         amount: dailyPoints,
+                        cutoff: false,
                     })}
                 />
             </div>

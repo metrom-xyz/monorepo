@@ -35,7 +35,7 @@ export function PoolStepPreview({ chainId, tokens, fee, usdTvl }: AmmPool) {
                 </div>
             </div>
             <Typography weight="medium" size="sm" light>
-                {formatUsdAmount(usdTvl)}
+                {formatUsdAmount({ amount: usdTvl })}
             </Typography>
         </div>
     );

@@ -53,7 +53,10 @@ export function Details({ campaign, loading }: DetailsProps) {
                             size="xl"
                             label={t("tvl")}
                             loading={detailsLoading}
-                            value={formatUsdAmount(campaign.target.pool.usdTvl)}
+                            value={formatUsdAmount({
+                                amount: campaign.target.pool.usdTvl,
+                                cutoff: false,
+                            })}
                         />
                     )}
                 <TextField

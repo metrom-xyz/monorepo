@@ -62,6 +62,7 @@ export function PriceRange({ campaign }: PriceRangeProps) {
                             token1: pool.tokens[1].symbol,
                             price: formatAmount({
                                 amount: fromPrice,
+                                cutoff: false,
                             }),
                         })}
                     />
@@ -74,6 +75,7 @@ export function PriceRange({ campaign }: PriceRangeProps) {
                             token1: pool.tokens[1].symbol,
                             price: formatAmount({
                                 amount: toPrice,
+                                cutoff: false,
                             }),
                         })}
                     />

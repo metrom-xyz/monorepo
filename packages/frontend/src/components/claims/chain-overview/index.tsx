@@ -322,7 +322,9 @@ export function ChainOverview({
                     {chainWithRewardsData.chainData.name}
                 </Typography>
                 <Typography size="xl2" weight="medium" light>
-                    {formatUsdAmount(chainWithRewardsData.totalUsdValue)}
+                    {formatUsdAmount({
+                        amount: chainWithRewardsData.totalUsdValue,
+                    })}
                 </Typography>
             </div>
             <div className={styles.buttonsWrapper}>

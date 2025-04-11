@@ -126,7 +126,9 @@ export function Reward({
                     />
                     <Typography weight="medium" light size="xs">
                         {reward.amount.usdValue
-                            ? formatUsdAmount(reward.amount.usdValue)
+                            ? formatUsdAmount({
+                                  amount: reward.amount.usdValue,
+                              })
                             : "-"}
                     </Typography>
                 </div>

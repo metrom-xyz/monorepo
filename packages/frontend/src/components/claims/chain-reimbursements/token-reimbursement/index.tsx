@@ -211,10 +211,11 @@ export function TokenReimbursement({
                         })}
                     </Typography>
                     <Typography size="sm" weight="medium" light>
-                        {formatUsdAmount(
-                            tokenReimbursements.totalAmount *
+                        {formatUsdAmount({
+                            amount:
+                                tokenReimbursements.totalAmount *
                                 tokenReimbursements.token.usdPrice,
-                        )}
+                        })}
                     </Typography>
                 </div>
             </div>

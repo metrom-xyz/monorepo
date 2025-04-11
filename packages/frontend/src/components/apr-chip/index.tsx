@@ -37,7 +37,7 @@ export function AprChip({
 
     return (
         <>
-            {apr && (
+            {apr !== undefined && apr > 0 && (
                 <div
                     className={classNames(styles.root, className, {
                         [styles.witkKpi]: kpi,

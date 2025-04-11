@@ -439,7 +439,9 @@ export function KpiSimulationChart({
                         />
                     }
                     ticks={sortedSignificantUsdTvls.slice(1, 4)}
-                    tickFormatter={(value) => formatUsdAmount(value)}
+                    tickFormatter={(value) =>
+                        formatUsdAmount({ amount: value })
+                    }
                     domain={[
                         sortedSignificantUsdTvls[0],
                         sortedSignificantUsdTvls[4],

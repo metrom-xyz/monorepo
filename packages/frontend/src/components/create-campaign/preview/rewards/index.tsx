@@ -93,7 +93,9 @@ export function Rewards({ rewards, startDate, endDate }: RewardsProps) {
                             </Typography>
                         </div>
                         <Typography weight="medium" light size="lg">
-                            {formatUsdAmount(reward.amount.usdValue || 0)}
+                            {formatUsdAmount({
+                                amount: reward.amount.usdValue || 0,
+                            })}
                         </Typography>
                         <Typography weight="medium" size="xl">
                             {formatAmount({
@@ -108,13 +110,13 @@ export function Rewards({ rewards, startDate, endDate }: RewardsProps) {
                     boxed
                     size="xl"
                     label={t("daily")}
-                    value={formatUsdAmount(dailyRewards)}
+                    value={formatUsdAmount({ amount: dailyRewards })}
                 />
                 <TextField
                     boxed
                     size="xl"
                     label={t("total")}
-                    value={formatUsdAmount(totalRewardsUsdAmount)}
+                    value={formatUsdAmount({ amount: totalRewardsUsdAmount })}
                 />
                 {resolvedFee && (
                     <TextField
@@ -129,10 +131,12 @@ export function Rewards({ rewards, startDate, endDate }: RewardsProps) {
                                     })}
                                 </Typography>
                                 <Typography weight="medium" light>
-                                    {formatUsdAmount(
-                                        (totalRewardsUsdAmount * resolvedFee) /
+                                    {formatUsdAmount({
+                                        amount:
+                                            (totalRewardsUsdAmount *
+                                                resolvedFee) /
                                             FEE_UNIT,
-                                    )}
+                                    })}
                                 </Typography>
                             </div>
                         }

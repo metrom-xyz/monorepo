@@ -202,10 +202,11 @@ export function TokenClaim({
                         {formatAmount({ amount: tokenClaims.totalAmount })}
                     </Typography>
                     <Typography size="sm" weight="medium" light>
-                        {formatUsdAmount(
-                            tokenClaims.totalAmount *
+                        {formatUsdAmount({
+                            amount:
+                                tokenClaims.totalAmount *
                                 tokenClaims.token.usdPrice,
-                        )}
+                        })}
                     </Typography>
                 </div>
             </div>

@@ -12,7 +12,10 @@ export function PointsBreakdown({ distributed }: PointsBreakdownProps) {
     return (
         <div className={styles.rankWrapper}>
             <Typography weight="medium" light>
-                {formatAmount({ amount: distributed.formatted })}
+                {formatAmount({
+                    amount: distributed.formatted,
+                    cutoff: false,
+                })}
             </Typography>
         </div>
     );

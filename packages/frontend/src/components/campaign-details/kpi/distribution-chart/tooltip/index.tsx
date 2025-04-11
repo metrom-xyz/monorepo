@@ -89,11 +89,13 @@ export function TooltipContent({ chain, active, payload }: TooltipProps) {
                     <Typography weight="medium">
                         {formatAmount({
                             amount: distributed.formatted,
+                            cutoff: false,
                         })}
                     </Typography>
                     <Typography weight="medium">
                         {formatAmount({
                             amount: reimbursed.formatted,
+                            cutoff: false,
                         })}
                     </Typography>
                 </div>

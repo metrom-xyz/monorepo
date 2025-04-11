@@ -43,7 +43,7 @@ export function Pool({ pool, chain, onClick }: PoolProps) {
                 </div>
             </div>
             <Typography weight="medium" size="sm" light>
-                {formatUsdAmount(pool.usdTvl)}
+                {formatUsdAmount({ amount: pool.usdTvl })}
             </Typography>
         </div>
     );

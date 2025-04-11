@@ -77,7 +77,7 @@ export function TvlTick({
                 fontSize={12}
                 className={styles.axis}
             >
-                {formatUsdAmount(payload.value)}
+                {formatUsdAmount({ amount: payload.value })}
             </text>
         </g>
     );

@@ -61,12 +61,16 @@ export function Rewards({ campaign, loading }: RewardsProps) {
                         </div>
                         <Typography uppercase weight="medium" light>
                             {reward.amount.usdValue
-                                ? formatUsdAmount(reward.amount.usdValue)
+                                ? formatUsdAmount({
+                                      amount: reward.amount.usdValue,
+                                      cutoff: false,
+                                  })
                                 : "-"}
                         </Typography>
                         <Typography uppercase weight="medium" size="lg">
                             {formatAmount({
                                 amount: reward.amount.formatted,
+                                cutoff: false,
                             })}
                         </Typography>
                     </div>
@@ -78,16 +82,20 @@ export function Rewards({ campaign, loading }: RewardsProps) {
                     size="xl"
                     label={t("daily")}
                     loading={loading}
-                    value={formatUsdAmount(dailyRewards)}
+                    value={formatUsdAmount({
+                        amount: dailyRewards,
+                        cutoff: false,
+                    })}
                 />
                 <TextField
                     boxed
                     size="xl"
                     label={t("total")}
                     loading={loading}
-                    value={formatUsdAmount(
-                        campaign.distributables.amountUsdValue,
-                    )}
+                    value={formatUsdAmount({
+                        amount: campaign.distributables.amountUsdValue,
+                        cutoff: false,
+                    })}
                 />
             </div>
         </div>
