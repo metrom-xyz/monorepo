@@ -172,7 +172,9 @@ export function getPoolLpTokenAddressOrThrow(poolAddress: Address): Address {
     let lpTokenAddress = LEGACY_POOL_LP_TOKEN.get(poolAddress);
     if (lpTokenAddress !== null) return lpTokenAddress;
 
-    return changetype<Address>(getPoolOrThrow(poolAddress).lpToken);
+    return changetype<Address>(
+        Address.fromHexString(getPoolOrThrow(poolAddress).lpToken._id),
+    );
 }
 
 export function fetchTokenSymbol(address: Address): string | null {

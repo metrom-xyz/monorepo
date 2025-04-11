@@ -1,0 +1,75 @@
+type Token @entity(immutable: true) {
+    id: Bytes!
+    name: String!
+    symbol: String!
+    decimals: Int!
+}
+
+type Controller @entity {
+    id: Bytes!
+    fee: Int!
+}
+
+type Pool @entity {
+    id: Bytes!
+    onChainId: BigInt!
+    token0: Token!
+    token0Tvl: BigInt!
+    token1: Token!
+    token1Tvl: BigInt!
+    tick: Int!
+    price: BigDecimal!
+    liquidity: BigInt!
+    controller: Controller!
+}
+
+type Order @entity {
+    id: Bytes!
+    lowerTick: Int!
+    upperTick: Int!
+    liquidity: BigInt!
+    tokenTvl: BigInt!
+    pool: Pool!
+}
+
+type Strategy @entity {
+    id: Bytes!
+    owner: Bytes!
+    order0: Order
+    order1: Order
+    pool: Pool!
+}
+
+type StrategyChange @entity(immutable: true) {
+    id: Bytes!
+    timestamp: BigInt!
+    strategyId: Bytes!
+    owner: Bytes!
+    order0: Order
+    order1: Order
+    pool: Pool!
+}
+
+type StrategyTransfer @entity(immutable: true) {
+    id: Bytes!
+    timestamp: BigInt!
+    from: Bytes!
+    to: Bytes!
+    strategyId: Bytes!
+    pool: Pool!
+}
+
+type TickChange @entity(immutable: true) {
+    id: Bytes!
+    timestamp: BigInt!
+    pool: Pool!
+    newTick: Int!
+}
+
+type Tick @entity {
+    id: Bytes!
+    idx: Int!
+    pool: Pool!
+    liquidityGross: BigInt!
+    liquidityNet: BigInt!
+}
