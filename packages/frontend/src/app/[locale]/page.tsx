@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import { Campaigns } from "@/src/components/campaigns";
 
 export const metadata = {
@@ -8,5 +9,9 @@ export const metadata = {
 };
 
 export default function HomePage() {
-    return <Campaigns />;
+    return (
+        <Suspense>
+            <Campaigns />
+        </Suspense>
+    );
 }

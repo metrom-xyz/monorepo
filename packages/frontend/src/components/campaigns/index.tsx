@@ -22,7 +22,7 @@ import {
 import { SearchIcon } from "@/src/assets/search-icon";
 import { useDebounce } from "react-use";
 import { filterCampaigns, sortCampaigns } from "@/src/utils/filtering";
-import { useRouter, usePathname } from "next/navigation";
+import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import { useRouter as useLocalizedRouter } from "@/i18n/routing";
 import { SupportedChain } from "@metrom-xyz/contracts";
 import { useChains } from "wagmi";
@@ -79,6 +79,7 @@ export function Campaigns() {
     const router = useRouter();
     const localizedRouter = useLocalizedRouter();
     const pathname = usePathname();
+    const searchParams = useSearchParams();
 
     const [search, setSearch] = useState("");
     const [status, setStatus] = useState<FilterableStatus>(
@@ -113,10 +114,15 @@ export function Campaigns() {
     }, [t]);
 
     const chainOptions = useMemo(() => {
-        const options = [
+        const options: {
+            label: string;
+            value: number;
+            query: string | null;
+        }[] = [
             {
                 label: t("filters.chain.all"),
                 value: CHAIN_ALL,
+                query: null,
             },
         ];
         for (const chain of chains) {
@@ -125,6 +131,7 @@ export function Campaigns() {
             options.push({
                 label: name,
                 value: chain.id,
+                query: name.toLowerCase().replaceAll(" ", "-"),
             });
         }
         return options;
@@ -160,6 +167,25 @@ export function Campaigns() {
         }
     }, [pageNumber, pathname, router, totalPages]);
 
+    useEffect(() => {
+        const chain = searchParams.get("chain");
+        if (chain) {
+            const resolvedChain = chainOptions.find(
+                (option) => option.query === chain,
+            );
+
+            const params = new URLSearchParams(searchParams.toString());
+            if (resolvedChain?.query) {
+                setChain(resolvedChain.value);
+                params.set("chain", resolvedChain.query);
+            } else {
+                setChain(CHAIN_ALL);
+                params.delete("chain");
+            }
+            router.replace(`${pathname}?${params.toString()}`);
+        }
+    }, [searchParams, pathname, router, chainOptions]);
+
     function handleSearchChange(event: ChangeEvent<HTMLInputElement>) {
         setSearch(event.target.value);
     }
@@ -171,9 +197,16 @@ export function Campaigns() {
         [],
     );
 
-    const handleChainChange = useCallback((chain: SelectOption<number>) => {
-        setChain(chain.value);
-    }, []);
+    const handleChainChange = useCallback(
+        (chain: SelectOption<number> & { query: string | null }) => {
+            setChain(chain.value);
+            const params = new URLSearchParams(searchParams.toString());
+            if (!chain.query) params.delete("chain");
+            else params.set("chain", chain.query);
+            router.replace(`${pathname}?${params.toString()}`);
+        },
+        [pathname, router, searchParams],
+    );
 
     function handlePreviousPage() {
         setPageNumber((page) => page - 1);
