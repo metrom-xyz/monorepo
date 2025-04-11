@@ -7,7 +7,7 @@ const HUMANIZE_PERCENTAGE_CUTOFF = 100_000;
 export function formatUsdAmount(amount?: number | null): string {
     if (amount && amount < 0.01) return "$<0.01";
     return numeral(amount).format(
-        `($0,0.0[0]${amount && amount > HUMANIZE_AMOUNT_CUTOFF ? "a" : ""})`,
+        `($0,0.0[0]${amount && amount >= HUMANIZE_AMOUNT_CUTOFF ? "a" : ""})`,
     );
 }
 
