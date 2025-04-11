@@ -201,10 +201,10 @@ export default async function Image({ params }: CampaignDetailsPageProps) {
                                 value={
                                     <div tw="flex items-center justify-between">
                                         <span tw="text-[30px]">
-                                            {formatUsdAmount(
-                                                campaign.distributables
+                                            {formatUsdAmount({
+                                                amount: campaign.distributables
                                                     .amountUsdValue,
-                                            )}
+                                            })}
                                         </span>
                                         <div
                                             tw="relative flex"

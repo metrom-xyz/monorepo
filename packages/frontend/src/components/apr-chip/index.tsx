@@ -37,7 +37,7 @@ export function AprChip({
 
     return (
         <>
-            {apr !== undefined && apr > 0 && (
+            {apr !== undefined && (
                 <div
                     className={classNames(styles.root, className, {
                         [styles.witkKpi]: kpi,
@@ -63,7 +63,7 @@ export function AprChip({
                     </div>
                 </div>
             )}
-            {!apr && placeholder && (
+            {apr === undefined && placeholder && (
                 <Typography
                     size={sizes[size][1]}
                     className={styles.empty}
