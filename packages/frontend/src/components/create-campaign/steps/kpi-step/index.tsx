@@ -268,7 +268,7 @@ export function KpiStep({
                         {t("currentTvl")}
                     </Typography>
                     <Typography weight="medium" size="sm">
-                        {formatUsdAmount(pool?.usdTvl)}
+                        {formatUsdAmount({ amount: pool?.usdTvl })}
                     </Typography>
                 </div>
             </StepPreview>

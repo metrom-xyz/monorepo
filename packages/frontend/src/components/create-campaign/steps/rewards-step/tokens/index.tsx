@@ -230,7 +230,7 @@ export function RewardTokens({
                 />
                 <div className={styles.totalValueWrapper}>
                     <Typography uppercase size="xs" weight="medium" light>
-                        {formatUsdAmount(totalRewardsUsdAmount)}
+                        {formatUsdAmount({ amount: totalRewardsUsdAmount })}
                     </Typography>
                     <Typography uppercase size="xs" weight="medium" light>
                         {t("totalUsd")}

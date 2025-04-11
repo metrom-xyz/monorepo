@@ -85,7 +85,7 @@ export function Rewards({
                         {t("tooltip.totalUsdValue")}
                     </Typography>
                     <Typography size="lg" weight="medium">
-                        {formatUsdAmount(rewards.amountUsdValue)}
+                        {formatUsdAmount({ amount: rewards.amountUsdValue })}
                     </Typography>
                 </div>
             </Popover>
@@ -115,7 +115,7 @@ export function Rewards({
                 <Typography weight="medium" className={styles.textRewards}>
                     {status === Status.Ended
                         ? "-"
-                        : formatUsdAmount(perDayUsdValue)}
+                        : formatUsdAmount({ amount: perDayUsdValue })}
                 </Typography>
             </div>
         </div>

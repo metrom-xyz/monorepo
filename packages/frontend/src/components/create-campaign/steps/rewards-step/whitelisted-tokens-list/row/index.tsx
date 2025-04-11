@@ -76,10 +76,11 @@ export function Row({
                     </Typography>
                     <Typography size="xs" weight="medium" light>
                         {tokenWithBalance.balance
-                            ? formatUsdAmount(
-                                  tokenWithBalance.balance.formatted *
+                            ? formatUsdAmount({
+                                  amount:
+                                      tokenWithBalance.balance.formatted *
                                       tokenWithBalance.token.usdPrice,
-                              )
+                              })
                             : "-"}
                     </Typography>
                 </div>

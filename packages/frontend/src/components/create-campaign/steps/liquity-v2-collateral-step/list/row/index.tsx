@@ -42,11 +42,12 @@ export function Row({ action, selected, collateral, onChange }: RowProps) {
                 </Typography>
             </div>
             <Typography weight="medium" size="sm" light>
-                {formatUsdAmount(
-                    action === LiquityV2Action.Debt
-                        ? collateral.usdMintedDebt
-                        : collateral.usdStabilityPoolDebt,
-                )}
+                {formatUsdAmount({
+                    amount:
+                        action === LiquityV2Action.Debt
+                            ? collateral.usdMintedDebt
+                            : collateral.usdStabilityPoolDebt,
+                })}
             </Typography>
         </div>
     );

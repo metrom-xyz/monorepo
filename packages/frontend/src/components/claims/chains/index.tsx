@@ -50,7 +50,9 @@ export function Chains({ className, options, value, onChange }: ChainsProps) {
                                 <Typography>{option.data.name}</Typography>
                             </div>
                             <Typography weight="medium">
-                                {formatUsdAmount(option.totalUsdValue)}
+                                {formatUsdAmount({
+                                    amount: option.totalUsdValue,
+                                })}
                             </Typography>
                         </div>
                     );

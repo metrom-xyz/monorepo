@@ -354,7 +354,9 @@ export function CampaignPreview({
                                 boxed
                                 size="xl"
                                 label={t("tvl")}
-                                value={formatUsdAmount(payload.pool.usdTvl)}
+                                value={formatUsdAmount({
+                                    amount: payload.pool.usdTvl,
+                                })}
                             />
                         )}
                         {tokensCampaign && (

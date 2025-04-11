@@ -188,7 +188,9 @@ export function RewardPoints({
                 </div>
                 <hr className={styles.horizontalDivider} />
                 <Typography light weight="medium" size="xs" uppercase>
-                    {t("usdCost", { usd: formatUsdAmount(resolvedFee?.usd) })}
+                    {t("usdCost", {
+                        usd: formatUsdAmount({ amount: resolvedFee?.usd }),
+                    })}
                 </Typography>
                 <Button
                     variant="secondary"

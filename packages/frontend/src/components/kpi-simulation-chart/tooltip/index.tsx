@@ -47,7 +47,7 @@ export function TooltipContent({
                     {t("tvl")}
                 </Typography>
                 <Typography weight="medium" size={size}>
-                    {formatUsdAmount(usdTvl)}
+                    {formatUsdAmount({ amount: usdTvl })}
                 </Typography>
             </div>
             <div className={styles.row}>
@@ -55,15 +55,16 @@ export function TooltipContent({
                     {t("payout")}
                 </Typography>
                 <Typography weight="medium" size={size}>
-                    {formatUsdAmount(
-                        totalRewardsUsd *
+                    {formatUsdAmount({
+                        amount:
+                            totalRewardsUsd *
                             getDistributableRewardsPercentage(
                                 usdTvl,
                                 lowerUsdTarget,
                                 upperUsdTarget,
                                 minimumPayouPercentage,
                             ),
-                    )}
+                    })}
                 </Typography>
             </div>
             <div className={styles.row}>

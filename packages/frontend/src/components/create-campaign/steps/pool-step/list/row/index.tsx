@@ -84,7 +84,7 @@ export function Row({
                 <Skeleton width={64} size="sm" />
             ) : (
                 <Typography weight="medium" size="sm" light>
-                    {formatUsdAmount(pool.usdTvl)}
+                    {formatUsdAmount({ amount: pool.usdTvl })}
                 </Typography>
             )}
         </div>

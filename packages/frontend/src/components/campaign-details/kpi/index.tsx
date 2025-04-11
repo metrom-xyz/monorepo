@@ -81,14 +81,20 @@ export function Kpi({ campaign, loading }: KpiProps) {
                             size="xl"
                             label={t("lowerBound")}
                             loading={specificationLoading}
-                            value={formatUsdAmount(lowerUsdTarget)}
+                            value={formatUsdAmount({
+                                amount: lowerUsdTarget,
+                                cutoff: false,
+                            })}
                         />
                         <TextField
                             boxed
                             size="xl"
                             label={t("upperBound")}
                             loading={specificationLoading}
-                            value={formatUsdAmount(upperUsdTarget)}
+                            value={formatUsdAmount({
+                                amount: upperUsdTarget,
+                                cutoff: false,
+                            })}
                         />
                         <TextField
                             boxed

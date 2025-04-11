@@ -54,13 +54,13 @@ export function Kpi({
                     boxed
                     size="xl"
                     label={t("lowerBound")}
-                    value={formatUsdAmount(lowerUsdTarget)}
+                    value={formatUsdAmount({ amount: lowerUsdTarget })}
                 />
                 <TextField
                     boxed
                     size="xl"
                     label={t("upperBound")}
-                    value={formatUsdAmount(upperUsdTarget)}
+                    value={formatUsdAmount({ amount: upperUsdTarget })}
                 />
                 <TextField
                     boxed
