@@ -110,7 +110,7 @@ export function Kpi({ campaign, loading }: KpiProps) {
                         <TextField
                             boxed
                             size="xl"
-                            label={t("goalReached")}
+                            label={t("averageGoalReached")}
                             loading={specificationLoading}
                             value={
                                 campaign.status === Status.Upcoming

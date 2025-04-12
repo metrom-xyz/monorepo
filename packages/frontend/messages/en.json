@@ -433,7 +433,7 @@
             "lowerBound": "Lower bound",
             "upperBound": "Upper bound",
             "chart": "Rewards payout and APR over TVL",
-            "goalReached": "Goal reached",
+            "averageGoalReached": "Average goal reached",
             "minimumPayout": "Minimum payout",
             "charts": {
                 "distributions": "Distributions",
