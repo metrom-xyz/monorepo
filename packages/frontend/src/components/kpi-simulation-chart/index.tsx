@@ -60,6 +60,7 @@ interface KpiSimulationChartProps {
     error?: boolean;
     loading?: boolean;
     tooltipSize?: TypographySize;
+    tooltip?: boolean;
     className?: string;
 }
 
@@ -79,6 +80,7 @@ export function KpiSimulationChart({
     error,
     loading,
     tooltipSize,
+    tooltip = true,
     className,
 }: KpiSimulationChartProps) {
     const t = useTranslations("simulationChart");
@@ -310,6 +312,20 @@ export function KpiSimulationChart({
         campaignDurationSeconds,
     ]);
 
+    if (loading) {
+        return (
+            <div className={classNames("root", styles.root, className)}>
+                <div
+                    className={classNames(
+                        "emptyContainer",
+                        styles.emptyContainer,
+                        styles.loading,
+                    )}
+                ></div>
+            </div>
+        );
+    }
+
     if (
         upperUsdTarget === undefined ||
         lowerUsdTarget === undefined ||
@@ -362,27 +378,13 @@ export function KpiSimulationChart({
         );
     }
 
-    if (loading) {
-        return (
-            <div className={classNames("root", styles.root, className)}>
-                <div
-                    className={classNames(
-                        "emptyContainer",
-                        styles.emptyContainer,
-                        styles.loading,
-                    )}
-                ></div>
-            </div>
-        );
-    }
-
     return (
         <ResponsiveContainer
             ref={chartRef}
             width="100%"
             height="100%"
             minHeight={270}
-            className={classNames("container", styles.container)}
+            className={classNames("container", styles.container, className)}
         >
             <ComposedChart
                 data={chartData}
@@ -558,19 +560,23 @@ export function KpiSimulationChart({
                     </>
                 )}
 
-                <Tooltip
-                    isAnimationActive={false}
-                    content={
-                        <TooltipContent
-                            size={tooltipSize}
-                            lowerUsdTarget={lowerUsdTarget}
-                            upperUsdTarget={upperUsdTarget}
-                            totalRewardsUsd={totalRewardsUsd}
-                            minimumPayouPercentage={minimumPayoutPercentage}
-                        />
-                    }
-                    cursor={<TooltipCursor totalRewardsUsd={totalRewardsUsd} />}
-                />
+                {tooltip && (
+                    <Tooltip
+                        isAnimationActive={false}
+                        content={
+                            <TooltipContent
+                                size={tooltipSize}
+                                lowerUsdTarget={lowerUsdTarget}
+                                upperUsdTarget={upperUsdTarget}
+                                totalRewardsUsd={totalRewardsUsd}
+                                minimumPayouPercentage={minimumPayoutPercentage}
+                            />
+                        }
+                        cursor={
+                            <TooltipCursor totalRewardsUsd={totalRewardsUsd} />
+                        }
+                    />
+                )}
             </ComposedChart>
         </ResponsiveContainer>
     );

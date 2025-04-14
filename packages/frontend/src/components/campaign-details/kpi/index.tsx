@@ -142,7 +142,6 @@ export function Kpi({ campaign, loading }: KpiProps) {
                                 minimumPayoutPercentage={
                                     minimumPayoutPercentage
                                 }
-                                className={styles.chartContainer}
                             />
                         </div>
                     </Card>
