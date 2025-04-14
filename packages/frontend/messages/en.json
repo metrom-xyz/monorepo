@@ -58,7 +58,10 @@
             "rewards": "Daily rewards"
         },
         "apr": {
-            "templateText": "This campaign has KPI set. The rewards start distributing when the TVL of the pool is {lowerBound} and has possibility to earn APR up to {maxApr} at the target TVL of {upperBound}."
+            "preview": {
+                "title": "This campaign has KPI set",
+                "description": "The KPI rewards start distributing when the TVL of the pool is <bold>{lowerBound}</bold> and has possibility to earn APR up to <apr>{maxApr}</apr> at the target TVL of <bold>{upperBound}</bold>."
+            }
         },
         "pool": {
             "range": "Range"
