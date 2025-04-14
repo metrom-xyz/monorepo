@@ -1,7 +1,7 @@
 @reference "../../../../app.css";
 
 .root {
-    @apply w-full;
+    @apply w-fit;
 }
 
 .aprWrapper {
@@ -9,7 +9,19 @@
 }
 
 .popoverContent {
-    @apply flex flex-col gap-2 w-full max-w-[450px] p-2;
+    @apply flex flex-col gap-2 w-[450px] p-2;
+}
+
+.boldText {
+    @apply text-black dark:text-white font-bold;
+}
+
+.skeletonDescription {
+    @apply h-12;
+}
+
+.aprText {
+    @apply bg-carrot-orange text-white rounded-md px-1 font-bold;
 }
 
 .chartWrapper {

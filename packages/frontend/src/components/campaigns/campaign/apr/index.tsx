@@ -2,7 +2,7 @@
 
 import { Popover, Skeleton, Typography } from "@metrom-xyz/ui";
 import { AprChip } from "@/src/components/apr-chip";
-import { useMemo, useRef, useState } from "react";
+import React, { useMemo, useRef, useState } from "react";
 import { type Hex } from "viem";
 import { useCampaign } from "@/src/hooks/useCampaign";
 import { KpiSimulationChart } from "@/src/components/kpi-simulation-chart";
@@ -28,6 +28,7 @@ export function Apr({ campaignId, chainId, apr, kpi }: AprProps) {
     const [popover, setPopover] = useState(false);
     const [anchor, setAnchor] = useState<HTMLDivElement | null>(null);
     const popoverRef = useRef<HTMLDivElement>(null);
+    const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
     const { loading: loadingCampaign, campaign } = useCampaign({
         id: campaignId,
@@ -76,76 +77,84 @@ export function Apr({ campaignId, chainId, apr, kpi }: AprProps) {
     function handlePopoverOpen() {
         if (apr === undefined) return;
         setPopover(true);
+        if (timeoutRef.current) clearTimeout(timeoutRef.current);
     }
 
     function handlePopoverClose() {
-        if (apr === undefined) return;
-        setPopover(false);
+        // Used to keep the popover open while moving to it
+        timeoutRef.current = setTimeout(() => {
+            setPopover(false);
+        }, 100);
     }
 
     const loading = loadingCampaign || loadingPool || !campaign || !pool;
+    const lowerBound = campaign?.specification?.kpi?.goal.lowerUsdTarget;
+    const upperBound = campaign?.specification?.kpi?.goal.upperUsdTarget;
+    const minimumPayout = campaign?.specification?.kpi?.minimumPayoutPercentage;
 
     return (
-        <div className={styles.root}>
-            <Popover
-                placement="left"
-                anchor={anchor}
-                open={popover}
-                ref={popoverRef}
-            >
-                {campaign && tokensCampaign && kpi && maxApr && (
-                    <div className={styles.popoverContent}>
-                        <Typography size="sm" weight="medium">
-                            {t("templateText", {
-                                lowerBound: formatUsdAmount({
-                                    amount:
-                                        campaign.specification?.kpi?.goal
-                                            .lowerUsdTarget || 0,
-                                }),
-                                upperBound: formatUsdAmount({
-                                    amount:
-                                        campaign.specification?.kpi?.goal
-                                            .upperUsdTarget || 0,
-                                }),
-                                maxApr: formatPercentage({
-                                    percentage: maxApr,
-                                }),
-                            })}
-                        </Typography>
-                        <div className={styles.chartWrapper}>
-                            <KpiSimulationChart
-                                loading={loading}
-                                poolUsdTvl={pool?.usdTvl}
-                                tooltip={false}
-                                campaignDurationSeconds={
-                                    campaign.to - campaign.from
-                                }
-                                totalRewardsUsd={
-                                    campaign.distributables.amountUsdValue
-                                }
-                                lowerUsdTarget={
-                                    campaign.specification?.kpi?.goal
-                                        .lowerUsdTarget
-                                }
-                                upperUsdTarget={
-                                    campaign.specification?.kpi?.goal
-                                        .upperUsdTarget
-                                }
-                                minimumPayoutPercentage={
-                                    campaign.specification?.kpi
-                                        ?.minimumPayoutPercentage
-                                }
-                            />
+        <div
+            onMouseEnter={handlePopoverOpen}
+            onMouseLeave={handlePopoverClose}
+            className={styles.root}
+        >
+            <div ref={setAnchor}>
+                <Popover
+                    placement="left"
+                    anchor={anchor}
+                    open={popover}
+                    ref={popoverRef}
+                >
+                    {loading ? (
+                        <SkeletonPopover />
+                    ) : tokensCampaign && kpi && maxApr ? (
+                        <div className={styles.popoverContent}>
+                            <Typography size="sm" weight="medium" uppercase>
+                                {t("preview.title")}
+                            </Typography>
+                            <Typography size="sm" weight="medium" light>
+                                {t.rich("preview.description", {
+                                    lowerBound: formatUsdAmount({
+                                        amount: lowerBound,
+                                    }),
+                                    upperBound: formatUsdAmount({
+                                        amount: upperBound,
+                                    }),
+                                    maxApr: formatPercentage({
+                                        percentage: maxApr,
+                                    }),
+                                    bold: (chunks) => (
+                                        <span className={styles.boldText}>
+                                            {chunks}
+                                        </span>
+                                    ),
+                                    apr: (chunks) => (
+                                        <span className={styles.aprText}>
+                                            {chunks}
+                                        </span>
+                                    ),
+                                })}
+                            </Typography>
+                            <div className={styles.chartWrapper}>
+                                <KpiSimulationChart
+                                    loading={loading}
+                                    poolUsdTvl={pool.usdTvl}
+                                    campaignDurationSeconds={
+                                        campaign.to - campaign.from
+                                    }
+                                    totalRewardsUsd={
+                                        campaign.distributables.amountUsdValue
+                                    }
+                                    lowerUsdTarget={lowerBound}
+                                    upperUsdTarget={upperBound}
+                                    minimumPayoutPercentage={minimumPayout}
+                                />
+                            </div>
                         </div>
-                    </div>
-                )}
-            </Popover>
-            <div
-                ref={setAnchor}
-                onMouseOver={handlePopoverOpen}
-                onMouseLeave={handlePopoverClose}
-                className={styles.aprWrapper}
-            >
+                    ) : null}
+                </Popover>
+            </div>
+            <div className={styles.aprWrapper}>
                 <AprChip apr={apr} kpi={kpi} placeholder />
             </div>
         </div>
@@ -154,4 +163,20 @@ export function Apr({ campaignId, chainId, apr, kpi }: AprProps) {
 
 export function SkeletonApr() {
     return <Skeleton width={80} size="xl" />;
+}
+
+export function SkeletonPopover() {
+    return (
+        <div className={styles.popoverContent}>
+            <Skeleton size="sm" width={120} />
+            <Skeleton width={400} className={styles.skeletonDescription} />
+            <div className={styles.chartWrapper}>
+                <KpiSimulationChart
+                    loading={true}
+                    campaignDurationSeconds={0}
+                    totalRewardsUsd={0}
+                />
+            </div>
+        </div>
+    );
 }
