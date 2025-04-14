@@ -113,7 +113,11 @@ export function Apr({ campaignId, chainId, apr, kpi }: AprProps) {
                             <Typography size="sm" weight="medium" uppercase>
                                 {t("preview.title")}
                             </Typography>
-                            <Typography size="sm" weight="medium" light>
+                            <Typography
+                                size="sm"
+                                light
+                                className={styles.description}
+                            >
                                 {t.rich("preview.description", {
                                     lowerBound: formatUsdAmount({
                                         amount: lowerBound,

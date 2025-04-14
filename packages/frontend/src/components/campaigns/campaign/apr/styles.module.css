@@ -12,6 +12,10 @@
     @apply flex flex-col gap-2 w-[450px] p-2;
 }
 
+.description {
+    @apply leading-5;
+}
+
 .boldText {
     @apply text-black dark:text-white font-bold;
 }
