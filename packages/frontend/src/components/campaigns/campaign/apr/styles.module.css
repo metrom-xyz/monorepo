@@ -3,3 +3,15 @@
 .root {
     @apply w-full;
 }
+
+.aprWrapper {
+    @apply w-fit;
+}
+
+.popoverContent {
+    @apply flex flex-col gap-2 w-full max-w-[450px] p-2;
+}
+
+.chartWrapper {
+    @apply w-full max-w-[450px];
+}

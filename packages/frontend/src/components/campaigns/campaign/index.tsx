@@ -49,7 +49,12 @@ export function CampaignRow({ campaign }: CampaignProps) {
                     to={campaign.to}
                     status={campaign.status}
                 />
-                <Apr apr={campaign.apr} kpi={!!campaign.specification?.kpi} />
+                <Apr
+                    campaignId={campaign.id}
+                    chainId={campaign.chainId}
+                    apr={campaign.apr}
+                    kpi={!!campaign.specification?.kpi}
+                />
                 {distributesPoints && (
                     <Points
                         status={campaign.status}

@@ -33,7 +33,7 @@ export function usePool({ chainId, id, enabled = true }: UsePoolParams): {
             }
         },
         enabled: enabled && !!id,
-        staleTime: 0,
+        staleTime: 30000,
         refetchOnWindowFocus: false,
     });
 
