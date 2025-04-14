@@ -20,6 +20,10 @@
     @apply h-12;
 }
 
+.skeletonDescription :global(.skeleton) {
+    @apply rounded-xl;
+}
+
 .aprText {
     @apply bg-carrot-orange text-white rounded-md px-1 font-bold;
 }

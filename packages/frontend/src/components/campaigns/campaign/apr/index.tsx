@@ -45,6 +45,7 @@ export function Apr({ campaignId, chainId, apr, kpi }: AprProps) {
         enabled: campaign && popover && kpi !== undefined,
     });
 
+    // TODO: add support for liquityv2 campaigns once they support KPIs
     const maxApr = useMemo(() => {
         if (
             !campaign ||
@@ -75,7 +76,7 @@ export function Apr({ campaignId, chainId, apr, kpi }: AprProps) {
     }, [popover, campaign, tokensCampaign]);
 
     function handlePopoverOpen() {
-        if (apr === undefined) return;
+        if (apr === undefined || !kpi) return;
         setPopover(true);
         if (timeoutRef.current) clearTimeout(timeoutRef.current);
     }
@@ -148,6 +149,7 @@ export function Apr({ campaignId, chainId, apr, kpi }: AprProps) {
                                     lowerUsdTarget={lowerBound}
                                     upperUsdTarget={upperBound}
                                     minimumPayoutPercentage={minimumPayout}
+                                    tooltipSize="xs"
                                 />
                             </div>
                         </div>
