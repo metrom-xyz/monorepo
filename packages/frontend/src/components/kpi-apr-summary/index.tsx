@@ -35,7 +35,7 @@ export function KpiAprSummary({ campaign }: KpiAprSummaryProps) {
             });
 
         return undefined;
-    }, [campaign]);
+    }, [campaign, ammCampaign, tokensCampaign]);
 
     const lowerBound = campaign?.specification?.kpi?.goal.lowerUsdTarget;
     const upperBound = campaign?.specification?.kpi?.goal.upperUsdTarget;
