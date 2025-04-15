@@ -46,6 +46,7 @@ export function useLiquidityInRange({
             }
         },
         enabled: enabled && !!pool,
+        staleTime: 30000,
         refetchOnWindowFocus: false,
     });
 

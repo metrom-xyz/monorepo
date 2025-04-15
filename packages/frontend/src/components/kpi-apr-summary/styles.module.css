@@ -1,0 +1,13 @@
+@reference "../../app.css";
+
+.text {
+    @apply leading-5;
+}
+
+.boldText {
+    @apply text-black dark:text-white font-bold;
+}
+
+.aprText {
+    @apply bg-carrot-orange text-white rounded-md px-1 font-bold;
+}
