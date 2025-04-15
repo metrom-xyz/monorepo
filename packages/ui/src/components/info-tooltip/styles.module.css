@@ -1,0 +1,21 @@
+@reference "../../theme.css";
+
+.root {
+    @apply w-fit;
+}
+
+.popover {
+    @apply max-w-[450px];
+}
+
+.content {
+    @apply p-2;
+}
+
+.iconWrapper {
+    @apply cursor-pointer;
+}
+
+.icon {
+    @apply theme-text h-4 w-4;
+}
