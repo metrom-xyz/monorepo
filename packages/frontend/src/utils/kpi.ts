@@ -46,9 +46,8 @@ export function getChartAxisScale(
 }
 
 export function isChartAxisTickActive(value: number, scale: number) {
-    const original = Math.ceil(Math.round(value * 100) / 100);
-    const scaled = Math.ceil(Math.round(scale * 100) / 100);
-    return Math.abs(original - scaled) <= TICK_ACTIVE_PROXIMITY_THRESHOLD;
+    const proximity = Math.abs(value - scale);
+    return proximity <= TICK_ACTIVE_PROXIMITY_THRESHOLD;
 }
 
 export function getAggregatedKpiMeasurements(

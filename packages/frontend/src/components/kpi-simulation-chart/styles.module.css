@@ -21,7 +21,8 @@
         justify-center
         items-center
         rounded-2xl
-        theme-surface-2
+        bg-zinc-200
+        dark:bg-zinc-700
         transition-colors
         duration-200
         ease-in-out;
