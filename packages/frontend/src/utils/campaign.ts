@@ -4,6 +4,7 @@ import {
     DistributablesType,
     type Specification,
     type LiquidityInRange,
+    type KpiSpecification,
 } from "@metrom-xyz/sdk";
 import {
     AmmPoolLiquidityCampaignPreviewPayload,
@@ -143,33 +144,13 @@ export function getCampaignPreviewApr(
             rewardsUsdValue += reward.amount.usdValue;
         }
 
-        if (payload.kpiSpecification) {
-            rewardsUsdValue *= getDistributableRewardsPercentage(
-                payload.pool.usdTvl,
-                payload.kpiSpecification.goal.lowerUsdTarget,
-                payload.kpiSpecification.goal.upperUsdTarget,
-                payload.kpiSpecification.minimumPayoutPercentage,
-            );
-        }
-
-        let poolUsdTvl = payload.pool.usdTvl;
-        if (range) {
-            const { liquidity, activeTick } = range;
-
-            const multiplier =
-                Math.min(
-                    Number((liquidity * 1_000_000n) / activeTick.liquidity),
-                    1_000_000,
-                ) / 1_000_000;
-
-            poolUsdTvl = payload.pool.usdTvl * multiplier;
-        }
-
-        const rewardsTvlRatio = rewardsUsdValue / poolUsdTvl;
-        const yearMultiplier = SECONDS_IN_YEAR / duration;
-        const apr = rewardsTvlRatio * yearMultiplier * 100;
-
-        return apr;
+        return getAmmPoolLiquidityCampaignApr({
+            usdRewards: rewardsUsdValue,
+            duration,
+            poolUsdTvl: payload.pool.usdTvl,
+            kpiSpecification: payload.kpiSpecification,
+            range,
+        });
     }
 
     if (
@@ -202,4 +183,49 @@ export function getCampaignPreviewApr(
 
         return apr;
     }
+}
+
+export function getAmmPoolLiquidityCampaignApr({
+    duration,
+    usdRewards,
+    poolUsdTvl,
+    kpiSpecification,
+    range,
+}: {
+    duration?: number;
+    usdRewards?: number;
+    poolUsdTvl?: number;
+    kpiSpecification?: KpiSpecification;
+    range?: LiquidityInRange;
+}) {
+    if (!poolUsdTvl || !usdRewards || !duration) return undefined;
+
+    let distributableUsdRewards = usdRewards;
+    if (kpiSpecification) {
+        distributableUsdRewards *= getDistributableRewardsPercentage(
+            poolUsdTvl,
+            kpiSpecification.goal.lowerUsdTarget,
+            kpiSpecification.goal.upperUsdTarget,
+            kpiSpecification.minimumPayoutPercentage,
+        );
+    }
+
+    let totalUsdTvl = poolUsdTvl;
+    if (range) {
+        const { liquidity, activeTick } = range;
+
+        const multiplier =
+            Math.min(
+                Number((liquidity * 1_000_000n) / activeTick.liquidity),
+                1_000_000,
+            ) / 1_000_000;
+
+        totalUsdTvl = poolUsdTvl * multiplier;
+    }
+
+    const rewardsRatio = distributableUsdRewards / totalUsdTvl;
+    const yearMultiplier = SECONDS_IN_YEAR / duration;
+    const aprPercentage = rewardsRatio * yearMultiplier * 100;
+
+    return aprPercentage;
 }

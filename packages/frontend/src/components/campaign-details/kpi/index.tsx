@@ -1,4 +1,4 @@
-import { Card, TextField, Typography } from "@metrom-xyz/ui";
+import { Card, InfoTooltip, TextField, Typography } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
 import { formatPercentage, formatUsdAmount } from "@/src/utils/format";
 import {
@@ -14,6 +14,7 @@ import { KpiSimulationChart } from "../../kpi-simulation-chart";
 import { useKpiMeasurements } from "@/src/hooks/useKpiMeasurements";
 import { DistributionChart } from "./distribution-chart";
 import { AverageDistributionChart } from "./average-distribution-chart";
+import { KpiAprSummary } from "../../kpi-apr-summary";
 
 import styles from "./styles.module.css";
 
@@ -70,9 +71,14 @@ export function Kpi({ campaign, loading }: KpiProps) {
 
     return (
         <div className={styles.root}>
-            <Typography size="lg" weight="medium" uppercase>
-                {t("title")}
-            </Typography>
+            <div className={styles.titleWrapper}>
+                <Typography size="lg" weight="medium" uppercase>
+                    {t("title")}
+                </Typography>
+                <InfoTooltip>
+                    <KpiAprSummary campaign={campaign} />
+                </InfoTooltip>
+            </div>
             <div className={styles.card}>
                 <div className={styles.wrapper}>
                     <div className={styles.leftContentWrapper}>

@@ -30,6 +30,9 @@
         "home": "Back to Campaigns",
         "retry": "Try again"
     },
+    "kpiAprSummary": {
+        "ammPoolLiquidity": "The KPI rewards start distributing when the TVL of the pool is <bold>{lowerBound}</bold> and has a possibility to earn APR up to <apr>{maxApr}</apr> at the target TVL of <bold>{upperBound}</bold>."
+    },
     "allCampaigns": {
         "title": "all campaigns",
         "kpi": "KPI",
@@ -58,10 +61,7 @@
             "rewards": "Daily rewards"
         },
         "apr": {
-            "preview": {
-                "title": "This campaign has KPI set",
-                "description": "The KPI rewards start distributing when the TVL of the pool is <bold>{lowerBound}</bold> and has possibility to earn APR up to <apr>{maxApr}</apr> at the target TVL of <bold>{upperBound}</bold>."
-            }
+            "title": "This campaign has KPI set"
         },
         "pool": {
             "range": "Range"

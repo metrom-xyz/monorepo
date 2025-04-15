@@ -2,16 +2,14 @@
 
 import { Popover, Skeleton, Typography } from "@metrom-xyz/ui";
 import { AprChip } from "@/src/components/apr-chip";
-import React, { useMemo, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import { type Hex } from "viem";
 import { useCampaign } from "@/src/hooks/useCampaign";
 import { KpiSimulationChart } from "@/src/components/kpi-simulation-chart";
 import { usePool } from "@/src/hooks/usePool";
 import { DistributablesType, TargetType } from "@metrom-xyz/sdk";
 import { useTranslations } from "next-intl";
-import { formatPercentage, formatUsdAmount } from "@/src/utils/format";
-import { getDistributableRewardsPercentage } from "@/src/utils/kpi";
-import { SECONDS_IN_YEAR } from "@/src/commons";
+import { KpiAprSummary } from "@/src/components/kpi-apr-summary";
 
 import styles from "./styles.module.css";
 
@@ -44,36 +42,6 @@ export function Apr({ campaignId, chainId, apr, kpi }: AprProps) {
         chainId: campaign ? campaign.target.chainId : 0,
         enabled: campaign && popover && kpi !== undefined,
     });
-
-    // TODO: add support for liquityv2 campaigns once they support KPIs
-    const maxApr = useMemo(() => {
-        if (
-            !campaign ||
-            !campaign.specification ||
-            !campaign.specification.kpi ||
-            !popover ||
-            !tokensCampaign
-        )
-            return undefined;
-
-        const { kpi } = campaign.specification;
-
-        const distributaleRewardsPercentage = getDistributableRewardsPercentage(
-            kpi.goal.upperUsdTarget,
-            kpi.goal.lowerUsdTarget,
-            kpi.goal.upperUsdTarget,
-            kpi.minimumPayoutPercentage,
-        );
-        const distributedRewardsUsd =
-            campaign.distributables.amountUsdValue *
-            distributaleRewardsPercentage;
-
-        const rewardsRatio = distributedRewardsUsd / kpi.goal.upperUsdTarget;
-        const yearMultiplier = SECONDS_IN_YEAR / (campaign.to - campaign.from);
-        const aprPercentage = rewardsRatio * yearMultiplier * 100;
-
-        return aprPercentage;
-    }, [popover, campaign, tokensCampaign]);
 
     function handlePopoverOpen() {
         if (apr === undefined || !kpi) return;
@@ -108,38 +76,12 @@ export function Apr({ campaignId, chainId, apr, kpi }: AprProps) {
                 >
                     {loading ? (
                         <SkeletonPopover />
-                    ) : tokensCampaign && kpi && maxApr ? (
+                    ) : tokensCampaign && kpi ? (
                         <div className={styles.popoverContent}>
                             <Typography size="sm" weight="medium" uppercase>
-                                {t("preview.title")}
+                                {t("title")}
                             </Typography>
-                            <Typography
-                                size="sm"
-                                light
-                                className={styles.description}
-                            >
-                                {t.rich("preview.description", {
-                                    lowerBound: formatUsdAmount({
-                                        amount: lowerBound,
-                                    }),
-                                    upperBound: formatUsdAmount({
-                                        amount: upperBound,
-                                    }),
-                                    maxApr: formatPercentage({
-                                        percentage: maxApr,
-                                    }),
-                                    bold: (chunks) => (
-                                        <span className={styles.boldText}>
-                                            {chunks}
-                                        </span>
-                                    ),
-                                    apr: (chunks) => (
-                                        <span className={styles.aprText}>
-                                            {chunks}
-                                        </span>
-                                    ),
-                                })}
-                            </Typography>
+                            <KpiAprSummary campaign={campaign} />
                             <div className={styles.chartWrapper}>
                                 <KpiSimulationChart
                                     loading={loading}
@@ -153,6 +95,8 @@ export function Apr({ campaignId, chainId, apr, kpi }: AprProps) {
                                     lowerUsdTarget={lowerBound}
                                     upperUsdTarget={upperBound}
                                     minimumPayoutPercentage={minimumPayout}
+                                    // TODO: add liquidity in range to simulation?
+                                    // range={liquidityInRange}
                                     tooltipSize="xs"
                                 />
                             </div>
