@@ -14,6 +14,7 @@ import type { SupportedChain } from "@metrom-xyz/contracts";
 import { Card, Typography } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
 import { getAggregatedKpiMeasurements } from "@/src/utils/kpi";
+import classNames from "classnames";
 
 import styles from "./styles.module.css";
 
@@ -90,9 +91,19 @@ export function DistributionChart({
         });
     }, [kpiMeasurements, minimumPayoutPercentage]);
 
-    // TODO: add loading state?
     if (loading || !kpiMeasurements || kpiMeasurements.length === 0)
-        return null;
+        return (
+            <Card className={styles.root}>
+                <Typography weight="medium" light uppercase size="sm">
+                    {t("distributions")}
+                </Typography>
+                <div className={classNames(styles.container, styles.loading)}>
+                    {Array.from({ length: 25 }).map((_, index) => (
+                        <div key={index} className={styles.loadingBar}></div>
+                    ))}
+                </div>
+            </Card>
+        );
 
     return (
         <Card className={styles.root}>

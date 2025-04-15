@@ -11,6 +11,14 @@
     @apply h-full min-h-80;
 }
 
+.container.loading {
+    @apply flex items-end gap-2;
+}
+
+.loadingBar {
+    @apply h-80 animate-pulse theme-surface-2 w-full max-w-12 rounded-t-md;
+}
+
 .reimbursedBar {
     @apply fill-[#d1d5db] dark:fill-zinc-700;
 }
