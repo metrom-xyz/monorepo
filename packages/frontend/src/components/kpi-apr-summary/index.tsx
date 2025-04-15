@@ -47,9 +47,11 @@ export function KpiAprSummary({ campaign }: KpiAprSummaryProps) {
             {t.rich("ammPoolLiquidity", {
                 lowerBound: formatUsdAmount({
                     amount: lowerBound,
+                    cutoff: false,
                 }),
                 upperBound: formatUsdAmount({
                     amount: upperBound,
+                    cutoff: false,
                 }),
                 maxApr: formatPercentage({
                     percentage: maxApr,
