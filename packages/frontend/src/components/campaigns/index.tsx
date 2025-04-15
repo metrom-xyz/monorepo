@@ -182,9 +182,8 @@ export function Campaigns() {
                 setChain(CHAIN_ALL);
                 params.delete("chain");
             }
-            router.replace(`${pathname}?${params.toString()}`);
         }
-    }, [searchParams, pathname, router, chainOptions]);
+    }, [searchParams, pathname, chainOptions]);
 
     function handleSearchChange(event: ChangeEvent<HTMLInputElement>) {
         setSearch(event.target.value);
