@@ -11,6 +11,7 @@ interface TvlTickProps {
     payload?: {
         value?: number;
     };
+    index?: number;
     x?: number;
     y?: number;
 }
@@ -24,11 +25,13 @@ export function TvlTick({
     lowerBoundScale,
     upperBoundScale,
     payload,
+    index,
     y,
     x,
 }: TvlTickProps) {
     const textAnchor = useMemo(() => {
         if (
+            index === undefined ||
             x === undefined ||
             poolTvlScale === undefined ||
             lowerBoundScale === undefined ||
@@ -48,16 +51,20 @@ export function TvlTick({
             upperBoundScale - lowerBoundScale <= TICK_PROXIMITY_THRESHOLD;
 
         if (closeBounds) {
+            if (lowerBound && upperBound)
+                return index % 2 === 0 ? "end" : "start";
             if (lowerBound) return "end";
             if (upperBound) return "start";
         }
 
         if (closeToLowerBound) {
+            if (poolTvl && lowerBound) return index % 2 === 0 ? "end" : "start";
             if (poolTvl) return x <= lowerBoundScale ? "end" : "start";
             if (lowerBound) return x <= poolTvlScale ? "end" : "start";
         }
 
         if (closeToUpperBound) {
+            if (poolTvl && upperBound) return index % 2 === 0 ? "start" : "end";
             if (poolTvl) return x >= upperBoundScale ? "start" : "end";
             if (upperBound) return x >= poolTvlScale ? "start" : "end";
         }
