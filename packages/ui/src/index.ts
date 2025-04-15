@@ -5,6 +5,7 @@ export * from "./components/chip";
 export * from "./components/date-picker";
 export * from "./components/date-time-picker";
 export * from "./components/error-text";
+export * from "./components/info-tooltip";
 export * from "./components/modal";
 export * from "./components/pagination";
 export * from "./components/pool-remote-logo";

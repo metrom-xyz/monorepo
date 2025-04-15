@@ -38,6 +38,7 @@ const preview: Preview = {
                         "Typography",
                         "Text field",
                         "Error text",
+                        "Info tooltip",
                         "Chip",
                         "Card",
                         "Remote logo",
