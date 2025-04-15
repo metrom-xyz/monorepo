@@ -1,9 +1,9 @@
 import { useRef, useState, type ReactNode } from "react";
 import { Popover } from "../popover";
 import { Info } from "../../assets/info";
+import classNames from "classnames";
 
 import styles from "./styles.module.css";
-import classNames from "classnames";
 
 export interface InfoTooltipProps {
     trigger?: "hover" | "click";
