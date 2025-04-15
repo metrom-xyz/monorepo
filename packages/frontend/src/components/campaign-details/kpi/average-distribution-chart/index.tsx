@@ -8,7 +8,8 @@ import classNames from "classnames";
 import styles from "./styles.module.css";
 
 interface AverageDistributionChartProps {
-    kpiMeasurementPercentage: number;
+    loading?: boolean;
+    kpiMeasurementPercentage?: number;
     minimumPayoutPercentage?: number;
 }
 
@@ -19,12 +20,15 @@ interface ChartData {
 }
 
 export function AverageDistributionChart({
+    loading,
     kpiMeasurementPercentage,
     minimumPayoutPercentage = 0,
 }: AverageDistributionChartProps) {
     const t = useTranslations("campaignDetails.kpi.charts");
 
     const chartData = useMemo(() => {
+        if (!kpiMeasurementPercentage) return undefined;
+
         const normalizedKpiMeasurementPercentage = Math.max(
             Math.min(kpiMeasurementPercentage, 1),
             0,
@@ -59,36 +63,42 @@ export function AverageDistributionChart({
             <Typography uppercase weight="medium" light size="sm">
                 {t("averageDistribution")}
             </Typography>
-            <div className={styles.chartWrapper}>
-                <PieChart height={250} width={250}>
-                    <Pie
-                        dataKey="value"
-                        animationEasing="ease-in-out"
-                        animationDuration={500}
-                        cornerRadius={6}
-                        data={chartData}
-                        innerRadius={70}
-                        outerRadius={120}
-                        startAngle={90}
-                        endAngle={450}
-                        minAngle={5}
-                    >
-                        {chartData.map((entry, index) => (
-                            <Cell
-                                key={`cell-${index}`}
-                                strokeWidth={5}
-                                className={classNames(styles.cell, {
-                                    [styles[entry.type]]: true,
-                                })}
-                            />
-                        ))}
-                    </Pie>
-                    <Tooltip
-                        active
-                        defaultIndex={0}
-                        content={<RankTooltip />}
-                    />
-                </PieChart>
+            <div
+                className={classNames(styles.chartWrapper, {
+                    [styles.loading]: !chartData || loading,
+                })}
+            >
+                {chartData && !loading && (
+                    <PieChart height={250} width={250}>
+                        <Pie
+                            dataKey="value"
+                            animationEasing="ease-in-out"
+                            animationDuration={500}
+                            cornerRadius={6}
+                            data={chartData}
+                            innerRadius={70}
+                            outerRadius={120}
+                            startAngle={90}
+                            endAngle={450}
+                            minAngle={5}
+                        >
+                            {chartData.map((entry, index) => (
+                                <Cell
+                                    key={`cell-${index}`}
+                                    strokeWidth={5}
+                                    className={classNames(styles.cell, {
+                                        [styles[entry.type]]: true,
+                                    })}
+                                />
+                            ))}
+                        </Pie>
+                        <Tooltip
+                            active
+                            defaultIndex={0}
+                            content={<RankTooltip />}
+                        />
+                    </PieChart>
+                )}
             </div>
         </Card>
     );

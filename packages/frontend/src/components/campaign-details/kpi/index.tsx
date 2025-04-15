@@ -152,23 +152,21 @@ export function Kpi({ campaign, loading }: KpiProps) {
                         </div>
                     </Card>
                 </div>
-                {measurement && (
-                    <div className={styles.distributionChartsWrapper}>
-                        <DistributionChart
-                            chain={campaign.chainId}
-                            loading={loadingKpiMeasurements}
-                            kpiMeasurements={kpiMeasurements}
-                            minimumPayoutPercentage={minimumPayoutPercentage}
-                        />
-                        <AverageDistributionChart
-                            kpiMeasurementPercentage={measurement}
-                            minimumPayoutPercentage={
-                                campaign.specification.kpi
-                                    .minimumPayoutPercentage
-                            }
-                        />
-                    </div>
-                )}
+                <div className={styles.distributionChartsWrapper}>
+                    <DistributionChart
+                        chain={campaign.chainId}
+                        loading={loadingKpiMeasurements}
+                        kpiMeasurements={kpiMeasurements}
+                        minimumPayoutPercentage={minimumPayoutPercentage}
+                    />
+                    <AverageDistributionChart
+                        loading={loadingKpiMeasurements}
+                        kpiMeasurementPercentage={measurement}
+                        minimumPayoutPercentage={
+                            campaign.specification.kpi.minimumPayoutPercentage
+                        }
+                    />
+                </div>
             </div>
         </div>
     );
