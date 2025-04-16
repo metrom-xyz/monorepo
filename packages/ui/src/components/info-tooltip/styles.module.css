@@ -5,7 +5,7 @@
 }
 
 .popover {
-    @apply max-w-[450px];
+    @apply max-w-64 md:max-w-[450px];
 }
 
 .content {

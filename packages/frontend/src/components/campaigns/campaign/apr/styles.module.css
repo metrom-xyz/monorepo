@@ -1,7 +1,7 @@
 @reference "../../../../app.css";
 
 .root {
-    @apply w-fit;
+    @apply w-fit pointer-events-none md:pointer-events-auto;
 }
 
 .aprWrapper {
@@ -17,7 +17,7 @@
 }
 
 .skeletonDescription {
-    @apply h-12;
+    @apply h-[60px];
 }
 
 .skeletonDescription :global(.skeleton) {
