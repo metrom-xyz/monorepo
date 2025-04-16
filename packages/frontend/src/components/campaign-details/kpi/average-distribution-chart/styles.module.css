@@ -34,6 +34,10 @@
         ease-in-out;
 }
 
+.chartWrapper.empty {
+    @apply flex-col gap-2 bg-transparent;
+}
+
 .loading {
     @apply animate-pulse theme-bg;
 }
