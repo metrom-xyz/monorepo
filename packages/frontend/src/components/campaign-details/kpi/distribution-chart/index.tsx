@@ -15,6 +15,7 @@ import { Card, Typography } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
 import { getAggregatedKpiMeasurements } from "@/src/utils/kpi";
 import classNames from "classnames";
+import { NoDistributionsIcon } from "@/src/assets/no-distributions-icon";
 
 import styles from "./styles.module.css";
 
@@ -91,7 +92,7 @@ export function DistributionChart({
         });
     }, [kpiMeasurements, minimumPayoutPercentage]);
 
-    if (loading || !kpiMeasurements || kpiMeasurements.length === 0)
+    if (loading)
         return (
             <Card className={styles.root}>
                 <Typography weight="medium" light uppercase size="sm">
@@ -104,6 +105,22 @@ export function DistributionChart({
                 </div>
             </Card>
         );
+
+    if (!kpiMeasurements || kpiMeasurements.length === 0) {
+        return (
+            <Card className={styles.root}>
+                <Typography weight="medium" light uppercase size="sm">
+                    {t("distributions")}
+                </Typography>
+                <div className={classNames(styles.container, styles.empty)}>
+                    <NoDistributionsIcon />
+                    <Typography uppercase weight="medium" size="sm">
+                        {t("noDistribution")}
+                    </Typography>
+                </div>
+            </Card>
+        );
+    }
 
     return (
         <Card className={styles.root}>
