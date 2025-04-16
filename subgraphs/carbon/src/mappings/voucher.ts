@@ -15,5 +15,6 @@ export function handleTransfer(event: Transfer): void {
     liquidityTransfer.from = event.params.from;
     liquidityTransfer.to = event.params.to;
     liquidityTransfer.strategyId = strategy.id;
+    liquidityTransfer.pool = strategy.pool;
     liquidityTransfer.save();
 }

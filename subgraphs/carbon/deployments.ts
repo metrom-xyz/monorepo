@@ -9,6 +9,10 @@ interface AmmConfig {
 }
 
 interface ChainConfig {
+    grafting?: {
+        base: string;
+        block: number;
+    };
     nativeToken: {
         address: string;
         symbol: string;
@@ -42,6 +46,10 @@ export const DEPLOYMENTS: {
         },
     },
     "sei-mainnet": {
+        // grafting: {
+        //     base: "QmUFA1a8zmQkpqcQXV3qw45MHoaoGgBZKyPe8vciaBLAtT",
+        //     block: 120270795,
+        // },
         nativeToken: {
             address: "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
             symbol: "SEI",
