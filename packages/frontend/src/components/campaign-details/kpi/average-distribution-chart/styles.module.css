@@ -35,7 +35,7 @@
 }
 
 .chartWrapper.empty {
-    @apply flex-col gap-2 bg-transparent;
+    @apply flex-col gap-2 bg-transparent mt-2;
 }
 
 .loading {
