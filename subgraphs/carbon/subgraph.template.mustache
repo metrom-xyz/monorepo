@@ -3,6 +3,13 @@ indexerHints:
   prune: never
 schema:
   file: ./schema.graphql
+{{#grafting}}
+features:
+  - grafting
+graft:
+  base: {{base}}
+  block: {{block}} 
+{{/grafting}}
 dataSources:
   - kind: ethereum
     name: Controller
