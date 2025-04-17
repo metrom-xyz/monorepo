@@ -1,4 +1,4 @@
-import { BigDecimal, Bytes, log } from "@graphprotocol/graph-ts";
+import { BigDecimal, BigInt, Bytes, log, store } from "@graphprotocol/graph-ts";
 import {
     PairCreated,
     StrategyCreated,
@@ -12,6 +12,7 @@ import {
     Order,
     Pool,
     Strategy,
+    StrategyDelete,
     TickChange,
 } from "../../generated/schema";
 import { CONTROLLER_ADDRESS } from "../addresses";
@@ -167,12 +168,18 @@ export function handleStrategyDeleted(event: StrategyDeleted): void {
     }
     pool.save();
 
-    const strategy = getStrategyOrThrow(event.params.id);
-    strategy.order0 = null;
-    strategy.order1 = null;
-    strategy.save();
+    const strategyDelete = new StrategyDelete(getEventId(event));
+    strategyDelete.timestamp = event.block.timestamp;
+    strategyDelete.strategyId = Bytes.fromByteArray(
+        Bytes.fromBigInt(event.params.id),
+    );
+    strategyDelete.pool = pool.id;
+    strategyDelete.save();
 
-    createStrategyChange(event, strategy, order0, order1);
+    store.remove(
+        "Strategy",
+        Bytes.fromByteArray(Bytes.fromBigInt(event.params.id)).toHex(),
+    );
 }
 
 export function handleStrategyUpdated(event: StrategyUpdated): void {
@@ -213,11 +220,11 @@ export function handleStrategyUpdated(event: StrategyUpdated): void {
         token0Delta =
             strategyOrder0 === null
                 ? order0.tokenTvl
-                : strategyOrder0.tokenTvl.minus(order0.tokenTvl);
+                : order0.tokenTvl.minus(strategyOrder0.tokenTvl);
         liquidity0Delta =
             strategyOrder0 === null
                 ? order0.liquidity
-                : strategyOrder0.tokenTvl.minus(order0.liquidity);
+                : order0.liquidity.minus(strategyOrder0.liquidity);
 
         strategy.order0 = updateOrCreateOrder(
             getOrderId(strategy.id, true),
@@ -235,11 +242,11 @@ export function handleStrategyUpdated(event: StrategyUpdated): void {
         token1Delta =
             strategyOrder1 === null
                 ? order1.tokenTvl
-                : strategyOrder1.tokenTvl.minus(order1.tokenTvl);
+                : order1.tokenTvl.minus(strategyOrder1.tokenTvl);
         liquidity1Delta =
             strategyOrder1 === null
                 ? order1.liquidity
-                : strategyOrder1.tokenTvl.minus(order1.liquidity);
+                : order1.liquidity.minus(strategyOrder1.liquidity);
 
         strategy.order1 = updateOrCreateOrder(
             getOrderId(strategy.id, false),
@@ -261,26 +268,31 @@ export function handleStrategyUpdated(event: StrategyUpdated): void {
 }
 
 export function handleTokensTraded(event: TokensTraded): void {
-    const token0To1 =
-        event.params.sourceToken.toHex() < event.params.targetToken.toHex();
+    // Notice how in this handler we don't update TVLs. That's because
+    // each swap also emits a related StrategyUpdated event for touched
+    // positions, and we use that to update the pool's token TVLs in the
+    // handleStrategyUpdates handler
 
-    const token0 = token0To1
-        ? event.params.sourceToken
-        : event.params.targetToken;
-    const token1 = token0To1
-        ? event.params.targetToken
-        : event.params.sourceToken;
+    let token0To1 = true;
+    let token0 = event.params.sourceToken;
+    let token1 = event.params.targetToken;
+    if (event.params.targetToken.toHex() < event.params.sourceToken.toHex()) {
+        token0To1 = false;
+        token0 = event.params.targetToken;
+        token1 = event.params.sourceToken;
+    }
 
-    const token0Delta = token0To1
-        ? event.params.sourceAmount
-        : event.params.targetAmount.neg();
-    const token1Delta = token0To1
-        ? event.params.targetAmount.neg()
-        : event.params.sourceAmount;
+    let token0Delta: BigInt;
+    let token1Delta: BigInt;
+    if (token0To1) {
+        token0Delta = event.params.sourceAmount;
+        token1Delta = event.params.targetAmount.neg();
+    } else {
+        token0Delta = event.params.targetAmount.neg();
+        token1Delta = event.params.sourceAmount;
+    }
 
     const pool = getPoolOrThrow(token0, token1);
-    pool.token0Tvl = pool.token0Tvl.plus(token0Delta);
-    pool.token1Tvl = pool.token1Tvl.plus(token1Delta);
 
     if (!token0Delta.isZero())
         pool.price = BigDecimal.fromString(token1Delta.abs().toString()).div(

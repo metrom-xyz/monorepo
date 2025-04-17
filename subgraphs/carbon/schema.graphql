@@ -50,6 +50,13 @@ type StrategyChange @entity(immutable: true) {
     pool: Pool!
 }
 
+type StrategyDelete @entity(immutable: true) {
+    id: Bytes!
+    timestamp: BigInt!
+    strategyId: Bytes!
+    pool: Pool!
+}
+
 type StrategyTransfer @entity(immutable: true) {
     id: Bytes!
     timestamp: BigInt!
