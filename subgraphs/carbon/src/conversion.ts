@@ -24,6 +24,7 @@ export class EncodedOrder {
 }
 
 function decodeFloat(value: BigInt): BigDecimal {
+    if (value.isZero()) return BD_0;
     const numerator = value.mod(CARBON_UNIT);
     const denominator = BI_2.pow(value.div(CARBON_UNIT).toI32() as u8);
     const out = numerator.div(denominator);
@@ -50,17 +51,15 @@ export class DecodedOrder {
     }
 }
 
-function decodeOrder(order: EncodedOrder): DecodedOrder | null {
-    if (order.A.isZero() && order.B.isZero()) return null;
-
+function decodeOrder(order: EncodedOrder): DecodedOrder {
     const A = decodeFloat(order.A);
-    const B = decodeRate(decodeFloat(order.B));
-
+    const B = decodeFloat(order.B);
     return new DecodedOrder(decodeRate(B), decodeRate(B.plus(A)), order.y);
 }
 
 export function calculateImpliedTick(decodedRate: BigDecimal): i32 {
     const float = parseFloat(decodedRate.toString());
+    if (float == 0) return MIN_TICK;
     const tick = NativeMath.log(float) / NativeMath.log(1.0001);
     return NativeMath.round(tick) as i32;
 }
@@ -95,9 +94,8 @@ export class UniV3Order {
 export function decodeOrderToUniV3(
     order: EncodedOrder,
     isZero: bool,
-): UniV3Order | null {
+): UniV3Order {
     const decodedOrder = decodeOrder(order);
-    if (decodedOrder === null) return null;
 
     let lowerTick: i32 = 0;
     let upperTick: i32 = 0;
@@ -107,14 +105,19 @@ export function decodeOrderToUniV3(
         upperTick = calculateImpliedTick(decodedOrder.highestRate);
     } else {
         // For buy orders, invert the prices
-        const invertedPriceLow = BD_1.div(decodedOrder.highestRate);
-        const invertedPriceHigh = BD_1.div(decodedOrder.lowestRate);
+        const invertedPriceLow = decodedOrder.highestRate.equals(BD_0)
+            ? BD_0
+            : BD_1.div(decodedOrder.highestRate);
+        const invertedPriceHigh = decodedOrder.lowestRate.equals(BD_0)
+            ? BD_0
+            : BD_1.div(decodedOrder.lowestRate);
 
         lowerTick = calculateImpliedTick(invertedPriceLow);
         upperTick = calculateImpliedTick(invertedPriceHigh);
     }
 
-    if (lowerTick < MIN_TICK || upperTick > MAX_TICK) return null;
+    if (lowerTick < MIN_TICK) lowerTick = MIN_TICK;
+    if (upperTick > MAX_TICK) upperTick = MAX_TICK;
     if (lowerTick == upperTick) upperTick = lowerTick + 1;
 
     return new UniV3Order(

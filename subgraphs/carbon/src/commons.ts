@@ -146,15 +146,8 @@ export function updateOrCreateOrder(
     uniV3Order: UniV3Order,
 ): Order {
     let order = Order.load(id);
-    if (order !== null) {
-        order.lowerTick = uniV3Order.lowerTick;
-        order.upperTick = uniV3Order.upperTick;
-        order.liquidity = uniV3Order.liquidity;
-        order.tokenTvl = uniV3Order.tokenTvl;
-        return order;
-    }
+    if (order === null) order = new Order(id);
 
-    order = new Order(id);
     order.lowerTick = uniV3Order.lowerTick;
     order.upperTick = uniV3Order.upperTick;
     order.liquidity = uniV3Order.liquidity;
