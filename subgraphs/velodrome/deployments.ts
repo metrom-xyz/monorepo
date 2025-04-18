@@ -32,7 +32,7 @@ export const DEPLOYMENTS: {
                 address: "0x97cDBCe21B6fd0585d29E539B1B99dAd328a1123",
                 startBlock: 3717934,
             },
-            AlmCoreAddress: null,
+            AlmCoreAddress: "0xE46EC96906fc6dEC53De25F013639969Fe10180d",
         },
     },
 };

@@ -125,7 +125,7 @@ importers:
         version: 3.3.1
       '@fleek-platform/next':
         specifier: ^2.2.1
-        version: 2.2.1(bufferutil@4.0.9)(encoding@0.1.13)(utf-8-validate@5.0.10)(vercel@41.4.1(@swc/core@1.11.11(@swc/helpers@0.5.15))(encoding@0.1.13)(rollup@4.39.0))
+        version: 2.2.1(bufferutil@4.0.9)(encoding@0.1.13)(utf-8-validate@5.0.10)(vercel@41.4.1(@swc/core@1.11.11)(encoding@0.1.13)(rollup@4.39.0))
       '@tailwindcss/postcss':
         specifier: ^4.1.3
         version: 4.1.3
@@ -464,7 +464,7 @@ importers:
     dependencies:
       '@0xgraph/cli':
         specifier: ^0.2.1
-        version: 0.2.1(@swc/core@1.11.11(@swc/helpers@0.5.15))(@types/node@22.14.0)(bufferutil@4.0.9)(encoding@0.1.13)(node-fetch@2.7.0(encoding@0.1.13))(typescript@5.8.3)(utf-8-validate@5.0.10)
+        version: 0.2.1(@swc/core@1.11.11)(@types/node@22.14.0)(bufferutil@4.0.9)(encoding@0.1.13)(node-fetch@2.7.0(encoding@0.1.13))(typescript@5.8.3)(utf-8-validate@5.0.10)
       '@graphprotocol/graph-cli':
         specifier: ^0.97.0
         version: 0.97.0(@types/node@22.14.0)(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.24.2)
@@ -513,7 +513,7 @@ importers:
     dependencies:
       '@0xgraph/cli':
         specifier: ^0.2.1
-        version: 0.2.1(@swc/core@1.11.11(@swc/helpers@0.5.15))(@types/node@22.14.0)(bufferutil@4.0.9)(encoding@0.1.13)(node-fetch@2.7.0(encoding@0.1.13))(typescript@5.8.3)(utf-8-validate@5.0.10)
+        version: 0.2.1(@swc/core@1.11.11)(@types/node@22.14.0)(bufferutil@4.0.9)(encoding@0.1.13)(node-fetch@2.7.0(encoding@0.1.13))(typescript@5.8.3)(utf-8-validate@5.0.10)
       '@graphprotocol/graph-cli':
         specifier: ^0.97.0
         version: 0.97.0(@types/node@22.14.0)(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.24.2)
@@ -611,7 +611,7 @@ importers:
     dependencies:
       '@0xgraph/cli':
         specifier: ^0.2.1
-        version: 0.2.1(@swc/core@1.11.11(@swc/helpers@0.5.15))(@types/node@22.14.0)(bufferutil@4.0.9)(encoding@0.1.13)(node-fetch@2.7.0(encoding@0.1.13))(typescript@5.8.3)(utf-8-validate@5.0.10)
+        version: 0.2.1(@swc/core@1.11.11)(@types/node@22.14.0)(bufferutil@4.0.9)(encoding@0.1.13)(node-fetch@2.7.0(encoding@0.1.13))(typescript@5.8.3)(utf-8-validate@5.0.10)
       '@graphprotocol/graph-cli':
         specifier: ^0.97.0
         version: 0.97.0(@types/node@22.14.0)(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.24.2)
@@ -657,7 +657,7 @@ importers:
     dependencies:
       '@0xgraph/cli':
         specifier: ^0.2.1
-        version: 0.2.1(@swc/core@1.11.11(@swc/helpers@0.5.15))(@types/node@22.14.0)(bufferutil@4.0.9)(encoding@0.1.13)(node-fetch@2.7.0(encoding@0.1.13))(typescript@5.8.3)(utf-8-validate@5.0.10)
+        version: 0.2.1(@swc/core@1.11.11)(@types/node@22.14.0)(bufferutil@4.0.9)(encoding@0.1.13)(node-fetch@2.7.0(encoding@0.1.13))(typescript@5.8.3)(utf-8-validate@5.0.10)
       '@graphprotocol/graph-cli':
         specifier: ^0.97.0
         version: 0.97.0(@types/node@22.14.0)(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.24.2)
@@ -706,7 +706,7 @@ importers:
     dependencies:
       '@0xgraph/cli':
         specifier: ^0.2.1
-        version: 0.2.1(@swc/core@1.11.11(@swc/helpers@0.5.15))(@types/node@22.14.0)(bufferutil@4.0.9)(encoding@0.1.13)(node-fetch@2.7.0(encoding@0.1.13))(typescript@5.8.3)(utf-8-validate@5.0.10)
+        version: 0.2.1(@swc/core@1.11.11)(@types/node@22.14.0)(bufferutil@4.0.9)(encoding@0.1.13)(node-fetch@2.7.0(encoding@0.1.13))(typescript@5.8.3)(utf-8-validate@5.0.10)
       '@graphprotocol/graph-cli':
         specifier: ^0.97.0
         version: 0.97.0(@types/node@22.14.0)(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.24.2)
@@ -752,7 +752,7 @@ importers:
     dependencies:
       '@0xgraph/cli':
         specifier: ^0.2.1
-        version: 0.2.1(@swc/core@1.11.11(@swc/helpers@0.5.15))(@types/node@22.14.0)(bufferutil@4.0.9)(encoding@0.1.13)(node-fetch@2.7.0(encoding@0.1.13))(typescript@5.8.3)(utf-8-validate@5.0.10)
+        version: 0.2.1(@swc/core@1.11.11)(@types/node@22.14.0)(bufferutil@4.0.9)(encoding@0.1.13)(node-fetch@2.7.0(encoding@0.1.13))(typescript@5.8.3)(utf-8-validate@5.0.10)
       '@graphprotocol/graph-cli':
         specifier: ^0.97.0
         version: 0.97.0(@types/node@22.14.0)(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.24.2)
@@ -804,7 +804,7 @@ importers:
     dependencies:
       '@0xgraph/cli':
         specifier: ^0.2.1
-        version: 0.2.1(@swc/core@1.11.11(@swc/helpers@0.5.15))(@types/node@22.14.0)(bufferutil@4.0.9)(encoding@0.1.13)(node-fetch@2.7.0(encoding@0.1.13))(typescript@5.8.3)(utf-8-validate@5.0.10)
+        version: 0.2.1(@swc/core@1.11.11)(@types/node@22.14.0)(bufferutil@4.0.9)(encoding@0.1.13)(node-fetch@2.7.0(encoding@0.1.13))(typescript@5.8.3)(utf-8-validate@5.0.10)
       '@graphprotocol/graph-cli':
         specifier: ^0.97.0
         version: 0.97.0(@types/node@22.14.0)(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.24.2)
@@ -942,7 +942,7 @@ importers:
     dependencies:
       '@0xgraph/cli':
         specifier: ^0.2.1
-        version: 0.2.1(@swc/core@1.11.11(@swc/helpers@0.5.15))(@types/node@22.14.0)(bufferutil@4.0.9)(encoding@0.1.13)(node-fetch@2.7.0(encoding@0.1.13))(typescript@5.8.3)(utf-8-validate@5.0.10)
+        version: 0.2.1(@swc/core@1.11.11)(@types/node@22.14.0)(bufferutil@4.0.9)(encoding@0.1.13)(node-fetch@2.7.0(encoding@0.1.13))(typescript@5.8.3)(utf-8-validate@5.0.10)
       '@graphprotocol/graph-cli':
         specifier: ^0.97.0
         version: 0.97.0(@types/node@22.14.0)(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.24.2)
@@ -993,8 +993,8 @@ importers:
         specifier: ^0.97.0
         version: 0.97.0(@types/node@22.14.0)(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.24.2)
       '@graphprotocol/graph-ts':
-        specifier: ^0.38.0
-        version: 0.38.0
+        specifier: 0.36.0
+        version: 0.36.0
     devDependencies:
       '@eslint/js':
         specifier: ^9.24.0
@@ -2008,9 +2008,6 @@ packages:
 
   '@graphprotocol/graph-ts@0.36.0':
     resolution: {integrity: sha512-yJNQK5YZWEThuawSboQQ+U4Fb2C78KBjmaoeOK7Nn0CFoChmHc+woRvW3yj+IKVSPc7JNHt4JSUHxVDJfUZbTA==}
-
-  '@graphprotocol/graph-ts@0.38.0':
-    resolution: {integrity: sha512-fx9IpqbXHWMskl6wLDstKLy0VeszTQg6K5xsUEHXPkpOtceDkWAiDE8FyqsGF0IVTmE2Pxafw4t6+rEG8lVfyw==}
 
   '@humanfs/core@0.19.1':
     resolution: {integrity: sha512-5DyQ4+1JEUzejeK1JGICcideyfUbGixgS9jNgex5nqkW+cY7WZhxBigmieN5Qnw9ZosSNVC9KQKyb+GUaGyKUA==}
@@ -4191,11 +4188,6 @@ packages:
     resolution: {integrity: sha512-fwOQNZVTMga5KRsfY80g7cpOl4PsFQczMwHzdtgoqLXaYhkhavufKb0sB0l3T1DUxpAufA0KNhlbpuuhZUwxMA==}
     hasBin: true
 
-  assemblyscript@0.27.31:
-    resolution: {integrity: sha512-Ra8kiGhgJQGZcBxjtMcyVRxOEJZX64kd+XGpjWzjcjgxWJVv+CAQO0aDBk4GQVhjYbOkATarC83mHjAVGtwPBQ==}
-    engines: {node: '>=16', npm: '>=7'}
-    hasBin: true
-
   assertion-error@2.0.1:
     resolution: {integrity: sha512-Izi8RQcffqCeNVgFigKli1ssklIbpHnCYc6AknXGYoB6grJqyeby7jv12JUQgmTAnIDnbck1uxksT4dzN3PWBA==}
     engines: {node: '>=12'}
@@ -4302,10 +4294,6 @@ packages:
 
   binaryen@102.0.0-nightly.20211028:
     resolution: {integrity: sha512-GCJBVB5exbxzzvyt8MGDv/MeUjs6gkXDvf4xOIItRBptYl0Tz5sm1o/uG95YK0L0VeG5ajDu3hRtkBP2kzqC5w==}
-    hasBin: true
-
-  binaryen@116.0.0-nightly.20240114:
-    resolution: {integrity: sha512-0GZrojJnuhoe+hiwji7QFaL3tBlJoA+KFUN7ouYSDGZLSo9CKM8swQX8n/UcbR0d1VuZKU+nhogNzv423JEu5A==}
     hasBin: true
 
   bindings@1.5.0:
@@ -7120,9 +7108,6 @@ packages:
   long@5.2.3:
     resolution: {integrity: sha512-lcHwpNoggQTObv5apGNCTdJrO69eHOZMi4BNC+rTLER8iHAqGrUVeLh/irVIM7zTw2bOXA8T6uNPeujwOLg/2Q==}
 
-  long@5.3.1:
-    resolution: {integrity: sha512-ka87Jz3gcx/I7Hal94xaN2tZEOPoUOEVftkQqZx2EeQRN7LGdfLlI3FvZ+7WDplm+vK2Urx9ULrvSowtdCieng==}
-
   loose-envify@1.4.0:
     resolution: {integrity: sha512-lyuxPGr/Wfhrlem2CL/UcnUc1zcqKAImBDzukY7Y5F/yQiNdko6+fRLevlw1HgMySw7f611UIY408EtxRSoK3Q==}
     hasBin: true
@@ -9716,12 +9701,12 @@ packages:
 
 snapshots:
 
-  '@0xgraph/cli@0.2.1(@swc/core@1.11.11(@swc/helpers@0.5.15))(@types/node@22.14.0)(bufferutil@4.0.9)(encoding@0.1.13)(node-fetch@2.7.0(encoding@0.1.13))(typescript@5.8.3)(utf-8-validate@5.0.10)':
+  '@0xgraph/cli@0.2.1(@swc/core@1.11.11)(@types/node@22.14.0)(bufferutil@4.0.9)(encoding@0.1.13)(node-fetch@2.7.0(encoding@0.1.13))(typescript@5.8.3)(utf-8-validate@5.0.10)':
     dependencies:
       '@float-capital/float-subgraph-uncrashable': 0.0.0-internal-testing.5
-      '@oclif/core': 2.8.6(@swc/core@1.11.11(@swc/helpers@0.5.15))(@types/node@22.14.0)(typescript@5.8.3)
-      '@oclif/plugin-autocomplete': 2.3.10(@swc/core@1.11.11(@swc/helpers@0.5.15))(@types/node@22.14.0)(typescript@5.8.3)
-      '@oclif/plugin-not-found': 2.4.3(@swc/core@1.11.11(@swc/helpers@0.5.15))(@types/node@22.14.0)(typescript@5.8.3)
+      '@oclif/core': 2.8.6(@swc/core@1.11.11)(@types/node@22.14.0)(typescript@5.8.3)
+      '@oclif/plugin-autocomplete': 2.3.10(@swc/core@1.11.11)(@types/node@22.14.0)(typescript@5.8.3)
+      '@oclif/plugin-not-found': 2.4.3(@swc/core@1.11.11)(@types/node@22.14.0)(typescript@5.8.3)
       '@whatwg-node/fetch': 0.8.8
       assemblyscript: 0.19.23
       binary-install-raw: 0.0.13(debug@4.3.4)
@@ -10650,7 +10635,7 @@ snapshots:
     dependencies:
       esbuild: 0.24.2
 
-  '@fleek-platform/next-on-fleek@1.15.5(bufferutil@4.0.9)(utf-8-validate@5.0.10)(vercel@41.4.1(@swc/core@1.11.11(@swc/helpers@0.5.15))(encoding@0.1.13)(rollup@4.39.0))':
+  '@fleek-platform/next-on-fleek@1.15.5(bufferutil@4.0.9)(utf-8-validate@5.0.10)(vercel@41.4.1(@swc/core@1.11.11)(encoding@0.1.13)(rollup@4.39.0))':
     dependencies:
       acorn: 8.14.0
       ast-types: 0.14.2
@@ -10667,16 +10652,16 @@ snapshots:
       package-manager-manager: 0.2.0
       parallel-transform-web: 1.0.1
       semver: 7.6.3
-      vercel: 41.4.1(@swc/core@1.11.11(@swc/helpers@0.5.15))(encoding@0.1.13)(rollup@4.39.0)
+      vercel: 41.4.1(@swc/core@1.11.11)(encoding@0.1.13)(rollup@4.39.0)
     transitivePeerDependencies:
       - bufferutil
       - supports-color
       - utf-8-validate
 
-  '@fleek-platform/next@2.2.1(bufferutil@4.0.9)(encoding@0.1.13)(utf-8-validate@5.0.10)(vercel@41.4.1(@swc/core@1.11.11(@swc/helpers@0.5.15))(encoding@0.1.13)(rollup@4.39.0))':
+  '@fleek-platform/next@2.2.1(bufferutil@4.0.9)(encoding@0.1.13)(utf-8-validate@5.0.10)(vercel@41.4.1(@swc/core@1.11.11)(encoding@0.1.13)(rollup@4.39.0))':
     dependencies:
       '@fleek-platform/functions-esbuild-config': 0.0.19(esbuild@0.24.2)
-      '@fleek-platform/next-on-fleek': 1.15.5(bufferutil@4.0.9)(utf-8-validate@5.0.10)(vercel@41.4.1(@swc/core@1.11.11(@swc/helpers@0.5.15))(encoding@0.1.13)(rollup@4.39.0))
+      '@fleek-platform/next-on-fleek': 1.15.5(bufferutil@4.0.9)(utf-8-validate@5.0.10)(vercel@41.4.1(@swc/core@1.11.11)(encoding@0.1.13)(rollup@4.39.0))
       ansi-escapes: 7.0.0
       boxen: 7.1.1
       chalk: 5.4.0
@@ -10845,10 +10830,6 @@ snapshots:
   '@graphprotocol/graph-ts@0.36.0':
     dependencies:
       assemblyscript: 0.19.10
-
-  '@graphprotocol/graph-ts@0.38.0':
-    dependencies:
-      assemblyscript: 0.27.31
 
   '@humanfs/core@0.19.1': {}
 
@@ -11554,7 +11535,7 @@ snapshots:
 
   '@nolyfill/is-core-module@1.0.39': {}
 
-  '@oclif/core@2.16.0(@swc/core@1.11.11(@swc/helpers@0.5.15))(@types/node@22.14.0)(typescript@5.8.3)':
+  '@oclif/core@2.16.0(@swc/core@1.11.11)(@types/node@22.14.0)(typescript@5.8.3)':
     dependencies:
       '@types/cli-progress': 3.11.6
       ansi-escapes: 4.3.2
@@ -11579,7 +11560,7 @@ snapshots:
       strip-ansi: 6.0.1
       supports-color: 8.1.1
       supports-hyperlinks: 2.3.0
-      ts-node: 10.9.2(@swc/core@1.11.11(@swc/helpers@0.5.15))(@types/node@22.14.0)(typescript@5.8.3)
+      ts-node: 10.9.2(@swc/core@1.11.11)(@types/node@22.14.0)(typescript@5.8.3)
       tslib: 2.8.1
       widest-line: 3.1.0
       wordwrap: 1.0.0
@@ -11590,7 +11571,7 @@ snapshots:
       - '@types/node'
       - typescript
 
-  '@oclif/core@2.8.6(@swc/core@1.11.11(@swc/helpers@0.5.15))(@types/node@22.14.0)(typescript@5.8.3)':
+  '@oclif/core@2.8.6(@swc/core@1.11.11)(@types/node@22.14.0)(typescript@5.8.3)':
     dependencies:
       '@types/cli-progress': 3.11.6
       ansi-escapes: 4.3.2
@@ -11616,7 +11597,7 @@ snapshots:
       strip-ansi: 6.0.1
       supports-color: 8.1.1
       supports-hyperlinks: 2.3.0
-      ts-node: 10.9.2(@swc/core@1.11.11(@swc/helpers@0.5.15))(@types/node@22.14.0)(typescript@5.8.3)
+      ts-node: 10.9.2(@swc/core@1.11.11)(@types/node@22.14.0)(typescript@5.8.3)
       tslib: 2.8.1
       widest-line: 3.1.0
       wordwrap: 1.0.0
@@ -11669,9 +11650,9 @@ snapshots:
       wordwrap: 1.0.0
       wrap-ansi: 7.0.0
 
-  '@oclif/plugin-autocomplete@2.3.10(@swc/core@1.11.11(@swc/helpers@0.5.15))(@types/node@22.14.0)(typescript@5.8.3)':
+  '@oclif/plugin-autocomplete@2.3.10(@swc/core@1.11.11)(@types/node@22.14.0)(typescript@5.8.3)':
     dependencies:
-      '@oclif/core': 2.16.0(@swc/core@1.11.11(@swc/helpers@0.5.15))(@types/node@22.14.0)(typescript@5.8.3)
+      '@oclif/core': 2.16.0(@swc/core@1.11.11)(@types/node@22.14.0)(typescript@5.8.3)
       chalk: 4.1.2
       debug: 4.4.0(supports-color@8.1.1)
     transitivePeerDependencies:
@@ -11690,9 +11671,9 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@oclif/plugin-not-found@2.4.3(@swc/core@1.11.11(@swc/helpers@0.5.15))(@types/node@22.14.0)(typescript@5.8.3)':
+  '@oclif/plugin-not-found@2.4.3(@swc/core@1.11.11)(@types/node@22.14.0)(typescript@5.8.3)':
     dependencies:
-      '@oclif/core': 2.16.0(@swc/core@1.11.11(@swc/helpers@0.5.15))(@types/node@22.14.0)(typescript@5.8.3)
+      '@oclif/core': 2.16.0(@swc/core@1.11.11)(@types/node@22.14.0)(typescript@5.8.3)
       chalk: 4.1.2
       fast-levenshtein: 3.0.0
     transitivePeerDependencies:
@@ -12894,7 +12875,7 @@ snapshots:
       - rollup
       - supports-color
 
-  '@vercel/node@5.1.14(@swc/core@1.11.11(@swc/helpers@0.5.15))(encoding@0.1.13)(rollup@4.39.0)':
+  '@vercel/node@5.1.14(@swc/core@1.11.11)(encoding@0.1.13)(rollup@4.39.0)':
     dependencies:
       '@edge-runtime/node-utils': 2.3.0
       '@edge-runtime/primitives': 4.1.0
@@ -12914,7 +12895,7 @@ snapshots:
       path-to-regexp: 6.1.0
       path-to-regexp-updated: path-to-regexp@6.3.0
       ts-morph: 12.0.0
-      ts-node: 10.9.1(@swc/core@1.11.11(@swc/helpers@0.5.15))(@types/node@16.18.11)(typescript@4.9.5)
+      ts-node: 10.9.1(@swc/core@1.11.11)(@types/node@16.18.11)(typescript@4.9.5)
       typescript: 4.9.5
       undici: 5.28.4
     transitivePeerDependencies:
@@ -14117,11 +14098,6 @@ snapshots:
       long: 5.2.3
       source-map-support: 0.5.21
 
-  assemblyscript@0.27.31:
-    dependencies:
-      binaryen: 116.0.0-nightly.20240114
-      long: 5.3.1
-
   assertion-error@2.0.1: {}
 
   ast-types-flow@0.0.8: {}
@@ -14214,8 +14190,6 @@ snapshots:
   binaryen@101.0.0-nightly.20210723: {}
 
   binaryen@102.0.0-nightly.20211028: {}
-
-  binaryen@116.0.0-nightly.20240114: {}
 
   bindings@1.5.0:
     dependencies:
@@ -15570,7 +15544,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  eslint-module-utils@2.12.0(@typescript-eslint/parser@8.29.1(eslint@9.24.0(jiti@2.4.2))(typescript@5.8.3))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.10.0)(eslint@9.24.0(jiti@2.4.2)):
+  eslint-module-utils@2.12.0(@typescript-eslint/parser@8.29.1(eslint@9.24.0(jiti@2.4.2))(typescript@5.8.3))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.10.0(eslint-plugin-import@2.31.0)(eslint@9.24.0(jiti@2.4.2)))(eslint@9.24.0(jiti@2.4.2)):
     dependencies:
       debug: 3.2.7
     optionalDependencies:
@@ -15592,7 +15566,7 @@ snapshots:
       doctrine: 2.1.0
       eslint: 9.24.0(jiti@2.4.2)
       eslint-import-resolver-node: 0.3.9
-      eslint-module-utils: 2.12.0(@typescript-eslint/parser@8.29.1(eslint@9.24.0(jiti@2.4.2))(typescript@5.8.3))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.10.0)(eslint@9.24.0(jiti@2.4.2))
+      eslint-module-utils: 2.12.0(@typescript-eslint/parser@8.29.1(eslint@9.24.0(jiti@2.4.2))(typescript@5.8.3))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.10.0(eslint-plugin-import@2.31.0)(eslint@9.24.0(jiti@2.4.2)))(eslint@9.24.0(jiti@2.4.2))
       hasown: 2.0.2
       is-core-module: 2.16.1
       is-glob: 4.0.3
@@ -17343,8 +17317,6 @@ snapshots:
   long@4.0.0: {}
 
   long@5.2.3: {}
-
-  long@5.3.1: {}
 
   loose-envify@1.4.0:
     dependencies:
@@ -19245,7 +19217,7 @@ snapshots:
       '@ts-morph/common': 0.11.1
       code-block-writer: 10.1.1
 
-  ts-node@10.9.1(@swc/core@1.11.11(@swc/helpers@0.5.15))(@types/node@16.18.11)(typescript@4.9.5):
+  ts-node@10.9.1(@swc/core@1.11.11)(@types/node@16.18.11)(typescript@4.9.5):
     dependencies:
       '@cspotcode/source-map-support': 0.8.1
       '@tsconfig/node10': 1.0.11
@@ -19265,7 +19237,7 @@ snapshots:
     optionalDependencies:
       '@swc/core': 1.11.11(@swc/helpers@0.5.15)
 
-  ts-node@10.9.2(@swc/core@1.11.11(@swc/helpers@0.5.15))(@types/node@22.14.0)(typescript@5.8.3):
+  ts-node@10.9.2(@swc/core@1.11.11)(@types/node@22.14.0)(typescript@5.8.3):
     dependencies:
       '@cspotcode/source-map-support': 0.8.1
       '@tsconfig/node10': 1.0.11
@@ -19640,14 +19612,14 @@ snapshots:
 
   varint@6.0.0: {}
 
-  vercel@41.4.1(@swc/core@1.11.11(@swc/helpers@0.5.15))(encoding@0.1.13)(rollup@4.39.0):
+  vercel@41.4.1(@swc/core@1.11.11)(encoding@0.1.13)(rollup@4.39.0):
     dependencies:
       '@vercel/build-utils': 10.5.1
       '@vercel/fun': 1.1.5(encoding@0.1.13)
       '@vercel/go': 3.2.1
       '@vercel/hydrogen': 1.2.0
       '@vercel/next': 4.7.4(encoding@0.1.13)(rollup@4.39.0)
-      '@vercel/node': 5.1.14(@swc/core@1.11.11(@swc/helpers@0.5.15))(encoding@0.1.13)(rollup@4.39.0)
+      '@vercel/node': 5.1.14(@swc/core@1.11.11)(encoding@0.1.13)(rollup@4.39.0)
       '@vercel/python': 4.7.1
       '@vercel/redwood': 2.3.0(encoding@0.1.13)(rollup@4.39.0)
       '@vercel/remix-builder': 5.4.3(encoding@0.1.13)(rollup@4.39.0)
