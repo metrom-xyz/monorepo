@@ -347,7 +347,8 @@ export function KpiSimulationChart({
         lowerUsdTarget === undefined ||
         poolUsdTvl === null ||
         poolUsdTvl === undefined
-    )
+    ) {
+        console.log({ upperUsdTarget, lowerUsdTarget, poolUsdTvl });
         return (
             <div className={classNames("root", styles.root, className)}>
                 <div
@@ -375,6 +376,7 @@ export function KpiSimulationChart({
                 </div>
             </div>
         );
+    }
 
     if (error) {
         return (

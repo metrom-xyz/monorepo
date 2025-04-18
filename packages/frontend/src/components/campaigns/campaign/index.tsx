@@ -10,7 +10,7 @@ import { Protocol, SkeletonProtocol } from "./protocol";
 import { Points } from "./points";
 import dayjs from "dayjs";
 import { DistributablesType } from "@metrom-xyz/sdk";
-import { type Campaign } from "@/src/types/common";
+import { type Campaign } from "@/src/types/campaign";
 
 import styles from "./styles.module.css";
 

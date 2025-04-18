@@ -26,8 +26,8 @@ import type {
     AugmentedPriceRangeBound,
     AugmentedPriceRangeSpecification,
     CampaignPayloadErrors,
-    LocalizedMessage,
-} from "@/src/types/common";
+} from "@/src/types/campaign";
+import type { LocalizedMessage } from "@/src/types/utils";
 
 import styles from "./styles.module.css";
 

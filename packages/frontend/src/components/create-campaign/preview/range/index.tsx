@@ -1,4 +1,4 @@
-import type { AmmPoolLiquidityCampaignPayload } from "@/src/types/common";
+import type { AmmPoolLiquidityCampaignPayload } from "@/src/types/campaign";
 import { useTranslations } from "next-intl";
 import { TextField, Typography } from "@metrom-xyz/ui";
 import { formatAmount } from "@/src/utils/format";

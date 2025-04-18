@@ -13,7 +13,7 @@ import { getTxExplorerLink } from "@/src/utils/dex";
 import { useCampaign } from "@/src/hooks/useCampaign";
 import { PoolRemoteLogo } from "@/src/components/pool-remote-logo";
 import { useProtocolsInChain } from "@/src/hooks/useProtocolsInChain";
-import { ProtocolType } from "@/src/types/common";
+import { ProtocolType } from "@/src/types/protocol";
 
 import styles from "./styles.module.css";
 import classNames from "classnames";

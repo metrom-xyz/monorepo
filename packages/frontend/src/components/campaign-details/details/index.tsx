@@ -1,51 +1,33 @@
 import { useTranslations } from "next-intl";
 import styles from "./styles.module.css";
 import { TextField, Typography } from "@metrom-xyz/ui";
-import dayjs from "dayjs";
 import { Campaign, Status, TargetType } from "@metrom-xyz/sdk";
-import { useMemo } from "react";
-import { formatDateTime, formatUsdAmount } from "@/src/utils/format";
+import { formatUsdAmount } from "@/src/utils/format";
+import { CampaignDuration } from "../../campaign-duration";
+import type { TranslationsKeys } from "@/src/types/utils";
 
 interface DetailsProps {
     campaign?: Campaign;
     loading: boolean;
 }
 
+const STATUS_TEXT_MAP: Record<
+    Status,
+    TranslationsKeys<"campaignDetails.details.statusType">
+> = {
+    upcoming: "upcoming",
+    live: "live",
+    ended: "ended",
+};
+
 export function Details({ campaign, loading }: DetailsProps) {
     const t = useTranslations("campaignDetails.details");
 
     const detailsLoading = loading || !campaign;
-    const duration = useMemo(() => {
-        if (!campaign) return undefined;
-
-        if (campaign.status === Status.Upcoming) {
-            return {
-                text: t("status.upcoming.text"),
-                duration: t("status.upcoming.duration", {
-                    days: dayjs.unix(campaign.from).to(dayjs(), true),
-                }),
-            };
-        }
-        if (campaign.status === Status.Ended) {
-            return {
-                text: t("status.ended.text"),
-                duration: t("status.ended.duration", {
-                    days: dayjs().to(dayjs.unix(campaign.to), true),
-                }),
-            };
-        }
-
-        return {
-            text: t("status.live.text"),
-            duration: t("status.live.duration", {
-                days: dayjs().to(dayjs.unix(campaign.to), true),
-            }),
-        };
-    }, [campaign, t]);
 
     return (
         <div className={styles.root}>
-            <div>
+            <div className={styles.topContent}>
                 {campaign?.isTargeting(TargetType.AmmPoolLiquidity) &&
                     campaign.target.pool.usdTvl && (
                         <TextField
@@ -62,7 +44,7 @@ export function Details({ campaign, loading }: DetailsProps) {
                 <TextField
                     boxed
                     size="xl"
-                    label={t("status.text")}
+                    label={t("duration")}
                     loading={detailsLoading}
                     value={
                         <div className={styles.statusWrapper}>
@@ -74,37 +56,17 @@ export function Details({ campaign, loading }: DetailsProps) {
                                 ></div>
                             </div>
                             <Typography weight="medium" size="xl">
-                                {duration?.text}
+                                {campaign
+                                    ? t(
+                                          `statusType.${STATUS_TEXT_MAP[campaign.status]}`,
+                                      )
+                                    : ""}
                             </Typography>
                         </div>
                     }
                 />
             </div>
-            <div>
-                <TextField
-                    boxed
-                    size="xl"
-                    uppercase
-                    label={t("startDate")}
-                    loading={detailsLoading}
-                    value={campaign && formatDateTime(campaign.from)}
-                />
-                <TextField
-                    boxed
-                    size="xl"
-                    uppercase
-                    label={t("endDate")}
-                    loading={detailsLoading}
-                    value={campaign && formatDateTime(campaign.to)}
-                />
-                <TextField
-                    boxed
-                    size="xl"
-                    label={duration?.text || t("status.duration")}
-                    loading={detailsLoading}
-                    value={duration?.duration || "-"}
-                />
-            </div>
+            <CampaignDuration from={campaign?.from} to={campaign?.to} />
         </div>
     );
 }

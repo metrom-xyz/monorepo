@@ -8,7 +8,7 @@ import {
 } from "react";
 import { useChainId } from "wagmi";
 import { usePool } from "@/src/hooks/usePool";
-import type { AmmPoolLiquidityCampaignPayload } from "@/src/types/common";
+import type { AmmPoolLiquidityCampaignPayload } from "@/src/types/campaign";
 import { type Address, type Hex, isAddress, isHash } from "viem";
 import { useDebounce } from "react-use";
 import { TextInput, Typography } from "@metrom-xyz/ui";

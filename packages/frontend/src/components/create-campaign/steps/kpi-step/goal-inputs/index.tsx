@@ -1,4 +1,4 @@
-import type { BaseCampaignPayload } from "@/src/types/common";
+import type { BaseCampaignPayload } from "@/src/types/campaign";
 import {
     NumberInput,
     SliderInput,

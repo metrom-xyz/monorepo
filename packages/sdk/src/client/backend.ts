@@ -83,6 +83,8 @@ const DEX_BRAND_NAME: Record<SupportedDex, string> = {
 
 const LIQUITY_V2_BRAND_NAME: Record<SupportedLiquityV2, string> = {
     [SupportedLiquityV2.Ebisu]: "Ebisu",
+    [SupportedLiquityV2.Orki]: "Orki",
+    [SupportedLiquityV2.Quill]: "Quill",
     [SupportedLiquityV2.Liquity]: "Liquity",
 };
 

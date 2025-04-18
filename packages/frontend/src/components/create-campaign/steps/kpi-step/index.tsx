@@ -5,9 +5,9 @@ import {
     type AmmPoolLiquidityCampaignPayload,
     type CampaignPayloadErrors,
     type BaseCampaignPayloadPart,
-    type LocalizedMessage,
     type CampaignPayloadTokenDistributables,
-} from "@/src/types/common";
+} from "@/src/types/campaign";
+import type { LocalizedMessage } from "@/src/types/utils";
 import { Button, ErrorText, Switch, Typography } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
 import React, { useCallback, useEffect, useMemo, useState } from "react";

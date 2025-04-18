@@ -3,7 +3,7 @@ import { METROM_API_CLIENT } from "../commons";
 import { SupportedDex, type AmmPoolWithTvl } from "@metrom-xyz/sdk";
 import { useQuery } from "@tanstack/react-query";
 import { useProtocolsInChain } from "./useProtocolsInChain";
-import { ProtocolType } from "../types/common";
+import { ProtocolType } from "../types/protocol";
 import type { HookBaseParams } from "../types/hooks";
 
 interface UsePoolsParams extends HookBaseParams {

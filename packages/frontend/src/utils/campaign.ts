@@ -8,12 +8,12 @@ import {
 } from "@metrom-xyz/sdk";
 import {
     AmmPoolLiquidityCampaignPreviewPayload,
-    LiquityV2Action,
     LiquityV2CampaignPreviewPayload,
     type BaseCampaignPreviewPayload,
     type CampaignPreviewPayload,
-    type TranslationsType,
-} from "../types/common";
+} from "../types/campaign";
+import type { TranslationsType } from "../types/utils";
+import { LiquityV2Action } from "../types/common";
 import { getDistributableRewardsPercentage } from "./kpi";
 import { type Hex, encodeAbiParameters, stringToHex } from "viem";
 import { CHAIN_DATA, SECONDS_IN_YEAR } from "../commons";

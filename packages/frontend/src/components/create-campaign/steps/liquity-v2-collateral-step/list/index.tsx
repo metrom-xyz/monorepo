@@ -1,11 +1,9 @@
 import type { LiquityV2Collateral } from "@metrom-xyz/sdk";
 import { Typography } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
-import {
-    LiquityV2Action,
-    type LiquityV2CampaignPayload,
-} from "@/src/types/common";
+import { LiquityV2Action } from "@/src/types/common";
 import { Row, RowSkeleton } from "./row";
+import type { LiquityV2CampaignPayload } from "@/src/types/campaign";
 
 import styles from "./styles.module.css";
 
