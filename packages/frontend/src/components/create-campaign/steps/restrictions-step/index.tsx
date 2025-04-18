@@ -2,12 +2,12 @@ import { Step } from "@/src/components/step";
 import { StepContent } from "@/src/components/step/content";
 import { StepPreview } from "@/src/components/step/preview";
 import {
-    RestrictionType,
     type BaseCampaignPayload,
     type CampaignPayloadErrors,
     type BaseCampaignPayloadPart,
-    type LocalizedMessage,
-} from "@/src/types/common";
+} from "@/src/types/campaign";
+import type { LocalizedMessage } from "@/src/types/utils";
+import { RestrictionType } from "@/src/types/common";
 import {
     Button,
     ErrorText,

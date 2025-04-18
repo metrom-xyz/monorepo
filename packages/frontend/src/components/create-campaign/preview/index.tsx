@@ -2,8 +2,8 @@ import { Button, Typography, TextField, ErrorText } from "@metrom-xyz/ui";
 import {
     AmmPoolLiquidityCampaignPreviewPayload,
     type CampaignPreviewPayload,
-    type LocalizedMessage,
-} from "@/src/types/common";
+} from "@/src/types/campaign";
+import type { LocalizedMessage } from "@/src/types/utils";
 import {
     useChainId,
     usePublicClient,

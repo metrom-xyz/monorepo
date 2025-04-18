@@ -29,6 +29,7 @@ import { useChains } from "wagmi";
 import classNames from "classnames";
 import { CHAIN_DATA } from "@/src/commons";
 import { FilterableStatus } from "@/src/types/common";
+import { Lv2PointsCampaignBanner } from "./lv2-points-campaigns-banner";
 
 import styles from "./styles.module.css";
 
@@ -224,6 +225,7 @@ export function Campaigns() {
 
     return (
         <div className={styles.root}>
+            <Lv2PointsCampaignBanner />
             <div className={styles.filters}>
                 <TextInput
                     className={classNames(

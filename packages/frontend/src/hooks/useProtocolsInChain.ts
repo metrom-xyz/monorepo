@@ -3,7 +3,7 @@ import {
     type DexProtocol,
     type LiquityV2Protocol,
     type Protocol,
-} from "../types/common";
+} from "../types/protocol";
 import { useChainData } from "./useChainData";
 
 interface ProtocolByType {

@@ -1,4 +1,4 @@
-@reference "../../../../app.css";
+@reference "../../../app.css";
 
 .root {
     @apply w-full
@@ -9,10 +9,6 @@
 
 .header {
     @apply grid grid-cols-3;
-}
-
-.header > :nth-child(2) {
-    @apply justify-self-center;
 }
 
 .header > :last-child {

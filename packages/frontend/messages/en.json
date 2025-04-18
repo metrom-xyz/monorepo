@@ -372,6 +372,42 @@
         "allCampaigns": "All campaigns",
         "newCampaign": "New campaign"
     },
+    "campaignDuration": {
+        "startDate": "Start date",
+        "endDate": "End date",
+        "status": {
+            "duration": "Duration",
+            "live": {
+                "text": "Live",
+                "duration": "{days} left"
+            },
+            "upcoming": {
+                "text": "Upcoming",
+                "duration": "in {days}"
+            },
+            "ended": {
+                "text": "Ended",
+                "duration": "{days} ago"
+            }
+        }
+    },
+    "lv2PointsCampaignPage": {
+        "title": "Points campaign running on {protocol}",
+        "header": {
+            "title": "{protocol} campaign"
+        },
+        "details": {
+            "title": "Campaign",
+            "type": "Campaign type",
+            "points": "Points campaign",
+            "createdBy": "Created by"
+        },
+        "actions": {
+            "title": "Earn points",
+            "action": "Action",
+            "multiplier": "Multiplier"
+        }
+    },
     "campaignDetails": {
         "title": "Campaign details",
         "header": {
@@ -389,25 +425,15 @@
         },
         "details": {
             "tvl": "Tvl",
-            "status": {
-                "text": "Status",
-                "duration": "Duration",
-                "live": {
-                    "text": "Live",
-                    "duration": "{days} left"
-                },
-                "upcoming": {
-                    "text": "Upcoming",
-                    "duration": "in {days}"
-                },
-                "ended": {
-                    "text": "Ended",
-                    "duration": "{days} ago"
-                }
+            "status": "Status",
+            "duration": "Duration",
+            "statusType": {
+                "live": "Live",
+                "upcoming": "Upcoming",
+                "ended": "Ended"
             },
             "startDate": "Start date",
-            "endDate": "End date",
-            "endsIn": "Ends in"
+            "endDate": "End date"
         },
         "rewards": {
             "title": "Total rewards",

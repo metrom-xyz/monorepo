@@ -1,7 +1,7 @@
-@reference "../../../app.css";
+@reference "../../app.css";
 
 .root {
-    @apply flex flex-col gap-4;
+    @apply w-full flex flex-col gap-4;
 }
 
 .titleContainer {
@@ -40,7 +40,7 @@
 }
 
 .noDistribution {
-    @apply min-h-[380px] flex flex-col items-center justify-center gap-2;
+    @apply min-h-[404px] flex flex-col items-center justify-center gap-2;
 }
 
 .tableWrapper {
@@ -49,10 +49,6 @@
 
 .header {
     @apply grid grid-cols-3;
-}
-
-.header > :nth-child(2) {
-    @apply justify-self-center;
 }
 
 .header > :last-child {
@@ -65,10 +61,6 @@
 
 .row > :first-child {
     @apply flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4;
-}
-
-.row > :nth-child(2) {
-    @apply justify-self-center;
 }
 
 .row > :last-child {

@@ -1,0 +1,21 @@
+@reference "../../../app.css";
+
+.root {
+    @apply w-full flex justify-between items-end;
+}
+
+.leftContent {
+    @apply flex gap-3.5 items-center;
+}
+
+.titleWrapper {
+    @apply flex flex-col gap-1;
+}
+
+.exploreButton {
+    @apply h-12;
+}
+
+.externalLinkIcon {
+    @apply h-4 w-4 transform -rotate-45;
+}

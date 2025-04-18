@@ -14,7 +14,8 @@ import { useAccount } from "wagmi";
 import { NavThemeSwitcher } from "../../nav-theme-switcher";
 import { useMemo, type FunctionComponent } from "react";
 import { AnimatePresence, motion } from "motion/react";
-import type { SVGIcon, TranslationsKeys } from "@/src/types/common";
+import type { SVGIcon } from "@/src/types/common";
+import type { TranslationsKeys } from "@/src/types/utils";
 import { useClaims } from "@/src/hooks/useClaims";
 import type { Address } from "viem";
 

@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { Typography, ErrorText, Tabs, Tab } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
 import { Step } from "@/src/components/step";
@@ -8,7 +8,7 @@ import {
     type BaseCampaignPayload,
     type BaseCampaignPayloadPart,
     type CampaignPayloadErrors,
-} from "@/src/types/common";
+} from "@/src/types/campaign";
 import classNames from "classnames";
 import { RewardTokens } from "./tokens";
 import { RewardPoints } from "./points";

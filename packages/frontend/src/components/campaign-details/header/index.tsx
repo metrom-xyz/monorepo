@@ -1,7 +1,7 @@
 import { Skeleton, Button } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
 import { PoolRemoteLogo } from "../../pool-remote-logo";
-import type { Campaign } from "@/src/types/common";
+import type { Campaign } from "@/src/types/campaign";
 import { AmmPoolLiquityHeader } from "./amm-pool-liquitidy";
 import { TargetType } from "@metrom-xyz/sdk";
 import { LiquityV2Header } from "./liquity-v2";

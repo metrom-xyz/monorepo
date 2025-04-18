@@ -3,7 +3,7 @@ import { type ChainData } from "..";
 import { GnosisLogo } from "@/src/assets/logos/chains/gnosis";
 import { gnosis } from "viem/chains";
 import { SwaprLogo } from "@/src/assets/logos/dexes/swapr";
-import { DepositUrlType, ProtocolType } from "@/src/types/common";
+import { DepositUrlType, ProtocolType } from "@/src/types/protocol";
 import { ADDRESS, SupportedChain } from "@metrom-xyz/contracts";
 
 export const gnosisData: ChainData = {

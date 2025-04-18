@@ -1,6 +1,6 @@
 import { Typography } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
-import type { LiquityV2CampaignPreviewPayload } from "@/src/types/common";
+import type { LiquityV2CampaignPreviewPayload } from "@/src/types/campaign";
 import { useMemo } from "react";
 import { LIQUITY_V2_SUPPORTED_ACTIONS } from "../../steps/liquity-v2-action-step";
 import { RemoteLogo } from "@/src/components/remote-logo";

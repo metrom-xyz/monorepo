@@ -5,7 +5,7 @@ import { formatPercentage, formatUsdAmount } from "@/src/utils/format";
 import type {
     BaseCampaignPayload,
     CampaignPayloadTokenDistributables,
-} from "@/src/types/common";
+} from "@/src/types/campaign";
 import { useMemo } from "react";
 
 import styles from "./styles.module.css";

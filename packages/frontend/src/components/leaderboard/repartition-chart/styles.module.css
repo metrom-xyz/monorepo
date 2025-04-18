@@ -1,4 +1,4 @@
-@reference "../../../../app.css";
+@reference "../../../app.css";
 
 .root {
     @apply sm:max-w-80

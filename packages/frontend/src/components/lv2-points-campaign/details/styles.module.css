@@ -1,0 +1,9 @@
+@reference "../../../app.css";
+
+.root {
+    @apply w-full flex flex-col gap-4 mt-4;
+}
+
+.topContent {
+    @apply flex flex-wrap sm:flex-nowrap justify-between gap-4;
+}
