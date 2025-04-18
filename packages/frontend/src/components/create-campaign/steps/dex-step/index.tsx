@@ -8,11 +8,10 @@ import { useProtocolsInChain } from "@/src/hooks/useProtocolsInChain";
 import classNames from "classnames";
 import { Typography } from "@metrom-xyz/ui";
 import {
-    ProtocolType,
     type AmmPoolLiquidityCampaignPayload,
     type AmmPoolLiquidityCampaignPayloadPart,
-    type DexProtocol,
-} from "@/src/types/common";
+} from "@/src/types/campaign";
+import { ProtocolType, type DexProtocol } from "@/src/types/protocol";
 
 import styles from "./styles.module.css";
 

@@ -7,8 +7,8 @@ import { useConnectModal } from "@rainbow-me/rainbowkit";
 import { SkeletonRow, type PersonalRank } from "..";
 import { RewardsBreakdown } from "../rewards-breakdown";
 import { formatPercentage } from "@/src/utils/format";
-import type { Rank } from "@/src/hooks/useLeaderboard";
 import { PointsBreakdown } from "../points-breakdown";
+import type { Rank } from "@/src/types/campaign";
 
 import styles from "./styles.module.css";
 

@@ -1,18 +1,18 @@
-import { act, useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useChainId } from "wagmi";
 import { Step } from "@/src/components/step";
 import { StepPreview } from "@/src/components/step/preview";
 import { StepContent } from "@/src/components/step/content";
 import { useTranslations } from "next-intl";
 import {
-    LiquityV2Action,
     type LiquityV2CampaignPayload,
     type LiquityV2CampaignPayloadPart,
-} from "@/src/types/common";
+} from "@/src/types/campaign";
 import { Typography } from "@metrom-xyz/ui";
 import classNames from "classnames";
 import { TakeLoanIcon } from "@/src/assets/take-loan-icon";
 import { DepositToSpIcon } from "@/src/assets/deposit-to-sp-icon";
+import { LiquityV2Action } from "@/src/types/common";
 
 import styles from "./styles.module.css";
 

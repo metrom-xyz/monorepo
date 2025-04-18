@@ -5,7 +5,7 @@ import { ScribeLogo } from "../../assets/logos/dexes/scribe";
 import { type ChainData } from "..";
 import { scroll } from "viem/chains";
 import { UniswapLogo } from "@/src/assets/logos/dexes/uniswap";
-import { DepositUrlType, ProtocolType } from "@/src/types/common";
+import { DepositUrlType, ProtocolType } from "@/src/types/protocol";
 
 export const scrollData: ChainData = {
     testnet: false,

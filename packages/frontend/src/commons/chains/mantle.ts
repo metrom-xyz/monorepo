@@ -4,7 +4,7 @@ import { MantleLogo } from "../../assets/logos/chains/mantle";
 import { SwapsicleLogo } from "../../assets/logos/dexes/swapsicle";
 import { type ChainData } from "..";
 import { mantle } from "viem/chains";
-import { DepositUrlType, ProtocolType } from "@/src/types/common";
+import { DepositUrlType, ProtocolType } from "@/src/types/protocol";
 
 export const mantleData: ChainData = {
     testnet: false,

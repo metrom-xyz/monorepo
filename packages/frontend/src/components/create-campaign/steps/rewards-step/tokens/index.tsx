@@ -19,13 +19,12 @@ import { useTranslations } from "next-intl";
 import { useAccount, useChainId } from "wagmi";
 import { BorderedPlusIcon } from "@/src/assets/bordered-plus-icon";
 import type {
-    BaseCampaignPayload,
     CampaignPayloadErrors,
     BaseCampaignPayloadPart,
-    WhitelistedErc20TokenAmount,
-    LocalizedMessage,
     CampaignPayloadTokenDistributables,
-} from "@/src/types/common";
+} from "@/src/types/campaign";
+import type { WhitelistedErc20TokenAmount } from "@/src/types/common";
+import type { LocalizedMessage } from "@/src/types/utils";
 import { trackFathomEvent } from "@/src/utils/fathom";
 import { useWatchBalance } from "@/src/hooks/useWatchBalance";
 import { WhitelistedTokensList } from "../whitelisted-tokens-list";

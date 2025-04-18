@@ -8,7 +8,7 @@ import { AmmCampaignIcon } from "@/src/assets/amm-campaign-icon";
 import classNames from "classnames";
 import { LIQUITY_V2_CAMPAIGN } from "@/src/commons/env";
 import { RedirectType } from "next/navigation";
-import { CampaignType } from "@/src/types/common";
+import { CampaignType } from "@/src/types/campaign";
 
 import styles from "./styles.module.css";
 
