@@ -7,7 +7,6 @@ import {
     Select,
     Button,
     type SelectOption,
-    Card,
 } from "@metrom-xyz/ui";
 import { useCampaigns } from "@/src/hooks/useCampaigns";
 import { CampaignRow, SkeletonCampaign } from "./campaign";
@@ -24,14 +23,13 @@ import { SearchIcon } from "@/src/assets/search-icon";
 import { useDebounce } from "react-use";
 import { filterCampaigns, sortCampaigns } from "@/src/utils/filtering";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
-import { Link, useRouter as useLocalizedRouter } from "@/i18n/routing";
+import { useRouter as useLocalizedRouter } from "@/i18n/routing";
 import { SupportedChain } from "@metrom-xyz/contracts";
 import { useChains } from "wagmi";
 import classNames from "classnames";
 import { CHAIN_DATA } from "@/src/commons";
 import { FilterableStatus } from "@/src/types/common";
-import { ENVIRONMENT } from "@/src/commons/env";
-import { LV2_POINTS_CAMPAIGNS } from "@/src/commons/lv2-points";
+import { Lv2PointsCampaignBanner } from "./lv2-points-campaigns-banner";
 
 import styles from "./styles.module.css";
 
@@ -227,25 +225,7 @@ export function Campaigns() {
 
     return (
         <div className={styles.root}>
-            <div className={styles.lv2CampaignsWrapper}>
-                {Object.entries(LV2_POINTS_CAMPAIGNS[ENVIRONMENT]).map(
-                    ([protocol, lv2PointsCampaign], index) => {
-                        if (lv2PointsCampaign)
-                            return (
-                                <Link
-                                    key={index}
-                                    href={`/campaigns/lv2-points/${protocol}`}
-                                >
-                                    <Card>
-                                        <Typography>
-                                            {lv2PointsCampaign.name}
-                                        </Typography>
-                                    </Card>
-                                </Link>
-                            );
-                    },
-                )}
-            </div>
+            <Lv2PointsCampaignBanner />
             <div className={styles.filters}>
                 <TextInput
                     className={classNames(

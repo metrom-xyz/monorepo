@@ -7,6 +7,7 @@ import type { SupportedLiquityV2 } from "@metrom-xyz/sdk";
 import { ENVIRONMENT } from "@/src/commons/env";
 import { useLv2PointsCampaignLeaderboard } from "@/src/hooks/useLv2PointsCampaignLeaderboard";
 import { LV2_POINTS_CAMPAIGNS } from "@/src/commons/lv2-points";
+import { Actions } from "./actions";
 
 import styles from "./styles.module.css";
 
@@ -22,7 +23,7 @@ export function Lv2PointsCampaign({ protocol }: Lv2PointsCampaignProps) {
 
     if (!campaign) return null;
 
-    const { name, description, url, icon, from, to } = campaign;
+    const { name, description, url, chain, icon, from, to, actions } = campaign;
 
     return (
         <div className={styles.root}>
@@ -33,6 +34,7 @@ export function Lv2PointsCampaign({ protocol }: Lv2PointsCampaignProps) {
                 icon={icon}
             />
             <Details from={from} to={to} protocol={name} />
+            <Actions chain={chain} actions={actions} />
             <Leaderboard
                 noDistributionDate
                 loading={loadingLeaderboard}

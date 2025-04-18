@@ -2,6 +2,7 @@ import type { SupportedLiquityV2 } from "@metrom-xyz/sdk";
 import type { FunctionComponent } from "react";
 import type { Address } from "viem";
 import type { SVGIcon } from "./common";
+import type { SupportedChain } from "@metrom-xyz/contracts";
 
 export interface Lv2BackendPointsLeaderboardRank {
     account: Address;
@@ -17,19 +18,29 @@ export interface Lv2BackendLeaderboardResponse {
 
 export interface Action {
     name: string;
-    icon: FunctionComponent<SVGIcon>;
+    targets: Address[];
+    multiplier: number;
+    minimumDuration: number;
     description?: string;
+}
+
+export interface ActionsGroup {
+    title: string;
+    description: string;
+    actions: Action[];
 }
 
 export interface Lv2PointsCampaign {
     name: string;
     description: string;
     url: string;
+    chain: SupportedChain;
     protocol: SupportedLiquityV2;
+    brandColor: string;
     icon: FunctionComponent<SVGIcon>;
     from: number;
     to: number;
-    actions: Record<Lv2PointsCampaign2Action, Action[]>;
+    actions: Record<Lv2PointsCampaign2Action, ActionsGroup>;
 }
 
 export enum Lv2PointsCampaign2Action {
