@@ -4,10 +4,6 @@
     @apply max-w-screen-xl w-full flex flex-col px-4 sm:px-0;
 }
 
-.lv2CampaignsWrapper {
-    @apply w-full flex gap-3 justify-center;
-}
-
 .filters {
     @apply max-w-screen-lg w-full sm:items-end flex-col sm:flex-row flex gap-3 mb-7;
 }

@@ -11,10 +11,6 @@
     @apply grid grid-cols-3;
 }
 
-.header > :nth-child(2) {
-    @apply justify-self-center;
-}
-
 .header > :last-child {
     @apply justify-self-end;
 }
