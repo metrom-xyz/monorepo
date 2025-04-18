@@ -3,9 +3,9 @@ import type { Hex } from "viem";
 import { CHAIN_DATA, METROM_API_CLIENT } from "../commons";
 import { useQuery } from "@tanstack/react-query";
 import { getCampaignName } from "../utils/campaign";
-import { Campaign } from "../types/common";
 import type { HookBaseParams } from "../types/hooks";
 import { useTranslations } from "next-intl";
+import { Campaign } from "../types/campaign";
 
 interface UseCampaignParams extends HookBaseParams {
     chainId?: SupportedChain;

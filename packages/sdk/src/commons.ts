@@ -21,6 +21,8 @@ export enum SupportedDex {
 export enum SupportedLiquityV2 {
     Ebisu = "ebisu",
     Liquity = "liquity",
+    Quill = "quill",
+    Orki = "orki",
 }
 
 export enum SupportedAmm {

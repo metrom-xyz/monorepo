@@ -1,11 +1,11 @@
 import { useEffect, useMemo, useState } from "react";
 import { useTranslations } from "next-intl";
-import type { Leaderboard, Rank } from "@/src/hooks/useLeaderboard";
 import { Card, Typography } from "@metrom-xyz/ui";
 import { Cell, Pie, PieChart, Tooltip } from "recharts";
 import type { Address } from "viem";
 import { formatPercentage } from "@/src/utils/format";
 import { shuffle } from "@/src/utils/common";
+import type { Leaderboard, Rank } from "@/src/types/campaign";
 
 import styles from "./styles.module.css";
 import classNames from "classnames";

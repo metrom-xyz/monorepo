@@ -1,5 +1,5 @@
 import { CHAIN_DATA } from "@/src/commons";
-import { ProtocolType } from "@/src/types/common";
+import { ProtocolType } from "@/src/types/protocol";
 import { SupportedDex } from "@metrom-xyz/sdk";
 import { exec } from "node:child_process";
 import { writeFileSync } from "node:fs";

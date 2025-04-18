@@ -4,12 +4,8 @@
     @apply flex flex-col gap-4 mt-4;
 }
 
-.root > div {
-    @apply flex justify-between gap-4;
-}
-
-.root > div:nth-child(2) {
-    @apply flex-wrap sm:flex-nowrap;
+.topContent {
+    @apply flex flex-wrap sm:flex-nowrap justify-between gap-4;
 }
 
 .statusWrapper {

@@ -70,7 +70,7 @@ export function TvlTick({
         }
 
         return "middle";
-    }, [lowerBoundScale, poolTvlScale, upperBoundScale, x]);
+    }, [lowerBoundScale, poolTvlScale, upperBoundScale, x, index]);
 
     if (!payload || payload.value === undefined) return null;
 

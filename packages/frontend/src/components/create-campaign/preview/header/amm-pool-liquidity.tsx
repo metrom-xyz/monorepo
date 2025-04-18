@@ -1,9 +1,7 @@
 import { formatPercentage } from "@/src/utils/format";
 import { Typography } from "@metrom-xyz/ui";
-import {
-    ProtocolType,
-    type AmmPoolLiquidityCampaignPreviewPayload,
-} from "@/src/types/common";
+import { type AmmPoolLiquidityCampaignPreviewPayload } from "@/src/types/campaign";
+import { ProtocolType } from "@/src/types/protocol";
 import { useChainId } from "wagmi";
 import { useProtocolsInChain } from "@/src/hooks/useProtocolsInChain";
 import { useMemo } from "react";

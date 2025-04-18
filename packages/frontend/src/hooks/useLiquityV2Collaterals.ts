@@ -3,8 +3,8 @@ import { METROM_API_CLIENT } from "../commons";
 import { SupportedLiquityV2, type LiquityV2Collateral } from "@metrom-xyz/sdk";
 import { useQuery } from "@tanstack/react-query";
 import { useProtocolsInChain } from "./useProtocolsInChain";
-import { ProtocolType } from "../types/common";
 import type { HookBaseParams } from "../types/hooks";
+import { ProtocolType } from "../types/protocol";
 
 interface UseLiquityV2CollateralsParams extends HookBaseParams {
     chainId: SupportedChain;

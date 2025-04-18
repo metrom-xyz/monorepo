@@ -1,28 +1,10 @@
 import type { Address, Hex } from "viem";
-import {
-    type Campaign,
-    type OnChainAmount,
-    type UsdPricedErc20TokenAmount,
-} from "@metrom-xyz/sdk";
 import { METROM_API_CLIENT } from "../commons";
 import { useQuery } from "@tanstack/react-query";
 import { useAccount } from "wagmi";
 import type { HookBaseParams } from "../types/hooks";
 import type { SupportedChain } from "@metrom-xyz/contracts";
-
-export interface Rank {
-    account: Address;
-    weight: number;
-    position: number;
-    usdValue: number | null;
-    distributed: OnChainAmount | UsdPricedErc20TokenAmount[];
-}
-
-export interface Leaderboard {
-    timestamp: number;
-    connectedAccountRank?: Rank;
-    sortedRanks: Rank[];
-}
+import type { Leaderboard, Rank } from "../types/campaign";
 
 interface UseLeaderboardParams extends HookBaseParams {
     campaignId?: Hex;

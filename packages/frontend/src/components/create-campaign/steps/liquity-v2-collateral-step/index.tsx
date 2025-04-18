@@ -7,7 +7,7 @@ import { useTranslations } from "next-intl";
 import {
     type LiquityV2CampaignPayload,
     type LiquityV2CampaignPayloadPart,
-} from "@/src/types/common";
+} from "@/src/types/campaign";
 import { CollateralsList } from "./list";
 import { Typography } from "@metrom-xyz/ui";
 import type { LiquityV2Collateral } from "@metrom-xyz/sdk";

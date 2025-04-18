@@ -4,7 +4,7 @@ import {
     type LiquityV2CampaignPayload,
     type LiquityV2CampaignPayloadPart,
     type CampaignPreviewDistributables,
-} from "@/src/types/common";
+} from "@/src/types/campaign";
 import { useTranslations } from "next-intl";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useChainId } from "wagmi";

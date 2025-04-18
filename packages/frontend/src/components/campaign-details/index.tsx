@@ -10,10 +10,11 @@ import { Header, SkeletonHeader } from "./header";
 import { Details } from "./details";
 import { Rewards } from "./rewards";
 import { Points } from "./points";
-import { Leaderboard } from "./leaderboard";
 import { Kpi } from "./kpi";
 import { PageNotFound } from "../page-not-found";
 import { PriceRange } from "./price-range";
+import { Leaderboard } from "../leaderboard";
+import { useLeaderboard } from "@/src/hooks/useLeaderboard";
 
 import styles from "./styles.module.css";
 
@@ -28,6 +29,12 @@ export function CampaignDetails({ chain, campaignId }: CampaignDetailsProps) {
     const { loading: loadingCampaign, campaign } = useCampaign({
         id: campaignId,
         chainId: chain,
+    });
+
+    const { loading: loadingLeaderboard, leaderboard } = useLeaderboard({
+        campaignId: campaign?.id,
+        chainId: campaign?.chainId,
+        enabled: !!campaign,
     });
 
     const prevLoadingCampaign = usePrevious(loadingCampaign);
@@ -59,7 +66,11 @@ export function CampaignDetails({ chain, campaignId }: CampaignDetailsProps) {
                 {tokensCampaign && (
                     <Kpi campaign={campaign} loading={loadingCampaign} />
                 )}
-                <Leaderboard campaign={campaign} loading={loadingCampaign} />
+                <Leaderboard
+                    chainId={campaign?.chainId}
+                    leaderboard={leaderboard}
+                    loading={loadingLeaderboard}
+                />
             </div>
         </div>
     );

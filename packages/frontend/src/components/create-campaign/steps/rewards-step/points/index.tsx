@@ -14,9 +14,9 @@ import { RemoteLogo } from "@/src/components/remote-logo";
 import type {
     CampaignPayloadErrors,
     BaseCampaignPayloadPart,
-    LocalizedMessage,
     CampaignPayloadPointDistributables,
-} from "@/src/types/common";
+} from "@/src/types/campaign";
+import type { LocalizedMessage } from "@/src/types/utils";
 import { formatUsdAmount } from "@/src/utils/format";
 import { usePrevious } from "react-use";
 import { DistributablesType, type FeeToken } from "@metrom-xyz/sdk";

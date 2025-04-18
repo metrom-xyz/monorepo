@@ -6,7 +6,7 @@ import { useTranslations } from "next-intl";
 import dayjs from "dayjs";
 import { PersonalRank } from "./personal-rank";
 import { RepartitionChart } from "./repartition-chart";
-import type { Address } from "viem";
+import type { Address, Hex } from "viem";
 import { RewardsBreakdown } from "./rewards-breakdown";
 import { formatPercentage } from "@/src/utils/format";
 import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
@@ -14,11 +14,15 @@ import { getExplorerLink } from "@/src/utils/dex";
 import classNames from "classnames";
 import { NoDistributionsIcon } from "@/src/assets/no-distributions-icon";
 import { PointsBreakdown } from "./points-breakdown";
+import type { SupportedChain } from "@metrom-xyz/contracts";
+import type { Leaderboard } from "@/src/types/campaign";
 
 import styles from "./styles.module.css";
 
 interface LeaderboardProps {
-    campaign?: Campaign;
+    chainId?: SupportedChain;
+    leaderboard?: Leaderboard;
+    noDistributionDate?: boolean;
     loading: boolean;
 }
 
@@ -30,15 +34,17 @@ export interface PersonalRank {
     accrued: UsdPricedErc20TokenAmount[];
 }
 
-export function Leaderboard({ campaign, loading }: LeaderboardProps) {
+export function Leaderboard({
+    chainId,
+    leaderboard,
+    noDistributionDate,
+    loading,
+}: LeaderboardProps) {
     const t = useTranslations("campaignDetails.leaderboard");
 
-    const { loading: loadingLeaderboard, leaderboard } = useLeaderboard({
-        campaignId: campaign?.id,
-        chainId: campaign?.chainId,
-    });
+    console.log({ loading, leaderboard });
 
-    if (!loading && !loadingLeaderboard && !leaderboard) {
+    if (!loading && !leaderboard) {
         return (
             <div className={styles.root}>
                 <div className={styles.titleContainer}>
@@ -67,28 +73,35 @@ export function Leaderboard({ campaign, loading }: LeaderboardProps) {
                 <Typography size="lg" weight="medium" uppercase>
                     {t("title")}
                 </Typography>
-                <div className={styles.subtitleContainer}>
-                    <Typography weight="medium" size="sm" light uppercase>
-                        {leaderboard && t("subtitleLatest")}
-                    </Typography>
-                    {loading || loadingLeaderboard ? (
-                        <Skeleton width={130} size="sm" />
-                    ) : (
+                {!noDistributionDate && (
+                    <div className={styles.subtitleContainer}>
                         <Typography weight="medium" size="sm" light uppercase>
-                            {leaderboard
-                                ? dayjs
-                                      .unix(leaderboard.timestamp)
-                                      .format("DD/MMM/YY HH:mm")
-                                : t("noDistribution")}
+                            {leaderboard && t("subtitleLatest")}
                         </Typography>
-                    )}
-                </div>
+                        {loading ? (
+                            <Skeleton width={130} size="sm" />
+                        ) : (
+                            <Typography
+                                weight="medium"
+                                size="sm"
+                                light
+                                uppercase
+                            >
+                                {leaderboard && leaderboard.timestamp
+                                    ? dayjs
+                                          .unix(leaderboard.timestamp)
+                                          .format("DD/MMM/YY HH:mm")
+                                    : t("noDistribution")}
+                            </Typography>
+                        )}
+                    </div>
+                )}
             </div>
             <div className={styles.cardsWrapper}>
                 <div className={styles.leaderboardWrapper}>
                     <PersonalRank
-                        chain={campaign?.chainId}
-                        loading={loading || loadingLeaderboard}
+                        chain={chainId}
+                        loading={loading}
                         connectedAccountRank={leaderboard?.connectedAccountRank}
                     />
                     <Card className={styles.tableWrapper}>
@@ -118,7 +131,7 @@ export function Leaderboard({ campaign, loading }: LeaderboardProps) {
                                 {t("rewardsDistributed")}
                             </Typography>
                         </div>
-                        {loading || loadingLeaderboard ? (
+                        {loading ? (
                             <>
                                 <SkeletonRow />
                                 <SkeletonRow />
@@ -152,7 +165,7 @@ export function Leaderboard({ campaign, loading }: LeaderboardProps) {
                                         <a
                                             href={getExplorerLink(
                                                 distribution.account,
-                                                campaign?.chainId,
+                                                chainId,
                                             )}
                                             target="_blank"
                                             rel="noopener noreferrer"
@@ -168,7 +181,7 @@ export function Leaderboard({ campaign, loading }: LeaderboardProps) {
                                         {distribution.distributed instanceof
                                         Array ? (
                                             <RewardsBreakdown
-                                                chain={campaign?.chainId}
+                                                chain={chainId}
                                                 distributed={
                                                     distribution.distributed
                                                 }

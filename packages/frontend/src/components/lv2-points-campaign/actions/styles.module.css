@@ -1,0 +1,8 @@
+@reference "../../../app.css";
+
+.root {
+    @apply flex gap-4;
+}
+
+.action {
+}

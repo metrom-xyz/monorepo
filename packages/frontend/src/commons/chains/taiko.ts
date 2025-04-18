@@ -5,7 +5,7 @@ import { TaikoLogo } from "@/src/assets/logos/chains/taiko";
 import { taiko } from "viem/chains";
 import { UniswapLogo } from "@/src/assets/logos/dexes/uniswap";
 import { UnagiLogo } from "@/src/assets/logos/dexes/unagi";
-import { DepositUrlType, ProtocolType } from "@/src/types/common";
+import { DepositUrlType, ProtocolType } from "@/src/types/protocol";
 
 export const taikoData: ChainData = {
     testnet: false,

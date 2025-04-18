@@ -4,7 +4,7 @@ import { LightLinkPhoenixLogo } from "../../assets/logos/chains/lightlink-phoeni
 import { type ChainData } from "..";
 import { lightlinkPhoenix } from "viem/chains";
 import { UniswapLogo } from "@/src/assets/logos/dexes/uniswap";
-import { DepositUrlType, ProtocolType } from "@/src/types/common";
+import { DepositUrlType, ProtocolType } from "@/src/types/protocol";
 
 export const lightlinkPhoenixData: ChainData = {
     testnet: false,

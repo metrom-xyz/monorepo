@@ -9,9 +9,8 @@ import { Typography } from "@metrom-xyz/ui";
 import {
     type LiquityV2CampaignPayload,
     type LiquityV2CampaignPayloadPart,
-    type LiquityV2Protocol,
-    ProtocolType,
-} from "@/src/types/common";
+} from "@/src/types/campaign";
+import { ProtocolType, type LiquityV2Protocol } from "@/src/types/protocol";
 import { useProtocolsInChain } from "@/src/hooks/useProtocolsInChain";
 
 import styles from "./styles.module.css";

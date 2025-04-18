@@ -134,7 +134,10 @@ export function Kpi({ campaign, loading }: KpiProps) {
                         </Typography>
                         <div className={styles.chartWrapper}>
                             <KpiSimulationChart
-                                loading={specificationLoading}
+                                loading={
+                                    specificationLoading ||
+                                    loadingKpiMeasurements
+                                }
                                 poolUsdTvl={poolUsdTvl}
                                 campaignEnded={campaign.status === Status.Ended}
                                 campaignDurationSeconds={
