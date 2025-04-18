@@ -51,10 +51,6 @@
     @apply grid grid-cols-3;
 }
 
-.header > :nth-child(2) {
-    @apply justify-self-center;
-}
-
 .header > :last-child {
     @apply justify-self-end;
 }
@@ -65,10 +61,6 @@
 
 .row > :first-child {
     @apply flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4;
-}
-
-.row > :nth-child(2) {
-    @apply justify-self-center;
 }
 
 .row > :last-child {

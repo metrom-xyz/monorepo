@@ -66,7 +66,7 @@ export function useLv2PointsCampaignLeaderboard({
 
                 const connectedAccountRank =
                     connectedAccountRankIndex !== -1
-                        ? items.length < 5
+                        ? items.length <= 5
                             ? items[connectedAccountRankIndex]
                             : items.splice(connectedAccountRankIndex, 1)[0]
                         : undefined;

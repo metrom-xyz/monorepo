@@ -70,7 +70,7 @@ export function useLeaderboard({
 
                 const connectedAccountRank =
                     connectedAccountRankIndex !== -1
-                        ? sortedRanks.length < 5
+                        ? sortedRanks.length <= 5
                             ? sortedRanks[connectedAccountRankIndex]
                             : sortedRanks.splice(
                                   connectedAccountRankIndex,

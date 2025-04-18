@@ -393,6 +393,9 @@
     },
     "lv2PointsCampaignPage": {
         "title": "Points campaign running on {protocol}",
+        "header": {
+            "title": "{protocol} campaign"
+        },
         "details": {
             "title": "Campaign",
             "type": "Campaign type",
@@ -400,11 +403,10 @@
             "createdBy": "Created by"
         },
         "actions": {
-            "title": "Earn points"
+            "title": "Earn points",
+            "action": "Action",
+            "multiplier": "Multiplier"
         }
-    },
-    "lv2PointsCampaign": {
-        "title": "{protocol} campaign"
     },
     "campaignDetails": {
         "title": "Campaign details",

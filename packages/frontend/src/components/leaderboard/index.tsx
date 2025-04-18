@@ -1,5 +1,4 @@
-import { useLeaderboard } from "@/src/hooks/useLeaderboard";
-import { type Campaign, type UsdPricedErc20TokenAmount } from "@metrom-xyz/sdk";
+import { type UsdPricedErc20TokenAmount } from "@metrom-xyz/sdk";
 import { shortenAddress } from "@/src/utils/address";
 import { Typography, Skeleton, Card, type SkeletonProps } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
@@ -160,22 +159,25 @@ export function Leaderboard({
                                         <Typography weight="medium">
                                             {shortenAddress(
                                                 distribution.account,
+                                                true,
                                             )}
                                         </Typography>
-                                        <a
-                                            href={getExplorerLink(
-                                                distribution.account,
-                                                chainId,
-                                            )}
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                        >
-                                            <ArrowRightIcon
-                                                className={
-                                                    styles.externalLinkIcon
-                                                }
-                                            />
-                                        </a>
+                                        {chainId && (
+                                            <a
+                                                href={getExplorerLink(
+                                                    distribution.account,
+                                                    chainId,
+                                                )}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                            >
+                                                <ArrowRightIcon
+                                                    className={
+                                                        styles.externalLinkIcon
+                                                    }
+                                                />
+                                            </a>
+                                        )}
                                     </div>
                                     <div>
                                         {distribution.distributed instanceof

@@ -14,7 +14,7 @@ interface HeaderProps {
 }
 
 export function Header({ name, description, url, icon: Icon }: HeaderProps) {
-    const t = useTranslations("lv2PointsCampaign");
+    const t = useTranslations("lv2PointsCampaignPage.header");
 
     return (
         <div className={styles.root}>
