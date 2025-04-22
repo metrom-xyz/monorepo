@@ -41,8 +41,6 @@ export function Leaderboard({
 }: LeaderboardProps) {
     const t = useTranslations("campaignDetails.leaderboard");
 
-    console.log({ loading, leaderboard });
-
     if (!loading && !leaderboard) {
         return (
             <div className={styles.root}>
