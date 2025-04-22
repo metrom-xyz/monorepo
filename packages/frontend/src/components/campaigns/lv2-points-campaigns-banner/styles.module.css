@@ -1,9 +1,66 @@
 @reference "../../../app.css";
 
 .root {
-    @apply w-full flex gap-3 justify-center;
+    @apply w-full flex flex-col gap-3 mb-11 justify-center;
+}
+
+.cardsWrapper {
+    @apply w-full flex flex-col md:grid md:grid-cols-3 gap-3;
+}
+
+.illustration {
+    @apply absolute z-0 text-white opacity-50 right-0 -bottom-5;
+}
+
+.link {
+    @apply w-full;
 }
 
 .card {
-    @apply flex gap-2 items-center rounded-2xl p-4 theme-surface;
+    @apply relative
+        overflow-hidden
+        h-fit
+        flex
+        flex-col
+        gap-4
+        items-center
+        rounded-2xl
+        p-4
+        hover:opacity-80
+        transition-opacity
+        duration-200
+        ease-in-out
+        theme-surface;
+}
+
+.card > :not(:first-child) {
+    @apply z-10;
+}
+
+.cardHeader {
+    @apply w-full flex items-center gap-2;
+}
+
+.iconWrapper {
+    @apply flex items-center justify-center rounded-md h-7 w-7 p-[3px];
+}
+
+.icon {
+    @apply w-6 h-6;
+}
+
+.cardBody {
+    @apply w-full flex items-baseline gap-2;
+}
+
+.title {
+    @apply text-black;
+}
+
+.rewardAmount {
+    @apply text-black text-[46px];
+}
+
+.rewards {
+    @apply text-white;
 }
