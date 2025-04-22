@@ -17,6 +17,12 @@ export function Lv2PointsCampaignBanner() {
 
     const Illustration = ILLUSTRATIONS.at(ILLUSTRATIONS.length * Math.random());
 
+    const lv2CampaignsActive = Object.entries(
+        LV2_POINTS_CAMPAIGNS[ENVIRONMENT],
+    ).some(([_, campaign]) => !!campaign);
+
+    if (!lv2CampaignsActive) return null;
+
     return (
         <div className={styles.root}>
             <Typography weight="medium" size="lg" uppercase>
