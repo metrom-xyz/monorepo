@@ -64,14 +64,6 @@ export function calculateImpliedTick(decodedRate: BigDecimal): i32 {
     return NativeMath.round(tick) as i32;
 }
 
-function calculateLConstant(order: EncodedOrder): BigInt {
-    const decodedA = decodeFloat(order.A);
-    const A = decodedA.equals(BD_0) ? BD_1 : decodedA;
-    const z = BigDecimal.fromString(order.z.toString());
-    const L = z.div(A);
-    return BigInt.fromString(L.truncate(0).toString());
-}
-
 export class UniV3Order {
     lowerTick: i32;
     upperTick: i32;
@@ -120,10 +112,5 @@ export function decodeOrderToUniV3(
     if (upperTick > MAX_TICK) upperTick = MAX_TICK;
     if (lowerTick == upperTick) upperTick = lowerTick + 1;
 
-    return new UniV3Order(
-        lowerTick,
-        upperTick,
-        calculateLConstant(order),
-        order.y,
-    );
+    return new UniV3Order(lowerTick, upperTick, order.y, order.y);
 }
