@@ -5,7 +5,7 @@
 }
 
 .leftContent {
-    @apply w-full flex flex-col md:flex-row items-start gap-3.5 items-center;
+    @apply w-full flex flex-1 flex-col md:flex-row items-start gap-3.5 items-center;
 }
 
 .iconWrapper {
