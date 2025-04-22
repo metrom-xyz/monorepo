@@ -23,7 +23,8 @@ export function Lv2PointsCampaign({ protocol }: Lv2PointsCampaignProps) {
 
     if (!campaign) return null;
 
-    const { name, description, url, chain, icon, from, to, actions } = campaign;
+    const { name, description, brand, url, chain, icon, from, to, actions } =
+        campaign;
 
     return (
         <div className={styles.root}>
@@ -31,6 +32,7 @@ export function Lv2PointsCampaign({ protocol }: Lv2PointsCampaignProps) {
                 name={name}
                 description={description}
                 url={url}
+                brand={brand}
                 icon={icon}
             />
             <Details from={from} to={to} protocol={name} />

@@ -1,11 +1,19 @@
 @reference "../../../app.css";
 
 .root {
-    @apply w-full flex justify-between items-end;
+    @apply w-full flex flex-col md:flex-row justify-between items-end;
 }
 
 .leftContent {
-    @apply flex gap-3.5 items-center;
+    @apply w-full flex flex-col md:flex-row items-start gap-3.5 items-center;
+}
+
+.iconWrapper {
+    @apply flex items-center justify-center h-17 w-17 rounded-2xl;
+}
+
+.icon {
+    @apply h-12 w-12;
 }
 
 .titleWrapper {

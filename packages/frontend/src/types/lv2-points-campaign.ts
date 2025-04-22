@@ -30,13 +30,19 @@ export interface ActionsGroup {
     actions: Action[];
 }
 
+export interface BrandColor {
+    main: string;
+    light: string;
+}
+
 export interface Lv2PointsCampaign {
     name: string;
     description: string;
     url: string;
     chain: SupportedChain;
     protocol: SupportedLiquityV2;
-    brandColor: string;
+    totalUsdRewards: number;
+    brand: BrandColor;
     icon: FunctionComponent<SVGIcon>;
     from: number;
     to: number;

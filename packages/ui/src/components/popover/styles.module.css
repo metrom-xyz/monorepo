@@ -5,7 +5,7 @@
         border
         bg-white dark:bg-zinc-800
         border-zinc-200 dark:border-zinc-600
-        z-10;
+        z-50;
 }
 
 .open {

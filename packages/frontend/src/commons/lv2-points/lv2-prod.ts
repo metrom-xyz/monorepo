@@ -5,6 +5,8 @@ import {
     type Lv2PointsCampaign,
 } from "@/src/types/lv2-points-campaign";
 import { SupportedChain } from "@metrom-xyz/contracts";
+import { OrkiLogo } from "@/src/assets/logos/liquity-v2-platforms/orki";
+import { EbisuLogo } from "@/src/assets/logos/liquity-v2-platforms/ebisu";
 
 export const lv2PointsCampaignsProd: Record<
     SupportedLiquityV2,
@@ -17,7 +19,8 @@ export const lv2PointsCampaignsProd: Record<
         url: "https://app.quill.finance",
         chain: SupportedChain.Scroll,
         protocol: SupportedLiquityV2.Quill,
-        brandColor: "#FF5500",
+        totalUsdRewards: 1000000,
+        brand: { main: "#FF5500", light: "#FFBFA3" },
         icon: QuillLogo,
         from: 1744892700,
         to: 1744899900,
@@ -116,4 +119,63 @@ export const lv2PointsCampaignsProd: Record<
     [SupportedLiquityV2.Orki]: null,
     [SupportedLiquityV2.Ebisu]: null,
     [SupportedLiquityV2.Liquity]: null,
+    // TODO: add campaigns
+    // [SupportedLiquityV2.Orki]: {
+    //     name: "Orki",
+    //     description: "Native stablecoin and credit protocol on Swell.",
+    //     url: "https://www.orki.finance",
+    //     chain: SupportedChain.Scroll,
+    //     protocol: SupportedLiquityV2.Orki,
+    //     totalUsdRewards: 500000,
+    //     brand: { main: "#2973EB", light: "#94B9F5" },
+    //     icon: OrkiLogo,
+    //     from: 1744892700,
+    //     to: 1744899900,
+    //     actions: {
+    //         [Lv2PointsCampaign2Action.Liquidity]: {
+    //             title: "",
+    //             description: "",
+    //             actions: [],
+    //         },
+    //         [Lv2PointsCampaign2Action.StabilityPool]: {
+    //             title: "",
+    //             description: "",
+    //             actions: [],
+    //         },
+    //         [Lv2PointsCampaign2Action.Debt]: {
+    //             title: "",
+    //             description: "",
+    //             actions: [],
+    //         },
+    //     },
+    // },
+    // [SupportedLiquityV2.Ebisu]: {
+    //     name: "Ebisu",
+    //     description: "Native stablecoin and credit protocol on Swell.",
+    //     url: "https://www.orki.finance",
+    //     chain: SupportedChain.Scroll,
+    //     protocol: SupportedLiquityV2.Orki,
+    //     totalUsdRewards: 250000,
+    //     brand: { main: "#F24C9E", light: "#F9A5CF" },
+    //     icon: EbisuLogo,
+    //     from: 1744892700,
+    //     to: 1744899900,
+    //     actions: {
+    //         [Lv2PointsCampaign2Action.Liquidity]: {
+    //             title: "",
+    //             description: "",
+    //             actions: [],
+    //         },
+    //         [Lv2PointsCampaign2Action.StabilityPool]: {
+    //             title: "",
+    //             description: "",
+    //             actions: [],
+    //         },
+    //         [Lv2PointsCampaign2Action.Debt]: {
+    //             title: "",
+    //             description: "",
+    //             actions: [],
+    //         },
+    //     },
+    // },
 };
