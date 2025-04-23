@@ -39,7 +39,7 @@ export function sortCampaigns(
         return b.to - a.to;
     });
 
-    const sorted = clusteredCampaigns[Status.Live];
+    let sorted = clusteredCampaigns[Status.Live];
     sorted.push(...clusteredCampaigns[Status.Upcoming]);
     sorted.push(...clusteredCampaigns[Status.Ended]);
 
@@ -64,6 +64,11 @@ export function sortCampaigns(
             break;
         }
         case "apr": {
+            // When sorting for APR we also filter for live campaigns, since it doesn't make much sense
+            // to sort ended campaings with missing APR.
+            sorted = sorted.filter(
+                (campaign) => campaign.status !== Status.Ended,
+            );
             sorted
                 .sort((a, b) => {
                     return (
@@ -78,6 +83,11 @@ export function sortCampaigns(
             break;
         }
         case "rewards": {
+            // When sorting for rewards we also filter for live campaigns, since it doesn't make much sense
+            // to sort ended campaings with missing rewards.
+            sorted = sorted.filter(
+                (campaign) => campaign.status !== Status.Ended,
+            );
             sorted.sort((a, b) => {
                 const targetFieldA =
                     a.distributables.type === DistributablesType.Tokens
