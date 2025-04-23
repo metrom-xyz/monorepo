@@ -285,14 +285,6 @@ export function Campaigns() {
         }
     }, [searchParams, pathname, chainOptions]);
 
-    // When sorting for APR or rewards we also filter for live campaigns,
-    // since it doesn't make much sense so sort ended campaings with missing
-    // APR and rewards.
-    useEffect(() => {
-        if (sortField === "apr" || sortField === "rewards")
-            setStatus(FilterableStatus.Live);
-    }, [sortField]);
-
     function handleSearchChange(event: ChangeEvent<HTMLInputElement>) {
         setSearch(event.target.value);
     }
