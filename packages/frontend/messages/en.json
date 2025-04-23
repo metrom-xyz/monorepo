@@ -40,6 +40,10 @@
             "search": {
                 "label": "Search"
             },
+            "protocol": {
+                "label": "Protocol",
+                "all": "All"
+            },
             "status": {
                 "label": "Status",
                 "all": "All",
@@ -50,7 +54,8 @@
             "chain": {
                 "label": "Chain",
                 "all": "All"
-            }
+            },
+            "clear": "Clear filters"
         },
         "header": {
             "chain": "Chain",

@@ -9,8 +9,7 @@
 }
 
 .dropdownRoot {
-    @apply max-h-48
-        z-20
+    @apply z-20
         overflow-hidden
         h-fit;
 }

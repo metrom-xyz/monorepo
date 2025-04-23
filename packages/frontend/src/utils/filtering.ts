@@ -1,14 +1,22 @@
 import { isAddress } from "viem";
 import {
     type AmmPool,
+    DistributablesType,
     type Erc20Token,
     Status,
     TargetType,
 } from "@metrom-xyz/sdk";
 import { FilterableStatus } from "../types/common";
 import { type Campaign } from "../types/campaign";
+import dayjs from "dayjs";
 
-export function sortCampaigns(campaigns: Campaign[]): Campaign[] {
+export type CampaignSortOptions = "protocol" | "apr" | "rewards";
+
+export function sortCampaigns(
+    campaigns: Campaign[],
+    sortField?: CampaignSortOptions,
+    sortDirection?: number,
+): Campaign[] {
     const clusteredCampaigns = campaigns.reduce(
         (clustered: Record<Status, Campaign[]>, campaign) => {
             clustered[campaign.status].push(campaign);
@@ -35,17 +43,96 @@ export function sortCampaigns(campaigns: Campaign[]): Campaign[] {
     sorted.push(...clusteredCampaigns[Status.Upcoming]);
     sorted.push(...clusteredCampaigns[Status.Ended]);
 
+    switch (sortField) {
+        case "protocol": {
+            sorted.sort((a, b) => {
+                const targetFieldA =
+                    a.target.type === TargetType.AmmPoolLiquidity
+                        ? a.target.pool.dex.name
+                        : a.target.brand.name;
+
+                const targetFieldB =
+                    b.target.type === TargetType.AmmPoolLiquidity
+                        ? b.target.pool.dex.name
+                        : b.target.brand.name;
+
+                return (
+                    targetFieldA.localeCompare(targetFieldB, "en") *
+                    (sortDirection || 1)
+                );
+            });
+            break;
+        }
+        case "apr": {
+            sorted
+                .sort((a, b) => {
+                    return (
+                        (a.apr || 0)
+                            .toString()
+                            .localeCompare((b.apr || 0).toString(), "en", {
+                                numeric: true,
+                            }) * (sortDirection || 1)
+                    );
+                })
+                .filter((campaign) => campaign.status === Status.Live);
+            break;
+        }
+        case "rewards": {
+            sorted.sort((a, b) => {
+                const targetFieldA =
+                    a.distributables.type === DistributablesType.Tokens
+                        ? a.distributables.amountUsdValue
+                        : 0;
+
+                const targetFieldB =
+                    b.distributables.type === DistributablesType.Tokens
+                        ? b.distributables.amountUsdValue
+                        : 0;
+
+                const daysDurationA =
+                    dayjs.unix(a.to).diff(dayjs.unix(a.from), "hours", false) /
+                    24;
+                const perDayUsdValueA =
+                    daysDurationA >= 1 ? targetFieldA / daysDurationA : 0;
+
+                const daysDurationB =
+                    dayjs.unix(b.to).diff(dayjs.unix(b.from), "hours", false) /
+                    24;
+                const perDayUsdValueB =
+                    daysDurationB >= 1 ? targetFieldB / daysDurationB : 0;
+
+                return (
+                    perDayUsdValueA
+                        .toString()
+                        .localeCompare(perDayUsdValueB.toString(), "en", {
+                            numeric: true,
+                        }) * (sortDirection || 1)
+                );
+            });
+            break;
+        }
+        default: {
+            break;
+        }
+    }
+
     return sorted;
 }
 
 export function filterCampaigns(
     campaigns: Campaign[],
     status: FilterableStatus,
+    protocol: string,
     chainId: number | null,
     searchQuery: string,
 ): Campaign[] {
     if (campaigns.length === 0) return [];
-    if (!searchQuery && status === FilterableStatus.All && !chainId)
+    if (
+        !searchQuery &&
+        status === FilterableStatus.All &&
+        !chainId &&
+        protocol === ""
+    )
         return campaigns;
 
     let filteredCampaigns = campaigns;
@@ -54,6 +141,20 @@ export function filterCampaigns(
         filteredCampaigns = filteredCampaigns.filter(
             (campaign) => campaign.chainId === chainId,
         );
+
+    if (protocol !== "") {
+        filteredCampaigns = filteredCampaigns.filter((campaign) => {
+            switch (campaign.target.type) {
+                case TargetType.AmmPoolLiquidity: {
+                    return campaign.target.pool.dex.slug === protocol;
+                }
+                case TargetType.LiquityV2Debt:
+                case TargetType.LiquityV2StabilityPool: {
+                    return campaign.target.brand.slug === protocol;
+                }
+            }
+        });
+    }
 
     if (status !== FilterableStatus.All) {
         let convertedStatus: Status;
