@@ -121,7 +121,7 @@ export function getOrCreateToken(address: Address): Token | null {
     token = new Token(address);
     token.symbol = symbol;
     token.name = name;
-    token.decimals = decimals;
+    token.decimals = decimals.toI32();
     token.save();
 
     return token;
@@ -153,10 +153,10 @@ export function getFeeAdjustedAmount(amount: BigInt, fee: i32): BigInt {
         : amount.times(BI_10_000.minus(BigInt.fromI32(fee))).div(BI_10_000);
 }
 
-function exponentToBigDecimal(decimals: BigInt): BigDecimal {
+export function exponentToBigDecimal(decimals: i32): BigDecimal {
     let result = "1";
 
-    for (let i = 0; i < decimals.toI32(); i++) {
+    for (let i = 0; i < decimals; i++) {
         result += "0";
     }
 
