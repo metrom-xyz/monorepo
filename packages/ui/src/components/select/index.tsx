@@ -197,7 +197,7 @@ function Component<V extends ValueType, O extends SelectOption<V>>(
                     </div>
                 ) : (
                     <FixedSizeList<ItemData<V, O>>
-                        height={Math.min(filteredOptions.length, 4) * 48}
+                        height={Math.min(filteredOptions.length, 6) * 48}
                         width={anchorEl?.parentElement?.clientWidth || "auto"}
                         itemCount={filteredOptions.length}
                         itemData={itemData}

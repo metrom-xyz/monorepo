@@ -18,24 +18,70 @@ import {
     useMemo,
     useState,
     type ChangeEvent,
+    type FunctionComponent,
 } from "react";
 import { SearchIcon } from "@/src/assets/search-icon";
 import { useDebounce } from "react-use";
-import { filterCampaigns, sortCampaigns } from "@/src/utils/filtering";
+import {
+    filterCampaigns,
+    sortCampaigns,
+    type CampaignSortOptions,
+} from "@/src/utils/filtering";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import { useRouter as useLocalizedRouter } from "@/i18n/routing";
 import { SupportedChain } from "@metrom-xyz/contracts";
 import { useChains } from "wagmi";
 import classNames from "classnames";
 import { CHAIN_DATA } from "@/src/commons";
-import { FilterableStatus } from "@/src/types/common";
 import { Lv2PointsCampaignBanner } from "./lv2-points-campaigns-banner";
+import {
+    FilterableStatus,
+    type SVGIcon,
+    type TranslationsKeys,
+} from "@/src/types/common";
+import { useSupportedProtocols } from "@/src/hooks/useSupportedProtocols";
+import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
 
 import styles from "./styles.module.css";
 
 const PAGE_SIZE = 10;
-
 const CHAIN_ALL = 0;
+const TABLE_COLUMNS: {
+    name: string;
+    label: TranslationsKeys<"allCampaigns.header">;
+    sort: boolean;
+}[] = [
+    {
+        name: "chain",
+        label: "chain",
+        sort: false,
+    },
+    {
+        name: "protocol",
+        label: "protocol",
+        sort: true,
+    },
+    {
+        name: "action",
+        label: "action",
+        sort: false,
+    },
+    {
+        name: "status",
+        label: "status",
+        sort: false,
+    },
+    {
+        name: "apr",
+        label: "apr",
+        sort: true,
+    },
+    {
+        name: "rewards",
+        label: "rewards",
+        sort: true,
+    },
+];
 
 const statusSelectRenderOption = (option: {
     label: string;
@@ -59,15 +105,23 @@ const chainSelectRenderOption = (option: { label: string; value: number }) => {
             : null;
     return (
         <div className={styles.customOptionContainer}>
-            {ChainIcon && (
-                <div>
-                    <ChainIcon className={styles.chainIcon} />
-                </div>
-            )}
-            <Typography
-                className={styles.chainSelectOptionText}
-                weight="medium"
-            >
+            {ChainIcon && <ChainIcon className={styles.icon} />}
+            <Typography className={styles.selectOptionText} weight="medium">
+                {option.label}
+            </Typography>
+        </div>
+    );
+};
+
+const protocolSelectRenderOption = (option: {
+    label: string;
+    icon?: FunctionComponent<SVGIcon>;
+    value: string;
+}) => {
+    return (
+        <div className={styles.customOptionContainer}>
+            {option.icon && <option.icon className={styles.icon} />}
+            <Typography className={styles.selectOptionText} weight="medium">
                 {option.label}
             </Typography>
         </div>
@@ -77,18 +131,33 @@ const chainSelectRenderOption = (option: { label: string; value: number }) => {
 export function Campaigns() {
     const t = useTranslations("allCampaigns");
     const chains = useChains();
+    const protocols = useSupportedProtocols();
     const router = useRouter();
     const localizedRouter = useLocalizedRouter();
     const pathname = usePathname();
     const searchParams = useSearchParams();
 
     const [search, setSearch] = useState("");
+    const [protocol, setProtocol] = useState("");
     const [status, setStatus] = useState<FilterableStatus>(
         FilterableStatus.All,
     );
+    const [sortField, setSortField] = useState<CampaignSortOptions>();
+    const [order, setOrder] = useState<number | undefined>();
     const [chain, setChain] = useState(CHAIN_ALL);
     const [debouncedSearch, setDebouncedSearch] = useState(search);
     const [pageNumber, setPageNumber] = useState(1);
+
+    const filtersActive = useMemo(
+        () =>
+            !!search ||
+            !!protocol ||
+            status !== FilterableStatus.All ||
+            !!sortField ||
+            !!order ||
+            !!chain,
+        [search, protocol, status, sortField, order, chain],
+    );
 
     const statusOptions = useMemo(() => {
         return [
@@ -113,6 +182,28 @@ export function Campaigns() {
             },
         ];
     }, [t]);
+
+    const protocolOptions = useMemo(() => {
+        const options: {
+            label: string;
+            icon?: FunctionComponent<SVGIcon>;
+            value: string;
+        }[] = [
+            {
+                label: t("filters.protocol.all"),
+                value: "",
+            },
+        ];
+
+        for (const protocol of protocols) {
+            options.push({
+                label: protocol.name,
+                icon: protocol.logo,
+                value: protocol.slug,
+            });
+        }
+        return options;
+    }, [protocols, t]);
 
     const chainOptions = useMemo(() => {
         const options: {
@@ -150,9 +241,17 @@ export function Campaigns() {
 
     const filteredCampaigns = useMemo(() => {
         return sortCampaigns(
-            filterCampaigns(campaigns || [], status, chain, debouncedSearch),
+            filterCampaigns(
+                campaigns || [],
+                status,
+                protocol,
+                chain,
+                debouncedSearch,
+            ),
+            sortField,
+            order,
         );
-    }, [campaigns, status, chain, debouncedSearch]);
+    }, [campaigns, status, protocol, chain, debouncedSearch, sortField, order]);
 
     const { data: pagedCampaigns, totalPages } = usePagination({
         data: filteredCampaigns,
@@ -186,9 +285,24 @@ export function Campaigns() {
         }
     }, [searchParams, pathname, chainOptions]);
 
+    // When sorting for APR or rewards we also filter for live campaigns,
+    // since it doesn't make much sense so sort ended campaings with missing
+    // APR and rewards.
+    useEffect(() => {
+        if (sortField === "apr" || sortField === "rewards")
+            setStatus(FilterableStatus.Live);
+    }, [sortField]);
+
     function handleSearchChange(event: ChangeEvent<HTMLInputElement>) {
         setSearch(event.target.value);
     }
+
+    const handleProtocolChange = useCallback(
+        (protocol: SelectOption<string>) => {
+            setProtocol(protocol.value);
+        },
+        [],
+    );
 
     const handleStatusChange = useCallback(
         (status: SelectOption<FilterableStatus>) => {
@@ -207,6 +321,29 @@ export function Campaigns() {
         },
         [pathname, router, searchParams],
     );
+
+    const getSortChangeHandler = useCallback(
+        (column: CampaignSortOptions) => {
+            return () => {
+                setSortField(column);
+                setOrder(column === sortField && order === 1 ? -1 : 1);
+            };
+        },
+        [sortField, order],
+    );
+
+    const handleClearFilters = useCallback(() => {
+        setSearch("");
+        setProtocol("");
+        setStatus(FilterableStatus.All);
+        setChain(CHAIN_ALL);
+        setSortField(undefined);
+        setOrder(undefined);
+
+        const params = new URLSearchParams(searchParams.toString());
+        params.delete("chain");
+        router.replace(`${pathname}?${params.toString()}`);
+    }, [pathname, searchParams, router]);
 
     function handlePreviousPage() {
         setPageNumber((page) => page - 1);
@@ -251,8 +388,21 @@ export function Campaigns() {
                         renderOption={statusSelectRenderOption}
                     />
                     <Select
+                        options={protocolOptions}
+                        value={protocol}
+                        search
+                        onChange={handleProtocolChange}
+                        label={t("filters.protocol.label")}
+                        messages={{
+                            noResults: "",
+                        }}
+                        className={styles.filterInput}
+                        renderOption={protocolSelectRenderOption}
+                    />
+                    <Select
                         options={chainOptions}
                         value={chain}
+                        search
                         onChange={handleChainChange}
                         label={t("filters.chain.label")}
                         messages={{
@@ -262,29 +412,58 @@ export function Campaigns() {
                         renderOption={chainSelectRenderOption}
                     />
                 </div>
+                <Button
+                    variant="secondary"
+                    size="xs"
+                    border={false}
+                    onClick={handleClearFilters}
+                    className={{
+                        root: classNames(styles.clearButton, {
+                            [styles.visible]: filtersActive,
+                        }),
+                    }}
+                >
+                    {t("filters.clear")}
+                </Button>
             </div>
             <div className={styles.scrollContainer}>
                 <div className={styles.tableWrapper}>
                     <div className={styles.table}>
                         <div className={styles.header}>
-                            <Typography size="sm" weight="medium">
-                                {t("header.chain")}
-                            </Typography>
-                            <Typography size="sm" weight="medium">
-                                {t("header.protocol")}
-                            </Typography>
-                            <Typography size="sm" weight="medium">
-                                {t("header.action")}
-                            </Typography>
-                            <Typography size="sm" weight="medium">
-                                {t("header.status")}
-                            </Typography>
-                            <Typography size="sm" weight="medium">
-                                {t("header.apr")}
-                            </Typography>
-                            <Typography size="sm" weight="medium">
-                                {t("header.rewards")}
-                            </Typography>
+                            {TABLE_COLUMNS.map(
+                                ({ name, label, sort }, index) => (
+                                    <div
+                                        key={index}
+                                        onClick={
+                                            sort
+                                                ? getSortChangeHandler(
+                                                      name as any,
+                                                  )
+                                                : undefined
+                                        }
+                                        className={classNames(styles.column, {
+                                            [styles.sort]: sort,
+                                        })}
+                                    >
+                                        <Typography size="sm" weight="medium">
+                                            {t(`header.${label}`)}
+                                        </Typography>
+                                        {sort && (
+                                            <ArrowRightIcon
+                                                className={classNames(
+                                                    styles.sortIcon,
+                                                    {
+                                                        [styles.asc]:
+                                                            sortField ===
+                                                                name &&
+                                                            order === 1,
+                                                    },
+                                                )}
+                                            />
+                                        )}
+                                    </div>
+                                ),
+                            )}
                         </div>
                         <div className={styles.body}>
                             {loading ? (
