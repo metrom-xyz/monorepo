@@ -6,6 +6,7 @@ import {
 import { FullRangePool } from "../../../generated/schema";
 import { Pool as PoolTemplate } from "../../../generated/templates";
 import {
+    BD_0,
     BI_0,
     getFullRangePoolOrThrow,
     getOrCreateToken,
@@ -43,6 +44,7 @@ export function handlePoolCreated(event: PoolCreated): void {
     pool.token1 = token1.id;
     pool.token0Tvl = BI_0;
     pool.token1Tvl = BI_0;
+    pool.price = BD_0;
     pool.liquidity = BI_0;
     pool.fee = PoolFactoryContract.getFee(
         event.params.pool,

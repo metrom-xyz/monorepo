@@ -2,7 +2,7 @@ type Token @entity(immutable: true) {
     id: Bytes!
     name: String!
     symbol: String!
-    decimals: BigInt!
+    decimals: Int!
 }
 
 type Gauge @entity(immutable: true) {
@@ -17,6 +17,7 @@ type FullRangePool @entity {
     token0Tvl: BigInt!
     token1Tvl: BigInt!
     liquidity: BigInt!
+    price: BigDecimal!
     fee: Int!
     positions: [FullRangePosition!]! @derivedFrom(field: "pool")
     liquidityChanges: [FullRangeLiquidityChange!]! @derivedFrom(field: "pool")
