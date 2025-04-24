@@ -2,6 +2,7 @@ import { forwardRef, type ReactElement, type ReactNode, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import classNames from "classnames";
 import {
+    autoPlacement,
     autoUpdate,
     offset,
     useFloating,
@@ -13,6 +14,7 @@ import styles from "./styles.module.css";
 export interface PopoverProps {
     open: boolean;
     anchor?: Element | null;
+    margin?: number;
     placement?: Placement;
     className?: string;
     children?: ReactNode;
@@ -20,7 +22,7 @@ export interface PopoverProps {
 
 export const Popover = forwardRef<HTMLDivElement, PopoverProps>(
     function Popover(
-        { open, anchor, placement, className, children }: PopoverProps,
+        { open, anchor, margin, placement, className, children }: PopoverProps,
         ref,
     ): ReactElement {
         const [popper, setPopper] = useState<HTMLDivElement | null>(null);
@@ -28,7 +30,10 @@ export const Popover = forwardRef<HTMLDivElement, PopoverProps>(
         const { floatingStyles } = useFloating({
             elements: { reference: anchor, floating: popper },
             open,
-            middleware: [offset(8)],
+            middleware: [
+                offset(margin || 8),
+                ...(placement ? [] : [autoPlacement()]),
+            ],
             placement,
             whileElementsMounted: autoUpdate,
         });
