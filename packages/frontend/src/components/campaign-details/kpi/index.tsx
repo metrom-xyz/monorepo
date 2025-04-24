@@ -160,7 +160,9 @@ export function Kpi({ campaign, loading }: KpiProps) {
                         minimumPayoutPercentage={minimumPayoutPercentage}
                     />
                     <AverageDistributionChart
+                        chain={campaign.chainId}
                         loading={loadingKpiMeasurements}
+                        distributables={campaign.distributables}
                         kpiMeasurementPercentage={measurement}
                         minimumPayoutPercentage={
                             campaign.specification.kpi.minimumPayoutPercentage
