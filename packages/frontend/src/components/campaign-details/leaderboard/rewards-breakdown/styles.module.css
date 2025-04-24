@@ -1,15 +1,23 @@
 @reference "../../../../app.css";
 
 .rewardsPopover {
-    @apply flex flex-col gap-3 p-3;
+    @apply flex flex-col gap-2 p-2;
 }
 
 .rewardsPopoverRow {
-    @apply flex items-center gap-6 justify-between;
+    @apply grid grid-cols-3 gap-3 items-center;
 }
 
-.rewardsPopoverRow > div {
-    @apply flex items-center gap-2;
+.rewardsPopoverRow > :first-child {
+    @apply flex justify-self-start items-center gap-2;
+}
+
+.rewardsPopoverRow > :nth-child(2) {
+    @apply justify-self-center;
+}
+
+.rewardsPopoverRow > :last-child {
+    @apply justify-self-end;
 }
 
 .rankWrapper {

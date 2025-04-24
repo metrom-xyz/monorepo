@@ -48,7 +48,6 @@ export function RewardsBreakdown({
                             <div>
                                 <RemoteLogo
                                     chain={chain}
-                                    size="sm"
                                     address={distributed.token.address}
                                     defaultText={distributed.token.symbol}
                                 />
@@ -56,23 +55,20 @@ export function RewardsBreakdown({
                                     {distributed.token.symbol}
                                 </Typography>
                             </div>
-                            <div>
-                                <Typography weight="medium">
-                                    {formatAmount({
-                                        amount: distributed.amount.formatted,
-                                        cutoff: false,
-                                    })}
-                                </Typography>
-                                <Typography weight="medium">
-                                    {distributed.amount.usdValue
-                                        ? formatUsdAmount({
-                                              amount: distributed.amount
-                                                  .usdValue,
-                                              cutoff: false,
-                                          })
-                                        : "-"}
-                                </Typography>
-                            </div>
+                            <Typography weight="medium">
+                                {formatAmount({
+                                    amount: distributed.amount.formatted,
+                                    cutoff: false,
+                                })}
+                            </Typography>
+                            <Typography weight="medium" light>
+                                {distributed.amount.usdValue
+                                    ? formatUsdAmount({
+                                          amount: distributed.amount.usdValue,
+                                          cutoff: false,
+                                      })
+                                    : "-"}
+                            </Typography>
                         </div>
                     ))}
                 </div>
