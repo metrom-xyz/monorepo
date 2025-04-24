@@ -2,8 +2,8 @@ import { forwardRef, type ReactElement, type ReactNode, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import classNames from "classnames";
 import {
-    autoPlacement,
     autoUpdate,
+    flip,
     offset,
     useFloating,
     type Placement,
@@ -32,7 +32,7 @@ export const Popover = forwardRef<HTMLDivElement, PopoverProps>(
             open,
             middleware: [
                 offset(margin || 8),
-                ...(placement ? [] : [autoPlacement()]),
+                flip({ fallbackPlacements: ["top", "bottom"] }),
             ],
             placement,
             whileElementsMounted: autoUpdate,
