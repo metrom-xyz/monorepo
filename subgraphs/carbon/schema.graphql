@@ -25,6 +25,10 @@ type Pool @entity {
 
 type Order @entity {
     id: Bytes!
+    y: BigInt!
+    z: BigInt!
+    A: BigInt!
+    B: BigInt!
     lowerTick: Int!
     upperTick: Int!
     liquidity: BigInt!

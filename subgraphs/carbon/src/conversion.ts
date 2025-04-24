@@ -64,18 +64,42 @@ export function calculateImpliedTick(decodedRate: BigDecimal): i32 {
     return NativeMath.round(tick) as i32;
 }
 
+function calculateLConstant(z: BigInt, A: BigInt): BigInt {
+    let decodedA = decodeFloat(A);
+
+    return BigInt.fromString(
+        BigDecimal.fromString(z.toString())
+            .div(decodedA.equals(BD_0) ? BD_1 : decodedA)
+            .truncate(0)
+            .toString(),
+    );
+}
+
 export class UniV3Order {
+    y: BigInt;
+    z: BigInt;
+    A: BigInt;
+    B: BigInt;
+
     lowerTick: i32;
     upperTick: i32;
     liquidity: BigInt;
     tokenTvl: BigInt;
 
     constructor(
+        y: BigInt,
+        z: BigInt,
+        A: BigInt,
+        B: BigInt,
         lowerTick: i32,
         upperTick: i32,
         liquidity: BigInt,
         tokenTvl: BigInt,
     ) {
+        this.y = y;
+        this.z = z;
+        this.A = A;
+        this.B = B;
         this.lowerTick = lowerTick;
         this.upperTick = upperTick;
         this.liquidity = liquidity;
@@ -112,5 +136,14 @@ export function decodeOrderToUniV3(
     if (upperTick > MAX_TICK) upperTick = MAX_TICK;
     if (lowerTick == upperTick) upperTick = lowerTick + 1;
 
-    return new UniV3Order(lowerTick, upperTick, order.y, order.y);
+    return new UniV3Order(
+        order.y,
+        order.z,
+        order.A,
+        order.B,
+        lowerTick,
+        upperTick,
+        calculateLConstant(order.z, order.A),
+        order.y,
+    );
 }
