@@ -105,10 +105,9 @@ export function AverageDistributionChart({
         const reimbursedList: UsdPricedErc20TokenAmount[] = [];
 
         distributables.list.forEach(({ amount, remaining, token }) => {
-            const distributedAmount =
-                ((amount.formatted - remaining.formatted) * distributed) / 100;
-            const reimbursedAmount =
-                ((amount.formatted - remaining.formatted) * reimbursed) / 100;
+            const assignedAmount = amount.formatted - remaining.formatted;
+            const distributedAmount = (assignedAmount * distributed) / 100;
+            const reimbursedAmount = (assignedAmount * reimbursed) / 100;
 
             distributedList.push({
                 token,
