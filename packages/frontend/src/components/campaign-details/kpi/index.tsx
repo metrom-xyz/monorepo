@@ -154,9 +154,8 @@ export function Kpi({ campaign, loading }: KpiProps) {
                 </div>
                 <div className={styles.distributionChartsWrapper}>
                     <DistributionChart
-                        chain={campaign.chainId}
+                        campaign={campaign}
                         loading={loadingKpiMeasurements}
-                        kpiMeasurements={kpiMeasurements}
                         minimumPayoutPercentage={minimumPayoutPercentage}
                     />
                     <AverageDistributionChart

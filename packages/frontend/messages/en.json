@@ -446,7 +446,9 @@
                 "noDistribution": "No distribution yet",
                 "averageDistribution": "Average distribution",
                 "reimbursed": "Reimbursed",
-                "distributed": "Distributed"
+                "distributed": "Distributed",
+                "week": "W {week}",
+                "weekDuration": "{from} to {to}"
             }
         },
         "leaderboard": {

@@ -7,12 +7,32 @@
         gap-3;
 }
 
+.header {
+    @apply w-full flex items-start justify-between min-h-7;
+}
+
+.leftContent {
+    @apply flex items-baseline gap-1;
+}
+
+.rightContent {
+    @apply flex gap-1;
+}
+
+.skeletonChip :global(.skeleton) {
+    @apply rounded-[2.813rem];
+}
+
+.rightContent.loading {
+    @apply w-full flex justify-end;
+}
+
 .container {
     @apply h-full min-h-80;
 }
 
 .container.loading {
-    @apply flex items-end gap-2;
+    @apply flex items-end gap-1;
 }
 
 .container.empty {
@@ -20,7 +40,7 @@
 }
 
 .loadingBar {
-    @apply h-80 animate-pulse theme-surface-2 w-full max-w-12 rounded-t-md;
+    @apply h-80 animate-pulse theme-surface-2 w-full max-w-10 rounded-t-md;
 }
 
 .reimbursedBar {

@@ -5,15 +5,23 @@ import dayjs from "dayjs";
 import type { HookBaseParams } from "../types/hooks";
 
 interface UseKpiMeasurementsParams extends HookBaseParams {
+    from?: number;
+    to?: number;
     campaign?: Campaign;
 }
 
-type QueryKey = [string, Campaign | undefined];
+type QueryKey = [
+    string,
+    Campaign | undefined,
+    number | undefined,
+    number | undefined,
+];
 
 const MAX_DAYS_RANGE = 7;
 
-// TODO: dynamic from and to
 export function useKpiMeasurements({
+    from,
+    to,
     campaign,
     enabled = true,
 }: UseKpiMeasurementsParams = {}): {
@@ -21,30 +29,35 @@ export function useKpiMeasurements({
     kpiMeasurements: KpiMeasurement[];
 } {
     const { data, isPending } = useQuery({
-        queryKey: ["kpi-measurements", campaign],
+        queryKey: ["kpi-measurements", campaign, from, to],
         queryFn: async ({ queryKey }) => {
-            const [, campaign] = queryKey as QueryKey;
+            const [, campaign, from, to] = queryKey as QueryKey;
             if (!campaign) return [];
 
-            const from =
-                campaign.status === Status.Ended
-                    ? dayjs
-                          .unix(campaign.to)
-                          .utc()
-                          .subtract(MAX_DAYS_RANGE, "days")
-                          .unix()
-                    : dayjs().utc().subtract(MAX_DAYS_RANGE, "days").unix();
+            let derivedFrom = from;
+            let derivedTo = to;
 
-            const to =
-                campaign.status === Status.Ended
-                    ? dayjs.unix(campaign.to).utc().unix()
-                    : dayjs().utc().unix();
+            if (!derivedFrom)
+                derivedFrom =
+                    campaign.status === Status.Ended
+                        ? dayjs
+                              .unix(campaign.to)
+                              .utc()
+                              .subtract(MAX_DAYS_RANGE, "days")
+                              .unix()
+                        : dayjs().utc().subtract(MAX_DAYS_RANGE, "days").unix();
+
+            if (!derivedTo)
+                derivedTo =
+                    campaign.status === Status.Ended
+                        ? dayjs.unix(campaign.to).utc().unix()
+                        : dayjs().utc().unix();
 
             try {
                 return METROM_API_CLIENT.fetchKpiMeasurements({
                     campaign,
-                    from,
-                    to,
+                    from: derivedFrom,
+                    to: derivedTo,
                 });
             } catch (error) {
                 console.error(
@@ -53,6 +66,7 @@ export function useKpiMeasurements({
                 throw error;
             }
         },
+        staleTime: 60000,
         enabled: enabled && !!campaign && !!campaign.specification?.kpi,
     });
 
