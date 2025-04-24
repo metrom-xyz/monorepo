@@ -6,16 +6,21 @@ import {
     XAxis,
     YAxis,
 } from "recharts";
-import { useMemo } from "react";
-import type { KpiMeasurement, KpiRewardDistribution } from "@metrom-xyz/sdk";
+import { useCallback, useMemo, useState } from "react";
+import type {
+    DistributablesCampaign,
+    DistributablesType,
+    KpiRewardDistribution,
+} from "@metrom-xyz/sdk";
 import dayjs from "dayjs";
 import { TooltipContent } from "./tooltip";
-import type { SupportedChain } from "@metrom-xyz/contracts";
-import { Card, Typography } from "@metrom-xyz/ui";
+import { Card, Chip, Skeleton, Typography } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
-import { getAggregatedKpiMeasurements } from "@/src/utils/kpi";
 import classNames from "classnames";
 import { NoDistributionsIcon } from "@/src/assets/no-distributions-icon";
+import { useKpiMeasurements } from "@/src/hooks/useKpiMeasurements";
+import { getAggregatedKpiMeasurements } from "@/src/utils/kpi";
+import { AnimatePresence, easeInOut, motion } from "motion/react";
 
 import styles from "./styles.module.css";
 
@@ -28,26 +33,27 @@ export interface DistributionChartData {
 }
 
 interface DistributionChartProps {
-    chain?: SupportedChain;
-    kpiMeasurements?: KpiMeasurement[];
+    campaign?: DistributablesCampaign<DistributablesType.Tokens>;
     minimumPayoutPercentage?: number;
     loading?: boolean;
 }
 
-const TWO_HOURS_SECONDS = 60 * 60 * 2;
-const FOUR_HOURS_SECONDS = TWO_HOURS_SECONDS * 2;
-const TWELVE_HOURS_SECONDS = FOUR_HOURS_SECONDS * 3;
+const THREE_HOURS_SECONDS = 60 * 60 * 3;
 const ONE_DAY_SECONDS = 60 * 60 * 24;
-const TWO_DAYS_SECONDS = ONE_DAY_SECONDS * 2;
-const FOURTEEN_DAYS_SECONDS = ONE_DAY_SECONDS * 14;
 
 export function DistributionChart({
-    chain,
-    kpiMeasurements,
+    campaign,
     minimumPayoutPercentage = 0,
     loading,
 }: DistributionChartProps) {
     const t = useTranslations("campaignDetails.kpi.charts");
+
+    const [week, setWeek] = useState<number>();
+    const [from, setFrom] = useState<number>();
+    const [to, setTo] = useState<number>();
+
+    const { kpiMeasurements, loading: loadingKpiMeasurements } =
+        useKpiMeasurements({ campaign, from, to });
 
     const chartData: DistributionChartData[] = useMemo(() => {
         if (!kpiMeasurements || kpiMeasurements.length === 0) return [];
@@ -56,27 +62,15 @@ export function DistributionChart({
             kpiMeasurements[kpiMeasurements.length - 1].to -
             kpiMeasurements[0].from;
 
-        let aggregatedMeasurements;
-        if (fullTimeRange < ONE_DAY_SECONDS) {
-            aggregatedMeasurements = kpiMeasurements;
-        } else if (fullTimeRange < TWO_DAYS_SECONDS) {
-            aggregatedMeasurements = getAggregatedKpiMeasurements(
+        let aggregated;
+        if (fullTimeRange < ONE_DAY_SECONDS) aggregated = kpiMeasurements;
+        else
+            aggregated = aggregated = getAggregatedKpiMeasurements(
                 kpiMeasurements,
-                TWO_HOURS_SECONDS,
+                THREE_HOURS_SECONDS,
             );
-        } else if (fullTimeRange < FOURTEEN_DAYS_SECONDS) {
-            aggregatedMeasurements = getAggregatedKpiMeasurements(
-                kpiMeasurements,
-                FOUR_HOURS_SECONDS,
-            );
-        } else {
-            aggregatedMeasurements = getAggregatedKpiMeasurements(
-                kpiMeasurements,
-                TWELVE_HOURS_SECONDS,
-            );
-        }
 
-        return aggregatedMeasurements.map((measurement) => {
+        return aggregated.map((measurement) => {
             const { percentage } = measurement;
 
             const normalizedPercentage = Math.max(Math.min(percentage, 1), 0);
@@ -92,21 +86,87 @@ export function DistributionChart({
         });
     }, [kpiMeasurements, minimumPayoutPercentage]);
 
-    if (loading)
+    const weeksCount = useMemo(() => {
+        if (!campaign) return 0;
+
+        const campaignDaysDuration =
+            dayjs
+                .unix(Math.min(campaign.to, dayjs().unix()))
+                .diff(dayjs.unix(campaign.from), "hours") / 24;
+        const weeks = campaignDaysDuration / 7;
+
+        return weeks > 1 ? weeks : 0;
+    }, [campaign]);
+
+    const getWeekOnClickHandler = useCallback(
+        (newWeek: number) => {
+            return () => {
+                if (!campaign) return;
+
+                if (week === newWeek) {
+                    setFrom(undefined);
+                    setTo(undefined);
+                    setWeek(undefined);
+                    return;
+                }
+
+                const from = dayjs
+                    .unix(campaign.from)
+                    .utc()
+                    .add(newWeek, "weeks")
+                    .unix();
+                const to = dayjs.unix(from).utc().add(1, "weeks").unix();
+
+                setWeek(newWeek);
+                setFrom(from);
+                setTo(to);
+            };
+        },
+        [campaign, week],
+    );
+
+    if (!campaign || loading)
         return (
             <Card className={styles.root}>
-                <Typography weight="medium" light uppercase size="sm">
-                    {t("distributions")}
-                </Typography>
+                <div className={styles.header}>
+                    <Typography weight="medium" light uppercase size="sm">
+                        {t("distributions")}
+                    </Typography>
+                    <div
+                        className={classNames(
+                            styles.rightContent,
+                            styles.loading,
+                        )}
+                    >
+                        <Skeleton
+                            width={33}
+                            size="xl"
+                            className={styles.skeletonChip}
+                        />
+                        <Skeleton
+                            width={33}
+                            size="xl"
+                            className={styles.skeletonChip}
+                        />
+                        <Skeleton
+                            width={33}
+                            size="xl"
+                            className={styles.skeletonChip}
+                        />
+                    </div>
+                </div>
                 <div className={classNames(styles.container, styles.loading)}>
-                    {Array.from({ length: 25 }).map((_, index) => (
+                    {Array.from({ length: 35 }).map((_, index) => (
                         <div key={index} className={styles.loadingBar}></div>
                     ))}
                 </div>
             </Card>
         );
 
-    if (!kpiMeasurements || kpiMeasurements.length === 0) {
+    if (
+        !loadingKpiMeasurements &&
+        (!kpiMeasurements || kpiMeasurements.length === 0)
+    ) {
         return (
             <Card className={styles.root}>
                 <Typography weight="medium" light uppercase size="sm">
@@ -124,43 +184,93 @@ export function DistributionChart({
 
     return (
         <Card className={styles.root}>
-            <Typography weight="medium" light uppercase size="sm">
-                {t("distributions")}
-            </Typography>
-            <ResponsiveContainer width="100%" className={styles.container}>
-                <BarChart data={chartData} style={{ cursor: "pointer" }}>
-                    <YAxis ticks={[0, 1]} hide />
-                    <XAxis
-                        type="category"
-                        dataKey="to"
-                        height={20}
-                        padding={{ left: 0, right: 0 }}
-                        tickSize={4}
-                        minTickGap={50}
-                        axisLine={false}
-                        tick={<Tick />}
-                    />
+            <div className={styles.header}>
+                <div className={styles.leftContent}>
+                    <Typography weight="medium" light uppercase size="sm">
+                        {t("distributions")}
+                    </Typography>
+                    <AnimatePresence>
+                        {from && to && (
+                            <motion.div
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                exit={{ opacity: 0 }}
+                                transition={{ ease: easeInOut, duration: 0.2 }}
+                            >
+                                <Typography weight="medium" size="xs">
+                                    {t("weekDuration", {
+                                        from: dayjs
+                                            .unix(from)
+                                            .format("DD MMM")
+                                            .toUpperCase(),
+                                        to: dayjs
+                                            .unix(to)
+                                            .format("DD MMM")
+                                            .toUpperCase(),
+                                    })}
+                                </Typography>
+                            </motion.div>
+                        )}
+                    </AnimatePresence>
+                </div>
+                <div className={styles.rightContent}>
+                    {Array.from({ length: weeksCount }).map((_, index) => (
+                        <Chip
+                            key={index}
+                            size="xs"
+                            clickable={!loadingKpiMeasurements}
+                            active={index === week}
+                            onClick={getWeekOnClickHandler(index)}
+                        >
+                            {t("week", { week: index + 1 })}
+                        </Chip>
+                    ))}
+                </div>
+            </div>
+            {loadingKpiMeasurements ? (
+                <div className={classNames(styles.container, styles.loading)}>
+                    {Array.from({ length: 35 }).map((_, index) => (
+                        <div key={index} className={styles.loadingBar}></div>
+                    ))}
+                </div>
+            ) : (
+                <ResponsiveContainer width="100%" className={styles.container}>
+                    <BarChart data={chartData} style={{ cursor: "pointer" }}>
+                        <YAxis ticks={[0, 1]} hide />
+                        <XAxis
+                            type="category"
+                            dataKey="to"
+                            height={20}
+                            padding={{ left: 0, right: 0 }}
+                            tickSize={4}
+                            interval={"preserveStartEnd"}
+                            axisLine={false}
+                            tick={<Tick />}
+                        />
 
-                    <Bar
-                        dataKey="distributed"
-                        stackId="distribution"
-                        className={styles.distributedBar}
-                    />
-                    <Bar
-                        dataKey="reimbursed"
-                        stackId="distribution"
-                        radius={[6, 6, 0, 0]}
-                        className={styles.reimbursedBar}
-                    />
+                        <Bar
+                            dataKey="distributed"
+                            stackId="distribution"
+                            className={styles.distributedBar}
+                        />
+                        <Bar
+                            dataKey="reimbursed"
+                            stackId="distribution"
+                            radius={[6, 6, 0, 0]}
+                            className={styles.reimbursedBar}
+                        />
 
-                    <Tooltip
-                        position={{ y: -100 }}
-                        isAnimationActive={false}
-                        cursor={false}
-                        content={<TooltipContent chain={chain} />}
-                    />
-                </BarChart>
-            </ResponsiveContainer>
+                        <Tooltip
+                            position={{ y: -100 }}
+                            isAnimationActive={false}
+                            cursor={false}
+                            content={
+                                <TooltipContent chain={campaign?.chainId} />
+                            }
+                        />
+                    </BarChart>
+                </ResponsiveContainer>
+            )}
         </Card>
     );
 }
