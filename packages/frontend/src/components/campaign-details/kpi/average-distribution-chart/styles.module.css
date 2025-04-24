@@ -7,6 +7,60 @@
         sm:max-w-80;
 }
 
+.popover {
+    @apply rounded-lg
+        bg-white dark:bg-zinc-900
+        border-zinc-200 dark:border-zinc-600;
+}
+
+.popoverContent {
+    @apply flex
+        flex-col
+        gap-2
+        p-2
+        rounded-lg;
+}
+
+.header {
+    @apply flex justify-between mb-3;
+}
+
+.headerTextWrapper {
+    @apply flex items-center gap-1;
+}
+
+.legendDot {
+    @apply h-3 w-3 rounded-full;
+}
+
+.legendDot.reimbursed {
+    @apply bg-[#D1D5DB];
+}
+
+.legendDot.distributed {
+    @apply bg-brand-green;
+}
+
+.tokenRow {
+    @apply grid grid-cols-3 gap-3 items-center;
+}
+
+.tokenRow > :first-child {
+    @apply justify-self-start;
+}
+
+.tokenRow > :nth-child(2) {
+    @apply justify-self-center;
+}
+
+.tokenRow > :last-child {
+    @apply justify-self-end;
+}
+
+.tokenWrapper {
+    @apply flex items-center gap-2;
+}
+
 .tooltipWrapper {
     @apply absolute
         select-none
