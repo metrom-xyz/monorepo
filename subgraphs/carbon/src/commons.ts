@@ -216,8 +216,8 @@ export function updateTicks(
 export function createStrategyChange(
     event: ethereum.Event,
     changedStrategy: Strategy,
-    order0: UniV3Order | null,
-    order1: UniV3Order | null,
+    order0: UniV3Order,
+    order1: UniV3Order,
 ): StrategyChange {
     const eventId = getEventId(event);
 
@@ -226,23 +226,19 @@ export function createStrategyChange(
     strategyChange.strategyId = changedStrategy.id;
     strategyChange.owner = changedStrategy.owner;
 
-    if (order0 !== null) {
-        // no update will ever happen here, just creation
-        strategyChange.order0 = updateOrCreateOrder(
-            eventId.concat(BYTES_0),
-            changedStrategy.pool,
-            order0,
-        ).id;
-    }
+    // no update will ever happen here, just creation
+    strategyChange.order0 = updateOrCreateOrder(
+        eventId.concat(BYTES_0),
+        changedStrategy.pool,
+        order0,
+    ).id;
 
-    if (order1 !== null) {
-        // no update will ever happen here, just creation
-        strategyChange.order1 = updateOrCreateOrder(
-            eventId.concat(BYTES_1),
-            changedStrategy.pool,
-            order1,
-        ).id;
-    }
+    // no update will ever happen here, just creation
+    strategyChange.order1 = updateOrCreateOrder(
+        eventId.concat(BYTES_1),
+        changedStrategy.pool,
+        order1,
+    ).id;
 
     strategyChange.pool = changedStrategy.pool;
     strategyChange.save();

@@ -9,7 +9,6 @@ import {
 } from "../../generated/Controller/Controller";
 import {
     Controller,
-    Order,
     Pool,
     Strategy,
     StrategyDelete,
@@ -96,39 +95,32 @@ export function handleStrategyCreated(event: StrategyCreated): void {
     );
 
     const pool = getPoolOrThrow(event.params.token0, event.params.token1);
-    if (order0 !== null) {
-        pool.token0Tvl = pool.token0Tvl.plus(order0.tokenTvl);
-        pool.liquidity = pool.liquidity.plus(order0.liquidity);
-        updateTicks(pool.id, order0, false);
-    }
-    if (order1 !== null) {
-        pool.token1Tvl = pool.token1Tvl.plus(order1.tokenTvl);
-        pool.liquidity = pool.liquidity.plus(order1.liquidity);
-        updateTicks(pool.id, order1, false);
-    }
+
+    pool.token0Tvl = pool.token0Tvl.plus(order0.tokenTvl);
+    pool.token1Tvl = pool.token1Tvl.plus(order1.tokenTvl);
+
+    updateTicks(pool.id, order0, false);
+    updateTicks(pool.id, order1, false);
+
+    pool.liquidity = pool.liquidity
+        .plus(order0.liquidity)
+        .plus(order1.liquidity);
     pool.save();
 
     const strategy = new Strategy(
         Bytes.fromByteArray(Bytes.fromBigInt(event.params.id)),
     );
     strategy.owner = event.params.owner;
-
-    if (order0 !== null) {
-        strategy.order0 = updateOrCreateOrder(
-            getOrderId(strategy.id, true),
-            pool.id,
-            order0,
-        ).id;
-    }
-
-    if (order1 !== null) {
-        strategy.order1 = updateOrCreateOrder(
-            getOrderId(strategy.id, false),
-            pool.id,
-            order1,
-        ).id;
-    }
-
+    strategy.order0 = updateOrCreateOrder(
+        getOrderId(strategy.id, true),
+        pool.id,
+        order0,
+    ).id;
+    strategy.order1 = updateOrCreateOrder(
+        getOrderId(strategy.id, false),
+        pool.id,
+        order1,
+    ).id;
     strategy.pool = pool.id;
     strategy.save();
 
@@ -156,16 +148,16 @@ export function handleStrategyDeleted(event: StrategyDeleted): void {
     );
 
     const pool = getPoolOrThrow(event.params.token0, event.params.token1);
-    if (order0 !== null) {
-        pool.token0Tvl = pool.token0Tvl.minus(order0.tokenTvl);
-        pool.liquidity = pool.liquidity.minus(order0.liquidity);
-        updateTicks(pool.id, order0, true);
-    }
-    if (order1 !== null) {
-        pool.token1Tvl = pool.token1Tvl.minus(order1.tokenTvl);
-        pool.liquidity = pool.liquidity.minus(order1.liquidity);
-        updateTicks(pool.id, order1, true);
-    }
+    pool.token0Tvl = pool.token0Tvl.minus(order0.tokenTvl);
+    pool.token1Tvl = pool.token1Tvl.minus(order1.tokenTvl);
+
+    updateTicks(pool.id, order0, true);
+    updateTicks(pool.id, order1, true);
+
+    pool.liquidity = pool.liquidity
+        .minus(order0.liquidity)
+        .minus(order1.liquidity);
+
     pool.save();
 
     const strategyDelete = new StrategyDelete(getEventId(event));
@@ -212,50 +204,29 @@ export function handleStrategyUpdated(event: StrategyUpdated): void {
     let liquidity0Delta = BI_0;
     let liquidity1Delta = BI_0;
 
-    if (order0 !== null) {
-        let strategyOrder0: Order | null = null;
-        if (strategy.order0 !== null)
-            strategyOrder0 = getOrderOrThrow(strategy.order0!);
+    let strategyOrder0 = getOrderOrThrow(strategy.order0);
+    token0Delta = order0.tokenTvl.minus(strategyOrder0.tokenTvl);
+    liquidity0Delta = order0.liquidity.minus(strategyOrder0.liquidity);
 
-        token0Delta =
-            strategyOrder0 === null
-                ? order0.tokenTvl
-                : order0.tokenTvl.minus(strategyOrder0.tokenTvl);
-        liquidity0Delta =
-            strategyOrder0 === null
-                ? order0.liquidity
-                : order0.liquidity.minus(strategyOrder0.liquidity);
+    strategy.order0 = updateOrCreateOrder(
+        getOrderId(strategy.id, true),
+        strategy.pool,
+        order0,
+    ).id;
 
-        strategy.order0 = updateOrCreateOrder(
-            getOrderId(strategy.id, true),
-            strategy.pool,
-            order0,
-        ).id;
+    updateTicks(pool.id, order0, liquidity0Delta.lt(BI_0));
 
-        updateTicks(pool.id, order0, liquidity0Delta.lt(BI_0));
-    }
-    if (order1 !== null) {
-        let strategyOrder1: Order | null = null;
-        if (strategy.order1 !== null)
-            strategyOrder1 = getOrderOrThrow(strategy.order1!);
+    let strategyOrder1 = getOrderOrThrow(strategy.order1);
+    token1Delta = order1.tokenTvl.minus(strategyOrder1.tokenTvl);
+    liquidity1Delta = order1.liquidity.minus(strategyOrder1.liquidity);
 
-        token1Delta =
-            strategyOrder1 === null
-                ? order1.tokenTvl
-                : order1.tokenTvl.minus(strategyOrder1.tokenTvl);
-        liquidity1Delta =
-            strategyOrder1 === null
-                ? order1.liquidity
-                : order1.liquidity.minus(strategyOrder1.liquidity);
+    strategy.order1 = updateOrCreateOrder(
+        getOrderId(strategy.id, false),
+        strategy.pool,
+        order1,
+    ).id;
 
-        strategy.order1 = updateOrCreateOrder(
-            getOrderId(strategy.id, false),
-            strategy.pool,
-            order1,
-        ).id;
-
-        updateTicks(pool.id, order1, liquidity1Delta.lt(BI_0));
-    }
+    updateTicks(pool.id, order1, liquidity1Delta.lt(BI_0));
 
     strategy.save();
 
