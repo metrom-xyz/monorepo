@@ -39,8 +39,8 @@ type Order @entity {
 type Strategy @entity {
     id: Bytes!
     owner: Bytes!
-    order0: Order
-    order1: Order
+    order0: Order!
+    order1: Order!
     pool: Pool!
 }
 
@@ -49,8 +49,8 @@ type StrategyChange @entity(immutable: true) {
     timestamp: BigInt!
     strategyId: Bytes!
     owner: Bytes!
-    order0: Order
-    order1: Order
+    order0: Order!
+    order1: Order!
     pool: Pool!
 }
 
