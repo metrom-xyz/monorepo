@@ -15,6 +15,7 @@ import { PageNotFound } from "../page-not-found";
 import { PriceRange } from "./price-range";
 import { Leaderboard } from "../leaderboard";
 import { useLeaderboard } from "@/src/hooks/useLeaderboard";
+import { Weighting } from "./weighting";
 
 import styles from "./styles.module.css";
 
@@ -62,7 +63,15 @@ export function CampaignDetails({ chain, campaignId }: CampaignDetailsProps) {
                 {pointsCampaign && (
                     <Points campaign={campaign} loading={loadingCampaign} />
                 )}
-                {ammPoolCampaign && <PriceRange campaign={campaign} />}
+                {ammPoolCampaign && (
+                    <>
+                        <Weighting
+                            specification={campaign.specification}
+                            pool={campaign.target.pool}
+                        />
+                        <PriceRange campaign={campaign} />
+                    </>
+                )}
                 {tokensCampaign && (
                     <Kpi campaign={campaign} loading={loadingCampaign} />
                 )}

@@ -15,7 +15,7 @@ import classNames from "classnames";
 import { RewardTokens } from "./tokens";
 import { RewardPoints } from "./points";
 import { DistributablesType } from "@metrom-xyz/sdk";
-import { TokensRatio } from "./tokens-ratio";
+import { Weighting } from "./weighting";
 import { AMM_SUPPORTS_TOKENS_RATIO } from "@/src/commons";
 import type { SupportedAmm } from "@metrom-xyz/sdk";
 
@@ -24,13 +24,13 @@ import styles from "./styles.module.css";
 interface RewardsStepProps {
     disabled?: boolean;
     pool?: AmmPoolLiquidityCampaignPayload["pool"];
-    tokensRatio?: AmmPoolLiquidityCampaignPayload["tokensRatio"];
+    weighting?: AmmPoolLiquidityCampaignPayload["weighting"];
     distributables?: BaseCampaignPayload["distributables"];
     startDate?: BaseCampaignPayload["startDate"];
     endDate?: BaseCampaignPayload["endDate"];
     onDistributablesChange: (rewards: BaseCampaignPayloadPart) => void;
-    onTokensRatioChange?: (
-        tokensRatio: AmmPoolLiquidityCampaignPayloadPart,
+    onWeightingChange?: (
+        weighting: AmmPoolLiquidityCampaignPayloadPart,
     ) => void;
     onError: (errors: CampaignPayloadErrors) => void;
 }
@@ -38,12 +38,12 @@ interface RewardsStepProps {
 export function RewardsStep({
     disabled,
     pool,
-    tokensRatio,
+    weighting,
     distributables,
     startDate,
     endDate,
     onDistributablesChange,
-    onTokensRatioChange,
+    onWeightingChange,
     onError,
 }: RewardsStepProps) {
     const t = useTranslations("newCampaign.form.base.rewards");
@@ -78,10 +78,10 @@ export function RewardsStep({
         return (
             !!pool &&
             !disabled &&
-            !!onTokensRatioChange &&
+            !!onWeightingChange &&
             AMM_SUPPORTS_TOKENS_RATIO[pool.amm as SupportedAmm]
         );
-    }, [pool, disabled, onTokensRatioChange]);
+    }, [pool, disabled, onWeightingChange]);
 
     return (
         <Step
@@ -149,7 +149,7 @@ export function RewardsStep({
                                         light
                                         size="xs"
                                     >
-                                        {t("tokensRatio.title")}:
+                                        {t("weighting.title")}:
                                     </Typography>
                                     <Switch
                                         size="xs"
@@ -183,11 +183,11 @@ export function RewardsStep({
                     )}
                     {tokensRatioSupported && (
                         <div className={styles.tokensRatioWrapper}>
-                            <TokensRatio
+                            <Weighting
                                 open={tokensRatioOpen}
                                 pool={pool}
-                                tokensRatio={tokensRatio}
-                                onTokensRatioChange={onTokensRatioChange!}
+                                weighting={weighting}
+                                onWeightingChange={onWeightingChange!}
                             />
                         </div>
                     )}

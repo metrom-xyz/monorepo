@@ -64,7 +64,8 @@
             "title": "This campaign has KPI set"
         },
         "pool": {
-            "range": "Range"
+            "range": "Range",
+            "weighting": "Weighting"
         },
         "status": {
             "live": {
@@ -161,7 +162,7 @@
                             "lowDistributionRate": "Low distribution rate"
                         }
                     },
-                    "tokensRatio": {
+                    "weighting": {
                         "title": "Tokens ratio",
                         "fees": "Fees"
                     },
@@ -452,6 +453,7 @@
             "daily": "Daily rewards",
             "total": "Total value"
         },
+        "weighting": { "title": "Tokens ratio", "fees": "Fees" },
         "points": {
             "title": "Points",
             "total": "Total",

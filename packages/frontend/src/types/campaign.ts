@@ -1,4 +1,8 @@
-import type { OnChainAmount, UsdPricedErc20TokenAmount } from "@metrom-xyz/sdk";
+import type {
+    OnChainAmount,
+    UsdPricedErc20TokenAmount,
+    Weighting,
+} from "@metrom-xyz/sdk";
 import {
     Campaign as SdkCampaign,
     TargetType,
@@ -79,6 +83,7 @@ export interface BaseCampaignPayload {
 export interface AmmPoolLiquidityCampaignPayload extends BaseCampaignPayload {
     dex?: DexProtocol;
     pool?: AmmPoolWithTvl;
+    weighting?: Weighting;
     priceRangeSpecification?: AugmentedPriceRangeSpecification;
 }
 

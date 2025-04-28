@@ -13,23 +13,23 @@ import { AnimatePresence, motion } from "motion/react";
 
 import styles from "./styles.module.css";
 
-interface TokensRatioProps {
+interface WeightingProps {
     open?: boolean;
     pool?: AmmPoolLiquidityCampaignPayload["pool"];
-    tokensRatio?: AmmPoolLiquidityCampaignPayload["tokensRatio"];
-    onTokensRatioChange: (value: AmmPoolLiquidityCampaignPayloadPart) => void;
+    weighting?: AmmPoolLiquidityCampaignPayload["weighting"];
+    onWeightingChange: (value: AmmPoolLiquidityCampaignPayloadPart) => void;
 }
 
-export function TokensRatio({
+export function Weighting({
     open,
     pool,
-    tokensRatio,
-    onTokensRatioChange,
-}: TokensRatioProps) {
-    const t = useTranslations("newCampaign.form.base.rewards.tokensRatio");
+    weighting,
+    onWeightingChange,
+}: WeightingProps) {
+    const t = useTranslations("newCampaign.form.base.rewards.weighting");
 
-    const [token0, setToken0] = useState<number>(tokensRatio?.token0 || 0);
-    const [token1, setToken1] = useState<number>(tokensRatio?.token1 || 0);
+    const [token0, setToken0] = useState<number>(weighting?.token0 || 0);
+    const [token1, setToken1] = useState<number>(weighting?.token1 || 0);
 
     const leftFee = useMemo(() => {
         return Math.max(100 - token0 - token1, 0);
@@ -40,8 +40,8 @@ export function TokensRatio({
 
         setToken0(0);
         setToken1(0);
-        onTokensRatioChange({ tokensRatio: undefined });
-    }, [open, onTokensRatioChange]);
+        onWeightingChange({ weighting: undefined });
+    }, [open, onWeightingChange]);
 
     function handleToken0OnChange({ floatValue }: NumberFormatValues) {
         if (floatValue) setToken0(floatValue);
@@ -57,19 +57,19 @@ export function TokensRatio({
         const newToken0 = Math.min(token0, 100 - token1);
 
         setToken0(newToken0);
-        onTokensRatioChange({
-            tokensRatio: { token0: newToken0, token1, fee: leftFee },
+        onWeightingChange({
+            weighting: { token0: newToken0, token1, liquidity: leftFee },
         });
-    }, [token0, token1, leftFee, onTokensRatioChange]);
+    }, [token0, token1, leftFee, onWeightingChange]);
 
     const handleToken1OnBlur = useCallback(() => {
         const newToken1 = Math.min(token1, 100 - token0);
 
         setToken1(newToken1);
-        onTokensRatioChange({
-            tokensRatio: { token0, token1: newToken1, fee: leftFee },
+        onWeightingChange({
+            weighting: { token0, token1: newToken1, liquidity: leftFee },
         });
-    }, [token0, token1, leftFee, onTokensRatioChange]);
+    }, [token0, token1, leftFee, onWeightingChange]);
 
     return (
         <AnimatePresence>

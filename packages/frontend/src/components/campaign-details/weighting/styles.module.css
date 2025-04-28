@@ -1,0 +1,9 @@
+@reference "../../../app.css";
+
+.root {
+    @apply flex flex-col gap-4;
+}
+
+.tokensWrapper {
+    @apply flex flex-col sm:flex-row justify-between gap-4;
+}
