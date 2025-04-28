@@ -163,7 +163,7 @@
                         }
                     },
                     "weighting": {
-                        "title": "Tokens ratio",
+                        "title": "Weighting",
                         "fees": "Fees"
                     },
                     "list": {
@@ -453,7 +453,7 @@
             "daily": "Daily rewards",
             "total": "Total value"
         },
-        "weighting": { "title": "Tokens ratio", "fees": "Fees" },
+        "weighting": { "title": "Weighting", "fees": "Fees" },
         "points": {
             "title": "Points",
             "total": "Total",
