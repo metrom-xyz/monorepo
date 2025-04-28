@@ -50,7 +50,7 @@ export function buildSpecificationBundle(
     if (payload.restrictions)
         specification[payload.restrictions.type] = payload.restrictions.list;
 
-    if (payload instanceof AmmPoolLiquidityCampaignPreviewPayload)
+    if (payload instanceof AmmPoolLiquidityCampaignPreviewPayload) {
         if (payload.priceRangeSpecification) {
             let from;
             let to;
@@ -64,6 +64,15 @@ export function buildSpecificationBundle(
 
             specification.priceRange = { from, to };
         }
+
+        if (payload.weighting) {
+            specification.weighting = {
+                token0: payload.weighting.token0 / 100,
+                token1: payload.weighting.token1 / 100,
+                liquidity: payload.weighting.liquidity / 100,
+            };
+        }
+    }
 
     return specification;
 }

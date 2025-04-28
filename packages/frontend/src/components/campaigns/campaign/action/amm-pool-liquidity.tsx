@@ -40,20 +40,29 @@ export function AmmPoolLiquidity({ campaign }: AmmPoolLiquidityProps) {
                         })}
                     </Typography>
                 )}
-                {campaign.specification?.kpi && (
-                    <div className={styles.chip}>
-                        <Typography size="sm" weight="medium" uppercase>
-                            {t("kpi")}
-                        </Typography>
-                    </div>
-                )}
-                {campaign.specification?.priceRange && (
-                    <div className={styles.chip}>
-                        <Typography size="sm" weight="medium" uppercase>
-                            {t("pool.range")}
-                        </Typography>
-                    </div>
-                )}
+                <div className={styles.chipsWrapper}>
+                    {campaign.specification?.kpi && (
+                        <div className={styles.chip}>
+                            <Typography size="xs" weight="medium" uppercase>
+                                {t("kpi")}
+                            </Typography>
+                        </div>
+                    )}
+                    {campaign.specification?.priceRange && (
+                        <div className={styles.chip}>
+                            <Typography size="xs" weight="medium" uppercase>
+                                {t("pool.range")}
+                            </Typography>
+                        </div>
+                    )}
+                    {campaign.specification?.weighting && (
+                        <div className={styles.chip}>
+                            <Typography size="xs" weight="medium" uppercase>
+                                {t("pool.weighting")}
+                            </Typography>
+                        </div>
+                    )}
+                </div>
             </div>
         </div>
     );

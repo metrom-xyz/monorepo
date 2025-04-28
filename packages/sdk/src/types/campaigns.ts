@@ -91,11 +91,18 @@ export interface PriceRangeSpecification {
     to: number;
 }
 
+export interface Weighting {
+    token0: number;
+    token1: number;
+    liquidity: number;
+}
+
 export interface Specification {
     whitelist?: Address[];
     blacklist?: Address[];
     kpi?: KpiSpecification;
     priceRange?: PriceRangeSpecification;
+    weighting?: Weighting;
 }
 
 export enum Status {

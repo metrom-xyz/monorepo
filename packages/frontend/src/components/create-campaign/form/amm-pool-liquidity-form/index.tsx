@@ -32,7 +32,7 @@ function validatePayload(
         startDate,
         endDate,
         distributables,
-        tokensRatio,
+        weighting,
         kpiSpecification,
         priceRangeSpecification,
         restrictions,
@@ -54,6 +54,7 @@ function validatePayload(
     return new AmmPoolLiquidityCampaignPreviewPayload(
         dex,
         pool,
+        weighting,
         priceRangeSpecification,
         startDate,
         endDate,
@@ -170,11 +171,13 @@ export function AmmPoolLiquidityForm({
                 />
                 <RewardsStep
                     disabled={!payload.endDate || unsupportedChain}
+                    pool={payload.pool}
+                    weighting={payload.weighting}
                     distributables={payload.distributables}
                     startDate={payload.startDate}
                     endDate={payload.endDate}
                     onDistributablesChange={handlePayloadOnChange}
-                    onTokensRatioChange={handlePayloadOnChange}
+                    onWeightingChange={handlePayloadOnChange}
                     onError={handlePayloadOnError}
                 />
                 <KpiStep
