@@ -39,22 +39,28 @@ export class DecodedOrder {
     lowestRate: BigDecimal;
     highestRate: BigDecimal;
     liquidity: BigInt;
+    active: bool;
 
     constructor(
         lowestRate: BigDecimal,
         highestRate: BigDecimal,
         liquidity: BigInt,
+        active: bool,
     ) {
         this.lowestRate = lowestRate;
         this.highestRate = highestRate;
         this.liquidity = liquidity;
+        this.active = active;
     }
 }
 
 function decodeOrder(order: EncodedOrder): DecodedOrder {
     const A = decodeFloat(order.A);
     const B = decodeFloat(order.B);
-    return new DecodedOrder(decodeRate(B), decodeRate(B.plus(A)), order.y);
+    const lowestRate = decodeRate(B);
+    const highestRate = decodeRate(B.plus(A));
+    const inactive = (order.A.isZero() && order.B.isZero()) || order.y.isZero();
+    return new DecodedOrder(lowestRate, highestRate, order.y, !inactive);
 }
 
 export function calculateImpliedTick(decodedRate: BigDecimal): i32 {
@@ -85,6 +91,7 @@ export class UniV3Order {
     upperTick: i32;
     liquidity: BigInt;
     tokenTvl: BigInt;
+    active: bool;
 
     constructor(
         y: BigInt,
@@ -95,6 +102,7 @@ export class UniV3Order {
         upperTick: i32,
         liquidity: BigInt,
         tokenTvl: BigInt,
+        active: bool,
     ) {
         this.y = y;
         this.z = z;
@@ -104,6 +112,7 @@ export class UniV3Order {
         this.upperTick = upperTick;
         this.liquidity = liquidity;
         this.tokenTvl = tokenTvl;
+        this.active = active;
     }
 }
 
@@ -145,5 +154,6 @@ export function decodeOrderToUniV3(
         upperTick,
         calculateLConstant(order.z, order.A),
         order.y,
+        decodedOrder.active,
     );
 }

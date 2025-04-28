@@ -157,6 +157,7 @@ export function updateOrCreateOrder(
     order.liquidity = uniV3Order.liquidity;
     order.tokenTvl = uniV3Order.tokenTvl;
     order.pool = poolId;
+    order.active = uniV3Order.active;
     order.save();
 
     return order;
