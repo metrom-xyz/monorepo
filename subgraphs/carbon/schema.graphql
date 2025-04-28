@@ -33,6 +33,7 @@ type Order @entity {
     upperTick: Int!
     liquidity: BigInt!
     tokenTvl: BigInt!
+    active: Boolean!
     pool: Pool!
 }
 
@@ -41,6 +42,7 @@ type Strategy @entity {
     owner: Bytes!
     order0: Order!
     order1: Order!
+    active: Boolean!
     pool: Pool!
 }
 
