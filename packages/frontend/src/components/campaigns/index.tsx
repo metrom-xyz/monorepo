@@ -34,11 +34,8 @@ import { useChains } from "wagmi";
 import classNames from "classnames";
 import { CHAIN_DATA } from "@/src/commons";
 import { Lv2PointsCampaignBanner } from "./lv2-points-campaigns-banner";
-import {
-    FilterableStatus,
-    type SVGIcon,
-    type TranslationsKeys,
-} from "@/src/types/common";
+import { FilterableStatus, type SVGIcon } from "@/src/types/common";
+import type { TranslationsKeys } from "@/src/types/utils";
 import { useSupportedProtocols } from "@/src/hooks/useSupportedProtocols";
 import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
 
