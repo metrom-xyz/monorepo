@@ -16,9 +16,7 @@ dataSources:
       apiVersion: 0.0.9
       language: wasm/assemblyscript
       file: ./src/mappings/full-range/factory.ts
-      entities:
-        - FullRangePool
-        - Token
+      entities: []
       abis:
         - name: PoolFactory
           file: ./abis/PoolFactory.json
@@ -47,9 +45,7 @@ dataSources:
       apiVersion: 0.0.9
       language: wasm/assemblyscript
       file: ./src/mappings/concentrated/factory.ts
-      entities:
-        - ConcentratedPool
-        - Token
+      entities: []
       abis:
         - name: ClFactory
           file: ./abis/ClFactory.json
@@ -76,11 +72,7 @@ dataSources:
       apiVersion: 0.0.9
       language: wasm/assemblyscript
       file: ./src/mappings/concentrated/non-fungible-position-manager.ts
-      entities:
-        - ConcentratedPool
-        - ConcentratedPosition
-        - ConcentratedLiquidityChange
-        - ConcentratedLiquidityTransfer
+      entities: []
       abis:
         - name: NonFungiblePositionManager
           file: ./abis/NonFungiblePositionManager.json
@@ -105,14 +97,55 @@ dataSources:
       apiVersion: 0.0.9
       language: wasm/assemblyscript
       file: ./src/mappings/voter.ts
-      entities:
-        - Gauge
+      entities: []
       abis:
         - name: Voter
           file: ./abis/Voter.json
       eventHandlers:
         - event: GaugeCreated(indexed address,indexed address,indexed address,address,address,address,address)
           handler: handleGaugeCreated
+  - kind: ethereum/contract
+    name: AlmFactory
+    network: {{network}}
+    source:
+      abi: AlmFactory
+      address: "{{almFactoryAddress}}"
+      startBlock: {{almFactoryStartBlock}}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.9
+      language: wasm/assemblyscript
+      file: ./src/mappings/alm/factory.ts
+      entities: []
+      abis:
+        - name: AlmFactory
+          file: ./abis/AlmFactory.json
+        - name: AlmLpWrapper
+          file: ./abis/AlmLpWrapper.json
+        - name: AlmCore
+          file: ./abis/AlmCore.json
+      eventHandlers:
+        - event: StrategyCreated((address,(address,address,uint24,int24,int24,uint128)[],(uint8,int24,int24,int24,uint256),address,address))
+          handler: handleStrategyCreated
+  - kind: ethereum/contract
+    name: AlmCore
+    network: {{network}}
+    source:
+      abi: AlmCore
+      address: "{{almCoreAddress}}"
+      startBlock: {{almCoreStartBlock}}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.9
+      language: wasm/assemblyscript
+      file: ./src/mappings/alm/core.ts
+      entities: []
+      abis:
+        - name: AlmCore
+          file: ./abis/AlmCore.json
+      eventHandlers:
+        - event: Rebalance((address,(address,address,uint24,int24,int24,uint128),uint160,uint256,uint256,uint256,uint256))
+          handler: handleRebalance
 templates:
   - kind: ethereum/contract
     name: Pool
@@ -170,3 +203,20 @@ templates:
           handler: handleMint
         - event: Burn(indexed address,indexed int24,indexed int24,uint128,uint256,uint256)
           handler: handleBurn
+  - kind: ethereum/contract
+    name: AlmLpWrapper
+    network: {{network}}
+    source:
+      abi: AlmLpWrapper
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.9
+      language: wasm/assemblyscript
+      file: ./src/mappings/alm/lp-wrapper.ts
+      entities: []
+      abis:
+        - name: AlmLpWrapper
+          file: ./abis/AlmLpWrapper.json
+      eventHandlers:
+        - event: Transfer(indexed address,indexed address,uint256)
+          handler: handleTransfer
