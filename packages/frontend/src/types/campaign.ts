@@ -147,6 +147,7 @@ export class AmmPoolLiquidityCampaignPreviewPayload extends BaseCampaignPreviewP
     constructor(
         public readonly dex: DexProtocol,
         public readonly pool: AmmPoolWithTvl,
+        public readonly weighting?: Weighting,
         public readonly priceRangeSpecification?: AugmentedPriceRangeSpecification,
         ...baseArgs: ConstructorParameters<typeof BaseCampaignPreviewPayload>
     ) {
