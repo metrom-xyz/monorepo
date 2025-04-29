@@ -1,6 +1,6 @@
 import { CHAIN_DATA } from "../commons";
 import { LIQUITY_V2_CAMPAIGN } from "../commons/env";
-import { ProtocolType, type ProtocolBase } from "../types/common";
+import { ProtocolType, type ProtocolBase } from "../types/protocol";
 
 export function useSupportedProtocols(): ProtocolBase[] {
     const protocols: Record<string, ProtocolBase> = {};
