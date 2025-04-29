@@ -12,7 +12,12 @@ import {
 } from "recharts";
 import { useMemo } from "react";
 import { useTranslations } from "next-intl";
-import { ErrorText, Typography, type TypographySize } from "@metrom-xyz/ui";
+import {
+    ErrorText,
+    Skeleton,
+    Typography,
+    type TypographySize,
+} from "@metrom-xyz/ui";
 import { TvlTick } from "./axis-ticks/tvl";
 import { RewardTick } from "./axis-ticks/reward";
 import { TooltipContent, TooltipCursor } from "./tooltip";
@@ -24,6 +29,7 @@ import classNames from "classnames";
 import { formatUsdAmount } from "@/src/utils/format";
 import { useMeasure } from "react-use";
 import { SECONDS_IN_YEAR } from "@/src/commons";
+import { ChartIcon } from "@/src/assets/chart-icon";
 
 import styles from "./styles.module.css";
 
@@ -317,11 +323,21 @@ export function KpiSimulationChart({
             <div className={classNames("root", styles.root, className)}>
                 <div
                     className={classNames(
-                        "emptyContainer",
-                        styles.emptyContainer,
-                        styles.loading,
+                        "loadingContainer",
+                        styles.loadingContainer,
                     )}
-                ></div>
+                >
+                    <div className={styles.skeletonArea}>
+                        <div className={styles.skeletonReferenceLine}></div>
+                        <div className={styles.skeletonReferenceLine}></div>
+                        <div className={styles.skeletonReferenceLine}></div>
+                    </div>
+                    <div className={styles.skeletonXAxis}>
+                        <Skeleton size="xs" width={40} />
+                        <Skeleton size="xs" width={40} />
+                        <Skeleton size="xs" width={40} />
+                    </div>
+                </div>
             </div>
         );
     }
@@ -349,9 +365,12 @@ export function KpiSimulationChart({
                             {t("errors.missingData")}
                         </ErrorText>
                     ) : (
-                        <Typography uppercase size="sm" light weight="medium">
-                            {t("emptyData")}
-                        </Typography>
+                        <>
+                            <ChartIcon />
+                            <Typography uppercase size="sm" weight="medium">
+                                {t("emptyData")}
+                            </Typography>
+                        </>
                     )}
                 </div>
             </div>
