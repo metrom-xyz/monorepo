@@ -25,5 +25,5 @@
 }
 
 .chartWrapper {
-    @apply w-full max-w-[450px];
+    @apply w-full max-w-[450px] h-[270px];
 }
