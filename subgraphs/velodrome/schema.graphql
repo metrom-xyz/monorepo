@@ -79,6 +79,8 @@ type ConcentratedPosition @entity {
     upperTick: Int!
     liquidity: BigInt!
     pool: ConcentratedPool!
+    # If this is true, this is a position that is handled by an ALM strategy
+    alm: Boolean!
     liquidityChanges: [ConcentratedLiquidityChange!]!
         @derivedFrom(field: "position")
     liquidityTransfers: [ConcentratedLiquidityTransfer!]!
@@ -118,4 +120,38 @@ type Tick @entity {
     pool: ConcentratedPool!
     liquidityGross: BigInt!
     liquidityNet: BigInt!
+}
+
+type AlmLpWrapper @entity {
+    id: Bytes!
+    liquidity: BigInt!
+    pool: ConcentratedPool!
+}
+
+type AlmLpWrapperPosition @entity {
+    id: Bytes!
+    liquidity: BigInt!
+    lpWrapper: AlmLpWrapper!
+    pool: ConcentratedPool!
+}
+
+type AlmLpWrapperLiquidityChange @entity(immutable: true) {
+    id: Bytes!
+    timestamp: BigInt!
+    blockNumber: BigInt!
+    delta: BigInt!
+    lpWrapper: AlmLpWrapper!
+    pool: ConcentratedPool!
+    position: AlmLpWrapperPosition!
+}
+
+type AlmLpWrapperLiquidityTransfer @entity(immutable: true) {
+    id: Bytes!
+    timestamp: BigInt!
+    blockNumber: BigInt!
+    from: Bytes!
+    to: Bytes!
+    amount: BigInt!
+    lpWrapper: AlmLpWrapper!
+    pool: ConcentratedPool!
 }

@@ -31,7 +31,8 @@ addressesFile += `export const POOL_FACTORY_ADDRESS = Address.fromString("${cont
 addressesFile += `export const CL_FACTORY_ADDRESS = Address.fromString("${contracts.ClFactory.address}");\n`;
 addressesFile += `export const NON_FUNGIBLE_POSITION_MANAGER_ADDRESS = Address.fromString("${contracts.NonFungiblePositionManager.address}");\n`;
 addressesFile += `export const VOTER_ADDRESS = Address.fromString("${contracts.Voter.address}");\n`;
-addressesFile += `export const ALM_CORE_ADDRESS: Address | null = ${contracts.AlmCoreAddress ? `Address.fromString("${contracts.AlmCoreAddress}")` : "null"};\n`;
+addressesFile += `export const ALM_FACTORY_ADDRESS = Address.fromString("${contracts.AlmFactory.address}");\n`;
+addressesFile += `export const ALM_CORE_ADDRESS = Address.fromString("${contracts.AlmCore.address}");\n`;
 
 try {
     const addressesFileOut = join(
@@ -73,6 +74,10 @@ try {
                     contracts.NonFungiblePositionManager.startBlock,
                 voterAddress: contracts.Voter.address,
                 voterStartBlock: contracts.Voter.startBlock,
+                almFactoryAddress: contracts.AlmFactory.address,
+                almFactoryStartBlock: contracts.AlmFactory.startBlock,
+                almCoreAddress: contracts.AlmCore.address,
+                almCoreStartBlock: contracts.AlmCore.startBlock,
             },
         ),
     );
