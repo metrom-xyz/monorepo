@@ -1,7 +1,3 @@
-import type {
-    AmmPoolLiquidityCampaignPayload,
-    AmmPoolLiquidityCampaignPayloadPart,
-} from "@/src/types/common";
 import {
     NumberInput,
     Typography,
@@ -10,6 +6,10 @@ import {
 import { useTranslations } from "next-intl";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
+import type {
+    AmmPoolLiquidityCampaignPayload,
+    AmmPoolLiquidityCampaignPayloadPart,
+} from "@/src/types/campaign";
 
 import styles from "./styles.module.css";
 
