@@ -89,7 +89,7 @@ export function AverageDistributionChart({
         }
 
         return data;
-    }, [loading, assignedPercentages]);
+    }, [assignedPercentages]);
 
     const distributionBreakdown = useMemo(() => {
         if (!distributables || !assignedPercentages) return undefined;
