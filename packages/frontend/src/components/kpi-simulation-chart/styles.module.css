@@ -48,7 +48,8 @@
         flex
         items-end
         justify-around
-        h-[320px]
+        md:h-[320px]
+        h-60
         bg-[linear-gradient(to_bottom_right,_transparent_0%,_transparent_50%,#e4e4e7_50%,#e4e4e7_100%)]
         dark:bg-[linear-gradient(to_bottom_right,_transparent_0%,_transparent_50%,#3f3f46_50%,#3f3f46_100%)]
         animate-pulse;
