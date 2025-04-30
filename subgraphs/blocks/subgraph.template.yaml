@@ -1,4 +1,4 @@
-specVersion: 1.0.0
+specVersion: 1.3.0
 indexerHints:
   prune: 500000
 schema:
@@ -13,7 +13,7 @@ dataSources:
       startBlock: {{startBlock}}
     mapping:
       kind: ethereum/events
-      apiVersion: 0.0.7
+      apiVersion: 0.0.9
       language: wasm/assemblyscript
       file: ./src/mappings.ts
       entities:

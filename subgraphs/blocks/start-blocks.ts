@@ -1,5 +1,5 @@
 export const START_BLOCKS: { [network: string]: number } = {
-    holesky: 3755153,
+    holesky: 3760157,
     "arbitrum-one": 154000000,
     "base-sepolia": 16132650,
     sepolia: 7483369,
