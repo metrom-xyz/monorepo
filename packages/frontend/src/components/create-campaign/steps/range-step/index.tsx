@@ -354,7 +354,13 @@ export function RangeStep({
                         onToChange={setTo}
                     />
                     <div className={styles.chartWrapper}>
-                        <Typography weight="medium" light uppercase size="xs">
+                        <Typography
+                            weight="medium"
+                            light
+                            uppercase
+                            size="xs"
+                            className={styles.chartTitleText}
+                        >
                             {t("chart")}
                         </Typography>
                         <LiquidityDensityChart
@@ -367,6 +373,7 @@ export function RangeStep({
                             to={{ tick: to?.tick }}
                             pool={pool}
                             density={liquidityDensity}
+                            className={styles.liquidityDensityChart}
                         />
                     </div>
                     <Button

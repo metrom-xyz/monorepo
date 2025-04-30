@@ -28,6 +28,7 @@ import { zoom } from "@/src/utils/liquidity-density";
 import { ZoomOutIcon } from "@/src/assets/zoom-out-icon";
 import { ZoomInIcon } from "@/src/assets/zoom-in-icon";
 import { formatUnits } from "viem";
+import { LiquidityChartIcon } from "@/src/assets/liquidity-chart-icon";
 
 import styles from "./styles.module.css";
 
@@ -131,9 +132,21 @@ export function LiquidityDensityChart({
                     className={classNames(
                         "emptyContainer",
                         styles.emptyContainer,
-                        styles.loading,
+                        styles.emptyContainerLoading,
                     )}
-                ></div>
+                >
+                    <div className={styles.barsContainer}>
+                        {Array.from({ length: 30 }).map((_, index) => (
+                            <div
+                                key={index}
+                                className={classNames(
+                                    styles.skeletonBar,
+                                    styles.loading,
+                                )}
+                            ></div>
+                        ))}
+                    </div>
+                </div>
             </div>
         );
     }
@@ -156,9 +169,12 @@ export function LiquidityDensityChart({
                             {t("errors.missingData")}
                         </ErrorText>
                     ) : (
-                        <Typography uppercase size="sm" light weight="medium">
-                            {t("emptyData")}
-                        </Typography>
+                        <>
+                            <LiquidityChartIcon />
+                            <Typography uppercase size="sm" weight="medium">
+                                {t("emptyData")}
+                            </Typography>
+                        </>
                     )}
                 </div>
             </div>
