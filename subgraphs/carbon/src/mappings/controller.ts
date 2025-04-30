@@ -25,6 +25,7 @@ import {
     getOrderOrThrow,
     getPoolId,
     getPoolOrThrow,
+    getStrategyId,
     getStrategyOrThrow,
     updateOrCreateOrder,
     updateTicks,
@@ -75,24 +76,47 @@ export function handlePairCreated(event: PairCreated): void {
 }
 
 export function handleStrategyCreated(event: StrategyCreated): void {
-    const order0 = decodeOrderToUniV3(
-        new EncodedOrder(
-            event.params.order0.y,
-            event.params.order0.z,
-            event.params.order0.A,
-            event.params.order0.B,
-        ),
-        true,
-    );
-    const order1 = decodeOrderToUniV3(
-        new EncodedOrder(
-            event.params.order1.y,
-            event.params.order1.z,
-            event.params.order1.A,
-            event.params.order1.B,
-        ),
-        false,
-    );
+    const ordersInverted =
+        event.params.token0.toHex() > event.params.token1.toHex();
+
+    const order0 = ordersInverted
+        ? decodeOrderToUniV3(
+              new EncodedOrder(
+                  event.params.order1.y,
+                  event.params.order1.z,
+                  event.params.order1.A,
+                  event.params.order1.B,
+              ),
+              true,
+          )
+        : decodeOrderToUniV3(
+              new EncodedOrder(
+                  event.params.order0.y,
+                  event.params.order0.z,
+                  event.params.order0.A,
+                  event.params.order0.B,
+              ),
+              true,
+          );
+    const order1 = ordersInverted
+        ? decodeOrderToUniV3(
+              new EncodedOrder(
+                  event.params.order0.y,
+                  event.params.order0.z,
+                  event.params.order0.A,
+                  event.params.order0.B,
+              ),
+              false,
+          )
+        : decodeOrderToUniV3(
+              new EncodedOrder(
+                  event.params.order1.y,
+                  event.params.order1.z,
+                  event.params.order1.A,
+                  event.params.order1.B,
+              ),
+              false,
+          );
 
     const pool = getPoolOrThrow(event.params.token0, event.params.token1);
 
@@ -109,9 +133,7 @@ export function handleStrategyCreated(event: StrategyCreated): void {
 
     pool.save();
 
-    const strategy = new Strategy(
-        Bytes.fromByteArray(Bytes.fromBigInt(event.params.id)),
-    );
+    const strategy = new Strategy(getStrategyId(event.params.id));
     strategy.owner = event.params.owner;
     strategy.order0 = updateOrCreateOrder(
         getOrderId(strategy.id, true),
@@ -131,24 +153,47 @@ export function handleStrategyCreated(event: StrategyCreated): void {
 }
 
 export function handleStrategyDeleted(event: StrategyDeleted): void {
-    const order0 = decodeOrderToUniV3(
-        new EncodedOrder(
-            event.params.order0.y,
-            event.params.order0.z,
-            event.params.order0.A,
-            event.params.order0.B,
-        ),
-        true,
-    );
-    const order1 = decodeOrderToUniV3(
-        new EncodedOrder(
-            event.params.order1.y,
-            event.params.order1.z,
-            event.params.order1.A,
-            event.params.order1.B,
-        ),
-        false,
-    );
+    const ordersInverted =
+        event.params.token0.toHex() > event.params.token1.toHex();
+
+    const order0 = ordersInverted
+        ? decodeOrderToUniV3(
+              new EncodedOrder(
+                  event.params.order1.y,
+                  event.params.order1.z,
+                  event.params.order1.A,
+                  event.params.order1.B,
+              ),
+              true,
+          )
+        : decodeOrderToUniV3(
+              new EncodedOrder(
+                  event.params.order0.y,
+                  event.params.order0.z,
+                  event.params.order0.A,
+                  event.params.order0.B,
+              ),
+              true,
+          );
+    const order1 = ordersInverted
+        ? decodeOrderToUniV3(
+              new EncodedOrder(
+                  event.params.order0.y,
+                  event.params.order0.z,
+                  event.params.order0.A,
+                  event.params.order0.B,
+              ),
+              false,
+          )
+        : decodeOrderToUniV3(
+              new EncodedOrder(
+                  event.params.order1.y,
+                  event.params.order1.z,
+                  event.params.order1.A,
+                  event.params.order1.B,
+              ),
+              false,
+          );
 
     const pool = getPoolOrThrow(event.params.token0, event.params.token1);
 
@@ -173,35 +218,54 @@ export function handleStrategyDeleted(event: StrategyDeleted): void {
     strategyDelete.pool = pool.id;
     strategyDelete.save();
 
-    store.remove(
-        "Strategy",
-        Bytes.fromByteArray(Bytes.fromBigInt(event.params.id)).toHex(),
-    );
+    store.remove("Strategy", getStrategyId(event.params.id).toHex());
 }
 
 export function handleStrategyUpdated(event: StrategyUpdated): void {
     const pool = getPoolOrThrow(event.params.token0, event.params.token1);
-
     const strategy = getStrategyOrThrow(event.params.id);
 
-    const order0 = decodeOrderToUniV3(
-        new EncodedOrder(
-            event.params.order0.y,
-            event.params.order0.z,
-            event.params.order0.A,
-            event.params.order0.B,
-        ),
-        true,
-    );
-    const order1 = decodeOrderToUniV3(
-        new EncodedOrder(
-            event.params.order1.y,
-            event.params.order1.z,
-            event.params.order1.A,
-            event.params.order1.B,
-        ),
-        false,
-    );
+    const ordersInverted =
+        event.params.token0.toHex() > event.params.token1.toHex();
+
+    const order0 = ordersInverted
+        ? decodeOrderToUniV3(
+              new EncodedOrder(
+                  event.params.order1.y,
+                  event.params.order1.z,
+                  event.params.order1.A,
+                  event.params.order1.B,
+              ),
+              true,
+          )
+        : decodeOrderToUniV3(
+              new EncodedOrder(
+                  event.params.order0.y,
+                  event.params.order0.z,
+                  event.params.order0.A,
+                  event.params.order0.B,
+              ),
+              true,
+          );
+    const order1 = ordersInverted
+        ? decodeOrderToUniV3(
+              new EncodedOrder(
+                  event.params.order0.y,
+                  event.params.order0.z,
+                  event.params.order0.A,
+                  event.params.order0.B,
+              ),
+              false,
+          )
+        : decodeOrderToUniV3(
+              new EncodedOrder(
+                  event.params.order1.y,
+                  event.params.order1.z,
+                  event.params.order1.A,
+                  event.params.order1.B,
+              ),
+              false,
+          );
 
     let poolToken0Delta = BI_0;
     let poolToken1Delta = BI_0;
@@ -212,17 +276,13 @@ export function handleStrategyUpdated(event: StrategyUpdated): void {
     let strategyOrder0 = getOrderOrThrow(strategy.order0);
     if (strategyOrder0.active && !order0.active) {
         poolToken0Delta = strategyOrder0.tokenTvl.neg();
-        poolLiquidity0Delta = poolLiquidity0Delta.minus(
-            strategyOrder0.liquidity,
-        );
+        poolLiquidity0Delta = strategyOrder0.liquidity.neg();
     } else if (!strategyOrder0.active && order0.active) {
         poolToken0Delta = order0.tokenTvl;
-        poolLiquidity0Delta = poolLiquidity0Delta.plus(order0.liquidity);
+        poolLiquidity0Delta = order0.liquidity;
     } else {
         poolToken0Delta = order0.tokenTvl.minus(strategyOrder0.tokenTvl);
-        poolLiquidity0Delta = poolLiquidity0Delta.plus(
-            order0.liquidity.minus(strategyOrder0.liquidity),
-        );
+        poolLiquidity0Delta = order0.liquidity.minus(strategyOrder0.liquidity);
     }
 
     strategy.order0 = updateOrCreateOrder(
@@ -236,17 +296,13 @@ export function handleStrategyUpdated(event: StrategyUpdated): void {
     let strategyOrder1 = getOrderOrThrow(strategy.order1);
     if (strategyOrder1.active && !order1.active) {
         poolToken1Delta = strategyOrder1.tokenTvl.neg();
-        poolLiquidity1Delta = poolLiquidity1Delta.minus(
-            strategyOrder1.liquidity,
-        );
+        poolLiquidity1Delta = strategyOrder1.liquidity.neg();
     } else if (!strategyOrder1.active && order1.active) {
         poolToken1Delta = order1.tokenTvl;
-        poolLiquidity1Delta = poolLiquidity1Delta.plus(order1.liquidity);
+        poolLiquidity1Delta = order1.liquidity;
     } else {
         poolToken1Delta = order1.tokenTvl.minus(strategyOrder1.tokenTvl);
-        poolLiquidity1Delta = poolLiquidity1Delta.plus(
-            order1.liquidity.minus(strategyOrder1.liquidity),
-        );
+        poolLiquidity1Delta = order1.liquidity.minus(strategyOrder1.liquidity);
     }
 
     strategy.order1 = updateOrCreateOrder(

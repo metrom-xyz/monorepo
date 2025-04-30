@@ -170,8 +170,12 @@ export function getOrderOrThrow(id: Bytes): Order {
     throw new Error(`Could not find order with id ${id.toHex()}`);
 }
 
+export function getStrategyId(id: BigInt): Bytes {
+    return Bytes.fromByteArray(Bytes.fromBigInt(id));
+}
+
 export function getStrategyOrThrow(id: BigInt): Strategy {
-    let bytesId = Bytes.fromByteArray(Bytes.fromBigInt(id));
+    let bytesId = getStrategyId(id);
     let strategy = Strategy.load(bytesId);
     if (strategy === null)
         throw new Error(
