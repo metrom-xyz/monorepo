@@ -5,7 +5,7 @@ type Token @entity(immutable: true) {
     decimals: BigInt!
 }
 
-type Pool @entity {
+type Pool @entity(immutable: false) {
     id: Bytes!
     token0: Token!
     token1: Token!
@@ -19,7 +19,7 @@ type Pool @entity {
     tickMovingSwaps: [TickMovingSwap!]! @derivedFrom(field: "pool")
 }
 
-type Position @entity {
+type Position @entity(immutable: false) {
     id: Bytes!
     owner: Bytes!
     lowerTick: BigInt!
@@ -58,7 +58,7 @@ type TickMovingSwap @entity(immutable: true) {
     newTick: BigInt!
 }
 
-type Tick @entity {
+type Tick @entity(immutable: false) {
     id: Bytes!
     idx: BigInt!
     pool: Pool!
