@@ -28,7 +28,7 @@
 }
 
 .row > :nth-child(2) {
-    @apply justify-self-center;
+    @apply justify-self-start;
 }
 
 .row > :last-child {

@@ -72,7 +72,7 @@ export function PersonalRank({
                             </Typography>
                         </div>
                         <Typography size="lg" weight="medium">
-                            {shortenAddress(connectedAddress)}
+                            {shortenAddress(connectedAddress, true)}
                         </Typography>
                         {connectedAccountRank.distributed instanceof Array ? (
                             <RewardsBreakdown
