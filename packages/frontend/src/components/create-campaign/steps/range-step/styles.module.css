@@ -57,6 +57,14 @@
     @apply flex flex-col gap-2 p-2 rounded-md theme-surface-2;
 }
 
+.chartTitleText {
+    @apply dark:text-zinc-200;
+}
+
+.liquidityDensityChart :global(.emptyContainer) {
+    @apply min-h-[352px];
+}
+
 .applyButton {
     @apply w-full;
 }
