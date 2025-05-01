@@ -41,7 +41,7 @@ function getOrCreatePosition(tokenId: BigInt): ConcentratedPosition | null {
     position.lowerTick = result.value.getTickLower();
     position.upperTick = result.value.getTickUpper();
     position.liquidity = BI_0; // updated in increase liquidity handler
-    position.alm = false;
+    position.almStrategy = null;
     position.pool = Bytes.fromHexString(poolAddress.toHex());
     position.save();
 
@@ -109,7 +109,7 @@ export function handleTransfer(event: TransferEvent): void {
         return;
 
     let position = getPosition(event.params.tokenId);
-    if (position == null || position.alm) return;
+    if (position == null || position.almStrategy !== null) return;
 
     position.owner = event.params.to;
     position.save();

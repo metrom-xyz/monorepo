@@ -1,13 +1,13 @@
 import { Transfer } from "../../../generated/templates/AlmLpWrapper/AlmLpWrapper";
 import {
-    AlmLpWrapperLiquidityChange,
-    AlmLpWrapperLiquidityTransfer,
+    AlmStrategyLiquidityChange,
+    AlmStrategyLiquidityTransfer,
 } from "../../../generated/schema";
 import {
-    getAlmLpWrapperOrThrow,
-    getAlmLpWrapperPositionOrThrow,
+    getAlmStrategyOrThrow,
+    getAlmStrategyPositionOrThrow,
     getEventId,
-    getOrCreateAlmLpWrapperPosition,
+    getOrCreateAlmStrategyPosition,
 } from "../../commons";
 import { Address, dataSource } from "@graphprotocol/graph-ts";
 
@@ -20,11 +20,11 @@ export function handleTransfer(event: Transfer): void {
 
     if (event.params.from == Address.zero()) {
         // mint scenario
-        let wrapper = getAlmLpWrapperOrThrow(event.address);
+        let wrapper = getAlmStrategyOrThrow(event.address);
         wrapper.liquidity = wrapper.liquidity.plus(event.params.value);
         wrapper.save();
 
-        let position = getOrCreateAlmLpWrapperPosition(
+        let position = getOrCreateAlmStrategyPosition(
             event.address,
             event.params.to,
             poolAddress,
@@ -32,51 +32,51 @@ export function handleTransfer(event: Transfer): void {
         position.liquidity = position.liquidity.plus(event.params.value);
         position.save();
 
-        let liquidityChange = new AlmLpWrapperLiquidityChange(
+        let liquidityChange = new AlmStrategyLiquidityChange(
             getEventId(event),
         );
         liquidityChange.timestamp = event.block.timestamp;
         liquidityChange.blockNumber = event.block.number;
         liquidityChange.delta = event.params.value;
-        liquidityChange.lpWrapper = event.address;
+        liquidityChange.strategy = event.address;
         liquidityChange.pool = poolAddress;
         liquidityChange.position = position.id;
         liquidityChange.save();
     } else if (event.params.to == Address.zero()) {
         // burn scenario
-        let wrapper = getAlmLpWrapperOrThrow(event.address);
+        let wrapper = getAlmStrategyOrThrow(event.address);
         wrapper.liquidity = wrapper.liquidity.minus(event.params.value);
         wrapper.save();
 
-        let position = getAlmLpWrapperPositionOrThrow(
+        let position = getAlmStrategyPositionOrThrow(
             event.address,
             event.params.from,
         );
         position.liquidity = position.liquidity.minus(event.params.value);
         position.save();
 
-        let liquidityChange = new AlmLpWrapperLiquidityChange(
+        let liquidityChange = new AlmStrategyLiquidityChange(
             getEventId(event),
         );
         liquidityChange.timestamp = event.block.timestamp;
         liquidityChange.blockNumber = event.block.number;
         liquidityChange.delta = event.params.value.neg();
-        liquidityChange.lpWrapper = event.address;
+        liquidityChange.strategy = event.address;
         liquidityChange.pool = poolAddress;
         liquidityChange.position = position.id;
         liquidityChange.save();
     } else {
-        let transfer = new AlmLpWrapperLiquidityTransfer(getEventId(event));
+        let transfer = new AlmStrategyLiquidityTransfer(getEventId(event));
         transfer.timestamp = event.block.timestamp;
         transfer.blockNumber = event.block.number;
         transfer.from = event.params.from;
         transfer.to = event.params.to;
         transfer.amount = event.params.value;
-        transfer.lpWrapper = event.address;
+        transfer.strategy = event.address;
         transfer.pool = poolAddress;
         transfer.save();
 
-        let fromPosition = getAlmLpWrapperPositionOrThrow(
+        let fromPosition = getAlmStrategyPositionOrThrow(
             event.address,
             event.params.from,
         );
@@ -85,7 +85,7 @@ export function handleTransfer(event: Transfer): void {
         );
         fromPosition.save();
 
-        let toPosition = getOrCreateAlmLpWrapperPosition(
+        let toPosition = getOrCreateAlmStrategyPosition(
             event.address,
             event.params.to,
             poolAddress,

@@ -6,8 +6,8 @@ import {
     ethereum,
 } from "@graphprotocol/graph-ts";
 import {
-    AlmLpWrapper,
-    AlmLpWrapperPosition,
+    AlmStrategy,
+    AlmStrategyPosition,
     ConcentratedPool,
     ConcentratedPosition,
     FullRangePool,
@@ -74,46 +74,49 @@ export function getConcentratedPoolOrThrow(address: Address): ConcentratedPool {
     );
 }
 
-export function getAlmLpWrapperOrThrow(address: Address): AlmLpWrapper {
-    let wrapper = AlmLpWrapper.load(address);
+export function getAlmStrategyOrThrow(address: Address): AlmStrategy {
+    let wrapper = AlmStrategy.load(address);
     if (wrapper !== null) return wrapper;
 
-    throw new Error(`Could not find LP wrapper at address ${address.toHex()}`);
+    throw new Error(
+        `Could not find ALM strategy at address ${address.toHex()}`,
+    );
 }
 
-function getAlmLpWrapperPositionId(lpWrapper: Address, owner: Address): Bytes {
-    return lpWrapper.concat(owner);
+function getAlmStrategyPositionId(address: Address, owner: Address): Bytes {
+    return address.concat(owner);
 }
 
-export function getOrCreateAlmLpWrapperPosition(
-    lpWrapper: Address,
+export function getOrCreateAlmStrategyPosition(
+    address: Address,
     owner: Address,
     pool: Address,
-): AlmLpWrapperPosition {
-    let id = getAlmLpWrapperPositionId(lpWrapper, owner);
-    let position = AlmLpWrapperPosition.load(id);
+): AlmStrategyPosition {
+    let id = getAlmStrategyPositionId(address, owner);
+    let position = AlmStrategyPosition.load(id);
     if (position !== null) return position;
 
-    position = new AlmLpWrapperPosition(id);
+    position = new AlmStrategyPosition(id);
+    position.owner = owner;
     position.liquidity = BI_0;
-    position.lpWrapper = lpWrapper;
+    position.strategy = address;
     position.pool = pool;
     position.save();
 
     return position;
 }
 
-export function getAlmLpWrapperPositionOrThrow(
-    lpWrapper: Address,
+export function getAlmStrategyPositionOrThrow(
+    address: Address,
     owner: Address,
-): AlmLpWrapperPosition {
-    let position = AlmLpWrapperPosition.load(
-        getAlmLpWrapperPositionId(lpWrapper, owner),
+): AlmStrategyPosition {
+    let position = AlmStrategyPosition.load(
+        getAlmStrategyPositionId(address, owner),
     );
     if (position !== null) return position;
 
     throw new Error(
-        `Could not find position for owner ${owner.toHex()} on ALM LP wrapper ${lpWrapper.toHex()}`,
+        `Could not find position for owner ${owner.toHex()} on ALM strategy ${address.toHex()}`,
     );
 }
 
