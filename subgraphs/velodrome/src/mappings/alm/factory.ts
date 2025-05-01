@@ -1,7 +1,7 @@
 import { DataSourceContext } from "@graphprotocol/graph-ts";
 import { StrategyCreated } from "../../../generated/AlmFactory/AlmFactory";
 import { AlmLpWrapper as AlmLpWrapperContract } from "../../../generated/templates/AlmLpWrapper/AlmLpWrapper";
-import { AlmLpWrapper } from "../../../generated/schema";
+import { AlmStrategy } from "../../../generated/schema";
 import { AlmLpWrapper as AlmLpWrapperTemplate } from "../../../generated/templates";
 import {
     AlmCoreContract,
@@ -10,7 +10,7 @@ import {
 } from "../../commons";
 
 export function handleStrategyCreated(event: StrategyCreated): void {
-    let lpWrapper = new AlmLpWrapper(event.params.params.lpWrapper);
+    let lpWrapper = new AlmStrategy(event.params.params.lpWrapper);
     lpWrapper.liquidity = BI_0;
     lpWrapper.pool = event.params.params.pool;
     lpWrapper.save();
@@ -23,7 +23,7 @@ export function handleStrategyCreated(event: StrategyCreated): void {
         const position = getConcentratedPositionOrThrow(
             result.ammPositionIds[i],
         );
-        position.alm = true;
+        position.almStrategy = event.params.params.lpWrapper;
         position.save();
     }
 

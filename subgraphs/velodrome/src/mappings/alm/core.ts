@@ -10,6 +10,6 @@ export function handleRebalance(event: Rebalance): void {
     );
 
     newPosition.owner = previousPosition.owner;
-    newPosition.alm = true;
+    newPosition.almStrategy = previousPosition.almStrategy;
     newPosition.save();
 }

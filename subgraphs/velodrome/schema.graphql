@@ -9,7 +9,7 @@ type Gauge @entity(immutable: true) {
     id: Bytes!
 }
 
-type FullRangePool @entity {
+type FullRangePool @entity(immutable: false) {
     id: Bytes!
     stable: Boolean!
     token0: Token!
@@ -25,7 +25,7 @@ type FullRangePool @entity {
         @derivedFrom(field: "pool")
 }
 
-type FullRangePosition @entity {
+type FullRangePosition @entity(immutable: false) {
     id: Bytes!
     owner: Bytes!
     liquidity: BigInt!
@@ -53,7 +53,7 @@ type FullRangeLiquidityTransfer @entity(immutable: true) {
     pool: FullRangePool!
 }
 
-type ConcentratedPool @entity {
+type ConcentratedPool @entity(immutable: false) {
     id: Bytes!
     token0: Token!
     token1: Token!
@@ -72,15 +72,15 @@ type ConcentratedPool @entity {
     ticks: [Tick!]! @derivedFrom(field: "pool")
 }
 
-type ConcentratedPosition @entity {
+type ConcentratedPosition @entity(immutable: false) {
     id: Bytes!
     owner: Bytes!
     lowerTick: Int!
     upperTick: Int!
     liquidity: BigInt!
     pool: ConcentratedPool!
-    # If this is true, this is a position that is handled by an ALM strategy
-    alm: Boolean!
+    # If this is non-null, this is a position that is handled by an ALM strategy
+    almStrategy: AlmStrategy
     liquidityChanges: [ConcentratedLiquidityChange!]!
         @derivedFrom(field: "position")
     liquidityTransfers: [ConcentratedLiquidityTransfer!]!
@@ -114,7 +114,7 @@ type TickChange @entity(immutable: true) {
     tick: Int!
 }
 
-type Tick @entity {
+type Tick @entity(immutable: false) {
     id: Bytes!
     idx: Int!
     pool: ConcentratedPool!
@@ -122,36 +122,39 @@ type Tick @entity {
     liquidityNet: BigInt!
 }
 
-type AlmLpWrapper @entity {
+type AlmStrategy @entity(immutable: false) {
     id: Bytes!
     liquidity: BigInt!
     pool: ConcentratedPool!
+    concentratedPositions: [ConcentratedPosition!]! @derivedFrom(field: "almStrategy")
+    positions: [AlmStrategyPosition!]! @derivedFrom(field: "strategy")
 }
 
-type AlmLpWrapperPosition @entity {
+type AlmStrategyPosition @entity(immutable: false) {
     id: Bytes!
+    owner: Bytes!
     liquidity: BigInt!
-    lpWrapper: AlmLpWrapper!
+    strategy: AlmStrategy!
     pool: ConcentratedPool!
 }
 
-type AlmLpWrapperLiquidityChange @entity(immutable: true) {
+type AlmStrategyLiquidityChange @entity(immutable: true) {
     id: Bytes!
     timestamp: BigInt!
     blockNumber: BigInt!
     delta: BigInt!
-    lpWrapper: AlmLpWrapper!
+    strategy: AlmStrategy!
     pool: ConcentratedPool!
-    position: AlmLpWrapperPosition!
+    position: AlmStrategyPosition!
 }
 
-type AlmLpWrapperLiquidityTransfer @entity(immutable: true) {
+type AlmStrategyLiquidityTransfer @entity(immutable: true) {
     id: Bytes!
     timestamp: BigInt!
     blockNumber: BigInt!
     from: Bytes!
     to: Bytes!
     amount: BigInt!
-    lpWrapper: AlmLpWrapper!
+    strategy: AlmStrategy!
     pool: ConcentratedPool!
 }
