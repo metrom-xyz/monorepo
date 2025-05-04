@@ -202,17 +202,16 @@ function getOrCreateTick(poolId: Bytes, idx: i32): Tick {
 
 export function updateTicks(
     poolId: Bytes,
-    order: UniV3Order,
-    removing: bool,
+    lowerTickIdx: i32,
+    upperTickIdx: i32,
+    liquidityDelta: BigInt,
 ): void {
-    const liquidityDelta = removing ? order.liquidity.neg() : order.liquidity;
-
-    let lowerTick = getOrCreateTick(poolId, order.lowerTick);
+    let lowerTick = getOrCreateTick(poolId, lowerTickIdx);
     lowerTick.liquidityGross = lowerTick.liquidityGross.plus(liquidityDelta);
     lowerTick.liquidityNet = lowerTick.liquidityNet.plus(liquidityDelta);
     lowerTick.save();
 
-    let upperTick = getOrCreateTick(poolId, order.upperTick);
+    let upperTick = getOrCreateTick(poolId, upperTickIdx);
     upperTick.liquidityGross = upperTick.liquidityGross.plus(liquidityDelta);
     upperTick.liquidityNet = upperTick.liquidityNet.minus(liquidityDelta);
     upperTick.save();
