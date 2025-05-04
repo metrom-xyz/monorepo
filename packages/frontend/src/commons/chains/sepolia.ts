@@ -2,10 +2,11 @@ import { EthLogo } from "../../assets/logos/chains/eth";
 import { SupportedChain, ADDRESS } from "@metrom-xyz/contracts";
 import { type ChainData } from "../index";
 import { sepolia } from "viem/chains";
-import { SupportedLiquityV2, TargetType } from "@metrom-xyz/sdk";
+import { SupportedDex, SupportedLiquityV2, TargetType } from "@metrom-xyz/sdk";
 import { LiquityLogo } from "@/src/assets/logos/liquity-v2-platforms/liquity";
-import { ProtocolType } from "@/src/types/protocol";
+import { ProtocolType, DepositUrlType } from "@/src/types/protocol";
 import { EbisuLogo } from "@/src/assets/logos/liquity-v2-platforms/ebisu";
+import { CarbonLogo } from "@/src/assets/logos/dexes/carbon";
 
 export const sepoliaData: ChainData = {
     testnet: true,
@@ -49,6 +50,18 @@ export const sepoliaData: ChainData = {
                 [TargetType.LiquityV2StabilityPool]:
                     "https://liquity2-sepolia.vercel.app/earn",
             },
+        },
+        {
+            type: ProtocolType.Dex,
+            slug: SupportedDex.Carbon,
+            logo: CarbonLogo,
+            name: "Carbon",
+            depositUrl: {
+                type: DepositUrlType.QueryTokenAddresses,
+                template:
+                    "https://app.carbondefi.xyz/trade/disposable?base={token0}&quote={token1}",
+            },
+            supportsFetchAllPools: true,
         },
     ],
     baseTokens: [],

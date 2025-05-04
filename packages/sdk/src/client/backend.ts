@@ -79,6 +79,7 @@ const DEX_BRAND_NAME: Record<SupportedDex, string> = {
     [SupportedDex.SilverSwap]: "SilverSwap",
     [SupportedDex.Swapr]: "Swapr",
     [SupportedDex.Unagi]: "Unagi",
+    [SupportedDex.Carbon]: "Carbon",
 };
 
 const LIQUITY_V2_BRAND_NAME: Record<SupportedLiquityV2, string> = {
