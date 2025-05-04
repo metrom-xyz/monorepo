@@ -2,9 +2,9 @@ import { SupportedChain, ADDRESS } from "@metrom-xyz/contracts";
 import { SupportedDex } from "@metrom-xyz/sdk";
 import { type ChainData } from "..";
 import { sei } from "viem/chains";
-import { DepositUrlType, ProtocolType } from "@/src/types/common";
 import { SeiLogo } from "@/src/assets/logos/chains/sei";
 import { CarbonLogo } from "@/src/assets/logos/dexes/carbon";
+import { DepositUrlType, ProtocolType } from "@/src/types/protocol";
 
 export const seiData: ChainData = {
     testnet: false,
