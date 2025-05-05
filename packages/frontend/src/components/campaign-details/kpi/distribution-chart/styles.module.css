@@ -16,7 +16,7 @@
 }
 
 .rightContent {
-    @apply flex gap-1;
+    @apply hidden md:flex gap-1;
 }
 
 .skeletonChip :global(.skeleton) {
