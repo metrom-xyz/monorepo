@@ -1,23 +1,19 @@
 import { useAccount, useReadContracts } from "wagmi";
 import { formatUnits, type Address, zeroAddress } from "viem";
 import { CHAIN_DATA, METROM_API_CLIENT } from "../commons";
-import { type OnChainAmount, type Reimbursement } from "@metrom-xyz/sdk";
 import { SupportedChain } from "@metrom-xyz/contracts";
 import { metromAbi } from "@metrom-xyz/contracts/abi";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import type { HookBaseParams } from "../types/hooks";
-
-interface ReimbursementsWithRemaining extends Reimbursement {
-    remaining: OnChainAmount;
-}
+import type { ReimbursementsWithRemaining } from "../types/campaign";
 
 interface UseReimbursementsParams extends HookBaseParams {}
 
 interface UseReimbursementsReturnValue {
     loading: boolean;
     invalidate: () => Promise<void>;
-    reimbursements?: Reimbursement[];
+    reimbursements?: ReimbursementsWithRemaining[];
 }
 
 type QueryKey = [string, Address | undefined];
@@ -149,7 +145,7 @@ export function useReimbursements({
             return;
         }
 
-        const reimbursements = [];
+        const reimbursements: ReimbursementsWithRemaining[] = [];
         for (let i = 0; i < recoveredData.length; i++) {
             const rawRecovered = recoveredData[i] as unknown as bigint;
             const rawClaimed = claimedData[i] as unknown as bigint;
@@ -164,7 +160,7 @@ export function useReimbursements({
             if (formattedRemaining > 0) {
                 reimbursements.push({
                     ...rawReimbursement,
-                    remaining: <OnChainAmount>{
+                    remaining: {
                         raw: rawRemaining,
                         formatted: formattedRemaining,
                     },

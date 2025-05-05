@@ -3,7 +3,6 @@
 import { useClaims } from "@/src/hooks/useClaims";
 import { Chains, ChainsSkeleton, type ChainOption } from "./chains";
 import { SupportedChain } from "@metrom-xyz/contracts";
-import { type Claim, type Reimbursement } from "@metrom-xyz/sdk";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { type Chain } from "viem";
 import { ChainOverview, SkeletonChainOverview } from "./chain-overview";
@@ -13,6 +12,10 @@ import { CHAIN_DATA, SUPPORTED_CHAINS, type ChainData } from "@/src/commons";
 import { useReimbursements } from "@/src/hooks/useReimbursements";
 import { ChainReimbursements } from "./chain-reimbursements";
 import { useAccount, useSwitchChain } from "wagmi";
+import type {
+    ClaimWithRemaining,
+    ReimbursementsWithRemaining,
+} from "@/src/types/campaign";
 
 import styles from "./styles.module.css";
 
@@ -24,8 +27,8 @@ enum RewardType {
 export interface ChainWithRewardsData {
     chain: Chain;
     chainData: ChainData;
-    claims: Claim[];
-    reimbursements: Reimbursement[];
+    claims: ClaimWithRemaining[];
+    reimbursements: ReimbursementsWithRemaining[];
     totalUsdValue: number;
 }
 

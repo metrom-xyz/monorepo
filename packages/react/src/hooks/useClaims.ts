@@ -1,6 +1,6 @@
 import { useReadContracts } from "wagmi";
 import { formatUnits, type Address, type Hex } from "viem";
-import { type Claim, type OnChainAmount } from "@metrom-xyz/sdk";
+import { OnChainAmount, type Claim } from "@metrom-xyz/sdk";
 import { SupportedChain, ADDRESS } from "@metrom-xyz/contracts";
 import { metromAbi } from "@metrom-xyz/contracts/abi";
 import { useEffect, useState } from "react";
@@ -92,7 +92,7 @@ export function useClaims(params: UseClaimsParams): UseClaimsReturnValue {
             return;
         }
 
-        const claims = [];
+        const claims: ClaimWithRemaining[] = [];
         for (let i = 0; i < claimedData.length; i++) {
             const rawClaimed = claimedData[i] as unknown as bigint;
             const rawClaim = rawClaims[i];
@@ -105,7 +105,7 @@ export function useClaims(params: UseClaimsParams): UseClaimsReturnValue {
             if (formattedRemaining > 0) {
                 claims.push({
                     ...rawClaim,
-                    remaining: <OnChainAmount>{
+                    remaining: {
                         raw: rawRemaining,
                         formatted: formattedRemaining,
                     },

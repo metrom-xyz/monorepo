@@ -7,12 +7,12 @@ import {
     SimulateContractErrorType,
     SimulateContractReturnType,
 } from "wagmi/actions";
-import { Claim } from "@metrom-xyz/sdk";
 import { QueryResult } from "../types";
+import { ClaimWithRemaining } from "./useClaims";
 
 export interface UseClaimsTransactionParams {
     chainId: number;
-    claims: Claim[];
+    claims: ClaimWithRemaining[];
     address?: Address;
 }
 

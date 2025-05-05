@@ -1,23 +1,19 @@
 import { useAccount, useReadContracts } from "wagmi";
 import { formatUnits, type Address } from "viem";
 import { CHAIN_DATA, METROM_API_CLIENT } from "../commons";
-import { type Claim, type OnChainAmount } from "@metrom-xyz/sdk";
 import { SupportedChain } from "@metrom-xyz/contracts";
 import { metromAbi } from "@metrom-xyz/contracts/abi";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import type { HookBaseParams } from "../types/hooks";
-
-interface ClaimWithRemaining extends Claim {
-    remaining: OnChainAmount;
-}
+import type { ClaimWithRemaining } from "../types/campaign";
 
 interface UseClaimsParams extends HookBaseParams {}
 
 interface UseClaimsReturnaValue {
     loading: boolean;
     invalidate: () => Promise<void>;
-    claims?: Claim[];
+    claims?: ClaimWithRemaining[];
 }
 
 type QueryKey = [string, Address | undefined];
@@ -105,7 +101,7 @@ export function useClaims({
             return;
         }
 
-        const claims = [];
+        const claims: ClaimWithRemaining[] = [];
         for (let i = 0; i < claimedData.length; i++) {
             const rawClaimed = claimedData[i] as unknown as bigint;
             const rawClaim = rawClaims[i];
@@ -118,7 +114,7 @@ export function useClaims({
             if (formattedRemaining > 0) {
                 claims.push({
                     ...rawClaim,
-                    remaining: <OnChainAmount>{
+                    remaining: {
                         raw: rawRemaining,
                         formatted: formattedRemaining,
                     },
