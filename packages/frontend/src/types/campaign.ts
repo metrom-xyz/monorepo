@@ -1,6 +1,9 @@
 import type {
+    Claim,
     OnChainAmount,
+    Reimbursement,
     UsdPricedErc20TokenAmount,
+    UsdPricedOnChainAmount,
     Weighting,
 } from "@metrom-xyz/sdk";
 import {
@@ -31,6 +34,14 @@ import {
     type LiquityV2Protocol,
 } from "./protocol";
 import type { PropertyUnion } from "./utils";
+
+export interface ClaimWithRemaining extends Claim {
+    remaining: OnChainAmount;
+}
+
+export interface ReimbursementsWithRemaining extends Reimbursement {
+    remaining: OnChainAmount;
+}
 
 export interface Rank {
     account: Address;

@@ -1,14 +1,11 @@
-import {
-    type Erc20Token,
-    type Reimbursement,
-    type UsdPricedErc20Token,
-} from "@metrom-xyz/sdk";
+import { type Erc20Token, type UsdPricedErc20Token } from "@metrom-xyz/sdk";
 import { useMemo } from "react";
 import { type Address } from "viem";
 import { TokenReimbursement } from "./token-reimbursement";
 import type { ChainWithRewardsData } from "..";
 import { Typography } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
+import type { ReimbursementsWithRemaining } from "@/src/types/campaign";
 
 import styles from "./styles.module.css";
 
@@ -19,7 +16,7 @@ type ChainReimbursementProps = {
 
 export interface TokenReimbursements {
     token: UsdPricedErc20Token;
-    reimbursements: Reimbursement[];
+    reimbursements: ReimbursementsWithRemaining[];
     totalAmount: number;
 }
 
@@ -45,7 +42,7 @@ export function ChainReimbursements({
                     reimbursement,
                 );
                 acc[reimbursement.token.address].totalAmount +=
-                    reimbursement.amount.formatted;
+                    reimbursement.remaining.formatted;
                 return acc;
             },
             {} as Record<Address, TokenReimbursements>,

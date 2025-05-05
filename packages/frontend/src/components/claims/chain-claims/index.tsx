@@ -1,15 +1,12 @@
 import { useTranslations } from "next-intl";
-import {
-    type Claim,
-    type Erc20Token,
-    type UsdPricedErc20Token,
-} from "@metrom-xyz/sdk";
+import { type Erc20Token, type UsdPricedErc20Token } from "@metrom-xyz/sdk";
 import { useMemo } from "react";
 import { type Address } from "viem";
 import { SkeletonTokenClaim, TokenClaim } from "./token-claim";
-import type { ChainWithRewardsData } from "..";
 import { Card, Typography } from "@metrom-xyz/ui";
 import classNames from "classnames";
+import type { ClaimWithRemaining } from "@/src/types/campaign";
+import type { ChainWithRewardsData } from "..";
 
 import styles from "./token-claim/styles.module.css";
 
@@ -23,7 +20,7 @@ type ChainOverviewProps = {
 
 export interface TokenClaims {
     token: UsdPricedErc20Token;
-    claims: Claim[];
+    claims: ClaimWithRemaining[];
     totalAmount: number;
 }
 
@@ -46,7 +43,8 @@ export function ChainClaims({
                     };
                 }
                 acc[claim.token.address].claims.push(claim);
-                acc[claim.token.address].totalAmount += claim.amount.formatted;
+                acc[claim.token.address].totalAmount +=
+                    claim.remaining.formatted;
                 return acc;
             },
             {} as Record<Address, TokenClaims>,
