@@ -57,6 +57,7 @@ export const BASE_URL = "https://app.metrom.xyz";
 export const SECONDS_IN_YEAR = 60 * 60 * 24 * 365;
 
 export const FEE_UNIT = 1_000_000;
+export const WEIGHT_UNIT = 1_000_000;
 
 export const MAX_U256 =
     0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffn;

@@ -16,7 +16,7 @@ import type { TranslationsType } from "../types/utils";
 import { LiquityV2Action } from "../types/common";
 import { getDistributableRewardsPercentage } from "./kpi";
 import { type Hex, encodeAbiParameters, stringToHex } from "viem";
-import { CHAIN_DATA, SECONDS_IN_YEAR } from "../commons";
+import { CHAIN_DATA, SECONDS_IN_YEAR, WEIGHT_UNIT } from "../commons";
 import type { SupportedChain } from "@metrom-xyz/contracts";
 import { getTranslations } from "next-intl/server";
 
@@ -67,9 +67,9 @@ export function buildSpecificationBundle(
 
         if (payload.weighting) {
             specification.weighting = {
-                token0: payload.weighting.token0 / 100,
-                token1: payload.weighting.token1 / 100,
-                liquidity: payload.weighting.liquidity / 100,
+                token0: (payload.weighting.token0 * WEIGHT_UNIT) / 100,
+                token1: (payload.weighting.token1 * WEIGHT_UNIT) / 100,
+                liquidity: (payload.weighting.liquidity * WEIGHT_UNIT) / 100,
             };
         }
     }
