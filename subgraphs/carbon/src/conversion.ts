@@ -25,10 +25,11 @@ export class EncodedOrder {
 
 function decodeFloat(value: BigInt): BigDecimal {
     if (value.isZero()) return BD_0;
-    const numerator = value.mod(CARBON_UNIT);
-    const denominator = BI_2.pow(value.div(CARBON_UNIT).toI32() as u8);
-    const out = numerator.div(denominator);
-    return BigDecimal.fromString(out.toString()).truncate(6);
+    const numerator = BigDecimal.fromString(value.mod(CARBON_UNIT).toString());
+    const denominator = BigDecimal.fromString(
+        BI_2.pow(value.div(CARBON_UNIT).toI32() as u8).toString(),
+    );
+    return numerator.div(denominator).truncate(6);
 }
 
 function decodeRate(decodedFloat: BigDecimal): BigDecimal {
