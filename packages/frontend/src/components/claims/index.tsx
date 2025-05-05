@@ -96,7 +96,7 @@ export function Claims() {
                         return acc;
                     }
 
-                    data.totalUsdValue += reward.amount.usdValue;
+                    data.totalUsdValue += reward.remaining.usdValue;
 
                     if (reward.type === RewardType.Claim)
                         data.claims.push(reward);

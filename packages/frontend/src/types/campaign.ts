@@ -36,11 +36,11 @@ import {
 import type { PropertyUnion } from "./utils";
 
 export interface ClaimWithRemaining extends Claim {
-    remaining: OnChainAmount;
+    remaining: UsdPricedOnChainAmount;
 }
 
 export interface ReimbursementsWithRemaining extends Reimbursement {
-    remaining: OnChainAmount;
+    remaining: UsdPricedOnChainAmount;
 }
 
 export interface Rank {
