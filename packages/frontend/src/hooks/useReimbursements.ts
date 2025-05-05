@@ -163,6 +163,9 @@ export function useReimbursements({
                     remaining: {
                         raw: rawRemaining,
                         formatted: formattedRemaining,
+                        usdValue:
+                            formattedRemaining *
+                            rawReimbursement.token.usdPrice,
                     },
                 });
             }

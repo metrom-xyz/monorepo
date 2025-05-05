@@ -117,6 +117,7 @@ export function useClaims({
                     remaining: {
                         raw: rawRemaining,
                         formatted: formattedRemaining,
+                        usdValue: formattedRemaining * rawClaim.token.usdPrice,
                     },
                 });
             }
