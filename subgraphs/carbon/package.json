@@ -12,21 +12,21 @@
         "format": "eslint --fix ."
     },
     "dependencies": {
-        "@graphprotocol/graph-cli": "^0.96.0",
+        "@graphprotocol/graph-cli": "^0.97.0",
         "@graphprotocol/graph-ts": "0.36.0"
     },
     "devDependencies": {
-        "@eslint/js": "^9.23.0",
-        "@types/mustache": "^4.2.5",
-        "@types/node": "^22.13.13",
-        "eslint": "^9.23.0",
+        "@eslint/js": "^9.26.0",
+        "@types/mustache": "^4.2.6",
+        "@types/node": "^22.15.12",
+        "eslint": "^9.26.0",
         "eslint-config-prettier": "^10.1.1",
-        "eslint-config-turbo": "^2.4.4",
-        "eslint-plugin-prettier": "^5.2.5",
+        "eslint-config-turbo": "^2.5.2",
+        "eslint-plugin-prettier": "^5.4.0",
         "mustache": "^4.2.0",
         "prettier": "^3.5.3",
-        "tsx": "^4.19.3",
+        "tsx": "^4.19.4",
         "typescript": "^5.8.2",
-        "typescript-eslint": "^8.28.0"
+        "typescript-eslint": "^8.32.0"
     }
 }
