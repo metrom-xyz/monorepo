@@ -2,6 +2,7 @@ import { useTranslations } from "next-intl";
 import { TextField, Typography } from "@metrom-xyz/ui";
 import type { AmmPool, Specification, Weighting } from "@metrom-xyz/sdk";
 import { formatPercentage } from "@/src/utils/format";
+import { WEIGHT_UNIT } from "@/src/commons";
 
 import styles from "./styles.module.css";
 
@@ -27,19 +28,25 @@ export function Weighting({ specification, pool }: WeightingProps) {
                     boxed
                     size="xl"
                     label={pool.tokens[0].symbol}
-                    value={formatPercentage({ percentage: token0 * 100 })}
+                    value={formatPercentage({
+                        percentage: (token0 / WEIGHT_UNIT) * 100,
+                    })}
                 />
                 <TextField
                     boxed
                     size="xl"
                     label={pool.tokens[1].symbol}
-                    value={formatPercentage({ percentage: token1 * 100 })}
+                    value={formatPercentage({
+                        percentage: (token1 / WEIGHT_UNIT) * 100,
+                    })}
                 />
                 <TextField
                     boxed
                     size="xl"
                     label={t("fees")}
-                    value={formatPercentage({ percentage: liquidity * 100 })}
+                    value={formatPercentage({
+                        percentage: (liquidity / WEIGHT_UNIT) * 100,
+                    })}
                 />
             </div>
         </div>
