@@ -37,7 +37,6 @@
     @apply z-10;
 }
 
-
 .iconWrapper {
     @apply flex items-center justify-center rounded-md h-10 w-10 p-[3px];
 }

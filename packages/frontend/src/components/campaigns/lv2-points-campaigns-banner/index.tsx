@@ -3,7 +3,6 @@ import { ENVIRONMENT } from "@/src/commons/env";
 import { Link } from "@/src/i18n/routing";
 import { Typography } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
-import { formatUsdAmount } from "@/src/utils/format";
 import { Lv2BannerGraphic1 } from "@/src/assets/lv2-banner-graphic-1";
 import { Lv2BannerGraphic2 } from "@/src/assets/lv2-banner-graphic-2";
 import { Lv2BannerGraphic3 } from "@/src/assets/lv2-banner-graphic-3";
@@ -14,8 +13,6 @@ const ILLUSTRATIONS = [Lv2BannerGraphic1, Lv2BannerGraphic2, Lv2BannerGraphic3];
 
 export function Lv2PointsCampaignBanner() {
     const t = useTranslations("lv2PointsCampaignsBanner");
-
-    const Illustration = ILLUSTRATIONS.at(ILLUSTRATIONS.length * Math.random());
 
     const lv2CampaignsActive = Object.entries(
         LV2_POINTS_CAMPAIGNS[ENVIRONMENT],
@@ -33,12 +30,11 @@ export function Lv2PointsCampaignBanner() {
                     ([protocol, campaign], index) => {
                         if (!campaign) return null;
 
-                        const {
-                            name,
-                            brand,
-                            totalUsdRewards,
-                            icon: Icon,
-                        } = campaign;
+                        const { name, brand, icon: Icon } = campaign;
+
+                        const Illustration = ILLUSTRATIONS.at(
+                            ILLUSTRATIONS.length * Math.random(),
+                        );
 
                         return (
                             <Link

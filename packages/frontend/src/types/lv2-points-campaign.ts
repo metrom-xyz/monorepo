@@ -21,6 +21,7 @@ export interface Action {
     targets: Address[];
     multiplier: number;
     minimumDuration: number;
+    href?: string;
     description?: string;
 }
 
@@ -35,15 +36,24 @@ export interface BrandColor {
     light: string;
 }
 
+export interface Article {
+    title: string;
+    href: string;
+}
+
+export interface ProtocolIntro {
+    articles: Article[];
+}
+
 export interface Lv2PointsCampaign {
     name: string;
     description: string;
     url: string;
     chain: SupportedChain;
     protocol: SupportedLiquityV2;
-    totalUsdRewards: number;
     brand: BrandColor;
     icon: FunctionComponent<SVGIcon>;
+    protocolIntro?: ProtocolIntro;
     from: number;
     to: number;
     actions: Record<Lv2PointsCampaign2Action, ActionsGroup>;

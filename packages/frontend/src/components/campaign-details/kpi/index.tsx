@@ -75,7 +75,7 @@ export function Kpi({ campaign, loading }: KpiProps) {
                 <Typography size="lg" weight="medium" uppercase>
                     {t("title")}
                 </Typography>
-                <InfoTooltip>
+                <InfoTooltip placement="top-start">
                     <KpiAprSummary campaign={campaign} />
                 </InfoTooltip>
             </div>

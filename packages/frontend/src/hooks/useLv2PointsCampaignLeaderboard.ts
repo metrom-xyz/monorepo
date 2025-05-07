@@ -21,7 +21,7 @@ export function useLv2PointsCampaignLeaderboard({
     loading: boolean;
     leaderboard?: Leaderboard;
 } {
-    const { address, chainId } = useAccount();
+    const { address } = useAccount();
 
     const { data, isPending } = useQuery({
         queryKey: ["lv2-points-leaderboard", protocol, address],
@@ -54,6 +54,7 @@ export function useLv2PointsCampaignLeaderboard({
                 const sortedRanks = items.map((rank) => {
                     return <Rank>{
                         ...rank,
+                        weight: rank.weight * 100,
                         usdValue: null,
                         distributed: rank.distributed,
                     };
@@ -73,7 +74,7 @@ export function useLv2PointsCampaignLeaderboard({
 
                 return <Leaderboard>{
                     connectedAccountRank,
-                    sortedRanks: items,
+                    sortedRanks,
                 };
             } catch (error) {
                 console.error(

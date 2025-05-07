@@ -2,18 +2,23 @@ import { useRef, useState, type ReactNode } from "react";
 import { Popover } from "../popover";
 import { Info } from "../../assets/info";
 import classNames from "classnames";
+import type { Placement } from "@floating-ui/react";
 
 import styles from "./styles.module.css";
 
 export interface InfoTooltipProps {
     trigger?: "hover" | "click";
+    placement?: Placement;
     children?: ReactNode;
+    icon?: ReactNode;
     className?: string;
 }
 
 export function InfoTooltip({
     trigger = "hover",
+    placement,
     children,
+    icon,
     className,
 }: InfoTooltipProps) {
     const [popover, setPopover] = useState(false);
@@ -35,7 +40,7 @@ export function InfoTooltip({
     return (
         <div className={classNames("root", styles.root, className)}>
             <Popover
-                placement="top-start"
+                placement={placement}
                 anchor={anchor}
                 open={popover}
                 ref={popoverRef}
@@ -55,7 +60,11 @@ export function InfoTooltip({
                       })}
                 className={classNames("iconWrapper", styles.iconWrapper)}
             >
-                <Info className={classNames("icon", styles.icon)} />
+                {icon ? (
+                    icon
+                ) : (
+                    <Info className={classNames("icon", styles.icon)} />
+                )}
             </div>
         </div>
     );

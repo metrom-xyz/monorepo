@@ -1,9 +1,8 @@
 import type { Lv2PointsCampaign } from "@/src/types/lv2-points-campaign";
 import { useTranslations } from "next-intl";
 import { Card, Typography } from "@metrom-xyz/ui";
-import { RemoteLogo } from "../../remote-logo";
-import { PoolRemoteLogo } from "../../pool-remote-logo";
 import type { SupportedChain } from "@metrom-xyz/contracts";
+import { Action } from "./action";
 
 import styles from "./styles.module.css";
 
@@ -52,45 +51,11 @@ export function Actions({ chain, actions }: ActionsProps) {
                             </div>
                             <div className={styles.actionsList}>
                                 {group.actions.map((action, index) => (
-                                    <div key={index} className={styles.action}>
-                                        <div className={styles.actionTarget}>
-                                            {action.targets.length === 1 ? (
-                                                <RemoteLogo
-                                                    size="sm"
-                                                    chain={chain}
-                                                    address={action.targets[0]}
-                                                />
-                                            ) : (
-                                                <PoolRemoteLogo
-                                                    size="sm"
-                                                    chain={chain}
-                                                    tokens={action.targets.map(
-                                                        (target) => ({
-                                                            address: target,
-                                                        }),
-                                                    )}
-                                                />
-                                            )}
-                                            <div className={styles.actionText}>
-                                                <Typography weight="medium">
-                                                    {action.name}
-                                                </Typography>
-                                                {action.description && (
-                                                    <Typography
-                                                        weight="medium"
-                                                        light
-                                                        uppercase
-                                                        size="xs"
-                                                    >
-                                                        {action.description}
-                                                    </Typography>
-                                                )}
-                                            </div>
-                                        </div>
-                                        <Typography weight="medium">
-                                            {`${action.multiplier}x`}
-                                        </Typography>
-                                    </div>
+                                    <Action
+                                        key={index}
+                                        chain={chain}
+                                        {...action}
+                                    />
                                 ))}
                             </div>
                         </div>
