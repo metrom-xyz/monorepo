@@ -22,9 +22,20 @@ export const lv2PointsCampaignsProd: Record<
         url: "https://app.quill.finance",
         chain: SupportedChain.Scroll,
         protocol: SupportedLiquityV2.Quill,
-        totalUsdRewards: 1000000,
         brand: { main: "#FF5500", light: "#FFBFA3" },
         icon: QuillLogo,
+        protocolIntro: {
+            articles: [
+                {
+                    title: "How Quill and Scroll Are Redefining DeFi Together",
+                    href: "https://medium.com/@QuillFi/how-quill-and-scroll-are-redefining-defi-together-47aeba67d995",
+                },
+                {
+                    title: "Fueling DeFi: Quill's Revamped Incentives Programs",
+                    href: "https://medium.com/@QuillFi/fueling-defi-quills-revamped-incentives-programs-926e4ffd9034",
+                },
+            ],
+        },
         from: 1746610800,
         to: 1746618000,
         actions: {
@@ -38,7 +49,7 @@ export const lv2PointsCampaignsProd: Record<
                             "0x6F2A1A886Dbf8E36C4fa9F25a517861A930fBF3A",
                             "0x06efdbff2a14a7c8e15944d1f4a48f9f95f663a4",
                         ],
-                        minimumDuration: 0,
+                        minimumDuration: 300,
                         name: "USDQ/USDC",
                         description: "Ambient",
                         multiplier: 2,
@@ -48,7 +59,7 @@ export const lv2PointsCampaignsProd: Record<
                             "0x6F2A1A886Dbf8E36C4fa9F25a517861A930fBF3A",
                             "0x06efdbff2a14a7c8e15944d1f4a48f9f95f663a4",
                         ],
-                        minimumDuration: 0,
+                        minimumDuration: 300,
                         name: "USDQ/USDC",
                         description: "Nuri",
                         multiplier: 2,
@@ -62,25 +73,25 @@ export const lv2PointsCampaignsProd: Record<
                 actions: [
                     {
                         targets: ["0x5300000000000000000000000000000000000004"],
-                        minimumDuration: 0,
+                        minimumDuration: 300,
                         name: "ETH stability pool",
                         multiplier: 3,
                     },
                     {
                         targets: ["0xf610A9dfB7C89644979b4A0f27063E9e7d7Cda32"],
-                        minimumDuration: 0,
+                        minimumDuration: 300,
                         name: "stETH stability pool",
                         multiplier: 3,
                     },
                     {
                         targets: ["0x01f0a31698C4d065659b9bdC21B3610292a1c506"],
-                        minimumDuration: 0,
+                        minimumDuration: 300,
                         name: "weETH stability pool",
                         multiplier: 2,
                     },
                     {
                         targets: ["0xd29687c813D741E2F938F4aC377128810E217b1b"],
-                        minimumDuration: 0,
+                        minimumDuration: 300,
                         name: "SCR stability pool",
                         multiplier: 5,
                     },
@@ -93,25 +104,25 @@ export const lv2PointsCampaignsProd: Record<
                 actions: [
                     {
                         targets: ["0x5300000000000000000000000000000000000004"],
-                        minimumDuration: 0,
+                        minimumDuration: 300,
                         name: "Deposit ETH",
                         multiplier: 3,
                     },
                     {
                         targets: ["0xf610A9dfB7C89644979b4A0f27063E9e7d7Cda32"],
-                        minimumDuration: 0,
+                        minimumDuration: 300,
                         name: "Deposit stETH",
                         multiplier: 3,
                     },
                     {
                         targets: ["0x01f0a31698C4d065659b9bdC21B3610292a1c506"],
-                        minimumDuration: 0,
+                        minimumDuration: 300,
                         name: "Deposit weETH",
                         multiplier: 2,
                     },
                     {
                         targets: ["0xd29687c813D741E2F938F4aC377128810E217b1b"],
-                        minimumDuration: 0,
+                        minimumDuration: 300,
                         name: "Deposit SCR",
                         multiplier: 5,
                     },

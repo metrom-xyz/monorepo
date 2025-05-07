@@ -411,15 +411,21 @@
             "title": "{protocol} campaign"
         },
         "details": {
-            "title": "Campaign",
             "type": "Campaign type",
             "points": "Points campaign",
             "createdBy": "Created by"
+        },
+        "protocolIntro": {
+            "title": "{protocol} in a nutshell",
+            "article": "Article"
         },
         "actions": {
             "title": "Earn points",
             "action": "Action",
             "multiplier": "Multiplier"
+        },
+        "action": {
+            "minimumDuration": "Hold your position for <bold>{time}</bold> after completing the action to start farming points."
         }
     },
     "campaignDetails": {

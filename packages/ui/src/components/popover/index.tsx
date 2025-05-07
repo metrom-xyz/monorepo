@@ -32,7 +32,9 @@ export const Popover = forwardRef<HTMLDivElement, PopoverProps>(
             open,
             middleware: [
                 offset(margin || 8),
-                flip({ fallbackPlacements: ["top", "bottom"] }),
+                flip({
+                    fallbackPlacements: ["top", "bottom", "left", "right"],
+                }),
             ],
             placement,
             whileElementsMounted: autoUpdate,

@@ -1,0 +1,57 @@
+@reference "../../../app.css";
+
+.root {
+    @apply w-full flex flex-col gap-4;
+}
+
+.articlesWrapper {
+    @apply w-full flex flex-wrap md:flex-nowrap gap-4;
+}
+
+.link {
+    @apply w-full;
+}
+
+.article {
+    @apply relative
+        overflow-hidden
+        h-fit
+        flex
+        gap-4
+        items-center
+        rounded-2xl
+        p-4
+        hover:opacity-80
+        transition-opacity
+        duration-200
+        ease-in-out
+        theme-surface;
+}
+
+.article > :not(:first-child) {
+    @apply z-10;
+}
+
+.illustration {
+    @apply absolute z-0 text-white opacity-50 right-0 -bottom-5;
+}
+
+.iconWrapper {
+    @apply flex items-center justify-center rounded-xl p-4 theme-surface;
+}
+
+.rightContent {
+    @apply flex flex-col gap-2;
+}
+
+.titleWrapper {
+    @apply flex justify-between;
+}
+
+.text {
+    @apply text-black;
+}
+
+.externalLinkIcon {
+    @apply h-5 w-5 transform -rotate-45 text-black;
+}

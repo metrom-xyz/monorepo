@@ -1,4 +1,4 @@
-import { TextField, Typography } from "@metrom-xyz/ui";
+import { TextField } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
 import { CampaignDuration } from "../../campaign-duration";
 
@@ -15,9 +15,6 @@ export function Details({ from, to, protocol }: DetailsProps) {
 
     return (
         <div className={styles.root}>
-            <Typography size="lg" weight="medium" uppercase>
-                {t("title")}
-            </Typography>
             <div className={styles.topContent}>
                 <TextField
                     boxed
