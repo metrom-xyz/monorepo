@@ -14,6 +14,7 @@
         "deploy:unagi:taiko": "pnpm prepare:deploy taiko unagi && pnpm codegen && graph build && goldsky subgraph deploy metrom-unagi-taiko/0.0.4",
         "deploy:uni-v3:telos": "pnpm prepare:deploy telos uni-v3 && pnpm codegen && graph build && goldsky subgraph deploy metrom-uni-v3-telos/0.0.1",
         "deploy:uni-v3:lightlink-phoenix": "pnpm prepare:deploy lightlink-phoenix uni-v3 && pnpm codegen && graph create --node https://graph.phoenix.lightlink.io/rpc metrom-uni-v3-lightlink-phoenix && graph build && graph deploy --node https://graph.phoenix.lightlink.io/rpc metrom-uni-v3-lightlink-phoenix -l 0.0.1",
+        "deploy:honeypop:scroll": "pnpm prepare:deploy scroll honeypop && pnpm codegen && graph deploy metrom-honeypop-scroll -l 0.0.1",
         "lint": "eslint .",
         "format": "eslint --fix ."
     },

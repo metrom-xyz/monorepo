@@ -35,6 +35,16 @@ export const DEPLOYMENTS: {
                 startBlock: 1375,
             },
         },
+        honeypop: {
+            Factory: {
+                address: "0x1d25AF2b0992bf227b350860Ea80Bad47382CAf6",
+                startBlock: 14223999,
+            },
+            NonFungiblePositionManager: {
+                address: "0xB6F8D24e28bF5b8AdD2e7510f84F3b9ef03B3435",
+                startBlock: 14224020,
+            },
+        },
     },
     "base-sepolia": {
         "uni-v3": {
