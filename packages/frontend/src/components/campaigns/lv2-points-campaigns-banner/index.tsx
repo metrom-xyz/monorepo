@@ -55,45 +55,24 @@ export function Lv2PointsCampaignBanner() {
                                     <div className={styles.illustration}>
                                         {!!Illustration && <Illustration />}
                                     </div>
-                                    <div className={styles.cardHeader}>
-                                        <div
-                                            className={styles.iconWrapper}
-                                            style={{
-                                                backgroundColor: brand.light,
-                                            }}
-                                        >
-                                            <Icon className={styles.icon} />
-                                        </div>
-                                        <Typography
-                                            weight="medium"
-                                            uppercase
-                                            className={styles.title}
-                                        >
-                                            {t("campaignTitle", {
-                                                protocol: name,
-                                            })}
-                                        </Typography>
+                                    <div
+                                        className={styles.iconWrapper}
+                                        style={{
+                                            backgroundColor: brand.light,
+                                        }}
+                                    >
+                                        <Icon className={styles.icon} />
                                     </div>
-                                    <div className={styles.cardBody}>
-                                        <Typography
-                                            size="xl4"
-                                            className={styles.rewardAmount}
-                                        >
-                                            {formatUsdAmount({
-                                                amount: totalUsdRewards,
-                                                cutoff: false,
-                                            })}
-                                        </Typography>
-                                        <Typography
-                                            weight="medium"
-                                            size="sm"
-                                            light
-                                            uppercase
-                                            className={styles.rewards}
-                                        >
-                                            {t("rewards")}
-                                        </Typography>
-                                    </div>
+                                    <Typography
+                                        weight="medium"
+                                        uppercase
+                                        size="xl"
+                                        className={styles.title}
+                                    >
+                                        {t("campaignTitle", {
+                                            protocol: name,
+                                        })}
+                                    </Typography>
                                 </div>
                             </Link>
                         );

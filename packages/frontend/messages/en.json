@@ -403,8 +403,7 @@
     },
     "lv2PointsCampaignsBanner": {
         "title": "Project opportunities",
-        "campaignTitle": "{protocol} points campaign",
-        "rewards": "Rewards"
+        "campaignTitle": "{protocol} points campaign"
     },
     "lv2PointsCampaignPage": {
         "title": "Points campaign running on {protocol}",
