@@ -6,6 +6,7 @@ import { useTranslations } from "next-intl";
 import { Lv2BannerGraphic1 } from "@/src/assets/lv2-banner-graphic-1";
 import { Lv2BannerGraphic2 } from "@/src/assets/lv2-banner-graphic-2";
 import { Lv2BannerGraphic3 } from "@/src/assets/lv2-banner-graphic-3";
+import { easeInOut, motion } from "motion/react";
 
 import styles from "./styles.module.css";
 
@@ -32,9 +33,8 @@ export function Lv2PointsCampaignBanner() {
 
                         const { name, brand, icon: Icon } = campaign;
 
-                        const Illustration = ILLUSTRATIONS.at(
-                            ILLUSTRATIONS.length * Math.random(),
-                        );
+                        const Illustration =
+                            ILLUSTRATIONS[index] || ILLUSTRATIONS[0];
 
                         return (
                             <Link
@@ -42,15 +42,26 @@ export function Lv2PointsCampaignBanner() {
                                 href={`/campaigns/lv2-points/${protocol}`}
                                 className={styles.link}
                             >
-                                <div
+                                <motion.div
+                                    whileHover="animate"
                                     className={styles.card}
                                     style={{
                                         backgroundColor: brand.main,
                                     }}
                                 >
-                                    <div className={styles.illustration}>
+                                    <motion.div
+                                        variants={{
+                                            initial: { y: 0 },
+                                            animate: { y: -10 },
+                                        }}
+                                        transition={{
+                                            duration: 0.2,
+                                            ease: easeInOut,
+                                        }}
+                                        className={styles.illustration}
+                                    >
                                         {!!Illustration && <Illustration />}
-                                    </div>
+                                    </motion.div>
                                     <div
                                         className={styles.iconWrapper}
                                         style={{
@@ -69,7 +80,7 @@ export function Lv2PointsCampaignBanner() {
                                             protocol: name,
                                         })}
                                     </Typography>
-                                </div>
+                                </motion.div>
                             </Link>
                         );
                     },

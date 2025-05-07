@@ -33,9 +33,8 @@ export function ProtocolIntro({
             </Typography>
             <div className={styles.articlesWrapper}>
                 {articles.map(({ title, href }, index) => {
-                    const Illustration = ILLUSTRATIONS.at(
-                        ILLUSTRATIONS.length * Math.random(),
-                    );
+                    const Illustration =
+                        ILLUSTRATIONS[index] || ILLUSTRATIONS[0];
 
                     return (
                         <a
