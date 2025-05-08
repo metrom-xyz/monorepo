@@ -7,7 +7,7 @@
 .wrapper {
     @apply sm:hidden
         flex
-        z-20
+        z-30
         fixed
         left-0
         right-0
