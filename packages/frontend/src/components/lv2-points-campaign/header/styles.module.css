@@ -1,19 +1,19 @@
 @reference "../../../app.css";
 
 .root {
-    @apply w-full flex flex-col md:flex-row justify-between items-end;
+    @apply w-full flex flex-col gap-4 md:gap-0 md:flex-row justify-between items-start md:items-end;
 }
 
 .leftContent {
-    @apply w-full flex flex-1 flex-col md:flex-row items-start gap-3.5 items-center;
+    @apply w-full flex flex-1 flex-row items-start gap-3.5;
 }
 
 .iconWrapper {
-    @apply flex items-center justify-center h-17 w-17 rounded-2xl;
+    @apply flex items-center justify-center w-full h-12 max-w-12 md:h-17 md:max-w-17 rounded-2xl;
 }
 
 .icon {
-    @apply h-12 w-12;
+    @apply h-8 w-8 md:h-12 md:w-12;
 }
 
 .titleWrapper {
