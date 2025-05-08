@@ -23,5 +23,3 @@ if (
 export const FATHOM_SITE_ID: string = process.env.NEXT_PUBLIC_FATHOM_SITE_ID!;
 export const LIQUITY_V2_CAMPAIGN: boolean =
     process.env.NEXT_PUBLIC_LIQUITY_V2_CAMPAIGN === "true";
-export const TOKENS_WEIGHTING: boolean =
-    process.env.NEXT_PUBLIC_TOKENS_WEIGHTING === "true";

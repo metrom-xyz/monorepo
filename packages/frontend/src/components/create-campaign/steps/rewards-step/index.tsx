@@ -18,7 +18,6 @@ import { DistributablesType } from "@metrom-xyz/sdk";
 import { Weighting } from "./weighting";
 import { AMM_SUPPORTS_TOKENS_RATIO } from "@/src/commons";
 import type { SupportedAmm } from "@metrom-xyz/sdk";
-import { TOKENS_WEIGHTING } from "@/src/commons/env";
 
 import styles from "./styles.module.css";
 
@@ -142,7 +141,7 @@ export function RewardsStep({
                                     </Typography>
                                 </Tab>
                             </Tabs>
-                            {TOKENS_WEIGHTING && tokensRatioSupported && (
+                            {tokensRatioSupported && (
                                 <div className={styles.tokensRatioToggle}>
                                     <Typography
                                         uppercase
