@@ -64,7 +64,9 @@ export function Action({
                     >
                         <Typography size="sm">
                             {t.rich("minimumDuration", {
-                                time: dayjs.duration(300, "seconds").humanize(),
+                                time: dayjs
+                                    .duration(minimumDuration, "seconds")
+                                    .humanize(),
                                 bold: (chunks) => (
                                     <span className={styles.boldText}>
                                         {chunks}
