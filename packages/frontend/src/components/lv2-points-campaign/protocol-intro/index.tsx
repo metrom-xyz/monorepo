@@ -9,6 +9,7 @@ import { Lv2BannerGraphic2 } from "@/src/assets/lv2-banner-graphic-2";
 import { Lv2BannerGraphic3 } from "@/src/assets/lv2-banner-graphic-3";
 import { ArticleIcon } from "@/src/assets/article-icon";
 import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
+import { easeInOut, motion } from "motion/react";
 
 import styles from "./styles.module.css";
 
@@ -44,15 +45,26 @@ export function ProtocolIntro({
                             rel="noopener noreferrer"
                             className={styles.link}
                         >
-                            <div
+                            <motion.div
+                                whileHover="animate"
                                 className={styles.article}
                                 style={{
                                     backgroundColor: brand.main,
                                 }}
                             >
-                                <div className={styles.illustration}>
+                                <motion.div
+                                    variants={{
+                                        initial: { y: 0 },
+                                        animate: { y: -10 },
+                                    }}
+                                    transition={{
+                                        duration: 0.2,
+                                        ease: easeInOut,
+                                    }}
+                                    className={styles.illustration}
+                                >
                                     {!!Illustration && <Illustration />}
-                                </div>
+                                </motion.div>
                                 <div className={styles.iconWrapper}>
                                     <ArticleIcon />
                                 </div>
@@ -78,7 +90,7 @@ export function ProtocolIntro({
                                         {title}
                                     </Typography>
                                 </div>
-                            </div>
+                            </motion.div>
                         </a>
                     );
                 })}
