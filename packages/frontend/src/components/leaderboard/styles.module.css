@@ -48,7 +48,7 @@
 }
 
 .header {
-    @apply grid grid-cols-3;
+    @apply grid grid-cols-[0.8fr_1fr_0.9fr] md:grid-cols-3;
 }
 
 .header > :last-child {
@@ -56,7 +56,7 @@
 }
 
 .row {
-    @apply w-full grid grid-cols-3 items-end sm:items-center;
+    @apply w-full grid grid-cols-[0.8fr_1fr_0.9fr] md:grid-cols-3 items-end sm:items-center;
 }
 
 .row > :first-child {

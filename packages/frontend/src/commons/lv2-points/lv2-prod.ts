@@ -42,7 +42,7 @@ export const lv2PointsCampaignsProd: Record<
             [Lv2PointsCampaign2Action.Liquidity]: {
                 title: "Liquidity",
                 description:
-                    "Incentivize users that provide liquidity in USDQ/USDC in AMMs.",
+                    "Users get incentivized to provide liquidity in USDQ/USDC in AMMs.",
                 actions: [
                     {
                         targets: [
@@ -60,7 +60,7 @@ export const lv2PointsCampaignsProd: Record<
             [Lv2PointsCampaign2Action.StabilityPool]: {
                 title: "Deposit to stability pool",
                 description:
-                    "Incentivize users that deposit liquidity to stability pools.",
+                    "Users get incentivized to deposit liquidity in stability pools.",
                 actions: [
                     {
                         targets: ["0x5300000000000000000000000000000000000004"],
@@ -95,7 +95,7 @@ export const lv2PointsCampaignsProd: Record<
             [Lv2PointsCampaign2Action.Debt]: {
                 title: "Borrow",
                 description:
-                    "Incentivize users that deposit collateral and mint USDQ.",
+                    "Users get incentivized to deposit collateral and mint USDQ.",
                 actions: [
                     {
                         targets: ["0x5300000000000000000000000000000000000004"],
