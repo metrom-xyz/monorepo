@@ -9,6 +9,7 @@ import { RewardsBreakdown } from "../rewards-breakdown";
 import { formatPercentage } from "@/src/utils/format";
 import { PointsBreakdown } from "../points-breakdown";
 import type { Rank } from "@/src/types/campaign";
+import { useWindowSize } from "react-use";
 
 import styles from "./styles.module.css";
 
@@ -27,6 +28,7 @@ export function PersonalRank({
         "campaignDetails.leaderboard.connectedAccountRank",
     );
 
+    const { width } = useWindowSize();
     const { address: connectedAddress } = useAccount();
     const { openConnectModal } = useConnectModal();
 
@@ -72,7 +74,7 @@ export function PersonalRank({
                             </Typography>
                         </div>
                         <Typography size="lg" weight="medium">
-                            {shortenAddress(connectedAddress, true)}
+                            {shortenAddress(connectedAddress, width > 640)}
                         </Typography>
                         {connectedAccountRank.distributed instanceof Array ? (
                             <RewardsBreakdown

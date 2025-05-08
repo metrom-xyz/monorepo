@@ -15,6 +15,7 @@ import { NoDistributionsIcon } from "@/src/assets/no-distributions-icon";
 import { PointsBreakdown } from "./points-breakdown";
 import type { SupportedChain } from "@metrom-xyz/contracts";
 import type { Leaderboard } from "@/src/types/campaign";
+import { useWindowSize } from "react-use";
 
 import styles from "./styles.module.css";
 
@@ -40,6 +41,8 @@ export function Leaderboard({
     loading,
 }: LeaderboardProps) {
     const t = useTranslations("campaignDetails.leaderboard");
+
+    const { width } = useWindowSize();
 
     if (!loading && !leaderboard) {
         return (
@@ -157,7 +160,7 @@ export function Leaderboard({
                                         <Typography weight="medium">
                                             {shortenAddress(
                                                 distribution.account,
-                                                true,
+                                                width > 640,
                                             )}
                                         </Typography>
                                         {chainId && (
