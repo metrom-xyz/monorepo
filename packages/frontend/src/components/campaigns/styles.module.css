@@ -5,7 +5,7 @@
 }
 
 .filters {
-    @apply max-w-screen-lg w-full sm:items-end flex-col sm:flex-row flex gap-3 mb-7;
+    @apply max-w-screen-xl w-full sm:items-end flex-col sm:flex-row flex gap-3 mb-7;
 }
 
 .searchFilter :global(.label) {
@@ -24,8 +24,12 @@
     @apply flex justify-between flex-wrap sm:flex-nowrap items-center gap-3;
 }
 
+.lastFilterWrapper {
+    @apply w-full flex items-end gap-3;
+}
+
 .clearButton {
-    @apply w-24 h-[42px] opacity-0 transition-opacity duration-200 ease-in-out pointer-events-none;
+    @apply min-w-24 h-[42px] opacity-0 transition-opacity duration-200 ease-in-out pointer-events-none;
 }
 
 .clearButton.visible {

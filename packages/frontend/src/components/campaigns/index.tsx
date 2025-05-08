@@ -388,32 +388,34 @@ export function Campaigns() {
                         className={styles.filterInput}
                         renderOption={protocolSelectRenderOption}
                     />
-                    <Select
-                        options={chainOptions}
-                        value={chain}
-                        search
-                        onChange={handleChainChange}
-                        label={t("filters.chain.label")}
-                        messages={{
-                            noResults: "",
-                        }}
-                        className={styles.filterInput}
-                        renderOption={chainSelectRenderOption}
-                    />
+                    <div className={styles.lastFilterWrapper}>
+                        <Select
+                            options={chainOptions}
+                            value={chain}
+                            search
+                            onChange={handleChainChange}
+                            label={t("filters.chain.label")}
+                            messages={{
+                                noResults: "",
+                            }}
+                            className={styles.filterInput}
+                            renderOption={chainSelectRenderOption}
+                        />
+                        <Button
+                            variant="secondary"
+                            size="xs"
+                            border={false}
+                            onClick={handleClearFilters}
+                            className={{
+                                root: classNames(styles.clearButton, {
+                                    [styles.visible]: filtersActive,
+                                }),
+                            }}
+                        >
+                            {t("filters.clear")}
+                        </Button>
+                    </div>
                 </div>
-                <Button
-                    variant="secondary"
-                    size="xs"
-                    border={false}
-                    onClick={handleClearFilters}
-                    className={{
-                        root: classNames(styles.clearButton, {
-                            [styles.visible]: filtersActive,
-                        }),
-                    }}
-                >
-                    {t("filters.clear")}
-                </Button>
             </div>
             <div className={styles.scrollContainer}>
                 <div className={styles.tableWrapper}>
