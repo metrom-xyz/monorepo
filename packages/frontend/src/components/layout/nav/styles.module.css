@@ -44,7 +44,7 @@
 .mobileNavigationWrapper {
     @apply sm:hidden
         w-full
-        z-10
+        z-20
         h-16
         fixed
         left-0

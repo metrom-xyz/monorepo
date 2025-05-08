@@ -17,7 +17,7 @@
 }
 
 .overlay {
-    @apply z-20
+    @apply z-30
         flex
         sm:hidden
         fixed
