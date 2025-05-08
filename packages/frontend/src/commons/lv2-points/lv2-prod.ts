@@ -42,7 +42,7 @@ export const lv2PointsCampaignsProd: Record<
             [Lv2PointsCampaign2Action.Liquidity]: {
                 title: "Liquidity",
                 description:
-                    "Incentivize users that provide liquidity of USDQ/USDC in AMMs.",
+                    "Incentivize users that provide liquidity in USDQ/USDC in AMMs.",
                 actions: [
                     {
                         targets: [
@@ -53,7 +53,7 @@ export const lv2PointsCampaignsProd: Record<
                         name: "USDQ/USDC LP",
                         description: "Ambient",
                         multiplier: 2,
-                        href: "https://ambient.finance/trade/market/chain=0x82750&tokenA=0x06efdbff2a14a7c8e15944d1f4a48f9f95f663a4&tokenB=0xdb9e8f82d6d45fff803161f2a5f75543972b229a",
+                        href: "https://ambient.finance/trade/pool/chain=0x82750&tokenA=0x06eFdBFf2a14a7c8E15944D1F4A48F9F95F663A4&tokenB=0xdb9e8f82d6d45fff803161f2a5f75543972b229a",
                     },
                 ],
             },
@@ -95,7 +95,7 @@ export const lv2PointsCampaignsProd: Record<
             [Lv2PointsCampaign2Action.Debt]: {
                 title: "Borrow",
                 description:
-                    "Incentivize users that deposits collateral and mints USDQ.",
+                    "Incentivize users that deposit collateral and mint USDQ.",
                 actions: [
                     {
                         targets: ["0x5300000000000000000000000000000000000004"],
