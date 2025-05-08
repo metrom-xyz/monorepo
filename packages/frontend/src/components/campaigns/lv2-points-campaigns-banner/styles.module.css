@@ -1,7 +1,7 @@
 @reference "../../../app.css";
 
 .root {
-    @apply w-full flex flex-col gap-3 mb-11 justify-center;
+    @apply w-full flex flex-col gap-3 mb-7 md:mb-11 justify-center;
 }
 
 .cardsWrapper {

@@ -69,17 +69,16 @@ export function sortCampaigns(
             sorted = sorted.filter(
                 (campaign) => campaign.status !== Status.Ended,
             );
-            sorted
-                .sort((a, b) => {
-                    return (
-                        (a.apr || 0)
-                            .toString()
-                            .localeCompare((b.apr || 0).toString(), "en", {
-                                numeric: true,
-                            }) * (sortDirection || 1)
-                    );
-                })
-                .filter((campaign) => campaign.status === Status.Live);
+            sorted.sort((a, b) => {
+                return (
+                    (a.apr || 0)
+                        .toString()
+                        .localeCompare((b.apr || 0).toString(), "en", {
+                            numeric: true,
+                        }) * (sortDirection || 1)
+                );
+            });
+
             break;
         }
         case "rewards": {
