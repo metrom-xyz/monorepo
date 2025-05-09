@@ -13,16 +13,20 @@ import { useWindowSize } from "react-use";
 
 import styles from "./styles.module.css";
 
-interface PersonalRankProps {
+export interface PersonalRankProps {
     chain?: SupportedChain;
     loading: boolean;
     connectedAccountRank?: Rank;
+    messages?: {
+        noRewards?: string;
+    };
 }
 
 export function PersonalRank({
     chain,
     loading,
     connectedAccountRank,
+    messages,
 }: PersonalRankProps) {
     const t = useTranslations(
         "campaignDetails.leaderboard.connectedAccountRank",
@@ -59,7 +63,9 @@ export function PersonalRank({
                     </button>
                 ) : !connectedAccountRank ? (
                     <Typography weight="medium" light>
-                        {t("noRewards")}
+                        {messages?.noRewards
+                            ? messages.noRewards
+                            : t("noRewards")}
                     </Typography>
                 ) : (
                     <div className={styles.row}>
