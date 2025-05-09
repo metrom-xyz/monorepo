@@ -22,6 +22,7 @@ export const lv2PointsCampaignsProd: Record<
         url: "https://app.quill.finance",
         chain: SupportedChain.Scroll,
         protocol: SupportedLiquityV2.Quill,
+        pointsName: "Quill Liquidity Points",
         brand: { main: "#FF5500", light: "#FFBFA3" },
         icon: QuillLogo,
         protocolIntro: {

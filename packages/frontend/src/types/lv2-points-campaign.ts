@@ -51,6 +51,7 @@ export interface Lv2PointsCampaign {
     url: string;
     chain: SupportedChain;
     protocol: SupportedLiquityV2;
+    pointsName: string;
     brand: BrandColor;
     icon: FunctionComponent<SVGIcon>;
     protocolIntro?: ProtocolIntro;

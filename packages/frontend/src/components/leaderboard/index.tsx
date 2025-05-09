@@ -3,7 +3,7 @@ import { shortenAddress } from "@/src/utils/address";
 import { Typography, Skeleton, Card, type SkeletonProps } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
 import dayjs from "dayjs";
-import { PersonalRank } from "./personal-rank";
+import { PersonalRank, type PersonalRankProps } from "./personal-rank";
 import { RepartitionChart } from "./repartition-chart";
 import type { Address, Hex } from "viem";
 import { RewardsBreakdown } from "./rewards-breakdown";
@@ -24,6 +24,9 @@ interface LeaderboardProps {
     leaderboard?: Leaderboard;
     noDistributionDate?: boolean;
     loading: boolean;
+    messages?: {
+        personalRank?: PersonalRankProps["messages"];
+    };
 }
 
 export interface PersonalRank {
@@ -39,6 +42,7 @@ export function Leaderboard({
     leaderboard,
     noDistributionDate,
     loading,
+    messages,
 }: LeaderboardProps) {
     const t = useTranslations("campaignDetails.leaderboard");
 
@@ -103,6 +107,7 @@ export function Leaderboard({
                         chain={chainId}
                         loading={loading}
                         connectedAccountRank={leaderboard?.connectedAccountRank}
+                        messages={messages?.personalRank}
                     />
                     <Card className={styles.tableWrapper}>
                         <div className={styles.header}>

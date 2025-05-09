@@ -9,6 +9,7 @@ import { useLv2PointsCampaignLeaderboard } from "@/src/hooks/useLv2PointsCampaig
 import { LV2_POINTS_CAMPAIGNS } from "@/src/commons/lv2-points";
 import { Actions } from "./actions";
 import { ProtocolIntro } from "./protocol-intro";
+import { useTranslations } from "next-intl";
 
 import styles from "./styles.module.css";
 
@@ -17,6 +18,8 @@ interface Lv2PointsCampaignProps {
 }
 
 export function Lv2PointsCampaign({ protocol }: Lv2PointsCampaignProps) {
+    const t = useTranslations("lv2PointsCampaignPage");
+
     const { loading: loadingLeaderboard, leaderboard } =
         useLv2PointsCampaignLeaderboard({ protocol });
 
@@ -27,6 +30,7 @@ export function Lv2PointsCampaign({ protocol }: Lv2PointsCampaignProps) {
     const {
         name,
         description,
+        pointsName,
         brand,
         url,
         chain,
@@ -60,6 +64,11 @@ export function Lv2PointsCampaign({ protocol }: Lv2PointsCampaignProps) {
                 chainId={chain}
                 loading={loadingLeaderboard}
                 leaderboard={leaderboard}
+                messages={{
+                    personalRank: {
+                        noRewards: t("noPoints", { points: pointsName }),
+                    },
+                }}
             />
         </div>
     );

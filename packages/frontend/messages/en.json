@@ -420,13 +420,14 @@
             "article": "Article"
         },
         "actions": {
-            "title": "⚫️ Earn Ink Blobs",
+            "title": "Earn Quill Liquidity Points",
             "action": "Action",
             "multiplier": "Multiplier"
         },
         "action": {
             "minimumDuration": "Hold your position for <bold>{time}</bold> after completing the action to start farming points."
-        }
+        },
+        "noPoints": "You don't have any {points}."
     },
     "campaignDetails": {
         "title": "Campaign details",
@@ -504,7 +505,7 @@
             "noDistribution": "No distribution yet",
             "connectedAccountRank": {
                 "connect": "View your rank",
-                "noRewards": "You don't have any rewards",
+                "noRewards": "You don't have any rewards.",
                 "yourRank": "Your rank",
                 "account": "Account",
                 "rewardsDistributed": "Distributed"
