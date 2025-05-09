@@ -1,5 +1,13 @@
 # frontend
 
+## 0.1.9
+
+### Patch Changes
+
+- Updated dependencies
+  - @metrom-xyz/sdk@0.5.1
+  - @metrom-xyz/ui@0.11.4
+
 ## 0.1.8
 
 ### Patch Changes

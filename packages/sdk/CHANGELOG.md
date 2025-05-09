@@ -1,5 +1,12 @@
 # @metrom-xyz/sdk
 
+## 0.5.1
+
+### Patch Changes
+
+- Add `weighting` to campaign specification
+- Update supported AMMs
+
 ## 0.5.0
 
 ### Minor Changes

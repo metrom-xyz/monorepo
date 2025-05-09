@@ -1,5 +1,11 @@
 # @metrom-xyz/react
 
+## 0.3.1
+
+### Patch Changes
+
+- Minor `useLeaderboard` hook fix
+
 ## 0.3.0
 
 ### Minor Changes

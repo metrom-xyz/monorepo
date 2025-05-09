@@ -1,5 +1,12 @@
 # @metrom-xyz/ui
 
+## 0.11.4
+
+### Patch Changes
+
+- Add `InfoTooltip` component
+- Add margin and auto placement to popover component
+
 ## 0.11.3
 
 ### Patch Changes
