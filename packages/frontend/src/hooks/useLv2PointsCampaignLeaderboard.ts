@@ -61,15 +61,18 @@ export function useLv2PointsCampaignLeaderboard({
                 });
                 sortedRanks.sort((a, b) => b.weight - a.weight);
 
-                const connectedAccountRankIndex = items.findIndex(
+                const connectedAccountRankIndex = sortedRanks.findIndex(
                     (rank) => rank.account === account?.toLowerCase(),
                 );
 
                 const connectedAccountRank =
                     connectedAccountRankIndex !== -1
-                        ? items.length <= 5
-                            ? items[connectedAccountRankIndex]
-                            : items.splice(connectedAccountRankIndex, 1)[0]
+                        ? sortedRanks.length <= 5
+                            ? sortedRanks[connectedAccountRankIndex]
+                            : sortedRanks.splice(
+                                  connectedAccountRankIndex,
+                                  1,
+                              )[0]
                         : undefined;
 
                 return <Leaderboard>{
