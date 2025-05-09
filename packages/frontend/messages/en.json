@@ -70,7 +70,7 @@
         },
         "pool": {
             "range": "Range",
-            "weighting": "Weighting"
+            "weighting": "Reward ratio"
         },
         "status": {
             "live": {
@@ -168,7 +168,7 @@
                         }
                     },
                     "weighting": {
-                        "title": "Weighting",
+                        "title": "Reward ratio",
                         "fees": "Fees"
                     },
                     "list": {
@@ -464,7 +464,7 @@
             "daily": "Daily rewards",
             "total": "Total value"
         },
-        "weighting": { "title": "Weighting", "fees": "Fees" },
+        "weighting": { "title": "Reward ratio", "fees": "Fees" },
         "points": {
             "title": "Points",
             "total": "Total",
