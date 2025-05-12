@@ -75,7 +75,7 @@ function calculateLConstant(z: BigInt, A: BigInt): BigInt {
     let decodedA = decodeFloat(A);
 
     return BigInt.fromString(
-        BigDecimal.fromString(z.toString())
+        BigDecimal.fromString(z.times(CARBON_UNIT).toString())
             .div(decodedA.equals(BD_0) ? BD_1 : decodedA)
             .truncate(0)
             .toString(),
