@@ -6,14 +6,17 @@ import type { Address } from "viem";
 import { formatPercentage } from "@/src/utils/format";
 import { shuffle } from "@/src/utils/common";
 import type { Leaderboard, Rank } from "@/src/types/campaign";
-
-import styles from "./styles.module.css";
 import classNames from "classnames";
 
-interface RepartitionChartProps {
+import styles from "./styles.module.css";
+
+export interface RepartitionChartProps {
     loading: boolean;
     leaderboard?: Leaderboard;
     connectedAccountRank?: Rank;
+    messages?: {
+        title?: string;
+    };
 }
 
 interface ChartData {
@@ -48,6 +51,7 @@ export function RepartitionChart({
     loading,
     leaderboard,
     connectedAccountRank,
+    messages,
 }: RepartitionChartProps) {
     const t = useTranslations("campaignDetails.leaderboard");
 
@@ -104,7 +108,7 @@ export function RepartitionChart({
     return (
         <Card className={styles.root}>
             <Typography uppercase weight="medium" light size="sm">
-                {t("repartition")}
+                {messages?.title ? messages.title : t("repartition")}
             </Typography>
             <div className={styles.container}>
                 <div
