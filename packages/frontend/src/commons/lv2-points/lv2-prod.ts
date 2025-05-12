@@ -65,7 +65,7 @@ export const lv2PointsCampaignsProd: Record<
                         name: "USDQ/USDC LP",
                         description: "Honeypop",
                         multiplier: 2,
-                        href: "https://honeypop.app/add/0x06eFdBFf2a14a7c8E15944D1F4A48F9F95F663A4/0xdb9E8F82D6d45fFf803161F2a5f75543972B229a/500?minPrice=0.0000000000000000000000000000000000000000000000000029395&maxPrice=340190000000000000000000000",
+                        href: "https://honeypop.app/add/0x06eFdBFf2a14a7c8E15944D1F4A48F9F95F663A4/0xdb9E8F82D6d45fFf803161F2a5f75543972B229a/500",
                     },
                 ],
             },
