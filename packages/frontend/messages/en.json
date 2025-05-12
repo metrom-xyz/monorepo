@@ -427,7 +427,8 @@
         "action": {
             "minimumDuration": "Hold your position for <bold>{time}</bold> after completing the action to start farming points."
         },
-        "noPoints": "You don't have any {points}."
+        "noPoints": "You don't have any {points}.",
+        "distribution": "Distribution"
     },
     "campaignDetails": {
         "title": "Campaign details",

@@ -68,6 +68,9 @@ export function Lv2PointsCampaign({ protocol }: Lv2PointsCampaignProps) {
                     personalRank: {
                         noRewards: t("noPoints", { points: pointsName }),
                     },
+                    repartionChart: {
+                        title: t("distribution"),
+                    },
                 }}
             />
         </div>

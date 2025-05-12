@@ -4,7 +4,10 @@ import { Typography, Skeleton, Card, type SkeletonProps } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
 import dayjs from "dayjs";
 import { PersonalRank, type PersonalRankProps } from "./personal-rank";
-import { RepartitionChart } from "./repartition-chart";
+import {
+    RepartitionChart,
+    type RepartitionChartProps,
+} from "./repartition-chart";
 import type { Address, Hex } from "viem";
 import { RewardsBreakdown } from "./rewards-breakdown";
 import { formatPercentage } from "@/src/utils/format";
@@ -26,6 +29,7 @@ interface LeaderboardProps {
     loading: boolean;
     messages?: {
         personalRank?: PersonalRankProps["messages"];
+        repartionChart?: RepartitionChartProps["messages"];
     };
 }
 
@@ -216,6 +220,7 @@ export function Leaderboard({
                     loading={loading}
                     leaderboard={leaderboard}
                     connectedAccountRank={leaderboard?.connectedAccountRank}
+                    messages={messages?.repartionChart}
                 />
             </div>
         </div>
