@@ -13,7 +13,7 @@
 }
 
 .inputsWrapper {
-    @apply flex gap-3;
+    @apply flex gap-3 pb-4;
 }
 
 .input {
