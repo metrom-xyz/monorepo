@@ -1,4 +1,4 @@
-import { Address, Bytes } from "@graphprotocol/graph-ts";
+import { Address, BigDecimal, BigInt, Bytes } from "@graphprotocol/graph-ts";
 import {
     Swap,
     Mint,
@@ -10,13 +10,32 @@ import {
     FullRangeLiquidityChange,
     FullRangeLiquidityTransfer,
     Gauge,
+    FullRangePool,
 } from "../../../generated/schema";
 import {
     BI_0,
     getEventId,
-    getFeeAdjustedAmount,   
+    getFeeAdjustedAmount,
     getFullRangePoolOrThrow,
+    getTokenOrThrow,
+    exponentToBigDecimal,
+    BD_0,
 } from "../../commons";
+
+function toBigDecimal(value: BigInt, decimals: i32): BigDecimal {
+    return value.toBigDecimal().div(exponentToBigDecimal(decimals));
+}
+
+function getPrice(pool: FullRangePool): BigDecimal {
+    if (pool.token0Tvl.isZero() || pool.token1Tvl.isZero()) return BD_0;
+
+    let token0 = getTokenOrThrow(changetype<Address>(pool.token0));
+    let token1 = getTokenOrThrow(changetype<Address>(pool.token1));
+
+    return toBigDecimal(pool.token1Tvl, token1.decimals).div(
+        toBigDecimal(pool.token0Tvl, token0.decimals),
+    );
+}
 
 export function handleSwap(event: Swap): void {
     let amount0Delta = event.params.amount0In.gt(BI_0)
@@ -33,6 +52,7 @@ export function handleSwap(event: Swap): void {
     pool.token1Tvl = pool.token1Tvl.plus(
         getFeeAdjustedAmount(amount1Delta, pool.fee),
     );
+    pool.price = getPrice(pool);
     pool.save();
 }
 

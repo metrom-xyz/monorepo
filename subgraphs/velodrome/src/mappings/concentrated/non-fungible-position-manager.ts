@@ -13,17 +13,14 @@ import {
 import {
     BI_0,
     ClFactoryContract,
+    getConcentratedPositionId,
     getEventId,
     NonFungiblePositionManagerContract,
 } from "../../commons";
 import { ALM_CORE_ADDRESS } from "../../addresses";
 
-function getPositionId(tokenId: BigInt): Bytes {
-    return Bytes.fromByteArray(Bytes.fromBigInt(tokenId));
-}
-
 function getOrCreatePosition(tokenId: BigInt): ConcentratedPosition | null {
-    let id = getPositionId(tokenId);
+    let id = getConcentratedPositionId(tokenId);
     let position = ConcentratedPosition.load(id);
     if (position != null) return position;
 
@@ -44,6 +41,7 @@ function getOrCreatePosition(tokenId: BigInt): ConcentratedPosition | null {
     position.lowerTick = result.value.getTickLower();
     position.upperTick = result.value.getTickUpper();
     position.liquidity = BI_0; // updated in increase liquidity handler
+    position.almStrategy = null;
     position.pool = Bytes.fromHexString(poolAddress.toHex());
     position.save();
 
@@ -51,7 +49,7 @@ function getOrCreatePosition(tokenId: BigInt): ConcentratedPosition | null {
 }
 
 function getPosition(tokenId: BigInt): ConcentratedPosition | null {
-    return ConcentratedPosition.load(getPositionId(tokenId));
+    return ConcentratedPosition.load(getConcentratedPositionId(tokenId));
 }
 
 export function handleIncreaseLiquidity(event: IncreaseLiquidityEvent): void {
@@ -98,7 +96,9 @@ export function handleTransfer(event: TransferEvent): void {
     // We don't register the position at NFT mint time because at this point
     // it has 0 liquidity. When creating a new position the IncreaseLiquidity
     // event is always emitted, so we register the position there if non-zero
-    // liquidity is added
+    // liquidity is added.
+    // We also don't handle transfers for ALM managed positions. Those are
+    // handled in the ALM-specific deposit/withdraw/rebalance handlers.
     if (
         event.params.from == Address.zero() ||
         event.params.to == Address.zero() ||
@@ -109,7 +109,7 @@ export function handleTransfer(event: TransferEvent): void {
         return;
 
     let position = getPosition(event.params.tokenId);
-    if (position == null) return;
+    if (position == null || position.almStrategy !== null) return;
 
     position.owner = event.params.to;
     position.save();

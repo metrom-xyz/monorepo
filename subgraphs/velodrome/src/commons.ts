@@ -6,18 +6,23 @@ import {
     ethereum,
 } from "@graphprotocol/graph-ts";
 import {
+    AlmStrategy,
+    AlmStrategyPosition,
     ConcentratedPool,
+    ConcentratedPosition,
     FullRangePool,
     Tick,
     Token,
 } from "../generated/schema";
 import { NonFungiblePositionManager } from "../generated/NonFungiblePositionManager/NonFungiblePositionManager";
+import { AlmCore } from "../generated/AlmCore/AlmCore";
 import { PoolFactory } from "../generated/PoolFactory/PoolFactory";
 import { ClFactory } from "../generated/ClFactory/ClFactory";
 import {
     POOL_FACTORY_ADDRESS,
     NON_FUNGIBLE_POSITION_MANAGER_ADDRESS,
     CL_FACTORY_ADDRESS,
+    ALM_CORE_ADDRESS,
 } from "./addresses";
 import { Erc20 } from "../generated/PoolFactory/Erc20";
 import { Erc20BytesSymbol } from "../generated/PoolFactory/Erc20BytesSymbol";
@@ -43,6 +48,7 @@ export const NonFungiblePositionManagerContract =
     NonFungiblePositionManager.bind(NON_FUNGIBLE_POSITION_MANAGER_ADDRESS);
 export const PoolFactoryContract = PoolFactory.bind(POOL_FACTORY_ADDRESS);
 export const ClFactoryContract = ClFactory.bind(CL_FACTORY_ADDRESS);
+export const AlmCoreContract = AlmCore.bind(ALM_CORE_ADDRESS);
 
 export function getEventId(event: ethereum.Event): Bytes {
     return changetype<Bytes>(
@@ -52,7 +58,7 @@ export function getEventId(event: ethereum.Event): Bytes {
 
 export function getFullRangePoolOrThrow(address: Address): FullRangePool {
     let pool = FullRangePool.load(address);
-    if (pool != null) return pool;
+    if (pool !== null) return pool;
 
     throw new Error(
         `Could not find full range pool with address ${address.toHex()}`,
@@ -61,16 +67,79 @@ export function getFullRangePoolOrThrow(address: Address): FullRangePool {
 
 export function getConcentratedPoolOrThrow(address: Address): ConcentratedPool {
     let pool = ConcentratedPool.load(address);
-    if (pool != null) return pool;
+    if (pool !== null) return pool;
 
     throw new Error(
         `Could not find concentrated pool with address ${address.toHex()}`,
     );
 }
 
+export function getAlmStrategyOrThrow(address: Address): AlmStrategy {
+    let wrapper = AlmStrategy.load(address);
+    if (wrapper !== null) return wrapper;
+
+    throw new Error(
+        `Could not find ALM strategy at address ${address.toHex()}`,
+    );
+}
+
+function getAlmStrategyPositionId(address: Address, owner: Address): Bytes {
+    return address.concat(owner);
+}
+
+export function getOrCreateAlmStrategyPosition(
+    address: Address,
+    owner: Address,
+    pool: Address,
+): AlmStrategyPosition {
+    let id = getAlmStrategyPositionId(address, owner);
+    let position = AlmStrategyPosition.load(id);
+    if (position !== null) return position;
+
+    position = new AlmStrategyPosition(id);
+    position.owner = owner;
+    position.liquidity = BI_0;
+    position.strategy = address;
+    position.pool = pool;
+    position.save();
+
+    return position;
+}
+
+export function getAlmStrategyPositionOrThrow(
+    address: Address,
+    owner: Address,
+): AlmStrategyPosition {
+    let position = AlmStrategyPosition.load(
+        getAlmStrategyPositionId(address, owner),
+    );
+    if (position !== null) return position;
+
+    throw new Error(
+        `Could not find position for owner ${owner.toHex()} on ALM strategy ${address.toHex()}`,
+    );
+}
+
+export function getConcentratedPositionId(tokenId: BigInt): Bytes {
+    return Bytes.fromByteArray(Bytes.fromBigInt(tokenId));
+}
+
+export function getConcentratedPositionOrThrow(
+    tokenId: BigInt,
+): ConcentratedPosition {
+    let position = ConcentratedPosition.load(
+        getConcentratedPositionId(tokenId),
+    );
+    if (position !== null) return position;
+
+    throw new Error(
+        `Could not find concentrated position with token id ${tokenId.toString()}`,
+    );
+}
+
 export function getTokenOrThrow(address: Address): Token {
     let token = Token.load(address);
-    if (token != null) return token;
+    if (token !== null) return token;
 
     throw new Error(`Could not find token with address ${address.toHex()}`);
 }
@@ -121,7 +190,7 @@ export function getOrCreateToken(address: Address): Token | null {
     token = new Token(address);
     token.symbol = symbol;
     token.name = name;
-    token.decimals = decimals;
+    token.decimals = decimals.toI32();
     token.save();
 
     return token;
@@ -153,10 +222,10 @@ export function getFeeAdjustedAmount(amount: BigInt, fee: i32): BigInt {
         : amount.times(BI_10_000.minus(BigInt.fromI32(fee))).div(BI_10_000);
 }
 
-function exponentToBigDecimal(decimals: BigInt): BigDecimal {
+export function exponentToBigDecimal(decimals: i32): BigDecimal {
     let result = "1";
 
-    for (let i = 0; i < decimals.toI32(); i++) {
+    for (let i = 0; i < decimals; i++) {
         result += "0";
     }
 
