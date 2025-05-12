@@ -58,7 +58,7 @@ export function Lv2PointsCampaign({ protocol }: Lv2PointsCampaignProps) {
                     {...protocolIntro}
                 />
             )}
-            <Actions chain={chain} actions={actions} />
+            <Actions chain={chain} actions={actions} pointsName={pointsName} />
             <Leaderboard
                 noDistributionDate
                 chainId={chain}

@@ -5,7 +5,7 @@
 }
 
 .actionGroupsWrapper {
-    @apply w-full flex flex-wrap md:flex-nowrap gap-4;
+    @apply w-full flex flex-wrap md:flex-nowrap md:grid md:grid-cols-3 gap-4;
 }
 
 .actionsGroup {

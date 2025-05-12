@@ -8,59 +8,64 @@ import styles from "./styles.module.css";
 
 interface ActionsProps {
     chain: SupportedChain;
+    pointsName: string;
     actions: Lv2PointsCampaign["actions"];
 }
 
-export function Actions({ chain, actions }: ActionsProps) {
+export function Actions({ chain, pointsName, actions }: ActionsProps) {
     const t = useTranslations("lv2PointsCampaignPage.actions");
 
     return (
         <div className={styles.root}>
             <Typography size="lg" weight="medium" uppercase>
-                {t("title")}
+                {t("title", { points: pointsName })}
             </Typography>
             <div className={styles.actionGroupsWrapper}>
-                {Object.entries(actions).map(([type, group]) => (
-                    <Card key={type} className={styles.actionsGroup}>
-                        <div className={styles.actionsGroupHeader}>
-                            <Typography weight="medium" uppercase size="sm">
-                                {group.title}
-                            </Typography>
-                            <Typography weight="medium" light>
-                                {group.description}
-                            </Typography>
-                        </div>
-                        <div className={styles.actionsWrapper}>
-                            <div className={styles.actionsListHeader}>
-                                <Typography
-                                    weight="medium"
-                                    light
-                                    uppercase
-                                    size="sm"
-                                >
-                                    {t("action")}
+                {Object.entries(actions).map(([type, group]) => {
+                    if (!group) return;
+
+                    return (
+                        <Card key={type} className={styles.actionsGroup}>
+                            <div className={styles.actionsGroupHeader}>
+                                <Typography weight="medium" uppercase size="sm">
+                                    {group.title}
                                 </Typography>
-                                <Typography
-                                    weight="medium"
-                                    light
-                                    uppercase
-                                    size="sm"
-                                >
-                                    {t("multiplier")}
+                                <Typography weight="medium" light>
+                                    {group.description}
                                 </Typography>
                             </div>
-                            <div className={styles.actionsList}>
-                                {group.actions.map((action, index) => (
-                                    <Action
-                                        key={index}
-                                        chain={chain}
-                                        {...action}
-                                    />
-                                ))}
+                            <div className={styles.actionsWrapper}>
+                                <div className={styles.actionsListHeader}>
+                                    <Typography
+                                        weight="medium"
+                                        light
+                                        uppercase
+                                        size="sm"
+                                    >
+                                        {t("action")}
+                                    </Typography>
+                                    <Typography
+                                        weight="medium"
+                                        light
+                                        uppercase
+                                        size="sm"
+                                    >
+                                        {t("multiplier")}
+                                    </Typography>
+                                </div>
+                                <div className={styles.actionsList}>
+                                    {group.actions.map((action, index) => (
+                                        <Action
+                                            key={index}
+                                            chain={chain}
+                                            {...action}
+                                        />
+                                    ))}
+                                </div>
                             </div>
-                        </div>
-                    </Card>
-                ))}
+                        </Card>
+                    );
+                })}
             </div>
         </div>
     );
