@@ -6,13 +6,11 @@ import {
 } from "@/src/types/lv2-points-campaign";
 import { SupportedChain } from "@metrom-xyz/contracts";
 import { OrkiLogo } from "@/src/assets/logos/liquity-v2-platforms/orki";
-import { EbisuLogo } from "@/src/assets/logos/liquity-v2-platforms/ebisu";
 
 export const lv2PointsCampaignsProd: Record<
     SupportedLiquityV2,
     Lv2PointsCampaign | null
 > = {
-    [SupportedLiquityV2.Orki]: null,
     [SupportedLiquityV2.Ebisu]: null,
     [SupportedLiquityV2.Liquity]: null,
     [SupportedLiquityV2.Quill]: {
@@ -141,35 +139,40 @@ export const lv2PointsCampaignsProd: Record<
             },
         },
     },
-    // [SupportedLiquityV2.Orki]: {
-    //     name: "Orki",
-    //     description: "Native stablecoin and credit protocol on Swell.",
-    //     url: "https://www.orki.finance",
-    //     chain: SupportedChain.Scroll,
-    //     protocol: SupportedLiquityV2.Orki,
-    //     totalUsdRewards: 500000,
-    //     brand: { main: "#2973EB", light: "#94B9F5" },
-    //     icon: OrkiLogo,
-    //     from: 1744892700,
-    //     to: 1744899900,
-    //     actions: {
-    //         [Lv2PointsCampaign2Action.Liquidity]: {
-    //             title: "",
-    //             description: "",
-    //             actions: [],
-    //         },
-    //         [Lv2PointsCampaign2Action.StabilityPool]: {
-    //             title: "",
-    //             description: "",
-    //             actions: [],
-    //         },
-    //         [Lv2PointsCampaign2Action.Debt]: {
-    //             title: "",
-    //             description: "",
-    //             actions: [],
-    //         },
-    //     },
-    // },
+    [SupportedLiquityV2.Orki]: {
+        name: "Orki",
+        description: "Native stablecoin and credit protocol on Swell.",
+        url: "https://www.orki.finance",
+        chain: SupportedChain.Scroll,
+        protocol: SupportedLiquityV2.Orki,
+        pointsName: "Orki Liquidity Points",
+        brand: { main: "#2973EB", light: "#94B9F5" },
+        icon: OrkiLogo,
+        from: 1747053900,
+        to: 1747075500,
+        actions: {
+            [Lv2PointsCampaign2Action.Liquidity]: {
+                title: "Liquidity",
+                description:
+                    "Users get incentivized to provide liquidity in WETH/weETH in AMMs.",
+                actions: [
+                    {
+                        targets: [
+                            "0xa6cb988942610f6731e664379d15ffcfbf282b44",
+                            "0x4200000000000000000000000000000000000006",
+                        ],
+                        minimumDuration: 3600,
+                        name: "WETH/weETH LP",
+                        description: "Velodrome",
+                        multiplier: 2,
+                        href: "https://www.velodrome.finance/deposit?token0=0xa6cb988942610f6731e664379d15ffcfbf282b44&token1=0x4200000000000000000000000000000000000006&type=1&chain0=1923&chain1=1923&factory=0x04625B046C69577EfC40e6c0Bb83CDBAfab5a55F",
+                    },
+                ],
+            },
+            [Lv2PointsCampaign2Action.StabilityPool]: null,
+            [Lv2PointsCampaign2Action.Debt]: null,
+        },
+    },
     // [SupportedLiquityV2.Ebisu]: {
     //     name: "Ebisu",
     //     description: "Native stablecoin and credit protocol on Swell.",

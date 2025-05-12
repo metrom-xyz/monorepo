@@ -420,7 +420,7 @@
             "article": "Article"
         },
         "actions": {
-            "title": "Earn Quill Liquidity Points",
+            "title": "Earn {points}",
             "action": "Action",
             "multiplier": "Multiplier"
         },

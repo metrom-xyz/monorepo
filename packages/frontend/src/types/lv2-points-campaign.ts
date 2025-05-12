@@ -57,7 +57,7 @@ export interface Lv2PointsCampaign {
     protocolIntro?: ProtocolIntro;
     from: number;
     to: number;
-    actions: Record<Lv2PointsCampaign2Action, ActionsGroup>;
+    actions: Record<Lv2PointsCampaign2Action, ActionsGroup | null>;
 }
 
 export enum Lv2PointsCampaign2Action {
