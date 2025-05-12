@@ -177,6 +177,10 @@ export function getOrCreateCollateral(
             `Could not correctly resolve ERC20 collateral token decimals at address ${tokenAddress}, skipping indexing`,
         );
 
+    let troveManagerContract = TroveManagerContract.bind(troveManagerAddress);
+    let troveNftAddress = troveManagerContract.troveNFT();
+    let stabilityPoolAddress = troveManagerContract.stabilityPool();
+
     collateral = new Collateral(tokenAddress);
     collateral.registry = registryAddress;
     collateral.name = tokenName;
@@ -186,11 +190,9 @@ export function getOrCreateCollateral(
     collateral.tvl = BI_0;
     collateral.mintedDebt = BI_0;
     collateral.stabilityPoolDebt = BI_0;
+    collateral.stabilityPool = stabilityPoolAddress;
+    collateral.troveManager = troveManagerAddress;
     collateral.save();
-
-    let troveManagerContract = TroveManagerContract.bind(troveManagerAddress);
-    let troveNftAddress = troveManagerContract.troveNFT();
-    let stabilityPoolAddress = troveManagerContract.stabilityPool();
 
     let troveManagerContext = new DataSourceContext();
     troveManagerContext.setBytes("troveNftAddress", troveNftAddress);

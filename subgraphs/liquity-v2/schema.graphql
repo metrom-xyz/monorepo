@@ -1,11 +1,11 @@
-type CollateralRegistry @entity {
+type CollateralRegistry @entity(immutable: false) {
     id: Bytes!
     collateralsAmount: Int!
 
     collaterals: [Collateral!]! @derivedFrom(field: "registry")
 }
 
-type Collateral @entity {
+type Collateral @entity(immutable: false) {
     id: Bytes!
     registry: CollateralRegistry!
     name: String!
@@ -15,6 +15,8 @@ type Collateral @entity {
     tvl: BigInt!
     mintedDebt: BigInt!
     stabilityPoolDebt: BigInt!
+    stabilityPool: Bytes!
+    troveManager: Bytes!
 
     troves: [Trove!]! @derivedFrom(field: "collateral")
     stabilityPoolPositions: [StabilityPoolPosition!]!
@@ -25,7 +27,7 @@ type Collateral @entity {
         @derivedFrom(field: "collateral")
 }
 
-type Trove @entity {
+type Trove @entity(immutable: false) {
     id: Bytes!
     owner: Bytes!
     collateral: Collateral!
@@ -37,7 +39,7 @@ type Trove @entity {
     mintedDebtChanges: [MintedDebtChange!]! @derivedFrom(field: "trove")
 }
 
-type StabilityPoolPosition @entity {
+type StabilityPoolPosition @entity(immutable: false) {
     id: Bytes!
     collateral: Collateral!
     owner: Bytes!
