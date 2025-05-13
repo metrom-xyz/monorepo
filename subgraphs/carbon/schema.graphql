@@ -5,12 +5,12 @@ type Token @entity(immutable: true) {
     decimals: Int!
 }
 
-type Controller @entity {
+type Controller @entity(immutable: false) {
     id: Bytes!
     fee: Int!
 }
 
-type Pool @entity {
+type Pool @entity(immutable: false) {
     id: Bytes!
     onChainId: BigInt!
     token0: Token!
@@ -23,20 +23,26 @@ type Pool @entity {
     controller: Controller!
 }
 
-type Order @entity {
+type Order @entity(immutable: false) {
     id: Bytes!
+    y: BigInt!
+    z: BigInt!
+    A: BigInt!
+    B: BigInt!
     lowerTick: Int!
     upperTick: Int!
     liquidity: BigInt!
     tokenTvl: BigInt!
+    active: Boolean!
     pool: Pool!
 }
 
-type Strategy @entity {
+type Strategy @entity(immutable: false) {
     id: Bytes!
     owner: Bytes!
-    order0: Order
-    order1: Order
+    order0: Order!
+    order1: Order!
+    active: Boolean!
     pool: Pool!
 }
 
@@ -45,8 +51,15 @@ type StrategyChange @entity(immutable: true) {
     timestamp: BigInt!
     strategyId: Bytes!
     owner: Bytes!
-    order0: Order
-    order1: Order
+    order0: Order!
+    order1: Order!
+    pool: Pool!
+}
+
+type StrategyDelete @entity(immutable: true) {
+    id: Bytes!
+    timestamp: BigInt!
+    strategyId: Bytes!
     pool: Pool!
 }
 
@@ -66,7 +79,7 @@ type TickChange @entity(immutable: true) {
     newTick: Int!
 }
 
-type Tick @entity {
+type Tick @entity(immutable: false) {
     id: Bytes!
     idx: Int!
     pool: Pool!

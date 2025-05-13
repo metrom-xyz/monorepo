@@ -146,20 +146,18 @@ export function updateOrCreateOrder(
     uniV3Order: UniV3Order,
 ): Order {
     let order = Order.load(id);
-    if (order !== null) {
-        order.lowerTick = uniV3Order.lowerTick;
-        order.upperTick = uniV3Order.upperTick;
-        order.liquidity = uniV3Order.liquidity;
-        order.tokenTvl = uniV3Order.tokenTvl;
-        return order;
-    }
+    if (order === null) order = new Order(id);
 
-    order = new Order(id);
+    order.y = uniV3Order.y;
+    order.z = uniV3Order.z;
+    order.A = uniV3Order.A;
+    order.B = uniV3Order.B;
     order.lowerTick = uniV3Order.lowerTick;
     order.upperTick = uniV3Order.upperTick;
     order.liquidity = uniV3Order.liquidity;
     order.tokenTvl = uniV3Order.tokenTvl;
     order.pool = poolId;
+    order.active = uniV3Order.active;
     order.save();
 
     return order;
@@ -172,8 +170,12 @@ export function getOrderOrThrow(id: Bytes): Order {
     throw new Error(`Could not find order with id ${id.toHex()}`);
 }
 
+export function getStrategyId(id: BigInt): Bytes {
+    return Bytes.fromByteArray(Bytes.fromBigInt(id));
+}
+
 export function getStrategyOrThrow(id: BigInt): Strategy {
-    let bytesId = Bytes.fromByteArray(Bytes.fromBigInt(id));
+    let bytesId = getStrategyId(id);
     let strategy = Strategy.load(bytesId);
     if (strategy === null)
         throw new Error(
@@ -200,17 +202,16 @@ function getOrCreateTick(poolId: Bytes, idx: i32): Tick {
 
 export function updateTicks(
     poolId: Bytes,
-    order: UniV3Order,
-    removing: bool,
+    lowerTickIdx: i32,
+    upperTickIdx: i32,
+    liquidityDelta: BigInt,
 ): void {
-    const liquidityDelta = removing ? order.liquidity.neg() : order.liquidity;
-
-    let lowerTick = getOrCreateTick(poolId, order.lowerTick);
+    let lowerTick = getOrCreateTick(poolId, lowerTickIdx);
     lowerTick.liquidityGross = lowerTick.liquidityGross.plus(liquidityDelta);
     lowerTick.liquidityNet = lowerTick.liquidityNet.plus(liquidityDelta);
     lowerTick.save();
 
-    let upperTick = getOrCreateTick(poolId, order.upperTick);
+    let upperTick = getOrCreateTick(poolId, upperTickIdx);
     upperTick.liquidityGross = upperTick.liquidityGross.plus(liquidityDelta);
     upperTick.liquidityNet = upperTick.liquidityNet.minus(liquidityDelta);
     upperTick.save();
@@ -219,8 +220,8 @@ export function updateTicks(
 export function createStrategyChange(
     event: ethereum.Event,
     changedStrategy: Strategy,
-    order0: UniV3Order | null,
-    order1: UniV3Order | null,
+    order0: UniV3Order,
+    order1: UniV3Order,
 ): StrategyChange {
     const eventId = getEventId(event);
 
@@ -229,23 +230,19 @@ export function createStrategyChange(
     strategyChange.strategyId = changedStrategy.id;
     strategyChange.owner = changedStrategy.owner;
 
-    if (order0 !== null) {
-        // no update will ever happen here, just creation
-        strategyChange.order0 = updateOrCreateOrder(
-            eventId.concat(BYTES_0),
-            changedStrategy.pool,
-            order0,
-        ).id;
-    }
+    // no update will ever happen here, just creation
+    strategyChange.order0 = updateOrCreateOrder(
+        eventId.concat(BYTES_0),
+        changedStrategy.pool,
+        order0,
+    ).id;
 
-    if (order1 !== null) {
-        // no update will ever happen here, just creation
-        strategyChange.order1 = updateOrCreateOrder(
-            eventId.concat(BYTES_1),
-            changedStrategy.pool,
-            order1,
-        ).id;
-    }
+    // no update will ever happen here, just creation
+    strategyChange.order1 = updateOrCreateOrder(
+        eventId.concat(BYTES_1),
+        changedStrategy.pool,
+        order1,
+    ).id;
 
     strategyChange.pool = changedStrategy.pool;
     strategyChange.save();

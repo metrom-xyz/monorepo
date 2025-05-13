@@ -1,4 +1,4 @@
-import { BigDecimal, Bytes, log } from "@graphprotocol/graph-ts";
+import { BigDecimal, BigInt, log, store } from "@graphprotocol/graph-ts";
 import {
     PairCreated,
     StrategyCreated,
@@ -9,9 +9,9 @@ import {
 } from "../../generated/Controller/Controller";
 import {
     Controller,
-    Order,
     Pool,
     Strategy,
+    StrategyDelete,
     TickChange,
 } from "../../generated/schema";
 import { CONTROLLER_ADDRESS } from "../addresses";
@@ -25,6 +25,7 @@ import {
     getOrderOrThrow,
     getPoolId,
     getPoolOrThrow,
+    getStrategyId,
     getStrategyOrThrow,
     updateOrCreateOrder,
     updateTicks,
@@ -75,215 +76,284 @@ export function handlePairCreated(event: PairCreated): void {
 }
 
 export function handleStrategyCreated(event: StrategyCreated): void {
-    if (event.params.order0.y.isZero() && event.params.order1.y.isZero())
-        return;
+    const ordersInverted =
+        event.params.token0.toHex() > event.params.token1.toHex();
 
-    const order0 = decodeOrderToUniV3(
-        new EncodedOrder(
-            event.params.order0.y,
-            event.params.order0.z,
-            event.params.order0.A,
-            event.params.order0.B,
-        ),
-        true,
-    );
-    const order1 = decodeOrderToUniV3(
-        new EncodedOrder(
-            event.params.order1.y,
-            event.params.order1.z,
-            event.params.order1.A,
-            event.params.order1.B,
-        ),
-        false,
-    );
+    const order0 = ordersInverted
+        ? decodeOrderToUniV3(
+              new EncodedOrder(
+                  event.params.order1.y,
+                  event.params.order1.z,
+                  event.params.order1.A,
+                  event.params.order1.B,
+              ),
+              true,
+          )
+        : decodeOrderToUniV3(
+              new EncodedOrder(
+                  event.params.order0.y,
+                  event.params.order0.z,
+                  event.params.order0.A,
+                  event.params.order0.B,
+              ),
+              true,
+          );
+    const order1 = ordersInverted
+        ? decodeOrderToUniV3(
+              new EncodedOrder(
+                  event.params.order0.y,
+                  event.params.order0.z,
+                  event.params.order0.A,
+                  event.params.order0.B,
+              ),
+              false,
+          )
+        : decodeOrderToUniV3(
+              new EncodedOrder(
+                  event.params.order1.y,
+                  event.params.order1.z,
+                  event.params.order1.A,
+                  event.params.order1.B,
+              ),
+              false,
+          );
 
     const pool = getPoolOrThrow(event.params.token0, event.params.token1);
-    if (order0 !== null) {
+
+    if (order0.active) {
         pool.token0Tvl = pool.token0Tvl.plus(order0.tokenTvl);
         pool.liquidity = pool.liquidity.plus(order0.liquidity);
-        updateTicks(pool.id, order0, false);
+        updateTicks(
+            pool.id,
+            order0.lowerTick,
+            order0.upperTick,
+            order0.liquidity,
+        );
     }
-    if (order1 !== null) {
+    if (order1.active) {
         pool.token1Tvl = pool.token1Tvl.plus(order1.tokenTvl);
         pool.liquidity = pool.liquidity.plus(order1.liquidity);
-        updateTicks(pool.id, order1, false);
+        updateTicks(
+            pool.id,
+            order1.lowerTick,
+            order1.upperTick,
+            order1.liquidity,
+        );
     }
+
     pool.save();
 
-    const strategy = new Strategy(
-        Bytes.fromByteArray(Bytes.fromBigInt(event.params.id)),
-    );
+    const strategy = new Strategy(getStrategyId(event.params.id));
     strategy.owner = event.params.owner;
-
-    if (order0 !== null) {
-        strategy.order0 = updateOrCreateOrder(
-            getOrderId(strategy.id, true),
-            pool.id,
-            order0,
-        ).id;
-    }
-
-    if (order1 !== null) {
-        strategy.order1 = updateOrCreateOrder(
-            getOrderId(strategy.id, false),
-            pool.id,
-            order1,
-        ).id;
-    }
-
+    strategy.order0 = updateOrCreateOrder(
+        getOrderId(strategy.id, true),
+        pool.id,
+        order0,
+    ).id;
+    strategy.order1 = updateOrCreateOrder(
+        getOrderId(strategy.id, false),
+        pool.id,
+        order1,
+    ).id;
     strategy.pool = pool.id;
+    strategy.active = order0.active || order1.active;
     strategy.save();
 
     createStrategyChange(event, strategy, order0, order1);
 }
 
 export function handleStrategyDeleted(event: StrategyDeleted): void {
-    const order0 = decodeOrderToUniV3(
-        new EncodedOrder(
-            event.params.order0.y,
-            event.params.order0.z,
-            event.params.order0.A,
-            event.params.order0.B,
-        ),
-        true,
-    );
-    const order1 = decodeOrderToUniV3(
-        new EncodedOrder(
-            event.params.order1.y,
-            event.params.order1.z,
-            event.params.order1.A,
-            event.params.order1.B,
-        ),
-        false,
-    );
-
     const pool = getPoolOrThrow(event.params.token0, event.params.token1);
-    if (order0 !== null) {
+    let strategy = getStrategyOrThrow(event.params.id);
+
+    let order0 = getOrderOrThrow(strategy.order0);
+    if (order0.active) {
+        let liquidityDelta = order0.liquidity.neg();
         pool.token0Tvl = pool.token0Tvl.minus(order0.tokenTvl);
-        pool.liquidity = pool.liquidity.minus(order0.liquidity);
-        updateTicks(pool.id, order0, true);
+        pool.liquidity = pool.liquidity.plus(liquidityDelta);
+        updateTicks(
+            pool.id,
+            order0.lowerTick,
+            order0.upperTick,
+            liquidityDelta,
+        );
     }
-    if (order1 !== null) {
+
+    let order1 = getOrderOrThrow(strategy.order1);
+    if (order1.active) {
+        let liquidityDelta = order1.liquidity.neg();
         pool.token1Tvl = pool.token1Tvl.minus(order1.tokenTvl);
-        pool.liquidity = pool.liquidity.minus(order1.liquidity);
-        updateTicks(pool.id, order1, true);
+        pool.liquidity = pool.liquidity.plus(liquidityDelta);
+        updateTicks(
+            pool.id,
+            order1.lowerTick,
+            order1.upperTick,
+            liquidityDelta,
+        );
     }
+
     pool.save();
 
-    const strategy = getStrategyOrThrow(event.params.id);
-    strategy.order0 = null;
-    strategy.order1 = null;
-    strategy.save();
+    const strategyDelete = new StrategyDelete(getEventId(event));
+    strategyDelete.timestamp = event.block.timestamp;
+    strategyDelete.strategyId = getStrategyId(event.params.id);
+    strategyDelete.pool = pool.id;
+    strategyDelete.save();
 
-    createStrategyChange(event, strategy, order0, order1);
+    store.remove("Strategy", getStrategyId(event.params.id).toHex());
 }
 
 export function handleStrategyUpdated(event: StrategyUpdated): void {
     const pool = getPoolOrThrow(event.params.token0, event.params.token1);
-
     const strategy = getStrategyOrThrow(event.params.id);
 
-    const order0 = decodeOrderToUniV3(
-        new EncodedOrder(
-            event.params.order0.y,
-            event.params.order0.z,
-            event.params.order0.A,
-            event.params.order0.B,
-        ),
-        true,
-    );
-    const order1 = decodeOrderToUniV3(
-        new EncodedOrder(
-            event.params.order1.y,
-            event.params.order1.z,
-            event.params.order1.A,
-            event.params.order1.B,
-        ),
-        false,
-    );
+    const ordersInverted =
+        event.params.token0.toHex() > event.params.token1.toHex();
 
-    let token0Delta = BI_0;
-    let token1Delta = BI_0;
+    const order0 = ordersInverted
+        ? decodeOrderToUniV3(
+              new EncodedOrder(
+                  event.params.order1.y,
+                  event.params.order1.z,
+                  event.params.order1.A,
+                  event.params.order1.B,
+              ),
+              true,
+          )
+        : decodeOrderToUniV3(
+              new EncodedOrder(
+                  event.params.order0.y,
+                  event.params.order0.z,
+                  event.params.order0.A,
+                  event.params.order0.B,
+              ),
+              true,
+          );
+    const order1 = ordersInverted
+        ? decodeOrderToUniV3(
+              new EncodedOrder(
+                  event.params.order0.y,
+                  event.params.order0.z,
+                  event.params.order0.A,
+                  event.params.order0.B,
+              ),
+              false,
+          )
+        : decodeOrderToUniV3(
+              new EncodedOrder(
+                  event.params.order1.y,
+                  event.params.order1.z,
+                  event.params.order1.A,
+                  event.params.order1.B,
+              ),
+              false,
+          );
 
-    let liquidity0Delta = BI_0;
-    let liquidity1Delta = BI_0;
+    let poolToken0Delta = BI_0;
+    let poolToken1Delta = BI_0;
 
-    if (order0 !== null) {
-        let strategyOrder0: Order | null = null;
-        if (strategy.order0 !== null)
-            strategyOrder0 = getOrderOrThrow(strategy.order0!);
+    let poolLiquidity0Delta = BI_0;
+    let poolLiquidity1Delta = BI_0;
 
-        token0Delta =
-            strategyOrder0 === null
-                ? order0.tokenTvl
-                : strategyOrder0.tokenTvl.minus(order0.tokenTvl);
-        liquidity0Delta =
-            strategyOrder0 === null
-                ? order0.liquidity
-                : strategyOrder0.tokenTvl.minus(order0.liquidity);
-
-        strategy.order0 = updateOrCreateOrder(
-            getOrderId(strategy.id, true),
-            strategy.pool,
-            order0,
-        ).id;
-
-        updateTicks(pool.id, order0, liquidity0Delta.lt(BI_0));
-    }
-    if (order1 !== null) {
-        let strategyOrder1: Order | null = null;
-        if (strategy.order1 !== null)
-            strategyOrder1 = getOrderOrThrow(strategy.order1!);
-
-        token1Delta =
-            strategyOrder1 === null
-                ? order1.tokenTvl
-                : strategyOrder1.tokenTvl.minus(order1.tokenTvl);
-        liquidity1Delta =
-            strategyOrder1 === null
-                ? order1.liquidity
-                : strategyOrder1.tokenTvl.minus(order1.liquidity);
-
-        strategy.order1 = updateOrCreateOrder(
-            getOrderId(strategy.id, false),
-            strategy.pool,
-            order1,
-        ).id;
-
-        updateTicks(pool.id, order1, liquidity1Delta.lt(BI_0));
+    // in the following if we leave out the "both old and new orders are inactive" as there's
+    // no actual change to the pool's state in that case, just at the strategy level
+    let strategyOrder0 = getOrderOrThrow(strategy.order0);
+    if (strategyOrder0.active && !order0.active) {
+        // old order active and new one inactive
+        poolToken0Delta = strategyOrder0.tokenTvl.neg();
+        poolLiquidity0Delta = strategyOrder0.liquidity.neg();
+    } else if (!strategyOrder0.active && order0.active) {
+        // old order inactive and new one active
+        poolToken0Delta = order0.tokenTvl;
+        poolLiquidity0Delta = order0.liquidity;
+    } else if (strategyOrder0.active && order0.active) {
+        // old order active and new one also active
+        poolToken0Delta = order0.tokenTvl.minus(strategyOrder0.tokenTvl);
+        poolLiquidity0Delta = order0.liquidity.minus(strategyOrder0.liquidity);
     }
 
+    strategy.order0 = updateOrCreateOrder(
+        getOrderId(strategy.id, true),
+        strategy.pool,
+        order0,
+    ).id;
+
+    updateTicks(
+        pool.id,
+        order0.lowerTick,
+        order0.upperTick,
+        poolLiquidity0Delta,
+    );
+
+    // in the following if we leave out the "both old and new orders are inactive" as there's
+    // no actual change to the pool's state in that case, just at the strategy level
+    let strategyOrder1 = getOrderOrThrow(strategy.order1);
+    if (strategyOrder1.active && !order1.active) {
+        // old order active and new one inactive
+        poolToken1Delta = strategyOrder1.tokenTvl.neg();
+        poolLiquidity1Delta = strategyOrder1.liquidity.neg();
+    } else if (!strategyOrder1.active && order1.active) {
+        // old order inactive and new one active
+        poolToken1Delta = order1.tokenTvl;
+        poolLiquidity1Delta = order1.liquidity;
+    } else if (strategyOrder1.active && order1.active) {
+        // old order active and new one also active
+        poolToken1Delta = order1.tokenTvl.minus(strategyOrder1.tokenTvl);
+        poolLiquidity1Delta = order1.liquidity.minus(strategyOrder1.liquidity);
+    }
+
+    strategy.order1 = updateOrCreateOrder(
+        getOrderId(strategy.id, false),
+        strategy.pool,
+        order1,
+    ).id;
+
+    updateTicks(
+        pool.id,
+        order1.lowerTick,
+        order1.upperTick,
+        poolLiquidity1Delta,
+    );
+
+    strategy.active = order0.active || order1.active;
     strategy.save();
 
-    pool.token0Tvl = pool.token0Tvl.plus(token0Delta);
-    pool.token1Tvl = pool.token1Tvl.plus(token1Delta);
-    pool.liquidity = pool.liquidity.plus(liquidity0Delta).plus(liquidity1Delta);
+    pool.token0Tvl = pool.token0Tvl.plus(poolToken0Delta);
+    pool.token1Tvl = pool.token1Tvl.plus(poolToken1Delta);
+    pool.liquidity = pool.liquidity
+        .plus(poolLiquidity0Delta)
+        .plus(poolLiquidity1Delta);
     pool.save();
 
     createStrategyChange(event, strategy, order0, order1);
 }
 
 export function handleTokensTraded(event: TokensTraded): void {
-    const token0To1 =
-        event.params.sourceToken.toHex() < event.params.targetToken.toHex();
+    // Notice how in this handler we don't update TVLs. That's because
+    // each swap also emits a related StrategyUpdated event for touched
+    // positions, and we use that to update the pool's token TVLs in the
+    // handleStrategyUpdates handler
 
-    const token0 = token0To1
-        ? event.params.sourceToken
-        : event.params.targetToken;
-    const token1 = token0To1
-        ? event.params.targetToken
-        : event.params.sourceToken;
+    let token0To1 = true;
+    let token0 = event.params.sourceToken;
+    let token1 = event.params.targetToken;
+    if (event.params.targetToken.toHex() < event.params.sourceToken.toHex()) {
+        token0To1 = false;
+        token0 = event.params.targetToken;
+        token1 = event.params.sourceToken;
+    }
 
-    const token0Delta = token0To1
-        ? event.params.sourceAmount
-        : event.params.targetAmount.neg();
-    const token1Delta = token0To1
-        ? event.params.targetAmount.neg()
-        : event.params.sourceAmount;
+    let token0Delta: BigInt;
+    let token1Delta: BigInt;
+    if (token0To1) {
+        token0Delta = event.params.sourceAmount;
+        token1Delta = event.params.targetAmount.neg();
+    } else {
+        token0Delta = event.params.targetAmount.neg();
+        token1Delta = event.params.sourceAmount;
+    }
 
     const pool = getPoolOrThrow(token0, token1);
-    pool.token0Tvl = pool.token0Tvl.plus(token0Delta);
-    pool.token1Tvl = pool.token1Tvl.plus(token1Delta);
 
     if (!token0Delta.isZero())
         pool.price = BigDecimal.fromString(token1Delta.abs().toString()).div(

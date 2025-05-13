@@ -1,8 +1,15 @@
-specVersion: 1.0.0
+specVersion: 1.2.0
 indexerHints:
   prune: never
 schema:
   file: ./schema.graphql
+{{#grafting}}
+features:
+  - grafting
+graft:
+  base: {{base}}
+  block: {{block}} 
+{{/grafting}}
 dataSources:
   - kind: ethereum
     name: Controller

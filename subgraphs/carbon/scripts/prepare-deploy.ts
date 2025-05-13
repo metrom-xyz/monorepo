@@ -69,6 +69,7 @@ try {
             ).toString(),
             {
                 network,
+                grafting: networkConfig.grafting,
                 ControllerAddress: ammConfig.Controller.address,
                 ControllerStartBlock: ammConfig.Controller.startBlock,
                 VoucherAddress: ammConfig.Voucher.address,
