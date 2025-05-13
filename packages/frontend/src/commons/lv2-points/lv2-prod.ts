@@ -37,7 +37,7 @@ export const lv2PointsCampaignsProd: Record<
                 },
             ],
         },
-        from: 1746712800,
+        from: 1746720000,
         to: 1749398400,
         actions: {
             [Lv2PointsCampaign2Action.Liquidity]: {
@@ -47,7 +47,7 @@ export const lv2PointsCampaignsProd: Record<
                 actions: [
                     {
                         targets: [
-                            "0x6F2A1A886Dbf8E36C4fa9F25a517861A930fBF3A",
+                            "0xdb9E8F82D6d45fFf803161F2a5f75543972B229a",
                             "0x06efdbff2a14a7c8e15944d1f4a48f9f95f663a4",
                         ],
                         minimumDuration: 3600,
@@ -55,6 +55,17 @@ export const lv2PointsCampaignsProd: Record<
                         description: "Ambient",
                         multiplier: 2,
                         href: "https://ambient.finance/trade/pool/chain=0x82750&tokenA=0x06eFdBFf2a14a7c8E15944D1F4A48F9F95F663A4&tokenB=0xdb9e8f82d6d45fff803161f2a5f75543972b229a",
+                    },
+                    {
+                        targets: [
+                            "0xdb9E8F82D6d45fFf803161F2a5f75543972B229a",
+                            "0x06efdbff2a14a7c8e15944d1f4a48f9f95f663a4",
+                        ],
+                        minimumDuration: 3600,
+                        name: "USDQ/USDC LP",
+                        description: "Honeypop",
+                        multiplier: 2,
+                        href: "https://honeypop.app/add/0x06eFdBFf2a14a7c8E15944D1F4A48F9F95F663A4/0xdb9E8F82D6d45fFf803161F2a5f75543972B229a/500",
                     },
                 ],
             },
