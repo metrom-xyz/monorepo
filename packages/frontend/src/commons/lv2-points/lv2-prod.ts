@@ -141,13 +141,26 @@ export const lv2PointsCampaignsProd: Record<
     },
     [SupportedLiquityV2.Orki]: {
         name: "Orki",
-        description: "Native stablecoin and credit protocol on Swell.",
+        description:
+            "Permissionless credit protocol and the native stablecoin of the Swellchain.",
         url: "https://www.orki.finance",
         chain: SupportedChain.Scroll,
         protocol: SupportedLiquityV2.Orki,
-        pointsName: "Orki Liquidity Points",
+        pointsName: "Orki Drops",
         brand: { main: "#2973EB", light: "#94B9F5" },
         icon: OrkiLogo,
+        protocolIntro: {
+            articles: [
+                {
+                    title: "A Permissionless Credit and Stablecoin Protocol",
+                    href: "https://orkifinance.substack.com/p/a-permissionless-credit-and-stablecoin",
+                },
+                {
+                    title: "Orki Drops: Waves of Liquidity",
+                    href: "https://orkifinance.substack.com/p/orki-drops-waves-of-liquidity",
+                },
+            ],
+        },
         from: 1747053900,
         to: 1747075500,
         actions: {

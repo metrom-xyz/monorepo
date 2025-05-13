@@ -83,7 +83,6 @@ export function ProtocolIntro({
                                         />
                                     </div>
                                     <Typography
-                                        size="lg"
                                         weight="medium"
                                         className={styles.text}
                                     >

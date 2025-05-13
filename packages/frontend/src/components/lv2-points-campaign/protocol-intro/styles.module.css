@@ -9,7 +9,7 @@
 }
 
 .link {
-    @apply w-full;
+    @apply w-full md:max-w-1/2;
 }
 
 .article {
