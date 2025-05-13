@@ -1,5 +1,5 @@
 import { useCallback } from "react";
-import { Typography, Button } from "@metrom-xyz/ui";
+import { Typography, Button, InfoTooltip } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
 import { useRouter } from "@/src/i18n/routing";
 import { AprChip } from "../../apr-chip";
@@ -34,7 +34,14 @@ export function LiquityV2Header({ campaign }: LiquityV2HeaderProps) {
         <div className={styles.root}>
             <div className={styles.titleContainer}>
                 <div className={styles.title}>
-                    <ChainIcon className={styles.chainLogo} />
+                    <InfoTooltip
+                        placement="top"
+                        icon={<ChainIcon className={styles.chainLogo} />}
+                    >
+                        <Typography size="sm">
+                            {campaign.chainData.name}
+                        </Typography>
+                    </InfoTooltip>
                     {brand && <brand.logo className={styles.logo} />}
                     <Typography size="xl4" weight="medium">
                         {campaign.name}
@@ -58,7 +65,9 @@ export function LiquityV2Header({ campaign }: LiquityV2HeaderProps) {
                         target="_blank"
                         rel="noopener noreferrer"
                     >
-                        {t(`liquityV2.${campaign.target.type}`)}
+                        {t(`liquityV2.${campaign.target.type}`, {
+                            collateral: campaign.target.collateral.symbol,
+                        })}
                     </Button>
                 </div>
                 {campaign.apr &&
