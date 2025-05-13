@@ -156,8 +156,8 @@ export const lv2PointsCampaignsProd: Record<
                     href: "https://orkifinance.substack.com/p/a-permissionless-credit-and-stablecoin",
                 },
                 {
-                    title: "Orki Drops: Waves of Liquidity",
-                    href: "https://orkifinance.substack.com/p/orki-drops-waves-of-liquidity",
+                    title: "Maximizing Yield: Drops, Pools, and Multiple Returns",
+                    href: "https://orkifinance.substack.com/p/maximizing-yield-drops-pools-and",
                 },
             ],
         },
@@ -167,7 +167,7 @@ export const lv2PointsCampaignsProd: Record<
             [Lv2PointsCampaign2Action.Liquidity]: {
                 title: "Liquidity",
                 description:
-                    "Users get incentivized to provide liquidity in WETH/weETH in AMMs.",
+                    "Users get incentivized to provide liquidity for $USDK pairs in AMMs.",
                 actions: [
                     {
                         targets: [
@@ -175,15 +175,87 @@ export const lv2PointsCampaignsProd: Record<
                             "0x4200000000000000000000000000000000000006",
                         ],
                         minimumDuration: 3600,
-                        name: "WETH/weETH LP",
+                        name: "wETH/weETH LP",
                         description: "Velodrome",
-                        multiplier: 2,
+                        multiplier: 2.5,
                         href: "https://www.velodrome.finance/deposit?token0=0xa6cb988942610f6731e664379d15ffcfbf282b44&token1=0x4200000000000000000000000000000000000006&type=1&chain0=1923&chain1=1923&factory=0x04625B046C69577EfC40e6c0Bb83CDBAfab5a55F",
                     },
                 ],
             },
-            [Lv2PointsCampaign2Action.StabilityPool]: null,
-            [Lv2PointsCampaign2Action.Debt]: null,
+            [Lv2PointsCampaign2Action.StabilityPool]: {
+                title: "Deposit to stability pool",
+                description:
+                    "Users get incentivized to deposit liquidity in stability pools.",
+                actions: [
+                    {
+                        targets: ["0x4200000000000000000000000000000000000006"],
+                        minimumDuration: 3600,
+                        name: "wETH stability pool",
+                        multiplier: 1.5,
+                    },
+                    {
+                        targets: ["0x09341022ea237a4DB1644DE7CCf8FA0e489D85B7"],
+                        minimumDuration: 3600,
+                        name: "swETH stability pool",
+                        multiplier: 1.5,
+                    },
+                    {
+                        targets: ["0x18d33689AE5d02649a859A1CF16c9f0563975258"],
+                        minimumDuration: 3600,
+                        name: "rswETH stability pool",
+                        multiplier: 1.5,
+                    },
+                    {
+                        targets: ["0xA6cB988942610f6731e664379D15fFcfBf282b44"],
+                        minimumDuration: 3600,
+                        name: "weETH stability pool",
+                        multiplier: 1.5,
+                    },
+                    {
+                        targets: ["0x2826D136F5630adA89C1678b64A61620Aab77Aea"],
+                        minimumDuration: 3600,
+                        name: "SWELL stability pool",
+                        multiplier: 1.5,
+                    },
+                ],
+            },
+            [Lv2PointsCampaign2Action.Debt]: {
+                title: "Borrow",
+                description:
+                    "Users get incentivized to deposit collateral and mint USDK.",
+                actions: [
+                    {
+                        targets: ["0x4200000000000000000000000000000000000006"],
+                        minimumDuration: 3600,
+                        name: "Borrow using wETH",
+                        multiplier: 1,
+                    },
+                    {
+                        targets: ["0x09341022ea237a4DB1644DE7CCf8FA0e489D85B7"],
+                        minimumDuration: 3600,
+                        name: "Borrow using swETH",
+                        multiplier: 1,
+                    },
+                    {
+                        targets: ["0x18d33689AE5d02649a859A1CF16c9f0563975258"],
+                        minimumDuration: 3600,
+                        name: "Borrow using rswETH",
+                        multiplier: 1,
+                    },
+                    {
+                        targets: ["0xA6cB988942610f6731e664379D15fFcfBf282b44"],
+                        minimumDuration: 3600,
+                        name: "Borrow using weETH",
+                        multiplier: 1,
+                    },
+                    {
+                        targets: ["0x2826D136F5630adA89C1678b64A61620Aab77Aea"],
+                        minimumDuration: 3600,
+                        name: "Borrow using SWELL",
+                        multiplier: 1,
+                    },
+                ],
+            },
         },
     },
     // [SupportedLiquityV2.Ebisu]: {
