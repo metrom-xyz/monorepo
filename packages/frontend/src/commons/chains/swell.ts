@@ -44,5 +44,23 @@ export const swellData: ChainData = {
             name: "Swell",
             symbol: "SWELL",
         },
+        {
+            address: "0x09341022ea237a4db1644de7ccf8fa0e489d85b7",
+            decimals: 18,
+            name: "swETH",
+            symbol: "swETH",
+        },
+        {
+            address: "0x18d33689ae5d02649a859a1cf16c9f0563975258",
+            decimals: 18,
+            name: "rswETH",
+            symbol: "rswETH",
+        },
+        {
+            address: "0xa6cb988942610f6731e664379d15ffcfbf282b44",
+            decimals: 18,
+            name: "Wrapped eETH",
+            symbol: "rswETH",
+        },
     ],
 };
