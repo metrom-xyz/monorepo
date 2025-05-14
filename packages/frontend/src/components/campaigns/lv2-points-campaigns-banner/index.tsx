@@ -31,7 +31,12 @@ export function Lv2PointsCampaignBanner() {
                     ([protocol, campaign], index) => {
                         if (!campaign) return null;
 
-                        const { name, brand, icon: Icon } = campaign;
+                        const {
+                            name,
+                            brand,
+                            pointsName,
+                            icon: Icon,
+                        } = campaign;
 
                         const Illustration =
                             ILLUSTRATIONS[index] || ILLUSTRATIONS[0];
@@ -73,11 +78,11 @@ export function Lv2PointsCampaignBanner() {
                                     <Typography
                                         weight="medium"
                                         uppercase
-                                        size="xl"
+                                        size="lg"
                                         className={styles.title}
                                     >
                                         {t("campaignTitle", {
-                                            protocol: name,
+                                            pointsName,
                                         })}
                                     </Typography>
                                 </motion.div>
