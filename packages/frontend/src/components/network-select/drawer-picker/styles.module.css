@@ -30,10 +30,6 @@
     @apply self-center bg-zinc-500 h-1 w-9 rounded-xl;
 }
 
-.networksWrapper {
-    @apply max-h-[400px] overflow-y-auto;
-}
-
 .row {
     @apply flex items-center gap-4 p-4 rounded-lg;
 }
