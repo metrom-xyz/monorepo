@@ -185,7 +185,8 @@
                         "errors": {
                             "costChanged": "Cost changed, apply to confirm",
                             "wrongAmount": "Wrong points amount"
-                        }
+                        },
+                        "noFeeTokens": "Points campaign not supported"
                     }
                 },
                 "restrictions": {
