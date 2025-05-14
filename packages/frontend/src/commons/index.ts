@@ -103,6 +103,8 @@ export const CHAIN_DATA: Record<SupportedChain, ChainData> = {
     [SupportedChain.Form]: formData,
     [SupportedChain.Gnosis]: gnosisData,
     [SupportedChain.Telos]: telosData,
+    // FIXME: remove this after merging carbon support on sei support
+    [SupportedChain.Sei]: swellData,
     [SupportedChain.LightLinkPhoenix]: lightlinkPhoenixData,
     [SupportedChain.Sei]: seiData,
 };
