@@ -233,8 +233,7 @@ export const lv2PointsCampaignsProd: Record<
                     {
                         targets: [
                             "0x0000baa0b1678229863c0a941c1056b83a1955f5",
-                            // TODO: add KING address
-                            "0x",
+                            "0xc2606AADe4bdd978a4fa5a6edb3b66657acEe6F8",
                         ],
                         minimumDuration: 3600,
                         name: "USDK/KING LP",
