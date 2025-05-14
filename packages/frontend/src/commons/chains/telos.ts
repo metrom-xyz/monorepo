@@ -49,5 +49,11 @@ export const telosData: ChainData = {
             name: "Ether",
             symbol: "ETH",
         },
+        {
+            address: "0xBAb93B7ad7fE8692A878B95a8e689423437cc500",
+            decimals: 18,
+            name: "Wrapped Ether",
+            symbol: "WETH",
+        },
     ],
 };
