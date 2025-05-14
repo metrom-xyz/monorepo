@@ -1,10 +1,11 @@
-import { SupportedDex } from "@metrom-xyz/sdk";
+import { SupportedDex, SupportedLiquityV2, TargetType } from "@metrom-xyz/sdk";
 import { SupportedChain, ADDRESS } from "@metrom-xyz/contracts";
 import { type ChainData } from "..";
 import { swellchain } from "viem/chains";
 import { DepositUrlType, ProtocolType } from "@/src/types/protocol";
 import { SwellLogo } from "@/src/assets/logos/chains/swell";
 import { VelodromeLogo } from "@/src/assets/logos/chains/velodrome";
+import { OrkiLogo } from "@/src/assets/logos/liquity-v2-platforms/orki";
 
 export const swellData: ChainData = {
     testnet: false,
@@ -23,6 +24,23 @@ export const swellData: ChainData = {
                 template: `https://velodrome.finance/deposit?token0={token_0}&token1={token_1}&type=1&chain0=${SupportedChain.Swell}&chain1=${SupportedChain.Swell}&factory=0x04625B046C69577EfC40e6c0Bb83CDBAfab5a55F`,
             },
             supportsFetchAllPools: true,
+        },
+        {
+            type: ProtocolType.LiquityV2,
+            slug: SupportedLiquityV2.Orki,
+            logo: OrkiLogo,
+            name: "Orki",
+            debtToken: {
+                address: "0x0000baa0b1678229863c0a941c1056b83a1955f5",
+                decimals: 18,
+                name: "USDK",
+                symbol: "USDK",
+            },
+            // TODO: add urls once Orki is live
+            actionUrls: {
+                [TargetType.LiquityV2Debt]: "",
+                [TargetType.LiquityV2StabilityPool]: "",
+            },
         },
     ],
     baseTokens: [
