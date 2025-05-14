@@ -83,7 +83,7 @@ export function ListPoolPicker({ value, dex, onChange }: ListPoolPickerProps) {
         setSearch(event.target.value);
     }
 
-    const itemCount = loading ? 6 : filteredPools.length;
+    const itemCount = Math.max(loading ? 6 : filteredPools.length, 1);
 
     return (
         <div className={styles.root}>
@@ -140,7 +140,7 @@ export function ListPoolPicker({ value, dex, onChange }: ListPoolPickerProps) {
                         {t("list.tvl")}
                     </Typography>
                 </div>
-                {loading || (pools && pools.length > 0) ? (
+                {loading || (filteredPools && filteredPools.length > 0) ? (
                     <AutoSizer>
                         {({ height, width }) => {
                             return (

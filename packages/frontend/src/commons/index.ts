@@ -23,6 +23,7 @@ import {
     gnosis,
     sepolia,
     telos,
+    swellchain,
     lightlinkPhoenix,
     sei,
 } from "viem/chains";
@@ -31,6 +32,7 @@ import {
     modeData,
     mantleData,
     sonicData,
+    swellData,
     baseData,
     baseSepoliaData,
     taikoData,
@@ -82,7 +84,7 @@ export const SUPPORTED_CHAINS: [Chain, ...Chain[]] =
               telos,
               lightlinkPhoenix,
           ]
-        : [holesky, baseSepolia, sepolia, sei];
+        : [holesky, baseSepolia, sepolia, sei, swellchain];
 
 export const TOKEN_ICONS_URL = `https://raw.githubusercontent.com/metrom-xyz/token-icons/refs/heads/main/${ENVIRONMENT === Environment.Production ? "mainnet" : "testnet"}-icons.json`;
 
@@ -97,6 +99,7 @@ export const CHAIN_DATA: Record<SupportedChain, ChainData> = {
     [SupportedChain.Taiko]: taikoData,
     [SupportedChain.Scroll]: scrollData,
     [SupportedChain.Sonic]: sonicData,
+    [SupportedChain.Swell]: swellData,
     [SupportedChain.Form]: formData,
     [SupportedChain.Gnosis]: gnosisData,
     [SupportedChain.Telos]: telosData,

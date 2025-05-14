@@ -19,6 +19,7 @@ const HOMEPAGES: Record<SupportedDex, string> = {
     [SupportedDex.Unagi]: "https://unagiswap.xyz/",
     [SupportedDex.UniswapV3]: "https://app.uniswap.org/",
     [SupportedDex.Carbon]: "https://carbondefi.xyz/",
+    [SupportedDex.Velodrome]: "https://velodrome.finance/",
 };
 
 const chains = Object.values(CHAIN_DATA).filter((chain) => !chain.testnet);

@@ -17,6 +17,7 @@ export enum SupportedDex {
     Swapr = "swapr",
     Unagi = "unagi",
     Carbon = "carbon",
+    Velodrome = "velodrome",
 }
 
 export enum SupportedLiquityV2 {
