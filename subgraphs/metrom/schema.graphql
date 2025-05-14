@@ -46,7 +46,7 @@ type Transaction @entity(immutable: true) {
         @derivedFrom(field: "transaction")
 }
 
-type Metrom @entity {
+type Metrom @entity(immutable: false) {
     id: Bytes!
     transaction: Transaction!
     ossified: Boolean!
@@ -293,35 +293,35 @@ type SetMaximumCampaignDurationEvent @entity(immutable: true) {
     maximumCampaignDuration: BigInt!
 }
 
-type ClaimableFee @entity {
+type ClaimableFee @entity(immutable: false) {
     id: Bytes!
     metrom: Metrom!
     token: Token!
     amount: BigInt!
 }
 
-type FeeRebate @entity {
+type FeeRebate @entity(immutable: false) {
     id: Bytes!
     metrom: Metrom!
     account: Bytes!
     rebate: BigInt!
 }
 
-type WhitelistedRewardToken @entity {
+type WhitelistedRewardToken @entity(immutable: false) {
     id: Bytes!
     metrom: Metrom!
     token: Token!
     minimumRate: BigInt!
 }
 
-type WhitelistedFeeToken @entity {
+type WhitelistedFeeToken @entity(immutable: false) {
     id: Bytes!
     metrom: Metrom!
     token: Token!
     minimumRate: BigInt!
 }
 
-type RewardsCampaign @entity {
+type RewardsCampaign @entity(immutable: false) {
     id: Bytes!
     transaction: Transaction!
     metrom: Metrom!
@@ -350,7 +350,7 @@ type RewardsCampaign @entity {
     recoverRewardEvents: [RecoverRewardEvent!]! @derivedFrom(field: "campaign")
 }
 
-type Reward @entity {
+type Reward @entity(immutable: false) {
     id: Bytes!
     campaign: RewardsCampaign!
     token: Token!
@@ -362,21 +362,21 @@ type Reward @entity {
     recoveredByAccount: [RecoveredByAccount!]! @derivedFrom(field: "reward")
 }
 
-type ClaimedByAccount @entity {
+type ClaimedByAccount @entity(immutable: false) {
     id: Bytes!
     reward: Reward!
     account: Bytes!
     amount: BigInt!
 }
 
-type RecoveredByAccount @entity {
+type RecoveredByAccount @entity(immutable: false) {
     id: Bytes!
     reward: Reward!
     account: Bytes!
     amount: BigInt!
 }
 
-type PointsCampaign @entity {
+type PointsCampaign @entity(immutable: false) {
     id: Bytes!
     transaction: Transaction!
     metrom: Metrom!
