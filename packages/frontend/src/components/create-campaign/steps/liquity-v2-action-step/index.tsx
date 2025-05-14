@@ -18,7 +18,7 @@ import styles from "./styles.module.css";
 
 export const LIQUITY_V2_SUPPORTED_ACTIONS = [
     {
-        title: "list.takeLoan",
+        title: "list.borrow",
         logo: <TakeLoanIcon />,
         value: LiquityV2Action.Debt,
     },
@@ -89,7 +89,8 @@ export function LiquityV2ActionStep({
             <StepPreview label={t("title")}>
                 {!!selectedAction && (
                     <div className={styles.preview}>
-                        <div className={styles.logo}>{selectedAction.logo}</div>
+                        {/* TODO: find better icons */}
+                        {/* <div className={styles.logo}>{selectedAction.logo}</div> */}
                         <Typography size="lg" weight="medium">
                             {t(selectedAction.title)}
                         </Typography>
@@ -108,9 +109,9 @@ export function LiquityV2ActionStep({
                                         selectedAction?.value === value,
                                 })}
                             >
-                                <div className={styles.actionIconWrapper}>
+                                {/* <div className={styles.actionIconWrapper}>
                                     {logo}
-                                </div>
+                                </div> */}
                                 <div className={styles.textWrapper}>
                                     <Typography
                                         weight="medium"

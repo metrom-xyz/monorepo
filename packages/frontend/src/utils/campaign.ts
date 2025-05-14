@@ -92,7 +92,7 @@ export function getCampaignName(
             });
         }
         case TargetType.LiquityV2Debt: {
-            return t("campaignActions.takeLoan", {
+            return t("campaignActions.borrow", {
                 brand: campaign.target.brand.name,
                 token: campaign.target.collateral.symbol,
             });

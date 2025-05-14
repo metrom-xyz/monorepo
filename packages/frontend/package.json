@@ -6,7 +6,6 @@
     "scripts": {
         "dev": "next dev --turbopack",
         "build": "next build",
-        "build:fleek": "fleek-next build",
         "start": "next start",
         "lint": "next lint",
         "format": "next lint --fix",

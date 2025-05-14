@@ -1,5 +1,5 @@
 import { useCallback } from "react";
-import { Typography, Button } from "@metrom-xyz/ui";
+import { Typography, Button, InfoTooltip } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
 import { useRouter } from "@/src/i18n/routing";
 import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
@@ -44,7 +44,14 @@ export function AmmPoolLiquityHeader({ campaign }: AmmPoolLiquityHeaderProps) {
         <div className={styles.root}>
             <div className={styles.titleContainer}>
                 <div className={styles.title}>
-                    <ChainIcon className={styles.chainLogo} />
+                    <InfoTooltip
+                        placement="top"
+                        icon={<ChainIcon className={styles.chainLogo} />}
+                    >
+                        <Typography size="sm">
+                            {campaign.chainData.name}
+                        </Typography>
+                    </InfoTooltip>
                     <PoolRemoteLogo
                         chain={campaign.chainId}
                         size="xl"

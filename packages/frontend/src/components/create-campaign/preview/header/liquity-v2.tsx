@@ -26,7 +26,7 @@ export function LiquityV2({ payload }: LiquityV2Props) {
         <div className={styles.titleContainer}>
             {action && (
                 <div className={styles.liquityV2Action}>
-                    {action.logo}
+                    {/* {action.logo} */}
                     <Typography weight="medium" size="xl">
                         {t(`liquityV2Actions.${action.title}`)}
                     </Typography>
