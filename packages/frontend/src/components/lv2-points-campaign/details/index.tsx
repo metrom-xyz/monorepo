@@ -1,3 +1,5 @@
+"use client";
+
 import { TextField, Typography } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
 import { CampaignDuration } from "../../campaign-duration";
