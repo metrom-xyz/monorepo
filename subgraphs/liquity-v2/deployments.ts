@@ -30,4 +30,12 @@ export const DEPLOYMENTS: {
             },
         },
     },
+    swellchain: {
+        orki: {
+            DebtToken: {
+                address: "0x0000baa0b1678229863c0a941c1056b83a1955f5",
+                startBlock: 7216771,
+            },
+        },
+    },
 };
