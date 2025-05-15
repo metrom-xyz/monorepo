@@ -50,8 +50,8 @@ export function Lv2PointsCampaign({ protocol }: Lv2PointsCampaignProps) {
                 brand={brand}
                 icon={icon}
             />
-            {/* <Details from={from} to={to} protocol={name} />
-            {protocolIntro && (
+            <Details from={from} to={to} protocol={name} />
+            {/* {protocolIntro && (
                 <ProtocolIntro
                     protocol={protocol}
                     brand={brand}
