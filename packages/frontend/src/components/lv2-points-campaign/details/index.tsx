@@ -31,7 +31,7 @@ export function Details({ from, to, protocol }: DetailsProps) {
                     value={protocol}
                 />
             </div>
-            <CampaignDuration from={from} to={to} />
+            {/* <CampaignDuration from={from} to={to} /> */}
         </div>
     );
 }
