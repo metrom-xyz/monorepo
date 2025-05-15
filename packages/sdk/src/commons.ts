@@ -16,6 +16,7 @@ export enum SupportedDex {
     SilverSwap = "silverswap",
     Swapr = "swapr",
     Unagi = "unagi",
+    Carbon = "carbon",
 }
 
 export enum SupportedLiquityV2 {
@@ -28,6 +29,7 @@ export enum SupportedLiquityV2 {
 export enum SupportedAmm {
     AlgebraIntegral = "algebra-integral",
     UniswapV3 = "uniswap-v3",
+    Carbon = "carbon",
 }
 
 export interface ServiceUrls {

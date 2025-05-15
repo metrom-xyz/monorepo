@@ -30,6 +30,7 @@ import { SUPPORTED_CHAINS } from "../commons";
 import Fathom from "./fathom";
 import { useTheme } from "next-themes";
 import { Theme } from "../types/common";
+import { sepolia } from "viem/chains";
 
 dayjs.extend(duration);
 dayjs.extend(localizedFormat);
