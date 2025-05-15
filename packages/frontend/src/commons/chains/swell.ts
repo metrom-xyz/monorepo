@@ -49,8 +49,9 @@ export const swellData: ChainData = {
                 symbol: "USDK",
             },
             actionUrls: {
-                [TargetType.LiquityV2Debt]: "https://app.orki.finance/earn",
-                [TargetType.LiquityV2StabilityPool]: "https://app.orki.finance",
+                [TargetType.LiquityV2Debt]: "https://app.orki.finance",
+                [TargetType.LiquityV2StabilityPool]:
+                    "https://app.orki.finance/earn",
             },
         },
     ],
