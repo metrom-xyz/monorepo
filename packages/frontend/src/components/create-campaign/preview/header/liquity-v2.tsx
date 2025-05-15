@@ -28,7 +28,10 @@ export function LiquityV2({ payload }: LiquityV2Props) {
                 <div className={styles.liquityV2Action}>
                     {/* {action.logo} */}
                     <Typography weight="medium" size="xl">
-                        {t(`liquityV2Actions.${action.title}`)}
+                        {t(`liquityV2Actions.${action.title}`, {
+                            debtToken: payload.brand.debtToken.symbol,
+                            collateral: payload.collateral.token.symbol,
+                        })}
                     </Typography>
                 </div>
             )}

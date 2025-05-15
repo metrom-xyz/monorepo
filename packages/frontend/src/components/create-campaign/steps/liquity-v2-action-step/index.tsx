@@ -32,12 +32,14 @@ export const LIQUITY_V2_SUPPORTED_ACTIONS = [
 interface LiquityV2ActionStepProps {
     disabled?: boolean;
     action?: LiquityV2CampaignPayload["action"];
+    brand?: LiquityV2CampaignPayload["brand"];
     onActionChange: (value: LiquityV2CampaignPayloadPart) => void;
 }
 
 export function LiquityV2ActionStep({
     disabled,
     action,
+    brand,
     onActionChange,
 }: LiquityV2ActionStepProps) {
     const t = useTranslations("newCampaign.form.liquityV2.action");
@@ -92,7 +94,9 @@ export function LiquityV2ActionStep({
                         {/* TODO: find better icons */}
                         {/* <div className={styles.logo}>{selectedAction.logo}</div> */}
                         <Typography size="lg" weight="medium">
-                            {t(selectedAction.title)}
+                            {t(selectedAction.title, {
+                                debtToken: brand?.debtToken.symbol || "",
+                            })}
                         </Typography>
                     </div>
                 )}
@@ -118,7 +122,10 @@ export function LiquityV2ActionStep({
                                         size="lg"
                                         uppercase
                                     >
-                                        {t(title)}
+                                        {t(title, {
+                                            debtToken:
+                                                brand?.debtToken.symbol || "",
+                                        })}
                                     </Typography>
                                 </div>
                             </div>

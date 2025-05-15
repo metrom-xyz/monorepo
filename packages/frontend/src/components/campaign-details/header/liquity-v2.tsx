@@ -67,6 +67,7 @@ export function LiquityV2Header({ campaign }: LiquityV2HeaderProps) {
                     >
                         {t(`liquityV2.${campaign.target.type}`, {
                             collateral: campaign.target.collateral.symbol,
+                            debtToken: brand?.debtToken.symbol || "",
                         })}
                     </Button>
                 </div>

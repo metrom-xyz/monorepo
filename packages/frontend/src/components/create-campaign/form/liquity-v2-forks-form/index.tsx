@@ -143,6 +143,7 @@ export function LiquityV2ForksForm({
                 <LiquityV2ActionStep
                     disabled={!payload.brand || unsupportedChain}
                     action={payload.action}
+                    brand={payload.brand}
                     onActionChange={handlePayloadOnChange}
                 />
                 <LiquityV2CollateralStep

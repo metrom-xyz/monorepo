@@ -83,6 +83,7 @@ export const SUPPORTED_CHAINS: [Chain, ...Chain[]] =
               gnosis,
               telos,
               lightlinkPhoenix,
+              swellchain,
           ]
         : [holesky, baseSepolia, sepolia, sei, swellchain];
 

@@ -5,6 +5,8 @@ import {
     type Specification,
     type LiquidityInRange,
     type KpiSpecification,
+    SupportedLiquityV2,
+    type LiquityV2DebtTarget,
 } from "@metrom-xyz/sdk";
 import {
     AmmPoolLiquidityCampaignPreviewPayload,
@@ -19,6 +21,7 @@ import { type Hex, encodeAbiParameters, stringToHex, isAddress } from "viem";
 import { CHAIN_DATA, SECONDS_IN_YEAR, WEIGHT_UNIT } from "../commons";
 import type { SupportedChain } from "@metrom-xyz/contracts";
 import { getTranslations } from "next-intl/server";
+import type { LiquityV2Protocol } from "../types/protocol";
 
 export function buildCampaignDataBundle(payload: CampaignPreviewPayload) {
     if (payload instanceof AmmPoolLiquidityCampaignPreviewPayload)
@@ -97,8 +100,17 @@ export function getCampaignName(
             });
         }
         case TargetType.LiquityV2Debt: {
+            const targetProtocol = CHAIN_DATA[
+                campaign.chainId as SupportedChain
+            ].protocols.find(
+                ({ slug }) =>
+                    slug ===
+                    (campaign.target as LiquityV2DebtTarget).brand.slug,
+            ) as LiquityV2Protocol | undefined;
+
             return t("campaignActions.borrow", {
                 brand: campaign.target.brand.name,
+                debtToken: targetProtocol?.debtToken.symbol || "",
                 token: campaign.target.collateral.symbol,
             });
         }

@@ -251,7 +251,7 @@
                 "action": {
                     "title": "Action",
                     "list": {
-                        "borrow": "Borrow",
+                        "borrow": "Borrow {debtToken}",
                         "depositCollateral": "Deposit collateral",
                         "depositToStabilityPool": "Deposit to stability pool"
                     }
@@ -332,9 +332,9 @@
             "endDate": "End date",
             "liquityV2Actions": {
                 "list": {
-                    "borrow": "Borrow",
+                    "borrow": "Borrow {debtToken} using {collateral}",
                     "depositCollateral": "Deposit collateral",
-                    "depositToStabilityPool": "Deposit to stability pool"
+                    "depositToStabilityPool": "Deposit to {collateral} stability pool"
                 }
             }
         },
@@ -440,7 +440,7 @@
                 "deposit": "Deposit"
             },
             "liquityV2": {
-                "liquity-v2-debt": "Borrow using {collateral}",
+                "liquity-v2-debt": "Borrow {debtToken} using {collateral}",
                 "liquity-v2-collateral": "Deposit collateral",
                 "liquity-v2-stability-pool": "Deposit to {collateral} stability pool"
             }
@@ -631,7 +631,7 @@
     "apr": "APR",
     "campaignActions": {
         "lp": "LP on {dex} {pool}",
-        "borrow": "Borrow using {token} on {brand}",
+        "borrow": "Borrow {debtToken} using {token} on {brand}",
         "depositStabilityPool": "Deposit to {token} stability pool on {brand}"
     },
     "socialCampaignPreview": {
