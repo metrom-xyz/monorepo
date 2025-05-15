@@ -1,4 +1,9 @@
-import { SupportedDex, SupportedLiquityV2, TargetType } from "@metrom-xyz/sdk";
+import {
+    Environment,
+    SupportedDex,
+    SupportedLiquityV2,
+    TargetType,
+} from "@metrom-xyz/sdk";
 import { SupportedChain, ADDRESS } from "@metrom-xyz/contracts";
 import { type ChainData } from "..";
 import { swellchain } from "viem/chains";
@@ -6,11 +11,18 @@ import { DepositUrlType, ProtocolType } from "@/src/types/protocol";
 import { SwellLogo } from "@/src/assets/logos/chains/swell";
 import { VelodromeLogo } from "@/src/assets/logos/chains/velodrome";
 import { OrkiLogo } from "@/src/assets/logos/liquity-v2-platforms/orki";
+import { ENVIRONMENT } from "../env";
 
 export const swellData: ChainData = {
     testnet: false,
     name: "Swell",
-    metromContract: ADDRESS[SupportedChain.Swell],
+    metromContract:
+        ENVIRONMENT === Environment.Development
+            ? {
+                  address: "0xe82c4D8b993D613a28600B953e91A3A93Ae69Fd6",
+                  blockCreated: 7267194,
+              }
+            : ADDRESS[SupportedChain.Swell],
     blockExplorers: swellchain.blockExplorers,
     icon: SwellLogo,
     protocols: [

@@ -39,8 +39,8 @@ importers:
         specifier: ^5.2.5
         version: 5.2.5
       '@metrom-xyz/contracts':
-        specifier: ^0.45.0
-        version: 0.45.0(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.24.2)
+        specifier: ^0.46.0
+        version: 0.46.0(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.24.2)
       '@metrom-xyz/sdk':
         specifier: workspace:*
         version: link:../sdk
@@ -224,8 +224,8 @@ importers:
   packages/react:
     dependencies:
       '@metrom-xyz/contracts':
-        specifier: ^0.45.0
-        version: 0.45.0(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.24.2)
+        specifier: ^0.46.0
+        version: 0.46.0(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.24.2)
       '@metrom-xyz/sdk':
         specifier: workspace:*
         version: link:../sdk
@@ -288,8 +288,8 @@ importers:
         specifier: ^9.26.0
         version: 9.26.0
       '@metrom-xyz/contracts':
-        specifier: ^0.45.0
-        version: 0.45.0(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@6.0.5)(zod@3.24.2)
+        specifier: ^0.46.0
+        version: 0.46.0(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@6.0.5)(zod@3.24.2)
       '@tsconfig/node20':
         specifier: ^20.1.5
         version: 20.1.5
@@ -767,8 +767,8 @@ importers:
         specifier: ^9.26.0
         version: 9.26.0
       '@metrom-xyz/contracts':
-        specifier: ^0.45.0
-        version: 0.45.0(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.24.2)
+        specifier: ^0.46.0
+        version: 0.46.0(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.24.2)
       '@types/mustache':
         specifier: ^4.2.6
         version: 4.2.6
@@ -2272,8 +2272,8 @@ packages:
     resolution: {integrity: sha512-w8CVbdkDrVXFJbfBSlDfafDR6BAkpDmv1bC1UJVCoVny5tW2RKAdn9i68Xf7asYT4TnUhl/hN4zfUiKQq9II4g==}
     engines: {node: '>=16.0.0'}
 
-  '@metrom-xyz/contracts@0.45.0':
-    resolution: {integrity: sha512-bTeuKXr4NjmOhe1bwUzDen35r+x0Dsy0hswWSA/nDYiKDB6uqlcGCrFYutFMRGrbLGh7QmwxeHwvO6WUa/+vNQ==}
+  '@metrom-xyz/contracts@0.46.0':
+    resolution: {integrity: sha512-WoIv60cJWfGt2iqEocpWk4AEz0lmXlewA9VmZI639wzO05oTH8ajt3Qn3KtJpKg1kxWTHnpBTDycCsmAZziUMQ==}
 
   '@microsoft/api-extractor-model@7.30.3':
     resolution: {integrity: sha512-yEAvq0F78MmStXdqz9TTT4PZ05Xu5R8nqgwI5xmUmQjWBQ9E6R2n8HB/iZMRciG4rf9iwI2mtuQwIzDXBvHn1w==}
@@ -11373,7 +11373,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@metrom-xyz/contracts@0.45.0(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.24.2)':
+  '@metrom-xyz/contracts@0.46.0(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.24.2)':
     dependencies:
       viem: 2.29.2(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.24.2)
     transitivePeerDependencies:
@@ -11382,7 +11382,7 @@ snapshots:
       - utf-8-validate
       - zod
 
-  '@metrom-xyz/contracts@0.45.0(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@6.0.5)(zod@3.24.2)':
+  '@metrom-xyz/contracts@0.46.0(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@6.0.5)(zod@3.24.2)':
     dependencies:
       viem: 2.29.2(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@6.0.5)(zod@3.24.2)
     transitivePeerDependencies:
