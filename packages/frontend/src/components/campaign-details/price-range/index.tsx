@@ -26,7 +26,10 @@ export function PriceRange({ campaign }: PriceRangeProps) {
         useLiquidityDensity({
             pool: campaign?.target.pool,
             computeAmount: COMPUTE_TICKS_AMOUNT,
-            enabled: campaign && campaign.status !== Status.Ended,
+            enabled:
+                campaign &&
+                !!campaign.specification?.priceRange &&
+                campaign.status !== Status.Ended,
         });
 
     if (
