@@ -14,7 +14,6 @@ import { FormHeader } from "./header";
 import { AmmPoolLiquidityForm } from "./amm-pool-liquidity-form";
 import { LiquityV2ForksForm } from "./liquity-v2-forks-form";
 import { useRouter } from "@/src/i18n/routing";
-import { LIQUITY_V2_CAMPAIGN } from "@/src/commons/env";
 
 import styles from "./styles.module.css";
 
@@ -63,7 +62,7 @@ export function CreateCampaignForm<T extends CampaignType>({
 
     return (
         <div className={styles.root}>
-            {LIQUITY_V2_CAMPAIGN && <FormHeader type={type} />}
+            <FormHeader type={type} />
             {type === CampaignType.AmmPoolLiquidity && (
                 <AmmPoolLiquidityForm
                     unsupportedChain={unsupportedChain}
