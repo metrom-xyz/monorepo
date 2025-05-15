@@ -215,6 +215,7 @@ export function RewardPoints({
                 value={token || fee?.token}
                 values={feeTokens}
                 onClick={handleFeedTokenOnChange}
+                messages={{ empty: t("noFeeTokens") }}
             />
         </div>
     );

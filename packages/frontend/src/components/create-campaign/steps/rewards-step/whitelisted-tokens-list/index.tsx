@@ -25,6 +25,9 @@ interface WhitelistedTokensListProps {
     value?: WhitelistedErc20Token;
     unavailable?: WhitelistedErc20TokenAmount[];
     onClick: (token: WhitelistedErc20Token) => void;
+    messages?: {
+        empty?: string;
+    };
 }
 
 export function WhitelistedTokensList({
@@ -34,6 +37,7 @@ export function WhitelistedTokensList({
     values,
     unavailable,
     onClick,
+    messages,
 }: WhitelistedTokensListProps) {
     const t = useTranslations("newCampaign.form.base.rewards");
     const rootRef = useRef<HTMLDivElement>(null);
@@ -132,7 +136,11 @@ export function WhitelistedTokensList({
                         ) : (
                             <div className={styles.emptyList}>
                                 {/* TODO: add illustration */}
-                                <Typography>{t("list.empty")}</Typography>
+                                <Typography>
+                                    {messages?.empty
+                                        ? messages.empty
+                                        : t("list.empty")}
+                                </Typography>
                             </div>
                         )}
                     </div>

@@ -69,8 +69,7 @@
             "title": "This campaign has KPI set"
         },
         "pool": {
-            "range": "Range",
-            "weighting": "Reward ratio"
+            "range": "Range"
         },
         "status": {
             "live": {
@@ -185,7 +184,8 @@
                         "errors": {
                             "costChanged": "Cost changed, apply to confirm",
                             "wrongAmount": "Wrong points amount"
-                        }
+                        },
+                        "noFeeTokens": "Points campaign not supported"
                     }
                 },
                 "restrictions": {

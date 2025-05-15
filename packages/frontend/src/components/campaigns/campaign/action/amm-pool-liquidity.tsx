@@ -55,13 +55,6 @@ export function AmmPoolLiquidity({ campaign }: AmmPoolLiquidityProps) {
                             </Typography>
                         </div>
                     )}
-                    {campaign.specification?.weighting && (
-                        <div className={styles.chip}>
-                            <Typography size="xs" weight="medium" uppercase>
-                                {t("pool.weighting")}
-                            </Typography>
-                        </div>
-                    )}
                 </div>
             </div>
         </div>

@@ -2,6 +2,7 @@ export { modeData } from "./mode";
 export { holeskyData } from "./holesky";
 export { mantleData } from "./mantle";
 export { sonicData } from "./sonic";
+export { swellData } from "./swell";
 export { baseData } from "./base";
 export { baseSepoliaData } from "./base-sepolia";
 export { taikoData } from "./taiko";
