@@ -1,6 +1,7 @@
-import { TextField } from "@metrom-xyz/ui";
+import { TextField, Typography } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
 import { CampaignDuration } from "../../campaign-duration";
+import { formatDateTime } from "@/src/utils/format";
 
 import styles from "./styles.module.css";
 
@@ -31,6 +32,7 @@ export function Details({ from, to, protocol }: DetailsProps) {
                     value={protocol}
                 />
             </div>
+            <Typography>{formatDateTime(from)}</Typography>
             {/* <CampaignDuration from={from} to={to} /> */}
         </div>
     );
