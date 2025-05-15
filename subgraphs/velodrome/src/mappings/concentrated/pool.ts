@@ -7,7 +7,6 @@ import {
 import { ConcentratedPool, TickChange } from "../../../generated/schema";
 import {
     getEventId,
-    getFeeAdjustedAmount,
     getOrCreateTick,
     getConcentratedPoolOrThrow,
     getPrice,
@@ -28,12 +27,8 @@ export function handleInitialize(event: Initialize): void {
 export function handleSwap(event: Swap): void {
     let pool = getConcentratedPoolOrThrow(event.address);
     pool.liquidity = event.params.liquidity;
-    pool.token0Tvl = pool.token0Tvl.plus(
-        getFeeAdjustedAmount(event.params.amount0, pool.fee),
-    );
-    pool.token1Tvl = pool.token1Tvl.plus(
-        getFeeAdjustedAmount(event.params.amount1, pool.fee),
-    );
+    pool.token0Tvl = pool.token0Tvl.plus(event.params.amount0);
+    pool.token1Tvl = pool.token1Tvl.plus(event.params.amount1);
     pool.price = getPrice(event.params.sqrtPriceX96, pool.token0, pool.token1);
 
     if (event.params.tick != pool.tick) {

@@ -15,7 +15,6 @@ import {
 import {
     BI_0,
     getEventId,
-    getFeeAdjustedAmount,
     getFullRangePoolOrThrow,
     getTokenOrThrow,
     exponentToBigDecimal,
@@ -46,12 +45,8 @@ export function handleSwap(event: Swap): void {
         : event.params.amount1Out.neg();
 
     let pool = getFullRangePoolOrThrow(event.address);
-    pool.token0Tvl = pool.token0Tvl.plus(
-        getFeeAdjustedAmount(amount0Delta, pool.fee),
-    );
-    pool.token1Tvl = pool.token1Tvl.plus(
-        getFeeAdjustedAmount(amount1Delta, pool.fee),
-    );
+    pool.token0Tvl = pool.token0Tvl.plus(amount0Delta);
+    pool.token1Tvl = pool.token1Tvl.plus(amount1Delta);
     pool.price = getPrice(pool);
     pool.save();
 }
