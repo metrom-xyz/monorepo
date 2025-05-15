@@ -20,7 +20,7 @@ export const swellData: ChainData = {
             logo: VelodromeLogo,
             name: "Velodrome",
             depositUrl: {
-                type: DepositUrlType.PathPoolAddress,
+                type: DepositUrlType.QueryTokenAddresses,
                 template: `https://velodrome.finance/deposit?token0={token_0}&token1={token_1}&type=1&chain0=${SupportedChain.Swell}&chain1=${SupportedChain.Swell}&factory=0x04625B046C69577EfC40e6c0Bb83CDBAfab5a55F`,
             },
             supportsFetchAllPools: true,
