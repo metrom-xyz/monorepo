@@ -55,7 +55,7 @@ export const sepoliaData: ChainData = {
             type: ProtocolType.Dex,
             slug: SupportedDex.Carbon,
             logo: CarbonLogo,
-            name: "Carbon",
+            name: "Carbon DeFi",
             depositUrl: {
                 type: DepositUrlType.QueryTokenAddresses,
                 template:
