@@ -48,10 +48,9 @@ export const swellData: ChainData = {
                 name: "USDK",
                 symbol: "USDK",
             },
-            // TODO: add urls once Orki is live
             actionUrls: {
-                [TargetType.LiquityV2Debt]: "",
-                [TargetType.LiquityV2StabilityPool]: "",
+                [TargetType.LiquityV2Debt]: "https://app.orki.finance/earn",
+                [TargetType.LiquityV2StabilityPool]: "https://app.orki.finance",
             },
         },
     ],
