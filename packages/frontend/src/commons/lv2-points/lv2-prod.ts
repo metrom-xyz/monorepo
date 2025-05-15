@@ -144,8 +144,7 @@ export const lv2PointsCampaignsProd: Record<
         description:
             "Permissionless credit protocol and the native stablecoin of the Swellchain.",
         url: "https://www.orki.finance",
-        // FIXME: change to Swell once supported
-        chain: SupportedChain.Scroll,
+        chain: SupportedChain.Swell,
         protocol: SupportedLiquityV2.Orki,
         pointsName: "Orki Drops",
         brand: { main: "#2973EB", light: "#94B9F5" },
@@ -179,47 +178,48 @@ export const lv2PointsCampaignsProd: Record<
                         name: "USDK/wETH LP",
                         description: "Velodrome",
                         multiplier: 2.5,
+                        href: "https://velodrome.finance/deposit?token0=0x0000baa0b1678229863c0a941c1056b83a1955f5&token1=0x4200000000000000000000000000000000000006&type=200&chain0=1923&chain1=1923&factory=0x04625B046C69577EfC40e6c0Bb83CDBAfab5a55F&position=1309",
                     },
-                    {
-                        targets: [
-                            "0x0000baa0b1678229863c0a941c1056b83a1955f5",
-                            "0x09341022ea237a4DB1644DE7CCf8FA0e489D85B7",
-                        ],
-                        minimumDuration: 3600,
-                        name: "USDK/swETH LP",
-                        description: "Velodrome",
-                        multiplier: 2.5,
-                    },
-                    {
-                        targets: [
-                            "0x0000baa0b1678229863c0a941c1056b83a1955f5",
-                            "0x18d33689AE5d02649a859A1CF16c9f0563975258",
-                        ],
-                        minimumDuration: 3600,
-                        name: "USDK/rswETH LP",
-                        description: "Velodrome",
-                        multiplier: 2.5,
-                    },
-                    {
-                        targets: [
-                            "0x0000baa0b1678229863c0a941c1056b83a1955f5",
-                            "0xA6cB988942610f6731e664379D15fFcfBf282b44",
-                        ],
-                        minimumDuration: 3600,
-                        name: "USDK/weETH LP",
-                        description: "Velodrome",
-                        multiplier: 2.5,
-                    },
-                    {
-                        targets: [
-                            "0x0000baa0b1678229863c0a941c1056b83a1955f5",
-                            "0x2826D136F5630adA89C1678b64A61620Aab77Aea",
-                        ],
-                        minimumDuration: 3600,
-                        name: "USDK/SWELL LP",
-                        description: "Velodrome",
-                        multiplier: 2.5,
-                    },
+                    // {
+                    //     targets: [
+                    //         "0x0000baa0b1678229863c0a941c1056b83a1955f5",
+                    //         "0x09341022ea237a4DB1644DE7CCf8FA0e489D85B7",
+                    //     ],
+                    //     minimumDuration: 3600,
+                    //     name: "USDK/swETH LP",
+                    //     description: "Velodrome",
+                    //     multiplier: 2.5,
+                    // },
+                    // {
+                    //     targets: [
+                    //         "0x0000baa0b1678229863c0a941c1056b83a1955f5",
+                    //         "0x18d33689AE5d02649a859A1CF16c9f0563975258",
+                    //     ],
+                    //     minimumDuration: 3600,
+                    //     name: "USDK/rswETH LP",
+                    //     description: "Velodrome",
+                    //     multiplier: 2.5,
+                    // },
+                    // {
+                    //     targets: [
+                    //         "0x0000baa0b1678229863c0a941c1056b83a1955f5",
+                    //         "0xA6cB988942610f6731e664379D15fFcfBf282b44",
+                    //     ],
+                    //     minimumDuration: 3600,
+                    //     name: "USDK/weETH LP",
+                    //     description: "Velodrome",
+                    //     multiplier: 2.5,
+                    // },
+                    // {
+                    //     targets: [
+                    //         "0x0000baa0b1678229863c0a941c1056b83a1955f5",
+                    //         "0x2826D136F5630adA89C1678b64A61620Aab77Aea",
+                    //     ],
+                    //     minimumDuration: 3600,
+                    //     name: "USDK/SWELL LP",
+                    //     description: "Velodrome",
+                    //     multiplier: 2.5,
+                    // },
                     {
                         targets: [
                             "0x0000baa0b1678229863c0a941c1056b83a1955f5",
@@ -229,17 +229,18 @@ export const lv2PointsCampaignsProd: Record<
                         name: "USDK/USDe LP",
                         description: "Velodrome",
                         multiplier: 2.5,
+                        href: "https://velodrome.finance/deposit?token0=0x0000baa0b1678229863c0a941c1056b83a1955f5&token1=0x5d3a1ff2b6bab83b63cd9ad0787074081a52ef34&type=50&chain0=1923&chain1=1923&factory=0x04625B046C69577EfC40e6c0Bb83CDBAfab5a55F&position=1310",
                     },
-                    {
-                        targets: [
-                            "0x0000baa0b1678229863c0a941c1056b83a1955f5",
-                            "0xc2606AADe4bdd978a4fa5a6edb3b66657acEe6F8",
-                        ],
-                        minimumDuration: 3600,
-                        name: "USDK/KING LP",
-                        description: "Velodrome",
-                        multiplier: 2.5,
-                    },
+                    // {
+                    //     targets: [
+                    //         "0x0000baa0b1678229863c0a941c1056b83a1955f5",
+                    //         "0xc2606AADe4bdd978a4fa5a6edb3b66657acEe6F8",
+                    //     ],
+                    //     minimumDuration: 3600,
+                    //     name: "USDK/KING LP",
+                    //     description: "Velodrome",
+                    //     multiplier: 2.5,
+                    // },
                 ],
             },
             [Lv2PointsCampaign2Action.StabilityPool]: {
