@@ -8,6 +8,7 @@
         "create:local": "graph create metrom-croc-scroll --node http://localhost:8020",
         "deploy:local": "pnpm prepare:deploy scroll && pnpm codegen && graph deploy metrom-croc-scroll --node http://localhost:8020 --ipfs http://localhost:5001 -l 0.0.1",
         "deploy:scroll:ambient": "pnpm prepare:deploy scroll ambient && pnpm codegen && graph deploy metrom-ambient-scroll -l 0.0.3",
+        "deploy:swell:ambient": "pnpm prepare:deploy swellchain ambient && pnpm codegen && graph deploy metrom-ambient-swell -l 0.0.1",
         "lint": "eslint .",
         "format": "eslint --fix ."
     },

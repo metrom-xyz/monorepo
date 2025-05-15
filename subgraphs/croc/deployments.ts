@@ -37,4 +37,24 @@ export const DEPLOYMENTS: Record<string, Record<string, ChainConfig>> = {
             },
         },
     },
+    swellchain: {
+        ambient: {
+            nativeToken: {
+                address: "0x0000000000000000000000000000000000000000",
+                symbol: "ETH",
+                name: "Ether",
+                decimals: 18,
+            },
+            contracts: {
+                CrocSwapDex: {
+                    address: "0xaAAaAaaa82812F0a1f274016514ba2cA933bF24D",
+                    startBlock: 242583,
+                },
+                CrocQuery: {
+                    address: "0xaab17419F062bB28CdBE82f9FC05E7C47C3F6194",
+                    startBlock: 242944,
+                },
+            },
+        },
+    },
 };
