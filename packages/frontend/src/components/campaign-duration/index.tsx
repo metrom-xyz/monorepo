@@ -70,3 +70,32 @@ export function CampaignDuration({ from, to }: CampaignDurationProps) {
         </div>
     );
 }
+
+export function CampaignDurationSkeleton() {
+    const t = useTranslations("campaignDuration");
+
+    return (
+        <div className={styles.root}>
+            <TextField
+                boxed
+                size="xl"
+                uppercase
+                label={t("startDate")}
+                loading={true}
+            />
+            <TextField
+                boxed
+                size="xl"
+                uppercase
+                label={t("endDate")}
+                loading={true}
+            />
+            <TextField
+                boxed
+                size="xl"
+                label={t("status.duration")}
+                loading={true}
+            />
+        </div>
+    );
+}
