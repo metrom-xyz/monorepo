@@ -12,6 +12,7 @@ import { SwellLogo } from "@/src/assets/logos/chains/swell";
 import { VelodromeLogo } from "@/src/assets/logos/chains/velodrome";
 import { OrkiLogo } from "@/src/assets/logos/liquity-v2-platforms/orki";
 import { ENVIRONMENT } from "../env";
+import { AmbientLogo } from "@/src/assets/logos/dexes/ambient";
 
 export const swellData: ChainData = {
     testnet: false,
@@ -34,6 +35,18 @@ export const swellData: ChainData = {
             depositUrl: {
                 type: DepositUrlType.QueryTokenAddresses,
                 template: `https://velodrome.finance/deposit?token0={token_0}&token1={token_1}&type=1&chain0=${SupportedChain.Swell}&chain1=${SupportedChain.Swell}&factory=0x04625B046C69577EfC40e6c0Bb83CDBAfab5a55F`,
+            },
+            supportsFetchAllPools: true,
+        },
+        {
+            type: ProtocolType.Dex,
+            slug: SupportedDex.Ambient,
+            logo: AmbientLogo,
+            name: "Ambient",
+            depositUrl: {
+                type: DepositUrlType.QueryTokenAddresses,
+                template:
+                    "https://ambient.finance/trade/pool/chain=0x783&tokenA={token_0}&tokenB={token_1}",
             },
             supportsFetchAllPools: true,
         },
