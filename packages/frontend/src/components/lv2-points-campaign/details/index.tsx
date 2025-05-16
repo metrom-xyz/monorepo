@@ -1,9 +1,12 @@
 "use client";
 
-import { TextField, Typography } from "@metrom-xyz/ui";
+import { TextField } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
-import { CampaignDuration } from "../../campaign-duration";
-import { formatDateTime } from "@/src/utils/format";
+import {
+    CampaignDuration,
+    CampaignDurationSkeleton,
+} from "../../campaign-duration";
+import { useEffect, useState } from "react";
 
 import styles from "./styles.module.css";
 
@@ -15,6 +18,11 @@ interface DetailsProps {
 
 export function Details({ from, to, protocol }: DetailsProps) {
     const t = useTranslations("lv2PointsCampaignPage.details");
+    const [mounted, setMounted] = useState(false);
+
+    useEffect(() => {
+        setMounted(true);
+    }, []);
 
     return (
         <div className={styles.root}>
@@ -34,8 +42,11 @@ export function Details({ from, to, protocol }: DetailsProps) {
                     value={protocol}
                 />
             </div>
-            <Typography>{formatDateTime(from)}</Typography>
-            {/* <CampaignDuration from={from} to={to} /> */}
+            {mounted ? (
+                <CampaignDuration from={from} to={to} />
+            ) : (
+                <CampaignDurationSkeleton />
+            )}
         </div>
     );
 }
