@@ -33,9 +33,9 @@
         "globals": "^16.1.0",
         "typescript": "~5.8.3",
         "typescript-eslint": "^8.32.1",
-        "viem": "^2.26.2",
+        "viem": "^2.29.3",
         "vite": "^6.3.5",
-        "vite-plugin-dts": "^4.5.3"
+        "vite-plugin-dts": "^4.5.4"
     },
     "peerDependencies": {
         "@tanstack/react-query": "^5.69.0",
