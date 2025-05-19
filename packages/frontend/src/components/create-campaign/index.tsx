@@ -10,10 +10,26 @@ import { CampaignType } from "@/src/types/campaign";
 import { useProtocolsInChain } from "@/src/hooks/useProtocolsInChain";
 import { useChainId } from "wagmi";
 import { ProtocolType } from "@/src/types/protocol";
-import { useMemo } from "react";
 import { RedirectType } from "next/navigation";
 
 import styles from "./styles.module.css";
+
+const CAMPAIGN_TYPES = [
+    {
+        path: `/campaigns/create/${CampaignType.AmmPoolLiquidity}`,
+        title: "amm.title",
+        description: "amm.description",
+        className: styles.ammFormIcon,
+        icon: <AmmCampaignIcon className={styles.ammIcon} />,
+    },
+    {
+        path: `/campaigns/create/${CampaignType.LiquityV2}`,
+        title: "liquityV2.title",
+        description: "liquityV2.description",
+        className: styles.liquityV2FormIcon,
+        icon: <LiquityV2CampaignIcon className={styles.liquidityV2Icon} />,
+    },
+];
 
 export function CreateCampaign() {
     const t = useTranslations("newCampaign.pickType");
@@ -26,29 +42,6 @@ export function CreateCampaign() {
         ProtocolType.LiquityV2,
     );
 
-    const campaignTypes = useMemo(() => {
-        return [
-            {
-                enabled: dexesProtocols.length > 0,
-                path: `/campaigns/create/${CampaignType.AmmPoolLiquidity}`,
-                title: "amm.title",
-                description: "amm.description",
-                className: styles.ammFormIcon,
-                icon: <AmmCampaignIcon className={styles.ammIcon} />,
-            },
-            {
-                enabled: liquityV2Protocols.length > 0,
-                path: `/campaigns/create/${CampaignType.LiquityV2}`,
-                title: "liquityV2.title",
-                description: "liquityV2.description",
-                className: styles.liquityV2FormIcon,
-                icon: (
-                    <LiquityV2CampaignIcon className={styles.liquidityV2Icon} />
-                ),
-            },
-        ];
-    }, [dexesProtocols.length, liquityV2Protocols.length]);
-
     if (dexesProtocols.length === 0)
         redirect(
             {
@@ -57,7 +50,7 @@ export function CreateCampaign() {
                 },
                 locale,
             },
-            RedirectType.replace,
+            RedirectType.push,
         );
 
     if (liquityV2Protocols.length === 0)
@@ -68,7 +61,7 @@ export function CreateCampaign() {
                 },
                 locale,
             },
-            RedirectType.replace,
+            RedirectType.push,
         );
 
     return (
@@ -80,9 +73,8 @@ export function CreateCampaign() {
                 {t("description")}
             </Typography>
             <div className={styles.campaignCardsWrapper}>
-                {campaignTypes
-                    .filter(({ enabled }) => enabled)
-                    .map(({ path, title, description, icon, className }) => (
+                {CAMPAIGN_TYPES.map(
+                    ({ path, title, description, icon, className }) => (
                         <Link key={path} href={path}>
                             <Card className={styles.campaignCard}>
                                 <div className={styles.campaignCardBody}>
@@ -105,7 +97,8 @@ export function CreateCampaign() {
                                 </div>
                             </Card>
                         </Link>
-                    ))}
+                    ),
+                )}
             </div>
         </div>
     );
