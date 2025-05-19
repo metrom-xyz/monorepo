@@ -36,7 +36,7 @@ export function DrawerPicker({
     return (
         <RemoveScroll enabled={open && width < 640} className={styles.root}>
             <MobileDrawer open={open} onClose={onClose}>
-                <div className={commonStyles.networksWrapper}>
+                <div className={styles.networksWrapper}>
                     {chains.map((chain) => {
                         const { icon: ChainIcon, name } =
                             CHAIN_DATA[chain.id as SupportedChain];

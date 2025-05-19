@@ -23,6 +23,7 @@ import {
 } from "../types/campaigns";
 import type {
     AmmPool,
+    AmmPoolLiquidityType,
     AmmPoolWithTvl,
     Erc20Token,
     OnChainAmount,
@@ -268,6 +269,7 @@ export class MetromApiClient {
                 tokens: ammPool.tokens.map((address) =>
                     resolveToken(parsedResponse.resolvedTokens, address),
                 ),
+                liquidityType: ammPool.liquidityType as AmmPoolLiquidityType,
             };
         });
     }
@@ -302,6 +304,8 @@ export class MetromApiClient {
             tokens: parsedResponse.ammPool.tokens.map((address) =>
                 resolveToken(parsedResponse.resolvedTokens, address),
             ),
+            liquidityType: parsedResponse.ammPool
+                .liquidityType as AmmPoolLiquidityType,
         };
     }
 
@@ -970,6 +974,7 @@ function resolveAmmPool(
         tokens: resolvedPool.tokens.map((address) =>
             resolveTokenInChain(tokensRegistry, chainId, address),
         ),
+        liquidityType: resolvedPool.liquidityType as AmmPoolLiquidityType,
     };
 }
 

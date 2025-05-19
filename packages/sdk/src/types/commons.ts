@@ -40,12 +40,18 @@ export interface WhitelistedErc20Token extends UsdPricedErc20Token {
     minimumRate: OnChainAmount;
 }
 
+export enum AmmPoolLiquidityType {
+    Concentrated = "concentrated",
+    FullRange = "full-range",
+}
+
 export interface AmmPool {
     chainId: number;
     id: Hex;
     dex: Brand<SupportedDex>;
     amm: SupportedAmm;
     tokens: Erc20Token[];
+    liquidityType: AmmPoolLiquidityType;
     usdTvl?: number;
     fee?: number;
 }

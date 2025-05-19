@@ -1,22 +1,24 @@
 export function BaseLogo(props: any) {
     return (
         <svg
-            width="110"
-            height="110"
-            viewBox="0 0 110 110"
+            width="111"
+            height="111"
+            viewBox="0 0 111 111"
             fill="none"
-            version="1.1"
+            xmlns="http://www.w3.org/2000/svg"
             {...props}
         >
-            <g>
+            <g clipPath="url(#clip0_573_2038)">
                 <path
-                    fillRule="evenodd"
-                    clipRule="evenodd"
-                    d="m 110.034,55 c 0,30.3756 -24.675,55 -55.113,55 C 26.0432,110 2.35281,87.8354 0,59.6232 H 72.8467 V 50.3768 H 0 C 2.35281,22.1646 26.0432,0 54.921,0 c 30.438,0 55.113,24.6243 55.113,55 z"
-                    fill="currentColor"
-                    id="path1"
+                    d="M54.921 110.034C85.359 110.034 110.034 85.402 110.034 55.017C110.034 24.6319 85.359 0 54.921 0C26.0432 0 2.35281 22.1714 0 50.3923H72.8467V59.6416H3.9565e-07C2.35281 87.8625 26.0432 110.034 54.921 110.034Z"
+                    fill="#0052FF"
                 />
             </g>
+            <defs>
+                <clipPath id="clip0_573_2038">
+                    <rect width="111" height="111" fill="white" />
+                </clipPath>
+            </defs>
         </svg>
     );
 }

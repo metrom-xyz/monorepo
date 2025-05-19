@@ -9,7 +9,7 @@ import { type ChainData } from "..";
 import { swellchain } from "viem/chains";
 import { DepositUrlType, ProtocolType } from "@/src/types/protocol";
 import { SwellLogo } from "@/src/assets/logos/chains/swell";
-import { VelodromeLogo } from "@/src/assets/logos/chains/velodrome";
+import { VelodromeLogo } from "@/src/assets/logos/dexes/velodrome";
 import { OrkiLogo } from "@/src/assets/logos/liquity-v2-platforms/orki";
 import { ENVIRONMENT } from "../env";
 

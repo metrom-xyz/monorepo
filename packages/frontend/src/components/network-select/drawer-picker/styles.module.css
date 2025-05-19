@@ -4,6 +4,18 @@
     @apply flex sm:hidden;
 }
 
+.networksWrapper {
+    @apply flex flex-col max-h-[400px] overflow-y-auto;
+}
+
+.networksWrapper > :first-child {
+    @apply rounded-t-xl;
+}
+
+.networksWrapper > :last-child {
+    @apply rounded-b-xl;
+}
+
 .wrapper {
     @apply sm:hidden
         flex
