@@ -4,12 +4,17 @@
     @apply hidden sm:flex;
 }
 
-.row {
+.networksWrapper {
+    @apply p-2 grid grid-cols-3 gap-2;
+}
+
+.network {
     @apply min-w-32
         flex
         items-center
         px-3
         py-3
+        rounded-lg
         gap-2
         cursor-pointer
         theme-surface-hover

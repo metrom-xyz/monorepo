@@ -3,6 +3,7 @@ import type { SupportedChain } from "@metrom-xyz/contracts";
 import { Popover, Typography } from "@metrom-xyz/ui";
 import classNames from "classnames";
 import type { Chain } from "viem";
+import { useWindowSize } from "react-use";
 
 import styles from "./styles.module.css";
 import commonStyles from "../styles.module.css";
@@ -22,20 +23,24 @@ export function PopoverPicker({
     value,
     onChange,
 }: PopoverPickerProps) {
+    const { width } = useWindowSize();
+
     function getOnChangeHandler(chainId: number) {
         return () => {
             onChange(chainId);
         };
     }
 
+    if (width < 640) return null;
+
     return (
         <Popover
-            placement="bottom"
+            placement="bottom-start"
             anchor={anchor}
             open={open}
             className={styles.root}
         >
-            <div className={commonStyles.networksWrapper}>
+            <div className={styles.networksWrapper}>
                 {chains.map((chain) => {
                     const { icon: ChainIcon, name } =
                         CHAIN_DATA[chain.id as SupportedChain];
@@ -43,7 +48,7 @@ export function PopoverPicker({
                     return (
                         <div
                             key={chain.id}
-                            className={classNames(styles.row, {
+                            className={classNames(styles.network, {
                                 [commonStyles.active]: value === chain.id,
                             })}
                             onClick={getOnChangeHandler(chain.id)}
