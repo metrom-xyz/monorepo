@@ -76,47 +76,27 @@ export function handlePairCreated(event: PairCreated): void {
 }
 
 export function handleStrategyCreated(event: StrategyCreated): void {
-    const ordersInverted =
-        event.params.token0.toHex() > event.params.token1.toHex();
+    const ordersNotInverted =
+        event.params.token0.toHex() < event.params.token1.toHex();
 
-    const order0 = ordersInverted
-        ? decodeOrderToUniV3(
-              new EncodedOrder(
-                  event.params.order1.y,
-                  event.params.order1.z,
-                  event.params.order1.A,
-                  event.params.order1.B,
-              ),
-              true,
-          )
-        : decodeOrderToUniV3(
-              new EncodedOrder(
-                  event.params.order0.y,
-                  event.params.order0.z,
-                  event.params.order0.A,
-                  event.params.order0.B,
-              ),
-              true,
-          );
-    const order1 = ordersInverted
-        ? decodeOrderToUniV3(
-              new EncodedOrder(
-                  event.params.order0.y,
-                  event.params.order0.z,
-                  event.params.order0.A,
-                  event.params.order0.B,
-              ),
-              false,
-          )
-        : decodeOrderToUniV3(
-              new EncodedOrder(
-                  event.params.order1.y,
-                  event.params.order1.z,
-                  event.params.order1.A,
-                  event.params.order1.B,
-              ),
-              false,
-          );
+    const order0 = decodeOrderToUniV3(
+        new EncodedOrder(
+            event.params.order0.y,
+            event.params.order0.z,
+            event.params.order0.A,
+            event.params.order0.B,
+        ),
+        ordersNotInverted,
+    );
+    const order1 = decodeOrderToUniV3(
+        new EncodedOrder(
+            event.params.order1.y,
+            event.params.order1.z,
+            event.params.order1.A,
+            event.params.order1.B,
+        ),
+        !ordersNotInverted,
+    );
 
     const pool = getPoolOrThrow(event.params.token0, event.params.token1);
 
@@ -207,47 +187,27 @@ export function handleStrategyUpdated(event: StrategyUpdated): void {
     const pool = getPoolOrThrow(event.params.token0, event.params.token1);
     const strategy = getStrategyOrThrow(event.params.id);
 
-    const ordersInverted =
-        event.params.token0.toHex() > event.params.token1.toHex();
+    const ordersNotInverted =
+        event.params.token0.toHex() < event.params.token1.toHex();
 
-    const order0 = ordersInverted
-        ? decodeOrderToUniV3(
-              new EncodedOrder(
-                  event.params.order1.y,
-                  event.params.order1.z,
-                  event.params.order1.A,
-                  event.params.order1.B,
-              ),
-              true,
-          )
-        : decodeOrderToUniV3(
-              new EncodedOrder(
-                  event.params.order0.y,
-                  event.params.order0.z,
-                  event.params.order0.A,
-                  event.params.order0.B,
-              ),
-              true,
-          );
-    const order1 = ordersInverted
-        ? decodeOrderToUniV3(
-              new EncodedOrder(
-                  event.params.order0.y,
-                  event.params.order0.z,
-                  event.params.order0.A,
-                  event.params.order0.B,
-              ),
-              false,
-          )
-        : decodeOrderToUniV3(
-              new EncodedOrder(
-                  event.params.order1.y,
-                  event.params.order1.z,
-                  event.params.order1.A,
-                  event.params.order1.B,
-              ),
-              false,
-          );
+    const order0 = decodeOrderToUniV3(
+        new EncodedOrder(
+            event.params.order0.y,
+            event.params.order0.z,
+            event.params.order0.A,
+            event.params.order0.B,
+        ),
+        ordersNotInverted,
+    );
+    const order1 = decodeOrderToUniV3(
+        new EncodedOrder(
+            event.params.order1.y,
+            event.params.order1.z,
+            event.params.order1.A,
+            event.params.order1.B,
+        ),
+        !ordersNotInverted,
+    );
 
     let poolToken0Delta = BI_0;
     let poolToken1Delta = BI_0;

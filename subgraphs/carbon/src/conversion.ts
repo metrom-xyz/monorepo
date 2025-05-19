@@ -33,7 +33,8 @@ function decodeFloat(value: BigInt): BigDecimal {
 }
 
 function decodeRate(decodedFloat: BigDecimal): BigDecimal {
-    return decodedFloat.div(BigDecimal.fromString(CARBON_UNIT.toString()));
+    let raw = decodedFloat.div(BigDecimal.fromString(CARBON_UNIT.toString()));
+    return raw.times(raw);
 }
 
 export class DecodedOrder {
@@ -83,10 +84,8 @@ function calculateLConstant(z: BigInt, A: BigInt): BigInt {
 }
 
 export class UniV3Order {
-    y: BigInt;
-    z: BigInt;
-    A: BigInt;
-    B: BigInt;
+    encoded: EncodedOrder;
+    decoded: DecodedOrder;
 
     lowerTick: i32;
     upperTick: i32;
@@ -95,20 +94,16 @@ export class UniV3Order {
     active: bool;
 
     constructor(
-        y: BigInt,
-        z: BigInt,
-        A: BigInt,
-        B: BigInt,
+        encodedOrder: EncodedOrder,
+        decodedOrder: DecodedOrder,
         lowerTick: i32,
         upperTick: i32,
         liquidity: BigInt,
         tokenTvl: BigInt,
         active: bool,
     ) {
-        this.y = y;
-        this.z = z;
-        this.A = A;
-        this.B = B;
+        this.encoded = encodedOrder;
+        this.decoded = decodedOrder;
         this.lowerTick = lowerTick;
         this.upperTick = upperTick;
         this.liquidity = liquidity;
@@ -118,43 +113,38 @@ export class UniV3Order {
 }
 
 export function decodeOrderToUniV3(
-    order: EncodedOrder,
-    isZero: bool,
+    encodedOrder: EncodedOrder,
+    invert: bool,
 ): UniV3Order {
-    const decodedOrder = decodeOrder(order);
+    const decodedOrder = decodeOrder(encodedOrder);
 
-    let lowerTick: i32 = 0;
-    let upperTick: i32 = 0;
+    let ogLowestRate = decodedOrder.lowestRate;
+    let ogHighestRate = decodedOrder.highestRate;
 
-    if (isZero) {
-        lowerTick = calculateImpliedTick(decodedOrder.lowestRate);
-        upperTick = calculateImpliedTick(decodedOrder.highestRate);
-    } else {
-        // For buy orders, invert the prices
-        const invertedPriceLow = decodedOrder.highestRate.equals(BD_0)
+    let lowestRate = ogLowestRate;
+    let highestRate = ogHighestRate;
+    if (invert) {
+        lowestRate = ogHighestRate.equals(BD_0)
             ? BD_0
-            : BD_1.div(decodedOrder.highestRate);
-        const invertedPriceHigh = decodedOrder.lowestRate.equals(BD_0)
-            ? BD_0
-            : BD_1.div(decodedOrder.lowestRate);
-
-        lowerTick = calculateImpliedTick(invertedPriceLow);
-        upperTick = calculateImpliedTick(invertedPriceHigh);
+            : BD_1.div(ogHighestRate);
+        highestRate = ogLowestRate.equals(BD_0) ? BD_0 : BD_1.div(ogLowestRate);
     }
 
-    if (lowerTick < MIN_TICK) lowerTick = MIN_TICK;
-    if (upperTick > MAX_TICK) upperTick = MAX_TICK;
-    if (lowerTick == upperTick) upperTick = lowerTick + 1;
+    let lowerTick = calculateImpliedTick(lowestRate);
+    let upperTick = calculateImpliedTick(highestRate);
+
+    if (lowerTick === upperTick) {
+        if (upperTick === MAX_TICK) lowerTick -= 1;
+        else upperTick += 1;
+    }
 
     return new UniV3Order(
-        order.y,
-        order.z,
-        order.A,
-        order.B,
+        encodedOrder,
+        decodedOrder,
         lowerTick,
         upperTick,
-        calculateLConstant(order.z, order.A),
-        order.y,
+        calculateLConstant(encodedOrder.z, encodedOrder.A),
+        encodedOrder.y,
         decodedOrder.active,
     );
 }
