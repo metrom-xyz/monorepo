@@ -6,7 +6,6 @@ import {
 } from "@/src/types/campaign";
 import { useAccount, useChainId, useChains } from "wagmi";
 import { useMemo, useState } from "react";
-import { useTranslations } from "next-intl";
 import { trackFathomEvent } from "@/src/utils/fathom";
 import { Modal } from "@metrom-xyz/ui";
 import { CampaignPreview } from "../preview";
@@ -14,6 +13,8 @@ import { FormHeader } from "./header";
 import { AmmPoolLiquidityForm } from "./amm-pool-liquidity-form";
 import { LiquityV2ForksForm } from "./liquity-v2-forks-form";
 import { useRouter } from "@/src/i18n/routing";
+import { useProtocolsInChain } from "@/src/hooks/useProtocolsInChain";
+import { ProtocolType } from "@/src/types/protocol";
 
 import styles from "./styles.module.css";
 
@@ -29,11 +30,15 @@ export interface CreateCampaignFormProps<T> {
 export function CreateCampaignForm<T extends CampaignType>({
     type,
 }: CreateCampaignFormProps<T>) {
-    const t = useTranslations("newCampaign");
     const { chain: connectedChain, isConnected } = useAccount();
     const selectedChain = useChainId();
     const chains = useChains();
     const router = useRouter();
+    const dexesProtocols = useProtocolsInChain(selectedChain, ProtocolType.Dex);
+    const liquityV2Protocols = useProtocolsInChain(
+        selectedChain,
+        ProtocolType.LiquityV2,
+    );
 
     const [view, setView] = useState(View.Form);
     const [payload, setPayload] = useState<CampaignPreviewPayload | null>(null);
@@ -62,7 +67,9 @@ export function CreateCampaignForm<T extends CampaignType>({
 
     return (
         <div className={styles.root}>
-            <FormHeader type={type} />
+            {dexesProtocols.length > 0 && liquityV2Protocols.length > 0 && (
+                <FormHeader type={type} />
+            )}
             {type === CampaignType.AmmPoolLiquidity && (
                 <AmmPoolLiquidityForm
                     unsupportedChain={unsupportedChain}
