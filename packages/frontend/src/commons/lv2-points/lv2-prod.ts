@@ -175,10 +175,10 @@ export const lv2PointsCampaignsProd: Record<
                             "0x4200000000000000000000000000000000000006",
                         ],
                         minimumDuration: 3600,
-                        name: "USDK/wETH LP",
+                        name: "USDK/WETH LP",
                         description: "Velodrome",
                         multiplier: 2.5,
-                        href: "https://velodrome.finance/deposit?token0=0x0000baa0b1678229863c0a941c1056b83a1955f5&token1=0x4200000000000000000000000000000000000006&type=200&chain0=1923&chain1=1923&factory=0x04625B046C69577EfC40e6c0Bb83CDBAfab5a55F&position=1309",
+                        href: "https://velodrome.finance/deposit?token0=0x0000baa0b1678229863c0a941c1056b83a1955f5&token1=0x4200000000000000000000000000000000000006&type=200&chain0=1923&chain1=1923&factory=0x04625B046C69577EfC40e6c0Bb83CDBAfab5a55F",
                     },
                     {
                         targets: [
@@ -189,7 +189,7 @@ export const lv2PointsCampaignsProd: Record<
                         name: "USDK/swETH LP",
                         description: "Velodrome",
                         multiplier: 2.5,
-                        href: "https://velodrome.finance/deposit?token0=0x0000baa0b1678229863c0a941c1056b83a1955f5&token1=0x09341022ea237a4db1644de7ccf8fa0e489d85b7&type=-1&chain0=1923&chain1=1923&factory=0x31832f2a97Fd20664D76Cc421207669b55CE4BC0&position=0",
+                        href: "https://velodrome.finance/deposit?token0=0x0000baa0b1678229863c0a941c1056b83a1955f5&token1=0x09341022ea237a4db1644de7ccf8fa0e489d85b7&type=200&chain0=1923&chain1=1923&factory=0x04625B046C69577EfC40e6c0Bb83CDBAfab5a55F",
                     },
                     {
                         targets: [
@@ -200,7 +200,7 @@ export const lv2PointsCampaignsProd: Record<
                         name: "USDK/rswETH LP",
                         description: "Velodrome",
                         multiplier: 2.5,
-                        href: "https://velodrome.finance/deposit?token0=0x0000baa0b1678229863c0a941c1056b83a1955f5&token1=0x18d33689ae5d02649a859a1cf16c9f0563975258&type=-1&chain0=1923&chain1=1923&factory=0x31832f2a97Fd20664D76Cc421207669b55CE4BC0&position=0",
+                        href: "https://velodrome.finance/deposit?token0=0x0000baa0b1678229863c0a941c1056b83a1955f5&token1=0x18d33689ae5d02649a859a1cf16c9f0563975258&type=200&chain0=1923&chain1=1923&factory=0x04625B046C69577EfC40e6c0Bb83CDBAfab5a55F",
                     },
                     {
                         targets: [
@@ -211,7 +211,7 @@ export const lv2PointsCampaignsProd: Record<
                         name: "USDK/weETH LP",
                         description: "Velodrome",
                         multiplier: 2.5,
-                        href: "https://velodrome.finance/deposit?token0=0x0000baa0b1678229863c0a941c1056b83a1955f5&token1=0xa6cb988942610f6731e664379d15ffcfbf282b44&type=-1&chain0=1923&chain1=1923&factory=0x31832f2a97Fd20664D76Cc421207669b55CE4BC0&position=0",
+                        href: "https://velodrome.finance/deposit?token0=0x0000baa0b1678229863c0a941c1056b83a1955f5&token1=0xa6cb988942610f6731e664379d15ffcfbf282b44&type=200&chain0=1923&chain1=1923&factory=0x04625B046C69577EfC40e6c0Bb83CDBAfab5a55F",
                     },
                     {
                         targets: [
@@ -222,7 +222,7 @@ export const lv2PointsCampaignsProd: Record<
                         name: "USDK/SWELL LP",
                         description: "Velodrome",
                         multiplier: 2.5,
-                        href: "https://velodrome.finance/deposit?token0=0x0000baa0b1678229863c0a941c1056b83a1955f5&token1=0x2826d136f5630ada89c1678b64a61620aab77aea&type=-1&chain0=1923&chain1=1923&factory=0x31832f2a97Fd20664D76Cc421207669b55CE4BC0&position=0",
+                        href: "https://velodrome.finance/deposit?token0=0x0000baa0b1678229863c0a941c1056b83a1955f5&token1=0x2826d136f5630ada89c1678b64a61620aab77aea&type=200&chain0=1923&chain1=1923&factory=0x04625B046C69577EfC40e6c0Bb83CDBAfab5a55F",
                     },
                     {
                         targets: [
@@ -233,7 +233,7 @@ export const lv2PointsCampaignsProd: Record<
                         name: "USDK/USDe LP",
                         description: "Velodrome",
                         multiplier: 2.5,
-                        href: "https://velodrome.finance/deposit?token0=0x0000baa0b1678229863c0a941c1056b83a1955f5&token1=0x5d3a1ff2b6bab83b63cd9ad0787074081a52ef34&type=50&chain0=1923&chain1=1923&factory=0x04625B046C69577EfC40e6c0Bb83CDBAfab5a55F&position=1310",
+                        href: "https://velodrome.finance/deposit?token0=0x0000baa0b1678229863c0a941c1056b83a1955f5&token1=0x5d3a1ff2b6bab83b63cd9ad0787074081a52ef34&type=50&chain0=1923&chain1=1923&factory=0x04625B046C69577EfC40e6c0Bb83CDBAfab5a55F",
                     },
                     {
                         targets: [
@@ -244,7 +244,7 @@ export const lv2PointsCampaignsProd: Record<
                         name: "USDK/KING LP",
                         description: "Velodrome",
                         multiplier: 2.5,
-                        href: "https://velodrome.finance/deposit?token0=0x0000baa0b1678229863c0a941c1056b83a1955f5&token1=0xc2606aade4bdd978a4fa5a6edb3b66657acee6f8&type=-1&chain0=1923&chain1=1923&factory=0x31832f2a97Fd20664D76Cc421207669b55CE4BC0&position=0",
+                        href: "https://velodrome.finance/deposit?token0=0x0000baa0b1678229863c0a941c1056b83a1955f5&token1=0xc2606aade4bdd978a4fa5a6edb3b66657acee6f8&type=200&chain0=1923&chain1=1923&factory=0x04625B046C69577EfC40e6c0Bb83CDBAfab5a55F",
                     },
                     {
                         targets: [
@@ -255,7 +255,7 @@ export const lv2PointsCampaignsProd: Record<
                         name: "USDK/rUSDC LP",
                         description: "Velodrome",
                         multiplier: 2.5,
-                        href: "https://velodrome.finance/deposit?token0=0x0000baa0b1678229863c0a941c1056b83a1955f5&token1=0x9ab96a4668456896d45c301bc3a15cee76aa7b8d&type=0&chain0=1923&chain1=1923&factory=0x31832f2a97Fd20664D76Cc421207669b55CE4BC0&position=0",
+                        href: "https://velodrome.finance/deposit?token0=0x0000baa0b1678229863c0a941c1056b83a1955f5&token1=0x9ab96a4668456896d45c301bc3a15cee76aa7b8d&type=50&chain0=1923&chain1=1923&factory=0x04625B046C69577EfC40e6c0Bb83CDBAfab5a55F",
                     },
                 ],
             },
