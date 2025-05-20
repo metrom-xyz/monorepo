@@ -17,6 +17,7 @@ export const telosData: ChainData = {
         },
     },
     icon: TelosLogo,
+    brandColor: "#4facf2",
     protocols: [
         {
             active: true,
