@@ -4,13 +4,14 @@ import { SkeletonStatus, Status } from "./status";
 import { Rewards, SkeletonRewards } from "./rewards";
 import { Chain, SkeletonChain } from "./chain";
 import { Link } from "@/src/i18n/routing";
-import { Card } from "@metrom-xyz/ui";
+import { Card, Typography } from "@metrom-xyz/ui";
 import classNames from "classnames";
 import { Protocol, SkeletonProtocol } from "./protocol";
 import { Points } from "./points";
 import dayjs from "dayjs";
-import { DistributablesType } from "@metrom-xyz/sdk";
+import { DistributablesType, RestrictionType } from "@metrom-xyz/sdk";
 import { type Campaign } from "@/src/types/campaign";
+import { useTranslations } from "next-intl";
 
 import styles from "./styles.module.css";
 
@@ -21,6 +22,8 @@ interface CampaignProps {
 // TODO: reinstate the arrow on hover, but on click, bring the user
 // to the provide liquidity page for the targeted dex
 export function CampaignRow({ campaign }: CampaignProps) {
+    const t = useTranslations("allCampaigns");
+
     const hoursDuration = dayjs
         .unix(campaign.to)
         .diff(dayjs.unix(campaign.from), "hours", false);
@@ -39,10 +42,36 @@ export function CampaignRow({ campaign }: CampaignProps) {
             className={styles.root}
         >
             <Card className={styles.card}>
-                <Chain id={campaign.chainId} />
-                <Protocol campaign={campaign} />
-                <div className={styles.poolContainer}>
-                    <Action campaign={campaign} />
+                <div className={styles.details}>
+                    <div className={styles.row}>
+                        <Action campaign={campaign} />
+                    </div>
+                    <div className={styles.row}>
+                        <Protocol campaign={campaign} />
+                        <Chain id={campaign.chainId} />
+                        {campaign.specification?.kpi && (
+                            <div className={styles.chip}>
+                                <Typography size="sm" weight="medium" uppercase>
+                                    {t("kpi")}
+                                </Typography>
+                            </div>
+                        )}
+                        {campaign.specification?.priceRange && (
+                            <div className={styles.chip}>
+                                <Typography size="sm" weight="medium" uppercase>
+                                    {t("pool.range")}
+                                </Typography>
+                            </div>
+                        )}
+                        {campaign.restrictions?.type ===
+                            RestrictionType.Whitelist && (
+                            <div className={styles.chip}>
+                                <Typography size="xs" weight="medium" uppercase>
+                                    {t("restricted")}
+                                </Typography>
+                            </div>
+                        )}
+                    </div>
                 </div>
                 <Status
                     from={campaign.from}
@@ -79,10 +108,14 @@ export function SkeletonCampaign() {
     return (
         <div className={styles.root}>
             <Card className={classNames(styles.card, styles.loading)}>
-                <SkeletonChain />
-                <SkeletonProtocol />
-                <div className={styles.poolContainer}>
-                    <SkeletonAction />
+                <div className={styles.details}>
+                    <div className={styles.row}>
+                        <SkeletonAction />
+                    </div>
+                    <div className={styles.row}>
+                        <SkeletonProtocol />
+                        <SkeletonChain />
+                    </div>
                 </div>
                 <SkeletonStatus />
                 <SkeletonApr />

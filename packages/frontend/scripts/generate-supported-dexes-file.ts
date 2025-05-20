@@ -6,7 +6,7 @@ import { join } from "node:path";
 
 const HOMEPAGES: Record<SupportedDex, string> = {
     [SupportedDex.BaseSwap]: "https://baseswap.fi/",
-    [SupportedDex.Fibonacci]: "https://www.fibonacci-dex.xy",
+    [SupportedDex.Fibonacci]: "https://www.fibonacci-dex.xyz",
     [SupportedDex.Kim]: "https://www.kim.exchange",
     [SupportedDex.Panko]: "https://panko.finance/",
     [SupportedDex.Scribe]: "https://scribe.exchange",
@@ -19,6 +19,7 @@ const HOMEPAGES: Record<SupportedDex, string> = {
     [SupportedDex.UniswapV3]: "https://app.uniswap.org/",
     [SupportedDex.Carbon]: "https://carbondefi.xyz/",
     [SupportedDex.Velodrome]: "https://velodrome.finance/",
+    [SupportedDex.Ambient]: "https://ambient.finance/",
 };
 
 const chains = Object.values(CHAIN_DATA[Environment.Production]).filter(

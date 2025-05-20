@@ -1,7 +1,11 @@
 @reference "../../../../app.css";
 
 .root {
-    @apply w-fit pointer-events-none md:pointer-events-auto;
+    @apply w-fit pointer-events-none md:pointer-events-auto justify-self-end;
+}
+
+.rootSkeleton {
+    @apply justify-self-end h-9;
 }
 
 .aprWrapper {

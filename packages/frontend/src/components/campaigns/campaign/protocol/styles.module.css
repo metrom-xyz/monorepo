@@ -1,14 +1,10 @@
 @reference "../../../../app.css";
 
 .root {
-    @apply w-full flex justify-center;
+    @apply flex justify-center items-center gap-1.5;
 }
 
 .icon,
 .icon > svg {
     @apply w-[1.25rem] h-[1.25rem] col-span-1;
-}
-
-.detailsContainer {
-    @apply p-3;
 }

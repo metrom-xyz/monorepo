@@ -5,7 +5,7 @@
 }
 
 .filters {
-    @apply max-w-screen-xl w-full sm:items-end flex-col sm:flex-row flex gap-3 mb-7;
+    @apply w-full sm:items-end flex-col sm:flex-row flex gap-3 mb-7;
 }
 
 .searchFilter :global(.label) {
@@ -47,7 +47,7 @@
 .table {
     @apply min-w-[800px] 
         grid
-        grid-cols-[0.1fr_0.4fr_3fr_1fr_1fr_1fr]
+        grid-cols-[4fr_1fr_1fr_1fr]
         gap-5
         items-center;
 }
@@ -82,9 +82,12 @@
     @apply -rotate-90;
 }
 
-.header > :nth-child(1),
-.header > :nth-child(2) {
-    @apply justify-self-center;
+.header > :nth-child(1) {
+    @apply justify-self-start;
+}
+
+.header > :not(:nth-child(1)) {
+    @apply justify-self-end;
 }
 
 .body {
@@ -92,21 +95,14 @@
         my-0
         grid
         grid-cols-subgrid
+        gap-y-1
         col-span-full;
-}
-
-.body > :first-child > div {
-    @apply rounded-t-xl;
-}
-
-.body > :last-child > div {
-    @apply rounded-b-xl;
 }
 
 .empty {
     @apply w-full
         col-span-full
-        h-[720px]
+        h-[956px]
         flex
         flex-col
         items-center
