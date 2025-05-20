@@ -25,6 +25,7 @@ export const swellData: ChainData = {
             : ADDRESS[SupportedChain.Swell],
     blockExplorers: swellchain.blockExplorers,
     icon: SwellLogo,
+    brandColor: "#3068ef",
     protocols: [
         {
             type: ProtocolType.Dex,

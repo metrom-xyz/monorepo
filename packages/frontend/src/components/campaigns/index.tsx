@@ -49,19 +49,9 @@ const TABLE_COLUMNS: {
     sort: boolean;
 }[] = [
     {
-        name: "chain",
-        label: "chain",
-        sort: false,
-    },
-    {
         name: "protocol",
-        label: "protocol",
+        label: "details",
         sort: true,
-    },
-    {
-        name: "action",
-        label: "action",
-        sort: false,
     },
     {
         name: "status",
@@ -436,7 +426,11 @@ export function Campaigns() {
                                             [styles.sort]: sort,
                                         })}
                                     >
-                                        <Typography size="sm" weight="medium">
+                                        <Typography
+                                            size="sm"
+                                            weight="medium"
+                                            uppercase
+                                        >
                                             {t(`header.${label}`)}
                                         </Typography>
                                         {sort && (
