@@ -129,7 +129,6 @@ export const PROTOCOLS_BRAND_COLORS: Record<
     [SupportedDex.UniswapV3]: "#fc72ff",
     [SupportedDex.Carbon]: "#00ac72",
     [SupportedDex.Velodrome]: "#615cf6",
-    [SupportedDex.Ambient]: undefined,
     [SupportedLiquityV2.Quill]: "#ff5500",
     [SupportedLiquityV2.Ebisu]: undefined,
     [SupportedLiquityV2.Liquity]: undefined,
