@@ -28,18 +28,18 @@ export function Weighting({
 }: WeightingProps) {
     const t = useTranslations("newCampaign.form.base.rewards.weighting");
 
-    const [token0, setToken0] = useState<number>(weighting?.token0 || 0);
-    const [token1, setToken1] = useState<number>(weighting?.token1 || 0);
+    const [token0, setToken0] = useState<number | undefined>(weighting?.token0);
+    const [token1, setToken1] = useState<number | undefined>(weighting?.token1);
 
     const leftFee = useMemo(() => {
-        return Math.max(100 - token0 - token1, 0);
+        return Math.max(100 - (token0 || 0) - (token1 || 0), 0);
     }, [token0, token1]);
 
     useEffect(() => {
         if (open) return;
 
-        setToken0(0);
-        setToken1(0);
+        setToken0(undefined);
+        setToken1(undefined);
         onWeightingChange({ weighting: undefined });
     }, [open, onWeightingChange]);
 
@@ -54,20 +54,28 @@ export function Weighting({
     }
 
     const handleToken0OnBlur = useCallback(() => {
-        const newToken0 = Math.min(token0, 100 - token1);
+        const newToken0 = Math.min(token0 || 0, 100 - (token1 || 0));
 
         setToken0(newToken0);
         onWeightingChange({
-            weighting: { token0: newToken0, token1, liquidity: leftFee },
+            weighting: {
+                token0: newToken0,
+                token1: token1 || 0,
+                liquidity: leftFee,
+            },
         });
     }, [token0, token1, leftFee, onWeightingChange]);
 
     const handleToken1OnBlur = useCallback(() => {
-        const newToken1 = Math.min(token1, 100 - token0);
+        const newToken1 = Math.min(token1 || 0, 100 - (token0 || 0));
 
         setToken1(newToken1);
         onWeightingChange({
-            weighting: { token0, token1: newToken1, liquidity: leftFee },
+            weighting: {
+                token0: token0 || 0,
+                token1: newToken1,
+                liquidity: leftFee,
+            },
         });
     }, [token0, token1, leftFee, onWeightingChange]);
 
@@ -104,6 +112,7 @@ export function Weighting({
                             size="sm"
                             suffix="%"
                             allowNegative={false}
+                            placeholder="0%"
                             value={token0}
                             onValueChange={handleToken0OnChange}
                             onBlur={handleToken0OnBlur}
@@ -123,6 +132,7 @@ export function Weighting({
                             size="sm"
                             suffix="%"
                             allowNegative={false}
+                            placeholder="0%"
                             value={token1}
                             onValueChange={handleToken1OnChange}
                             onBlur={handleToken1OnBlur}
