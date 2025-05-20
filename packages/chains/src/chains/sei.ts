@@ -20,6 +20,7 @@ export const seiDevelopmentData: ChainData = {
         },
     },
     icon: SeiLogo,
+    brandColor: "#9e1f19",
     protocols: [
         {
             active: true,

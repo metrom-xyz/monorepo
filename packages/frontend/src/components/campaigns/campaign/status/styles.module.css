@@ -1,29 +1,37 @@
 @reference "../../../../app.css";
 
-.statusRoot {
-    @apply max-w-28 w-full flex items-center gap-2 col-span-1;
+.root {
+    @apply flex items-center col-span-1 gap-1.5 justify-self-end;
 }
 
-.statusText {
-    @apply w-full flex flex-col justify-end gap-1;
+.rootSkeleton {
+    @apply w-full min-w-20 justify-self-end bg-zinc-200! dark:bg-dark-surface-2! animate-pulse;
 }
 
-.statusDot {
-    @apply w-2 h-2 rounded-full px-1;
+.text {
+    @apply flex gap-1;
 }
 
-.statusDotLive {
+.dotWrapper {
+    @apply flex items-center justify-center w-4 h-4 rounded-full theme-surface;
+}
+
+.dot {
+    @apply w-2.5 h-2.5 rounded-full px-1;
+}
+
+.dotLive {
     @apply bg-brand-green;
 }
 
-.statusDotUpcoming {
+.dotUpcoming {
     @apply bg-brand-blue;
 }
 
-.statusDotEnded {
+.dotEnded {
     @apply bg-zinc-400;
 }
 
-.statusDuration {
+.duration {
     @apply flex whitespace-nowrap;
 }

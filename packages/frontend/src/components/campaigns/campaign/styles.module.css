@@ -14,27 +14,37 @@
         transition-colors
         duration-200
         ease-in-out
-        rounded-none
+        rounded-2xl
         bg-none
-        min-h-[72px]
-        max-h-[72px]
-        px-7
-        py-4;
+        min-h-[92px]
+        max-h-[92px]
+        p-3.5;
 }
 
-.card > :nth-child(1),
-.card > :nth-child(2) {
-    @apply justify-self-center;
+.header > :nth-child(1) {
+    @apply justify-self-start;
+}
+
+.header > :not(:nth-child(1)) {
+    @apply justify-self-end;
 }
 
 .card.loading {
     @apply w-full pointer-events-none;
 }
 
-.poolContainer {
-    @apply flex justify-start items-center gap-2 col-span-1;
+.details {
+    @apply flex flex-col gap-2;
+}
+
+.row {
+    @apply w-full flex justify-start items-center gap-1 col-span-1;
 }
 
 .card:hover .externalLink {
     @apply opacity-100 scale-100;
+}
+
+.chip {
+    @apply flex items-center bg-zinc-100 dark:bg-zinc-800 rounded-md py-1 px-1.5 w-fit h-7;
 }

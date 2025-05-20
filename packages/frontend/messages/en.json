@@ -59,9 +59,7 @@
             "clear": "Clear filters"
         },
         "header": {
-            "chain": "Chain",
-            "protocol": "Protocol",
-            "action": "Action",
+            "details": "Details",
             "status": "Status",
             "apr": "APR",
             "rewards": "Daily rewards"

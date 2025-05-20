@@ -7,6 +7,7 @@ import { useTranslations } from "next-intl";
 import { Status as StatusState } from "@metrom-xyz/sdk";
 
 import styles from "./styles.module.css";
+import commonStyles from "../styles.module.css";
 
 interface CampaignStatusProps {
     from: number;
@@ -40,21 +41,23 @@ export function Status({
     }
 
     return (
-        <div className={styles.statusRoot}>
-            <div
-                className={classNames(styles.statusDot, {
-                    [styles.statusDotLive]: status === StatusState.Live,
-                    [styles.statusDotUpcoming]: status === StatusState.Upcoming,
-                    [styles.statusDotEnded]: status === StatusState.Ended,
-                })}
-            />
-            <div className={styles.statusText}>
-                <Typography size="sm" weight="medium">
+        <div className={classNames(styles.root, commonStyles.chip)}>
+            <div className={styles.dotWrapper}>
+                <div
+                    className={classNames(styles.dot, {
+                        [styles.dotLive]: status === StatusState.Live,
+                        [styles.dotUpcoming]: status === StatusState.Upcoming,
+                        [styles.dotEnded]: status === StatusState.Ended,
+                    })}
+                />
+            </div>
+            <div className={styles.text}>
+                <Typography size="sm" weight="medium" uppercase>
                     {text}
                 </Typography>
                 {showDuration && (
                     <Typography
-                        className={styles.statusDuration}
+                        className={styles.duration}
                         light
                         size="sm"
                         weight="medium"
@@ -69,11 +72,17 @@ export function Status({
 
 export function SkeletonStatus() {
     return (
-        <div className={styles.statusRoot}>
-            <Skeleton width={8} circular />
-            <div className={styles.statusText}>
+        <div
+            className={classNames(
+                styles.root,
+                styles.rootSkeleton,
+                commonStyles.chip,
+            )}
+        >
+            <Skeleton width={12} circular />
+            <div className={styles.text}>
                 <Skeleton width={50} />
-                <Skeleton width={30} className={styles.statusDuration} />
+                <Skeleton width={30} className={styles.duration} />
             </div>
         </div>
     );
