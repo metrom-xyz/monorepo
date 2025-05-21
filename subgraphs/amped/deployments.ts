@@ -4,7 +4,7 @@ export interface Contract {
 }
 
 export interface ChainConfig {
-    GlpManager: Contract;
+    Vault: Contract;
     RewardTrackerAddress: string;
 }
 
@@ -18,9 +18,9 @@ export const DEPLOYMENTS: {
     //     },
     // },
     sonic: {
-        GlpManager: {
-            address: "0x4DE729B85dDB172F1bb775882f355bA25764E430",
-            startBlock: 8181671,
+        Vault: {
+            address: "0x5B8caae7cC6Ea61fb96Fd251C4Bc13e48749C7Da",
+            startBlock: 8181381,
         },
         RewardTrackerAddress: "0xB895e3DBFB37A4Cc6b4FB50B1cf903608e942FF9",
     },

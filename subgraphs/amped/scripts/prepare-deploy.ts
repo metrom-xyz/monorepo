@@ -52,8 +52,8 @@ try {
             ).toString(),
             {
                 network: resolvedNetwork,
-                glpManagerAddress: contracts.GlpManager.address,
-                glpManagerStartBlock: contracts.GlpManager.startBlock,
+                vaultAddress: contracts.Vault.address,
+                vaultStartBlock: contracts.Vault.startBlock,
             },
         ),
     );

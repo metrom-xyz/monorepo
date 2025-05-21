@@ -2,12 +2,9 @@ import { Address, BigInt, ethereum } from "@graphprotocol/graph-ts";
 import { Erc20 } from "../../generated/Vault/Erc20";
 import { Erc20BytesSymbol } from "../../generated/Vault/Erc20BytesSymbol";
 import { Erc20BytesName } from "../../generated/Vault/Erc20BytesName";
-import { Collateral, LiquidityChange, Position } from "../../generated/schema";
+import { Collateral, SizeChange, Position } from "../../generated/schema";
 import { BI_0, getEventId } from "../commons";
-import {
-    AddLiquidity,
-    RemoveLiquidity,
-} from "../../generated/GlpManager/GlpManager";
+import { BuyUSDG, SellUSDG } from "../../generated/Vault/Vault";
 
 export function fetchTokenSymbolOrThrow(address: Address): string {
     let contract = Erc20.bind(address);
@@ -53,7 +50,8 @@ function getOrCreateCollateral(address: Address): Collateral {
     collateral.name = fetchTokenNameOrThrow(address);
     collateral.symbol = fetchTokenSymbolOrThrow(address);
     collateral.decimals = fetchTokenDecimalsOrThrow(address);
-    collateral.liquidity = BI_0;
+    collateral.tvl = BI_0;
+    collateral.size = BI_0;
     collateral.save();
 
     return collateral;
@@ -64,49 +62,56 @@ function getOrCreatePosition(owner: Address, collateral: Address): Position {
     if (position !== null) return position;
 
     position = new Position(owner);
-    position.liquidity = BI_0;
+    position.tvl = BI_0;
+    position.size = BI_0;
     position.collateral = collateral;
     position.save();
 
     return position;
 }
 
-function handlePositionChange(
+function handleUSDGChange(
     event: ethereum.Event,
     ownerAddress: Address,
     collateralAddress: Address,
-    liquidityDelta: BigInt,
+    tvlDelta: BigInt,
+    sizeDelta: BigInt,
 ): void {
     let collateral = getOrCreateCollateral(collateralAddress);
-    collateral.liquidity = collateral.liquidity.plus(liquidityDelta);
+    collateral.tvl = collateral.tvl.plus(tvlDelta);
+    collateral.size = collateral.size.plus(sizeDelta);
     collateral.save();
 
     let position = getOrCreatePosition(ownerAddress, collateralAddress);
-    position.liquidity = position.liquidity.plus(liquidityDelta);
+    position.tvl = position.tvl.plus(tvlDelta);
+    position.size = position.size.plus(sizeDelta);
     position.collateral = collateralAddress;
     position.save();
 
-    let change = new LiquidityChange(getEventId(event));
+    let change = new SizeChange(getEventId(event));
     change.timestamp = event.block.timestamp;
     change.position = position.id;
-    change.delta = liquidityDelta;
+    change.tvlDelta = tvlDelta;
+    change.sizeDelta = sizeDelta;
     change.save();
 }
 
-export function handleAddLiquidity(event: AddLiquidity): void {
-    handlePositionChange(
+export function handleBuyUSDG(event: BuyUSDG): void {
+    handleUSDGChange(
         event,
         event.params.account,
         event.params.token,
-        event.params.mintAmount,
+        event.params.tokenAmount,
+        event.params.usdgAmount,
     );
 }
 
-export function handleRemoveLiquidity(event: RemoveLiquidity): void {
-    handlePositionChange(
+export function handleSellUSDG(event: SellUSDG): void {
+    handleUSDGChange(
         event,
         event.params.account,
         event.params.token,
-        event.params.glpAmount.neg(),
+        event.params.tokenAmount.neg(),
+        event.params.usdgAmount.neg(),
     );
 }
