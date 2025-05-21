@@ -16,8 +16,7 @@ import { RewardTokens } from "./tokens";
 import { RewardPoints } from "./points";
 import { DistributablesType } from "@metrom-xyz/sdk";
 import { Weighting } from "./weighting";
-import { AMM_SUPPORTS_TOKENS_RATIO } from "@/src/commons";
-import type { SupportedAmm } from "@metrom-xyz/sdk";
+import { AmmPoolLiquidityType } from "@metrom-xyz/sdk";
 
 import styles from "./styles.module.css";
 
@@ -77,9 +76,9 @@ export function RewardsStep({
     const tokensRatioSupported = useMemo(() => {
         return (
             !!pool &&
+            pool.liquidityType === AmmPoolLiquidityType.Concentrated &&
             !disabled &&
-            !!onWeightingChange &&
-            AMM_SUPPORTS_TOKENS_RATIO[pool.amm as SupportedAmm]
+            !!onWeightingChange
         );
     }, [pool, disabled, onWeightingChange]);
 
