@@ -10,7 +10,7 @@
         "deploy:uni-v3:taiko": "pnpm prepare:deploy taiko uni-v3 && pnpm codegen && graph build && goldsky subgraph deploy metrom-uni-v3-taiko/0.0.9",
         "deploy:baseswap:base": "pnpm prepare:deploy base baseswap && pnpm codegen && graph deploy metrom-baseswap-base -l 0.0.7",
         "deploy:uni-v3:base": "pnpm prepare:deploy base uni-v3 && pnpm codegen && graph deploy metrom-uni-v3-base -l 0.0.7",
-        "deploy:uni-v3:sonic": "pnpm prepare:deploy sonic uni-v3 && pnpm codegen && 0xgraph deploy metrom-uni-v3-sonic -l 0.0.6",
+        "deploy:uni-v3:sonic": "pnpm prepare:deploy sonic uni-v3 && pnpm codegen && graph deploy metrom-uni-v-3-sonic -l 0.0.1",
         "deploy:unagi:taiko": "pnpm prepare:deploy taiko unagi && pnpm codegen && graph build && goldsky subgraph deploy metrom-unagi-taiko/0.0.4",
         "deploy:uni-v3:telos": "pnpm prepare:deploy telos uni-v3 && pnpm codegen && graph build && goldsky subgraph deploy metrom-uni-v3-telos/0.0.1",
         "deploy:uni-v3:lightlink-phoenix": "pnpm prepare:deploy lightlink-phoenix uni-v3 && pnpm codegen && graph create --node https://graph.phoenix.lightlink.io/rpc metrom-uni-v3-lightlink-phoenix && graph build && graph deploy --node https://graph.phoenix.lightlink.io/rpc metrom-uni-v3-lightlink-phoenix -l 0.0.1",
