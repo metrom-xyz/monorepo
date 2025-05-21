@@ -3,28 +3,18 @@ type Collateral @entity(immutable: false) {
     name: String!
     symbol: String!
     decimals: BigInt!
-    tvl: BigInt!
     liquidity: BigInt!
 }
 
 type Position @entity(immutable: false) {
     id: Bytes!
     liquidity: BigInt!
-    collaterals: [CollateralPosition!]! @derivedFrom(field: "position")
-}
-
-type CollateralPosition @entity(immutable: false) {
-    id: Bytes!
-    tvl: BigInt!
-    liquidity: BigInt!
     collateral: Collateral!
-    position: Position!
 }
 
 type LiquidityChange @entity(immutable: true) {
     id: Bytes!
     timestamp: BigInt!
     position: Position!
-    tvlDelta: BigInt!
-    liquidityDelta: BigInt!
+    delta: BigInt!
 }

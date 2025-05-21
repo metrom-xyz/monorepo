@@ -1,13 +1,8 @@
-import { Address, BigInt, Bytes, ethereum } from "@graphprotocol/graph-ts";
+import { Address, BigInt, ethereum } from "@graphprotocol/graph-ts";
 import { Erc20 } from "../../generated/Vault/Erc20";
 import { Erc20BytesSymbol } from "../../generated/Vault/Erc20BytesSymbol";
 import { Erc20BytesName } from "../../generated/Vault/Erc20BytesName";
-import {
-    Collateral,
-    CollateralPosition,
-    LiquidityChange,
-    Position,
-} from "../../generated/schema";
+import { Collateral, LiquidityChange, Position } from "../../generated/schema";
 import { BI_0, getEventId } from "../commons";
 import {
     AddLiquidity,
@@ -58,72 +53,43 @@ function getOrCreateCollateral(address: Address): Collateral {
     collateral.name = fetchTokenNameOrThrow(address);
     collateral.symbol = fetchTokenSymbolOrThrow(address);
     collateral.decimals = fetchTokenDecimalsOrThrow(address);
-    collateral.tvl = BI_0;
     collateral.liquidity = BI_0;
     collateral.save();
 
     return collateral;
 }
 
-function getOrCreatePosition(owner: Address): Position {
+function getOrCreatePosition(owner: Address, collateral: Address): Position {
     let position = Position.load(owner);
     if (position !== null) return position;
 
     position = new Position(owner);
     position.liquidity = BI_0;
+    position.collateral = collateral;
     position.save();
 
     return position;
-}
-
-function getOrCreatePositionCollateral(
-    owner: Address,
-    collateral: Address,
-): CollateralPosition {
-    let id = changetype<Bytes>(owner.concat(collateral));
-    let collateralPosition = CollateralPosition.load(id);
-    if (collateralPosition !== null) return collateralPosition;
-
-    collateralPosition = new CollateralPosition(id);
-    collateralPosition.tvl = BI_0;
-    collateralPosition.liquidity = BI_0;
-    collateralPosition.collateral = collateral;
-    collateralPosition.position = owner;
-    collateralPosition.save();
-
-    return collateralPosition;
 }
 
 function handlePositionChange(
     event: ethereum.Event,
     ownerAddress: Address,
     collateralAddress: Address,
-    tvlDelta: BigInt,
     liquidityDelta: BigInt,
 ): void {
     let collateral = getOrCreateCollateral(collateralAddress);
-    collateral.tvl = collateral.tvl.plus(tvlDelta);
     collateral.liquidity = collateral.liquidity.plus(liquidityDelta);
     collateral.save();
 
-    let position = getOrCreatePosition(ownerAddress);
+    let position = getOrCreatePosition(ownerAddress, collateralAddress);
     position.liquidity = position.liquidity.plus(liquidityDelta);
+    position.collateral = collateralAddress;
     position.save();
-
-    let collateralPosition = getOrCreatePositionCollateral(
-        ownerAddress,
-        collateralAddress,
-    );
-    collateralPosition.tvl = collateralPosition.tvl.plus(tvlDelta);
-    collateralPosition.liquidity =
-        collateralPosition.liquidity.plus(liquidityDelta);
-    collateralPosition.save();
 
     let change = new LiquidityChange(getEventId(event));
     change.timestamp = event.block.timestamp;
     change.position = position.id;
-    change.tvlDelta = tvlDelta;
-    change.liquidityDelta = liquidityDelta;
+    change.delta = liquidityDelta;
     change.save();
 }
 
@@ -132,7 +98,6 @@ export function handleAddLiquidity(event: AddLiquidity): void {
         event,
         event.params.account,
         event.params.token,
-        event.params.amount,
         event.params.mintAmount,
     );
 }
@@ -142,7 +107,6 @@ export function handleRemoveLiquidity(event: RemoveLiquidity): void {
         event,
         event.params.account,
         event.params.token,
-        event.params.amountOut.neg(),
         event.params.glpAmount.neg(),
     );
 }
