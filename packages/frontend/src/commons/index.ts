@@ -108,6 +108,18 @@ export const CHAIN_DATA: Record<SupportedChain, ChainData> = {
     [SupportedChain.Sei]: seiData,
 };
 
+export const AMM_SUPPORTS_RANGE_INCENTIVES: Record<SupportedAmm, boolean> = {
+    [SupportedAmm.AlgebraIntegral]: true,
+    [SupportedAmm.UniswapV3]: true,
+    [SupportedAmm.Carbon]: true,
+};
+
+export const AMM_SUPPORTS_TOKENS_RATIO: Record<SupportedAmm, boolean> = {
+    [SupportedAmm.AlgebraIntegral]: true,
+    [SupportedAmm.UniswapV3]: true,
+    [SupportedAmm.Carbon]: false,
+};
+
 // taken from https://github.com/wevm/wagmi/blob/80326815bea2f175623157f57465f9dfae1f4c5c/packages/connectors/src/safe.ts#L45
 export const SAFE_CONNECTOR_ID = "safe";
 
