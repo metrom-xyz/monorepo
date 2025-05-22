@@ -5,21 +5,21 @@ schema:
   file: ./schema.graphql
 dataSources:
   - kind: ethereum
-    name: Vault
+    name: GlpManager
     network: {{network}}
     source:
-      abi: Vault
-      address: "{{vaultAddress}}"
-      startBlock: {{vaultStartBlock}}
+      abi: GlpManager
+      address: "{{glpManagerAddress}}"
+      startBlock: {{glpManagerStartBlock}}
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
       language: wasm/assemblyscript
-      file: ./src/mappings/vault.ts
+      file: ./src/mappings/glp-manager.ts
       entities: []
       abis:
-        - name: Vault
-          file: ./abis/Vault.json
+        - name: GlpManager
+          file: ./abis/GlpManager.json
         - name: Erc20
           file: ./abis/Erc20.json
         - name: Erc20BytesName
@@ -27,8 +27,8 @@ dataSources:
         - name: Erc20BytesSymbol
           file: ./abis/Erc20BytesSymbol.json
       eventHandlers:
-        - event: BuyUSDG(address,address,uint256,uint256,uint256)
-          handler: handleBuyUSDG
-        - event: SellUSDG(address,address,uint256,uint256,uint256)
-          handler: handleSellUSDG
+        - event: AddLiquidity(address,address,uint256,uint256,uint256,uint256,uint256)
+          handler: handleAddLiquidity
+        - event: RemoveLiquidity(address,address,uint256,uint256,uint256,uint256,uint256)
+          handler: handleRemoveLiquidity
 

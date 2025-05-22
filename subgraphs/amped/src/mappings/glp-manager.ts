@@ -4,15 +4,20 @@ import { Erc20BytesSymbol } from "../../generated/Vault/Erc20BytesSymbol";
 import { Erc20BytesName } from "../../generated/Vault/Erc20BytesName";
 import { Collateral, SizeChange, Position } from "../../generated/schema";
 import { BI_0, getEventId } from "../commons";
-import { BuyUSDG, SellUSDG } from "../../generated/Vault/Vault";
+import {
+    AddLiquidity,
+    RemoveLiquidity,
+} from "../../generated/GlpManager/GlpManager";
+
+const BI_10_E_18 = BigInt.fromI32(10).pow(18);
 
 export function fetchTokenSymbolOrThrow(address: Address): string {
-    let contract = Erc20.bind(address);
-    let result = contract.try_symbol();
+    const contract = Erc20.bind(address);
+    const result = contract.try_symbol();
     if (!result.reverted) return result.value;
 
-    let bytesContract = Erc20BytesSymbol.bind(address);
-    let bytesResult = bytesContract.try_symbol();
+    const bytesContract = Erc20BytesSymbol.bind(address);
+    const bytesResult = bytesContract.try_symbol();
     if (!bytesResult.reverted) return bytesResult.value.toString();
 
     throw new Error(
@@ -21,20 +26,20 @@ export function fetchTokenSymbolOrThrow(address: Address): string {
 }
 
 export function fetchTokenNameOrThrow(address: Address): string {
-    let contract = Erc20.bind(address);
-    let result = contract.try_name();
+    const contract = Erc20.bind(address);
+    const result = contract.try_name();
     if (!result.reverted) return result.value;
 
-    let bytesContract = Erc20BytesName.bind(address);
-    let bytesResult = bytesContract.try_name();
+    const bytesContract = Erc20BytesName.bind(address);
+    const bytesResult = bytesContract.try_name();
     if (!bytesResult.reverted) return bytesResult.value.toString();
 
     throw new Error(`Could not fetch ERC20 token name for ${address.toHex()}`);
 }
 
 export function fetchTokenDecimalsOrThrow(address: Address): BigInt {
-    let contract = Erc20.bind(address);
-    let result = contract.try_decimals();
+    const contract = Erc20.bind(address);
+    const result = contract.try_decimals();
     if (!result.reverted) return result.value;
 
     throw new Error(
@@ -50,7 +55,6 @@ function getOrCreateCollateral(address: Address): Collateral {
     collateral.name = fetchTokenNameOrThrow(address);
     collateral.symbol = fetchTokenSymbolOrThrow(address);
     collateral.decimals = fetchTokenDecimalsOrThrow(address);
-    collateral.tvl = BI_0;
     collateral.size = BI_0;
     collateral.save();
 
@@ -58,11 +62,11 @@ function getOrCreateCollateral(address: Address): Collateral {
 }
 
 function getOrCreatePosition(owner: Address, collateral: Address): Position {
-    let position = Position.load(owner);
+    const id = collateral.concat(owner);
+    let position = Position.load(id);
     if (position !== null) return position;
 
-    position = new Position(owner);
-    position.tvl = BI_0;
+    position = new Position(id);
     position.size = BI_0;
     position.collateral = collateral;
     position.save();
@@ -70,48 +74,46 @@ function getOrCreatePosition(owner: Address, collateral: Address): Position {
     return position;
 }
 
-function handleUSDGChange(
+function handleLiquidityChange(
     event: ethereum.Event,
     ownerAddress: Address,
     collateralAddress: Address,
-    tvlDelta: BigInt,
-    sizeDelta: BigInt,
+    usdgAmount: BigInt,
+    glpDelta: BigInt,
 ): void {
-    let collateral = getOrCreateCollateral(collateralAddress);
-    collateral.tvl = collateral.tvl.plus(tvlDelta);
+    const sizeDelta = usdgAmount.times(BI_10_E_18).div(glpDelta);
+
+    const collateral = getOrCreateCollateral(collateralAddress);
     collateral.size = collateral.size.plus(sizeDelta);
     collateral.save();
 
-    let position = getOrCreatePosition(ownerAddress, collateralAddress);
-    position.tvl = position.tvl.plus(tvlDelta);
+    const position = getOrCreatePosition(ownerAddress, collateralAddress);
     position.size = position.size.plus(sizeDelta);
-    position.collateral = collateralAddress;
     position.save();
 
-    let change = new SizeChange(getEventId(event));
+    const change = new SizeChange(getEventId(event));
     change.timestamp = event.block.timestamp;
     change.position = position.id;
-    change.tvlDelta = tvlDelta;
-    change.sizeDelta = sizeDelta;
+    change.delta = sizeDelta;
     change.save();
 }
 
-export function handleBuyUSDG(event: BuyUSDG): void {
-    handleUSDGChange(
+export function handleAddLiquidity(event: AddLiquidity): void {
+    handleLiquidityChange(
         event,
         event.params.account,
         event.params.token,
-        event.params.tokenAmount,
         event.params.usdgAmount,
+        event.params.mintAmount,
     );
 }
 
-export function handleSellUSDG(event: SellUSDG): void {
-    handleUSDGChange(
+export function handleRemoveLiquidity(event: RemoveLiquidity): void {
+    handleLiquidityChange(
         event,
         event.params.account,
         event.params.token,
-        event.params.tokenAmount.neg(),
-        event.params.usdgAmount.neg(),
+        event.params.usdgAmount,
+        event.params.glpAmount,
     );
 }
