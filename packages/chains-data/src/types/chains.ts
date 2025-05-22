@@ -39,7 +39,3 @@ export enum SupportedProductionChain {
     Sei = SupportedChain.Sei,
     Swell = SupportedChain.Swell,
 }
-
-export type SupportedChainData =
-    | SupportedDevelopmentChain
-    | SupportedProductionChain;
