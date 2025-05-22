@@ -1,11 +1,10 @@
 import type { Chain } from "viem";
-import { CHAIN_DATA } from "@/src/commons";
-import { type SupportedChain } from "@metrom-xyz/contracts";
 import classNames from "classnames";
 import { Typography } from "@metrom-xyz/ui";
 import { RemoveScroll } from "react-remove-scroll";
 import { useWindowSize } from "react-use";
 import { MobileDrawer } from "../../mobile-drawer";
+import { getChainData } from "@/src/utils/chain";
 
 import styles from "./styles.module.css";
 import commonStyles from "../styles.module.css";
@@ -38,8 +37,9 @@ export function DrawerPicker({
             <MobileDrawer open={open} onClose={onClose}>
                 <div className={styles.networksWrapper}>
                     {chains.map((chain) => {
-                        const { icon: ChainIcon, name } =
-                            CHAIN_DATA[chain.id as SupportedChain];
+                        const { icon: ChainIcon, name } = getChainData(
+                            chain.id,
+                        );
 
                         return (
                             <div

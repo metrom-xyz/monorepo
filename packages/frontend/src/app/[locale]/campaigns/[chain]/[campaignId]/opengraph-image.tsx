@@ -1,4 +1,4 @@
-import { CHAIN_DATA, METROM_API_CLIENT, TOKEN_ICONS_URL } from "@/src/commons";
+import { METROM_API_CLIENT, TOKEN_ICONS_URL } from "@/src/commons";
 import { ImageResponse } from "next/og";
 import type { CampaignDetailsPageProps } from "./page";
 import { MetromSquareLogo } from "@/src/assets/metrom-square-logo";
@@ -25,6 +25,7 @@ import utc from "dayjs/plugin/utc";
 import { RemoteLogo } from "@/src/components/campaign-social-preview/remote-logo";
 import { LiquityV2 } from "@/src/components/campaign-social-preview/liquity-v2";
 import { PointsIcon } from "@/src/assets/points-icon";
+import { getChainData } from "@/src/utils/chain";
 
 dayjs.extend(relativeTime);
 dayjs.extend(utc);
@@ -44,9 +45,10 @@ async function getCampaign(id: Address, chainId: SupportedChain) {
             id,
             chainId,
         });
+
         return new Campaign(
             campaign,
-            CHAIN_DATA[chainId],
+            getChainData(chainId),
             await getSocialPreviewCampaignName(campaign),
         );
     } catch (error) {
@@ -61,7 +63,7 @@ function getCampaignTargetProtocol(
     chainId: SupportedChain,
     target: CampaignTarget,
 ) {
-    return CHAIN_DATA[chainId].protocols.find((protocol) => {
+    return getChainData(chainId).protocols.find((protocol) => {
         switch (target.type) {
             case TargetType.AmmPoolLiquidity: {
                 return protocol.slug === target.pool.dex.slug;

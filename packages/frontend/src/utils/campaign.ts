@@ -5,7 +5,6 @@ import {
     type Specification,
     type LiquidityInRange,
     type KpiSpecification,
-    SupportedLiquityV2,
     type LiquityV2DebtTarget,
 } from "@metrom-xyz/sdk";
 import {
@@ -18,10 +17,11 @@ import type { TranslationsType } from "../types/utils";
 import { LiquityV2Action } from "../types/common";
 import { getDistributableRewardsPercentage } from "./kpi";
 import { type Hex, encodeAbiParameters, stringToHex, isAddress } from "viem";
-import { CHAIN_DATA, SECONDS_IN_YEAR, WEIGHT_UNIT } from "../commons";
+import { SECONDS_IN_YEAR, WEIGHT_UNIT } from "../commons";
+import { type LiquityV2Protocol } from "@metrom-xyz/chains-data";
 import type { SupportedChain } from "@metrom-xyz/contracts";
 import { getTranslations } from "next-intl/server";
-import type { LiquityV2Protocol } from "../types/protocol";
+import { getChainData } from "./chain";
 
 export function buildCampaignDataBundle(payload: CampaignPreviewPayload) {
     if (payload instanceof AmmPoolLiquidityCampaignPreviewPayload)
@@ -100,9 +100,9 @@ export function getCampaignName(
             });
         }
         case TargetType.LiquityV2Debt: {
-            const targetProtocol = CHAIN_DATA[
-                campaign.chainId as SupportedChain
-            ].protocols.find(
+            const targetProtocol = getChainData(
+                campaign.chainId,
+            ).protocols.find(
                 ({ slug }) =>
                     slug ===
                     (campaign.target as LiquityV2DebtTarget).brand.slug,
@@ -128,8 +128,7 @@ export async function getSocialPreviewCampaignName(
 ): Promise<string> {
     const t = await getTranslations();
 
-    const chain =
-        CHAIN_DATA[campaign.chainId as SupportedChain].name.toUpperCase();
+    const chain = getChainData(campaign.chainId).name.toUpperCase();
 
     switch (campaign.target.type) {
         case TargetType.AmmPoolLiquidity: {

@@ -4,14 +4,14 @@ import { useTranslations } from "next-intl";
 import { Step } from "@/src/components/step";
 import { StepPreview } from "@/src/components/step/preview";
 import { StepContent } from "@/src/components/step/content";
-import { useProtocolsInChain } from "@/src/hooks/useProtocolsInChain";
+import { ProtocolType, type DexProtocol } from "@metrom-xyz/chains-data";
 import classNames from "classnames";
 import { Typography } from "@metrom-xyz/ui";
 import {
     type AmmPoolLiquidityCampaignPayload,
     type AmmPoolLiquidityCampaignPayloadPart,
 } from "@/src/types/campaign";
-import { ProtocolType, type DexProtocol } from "@/src/types/protocol";
+import { useProtocolsInChain } from "@/src/hooks/useProtocolsInChain";
 
 import styles from "./styles.module.css";
 

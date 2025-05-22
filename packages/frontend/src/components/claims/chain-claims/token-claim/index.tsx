@@ -12,7 +12,6 @@ import { metromAbi } from "@metrom-xyz/contracts/abi";
 import { useCallback, useMemo, useState } from "react";
 import type { TokenClaims } from "..";
 import { toast } from "sonner";
-import { useChainData } from "@/src/hooks/useChainData";
 import { formatAmount, formatUsdAmount } from "@/src/utils/format";
 import { trackFathomEvent } from "@/src/utils/fathom";
 import { RemoteLogo } from "@/src/components/remote-logo";
@@ -22,6 +21,7 @@ import { type WriteContractErrorType, encodeFunctionData } from "viem";
 import type { Erc20Token } from "@metrom-xyz/sdk";
 import { SAFE } from "@/src/commons/env";
 import { SAFE_APP_SDK } from "@/src/commons";
+import { useChainData } from "@/src/hooks/useChainData";
 
 import styles from "./styles.module.css";
 

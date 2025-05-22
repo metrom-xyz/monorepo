@@ -11,9 +11,9 @@ import {
     formatUsdAmount,
 } from "@/src/utils/format";
 import { RemoteLogo } from "@/src/components/remote-logo";
-import { useChainData } from "@/src/hooks/useChainData";
 import { metromAbi } from "@metrom-xyz/contracts/abi";
 import { FEE_UNIT } from "@/src/commons";
+import { useChainData } from "@/src/hooks/useChainData";
 
 import styles from "./styles.module.css";
 

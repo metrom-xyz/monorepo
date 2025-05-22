@@ -1,8 +1,8 @@
 import { metromAbi } from "@metrom-xyz/contracts/abi";
 import { useMemo } from "react";
 import { useChainId, useReadContracts } from "wagmi";
-import { useChainData } from "./useChainData";
 import type { HookBaseParams } from "../types/hooks";
+import { useChainData } from "./useChainData";
 
 interface CampaignDurationLimits {
     minimumSeconds: number;

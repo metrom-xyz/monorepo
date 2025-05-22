@@ -1,12 +1,12 @@
 import { useAccount, useReadContracts } from "wagmi";
 import { formatUnits, type Address, zeroAddress } from "viem";
-import { CHAIN_DATA, METROM_API_CLIENT } from "../commons";
-import { SupportedChain } from "@metrom-xyz/contracts";
+import { METROM_API_CLIENT } from "../commons";
 import { metromAbi } from "@metrom-xyz/contracts/abi";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import type { HookBaseParams } from "../types/hooks";
 import type { ReimbursementsWithRemaining } from "../types/campaign";
+import { getChainData } from "../utils/chain";
 
 interface UseReimbursementsParams extends HookBaseParams {}
 
@@ -60,9 +60,8 @@ export function useReimbursements({
         return rawReimbursements.map((rawReimbursement) => {
             return {
                 chainId: rawReimbursement.chainId,
-                address:
-                    CHAIN_DATA[rawReimbursement.chainId as SupportedChain]
-                        ?.metromContract.address,
+                address: getChainData(rawReimbursement.chainId).metromContract
+                    .address,
                 abi: metromAbi,
                 functionName: "claimedCampaignReward",
                 args: [
@@ -80,9 +79,8 @@ export function useReimbursements({
         return rawReimbursements.map((rawReimbursement) => {
             return {
                 chainId: rawReimbursement.chainId,
-                address:
-                    CHAIN_DATA[rawReimbursement.chainId as SupportedChain]
-                        ?.metromContract.address,
+                address: getChainData(rawReimbursement.chainId).metromContract
+                    .address,
                 abi: metromAbi,
                 functionName: "claimedCampaignReward",
                 args: [

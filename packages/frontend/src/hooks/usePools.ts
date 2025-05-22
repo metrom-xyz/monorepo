@@ -2,9 +2,9 @@ import type { SupportedChain } from "@metrom-xyz/contracts";
 import { METROM_API_CLIENT } from "../commons";
 import { SupportedDex, type AmmPoolWithTvl } from "@metrom-xyz/sdk";
 import { useQuery } from "@tanstack/react-query";
-import { useProtocolsInChain } from "./useProtocolsInChain";
-import { ProtocolType } from "../types/protocol";
 import type { HookBaseParams } from "../types/hooks";
+import { useProtocolsInChain } from "./useProtocolsInChain";
+import { ProtocolType } from "@metrom-xyz/chains-data";
 
 interface UsePoolsParams extends HookBaseParams {
     chainId: SupportedChain;
