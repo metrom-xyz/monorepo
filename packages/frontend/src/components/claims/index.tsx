@@ -8,7 +8,7 @@ import { type Chain } from "viem";
 import { ChainOverview, SkeletonChainOverview } from "./chain-overview";
 import { ChainClaims, SkeletonChainClaims } from "./chain-claims";
 import { Empty } from "./empty";
-import { CHAIN_DATA, SUPPORTED_CHAINS, type ChainData } from "@/src/commons";
+import { SUPPORTED_CHAINS } from "@/src/commons";
 import { useReimbursements } from "@/src/hooks/useReimbursements";
 import { ChainReimbursements } from "./chain-reimbursements";
 import { useAccount, useSwitchChain } from "wagmi";
@@ -16,6 +16,8 @@ import type {
     ClaimWithRemaining,
     ReimbursementsWithRemaining,
 } from "@/src/types/campaign";
+import { type ChainData } from "@metrom-xyz/chains-data";
+import { getChainData } from "@/src/utils/chain";
 
 import styles from "./styles.module.css";
 
@@ -82,7 +84,7 @@ export function Claims() {
                     if (!acc[chainId] && chain)
                         acc[chainId] = {
                             chain: chain,
-                            chainData: CHAIN_DATA[chainId],
+                            chainData: getChainData(chainId),
                             claims: [],
                             reimbursements: [],
                             totalUsdValue: 0,
@@ -122,7 +124,7 @@ export function Claims() {
 
         return chainsWithRewardsData.map(({ chain, totalUsdValue }) => ({
             chain,
-            data: CHAIN_DATA[chain.id as SupportedChain],
+            data: getChainData(chain.id),
             totalUsdValue,
         }));
     }, [chainsWithRewardsData]);
