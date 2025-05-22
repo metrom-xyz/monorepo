@@ -8,7 +8,11 @@ import {
 import { useTranslations } from "next-intl";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useChainId } from "wagmi";
-import { AmmPoolLiquidityType, DistributablesType } from "@metrom-xyz/sdk";
+import {
+    AmmPoolLiquidityType,
+    DistributablesType,
+    SupportedAmm,
+} from "@metrom-xyz/sdk";
 import { PoolStep } from "../../steps/pool-step";
 import { StartDateStep } from "../../steps/start-date-step";
 import { EndDateStep } from "../../steps/end-date-step";
@@ -19,6 +23,7 @@ import { RestrictionsStep } from "../../steps/restrictions-step";
 import { DexStep } from "../../steps/dex-step";
 import { Button } from "@metrom-xyz/ui";
 import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
+import { AMM_SUPPORTS_RANGE_INCENTIVES } from "@/src/commons";
 
 import styles from "./styles.module.css";
 
@@ -195,6 +200,9 @@ export function AmmPoolLiquidityForm({
                     onError={handlePayloadOnError}
                 />
                 {payload.pool &&
+                    AMM_SUPPORTS_RANGE_INCENTIVES[
+                        payload.pool.amm as SupportedAmm
+                    ] &&
                     payload.pool.liquidityType ===
                         AmmPoolLiquidityType.Concentrated && (
                         <RangeStep
