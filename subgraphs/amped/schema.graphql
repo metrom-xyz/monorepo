@@ -3,17 +3,19 @@ type Collateral @entity(immutable: false) {
     name: String!
     symbol: String!
     decimals: Int!
-    size: BigInt!
+    tvl: BigInt!
+    usdTvl: BigInt!
+    liquidity: BigInt!
 }
 
 type Position @entity(immutable: false) {
     id: Bytes!
     owner: Bytes!
-    size: BigInt!
+    liquidity: BigInt!
     collateral: Collateral!
 }
 
-type SizeChange @entity(immutable: true) {
+type LiquidityChange @entity(immutable: true) {
     id: Bytes!
     timestamp: BigInt!
     position: Position!
