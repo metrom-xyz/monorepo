@@ -1,6 +1,5 @@
-import { CHAIN_DATA } from "@/src/commons";
-import { ProtocolType } from "@/src/types/protocol";
-import { SupportedDex } from "@metrom-xyz/sdk";
+import { CHAIN_DATA, ProtocolType } from "@metrom-xyz/chains-data";
+import { Environment, SupportedDex } from "@metrom-xyz/sdk";
 import { exec } from "node:child_process";
 import { writeFileSync } from "node:fs";
 import { join } from "node:path";
@@ -22,7 +21,9 @@ const HOMEPAGES: Record<SupportedDex, string> = {
     [SupportedDex.Velodrome]: "https://velodrome.finance/",
 };
 
-const chains = Object.values(CHAIN_DATA).filter((chain) => !chain.testnet);
+const chains = Object.values(CHAIN_DATA[Environment.Production]).filter(
+    (chain) => !chain.testnet,
+);
 const chainNames = chains.map((chain) => chain.name);
 
 const protocols: { slug: string; name: string }[] = [];

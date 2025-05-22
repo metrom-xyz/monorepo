@@ -6,9 +6,9 @@ import { WalletIcon } from "@/src/assets/wallet-icon";
 import { useConnectModal } from "@rainbow-me/rainbowkit";
 import { useCallback, useEffect, useState } from "react";
 import { ApproveTokens } from "./approve-tokens";
-import { useChainData } from "@/src/hooks/useChainData";
 import type { UsdPricedErc20TokenAmount } from "@metrom-xyz/sdk";
 import type { BaseTransaction } from "@safe-global/safe-apps-sdk";
+import { useChainData } from "@/src/hooks/useChainData";
 
 import styles from "./styles.module.css";
 

@@ -29,17 +29,17 @@ import {
 } from "@/src/utils/filtering";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import { useRouter as useLocalizedRouter } from "@/i18n/routing";
-import { SupportedChain } from "@metrom-xyz/contracts";
 import { useChains } from "wagmi";
 import classNames from "classnames";
-import { CHAIN_DATA } from "@/src/commons";
 import { Lv2PointsCampaignBanner } from "./lv2-points-campaigns-banner";
 import { FilterableStatus, type SVGIcon } from "@/src/types/common";
 import type { TranslationsKeys } from "@/src/types/utils";
-import { useSupportedProtocols } from "@/src/hooks/useSupportedProtocols";
 import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
+import { getChainData } from "@/src/utils/chain";
+import { useSupportedProtocols } from "@/src/hooks/useSupportedProtocols";
 
 import styles from "./styles.module.css";
+import { useChainData } from "@/src/hooks/useChainData";
 
 const PAGE_SIZE = 10;
 const CHAIN_ALL = 0;
@@ -97,9 +97,7 @@ const statusSelectRenderOption = (option: {
 
 const chainSelectRenderOption = (option: { label: string; value: number }) => {
     const ChainIcon =
-        option.value !== 0
-            ? CHAIN_DATA[option.value as SupportedChain]?.icon
-            : null;
+        option.value !== 0 ? getChainData(option.value).icon : null;
     return (
         <div className={styles.customOptionContainer}>
             {ChainIcon && <ChainIcon className={styles.icon} />}
@@ -144,6 +142,9 @@ export function Campaigns() {
     const [chain, setChain] = useState(CHAIN_ALL);
     const [debouncedSearch, setDebouncedSearch] = useState(search);
     const [pageNumber, setPageNumber] = useState(1);
+
+    const data = useChainData(chain);
+    console.log("contract", data?.metromContract);
 
     const filtersActive = useMemo(
         () =>
@@ -215,7 +216,7 @@ export function Campaigns() {
             },
         ];
         for (const chain of chains) {
-            const { name } = CHAIN_DATA[chain.id as SupportedChain];
+            const { name } = getChainData(chain.id);
 
             options.push({
                 label: name,

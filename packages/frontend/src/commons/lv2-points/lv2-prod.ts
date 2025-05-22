@@ -1,11 +1,10 @@
 import { SupportedLiquityV2 } from "@metrom-xyz/sdk";
-import { QuillLogo } from "@/src/assets/logos/liquity-v2-platforms/quill";
 import {
     Lv2PointsCampaign2Action,
     type Lv2PointsCampaign,
 } from "@/src/types/lv2-points-campaign";
 import { SupportedChain } from "@metrom-xyz/contracts";
-import { OrkiLogo } from "@/src/assets/logos/liquity-v2-platforms/orki";
+import { OrkiLogo, QuillLogo } from "@metrom-xyz/chains-data";
 
 export const lv2PointsCampaignsProd: Record<
     SupportedLiquityV2,

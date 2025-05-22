@@ -21,7 +21,6 @@ import {
 } from "@metrom-xyz/sdk";
 import type { Dayjs } from "dayjs";
 import type { Address } from "viem";
-import type { ChainData } from "../commons";
 import {
     LiquityV2Action,
     type RestrictionType,
@@ -30,9 +29,10 @@ import {
 import {
     DepositUrlType,
     ProtocolType,
+    type ChainData,
     type DexProtocol,
     type LiquityV2Protocol,
-} from "./protocol";
+} from "@metrom-xyz/chains-data";
 import type { PropertyUnion } from "./utils";
 
 export interface ClaimWithRemaining extends Claim {

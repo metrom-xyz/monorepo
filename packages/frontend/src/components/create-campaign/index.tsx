@@ -7,10 +7,10 @@ import { LiquityV2CampaignIcon } from "@/src/assets/liquity-v2-campaign-icon";
 import { AmmCampaignIcon } from "@/src/assets/amm-campaign-icon";
 import classNames from "classnames";
 import { CampaignType } from "@/src/types/campaign";
-import { useProtocolsInChain } from "@/src/hooks/useProtocolsInChain";
+import { ProtocolType } from "@metrom-xyz/chains-data";
 import { useChainId } from "wagmi";
-import { ProtocolType } from "@/src/types/protocol";
 import { RedirectType } from "next/navigation";
+import { useProtocolsInChain } from "@/src/hooks/useProtocolsInChain";
 
 import styles from "./styles.module.css";
 

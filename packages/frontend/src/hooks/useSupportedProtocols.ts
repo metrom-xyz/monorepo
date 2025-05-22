@@ -1,10 +1,10 @@
-import { CHAIN_DATA } from "../commons";
-import { type ProtocolBase } from "../types/protocol";
+import { CHAIN_DATA, type ProtocolBase } from "@metrom-xyz/chains-data";
+import { ENVIRONMENT } from "../commons/env";
 
 export function useSupportedProtocols(): ProtocolBase[] {
     const protocols: Record<string, ProtocolBase> = {};
 
-    Object.entries(CHAIN_DATA).forEach(([_, chainData]) => {
+    Object.entries(CHAIN_DATA[ENVIRONMENT]).forEach(([_, chainData]) => {
         for (const protocol of chainData.protocols) {
             if (!protocols[protocol.slug]) {
                 protocols[protocol.slug] = protocol;

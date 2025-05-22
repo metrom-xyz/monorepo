@@ -15,7 +15,6 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 import { MetromLightLogo } from "@/src/assets/metrom-light-logo";
 import { useRouter } from "@/src/i18n/routing";
-import { useChainData } from "@/src/hooks/useChainData";
 import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
 import { ApproveTokensButton } from "./approve-tokens-button";
 import { Rewards } from "./rewards";
@@ -42,6 +41,7 @@ import { encodeFunctionData } from "viem/utils";
 import { type BaseTransaction } from "@safe-global/safe-apps-sdk";
 import { useLiquidityInRange } from "@/src/hooks/useLiquidityInRange";
 import { SAFE_APP_SDK } from "@/src/commons";
+import { useChainData } from "@/src/hooks/useChainData";
 
 import styles from "./styles.module.css";
 

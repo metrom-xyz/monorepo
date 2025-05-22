@@ -1,60 +1,15 @@
 import {
-    type Erc20Token,
     Environment,
     METROM_API_CLIENT as METROM_API_CLIENTS,
     SupportedAmm,
 } from "@metrom-xyz/sdk";
-import { type ChainContract, type Chain } from "viem";
-import { type Protocol } from "../types/protocol";
-import type { SVGIcon } from "../types/common";
-import type { FunctionComponent } from "react";
-import { SupportedChain } from "@metrom-xyz/contracts";
+import { type Chain } from "viem";
 import { ENVIRONMENT } from "./env";
 import SafeAppsSdk from "@safe-global/safe-apps-sdk";
 import {
-    holesky,
-    mode,
-    mantle,
-    base,
-    baseSepolia,
-    taiko,
-    scroll,
-    sonic,
-    gnosis,
-    sepolia,
-    telos,
-    swellchain,
-    lightlinkPhoenix,
-    sei,
-} from "viem/chains";
-import {
-    holeskyData,
-    modeData,
-    mantleData,
-    sonicData,
-    swellData,
-    baseData,
-    baseSepoliaData,
-    taikoData,
-    scrollData,
-    form,
-    formData,
-    gnosisData,
-    sepoliaData,
-    telosData,
-    lightlinkPhoenixData,
-    seiData,
-} from "./chains";
-
-export interface ChainData {
-    testnet: boolean;
-    name: string;
-    metromContract: ChainContract;
-    blockExplorers: Chain["blockExplorers"];
-    icon: FunctionComponent<SVGIcon>;
-    protocols: Protocol[];
-    baseTokens: Erc20Token[];
-}
+    SUPPORTED_DEVELOPMENT_CHAINS,
+    SUPPORTED_PRODUCTION_CHAINS,
+} from "@metrom-xyz/chains-data";
 
 export const BASE_URL = "https://app.metrom.xyz";
 
@@ -72,41 +27,10 @@ export const MAXIMUM_REWARDS_RESTRICTIONS = 20;
 
 export const SUPPORTED_CHAINS: [Chain, ...Chain[]] =
     ENVIRONMENT === Environment.Production
-        ? [
-              mode,
-              mantle,
-              base,
-              taiko,
-              scroll,
-              sonic,
-              form,
-              gnosis,
-              telos,
-              lightlinkPhoenix,
-              swellchain,
-          ]
-        : [holesky, baseSepolia, sepolia, sei, swellchain];
+        ? SUPPORTED_PRODUCTION_CHAINS
+        : SUPPORTED_DEVELOPMENT_CHAINS;
 
 export const TOKEN_ICONS_URL = `https://raw.githubusercontent.com/metrom-xyz/token-icons/refs/heads/main/${ENVIRONMENT === Environment.Production ? "mainnet" : "testnet"}-icons.json`;
-
-export const CHAIN_DATA: Record<SupportedChain, ChainData> = {
-    [SupportedChain.Holesky]: holeskyData,
-    [SupportedChain.BaseSepolia]: baseSepoliaData,
-    [SupportedChain.Sepolia]: sepoliaData,
-
-    [SupportedChain.Base]: baseData,
-    [SupportedChain.Mode]: modeData,
-    [SupportedChain.Mantle]: mantleData,
-    [SupportedChain.Taiko]: taikoData,
-    [SupportedChain.Scroll]: scrollData,
-    [SupportedChain.Sonic]: sonicData,
-    [SupportedChain.Swell]: swellData,
-    [SupportedChain.Form]: formData,
-    [SupportedChain.Gnosis]: gnosisData,
-    [SupportedChain.Telos]: telosData,
-    [SupportedChain.LightLinkPhoenix]: lightlinkPhoenixData,
-    [SupportedChain.Sei]: seiData,
-};
 
 export const AMM_SUPPORTS_RANGE_INCENTIVES: Record<SupportedAmm, boolean> = {
     [SupportedAmm.AlgebraIntegral]: true,

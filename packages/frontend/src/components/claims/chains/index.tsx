@@ -2,8 +2,8 @@ import classNames from "classnames";
 import { Typography, Skeleton, Card } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
 import type { Chain } from "viem";
-import type { ChainData } from "@/src/commons";
 import { formatUsdAmount } from "@/src/utils/format";
+import type { ChainData } from "@metrom-xyz/chains-data";
 
 import styles from "./styles.module.css";
 

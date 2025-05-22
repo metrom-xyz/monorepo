@@ -1,9 +1,9 @@
-import {
+import type {
+    DexProtocol,
+    LiquityV2Protocol,
+    Protocol,
     ProtocolType,
-    type DexProtocol,
-    type LiquityV2Protocol,
-    type Protocol,
-} from "../types/protocol";
+} from "@metrom-xyz/chains-data";
 import { useChainData } from "./useChainData";
 
 interface ProtocolByType {

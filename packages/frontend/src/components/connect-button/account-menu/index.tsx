@@ -12,13 +12,13 @@ import { TickIcon } from "@/src/assets/tick-icon";
 import { CopyIcon } from "@/src/assets/copy-icon";
 import { ThemeSwitcherTabs } from "../../theme-switcher-tabs";
 import { formatAmount } from "@/src/utils/format";
-import { useChainData } from "@/src/hooks/useChainData";
-import { useIsChainSupported } from "@/src/hooks/useIsChainSupported";
 import { ErrorIcon } from "@/src/assets/error-icon";
 import { RemoveScroll } from "react-remove-scroll";
 import { SAFE } from "@/src/commons/env";
 import { SafeLogo } from "@/src/assets/logos/safe";
 import Image from "next/image";
+import { useChainData } from "@/src/hooks/useChainData";
+import { useIsChainSupported } from "@/src/hooks/useIsChainSupported";
 
 import styles from "./styles.module.css";
 

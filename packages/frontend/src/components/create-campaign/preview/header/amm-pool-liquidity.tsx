@@ -1,11 +1,11 @@
 import { formatPercentage } from "@/src/utils/format";
 import { Typography } from "@metrom-xyz/ui";
 import { type AmmPoolLiquidityCampaignPreviewPayload } from "@/src/types/campaign";
-import { ProtocolType } from "@/src/types/protocol";
 import { useChainId } from "wagmi";
-import { useProtocolsInChain } from "@/src/hooks/useProtocolsInChain";
+import { ProtocolType } from "@metrom-xyz/chains-data";
 import { useMemo } from "react";
 import { PoolRemoteLogo } from "@/src/components/pool-remote-logo";
+import { useProtocolsInChain } from "@/src/hooks/useProtocolsInChain";
 
 import styles from "./styles.module.css";
 
