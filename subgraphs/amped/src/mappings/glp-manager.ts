@@ -37,10 +37,10 @@ export function fetchTokenNameOrThrow(address: Address): string {
     throw new Error(`Could not fetch ERC20 token name for ${address.toHex()}`);
 }
 
-export function fetchTokenDecimalsOrThrow(address: Address): BigInt {
+export function fetchTokenDecimalsOrThrow(address: Address): i32 {
     const contract = Erc20.bind(address);
     const result = contract.try_decimals();
-    if (!result.reverted) return result.value;
+    if (!result.reverted) return result.value.toI32();
 
     throw new Error(
         `Could not fetch ERC20 token decimals for ${address.toHex()}`,
@@ -67,6 +67,7 @@ function getOrCreatePosition(owner: Address, collateral: Address): Position {
     if (position !== null) return position;
 
     position = new Position(id);
+    position.owner = owner;
     position.size = BI_0;
     position.collateral = collateral;
     position.save();

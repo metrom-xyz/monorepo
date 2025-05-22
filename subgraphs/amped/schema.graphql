@@ -2,12 +2,13 @@ type Collateral @entity(immutable: false) {
     id: Bytes!
     name: String!
     symbol: String!
-    decimals: BigInt!
+    decimals: Int!
     size: BigInt!
 }
 
 type Position @entity(immutable: false) {
     id: Bytes!
+    owner: Bytes!
     size: BigInt!
     collateral: Collateral!
 }
