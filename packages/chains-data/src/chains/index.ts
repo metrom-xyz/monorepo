@@ -9,6 +9,7 @@ export { taikoData } from "./taiko";
 export { scrollData } from "./scroll";
 export { formData, form } from "./form";
 export { gnosisData } from "./gnosis";
+export { hemiData } from "./hemi";
 export { sepoliaData } from "./sepolia";
 export { telosData } from "./telos";
 export { lightlinkPhoenixData } from "./lightlink-phoenix";

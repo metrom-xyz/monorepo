@@ -138,4 +138,16 @@ export const DEPLOYMENTS: {
             },
         },
     },
+    hemi: {
+        "uni-v3": {
+            Factory: {
+                address: "0x346239972d1fa486FC4a521031BC81bFB7D6e8a4",
+                startBlock: 1293598,
+            },
+            NonFungiblePositionManager: {
+                address: "0xEFdE184f4b5d79f7c3b7Efc0388d829ff9af0050",
+                startBlock: 1293633,
+            },
+        },
+    },
 };
