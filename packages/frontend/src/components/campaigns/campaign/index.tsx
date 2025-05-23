@@ -47,8 +47,8 @@ export function CampaignRow({ campaign }: CampaignProps) {
                         <Action campaign={campaign} />
                     </div>
                     <div className={styles.row}>
-                        <Protocol campaign={campaign} />
                         <Chain id={campaign.chainId} />
+                        <Protocol campaign={campaign} />
                         <Status
                             from={campaign.from}
                             to={campaign.to}

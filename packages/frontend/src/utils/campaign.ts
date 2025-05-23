@@ -94,7 +94,6 @@ export function getCampaignName(
     switch (campaign.target.type) {
         case TargetType.AmmPoolLiquidity: {
             return t("campaignActions.lp", {
-                dex: campaign.target.pool.dex.name,
                 pool: campaign.target.pool.tokens
                     .map((token) => token.symbol)
                     .join("/"),
@@ -110,14 +109,12 @@ export function getCampaignName(
             ) as LiquityV2Protocol | undefined;
 
             return t("campaignActions.borrow", {
-                brand: campaign.target.brand.name,
                 debtToken: targetProtocol?.debtToken.symbol || "",
                 token: campaign.target.collateral.symbol,
             });
         }
         case TargetType.LiquityV2StabilityPool: {
             return t("campaignActions.depositStabilityPool", {
-                brand: campaign.target.brand.name,
                 token: campaign.target.collateral.symbol,
             });
         }

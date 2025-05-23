@@ -702,9 +702,9 @@
     },
     "apr": "APR",
     "campaignActions": {
-        "lp": "LP on {dex} {pool}",
-        "borrow": "Borrow {debtToken} using {token} on {brand}",
-        "depositStabilityPool": "Deposit to {token} stability pool on {brand}"
+        "lp": "Provide liquidity to {pool}",
+        "borrow": "Borrow {debtToken} using {token}",
+        "depositStabilityPool": "Deposit to {token} stability pool"
     },
     "socialCampaignPreview": {
         "title": "{protocol} on {chain}",
