@@ -18,6 +18,7 @@ export enum SupportedDex {
     Unagi = "unagi",
     Carbon = "carbon",
     Velodrome = "velodrome",
+    Ambient = "ambient",
 }
 
 export enum SupportedLiquityV2 {
