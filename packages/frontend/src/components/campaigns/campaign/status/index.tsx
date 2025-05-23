@@ -50,15 +50,10 @@ export function Status({
                 />
             </div>
             <div className={styles.text}>
-                <Typography size="sm" weight="medium" uppercase>
+                <Typography size="xs" weight="medium" uppercase>
                     {text}
                 </Typography>
-                <Typography
-                    className={styles.duration}
-                    light
-                    size="sm"
-                    weight="medium"
-                >
+                <Typography className={styles.duration} light size="xs">
                     {duration}
                 </Typography>
             </div>

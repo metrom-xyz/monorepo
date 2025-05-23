@@ -20,7 +20,7 @@ export function Chain({ id }: ChainProps) {
             style={{ backgroundColor: `${chainData?.brandColor}26` }}
         >
             {ChainIcon && <ChainIcon className={styles.icon} />}
-            <Typography weight="medium" size="sm" uppercase light>
+            <Typography size="xs" uppercase>
                 {chainData?.name}
             </Typography>
         </div>
