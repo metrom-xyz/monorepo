@@ -54,11 +54,6 @@ const TABLE_COLUMNS: {
         sort: true,
     },
     {
-        name: "status",
-        label: "status",
-        sort: false,
-    },
-    {
         name: "apr",
         label: "apr",
         sort: true,
@@ -426,6 +421,19 @@ export function Campaigns() {
                                             [styles.sort]: sort,
                                         })}
                                     >
+                                        {sort && index !== 0 && (
+                                            <ArrowRightIcon
+                                                className={classNames(
+                                                    styles.sortIcon,
+                                                    {
+                                                        [styles.asc]:
+                                                            sortField ===
+                                                                name &&
+                                                            order === 1,
+                                                    },
+                                                )}
+                                            />
+                                        )}
                                         <Typography
                                             size="sm"
                                             weight="medium"
@@ -433,7 +441,7 @@ export function Campaigns() {
                                         >
                                             {t(`header.${label}`)}
                                         </Typography>
-                                        {sort && (
+                                        {sort && index === 0 && (
                                             <ArrowRightIcon
                                                 className={classNames(
                                                     styles.sortIcon,

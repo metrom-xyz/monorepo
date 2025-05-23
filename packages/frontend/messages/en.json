@@ -59,7 +59,6 @@
         },
         "header": {
             "details": "Details",
-            "status": "Status",
             "apr": "APR",
             "rewards": "Daily rewards"
         },
