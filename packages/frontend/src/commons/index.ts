@@ -26,6 +26,7 @@ import {
     swellchain,
     lightlinkPhoenix,
     sei,
+    hemi,
 } from "viem/chains";
 import {
     holeskyData,
@@ -44,6 +45,7 @@ import {
     telosData,
     lightlinkPhoenixData,
     seiData,
+    hemiData,
 } from "./chains";
 
 export interface ChainData {
@@ -84,6 +86,7 @@ export const SUPPORTED_CHAINS: [Chain, ...Chain[]] =
               telos,
               lightlinkPhoenix,
               swellchain,
+              hemi,
           ]
         : [holesky, baseSepolia, sepolia, sei, swellchain];
 
@@ -106,6 +109,7 @@ export const CHAIN_DATA: Record<SupportedChain, ChainData> = {
     [SupportedChain.Telos]: telosData,
     [SupportedChain.LightLinkPhoenix]: lightlinkPhoenixData,
     [SupportedChain.Sei]: seiData,
+    [SupportedChain.Hemi]: hemiData,
 };
 
 export const AMM_SUPPORTS_RANGE_INCENTIVES: Record<SupportedAmm, boolean> = {

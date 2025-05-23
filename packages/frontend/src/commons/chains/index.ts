@@ -13,3 +13,4 @@ export { sepoliaData } from "./sepolia";
 export { telosData } from "./telos";
 export { lightlinkPhoenixData } from "./lightlink-phoenix";
 export { seiData } from "./sei";
+export { hemiData } from "./hemi";

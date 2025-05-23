@@ -22,6 +22,7 @@ const NETWORK_NAME: Record<SupportedChain, string> = {
     [SupportedChain.LightLinkPhoenix]: "lightlink-phoenix",
     [SupportedChain.Sei]: "sei-mainnet",
     [SupportedChain.Swell]: "swellchain",
+    [SupportedChain.Hemi]: "hemi",
 };
 
 const [, , rawNetwork = ""] = process.argv;
