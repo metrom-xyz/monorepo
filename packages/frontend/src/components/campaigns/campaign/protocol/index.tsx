@@ -30,7 +30,7 @@ export function Protocol({ campaign }: ProtocolProps) {
     return (
         <div className={classNames(styles.root, commonStyles.chip)}>
             {Logo ? <Logo className={styles.icon} /> : "-"}
-            <Typography size="sm" uppercase weight="medium" light>
+            <Typography size="xs" uppercase>
                 {protocol?.name}
             </Typography>
         </div>
