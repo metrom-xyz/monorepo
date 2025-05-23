@@ -47,7 +47,7 @@
 .table {
     @apply min-w-[800px] 
         grid
-        grid-cols-[4fr_1fr_1fr_1fr]
+        grid-cols-[4fr_1fr_1.5fr]
         gap-5
         items-center;
 }
@@ -95,14 +95,21 @@
         my-0
         grid
         grid-cols-subgrid
-        gap-y-1
         col-span-full;
+}
+
+.body > :first-child > div {
+    @apply rounded-t-xl;
+}
+
+.body > :last-child > div {
+    @apply rounded-b-xl;
 }
 
 .empty {
     @apply w-full
         col-span-full
-        h-[956px]
+        h-[920px]
         flex
         flex-col
         items-center

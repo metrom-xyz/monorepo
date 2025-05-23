@@ -49,6 +49,11 @@ export function CampaignRow({ campaign }: CampaignProps) {
                     <div className={styles.row}>
                         <Protocol campaign={campaign} />
                         <Chain id={campaign.chainId} />
+                        <Status
+                            from={campaign.from}
+                            to={campaign.to}
+                            status={campaign.status}
+                        />
                         {campaign.specification?.kpi && (
                             <div className={styles.chip}>
                                 <Typography size="sm" weight="medium" uppercase>
@@ -72,11 +77,6 @@ export function CampaignRow({ campaign }: CampaignProps) {
                         )}
                     </div>
                 </div>
-                <Status
-                    from={campaign.from}
-                    to={campaign.to}
-                    status={campaign.status}
-                />
                 <Apr
                     campaignId={campaign.id}
                     chainId={campaign.chainId}
@@ -114,9 +114,9 @@ export function SkeletonCampaign() {
                     <div className={styles.row}>
                         <SkeletonProtocol />
                         <SkeletonChain />
+                        <SkeletonStatus />
                     </div>
                 </div>
-                <SkeletonStatus />
                 <SkeletonApr />
                 <SkeletonRewards />
             </Card>
