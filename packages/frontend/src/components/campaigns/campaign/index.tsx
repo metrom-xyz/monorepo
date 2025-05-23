@@ -56,14 +56,14 @@ export function CampaignRow({ campaign }: CampaignProps) {
                         />
                         {campaign.specification?.kpi && (
                             <div className={styles.chip}>
-                                <Typography size="sm" weight="medium" uppercase>
+                                <Typography size="xs" uppercase>
                                     {t("kpi")}
                                 </Typography>
                             </div>
                         )}
                         {campaign.specification?.priceRange && (
                             <div className={styles.chip}>
-                                <Typography size="sm" weight="medium" uppercase>
+                                <Typography size="xs" uppercase>
                                     {t("pool.range")}
                                 </Typography>
                             </div>
