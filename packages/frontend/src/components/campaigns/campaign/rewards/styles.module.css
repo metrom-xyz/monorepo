@@ -37,5 +37,5 @@
 }
 
 .textRewards {
-    @apply text-base min-w-[50px] text-right;
+    @apply text-base w-full max-w-24 text-right;
 }
