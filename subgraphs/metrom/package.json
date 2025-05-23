@@ -20,6 +20,7 @@
         "deploy:lightlink-phoenix": "pnpm prepare:deploy lightlink-phoenix && pnpm codegen && graph create --node https://graph.phoenix.lightlink.io/rpc metrom-lightlink-phoenix && graph build && graph deploy --node https://graph.phoenix.lightlink.io/rpc metrom-lightlink-phoenix -l 0.0.1",
         "deploy:sei": "pnpm prepare:deploy sei-mainnet && pnpm codegen && graph build && graph deploy metrom-sei -l 0.0.1",
         "deploy:swell": "pnpm prepare:deploy swellchain && pnpm codegen && graph deploy metrom-swell -l 0.0.2",
+        "deploy:hemi": "pnpm prepare:deploy hemi && pnpm codegen && graph deploy metrom-hemi -l 0.0.1",
         "lint": "eslint .",
         "format": "eslint --fix ."
     },
@@ -31,7 +32,7 @@
     },
     "devDependencies": {
         "@eslint/js": "^9.26.0",
-        "@metrom-xyz/contracts": "^0.46.0",
+        "@metrom-xyz/contracts": "^0.47.0",
         "@types/mustache": "^4.2.6",
         "@types/node": "^22.15.18",
         "eslint": "^9.26.0",

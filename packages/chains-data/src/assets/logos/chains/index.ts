@@ -2,6 +2,7 @@ export * from "./base";
 export * from "./eth";
 export * from "./form";
 export * from "./gnosis";
+export * from "./hemi";
 export * from "./lightlink-phoenix";
 export * from "./mantle";
 export * from "./mode";

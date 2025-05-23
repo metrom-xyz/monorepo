@@ -14,6 +14,7 @@ import {
     swellchain,
     lightlinkPhoenix,
     sei,
+    hemi,
 } from "viem/chains";
 import {
     holeskyData,
@@ -33,6 +34,7 @@ import {
     seiData,
     swellDevelopmentData,
     swellProductionData,
+    hemiData,
 } from "./chains";
 import {
     ChainData,
@@ -73,6 +75,7 @@ export const SUPPORTED_PRODUCTION_CHAINS: [Chain, ...Chain[]] = [
     telos,
     lightlinkPhoenix,
     swellchain,
+    hemi,
 ];
 
 export const CHAIN_DATA: {
@@ -99,5 +102,6 @@ export const CHAIN_DATA: {
         [SupportedProductionChain.Telos]: telosData,
         [SupportedProductionChain.LightLinkPhoenix]: lightlinkPhoenixData,
         [SupportedProductionChain.Sei]: seiData,
+        [SupportedProductionChain.Hemi]: hemiData,
     },
 };

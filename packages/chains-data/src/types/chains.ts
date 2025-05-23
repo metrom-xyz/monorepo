@@ -38,4 +38,5 @@ export enum SupportedProductionChain {
     LightLinkPhoenix = SupportedChain.LightLinkPhoenix,
     Sei = SupportedChain.Sei,
     Swell = SupportedChain.Swell,
+    Hemi = SupportedChain.Hemi,
 }
