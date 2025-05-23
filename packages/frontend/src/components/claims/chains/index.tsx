@@ -3,7 +3,7 @@ import { Typography, Skeleton, Card } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
 import type { Chain } from "viem";
 import { formatUsdAmount } from "@/src/utils/format";
-import type { ChainData } from "@metrom-xyz/chains-data";
+import type { ChainData } from "@metrom-xyz/chains";
 
 import styles from "./styles.module.css";
 

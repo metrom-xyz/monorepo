@@ -1,4 +1,4 @@
-import { CHAIN_DATA, ProtocolType } from "@metrom-xyz/chains-data";
+import { CHAIN_DATA, ProtocolType } from "@metrom-xyz/chains";
 import { Environment, SupportedDex } from "@metrom-xyz/sdk";
 import { exec } from "node:child_process";
 import { writeFileSync } from "node:fs";

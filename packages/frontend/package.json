@@ -18,7 +18,7 @@
         "@metrom-xyz/contracts": "^0.46.0",
         "@metrom-xyz/sdk": "workspace:*",
         "@metrom-xyz/ui": "workspace:*",
-        "@metrom-xyz/chains-data": "workspace:*",
+        "@metrom-xyz/chains": "workspace:*",
         "@rainbow-me/rainbowkit": "^2.2.5",
         "@safe-global/safe-apps-sdk": "^9.1.0",
         "@tanstack/react-query": "^5.76.1",

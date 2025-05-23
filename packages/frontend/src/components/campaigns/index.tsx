@@ -39,7 +39,6 @@ import { getChainData } from "@/src/utils/chain";
 import { useSupportedProtocols } from "@/src/hooks/useSupportedProtocols";
 
 import styles from "./styles.module.css";
-import { useChainData } from "@/src/hooks/useChainData";
 
 const PAGE_SIZE = 10;
 const CHAIN_ALL = 0;
@@ -142,9 +141,6 @@ export function Campaigns() {
     const [chain, setChain] = useState(CHAIN_ALL);
     const [debouncedSearch, setDebouncedSearch] = useState(search);
     const [pageNumber, setPageNumber] = useState(1);
-
-    const data = useChainData(chain);
-    console.log("contract", data?.metromContract);
 
     const filtersActive = useMemo(
         () =>

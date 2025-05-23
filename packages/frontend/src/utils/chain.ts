@@ -4,7 +4,7 @@ import {
     SupportedDevelopmentChain,
     SupportedProductionChain,
     type ChainData,
-} from "@metrom-xyz/chains-data";
+} from "@metrom-xyz/chains";
 import { ENVIRONMENT } from "../commons/env";
 
 export function getChainData(chainId: number): ChainData {
