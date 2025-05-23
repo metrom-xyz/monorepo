@@ -1,11 +1,12 @@
 import type { SupportedChain } from "@metrom-xyz/contracts";
 import type { Hex } from "viem";
-import { CHAIN_DATA, METROM_API_CLIENT } from "../commons";
+import { METROM_API_CLIENT } from "../commons";
 import { useQuery } from "@tanstack/react-query";
 import { getCampaignName } from "../utils/campaign";
 import type { HookBaseParams } from "../types/hooks";
 import { useTranslations } from "next-intl";
 import { Campaign } from "../types/campaign";
+import { getChainData } from "../utils/chain";
 
 interface UseCampaignParams extends HookBaseParams {
     chainId?: SupportedChain;
@@ -34,7 +35,7 @@ export function useCampaign({
                 });
                 return new Campaign(
                     campaign,
-                    CHAIN_DATA[chainId],
+                    getChainData(chainId),
                     getCampaignName(t, campaign),
                 );
             } catch (error) {

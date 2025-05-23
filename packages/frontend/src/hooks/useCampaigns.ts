@@ -1,10 +1,10 @@
-import { CHAIN_DATA, METROM_API_CLIENT } from "../commons";
+import { METROM_API_CLIENT } from "../commons";
 import { useQuery } from "@tanstack/react-query";
 import { getCampaignName } from "../utils/campaign";
 import { Campaign } from "../types/campaign";
-import type { SupportedChain } from "@metrom-xyz/contracts";
 import type { HookBaseParams } from "../types/hooks";
 import { useTranslations } from "next-intl";
+import { getChainData } from "../utils/chain";
 
 interface UseCampaignsParams extends HookBaseParams {}
 
@@ -23,7 +23,7 @@ export function useCampaigns({ enabled = true }: UseCampaignsParams = {}): {
                     .map((campaign) => {
                         return new Campaign(
                             campaign,
-                            CHAIN_DATA[campaign.chainId as SupportedChain],
+                            getChainData(campaign.chainId),
                             getCampaignName(t, campaign),
                         );
                     })

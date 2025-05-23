@@ -5,9 +5,9 @@ import { useChainId, useChains, useSwitchChain } from "wagmi";
 import { PopoverPicker } from "./popover-picker";
 import { DrawerPicker } from "./drawer-picker";
 import { useClickAway } from "react-use";
-import { useIsChainSupported } from "@/src/hooks/useIsChainSupported";
-import { useChainData } from "@/src/hooks/useChainData";
 import { AnimatePresence, motion } from "motion/react";
+import { useChainData } from "@/src/hooks/useChainData";
+import { useIsChainSupported } from "@/src/hooks/useIsChainSupported";
 
 import styles from "./styles.module.css";
 
