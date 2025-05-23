@@ -49,24 +49,9 @@ const TABLE_COLUMNS: {
     sort: boolean;
 }[] = [
     {
-        name: "chain",
-        label: "chain",
-        sort: false,
-    },
-    {
         name: "protocol",
-        label: "protocol",
+        label: "details",
         sort: true,
-    },
-    {
-        name: "action",
-        label: "action",
-        sort: false,
-    },
-    {
-        name: "status",
-        label: "status",
-        sort: false,
     },
     {
         name: "apr",
@@ -436,10 +421,27 @@ export function Campaigns() {
                                             [styles.sort]: sort,
                                         })}
                                     >
-                                        <Typography size="sm" weight="medium">
+                                        {sort && index !== 0 && (
+                                            <ArrowRightIcon
+                                                className={classNames(
+                                                    styles.sortIcon,
+                                                    {
+                                                        [styles.asc]:
+                                                            sortField ===
+                                                                name &&
+                                                            order === 1,
+                                                    },
+                                                )}
+                                            />
+                                        )}
+                                        <Typography
+                                            size="sm"
+                                            weight="medium"
+                                            uppercase
+                                        >
                                             {t(`header.${label}`)}
                                         </Typography>
-                                        {sort && (
+                                        {sort && index === 0 && (
                                             <ArrowRightIcon
                                                 className={classNames(
                                                     styles.sortIcon,

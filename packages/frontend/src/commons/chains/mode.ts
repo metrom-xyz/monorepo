@@ -12,6 +12,7 @@ export const modeData: ChainData = {
     metromContract: ADDRESS[SupportedChain.Mode],
     blockExplorers: mode.blockExplorers,
     icon: ModeLogo,
+    brandColor: "#dffe00",
     protocols: [
         {
             type: ProtocolType.Dex,

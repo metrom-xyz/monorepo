@@ -3,6 +3,8 @@ import {
     Environment,
     METROM_API_CLIENT as METROM_API_CLIENTS,
     SupportedAmm,
+    SupportedDex,
+    SupportedLiquityV2,
 } from "@metrom-xyz/sdk";
 import { type ChainContract, type Chain } from "viem";
 import { type Protocol } from "../types/protocol";
@@ -52,6 +54,7 @@ export interface ChainData {
     metromContract: ChainContract;
     blockExplorers: Chain["blockExplorers"];
     icon: FunctionComponent<SVGIcon>;
+    brandColor?: string;
     protocols: Protocol[];
     baseTokens: Erc20Token[];
 }
@@ -106,6 +109,30 @@ export const CHAIN_DATA: Record<SupportedChain, ChainData> = {
     [SupportedChain.Telos]: telosData,
     [SupportedChain.LightLinkPhoenix]: lightlinkPhoenixData,
     [SupportedChain.Sei]: seiData,
+};
+
+export const PROTOCOLS_BRAND_COLORS: Record<
+    SupportedDex | SupportedLiquityV2,
+    string | undefined
+> = {
+    [SupportedDex.BaseSwap]: "#0154fe",
+    [SupportedDex.Fibonacci]: "#ba49cf",
+    [SupportedDex.Kim]: "#ff4500",
+    [SupportedDex.Panko]: "#e81899",
+    [SupportedDex.Scribe]: "#0094ff",
+    [SupportedDex.SilverSwap]: "#394480",
+    [SupportedDex.Swapr]: "#8780bf",
+    [SupportedDex.Swapsicle]: "#5161f2",
+    [SupportedDex.TestIntegral]: "#b080ff",
+    [SupportedDex.ThirdTrade]: undefined,
+    [SupportedDex.Unagi]: "#ed5ad5",
+    [SupportedDex.UniswapV3]: "#fc72ff",
+    [SupportedDex.Carbon]: "#00ac72",
+    [SupportedDex.Velodrome]: "#615cf6",
+    [SupportedLiquityV2.Quill]: "#ff5500",
+    [SupportedLiquityV2.Ebisu]: undefined,
+    [SupportedLiquityV2.Liquity]: undefined,
+    [SupportedLiquityV2.Orki]: "#2973eb",
 };
 
 export const AMM_SUPPORTS_RANGE_INCENTIVES: Record<SupportedAmm, boolean> = {
