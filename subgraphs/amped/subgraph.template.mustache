@@ -1,0 +1,64 @@
+specVersion: 1.0.0
+indexerHints:
+  prune: never
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum
+    name: Vault
+    network: {{network}}
+    source:
+      abi: Vault
+      address: "{{vaultAddress}}"
+      startBlock: {{vaultStartBlock}}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      file: ./src/mappings/vault.ts
+      entities: []
+      abis:
+        - name: Vault
+          file: ./abis/Vault.json
+        - name: Erc20
+          file: ./abis/Erc20.json
+        - name: Erc20BytesName
+          file: ./abis/Erc20BytesName.json
+        - name: Erc20BytesSymbol
+          file: ./abis/Erc20BytesSymbol.json
+      eventHandlers:
+        - event: IncreasePoolAmount(address,uint256)
+          handler: handleIncreasePoolAmount
+        - event: DecreasePoolAmount(address,uint256)
+          handler: handleDecreasePoolAmount
+        - event: IncreaseUsdgAmount(address,uint256)
+          handler: handleIncreaseUsdgAmount
+        - event: DecreaseUsdgAmount(address,uint256)
+          handler: handleDecreaseUsdgAmount
+  - kind: ethereum
+    name: GlpManager
+    network: {{network}}
+    source:
+      abi: GlpManager
+      address: "{{glpManagerAddress}}"
+      startBlock: {{glpManagerStartBlock}}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      file: ./src/mappings/glp-manager.ts
+      entities: []
+      abis:
+        - name: GlpManager
+          file: ./abis/GlpManager.json
+        - name: Erc20
+          file: ./abis/Erc20.json
+        - name: Erc20BytesName
+          file: ./abis/Erc20BytesName.json
+        - name: Erc20BytesSymbol
+          file: ./abis/Erc20BytesSymbol.json
+      eventHandlers:
+        - event: AddLiquidity(address,address,uint256,uint256,uint256,uint256,uint256)
+          handler: handleAddLiquidity
+        - event: RemoveLiquidity(address,address,uint256,uint256,uint256,uint256,uint256)
+          handler: handleRemoveLiquidity

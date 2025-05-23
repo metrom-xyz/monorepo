@@ -1,0 +1,23 @@
+type Collateral @entity(immutable: false) {
+    id: Bytes!
+    name: String!
+    symbol: String!
+    decimals: Int!
+    tvl: BigInt!
+    usdTvl: BigInt!
+    liquidity: BigInt!
+}
+
+type Position @entity(immutable: false) {
+    id: Bytes!
+    owner: Bytes!
+    liquidity: BigInt!
+    collateral: Collateral!
+}
+
+type LiquidityChange @entity(immutable: true) {
+    id: Bytes!
+    timestamp: BigInt!
+    position: Position!
+    delta: BigInt!
+}
