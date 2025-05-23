@@ -10,7 +10,7 @@ import {
     type LiquityV2CampaignPayload,
     type LiquityV2CampaignPayloadPart,
 } from "@/src/types/campaign";
-import { ProtocolType, type LiquityV2Protocol } from "@metrom-xyz/chains-data";
+import { ProtocolType, type LiquityV2Protocol } from "@metrom-xyz/chains";
 import { useProtocolsInChain } from "@/src/hooks/useProtocolsInChain";
 
 import styles from "./styles.module.css";

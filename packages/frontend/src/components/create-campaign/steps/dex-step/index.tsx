@@ -4,7 +4,7 @@ import { useTranslations } from "next-intl";
 import { Step } from "@/src/components/step";
 import { StepPreview } from "@/src/components/step/preview";
 import { StepContent } from "@/src/components/step/content";
-import { ProtocolType, type DexProtocol } from "@metrom-xyz/chains-data";
+import { ProtocolType, type DexProtocol } from "@metrom-xyz/chains";
 import classNames from "classnames";
 import { Typography } from "@metrom-xyz/ui";
 import {

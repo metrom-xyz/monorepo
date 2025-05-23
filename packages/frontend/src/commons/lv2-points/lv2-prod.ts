@@ -4,7 +4,7 @@ import {
     type Lv2PointsCampaign,
 } from "@/src/types/lv2-points-campaign";
 import { SupportedChain } from "@metrom-xyz/contracts";
-import { OrkiLogo, QuillLogo } from "@metrom-xyz/chains-data";
+import { OrkiLogo, QuillLogo } from "@metrom-xyz/chains";
 
 export const lv2PointsCampaignsProd: Record<
     SupportedLiquityV2,
