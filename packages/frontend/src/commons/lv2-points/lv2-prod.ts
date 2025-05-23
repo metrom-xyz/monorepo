@@ -65,6 +65,17 @@ export const lv2PointsCampaignsProd: Record<
                         multiplier: 2,
                         href: "https://honeypop.app/add/0x06eFdBFf2a14a7c8E15944D1F4A48F9F95F663A4/0xdb9E8F82D6d45fFf803161F2a5f75543972B229a/500",
                     },
+                    {
+                        targets: [
+                            "0xdb9E8F82D6d45fFf803161F2a5f75543972B229a",
+                            "0x06efdbff2a14a7c8e15944d1f4a48f9f95f663a4",
+                        ],
+                        minimumDuration: 3600,
+                        name: "USDQ/USDC LP",
+                        description: "Nuri",
+                        multiplier: 2,
+                        href: "https://www.nuri.exchange/liquidity/v2/0x082a51f4256555110350c5eec54e4c7e440a131e",
+                    },
                 ],
             },
             [Lv2PointsCampaign2Action.StabilityPool]: {
