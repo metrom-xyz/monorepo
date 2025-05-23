@@ -16,7 +16,7 @@ import type {
     ClaimWithRemaining,
     ReimbursementsWithRemaining,
 } from "@/src/types/campaign";
-import { type ChainData } from "@metrom-xyz/chains-data";
+import { type ChainData } from "@metrom-xyz/chains";
 import { getChainData } from "@/src/utils/chain";
 
 import styles from "./styles.module.css";

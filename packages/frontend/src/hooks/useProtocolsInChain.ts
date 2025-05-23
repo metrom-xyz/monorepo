@@ -3,7 +3,7 @@ import type {
     LiquityV2Protocol,
     Protocol,
     ProtocolType,
-} from "@metrom-xyz/chains-data";
+} from "@metrom-xyz/chains";
 import { useChainData } from "./useChainData";
 
 interface ProtocolByType {

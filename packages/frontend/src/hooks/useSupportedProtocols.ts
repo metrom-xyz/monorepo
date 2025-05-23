@@ -1,4 +1,4 @@
-import { CHAIN_DATA, type ProtocolBase } from "@metrom-xyz/chains-data";
+import { CHAIN_DATA, type ProtocolBase } from "@metrom-xyz/chains";
 import { ENVIRONMENT } from "../commons/env";
 
 export function useSupportedProtocols(): ProtocolBase[] {

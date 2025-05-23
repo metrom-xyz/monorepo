@@ -9,7 +9,7 @@ import SafeAppsSdk from "@safe-global/safe-apps-sdk";
 import {
     SUPPORTED_DEVELOPMENT_CHAINS,
     SUPPORTED_PRODUCTION_CHAINS,
-} from "@metrom-xyz/chains-data";
+} from "@metrom-xyz/chains";
 
 export const BASE_URL = "https://app.metrom.xyz";
 

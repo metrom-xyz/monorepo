@@ -4,7 +4,7 @@ import { SupportedDex, type AmmPoolWithTvl } from "@metrom-xyz/sdk";
 import { useQuery } from "@tanstack/react-query";
 import type { HookBaseParams } from "../types/hooks";
 import { useProtocolsInChain } from "./useProtocolsInChain";
-import { ProtocolType } from "@metrom-xyz/chains-data";
+import { ProtocolType } from "@metrom-xyz/chains";
 
 interface UsePoolsParams extends HookBaseParams {
     chainId: SupportedChain;

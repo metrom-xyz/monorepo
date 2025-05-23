@@ -5,7 +5,7 @@ import { useRouter } from "@/src/i18n/routing";
 import { AprChip } from "../../apr-chip";
 import { DistributablesType, type LiquityV2TargetType } from "@metrom-xyz/sdk";
 import { type TargetedNamedCampaign } from "@/src/types/campaign";
-import { ProtocolType } from "@metrom-xyz/chains-data";
+import { ProtocolType } from "@metrom-xyz/chains";
 import { useProtocolsInChain } from "@/src/hooks/useProtocolsInChain";
 
 import styles from "./styles.module.css";

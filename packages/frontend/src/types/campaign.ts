@@ -32,7 +32,7 @@ import {
     type ChainData,
     type DexProtocol,
     type LiquityV2Protocol,
-} from "@metrom-xyz/chains-data";
+} from "@metrom-xyz/chains";
 import type { PropertyUnion } from "./utils";
 
 export interface ClaimWithRemaining extends Claim {
