@@ -41,7 +41,7 @@ export function PopoverPicker({
         >
             <div className={styles.networksWrapper}>
                 {chains.map((chain) => {
-                    const { icon: ChainIcon, name } = getChainData(chain.id);
+                    const chainData = getChainData(chain.id);
 
                     return (
                         <div
@@ -51,8 +51,10 @@ export function PopoverPicker({
                             })}
                             onClick={getOnChangeHandler(chain.id)}
                         >
-                            <ChainIcon className={commonStyles.icon} />
-                            <Typography>{name}</Typography>
+                            {chainData?.icon && (
+                                <chainData.icon className={commonStyles.icon} />
+                            )}
+                            <Typography>{chainData?.name}</Typography>
                         </div>
                     );
                 })}

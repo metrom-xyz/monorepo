@@ -1,10 +1,7 @@
-import { SupportedDex } from "@metrom-xyz/sdk";
 import { SupportedChain, ADDRESS } from "@metrom-xyz/contracts";
 import { ModeLogo } from "../assets/logos/chains/mode";
-import { KimLogo } from "../assets/logos/dexes/kim";
 import { mode } from "viem/chains";
 import type { ChainData } from "../types/chains";
-import { DepositUrlType, ProtocolType } from "../types/protocol";
 
 export const modeData: ChainData = {
     testnet: false,
@@ -12,19 +9,7 @@ export const modeData: ChainData = {
     metromContract: ADDRESS[SupportedChain.Mode],
     blockExplorers: mode.blockExplorers,
     icon: ModeLogo,
-    protocols: [
-        {
-            type: ProtocolType.Dex,
-            slug: SupportedDex.Kim,
-            logo: KimLogo,
-            name: "Kim",
-            depositUrl: {
-                type: DepositUrlType.PathPoolAddress,
-                template: "https://app.kim.exchange/pools/v4/{pool}",
-            },
-            supportsFetchAllPools: true,
-        },
-    ],
+    protocols: [],
     baseTokens: [
         {
             address: "0x4200000000000000000000000000000000000006",

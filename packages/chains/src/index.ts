@@ -1,8 +1,6 @@
 import { type Chain } from "viem";
 import {
     holesky,
-    mode,
-    mantle,
     base,
     baseSepolia,
     taiko,
@@ -15,18 +13,15 @@ import {
     lightlinkPhoenix,
     sei,
     hemi,
+    form,
 } from "viem/chains";
 import {
     holeskyData,
-    modeData,
-    mantleData,
     sonicData,
     baseData,
     baseSepoliaData,
     taikoData,
     scrollData,
-    form,
-    formData,
     gnosisData,
     sepoliaData,
     telosData,
@@ -35,6 +30,7 @@ import {
     swellDevelopmentData,
     swellProductionData,
     hemiData,
+    formData,
 } from "./chains";
 import {
     ChainData,
@@ -64,8 +60,6 @@ export const SUPPORTED_DEVELOPMENT_CHAINS: [Chain, ...Chain[]] = [
 ];
 
 export const SUPPORTED_PRODUCTION_CHAINS: [Chain, ...Chain[]] = [
-    mode,
-    mantle,
     base,
     taiko,
     scroll,
@@ -91,13 +85,13 @@ export const CHAIN_DATA: {
     },
     [Environment.Production]: {
         [SupportedProductionChain.Base]: baseData,
-        [SupportedProductionChain.Mode]: modeData,
-        [SupportedProductionChain.Mantle]: mantleData,
+        // [SupportedProductionChain.Mode]: modeData,
+        // [SupportedProductionChain.Mantle]: mantleData,
+        [SupportedProductionChain.Form]: formData,
         [SupportedProductionChain.Taiko]: taikoData,
         [SupportedProductionChain.Scroll]: scrollData,
         [SupportedProductionChain.Sonic]: sonicData,
         [SupportedProductionChain.Swell]: swellProductionData,
-        [SupportedProductionChain.Form]: formData,
         [SupportedProductionChain.Gnosis]: gnosisData,
         [SupportedProductionChain.Telos]: telosData,
         [SupportedProductionChain.LightLinkPhoenix]: lightlinkPhoenixData,

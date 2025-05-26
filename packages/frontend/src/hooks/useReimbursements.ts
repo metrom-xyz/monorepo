@@ -60,7 +60,7 @@ export function useReimbursements({
         return rawReimbursements.map((rawReimbursement) => {
             return {
                 chainId: rawReimbursement.chainId,
-                address: getChainData(rawReimbursement.chainId).metromContract
+                address: getChainData(rawReimbursement.chainId)?.metromContract
                     .address,
                 abi: metromAbi,
                 functionName: "claimedCampaignReward",
@@ -79,7 +79,7 @@ export function useReimbursements({
         return rawReimbursements.map((rawReimbursement) => {
             return {
                 chainId: rawReimbursement.chainId,
-                address: getChainData(rawReimbursement.chainId).metromContract
+                address: getChainData(rawReimbursement.chainId)?.metromContract
                     .address,
                 abi: metromAbi,
                 functionName: "claimedCampaignReward",

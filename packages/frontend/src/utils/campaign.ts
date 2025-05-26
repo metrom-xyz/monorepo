@@ -102,7 +102,7 @@ export function getCampaignName(
         case TargetType.LiquityV2Debt: {
             const targetProtocol = getChainData(
                 campaign.chainId,
-            ).protocols.find(
+            )?.protocols.find(
                 ({ slug }) =>
                     slug ===
                     (campaign.target as LiquityV2DebtTarget).brand.slug,
@@ -128,7 +128,9 @@ export async function getSocialPreviewCampaignName(
 ): Promise<string> {
     const t = await getTranslations();
 
-    const chain = getChainData(campaign.chainId).name.toUpperCase();
+    const chain = getChainData(campaign.chainId)?.name.toUpperCase();
+
+    if (!chain) return "-";
 
     switch (campaign.target.type) {
         case TargetType.AmmPoolLiquidity: {

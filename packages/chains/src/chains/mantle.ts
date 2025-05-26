@@ -1,10 +1,7 @@
-import { SupportedDex } from "@metrom-xyz/sdk";
 import { SupportedChain, ADDRESS } from "@metrom-xyz/contracts";
 import { MantleLogo } from "../assets/logos/chains/mantle";
-import { SwapsicleLogo } from "../assets/logos/dexes/swapsicle";
 import { mantle } from "viem/chains";
 import type { ChainData } from "../types/chains";
-import { DepositUrlType, ProtocolType } from "../types/protocol";
 
 export const mantleData: ChainData = {
     testnet: false,
@@ -12,19 +9,7 @@ export const mantleData: ChainData = {
     metromContract: ADDRESS[SupportedChain.Mantle],
     blockExplorers: mantle.blockExplorers,
     icon: MantleLogo,
-    protocols: [
-        {
-            type: ProtocolType.Dex,
-            slug: SupportedDex.Swapsicle,
-            logo: SwapsicleLogo,
-            name: "Swapsicle",
-            depositUrl: {
-                type: DepositUrlType.PathPoolAddress,
-                template: "https://app.swapsicle.io/liquidity/v3/mantle/{pool}",
-            },
-            supportsFetchAllPools: true,
-        },
-    ],
+    protocols: [],
     baseTokens: [
         {
             address: "0x78c1b0c915c4faa5fffa6cabf0219da63d7f4cb8",

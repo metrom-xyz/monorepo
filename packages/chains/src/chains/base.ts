@@ -1,11 +1,9 @@
 import { SupportedDex } from "@metrom-xyz/sdk";
 import { SupportedChain, ADDRESS } from "@metrom-xyz/contracts";
 import { BaseLogo } from "../assets/logos/chains/base";
-import { KimLogo } from "../assets/logos/dexes/kim";
 import { BaseSwapLogo } from "../assets/logos/dexes/baseswap";
 import { base } from "viem/chains";
 import { UniswapLogo } from "../assets/logos/dexes/uniswap";
-import { ThirdTradeLogo } from "../assets/logos/dexes/thirdtrade";
 import type { ChainData } from "../types/chains";
 import { DepositUrlType, ProtocolType } from "../types/protocol";
 
@@ -16,17 +14,6 @@ export const baseData: ChainData = {
     blockExplorers: base.blockExplorers,
     icon: BaseLogo,
     protocols: [
-        {
-            type: ProtocolType.Dex,
-            slug: SupportedDex.Kim,
-            logo: KimLogo,
-            name: "Kim",
-            depositUrl: {
-                type: DepositUrlType.PathPoolAddress,
-                template: "https://app.kim.exchange/pools/v4/{pool}",
-            },
-            supportsFetchAllPools: true,
-        },
         {
             type: ProtocolType.Dex,
             slug: SupportedDex.BaseSwap,
@@ -48,17 +35,6 @@ export const baseData: ChainData = {
                 template: "https://oku.trade/app/base/liquidity/{pool}",
             },
             supportsFetchAllPools: false,
-        },
-        {
-            type: ProtocolType.Dex,
-            slug: SupportedDex.ThirdTrade,
-            logo: ThirdTradeLogo,
-            name: "Third Trade",
-            depositUrl: {
-                type: DepositUrlType.PathPoolAddress,
-                template: "https://third.trade/pool/{pool}",
-            },
-            supportsFetchAllPools: true,
         },
     ],
     baseTokens: [

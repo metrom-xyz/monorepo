@@ -9,7 +9,7 @@ export function getExplorerLink(
 ): string | undefined {
     if (!chainId || !isAddress(address)) return undefined;
 
-    const explorer = getChainData(chainId).blockExplorers?.default;
+    const explorer = getChainData(chainId)?.blockExplorers?.default;
     if (!explorer) return undefined;
 
     return `${explorer.url}/address/${address}`;
@@ -21,7 +21,7 @@ export function getTxExplorerLink(
 ): string | undefined {
     if (!chainId) return;
 
-    const explorer = getChainData(chainId).blockExplorers?.default;
+    const explorer = getChainData(chainId)?.blockExplorers?.default;
     if (!explorer) return;
 
     return `${explorer.url}/tx/${hash}`;

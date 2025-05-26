@@ -1,7 +1,6 @@
 import { SupportedDex } from "@metrom-xyz/sdk";
 import { SupportedChain, ADDRESS } from "@metrom-xyz/contracts";
 import { ScrollLogo } from "../assets/logos/chains/scroll";
-import { ScribeLogo } from "../assets/logos/dexes/scribe";
 import { scroll } from "viem/chains";
 import { UniswapLogo } from "../assets/logos/dexes/uniswap";
 import type { ChainData } from "../types/chains";
@@ -14,17 +13,6 @@ export const scrollData: ChainData = {
     blockExplorers: scroll.blockExplorers,
     icon: ScrollLogo,
     protocols: [
-        {
-            type: ProtocolType.Dex,
-            slug: SupportedDex.Scribe,
-            logo: ScribeLogo,
-            name: "Scribe",
-            depositUrl: {
-                type: DepositUrlType.PathPoolAddress,
-                template: "https://app.scribe.exchange/pools/v4/{pool}",
-            },
-            supportsFetchAllPools: true,
-        },
         {
             type: ProtocolType.Dex,
             slug: SupportedDex.UniswapV3,

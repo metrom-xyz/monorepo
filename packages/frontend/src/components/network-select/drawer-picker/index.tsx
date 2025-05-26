@@ -37,9 +37,7 @@ export function DrawerPicker({
             <MobileDrawer open={open} onClose={onClose}>
                 <div className={styles.networksWrapper}>
                     {chains.map((chain) => {
-                        const { icon: ChainIcon, name } = getChainData(
-                            chain.id,
-                        );
+                        const chainData = getChainData(chain.id);
 
                         return (
                             <div
@@ -49,8 +47,14 @@ export function DrawerPicker({
                                 })}
                                 onClick={getOnChangeHandler(chain.id)}
                             >
-                                <ChainIcon className={commonStyles.icon} />
-                                <Typography size="xl">{name}</Typography>
+                                {chainData?.icon && (
+                                    <chainData.icon
+                                        className={commonStyles.icon}
+                                    />
+                                )}
+                                <Typography size="xl">
+                                    {chainData?.name}
+                                </Typography>
                             </div>
                         );
                     })}
