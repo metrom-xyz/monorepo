@@ -13,7 +13,6 @@ export const scrollData: ChainData = {
     metromContract: ADDRESS[SupportedChain.Scroll],
     blockExplorers: scroll.blockExplorers,
     icon: ScrollLogo,
-    brandColor: "#ffeeda",
     protocols: [
         {
             active: false,

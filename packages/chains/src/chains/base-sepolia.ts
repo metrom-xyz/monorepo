@@ -12,7 +12,6 @@ export const baseSepoliaData: ChainData = {
     metromContract: ADDRESS[SupportedChain.BaseSepolia],
     blockExplorers: baseSepolia.blockExplorers,
     icon: BaseLogo,
-    brandColor: "#0052ff",
     protocols: [
         {
             active: true,
