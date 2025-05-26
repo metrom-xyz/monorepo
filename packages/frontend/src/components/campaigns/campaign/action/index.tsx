@@ -33,6 +33,7 @@ export function SkeletonAction() {
             <PoolRemoteLogo
                 tokens={[{ address: "0x1" }, { address: "0x2" }]}
                 loading
+                size="xs"
             />
             <div
                 className={classNames(

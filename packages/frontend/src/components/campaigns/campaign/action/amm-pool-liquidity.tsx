@@ -19,6 +19,7 @@ export function AmmPoolLiquidity({ campaign }: AmmPoolLiquidityProps) {
                     address: token.address,
                     defaultText: token.symbol,
                 }))}
+                size="xs"
             />
             <div className={styles.titleContainer}>
                 <Typography size="lg" weight="medium" truncate>
