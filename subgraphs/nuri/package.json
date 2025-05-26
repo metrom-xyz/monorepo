@@ -11,14 +11,14 @@
     },
     "dependencies": {
         "@0xgraph/cli": "^0.2.1",
-        "@graphprotocol/graph-cli": "^0.97.0",
+        "@graphprotocol/graph-cli": "^0.97.1",
         "@graphprotocol/graph-ts": "0.36.0"
     },
     "devDependencies": {
-        "@eslint/js": "^9.26.0",
+        "@eslint/js": "^9.27.0",
         "@types/mustache": "^4.2.6",
-        "@types/node": "^22.15.18",
-        "eslint": "^9.26.0",
+        "@types/node": "^22.15.21",
+        "eslint": "^9.27.0",
         "eslint-config-prettier": "^10.1.5",
         "eslint-config-turbo": "^2.5.2",
         "eslint-plugin-prettier": "^5.4.0",
