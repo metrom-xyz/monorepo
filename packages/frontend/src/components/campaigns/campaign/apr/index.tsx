@@ -105,7 +105,7 @@ export function Apr({ campaignId, chainId, apr, kpi }: AprProps) {
                 </Popover>
             </div>
             <div className={styles.aprWrapper}>
-                <AprChip apr={apr} kpi={kpi} placeholder size="xl" />
+                <AprChip apr={apr} kpi={kpi} placeholder size="base" />
             </div>
         </div>
     );

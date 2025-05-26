@@ -1,6 +1,6 @@
 "use client";
 
-import { Typography, Skeleton } from "@metrom-xyz/ui";
+import { Typography } from "@metrom-xyz/ui";
 import dayjs from "dayjs";
 import classNames from "classnames";
 import { useTranslations } from "next-intl";
@@ -60,24 +60,6 @@ export function Status({
                         {duration}
                     </Typography>
                 )}
-            </div>
-        </div>
-    );
-}
-
-export function SkeletonStatus() {
-    return (
-        <div
-            className={classNames(
-                styles.root,
-                styles.rootSkeleton,
-                commonStyles.chip,
-            )}
-        >
-            <Skeleton width={12} circular />
-            <div className={styles.text}>
-                <Skeleton width={50} />
-                <Skeleton width={30} className={styles.duration} />
             </div>
         </div>
     );

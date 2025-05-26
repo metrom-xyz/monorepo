@@ -31,7 +31,6 @@ export function SkeletonHeader() {
         <div className={styles.root}>
             <div className={styles.titleContainer}>
                 <div className={styles.title}>
-                    <Skeleton circular width={32} />
                     <PoolRemoteLogo
                         tokens={[{ address: "0x1" }, { address: "0x2" }]}
                         loading
@@ -39,6 +38,18 @@ export function SkeletonHeader() {
                     />
                     <Skeleton size="xl4" width={400} />
                     <Skeleton size="lg" width={60} />
+                </div>
+                <div className={styles.chips}>
+                    <Skeleton
+                        size="xl2"
+                        width={125}
+                        className={styles.skeletonChip}
+                    />
+                    <Skeleton
+                        size="xl2"
+                        width={125}
+                        className={styles.skeletonChip}
+                    />
                 </div>
                 <Skeleton size="sm" width={125} />
             </div>
