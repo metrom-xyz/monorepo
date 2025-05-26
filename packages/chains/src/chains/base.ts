@@ -14,7 +14,6 @@ export const baseData: ChainData = {
     metromContract: ADDRESS[SupportedChain.Base],
     blockExplorers: base.blockExplorers,
     icon: BaseLogo,
-    brandColor: "#0052ff",
     protocols: [
         {
             active: false,

@@ -12,7 +12,6 @@ export const lightlinkPhoenixData: ChainData = {
     metromContract: ADDRESS[SupportedChain.LightLinkPhoenix],
     blockExplorers: lightlinkPhoenix.blockExplorers,
     icon: LightLinkPhoenixLogo,
-    brandColor: "#6a81ff",
     protocols: [
         {
             active: true,

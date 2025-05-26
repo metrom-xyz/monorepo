@@ -13,7 +13,6 @@ export const taikoData: ChainData = {
     metromContract: ADDRESS[SupportedChain.Taiko],
     blockExplorers: taiko.blockExplorers,
     icon: TaikoLogo,
-    brandColor: "#e81899",
     protocols: [
         {
             active: true,
