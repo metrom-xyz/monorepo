@@ -75,6 +75,7 @@ export function Nav() {
                         if (disabled)
                             return (
                                 <div
+                                    key={path}
                                     className={classNames(
                                         styles.tab,
                                         styles.disabled,
