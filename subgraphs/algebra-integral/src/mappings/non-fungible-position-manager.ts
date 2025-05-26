@@ -40,8 +40,8 @@ function getOrCreateNftPosition(tokenId: BigInt): Position | null {
 
     position = new Position(id);
     position.owner = NonFungiblePositionManagerContract.ownerOf(tokenId);
-    position.lowerTick = BigInt.fromI32(result.value.getTickLower());
-    position.upperTick = BigInt.fromI32(result.value.getTickUpper());
+    position.lowerTick = result.value.getTickLower();
+    position.upperTick = result.value.getTickUpper();
     position.liquidity = BI_0; // updated in increase liquidity handler
     position.direct = false;
     position.pool = Bytes.fromHexString(poolAddress.toHex());
@@ -68,7 +68,6 @@ export function handleIncreaseLiquidity(event: IncreaseLiquidityEvent): void {
         let liquidityChange = new LiquidityChange(getEventId(event));
         liquidityChange.timestamp = event.block.timestamp;
         liquidityChange.blockNumber = event.block.number;
-        liquidityChange.transactionHash = event.transaction.hash;
         liquidityChange.delta = event.params.actualLiquidity;
         liquidityChange.position = position.id;
         liquidityChange.save();
@@ -86,7 +85,6 @@ export function handleDecreaseLiquidity(event: DecreaseLiquidityEvent): void {
         let liquidityChange = new LiquidityChange(getEventId(event));
         liquidityChange.timestamp = event.block.timestamp;
         liquidityChange.blockNumber = event.block.number;
-        liquidityChange.transactionHash = event.transaction.hash;
         liquidityChange.delta = event.params.liquidity.neg();
         liquidityChange.position = position.id;
         liquidityChange.save();
@@ -109,7 +107,6 @@ export function handleTransfer(event: TransferEvent): void {
     let liquidityTransfer = new LiquidityTransfer(getEventId(event));
     liquidityTransfer.timestamp = event.block.timestamp;
     liquidityTransfer.blockNumber = event.block.number;
-    liquidityTransfer.transactionHash = event.transaction.hash;
     liquidityTransfer.from = event.params.from;
     liquidityTransfer.to = event.params.to;
     liquidityTransfer.position = position.id;

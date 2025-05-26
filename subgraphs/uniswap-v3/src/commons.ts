@@ -78,10 +78,10 @@ export function fetchTokenName(address: Address): string | null {
     return null;
 }
 
-export function fetchTokenDecimals(address: Address): BigInt | null {
+export function fetchTokenDecimals(address: Address): i32 {
     let contract = Erc20.bind(address);
     let result = contract.try_decimals();
-    return result.reverted ? null : result.value;
+    return result.reverted ? -1 : result.value.toI32();
 }
 
 export function getOrCreateToken(address: Address): Token | null {
@@ -95,7 +95,7 @@ export function getOrCreateToken(address: Address): Token | null {
     if (name === null) return null;
 
     let decimals = fetchTokenDecimals(address);
-    if (decimals === null) return null;
+    if (decimals === -1) return null;
 
     token = new Token(address);
     token.symbol = symbol;
@@ -114,7 +114,7 @@ export function getOrCreateTick(poolAddress: Bytes, idx: i32): Tick {
     }
 
     tick = new Tick(id);
-    tick.idx = BigInt.fromI32(idx);
+    tick.idx = idx;
     tick.pool = poolAddress;
     tick.liquidityGross = BI_0;
     tick.liquidityNet = BI_0;
@@ -123,19 +123,21 @@ export function getOrCreateTick(poolAddress: Bytes, idx: i32): Tick {
     return tick;
 }
 
-export function getFeeAdjustedAmount(amount: BigInt, fee: BigInt): BigInt {
+export function getFeeAdjustedAmount(amount: BigInt, fee: i32): BigInt {
     // fees are taken from the input amount, so if the given amount
     // is negative (i.e. removing from pool, we just leave the
     // amount unchanged)
     return amount.lt(BI_0)
         ? amount
-        : amount.times(BI_1_000_000.minus(fee)).div(BI_1_000_000);
+        : amount
+              .times(BI_1_000_000.minus(BigInt.fromI32(fee)))
+              .div(BI_1_000_000);
 }
 
-function exponentToBigDecimal(decimals: BigInt): BigDecimal {
+function exponentToBigDecimal(decimals: i32): BigDecimal {
     let result = "1";
 
-    for (let i = 0; i < decimals.toI32(); i++) {
+    for (let i = 0; i < decimals; i++) {
         result += "0";
     }
 
