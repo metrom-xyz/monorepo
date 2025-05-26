@@ -23,8 +23,8 @@ export function useCampaigns({ enabled = true }: UseCampaignsParams = {}): {
                     .map((campaign) => {
                         return new Campaign(
                             campaign,
-                            getChainData(campaign.chainId),
                             getCampaignName(t, campaign),
+                            getChainData(campaign.chainId),
                         );
                     })
                     .sort((a, b) => a.createdAt - b.createdAt);

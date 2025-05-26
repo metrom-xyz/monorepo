@@ -81,10 +81,18 @@ export function Claims() {
                         ({ id }) => id === chainId,
                     );
 
+                    const chainData = getChainData(chainId);
+                    if (!chainData) {
+                        console.warn(
+                            `Claim detected on non-supported chain with id ${chainId}`,
+                        );
+                        return acc;
+                    }
+
                     if (!acc[chainId] && chain)
                         acc[chainId] = {
                             chain: chain,
-                            chainData: getChainData(chainId),
+                            chainData,
                             claims: [],
                             reimbursements: [],
                             totalUsdValue: 0,
@@ -93,7 +101,7 @@ export function Claims() {
                     const data = acc[chainId];
                     if (!data) {
                         console.warn(
-                            `Claim detected on non-supported chain with id ${reward.chainId}`,
+                            `Claim detected on non-supported chain with id ${chainId}`,
                         );
                         return acc;
                     }
@@ -122,11 +130,14 @@ export function Claims() {
     const chainsData: ChainOption[] | undefined = useMemo(() => {
         if (!chainsWithRewardsData) return undefined;
 
-        return chainsWithRewardsData.map(({ chain, totalUsdValue }) => ({
-            chain,
-            data: getChainData(chain.id),
-            totalUsdValue,
-        }));
+        return chainsWithRewardsData
+            .map(({ chain, totalUsdValue }) => {
+                const chainData = getChainData(chain.id);
+                if (!chainData) return null;
+
+                return { chain, data: chainData, totalUsdValue };
+            })
+            .filter((data) => !!data);
     }, [chainsWithRewardsData]);
 
     const chainWithRewardsData = useMemo(() => {

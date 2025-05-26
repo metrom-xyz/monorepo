@@ -35,8 +35,8 @@ export function useCampaign({
                 });
                 return new Campaign(
                     campaign,
-                    getChainData(chainId),
                     getCampaignName(t, campaign),
+                    getChainData(chainId),
                 );
             } catch (error) {
                 console.error(

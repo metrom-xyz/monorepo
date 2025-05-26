@@ -60,7 +60,7 @@ export function useClaims({
         return rawClaims.map((rawClaim) => {
             return {
                 chainId: rawClaim.chainId,
-                address: getChainData(rawClaim.chainId).metromContract.address,
+                address: getChainData(rawClaim.chainId)?.metromContract.address,
                 abi: metromAbi,
                 functionName: "claimedCampaignReward",
                 args: [rawClaim.campaignId, rawClaim.token.address, address],

@@ -96,7 +96,7 @@ const statusSelectRenderOption = (option: {
 
 const chainSelectRenderOption = (option: { label: string; value: number }) => {
     const ChainIcon =
-        option.value !== 0 ? getChainData(option.value).icon : null;
+        option.value !== 0 ? getChainData(option.value)?.icon : null;
     return (
         <div className={styles.customOptionContainer}>
             {ChainIcon && <ChainIcon className={styles.icon} />}
@@ -212,12 +212,13 @@ export function Campaigns() {
             },
         ];
         for (const chain of chains) {
-            const { name } = getChainData(chain.id);
+            const chainData = getChainData(chain.id);
+            if (!chainData) continue;
 
             options.push({
-                label: name,
+                label: chainData.name,
                 value: chain.id,
-                query: name.toLowerCase().replaceAll(" ", "-"),
+                query: chainData.name.toLowerCase().replaceAll(" ", "-"),
             });
         }
         return options;

@@ -27,25 +27,31 @@ export function Chain({ id }: ChainProps) {
 
     return (
         <div className={styles.root}>
-            <Popover
-                open={popoverOpen}
-                anchor={chainName}
-                ref={chainNamePopoverRef}
-                placement="top"
-            >
-                <div className={styles.chainNameContainer}>
-                    <Typography weight="medium" size="sm">
-                        {chainData?.name}
-                    </Typography>
-                </div>
-            </Popover>
-            <div
-                ref={setChainName}
-                onMouseEnter={handleChainNamePopoverOpen}
-                onMouseLeave={handleChainNamePopoverClose}
-            >
-                {ChainIcon && <ChainIcon className={styles.icon} />}
-            </div>
+            {ChainIcon ? (
+                <>
+                    <Popover
+                        open={popoverOpen}
+                        anchor={chainName}
+                        ref={chainNamePopoverRef}
+                        placement="top"
+                    >
+                        <div className={styles.chainNameContainer}>
+                            <Typography weight="medium" size="sm">
+                                {chainData?.name}
+                            </Typography>
+                        </div>
+                    </Popover>
+                    <div
+                        ref={setChainName}
+                        onMouseEnter={handleChainNamePopoverOpen}
+                        onMouseLeave={handleChainNamePopoverClose}
+                    >
+                        <ChainIcon className={styles.icon} />
+                    </div>
+                </>
+            ) : (
+                "-"
+            )}
         </div>
     );
 }

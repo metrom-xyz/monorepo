@@ -7,20 +7,28 @@ import {
 } from "@metrom-xyz/chains";
 import { ENVIRONMENT } from "../commons/env";
 
-export function getChainData(chainId: number): ChainData {
+export function getChainData(chainId: number): ChainData | undefined {
+    let chainData: ChainData | undefined;
+
     switch (ENVIRONMENT) {
         case Environment.Development: {
-            return CHAIN_DATA[Environment.Development][
-                chainId as SupportedDevelopmentChain
-            ];
+            chainData =
+                CHAIN_DATA[Environment.Development][
+                    chainId as SupportedDevelopmentChain
+                ];
+            break;
         }
         case Environment.Production: {
-            return CHAIN_DATA[Environment.Production][
-                chainId as SupportedProductionChain
-            ];
+            chainData =
+                CHAIN_DATA[Environment.Production][
+                    chainId as SupportedProductionChain
+                ];
+            break;
         }
         default: {
-            throw new Error(`Missing chain data for chain with id ${chainId}`);
+            throw new Error(`Unsupported environment ${ENVIRONMENT}`);
         }
     }
+
+    return chainData;
 }

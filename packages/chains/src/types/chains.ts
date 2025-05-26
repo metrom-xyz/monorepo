@@ -19,19 +19,19 @@ export enum SupportedDevelopmentChain {
     Holesky = SupportedChain.Holesky,
     Sepolia = SupportedChain.Sepolia,
     BaseSepolia = SupportedChain.BaseSepolia,
-    // TODO: this is temporary as we are testin, remove this as soon as that is done
+    // TODO: this is temporary as we are testing, remove this as soon as that is done
     Sei = SupportedChain.Sei,
-    // TODO: this is temporary as we are testin, remove this as soon as that is done
+    // TODO: this is temporary as we are testing, remove this as soon as that is done
     Swell = SupportedChain.Swell,
 }
 
 export enum SupportedProductionChain {
-    Mode = SupportedChain.Mode,
-    Mantle = SupportedChain.Mantle,
     Base = SupportedChain.Base,
     Taiko = SupportedChain.Taiko,
     Scroll = SupportedChain.Scroll,
     Sonic = SupportedChain.Sonic,
+    // Mode = SupportedChain.Mode,
+    // Mantle = SupportedChain.Mantle,
     Form = SupportedChain.Form,
     Gnosis = SupportedChain.Gnosis,
     Telos = SupportedChain.Telos,

@@ -48,8 +48,8 @@ async function getCampaign(id: Address, chainId: SupportedChain) {
 
         return new Campaign(
             campaign,
-            getChainData(chainId),
             await getSocialPreviewCampaignName(campaign),
+            getChainData(chainId),
         );
     } catch (error) {
         console.error(
@@ -63,7 +63,7 @@ function getCampaignTargetProtocol(
     chainId: SupportedChain,
     target: CampaignTarget,
 ) {
-    return getChainData(chainId).protocols.find((protocol) => {
+    return getChainData(chainId)?.protocols.find((protocol) => {
         switch (target.type) {
             case TargetType.AmmPoolLiquidity: {
                 return protocol.slug === target.pool.dex.slug;

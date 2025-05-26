@@ -236,8 +236,8 @@ export type LiquityV2CampaignPayloadPart =
 export class Campaign extends SdkCampaign {
     constructor(
         campaign: SdkCampaign,
-        public readonly chainData: ChainData,
         public readonly name: string,
+        public readonly chainData?: ChainData,
     ) {
         super(
             campaign.chainId,
@@ -269,7 +269,7 @@ export class Campaign extends SdkCampaign {
         if (!this.isTargeting(TargetType.AmmPoolLiquidity)) return undefined;
 
         const pool = this.target.pool;
-        const dex = this.chainData.protocols.find(
+        const dex = this.chainData?.protocols.find(
             (protocol) =>
                 protocol.type === ProtocolType.Dex &&
                 protocol.slug === pool.dex.slug,
