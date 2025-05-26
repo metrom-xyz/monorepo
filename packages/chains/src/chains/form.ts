@@ -2,6 +2,9 @@ import { SupportedChain, ADDRESS } from "@metrom-xyz/contracts";
 import { defineChain } from "viem";
 import { FormLogo } from "../assets/logos/chains/form";
 import type { ChainData } from "../types/chains";
+import { DepositUrlType, ProtocolType } from "../types/protocol";
+import { SupportedDex } from "@metrom-xyz/sdk";
+import { FibonacciLogo } from "../assets";
 
 export const form = defineChain({
     id: 478,
@@ -31,12 +34,25 @@ export const form = defineChain({
 });
 
 export const formData: ChainData = {
-    testnet: false,
+    active: false,
     name: form.name,
     metromContract: ADDRESS[SupportedChain.Form],
     blockExplorers: form.blockExplorers,
     icon: FormLogo,
-    protocols: [],
+    protocols: [
+        {
+            active: false,
+            type: ProtocolType.Dex,
+            slug: SupportedDex.Fibonacci,
+            logo: FibonacciLogo,
+            name: "Fibonacci",
+            depositUrl: {
+                type: DepositUrlType.PathPoolAddress,
+                template: "https://www.fibonacci-dex.xyz/pool/{pool}",
+            },
+            supportsFetchAllPools: true,
+        },
+    ],
     baseTokens: [
         {
             address: "0xFBf489bb4783D4B1B2e7D07ba39873Fb8068507D",

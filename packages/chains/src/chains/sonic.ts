@@ -8,7 +8,7 @@ import type { ChainData } from "../types/chains";
 import { DepositUrlType, ProtocolType } from "../types/protocol";
 
 export const sonicData: ChainData = {
-    testnet: false,
+    active: true,
     name: sonic.name,
     metromContract: ADDRESS[SupportedChain.Sonic],
     blockExplorers: {
@@ -20,6 +20,7 @@ export const sonicData: ChainData = {
     icon: SonicLogo,
     protocols: [
         {
+            active: true,
             type: ProtocolType.Dex,
             slug: SupportedDex.UniswapV3,
             logo: UniswapLogo,
@@ -31,6 +32,7 @@ export const sonicData: ChainData = {
             supportsFetchAllPools: true,
         },
         {
+            active: true,
             type: ProtocolType.Dex,
             slug: SupportedDex.SilverSwap,
             logo: SilverSwapLogo,

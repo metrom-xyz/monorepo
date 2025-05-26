@@ -4,7 +4,7 @@ import { mode } from "viem/chains";
 import type { ChainData } from "../types/chains";
 
 export const modeData: ChainData = {
-    testnet: false,
+    active: false,
     name: "Mode",
     metromContract: ADDRESS[SupportedChain.Mode],
     blockExplorers: mode.blockExplorers,

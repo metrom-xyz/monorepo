@@ -7,13 +7,14 @@ import { BaseLogo } from "../assets/logos/chains/base";
 import { UniswapLogo } from "../assets/logos/dexes/uniswap";
 
 export const baseSepoliaData: ChainData = {
-    testnet: true,
+    active: true,
     name: baseSepolia.name,
     metromContract: ADDRESS[SupportedChain.BaseSepolia],
     blockExplorers: baseSepolia.blockExplorers,
     icon: BaseLogo,
     protocols: [
         {
+            active: true,
             type: ProtocolType.Dex,
             slug: SupportedDex.UniswapV3,
             logo: UniswapLogo,

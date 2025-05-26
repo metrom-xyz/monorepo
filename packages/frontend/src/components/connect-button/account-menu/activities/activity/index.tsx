@@ -25,7 +25,10 @@ interface ActivityProps extends Activity {
 export function Activity({ chainId, transaction, payload }: ActivityProps) {
     const t = useTranslations("accountMenu.activities");
 
-    const dexes = useProtocolsInChain(chainId, ProtocolType.Dex);
+    const dexes = useProtocolsInChain({
+        chainId: chainId,
+        type: ProtocolType.Dex,
+    });
     const { campaign, loading } = useCampaign({
         chainId,
         id: payload.type === "create-campaign" ? payload.id : undefined,

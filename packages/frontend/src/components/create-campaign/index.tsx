@@ -20,6 +20,7 @@ const CAMPAIGN_TYPES = [
         title: "amm.title",
         description: "amm.description",
         className: styles.ammFormIcon,
+        type: ProtocolType.Dex,
         icon: <AmmCampaignIcon className={styles.ammIcon} />,
     },
     {
@@ -27,6 +28,7 @@ const CAMPAIGN_TYPES = [
         title: "liquityV2.title",
         description: "liquityV2.description",
         className: styles.liquityV2FormIcon,
+        type: ProtocolType.LiquityV2,
         icon: <LiquityV2CampaignIcon className={styles.liquidityV2Icon} />,
     },
 ];
@@ -36,11 +38,33 @@ export function CreateCampaign() {
     const locale = useLocale();
 
     const chainId = useChainId();
-    const dexesProtocols = useProtocolsInChain(chainId, ProtocolType.Dex);
-    const liquityV2Protocols = useProtocolsInChain(
+    const dexesProtocols = useProtocolsInChain({
         chainId,
-        ProtocolType.LiquityV2,
-    );
+        type: ProtocolType.Dex,
+        active: true,
+    });
+    const liquityV2Protocols = useProtocolsInChain({
+        chainId,
+        type: ProtocolType.LiquityV2,
+        active: true,
+    });
+
+    const protocols = {
+        [ProtocolType.Dex]: dexesProtocols,
+        [ProtocolType.LiquityV2]: liquityV2Protocols,
+    };
+
+    if (dexesProtocols.length === 0 && liquityV2Protocols.length === 0)
+        return (
+            <div className={styles.emptyWrapper}>
+                <Typography weight="medium" size="lg">
+                    {t("empty.message1")}
+                </Typography>
+                <Typography weight="medium" size="lg">
+                    {t("empty.message2")}
+                </Typography>
+            </div>
+        );
 
     if (dexesProtocols.length === 0)
         redirect(
@@ -74,30 +98,39 @@ export function CreateCampaign() {
             </Typography>
             <div className={styles.campaignCardsWrapper}>
                 {CAMPAIGN_TYPES.map(
-                    ({ path, title, description, icon, className }) => (
-                        <Link key={path} href={path}>
-                            <Card className={styles.campaignCard}>
-                                <div className={styles.campaignCardBody}>
-                                    <div
-                                        className={classNames(
-                                            styles.iconWrapper,
-                                            className,
-                                        )}
-                                    >
-                                        {icon}
+                    ({ path, title, description, type, icon, className }) => {
+                        const disabled = protocols[type].length === 0;
+
+                        if (disabled) return null;
+
+                        return (
+                            <Link key={path} href={path}>
+                                <Card className={styles.campaignCard}>
+                                    <div className={styles.campaignCardBody}>
+                                        <div
+                                            className={classNames(
+                                                styles.iconWrapper,
+                                                className,
+                                            )}
+                                        >
+                                            {icon}
+                                        </div>
+                                        <div className={styles.rightContent}>
+                                            <Typography
+                                                weight="medium"
+                                                size="lg"
+                                            >
+                                                {t<any>(title)}
+                                            </Typography>
+                                            <Typography weight="medium" light>
+                                                {t<any>(description)}
+                                            </Typography>
+                                        </div>
                                     </div>
-                                    <div className={styles.rightContent}>
-                                        <Typography weight="medium" size="lg">
-                                            {t<any>(title)}
-                                        </Typography>
-                                        <Typography weight="medium" light>
-                                            {t<any>(description)}
-                                        </Typography>
-                                    </div>
-                                </div>
-                            </Card>
-                        </Link>
-                    ),
+                                </Card>
+                            </Link>
+                        );
+                    },
                 )}
             </div>
         </div>

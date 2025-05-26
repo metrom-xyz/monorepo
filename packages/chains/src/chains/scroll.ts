@@ -5,15 +5,29 @@ import { scroll } from "viem/chains";
 import { UniswapLogo } from "../assets/logos/dexes/uniswap";
 import type { ChainData } from "../types/chains";
 import { DepositUrlType, ProtocolType } from "../types/protocol";
+import { ScribeLogo } from "../assets";
 
 export const scrollData: ChainData = {
-    testnet: false,
+    active: true,
     name: scroll.name,
     metromContract: ADDRESS[SupportedChain.Scroll],
     blockExplorers: scroll.blockExplorers,
     icon: ScrollLogo,
     protocols: [
         {
+            active: false,
+            type: ProtocolType.Dex,
+            slug: SupportedDex.Scribe,
+            logo: ScribeLogo,
+            name: "Scribe",
+            depositUrl: {
+                type: DepositUrlType.PathPoolAddress,
+                template: "https://app.scribe.exchange/pools/v4/{pool}",
+            },
+            supportsFetchAllPools: true,
+        },
+        {
+            active: true,
             type: ProtocolType.Dex,
             slug: SupportedDex.UniswapV3,
             logo: UniswapLogo,

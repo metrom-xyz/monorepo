@@ -10,7 +10,7 @@ import { NewCampaignIcon } from "@/src/assets/new-campaign-icon";
 import { AllCampaignsIcon } from "@/src/assets/all-campaigns-icon";
 import { ClaimsIcon } from "@/src/assets/claims";
 import { NetworkSelect } from "../../network-select";
-import { useAccount } from "wagmi";
+import { useAccount, useChainId } from "wagmi";
 import { NavThemeSwitcher } from "../../nav-theme-switcher";
 import { useMemo, type FunctionComponent } from "react";
 import { AnimatePresence, motion } from "motion/react";
@@ -18,6 +18,7 @@ import type { SVGIcon } from "@/src/types/common";
 import type { TranslationsKeys } from "@/src/types/utils";
 import { useClaims } from "@/src/hooks/useClaims";
 import type { Address } from "viem";
+import { useActiveChains } from "@/src/hooks/useActiveChains";
 
 import styles from "./styles.module.css";
 
@@ -36,6 +37,8 @@ export function Nav() {
     const pathname = usePathname();
     const { address } = useAccount();
     const { claims } = useClaims();
+    const chain = useChainId();
+    const activeChains = useActiveChains();
 
     const pendingClaimsCount = useMemo(() => {
         if (!claims) return undefined;
@@ -64,44 +67,71 @@ export function Nav() {
                     <ConnectButton />
                 </div>
                 <div className={styles.tabs}>
-                    {ROUTES.map(({ path, label, icon: Icon }) => (
-                        <Link key={path} href={path}>
-                            <div
-                                className={classNames(styles.tab, {
-                                    [styles.tabActive]:
-                                        pathname === path ||
-                                        (path !== "/" &&
-                                            pathname.startsWith(path)),
-                                })}
-                            >
-                                {Icon && <Icon className={styles.tabIcon} />}
-                                <Typography weight="medium">
-                                    {t(label)}
-                                </Typography>
-                                <AnimatePresence>
-                                    {label === "claims" &&
-                                        pendingClaimsCount && (
-                                            <motion.span
-                                                initial={{ scale: 0 }}
-                                                animate={{ scale: 1 }}
-                                                exit={{ scale: 0 }}
-                                                className={styles.claimsBadge}
-                                            >
-                                                <Typography
-                                                    size="xs"
-                                                    weight="medium"
+                    {ROUTES.map(({ path, label, icon: Icon }) => {
+                        const disabled =
+                            path === "/campaigns/create" &&
+                            !activeChains.find(({ id }) => id === chain);
+
+                        if (disabled)
+                            return (
+                                <div
+                                    className={classNames(
+                                        styles.tab,
+                                        styles.disabled,
+                                    )}
+                                >
+                                    {Icon && (
+                                        <Icon className={styles.tabIcon} />
+                                    )}
+                                    <Typography weight="medium">
+                                        {t(label)}
+                                    </Typography>
+                                </div>
+                            );
+
+                        return (
+                            <Link key={path} href={path}>
+                                <div
+                                    className={classNames(styles.tab, {
+                                        [styles.tabActive]:
+                                            pathname === path ||
+                                            (path !== "/" &&
+                                                pathname.startsWith(path)),
+                                    })}
+                                >
+                                    {Icon && (
+                                        <Icon className={styles.tabIcon} />
+                                    )}
+                                    <Typography weight="medium">
+                                        {t(label)}
+                                    </Typography>
+                                    <AnimatePresence>
+                                        {label === "claims" &&
+                                            pendingClaimsCount && (
+                                                <motion.span
+                                                    initial={{ scale: 0 }}
+                                                    animate={{ scale: 1 }}
+                                                    exit={{ scale: 0 }}
                                                     className={
-                                                        styles.claimsBadgeText
+                                                        styles.claimsBadge
                                                     }
                                                 >
-                                                    {pendingClaimsCount}
-                                                </Typography>
-                                            </motion.span>
-                                        )}
-                                </AnimatePresence>
-                            </div>
-                        </Link>
-                    ))}
+                                                    <Typography
+                                                        size="xs"
+                                                        weight="medium"
+                                                        className={
+                                                            styles.claimsBadgeText
+                                                        }
+                                                    >
+                                                        {pendingClaimsCount}
+                                                    </Typography>
+                                                </motion.span>
+                                            )}
+                                    </AnimatePresence>
+                                </div>
+                            </Link>
+                        );
+                    })}
                 </div>
                 <div className={styles.mobileNavigationWrapper}>
                     {ROUTES.map(({ path, label, icon: Icon }) => (

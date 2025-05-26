@@ -6,15 +6,29 @@ import { base } from "viem/chains";
 import { UniswapLogo } from "../assets/logos/dexes/uniswap";
 import type { ChainData } from "../types/chains";
 import { DepositUrlType, ProtocolType } from "../types/protocol";
+import { KimLogo } from "../assets";
 
 export const baseData: ChainData = {
-    testnet: false,
+    active: true,
     name: base.name,
     metromContract: ADDRESS[SupportedChain.Base],
     blockExplorers: base.blockExplorers,
     icon: BaseLogo,
     protocols: [
         {
+            active: false,
+            type: ProtocolType.Dex,
+            slug: SupportedDex.Kim,
+            logo: KimLogo,
+            name: "Kim",
+            depositUrl: {
+                type: DepositUrlType.PathPoolAddress,
+                template: "https://app.kim.exchange/pools/v4/{pool}",
+            },
+            supportsFetchAllPools: true,
+        },
+        {
+            active: true,
             type: ProtocolType.Dex,
             slug: SupportedDex.BaseSwap,
             logo: BaseSwapLogo,
@@ -26,6 +40,7 @@ export const baseData: ChainData = {
             supportsFetchAllPools: true,
         },
         {
+            active: true,
             type: ProtocolType.Dex,
             slug: SupportedDex.UniswapV3,
             logo: UniswapLogo,

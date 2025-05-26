@@ -11,7 +11,7 @@ interface ProtocolProps {
 }
 
 export function Protocol({ campaign }: ProtocolProps) {
-    const protocols = useProtocolsInChain(campaign.chainId);
+    const protocols = useProtocolsInChain({ chainId: campaign.chainId });
 
     const [popoverOpen, setPopoverOpen] = useState(false);
     const [dexDetails, setDexDetails] = useState<HTMLDivElement | null>(null);

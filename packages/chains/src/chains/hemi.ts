@@ -10,13 +10,14 @@ import {
 import { hemi } from "viem/chains";
 
 export const hemiData: ChainData = {
-    testnet: false,
+    active: true,
     name: hemi.name,
     metromContract: ADDRESS[SupportedChain.Hemi],
     blockExplorers: hemi.blockExplorers,
     icon: HemiLogo,
     protocols: [
         {
+            active: true,
             type: ProtocolType.Dex,
             slug: SupportedDex.UniswapV3,
             logo: UniswapLogo,

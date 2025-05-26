@@ -7,7 +7,7 @@ import type { ChainData } from "../types/chains";
 import { DepositUrlType, ProtocolType } from "../types/protocol";
 
 export const seiData: ChainData = {
-    testnet: false,
+    active: true,
     name: sei.name,
     metromContract: ADDRESS[SupportedChain.Sei],
     blockExplorers: {
@@ -19,6 +19,7 @@ export const seiData: ChainData = {
     icon: SeiLogo,
     protocols: [
         {
+            active: true,
             type: ProtocolType.Dex,
             slug: SupportedDex.Carbon,
             logo: CarbonLogo,

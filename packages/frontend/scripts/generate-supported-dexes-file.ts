@@ -22,7 +22,7 @@ const HOMEPAGES: Record<SupportedDex, string> = {
 };
 
 const chains = Object.values(CHAIN_DATA[Environment.Production]).filter(
-    (chain) => !chain.testnet,
+    ({ protocols }) => protocols.some(({ active }) => active),
 );
 const chainNames = chains.map((chain) => chain.name);
 

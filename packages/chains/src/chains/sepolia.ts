@@ -9,13 +9,14 @@ import type { ChainData } from "../types/chains";
 import { DepositUrlType, ProtocolType } from "../types/protocol";
 
 export const sepoliaData: ChainData = {
-    testnet: true,
+    active: true,
     name: sepolia.name,
     metromContract: ADDRESS[SupportedChain.Sepolia],
     blockExplorers: sepolia.blockExplorers,
     icon: EthLogo,
     protocols: [
         {
+            active: true,
             type: ProtocolType.LiquityV2,
             slug: SupportedLiquityV2.Liquity,
             logo: LiquityLogo,
@@ -34,6 +35,7 @@ export const sepoliaData: ChainData = {
             },
         },
         {
+            active: true,
             type: ProtocolType.LiquityV2,
             slug: SupportedLiquityV2.Ebisu,
             logo: EbisuLogo,
@@ -52,6 +54,7 @@ export const sepoliaData: ChainData = {
             },
         },
         {
+            active: true,
             type: ProtocolType.Dex,
             slug: SupportedDex.Carbon,
             logo: CarbonLogo,

@@ -15,7 +15,11 @@ interface AmmPoolLiquidityProps {
 
 export function AmmPoolLiquidity({ payload }: AmmPoolLiquidityProps) {
     const chainId = useChainId();
-    const availableDexes = useProtocolsInChain(chainId, ProtocolType.Dex);
+    const availableDexes = useProtocolsInChain({
+        chainId,
+        type: ProtocolType.Dex,
+        active: true,
+    });
 
     const selectedDex = useMemo(() => {
         return availableDexes.find(

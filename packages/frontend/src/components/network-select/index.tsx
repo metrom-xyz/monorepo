@@ -1,13 +1,14 @@
 import classNames from "classnames";
 import { ErrorIcon } from "@/src/assets/error-icon";
 import { useRef, useState } from "react";
-import { useChainId, useChains, useSwitchChain } from "wagmi";
+import { useChainId, useSwitchChain } from "wagmi";
 import { PopoverPicker } from "./popover-picker";
 import { DrawerPicker } from "./drawer-picker";
 import { useClickAway } from "react-use";
 import { AnimatePresence, motion } from "motion/react";
 import { useChainData } from "@/src/hooks/useChainData";
 import { useIsChainSupported } from "@/src/hooks/useIsChainSupported";
+import { useActiveChains } from "@/src/hooks/useActiveChains";
 
 import styles from "./styles.module.css";
 
@@ -17,7 +18,7 @@ export function NetworkSelect() {
 
     const rootRef = useRef<HTMLDivElement>(null);
 
-    const supportedChains = useChains();
+    const supportedActiveChains = useActiveChains();
     const selectedChainId = useChainId();
     const chainData = useChainData(selectedChainId);
     const chainSupported = useIsChainSupported(selectedChainId);
@@ -76,13 +77,13 @@ export function NetworkSelect() {
                 </div>
                 <PopoverPicker
                     anchor={wrapper}
-                    chains={supportedChains}
+                    chains={supportedActiveChains}
                     open={pickerOpen}
                     value={selectedChainId}
                     onChange={handleNetworkOnChange}
                 />
                 <DrawerPicker
-                    chains={supportedChains}
+                    chains={supportedActiveChains}
                     open={pickerOpen}
                     value={selectedChainId}
                     onChange={handleNetworkOnChange}

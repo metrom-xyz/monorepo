@@ -26,7 +26,11 @@ export function DexStep({ disabled, dex, onDexChange }: DexStepProps) {
     const [open, setOpen] = useState(true);
 
     const chainId = useChainId();
-    const availableDexes = useProtocolsInChain(chainId, ProtocolType.Dex);
+    const availableDexes = useProtocolsInChain({
+        chainId,
+        type: ProtocolType.Dex,
+        active: true,
+    });
 
     const selectedDex = useMemo(() => {
         if (!dex) return undefined;

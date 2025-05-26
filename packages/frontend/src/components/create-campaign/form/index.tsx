@@ -34,11 +34,16 @@ export function CreateCampaignForm<T extends CampaignType>({
     const selectedChain = useChainId();
     const chains = useChains();
     const router = useRouter();
-    const dexesProtocols = useProtocolsInChain(selectedChain, ProtocolType.Dex);
-    const liquityV2Protocols = useProtocolsInChain(
-        selectedChain,
-        ProtocolType.LiquityV2,
-    );
+    const dexesProtocols = useProtocolsInChain({
+        chainId: selectedChain,
+        type: ProtocolType.Dex,
+        active: true,
+    });
+    const liquityV2Protocols = useProtocolsInChain({
+        chainId: selectedChain,
+        type: ProtocolType.LiquityV2,
+        active: true,
+    });
 
     const [view, setView] = useState(View.Form);
     const [payload, setPayload] = useState<CampaignPreviewPayload | null>(null);

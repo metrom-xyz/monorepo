@@ -7,13 +7,14 @@ import type { ChainData } from "../types/chains";
 import { DepositUrlType, ProtocolType } from "../types/protocol";
 
 export const gnosisData: ChainData = {
-    testnet: false,
+    active: true,
     name: gnosis.name,
     metromContract: ADDRESS[SupportedChain.Gnosis],
     blockExplorers: gnosis.blockExplorers,
     icon: GnosisLogo,
     protocols: [
         {
+            active: true,
             type: ProtocolType.Dex,
             slug: SupportedDex.Swapr,
             logo: SwaprLogo,

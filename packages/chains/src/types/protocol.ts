@@ -13,6 +13,7 @@ export enum ProtocolType {
 }
 
 export interface ProtocolBase<S = string> {
+    active: boolean;
     slug: S;
     name: string;
     logo: FunctionComponent<SVGIcon>;
