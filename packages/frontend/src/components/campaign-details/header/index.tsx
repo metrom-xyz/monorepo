@@ -1,5 +1,4 @@
 import { Skeleton, Button } from "@metrom-xyz/ui";
-import { useTranslations } from "next-intl";
 import { PoolRemoteLogo } from "../../pool-remote-logo";
 import type { Campaign } from "@/src/types/campaign";
 import { AmmPoolLiquityHeader } from "./amm-pool-liquitidy";
@@ -28,13 +27,10 @@ export function Header({ campaign }: HeaderProps) {
 }
 
 export function SkeletonHeader() {
-    const t = useTranslations("campaignDetails.header");
-
     return (
         <div className={styles.root}>
             <div className={styles.titleContainer}>
                 <div className={styles.title}>
-                    <Skeleton circular width={32} />
                     <PoolRemoteLogo
                         tokens={[{ address: "0x1" }, { address: "0x2" }]}
                         loading
@@ -42,6 +38,18 @@ export function SkeletonHeader() {
                     />
                     <Skeleton size="xl4" width={400} />
                     <Skeleton size="lg" width={60} />
+                </div>
+                <div className={styles.chips}>
+                    <Skeleton
+                        size="xl2"
+                        width={125}
+                        className={styles.skeletonChip}
+                    />
+                    <Skeleton
+                        size="xl2"
+                        width={125}
+                        className={styles.skeletonChip}
+                    />
                 </div>
                 <Skeleton size="sm" width={125} />
             </div>
