@@ -41,8 +41,8 @@
         "recharts": "^2.15.3",
         "sharp": "^0.34.1",
         "sonner": "^2.0.3",
-        "viem": "^2.29.3",
-        "wagmi": "^2.15.3"
+        "viem": "2.23.9",
+        "wagmi": "2.14.15"
     },
     "devDependencies": {
         "@eslint/eslintrc": "^3.3.1",
