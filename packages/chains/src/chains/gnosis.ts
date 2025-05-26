@@ -12,7 +12,6 @@ export const gnosisData: ChainData = {
     metromContract: ADDRESS[SupportedChain.Gnosis],
     blockExplorers: gnosis.blockExplorers,
     icon: GnosisLogo,
-    brandColor: "#3e6957",
     protocols: [
         {
             active: true,
