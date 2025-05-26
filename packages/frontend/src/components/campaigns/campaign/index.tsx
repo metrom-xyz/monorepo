@@ -1,17 +1,17 @@
 import { Apr, SkeletonApr } from "./apr";
 import { Action, SkeletonAction } from "./action";
-import { SkeletonStatus, Status } from "./status";
+import { Status } from "./status";
 import { Rewards, SkeletonRewards } from "./rewards";
-import { Chain, SkeletonChain } from "./chain";
 import { Link } from "@/src/i18n/routing";
-import { Card, Typography } from "@metrom-xyz/ui";
+import { Card, Skeleton, Typography } from "@metrom-xyz/ui";
 import classNames from "classnames";
-import { Protocol, SkeletonProtocol } from "./protocol";
 import { Points } from "./points";
 import dayjs from "dayjs";
 import { DistributablesType, RestrictionType } from "@metrom-xyz/sdk";
 import { type Campaign } from "@/src/types/campaign";
 import { useTranslations } from "next-intl";
+import { ChainChip } from "../../chain-chip";
+import { ProtocolChip } from "../../protocol-chip";
 
 import styles from "./styles.module.css";
 
@@ -47,8 +47,8 @@ export function CampaignRow({ campaign }: CampaignProps) {
                         <Action campaign={campaign} />
                     </div>
                     <div className={styles.row}>
-                        <Chain id={campaign.chainId} />
-                        <Protocol campaign={campaign} />
+                        <ChainChip id={campaign.chainId} />
+                        <ProtocolChip campaign={campaign} />
                         <Status
                             from={campaign.from}
                             to={campaign.to}
@@ -113,9 +113,9 @@ export function SkeletonCampaign() {
                         <SkeletonAction />
                     </div>
                     <div className={styles.row}>
-                        <SkeletonProtocol />
-                        <SkeletonChain />
-                        <SkeletonStatus />
+                        <Skeleton width={80} size="xl" />
+                        <Skeleton width={80} size="xl" />
+                        <Skeleton width={100} size="xl" />
                     </div>
                 </div>
                 <SkeletonApr />

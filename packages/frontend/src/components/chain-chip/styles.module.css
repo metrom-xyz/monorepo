@@ -1,0 +1,42 @@
+@reference "../../app.css";
+
+.root {
+    @apply flex
+        justify-center
+        items-center
+        gap-1.5
+        bg-zinc-100
+        dark:bg-zinc-800
+        rounded-md
+        h-7
+        py-1
+        px-1.5
+        w-fit;
+}
+
+.root.surface {
+    @apply theme-surface;
+}
+
+.root.lg {
+    @apply h-9 py-1.5 px-2;
+}
+
+.root.xl {
+    @apply h-11 py-2 px-2.5;
+}
+
+.icon,
+.icon > svg {
+    @apply w-[1.25rem] h-[1.25rem] col-span-1;
+}
+
+.icon.lg,
+.icon.lg > svg {
+    @apply w-6 h-6;
+}
+
+.icon.xl,
+.icon.xl > svg {
+    @apply w-8 h-8;
+}

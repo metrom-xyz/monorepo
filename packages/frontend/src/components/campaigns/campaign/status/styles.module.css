@@ -4,10 +4,6 @@
     @apply flex items-center col-span-1 gap-1.5 justify-self-end;
 }
 
-.rootSkeleton {
-    @apply w-full min-w-20 justify-self-end bg-zinc-200! dark:bg-dark-surface-2! animate-pulse;
-}
-
 .text {
     @apply flex gap-1;
 }

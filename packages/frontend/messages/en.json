@@ -59,6 +59,7 @@
             "clear": "Clear filters"
         },
         "header": {
+            "chain": "Chain",
             "details": "Details",
             "apr": "APR",
             "rewards": "Daily rewards"

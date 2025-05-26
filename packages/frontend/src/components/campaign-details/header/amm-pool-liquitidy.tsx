@@ -1,5 +1,5 @@
 import { useCallback } from "react";
-import { Typography, Button, InfoTooltip } from "@metrom-xyz/ui";
+import { Typography, Button } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
 import { useRouter } from "@/src/i18n/routing";
 import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
@@ -10,6 +10,8 @@ import { PoolRemoteLogo } from "../../pool-remote-logo";
 import { AprChip } from "../../apr-chip";
 import { DistributablesType, TargetType } from "@metrom-xyz/sdk";
 import type { TargetedNamedCampaign } from "@/src/types/campaign";
+import { ChainChip } from "../../chain-chip";
+import { ProtocolChip } from "../../protocol-chip";
 
 import styles from "./styles.module.css";
 
@@ -25,7 +27,6 @@ export function AmmPoolLiquityHeader({ campaign }: AmmPoolLiquityHeaderProps) {
         router.push("/claims");
     }, [router]);
 
-    const ChainIcon = campaign.chainData?.icon;
     const depositLink = campaign.getDepositLiquidityUrl();
     const explorerLink = getExplorerLink(
         campaign.target.pool.id,
@@ -44,16 +45,6 @@ export function AmmPoolLiquityHeader({ campaign }: AmmPoolLiquityHeaderProps) {
         <div className={styles.root}>
             <div className={styles.titleContainer}>
                 <div className={styles.title}>
-                    {ChainIcon && (
-                        <InfoTooltip
-                            placement="top"
-                            icon={<ChainIcon className={styles.chainLogo} />}
-                        >
-                            <Typography size="sm">
-                                {campaign.chainData.name}
-                            </Typography>
-                        </InfoTooltip>
-                    )}
                     <PoolRemoteLogo
                         chain={campaign.chainId}
                         size="xl"
@@ -73,6 +64,10 @@ export function AmmPoolLiquityHeader({ campaign }: AmmPoolLiquityHeaderProps) {
                             })}
                         </Typography>
                     )}
+                </div>
+                <div className={styles.chips}>
+                    <ChainChip id={campaign.chainId} size="lg" surface />
+                    <ProtocolChip campaign={campaign} size="lg" surface />
                 </div>
                 <Typography size="sm" weight="medium" light>
                     {t("rewardsMayVary")}
