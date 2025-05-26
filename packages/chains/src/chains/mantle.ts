@@ -4,7 +4,7 @@ import { mantle } from "viem/chains";
 import type { ChainData } from "../types/chains";
 
 export const mantleData: ChainData = {
-    testnet: false,
+    active: false,
     name: mantle.name,
     metromContract: ADDRESS[SupportedChain.Mantle],
     blockExplorers: mantle.blockExplorers,

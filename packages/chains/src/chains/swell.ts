@@ -9,7 +9,7 @@ import { OrkiLogo } from "../assets/logos/liquity-v2-platforms/orki";
 
 // FIXME: remove this once done with development testing
 export const swellDevelopmentData: ChainData = {
-    testnet: false,
+    active: true,
     name: "Swell",
     metromContract: {
         address: "0xe82c4D8b993D613a28600B953e91A3A93Ae69Fd6",
@@ -19,6 +19,7 @@ export const swellDevelopmentData: ChainData = {
     icon: SwellLogo,
     protocols: [
         {
+            active: true,
             type: ProtocolType.Dex,
             slug: SupportedDex.Velodrome,
             logo: VelodromeLogo,
@@ -30,6 +31,7 @@ export const swellDevelopmentData: ChainData = {
             supportsFetchAllPools: true,
         },
         {
+            active: true,
             type: ProtocolType.LiquityV2,
             slug: SupportedLiquityV2.Orki,
             logo: OrkiLogo,
@@ -88,13 +90,14 @@ export const swellDevelopmentData: ChainData = {
 };
 
 export const swellProductionData: ChainData = {
-    testnet: false,
+    active: true,
     name: "Swell",
     metromContract: ADDRESS[SupportedChain.Swell],
     blockExplorers: swellchain.blockExplorers,
     icon: SwellLogo,
     protocols: [
         {
+            active: true,
             type: ProtocolType.Dex,
             slug: SupportedDex.Velodrome,
             logo: VelodromeLogo,
@@ -106,6 +109,7 @@ export const swellProductionData: ChainData = {
             supportsFetchAllPools: true,
         },
         {
+            active: true,
             type: ProtocolType.LiquityV2,
             slug: SupportedLiquityV2.Orki,
             logo: OrkiLogo,

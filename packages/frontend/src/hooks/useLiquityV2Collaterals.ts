@@ -21,10 +21,11 @@ export function useLiquityV2Collaterals({
     loading: boolean;
     collaterals?: LiquityV2Collateral[];
 } {
-    const supportedBrands = useProtocolsInChain(
+    const supportedBrands = useProtocolsInChain({
         chainId,
-        ProtocolType.LiquityV2,
-    );
+        type: ProtocolType.LiquityV2,
+        active: true,
+    });
 
     const { data: collaterals, isPending: loading } = useQuery({
         queryKey: ["liquity-v2-collaterals", brand, chainId],

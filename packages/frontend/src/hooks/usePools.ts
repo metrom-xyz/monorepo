@@ -17,7 +17,11 @@ export function usePools({ chainId, dex, enabled = true }: UsePoolsParams): {
     loading: boolean;
     pools?: AmmPoolWithTvl[];
 } {
-    const availableDexes = useProtocolsInChain(chainId, ProtocolType.Dex);
+    const availableDexes = useProtocolsInChain({
+        chainId,
+        type: ProtocolType.Dex,
+        active: true,
+    });
 
     const { data: pools, isPending: loading } = useQuery({
         queryKey: ["pools", dex, chainId],

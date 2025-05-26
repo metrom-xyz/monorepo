@@ -30,10 +30,11 @@ export function LiquityV2BrandStep({
     const [open, setOpen] = useState(true);
 
     const chainId = useChainId();
-    const supportedBrands = useProtocolsInChain(
+    const supportedBrands = useProtocolsInChain({
         chainId,
-        ProtocolType.LiquityV2,
-    );
+        type: ProtocolType.LiquityV2,
+        active: true,
+    });
 
     const selectedBrand = useMemo(() => {
         if (!brand) return undefined;

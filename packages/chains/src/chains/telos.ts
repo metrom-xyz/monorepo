@@ -7,7 +7,7 @@ import type { ChainData } from "../types/chains";
 import { DepositUrlType, ProtocolType } from "../types/protocol";
 
 export const telosData: ChainData = {
-    testnet: false,
+    active: true,
     name: telos.name,
     metromContract: ADDRESS[SupportedChain.Telos],
     blockExplorers: {
@@ -19,6 +19,7 @@ export const telosData: ChainData = {
     icon: TelosLogo,
     protocols: [
         {
+            active: true,
             type: ProtocolType.Dex,
             slug: SupportedDex.UniswapV3,
             logo: UniswapLogo,

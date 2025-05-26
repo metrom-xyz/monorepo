@@ -8,13 +8,14 @@ import type { ChainData } from "../types/chains";
 import { DepositUrlType, ProtocolType } from "../types/protocol";
 
 export const taikoData: ChainData = {
-    testnet: false,
+    active: true,
     name: "Taiko",
     metromContract: ADDRESS[SupportedChain.Taiko],
     blockExplorers: taiko.blockExplorers,
     icon: TaikoLogo,
     protocols: [
         {
+            active: true,
             type: ProtocolType.Dex,
             slug: SupportedDex.UniswapV3,
             logo: UniswapLogo,
@@ -26,6 +27,7 @@ export const taikoData: ChainData = {
             supportsFetchAllPools: true,
         },
         {
+            active: true,
             type: ProtocolType.Dex,
             slug: SupportedDex.Unagi,
             logo: UnagiLogo,

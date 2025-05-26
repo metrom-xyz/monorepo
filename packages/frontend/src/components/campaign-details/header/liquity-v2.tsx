@@ -18,10 +18,10 @@ export function LiquityV2Header({ campaign }: LiquityV2HeaderProps) {
     const t = useTranslations("campaignDetails.header");
     const router = useRouter();
 
-    const brand = useProtocolsInChain(
-        campaign.chainId,
-        ProtocolType.LiquityV2,
-    ).find((brand) => brand.slug === campaign.target.brand.slug);
+    const brand = useProtocolsInChain({
+        chainId: campaign.chainId,
+        type: ProtocolType.LiquityV2,
+    }).find((brand) => brand.slug === campaign.target.brand.slug);
 
     const ChainIcon = campaign.chainData?.icon;
     const actionLink = brand?.actionUrls[campaign.target.type];

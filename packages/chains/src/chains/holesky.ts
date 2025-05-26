@@ -7,13 +7,14 @@ import type { ChainData } from "../types/chains";
 import { DepositUrlType, ProtocolType } from "../types/protocol";
 
 export const holeskyData: ChainData = {
-    testnet: true,
+    active: true,
     name: holesky.name,
     metromContract: ADDRESS[SupportedChain.Holesky],
     blockExplorers: holesky.blockExplorers,
     icon: EthLogo,
     protocols: [
         {
+            active: true,
             type: ProtocolType.Dex,
             slug: SupportedDex.TestIntegral,
             logo: AlgebraIntegralLogo,

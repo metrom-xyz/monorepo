@@ -120,6 +120,10 @@
         theme-surface-hover;
 }
 
+.tab.disabled {
+    @apply cursor-not-allowed hover:bg-transparent;
+}
+
 .tabIcon {
     @apply w-5 h-5 text-black dark:text-zinc-200;
 }

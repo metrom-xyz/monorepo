@@ -6,7 +6,7 @@ import type { Protocol } from "./protocol";
 import { SupportedChain } from "@metrom-xyz/contracts";
 
 export interface ChainData {
-    testnet: boolean;
+    active: boolean;
     name: string;
     metromContract: ChainContract;
     blockExplorers: Chain["blockExplorers"];

@@ -113,6 +113,10 @@
             "liquityV2": {
                 "title": "LIQUITY V2",
                 "description": "Incentivize users borrowing and other actions on Liquity V2 and its forks."
+            },
+            "empty": {
+                "message1": "Campaign creation isn't supported on the selected chain.",
+                "message2": "Please choose a different chain."
             }
         },
         "type": {
