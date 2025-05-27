@@ -9,7 +9,7 @@ import { DepositUrlType, ProtocolType } from "../types/protocol";
 import { KimLogo } from "../assets";
 
 export const baseData: ChainData = {
-    active: true,
+    active: false,
     name: base.name,
     metromContract: ADDRESS[SupportedChain.Base],
     blockExplorers: base.blockExplorers,
@@ -28,7 +28,7 @@ export const baseData: ChainData = {
             supportsFetchAllPools: true,
         },
         {
-            active: true,
+            active: false,
             type: ProtocolType.Dex,
             slug: SupportedDex.BaseSwap,
             logo: BaseSwapLogo,
@@ -40,7 +40,7 @@ export const baseData: ChainData = {
             supportsFetchAllPools: true,
         },
         {
-            active: true,
+            active: false,
             type: ProtocolType.Dex,
             slug: SupportedDex.UniswapV3,
             logo: UniswapLogo,
