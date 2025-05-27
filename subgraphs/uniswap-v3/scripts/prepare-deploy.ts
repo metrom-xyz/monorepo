@@ -17,7 +17,13 @@ if (!networkConfig) {
     process.exit(1);
 }
 
-const contracts = networkConfig[amm];
+// trying to retain 24hrs of block history regardless of block time;
+const pruningBlocks =
+    typeof networkConfig.blockTime === "string"
+        ? networkConfig.blockTime
+        : Math.floor((24 * 60 * 60) / networkConfig.blockTime);
+
+const contracts = networkConfig.amms[amm];
 if (!contracts) {
     console.error(
         `"${amm}" is not a valid amm for the network ${network}. Valid values are: ${Object.keys(networkConfig).join(", ")}`,
@@ -61,6 +67,7 @@ try {
                 ),
             ).toString(),
             {
+                pruningBlocks,
                 network: resolvedNetwork,
                 factoryAddress: contracts.Factory.address,
                 factoryStartBlock: contracts.Factory.startBlock,

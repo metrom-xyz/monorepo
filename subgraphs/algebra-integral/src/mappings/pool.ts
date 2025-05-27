@@ -1,4 +1,4 @@
-import { Address, BigInt, Bytes, crypto } from "@graphprotocol/graph-ts";
+import { Address, Bytes, crypto } from "@graphprotocol/graph-ts";
 import {
     Initialize as InitializeEvent,
     Swap as SwapEvent,
@@ -9,8 +9,9 @@ import {
 import {
     Position,
     Pool,
-    TickMovingSwap,
     LiquidityChange,
+    TickChange,
+    PriceChange,
 } from "../../generated/schema";
 import {
     BI_0,
@@ -29,14 +30,14 @@ export function handleInitialize(event: InitializeEvent): void {
             `Could not find pool with address ${event.address.toHexString()}`,
         );
 
-    pool.tick = BigInt.fromI32(event.params.tick);
+    pool.tick = event.params.tick;
     pool.price = getPrice(event.params.price, pool.token0, pool.token1);
     pool.save();
 }
 
 export function handleFee(event: FeeEvent): void {
     let pool = getPoolOrThrow(event.address);
-    pool.fee = BigInt.fromU32(event.params.fee);
+    pool.fee = event.params.fee;
     pool.save();
 }
 
@@ -49,17 +50,27 @@ export function handleSwap(event: SwapEvent): void {
     pool.token1Tvl = pool.token1Tvl.plus(
         getFeeAdjustedAmount(event.params.amount1, pool.fee),
     );
-    pool.price = getPrice(event.params.price, pool.token0, pool.token1);
 
-    let newTick = BigInt.fromI32(event.params.tick);
+    let newPrice = getPrice(event.params.price, pool.token0, pool.token1);
+    if (newPrice != pool.price) {
+        let priceChange = new PriceChange(getEventId(event));
+        priceChange.timestamp = event.block.timestamp;
+        priceChange.blockNumber = event.block.number;
+        priceChange.pool = pool.id;
+        priceChange.newPrice = newPrice;
+        priceChange.save();
+
+        pool.price = newPrice;
+    }
+
+    let newTick = event.params.tick;
     if (newTick != pool.tick) {
-        let tickMovingSwap = new TickMovingSwap(getEventId(event));
-        tickMovingSwap.timestamp = event.block.timestamp;
-        tickMovingSwap.blockNumber = event.block.number;
-        tickMovingSwap.transactionHash = event.transaction.hash;
-        tickMovingSwap.pool = pool.id;
-        tickMovingSwap.newTick = newTick;
-        tickMovingSwap.save();
+        let tickChange = new TickChange(getEventId(event));
+        tickChange.timestamp = event.block.timestamp;
+        tickChange.blockNumber = event.block.number;
+        tickChange.pool = pool.id;
+        tickChange.newTick = newTick;
+        tickChange.save();
 
         pool.tick = newTick;
     }
@@ -70,15 +81,15 @@ export function handleSwap(event: SwapEvent): void {
 function getDirectPositionId(
     poolAddress: Address,
     owner: Address,
-    lowerTick: BigInt,
-    upperTick: BigInt,
+    lowerTick: i32,
+    upperTick: i32,
 ): Bytes {
     return Bytes.fromByteArray(
         crypto.keccak256(
             poolAddress
                 .concat(owner)
-                .concat(Bytes.fromByteArray(Bytes.fromBigInt(lowerTick)))
-                .concat(Bytes.fromByteArray(Bytes.fromBigInt(upperTick))),
+                .concat(Bytes.fromByteArray(Bytes.fromI32(lowerTick)))
+                .concat(Bytes.fromByteArray(Bytes.fromI32(upperTick))),
         ),
     );
 }
@@ -86,8 +97,8 @@ function getDirectPositionId(
 function getOrCreateDirectPosition(
     poolAddress: Address,
     owner: Address,
-    lowerTick: BigInt,
-    upperTick: BigInt,
+    lowerTick: i32,
+    upperTick: i32,
 ): Position {
     let id = getDirectPositionId(poolAddress, owner, lowerTick, upperTick);
     let position = Position.load(id);
@@ -110,8 +121,8 @@ function getOrCreateDirectPosition(
 function getDirectPositionOrThrow(
     poolAddress: Address,
     owner: Address,
-    lowerTick: BigInt,
-    upperTick: BigInt,
+    lowerTick: i32,
+    upperTick: i32,
 ): Position {
     let position = Position.load(
         getDirectPositionId(poolAddress, owner, lowerTick, upperTick),
@@ -129,9 +140,8 @@ export function handleMint(event: MintEvent): void {
     pool.token1Tvl = pool.token1Tvl.plus(event.params.amount1);
 
     if (
-        pool.tick !== null &&
-        BigInt.fromI32(event.params.bottomTick).le(pool.tick) &&
-        BigInt.fromI32(event.params.topTick).gt(pool.tick)
+        event.params.bottomTick <= pool.tick &&
+        event.params.topTick > pool.tick
     )
         pool.liquidity = pool.liquidity.plus(event.params.liquidityAmount);
 
@@ -161,8 +171,8 @@ export function handleMint(event: MintEvent): void {
         let position = getOrCreateDirectPosition(
             event.address,
             event.params.owner,
-            BigInt.fromI32(event.params.bottomTick),
-            BigInt.fromI32(event.params.topTick),
+            event.params.bottomTick,
+            event.params.topTick,
         );
 
         position.liquidity = position.liquidity.plus(
@@ -173,7 +183,6 @@ export function handleMint(event: MintEvent): void {
         let liquidityChange = new LiquidityChange(getEventId(event));
         liquidityChange.timestamp = event.block.timestamp;
         liquidityChange.blockNumber = event.block.number;
-        liquidityChange.transactionHash = event.transaction.hash;
         liquidityChange.delta = event.params.liquidityAmount;
         liquidityChange.position = position.id;
         liquidityChange.save();
@@ -186,9 +195,8 @@ export function handleBurn(event: BurnEvent): void {
     pool.token1Tvl = pool.token1Tvl.minus(event.params.amount1);
 
     if (
-        pool.tick !== null &&
-        BigInt.fromI32(event.params.bottomTick).le(pool.tick) &&
-        BigInt.fromI32(event.params.topTick).gt(pool.tick)
+        event.params.bottomTick <= pool.tick &&
+        event.params.topTick > pool.tick
     )
         pool.liquidity = pool.liquidity.plus(event.params.liquidityAmount);
 
@@ -218,8 +226,8 @@ export function handleBurn(event: BurnEvent): void {
         let position = getDirectPositionOrThrow(
             event.address,
             event.params.owner,
-            BigInt.fromI32(event.params.bottomTick),
-            BigInt.fromI32(event.params.topTick),
+            event.params.bottomTick,
+            event.params.topTick,
         );
 
         position.liquidity = position.liquidity.minus(
@@ -230,7 +238,6 @@ export function handleBurn(event: BurnEvent): void {
         let liquidityChange = new LiquidityChange(getEventId(event));
         liquidityChange.timestamp = event.block.timestamp;
         liquidityChange.blockNumber = event.block.number;
-        liquidityChange.transactionHash = event.transaction.hash;
         liquidityChange.delta = event.params.liquidityAmount.neg();
         liquidityChange.position = position.id;
         liquidityChange.save();
