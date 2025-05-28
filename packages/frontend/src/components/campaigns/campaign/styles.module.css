@@ -16,9 +16,11 @@
         ease-in-out
         rounded-none
         bg-none
-        min-h-[92px]
-        max-h-[92px]
-        p-3.5;
+        min-h-[89px]
+        max-h-[89px]
+        pt-[13px]
+        pb-4
+        px-4;
 }
 
 .header > :nth-child(1) {

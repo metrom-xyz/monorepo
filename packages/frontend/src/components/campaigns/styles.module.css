@@ -53,7 +53,7 @@
 }
 
 .header {
-    @apply grid grid-cols-subgrid col-span-full items-center px-7;
+    @apply grid grid-cols-subgrid col-span-full items-center px-4;
 }
 
 .column {
@@ -109,7 +109,7 @@
 .empty {
     @apply w-full
         col-span-full
-        h-[920px]
+        h-[890px]
         flex
         flex-col
         items-center
