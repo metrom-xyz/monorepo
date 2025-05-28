@@ -3,12 +3,12 @@ import { usePrevious } from "react-use";
 import { useAccount, useChainId } from "wagmi";
 import { Button } from "@metrom-xyz/ui";
 import { WalletIcon } from "@/src/assets/wallet-icon";
-import { useConnectModal } from "@rainbow-me/rainbowkit";
 import { useCallback, useEffect, useState } from "react";
 import { ApproveTokens } from "./approve-tokens";
 import type { UsdPricedErc20TokenAmount } from "@metrom-xyz/sdk";
 import type { BaseTransaction } from "@safe-global/safe-apps-sdk";
 import { useChainData } from "@/src/hooks/useChainData";
+import { useAppKit } from "@reown/appkit/react";
 
 import styles from "./styles.module.css";
 
@@ -29,7 +29,7 @@ export function ApproveTokensButton({
     const previousRewards = usePrevious(tokenAmounts);
 
     const chainId = useChainId();
-    const { openConnectModal } = useConnectModal();
+    const { open } = useAppKit();
     const chainData = useChainData(chainId);
     const { address: connectedAddress } = useAccount();
 
@@ -37,6 +37,10 @@ export function ApproveTokensButton({
         if (previousRewards && previousRewards.length !== tokenAmounts.length)
             setApproved(false);
     }, [tokenAmounts.length, previousRewards]);
+
+    async function handleOnConnect() {
+        await open();
+    }
 
     const handleOnApprove = useCallback(() => {
         setApproved(true);
@@ -49,7 +53,7 @@ export function ApproveTokensButton({
                 icon={WalletIcon}
                 iconPlacement="right"
                 className={{ root: styles.button }}
-                onClick={openConnectModal}
+                onClick={handleOnConnect}
             >
                 {t("connectWallet")}
             </Button>

@@ -1,7 +1,7 @@
 import classNames from "classnames";
 import { useClickAway } from "react-use";
 import { useEffect, useRef, useState } from "react";
-import { Typography } from "@metrom-xyz/ui";
+import { Skeleton, Typography } from "@metrom-xyz/ui";
 import { shortenAddress } from "@/src/utils/address";
 import { type Address } from "viem";
 import { Disconnect } from "@/src/assets/disconnect";
@@ -19,23 +19,15 @@ import { SafeLogo } from "@/src/assets/logos/safe";
 import Image from "next/image";
 import { useChainData } from "@/src/hooks/useChainData";
 import { useIsChainSupported } from "@/src/hooks/useIsChainSupported";
+import { useAppKitAccount, useAppKitBalance } from "@reown/appkit/react";
 
 import styles from "./styles.module.css";
+import { AdapterBlueprint } from "@reown/appkit/adapters";
 
 interface AccountMenuProps {
     className?: string;
     chainId: number;
-    account: {
-        address: string;
-        balanceDecimals?: number;
-        balanceFormatted?: string;
-        balanceSymbol?: string;
-        displayBalance?: string;
-        displayName: string;
-        ensAvatar?: string;
-        ensName?: string;
-        hasPendingTransactions: boolean;
-    };
+    address: string;
     blockie: string;
     onClose: () => void;
 }
@@ -50,17 +42,35 @@ export function AccountMenu({
     className,
     chainId,
     onClose,
-    account,
+    address,
     blockie,
 }: AccountMenuProps) {
     const t = useTranslations("accountMenu");
     const [tab, setTab] = useState(Tab.Activity);
     const [copied, setCopied] = useState(false);
+    const [balance, setBalance] = useState<AdapterBlueprint.GetBalanceResult>();
 
     const rootRef = useRef(null);
     const chainData = useChainData(chainId);
     const chainSupported = useIsChainSupported(chainId);
     const { disconnect } = useDisconnect();
+    const { fetchBalance } = useAppKitBalance();
+    const { isConnected } = useAppKitAccount();
+
+    useEffect(() => {
+        const fetch = async () => {
+            try {
+                const response = await fetchBalance();
+                setBalance(response.data);
+            } catch (error) {
+                console.error(`Could not fetch account balance`, error);
+            }
+        };
+
+        if (isConnected && !balance) fetch();
+
+        console.log("fetch", balance);
+    }, [isConnected, balance, fetchBalance]);
 
     useClickAway(rootRef, onClose);
 
@@ -80,7 +90,7 @@ export function AccountMenu({
     }
 
     const handleCopyClick = () => {
-        navigator.clipboard.writeText(account.address).then(() => {
+        navigator.clipboard.writeText(address).then(() => {
             setCopied(true);
         });
     };
@@ -108,7 +118,7 @@ export function AccountMenu({
                                 alt="Avatar"
                                 height={36}
                                 width={36}
-                                src={account.ensAvatar || blockie}
+                                src={blockie}
                                 className={styles.avatar}
                             />
                         )}
@@ -123,7 +133,7 @@ export function AccountMenu({
                                 weight="medium"
                                 className={styles.address}
                             >
-                                {shortenAddress(account.address as Address)}
+                                {shortenAddress(address as Address)}
                             </Typography>
                             <div className={styles.copyIconContainer}>
                                 {copied ? (
@@ -134,14 +144,20 @@ export function AccountMenu({
                             </div>
                         </div>
                         <div className={styles.balanceWrapper}>
-                            <Typography light weight="medium" size="lg">
-                                {account.balanceSymbol}
-                            </Typography>
-                            <Typography light weight="medium" size="lg">
-                                {formatAmount({
-                                    amount: Number(account.balanceFormatted),
-                                })}
-                            </Typography>
+                            {balance ? (
+                                <>
+                                    <Typography light weight="medium" size="lg">
+                                        {balance.symbol}
+                                    </Typography>
+                                    <Typography light weight="medium" size="lg">
+                                        {formatAmount({
+                                            amount: Number(balance.balance),
+                                        })}
+                                    </Typography>
+                                </>
+                            ) : (
+                                <Skeleton size="lg" width={120} />
+                            )}
                         </div>
                     </div>
                 </div>

@@ -7,7 +7,6 @@ import "../../app.css";
 import type { Metadata } from "next";
 import { type ReactNode } from "react";
 import { setRequestLocale } from "next-intl/server";
-import type { Locale as RainbowLocale } from "@rainbow-me/rainbowkit";
 import { ClientProviders } from "../../components/client-providers";
 import { routing, type Locale } from "@/src/i18n/routing";
 import { notFound } from "next/navigation";
@@ -63,7 +62,7 @@ export default async function Layout({ children, params }: LayoutParams) {
             <body>
                 <NextIntlClientProvider>
                     <ThemeProvider attribute={"data-theme"}>
-                        <ClientProviders locale={locale as RainbowLocale}>
+                        <ClientProviders>
                             <AppLayout>{children}</AppLayout>
                         </ClientProviders>
                     </ThemeProvider>

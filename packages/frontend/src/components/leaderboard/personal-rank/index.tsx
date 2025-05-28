@@ -3,13 +3,13 @@ import { Card, Typography } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
 import { SupportedChain } from "@metrom-xyz/contracts";
 import { shortenAddress } from "@/src/utils/address";
-import { useConnectModal } from "@rainbow-me/rainbowkit";
 import { SkeletonRow, type PersonalRank } from "..";
 import { RewardsBreakdown } from "../rewards-breakdown";
 import { formatPercentage } from "@/src/utils/format";
 import { PointsBreakdown } from "../points-breakdown";
 import type { Rank } from "@/src/types/campaign";
 import { useWindowSize } from "react-use";
+import { useAppKit } from "@reown/appkit/react";
 
 import styles from "./styles.module.css";
 
@@ -34,7 +34,11 @@ export function PersonalRank({
 
     const { width } = useWindowSize();
     const { address: connectedAddress } = useAccount();
-    const { openConnectModal } = useConnectModal();
+    const { open } = useAppKit();
+
+    async function handleOnConnect() {
+        await open();
+    }
 
     return (
         <Card className={styles.root}>
@@ -54,7 +58,7 @@ export function PersonalRank({
                     <SkeletonRow size="lg" />
                 ) : !connectedAddress ? (
                     <button
-                        onClick={openConnectModal}
+                        onClick={handleOnConnect}
                         className={styles.connectWallet}
                     >
                         <Typography weight="medium" size="sm">

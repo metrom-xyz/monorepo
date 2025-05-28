@@ -2,20 +2,24 @@ import { Typography, Button, Card } from "@metrom-xyz/ui";
 import { Link } from "@/src/i18n/routing";
 import { useTranslations } from "next-intl";
 import { useAccount } from "wagmi";
-import { useConnectModal } from "@rainbow-me/rainbowkit";
 import { useEffect } from "react";
 import { trackFathomEvent } from "@/src/utils/fathom";
+import { useAppKit } from "@reown/appkit/react";
 
 import styles from "./styles.module.css";
 
 export function Empty() {
     const t = useTranslations("rewards.claims");
     const { address } = useAccount();
-    const { openConnectModal } = useConnectModal();
+    const { open } = useAppKit();
 
     useEffect(() => {
         trackFathomEvent("NO_REWARDS_CLAIM");
     }, []);
+
+    async function handleOnConnect() {
+        await open();
+    }
 
     return address ? (
         <Card className={styles.root}>
@@ -37,7 +41,7 @@ export function Empty() {
             <Typography size="lg" weight="medium" className={styles.body}>
                 {t("walletNotConnected.body")}
             </Typography>
-            <Button onClick={openConnectModal} size="sm">
+            <Button onClick={handleOnConnect} size="sm">
                 {t("walletNotConnected.action")}
             </Button>
         </Card>

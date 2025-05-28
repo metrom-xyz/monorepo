@@ -1,6 +1,5 @@
 "use client";
 
-import { ConnectButton as RainbowConnectButton } from "@rainbow-me/rainbowkit";
 import { Typography, Button } from "@metrom-xyz/ui";
 import { useEffect, useState } from "react";
 import { useWindowSize } from "react-use";
@@ -17,6 +16,12 @@ import { SAFE_CONNECTOR_ID } from "@/src/commons";
 import { toast } from "sonner";
 import { SafeLogo } from "@/src/assets/logos/safe";
 import { SafeConnectedNotification } from "./safe-connected-notification";
+import {
+    useAppKit,
+    useAppKitAccount,
+    useAppKitNetwork,
+} from "@reown/appkit/react";
+import { shortenAddress } from "@/src/utils/address";
 
 import styles from "./styles.module.css";
 
@@ -27,6 +32,12 @@ export function ConnectButton() {
     const { connector } = useAccount();
     const { connect } = useConnect();
     const { disconnect } = useDisconnect();
+
+    const { open } = useAppKit();
+    const { address, isConnected } = useAppKitAccount();
+    const { chainId } = useAppKitNetwork();
+
+    // TODO: resolved ens name and avatar
 
     const [accountMenuOpen, setAccountMenuOpen] = useState(false);
 
@@ -56,6 +67,10 @@ export function ConnectButton() {
         );
     }, [connect, connector?.id, connectors, disconnect]);
 
+    async function handleOnConnect() {
+        await open();
+    }
+
     function handleAccountMenuOpen() {
         setAccountMenuOpen(true);
         trackFathomEvent("OPEN_SIDEBAR");
@@ -65,136 +80,108 @@ export function ConnectButton() {
         setAccountMenuOpen(false);
     }
 
-    return (
-        <RainbowConnectButton.Custom>
-            {({ account, chain, openConnectModal, mounted }) => {
-                const ready = mounted;
-                const connected = ready && account && chain;
-                const blockie = blo(
-                    (account?.address as Address) || zeroAddress,
-                );
+    const blockie = blo((address as Address) || zeroAddress);
 
-                return (
-                    <div className={styles.root}>
-                        <div className={styles.wrapper}>
-                            {!connected ? (
-                                <Button
-                                    size="sm"
-                                    onClick={openConnectModal}
-                                    className={{
-                                        root: styles.connectButton,
-                                    }}
-                                >
-                                    {t("navigation.connect")}
-                                </Button>
-                            ) : (
-                                <>
-                                    <AnimatePresence>
-                                        {accountMenuOpen && (
-                                            <motion.div
-                                                initial={{ opacity: 0 }}
-                                                animate={{ opacity: 1 }}
-                                                exit={{ opacity: 0 }}
-                                                className={classNames(
-                                                    styles.overlay,
-                                                )}
-                                            />
-                                        )}
-                                    </AnimatePresence>
-                                    <AnimatePresence>
-                                        {accountMenuOpen && (
-                                            <motion.div
-                                                initial={{
-                                                    x: width > 640 ? 448 : 0,
-                                                    y: width > 640 ? 0 : "100%",
-                                                }}
-                                                animate={{
-                                                    x: width > 640 ? -448 : 0,
-                                                    y: 0,
-                                                }}
-                                                exit={{
-                                                    x: width > 640 ? 448 : 0,
-                                                    y: width > 640 ? 0 : "100%",
-                                                }}
-                                                transition={{
-                                                    ease: "easeInOut",
-                                                    duration: 0.2,
-                                                }}
-                                                drag={
-                                                    width > 640
-                                                        ? undefined
-                                                        : "y"
-                                                }
-                                                dragConstraints={{
-                                                    top: 0,
-                                                    bottom: 0,
-                                                }}
-                                                dragElastic={1}
-                                                onDragEnd={(_, info) => {
-                                                    if (info.offset.y > 100)
-                                                        handleAccountMenuClose();
-                                                }}
-                                                className={classNames({
-                                                    [styles.accountMenuHorizontal]:
-                                                        width > 640,
-                                                    [styles.accountMenuVertical]:
-                                                        width <= 640,
-                                                })}
-                                            >
-                                                <AccountMenu
-                                                    account={account}
-                                                    blockie={blockie}
-                                                    chainId={chain.id}
-                                                    onClose={
-                                                        handleAccountMenuClose
-                                                    }
-                                                />
-                                            </motion.div>
-                                        )}
-                                    </AnimatePresence>
-                                    <div
-                                        className={styles.walletWrapper}
-                                        onClick={handleAccountMenuOpen}
-                                    >
-                                        <div className={styles.account}>
-                                            {SAFE ? (
-                                                <div
-                                                    className={classNames(
-                                                        styles.avatar,
-                                                        styles.safeAvatar,
-                                                    )}
-                                                >
-                                                    <SafeLogo
-                                                        className={
-                                                            styles.safeLogo
-                                                        }
-                                                    />
-                                                </div>
-                                            ) : (
-                                                // eslint-disable-next-line @next/next/no-img-element
-                                                <img
-                                                    alt="Avatar"
-                                                    src={
-                                                        account.ensAvatar ||
-                                                        blockie
-                                                    }
-                                                    className={styles.avatar}
-                                                />
-                                            )}
-                                            <Typography
-                                                className={styles.displayName}
-                                            >
-                                                {account.ensName ||
-                                                    account.displayName}
-                                            </Typography>
-                                        </div>
-                                    </div>
-                                </>
+    return (
+        <div className={styles.root}>
+            <div className={styles.wrapper}>
+                {!isConnected ? (
+                    <Button
+                        size="sm"
+                        onClick={handleOnConnect}
+                        className={{
+                            root: styles.connectButton,
+                        }}
+                    >
+                        {t("navigation.connect")}
+                    </Button>
+                ) : (
+                    <>
+                        <AnimatePresence>
+                            {accountMenuOpen && (
+                                <motion.div
+                                    initial={{ opacity: 0 }}
+                                    animate={{ opacity: 1 }}
+                                    exit={{ opacity: 0 }}
+                                    className={classNames(styles.overlay)}
+                                />
                             )}
+                        </AnimatePresence>
+                        <AnimatePresence>
+                            {accountMenuOpen && address && chainId && (
+                                <motion.div
+                                    initial={{
+                                        x: width > 640 ? 448 : 0,
+                                        y: width > 640 ? 0 : "100%",
+                                    }}
+                                    animate={{
+                                        x: width > 640 ? -448 : 0,
+                                        y: 0,
+                                    }}
+                                    exit={{
+                                        x: width > 640 ? 448 : 0,
+                                        y: width > 640 ? 0 : "100%",
+                                    }}
+                                    transition={{
+                                        ease: "easeInOut",
+                                        duration: 0.2,
+                                    }}
+                                    drag={width > 640 ? undefined : "y"}
+                                    dragConstraints={{
+                                        top: 0,
+                                        bottom: 0,
+                                    }}
+                                    dragElastic={1}
+                                    onDragEnd={(_, info) => {
+                                        if (info.offset.y > 100)
+                                            handleAccountMenuClose();
+                                    }}
+                                    className={classNames({
+                                        [styles.accountMenuHorizontal]:
+                                            width > 640,
+                                        [styles.accountMenuVertical]:
+                                            width <= 640,
+                                    })}
+                                >
+                                    <AccountMenu
+                                        address={address}
+                                        blockie={blockie}
+                                        chainId={Number(chainId)}
+                                        onClose={handleAccountMenuClose}
+                                    />
+                                </motion.div>
+                            )}
+                        </AnimatePresence>
+                        <div
+                            className={styles.walletWrapper}
+                            onClick={handleAccountMenuOpen}
+                        >
+                            <div className={styles.account}>
+                                {SAFE ? (
+                                    <div
+                                        className={classNames(
+                                            styles.avatar,
+                                            styles.safeAvatar,
+                                        )}
+                                    >
+                                        <SafeLogo className={styles.safeLogo} />
+                                    </div>
+                                ) : (
+                                    // eslint-disable-next-line @next/next/no-img-element
+                                    <img
+                                        alt="Avatar"
+                                        src={blockie}
+                                        className={styles.avatar}
+                                    />
+                                )}
+                                <Typography className={styles.displayName}>
+                                    {shortenAddress(address as Address)}
+                                </Typography>
+                            </div>
                         </div>
-                    </div>
-                );
-            }}
-        </RainbowConnectButton.Custom>
+                    </>
+                )}
+            </div>
+        </div>
     );
 }
