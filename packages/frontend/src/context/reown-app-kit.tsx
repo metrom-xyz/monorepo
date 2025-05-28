@@ -8,6 +8,7 @@ import {
 } from "@reown/appkit/react";
 import React, { useEffect, type ReactNode } from "react";
 import { cookieToInitialState, WagmiProvider, type Config } from "wagmi";
+import { safe } from "wagmi/connectors";
 import { SUPPORTED_CHAINS } from "../commons";
 import { hashFn } from "wagmi/query";
 import { WALLETCONNECT_PROJECT_ID, SAFE } from "../commons/env";
@@ -29,6 +30,14 @@ const wagmiAdapter = new WagmiAdapter({
     ssr: true,
     projectId: WALLETCONNECT_PROJECT_ID,
     networks: SUPPORTED_CHAINS,
+    connectors: SAFE
+        ? [
+              safe({
+                  allowedDomains: [/^app\.safe\.global$/],
+                  debug: false,
+              }),
+          ]
+        : undefined,
 });
 
 createAppKit({
