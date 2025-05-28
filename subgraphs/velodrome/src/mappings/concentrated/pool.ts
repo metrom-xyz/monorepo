@@ -4,7 +4,11 @@ import {
     Mint,
     Burn,
 } from "../../../generated/templates/ClPool/ClPool";
-import { ConcentratedPool, TickChange } from "../../../generated/schema";
+import {
+    ConcentratedPool,
+    TickChange,
+    PriceChange,
+} from "../../../generated/schema";
 import {
     getEventId,
     getOrCreateTick,
@@ -29,7 +33,22 @@ export function handleSwap(event: Swap): void {
     pool.liquidity = event.params.liquidity;
     pool.token0Tvl = pool.token0Tvl.plus(event.params.amount0);
     pool.token1Tvl = pool.token1Tvl.plus(event.params.amount1);
-    pool.price = getPrice(event.params.sqrtPriceX96, pool.token0, pool.token1);
+
+    let newPrice = getPrice(
+        event.params.sqrtPriceX96,
+        pool.token0,
+        pool.token1,
+    );
+    if (newPrice != pool.price) {
+        let priceChange = new PriceChange(getEventId(event));
+        priceChange.timestamp = event.block.timestamp;
+        priceChange.blockNumber = event.block.number;
+        priceChange.pool = pool.id;
+        priceChange.price = newPrice;
+        priceChange.save();
+
+        pool.price = newPrice;
+    }
 
     if (event.params.tick != pool.tick) {
         let tickChange = new TickChange(getEventId(event));

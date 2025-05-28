@@ -52,6 +52,13 @@ type TickChange @entity(immutable: true) {
     newTick: Int!
 }
 
+type PriceChange @entity(immutable: true) {
+    id: Bytes!
+    timestamp: BigInt!
+    pool: Pool!
+    newPrice: BigDecimal!
+}
+
 type Tick @entity(immutable: false) {
     id: Bytes!
     idx: Int!

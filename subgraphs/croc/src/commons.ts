@@ -13,6 +13,7 @@ import {
     Position,
     Tick,
     TickChange,
+    PriceChange,
     Token,
 } from "../generated/schema";
 import { Erc20 } from "../generated/CrocSwapDex/Erc20";
@@ -180,10 +181,6 @@ export function handleSwap(
 
     pool.token0Tvl = pool.token0Tvl.plus(token0Delta);
     pool.token1Tvl = pool.token1Tvl.plus(token1Delta);
-    if (!token0Delta.isZero())
-        pool.price = BigDecimal.fromString(token1Delta.abs().toString()).div(
-            BigDecimal.fromString(token0Delta.abs().toString()),
-        );
     pool.save();
 
     let tickChangeId = getBlockEventId(block, pool.id);
@@ -201,6 +198,26 @@ export function handleSwap(
             tickChange.save();
 
             pool.tick = newTick;
+            pool.save();
+        }
+    }
+
+    let newPrice = !token0Delta.isZero()
+        ? (pool.price = BigDecimal.fromString(token1Delta.abs().toString()).div(
+              BigDecimal.fromString(token0Delta.abs().toString()),
+          ))
+        : BD_0;
+
+    let priceChangeId = getBlockEventId(block, pool.id);
+    if (PriceChange.loadInBlock(priceChangeId) === null) {
+        if (newPrice.notEqual(BD_0) && pool.price != newPrice) {
+            let priceChange = new PriceChange(priceChangeId);
+            priceChange.timestamp = block.timestamp;
+            priceChange.pool = pool.id;
+            priceChange.newPrice = newPrice;
+            priceChange.save();
+
+            pool.price = newPrice;
             pool.save();
         }
     }

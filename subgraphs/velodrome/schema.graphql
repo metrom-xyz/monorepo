@@ -114,6 +114,14 @@ type TickChange @entity(immutable: true) {
     tick: Int!
 }
 
+type PriceChange @entity(immutable: true) {
+    id: Bytes!
+    timestamp: BigInt!
+    blockNumber: BigInt!
+    pool: ConcentratedPool!
+    price: BigDecimal!
+}
+
 type Tick @entity(immutable: false) {
     id: Bytes!
     idx: Int!
@@ -126,7 +134,8 @@ type AlmStrategy @entity(immutable: false) {
     id: Bytes!
     liquidity: BigInt!
     pool: ConcentratedPool!
-    concentratedPositions: [ConcentratedPosition!]! @derivedFrom(field: "almStrategy")
+    concentratedPositions: [ConcentratedPosition!]!
+        @derivedFrom(field: "almStrategy")
     positions: [AlmStrategyPosition!]! @derivedFrom(field: "strategy")
 }
 
