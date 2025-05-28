@@ -63,9 +63,9 @@ export function CarbonLogo(props: SVGIcon) {
                     y2="90"
                     gradientUnits="userSpaceOnUse"
                 >
-                    <stop stop-color="#00B578" stop-opacity="0.7"></stop>
-                    <stop offset="0.515" stop-color="#00B578"></stop>
-                    <stop offset="1" stop-color="#10BBD8"></stop>
+                    <stop stopColor="#00B578" stopOpacity="0.7"></stop>
+                    <stop offset="0.515" stopColor="#00B578"></stop>
+                    <stop offset="1" stopColor="#10BBD8"></stop>
                 </linearGradient>
             </defs>
         </svg>

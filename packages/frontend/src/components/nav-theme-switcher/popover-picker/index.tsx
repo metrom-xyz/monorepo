@@ -11,7 +11,7 @@ interface PopoverPickerProps {
 export function PopoverPicker({ anchor, open }: PopoverPickerProps) {
     return (
         <Popover
-            placement="bottom"
+            placement="bottom-start"
             anchor={anchor}
             open={open}
             className={styles.root}
