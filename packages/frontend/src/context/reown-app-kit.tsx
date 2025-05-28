@@ -52,11 +52,16 @@ createAppKit({
     },
     allWallets: SAFE ? "SHOW" : "HIDE",
     // https://docs.reown.com/cloud/wallets/wallet-list#wallets
-    featuredWalletIds: SAFE
+    excludeWalletIds: SAFE
         ? [
-              // safe
-              "225affb176778569276e484e1b92637ad061b01e13a048b35a9d280c3b58970f",
+              // coinbase
+              "fd20dc426fb37566d803205b19bbc1d4096b248ac04548e3cfb6b3a38bd033aa",
+              // metamask
+              "c57ca95b47569778a828d19178114f4db188b89b763c899ba0be274e97267d96",
           ]
+        : [],
+    featuredWalletIds: SAFE
+        ? []
         : [
               // coinbase
               "fd20dc426fb37566d803205b19bbc1d4096b248ac04548e3cfb6b3a38bd033aa",
