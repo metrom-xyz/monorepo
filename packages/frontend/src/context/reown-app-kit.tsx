@@ -43,14 +43,7 @@ const wagmiAdapter = new WagmiAdapter({
     projectId: WALLETCONNECT_PROJECT_ID,
     networks: SUPPORTED_CHAINS,
     transports,
-    connectors: SAFE
-        ? [
-              safe({
-                  allowedDomains: [/^app\.safe\.global$/],
-                  debug: false,
-              }),
-          ]
-        : undefined,
+    connectors: SAFE ? [safe()] : undefined,
 });
 
 createAppKit({

@@ -20,9 +20,9 @@ import Image from "next/image";
 import { useChainData } from "@/src/hooks/useChainData";
 import { useIsChainSupported } from "@/src/hooks/useIsChainSupported";
 import { useAppKitAccount, useAppKitBalance } from "@reown/appkit/react";
+import { type AdapterBlueprint } from "@reown/appkit/adapters";
 
 import styles from "./styles.module.css";
-import { AdapterBlueprint } from "@reown/appkit/adapters";
 
 interface AccountMenuProps {
     className?: string;
