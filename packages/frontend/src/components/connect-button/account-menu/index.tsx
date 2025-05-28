@@ -68,8 +68,6 @@ export function AccountMenu({
         };
 
         if (isConnected && !balance) fetch();
-
-        console.log("fetch", balance);
     }, [isConnected, balance, fetchBalance]);
 
     useClickAway(rootRef, onClose);

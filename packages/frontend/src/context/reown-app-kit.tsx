@@ -7,13 +7,14 @@ import {
     type ThemeMode,
 } from "@reown/appkit/react";
 import React, { useEffect, type ReactNode } from "react";
-import { cookieToInitialState, WagmiProvider, type Config } from "wagmi";
+import { cookieToInitialState, http, WagmiProvider, type Config } from "wagmi";
 import { safe } from "wagmi/connectors";
 import { SUPPORTED_CHAINS } from "../commons";
 import { hashFn } from "wagmi/query";
 import { WALLETCONNECT_PROJECT_ID, SAFE } from "../commons/env";
 import { useTheme } from "next-themes";
 import { WagmiAdapter } from "@reown/appkit-adapter-wagmi";
+import type { EIP1193RequestFn, Transport } from "viem";
 
 // Set up queryClient
 // TODO: if we need to have SSR prefetching https://tanstack.com/query/latest/docs/framework/react/guides/advanced-ssr#server-components--nextjs-app-router
@@ -26,10 +27,22 @@ const queryClient = new QueryClient({
     },
 });
 
+const transports = SUPPORTED_CHAINS.reduce(
+    (prev, chain) => {
+        prev[chain.id] = http(chain.rpcUrls.default.http[0]);
+        return prev;
+    },
+    {} as Record<
+        number,
+        Transport<string, Record<string, any>, EIP1193RequestFn>
+    >,
+);
+
 const wagmiAdapter = new WagmiAdapter({
     ssr: true,
     projectId: WALLETCONNECT_PROJECT_ID,
     networks: SUPPORTED_CHAINS,
+    transports,
     connectors: SAFE
         ? [
               safe({
