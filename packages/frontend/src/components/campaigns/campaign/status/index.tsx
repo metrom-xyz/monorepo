@@ -50,7 +50,7 @@ export function Status({
                 />
             </div>
             <div className={styles.text}>
-                <Typography size="xs" weight="medium" uppercase>
+                <Typography size="xs" uppercase>
                     {text}
                 </Typography>
                 <Typography className={styles.duration} light size="xs">
