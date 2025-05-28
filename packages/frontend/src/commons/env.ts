@@ -11,7 +11,7 @@ export const SAFE: boolean = process.env.NEXT_PUBLIC_SAFE === "true";
 
 export const WALLETCONNECT_PROJECT_ID: string =
     process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID!;
-if (SAFE && !WALLETCONNECT_PROJECT_ID)
+if (!SAFE && !WALLETCONNECT_PROJECT_ID)
     throw new Error(
         "A valid NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID env variable is needed",
     );
