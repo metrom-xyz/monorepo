@@ -62,15 +62,11 @@
 }
 
 .account {
-    @apply flex gap-2 items-center justify-between;
+    @apply w-full flex gap-2 items-center justify-between;
 }
 
 .displayName {
     @apply hidden sm:flex;
-}
-
-.avatar {
-    @apply w-7 h-7 rounded-md;
 }
 
 .safeAvatar {

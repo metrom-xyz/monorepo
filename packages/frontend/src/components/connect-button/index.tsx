@@ -7,10 +7,18 @@ import { useTranslations } from "next-intl";
 import { blo, type Address } from "blo";
 import { AccountMenu } from "./account-menu";
 import { zeroAddress } from "viem";
+import { normalize } from "viem/ens";
 import classNames from "classnames";
 import { trackFathomEvent } from "@/src/utils/fathom";
 import { AnimatePresence, motion } from "motion/react";
-import { useAccount, useConnect, useConnectors, useDisconnect } from "wagmi";
+import {
+    useAccount,
+    useConnect,
+    useConnectors,
+    useDisconnect,
+    useEnsAvatar,
+    useEnsName,
+} from "wagmi";
 import { SAFE } from "@/src/commons/env";
 import { SAFE_CONNECTOR_ID } from "@/src/commons";
 import { toast } from "sonner";
@@ -22,6 +30,7 @@ import {
     useAppKitNetwork,
 } from "@reown/appkit/react";
 import { shortenAddress } from "@/src/utils/address";
+import { Avatar } from "./avatar/avatar";
 
 import styles from "./styles.module.css";
 
@@ -36,8 +45,12 @@ export function ConnectButton() {
     const { open } = useAppKit();
     const { address, isConnected } = useAppKitAccount();
     const { chainId } = useAppKitNetwork();
-
-    // TODO: resolved ens name and avatar
+    const { data: ensName, isLoading: loadingEnsName } = useEnsName({
+        address: address as Address | undefined,
+    });
+    const { data: ensAvatar, isLoading: loadingEnsAvatar } = useEnsAvatar({
+        name: ensName ? normalize(ensName) : undefined,
+    });
 
     const [accountMenuOpen, setAccountMenuOpen] = useState(false);
 
@@ -144,7 +157,14 @@ export function ConnectButton() {
                                     })}
                                 >
                                     <AccountMenu
-                                        address={address}
+                                        account={{
+                                            address,
+                                            ensName: ensName as string,
+                                            ensAvatar: ensAvatar as string,
+                                            loading:
+                                                loadingEnsName ||
+                                                loadingEnsAvatar,
+                                        }}
                                         blockie={blockie}
                                         chainId={Number(chainId)}
                                         onClose={handleAccountMenuClose}
@@ -167,15 +187,18 @@ export function ConnectButton() {
                                         <SafeLogo className={styles.safeLogo} />
                                     </div>
                                 ) : (
-                                    // eslint-disable-next-line @next/next/no-img-element
-                                    <img
-                                        alt="Avatar"
-                                        src={blockie}
-                                        className={styles.avatar}
+                                    <Avatar
+                                        height={28}
+                                        width={28}
+                                        loading={
+                                            loadingEnsName || loadingEnsAvatar
+                                        }
+                                        src={ensAvatar || blockie}
                                     />
                                 )}
                                 <Typography className={styles.displayName}>
-                                    {shortenAddress(address as Address)}
+                                    {ensName ||
+                                        shortenAddress(address as Address)}
                                 </Typography>
                             </div>
                         </div>
