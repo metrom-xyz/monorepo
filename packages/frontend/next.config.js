@@ -14,6 +14,11 @@ const nextConfig = {
                 protocol: "https",
                 hostname: "assets.coingecko.com",
             },
+            // For ens avatar
+            {
+                protocol: "https",
+                hostname: "euc.li",
+            },
         ],
     },
     async headers() {

@@ -21,13 +21,19 @@ import { useChainData } from "@/src/hooks/useChainData";
 import { useIsChainSupported } from "@/src/hooks/useIsChainSupported";
 import { useAppKitAccount, useAppKitBalance } from "@reown/appkit/react";
 import { type AdapterBlueprint } from "@reown/appkit/adapters";
+import { Avatar } from "../avatar/avatar";
 
 import styles from "./styles.module.css";
 
 interface AccountMenuProps {
     className?: string;
     chainId: number;
-    address: string;
+    account: {
+        address: string;
+        ensName?: string;
+        ensAvatar?: string;
+        loading?: boolean;
+    };
     blockie: string;
     onClose: () => void;
 }
@@ -42,7 +48,7 @@ export function AccountMenu({
     className,
     chainId,
     onClose,
-    address,
+    account,
     blockie,
 }: AccountMenuProps) {
     const t = useTranslations("accountMenu");
@@ -88,7 +94,7 @@ export function AccountMenu({
     }
 
     const handleCopyClick = () => {
-        navigator.clipboard.writeText(address).then(() => {
+        navigator.clipboard.writeText(account.address).then(() => {
             setCopied(true);
         });
     };
@@ -112,12 +118,11 @@ export function AccountMenu({
                                 <SafeLogo className={styles.safeLogo} />
                             </div>
                         ) : (
-                            <Image
-                                alt="Avatar"
+                            <Avatar
                                 height={36}
                                 width={36}
-                                src={blockie}
-                                className={styles.avatar}
+                                loading={account.loading}
+                                src={account.ensAvatar || blockie}
                             />
                         )}
                     </div>
@@ -131,7 +136,8 @@ export function AccountMenu({
                                 weight="medium"
                                 className={styles.address}
                             >
-                                {shortenAddress(address as Address)}
+                                {account.ensName ||
+                                    shortenAddress(account.address as Address)}
                             </Typography>
                             <div className={styles.copyIconContainer}>
                                 {copied ? (
