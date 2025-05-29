@@ -38,10 +38,6 @@
     @apply flex flex-col;
 }
 
-.avatar {
-    @apply w-9 h-9 rounded-full;
-}
-
 .safeAvatar {
     @apply bg-safe-brand flex items-center justify-center;
 }
@@ -75,7 +71,7 @@
 }
 
 .balanceWrapper {
-    @apply flex justify-between mr-8;
+    @apply flex justify-between mr-8 min-w-32;
 }
 
 .icon {

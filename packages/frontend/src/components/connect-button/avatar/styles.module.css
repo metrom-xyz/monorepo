@@ -1,0 +1,5 @@
+@reference "../../../app.css";
+
+.root {
+    @apply rounded-full;
+}
