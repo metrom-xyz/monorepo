@@ -1,0 +1,9 @@
+@reference "../../app.css";
+
+.root {
+    @apply flex flex-col items-center gap-4;
+}
+
+.datePickersWrapper {
+    @apply flex gap-4;
+}
