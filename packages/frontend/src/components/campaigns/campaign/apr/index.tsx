@@ -112,7 +112,7 @@ export function Apr({ campaignId, chainId, apr, kpi }: AprProps) {
 }
 
 export function SkeletonApr() {
-    return <Skeleton width={80} size="xl" />;
+    return <Skeleton width={80} size="lg" className={styles.rootSkeleton} />;
 }
 
 export function SkeletonPopover() {

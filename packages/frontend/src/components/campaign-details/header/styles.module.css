@@ -9,15 +9,19 @@
 }
 
 .title {
-    @apply flex sm:flex-wrap items-center gap-5;
+    @apply flex flex-wrap items-center gap-2 md:gap-5;
+}
+
+.chips {
+    @apply flex flex-wrap items-center gap-2;
+}
+
+.skeletonChip {
+    @apply h-9;
 }
 
 .logo {
     @apply h-11 w-11;
-}
-
-.chainLogo {
-    @apply h-8 w-8;
 }
 
 .actionsContainer {

@@ -1,5 +1,4 @@
 import { Typography } from "@metrom-xyz/ui";
-import { useTranslations } from "next-intl";
 import { formatPercentage } from "@/src/utils/format";
 import { PoolRemoteLogo } from "@/src/components/pool-remote-logo";
 import type { TargetType } from "@metrom-xyz/sdk";
@@ -12,8 +11,6 @@ interface AmmPoolLiquidityProps {
 }
 
 export function AmmPoolLiquidity({ campaign }: AmmPoolLiquidityProps) {
-    const t = useTranslations("allCampaigns");
-
     return (
         <div className={styles.root}>
             <PoolRemoteLogo
@@ -22,6 +19,7 @@ export function AmmPoolLiquidity({ campaign }: AmmPoolLiquidityProps) {
                     address: token.address,
                     defaultText: token.symbol,
                 }))}
+                size="xs"
             />
             <div className={styles.titleContainer}>
                 <Typography size="lg" weight="medium" truncate>
@@ -40,22 +38,6 @@ export function AmmPoolLiquidity({ campaign }: AmmPoolLiquidityProps) {
                         })}
                     </Typography>
                 )}
-                <div className={styles.chipsWrapper}>
-                    {campaign.specification?.kpi && (
-                        <div className={styles.chip}>
-                            <Typography size="xs" weight="medium" uppercase>
-                                {t("kpi")}
-                            </Typography>
-                        </div>
-                    )}
-                    {campaign.specification?.priceRange && (
-                        <div className={styles.chip}>
-                            <Typography size="xs" weight="medium" uppercase>
-                                {t("pool.range")}
-                            </Typography>
-                        </div>
-                    )}
-                </div>
             </div>
         </div>
     );

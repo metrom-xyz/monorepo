@@ -33,6 +33,7 @@ export function SkeletonAction() {
             <PoolRemoteLogo
                 tokens={[{ address: "0x1" }, { address: "0x2" }]}
                 loading
+                size="xs"
             />
             <div
                 className={classNames(
@@ -40,7 +41,7 @@ export function SkeletonAction() {
                     styles.titleContainerLoading,
                 )}
             >
-                <Skeleton size="lg" width={120} />
+                <Skeleton width={300} />
                 <Skeleton size="sm" width={50} className={styles.campaignFee} />
             </div>
         </div>
