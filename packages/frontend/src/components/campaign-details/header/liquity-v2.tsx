@@ -1,5 +1,5 @@
 import { useCallback } from "react";
-import { Typography, Button, InfoTooltip } from "@metrom-xyz/ui";
+import { Typography, Button } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
 import { useRouter } from "@/src/i18n/routing";
 import { AprChip } from "../../apr-chip";
@@ -7,6 +7,8 @@ import { DistributablesType, type LiquityV2TargetType } from "@metrom-xyz/sdk";
 import { type TargetedNamedCampaign } from "@/src/types/campaign";
 import { ProtocolType } from "@metrom-xyz/chains";
 import { useProtocolsInChain } from "@/src/hooks/useProtocolsInChain";
+import { ChainChip } from "../../chain-chip";
+import { ProtocolChip } from "../../protocol-chip";
 
 import styles from "./styles.module.css";
 
@@ -34,20 +36,13 @@ export function LiquityV2Header({ campaign }: LiquityV2HeaderProps) {
         <div className={styles.root}>
             <div className={styles.titleContainer}>
                 <div className={styles.title}>
-                    {ChainIcon && (
-                        <InfoTooltip
-                            placement="top"
-                            icon={<ChainIcon className={styles.chainLogo} />}
-                        >
-                            <Typography size="sm">
-                                {campaign.chainData.name}
-                            </Typography>
-                        </InfoTooltip>
-                    )}
-                    {brand && <brand.logo className={styles.logo} />}
                     <Typography size="xl4" weight="medium">
                         {campaign.name}
                     </Typography>
+                </div>
+                <div className={styles.chips}>
+                    <ChainChip id={campaign.chainId} surface />
+                    <ProtocolChip campaign={campaign} surface />
                 </div>
                 <Typography size="sm" weight="medium" light>
                     {t("rewardsMayVary")}
