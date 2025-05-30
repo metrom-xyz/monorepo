@@ -1,9 +1,45 @@
 @reference "../../app.css";
 
 .root {
-    @apply flex flex-col items-center gap-4;
+    @apply w-full max-w-screen-xl flex flex-col items-center gap-4;
+}
+
+.campaignIdInput {
+    @apply w-full;
 }
 
 .datePickersWrapper {
-    @apply flex gap-4;
+    @apply flex gap-10;
+}
+
+.chartsWrapper {
+    @apply w-full flex flex-col gap-4;
+}
+
+.distributionWrapper {
+    @apply w-full flex items-center justify-center;
+}
+
+.distributionDetails {
+    @apply w-full max-h-[600px] overflow-auto flex gap-4;
+}
+
+.tokenColumn {
+    @apply w-full;
+}
+
+.accounts {
+    @apply flex flex-col gap-2;
+}
+
+.accountRow {
+    @apply w-full grid grid-cols-[0.8fr_0.5fr_0.5fr];
+}
+
+.accountRow > :nth-child(2) {
+    @apply justify-self-end;
+}
+
+.accountRow > :nth-child(3) {
+    @apply justify-self-end;
 }

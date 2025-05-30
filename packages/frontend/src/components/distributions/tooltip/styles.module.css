@@ -1,0 +1,21 @@
+@reference "../../../app.css";
+
+.root {
+    @apply flex
+        flex-col
+        gap-2
+        p-2
+        z-50
+        rounded-lg
+        border
+        bg-white dark:bg-zinc-900
+        border-zinc-200 dark:border-zinc-600;
+}
+
+.tokenRow {
+    @apply flex flex-col gap-3;
+}
+
+.weightRow {
+    @apply flex items-center justify-between;
+}
