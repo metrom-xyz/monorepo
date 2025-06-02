@@ -14,8 +14,9 @@ import {
 import {
     ConcentratedPosition,
     ConcentratedPool,
-    TickMovingSwap,
+    TickChange,
     ConcentratedLiquidityChange,
+    PriceChange,
 } from "../../../generated/schema";
 import {
     BD_Q192,
@@ -69,11 +70,26 @@ export function handleSwap(event: Swap): void {
     pool.token1Tvl = pool.token1Tvl.plus(
         getFeeAdjustedAmount(event.params.amount1, pool.fee),
     );
-    pool.price = getPrice(event.params.sqrtPriceX96, pool.token0, pool.token1);
+
+    let newPrice = getPrice(
+        event.params.sqrtPriceX96,
+        pool.token0,
+        pool.token1,
+    );
+    if (newPrice != pool.price) {
+        let priceChange = new PriceChange(getEventId(event));
+        priceChange.timestamp = event.block.timestamp;
+        priceChange.blockNumber = event.block.number;
+        priceChange.pool = pool.id;
+        priceChange.newPrice = newPrice;
+        priceChange.save();
+
+        pool.price = newPrice;
+    }
 
     let newTick = event.params.tick;
     if (newTick != pool.tick) {
-        let tickMovingSwap = new TickMovingSwap(getEventId(event));
+        let tickMovingSwap = new TickChange(getEventId(event));
         tickMovingSwap.timestamp = event.block.timestamp;
         tickMovingSwap.blockNumber = event.block.number;
         tickMovingSwap.pool = pool.id;
@@ -148,7 +164,6 @@ export function handleMint(event: Mint): void {
     pool.token1Tvl = pool.token1Tvl.plus(event.params.amount1);
 
     if (
-        pool.tick !== null &&
         event.params.tickLower <= pool.tick &&
         event.params.tickUpper > pool.tick
     )
@@ -201,7 +216,6 @@ export function handleBurn(event: Burn): void {
     pool.token1Tvl = pool.token1Tvl.minus(event.params.amount1);
 
     if (
-        pool.tick !== null &&
         event.params.tickLower <= pool.tick &&
         event.params.tickUpper > pool.tick
     )

@@ -10,13 +10,13 @@ type Gauge @entity(immutable: true) {
     pool: Bytes!
 }
 
-type FullRangeFactory @entity {
+type FullRangeFactory @entity(immutable: false) {
     id: Bytes!
     stableFee: Int!
     volatileFee: Int!
 }
 
-type FullRangePool @entity {
+type FullRangePool @entity(immutable: false) {
     id: Bytes!
     stable: Boolean!
     token0: Token!
@@ -32,7 +32,7 @@ type FullRangePool @entity {
         @derivedFrom(field: "pool")
 }
 
-type FullRangePosition @entity {
+type FullRangePosition @entity(immutable: false) {
     id: Bytes!
     owner: Bytes!
     liquidity: BigInt!
@@ -60,7 +60,7 @@ type FullRangeLiquidityTransfer @entity(immutable: true) {
     pool: FullRangePool!
 }
 
-type ConcentratedPool @entity {
+type ConcentratedPool @entity(immutable: false) {
     id: Bytes!
     token0: Token!
     token1: Token!
@@ -77,7 +77,7 @@ type ConcentratedPool @entity {
         @derivedFrom(field: "pool")
 }
 
-type ConcentratedPosition @entity {
+type ConcentratedPosition @entity(immutable: false) {
     id: Bytes!
     owner: Bytes!
     lowerTick: Int!
@@ -108,7 +108,7 @@ type ConcentratedLiquidityTransfer @entity(immutable: true) {
     position: ConcentratedPosition!
 }
 
-type TickMovingSwap @entity(immutable: true) {
+type TickChange @entity(immutable: true) {
     id: Bytes!
     timestamp: BigInt!
     blockNumber: BigInt!
@@ -116,7 +116,15 @@ type TickMovingSwap @entity(immutable: true) {
     newTick: Int!
 }
 
-type Tick @entity {
+type PriceChange @entity(immutable: true) {
+    id: Bytes!
+    timestamp: BigInt!
+    blockNumber: BigInt!
+    pool: ConcentratedPool!
+    newPrice: BigDecimal!
+}
+
+type Tick @entity(immutable: false) {
     id: Bytes!
     idx: Int!
     pool: ConcentratedPool!
