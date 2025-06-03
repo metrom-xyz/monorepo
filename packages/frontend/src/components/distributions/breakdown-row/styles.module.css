@@ -1,0 +1,52 @@
+@reference "../../../app.css";
+
+.root {
+    @apply flex gap-4 p-4 rounded-lg;
+}
+
+.header {
+    @apply grid grid-cols-[0.8fr_0.5fr_0.5fr];
+}
+
+.active {
+    @apply theme-surface-active;
+}
+
+.tokenColumn {
+    @apply w-full flex flex-col gap-4;
+}
+
+.titleWrapper {
+    @apply flex items-center gap-2;
+}
+
+.accounts {
+    @apply flex flex-col gap-2;
+}
+
+.accountRow {
+    @apply w-full grid grid-cols-[0.8fr_0.5fr_0.5fr];
+}
+
+.accountWrapper {
+    @apply w-full flex items-center gap-2;
+}
+
+.legendSquare {
+    @apply w-4 h-4 rounded-sm;
+}
+
+.header > :first-child,
+.accountRow > :first-child {
+    @apply w-96;
+}
+
+.header > :nth-child(2),
+.accountRow > :nth-child(2) {
+    @apply justify-self-end;
+}
+
+.header > :last-child,
+.accountRow > :last-child {
+    @apply justify-self-end;
+}

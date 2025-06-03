@@ -1,7 +1,8 @@
 @reference "../../../app.css";
 
 .root {
-    @apply flex
+    @apply w-full
+        flex        
         flex-col
         gap-2
         p-2
@@ -12,10 +13,6 @@
         border-zinc-200 dark:border-zinc-600;
 }
 
-.tokenRow {
-    @apply flex flex-col gap-3;
-}
-
-.weightRow {
-    @apply flex items-center justify-between;
+.fieldWrapper {
+    @apply flex items-center justify-between gap-4;
 }

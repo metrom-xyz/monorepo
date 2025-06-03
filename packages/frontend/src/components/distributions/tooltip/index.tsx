@@ -8,10 +8,13 @@ import { Typography } from "@metrom-xyz/ui";
 import type { DistributionChartData } from "..";
 import type { SupportedChain } from "@metrom-xyz/contracts";
 import dayjs from "dayjs";
+import type { Address } from "viem";
+import { RemoteLogo } from "../../remote-logo";
 
 import styles from "./styles.module.css";
 
 interface Payload {
+    name: string;
     payload: DistributionChartData;
 }
 
@@ -22,43 +25,60 @@ interface TooltipProps {
 }
 
 export function TooltipContent({ chain, active, payload }: TooltipProps) {
-    const t = useTranslations("distributionChart.tooltip");
+    const t = useTranslations("campaignDistributions");
 
     if (!active || !payload || !payload.length) return null;
 
-    const { timestamp, weights, tokens } = payload[0].payload;
+    const { timestamp, weights } = payload[0].payload;
+
+    const token = payload[0].name.split(".")[1] as Address;
+    const account = payload[0].name.split(".")[2] as Address;
 
     return (
         <div className={styles.root}>
-            <Typography>{formatDateTime(dayjs.unix(timestamp))}</Typography>
-            {Object.entries(weights).map(([token, weight]) => {
-                return (
-                    <div key={token} className={styles.tokenRow}>
-                        <Typography>{token}</Typography>
-                        {/* {Object.entries(weight)
-                            .sort(
-                                (a, b) =>
-                                    b[1].percentage.formatted -
-                                    a[1].percentage.formatted,
-                            )
-                            .map(([account, { amount, percentage }]) => (
-                                <div key={account} className={styles.weightRow}>
-                                    <Typography>{account}</Typography>
-                                    <Typography>
-                                        {formatPercentage({
-                                            percentage: percentage.formatted,
-                                        })}
-                                    </Typography>
-                                    <Typography>
-                                        {formatAmount({
-                                            amount: amount.formatted,
-                                        })}
-                                    </Typography>
-                                </div>
-                            ))} */}
-                    </div>
-                );
-            })}
+            <div className={styles.fieldWrapper}>
+                <Typography weight="medium" light uppercase>
+                    {t("time")}
+                </Typography>
+                <Typography weight="medium" uppercase>
+                    {formatDateTime(dayjs.unix(timestamp))}
+                </Typography>
+            </div>
+            <div className={styles.fieldWrapper}>
+                <Typography weight="medium" light uppercase>
+                    {t("token")}
+                </Typography>
+                <RemoteLogo address={token} chain={chain} />
+            </div>
+            <div className={styles.fieldWrapper}>
+                <Typography weight="medium" light uppercase>
+                    {t("account")}
+                </Typography>
+                <Typography size="sm" weight="medium">
+                    {account}
+                </Typography>
+            </div>
+            <div className={styles.fieldWrapper}>
+                <Typography weight="medium" light uppercase>
+                    {t("distributed")}
+                </Typography>
+                <Typography size="sm" weight="medium">
+                    {formatAmount({
+                        amount: weights[token][account].amount.formatted,
+                    })}
+                </Typography>
+            </div>
+            <div className={styles.fieldWrapper}>
+                <Typography weight="medium" light uppercase>
+                    {t("weight")}
+                </Typography>
+                <Typography size="sm" weight="medium">
+                    {formatPercentage({
+                        percentage:
+                            weights[token][account].percentage.formatted,
+                    })}
+                </Typography>
+            </div>
         </div>
     );
 }
