@@ -10,6 +10,7 @@ import type { SupportedChain } from "@metrom-xyz/contracts";
 import dayjs from "dayjs";
 import type { Address } from "viem";
 import { RemoteLogo } from "../../remote-logo";
+import { getColorFromAddress } from "@/src/utils/address";
 
 import styles from "./styles.module.css";
 
@@ -54,9 +55,19 @@ export function TooltipContent({ chain, active, payload }: TooltipProps) {
                 <Typography weight="medium" light uppercase>
                     {t("account")}
                 </Typography>
-                <Typography size="sm" weight="medium">
-                    {account}
-                </Typography>
+                <div className={styles.accountWrapper}>
+                    <div
+                        className={styles.legendSquare}
+                        style={{
+                            backgroundColor: getColorFromAddress(
+                                account as Address,
+                            ),
+                        }}
+                    ></div>
+                    <Typography size="sm" weight="medium">
+                        {account}
+                    </Typography>
+                </div>
             </div>
             <div className={styles.fieldWrapper}>
                 <Typography weight="medium" light uppercase>
