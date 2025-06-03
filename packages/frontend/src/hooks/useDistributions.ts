@@ -116,7 +116,7 @@ export function useDistributions({
         };
 
         fetchHashes();
-    }, [from, to, chainId, campaignId]);
+    }, [from, to, chainId, campaignId, enabled]);
 
     useEffect(() => {
         const fetchDistributions = async () => {

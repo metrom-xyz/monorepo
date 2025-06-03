@@ -16,3 +16,11 @@
 .fieldWrapper {
     @apply flex items-center justify-between gap-4;
 }
+
+.accountWrapper {
+    @apply flex items-center gap-2;
+}
+
+.legendSquare {
+    @apply w-4 h-4 rounded-sm;
+}
