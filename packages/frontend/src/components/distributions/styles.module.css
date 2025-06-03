@@ -4,42 +4,54 @@
     @apply w-full max-w-screen-xl flex flex-col items-center gap-4;
 }
 
-.campaignIdInput {
-    @apply w-full;
+.inputsCard {
+    @apply flex items-end gap-2;
 }
 
-.datePickersWrapper {
-    @apply flex gap-10;
+.datePickerPopover {
+    @apply p-2;
+}
+
+.campaignIdInput {
+    @apply w-1/2;
+}
+
+.section {
+    @apply flex flex-col gap-4;
 }
 
 .chartsWrapper {
     @apply w-full flex flex-col gap-4;
 }
 
-.distributionWrapper {
-    @apply w-full flex items-center justify-center;
+.breakdownListWrapper {
+    @apply w-full h-[32rem];
 }
 
-.distributionDetails {
-    @apply w-full max-h-[600px] overflow-auto flex gap-4;
+.breakdownsList {
+    @apply scroll-smooth;
 }
 
-.tokenColumn {
-    @apply w-full;
+.dataWrapper {
+    @apply w-full h-full flex flex-col gap-8;
 }
 
-.accounts {
-    @apply flex flex-col gap-2;
+.chartWrapper {
+    @apply w-full h-[500px];
 }
 
-.accountRow {
-    @apply w-full grid grid-cols-[0.8fr_0.5fr_0.5fr];
+.chart {
+    @apply w-full h-[500px];
 }
 
-.accountRow > :nth-child(2) {
-    @apply justify-self-end;
-}
-
-.accountRow > :nth-child(3) {
-    @apply justify-self-end;
+.timeTick {
+    @apply font-sans
+        uppercase
+        text-xs
+        leading-none
+        font-medium
+        fill-black dark:fill-zinc-200
+        transition-colors
+        duration-200
+        ease-in-out;
 }

@@ -1,0 +1,119 @@
+import type { ProcessedDistribution } from "@/src/hooks/useDistributions";
+import { RemoteLogo } from "../../remote-logo";
+import type { Address } from "viem";
+import { Typography } from "@metrom-xyz/ui";
+import {
+    formatAmount,
+    formatDateTime,
+    formatPercentage,
+} from "@/src/utils/format";
+import classNames from "classnames";
+import { useTranslations } from "next-intl";
+import { getColorFromAddress } from "@/src/utils/address";
+
+import styles from "./styles.module.css";
+
+interface BreakdownRowProps {
+    style?: any;
+    active: boolean;
+    chainId: number;
+    distribution: ProcessedDistribution;
+}
+
+export function BreakdownRow({
+    style,
+    active,
+    chainId,
+    distribution,
+}: BreakdownRowProps) {
+    const t = useTranslations("campaignDistributions");
+
+    return (
+        <div
+            style={style}
+            className={classNames(styles.root, { [styles.active]: active })}
+        >
+            {Object.entries(distribution.weights).map(([token, weight]) => {
+                return (
+                    <div key={token} className={styles.tokenColumn}>
+                        <div className={styles.titleWrapper}>
+                            <RemoteLogo
+                                address={token as Address}
+                                chain={chainId}
+                            />
+                            <Typography>
+                                {formatDateTime(distribution.timestamp)}
+                            </Typography>
+                        </div>
+                        <div className={styles.header}>
+                            <Typography
+                                weight="medium"
+                                light
+                                size="sm"
+                                uppercase
+                            >
+                                {t("account")}
+                            </Typography>
+                            <Typography
+                                weight="medium"
+                                light
+                                size="sm"
+                                uppercase
+                            >
+                                {t("distributed")}
+                            </Typography>
+                            <Typography
+                                weight="medium"
+                                light
+                                size="sm"
+                                uppercase
+                            >
+                                {t("weight")}
+                            </Typography>
+                        </div>
+                        <div className={styles.accounts}>
+                            {Object.entries(weight)
+                                .sort(
+                                    (a, b) =>
+                                        b[1].percentage.formatted -
+                                        a[1].percentage.formatted,
+                                )
+                                .map(([account, { amount, percentage }]) => (
+                                    <div
+                                        key={account}
+                                        className={styles.accountRow}
+                                    >
+                                        <div className={styles.accountWrapper}>
+                                            <div
+                                                className={styles.legendSquare}
+                                                style={{
+                                                    backgroundColor:
+                                                        getColorFromAddress(
+                                                            account as Address,
+                                                        ),
+                                                }}
+                                            ></div>
+                                            <Typography size="sm" light>
+                                                {account}
+                                            </Typography>
+                                        </div>
+                                        <Typography>
+                                            {formatAmount({
+                                                amount: amount.formatted,
+                                            })}
+                                        </Typography>
+                                        <Typography>
+                                            {formatPercentage({
+                                                percentage:
+                                                    percentage.formatted,
+                                            })}
+                                        </Typography>
+                                    </div>
+                                ))}
+                        </div>
+                    </div>
+                );
+            })}
+        </div>
+    );
+}

@@ -552,6 +552,20 @@
         },
         "notFound": "Campaign not found!"
     },
+    "campaignDistributions": {
+        "inputs": {
+            "campaignId": "Campaign id",
+            "from": "From",
+            "to": "To"
+        },
+        "distributionsBreakdown": "Distributions breakdown",
+        "distributionsOverview": "Distributions overview",
+        "token": "Token",
+        "time": "Time",
+        "account": "Account",
+        "distributed": "Distributed",
+        "weight": "Weight"
+    },
     "rewards": {
         "claims": {
             "chain": "Chain",
