@@ -63,6 +63,9 @@ export function Distributions() {
     const [activeDistribution, setActiveDistribution] = useState<number>();
 
     // TODO: move inputs to dedicated component
+    // TODO: add errors/validations
+    // TODO: issue with duplicated timetamps - holesky - 0x23397e99c6085c653205111f3a6ef406abe24abf210ba25e05c53eac43d07a8a - 29 may
+    // TODO: filter out 0 weight from breakdown
     const breakdownListRef = useRef(null);
     const [fromAnchor, setFromAnchor] = useState<
         HTMLDivElement | SVGElement | null
@@ -223,8 +226,9 @@ export function Distributions() {
                                 <BarChart
                                     data={distributions}
                                     style={{ cursor: "pointer" }}
-                                    barSize={30}
-                                    barCategoryGap={1}
+                                    barGap={1}
+                                    barSize={20}
+                                    barCategoryGap={5}
                                 >
                                     <Tooltip
                                         isAnimationActive={false}
@@ -262,27 +266,6 @@ export function Distributions() {
                                             />
                                         ),
                                     )}
-
-                                    {/* {distributions.map((distribution, index) =>
-                        Object.entries(distribution.weights).map(
-                            ([token, weight]) => {
-                                return Object.keys(weight).map((account) => {
-                                    return (
-                                        <Bar
-                                            id={`${index}.${distribution.timestamp}.${token}`}
-                                            key={account}
-                                            dataKey={`weights.${token}.${account}.percentage.formatted`}
-                                            stackId={`${index}.${distribution.timestamp}.${token}`}
-                                            isAnimationActive={false}
-                                            fill={getColorFromEthAddress(
-                                                account,
-                                            )}
-                                        />
-                                    );
-                                });
-                            },
-                        ),
-                    )} */}
                                 </BarChart>
                             </ResponsiveContainer>
                         </Card>
