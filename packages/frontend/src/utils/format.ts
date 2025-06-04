@@ -41,6 +41,22 @@ export function formatAmount({
     );
 }
 
+export function formatAmountChange({
+    amount,
+    cutoff = true,
+}: FormatAmountParams): string {
+    if (amount && amount < 0.0001 && amount > -0.0001) {
+        return amount > 0 ? "+<0.0001" : "-<0.0001";
+    }
+
+    const formatted = numeral(amount).format(
+        `0,0.[000]${amount && cutoff && amount > HUMANIZE_AMOUNT_CUTOFF ? "a" : ""}`,
+    );
+
+    if (amount && amount > 0) return `+${formatted}`;
+    return formatted;
+}
+
 export function formatDateTime(dateTime?: Dayjs | number): string {
     if (!dateTime) return "-";
     if (typeof dateTime === "number") dateTime = dayjs.unix(dateTime);

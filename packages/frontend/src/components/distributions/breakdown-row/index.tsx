@@ -1,9 +1,10 @@
 import type { ProcessedDistribution } from "@/src/hooks/useDistributions";
 import { RemoteLogo } from "../../remote-logo";
-import type { Address } from "viem";
+import { type Address, zeroAddress } from "viem";
 import { Typography } from "@metrom-xyz/ui";
 import {
     formatAmount,
+    formatAmountChange,
     formatDateTime,
     formatPercentage,
 } from "@/src/utils/format";
@@ -78,38 +79,69 @@ export function BreakdownRow({
                                         b[1].percentage.formatted -
                                         a[1].percentage.formatted,
                                 )
-                                .map(([account, { amount, percentage }]) => (
-                                    <div
-                                        key={account}
-                                        className={styles.accountRow}
-                                    >
-                                        <div className={styles.accountWrapper}>
-                                            <div
-                                                className={styles.legendSquare}
-                                                style={{
-                                                    backgroundColor:
-                                                        getColorFromAddress(
-                                                            account as Address,
-                                                        ),
-                                                }}
-                                            ></div>
-                                            <Typography size="sm" light>
-                                                {account}
+                                .map(
+                                    ([
+                                        account,
+                                        { amount, amountChange, percentage },
+                                    ]) => (
+                                        <div
+                                            key={account}
+                                            className={styles.accountRow}
+                                        >
+                                            <div className={styles.account}>
+                                                <div
+                                                    className={styles.legend}
+                                                    style={{
+                                                        backgroundColor:
+                                                            getColorFromAddress(
+                                                                account as Address,
+                                                            ),
+                                                    }}
+                                                ></div>
+                                                <Typography
+                                                    size="sm"
+                                                    light
+                                                    weight="medium"
+                                                >
+                                                    {account === zeroAddress
+                                                        ? t("reimbursed")
+                                                        : account}
+                                                </Typography>
+                                            </div>
+                                            <div className={styles.amount}>
+                                                <Typography>
+                                                    {formatAmount({
+                                                        amount: amount.formatted,
+                                                    })}
+                                                </Typography>
+                                                <Typography
+                                                    size="xs"
+                                                    className={classNames(
+                                                        styles.change,
+                                                        {
+                                                            [styles.positive]:
+                                                                amountChange.formatted >
+                                                                0,
+                                                            [styles.negative]:
+                                                                amountChange.formatted <
+                                                                0,
+                                                        },
+                                                    )}
+                                                >
+                                                    {formatAmountChange({
+                                                        amount: amountChange.formatted,
+                                                    })}
+                                                </Typography>
+                                            </div>
+                                            <Typography>
+                                                {formatPercentage({
+                                                    percentage:
+                                                        percentage.formatted,
+                                                })}
                                             </Typography>
                                         </div>
-                                        <Typography>
-                                            {formatAmount({
-                                                amount: amount.formatted,
-                                            })}
-                                        </Typography>
-                                        <Typography>
-                                            {formatPercentage({
-                                                percentage:
-                                                    percentage.formatted,
-                                            })}
-                                        </Typography>
-                                    </div>
-                                ))}
+                                    ),
+                                )}
                         </div>
                     </div>
                 );

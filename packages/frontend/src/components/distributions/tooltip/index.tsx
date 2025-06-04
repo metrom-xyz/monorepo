@@ -8,7 +8,7 @@ import { Typography } from "@metrom-xyz/ui";
 import type { DistributionChartData } from "..";
 import type { SupportedChain } from "@metrom-xyz/contracts";
 import dayjs from "dayjs";
-import type { Address } from "viem";
+import { type Address, zeroAddress } from "viem";
 import { RemoteLogo } from "../../remote-logo";
 import { getColorFromAddress } from "@/src/utils/address";
 
@@ -65,7 +65,7 @@ export function TooltipContent({ chain, active, payload }: TooltipProps) {
                         }}
                     ></div>
                     <Typography size="sm" weight="medium">
-                        {account}
+                        {account === zeroAddress ? t("reimbursed") : account}
                     </Typography>
                 </div>
             </div>
