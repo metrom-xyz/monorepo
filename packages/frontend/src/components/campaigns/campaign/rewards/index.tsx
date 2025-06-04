@@ -104,6 +104,7 @@ export function Rewards({
                                 style={{ zIndex: i }}
                             >
                                 <RemoteLogo
+                                    size="sm"
                                     chain={chainId}
                                     address={reward.token.address}
                                     defaultText={reward.token.symbol}
@@ -129,7 +130,7 @@ export function SkeletonRewards() {
                 {new Array(5).fill(null).map((_, i) => {
                     return (
                         <div key={i} className={styles.tokenIcon}>
-                            <RemoteLogo loading />
+                            <RemoteLogo size="sm" loading />
                         </div>
                     );
                 })}

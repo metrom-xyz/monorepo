@@ -40,16 +40,8 @@ export function SkeletonHeader() {
                     <Skeleton size="lg" width={60} />
                 </div>
                 <div className={styles.chips}>
-                    <Skeleton
-                        size="xl2"
-                        width={125}
-                        className={styles.skeletonChip}
-                    />
-                    <Skeleton
-                        size="xl2"
-                        width={125}
-                        className={styles.skeletonChip}
-                    />
+                    <Skeleton size="xl" width={125} />
+                    <Skeleton size="xl" width={125} />
                 </div>
                 <Skeleton size="sm" width={125} />
             </div>
