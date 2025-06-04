@@ -39,6 +39,7 @@ import { useTranslations } from "next-intl";
 import { getColorFromAddress } from "@/src/utils/address";
 import { formatDateTime } from "@/src/utils/format";
 import { useClickAway } from "react-use";
+import { LoadingText } from "./loading-test";
 
 import styles from "./styles.module.css";
 
@@ -51,6 +52,7 @@ interface StackedBar {
 }
 
 const ACCOUNT_ROW_SIZE = 36;
+const MIN_BREAKDOWN_ROW_SIZE = 250;
 
 export function Distributions() {
     const t = useTranslations("campaignDistributions");
@@ -77,12 +79,13 @@ export function Distributions() {
     const toRef = useRef<HTMLDivElement>(null);
 
     const chainId = useChainId();
-    const { distributions, loading } = useDistributions({
-        campaignId,
-        from,
-        to,
-        enabled: !!campaignId && !!from && !!to,
-    });
+    const { distributions, loadingHashes, loadingDistributions, processing } =
+        useDistributions({
+            campaignId,
+            from,
+            to,
+            enabled: !!campaignId && !!from && !!to,
+        });
 
     const stackedBars = useMemo(() => {
         const existing: Record<string, boolean> = {};
@@ -155,7 +158,10 @@ export function Distributions() {
                     maxAccounts = Object.keys(weights).length;
             }
 
-            return maxAccounts * ACCOUNT_ROW_SIZE;
+            return Math.max(
+                MIN_BREAKDOWN_ROW_SIZE,
+                maxAccounts * ACCOUNT_ROW_SIZE,
+            );
         },
         [distributions],
     );
@@ -210,8 +216,12 @@ export function Distributions() {
                     />
                 </Popover>
             </Card>
-            {loading ? (
-                <div>Loading...</div>
+            {loadingHashes || loadingDistributions || processing ? (
+                <LoadingText
+                    loadingHashes={loadingHashes}
+                    loadingDistributions={loadingDistributions}
+                    processing={processing}
+                />
             ) : distributions.length > 0 ? (
                 <div className={styles.dataWrapper}>
                     <div className={styles.section}>
@@ -225,10 +235,8 @@ export function Distributions() {
                             >
                                 <BarChart
                                     data={distributions}
+                                    barSize={25}
                                     style={{ cursor: "pointer" }}
-                                    barGap={1}
-                                    barSize={20}
-                                    barCategoryGap={5}
                                 >
                                     <Tooltip
                                         isAnimationActive={false}

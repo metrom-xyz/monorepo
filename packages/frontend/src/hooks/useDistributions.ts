@@ -20,6 +20,7 @@ interface UseDistributionsParams extends HookBaseParams {
 
 interface Weight {
     amount: OnChainAmount;
+    amountChange: OnChainAmount;
     percentage: OnChainAmount;
 }
 
@@ -31,7 +32,9 @@ export interface ProcessedDistribution {
 
 interface UseDistributionsReturnValue {
     distributions: ProcessedDistribution[];
-    loading: boolean;
+    loadingHashes: boolean;
+    loadingDistributions: boolean;
+    processing: boolean;
 }
 
 interface Hash {
@@ -78,7 +81,9 @@ export function useDistributions({
     enabled,
 }: UseDistributionsParams): UseDistributionsReturnValue {
     const [hashes, setHashes] = useState<Hash[]>();
-    const [loading, setLoading] = useState(false);
+    const [loadingHashes, setLoadingHashes] = useState(false);
+    const [loadingDistributions, setLoadingDistributions] = useState(false);
+    const [processing, setProcessing] = useState(false);
     const [distributions, setDistributions] =
         useState<DistributionsResponse[]>();
 
@@ -90,7 +95,7 @@ export function useDistributions({
             if (!campaignId || !from || !to || !enabled) return;
 
             setDistributions([]);
-            setLoading(true);
+            setLoadingHashes(true);
 
             try {
                 const response = await fetch(
@@ -111,7 +116,8 @@ export function useDistributions({
                 setHashes(data.dataHashes);
             } catch (error) {
                 console.error(`Could not fetch hashes from backend`, error);
-                setLoading(false);
+            } finally {
+                setLoadingHashes(false);
             }
         };
 
@@ -121,6 +127,8 @@ export function useDistributions({
     useEffect(() => {
         const fetchDistributions = async () => {
             if (!hashes) return;
+
+            setLoadingDistributions(true);
 
             try {
                 const distributions = [];
@@ -167,7 +175,8 @@ export function useDistributions({
                     `Could not fetch distributions from data manager`,
                     error,
                 );
-                setLoading(false);
+            } finally {
+                setLoadingDistributions(false);
             }
         };
 
@@ -177,7 +186,10 @@ export function useDistributions({
     const processed = useMemo(() => {
         if (!distributions || !campaign) return [];
 
+        setProcessing(true);
+
         const tokensRegistry: Record<Address, Erc20Token> = {};
+        // TODO: for points campaigns?
         if (campaign.isDistributing(DistributablesType.Tokens)) {
             for (const { token } of campaign.distributables.list) {
                 tokensRegistry[token.address] = token;
@@ -225,13 +237,13 @@ export function useDistributions({
             });
         }
 
-        return deltas.map((dist) => {
+        const processed = deltas.map((distro, index) => {
             const tokens: ProcessedDistribution["tokens"] = {};
             const weights: ProcessedDistribution["weights"] = {};
 
             const tokenTotals: Record<string, bigint> = {};
 
-            for (const { tokenAddress: token, amount } of dist.leaves) {
+            for (const { tokenAddress: token, amount } of distro.leaves) {
                 const delta = BigInt(amount);
                 if (!tokenTotals[token]) tokenTotals[token] = 0n;
                 tokenTotals[token] += delta;
@@ -248,7 +260,7 @@ export function useDistributions({
                 account,
                 tokenAddress: token,
                 amount,
-            } of dist.leaves) {
+            } of distro.leaves) {
                 const delta = BigInt(amount);
                 const total = tokenTotals[token];
                 const decimals = tokensRegistry[token]?.decimals ?? 18;
@@ -259,8 +271,28 @@ export function useDistributions({
                 const formattedPercentage = Number(rawPercentage) / 10_000;
 
                 if (!weights[token]) weights[token] = {};
+
+                // Calculate the amount difference between the current and latest
+                // delta (for the same token and account).
+                const prevDelta = deltas[index - 1]
+                    ? (deltas[index - 1].leaves.find(
+                          (leaf) =>
+                              leaf.account === account &&
+                              leaf.tokenAddress === token,
+                      )?.amount ?? delta)
+                    : delta;
+
+                const rawAmountChange = delta - BigInt(prevDelta);
+                const formattedAmountChange = Number(
+                    formatUnits(rawAmountChange, decimals),
+                );
+
                 weights[token][account] = {
                     amount: { raw: delta, formatted: formattedAmount },
+                    amountChange: {
+                        raw: rawAmountChange,
+                        formatted: formattedAmountChange,
+                    },
                     percentage: {
                         raw: rawPercentage,
                         formatted: formattedPercentage,
@@ -268,15 +300,21 @@ export function useDistributions({
                 };
             }
 
-            setLoading(false);
-
             return {
-                timestamp: dist.timestamp,
+                timestamp: distro.timestamp,
                 tokens,
                 weights,
             };
         });
+
+        setProcessing(false);
+        return processed;
     }, [distributions, campaign]);
 
-    return { distributions: processed, loading };
+    return {
+        distributions: processed,
+        loadingHashes,
+        loadingDistributions,
+        processing,
+    };
 }

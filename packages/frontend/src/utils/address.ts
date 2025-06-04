@@ -1,4 +1,4 @@
-import { type Address } from "viem";
+import { type Address, zeroAddress } from "viem";
 
 export function shortenAddress(address?: Address, long?: boolean) {
     if (!address) return "";
@@ -9,6 +9,8 @@ export function shortenAddress(address?: Address, long?: boolean) {
 }
 
 export function getColorFromAddress(address: Address) {
+    if (address === zeroAddress) return "#D1D5DB";
+
     let hash = 0;
     const cleanAddress = address.toLowerCase().replace(/^0x/, "");
 

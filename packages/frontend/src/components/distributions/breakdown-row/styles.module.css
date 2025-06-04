@@ -5,7 +5,7 @@
 }
 
 .header {
-    @apply grid grid-cols-[0.8fr_0.5fr_0.5fr];
+    @apply grid grid-cols-[0.8fr_0.6fr_0.5fr];
 }
 
 .active {
@@ -25,20 +25,36 @@
 }
 
 .accountRow {
-    @apply w-full grid grid-cols-[0.8fr_0.5fr_0.5fr];
+    @apply w-full grid grid-cols-[0.8fr_0.6fr_0.5fr];
 }
 
-.accountWrapper {
+.account {
     @apply w-full flex items-center gap-2;
 }
 
-.legendSquare {
+.amount {
+    @apply flex items-center gap-1;
+}
+
+.change {
+    @apply theme-text rounded-md font-bold;
+}
+
+.change.negative {
+    @apply text-red-600;
+}
+
+.change.positive {
+    @apply text-green-600;
+}
+
+.legend {
     @apply w-4 h-4 rounded-sm;
 }
 
 .header > :first-child,
 .accountRow > :first-child {
-    @apply w-96;
+    @apply w-[400px];
 }
 
 .header > :nth-child(2),

@@ -558,8 +558,12 @@
             "from": "From",
             "to": "To"
         },
-        "distributionsBreakdown": "Distributions breakdown",
+        "fetchingHashes": "Fetching hashes",
+        "fetchingDistributions": "Fetching distributions",
+        "processingDistributions": "Processing distributions",
         "distributionsOverview": "Distributions overview",
+        "distributionsBreakdown": "Distributions breakdown",
+        "reimbursed": "Reimbursed",
         "token": "Token",
         "time": "Time",
         "account": "Account",
