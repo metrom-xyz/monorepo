@@ -12,6 +12,7 @@ import classNames from "classnames";
 import { useTranslations } from "next-intl";
 import { getColorFromAddress } from "@/src/utils/address";
 import dayjs from "dayjs";
+import { useMemo } from "react";
 
 import styles from "./styles.module.css";
 
@@ -20,6 +21,7 @@ interface BreakdownRowProps {
     index: number;
     active: boolean;
     chainId: number;
+    previousDistribution?: ProcessedDistribution;
     distribution: ProcessedDistribution;
     campaignFrom?: number;
 }
@@ -29,10 +31,30 @@ export function BreakdownRow({
     index,
     active,
     chainId,
+    previousDistribution,
     distribution,
     campaignFrom,
 }: BreakdownRowProps) {
     const t = useTranslations("campaignDistributions");
+
+    const notFirstDistribution = useMemo(
+        () =>
+            !!campaignFrom &&
+            dayjs
+                .unix(distribution.timestamp)
+                .diff(dayjs.unix(campaignFrom), "hours") > 1 &&
+            index === 0,
+        [campaignFrom, distribution.timestamp, index],
+    );
+
+    // there are cases where distributions didn't happen hourly
+    const aggregatedDistributions = useMemo(() => {
+        if (!previousDistribution) return 0;
+
+        return dayjs
+            .unix(distribution.timestamp)
+            .diff(dayjs.unix(previousDistribution.timestamp), "hours");
+    }, [previousDistribution, distribution.timestamp]);
 
     return (
         <div
@@ -50,20 +72,26 @@ export function BreakdownRow({
                             <Typography weight="medium" size="lg">
                                 {formatDateTime(distribution.timestamp)}
                             </Typography>
-                            {campaignFrom &&
-                                dayjs
-                                    .unix(distribution.timestamp)
-                                    .diff(dayjs.unix(campaignFrom), "hours") >
-                                    1 &&
-                                index === 0 && (
-                                    <ErrorText
-                                        level="warning"
-                                        size="xs"
-                                        weight="medium"
-                                    >
-                                        {t("warningMessage")}
-                                    </ErrorText>
-                                )}
+                            {notFirstDistribution && (
+                                <ErrorText
+                                    level="warning"
+                                    size="xs"
+                                    weight="medium"
+                                >
+                                    {t("warningMessages.notFirstDistribution")}
+                                </ErrorText>
+                            )}
+                            {aggregatedDistributions > 1 && (
+                                <ErrorText
+                                    level="warning"
+                                    size="xs"
+                                    weight="medium"
+                                >
+                                    {t("warningMessages.multiDistribution", {
+                                        amount: aggregatedDistributions,
+                                    })}
+                                </ErrorText>
+                            )}
                         </div>
                         <div className={styles.header}>
                             <Typography

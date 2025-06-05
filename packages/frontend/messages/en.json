@@ -537,7 +537,7 @@
         "distributionsBreakdown": "Distributions breakdown",
         "warningMessages": {
             "notFirstDistribution": "This distribution includes all previous ones, as this is not the first one for the campaign.",
-            "multiDistribution": "This distribution includes data from multiple distributions."
+            "multiDistribution": "This distribution includes data from multiple (~{amount}) distributions."
         },
         "reimbursed": "Reimbursed",
         "token": "Token",
