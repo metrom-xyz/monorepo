@@ -1,23 +1,27 @@
 @reference "../../../app.css";
 
 .root {
-    @apply flex gap-4 rounded-lg;
+    @apply flex p-4 gap-4 rounded-lg;
 }
 
 .header {
     @apply grid grid-cols-[0.8fr_0.6fr_0.5fr];
 }
 
-.active {
-    @apply theme-surface-active;
-}
-
 .tokenColumn {
-    @apply w-full flex flex-col gap-4;
+    @apply w-full min-w-full flex flex-col gap-4;
 }
 
 .titleWrapper {
-    @apply flex items-center gap-2;
+    @apply flex items-center p-2 gap-2 rounded-md theme-surface-2;
+}
+
+.titleWrapper.active {
+     @apply theme-surface-2-active;
+}
+
+.titleWrapper.loading {
+    @apply p-0 bg-transparent;
 }
 
 .accounts {
@@ -37,7 +41,7 @@
 }
 
 .amount {
-    @apply flex items-center gap-1;
+    @apply flex items-baseline gap-1;
 }
 
 .amount.loading {

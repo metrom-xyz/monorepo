@@ -55,14 +55,15 @@ export function BreakdownRow({
     }, [previousDistribution, distribution.timestamp]);
 
     return (
-        <div
-            style={style}
-            className={classNames(styles.root, { [styles.active]: active })}
-        >
+        <div style={style} className={styles.root}>
             {Object.entries(distribution.weights).map(([token, weight]) => {
                 return (
                     <div key={token} className={styles.tokenColumn}>
-                        <div className={styles.titleWrapper}>
+                        <div
+                            className={classNames(styles.titleWrapper, {
+                                [styles.active]: active,
+                            })}
+                        >
                             <RemoteLogo
                                 address={token as Address}
                                 chain={chainId}
@@ -147,7 +148,9 @@ export function BreakdownRowSkeleton() {
     return (
         <div className={styles.root}>
             <div className={styles.tokenColumn}>
-                <div className={styles.titleWrapper}>
+                <div
+                    className={classNames(styles.titleWrapper, styles.loading)}
+                >
                     <RemoteLogo loading />
                     <Skeleton width={150} size="lg" />
                 </div>

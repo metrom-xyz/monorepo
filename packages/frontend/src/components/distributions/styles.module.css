@@ -21,7 +21,7 @@
 }
 
 .breakdownListWrapper {
-    @apply w-full h-[32rem];
+    @apply w-full h-[32rem] p-0 overflow-y-hidden;
 }
 
 .breakdownsList {
