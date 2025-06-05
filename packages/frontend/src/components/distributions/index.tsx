@@ -19,16 +19,17 @@ import {
 import { TooltipContent } from "./tooltip";
 import type { Address, Hex } from "viem";
 import { VariableSizeList } from "react-window";
-import { BreakdownRow } from "./breakdown-row";
+import { BreakdownRow, BreakdownRowSkeleton } from "./breakdown-row";
 import dayjs from "dayjs";
 import { useTranslations } from "next-intl";
 import { getColorFromAddress } from "@/src/utils/address";
-import { LoadingText } from "./loading-test";
 import type { SupportedChain } from "@metrom-xyz/contracts";
 import { useCampaign } from "@/src/hooks/useCampaign";
 import { Header, SkeletonHeader } from "../campaign-details/header";
 import { CampaignDuration } from "../campaign-duration";
 import { Filters } from "./filters";
+import { NoDistributionsIcon } from "@/src/assets/no-distributions-icon";
+import classNames from "classnames";
 
 import styles from "./styles.module.css";
 
@@ -55,18 +56,19 @@ export function Distributions({ chain, campaignId }: DistributionsProps) {
     const [to, setTo] = useState<Dayjs | undefined>();
     const [active, setActiveDistribution] = useState<number>();
 
-    // TODO: add errors/validations
-    // TODO: issue with duplicated timetamps - holesky - 0x23397e99c6085c653205111f3a6ef406abe24abf210ba25e05c53eac43d07a8a - 29 may
-    // TODO: filter out 0 weight from breakdown
     const breakdownListRef = useRef(null);
 
-    const { distributions, loading, processing, fetchDistributions } =
-        useDistributions({
-            chainId: chain,
-            campaignId,
-            from: from?.unix(),
-            to: to?.unix(),
-        });
+    const {
+        distributions,
+        loading: loadingDistributions,
+        processing: processingDistributions,
+        fetchDistributions,
+    } = useDistributions({
+        chainId: chain,
+        campaignId,
+        from: from?.unix(),
+        to: to?.unix(),
+    });
 
     const { campaign, loading: loadingCampaign } = useCampaign({
         chainId: chain,
@@ -135,6 +137,8 @@ export function Distributions({ chain, campaignId }: DistributionsProps) {
         [distributions],
     );
 
+    const loading = loadingDistributions || processingDistributions;
+
     return (
         <div className={styles.root}>
             <div className={styles.header}>
@@ -148,20 +152,30 @@ export function Distributions({ chain, campaignId }: DistributionsProps) {
             <Filters
                 from={from}
                 to={to}
-                loading={loading || processing}
+                loading={loading}
                 onFromChange={setFrom}
                 onTohange={setTo}
                 onFetch={fetchDistributions}
             />
-            {loading || processing ? (
-                <LoadingText loading={loading} processing={processing} />
-            ) : distributions.length > 0 ? (
-                <div className={styles.dataWrapper}>
-                    <div className={styles.section}>
-                        <Typography size="lg" weight="medium" uppercase>
-                            {t("distributionsOverview")}
-                        </Typography>
-                        <Card className={styles.chartWrapper}>
+
+            <div className={styles.dataWrapper}>
+                <div className={styles.section}>
+                    <Typography size="lg" weight="medium" uppercase>
+                        {t("distributionsOverview")}
+                    </Typography>
+                    <Card
+                        className={classNames(styles.chartWrapper, {
+                            [styles.loading]: loading,
+                        })}
+                    >
+                        {loading ? (
+                            Array.from({ length: 35 }).map((_, index) => (
+                                <div
+                                    key={index}
+                                    className={styles.loadingBar}
+                                ></div>
+                            ))
+                        ) : distributions.length > 0 ? (
                             <ResponsiveContainer
                                 width="100%"
                                 className={styles.container}
@@ -209,13 +223,28 @@ export function Distributions({ chain, campaignId }: DistributionsProps) {
                                     )}
                                 </BarChart>
                             </ResponsiveContainer>
-                        </Card>
-                    </div>
-                    <div className={styles.section}>
-                        <Typography size="lg" weight="medium" uppercase>
-                            {t("distributionsBreakdown")}
-                        </Typography>
-                        <Card className={styles.breakdownListWrapper}>
+                        ) : (
+                            <div className={styles.empty}>
+                                <NoDistributionsIcon />
+                                <Typography uppercase weight="medium" size="sm">
+                                    {t("empty")}
+                                </Typography>
+                            </div>
+                        )}
+                    </Card>
+                </div>
+                <div className={styles.section}>
+                    <Typography size="lg" weight="medium" uppercase>
+                        {t("distributionsBreakdown")}
+                    </Typography>
+                    <Card
+                        className={classNames(styles.breakdownListWrapper, {
+                            [styles.loading]: loading,
+                        })}
+                    >
+                        {loading ? (
+                            <BreakdownRowSkeleton />
+                        ) : distributions.length > 0 ? (
                             <AutoSizer>
                                 {({ height, width }) => {
                                     return (
@@ -258,12 +287,17 @@ export function Distributions({ chain, campaignId }: DistributionsProps) {
                                     );
                                 }}
                             </AutoSizer>
-                        </Card>
-                    </div>
+                        ) : (
+                            <div className={styles.empty}>
+                                <NoDistributionsIcon />
+                                <Typography uppercase weight="medium" size="sm">
+                                    {t("empty")}
+                                </Typography>
+                            </div>
+                        )}
+                    </Card>
                 </div>
-            ) : (
-                <div>No data</div>
-            )}
+            </div>
         </div>
     );
 }
