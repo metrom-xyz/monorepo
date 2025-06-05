@@ -1,4 +1,5 @@
 import {
+    Button,
     Card,
     DateTimePicker,
     Popover,
@@ -17,12 +18,21 @@ import styles from "./styles.module.css";
 interface FiltersProps {
     from?: Dayjs;
     to?: Dayjs;
+    loading?: boolean;
     onFromChange?: (from: Dayjs) => void;
     onTohange?: (to: Dayjs) => void;
+    onFetch?: () => void;
 }
 
-export function Filters({ from, to, onFromChange, onTohange }: FiltersProps) {
-    const t = useTranslations("campaignDistributions.filers");
+export function Filters({
+    from,
+    to,
+    loading,
+    onFromChange,
+    onTohange,
+    onFetch,
+}: FiltersProps) {
+    const t = useTranslations("campaignDistributions.filters");
 
     const [fromPopover, setFromPopover] = useState(false);
     const [toPopover, setToPopover] = useState(false);
@@ -91,10 +101,18 @@ export function Filters({ from, to, onFromChange, onTohange }: FiltersProps) {
                     <DateTimePicker
                         value={to}
                         range={{ from, to }}
-                        max={dayjs(to).add(7, "days")}
+                        max={dayjs(from).add(7, "days")}
                         onChange={onTohange}
                     />
                 </Popover>
+                <Button
+                    size="sm"
+                    disabled={!from || !to}
+                    loading={loading}
+                    onClick={onFetch}
+                >
+                    {t("search")}
+                </Button>
             </Card>
         </div>
     );

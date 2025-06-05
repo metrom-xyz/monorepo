@@ -30,3 +30,7 @@ export default async function DistributionsPage({
 
     return <Distributions chain={chain} campaignId={campaignId} />;
 }
+
+export function generateStaticParams() {
+    return routing.locales.map((locale) => ({ locale }));
+}

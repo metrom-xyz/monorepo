@@ -7,17 +7,16 @@ import {
     type OnChainAmount,
 } from "@metrom-xyz/sdk";
 import { ENVIRONMENT } from "../commons/env";
-import type { Dayjs } from "dayjs";
 import { useCampaign } from "./useCampaign";
 import { type Address, type Hex, formatUnits } from "viem";
 import type { SupportedChain } from "@metrom-xyz/contracts";
-import { useQuery } from "@tanstack/react-query";
+import { keepPreviousData, useQuery } from "@tanstack/react-query";
 
 interface UseDistributionsParams extends HookBaseParams {
     chainId?: SupportedChain;
     campaignId?: Address;
-    from?: Dayjs;
-    to?: Dayjs;
+    from?: number;
+    to?: number;
 }
 
 interface Weight {
@@ -34,9 +33,9 @@ export interface ProcessedDistribution {
 
 interface UseDistributionsReturnValue {
     distributions: ProcessedDistribution[];
-    loadingHashes: boolean;
-    loadingDistributions: boolean;
+    loading: boolean;
     processing: boolean;
+    fetchDistributions: () => void;
 }
 
 interface Hash {
@@ -81,27 +80,32 @@ export function useDistributions({
     campaignId,
     from,
     to,
-    enabled,
 }: UseDistributionsParams): UseDistributionsReturnValue {
     const [processing, setProcessing] = useState(false);
     const { campaign } = useCampaign({ id: campaignId, chainId });
 
-    const { data: hashes, isLoading: loadingHashes } = useQuery({
+    const {
+        data: hashes,
+        isLoading: loadingHashes,
+        isRefetching: refetchingHashes,
+        refetch: fetchHashes,
+    } = useQuery({
         queryKey: ["hashes", chainId, campaignId, from, to],
+        placeholderData: keepPreviousData,
         queryFn: async ({ queryKey }) => {
             const [, chainId, campaignId, from, to] = queryKey as [
                 string,
                 SupportedChain | undefined,
                 Hex | undefined,
-                Dayjs | undefined,
-                Dayjs | undefined,
+                number | undefined,
+                number | undefined,
             ];
 
             if (!chainId || !campaignId || !from || !to) return null;
 
             try {
                 const response = await fetch(
-                    `${SERVICE_URLS[ENVIRONMENT].metrom}/v1/data-hashes/${chainId}/${campaignId}?from=${from.unix()}&to=${to.unix()}`,
+                    `${SERVICE_URLS[ENVIRONMENT].metrom}/v1/data-hashes/${chainId}/${campaignId}?from=${from}&to=${to}`,
                     {
                         method: "GET",
                         headers: {
@@ -122,13 +126,18 @@ export function useDistributions({
         },
         refetchOnWindowFocus: false,
         staleTime: 60000,
-        enabled,
+        enabled: false,
     });
 
-    const { data: distributions, isLoading: loadingDistributions } = useQuery({
-        queryKey: ["distributions", hashes],
+    const {
+        data: distributions,
+        isLoading: loadingDistributions,
+        isRefetching: refetchingDistributions,
+    } = useQuery({
+        queryKey: ["distributions-data", hashes],
         queryFn: async ({ queryKey }) => {
-            const [, hashes] = queryKey as [string, Hash[]];
+            const [, hashes] = queryKey as [string, Hash[] | undefined];
+
             if (!hashes) return null;
 
             try {
@@ -160,7 +169,7 @@ export function useDistributions({
         },
         refetchOnWindowFocus: false,
         staleTime: 60000,
-        enabled,
+        enabled: !!hashes,
     });
 
     const processed = useMemo(() => {
@@ -293,8 +302,12 @@ export function useDistributions({
 
     return {
         distributions: processed,
-        loadingHashes,
-        loadingDistributions,
+        loading:
+            loadingHashes ||
+            refetchingHashes ||
+            loadingDistributions ||
+            refetchingDistributions,
         processing,
+        fetchDistributions: fetchHashes,
     };
 }
