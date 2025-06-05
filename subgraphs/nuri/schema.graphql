@@ -68,6 +68,7 @@ type ConcentratedPool @entity(immutable: false) {
     token1Tvl: BigInt!
     tick: Int!
     price: BigDecimal!
+    sqrtPriceX96: BigInt!
     fee: Int!
     liquidity: BigInt!
     positions: [ConcentratedPosition!]! @derivedFrom(field: "pool")
@@ -75,6 +76,8 @@ type ConcentratedPool @entity(immutable: false) {
         @derivedFrom(field: "pool")
     liquidityTransfers: [ConcentratedLiquidityTransfer!]!
         @derivedFrom(field: "pool")
+    swapChanges: [SwapChange!]! @derivedFrom(field: "pool")
+    ticks: [Tick!]! @derivedFrom(field: "pool")
 }
 
 type ConcentratedPosition @entity(immutable: false) {
@@ -108,20 +111,13 @@ type ConcentratedLiquidityTransfer @entity(immutable: true) {
     position: ConcentratedPosition!
 }
 
-type TickChange @entity(immutable: true) {
+type SwapChange @entity(immutable: true) {
     id: Bytes!
     timestamp: BigInt!
     blockNumber: BigInt!
     pool: ConcentratedPool!
-    newTick: Int!
-}
-
-type PriceChange @entity(immutable: true) {
-    id: Bytes!
-    timestamp: BigInt!
-    blockNumber: BigInt!
-    pool: ConcentratedPool!
-    newPrice: BigDecimal!
+    tick: Int!
+    sqrtPriceX96: BigInt!
 }
 
 type Tick @entity(immutable: false) {

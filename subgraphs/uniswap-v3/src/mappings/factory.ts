@@ -30,6 +30,7 @@ export function handlePoolCreated(event: PoolCreatedEvent): void {
     pool.token1Tvl = BI_0;
     pool.tick = 0;
     pool.price = BD_0;
+    pool.sqrtPriceX96 = BI_0;
     pool.fee = event.params.fee;
     pool.liquidity = BI_0;
     pool.save();

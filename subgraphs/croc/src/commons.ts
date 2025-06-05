@@ -12,8 +12,7 @@ import {
     PoolTemplate,
     Position,
     Tick,
-    TickChange,
-    PriceChange,
+    SwapChange,
     Token,
 } from "../generated/schema";
 import { Erc20 } from "../generated/CrocSwapDex/Erc20";
@@ -37,6 +36,11 @@ export const BD_Q192 = BigDecimal.fromString(
         .pow(192 as u8)
         .toString(),
 );
+export const BD_Q96 = BigDecimal.fromString(
+    BigInt.fromI32(2)
+        .pow(96 as u8)
+        .toString(),
+);
 
 const CROC_ADDR_PREFIX = "0xaaaaaaa";
 
@@ -51,10 +55,11 @@ export function decodeAbiOrThrow(
         throw new Error(`Could not decode data ${encoded.toHex()}`);
     return decoded.toTuple();
 }
-export function exponentToBigDecimal(decimals: BigInt): BigDecimal {
+
+export function exponentToBigDecimal(decimals: number): BigDecimal {
     let result = "1";
 
-    for (let i = 0; i < decimals.toI32(); i++) {
+    for (let i = 0; i < decimals; i++) {
         result += "0";
     }
 
@@ -135,7 +140,7 @@ export function getOrCreateToken(address: Address): Token {
         token = new Token(NATIVE_TOKEN_ADDRESS);
         token.symbol = NATIVE_TOKEN_SYMBOL;
         token.name = NATIVE_TOKEN_NAME;
-        token.decimals = NATIVE_TOKEN_DECIMALS;
+        token.decimals = NATIVE_TOKEN_DECIMALS.toI32();
         token.save();
         return token;
     }
@@ -161,7 +166,7 @@ export function getOrCreateToken(address: Address): Token {
     token = new Token(address);
     token.symbol = symbol;
     token.name = name;
-    token.decimals = decimals;
+    token.decimals = decimals.toI32();
     token.save();
 
     return token;
@@ -183,44 +188,71 @@ export function handleSwap(
     pool.token1Tvl = pool.token1Tvl.plus(token1Delta);
     pool.save();
 
-    let tickChangeId = getBlockEventId(block, pool.id);
-    if (TickChange.loadInBlock(tickChangeId) === null) {
+    let sqrtPriceX96 = BI_0;
+    let price = BD_0;
+    if (!token0Delta.isZero()) {
+        let rawPrice = BigDecimal.fromString(token1Delta.abs().toString())
+            .div(BigDecimal.fromString(token0Delta.abs().toString()))
+            .truncate(10);
+
+        let rawPriceNumber = parseFloat(rawPrice.toString());
+        sqrtPriceX96 = BigInt.fromString(
+            BigDecimal.fromString(NativeMath.sqrt(rawPriceNumber).toString())
+                .times(BD_Q96)
+                .truncate(0)
+                .toString(),
+        );
+
+        let token0 = getOrCreateToken(changetype<Address>(pool.token0));
+        let adjustedToken0Delta = BigDecimal.fromString(
+            token0Delta.toString(),
+        ).div(
+            BigDecimal.fromString(
+                BigInt.fromI32(10)
+                    .pow(token0.decimals as u8)
+                    .toString(),
+            ),
+        );
+
+        let token1 = getOrCreateToken(changetype<Address>(pool.token1));
+        let adjustedToken1Delta = BigDecimal.fromString(
+            token1Delta.toString(),
+        ).div(
+            BigDecimal.fromString(
+                BigInt.fromI32(10)
+                    .pow(token1.decimals as u8)
+                    .toString(),
+            ),
+        );
+
+        price = adjustedToken1Delta.div(adjustedToken0Delta);
+    }
+
+    let swapChangeId = getBlockEventId(block, pool.id);
+    if (SwapChange.loadInBlock(swapChangeId) === null) {
         let newTick = CrocQueryContract.queryCurveTick(
             changetype<Address>(pool.token0),
             changetype<Address>(pool.token1),
             pool.idx,
         );
         if (pool.tick != newTick) {
-            let tickChange = new TickChange(tickChangeId);
-            tickChange.timestamp = block.timestamp;
-            tickChange.pool = pool.id;
-            tickChange.newTick = newTick;
-            tickChange.save();
+            let swapChange = new SwapChange(swapChangeId);
+            swapChange.timestamp = block.timestamp;
+            swapChange.blockNumber = block.number;
+            swapChange.pool = pool.id;
+            swapChange.tick = newTick;
+            swapChange.sqrtPriceX96 = sqrtPriceX96;
+            swapChange.tick = newTick;
+            swapChange.save();
 
             pool.tick = newTick;
             pool.save();
         }
     }
 
-    let newPrice = !token0Delta.isZero()
-        ? (pool.price = BigDecimal.fromString(token1Delta.abs().toString()).div(
-              BigDecimal.fromString(token0Delta.abs().toString()),
-          ))
-        : BD_0;
-
-    let priceChangeId = getBlockEventId(block, pool.id);
-    if (PriceChange.loadInBlock(priceChangeId) === null) {
-        if (newPrice.notEqual(BD_0) && pool.price != newPrice) {
-            let priceChange = new PriceChange(priceChangeId);
-            priceChange.timestamp = block.timestamp;
-            priceChange.pool = pool.id;
-            priceChange.newPrice = newPrice;
-            priceChange.save();
-
-            pool.price = newPrice;
-            pool.save();
-        }
-    }
+    pool.price = price;
+    pool.sqrtPriceX96 = sqrtPriceX96;
+    pool.save();
 }
 
 export function handleLiquidityChange(

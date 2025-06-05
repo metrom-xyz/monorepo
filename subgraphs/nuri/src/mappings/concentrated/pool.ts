@@ -14,9 +14,8 @@ import {
 import {
     ConcentratedPosition,
     ConcentratedPool,
-    TickChange,
     ConcentratedLiquidityChange,
-    PriceChange,
+    SwapChange,
 } from "../../../generated/schema";
 import {
     BD_Q192,
@@ -58,6 +57,7 @@ export function handleInitialize(event: Initialize): void {
     let pool = getPoolOrThrow(event.address);
     pool.tick = event.params.tick;
     pool.price = getPrice(event.params.sqrtPriceX96, pool.token0, pool.token1);
+    pool.sqrtPriceX96 = event.params.sqrtPriceX96;
     pool.save();
 }
 
@@ -70,35 +70,23 @@ export function handleSwap(event: Swap): void {
     pool.token1Tvl = pool.token1Tvl.plus(
         getFeeAdjustedAmount(event.params.amount1, pool.fee),
     );
+    pool.price = getPrice(event.params.sqrtPriceX96, pool.token0, pool.token1);
 
-    let newPrice = getPrice(
-        event.params.sqrtPriceX96,
-        pool.token0,
-        pool.token1,
-    );
-    if (newPrice != pool.price) {
-        let priceChange = new PriceChange(getEventId(event));
-        priceChange.timestamp = event.block.timestamp;
-        priceChange.blockNumber = event.block.number;
-        priceChange.pool = pool.id;
-        priceChange.newPrice = newPrice;
-        priceChange.save();
-
-        pool.price = newPrice;
+    if (
+        event.params.sqrtPriceX96.notEqual(pool.sqrtPriceX96) ||
+        event.params.tick != pool.tick
+    ) {
+        let swapChange = new SwapChange(getEventId(event));
+        swapChange.timestamp = event.block.timestamp;
+        swapChange.blockNumber = event.block.number;
+        swapChange.pool = pool.id;
+        swapChange.tick = event.params.tick;
+        swapChange.sqrtPriceX96 = event.params.sqrtPriceX96;
+        swapChange.save();
     }
 
-    let newTick = event.params.tick;
-    if (newTick != pool.tick) {
-        let tickMovingSwap = new TickChange(getEventId(event));
-        tickMovingSwap.timestamp = event.block.timestamp;
-        tickMovingSwap.blockNumber = event.block.number;
-        tickMovingSwap.pool = pool.id;
-        tickMovingSwap.newTick = newTick;
-        tickMovingSwap.save();
-
-        pool.tick = newTick;
-    }
-
+    pool.tick = event.params.tick;
+    pool.sqrtPriceX96 = event.params.sqrtPriceX96;
     pool.save();
 }
 

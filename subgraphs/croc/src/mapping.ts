@@ -108,6 +108,7 @@ export function handleColdCmdEvent(event: CrocColdCmdEvent): void {
     pool.tick = NativeMath.floor(
         NativeMath.log10(price) / NativeMath.log10(1.0001),
     ) as i32;
+    pool.sqrtPriceX96 = sqrtPriceX96;
     pool.price = BD_0;
     pool.fee = template.fee;
     pool.concentratedLiquidity = BI_0;

@@ -13,11 +13,12 @@ type Pool @entity(immutable: false) {
     token1Tvl: BigInt!
     tick: Int!
     price: BigDecimal!
+    sqrtPriceX96: BigInt!
     fee: Int!
     liquidity: BigInt!
     positions: [Position!]! @derivedFrom(field: "pool")
-    tickChanges: [TickChange!]! @derivedFrom(field: "pool")
-    priceChanges: [PriceChange!]! @derivedFrom(field: "pool")
+    swapChanges: [SwapChange!]! @derivedFrom(field: "pool")
+    ticks: [Tick!]! @derivedFrom(field: "pool")
 }
 
 type Position @entity(immutable: false) {
@@ -48,20 +49,13 @@ type LiquidityTransfer @entity(immutable: true) {
     position: Position!
 }
 
-type TickChange @entity(immutable: true) {
+type SwapChange @entity(immutable: true) {
     id: Bytes!
     timestamp: BigInt!
     blockNumber: BigInt!
     pool: Pool!
-    newTick: Int!
-}
-
-type PriceChange @entity(immutable: true) {
-    id: Bytes!
-    timestamp: BigInt!
-    blockNumber: BigInt!
-    pool: Pool!
-    newPrice: BigDecimal!
+    tick: Int!
+    sqrtPriceX96: BigInt!
 }
 
 type Tick @entity(immutable: false) {

@@ -4,11 +4,7 @@ import {
     Mint,
     Burn,
 } from "../../../generated/templates/ClPool/ClPool";
-import {
-    ConcentratedPool,
-    TickChange,
-    PriceChange,
-} from "../../../generated/schema";
+import { ConcentratedPool, SwapChange } from "../../../generated/schema";
 import {
     getEventId,
     getOrCreateTick,
@@ -25,6 +21,7 @@ export function handleInitialize(event: Initialize): void {
 
     pool.tick = event.params.tick;
     pool.price = getPrice(event.params.sqrtPriceX96, pool.token0, pool.token1);
+    pool.sqrtPriceX96 = event.params.sqrtPriceX96;
     pool.save();
 }
 
@@ -33,34 +30,23 @@ export function handleSwap(event: Swap): void {
     pool.liquidity = event.params.liquidity;
     pool.token0Tvl = pool.token0Tvl.plus(event.params.amount0);
     pool.token1Tvl = pool.token1Tvl.plus(event.params.amount1);
+    pool.price = getPrice(event.params.sqrtPriceX96, pool.token0, pool.token1);
 
-    let newPrice = getPrice(
-        event.params.sqrtPriceX96,
-        pool.token0,
-        pool.token1,
-    );
-    if (newPrice != pool.price) {
-        let priceChange = new PriceChange(getEventId(event));
-        priceChange.timestamp = event.block.timestamp;
-        priceChange.blockNumber = event.block.number;
-        priceChange.pool = pool.id;
-        priceChange.price = newPrice;
-        priceChange.save();
-
-        pool.price = newPrice;
+    if (
+        event.params.sqrtPriceX96.notEqual(pool.sqrtPriceX96) ||
+        event.params.tick != pool.tick
+    ) {
+        let swapChange = new SwapChange(getEventId(event));
+        swapChange.timestamp = event.block.timestamp;
+        swapChange.blockNumber = event.block.number;
+        swapChange.pool = pool.id;
+        swapChange.tick = event.params.tick;
+        swapChange.sqrtPriceX96 = event.params.sqrtPriceX96;
+        swapChange.save();
     }
 
-    if (event.params.tick != pool.tick) {
-        let tickChange = new TickChange(getEventId(event));
-        tickChange.timestamp = event.block.timestamp;
-        tickChange.blockNumber = event.block.number;
-        tickChange.pool = pool.id;
-        tickChange.tick = event.params.tick;
-        tickChange.save();
-
-        pool.tick = event.params.tick;
-    }
-
+    pool.tick = event.params.tick;
+    pool.sqrtPriceX96 = event.params.sqrtPriceX96;
     pool.save();
 }
 

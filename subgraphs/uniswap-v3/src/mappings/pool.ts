@@ -8,9 +8,8 @@ import {
 import {
     Position,
     Pool,
-    TickChange,
     LiquidityChange,
-    PriceChange,
+    SwapChange,
 } from "../../generated/schema";
 import {
     BI_0,
@@ -31,6 +30,7 @@ export function handleInitialize(event: InitializeEvent): void {
 
     pool.tick = event.params.tick;
     pool.price = getPrice(event.params.sqrtPriceX96, pool.token0, pool.token1);
+    pool.sqrtPriceX96 = event.params.sqrtPriceX96;
     pool.save();
 }
 
@@ -43,35 +43,23 @@ export function handleSwap(event: SwapEvent): void {
     pool.token1Tvl = pool.token1Tvl.plus(
         getFeeAdjustedAmount(event.params.amount1, pool.fee),
     );
+    pool.price = getPrice(event.params.sqrtPriceX96, pool.token0, pool.token1);
 
-    let newPrice = getPrice(
-        event.params.sqrtPriceX96,
-        pool.token0,
-        pool.token1,
-    );
-    if (newPrice != pool.price) {
-        let priceChange = new PriceChange(getEventId(event));
-        priceChange.timestamp = event.block.timestamp;
-        priceChange.blockNumber = event.block.number;
-        priceChange.pool = pool.id;
-        priceChange.newPrice = newPrice;
-        priceChange.save();
-
-        pool.price = newPrice;
+    if (
+        event.params.sqrtPriceX96.notEqual(pool.sqrtPriceX96) ||
+        event.params.tick != pool.tick
+    ) {
+        let swapChange = new SwapChange(getEventId(event));
+        swapChange.timestamp = event.block.timestamp;
+        swapChange.blockNumber = event.block.number;
+        swapChange.pool = pool.id;
+        swapChange.tick = event.params.tick;
+        swapChange.sqrtPriceX96 = event.params.sqrtPriceX96;
+        swapChange.save();
     }
 
-    let newTick = event.params.tick;
-    if (newTick != pool.tick) {
-        let tickChange = new TickChange(getEventId(event));
-        tickChange.timestamp = event.block.timestamp;
-        tickChange.blockNumber = event.block.number;
-        tickChange.pool = pool.id;
-        tickChange.newTick = newTick;
-        tickChange.save();
-
-        pool.tick = newTick;
-    }
-
+    pool.tick = event.params.tick;
+    pool.sqrtPriceX96 = event.params.sqrtPriceX96;
     pool.save();
 }
 
