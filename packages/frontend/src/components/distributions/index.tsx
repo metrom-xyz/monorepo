@@ -229,7 +229,11 @@ export function Distributions({ chain, campaignId }: DistributionsProps) {
                                             className={styles.breakdownsList}
                                         >
                                             {({ index, style, data }) => {
-                                                const distribution: ProcessedDistribution =
+                                                const previous:
+                                                    | ProcessedDistribution
+                                                    | undefined =
+                                                    data[index - 1];
+                                                const current: ProcessedDistribution =
                                                     data[index];
 
                                                 return (
@@ -240,9 +244,10 @@ export function Distributions({ chain, campaignId }: DistributionsProps) {
                                                             active === index
                                                         }
                                                         chainId={chain}
-                                                        distribution={
-                                                            distribution
+                                                        previousDistribution={
+                                                            previous
                                                         }
+                                                        distribution={current}
                                                         campaignFrom={
                                                             campaign?.from
                                                         }
