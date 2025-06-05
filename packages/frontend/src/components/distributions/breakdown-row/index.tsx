@@ -1,18 +1,14 @@
 import type { ProcessedDistribution } from "@/src/hooks/useDistributions";
 import { RemoteLogo } from "../../remote-logo";
-import { type Address, zeroAddress } from "viem";
+import { type Address } from "viem";
 import { ErrorText, Typography } from "@metrom-xyz/ui";
-import {
-    formatAmount,
-    formatAmountChange,
-    formatDateTime,
-    formatPercentage,
-} from "@/src/utils/format";
+import { formatDateTime } from "@/src/utils/format";
 import classNames from "classnames";
 import { useTranslations } from "next-intl";
-import { getColorFromAddress } from "@/src/utils/address";
 import dayjs from "dayjs";
 import { useMemo } from "react";
+import { useAccount } from "wagmi";
+import { AccountRow } from "./account-row";
 
 import styles from "./styles.module.css";
 
@@ -36,6 +32,8 @@ export function BreakdownRow({
     campaignFrom,
 }: BreakdownRowProps) {
     const t = useTranslations("campaignDistributions");
+
+    const { address } = useAccount();
 
     const notFirstDistribution = useMemo(
         () =>
@@ -126,69 +124,17 @@ export function BreakdownRow({
                                         b[1].percentage.formatted -
                                         a[1].percentage.formatted,
                                 )
-                                .map(
-                                    ([
-                                        account,
-                                        { amount, amountChange, percentage },
-                                    ]) => (
-                                        <div
-                                            key={account}
-                                            className={styles.accountRow}
-                                        >
-                                            <div className={styles.account}>
-                                                <div
-                                                    className={styles.legend}
-                                                    style={{
-                                                        backgroundColor:
-                                                            getColorFromAddress(
-                                                                account as Address,
-                                                            ),
-                                                    }}
-                                                ></div>
-                                                <Typography
-                                                    size="sm"
-                                                    light
-                                                    weight="medium"
-                                                >
-                                                    {account === zeroAddress
-                                                        ? t("reimbursed")
-                                                        : account}
-                                                </Typography>
-                                            </div>
-                                            <div className={styles.amount}>
-                                                <Typography>
-                                                    {formatAmount({
-                                                        amount: amount.formatted,
-                                                    })}
-                                                </Typography>
-                                                <Typography
-                                                    size="xs"
-                                                    className={classNames(
-                                                        styles.change,
-                                                        {
-                                                            [styles.positive]:
-                                                                amountChange.formatted >
-                                                                0,
-                                                            [styles.negative]:
-                                                                amountChange.formatted <
-                                                                0,
-                                                        },
-                                                    )}
-                                                >
-                                                    {formatAmountChange({
-                                                        amount: amountChange.formatted,
-                                                    })}
-                                                </Typography>
-                                            </div>
-                                            <Typography>
-                                                {formatPercentage({
-                                                    percentage:
-                                                        percentage.formatted,
-                                                })}
-                                            </Typography>
-                                        </div>
-                                    ),
-                                )}
+                                .map(([account, weight]) => (
+                                    <AccountRow
+                                        key={account}
+                                        account={account as Address}
+                                        connected={
+                                            address?.toLowerCase() ===
+                                            account.toLowerCase()
+                                        }
+                                        {...weight}
+                                    />
+                                ))}
                         </div>
                     </div>
                 );
