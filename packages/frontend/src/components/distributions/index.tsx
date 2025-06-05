@@ -60,12 +60,12 @@ export function Distributions({ chain, campaignId }: DistributionsProps) {
     // TODO: filter out 0 weight from breakdown
     const breakdownListRef = useRef(null);
 
-    const { distributions, loadingHashes, loadingDistributions, processing } =
+    const { distributions, loading, processing, fetchDistributions } =
         useDistributions({
             chainId: chain,
             campaignId,
-            from,
-            to,
+            from: from?.unix(),
+            to: to?.unix(),
         });
 
     const { campaign, loading: loadingCampaign } = useCampaign({
@@ -148,15 +148,13 @@ export function Distributions({ chain, campaignId }: DistributionsProps) {
             <Filters
                 from={from}
                 to={to}
+                loading={loading || processing}
                 onFromChange={setFrom}
                 onTohange={setTo}
+                onFetch={fetchDistributions}
             />
-            {loadingHashes || loadingDistributions || processing ? (
-                <LoadingText
-                    loadingHashes={loadingHashes}
-                    loadingDistributions={loadingDistributions}
-                    processing={processing}
-                />
+            {loading || processing ? (
+                <LoadingText loading={loading} processing={processing} />
             ) : distributions.length > 0 ? (
                 <div className={styles.dataWrapper}>
                     <div className={styles.section}>

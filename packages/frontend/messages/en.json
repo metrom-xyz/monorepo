@@ -525,17 +525,20 @@
         "notFound": "Campaign not found!"
     },
     "campaignDistributions": {
-        "filers": {
+        "filters": {
             "title": "Distributions filters",
             "from": "From",
-            "to": "To"
+            "to": "To",
+            "search": "Search"
         },
-        "fetchingHashes": "Fetching hashes",
         "fetchingDistributions": "Fetching distributions",
         "processingDistributions": "Processing distributions",
         "distributionsOverview": "Distributions overview",
         "distributionsBreakdown": "Distributions breakdown",
-        "warningMessage": "These amounts include all previous distributions, as this is not the first one for the campaign.",
+        "warningMessages": {
+            "notFirstDistribution": "This distribution includes all previous ones, as this is not the first one for the campaign.",
+            "multiDistribution": "This distribution includes data from multiple distributions."
+        },
         "reimbursed": "Reimbursed",
         "token": "Token",
         "time": "Time",
