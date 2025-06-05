@@ -553,8 +553,8 @@
         "notFound": "Campaign not found!"
     },
     "campaignDistributions": {
-        "inputs": {
-            "campaignId": "Campaign id",
+        "filers": {
+            "title": "Distributions filters",
             "from": "From",
             "to": "To"
         },
@@ -563,6 +563,7 @@
         "processingDistributions": "Processing distributions",
         "distributionsOverview": "Distributions overview",
         "distributionsBreakdown": "Distributions breakdown",
+        "warningMessage": "These amounts include all previous distributions, as this is not the first one for the campaign.",
         "reimbursed": "Reimbursed",
         "token": "Token",
         "time": "Time",

@@ -1,7 +1,7 @@
 import type { ProcessedDistribution } from "@/src/hooks/useDistributions";
 import { RemoteLogo } from "../../remote-logo";
 import { type Address, zeroAddress } from "viem";
-import { Typography } from "@metrom-xyz/ui";
+import { ErrorText, Typography } from "@metrom-xyz/ui";
 import {
     formatAmount,
     formatAmountChange,
@@ -11,21 +11,26 @@ import {
 import classNames from "classnames";
 import { useTranslations } from "next-intl";
 import { getColorFromAddress } from "@/src/utils/address";
+import dayjs from "dayjs";
 
 import styles from "./styles.module.css";
 
 interface BreakdownRowProps {
     style?: any;
+    index: number;
     active: boolean;
     chainId: number;
     distribution: ProcessedDistribution;
+    campaignFrom?: number;
 }
 
 export function BreakdownRow({
     style,
+    index,
     active,
     chainId,
     distribution,
+    campaignFrom,
 }: BreakdownRowProps) {
     const t = useTranslations("campaignDistributions");
 
@@ -42,9 +47,23 @@ export function BreakdownRow({
                                 address={token as Address}
                                 chain={chainId}
                             />
-                            <Typography>
+                            <Typography weight="medium" size="lg">
                                 {formatDateTime(distribution.timestamp)}
                             </Typography>
+                            {campaignFrom &&
+                                dayjs
+                                    .unix(distribution.timestamp)
+                                    .diff(dayjs.unix(campaignFrom), "hours") >
+                                    1 &&
+                                index === 0 && (
+                                    <ErrorText
+                                        level="warning"
+                                        size="xs"
+                                        weight="medium"
+                                    >
+                                        {t("warningMessage")}
+                                    </ErrorText>
+                                )}
                         </div>
                         <div className={styles.header}>
                             <Typography
