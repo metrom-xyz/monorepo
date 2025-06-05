@@ -1,15 +1,11 @@
 @reference "../../app.css";
 
 .root {
-    @apply w-full max-w-screen-xl flex flex-col items-center gap-4;
+    @apply w-full max-w-screen-lg flex flex-col items-center gap-8;
 }
 
-.inputsCard {
-    @apply flex items-end gap-2;
-}
-
-.datePickerPopover {
-    @apply p-2;
+.header {
+    @apply w-full flex flex-col sm:gap-3 gap-8;
 }
 
 .campaignIdInput {

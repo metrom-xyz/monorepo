@@ -1,5 +1,4 @@
 import { Skeleton, Button } from "@metrom-xyz/ui";
-import { useTranslations } from "next-intl";
 import { PoolRemoteLogo } from "../../pool-remote-logo";
 import type { Campaign } from "@/src/types/campaign";
 import { AmmPoolLiquityHeader } from "./amm-pool-liquitidy";
@@ -28,8 +27,6 @@ export function Header({ campaign }: HeaderProps) {
 }
 
 export function SkeletonHeader() {
-    const t = useTranslations("campaignDetails.header");
-
     return (
         <div className={styles.root}>
             <div className={styles.titleContainer}>

@@ -4,22 +4,9 @@ import {
     useDistributions,
     type ProcessedDistribution,
 } from "@/src/hooks/useDistributions";
-import {
-    Button,
-    Card,
-    DateTimePicker,
-    Popover,
-    TextInput,
-    Typography,
-} from "@metrom-xyz/ui";
+import { Card, Typography } from "@metrom-xyz/ui";
 import type { Dayjs } from "dayjs";
-import {
-    useCallback,
-    useMemo,
-    useRef,
-    useState,
-    type ChangeEvent,
-} from "react";
+import { useCallback, useMemo, useRef, useState } from "react";
 import AutoSizer from "react-virtualized-auto-sizer";
 import {
     Bar,
@@ -30,18 +17,25 @@ import {
     YAxis,
 } from "recharts";
 import { TooltipContent } from "./tooltip";
-import type { Address } from "viem";
-import { useChainId } from "wagmi";
+import type { Address, Hex } from "viem";
 import { VariableSizeList } from "react-window";
 import { BreakdownRow } from "./breakdown-row";
 import dayjs from "dayjs";
 import { useTranslations } from "next-intl";
 import { getColorFromAddress } from "@/src/utils/address";
-import { formatDateTime } from "@/src/utils/format";
-import { useClickAway } from "react-use";
 import { LoadingText } from "./loading-test";
+import type { SupportedChain } from "@metrom-xyz/contracts";
+import { useCampaign } from "@/src/hooks/useCampaign";
+import { Header, SkeletonHeader } from "../campaign-details/header";
+import { CampaignDuration } from "../campaign-duration";
+import { Filters } from "./filters";
 
 import styles from "./styles.module.css";
+
+interface DistributionsProps {
+    chain: SupportedChain;
+    campaignId: Hex;
+}
 
 export interface DistributionChartData extends ProcessedDistribution {}
 
@@ -51,41 +45,33 @@ interface StackedBar {
     token: string;
 }
 
-const ACCOUNT_ROW_SIZE = 36;
-const MIN_BREAKDOWN_ROW_SIZE = 250;
+const ACCOUNT_ROW_SIZE = 38;
+const MIN_BREAKDOWN_ROW_SIZE = 280;
 
-export function Distributions() {
+export function Distributions({ chain, campaignId }: DistributionsProps) {
     const t = useTranslations("campaignDistributions");
 
-    const [campaignId, setCampaignId] = useState<Address>();
     const [from, setFrom] = useState<Dayjs | undefined>();
     const [to, setTo] = useState<Dayjs | undefined>();
-    const [fromPopover, setFromPopover] = useState(false);
-    const [toPopover, setToPopover] = useState(false);
-    const [activeDistribution, setActiveDistribution] = useState<number>();
+    const [active, setActiveDistribution] = useState<number>();
 
-    // TODO: move inputs to dedicated component
     // TODO: add errors/validations
     // TODO: issue with duplicated timetamps - holesky - 0x23397e99c6085c653205111f3a6ef406abe24abf210ba25e05c53eac43d07a8a - 29 may
     // TODO: filter out 0 weight from breakdown
     const breakdownListRef = useRef(null);
-    const [fromAnchor, setFromAnchor] = useState<
-        HTMLDivElement | SVGElement | null
-    >(null);
-    const fromRef = useRef<HTMLDivElement>(null);
-    const [toAncor, setToAnchor] = useState<HTMLDivElement | SVGElement | null>(
-        null,
-    );
-    const toRef = useRef<HTMLDivElement>(null);
 
-    const chainId = useChainId();
     const { distributions, loadingHashes, loadingDistributions, processing } =
         useDistributions({
+            chainId: chain,
             campaignId,
             from,
             to,
-            enabled: !!campaignId && !!from && !!to,
         });
+
+    const { campaign, loading: loadingCampaign } = useCampaign({
+        chainId: chain,
+        id: campaignId,
+    });
 
     const stackedBars = useMemo(() => {
         const existing: Record<string, boolean> = {};
@@ -111,23 +97,6 @@ export function Distributions() {
             (a, b) => a.account.localeCompare(b.account, "en") * 1,
         );
     }, [distributions]);
-
-    useClickAway(fromRef, getPopoverHandler("from", false));
-    useClickAway(toRef, getPopoverHandler("to", false));
-
-    function handleCampaignIdOnChange(event: ChangeEvent<HTMLInputElement>) {
-        setCampaignId(event.target.value as Address);
-    }
-
-    function getPopoverHandler(type: "from" | "to", open: boolean) {
-        return () => {
-            if (type === "from") {
-                setFromPopover(open);
-            } else {
-                setToPopover(open);
-            }
-        };
-    }
 
     // TODO: add type
     const handleStackedBarOnClick = useCallback(
@@ -168,54 +137,20 @@ export function Distributions() {
 
     return (
         <div className={styles.root}>
-            <Card className={styles.inputsCard}>
-                <TextInput
-                    label={t("inputs.from")}
-                    ref={setFromAnchor}
-                    value={formatDateTime(from)}
-                    onClick={getPopoverHandler("from", true)}
-                    readOnly
-                />
-                <TextInput
-                    label={t("inputs.to")}
-                    disabled={!from}
-                    ref={setToAnchor}
-                    value={formatDateTime(to)}
-                    onClick={getPopoverHandler("to", true)}
-                    readOnly
-                />
-                <TextInput
-                    label={t("inputs.campaignId")}
-                    disabled={!from || !to}
-                    value={campaignId}
-                    onChange={handleCampaignIdOnChange}
-                    className={styles.campaignIdInput}
-                />
-                <Popover
-                    ref={fromRef}
-                    anchor={fromAnchor}
-                    open={fromPopover}
-                    className={styles.datePickerPopover}
-                >
-                    <DateTimePicker
-                        value={from}
-                        range={{ from, to }}
-                        onChange={setFrom}
-                    />
-                </Popover>
-                <Popover
-                    ref={toRef}
-                    anchor={toAncor}
-                    open={toPopover}
-                    className={styles.datePickerPopover}
-                >
-                    <DateTimePicker
-                        value={to}
-                        range={{ from, to }}
-                        onChange={setTo}
-                    />
-                </Popover>
-            </Card>
+            <div className={styles.header}>
+                {loadingCampaign || !campaign ? (
+                    <SkeletonHeader />
+                ) : (
+                    <Header campaign={campaign} />
+                )}
+                <CampaignDuration from={campaign?.from} to={campaign?.to} />
+            </div>
+            <Filters
+                from={from}
+                to={to}
+                onFromChange={setFrom}
+                onTohange={setTo}
+            />
             {loadingHashes || loadingDistributions || processing ? (
                 <LoadingText
                     loadingHashes={loadingHashes}
@@ -243,7 +178,7 @@ export function Distributions() {
                                         cursor={false}
                                         shared={false}
                                         content={
-                                            <TooltipContent chain={chainId} />
+                                            <TooltipContent chain={chain} />
                                         }
                                     />
 
@@ -302,13 +237,16 @@ export function Distributions() {
                                                 return (
                                                     <BreakdownRow
                                                         style={style}
+                                                        index={index}
                                                         active={
-                                                            activeDistribution ===
-                                                            index
+                                                            active === index
                                                         }
-                                                        chainId={chainId}
+                                                        chainId={chain}
                                                         distribution={
                                                             distribution
+                                                        }
+                                                        campaignFrom={
+                                                            campaign?.from
                                                         }
                                                     />
                                                 );
