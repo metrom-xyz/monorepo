@@ -33,7 +33,19 @@
 }
 
 .chartWrapper {
-    @apply w-full h-[500px];
+    @apply w-full h-[500px] flex items-center justify-center gap-2;
+}
+
+.chartWrapper.loading {
+    @apply items-end;
+}
+
+.empty {
+    @apply h-full flex flex-col gap-2 self-center justify-center items-center;
+}
+
+.loadingBar {
+    @apply h-96 animate-pulse theme-surface-2 w-full max-w-10 rounded-t-md;
 }
 
 .chart {

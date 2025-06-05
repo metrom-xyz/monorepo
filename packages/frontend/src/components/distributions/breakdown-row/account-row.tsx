@@ -1,6 +1,6 @@
 import { type Address, zeroAddress } from "viem";
 import { getColorFromAddress } from "@/src/utils/address";
-import { Typography } from "@metrom-xyz/ui";
+import { Skeleton, Typography } from "@metrom-xyz/ui";
 import classNames from "classnames";
 import { useTranslations } from "next-intl";
 import {
@@ -74,6 +74,21 @@ export function AccountRow({
                     percentage: percentage.formatted,
                 })}
             </Typography>
+        </div>
+    );
+}
+
+export function AccountRowSkeleton() {
+    return (
+        <div className={styles.accountRow}>
+            <div className={styles.account}>
+                <Skeleton width={380} size="sm" />
+            </div>
+            <div className={classNames(styles.amount, styles.loading)}>
+                <Skeleton width={100} size="sm" />
+                <Skeleton width={25} size="xs" />
+            </div>
+            <Skeleton width={100} size="sm" />
         </div>
     );
 }

@@ -1,7 +1,7 @@
 @reference "../../../app.css";
 
 .root {
-    @apply flex gap-4 p-4 rounded-lg;
+    @apply flex gap-4 rounded-lg;
 }
 
 .header {
@@ -38,6 +38,10 @@
 
 .amount {
     @apply flex items-center gap-1;
+}
+
+.amount.loading {
+    @apply w-32;
 }
 
 .change {

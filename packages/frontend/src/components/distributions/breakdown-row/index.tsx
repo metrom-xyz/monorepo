@@ -1,14 +1,14 @@
 import type { ProcessedDistribution } from "@/src/hooks/useDistributions";
 import { RemoteLogo } from "../../remote-logo";
 import { type Address } from "viem";
-import { ErrorText, Typography } from "@metrom-xyz/ui";
+import { ErrorText, Skeleton, Typography } from "@metrom-xyz/ui";
 import { formatDateTime } from "@/src/utils/format";
 import classNames from "classnames";
 import { useTranslations } from "next-intl";
 import dayjs from "dayjs";
 import { useMemo } from "react";
 import { useAccount } from "wagmi";
-import { AccountRow } from "./account-row";
+import { AccountRow, AccountRowSkeleton } from "./account-row";
 
 import styles from "./styles.module.css";
 
@@ -139,6 +139,29 @@ export function BreakdownRow({
                     </div>
                 );
             })}
+        </div>
+    );
+}
+
+export function BreakdownRowSkeleton() {
+    return (
+        <div className={styles.root}>
+            <div className={styles.tokenColumn}>
+                <div className={styles.titleWrapper}>
+                    <RemoteLogo loading />
+                    <Skeleton width={150} size="lg" />
+                </div>
+                <div className={styles.header}>
+                    <Skeleton width={100} size="sm" />
+                    <Skeleton width={100} size="sm" />
+                    <Skeleton width={100} size="sm" />
+                </div>
+                <div className={styles.accounts}>
+                    {Array.from({ length: 17 }).map((_, index) => (
+                        <AccountRowSkeleton key={index} />
+                    ))}
+                </div>
+            </div>
         </div>
     );
 }

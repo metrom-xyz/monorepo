@@ -531,8 +531,6 @@
             "to": "To",
             "search": "Search"
         },
-        "fetchingDistributions": "Fetching distributions",
-        "processingDistributions": "Processing distributions",
         "distributionsOverview": "Distributions overview",
         "distributionsBreakdown": "Distributions breakdown",
         "warningMessages": {
@@ -544,7 +542,8 @@
         "time": "Time",
         "account": "Account",
         "distributed": "Distributed",
-        "weight": "Weight"
+        "weight": "Weight",
+        "empty": "No data"
     },
     "rewards": {
         "claims": {
