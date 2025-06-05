@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import type { HookBaseParams } from "../types/hooks";
 import {
     DistributablesType,
@@ -7,12 +7,14 @@ import {
     type OnChainAmount,
 } from "@metrom-xyz/sdk";
 import { ENVIRONMENT } from "../commons/env";
-import { useChainId } from "wagmi";
 import type { Dayjs } from "dayjs";
 import { useCampaign } from "./useCampaign";
-import { type Address, formatUnits } from "viem";
+import { type Address, type Hex, formatUnits } from "viem";
+import type { SupportedChain } from "@metrom-xyz/contracts";
+import { useQuery } from "@tanstack/react-query";
 
 interface UseDistributionsParams extends HookBaseParams {
+    chainId?: SupportedChain;
     campaignId?: Address;
     from?: Dayjs;
     to?: Dayjs;
@@ -75,27 +77,27 @@ function buildTokenMap(leaves: Leaf[]): TokenMap {
 }
 
 export function useDistributions({
+    chainId,
     campaignId,
     from,
     to,
     enabled,
 }: UseDistributionsParams): UseDistributionsReturnValue {
-    const [hashes, setHashes] = useState<Hash[]>();
-    const [loadingHashes, setLoadingHashes] = useState(false);
-    const [loadingDistributions, setLoadingDistributions] = useState(false);
     const [processing, setProcessing] = useState(false);
-    const [distributions, setDistributions] =
-        useState<DistributionsResponse[]>();
-
-    const chainId = useChainId();
     const { campaign } = useCampaign({ id: campaignId, chainId });
 
-    useEffect(() => {
-        const fetchHashes = async () => {
-            if (!campaignId || !from || !to || !enabled) return;
+    const { data: hashes, isLoading: loadingHashes } = useQuery({
+        queryKey: ["hashes", chainId, campaignId, from, to],
+        queryFn: async ({ queryKey }) => {
+            const [, chainId, campaignId, from, to] = queryKey as [
+                string,
+                SupportedChain | undefined,
+                Hex | undefined,
+                Dayjs | undefined,
+                Dayjs | undefined,
+            ];
 
-            setDistributions([]);
-            setLoadingHashes(true);
+            if (!chainId || !campaignId || !from || !to) return null;
 
             try {
                 const response = await fetch(
@@ -113,22 +115,21 @@ export function useDistributions({
                 const data = (await response.json()) as DataHashesResponse;
                 data.dataHashes.sort((a, b) => a.timestamp - b.timestamp);
 
-                setHashes(data.dataHashes);
+                return data.dataHashes;
             } catch (error) {
                 console.error(`Could not fetch hashes from backend`, error);
-            } finally {
-                setLoadingHashes(false);
             }
-        };
+        },
+        refetchOnWindowFocus: false,
+        staleTime: 60000,
+        enabled,
+    });
 
-        fetchHashes();
-    }, [from, to, chainId, campaignId, enabled]);
-
-    useEffect(() => {
-        const fetchDistributions = async () => {
-            if (!hashes) return;
-
-            setLoadingDistributions(true);
+    const { data: distributions, isLoading: loadingDistributions } = useQuery({
+        queryKey: ["distributions", hashes],
+        queryFn: async ({ queryKey }) => {
+            const [, hashes] = queryKey as [string, Hash[]];
+            if (!hashes) return null;
 
             try {
                 const distributions = [];
@@ -149,39 +150,18 @@ export function useDistributions({
                     distributions.push(data);
                 }
 
-                // TODO: do we still need this?
-                // const distributions = await Promise.all(
-                //     hashes.map(
-                //         async ({ hash }): Promise<DistributionsResponse> => {
-                //             const response = await fetch(
-                //                 `${SERVICE_URLS[ENVIRONMENT].dataManager}/data?hash=${hash.replace("0x", "")}`,
-                //                 {
-                //                     method: "GET",
-                //                     headers: {
-                //                         "Content-Type": "application/json",
-                //                     },
-                //                 },
-                //             );
-
-                //             return (await await response.json()) as DistributionsResponse;
-                //         },
-                //     ),
-                // );
-
-                distributions.sort((a, b) => a.timestamp - b.timestamp);
-                setDistributions(distributions);
+                return distributions.sort((a, b) => a.timestamp - b.timestamp);
             } catch (error) {
                 console.error(
                     `Could not fetch distributions from data manager`,
                     error,
                 );
-            } finally {
-                setLoadingDistributions(false);
             }
-        };
-
-        fetchDistributions();
-    }, [hashes]);
+        },
+        refetchOnWindowFocus: false,
+        staleTime: 60000,
+        enabled,
+    });
 
     const processed = useMemo(() => {
         if (!distributions || !campaign) return [];
