@@ -32,6 +32,10 @@
     @apply w-full flex items-center gap-2;
 }
 
+.connected {
+    @apply theme-text font-bold;
+}
+
 .amount {
     @apply flex items-center gap-1;
 }
