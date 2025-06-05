@@ -46,8 +46,8 @@ interface StackedBar {
     token: string;
 }
 
-const ACCOUNT_ROW_SIZE = 38;
-const MIN_BREAKDOWN_ROW_SIZE = 280;
+const ACCOUNT_ROW_SIZE = 28;
+const ACCOUNT_ROW_PADDINGS = 152;
 
 export function Distributions({ chain, campaignId }: DistributionsProps) {
     const t = useTranslations("campaignDistributions");
@@ -129,10 +129,7 @@ export function Distributions({ chain, campaignId }: DistributionsProps) {
                     maxAccounts = Object.keys(weights).length;
             }
 
-            return Math.max(
-                MIN_BREAKDOWN_ROW_SIZE,
-                maxAccounts * ACCOUNT_ROW_SIZE,
-            );
+            return maxAccounts * ACCOUNT_ROW_SIZE + ACCOUNT_ROW_PADDINGS;
         },
         [distributions],
     );

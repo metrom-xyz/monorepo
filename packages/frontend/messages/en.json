@@ -529,7 +529,11 @@
             "title": "Distributions filters",
             "from": "From",
             "to": "To",
-            "search": "Search"
+            "search": "Search",
+            "errors": {
+                "inconsistentRange": "Dates range not valid.",
+                "rangeTooWide": "Dates range wide; max supported range is 7 days."
+            }
         },
         "distributionsOverview": "Distributions overview",
         "distributionsBreakdown": "Distributions breakdown",
