@@ -12,15 +12,15 @@
     @apply w-full min-w-full flex flex-col gap-4;
 }
 
-.titleWrapper {
+.title {
     @apply flex items-center p-2 gap-2 rounded-md theme-surface-2;
 }
 
-.titleWrapper.active {
-     @apply theme-surface-2-active;
+.title.active {
+    @apply theme-surface-2-active;
 }
 
-.titleWrapper.loading {
+.title.loading {
     @apply p-0 bg-transparent;
 }
 
