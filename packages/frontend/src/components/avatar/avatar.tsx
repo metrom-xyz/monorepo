@@ -1,5 +1,4 @@
 import { Skeleton } from "@metrom-xyz/ui";
-import Image from "next/image";
 import { useEnsAvatar, useEnsName } from "wagmi";
 import { normalize } from "viem/ens";
 import { blo, type Address } from "blo";
@@ -37,7 +36,7 @@ export function Avatar({ address, height, width }: AvatarProps) {
         );
 
     return (
-        <Image
+        <img
             alt="Avatar"
             height={height}
             width={width}
