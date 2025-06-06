@@ -7,7 +7,13 @@ import {
     type ThemeMode,
 } from "@reown/appkit/react";
 import React, { useEffect, type ReactNode } from "react";
-import { cookieToInitialState, http, WagmiProvider, type Config } from "wagmi";
+import {
+    cookieToInitialState,
+    createConfig,
+    http,
+    WagmiProvider,
+    type Config,
+} from "wagmi";
 import { safe } from "wagmi/connectors";
 import { SUPPORTED_CHAINS } from "../commons";
 import { hashFn } from "wagmi/query";
@@ -15,6 +21,7 @@ import { WALLETCONNECT_PROJECT_ID, SAFE } from "../commons/env";
 import { useTheme } from "next-themes";
 import { WagmiAdapter } from "@reown/appkit-adapter-wagmi";
 import type { EIP1193RequestFn, Transport } from "viem";
+import { mainnet } from "viem/chains";
 
 // Set up queryClient
 // TODO: if we need to have SSR prefetching https://tanstack.com/query/latest/docs/framework/react/guides/advanced-ssr#server-components--nextjs-app-router
@@ -44,6 +51,15 @@ const wagmiAdapter = new WagmiAdapter({
     networks: SUPPORTED_CHAINS,
     transports,
     connectors: SAFE ? [safe()] : undefined,
+});
+
+// Required for ENS resolution hooks, since the dapp doesn't support mainnet,
+// we provide a separate client config specifically for querying ens on mainnet.
+export const mainnetWagmiConfig = createConfig({
+    chains: [mainnet],
+    transports: {
+        [mainnet.id]: http(mainnet.rpcUrls.default.http[0]),
+    },
 });
 
 createAppKit({

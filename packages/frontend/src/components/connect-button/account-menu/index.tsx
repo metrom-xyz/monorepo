@@ -2,7 +2,6 @@ import classNames from "classnames";
 import { useClickAway } from "react-use";
 import { useEffect, useRef, useState } from "react";
 import { Skeleton, Typography } from "@metrom-xyz/ui";
-import { shortenAddress } from "@/src/utils/address";
 import { type Address } from "viem";
 import { Disconnect } from "@/src/assets/disconnect";
 import { Activities } from "./activities";
@@ -16,25 +15,19 @@ import { ErrorIcon } from "@/src/assets/error-icon";
 import { RemoveScroll } from "react-remove-scroll";
 import { SAFE } from "@/src/commons/env";
 import { SafeLogo } from "@/src/assets/logos/safe";
-import Image from "next/image";
 import { useChainData } from "@/src/hooks/useChainData";
 import { useIsChainSupported } from "@/src/hooks/useIsChainSupported";
 import { useAppKitAccount, useAppKitBalance } from "@reown/appkit/react";
 import { type AdapterBlueprint } from "@reown/appkit/adapters";
-import { Avatar } from "../avatar/avatar";
+import { Avatar } from "../../avatar/avatar";
+import { Account } from "../../account";
 
 import styles from "./styles.module.css";
 
 interface AccountMenuProps {
     className?: string;
     chainId: number;
-    account: {
-        address: string;
-        ensName?: string;
-        ensAvatar?: string;
-        loading?: boolean;
-    };
-    blockie: string;
+    account: Address;
     onClose: () => void;
 }
 
@@ -47,9 +40,8 @@ enum Tab {
 export function AccountMenu({
     className,
     chainId,
-    onClose,
     account,
-    blockie,
+    onClose,
 }: AccountMenuProps) {
     const t = useTranslations("accountMenu");
     const [tab, setTab] = useState(Tab.Activity);
@@ -94,7 +86,7 @@ export function AccountMenu({
     }
 
     const handleCopyClick = () => {
-        navigator.clipboard.writeText(account.address).then(() => {
+        navigator.clipboard.writeText(account).then(() => {
             setCopied(true);
         });
     };
@@ -119,10 +111,9 @@ export function AccountMenu({
                             </div>
                         ) : (
                             <Avatar
+                                address={account as Address}
                                 height={36}
                                 width={36}
-                                loading={account.loading}
-                                src={account.ensAvatar || blockie}
                             />
                         )}
                     </div>
@@ -131,14 +122,12 @@ export function AccountMenu({
                             className={styles.clipWrapper}
                             onClick={handleCopyClick}
                         >
-                            <Typography
+                            <Account
+                                address={account as Address}
                                 size="lg"
                                 weight="medium"
                                 className={styles.address}
-                            >
-                                {account.ensName ||
-                                    shortenAddress(account.address as Address)}
-                            </Typography>
+                            />
                             <div className={styles.copyIconContainer}>
                                 {copied ? (
                                     <TickIcon className={styles.tickIcon} />
