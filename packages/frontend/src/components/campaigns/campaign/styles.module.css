@@ -48,13 +48,5 @@
 }
 
 .chip {
-    @apply flex
-        items-center
-        bg-zinc-100
-        dark:bg-zinc-800
-        rounded-md
-        h-7
-        py-1
-        px-1.5
-        w-fit;
+    @apply flex items-center py-1 min-h-7 px-1.5;
 }

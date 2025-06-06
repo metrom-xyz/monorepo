@@ -1,6 +1,6 @@
 "use client";
 
-import { Typography } from "@metrom-xyz/ui";
+import { Chip, Typography } from "@metrom-xyz/ui";
 import dayjs from "dayjs";
 import classNames from "classnames";
 import { useTranslations } from "next-intl";
@@ -39,7 +39,11 @@ export function Status({
     }
 
     return (
-        <div className={classNames(styles.root, commonStyles.chip)}>
+        <Chip
+            variant="secondary"
+            border="squared"
+            className={{ root: styles.root }}
+        >
             <div className={styles.dotWrapper}>
                 <div
                     className={classNames(styles.dot, {
@@ -57,6 +61,6 @@ export function Status({
                     {duration}
                 </Typography>
             </div>
-        </div>
+        </Chip>
     );
 }

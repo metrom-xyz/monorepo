@@ -16,9 +16,15 @@ type Story = StoryObj<typeof Chip>;
 
 export const Base: Story = {};
 
-export const Clickable: Story = {
+export const Primary: Story = {
     args: {
-        clickable: true,
+        variant: "primary",
+    },
+};
+
+export const Secondary: Story = {
+    args: {
+        variant: "secondary",
     },
 };
 
