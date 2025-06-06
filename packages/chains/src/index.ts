@@ -51,27 +51,6 @@ export * from "./types/chains";
 export * from "./types/protocol";
 export * from "./assets";
 
-export const SUPPORTED_DEVELOPMENT_CHAINS: [Chain, ...Chain[]] = [
-    holesky,
-    baseSepolia,
-    sepolia,
-    sei,
-    swellchain,
-];
-
-export const SUPPORTED_PRODUCTION_CHAINS: [Chain, ...Chain[]] = [
-    base,
-    taiko,
-    scroll,
-    sonic,
-    form,
-    gnosis,
-    telos,
-    lightlinkPhoenix,
-    swellchain,
-    hemi,
-];
-
 export const CHAIN_DATA: {
     [Environment.Development]: Record<SupportedDevelopmentChain, ChainData>;
     [Environment.Production]: Record<SupportedProductionChain, ChainData>;
@@ -99,3 +78,31 @@ export const CHAIN_DATA: {
         [SupportedProductionChain.Hemi]: hemiData,
     },
 };
+
+export const SUPPORTED_DEVELOPMENT_CHAINS: [Chain, ...Chain[]] = [
+    holesky,
+    baseSepolia,
+    sepolia,
+    sei,
+    swellchain,
+];
+
+export const SUPPORTED_PRODUCTION_CHAINS: [Chain, ...Chain[]] = [
+    base,
+    taiko,
+    scroll,
+    sonic,
+    form,
+    gnosis,
+    telos,
+    lightlinkPhoenix,
+    swellchain,
+    hemi,
+].sort((a, b) => {
+    // keep the active chains first, this way the default selected
+    // chain will always be an active one
+    const chainDataA = CHAIN_DATA[Environment.Production][a.id];
+    const chainDataB = CHAIN_DATA[Environment.Production][b.id];
+
+    return (chainDataB.active ? 1 : 0) - (chainDataA.active ? 1 : 0);
+}) as unknown as [Chain, ...Chain[]];
