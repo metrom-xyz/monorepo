@@ -32,7 +32,7 @@ export const sonicData: ChainData = {
             supportsFetchAllPools: true,
         },
         {
-            active: true,
+            active: false,
             type: ProtocolType.Dex,
             slug: SupportedDex.SilverSwap,
             logo: SilverSwapLogo,
