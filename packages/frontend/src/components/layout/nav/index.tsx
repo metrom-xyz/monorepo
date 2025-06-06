@@ -108,7 +108,8 @@ export function Nav() {
                                     </Typography>
                                     <AnimatePresence>
                                         {label === "claims" &&
-                                            pendingClaimsCount && (
+                                            pendingClaimsCount &&
+                                            address && (
                                                 <motion.span
                                                     initial={{ scale: 0 }}
                                                     animate={{ scale: 1 }}
@@ -150,22 +151,26 @@ export function Nav() {
                                 {t(label)}
                             </Typography>
                             <AnimatePresence>
-                                {label === "claims" && pendingClaimsCount && (
-                                    <motion.span
-                                        initial={{ scale: 0 }}
-                                        animate={{ scale: 1 }}
-                                        exit={{ scale: 0 }}
-                                        className={styles.claimsBadge}
-                                    >
-                                        <Typography
-                                            size="xs"
-                                            weight="medium"
-                                            className={styles.claimsBadgeText}
+                                {label === "claims" &&
+                                    pendingClaimsCount &&
+                                    address && (
+                                        <motion.span
+                                            initial={{ scale: 0 }}
+                                            animate={{ scale: 1 }}
+                                            exit={{ scale: 0 }}
+                                            className={styles.claimsBadge}
                                         >
-                                            {pendingClaimsCount}
-                                        </Typography>
-                                    </motion.span>
-                                )}
+                                            <Typography
+                                                size="xs"
+                                                weight="medium"
+                                                className={
+                                                    styles.claimsBadgeText
+                                                }
+                                            >
+                                                {pendingClaimsCount}
+                                            </Typography>
+                                        </motion.span>
+                                    )}
                             </AnimatePresence>
                         </Link>
                     ))}
