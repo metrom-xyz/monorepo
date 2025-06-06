@@ -1,7 +1,7 @@
 @reference "../../../../app.css";
 
 .root {
-    @apply flex items-center col-span-1 gap-1.5 justify-self-end;
+    @apply flex items-center col-span-1 gap-1.5 py-1 min-h-7 px-1.5 justify-self-end;
 }
 
 .text {

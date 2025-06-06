@@ -1,4 +1,4 @@
-import { Typography, type TypographySize } from "@metrom-xyz/ui";
+import { Chip, Typography, type TypographySize } from "@metrom-xyz/ui";
 import { useProtocolsInChain } from "@/src/hooks/useProtocolsInChain";
 import type { Campaign } from "@/src/types/campaign";
 import { TargetType } from "@metrom-xyz/sdk";
@@ -9,14 +9,9 @@ import classNames from "classnames";
 interface ProtocolChipProps {
     campaign: Campaign;
     size?: TypographySize;
-    surface?: boolean;
 }
 
-export function ProtocolChip({
-    campaign,
-    size = "xs",
-    surface = false,
-}: ProtocolChipProps) {
+export function ProtocolChip({ campaign, size = "xs" }: ProtocolChipProps) {
     const protocols = useProtocolsInChain({ chainId: campaign.chainId });
 
     const protocol = protocols.find((protocol) => {
@@ -32,11 +27,10 @@ export function ProtocolChip({
     });
 
     return (
-        <div
-            className={classNames(styles.root, {
-                [styles[size]]: true,
-                [styles.surface]: !!surface,
-            })}
+        <Chip
+            variant="secondary"
+            border="squared"
+            className={{ root: styles.root }}
         >
             {protocol?.logo && (
                 <protocol.logo
@@ -48,6 +42,6 @@ export function ProtocolChip({
             <Typography size={size} uppercase>
                 {protocol?.name}
             </Typography>
-        </div>
+        </Chip>
     );
 }

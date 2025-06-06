@@ -3,7 +3,7 @@ import { Action, SkeletonAction } from "./action";
 import { Status } from "./status";
 import { Rewards, SkeletonRewards } from "./rewards";
 import { Link } from "@/src/i18n/routing";
-import { Card, Skeleton, Typography } from "@metrom-xyz/ui";
+import { Card, Chip, Skeleton, Typography } from "@metrom-xyz/ui";
 import classNames from "classnames";
 import { Points } from "./points";
 import dayjs from "dayjs";
@@ -55,18 +55,26 @@ export function CampaignRow({ campaign }: CampaignProps) {
                             status={campaign.status}
                         />
                         {campaign.specification?.kpi && (
-                            <div className={styles.chip}>
+                            <Chip
+                                variant="secondary"
+                                border="squared"
+                                className={{ root: styles.chip }}
+                            >
                                 <Typography size="xs" uppercase>
                                     {t("kpi")}
                                 </Typography>
-                            </div>
+                            </Chip>
                         )}
                         {campaign.specification?.priceRange && (
-                            <div className={styles.chip}>
+                            <Chip
+                                variant="secondary"
+                                border="squared"
+                                className={{ root: styles.chip }}
+                            >
                                 <Typography size="xs" uppercase>
                                     {t("pool.range")}
                                 </Typography>
-                            </div>
+                            </Chip>
                         )}
                         {campaign.restrictions?.type ===
                             RestrictionType.Whitelist && (

@@ -8,6 +8,8 @@ export interface BaseChipsProps {
     size?: "xs" | "sm";
     clickable?: boolean;
     active?: boolean;
+    variant?: "primary" | "secondary";
+    border?: "rounded" | "squared";
     className?: { root?: string };
     children: string | ReactNode;
 }
@@ -19,6 +21,8 @@ export const Chip = ({
     size = "sm",
     clickable,
     active,
+    variant = "primary",
+    border = "rounded",
     children,
     className,
     ...rest
@@ -27,6 +31,8 @@ export const Chip = ({
         {...rest}
         className={classNames(className?.root, styles.root, {
             [styles[size]]: true,
+            [styles[variant]]: true,
+            [styles[border]]: true,
             [styles.rootClickable]: clickable,
             [styles.rootActive]: active,
         })}
