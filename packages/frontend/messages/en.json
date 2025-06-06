@@ -530,6 +530,7 @@
             "from": "From",
             "to": "To",
             "search": "Search",
+            "loading": "Loading distributions ({completed}/{total})",
             "errors": {
                 "inconsistentRange": "Dates range not valid.",
                 "rangeTooWide": "Dates range wide; max supported range is 7 days."

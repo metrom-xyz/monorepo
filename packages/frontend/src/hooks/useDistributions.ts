@@ -4,75 +4,37 @@ import {
     DistributablesType,
     SERVICE_URLS,
     type Erc20Token,
-    type OnChainAmount,
 } from "@metrom-xyz/sdk";
 import { ENVIRONMENT } from "../commons/env";
 import { useCampaign } from "./useCampaign";
 import { type Address, type Hex, formatUnits } from "viem";
 import type { SupportedChain } from "@metrom-xyz/contracts";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
+import type {
+    DataHashesResponse,
+    Distribution,
+    DistributionsResponse,
+    DataHash,
+    Leaf,
+    ProcessedDistribution,
+    TokenMap,
+} from "../types/distributions";
 
-interface UseDistributionsParams extends HookBaseParams {
+export interface UseDistributionsParams extends HookBaseParams {
     chainId?: SupportedChain;
     campaignId?: Address;
     from?: number;
     to?: number;
 }
 
-interface Weight {
-    amount: OnChainAmount;
-    amountChange: OnChainAmount;
-    percentage: OnChainAmount;
-}
-
-export interface ProcessedDistribution {
-    timestamp: number;
-    tokens: Record<string, OnChainAmount>;
-    weights: Record<string, Record<string, Weight>>;
-}
-
-interface UseDistributionsReturnValue {
+export interface UseDistributionsReturnValue {
     distributions: ProcessedDistribution[];
     loading: boolean;
-    processing: boolean;
+    progress: {
+        total?: number;
+        completed: number;
+    };
     fetchDistributions: () => void;
-}
-
-interface Hash {
-    hash: string;
-    timestamp: number;
-}
-
-interface Leaf {
-    account: string;
-    tokenAddress: Address;
-    amount: string;
-}
-
-interface DataHashesResponse {
-    dataHashes: Hash[];
-}
-
-interface DistributionsResponse {
-    timestamp: number;
-    leaves: Leaf[];
-}
-
-type Distribution = {
-    timestamp: number;
-    leaves: Leaf[];
-};
-
-type TokenMap = Record<string, Record<string, bigint>>;
-
-function buildTokenMap(leaves: Leaf[]): TokenMap {
-    const map: TokenMap = {};
-    for (const { account, tokenAddress: token, amount } of leaves) {
-        if (!map[token]) map[token] = {};
-        if (!map[token][account]) map[token][account] = 0n;
-        map[token][account] += BigInt(amount);
-    }
-    return map;
 }
 
 export function useDistributions({
@@ -81,7 +43,8 @@ export function useDistributions({
     from,
     to,
 }: UseDistributionsParams): UseDistributionsReturnValue {
-    const [processing, setProcessing] = useState(false);
+    const [completed, setCompleted] = useState(0);
+
     const { campaign } = useCampaign({ id: campaignId, chainId });
 
     const {
@@ -136,7 +99,9 @@ export function useDistributions({
     } = useQuery({
         queryKey: ["distributions-data", hashes],
         queryFn: async ({ queryKey }) => {
-            const [, hashes] = queryKey as [string, Hash[] | undefined];
+            const [, hashes] = queryKey as [string, DataHash[] | undefined];
+
+            setCompleted(0);
 
             if (!hashes) return null;
 
@@ -157,6 +122,8 @@ export function useDistributions({
                     const data =
                         (await response.json()) as DistributionsResponse;
                     distributions.push(data);
+
+                    setCompleted((prev) => prev + 1);
                 }
 
                 return distributions.sort((a, b) => a.timestamp - b.timestamp);
@@ -174,8 +141,6 @@ export function useDistributions({
 
     const processed = useMemo(() => {
         if (!distributions || !campaign) return [];
-
-        setProcessing(true);
 
         const tokensRegistry: Record<Address, Erc20Token> = {};
         // TODO: for points campaigns?
@@ -296,7 +261,6 @@ export function useDistributions({
             };
         });
 
-        setProcessing(false);
         return processed;
     }, [distributions, campaign]);
 
@@ -307,7 +271,20 @@ export function useDistributions({
             refetchingHashes ||
             loadingDistributions ||
             refetchingDistributions,
-        processing,
+        progress: {
+            total: hashes?.length,
+            completed,
+        },
         fetchDistributions: fetchHashes,
     };
+}
+
+function buildTokenMap(leaves: Leaf[]): TokenMap {
+    const map: TokenMap = {};
+    for (const { account, tokenAddress: token, amount } of leaves) {
+        if (!map[token]) map[token] = {};
+        if (!map[token][account]) map[token][account] = 0n;
+        map[token][account] += BigInt(amount);
+    }
+    return map;
 }

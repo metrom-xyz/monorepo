@@ -1,9 +1,6 @@
 "use client";
 
-import {
-    useDistributions,
-    type ProcessedDistribution,
-} from "@/src/hooks/useDistributions";
+import { useDistributions } from "@/src/hooks/useDistributions";
 import { Card, Typography } from "@metrom-xyz/ui";
 import type { Dayjs } from "dayjs";
 import { useCallback, useMemo, useRef, useState } from "react";
@@ -30,6 +27,7 @@ import { CampaignDuration } from "../campaign-duration";
 import { Filters } from "./filters";
 import { NoDistributionsIcon } from "@/src/assets/no-distributions-icon";
 import classNames from "classnames";
+import type { ProcessedDistribution } from "@/src/types/distributions";
 
 import styles from "./styles.module.css";
 
@@ -61,7 +59,7 @@ export function Distributions({ chain, campaignId }: DistributionsProps) {
     const {
         distributions,
         loading: loadingDistributions,
-        processing: processingDistributions,
+        progress,
         fetchDistributions,
     } = useDistributions({
         chainId: chain,
@@ -134,8 +132,6 @@ export function Distributions({ chain, campaignId }: DistributionsProps) {
         [distributions],
     );
 
-    const loading = loadingDistributions || processingDistributions;
-
     return (
         <div className={styles.root}>
             <div className={styles.header}>
@@ -149,12 +145,12 @@ export function Distributions({ chain, campaignId }: DistributionsProps) {
             <Filters
                 from={from}
                 to={to}
-                loading={loading}
+                loading={loadingDistributions}
+                progress={progress}
                 onFromChange={setFrom}
                 onTohange={setTo}
                 onFetch={fetchDistributions}
             />
-
             <div className={styles.dataWrapper}>
                 <div className={styles.section}>
                     <Typography size="lg" weight="medium" uppercase>
@@ -162,10 +158,10 @@ export function Distributions({ chain, campaignId }: DistributionsProps) {
                     </Typography>
                     <Card
                         className={classNames(styles.chartWrapper, {
-                            [styles.loading]: loading,
+                            [styles.loading]: loadingDistributions,
                         })}
                     >
-                        {loading ? (
+                        {loadingDistributions ? (
                             Array.from({ length: 35 }).map((_, index) => (
                                 <div
                                     key={index}
@@ -236,10 +232,10 @@ export function Distributions({ chain, campaignId }: DistributionsProps) {
                     </Typography>
                     <Card
                         className={classNames(styles.breakdownListWrapper, {
-                            [styles.loading]: loading,
+                            [styles.loading]: loadingDistributions,
                         })}
                     >
-                        {loading ? (
+                        {loadingDistributions ? (
                             <BreakdownRowSkeleton />
                         ) : distributions.length > 0 ? (
                             <AutoSizer>

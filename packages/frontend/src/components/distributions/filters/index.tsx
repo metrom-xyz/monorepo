@@ -13,6 +13,7 @@ import { useEffect, useRef, useState } from "react";
 import type { Dayjs } from "dayjs";
 import dayjs from "dayjs";
 import { useClickAway } from "react-use";
+import type { UseDistributionsReturnValue } from "@/src/hooks/useDistributions";
 
 import styles from "./styles.module.css";
 
@@ -20,6 +21,7 @@ interface FiltersProps {
     from?: Dayjs;
     to?: Dayjs;
     loading?: boolean;
+    progress: UseDistributionsReturnValue["progress"];
     onFromChange?: (from: Dayjs) => void;
     onTohange?: (to: Dayjs) => void;
     onFetch?: () => void;
@@ -29,6 +31,7 @@ export function Filters({
     from,
     to,
     loading,
+    progress,
     onFromChange,
     onTohange,
     onFetch,
@@ -126,7 +129,12 @@ export function Filters({
                     loading={loading}
                     onClick={onFetch}
                 >
-                    {t("search")}
+                    {loading
+                        ? t("loading", {
+                              completed: progress.completed,
+                              total: progress.total || "...",
+                          })
+                        : t("search")}
                 </Button>
                 <ErrorText level="error" size="xs" weight="medium">
                     {error}
