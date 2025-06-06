@@ -77,11 +77,15 @@ export function CampaignRow({ campaign }: CampaignProps) {
                             </Chip>
                         )}
                         {campaign.restrictions && (
-                            <div className={styles.chip}>
-                                <Typography size="xs" weight="medium" uppercase>
+                            <Chip
+                                variant="secondary"
+                                border="squared"
+                                className={{ root: styles.chip }}
+                            >
+                                <Typography size="xs" uppercase>
                                     {t("restricted")}
                                 </Typography>
-                            </div>
+                            </Chip>
                         )}
                     </div>
                 </div>
