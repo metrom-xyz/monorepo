@@ -1,0 +1,65 @@
+@reference "../../app.css";
+
+.root {
+    @apply w-full max-w-screen-lg flex flex-col items-center gap-8;
+}
+
+.header {
+    @apply w-full flex flex-col sm:gap-3 gap-8;
+}
+
+.campaignIdInput {
+    @apply w-1/2;
+}
+
+.section {
+    @apply flex flex-col gap-4;
+}
+
+.chartsWrapper {
+    @apply w-full flex flex-col gap-4;
+}
+
+.breakdownListWrapper {
+    @apply w-full h-[32rem] p-0 overflow-y-hidden;
+}
+
+.breakdownsList {
+    @apply scroll-smooth;
+}
+
+.dataWrapper {
+    @apply w-full h-full flex flex-col gap-8;
+}
+
+.chartWrapper {
+    @apply w-full h-[500px] flex items-center justify-center gap-2;
+}
+
+.chartWrapper.loading {
+    @apply items-end;
+}
+
+.empty {
+    @apply h-full flex flex-col gap-2 self-center justify-center items-center;
+}
+
+.loadingBar {
+    @apply h-96 animate-pulse theme-surface-2 w-full max-w-10 rounded-t-md;
+}
+
+.chart {
+    @apply w-full h-[500px];
+}
+
+.timeTick {
+    @apply font-sans
+        uppercase
+        text-xs
+        leading-none
+        font-medium
+        fill-black dark:fill-zinc-200
+        transition-colors
+        duration-200
+        ease-in-out;
+}
