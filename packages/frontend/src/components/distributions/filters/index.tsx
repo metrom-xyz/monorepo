@@ -13,31 +13,30 @@ import { useEffect, useRef, useState } from "react";
 import type { Dayjs } from "dayjs";
 import dayjs from "dayjs";
 import { useClickAway } from "react-use";
-import type { UseDistributionsReturnValue } from "@/src/hooks/useDistributions";
+import { useDistributions } from "@/src/hooks/useDistributions";
+import type { ProcessedDistribution } from "@/src/types/distributions";
+import type { Hex } from "viem";
+import type { SupportedChain } from "@metrom-xyz/contracts";
 
 import styles from "./styles.module.css";
 
 interface FiltersProps {
-    from?: Dayjs;
-    to?: Dayjs;
-    loading?: boolean;
-    progress: UseDistributionsReturnValue["progress"];
-    onFromChange?: (from: Dayjs) => void;
-    onTohange?: (to: Dayjs) => void;
-    onFetch?: () => void;
+    chain: SupportedChain;
+    campaignId: Hex;
+    onFetched: (distributions: ProcessedDistribution[]) => void;
+    onLoading: (loading: boolean) => void;
 }
 
 export function Filters({
-    from,
-    to,
-    loading,
-    progress,
-    onFromChange,
-    onTohange,
-    onFetch,
+    campaignId,
+    chain,
+    onFetched,
+    onLoading,
 }: FiltersProps) {
     const t = useTranslations("campaignDistributions.filters");
 
+    const [from, setFrom] = useState<Dayjs | undefined>();
+    const [to, setTo] = useState<Dayjs | undefined>();
     const [error, setError] = useState("");
     const [fromPopover, setFromPopover] = useState(false);
     const [toPopover, setToPopover] = useState(false);
@@ -51,8 +50,25 @@ export function Filters({
     const fromRef = useRef<HTMLDivElement>(null);
     const toRef = useRef<HTMLDivElement>(null);
 
+    const { distributions, loading, progress, fetchDistributions } =
+        useDistributions({
+            chainId: chain,
+            campaignId,
+            from: from?.unix(),
+            to: to?.unix(),
+        });
+
     useClickAway(fromRef, getPopoverHandler("from", false));
     useClickAway(toRef, getPopoverHandler("to", false));
+
+    useEffect(() => {
+        if (!loading) {
+            console.log("on fetched");
+            onFetched(distributions);
+        }
+
+        onLoading(loading);
+    }, [loading, distributions]);
 
     useEffect(() => {
         if (!from || !to) return;
@@ -107,7 +123,7 @@ export function Filters({
                         value={from}
                         range={{ from, to }}
                         min={to && dayjs(to).subtract(7, "days")}
-                        onChange={onFromChange}
+                        onChange={setFrom}
                     />
                 </Popover>
                 <Popover
@@ -120,14 +136,14 @@ export function Filters({
                         value={to}
                         range={{ from, to }}
                         max={from && dayjs(from).add(7, "days")}
-                        onChange={onTohange}
+                        onChange={setTo}
                     />
                 </Popover>
                 <Button
                     size="sm"
                     disabled={!from || !to || !!error}
                     loading={loading}
-                    onClick={onFetch}
+                    onClick={fetchDistributions}
                 >
                     {loading
                         ? t("loading", {

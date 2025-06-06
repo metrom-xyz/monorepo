@@ -1,4 +1,3 @@
-import type { ProcessedDistribution } from "@/src/hooks/useDistributions";
 import { RemoteLogo } from "../../remote-logo";
 import { type Address } from "viem";
 import { ErrorText, Skeleton, Typography } from "@metrom-xyz/ui";
@@ -9,6 +8,7 @@ import dayjs from "dayjs";
 import { useMemo } from "react";
 import { useAccount } from "wagmi";
 import { AccountRow, AccountRowSkeleton } from "./account-row";
+import type { ProcessedDistribution } from "@/src/types/distributions";
 
 import styles from "./styles.module.css";
 
@@ -17,8 +17,8 @@ interface BreakdownRowProps {
     index: number;
     active: boolean;
     chainId: number;
-    previousDistribution?: ProcessedDistribution;
-    distribution: ProcessedDistribution;
+    previousDistro?: ProcessedDistribution;
+    distro: ProcessedDistribution;
     campaignFrom?: number;
 }
 
@@ -27,40 +27,40 @@ export function BreakdownRow({
     index,
     active,
     chainId,
-    previousDistribution,
-    distribution,
+    previousDistro,
+    distro,
     campaignFrom,
 }: BreakdownRowProps) {
     const t = useTranslations("campaignDistributions");
 
     const { address } = useAccount();
 
-    const notFirstDistribution = useMemo(
+    const notFirstDistro = useMemo(
         () =>
             !!campaignFrom &&
             dayjs
-                .unix(distribution.timestamp)
+                .unix(distro.timestamp)
                 .diff(dayjs.unix(campaignFrom), "hours") > 1 &&
             index === 0,
-        [campaignFrom, distribution.timestamp, index],
+        [campaignFrom, distro.timestamp, index],
     );
 
     // there are cases where distributions didn't happen hourly
-    const aggregatedDistributions = useMemo(() => {
-        if (!previousDistribution) return 0;
+    const aggregatedDistros = useMemo(() => {
+        if (!previousDistro) return 0;
 
         return dayjs
-            .unix(distribution.timestamp)
-            .diff(dayjs.unix(previousDistribution.timestamp), "hours");
-    }, [previousDistribution, distribution.timestamp]);
+            .unix(distro.timestamp)
+            .diff(dayjs.unix(previousDistro.timestamp), "hours");
+    }, [previousDistro, distro.timestamp]);
 
     return (
         <div style={style} className={styles.root}>
-            {Object.entries(distribution.weights).map(([token, weight]) => {
+            {Object.entries(distro.weights).map(([token, weight]) => {
                 return (
                     <div key={token} className={styles.tokenColumn}>
                         <div
-                            className={classNames(styles.titleWrapper, {
+                            className={classNames(styles.title, {
                                 [styles.active]: active,
                             })}
                         >
@@ -69,9 +69,9 @@ export function BreakdownRow({
                                 chain={chainId}
                             />
                             <Typography weight="medium" size="lg">
-                                {formatDateTime(distribution.timestamp)}
+                                {formatDateTime(distro.timestamp)}
                             </Typography>
-                            {notFirstDistribution && (
+                            {notFirstDistro && (
                                 <ErrorText
                                     level="warning"
                                     size="xs"
@@ -80,14 +80,14 @@ export function BreakdownRow({
                                     {t("warningMessages.notFirstDistribution")}
                                 </ErrorText>
                             )}
-                            {aggregatedDistributions > 1 && (
+                            {aggregatedDistros > 1 && (
                                 <ErrorText
                                     level="warning"
                                     size="xs"
                                     weight="medium"
                                 >
                                     {t("warningMessages.multiDistribution", {
-                                        amount: aggregatedDistributions,
+                                        amount: aggregatedDistros,
                                     })}
                                 </ErrorText>
                             )}
@@ -148,9 +148,7 @@ export function BreakdownRowSkeleton() {
     return (
         <div className={styles.root}>
             <div className={styles.tokenColumn}>
-                <div
-                    className={classNames(styles.titleWrapper, styles.loading)}
-                >
+                <div className={classNames(styles.title, styles.loading)}>
                     <RemoteLogo loading />
                     <Skeleton width={150} size="lg" />
                 </div>
