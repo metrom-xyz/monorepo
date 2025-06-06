@@ -66,8 +66,8 @@ export function AmmPoolLiquityHeader({ campaign }: AmmPoolLiquityHeaderProps) {
                     )}
                 </div>
                 <div className={styles.chips}>
-                    <ChainChip id={campaign.chainId} surface />
-                    <ProtocolChip campaign={campaign} surface />
+                    <ChainChip id={campaign.chainId} />
+                    <ProtocolChip campaign={campaign} />
                 </div>
                 <Typography size="sm" weight="medium" light>
                     {t("rewardsMayVary")}
