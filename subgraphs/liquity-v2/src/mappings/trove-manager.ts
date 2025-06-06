@@ -65,29 +65,26 @@ function updateTrove(
     );
     let newMintedDebt = troveData.entireDebt;
     let newTvl = troveData.entireColl;
-    let newInterestRate = troveData.annualInterestRate;
 
     let tvlDelta = newTvl.minus(previousTvl);
     if (!tvlDelta.isZero()) {
-        let collateralChange = new CollateralChange(
-            getEventId(event),
-        );
+        let collateralChange = new CollateralChange(getEventId(event));
         collateralChange.timestamp = event.block.timestamp;
         collateralChange.blockNumber = event.block.number;
         collateralChange.collateral = trove.collateral;
-        collateralChange.trove = trove.id;
+        collateralChange.troveId = trove.id;
+        collateralChange.owner = trove.owner;
         collateralChange.delta = tvlDelta;
         collateralChange.save();
     }
 
     let mintedDebtDelta = newMintedDebt.minus(previousMintedDebt);
     if (!mintedDebtDelta.isZero()) {
-        let mintedDebtChange = new MintedDebtChange(
-            getEventId(event),
-        );
+        let mintedDebtChange = new MintedDebtChange(getEventId(event));
         mintedDebtChange.timestamp = event.block.timestamp;
         mintedDebtChange.blockNumber = event.block.number;
-        mintedDebtChange.trove = trove.id;
+        mintedDebtChange.troveId = trove.id;
+        mintedDebtChange.owner = trove.owner;
         mintedDebtChange.collateral = trove.collateral;
         mintedDebtChange.delta = mintedDebtDelta;
         mintedDebtChange.save();
@@ -102,6 +99,5 @@ function updateTrove(
 
     trove.tvl = newTvl;
     trove.mintedDebt = newMintedDebt;
-    trove.interestRate = newInterestRate;
     trove.save();
 }

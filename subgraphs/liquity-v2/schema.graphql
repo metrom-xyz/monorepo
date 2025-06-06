@@ -1,8 +1,6 @@
 type CollateralRegistry @entity(immutable: false) {
     id: Bytes!
     collateralsAmount: Int!
-
-    collaterals: [Collateral!]! @derivedFrom(field: "registry")
 }
 
 type Collateral @entity(immutable: false) {
@@ -17,26 +15,15 @@ type Collateral @entity(immutable: false) {
     stabilityPoolDebt: BigInt!
     stabilityPool: Bytes!
     troveManager: Bytes!
-
-    troves: [Trove!]! @derivedFrom(field: "collateral")
-    stabilityPoolPositions: [StabilityPoolPosition!]!
-        @derivedFrom(field: "collateral")
-    tvlChanges: [CollateralChange!]! @derivedFrom(field: "collateral")
-    mintedDebtChanges: [MintedDebtChange!]! @derivedFrom(field: "collateral")
-    stabilityPoolDebtChanges: [StabilityPoolDebtChange!]!
-        @derivedFrom(field: "collateral")
 }
 
 type Trove @entity(immutable: false) {
     id: Bytes!
+    tokenId: Bytes!
     owner: Bytes!
     collateral: Collateral!
-    interestRate: BigInt!
     tvl: BigInt!
     mintedDebt: BigInt!
-
-    tvlChanges: [CollateralChange!]! @derivedFrom(field: "trove")
-    mintedDebtChanges: [MintedDebtChange!]! @derivedFrom(field: "trove")
 }
 
 type StabilityPoolPosition @entity(immutable: false) {
@@ -50,7 +37,8 @@ type TroveTransfer @entity(immutable: true) {
     id: Bytes!
     timestamp: BigInt!
     blockNumber: BigInt!
-    trove: Trove!
+    collateral: Collateral!
+    troveId: Bytes!
     from: Bytes!
     to: Bytes!
 }
@@ -60,7 +48,8 @@ type CollateralChange @entity(immutable: true) {
     timestamp: BigInt!
     blockNumber: BigInt!
     collateral: Collateral!
-    trove: Trove!
+    troveId: Bytes!
+    owner: Bytes!
     delta: BigInt!
 }
 
@@ -69,7 +58,8 @@ type MintedDebtChange @entity(immutable: true) {
     timestamp: BigInt!
     blockNumber: BigInt!
     collateral: Collateral!
-    trove: Trove!
+    troveId: Bytes!
+    owner: Bytes!
     delta: BigInt!
 }
 
@@ -78,6 +68,7 @@ type StabilityPoolDebtChange @entity(immutable: true) {
     timestamp: BigInt!
     blockNumber: BigInt!
     collateral: Collateral!
-    position: StabilityPoolPosition!
+    positionId: Bytes!
+    owner: Bytes!
     delta: BigInt!
 }

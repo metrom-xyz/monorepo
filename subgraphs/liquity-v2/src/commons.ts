@@ -53,9 +53,9 @@ export function getOrCreateTrove(
     );
 
     trove = new Trove(id);
+    trove.tokenId = Bytes.fromByteArray(Bytes.fromBigInt(onChainTroveId));
     trove.owner = owner;
     trove.collateral = collateralId;
-    trove.interestRate = BI_0;
     trove.tvl = BI_0;
     trove.mintedDebt = BI_0;
     trove.save();

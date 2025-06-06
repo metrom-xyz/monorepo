@@ -23,7 +23,8 @@ export function handleDepositUpdated(event: DepositUpdatedEvent): void {
         stabilityPoolDebtChange.timestamp = event.block.timestamp;
         stabilityPoolDebtChange.blockNumber = event.block.number;
         stabilityPoolDebtChange.collateral = collateralId;
-        stabilityPoolDebtChange.position = position.id;
+        stabilityPoolDebtChange.positionId = position.id;
+        stabilityPoolDebtChange.owner = position.owner;
         stabilityPoolDebtChange.delta = delta;
         stabilityPoolDebtChange.save();
 

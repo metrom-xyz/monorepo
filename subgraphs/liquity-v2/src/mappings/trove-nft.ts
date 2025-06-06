@@ -4,8 +4,13 @@ import { Transfer as TransferEvent } from "../../generated/templates/TroveManage
 import { getEventId, getTroveOrThrow } from "../commons";
 
 export function handleTroveTransfer(event: TransferEvent): void {
-    // The trove's opening is taken care of in the trove manager handler
-    if (event.params.from == Address.zero()) return;
+    // The trove's opening and closing is taken care of in the trove
+    // manager handler
+    if (
+        event.params.from == Address.zero() ||
+        event.params.to == Address.zero()
+    )
+        return;
 
     let collateralId = dataSource.context().getBytes("collateralId");
 
@@ -17,7 +22,8 @@ export function handleTroveTransfer(event: TransferEvent): void {
     let troveTransfer = new TroveTransfer(getEventId(event));
     troveTransfer.timestamp = event.block.timestamp;
     troveTransfer.blockNumber = event.block.number;
-    troveTransfer.trove = trove.id;
+    troveTransfer.collateral = collateralId;
+    troveTransfer.troveId = trove.id;
     troveTransfer.from = event.params.from;
     troveTransfer.to = event.params.to;
     troveTransfer.save();
