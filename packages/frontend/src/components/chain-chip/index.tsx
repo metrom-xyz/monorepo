@@ -1,5 +1,5 @@
 import { useChainData } from "@/src/hooks/useChainData";
-import { Typography, type TypographySize } from "@metrom-xyz/ui";
+import { Chip, Typography, type TypographySize } from "@metrom-xyz/ui";
 
 import styles from "./styles.module.css";
 import classNames from "classnames";
@@ -7,22 +7,16 @@ import classNames from "classnames";
 interface ChainChipProps {
     id: number;
     size?: TypographySize;
-    surface?: boolean;
 }
 
-export function ChainChip({
-    id,
-    size = "xs",
-    surface = false,
-}: ChainChipProps) {
+export function ChainChip({ id, size = "xs" }: ChainChipProps) {
     const chainData = useChainData(id);
 
     return (
-        <div
-            className={classNames(styles.root, {
-                [styles[size]]: true,
-                [styles.surface]: !!surface,
-            })}
+        <Chip
+            variant="secondary"
+            border="squared"
+            className={{ root: styles.root }}
         >
             {chainData?.icon && (
                 <chainData.icon
@@ -34,6 +28,6 @@ export function ChainChip({
             <Typography size={size} uppercase>
                 {chainData?.name}
             </Typography>
-        </div>
+        </Chip>
     );
 }
