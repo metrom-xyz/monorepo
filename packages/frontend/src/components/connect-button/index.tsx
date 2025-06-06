@@ -1,24 +1,15 @@
 "use client";
 
-import { Typography, Button } from "@metrom-xyz/ui";
+import { Button } from "@metrom-xyz/ui";
 import { useEffect, useState } from "react";
 import { useWindowSize } from "react-use";
 import { useTranslations } from "next-intl";
-import { blo, type Address } from "blo";
+import { type Address } from "blo";
 import { AccountMenu } from "./account-menu";
-import { zeroAddress } from "viem";
-import { normalize } from "viem/ens";
 import classNames from "classnames";
 import { trackFathomEvent } from "@/src/utils/fathom";
 import { AnimatePresence, motion } from "motion/react";
-import {
-    useAccount,
-    useConnect,
-    useConnectors,
-    useDisconnect,
-    useEnsAvatar,
-    useEnsName,
-} from "wagmi";
+import { useAccount, useConnect, useConnectors, useDisconnect } from "wagmi";
 import { SAFE } from "@/src/commons/env";
 import { SAFE_CONNECTOR_ID } from "@/src/commons";
 import { toast } from "sonner";
@@ -29,8 +20,8 @@ import {
     useAppKitAccount,
     useAppKitNetwork,
 } from "@reown/appkit/react";
-import { shortenAddress } from "@/src/utils/address";
-import { Avatar } from "./avatar/avatar";
+import { Avatar } from "../avatar/avatar";
+import { Account } from "../account";
 
 import styles from "./styles.module.css";
 
@@ -45,12 +36,6 @@ export function ConnectButton() {
     const { open } = useAppKit();
     const { address, isConnected } = useAppKitAccount();
     const { chainId } = useAppKitNetwork();
-    const { data: ensName, isLoading: loadingEnsName } = useEnsName({
-        address: address as Address | undefined,
-    });
-    const { data: ensAvatar, isLoading: loadingEnsAvatar } = useEnsAvatar({
-        name: ensName ? normalize(ensName) : undefined,
-    });
 
     const [accountMenuOpen, setAccountMenuOpen] = useState(false);
 
@@ -92,8 +77,6 @@ export function ConnectButton() {
     function handleAccountMenuClose() {
         setAccountMenuOpen(false);
     }
-
-    const blockie = blo((address as Address) || zeroAddress);
 
     return (
         <div className={styles.root}>
@@ -157,15 +140,7 @@ export function ConnectButton() {
                                     })}
                                 >
                                     <AccountMenu
-                                        account={{
-                                            address,
-                                            ensName: ensName as string,
-                                            ensAvatar: ensAvatar as string,
-                                            loading:
-                                                loadingEnsName ||
-                                                loadingEnsAvatar,
-                                        }}
-                                        blockie={blockie}
+                                        account={address as Address}
                                         chainId={Number(chainId)}
                                         onClose={handleAccountMenuClose}
                                     />
@@ -188,18 +163,15 @@ export function ConnectButton() {
                                     </div>
                                 ) : (
                                     <Avatar
+                                        address={address as Address}
                                         height={28}
                                         width={28}
-                                        loading={
-                                            loadingEnsName || loadingEnsAvatar
-                                        }
-                                        src={ensAvatar || blockie}
                                     />
                                 )}
-                                <Typography className={styles.displayName}>
-                                    {ensName ||
-                                        shortenAddress(address as Address)}
-                                </Typography>
+                                <Account
+                                    address={address as Address}
+                                    className={styles.displayName}
+                                />
                             </div>
                         </div>
                     </>
