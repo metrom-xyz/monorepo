@@ -26,7 +26,8 @@ import {
     sepoliaData,
     telosData,
     lightlinkPhoenixData,
-    seiData,
+    seiDevelopmentData,
+    seiProductionData,
     swellDevelopmentData,
     swellProductionData,
     hemiData,
@@ -60,7 +61,7 @@ export const CHAIN_DATA: {
         [SupportedDevelopmentChain.BaseSepolia]: baseSepoliaData,
         [SupportedDevelopmentChain.Sepolia]: sepoliaData,
         [SupportedDevelopmentChain.Swell]: swellDevelopmentData,
-        [SupportedDevelopmentChain.Sei]: seiData,
+        [SupportedDevelopmentChain.Sei]: seiDevelopmentData,
     },
     [Environment.Production]: {
         [SupportedProductionChain.Base]: baseData,
@@ -74,7 +75,7 @@ export const CHAIN_DATA: {
         [SupportedProductionChain.Gnosis]: gnosisData,
         [SupportedProductionChain.Telos]: telosData,
         [SupportedProductionChain.LightLinkPhoenix]: lightlinkPhoenixData,
-        [SupportedProductionChain.Sei]: seiData,
+        [SupportedProductionChain.Sei]: seiProductionData,
         [SupportedProductionChain.Hemi]: hemiData,
     },
 };
@@ -98,6 +99,7 @@ export const SUPPORTED_PRODUCTION_CHAINS: [Chain, ...Chain[]] = [
     lightlinkPhoenix,
     swellchain,
     hemi,
+    sei,
 ].sort((a, b) => {
     // keep the active chains first, this way the default selected
     // chain will always be an active one

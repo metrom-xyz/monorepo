@@ -17,7 +17,7 @@
         "lint": "eslint ."
     },
     "dependencies": {
-        "@metrom-xyz/contracts": "^0.47.0",
+        "@metrom-xyz/contracts": "^0.48.0",
         "@metrom-xyz/sdk": "workspace:*"
     },
     "devDependencies": {
