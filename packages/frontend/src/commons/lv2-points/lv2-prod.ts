@@ -35,7 +35,7 @@ export const lv2PointsCampaignsProd: Record<
             ],
         },
         from: 1746720000,
-        to: 1749398400,
+        to: 1751990400,
         actions: {
             [Lv2PointsCampaign2Action.Liquidity]: {
                 title: "Liquidity",
