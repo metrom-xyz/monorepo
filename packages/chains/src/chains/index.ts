@@ -13,4 +13,4 @@ export { hemiData } from "./hemi";
 export { sepoliaData } from "./sepolia";
 export { telosData } from "./telos";
 export { lightlinkPhoenixData } from "./lightlink-phoenix";
-export { seiData } from "./sei";
+export { seiDevelopmentData, seiProductionData } from "./sei";

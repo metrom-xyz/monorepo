@@ -18,7 +18,7 @@
         "deploy:gnosis": "pnpm prepare:deploy gnosis && pnpm codegen && graph deploy metrom-gnosis -l 0.0.2",
         "deploy:telos": "pnpm prepare:deploy telos && pnpm codegen && graph build && graph deploy metrom-telos/0.0.1",
         "deploy:lightlink-phoenix": "pnpm prepare:deploy lightlink-phoenix && pnpm codegen && graph create --node https://graph.phoenix.lightlink.io/rpc metrom-lightlink-phoenix && graph build && graph deploy --node https://graph.phoenix.lightlink.io/rpc metrom-lightlink-phoenix -l 0.0.1",
-        "deploy:sei": "pnpm prepare:deploy sei-mainnet && pnpm codegen && graph build && graph deploy metrom-sei -l 0.0.1",
+        "deploy:sei": "pnpm prepare:deploy sei-mainnet && pnpm codegen && graph build && graph deploy metrom-sei -l 0.0.2",
         "deploy:swell": "pnpm prepare:deploy swellchain && pnpm codegen && graph deploy metrom-swell -l 0.0.2",
         "deploy:hemi": "pnpm prepare:deploy hemi && pnpm codegen && graph deploy metrom-hemi -l 0.0.1",
         "lint": "eslint .",
@@ -32,7 +32,7 @@
     },
     "devDependencies": {
         "@eslint/js": "^9.27.0",
-        "@metrom-xyz/contracts": "^0.47.0",
+        "@metrom-xyz/contracts": "^0.48.0",
         "@types/mustache": "^4.2.6",
         "@types/node": "^22.15.21",
         "eslint": "^9.27.0",
