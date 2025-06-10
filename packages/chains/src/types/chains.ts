@@ -36,7 +36,7 @@ export enum SupportedProductionChain {
     Gnosis = SupportedChain.Gnosis,
     Telos = SupportedChain.Telos,
     LightLinkPhoenix = SupportedChain.LightLinkPhoenix,
-    // Sei = SupportedChain.Sei,
+    Sei = SupportedChain.Sei,
     Swell = SupportedChain.Swell,
     Hemi = SupportedChain.Hemi,
 }
