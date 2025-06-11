@@ -23,6 +23,7 @@ const NETWORK_NAME: Record<SupportedChain, string> = {
     [SupportedChain.Sei]: "sei-mainnet",
     [SupportedChain.Swell]: "swellchain",
     [SupportedChain.Hemi]: "hemi",
+    [SupportedChain.Lens]: "lens",
 };
 
 const [, , rawNetwork = ""] = process.argv;
