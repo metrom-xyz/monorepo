@@ -3,16 +3,23 @@ import { useTranslations } from "next-intl";
 import { Card, Typography } from "@metrom-xyz/ui";
 import type { SupportedChain } from "@metrom-xyz/contracts";
 import { Action } from "./action";
+import { LiquidityLandChip } from "../liquidity-land-chip";
 
 import styles from "./styles.module.css";
 
 interface ActionsProps {
     chain: SupportedChain;
     pointsName: string;
+    liquidityLandUrl?: Lv2PointsCampaign["liquidityLandUrl"];
     actions: Lv2PointsCampaign["actions"];
 }
 
-export function Actions({ chain, pointsName, actions }: ActionsProps) {
+export function Actions({
+    chain,
+    pointsName,
+    liquidityLandUrl,
+    actions,
+}: ActionsProps) {
     const t = useTranslations("lv2PointsCampaignPage.actions");
 
     return (
@@ -33,6 +40,10 @@ export function Actions({ chain, pointsName, actions }: ActionsProps) {
                                 <Typography weight="medium" light>
                                     {group.description}
                                 </Typography>
+                                <LiquidityLandChip
+                                    boost={group.boost}
+                                    endpoint={liquidityLandUrl}
+                                />
                             </div>
                             <div className={styles.actionsWrapper}>
                                 <div className={styles.actionsListHeader}>

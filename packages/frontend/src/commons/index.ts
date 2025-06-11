@@ -13,6 +13,9 @@ import {
 
 export const BASE_URL = "https://app.metrom.xyz";
 
+export const LIQUIDITY_LAND_REFERRAL_URL =
+    "https://app.liquidity.land/?ref=2AQfO-fN";
+
 export const SECONDS_IN_YEAR = 60 * 60 * 24 * 365;
 
 export const FEE_UNIT = 1_000_000;

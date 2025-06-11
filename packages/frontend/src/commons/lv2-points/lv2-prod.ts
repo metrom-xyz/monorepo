@@ -17,6 +17,8 @@ export const lv2PointsCampaignsProd: Record<
         description:
             "A secure, over-collateralized stablecoin protocol on Scroll's zk-Rollup network.",
         url: "https://app.quill.finance",
+        liquidityLandUrl:
+            "https://api.liquidity.land/project/cmb7lzcnd000108jo7tnd4j5u/activities.json",
         chain: SupportedChain.Scroll,
         protocol: SupportedLiquityV2.Quill,
         pointsName: "Quill Liquidity Points",
@@ -81,6 +83,7 @@ export const lv2PointsCampaignsProd: Record<
                 title: "Deposit to stability pool",
                 description:
                     "Users get incentivized to deposit liquidity in stability pools.",
+                boost: 0.5,
                 actions: [
                     {
                         targets: ["0x5300000000000000000000000000000000000004"],
@@ -116,6 +119,7 @@ export const lv2PointsCampaignsProd: Record<
                 title: "Borrow",
                 description:
                     "Users get incentivized to deposit collateral and mint USDQ.",
+                boost: 0.5,
                 actions: [
                     {
                         targets: ["0x5300000000000000000000000000000000000004"],
@@ -154,6 +158,8 @@ export const lv2PointsCampaignsProd: Record<
         description:
             "Permissionless credit protocol and the native stablecoin of the Swellchain.",
         url: "https://www.orki.finance",
+        liquidityLandUrl:
+            "https://api.liquidity.land/project/cmb7mfrd9000007l24ej8c4fm/activities.json",
         chain: SupportedChain.Swell,
         protocol: SupportedLiquityV2.Orki,
         pointsName: "Orki Drops",
@@ -273,6 +279,7 @@ export const lv2PointsCampaignsProd: Record<
                 title: "Deposit to stability pool",
                 description:
                     "Users get incentivized to deposit liquidity in stability pools.",
+                boost: 0.5,
                 actions: [
                     {
                         targets: ["0x4200000000000000000000000000000000000006"],
@@ -315,6 +322,7 @@ export const lv2PointsCampaignsProd: Record<
                 title: "Borrow",
                 description:
                     "Users get incentivized to deposit collateral and mint USDK.",
+                boost: 0.5,
                 actions: [
                     {
                         targets: ["0x4200000000000000000000000000000000000006"],
