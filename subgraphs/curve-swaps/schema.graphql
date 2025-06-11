@@ -1,0 +1,16 @@
+type Token @entity(immutable: true) {
+    id: Bytes!
+    name: String!
+    symbol: String!
+    decimals: Int!
+}
+
+type Swap @entity(immutable: true) {
+    id: Bytes!
+    timestamp: BigInt!
+    from: Bytes!
+    tokenIn: Token!
+    amountIn: BigInt!
+    tokenOut: Token!
+    amountOut: BigInt!
+}
