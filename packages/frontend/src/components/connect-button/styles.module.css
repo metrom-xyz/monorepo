@@ -62,7 +62,7 @@
 }
 
 .account {
-    @apply w-full flex gap-2 items-center justify-between;
+    @apply sm:w-full flex gap-2 items-center justify-between;
 }
 
 .displayName {

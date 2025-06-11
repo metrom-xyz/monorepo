@@ -4,17 +4,17 @@
     @apply w-full
         flex
         flex-row
-        justify-center
-        sm:justify-between
+        justify-between
         items-center
+        rounded-xl
+        theme-surface
         gap-10
-        py-10
-        px-4
-        sm:px-0
+        p-4
+        sm:p-8
         mt-10
+        sm:mb-8
         mb-[63px]
-        sm:my-0
-        sm:mt-10
+        sm:my-10
         max-w-screen-xl;
 }
 
@@ -23,24 +23,25 @@
 }
 
 .logo {
-    @apply max-w-36 dark:text-zinc-200;
+    @apply max-w-40 dark:text-zinc-200;
 }
 
 .socials {
-    @apply flex gap-5;
+    @apply flex justify-between -mx-2.5;
+}
+
+.socialLink {
+    @apply p-2.5 rounded-full theme-surface-hover transition-colors duration-200 ease-in-out;
+}
+
+.supportLink {
+    @apply p-1.5 rounded-md theme-surface-hover transition-colors duration-200 ease-in-out;
 }
 
 .socialIcon {
-    @apply w-5
-        h-5
-        text-zinc-900
-        dark:text-zinc-200
-        hover:text-brand-green
-        transition-colors
-        duration-200
-        ease-in-out;
+    @apply w-5 h-5 text-zinc-900 dark:text-zinc-200;
 }
 
 .support {
-    @apply flex flex-col items-start gap-3;
+    @apply h-full flex flex-col items-end gap-1;
 }
