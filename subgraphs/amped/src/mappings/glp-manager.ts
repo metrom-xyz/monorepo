@@ -5,6 +5,7 @@ import {
     AddLiquidity,
     RemoveLiquidity,
 } from "../../generated/GlpManager/GlpManager";
+import { YALP_VAULT_ADDRESS } from "../addresses";
 
 const BI_10_E_18 = BigInt.fromI32(10).pow(18);
 
@@ -17,6 +18,7 @@ function getOrCreatePosition(owner: Address, collateral: Address): Position {
     position.owner = owner;
     position.liquidity = BI_0;
     position.collateral = collateral;
+    position.vault = owner === YALP_VAULT_ADDRESS ? YALP_VAULT_ADDRESS : null;
     position.save();
 
     return position;

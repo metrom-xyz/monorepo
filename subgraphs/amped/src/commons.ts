@@ -4,6 +4,7 @@ import { Erc20BytesSymbol } from "../generated/Vault/Erc20BytesSymbol";
 import { Erc20BytesName } from "../generated/Vault/Erc20BytesName";
 import { Collateral } from "../generated/schema";
 
+export const ADDRESS_ZERO = Address.zero();
 export const BI_0 = BigInt.zero();
 
 export function getEventId(event: ethereum.Event): Bytes {
