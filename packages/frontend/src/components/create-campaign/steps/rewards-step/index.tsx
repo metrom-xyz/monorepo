@@ -1,5 +1,12 @@
 import { useCallback, useMemo, useState } from "react";
-import { Typography, ErrorText, Tabs, Tab, Switch } from "@metrom-xyz/ui";
+import {
+    Typography,
+    ErrorText,
+    Tabs,
+    Tab,
+    Switch,
+    InfoTooltip,
+} from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
 import { Step } from "@/src/components/step";
 import { StepPreview } from "@/src/components/step/preview";
@@ -99,14 +106,32 @@ export function RewardsStep({
                         })}
                     >
                         <div className={styles.previewTextWrapper}>
-                            <Typography
-                                uppercase
-                                weight="medium"
-                                size="sm"
-                                className={styles.previewLabel}
-                            >
-                                {t("title.rewards")}
-                            </Typography>
+                            <div className={styles.titleWrapper}>
+                                <Typography
+                                    uppercase
+                                    weight="medium"
+                                    size="sm"
+                                    className={styles.previewLabel}
+                                >
+                                    {t("title.rewards")}
+                                </Typography>
+                                <InfoTooltip trigger="click" placement="top">
+                                    <Typography size="sm">
+                                        {t.rich("title.contactUs", {
+                                            link: (chunks) => (
+                                                <a
+                                                    href="https://github.com/metrom-xyz/monorepo/issues/new?template=whitelist_token.yaml"
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                    className={styles.link}
+                                                >
+                                                    {chunks}
+                                                </a>
+                                            ),
+                                        })}
+                                    </Typography>
+                                </InfoTooltip>
+                            </div>
                             <ErrorText size="xs" weight="medium">
                                 {!disabled ? error : null}
                             </ErrorText>

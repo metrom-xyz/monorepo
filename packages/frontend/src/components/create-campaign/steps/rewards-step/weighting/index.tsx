@@ -5,7 +5,7 @@ import {
 } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { AnimatePresence, motion } from "motion/react";
+import { AnimatePresence, easeInOut, motion } from "motion/react";
 import type {
     AmmPoolLiquidityCampaignPayload,
     AmmPoolLiquidityCampaignPayloadPart,
@@ -86,6 +86,7 @@ export function Weighting({
                     initial={{ height: 0 }}
                     animate={{ height: "auto" }}
                     exit={{ height: 0 }}
+                    transition={{ ease: easeInOut, duration: 0.2 }}
                     className={styles.root}
                 >
                     <Typography

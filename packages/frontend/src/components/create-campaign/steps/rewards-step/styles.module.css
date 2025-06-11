@@ -20,9 +20,17 @@
     @apply flex flex-col gap-1;
 }
 
+.titleWrapper {
+    @apply flex items-center gap-1;
+}
+
 .previewLabel {
     font-size: inherit;
     color: inherit;
+}
+
+.link {
+    @apply text-brand-green-dark font-medium;
 }
 
 .topRightContent {
