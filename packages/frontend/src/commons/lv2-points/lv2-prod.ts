@@ -5,6 +5,7 @@ import {
 } from "@/src/types/lv2-points-campaign";
 import { SupportedChain } from "@metrom-xyz/contracts";
 import { OrkiLogo, QuillLogo } from "@metrom-xyz/chains";
+import { LIQUIDITY_LAND_REFERRAL_URL_TEMPLATE } from "..";
 
 export const lv2PointsCampaignsProd: Record<
     SupportedLiquityV2,
@@ -19,6 +20,10 @@ export const lv2PointsCampaignsProd: Record<
         url: "https://app.quill.finance",
         liquidityLandUrl:
             "https://api.liquidity.land/project/cmb7lzcnd000108jo7tnd4j5u/activities.json",
+        liquidityLandReferralUrl: LIQUIDITY_LAND_REFERRAL_URL_TEMPLATE.replace(
+            "{project_name}",
+            "quill-finance",
+        ),
         chain: SupportedChain.Scroll,
         protocol: SupportedLiquityV2.Quill,
         pointsName: "Quill Liquidity Points",
@@ -160,6 +165,10 @@ export const lv2PointsCampaignsProd: Record<
         url: "https://www.orki.finance",
         liquidityLandUrl:
             "https://api.liquidity.land/project/cmb7mfrd9000007l24ej8c4fm/activities.json",
+        liquidityLandReferralUrl: LIQUIDITY_LAND_REFERRAL_URL_TEMPLATE.replace(
+            "{project_name}",
+            "orki-finance",
+        ),
         chain: SupportedChain.Swell,
         protocol: SupportedLiquityV2.Orki,
         pointsName: "Orki Drops",
