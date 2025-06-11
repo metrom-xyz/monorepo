@@ -5,39 +5,43 @@
 }
 
 .root.popover {
-    @apply rounded-xl p-0;
+    @apply rounded-xl flex gap-2;
 }
 
 .tab.popover {
-    @apply rounded-xl;
+    @apply rounded-lg max-h-11 min-h-11;
 }
 
 .tab {
-    @apply w-full min-h-12 bg-white dark:bg-zinc-800 opacity-100;
+    @apply w-full
+        min-h-12
+        bg-white
+        dark:bg-zinc-800
+        opacity-100
+        cursor-pointer
+        transition-colors
+        duration-200
+        ease-in-out;
 }
 
-.tab > p {
-    @apply text-zinc-400;
+.tab.popover {
+    @apply theme-surface-hover;
 }
 
-.tab:first-child {
+.tab:not(.popover):first-child {
     @apply rounded-r-none;
 }
 
-.tab:nth-child(2) {
+.tab:not(.popover):nth-child(2) {
     @apply rounded-r-none rounded-l-none;
 }
 
-.tab:last-child {
+.tab:not(.popover):last-child {
     @apply rounded-l-none;
 }
 
 .active {
-    @apply bg-zinc-100 dark:bg-zinc-700;
-}
-
-.active > p {
-    @apply text-white;
+    @apply bg-zinc-200 dark:bg-zinc-700;
 }
 
 .loading {
@@ -45,5 +49,5 @@
 }
 
 .icon {
-    @apply h-6 w-6 dark:text-zinc-200;
+    @apply h-5 w-5 dark:text-zinc-200;
 }
