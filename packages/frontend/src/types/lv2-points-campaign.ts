@@ -51,6 +51,7 @@ export interface Lv2PointsCampaign {
     description: string;
     url: string;
     liquidityLandUrl?: string;
+    liquidityLandReferralUrl?: string;
     chain: SupportedChain;
     protocol: SupportedLiquityV2;
     pointsName: string;
