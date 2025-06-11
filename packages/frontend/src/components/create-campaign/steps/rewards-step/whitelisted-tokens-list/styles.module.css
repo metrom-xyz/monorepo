@@ -4,6 +4,7 @@
     @apply max-h-[22.5rem]
         h-full
         w-full
+        rounded-b-2xl
         overflow-hidden;
 }
 
@@ -15,6 +16,10 @@
         px-4;
 }
 
-.emptyList {
+.empty {
     @apply flex justify-center py-4;
+}
+
+.list {
+    @apply rounded-b-2xl;
 }

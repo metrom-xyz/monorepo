@@ -149,7 +149,8 @@
                 },
                 "rewards": {
                     "title": {
-                        "rewards": "Rewards"
+                        "rewards": "Rewards",
+                        "contactUs": "Not seeing the token you want to use? <link>Contact us</link>."
                     },
                     "tabs": {
                         "tokens": "Tokens",

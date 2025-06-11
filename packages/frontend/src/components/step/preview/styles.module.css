@@ -7,11 +7,16 @@
         px-4
         py-7
         h-[5.25rem]
+        rounded-2xl
         theme-surface-hover
         hover:cursor-pointer
-        transition-colors
+        transition-all
         duration-200
         ease-in-out;
+}
+
+.root.open {
+    @apply rounded-b-none;
 }
 
 .rootCompleted {

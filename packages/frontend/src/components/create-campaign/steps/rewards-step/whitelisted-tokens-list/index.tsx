@@ -11,8 +11,9 @@ import {
     type Erc20TokenWithBalance,
 } from "@/src/hooks/useWatchBalances";
 import { Row } from "./row";
-import { AnimatePresence, motion } from "motion/react";
+import { AnimatePresence, easeInOut, motion } from "motion/react";
 import type { WhitelistedErc20TokenAmount } from "@/src/types/common";
+import classNames from "classnames";
 
 import styles from "./styles.module.css";
 
@@ -60,6 +61,7 @@ export function WhitelistedTokensList({
                         hide: { height: 0 },
                         show: { height: "auto" },
                     }}
+                    transition={{ ease: easeInOut, duration: 0.2 }}
                     className={styles.root}
                 >
                     <div ref={rootRef}>
@@ -134,7 +136,12 @@ export function WhitelistedTokensList({
                                 }}
                             </FixedSizeList>
                         ) : (
-                            <div className={styles.emptyList}>
+                            <div
+                                className={classNames(
+                                    styles.list,
+                                    styles.empty,
+                                )}
+                            >
                                 {/* TODO: add illustration */}
                                 <Typography>
                                     {messages?.empty

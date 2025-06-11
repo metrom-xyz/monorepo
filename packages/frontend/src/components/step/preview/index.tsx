@@ -31,6 +31,7 @@ export function StepPreview({
         <div
             className={classNames(className?.root, styles.root, {
                 [styles.rootCompleted]: completed,
+                [styles.open]: open,
             })}
         >
             <div className={styles.wrapper}>

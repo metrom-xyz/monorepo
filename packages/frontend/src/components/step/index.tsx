@@ -2,7 +2,7 @@
 
 import React, { type ReactElement, useRef } from "react";
 import classNames from "classnames";
-import { AnimatePresence, motion } from "motion/react";
+import { AnimatePresence, easeInOut, motion } from "motion/react";
 import { StepPreview, type StepPreviewProps } from "./preview";
 import { StepContent } from "./content";
 import { matchChildByType } from "@metrom-xyz/ui";
@@ -39,9 +39,7 @@ export function Step({
     ) as ReactElement;
 
     return (
-        <motion.div
-            initial={{ height: 84 }}
-            animate={{ height: open ? "fit-content" : 84 }}
+        <div
             className={classNames(className, styles.root, {
                 [styles.disabled]: disabled,
                 [styles.open]: open,
@@ -57,16 +55,18 @@ export function Step({
                 <AnimatePresence>
                     {open && (
                         <motion.div
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            exit={{ opacity: 0 }}
+                            initial={{ opacity: 0, height: 0 }}
+                            animate={{ opacity: 1, height: "fit-content" }}
+                            exit={{ opacity: 0, height: 0 }}
                             inert={!open}
+                            transition={{ ease: easeInOut, duration: 0.2 }}
+                            className={styles.childrenWrapper}
                         >
                             {contentChildren}
                         </motion.div>
                     )}
                 </AnimatePresence>
             </div>
-        </motion.div>
+        </div>
     );
 }
