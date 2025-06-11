@@ -19,7 +19,6 @@ import { getDistributableRewardsPercentage } from "./kpi";
 import { type Hex, encodeAbiParameters, stringToHex, isAddress } from "viem";
 import { SECONDS_IN_YEAR, WEIGHT_UNIT } from "../commons";
 import { type LiquityV2Protocol } from "@metrom-xyz/chains";
-import type { SupportedChain } from "@metrom-xyz/contracts";
 import { getTranslations } from "next-intl/server";
 import { getChainData } from "./chain";
 
