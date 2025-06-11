@@ -38,4 +38,12 @@ export const DEPLOYMENTS: {
             },
         },
     },
+    mainnet: {
+        ebisu: {
+            DebtToken: {
+                address: "0x09fD37d9AA613789c517e76DF1c53aEce2b60Df4",
+                startBlock: 22639791,
+            },
+        },
+    },
 };

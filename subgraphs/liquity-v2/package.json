@@ -9,6 +9,7 @@
         "deploy:ebisu:sepolia": "pnpm prepare:deploy sepolia ebisu && pnpm codegen && graph deploy metrom-ebisu-sepolia -l 0.0.1",
         "deploy:quill:scroll": "pnpm prepare:deploy scroll quill && pnpm codegen && graph deploy metrom-quill-scroll -l 0.0.7",
         "deploy:orki:swell": "pnpm prepare:deploy swellchain orki && pnpm codegen && graph deploy metrom-orki-swell -l 0.0.4",
+        "deploy:ebisu:mainnet": "pnpm prepare:deploy mainnet ebisu && pnpm codegen && graph deploy metrom-ebisu-mainnet -l 0.0.1",
         "lint": "eslint .",
         "format": "eslint --fix ."
     },
