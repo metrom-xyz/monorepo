@@ -28,6 +28,7 @@ export interface Action {
 export interface ActionsGroup {
     title: string;
     description: string;
+    boost?: number;
     actions: Action[];
 }
 
@@ -49,6 +50,7 @@ export interface Lv2PointsCampaign {
     name: string;
     description: string;
     url: string;
+    liquidityLandUrl?: string;
     chain: SupportedChain;
     protocol: SupportedLiquityV2;
     pointsName: string;

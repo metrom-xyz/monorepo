@@ -1,7 +1,6 @@
 import { useAccount, useReadContracts } from "wagmi";
 import { formatUnits, type Address } from "viem";
 import { METROM_API_CLIENT } from "../commons";
-import { SupportedChain } from "@metrom-xyz/contracts";
 import { metromAbi } from "@metrom-xyz/contracts/abi";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";

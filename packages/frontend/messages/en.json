@@ -426,7 +426,9 @@
         "actions": {
             "title": "Earn {points}",
             "action": "Action",
-            "multiplier": "Multiplier"
+            "multiplier": "Multiplier",
+            "getBoost": "Get {boost} more points",
+            "boostActive": "{boost} more points active"
         },
         "action": {
             "minimumDuration": "Hold your position for <bold>{time}</bold> after completing the action to start farming points."
