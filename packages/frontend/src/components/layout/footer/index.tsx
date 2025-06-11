@@ -24,6 +24,7 @@ export function Footer() {
                         target="_blank"
                         rel="noopener noreferrer"
                         onClick={() => trackFathomEvent("CLICK_GITHUB_LINK")}
+                        className={styles.socialLink}
                     >
                         <GithubLogo className={styles.socialIcon} />
                     </a>
@@ -33,6 +34,7 @@ export function Footer() {
                         target="_blank"
                         rel="noopener noreferrer"
                         onClick={() => trackFathomEvent("CLICK_X_LINK")}
+                        className={styles.socialLink}
                     >
                         <XLogo className={styles.socialIcon} />
                     </a>
@@ -42,6 +44,7 @@ export function Footer() {
                         target="_blank"
                         rel="noopener noreferrer"
                         onClick={() => trackFathomEvent("CLICK_DISCORD_LINK")}
+                        className={styles.socialLink}
                     >
                         <DiscordLogo className={styles.socialIcon} />
                     </a>
@@ -51,6 +54,7 @@ export function Footer() {
                         target="_blank"
                         rel="noopener noreferrer"
                         onClick={() => trackFathomEvent("CLICK_TELEGRAM_LINK")}
+                        className={styles.socialLink}
                     >
                         <TelegramLogo className={styles.socialIcon} />
                     </a>
@@ -62,6 +66,7 @@ export function Footer() {
                     href="https://discord.com/invite/uRer2D4Pdf"
                     target="_blank"
                     rel="noopener noreferrer"
+                    className={styles.supportLink}
                 >
                     <Typography>{t("support")}</Typography>
                 </a>
@@ -70,10 +75,14 @@ export function Footer() {
                     target="_blank"
                     rel="noopener noreferrer"
                     onClick={() => trackFathomEvent("CLICK_DOCUMENTATION_LINK")}
+                    className={styles.supportLink}
                 >
                     <Typography>{t("documentation")}</Typography>
                 </a>
-                <a href="mailto:hello@metrom.xyz">
+                <a
+                    href="mailto:hello@metrom.xyz"
+                    className={styles.supportLink}
+                >
                     <Typography>{t("contactUs")}</Typography>
                 </a>
             </div>
