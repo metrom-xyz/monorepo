@@ -30,7 +30,7 @@ export const seiDevelopmentData: ChainData = {
             depositUrl: {
                 type: DepositUrlType.QueryTokenAddresses,
                 template:
-                    "https://sei.carbondefi.xyz/trade/disposable?base={token0}&quote={token1}",
+                    "https://sei.carbondefi.xyz/trade/disposable?base={token_0}&quote={token_1}",
             },
             supportsFetchAllPools: true,
         },
@@ -78,7 +78,7 @@ export const seiProductionData: ChainData = {
             depositUrl: {
                 type: DepositUrlType.QueryTokenAddresses,
                 template:
-                    "https://sei.carbondefi.xyz/trade/disposable?base={token0}&quote={token1}",
+                    "https://sei.carbondefi.xyz/trade/disposable?base={token_0}&quote={token_1}",
             },
             supportsFetchAllPools: true,
         },
