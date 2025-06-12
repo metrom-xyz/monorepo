@@ -33,7 +33,6 @@ export function Lv2PointsCampaign({ protocol }: Lv2PointsCampaignProps) {
         pointsName,
         brand,
         url,
-        liquidityLandUrl,
         chain,
         icon,
         protocolIntro,
@@ -61,9 +60,9 @@ export function Lv2PointsCampaign({ protocol }: Lv2PointsCampaignProps) {
             )}
             <Actions
                 chain={chain}
+                protocol={protocol}
                 actions={actions}
                 pointsName={pointsName}
-                liquidityLandUrl={liquidityLandUrl}
             />
             <Leaderboard
                 noDistributionDate

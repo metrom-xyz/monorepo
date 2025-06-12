@@ -2,9 +2,13 @@ import { useQuery } from "@tanstack/react-query";
 import { useAccount } from "wagmi";
 import { type Address } from "viem";
 import type { HookBaseParams } from "../types/hooks";
+import { LV2_SERVICE_BASE_URLS } from "../commons/lv2-points";
+import { ENVIRONMENT } from "../commons/env";
+import type { SupportedLiquityV2 } from "@metrom-xyz/sdk";
+import type { Lv2BackendLiquidityLandUsersResponse } from "../types/lv2-points-campaign";
 
 interface UseIsAccountOnLiquidityLandProps extends HookBaseParams {
-    endpoint?: string;
+    protocol?: SupportedLiquityV2;
 }
 
 interface UseIsAccountOnLiquidityLandReturnaValue {
@@ -12,48 +16,48 @@ interface UseIsAccountOnLiquidityLandReturnaValue {
     active?: boolean;
 }
 
-interface LiquidityLandActivitiesResponse {
-    walletAddress: Address;
-    totalValueUsd: number;
-    date: string;
-}
-
-type QueryKey = [string, Address, string];
+type QueryKey = [string, Address, SupportedLiquityV2];
 
 export function useIsAccountOnLiquidityLand({
-    endpoint,
+    protocol,
     enabled,
 }: UseIsAccountOnLiquidityLandProps): UseIsAccountOnLiquidityLandReturnaValue {
     const { address } = useAccount();
 
     const { data: active, isLoading: loading } = useQuery({
-        queryKey: ["liquidity-land-activities", address, endpoint],
+        queryKey: ["liquidity-land-activities", address, protocol],
         queryFn: async ({ queryKey }) => {
-            const [, address, endpoint] = queryKey as QueryKey;
+            const [, address, protocol] = queryKey as QueryKey;
 
-            if (!address || !endpoint) return false;
+            if (!address || !protocol) return false;
 
             try {
-                const response = await fetch(endpoint);
+                const url = new URL(
+                    "/api/v1/liquidity-land/users",
+                    LV2_SERVICE_BASE_URLS[ENVIRONMENT](protocol),
+                );
 
+                const response = await fetch(url);
                 if (!response.ok)
                     throw new Error(
-                        `Could not fetch liquidity land activities: ${await response.text()}`,
+                        `response not ok while fetching lv2 points campaign liquidity land users: ${await response.text()}`,
                     );
 
-                const activities =
-                    (await response.json()) as LiquidityLandActivitiesResponse[];
+                const { accounts } =
+                    (await response.json()) as Lv2BackendLiquidityLandUsersResponse;
 
-                return !!activities.find(
-                    ({ walletAddress }) =>
-                        walletAddress.toLowerCase() === address.toLowerCase(),
+                return !!accounts.find(
+                    (account) =>
+                        account.toLowerCase() === address.toLowerCase(),
                 );
             } catch (error) {
-                console.error(`Could not fetch fee tokens: ${error}`);
+                console.error(
+                    `Could not fetch lv2 points campaign liquidity land users: ${error}`,
+                );
                 throw error;
             }
         },
-        enabled,
+        enabled: enabled && !!address,
     });
 
     return { loading, active };
