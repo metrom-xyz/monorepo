@@ -186,7 +186,7 @@ export function RewardPoints({
                         <ChevronDown className={styles.chevronDown} />
                     </div>
                 </div>
-                <hr className={styles.horizontalDivider} />
+                <div className={styles.horizontalDivider} />
                 <Typography light weight="medium" size="xs" uppercase>
                     {t("usdCost", {
                         usd: formatUsdAmount({ amount: resolvedFee?.usd }),

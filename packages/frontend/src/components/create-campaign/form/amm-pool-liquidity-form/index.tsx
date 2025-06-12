@@ -23,7 +23,11 @@ import { RestrictionsStep } from "../../steps/restrictions-step";
 import { DexStep } from "../../steps/dex-step";
 import { Button } from "@metrom-xyz/ui";
 import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
-import { AMM_SUPPORTS_RANGE_INCENTIVES } from "@/src/commons";
+import {
+    AMM_SUPPORTS_RANGE_INCENTIVES,
+    AMM_SUPPORTS_TOKENS_RATIO,
+} from "@/src/commons";
+import { WeightingStep } from "../../steps/weighting";
 
 import styles from "./styles.module.css";
 
@@ -94,15 +98,14 @@ export function AmmPoolLiquidityForm({
         return validatePayload(payload);
     }, [payload, errors]);
 
-    const kpiAndRangeDisabled = useMemo(() => {
+    const noDistributables = useMemo(() => {
         return (
             !payload.distributables ||
             payload.distributables.type === DistributablesType.Points ||
             !payload.distributables.tokens ||
-            payload.distributables.tokens.length === 0 ||
-            unsupportedChain
+            payload.distributables.tokens.length === 0
         );
-    }, [payload.distributables, unsupportedChain]);
+    }, [payload.distributables]);
 
     const missingDistributables = useMemo(() => {
         if (!payload.distributables) return true;
@@ -121,6 +124,14 @@ export function AmmPoolLiquidityForm({
 
         return true;
     }, [payload.distributables]);
+
+    const tokensRatioSupported = useMemo(() => {
+        return (
+            !!payload.pool &&
+            AMM_SUPPORTS_TOKENS_RATIO[payload.pool.amm as SupportedAmm] &&
+            payload.pool.liquidityType === AmmPoolLiquidityType.Concentrated
+        );
+    }, [payload.pool]);
 
     useEffect(() => {
         setPayload(initialPayload);
@@ -175,17 +186,23 @@ export function AmmPoolLiquidityForm({
                 />
                 <RewardsStep
                     disabled={!payload.endDate || unsupportedChain}
-                    pool={payload.pool}
-                    weighting={payload.weighting}
                     distributables={payload.distributables}
                     startDate={payload.startDate}
                     endDate={payload.endDate}
                     onDistributablesChange={handlePayloadOnChange}
-                    onWeightingChange={handlePayloadOnChange}
                     onError={handlePayloadOnError}
                 />
+                {tokensRatioSupported && (
+                    <WeightingStep
+                        pool={payload.pool}
+                        disabled={noDistributables || unsupportedChain}
+                        weighting={payload.weighting}
+                        onWeightingChange={handlePayloadOnChange}
+                        onError={handlePayloadOnError}
+                    />
+                )}
                 <KpiStep
-                    disabled={kpiAndRangeDisabled}
+                    disabled={noDistributables || unsupportedChain}
                     pool={payload.pool}
                     distributables={
                         payload.distributables?.type ===
@@ -206,7 +223,7 @@ export function AmmPoolLiquidityForm({
                     payload.pool.liquidityType ===
                         AmmPoolLiquidityType.Concentrated && (
                         <RangeStep
-                            disabled={kpiAndRangeDisabled}
+                            disabled={noDistributables || unsupportedChain}
                             distributablesType={payload.distributables?.type}
                             pool={payload.pool}
                             priceRangeSpecification={

@@ -17,6 +17,7 @@ import { usePrevious } from "react-use";
 import { KpiSimulationChart } from "../../../kpi-simulation-chart";
 import { GoalInputs } from "./goal-inputs";
 import { useChainId } from "wagmi";
+import { InfoMessage } from "@/src/components/info-message";
 
 import styles from "./styles.module.css";
 
@@ -274,6 +275,11 @@ export function KpiStep({
             </StepPreview>
             <StepContent>
                 <div className={styles.stepContent}>
+                    <InfoMessage
+                        text={t("infoMessage")}
+                        link="https://docs.metrom.xyz/creating-a-campaign/kpi-campaign"
+                        linkText={t("readMore")}
+                    />
                     <GoalInputs
                         enabled={enabled}
                         kpiSpecification={newKpiSpecification}

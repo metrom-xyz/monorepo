@@ -1,19 +1,10 @@
 import { useCallback, useMemo, useState } from "react";
-import {
-    Typography,
-    ErrorText,
-    Tabs,
-    Tab,
-    Switch,
-    InfoTooltip,
-} from "@metrom-xyz/ui";
+import { Typography, ErrorText, Tabs, Tab } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
 import { Step } from "@/src/components/step";
 import { StepPreview } from "@/src/components/step/preview";
 import { StepContent } from "@/src/components/step/content";
 import {
-    type AmmPoolLiquidityCampaignPayload,
-    type AmmPoolLiquidityCampaignPayloadPart,
     type BaseCampaignPayload,
     type BaseCampaignPayloadPart,
     type CampaignPayloadErrors,
@@ -21,39 +12,30 @@ import {
 import classNames from "classnames";
 import { RewardTokens } from "./tokens";
 import { RewardPoints } from "./points";
-import { DistributablesType, SupportedAmm } from "@metrom-xyz/sdk";
-import { Weighting } from "./weighting";
-import { AmmPoolLiquidityType } from "@metrom-xyz/sdk";
-import { AMM_SUPPORTS_TOKENS_RATIO } from "@/src/commons";
+import { DistributablesType } from "@metrom-xyz/sdk";
+import { InfoMessage } from "@/src/components/info-message";
 
 import styles from "./styles.module.css";
 
 interface RewardsStepProps {
     disabled?: boolean;
-    pool?: AmmPoolLiquidityCampaignPayload["pool"];
-    weighting?: AmmPoolLiquidityCampaignPayload["weighting"];
     distributables?: BaseCampaignPayload["distributables"];
     startDate?: BaseCampaignPayload["startDate"];
     endDate?: BaseCampaignPayload["endDate"];
     onDistributablesChange: (rewards: BaseCampaignPayloadPart) => void;
-    onWeightingChange?: (
-        weighting: AmmPoolLiquidityCampaignPayloadPart,
-    ) => void;
     onError: (errors: CampaignPayloadErrors) => void;
 }
 
 export function RewardsStep({
     disabled,
-    pool,
-    weighting,
     distributables,
     startDate,
     endDate,
     onDistributablesChange,
-    onWeightingChange,
     onError,
 }: RewardsStepProps) {
     const t = useTranslations("newCampaign.form.base.rewards");
+
     const [error, setError] = useState("");
     const [tokensRatioOpen, setTokensRatioOpen] = useState(false);
 
@@ -81,16 +63,6 @@ export function RewardsStep({
         [onDistributablesChange],
     );
 
-    const tokensRatioSupported = useMemo(() => {
-        return (
-            !!pool &&
-            AMM_SUPPORTS_TOKENS_RATIO[pool.amm as SupportedAmm] &&
-            pool.liquidityType === AmmPoolLiquidityType.Concentrated &&
-            !disabled &&
-            !!onWeightingChange
-        );
-    }, [pool, disabled, onWeightingChange]);
-
     return (
         <Step
             disabled={disabled}
@@ -115,22 +87,6 @@ export function RewardsStep({
                                 >
                                     {t("title.rewards")}
                                 </Typography>
-                                <InfoTooltip trigger="click" placement="top">
-                                    <Typography size="sm">
-                                        {t.rich("title.contactUs", {
-                                            link: (chunks) => (
-                                                <a
-                                                    href="https://github.com/metrom-xyz/monorepo/issues/new?template=whitelist_token.yaml"
-                                                    target="_blank"
-                                                    rel="noopener noreferrer"
-                                                    className={styles.link}
-                                                >
-                                                    {chunks}
-                                                </a>
-                                            ),
-                                        })}
-                                    </Typography>
-                                </InfoTooltip>
                             </div>
                             <ErrorText size="xs" weight="medium">
                                 {!disabled ? error : null}
@@ -167,23 +123,6 @@ export function RewardsStep({
                                     </Typography>
                                 </Tab>
                             </Tabs>
-                            {tokensRatioSupported && (
-                                <div className={styles.tokensRatioToggle}>
-                                    <Typography
-                                        uppercase
-                                        weight="medium"
-                                        light
-                                        size="xs"
-                                    >
-                                        {t("weighting.title")}:
-                                    </Typography>
-                                    <Switch
-                                        size="xs"
-                                        checked={tokensRatioOpen}
-                                        onClick={setTokensRatioOpen}
-                                    />
-                                </div>
-                            )}
                         </div>
                     </div>
                 }
@@ -191,6 +130,12 @@ export function RewardsStep({
                 className={{ root: !disabled ? styles.stepPreview : "" }}
             >
                 <div className={styles.previewWrapper}>
+                    <InfoMessage
+                        text={t("infoMessage")}
+                        link="https://github.com/metrom-xyz/monorepo/issues/new?template=whitelist_token.yaml"
+                        linkText={t("contactUs")}
+                        className={styles.infoText}
+                    />
                     {distributables?.type === DistributablesType.Points && (
                         <RewardPoints
                             campaignDuration={campaignDuration}
@@ -206,16 +151,6 @@ export function RewardsStep({
                             onError={handleOnError}
                             onTokensChange={onDistributablesChange}
                         />
-                    )}
-                    {tokensRatioSupported && (
-                        <div className={styles.tokensRatioWrapper}>
-                            <Weighting
-                                open={tokensRatioOpen}
-                                pool={pool}
-                                weighting={weighting}
-                                onWeightingChange={onWeightingChange!}
-                            />
-                        </div>
                     )}
                 </div>
             </StepPreview>
