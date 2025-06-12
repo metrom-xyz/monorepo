@@ -20,6 +20,6 @@
     @apply flex justify-center py-4;
 }
 
-.list {
-    @apply rounded-b-2xl;
+.infoText {
+    @apply py-2 px-4 text-center;
 }

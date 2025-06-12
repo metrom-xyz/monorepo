@@ -20,20 +20,21 @@ export function InfoMessage({
         <div className={className}>
             <Typography weight="medium" light size="xs">
                 {text}
+                {link && linkText && (
+                    <>
+                        {" "}
+                        <a
+                            href={link}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className={styles.link}
+                        >
+                            {linkText}
+                        </a>
+                        .
+                    </>
+                )}
             </Typography>
-            {link && linkText && (
-                <Typography weight="medium" light size="xs">
-                    <a
-                        href={link}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className={styles.link}
-                    >
-                        {linkText}
-                    </a>
-                    .
-                </Typography>
-            )}
         </div>
     );
 }

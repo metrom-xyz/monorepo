@@ -14,6 +14,7 @@ import { Row } from "./row";
 import { AnimatePresence, easeInOut, motion } from "motion/react";
 import type { WhitelistedErc20TokenAmount } from "@/src/types/common";
 import classNames from "classnames";
+import { InfoMessage } from "@/src/components/info-message";
 
 import styles from "./styles.module.css";
 
@@ -150,6 +151,12 @@ export function WhitelistedTokensList({
                                 </Typography>
                             </div>
                         )}
+                        <InfoMessage
+                            text={t("infoMessage")}
+                            link="https://github.com/metrom-xyz/monorepo/issues/new?template=whitelist_token.yaml"
+                            linkText={t("contactUs")}
+                            className={styles.infoText}
+                        />
                     </div>
                 </motion.div>
             )}
