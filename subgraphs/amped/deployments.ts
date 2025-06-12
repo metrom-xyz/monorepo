@@ -33,8 +33,8 @@ export const DEPLOYMENTS: {
             startBlock: 8181671,
         },
         yAlpVault: {
-            address: "0x2696351e079b1F411f5e6204C54a3C2dDdbE8097",
-            startBlock: 30157094,
+            address: "0xFa9A3A721BA614C589Dcd6062578123f998d3A34",
+            startBlock: 33453126,
         },
     },
 };
