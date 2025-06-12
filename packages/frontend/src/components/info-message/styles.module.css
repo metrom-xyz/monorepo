@@ -1,0 +1,5 @@
+@reference "../../app.css";
+
+.link {
+    @apply text-brand-green-dark font-medium;
+}

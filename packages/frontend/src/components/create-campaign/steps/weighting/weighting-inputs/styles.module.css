@@ -1,11 +1,7 @@
 @reference "../../../../../app.css";
 
 .root {
-    @apply flex
-        flex-col
-        gap-1
-        h-full
-        overflow-hidden;
+    @apply flex flex-col gap-1 h-full;
 }
 
 .title {
@@ -13,7 +9,7 @@
 }
 
 .inputsWrapper {
-    @apply flex gap-3 pb-4;
+    @apply flex gap-3;
 }
 
 .input {

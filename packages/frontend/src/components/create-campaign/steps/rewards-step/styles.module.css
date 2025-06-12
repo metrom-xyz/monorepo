@@ -29,6 +29,10 @@
     color: inherit;
 }
 
+.infoText {
+    @apply px-4;
+}
+
 .link {
     @apply text-brand-green-dark font-medium;
 }
@@ -46,7 +50,7 @@
 }
 
 .previewWrapper {
-    @apply h-full w-full flex flex-col;
+    @apply h-full w-full flex flex-col gap-2.5;
 }
 
 .tokensRatioWrapper {

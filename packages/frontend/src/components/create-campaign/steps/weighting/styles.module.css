@@ -1,0 +1,51 @@
+@reference "../../../../app.css";
+
+.stepPreview {
+    @apply hover:cursor-default hover:bg-inherit h-full p-0;
+}
+
+.previewLabelWrapper {
+    @apply w-full flex justify-between items-center;
+}
+
+.previewTextWrapper {
+    @apply flex items-center gap-2;
+}
+
+.previewLabel {
+    font-size: inherit;
+    color: inherit;
+}
+
+.previewDisabled {
+    @apply hover:cursor-default hover:bg-light-surface hover:dark:bg-dark-surface;
+}
+
+.weightsWrapper {
+    @apply flex gap-2;
+}
+
+.weight {
+    @apply flex gap-1;
+}
+
+.previewLabel {
+    font-size: inherit;
+    color: inherit;
+}
+
+.previewDisabled {
+    @apply hover:cursor-default hover:bg-light-surface hover:dark:bg-dark-surface;
+}
+
+.stepContent {
+    @apply flex flex-col gap-3 p-4;
+}
+
+.boldText {
+    @apply text-black dark:text-white font-bold;
+}
+
+.applyButton {
+    @apply w-full;
+}

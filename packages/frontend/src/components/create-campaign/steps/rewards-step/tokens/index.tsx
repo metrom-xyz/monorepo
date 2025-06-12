@@ -17,7 +17,6 @@ import { ChevronDown } from "@/src/assets/chevron-down";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslations } from "next-intl";
 import { useAccount, useChainId } from "wagmi";
-import { BorderedPlusIcon } from "@/src/assets/bordered-plus-icon";
 import type {
     CampaignPayloadErrors,
     BaseCampaignPayloadPart,
@@ -235,7 +234,7 @@ export function RewardTokens({
                         {t("totalUsd")}
                     </Typography>
                 </div>
-                <hr className={styles.horizontalDivider} />
+                <div className={styles.horizontalDivider} />
                 <div className={styles.rewardPickerWrapper}>
                     <NumberInput
                         placeholder="0"
@@ -270,7 +269,6 @@ export function RewardTokens({
                 <Button
                     variant="secondary"
                     size="sm"
-                    icon={BorderedPlusIcon}
                     disabled={
                         distributables.tokens?.length === 5 ||
                         !amount ||

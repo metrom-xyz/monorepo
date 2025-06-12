@@ -149,9 +149,10 @@
                 },
                 "rewards": {
                     "title": {
-                        "rewards": "Rewards",
-                        "contactUs": "Not seeing the token you want to use? <link>Contact us</link>."
+                        "rewards": "Rewards"
                     },
+                    "infoMessage": "You're not seeing the token you want to use to reward users?",
+                    "contactUs": "Contact us 🡥",
                     "tabs": {
                         "tokens": "Tokens",
                         "points": "Points"
@@ -171,10 +172,6 @@
                             "lowDistributionRate": "Low distribution rate"
                         }
                     },
-                    "weighting": {
-                        "title": "Reward ratio",
-                        "fees": "Fees"
-                    },
                     "list": {
                         "token": "Token",
                         "balance": "Balance",
@@ -192,6 +189,14 @@
                         },
                         "noFeeTokens": "Points campaign not supported"
                     }
+                },
+                "weighting": {
+                    "title": "Reward ratio",
+                    "fees": "Fees",
+                    "apply": "Apply",
+                    "notApplied": "Not applied",
+                    "infoMessage": "Distribute emissions among <bold>{token0}</bold>, <bold>{token1}</bold>, and generated fees, rather than applying a uniform flat APR to all positions.",
+                    "readMore": "Read more 🡥"
                 },
                 "restrictions": {
                     "title": "Filter addresses",
@@ -232,6 +237,8 @@
                 "kpi": {
                     "title": "Set KPI",
                     "currentTvl": "Current TVL",
+                    "infoMessage": "Setting a TVL KPI ensures rewards are distributed in proportion to performance, aligning incentives by unlocking only the corresponding share when targets are partially met.",
+                    "readMore": "Read more 🡥",
                     "rangedTvl": {
                         "lowerBound": "Lower TVL bound",
                         "upperBound": "Upper TVL bound"

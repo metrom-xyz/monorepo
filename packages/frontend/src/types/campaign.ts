@@ -220,6 +220,7 @@ export interface CampaignPayloadErrors {
     startDate?: boolean;
     endDate?: boolean;
     rewards?: boolean;
+    weighting?: boolean;
     kpiSpecification?: boolean;
     priceRangeSpecification?: boolean;
     restrictions?: boolean;
