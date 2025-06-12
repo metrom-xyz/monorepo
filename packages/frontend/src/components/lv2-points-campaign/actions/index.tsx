@@ -4,20 +4,21 @@ import { Card, Typography } from "@metrom-xyz/ui";
 import type { SupportedChain } from "@metrom-xyz/contracts";
 import { Action } from "./action";
 import { LiquidityLandChip } from "../liquidity-land-chip";
+import type { SupportedLiquityV2 } from "@metrom-xyz/sdk";
 
 import styles from "./styles.module.css";
 
 interface ActionsProps {
     chain: SupportedChain;
+    protocol: SupportedLiquityV2;
     pointsName: string;
-    liquidityLandUrl?: Lv2PointsCampaign["liquidityLandUrl"];
     actions: Lv2PointsCampaign["actions"];
 }
 
 export function Actions({
     chain,
+    protocol,
     pointsName,
-    liquidityLandUrl,
     actions,
 }: ActionsProps) {
     const t = useTranslations("lv2PointsCampaignPage.actions");
@@ -42,7 +43,7 @@ export function Actions({
                                 </Typography>
                                 <LiquidityLandChip
                                     boost={group.boost}
-                                    endpoint={liquidityLandUrl}
+                                    protocol={protocol}
                                 />
                             </div>
                             <div className={styles.actionsWrapper}>

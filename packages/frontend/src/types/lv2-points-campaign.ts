@@ -16,6 +16,10 @@ export interface Lv2BackendLeaderboardResponse {
     totalItems: number;
 }
 
+export interface Lv2BackendLiquidityLandUsersResponse {
+    accounts: Address[];
+}
+
 export interface Action {
     name: string;
     targets: Address[];
@@ -50,7 +54,6 @@ export interface Lv2PointsCampaign {
     name: string;
     description: string;
     url: string;
-    liquidityLandUrl?: string;
     chain: SupportedChain;
     protocol: SupportedLiquityV2;
     pointsName: string;

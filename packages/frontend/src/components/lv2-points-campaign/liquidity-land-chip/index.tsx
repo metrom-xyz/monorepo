@@ -4,22 +4,19 @@ import { formatPercentage } from "@/src/utils/format";
 import { useIsAccountOnLiquidityLand } from "@/src/hooks/useIsAccountOnLiquidityLand";
 import classNames from "classnames";
 import { LIQUIDITY_LAND_REFERRAL_URL } from "@/src/commons";
+import type { SupportedLiquityV2 } from "@metrom-xyz/sdk";
 
 import styles from "./styles.module.css";
 
 interface LiquidityLandChipProps {
-    endpoint?: string;
+    protocol: SupportedLiquityV2;
     boost?: number;
 }
 
-export function LiquidityLandChip({ boost, endpoint }: LiquidityLandChipProps) {
+export function LiquidityLandChip({ boost, protocol }: LiquidityLandChipProps) {
     const t = useTranslations("lv2PointsCampaignPage.actions");
 
-    const { active, loading } = useIsAccountOnLiquidityLand({
-        endpoint,
-        // TODO: enable once we have the BE API
-        enabled: false,
-    });
+    const { active, loading } = useIsAccountOnLiquidityLand({ protocol });
 
     if (!boost) return null;
 
