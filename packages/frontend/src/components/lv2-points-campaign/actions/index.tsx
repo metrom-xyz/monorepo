@@ -11,7 +11,6 @@ interface ActionsProps {
     chain: SupportedChain;
     pointsName: string;
     liquidityLandUrl?: Lv2PointsCampaign["liquidityLandUrl"];
-    liquidityLandReferralUrl?: Lv2PointsCampaign["liquidityLandReferralUrl"];
     actions: Lv2PointsCampaign["actions"];
 }
 
@@ -19,7 +18,6 @@ export function Actions({
     chain,
     pointsName,
     liquidityLandUrl,
-    liquidityLandReferralUrl,
     actions,
 }: ActionsProps) {
     const t = useTranslations("lv2PointsCampaignPage.actions");
@@ -45,7 +43,6 @@ export function Actions({
                                 <LiquidityLandChip
                                     boost={group.boost}
                                     endpoint={liquidityLandUrl}
-                                    referral={liquidityLandReferralUrl}
                                 />
                             </div>
                             <div className={styles.actionsWrapper}>

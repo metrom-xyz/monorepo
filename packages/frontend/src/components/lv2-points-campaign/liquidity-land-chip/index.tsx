@@ -3,20 +3,16 @@ import { useTranslations } from "next-intl";
 import { formatPercentage } from "@/src/utils/format";
 import { useIsAccountOnLiquidityLand } from "@/src/hooks/useIsAccountOnLiquidityLand";
 import classNames from "classnames";
+import { LIQUIDITY_LAND_REFERRAL_URL } from "@/src/commons";
 
 import styles from "./styles.module.css";
 
 interface LiquidityLandChipProps {
     endpoint?: string;
-    referral?: string;
     boost?: number;
 }
 
-export function LiquidityLandChip({
-    boost,
-    endpoint,
-    referral,
-}: LiquidityLandChipProps) {
+export function LiquidityLandChip({ boost, endpoint }: LiquidityLandChipProps) {
     const t = useTranslations("lv2PointsCampaignPage.actions");
 
     const { active, loading } = useIsAccountOnLiquidityLand({
@@ -32,7 +28,7 @@ export function LiquidityLandChip({
             <a
                 target="_blank"
                 rel="noopener noreferrer"
-                href={referral}
+                href={LIQUIDITY_LAND_REFERRAL_URL}
                 className={classNames(styles.chip, {
                     [styles.loading]: loading,
                 })}
