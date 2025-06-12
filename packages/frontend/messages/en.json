@@ -151,7 +151,7 @@
                     "title": {
                         "rewards": "Rewards"
                     },
-                    "infoMessage": "You're not seeing the token you want to use to reward users?",
+                    "infoMessage": "You're not seeing the token you want to use?",
                     "contactUs": "Contact us 🡥",
                     "tabs": {
                         "tokens": "Tokens",
@@ -195,7 +195,7 @@
                     "fees": "Fees",
                     "apply": "Apply",
                     "notApplied": "Not applied",
-                    "infoMessage": "Distribute emissions among <bold>{token0}</bold>, <bold>{token1}</bold>, and generated fees, rather than applying a uniform flat APR to all positions.",
+                    "infoMessage": "Structure incentives based on the size of position that holds <bold>{token0}</bold> and <bold>{token1}</bold>. Fees based structure will be based on concentration and liquidity depth.",
                     "readMore": "Read more 🡥"
                 },
                 "restrictions": {
@@ -237,7 +237,7 @@
                 "kpi": {
                     "title": "Set KPI",
                     "currentTvl": "Current TVL",
-                    "infoMessage": "Setting a TVL KPI ensures rewards are distributed in proportion to performance, aligning incentives by unlocking only the corresponding share when targets are partially met.",
+                    "infoMessage": "Structure incentives with a TVL KPI - distributed in proportion to performance, aligning incentives when targets are partially met.",
                     "readMore": "Read more 🡥",
                     "rangedTvl": {
                         "lowerBound": "Lower TVL bound",

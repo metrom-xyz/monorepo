@@ -13,7 +13,6 @@ import classNames from "classnames";
 import { RewardTokens } from "./tokens";
 import { RewardPoints } from "./points";
 import { DistributablesType } from "@metrom-xyz/sdk";
-import { InfoMessage } from "@/src/components/info-message";
 
 import styles from "./styles.module.css";
 
@@ -37,7 +36,6 @@ export function RewardsStep({
     const t = useTranslations("newCampaign.form.base.rewards");
 
     const [error, setError] = useState("");
-    const [tokensRatioOpen, setTokensRatioOpen] = useState(false);
 
     const campaignDuration = useMemo(() => {
         if (!startDate || !endDate) return undefined;
@@ -130,12 +128,6 @@ export function RewardsStep({
                 className={{ root: !disabled ? styles.stepPreview : "" }}
             >
                 <div className={styles.previewWrapper}>
-                    <InfoMessage
-                        text={t("infoMessage")}
-                        link="https://github.com/metrom-xyz/monorepo/issues/new?template=whitelist_token.yaml"
-                        linkText={t("contactUs")}
-                        className={styles.infoText}
-                    />
                     {distributables?.type === DistributablesType.Points && (
                         <RewardPoints
                             campaignDuration={campaignDuration}

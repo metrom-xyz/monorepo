@@ -29,10 +29,6 @@
     color: inherit;
 }
 
-.infoText {
-    @apply px-4;
-}
-
 .link {
     @apply text-brand-green-dark font-medium;
 }
