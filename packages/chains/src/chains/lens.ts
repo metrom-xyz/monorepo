@@ -1,6 +1,12 @@
 import { SupportedChain, ADDRESS } from "@metrom-xyz/contracts";
-
-import { LensLogo, type ChainData } from "..";
+import {
+    DepositUrlType,
+    LensLogo,
+    ProtocolType,
+    SupportedDex,
+    UniswapLogo,
+    type ChainData,
+} from "..";
 import { lens } from "viem/chains";
 
 export const lensData: ChainData = {
@@ -9,7 +15,20 @@ export const lensData: ChainData = {
     metromContract: ADDRESS[SupportedChain.Lens],
     blockExplorers: lens.blockExplorers,
     icon: LensLogo,
-    protocols: [],
+    protocols: [
+        {
+            active: true,
+            type: ProtocolType.Dex,
+            slug: SupportedDex.UniswapV3,
+            logo: UniswapLogo,
+            name: "Uniswap v3",
+            depositUrl: {
+                type: DepositUrlType.PathPoolAddress,
+                template: "https://oku.trade/app/taiko/liquidity/{pool}",
+            },
+            supportsFetchAllPools: true,
+        },
+    ],
     baseTokens: [
         {
             address: "0x000000000000000000000000000000000000800A",
