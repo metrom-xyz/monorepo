@@ -31,12 +31,7 @@ export function Lv2PointsCampaignBanner() {
                     ([protocol, campaign], index) => {
                         if (!campaign) return null;
 
-                        const {
-                            name,
-                            brand,
-                            pointsName,
-                            icon: Icon,
-                        } = campaign;
+                        const { brand, pointsName, icon: Icon } = campaign;
 
                         const Illustration =
                             ILLUSTRATIONS[index] || ILLUSTRATIONS[0];
