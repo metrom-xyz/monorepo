@@ -1,0 +1,80 @@
+@reference "../../../app.css";
+
+.root {
+    @apply flex p-4 gap-4 rounded-lg;
+}
+
+.header {
+    @apply grid grid-cols-[0.8fr_0.6fr_0.5fr];
+}
+
+.tokenColumn {
+    @apply w-full min-w-full flex flex-col gap-4;
+}
+
+.title {
+    @apply flex items-center p-2 gap-2 rounded-md theme-surface-2;
+}
+
+.title.active {
+    @apply theme-surface-2-active;
+}
+
+.title.loading {
+    @apply p-0 bg-transparent;
+}
+
+.accounts {
+    @apply flex flex-col gap-2;
+}
+
+.accountRow {
+    @apply w-full grid grid-cols-[0.8fr_0.6fr_0.5fr];
+}
+
+.account {
+    @apply w-full flex items-center gap-2;
+}
+
+.connected {
+    @apply theme-text font-bold;
+}
+
+.amount {
+    @apply flex items-baseline gap-1;
+}
+
+.amount.loading {
+    @apply w-32;
+}
+
+.change {
+    @apply theme-text rounded-md font-bold;
+}
+
+.change.negative {
+    @apply text-red-600;
+}
+
+.change.positive {
+    @apply text-green-600;
+}
+
+.legend {
+    @apply w-4 h-4 rounded-sm;
+}
+
+.header > :first-child,
+.accountRow > :first-child {
+    @apply w-[400px];
+}
+
+.header > :nth-child(2),
+.accountRow > :nth-child(2) {
+    @apply justify-self-end;
+}
+
+.header > :last-child,
+.accountRow > :last-child {
+    @apply justify-self-end;
+}

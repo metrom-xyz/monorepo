@@ -534,6 +534,32 @@
         },
         "notFound": "Campaign not found!"
     },
+    "campaignDistributions": {
+        "filters": {
+            "title": "Distributions filters",
+            "from": "From",
+            "to": "To",
+            "search": "Search",
+            "loading": "Loading distributions ({completed}/{total})",
+            "errors": {
+                "inconsistentRange": "Dates range not valid.",
+                "rangeTooWide": "Dates range wide; max supported range is 7 days."
+            }
+        },
+        "distributionsOverview": "Distributions overview",
+        "distributionsBreakdown": "Distributions breakdown",
+        "warningMessages": {
+            "notFirstDistribution": "This distribution includes all previous ones, as this is not the first one for the campaign.",
+            "multiDistribution": "This distribution includes data from multiple distributions (~{amount})."
+        },
+        "reimbursed": "Reimbursed",
+        "token": "Token",
+        "time": "Time",
+        "account": "Account",
+        "distributed": "Distributed",
+        "weight": "Weight",
+        "empty": "No data"
+    },
     "rewards": {
         "claims": {
             "chain": "Chain",

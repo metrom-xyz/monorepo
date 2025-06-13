@@ -1,0 +1,13 @@
+@reference "../../../app.css";
+
+.root {
+    @apply w-full flex flex-col gap-4;
+}
+
+.card {
+    @apply flex items-end gap-2;
+}
+
+.popover {
+    @apply p-2;
+}

@@ -1,0 +1,26 @@
+@reference "../../../app.css";
+
+.root {
+    @apply w-full
+        flex        
+        flex-col
+        gap-2
+        p-2
+        z-50
+        rounded-lg
+        border
+        bg-white dark:bg-zinc-900
+        border-zinc-200 dark:border-zinc-600;
+}
+
+.fieldWrapper {
+    @apply flex items-center justify-between gap-4;
+}
+
+.accountWrapper {
+    @apply flex items-center gap-2;
+}
+
+.legendSquare {
+    @apply w-4 h-4 rounded-sm;
+}
