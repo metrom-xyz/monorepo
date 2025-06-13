@@ -4,7 +4,8 @@ import {
     type Lv2PointsCampaign,
 } from "@/src/types/lv2-points-campaign";
 import { SupportedChain } from "@metrom-xyz/contracts";
-import { AmpedLogo, OrkiLogo, QuillLogo } from "@metrom-xyz/chains";
+import { EbisuLogo, AmpedLogo, OrkiLogo, QuillLogo } from "@metrom-xyz/chains";
+import { mainnet } from "viem/chains";
 
 export const lv2PointsCampaignsProd: Record<
     SupportedLiquityV2 | SupportedGmxV1,
@@ -395,35 +396,35 @@ export const lv2PointsCampaignsProd: Record<
             [Lv2PointsCampaign2Action.Debt]: null,
         },
     },
-    [SupportedLiquityV2.Ebisu]: null,
+    [SupportedLiquityV2.Ebisu]: {
+        name: "Ebisu",
+        description:
+            "Ebisu Money is a Stablecoin Credit Market that facilitates economic activity between ebUSD Borrowers and Stability Pool depositors.",
+        url: "https://ebisu.money",
+        chain: mainnet.id as SupportedChain,
+        pointsName: "",
+        protocol: SupportedLiquityV2.Ebisu,
+        brand: { main: "#f14d9d", light: "#f28fbd" },
+        icon: EbisuLogo,
+        from: 1744892700,
+        to: 1744899900,
+        actions: {
+            [Lv2PointsCampaign2Action.Liquidity]: {
+                title: "",
+                description: "",
+                actions: [],
+            },
+            [Lv2PointsCampaign2Action.StabilityPool]: {
+                title: "",
+                description: "",
+                actions: [],
+            },
+            [Lv2PointsCampaign2Action.Debt]: {
+                title: "",
+                description: "",
+                actions: [],
+            },
+        },
+    },
     [SupportedLiquityV2.Liquity]: null,
-    // [SupportedLiquityV2.Ebisu]: {
-    //     name: "Ebisu",
-    //     description: "Native stablecoin and credit protocol on Swell.",
-    //     url: "https://www.orki.finance",
-    //     chain: SupportedChain.Scroll,
-    //     protocol: SupportedLiquityV2.Orki,
-    //     totalUsdRewards: 250000,
-    //     brand: { main: "#F24C9E", light: "#F9A5CF" },
-    //     icon: EbisuLogo,
-    //     from: 1744892700,
-    //     to: 1744899900,
-    //     actions: {
-    //         [Lv2PointsCampaign2Action.Liquidity]: {
-    //             title: "",
-    //             description: "",
-    //             actions: [],
-    //         },
-    //         [Lv2PointsCampaign2Action.StabilityPool]: {
-    //             title: "",
-    //             description: "",
-    //             actions: [],
-    //         },
-    //         [Lv2PointsCampaign2Action.Debt]: {
-    //             title: "",
-    //             description: "",
-    //             actions: [],
-    //         },
-    //     },
-    // },
 };
