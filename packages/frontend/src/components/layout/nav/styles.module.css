@@ -5,8 +5,7 @@
         w-full
         flex
         justify-center
-        mb-6
-        sm:mb-12;
+        sm:mb-10;
 }
 
 .main {
