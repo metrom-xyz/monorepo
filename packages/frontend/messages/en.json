@@ -364,6 +364,10 @@
                 "value": "{price} {token1} PER {token0}"
             }
         },
+        "weighting": {
+            "title": "Reward ratio",
+            "fees": "Fees"
+        },
         "kpi": {
             "title": "KPI",
             "simulation": "KPI simulation",

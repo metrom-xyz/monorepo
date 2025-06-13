@@ -1,4 +1,3 @@
-import { CircledXIcon } from "@/src/assets/circled-x-icon";
 import {
     AmmPoolLiquidityCampaignPreviewPayload,
     LiquityV2CampaignPreviewPayload,
@@ -29,15 +28,12 @@ export function Header({ payload, backDisabled, onBack }: HeaderProps) {
     return (
         <div className={styles.root}>
             <Button
-                icon={CircledXIcon}
-                iconPlacement="right"
                 variant="secondary"
                 size="xs"
                 onClick={onBack}
                 disabled={backDisabled}
                 className={{
                     root: styles.backButton,
-                    contentWrapper: styles.backButtonContent,
                 }}
             >
                 {t("back")}

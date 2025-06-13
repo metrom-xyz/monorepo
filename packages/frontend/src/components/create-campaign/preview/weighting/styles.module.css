@@ -1,0 +1,9 @@
+@reference "../../../../app.css";
+
+.root {
+    @apply w-full flex flex-col gap-4;
+}
+
+.fields {
+    @apply flex flex-wrap sm:flex-nowrap gap-4;
+}

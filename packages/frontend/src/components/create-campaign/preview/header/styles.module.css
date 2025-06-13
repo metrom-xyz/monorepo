@@ -1,15 +1,11 @@
 @reference "../../../../app.css";
 
 .root {
-    @apply flex flex-col gap-2 bg-white dark:bg-zinc-800 p-5 px-6 rounded-t-3xl;
+    @apply flex flex-col gap-2 sm:gap-0 bg-white dark:bg-zinc-800 p-4 rounded-t-3xl;
 }
 
 .backButton {
     @apply self-end;
-}
-
-.backButtonContent {
-    @apply !mr-1;
 }
 
 .titleContainer {
