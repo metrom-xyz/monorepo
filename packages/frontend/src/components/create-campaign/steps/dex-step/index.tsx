@@ -23,7 +23,7 @@ interface DexStepProps {
 
 export function DexStep({ disabled, dex, onDexChange }: DexStepProps) {
     const t = useTranslations("newCampaign.form.ammPoolLiquidity.dex");
-    const [open, setOpen] = useState(true);
+    const [open, setOpen] = useState(false);
 
     const chainId = useChainId();
     const availableDexes = useProtocolsInChain({

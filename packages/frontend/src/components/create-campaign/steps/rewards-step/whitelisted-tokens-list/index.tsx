@@ -107,7 +107,6 @@ export function WhitelistedTokensList({
                                         : tokensWithBalance
                                 }
                                 itemSize={57}
-                                className={styles.list}
                             >
                                 {({ index, style, data }) => {
                                     const whitelistedToken: Erc20TokenWithBalance<WhitelistedErc20Token> | null =

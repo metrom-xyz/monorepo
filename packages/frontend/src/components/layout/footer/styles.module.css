@@ -11,9 +11,9 @@
         gap-10
         p-4
         sm:p-8
-        sm:mb-8
+        sm:mb-6
         mb-[63px]
-        sm:my-10
+        sm:mt-10
         max-w-screen-xl;
 }
 
