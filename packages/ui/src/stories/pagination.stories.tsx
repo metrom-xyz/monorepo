@@ -1,5 +1,5 @@
-import type { Meta, StoryObj } from "@storybook/react";
-import { useState } from "@storybook/preview-api";
+import type { Meta, StoryObj } from "@storybook/react-vite";
+import { useState } from "storybook/preview-api";
 import { Pagination } from "../components/pagination/index";
 
 const meta: Meta = {

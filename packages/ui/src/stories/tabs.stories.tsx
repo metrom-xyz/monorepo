@@ -1,5 +1,5 @@
-import type { Meta, StoryObj } from "@storybook/react";
-import { useState } from "@storybook/preview-api";
+import type { Meta, StoryObj } from "@storybook/react-vite";
+import { useState } from "storybook/preview-api";
 import { Tabs } from "../components/tabs/index";
 import { Tab } from "../components/tabs/tab";
 import { Typography } from "../components/typography";

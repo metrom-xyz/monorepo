@@ -1,5 +1,5 @@
-import type { Meta, StoryObj } from "@storybook/react";
-import { useRef, useState } from "@storybook/preview-api";
+import type { Meta, StoryObj } from "@storybook/react-vite";
+import { useRef, useState } from "storybook/preview-api";
 import { Popover } from "../components/popover/index";
 import { Card } from "../components/card";
 import { Typography } from "../components/typography";
