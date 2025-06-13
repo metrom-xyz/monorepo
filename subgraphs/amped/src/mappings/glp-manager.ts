@@ -18,7 +18,7 @@ function getOrCreatePosition(owner: Address, collateral: Address): Position {
     position.owner = owner;
     position.liquidity = BI_0;
     position.collateral = collateral;
-    position.vault = owner === YALP_VAULT_ADDRESS ? YALP_VAULT_ADDRESS : null;
+    position.vault = owner == YALP_VAULT_ADDRESS ? YALP_VAULT_ADDRESS : null;
     position.save();
 
     return position;
