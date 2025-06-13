@@ -12,5 +12,6 @@ export { gnosisData } from "./gnosis";
 export { hemiData } from "./hemi";
 export { sepoliaData } from "./sepolia";
 export { telosData } from "./telos";
+export { lensData } from "./lens";
 export { lightlinkPhoenixData } from "./lightlink-phoenix";
 export { seiDevelopmentData, seiProductionData } from "./sei";
