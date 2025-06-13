@@ -42,6 +42,7 @@ import { type BaseTransaction } from "@safe-global/safe-apps-sdk";
 import { useLiquidityInRange } from "@/src/hooks/useLiquidityInRange";
 import { SAFE_APP_SDK } from "@/src/commons";
 import { useChainData } from "@/src/hooks/useChainData";
+import { Weighting } from "./weighting";
 
 import styles from "./styles.module.css";
 
@@ -320,6 +321,13 @@ export function CampaignPreview({
     const pointsCampaign = payload.isDistributing(DistributablesType.Points);
     const tokensCampaign = payload.isDistributing(DistributablesType.Tokens);
 
+    const range = ammPoolLiquidityCampaign && !!payload.priceRangeSpecification;
+    const weighting = ammPoolLiquidityCampaign && !!payload.weighting;
+    const kpi =
+        ammPoolLiquidityCampaign &&
+        !!payload.kpiSpecification &&
+        tokensCampaign;
+
     // TODO: add notification toast in case of errors
     if (!created) {
         return (
@@ -330,24 +338,27 @@ export function CampaignPreview({
                     onBack={onBack}
                 />
                 <div className={styles.content}>
-                    {ammPoolLiquidityCampaign &&
-                        !!payload.priceRangeSpecification && (
-                            <Range
-                                pool={payload.pool}
-                                specification={payload.priceRangeSpecification}
-                            />
-                        )}
-                    {ammPoolLiquidityCampaign &&
-                        !!payload.kpiSpecification &&
-                        tokensCampaign && (
-                            <Kpi
-                                poolUsdTvl={payload.pool.usdTvl}
-                                from={payload.startDate}
-                                to={payload.endDate}
-                                distributables={payload.distributables}
-                                specification={payload.kpiSpecification}
-                            />
-                        )}
+                    {weighting && (
+                        <Weighting
+                            pool={payload.pool}
+                            weighting={payload.weighting}
+                        />
+                    )}
+                    {kpi && (
+                        <Kpi
+                            poolUsdTvl={payload.pool.usdTvl}
+                            from={payload.startDate}
+                            to={payload.endDate}
+                            distributables={payload.distributables}
+                            specification={payload.kpiSpecification}
+                        />
+                    )}
+                    {range && (
+                        <Range
+                            pool={payload.pool}
+                            specification={payload.priceRangeSpecification}
+                        />
+                    )}
                     <div className={styles.contentGrid}>
                         {ammPoolLiquidityCampaign && (
                             <TextField
