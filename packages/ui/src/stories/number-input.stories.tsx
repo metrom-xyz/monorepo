@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import { NumberInput } from "../components/number-input";
 import { SettingsIcon } from "../assets/settings";
 import { Typography } from "../components/typography";

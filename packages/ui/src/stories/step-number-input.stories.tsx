@@ -1,6 +1,6 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import { StepNumberInput } from "../components/step-number-input";
-import { useState } from "@storybook/preview-api";
+import { useState } from "storybook/preview-api";
 
 const meta: Meta = {
     title: "Input/Step number",

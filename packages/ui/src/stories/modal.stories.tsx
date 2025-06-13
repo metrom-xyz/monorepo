@@ -1,5 +1,5 @@
-import type { Meta, StoryObj } from "@storybook/react";
-import { useState } from "@storybook/preview-api";
+import type { Meta, StoryObj } from "@storybook/react-vite";
+import { useState } from "storybook/preview-api";
 import { Modal } from "../components/modal/index";
 import { Button } from "../components/button";
 import { Card } from "../components/card";

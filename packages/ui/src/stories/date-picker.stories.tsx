@@ -1,5 +1,5 @@
-import type { Meta, StoryObj } from "@storybook/react";
-import { useState } from "@storybook/preview-api";
+import type { Meta, StoryObj } from "@storybook/react-vite";
+import { useState } from "storybook/preview-api";
 import dayjs, { Dayjs } from "dayjs";
 import { DatePicker } from "../components/date-picker/index";
 import { Card } from "../components/card";

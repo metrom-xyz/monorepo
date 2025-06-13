@@ -1,6 +1,6 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import { SliderInput } from "../components/slider/index";
-import { useState } from "@storybook/preview-api";
+import { useState } from "storybook/preview-api";
 import type { ChangeEvent } from "react";
 
 const meta: Meta = {
