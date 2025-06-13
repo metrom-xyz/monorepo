@@ -152,4 +152,16 @@ export const DEPLOYMENTS: {
             },
         },
     },
+    gnosis: {
+        "uni-v3": {
+            Factory: {
+                address: "0xe32F7dD7e3f098D518ff19A22d5f028e076489B1",
+                startBlock: 27416614,
+            },
+            NonFungiblePositionManager: {
+                address: "0xAE8fbE656a77519a7490054274910129c9244FA3",
+                startBlock: 27416645,
+            },
+        },
+    },
 };
