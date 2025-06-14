@@ -6,6 +6,7 @@ interface Contract {
 interface ChainConfig {
     Vault: Contract;
     GlpManager: Contract;
+    yAlpVault: Contract | null;
 }
 
 export const DEPLOYMENTS: {
@@ -20,6 +21,7 @@ export const DEPLOYMENTS: {
             address: "0xEF301eD9eAFf7476605aE8C8A7b966c0fbE77530",
             startBlock: 85247896,
         },
+        yAlpVault: null,
     },
     sonic: {
         Vault: {
@@ -29,6 +31,10 @@ export const DEPLOYMENTS: {
         GlpManager: {
             address: "0x4DE729B85dDB172F1bb775882f355bA25764E430",
             startBlock: 8181671,
+        },
+        yAlpVault: {
+            address: "0xFa9A3A721BA614C589Dcd6062578123f998d3A34",
+            startBlock: 33453126,
         },
     },
 };
