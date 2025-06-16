@@ -37,9 +37,6 @@ import type { TranslationsKeys } from "@/src/types/utils";
 import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
 import { getChainData } from "@/src/utils/chain";
 import { useSupportedProtocols } from "@/src/hooks/useSupportedProtocols";
-import { useTurtleDeals } from "@/src/hooks/useTurtleDeals";
-// import { TURTLE_KATANA_CAMPAIGN_ID } from "@/src/commons";
-import { TurtleDealRow } from "./turtle-deal";
 
 import styles from "./styles.module.css";
 
@@ -228,10 +225,6 @@ export function Campaigns() {
     }, [chains, t]);
 
     const { loading: loadingCampaigns, campaigns } = useCampaigns();
-    // TODO: remove this
-    const { loading: loadingTurtleDeals, deals } = useTurtleDeals({
-        campaignId: "",
-    });
 
     useDebounce(
         () => {
@@ -491,25 +484,14 @@ export function Campaigns() {
                                     </Button>
                                 </div>
                             ) : (
-                                <>
-                                    {deals?.map((deal) => {
-                                        return (
-                                            <TurtleDealRow
-                                                key={deal.metadata.id}
-                                                campaignId={deal.campaignId}
-                                                deal={deal}
-                                            />
-                                        );
-                                    })}
-                                    {pagedCampaigns.map((campaign) => {
-                                        return (
-                                            <CampaignRow
-                                                key={campaign.id}
-                                                campaign={campaign}
-                                            />
-                                        );
-                                    })}
-                                </>
+                                pagedCampaigns.map((campaign) => {
+                                    return (
+                                        <CampaignRow
+                                            key={campaign.id}
+                                            campaign={campaign}
+                                        />
+                                    );
+                                })
                             )}
                         </div>
                     </div>

@@ -57,9 +57,9 @@ export function ProjectOpportunitiesBanner() {
 
                     const { id, name, brand, ownerLogo } = campaign;
 
+                    // FIXME: illustrations jumping around
                     const Illustration =
-                        ILLUSTRATIONS.reverse()[index] ||
-                        ILLUSTRATIONS.reverse()[0];
+                        ILLUSTRATIONS[index] || ILLUSTRATIONS[0];
 
                     return (
                         <Opportunity

@@ -17,13 +17,41 @@
 }
 
 .dealsWrapper {
-    @apply w-full flex flex-col gap-1.5;
+    @apply w-full flex flex-col gap-4;
 }
 
-.dealsWrapper > div {
+.dealsWrapper > div:not(.skeletonDeals) {
     @apply theme-bg;
 }
 
 .dealsWrapper > div > div {
     @apply p-0 border-none;
+}
+
+.dealsWrapper > div > div > div:first-child:not(.skeletonDeal) {
+    @apply hidden;
+}
+
+.dealsWrapper > div > div > div > div {
+    @apply px-4;
+}
+
+.dealsWrapper > div > div > div > div > div {
+    @apply gap-4;
+}
+
+.skeletonDeals {
+    @apply flex flex-col gap-4 rounded-xl p-4 theme-surface;
+}
+
+.skeletonDealHeader {
+    @apply h-[17px] w-full rounded-xl theme-surface-2 animate-pulse;
+}
+
+.skeletonDealsWrapper {
+    @apply w-full flex gap-4 flex-wrap;
+}
+
+.skeletonDeal {
+    @apply w-80 h-[374px] rounded-xl theme-surface-2 animate-pulse;
 }
