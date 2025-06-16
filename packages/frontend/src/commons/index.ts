@@ -13,6 +13,8 @@ import {
 
 export const BASE_URL = "https://app.metrom.xyz";
 
+export const TURTLE_API_BASE_URL = "https://earn.turtle.vision";
+
 export const LIQUIDITY_LAND_REFERRAL_URL =
     "https://app.liquidity.land?ref=2AQfO-fN";
 

@@ -96,6 +96,9 @@
                 "points": "Points"
             }
         },
+        "turtleDeal": {
+            "action": "Deposit {tokens} to {owner} turtle vault"
+        },
         "empty": {
             "title": "No campaigns found",
             "description": "No campaigns found on Metrom.",
@@ -417,7 +420,7 @@
             }
         }
     },
-    "lv2PointsCampaignsBanner": {
+    "projectOpportunitiesBanner": {
         "title": "Project opportunities",
         "campaignTitle": "{pointsName} campaign"
     },
@@ -447,6 +450,16 @@
         },
         "noPoints": "You don't have any {points}.",
         "distribution": "Distribution"
+    },
+    "turtleCampaignPage": {
+        "header": {
+            "title": "{owner} campaign on Turtle Club",
+            "fallback": "Campaign on Turtle Club"
+        },
+        "tvl": "Tvl",
+        "status": "Status",
+        "live": "Live",
+        "exploreDeals": "Explore deals"
     },
     "campaignDetails": {
         "title": "Campaign details",

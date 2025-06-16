@@ -44,7 +44,7 @@ export function Details({ campaign, loading }: DetailsProps) {
                 <TextField
                     boxed
                     size="xl"
-                    label={t("duration")}
+                    label={t("status")}
                     loading={detailsLoading}
                     value={
                         <div className={styles.statusWrapper}>
