@@ -1,15 +1,14 @@
 "use client";
 
 import { useTurtleDeals } from "@/src/hooks/useTurtleDeals";
-import { EarnPage, useWagmiAdapter } from "@turtledev/react";
 import { useAccount } from "wagmi";
-import { useAppKit } from "@reown/appkit/react";
 import { TextField, Typography } from "@metrom-xyz/ui";
 import { TURTLE_CAMPAIGNS } from "@/src/commons/turtle-campaigns";
 import { Header } from "./header";
 import { formatUsdAmount } from "@/src/utils/format";
 import { useMemo } from "react";
 import { useTranslations } from "next-intl";
+import { Earn } from "./earn";
 
 import styles from "./styles.module.css";
 
@@ -23,9 +22,7 @@ export function TurtleCampaignDetails({
     const t = useTranslations("turtleCampaignPage");
 
     const { address } = useAccount();
-    const { open } = useAppKit();
     const { deals, loading } = useTurtleDeals({ campaignId });
-    const adapter = useWagmiAdapter();
 
     const totalDealsTvl = useMemo(() => {
         if (!deals) return null;
@@ -85,14 +82,7 @@ export function TurtleCampaignDetails({
                 <Typography size="lg" weight="medium" uppercase>
                     {t("exploreDeals")}
                 </Typography>
-                <EarnPage
-                    // TODO: add referral code
-                    referral="YOUR_REFERRAL_CODE"
-                    campaignId={campaignId}
-                    user={address}
-                    openConnectionModal={open}
-                    {...adapter}
-                />
+                <Earn campaignId={campaignId} address={address} />
             </div>
         </div>
     );
