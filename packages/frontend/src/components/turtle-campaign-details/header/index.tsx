@@ -1,5 +1,3 @@
-"use client";
-
 import type { SVGIcon } from "@/src/types/common";
 import type { FunctionComponent } from "react";
 import { Button, Typography } from "@metrom-xyz/ui";
