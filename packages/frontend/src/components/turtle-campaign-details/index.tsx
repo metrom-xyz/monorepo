@@ -1,13 +1,7 @@
 "use client";
 
 import { useTurtleDeals } from "@/src/hooks/useTurtleDeals";
-import {
-    defaultThemeConfig,
-    EarnPage,
-    TurtleProvider,
-    useWagmiAdapter,
-} from "@turtledev/react";
-import { useTheme } from "next-themes";
+import { EarnPage, useWagmiAdapter } from "@turtledev/react";
 import { useAccount } from "wagmi";
 import { useAppKit } from "@reown/appkit/react";
 import { TextField, Typography } from "@metrom-xyz/ui";
@@ -31,7 +25,6 @@ export function TurtleCampaignDetails({
     const { address } = useAccount();
     const { open } = useAppKit();
     const { deals, loading } = useTurtleDeals({ campaignId });
-    const { resolvedTheme } = useTheme();
     const adapter = useWagmiAdapter();
 
     const totalDealsTvl = useMemo(() => {
@@ -87,50 +80,20 @@ export function TurtleCampaignDetails({
                     />
                 </div>
             </div>
-            <TurtleProvider
-                themeConfig={{
-                    ...defaultThemeConfig,
-                    light: {
-                        ...defaultThemeConfig.light,
-                        bgPrimary: "#ffffff",
-                        bgAccent: "#f4f4f5",
-                        textPrimary: "#000000",
-                        textSecondary: "#9ca3af",
-                        borderColor: "transparent",
-                    },
-                    dark: {
-                        ...defaultThemeConfig.dark,
-                        bgPrimary: "#202024",
-                        bgAccent: "#3f3f46",
-                        textPrimary: "#d4d4d8",
-                        textSecondary: "#9ca3af",
-                        borderColor: "transparent",
-                    },
-                    theme: resolvedTheme as any,
-                    shared: {
-                        borderRadius: "0.5rem",
-                        gap: "1rem",
-                        padding: "1rem",
-                        fontFamily: "IBM Plex Sans, ui-sans-serif, sans-serif",
-                        fontSize: "1rem",
-                        fontWeight: "400",
-                    },
-                }}
-            >
-                <div className={styles.dealsWrapper}>
-                    <Typography size="lg" weight="medium" uppercase>
-                        {t("exploreDeals")}
-                    </Typography>
-                    <EarnPage
-                        // TODO: add referral code
-                        referral="YOUR_REFERRAL_CODE"
-                        campaignId={campaignId}
-                        user={address}
-                        openConnectionModal={open}
-                        {...adapter}
-                    />
-                </div>
-            </TurtleProvider>
+
+            <div className={styles.dealsWrapper}>
+                <Typography size="lg" weight="medium" uppercase>
+                    {t("exploreDeals")}
+                </Typography>
+                <EarnPage
+                    // TODO: add referral code
+                    referral="YOUR_REFERRAL_CODE"
+                    campaignId={campaignId}
+                    user={address}
+                    openConnectionModal={open}
+                    {...adapter}
+                />
+            </div>
         </div>
     );
 }
