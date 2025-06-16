@@ -31,12 +31,15 @@ import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import { useRouter as useLocalizedRouter } from "@/i18n/routing";
 import { useChains } from "wagmi";
 import classNames from "classnames";
-import { Lv2PointsCampaignBanner } from "./lv2-points-campaigns-banner";
+import { ProjectOpportunitiesBanner } from "./project-opportunities-banner";
 import { FilterableStatus, type SVGIcon } from "@/src/types/common";
 import type { TranslationsKeys } from "@/src/types/utils";
 import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
 import { getChainData } from "@/src/utils/chain";
 import { useSupportedProtocols } from "@/src/hooks/useSupportedProtocols";
+import { useTurtleDeals } from "@/src/hooks/useTurtleDeals";
+// import { TURTLE_KATANA_CAMPAIGN_ID } from "@/src/commons";
+import { TurtleDealRow } from "./turtle-deal";
 
 import styles from "./styles.module.css";
 
@@ -224,7 +227,11 @@ export function Campaigns() {
         return options;
     }, [chains, t]);
 
-    const { loading, campaigns } = useCampaigns();
+    const { loading: loadingCampaigns, campaigns } = useCampaigns();
+    // TODO: remove this
+    const { loading: loadingTurtleDeals, deals } = useTurtleDeals({
+        campaignId: "",
+    });
 
     useDebounce(
         () => {
@@ -349,7 +356,7 @@ export function Campaigns() {
 
     return (
         <div className={styles.root}>
-            <Lv2PointsCampaignBanner />
+            <ProjectOpportunitiesBanner />
             <div className={styles.filters}>
                 <TextInput
                     className={classNames(
@@ -455,7 +462,7 @@ export function Campaigns() {
                             )}
                         </div>
                         <div className={styles.body}>
-                            {loading ? (
+                            {loadingCampaigns ? (
                                 <>
                                     <SkeletonCampaign />
                                     <SkeletonCampaign />
@@ -484,14 +491,25 @@ export function Campaigns() {
                                     </Button>
                                 </div>
                             ) : (
-                                pagedCampaigns.map((campaign) => {
-                                    return (
-                                        <CampaignRow
-                                            key={campaign.id}
-                                            campaign={campaign}
-                                        />
-                                    );
-                                })
+                                <>
+                                    {deals?.map((deal) => {
+                                        return (
+                                            <TurtleDealRow
+                                                key={deal.metadata.id}
+                                                campaignId={deal.campaignId}
+                                                deal={deal}
+                                            />
+                                        );
+                                    })}
+                                    {pagedCampaigns.map((campaign) => {
+                                        return (
+                                            <CampaignRow
+                                                key={campaign.id}
+                                                campaign={campaign}
+                                            />
+                                        );
+                                    })}
+                                </>
                             )}
                         </div>
                     </div>

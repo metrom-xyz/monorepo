@@ -12,12 +12,14 @@ interface CampaignStatusProps {
     from: number;
     to: number;
     status: StatusState;
+    showDuration?: boolean;
 }
 
 export function Status({
     from: rawFrom,
     to: rawTo,
     status,
+    showDuration = true,
 }: CampaignStatusProps) {
     const t = useTranslations("allCampaigns.status");
     const now = dayjs();
@@ -50,14 +52,16 @@ export function Status({
                 <Typography size="sm" weight="medium">
                     {text}
                 </Typography>
-                <Typography
-                    className={styles.statusDuration}
-                    light
-                    size="sm"
-                    weight="medium"
-                >
-                    {duration}
-                </Typography>
+                {showDuration && (
+                    <Typography
+                        className={styles.statusDuration}
+                        light
+                        size="sm"
+                        weight="medium"
+                    >
+                        {duration}
+                    </Typography>
+                )}
             </div>
         </div>
     );
