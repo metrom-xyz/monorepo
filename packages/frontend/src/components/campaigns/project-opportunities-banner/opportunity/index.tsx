@@ -23,7 +23,7 @@ export function Opportunity({
     illustration: Illustration,
 }: OpportunityProps) {
     return (
-        <Link href={href} className={styles.link}>
+        <Link href={href} className={styles.root}>
             <motion.div
                 whileHover="animate"
                 className={styles.card}

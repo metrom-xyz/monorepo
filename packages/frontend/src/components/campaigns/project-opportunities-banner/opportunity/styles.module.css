@@ -7,7 +7,7 @@
 .card {
     @apply relative
         overflow-hidden
-        h-fit
+        h-20
         flex
         gap-2
         items-center
