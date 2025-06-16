@@ -1,0 +1,54 @@
+@reference "../../../app.css";
+
+.root {
+    @apply grid col-span-full grid-cols-subgrid;
+}
+
+.card {
+    @apply col-span-full
+        grid
+        grid-cols-subgrid
+        items-center
+        theme-surface-hover
+        cursor-pointer
+        transition-colors
+        duration-200
+        ease-in-out
+        rounded-none
+        bg-none
+        min-h-[72px]
+        max-h-[72px]
+        px-7
+        py-4;
+}
+
+.card > :nth-child(1),
+.card > :nth-child(2) {
+    @apply justify-self-center;
+}
+
+.icon,
+.icon > svg {
+    @apply w-[1.25rem] h-[1.25rem] col-span-1;
+}
+
+.action {
+    @apply w-full flex items-center gap-3;
+}
+
+.title {
+    @apply w-fit max-w-full flex items-center gap-1.5;
+}
+
+.rewards {
+    @apply w-full flex items-center gap-1 justify-end pointer-events-none sm:pointer-events-auto;
+}
+
+.partnerIcon,
+.partnerIcon > svg {
+    @apply w-7 h-7 col-span-1 rounded-full;
+}
+
+.rewardIcon:not(:first-child) {
+    @apply -ml-4;
+}
