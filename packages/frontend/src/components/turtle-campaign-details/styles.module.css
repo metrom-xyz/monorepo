@@ -1,0 +1,29 @@
+@reference "../../app.css";
+
+.root {
+    @apply w-full max-w-screen-lg flex flex-col items-center px-4 sm:px-0 gap-4 md:gap-8;
+}
+
+.headerWrapper {
+    @apply flex flex-col items-center w-full max-w-screen-lg gap-10;
+}
+
+.contentWrapper {
+    @apply w-full max-w-screen-lg flex flex-col gap-8;
+}
+
+.details {
+    @apply flex flex-wrap sm:flex-nowrap justify-between gap-4;
+}
+
+.dealsWrapper {
+    @apply w-full flex flex-col gap-1.5;
+}
+
+.dealsWrapper > div {
+    @apply theme-bg;
+}
+
+.dealsWrapper > div > div {
+    @apply p-0 border-none;
+}

@@ -14,6 +14,7 @@ import {
     sei,
     hemi,
     form,
+    mainnet,
 } from "viem/chains";
 import {
     holeskyData,
@@ -32,6 +33,7 @@ import {
     swellProductionData,
     hemiData,
     formData,
+    mainnetData,
 } from "./chains";
 import {
     ChainData,
@@ -75,6 +77,7 @@ export const CHAIN_DATA: {
         [SupportedProductionChain.Gnosis]: gnosisData,
         [SupportedProductionChain.Telos]: telosData,
         [SupportedProductionChain.LightLinkPhoenix]: lightlinkPhoenixData,
+        [SupportedProductionChain.Mainnet]: mainnetData,
         [SupportedProductionChain.Sei]: seiProductionData,
         [SupportedProductionChain.Hemi]: hemiData,
     },
@@ -97,6 +100,8 @@ export const SUPPORTED_PRODUCTION_CHAINS: [Chain, ...Chain[]] = [
     gnosis,
     telos,
     lightlinkPhoenix,
+    // This is required for the Turtle integration
+    mainnet,
     swellchain,
     hemi,
     sei,

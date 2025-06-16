@@ -1,0 +1,9 @@
+@reference "../../../app.css";
+
+.root {
+    @apply w-full flex flex-col gap-3 mb-7 md:mb-11 justify-center;
+}
+
+.cardsWrapper {
+    @apply w-full flex flex-col md:grid md:grid-cols-3 gap-3;
+}

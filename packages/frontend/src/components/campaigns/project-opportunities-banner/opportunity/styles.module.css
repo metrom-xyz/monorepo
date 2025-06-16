@@ -1,18 +1,6 @@
-@reference "../../../app.css";
+@reference "../../../../app.css";
 
 .root {
-    @apply w-full flex flex-col gap-3 mb-7 md:mb-11 justify-center;
-}
-
-.cardsWrapper {
-    @apply w-full flex flex-col md:grid md:grid-cols-3 gap-3;
-}
-
-.illustration {
-    @apply absolute z-0 text-white opacity-50 right-0 -bottom-5;
-}
-
-.link {
     @apply w-full;
 }
 
@@ -37,6 +25,10 @@
     @apply z-10;
 }
 
+.illustration {
+    @apply absolute z-0 text-white opacity-50 right-0 -bottom-5;
+}
+
 .iconWrapper {
     @apply flex items-center justify-center rounded-md h-10 w-10 p-[3px];
 }
@@ -47,12 +39,4 @@
 
 .title {
     @apply text-black;
-}
-
-.rewardAmount {
-    @apply text-black text-[46px];
-}
-
-.rewards {
-    @apply text-white;
 }

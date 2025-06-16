@@ -4,6 +4,7 @@ import type { SVGIcon } from "./common";
 import type { Erc20Token } from "@metrom-xyz/sdk";
 import type { Protocol } from "./protocol";
 import { SupportedChain } from "@metrom-xyz/contracts";
+import { mainnet } from "viem/chains";
 
 export interface ChainData {
     active: boolean;
@@ -36,6 +37,8 @@ export enum SupportedProductionChain {
     Gnosis = SupportedChain.Gnosis,
     Telos = SupportedChain.Telos,
     LightLinkPhoenix = SupportedChain.LightLinkPhoenix,
+    // This is required for the Turtle integration
+    Mainnet = mainnet.id,
     Sei = SupportedChain.Sei,
     Swell = SupportedChain.Swell,
     Hemi = SupportedChain.Hemi,
