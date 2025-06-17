@@ -1,4 +1,4 @@
-import { useAccount, useReadContracts } from "wagmi";
+import { useAccount, useChains, useReadContracts } from "wagmi";
 import { formatUnits, type Address } from "viem";
 import { METROM_API_CLIENT } from "../commons";
 import { metromAbi } from "@metrom-xyz/contracts/abi";
@@ -23,6 +23,7 @@ export function useClaims({
 }: UseClaimsParams = {}): UseClaimsReturnaValue {
     const [claims, setClaims] = useState<ClaimWithRemaining[]>();
 
+    const supportedChains = useChains();
     const queryClient = useQueryClient();
     const { address } = useAccount();
 
@@ -40,7 +41,10 @@ export function useClaims({
                 const rawClaims = await METROM_API_CLIENT.fetchClaims({
                     address: account,
                 });
-                return rawClaims;
+
+                return rawClaims.filter(({ chainId }) =>
+                    supportedChains.find(({ id }) => id === chainId),
+                );
             } catch (error) {
                 console.error(
                     `Could not fetch raw claims for address ${address}: ${error}`,
