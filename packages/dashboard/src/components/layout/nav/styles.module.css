@@ -1,0 +1,156 @@
+@reference "../../../app.css";
+
+.root {
+    @apply sm:h-20
+        w-full
+        flex
+        justify-center
+        sm:mb-10;
+}
+
+.main {
+    @apply sm:relative
+        sm:h-20
+        flex-wrap
+        w-full
+        max-w-screen-xl
+        px-4
+        sm:px-0
+        pt-5
+        flex
+        justify-between
+        items-center;
+}
+
+.leftContent {
+    @apply flex items-center gap-3;
+}
+
+.menuIconWrapper {
+    @apply md:hidden
+        bg-white dark:bg-zinc-800
+        rounded-md
+        p-1.5
+        transition-colors
+        duration-200
+        ease-in-out;
+}
+
+.menuIconWrapper > svg {
+    @apply h-7 w-7 theme-text;
+}
+
+.mobileNavigationWrapper {
+    @apply sm:hidden
+        w-full
+        z-20
+        h-16
+        fixed
+        left-0
+        -bottom-0.5
+        flex
+        items-center
+        justify-between
+        border-t
+        border-gray-200 dark:border-zinc-600
+        theme-surface;
+}
+
+.mobileNavLink {
+    @apply h-full
+        w-full
+        flex
+        flex-col
+        items-center
+        justify-center
+        px-3;
+}
+
+.metromLogo {
+    @apply h-10 w-10;
+}
+
+.themePicker {
+    @apply bg-white dark:bg-zinc-800
+        h-10
+        px-3
+        rounded-md
+        flex
+        items-center
+        justify-center
+        cursor-pointer
+        theme-surface-hover
+        transition-colors
+        duration-200
+        ease-in-out;
+}
+
+.tabs {
+    @apply flex-wrap
+        w-full
+        hidden
+        md:flex
+        sm:w-fit
+        flex-row
+        gap-2
+        mt-3
+        sm:mt-0
+        justify-center
+        sm:absolute
+        sm:left-[42%]
+        lg:left-1/2
+        sm:-translate-x-1/2;
+}
+
+.tab {
+    @apply flex
+        w-fit
+        items-center
+        gap-2
+        h-10
+        px-3
+        relative
+        select-none
+        rounded-md
+        cursor-pointer
+        transition-colors
+        duration-200
+        ease-in-out
+        theme-surface-hover;
+}
+
+.tab.disabled {
+    @apply cursor-not-allowed hover:bg-transparent;
+}
+
+.tabIcon {
+    @apply w-5 h-5 text-black dark:text-zinc-200;
+}
+
+.claimsBadge {
+    @apply flex
+        items-center
+        justify-center
+        absolute
+        px-0.5
+        h-5
+        min-w-5
+        bg-brand-green
+        rounded-md
+        right-4
+        top-auto
+        md:-right-1.5
+        md:-top-1.5;
+}
+
+.claimsBadgeText {
+    @apply text-black;
+}
+
+.tabActive {
+    @apply bg-white dark:bg-zinc-800 hover:bg-white hover:dark:bg-zinc-800;
+}
+
+.rightContentContainer {
+    @apply flex items-center gap-2;
+}

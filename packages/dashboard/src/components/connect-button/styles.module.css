@@ -1,0 +1,82 @@
+@reference "../../app.css";
+
+.root {
+    @apply flex items-center;
+}
+
+.connectButton {
+    @apply h-10 rounded-lg;
+}
+
+.wrapper {
+    @apply flex items-center gap-3;
+}
+
+.overlay {
+    @apply z-30
+        fixed
+        top-0
+        bottom-0
+        left-0
+        right-0
+        bg-light-overlay dark:bg-dark-overlay;
+}
+
+.accountMenuHorizontal {
+    @apply hidden
+        sm:flex
+        z-30
+        fixed
+        top-0
+        bottom-0
+        -right-[28rem];
+}
+
+.accountMenuVertical {
+    @apply sm:hidden
+        flex
+        z-30
+        max-h-[600px]
+        fixed
+        left-0
+        right-0
+        bottom-0
+        w-full;
+}
+
+.walletWrapper {
+    @apply bg-white dark:bg-zinc-800
+        sm:px-2
+        h-10
+        min-w-10
+        rounded-md
+        flex
+        items-center
+        sm:justify-between
+        justify-center
+        cursor-pointer
+        theme-surface-hover
+        transition-colors
+        duration-200
+        ease-in-out;
+}
+
+.account {
+    @apply sm:w-full flex gap-2 items-center justify-between;
+}
+
+.displayName {
+    @apply hidden sm:flex;
+}
+
+.safeAvatar {
+    @apply bg-safe-brand flex items-center justify-center;
+}
+
+.safeLogo {
+    @apply text-black w-4 h-4;
+}
+
+.icon {
+    @apply w-5 h-5;
+}
