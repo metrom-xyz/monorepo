@@ -1,0 +1,24 @@
+@reference "../../../app.css";
+
+.root {
+    @apply hidden sm:flex;
+}
+
+.networksWrapper {
+    @apply p-2 grid grid-cols-2 gap-2;
+}
+
+.network {
+    @apply min-w-32
+        flex
+        items-center
+        px-3
+        py-3
+        rounded-lg
+        gap-2
+        cursor-pointer
+        theme-surface-hover
+        transition-colors
+        duration-200
+        ease-in-out;
+}

@@ -1,0 +1,19 @@
+{
+    "layout": {
+        "navigation": {
+            "fees": "Fees"
+        }
+    },
+    "connectButton": {
+        "connect": "Connect"
+    },
+    "theme": {
+        "system": "System"
+    },
+    "notifications": {
+        "safe": {
+            "title": "Safe connected",
+            "content": "Please notify the wallet participants to sign transactions."
+        }
+    }
+}
