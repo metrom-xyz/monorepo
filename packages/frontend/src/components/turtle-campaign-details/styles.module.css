@@ -33,17 +33,17 @@
 }
 
 .skeletonDeals {
-    @apply flex flex-col gap-4 rounded-xl p-4 theme-surface;
+    @apply flex flex-col gap-4 rounded-2xl p-3 theme-surface;
 }
 
 .skeletonDealHeader {
-    @apply h-[17px] w-full rounded-xl theme-surface-2 animate-pulse;
+    @apply h-[19px] w-full rounded-xl theme-surface-2 animate-pulse;
 }
 
 .skeletonDealsWrapper {
-    @apply w-full flex gap-4 flex-wrap;
+    @apply w-full flex gap-2 flex-wrap;
 }
 
 .skeletonDeal {
-    @apply w-80 h-[374px] rounded-xl theme-surface-2 animate-pulse;
+    @apply w-full sm:w-[327px] h-[350px] rounded-xl theme-surface-2 animate-pulse;
 }
