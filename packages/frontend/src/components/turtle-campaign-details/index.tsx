@@ -132,8 +132,6 @@ export function TurtleCampaignDetails({
                             textPrimary: "#000000",
                             textSecondary: "#9ca3af",
                             borderColor: "transparent",
-                            buttonBgColor: "#000000",
-                            buttonTextColor: "#ffffff",
                         },
                         dark: {
                             ...defaultThemeConfig.dark,
@@ -142,8 +140,6 @@ export function TurtleCampaignDetails({
                             textPrimary: "#d4d4d8",
                             textSecondary: "#9ca3af",
                             borderColor: "transparent",
-                            buttonBgColor: "#e4e4e7",
-                            buttonTextColor: "#000000",
                         },
                         theme: resolvedTheme as any,
                         shared: {
