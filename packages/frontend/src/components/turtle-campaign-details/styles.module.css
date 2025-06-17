@@ -32,14 +32,6 @@
     @apply hidden;
 }
 
-.dealsWrapper > div > div > div > div {
-    @apply px-4;
-}
-
-.dealsWrapper > div > div > div > div > div {
-    @apply gap-4;
-}
-
 .skeletonDeals {
     @apply flex flex-col gap-4 rounded-xl p-4 theme-surface;
 }
