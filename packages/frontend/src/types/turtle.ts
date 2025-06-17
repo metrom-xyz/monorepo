@@ -46,6 +46,7 @@ export interface TurtleDealsResponse {
 
 export interface TurtleCampaign {
     id: string;
+    distributor: string;
     name: string;
     description: string;
     url: string;

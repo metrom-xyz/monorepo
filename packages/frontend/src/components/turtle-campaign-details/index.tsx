@@ -85,18 +85,9 @@ export function TurtleCampaignDetails({
 
     if (!campaign) return null;
 
-    const { name, owner, description, brand, url, ownerLogo } = campaign;
-
     return (
         <div className={styles.root}>
-            <Header
-                name={name}
-                owner={owner}
-                description={description}
-                url={url}
-                brand={brand}
-                icon={ownerLogo}
-            />
+            <Header {...campaign} />
             <div className={styles.contentWrapper}>
                 <div className={styles.details}>
                     <TextField
@@ -141,6 +132,8 @@ export function TurtleCampaignDetails({
                             textPrimary: "#000000",
                             textSecondary: "#9ca3af",
                             borderColor: "transparent",
+                            buttonBgColor: "#000000",
+                            buttonTextColor: "#ffffff",
                         },
                         dark: {
                             ...defaultThemeConfig.dark,
@@ -149,6 +142,8 @@ export function TurtleCampaignDetails({
                             textPrimary: "#d4d4d8",
                             textSecondary: "#9ca3af",
                             borderColor: "transparent",
+                            buttonBgColor: "#e4e4e7",
+                            buttonTextColor: "#000000",
                         },
                         theme: resolvedTheme as any,
                         shared: {

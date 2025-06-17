@@ -454,6 +454,7 @@
     "turtleCampaignPage": {
         "header": {
             "title": "{owner} campaign on Turtle Club",
+            "deposit": "Deposit",
             "fallback": "Campaign on Turtle Club"
         },
         "tvl": "Tvl",

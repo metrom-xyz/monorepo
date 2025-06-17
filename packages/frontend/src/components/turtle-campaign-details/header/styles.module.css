@@ -1,7 +1,11 @@
 @reference "../../../app.css";
 
 .root {
-    @apply w-full flex flex-col gap-4 md:gap-2 md:flex-row justify-between items-start md:items-end;
+    @apply flex flex-col gap-3 sm:gap-8 w-full;
+}
+
+.titleContainer {
+    @apply w-full flex flex-col sm:flex-row sm:items-end gap-4;
 }
 
 .leftContent {
@@ -26,4 +30,13 @@
 
 .externalLinkIcon {
     @apply h-4 w-4 transform -rotate-45;
+}
+
+.actionsContainer {
+    @apply w-full flex flex-col-reverse sm:flex-row gap-3 flex-wrap justify-between sm:mb-2;
+}
+
+.actionsContainer button,
+.actionsContainer a {
+    @apply min-w-28;
 }
