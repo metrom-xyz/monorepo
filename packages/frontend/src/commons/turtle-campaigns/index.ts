@@ -1,6 +1,7 @@
 import type { TurtleCampaign } from "@/src/types/turtle";
 import { KatanaLogo } from "@metrom-xyz/chains";
 
+export const TURTLE_REFERRAL_CODE = "D8B9mk2Z";
 export const TURTLE_DISTRIBUTOR_URL =
     "https://app.turtle.club/widget/?distributorId=D8B9mk2Z";
 
