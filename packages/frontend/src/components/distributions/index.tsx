@@ -74,7 +74,6 @@ export function Distributions({ chain, campaignId }: DistributionsProps) {
         );
     }, [distros]);
 
-    // TODO: add type
     const handleBarOnClick = useCallback(
         (value: BarPayload) => {
             if (!breakdownListRef.current) return;

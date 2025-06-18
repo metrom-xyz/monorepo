@@ -62,10 +62,7 @@ export function Filters({
     useClickAway(toRef, getPopoverHandler("to", false));
 
     useEffect(() => {
-        if (!loading) {
-            console.log("on fetched");
-            onFetched(distributions);
-        }
+        if (!loading) onFetched(distributions);
 
         onLoading(loading);
     }, [loading, distributions]);
@@ -82,11 +79,8 @@ export function Filters({
 
     function getPopoverHandler(type: "from" | "to", open: boolean) {
         return () => {
-            if (type === "from") {
-                setFromPopover(open);
-            } else {
-                setToPopover(open);
-            }
+            if (type === "from") setFromPopover(open);
+            else setToPopover(open);
         };
     }
 
