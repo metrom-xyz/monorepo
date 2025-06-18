@@ -19,7 +19,7 @@ export function ProjectOpportunitiesBanner() {
         LV2_POINTS_CAMPAIGNS[ENVIRONMENT],
     ).some(([_, campaign]) => !!campaign);
 
-    const turtleCampaignsActive = TURTLE_CAMPAIGNS.length > 0;
+    const turtleCampaignsActive = TURTLE_CAMPAIGNS[ENVIRONMENT].length > 0;
 
     if (!lv2CampaignsActive && !turtleCampaignsActive) return null;
 
@@ -52,7 +52,7 @@ export function ProjectOpportunitiesBanner() {
                         );
                     },
                 )}
-                {TURTLE_CAMPAIGNS.map((campaign, index) => {
+                {TURTLE_CAMPAIGNS[ENVIRONMENT].map((campaign, index) => {
                     if (!campaign) return null;
 
                     const { id, name, brand, ownerLogo } = campaign;
