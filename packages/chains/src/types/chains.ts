@@ -36,6 +36,7 @@ export enum SupportedProductionChain {
     Form = SupportedChain.Form,
     Gnosis = SupportedChain.Gnosis,
     Telos = SupportedChain.Telos,
+    Lens = SupportedChain.Lens,
     LightLinkPhoenix = SupportedChain.LightLinkPhoenix,
     // This is required for the Turtle integration
     Mainnet = mainnet.id,

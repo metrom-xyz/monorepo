@@ -5,6 +5,7 @@ export * from "./gnosis";
 export * from "./hemi";
 export * from "./katana";
 export * from "./lightlink-phoenix";
+export * from "./lens";
 export * from "./mantle";
 export * from "./mode";
 export * from "./scroll";

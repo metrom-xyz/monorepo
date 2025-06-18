@@ -164,4 +164,16 @@ export const DEPLOYMENTS: {
             },
         },
     },
+    lens: {
+        "uni-v3": {
+            Factory: {
+                address: "0xe0704DB90bcAA1eAFc00E958FF815Ab7aa11Ef47",
+                startBlock: 184120,
+            },
+            NonFungiblePositionManager: {
+                address: "0xC5d0CAaE8aa00032F6DA993A69Ffa6ff80b5F031",
+                startBlock: 184128,
+            },
+        },
+    },
 };

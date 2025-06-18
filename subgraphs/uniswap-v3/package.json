@@ -17,6 +17,7 @@
         "deploy:honeypop:scroll": "pnpm prepare:deploy scroll honeypop && pnpm codegen && graph deploy metrom-honeypop-scroll -l 0.0.6",
         "deploy:uni-v3:hemi": "pnpm prepare:deploy hemi uni-v3 && pnpm codegen && graph deploy metrom-uni-v-3-hemi -l 0.0.4",
         "deploy:uni-v3:gnosis": "pnpm prepare:deploy gnosis uni-v3 && pnpm codegen && graph deploy metrom-uni-v-3-gnosis -l 0.0.1",
+        "deploy:uni-v3:lens": "pnpm prepare:deploy lens uni-v3 && pnpm codegen && graph deploy metrom-uni-v-3-lens -l 0.0.1",
         "lint": "eslint .",
         "format": "eslint --fix ."
     },
