@@ -204,8 +204,12 @@ export function useDistributions({
             }
 
             for (const [token, totalRaw] of Object.entries(tokenTotals)) {
-                const decimals =
-                    tokensRegistry[token as Address]?.decimals ?? 18;
+                if (!tokensRegistry[token as Address]) {
+                    console.error(`Could not get token ${token} from registry`);
+                    throw new Error(`Token ${token} missing from registry`);
+                }
+
+                const decimals = tokensRegistry[token as Address].decimals;
                 const totalFormatted = Number(formatUnits(totalRaw, decimals));
                 tokens[token] = { raw: totalRaw, formatted: totalFormatted };
             }
@@ -215,9 +219,14 @@ export function useDistributions({
                 tokenAddress: token,
                 amount,
             } of distro.leaves) {
+                if (!tokensRegistry[token]) {
+                    console.error(`Could not get token ${token} from registry`);
+                    throw new Error(`Token ${token} missing from registry`);
+                }
+
                 const delta = BigInt(amount);
                 const total = tokenTotals[token];
-                const decimals = tokensRegistry[token]?.decimals ?? 18;
+                const decimals = tokensRegistry[token].decimals;
 
                 const formattedAmount = Number(formatUnits(delta, decimals));
                 const rawPercentage =

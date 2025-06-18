@@ -65,7 +65,7 @@ export function Filters({
         if (!loading) onFetched(distributions);
 
         onLoading(loading);
-    }, [loading, distributions]);
+    }, [loading, distributions, onLoading, onFetched]);
 
     useEffect(() => {
         if (!from || !to) return;
