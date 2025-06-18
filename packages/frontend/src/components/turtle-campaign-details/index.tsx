@@ -10,6 +10,7 @@ import { useMemo } from "react";
 import { useTranslations } from "next-intl";
 import dynamic from "next/dynamic";
 import { useTheme } from "next-themes";
+import { ENVIRONMENT } from "@/src/commons/env";
 
 const TurtleProvider = dynamic(
     () => import("@turtledev/react").then((mod) => mod.TurtleProvider),
@@ -81,7 +82,9 @@ export function TurtleCampaignDetails({
         return deals.reduce((prev, deal) => prev + deal.data.tvl, 0);
     }, [deals]);
 
-    const campaign = TURTLE_CAMPAIGNS.find(({ id }) => id === campaignId);
+    const campaign = TURTLE_CAMPAIGNS[ENVIRONMENT].find(
+        ({ id }) => id === campaignId,
+    );
 
     if (!campaign) return null;
 
