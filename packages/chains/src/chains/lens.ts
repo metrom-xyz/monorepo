@@ -10,7 +10,7 @@ import {
 import { lens } from "viem/chains";
 
 export const lensData: ChainData = {
-    active: true,
+    active: false,
     name: lens.name,
     metromContract: ADDRESS[SupportedChain.Lens],
     blockExplorers: lens.blockExplorers,
