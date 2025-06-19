@@ -62,3 +62,34 @@ dataSources:
           handler: handleAddLiquidity
         - event: RemoveLiquidity(address,address,uint256,uint256,uint256,uint256,uint256)
           handler: handleRemoveLiquidity
+  {{#tokenizedVaults}}
+  - kind: ethereum/contract
+    name: YieldBearingALPVault
+    network: {{network}}
+    source:
+      abi: YieldBearingALPVault
+      address: "{{address}}"
+      startBlock: {{startBlock}}
+    context:
+      collateral:
+        type: Bytes
+        data: "{{collateral}}"
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      file: ./src/mappings/tokenized-vault.ts
+      entities: []
+      abis:
+        - name: YieldBearingALPVault
+          file: ./abis/YieldBearingALPVault.json
+        - name: GlpManager
+          file: ./abis/GlpManager.json
+      eventHandlers:
+        - event: Deposit(indexed address,indexed address,uint256,uint256)
+          handler: handleDeposit
+        - event: Withdraw(indexed address,indexed address,indexed address,uint256,uint256)
+          handler: handleWithdraw
+        - event: Transfer(indexed address,indexed address,uint256)
+          handler: handleTransfer
+  {{/tokenizedVaults}}

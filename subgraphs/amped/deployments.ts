@@ -3,9 +3,14 @@ interface Contract {
     startBlock: number;
 }
 
+interface AutomatedVault extends Contract {
+    collateral: string;
+}
+
 interface ChainConfig {
     Vault: Contract;
     GlpManager: Contract;
+    tokenizedVaults: AutomatedVault[];
 }
 
 export const DEPLOYMENTS: {
@@ -20,6 +25,7 @@ export const DEPLOYMENTS: {
             address: "0xEF301eD9eAFf7476605aE8C8A7b966c0fbE77530",
             startBlock: 85247896,
         },
+        tokenizedVaults: [],
     },
     sonic: {
         Vault: {
@@ -30,5 +36,13 @@ export const DEPLOYMENTS: {
             address: "0x4DE729B85dDB172F1bb775882f355bA25764E430",
             startBlock: 8181671,
         },
+        tokenizedVaults: [
+            // Wrapped sonic
+            {
+                address: "0xFa9A3A721BA614C589Dcd6062578123f998d3A34",
+                startBlock: 33453126,
+                collateral: "0x039e2fb66102314ce7b64ce5ce3e5183bc94ad38",
+            },
+        ],
     },
 };
