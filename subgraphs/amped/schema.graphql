@@ -13,36 +13,46 @@ type Position @entity(immutable: false) {
     owner: Bytes!
     liquidity: BigInt!
     collateral: Collateral!
-    vault: YalpVault
+    tokenizedVault: TokenizedVault
 }
 
 type LiquidityChange @entity(immutable: true) {
     id: Bytes!
     timestamp: BigInt!
-    position: Position!
+    collateral: Collateral!
+    positionId: Bytes!
     delta: BigInt!
 }
 
-type YalpVault @entity(immutable: false) {
+type TokenizedVault @entity(immutable: false) {
     id: Bytes!
     shares: BigInt!
+    collateral: Collateral!
 }
 
-type YalpPosition @entity(immutable: false) {
+type TokenizedVaultPosition @entity(immutable: false) {
     id: Bytes!
+    owner: Bytes!
     shares: BigInt!
+    collateral: Collateral!
+    vault: TokenizedVault!
 }
 
-type YalpPositionChange @entity(immutable: true) {
+type TokenizedVaultPositionChange @entity(immutable: true) {
     id: Bytes!
     timestamp: BigInt!
+    owner: Bytes!
     delta: BigInt!
+    tokenizedVault: TokenizedVault!
+    collateral: Collateral!
 }
 
-type YalpPositionTransfer @entity(immutable: true) {
+type TokenizedVaultPositionTransfer @entity(immutable: true) {
     id: Bytes!
     timestamp: BigInt!
     from: Bytes!
     to: Bytes!
     amount: BigInt!
+    tokenizedVault: TokenizedVault!
+    collateral: Collateral!
 }

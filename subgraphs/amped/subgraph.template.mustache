@@ -62,7 +62,7 @@ dataSources:
           handler: handleAddLiquidity
         - event: RemoveLiquidity(address,address,uint256,uint256,uint256,uint256,uint256)
           handler: handleRemoveLiquidity
-  {{#yAlpVault}}
+  {{#tokenizedVaults}}
   - kind: ethereum/contract
     name: YieldBearingALPVault
     network: {{network}}
@@ -70,11 +70,15 @@ dataSources:
       abi: YieldBearingALPVault
       address: "{{address}}"
       startBlock: {{startBlock}}
+    context:
+      collateral:
+        type: Bytes
+        data: "{{collateral}}"
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
       language: wasm/assemblyscript
-      file: ./src/mappings/yalp.ts
+      file: ./src/mappings/tokenized-vault.ts
       entities: []
       abis:
         - name: YieldBearingALPVault
@@ -88,4 +92,4 @@ dataSources:
           handler: handleWithdraw
         - event: Transfer(indexed address,indexed address,uint256)
           handler: handleTransfer
-  {{/yAlpVault}}
+  {{/tokenizedVaults}}

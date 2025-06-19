@@ -5,7 +5,7 @@ import {
     AddLiquidity,
     RemoveLiquidity,
 } from "../../generated/GlpManager/GlpManager";
-import { YALP_VAULT_ADDRESS } from "../addresses";
+import { TOKENIZED_VAULT_COLLATERAL } from "../addresses";
 
 const BI_10_E_18 = BigInt.fromI32(10).pow(18);
 
@@ -18,7 +18,9 @@ function getOrCreatePosition(owner: Address, collateral: Address): Position {
     position.owner = owner;
     position.liquidity = BI_0;
     position.collateral = collateral;
-    position.vault = owner == YALP_VAULT_ADDRESS ? YALP_VAULT_ADDRESS : null;
+    position.tokenizedVault = TOKENIZED_VAULT_COLLATERAL.isSet(owner)
+        ? owner
+        : null;
     position.save();
 
     return position;
@@ -45,6 +47,7 @@ function handleLiquidityChange(
     change.timestamp = event.block.timestamp;
     change.position = position.id;
     change.delta = liquidityDelta;
+    change.collateral = collateralAddress;
     change.save();
 }
 
