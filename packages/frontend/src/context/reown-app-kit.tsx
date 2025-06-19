@@ -49,6 +49,7 @@ const wagmiAdapter = new WagmiAdapter({
     ssr: true,
     projectId: WALLETCONNECT_PROJECT_ID,
     networks: SUPPORTED_CHAINS,
+    // TODO: override base default RPC? It's rate limited https://docs.base.org/base-chain/quickstart/connecting-to-base#base-mainnet
     transports,
     connectors: SAFE ? [safe()] : undefined,
 });

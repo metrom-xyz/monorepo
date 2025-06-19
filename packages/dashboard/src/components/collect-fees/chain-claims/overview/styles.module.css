@@ -1,0 +1,17 @@
+@reference "../../../../app.css";
+
+.root {
+    @apply grid grid-cols-[2fr_2fr_1fr] items-center;
+}
+
+.field {
+    @apply flex items-center gap-2;
+}
+
+.icon {
+    @apply w-10 h-10;
+}
+
+.root > :last-child {
+    @apply justify-self-end;
+}

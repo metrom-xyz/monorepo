@@ -10,6 +10,20 @@
     "theme": {
         "system": "System"
     },
+    "chainsList": {
+        "title": "Total fees",
+        "chains": "Chains"
+    },
+    "overview": {
+        "chain": "Chain",
+        "unclaimed": "Unclaimed",
+        "claimAll": "Claim all"
+    },
+    "tokenClaim": {
+        "token": "Token",
+        "unclaimed": "Unclaimed",
+        "claim": "Claim"
+    },
     "notifications": {
         "safe": {
             "title": "Safe connected",
