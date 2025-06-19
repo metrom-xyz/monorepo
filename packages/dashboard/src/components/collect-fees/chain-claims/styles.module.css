@@ -1,0 +1,9 @@
+@reference "../../../app.css";
+
+.root {
+    @apply flex flex-col gap-2;
+}
+
+.claims {
+    @apply flex flex-col gap-2 max-h-80 overflow-y-auto sm:min-h-full;
+}

@@ -14,6 +14,7 @@ export function Layout({ children }: LayoutProps) {
         <div className={styles.layout}>
             <Nav />
             <div className={styles.main}>{children}</div>
+            {/* TODO: add footer */}
             {/* <div className={styles.footer}>
                 <Footer />
             </div> */}

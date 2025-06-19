@@ -1,4 +1,8 @@
-import { Environment } from "@metrom-xyz/sdk";
+import {
+    Environment,
+    METROM_API_CLIENT as METROM_API_CLIENTS,
+} from "@metrom-xyz/sdk";
+import SafeAppsSdk from "@safe-global/safe-apps-sdk";
 import { ENVIRONMENT } from "./env";
 import { Chain } from "viem";
 import {
@@ -15,3 +19,7 @@ export const SUPPORTED_CHAINS: [Chain, ...Chain[]] =
     ENVIRONMENT === Environment.Production
         ? SUPPORTED_PRODUCTION_CHAINS
         : SUPPORTED_DEVELOPMENT_CHAINS;
+
+export const METROM_API_CLIENT = METROM_API_CLIENTS[ENVIRONMENT];
+
+export const SAFE_APP_SDK = new SafeAppsSdk();

@@ -20,7 +20,8 @@ import { hashFn } from "wagmi/query";
 import { useTheme } from "next-themes";
 import { WagmiAdapter } from "@reown/appkit-adapter-wagmi";
 import type { EIP1193RequestFn, Transport } from "viem";
-import { mainnet } from "viem/chains";
+import { base, mainnet } from "viem/chains";
+import { WALLETCONNECT_PROJECT_ID } from "@/commons/env";
 
 // Set up queryClient
 // TODO: if we need to have SSR prefetching https://tanstack.com/query/latest/docs/framework/react/guides/advanced-ssr#server-components--nextjs-app-router
@@ -47,9 +48,10 @@ const transports = SUPPORTED_CHAINS.reduce(
 
 const wagmiAdapter = new WagmiAdapter({
     ssr: true,
-    projectId: "",
+    projectId: WALLETCONNECT_PROJECT_ID,
     networks: SUPPORTED_CHAINS,
-    transports,
+    // FIXME: override base rpc due to 429 errors
+    transports: { ...transports, [base.id]: http("https://base.llamarpc.com") },
     connectors: [safe()],
 });
 
@@ -64,7 +66,7 @@ export const mainnetWagmiConfig = createConfig({
 
 createAppKit({
     adapters: [wagmiAdapter],
-    projectId: "",
+    projectId: WALLETCONNECT_PROJECT_ID,
     networks: SUPPORTED_CHAINS,
     metadata: {
         name: "Metrom",

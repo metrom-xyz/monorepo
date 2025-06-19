@@ -1,7 +1,7 @@
 import classNames from "classnames";
 import { useClickAway } from "react-use";
 import { useEffect, useRef, useState } from "react";
-import { Skeleton, Typography } from "@metrom-xyz/ui";
+import { Button, Skeleton, Typography } from "@metrom-xyz/ui";
 import { type Address } from "viem";
 import { RemoveScroll } from "react-remove-scroll";
 import { useAppKitAccount, useAppKitBalance } from "@reown/appkit/react";
@@ -17,6 +17,7 @@ import { ErrorIcon } from "@/assets/error-icon";
 import { ThemeSwitcherTabs } from "@/components/theme-switcher-tabs";
 
 import styles from "./styles.module.css";
+import { useDisconnect } from "wagmi";
 
 interface AccountMenuProps {
     className?: string;
@@ -38,6 +39,7 @@ export function AccountMenu({
     const chainData = useChainData(chainId);
     const chainSupported = useIsChainSupported(chainId);
     const { fetchBalance } = useAppKitBalance();
+    const { disconnect } = useDisconnect();
     const { isConnected } = useAppKitAccount();
 
     useEffect(() => {
@@ -85,6 +87,10 @@ export function AccountMenu({
                             <SafeLogo className={styles.safeLogo} />
                         </div>
                     </div>
+                    {/* FIXME: remove after testing */}
+                    <Button size="xs" onClick={() => disconnect()}>
+                        disconnect
+                    </Button>
                     <div className={styles.addressAndBalanceWrapper}>
                         <div
                             className={styles.clipWrapper}

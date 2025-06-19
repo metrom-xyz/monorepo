@@ -1,0 +1,36 @@
+@reference "../../../app.css";
+
+.root {
+    @apply h-fit flex flex-col gap-4;
+}
+
+.list {
+    @apply flex flex-col gap-2;
+}
+
+.chain {
+    @apply w-full
+        flex
+        items-center
+        p-3
+        gap-2
+        rounded-lg
+        cursor-pointer
+        bg-zinc-100 dark:bg-zinc-900
+        hover:bg-zinc-200 dark:hover:bg-zinc-700
+        transition-colors
+        ease-in-out
+        duration-200;
+}
+
+.chain.skeleton {
+    @apply h-11 pointer-events-none animate-pulse bg-zinc-200 dark:bg-dark-surface-2;
+}
+
+.chain.selected {
+    @apply bg-zinc-200 dark:bg-zinc-700 theme-surface-hover;
+}
+
+.icon {
+    @apply w-5 h-5;
+}
