@@ -1,7 +1,7 @@
 import classNames from "classnames";
 import { ErrorIcon } from "@/src/assets/error-icon";
-import { useRef, useState } from "react";
-import { useChainId, useSwitchChain } from "wagmi";
+import { useEffect, useRef, useState } from "react";
+import { useAccount, useChainId, useSwitchChain } from "wagmi";
 import { PopoverPicker } from "./popover-picker";
 import { DrawerPicker } from "./drawer-picker";
 import { useClickAway } from "react-use";
@@ -18,12 +18,22 @@ export function NetworkSelect() {
 
     const rootRef = useRef<HTMLDivElement>(null);
 
-    const supportedActiveChains = useActiveChains();
+    const activeChains = useActiveChains();
     const selectedChainId = useChainId();
     const chainData = useChainData(selectedChainId);
     const chainSupported = useIsChainSupported(selectedChainId);
-
+    const { address } = useAccount();
     const { switchChain } = useSwitchChain();
+
+    // When no wallet is connected, Wagmi defaults to mainnet.
+    // Since mainnet is not marked as active in our config, we need to
+    // manually switch to the first supported active chain.
+    useEffect(() => {
+        if (!!address) return;
+
+        const supported = activeChains.some(({ id }) => id === selectedChainId);
+        if (!supported) switchChain({ chainId: activeChains[0].id });
+    }, [activeChains, address, selectedChainId, switchChain]);
 
     useClickAway(rootRef, () => {
         setPickerOpen(false);
@@ -77,13 +87,13 @@ export function NetworkSelect() {
                 </div>
                 <PopoverPicker
                     anchor={wrapper}
-                    chains={supportedActiveChains}
+                    chains={activeChains}
                     open={pickerOpen}
                     value={selectedChainId}
                     onChange={handleNetworkOnChange}
                 />
                 <DrawerPicker
-                    chains={supportedActiveChains}
+                    chains={activeChains}
                     open={pickerOpen}
                     value={selectedChainId}
                     onChange={handleNetworkOnChange}
