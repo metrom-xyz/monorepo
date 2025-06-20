@@ -1,7 +1,7 @@
 @reference "../../../../app.css";
 
 .root {
-    @apply grid grid-cols-[2fr_2fr_1fr] items-center;
+    @apply grid grid-cols-[2fr_2fr_1fr] items-end;
 }
 
 .field {
@@ -14,4 +14,20 @@
 
 .root > :last-child {
     @apply justify-self-end;
+}
+
+.tokens {
+    @apply min-h-full flex items-center gap-[1px];
+}
+
+.token {
+    @apply cursor-pointer;
+}
+
+.token:not(:first-child) {
+    @apply -ml-4;
+}
+
+.notification {
+    @apply flex items-center gap-2;
 }

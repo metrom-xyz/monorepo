@@ -7,10 +7,11 @@ import { TokenClaim } from "./token-claim";
 import styles from "./styles.module.css";
 
 interface ChainClaimsProps {
+    loading: boolean;
     claimableFees?: ClaimableFees;
 }
 
-export function ChainClaims({ claimableFees }: ChainClaimsProps) {
+export function ChainClaims({ loading, claimableFees }: ChainClaimsProps) {
     const chainId = useChainId();
 
     const claims = useMemo(() => {
@@ -25,9 +26,11 @@ export function ChainClaims({ claimableFees }: ChainClaimsProps) {
     return (
         <div className={styles.root}>
             <Overview
+                loading={loading}
                 chain={claims?.chain.name}
                 icon={claims?.chain.icon}
                 totalUsd={claims?.totalUsd}
+                tokens={sortedTokens}
             />
             <div className={styles.claims}>
                 {sortedTokens?.map((claim) => (
