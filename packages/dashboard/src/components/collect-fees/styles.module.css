@@ -1,0 +1,17 @@
+@reference "../../app.css";
+
+.root {
+    @apply w-full max-w-screen-xl flex flex-col sm:grid sm:grid-cols-[1fr_2.5fr] px-4 sm:px-0 gap-2;
+}
+
+.container {
+    @apply flex flex-col gap-4;
+}
+
+.chain {
+    @apply w-full flex items-center gap-2 flex-wrap;
+}
+
+.chainIcon {
+    @apply w-5 h-5;
+}
