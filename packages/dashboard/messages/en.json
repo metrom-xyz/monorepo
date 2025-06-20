@@ -17,12 +17,14 @@
     "overview": {
         "chain": "Chain",
         "unclaimed": "Unclaimed",
-        "claimAll": "Claim all"
+        "claimAll": "Claim all",
+        "txSubmitted": "Safe tx submitted"
     },
     "tokenClaim": {
         "token": "Token",
         "unclaimed": "Unclaimed",
-        "claim": "Claim"
+        "claim": "Claim",
+        "txSubmitted": "Safe tx submitted"
     },
     "notifications": {
         "safe": {
