@@ -1,22 +1,22 @@
 "use client";
 
 import { Button } from "@metrom-xyz/ui";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useWindowSize } from "react-use";
 import { useTranslations } from "next-intl";
 import { type Address } from "blo";
 import { AccountMenu } from "./account-menu";
 import classNames from "classnames";
 import { AnimatePresence, motion } from "motion/react";
-// import { useAccount, useConnect, useConnectors, useDisconnect } from "wagmi";
-// import { toast } from "sonner";
-// import { SafeConnectedNotification } from "./safe-connected-notification";
+import { useAccount, useConnect, useConnectors, useDisconnect } from "wagmi";
+import { toast } from "sonner";
+import { SafeConnectedNotification } from "./safe-connected-notification";
 import {
     useAppKit,
     useAppKitAccount,
     useAppKitNetwork,
 } from "@reown/appkit/react";
-// import { SAFE_CONNECTOR_ID } from "@/commons";
+import { SAFE_CONNECTOR_ID } from "@/commons";
 import { SafeLogo } from "@/assets/logos/safe";
 import { Account } from "../account";
 
@@ -25,10 +25,10 @@ import styles from "./styles.module.css";
 export function ConnectButton() {
     const t = useTranslations("connectButton");
     const { width } = useWindowSize();
-    // const connectors = useConnectors();
-    // const { connector } = useAccount();
-    // const { connect } = useConnect();
-    // const { disconnect } = useDisconnect();
+    const connectors = useConnectors();
+    const { connector } = useAccount();
+    const { connect } = useConnect();
+    const { disconnect } = useDisconnect();
 
     const { open } = useAppKit();
     const { address, isConnected } = useAppKitAccount();
@@ -36,31 +36,30 @@ export function ConnectButton() {
 
     const [accountMenuOpen, setAccountMenuOpen] = useState(false);
 
-    // TODO: enable after testing
-    // useEffect(() => {
-    //     const safeConnector = connectors.find(
-    //         (connector) => connector.id === SAFE_CONNECTOR_ID,
-    //     );
+    useEffect(() => {
+        const safeConnector = connectors.find(
+            (connector) => connector.id === SAFE_CONNECTOR_ID,
+        );
 
-    //     if (!safeConnector) return;
+        if (!safeConnector) return;
 
-    //     if (connector?.id !== SAFE_CONNECTOR_ID) disconnect();
+        if (connector?.id !== SAFE_CONNECTOR_ID) disconnect();
 
-    //     connect(
-    //         { connector: safeConnector },
-    //         {
-    //             onSuccess: () =>
-    //                 toast.custom((toastId) => (
-    //                     <SafeConnectedNotification toastId={toastId} />
-    //                 )),
-    //             onError: (error) => {
-    //                 console.warn(
-    //                     `Could not connect with Safe connector: ${error}`,
-    //                 );
-    //             },
-    //         },
-    //     );
-    // }, [connect, connector?.id, connectors, disconnect]);
+        connect(
+            { connector: safeConnector },
+            {
+                onSuccess: () =>
+                    toast.custom((toastId) => (
+                        <SafeConnectedNotification toastId={toastId} />
+                    )),
+                onError: (error) => {
+                    console.warn(
+                        `Could not connect with Safe connector: ${error}`,
+                    );
+                },
+            },
+        );
+    }, [connect, connector?.id, connectors, disconnect]);
 
     async function handleOnConnect() {
         await open();

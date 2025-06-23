@@ -5,5 +5,5 @@
 }
 
 .claims {
-    @apply flex flex-col gap-2 max-h-80 overflow-y-auto sm:min-h-full;
+    @apply flex flex-col gap-2 h-52 mb-[75px] overflow-y-auto sm:min-h-full;
 }
