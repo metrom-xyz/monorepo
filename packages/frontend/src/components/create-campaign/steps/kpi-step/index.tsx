@@ -260,9 +260,7 @@ export function KpiStep({
                     </div>
                 }
                 decorator={false}
-                className={{
-                    root: !enabled ? styles.previewDisabled : "",
-                }}
+                disabled={!enabled}
             >
                 <div className={styles.tvlWrapper}>
                     <Typography uppercase weight="medium" light size="sm">

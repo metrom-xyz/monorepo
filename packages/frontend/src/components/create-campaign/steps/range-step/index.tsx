@@ -255,11 +255,7 @@ export function RangeStep({
                     </div>
                 }
                 decorator={false}
-                className={{
-                    root: classNames({
-                        [styles.previewDisabled]: !enabled,
-                    }),
-                }}
+                disabled={!enabled}
             >
                 <div className={styles.priceWrapper}>
                     {open || from === undefined || to === undefined ? (

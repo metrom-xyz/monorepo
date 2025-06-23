@@ -21,10 +21,6 @@
     @apply hover:border-transparent;
 }
 
-.previewDisabled {
-    @apply hover:cursor-default hover:bg-light-surface hover:dark:bg-dark-surface;
-}
-
 .typeWrapper {
     @apply flex gap-1;
 }

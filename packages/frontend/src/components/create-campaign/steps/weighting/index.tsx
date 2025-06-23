@@ -160,11 +160,7 @@ export function WeightingStep({
                     </div>
                 }
                 decorator={false}
-                className={{
-                    root: classNames({
-                        [styles.previewDisabled]: !enabled,
-                    }),
-                }}
+                disabled={!enabled}
             >
                 <div className={styles.weightsWrapper}>
                     <div className={styles.weight}>

@@ -45,10 +45,6 @@
     color: inherit;
 }
 
-.previewDisabled {
-    @apply hover:cursor-default hover:bg-light-surface hover:dark:bg-dark-surface;
-}
-
 .priceWrapper {
     @apply w-full flex gap-1;
 }
