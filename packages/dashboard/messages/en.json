@@ -1,0 +1,35 @@
+{
+    "layout": {
+        "navigation": {
+            "fees": "Fees"
+        }
+    },
+    "connectButton": {
+        "connect": "Connect"
+    },
+    "theme": {
+        "system": "System"
+    },
+    "chainsList": {
+        "title": "Total fees",
+        "chains": "Chains"
+    },
+    "overview": {
+        "chain": "Chain",
+        "unclaimed": "Unclaimed",
+        "claimAll": "Claim all",
+        "txSubmitted": "Safe tx submitted"
+    },
+    "tokenClaim": {
+        "token": "Token",
+        "unclaimed": "Unclaimed",
+        "claim": "Claim",
+        "txSubmitted": "Safe tx submitted"
+    },
+    "notifications": {
+        "safe": {
+            "title": "Safe connected",
+            "content": "Please notify the wallet participants to sign transactions."
+        }
+    }
+}

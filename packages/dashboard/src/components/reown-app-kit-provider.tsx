@@ -17,11 +17,11 @@ import {
 import { safe } from "wagmi/connectors";
 import { SUPPORTED_CHAINS } from "../commons";
 import { hashFn } from "wagmi/query";
-import { WALLETCONNECT_PROJECT_ID, SAFE } from "../commons/env";
 import { useTheme } from "next-themes";
 import { WagmiAdapter } from "@reown/appkit-adapter-wagmi";
 import type { EIP1193RequestFn, Transport } from "viem";
-import { mainnet } from "viem/chains";
+import { base, mainnet } from "viem/chains";
+import { WALLETCONNECT_PROJECT_ID } from "@/commons/env";
 
 // Set up queryClient
 // TODO: if we need to have SSR prefetching https://tanstack.com/query/latest/docs/framework/react/guides/advanced-ssr#server-components--nextjs-app-router
@@ -41,6 +41,7 @@ const transports = SUPPORTED_CHAINS.reduce(
     },
     {} as Record<
         number,
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         Transport<string, Record<string, any>, EIP1193RequestFn>
     >,
 );
@@ -49,9 +50,9 @@ const wagmiAdapter = new WagmiAdapter({
     ssr: true,
     projectId: WALLETCONNECT_PROJECT_ID,
     networks: SUPPORTED_CHAINS,
-    // TODO: override base default RPC? It's rate limited https://docs.base.org/base-chain/quickstart/connecting-to-base#base-mainnet
-    transports,
-    connectors: SAFE ? [safe()] : undefined,
+    // FIXME: override base rpc due to 429 errors
+    transports: { ...transports, [base.id]: http("https://base.llamarpc.com") },
+    connectors: [safe()],
 });
 
 // Required for ENS resolution hooks, since the dapp doesn't support mainnet,
@@ -73,24 +74,24 @@ createAppKit({
         url: "https://app.metrom.xyz",
         icons: ["https://app.metrom.xyz/icons/icon-128x128.png"],
     },
-    allWallets: SAFE ? "SHOW" : "HIDE",
+    allWallets: "SHOW",
     // https://docs.reown.com/cloud/wallets/wallet-list#wallets
-    excludeWalletIds: SAFE
-        ? [
-              // coinbase
-              "fd20dc426fb37566d803205b19bbc1d4096b248ac04548e3cfb6b3a38bd033aa",
-              // metamask
-              "c57ca95b47569778a828d19178114f4db188b89b763c899ba0be274e97267d96",
-          ]
-        : undefined,
-    featuredWalletIds: SAFE
-        ? undefined
-        : [
-              // coinbase
-              "fd20dc426fb37566d803205b19bbc1d4096b248ac04548e3cfb6b3a38bd033aa",
-              // metamask
-              "c57ca95b47569778a828d19178114f4db188b89b763c899ba0be274e97267d96",
-          ],
+    // excludeWalletIds: SAFE
+    //     ? [
+    //           // coinbase
+    //           "fd20dc426fb37566d803205b19bbc1d4096b248ac04548e3cfb6b3a38bd033aa",
+    //           // metamask
+    //           "c57ca95b47569778a828d19178114f4db188b89b763c899ba0be274e97267d96",
+    //       ]
+    //     : undefined,
+    // featuredWalletIds: SAFE
+    //     ? undefined
+    //     : [
+    //           // coinbase
+    //           "fd20dc426fb37566d803205b19bbc1d4096b248ac04548e3cfb6b3a38bd033aa",
+    //           // metamask
+    //           "c57ca95b47569778a828d19178114f4db188b89b763c899ba0be274e97267d96",
+    //       ],
     features: {
         socials: false,
         email: false,

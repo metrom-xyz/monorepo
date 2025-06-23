@@ -1,0 +1,147 @@
+@reference "../../../app.css";
+
+.root {
+    @apply bg-zinc-100 dark:bg-zinc-900
+        rounded-t-4xl
+        sm:rounded-t-none
+        h-full
+        w-full
+        sm:w-[28rem]
+        flex
+        flex-col
+        gap-6
+        p-6
+        sm:p-3;
+}
+
+.drawBar {
+    @apply self-center bg-zinc-500 h-1 w-9 rounded-xl sm:hidden;
+}
+
+.headerWrapper {
+    @apply flex justify-between items-center;
+}
+
+.accountContainer {
+    @apply flex items-center gap-3;
+}
+
+.topContent {
+    @apply flex items-center gap-3;
+}
+
+.avatarWrapper {
+    @apply p-2 rounded-lg bg-zinc-200 dark:bg-zinc-800;
+}
+
+.addressAndBalanceWrapper {
+    @apply flex flex-col;
+}
+
+.safeAvatar {
+    @apply bg-safe-brand flex items-center justify-center;
+}
+
+.safeLogo {
+    @apply w-6 h-6 text-black;
+}
+
+.clipWrapper {
+    @apply flex
+        gap-1
+        items-center
+        cursor-pointer
+        transition-opacity
+        duration-200
+        ease-in-out;
+}
+
+.address {
+    @apply transition-opacity
+        duration-200
+        ease-in-out;
+}
+
+.address:hover {
+    @apply opacity-50;
+}
+
+.clipWrapper:hover .copyIconContainer {
+    @apply opacity-100;
+}
+
+.balanceWrapper {
+    @apply flex justify-between mr-8 min-w-32;
+}
+
+.icon {
+    @apply w-5 h-5;
+}
+
+.iconWrapper {
+    @apply p-2 rounded-lg bg-zinc-200 dark:bg-zinc-800;
+}
+
+.disconnect {
+    @apply cursor-pointer
+        theme-surface-hover
+        transition-colors
+        duration-200
+        ease-in-out;
+}
+
+.unsupportedChain {
+    @apply bg-red-300 dark:bg-red-600;
+}
+
+.tabs {
+    @apply flex gap-2;
+}
+
+.tab {
+    @apply flex
+        items-center
+        gap-2
+        h-10
+        px-3
+        select-none
+        rounded-md
+        cursor-pointer
+        transition-colors
+        duration-200
+        ease-in-out
+        bg-white dark:bg-zinc-800
+        hover:bg-white hover:dark:bg-zinc-800;
+}
+
+.tabIcon {
+    @apply w-5 h-5;
+}
+
+.tabActive {
+    @apply bg-zinc-200 dark:bg-zinc-700 theme-surface-hover;
+}
+
+.copyIcon {
+    @apply w-5 h-5 theme-text;
+}
+
+.tickIcon {
+    @apply w-7 h-7 text-green-600;
+}
+
+.rightContent {
+    @apply flex gap-2;
+}
+
+.copyIconContainer {
+    @apply opacity-0
+        flex
+        items-center
+        justify-center
+        w-7
+        h-7
+        transition-opacity
+        duration-200
+        ease-in-out;
+}

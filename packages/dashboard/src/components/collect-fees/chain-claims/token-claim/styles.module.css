@@ -1,0 +1,21 @@
+@reference "../../../../app.css";
+
+.root {
+    @apply w-full grid grid-cols-[2fr_2fr_1fr] items-center;
+}
+
+.field {
+    @apply flex items-center gap-2;
+}
+
+.root > :last-child {
+    @apply justify-self-end;
+}
+
+.error {
+    @apply border-red-400;
+}
+
+.notification {
+    @apply flex items-center gap-2;
+}
