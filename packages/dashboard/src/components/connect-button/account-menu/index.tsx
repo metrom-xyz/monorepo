@@ -1,7 +1,7 @@
 import classNames from "classnames";
 import { useClickAway } from "react-use";
 import { useEffect, useRef, useState } from "react";
-import { Button, Skeleton, Typography } from "@metrom-xyz/ui";
+import { Skeleton, Typography } from "@metrom-xyz/ui";
 import { type Address } from "viem";
 import { RemoveScroll } from "react-remove-scroll";
 import { useAppKitAccount, useAppKitBalance } from "@reown/appkit/react";
