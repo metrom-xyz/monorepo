@@ -12,6 +12,7 @@ export interface StepPreviewProps {
     label: ReactNode;
     open?: boolean;
     completed?: boolean;
+    disabled?: boolean;
     decorator?: boolean;
     children?: ReactNode;
     className?: {
@@ -23,6 +24,7 @@ export function StepPreview({
     label,
     open,
     completed,
+    disabled,
     decorator = true,
     children,
     className,
@@ -30,7 +32,8 @@ export function StepPreview({
     return (
         <div
             className={classNames(className?.root, styles.root, {
-                [styles.rootCompleted]: completed,
+                [styles.completed]: completed,
+                [styles.disabled]: disabled,
                 [styles.open]: open,
             })}
         >

@@ -19,8 +19,12 @@
     @apply rounded-b-none;
 }
 
-.rootCompleted {
+.root.completed {
     @apply py-4;
+}
+
+.root.disabled {
+    @apply hover:cursor-default hover:bg-light-surface hover:dark:bg-dark-surface;
 }
 
 .wrapper {

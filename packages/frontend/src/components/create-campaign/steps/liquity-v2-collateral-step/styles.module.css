@@ -29,10 +29,6 @@
     @apply -ml-2;
 }
 
-.previewDisabled {
-    @apply hover:cursor-default hover:bg-white dark:bg-zinc-800;
-}
-
 .contentWrapper {
     @apply flex flex-col gap-4 p-4;
 }

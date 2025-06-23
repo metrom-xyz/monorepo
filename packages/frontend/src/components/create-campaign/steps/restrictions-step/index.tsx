@@ -212,9 +212,7 @@ export function RestrictionsStep({
                     </div>
                 }
                 decorator={false}
-                className={{
-                    root: !enabled ? styles.previewDisabled : "",
-                }}
+                disabled={!enabled}
             >
                 <div className={styles.typeWrapper}>
                     <Typography weight="medium" size="sm" uppercase>

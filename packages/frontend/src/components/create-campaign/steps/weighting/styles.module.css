@@ -13,10 +13,6 @@
     color: inherit;
 }
 
-.previewDisabled {
-    @apply hover:cursor-default hover:bg-light-surface hover:dark:bg-dark-surface;
-}
-
 .weightsWrapper {
     @apply flex gap-2;
 }
@@ -28,10 +24,6 @@
 .previewLabel {
     font-size: inherit;
     color: inherit;
-}
-
-.previewDisabled {
-    @apply hover:cursor-default hover:bg-light-surface hover:dark:bg-dark-surface;
 }
 
 .stepContent {

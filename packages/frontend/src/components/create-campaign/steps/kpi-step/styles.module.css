@@ -13,10 +13,6 @@
     color: inherit;
 }
 
-.previewDisabled {
-    @apply hover:cursor-default hover:bg-light-surface hover:dark:bg-dark-surface;
-}
-
 .tvlWrapper {
     @apply flex gap-1;
 }
