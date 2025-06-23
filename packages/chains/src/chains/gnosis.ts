@@ -5,6 +5,7 @@ import { SwaprLogo } from "../assets/logos/dexes/swapr";
 import { ADDRESS, SupportedChain } from "@metrom-xyz/contracts";
 import type { ChainData } from "../types/chains";
 import { DepositUrlType, ProtocolType } from "../types/protocol";
+import { UniswapLogo } from "../assets";
 
 export const gnosisData: ChainData = {
     active: true,
@@ -22,6 +23,18 @@ export const gnosisData: ChainData = {
             depositUrl: {
                 type: DepositUrlType.PathPoolAddress,
                 template: "https://v3.swapr.eth.limo/#/info/pools/{pool}",
+            },
+            supportsFetchAllPools: true,
+        },
+        {
+            active: true,
+            type: ProtocolType.Dex,
+            slug: SupportedDex.UniswapV3,
+            logo: UniswapLogo,
+            name: "Uniswap v3",
+            depositUrl: {
+                type: DepositUrlType.PathPoolAddress,
+                template: "https://oku.trade/app/gnosis/liquidity/{pool}",
             },
             supportsFetchAllPools: true,
         },
