@@ -32,7 +32,7 @@ export function useRewardTokens(): UseRewardTokensReturnValue {
                     })) as RewardTokenWithChain[];
                 } catch (error) {
                     console.error(
-                        `Could not fetch reward tokens for chain ${chain}: ${error}`,
+                        `Could not fetch reward tokens for chain ${chain.id}: ${error}`,
                     );
                     throw error;
                 }

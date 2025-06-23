@@ -43,8 +43,8 @@ export function useClaimableFees(): UseClaimableFeesReturnValue {
 
             const token = tokens[index];
             if (!token) {
-                console.error(`Couldn't get token ${token} from whitelist`);
-                throw new Error(`Token ${token} missing from whitelist`);
+                console.error(`Couldn't get token ${index} from whitelist`);
+                throw new Error(`Token index ${index} missing from whitelist`);
             }
 
             const chainData = getChainData(token.chainId);
