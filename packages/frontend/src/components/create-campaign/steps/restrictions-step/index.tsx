@@ -32,6 +32,7 @@ import { Dot } from "./dot";
 import { CsvAddressesImport } from "./csv-addresses-import";
 import { Avatar } from "@/src/components/avatar/avatar";
 import { Account } from "@/src/components/account";
+import { InfoMessage } from "@/src/components/info-message";
 
 import styles from "./styles.module.css";
 
@@ -226,9 +227,11 @@ export function RestrictionsStep({
             </StepPreview>
             <StepContent>
                 <div className={styles.stepContent}>
-                    <Typography light size="xs">
-                        {t("description")}
-                    </Typography>
+                    <InfoMessage
+                        text={t("infoMessage")}
+                        link="https://docs.metrom.xyz/creating-a-campaign/address-restrictions"
+                        linkText={t("readMore")}
+                    />
                     <div className={styles.inputsWrapper}>
                         <Tabs value={type} onChange={setType}>
                             <Tab value={RestrictionType.Blacklist}>

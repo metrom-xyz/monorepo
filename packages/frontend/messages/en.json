@@ -203,7 +203,8 @@
                 },
                 "restrictions": {
                     "title": "Filter addresses",
-                    "description": "Blacklist addresses that shouldn't receive rewards, or whitelist only those that should be eligible to receive rewards.",
+                    "infoMessage": "Blacklist unwanted addresses or whitelist only those eligible for rewards. Zero address and dead address are excluded by default.",
+                    "readMore": "Read more 🡥",
                     "errors": {
                         "notAnAddress": "Not a valid address",
                         "alreadyRestricted": "Address already restricted"
