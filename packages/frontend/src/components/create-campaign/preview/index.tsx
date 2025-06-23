@@ -43,6 +43,7 @@ import { useLiquidityInRange } from "@/src/hooks/useLiquidityInRange";
 import { SAFE_APP_SDK } from "@/src/commons";
 import { useChainData } from "@/src/hooks/useChainData";
 import { Weighting } from "./weighting";
+import { Restrictions } from "./restrictions";
 
 import styles from "./styles.module.css";
 
@@ -323,6 +324,8 @@ export function CampaignPreview({
 
     const range = ammPoolLiquidityCampaign && !!payload.priceRangeSpecification;
     const weighting = ammPoolLiquidityCampaign && !!payload.weighting;
+    const restrictions =
+        !!payload.restrictions && payload.restrictions.list.length > 0;
     const kpi =
         ammPoolLiquidityCampaign &&
         !!payload.kpiSpecification &&
@@ -338,27 +341,6 @@ export function CampaignPreview({
                     onBack={onBack}
                 />
                 <div className={styles.content}>
-                    {weighting && (
-                        <Weighting
-                            pool={payload.pool}
-                            weighting={payload.weighting}
-                        />
-                    )}
-                    {kpi && (
-                        <Kpi
-                            poolUsdTvl={payload.pool.usdTvl}
-                            from={payload.startDate}
-                            to={payload.endDate}
-                            distributables={payload.distributables}
-                            specification={payload.kpiSpecification}
-                        />
-                    )}
-                    {range && (
-                        <Range
-                            pool={payload.pool}
-                            specification={payload.priceRangeSpecification}
-                        />
-                    )}
                     <div className={styles.contentGrid}>
                         {ammPoolLiquidityCampaign && (
                             <TextField
@@ -373,7 +355,7 @@ export function CampaignPreview({
                         {tokensCampaign && (
                             <TextField
                                 boxed
-                                size="xl"
+                                size="xl2"
                                 label={t("apr")}
                                 loading={loadingLiquidityInRange}
                                 value={
@@ -405,6 +387,30 @@ export function CampaignPreview({
                             startDate={payload.startDate}
                             endDate={payload.endDate}
                         />
+                    )}
+                    {weighting && (
+                        <Weighting
+                            pool={payload.pool}
+                            weighting={payload.weighting}
+                        />
+                    )}
+                    {kpi && (
+                        <Kpi
+                            poolUsdTvl={payload.pool.usdTvl}
+                            from={payload.startDate}
+                            to={payload.endDate}
+                            distributables={payload.distributables}
+                            specification={payload.kpiSpecification}
+                        />
+                    )}
+                    {range && (
+                        <Range
+                            pool={payload.pool}
+                            specification={payload.priceRangeSpecification}
+                        />
+                    )}
+                    {restrictions && (
+                        <Restrictions restrictions={payload.restrictions} />
                     )}
                     <div className={styles.deployButtonContainer}>
                         {error && (

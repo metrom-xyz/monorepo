@@ -72,6 +72,9 @@ export function Rewards({ rewards, startDate, endDate }: RewardsProps) {
 
     return (
         <div className={styles.root}>
+            <Typography uppercase weight="medium">
+                {t("title")}
+            </Typography>
             <Card className={styles.table}>
                 <div className={styles.header}>
                     <Typography uppercase weight="medium" light size="sm">
