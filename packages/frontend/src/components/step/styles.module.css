@@ -8,11 +8,11 @@
         ease-in-out;
 }
 
-.disabled {
+.root.disabled {
     @apply hover:cursor-not-allowed;
 }
 
-.disabled > * {
+.root.disabled > * {
     @apply pointer-events-none opacity-40 dark:opacity-20 select-none;
 }
 
