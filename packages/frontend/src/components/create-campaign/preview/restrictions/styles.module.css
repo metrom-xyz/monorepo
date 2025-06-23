@@ -1,0 +1,17 @@
+@reference "../../../../app.css";
+
+.root {
+    @apply w-full flex flex-col gap-4;
+}
+
+.list {
+    @apply max-h-64 overflow-y-auto snap-y flex flex-col gap-6 p-4;
+}
+
+.row {
+    @apply flex items-center justify-between snap-start;
+}
+
+.account {
+    @apply flex items-center gap-2;
+}

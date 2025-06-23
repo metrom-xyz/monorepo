@@ -26,12 +26,12 @@ import {
     type ChangeEvent,
 } from "react";
 import { usePrevious } from "react-use";
-import { isAddress, zeroAddress, type Address } from "viem";
-import { blo } from "blo";
-import { shortenAddress } from "@/src/utils/address";
+import { isAddress, type Address } from "viem";
 import { XIcon } from "@/src/assets/x-icon";
 import { Dot } from "./dot";
 import { CsvAddressesImport } from "./csv-addresses-import";
+import { Avatar } from "@/src/components/avatar/avatar";
+import { Account } from "@/src/components/account";
 
 import styles from "./styles.module.css";
 
@@ -108,14 +108,19 @@ export function RestrictionsStep({
     useEffect(() => {
         if (enabled && !open && unsavedChanges)
             setWarning("warnings.notApplied");
+        else if (enabled && !open && addresses.length === 0)
+            setWarning("warnings.emptyAddresses");
         else setWarning("");
-    }, [enabled, open, unsavedChanges]);
+    }, [enabled, open, unsavedChanges, addresses]);
 
     useEffect(() => {
         onError({
-            restrictions: !!error || (enabled && !restrictions),
+            restrictions:
+                !!error ||
+                (enabled && !restrictions) ||
+                restrictions?.list.length === 0,
         });
-    }, [enabled, restrictions, onError, error]);
+    }, [enabled, restrictions, error, onError]);
 
     useEffect(() => {
         setOpen(enabled);
@@ -280,17 +285,16 @@ export function RestrictionsStep({
                                 {addresses.map((address) => (
                                     <div key={address} className={styles.row}>
                                         <div className={styles.accountWrapper}>
-                                            {/* eslint-disable-next-line @next/next/no-img-element */}
-                                            <img
-                                                alt="Avatar"
-                                                src={blo(
-                                                    address || zeroAddress,
-                                                )}
-                                                className={styles.avatar}
+                                            <Avatar
+                                                address={address}
+                                                width={20}
+                                                height={20}
                                             />
-                                            <Typography weight="medium">
-                                                {shortenAddress(address, true)}
-                                            </Typography>
+                                            <Account
+                                                variant="long"
+                                                weight="medium"
+                                                address={address}
+                                            />
                                         </div>
                                         <XIcon
                                             onClick={getRemoveHandler(address)}

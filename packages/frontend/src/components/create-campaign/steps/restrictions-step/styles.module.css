@@ -94,10 +94,6 @@
     @apply cursor-pointer;
 }
 
-.avatar {
-    @apply h-5 w-5 rounded-full;
-}
-
 .applyButton {
     @apply w-full;
 }

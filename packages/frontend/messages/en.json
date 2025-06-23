@@ -209,7 +209,8 @@
                         "alreadyRestricted": "Address already restricted"
                     },
                     "warnings": {
-                        "notApplied": "Not applied"
+                        "notApplied": "Not applied",
+                        "emptyAddresses": "No addresses"
                     },
                     "blocks": "Blocks {count, plural, =0 {} =1 {# address} other {# adresses}}",
                     "allows": "Allows {count, plural, =0 {} =1 {# address} other {# adresses}}",
@@ -379,11 +380,17 @@
             "minimumPayout": "Minimum payout"
         },
         "rewards": {
+            "title": "Rewards",
             "daily": "Daily rewards",
             "total": "Total rewards",
             "token": "Reward token",
             "amount": "Amount",
             "fee": "Protocol fee"
+        },
+        "restrictions": {
+            "title": "Restrictions",
+            "blocks": "Blocks {count, plural, =0 {} =1 {# address} other {# adresses}}",
+            "allows": "Allows {count, plural, =0 {} =1 {# address} other {# adresses}}"
         },
         "errors": {
             "specification": "An error occurred while processing the campaign specification"
