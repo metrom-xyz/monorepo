@@ -66,7 +66,7 @@ export function StartDateStep({
     useEffect(() => {
         if (disabled || !!startDate) return;
         setOpen(true);
-    }, [disabled]);
+    }, [disabled, startDate]);
 
     useEffect(() => {
         if (minDate || !open) return;

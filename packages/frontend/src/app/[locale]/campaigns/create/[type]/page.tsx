@@ -2,6 +2,7 @@ import { CreateCampaignForm } from "@/src/components/create-campaign/form";
 import { routing, type Locale } from "@/src/i18n/routing";
 import { CampaignType } from "@/src/types/campaign";
 import { setRequestLocale } from "next-intl/server";
+import { Suspense } from "react";
 
 interface Params {
     type: CampaignType;
@@ -26,7 +27,11 @@ export default async function CampaignFormPage({
 
     setRequestLocale(locale);
 
-    return <CreateCampaignForm type={type} />;
+    return (
+        <Suspense>
+            <CreateCampaignForm type={type} />
+        </Suspense>
+    );
 }
 
 export async function generateStaticParams() {
