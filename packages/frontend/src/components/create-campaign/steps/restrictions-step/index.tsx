@@ -5,6 +5,7 @@ import {
     type BaseCampaignPayload,
     type CampaignPayloadErrors,
     type BaseCampaignPayloadPart,
+    type FormStepBaseProps,
 } from "@/src/types/campaign";
 import type { LocalizedMessage } from "@/src/types/utils";
 import { RestrictionType } from "@metrom-xyz/sdk";
@@ -38,8 +39,7 @@ import styles from "./styles.module.css";
 
 export const MAXIMUM_RESTRICTIONS = 20;
 
-interface RestrictionsStepProps {
-    disabled?: boolean;
+interface RestrictionsStepProps extends FormStepBaseProps {
     restrictions?: BaseCampaignPayload["restrictions"];
     onRestrictionsChange: (restrictions: BaseCampaignPayloadPart) => void;
     onError: (errors: CampaignPayloadErrors) => void;
@@ -48,6 +48,7 @@ interface RestrictionsStepProps {
 type ErrorMessage = LocalizedMessage<"newCampaign.form.base.restrictions">;
 
 export function RestrictionsStep({
+    autoCompleted,
     disabled,
     restrictions,
     onRestrictionsChange,
@@ -58,13 +59,9 @@ export function RestrictionsStep({
     const [enabled, setEnabled] = useState(false);
     const [error, setError] = useState<ErrorMessage>("");
     const [warning, setWarning] = useState<ErrorMessage>("");
-    const [type, setType] = useState(
-        restrictions?.type || RestrictionType.Blacklist,
-    );
+    const [type, setType] = useState(RestrictionType.Blacklist);
     const [address, setAddress] = useState("");
-    const [addresses, setAddresses] = useState<Address[]>(
-        restrictions?.list || [],
-    );
+    const [addresses, setAddresses] = useState<Address[]>([]);
 
     const prevRestrictions = usePrevious(restrictions);
 
@@ -81,21 +78,22 @@ export function RestrictionsStep({
         );
     }, [addresses, prevRestrictions, type]);
 
-    // this hooks is used to disable and close the step when
-    // the restrictions gets disabled, after the campaign creation
+    // This hooks is used to disable and close the step when
+    // the restrictions gets disabled, after the campaign creation.
     useEffect(() => {
-        if (enabled && !!prevRestrictions && !restrictions) setEnabled(false);
+        if (!autoCompleted && enabled && !!prevRestrictions && !restrictions)
+            setEnabled(false);
         if (disabled) setEnabled(false);
     }, [enabled, restrictions, prevRestrictions, disabled]);
 
     useEffect(() => {
-        if (enabled) return;
-        if (restrictions) onRestrictionsChange({ restrictions: undefined });
+        if (restrictions) {
+            const { type, list } = restrictions;
 
-        setAddress("");
-        setType(RestrictionType.Blacklist);
-        setAddresses([]);
-    }, [enabled, onRestrictionsChange, restrictions]);
+            setType(type);
+            setAddresses(list);
+        }
+    }, [restrictions]);
 
     useEffect(() => {
         if (!address) {
@@ -127,8 +125,11 @@ export function RestrictionsStep({
     }, [enabled, restrictions, error, onError]);
 
     useEffect(() => {
-        setOpen(enabled);
-    }, [enabled]);
+        if (autoCompleted && !!restrictions) {
+            setEnabled(true);
+            setOpen(false);
+        } else setOpen(enabled);
+    }, [autoCompleted, restrictions, enabled]);
 
     function handleSwitchOnClick(
         _: boolean,
@@ -138,6 +139,13 @@ export function RestrictionsStep({
     ) {
         event.stopPropagation();
         setEnabled((enabled) => !enabled);
+
+        if (restrictions) {
+            onRestrictionsChange({ restrictions: undefined });
+            setAddress("");
+            setType(RestrictionType.Blacklist);
+            setAddresses([]);
+        }
     }
 
     function handleStepOnClick() {

@@ -1,4 +1,10 @@
-import { Button, Typography, TextField, ErrorText } from "@metrom-xyz/ui";
+import {
+    Button,
+    Typography,
+    TextField,
+    ErrorText,
+    ToastNotification,
+} from "@metrom-xyz/ui";
 import {
     AmmPoolLiquidityCampaignPreviewPayload,
     type CampaignPreviewPayload,
@@ -45,6 +51,8 @@ import { useChainData } from "@/src/hooks/useChainData";
 import { Weighting } from "./weighting";
 import { Restrictions } from "./restrictions";
 import { useLiquidityByAddresses } from "@/src/hooks/useLiquidityByAddresses";
+import { LinkIcon } from "@/src/assets/link-icon";
+import { toast } from "sonner";
 
 import styles from "./styles.module.css";
 
@@ -108,6 +116,17 @@ export function CampaignPreview({
             enabled: true,
         };
     }, [ammPoolLiquidityCampaign, payload]);
+    
+    const sharablePreviewUrl = useMemo(() => {
+        const data = JSON.stringify(payload, (_, value) =>
+            typeof value === "bigint" ? `${value.toString()}n` : value,
+        );
+
+        const url = new URL(window.location.href);
+        url.searchParams.set("payload", btoa(data));
+
+        return url.toString();
+    }, [payload]);
 
     const { loading: loadingLiquidityInRange, liquidityInRange } =
         useLiquidityInRange(liquidityInRangeParams);
@@ -254,6 +273,18 @@ export function CampaignPreview({
     function handleOnRewardsApproved() {
         setTokensApproved(true);
     }
+
+    const handleShareOnClick = useCallback(() => {
+        navigator.clipboard.writeText(sharablePreviewUrl).then(() => {
+            toast.custom((toastId) => (
+                <ToastNotification
+                    toastId={toastId}
+                    title={t("linkCopied")}
+                    icon={LinkIcon}
+                />
+            ));
+        });
+    }, [sharablePreviewUrl, t]);
 
     const handleOnStandardDeploy = useCallback(() => {
         if (simulateCreateErrored) {
@@ -435,12 +466,22 @@ export function CampaignPreview({
                     {restrictions && (
                         <Restrictions restrictions={payload.restrictions} />
                     )}
-                    <div className={styles.deployButtonContainer}>
+                    <div className={styles.buttonsContainer}>
                         {error && (
                             <ErrorText size="xs" weight="medium">
                                 {t(error)}
                             </ErrorText>
                         )}
+                        <Button
+                            icon={LinkIcon}
+                            iconPlacement="right"
+                            variant="secondary"
+                            disabled={!!error || simulateCreateErrored}
+                            className={{ root: styles.button }}
+                            onClick={handleShareOnClick}
+                        >
+                            {t("share")}
+                        </Button>
                         {tokensApproved && (
                             <Button
                                 icon={ArrowRightIcon}
@@ -451,7 +492,7 @@ export function CampaignPreview({
                                     simulatingCreate ||
                                     deploying
                                 }
-                                className={{ root: styles.deployButton }}
+                                className={{ root: styles.button }}
                                 onClick={
                                     SAFE
                                         ? handleOnSafeDeploy

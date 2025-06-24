@@ -48,6 +48,14 @@ export function CreateCampaignForm<T extends CampaignType>({
     const [view, setView] = useState(View.Form);
     const [payload, setPayload] = useState<CampaignPreviewPayload | null>(null);
 
+    const unsupportedChain = useMemo(() => {
+        return (
+            isConnected &&
+            (!connectedChain ||
+                !chains.some((chain) => chain.id === selectedChain))
+        );
+    }, [chains, connectedChain, isConnected, selectedChain]);
+
     function handlePreviewOnClick(payload: CampaignPreviewPayload | null) {
         setPayload(payload);
         setView(View.Preview);
@@ -61,14 +69,6 @@ export function CreateCampaignForm<T extends CampaignType>({
     function handleCreateNewOnClick() {
         router.push("/campaigns/create");
     }
-
-    const unsupportedChain = useMemo(() => {
-        return (
-            isConnected &&
-            (!connectedChain ||
-                !chains.some((chain) => chain.id === selectedChain))
-        );
-    }, [chains, connectedChain, isConnected, selectedChain]);
 
     return (
         <div className={styles.root}>

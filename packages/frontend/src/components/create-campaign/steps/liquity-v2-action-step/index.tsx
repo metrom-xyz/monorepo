@@ -5,6 +5,7 @@ import { StepPreview } from "@/src/components/step/preview";
 import { StepContent } from "@/src/components/step/content";
 import { useTranslations } from "next-intl";
 import {
+    type FormStepBaseProps,
     type LiquityV2CampaignPayload,
     type LiquityV2CampaignPayloadPart,
 } from "@/src/types/campaign";
@@ -29,14 +30,14 @@ export const LIQUITY_V2_SUPPORTED_ACTIONS = [
     },
 ] as const;
 
-interface LiquityV2ActionStepProps {
-    disabled?: boolean;
+interface LiquityV2ActionStepProps extends FormStepBaseProps {
     action?: LiquityV2CampaignPayload["action"];
     brand?: LiquityV2CampaignPayload["brand"];
     onActionChange: (value: LiquityV2CampaignPayloadPart) => void;
 }
 
 export function LiquityV2ActionStep({
+    autoCompleted,
     disabled,
     action,
     brand,
@@ -58,6 +59,10 @@ export function LiquityV2ActionStep({
     useEffect(() => {
         setOpen(false);
     }, [chainId]);
+
+    useEffect(() => {
+        if (autoCompleted) setOpen(false);
+    }, [autoCompleted]);
 
     useEffect(() => {
         if (disabled || !!action) return;

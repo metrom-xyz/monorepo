@@ -397,6 +397,8 @@
         "errors": {
             "specification": "An error occurred while processing the campaign specification"
         },
+        "share": "Share campaign setup",
+        "linkCopied": "Link copied to clipboard",
         "deploy": "Launch campaign",
         "connectWallet": "Connect wallet",
         "congratulations": "Congratulations!",

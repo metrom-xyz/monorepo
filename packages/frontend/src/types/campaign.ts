@@ -314,3 +314,8 @@ export interface TargetedNamedCampaign<T extends TargetType> extends Campaign {
             ? LiquityV2StabilityPoolTarget
             : never;
 }
+
+export interface FormStepBaseProps {
+    autoCompleted?: boolean;
+    disabled?: boolean;
+}
