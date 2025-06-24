@@ -98,7 +98,7 @@ export function EndDateStep({
     useEffect(() => {
         if (disabled || !!endDate) return;
         setOpen(true);
-    }, [disabled]);
+    }, [disabled, endDate]);
 
     useEffect(() => {
         if (!endDate) setDate(undefined);
