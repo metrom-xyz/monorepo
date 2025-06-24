@@ -1,4 +1,4 @@
-import React, { type ReactElement } from "react";
+import React, { useCallback, type ReactElement } from "react";
 import classNames from "classnames";
 import { matchChildByType } from "../../utils/components";
 import { Tab, type TabProps } from "./tab";
@@ -22,9 +22,13 @@ export function Tabs<T>({
     children,
     className,
 }: TabsProps<T>) {
-    function handleOnChange(value: T) {
-        onChange(value);
-    }
+    const handleOnChange = useCallback(
+        (newValue: T) => {
+            if (value === newValue) return;
+            onChange(newValue);
+        },
+        [value],
+    );
 
     return (
         <div
