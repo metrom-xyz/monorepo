@@ -84,7 +84,7 @@ export function RestrictionsStep({
         if (!autoCompleted && enabled && !!prevRestrictions && !restrictions)
             setEnabled(false);
         if (disabled) setEnabled(false);
-    }, [enabled, restrictions, prevRestrictions, disabled]);
+    }, [autoCompleted, enabled, restrictions, prevRestrictions, disabled]);
 
     useEffect(() => {
         if (restrictions) {
