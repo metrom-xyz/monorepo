@@ -27,12 +27,12 @@
     @apply grid grid-cols-2 gap-4;
 }
 
-.deployButtonContainer {
-    @apply w-full flex flex-col gap-2 items-center justify-center;
+.buttonsContainer {
+    @apply w-full flex gap-4 items-center justify-center;
 }
 
-.deployButton {
-    @apply w-full max-w-[400px];
+.button {
+    @apply w-full min-h-16 max-w-[400px];
 }
 
 .feedback {

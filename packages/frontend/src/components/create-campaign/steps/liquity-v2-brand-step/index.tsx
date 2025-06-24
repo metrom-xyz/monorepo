@@ -7,6 +7,7 @@ import { StepContent } from "@/src/components/step/content";
 import classNames from "classnames";
 import { Typography } from "@metrom-xyz/ui";
 import {
+    type FormStepBaseProps,
     type LiquityV2CampaignPayload,
     type LiquityV2CampaignPayloadPart,
 } from "@/src/types/campaign";
@@ -15,13 +16,13 @@ import { useProtocolsInChain } from "@/src/hooks/useProtocolsInChain";
 
 import styles from "./styles.module.css";
 
-interface LiquityV2BrandStepProps {
-    disabled?: boolean;
+interface LiquityV2BrandStepProps extends FormStepBaseProps {
     brand?: LiquityV2CampaignPayload["brand"];
     onBrandChange: (value: LiquityV2CampaignPayloadPart) => void;
 }
 
 export function LiquityV2BrandStep({
+    autoCompleted,
     disabled,
     brand,
     onBrandChange,
@@ -44,6 +45,10 @@ export function LiquityV2BrandStep({
     useEffect(() => {
         setOpen(false);
     }, [chainId]);
+
+    useEffect(() => {
+        if (autoCompleted) setOpen(false);
+    }, [autoCompleted]);
 
     useEffect(() => {
         if (!!brand || supportedBrands.length !== 1) return;

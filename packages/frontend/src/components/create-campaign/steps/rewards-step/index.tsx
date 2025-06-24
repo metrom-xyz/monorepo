@@ -8,6 +8,7 @@ import {
     type BaseCampaignPayload,
     type BaseCampaignPayloadPart,
     type CampaignPayloadErrors,
+    type FormStepBaseProps,
 } from "@/src/types/campaign";
 import classNames from "classnames";
 import { RewardTokens } from "./tokens";
@@ -16,8 +17,7 @@ import { DistributablesType } from "@metrom-xyz/sdk";
 
 import styles from "./styles.module.css";
 
-interface RewardsStepProps {
-    disabled?: boolean;
+interface RewardsStepProps extends FormStepBaseProps {
     distributables?: BaseCampaignPayload["distributables"];
     startDate?: BaseCampaignPayload["startDate"];
     endDate?: BaseCampaignPayload["endDate"];
