@@ -11,14 +11,14 @@ import type {
     AmmPoolLiquidityCampaignPayload,
     AmmPoolLiquidityCampaignPayloadPart,
     CampaignPayloadErrors,
+    FormStepBaseProps,
 } from "@/src/types/campaign";
 import { ListPoolPicker } from "./list";
 import { AddressPoolPicker } from "./address-picker";
 
 import styles from "./styles.module.css";
 
-interface PoolStepProps {
-    disabled?: boolean;
+interface PoolStepProps extends FormStepBaseProps {
     dex?: AmmPoolLiquidityCampaignPayload["dex"];
     pool?: AmmPoolLiquidityCampaignPayload["pool"];
     onPoolChange: (value: AmmPoolLiquidityCampaignPayloadPart) => void;
@@ -26,6 +26,7 @@ interface PoolStepProps {
 }
 
 export function PoolStep({
+    autoCompleted,
     disabled,
     dex,
     pool,
@@ -42,9 +43,13 @@ export function PoolStep({
     }, [chainId]);
 
     useEffect(() => {
-        if (disabled || !!pool?.id) return;
+        if (autoCompleted) setOpen(false);
+    }, [autoCompleted]);
+
+    useEffect(() => {
+        if (autoCompleted || disabled || !!pool?.id) return;
         setOpen(true);
-    }, [disabled, pool]);
+    }, [autoCompleted, disabled, pool]);
 
     useEffect(() => {
         onError({ pool: !!error });

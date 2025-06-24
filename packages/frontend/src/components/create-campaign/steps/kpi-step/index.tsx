@@ -6,6 +6,7 @@ import {
     type CampaignPayloadErrors,
     type BaseCampaignPayloadPart,
     type CampaignPayloadTokenDistributables,
+    type FormStepBaseProps,
 } from "@/src/types/campaign";
 import type { LocalizedMessage } from "@/src/types/utils";
 import { Button, ErrorText, Switch, Typography } from "@metrom-xyz/ui";
@@ -21,8 +22,7 @@ import { InfoMessage } from "@/src/components/info-message";
 
 import styles from "./styles.module.css";
 
-interface KpiStepProps {
-    disabled?: boolean;
+interface KpiStepProps extends FormStepBaseProps {
     pool?: AmmPoolLiquidityCampaignPayload["pool"];
     distributables?: CampaignPayloadTokenDistributables;
     startDate?: AmmPoolLiquidityCampaignPayload["startDate"];
@@ -36,6 +36,7 @@ type ErrorMessage = LocalizedMessage<"newCampaign.form.base.kpi">;
 
 // TODO: make KPI step work with liquityv2 campaigns
 export function KpiStep({
+    autoCompleted,
     disabled,
     pool,
     distributables,
@@ -52,13 +53,13 @@ export function KpiStep({
     const [warning, setWarning] = useState<ErrorMessage>("");
 
     const [minimumPayoutPercentage, setMinimumPayoutPercentage] =
-        useState<number>(kpiSpecification?.minimumPayoutPercentage || 0);
+        useState<number>(0);
     const [lowerUsdTargetRaw, setLowerUsdTargetRaw] = useState<
         number | undefined
-    >(kpiSpecification?.goal.lowerUsdTarget);
+    >();
     const [upperUsdTargetRaw, setUpperUsdTargetRaw] = useState<
         number | undefined
-    >(kpiSpecification?.goal.upperUsdTarget);
+    >();
 
     const prevKpiSpecification = usePrevious(kpiSpecification);
     const chainId = useChainId();
@@ -109,25 +110,37 @@ export function KpiStep({
             : undefined;
 
     useEffect(() => {
+        if (!!kpiSpecification) {
+            const { goal, minimumPayoutPercentage } = kpiSpecification;
+
+            setLowerUsdTargetRaw(goal.lowerUsdTarget);
+            setUpperUsdTargetRaw(goal.upperUsdTarget);
+            setMinimumPayoutPercentage(minimumPayoutPercentage ?? 0);
+        }
+    }, [kpiSpecification]);
+
+    useEffect(() => {
         setEnabled(false);
     }, [chainId]);
 
-    // this hooks is used to disable and close the step when
-    // the kpi specification gets disabled, after the campaign creation
     useEffect(() => {
-        if (enabled && !!prevKpiSpecification && !kpiSpecification)
+        if (autoCompleted && !!kpiSpecification) {
+            setEnabled(true);
+            setOpen(false);
+        } else setOpen(enabled);
+    }, [autoCompleted, kpiSpecification, enabled]);
+
+    // This hooks is used to disable and close the step when
+    // the kpi specification gets disabled, after the campaign creation.
+    useEffect(() => {
+        if (
+            !autoCompleted &&
+            enabled &&
+            !!prevKpiSpecification &&
+            !kpiSpecification
+        )
             setEnabled(false);
-    }, [enabled, kpiSpecification, prevKpiSpecification]);
-
-    useEffect(() => {
-        if (enabled) return;
-        if (kpiSpecification) onKpiChange({ kpiSpecification: undefined });
-
-        setMinimumPayoutPercentage(0);
-        setLowerUsdTargetRaw(undefined);
-        setUpperUsdTargetRaw(undefined);
-        setError("");
-    }, [enabled, kpiSpecification, onKpiChange]);
+    }, [autoCompleted, enabled, kpiSpecification, prevKpiSpecification]);
 
     useEffect(() => {
         if (
@@ -167,13 +180,11 @@ export function KpiStep({
         });
     }, [error, enabled, kpiSpecification, onError]);
 
-    useEffect(() => {
-        setOpen(enabled);
-    }, [enabled]);
-
     // TODO: avoid resetting when the KPI is enabled for points.
     // This hook is used to reset and disable the KPI when changing reward type.
     useEffect(() => {
+        if (!!distributables?.type) return;
+
         onKpiChange({ kpiSpecification: undefined });
         setMinimumPayoutPercentage(0);
         setLowerUsdTargetRaw(undefined);
@@ -190,6 +201,14 @@ export function KpiStep({
     ) {
         event.stopPropagation();
         setEnabled((enabled) => !enabled);
+
+        if (kpiSpecification) {
+            onKpiChange({ kpiSpecification: undefined });
+            setMinimumPayoutPercentage(0);
+            setLowerUsdTargetRaw(undefined);
+            setUpperUsdTargetRaw(undefined);
+            setError("");
+        }
     }
 
     function handleStepOnClick() {

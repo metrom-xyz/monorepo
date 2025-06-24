@@ -5,6 +5,7 @@ import { StepPreview } from "@/src/components/step/preview";
 import { StepContent } from "@/src/components/step/content";
 import { useTranslations } from "next-intl";
 import {
+    type FormStepBaseProps,
     type LiquityV2CampaignPayload,
     type LiquityV2CampaignPayloadPart,
 } from "@/src/types/campaign";
@@ -16,8 +17,7 @@ import { useLiquityV2Collaterals } from "@/src/hooks/useLiquityV2Collaterals";
 
 import styles from "./styles.module.css";
 
-interface LiquityV2CollateralStepProps {
-    disabled?: boolean;
+interface LiquityV2CollateralStepProps extends FormStepBaseProps {
     brand?: LiquityV2CampaignPayload["brand"];
     action?: LiquityV2CampaignPayload["action"];
     collateral?: LiquityV2CampaignPayload["collateral"];
@@ -25,6 +25,7 @@ interface LiquityV2CollateralStepProps {
 }
 
 export function LiquityV2CollateralStep({
+    autoCompleted,
     disabled,
     brand,
     action,
@@ -44,6 +45,10 @@ export function LiquityV2CollateralStep({
     useEffect(() => {
         setOpen(false);
     }, [chainId]);
+
+    useEffect(() => {
+        if (autoCompleted) setOpen(false);
+    }, [autoCompleted]);
 
     useEffect(() => {
         if (disabled || !!collateral) return;

@@ -12,6 +12,7 @@ import type {
     BaseCampaignPayload,
     CampaignPayloadErrors,
     BaseCampaignPayloadPart,
+    FormStepBaseProps,
 } from "@/src/types/campaign";
 import { Typography, Button, DateTimePicker, ErrorText } from "@metrom-xyz/ui";
 import { getClosestAvailableDateTime } from "../../../../utils/date";
@@ -19,8 +20,7 @@ import { formatDateTime } from "@/src/utils/format";
 
 import styles from "./styles.module.css";
 
-interface StartDateStepProps {
-    disabled?: boolean;
+interface StartDateStepProps extends FormStepBaseProps {
     startDate?: BaseCampaignPayload["startDate"];
     endDate?: BaseCampaignPayload["endDate"];
     onStartDateChange: (startDate: BaseCampaignPayloadPart) => void;
@@ -28,6 +28,7 @@ interface StartDateStepProps {
 }
 
 export function StartDateStep({
+    autoCompleted,
     disabled,
     startDate,
     endDate,
@@ -36,7 +37,7 @@ export function StartDateStep({
 }: StartDateStepProps) {
     const t = useTranslations("newCampaign.form.base.startDate");
     const [open, setOpen] = useState(false);
-    const [date, setDate] = useState<Dayjs | undefined>(startDate);
+    const [date, setDate] = useState<Dayjs | undefined>();
     const [minDate, setMinDate] = useState<Dayjs | undefined>();
     const [dateError, setDateError] = useState("");
 
@@ -51,11 +52,19 @@ export function StartDateStep({
     }, [date, prevDate]);
 
     useEffect(() => {
+        if (startDate) setDate(startDate);
+    }, [startDate]);
+
+    useEffect(() => {
         setOpen(false);
     }, [chainId]);
 
     useEffect(() => {
-        if (disabled) return;
+        if (autoCompleted) setOpen(false);
+    }, [autoCompleted]);
+
+    useEffect(() => {
+        if (disabled || !!startDate) return;
         setOpen(true);
     }, [disabled]);
 
