@@ -10,18 +10,23 @@ import { Typography } from "@metrom-xyz/ui";
 import {
     type AmmPoolLiquidityCampaignPayload,
     type AmmPoolLiquidityCampaignPayloadPart,
+    type FormStepBaseProps,
 } from "@/src/types/campaign";
 import { useProtocolsInChain } from "@/src/hooks/useProtocolsInChain";
 
 import styles from "./styles.module.css";
 
-interface DexStepProps {
-    disabled?: boolean;
+interface DexStepProps extends FormStepBaseProps {
     dex?: AmmPoolLiquidityCampaignPayload["dex"];
     onDexChange: (value: AmmPoolLiquidityCampaignPayloadPart) => void;
 }
 
-export function DexStep({ disabled, dex, onDexChange }: DexStepProps) {
+export function DexStep({
+    autoCompleted,
+    disabled,
+    dex,
+    onDexChange,
+}: DexStepProps) {
     const t = useTranslations("newCampaign.form.ammPoolLiquidity.dex");
     const [open, setOpen] = useState(false);
 
@@ -40,6 +45,10 @@ export function DexStep({ disabled, dex, onDexChange }: DexStepProps) {
     useEffect(() => {
         setOpen(false);
     }, [chainId]);
+
+    useEffect(() => {
+        if (autoCompleted) setOpen(false);
+    }, [autoCompleted]);
 
     useEffect(() => {
         if (!!dex || availableDexes.length !== 1) return;

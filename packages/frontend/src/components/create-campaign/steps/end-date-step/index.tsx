@@ -11,6 +11,7 @@ import type {
     BaseCampaignPayload,
     CampaignPayloadErrors,
     BaseCampaignPayloadPart,
+    FormStepBaseProps,
 } from "@/src/types/campaign";
 import type { TranslationsKeys } from "@/src/types/utils";
 import {
@@ -26,8 +27,7 @@ import { usePrevious } from "react-use";
 
 import styles from "./styles.module.css";
 
-interface EndDateStepProps {
-    disabled?: boolean;
+interface EndDateStepProps extends FormStepBaseProps {
     startDate?: BaseCampaignPayload["startDate"];
     endDate?: BaseCampaignPayload["endDate"];
     onEndDateChange: (startDate: BaseCampaignPayloadPart) => void;
@@ -59,6 +59,7 @@ const DURATION_PRESETS: DurationPreset[] = [
 ];
 
 export function EndDateStep({
+    autoCompleted,
     disabled,
     startDate,
     endDate,
@@ -67,7 +68,7 @@ export function EndDateStep({
 }: EndDateStepProps) {
     const t = useTranslations("newCampaign.form.base.endDate");
     const [open, setOpen] = useState(false);
-    const [date, setDate] = useState<Dayjs | undefined>(endDate);
+    const [date, setDate] = useState<Dayjs | undefined>();
     const [durationPreset, setDurationPreset] = useState<DurationPreset>();
     const [dateError, setDateError] = useState("");
 
@@ -83,11 +84,19 @@ export function EndDateStep({
     }, [date, prevDate]);
 
     useEffect(() => {
+        if (endDate) setDate(endDate);
+    }, [endDate]);
+
+    useEffect(() => {
         setOpen(false);
     }, [chainId]);
 
     useEffect(() => {
-        if (disabled) return;
+        if (autoCompleted) setOpen(false);
+    }, [autoCompleted]);
+
+    useEffect(() => {
+        if (disabled || !!endDate) return;
         setOpen(true);
     }, [disabled]);
 
