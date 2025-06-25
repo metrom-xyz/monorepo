@@ -65,12 +65,13 @@ try {
             {
                 grafting: chainConfig.grafting,
                 network,
-                address: poolConfig.address,
-                startBlock: poolConfig.startBlock,
-                tokens: poolConfig.tokens.map((token, i) => ({
-                    key: `token${i}`,
-                    value: token,
-                })),
+                curveRouterAddress: chainConfig.routers.curve.address,
+                curveRouterStartBlock: chainConfig.routers.curve.startBlock,
+                gpv2SettlementAddress:
+                    chainConfig.routers.gpv2Settlement.address,
+                gpv2SettlementStartBlock:
+                    chainConfig.routers.gpv2Settlement.startBlock,
+                targetToken: poolConfig.targetToken,
             },
         ),
     );

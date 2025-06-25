@@ -9,8 +9,5 @@ type Swap @entity(immutable: true) {
     id: Bytes!
     timestamp: BigInt!
     from: Bytes!
-    tokenIn: Token!
-    amountIn: BigInt!
-    tokenOut: Token!
-    amountOut: BigInt!
+    tokenDelta: BigInt!
 }

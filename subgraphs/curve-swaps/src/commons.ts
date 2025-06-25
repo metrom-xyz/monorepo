@@ -1,16 +1,14 @@
 import { Address, BigInt, Bytes, ethereum } from "@graphprotocol/graph-ts";
 import { Token } from "../generated/schema";
-import { Erc20 } from "../generated/UnifiedPool/Erc20";
-import { Erc20BytesSymbol } from "../generated/UnifiedPool/Erc20BytesSymbol";
-import { Erc20BytesName } from "../generated/UnifiedPool/Erc20BytesName";
+import { Erc20 } from "../generated/CurveRouter/Erc20";
+import { Erc20BytesSymbol } from "../generated/CurveRouter/Erc20BytesSymbol";
+import { Erc20BytesName } from "../generated/CurveRouter/Erc20BytesName";
 import {
     NATIVE_TOKEN_ADDRESS,
     NATIVE_TOKEN_DECIMALS,
     NATIVE_TOKEN_NAME,
     NATIVE_TOKEN_SYMBOL,
 } from "./constants";
-
-export const BI_0 = BigInt.zero();
 
 export function getEventId(event: ethereum.Event): Bytes {
     return changetype<Bytes>(

@@ -5,7 +5,7 @@
     "scripts": {
         "prepare:deploy": "tsx ./scripts/prepare-deploy.ts",
         "codegen": "graph codegen",
-        "deploy:mainnet:ebusd-usdc": "pnpm prepare:deploy mainnet ebusd-usdc && pnpm codegen && graph deploy metrom-curve-swaps-mainnet-ebusd-usdc -l 0.0.6",
+        "deploy:mainnet:ebusd-usdc": "pnpm prepare:deploy mainnet ebusd-usdc && pnpm codegen && graph deploy metrom-curve-swaps-mainnet-ebusd-usdc -l 0.0.8",
         "lint": "eslint .",
         "format": "eslint --fix ."
     },

@@ -12,12 +12,41 @@ graft:
 {{/grafting}}
 dataSources:
   - kind: ethereum
-    name: UnifiedPool
+    name: CurveRouter
     network: {{network}}
     source:
-      address: "{{address}}"
-      startBlock: {{startBlock}}
-      abi: UnifiedPool
+      address: "{{curveRouterAddress}}"
+      startBlock: {{curveRouterStartBlock}}
+      abi: CurveRouter
+    context:
+      targetToken:
+        type: Bytes
+        data: "{{targetToken}}"
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities: []
+      abis:
+        - name: CurveRouter
+          file: ./abis/CurveRouter.json
+        - name: Erc20
+          file: ./abis/Erc20.json
+        - name: Erc20BytesName
+          file: ./abis/Erc20BytesName.json
+        - name: Erc20BytesSymbol
+          file: ./abis/Erc20BytesSymbol.json
+      file: ./src/mappings/curve-router.ts
+      eventHandlers:
+        - event: Exchange(indexed address,indexed address,address[11],uint256[5][5],address[5],uint256,uint256)
+          handler: handleExchange
+  - kind: ethereum
+    name: GPv2Settlement
+    network: {{network}}
+    source:
+      address: "{{gpv2SettlementAddress}}"
+      startBlock: {{gpv2SettlementStartBlock}}
+      abi: GPv2Settlement
     context:
       {{#tokens}}
       {{key}}:
@@ -30,21 +59,15 @@ dataSources:
       language: wasm/assemblyscript
       entities: []
       abis:
-        - name: UnifiedPool
-          file: ./abis/UnifiedPool.json
+        - name: GPv2Settlement
+          file: ./abis/GPv2Settlement.json
         - name: Erc20
           file: ./abis/Erc20.json
         - name: Erc20BytesName
           file: ./abis/Erc20BytesName.json
         - name: Erc20BytesSymbol
           file: ./abis/Erc20BytesSymbol.json
-      file: ./src/mappings/pool.ts
+      file: ./src/mappings/gpv2-settlement.ts
       eventHandlers:
-        - event: TokenExchange(indexed address,int128,uint256,int128,uint256)
-          handler: handleStableSwapTokenExchange
-        - event: TokenExchangeUnderlying(indexed address,int128,uint256,int128,uint256)
-          handler: handleStableSwapTokenExchangeUnderlying
-        - event: TokenExchange(indexed address,uint256,uint256,uint256,uint256)
-          handler: handleCryptoSwapTokenExchange
-        - event: TokenExchange(indexed address,uint256,uint256,uint256,uint256,uint256,uint256)
-          handler: handleCryptoSwapNgTokenExchange
+        - event: Trade(indexed address,address,address,uint256,uint256,uint256,bytes)
+          handler: handleTrade
