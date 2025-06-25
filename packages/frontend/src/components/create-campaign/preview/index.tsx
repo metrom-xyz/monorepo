@@ -80,9 +80,11 @@ export function CampaignPreview({
 
     const [deploying, setDeploying] = useState(false);
     const [uploadingSpecification, setUploadingSpecification] = useState(false);
+    const [uploadingSetup, setUploadingSetup] = useState(false);
     const [created, setCreated] = useState(false);
     const [tokensApproved, setTokensApproved] = useState(false);
     const [specificationHash, setSpecificationHash] = useState<Hex>(zeroHash);
+    const [shareUrl, setShareUrl] = useState<string>();
     const [error, setError] = useState<ErrorMessage>("");
     const [safeTxs, setSafeTxs] = useState<BaseTransaction[]>([]);
 
@@ -116,17 +118,6 @@ export function CampaignPreview({
             enabled: true,
         };
     }, [ammPoolLiquidityCampaign, payload]);
-    
-    const sharablePreviewUrl = useMemo(() => {
-        const data = JSON.stringify(payload, (_, value) =>
-            typeof value === "bigint" ? `${value.toString()}n` : value,
-        );
-
-        const url = new URL(window.location.href);
-        url.searchParams.set("payload", btoa(data));
-
-        return url.toString();
-    }, [payload]);
 
     const { loading: loadingLiquidityInRange, liquidityInRange } =
         useLiquidityInRange(liquidityInRangeParams);
@@ -221,6 +212,67 @@ export function CampaignPreview({
         },
     });
 
+    const uploadSetup = useCallback(async () => {
+        if (!!shareUrl) {
+            navigator.clipboard.writeText(shareUrl).then(() => {
+                toast.custom((toastId) => (
+                    <ToastNotification
+                        toastId={toastId}
+                        title={t("linkCopied")}
+                        icon={LinkIcon}
+                    />
+                ));
+            });
+
+            return;
+        }
+
+        setUploadingSetup(true);
+
+        const setup = JSON.stringify(payload, (_, value) =>
+            typeof value === "bigint" ? `${value.toString()}n` : value,
+        );
+
+        try {
+            const response = await fetch(
+                `${SERVICE_URLS[ENVIRONMENT].dataManager}/data/temporary`,
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: setup,
+                },
+            );
+
+            if (!response.ok) throw new Error(await response.text());
+
+            const { hash } = (await response.json()) as { hash: Hex };
+
+            const url = new URL(window.location.href);
+            url.searchParams.set("setup", hash);
+
+            setShareUrl(url.toString());
+            navigator.clipboard.writeText(url.toString()).then(() => {
+                toast.custom((toastId) => (
+                    <ToastNotification
+                        toastId={toastId}
+                        title={t("linkCopied")}
+                        icon={LinkIcon}
+                    />
+                ));
+            });
+        } catch (error) {
+            console.error(
+                `Could not upload setup to data-manager: ${setup}`,
+                error,
+            );
+            setError("errors.setup");
+        } finally {
+            setUploadingSetup(false);
+        }
+    }, [shareUrl, payload, t]);
+
     useEffect(() => {
         const specification = buildSpecificationBundle(payload);
 
@@ -273,18 +325,6 @@ export function CampaignPreview({
     function handleOnRewardsApproved() {
         setTokensApproved(true);
     }
-
-    const handleShareOnClick = useCallback(() => {
-        navigator.clipboard.writeText(sharablePreviewUrl).then(() => {
-            toast.custom((toastId) => (
-                <ToastNotification
-                    toastId={toastId}
-                    title={t("linkCopied")}
-                    icon={LinkIcon}
-                />
-            ));
-        });
-    }, [sharablePreviewUrl, t]);
 
     const handleOnStandardDeploy = useCallback(() => {
         if (simulateCreateErrored) {
@@ -476,9 +516,10 @@ export function CampaignPreview({
                             icon={LinkIcon}
                             iconPlacement="right"
                             variant="secondary"
+                            loading={uploadingSetup}
                             disabled={!!error || simulateCreateErrored}
                             className={{ root: styles.button }}
-                            onClick={handleShareOnClick}
+                            onClick={uploadSetup}
                         >
                             {t("share")}
                         </Button>

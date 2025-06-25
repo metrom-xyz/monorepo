@@ -22,6 +22,7 @@ interface DexStepProps extends FormStepBaseProps {
 }
 
 export function DexStep({
+    loading,
     autoCompleted,
     disabled,
     dex,
@@ -51,12 +52,12 @@ export function DexStep({
     }, [autoCompleted]);
 
     useEffect(() => {
-        if (!!dex || availableDexes.length !== 1) return;
+        if (autoCompleted || !!dex || availableDexes.length !== 1) return;
         onDexChange({
             dex: availableDexes[0],
         });
         setOpen(false);
-    }, [availableDexes, dex, onDexChange]);
+    }, [autoCompleted, availableDexes, dex, onDexChange]);
 
     const getDexChangeHandler = useCallback(
         (newDex: DexProtocol) => {
@@ -77,6 +78,7 @@ export function DexStep({
 
     return (
         <Step
+            loading={loading}
             disabled={disabled || availableDexes.length === 0}
             open={open}
             completed={!!selectedDex}

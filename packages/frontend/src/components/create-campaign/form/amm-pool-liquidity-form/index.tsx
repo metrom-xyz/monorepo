@@ -13,7 +13,7 @@ import {
     useMemo,
     useState,
 } from "react";
-import { useAccount, useChainId, useSwitchChain } from "wagmi";
+import { useChainId, useSwitchChain } from "wagmi";
 import {
     AmmPoolLiquidityType,
     DistributablesType,
@@ -34,8 +34,13 @@ import {
     AMM_SUPPORTS_TOKENS_RATIO,
 } from "@/src/commons";
 import { WeightingStep } from "../../steps/weighting";
-import { useSearchParams } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import dayjs from "dayjs";
+import { useCampaignSetup } from "@/src/hooks/useCampaignSetup";
+import { toast } from "sonner";
+import { SetupFail } from "../notifications/setup-fail";
+import { SetupSuccess } from "../notifications/setup-success";
+import { useRouter } from "next/navigation";
 
 import styles from "./styles.module.css";
 
@@ -96,23 +101,31 @@ export function AmmPoolLiquidityForm({
     onPreviewClick,
 }: AmmPoolLiquidityFormProps) {
     const t = useTranslations("newCampaign");
+
     const chainId = useChainId();
-    const { address } = useAccount();
-    const { switchChainAsync } = useSwitchChain();
+    const router = useRouter();
+    const pathname = usePathname();
+    const { switchChainAsync, isPending: switchingChain } = useSwitchChain();
     const searchParams = useSearchParams();
+    const {
+        loading: loadingSetup,
+        error: setupError,
+        setup,
+    } = useCampaignSetup({
+        hash: searchParams.get("setup"),
+        enabled: !!searchParams.get("setup"),
+    });
 
     const [payload, setPayload] = useState(initialPayload);
     const [autoCompleted, setAutoCompleted] = useState(false);
     const [errors, setErrors] = useState<CampaignPayloadErrors>({});
 
-    // This hook auto fills the form state when a 'payload' query parameter is found in the url,
-    // indicating that the campaign setup was shared via a link.
+    // This hook auto fills the form state when a campaign setup is available.
     useLayoutEffect(() => {
         const parsePayload = async () => {
-            const encodedPayload = searchParams.get("payload");
-            if (!encodedPayload) return undefined;
+            if (!setup) return undefined;
 
-            const payload = JSON.parse(atob(encodedPayload), (key, value) => {
+            const payload = JSON.parse(setup, (key, value) => {
                 if (typeof value === "string" && /^\d+n$/.test(value))
                     return BigInt(value.slice(0, -1));
 
@@ -124,13 +137,26 @@ export function AmmPoolLiquidityForm({
 
             if (!payload.pool) return undefined;
 
-            await switchChainAsync({ chainId: payload.pool.chainId });
+            if (payload.pool.chainId !== chainId)
+                await switchChainAsync({ chainId: payload.pool.chainId });
+
+            const params = new URLSearchParams(searchParams.toString());
+            params.delete("setup");
+            router.replace(`${pathname}?${params.toString()}`);
+
             setPayload(payload);
         };
 
         parsePayload();
         setAutoCompleted(true);
-    }, [address, searchParams, switchChainAsync]);
+    }, [searchParams, chainId, setup, pathname, router, switchChainAsync]);
+
+    useEffect(() => {
+        if (!loadingSetup && !!setupError)
+            toast.custom((toastId) => <SetupFail toastId={toastId} />);
+        if (!loadingSetup && !setupError && !!setup)
+            toast.custom((toastId) => <SetupSuccess toastId={toastId} />);
+    }, [loadingSetup, setupError, setup]);
 
     const previewPayload = useMemo(() => {
         if (Object.values(errors).some((error) => !!error)) return null;
@@ -194,16 +220,20 @@ export function AmmPoolLiquidityForm({
         onPreviewClick(previewPayload);
     }
 
+    const loading = loadingSetup || switchingChain;
+
     return (
         <div className={styles.root}>
             <div className={styles.stepsWrapper}>
                 <DexStep
+                    loading={loading}
                     autoCompleted={autoCompleted}
                     disabled={unsupportedChain}
                     dex={payload.dex}
                     onDexChange={handlePayloadOnChange}
                 />
                 <PoolStep
+                    loading={loading}
                     autoCompleted={autoCompleted}
                     disabled={!payload.dex || unsupportedChain}
                     dex={payload.dex}
@@ -212,6 +242,7 @@ export function AmmPoolLiquidityForm({
                     onError={handlePayloadOnError}
                 />
                 <StartDateStep
+                    loading={loading}
                     autoCompleted={autoCompleted}
                     disabled={!payload.pool || unsupportedChain}
                     startDate={payload.startDate}
@@ -220,6 +251,7 @@ export function AmmPoolLiquidityForm({
                     onError={handlePayloadOnError}
                 />
                 <EndDateStep
+                    loading={loading}
                     autoCompleted={autoCompleted}
                     disabled={!payload.startDate || unsupportedChain}
                     startDate={payload.startDate}
@@ -228,6 +260,7 @@ export function AmmPoolLiquidityForm({
                     onError={handlePayloadOnError}
                 />
                 <RewardsStep
+                    loading={loading}
                     autoCompleted={autoCompleted}
                     disabled={!payload.endDate || unsupportedChain}
                     distributables={payload.distributables}
@@ -248,6 +281,7 @@ export function AmmPoolLiquidityForm({
                     />
                 )}
                 <KpiStep
+                    loading={loading}
                     autoCompleted={autoCompleted}
                     disabled={noDistributables || unsupportedChain}
                     pool={payload.pool}
@@ -282,6 +316,7 @@ export function AmmPoolLiquidityForm({
                         />
                     )}
                 <RestrictionsStep
+                    loading={loading}
                     autoCompleted={autoCompleted}
                     disabled={missingDistributables || unsupportedChain}
                     restrictions={payload.restrictions}
@@ -292,6 +327,7 @@ export function AmmPoolLiquidityForm({
             <Button
                 icon={ArrowRightIcon}
                 iconPlacement="right"
+                loading={loading}
                 disabled={!previewPayload}
                 className={{ root: styles.button }}
                 onClick={handlePreviewOnClick}

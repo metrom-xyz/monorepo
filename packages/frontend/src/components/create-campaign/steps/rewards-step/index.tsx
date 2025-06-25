@@ -26,6 +26,7 @@ interface RewardsStepProps extends FormStepBaseProps {
 }
 
 export function RewardsStep({
+    loading,
     disabled,
     distributables,
     startDate,
@@ -63,6 +64,7 @@ export function RewardsStep({
 
     return (
         <Step
+            loading={loading}
             disabled={disabled}
             completed={!disabled}
             open
