@@ -188,24 +188,11 @@ export function handleSwap(
     pool.token1Tvl = pool.token1Tvl.plus(token1Delta);
     pool.save();
 
-    let sqrtPriceX96 = BI_0;
     let price = BD_0;
     if (!token0Delta.isZero()) {
-        let rawPrice = BigDecimal.fromString(token1Delta.abs().toString())
-            .div(BigDecimal.fromString(token0Delta.abs().toString()))
-            .truncate(10);
-
-        let rawPriceNumber = parseFloat(rawPrice.toString());
-        sqrtPriceX96 = BigInt.fromString(
-            BigDecimal.fromString(NativeMath.sqrt(rawPriceNumber).toString())
-                .times(BD_Q96)
-                .truncate(0)
-                .toString(),
-        );
-
         let token0 = getOrCreateToken(changetype<Address>(pool.token0));
         let adjustedToken0Delta = BigDecimal.fromString(
-            token0Delta.toString(),
+            token0Delta.abs().toString(),
         ).div(
             BigDecimal.fromString(
                 BigInt.fromI32(10)
@@ -216,7 +203,7 @@ export function handleSwap(
 
         let token1 = getOrCreateToken(changetype<Address>(pool.token1));
         let adjustedToken1Delta = BigDecimal.fromString(
-            token1Delta.toString(),
+            token1Delta.abs().toString(),
         ).div(
             BigDecimal.fromString(
                 BigInt.fromI32(10)
@@ -235,23 +222,29 @@ export function handleSwap(
             changetype<Address>(pool.token1),
             pool.idx,
         );
+        let curve = CrocQueryContract.queryCurve(
+            changetype<Address>(pool.token0),
+            changetype<Address>(pool.token1),
+            pool.idx,
+        );
         if (pool.tick != newTick) {
             let swapChange = new SwapChange(swapChangeId);
             swapChange.timestamp = block.timestamp;
             swapChange.blockNumber = block.number;
             swapChange.pool = pool.id;
             swapChange.tick = newTick;
-            swapChange.sqrtPriceX96 = sqrtPriceX96;
+            swapChange.sqrtPriceX96 = curve.priceRoot_;
             swapChange.tick = newTick;
             swapChange.save();
 
             pool.tick = newTick;
             pool.save();
         }
+
+        pool.price = price;
+        pool.sqrtPriceX96 = curve.priceRoot_;
     }
 
-    pool.price = price;
-    pool.sqrtPriceX96 = sqrtPriceX96;
     pool.save();
 }
 
