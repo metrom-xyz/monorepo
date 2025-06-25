@@ -316,6 +316,7 @@ export interface TargetedNamedCampaign<T extends TargetType> extends Campaign {
 }
 
 export interface FormStepBaseProps {
+    loading?: boolean;
     autoCompleted?: boolean;
     disabled?: boolean;
 }
