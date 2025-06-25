@@ -1,4 +1,4 @@
-import { NewCampaignIcon } from "@/src/assets/new-campaign-icon";
+import { TickIcon } from "@/src/assets/tick-icon";
 import { ToastNotification, Typography } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
 
@@ -13,7 +13,7 @@ export function SetupSuccess({ toastId }: SetupSuccessProps) {
         <ToastNotification
             toastId={toastId}
             title={t("title")}
-            icon={NewCampaignIcon}
+            icon={TickIcon}
             variant="success"
         >
             <Typography weight="medium">{t("message")}</Typography>

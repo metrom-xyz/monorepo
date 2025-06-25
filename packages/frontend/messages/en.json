@@ -347,7 +347,7 @@
                 "message": "Something went wrong"
             },
             "setupSuccess": {
-                "title": "Setup completed",
+                "title": "Setup successful",
                 "message": "Campaign imported"
             }
         }
