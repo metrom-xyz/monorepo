@@ -15,6 +15,7 @@ import type {
 } from "@/src/types/campaign";
 import { ListPoolPicker } from "./list";
 import { AddressPoolPicker } from "./address-picker";
+import { usePrevious } from "react-use";
 
 import styles from "./styles.module.css";
 
@@ -26,6 +27,7 @@ interface PoolStepProps extends FormStepBaseProps {
 }
 
 export function PoolStep({
+    loading,
     autoCompleted,
     disabled,
     dex,
@@ -38,6 +40,8 @@ export function PoolStep({
     const [error, setError] = useState("");
     const chainId = useChainId();
 
+    const prevDex = usePrevious(dex);
+
     useEffect(() => {
         setOpen(false);
     }, [chainId]);
@@ -47,17 +51,18 @@ export function PoolStep({
     }, [autoCompleted]);
 
     useEffect(() => {
-        if (autoCompleted || disabled || !!pool?.id) return;
+        if (disabled || !!pool?.id) return;
         setOpen(true);
-    }, [autoCompleted, disabled, pool]);
+    }, [disabled, pool]);
 
     useEffect(() => {
         onError({ pool: !!error });
     }, [onError, error]);
 
     useEffect(() => {
-        onPoolChange({ pool: undefined });
-    }, [onPoolChange, dex?.slug]);
+        if (!!prevDex && !!dex && prevDex.slug !== dex.slug)
+            onPoolChange({ pool: undefined });
+    }, [onPoolChange, prevDex, dex]);
 
     const handlePoolOnChange = useCallback(
         (newPool: AmmPoolWithTvl) => {
@@ -76,6 +81,7 @@ export function PoolStep({
 
     return (
         <Step
+            loading={loading}
             disabled={disabled}
             open={open}
             completed={!!pool}

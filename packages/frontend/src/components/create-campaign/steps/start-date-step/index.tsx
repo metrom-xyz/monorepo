@@ -28,6 +28,7 @@ interface StartDateStepProps extends FormStepBaseProps {
 }
 
 export function StartDateStep({
+    loading,
     autoCompleted,
     disabled,
     startDate,
@@ -111,6 +112,7 @@ export function StartDateStep({
 
     return (
         <Step
+            loading={loading}
             disabled={disabled}
             open={open}
             completed={!!date || !!startDate}

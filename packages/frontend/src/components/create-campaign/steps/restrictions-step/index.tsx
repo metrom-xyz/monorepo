@@ -34,6 +34,7 @@ import { CsvAddressesImport } from "./csv-addresses-import";
 import { Avatar } from "@/src/components/avatar/avatar";
 import { Account } from "@/src/components/account";
 import { InfoMessage } from "@/src/components/info-message";
+import { useChainId } from "wagmi";
 
 import styles from "./styles.module.css";
 
@@ -48,6 +49,7 @@ interface RestrictionsStepProps extends FormStepBaseProps {
 type ErrorMessage = LocalizedMessage<"newCampaign.form.base.restrictions">;
 
 export function RestrictionsStep({
+    loading,
     autoCompleted,
     disabled,
     restrictions,
@@ -63,6 +65,7 @@ export function RestrictionsStep({
     const [address, setAddress] = useState("");
     const [addresses, setAddresses] = useState<Address[]>([]);
 
+    const chainId = useChainId();
     const prevRestrictions = usePrevious(restrictions);
 
     const unsavedChanges = useMemo(() => {
@@ -87,7 +90,14 @@ export function RestrictionsStep({
     }, [autoCompleted, enabled, restrictions, prevRestrictions, disabled]);
 
     useEffect(() => {
-        if (restrictions) {
+        onRestrictionsChange({ restrictions: undefined });
+        setAddress("");
+        setType(RestrictionType.Blacklist);
+        setAddresses([]);
+    }, [chainId, onRestrictionsChange]);
+
+    useEffect(() => {
+        if (!!restrictions) {
             const { type, list } = restrictions;
 
             setType(type);
@@ -185,6 +195,7 @@ export function RestrictionsStep({
 
     return (
         <Step
+            loading={loading}
             disabled={disabled}
             completed={enabled}
             open={open}

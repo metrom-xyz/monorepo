@@ -340,6 +340,16 @@
                 "approve": "Approve {amount} {symbol} ({currentIndex}/{totalAmount})"
             },
             "preview": "Campaign preview"
+        },
+        "notifications": {
+            "setupFail": {
+                "title": "Setup failed",
+                "message": "Something went wrong"
+            },
+            "setupSuccess": {
+                "title": "Setup completed",
+                "message": "Campaign imported"
+            }
         }
     },
     "campaignPreview": {
@@ -395,7 +405,8 @@
             "allows": "Allows {count, plural, =0 {} =1 {# address} other {# adresses}}"
         },
         "errors": {
-            "specification": "An error occurred while processing the campaign specification"
+            "specification": "An error occurred while processing the campaign specification",
+            "setup": "An error occurred while processing the campaign setup"
         },
         "share": "Share campaign setup",
         "linkCopied": "Link copied to clipboard",
