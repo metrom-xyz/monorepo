@@ -36,6 +36,7 @@ type ErrorMessage = LocalizedMessage<"newCampaign.form.base.kpi">;
 
 // TODO: make KPI step work with liquityv2 campaigns
 export function KpiStep({
+    loading,
     autoCompleted,
     disabled,
     pool,
@@ -121,7 +122,12 @@ export function KpiStep({
 
     useEffect(() => {
         setEnabled(false);
-    }, [chainId]);
+        onKpiChange({ kpiSpecification: undefined });
+        setMinimumPayoutPercentage(0);
+        setLowerUsdTargetRaw(undefined);
+        setUpperUsdTargetRaw(undefined);
+        setError("");
+    }, [chainId, onKpiChange]);
 
     useEffect(() => {
         if (autoCompleted && !!kpiSpecification) {
@@ -242,6 +248,7 @@ export function KpiStep({
 
     return (
         <Step
+            loading={loading}
             disabled={disabled}
             completed={enabled}
             open={open}

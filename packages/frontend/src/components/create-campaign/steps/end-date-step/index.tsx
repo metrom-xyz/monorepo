@@ -59,6 +59,7 @@ const DURATION_PRESETS: DurationPreset[] = [
 ];
 
 export function EndDateStep({
+    loading,
     autoCompleted,
     disabled,
     startDate,
@@ -174,6 +175,7 @@ export function EndDateStep({
 
     return (
         <Step
+            loading={loading}
             disabled={disabled}
             open={open}
             completed={!!date || !!endDate}
