@@ -80,8 +80,8 @@ export function WeightingStep({
         if (autoCompleted && !!weighting) {
             setEnabled(true);
             setOpen(false);
-        } else setOpen(enabled);
-    }, [autoCompleted, weighting, enabled]);
+        }
+    }, [autoCompleted, weighting]);
 
     useEffect(() => {
         if (enabled && !open && unsavedChanges) setWarning("notApplied");
@@ -112,13 +112,14 @@ export function WeightingStep({
     }, [autoCompleted, enabled, prevWeighting, weighting]);
 
     function handleSwitchOnClick(
-        _: boolean,
+        checked: boolean,
         event:
             | React.MouseEvent<HTMLButtonElement>
             | React.KeyboardEvent<HTMLButtonElement>,
     ) {
         event.stopPropagation();
-        setEnabled((enabled) => !enabled);
+        setEnabled(checked);
+        setOpen(checked);
 
         if (weighting) {
             onWeightingChange({ weighting: undefined });
