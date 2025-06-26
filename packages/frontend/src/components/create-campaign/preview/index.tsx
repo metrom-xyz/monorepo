@@ -53,6 +53,8 @@ import { Restrictions } from "./restrictions";
 import { useLiquidityByAddresses } from "@/src/hooks/useLiquidityByAddresses";
 import { LinkIcon } from "@/src/assets/link-icon";
 import { toast } from "sonner";
+import { LinkCopied } from "./notifications/link-copied";
+import { LinkError } from "./notifications/link-error";
 
 import styles from "./styles.module.css";
 
@@ -81,6 +83,7 @@ export function CampaignPreview({
     const [deploying, setDeploying] = useState(false);
     const [uploadingSpecification, setUploadingSpecification] = useState(false);
     const [uploadingSetup, setUploadingSetup] = useState(false);
+    const [setupError, setSetupError] = useState(false);
     const [created, setCreated] = useState(false);
     const [tokensApproved, setTokensApproved] = useState(false);
     const [specificationHash, setSpecificationHash] = useState<Hex>(zeroHash);
@@ -215,18 +218,13 @@ export function CampaignPreview({
     const uploadSetup = useCallback(async () => {
         if (!!shareUrl) {
             navigator.clipboard.writeText(shareUrl).then(() => {
-                toast.custom((toastId) => (
-                    <ToastNotification
-                        toastId={toastId}
-                        title={t("linkCopied")}
-                        icon={LinkIcon}
-                    />
-                ));
+                toast.custom((toastId) => <LinkCopied toastId={toastId} />);
             });
 
             return;
         }
 
+        setSetupError(false);
         setUploadingSetup(true);
 
         const setup = JSON.stringify(payload, (_, value) =>
@@ -254,24 +252,23 @@ export function CampaignPreview({
 
             setShareUrl(url.toString());
             navigator.clipboard.writeText(url.toString()).then(() => {
-                toast.custom((toastId) => (
-                    <ToastNotification
-                        toastId={toastId}
-                        title={t("linkCopied")}
-                        icon={LinkIcon}
-                    />
-                ));
+                toast.custom((toastId) => <LinkCopied toastId={toastId} />);
             });
         } catch (error) {
             console.error(
                 `Could not upload setup to data-manager: ${setup}`,
                 error,
             );
-            setError("errors.setup");
+            setSetupError(true);
         } finally {
             setUploadingSetup(false);
         }
-    }, [shareUrl, payload, t]);
+    }, [shareUrl, payload]);
+
+    useEffect(() => {
+        if (setupError)
+            toast.custom((toastId) => <LinkError toastId={toastId} />);
+    }, [setupError]);
 
     useEffect(() => {
         const specification = buildSpecificationBundle(payload);

@@ -111,8 +111,8 @@ export function RangeStep({
         if (autoCompleted && priceRangeSpecification) {
             setEnabled(true);
             setOpen(false);
-        } else setOpen(enabled);
-    }, [autoCompleted, priceRangeSpecification, enabled]);
+        }
+    }, [autoCompleted, priceRangeSpecification]);
 
     // This hooks is used to disable and close the step when
     // the range specification gets disabled, after the campaign creation.
@@ -171,13 +171,14 @@ export function RangeStep({
     }, [distributablesType, onRangeChange]);
 
     function handleSwitchOnClick(
-        _: boolean,
+        checked: boolean,
         event:
             | React.MouseEvent<HTMLButtonElement>
             | React.KeyboardEvent<HTMLButtonElement>,
     ) {
         event.stopPropagation();
-        setEnabled((enabled) => !enabled);
+        setEnabled(checked);
+        setOpen(checked);
 
         if (priceRangeSpecification) {
             onRangeChange({ priceRangeSpecification: undefined });

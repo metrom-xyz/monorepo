@@ -133,8 +133,8 @@ export function KpiStep({
         if (autoCompleted && !!kpiSpecification) {
             setEnabled(true);
             setOpen(false);
-        } else setOpen(enabled);
-    }, [autoCompleted, kpiSpecification, enabled]);
+        }
+    }, [autoCompleted, kpiSpecification]);
 
     // This hooks is used to disable and close the step when
     // the kpi specification gets disabled, after the campaign creation.
@@ -200,13 +200,14 @@ export function KpiStep({
     }, [distributables?.type, onKpiChange]);
 
     function handleSwitchOnClick(
-        _: boolean,
+        checked: boolean,
         event:
             | React.MouseEvent<HTMLButtonElement>
             | React.KeyboardEvent<HTMLButtonElement>,
     ) {
         event.stopPropagation();
-        setEnabled((enabled) => !enabled);
+        setEnabled(checked);
+        setOpen(checked);
 
         if (kpiSpecification) {
             onKpiChange({ kpiSpecification: undefined });

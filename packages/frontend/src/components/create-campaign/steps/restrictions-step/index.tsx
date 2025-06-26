@@ -138,17 +138,18 @@ export function RestrictionsStep({
         if (autoCompleted && !!restrictions) {
             setEnabled(true);
             setOpen(false);
-        } else setOpen(enabled);
-    }, [autoCompleted, restrictions, enabled]);
+        }
+    }, [autoCompleted, restrictions]);
 
     function handleSwitchOnClick(
-        _: boolean,
+        checked: boolean,
         event:
             | React.MouseEvent<HTMLButtonElement>
             | React.KeyboardEvent<HTMLButtonElement>,
     ) {
         event.stopPropagation();
-        setEnabled((enabled) => !enabled);
+        setEnabled(checked);
+        setOpen(checked);
 
         if (restrictions) {
             onRestrictionsChange({ restrictions: undefined });

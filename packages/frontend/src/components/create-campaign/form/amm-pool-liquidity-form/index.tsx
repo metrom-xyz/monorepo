@@ -148,8 +148,16 @@ export function AmmPoolLiquidityForm({
         };
 
         parsePayload();
-        setAutoCompleted(true);
-    }, [searchParams, chainId, setup, pathname, router, switchChainAsync]);
+        if (loadingSetup) setAutoCompleted(true);
+    }, [
+        loadingSetup,
+        searchParams,
+        chainId,
+        setup,
+        pathname,
+        router,
+        switchChainAsync,
+    ]);
 
     useEffect(() => {
         if (!loadingSetup && !!setupError)
