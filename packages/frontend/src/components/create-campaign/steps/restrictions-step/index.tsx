@@ -50,7 +50,6 @@ type ErrorMessage = LocalizedMessage<"newCampaign.form.base.restrictions">;
 
 export function RestrictionsStep({
     loading,
-    autoCompleted,
     disabled,
     restrictions,
     onRestrictionsChange,
@@ -84,10 +83,9 @@ export function RestrictionsStep({
     // This hooks is used to disable and close the step when
     // the restrictions gets disabled, after the campaign creation.
     useEffect(() => {
-        if (!autoCompleted && enabled && !!prevRestrictions && !restrictions)
-            setEnabled(false);
+        if (enabled && !!prevRestrictions && !restrictions) setEnabled(false);
         if (disabled) setEnabled(false);
-    }, [autoCompleted, enabled, restrictions, prevRestrictions, disabled]);
+    }, [enabled, restrictions, prevRestrictions, disabled]);
 
     useEffect(() => {
         onRestrictionsChange({ restrictions: undefined });
@@ -135,11 +133,11 @@ export function RestrictionsStep({
     }, [enabled, restrictions, error, onError]);
 
     useEffect(() => {
-        if (autoCompleted && !!restrictions) {
+        if (!!restrictions) {
             setEnabled(true);
             setOpen(false);
         }
-    }, [autoCompleted, restrictions]);
+    }, [restrictions]);
 
     function handleSwitchOnClick(
         checked: boolean,

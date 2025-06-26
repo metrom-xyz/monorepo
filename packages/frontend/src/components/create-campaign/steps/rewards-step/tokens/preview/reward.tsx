@@ -13,7 +13,6 @@ import type { Address } from "viem";
 import classNames from "classnames";
 import { formatUsdAmount } from "@/src/utils/format";
 import { RemoteLogo } from "@/src/components/remote-logo";
-import { MAX_U256 } from "@/src/commons";
 import type { WhitelistedErc20TokenAmount } from "@/src/types/common";
 import type { TokensErrorMessage } from "..";
 
@@ -61,10 +60,10 @@ export function Reward({
 
         const distributionRate =
             (rewardAmount.formatted * 3_600) / campaignDuration;
-        const balance = rewardTokenBalance || MAX_U256;
+        const balance = rewardTokenBalance || 0n;
 
         const error =
-            rewardAmount.raw > balance
+            !!address && rewardAmount.raw > balance
                 ? "errors.insufficientBalance"
                 : distributionRate < reward.token.minimumRate.formatted
                   ? "errors.lowDistributionRate"
@@ -72,7 +71,14 @@ export function Reward({
 
         onError(reward.token.address, error);
         setError(!!error);
-    }, [campaignDuration, onError, reward, rewardAmount, rewardTokenBalance]);
+    }, [
+        address,
+        campaignDuration,
+        onError,
+        reward,
+        rewardAmount,
+        rewardTokenBalance,
+    ]);
 
     useEffect(() => {
         if (!rewardRawValue) return;

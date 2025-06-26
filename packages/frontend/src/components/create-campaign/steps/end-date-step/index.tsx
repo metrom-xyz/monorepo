@@ -60,7 +60,6 @@ const DURATION_PRESETS: DurationPreset[] = [
 
 export function EndDateStep({
     loading,
-    autoCompleted,
     disabled,
     startDate,
     endDate,
@@ -91,10 +90,6 @@ export function EndDateStep({
     useEffect(() => {
         setOpen(false);
     }, [chainId]);
-
-    useEffect(() => {
-        if (autoCompleted) setOpen(false);
-    }, [autoCompleted]);
 
     useEffect(() => {
         if (disabled || !!endDate) return;

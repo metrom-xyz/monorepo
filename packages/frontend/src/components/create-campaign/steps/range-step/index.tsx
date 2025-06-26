@@ -46,7 +46,6 @@ interface RangeStepProps extends FormStepBaseProps {
 type ErrorMessage = LocalizedMessage<"newCampaign.form.ammPoolLiquidity.range">;
 
 export function RangeStep({
-    autoCompleted,
     disabled,
     distributablesType,
     pool,
@@ -65,6 +64,7 @@ export function RangeStep({
     const [to, setTo] = useState<AugmentedPriceRangeBound | undefined>();
 
     const prevRangeSpecification = usePrevious(priceRangeSpecification);
+    const prevPoolId = usePrevious(pool?.id);
     const chainId = useChainId();
     const { liquidityDensity, loading: loadingLiquidityDensity } =
         useLiquidityDensity({
@@ -89,47 +89,37 @@ export function RangeStep({
         return tickToScaledPrice(activeTickIdx, pool, token0To1);
     }, [liquidityDensity, token0To1, pool]);
 
+    // FIXME: changing dex doesn't reset range it it's enabled
     useEffect(() => {
+        if (!prevPoolId || prevPoolId === pool?.id) return;
+
+        onRangeChange({ priceRangeSpecification: undefined });
         setFrom(undefined);
         setTo(undefined);
-    }, [pool?.id]);
+    }, [prevPoolId, pool?.id]);
 
     useEffect(() => {
         setOpen(false);
     }, [chainId]);
 
     useEffect(() => {
-        if (priceRangeSpecification) {
-            const { from, to } = priceRangeSpecification;
-
-            setFrom(from);
-            setTo(to);
-        }
-    }, [priceRangeSpecification]);
+        setFrom(priceRangeSpecification?.from);
+        setTo(priceRangeSpecification?.to);
+    }, [priceRangeSpecification?.from, priceRangeSpecification?.to]);
 
     useEffect(() => {
-        if (autoCompleted && priceRangeSpecification) {
+        if (!!priceRangeSpecification) {
             setEnabled(true);
             setOpen(false);
         }
-    }, [autoCompleted, priceRangeSpecification]);
+    }, [priceRangeSpecification]);
 
     // This hooks is used to disable and close the step when
     // the range specification gets disabled, after the campaign creation.
     useEffect(() => {
-        if (
-            !autoCompleted &&
-            enabled &&
-            !!prevRangeSpecification &&
-            !priceRangeSpecification
-        )
+        if (enabled && !!prevRangeSpecification && !priceRangeSpecification)
             setEnabled(false);
-    }, [
-        autoCompleted,
-        enabled,
-        prevRangeSpecification,
-        priceRangeSpecification,
-    ]);
+    }, [enabled, prevRangeSpecification, priceRangeSpecification]);
 
     useEffect(() => {
         if (!from && !to) setError("");
@@ -180,7 +170,7 @@ export function RangeStep({
         setEnabled(checked);
         setOpen(checked);
 
-        if (priceRangeSpecification) {
+        if (!checked) {
             onRangeChange({ priceRangeSpecification: undefined });
             setFrom(undefined);
             setTo(undefined);

@@ -52,12 +52,12 @@ export function DexStep({
     }, [autoCompleted]);
 
     useEffect(() => {
-        if (autoCompleted || !!dex || availableDexes.length !== 1) return;
+        if (loading || !!dex || availableDexes.length !== 1) return;
         onDexChange({
             dex: availableDexes[0],
         });
         setOpen(false);
-    }, [autoCompleted, availableDexes, dex, onDexChange]);
+    }, [loading, availableDexes, dex, onDexChange]);
 
     const getDexChangeHandler = useCallback(
         (newDex: DexProtocol) => {

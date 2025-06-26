@@ -37,7 +37,6 @@ type ErrorMessage = LocalizedMessage<"newCampaign.form.base.kpi">;
 // TODO: make KPI step work with liquityv2 campaigns
 export function KpiStep({
     loading,
-    autoCompleted,
     disabled,
     pool,
     distributables,
@@ -130,23 +129,18 @@ export function KpiStep({
     }, [chainId, onKpiChange]);
 
     useEffect(() => {
-        if (autoCompleted && !!kpiSpecification) {
+        if (!!kpiSpecification) {
             setEnabled(true);
             setOpen(false);
         }
-    }, [autoCompleted, kpiSpecification]);
+    }, [kpiSpecification]);
 
     // This hooks is used to disable and close the step when
     // the kpi specification gets disabled, after the campaign creation.
     useEffect(() => {
-        if (
-            !autoCompleted &&
-            enabled &&
-            !!prevKpiSpecification &&
-            !kpiSpecification
-        )
+        if (enabled && !!prevKpiSpecification && !kpiSpecification)
             setEnabled(false);
-    }, [autoCompleted, enabled, kpiSpecification, prevKpiSpecification]);
+    }, [enabled, kpiSpecification, prevKpiSpecification]);
 
     useEffect(() => {
         if (

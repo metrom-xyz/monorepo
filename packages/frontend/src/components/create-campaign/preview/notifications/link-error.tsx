@@ -1,4 +1,4 @@
-import { ErrorIcon } from "@/src/assets/error-icon";
+import { Error } from "@/src/assets/error";
 import { ToastNotification, Typography } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
 
@@ -13,7 +13,7 @@ export function LinkError({ toastId }: LinkErrorProps) {
         <ToastNotification
             toastId={toastId}
             title={t("title")}
-            icon={ErrorIcon}
+            icon={Error}
             variant="fail"
         >
             <Typography weight="medium">{t("message")}</Typography>

@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useLayoutEffect, useState } from "react";
 import { useChainId } from "wagmi";
 import { useTranslations } from "next-intl";
 import { type AmmPoolWithTvl } from "@metrom-xyz/sdk";
@@ -28,7 +28,6 @@ interface PoolStepProps extends FormStepBaseProps {
 
 export function PoolStep({
     loading,
-    autoCompleted,
     disabled,
     dex,
     pool,
@@ -47,9 +46,9 @@ export function PoolStep({
     }, [chainId]);
 
     useEffect(() => {
-        if (autoCompleted || disabled || !!pool?.id) setOpen(false);
+        if (disabled || !!pool?.id) setOpen(false);
         else setOpen(true);
-    }, [autoCompleted, disabled, pool]);
+    }, [disabled, pool]);
 
     useEffect(() => {
         onError({ pool: !!error });
