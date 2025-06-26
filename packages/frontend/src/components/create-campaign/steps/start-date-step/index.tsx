@@ -29,7 +29,6 @@ interface StartDateStepProps extends FormStepBaseProps {
 
 export function StartDateStep({
     loading,
-    autoCompleted,
     disabled,
     startDate,
     endDate,
@@ -59,10 +58,6 @@ export function StartDateStep({
     useEffect(() => {
         setOpen(false);
     }, [chainId]);
-
-    useEffect(() => {
-        if (autoCompleted) setOpen(false);
-    }, [autoCompleted]);
 
     useEffect(() => {
         if (disabled || !!startDate) return;

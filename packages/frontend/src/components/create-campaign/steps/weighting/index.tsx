@@ -31,7 +31,6 @@ interface WeightingStepProps extends FormStepBaseProps {
 type ErrorMessage = LocalizedMessage<"newCampaign.form.base.weighting">;
 
 export function WeightingStep({
-    autoCompleted,
     disabled,
     pool,
     distributablesType,
@@ -77,11 +76,11 @@ export function WeightingStep({
     }, [weighting]);
 
     useEffect(() => {
-        if (autoCompleted && !!weighting) {
+        if (!!weighting) {
             setEnabled(true);
             setOpen(false);
         }
-    }, [autoCompleted, weighting]);
+    }, [weighting]);
 
     useEffect(() => {
         if (enabled && !open && unsavedChanges) setWarning("notApplied");
@@ -107,9 +106,8 @@ export function WeightingStep({
     // This hooks is used to disable and close the step when
     // the weighting gets disabled, after the campaign creation.
     useEffect(() => {
-        if (!autoCompleted && enabled && !!prevWeighting && !weighting)
-            setEnabled(false);
-    }, [autoCompleted, enabled, prevWeighting, weighting]);
+        if (enabled && !!prevWeighting && !weighting) setEnabled(false);
+    }, [enabled, prevWeighting, weighting]);
 
     function handleSwitchOnClick(
         checked: boolean,
