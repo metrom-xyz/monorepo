@@ -20,7 +20,9 @@ type LiquidityChange @entity(immutable: true) {
     id: Bytes!
     timestamp: BigInt!
     collateral: Collateral!
+    owner: Bytes!
     positionId: Bytes!
+    tokenizedVaultId: Bytes
     delta: BigInt!
 }
 
@@ -43,7 +45,7 @@ type TokenizedVaultPositionChange @entity(immutable: true) {
     timestamp: BigInt!
     owner: Bytes!
     delta: BigInt!
-    tokenizedVault: TokenizedVault!
+    tokenizedVaultId: Bytes!
     collateral: Collateral!
 }
 
@@ -53,6 +55,6 @@ type TokenizedVaultPositionTransfer @entity(immutable: true) {
     from: Bytes!
     to: Bytes!
     amount: BigInt!
-    tokenizedVault: TokenizedVault!
+    tokenizedVaultId: Bytes!
     collateral: Collateral!
 }

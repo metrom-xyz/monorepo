@@ -16,8 +16,6 @@ if (!contracts) {
     process.exit(1);
 }
 
-let resolvedNetwork = network === "lightlink-phoenix" ? "mainnet" : network;
-
 console.log(`Generating addresses.ts file for network ${network}`);
 
 let addressesFile =
@@ -58,7 +56,7 @@ try {
                 ),
             ).toString(),
             {
-                network: resolvedNetwork,
+                network,
                 vaultAddress: contracts.Vault.address,
                 vaultStartBlock: contracts.Vault.startBlock,
                 glpManagerAddress: contracts.GlpManager.address,

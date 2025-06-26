@@ -63,7 +63,7 @@ export function handleDeposit(event: Deposit): void {
         change.timestamp = event.block.timestamp;
         change.owner = event.params.owner;
         change.delta = event.params.shares;
-        change.tokenizedVault = event.address;
+        change.tokenizedVaultId = event.address;
         change.collateral = dataSource.context().getBytes("collateral");
         change.save();
     }
@@ -83,7 +83,7 @@ export function handleWithdraw(event: Withdraw): void {
         change.timestamp = event.block.timestamp;
         change.owner = event.params.owner;
         change.delta = event.params.shares.neg();
-        change.tokenizedVault = event.address;
+        change.tokenizedVaultId = event.address;
         change.collateral = dataSource.context().getBytes("collateral");
         change.save();
     }
@@ -102,7 +102,7 @@ export function handleTransfer(event: Transfer): void {
         transfer.from = event.params.from;
         transfer.to = event.params.to;
         transfer.amount = event.params.value;
-        transfer.tokenizedVault = event.address;
+        transfer.tokenizedVaultId = event.address;
         transfer.collateral = dataSource.context().getBytes("collateral");
         transfer.save();
     }

@@ -45,7 +45,9 @@ function handleLiquidityChange(
 
     const change = new LiquidityChange(getEventId(event));
     change.timestamp = event.block.timestamp;
-    change.position = position.id;
+    change.owner = position.owner;
+    change.positionId = position.id;
+    change.tokenizedVaultId = position.tokenizedVault;
     change.delta = liquidityDelta;
     change.collateral = collateralAddress;
     change.save();
