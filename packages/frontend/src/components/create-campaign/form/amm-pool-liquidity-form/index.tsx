@@ -117,7 +117,6 @@ export function AmmPoolLiquidityForm({
     });
 
     const [payload, setPayload] = useState(initialPayload);
-    const [autoCompleted, setAutoCompleted] = useState(false);
     const [errors, setErrors] = useState<CampaignPayloadErrors>({});
 
     // This hook auto fills the form state when a campaign setup is available.
@@ -142,13 +141,14 @@ export function AmmPoolLiquidityForm({
 
             const params = new URLSearchParams(searchParams.toString());
             params.delete("setup");
-            router.replace(`${pathname}?${params.toString()}`);
+            router.replace(`${pathname}?${params.toString()}`, {
+                scroll: false,
+            });
 
             setPayload(payload);
         };
 
         parsePayload();
-        if (loadingSetup) setAutoCompleted(true);
     }, [
         loadingSetup,
         searchParams,
@@ -162,6 +162,7 @@ export function AmmPoolLiquidityForm({
     useEffect(() => {
         if (!loadingSetup && !!setupError)
             toast.custom((toastId) => <SetupFail toastId={toastId} />);
+
         if (!loadingSetup && !setupError && !!setup)
             toast.custom((toastId) => <SetupSuccess toastId={toastId} />);
     }, [loadingSetup, setupError, setup]);
@@ -235,14 +236,12 @@ export function AmmPoolLiquidityForm({
             <div className={styles.stepsWrapper}>
                 <DexStep
                     loading={loading}
-                    autoCompleted={autoCompleted}
                     disabled={unsupportedChain}
                     dex={payload.dex}
                     onDexChange={handlePayloadOnChange}
                 />
                 <PoolStep
                     loading={loading}
-                    autoCompleted={autoCompleted}
                     disabled={!payload.dex || unsupportedChain}
                     dex={payload.dex}
                     pool={payload.pool}
@@ -251,7 +250,6 @@ export function AmmPoolLiquidityForm({
                 />
                 <StartDateStep
                     loading={loading}
-                    autoCompleted={autoCompleted}
                     disabled={!payload.pool || unsupportedChain}
                     startDate={payload.startDate}
                     endDate={payload.endDate}
@@ -260,7 +258,6 @@ export function AmmPoolLiquidityForm({
                 />
                 <EndDateStep
                     loading={loading}
-                    autoCompleted={autoCompleted}
                     disabled={!payload.startDate || unsupportedChain}
                     startDate={payload.startDate}
                     endDate={payload.endDate}
@@ -269,7 +266,6 @@ export function AmmPoolLiquidityForm({
                 />
                 <RewardsStep
                     loading={loading}
-                    autoCompleted={autoCompleted}
                     disabled={!payload.endDate || unsupportedChain}
                     distributables={payload.distributables}
                     startDate={payload.startDate}
@@ -279,7 +275,6 @@ export function AmmPoolLiquidityForm({
                 />
                 {tokensRatioSupported && (
                     <WeightingStep
-                        autoCompleted={autoCompleted}
                         pool={payload.pool}
                         distributablesType={payload.distributables?.type}
                         disabled={noDistributables || unsupportedChain}
@@ -290,7 +285,6 @@ export function AmmPoolLiquidityForm({
                 )}
                 <KpiStep
                     loading={loading}
-                    autoCompleted={autoCompleted}
                     disabled={noDistributables || unsupportedChain}
                     pool={payload.pool}
                     distributables={
@@ -312,7 +306,6 @@ export function AmmPoolLiquidityForm({
                     payload.pool.liquidityType ===
                         AmmPoolLiquidityType.Concentrated && (
                         <RangeStep
-                            autoCompleted={autoCompleted}
                             disabled={noDistributables || unsupportedChain}
                             distributablesType={payload.distributables?.type}
                             pool={payload.pool}
@@ -325,7 +318,6 @@ export function AmmPoolLiquidityForm({
                     )}
                 <RestrictionsStep
                     loading={loading}
-                    autoCompleted={autoCompleted}
                     disabled={missingDistributables || unsupportedChain}
                     restrictions={payload.restrictions}
                     onRestrictionsChange={handlePayloadOnChange}
