@@ -409,7 +409,6 @@
             "setup": "An error occurred while processing the campaign setup"
         },
         "share": "Share campaign setup",
-        "linkCopied": "Link copied to clipboard",
         "deploy": "Launch campaign",
         "connectWallet": "Connect wallet",
         "congratulations": "Congratulations!",
@@ -421,7 +420,17 @@
             }
         },
         "allCampaigns": "All campaigns",
-        "newCampaign": "New campaign"
+        "newCampaign": "New campaign",
+        "notifications": {
+            "linkCopied": {
+                "title": "Link copied to clipboard",
+                "message": "Expires in 2 days"
+            },
+            "linkError": {
+                "title": "Link generation failed",
+                "message": "Something went wrong"
+            }
+        }
     },
     "campaignDuration": {
         "startDate": "Start date",

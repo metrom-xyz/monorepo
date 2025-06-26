@@ -47,13 +47,9 @@ export function PoolStep({
     }, [chainId]);
 
     useEffect(() => {
-        if (autoCompleted) setOpen(false);
-    }, [autoCompleted]);
-
-    useEffect(() => {
-        if (disabled || !!pool?.id) return;
-        setOpen(true);
-    }, [disabled, pool]);
+        if (autoCompleted || disabled || !!pool?.id) setOpen(false);
+        else setOpen(true);
+    }, [autoCompleted, disabled, pool]);
 
     useEffect(() => {
         onError({ pool: !!error });
