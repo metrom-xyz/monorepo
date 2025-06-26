@@ -92,12 +92,8 @@ export function RestrictionsStep({
     }, [chainId, onRestrictionsChange]);
 
     useEffect(() => {
-        if (!!restrictions) {
-            const { type, list } = restrictions;
-
-            setType(type);
-            setAddresses(list);
-        }
+        setType(restrictions?.type || RestrictionType.Blacklist);
+        setAddresses(restrictions?.list || []);
     }, [restrictions]);
 
     useEffect(() => {
