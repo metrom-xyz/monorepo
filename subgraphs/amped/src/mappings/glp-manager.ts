@@ -67,6 +67,6 @@ export function handleRemoveLiquidity(event: RemoveLiquidity): void {
         event.params.account,
         event.params.token,
         event.params.usdgAmount,
-        event.params.glpAmount,
+        event.params.glpAmount.neg(),
     );
 }
