@@ -110,13 +110,11 @@ export function KpiStep({
             : undefined;
 
     useEffect(() => {
-        if (!!kpiSpecification) {
-            const { goal, minimumPayoutPercentage } = kpiSpecification;
-
-            setLowerUsdTargetRaw(goal.lowerUsdTarget);
-            setUpperUsdTargetRaw(goal.upperUsdTarget);
-            setMinimumPayoutPercentage(minimumPayoutPercentage ?? 0);
-        }
+        setLowerUsdTargetRaw(kpiSpecification?.goal.lowerUsdTarget);
+        setUpperUsdTargetRaw(kpiSpecification?.goal.upperUsdTarget);
+        setMinimumPayoutPercentage(
+            kpiSpecification?.minimumPayoutPercentage ?? 0,
+        );
     }, [kpiSpecification]);
 
     useEffect(() => {
