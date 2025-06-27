@@ -304,7 +304,9 @@ export function Campaigns() {
             const params = new URLSearchParams(searchParams.toString());
             if (!chain.query) params.delete("chain");
             else params.set("chain", chain.query);
-            router.replace(`${pathname}?${params.toString()}`);
+            router.replace(`${pathname}?${params.toString()}`, {
+                scroll: false,
+            });
         },
         [pathname, router, searchParams],
     );
@@ -329,7 +331,7 @@ export function Campaigns() {
 
         const params = new URLSearchParams(searchParams.toString());
         params.delete("chain");
-        router.replace(`${pathname}?${params.toString()}`);
+        router.replace(`${pathname}?${params.toString()}`, { scroll: false });
     }, [pathname, searchParams, router]);
 
     function handlePreviousPage() {

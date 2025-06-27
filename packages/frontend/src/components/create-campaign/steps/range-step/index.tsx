@@ -26,6 +26,7 @@ import type {
     AugmentedPriceRangeBound,
     AugmentedPriceRangeSpecification,
     CampaignPayloadErrors,
+    FormStepBaseProps,
 } from "@/src/types/campaign";
 import type { LocalizedMessage } from "@/src/types/utils";
 
@@ -34,8 +35,7 @@ import styles from "./styles.module.css";
 const COMPUTE_TICKS_AMOUNT = 3000;
 const RANGE_TICKS_LIMIT = 4000;
 
-interface RangeStepProps {
-    disabled?: boolean;
+interface RangeStepProps extends FormStepBaseProps {
     distributablesType?: DistributablesType;
     pool?: AmmPoolLiquidityCampaignPayload["pool"];
     priceRangeSpecification?: AmmPoolLiquidityCampaignPayload["priceRangeSpecification"];
@@ -46,6 +46,7 @@ interface RangeStepProps {
 type ErrorMessage = LocalizedMessage<"newCampaign.form.ammPoolLiquidity.range">;
 
 export function RangeStep({
+    autoCompleting,
     disabled,
     distributablesType,
     pool,
@@ -68,6 +69,7 @@ export function RangeStep({
     );
 
     const prevRangeSpecification = usePrevious(priceRangeSpecification);
+    const prevPoolId = usePrevious(pool?.id);
     const chainId = useChainId();
     const { liquidityDensity, loading: loadingLiquidityDensity } =
         useLiquidityDensity({
@@ -93,31 +95,36 @@ export function RangeStep({
     }, [liquidityDensity, token0To1, pool]);
 
     useEffect(() => {
+        // Avoid resetting the range if the form is autocompleting
+        if (autoCompleting || prevPoolId === pool?.id) return;
+
+        onRangeChange({ priceRangeSpecification: undefined });
         setFrom(undefined);
         setTo(undefined);
-    }, [pool?.id]);
+    }, [autoCompleting, prevPoolId, pool?.id, onRangeChange]);
 
     useEffect(() => {
         setOpen(false);
     }, [chainId]);
 
-    // this hooks is used to disable and close the step when
-    // the range specification gets disabled, after the campaign creation
+    useEffect(() => {
+        setFrom(priceRangeSpecification?.from);
+        setTo(priceRangeSpecification?.to);
+    }, [priceRangeSpecification?.from, priceRangeSpecification?.to]);
+
+    useEffect(() => {
+        if (!!priceRangeSpecification) {
+            setEnabled(true);
+            setOpen(false);
+        }
+    }, [priceRangeSpecification]);
+
+    // This hooks is used to disable and close the step when
+    // the range specification gets disabled, after the campaign creation.
     useEffect(() => {
         if (enabled && !!prevRangeSpecification && !priceRangeSpecification)
             setEnabled(false);
     }, [enabled, prevRangeSpecification, priceRangeSpecification]);
-
-    // reset state once the step gets disabled
-    useEffect(() => {
-        if (enabled) return;
-        if (priceRangeSpecification)
-            onRangeChange({ priceRangeSpecification: undefined });
-
-        setFrom(undefined);
-        setTo(undefined);
-        setError("");
-    }, [enabled, onRangeChange, priceRangeSpecification]);
 
     useEffect(() => {
         if (!from && !to) setError("");
@@ -132,10 +139,6 @@ export function RangeStep({
             setError("errors.rangeTooWide");
         else setError("");
     }, [from, to]);
-
-    useEffect(() => {
-        setOpen(enabled);
-    }, [enabled]);
 
     useEffect(() => {
         if (enabled && !open && unsavedChanges)
@@ -153,6 +156,8 @@ export function RangeStep({
     // TODO: avoid resetting when the range is enabled for points.
     // This hook is used to reset and disable the range when changing reward type.
     useEffect(() => {
+        if (distributablesType === DistributablesType.Tokens) return;
+
         onRangeChange({ priceRangeSpecification: undefined });
         setFrom(undefined);
         setTo(undefined);
@@ -161,13 +166,21 @@ export function RangeStep({
     }, [distributablesType, onRangeChange]);
 
     function handleSwitchOnClick(
-        _: boolean,
+        checked: boolean,
         event:
             | React.MouseEvent<HTMLButtonElement>
             | React.KeyboardEvent<HTMLButtonElement>,
     ) {
         event.stopPropagation();
-        setEnabled((enabled) => !enabled);
+        setEnabled(checked);
+        setOpen(checked);
+
+        if (!checked) {
+            onRangeChange({ priceRangeSpecification: undefined });
+            setFrom(undefined);
+            setTo(undefined);
+            setError("");
+        }
     }
 
     function handleStepOnClick() {

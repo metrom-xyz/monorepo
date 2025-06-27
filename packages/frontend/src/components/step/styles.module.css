@@ -8,6 +8,10 @@
         ease-in-out;
 }
 
+.root.loading {
+    @apply animate-pulse;
+}
+
 .root.disabled {
     @apply hover:cursor-not-allowed;
 }

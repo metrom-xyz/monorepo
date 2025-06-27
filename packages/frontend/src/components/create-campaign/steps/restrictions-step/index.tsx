@@ -5,6 +5,7 @@ import {
     type BaseCampaignPayload,
     type CampaignPayloadErrors,
     type BaseCampaignPayloadPart,
+    type FormStepBaseProps,
 } from "@/src/types/campaign";
 import type { LocalizedMessage } from "@/src/types/utils";
 import { RestrictionType } from "@/src/types/common";
@@ -38,8 +39,7 @@ import styles from "./styles.module.css";
 
 export const MAXIMUM_RESTRICTIONS = 20;
 
-interface RestrictionsStepProps {
-    disabled?: boolean;
+interface RestrictionsStepProps extends FormStepBaseProps {
     restrictions?: BaseCampaignPayload["restrictions"];
     onRestrictionsChange: (restrictions: BaseCampaignPayloadPart) => void;
     onError: (errors: CampaignPayloadErrors) => void;
@@ -48,6 +48,7 @@ interface RestrictionsStepProps {
 type ErrorMessage = LocalizedMessage<"newCampaign.form.base.restrictions">;
 
 export function RestrictionsStep({
+    loading,
     disabled,
     restrictions,
     onRestrictionsChange,
@@ -78,21 +79,17 @@ export function RestrictionsStep({
         );
     }, [addresses, prevRestrictions, type]);
 
-    // this hooks is used to disable and close the step when
-    // the restrictions gets disabled, after the campaign creation
+    // This hooks is used to disable and close the step when
+    // the restrictions gets disabled, after the campaign creation.
     useEffect(() => {
         if (enabled && !!prevRestrictions && !restrictions) setEnabled(false);
         if (disabled) setEnabled(false);
     }, [enabled, restrictions, prevRestrictions, disabled]);
 
     useEffect(() => {
-        if (enabled) return;
-        if (restrictions) onRestrictionsChange({ restrictions: undefined });
-
-        setAddress("");
-        setType(RestrictionType.Blacklist);
-        setAddresses([]);
-    }, [enabled, onRestrictionsChange, restrictions]);
+        setType(restrictions?.type || RestrictionType.Blacklist);
+        setAddresses(restrictions?.list || []);
+    }, [restrictions]);
 
     useEffect(() => {
         if (!address) {
@@ -124,17 +121,28 @@ export function RestrictionsStep({
     }, [enabled, restrictions, error, onError]);
 
     useEffect(() => {
-        setOpen(enabled);
-    }, [enabled]);
+        if (!!restrictions) {
+            setEnabled(true);
+            setOpen(false);
+        }
+    }, [restrictions]);
 
     function handleSwitchOnClick(
-        _: boolean,
+        checked: boolean,
         event:
             | React.MouseEvent<HTMLButtonElement>
             | React.KeyboardEvent<HTMLButtonElement>,
     ) {
         event.stopPropagation();
-        setEnabled((enabled) => !enabled);
+        setEnabled(checked);
+        setOpen(checked);
+
+        if (restrictions) {
+            onRestrictionsChange({ restrictions: undefined });
+            setAddress("");
+            setType(RestrictionType.Blacklist);
+            setAddresses([]);
+        }
     }
 
     function handleStepOnClick() {
@@ -174,6 +182,7 @@ export function RestrictionsStep({
 
     return (
         <Step
+            loading={loading}
             disabled={disabled}
             completed={enabled}
             open={open}
