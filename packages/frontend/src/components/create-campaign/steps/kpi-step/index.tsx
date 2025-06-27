@@ -17,7 +17,6 @@ import { KpiMetric, type KpiSpecification } from "@metrom-xyz/sdk";
 import { usePrevious } from "react-use";
 import { KpiSimulationChart } from "../../../kpi-simulation-chart";
 import { GoalInputs } from "./goal-inputs";
-import { useChainId } from "wagmi";
 import { InfoMessage } from "@/src/components/info-message";
 
 import styles from "./styles.module.css";
@@ -53,16 +52,15 @@ export function KpiStep({
     const [warning, setWarning] = useState<ErrorMessage>("");
 
     const [minimumPayoutPercentage, setMinimumPayoutPercentage] =
-        useState<number>(0);
+        useState<number>(kpiSpecification?.minimumPayoutPercentage || 0);
     const [lowerUsdTargetRaw, setLowerUsdTargetRaw] = useState<
         number | undefined
-    >();
+    >(kpiSpecification?.goal.lowerUsdTarget);
     const [upperUsdTargetRaw, setUpperUsdTargetRaw] = useState<
         number | undefined
-    >();
+    >(kpiSpecification?.goal.upperUsdTarget);
 
     const prevKpiSpecification = usePrevious(kpiSpecification);
-    const chainId = useChainId();
 
     const totalRewardsUsdAmount = useMemo(() => {
         if (!distributables || !distributables.tokens) return 0;
@@ -116,15 +114,6 @@ export function KpiStep({
             kpiSpecification?.minimumPayoutPercentage ?? 0,
         );
     }, [kpiSpecification]);
-
-    useEffect(() => {
-        setEnabled(false);
-        onKpiChange({ kpiSpecification: undefined });
-        setMinimumPayoutPercentage(0);
-        setLowerUsdTargetRaw(undefined);
-        setUpperUsdTargetRaw(undefined);
-        setError("");
-    }, [chainId, onKpiChange]);
 
     useEffect(() => {
         if (!!kpiSpecification) {
