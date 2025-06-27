@@ -23,6 +23,7 @@ import { SECONDS_IN_YEAR, WEIGHT_UNIT } from "../commons";
 import { type LiquityV2Protocol } from "@metrom-xyz/chains";
 import { getTranslations } from "next-intl/server";
 import { getChainData } from "./chain";
+import dayjs from "dayjs";
 
 export function buildCampaignDataBundle(payload: CampaignPreviewPayload) {
     if (payload instanceof AmmPoolLiquidityCampaignPreviewPayload)
@@ -278,4 +279,15 @@ export function getAmmPoolLiquidityCampaignApr({
     const aprPercentage = rewardsRatio * yearMultiplier * 100;
 
     return aprPercentage;
+}
+
+export function decodeCampaignSetup(setup: string) {
+    return JSON.parse(setup, (key, value) => {
+        if (typeof value === "string" && /^\d+n$/.test(value))
+            return BigInt(value.slice(0, -1));
+
+        if (key === "startDate" || key === "endDate") return dayjs(value);
+
+        return value;
+    });
 }
