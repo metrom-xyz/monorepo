@@ -34,7 +34,6 @@ import { CsvAddressesImport } from "./csv-addresses-import";
 import { Avatar } from "@/src/components/avatar/avatar";
 import { Account } from "@/src/components/account";
 import { InfoMessage } from "@/src/components/info-message";
-import { useChainId } from "wagmi";
 
 import styles from "./styles.module.css";
 
@@ -60,11 +59,14 @@ export function RestrictionsStep({
     const [enabled, setEnabled] = useState(false);
     const [error, setError] = useState<ErrorMessage>("");
     const [warning, setWarning] = useState<ErrorMessage>("");
-    const [type, setType] = useState(RestrictionType.Blacklist);
+    const [type, setType] = useState(
+        restrictions?.type || RestrictionType.Blacklist,
+    );
     const [address, setAddress] = useState("");
-    const [addresses, setAddresses] = useState<Address[]>([]);
+    const [addresses, setAddresses] = useState<Address[]>(
+        restrictions?.list || [],
+    );
 
-    const chainId = useChainId();
     const prevRestrictions = usePrevious(restrictions);
 
     const unsavedChanges = useMemo(() => {
@@ -86,13 +88,6 @@ export function RestrictionsStep({
         if (enabled && !!prevRestrictions && !restrictions) setEnabled(false);
         if (disabled) setEnabled(false);
     }, [enabled, restrictions, prevRestrictions, disabled]);
-
-    useEffect(() => {
-        onRestrictionsChange({ restrictions: undefined });
-        setAddress("");
-        setType(RestrictionType.Blacklist);
-        setAddresses([]);
-    }, [chainId, onRestrictionsChange]);
 
     useEffect(() => {
         setType(restrictions?.type || RestrictionType.Blacklist);
