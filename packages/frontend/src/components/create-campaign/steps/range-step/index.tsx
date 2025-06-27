@@ -96,7 +96,7 @@ export function RangeStep({
         onRangeChange({ priceRangeSpecification: undefined });
         setFrom(undefined);
         setTo(undefined);
-    }, [prevPoolId, pool?.id]);
+    }, [prevPoolId, pool?.id, onRangeChange]);
 
     useEffect(() => {
         setOpen(false);
