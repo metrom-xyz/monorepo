@@ -28,7 +28,7 @@
 }
 
 .buttonsContainer {
-    @apply w-full flex gap-4 items-center justify-center;
+    @apply w-full flex flex-col sm:flex-row gap-4 items-center justify-center;
 }
 
 .button {

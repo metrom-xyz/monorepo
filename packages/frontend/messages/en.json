@@ -424,7 +424,7 @@
         "notifications": {
             "linkCopied": {
                 "title": "Link copied to clipboard",
-                "message": "Expires in 2 days"
+                "message": "Expires in 1 day"
             },
             "linkError": {
                 "title": "Link generation failed",
