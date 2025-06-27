@@ -139,6 +139,8 @@ export function AmmPoolLiquidityForm({
             if (payload.pool.chainId !== chainId)
                 await switchChainAsync({ chainId: payload.pool.chainId });
 
+            // Remove the 'setup' parameter from the URL after parsing.
+            // This ensures the form behaves correctly after autocomplete completes.
             const params = new URLSearchParams(searchParams.toString());
             params.delete("setup");
             router.replace(`${pathname}?${params.toString()}`, {
@@ -306,6 +308,7 @@ export function AmmPoolLiquidityForm({
                     payload.pool.liquidityType ===
                         AmmPoolLiquidityType.Concentrated && (
                         <RangeStep
+                            autoCompleting={!!setup}
                             disabled={noDistributables || unsupportedChain}
                             distributablesType={payload.distributables?.type}
                             pool={payload.pool}

@@ -46,6 +46,7 @@ interface RangeStepProps extends FormStepBaseProps {
 type ErrorMessage = LocalizedMessage<"newCampaign.form.ammPoolLiquidity.range">;
 
 export function RangeStep({
+    autoCompleting,
     disabled,
     distributablesType,
     pool,
@@ -60,8 +61,12 @@ export function RangeStep({
     const [error, setError] = useState<ErrorMessage>("");
     const [warning, setWarning] = useState<ErrorMessage>("");
 
-    const [from, setFrom] = useState<AugmentedPriceRangeBound | undefined>();
-    const [to, setTo] = useState<AugmentedPriceRangeBound | undefined>();
+    const [from, setFrom] = useState<AugmentedPriceRangeBound | undefined>(
+        priceRangeSpecification?.from,
+    );
+    const [to, setTo] = useState<AugmentedPriceRangeBound | undefined>(
+        priceRangeSpecification?.to,
+    );
 
     const prevRangeSpecification = usePrevious(priceRangeSpecification);
     const prevPoolId = usePrevious(pool?.id);
@@ -89,14 +94,14 @@ export function RangeStep({
         return tickToScaledPrice(activeTickIdx, pool, token0To1);
     }, [liquidityDensity, token0To1, pool]);
 
-    // FIXME: changing dex doesn't reset range it it's enabled
     useEffect(() => {
-        if (!prevPoolId || prevPoolId === pool?.id) return;
+        // Avoid resetting the range if the form is autocompleting
+        if (autoCompleting || prevPoolId === pool?.id) return;
 
         onRangeChange({ priceRangeSpecification: undefined });
         setFrom(undefined);
         setTo(undefined);
-    }, [prevPoolId, pool?.id, onRangeChange]);
+    }, [autoCompleting, prevPoolId, pool?.id, onRangeChange]);
 
     useEffect(() => {
         setOpen(false);
