@@ -14,6 +14,7 @@ import classNames from "classnames";
 import { TakeLoanIcon } from "@/src/assets/take-loan-icon";
 import { DepositToSpIcon } from "@/src/assets/deposit-to-sp-icon";
 import { LiquityV2Action } from "@/src/types/common";
+import { usePrevious } from "react-use";
 
 import styles from "./styles.module.css";
 
@@ -37,7 +38,8 @@ interface LiquityV2ActionStepProps extends FormStepBaseProps {
 }
 
 export function LiquityV2ActionStep({
-    autoCompleted,
+    autoCompleting,
+    loading,
     disabled,
     action,
     brand,
@@ -48,6 +50,7 @@ export function LiquityV2ActionStep({
     const [open, setOpen] = useState(false);
 
     const chainId = useChainId();
+    const prevBrand = usePrevious(brand);
 
     const selectedAction = useMemo(() => {
         if (!action) return undefined;
@@ -61,13 +64,14 @@ export function LiquityV2ActionStep({
     }, [chainId]);
 
     useEffect(() => {
-        if (autoCompleted) setOpen(false);
-    }, [autoCompleted]);
+        if (disabled || !!action) setOpen(false);
+        else setOpen(true);
+    }, [disabled, action]);
 
     useEffect(() => {
-        if (disabled || !!action) return;
-        setOpen(true);
-    }, [disabled, action]);
+        if (!autoCompleting && !!prevBrand && !!action && prevBrand !== brand)
+            onActionChange({ action: undefined });
+    }, [autoCompleting, prevBrand, brand, action, onActionChange]);
 
     const getActionChangeHandler = useCallback(
         (newAction: LiquityV2Action) => {
@@ -88,6 +92,7 @@ export function LiquityV2ActionStep({
 
     return (
         <Step
+            loading={loading}
             disabled={disabled}
             open={open}
             completed={!!action}

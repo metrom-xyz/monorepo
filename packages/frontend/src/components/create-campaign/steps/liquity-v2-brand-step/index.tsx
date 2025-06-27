@@ -11,7 +11,11 @@ import {
     type LiquityV2CampaignPayload,
     type LiquityV2CampaignPayloadPart,
 } from "@/src/types/campaign";
-import { ProtocolType, type LiquityV2Protocol } from "@metrom-xyz/chains";
+import {
+    ProtocolType,
+    type LiquityV2Protocol,
+    type WithChain,
+} from "@metrom-xyz/chains";
 import { useProtocolsInChain } from "@/src/hooks/useProtocolsInChain";
 
 import styles from "./styles.module.css";
@@ -22,13 +26,13 @@ interface LiquityV2BrandStepProps extends FormStepBaseProps {
 }
 
 export function LiquityV2BrandStep({
-    autoCompleted,
+    loading,
     disabled,
     brand,
     onBrandChange,
 }: LiquityV2BrandStepProps) {
     const t = useTranslations("newCampaign.form.liquityV2.brand");
-    const [open, setOpen] = useState(true);
+    const [open, setOpen] = useState(false);
 
     const chainId = useChainId();
     const supportedBrands = useProtocolsInChain({
@@ -47,10 +51,6 @@ export function LiquityV2BrandStep({
     }, [chainId]);
 
     useEffect(() => {
-        if (autoCompleted) setOpen(false);
-    }, [autoCompleted]);
-
-    useEffect(() => {
         if (!!brand || supportedBrands.length !== 1) return;
         onBrandChange({
             brand: supportedBrands[0],
@@ -59,7 +59,7 @@ export function LiquityV2BrandStep({
     }, [supportedBrands, brand, onBrandChange]);
 
     const getBrandChangeHandler = useCallback(
-        (newPlatform: LiquityV2Protocol) => {
+        (newPlatform: WithChain<LiquityV2Protocol>) => {
             return () => {
                 if (brand && brand.slug === newPlatform.slug) return;
                 onBrandChange({
@@ -77,6 +77,7 @@ export function LiquityV2BrandStep({
 
     return (
         <Step
+            loading={loading}
             disabled={disabled || supportedBrands.length === 0}
             open={open}
             completed={!!selectedBrand}

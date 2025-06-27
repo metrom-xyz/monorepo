@@ -14,6 +14,7 @@ import { Typography } from "@metrom-xyz/ui";
 import type { LiquityV2Collateral } from "@metrom-xyz/sdk";
 import { RemoteLogo } from "@/src/components/remote-logo";
 import { useLiquityV2Collaterals } from "@/src/hooks/useLiquityV2Collaterals";
+import { usePrevious } from "react-use";
 
 import styles from "./styles.module.css";
 
@@ -25,7 +26,7 @@ interface LiquityV2CollateralStepProps extends FormStepBaseProps {
 }
 
 export function LiquityV2CollateralStep({
-    autoCompleted,
+    loading,
     disabled,
     brand,
     action,
@@ -37,18 +38,17 @@ export function LiquityV2CollateralStep({
     const [open, setOpen] = useState(false);
 
     const chainId = useChainId();
-    const { loading, collaterals } = useLiquityV2Collaterals({
-        chainId,
-        brand: brand?.slug,
-    });
+    const { loading: loadingCollaterals, collaterals } =
+        useLiquityV2Collaterals({
+            chainId,
+            brand: brand?.slug,
+        });
+
+    const prevAction = usePrevious(action);
 
     useEffect(() => {
         setOpen(false);
     }, [chainId]);
-
-    useEffect(() => {
-        if (autoCompleted) setOpen(false);
-    }, [autoCompleted]);
 
     useEffect(() => {
         if (disabled || !!collateral) return;
@@ -56,8 +56,9 @@ export function LiquityV2CollateralStep({
     }, [collateral, disabled, action]);
 
     useEffect(() => {
-        onCollateralChange({ collateral: undefined });
-    }, [brand, action, onCollateralChange]);
+        if (!!prevAction && !!brand && prevAction !== action)
+            onCollateralChange({ collateral: undefined });
+    }, [prevAction, brand, action, onCollateralChange]);
 
     const handleCollateralChange = useCallback(
         (collateral: LiquityV2Collateral) => {
@@ -73,6 +74,7 @@ export function LiquityV2CollateralStep({
 
     return (
         <Step
+            loading={loading}
             disabled={disabled}
             open={open}
             completed={!!collateral}
@@ -110,7 +112,7 @@ export function LiquityV2CollateralStep({
             </StepPreview>
             <StepContent>
                 <CollateralsList
-                    loading={loading}
+                    loading={loadingCollaterals}
                     action={action}
                     selected={collateral}
                     collaterals={collaterals}

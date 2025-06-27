@@ -6,6 +6,7 @@ import {
     SupportedLiquityV2,
     TargetType,
 } from "@metrom-xyz/sdk";
+import { SupportedChain } from "@metrom-xyz/contracts";
 
 export enum ProtocolType {
     Dex = "dex",
@@ -33,6 +34,10 @@ export interface DexProtocol extends ProtocolBase<SupportedDex> {
     };
     supportsFetchAllPools: boolean;
 }
+
+export type WithChain<T extends ProtocolBase> = T & {
+    chainId: SupportedChain;
+};
 
 export interface LiquityV2Protocol extends ProtocolBase<SupportedLiquityV2> {
     type: ProtocolType.LiquityV2;

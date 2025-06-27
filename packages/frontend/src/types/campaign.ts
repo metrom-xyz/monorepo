@@ -29,6 +29,7 @@ import {
     type ChainData,
     type DexProtocol,
     type LiquityV2Protocol,
+    type WithChain,
 } from "@metrom-xyz/chains";
 import type { PropertyUnion } from "./utils";
 
@@ -83,17 +84,18 @@ export interface BaseCampaignPayload {
     kpiSpecification?: KpiSpecification;
     priceRangeSpecification?: AugmentedPriceRangeSpecification;
     restrictions?: Restrictions;
+    kind?: CampaignKind;
 }
 
 export interface AmmPoolLiquidityCampaignPayload extends BaseCampaignPayload {
-    dex?: DexProtocol;
+    dex?: WithChain<DexProtocol>;
     pool?: AmmPoolWithTvl;
     weighting?: Weighting;
     priceRangeSpecification?: AugmentedPriceRangeSpecification;
 }
 
 export interface LiquityV2CampaignPayload extends BaseCampaignPayload {
-    brand?: LiquityV2Protocol;
+    brand?: WithChain<LiquityV2Protocol>;
     action?: LiquityV2Action;
     collateral?: LiquityV2Collateral;
 }

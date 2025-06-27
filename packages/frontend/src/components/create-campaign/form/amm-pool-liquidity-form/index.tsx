@@ -4,6 +4,7 @@ import {
     AmmPoolLiquidityCampaignPreviewPayload,
     type AmmPoolLiquidityCampaignPayloadPart,
     type CampaignPreviewDistributables,
+    CampaignKind,
 } from "@/src/types/campaign";
 import { useTranslations } from "next-intl";
 import {
@@ -34,15 +35,16 @@ import {
     AMM_SUPPORTS_TOKENS_RATIO,
 } from "@/src/commons";
 import { WeightingStep } from "../../steps/weighting";
-import { usePathname, useSearchParams } from "next/navigation";
+import { usePathname } from "@/i18n/routing";
 import dayjs from "dayjs";
 import { useCampaignSetup } from "@/src/hooks/useCampaignSetup";
 import { toast } from "sonner";
 import { SetupFail } from "../notifications/setup-fail";
 import { SetupSuccess } from "../notifications/setup-success";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 import styles from "./styles.module.css";
+import { decodeCampaignSetup } from "@/src/utils/campaign";
 
 function validatePayload(
     payload: AmmPoolLiquidityCampaignPayload,
@@ -121,23 +123,19 @@ export function AmmPoolLiquidityForm({
 
     // This hook auto fills the form state when a campaign setup is available.
     useLayoutEffect(() => {
-        const parsePayload = async () => {
-            if (!setup) return undefined;
+        if (!setup) return;
 
-            const payload = JSON.parse(setup, (key, value) => {
-                if (typeof value === "string" && /^\d+n$/.test(value))
-                    return BigInt(value.slice(0, -1));
+        const autocompletePayload = async () => {
+            const decodedSetup = decodeCampaignSetup(setup);
+            if (decodedSetup.kind !== CampaignKind.AmmPoolLiquidity) return;
 
-                if (key === "startDate" || key === "endDate")
-                    return dayjs(value);
+            const payload = decodedSetup as AmmPoolLiquidityCampaignPayload;
+            if (!payload.dex?.chainId) return;
 
-                return value;
-            }) as AmmPoolLiquidityCampaignPayload;
+            const { dex } = payload;
 
-            if (!payload.pool) return undefined;
-
-            if (payload.pool.chainId !== chainId)
-                await switchChainAsync({ chainId: payload.pool.chainId });
+            if (dex.chainId !== chainId)
+                await switchChainAsync({ chainId: dex.chainId });
 
             // Remove the 'setup' parameter from the URL after parsing.
             // This ensures the form behaves correctly after autocomplete completes.
@@ -150,7 +148,7 @@ export function AmmPoolLiquidityForm({
             setPayload(payload);
         };
 
-        parsePayload();
+        autocompletePayload();
     }, [
         loadingSetup,
         searchParams,
