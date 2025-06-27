@@ -10,7 +10,6 @@ import {
     SwapChange,
     LiquidityChange,
     Position,
-    PoolInitialization,
 } from "../../generated/schema";
 import {
     BI_0,
@@ -49,7 +48,6 @@ export function handleInitialize(event: InitializeEvent): void {
     }
 
     // Create hook if exists
-    let hook = getOrCreateHook(event.params.hooks);
 
     // Create pool entity
     let pool = new Pool(event.params.id);
@@ -62,21 +60,11 @@ export function handleInitialize(event: InitializeEvent): void {
     pool.sqrtPriceX96 = event.params.sqrtPriceX96;
     pool.fee = event.params.fee;
     pool.isDynamicFee = isDynamicFee(event.params.fee);
-    pool.hook = hook ? hook.id : null;
+    pool.hook = event.params.hooks;
     pool.liquidity = BI_0;
-    pool.poolManager = POOL_MANAGER_ADDRESS;
     pool.save();
 
-    // Create pool initialization event
-    let poolInit = new PoolInitialization(getEventId(event));
-    poolInit.timestamp = event.block.timestamp;
-    poolInit.blockNumber = event.block.number;
-    poolInit.pool = pool.id;
-    poolInit.sqrtPriceX96 = event.params.sqrtPriceX96;
-    poolInit.tick = event.params.tick;
-    poolInit.save();
 
-    log.info("Pool initialized successfully: {}", [pool.id.toHexString()]);
 }
 
 export function handleSwap(event: SwapEvent): void {
@@ -106,10 +94,6 @@ export function handleSwap(event: SwapEvent): void {
     swapChange.pool = pool.id;
     swapChange.tick = event.params.tick;
     swapChange.sqrtPriceX96 = event.params.sqrtPriceX96;
-    swapChange.deltaAmount0 = event.params.amount0;
-    swapChange.deltaAmount1 = event.params.amount1;
-    swapChange.hookFeeAmount0 = BI_0; // TODO: Extract from hook events if applicable
-    swapChange.hookFeeAmount1 = BI_0; // TODO: Extract from hook events if applicable
     swapChange.save();
 
     log.info("Swap processed for pool: {}, amounts: [{}, {}]", [
