@@ -15,6 +15,8 @@ type Pool @entity(immutable: false) {
     price: BigDecimal!
     sqrtPriceX96: BigInt!
     fee: Int!
+    isDynamicFee: Boolean!
+    hook: Hook
     liquidity: BigInt!
     positions: [Position!]! @derivedFrom(field: "pool")
     swapChanges: [SwapChange!]! @derivedFrom(field: "pool")
@@ -29,6 +31,7 @@ type Position @entity(immutable: false) {
     liquidity: BigInt!
     direct: Boolean!
     pool: Pool!
+    salt: Bytes
     liquidityChanges: [LiquidityChange!]! @derivedFrom(field: "position")
 }
 
