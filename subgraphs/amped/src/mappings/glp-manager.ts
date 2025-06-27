@@ -7,8 +7,6 @@ import {
 } from "../../generated/GlpManager/GlpManager";
 import { TOKENIZED_VAULT_COLLATERAL } from "../addresses";
 
-const BI_10_E_18 = BigInt.fromI32(10).pow(18);
-
 function getOrCreatePosition(owner: Address, collateral: Address): Position {
     const id = collateral.concat(owner);
     let position = Position.load(id);
@@ -30,17 +28,14 @@ function handleLiquidityChange(
     event: ethereum.Event,
     ownerAddress: Address,
     collateralAddress: Address,
-    usdgAmount: BigInt,
     glpDelta: BigInt,
 ): void {
-    const liquidityDelta = usdgAmount.times(BI_10_E_18).div(glpDelta);
-
     const collateral = getOrCreateCollateral(collateralAddress);
-    collateral.liquidity = collateral.liquidity.plus(liquidityDelta);
+    collateral.liquidity = collateral.liquidity.plus(glpDelta);
     collateral.save();
 
     const position = getOrCreatePosition(ownerAddress, collateralAddress);
-    position.liquidity = position.liquidity.plus(liquidityDelta);
+    position.liquidity = position.liquidity.plus(glpDelta);
     position.save();
 
     const change = new LiquidityChange(getEventId(event));
@@ -48,7 +43,7 @@ function handleLiquidityChange(
     change.owner = position.owner;
     change.positionId = position.id;
     change.tokenizedVaultId = position.tokenizedVault;
-    change.delta = liquidityDelta;
+    change.delta = glpDelta;
     change.collateral = collateralAddress;
     change.save();
 }
@@ -58,7 +53,6 @@ export function handleAddLiquidity(event: AddLiquidity): void {
         event,
         event.params.account,
         event.params.token,
-        event.params.usdgAmount,
         event.params.mintAmount,
     );
 }
@@ -68,7 +62,6 @@ export function handleRemoveLiquidity(event: RemoveLiquidity): void {
         event,
         event.params.account,
         event.params.token,
-        event.params.usdgAmount,
         event.params.glpAmount.neg(),
     );
 }
