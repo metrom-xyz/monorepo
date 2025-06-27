@@ -23,7 +23,7 @@ export function FormHeader({ type }: FormHeaderProps) {
     const router = useRouter();
 
     function handleBackOnClick() {
-        router.back();
+        router.push("/campaigns/create");
     }
 
     return (
