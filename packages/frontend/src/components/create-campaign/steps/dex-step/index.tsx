@@ -4,7 +4,11 @@ import { useTranslations } from "next-intl";
 import { Step } from "@/src/components/step";
 import { StepPreview } from "@/src/components/step/preview";
 import { StepContent } from "@/src/components/step/content";
-import { ProtocolType, type DexProtocol } from "@metrom-xyz/chains";
+import {
+    ProtocolType,
+    type DexProtocol,
+    type WithChain,
+} from "@metrom-xyz/chains";
 import classNames from "classnames";
 import { Typography } from "@metrom-xyz/ui";
 import {
@@ -21,13 +25,7 @@ interface DexStepProps extends FormStepBaseProps {
     onDexChange: (value: AmmPoolLiquidityCampaignPayloadPart) => void;
 }
 
-export function DexStep({
-    loading,
-    autoCompleted,
-    disabled,
-    dex,
-    onDexChange,
-}: DexStepProps) {
+export function DexStep({ loading, disabled, dex, onDexChange }: DexStepProps) {
     const t = useTranslations("newCampaign.form.ammPoolLiquidity.dex");
     const [open, setOpen] = useState(false);
 
@@ -48,10 +46,6 @@ export function DexStep({
     }, [chainId]);
 
     useEffect(() => {
-        if (autoCompleted) setOpen(false);
-    }, [autoCompleted]);
-
-    useEffect(() => {
         if (loading || !!dex || availableDexes.length !== 1) return;
         onDexChange({
             dex: availableDexes[0],
@@ -60,7 +54,7 @@ export function DexStep({
     }, [loading, availableDexes, dex, onDexChange]);
 
     const getDexChangeHandler = useCallback(
-        (newDex: DexProtocol) => {
+        (newDex: WithChain<DexProtocol>) => {
             return () => {
                 if (dex && dex.slug === newDex.slug) return;
                 onDexChange({
