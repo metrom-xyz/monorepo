@@ -115,6 +115,17 @@ export function LiquityV2ForksForm({
 
     // This hook auto fills the form state when a campaign setup is available.
     useLayoutEffect(() => {
+        // Remove the 'setup' parameter from the URL after parsing.
+        // This ensures the form behaves correctly after autocomplete completes.
+        const params = new URLSearchParams(searchParams.toString());
+
+        if (setupError) {
+            params.delete("setup");
+            router.replace(`${pathname}?${params.toString()}`, {
+                scroll: false,
+            });
+        }
+
         if (!setup) return;
 
         const autocompletePayload = async () => {
@@ -133,9 +144,6 @@ export function LiquityV2ForksForm({
             if (brand.chainId !== chainId)
                 await switchChainAsync({ chainId: brand.chainId });
 
-            // Remove the 'setup' parameter from the URL after parsing.
-            // This ensures the form behaves correctly after autocomplete completes.
-            const params = new URLSearchParams(searchParams.toString());
             params.delete("setup");
             router.replace(`${pathname}?${params.toString()}`, {
                 scroll: false,
@@ -147,6 +155,7 @@ export function LiquityV2ForksForm({
         autocompletePayload();
     }, [
         loadingSetup,
+        setupError,
         searchParams,
         chainId,
         setup,

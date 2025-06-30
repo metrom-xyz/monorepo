@@ -101,7 +101,7 @@ export function RangeStep({
             : -liquidityDensity.activeIdx;
 
         return tickToScaledPrice(activeTickIdx, pool, token0To1);
-    }, [liquidityDensity, ratio, pool, token0To1]);
+    }, [liquidityDensity, pool, token0To1]);
 
     useEffect(() => {
         // Avoid resetting the range if the form is autocompleting
@@ -239,7 +239,7 @@ export function RangeStep({
 
         setOpen(false);
         onRangeChange({ priceRangeSpecification });
-    }, [from, to, ratio, token0To1, onRangeChange]);
+    }, [from, to, token0To1, onRangeChange]);
 
     return (
         <Step
