@@ -6,9 +6,9 @@ import { PoolRemoteLogo } from "@/src/components/pool-remote-logo";
 import { InfoTooltip, Typography } from "@metrom-xyz/ui";
 import { TimeProgressIcon } from "@/src/assets/time-progress-icon";
 import { useTranslations } from "next-intl";
+import dayjs from "dayjs";
 
 import styles from "./styles.module.css";
-import dayjs from "dayjs";
 
 interface ActionProps extends Action {
     chain: SupportedChain;

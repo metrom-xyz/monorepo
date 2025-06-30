@@ -55,6 +55,13 @@ export function AmmPoolLiquidity({ campaign }: AmmPoolLiquidityProps) {
                             </Typography>
                         </div>
                     )}
+                    {campaign.restrictions && (
+                        <div className={styles.chip}>
+                            <Typography size="xs" weight="medium" uppercase>
+                                {t("restricted")}
+                            </Typography>
+                        </div>
+                    )}
                 </div>
             </div>
         </div>

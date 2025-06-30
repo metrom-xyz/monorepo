@@ -1,28 +1,26 @@
-import type { BaseCampaignPayload } from "@/src/types/campaign";
-import { Accordion, Typography } from "@metrom-xyz/ui";
+import { RestrictionType } from "@metrom-xyz/sdk";
+import type { Address } from "viem";
 import { useTranslations } from "next-intl";
 import { useMemo } from "react";
-import { Avatar } from "@/src/components/avatar/avatar";
-import { Account } from "@/src/components/account";
-import { RestrictionType } from "@metrom-xyz/sdk";
+import { Accordion, Typography } from "@metrom-xyz/ui";
+import { Avatar } from "../../avatar/avatar";
+import { Account } from "../../account";
 
 import styles from "./styles.module.css";
 
 interface RestrictionsProps {
-    restrictions: BaseCampaignPayload["restrictions"];
+    type: RestrictionType;
+    list: Address[];
 }
 
-export function Restrictions({ restrictions }: RestrictionsProps) {
-    const t = useTranslations("campaignPreview.restrictions");
+export function Restrictions({ type, list }: RestrictionsProps) {
+    const t = useTranslations("campaignDetails.restrictions");
 
     const accordionTitle = useMemo(() => {
-        if (!restrictions) return undefined;
-
-        const { type, list } = restrictions;
         return type === RestrictionType.Blacklist
             ? t("blocks", { count: list.length })
             : t("allows", { count: list.length });
-    }, [restrictions, t]);
+    }, [type, list, t]);
 
     return (
         <div className={styles.root}>
@@ -31,7 +29,7 @@ export function Restrictions({ restrictions }: RestrictionsProps) {
             </Typography>
             <Accordion title={accordionTitle}>
                 <div className={styles.list}>
-                    {restrictions?.list.map((address) => (
+                    {list.map((address) => (
                         <div key={address} className={styles.row}>
                             <div className={styles.account}>
                                 <Avatar

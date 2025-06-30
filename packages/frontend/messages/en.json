@@ -36,6 +36,7 @@
     "allCampaigns": {
         "title": "all campaigns",
         "kpi": "KPI",
+        "restricted": "Restricted",
         "filters": {
             "search": {
                 "label": "Search"
@@ -539,6 +540,11 @@
                 "week": "W {week}",
                 "weekDuration": "{from} to {to}"
             }
+        },
+        "restrictions": {
+            "title": "Restrictions",
+            "blocks": "Blocks {count, plural, =0 {} =1 {# address} other {# adresses}}",
+            "allows": "Allows {count, plural, =0 {} =1 {# address} other {# adresses}}"
         },
         "leaderboard": {
             "title": "Leaderboard",

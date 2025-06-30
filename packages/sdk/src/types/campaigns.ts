@@ -137,7 +137,7 @@ export class Campaign {
         public readonly snapshottedAt?: number,
         public readonly specification?: Specification,
         public readonly apr?: number,
-        // TODO: add restrictions
+        public readonly restrictions?: Restrictions,
     ) {
         const now = Number(Math.floor(Date.now() / 1000));
         this.status =
