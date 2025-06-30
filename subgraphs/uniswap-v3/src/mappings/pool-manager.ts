@@ -134,50 +134,23 @@ export function handleModifyLiquidity(event: ModifyLiquidityEvent): void {
     }
 
     // Update position liquidity
-    if (event.params.liquidityDelta.gt(BI_0)) {
-        // Added liquidity
-        position.liquidity = position.liquidity.plus(event.params.liquidityDelta);
+    // Added liquidity
+    position.liquidity = position.liquidity.plus(event.params.liquidityDelta);
 
-        // Update tick data - following v3 pattern for minting
-        let lowerTick = getOrCreateTick(pool.id, event.params.tickLower);
-        lowerTick.liquidityGross = lowerTick.liquidityGross.plus(event.params.liquidityDelta);
-        lowerTick.liquidityNet = lowerTick.liquidityNet.plus(event.params.liquidityDelta);
-        lowerTick.save();
+    // Update tick data - following v3 pattern for minting
+    let lowerTick = getOrCreateTick(pool.id, event.params.tickLower);
+    lowerTick.liquidityGross = lowerTick.liquidityGross.plus(event.params.liquidityDelta);
+    lowerTick.liquidityNet = lowerTick.liquidityNet.plus(event.params.liquidityDelta);
+    lowerTick.save();
 
-        let upperTick = getOrCreateTick(pool.id, event.params.tickUpper);
-        upperTick.liquidityGross = upperTick.liquidityGross.plus(event.params.liquidityDelta);
-        upperTick.liquidityNet = upperTick.liquidityNet.minus(event.params.liquidityDelta);
-        upperTick.save();
+    let upperTick = getOrCreateTick(pool.id, event.params.tickUpper);
+    upperTick.liquidityGross = upperTick.liquidityGross.plus(event.params.liquidityDelta);
+    upperTick.liquidityNet = upperTick.liquidityNet.minus(event.params.liquidityDelta);
+    upperTick.save();
 
-        // Update pool liquidity if current tick is within position range
-        if (event.params.tickLower <= pool.tick && event.params.tickUpper > pool.tick) {
-            pool.liquidity = pool.liquidity.plus(event.params.liquidityDelta);
-        }
-
-        // Note: TVL updates are handled in handleSwap since ModifyLiquidity doesn't emit token amounts
-
-    } else if (event.params.liquidityDelta.lt(BI_0)) {
-        // Removed liquidity
-        let liquidityToRemove = event.params.liquidityDelta.neg(); // Convert to positive for calculations
-        position.liquidity = position.liquidity.minus(liquidityToRemove);
-
-        // Update tick data - following v3 pattern for burning
-        let lowerTick = getOrCreateTick(pool.id, event.params.tickLower);
-        lowerTick.liquidityGross = lowerTick.liquidityGross.minus(liquidityToRemove);
-        lowerTick.liquidityNet = lowerTick.liquidityNet.minus(liquidityToRemove);
-        lowerTick.save();
-
-        let upperTick = getOrCreateTick(pool.id, event.params.tickUpper);
-        upperTick.liquidityGross = upperTick.liquidityGross.minus(liquidityToRemove);
-        upperTick.liquidityNet = upperTick.liquidityNet.plus(liquidityToRemove);
-        upperTick.save();
-
-        // Update pool liquidity if current tick is within position range
-        if (event.params.tickLower <= pool.tick && event.params.tickUpper > pool.tick) {
-            pool.liquidity = pool.liquidity.minus(liquidityToRemove);
-        }
-
-        // Note: TVL updates are handled in handleSwap since ModifyLiquidity doesn't emit token amounts
+    // Update pool liquidity if current tick is within position range
+    if (event.params.tickLower <= pool.tick && event.params.tickUpper > pool.tick) {
+        pool.liquidity = pool.liquidity.plus(event.params.liquidityDelta);
     }
 
     // Save updated entities
