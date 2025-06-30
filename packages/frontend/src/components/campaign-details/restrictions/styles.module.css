@@ -4,6 +4,18 @@
     @apply flex flex-col gap-4;
 }
 
+.titleWrapper {
+    @apply flex gap-2 items-center;
+}
+
+.tooltipText {
+    @apply leading-5;
+}
+
+.bold {
+    @apply text-black dark:text-white font-bold;
+}
+
 .list {
     @apply max-h-64 overflow-y-auto flex flex-col gap-6 p-4;
 }
