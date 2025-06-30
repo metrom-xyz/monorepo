@@ -123,6 +123,17 @@ export function AmmPoolLiquidityForm({
 
     // This hook auto fills the form state when a campaign setup is available.
     useLayoutEffect(() => {
+        // Remove the 'setup' parameter from the URL after parsing.
+        // This ensures the form behaves correctly after autocomplete completes.
+        const params = new URLSearchParams(searchParams.toString());
+
+        if (setupError) {
+            params.delete("setup");
+            router.replace(`${pathname}?${params.toString()}`, {
+                scroll: false,
+            });
+        }
+
         if (!setup) return;
 
         const autocompletePayload = async () => {
@@ -137,9 +148,6 @@ export function AmmPoolLiquidityForm({
             if (dex.chainId !== chainId)
                 await switchChainAsync({ chainId: dex.chainId });
 
-            // Remove the 'setup' parameter from the URL after parsing.
-            // This ensures the form behaves correctly after autocomplete completes.
-            const params = new URLSearchParams(searchParams.toString());
             params.delete("setup");
             router.replace(`${pathname}?${params.toString()}`, {
                 scroll: false,
@@ -151,6 +159,7 @@ export function AmmPoolLiquidityForm({
         autocompletePayload();
     }, [
         loadingSetup,
+        setupError,
         searchParams,
         chainId,
         setup,
@@ -160,7 +169,7 @@ export function AmmPoolLiquidityForm({
     ]);
 
     useEffect(() => {
-        if (!loadingSetup && !!setupError)
+        if (!loadingSetup && setupError)
             toast.custom((toastId) => <SetupFail toastId={toastId} />);
 
         if (!loadingSetup && !setupError && !!setup)

@@ -32,13 +32,20 @@ export function useCampaignSetup({ hash, enabled }: UseCampaignSetupParams): {
 
                 if (!response.ok) throw new Error(await response.text());
 
-                return await response.text();
+                const setup = await response.json();
+                if (!setup.kind)
+                    throw new Error(
+                        `Unsupported campaign setup with hash ${hash}: missing kind`,
+                    );
+
+                return JSON.stringify(setup);
             } catch (error) {
                 console.error(`Could not fetch campaign setup: ${error}`);
                 throw error;
             }
         },
         enabled: enabled && !!hash,
+        refetchOnWindowFocus: false,
     });
 
     return { loading, error, setup };
