@@ -24,10 +24,6 @@ import {
 import { POOL_MANAGER_ADDRESS } from "../addresses";
 
 export function handleInitialize(event: InitializeEvent): void {
-    log.info("Handling pool initialization for pool id: {}", [
-        event.params.id.toHexString(),
-    ]);
-
     // Create tokens
     let token0 = getOrCreateToken(event.params.currency0);
     if (token0 === null) {
@@ -46,8 +42,6 @@ export function handleInitialize(event: InitializeEvent): void {
         );
         return;
     }
-
-    // Create hook if exists
 
     // Create pool entity
     let pool = new Pool(event.params.id);
@@ -76,6 +70,17 @@ export function handleSwap(event: SwapEvent): void {
         return;
     }
 
+    if (pool.sqrtPriceX96.notEqual(event.params.sqrtPriceX96)) {
+        // Create swap change event
+        let swapChange = new SwapChange(getEventId(event));
+        swapChange.timestamp = event.block.timestamp;
+        swapChange.blockNumber = event.block.number;
+        swapChange.pool = pool.id;
+        swapChange.tick = event.params.tick;
+        swapChange.sqrtPriceX96 = event.params.sqrtPriceX96;
+        swapChange.save();
+    }
+
     // Update pool state
     pool.liquidity = event.params.liquidity;
     pool.tick = event.params.tick;
@@ -86,21 +91,6 @@ export function handleSwap(event: SwapEvent): void {
     pool.token0Tvl = pool.token0Tvl.plus(event.params.amount0);
     pool.token1Tvl = pool.token1Tvl.plus(event.params.amount1);
     pool.save();
-
-    // Create swap change event
-    let swapChange = new SwapChange(getEventId(event));
-    swapChange.timestamp = event.block.timestamp;
-    swapChange.blockNumber = event.block.number;
-    swapChange.pool = pool.id;
-    swapChange.tick = event.params.tick;
-    swapChange.sqrtPriceX96 = event.params.sqrtPriceX96;
-    swapChange.save();
-
-    log.info("Swap processed for pool: {}, amounts: [{}, {}]", [
-        pool.id.toHexString(),
-        event.params.amount0.toString(),
-        event.params.amount1.toString(),
-    ]);
 }
 
 export function handleModifyLiquidity(event: ModifyLiquidityEvent): void {
