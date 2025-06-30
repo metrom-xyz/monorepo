@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import { useCallback, type ReactNode } from "react";
 import classNames from "classnames";
 import type { TabsSize } from "..";
 
@@ -21,9 +21,9 @@ export function Tab<T>({
     children,
     className,
 }: TabProps<T>) {
-    function handleOnClick() {
-        if (onClick) onClick(value);
-    }
+    const handleOnClick = useCallback(() => {
+        if (onClick && value !== active) onClick(value);
+    }, [active, value, onClick]);
 
     return (
         <div
