@@ -1,10 +1,10 @@
 import type { BaseCampaignPayload } from "@/src/types/campaign";
 import { Accordion, Typography } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
-import { RestrictionType } from "@/src/types/common";
 import { useMemo } from "react";
 import { Avatar } from "@/src/components/avatar/avatar";
 import { Account } from "@/src/components/account";
+import { RestrictionType } from "@metrom-xyz/sdk";
 
 import styles from "./styles.module.css";
 

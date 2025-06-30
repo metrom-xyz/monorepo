@@ -21,6 +21,7 @@ export interface BackendAmmPool {
     amm: string;
     tokens: Address[];
     liquidityType: string;
+    liquidity?: string;
     usdTvl?: number;
     fee?: number;
 }

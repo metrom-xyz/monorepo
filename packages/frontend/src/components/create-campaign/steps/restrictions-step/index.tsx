@@ -7,7 +7,7 @@ import {
     type BaseCampaignPayloadPart,
 } from "@/src/types/campaign";
 import type { LocalizedMessage } from "@/src/types/utils";
-import { RestrictionType } from "@/src/types/common";
+import { RestrictionType } from "@metrom-xyz/sdk";
 import {
     Button,
     ErrorText,
@@ -73,6 +73,9 @@ export function RestrictionsStep({
         if (!prevRestrictions) return true;
 
         return (
+            prevRestrictions.list.filter(
+                (address) => !addresses.includes(address),
+            ).length > 0 ||
             prevRestrictions.list.length !== addresses.length ||
             prevRestrictions.type !== type
         );

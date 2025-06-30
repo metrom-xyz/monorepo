@@ -2,6 +2,7 @@ import type {
     Claim,
     OnChainAmount,
     Reimbursement,
+    Restrictions,
     UsdPricedErc20TokenAmount,
     UsdPricedOnChainAmount,
     Weighting,
@@ -21,11 +22,7 @@ import {
 } from "@metrom-xyz/sdk";
 import type { Dayjs } from "dayjs";
 import type { Address } from "viem";
-import {
-    LiquityV2Action,
-    type RestrictionType,
-    type WhitelistedErc20TokenAmount,
-} from "./common";
+import { LiquityV2Action, type WhitelistedErc20TokenAmount } from "./common";
 import {
     DepositUrlType,
     ProtocolType,
@@ -85,10 +82,7 @@ export interface BaseCampaignPayload {
     distributables?: CampaignPayloadDistributables;
     kpiSpecification?: KpiSpecification;
     priceRangeSpecification?: AugmentedPriceRangeSpecification;
-    restrictions?: {
-        type: RestrictionType;
-        list: Address[];
-    };
+    restrictions?: Restrictions;
 }
 
 export interface AmmPoolLiquidityCampaignPayload extends BaseCampaignPayload {
@@ -140,10 +134,7 @@ export class BaseCampaignPreviewPayload {
         public readonly endDate: Dayjs,
         public readonly distributables: CampaignPreviewDistributables,
         public readonly kpiSpecification?: KpiSpecification,
-        public readonly restrictions?: {
-            type: RestrictionType;
-            list: Address[];
-        },
+        public readonly restrictions?: Restrictions,
     ) {}
 
     isDistributing<T extends DistributablesType>(

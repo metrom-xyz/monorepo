@@ -105,6 +105,16 @@ export interface Specification {
     weighting?: Weighting;
 }
 
+export enum RestrictionType {
+    Blacklist = "blacklist",
+    Whitelist = "whitelist",
+}
+
+export interface Restrictions {
+    type: RestrictionType;
+    list: Address[];
+}
+
 export enum Status {
     Live = "live",
     Upcoming = "upcoming",
@@ -127,6 +137,7 @@ export class Campaign {
         public readonly snapshottedAt?: number,
         public readonly specification?: Specification,
         public readonly apr?: number,
+        // TODO: add restrictions
     ) {
         const now = Number(Math.floor(Date.now() / 1000));
         this.status =

@@ -30,7 +30,11 @@ import type {
     UsdPricedErc20Token,
     UsdPricedOnChainAmount,
 } from "../types/commons";
-import type { BackendPoolResponse, BackendPoolsResponse } from "./types/pools";
+import type {
+    BackendLiquidityByAddressResponse,
+    BackendPoolResponse,
+    BackendPoolsResponse,
+} from "./types/pools";
 import type { Claim, Reimbursement } from "../types/claims";
 import type {
     BackendClaimsResponse,
@@ -146,6 +150,12 @@ export interface FetchLeaderboardParams {
     chainId: SupportedChain;
     campaignId: Hex;
     account?: Address;
+}
+
+export interface FetchLiquidityByAddressesParams {
+    chainId: number;
+    pool: AmmPool;
+    addresses: Address[];
 }
 
 export interface FetchLiquidityInRangeParams {
@@ -270,6 +280,9 @@ export class MetromApiClient {
                     resolveToken(parsedResponse.resolvedTokens, address),
                 ),
                 liquidityType: ammPool.liquidityType as AmmPoolLiquidityType,
+                liquidity: ammPool.liquidity
+                    ? BigInt(ammPool.liquidity)
+                    : undefined,
             };
         });
     }
@@ -306,6 +319,9 @@ export class MetromApiClient {
             ),
             liquidityType: parsedResponse.ammPool
                 .liquidityType as AmmPoolLiquidityType,
+            liquidity: parsedResponse.ammPool.liquidity
+                ? BigInt(parsedResponse.ammPool.liquidity)
+                : undefined,
         };
     }
 
@@ -702,6 +718,31 @@ export class MetromApiClient {
         };
     }
 
+    async fetchLiquidityByAddresses(
+        params: FetchLiquidityByAddressesParams,
+    ): Promise<bigint> {
+        const url = new URL(
+            `v1/amm-pools/${params.chainId}/${params.pool.id}/liquidities-by-addresses`,
+            this.baseUrl,
+        );
+
+        url.searchParams.set("addresses", params.addresses.join(","));
+
+        const response = await fetch(url);
+        if (!response.ok)
+            throw new Error(
+                `response not ok while fetching liquidity by addresses ${params.addresses.join(",")} for pool ${params.pool.id} in chain with id ${params.chainId}: ${await response.text()}`,
+            );
+
+        const { liquidities } =
+            (await response.json()) as BackendLiquidityByAddressResponse;
+
+        return Object.values(liquidities).reduce(
+            (prev, liquidity) => prev + BigInt(liquidity),
+            0n,
+        );
+    }
+
     async fetchLiquidityDensity(
         params: FetchInitializedTicksParams,
     ): Promise<LiquidityDensity> {
@@ -975,6 +1016,9 @@ function resolveAmmPool(
             resolveTokenInChain(tokensRegistry, chainId, address),
         ),
         liquidityType: resolvedPool.liquidityType as AmmPoolLiquidityType,
+        liquidity: resolvedPool.liquidity
+            ? BigInt(resolvedPool.liquidity)
+            : undefined,
     };
 }
 

@@ -20,11 +20,6 @@ export enum FilterableStatus {
 
 export type SVGIcon = Omit<SVGProps<SVGSVGElement>, "dangerouslySetInnerHTML">;
 
-export enum RestrictionType {
-    Blacklist = "blacklist",
-    Whitelist = "whitelist",
-}
-
 export interface WhitelistedErc20TokenAmount {
     token: WhitelistedErc20Token;
     amount: UsdPricedOnChainAmount;

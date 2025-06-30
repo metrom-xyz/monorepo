@@ -6,6 +6,8 @@ import {
     type LiquidityInRange,
     type KpiSpecification,
     type LiquityV2DebtTarget,
+    type LiquidityByAddresses,
+    RestrictionType,
 } from "@metrom-xyz/sdk";
 import {
     AmmPoolLiquidityCampaignPreviewPayload,
@@ -156,6 +158,7 @@ export async function getSocialPreviewCampaignName(
 export function getCampaignPreviewApr(
     payload: BaseCampaignPreviewPayload,
     range?: LiquidityInRange,
+    liquidityByAddresses?: LiquidityByAddresses,
 ): number | undefined {
     const duration = payload.endDate.unix() - payload.startDate.unix();
     if (duration <= 0) return undefined;
@@ -174,8 +177,10 @@ export function getCampaignPreviewApr(
             usdRewards: rewardsUsdValue,
             duration,
             poolUsdTvl: payload.pool.usdTvl,
+            poolLiquidity: payload.pool.liquidity,
             kpiSpecification: payload.kpiSpecification,
             range,
+            liquidityByAddresses,
         });
     }
 
@@ -202,6 +207,7 @@ export function getCampaignPreviewApr(
         }
 
         // TODO: add KPI once supported for liquity v2
+        // TODO: add liquidity by addresses once supported
 
         const rewardsRatio = rewardsUsdValue / liquityUsdValue;
         const yearMultiplier = SECONDS_IN_YEAR / duration;
@@ -215,16 +221,21 @@ export function getAmmPoolLiquidityCampaignApr({
     duration,
     usdRewards,
     poolUsdTvl,
+    poolLiquidity,
     kpiSpecification,
     range,
+    liquidityByAddresses,
 }: {
     duration?: number;
     usdRewards?: number;
     poolUsdTvl?: number;
+    poolLiquidity?: bigint;
     kpiSpecification?: KpiSpecification;
     range?: LiquidityInRange;
+    liquidityByAddresses?: LiquidityByAddresses;
 }) {
-    if (!poolUsdTvl || !usdRewards || !duration) return undefined;
+    if (!poolUsdTvl || !usdRewards || !duration || !poolLiquidity)
+        return undefined;
 
     let distributableUsdRewards = usdRewards;
     if (kpiSpecification) {
@@ -238,11 +249,24 @@ export function getAmmPoolLiquidityCampaignApr({
 
     let totalUsdTvl = poolUsdTvl;
     if (range) {
-        const { liquidity, activeTick } = range;
+        const multiplier =
+            Math.min(
+                Number(
+                    (range.liquidity * 1_000_000n) / range.activeTick.liquidity,
+                ),
+                1_000_000,
+            ) / 1_000_000;
+
+        totalUsdTvl = poolUsdTvl * multiplier;
+    } else if (liquidityByAddresses) {
+        const adjustedLiquidity =
+            liquidityByAddresses.type === RestrictionType.Blacklist
+                ? poolLiquidity - liquidityByAddresses.liquidity
+                : liquidityByAddresses.liquidity;
 
         const multiplier =
             Math.min(
-                Number((liquidity * 1_000_000n) / activeTick.liquidity),
+                Number((adjustedLiquidity * 1_000_000n) / poolLiquidity),
                 1_000_000,
             ) / 1_000_000;
 
