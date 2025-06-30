@@ -1,4 +1,4 @@
-import { log } from "@graphprotocol/graph-ts";
+import { BigInt, log } from "@graphprotocol/graph-ts";
 import {
     Initialize as InitializeEvent,
     Swap as SwapEvent,
@@ -10,18 +10,23 @@ import {
     SwapChange,
     LiquidityChange,
     Position,
+    PoolManagerContract,
 } from "../../generated/schema";
 import {
     BI_0,
     getEventId,
     getOrCreateToken,
-    getOrCreateHook,
     getPrice,
     getPositionId,
     isDynamicFee,
     getOrCreateTick,
+    ZERO_ADDRESS,
+    BD_0,
+    BI_1,
 } from "../commons";
 import { POOL_MANAGER_ADDRESS } from "../addresses";
+import { getAmount0, getAmount1 } from "../utils/utils/liquidityMath/liquidityAmounts";
+import { convertTokenToDecimal } from "../utils/utils";
 
 export function handleInitialize(event: InitializeEvent): void {
     // Create tokens
@@ -42,6 +47,27 @@ export function handleInitialize(event: InitializeEvent): void {
         );
         return;
     }
+
+    // load pool manager
+    let poolManager = PoolManagerContract.load(POOL_MANAGER_ADDRESS)
+    if (poolManager === null) {
+        poolManager = new PoolManagerContract(POOL_MANAGER_ADDRESS)
+        poolManager.poolCount = BI_0
+        poolManager.totalVolumeETH = BD_0
+        poolManager.totalVolumeUSD = BD_0
+        poolManager.untrackedVolumeUSD = BD_0
+        poolManager.totalFeesUSD = BD_0
+        poolManager.totalFeesETH = BD_0
+        poolManager.totalValueLockedETH = BD_0
+        poolManager.totalValueLockedUSD = BD_0
+        poolManager.totalValueLockedUSDUntracked = BD_0
+        poolManager.totalValueLockedETHUntracked = BD_0
+        poolManager.txCount = BI_0
+        poolManager.owner = ZERO_ADDRESS
+    }
+
+    poolManager.poolCount = poolManager.poolCount.plus(BI_1)
+    poolManager.save()
 
     // Create pool entity
     let pool = new Pool(event.params.id);
@@ -95,6 +121,7 @@ export function handleSwap(event: SwapEvent): void {
 
 export function handleModifyLiquidity(event: ModifyLiquidityEvent): void {
     let pool = Pool.load(event.params.id);
+    let poolManager = PoolManagerContract.load(POOL_MANAGER_ADDRESS)
     if (pool === null) {
         log.error("Pool not found for modify liquidity event: {}", [
             event.params.id.toHexString(),
@@ -102,6 +129,42 @@ export function handleModifyLiquidity(event: ModifyLiquidityEvent): void {
         return;
     }
 
+    if (poolManager === null) {
+        log.error("Pool Manager not found for address: {}", [
+            POOL_MANAGER_ADDRESS.toHexString(),
+        ]);
+        return;
+    }
+
+    let token0 = getOrCreateToken(pool.token0);
+    let token1 = getOrCreateToken(pool.token1);
+
+    if (token0 && token1) {
+        const currentTick:i32 = pool.tick!;
+        const amount0Raw = getAmount0(event.params.tickLower, event.params.tickUpper, currentTick, event.params.liquidityDelta)
+        const amount1Raw = getAmount1(event.params.tickLower, event.params.tickUpper, currentTick, event.params.liquidityDelta)
+        const amount0 = convertTokenToDecimal(amount0Raw, token0.decimals)
+        const amount1 = convertTokenToDecimal(amount1Raw, token1.decimals)
+
+        // update globals
+        poolManager.txCount = poolManager.txCount.plus(BI_1)
+
+        // Pools liquidity tracks the currently active liquidity given pools current tick.
+        // We only want to update it if the new position includes the current tick.
+        if (
+            pool.tick !== null &&
+            (event.params.tickLower >= pool.tick ) &&
+            (event.params.tickUpper > pool.tick)
+          ) {
+            pool.liquidity = pool.liquidity.plus(event.params.liquidityDelta)
+        }
+
+        pool.token0Tvl = pool.token0Tvl.plus(amount0Raw)
+        pool.token1Tvl = pool.token1Tvl.plus(amount1Raw)
+
+        pool.save()
+        poolManager.save()
+    }
     // Create or update position
     let positionId = getPositionId(
         pool.id,
@@ -138,10 +201,7 @@ export function handleModifyLiquidity(event: ModifyLiquidityEvent): void {
     upperTick.liquidityNet = upperTick.liquidityNet.minus(event.params.liquidityDelta);
     upperTick.save();
 
-    // Update pool liquidity if current tick is within position range
-    if (event.params.tickLower <= pool.tick && event.params.tickUpper > pool.tick) {
-        pool.liquidity = pool.liquidity.plus(event.params.liquidityDelta);
-    }
+
 
     // Save updated entities
     position.save();
@@ -154,17 +214,6 @@ export function handleModifyLiquidity(event: ModifyLiquidityEvent): void {
     liquidityChange.delta = event.params.liquidityDelta;
     liquidityChange.position = position.id;
     liquidityChange.save();
-
-    log.info(
-        "Liquidity modified for pool: {}, position: {}, delta: {}, tick range: [{}, {}]",
-        [
-            pool.id.toHexString(),
-            position.id.toHexString(),
-            event.params.liquidityDelta.toString(),
-            event.params.tickLower.toString(),
-            event.params.tickUpper.toString(),
-        ],
-    );
 }
 
 // export function handleDynamicFeeUpdated(event: DynamicFeeUpdatedEvent): void {
