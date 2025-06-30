@@ -43,6 +43,11 @@ interface RangeStepProps extends FormStepBaseProps {
     onError: (errors: CampaignPayloadErrors) => void;
 }
 
+enum PriceRatio {
+    Token0To1 = "token-0-to-1",
+    Token1To0 = "token-1-to-0",
+}
+
 type ErrorMessage = LocalizedMessage<"newCampaign.form.ammPoolLiquidity.range">;
 
 export function RangeStep({
@@ -56,7 +61,7 @@ export function RangeStep({
 }: RangeStepProps) {
     const t = useTranslations("newCampaign.form.ammPoolLiquidity.range");
     const [open, setOpen] = useState(false);
-    const [token0To1, setToken0To1] = useState(true);
+    const [ratio, setRatio] = useState<PriceRatio>(PriceRatio.Token0To1);
     const [enabled, setEnabled] = useState(false);
     const [error, setError] = useState<ErrorMessage>("");
     const [warning, setWarning] = useState<ErrorMessage>("");
@@ -86,13 +91,17 @@ export function RangeStep({
         );
     }, [from, prevRangeSpecification, to]);
 
+    const token0To1 = useMemo(() => ratio === PriceRatio.Token0To1, [ratio]);
+
     const currentPrice = useMemo(() => {
         if (!liquidityDensity || !pool) return undefined;
+
         const activeTickIdx = token0To1
             ? liquidityDensity.activeIdx
             : -liquidityDensity.activeIdx;
+
         return tickToScaledPrice(activeTickIdx, pool, token0To1);
-    }, [liquidityDensity, token0To1, pool]);
+    }, [liquidityDensity, ratio, pool, token0To1]);
 
     useEffect(() => {
         // Avoid resetting the range if the form is autocompleting
@@ -191,15 +200,18 @@ export function RangeStep({
     const handleOnFlipPrice = useCallback(() => {
         if (!pool) return;
 
-        setToken0To1((token0To1) => {
-            const newToken0ToToken1 = !token0To1;
+        setRatio((ratio) => {
+            const newRatio =
+                ratio === PriceRatio.Token0To1
+                    ? PriceRatio.Token1To0
+                    : PriceRatio.Token0To1;
 
             if (from && to) {
                 const newFromTick = -to.tick;
                 const newFromPrice = tickToScaledPrice(
                     newFromTick,
                     pool,
-                    newToken0ToToken1,
+                    newRatio === PriceRatio.Token0To1,
                 );
                 setFrom({ tick: newFromTick, price: newFromPrice });
 
@@ -207,12 +219,12 @@ export function RangeStep({
                 const newToPrice = tickToScaledPrice(
                     newToTick,
                     pool,
-                    newToken0ToToken1,
+                    newRatio === PriceRatio.Token0To1,
                 );
                 setTo({ tick: newToTick, price: newToPrice });
             }
 
-            return newToken0ToToken1;
+            return newRatio;
         });
     }, [pool, from, to]);
 
@@ -227,7 +239,7 @@ export function RangeStep({
 
         setOpen(false);
         onRangeChange({ priceRangeSpecification });
-    }, [from, onRangeChange, to, token0To1]);
+    }, [from, to, ratio, token0To1, onRangeChange]);
 
     return (
         <Step
@@ -327,12 +339,12 @@ export function RangeStep({
                 <div className={styles.stepContent}>
                     <Tabs
                         size="sm"
-                        value={token0To1}
+                        value={ratio}
                         onChange={handleOnFlipPrice}
                         className={styles.priceTabs}
                     >
                         <Tab
-                            value={token0To1}
+                            value={PriceRatio.Token0To1}
                             className={classNames(styles.priceTab, {
                                 [styles.activePriceTab]: token0To1,
                             })}
@@ -342,7 +354,7 @@ export function RangeStep({
                             </Typography>
                         </Tab>
                         <Tab
-                            value={!token0To1}
+                            value={PriceRatio.Token1To0}
                             className={classNames(styles.priceTab, {
                                 [styles.activePriceTab]: !token0To1,
                             })}
