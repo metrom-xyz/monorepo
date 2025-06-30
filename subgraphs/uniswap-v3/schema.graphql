@@ -5,6 +5,19 @@ type Token @entity(immutable: true) {
     decimals: Int!
 }
 
+type PoolManagerContract @entity(immutable: false) {
+    id: Bytes!
+    poolCount: BigInt!
+    txCount: BigInt!
+    totalVolumeUSD: BigDecimal!
+    totalVolumeETH: BigDecimal!
+    totalFeesUSD: BigDecimal!
+    totalFeesETH: BigDecimal!
+    untrackedVolumeUSD: BigDecimal!
+    totalValueLockedUSD: BigDecimal!
+    owner: Bytes!
+}
+
 type Pool @entity(immutable: false) {
     id: Bytes!
     token0: Token!
