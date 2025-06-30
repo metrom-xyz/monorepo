@@ -242,6 +242,7 @@ export class Campaign extends SdkCampaign {
             campaign.snapshottedAt,
             campaign.specification,
             campaign.apr,
+            campaign.restrictions,
         );
     }
 

@@ -17,6 +17,8 @@ import {
     type LiquityV2DebtTarget,
     type LiquityV2StabilityPoolTarget,
     type PointDistributables,
+    type Restrictions,
+    RestrictionType,
     TargetType,
     type TokenDistributable,
     type TokenDistributables,
@@ -972,6 +974,20 @@ function processCampaignsResponse(
             }
         }
 
+        let restrictions: Restrictions | undefined = undefined;
+        if (backendCampaign.specification?.blacklist) {
+            restrictions = {
+                type: RestrictionType.Blacklist,
+                list: backendCampaign.specification.blacklist,
+            };
+        }
+        if (backendCampaign.specification?.whitelist) {
+            restrictions = {
+                type: RestrictionType.Whitelist,
+                list: backendCampaign.specification.whitelist,
+            };
+        }
+
         campaigns.push(
             new Campaign(
                 backendCampaign.chainId,
@@ -984,6 +1000,7 @@ function processCampaignsResponse(
                 backendCampaign.snapshottedAt,
                 backendCampaign.specification,
                 backendCampaign.apr,
+                restrictions,
             ),
         );
     }

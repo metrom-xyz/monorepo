@@ -27,6 +27,13 @@ export function LiquidityV2<T extends LiquityV2TargetType>({
                         </Typography>
                     </div>
                 )}
+                {campaign.restrictions && (
+                    <div className={styles.chip}>
+                        <Typography size="xs" weight="medium" uppercase>
+                            {t("restricted")}
+                        </Typography>
+                    </div>
+                )}
             </div>
         </div>
     );

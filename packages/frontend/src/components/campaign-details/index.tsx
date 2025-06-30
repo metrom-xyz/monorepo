@@ -16,6 +16,7 @@ import { PriceRange } from "./price-range";
 import { Leaderboard } from "../leaderboard";
 import { useLeaderboard } from "@/src/hooks/useLeaderboard";
 import { Weighting } from "./weighting";
+import { Restrictions } from "./restrictions";
 
 import styles from "./styles.module.css";
 
@@ -74,6 +75,9 @@ export function CampaignDetails({ chain, campaignId }: CampaignDetailsProps) {
                 )}
                 {tokensCampaign && (
                     <Kpi campaign={campaign} loading={loadingCampaign} />
+                )}
+                {campaign?.restrictions && (
+                    <Restrictions {...campaign.restrictions} />
                 )}
                 <Leaderboard
                     chainId={campaign?.chainId}
