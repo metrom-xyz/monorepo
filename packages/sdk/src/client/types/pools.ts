@@ -14,3 +14,7 @@ export interface BackendPoolResponse {
     resolvedTokens: Record<Address, BackendErc20Token>;
     ammPool: BackendAmmPoolWithTvlAndId;
 }
+
+export interface BackendLiquidityByAddressResponse {
+    liquidities: Record<Address, string>;
+}

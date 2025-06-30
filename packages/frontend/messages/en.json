@@ -207,7 +207,7 @@
                     "readMore": "Read more 🡥",
                     "errors": {
                         "notAnAddress": "Not a valid address",
-                        "alreadyRestricted": "Address already restricted"
+                        "alreadyRestricted": "Already restricted"
                     },
                     "warnings": {
                         "notApplied": "Not applied",

@@ -52,6 +52,7 @@ export interface AmmPool {
     amm: SupportedAmm;
     tokens: Erc20Token[];
     liquidityType: AmmPoolLiquidityType;
+    liquidity?: bigint;
     usdTvl?: number;
     fee?: number;
 }

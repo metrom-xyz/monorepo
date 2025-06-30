@@ -29,8 +29,9 @@ export function KpiAprSummary({ campaign }: KpiAprSummaryProps) {
                 usdRewards: campaign.distributables.amountUsdValue,
                 duration: campaign.to - campaign.from,
                 poolUsdTvl: kpi.goal.upperUsdTarget,
+                poolLiquidity: campaign.target.pool.liquidity,
                 kpiSpecification: kpi,
-                // TODO: add liquidity in range?
+                // TODO: add liquidity in range and pool liquidity?
                 // range: liquidityInRange,
             });
 

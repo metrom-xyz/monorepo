@@ -44,6 +44,7 @@ import { SAFE_APP_SDK } from "@/src/commons";
 import { useChainData } from "@/src/hooks/useChainData";
 import { Weighting } from "./weighting";
 import { Restrictions } from "./restrictions";
+import { useLiquidityByAddresses } from "@/src/hooks/useLiquidityByAddresses";
 
 import styles from "./styles.module.css";
 
@@ -92,8 +93,26 @@ export function CampaignPreview({
         };
     }, [ammPoolLiquidityCampaign, payload]);
 
+    const liquidityByAddressesParams = useMemo(() => {
+        if (
+            !ammPoolLiquidityCampaign ||
+            !payload.restrictions ||
+            payload.restrictions.list.length === 0
+        )
+            return { enabled: false };
+
+        return {
+            pool: payload.pool,
+            type: payload.restrictions.type,
+            addresses: payload.restrictions.list,
+            enabled: true,
+        };
+    }, [ammPoolLiquidityCampaign, payload]);
+
     const { loading: loadingLiquidityInRange, liquidityInRange } =
         useLiquidityInRange(liquidityInRangeParams);
+    const { loading: loadingLiquidityByAddresses, liquidityByAddresses } =
+        useLiquidityByAddresses(liquidityByAddressesParams);
 
     const tokensToApprove: [
         UsdPricedErc20TokenAmount,
@@ -357,13 +376,17 @@ export function CampaignPreview({
                                 boxed
                                 size="xl2"
                                 label={t("apr")}
-                                loading={loadingLiquidityInRange}
+                                loading={
+                                    loadingLiquidityInRange ||
+                                    loadingLiquidityByAddresses
+                                }
                                 value={
                                     <AprChip
                                         size="lg"
                                         apr={getCampaignPreviewApr(
                                             payload,
                                             liquidityInRange,
+                                            liquidityByAddresses,
                                         )}
                                         kpi={!!payload.kpiSpecification}
                                     />
