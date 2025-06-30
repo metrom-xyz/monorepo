@@ -75,9 +75,11 @@ export function Kpi({ campaign, loading }: KpiProps) {
                 <Typography size="lg" weight="medium" uppercase>
                     {t("title")}
                 </Typography>
-                <InfoTooltip placement="top-start">
-                    <KpiAprSummary campaign={campaign} />
-                </InfoTooltip>
+                {campaign.status !== Status.Ended && (
+                    <InfoTooltip placement="top-start">
+                        <KpiAprSummary campaign={campaign} />
+                    </InfoTooltip>
+                )}
             </div>
             <div className={styles.card}>
                 <div className={styles.wrapper}>

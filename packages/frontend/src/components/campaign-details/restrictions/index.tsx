@@ -2,7 +2,7 @@ import { RestrictionType } from "@metrom-xyz/sdk";
 import type { Address } from "viem";
 import { useTranslations } from "next-intl";
 import { useMemo } from "react";
-import { Accordion, Typography } from "@metrom-xyz/ui";
+import { Accordion, InfoTooltip, Typography } from "@metrom-xyz/ui";
 import { Avatar } from "../../avatar/avatar";
 import { Account } from "../../account";
 
@@ -24,9 +24,30 @@ export function Restrictions({ type, list }: RestrictionsProps) {
 
     return (
         <div className={styles.root}>
-            <Typography uppercase weight="medium">
-                {t("title")}
-            </Typography>
+            <div className={styles.titleWrapper}>
+                <Typography size="lg" weight="medium" uppercase>
+                    {t("title")}
+                </Typography>
+                <InfoTooltip placement="top-start">
+                    <Typography size="sm" light className={styles.tooltipText}>
+                        {type === RestrictionType.Blacklist
+                            ? t.rich("tooltip.blocks", {
+                                  bold: (chunks) => (
+                                      <span className={styles.bold}>
+                                          {chunks}
+                                      </span>
+                                  ),
+                              })
+                            : t.rich("tooltip.allows", {
+                                  bold: (chunks) => (
+                                      <span className={styles.bold}>
+                                          {chunks}
+                                      </span>
+                                  ),
+                              })}
+                    </Typography>
+                </InfoTooltip>
+            </div>
             <Accordion title={accordionTitle}>
                 <div className={styles.list}>
                     {list.map((address) => (
