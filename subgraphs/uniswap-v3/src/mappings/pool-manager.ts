@@ -128,11 +128,8 @@ export function handleModifyLiquidity(event: ModifyLiquidityEvent): void {
         return;
     }
 
-    let token0 = getOrCreateToken(pool.token0);
-    let token1 = getOrCreateToken(pool.token1);
-
-    if (token0 && token1) {
-        const currentTick:i32 = pool.tick!;
+    if (pool.token0 && pool.token1) {
+        const currentTick:i32 = pool.tick;
         const amount0Raw = getAmount0(event.params.tickLower, event.params.tickUpper, currentTick, event.params.liquidityDelta)
         const amount1Raw = getAmount1(event.params.tickLower, event.params.tickUpper, currentTick, event.params.liquidityDelta)
         // const amount0 = convertTokenToDecimal(amount0Raw, token0.decimals)
@@ -144,7 +141,7 @@ export function handleModifyLiquidity(event: ModifyLiquidityEvent): void {
         // Pools liquidity tracks the currently active liquidity given pools current tick.
         // We only want to update it if the new position includes the current tick.
         if (
-            pool.tick !== null &&
+            pool.tick !== 0 &&
             (event.params.tickLower >= pool.tick ) &&
             (event.params.tickUpper > pool.tick)
           ) {
