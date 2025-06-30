@@ -1,9 +1,8 @@
-import { BigInt, log } from "@graphprotocol/graph-ts";
+import { log } from "@graphprotocol/graph-ts";
 import {
     Initialize as InitializeEvent,
     Swap as SwapEvent,
     ModifyLiquidity as ModifyLiquidityEvent,
-    Donate as DonateEvent,
 } from "../../generated/PoolManager/PoolManager";
 import {
     Pool,
@@ -25,8 +24,7 @@ import {
     BI_1,
 } from "../commons";
 import { POOL_MANAGER_ADDRESS } from "../addresses";
-import { getAmount0, getAmount1 } from "../utils/utils/liquidityMath/liquidityAmounts";
-import { convertTokenToDecimal } from "../utils/utils";
+import { getAmount0, getAmount1 } from "../utils/liquidityMath/liquidityAmounts";
 
 export function handleInitialize(event: InitializeEvent): void {
     // Create tokens
@@ -58,10 +56,7 @@ export function handleInitialize(event: InitializeEvent): void {
         poolManager.untrackedVolumeUSD = BD_0
         poolManager.totalFeesUSD = BD_0
         poolManager.totalFeesETH = BD_0
-        poolManager.totalValueLockedETH = BD_0
         poolManager.totalValueLockedUSD = BD_0
-        poolManager.totalValueLockedUSDUntracked = BD_0
-        poolManager.totalValueLockedETHUntracked = BD_0
         poolManager.txCount = BI_0
         poolManager.owner = ZERO_ADDRESS
     }
@@ -112,8 +107,6 @@ export function handleSwap(event: SwapEvent): void {
     pool.tick = event.params.tick;
     pool.sqrtPriceX96 = event.params.sqrtPriceX96;
     pool.price = getPrice(event.params.sqrtPriceX96, pool.token0, pool.token1);
-
-    // Update TVL (simplified - in v4, delta accounting makes this more complex)
     pool.token0Tvl = pool.token0Tvl.plus(event.params.amount0);
     pool.token1Tvl = pool.token1Tvl.plus(event.params.amount1);
     pool.save();
@@ -143,8 +136,8 @@ export function handleModifyLiquidity(event: ModifyLiquidityEvent): void {
         const currentTick:i32 = pool.tick!;
         const amount0Raw = getAmount0(event.params.tickLower, event.params.tickUpper, currentTick, event.params.liquidityDelta)
         const amount1Raw = getAmount1(event.params.tickLower, event.params.tickUpper, currentTick, event.params.liquidityDelta)
-        const amount0 = convertTokenToDecimal(amount0Raw, token0.decimals)
-        const amount1 = convertTokenToDecimal(amount1Raw, token1.decimals)
+        // const amount0 = convertTokenToDecimal(amount0Raw, token0.decimals)
+        // const amount1 = convertTokenToDecimal(amount1Raw, token1.decimals)
 
         // update globals
         poolManager.txCount = poolManager.txCount.plus(BI_1)
@@ -214,40 +207,4 @@ export function handleModifyLiquidity(event: ModifyLiquidityEvent): void {
     liquidityChange.delta = event.params.liquidityDelta;
     liquidityChange.position = position.id;
     liquidityChange.save();
-}
-
-// export function handleDynamicFeeUpdated(event: DynamicFeeUpdatedEvent): void {
-//     let pool = Pool.load(event.params.id);
-//     if (pool === null) {
-//         log.error("Pool not found for dynamic fee update: {}", [
-//             event.params.id.toHexString(),
-//         ]);
-//         return;
-//     }
-
-//     let oldFee = pool.fee;
-//     let newFee = event.params.newDynamicLPFee;
-
-//     // Update pool fee
-//     pool.fee = newFee;
-//     pool.save();
-
-//     // Create fee change event
-//     let feeChange = new FeeChange(getEventId(event));
-//     feeChange.timestamp = event.block.timestamp;
-//     feeChange.blockNumber = event.block.number;
-//     feeChange.pool = pool.id;
-//     feeChange.oldFee = oldFee;
-//     feeChange.newFee = newFee;
-//     feeChange.save();
-
-//     log.info("Dynamic fee updated for pool: {}, old: {}, new: {}", [
-//         pool.id.toHexString(),
-//         oldFee.toString(),
-//         newFee.toString(),
-//     ]);
-// }
-
-export function handleDonate(event: DonateEvent): void {
-    log.info("Handling donate event for pool: {}", [event.params.id.toHexString()]);
 }

@@ -1,14 +1,3 @@
-// export interface ChainConfig {
-//     PoolManager: {
-//         address: string;
-//         startBlock: number;
-//     };
-//     PositionManager: {
-//         address: string;
-//         startBlock: number;
-//     };
-// }
-
 // Add new interface for v4 deployments
 export interface ChainConfig {
     // PoolManager instead of PoolManager in V4
@@ -99,66 +88,6 @@ export const DEPLOYMENTS: {
             },
         },
     },
-    blast: {
-        "uni-v4": {
-            PoolManager: {
-                address: "0x1631559198a9e474033433b2958dabc135ab6446",
-                startBlock: 10506059,
-            },
-            PositionManager: {
-                address: "0x4ad2f4cca2682cbb5b950d660dd458a1d3f1baad",
-                startBlock: 10506059,
-            },
-        },
-    },
-    zora: {
-        "uni-v4": {
-            PoolManager: {
-                address: "0x0575338e4c17006ae181b47900a84404247ca30f",
-                startBlock: 20655089,
-            },
-            PositionManager: {
-                address: "0xf66c7b99e2040f0d9b326b3b7c152e9663543d63",
-                startBlock: 20655089,
-            },
-        },
-    },
-    worldchain: {
-        "uni-v4": {
-            PoolManager: {
-                address: "0xb1860d529182ac3bc1f51fa2abd56662b7d13f33",
-                startBlock: 19270006,
-            },
-            PositionManager: {
-                address: "0xc585e0f504613b5fbf874f21af14c65260fb41fa",
-                startBlock: 19270006,
-            },
-        },
-    },
-    ink: {
-        "uni-v4": {
-            PoolManager: {
-                address: "0x360e68faccca8ca495c1b759fd9eee466db9fb32",
-                startBlock: 113985,
-            },
-            PositionManager: {
-                address: "0x1b35d13a2e2528f192637f14b05f0dc0e7deb566",
-                startBlock: 113985,
-            },
-        },
-    },
-    soneium: {
-        "uni-v4": {
-            PoolManager: {
-                address: "0x360e68faccca8ca495c1b759fd9eee466db9fb32",
-                startBlock: 1021394,
-            },
-            PositionManager: {
-                address: "0x1b35d13a2e2528f192637f14b05f0dc0e7deb566",
-                startBlock: 1021394,
-            },
-        },
-    },
     avalanche: {
         "uni-v4": {
             PoolManager: {
@@ -171,18 +100,6 @@ export const DEPLOYMENTS: {
             },
         },
     },
-    bsc: {
-        "uni-v4": {
-            PoolManager: {
-                address: "0x28e2ea090877bf75740558f6bfb36a5ffee9e9df",
-                startBlock: 44756893,
-            },
-            PositionManager: {
-                address: "0x7a4a5c919ae2541aed11041a1aeee68f1287f95b",
-                startBlock: 44756893,
-            },
-        },
-    },
     unichain: {
         "uni-v4": {
             PoolManager: {
@@ -192,88 +109,6 @@ export const DEPLOYMENTS: {
             PositionManager: {
                 address: "0x4529a01c7a0410167c5740c487a8de60232617bf",
                 startBlock: 1,
-            },
-        },
-    },
-
-    // ===== ORIGINAL NETWORKS CONVERTED TO V4 =====
-    scroll: {
-        "uni-v4": {
-            PoolManager: {
-                address: "0x70C62C8b8e801124A4Aa81ce07b637A3e83cb919",
-                startBlock: 1367,
-            },
-            PositionManager: {
-                address: "0xB39002E4033b162fAc607fc3471E205FA2aE5967",
-                startBlock: 1375,
-            },
-        },
-        honeypop: {
-            PoolManager: {
-                address: "0x1d25AF2b0992bf227b350860Ea80Bad47382CAf6",
-                startBlock: 14223999,
-            },
-            PositionManager: {
-                address: "0xB6F8D24e28bF5b8AdD2e7510f84F3b9ef03B3435",
-                startBlock: 14224020,
-            },
-        },
-    },
-    taiko: {
-        "uni-v4": {
-            PoolManager: {
-                address: "0x75FC67473A91335B5b8F8821277262a13B38c9b3",
-                startBlock: 961,
-            },
-            PositionManager: {
-                address: "0x8B3c541c30f9b29560f56B9E44b59718916B69EF",
-                startBlock: 980,
-            },
-        },
-        unagi: {
-            PoolManager: {
-                address: "0x78172691DD3B8ADa7aEbd9bFfB487FB11D735DB2",
-                startBlock: 749458,
-            },
-            PositionManager: {
-                address: "0x2623281DdcC34A73a9e8898f2c57A32A860903f1",
-                startBlock: 750056,
-            },
-        },
-    },
-    sonic: {
-        "uni-v4": {
-            PoolManager: {
-                address: "0xcb2436774C3e191c85056d248EF4260ce5f27A9D",
-                startBlock: 322744,
-            },
-            PositionManager: {
-                address: "0x743E03cceB4af2efA3CC76838f6E8B50B63F184c",
-                startBlock: 322763,
-            },
-        },
-    },
-    telos: {
-        "uni-v4": {
-            PoolManager: {
-                address: "0xcb2436774C3e191c85056d248EF4260ce5f27A9D",
-                startBlock: 386633562,
-            },
-            PositionManager: {
-                address: "0x743E03cceB4af2efA3CC76838f6E8B50B63F184c",
-                startBlock: 386635939,
-            },
-        },
-    },
-    "lightlink-phoenix": {
-        "uni-v4": {
-            PoolManager: {
-                address: "0xcb2436774C3e191c85056d248EF4260ce5f27A9D",
-                startBlock: 131405097,
-            },
-            PositionManager: {
-                address: "0x743E03cceB4af2efA3CC76838f6E8B50B63F184c",
-                startBlock: 131405537,
             },
         },
     },
@@ -298,18 +133,6 @@ export const DEPLOYMENTS: {
             PositionManager: {
                 address: "0xAE8fbE656a77519a7490054274910129c9244FA3",
                 startBlock: 27416645,
-            },
-        },
-    },
-    lens: {
-        "uni-v4": {
-            PoolManager: {
-                address: "0xe0704DB90bcAA1eAFc00E958FF815Ab7aa11Ef47",
-                startBlock: 184120,
-            },
-            PositionManager: {
-                address: "0xC5d0CAaE8aa00032F6DA993A69Ffa6ff80b5F031",
-                startBlock: 184128,
             },
         },
     },
