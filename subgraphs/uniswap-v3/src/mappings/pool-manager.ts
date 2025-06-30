@@ -17,7 +17,6 @@ import {
     getOrCreateToken,
     getPrice,
     getPositionId,
-    isDynamicFee,
     getOrCreateTick,
     ZERO_ADDRESS,
     BD_0,
@@ -74,7 +73,7 @@ export function handleInitialize(event: InitializeEvent): void {
     pool.price = getPrice(event.params.sqrtPriceX96, pool.token0, pool.token1);
     pool.sqrtPriceX96 = event.params.sqrtPriceX96;
     pool.fee = event.params.fee;
-    pool.isDynamicFee = isDynamicFee(event.params.fee);
+    pool.isDynamicFee = true;//isDynamicFee(event.params.fee); // CHANGE THIS UPON RESEARCH
     pool.hook = event.params.hooks;
     pool.liquidity = BI_0;
     pool.save();
