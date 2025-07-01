@@ -10,8 +10,6 @@ export const lv2PointsCampaignsProd: Record<
     SupportedLiquityV2,
     Lv2PointsCampaign | null
 > = {
-    [SupportedLiquityV2.Ebisu]: null,
-    [SupportedLiquityV2.Liquity]: null,
     [SupportedLiquityV2.Quill]: {
         name: "Quill finance",
         description:
@@ -359,6 +357,8 @@ export const lv2PointsCampaignsProd: Record<
             },
         },
     },
+    [SupportedLiquityV2.Ebisu]: null,
+    [SupportedLiquityV2.Liquity]: null,
     // [SupportedLiquityV2.Ebisu]: {
     //     name: "Ebisu",
     //     description: "Native stablecoin and credit protocol on Swell.",

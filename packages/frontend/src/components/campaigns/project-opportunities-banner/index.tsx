@@ -36,7 +36,8 @@ export function ProjectOpportunitiesBanner() {
                         const { brand, pointsName, icon } = campaign;
 
                         const Illustration =
-                            ILLUSTRATIONS[index] || ILLUSTRATIONS[0];
+                            ILLUSTRATIONS.toReversed()[index] ||
+                            ILLUSTRATIONS.toReversed()[0];
 
                         return (
                             <Opportunity
@@ -57,7 +58,6 @@ export function ProjectOpportunitiesBanner() {
 
                     const { id, name, brand, ownerLogo } = campaign;
 
-                    // FIXME: illustrations jumping around
                     const Illustration =
                         ILLUSTRATIONS[index] || ILLUSTRATIONS[0];
 
