@@ -148,7 +148,7 @@
 }
 
 .tabActive {
-    @apply bg-white dark:bg-zinc-800 hover:bg-white hover:dark:bg-zinc-800;
+    @apply bg-zinc-200 sm:bg-white dark:bg-zinc-800 hover:bg-white hover:dark:bg-zinc-800;
 }
 
 .rightContentContainer {

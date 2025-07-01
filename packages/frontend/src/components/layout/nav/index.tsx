@@ -141,40 +141,68 @@ export function Nav() {
                     })}
                 </div>
                 <div className={styles.mobileNavigationWrapper}>
-                    {ROUTES.map(({ path, label, icon: Icon }) => (
-                        <Link
-                            key={path}
-                            href={path}
-                            className={classNames(styles.mobileNavLink, {
-                                [styles.tabActive]:
-                                    pathname === path ||
-                                    (path !== "/" && pathname.startsWith(path)),
-                            })}
-                        >
-                            {Icon && <Icon className={styles.tabIcon} />}
-                            <Typography weight="medium" size="sm">
-                                {t(label)}
-                            </Typography>
-                            <AnimatePresence>
-                                {label === "claims" && pendingClaimsCount && (
-                                    <motion.span
-                                        initial={{ scale: 0 }}
-                                        animate={{ scale: 1 }}
-                                        exit={{ scale: 0 }}
-                                        className={styles.claimsBadge}
-                                    >
-                                        <Typography
-                                            size="xs"
-                                            weight="medium"
-                                            className={styles.claimsBadgeText}
-                                        >
-                                            {pendingClaimsCount}
-                                        </Typography>
-                                    </motion.span>
-                                )}
-                            </AnimatePresence>
-                        </Link>
-                    ))}
+                    {ROUTES.map(({ path, label, icon: Icon }) => {
+                        const disabled =
+                            path === "/campaigns/create" &&
+                            !activeChains.find(({ id }) => id === chain);
+                        const active =
+                            pathname === path ||
+                            (path !== "/" && pathname.startsWith(path));
+
+                        if (disabled)
+                            return (
+                                <div
+                                    key={path}
+                                    className={classNames(
+                                        styles.tab,
+                                        styles.disabled,
+                                    )}
+                                >
+                                    {Icon && (
+                                        <Icon className={styles.tabIcon} />
+                                    )}
+                                    <Typography weight="medium">
+                                        {t(label)}
+                                    </Typography>
+                                </div>
+                            );
+
+                        return (
+                            <Link
+                                key={path}
+                                href={path}
+                                className={classNames(styles.mobileNavLink, {
+                                    [styles.tabActive]: active,
+                                })}
+                            >
+                                {Icon && <Icon className={styles.tabIcon} />}
+                                <Typography weight="medium" size="sm">
+                                    {t(label)}
+                                </Typography>
+                                <AnimatePresence>
+                                    {label === "claims" &&
+                                        pendingClaimsCount && (
+                                            <motion.span
+                                                initial={{ scale: 0 }}
+                                                animate={{ scale: 1 }}
+                                                exit={{ scale: 0 }}
+                                                className={styles.claimsBadge}
+                                            >
+                                                <Typography
+                                                    size="xs"
+                                                    weight="medium"
+                                                    className={
+                                                        styles.claimsBadgeText
+                                                    }
+                                                >
+                                                    {pendingClaimsCount}
+                                                </Typography>
+                                            </motion.span>
+                                        )}
+                                </AnimatePresence>
+                            </Link>
+                        );
+                    })}
                 </div>
             </div>
         </div>
