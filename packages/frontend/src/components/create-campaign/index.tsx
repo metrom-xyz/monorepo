@@ -1,16 +1,16 @@
 "use client";
 
 import { Card, Typography } from "@metrom-xyz/ui";
-import { Link, redirect } from "@/src/i18n/routing";
-import { useLocale, useTranslations } from "next-intl";
+import { Link } from "@/src/i18n/routing";
+import { useTranslations } from "next-intl";
 import { LiquityV2CampaignIcon } from "@/src/assets/liquity-v2-campaign-icon";
 import { AmmCampaignIcon } from "@/src/assets/amm-campaign-icon";
 import classNames from "classnames";
 import { CampaignType } from "@/src/types/campaign";
 import { ProtocolType } from "@metrom-xyz/chains";
 import { useChainId } from "wagmi";
-import { RedirectType } from "next/navigation";
 import { useProtocolsInChain } from "@/src/hooks/useProtocolsInChain";
+import { Redirect } from "./redirect";
 
 import styles from "./styles.module.css";
 
@@ -35,10 +35,9 @@ const CAMPAIGN_TYPES = [
 
 export function CreateCampaign() {
     const t = useTranslations("newCampaign.pickType");
-    const locale = useLocale();
 
     const chainId = useChainId();
-    const dexesProtocols = useProtocolsInChain({
+    const dexProtocols = useProtocolsInChain({
         chainId,
         type: ProtocolType.Dex,
         active: true,
@@ -50,11 +49,11 @@ export function CreateCampaign() {
     });
 
     const protocols = {
-        [ProtocolType.Dex]: dexesProtocols,
+        [ProtocolType.Dex]: dexProtocols,
         [ProtocolType.LiquityV2]: liquityV2Protocols,
     };
 
-    if (dexesProtocols.length === 0 && liquityV2Protocols.length === 0)
+    if (dexProtocols.length === 0 && liquityV2Protocols.length === 0)
         return (
             <div className={styles.emptyWrapper}>
                 <Typography weight="medium" size="lg">
@@ -66,27 +65,8 @@ export function CreateCampaign() {
             </div>
         );
 
-    if (dexesProtocols.length === 0)
-        redirect(
-            {
-                href: {
-                    pathname: `/campaigns/create/${CampaignType.LiquityV2}`,
-                },
-                locale,
-            },
-            RedirectType.push,
-        );
-
-    if (liquityV2Protocols.length === 0)
-        redirect(
-            {
-                href: {
-                    pathname: `/campaigns/create/${CampaignType.AmmPoolLiquidity}`,
-                },
-                locale,
-            },
-            RedirectType.push,
-        );
+    if (dexProtocols.length === 0 || liquityV2Protocols.length === 0)
+        return <Redirect {...protocols} />;
 
     return (
         <div className={styles.root}>
