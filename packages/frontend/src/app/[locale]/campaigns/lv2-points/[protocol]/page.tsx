@@ -2,7 +2,7 @@ import { ENVIRONMENT } from "@/src/commons/env";
 import { LV2_POINTS_CAMPAIGNS } from "@/src/commons/lv2-points";
 import { Lv2PointsCampaign } from "@/src/components/lv2-points-campaign";
 import { routing, type Locale } from "@/src/i18n/routing";
-import type { SupportedLiquityV2 } from "@metrom-xyz/sdk";
+import { SupportedLiquityV2 } from "@metrom-xyz/sdk";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
 
@@ -40,6 +40,11 @@ export default async function Lv2PointsCampaignPage({
     return <Lv2PointsCampaign protocol={protocol} />;
 }
 
-export function generateStaticParams() {
-    return routing.locales.map((locale) => ({ locale }));
+export async function generateStaticParams() {
+    return routing.locales.flatMap((locale) =>
+        [SupportedLiquityV2.Quill, SupportedLiquityV2.Orki].map((type) => ({
+            locale,
+            type,
+        })),
+    );
 }

@@ -1,0 +1,16 @@
+@reference "../../../app.css";
+
+.root {
+    @apply w-full max-w-[25.625rem] px-4 flex flex-col gap-2;
+}
+
+.step {
+    @apply theme-surface
+        w-full
+        px-4
+        py-7
+        h-[5.25rem]
+        rounded-2xl
+        animate-pulse
+        theme-surface-hover;
+}
