@@ -1,5 +1,5 @@
 import dayjs, { Dayjs } from "dayjs";
-import React, { useCallback, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { Typography } from "../typography";
 import {
     getCalendarCells,
@@ -42,6 +42,11 @@ export const DatePicker = ({
     );
 
     const cells = useMemo(() => getCalendarCells(lookupDate), [lookupDate]);
+
+    useEffect(() => {
+        if (!value) return;
+        setLookupDate(dayjs().set("month", dayjs(value).month()));
+    }, [value]);
 
     const handlePreviousMonth = useCallback(() => {
         setLookupDate(lookupDate.subtract(1, "month"));

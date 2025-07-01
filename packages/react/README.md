@@ -1,6 +1,6 @@
 # Metrom React
 
-Collection of React hooks a for seamless and efficient integration with Metrom.
+Collection of React hooks for a seamless and efficient integration with Metrom.
 
 ## Installation
 
