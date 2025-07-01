@@ -71,6 +71,9 @@ export function Nav() {
                         const disabled =
                             path === "/campaigns/create" &&
                             !activeChains.find(({ id }) => id === chain);
+                        const active =
+                            pathname === path ||
+                            (path !== "/" && pathname.startsWith(path));
 
                         if (disabled)
                             return (
@@ -91,13 +94,16 @@ export function Nav() {
                             );
 
                         return (
-                            <Link key={path} href={path}>
+                            <Link
+                                key={path}
+                                href={path}
+                                onNavigate={(e) => {
+                                    if (active) e.preventDefault();
+                                }}
+                            >
                                 <div
                                     className={classNames(styles.tab, {
-                                        [styles.tabActive]:
-                                            pathname === path ||
-                                            (path !== "/" &&
-                                                pathname.startsWith(path)),
+                                        [styles.tabActive]: active,
                                     })}
                                 >
                                     {Icon && (
