@@ -1,7 +1,5 @@
 import { Typography } from "@metrom-xyz/ui";
-import { useTranslations } from "next-intl";
 import { formatPercentage } from "@/src/utils/format";
-import { PoolRemoteLogo } from "@/src/components/pool-remote-logo";
 import type { TargetType } from "@metrom-xyz/sdk";
 import type { TargetedNamedCampaign } from "@/src/types/campaign";
 
@@ -12,17 +10,8 @@ interface AmmPoolLiquidityProps {
 }
 
 export function AmmPoolLiquidity({ campaign }: AmmPoolLiquidityProps) {
-    const t = useTranslations("allCampaigns");
-
     return (
         <div className={styles.root}>
-            <PoolRemoteLogo
-                chain={campaign.chainId}
-                tokens={campaign.target.pool.tokens.map((token) => ({
-                    address: token.address,
-                    defaultText: token.symbol,
-                }))}
-            />
             <div className={styles.titleContainer}>
                 <Typography size="lg" weight="medium" truncate>
                     {campaign.name}
@@ -40,29 +29,6 @@ export function AmmPoolLiquidity({ campaign }: AmmPoolLiquidityProps) {
                         })}
                     </Typography>
                 )}
-                <div className={styles.chipsWrapper}>
-                    {campaign.specification?.kpi && (
-                        <div className={styles.chip}>
-                            <Typography size="xs" weight="medium" uppercase>
-                                {t("kpi")}
-                            </Typography>
-                        </div>
-                    )}
-                    {campaign.specification?.priceRange && (
-                        <div className={styles.chip}>
-                            <Typography size="xs" weight="medium" uppercase>
-                                {t("pool.range")}
-                            </Typography>
-                        </div>
-                    )}
-                    {campaign.restrictions && (
-                        <div className={styles.chip}>
-                            <Typography size="xs" weight="medium" uppercase>
-                                {t("restricted")}
-                            </Typography>
-                        </div>
-                    )}
-                </div>
             </div>
         </div>
     );

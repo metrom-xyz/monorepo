@@ -98,6 +98,7 @@ export function ListPoolPicker({ value, dex, onChange }: ListPoolPickerProps) {
                 <div className={styles.baseTokensWrapper}>
                     {baseTokens.map((token) => (
                         <Chip
+                            variant="secondary"
                             key={token.address}
                             clickable
                             active={baseTokenFilter?.address === token.address}
