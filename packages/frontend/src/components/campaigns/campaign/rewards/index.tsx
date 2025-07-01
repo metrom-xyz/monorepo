@@ -54,33 +54,35 @@ export function Rewards({
                     <Typography size="sm" weight="medium" uppercase light>
                         {t("tooltip.rewards")}
                     </Typography>
-                    {rewards.list.map((reward) => {
-                        return (
-                            <div
-                                key={reward.token.address}
-                                className={styles.breakdownRow}
-                            >
-                                <div>
-                                    <RemoteLogo
-                                        chain={chainId}
-                                        size="sm"
-                                        address={reward.token.address}
-                                        defaultText={reward.token.symbol}
-                                    />
-                                    <Typography weight="medium" size="sm">
-                                        {reward.token.symbol}
-                                    </Typography>
+                    {rewards.list
+                        .sort((a, b) => b.amount.usdValue - a.amount.usdValue)
+                        .map((reward) => {
+                            return (
+                                <div
+                                    key={reward.token.address}
+                                    className={styles.breakdownRow}
+                                >
+                                    <div>
+                                        <RemoteLogo
+                                            chain={chainId}
+                                            size="sm"
+                                            address={reward.token.address}
+                                            defaultText={reward.token.symbol}
+                                        />
+                                        <Typography weight="medium" size="sm">
+                                            {reward.token.symbol}
+                                        </Typography>
+                                    </div>
+                                    <div>
+                                        <Typography weight="medium" size="sm">
+                                            {formatAmount({
+                                                amount: reward.amount.formatted,
+                                            })}
+                                        </Typography>
+                                    </div>
                                 </div>
-                                <div>
-                                    <Typography weight="medium" size="sm">
-                                        {formatAmount({
-                                            amount: reward.amount.formatted,
-                                        })}
-                                    </Typography>
-                                </div>
-                            </div>
-                        );
-                    })}
+                            );
+                        })}
                     <Typography weight="medium" size="sm" uppercase light>
                         {t("tooltip.totalUsdValue")}
                     </Typography>
