@@ -47,34 +47,36 @@ export function Rewards({ campaign, loading }: RewardsProps) {
                         {t("amount")}
                     </Typography>
                 </div>
-                {campaign.distributables.list.map((reward) => (
-                    <div key={reward.token.address} className={styles.row}>
-                        <div className={styles.nameContainer}>
-                            <RemoteLogo
-                                chain={campaign.chainId}
-                                address={reward.token.address}
-                                defaultText={reward.token.symbol}
-                            />
-                            <Typography weight="medium" size="lg" truncate>
-                                {reward.token.symbol}
+                {campaign.distributables.list
+                    .sort((a, b) => b.amount.usdValue - a.amount.usdValue)
+                    .map((reward) => (
+                        <div key={reward.token.address} className={styles.row}>
+                            <div className={styles.nameContainer}>
+                                <RemoteLogo
+                                    chain={campaign.chainId}
+                                    address={reward.token.address}
+                                    defaultText={reward.token.symbol}
+                                />
+                                <Typography weight="medium" size="lg" truncate>
+                                    {reward.token.symbol}
+                                </Typography>
+                            </div>
+                            <Typography uppercase weight="medium" light>
+                                {reward.amount.usdValue
+                                    ? formatUsdAmount({
+                                          amount: reward.amount.usdValue,
+                                          cutoff: false,
+                                      })
+                                    : "-"}
+                            </Typography>
+                            <Typography uppercase weight="medium" size="lg">
+                                {formatAmount({
+                                    amount: reward.amount.formatted,
+                                    cutoff: false,
+                                })}
                             </Typography>
                         </div>
-                        <Typography uppercase weight="medium" light>
-                            {reward.amount.usdValue
-                                ? formatUsdAmount({
-                                      amount: reward.amount.usdValue,
-                                      cutoff: false,
-                                  })
-                                : "-"}
-                        </Typography>
-                        <Typography uppercase weight="medium" size="lg">
-                            {formatAmount({
-                                amount: reward.amount.formatted,
-                                cutoff: false,
-                            })}
-                        </Typography>
-                    </div>
-                ))}
+                    ))}
             </Card>
             <div className={styles.summary}>
                 <TextField

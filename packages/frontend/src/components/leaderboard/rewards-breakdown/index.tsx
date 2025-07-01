@@ -40,37 +40,40 @@ export function RewardsBreakdown({
                 ref={rewardsPopoverRef}
             >
                 <div className={styles.rewardsPopover}>
-                    {distributed.map((distributed) => (
-                        <div
-                            key={distributed.token.address}
-                            className={styles.rewardsPopoverRow}
-                        >
-                            <div>
-                                <RemoteLogo
-                                    chain={chain}
-                                    address={distributed.token.address}
-                                    defaultText={distributed.token.symbol}
-                                />
+                    {distributed
+                        .sort((a, b) => b.amount.usdValue - a.amount.usdValue)
+                        .map((distributed) => (
+                            <div
+                                key={distributed.token.address}
+                                className={styles.rewardsPopoverRow}
+                            >
+                                <div>
+                                    <RemoteLogo
+                                        chain={chain}
+                                        address={distributed.token.address}
+                                        defaultText={distributed.token.symbol}
+                                    />
+                                    <Typography weight="medium">
+                                        {distributed.token.symbol}
+                                    </Typography>
+                                </div>
                                 <Typography weight="medium">
-                                    {distributed.token.symbol}
+                                    {formatAmount({
+                                        amount: distributed.amount.formatted,
+                                        cutoff: false,
+                                    })}
+                                </Typography>
+                                <Typography weight="medium" light>
+                                    {distributed.amount.usdValue
+                                        ? formatUsdAmount({
+                                              amount: distributed.amount
+                                                  .usdValue,
+                                              cutoff: false,
+                                          })
+                                        : "-"}
                                 </Typography>
                             </div>
-                            <Typography weight="medium">
-                                {formatAmount({
-                                    amount: distributed.amount.formatted,
-                                    cutoff: false,
-                                })}
-                            </Typography>
-                            <Typography weight="medium" light>
-                                {distributed.amount.usdValue
-                                    ? formatUsdAmount({
-                                          amount: distributed.amount.usdValue,
-                                          cutoff: false,
-                                      })
-                                    : "-"}
-                            </Typography>
-                        </div>
-                    ))}
+                        ))}
                 </div>
             </Popover>
             <div
