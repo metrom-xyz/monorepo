@@ -36,32 +36,43 @@ dataSources:
         - event: DecreaseUsdgAmount(address,uint256)
           handler: handleDecreaseUsdgAmount
   - kind: ethereum
-    name: GlpManager
+    name: RewardRouterV2
     network: {{network}}
     source:
-      abi: GlpManager
-      address: "{{glpManagerAddress}}"
-      startBlock: {{glpManagerStartBlock}}
+      abi: RewardRouterV2
+      address: "{{rewardRouterV2Address}}"
+      startBlock: {{rewardRouterV2StartBlock}}
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
       language: wasm/assemblyscript
-      file: ./src/mappings/glp-manager.ts
+      file: ./src/mappings/reward-router-v2.ts
       entities: []
       abis:
-        - name: GlpManager
-          file: ./abis/GlpManager.json
+        - name: RewardRouterV2
+          file: ./abis/RewardRouterV2.json
+      callHandlers:
+        - function: acceptTransfer(address)
+          handler: handleAcceptTransfer
+  - kind: ethereum
+    name: ALP
+    network: {{network}}
+    source:
+      abi: Erc20
+      address: "{{alpAddress}}"
+      startBlock: {{alpStartBlock}}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      file: ./src/mappings/alp.ts
+      entities: []
+      abis:
         - name: Erc20
           file: ./abis/Erc20.json
-        - name: Erc20BytesName
-          file: ./abis/Erc20BytesName.json
-        - name: Erc20BytesSymbol
-          file: ./abis/Erc20BytesSymbol.json
       eventHandlers:
-        - event: AddLiquidity(address,address,uint256,uint256,uint256,uint256,uint256)
-          handler: handleAddLiquidity
-        - event: RemoveLiquidity(address,address,uint256,uint256,uint256,uint256,uint256)
-          handler: handleRemoveLiquidity
+        - event: Transfer(indexed address,indexed address,uint256)
+          handler: handleTransfer
   {{#tokenizedVaults}}
   - kind: ethereum/contract
     name: YieldBearingALPVault

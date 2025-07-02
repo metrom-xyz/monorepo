@@ -3,25 +3,20 @@ type Collateral @entity(immutable: false) {
     name: String!
     symbol: String!
     decimals: Int!
-    tvl: BigInt!
     usdTvl: BigInt!
-    liquidity: BigInt!
+    tvl: BigInt!
 }
 
 type Position @entity(immutable: false) {
     id: Bytes!
-    owner: Bytes!
     liquidity: BigInt!
-    collateral: Collateral!
     tokenizedVault: TokenizedVault
 }
 
 type LiquidityChange @entity(immutable: true) {
     id: Bytes!
     timestamp: BigInt!
-    collateral: Collateral!
     owner: Bytes!
-    positionId: Bytes!
     tokenizedVaultId: Bytes
     delta: BigInt!
 }
@@ -29,14 +24,12 @@ type LiquidityChange @entity(immutable: true) {
 type TokenizedVault @entity(immutable: false) {
     id: Bytes!
     shares: BigInt!
-    collateral: Collateral!
 }
 
 type TokenizedVaultPosition @entity(immutable: false) {
     id: Bytes!
     owner: Bytes!
     shares: BigInt!
-    collateral: Collateral!
     vault: TokenizedVault!
 }
 
@@ -46,7 +39,6 @@ type TokenizedVaultPositionChange @entity(immutable: true) {
     owner: Bytes!
     delta: BigInt!
     tokenizedVaultId: Bytes!
-    collateral: Collateral!
 }
 
 type TokenizedVaultPositionTransfer @entity(immutable: true) {
@@ -56,5 +48,4 @@ type TokenizedVaultPositionTransfer @entity(immutable: true) {
     to: Bytes!
     amount: BigInt!
     tokenizedVaultId: Bytes!
-    collateral: Collateral!
 }

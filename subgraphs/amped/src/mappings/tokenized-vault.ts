@@ -1,4 +1,4 @@
-import { Address, dataSource } from "@graphprotocol/graph-ts";
+import { Address } from "@graphprotocol/graph-ts";
 import {
     Deposit,
     Withdraw,
@@ -18,7 +18,6 @@ function getOrCreateVault(address: Address): TokenizedVault {
     if (vault === null) {
         vault = new TokenizedVault(address);
         vault.shares = BI_0;
-        vault.collateral = dataSource.context().getBytes("collateral");
         vault.save();
     }
 
@@ -35,7 +34,6 @@ function getOrCreatePosition(
         position = new TokenizedVaultPosition(vault.concat(owner));
         position.owner = owner;
         position.shares = BI_0;
-        position.collateral = dataSource.context().getBytes("collateral");
         position.vault = vault;
         position.save();
     }
@@ -64,7 +62,6 @@ export function handleDeposit(event: Deposit): void {
         change.owner = event.params.owner;
         change.delta = event.params.shares;
         change.tokenizedVaultId = event.address;
-        change.collateral = dataSource.context().getBytes("collateral");
         change.save();
     }
 }
@@ -84,7 +81,6 @@ export function handleWithdraw(event: Withdraw): void {
         change.owner = event.params.owner;
         change.delta = event.params.shares.neg();
         change.tokenizedVaultId = event.address;
-        change.collateral = dataSource.context().getBytes("collateral");
         change.save();
     }
 }
@@ -103,7 +99,6 @@ export function handleTransfer(event: Transfer): void {
         transfer.to = event.params.to;
         transfer.amount = event.params.value;
         transfer.tokenizedVaultId = event.address;
-        transfer.collateral = dataSource.context().getBytes("collateral");
         transfer.save();
     }
 

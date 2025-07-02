@@ -2,7 +2,8 @@ import { Address, BigInt, Bytes, ethereum } from "@graphprotocol/graph-ts";
 import { Erc20 } from "../generated/Vault/Erc20";
 import { Erc20BytesSymbol } from "../generated/Vault/Erc20BytesSymbol";
 import { Erc20BytesName } from "../generated/Vault/Erc20BytesName";
-import { Collateral } from "../generated/schema";
+import { Collateral, Position } from "../generated/schema";
+import { TOKENIZED_VAULT_COLLATERAL } from "./addresses";
 
 export const ADDRESS_ZERO = Address.zero();
 export const BI_0 = BigInt.zero();
@@ -11,6 +12,27 @@ export function getEventId(event: ethereum.Event): Bytes {
     return changetype<Bytes>(
         event.block.number.leftShift(40).plus(event.logIndex).reverse(),
     );
+}
+
+export function getOrCreatePosition(owner: Address): Position {
+    let position = Position.load(owner);
+    if (position !== null) return position;
+
+    position = new Position(owner);
+    position.liquidity = BI_0;
+    position.tokenizedVault = TOKENIZED_VAULT_COLLATERAL.isSet(owner)
+        ? owner
+        : null;
+    position.save();
+
+    return position;
+}
+
+export function getPositionOrThrow(owner: Address): Position {
+    let position = Position.load(owner);
+    if (position !== null) return position;
+
+    throw new Error(`Could not find position with owner ${owner.toHex()}`);
 }
 
 function fetchTokenSymbolOrThrow(address: Address): string {
@@ -57,9 +79,8 @@ export function getOrCreateCollateral(address: Address): Collateral {
     collateral.name = fetchTokenNameOrThrow(address);
     collateral.symbol = fetchTokenSymbolOrThrow(address);
     collateral.decimals = fetchTokenDecimalsOrThrow(address);
-    collateral.tvl = BI_0;
     collateral.usdTvl = BI_0;
-    collateral.liquidity = BI_0;
+    collateral.tvl = BI_0;
     collateral.save();
 
     return collateral;
