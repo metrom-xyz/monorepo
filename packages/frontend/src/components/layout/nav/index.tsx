@@ -171,6 +171,9 @@ export function Nav() {
                             <Link
                                 key={path}
                                 href={path}
+                                onNavigate={(e) => {
+                                    if (active) e.preventDefault();
+                                }}
                                 className={classNames(styles.mobileNavLink, {
                                     [styles.tabActive]: active,
                                 })}
