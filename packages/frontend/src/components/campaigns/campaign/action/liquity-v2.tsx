@@ -1,6 +1,6 @@
 import { Typography } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
-import { type LiquityV2TargetType } from "@metrom-xyz/sdk";
+import { RestrictionType, type LiquityV2TargetType } from "@metrom-xyz/sdk";
 import { type TargetedNamedCampaign } from "@/src/types/campaign";
 
 import styles from "./styles.module.css";
@@ -27,7 +27,7 @@ export function LiquidityV2<T extends LiquityV2TargetType>({
                         </Typography>
                     </div>
                 )}
-                {campaign.restrictions && (
+                {campaign.restrictions?.type === RestrictionType.Whitelist && (
                     <div className={styles.chip}>
                         <Typography size="xs" weight="medium" uppercase>
                             {t("restricted")}

@@ -543,10 +543,8 @@
         },
         "restrictions": {
             "title": "Restrictions",
-            "blocks": "Blocks {count, plural, =0 {} =1 {# address} other {# adresses}}",
             "allows": "Allows {count, plural, =0 {} =1 {# address} other {# adresses}}",
             "tooltip": {
-                "blocks": "Rewards for this campaign are restricted. The addresses listed below <bold>will not</bold> be eligible for rewards.",
                 "allows": "Rewards for this campaign are restricted. Rewards will be available <bold>exclusively to</bold> the addresses listed below."
             }
         },

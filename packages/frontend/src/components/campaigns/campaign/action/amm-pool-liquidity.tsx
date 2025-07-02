@@ -2,7 +2,7 @@ import { Typography } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
 import { formatPercentage } from "@/src/utils/format";
 import { PoolRemoteLogo } from "@/src/components/pool-remote-logo";
-import type { TargetType } from "@metrom-xyz/sdk";
+import { RestrictionType, type TargetType } from "@metrom-xyz/sdk";
 import type { TargetedNamedCampaign } from "@/src/types/campaign";
 
 import styles from "./styles.module.css";
@@ -55,7 +55,8 @@ export function AmmPoolLiquidity({ campaign }: AmmPoolLiquidityProps) {
                             </Typography>
                         </div>
                     )}
-                    {campaign.restrictions && (
+                    {campaign.restrictions?.type ===
+                        RestrictionType.Whitelist && (
                         <div className={styles.chip}>
                             <Typography size="xs" weight="medium" uppercase>
                                 {t("restricted")}

@@ -1,7 +1,6 @@
 import { RestrictionType } from "@metrom-xyz/sdk";
 import type { Address } from "viem";
 import { useTranslations } from "next-intl";
-import { useMemo } from "react";
 import { Accordion, InfoTooltip, Typography } from "@metrom-xyz/ui";
 import { Avatar } from "../../avatar/avatar";
 import { Account } from "../../account";
@@ -16,11 +15,7 @@ interface RestrictionsProps {
 export function Restrictions({ type, list }: RestrictionsProps) {
     const t = useTranslations("campaignDetails.restrictions");
 
-    const accordionTitle = useMemo(() => {
-        return type === RestrictionType.Blacklist
-            ? t("blocks", { count: list.length })
-            : t("allows", { count: list.length });
-    }, [type, list, t]);
+    if (type === RestrictionType.Blacklist) return;
 
     return (
         <div className={styles.root}>
@@ -30,25 +25,15 @@ export function Restrictions({ type, list }: RestrictionsProps) {
                 </Typography>
                 <InfoTooltip placement="top-start">
                     <Typography size="sm" light className={styles.tooltipText}>
-                        {type === RestrictionType.Blacklist
-                            ? t.rich("tooltip.blocks", {
-                                  bold: (chunks) => (
-                                      <span className={styles.bold}>
-                                          {chunks}
-                                      </span>
-                                  ),
-                              })
-                            : t.rich("tooltip.allows", {
-                                  bold: (chunks) => (
-                                      <span className={styles.bold}>
-                                          {chunks}
-                                      </span>
-                                  ),
-                              })}
+                        {t.rich("tooltip.allows", {
+                            bold: (chunks) => (
+                                <span className={styles.bold}>{chunks}</span>
+                            ),
+                        })}
                     </Typography>
                 </InfoTooltip>
             </div>
-            <Accordion title={accordionTitle}>
+            <Accordion title={t("allows", { count: list.length })}>
                 <div className={styles.list}>
                     {list.map((address) => (
                         <div key={address} className={styles.row}>
