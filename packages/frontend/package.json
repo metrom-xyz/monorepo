@@ -23,6 +23,7 @@
         "@safe-global/safe-apps-sdk": "^9.1.0",
         "@tanstack/react-query": "^5.81.5",
         "@turtledev/react": "^1.4.7",
+        "@wagmi/core": "^2.17.3",
         "blo": "^2.0.0",
         "dayjs": "^1.11.13",
         "fathom-client": "^3.7.2",
