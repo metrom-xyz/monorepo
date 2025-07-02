@@ -45,7 +45,7 @@ export const DatePicker = ({
 
     useEffect(() => {
         if (!value) return;
-        setLookupDate(dayjs().set("month", dayjs(value).month()));
+        setLookupDate(dayjs(value));
     }, [value]);
 
     const handlePreviousMonth = useCallback(() => {
