@@ -41,7 +41,7 @@ export function Nav() {
     const activeChains = useActiveChains();
 
     const pendingClaimsCount = useMemo(() => {
-        if (!claims) return undefined;
+        if (!claims || !address) return undefined;
 
         const reduced = claims.reduce(
             (acc, claim) => {
@@ -51,7 +51,7 @@ export function Nav() {
             {} as Record<Address, boolean>,
         );
         return Object.values(reduced).length;
-    }, [claims]);
+    }, [claims, address]);
 
     return (
         <div className={classNames(styles.root)}>
