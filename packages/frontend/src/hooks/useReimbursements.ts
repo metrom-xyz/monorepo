@@ -1,4 +1,4 @@
-import { useAccount, useReadContracts } from "wagmi";
+import { useAccount, useConfig, useReadContracts } from "wagmi";
 import { formatUnits, type Address, zeroAddress } from "viem";
 import { METROM_API_CLIENT } from "../commons";
 import { metromAbi } from "@metrom-xyz/contracts/abi";
@@ -7,6 +7,7 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import type { HookBaseParams } from "../types/hooks";
 import type { ReimbursementsWithRemaining } from "../types/campaign";
 import { getChainData } from "../utils/chain";
+import { readContracts } from "@wagmi/core";
 
 interface UseReimbursementsParams extends HookBaseParams {}
 
@@ -24,6 +25,7 @@ export function useReimbursements({
     const [reimbursements, setReimbursements] =
         useState<ReimbursementsWithRemaining[]>();
 
+    const config = useConfig();
     const queryClient = useQueryClient();
     const { address } = useAccount();
 
@@ -57,75 +59,112 @@ export function useReimbursements({
     const recoveredContracts = useMemo(() => {
         if (!rawReimbursements) return undefined;
 
-        return rawReimbursements.map((rawReimbursement) => {
-            return {
-                chainId: rawReimbursement.chainId,
-                address: getChainData(rawReimbursement.chainId)?.metromContract
-                    .address,
-                abi: metromAbi,
-                functionName: "claimedCampaignReward",
-                args: [
-                    rawReimbursement.campaignId,
-                    rawReimbursement.token.address,
-                    zeroAddress,
-                ],
-            };
-        });
+        return rawReimbursements
+            .map((rawReimbursement) => {
+                const chainData = getChainData(rawReimbursement.chainId);
+                if (!chainData) return null;
+
+                return {
+                    chainId: rawReimbursement.chainId,
+                    address: chainData.metromContract.address,
+                    abi: metromAbi,
+                    functionName: "claimedCampaignReward",
+                    args: [
+                        rawReimbursement.campaignId,
+                        rawReimbursement.token.address,
+                        zeroAddress,
+                    ],
+                };
+            })
+            .filter((reimbursement) => !!reimbursement);
     }, [rawReimbursements]);
 
     const claimedContracts = useMemo(() => {
         if (!rawReimbursements) return undefined;
 
-        return rawReimbursements.map((rawReimbursement) => {
-            return {
-                chainId: rawReimbursement.chainId,
-                address: getChainData(rawReimbursement.chainId)?.metromContract
-                    .address,
-                abi: metromAbi,
-                functionName: "claimedCampaignReward",
-                args: [
-                    rawReimbursement.campaignId,
-                    rawReimbursement.token.address,
-                    address,
-                ],
-            };
-        });
+        return rawReimbursements
+            .map((rawReimbursement) => {
+                const chainData = getChainData(rawReimbursement.chainId);
+                if (!chainData) return null;
+
+                return {
+                    chainId: rawReimbursement.chainId,
+                    address: chainData.metromContract.address,
+                    abi: metromAbi,
+                    functionName: "claimedCampaignReward",
+                    args: [
+                        rawReimbursement.campaignId,
+                        rawReimbursement.token.address,
+                        address,
+                    ],
+                };
+            })
+            .filter((reimbursement) => !!reimbursement);
     }, [address, rawReimbursements]);
 
     // reimbursements recovered are assigned to the zero address,
     // so we have to fetch them separately
     const {
         data: recoveredData,
-        queryKey: recoveredQueryKey,
         error: recoveredError,
         isError: recoveredErrored,
         isLoading: loadingRecovered,
-    } = useReadContracts({
-        allowFailure: false,
-        contracts: recoveredContracts,
-        query: {
-            retryDelay: 1000,
-            refetchOnWindowFocus: false,
-            staleTime: 60000,
-            enabled: !!recoveredContracts,
+    } = useQuery({
+        queryKey: ["recovered-campaign-reimbursements", recoveredContracts],
+        queryFn: async ({ queryKey }) => {
+            const [, contracts] = queryKey as [
+                string,
+                typeof recoveredContracts,
+            ];
+
+            if (!contracts) return null;
+
+            try {
+                return await readContracts(config, {
+                    allowFailure: false,
+                    contracts,
+                });
+            } catch (error) {
+                console.error(
+                    `Could not fetch recovered campaign reimbursements: ${error}`,
+                );
+                throw error;
+            }
         },
+        retryDelay: 1000,
+        refetchOnWindowFocus: false,
+        staleTime: 60000,
+        enabled: !!recoveredContracts,
     });
 
     const {
         data: claimedData,
-        queryKey: claimedQueryKey,
         error: claimedError,
         isError: claimedErrored,
         isLoading: loadingClaimed,
-    } = useReadContracts({
-        allowFailure: false,
-        contracts: claimedContracts,
-        query: {
-            retryDelay: 1000,
-            refetchOnWindowFocus: false,
-            staleTime: 60000,
-            enabled: !!claimedContracts,
+    } = useQuery({
+        queryKey: ["claimed-campaign-reimbursements", claimedContracts],
+        queryFn: async ({ queryKey }) => {
+            const [, contracts] = queryKey as [string, typeof claimedContracts];
+
+            if (!contracts) return null;
+
+            try {
+                return await readContracts(config, {
+                    allowFailure: false,
+                    contracts,
+                });
+            } catch (error) {
+                console.error(
+                    `Could not fetch claimed campaign reimbursements: ${error}`,
+                );
+                throw error;
+            }
         },
+        retryDelay: 1000,
+        refetchOnWindowFocus: false,
+        staleTime: 60000,
+        enabled: !!claimedContracts,
     });
 
     useEffect(() => {
@@ -188,9 +227,13 @@ export function useReimbursements({
     // Can be used to invalide the contract queries, to update the reimbursements
     // after a successful recovery.
     const invalidate = useCallback(async () => {
-        await queryClient.invalidateQueries({ queryKey: recoveredQueryKey });
-        await queryClient.invalidateQueries({ queryKey: claimedQueryKey });
-    }, [queryClient, recoveredQueryKey, claimedQueryKey]);
+        await queryClient.invalidateQueries({
+            queryKey: ["recovered-campaign-reimbursements"],
+        });
+        await queryClient.invalidateQueries({
+            queryKey: ["claimed-campaign-reimbursements"],
+        });
+    }, [queryClient]);
 
     return {
         loading:
