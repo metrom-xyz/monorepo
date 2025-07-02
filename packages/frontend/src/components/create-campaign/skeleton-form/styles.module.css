@@ -11,6 +11,5 @@
         py-7
         h-[5.25rem]
         rounded-2xl
-        animate-pulse
-        theme-surface-hover;
+        animate-pulse;
 }
