@@ -18,6 +18,7 @@ import { KpiSimulationChart } from "../../../kpi-simulation-chart";
 import { GoalInputs } from "./goal-inputs";
 import { useChainId } from "wagmi";
 import { InfoMessage } from "@/src/components/info-message";
+import { ReimbursementFee } from "../../reimbursement-fee";
 
 import styles from "./styles.module.css";
 
@@ -323,6 +324,7 @@ export function KpiStep({
                             error={!!error}
                         />
                     </div>
+                    <ReimbursementFee />
                     <Button
                         variant="secondary"
                         size="sm"

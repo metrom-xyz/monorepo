@@ -10,6 +10,7 @@ import { OrkiLogo } from "../assets/logos/liquity-v2-platforms/orki";
 // FIXME: remove this once done with development testing
 export const swellDevelopmentData: ChainData = {
     active: true,
+    reimbursementFeeEnabled: false,
     name: "Swell",
     metromContract: {
         address: "0xe82c4D8b993D613a28600B953e91A3A93Ae69Fd6",
@@ -91,6 +92,7 @@ export const swellDevelopmentData: ChainData = {
 
 export const swellProductionData: ChainData = {
     active: true,
+    reimbursementFeeEnabled: false,
     name: "Swell",
     metromContract: ADDRESS[SupportedChain.Swell],
     blockExplorers: swellchain.blockExplorers,

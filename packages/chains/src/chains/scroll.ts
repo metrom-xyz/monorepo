@@ -9,6 +9,7 @@ import { ScribeLogo } from "../assets";
 
 export const scrollData: ChainData = {
     active: true,
+    reimbursementFeeEnabled: false,
     name: scroll.name,
     metromContract: ADDRESS[SupportedChain.Scroll],
     blockExplorers: scroll.blockExplorers,

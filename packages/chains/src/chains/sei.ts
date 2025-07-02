@@ -8,6 +8,7 @@ import { DepositUrlType, ProtocolType } from "../types/protocol";
 
 export const seiDevelopmentData: ChainData = {
     active: true,
+    reimbursementFeeEnabled: false,
     name: "Sei",
     metromContract: {
         address: "0xD4AC4AaFb81eC774E49AA755A66EfCe4574D6276",
@@ -59,6 +60,7 @@ export const seiDevelopmentData: ChainData = {
 
 export const seiProductionData: ChainData = {
     active: true,
+    reimbursementFeeEnabled: false,
     name: sei.name,
     metromContract: ADDRESS[SupportedChain.Sei],
     blockExplorers: {

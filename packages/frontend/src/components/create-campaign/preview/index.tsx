@@ -47,6 +47,7 @@ import { Restrictions } from "./restrictions";
 import { useLiquidityByAddresses } from "@/src/hooks/useLiquidityByAddresses";
 
 import styles from "./styles.module.css";
+import { ReimbursementFee } from "../reimbursement-fee";
 
 interface CampaignPreviewProps {
     payload: CampaignPreviewPayload;
@@ -435,6 +436,7 @@ export function CampaignPreview({
                     {restrictions && (
                         <Restrictions restrictions={payload.restrictions} />
                     )}
+                    <ReimbursementFee radius="xl2" />
                     <div className={styles.deployButtonContainer}>
                         {error && (
                             <ErrorText size="xs" weight="medium">
