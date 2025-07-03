@@ -130,7 +130,7 @@
         "form": {
             "reimbursementFee": {
                 "title": "{fee} fee from savings apply",
-                "description": "A reimbursement fee is in place, a portion of the reimbursed rewards will be retained by Metrom"
+                "description": "A reimbursement fee is in place, a portion of the reimbursed rewards will be retained by Metrom."
             },
             "base": {
                 "startDate": {

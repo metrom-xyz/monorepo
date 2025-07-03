@@ -419,13 +419,16 @@ export function CampaignPreview({
                         />
                     )}
                     {kpi && (
-                        <Kpi
-                            poolUsdTvl={payload.pool.usdTvl}
-                            from={payload.startDate}
-                            to={payload.endDate}
-                            distributables={payload.distributables}
-                            specification={payload.kpiSpecification}
-                        />
+                        <>
+                            <Kpi
+                                poolUsdTvl={payload.pool.usdTvl}
+                                from={payload.startDate}
+                                to={payload.endDate}
+                                distributables={payload.distributables}
+                                specification={payload.kpiSpecification}
+                            />
+                            <ReimbursementFee radius="xl2" />
+                        </>
                     )}
                     {range && (
                         <Range
@@ -436,7 +439,6 @@ export function CampaignPreview({
                     {restrictions && (
                         <Restrictions restrictions={payload.restrictions} />
                     )}
-                    <ReimbursementFee radius="xl2" />
                     <div className={styles.deployButtonContainer}>
                         {error && (
                             <ErrorText size="xs" weight="medium">
