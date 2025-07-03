@@ -1,4 +1,4 @@
-import { useAccount, useChains, useReadContracts } from "wagmi";
+import { useAccount, useChains, useConfig } from "wagmi";
 import { formatUnits, type Address } from "viem";
 import { METROM_API_CLIENT } from "../commons";
 import { metromAbi } from "@metrom-xyz/contracts/abi";
@@ -7,6 +7,7 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import type { HookBaseParams } from "../types/hooks";
 import type { ClaimWithRemaining } from "../types/campaign";
 import { getChainData } from "../utils/chain";
+import { readContracts } from "@wagmi/core";
 
 interface UseClaimsParams extends HookBaseParams {}
 
@@ -23,6 +24,7 @@ export function useClaims({
 }: UseClaimsParams = {}): UseClaimsReturnaValue {
     const [claims, setClaims] = useState<ClaimWithRemaining[]>();
 
+    const config = useConfig();
     const supportedChains = useChains();
     const queryClient = useQueryClient();
     const { address } = useAccount();
@@ -60,32 +62,54 @@ export function useClaims({
     const claimedContracts = useMemo(() => {
         if (!rawClaims) return undefined;
 
-        return rawClaims.map((rawClaim) => {
-            return {
-                chainId: rawClaim.chainId,
-                address: getChainData(rawClaim.chainId)?.metromContract.address,
-                abi: metromAbi,
-                functionName: "claimedCampaignReward",
-                args: [rawClaim.campaignId, rawClaim.token.address, address],
-            };
-        });
+        return rawClaims
+            .map((rawClaim) => {
+                const chainData = getChainData(rawClaim.chainId);
+                if (!chainData) return null;
+
+                return {
+                    chainId: rawClaim.chainId,
+                    address: chainData.metromContract.address,
+                    abi: metromAbi,
+                    functionName: "claimedCampaignReward",
+                    args: [
+                        rawClaim.campaignId,
+                        rawClaim.token.address,
+                        address,
+                    ],
+                };
+            })
+            .filter((claim) => !!claim);
     }, [address, rawClaims]);
 
     const {
         data: claimedData,
-        queryKey: claimedQueryKey,
-        error: claimedError,
-        isError: claimedErrored,
+        error: claimedErrored,
         isLoading: loadingClaimed,
-    } = useReadContracts({
-        allowFailure: false,
-        contracts: claimedContracts,
-        query: {
-            retryDelay: 1000,
-            refetchOnWindowFocus: false,
-            staleTime: 60000,
-            enabled: !!claimedContracts,
+        isError: claimedError,
+    } = useQuery({
+        queryKey: ["claimed-campaign-rewards", claimedContracts],
+        queryFn: async ({ queryKey }) => {
+            const [, contracts] = queryKey as [string, typeof claimedContracts];
+
+            if (!contracts) return null;
+
+            try {
+                return await readContracts(config, {
+                    allowFailure: false,
+                    contracts,
+                });
+            } catch (error) {
+                console.error(
+                    `Could not call fetch claimed campaign rewards: ${error}`,
+                );
+                throw error;
+            }
         },
+        retryDelay: 1000,
+        refetchOnWindowFocus: false,
+        staleTime: 60000,
+        enabled: !!claimedContracts,
     });
 
     useEffect(() => {
@@ -140,8 +164,10 @@ export function useClaims({
     // Can be used to invalide the contract queries, to update the rewards
     // after a successful claim.
     const invalidate = useCallback(async () => {
-        await queryClient.invalidateQueries({ queryKey: claimedQueryKey });
-    }, [queryClient, claimedQueryKey]);
+        await queryClient.invalidateQueries({
+            queryKey: ["claimed-campaign-rewards"],
+        });
+    }, [queryClient]);
 
     return {
         loading: loadingClaims || loadingClaimed || !claims,
