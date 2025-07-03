@@ -81,6 +81,7 @@ export function CampaignDetails({ chain, campaignId }: CampaignDetailsProps) {
                 )}
                 <Leaderboard
                     chainId={campaign?.chainId}
+                    restrictions={campaign?.restrictions}
                     leaderboard={leaderboard}
                     loading={loadingLeaderboard}
                 />
