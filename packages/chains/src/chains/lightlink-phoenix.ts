@@ -8,6 +8,7 @@ import { DepositUrlType, ProtocolType } from "../types/protocol";
 
 export const lightlinkPhoenixData: ChainData = {
     active: true,
+    reimbursementFeeEnabled: false,
     name: "LightLink",
     metromContract: ADDRESS[SupportedChain.LightLinkPhoenix],
     blockExplorers: lightlinkPhoenix.blockExplorers,

@@ -1,0 +1,25 @@
+@reference "../../../app.css";
+
+.root {
+    @apply w-full flex gap-3 justify-between bg-blue-500 p-3;
+}
+
+.root.md {
+    @apply rounded-md;
+}
+
+.root.xl2 {
+    @apply rounded-2xl;
+}
+
+.icon {
+    @apply w-6 h-6 text-white;
+}
+
+.rightContent {
+    @apply w-full flex flex-col gap-1;
+}
+
+.text {
+    @apply text-white;
+}

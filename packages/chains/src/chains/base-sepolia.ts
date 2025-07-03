@@ -8,6 +8,7 @@ import { UniswapLogo } from "../assets/logos/dexes/uniswap";
 
 export const baseSepoliaData: ChainData = {
     active: true,
+    reimbursementFeeEnabled: false,
     name: baseSepolia.name,
     metromContract: ADDRESS[SupportedChain.BaseSepolia],
     blockExplorers: baseSepolia.blockExplorers,

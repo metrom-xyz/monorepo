@@ -11,6 +11,7 @@ import { hemi } from "viem/chains";
 
 export const hemiData: ChainData = {
     active: true,
+    reimbursementFeeEnabled: false,
     name: hemi.name,
     metromContract: ADDRESS[SupportedChain.Hemi],
     blockExplorers: hemi.blockExplorers,

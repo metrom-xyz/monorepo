@@ -9,6 +9,7 @@ import { DepositUrlType, ProtocolType } from "../types/protocol";
 
 export const sonicData: ChainData = {
     active: true,
+    reimbursementFeeEnabled: false,
     name: sonic.name,
     metromContract: ADDRESS[SupportedChain.Sonic],
     blockExplorers: {

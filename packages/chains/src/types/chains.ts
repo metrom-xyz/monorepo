@@ -8,6 +8,7 @@ import { mainnet } from "viem/chains";
 
 export interface ChainData {
     active: boolean;
+    reimbursementFeeEnabled: boolean;
     name: string;
     metromContract: ChainContract;
     blockExplorers: Chain["blockExplorers"];

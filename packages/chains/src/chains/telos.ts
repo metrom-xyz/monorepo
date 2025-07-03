@@ -8,6 +8,7 @@ import { DepositUrlType, ProtocolType } from "../types/protocol";
 
 export const telosData: ChainData = {
     active: true,
+    reimbursementFeeEnabled: false,
     name: telos.name,
     metromContract: ADDRESS[SupportedChain.Telos],
     blockExplorers: {
