@@ -554,6 +554,7 @@
             "noDistribution": "No distribution yet",
             "connectedAccountRank": {
                 "connect": "View your rank",
+                "blacklisted": "Your address is blacklisted from farming rewards in the campaign.",
                 "noRewards": "You don't have any rewards.",
                 "yourRank": "Your rank",
                 "account": "Account",

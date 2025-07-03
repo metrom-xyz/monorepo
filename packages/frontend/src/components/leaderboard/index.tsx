@@ -1,4 +1,7 @@
-import { type UsdPricedErc20TokenAmount } from "@metrom-xyz/sdk";
+import {
+    type Restrictions,
+    type UsdPricedErc20TokenAmount,
+} from "@metrom-xyz/sdk";
 import { shortenAddress } from "@/src/utils/address";
 import { Typography, Skeleton, Card, type SkeletonProps } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
@@ -8,7 +11,7 @@ import {
     RepartitionChart,
     type RepartitionChartProps,
 } from "./repartition-chart";
-import type { Address, Hex } from "viem";
+import type { Address } from "viem";
 import { RewardsBreakdown } from "./rewards-breakdown";
 import { formatPercentage } from "@/src/utils/format";
 import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
@@ -24,6 +27,7 @@ import styles from "./styles.module.css";
 
 interface LeaderboardProps {
     chainId?: SupportedChain;
+    restrictions?: Restrictions;
     leaderboard?: Leaderboard;
     noDistributionDate?: boolean;
     loading: boolean;
@@ -43,6 +47,7 @@ export interface PersonalRank {
 
 export function Leaderboard({
     chainId,
+    restrictions,
     leaderboard,
     noDistributionDate,
     loading,
@@ -110,6 +115,7 @@ export function Leaderboard({
                     <PersonalRank
                         chain={chainId}
                         loading={loading}
+                        restrictions={restrictions}
                         connectedAccountRank={leaderboard?.connectedAccountRank}
                         messages={messages?.personalRank}
                     />

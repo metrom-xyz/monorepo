@@ -10,12 +10,16 @@ import { PointsBreakdown } from "../points-breakdown";
 import type { Rank } from "@/src/types/campaign";
 import { useWindowSize } from "react-use";
 import { useAppKit } from "@reown/appkit/react";
+import { type Restrictions, RestrictionType } from "@metrom-xyz/sdk";
+import { useMemo } from "react";
+import type { Address } from "viem";
 
 import styles from "./styles.module.css";
 
 export interface PersonalRankProps {
     chain?: SupportedChain;
     loading: boolean;
+    restrictions?: Restrictions;
     connectedAccountRank?: Rank;
     messages?: {
         noRewards?: string;
@@ -25,6 +29,7 @@ export interface PersonalRankProps {
 export function PersonalRank({
     chain,
     loading,
+    restrictions,
     connectedAccountRank,
     messages,
 }: PersonalRankProps) {
@@ -35,6 +40,19 @@ export function PersonalRank({
     const { width } = useWindowSize();
     const { address: connectedAddress } = useAccount();
     const { open } = useAppKit();
+
+    const blacklisted = useMemo(() => {
+        if (
+            !connectedAddress ||
+            !restrictions ||
+            restrictions.type === RestrictionType.Whitelist
+        )
+            return false;
+
+        return restrictions.list.includes(
+            connectedAddress.toLowerCase() as Address,
+        );
+    }, [connectedAddress, restrictions]);
 
     async function handleOnConnect() {
         await open();
@@ -65,6 +83,10 @@ export function PersonalRank({
                             {t("connect")}
                         </Typography>
                     </button>
+                ) : blacklisted ? (
+                    <Typography weight="medium" light>
+                        {t("blacklisted")}
+                    </Typography>
                 ) : !connectedAccountRank ? (
                     <Typography weight="medium" light>
                         {messages?.noRewards
