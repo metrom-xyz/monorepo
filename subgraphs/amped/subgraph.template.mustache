@@ -36,6 +36,33 @@ dataSources:
         - event: DecreaseUsdgAmount(address,uint256)
           handler: handleDecreaseUsdgAmount
   - kind: ethereum
+    name: GlpManager
+    network: {{network}}
+    source:
+      abi: GlpManager
+      address: "{{glpManagerAddress}}"
+      startBlock: {{glpManagerStartBlock}}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      file: ./src/mappings/glp-manager.ts
+      entities: []
+      abis:
+        - name: GlpManager
+          file: ./abis/GlpManager.json
+        - name: Erc20
+          file: ./abis/Erc20.json
+        - name: Erc20BytesName
+          file: ./abis/Erc20BytesName.json
+        - name: Erc20BytesSymbol
+          file: ./abis/Erc20BytesSymbol.json
+      eventHandlers:
+        - event: AddLiquidity(address,address,uint256,uint256,uint256,uint256,uint256)
+          handler: handleAddLiquidity
+        - event: RemoveLiquidity(address,address,uint256,uint256,uint256,uint256,uint256)
+          handler: handleRemoveLiquidity
+  - kind: ethereum
     name: RewardRouterV2
     network: {{network}}
     source:
@@ -94,8 +121,6 @@ dataSources:
       abis:
         - name: YieldBearingALPVault
           file: ./abis/YieldBearingALPVault.json
-        - name: GlpManager
-          file: ./abis/GlpManager.json
       eventHandlers:
         - event: Deposit(indexed address,indexed address,uint256,uint256)
           handler: handleDeposit
