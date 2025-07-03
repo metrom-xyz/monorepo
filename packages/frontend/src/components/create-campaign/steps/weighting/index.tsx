@@ -8,20 +8,21 @@ import {
     type AmmPoolLiquidityCampaignPayload,
     type AmmPoolLiquidityCampaignPayloadPart,
     type CampaignPayloadErrors,
+    type FormStepBaseProps,
 } from "@/src/types/campaign";
-import classNames from "classnames";
 import { WeightingInputs } from "./weighting-inputs";
 import type { LocalizedMessage } from "@/src/types/utils";
 import { useChainId } from "wagmi";
 import { usePrevious } from "react-use";
 import { formatPercentage } from "@/src/utils/format";
 import { InfoMessage } from "@/src/components/info-message";
+import { DistributablesType } from "@metrom-xyz/sdk";
 
 import styles from "./styles.module.css";
 
-interface WeightingStepProps {
-    disabled?: boolean;
+interface WeightingStepProps extends FormStepBaseProps {
     pool?: AmmPoolLiquidityCampaignPayload["pool"];
+    distributablesType?: DistributablesType;
     weighting?: AmmPoolLiquidityCampaignPayload["weighting"];
     onWeightingChange: (weighting: AmmPoolLiquidityCampaignPayloadPart) => void;
     onError: (errors: CampaignPayloadErrors) => void;
@@ -32,6 +33,7 @@ type ErrorMessage = LocalizedMessage<"newCampaign.form.base.weighting">;
 export function WeightingStep({
     disabled,
     pool,
+    distributablesType,
     weighting,
     onWeightingChange,
     onError,
@@ -41,8 +43,8 @@ export function WeightingStep({
     const [open, setOpen] = useState(false);
     const [enabled, setEnabled] = useState(false);
     const [warning, setWarning] = useState<ErrorMessage>("");
-    const [token0, setToken0] = useState<number | undefined>(weighting?.token0);
-    const [token1, setToken1] = useState<number | undefined>(weighting?.token1);
+    const [token0, setToken0] = useState<number | undefined>();
+    const [token1, setToken1] = useState<number | undefined>();
 
     const chainId = useChainId();
     const prevWeighting = usePrevious(weighting);
@@ -65,8 +67,20 @@ export function WeightingStep({
     }, [chainId]);
 
     useEffect(() => {
-        setOpen(enabled);
-    }, [enabled]);
+        if (!!weighting) {
+            const { token0, token1 } = weighting;
+
+            setToken0(token0);
+            setToken1(token1);
+        }
+    }, [weighting]);
+
+    useEffect(() => {
+        if (!!weighting) {
+            setEnabled(true);
+            setOpen(false);
+        }
+    }, [weighting]);
 
     useEffect(() => {
         if (enabled && !open && unsavedChanges) setWarning("notApplied");
@@ -79,29 +93,37 @@ export function WeightingStep({
         });
     }, [enabled, weighting, onError]);
 
-    // this hooks is used to disable and close the step when
-    // the weighting gets disabled, after the campaign creation
+    // This hook is used to reset and disable the step when changing reward type to points.
+    useEffect(() => {
+        if (distributablesType === DistributablesType.Tokens) return;
+
+        onWeightingChange({ weighting: undefined });
+        setToken0(undefined);
+        setToken1(undefined);
+        setEnabled(false);
+    }, [distributablesType, onWeightingChange]);
+
+    // This hooks is used to disable and close the step when
+    // the weighting gets disabled, after the campaign creation.
     useEffect(() => {
         if (enabled && !!prevWeighting && !weighting) setEnabled(false);
     }, [enabled, prevWeighting, weighting]);
 
-    // reset state once the step gets disabled
-    useEffect(() => {
-        if (enabled) return;
-        if (weighting) onWeightingChange({ weighting: undefined });
-
-        setToken0(undefined);
-        setToken1(undefined);
-    }, [enabled, weighting, onWeightingChange]);
-
     function handleSwitchOnClick(
-        _: boolean,
+        checked: boolean,
         event:
             | React.MouseEvent<HTMLButtonElement>
             | React.KeyboardEvent<HTMLButtonElement>,
     ) {
         event.stopPropagation();
-        setEnabled((enabled) => !enabled);
+        setEnabled(checked);
+        setOpen(checked);
+
+        if (weighting) {
+            onWeightingChange({ weighting: undefined });
+            setToken0(undefined);
+            setToken1(undefined);
+        }
     }
 
     function handleStepOnClick() {
