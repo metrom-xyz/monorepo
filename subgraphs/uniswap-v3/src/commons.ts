@@ -6,11 +6,9 @@ import {
     ethereum,
 } from "@graphprotocol/graph-ts";
 import { Pool, Tick, Token } from "../generated/schema";
-import { NonFungiblePositionManager } from "../generated/NonFungiblePositionManager/NonFungiblePositionManager";
-import { Factory } from "../generated/Factory/Factory";
+import { PoolManager } from "../generated/PoolManager/PoolManager";
 import {
-    FACTORY_ADDRESS,
-    NON_FUNGIBLE_POSITION_MANAGER_ADDRESS,
+    POOL_MANAGER_ADDRESS,
 } from "./addresses";
 import { Erc20 } from "../generated/Factory/Erc20";
 import { Erc20BytesSymbol } from "../generated/Factory/Erc20BytesSymbol";
@@ -30,9 +28,12 @@ export const BD_Q192 = BigDecimal.fromString(
         .toString(),
 );
 
-export const NonFungiblePositionManagerContract =
-    NonFungiblePositionManager.bind(NON_FUNGIBLE_POSITION_MANAGER_ADDRESS);
-export const FactoryContract = Factory.bind(FACTORY_ADDRESS);
+// V4 constants
+export const ZERO_ADDRESS = Address.zero();
+export const NATIVE_TOKEN_ADDRESS = Address.zero(); // In v4, address(0) represents native ETH
+
+export let PoolManagerContract: PoolManager | null = null;
+PoolManagerContract = PoolManager.bind(POOL_MANAGER_ADDRESS);
 
 export function getEventId(event: ethereum.Event): Bytes {
     return changetype<Bytes>(
@@ -88,14 +89,28 @@ export function getOrCreateToken(address: Address): Token | null {
     let token = Token.load(address);
     if (token !== null) return token;
 
-    let symbol = fetchTokenSymbol(address);
-    if (symbol === null) return null;
+    // V4: Check if it's native token
+    let isNative = address.equals(ZERO_ADDRESS);
 
-    let name = fetchTokenName(address);
-    if (name === null) return null;
+    let symbol: string | null;
+    let name: string | null;
+    let decimals: i32;
 
-    let decimals = fetchTokenDecimals(address);
-    if (decimals === -1) return null;
+    if (isNative) {
+        // Native ETH
+        symbol = "ETH";
+        name = "Ether";
+        decimals = 18;
+    } else {
+        symbol = fetchTokenSymbol(address);
+        if (symbol === null) return null;
+
+        name = fetchTokenName(address);
+        if (name === null) return null;
+
+        decimals = fetchTokenDecimals(address);
+        if (decimals === -1) return null;
+    }
 
     token = new Token(address);
     token.symbol = symbol;
@@ -158,4 +173,25 @@ export function getPrice(
         .div(BD_Q192)
         .times(exponentToBigDecimal(token0.decimals))
         .div(exponentToBigDecimal(token1.decimals));
+}
+
+// V4-specific functions
+
+/**
+ * Create position ID with salt (v4)
+ */
+export function getPositionId(
+    poolId: Bytes,
+    owner: Address,
+    tickLower: i32,
+    tickUpper: i32,
+    salt: Bytes
+): Bytes {
+    return changetype<Bytes>(
+        poolId
+            .concat(owner)
+            .concat(Bytes.fromI32(tickLower))
+            .concat(Bytes.fromI32(tickUpper))
+            .concat(salt)
+    );
 }

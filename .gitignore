@@ -133,3 +133,4 @@ generated
 build
 
 .turbo
+subgraphs/uniswap-v3/package-lock.json
