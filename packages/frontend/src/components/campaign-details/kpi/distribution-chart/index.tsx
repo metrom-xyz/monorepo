@@ -235,7 +235,11 @@ export function DistributionChart({
                 </div>
             ) : (
                 <ResponsiveContainer width="100%" className={styles.container}>
-                    <BarChart data={chartData} style={{ cursor: "pointer" }}>
+                    <BarChart
+                        data={chartData}
+                        style={{ cursor: "pointer" }}
+                        accessibilityLayer={false}
+                    >
                         <YAxis ticks={[0, 1]} hide />
                         <XAxis
                             type="category"

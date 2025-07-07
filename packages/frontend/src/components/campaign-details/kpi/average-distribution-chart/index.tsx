@@ -241,7 +241,7 @@ export function AverageDistributionChart({
                 </div>
             </Popover>
             <div className={styles.chartWrapper} ref={setAnchor}>
-                <PieChart height={250} width={250}>
+                <PieChart height={250} width={250} accessibilityLayer={false}>
                     <Pie
                         dataKey="value"
                         animationEasing="ease-in-out"

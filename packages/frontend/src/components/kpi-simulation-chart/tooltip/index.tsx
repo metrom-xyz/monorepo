@@ -135,27 +135,25 @@ export function TooltipCursor({
             <ReferenceLine
                 strokeDasharray={"3 3"}
                 ifOverflow="visible"
-                isFront
-                className={styles.referenceLine}
                 segment={[
                     { x: usdTvl, y: reward },
                     { x: 0, y: reward },
                 ]}
+                className={styles.referenceLine}
             />
             <ReferenceLine
                 strokeDasharray={"3 3"}
                 ifOverflow="visible"
-                isFront
-                className={styles.referenceLine}
                 segment={[{ x: usdTvl }, { x: usdTvl, y: 0 }]}
+                className={styles.referenceLine}
             />
             {cyRewards && (
                 <circle
                     cx={points[0].x}
                     cy={cyRewards}
                     r={4}
-                    className={styles.referenceCircle}
                     strokeWidth={1}
+                    className={styles.referenceCircle}
                 />
             )}
             {cyApr && (
@@ -163,8 +161,8 @@ export function TooltipCursor({
                     cx={points[0].x}
                     cy={cyApr}
                     r={4}
-                    className={styles.referenceCircle}
                     strokeWidth={1}
+                    className={styles.referenceCircle}
                 />
             )}
         </>

@@ -409,6 +409,7 @@ export function KpiSimulationChart({
             <ComposedChart
                 data={chartData}
                 margin={CHART_MARGINS}
+                accessibilityLayer={false}
                 style={{ cursor: "pointer" }}
             >
                 <Area
@@ -484,7 +485,6 @@ export function KpiSimulationChart({
                 <ReferenceLine
                     strokeDasharray={"3 3"}
                     ifOverflow="visible"
-                    isFront
                     segment={[
                         {
                             x: poolUsdTvl,
@@ -512,7 +512,6 @@ export function KpiSimulationChart({
                 <ReferenceLine
                     strokeDasharray={"3 3"}
                     ifOverflow="visible"
-                    isFront
                     segment={[
                         {
                             x: lowerUsdTarget,
@@ -536,7 +535,6 @@ export function KpiSimulationChart({
                 <ReferenceLine
                     strokeDasharray={"3 3"}
                     ifOverflow="visible"
-                    isFront
                     segment={[
                         {
                             x: upperUsdTarget,
@@ -562,7 +560,6 @@ export function KpiSimulationChart({
                         <ReferenceLine
                             strokeDasharray={"3 3"}
                             ifOverflow="visible"
-                            isFront
                             segment={[
                                 { x: 0, y: currentPayoutUsd },
                                 { x: poolUsdTvl, y: currentPayoutUsd },

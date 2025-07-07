@@ -12,7 +12,7 @@ import { TooltipContent } from "./tooltip";
 import { getColorFromAddress } from "@/src/utils/address";
 import type { SupportedChain } from "@metrom-xyz/contracts";
 import dayjs from "dayjs";
-import { memo } from "react";
+import { memo, useCallback } from "react";
 
 import styles from "./styles.module.css";
 
@@ -32,16 +32,14 @@ interface TickProps {
 
 export interface BarPayload {
     // add more props if needed
-    payload: {
-        timestamp: number;
-    };
+    timestamp: number;
 }
 
 interface ChartProps {
     chain: SupportedChain;
     distros: ProcessedDistribution[];
     bars: StackedBar[];
-    onBarClick: (value: BarPayload) => void;
+    onBarClick: (data: BarPayload) => void;
 }
 
 const Chart = memo(function Chart({
@@ -50,9 +48,24 @@ const Chart = memo(function Chart({
     bars,
     onBarClick,
 }: ChartProps) {
+    const handleOnBarClick = useCallback(
+        (data: unknown) => {
+            const { timestamp } = data as BarPayload;
+            if (!timestamp) return;
+
+            onBarClick(data as BarPayload);
+        },
+        [onBarClick],
+    );
+
     return (
         <ResponsiveContainer width="100%">
-            <BarChart data={distros} barSize={25} style={{ cursor: "pointer" }}>
+            <BarChart
+                data={distros}
+                barSize={25}
+                accessibilityLayer={false}
+                style={{ cursor: "pointer" }}
+            >
                 <Tooltip
                     isAnimationActive={false}
                     cursor={false}
@@ -76,7 +89,7 @@ const Chart = memo(function Chart({
                         stackId={token}
                         isAnimationActive={false}
                         fill={getColorFromAddress(account as Address)}
-                        onClick={onBarClick}
+                        onClick={handleOnBarClick}
                     />
                 ))}
             </BarChart>
