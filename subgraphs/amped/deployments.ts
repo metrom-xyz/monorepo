@@ -40,7 +40,7 @@ export const DEPLOYMENTS: {
         fALP: "0xF3d911F81c4A630e755B42C90942e278019709A7",
         fsALP: "0xB895e3DBFB37A4Cc6b4FB50B1cf903608e942FF9",
         tokenizedVaults: [
-            // Wrapped sonic
+            // Wrapped sonic (yALP.s)
             {
                 address: "0xFa9A3A721BA614C589Dcd6062578123f998d3A34",
                 startBlock: 33453126,

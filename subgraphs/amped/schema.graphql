@@ -9,7 +9,8 @@ type Collateral @entity(immutable: false) {
 
 type Position @entity(immutable: false) {
     id: Bytes!
-    liquidity: BigInt!
+    tvl: BigInt!
+    scaledUsdValue: BigInt!
     tokenizedVault: TokenizedVault
 }
 
@@ -18,7 +19,17 @@ type LiquidityChange @entity(immutable: true) {
     timestamp: BigInt!
     owner: Bytes!
     tokenizedVaultId: Bytes
-    delta: BigInt!
+    tvlDelta: BigInt!
+    scaledUsdValueDelta: BigInt!
+}
+
+type LiquidityTransfer @entity(immutable: true) {
+    id: Bytes!
+    timestamp: BigInt!
+    from: Bytes!
+    to: Bytes!
+    tvl: BigInt!
+    scaledUsdValue: BigInt!
 }
 
 type TokenizedVault @entity(immutable: false) {

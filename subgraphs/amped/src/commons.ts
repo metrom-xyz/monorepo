@@ -7,10 +7,17 @@ import { TOKENIZED_VAULT_COLLATERAL } from "./addresses";
 
 export const ADDRESS_ZERO = Address.zero();
 export const BI_0 = BigInt.zero();
+export const BI_10E18 = BigInt.fromI32(10).pow(18);
 
 export function getEventId(event: ethereum.Event): Bytes {
     return changetype<Bytes>(
         event.block.number.leftShift(40).plus(event.logIndex).reverse(),
+    );
+}
+
+export function getEventIdFromCall(call: ethereum.Call): Bytes {
+    return changetype<Bytes>(
+        call.block.number.leftShift(40).plus(call.transaction.index).reverse(),
     );
 }
 
@@ -19,7 +26,8 @@ export function getOrCreatePosition(owner: Address): Position {
     if (position !== null) return position;
 
     position = new Position(owner);
-    position.liquidity = BI_0;
+    position.tvl = BI_0;
+    position.scaledUsdValue = BI_0;
     position.tokenizedVault = TOKENIZED_VAULT_COLLATERAL.isSet(owner)
         ? owner
         : null;
@@ -84,4 +92,14 @@ export function getOrCreateCollateral(address: Address): Collateral {
     collateral.save();
 
     return collateral;
+}
+
+export function getUsdTvlDeltaBasedOnPositionState(
+    position: Position,
+    tvlDelta: BigInt,
+): BigInt {
+    const positionAverageScaledAlpPrice = position.scaledUsdValue
+        .times(BI_10E18)
+        .div(position.tvl);
+    return tvlDelta.times(positionAverageScaledAlpPrice).div(BI_10E18);
 }
