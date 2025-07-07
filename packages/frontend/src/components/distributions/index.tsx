@@ -79,7 +79,7 @@ export function Distributions({ chain, campaignId }: DistributionsProps) {
             if (!breakdownListRef.current) return;
 
             const index = distros.findIndex(
-                ({ timestamp }) => timestamp === value.payload.timestamp,
+                ({ timestamp }) => timestamp === value.timestamp,
             );
 
             setActiveDistribution(index < 0 ? undefined : index);

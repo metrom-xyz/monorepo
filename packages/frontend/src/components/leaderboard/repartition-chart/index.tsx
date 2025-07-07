@@ -117,14 +117,17 @@ export function RepartitionChart({
                     })}
                 >
                     {chartData && !loading && (
-                        <PieChart height={250} width={250}>
+                        <PieChart
+                            height={250}
+                            width={250}
+                            accessibilityLayer={false}
+                        >
                             <Pie
                                 dataKey="value"
                                 animationEasing="ease-in-out"
                                 animationDuration={500}
                                 cornerRadius={6}
                                 data={chartData}
-                                activeIndex={activeIndex}
                                 innerRadius={70}
                                 outerRadius={120}
                                 startAngle={90}

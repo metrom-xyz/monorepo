@@ -14,7 +14,6 @@ import {
     XAxis,
     YAxis,
 } from "recharts";
-import type { CategoricalChartState } from "recharts/types/chart/types";
 import {
     tickToScaledPrice,
     type AmmPool,
@@ -49,6 +48,14 @@ interface LiquidityDensityProps {
     tooltipSize?: TypographySize;
     showPriceRange?: boolean;
     className?: string;
+}
+
+interface BarChartState {
+    activeDataKey?: string;
+    activeIndex?: string;
+    activeLabel?: number;
+    activeTooltipIndex?: string;
+    isTooltipActive: boolean;
 }
 
 export interface ScaledLiquidityTick {
@@ -108,8 +115,11 @@ export function LiquidityDensityChart({
             : tickToScaledPrice(activeTickIdx, pool, token0To1);
     }, [pool, activeTickIdx, token0To1]);
 
-    function handleOnMouseMove(state: CategoricalChartState) {
-        if (state.isTooltipActive) setTooltipIndex(state.activeTooltipIndex);
+    function handleOnMouseMove(state: unknown) {
+        const { isTooltipActive, activeTooltipIndex } = state as BarChartState;
+
+        if (isTooltipActive && activeTooltipIndex)
+            setTooltipIndex(Number(activeTooltipIndex));
         else setTooltipIndex(undefined);
     }
 
@@ -236,6 +246,7 @@ export function LiquidityDensityChart({
                     onMouseMove={handleOnMouseMove}
                     onMouseLeave={handleOnMouseLeave}
                     margin={{ top: 24, bottom: showPriceRange ? 20 : 0 }}
+                    accessibilityLayer={false}
                     style={{ cursor: "pointer" }}
                 >
                     <YAxis hide domain={[0, "dataMax"]} />
