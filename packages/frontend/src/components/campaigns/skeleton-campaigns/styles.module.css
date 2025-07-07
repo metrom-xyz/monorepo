@@ -1,0 +1,77 @@
+@reference "../../../app.css";
+
+.root {
+    @apply max-w-screen-xl w-full flex flex-col px-4 sm:px-0;
+}
+
+.filters {
+    @apply max-w-screen-xl w-full sm:items-end flex-col sm:flex-row flex gap-3 mb-7;
+}
+
+.inputWithLabel {
+    @apply flex flex-col gap-1.5;
+}
+
+.label {
+    @apply w-16 h-4 rounded-sm theme-surface animate-pulse;
+}
+
+.filterInput {
+    @apply w-[17rem] h-[2.625rem] rounded-md theme-surface py-2 animate-pulse;
+}
+
+.filterInput:first-child {
+    @apply w-[14.75rem];
+}
+
+.filterInput.last {
+    @apply w-[10.25rem];
+}
+
+.scrollContainer {
+    @apply w-full mb-5;
+}
+
+.tableWrapper {
+    @apply overflow-x-scroll sm:overflow-x-auto;
+}
+
+.table {
+    @apply min-w-[800px] 
+        grid
+        grid-cols-[0.1fr_0.4fr_3fr_1fr_1fr_1fr]
+        gap-5
+        items-center;
+}
+
+.header {
+    @apply grid grid-cols-subgrid col-span-full items-center px-7;
+}
+
+.body {
+    @apply sm:w-full
+        my-0
+        grid
+        grid-cols-subgrid
+        col-span-full;
+}
+
+.body > :first-child > div {
+    @apply rounded-t-xl;
+}
+
+.body > :last-child > div {
+    @apply rounded-b-xl;
+}
+
+.headerSkeleton {
+    @apply w-16 h-4 theme-surface animate-pulse rounded-md;
+}
+
+.campaignSkeleton {
+    @apply w-full grid col-span-full grid-cols-subgrid;
+}
+
+.campaignSkeleton > div {
+    @apply col-span-full grid grid-cols-subgrid min-h-[72px] theme-surface animate-pulse;
+}
