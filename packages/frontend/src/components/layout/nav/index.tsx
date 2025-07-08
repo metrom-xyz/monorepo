@@ -114,7 +114,8 @@ export function Nav() {
                                     </Typography>
                                     <AnimatePresence>
                                         {label === "claims" &&
-                                            pendingClaimsCount && (
+                                            pendingClaimsCount &&
+                                            address && (
                                                 <motion.span
                                                     initial={{ scale: 0 }}
                                                     animate={{ scale: 1 }}
@@ -184,7 +185,8 @@ export function Nav() {
                                 </Typography>
                                 <AnimatePresence>
                                     {label === "claims" &&
-                                        pendingClaimsCount && (
+                                        pendingClaimsCount &&
+                                        address && (
                                             <motion.span
                                                 initial={{ scale: 0 }}
                                                 animate={{ scale: 1 }}
