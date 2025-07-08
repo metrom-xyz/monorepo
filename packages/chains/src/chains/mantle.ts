@@ -5,6 +5,7 @@ import type { ChainData } from "../types/chains";
 
 export const mantleData: ChainData = {
     active: false,
+    reimbursementFeeEnabled: false,
     name: mantle.name,
     metromContract: ADDRESS[SupportedChain.Mantle],
     blockExplorers: mantle.blockExplorers,

@@ -9,6 +9,7 @@ import { DepositUrlType, ProtocolType } from "../types/protocol";
 
 export const taikoData: ChainData = {
     active: true,
+    reimbursementFeeEnabled: false,
     name: "Taiko",
     metromContract: ADDRESS[SupportedChain.Taiko],
     blockExplorers: taiko.blockExplorers,

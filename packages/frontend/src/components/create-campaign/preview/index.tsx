@@ -47,6 +47,7 @@ import { Restrictions } from "./restrictions";
 import { useLiquidityByAddresses } from "@/src/hooks/useLiquidityByAddresses";
 
 import styles from "./styles.module.css";
+import { ReimbursementFee } from "../reimbursement-fee";
 
 interface CampaignPreviewProps {
     payload: CampaignPreviewPayload;
@@ -418,13 +419,16 @@ export function CampaignPreview({
                         />
                     )}
                     {kpi && (
-                        <Kpi
-                            poolUsdTvl={payload.pool.usdTvl}
-                            from={payload.startDate}
-                            to={payload.endDate}
-                            distributables={payload.distributables}
-                            specification={payload.kpiSpecification}
-                        />
+                        <>
+                            <Kpi
+                                poolUsdTvl={payload.pool.usdTvl}
+                                from={payload.startDate}
+                                to={payload.endDate}
+                                distributables={payload.distributables}
+                                specification={payload.kpiSpecification}
+                            />
+                            <ReimbursementFee radius="xl2" />
+                        </>
                     )}
                     {range && (
                         <Range

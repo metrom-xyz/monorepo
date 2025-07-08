@@ -10,6 +10,7 @@ import { DepositUrlType, ProtocolType } from "../types/protocol";
 
 export const sepoliaData: ChainData = {
     active: true,
+    reimbursementFeeEnabled: false,
     name: sepolia.name,
     metromContract: ADDRESS[SupportedChain.Sepolia],
     blockExplorers: sepolia.blockExplorers,

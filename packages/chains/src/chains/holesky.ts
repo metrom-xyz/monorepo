@@ -8,6 +8,7 @@ import { DepositUrlType, ProtocolType } from "../types/protocol";
 
 export const holeskyData: ChainData = {
     active: true,
+    reimbursementFeeEnabled: true,
     name: holesky.name,
     metromContract: ADDRESS[SupportedChain.Holesky],
     blockExplorers: holesky.blockExplorers,
