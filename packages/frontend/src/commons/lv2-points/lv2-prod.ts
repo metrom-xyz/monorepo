@@ -378,14 +378,14 @@ export const lv2PointsCampaignsProd: Record<
                     {
                         targets: ["0x6fbaeE8bEf2e8f5c34A08BdD4A4AB777Bd3f6764"],
                         minimumDuration: 3600,
-                        name: "ALP",
+                        name: "ALP on Sonic",
                         multiplier: 1,
                         href: "https://amped.finance/#/earn",
                     },
                     {
                         targets: ["0x6fbaeE8bEf2e8f5c34A08BdD4A4AB777Bd3f6764"],
                         minimumDuration: 3600,
-                        name: "yALP",
+                        name: "yALP on Sonic",
                         multiplier: 1,
                         href: "https://amped.finance/#/earn",
                     },
