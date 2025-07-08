@@ -1,13 +1,13 @@
-import { SupportedLiquityV2 } from "@metrom-xyz/sdk";
+import { SupportedGmxV1, SupportedLiquityV2 } from "@metrom-xyz/sdk";
 import {
     Lv2PointsCampaign2Action,
     type Lv2PointsCampaign,
 } from "@/src/types/lv2-points-campaign";
 import { SupportedChain } from "@metrom-xyz/contracts";
-import { OrkiLogo, QuillLogo } from "@metrom-xyz/chains";
+import { AmpedLogo, OrkiLogo, QuillLogo } from "@metrom-xyz/chains";
 
 export const lv2PointsCampaignsProd: Record<
-    SupportedLiquityV2,
+    SupportedLiquityV2 | SupportedGmxV1,
     Lv2PointsCampaign | null
 > = {
     [SupportedLiquityV2.Quill]: {
@@ -355,6 +355,44 @@ export const lv2PointsCampaignsProd: Record<
                     },
                 ],
             },
+        },
+    },
+    [SupportedGmxV1.Amped]: {
+        name: "Amped",
+        description:
+            "Experience efficient trading and profit sharing in one dynamic platform.",
+        url: "https://amped.finance",
+        chain: SupportedChain.Sonic,
+        protocol: SupportedGmxV1.Amped,
+        pointsName: "Amped Points",
+        brand: { main: "#e05573", light: "#ffb1c6" },
+        icon: AmpedLogo,
+        from: 1739750400,
+        to: 1756080000,
+        actions: {
+            [Lv2PointsCampaign2Action.Liquidity]: {
+                title: "Liquidity",
+                description:
+                    "Users get incentivized to provide liquidity on Amped.",
+                actions: [
+                    {
+                        targets: ["0x6fbaeE8bEf2e8f5c34A08BdD4A4AB777Bd3f6764"],
+                        minimumDuration: 3600,
+                        name: "ALP",
+                        multiplier: 1,
+                        href: "https://amped.finance/#/earn",
+                    },
+                    {
+                        targets: ["0x6fbaeE8bEf2e8f5c34A08BdD4A4AB777Bd3f6764"],
+                        minimumDuration: 3600,
+                        name: "yALP",
+                        multiplier: 1,
+                        href: "https://amped.finance/#/earn",
+                    },
+                ],
+            },
+            [Lv2PointsCampaign2Action.StabilityPool]: null,
+            [Lv2PointsCampaign2Action.Debt]: null,
         },
     },
     [SupportedLiquityV2.Ebisu]: null,

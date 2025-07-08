@@ -27,6 +27,10 @@ export enum SupportedLiquityV2 {
     Orki = "orki",
 }
 
+export enum SupportedGmxV1 {
+    Amped = "amped",
+}
+
 export enum SupportedAmm {
     AlgebraIntegral = "algebra-integral",
     UniswapV3 = "uniswap-v3",
