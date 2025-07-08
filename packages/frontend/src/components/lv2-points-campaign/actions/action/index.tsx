@@ -35,7 +35,7 @@ export function Action({
             })}
         >
             <div className={styles.target}>
-                {targets.length === 1 ? (
+                {targets.length === 0 ? null : targets.length === 1 ? (
                     <RemoteLogo size="sm" chain={chain} address={targets[0]} />
                 ) : (
                     <PoolRemoteLogo
