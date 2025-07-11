@@ -26,6 +26,7 @@ import type {
     AugmentedPriceRangeBound,
     AugmentedPriceRangeSpecification,
     CampaignPayloadErrors,
+    FormStepBaseProps,
 } from "@/src/types/campaign";
 import type { LocalizedMessage } from "@/src/types/utils";
 
@@ -34,8 +35,7 @@ import styles from "./styles.module.css";
 const COMPUTE_TICKS_AMOUNT = 3000;
 const RANGE_TICKS_LIMIT = 4000;
 
-interface RangeStepProps {
-    disabled?: boolean;
+interface RangeStepProps extends FormStepBaseProps {
     distributablesType?: DistributablesType;
     pool?: AmmPoolLiquidityCampaignPayload["pool"];
     priceRangeSpecification?: AmmPoolLiquidityCampaignPayload["priceRangeSpecification"];
@@ -43,9 +43,15 @@ interface RangeStepProps {
     onError: (errors: CampaignPayloadErrors) => void;
 }
 
+enum PriceRatio {
+    Token0To1 = "token-0-to-1",
+    Token1To0 = "token-1-to-0",
+}
+
 type ErrorMessage = LocalizedMessage<"newCampaign.form.ammPoolLiquidity.range">;
 
 export function RangeStep({
+    autoCompleting,
     disabled,
     distributablesType,
     pool,
@@ -55,7 +61,7 @@ export function RangeStep({
 }: RangeStepProps) {
     const t = useTranslations("newCampaign.form.ammPoolLiquidity.range");
     const [open, setOpen] = useState(false);
-    const [token0To1, setToken0To1] = useState(true);
+    const [ratio, setRatio] = useState<PriceRatio>(PriceRatio.Token0To1);
     const [enabled, setEnabled] = useState(false);
     const [error, setError] = useState<ErrorMessage>("");
     const [warning, setWarning] = useState<ErrorMessage>("");
@@ -68,6 +74,7 @@ export function RangeStep({
     );
 
     const prevRangeSpecification = usePrevious(priceRangeSpecification);
+    const prevPoolId = usePrevious(pool?.id);
     const chainId = useChainId();
     const { liquidityDensity, loading: loadingLiquidityDensity } =
         useLiquidityDensity({
@@ -84,40 +91,49 @@ export function RangeStep({
         );
     }, [from, prevRangeSpecification, to]);
 
+    const token0To1 = useMemo(() => ratio === PriceRatio.Token0To1, [ratio]);
+
     const currentPrice = useMemo(() => {
         if (!liquidityDensity || !pool) return undefined;
+
         const activeTickIdx = token0To1
             ? liquidityDensity.activeIdx
             : -liquidityDensity.activeIdx;
+
         return tickToScaledPrice(activeTickIdx, pool, token0To1);
-    }, [liquidityDensity, token0To1, pool]);
+    }, [liquidityDensity, pool, token0To1]);
 
     useEffect(() => {
+        // Avoid resetting the range if the form is autocompleting
+        if (autoCompleting || prevPoolId === pool?.id) return;
+
+        onRangeChange({ priceRangeSpecification: undefined });
         setFrom(undefined);
         setTo(undefined);
-    }, [pool?.id]);
+    }, [autoCompleting, prevPoolId, pool?.id, onRangeChange]);
 
     useEffect(() => {
         setOpen(false);
     }, [chainId]);
 
-    // this hooks is used to disable and close the step when
-    // the range specification gets disabled, after the campaign creation
+    useEffect(() => {
+        setFrom(priceRangeSpecification?.from);
+        setTo(priceRangeSpecification?.to);
+    }, [priceRangeSpecification?.from, priceRangeSpecification?.to]);
+
+    useEffect(() => {
+        if (!!priceRangeSpecification) {
+            setEnabled(true);
+            setOpen(false);
+        }
+    }, [priceRangeSpecification]);
+
+    // This hooks is used to disable and close the step when
+    // the range specification gets disabled, after the campaign creation.
     useEffect(() => {
         if (enabled && !!prevRangeSpecification && !priceRangeSpecification)
             setEnabled(false);
     }, [enabled, prevRangeSpecification, priceRangeSpecification]);
-
-    // reset state once the step gets disabled
-    useEffect(() => {
-        if (enabled) return;
-        if (priceRangeSpecification)
-            onRangeChange({ priceRangeSpecification: undefined });
-
-        setFrom(undefined);
-        setTo(undefined);
-        setError("");
-    }, [enabled, onRangeChange, priceRangeSpecification]);
 
     useEffect(() => {
         if (!from && !to) setError("");
@@ -132,10 +148,6 @@ export function RangeStep({
             setError("errors.rangeTooWide");
         else setError("");
     }, [from, to]);
-
-    useEffect(() => {
-        setOpen(enabled);
-    }, [enabled]);
 
     useEffect(() => {
         if (enabled && !open && unsavedChanges)
@@ -153,6 +165,8 @@ export function RangeStep({
     // TODO: avoid resetting when the range is enabled for points.
     // This hook is used to reset and disable the range when changing reward type.
     useEffect(() => {
+        if (distributablesType === DistributablesType.Tokens) return;
+
         onRangeChange({ priceRangeSpecification: undefined });
         setFrom(undefined);
         setTo(undefined);
@@ -161,13 +175,21 @@ export function RangeStep({
     }, [distributablesType, onRangeChange]);
 
     function handleSwitchOnClick(
-        _: boolean,
+        checked: boolean,
         event:
             | React.MouseEvent<HTMLButtonElement>
             | React.KeyboardEvent<HTMLButtonElement>,
     ) {
         event.stopPropagation();
-        setEnabled((enabled) => !enabled);
+        setEnabled(checked);
+        setOpen(checked);
+
+        if (!checked) {
+            onRangeChange({ priceRangeSpecification: undefined });
+            setFrom(undefined);
+            setTo(undefined);
+            setError("");
+        }
     }
 
     function handleStepOnClick() {
@@ -178,15 +200,18 @@ export function RangeStep({
     const handleOnFlipPrice = useCallback(() => {
         if (!pool) return;
 
-        setToken0To1((token0To1) => {
-            const newToken0ToToken1 = !token0To1;
+        setRatio((ratio) => {
+            const newRatio =
+                ratio === PriceRatio.Token0To1
+                    ? PriceRatio.Token1To0
+                    : PriceRatio.Token0To1;
 
             if (from && to) {
                 const newFromTick = -to.tick;
                 const newFromPrice = tickToScaledPrice(
                     newFromTick,
                     pool,
-                    newToken0ToToken1,
+                    newRatio === PriceRatio.Token0To1,
                 );
                 setFrom({ tick: newFromTick, price: newFromPrice });
 
@@ -194,12 +219,12 @@ export function RangeStep({
                 const newToPrice = tickToScaledPrice(
                     newToTick,
                     pool,
-                    newToken0ToToken1,
+                    newRatio === PriceRatio.Token0To1,
                 );
                 setTo({ tick: newToTick, price: newToPrice });
             }
 
-            return newToken0ToToken1;
+            return newRatio;
         });
     }, [pool, from, to]);
 
@@ -214,7 +239,7 @@ export function RangeStep({
 
         setOpen(false);
         onRangeChange({ priceRangeSpecification });
-    }, [from, onRangeChange, to, token0To1]);
+    }, [from, to, token0To1, onRangeChange]);
 
     return (
         <Step
@@ -314,12 +339,12 @@ export function RangeStep({
                 <div className={styles.stepContent}>
                     <Tabs
                         size="sm"
-                        value={token0To1}
+                        value={ratio}
                         onChange={handleOnFlipPrice}
                         className={styles.priceTabs}
                     >
                         <Tab
-                            value={token0To1}
+                            value={PriceRatio.Token0To1}
                             className={classNames(styles.priceTab, {
                                 [styles.activePriceTab]: token0To1,
                             })}
@@ -329,7 +354,7 @@ export function RangeStep({
                             </Typography>
                         </Tab>
                         <Tab
-                            value={!token0To1}
+                            value={PriceRatio.Token1To0}
                             className={classNames(styles.priceTab, {
                                 [styles.activePriceTab]: !token0To1,
                             })}
