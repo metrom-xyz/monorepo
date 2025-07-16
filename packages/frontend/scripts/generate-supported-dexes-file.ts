@@ -1,4 +1,4 @@
-import { CHAIN_DATA, ProtocolType } from "@metrom-xyz/chains";
+import { EVM_CHAIN_DATA, ProtocolType } from "@metrom-xyz/chains";
 import { Environment, SupportedDex } from "@metrom-xyz/sdk";
 import { exec } from "node:child_process";
 import { writeFileSync } from "node:fs";
@@ -22,7 +22,8 @@ const HOMEPAGES: Record<SupportedDex, string> = {
     [SupportedDex.Morphex]: "https://morphex.exchange/",
 };
 
-const chains = Object.values(CHAIN_DATA[Environment.Production]).filter(
+// TODO: add support for MVM_CHAIN_DATA generation
+const chains = Object.values(EVM_CHAIN_DATA[Environment.Production]).filter(
     ({ protocols }) => protocols.some(({ active }) => active),
 );
 const chainNames = chains.map((chain) => chain.name);

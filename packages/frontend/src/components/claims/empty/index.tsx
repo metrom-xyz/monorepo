@@ -1,10 +1,10 @@
 import { Typography, Button, Card } from "@metrom-xyz/ui";
 import { Link } from "@/src/i18n/routing";
 import { useTranslations } from "next-intl";
-import { useAccount } from "wagmi";
 import { useEffect } from "react";
 import { trackFathomEvent } from "@/src/utils/fathom";
 import { useAppKit } from "@reown/appkit/react";
+import { useAccount } from "@/src/hooks/use-account/useAccount";
 
 import styles from "./styles.module.css";
 
@@ -21,7 +21,7 @@ export function Empty() {
         await open();
     }
 
-    return address ? (
+    return !!address ? (
         <Card className={styles.root}>
             <Typography weight="medium" uppercase className={styles.title}>
                 {t("empty.title")}
