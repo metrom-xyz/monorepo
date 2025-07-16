@@ -10,15 +10,16 @@ import { NewCampaignIcon } from "@/src/assets/new-campaign-icon";
 import { AllCampaignsIcon } from "@/src/assets/all-campaigns-icon";
 import { ClaimsIcon } from "@/src/assets/claims";
 import { NetworkSelect } from "../../network-select";
-import { useAccount, useChainId } from "wagmi";
 import { NavThemeSwitcher } from "../../nav-theme-switcher";
 import { useMemo, type FunctionComponent } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import type { SVGIcon } from "@/src/types/common";
 import type { TranslationsKeys } from "@/src/types/utils";
-import { useClaims } from "@/src/hooks/useClaims";
 import type { Address } from "viem";
-import { useActiveChains } from "@/src/hooks/useActiveChains";
+import { useClaims } from "@/src/hooks/use-claims/useClaims";
+import { useActiveChains } from "@/src/hooks/use-active-chains/useActiveChains";
+import { useChainId } from "@/src/hooks/use-chain-id/useChainId";
+import { useAccount } from "@/src/hooks/use-account/useAccount";
 
 import styles from "./styles.module.css";
 
@@ -70,7 +71,7 @@ export function Nav() {
                     {ROUTES.map(({ path, label, icon: Icon }) => {
                         const disabled =
                             path === "/campaigns/create" &&
-                            !activeChains.find(({ id }) => id === chain);
+                            !activeChains.find((id) => id === chain);
                         const active =
                             pathname === path ||
                             (path !== "/" && pathname.startsWith(path));
@@ -144,7 +145,7 @@ export function Nav() {
                     {ROUTES.map(({ path, label, icon: Icon }) => {
                         const disabled =
                             path === "/campaigns/create" &&
-                            !activeChains.find(({ id }) => id === chain);
+                            !activeChains.find((id) => id === chain);
                         const active =
                             pathname === path ||
                             (path !== "/" && pathname.startsWith(path));

@@ -1,0 +1,5 @@
+@reference "../../../../app.css";
+
+.button {
+    @apply w-full max-w-[400px];
+}
