@@ -16,7 +16,8 @@ import { RemoteLogo } from "@/src/components/remote-logo";
 import { ChevronDown } from "@/src/assets/chevron-down";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslations } from "next-intl";
-import { useAccount, useChainId } from "wagmi";
+import { useChainId } from "@/src/hooks/use-chain-id/useChainId";
+import { useAccount } from "@/src/hooks/use-account/useAccount";
 import type {
     CampaignPayloadErrors,
     BaseCampaignPayloadPart,

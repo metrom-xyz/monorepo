@@ -1,7 +1,7 @@
 "use client";
 
 import { useTurtleDeals } from "@/src/hooks/useTurtleDeals";
-import { useAccount } from "wagmi";
+import { useAccount } from "@/src/hooks/use-account/useAccount";
 import { TextField, Typography } from "@metrom-xyz/ui";
 import { TURTLE_CAMPAIGNS } from "@/src/commons/turtle-campaigns";
 import { Header } from "./header";

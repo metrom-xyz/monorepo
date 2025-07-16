@@ -8,7 +8,7 @@ import {
 } from "react";
 import { useDebounce } from "react-use";
 import type { Erc20Token, SupportedDex, AmmPoolWithTvl } from "@metrom-xyz/sdk";
-import { useChainId } from "wagmi";
+import { useChainId } from "@/src/hooks/use-chain-id/useChainId";
 import { TextInput, Chip, Typography } from "@metrom-xyz/ui";
 import AutoSizer from "react-virtualized-auto-sizer";
 import { FixedSizeList } from "react-window";
