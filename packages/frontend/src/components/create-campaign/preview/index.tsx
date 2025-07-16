@@ -7,14 +7,7 @@ import {
     type CampaignPreviewPayload,
 } from "@/src/types/campaign";
 import type { LocalizedMessage } from "@/src/types/utils";
-import {
-    useChainId,
-    usePublicClient,
-    useSimulateContract,
-    useWriteContract,
-} from "wagmi";
-import { metromAbi } from "@metrom-xyz/contracts/abi";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 import { MetromLightLogo } from "@/src/assets/metrom-light-logo";
 import { useRouter } from "@/src/i18n/routing";
@@ -22,7 +15,6 @@ import { Rewards } from "./rewards";
 import { Header } from "./header";
 import { formatAmount, formatUsdAmount } from "@/src/utils/format";
 import {
-    buildCampaignDataBundle,
     buildSpecificationBundle,
     getCampaignPreviewApr,
 } from "@/src/utils/campaign";
@@ -30,29 +22,17 @@ import {
     DistributablesType,
     SERVICE_URLS,
     type Specification,
-    type UsdPricedErc20TokenAmount,
 } from "@metrom-xyz/sdk";
 import { ENVIRONMENT, SAFE } from "@/src/commons/env";
 import { Kpi } from "./kpi";
 import { AprChip } from "../../apr-chip";
 import { Range } from "./range";
-import {
-    zeroHash,
-    type Hex,
-    parseUnits,
-    formatUnits,
-    encodeFunctionData,
-} from "viem";
+import { zeroHash, type Hex } from "viem";
 import { useLiquidityInRange } from "@/src/hooks/useLiquidityInRange";
 import { Weighting } from "./weighting";
 import { Restrictions } from "./restrictions";
 import { useLiquidityByAddresses } from "@/src/hooks/useLiquidityByAddresses";
-import { useChainData } from "@/src/hooks/useChainData";
-import type { BaseTransaction } from "@safe-global/safe-apps-sdk";
-import { trackFathomEvent } from "@/src/utils/fathom";
-import { SAFE_APP_SDK } from "@/src/commons";
-import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
-import { ApproveTokensButton } from "./approve-tokens-button";
+import { DeployButton } from "./deploy-button";
 
 import styles from "./styles.module.css";
 
@@ -71,20 +51,14 @@ export function CampaignPreview({
 }: CampaignPreviewProps) {
     const t = useTranslations("campaignPreview");
     const router = useRouter();
-    const chainId = useChainId();
-    const chainData = useChainData(chainId);
-    const publicClient = usePublicClient();
-    const { writeContractAsync } = useWriteContract();
 
     const feedback = useRef<HTMLDivElement>(null);
 
-    const [deploying, setDeploying] = useState(false);
     const [uploadingSpecification, setUploadingSpecification] = useState(false);
     const [created, setCreated] = useState(false);
     const [tokensApproved, setTokensApproved] = useState(false);
     const [specificationHash, setSpecificationHash] = useState<Hex>(zeroHash);
     const [error, setError] = useState<ErrorMessage>("");
-    const [safeTxs, setSafeTxs] = useState<BaseTransaction[]>([]);
 
     const ammPoolLiquidityCampaign =
         payload instanceof AmmPoolLiquidityCampaignPreviewPayload;
@@ -122,35 +96,6 @@ export function CampaignPreview({
     const { loading: loadingLiquidityByAddresses, liquidityByAddresses } =
         useLiquidityByAddresses(liquidityByAddressesParams);
 
-    const tokensToApprove: [
-        UsdPricedErc20TokenAmount,
-        ...UsdPricedErc20TokenAmount[],
-    ] = useMemo(() => {
-        switch (payload.distributables.type) {
-            case DistributablesType.Tokens: {
-                return payload.distributables.tokens;
-            }
-            case DistributablesType.Points: {
-                const { amount, token } = payload.distributables.fee;
-                const adjustedFeeAmountRaw = (amount.raw * 115n) / 100n;
-                const adjustedFeeAmountFormatted = Number(
-                    formatUnits(adjustedFeeAmountRaw, token.decimals),
-                );
-                return [
-                    {
-                        token,
-                        amount: {
-                            raw: adjustedFeeAmountRaw,
-                            formatted: adjustedFeeAmountFormatted,
-                            usdValue:
-                                adjustedFeeAmountFormatted * token.usdPrice,
-                        },
-                    },
-                ];
-            }
-        }
-    }, [payload.distributables]);
-
     const pointsCampaign = payload.isDistributing(DistributablesType.Points);
     const tokensCampaign = payload.isDistributing(DistributablesType.Tokens);
     const emptyTargetCampaign =
@@ -174,64 +119,11 @@ export function CampaignPreview({
         return 0;
     }, [kpi, payload]);
 
-    const [tokensCampaignArgs, pointsCampaignArgs] = useMemo(() => {
-        const { kind, startDate, endDate } = payload;
-
-        if (!tokensApproved || !startDate || !endDate) return [[], []];
-
-        let tokenArgs = [];
-        let pointArgs = [];
-
-        const data = buildCampaignDataBundle(payload);
-        if (data === null) return [[], []];
-
-        if (payload.isDistributing(DistributablesType.Tokens))
-            tokenArgs.push({
-                from: startDate.unix(),
-                to: endDate.unix(),
-                kind,
-                data,
-                specificationHash,
-                rewards: payload.distributables.tokens.map((token) => ({
-                    token: token.token.address,
-                    amount: token.amount.raw,
-                })),
-            });
-
-        if (payload.isDistributing(DistributablesType.Points))
-            pointArgs.push({
-                from: startDate.unix(),
-                to: endDate.unix(),
-                kind,
-                data,
-                specificationHash,
-                points: parseUnits(
-                    payload.distributables.points.toString(),
-                    18,
-                ),
-                feeToken: payload.distributables.fee.token.address,
-            });
-
-        return [tokenArgs, pointArgs];
-    }, [payload, specificationHash, tokensApproved]);
-
-    const {
-        data: simulatedCreate,
-        isLoading: simulatingCreate,
-        isError: simulateCreateErrored,
-        error: simulateCreateError,
-    } = useSimulateContract({
-        abi: metromAbi,
-        address: chainData?.metromContract.address,
-        functionName: "createCampaigns",
-        args: [tokensCampaignArgs, pointsCampaignArgs],
-        query: {
-            enabled:
-                !SAFE &&
-                (tokensCampaignArgs.length > 0 ||
-                    pointsCampaignArgs.length > 0),
-        },
-    });
+    // There's no need to approve tokens for Aptos
+    useEffect(() => {
+        if (tokensApproved) return;
+        setTokensApproved(true);
+    }, [tokensApproved]);
 
     useEffect(() => {
         const specification = buildSpecificationBundle(payload);
@@ -275,95 +167,9 @@ export function CampaignPreview({
         tokensApproved,
     ]);
 
-    const handleSafeTransaction = useCallback(
-        (tx: BaseTransaction) => {
-            setSafeTxs([...safeTxs, tx]);
-        },
-        [safeTxs],
-    );
-
-    function handleOnRewardsApproved() {
-        setTokensApproved(true);
+    function handleOnCreate() {
+        setCreated(true);
     }
-
-    const handleOnStandardDeploy = useCallback(() => {
-        if (simulateCreateErrored) {
-            console.warn(
-                `Could not deploy the campaign: ${simulateCreateError}`,
-            );
-            return;
-        }
-
-        if (!writeContractAsync || !publicClient || !simulatedCreate?.request)
-            return;
-
-        const create = async () => {
-            setDeploying(true);
-            try {
-                const tx = await writeContractAsync(simulatedCreate.request);
-                const receipt = await publicClient.waitForTransactionReceipt({
-                    hash: tx,
-                });
-
-                if (receipt.status === "reverted") {
-                    console.warn("creation transaction reverted");
-                    return;
-                }
-
-                setCreated(true);
-                trackFathomEvent("CLICK_DEPLOY_CAMPAIGN");
-            } catch (error) {
-                console.warn("Could not create campaign", error);
-            } finally {
-                setDeploying(false);
-            }
-        };
-        void create();
-    }, [
-        publicClient,
-        simulateCreateError,
-        simulateCreateErrored,
-        simulatedCreate?.request,
-        writeContractAsync,
-    ]);
-
-    const handleOnSafeDeploy = useCallback(() => {
-        if (
-            !chainData ||
-            (tokensCampaignArgs.length === 0 && pointsCampaignArgs.length === 0)
-        ) {
-            console.warn(
-                "Missing parameters to deploy campaign through Safe: aborting",
-            );
-            return;
-        }
-
-        safeTxs.push({
-            to: chainData.metromContract.address,
-            data: encodeFunctionData({
-                abi: metromAbi,
-                functionName: "createCampaigns",
-                args: [tokensCampaignArgs, pointsCampaignArgs],
-            }),
-            value: "0",
-        });
-
-        const create = async () => {
-            setDeploying(true);
-            try {
-                await SAFE_APP_SDK.txs.send({ txs: safeTxs });
-
-                setCreated(true);
-                trackFathomEvent("CLICK_DEPLOY_CAMPAIGN");
-            } catch (error) {
-                console.warn("Could not create campaign", error);
-            } finally {
-                setDeploying(false);
-            }
-        };
-
-        void create();
-    }, [chainData, safeTxs, tokensCampaignArgs, pointsCampaignArgs]);
 
     function handleGoToAllCampaigns() {
         router.push("/");
@@ -379,7 +185,9 @@ export function CampaignPreview({
         return (
             <div ref={feedback} className={styles.root}>
                 <Header
-                    backDisabled={simulatingCreate || deploying}
+                    backDisabled={false}
+                    // FIXME: disable when loading
+                    // backDisabled={simulatingCreate || deploying}
                     payload={payload}
                     onBack={onBack}
                 />
@@ -465,7 +273,14 @@ export function CampaignPreview({
                                 {t(error)}
                             </ErrorText>
                         )}
-                        {tokensApproved && (
+                        <DeployButton
+                            payload={payload}
+                            specificationHash={specificationHash}
+                            uploadingSpecification={uploadingSpecification}
+                            disabled={!!error}
+                            onCreate={handleOnCreate}
+                        />
+                        {/* {tokensApproved && (
                             <Button
                                 icon={ArrowRightIcon}
                                 iconPlacement="right"
@@ -489,7 +304,7 @@ export function CampaignPreview({
                             tokenAmounts={tokensToApprove}
                             onApproved={handleOnRewardsApproved}
                             onSafeTx={handleSafeTransaction}
-                        />
+                        /> */}
                     </div>
                 </div>
             </div>

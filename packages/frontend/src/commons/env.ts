@@ -21,3 +21,4 @@ export const EXPERIMENTAL_CHAINS: number[] =
     process.env.NEXT_PUBLIC_EXPERIMENTAL_CHAINS?.split(",")
         .map((chain) => parseInt(chain.trim()))
         .filter(Boolean) || [];
+export const APTOS: boolean = process.env.NEXT_PUBLIC_APTOS === "true";

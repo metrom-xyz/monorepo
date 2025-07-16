@@ -1,6 +1,6 @@
 "use client";
 
-import { useClaims } from "@/src/hooks/useClaims";
+import { useClaims } from "@/src/hooks/use-claims/useClaims";
 import { Chains, ChainsSkeleton, type ChainOption } from "./chains";
 import { SupportedChain } from "@metrom-xyz/contracts";
 import { useCallback, useEffect, useMemo, useState } from "react";
@@ -9,15 +9,16 @@ import { ChainOverview, SkeletonChainOverview } from "./chain-overview";
 import { ChainClaims, SkeletonChainClaims } from "./chain-claims";
 import { Empty } from "./empty";
 import { SUPPORTED_CHAINS } from "@/src/commons";
-import { useReimbursements } from "@/src/hooks/useReimbursements";
+import { useReimbursements } from "@/src/hooks/use-reimbursements/useReimbursements";
 import { ChainReimbursements } from "./chain-reimbursements";
-import { useAccount, useSwitchChain } from "wagmi";
+import { useSwitchChain } from "wagmi";
 import type {
     ClaimWithRemaining,
     ReimbursementsWithRemaining,
 } from "@/src/types/campaign";
 import { type ChainData } from "@metrom-xyz/chains";
 import { getChainData } from "@/src/utils/chain";
+import { useAccount } from "@/src/hooks/use-account/useAccount";
 
 import styles from "./styles.module.css";
 

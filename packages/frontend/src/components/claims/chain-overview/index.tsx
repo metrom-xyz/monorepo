@@ -3,12 +3,12 @@ import { Typography, Button, Skeleton, Card } from "@metrom-xyz/ui";
 import type { ChainWithRewardsData } from "..";
 import { useTranslations } from "next-intl";
 import {
-    useAccount,
     usePublicClient,
     useSimulateContract,
     useSwitchChain,
     useWriteContract,
 } from "wagmi";
+import { useAccount } from "@/src/hooks/use-account/useAccount";
 import { metromAbi } from "@metrom-xyz/contracts/abi";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { trackFathomEvent } from "@/src/utils/fathom";

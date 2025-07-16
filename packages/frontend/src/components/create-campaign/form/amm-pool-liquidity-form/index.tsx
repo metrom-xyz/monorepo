@@ -8,7 +8,7 @@ import {
 } from "@/src/types/campaign";
 import { useTranslations } from "next-intl";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { useChainId } from "wagmi";
+import { useChainId } from "@/src/hooks/use-chain-id/useChainId";
 import {
     AmmPoolLiquidityType,
     DistributablesType,

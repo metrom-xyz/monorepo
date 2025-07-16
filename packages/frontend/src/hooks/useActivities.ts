@@ -4,7 +4,7 @@ import { useAccount, useChainId } from "wagmi";
 import { useQuery } from "@tanstack/react-query";
 import type { Address } from "viem";
 import type { HookBaseParams } from "../types/hooks";
-import { useActiveChains } from "./useActiveChains";
+import { useActiveChains } from "./use-active-chains/useActiveChains";
 
 interface UseActivitiesParams extends HookBaseParams {}
 
@@ -21,7 +21,7 @@ export function useActivities({ enabled = true }: UseActivitiesParams = {}): {
     const activeChains = useActiveChains();
     const { address } = useAccount();
 
-    const { data: activities, isPending: loading } = useQuery({
+    const { data: activities, isLoading: loading } = useQuery({
         queryKey: ["activities", address, chainId],
         queryFn: async ({ queryKey }) => {
             const [, account] = queryKey as QueryKey;
@@ -49,7 +49,7 @@ export function useActivities({ enabled = true }: UseActivitiesParams = {}): {
             enabled &&
             !!chainId &&
             !!address &&
-            !!activeChains.find(({ id }) => id === chainId),
+            !!activeChains.find((id) => id === chainId),
     });
 
     return {

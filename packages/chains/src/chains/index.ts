@@ -1,3 +1,8 @@
+export {
+    aptosDevelopmentData,
+    aptosDevelopmentTestnetData,
+    aptosProductionData,
+} from "./aptos";
 export { modeData } from "./mode";
 export { holeskyData } from "./holesky";
 export { mantleData } from "./mantle";

@@ -2,12 +2,12 @@ import classNames from "classnames";
 import { Typography, Button, Skeleton, Card } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
 import {
-    useAccount,
     usePublicClient,
     useSimulateContract,
     useSwitchChain,
     useWriteContract,
 } from "wagmi";
+import { useAccount } from "@/src/hooks/use-account/useAccount";
 import { metromAbi } from "@metrom-xyz/contracts/abi";
 import { useCallback, useMemo, useState } from "react";
 import type { TokenReimbursements } from "..";
@@ -43,7 +43,7 @@ export function TokenReimbursement({
     const publicClient = usePublicClient();
     const { switchChainAsync } = useSwitchChain();
     const { writeContractAsync } = useWriteContract();
-    const chainData = useChainData(chainId);
+    const chainData = useChainData({ chainId });
 
     const [recovering, setRecovering] = useState(false);
     const [recovered, setRecovered] = useState(false);
