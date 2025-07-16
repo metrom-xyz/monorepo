@@ -5,6 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import type { HookBaseParams } from "../types/hooks";
 import { useProtocolsInChain } from "./useProtocolsInChain";
 import { ProtocolType } from "@metrom-xyz/chains";
+import { APTOS } from "../commons/env";
 
 interface UsePoolsParams extends HookBaseParams {
     chainId: SupportedChain;
@@ -37,8 +38,9 @@ export function usePools({
 
             try {
                 const pools = await METROM_API_CLIENT.fetchAmmPools({
-                    chainId,
+                    chainId: APTOS ? 17000 : chainId,
                     chainType,
+                    // FIXME: remove
                     dex,
                 });
                 return pools;

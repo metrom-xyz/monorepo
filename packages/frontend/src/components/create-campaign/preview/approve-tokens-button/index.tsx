@@ -1,6 +1,7 @@
 import { useTranslations } from "next-intl";
 import { usePrevious } from "react-use";
-import { useAccount, useChainId } from "wagmi";
+import { useChainId } from "wagmi";
+import { useAccount } from "@/src/hooks/use-account/useAccount";
 import { Button } from "@metrom-xyz/ui";
 import { WalletIcon } from "@/src/assets/wallet-icon";
 import { useCallback, useEffect, useState } from "react";
@@ -30,7 +31,7 @@ export function ApproveTokensButton({
 
     const chainId = useChainId();
     const { open } = useAppKit();
-    const chainData = useChainData(chainId);
+    const chainData = useChainData({ chainId });
     const { address: connectedAddress } = useAccount();
 
     useEffect(() => {

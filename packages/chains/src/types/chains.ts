@@ -16,7 +16,21 @@ export interface ChainData {
     baseTokens: Erc20Token[];
 }
 
-export enum SupportedDevelopmentChain {
+export enum SupportedDevelopmentMvmChain {
+    // TODO: use the chain id from the SupportedChain once added
+    AptosTestnet = 2,
+    // FIXME: aptos devnet chain id can't be hardcoded because it changes weekly, when Aptos resets the chain.
+    // It's probably better to skip this chain and use the testnet directly.
+    AptosDevnet = 195,
+    Aptos = 1,
+}
+
+export enum SupportedProductionMvmChain {
+    // TODO: use the chain id from the SupportedChain once added
+    Aptos = 1,
+}
+
+export enum SupportedDevelopmentEvmChain {
     Holesky = SupportedChain.Holesky,
     Sepolia = SupportedChain.Sepolia,
     BaseSepolia = SupportedChain.BaseSepolia,
@@ -26,7 +40,7 @@ export enum SupportedDevelopmentChain {
     Swell = SupportedChain.Swell,
 }
 
-export enum SupportedProductionChain {
+export enum SupportedProductionEvmChain {
     Base = SupportedChain.Base,
     Taiko = SupportedChain.Taiko,
     Scroll = SupportedChain.Scroll,

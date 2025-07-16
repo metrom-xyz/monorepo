@@ -12,6 +12,10 @@
         "generate-supported-protocols-file": "NEXT_PUBLIC_ENVIRONMENT=development tsx --import 'data:text/javascript,import { register } from \"node:module\"; import { pathToFileURL } from \"node:url\"; register(\"./scripts/ignore-loader.js\", pathToFileURL(\"./\"));' ./scripts/generate-supported-dexes-file.ts"
     },
     "dependencies": {
+        "@aptos-labs/js-pro": "^0.1.1",
+        "@aptos-labs/react": "^0.1.1",
+        "@aptos-labs/ts-sdk": "^3.1.2",
+        "@aptos-labs/wallet-adapter-react": "^7.0.1",
         "@fontsource/ibm-plex-mono": "^5.2.5",
         "@fontsource/ibm-plex-sans": "^5.2.5",
         "@metrom-xyz/chains": "workspace:*",
@@ -27,6 +31,7 @@
         "blo": "^2.0.0",
         "dayjs": "^1.11.13",
         "fathom-client": "^3.7.2",
+        "keyv": "4.5.4",
         "motion": "^12.23.12",
         "next": "15.4.6",
         "next-intl": "^4.3.4",

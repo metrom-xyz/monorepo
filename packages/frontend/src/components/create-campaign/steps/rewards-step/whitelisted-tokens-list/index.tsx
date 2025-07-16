@@ -1,7 +1,8 @@
 "use client";
 
 import { useRef } from "react";
-import { useAccount, useChainId } from "wagmi";
+import { useAccount } from "@/src/hooks/use-account/useAccount";
+import { useChainId } from "@/src/hooks/use-chain-id/useChainId";
 import { FixedSizeList } from "react-window";
 import { useTranslations } from "next-intl";
 import { type WhitelistedErc20Token } from "@metrom-xyz/sdk";
@@ -9,7 +10,7 @@ import { Typography } from "@metrom-xyz/ui";
 import {
     useWatchBalances,
     type Erc20TokenWithBalance,
-} from "@/src/hooks/useWatchBalances";
+} from "@/src/hooks/use-watch-balances";
 import { Row } from "./row";
 import { AnimatePresence, easeInOut, motion } from "motion/react";
 import type { WhitelistedErc20TokenAmount } from "@/src/types/common";
