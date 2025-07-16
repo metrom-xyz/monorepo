@@ -14,5 +14,6 @@ export { sepoliaData } from "./sepolia";
 export { telosData } from "./telos";
 export { lensData } from "./lens";
 export { lightlinkPhoenixData } from "./lightlink-phoenix";
+export { lumiaData } from "./lumia";
 export { mainnetData } from "./mainnet";
 export { seiDevelopmentData, seiProductionData } from "./sei";

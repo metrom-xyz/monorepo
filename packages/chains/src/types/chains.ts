@@ -38,6 +38,7 @@ export enum SupportedProductionChain {
     Telos = SupportedChain.Telos,
     Lens = SupportedChain.Lens,
     LightLinkPhoenix = SupportedChain.LightLinkPhoenix,
+    Lumia = SupportedChain.Lumia,
     // This is required for the Turtle integration
     Mainnet = mainnet.id,
     Sei = SupportedChain.Sei,
