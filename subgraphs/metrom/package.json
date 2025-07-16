@@ -22,6 +22,7 @@
         "deploy:swell": "pnpm prepare:deploy swellchain && pnpm codegen && graph deploy metrom-swell -l 0.0.2",
         "deploy:hemi": "pnpm prepare:deploy hemi && pnpm codegen && graph deploy metrom-hemi -l 0.0.1",
         "deploy:lens": "pnpm prepare:deploy lens && pnpm codegen && graph deploy metrom-lens -l 0.0.1",
+        "deploy:lumia": "pnpm prepare:deploy lumia && pnpm codegen && graph deploy metrom-lumia -l 0.0.1",
         "lint": "eslint .",
         "format": "eslint --fix ."
     },
@@ -33,7 +34,7 @@
     },
     "devDependencies": {
         "@eslint/js": "^9.30.1",
-        "@metrom-xyz/contracts": "^0.49.0",
+        "@metrom-xyz/contracts": "^0.50.0",
         "@types/mustache": "^4.2.6",
         "@types/node": "^24.0.10",
         "eslint": "^9.30.1",

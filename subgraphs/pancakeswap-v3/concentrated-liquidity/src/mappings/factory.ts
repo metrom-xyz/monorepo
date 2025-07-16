@@ -1,4 +1,4 @@
-import { BigInt, log } from "@graphprotocol/graph-ts";
+import { log } from "@graphprotocol/graph-ts";
 import { PoolCreated as PoolCreatedEvent } from "../../generated/Factory/Factory";
 import { Pool } from "../../generated/schema";
 import { Pool as PoolTemplate } from "../../generated/templates";
@@ -23,14 +23,15 @@ export function handlePoolCreated(event: PoolCreatedEvent): void {
         return;
     }
 
-    let pool = new Pool(event.params.pool);
+   let pool = new Pool(event.params.pool);
     pool.token0 = token0.id;
     pool.token1 = token1.id;
     pool.token0Tvl = BI_0;
     pool.token1Tvl = BI_0;
-    pool.tick = BI_0;
+    pool.tick = 0;
     pool.price = BD_0;
-    pool.fee = BigInt.fromU32(event.params.fee);
+    pool.sqrtPriceX96 = BI_0;
+    pool.fee = event.params.fee;
     pool.liquidity = BI_0;
     pool.save();
 

@@ -2,29 +2,30 @@ type Token @entity(immutable: true) {
     id: Bytes!
     name: String!
     symbol: String!
-    decimals: BigInt!
+    decimals: Int!
 }
 
-type Pool @entity {
+type Pool @entity(immutable: false) {
     id: Bytes!
     token0: Token!
     token1: Token!
     token0Tvl: BigInt!
     token1Tvl: BigInt!
-    tick: BigInt!
+    tick: Int!
     price: BigDecimal!
-    fee: BigInt!
+    sqrtPriceX96: BigInt!
+    fee: Int!
     liquidity: BigInt!
     positions: [Position!]! @derivedFrom(field: "pool")
-    tickMovingSwaps: [TickMovingSwap!]! @derivedFrom(field: "pool")
+    swapChanges: [SwapChange!]! @derivedFrom(field: "pool")
     ticks: [Tick!]! @derivedFrom(field: "pool")
 }
 
-type Position @entity {
+type Position @entity(immutable: false) {
     id: Bytes!
     owner: Bytes!
-    lowerTick: BigInt!
-    upperTick: BigInt!
+    lowerTick: Int!
+    upperTick: Int!
     liquidity: BigInt!
     direct: Boolean!
     pool: Pool!
@@ -35,7 +36,6 @@ type LiquidityChange @entity(immutable: true) {
     id: Bytes!
     timestamp: BigInt!
     blockNumber: BigInt!
-    transactionHash: Bytes!
     delta: BigInt!
     position: Position!
 }
@@ -44,24 +44,23 @@ type LiquidityTransfer @entity(immutable: true) {
     id: Bytes!
     timestamp: BigInt!
     blockNumber: BigInt!
-    transactionHash: Bytes!
     from: Bytes!
     to: Bytes!
     position: Position!
 }
 
-type TickMovingSwap @entity(immutable: true) {
+type SwapChange @entity(immutable: true) {
     id: Bytes!
     timestamp: BigInt!
     blockNumber: BigInt!
-    transactionHash: Bytes!
     pool: Pool!
-    newTick: BigInt!
+    tick: Int!
+    sqrtPriceX96: BigInt!
 }
 
-type Tick @entity {
+type Tick @entity(immutable: false) {
     id: Bytes!
-    idx: BigInt!
+    idx: Int!
     pool: Pool!
     liquidityGross: BigInt!
     liquidityNet: BigInt!

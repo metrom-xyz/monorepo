@@ -24,6 +24,7 @@ const NETWORK_NAME: Record<SupportedChain, string> = {
     [SupportedChain.Swell]: "swellchain",
     [SupportedChain.Hemi]: "hemi",
     [SupportedChain.Lens]: "lens",
+    [SupportedChain.Lumia]: "lumia",
 };
 
 const [, , rawNetwork = ""] = process.argv;

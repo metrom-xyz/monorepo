@@ -7,9 +7,7 @@ export interface ChainConfig {
         address: string;
         startBlock: number;
     };
-    MasterChefV3: {
-        address: string;
-    };
+    stakingContractAddresses?: string[];
 }
 
 export const DEPLOYMENTS: {
@@ -25,9 +23,26 @@ export const DEPLOYMENTS: {
                 address: "0xbbD6db7cDb3C3a0Ce26c89918D7ce99FB2d403aF",
                 startBlock: 433334,
             },
-            MasterChefV3: {
-                address: "0x2E47e7e2d7A75D1473995441BbcE7888DC035E74",
+            stakingContractAddresses: [
+                // Masterchef V3
+                "0x2E47e7e2d7A75D1473995441BbcE7888DC035E74",
+            ],
+        },
+    },
+    lumia: {
+        morphex: {
+            Factory: {
+                address: "0x69bCd7daCEe8789dc923D09E5b76135fe0fb95f9",
+                startBlock: 4581818,
             },
+            NonFungiblePositionManager: {
+                address: "0x2F91EECCc3c73a6D90E88576C9a070Be71aeC31F",
+                startBlock: 4581905,
+            },
+            stakingContractAddresses: [
+                // Masterchef V3
+                "0x01A441E7c15Da925d0F3444CDAdCaA34aD3026BC",
+            ],
         },
     },
 };
