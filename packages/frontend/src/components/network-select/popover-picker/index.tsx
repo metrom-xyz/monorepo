@@ -1,6 +1,5 @@
 import { Popover, Typography } from "@metrom-xyz/ui";
 import classNames from "classnames";
-import type { Chain } from "viem";
 import { useWindowSize } from "react-use";
 import { getChainData } from "@/src/utils/chain";
 
@@ -10,9 +9,9 @@ import commonStyles from "../styles.module.css";
 interface PopoverPickerProps {
     anchor: Element | null;
     open: boolean;
-    chains: readonly Chain[];
+    chains: readonly number[];
     value: number;
-    onChange: (chainId: number) => void;
+    onChange?: (chainId: number) => void;
 }
 
 export function PopoverPicker({
@@ -25,6 +24,7 @@ export function PopoverPicker({
     const { width } = useWindowSize();
 
     function getOnChangeHandler(chainId: number) {
+        if (!onChange) return;
         return () => {
             onChange(chainId);
         };
@@ -39,17 +39,21 @@ export function PopoverPicker({
             open={open}
             className={styles.root}
         >
-            <div className={styles.networksWrapper}>
-                {chains.map((chain) => {
-                    const chainData = getChainData(chain.id);
+            <div
+                className={classNames(styles.networksWrapper, {
+                    [styles.grid]: chains.length > 1,
+                })}
+            >
+                {chains.map((id) => {
+                    const chainData = getChainData(id);
 
                     return (
                         <div
-                            key={chain.id}
+                            key={id}
                             className={classNames(styles.network, {
-                                [commonStyles.active]: value === chain.id,
+                                [commonStyles.active]: value === id,
                             })}
-                            onClick={getOnChangeHandler(chain.id)}
+                            onClick={getOnChangeHandler(id)}
                         >
                             {chainData?.icon && (
                                 <chainData.icon className={commonStyles.icon} />

@@ -9,7 +9,7 @@ interface ChainProps {
 }
 
 export function Chain({ id }: ChainProps) {
-    const chainData = useChainData(id);
+    const chainData = useChainData({ chainId: id, crossVm: true });
 
     const [popoverOpen, setPopoverOpen] = useState(false);
     const [chainName, setChainName] = useState<HTMLDivElement | null>(null);

@@ -1,3 +1,4 @@
+export * from "./aptos";
 export * from "./base";
 export * from "./eth";
 export * from "./gnosis";

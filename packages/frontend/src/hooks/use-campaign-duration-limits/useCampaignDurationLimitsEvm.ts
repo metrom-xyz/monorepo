@@ -1,24 +1,19 @@
 import { metromAbi } from "@metrom-xyz/contracts/abi";
 import { useMemo } from "react";
-import { useChainId, useReadContracts } from "wagmi";
-import type { HookBaseParams } from "../types/hooks";
-import { useChainData } from "./useChainData";
+import { useReadContracts } from "wagmi";
+import { useChainData } from "../useChainData";
+import { useChainId } from "../use-chain-id/useChainId";
+import type {
+    CampaignDurationLimits,
+    UseCampaignDurationLimitsParams,
+    UseCampaignDurationReturnValue,
+} from "./types";
 
-interface CampaignDurationLimits {
-    minimumSeconds: number;
-    maximumSeconds: number;
-}
-
-interface UseCampaignDurationLimitsParams extends HookBaseParams {}
-
-export function useCampaignDurationLimits({
+export function useCampaignDurationLimitsEvm({
     enabled = true,
-}: UseCampaignDurationLimitsParams = {}): {
-    loading: boolean;
-    limits?: CampaignDurationLimits;
-} {
+}: UseCampaignDurationLimitsParams = {}): UseCampaignDurationReturnValue {
     const chainId = useChainId();
-    const chainData = useChainData(chainId);
+    const chainData = useChainData({ chainId });
 
     const { data, isLoading: loadingDurationLimits } = useReadContracts({
         contracts: [

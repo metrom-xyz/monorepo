@@ -4,7 +4,7 @@ import {
     CampaignType,
     type CampaignPreviewPayload,
 } from "@/src/types/campaign";
-import { useAccount, useChainId, useChains } from "wagmi";
+import { useAccount } from "@/src/hooks/use-account/useAccount";
 import { useMemo, useState } from "react";
 import { trackFathomEvent } from "@/src/utils/fathom";
 import { Modal } from "@metrom-xyz/ui";
@@ -15,6 +15,8 @@ import { LiquityV2ForksForm } from "./liquity-v2-forks-form";
 import { useRouter } from "@/src/i18n/routing";
 import { ProtocolType } from "@metrom-xyz/chains";
 import { useProtocolsInChain } from "@/src/hooks/useProtocolsInChain";
+import { useChainId } from "@/src/hooks/use-chain-id/useChainId";
+import { useActiveChains } from "@/src/hooks/use-active-chains/useActiveChains";
 
 import styles from "./styles.module.css";
 
@@ -30,9 +32,9 @@ export interface CreateCampaignFormProps<T> {
 export function CreateCampaignForm<T extends CampaignType>({
     type,
 }: CreateCampaignFormProps<T>) {
-    const { chain: connectedChain, isConnected } = useAccount();
+    const { chainId: connectedChainId, connected } = useAccount();
     const selectedChain = useChainId();
-    const chains = useChains();
+    const activeChains = useActiveChains();
     const router = useRouter();
     const dexesProtocols = useProtocolsInChain({
         chainId: selectedChain,
@@ -64,11 +66,11 @@ export function CreateCampaignForm<T extends CampaignType>({
 
     const unsupportedChain = useMemo(() => {
         return (
-            isConnected &&
-            (!connectedChain ||
-                !chains.some((chain) => chain.id === selectedChain))
+            connected &&
+            (!connectedChainId ||
+                !activeChains.some((id) => id === selectedChain))
         );
-    }, [chains, connectedChain, isConnected, selectedChain]);
+    }, [activeChains, connectedChainId, connected, selectedChain]);
 
     return (
         <div className={styles.root}>

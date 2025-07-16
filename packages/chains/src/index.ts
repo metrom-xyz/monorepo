@@ -39,10 +39,17 @@ import {
 } from "./chains";
 import {
     ChainData,
-    SupportedDevelopmentChain,
-    SupportedProductionChain,
+    SupportedDevelopmentEvmChain,
+    SupportedDevelopmentMvmChain,
+    SupportedProductionEvmChain,
+    SupportedProductionMvmChain,
 } from "./types/chains";
 import { Environment } from "@metrom-xyz/sdk";
+import {
+    aptosDevelopmentData,
+    aptosDevelopmentTestnetData,
+    aptosProductionData,
+} from "./chains/aptos";
 
 export {
     Environment,
@@ -56,34 +63,50 @@ export * from "./types/chains";
 export * from "./types/protocol";
 export * from "./assets";
 
-export const CHAIN_DATA: {
-    [Environment.Development]: Record<SupportedDevelopmentChain, ChainData>;
-    [Environment.Production]: Record<SupportedProductionChain, ChainData>;
+export const EVM_CHAIN_DATA: {
+    [Environment.Development]: Record<SupportedDevelopmentEvmChain, ChainData>;
+    [Environment.Production]: Record<SupportedProductionEvmChain, ChainData>;
 } = {
     [Environment.Development]: {
-        [SupportedDevelopmentChain.Holesky]: holeskyData,
-        [SupportedDevelopmentChain.BaseSepolia]: baseSepoliaData,
-        [SupportedDevelopmentChain.Sepolia]: sepoliaData,
-        [SupportedDevelopmentChain.Swell]: swellDevelopmentData,
-        [SupportedDevelopmentChain.Sei]: seiDevelopmentData,
+        [SupportedDevelopmentEvmChain.Holesky]: holeskyData,
+        [SupportedDevelopmentEvmChain.BaseSepolia]: baseSepoliaData,
+        [SupportedDevelopmentEvmChain.Sepolia]: sepoliaData,
+        [SupportedDevelopmentEvmChain.Swell]: swellDevelopmentData,
+        [SupportedDevelopmentEvmChain.Sei]: seiDevelopmentData,
     },
     [Environment.Production]: {
-        [SupportedProductionChain.Base]: baseData,
-        [SupportedProductionChain.Taiko]: taikoData,
-        [SupportedProductionChain.Scroll]: scrollData,
-        [SupportedProductionChain.Sonic]: sonicData,
-        [SupportedProductionChain.Swell]: swellProductionData,
-        [SupportedProductionChain.Gnosis]: gnosisData,
-        [SupportedProductionChain.Telos]: telosData,
-        [SupportedProductionChain.Lens]: lensData,
-        [SupportedProductionChain.LightLinkPhoenix]: lightlinkPhoenixData,
-        [SupportedProductionChain.Lumia]: lumiaData,
-        [SupportedProductionChain.Mainnet]: mainnetData,
-        [SupportedProductionChain.Sei]: seiProductionData,
-        [SupportedProductionChain.Hemi]: hemiData,
+        [SupportedProductionEvmChain.Base]: baseData,
+        [SupportedProductionEvmChain.Taiko]: taikoData,
+        [SupportedProductionEvmChain.Scroll]: scrollData,
+        [SupportedProductionEvmChain.Sonic]: sonicData,
+        [SupportedProductionEvmChain.Swell]: swellProductionData,
+        [SupportedProductionEvmChain.Gnosis]: gnosisData,
+        [SupportedProductionEvmChain.Telos]: telosData,
+        [SupportedProductionEvmChain.Lens]: lensData,
+        [SupportedProductionEvmChain.LightLinkPhoenix]: lightlinkPhoenixData,
+        [SupportedProductionEvmChain.Lumia]: lumiaData,
+        [SupportedProductionEvmChain.Mainnet]: mainnetData,
+        [SupportedProductionEvmChain.Sei]: seiProductionData,
+        [SupportedProductionEvmChain.Hemi]: hemiData,
     },
 };
 
+export const MVM_CHAIN_DATA: {
+    [Environment.Development]: Record<SupportedDevelopmentMvmChain, ChainData>;
+    [Environment.Production]: Record<SupportedProductionMvmChain, ChainData>;
+} = {
+    [Environment.Development]: {
+        [SupportedDevelopmentMvmChain.AptosDevnet]: aptosDevelopmentData,
+        [SupportedDevelopmentMvmChain.AptosTestnet]:
+            aptosDevelopmentTestnetData,
+        [SupportedDevelopmentMvmChain.Aptos]: aptosProductionData,
+    },
+    [Environment.Production]: {
+        [SupportedProductionMvmChain.Aptos]: aptosProductionData,
+    },
+};
+
+// Needed for wagmi context setup, not needed for MVM chains
 export const SUPPORTED_DEVELOPMENT_CHAINS: [Chain, ...Chain[]] = [
     holesky,
     baseSepolia,
@@ -92,6 +115,7 @@ export const SUPPORTED_DEVELOPMENT_CHAINS: [Chain, ...Chain[]] = [
     swellchain,
 ];
 
+// Needed for wagmi context setup, not needed for MVM chains
 export const SUPPORTED_PRODUCTION_CHAINS: [Chain, ...Chain[]] = [
     base,
     taiko,
@@ -110,8 +134,8 @@ export const SUPPORTED_PRODUCTION_CHAINS: [Chain, ...Chain[]] = [
 ].sort((a, b) => {
     // keep the active chains first, this way the default selected
     // chain will always be an active one
-    const chainDataA = CHAIN_DATA[Environment.Production][a.id];
-    const chainDataB = CHAIN_DATA[Environment.Production][b.id];
+    const chainDataA = EVM_CHAIN_DATA[Environment.Production][a.id];
+    const chainDataB = EVM_CHAIN_DATA[Environment.Production][b.id];
 
     return (chainDataB.active ? 1 : 0) - (chainDataA.active ? 1 : 0);
 }) as unknown as [Chain, ...Chain[]];

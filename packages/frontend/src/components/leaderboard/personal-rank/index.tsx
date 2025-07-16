@@ -1,4 +1,4 @@
-import { useAccount } from "wagmi";
+import { useAccount } from "@/src/hooks/use-account/useAccount";
 import { Card, Typography } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
 import { SupportedChain } from "@metrom-xyz/contracts";

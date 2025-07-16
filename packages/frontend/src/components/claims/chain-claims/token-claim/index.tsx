@@ -2,7 +2,6 @@ import classNames from "classnames";
 import { Typography, Button, Skeleton, Card } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
 import {
-    useAccount,
     usePublicClient,
     useSimulateContract,
     useSwitchChain,
@@ -22,6 +21,7 @@ import type { Erc20Token } from "@metrom-xyz/sdk";
 import { SAFE } from "@/src/commons/env";
 import { SAFE_APP_SDK } from "@/src/commons";
 import { useChainData } from "@/src/hooks/useChainData";
+import { useAccount } from "@/src/hooks/use-account/useAccount";
 
 import styles from "./styles.module.css";
 
@@ -43,7 +43,7 @@ export function TokenClaim({
     const publicClient = usePublicClient();
     const { switchChainAsync } = useSwitchChain();
     const { writeContractAsync } = useWriteContract();
-    const chainData = useChainData(chainId);
+    const chainData = useChainData({ chainId });
 
     const [claiming, setClaiming] = useState(false);
     const [claimed, setClaimed] = useState(false);

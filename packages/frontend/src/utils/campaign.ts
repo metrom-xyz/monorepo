@@ -19,13 +19,20 @@ import {
 import type { TranslationsType } from "../types/utils";
 import { LiquityV2Action } from "../types/common";
 import { getDistributableRewardsPercentage } from "./kpi";
-import { type Hex, encodeAbiParameters, stringToHex, isAddress } from "viem";
+import {
+    type Hex,
+    encodeAbiParameters,
+    stringToHex,
+    isAddress,
+    hexToBytes,
+} from "viem";
 import { SECONDS_IN_YEAR, WEIGHT_UNIT } from "../commons";
 import { type LiquityV2Protocol } from "@metrom-xyz/chains";
 import { getTranslations } from "next-intl/server";
 import { getChainData } from "./chain";
+import { Serializer, Hex as BcsHex } from "@aptos-labs/ts-sdk";
 
-export function buildCampaignDataBundle(payload: CampaignPreviewPayload) {
+export function buildCampaignDataBundleEvm(payload: CampaignPreviewPayload) {
     if (payload instanceof AmmPoolLiquidityCampaignPreviewPayload)
         return encodeAbiParameters(
             [
@@ -50,6 +57,27 @@ export function buildCampaignDataBundle(payload: CampaignPreviewPayload) {
     } else if (payload instanceof EmptyTargetCampaignPreviewPayload) {
         return "0x";
     } else return null;
+}
+
+export function buildCampaignDataBundleMvm(payload: CampaignPreviewPayload) {
+    const serializer = new Serializer();
+
+    if (payload instanceof AmmPoolLiquidityCampaignPreviewPayload) {
+        serializer.serializeBytes(
+            hexToBytes(
+                BcsHex.fromHexString(payload.pool.id)
+                    .toString()
+                    .padEnd(64, "0") as Hex,
+            ),
+        );
+    } else if (payload instanceof LiquityV2CampaignPreviewPayload) {
+        serializer.serializeBytes(
+            hexToBytes(stringToHex(payload.brand.slug).padEnd(66, "0") as Hex),
+        );
+        serializer.serializeBytes(hexToBytes(payload.collateral.token.address));
+    } else return null;
+
+    return serializer.toUint8Array();
 }
 
 export function buildSpecificationBundle(

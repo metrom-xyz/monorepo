@@ -8,9 +8,9 @@ import { AmmCampaignIcon } from "@/src/assets/amm-campaign-icon";
 import classNames from "classnames";
 import { CampaignType } from "@/src/types/campaign";
 import { ProtocolType } from "@metrom-xyz/chains";
-import { useChainId } from "wagmi";
 import { useProtocolsInChain } from "@/src/hooks/useProtocolsInChain";
 import { Redirect } from "./redirect";
+import { useChainId } from "@/src/hooks/use-chain-id/useChainId";
 
 import styles from "./styles.module.css";
 
