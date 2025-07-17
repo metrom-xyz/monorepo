@@ -1,4 +1,4 @@
-import { formatUnits, type Address, zeroAddress } from "viem";
+import { formatUnits, type Address, zeroAddress, hexToBytes } from "viem";
 import { METROM_API_CLIENT } from "../../commons";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
@@ -19,7 +19,7 @@ type QueryKey = [string, Address | undefined];
 
 const rawReimbursements: Reimbursement[] = [
     {
-        chainId: 2,
+        chainId: 195,
         campaignId:
             "0xee4d17dece7eead3cb9f200546a8fc0e03cae8469a19fca5c22061d7d6775d46",
         token: {
@@ -31,9 +31,9 @@ const rawReimbursements: Reimbursement[] = [
                 "0x681c42269c3ae5b6703f0bdef4a5573998997903f77bab75f40e2c3297e6be9d",
         },
         amount: {
-            raw: 237975445301023078576n,
-            formatted: 237.9754453010231,
-            usdValue: 237.89167794427712,
+            raw: 1000000000000000000n,
+            formatted: 1,
+            usdValue: 1,
         },
         proof: [
             "0x0216b99ab038419061fe7f0492e92a901960c8183e6cf87254793c233d77cde4",
@@ -189,7 +189,7 @@ export function useReimbursementsMvm({
         if (!address) return;
         if (reimbursementsErrored || recoveredErrored || claimedErrored) {
             console.error(
-                `Could not fetch claimed data for address ${address}: ${recoveredError} ${claimedError}`,
+                `Could not fetch reimbursed data for address ${address}: ${recoveredError} ${claimedError}`,
             );
             setReimbursements([]);
             return;
