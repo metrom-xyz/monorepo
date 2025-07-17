@@ -18,3 +18,5 @@ if (!SAFE && !WALLETCONNECT_PROJECT_ID)
 
 export const FATHOM_SITE_ID: string = process.env.NEXT_PUBLIC_FATHOM_SITE_ID!;
 export const APTOS: boolean = process.env.NEXT_PUBLIC_APTOS === "true";
+export const APTOS_CLIENT_API_KEY =
+    process.env.NEXT_PUBLIC_APTOS_CLIENT_API_KEY;

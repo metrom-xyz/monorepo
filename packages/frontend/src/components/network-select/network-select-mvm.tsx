@@ -6,8 +6,8 @@ import { DrawerPicker } from "./drawer-picker";
 import { useClickAway } from "react-use";
 import { AnimatePresence, motion } from "motion/react";
 import { useChainData } from "@/src/hooks/useChainData";
-import { useIsChainSupported } from "@/src/hooks/use-is-chain-supported/useIsChainSupported";
-import { useActiveChains } from "@/src/hooks/use-active-chains/useActiveChains";
+import { useIsChainSupported } from "@/src/hooks/use-is-chain-supported";
+import { useActiveChains } from "@/src/hooks/use-active-chains";
 import {
     APTOS_NETWORK_ID,
     useChainIdMvm,
