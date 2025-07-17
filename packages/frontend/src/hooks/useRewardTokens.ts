@@ -31,7 +31,7 @@ export function useRewardTokens({
                                 "0x000000000000000000000000000000000000000000000000000000000000000a",
                             decimals: 8,
                             symbol: "APT",
-                            minimumRate: { formatted: 0.001, raw: 1000000n },
+                            minimumRate: { formatted: 1, raw: 100000000n },
                             name: "Aptos Coin",
                             usdPrice: 5.1898,
                         },

@@ -8,7 +8,7 @@ import {
     useSwitchChain,
     useWriteContract,
 } from "wagmi";
-import { useAccount } from "@/src/hooks/use-account/useAccount";
+import { useAccount } from "@/src/hooks/use-account";
 import { metromAbi } from "@metrom-xyz/contracts/abi";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { trackFathomEvent } from "@/src/utils/fathom";

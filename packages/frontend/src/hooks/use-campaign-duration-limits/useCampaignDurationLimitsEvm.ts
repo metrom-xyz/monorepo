@@ -2,7 +2,7 @@ import { metromAbi } from "@metrom-xyz/contracts/abi";
 import { useMemo } from "react";
 import { useReadContracts } from "wagmi";
 import { useChainData } from "../useChainData";
-import { useChainId } from "../use-chain-id/useChainId";
+import { useChainId } from "../use-chain-id";
 import type {
     CampaignDurationLimits,
     UseCampaignDurationLimitsParams,

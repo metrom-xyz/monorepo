@@ -4,7 +4,7 @@ import { useTranslations } from "next-intl";
 import { useEffect } from "react";
 import { trackFathomEvent } from "@/src/utils/fathom";
 import { useAppKit } from "@reown/appkit/react";
-import { useAccount } from "@/src/hooks/use-account/useAccount";
+import { useAccount } from "@/src/hooks/use-account";
 
 import styles from "./styles.module.css";
 

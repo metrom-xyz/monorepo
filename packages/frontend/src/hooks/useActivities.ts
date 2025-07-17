@@ -4,7 +4,7 @@ import { useAccount, useChainId } from "wagmi";
 import { useQuery } from "@tanstack/react-query";
 import type { Address } from "viem";
 import type { HookBaseParams } from "../types/hooks";
-import { useActiveChains } from "./use-active-chains/useActiveChains";
+import { useActiveChains } from "./use-active-chains";
 
 interface UseActivitiesParams extends HookBaseParams {}
 

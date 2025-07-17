@@ -1,5 +1,5 @@
 import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
-import { useChainId } from "@/src/hooks/use-chain-id/useChainId";
+import { useChainId } from "@/src/hooks/use-chain-id";
 import { useChainData } from "@/src/hooks/useChainData";
 import { Button } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
@@ -14,7 +14,7 @@ import {
     useSimulateTransaction,
 } from "@aptos-labs/react";
 import { aptosClient } from "@/src/components/client-providers";
-import { useAccount } from "@/src/hooks/use-account/useAccount";
+import { useAccount } from "@/src/hooks/use-account";
 import {
     U32,
     U64,
@@ -48,7 +48,7 @@ export function DeployButtonMvm({
 
             const specHash =
                 specificationHash === zeroHash
-                    ? []
+                    ? null
                     : hexToBytes(specificationHash);
 
             if (payload.isDistributing(DistributablesType.Tokens)) {
@@ -60,24 +60,8 @@ export function DeployButtonMvm({
                     rewardAmounts.push(new U64(amount.formatted));
                 });
 
-                // const transaction = await aptosClient.transaction.build.simple({
-                //     sender: address,
-                //     data: {
-                //         function: `${chainData.metromContract.address}::metrom::create_reward_campaign`,
-                //         functionArguments: [
-                //             new U64(payload.startDate.unix()),
-                //             new U64(payload.endDate.unix()),
-                //             new U32(payload.kind),
-                //             data,
-                //             hexToBytes(specificationHash),
-                //             rewardTokens,
-                //             rewardAmounts,
-                //         ],
-                //     },
-                // });
-
                 setTxPayload({
-                    function: `${chainData.metromContract.address}::metrom::create_reward_campaign`,
+                    function: `${chainData.metromContract.address}::metrom::create_rewards_campaign`,
                     functionArguments: [
                         new U64(payload.startDate.unix()),
                         new U64(payload.endDate.unix()),
@@ -121,7 +105,7 @@ export function DeployButtonMvm({
     const { signAndSubmitTransactionAsync } = useSignAndSubmitTransaction();
 
     const handleOnStandardDeploy = useCallback(() => {
-        if (simulateCreateErrored) {
+        if (simulateCreateErrored || !simulatedCreate?.success) {
             console.warn(
                 `Could not deploy the campaign: ${simulateCreateError}`,
             );
@@ -155,6 +139,7 @@ export function DeployButtonMvm({
         };
         void create();
     }, [
+        simulatedCreate,
         simulateCreateError,
         simulateCreateErrored,
         txPayload,
@@ -166,7 +151,9 @@ export function DeployButtonMvm({
         <Button
             icon={ArrowRightIcon}
             iconPlacement="right"
-            disabled={disabled || simulateCreateErrored}
+            disabled={
+                disabled || simulateCreateErrored || !simulatedCreate?.success
+            }
             loading={uploadingSpecification || simulatingCreate || deploying}
             className={{ root: styles.button }}
             onClick={handleOnStandardDeploy}

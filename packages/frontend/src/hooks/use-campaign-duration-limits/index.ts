@@ -1,10 +1,19 @@
-import type {
-    UseCampaignDurationLimitsParams,
-    UseCampaignDurationReturnValue,
-} from "./types";
 import { useCampaignDurationLimitsEvm } from "./useCampaignDurationLimitsEvm";
 import { APTOS } from "@/src/commons/env";
 import { useCampaignDurationLimitsMvm } from "./useCampaignDurationLimitsMvm";
+import type { HookBaseParams } from "@/src/types/hooks";
+
+export interface CampaignDurationLimits {
+    minimumSeconds: number;
+    maximumSeconds: number;
+}
+
+export interface UseCampaignDurationLimitsParams extends HookBaseParams {}
+
+export interface UseCampaignDurationReturnValue {
+    loading: boolean;
+    limits?: CampaignDurationLimits;
+}
 
 export function useCampaignDurationLimits(
     params: UseCampaignDurationLimitsParams = {},

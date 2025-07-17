@@ -1,6 +1,6 @@
 import { useCallback, useState, useEffect } from "react";
 import { useReadContracts } from "wagmi";
-import { useAccount } from "@/src/hooks/use-account/useAccount";
+import { useAccount } from "@/src/hooks/use-account";
 import { type Address, erc20Abi } from "viem";
 import { ApproveToken } from "./approve-token";
 import type { UsdPricedErc20TokenAmount } from "@metrom-xyz/sdk";
