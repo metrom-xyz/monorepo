@@ -1,14 +1,13 @@
 import classNames from "classnames";
 import { Typography, Skeleton, Card } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
-import type { Chain } from "viem";
 import { formatUsdAmount } from "@/src/utils/format";
 import type { ChainData } from "@metrom-xyz/chains";
 
 import styles from "./styles.module.css";
 
 export interface ChainOption {
-    chain: Chain;
+    chainId: number;
     data: ChainData;
     totalUsdValue: number;
 }
@@ -16,8 +15,8 @@ export interface ChainOption {
 interface ChainsProps {
     className?: string;
     options: ChainOption[];
-    value: Chain | null;
-    onChange: (value: Chain) => void;
+    value: number | null;
+    onChange: (chainId: number) => void;
 }
 
 export function Chains({ className, options, value, onChange }: ChainsProps) {
@@ -34,14 +33,14 @@ export function Chains({ className, options, value, onChange }: ChainsProps) {
 
                     return (
                         <div
-                            key={option.chain.id}
-                            onClick={() => onChange(option.chain)}
+                            key={option.chainId}
+                            onClick={() => onChange(option.chainId)}
                             className={classNames(
                                 styles.row,
                                 styles.rowAnimated,
                                 {
                                     [styles.rowActive]:
-                                        option.chain.id === value?.id,
+                                        option.chainId === value,
                                 },
                             )}
                         >

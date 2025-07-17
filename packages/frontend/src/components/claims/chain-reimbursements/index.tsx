@@ -22,7 +22,7 @@ export interface TokenReimbursements {
 
 export function ChainReimbursements({
     onRecover,
-    chain,
+    chainId,
     reimbursements,
     recoveringAll,
 }: ChainReimbursementProps) {
@@ -60,7 +60,7 @@ export function ChainReimbursements({
                     return (
                         <TokenReimbursement
                             key={tokenReimbursement.token.address}
-                            chainId={chain.id}
+                            chainId={chainId}
                             tokenReimbursements={tokenReimbursement}
                             recoveringAll={recoveringAll}
                             onRecover={onRecover}

@@ -31,8 +31,8 @@ import styles from "./styles.module.css";
 interface ChainOverviewProps {
     className?: string;
     chainWithRewardsData: ChainWithRewardsData;
-    onClaimAll: (chain: Chain) => void;
-    onRecoverAll: (chain: Chain) => void;
+    onClaimAll: () => void;
+    onRecoverAll: () => void;
     onClaiming?: (value: boolean) => void;
     onRecovering?: (value: boolean) => void;
 }
@@ -89,7 +89,7 @@ export function ChainOverview({
         isLoading: simulatingRecoverAll,
         isError: simulateRecoverAllErrored,
     } = useSimulateContract({
-        chainId: chainWithRewardsData.chain.id,
+        chainId: chainWithRewardsData.chainId,
         abi: metromAbi,
         address: chainWithRewardsData.chainData.metromContract.address,
         functionName: "recoverRewards",
@@ -108,7 +108,7 @@ export function ChainOverview({
         isLoading: simulatingClaimAll,
         isError: simulateClaimAllErrored,
     } = useSimulateContract({
-        chainId: chainWithRewardsData.chain.id,
+        chainId: chainWithRewardsData.chainId,
         abi: metromAbi,
         address: chainWithRewardsData.chainData.metromContract.address,
         functionName: "claimRewards",
@@ -137,7 +137,7 @@ export function ChainOverview({
             setRecovering(true);
             try {
                 await switchChainAsync({
-                    chainId: chainWithRewardsData.chain.id,
+                    chainId: chainWithRewardsData.chainId,
                 });
 
                 const tx = await writeContractAsync(
@@ -153,7 +153,7 @@ export function ChainOverview({
                 }
 
                 toast.custom((toastId) => <RecoverSuccess toastId={toastId} />);
-                onRecoverAll(chainWithRewardsData.chain);
+                onRecoverAll();
                 trackFathomEvent("CLICK_RECOVER_ALL");
             } catch (error) {
                 if (
@@ -172,7 +172,7 @@ export function ChainOverview({
         };
         void recover();
     }, [
-        chainWithRewardsData.chain,
+        chainWithRewardsData.chainId,
         publicClient,
         simulatedRecoverAll,
         onRecoverAll,
@@ -205,7 +205,7 @@ export function ChainOverview({
                 toast.custom((toastId) => (
                     <RecoverSuccess toastId={toastId} safe />
                 ));
-                onRecoverAll(chainWithRewardsData.chain);
+                onRecoverAll();
                 trackFathomEvent("CLICK_RECOVER_ALL");
             } catch (error) {
                 console.warn("Could not recover", error);
@@ -215,12 +215,7 @@ export function ChainOverview({
         };
 
         void recover();
-    }, [
-        recoverRewardsArgs,
-        chainWithRewardsData.chainData,
-        chainWithRewardsData.chain,
-        onRecoverAll,
-    ]);
+    }, [recoverRewardsArgs, chainWithRewardsData.chainData, onRecoverAll]);
 
     const handleStandardClaimAll = useCallback(() => {
         if (!writeContractAsync || !publicClient || !simulatedClaimAll?.request)
@@ -229,7 +224,7 @@ export function ChainOverview({
             setClaiming(true);
             try {
                 await switchChainAsync({
-                    chainId: chainWithRewardsData.chain.id,
+                    chainId: chainWithRewardsData.chainId,
                 });
 
                 const tx = await writeContractAsync(simulatedClaimAll.request);
@@ -243,7 +238,7 @@ export function ChainOverview({
                 }
 
                 toast.custom((toastId) => <ClaimSuccess toastId={toastId} />);
-                onClaimAll(chainWithRewardsData.chain);
+                onClaimAll();
                 trackFathomEvent("CLICK_CLAIM_ALL");
             } catch (error) {
                 if (
@@ -266,7 +261,7 @@ export function ChainOverview({
         void claim();
     }, [
         t,
-        chainWithRewardsData.chain,
+        chainWithRewardsData.chainId,
         publicClient,
         simulatedClaimAll,
         onClaimAll,
@@ -297,7 +292,7 @@ export function ChainOverview({
                 toast.custom((toastId) => (
                     <ClaimSuccess toastId={toastId} safe />
                 ));
-                onClaimAll(chainWithRewardsData.chain);
+                onClaimAll();
                 trackFathomEvent("CLICK_CLAIM_ALL");
             } catch (error) {
                 console.warn("Could not claim", error);
@@ -307,12 +302,7 @@ export function ChainOverview({
         };
 
         void claim();
-    }, [
-        claimRewardsArgs,
-        chainWithRewardsData.chainData,
-        chainWithRewardsData.chain,
-        onClaimAll,
-    ]);
+    }, [claimRewardsArgs, chainWithRewardsData.chainData, onClaimAll]);
 
     return (
         <Card className={classNames(styles.root, className)}>
