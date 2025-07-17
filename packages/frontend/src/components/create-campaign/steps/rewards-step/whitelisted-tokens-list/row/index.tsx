@@ -1,6 +1,6 @@
 import { useCallback } from "react";
 import { type WhitelistedErc20Token } from "@metrom-xyz/sdk";
-import type { Erc20TokenWithBalance } from "@/src/hooks/useWatchBalances";
+import type { Erc20TokenWithBalance } from "@/src/hooks/use-watch-balances";
 import classNames from "classnames";
 import { Typography, Skeleton } from "@metrom-xyz/ui";
 import { formatAmount, formatUsdAmount } from "@/src/utils/format";

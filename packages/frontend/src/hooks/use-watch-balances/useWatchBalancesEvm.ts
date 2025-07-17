@@ -1,30 +1,23 @@
-import type { OnChainAmount, UsdPricedErc20Token } from "@metrom-xyz/sdk";
+import type { UsdPricedErc20Token } from "@metrom-xyz/sdk";
 import { useEffect, useMemo } from "react";
-import { type Address, erc20Abi, formatUnits } from "viem";
-import { useBlockNumber, useReadContracts } from "wagmi";
-import type { HookBaseParams } from "../types/hooks";
-
-export interface Erc20TokenWithBalance<T extends UsdPricedErc20Token> {
-    token: T;
-    balance: OnChainAmount | null;
-}
-
-interface UseWatchBalancesParams<T> extends HookBaseParams {
-    address?: Address;
-    tokens?: T[];
-}
+import { erc20Abi, formatUnits } from "viem";
+import { useReadContracts } from "wagmi";
+import { useWatchBlockNumber } from "../use-watch-block-number";
+import type {
+    Erc20TokenWithBalance,
+    UseWatchBalancesParams,
+    UseWatchBalancesReturnValue,
+} from ".";
 
 const collator = new Intl.Collator();
 
-export function useWatchBalances<T extends UsdPricedErc20Token>({
+export function useWatchBalancesEvm<T extends UsdPricedErc20Token>({
     address,
     tokens,
     enabled = true,
-}: UseWatchBalancesParams<T> = {}): {
-    tokensWithBalance: Erc20TokenWithBalance<T>[];
-    loading: boolean;
-} {
-    const { data: blockNumber } = useBlockNumber({ watch: true });
+}: UseWatchBalancesParams<T> = {}): UseWatchBalancesReturnValue<T> {
+    const blockNumber = useWatchBlockNumber();
+
     const {
         data: rewardTokenRawBalances,
         isLoading: loading,
@@ -43,8 +36,9 @@ export function useWatchBalances<T extends UsdPricedErc20Token>({
     });
 
     useEffect(() => {
+        if (!enabled) return;
         refetch();
-    }, [blockNumber, refetch]);
+    }, [enabled, blockNumber, refetch]);
 
     const tokensWithBalance = useMemo(() => {
         if (!tokens) return [];

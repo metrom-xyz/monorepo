@@ -1,12 +1,12 @@
-import { useAccount, useConfig, useReadContracts } from "wagmi";
+import { useAccount, useConfig } from "wagmi";
 import { formatUnits, type Address, zeroAddress } from "viem";
-import { METROM_API_CLIENT } from "../commons";
+import { METROM_API_CLIENT } from "../../commons";
 import { metromAbi } from "@metrom-xyz/contracts/abi";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import type { HookBaseParams } from "../types/hooks";
-import type { ReimbursementsWithRemaining } from "../types/campaign";
-import { getChainData } from "../utils/chain";
+import type { HookBaseParams } from "../../types/hooks";
+import type { ReimbursementsWithRemaining } from "../../types/campaign";
+import { getChainData } from "../../utils/chain";
 import { readContracts } from "@wagmi/core";
 
 interface UseReimbursementsParams extends HookBaseParams {}
@@ -19,7 +19,7 @@ interface UseReimbursementsReturnValue {
 
 type QueryKey = [string, Address | undefined];
 
-export function useReimbursements({
+export function useReimbursementsEvm({
     enabled = true,
 }: UseReimbursementsParams = {}): UseReimbursementsReturnValue {
     const [reimbursements, setReimbursements] =
@@ -134,7 +134,7 @@ export function useReimbursements({
         retryDelay: 1000,
         refetchOnWindowFocus: false,
         staleTime: 60000,
-        enabled: !!recoveredContracts,
+        enabled: !!recoveredContracts && enabled,
     });
 
     const {
@@ -164,14 +164,14 @@ export function useReimbursements({
         retryDelay: 1000,
         refetchOnWindowFocus: false,
         staleTime: 60000,
-        enabled: !!claimedContracts,
+        enabled: !!claimedContracts && enabled,
     });
 
     useEffect(() => {
         if (!address) return;
         if (reimbursementsErrored || recoveredErrored || claimedErrored) {
             console.error(
-                `Could not fetch claimed data for address ${address}: ${recoveredError} ${claimedError}`,
+                `Could not fetch reimbursed data for address ${address}: ${recoveredError} ${claimedError}`,
             );
             setReimbursements([]);
             return;
@@ -237,9 +237,7 @@ export function useReimbursements({
 
     return {
         loading:
-            loadingReimbursements ||
-            loadingClaimed ||
-            loadingRecovered ||
+            (loadingReimbursements || loadingClaimed || loadingRecovered) &&
             !reimbursements,
         invalidate,
         reimbursements,
