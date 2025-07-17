@@ -32,7 +32,7 @@ export function useWatchBlockNumberEvm({
         return () => {
             clearInterval(interval);
         };
-    }, [enabled]);
+    }, [enabled, config]);
 
     return blockNumber;
 }

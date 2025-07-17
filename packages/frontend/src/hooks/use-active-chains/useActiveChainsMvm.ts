@@ -1,9 +1,9 @@
 import type { HookBaseParams } from "@/src/types/hooks";
 import { useMemo } from "react";
-import { APTOS_NETWORK_ID } from "../use-chain-id/useChainIdMvm";
 import { Network } from "@aptos-labs/ts-sdk";
 import { ENVIRONMENT } from "@/src/commons/env";
 import { Environment } from "@metrom-xyz/sdk";
+import { APTOS_NETWORK_ID } from "@/src/utils/chain";
 
 export function useActiveChainsMvm({ enabled = true }: HookBaseParams = {}) {
     return useMemo(() => {

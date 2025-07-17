@@ -4,7 +4,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import type { ClaimWithRemaining } from "../../types/campaign";
 import { getChainData } from "../../utils/chain";
-import type { UseClaimsParams, UseClaimsReturnValue } from "./types";
+import type { UseClaimsParams, UseClaimsReturnValue } from ".";
 import { useWallet } from "@aptos-labs/wallet-adapter-react";
 import { aptosClient } from "@/src/components/client-providers";
 import type { InputViewFunctionData, MoveFunctionId } from "@aptos-labs/ts-sdk";
