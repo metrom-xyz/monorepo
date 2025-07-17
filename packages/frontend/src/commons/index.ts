@@ -48,8 +48,7 @@ export const AMM_SUPPORTS_TOKENS_RATIO: Record<SupportedAmm, boolean> = {
     [SupportedAmm.AlgebraIntegral]: true,
     [SupportedAmm.UniswapV3]: true,
     [SupportedAmm.Carbon]: false,
-    // TODO: does pancake v3 supports tokens ratio?
-    [SupportedAmm.PancakeV3]: false,
+    [SupportedAmm.PancakeV3]: true,
 };
 
 // taken from https://github.com/wevm/wagmi/blob/80326815bea2f175623157f57465f9dfae1f4c5c/packages/connectors/src/safe.ts#L45
