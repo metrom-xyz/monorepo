@@ -5,7 +5,7 @@ import {
 } from "@/src/types/campaign";
 import type { LocalizedMessage } from "@/src/types/utils";
 import { usePublicClient, useSimulateContract, useWriteContract } from "wagmi";
-import { useChainId } from "@/src/hooks/use-chain-id/useChainId";
+import { useChainId } from "@/src/hooks/use-chain-id";
 import { metromAbi } from "@metrom-xyz/contracts/abi";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
