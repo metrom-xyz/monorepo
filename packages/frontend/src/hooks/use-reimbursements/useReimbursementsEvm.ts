@@ -171,7 +171,7 @@ export function useReimbursementsEvm({
         if (!address) return;
         if (reimbursementsErrored || recoveredErrored || claimedErrored) {
             console.error(
-                `Could not fetch claimed data for address ${address}: ${recoveredError} ${claimedError}`,
+                `Could not fetch reimbursed data for address ${address}: ${recoveredError} ${claimedError}`,
             );
             setReimbursements([]);
             return;
