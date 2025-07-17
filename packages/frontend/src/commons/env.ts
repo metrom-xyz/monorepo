@@ -22,3 +22,5 @@ export const EXPERIMENTAL_CHAINS: number[] =
         .map((chain) => parseInt(chain.trim()))
         .filter(Boolean) || [];
 export const APTOS: boolean = process.env.NEXT_PUBLIC_APTOS === "true";
+export const APTOS_CLIENT_API_KEY =
+    process.env.NEXT_PUBLIC_APTOS_CLIENT_API_KEY;

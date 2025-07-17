@@ -1,5 +1,5 @@
 import type { UsdPricedErc20Token } from "@metrom-xyz/sdk";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo } from "react";
 import type {
     Erc20TokenWithBalance,
     UseWatchBalancesParams,
@@ -7,16 +7,8 @@ import type {
 } from ".";
 import { useQuery } from "@tanstack/react-query";
 import { type Address, formatUnits } from "viem";
-import {
-    aptosClient,
-    aptosJsProClient,
-} from "@/src/components/client-providers";
-
-interface BlockMetadataTransactionsQueryResult {
-    metadata: [{ block: number }];
-}
-
-const BLOCk_WATCH_TIME_MS = 15000;
+import { aptosJsProClient } from "@/src/components/client-providers";
+import { useWatchBlockNumber } from "../use-watch-block-number";
 
 const collator = new Intl.Collator();
 
@@ -25,37 +17,7 @@ export function useWatchBalancesMvm<T extends UsdPricedErc20Token>({
     tokens,
     enabled = true,
 }: UseWatchBalancesParams<T> = {}): UseWatchBalancesReturnValue<T> {
-    const [blockNumber, setBlockNumber] = useState<number | undefined>();
-
-    useEffect(() => {
-        const fetchBlock = async () => {
-            const { metadata } =
-                await aptosClient.queryIndexer<BlockMetadataTransactionsQueryResult>(
-                    {
-                        query: {
-                            query: `query block {
-                                metadata: block_metadata_transactions(
-                                    order_by: {block_height: desc}
-                                    limit: 1
-                                ) {
-                                    block: block_height
-                                }
-                            }`,
-                        },
-                    },
-                );
-
-            setBlockNumber(metadata[0].block);
-        };
-
-        const interval = setInterval(() => {
-            fetchBlock();
-        }, BLOCk_WATCH_TIME_MS);
-
-        return () => {
-            clearInterval(interval);
-        };
-    }, []);
+    const blockNumber = useWatchBlockNumber();
 
     const { data: rewardTokenRawBalances, isLoading: loading } = useQuery({
         queryKey: [
@@ -65,7 +27,7 @@ export function useWatchBalancesMvm<T extends UsdPricedErc20Token>({
             address,
         ],
         queryFn: async ({ queryKey }) => {
-            const [, blockNumber, tokens, address] = queryKey as [
+            const [, , tokens, address] = queryKey as [
                 string,
                 number | undefined,
                 T[] | undefined,

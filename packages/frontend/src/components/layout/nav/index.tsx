@@ -16,10 +16,10 @@ import { AnimatePresence, motion } from "motion/react";
 import type { SVGIcon } from "@/src/types/common";
 import type { TranslationsKeys } from "@/src/types/utils";
 import type { Address } from "viem";
-import { useClaims } from "@/src/hooks/use-claims/useClaims";
-import { useActiveChains } from "@/src/hooks/use-active-chains/useActiveChains";
-import { useChainId } from "@/src/hooks/use-chain-id/useChainId";
-import { useAccount } from "@/src/hooks/use-account/useAccount";
+import { useClaims } from "@/src/hooks/use-claims";
+import { useActiveChains } from "@/src/hooks/use-active-chains";
+import { useChainId } from "@/src/hooks/use-chain-id";
+import { useAccount } from "@/src/hooks/use-account";
 
 import styles from "./styles.module.css";
 

@@ -15,7 +15,7 @@ import { RemoveScroll } from "react-remove-scroll";
 import { SAFE } from "@/src/commons/env";
 import { SafeLogo } from "@/src/assets/logos/safe";
 import { useChainData } from "@/src/hooks/useChainData";
-import { useIsChainSupported } from "@/src/hooks/use-is-chain-supported/useIsChainSupported";
+import { useIsChainSupported } from "@/src/hooks/use-is-chain-supported";
 import { AnimatePresence, motion } from "motion/react";
 import { Avatar } from "../../avatar/avatar";
 import { Account } from "../../account";

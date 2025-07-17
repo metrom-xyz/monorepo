@@ -1,7 +1,8 @@
 import type { UsdPricedErc20Token } from "@metrom-xyz/sdk";
 import { useEffect, useMemo } from "react";
 import { erc20Abi, formatUnits } from "viem";
-import { useBlockNumber, useReadContracts } from "wagmi";
+import { useReadContracts } from "wagmi";
+import { useWatchBlockNumber } from "../use-watch-block-number";
 import type {
     Erc20TokenWithBalance,
     UseWatchBalancesParams,
@@ -15,9 +16,8 @@ export function useWatchBalancesEvm<T extends UsdPricedErc20Token>({
     tokens,
     enabled = true,
 }: UseWatchBalancesParams<T> = {}): UseWatchBalancesReturnValue<T> {
-    // FIXME: have a custom useBlockNumber hook that uses the getBlockNumber wagmi action
-    // to properly handle the enable:false
-    const { data: blockNumber } = useBlockNumber({ watch: enabled });
+    const blockNumber = useWatchBlockNumber();
+
     const {
         data: rewardTokenRawBalances,
         isLoading: loading,

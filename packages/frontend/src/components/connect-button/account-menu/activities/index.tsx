@@ -1,6 +1,6 @@
 import { useActivities } from "@/src/hooks/useActivities";
 import { Activity, SkeletonActivity } from "./activity";
-import { useIsChainSupported } from "@/src/hooks/use-is-chain-supported/useIsChainSupported";
+import { useIsChainSupported } from "@/src/hooks/use-is-chain-supported";
 import { APTOS } from "@/src/commons/env";
 
 import styles from "./styles.module.css";
