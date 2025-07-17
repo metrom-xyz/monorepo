@@ -1,17 +1,17 @@
 import { useMemo } from "react";
-import type { UseIsChainSupportedParams } from "./types";
 import { useWallet } from "@aptos-labs/wallet-adapter-react";
-import { APTOS_NETWORK_ID } from "../use-chain-id/useChainIdMvm";
+import type { UseIsChainSupportedParams } from ".";
+import { chainIdToAptosNetwork } from "@/src/utils/chain";
 
 export function useIsChainSupportedMvm({
     chainId,
     enabled,
 }: UseIsChainSupportedParams) {
-    const { network, connected } = useWallet();
+    const { connected } = useWallet();
 
     return useMemo(() => {
-        if (!connected || !network || !enabled) return true;
+        if (!connected || !enabled) return true;
 
-        return !!network && !!APTOS_NETWORK_ID[network.name];
-    }, [connected, network, enabled, chainId]);
+        return !!chainIdToAptosNetwork(chainId);
+    }, [connected, enabled, chainId]);
 }
