@@ -5,7 +5,7 @@ import type {
     CampaignDurationLimits,
     UseCampaignDurationLimitsParams,
     UseCampaignDurationReturnValue,
-} from "./types";
+} from ".";
 import { useViewModule } from "@aptos-labs/react";
 
 export function useCampaignDurationLimitsMvm({

@@ -215,7 +215,7 @@ export function DeployButtonEvm({
         };
 
         void create();
-    }, [chainData, safeTxs, tokensCampaignArgs, pointsCampaignArgs]);
+    }, [chainData, safeTxs, tokensCampaignArgs, pointsCampaignArgs, onCreate]);
 
     return (
         <>

@@ -27,7 +27,7 @@ interface RewardsProps {
 export function Rewards({ rewards, startDate, endDate }: RewardsProps) {
     const t = useTranslations("campaignPreview.rewards");
     const chain: SupportedChain = useChainId();
-    const chainData = useChainData(chain);
+    const chainData = useChainData({ chainId: chain });
     const { address: connectedAccount } = useAccount();
 
     const [resolvedFee, setResolvedFee] = useState<number>();
