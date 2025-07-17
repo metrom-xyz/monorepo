@@ -7,7 +7,7 @@ import type {
     CampaignDurationLimits,
     UseCampaignDurationLimitsParams,
     UseCampaignDurationReturnValue,
-} from "./types";
+} from ".";
 
 export function useCampaignDurationLimitsEvm({
     enabled = true,
