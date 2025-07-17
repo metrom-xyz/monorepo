@@ -40,8 +40,9 @@ export const DEPLOYMENTS: {
                 startBlock: 4581905,
             },
             stakingContractAddresses: [
-                // Masterchef V3
-                "0x01A441E7c15Da925d0F3444CDAdCaA34aD3026BC",
+                // Masterchef V3s
+                "0x01a441e7c15da925d0f3444cdadcaa34ad3026bc",
+                "0x1e016022d93cf86c3d9e38c50b0adb909047830d",
             ],
         },
     },
