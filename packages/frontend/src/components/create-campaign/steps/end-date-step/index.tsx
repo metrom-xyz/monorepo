@@ -1,7 +1,7 @@
 "use client";
 
 import { useTranslations } from "next-intl";
-import { useChainId } from "@/src/hooks/use-chain-id/useChainId";
+import { useChainId } from "@/src/hooks/use-chain-id";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import dayjs, { type Dayjs, type ManipulateType } from "dayjs";
 import { Step } from "@/src/components/step";
@@ -20,7 +20,7 @@ import {
     Chip,
     ErrorText,
 } from "@metrom-xyz/ui";
-import { useCampaignDurationLimits } from "@/src/hooks/use-campaign-duration-limits/useCampaignDurationLimits";
+import { useCampaignDurationLimits } from "@/src/hooks/use-campaign-duration-limits";
 import { formatDateTime } from "@/src/utils/format";
 import { usePrevious } from "react-use";
 

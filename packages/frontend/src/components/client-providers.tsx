@@ -12,7 +12,7 @@ import relativeTime from "dayjs/plugin/relativeTime";
 import utc from "dayjs/plugin/utc";
 import Fathom from "./fathom";
 import { ReownAppKitContextProvider } from "../context/reown-app-kit";
-import { ENVIRONMENT } from "../commons/env";
+import { APTOS_CLIENT_API_KEY, ENVIRONMENT } from "../commons/env";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { hashFn } from "wagmi/query";
 import { Environment } from "@metrom-xyz/sdk";
@@ -36,6 +36,7 @@ const queryClient = new QueryClient({
 });
 
 export const aptosConfig = new AptosConfig({
+    clientConfig: { API_KEY: APTOS_CLIENT_API_KEY },
     network:
         ENVIRONMENT === Environment.Production
             ? Network.MAINNET
