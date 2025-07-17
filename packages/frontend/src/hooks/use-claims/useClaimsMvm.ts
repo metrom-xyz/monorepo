@@ -26,9 +26,9 @@ const rawClaims: Claim[] = [
                 "0x681c42269c3ae5b6703f0bdef4a5573998997903f77bab75f40e2c3297e6be9d",
         },
         amount: {
-            raw: 237975445301023078576n,
-            formatted: 237.9754453010231,
-            usdValue: 237.89167794427712,
+            raw: 1000000000000000000n,
+            formatted: 1,
+            usdValue: 1,
         },
         proof: [
             "0x0216b99ab038419061fe7f0492e92a901960c8183e6cf87254793c233d77cde4",
@@ -92,8 +92,6 @@ export function useClaimsMvm({
                 const moveFunction: MoveFunctionId = `${metrom.address}::metrom::claimed_campaign_reward`;
 
                 return {
-                    // TODO: add ABI
-                    // TODO: have a single metromAbi exported from const that depends on APTOS env
                     function: moveFunction,
                     functionArguments: [
                         rawClaim.campaignId,
@@ -190,6 +188,8 @@ export function useClaimsMvm({
             queryKey: ["claimed-campaign-rewards"],
         });
     }, [queryClient]);
+
+    console.log("claims", claims);
 
     return {
         loading: loadingClaims || loadingClaimed || !claims,

@@ -26,7 +26,7 @@ export interface TokenClaims {
 
 export function ChainClaims({
     onClaim,
-    chain,
+    chainId,
     claims,
     claimingAll,
 }: ChainOverviewProps) {
@@ -65,7 +65,7 @@ export function ChainClaims({
         return (
             <TokenClaim
                 key={tokenClaims.token.address}
-                chainId={chain.id}
+                chainId={chainId}
                 tokenClaims={tokenClaims}
                 claimingAll={claimingAll}
                 onClaim={onClaim}
