@@ -3,7 +3,7 @@ import { Card, TextField, Typography } from "@metrom-xyz/ui";
 import type { SupportedChain } from "@metrom-xyz/contracts";
 import { useTranslations } from "next-intl";
 import { useChainId, useReadContract } from "wagmi";
-import { useAccount } from "@/src/hooks/use-account/useAccount";
+import { useAccount } from "@/src/hooks/use-account";
 import { Dayjs } from "dayjs";
 import { useEffect, useMemo, useState } from "react";
 import {

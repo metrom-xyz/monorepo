@@ -21,7 +21,7 @@ import type { Erc20Token } from "@metrom-xyz/sdk";
 import { SAFE } from "@/src/commons/env";
 import { SAFE_APP_SDK } from "@/src/commons";
 import { useChainData } from "@/src/hooks/useChainData";
-import { useAccount } from "@/src/hooks/use-account/useAccount";
+import { useAccount } from "@/src/hooks/use-account";
 
 import styles from "./styles.module.css";
 

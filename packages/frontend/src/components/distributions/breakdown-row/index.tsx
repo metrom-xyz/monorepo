@@ -6,7 +6,7 @@ import classNames from "classnames";
 import { useTranslations } from "next-intl";
 import dayjs from "dayjs";
 import { useMemo } from "react";
-import { useAccount } from "@/src/hooks/use-account/useAccount";
+import { useAccount } from "@/src/hooks/use-account";
 import { AccountRow, AccountRowSkeleton } from "./account-row";
 import type { ProcessedDistribution } from "@/src/types/distributions";
 

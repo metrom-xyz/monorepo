@@ -1,7 +1,11 @@
+import type { HookBaseParams } from "@/src/types/hooks";
 import { useIsChainSupportedEvm } from "./useIsChainSupportedEvm";
 import { useIsChainSupportedMvm } from "./useIsChainSupportedMvm";
-import type { UseIsChainSupportedParams } from "./types";
 import { APTOS } from "@/src/commons/env";
+
+export interface UseIsChainSupportedParams extends HookBaseParams {
+    chainId?: number;
+}
 
 export function useIsChainSupported(params: UseIsChainSupportedParams) {
     const supportedEvm = useIsChainSupportedEvm({ ...params, enabled: !APTOS });
