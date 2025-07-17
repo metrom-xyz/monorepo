@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { useAccount, useChains } from "wagmi";
-import type { UseIsChainSupportedParams } from "./types";
+import type { UseIsChainSupportedParams } from ".";
 
 export function useIsChainSupportedEvm({
     chainId,

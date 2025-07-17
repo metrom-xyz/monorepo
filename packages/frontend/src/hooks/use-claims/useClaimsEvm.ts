@@ -7,7 +7,7 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import type { ClaimWithRemaining } from "../../types/campaign";
 import { getChainData } from "../../utils/chain";
 import { readContracts } from "@wagmi/core";
-import type { UseClaimsParams, UseClaimsReturnValue } from "./types";
+import type { UseClaimsParams, UseClaimsReturnValue } from ".";
 
 type QueryKey = [string, Address | undefined];
 

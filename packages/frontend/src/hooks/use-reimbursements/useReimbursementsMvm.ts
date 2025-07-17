@@ -4,10 +4,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import type { ReimbursementsWithRemaining } from "../../types/campaign";
 import { getChainData } from "../../utils/chain";
-import type {
-    UseReimbursementsParams,
-    UseReimbursementsReturnValue,
-} from "./types";
+import type { UseReimbursementsParams, UseReimbursementsReturnValue } from ".";
 import { useWallet } from "@aptos-labs/wallet-adapter-react";
 import type { InputViewFunctionData, MoveFunctionId } from "@aptos-labs/ts-sdk";
 import { aptosClient } from "@/src/components/client-providers";
