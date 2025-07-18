@@ -125,7 +125,7 @@ export function DeployButtonMvm({
                 });
 
                 if (!receipt.success) {
-                    console.warn("creation transaction reverted");
+                    console.warn("Creation transaction reverted");
                     return;
                 }
 
