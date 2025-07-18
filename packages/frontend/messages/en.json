@@ -5,6 +5,11 @@
         "claims": "Claims",
         "connect": "Connect"
     },
+    "wallets": {
+        "title": "Connect wallet",
+        "connect": "Connect",
+        "install": "Install"
+    },
     "theme": {
         "system": "System",
         "dark": "Dark",

@@ -32,3 +32,7 @@
 .account {
     @apply sm:w-full flex gap-2 items-center justify-between;
 }
+
+.displayName {
+    @apply hidden sm:flex;
+}
