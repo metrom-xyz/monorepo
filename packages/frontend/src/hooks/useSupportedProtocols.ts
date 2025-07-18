@@ -4,21 +4,35 @@ import {
     type ProtocolBase,
 } from "@metrom-xyz/chains";
 import { APTOS, ENVIRONMENT } from "../commons/env";
+import type { HookCrossVmParams } from "../types/hooks";
 
-export function useSupportedProtocols(): ProtocolBase[] {
-    const protocols: Record<string, ProtocolBase> = {};
+interface UseSupportedProtocolsParams extends HookCrossVmParams {}
 
-    const chains = APTOS
-        ? MVM_CHAIN_DATA[ENVIRONMENT]
-        : EVM_CHAIN_DATA[ENVIRONMENT];
+export function useSupportedProtocols({
+    crossVm = false,
+}: UseSupportedProtocolsParams = {}): ProtocolBase[] {
+    const protocolsEvm: Record<string, ProtocolBase> = {};
+    const protocolsMvm: Record<string, ProtocolBase> = {};
 
-    Object.entries(chains).forEach(([_, chainData]) => {
+    Object.entries(MVM_CHAIN_DATA[ENVIRONMENT]).forEach(([_, chainData]) => {
         for (const protocol of chainData.protocols) {
-            if (!protocols[protocol.slug]) {
-                protocols[protocol.slug] = protocol;
+            if (!protocolsMvm[protocol.slug]) {
+                protocolsMvm[protocol.slug] = protocol;
             }
         }
     });
 
-    return Object.values(protocols);
+    Object.entries(EVM_CHAIN_DATA[ENVIRONMENT]).forEach(([_, chainData]) => {
+        for (const protocol of chainData.protocols) {
+            if (!protocolsEvm[protocol.slug]) {
+                protocolsEvm[protocol.slug] = protocol;
+            }
+        }
+    });
+
+    if (crossVm)
+        return [...Object.values(protocolsEvm), ...Object.values(protocolsMvm)];
+
+    if (APTOS) return Object.values(protocolsMvm);
+    return Object.values(protocolsEvm);
 }

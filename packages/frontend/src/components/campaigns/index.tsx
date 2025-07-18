@@ -29,13 +29,13 @@ import {
 } from "@/src/utils/filtering";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import { useRouter as useLocalizedRouter } from "@/i18n/routing";
-import { useChains } from "wagmi";
+import { useChainIds } from "@/src/hooks/use-chains";
 import classNames from "classnames";
 import { ProjectOpportunitiesBanner } from "./project-opportunities-banner";
 import { FilterableStatus, type SVGIcon } from "@/src/types/common";
 import type { TranslationsKeys } from "@/src/types/utils";
 import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
-import { getChainData } from "@/src/utils/chain";
+import { getCrossVmChainData } from "@/src/utils/chain";
 import { useSupportedProtocols } from "@/src/hooks/useSupportedProtocols";
 
 import styles from "./styles.module.css";
@@ -96,7 +96,7 @@ const statusSelectRenderOption = (option: {
 
 const chainSelectRenderOption = (option: { label: string; value: number }) => {
     const ChainIcon =
-        option.value !== 0 ? getChainData(option.value)?.icon : null;
+        option.value !== 0 ? getCrossVmChainData(option.value)?.icon : null;
     return (
         <div className={styles.customOptionContainer}>
             {ChainIcon && <ChainIcon className={styles.icon} />}
@@ -124,8 +124,8 @@ const protocolSelectRenderOption = (option: {
 
 export function Campaigns() {
     const t = useTranslations("allCampaigns");
-    const chains = useChains();
-    const protocols = useSupportedProtocols();
+    const chainIds = useChainIds();
+    const protocols = useSupportedProtocols({ crossVm: true });
     const router = useRouter();
     const localizedRouter = useLocalizedRouter();
     const pathname = usePathname();
@@ -211,18 +211,18 @@ export function Campaigns() {
                 query: null,
             },
         ];
-        for (const chain of chains) {
-            const chainData = getChainData(chain.id);
+        for (const id of chainIds) {
+            const chainData = getCrossVmChainData(id);
             if (!chainData) continue;
 
             options.push({
                 label: chainData.name,
-                value: chain.id,
+                value: id,
                 query: chainData.name.toLowerCase().replaceAll(" ", "-"),
             });
         }
         return options;
-    }, [chains, t]);
+    }, [chainIds, t]);
 
     const { loading: loadingCampaigns, campaigns } = useCampaigns();
 
