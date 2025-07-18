@@ -11,6 +11,8 @@ import {
     SUPPORTED_DEVELOPMENT_CHAINS,
     SUPPORTED_PRODUCTION_CHAINS,
 } from "@metrom-xyz/chains";
+import { APTOS_NETWORK_ID } from "../utils/chain";
+import { Network } from "@aptos-labs/ts-sdk";
 
 // TODO: use APTOS build env
 export const CHAIN_TYPE = ChainType.Evm;
@@ -34,10 +36,15 @@ export const METROM_DATA_MANAGER_JWT_ISSUER = "metrom-data-manager";
 
 export const MAXIMUM_REWARDS_RESTRICTIONS = 20;
 
-export const SUPPORTED_CHAINS: [Chain, ...Chain[]] =
+export const SUPPORTED_CHAINS_EVM: [Chain, ...Chain[]] =
     ENVIRONMENT === Environment.Production
         ? SUPPORTED_PRODUCTION_CHAINS
         : SUPPORTED_DEVELOPMENT_CHAINS;
+
+export const SUPPORTED_CHAINS_MVM =
+    ENVIRONMENT === Environment.Production
+        ? [APTOS_NETWORK_ID[Network.MAINNET]]
+        : [APTOS_NETWORK_ID[Network.DEVNET], APTOS_NETWORK_ID[Network.TESTNET]];
 
 export const TOKEN_ICONS_URL = `https://raw.githubusercontent.com/metrom-xyz/token-icons/refs/heads/main/${ENVIRONMENT === Environment.Production ? "mainnet" : "testnet"}-icons.json`;
 
