@@ -18,13 +18,15 @@
         "deploy:uni-v3:hemi": "pnpm prepare:deploy hemi uni-v3 && pnpm codegen && graph deploy metrom-uni-v-3-hemi -l 0.0.4",
         "deploy:uni-v3:gnosis": "pnpm prepare:deploy gnosis uni-v3 && pnpm codegen && graph deploy metrom-uni-v-3-gnosis -l 0.0.1",
         "deploy:uni-v3:lens": "pnpm prepare:deploy lens uni-v3 && pnpm codegen && graph deploy metrom-uni-v-3-lens -l 0.0.1",
+        "deploy:taraswap:taraxa": "pnpm prepare:deploy taraxa taraswap && pnpm codegen && metrom-graph deploy production metrom-taraswap-taraxa 0.0.1",
         "lint": "eslint .",
         "format": "eslint --fix ."
     },
     "dependencies": {
         "@0xgraph/cli": "^0.2.1",
         "@graphprotocol/graph-cli": "^0.97.1",
-        "@graphprotocol/graph-ts": "0.38.1"
+        "@graphprotocol/graph-ts": "0.38.1",
+        "@metrom-xyz/graph-cli": "workspace:*"
     },
     "devDependencies": {
         "@eslint/js": "^9.30.1",

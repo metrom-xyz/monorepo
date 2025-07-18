@@ -176,4 +176,16 @@ export const DEPLOYMENTS: {
             },
         },
     },
+    taraxa: {
+        taraswap: {
+            Factory: {
+                address: "0x5EFAc029721023DD6859AFc8300d536a2d6d4c82",
+                startBlock: 10674828,
+            },
+            NonFungiblePositionManager: {
+                address: "0x1C5A295E9860d127D8A3E7af138Bb945c4377ae7",
+                startBlock: 10674878,
+            },
+        },
+    },
 };
