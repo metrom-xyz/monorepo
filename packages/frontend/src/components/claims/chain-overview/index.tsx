@@ -14,11 +14,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { trackFathomEvent } from "@/src/utils/fathom";
 import { toast } from "sonner";
 import { ClaimSuccess } from "../notification/claim-success";
-import {
-    type WriteContractErrorType,
-    type Chain,
-    encodeFunctionData,
-} from "viem";
+import { type WriteContractErrorType, encodeFunctionData } from "viem";
 import { ClaimFail } from "../notification/claim-fail";
 import { RecoverSuccess } from "../notification/recover-success";
 import { RecoverFail } from "../notification/recover-fail";

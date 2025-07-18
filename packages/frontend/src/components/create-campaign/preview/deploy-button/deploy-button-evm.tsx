@@ -157,7 +157,7 @@ export function DeployButtonEvm({
                 });
 
                 if (receipt.status === "reverted") {
-                    console.warn("creation transaction reverted");
+                    console.warn("Creation transaction reverted");
                     return;
                 }
 

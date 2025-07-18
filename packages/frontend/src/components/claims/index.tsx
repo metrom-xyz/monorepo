@@ -76,9 +76,6 @@ export function Claims() {
             const reducedRewards = rewards.reduce(
                 (acc, reward) => {
                     const chainId = reward.chainId as SupportedChain;
-                    // const chain = SUPPORTED_CHAINS.find(
-                    //     ({ id }) => id === chainId,
-                    // );
 
                     const chainData = getChainData(chainId);
                     if (!chainData) {

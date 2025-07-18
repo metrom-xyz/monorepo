@@ -21,7 +21,7 @@ const rawReimbursements: Reimbursement[] = [
     {
         chainId: 195,
         campaignId:
-            "0xee4d17dece7eead3cb9f200546a8fc0e03cae8469a19fca5c22061d7d6775d46",
+            "0xf9b18a4918b3965faf3d4ed06a7215999e5e2c0e6546dec28f92d97b49d51495",
         token: {
             decimals: 18,
             symbol: "tDAI",

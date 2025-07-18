@@ -13,11 +13,10 @@ import { Avatar } from "../../avatar/avatar";
 import { Account } from "../../account";
 import { useTranslations } from "next-intl";
 import { useAptBalance } from "@aptos-labs/react";
-import { formatUnits } from "viem";
+import { formatApt } from "@aptos-labs/js-pro";
 
 import styles from "./styles.module.css";
 import commonStyles from "../styles.module.css";
-import { formatApt } from "@aptos-labs/js-pro";
 
 export function ConnectButtonMvm() {
     const t = useTranslations();
@@ -110,6 +109,11 @@ export function ConnectButtonMvm() {
             )}
             <Modal onDismiss={handleModalOnClose} open={open}>
                 <div className={styles.modal}>
+                    <div className={styles.title}>
+                        <Typography weight="medium">
+                            {t("wallets.title")}
+                        </Typography>
+                    </div>
                     {[...availableWallets, ...installableWallets].map(
                         (wallet) => (
                             <WalletItem
@@ -122,22 +126,46 @@ export function ConnectButtonMvm() {
                                     <WalletItem.InstallLink
                                         className={styles.walletButton}
                                     >
-                                        <WalletItem.Icon
-                                            className={styles.walletIcon}
-                                        />
-                                        <Typography size="sm" weight="medium">
-                                            {wallet.name}
+                                        <div className={styles.leftContent}>
+                                            <WalletItem.Icon
+                                                className={styles.walletIcon}
+                                            />
+                                            <Typography
+                                                size="sm"
+                                                weight="medium"
+                                            >
+                                                {wallet.name}
+                                            </Typography>
+                                        </div>
+                                        <Typography
+                                            size="sm"
+                                            weight="medium"
+                                            uppercase
+                                        >
+                                            {t("wallets.install")}
                                         </Typography>
                                     </WalletItem.InstallLink>
                                 ) : (
                                     <WalletItem.ConnectButton
                                         className={styles.walletButton}
                                     >
-                                        <WalletItem.Icon
-                                            className={styles.walletIcon}
-                                        />
-                                        <Typography size="sm" weight="medium">
-                                            {wallet.name}
+                                        <div className={styles.leftContent}>
+                                            <WalletItem.Icon
+                                                className={styles.walletIcon}
+                                            />
+                                            <Typography
+                                                size="sm"
+                                                weight="medium"
+                                            >
+                                                {wallet.name}
+                                            </Typography>
+                                        </div>
+                                        <Typography
+                                            size="sm"
+                                            weight="medium"
+                                            uppercase
+                                        >
+                                            {t("wallets.connect")}
                                         </Typography>
                                     </WalletItem.ConnectButton>
                                 )}
