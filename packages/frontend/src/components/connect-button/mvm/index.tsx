@@ -38,7 +38,7 @@ export function ConnectButtonMvm() {
     });
 
     const balance: Balance | undefined = useMemo(() => {
-        if (!aptBalance) return undefined;
+        if (aptBalance === undefined) return undefined;
 
         return {
             symbol: "APT",
