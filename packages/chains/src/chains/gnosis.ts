@@ -9,6 +9,7 @@ import { UniswapLogo } from "../assets";
 
 export const gnosisData: ChainData = {
     active: true,
+    reimbursementFeeEnabled: false,
     name: gnosis.name,
     metromContract: ADDRESS[SupportedChain.Gnosis],
     blockExplorers: gnosis.blockExplorers,

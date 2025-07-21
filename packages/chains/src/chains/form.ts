@@ -35,6 +35,7 @@ export const form = defineChain({
 
 export const formData: ChainData = {
     active: false,
+    reimbursementFeeEnabled: false,
     name: form.name,
     metromContract: ADDRESS[SupportedChain.Form],
     blockExplorers: form.blockExplorers,

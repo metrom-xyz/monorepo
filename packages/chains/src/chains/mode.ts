@@ -5,6 +5,7 @@ import type { ChainData } from "../types/chains";
 
 export const modeData: ChainData = {
     active: false,
+    reimbursementFeeEnabled: false,
     name: "Mode",
     metromContract: ADDRESS[SupportedChain.Mode],
     blockExplorers: mode.blockExplorers,

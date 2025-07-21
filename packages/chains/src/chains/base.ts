@@ -10,6 +10,7 @@ import { KimLogo } from "../assets";
 
 export const baseData: ChainData = {
     active: true,
+    reimbursementFeeEnabled: false,
     name: base.name,
     metromContract: ADDRESS[SupportedChain.Base],
     blockExplorers: base.blockExplorers,
