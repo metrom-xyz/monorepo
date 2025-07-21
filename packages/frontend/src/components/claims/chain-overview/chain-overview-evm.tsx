@@ -1,0 +1,347 @@
+import classNames from "classnames";
+import { Typography, Button, Card } from "@metrom-xyz/ui";
+import { useTranslations } from "next-intl";
+import {
+    usePublicClient,
+    useSimulateContract,
+    useSwitchChain,
+    useWriteContract,
+} from "wagmi";
+import { useAccount } from "@/src/hooks/use-account";
+import { metromAbi } from "@metrom-xyz/contracts/abi";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { trackFathomEvent } from "@/src/utils/fathom";
+import { toast } from "sonner";
+import { ClaimSuccess } from "../notification/claim-success";
+import { type WriteContractErrorType, encodeFunctionData } from "viem";
+import { ClaimFail } from "../notification/claim-fail";
+import { RecoverSuccess } from "../notification/recover-success";
+import { RecoverFail } from "../notification/recover-fail";
+import { SAFE } from "@/src/commons/env";
+import { SAFE_APP_SDK } from "@/src/commons";
+import { formatUsdAmount } from "@/src/utils/format";
+import type { ChainOverviewProps } from ".";
+
+import styles from "./styles.module.css";
+
+export function ChainOverviewEvm({
+    className,
+    chainWithRewardsData,
+    onClaimAll,
+    onRecoverAll,
+    onClaiming,
+    onRecovering,
+}: ChainOverviewProps) {
+    const t = useTranslations("rewards");
+    const { address: account } = useAccount();
+    const publicClient = usePublicClient();
+    const { switchChainAsync } = useSwitchChain();
+    const { writeContractAsync } = useWriteContract();
+
+    const [claiming, setClaiming] = useState(false);
+    const [recovering, setRecovering] = useState(false);
+
+    const ChainIcon = chainWithRewardsData.chainData.icon;
+
+    const recoverRewardsArgs = useMemo(() => {
+        if (!account) return [];
+
+        return chainWithRewardsData.reimbursements.map((reimbursement) => {
+            return {
+                campaignId: reimbursement.campaignId,
+                proof: reimbursement.proof,
+                token: reimbursement.token.address,
+                amount: reimbursement.amount.raw,
+                receiver: account,
+            };
+        });
+    }, [account, chainWithRewardsData.reimbursements]);
+
+    const claimRewardsArgs = useMemo(() => {
+        if (!account) return [];
+
+        return chainWithRewardsData.claims.map((claim) => {
+            return {
+                campaignId: claim.campaignId,
+                proof: claim.proof,
+                token: claim.token.address,
+                amount: claim.amount.raw,
+                receiver: account,
+            };
+        });
+    }, [account, chainWithRewardsData.claims]);
+
+    const {
+        data: simulatedRecoverAll,
+        isLoading: simulatingRecoverAll,
+        isError: simulateRecoverAllErrored,
+    } = useSimulateContract({
+        chainId: chainWithRewardsData.chainId,
+        abi: metromAbi,
+        address: chainWithRewardsData.chainData.metromContract.address,
+        functionName: "recoverRewards",
+        args: [recoverRewardsArgs],
+        query: {
+            refetchOnMount: false,
+            enabled:
+                !SAFE &&
+                !!account &&
+                chainWithRewardsData.reimbursements.length > 0,
+        },
+    });
+
+    const {
+        data: simulatedClaimAll,
+        isLoading: simulatingClaimAll,
+        isError: simulateClaimAllErrored,
+    } = useSimulateContract({
+        chainId: chainWithRewardsData.chainId,
+        abi: metromAbi,
+        address: chainWithRewardsData.chainData.metromContract.address,
+        functionName: "claimRewards",
+        args: [claimRewardsArgs],
+        query: {
+            enabled: !SAFE && account && chainWithRewardsData.claims.length > 0,
+        },
+    });
+
+    useEffect(() => {
+        if (onClaiming) onClaiming(claiming);
+    }, [claiming, onClaiming]);
+
+    useEffect(() => {
+        if (onRecovering) onRecovering(recovering);
+    }, [recovering, onRecovering]);
+
+    const handleStandardRecoverAll = useCallback(() => {
+        if (
+            !writeContractAsync ||
+            !publicClient ||
+            !simulatedRecoverAll?.request
+        )
+            return;
+        const recover = async () => {
+            setRecovering(true);
+            try {
+                await switchChainAsync({
+                    chainId: chainWithRewardsData.chainId,
+                });
+
+                const tx = await writeContractAsync(
+                    simulatedRecoverAll.request,
+                );
+                const receipt = await publicClient.waitForTransactionReceipt({
+                    hash: tx,
+                });
+
+                if (receipt.status === "reverted") {
+                    console.warn("Recover transaction reverted");
+                    throw new Error("Transaction reverted");
+                }
+
+                toast.custom((toastId) => <RecoverSuccess toastId={toastId} />);
+                onRecoverAll();
+                trackFathomEvent("CLICK_RECOVER_ALL");
+            } catch (error) {
+                if (
+                    !(error as WriteContractErrorType).message.includes(
+                        "User rejected",
+                    )
+                )
+                    toast.custom((toastId) => (
+                        <RecoverFail toastId={toastId} />
+                    ));
+
+                console.warn("Could not recover", error);
+            } finally {
+                setRecovering(false);
+            }
+        };
+        void recover();
+    }, [
+        chainWithRewardsData.chainId,
+        publicClient,
+        simulatedRecoverAll,
+        onRecoverAll,
+        switchChainAsync,
+        writeContractAsync,
+    ]);
+
+    const handleSafeRecoverAll = useCallback(() => {
+        const recover = async () => {
+            setRecovering(true);
+
+            try {
+                await SAFE_APP_SDK.txs.send({
+                    txs: [
+                        {
+                            to: chainWithRewardsData.chainData.metromContract
+                                .address,
+                            data: encodeFunctionData({
+                                abi: metromAbi,
+                                functionName: "recoverRewards",
+                                args: [recoverRewardsArgs],
+                            }),
+                            value: "0",
+                        },
+                    ],
+                });
+
+                // TODO: do we need to check the safe tx status and have a custom notification
+                // if the tx gets executed instantly (only 1 signer)?
+                toast.custom((toastId) => (
+                    <RecoverSuccess toastId={toastId} safe />
+                ));
+                onRecoverAll();
+                trackFathomEvent("CLICK_RECOVER_ALL");
+            } catch (error) {
+                console.warn("Could not recover", error);
+            } finally {
+                setRecovering(false);
+            }
+        };
+
+        void recover();
+    }, [recoverRewardsArgs, chainWithRewardsData.chainData, onRecoverAll]);
+
+    const handleStandardClaimAll = useCallback(() => {
+        if (!writeContractAsync || !publicClient || !simulatedClaimAll?.request)
+            return;
+        const claim = async () => {
+            setClaiming(true);
+            try {
+                await switchChainAsync({
+                    chainId: chainWithRewardsData.chainId,
+                });
+
+                const tx = await writeContractAsync(simulatedClaimAll.request);
+                const receipt = await publicClient.waitForTransactionReceipt({
+                    hash: tx,
+                });
+
+                if (receipt.status === "reverted") {
+                    console.warn("Claim transaction reverted");
+                    throw new Error("Transaction reverted");
+                }
+
+                toast.custom((toastId) => <ClaimSuccess toastId={toastId} />);
+                onClaimAll();
+                trackFathomEvent("CLICK_CLAIM_ALL");
+            } catch (error) {
+                if (
+                    !(error as WriteContractErrorType).message.includes(
+                        "User rejected",
+                    )
+                )
+                    toast.custom((toastId) => (
+                        <ClaimFail
+                            toastId={toastId}
+                            message={t("claims.notification.fail.message")}
+                        />
+                    ));
+
+                console.warn("Could not claim", error);
+            } finally {
+                setClaiming(false);
+            }
+        };
+        void claim();
+    }, [
+        t,
+        chainWithRewardsData.chainId,
+        publicClient,
+        simulatedClaimAll,
+        onClaimAll,
+        switchChainAsync,
+        writeContractAsync,
+    ]);
+
+    const handleSafeClaimAll = useCallback(() => {
+        const claim = async () => {
+            setClaiming(true);
+
+            try {
+                await SAFE_APP_SDK.txs.send({
+                    txs: [
+                        {
+                            to: chainWithRewardsData.chainData.metromContract
+                                .address,
+                            data: encodeFunctionData({
+                                abi: metromAbi,
+                                functionName: "claimRewards",
+                                args: [claimRewardsArgs],
+                            }),
+                            value: "0",
+                        },
+                    ],
+                });
+
+                toast.custom((toastId) => (
+                    <ClaimSuccess toastId={toastId} safe />
+                ));
+                onClaimAll();
+                trackFathomEvent("CLICK_CLAIM_ALL");
+            } catch (error) {
+                console.warn("Could not claim", error);
+            } finally {
+                setClaiming(false);
+            }
+        };
+
+        void claim();
+    }, [claimRewardsArgs, chainWithRewardsData.chainData, onClaimAll]);
+
+    return (
+        <Card className={classNames(styles.root, className)}>
+            <div className={styles.chainNameWrapper}>
+                <ChainIcon className={styles.chainIcon} />
+                <Typography size="xl4" truncate>
+                    {chainWithRewardsData.chainData.name}
+                </Typography>
+                <Typography size="xl2" weight="medium" light>
+                    {formatUsdAmount({
+                        amount: chainWithRewardsData.totalUsdValue,
+                    })}
+                </Typography>
+            </div>
+            <div className={styles.buttonsWrapper}>
+                {chainWithRewardsData.reimbursements.length > 0 && (
+                    <Button
+                        size="sm"
+                        disabled={simulateRecoverAllErrored}
+                        loading={simulatingRecoverAll || recovering}
+                        iconPlacement="right"
+                        onClick={
+                            SAFE
+                                ? handleSafeRecoverAll
+                                : handleStandardRecoverAll
+                        }
+                    >
+                        {simulatingRecoverAll
+                            ? t("reimbursements.loading")
+                            : recovering
+                              ? t("reimbursements.recoveringAll")
+                              : t("reimbursements.recoverAll")}
+                    </Button>
+                )}
+                {chainWithRewardsData.claims.length > 0 && (
+                    <Button
+                        size="sm"
+                        disabled={simulateClaimAllErrored}
+                        loading={simulatingClaimAll || claiming}
+                        iconPlacement="right"
+                        onClick={
+                            SAFE ? handleSafeClaimAll : handleStandardClaimAll
+                        }
+                    >
+                        {simulatingClaimAll
+                            ? t("claims.loading")
+                            : claiming
+                              ? t("claims.claimingAll")
+                              : t("claims.claimAll")}
+                    </Button>
+                )}
+            </div>
+        </Card>
+    );
+}

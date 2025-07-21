@@ -3,7 +3,7 @@ import type { ChainContract, Chain } from "viem";
 import type { SVGIcon } from "./common";
 import type { Erc20Token } from "@metrom-xyz/sdk";
 import type { Protocol } from "./protocol";
-import { SupportedChain } from "@metrom-xyz/contracts";
+import { SupportedChain as SupportedChainEvm } from "@metrom-xyz/contracts";
 import { mainnet } from "viem/chains";
 
 export interface ChainData {
@@ -21,7 +21,8 @@ export enum SupportedDevelopmentMvmChain {
     AptosTestnet = 2,
     // FIXME: aptos devnet chain id can't be hardcoded because it changes weekly, when Aptos resets the chain.
     // It's probably better to skip this chain and use the testnet directly.
-    AptosDevnet = 195,
+    // AptosDevnet = SupportedChainMvm.Devnet,
+    AptosDevnet = 197,
     Aptos = 1,
 }
 
@@ -31,28 +32,28 @@ export enum SupportedProductionMvmChain {
 }
 
 export enum SupportedDevelopmentEvmChain {
-    Holesky = SupportedChain.Holesky,
-    Sepolia = SupportedChain.Sepolia,
-    BaseSepolia = SupportedChain.BaseSepolia,
+    Holesky = SupportedChainEvm.Holesky,
+    Sepolia = SupportedChainEvm.Sepolia,
+    BaseSepolia = SupportedChainEvm.BaseSepolia,
     // TODO: this is temporary as we are testing, remove this as soon as that is done
-    Sei = SupportedChain.Sei,
+    Sei = SupportedChainEvm.Sei,
     // TODO: this is temporary as we are testing, remove this as soon as that is done
-    Swell = SupportedChain.Swell,
+    Swell = SupportedChainEvm.Swell,
 }
 
 export enum SupportedProductionEvmChain {
-    Base = SupportedChain.Base,
-    Taiko = SupportedChain.Taiko,
-    Scroll = SupportedChain.Scroll,
-    Sonic = SupportedChain.Sonic,
-    Gnosis = SupportedChain.Gnosis,
-    Telos = SupportedChain.Telos,
-    Lens = SupportedChain.Lens,
-    LightLinkPhoenix = SupportedChain.LightLinkPhoenix,
-    Lumia = SupportedChain.Lumia,
+    Base = SupportedChainEvm.Base,
+    Taiko = SupportedChainEvm.Taiko,
+    Scroll = SupportedChainEvm.Scroll,
+    Sonic = SupportedChainEvm.Sonic,
+    Gnosis = SupportedChainEvm.Gnosis,
+    Telos = SupportedChainEvm.Telos,
+    Lens = SupportedChainEvm.Lens,
+    LightLinkPhoenix = SupportedChainEvm.LightLinkPhoenix,
+    Lumia = SupportedChainEvm.Lumia,
     // This is required for the Turtle integration
     Mainnet = mainnet.id,
-    Sei = SupportedChain.Sei,
-    Swell = SupportedChain.Swell,
-    Hemi = SupportedChain.Hemi,
+    Sei = SupportedChainEvm.Sei,
+    Swell = SupportedChainEvm.Swell,
+    Hemi = SupportedChainEvm.Hemi,
 }
