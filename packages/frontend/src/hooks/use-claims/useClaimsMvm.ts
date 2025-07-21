@@ -14,7 +14,7 @@ type QueryKey = [string, Address | undefined];
 
 const rawClaims: Claim[] = [
     {
-        chainId: 195,
+        chainId: 197,
         campaignId:
             "0xf9b18a4918b3965faf3d4ed06a7215999e5e2c0e6546dec28f92d97b49d51495",
         token: {
