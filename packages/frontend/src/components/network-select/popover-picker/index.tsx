@@ -1,7 +1,10 @@
 import { Popover, Typography } from "@metrom-xyz/ui";
 import classNames from "classnames";
 import { useWindowSize } from "react-use";
-import { getChainData } from "@/src/utils/chain";
+import { getCrossVmChainData } from "@/src/utils/chain";
+import { BASE_URL, SUPPORTED_CHAINS_MVM } from "@/src/commons";
+import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
+import { APTOS } from "@/src/commons/env";
 
 import styles from "./styles.module.css";
 import commonStyles from "../styles.module.css";
@@ -45,7 +48,29 @@ export function PopoverPicker({
                 })}
             >
                 {chains.map((id) => {
-                    const chainData = getChainData(id);
+                    const chainData = getCrossVmChainData(id);
+
+                    if (!APTOS && SUPPORTED_CHAINS_MVM.includes(id))
+                        return (
+                            <a
+                                key={id}
+                                // TODO: metrom Aptos url
+                                href={`${BASE_URL}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className={classNames(styles.network)}
+                            >
+                                {chainData?.icon && (
+                                    <chainData.icon
+                                        className={commonStyles.icon}
+                                    />
+                                )}
+                                <Typography>{chainData?.name}</Typography>
+                                <ArrowRightIcon
+                                    className={commonStyles.externalLinkIcon}
+                                />
+                            </a>
+                        );
 
                     return (
                         <div
