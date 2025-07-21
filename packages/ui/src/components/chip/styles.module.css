@@ -3,12 +3,26 @@
 .root {
     @apply flex
         justify-center
-        theme-surface-2
-        rounded-[2.813rem]
         select-none
         transition-colors
         duration-200
         ease-in-out;
+}
+
+.primary {
+    @apply theme-surface-2;
+}
+
+.secondary {
+    @apply border border-zinc-500 dark:border-zinc-500;
+}
+
+.rounded {
+    @apply rounded-[2.813rem];
+}
+
+.squared {
+    @apply rounded-md;
 }
 
 .sm {

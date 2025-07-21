@@ -1,12 +1,13 @@
 "use client";
 
-import { Typography, Skeleton } from "@metrom-xyz/ui";
+import { Chip, Typography } from "@metrom-xyz/ui";
 import dayjs from "dayjs";
 import classNames from "classnames";
 import { useTranslations } from "next-intl";
 import { Status as StatusState } from "@metrom-xyz/sdk";
 
 import styles from "./styles.module.css";
+import commonStyles from "../styles.module.css";
 
 interface CampaignStatusProps {
     from: number;
@@ -40,41 +41,30 @@ export function Status({
     }
 
     return (
-        <div className={styles.statusRoot}>
-            <div
-                className={classNames(styles.statusDot, {
-                    [styles.statusDotLive]: status === StatusState.Live,
-                    [styles.statusDotUpcoming]: status === StatusState.Upcoming,
-                    [styles.statusDotEnded]: status === StatusState.Ended,
-                })}
-            />
-            <div className={styles.statusText}>
-                <Typography size="sm" weight="medium">
+        <Chip
+            variant="secondary"
+            border="squared"
+            className={{ root: styles.root }}
+        >
+            <div className={styles.dotWrapper}>
+                <div
+                    className={classNames(styles.dot, {
+                        [styles.dotLive]: status === StatusState.Live,
+                        [styles.dotUpcoming]: status === StatusState.Upcoming,
+                        [styles.dotEnded]: status === StatusState.Ended,
+                    })}
+                />
+            </div>
+            <div className={styles.text}>
+                <Typography size="xs" uppercase>
                     {text}
                 </Typography>
                 {showDuration && (
-                    <Typography
-                        className={styles.statusDuration}
-                        light
-                        size="sm"
-                        weight="medium"
-                    >
+                    <Typography className={styles.duration} light size="xs">
                         {duration}
                     </Typography>
                 )}
             </div>
-        </div>
-    );
-}
-
-export function SkeletonStatus() {
-    return (
-        <div className={styles.statusRoot}>
-            <Skeleton width={8} circular />
-            <div className={styles.statusText}>
-                <Skeleton width={50} />
-                <Skeleton width={30} className={styles.statusDuration} />
-            </div>
-        </div>
+        </Chip>
     );
 }
