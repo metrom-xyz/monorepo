@@ -4,24 +4,28 @@ import { useTranslations } from "next-intl";
 import { Step } from "@/src/components/step";
 import { StepPreview } from "@/src/components/step/preview";
 import { StepContent } from "@/src/components/step/content";
-import { ProtocolType, type DexProtocol } from "@metrom-xyz/chains";
+import {
+    ProtocolType,
+    type DexProtocol,
+    type WithChain,
+} from "@metrom-xyz/chains";
 import classNames from "classnames";
 import { Typography } from "@metrom-xyz/ui";
 import {
     type AmmPoolLiquidityCampaignPayload,
     type AmmPoolLiquidityCampaignPayloadPart,
+    type FormStepBaseProps,
 } from "@/src/types/campaign";
 import { useProtocolsInChain } from "@/src/hooks/useProtocolsInChain";
 
 import styles from "./styles.module.css";
 
-interface DexStepProps {
-    disabled?: boolean;
+interface DexStepProps extends FormStepBaseProps {
     dex?: AmmPoolLiquidityCampaignPayload["dex"];
     onDexChange: (value: AmmPoolLiquidityCampaignPayloadPart) => void;
 }
 
-export function DexStep({ disabled, dex, onDexChange }: DexStepProps) {
+export function DexStep({ loading, disabled, dex, onDexChange }: DexStepProps) {
     const t = useTranslations("newCampaign.form.ammPoolLiquidity.dex");
     const [open, setOpen] = useState(false);
 
@@ -42,15 +46,15 @@ export function DexStep({ disabled, dex, onDexChange }: DexStepProps) {
     }, [chainId]);
 
     useEffect(() => {
-        if (!!dex || availableDexes.length !== 1) return;
+        if (loading || !!dex || availableDexes.length !== 1) return;
         onDexChange({
             dex: availableDexes[0],
         });
         setOpen(false);
-    }, [availableDexes, dex, onDexChange]);
+    }, [loading, availableDexes, dex, onDexChange]);
 
     const getDexChangeHandler = useCallback(
-        (newDex: DexProtocol) => {
+        (newDex: WithChain<DexProtocol>) => {
             return () => {
                 if (dex && dex.slug === newDex.slug) return;
                 onDexChange({
@@ -68,6 +72,7 @@ export function DexStep({ disabled, dex, onDexChange }: DexStepProps) {
 
     return (
         <Step
+            loading={loading}
             disabled={disabled || availableDexes.length === 0}
             open={open}
             completed={!!selectedDex}

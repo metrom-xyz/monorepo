@@ -4,10 +4,17 @@ import {
     type LiquityV2CampaignPayload,
     type LiquityV2CampaignPayloadPart,
     type CampaignPreviewDistributables,
+    CampaignKind,
 } from "@/src/types/campaign";
 import { useTranslations } from "next-intl";
-import { useCallback, useEffect, useMemo, useState } from "react";
-import { useChainId } from "wagmi";
+import {
+    useCallback,
+    useEffect,
+    useLayoutEffect,
+    useMemo,
+    useState,
+} from "react";
+import { useChainId, useSwitchChain } from "wagmi";
 import { DistributablesType } from "@metrom-xyz/sdk";
 import { StartDateStep } from "../../steps/start-date-step";
 import { EndDateStep } from "../../steps/end-date-step";
@@ -18,6 +25,13 @@ import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
 import { LiquityV2BrandStep } from "../../steps/liquity-v2-brand-step";
 import { LiquityV2ActionStep } from "../../steps/liquity-v2-action-step";
 import { LiquityV2CollateralStep } from "../../steps/liquity-v2-collateral-step";
+import { useRouter, useSearchParams } from "next/navigation";
+import { usePathname } from "@/src/i18n/routing";
+import { useCampaignSetup } from "@/src/hooks/useCampaignSetup";
+import { decodeCampaignSetup } from "@/src/utils/campaign";
+import { toast } from "sonner";
+import { SetupFail } from "../notifications/setup-fail";
+import { SetupSuccess } from "../notifications/setup-success";
 
 import styles from "./styles.module.css";
 
@@ -83,9 +97,80 @@ export function LiquityV2ForksForm({
 }: LiquityV2ForksFormProps) {
     const t = useTranslations("newCampaign");
     const chainId = useChainId();
+    const router = useRouter();
+    const pathname = usePathname();
+    const { switchChainAsync, isPending: switchingChain } = useSwitchChain();
+    const searchParams = useSearchParams();
+    const {
+        loading: loadingSetup,
+        error: setupError,
+        setup,
+    } = useCampaignSetup({
+        hash: searchParams.get("setup"),
+        enabled: !!searchParams.get("setup"),
+    });
 
     const [payload, setPayload] = useState(initialPayload);
     const [errors, setErrors] = useState<CampaignPayloadErrors>({});
+
+    // This hook auto fills the form state when a campaign setup is available.
+    useLayoutEffect(() => {
+        // Remove the 'setup' parameter from the URL after parsing.
+        // This ensures the form behaves correctly after autocomplete completes.
+        const params = new URLSearchParams(searchParams.toString());
+
+        if (setupError) {
+            params.delete("setup");
+            router.replace(`${pathname}?${params.toString()}`, {
+                scroll: false,
+            });
+        }
+
+        if (!setup) return;
+
+        const autocompletePayload = async () => {
+            const decodedSetup = decodeCampaignSetup(setup);
+            if (
+                decodedSetup.kind !== CampaignKind.LiquityV2Debt &&
+                decodedSetup.kind !== CampaignKind.LiquityV2StabilityPool
+            )
+                return;
+
+            const payload = decodedSetup as LiquityV2CampaignPayload;
+            if (!payload.brand?.chainId) return;
+
+            const { brand } = payload;
+
+            if (brand.chainId !== chainId)
+                await switchChainAsync({ chainId: brand.chainId });
+
+            params.delete("setup");
+            router.replace(`${pathname}?${params.toString()}`, {
+                scroll: false,
+            });
+
+            setPayload(payload);
+        };
+
+        autocompletePayload();
+    }, [
+        loadingSetup,
+        setupError,
+        searchParams,
+        chainId,
+        setup,
+        pathname,
+        router,
+        switchChainAsync,
+    ]);
+
+    useEffect(() => {
+        if (!loadingSetup && !!setupError)
+            toast.custom((toastId) => <SetupFail toastId={toastId} />);
+
+        if (!loadingSetup && !setupError && !!setup)
+            toast.custom((toastId) => <SetupSuccess toastId={toastId} />);
+    }, [loadingSetup, setupError, setup]);
 
     const previewPayload = useMemo(() => {
         if (Object.values(errors).some((error) => !!error)) return null;
@@ -132,21 +217,27 @@ export function LiquityV2ForksForm({
         onPreviewClick(previewPayload);
     }
 
+    const loading = loadingSetup || switchingChain;
+
     return (
         <div className={styles.root}>
             <div className={styles.stepsWrapper}>
                 <LiquityV2BrandStep
+                    loading={loading}
                     disabled={unsupportedChain}
                     brand={payload.brand}
                     onBrandChange={handlePayloadOnChange}
                 />
                 <LiquityV2ActionStep
+                    autoCompleting={!!setup}
+                    loading={loading}
                     disabled={!payload.brand || unsupportedChain}
                     action={payload.action}
                     brand={payload.brand}
                     onActionChange={handlePayloadOnChange}
                 />
                 <LiquityV2CollateralStep
+                    loading={loading}
                     disabled={!payload.action || unsupportedChain}
                     brand={payload.brand}
                     action={payload.action}
@@ -154,6 +245,7 @@ export function LiquityV2ForksForm({
                     onCollateralChange={handlePayloadOnChange}
                 />
                 <StartDateStep
+                    loading={loading}
                     disabled={!payload.collateral || unsupportedChain}
                     startDate={payload.startDate}
                     endDate={payload.endDate}
@@ -161,6 +253,7 @@ export function LiquityV2ForksForm({
                     onError={handlePayloadOnError}
                 />
                 <EndDateStep
+                    loading={loading}
                     disabled={!payload.startDate || unsupportedChain}
                     startDate={payload.startDate}
                     endDate={payload.endDate}
@@ -168,6 +261,7 @@ export function LiquityV2ForksForm({
                     onError={handlePayloadOnError}
                 />
                 <RewardsStep
+                    loading={loading}
                     disabled={!payload.endDate || unsupportedChain}
                     distributables={payload.distributables}
                     startDate={payload.startDate}
@@ -189,6 +283,7 @@ export function LiquityV2ForksForm({
                     onError={handlePayloadOnError}
                 /> */}
                 <RestrictionsStep
+                    loading={loading}
                     disabled={missingDistributables || unsupportedChain}
                     restrictions={payload.restrictions}
                     onRestrictionsChange={handlePayloadOnChange}
@@ -196,6 +291,7 @@ export function LiquityV2ForksForm({
                 />
             </div>
             <Button
+                loading={loading}
                 icon={ArrowRightIcon}
                 iconPlacement="right"
                 disabled={!previewPayload}

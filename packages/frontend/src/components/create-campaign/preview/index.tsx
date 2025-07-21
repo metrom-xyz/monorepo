@@ -1,4 +1,10 @@
-import { Button, Typography, TextField, ErrorText } from "@metrom-xyz/ui";
+import {
+    Button,
+    Typography,
+    TextField,
+    ErrorText,
+    ToastNotification,
+} from "@metrom-xyz/ui";
 import {
     AmmPoolLiquidityCampaignPreviewPayload,
     type CampaignPreviewPayload,
@@ -45,6 +51,10 @@ import { useChainData } from "@/src/hooks/useChainData";
 import { Weighting } from "./weighting";
 import { Restrictions } from "./restrictions";
 import { useLiquidityByAddresses } from "@/src/hooks/useLiquidityByAddresses";
+import { LinkIcon } from "@/src/assets/link-icon";
+import { toast } from "sonner";
+import { LinkCopied } from "./notifications/link-copied";
+import { LinkError } from "./notifications/link-error";
 
 import styles from "./styles.module.css";
 
@@ -72,9 +82,12 @@ export function CampaignPreview({
 
     const [deploying, setDeploying] = useState(false);
     const [uploadingSpecification, setUploadingSpecification] = useState(false);
+    const [uploadingSetup, setUploadingSetup] = useState(false);
+    const [setupError, setSetupError] = useState(false);
     const [created, setCreated] = useState(false);
     const [tokensApproved, setTokensApproved] = useState(false);
     const [specificationHash, setSpecificationHash] = useState<Hex>(zeroHash);
+    const [shareUrl, setShareUrl] = useState<string>();
     const [error, setError] = useState<ErrorMessage>("");
     const [safeTxs, setSafeTxs] = useState<BaseTransaction[]>([]);
 
@@ -201,6 +214,61 @@ export function CampaignPreview({
                     pointsCampaignArgs.length > 0),
         },
     });
+
+    const uploadSetup = useCallback(async () => {
+        if (!!shareUrl) {
+            navigator.clipboard.writeText(shareUrl).then(() => {
+                toast.custom((toastId) => <LinkCopied toastId={toastId} />);
+            });
+
+            return;
+        }
+
+        setSetupError(false);
+        setUploadingSetup(true);
+
+        const setup = JSON.stringify(payload, (_, value) =>
+            typeof value === "bigint" ? `${value.toString()}n` : value,
+        );
+
+        try {
+            const response = await fetch(
+                `${SERVICE_URLS[ENVIRONMENT].dataManager}/data/temporary`,
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: setup,
+                },
+            );
+
+            if (!response.ok) throw new Error(await response.text());
+
+            const { hash } = (await response.json()) as { hash: Hex };
+
+            const url = new URL(window.location.href);
+            url.searchParams.set("setup", hash);
+
+            setShareUrl(url.toString());
+            navigator.clipboard.writeText(url.toString()).then(() => {
+                toast.custom((toastId) => <LinkCopied toastId={toastId} />);
+            });
+        } catch (error) {
+            console.error(
+                `Could not upload setup to data-manager: ${setup}`,
+                error,
+            );
+            setSetupError(true);
+        } finally {
+            setUploadingSetup(false);
+        }
+    }, [shareUrl, payload]);
+
+    useEffect(() => {
+        if (setupError)
+            toast.custom((toastId) => <LinkError toastId={toastId} />);
+    }, [setupError]);
 
     useEffect(() => {
         const specification = buildSpecificationBundle(payload);
@@ -435,12 +503,23 @@ export function CampaignPreview({
                     {restrictions && (
                         <Restrictions restrictions={payload.restrictions} />
                     )}
-                    <div className={styles.deployButtonContainer}>
+                    <div className={styles.buttonsContainer}>
                         {error && (
                             <ErrorText size="xs" weight="medium">
                                 {t(error)}
                             </ErrorText>
                         )}
+                        <Button
+                            icon={LinkIcon}
+                            iconPlacement="right"
+                            variant="secondary"
+                            loading={uploadingSetup}
+                            disabled={!!error || simulateCreateErrored}
+                            className={{ root: styles.button }}
+                            onClick={uploadSetup}
+                        >
+                            {t("share")}
+                        </Button>
                         {tokensApproved && (
                             <Button
                                 icon={ArrowRightIcon}
@@ -451,7 +530,7 @@ export function CampaignPreview({
                                     simulatingCreate ||
                                     deploying
                                 }
-                                className={{ root: styles.deployButton }}
+                                className={{ root: styles.button }}
                                 onClick={
                                     SAFE
                                         ? handleOnSafeDeploy

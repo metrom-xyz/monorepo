@@ -5,6 +5,7 @@ import { StepPreview } from "@/src/components/step/preview";
 import { StepContent } from "@/src/components/step/content";
 import { useTranslations } from "next-intl";
 import {
+    type FormStepBaseProps,
     type LiquityV2CampaignPayload,
     type LiquityV2CampaignPayloadPart,
 } from "@/src/types/campaign";
@@ -13,6 +14,7 @@ import classNames from "classnames";
 import { TakeLoanIcon } from "@/src/assets/take-loan-icon";
 import { DepositToSpIcon } from "@/src/assets/deposit-to-sp-icon";
 import { LiquityV2Action } from "@/src/types/common";
+import { usePrevious } from "react-use";
 
 import styles from "./styles.module.css";
 
@@ -29,14 +31,15 @@ export const LIQUITY_V2_SUPPORTED_ACTIONS = [
     },
 ] as const;
 
-interface LiquityV2ActionStepProps {
-    disabled?: boolean;
+interface LiquityV2ActionStepProps extends FormStepBaseProps {
     action?: LiquityV2CampaignPayload["action"];
     brand?: LiquityV2CampaignPayload["brand"];
     onActionChange: (value: LiquityV2CampaignPayloadPart) => void;
 }
 
 export function LiquityV2ActionStep({
+    autoCompleting,
+    loading,
     disabled,
     action,
     brand,
@@ -47,6 +50,7 @@ export function LiquityV2ActionStep({
     const [open, setOpen] = useState(false);
 
     const chainId = useChainId();
+    const prevBrand = usePrevious(brand);
 
     const selectedAction = useMemo(() => {
         if (!action) return undefined;
@@ -60,9 +64,14 @@ export function LiquityV2ActionStep({
     }, [chainId]);
 
     useEffect(() => {
-        if (disabled || !!action) return;
-        setOpen(true);
+        if (disabled || !!action) setOpen(false);
+        else setOpen(true);
     }, [disabled, action]);
+
+    useEffect(() => {
+        if (!autoCompleting && !!prevBrand && !!action && prevBrand !== brand)
+            onActionChange({ action: undefined });
+    }, [autoCompleting, prevBrand, brand, action, onActionChange]);
 
     const getActionChangeHandler = useCallback(
         (newAction: LiquityV2Action) => {
@@ -83,6 +92,7 @@ export function LiquityV2ActionStep({
 
     return (
         <Step
+            loading={loading}
             disabled={disabled}
             open={open}
             completed={!!action}

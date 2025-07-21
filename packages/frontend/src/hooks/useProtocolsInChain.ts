@@ -3,12 +3,13 @@ import type {
     LiquityV2Protocol,
     Protocol,
     ProtocolType,
+    WithChain,
 } from "@metrom-xyz/chains";
 import { useChainData } from "./useChainData";
 
 interface ProtocolByType {
-    [ProtocolType.Dex]: DexProtocol;
-    [ProtocolType.LiquityV2]: LiquityV2Protocol;
+    [ProtocolType.Dex]: WithChain<DexProtocol>;
+    [ProtocolType.LiquityV2]: WithChain<LiquityV2Protocol>;
 }
 
 type ProtocolsInChain<T extends ProtocolType | undefined> =
@@ -34,5 +35,8 @@ export function useProtocolsInChain<T extends ProtocolType | undefined>({
         return true;
     });
 
-    return filteredProtocols as unknown as ProtocolsInChain<T>;
+    return filteredProtocols.map((protocol) => ({
+        ...protocol,
+        chainId,
+    })) as unknown as ProtocolsInChain<T>;
 }

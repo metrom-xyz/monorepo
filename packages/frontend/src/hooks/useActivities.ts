@@ -1,5 +1,4 @@
 import { type Activity } from "@metrom-xyz/sdk";
-import { SupportedChain } from "@metrom-xyz/contracts";
 import { METROM_API_CLIENT } from "../commons";
 import { useAccount, useChainId } from "wagmi";
 import { useQuery } from "@tanstack/react-query";

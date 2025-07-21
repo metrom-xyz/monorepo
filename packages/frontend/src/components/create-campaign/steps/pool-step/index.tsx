@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useLayoutEffect, useState } from "react";
 import { useChainId } from "wagmi";
 import { useTranslations } from "next-intl";
 import { type AmmPoolWithTvl } from "@metrom-xyz/sdk";
@@ -11,14 +11,15 @@ import type {
     AmmPoolLiquidityCampaignPayload,
     AmmPoolLiquidityCampaignPayloadPart,
     CampaignPayloadErrors,
+    FormStepBaseProps,
 } from "@/src/types/campaign";
 import { ListPoolPicker } from "./list";
 import { AddressPoolPicker } from "./address-picker";
+import { usePrevious } from "react-use";
 
 import styles from "./styles.module.css";
 
-interface PoolStepProps {
-    disabled?: boolean;
+interface PoolStepProps extends FormStepBaseProps {
     dex?: AmmPoolLiquidityCampaignPayload["dex"];
     pool?: AmmPoolLiquidityCampaignPayload["pool"];
     onPoolChange: (value: AmmPoolLiquidityCampaignPayloadPart) => void;
@@ -26,6 +27,7 @@ interface PoolStepProps {
 }
 
 export function PoolStep({
+    loading,
     disabled,
     dex,
     pool,
@@ -37,13 +39,15 @@ export function PoolStep({
     const [error, setError] = useState("");
     const chainId = useChainId();
 
+    const prevDex = usePrevious(dex);
+
     useEffect(() => {
         setOpen(false);
     }, [chainId]);
 
     useEffect(() => {
-        if (disabled || !!pool?.id) return;
-        setOpen(true);
+        if (disabled || !!pool?.id) setOpen(false);
+        else setOpen(true);
     }, [disabled, pool]);
 
     useEffect(() => {
@@ -51,8 +55,9 @@ export function PoolStep({
     }, [onError, error]);
 
     useEffect(() => {
-        onPoolChange({ pool: undefined });
-    }, [onPoolChange, dex?.slug]);
+        if (!!prevDex && !!dex && prevDex.slug !== dex.slug)
+            onPoolChange({ pool: undefined });
+    }, [onPoolChange, prevDex, dex]);
 
     const handlePoolOnChange = useCallback(
         (newPool: AmmPoolWithTvl) => {
@@ -71,6 +76,7 @@ export function PoolStep({
 
     return (
         <Step
+            loading={loading}
             disabled={disabled}
             open={open}
             completed={!!pool}

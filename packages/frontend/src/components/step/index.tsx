@@ -11,6 +11,7 @@ import styles from "./styles.module.css";
 
 interface StepProps {
     disabled?: boolean;
+    loading?: boolean;
     completed?: boolean;
     open?: boolean;
     children: ReactElement[];
@@ -20,6 +21,7 @@ interface StepProps {
 
 export function Step({
     disabled,
+    loading,
     completed,
     open,
     children,
@@ -41,7 +43,8 @@ export function Step({
     return (
         <div
             className={classNames(className, styles.root, {
-                [styles.disabled]: disabled,
+                [styles.loading]: loading,
+                [styles.disabled]: disabled || loading,
                 [styles.open]: open,
             })}
         >

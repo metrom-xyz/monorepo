@@ -6,6 +6,7 @@ import {
     type CampaignPayloadErrors,
     type BaseCampaignPayloadPart,
     type CampaignPayloadTokenDistributables,
+    type FormStepBaseProps,
 } from "@/src/types/campaign";
 import type { LocalizedMessage } from "@/src/types/utils";
 import { Button, ErrorText, Switch, Typography } from "@metrom-xyz/ui";
@@ -16,13 +17,11 @@ import { KpiMetric, type KpiSpecification } from "@metrom-xyz/sdk";
 import { usePrevious } from "react-use";
 import { KpiSimulationChart } from "../../../kpi-simulation-chart";
 import { GoalInputs } from "./goal-inputs";
-import { useChainId } from "wagmi";
 import { InfoMessage } from "@/src/components/info-message";
 
 import styles from "./styles.module.css";
 
-interface KpiStepProps {
-    disabled?: boolean;
+interface KpiStepProps extends FormStepBaseProps {
     pool?: AmmPoolLiquidityCampaignPayload["pool"];
     distributables?: CampaignPayloadTokenDistributables;
     startDate?: AmmPoolLiquidityCampaignPayload["startDate"];
@@ -36,6 +35,7 @@ type ErrorMessage = LocalizedMessage<"newCampaign.form.base.kpi">;
 
 // TODO: make KPI step work with liquityv2 campaigns
 export function KpiStep({
+    loading,
     disabled,
     pool,
     distributables,
@@ -61,7 +61,6 @@ export function KpiStep({
     >(kpiSpecification?.goal.upperUsdTarget);
 
     const prevKpiSpecification = usePrevious(kpiSpecification);
-    const chainId = useChainId();
 
     const totalRewardsUsdAmount = useMemo(() => {
         if (!distributables || !distributables.tokens) return 0;
@@ -109,25 +108,26 @@ export function KpiStep({
             : undefined;
 
     useEffect(() => {
-        setEnabled(false);
-    }, [chainId]);
+        setLowerUsdTargetRaw(kpiSpecification?.goal.lowerUsdTarget);
+        setUpperUsdTargetRaw(kpiSpecification?.goal.upperUsdTarget);
+        setMinimumPayoutPercentage(
+            kpiSpecification?.minimumPayoutPercentage ?? 0,
+        );
+    }, [kpiSpecification]);
 
-    // this hooks is used to disable and close the step when
-    // the kpi specification gets disabled, after the campaign creation
+    useEffect(() => {
+        if (!!kpiSpecification) {
+            setEnabled(true);
+            setOpen(false);
+        }
+    }, [kpiSpecification]);
+
+    // This hooks is used to disable and close the step when
+    // the kpi specification gets disabled, after the campaign creation.
     useEffect(() => {
         if (enabled && !!prevKpiSpecification && !kpiSpecification)
             setEnabled(false);
     }, [enabled, kpiSpecification, prevKpiSpecification]);
-
-    useEffect(() => {
-        if (enabled) return;
-        if (kpiSpecification) onKpiChange({ kpiSpecification: undefined });
-
-        setMinimumPayoutPercentage(0);
-        setLowerUsdTargetRaw(undefined);
-        setUpperUsdTargetRaw(undefined);
-        setError("");
-    }, [enabled, kpiSpecification, onKpiChange]);
 
     useEffect(() => {
         if (
@@ -167,13 +167,11 @@ export function KpiStep({
         });
     }, [error, enabled, kpiSpecification, onError]);
 
-    useEffect(() => {
-        setOpen(enabled);
-    }, [enabled]);
-
     // TODO: avoid resetting when the KPI is enabled for points.
     // This hook is used to reset and disable the KPI when changing reward type.
     useEffect(() => {
+        if (!!distributables?.type) return;
+
         onKpiChange({ kpiSpecification: undefined });
         setMinimumPayoutPercentage(0);
         setLowerUsdTargetRaw(undefined);
@@ -183,13 +181,22 @@ export function KpiStep({
     }, [distributables?.type, onKpiChange]);
 
     function handleSwitchOnClick(
-        _: boolean,
+        checked: boolean,
         event:
             | React.MouseEvent<HTMLButtonElement>
             | React.KeyboardEvent<HTMLButtonElement>,
     ) {
         event.stopPropagation();
-        setEnabled((enabled) => !enabled);
+        setEnabled(checked);
+        setOpen(checked);
+
+        if (kpiSpecification) {
+            onKpiChange({ kpiSpecification: undefined });
+            setMinimumPayoutPercentage(0);
+            setLowerUsdTargetRaw(undefined);
+            setUpperUsdTargetRaw(undefined);
+            setError("");
+        }
     }
 
     function handleStepOnClick() {
@@ -223,6 +230,7 @@ export function KpiStep({
 
     return (
         <Step
+            loading={loading}
             disabled={disabled}
             completed={enabled}
             open={open}

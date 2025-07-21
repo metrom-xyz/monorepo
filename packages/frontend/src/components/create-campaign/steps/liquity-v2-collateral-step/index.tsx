@@ -5,6 +5,7 @@ import { StepPreview } from "@/src/components/step/preview";
 import { StepContent } from "@/src/components/step/content";
 import { useTranslations } from "next-intl";
 import {
+    type FormStepBaseProps,
     type LiquityV2CampaignPayload,
     type LiquityV2CampaignPayloadPart,
 } from "@/src/types/campaign";
@@ -13,11 +14,11 @@ import { Typography } from "@metrom-xyz/ui";
 import type { LiquityV2Collateral } from "@metrom-xyz/sdk";
 import { RemoteLogo } from "@/src/components/remote-logo";
 import { useLiquityV2Collaterals } from "@/src/hooks/useLiquityV2Collaterals";
+import { usePrevious } from "react-use";
 
 import styles from "./styles.module.css";
 
-interface LiquityV2CollateralStepProps {
-    disabled?: boolean;
+interface LiquityV2CollateralStepProps extends FormStepBaseProps {
     brand?: LiquityV2CampaignPayload["brand"];
     action?: LiquityV2CampaignPayload["action"];
     collateral?: LiquityV2CampaignPayload["collateral"];
@@ -25,6 +26,7 @@ interface LiquityV2CollateralStepProps {
 }
 
 export function LiquityV2CollateralStep({
+    loading,
     disabled,
     brand,
     action,
@@ -36,10 +38,13 @@ export function LiquityV2CollateralStep({
     const [open, setOpen] = useState(false);
 
     const chainId = useChainId();
-    const { loading, collaterals } = useLiquityV2Collaterals({
-        chainId,
-        brand: brand?.slug,
-    });
+    const { loading: loadingCollaterals, collaterals } =
+        useLiquityV2Collaterals({
+            chainId,
+            brand: brand?.slug,
+        });
+
+    const prevAction = usePrevious(action);
 
     useEffect(() => {
         setOpen(false);
@@ -51,8 +56,9 @@ export function LiquityV2CollateralStep({
     }, [collateral, disabled, action]);
 
     useEffect(() => {
-        onCollateralChange({ collateral: undefined });
-    }, [brand, action, onCollateralChange]);
+        if (!!prevAction && !!brand && prevAction !== action)
+            onCollateralChange({ collateral: undefined });
+    }, [prevAction, brand, action, onCollateralChange]);
 
     const handleCollateralChange = useCallback(
         (collateral: LiquityV2Collateral) => {
@@ -68,6 +74,7 @@ export function LiquityV2CollateralStep({
 
     return (
         <Step
+            loading={loading}
             disabled={disabled}
             open={open}
             completed={!!collateral}
@@ -105,7 +112,7 @@ export function LiquityV2CollateralStep({
             </StepPreview>
             <StepContent>
                 <CollateralsList
-                    loading={loading}
+                    loading={loadingCollaterals}
                     action={action}
                     selected={collateral}
                     collaterals={collaterals}
