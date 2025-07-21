@@ -112,6 +112,7 @@ export function TokenReimbursementMvm({
         simulatedRecover,
         tokenReimbursements.token,
         tokenReimbursements.totalAmount,
+        signAndSubmitTransactionAsync,
         onRecover,
     ]);
 

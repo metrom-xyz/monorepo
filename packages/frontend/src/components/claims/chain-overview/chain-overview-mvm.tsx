@@ -55,7 +55,11 @@ export function ChainOverviewMvm({
                 chainWithRewardsData.reimbursements,
             ),
         };
-    }, [account, chainWithRewardsData.reimbursements]);
+    }, [
+        account,
+        chainWithRewardsData.chainData,
+        chainWithRewardsData.reimbursements,
+    ]);
 
     const claimRewardsTxPayload:
         | InputGenerateTransactionPayloadData
@@ -72,7 +76,7 @@ export function ChainOverviewMvm({
                 chainWithRewardsData.claims,
             ),
         };
-    }, [account, chainWithRewardsData.claims]);
+    }, [account, chainWithRewardsData.chainData, chainWithRewardsData.claims]);
 
     const {
         data: simulatedRecoverAll,
@@ -143,6 +147,7 @@ export function ChainOverviewMvm({
         simulatedRecoverAllErrored,
         chainWithRewardsData.chainId,
         simulatedRecoverAll,
+        signAndSubmitTransactionAsync,
         onRecoverAll,
     ]);
 
@@ -192,6 +197,7 @@ export function ChainOverviewMvm({
         simulatedClaimAllErrored,
         chainWithRewardsData.chainId,
         simulatedClaimAll,
+        signAndSubmitTransactionAsync,
         onClaimAll,
     ]);
 
