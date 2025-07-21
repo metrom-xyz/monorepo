@@ -15,7 +15,7 @@ export const APTOS_NETWORK_ID: Record<Network, number> = {
     [Network.LOCAL]: 0,
     [Network.CUSTOM]: 0,
     // FIXME: devnet id is dynamic
-    [Network.DEVNET]: 195,
+    [Network.DEVNET]: 197,
     [Network.TESTNET]: 2,
     [Network.MAINNET]: 1,
 };
