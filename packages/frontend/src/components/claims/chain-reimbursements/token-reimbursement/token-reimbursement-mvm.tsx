@@ -6,7 +6,6 @@ import { toast } from "sonner";
 import { formatAmount, formatUsdAmount } from "@/src/utils/format";
 import { trackFathomEvent } from "@/src/utils/fathom";
 import { RemoteLogo } from "@/src/components/remote-logo";
-import { type Address, hexToBytes } from "viem";
 import { RecoverSuccess } from "../../notification/recover-success";
 import { RecoverFail } from "../../notification/recover-fail";
 import { useChainData } from "@/src/hooks/useChainData";
@@ -20,6 +19,7 @@ import {
     useSimulateTransaction,
 } from "@aptos-labs/react";
 import { aptosClient } from "@/src/components/client-providers";
+import { buildRewardsFunctionArgs } from "@/src/utils/aptos";
 
 import styles from "./styles.module.css";
 
@@ -44,29 +44,12 @@ export function TokenReimbursementMvm({
         const { metromContract: metrom } = chainData;
         const moveFunction: MoveFunctionId = `${metrom.address}::metrom::recover_rewards`;
 
-        const campaignIds: Uint8Array[] = [];
-        const proofs: Uint8Array[][] = [];
-        const tokens: Address[] = [];
-        const amounts: bigint[] = [];
-        const receivers: Address[] = [];
-
-        tokenReimbursements.reimbursements.forEach((claim) => {
-            campaignIds.push(hexToBytes(claim.campaignId));
-            proofs.push(claim.proof.map((proof) => hexToBytes(proof)));
-            tokens.push(claim.token.address);
-            amounts.push(claim.amount.raw);
-            receivers.push(account);
-        });
-
         return {
             function: moveFunction,
-            functionArguments: [
-                campaignIds,
-                proofs,
-                tokens,
-                amounts,
-                receivers,
-            ],
+            functionArguments: buildRewardsFunctionArgs(
+                account,
+                tokenReimbursements.reimbursements,
+            ),
         };
     }, [account, chainData, tokenReimbursements.reimbursements]);
 

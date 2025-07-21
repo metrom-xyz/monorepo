@@ -2,7 +2,6 @@ import { Typography, Button, Card } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
 import { useCallback, useMemo, useState } from "react";
 import { toast } from "sonner";
-import { type Address, hexToBytes } from "viem";
 import { formatAmount, formatUsdAmount } from "@/src/utils/format";
 import { trackFathomEvent } from "@/src/utils/fathom";
 import { RemoteLogo } from "@/src/components/remote-logo";
@@ -20,6 +19,7 @@ import {
     useSignAndSubmitTransaction,
     useSimulateTransaction,
 } from "@aptos-labs/react";
+import { buildRewardsFunctionArgs } from "@/src/utils/aptos";
 
 import styles from "./styles.module.css";
 
@@ -44,29 +44,12 @@ export function TokenClaimMvm({
         const { metromContract: metrom } = chainData;
         const moveFunction: MoveFunctionId = `${metrom.address}::metrom::claim_rewards`;
 
-        const campaignIds: Uint8Array[] = [];
-        const proofs: Uint8Array[][] = [];
-        const tokens: Address[] = [];
-        const amounts: bigint[] = [];
-        const receivers: Address[] = [];
-
-        tokenClaims.claims.forEach((claim) => {
-            campaignIds.push(hexToBytes(claim.campaignId));
-            proofs.push(claim.proof.map((proof) => hexToBytes(proof)));
-            tokens.push(claim.token.address);
-            amounts.push(claim.amount.raw);
-            receivers.push(account);
-        });
-
         return {
             function: moveFunction,
-            functionArguments: [
-                campaignIds,
-                proofs,
-                tokens,
-                amounts,
-                receivers,
-            ],
+            functionArguments: buildRewardsFunctionArgs(
+                account,
+                tokenClaims.claims,
+            ),
         };
     }, [account, chainData, tokenClaims.claims]);
 
