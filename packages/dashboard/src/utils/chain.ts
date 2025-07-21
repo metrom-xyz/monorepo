@@ -1,27 +1,28 @@
 import {
-    CHAIN_DATA,
+    EVM_CHAIN_DATA,
     Environment,
-    SupportedDevelopmentChain,
-    SupportedProductionChain,
+    SupportedDevelopmentEvmChain,
+    SupportedProductionEvmChain,
     type ChainData,
 } from "@metrom-xyz/chains";
 import { ENVIRONMENT } from "../commons/env";
 
+// TODO: add support for Aptos
 export function getChainData(chainId: number): ChainData | undefined {
     let chainData: ChainData | undefined;
 
     switch (ENVIRONMENT) {
         case Environment.Development: {
             chainData =
-                CHAIN_DATA[Environment.Development][
-                    chainId as SupportedDevelopmentChain
+                EVM_CHAIN_DATA[Environment.Development][
+                    chainId as SupportedDevelopmentEvmChain
                 ];
             break;
         }
         case Environment.Production: {
             chainData =
-                CHAIN_DATA[Environment.Production][
-                    chainId as SupportedProductionChain
+                EVM_CHAIN_DATA[Environment.Production][
+                    chainId as SupportedProductionEvmChain
                 ];
             break;
         }
