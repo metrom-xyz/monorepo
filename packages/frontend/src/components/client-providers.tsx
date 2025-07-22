@@ -40,8 +40,7 @@ export const aptosConfig = new AptosConfig({
     network:
         ENVIRONMENT === Environment.Production
             ? Network.MAINNET
-            : // FIXME: use testnet
-              Network.DEVNET,
+            : Network.TESTNET,
 });
 
 // TODO: rate limit?
@@ -52,8 +51,7 @@ export const aptosJsProClient = new AptosJSProClient({
         network:
             ENVIRONMENT === Environment.Production
                 ? Network.MAINNET
-                : // FIXME: use testnet
-                  Network.DEVNET,
+                : Network.TESTNET,
     },
 });
 
