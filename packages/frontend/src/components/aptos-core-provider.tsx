@@ -13,8 +13,7 @@ export default function AptosCoreProvider({ children }: PropsWithChildren) {
         network:
             ENVIRONMENT === Environment.Production
                 ? Network.MAINNET
-                : // FIXME: use testnet
-                  Network.DEVNET,
+                : Network.TESTNET,
     };
     const core = useWalletAdapterCore({ wallet, defaultNetwork });
     return <AptosJSCoreProvider core={core}>{children}</AptosJSCoreProvider>;
