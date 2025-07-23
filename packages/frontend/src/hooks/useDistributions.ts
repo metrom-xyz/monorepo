@@ -37,6 +37,8 @@ export interface UseDistributionsReturnValue {
     fetchDistributions: () => void;
 }
 
+const HASHES_CHUNK_SIZE = 50;
+
 export function useDistributions({
     chainId,
     campaignId,
@@ -106,24 +108,37 @@ export function useDistributions({
             if (!hashes) return null;
 
             try {
-                const distributions = [];
+                const distributions: DistributionsResponse[] = [];
 
-                for (const { hash } of hashes) {
-                    const response = await fetch(
-                        `${SERVICE_URLS[ENVIRONMENT].dataManager}/data?hash=${hash.replace("0x", "")}`,
-                        {
-                            method: "GET",
-                            headers: {
-                                "Content-Type": "application/json",
-                            },
-                        },
+                const hashesChunks: DataHash[][] = [];
+                for (let i = 0; i < hashes.length; i += HASHES_CHUNK_SIZE) {
+                    hashesChunks.push(hashes.slice(i, i + HASHES_CHUNK_SIZE));
+                }
+
+                for (const chunk of hashesChunks) {
+                    await Promise.all(
+                        chunk.map(async (dataHash) => {
+                            const response = await fetch(
+                                `${SERVICE_URLS[ENVIRONMENT].dataManager}/data?hash=${dataHash.hash.replace("0x", "")}`,
+                                {
+                                    method: "GET",
+                                    headers: {
+                                        "Content-Type": "application/json",
+                                    },
+                                },
+                            );
+
+                            const data =
+                                (await response.json()) as DistributionsResponse;
+                            distributions.push(data);
+                        }),
                     );
 
-                    const data =
-                        (await response.json()) as DistributionsResponse;
-                    distributions.push(data);
-
-                    setCompleted((prev) => prev + 1);
+                    setCompleted((prev) => prev + chunk.length);
+                    if (chunk.length === HASHES_CHUNK_SIZE)
+                        await new Promise((resolve) =>
+                            setTimeout(resolve, 500),
+                        );
                 }
 
                 return distributions.sort((a, b) => a.timestamp - b.timestamp);
