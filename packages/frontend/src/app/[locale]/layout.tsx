@@ -25,9 +25,9 @@ interface LayoutParams {
 }
 
 export const metadata: Metadata = {
-    title: "Maximize your liquidity mining impact with precise incentives",
+    title: "Distribute incentives based on outcomes",
     description:
-        "Metrom is a flexible liquidity mining platform designed to help AMMs and projects efficiently launch and manage multiple incentivisation campaigns.",
+        "Metrom helps protocols to create and launch their campaigns, while incentives get distributed based on the outcomes set through KPIs.",
     alternates: {
         canonical: `${BASE_URL}/en`,
         languages: {
