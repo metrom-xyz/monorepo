@@ -16,7 +16,8 @@ import { RemoteLogo } from "@/src/components/remote-logo";
 import { ChevronDown } from "@/src/assets/chevron-down";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslations } from "next-intl";
-import { useAccount, useChainId } from "wagmi";
+import { useChainId } from "@/src/hooks/use-chain-id";
+import { useAccount } from "@/src/hooks/use-account";
 import type {
     CampaignPayloadErrors,
     BaseCampaignPayloadPart,
@@ -25,7 +26,7 @@ import type {
 import type { WhitelistedErc20TokenAmount } from "@/src/types/common";
 import type { LocalizedMessage } from "@/src/types/utils";
 import { trackFathomEvent } from "@/src/utils/fathom";
-import { useWatchBalance } from "@/src/hooks/useWatchBalance";
+import { useWatchBalance } from "@/src/hooks/use-watch-balance";
 import { WhitelistedTokensList } from "../whitelisted-tokens-list";
 import { useRewardTokens } from "@/src/hooks/useRewardTokens";
 
