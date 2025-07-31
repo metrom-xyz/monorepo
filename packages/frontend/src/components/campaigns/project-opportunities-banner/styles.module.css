@@ -4,6 +4,18 @@
     @apply w-full flex flex-col gap-3 mb-7 md:mb-11 justify-center overflow-x-hidden;
 }
 
+.scrollContainer {
+    @apply w-full flex items-center justify-between gap-2;
+}
+
 .cardsWrapper {
-    @apply w-full flex gap-3 overflow-x-auto py-2;
+    @apply w-full flex gap-3 overflow-x-scroll py-2 scrollbar-hide scroll-smooth;
+}
+
+.scrollButton {
+    @apply hidden md:flex w-10 h-10;
+}
+
+.leftIcon {
+    @apply rotate-180;
 }

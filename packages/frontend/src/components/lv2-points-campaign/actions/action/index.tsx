@@ -7,6 +7,7 @@ import { InfoTooltip, Typography } from "@metrom-xyz/ui";
 import { TimeProgressIcon } from "@/src/assets/time-progress-icon";
 import { useTranslations } from "next-intl";
 import dayjs from "dayjs";
+import type { LocalizedMessage } from "@/src/types/utils";
 
 import styles from "./styles.module.css";
 
@@ -20,6 +21,7 @@ export function Action({
     description,
     targets,
     multiplier,
+    tooltip,
     minimumDuration,
     href,
 }: ActionProps) {
@@ -63,7 +65,7 @@ export function Action({
                         className={styles.infoTooltip}
                     >
                         <Typography size="sm">
-                            {t.rich("minimumDuration", {
+                            {t.rich(tooltip || "minimumDuration", {
                                 time: dayjs
                                     .duration(minimumDuration, "seconds")
                                     .humanize(),
