@@ -8,6 +8,10 @@
     @apply w-full flex flex-wrap md:flex-nowrap md:grid md:grid-cols-3 gap-4;
 }
 
+.groupedActionsWrapper {
+    @apply h-auto flex flex-col gap-4;
+}
+
 .actionsGroup {
     @apply flex flex-col gap-12;
 }

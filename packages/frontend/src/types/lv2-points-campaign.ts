@@ -3,6 +3,7 @@ import type { FunctionComponent } from "react";
 import type { Address } from "viem";
 import type { SVGIcon } from "./common";
 import type { SupportedChain } from "@metrom-xyz/contracts";
+import type { LocalizedMessage } from "./utils";
 
 export interface Lv2BackendPointsLeaderboardRank {
     account: Address;
@@ -24,6 +25,7 @@ export interface Action {
     name: string;
     targets: Address[];
     multiplier: number;
+    tooltip?: LocalizedMessage<"lv2PointsCampaignPage.action">;
     minimumDuration: number;
     href?: string;
     description?: string;
@@ -69,6 +71,7 @@ export enum Lv2PointsCampaign2Action {
     Debt = "debt",
     StabilityPool = "stabilty-pool",
     Liquidity = "liquidity",
+    NetSwapVolume = "net-swap-volume",
 }
 
 export type Lv2PointsCampaigns = Record<

@@ -52,12 +52,7 @@ export function Opportunity({
                 >
                     <Icon className={styles.icon} />
                 </div>
-                <Typography
-                    weight="medium"
-                    uppercase
-                    size="lg"
-                    className={styles.title}
-                >
+                <Typography weight="medium" uppercase className={styles.title}>
                     {name}
                 </Typography>
             </motion.div>
