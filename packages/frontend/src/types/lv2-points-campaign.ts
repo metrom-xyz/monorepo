@@ -69,6 +69,7 @@ export enum Lv2PointsCampaign2Action {
     Debt = "debt",
     StabilityPool = "stabilty-pool",
     Liquidity = "liquidity",
+    NetSwapVolume = "net-swap-volume",
 }
 
 export type Lv2PointsCampaigns = Record<
