@@ -45,5 +45,11 @@ export const DEPLOYMENTS: {
                 startBlock: 22639791,
             },
         },
+        liquity: {
+            DebtToken: {
+                address: "0x6440f144b7e50D6a8439336510312d2F54beB01D",
+                startBlock: 22483043,
+            },
+        },
     },
 };
