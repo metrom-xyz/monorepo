@@ -10,3 +10,11 @@ html.no-transition *::after {
     transition: none !important;
     animation: none !important;
 }
+
+@utility scrollbar-hide {
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar {
+        display: none;
+    }
+}

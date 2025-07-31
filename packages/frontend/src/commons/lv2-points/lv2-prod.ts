@@ -451,6 +451,7 @@ export const lv2PointsCampaignsProd: Record<
                             "0x09fD37d9AA613789c517e76DF1c53aEce2b60Df4",
                             "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
                         ],
+                        tooltip: "netSwapVolumeEbUSD",
                         minimumDuration: 604800,
                         name: "ebUSD/USDC LP",
                         description: "Curve",
