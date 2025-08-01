@@ -220,9 +220,6 @@ importers:
       '@reown/appkit-adapter-wagmi':
         specifier: ^1.7.18
         version: 1.7.18(@types/react@19.1.9)(@wagmi/core@2.17.3(@tanstack/query-core@5.83.1)(@types/react@19.1.9)(immer@10.1.1)(react@19.1.1)(typescript@5.9.2)(use-sync-external-store@1.5.0(react@19.1.1))(viem@2.33.2(bufferutil@4.0.9)(typescript@5.9.2)(utf-8-validate@5.0.10)(zod@3.25.56)))(bufferutil@4.0.9)(encoding@0.1.13)(immer@10.1.1)(lit@3.3.0)(react@19.1.1)(typescript@5.9.2)(use-sync-external-store@1.5.0(react@19.1.1))(utf-8-validate@5.0.10)(viem@2.33.2(bufferutil@4.0.9)(typescript@5.9.2)(utf-8-validate@5.0.10)(zod@3.25.56))(wagmi@2.15.6(@tanstack/query-core@5.83.1)(@tanstack/react-query@5.84.1(react@19.1.1))(@types/react@19.1.9)(bufferutil@4.0.9)(encoding@0.1.13)(immer@10.1.1)(react@19.1.1)(typescript@5.9.2)(utf-8-validate@5.0.10)(viem@2.33.2(bufferutil@4.0.9)(typescript@5.9.2)(utf-8-validate@5.0.10)(zod@3.25.56))(zod@3.25.56))(zod@3.25.56)
-      '@rescale/nemo':
-        specifier: ^2.0.2
-        version: 2.0.2(next@15.4.5(react-dom@19.1.1(react@19.1.1))(react@19.1.1))
       '@safe-global/safe-apps-sdk':
         specifier: ^9.1.0
         version: 9.1.0(bufferutil@4.0.9)(typescript@5.9.2)(utf-8-validate@5.0.10)(zod@3.25.56)
@@ -3205,11 +3202,6 @@ packages:
 
   '@reown/appkit@1.7.8':
     resolution: {integrity: sha512-51kTleozhA618T1UvMghkhKfaPcc9JlKwLJ5uV+riHyvSoWPKPRIa5A6M1Wano5puNyW0s3fwywhyqTHSilkaA==}
-
-  '@rescale/nemo@2.0.2':
-    resolution: {integrity: sha512-d3t9hH0gN3PCtccxm7GLYwoJw6ZpZXqsWjLaB5d8pIXGJiZiqXzILcNiQaE0hgDO4Jh1ONflrurWdb2nVrjj9A==}
-    peerDependencies:
-      next: ^13.0.0-0 || ^14.0.0-0 || ^15.0.0-0
 
   '@rescript/std@9.0.0':
     resolution: {integrity: sha512-zGzFsgtZ44mgL4Xef2gOy1hrRVdrs9mcxCOOKZrIPsmbZW14yTkaF591GXxpQvjXiHtgZ/iA9qLyWH6oSReIxQ==}
@@ -13214,11 +13206,6 @@ snapshots:
       - uploadthing
       - utf-8-validate
       - zod
-
-  '@rescale/nemo@2.0.2(next@15.4.5(react-dom@19.1.1(react@19.1.1))(react@19.1.1))':
-    dependencies:
-      next: 15.4.5(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
-      path-to-regexp: 6.3.0
 
   '@rescript/std@9.0.0': {}
 
