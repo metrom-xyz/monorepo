@@ -912,6 +912,52 @@ importers:
         specifier: ^2.31.7
         version: 2.31.7(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.25.56)
 
+  subgraphs/curve-stable-swap-ng-non-meta-pool:
+    dependencies:
+      '@graphprotocol/graph-cli':
+        specifier: ^0.97.1
+        version: 0.97.1(@types/node@24.0.14)(bufferutil@4.0.9)(typescript@5.9.2)(utf-8-validate@5.0.10)(zod@3.25.56)
+      '@graphprotocol/graph-ts':
+        specifier: 0.38.1
+        version: 0.38.1
+    devDependencies:
+      '@eslint/js':
+        specifier: ^9.30.1
+        version: 9.32.0
+      '@types/mustache':
+        specifier: ^4.2.6
+        version: 4.2.6
+      '@types/node':
+        specifier: ^24.0.10
+        version: 24.0.14
+      eslint:
+        specifier: ^9.30.1
+        version: 9.32.0(jiti@2.4.2)
+      eslint-config-prettier:
+        specifier: ^10.1.5
+        version: 10.1.5(eslint@9.32.0(jiti@2.4.2))
+      eslint-plugin-prettier:
+        specifier: ^5.5.1
+        version: 5.5.1(@types/eslint@9.6.1)(eslint-config-prettier@10.1.5(eslint@9.32.0(jiti@2.4.2)))(eslint@9.32.0(jiti@2.4.2))(prettier@3.6.2)
+      mustache:
+        specifier: ^4.2.0
+        version: 4.2.0
+      prettier:
+        specifier: ^3.6.2
+        version: 3.6.2
+      tsx:
+        specifier: ^4.20.3
+        version: 4.20.3
+      typescript:
+        specifier: ^5.8.3
+        version: 5.9.2
+      typescript-eslint:
+        specifier: ^8.35.1
+        version: 8.38.0(eslint@9.32.0(jiti@2.4.2))(typescript@5.9.2)
+      viem:
+        specifier: ^2.31.7
+        version: 2.33.2(bufferutil@4.0.9)(typescript@5.9.2)(utf-8-validate@5.0.10)(zod@3.25.56)
+
   subgraphs/curve-swaps:
     dependencies:
       '@0xgraph/cli':
@@ -12015,6 +12061,42 @@ snapshots:
       - utf-8-validate
       - zod
 
+  '@graphprotocol/graph-cli@0.97.1(@types/node@24.0.14)(bufferutil@4.0.9)(typescript@5.9.2)(utf-8-validate@5.0.10)(zod@3.25.56)':
+    dependencies:
+      '@float-capital/float-subgraph-uncrashable': 0.0.0-internal-testing.5
+      '@oclif/core': 4.3.0
+      '@oclif/plugin-autocomplete': 3.2.29
+      '@oclif/plugin-not-found': 3.2.53(@types/node@24.0.14)
+      '@oclif/plugin-warn-if-update-available': 3.1.40
+      '@pinax/graph-networks-registry': 0.6.7
+      '@whatwg-node/fetch': 0.10.8
+      assemblyscript: 0.19.23
+      chokidar: 4.0.3
+      debug: 4.4.1(supports-color@8.1.1)
+      docker-compose: 1.2.0
+      fs-extra: 11.3.0
+      glob: 11.0.2
+      gluegun: 5.2.0(debug@4.4.1)
+      graphql: 16.11.0
+      immutable: 5.1.2
+      jayson: 4.2.0(bufferutil@4.0.9)(utf-8-validate@5.0.10)
+      js-yaml: 4.1.0
+      kubo-rpc-client: 5.1.0(undici@7.9.0)
+      open: 10.1.2
+      prettier: 3.5.3
+      semver: 7.7.2
+      tmp-promise: 3.0.3
+      undici: 7.9.0
+      web3-eth-abi: 4.4.1(typescript@5.9.2)(zod@3.25.56)
+      yaml: 2.8.0
+    transitivePeerDependencies:
+      - '@types/node'
+      - bufferutil
+      - supports-color
+      - typescript
+      - utf-8-validate
+      - zod
+
   '@graphprotocol/graph-ts@0.38.1':
     dependencies:
       assemblyscript: 0.27.31
@@ -12123,12 +12205,29 @@ snapshots:
     optionalDependencies:
       '@types/node': 24.0.10
 
+  '@inquirer/checkbox@4.1.8(@types/node@24.0.14)':
+    dependencies:
+      '@inquirer/core': 10.1.13(@types/node@24.0.14)
+      '@inquirer/figures': 1.0.12
+      '@inquirer/type': 3.0.7(@types/node@24.0.14)
+      ansi-escapes: 4.3.2
+      yoctocolors-cjs: 2.1.2
+    optionalDependencies:
+      '@types/node': 24.0.14
+
   '@inquirer/confirm@5.1.12(@types/node@24.0.10)':
     dependencies:
       '@inquirer/core': 10.1.13(@types/node@24.0.10)
       '@inquirer/type': 3.0.7(@types/node@24.0.10)
     optionalDependencies:
       '@types/node': 24.0.10
+
+  '@inquirer/confirm@5.1.12(@types/node@24.0.14)':
+    dependencies:
+      '@inquirer/core': 10.1.13(@types/node@24.0.14)
+      '@inquirer/type': 3.0.7(@types/node@24.0.14)
+    optionalDependencies:
+      '@types/node': 24.0.14
 
   '@inquirer/core@10.1.13(@types/node@24.0.10)':
     dependencies:
@@ -12143,6 +12242,19 @@ snapshots:
     optionalDependencies:
       '@types/node': 24.0.10
 
+  '@inquirer/core@10.1.13(@types/node@24.0.14)':
+    dependencies:
+      '@inquirer/figures': 1.0.12
+      '@inquirer/type': 3.0.7(@types/node@24.0.14)
+      ansi-escapes: 4.3.2
+      cli-width: 4.1.0
+      mute-stream: 2.0.0
+      signal-exit: 4.1.0
+      wrap-ansi: 6.2.0
+      yoctocolors-cjs: 2.1.2
+    optionalDependencies:
+      '@types/node': 24.0.14
+
   '@inquirer/editor@4.2.13(@types/node@24.0.10)':
     dependencies:
       '@inquirer/core': 10.1.13(@types/node@24.0.10)
@@ -12151,6 +12263,14 @@ snapshots:
     optionalDependencies:
       '@types/node': 24.0.10
 
+  '@inquirer/editor@4.2.13(@types/node@24.0.14)':
+    dependencies:
+      '@inquirer/core': 10.1.13(@types/node@24.0.14)
+      '@inquirer/type': 3.0.7(@types/node@24.0.14)
+      external-editor: 3.1.0
+    optionalDependencies:
+      '@types/node': 24.0.14
+
   '@inquirer/expand@4.0.15(@types/node@24.0.10)':
     dependencies:
       '@inquirer/core': 10.1.13(@types/node@24.0.10)
@@ -12158,6 +12278,14 @@ snapshots:
       yoctocolors-cjs: 2.1.2
     optionalDependencies:
       '@types/node': 24.0.10
+
+  '@inquirer/expand@4.0.15(@types/node@24.0.14)':
+    dependencies:
+      '@inquirer/core': 10.1.13(@types/node@24.0.14)
+      '@inquirer/type': 3.0.7(@types/node@24.0.14)
+      yoctocolors-cjs: 2.1.2
+    optionalDependencies:
+      '@types/node': 24.0.14
 
   '@inquirer/figures@1.0.12': {}
 
@@ -12168,12 +12296,26 @@ snapshots:
     optionalDependencies:
       '@types/node': 24.0.10
 
+  '@inquirer/input@4.1.12(@types/node@24.0.14)':
+    dependencies:
+      '@inquirer/core': 10.1.13(@types/node@24.0.14)
+      '@inquirer/type': 3.0.7(@types/node@24.0.14)
+    optionalDependencies:
+      '@types/node': 24.0.14
+
   '@inquirer/number@3.0.15(@types/node@24.0.10)':
     dependencies:
       '@inquirer/core': 10.1.13(@types/node@24.0.10)
       '@inquirer/type': 3.0.7(@types/node@24.0.10)
     optionalDependencies:
       '@types/node': 24.0.10
+
+  '@inquirer/number@3.0.15(@types/node@24.0.14)':
+    dependencies:
+      '@inquirer/core': 10.1.13(@types/node@24.0.14)
+      '@inquirer/type': 3.0.7(@types/node@24.0.14)
+    optionalDependencies:
+      '@types/node': 24.0.14
 
   '@inquirer/password@4.0.15(@types/node@24.0.10)':
     dependencies:
@@ -12182,6 +12324,14 @@ snapshots:
       ansi-escapes: 4.3.2
     optionalDependencies:
       '@types/node': 24.0.10
+
+  '@inquirer/password@4.0.15(@types/node@24.0.14)':
+    dependencies:
+      '@inquirer/core': 10.1.13(@types/node@24.0.14)
+      '@inquirer/type': 3.0.7(@types/node@24.0.14)
+      ansi-escapes: 4.3.2
+    optionalDependencies:
+      '@types/node': 24.0.14
 
   '@inquirer/prompts@7.5.3(@types/node@24.0.10)':
     dependencies:
@@ -12198,6 +12348,21 @@ snapshots:
     optionalDependencies:
       '@types/node': 24.0.10
 
+  '@inquirer/prompts@7.5.3(@types/node@24.0.14)':
+    dependencies:
+      '@inquirer/checkbox': 4.1.8(@types/node@24.0.14)
+      '@inquirer/confirm': 5.1.12(@types/node@24.0.14)
+      '@inquirer/editor': 4.2.13(@types/node@24.0.14)
+      '@inquirer/expand': 4.0.15(@types/node@24.0.14)
+      '@inquirer/input': 4.1.12(@types/node@24.0.14)
+      '@inquirer/number': 3.0.15(@types/node@24.0.14)
+      '@inquirer/password': 4.0.15(@types/node@24.0.14)
+      '@inquirer/rawlist': 4.1.3(@types/node@24.0.14)
+      '@inquirer/search': 3.0.15(@types/node@24.0.14)
+      '@inquirer/select': 4.2.3(@types/node@24.0.14)
+    optionalDependencies:
+      '@types/node': 24.0.14
+
   '@inquirer/rawlist@4.1.3(@types/node@24.0.10)':
     dependencies:
       '@inquirer/core': 10.1.13(@types/node@24.0.10)
@@ -12205,6 +12370,14 @@ snapshots:
       yoctocolors-cjs: 2.1.2
     optionalDependencies:
       '@types/node': 24.0.10
+
+  '@inquirer/rawlist@4.1.3(@types/node@24.0.14)':
+    dependencies:
+      '@inquirer/core': 10.1.13(@types/node@24.0.14)
+      '@inquirer/type': 3.0.7(@types/node@24.0.14)
+      yoctocolors-cjs: 2.1.2
+    optionalDependencies:
+      '@types/node': 24.0.14
 
   '@inquirer/search@3.0.15(@types/node@24.0.10)':
     dependencies:
@@ -12214,6 +12387,15 @@ snapshots:
       yoctocolors-cjs: 2.1.2
     optionalDependencies:
       '@types/node': 24.0.10
+
+  '@inquirer/search@3.0.15(@types/node@24.0.14)':
+    dependencies:
+      '@inquirer/core': 10.1.13(@types/node@24.0.14)
+      '@inquirer/figures': 1.0.12
+      '@inquirer/type': 3.0.7(@types/node@24.0.14)
+      yoctocolors-cjs: 2.1.2
+    optionalDependencies:
+      '@types/node': 24.0.14
 
   '@inquirer/select@4.2.3(@types/node@24.0.10)':
     dependencies:
@@ -12225,9 +12407,23 @@ snapshots:
     optionalDependencies:
       '@types/node': 24.0.10
 
+  '@inquirer/select@4.2.3(@types/node@24.0.14)':
+    dependencies:
+      '@inquirer/core': 10.1.13(@types/node@24.0.14)
+      '@inquirer/figures': 1.0.12
+      '@inquirer/type': 3.0.7(@types/node@24.0.14)
+      ansi-escapes: 4.3.2
+      yoctocolors-cjs: 2.1.2
+    optionalDependencies:
+      '@types/node': 24.0.14
+
   '@inquirer/type@3.0.7(@types/node@24.0.10)':
     optionalDependencies:
       '@types/node': 24.0.10
+
+  '@inquirer/type@3.0.7(@types/node@24.0.14)':
+    optionalDependencies:
+      '@types/node': 24.0.14
 
   '@ipld/dag-cbor@7.0.3':
     dependencies:
@@ -12860,6 +13056,15 @@ snapshots:
     transitivePeerDependencies:
       - '@types/node'
 
+  '@oclif/plugin-not-found@3.2.53(@types/node@24.0.14)':
+    dependencies:
+      '@inquirer/prompts': 7.5.3(@types/node@24.0.14)
+      '@oclif/core': 4.3.0
+      ansis: 3.17.0
+      fast-levenshtein: 3.0.0
+    transitivePeerDependencies:
+      - '@types/node'
+
   '@oclif/plugin-warn-if-update-available@3.1.40':
     dependencies:
       '@oclif/core': 4.3.0
@@ -13180,7 +13385,7 @@ snapshots:
     dependencies:
       big.js: 6.2.2
       dayjs: 1.11.13
-      viem: 2.31.7(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.22.4)
+      viem: 2.33.2(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.22.4)
     transitivePeerDependencies:
       - bufferutil
       - typescript
@@ -13191,7 +13396,7 @@ snapshots:
     dependencies:
       big.js: 6.2.2
       dayjs: 1.11.13
-      viem: 2.31.7(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.25.56)
+      viem: 2.33.2(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.25.56)
     transitivePeerDependencies:
       - bufferutil
       - typescript
@@ -13202,7 +13407,7 @@ snapshots:
     dependencies:
       big.js: 6.2.2
       dayjs: 1.11.13
-      viem: 2.31.7(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.22.4)
+      viem: 2.33.2(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.22.4)
     transitivePeerDependencies:
       - bufferutil
       - typescript
@@ -13213,7 +13418,7 @@ snapshots:
     dependencies:
       big.js: 6.2.2
       dayjs: 1.11.13
-      viem: 2.31.7(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.25.56)
+      viem: 2.33.2(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.25.56)
     transitivePeerDependencies:
       - bufferutil
       - typescript
@@ -13224,7 +13429,7 @@ snapshots:
     dependencies:
       big.js: 6.2.2
       dayjs: 1.11.13
-      viem: 2.31.7(bufferutil@4.0.9)(typescript@5.9.2)(utf-8-validate@5.0.10)(zod@3.22.4)
+      viem: 2.33.2(bufferutil@4.0.9)(typescript@5.9.2)(utf-8-validate@5.0.10)(zod@3.22.4)
     transitivePeerDependencies:
       - bufferutil
       - typescript
@@ -13235,7 +13440,7 @@ snapshots:
     dependencies:
       big.js: 6.2.2
       dayjs: 1.11.13
-      viem: 2.31.7(bufferutil@4.0.9)(typescript@5.9.2)(utf-8-validate@5.0.10)(zod@3.25.56)
+      viem: 2.33.2(bufferutil@4.0.9)(typescript@5.9.2)(utf-8-validate@5.0.10)(zod@3.25.56)
     transitivePeerDependencies:
       - bufferutil
       - typescript
@@ -13248,7 +13453,7 @@ snapshots:
       '@reown/appkit-wallet': 1.7.13(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)
       '@walletconnect/universal-provider': 2.21.3(bufferutil@4.0.9)(encoding@0.1.13)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.25.56)
       valtio: 2.1.5(@types/react@19.1.8)(react@19.1.0)
-      viem: 2.31.7(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.25.56)
+      viem: 2.33.2(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.25.56)
     transitivePeerDependencies:
       - '@azure/app-configuration'
       - '@azure/cosmos'
@@ -13282,7 +13487,7 @@ snapshots:
       '@reown/appkit-wallet': 1.7.8(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)
       '@walletconnect/universal-provider': 2.21.0(bufferutil@4.0.9)(encoding@0.1.13)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.25.56)
       valtio: 1.13.2(@types/react@19.1.8)(react@19.1.0)
-      viem: 2.31.7(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.25.56)
+      viem: 2.33.2(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.25.56)
     transitivePeerDependencies:
       - '@azure/app-configuration'
       - '@azure/cosmos'
@@ -13316,7 +13521,7 @@ snapshots:
       '@reown/appkit-wallet': 1.7.8(bufferutil@4.0.9)(typescript@5.9.2)(utf-8-validate@5.0.10)
       '@walletconnect/universal-provider': 2.21.0(bufferutil@4.0.9)(encoding@0.1.13)(typescript@5.9.2)(utf-8-validate@5.0.10)(zod@3.25.56)
       valtio: 1.13.2(@types/react@19.1.9)(react@19.1.0)
-      viem: 2.31.7(bufferutil@4.0.9)(typescript@5.9.2)(utf-8-validate@5.0.10)(zod@3.25.56)
+      viem: 2.33.2(bufferutil@4.0.9)(typescript@5.9.2)(utf-8-validate@5.0.10)(zod@3.25.56)
     transitivePeerDependencies:
       - '@azure/app-configuration'
       - '@azure/cosmos'
@@ -13677,7 +13882,7 @@ snapshots:
       '@walletconnect/logger': 2.1.2
       '@walletconnect/universal-provider': 2.21.3(bufferutil@4.0.9)(encoding@0.1.13)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.25.56)
       valtio: 2.1.5(@types/react@19.1.8)(react@19.1.0)
-      viem: 2.31.7(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.25.56)
+      viem: 2.33.2(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.25.56)
     transitivePeerDependencies:
       - '@azure/app-configuration'
       - '@azure/cosmos'
@@ -13714,7 +13919,7 @@ snapshots:
       '@walletconnect/logger': 2.1.2
       '@walletconnect/universal-provider': 2.21.0(bufferutil@4.0.9)(encoding@0.1.13)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.25.56)
       valtio: 1.13.2(@types/react@19.1.8)(react@19.1.0)
-      viem: 2.31.7(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.25.56)
+      viem: 2.33.2(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.25.56)
     transitivePeerDependencies:
       - '@azure/app-configuration'
       - '@azure/cosmos'
@@ -13751,7 +13956,7 @@ snapshots:
       '@walletconnect/logger': 2.1.2
       '@walletconnect/universal-provider': 2.21.0(bufferutil@4.0.9)(encoding@0.1.13)(typescript@5.9.2)(utf-8-validate@5.0.10)(zod@3.25.56)
       valtio: 1.13.2(@types/react@19.1.9)(react@19.1.0)
-      viem: 2.31.7(bufferutil@4.0.9)(typescript@5.9.2)(utf-8-validate@5.0.10)(zod@3.25.56)
+      viem: 2.33.2(bufferutil@4.0.9)(typescript@5.9.2)(utf-8-validate@5.0.10)(zod@3.25.56)
     transitivePeerDependencies:
       - '@azure/app-configuration'
       - '@azure/cosmos'
@@ -13869,7 +14074,7 @@ snapshots:
       '@walletconnect/universal-provider': 2.21.0(bufferutil@4.0.9)(encoding@0.1.13)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.25.56)
       bs58: 6.0.0
       valtio: 1.13.2(@types/react@19.1.8)(react@19.1.0)
-      viem: 2.31.7(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.25.56)
+      viem: 2.33.2(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.25.56)
     transitivePeerDependencies:
       - '@azure/app-configuration'
       - '@azure/cosmos'
@@ -13911,7 +14116,7 @@ snapshots:
       '@walletconnect/universal-provider': 2.21.0(bufferutil@4.0.9)(encoding@0.1.13)(typescript@5.9.2)(utf-8-validate@5.0.10)(zod@3.25.56)
       bs58: 6.0.0
       valtio: 1.13.2(@types/react@19.1.9)(react@19.1.0)
-      viem: 2.31.7(bufferutil@4.0.9)(typescript@5.9.2)(utf-8-validate@5.0.10)(zod@3.25.56)
+      viem: 2.33.2(bufferutil@4.0.9)(typescript@5.9.2)(utf-8-validate@5.0.10)(zod@3.25.56)
     transitivePeerDependencies:
       - '@azure/app-configuration'
       - '@azure/cosmos'
@@ -14604,7 +14809,7 @@ snapshots:
 
   '@turtledev/api@1.4.5(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)':
     dependencies:
-      viem: 2.31.7(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.25.56)
+      viem: 2.33.2(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.25.56)
       zod: 3.25.56
     transitivePeerDependencies:
       - bufferutil
@@ -14693,7 +14898,7 @@ snapshots:
 
   '@types/bn.js@5.1.6':
     dependencies:
-      '@types/node': 24.0.10
+      '@types/node': 24.0.14
 
   '@types/chai@5.2.2':
     dependencies:
@@ -14701,15 +14906,15 @@ snapshots:
 
   '@types/cli-progress@3.11.6':
     dependencies:
-      '@types/node': 24.0.10
+      '@types/node': 24.0.14
 
   '@types/concat-stream@1.6.1':
     dependencies:
-      '@types/node': 24.0.10
+      '@types/node': 24.0.14
 
   '@types/connect@3.4.38':
     dependencies:
-      '@types/node': 24.0.10
+      '@types/node': 24.0.14
 
   '@types/conventional-commits-parser@5.0.1':
     dependencies:
@@ -14747,7 +14952,7 @@ snapshots:
 
   '@types/dns-packet@5.6.5':
     dependencies:
-      '@types/node': 24.0.10
+      '@types/node': 24.0.14
 
   '@types/doctrine@0.0.9': {}
 
@@ -14763,7 +14968,7 @@ snapshots:
 
   '@types/form-data@0.0.33':
     dependencies:
-      '@types/node': 24.0.10
+      '@types/node': 24.0.14
 
   '@types/js-cookie@2.2.7': {}
 
@@ -14807,7 +15012,7 @@ snapshots:
 
   '@types/pbkdf2@3.1.2':
     dependencies:
-      '@types/node': 24.0.10
+      '@types/node': 24.0.14
 
   '@types/qs@6.9.17': {}
 
@@ -14835,7 +15040,7 @@ snapshots:
 
   '@types/secp256k1@4.0.6':
     dependencies:
-      '@types/node': 24.0.10
+      '@types/node': 24.0.14
 
   '@types/trusted-types@2.0.7': {}
 
@@ -14843,7 +15048,7 @@ snapshots:
 
   '@types/ws@7.4.7':
     dependencies:
-      '@types/node': 24.0.10
+      '@types/node': 24.0.14
 
   '@typescript-eslint/eslint-plugin@8.35.1(@typescript-eslint/parser@8.35.1(eslint@9.30.1(jiti@2.4.2))(typescript@5.8.3))(eslint@9.30.1(jiti@2.4.2))(typescript@5.8.3)':
     dependencies:
@@ -16715,6 +16920,12 @@ snapshots:
     optionalDependencies:
       zod: 3.25.56
 
+  abitype@0.7.1(typescript@5.9.2)(zod@3.25.56):
+    dependencies:
+      typescript: 5.9.2
+    optionalDependencies:
+      zod: 3.25.56
+
   abitype@1.0.8(typescript@5.8.3)(zod@3.22.4):
     optionalDependencies:
       typescript: 5.8.3
@@ -18423,8 +18634,8 @@ snapshots:
       '@typescript-eslint/parser': 8.35.1(eslint@9.30.1(jiti@2.4.2))(typescript@5.8.3)
       eslint: 9.30.1(jiti@2.4.2)
       eslint-import-resolver-node: 0.3.9
-      eslint-import-resolver-typescript: 3.10.1(eslint-plugin-import@2.31.0(@typescript-eslint/parser@8.35.1(eslint@9.30.1(jiti@2.4.2))(typescript@5.8.3))(eslint@9.30.1(jiti@2.4.2)))(eslint@9.30.1(jiti@2.4.2))
-      eslint-plugin-import: 2.31.0(@typescript-eslint/parser@8.35.1(eslint@9.30.1(jiti@2.4.2))(typescript@5.8.3))(eslint-import-resolver-typescript@3.10.1(eslint-plugin-import@2.31.0(@typescript-eslint/parser@8.35.1(eslint@9.30.1(jiti@2.4.2))(typescript@5.8.3))(eslint@9.30.1(jiti@2.4.2)))(eslint@9.30.1(jiti@2.4.2)))(eslint@9.30.1(jiti@2.4.2))
+      eslint-import-resolver-typescript: 3.10.1(eslint-plugin-import@2.31.0)(eslint@9.30.1(jiti@2.4.2))
+      eslint-plugin-import: 2.31.0(@typescript-eslint/parser@8.35.1(eslint@9.30.1(jiti@2.4.2))(typescript@5.8.3))(eslint-import-resolver-typescript@3.10.1)(eslint@9.30.1(jiti@2.4.2))
       eslint-plugin-jsx-a11y: 6.10.2(eslint@9.30.1(jiti@2.4.2))
       eslint-plugin-react: 7.37.5(eslint@9.30.1(jiti@2.4.2))
       eslint-plugin-react-hooks: 5.2.0(eslint@9.30.1(jiti@2.4.2))
@@ -18438,6 +18649,10 @@ snapshots:
   eslint-config-prettier@10.1.5(eslint@9.30.1(jiti@2.4.2)):
     dependencies:
       eslint: 9.30.1(jiti@2.4.2)
+
+  eslint-config-prettier@10.1.5(eslint@9.32.0(jiti@2.4.2)):
+    dependencies:
+      eslint: 9.32.0(jiti@2.4.2)
 
   eslint-config-turbo@2.5.4(eslint@9.30.1(jiti@2.4.2))(turbo@2.5.4):
     dependencies:
@@ -18453,7 +18668,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  eslint-import-resolver-typescript@3.10.1(eslint-plugin-import@2.31.0(@typescript-eslint/parser@8.35.1(eslint@9.30.1(jiti@2.4.2))(typescript@5.8.3))(eslint@9.30.1(jiti@2.4.2)))(eslint@9.30.1(jiti@2.4.2)):
+  eslint-import-resolver-typescript@3.10.1(eslint-plugin-import@2.31.0)(eslint@9.30.1(jiti@2.4.2)):
     dependencies:
       '@nolyfill/is-core-module': 1.0.39
       debug: 4.4.1(supports-color@8.1.1)
@@ -18464,22 +18679,22 @@ snapshots:
       tinyglobby: 0.2.14
       unrs-resolver: 1.11.0
     optionalDependencies:
-      eslint-plugin-import: 2.31.0(@typescript-eslint/parser@8.35.1(eslint@9.30.1(jiti@2.4.2))(typescript@5.8.3))(eslint-import-resolver-typescript@3.10.1(eslint-plugin-import@2.31.0(@typescript-eslint/parser@8.35.1(eslint@9.30.1(jiti@2.4.2))(typescript@5.8.3))(eslint@9.30.1(jiti@2.4.2)))(eslint@9.30.1(jiti@2.4.2)))(eslint@9.30.1(jiti@2.4.2))
+      eslint-plugin-import: 2.31.0(@typescript-eslint/parser@8.35.1(eslint@9.30.1(jiti@2.4.2))(typescript@5.8.3))(eslint-import-resolver-typescript@3.10.1)(eslint@9.30.1(jiti@2.4.2))
     transitivePeerDependencies:
       - supports-color
 
-  eslint-module-utils@2.12.0(@typescript-eslint/parser@8.35.1(eslint@9.30.1(jiti@2.4.2))(typescript@5.8.3))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.10.1(eslint-plugin-import@2.31.0(@typescript-eslint/parser@8.35.1(eslint@9.30.1(jiti@2.4.2))(typescript@5.8.3))(eslint@9.30.1(jiti@2.4.2)))(eslint@9.30.1(jiti@2.4.2)))(eslint@9.30.1(jiti@2.4.2)):
+  eslint-module-utils@2.12.0(@typescript-eslint/parser@8.35.1(eslint@9.30.1(jiti@2.4.2))(typescript@5.8.3))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.10.1)(eslint@9.30.1(jiti@2.4.2)):
     dependencies:
       debug: 3.2.7
     optionalDependencies:
       '@typescript-eslint/parser': 8.35.1(eslint@9.30.1(jiti@2.4.2))(typescript@5.8.3)
       eslint: 9.30.1(jiti@2.4.2)
       eslint-import-resolver-node: 0.3.9
-      eslint-import-resolver-typescript: 3.10.1(eslint-plugin-import@2.31.0(@typescript-eslint/parser@8.35.1(eslint@9.30.1(jiti@2.4.2))(typescript@5.8.3))(eslint@9.30.1(jiti@2.4.2)))(eslint@9.30.1(jiti@2.4.2))
+      eslint-import-resolver-typescript: 3.10.1(eslint-plugin-import@2.31.0)(eslint@9.30.1(jiti@2.4.2))
     transitivePeerDependencies:
       - supports-color
 
-  eslint-plugin-import@2.31.0(@typescript-eslint/parser@8.35.1(eslint@9.30.1(jiti@2.4.2))(typescript@5.8.3))(eslint-import-resolver-typescript@3.10.1(eslint-plugin-import@2.31.0(@typescript-eslint/parser@8.35.1(eslint@9.30.1(jiti@2.4.2))(typescript@5.8.3))(eslint@9.30.1(jiti@2.4.2)))(eslint@9.30.1(jiti@2.4.2)))(eslint@9.30.1(jiti@2.4.2)):
+  eslint-plugin-import@2.31.0(@typescript-eslint/parser@8.35.1(eslint@9.30.1(jiti@2.4.2))(typescript@5.8.3))(eslint-import-resolver-typescript@3.10.1)(eslint@9.30.1(jiti@2.4.2)):
     dependencies:
       '@rtsao/scc': 1.1.0
       array-includes: 3.1.9
@@ -18490,7 +18705,7 @@ snapshots:
       doctrine: 2.1.0
       eslint: 9.30.1(jiti@2.4.2)
       eslint-import-resolver-node: 0.3.9
-      eslint-module-utils: 2.12.0(@typescript-eslint/parser@8.35.1(eslint@9.30.1(jiti@2.4.2))(typescript@5.8.3))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.10.1(eslint-plugin-import@2.31.0(@typescript-eslint/parser@8.35.1(eslint@9.30.1(jiti@2.4.2))(typescript@5.8.3))(eslint@9.30.1(jiti@2.4.2)))(eslint@9.30.1(jiti@2.4.2)))(eslint@9.30.1(jiti@2.4.2))
+      eslint-module-utils: 2.12.0(@typescript-eslint/parser@8.35.1(eslint@9.30.1(jiti@2.4.2))(typescript@5.8.3))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.10.1)(eslint@9.30.1(jiti@2.4.2))
       hasown: 2.0.2
       is-core-module: 2.16.1
       is-glob: 4.0.3
@@ -18536,6 +18751,16 @@ snapshots:
     optionalDependencies:
       '@types/eslint': 9.6.1
       eslint-config-prettier: 10.1.5(eslint@9.30.1(jiti@2.4.2))
+
+  eslint-plugin-prettier@5.5.1(@types/eslint@9.6.1)(eslint-config-prettier@10.1.5(eslint@9.32.0(jiti@2.4.2)))(eslint@9.32.0(jiti@2.4.2))(prettier@3.6.2):
+    dependencies:
+      eslint: 9.32.0(jiti@2.4.2)
+      prettier: 3.6.2
+      prettier-linter-helpers: 1.0.0
+      synckit: 0.11.8
+    optionalDependencies:
+      '@types/eslint': 9.6.1
+      eslint-config-prettier: 10.1.5(eslint@9.32.0(jiti@2.4.2))
 
   eslint-plugin-react-hooks@5.2.0(eslint@9.30.1(jiti@2.4.2)):
     dependencies:
@@ -20770,21 +20995,6 @@ snapshots:
     transitivePeerDependencies:
       - zod
 
-  ox@0.8.1(typescript@5.8.3)(zod@3.22.4):
-    dependencies:
-      '@adraffy/ens-normalize': 1.11.0
-      '@noble/ciphers': 1.3.0
-      '@noble/curves': 1.9.2
-      '@noble/hashes': 1.8.0
-      '@scure/bip32': 1.7.0
-      '@scure/bip39': 1.6.0
-      abitype: 1.0.8(typescript@5.8.3)(zod@3.22.4)
-      eventemitter3: 5.0.1
-    optionalDependencies:
-      typescript: 5.8.3
-    transitivePeerDependencies:
-      - zod
-
   ox@0.8.1(typescript@5.8.3)(zod@3.25.56):
     dependencies:
       '@adraffy/ens-normalize': 1.11.0
@@ -20797,21 +21007,6 @@ snapshots:
       eventemitter3: 5.0.1
     optionalDependencies:
       typescript: 5.8.3
-    transitivePeerDependencies:
-      - zod
-
-  ox@0.8.1(typescript@5.9.2)(zod@3.22.4):
-    dependencies:
-      '@adraffy/ens-normalize': 1.11.0
-      '@noble/ciphers': 1.3.0
-      '@noble/curves': 1.9.2
-      '@noble/hashes': 1.8.0
-      '@scure/bip32': 1.7.0
-      '@scure/bip39': 1.6.0
-      abitype: 1.0.8(typescript@5.9.2)(zod@3.22.4)
-      eventemitter3: 5.0.1
-    optionalDependencies:
-      typescript: 5.9.2
     transitivePeerDependencies:
       - zod
 
@@ -20830,6 +21025,21 @@ snapshots:
     transitivePeerDependencies:
       - zod
 
+  ox@0.8.6(typescript@5.8.3)(zod@3.22.4):
+    dependencies:
+      '@adraffy/ens-normalize': 1.11.0
+      '@noble/ciphers': 1.3.0
+      '@noble/curves': 1.9.2
+      '@noble/hashes': 1.8.0
+      '@scure/bip32': 1.7.0
+      '@scure/bip39': 1.6.0
+      abitype: 1.0.8(typescript@5.8.3)(zod@3.22.4)
+      eventemitter3: 5.0.1
+    optionalDependencies:
+      typescript: 5.8.3
+    transitivePeerDependencies:
+      - zod
+
   ox@0.8.6(typescript@5.8.3)(zod@3.25.56):
     dependencies:
       '@adraffy/ens-normalize': 1.11.0
@@ -20842,6 +21052,21 @@ snapshots:
       eventemitter3: 5.0.1
     optionalDependencies:
       typescript: 5.8.3
+    transitivePeerDependencies:
+      - zod
+
+  ox@0.8.6(typescript@5.9.2)(zod@3.22.4):
+    dependencies:
+      '@adraffy/ens-normalize': 1.11.0
+      '@noble/ciphers': 1.3.0
+      '@noble/curves': 1.9.2
+      '@noble/hashes': 1.8.0
+      '@scure/bip32': 1.7.0
+      '@scure/bip39': 1.6.0
+      abitype: 1.0.8(typescript@5.9.2)(zod@3.22.4)
+      eventemitter3: 5.0.1
+    optionalDependencies:
+      typescript: 5.9.2
     transitivePeerDependencies:
       - zod
 
@@ -21167,7 +21392,7 @@ snapshots:
       '@protobufjs/pool': 1.1.0
       '@protobufjs/utf8': 1.1.0
       '@types/long': 4.0.2
-      '@types/node': 24.0.10
+      '@types/node': 24.0.14
       long: 4.0.0
 
   protons-runtime@5.5.0:
@@ -22796,23 +23021,6 @@ snapshots:
       - utf-8-validate
       - zod
 
-  viem@2.31.7(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.22.4):
-    dependencies:
-      '@noble/curves': 1.9.2
-      '@noble/hashes': 1.8.0
-      '@scure/bip32': 1.7.0
-      '@scure/bip39': 1.6.0
-      abitype: 1.0.8(typescript@5.8.3)(zod@3.22.4)
-      isows: 1.0.7(ws@8.18.2(bufferutil@4.0.9)(utf-8-validate@5.0.10))
-      ox: 0.8.1(typescript@5.8.3)(zod@3.22.4)
-      ws: 8.18.2(bufferutil@4.0.9)(utf-8-validate@5.0.10)
-    optionalDependencies:
-      typescript: 5.8.3
-    transitivePeerDependencies:
-      - bufferutil
-      - utf-8-validate
-      - zod
-
   viem@2.31.7(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.25.56):
     dependencies:
       '@noble/curves': 1.9.2
@@ -22847,23 +23055,6 @@ snapshots:
       - utf-8-validate
       - zod
 
-  viem@2.31.7(bufferutil@4.0.9)(typescript@5.9.2)(utf-8-validate@5.0.10)(zod@3.22.4):
-    dependencies:
-      '@noble/curves': 1.9.2
-      '@noble/hashes': 1.8.0
-      '@scure/bip32': 1.7.0
-      '@scure/bip39': 1.6.0
-      abitype: 1.0.8(typescript@5.9.2)(zod@3.22.4)
-      isows: 1.0.7(ws@8.18.2(bufferutil@4.0.9)(utf-8-validate@5.0.10))
-      ox: 0.8.1(typescript@5.9.2)(zod@3.22.4)
-      ws: 8.18.2(bufferutil@4.0.9)(utf-8-validate@5.0.10)
-    optionalDependencies:
-      typescript: 5.9.2
-    transitivePeerDependencies:
-      - bufferutil
-      - utf-8-validate
-      - zod
-
   viem@2.31.7(bufferutil@4.0.9)(typescript@5.9.2)(utf-8-validate@5.0.10)(zod@3.25.56):
     dependencies:
       '@noble/curves': 1.9.2
@@ -22876,6 +23067,23 @@ snapshots:
       ws: 8.18.2(bufferutil@4.0.9)(utf-8-validate@5.0.10)
     optionalDependencies:
       typescript: 5.9.2
+    transitivePeerDependencies:
+      - bufferutil
+      - utf-8-validate
+      - zod
+
+  viem@2.33.2(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.22.4):
+    dependencies:
+      '@noble/curves': 1.9.2
+      '@noble/hashes': 1.8.0
+      '@scure/bip32': 1.7.0
+      '@scure/bip39': 1.6.0
+      abitype: 1.0.8(typescript@5.8.3)(zod@3.22.4)
+      isows: 1.0.7(ws@8.18.2(bufferutil@4.0.9)(utf-8-validate@5.0.10))
+      ox: 0.8.6(typescript@5.8.3)(zod@3.22.4)
+      ws: 8.18.2(bufferutil@4.0.9)(utf-8-validate@5.0.10)
+    optionalDependencies:
+      typescript: 5.8.3
     transitivePeerDependencies:
       - bufferutil
       - utf-8-validate
@@ -22910,6 +23118,23 @@ snapshots:
       ws: 8.18.2(bufferutil@4.0.9)(utf-8-validate@6.0.5)
     optionalDependencies:
       typescript: 5.8.3
+    transitivePeerDependencies:
+      - bufferutil
+      - utf-8-validate
+      - zod
+
+  viem@2.33.2(bufferutil@4.0.9)(typescript@5.9.2)(utf-8-validate@5.0.10)(zod@3.22.4):
+    dependencies:
+      '@noble/curves': 1.9.2
+      '@noble/hashes': 1.8.0
+      '@scure/bip32': 1.7.0
+      '@scure/bip39': 1.6.0
+      abitype: 1.0.8(typescript@5.9.2)(zod@3.22.4)
+      isows: 1.0.7(ws@8.18.2(bufferutil@4.0.9)(utf-8-validate@5.0.10))
+      ox: 0.8.6(typescript@5.9.2)(zod@3.22.4)
+      ws: 8.18.2(bufferutil@4.0.9)(utf-8-validate@5.0.10)
+    optionalDependencies:
+      typescript: 5.9.2
     transitivePeerDependencies:
       - bufferutil
       - utf-8-validate
@@ -23121,6 +23346,17 @@ snapshots:
   web3-eth-abi@4.4.1(typescript@5.8.3)(zod@3.25.56):
     dependencies:
       abitype: 0.7.1(typescript@5.8.3)(zod@3.25.56)
+      web3-errors: 1.3.1
+      web3-types: 1.10.0
+      web3-utils: 4.3.3
+      web3-validator: 2.0.6
+    transitivePeerDependencies:
+      - typescript
+      - zod
+
+  web3-eth-abi@4.4.1(typescript@5.9.2)(zod@3.25.56):
+    dependencies:
+      abitype: 0.7.1(typescript@5.9.2)(zod@3.25.56)
       web3-errors: 1.3.1
       web3-types: 1.10.0
       web3-utils: 4.3.3
