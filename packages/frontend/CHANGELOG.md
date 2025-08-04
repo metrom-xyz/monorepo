@@ -1,5 +1,15 @@
 # frontend
 
+## 0.1.10
+
+### Patch Changes
+
+- Updated dependencies
+  - @metrom-xyz/react@0.3.2
+  - @metrom-xyz/sdk@0.5.2
+  - @metrom-xyz/ui@0.11.5
+  - @metrom-xyz/chains@0.0.2
+
 ## 0.1.9
 
 ### Patch Changes

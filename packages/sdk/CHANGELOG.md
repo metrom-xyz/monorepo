@@ -1,5 +1,11 @@
 # @metrom-xyz/sdk
 
+## 0.5.2
+
+### Patch Changes
+
+- Fix params handling issue in `fetchCampaigns` method
+
 ## 0.5.1
 
 ### Patch Changes

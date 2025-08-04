@@ -1,5 +1,11 @@
 # @metrom-xyz/ui
 
+## 0.11.5
+
+### Patch Changes
+
+- Minor fixes
+
 ## 0.11.4
 
 ### Patch Changes
