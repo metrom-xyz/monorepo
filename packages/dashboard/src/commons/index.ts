@@ -8,7 +8,7 @@ import { Chain } from "viem";
 import {
     SUPPORTED_DEVELOPMENT_CHAINS,
     SUPPORTED_PRODUCTION_CHAINS,
-} from "../../../chains/dist";
+} from "@metrom-xyz/chains";
 
 // taken from https://github.com/wevm/wagmi/blob/80326815bea2f175623157f57465f9dfae1f4c5c/packages/connectors/src/safe.ts#L45
 export const SAFE_CONNECTOR_ID = "safe";
