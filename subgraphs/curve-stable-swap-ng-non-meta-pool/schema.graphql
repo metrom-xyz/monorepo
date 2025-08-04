@@ -1,0 +1,41 @@
+type Token @entity(immutable: true) {
+    id: Bytes!
+    name: String!
+    symbol: String!
+    decimals: BigInt!
+    pools: [Pool!]! @derivedFrom(field: "tokens")
+}
+
+type Pool @entity(immutable: false) {
+    id: Bytes!
+    tokens: [Token!]!
+    tvls: [BigInt!]!
+    liquidity: BigInt!
+    positions: [Position!]! @derivedFrom(field: "pool")
+}
+
+type Position @entity(immutable: false) {
+    id: Bytes!
+    owner: Bytes!
+    liquidity: BigInt!
+    pool: Pool!
+    liquidityChanges: [LiquidityChange!]! @derivedFrom(field: "position")
+}
+
+type LiquidityChange @entity(immutable: true) {
+    id: Bytes!
+    timestamp: BigInt!
+    blockNumber: BigInt!
+    delta: BigInt!
+    position: Position!
+}
+
+type LiquidityTransfer @entity(immutable: true) {
+    id: Bytes!
+    timestamp: BigInt!
+    blockNumber: BigInt!
+    from: Bytes!
+    to: Bytes!
+    amount: BigInt!
+    pool: Pool!
+}
