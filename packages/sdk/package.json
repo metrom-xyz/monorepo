@@ -34,5 +34,8 @@
         "typescript-eslint": "^8.35.1",
         "viem": "^2.31.7",
         "vite": "^7.0.2"
-    }
+    },
+    "files": [
+        "dist"
+    ]
 }
