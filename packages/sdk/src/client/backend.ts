@@ -208,10 +208,9 @@ export class MetromApiClient {
 
         if (params)
             for (const param in params) {
-                url.searchParams.set(
-                    param,
-                    params[param as keyof FetchCampaignsParams]!.toString(),
-                );
+                const value = params[param as keyof FetchCampaignsParams];
+                if (!value) continue;
+                url.searchParams.set(param, value.toString());
             }
 
         const response = await fetch(url);
