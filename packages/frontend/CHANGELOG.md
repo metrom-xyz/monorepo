@@ -1,5 +1,12 @@
 # frontend
 
+## 0.1.11
+
+### Patch Changes
+
+- Updated dependencies
+  - @metrom-xyz/react@0.3.3
+
 ## 0.1.10
 
 ### Patch Changes
