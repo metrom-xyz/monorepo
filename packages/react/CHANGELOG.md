@@ -1,5 +1,11 @@
 # @metrom-xyz/react
 
+## 0.3.3
+
+### Patch Changes
+
+- Update sdk
+
 ## 0.3.2
 
 ### Patch Changes
