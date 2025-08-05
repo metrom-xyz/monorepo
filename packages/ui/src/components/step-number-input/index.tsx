@@ -19,6 +19,8 @@ import commonStyles from "../commons/styles.module.css";
 
 type InputBase = NumericFormatProps<InputAttributes> & BaseInputProps<string>;
 
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
 type InputBaseWithoutOverrides = Omit<
     InputBase,
     "id" | "size" | "value" | "icon" | "iconPlacement" | "onChange"
