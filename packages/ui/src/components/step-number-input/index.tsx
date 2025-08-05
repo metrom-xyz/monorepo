@@ -7,6 +7,7 @@ import { Button } from "../button";
 import {
     NumberFormatBase,
     useNumericFormat,
+    type InputAttributes,
     type NumberFormatValues,
     type NumericFormatProps,
 } from "react-number-format";
@@ -17,8 +18,8 @@ import styles from "./styles.module.css";
 import commonStyles from "../commons/styles.module.css";
 
 export type StepNumberInputProps = Omit<
-    NumericFormatProps & Omit<BaseInputProps<string>, "value">,
-    "id" | "size" | "icon" | "iconPlacement" | "onChange"
+    NumericFormatProps<InputAttributes> & BaseInputProps<string>,
+    "id" | "size" | "value" | "icon" | "iconPlacement" | "onChange"
 > & {
     id?: string;
     size?: BaseInputProps<string>["size"];
