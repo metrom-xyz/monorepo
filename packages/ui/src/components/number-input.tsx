@@ -1,6 +1,10 @@
 import { forwardRef, useId } from "react";
 import type { ReactElement } from "react";
-import { type NumericFormatProps, NumericFormat } from "react-number-format";
+import {
+    type InputAttributes,
+    type NumericFormatProps,
+    NumericFormat,
+} from "react-number-format";
 import { type BaseInputProps, BaseInputWrapper } from "./commons/input";
 import classNames from "classnames";
 
@@ -9,7 +13,7 @@ import styles from "./commons/styles.module.css";
 export { type NumberFormatValues } from "react-number-format";
 
 export type NumberInputProps = Omit<
-    NumericFormatProps & Omit<BaseInputProps<string>, "value">,
+    NumericFormatProps<InputAttributes> & Omit<BaseInputProps<string>, "value">,
     "size" | "id" | "className"
 > & {
     id?: string;
