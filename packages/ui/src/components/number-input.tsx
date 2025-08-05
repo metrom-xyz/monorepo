@@ -17,57 +17,57 @@ export type NumberInputProps = Omit<
     className?: BaseInputProps<string>["className"];
 };
 
-export const NumberInput = forwardRef<HTMLInputElement, NumberInputProps>(
-    function NumberInput(
-        {
-            id,
-            size = "base",
-            value,
-            label,
-            placeholder,
-            errorText,
-            prefixElement,
-            icon,
-            iconPlacement,
-            error = false,
-            className,
-            loading,
-            disabled,
-            ...rest
-        },
-        ref,
-    ): ReactElement {
-        const generatedId = useId();
-
-        const resolvedId = id || generatedId;
-
-        return (
-            <BaseInputWrapper
-                id={resolvedId}
-                label={label}
-                size={size}
-                loading={loading}
-                error={error}
-                errorText={errorText}
-                prefixElement={prefixElement}
-                icon={icon}
-                iconPlacement={iconPlacement}
-                className={className}
-            >
-                <NumericFormat
-                    id={resolvedId}
-                    type="text"
-                    defaultValue=""
-                    thousandSeparator=" "
-                    decimalSeparator="."
-                    value={value}
-                    disabled={disabled || loading}
-                    placeholder={placeholder}
-                    getInputRef={ref}
-                    {...rest}
-                    className={classNames("input", styles.input)}
-                />
-            </BaseInputWrapper>
-        );
+export const NumberInput: React.ForwardRefExoticComponent<
+    NumberInputProps & React.RefAttributes<HTMLInputElement>
+> = forwardRef(function NumberInput(
+    {
+        id,
+        size = "base",
+        value,
+        label,
+        placeholder,
+        errorText,
+        prefixElement,
+        icon,
+        iconPlacement,
+        error = false,
+        className,
+        loading,
+        disabled,
+        ...rest
     },
-);
+    ref,
+): ReactElement {
+    const generatedId = useId();
+
+    const resolvedId = id || generatedId;
+
+    return (
+        <BaseInputWrapper
+            id={resolvedId}
+            label={label}
+            size={size}
+            loading={loading}
+            error={error}
+            errorText={errorText}
+            prefixElement={prefixElement}
+            icon={icon}
+            iconPlacement={iconPlacement}
+            className={className}
+        >
+            <NumericFormat
+                id={resolvedId}
+                type="text"
+                defaultValue=""
+                thousandSeparator=" "
+                decimalSeparator="."
+                value={value}
+                disabled={disabled || loading}
+                placeholder={placeholder}
+                getInputRef={ref}
+                {...rest}
+                className={classNames("input", styles.input)}
+            />
+        </BaseInputWrapper>
+    );
+});
