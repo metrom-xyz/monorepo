@@ -18,6 +18,8 @@ import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
 import { LiquityV2BrandStep } from "../../steps/liquity-v2-brand-step";
 import { LiquityV2ActionStep } from "../../steps/liquity-v2-action-step";
 import { LiquityV2CollateralStep } from "../../steps/liquity-v2-collateral-step";
+import { LiquityV2Action } from "@/src/types/common";
+import { KpiStep } from "../../steps/kpi-step";
 
 import styles from "./styles.module.css";
 
@@ -91,6 +93,15 @@ export function LiquityV2ForksForm({
         if (Object.values(errors).some((error) => !!error)) return null;
         return validatePayload(payload);
     }, [payload, errors]);
+
+    const noDistributables = useMemo(() => {
+        return (
+            !payload.distributables ||
+            payload.distributables.type === DistributablesType.Points ||
+            !payload.distributables.tokens ||
+            payload.distributables.tokens.length === 0
+        );
+    }, [payload.distributables]);
 
     const missingDistributables = useMemo(() => {
         if (!payload.distributables) return true;
@@ -175,19 +186,27 @@ export function LiquityV2ForksForm({
                     onDistributablesChange={handlePayloadOnChange}
                     onError={handlePayloadOnError}
                 />
-                {/* TODO: add support for KPIs to liquity campaign, how? */}
-                {/* <KpiStep
-                    disabled={
-                        !payload.tokens ||
-                        payload.rewardType === RewardType.Points ||
-                        unsupportedChain
+                <KpiStep
+                    disabled={noDistributables || unsupportedChain}
+                    usdTvl={
+                        payload.action === LiquityV2Action.Debt
+                            ? payload.collateral?.usdMintedDebt
+                            : payload.action === LiquityV2Action.StabilityPool
+                              ? payload.collateral?.usdStabilityPoolDebt
+                              : undefined
                     }
-                    pool={payload.pool}
-                    rewards={payload.tokens}
+                    distributables={
+                        payload.distributables?.type ===
+                        DistributablesType.Tokens
+                            ? payload.distributables
+                            : undefined
+                    }
+                    startDate={payload.startDate}
+                    endDate={payload.endDate}
                     kpiSpecification={payload.kpiSpecification}
                     onKpiChange={handlePayloadOnChange}
                     onError={handlePayloadOnError}
-                /> */}
+                />
                 <RestrictionsStep
                     disabled={missingDistributables || unsupportedChain}
                     restrictions={payload.restrictions}
