@@ -30,7 +30,7 @@ React app with the required context providers by following the official
 ### Wrap app in context provider
 
 Wrap your app with the `MetromProvider` React Context Provider and pass the
-environment you wish to target the `environment` property.
+environment you wish to target in the `environment` property.
 
 The `Environment` is exported by the library.
 
@@ -44,7 +44,7 @@ function App() {
 }
 ```
 
-> Omitting the environment will default to `development`.
+> **Important:** Omitting the environment will default to `development`.
 
 ## Usage
 

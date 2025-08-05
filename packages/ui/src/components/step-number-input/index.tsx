@@ -17,10 +17,14 @@ import { Plus } from "../../assets/plus";
 import styles from "./styles.module.css";
 import commonStyles from "../commons/styles.module.css";
 
-export type StepNumberInputProps = Omit<
-    NumericFormatProps<InputAttributes> & BaseInputProps<string>,
+type InputBase = NumericFormatProps<InputAttributes> & BaseInputProps<string>;
+
+type InputBaseWithoutOverrides = Omit<
+    InputBase,
     "id" | "size" | "value" | "icon" | "iconPlacement" | "onChange"
-> & {
+>;
+
+export type StepNumberInputProps = InputBaseWithoutOverrides & {
     id?: string;
     size?: BaseInputProps<string>["size"];
     value?: number;
