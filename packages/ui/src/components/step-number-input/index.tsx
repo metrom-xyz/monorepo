@@ -17,8 +17,8 @@ import styles from "./styles.module.css";
 import commonStyles from "../commons/styles.module.css";
 
 export type StepNumberInputProps = Omit<
-    NumericFormatProps & BaseInputProps<string>,
-    "id" | "size" | "value" | "icon" | "iconPlacement" | "onChange"
+    NumericFormatProps & Omit<BaseInputProps<string>, "value">,
+    "id" | "size" | "icon" | "iconPlacement" | "onChange"
 > & {
     id?: string;
     size?: BaseInputProps<string>["size"];
