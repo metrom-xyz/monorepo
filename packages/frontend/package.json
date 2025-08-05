@@ -16,7 +16,6 @@
         "@fontsource/ibm-plex-sans": "^5.2.5",
         "@metrom-xyz/chains": "workspace:*",
         "@metrom-xyz/contracts": "^0.49.0",
-        "@metrom-xyz/react": "workspace:*",
         "@metrom-xyz/sdk": "workspace:*",
         "@metrom-xyz/ui": "workspace:*",
         "@reown/appkit": "^1.7.13",
