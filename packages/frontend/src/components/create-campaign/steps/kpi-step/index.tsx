@@ -2,7 +2,6 @@ import { Step } from "@/src/components/step";
 import { StepContent } from "@/src/components/step/content";
 import { StepPreview } from "@/src/components/step/preview";
 import {
-    type AmmPoolLiquidityCampaignPayload,
     type CampaignPayloadErrors,
     type BaseCampaignPayloadPart,
     type CampaignPayloadTokenDistributables,
@@ -18,16 +17,17 @@ import { KpiSimulationChart } from "../../../kpi-simulation-chart";
 import { GoalInputs } from "./goal-inputs";
 import { useChainId } from "wagmi";
 import { InfoMessage } from "@/src/components/info-message";
+import type { Dayjs } from "dayjs";
 
 import styles from "./styles.module.css";
 
 interface KpiStepProps {
     disabled?: boolean;
-    pool?: AmmPoolLiquidityCampaignPayload["pool"];
+    usdTvl?: number;
     distributables?: CampaignPayloadTokenDistributables;
-    startDate?: AmmPoolLiquidityCampaignPayload["startDate"];
-    endDate?: AmmPoolLiquidityCampaignPayload["endDate"];
-    kpiSpecification?: AmmPoolLiquidityCampaignPayload["kpiSpecification"];
+    startDate?: Dayjs;
+    endDate?: Dayjs;
+    kpiSpecification?: KpiSpecification;
     onKpiChange: (value: BaseCampaignPayloadPart) => void;
     onError: (errors: CampaignPayloadErrors) => void;
 }
@@ -37,7 +37,7 @@ type ErrorMessage = LocalizedMessage<"newCampaign.form.base.kpi">;
 // TODO: make KPI step work with liquityv2 campaigns
 export function KpiStep({
     disabled,
-    pool,
+    usdTvl,
     distributables,
     startDate,
     endDate,
@@ -267,7 +267,7 @@ export function KpiStep({
                         {t("currentTvl")}
                     </Typography>
                     <Typography weight="medium" size="sm">
-                        {formatUsdAmount({ amount: pool?.usdTvl })}
+                        {formatUsdAmount({ amount: usdTvl })}
                     </Typography>
                 </div>
             </StepPreview>
@@ -319,7 +319,7 @@ export function KpiStep({
                                     : 1
                             }
                             minimumPayoutPercentage={minimumPayoutPercentage}
-                            poolUsdTvl={pool?.usdTvl}
+                            usdTvl={usdTvl}
                             error={!!error}
                         />
                     </div>

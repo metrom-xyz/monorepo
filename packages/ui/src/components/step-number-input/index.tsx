@@ -28,10 +28,9 @@ export type StepNumberInputProps = Omit<
     onDecrement: () => void;
 };
 
-export const StepNumberInput = forwardRef<
-    HTMLInputElement,
-    StepNumberInputProps
->(function StepNumberInput(
+export const StepNumberInput: React.ForwardRefExoticComponent<
+    StepNumberInputProps & React.RefAttributes<HTMLInputElement>
+> = forwardRef(function StepNumberInput(
     {
         id,
         label,
