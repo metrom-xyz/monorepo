@@ -78,7 +78,7 @@ export function Kpi({
             <Accordion title={t("simulation")} className={styles.chartWrapper}>
                 <KpiSimulationChart
                     tooltipSize="xs"
-                    poolUsdTvl={poolUsdTvl}
+                    usdTvl={poolUsdTvl}
                     campaignDurationSeconds={
                         // we don't pass 0 as the default value to avoid potential 0
                         // division issues

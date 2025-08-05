@@ -85,7 +85,7 @@ export function Apr({ campaignId, chainId, apr, kpi }: AprProps) {
                             <div className={styles.chartWrapper}>
                                 <KpiSimulationChart
                                     loading={loading}
-                                    poolUsdTvl={pool.usdTvl}
+                                    usdTvl={pool.usdTvl}
                                     campaignDurationSeconds={
                                         campaign.to - campaign.from
                                     }

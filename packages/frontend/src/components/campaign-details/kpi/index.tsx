@@ -140,7 +140,7 @@ export function Kpi({ campaign, loading }: KpiProps) {
                                     specificationLoading ||
                                     loadingKpiMeasurements
                                 }
-                                poolUsdTvl={poolUsdTvl}
+                                usdTvl={poolUsdTvl}
                                 campaignEnded={campaign.status === Status.Ended}
                                 campaignDurationSeconds={
                                     campaign.to - campaign.from
