@@ -16,4 +16,6 @@ if (!SAFE && !WALLETCONNECT_PROJECT_ID)
         "A valid NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID env variable is needed",
     );
 
+export const LIQUITY_V2_KPI_ENABLED =
+    process.env.NEXT_PUBLIC_LIQUITY_V2_KPI_ENABLED === "true";
 export const FATHOM_SITE_ID: string = process.env.NEXT_PUBLIC_FATHOM_SITE_ID!;
