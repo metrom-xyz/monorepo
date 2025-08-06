@@ -11,7 +11,7 @@ import { useMemo } from "react";
 import styles from "./styles.module.css";
 
 interface KpiProps {
-    poolUsdTvl?: number | null;
+    usdTvl?: number | null;
     from: BaseCampaignPayload["startDate"];
     to: BaseCampaignPayload["endDate"];
     distributables?: CampaignPayloadTokenDistributables;
@@ -19,7 +19,7 @@ interface KpiProps {
 }
 
 export function Kpi({
-    poolUsdTvl,
+    usdTvl,
     from,
     to,
     distributables,
@@ -78,7 +78,7 @@ export function Kpi({
             <Accordion title={t("simulation")} className={styles.chartWrapper}>
                 <KpiSimulationChart
                     tooltipSize="xs"
-                    usdTvl={poolUsdTvl}
+                    usdTvl={usdTvl}
                     campaignDurationSeconds={
                         // we don't pass 0 as the default value to avoid potential 0
                         // division issues

@@ -1,6 +1,8 @@
 import { Button, Typography, TextField, ErrorText } from "@metrom-xyz/ui";
 import {
     AmmPoolLiquidityCampaignPreviewPayload,
+    CampaignKind,
+    LiquityV2CampaignPreviewPayload,
     type CampaignPreviewPayload,
 } from "@/src/types/campaign";
 import type { LocalizedMessage } from "@/src/types/utils";
@@ -142,6 +144,23 @@ export function CampaignPreview({
             }
         }
     }, [payload.distributables]);
+
+    const kpiUsdTvl = useMemo(() => {
+        if (!kpi) return 0;
+
+        if (payload instanceof AmmPoolLiquidityCampaignPreviewPayload)
+            return payload.pool.usdTvl;
+
+        if (payload instanceof LiquityV2CampaignPreviewPayload) {
+            if (payload.kind === CampaignKind.LiquityV2Debt)
+                return payload.collateral.usdMintedDebt;
+            if (payload.kind === CampaignKind.LiquityV2StabilityPool)
+                return payload.collateral.usdStabilityPoolDebt;
+            return 0;
+        }
+
+        return 0;
+    }, [payload]);
 
     const [tokensCampaignArgs, pointsCampaignArgs] = useMemo(() => {
         const { kind, startDate, endDate } = payload;
@@ -345,10 +364,7 @@ export function CampaignPreview({
     const weighting = ammPoolLiquidityCampaign && !!payload.weighting;
     const restrictions =
         !!payload.restrictions && payload.restrictions.list.length > 0;
-    const kpi =
-        ammPoolLiquidityCampaign &&
-        !!payload.kpiSpecification &&
-        tokensCampaign;
+    const kpi = !!payload.kpiSpecification && tokensCampaign;
 
     // TODO: add notification toast in case of errors
     if (!created) {
@@ -419,7 +435,7 @@ export function CampaignPreview({
                     )}
                     {kpi && (
                         <Kpi
-                            poolUsdTvl={payload.pool.usdTvl}
+                            usdTvl={kpiUsdTvl}
                             from={payload.startDate}
                             to={payload.endDate}
                             distributables={payload.distributables}
