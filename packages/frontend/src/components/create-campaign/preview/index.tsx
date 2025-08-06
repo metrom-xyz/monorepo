@@ -145,6 +145,10 @@ export function CampaignPreview({
         }
     }, [payload.distributables]);
 
+    const pointsCampaign = payload.isDistributing(DistributablesType.Points);
+    const tokensCampaign = payload.isDistributing(DistributablesType.Tokens);
+    const kpi = !!payload.kpiSpecification && tokensCampaign;
+
     const kpiUsdTvl = useMemo(() => {
         if (!kpi) return 0;
 
@@ -160,7 +164,7 @@ export function CampaignPreview({
         }
 
         return 0;
-    }, [payload]);
+    }, [kpi, payload]);
 
     const [tokensCampaignArgs, pointsCampaignArgs] = useMemo(() => {
         const { kind, startDate, endDate } = payload;
@@ -357,14 +361,10 @@ export function CampaignPreview({
         router.push("/");
     }
 
-    const pointsCampaign = payload.isDistributing(DistributablesType.Points);
-    const tokensCampaign = payload.isDistributing(DistributablesType.Tokens);
-
     const range = ammPoolLiquidityCampaign && !!payload.priceRangeSpecification;
     const weighting = ammPoolLiquidityCampaign && !!payload.weighting;
     const restrictions =
         !!payload.restrictions && payload.restrictions.list.length > 0;
-    const kpi = !!payload.kpiSpecification && tokensCampaign;
 
     // TODO: add notification toast in case of errors
     if (!created) {
