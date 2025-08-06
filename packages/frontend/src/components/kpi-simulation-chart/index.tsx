@@ -242,15 +242,15 @@ export function KpiSimulationChart({
 
         const aprPercentages = [];
         for (
-            let usdTvl = lowerUsdTvl;
-            usdTvl <= upperUsdTvl;
-            usdTvl += domainStep
+            let usdTvlStep = lowerUsdTvl;
+            usdTvlStep <= upperUsdTvl;
+            usdTvlStep += domainStep
         ) {
-            if (usdTvl <= 0) continue;
+            if (usdTvlStep <= 0) continue;
 
             const distributaleRewardsPercentage =
                 getDistributableRewardsPercentage(
-                    usdTvl,
+                    usdTvlStep,
                     lowerUsdTarget,
                     upperUsdTarget,
                     minimumPayoutPercentage,
@@ -258,7 +258,7 @@ export function KpiSimulationChart({
             const distributedRewardsUsd =
                 totalRewardsUsd * distributaleRewardsPercentage;
 
-            const rewardsRatio = distributedRewardsUsd / usdTvl;
+            const rewardsRatio = distributedRewardsUsd / usdTvlStep;
             const yearMultiplier = SECONDS_IN_YEAR / campaignDurationSeconds;
             const aprPercentage = rewardsRatio * yearMultiplier * 100;
 
@@ -270,11 +270,11 @@ export function KpiSimulationChart({
                 minAprPercentage = aprPercentage;
 
             chartData.push({
-                usdTvl,
+                usdTvl: usdTvlStep,
                 currentlyDistributing:
-                    usdTvl <= usdTvl ? distributedRewardsUsd : 0,
+                    usdTvlStep <= usdTvl ? distributedRewardsUsd : 0,
                 currentlyNotDistributing:
-                    usdTvl > usdTvl ? distributedRewardsUsd : 0,
+                    usdTvlStep > usdTvl ? distributedRewardsUsd : 0,
                 aprPercentage,
             });
         }
