@@ -3,7 +3,6 @@ type Token @entity(immutable: true) {
     name: String!
     symbol: String!
     decimals: BigInt!
-    pools: [Pool!]! @derivedFrom(field: "tokens")
 }
 
 type Pool @entity(immutable: false) {
@@ -37,5 +36,4 @@ type LiquidityTransfer @entity(immutable: true) {
     from: Bytes!
     to: Bytes!
     amount: BigInt!
-    pool: Pool!
 }

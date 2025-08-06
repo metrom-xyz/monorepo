@@ -3,6 +3,10 @@ export interface Contract {
     startBlock: number;
 }
 
+export interface NamedContract extends Contract {
+    name: string;
+}
+
 export interface ChainConfig {
     nativeToken: {
         address: string;
@@ -20,7 +24,7 @@ export interface PoolConfig {
         block: number;
     };
     Pool: Contract;
-    GaugeAddress: string;
+    ProxyTokens: NamedContract[];
 }
 
 export const DEPLOYMENTS: Record<string, ChainConfig> = {
@@ -38,14 +42,31 @@ export const DEPLOYMENTS: Record<string, ChainConfig> = {
                     address: "0xEFc6516323FbD28e80B85A497B65A86243a54B3E",
                     startBlock: 22512006,
                 },
-                GaugeAddress: "0x07a01471fA544D9C6531B631E6A96A79a9AD05E9",
+                ProxyTokens: [
+                    {
+                        name: "GaugeToken",
+                        address: "0x07a01471fA544D9C6531B631E6A96A79a9AD05E9",
+                        startBlock: 22516134,
+                    },
+                    {
+                        name: "BeefyVaultToken",
+                        address: "0xC3CB31faFE8f1f2A991A833D0F0e34187bC6D5AD",
+                        startBlock: 22537747,
+                    },
+                ],
             },
             "ebusd-usdc": {
                 Pool: {
                     address: "0xd25f2cc6819fbd34641712122397efbaf9b6a6e2",
                     startBlock: 22639808,
                 },
-                GaugeAddress: "0xc26f3C4F14e90649260A19896E27674Ba188862e",
+                ProxyTokens: [
+                    {
+                        name: "GaugeToken",
+                        address: "0xc26f3C4F14e90649260A19896E27674Ba188862e",
+                        startBlock: 22640658,
+                    },
+                ],
             },
         },
     },

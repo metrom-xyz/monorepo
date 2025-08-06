@@ -36,8 +36,6 @@ constantsFile += `export const NATIVE_TOKEN_SYMBOL = "${chainConfig.nativeToken.
 constantsFile += `export const NATIVE_TOKEN_NAME = "${chainConfig.nativeToken.name}";\n`;
 constantsFile += `export const NATIVE_TOKEN_DECIMALS = BigInt.fromI32(${chainConfig.nativeToken.decimals});\n`;
 constantsFile += `export const POOL_ADDRESS = Address.fromString("${poolConfig.Pool.address}");\n`;
-constantsFile += `export const GAUGE_ADDRESS = Address.fromString("${poolConfig.GaugeAddress}");\n`;
-constantsFile += `export const DEPOSIT_AND_STAKE_ZIP_ADDRESS = Address.fromString("${chainConfig.DepositAndStakeZipAddress}");\n`;
 
 try {
     const constantsFileOut = join(
@@ -74,6 +72,7 @@ try {
                 network,
                 PoolAddress: poolConfig.Pool.address,
                 PoolStartBlock: poolConfig.Pool.startBlock,
+                ProxyTokens: poolConfig.ProxyTokens,
             },
         ),
     );
