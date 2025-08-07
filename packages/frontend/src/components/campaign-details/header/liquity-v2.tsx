@@ -68,7 +68,7 @@ export function LiquityV2Header({ campaign }: LiquityV2HeaderProps) {
                         rel="noopener noreferrer"
                     >
                         {t(`liquityV2.${campaign.target.type}`, {
-                            collateral: campaign.target.collateral.symbol,
+                            collateral: campaign.target.collateral.token.symbol,
                             debtToken: brand?.debtToken.symbol || "",
                         })}
                     </Button>

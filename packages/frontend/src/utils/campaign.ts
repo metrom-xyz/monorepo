@@ -112,13 +112,13 @@ export function getCampaignName(
             return t("campaignActions.borrow", {
                 brand: campaign.target.brand.name,
                 debtToken: targetProtocol?.debtToken.symbol || "",
-                token: campaign.target.collateral.symbol,
+                token: campaign.target.collateral.token.symbol,
             });
         }
         case TargetType.LiquityV2StabilityPool: {
             return t("campaignActions.depositStabilityPool", {
                 brand: campaign.target.brand.name,
-                token: campaign.target.collateral.symbol,
+                token: campaign.target.collateral.token.symbol,
             });
         }
     }
