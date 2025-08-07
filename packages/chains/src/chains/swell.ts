@@ -115,6 +115,7 @@ export const swellProductionData: ChainData = {
             type: ProtocolType.LiquityV2,
             slug: SupportedLiquityV2.Orki,
             logo: OrkiDarkLogo,
+            logoLight: OrkiLightLogo,
             name: "Orki",
             debtToken: {
                 address: "0x0000baa0b1678229863c0a941c1056b83a1955f5",
