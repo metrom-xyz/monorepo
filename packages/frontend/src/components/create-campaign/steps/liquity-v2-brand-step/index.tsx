@@ -12,6 +12,8 @@ import {
 } from "@/src/types/campaign";
 import { ProtocolType, type LiquityV2Protocol } from "@metrom-xyz/chains";
 import { useProtocolsInChain } from "@/src/hooks/useProtocolsInChain";
+import { useTheme } from "next-themes";
+import { Theme } from "@/src/types/common";
 
 import styles from "./styles.module.css";
 
@@ -29,6 +31,7 @@ export function LiquityV2BrandStep({
     const t = useTranslations("newCampaign.form.liquityV2.brand");
     const [open, setOpen] = useState(true);
 
+    const { resolvedTheme } = useTheme();
     const chainId = useChainId();
     const supportedBrands = useProtocolsInChain({
         chainId,
@@ -81,7 +84,12 @@ export function LiquityV2BrandStep({
                 {!!selectedBrand && (
                     <div className={styles.preview}>
                         <div className={styles.logo}>
-                            <selectedBrand.logo />
+                            {selectedBrand.logoLight &&
+                            resolvedTheme === Theme.Dark ? (
+                                <selectedBrand.logoLight />
+                            ) : (
+                                <selectedBrand.logo />
+                            )}
                         </div>
                         <Typography size="lg" weight="medium">
                             {selectedBrand.name}
@@ -102,7 +110,12 @@ export function LiquityV2BrandStep({
                             onClick={getBrandChangeHandler(availablePlatform)}
                         >
                             <div className={styles.logo}>
-                                <availablePlatform.logo />
+                                {availablePlatform.logoLight &&
+                                resolvedTheme === Theme.Dark ? (
+                                    <availablePlatform.logoLight />
+                                ) : (
+                                    <availablePlatform.logo />
+                                )}
                             </div>
                             <Typography size="lg" weight="medium">
                                 {availablePlatform.name}
