@@ -1,8 +1,9 @@
-import type { Erc20Token } from "./commons";
+import type { UsdPricedErc20Token } from "./commons";
 
 export interface LiquityV2Collateral {
-    token: Erc20Token;
+    chainId: number;
+    token: UsdPricedErc20Token;
+    usdTvl: number;
     usdMintedDebt: number;
     usdStabilityPoolDebt: number;
-    usdTvlUsd: number;
 }

@@ -47,6 +47,13 @@ export enum BackendCampaignStatus {
     Expired = "expired",
 }
 
+export interface BackendLiquityV2Collateral {
+    tvl: string;
+    usdTvl: number;
+    mintedDebt: number;
+    stabilityPoolDebt: number;
+}
+
 export interface BackendCampaign {
     chainId: number;
     id: Hex;
@@ -70,6 +77,10 @@ export interface BackendCampaignsResponse {
         Record<Address, BackendUsdPricedErc20Token>
     >;
     resolvedAmmPools: Record<number, Record<Hex, BackendAmmPool>>;
+    resolvedLiquityV2Collaterals: Record<
+        number,
+        Record<string, Record<Hex, BackendLiquityV2Collateral>>
+    >;
     campaigns: BackendCampaign[];
 }
 
@@ -80,5 +91,9 @@ export interface BackendCampaignResponse {
         Record<Address, BackendUsdPricedErc20Token>
     >;
     resolvedAmmPools: Record<number, Record<Hex, BackendAmmPool>>;
+    resolvedLiquityV2Collaterals: Record<
+        number,
+        Record<string, Record<Hex, BackendLiquityV2Collateral>>
+    >;
     campaign: BackendCampaign;
 }

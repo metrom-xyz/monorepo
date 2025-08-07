@@ -5,6 +5,7 @@ import type {
     BackendCampaignResponse,
     BackendCampaignsResponse,
     BackendCampaignStatus,
+    BackendLiquityV2Collateral,
 } from "./types/campaigns";
 import type {
     BackendAmmPool,
@@ -850,13 +851,14 @@ export class MetromApiClient {
 
         return parsedResponse.collaterals.map((collateral) => {
             return {
-                usdMintedDebt: collateral.mintedDebt,
-                usdTvlUsd: collateral.usdTvl,
-                usdStabilityPoolDebt: collateral.stabilityPoolDebt,
-                token: resolveToken(
-                    parsedResponse.resolvedTokens,
+                chainId: params.chainId,
+                token: resolvePricedToken(
+                    parsedResponse.resolvedPricedTokens,
                     collateral.address,
                 ),
+                usdMintedDebt: collateral.mintedDebt,
+                usdTvl: collateral.usdTvl,
+                usdStabilityPoolDebt: collateral.stabilityPoolDebt,
             };
         });
     }
@@ -893,9 +895,11 @@ function processCampaignsResponse(
                         ],
                     },
                     chainId: backendCampaign.target.chainId,
-                    collateral: resolveTokenInChain(
+                    collateral: resolveLiquityV2Collateral(
+                        response.resolvedLiquityV2Collaterals,
                         response.resolvedPricedTokens,
                         backendCampaign.target.chainId,
+                        backendCampaign.target.brand,
                         backendCampaign.target.collateral as Address,
                     ),
                 };
@@ -912,9 +916,11 @@ function processCampaignsResponse(
                         ],
                     },
                     chainId: backendCampaign.target.chainId,
-                    collateral: resolveTokenInChain(
+                    collateral: resolveLiquityV2Collateral(
+                        response.resolvedLiquityV2Collaterals,
                         response.resolvedPricedTokens,
                         backendCampaign.target.chainId,
+                        backendCampaign.target.brand,
                         backendCampaign.target.collateral as Address,
                     ),
                 };
@@ -1036,6 +1042,46 @@ function resolveAmmPool(
         liquidity: resolvedPool.liquidity
             ? BigInt(resolvedPool.liquidity)
             : undefined,
+    };
+}
+
+function resolveLiquityV2Collateral(
+    liquityV2CollateralsRegistry: Record<
+        number,
+        Record<string, Record<Hex, BackendLiquityV2Collateral>>
+    >,
+    pricedTokensRegistry: Record<
+        number,
+        Record<Address, BackendUsdPricedErc20Token>
+    >,
+    chainId: number,
+    brand: string,
+    id: Hex,
+): LiquityV2Collateral {
+    const byChain = liquityV2CollateralsRegistry[chainId];
+    if (!byChain)
+        throw new Error(
+            `Could not find resolved Liquity V2 collaterals by chain with id ${chainId}`,
+        );
+
+    const byBrand = byChain[brand];
+    if (!byBrand)
+        throw new Error(
+            `Could not find resolved Liquity V2 collaterals with brand ${brand} in chain with id ${chainId}`,
+        );
+
+    const resolvedLiquityV2Collateral = byBrand[id];
+    if (!resolvedLiquityV2Collateral)
+        throw new Error(
+            `Could not find resolved Liquity V2 collateral with brand ${brand} with id ${id} in chain with id ${chainId}`,
+        );
+
+    return {
+        chainId,
+        token: resolvePricedTokenInChain(pricedTokensRegistry, chainId, id),
+        usdTvl: resolvedLiquityV2Collateral.usdTvl,
+        usdMintedDebt: resolvedLiquityV2Collateral.mintedDebt,
+        usdStabilityPoolDebt: resolvedLiquityV2Collateral.stabilityPoolDebt,
     };
 }
 

@@ -17,7 +17,6 @@ interface RowProps {
     onChange: (collateral: LiquityV2Collateral) => void;
 }
 
-// TODO: add some sort of TVL indicator
 export function Row({ action, selected, collateral, onChange }: RowProps) {
     const chainId = useChainId();
 

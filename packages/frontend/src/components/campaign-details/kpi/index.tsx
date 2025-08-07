@@ -51,22 +51,25 @@ export function Kpi({ campaign, loading }: KpiProps) {
         return { goal, measurement, minimumPayoutPercentage };
     }, [campaign]);
 
-    if (
-        !campaign?.specification?.kpi ||
-        !campaign.isTargeting(TargetType.AmmPoolLiquidity)
-    )
-        return null;
+    if (!campaign?.specification?.kpi) return null;
 
     const reachedGoalPercentage = measurement || 0;
 
-    let poolUsdTvl;
+    let usdTvl;
     if (campaign.status === Status.Ended) {
-        poolUsdTvl =
+        usdTvl =
             loadingKpiMeasurements || kpiMeasurements.length === 0
                 ? undefined
                 : kpiMeasurements[kpiMeasurements.length - 1].value;
+    } else if (campaign.isTargeting(TargetType.AmmPoolLiquidity)) {
+        usdTvl = campaign.target.pool.usdTvl;
+    } else if (campaign.isTargeting(TargetType.LiquityV2Debt)) {
+        usdTvl = campaign.target.collateral.usdMintedDebt;
+    } else if (campaign.isTargeting(TargetType.LiquityV2StabilityPool)) {
+        usdTvl = campaign.target.collateral.usdStabilityPoolDebt;
     } else {
-        poolUsdTvl = campaign.target.pool.usdTvl;
+        console.warn(`Campaign type ${campaign.target} does not support KPIs`);
+        return null;
     }
 
     return (
@@ -140,7 +143,7 @@ export function Kpi({ campaign, loading }: KpiProps) {
                                     specificationLoading ||
                                     loadingKpiMeasurements
                                 }
-                                usdTvl={poolUsdTvl}
+                                usdTvl={usdTvl}
                                 campaignEnded={campaign.status === Status.Ended}
                                 campaignDurationSeconds={
                                     campaign.to - campaign.from

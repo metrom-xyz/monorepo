@@ -8,6 +8,7 @@ import type {
     UsdPricedOnChainAmount,
 } from "./commons";
 import type { SupportedLiquityV2 } from "src/commons";
+import type { LiquityV2Collateral } from "./liquity-v2";
 
 export enum TargetType {
     AmmPoolLiquidity = "amm-pool-liquidity",
@@ -34,7 +35,7 @@ export interface LiquityV2Target<T> {
     type: T;
     chainId: number;
     brand: Brand<SupportedLiquityV2>;
-    collateral: Erc20Token;
+    collateral: LiquityV2Collateral;
 }
 
 export type LiquityV2DebtTarget = LiquityV2Target<TargetType.LiquityV2Debt>;

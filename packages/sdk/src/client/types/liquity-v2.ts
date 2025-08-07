@@ -1,5 +1,5 @@
 import type { Address } from "viem";
-import type { BackendErc20Token } from "./commons";
+import type { BackendUsdPricedErc20Token } from "./commons";
 
 export interface BackendLiquityV2Collaterals {
     address: Address;
@@ -10,6 +10,6 @@ export interface BackendLiquityV2Collaterals {
 }
 
 export interface BackendLiquityV2CollateralsResponse {
-    resolvedTokens: Record<Address, BackendErc20Token>;
+    resolvedPricedTokens: Record<Address, BackendUsdPricedErc20Token>;
     collaterals: BackendLiquityV2Collaterals[];
 }
