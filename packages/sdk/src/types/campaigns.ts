@@ -2,6 +2,7 @@ import type { Address, Hex } from "viem";
 import type {
     AmmPool,
     Brand,
+    ChainType,
     Erc20Token,
     OnChainAmount,
     UsdPricedErc20Token,
@@ -127,6 +128,7 @@ export class Campaign {
 
     constructor(
         public readonly chainId: number,
+        public readonly chainType: ChainType,
         public readonly id: Hex,
         public readonly from: number,
         public readonly to: number,
