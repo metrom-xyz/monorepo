@@ -1,8 +1,11 @@
 import { Popover, Skeleton, Typography } from "@metrom-xyz/ui";
-import { TargetType } from "@metrom-xyz/sdk";
+import { SupportedLiquityV2, TargetType } from "@metrom-xyz/sdk";
 import type { Campaign } from "@/src/types/campaign";
 import { useRef, useState } from "react";
 import { useProtocolsInChain } from "@/src/hooks/useProtocolsInChain";
+import { Theme } from "@/src/types/common";
+import { useTheme } from "next-themes";
+import classNames from "classnames";
 
 import styles from "./styles.module.css";
 
@@ -12,6 +15,7 @@ interface ProtocolProps {
 
 export function Protocol({ campaign }: ProtocolProps) {
     const protocols = useProtocolsInChain({ chainId: campaign.chainId });
+    const { resolvedTheme } = useTheme();
 
     const [popoverOpen, setPopoverOpen] = useState(false);
     const [dexDetails, setDexDetails] = useState<HTMLDivElement | null>(null);
@@ -29,6 +33,7 @@ export function Protocol({ campaign }: ProtocolProps) {
         }
     });
     const Logo = protocol?.logo;
+    const LogoLight = protocol?.logoLight;
 
     function handleDexDetailsPopoverOpen() {
         setPopoverOpen(true);
@@ -59,7 +64,23 @@ export function Protocol({ campaign }: ProtocolProps) {
                         onMouseEnter={handleDexDetailsPopoverOpen}
                         onMouseLeave={handleDexDetailsPopoverClose}
                     >
-                        <Logo className={styles.icon} />
+                        {LogoLight && resolvedTheme === Theme.Dark ? (
+                            <LogoLight
+                                className={classNames(styles.icon, {
+                                    [styles.iconBig]:
+                                        protocol.slug ===
+                                        SupportedLiquityV2.Orki,
+                                })}
+                            />
+                        ) : (
+                            <Logo
+                                className={classNames(styles.icon, {
+                                    [styles.iconBig]:
+                                        protocol.slug ===
+                                        SupportedLiquityV2.Orki,
+                                })}
+                            />
+                        )}
                     </div>
                 </div>
             ) : (

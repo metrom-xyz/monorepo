@@ -9,6 +9,11 @@
     @apply w-[1.25rem] h-[1.25rem] col-span-1;
 }
 
+.iconBig,
+.iconBig > svg {
+    @apply w-7 h-7 col-span-1;
+}
+
 .detailsContainer {
     @apply p-3;
 }

@@ -7,6 +7,8 @@ import { DistributablesType, type LiquityV2TargetType } from "@metrom-xyz/sdk";
 import { type TargetedNamedCampaign } from "@/src/types/campaign";
 import { ProtocolType } from "@metrom-xyz/chains";
 import { useProtocolsInChain } from "@/src/hooks/useProtocolsInChain";
+import { useTheme } from "next-themes";
+import { Theme } from "@/src/types/common";
 
 import styles from "./styles.module.css";
 
@@ -17,6 +19,7 @@ interface LiquityV2HeaderProps {
 export function LiquityV2Header({ campaign }: LiquityV2HeaderProps) {
     const t = useTranslations("campaignDetails.header");
     const router = useRouter();
+    const { resolvedTheme } = useTheme();
 
     const brand = useProtocolsInChain({
         chainId: campaign.chainId,
@@ -25,6 +28,9 @@ export function LiquityV2Header({ campaign }: LiquityV2HeaderProps) {
 
     const ChainIcon = campaign.chainData?.icon;
     const actionLink = brand?.actionUrls[campaign.target.type];
+
+    const BrandLogo = brand?.logo;
+    const BrandLogoLight = brand?.logoLight;
 
     const handleClaimOnClick = useCallback(() => {
         router.push("/claims");
@@ -44,7 +50,11 @@ export function LiquityV2Header({ campaign }: LiquityV2HeaderProps) {
                             </Typography>
                         </InfoTooltip>
                     )}
-                    {brand && <brand.logo className={styles.logo} />}
+                    {BrandLogoLight && resolvedTheme === Theme.Dark ? (
+                        <BrandLogoLight className={styles.logo} />
+                    ) : BrandLogo ? (
+                        <BrandLogo className={styles.logo} />
+                    ) : null}
                     <Typography size="xl4" weight="medium">
                         {campaign.name}
                     </Typography>

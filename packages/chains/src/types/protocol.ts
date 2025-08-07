@@ -17,6 +17,7 @@ export interface ProtocolBase<S = string> {
     slug: S;
     name: string;
     logo: FunctionComponent<SVGIcon>;
+    logoLight?: FunctionComponent<SVGIcon>;
 }
 
 export enum DepositUrlType {

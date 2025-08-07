@@ -1,13 +1,8 @@
 import { SVGIcon } from "../../../types/common";
 
-export function OrkiLogo(props: SVGIcon) {
+export function OrkiDarkLogo(props: SVGIcon) {
     return (
-        <svg
-            xmlns="http://www.w3.org/2000/svg"
-            id="Logo"
-            viewBox="0 0 780 540"
-            {...props}
-        >
+        <svg width="780" height="540" viewBox="0 0 780 540" {...props}>
             <defs>
                 <style>{".st0{fill:#010101}.st1{fill:#fff}"}</style>
             </defs>

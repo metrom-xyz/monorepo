@@ -4,7 +4,12 @@ import {
     type Lv2PointsCampaign,
 } from "@/src/types/lv2-points-campaign";
 import { SupportedChain } from "@metrom-xyz/contracts";
-import { EbisuLogo, AmpedLogo, OrkiLogo, QuillLogo } from "@metrom-xyz/chains";
+import {
+    EbisuLogo,
+    AmpedLogo,
+    OrkiDarkLogo,
+    QuillLogo,
+} from "@metrom-xyz/chains";
 import { mainnet } from "viem/chains";
 
 export const lv2PointsCampaignsProd: Record<
@@ -174,7 +179,7 @@ export const lv2PointsCampaignsProd: Record<
         protocol: SupportedLiquityV2.Orki,
         pointsName: "Orki Drops",
         brand: { main: "#2973EB", light: "#94B9F5" },
-        icon: OrkiLogo,
+        icon: OrkiDarkLogo,
         protocolIntro: {
             articles: [
                 {

@@ -5,7 +5,8 @@ import type { ChainData } from "../types/chains";
 import { DepositUrlType, ProtocolType } from "../types/protocol";
 import { SwellLogo } from "../assets/logos/chains/swell";
 import { VelodromeLogo } from "../assets/logos/dexes/velodrome";
-import { OrkiLogo } from "../assets/logos/liquity-v2-platforms/orki";
+import { OrkiDarkLogo } from "../assets/logos/liquity-v2-platforms/orki-dark";
+import { OrkiLightLogo } from "../assets/logos/liquity-v2-platforms/orki-light";
 
 // FIXME: remove this once done with development testing
 export const swellDevelopmentData: ChainData = {
@@ -34,7 +35,8 @@ export const swellDevelopmentData: ChainData = {
             active: true,
             type: ProtocolType.LiquityV2,
             slug: SupportedLiquityV2.Orki,
-            logo: OrkiLogo,
+            logo: OrkiDarkLogo,
+            logoLight: OrkiLightLogo,
             name: "Orki",
             debtToken: {
                 address: "0x0000baa0b1678229863c0a941c1056b83a1955f5",
@@ -112,7 +114,7 @@ export const swellProductionData: ChainData = {
             active: true,
             type: ProtocolType.LiquityV2,
             slug: SupportedLiquityV2.Orki,
-            logo: OrkiLogo,
+            logo: OrkiDarkLogo,
             name: "Orki",
             debtToken: {
                 address: "0x0000baa0b1678229863c0a941c1056b83a1955f5",
