@@ -20,7 +20,6 @@ import { LiquityV2ActionStep } from "../../steps/liquity-v2-action-step";
 import { LiquityV2CollateralStep } from "../../steps/liquity-v2-collateral-step";
 import { LiquityV2Action } from "@/src/types/common";
 import { KpiStep } from "../../steps/kpi-step";
-import { LIQUITY_V2_KPI_ENABLED } from "@/src/commons/env";
 
 import styles from "./styles.module.css";
 
@@ -187,30 +186,27 @@ export function LiquityV2ForksForm({
                     onDistributablesChange={handlePayloadOnChange}
                     onError={handlePayloadOnError}
                 />
-                {LIQUITY_V2_KPI_ENABLED && (
-                    <KpiStep
-                        disabled={noDistributables || unsupportedChain}
-                        usdTvl={
-                            payload.action === LiquityV2Action.Debt
-                                ? payload.collateral?.usdMintedDebt
-                                : payload.action ===
-                                    LiquityV2Action.StabilityPool
-                                  ? payload.collateral?.usdStabilityPoolDebt
-                                  : undefined
-                        }
-                        distributables={
-                            payload.distributables?.type ===
-                            DistributablesType.Tokens
-                                ? payload.distributables
-                                : undefined
-                        }
-                        startDate={payload.startDate}
-                        endDate={payload.endDate}
-                        kpiSpecification={payload.kpiSpecification}
-                        onKpiChange={handlePayloadOnChange}
-                        onError={handlePayloadOnError}
-                    />
-                )}
+                <KpiStep
+                    disabled={noDistributables || unsupportedChain}
+                    usdTvl={
+                        payload.action === LiquityV2Action.Debt
+                            ? payload.collateral?.usdMintedDebt
+                            : payload.action === LiquityV2Action.StabilityPool
+                              ? payload.collateral?.usdStabilityPoolDebt
+                              : undefined
+                    }
+                    distributables={
+                        payload.distributables?.type ===
+                        DistributablesType.Tokens
+                            ? payload.distributables
+                            : undefined
+                    }
+                    startDate={payload.startDate}
+                    endDate={payload.endDate}
+                    kpiSpecification={payload.kpiSpecification}
+                    onKpiChange={handlePayloadOnChange}
+                    onError={handlePayloadOnError}
+                />
                 <RestrictionsStep
                     disabled={missingDistributables || unsupportedChain}
                     restrictions={payload.restrictions}
