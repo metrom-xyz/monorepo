@@ -5,10 +5,14 @@ import type {
     BackendCampaignResponse,
     BackendCampaignsResponse,
     BackendCampaignStatus,
-    BackendLiquityV2Collateral,
 } from "./types/campaigns";
 import type {
-    BackendAmmPool,
+    BackendResolvedAmmPoolsRegistry,
+    BackendResolvedLiquityV2CollateralsRegistry,
+    BackendResolvedPricedTokensRegistry,
+    BackendResolvedTokensRegistry,
+} from "./types/commons";
+import type {
     BackendErc20Token,
     BackendUsdPricedErc20Token,
 } from "./types/commons";
@@ -24,14 +28,15 @@ import {
     type TokenDistributable,
     type TokenDistributables,
 } from "../types/campaigns";
-import type {
-    AmmPool,
-    AmmPoolLiquidityType,
-    AmmPoolWithTvl,
-    Erc20Token,
-    OnChainAmount,
-    UsdPricedErc20Token,
-    UsdPricedOnChainAmount,
+import {
+    ChainType,
+    type AmmPool,
+    type AmmPoolLiquidityType,
+    type AmmPoolWithTvl,
+    type Erc20Token,
+    type OnChainAmount,
+    type UsdPricedErc20Token,
+    type UsdPricedOnChainAmount,
 } from "../types/commons";
 import type {
     BackendLiquidityByAddressResponse,
@@ -103,21 +108,24 @@ export interface FetchCampaignsParams {
     status?: BackendCampaignStatus;
     owner?: Address;
     chainId?: SupportedChain;
+    chainType?: ChainType;
     dex?: SupportedDex;
 }
 
-export interface FetchCampaignParams {
+export interface ChainParams {
     chainId: number;
+    chainType: ChainType;
+}
+
+export interface FetchCampaignParams extends ChainParams {
     id: Hex;
 }
 
-export interface FetchPoolsParams {
-    chainId: SupportedChain;
+export interface FetchPoolsParams extends ChainParams {
     dex: SupportedDex;
 }
 
-export interface FetchPoolParams {
-    chainId: SupportedChain;
+export interface FetchPoolParams extends ChainParams {
     id: Hex;
 }
 
@@ -129,12 +137,9 @@ export interface FetchReimbursementsParams {
     address: Address;
 }
 
-export interface FetchWhitelistedTokensParams {
-    chainId: SupportedChain;
-}
+export type FetchWhitelistedTokensParams = ChainParams;
 
-export interface FetchActivitiesParams {
-    chainId: number;
+export interface FetchActivitiesParams extends ChainParams {
     address: Address;
     from: number;
     to: number;
@@ -150,34 +155,29 @@ export interface FetchKpiMeasurementsParams {
     to: number;
 }
 
-export interface FetchLeaderboardParams {
-    chainId: SupportedChain;
+export interface FetchLeaderboardParams extends ChainParams {
     campaignId: Hex;
     account?: Address;
 }
 
-export interface FetchLiquidityByAddressesParams {
-    chainId: number;
+export interface FetchLiquidityByAddressesParams extends ChainParams {
     pool: AmmPool;
     addresses: Address[];
 }
 
-export interface FetchLiquidityInRangeParams {
-    chainId: number;
+export interface FetchLiquidityInRangeParams extends ChainParams {
     pool: AmmPool;
     from: number;
     to: number;
 }
 
-export interface FetchInitializedTicksParams {
-    chainId: number;
+export interface FetchInitializedTicksParams extends ChainParams {
     pool: AmmPool;
     surroundingAmount: number;
     computeAmount?: number;
 }
 
-export interface FetchLiquityV2CollateralsParams {
-    chainId: number;
+export interface FetchLiquityV2CollateralsParams extends ChainParams {
     brand: SupportedLiquityV2;
 }
 
@@ -205,7 +205,7 @@ export class MetromApiClient {
     constructor(public readonly baseUrl: string) {}
 
     async fetchCampaigns(params?: FetchCampaignsParams): Promise<Campaign[]> {
-        const url = new URL("v1/campaigns", this.baseUrl);
+        const url = new URL("v2/campaigns", this.baseUrl);
 
         if (params)
             for (const param in params) {
@@ -230,13 +230,13 @@ export class MetromApiClient {
     async fetchCampaign(params: FetchCampaignParams): Promise<Campaign> {
         const response = await fetch(
             new URL(
-                `v1/campaigns/${params.chainId}/${params.id}`,
+                `v2/campaigns/${params.chainType}/${params.chainId}/${params.id}`,
                 this.baseUrl,
             ),
         );
         if (!response.ok)
             throw new Error(
-                `response not ok while fetching campaign with id ${params.id} on chain id ${params.chainId}: ${await response.text()}`,
+                `response not ok while fetching campaign with id ${params.id} on chain id ${params.chainId} and type ${params.chainType}: ${await response.text()}`,
             );
 
         const parsedResponse =
@@ -256,12 +256,12 @@ export class MetromApiClient {
     }
 
     async fetchAmmPools(params: FetchPoolsParams): Promise<AmmPoolWithTvl[]> {
-        const url = new URL(
-            `v1/amm-pools/${params.chainId}/${params.dex}`,
-            this.baseUrl,
+        const response = await fetch(
+            new URL(
+                `v2/amm-pools/${params.chainType}/${params.chainId}/${params.dex}`,
+                this.baseUrl,
+            ),
         );
-
-        const response = await fetch(url);
         if (!response.ok)
             throw new Error(
                 `response not ok while fetching pools: ${await response.text()}`,
@@ -274,6 +274,7 @@ export class MetromApiClient {
                 ...ammPool,
                 // FIXME: it's probably better to have this in the response
                 chainId: params.chainId,
+                chainType: params.chainType,
                 dex: {
                     slug: ammPool.dex as SupportedDex,
                     name: DEX_BRAND_NAME[ammPool.dex as SupportedDex],
@@ -291,12 +292,12 @@ export class MetromApiClient {
     }
 
     async fetchPool(params: FetchPoolParams): Promise<AmmPoolWithTvl | null> {
-        const url = new URL(
-            `v1/amm-pools/${params.chainId}/${params.id}`,
-            this.baseUrl,
+        const response = await fetch(
+            new URL(
+                `v2/amm-pools/${params.chainType}/${params.chainId}/${params.id}`,
+                this.baseUrl,
+            ),
         );
-
-        const response = await fetch(url);
         if (response.status === 404) return null;
 
         if (!response.ok)
@@ -310,6 +311,7 @@ export class MetromApiClient {
             ...parsedResponse.ammPool,
             // FIXME: it's probably better to have this in the response
             chainId: params.chainId,
+            chainType: params.chainType,
             dex: {
                 slug: parsedResponse.ammPool.dex as SupportedDex,
                 name: DEX_BRAND_NAME[
@@ -329,9 +331,9 @@ export class MetromApiClient {
     }
 
     async fetchClaims(params: FetchClaimsParams): Promise<Claim[]> {
-        const url = new URL(`v1/claims/${params.address}`, this.baseUrl);
-
-        const response = await fetch(url);
+        const response = await fetch(
+            new URL(`v2/claims/${params.address}`, this.baseUrl),
+        );
         if (!response.ok)
             throw new Error(
                 `response not ok while fetching claimable rewards: ${await response.text()}`,
@@ -343,6 +345,7 @@ export class MetromApiClient {
             const resolvedToken = resolvePricedTokenInChain(
                 parsedResponse.resolvedPricedTokens,
                 claim.chainId,
+                claim.chainType,
                 claim.token,
             );
 
@@ -361,12 +364,9 @@ export class MetromApiClient {
     async fetchReimbursements(
         params: FetchReimbursementsParams,
     ): Promise<Reimbursement[]> {
-        const url = new URL(
-            `v1/reimbursements/${params.address}`,
-            this.baseUrl,
+        const response = await fetch(
+            new URL(`v2/reimbursements/${params.address}`, this.baseUrl),
         );
-
-        const response = await fetch(url);
         if (!response.ok)
             throw new Error(
                 `response not ok while fetching reimbursements: ${await response.text()}`,
@@ -379,6 +379,7 @@ export class MetromApiClient {
             const resolvedToken = resolvePricedTokenInChain(
                 parsedResponse.resolvedPricedTokens,
                 reimbursement.chainId,
+                reimbursement.chainType,
                 reimbursement.token,
             );
 
@@ -398,7 +399,10 @@ export class MetromApiClient {
         params: FetchWhitelistedTokensParams,
     ): Promise<RewardToken[]> {
         const response = await fetch(
-            new URL(`v1/reward-tokens/${params.chainId}`, this.baseUrl),
+            new URL(
+                `v2/reward-tokens/${params.chainType}/${params.chainId}`,
+                this.baseUrl,
+            ),
         );
         if (!response.ok)
             throw new Error(
@@ -423,7 +427,10 @@ export class MetromApiClient {
         params: FetchWhitelistedTokensParams,
     ): Promise<FeeToken[]> {
         const response = await fetch(
-            new URL(`v1/fee-tokens/${params.chainId}`, this.baseUrl),
+            new URL(
+                `v2/fee-tokens/${params.chainType}/${params.chainId}`,
+                this.baseUrl,
+            ),
         );
         if (!response.ok)
             throw new Error(
@@ -446,7 +453,7 @@ export class MetromApiClient {
 
     async fetchActivities(params: FetchActivitiesParams): Promise<Activity[]> {
         const url = new URL(
-            `v1/activities/${params.chainId}/${params.address}`,
+            `v2/activities/${params.chainType}/${params.chainId}/${params.address}`,
             this.baseUrl,
         );
 
@@ -491,44 +498,43 @@ export class MetromApiClient {
     async fetchKpiMeasurements(
         params: FetchKpiMeasurementsParams,
     ): Promise<KpiMeasurement[]> {
-        if (
-            !params.campaign.specification ||
-            !params.campaign.specification.kpi
-        )
+        const { campaign, from, to } = params;
+
+        if (!campaign.specification || !campaign.specification.kpi)
             throw new Error(
-                `Tried to fetch KPI measurements for campaign with id ${params.campaign.id} in chain with id ${params.campaign.chainId} with no attached KPI`,
+                `Tried to fetch KPI measurements for campaign with id ${campaign.id} in chain with id ${campaign.chainId} with no attached KPI`,
             );
 
-        if (params.campaign.distributables.type != "tokens")
+        if (campaign.distributables.type != "tokens")
             throw new Error(
-                `Tried to fetch KPI measurements for ampaign with id ${params.campaign.id} in chain with id ${params.campaign.chainId} not distributing tokens`,
+                `Tried to fetch KPI measurements for ampaign with id ${campaign.id} in chain with id ${campaign.chainId} not distributing tokens`,
             );
 
         const url = new URL(
-            `v1/kpi-measurements/${params.campaign.chainId}/${params.campaign.id}`,
+            `v2/kpi-measurements/${campaign.chainType}/${campaign.chainId}/${campaign.id}`,
             this.baseUrl,
         );
 
-        url.searchParams.set("from", params.from.toString());
-        url.searchParams.set("to", params.to.toString());
+        url.searchParams.set("from", from.toString());
+        url.searchParams.set("to", to.toString());
 
         const response = await fetch(url);
         if (!response.ok)
             throw new Error(
-                `response not ok while fetching kpi measurements for campaign with id ${params.campaign.id} in chain with id ${params.campaign.chainId} from ${params.from} to ${params.to}: ${await response.text()}`,
+                `response not ok while fetching kpi measurements for campaign with id ${campaign.id} in chain with id ${campaign.chainId} and type ${campaign.chainType} from ${from} to ${to}: ${await response.text()}`,
             );
 
         const parsedResponse =
             (await response.json()) as BackendKpiMeasurementResponse;
 
         const minimumPayoutPercentage =
-            params.campaign.specification!.kpi!.minimumPayoutPercentage || 0;
+            campaign.specification!.kpi!.minimumPayoutPercentage || 0;
 
-        const totalCampaignDuration = params.campaign.to - params.campaign.from;
+        const totalCampaignDuration = campaign.to - campaign.from;
         return parsedResponse.measurements.map((measurement) => {
             const measuredPeriodDuration = Math.min(
                 measurement.to - measurement.from,
-                params.campaign.to - params.campaign.from,
+                campaign.to - campaign.from,
             );
             const periodDurationMultiplier = {
                 standard: measuredPeriodDuration / totalCampaignDuration,
@@ -538,7 +544,7 @@ export class MetromApiClient {
             };
 
             const distributions = (
-                params.campaign.distributables as TokenDistributables
+                campaign.distributables as TokenDistributables
             ).list.map((distributable) => {
                 const normalizedKpiMeasurementPercentage = Math.min(
                     Math.max(measurement.percentage, 0),
@@ -599,9 +605,9 @@ export class MetromApiClient {
             });
 
             const goalLowerTarget =
-                params.campaign.specification!.kpi!.goal.lowerUsdTarget;
+                campaign.specification!.kpi!.goal.lowerUsdTarget;
             const goalUpperTarget =
-                params.campaign.specification!.kpi!.goal.upperUsdTarget;
+                campaign.specification!.kpi!.goal.upperUsdTarget;
             const goalRange = goalUpperTarget - goalLowerTarget;
 
             return {
@@ -618,7 +624,7 @@ export class MetromApiClient {
         params: FetchLeaderboardParams,
     ): Promise<Leaderboard | null> {
         const url = new URL(
-            `v1/leaderboards/${params.chainId}/${params.campaignId}`,
+            `v2/leaderboards/${params.chainType}/${params.chainId}/${params.campaignId}`,
             this.baseUrl,
         );
 
@@ -628,7 +634,7 @@ export class MetromApiClient {
         const response = await fetch(url);
         if (!response.ok)
             throw new Error(
-                `response not ok while fetching leaderboard for campaign with id ${params.campaignId} in chain with id ${params.chainId}: ${await response.text()}`,
+                `response not ok while fetching leaderboard for campaign with id ${params.campaignId} in chain with id ${params.chainId} and type ${params.chainType}: ${await response.text()}`,
             );
 
         const { resolvedPricedTokens, updatedAt, leaderboard } =
@@ -696,7 +702,7 @@ export class MetromApiClient {
         params: FetchLiquidityInRangeParams,
     ): Promise<LiquidityInRange> {
         const url = new URL(
-            `v1/liquidities-in-range/${params.chainId}/${params.pool.id}`,
+            `v2/liquidities-in-range/${params.chainType}/${params.chainId}/${params.pool.id}`,
             this.baseUrl,
         );
 
@@ -706,7 +712,7 @@ export class MetromApiClient {
         const response = await fetch(url);
         if (!response.ok)
             throw new Error(
-                `response not ok while fetching liquidity in range ${params.from}-${params.to} for pool ${params.pool.id} in chain with id ${params.chainId}: ${await response.text()}`,
+                `response not ok while fetching liquidity in range ${params.from}-${params.to} for pool ${params.pool.id} in chain with id ${params.chainId} and type ${params.chainType}: ${await response.text()}`,
             );
 
         const { activeTick, liquidity } =
@@ -725,7 +731,7 @@ export class MetromApiClient {
         params: FetchLiquidityByAddressesParams,
     ): Promise<bigint> {
         const url = new URL(
-            `v1/amm-pools/${params.chainId}/${params.pool.id}/liquidities-by-addresses`,
+            `v2/amm-pools/${params.chainType}/${params.chainId}/${params.pool.id}/liquidities-by-addresses`,
             this.baseUrl,
         );
 
@@ -734,7 +740,7 @@ export class MetromApiClient {
         const response = await fetch(url);
         if (!response.ok)
             throw new Error(
-                `response not ok while fetching liquidity by addresses ${params.addresses.join(",")} for pool ${params.pool.id} in chain with id ${params.chainId}: ${await response.text()}`,
+                `response not ok while fetching liquidity by addresses ${params.addresses.join(",")} for pool ${params.pool.id} in chain with id ${params.chainId} and type ${params.chainType}: ${await response.text()}`,
             );
 
         const { liquidities } =
@@ -750,7 +756,7 @@ export class MetromApiClient {
         params: FetchInitializedTicksParams,
     ): Promise<LiquidityDensity> {
         const url = new URL(
-            `v1/initialized-ticks/${params.chainId}/${params.pool.id}`,
+            `v2/initialized-ticks/${params.chainType}/${params.chainId}/${params.pool.id}`,
             this.baseUrl,
         );
 
@@ -763,7 +769,7 @@ export class MetromApiClient {
         const response = await fetch(url);
         if (!response.ok)
             throw new Error(
-                `response not ok while fetching ${params.surroundingAmount} surrounding initialized ticks for pool ${params.pool.id} in chain with id ${params.chainId}: ${await response.text()}`,
+                `response not ok while fetching ${params.surroundingAmount} surrounding initialized ticks for pool ${params.pool.id} in chain with id ${params.chainId} and type ${params.chainId}: ${await response.text()}`,
             );
 
         const { activeTick, ticks: initializedTicks } =
@@ -836,7 +842,7 @@ export class MetromApiClient {
         params: FetchLiquityV2CollateralsParams,
     ): Promise<LiquityV2Collateral[]> {
         const url = new URL(
-            `v1/liquity-v2/${params.chainId}/${params.brand}/collaterals`,
+            `v2/liquity-v2/${params.chainType}/${params.chainId}/${params.brand}/collaterals`,
             this.baseUrl,
         );
 
@@ -851,7 +857,9 @@ export class MetromApiClient {
 
         return parsedResponse.collaterals.map((collateral) => {
             return {
+                // FIXME: it's probably better to have this in the response
                 chainId: params.chainId,
+                chainType: params.chainType,
                 token: resolvePricedToken(
                     parsedResponse.resolvedPricedTokens,
                     collateral.address,
@@ -879,6 +887,8 @@ function processCampaignsResponse(
                         response.resolvedAmmPools,
                         response.resolvedTokens,
                         backendCampaign.target.chainId,
+                        // FIXME: add chainType from respose
+                        ChainType.Evm,
                         backendCampaign.target.poolId,
                     ),
                 };
@@ -899,6 +909,8 @@ function processCampaignsResponse(
                         response.resolvedLiquityV2Collaterals,
                         response.resolvedPricedTokens,
                         backendCampaign.target.chainId,
+                        // FIXME: add chainType from respose
+                        ChainType.Evm,
                         backendCampaign.target.brand,
                         backendCampaign.target.collateral as Address,
                     ),
@@ -920,6 +932,8 @@ function processCampaignsResponse(
                         response.resolvedLiquityV2Collaterals,
                         response.resolvedPricedTokens,
                         backendCampaign.target.chainId,
+                        // FIXME: add chainType from respose
+                        ChainType.Evm,
                         backendCampaign.target.brand,
                         backendCampaign.target.collateral as Address,
                     ),
@@ -943,6 +957,7 @@ function processCampaignsResponse(
                     const resolvedToken = resolvePricedTokenInChain(
                         response.resolvedPricedTokens,
                         backendCampaign.chainId,
+                        backendCampaign.chainType,
                         backendReward.token,
                     );
 
@@ -997,6 +1012,7 @@ function processCampaignsResponse(
         campaigns.push(
             new Campaign(
                 backendCampaign.chainId,
+                backendCampaign.chainType,
                 backendCampaign.id,
                 backendCampaign.from,
                 backendCampaign.to,
@@ -1015,20 +1031,22 @@ function processCampaignsResponse(
 }
 
 function resolveAmmPool(
-    poolsRegistry: Record<number, Record<Address, BackendAmmPool>>,
-    tokensRegistry: Record<number, Record<Address, BackendErc20Token>>,
+    poolsRegistry: BackendResolvedAmmPoolsRegistry,
+    tokensRegistry: BackendResolvedTokensRegistry,
     chainId: number,
+    chainType: ChainType,
     id: Hex,
 ): AmmPool {
-    const resolvedPool = poolsRegistry[chainId][id];
+    const resolvedPool = poolsRegistry[chainType][chainId][id];
     if (!resolvedPool)
         throw new Error(
-            `Could not find resolved pool with id ${id} in chain with id ${chainId}`,
+            `Could not find resolved pool with id ${id} in chain with id ${chainId} and type ${chainType}`,
         );
 
     return {
         ...resolvedPool,
         chainId,
+        chainType,
         id,
         dex: {
             slug: resolvedPool.dex as SupportedDex,
@@ -1036,7 +1054,7 @@ function resolveAmmPool(
         },
         amm: resolvedPool.amm as SupportedAmm,
         tokens: resolvedPool.tokens.map((address) =>
-            resolveTokenInChain(tokensRegistry, chainId, address),
+            resolveTokenInChain(tokensRegistry, chainId, chainType, address),
         ),
         liquidityType: resolvedPool.liquidityType as AmmPoolLiquidityType,
         liquidity: resolvedPool.liquidity
@@ -1046,39 +1064,40 @@ function resolveAmmPool(
 }
 
 function resolveLiquityV2Collateral(
-    liquityV2CollateralsRegistry: Record<
-        number,
-        Record<string, Record<Hex, BackendLiquityV2Collateral>>
-    >,
-    pricedTokensRegistry: Record<
-        number,
-        Record<Address, BackendUsdPricedErc20Token>
-    >,
+    liquityV2CollateralsRegistry: BackendResolvedLiquityV2CollateralsRegistry,
+    pricedTokensRegistry: BackendResolvedPricedTokensRegistry,
     chainId: number,
+    chainType: ChainType,
     brand: string,
     id: Hex,
 ): LiquityV2Collateral {
-    const byChain = liquityV2CollateralsRegistry[chainId];
+    const byChain = liquityV2CollateralsRegistry[chainType][chainId];
     if (!byChain)
         throw new Error(
-            `Could not find resolved Liquity V2 collaterals by chain with id ${chainId}`,
+            `Could not find resolved Liquity V2 collaterals by chain with id ${chainId} and type ${chainType}`,
         );
 
     const byBrand = byChain[brand];
     if (!byBrand)
         throw new Error(
-            `Could not find resolved Liquity V2 collaterals with brand ${brand} in chain with id ${chainId}`,
+            `Could not find resolved Liquity V2 collaterals with brand ${brand} in chain with id ${chainId} and type ${chainType}`,
         );
 
     const resolvedLiquityV2Collateral = byBrand[id];
     if (!resolvedLiquityV2Collateral)
         throw new Error(
-            `Could not find resolved Liquity V2 collateral with brand ${brand} with id ${id} in chain with id ${chainId}`,
+            `Could not find resolved Liquity V2 collateral with brand ${brand} with id ${id} in chain with id ${chainId} and type ${chainType}`,
         );
 
     return {
         chainId,
-        token: resolvePricedTokenInChain(pricedTokensRegistry, chainId, id),
+        chainType,
+        token: resolvePricedTokenInChain(
+            pricedTokensRegistry,
+            chainId,
+            chainType,
+            id,
+        ),
         usdTvl: resolvedLiquityV2Collateral.usdTvl,
         usdMintedDebt: resolvedLiquityV2Collateral.mintedDebt,
         usdStabilityPoolDebt: resolvedLiquityV2Collateral.stabilityPoolDebt,
@@ -1086,14 +1105,15 @@ function resolveLiquityV2Collateral(
 }
 
 function resolveTokenInChain(
-    registry: Record<number, Record<Address, BackendErc20Token>>,
+    registry: BackendResolvedTokensRegistry,
     chainId: number,
+    chainType: ChainType,
     address: Address,
 ): Erc20Token {
-    const resolved = registry[chainId][address];
+    const resolved = registry[chainType][chainId][address];
     if (!resolved)
         throw new Error(
-            `Could not find resolved token with address ${address} in chain with id ${chainId}`,
+            `Could not find resolved token with address ${address} in chain with id ${chainId} and type ${chainType}`,
         );
 
     return {
@@ -1119,14 +1139,15 @@ function resolveToken(
 }
 
 function resolvePricedTokenInChain(
-    registry: Record<number, Record<Address, BackendUsdPricedErc20Token>>,
+    registry: BackendResolvedPricedTokensRegistry,
     chainId: number,
+    chainType: ChainType,
     address: Address,
 ): UsdPricedErc20Token {
-    const resolved = registry[chainId][address];
+    const resolved = registry[chainType][chainId][address];
     if (!resolved)
         throw new Error(
-            `Could not find resolved priced token with address ${address} in chain with id ${chainId}`,
+            `Could not find resolved priced token with address ${address} in chain with id ${chainId} and type ${chainType}`,
         );
 
     return {

@@ -1,10 +1,12 @@
 import type { Address, Hex } from "viem";
 import type {
-    BackendAmmPool,
-    BackendErc20Token,
-    BackendUsdPricedErc20Token,
+    BackendResolvedAmmPoolsRegistry,
+    BackendResolvedLiquityV2CollateralsRegistry,
+    BackendResolvedPricedTokensRegistry,
+    BackendResolvedTokensRegistry,
 } from "./commons";
 import type { Specification } from "src/types/campaigns";
+import type { ChainType } from "src/types/commons";
 
 export interface BackendAmmPoolLiquidityTarget {
     type: "amm-pool-liquidity";
@@ -57,6 +59,7 @@ export interface BackendLiquityV2Collateral {
 export interface BackendCampaign {
     chainId: number;
     id: Hex;
+    chainType: ChainType;
     from: number;
     to: number;
     createdAt: number;
@@ -71,29 +74,17 @@ export interface BackendCampaign {
 }
 
 export interface BackendCampaignsResponse {
-    resolvedTokens: Record<number, Record<Address, BackendErc20Token>>;
-    resolvedPricedTokens: Record<
-        number,
-        Record<Address, BackendUsdPricedErc20Token>
-    >;
-    resolvedAmmPools: Record<number, Record<Hex, BackendAmmPool>>;
-    resolvedLiquityV2Collaterals: Record<
-        number,
-        Record<string, Record<Hex, BackendLiquityV2Collateral>>
-    >;
+    resolvedTokens: BackendResolvedTokensRegistry;
+    resolvedPricedTokens: BackendResolvedPricedTokensRegistry;
+    resolvedAmmPools: BackendResolvedAmmPoolsRegistry;
+    resolvedLiquityV2Collaterals: BackendResolvedLiquityV2CollateralsRegistry;
     campaigns: BackendCampaign[];
 }
 
 export interface BackendCampaignResponse {
-    resolvedTokens: Record<number, Record<Address, BackendErc20Token>>;
-    resolvedPricedTokens: Record<
-        number,
-        Record<Address, BackendUsdPricedErc20Token>
-    >;
-    resolvedAmmPools: Record<number, Record<Hex, BackendAmmPool>>;
-    resolvedLiquityV2Collaterals: Record<
-        number,
-        Record<string, Record<Hex, BackendLiquityV2Collateral>>
-    >;
+    resolvedTokens: BackendResolvedTokensRegistry;
+    resolvedPricedTokens: BackendResolvedPricedTokensRegistry;
+    resolvedAmmPools: BackendResolvedAmmPoolsRegistry;
+    resolvedLiquityV2Collaterals: BackendResolvedLiquityV2CollateralsRegistry;
     campaign: BackendCampaign;
 }

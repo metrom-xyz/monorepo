@@ -1,8 +1,10 @@
 import type { Address, Hex } from "viem";
-import type { BackendUsdPricedErc20Token } from "./commons";
+import type { ChainType } from "src/types/commons";
+import type { BackendResolvedPricedTokensRegistry } from "./commons";
 
 export interface BackendClaim {
     chainId: number;
+    chainType: ChainType;
     campaignId: Hex;
     token: Address;
     amount: string;
@@ -10,19 +12,13 @@ export interface BackendClaim {
 }
 
 export interface BackendClaimsResponse {
-    resolvedPricedTokens: Record<
-        number,
-        Record<Address, BackendUsdPricedErc20Token>
-    >;
+    resolvedPricedTokens: BackendResolvedPricedTokensRegistry;
     claims: BackendClaim[];
 }
 
 export type BackendReimbursement = BackendClaim;
 
 export interface BackendReimbursementsResponse {
-    resolvedPricedTokens: Record<
-        number,
-        Record<Address, BackendUsdPricedErc20Token>
-    >;
+    resolvedPricedTokens: BackendResolvedPricedTokensRegistry;
     reimbursements: BackendReimbursement[];
 }

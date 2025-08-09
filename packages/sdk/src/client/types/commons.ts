@@ -1,4 +1,26 @@
-import type { Address } from "viem";
+import type { ChainType } from "src/types/commons";
+import type { Address, Hex } from "viem";
+import type { BackendLiquityV2Collateral } from "./campaigns";
+
+export type BackendResolvedTokensRegistry = Record<
+    ChainType,
+    Record<number, Record<Address, BackendErc20Token>>
+>;
+
+export type BackendResolvedPricedTokensRegistry = Record<
+    ChainType,
+    Record<number, Record<Address, BackendUsdPricedErc20Token>>
+>;
+
+export type BackendResolvedAmmPoolsRegistry = Record<
+    ChainType,
+    Record<number, Record<Hex, BackendAmmPool>>
+>;
+
+export type BackendResolvedLiquityV2CollateralsRegistry = Record<
+    ChainType,
+    Record<number, Record<string, Record<Hex, BackendLiquityV2Collateral>>>
+>;
 
 export interface BackendErc20Token {
     decimals: number;

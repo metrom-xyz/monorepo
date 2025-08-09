@@ -1,6 +1,11 @@
 import type { SupportedAmm, SupportedDex } from "src/commons";
 import type { Address, Hex } from "viem";
 
+export enum ChainType {
+    Evm = "evm",
+    Aptos = "aptos",
+}
+
 export interface Brand<S> {
     slug: S;
     name: string;
@@ -47,6 +52,7 @@ export enum AmmPoolLiquidityType {
 
 export interface AmmPool {
     chainId: number;
+    chainType: ChainType;
     id: Hex;
     dex: Brand<SupportedDex>;
     amm: SupportedAmm;
