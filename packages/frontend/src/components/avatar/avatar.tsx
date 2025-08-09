@@ -1,10 +1,11 @@
 import { Skeleton } from "@metrom-xyz/ui";
-import { useEnsAvatar, useEnsName } from "wagmi";
 import { normalize } from "viem/ens";
 import { blo, type Address } from "blo";
 import { mainnet } from "viem/chains";
 import { mainnetWagmiConfig } from "@/src/context/reown-app-kit";
 import { zeroAddress } from "viem";
+import { useAccountName } from "@/src/hooks/useAccountName";
+import { useAccountAvatar } from "@/src/hooks/useAccountAvatar";
 
 import styles from "./styles.module.css";
 
@@ -15,12 +16,12 @@ interface AvatarProps {
 }
 
 export function Avatar({ address, height, width }: AvatarProps) {
-    const { data: ensName, isLoading: loadingEnsName } = useEnsName({
+    const { data: ensName, isLoading: loadingEnsName } = useAccountName({
         address,
         chainId: mainnet.id,
         config: mainnetWagmiConfig,
     });
-    const { data: ensAvatar, isLoading: loadingEnsAvatar } = useEnsAvatar({
+    const { data: ensAvatar, isLoading: loadingEnsAvatar } = useAccountAvatar({
         name: ensName ? normalize(ensName) : undefined,
         chainId: mainnet.id,
         config: mainnetWagmiConfig,

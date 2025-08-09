@@ -1,23 +1,22 @@
 "use client";
 
-import { useClaims } from "@/src/hooks/useClaims";
+import { useClaims } from "@/src/hooks/use-claims";
 import { Chains, ChainsSkeleton, type ChainOption } from "./chains";
 import { SupportedChain } from "@metrom-xyz/contracts";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { type Chain } from "viem";
 import { ChainOverview, SkeletonChainOverview } from "./chain-overview";
 import { ChainClaims, SkeletonChainClaims } from "./chain-claims";
 import { Empty } from "./empty";
-import { SUPPORTED_CHAINS } from "@/src/commons";
-import { useReimbursements } from "@/src/hooks/useReimbursements";
+import { useReimbursements } from "@/src/hooks/use-reimbursements";
 import { ChainReimbursements } from "./chain-reimbursements";
-import { useAccount, useSwitchChain } from "wagmi";
+import { useSwitchChain } from "wagmi";
 import type {
     ClaimWithRemaining,
     ReimbursementsWithRemaining,
 } from "@/src/types/campaign";
 import { type ChainData } from "@metrom-xyz/chains";
 import { getChainData } from "@/src/utils/chain";
+import { useAccount } from "@/src/hooks/use-account";
 
 import styles from "./styles.module.css";
 
@@ -27,7 +26,7 @@ enum RewardType {
 }
 
 export interface ChainWithRewardsData {
-    chain: Chain;
+    chainId: number;
     chainData: ChainData;
     claims: ClaimWithRemaining[];
     reimbursements: ReimbursementsWithRemaining[];
@@ -35,7 +34,7 @@ export interface ChainWithRewardsData {
 }
 
 export function Claims() {
-    const [chain, setChain] = useState<Chain | null>(null);
+    const [chainId, setChainId] = useState<number | null>(null);
     const [claimingAll, setClaimingAll] = useState(false);
     const [recoveringAll, setRecoveringAll] = useState(false);
 
@@ -77,9 +76,6 @@ export function Claims() {
             const reducedRewards = rewards.reduce(
                 (acc, reward) => {
                     const chainId = reward.chainId as SupportedChain;
-                    const chain = SUPPORTED_CHAINS.find(
-                        ({ id }) => id === chainId,
-                    );
 
                     const chainData = getChainData(chainId);
                     if (!chainData) {
@@ -89,9 +85,9 @@ export function Claims() {
                         return acc;
                     }
 
-                    if (!acc[chainId] && chain)
+                    if (!acc[chainId] && chainId)
                         acc[chainId] = {
-                            chain: chain,
+                            chainId,
                             chainData,
                             claims: [],
                             reimbursements: [],
@@ -131,19 +127,19 @@ export function Claims() {
         if (!chainsWithRewardsData) return undefined;
 
         return chainsWithRewardsData
-            .map(({ chain, totalUsdValue }) => {
-                const chainData = getChainData(chain.id);
+            .map(({ chainId, totalUsdValue }) => {
+                const chainData = getChainData(chainId);
                 if (!chainData) return null;
 
-                return { chain, data: chainData, totalUsdValue };
+                return { chainId, data: chainData, totalUsdValue };
             })
             .filter((data) => !!data);
     }, [chainsWithRewardsData]);
 
     const chainWithRewardsData = useMemo(() => {
-        if (!chain || !chainsWithRewardsData) return undefined;
-        return chainsWithRewardsData.find((data) => data.chain.id === chain.id);
-    }, [chain, chainsWithRewardsData]);
+        if (!chainId || !chainsWithRewardsData) return undefined;
+        return chainsWithRewardsData.find((data) => data.chainId === chainId);
+    }, [chainId, chainsWithRewardsData]);
 
     const initializing = useMemo(() => {
         if (!address) return false;
@@ -178,19 +174,20 @@ export function Claims() {
             chainsData &&
             chainsData.length > 0
         )
-            if (!chain || !chainWithRewardsData) setChain(chainsData[0].chain);
+            if (!chainId || !chainWithRewardsData)
+                setChainId(chainsData[0].chainId);
     }, [
         loadingClaims,
         loadingReimbursements,
         chainWithRewardsData,
-        chain,
+        chainId,
         chainsData,
     ]);
 
     const onChainSwitch = useCallback(
-        (chain: Chain) => {
-            switchChain({ chainId: chain.id });
-            setChain(chain);
+        (chainId: number) => {
+            switchChain({ chainId });
+            setChainId(chainId);
         },
         [switchChain],
     );
@@ -221,7 +218,7 @@ export function Claims() {
         <div className={styles.root}>
             <Chains
                 options={chainsData}
-                value={chain}
+                value={chainId}
                 onChange={onChainSwitch}
             />
             <div className={styles.rightWrapper}>
@@ -233,14 +230,14 @@ export function Claims() {
                     onRecoverAll={invalidateReimbursements}
                 />
                 <ChainClaims
-                    chain={chainWithRewardsData.chain}
+                    chainId={chainWithRewardsData.chainId}
                     claims={chainWithRewardsData.claims}
                     claimingAll={claimingAll}
                     onClaim={invalidateClaims}
                 />
                 {chainWithRewardsData.reimbursements.length > 0 && (
                     <ChainReimbursements
-                        chain={chainWithRewardsData.chain}
+                        chainId={chainWithRewardsData.chainId}
                         reimbursements={chainWithRewardsData.reimbursements}
                         recoveringAll={recoveringAll}
                         onRecover={invalidateReimbursements}

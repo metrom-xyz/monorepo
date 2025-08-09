@@ -1,40 +1,21 @@
 "use client";
 
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import {
     createAppKit,
     useAppKitTheme,
     type ThemeMode,
 } from "@reown/appkit/react";
 import React, { useEffect, type ReactNode } from "react";
-import {
-    cookieToInitialState,
-    createConfig,
-    http,
-    WagmiProvider,
-    type Config,
-} from "wagmi";
+import { cookieToInitialState, createConfig, http, WagmiProvider } from "wagmi";
 import { safe } from "wagmi/connectors";
-import { SUPPORTED_CHAINS } from "../commons";
-import { hashFn } from "wagmi/query";
+import { SUPPORTED_CHAINS_EVM } from "../commons";
 import { WALLETCONNECT_PROJECT_ID, SAFE } from "../commons/env";
 import { useTheme } from "next-themes";
 import { WagmiAdapter } from "@reown/appkit-adapter-wagmi";
 import type { EIP1193RequestFn, Transport } from "viem";
 import { mainnet } from "viem/chains";
 
-// Set up queryClient
-// TODO: if we need to have SSR prefetching https://tanstack.com/query/latest/docs/framework/react/guides/advanced-ssr#server-components--nextjs-app-router
-const queryClient = new QueryClient({
-    defaultOptions: {
-        queries: {
-            // Needed to issues when serializing Bigint values in the react query queries.
-            queryKeyHashFn: hashFn,
-        },
-    },
-});
-
-const transports = SUPPORTED_CHAINS.reduce(
+const transports = SUPPORTED_CHAINS_EVM.reduce(
     (prev, chain) => {
         prev[chain.id] = http(chain.rpcUrls.default.http[0]);
         return prev;
@@ -48,7 +29,7 @@ const transports = SUPPORTED_CHAINS.reduce(
 const wagmiAdapter = new WagmiAdapter({
     ssr: true,
     projectId: WALLETCONNECT_PROJECT_ID,
-    networks: SUPPORTED_CHAINS,
+    networks: SUPPORTED_CHAINS_EVM,
     // TODO: override base default RPC? It's rate limited https://docs.base.org/base-chain/quickstart/connecting-to-base#base-mainnet
     transports,
     connectors: SAFE ? [safe()] : undefined,
@@ -66,7 +47,7 @@ export const mainnetWagmiConfig = createConfig({
 createAppKit({
     adapters: [wagmiAdapter],
     projectId: WALLETCONNECT_PROJECT_ID,
-    networks: SUPPORTED_CHAINS,
+    networks: SUPPORTED_CHAINS_EVM,
     metadata: {
         name: "Metrom",
         description: "Flexible liquidity mining platform",
@@ -115,12 +96,10 @@ export function ReownAppKitContextProvider({
 
     return (
         <WagmiProvider
-            config={wagmiAdapter.wagmiConfig as Config}
+            config={wagmiAdapter.wagmiConfig}
             initialState={initialState}
         >
-            <QueryClientProvider client={queryClient}>
-                {children}
-            </QueryClientProvider>
+            {children}
         </WagmiProvider>
     );
 }

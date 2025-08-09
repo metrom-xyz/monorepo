@@ -14,8 +14,11 @@ interface ProtocolProps {
 }
 
 export function Protocol({ campaign }: ProtocolProps) {
-    const protocols = useProtocolsInChain({ chainId: campaign.chainId });
     const { resolvedTheme } = useTheme();
+    const protocols = useProtocolsInChain({
+        chainId: campaign.chainId,
+        crossVm: true,
+    });
 
     const [popoverOpen, setPopoverOpen] = useState(false);
     const [dexDetails, setDexDetails] = useState<HTMLDivElement | null>(null);
