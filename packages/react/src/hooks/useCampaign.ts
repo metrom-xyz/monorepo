@@ -16,7 +16,7 @@ type QueryKey = [string, number, ChainType, Hex];
 
 /** https://docs.metrom.xyz/react-library/use-campaign */
 export function useCampaign(
-    params?: UseCampaignParams,
+    params: UseCampaignParams = { chainType: ChainType.Evm },
 ): UseCampaignReturnValue {
     const metromClient = useMetromClient();
 

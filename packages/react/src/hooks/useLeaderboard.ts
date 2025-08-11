@@ -39,7 +39,7 @@ export function useLeaderboard({
     options,
     campaignId,
     chainId,
-    chainType,
+    chainType = ChainType.Evm,
     address,
 }: UseLeaderboardParams): UseLeaderboardReturnValue {
     const metromClient = useMetromClient();
