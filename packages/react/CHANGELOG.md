@@ -1,5 +1,16 @@
 # @metrom-xyz/react
 
+## 0.4.0
+
+### Minor Changes
+
+- Use new backend v2 APIs
+
+### Patch Changes
+
+- Updated dependencies
+  - @metrom-xyz/sdk@0.6.0
+
 ## 0.3.3
 
 ### Patch Changes

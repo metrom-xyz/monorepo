@@ -1,5 +1,11 @@
 # @metrom-xyz/sdk
 
+## 0.6.0
+
+### Minor Changes
+
+- Use new backend v2 APIs
+
 ## 0.5.2
 
 ### Patch Changes
