@@ -401,10 +401,10 @@ importers:
     dependencies:
       '@metrom-xyz/contracts':
         specifier: ^0.50.0
-        version: 0.50.0(bufferutil@4.0.9)(typescript@5.9.2)(utf-8-validate@5.0.10)(zod@3.25.56)
+        version: 0.50.0(bufferutil@4.0.9)(typescript@5.9.2)(utf-8-validate@6.0.5)(zod@3.25.56)
       '@metrom-xyz/sdk':
-        specifier: ^0.5.2
-        version: 0.5.2
+        specifier: ^0.6.0
+        version: 0.6.0
       '@tanstack/react-query':
         specifier: ^5.81.5
         version: 5.81.5(react@19.1.0)
@@ -450,7 +450,7 @@ importers:
         version: 8.39.0(eslint@9.32.0(jiti@2.4.2))(typescript@5.9.2)
       viem:
         specifier: ^2.33.2
-        version: 2.33.2(bufferutil@4.0.9)(typescript@5.9.2)(utf-8-validate@5.0.10)(zod@3.25.56)
+        version: 2.33.2(bufferutil@4.0.9)(typescript@5.9.2)(utf-8-validate@6.0.5)(zod@3.25.56)
       vite:
         specifier: ^7.0.6
         version: 7.0.6(@types/node@24.2.0)(jiti@2.4.2)(lightningcss@1.30.1)(tsx@4.20.3)(yaml@2.8.0)
@@ -2652,8 +2652,8 @@ packages:
   '@metrom-xyz/contracts@0.50.0':
     resolution: {integrity: sha512-QDar6cNA/Pq7QXF/+OnrZ7oHlJ/s7nxidx1ZQEOHgVDLeozjFqo5uH4E69BdAfMlQGP0QF4QZm7bMqsmfdQHng==}
 
-  '@metrom-xyz/sdk@0.5.2':
-    resolution: {integrity: sha512-PCk0sRAQwuBm+dPWk8jKPsPaf5U96hImYxx+0dZ3bKb1Qu/iGVubtTqL+Rt8lvsv+I4Ir5b5ndxOm2A11cgiEQ==}
+  '@metrom-xyz/sdk@0.6.0':
+    resolution: {integrity: sha512-lI/jawYztmZwy3+8rSp5s+4AuRaCfOBzBaV877eX8lu8ccAgQcg+Qeq1O9ZoS7IGSBNdkBLZHfkjtjTf0CIz9Q==}
 
   '@microsoft/api-extractor-model@7.30.6':
     resolution: {integrity: sha512-znmFn69wf/AIrwHya3fxX6uB5etSIn6vg4Q4RB/tb5VDDs1rqREc+AvMC/p19MUN13CZ7+V/8pkYPTj7q8tftg==}
@@ -11827,7 +11827,7 @@ snapshots:
       - utf-8-validate
       - zod
 
-  '@metrom-xyz/sdk@0.5.2': {}
+  '@metrom-xyz/sdk@0.6.0': {}
 
   '@microsoft/api-extractor-model@7.30.6(@types/node@24.2.0)':
     dependencies:
