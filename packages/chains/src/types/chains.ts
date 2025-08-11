@@ -19,11 +19,6 @@ export interface ChainData {
 export enum SupportedDevelopmentMvmChain {
     // TODO: use the chain id from the SupportedChain once added
     AptosTestnet = 2,
-    // FIXME: aptos devnet chain id can't be hardcoded because it changes weekly, when Aptos resets the chain.
-    // It's probably better to skip this chain and use the testnet directly.
-    // AptosDevnet = SupportedChainMvm.Devnet,
-    AptosDevnet = 197,
-    Aptos = 1,
 }
 
 export enum SupportedProductionMvmChain {

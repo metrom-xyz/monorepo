@@ -9,18 +9,18 @@ import {
     SupportedProductionMvmChain,
 } from "@metrom-xyz/chains";
 import { APTOS, ENVIRONMENT } from "../commons/env";
-import { Network } from "@aptos-labs/ts-sdk";
+import { Network, NetworkToChainId } from "@aptos-labs/ts-sdk";
 
-export const APTOS_NETWORK_ID: Record<Network, number> = {
-    [Network.LOCAL]: 0,
-    [Network.CUSTOM]: 0,
-    [Network.DEVNET]: 197,
-    [Network.TESTNET]: 2,
-    [Network.MAINNET]: 1,
+export const APTOS_NETWORK_ID: Record<
+    Network.TESTNET | Network.MAINNET,
+    number
+> = {
+    [Network.TESTNET]: NetworkToChainId[Network.TESTNET],
+    [Network.MAINNET]: NetworkToChainId[Network.MAINNET],
 };
 
 export function aptosNetworkToId(network: Network): number {
-    return APTOS_NETWORK_ID[network];
+    return NetworkToChainId[network];
 }
 
 export function chainIdToAptosNetwork(chainId?: number): Network | null {
@@ -28,7 +28,10 @@ export function chainIdToAptosNetwork(chainId?: number): Network | null {
         ([, id]) => chainId === id,
     );
 
-    if (!chain) return null;
+    if (!chain) {
+        console.error(`Could not find unsupported aptos chain id ${chainId}`);
+        return null;
+    }
     return chain[0] as Network;
 }
 
