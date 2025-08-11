@@ -12,10 +12,6 @@
     @apply flex sm:flex-wrap items-center gap-5;
 }
 
-.logo {
-    @apply h-11 w-11;
-}
-
 .chainLogo {
     @apply h-8 w-8;
 }

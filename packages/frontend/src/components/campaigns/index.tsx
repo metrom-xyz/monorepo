@@ -12,13 +12,14 @@ import { useCampaigns } from "@/src/hooks/useCampaigns";
 import { CampaignRow, SkeletonCampaign } from "./campaign";
 import { useTranslations } from "next-intl";
 import { usePagination } from "@/src/hooks/usePagination";
-import {
+import React, {
     useCallback,
     useEffect,
     useMemo,
     useState,
     type ChangeEvent,
     type FunctionComponent,
+    type ReactNode,
 } from "react";
 import { SearchIcon } from "@/src/assets/search-icon";
 import { useDebounce } from "react-use";
@@ -37,6 +38,7 @@ import type { TranslationsKeys } from "@/src/types/utils";
 import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
 import { getChainData } from "@/src/utils/chain";
 import { useSupportedProtocols } from "@/src/hooks/useSupportedProtocols";
+import { ProtocolLogo, type ProtocolLogoProps } from "../protocol-logo";
 
 import styles from "./styles.module.css";
 
@@ -109,12 +111,12 @@ const chainSelectRenderOption = (option: { label: string; value: number }) => {
 
 const protocolSelectRenderOption = (option: {
     label: string;
-    icon?: FunctionComponent<SVGIcon>;
+    icon?: ReactNode;
     value: string;
 }) => {
     return (
         <div className={styles.customOptionContainer}>
-            {option.icon && <option.icon className={styles.icon} />}
+            {option.icon && option.icon}
             <Typography className={styles.selectOptionText} weight="medium">
                 {option.label}
             </Typography>
@@ -180,7 +182,7 @@ export function Campaigns() {
     const protocolOptions = useMemo(() => {
         const options: {
             label: string;
-            icon?: FunctionComponent<SVGIcon>;
+            icon?: ReactNode;
             value: string;
         }[] = [
             {
@@ -192,7 +194,13 @@ export function Campaigns() {
         for (const protocol of protocols) {
             options.push({
                 label: protocol.name,
-                icon: protocol.logo,
+                icon: (
+                    <ProtocolLogo
+                        protocol={protocol}
+                        size="sm"
+                        className={styles.icon}
+                    />
+                ),
                 value: protocol.slug,
             });
         }
