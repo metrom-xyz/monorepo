@@ -8,7 +8,7 @@
         "create:local": "graph create metrom-curve-local --node http://localhost:8020",
         "deploy:local": "pnpm prepare:deploy mainnet && pnpm codegen && graph deploy metrom-curve-local --node http://localhost:8020 --ipfs http://localhost:5001 -l 0.0.1",
         "deploy:bold-usdc:mainnet": "pnpm prepare:deploy mainnet bold-usdc && pnpm codegen && graph deploy metrom-curve-bold-usdc-mainnet -l 0.0.16",
-        "deploy:ebusd-usdc:mainnet": "pnpm prepare:deploy mainnet ebusd-usdc && pnpm codegen && graph deploy metrom-curve-ebusd-usdc-mainnet -l 0.0.2",
+        "deploy:ebusd-usdc:mainnet": "pnpm prepare:deploy mainnet ebusd-usdc && pnpm codegen && graph deploy metrom-curve-ebusd-usdc-mainnet -l 0.0.5",
         "lint": "eslint .",
         "format": "eslint --fix ."
     },
