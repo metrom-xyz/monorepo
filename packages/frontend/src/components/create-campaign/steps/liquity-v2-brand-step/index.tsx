@@ -13,7 +13,7 @@ import {
 import { ProtocolType, type LiquityV2Protocol } from "@metrom-xyz/chains";
 import { useProtocolsInChain } from "@/src/hooks/useProtocolsInChain";
 import { useTheme } from "next-themes";
-import { Theme } from "@/src/types/common";
+import { ProtocolLogo } from "@/src/components/protocol-logo";
 
 import styles from "./styles.module.css";
 
@@ -83,14 +83,7 @@ export function LiquityV2BrandStep({
             <StepPreview label={t("title")}>
                 {!!selectedBrand && (
                     <div className={styles.preview}>
-                        <div className={styles.logo}>
-                            {selectedBrand.logoLight &&
-                            resolvedTheme === Theme.Dark ? (
-                                <selectedBrand.logoLight />
-                            ) : (
-                                <selectedBrand.logo />
-                            )}
-                        </div>
+                        <ProtocolLogo protocol={selectedBrand} />
                         <Typography size="lg" weight="medium">
                             {selectedBrand.name}
                         </Typography>
@@ -109,14 +102,7 @@ export function LiquityV2BrandStep({
                             })}
                             onClick={getBrandChangeHandler(availablePlatform)}
                         >
-                            <div className={styles.logo}>
-                                {availablePlatform.logoLight &&
-                                resolvedTheme === Theme.Dark ? (
-                                    <availablePlatform.logoLight />
-                                ) : (
-                                    <availablePlatform.logo />
-                                )}
-                            </div>
+                            <ProtocolLogo protocol={availablePlatform} />
                             <Typography size="lg" weight="medium">
                                 {availablePlatform.name}
                             </Typography>
