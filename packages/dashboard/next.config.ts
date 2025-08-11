@@ -4,9 +4,36 @@ import createNextIntlPlugin from "next-intl/plugin";
 
 const withNextIntl = createNextIntlPlugin();
 
+const cspHeader = `
+    default-src 'self';
+    connect-src 'self' https:;
+    script-src 'self' 'unsafe-eval' 'unsafe-inline';
+    style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
+    img-src * data: blob:;
+    font-src 'self' https://fonts.gstatic.com;
+    object-src 'none';
+    base-uri 'self';
+    form-action 'self';
+    frame-ancestors 'none';
+    upgrade-insecure-requests;
+`;
+
 const nextConfig: NextConfig = {
     async headers() {
         return [
+            {
+                source: "/(.*)",
+                headers: [
+                    {
+                        key: "Content-Security-Policy",
+                        value: cspHeader.replace(/\n/g, ""),
+                    },
+                    {
+                        key: "X-Frame-Options",
+                        value: "DENY",
+                    },
+                ],
+            },
             {
                 source: "/manifest.json",
                 headers: [
