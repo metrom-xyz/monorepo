@@ -1,5 +1,11 @@
 # @metrom-xyz/react
 
+## 0.4.2
+
+### Patch Changes
+
+- Fix wrong chain type default for useCampaign hook
+
 ## 0.4.1
 
 ### Patch Changes
