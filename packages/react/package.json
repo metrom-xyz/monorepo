@@ -1,6 +1,6 @@
 {
     "name": "@metrom-xyz/react",
-    "version": "0.3.3",
+    "version": "0.4.0",
     "publishConfig": {
         "access": "public"
     },
@@ -20,7 +20,7 @@
     },
     "dependencies": {
         "@metrom-xyz/contracts": "^0.50.0",
-        "@metrom-xyz/sdk": "^0.5.2"
+        "@metrom-xyz/sdk": "^0.6.0"
     },
     "devDependencies": {
         "@eslint/js": "^9.32.0",
