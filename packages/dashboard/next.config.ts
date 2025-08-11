@@ -6,7 +6,7 @@ const withNextIntl = createNextIntlPlugin();
 
 const cspHeader = `
     default-src 'self';
-    connect-src 'self' https: https://verify.walletconnect.org  wss://relay.walletconnect.org;
+    connect-src 'self' https: https://verify.walletconnect.org  wss://relay.walletconnect.org wss://www.walletlink.org;
     frame-src 'self' https://verify.walletconnect.org;
     script-src 'self' 'unsafe-eval' 'unsafe-inline';
     style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
