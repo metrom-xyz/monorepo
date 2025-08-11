@@ -1,4 +1,5 @@
 import {
+    ChainType,
     Environment,
     METROM_API_CLIENT as METROM_API_CLIENTS,
     SupportedAmm,
@@ -10,6 +11,9 @@ import {
     SUPPORTED_DEVELOPMENT_CHAINS,
     SUPPORTED_PRODUCTION_CHAINS,
 } from "@metrom-xyz/chains";
+
+// TODO: use APTOS build env
+export const CHAIN_TYPE = ChainType.Evm;
 
 export const BASE_URL = "https://app.metrom.xyz";
 

@@ -1,6 +1,6 @@
 import type { SupportedChain } from "@metrom-xyz/contracts";
 import { METROM_API_CLIENT } from "../commons";
-import { SupportedDex, type AmmPoolWithTvl } from "@metrom-xyz/sdk";
+import { ChainType, SupportedDex, type AmmPoolWithTvl } from "@metrom-xyz/sdk";
 import { useQuery } from "@tanstack/react-query";
 import type { HookBaseParams } from "../types/hooks";
 import { useProtocolsInChain } from "./useProtocolsInChain";
@@ -8,12 +8,18 @@ import { ProtocolType } from "@metrom-xyz/chains";
 
 interface UsePoolsParams extends HookBaseParams {
     chainId: SupportedChain;
+    chainType: ChainType;
     dex?: SupportedDex;
 }
 
-type QueryKey = [string, SupportedDex | undefined, SupportedChain];
+type QueryKey = [string, SupportedDex | undefined, SupportedChain, ChainType];
 
-export function usePools({ chainId, dex, enabled = true }: UsePoolsParams): {
+export function usePools({
+    chainId,
+    chainType,
+    dex,
+    enabled = true,
+}: UsePoolsParams): {
     loading: boolean;
     pools?: AmmPoolWithTvl[];
 } {
@@ -24,19 +30,22 @@ export function usePools({ chainId, dex, enabled = true }: UsePoolsParams): {
     });
 
     const { data: pools, isPending: loading } = useQuery({
-        queryKey: ["pools", dex, chainId],
+        queryKey: ["pools", dex, chainId, chainType],
         queryFn: async ({ queryKey }) => {
-            const [, dex, chainId] = queryKey as QueryKey;
+            const [, dex, chainId, chainType] = queryKey as QueryKey;
             if (!dex) return null;
 
             try {
                 const pools = await METROM_API_CLIENT.fetchAmmPools({
                     chainId,
+                    chainType,
                     dex,
                 });
                 return pools;
             } catch (error) {
-                console.error(`Could not fetch pools for dex ${dex}: ${error}`);
+                console.error(
+                    `Could not fetch pools for dex ${dex} in chain with id ${chainId}: ${error}`,
+                );
                 throw error;
             }
         },

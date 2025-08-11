@@ -34,6 +34,7 @@ export function useLiquidityByAddresses({
             try {
                 return METROM_API_CLIENT.fetchLiquidityByAddresses({
                     chainId: pool.chainId,
+                    chainType: pool.chainType,
                     pool,
                     addresses,
                 });

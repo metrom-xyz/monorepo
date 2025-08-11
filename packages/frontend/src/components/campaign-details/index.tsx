@@ -3,7 +3,7 @@
 import { usePrevious } from "react-use";
 import { useTranslations } from "next-intl";
 import type { SupportedChain } from "@metrom-xyz/contracts";
-import { DistributablesType, TargetType } from "@metrom-xyz/sdk";
+import { ChainType, DistributablesType, TargetType } from "@metrom-xyz/sdk";
 import { useCampaign } from "@/src/hooks/useCampaign";
 import type { Hex } from "viem";
 import { Header, SkeletonHeader } from "./header";
@@ -22,20 +22,27 @@ import styles from "./styles.module.css";
 
 interface CampaignDetailsProps {
     chain: SupportedChain;
+    chainType: ChainType;
     campaignId: Hex;
 }
 
-export function CampaignDetails({ chain, campaignId }: CampaignDetailsProps) {
+export function CampaignDetails({
+    chain,
+    chainType,
+    campaignId,
+}: CampaignDetailsProps) {
     const t = useTranslations("campaignDetails");
 
     const { loading: loadingCampaign, campaign } = useCampaign({
         id: campaignId,
         chainId: chain,
+        chainType,
     });
 
     const { loading: loadingLeaderboard, leaderboard } = useLeaderboard({
         campaignId: campaign?.id,
         chainId: campaign?.chainId,
+        chainType: campaign?.chainType,
         enabled: !!campaign,
     });
 

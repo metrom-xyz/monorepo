@@ -7,7 +7,7 @@ import { type Hex } from "viem";
 import { useCampaign } from "@/src/hooks/useCampaign";
 import { KpiSimulationChart } from "@/src/components/kpi-simulation-chart";
 import { usePool } from "@/src/hooks/usePool";
-import { DistributablesType, TargetType } from "@metrom-xyz/sdk";
+import { ChainType, DistributablesType, TargetType } from "@metrom-xyz/sdk";
 import { useTranslations } from "next-intl";
 import { KpiAprSummary } from "@/src/components/kpi-apr-summary";
 
@@ -16,11 +16,12 @@ import styles from "./styles.module.css";
 interface AprProps {
     campaignId: Hex;
     chainId: number;
+    chainType: ChainType;
     apr?: number;
     kpi?: boolean;
 }
 
-export function Apr({ campaignId, chainId, apr, kpi }: AprProps) {
+export function Apr({ campaignId, chainId, chainType, apr, kpi }: AprProps) {
     const t = useTranslations("allCampaigns.apr");
 
     const [popover, setPopover] = useState(false);
@@ -31,6 +32,7 @@ export function Apr({ campaignId, chainId, apr, kpi }: AprProps) {
     const { loading: loadingCampaign, campaign } = useCampaign({
         id: campaignId,
         chainId,
+        chainType,
         enabled: popover && kpi !== undefined,
     });
 
@@ -39,7 +41,8 @@ export function Apr({ campaignId, chainId, apr, kpi }: AprProps) {
 
     const { loading: loadingPool, pool } = usePool({
         id: ammCampaign ? campaign.target.pool.id : undefined,
-        chainId: campaign ? campaign.target.chainId : 0,
+        chainId: campaign?.target.chainId,
+        chainType: campaign?.chainType,
         enabled: campaign && popover && kpi !== undefined,
     });
 

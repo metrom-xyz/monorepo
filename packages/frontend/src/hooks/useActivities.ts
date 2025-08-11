@@ -1,6 +1,5 @@
 import { type Activity } from "@metrom-xyz/sdk";
-import { SupportedChain } from "@metrom-xyz/contracts";
-import { METROM_API_CLIENT } from "../commons";
+import { CHAIN_TYPE, METROM_API_CLIENT } from "../commons";
 import { useAccount, useChainId } from "wagmi";
 import { useQuery } from "@tanstack/react-query";
 import type { Address } from "viem";
@@ -32,6 +31,7 @@ export function useActivities({ enabled = true }: UseActivitiesParams = {}): {
                 const to = Math.floor(Date.now() / 1000);
                 const activities = await METROM_API_CLIENT.fetchActivities({
                     chainId,
+                    chainType: CHAIN_TYPE,
                     address: account,
                     from: to - TIME_RANGE,
                     to,

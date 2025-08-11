@@ -233,6 +233,7 @@ export class Campaign extends SdkCampaign {
     ) {
         super(
             campaign.chainId,
+            campaign.chainType,
             campaign.id,
             campaign.from,
             campaign.to,

@@ -13,6 +13,7 @@ import { Typography } from "@metrom-xyz/ui";
 import type { LiquityV2Collateral } from "@metrom-xyz/sdk";
 import { RemoteLogo } from "@/src/components/remote-logo";
 import { useLiquityV2Collaterals } from "@/src/hooks/useLiquityV2Collaterals";
+import { CHAIN_TYPE } from "@/src/commons";
 
 import styles from "./styles.module.css";
 
@@ -38,6 +39,7 @@ export function LiquityV2CollateralStep({
     const chainId = useChainId();
     const { loading, collaterals } = useLiquityV2Collaterals({
         chainId,
+        chainType: CHAIN_TYPE,
         brand: brand?.slug,
     });
 

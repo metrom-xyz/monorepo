@@ -15,6 +15,7 @@ import { TextInput, Typography } from "@metrom-xyz/ui";
 import { SearchIcon } from "@/src/assets/search-icon";
 import { Pool, SkeletonPool } from "../pool";
 import type { AmmPoolWithTvl } from "@metrom-xyz/sdk";
+import { CHAIN_TYPE } from "@/src/commons";
 
 import styles from "./styles.module.css";
 
@@ -36,6 +37,7 @@ export function AddressPoolPicker({
 
     const { pool: importedPool, loading: loadingImportedPool } = usePool({
         chainId,
+        chainType: CHAIN_TYPE,
         id,
     });
 

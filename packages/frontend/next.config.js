@@ -65,6 +65,16 @@ const nextConfig = {
             },
         ];
     },
+    // Redirect old campaign page links to use 'evm' as the default chain type
+    async redirects() {
+        return [
+            {
+                source: "/en/campaigns/:chain/:id",
+                destination: "/en/campaigns/evm/:chain/:id",
+                permanent: true,
+            },
+        ];
+    },
 };
 
 export default withNextIntl(nextConfig);

@@ -34,6 +34,7 @@ export function useLiquidityInRange({
             try {
                 return METROM_API_CLIENT.fetchLiquidityInRange({
                     chainId: pool.chainId,
+                    chainType: pool.chainType,
                     pool,
                     from,
                     to,

@@ -17,11 +17,13 @@ import { useDistributions } from "@/src/hooks/useDistributions";
 import type { ProcessedDistribution } from "@/src/types/distributions";
 import type { Hex } from "viem";
 import type { SupportedChain } from "@metrom-xyz/contracts";
+import type { ChainType } from "@metrom-xyz/sdk";
 
 import styles from "./styles.module.css";
 
 interface FiltersProps {
     chain: SupportedChain;
+    chainType: ChainType;
     campaignId: Hex;
     onFetched: (distributions: ProcessedDistribution[]) => void;
     onLoading: (loading: boolean) => void;
@@ -30,6 +32,7 @@ interface FiltersProps {
 export function Filters({
     campaignId,
     chain,
+    chainType,
     onFetched,
     onLoading,
 }: FiltersProps) {
@@ -53,6 +56,7 @@ export function Filters({
     const { distributions, loading, progress, fetchDistributions } =
         useDistributions({
             chainId: chain,
+            chainType,
             campaignId,
             from: from?.unix(),
             to: to?.unix(),

@@ -21,6 +21,7 @@ import { Row } from "./row";
 import { RemoteLogo } from "@/src/components/remote-logo";
 
 import styles from "./styles.module.css";
+import { CHAIN_TYPE } from "@/src/commons";
 
 interface ListPoolPickerProps {
     value?: AmmPoolWithTvl;
@@ -39,7 +40,11 @@ export function ListPoolPicker({ value, dex, onChange }: ListPoolPickerProps) {
 
     const chainId = useChainId();
     const baseTokens = useBaseTokens(chainId);
-    const { pools, loading } = usePools({ chainId, dex });
+    const { pools, loading } = usePools({
+        chainId,
+        chainType: CHAIN_TYPE,
+        dex,
+    });
 
     const filteredPools = useMemo(
         () =>

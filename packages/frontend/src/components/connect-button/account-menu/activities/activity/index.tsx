@@ -14,6 +14,7 @@ import { useCampaign } from "@/src/hooks/useCampaign";
 import { PoolRemoteLogo } from "@/src/components/pool-remote-logo";
 import { ProtocolType } from "@metrom-xyz/chains";
 import { useProtocolsInChain } from "@/src/hooks/useProtocolsInChain";
+import { CHAIN_TYPE } from "@/src/commons";
 
 import styles from "./styles.module.css";
 import classNames from "classnames";
@@ -31,6 +32,7 @@ export function Activity({ chainId, transaction, payload }: ActivityProps) {
     });
     const { campaign, loading } = useCampaign({
         chainId,
+        chainType: CHAIN_TYPE,
         id: payload.type === "create-campaign" ? payload.id : undefined,
     });
 
