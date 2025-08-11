@@ -16,13 +16,14 @@ type QueryKey = [string, number, ChainType, Hex];
 
 /** https://docs.metrom.xyz/react-library/use-campaign */
 export function useCampaign(
-    params: UseCampaignParams = { chainType: ChainType.Evm },
+    params?: UseCampaignParams,
 ): UseCampaignReturnValue {
     const metromClient = useMetromClient();
 
+    const chainType = params?.chainType || ChainType.Evm;
     const { data, isLoading, isPending, isFetching } = useQuery({
         ...params?.options,
-        queryKey: ["campaign", params?.chainId, params?.chainType, params?.id],
+        queryKey: ["campaign", params?.chainId, chainType, params?.id],
         queryFn: async ({ queryKey }) => {
             const [, chainId, chainType, id] = queryKey as QueryKey;
 
@@ -40,7 +41,7 @@ export function useCampaign(
         enabled:
             !!params?.chainId &&
             !!params?.id &&
-            !!params?.chainType &&
+            !!chainType &&
             (params.options?.enabled ?? true),
     });
 
