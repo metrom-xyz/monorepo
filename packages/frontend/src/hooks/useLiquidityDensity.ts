@@ -29,6 +29,7 @@ export function useLiquidityDensity({
             try {
                 return METROM_API_CLIENT.fetchLiquidityDensity({
                     chainId: pool.chainId,
+                    chainType: pool.chainType,
                     pool,
                     surroundingAmount: SURROUNDING_AMOUNT,
                     computeAmount,

@@ -5,22 +5,26 @@ import { useAccount } from "wagmi";
 import type { HookBaseParams } from "../types/hooks";
 import type { SupportedChain } from "@metrom-xyz/contracts";
 import type { Leaderboard, Rank } from "../types/campaign";
+import type { ChainType } from "@metrom-xyz/sdk";
 
 interface UseLeaderboardParams extends HookBaseParams {
     campaignId?: Hex;
     chainId?: SupportedChain;
+    chainType?: ChainType;
 }
 
 type QueryKey = [
     string,
     Hex | undefined,
     SupportedChain | undefined,
+    ChainType | undefined,
     Address | undefined,
 ];
 
 export function useLeaderboard({
     campaignId,
     chainId,
+    chainType,
     enabled = true,
 }: UseLeaderboardParams = {}): {
     loading: boolean;
@@ -29,15 +33,17 @@ export function useLeaderboard({
     const { address } = useAccount();
 
     const { data, isPending } = useQuery({
-        queryKey: ["leaderboard", campaignId, chainId, address],
+        queryKey: ["leaderboard", campaignId, chainId, chainType, address],
         queryFn: async ({ queryKey }) => {
-            const [, campaignId, chainId, account] = queryKey as QueryKey;
-            if (!campaignId || !chainId) return null;
+            const [, campaignId, chainId, chainType, account] =
+                queryKey as QueryKey;
+            if (!campaignId || !chainType || !chainId) return null;
 
             try {
                 const response = await METROM_API_CLIENT.fetchLeaderboard({
                     campaignId,
                     chainId,
+                    chainType,
                     account,
                 });
 

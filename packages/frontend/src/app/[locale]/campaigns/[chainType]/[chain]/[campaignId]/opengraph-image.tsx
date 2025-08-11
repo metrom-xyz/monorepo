@@ -1,4 +1,4 @@
-import { METROM_API_CLIENT, TOKEN_ICONS_URL } from "@/src/commons";
+import { CHAIN_TYPE, METROM_API_CLIENT, TOKEN_ICONS_URL } from "@/src/commons";
 import { ImageResponse } from "next/og";
 import type { CampaignDetailsPageProps } from "./page";
 import { MetromSquareLogo } from "@/src/assets/metrom-square-logo";
@@ -43,6 +43,7 @@ async function getCampaign(id: Address, chainId: SupportedChain) {
     try {
         const campaign = await METROM_API_CLIENT.fetchCampaign({
             id,
+            chainType: CHAIN_TYPE,
             chainId,
         });
 

@@ -3,12 +3,14 @@ import { CampaignDetails } from "@/src/components/campaign-details";
 import { routing, type Locale } from "@/src/i18n/routing";
 import { getCampaignName } from "@/src/utils/campaign";
 import type { SupportedChain } from "@metrom-xyz/contracts";
+import type { ChainType } from "@metrom-xyz/sdk";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
 import type { Hex } from "viem";
 
 export interface Params {
     chain: SupportedChain;
+    chainType: ChainType;
     campaignId: Hex;
     locale: Locale;
 }
@@ -18,12 +20,13 @@ export interface CampaignDetailsPageProps {
 }
 
 export async function generateMetadata({ params }: CampaignDetailsPageProps) {
-    const { chain, campaignId } = await params;
+    const { chain, chainType, campaignId } = await params;
     const t = await getTranslations();
 
     try {
         const campaignData = await METROM_API_CLIENT.fetchCampaign({
             id: campaignId,
+            chainType,
             chainId: chain,
         });
 
@@ -41,13 +44,19 @@ export async function generateMetadata({ params }: CampaignDetailsPageProps) {
 export default async function CampaignDetailsPage({
     params,
 }: CampaignDetailsPageProps) {
-    const { locale, chain, campaignId } = await params;
+    const { locale, chain, chainType, campaignId } = await params;
 
     if (!routing.locales.includes(locale)) notFound();
 
     setRequestLocale(locale);
 
-    return <CampaignDetails chain={chain} campaignId={campaignId} />;
+    return (
+        <CampaignDetails
+            chain={chain}
+            chainType={chainType}
+            campaignId={campaignId}
+        />
+    );
 }
 
 export function generateStaticParams() {

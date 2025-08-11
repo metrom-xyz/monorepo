@@ -1,5 +1,6 @@
 import type { Address, Hex } from "viem";
 import {
+    ChainType,
     type OnChainAmount,
     type UsdPricedErc20TokenAmount,
 } from "@metrom-xyz/sdk";
@@ -26,31 +27,35 @@ export interface UseLeaderboardParams
     address?: Address;
     campaignId?: Hex;
     chainId?: number;
+    chainType?: ChainType;
 }
 
 export type UseLeaderboardReturnValue = QueryResult<Leaderboard | undefined>;
 
-type QueryKey = [string, Hex, number, Address | undefined];
+type QueryKey = [string, Hex, number, ChainType, Address | undefined];
 
 /** https://docs.metrom.xyz/react-library/use-leaderboard */
 export function useLeaderboard({
     options,
     campaignId,
     chainId,
+    chainType,
     address,
 }: UseLeaderboardParams): UseLeaderboardReturnValue {
     const metromClient = useMetromClient();
 
     const { data, isLoading, isPending, isFetching } = useQuery({
         ...options,
-        queryKey: ["leaderboard", campaignId, chainId, address],
+        queryKey: ["leaderboard", campaignId, chainId, chainType, address],
         queryFn: async ({ queryKey }) => {
-            const [, campaignId, chainId, account] = queryKey as QueryKey;
+            const [, campaignId, chainId, chainType, account] =
+                queryKey as QueryKey;
 
             try {
                 const response = await metromClient.fetchLeaderboard({
                     campaignId,
                     chainId,
+                    chainType,
                     account,
                 });
 
@@ -103,7 +108,7 @@ export function useLeaderboard({
                 throw error;
             }
         },
-        enabled: !!campaignId && !!chainId,
+        enabled: !!campaignId && !!chainId && !!chainType,
         refetchOnWindowFocus: false,
     });
 

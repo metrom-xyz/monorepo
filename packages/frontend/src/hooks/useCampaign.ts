@@ -7,30 +7,39 @@ import type { HookBaseParams } from "../types/hooks";
 import { useTranslations } from "next-intl";
 import { Campaign } from "../types/campaign";
 import { getChainData } from "../utils/chain";
+import type { ChainType } from "@metrom-xyz/sdk";
 
 interface UseCampaignParams extends HookBaseParams {
     chainId?: SupportedChain;
+    chainType?: ChainType;
     id?: Hex;
 }
 
-type QueryKey = [string, SupportedChain | undefined, Hex | undefined];
+type QueryKey = [
+    string,
+    SupportedChain | undefined,
+    ChainType | undefined,
+    Hex | undefined,
+];
 
 export function useCampaign({
     id,
     chainId,
+    chainType,
     enabled = true,
 }: UseCampaignParams = {}) {
     const t = useTranslations();
 
     const { data: campaign, isPending: loading } = useQuery({
-        queryKey: ["campaign", chainId, id],
+        queryKey: ["campaign", chainId, chainType, id],
         queryFn: async ({ queryKey }) => {
-            const [, chainId, id] = queryKey as QueryKey;
-            if (!chainId || !id) return null;
+            const [, chainId, chainType, id] = queryKey as QueryKey;
+            if (!chainId || !chainType || !id) return null;
 
             try {
                 const campaign = await METROM_API_CLIENT.fetchCampaign({
                     chainId,
+                    chainType,
                     id,
                 });
                 return new Campaign(
@@ -48,7 +57,7 @@ export function useCampaign({
         refetchOnMount: false,
         refetchOnWindowFocus: false,
         staleTime: 60000,
-        enabled: enabled && !!chainId && !!id,
+        enabled: enabled && !!chainId && !!chainType && !!id,
     });
 
     return {

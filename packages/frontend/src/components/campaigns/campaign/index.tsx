@@ -35,7 +35,7 @@ export function CampaignRow({ campaign }: CampaignProps) {
 
     return (
         <Link
-            href={`/campaigns/${campaign.chainId}/${campaign.id}`}
+            href={`/campaigns/${campaign.chainType}/${campaign.chainId}/${campaign.id}`}
             className={styles.root}
         >
             <Card className={styles.card}>
@@ -52,6 +52,7 @@ export function CampaignRow({ campaign }: CampaignProps) {
                 <Apr
                     campaignId={campaign.id}
                     chainId={campaign.chainId}
+                    chainType={campaign.chainType}
                     apr={campaign.apr}
                     kpi={!!campaign.specification?.kpi}
                 />

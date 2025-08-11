@@ -1,34 +1,48 @@
 import type { SupportedChain } from "@metrom-xyz/contracts";
 import { METROM_API_CLIENT } from "../commons";
-import { type AmmPoolWithTvl } from "@metrom-xyz/sdk";
+import { ChainType, type AmmPoolWithTvl } from "@metrom-xyz/sdk";
 import { useQuery } from "@tanstack/react-query";
 import type { Address, Hex } from "viem";
 import type { HookBaseParams } from "../types/hooks";
 
 interface UsePoolParams extends HookBaseParams {
-    chainId: SupportedChain;
+    chainId?: SupportedChain;
+    chainType?: ChainType;
     id?: Hex;
 }
 
-type QueryKey = [string, SupportedChain, Address | undefined];
+type QueryKey = [
+    string,
+    SupportedChain | undefined,
+    ChainType | undefined,
+    Address | undefined,
+];
 
-export function usePool({ chainId, id, enabled = true }: UsePoolParams): {
+export function usePool({
+    chainId,
+    chainType,
+    id,
+    enabled = true,
+}: UsePoolParams): {
     loading: boolean;
     pool?: AmmPoolWithTvl | null;
 } {
     const { data: pool, isFetching: loading } = useQuery({
-        queryKey: ["pool", chainId, id],
+        queryKey: ["pool", chainId, chainType, id],
         queryFn: async ({ queryKey }) => {
-            const [, chainId, id] = queryKey as QueryKey;
-            if (!chainId || !id) return null;
+            const [, chainId, chainType, id] = queryKey as QueryKey;
+            if (!chainId || !chainType || !id) return null;
 
             try {
                 return await METROM_API_CLIENT.fetchPool({
                     chainId,
+                    chainType,
                     id,
                 });
             } catch (error) {
-                console.error(`Could not fetch pools with id ${id}: ${error}`);
+                console.error(
+                    `Could not fetch pool with id ${id} in chain with id ${chainId}: ${error}`,
+                );
                 throw error;
             }
         },

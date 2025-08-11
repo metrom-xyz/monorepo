@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import type { HookBaseParams } from "../types/hooks";
 import {
+    ChainType,
     DistributablesType,
     SERVICE_URLS,
     type Erc20Token,
@@ -22,6 +23,7 @@ import type {
 
 export interface UseDistributionsParams extends HookBaseParams {
     chainId?: SupportedChain;
+    chainType?: ChainType;
     campaignId?: Address;
     from?: number;
     to?: number;
@@ -41,13 +43,14 @@ const HASHES_CHUNK_SIZE = 50;
 
 export function useDistributions({
     chainId,
+    chainType,
     campaignId,
     from,
     to,
 }: UseDistributionsParams): UseDistributionsReturnValue {
     const [completed, setCompleted] = useState(0);
 
-    const { campaign } = useCampaign({ id: campaignId, chainId });
+    const { campaign } = useCampaign({ id: campaignId, chainId, chainType });
 
     const {
         data: hashes,
@@ -55,22 +58,24 @@ export function useDistributions({
         isRefetching: refetchingHashes,
         refetch: fetchHashes,
     } = useQuery({
-        queryKey: ["hashes", chainId, campaignId, from, to],
+        queryKey: ["hashes", chainId, chainType, campaignId, from, to],
         placeholderData: keepPreviousData,
         queryFn: async ({ queryKey }) => {
-            const [, chainId, campaignId, from, to] = queryKey as [
+            const [, chainId, chainType, campaignId, from, to] = queryKey as [
                 string,
                 SupportedChain | undefined,
+                ChainType | undefined,
                 Hex | undefined,
                 number | undefined,
                 number | undefined,
             ];
 
-            if (!chainId || !campaignId || !from || !to) return null;
+            if (!chainId || !chainType || !campaignId || !from || !to)
+                return null;
 
             try {
                 const response = await fetch(
-                    `${SERVICE_URLS[ENVIRONMENT].metrom}/v1/data-hashes/${chainId}/${campaignId}?from=${from}&to=${to}`,
+                    `${SERVICE_URLS[ENVIRONMENT].metrom}/v2/data-hashes${chainType}/${chainId}/${campaignId}?from=${from}&to=${to}`,
                     {
                         method: "GET",
                         headers: {

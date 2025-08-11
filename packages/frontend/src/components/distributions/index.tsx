@@ -16,11 +16,13 @@ import { NoDistributionsIcon } from "@/src/assets/no-distributions-icon";
 import classNames from "classnames";
 import type { ProcessedDistribution } from "@/src/types/distributions";
 import { Chart, type BarPayload } from "./chart";
+import type { ChainType } from "@metrom-xyz/sdk";
 
 import styles from "./styles.module.css";
 
 interface DistributionsProps {
     chain: SupportedChain;
+    chainType: ChainType;
     campaignId: Hex;
 }
 
@@ -35,7 +37,11 @@ export interface StackedBar {
 const ACCOUNT_ROW_SIZE = 28;
 const ACCOUNT_ROW_PADDINGS = 152;
 
-export function Distributions({ chain, campaignId }: DistributionsProps) {
+export function Distributions({
+    chain,
+    chainType,
+    campaignId,
+}: DistributionsProps) {
     const t = useTranslations("campaignDistributions");
 
     const [loading, setLoading] = useState(false);
@@ -46,6 +52,7 @@ export function Distributions({ chain, campaignId }: DistributionsProps) {
 
     const { campaign, loading: loadingCampaign } = useCampaign({
         chainId: chain,
+        chainType,
         id: campaignId,
     });
 
@@ -117,6 +124,7 @@ export function Distributions({ chain, campaignId }: DistributionsProps) {
             </div>
             <Filters
                 chain={chain}
+                chainType={chainType}
                 campaignId={campaignId}
                 onLoading={setLoading}
                 onFetched={setDistros}
