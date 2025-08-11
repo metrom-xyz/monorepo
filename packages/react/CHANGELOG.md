@@ -1,5 +1,11 @@
 # @metrom-xyz/react
 
+## 0.4.1
+
+### Patch Changes
+
+- Use evm as the default chain type
+
 ## 0.4.0
 
 ### Minor Changes
