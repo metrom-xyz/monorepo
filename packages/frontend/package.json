@@ -14,7 +14,7 @@
     "dependencies": {
         "@aptos-labs/js-pro": "^0.1.1",
         "@aptos-labs/react": "^0.1.1",
-        "@aptos-labs/ts-sdk": "^3.1.2",
+        "@aptos-labs/ts-sdk": "^4.0.0",
         "@aptos-labs/wallet-adapter-react": "^7.0.1",
         "@fontsource/ibm-plex-mono": "^5.2.5",
         "@fontsource/ibm-plex-sans": "^5.2.5",

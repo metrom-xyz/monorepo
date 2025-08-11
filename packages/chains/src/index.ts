@@ -45,11 +45,7 @@ import {
     SupportedProductionMvmChain,
 } from "./types/chains";
 import { Environment } from "@metrom-xyz/sdk";
-import {
-    aptosDevelopmentData,
-    aptosDevelopmentTestnetData,
-    aptosProductionData,
-} from "./chains/aptos";
+import { aptosDevelopmentData, aptosProductionData } from "./chains/aptos";
 
 export {
     Environment,
@@ -96,10 +92,7 @@ export const MVM_CHAIN_DATA: {
     [Environment.Production]: Record<SupportedProductionMvmChain, ChainData>;
 } = {
     [Environment.Development]: {
-        [SupportedDevelopmentMvmChain.AptosDevnet]: aptosDevelopmentData,
-        [SupportedDevelopmentMvmChain.AptosTestnet]:
-            aptosDevelopmentTestnetData,
-        [SupportedDevelopmentMvmChain.Aptos]: aptosProductionData,
+        [SupportedDevelopmentMvmChain.AptosTestnet]: aptosDevelopmentData,
     },
     [Environment.Production]: {
         [SupportedProductionMvmChain.Aptos]: aptosProductionData,
