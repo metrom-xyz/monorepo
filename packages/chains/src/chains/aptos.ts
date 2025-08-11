@@ -6,9 +6,14 @@ import { ADDRESS, SupportedChain } from "@metrom-xyz/aptos-contracts";
 
 export const aptosDevelopmentData: ChainData = {
     active: true,
-    name: "Aptos Devnet",
-    metromContract: ADDRESS[SupportedChain.Devnet],
-    blockExplorers: { default: { name: "", url: "" } },
+    name: "Aptos Testnet",
+    metromContract: ADDRESS[SupportedChain.Testnet],
+    blockExplorers: {
+        default: {
+            name: "Aptos Explorer",
+            url: "https://explorer.aptoslabs.com/?network=testnet",
+        },
+    },
     icon: AptosLogo,
     protocols: [
         // FIXME: add proper supported protocols
@@ -26,19 +31,6 @@ export const aptosDevelopmentData: ChainData = {
             supportsFetchAllPools: true,
         },
     ],
-    baseTokens: [],
-};
-
-export const aptosDevelopmentTestnetData: ChainData = {
-    active: true,
-    name: "Aptos Testnet",
-    // TODO: add metrom contract
-    metromContract: {
-        address: "0x",
-    },
-    blockExplorers: { default: { name: "", url: "" } },
-    icon: AptosLogo,
-    protocols: [],
     baseTokens: [],
 };
 
