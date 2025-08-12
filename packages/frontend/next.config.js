@@ -69,9 +69,9 @@ const nextConfig = {
     async redirects() {
         return [
             {
-                source: "/en/campaigns/:chain/:id",
+                source: "/en/campaigns/:chain(\\d{1,})/:id",
                 destination: "/en/campaigns/evm/:chain/:id",
-                permanent: true,
+                permanent: false,
             },
         ];
     },
