@@ -5,20 +5,35 @@ import { Campaign } from "../types/campaign";
 import type { HookBaseParams } from "../types/hooks";
 import { useTranslations } from "next-intl";
 import { getChainData } from "../utils/chain";
+import type { SupportedDex } from "@metrom-xyz/sdk";
+import type { CampaignStatus } from "@metrom-xyz/chains";
 
-interface UseCampaignsParams extends HookBaseParams {}
+interface UseCampaignsParams extends HookBaseParams {
+    chainId?: number;
+    dex?: SupportedDex;
+    status?: CampaignStatus;
+}
 
-export function useCampaigns({ enabled = true }: UseCampaignsParams = {}): {
+export function useCampaigns({
+    chainId,
+    dex,
+    status,
+    enabled = true,
+}: UseCampaignsParams = {}): {
     loading: boolean;
     campaigns?: Campaign[];
 } {
     const t = useTranslations();
 
     const { data: campaigns, isPending: loading } = useQuery({
-        queryKey: ["campaigns"],
+        queryKey: ["campaigns", chainId, dex, status],
         queryFn: async () => {
             try {
-                const campaigns = await METROM_API_CLIENT.fetchCampaigns();
+                const campaigns = await METROM_API_CLIENT.fetchCampaigns({
+                    chainId,
+                    dex,
+                    status,
+                });
                 return campaigns
                     .map((campaign) => {
                         return new Campaign(

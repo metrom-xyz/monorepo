@@ -1,6 +1,6 @@
 import type { SVGIcon } from "@metrom-xyz/chains";
 import type { FunctionComponent } from "react";
-import type { BrandColor } from "./lv2-points-campaign";
+import type { BrandColor } from "./common";
 
 export interface Token {
     address: string;

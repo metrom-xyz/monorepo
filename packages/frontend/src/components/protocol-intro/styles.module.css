@@ -1,4 +1,4 @@
-@reference "../../../app.css";
+@reference "../../app.css";
 
 .root {
     @apply w-full flex flex-col gap-4;
@@ -41,7 +41,7 @@
 }
 
 .rightContent {
-    @apply flex flex-col gap-2;
+    @apply w-full flex flex-col gap-2;
 }
 
 .titleWrapper {

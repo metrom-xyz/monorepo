@@ -9,6 +9,7 @@ import { TURTLE_CAMPAIGNS } from "@/src/commons/turtle-campaigns";
 import { Opportunity } from "./opportunity";
 import { useRef } from "react";
 import { ChevronRight } from "@/src/assets/chevron-right";
+import { PROJECT_PAGES } from "@/src/commons/project-pages";
 
 import styles from "./styles.module.css";
 
@@ -21,10 +22,13 @@ export function ProjectOpportunitiesBanner() {
     const lv2CampaignsActive = Object.entries(
         LV2_POINTS_CAMPAIGNS[ENVIRONMENT],
     ).some(([_, campaign]) => !!campaign);
-
     const turtleCampaignsActive = TURTLE_CAMPAIGNS[ENVIRONMENT].length > 0;
+    const protocolPages = Object.entries(PROJECT_PAGES[ENVIRONMENT]).some(
+        ([_, project]) => !!project,
+    );
 
-    if (!lv2CampaignsActive && !turtleCampaignsActive) return null;
+    if (!lv2CampaignsActive && !turtleCampaignsActive && !protocolPages)
+        return null;
 
     function onScrollLeft() {
         if (!ref.current) return;
@@ -73,6 +77,25 @@ export function ProjectOpportunitiesBanner() {
                                     brand={brand}
                                     icon={icon}
                                     illustration={Illustration}
+                                />
+                            );
+                        },
+                    )}
+                    {Object.entries(PROJECT_PAGES[ENVIRONMENT]).map(
+                        ([poject, page], index) => {
+                            const { brand, name, icon } = page;
+
+                            const Illustration =
+                                ILLUSTRATIONS[index] || ILLUSTRATIONS[0];
+
+                            return (
+                                <Opportunity
+                                    key={index}
+                                    name={name}
+                                    href={`/projects/${poject}`}
+                                    icon={icon}
+                                    illustration={Illustration}
+                                    brand={brand}
                                 />
                             );
                         },

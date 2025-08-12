@@ -1,8 +1,7 @@
 import { Link } from "@/src/i18n/routing";
 import { easeInOut, motion } from "motion/react";
-import type { BrandColor } from "@/src/types/lv2-points-campaign";
 import type { FunctionComponent } from "react";
-import type { SVGIcon } from "@/src/types/common";
+import type { BrandColor, SVGIcon } from "@/src/types/common";
 import { Typography } from "@metrom-xyz/ui";
 
 import styles from "./styles.module.css";

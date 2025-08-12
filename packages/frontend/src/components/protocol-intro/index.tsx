@@ -1,36 +1,29 @@
 import { Typography } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
-import type {
-    BrandColor,
-    ProtocolIntro,
-} from "@/src/types/lv2-points-campaign";
 import { Lv2BannerGraphic1 } from "@/src/assets/lv2-banner-graphic-1";
 import { Lv2BannerGraphic2 } from "@/src/assets/lv2-banner-graphic-2";
 import { Lv2BannerGraphic3 } from "@/src/assets/lv2-banner-graphic-3";
 import { ArticleIcon } from "@/src/assets/article-icon";
 import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
 import { easeInOut, motion } from "motion/react";
+import type { BrandColor, ProjectIntro } from "@/src/types/common";
 
 import styles from "./styles.module.css";
 
-interface ProtocolIntroProps extends ProtocolIntro {
-    protocol: string;
+interface ProjectIntroProps extends ProjectIntro {
+    project: string;
     brand: BrandColor;
 }
 
 const ILLUSTRATIONS = [Lv2BannerGraphic1, Lv2BannerGraphic2, Lv2BannerGraphic3];
 
-export function ProtocolIntro({
-    protocol,
-    brand,
-    articles,
-}: ProtocolIntroProps) {
-    const t = useTranslations("lv2PointsCampaignPage.protocolIntro");
+export function ProjectIntro({ project, brand, articles }: ProjectIntroProps) {
+    const t = useTranslations("projectIntro");
 
     return (
         <div className={styles.root}>
             <Typography size="lg" weight="medium" uppercase>
-                {t("title", { protocol })}
+                {t("title", { project })}
             </Typography>
             <div className={styles.articlesWrapper}>
                 {articles.map(({ title, href }, index) => {
