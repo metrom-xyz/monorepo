@@ -21,7 +21,7 @@ export function Header({
     url,
     icon: Icon,
 }: HeaderProps) {
-    const t = useTranslations("lv2PointsCampaignPage.header");
+    const t = useTranslations("projectPage.header");
 
     return (
         <div className={styles.root}>

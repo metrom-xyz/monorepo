@@ -1,9 +1,8 @@
-import type { SVGIcon } from "@/src/types/common";
+import type { BrandColor, SVGIcon } from "@/src/types/common";
 import type { FunctionComponent } from "react";
 import { Button, Typography } from "@metrom-xyz/ui";
 import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
 import { useTranslations } from "next-intl";
-import type { BrandColor } from "@/src/types/lv2-points-campaign";
 
 import styles from "./styles.module.css";
 

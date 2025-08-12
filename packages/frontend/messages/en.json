@@ -433,6 +433,17 @@
         "title": "Project opportunities",
         "campaignTitle": "{pointsName} campaign"
     },
+    "projectIntro": {
+        "title": "{project} in a nutshell",
+        "article": "Article"
+    },
+    "projectPage": {
+        "title": "Project page - {project}",
+        "header": {
+            "title": "{protocol}"
+        },
+        "explore": "Explore opportunities"
+    },
     "lv2PointsCampaignPage": {
         "title": "Points campaign running on {protocol}",
         "header": {
@@ -442,10 +453,6 @@
             "type": "Campaign type",
             "points": "Points campaign",
             "createdBy": "Created by"
-        },
-        "protocolIntro": {
-            "title": "{protocol} in a nutshell",
-            "article": "Article"
         },
         "actions": {
             "title": "Earn {points}",

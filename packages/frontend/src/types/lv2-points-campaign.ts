@@ -1,7 +1,7 @@
 import type { SupportedGmxV1, SupportedLiquityV2 } from "@metrom-xyz/sdk";
 import type { FunctionComponent } from "react";
 import type { Address } from "viem";
-import type { SVGIcon } from "./common";
+import type { BrandColor, ProjectIntro, SVGIcon } from "./common";
 import type { SupportedChain } from "@metrom-xyz/contracts";
 import type { LocalizedMessage } from "./utils";
 
@@ -38,20 +38,6 @@ export interface ActionsGroup {
     actions: Action[];
 }
 
-export interface BrandColor {
-    main: string;
-    light: string;
-}
-
-export interface Article {
-    title: string;
-    href: string;
-}
-
-export interface ProtocolIntro {
-    articles: Article[];
-}
-
 export interface Lv2PointsCampaign {
     name: string;
     description: string;
@@ -61,7 +47,7 @@ export interface Lv2PointsCampaign {
     pointsName: string;
     brand: BrandColor;
     icon: FunctionComponent<SVGIcon>;
-    protocolIntro?: ProtocolIntro;
+    protocolIntro?: ProjectIntro;
     from: number;
     to: number;
     leaderboard: boolean;

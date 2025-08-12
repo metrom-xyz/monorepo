@@ -8,7 +8,7 @@ import { ENVIRONMENT } from "@/src/commons/env";
 import { useLv2PointsCampaignLeaderboard } from "@/src/hooks/useLv2PointsCampaignLeaderboard";
 import { LV2_POINTS_CAMPAIGNS } from "@/src/commons/lv2-points";
 import { Actions } from "./actions";
-import { ProtocolIntro } from "./protocol-intro";
+import { ProjectIntro } from "../protocol-intro";
 import { useTranslations } from "next-intl";
 
 import styles from "./styles.module.css";
@@ -53,8 +53,8 @@ export function Lv2PointsCampaign({ protocol }: Lv2PointsCampaignProps) {
             />
             <Details from={from} to={to} protocol={name} />
             {protocolIntro && (
-                <ProtocolIntro
-                    protocol={protocol}
+                <ProjectIntro
+                    project={protocol}
                     brand={brand}
                     {...protocolIntro}
                 />

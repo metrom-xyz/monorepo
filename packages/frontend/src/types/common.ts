@@ -11,6 +11,20 @@ export enum Theme {
     Light = "light",
 }
 
+export interface BrandColor {
+    main: string;
+    light: string;
+}
+
+export interface Article {
+    title: string;
+    href: string;
+}
+
+export interface ProjectIntro {
+    articles: Article[];
+}
+
 export enum FilterableStatus {
     All = "",
     Live = Status.Live,
