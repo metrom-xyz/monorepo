@@ -28,6 +28,7 @@ export const lv2PointsCampaignsProd: Record<
         icon: EbisuLogo,
         from: 1753963200,
         to: 1761915600,
+        leaderboard: false,
         actions: {
             [Lv2PointsCampaign2Action.Liquidity]: {
                 title: "Liquidity",
@@ -194,6 +195,7 @@ export const lv2PointsCampaignsProd: Record<
         },
         from: 1747317600,
         to: 1763218800,
+        leaderboard: true,
         actions: {
             [Lv2PointsCampaign2Action.Liquidity]: {
                 title: "Liquidity",
@@ -391,6 +393,7 @@ export const lv2PointsCampaignsProd: Record<
         icon: AmpedLogo,
         from: 1739750400,
         to: 1756080000,
+        leaderboard: true,
         actions: {
             [Lv2PointsCampaign2Action.Liquidity]: {
                 title: "Liquidity",
@@ -442,6 +445,7 @@ export const lv2PointsCampaignsProd: Record<
         },
         from: 1746720000,
         to: 1757347200,
+        leaderboard: true,
         actions: {
             [Lv2PointsCampaign2Action.Liquidity]: {
                 title: "Liquidity",

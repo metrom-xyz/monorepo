@@ -64,6 +64,7 @@ export interface Lv2PointsCampaign {
     protocolIntro?: ProtocolIntro;
     from: number;
     to: number;
+    leaderboard: boolean;
     actions: Record<Lv2PointsCampaign2Action, ActionsGroup | null>;
 }
 

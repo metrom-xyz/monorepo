@@ -38,6 +38,7 @@ export function Lv2PointsCampaign({ protocol }: Lv2PointsCampaignProps) {
         protocolIntro,
         from,
         to,
+        leaderboard: showLeaderboard,
         actions,
     } = campaign;
 
@@ -64,20 +65,22 @@ export function Lv2PointsCampaign({ protocol }: Lv2PointsCampaignProps) {
                 actions={actions}
                 pointsName={pointsName}
             />
-            <Leaderboard
-                noDistributionDate
-                chainId={chain}
-                loading={loadingLeaderboard}
-                leaderboard={leaderboard}
-                messages={{
-                    personalRank: {
-                        noRewards: t("noPoints", { points: pointsName }),
-                    },
-                    repartionChart: {
-                        title: t("distribution"),
-                    },
-                }}
-            />
+            {showLeaderboard && (
+                <Leaderboard
+                    noDistributionDate
+                    chainId={chain}
+                    loading={loadingLeaderboard}
+                    leaderboard={leaderboard}
+                    messages={{
+                        personalRank: {
+                            noRewards: t("noPoints", { points: pointsName }),
+                        },
+                        repartionChart: {
+                            title: t("distribution"),
+                        },
+                    }}
+                />
+            )}
         </div>
     );
 }
