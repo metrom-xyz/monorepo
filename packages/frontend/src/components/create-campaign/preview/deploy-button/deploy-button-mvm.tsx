@@ -57,7 +57,7 @@ export function DeployButtonMvm({
 
                 payload.distributables.tokens.forEach(({ token, amount }) => {
                     rewardTokens.push(token.address);
-                    rewardAmounts.push(new U64(amount.formatted));
+                    rewardAmounts.push(new U64(amount.raw));
                 });
 
                 setTxPayload({
