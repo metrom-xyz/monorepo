@@ -8,13 +8,14 @@ import type { UseClaimsParams, UseClaimsReturnValue } from ".";
 import { useWallet } from "@aptos-labs/wallet-adapter-react";
 import { aptosClient } from "@/src/components/client-providers";
 import type { InputViewFunctionData, MoveFunctionId } from "@aptos-labs/ts-sdk";
-import type { Claim } from "@metrom-xyz/sdk";
+import { ChainType, type Claim } from "@metrom-xyz/sdk";
 
 type QueryKey = [string, Address | undefined];
 
 const rawClaims: Claim[] = [
     {
         chainId: 197,
+        chainType: ChainType.Aptos,
         campaignId:
             "0xf9b18a4918b3965faf3d4ed06a7215999e5e2c0e6546dec28f92d97b49d51495",
         token: {
