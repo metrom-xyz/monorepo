@@ -5,7 +5,7 @@ import {
     SupportedAmm,
 } from "@metrom-xyz/sdk";
 import { type Chain } from "viem";
-import { ENVIRONMENT } from "./env";
+import { APTOS, ENVIRONMENT } from "./env";
 import SafeAppsSdk from "@safe-global/safe-apps-sdk";
 import {
     SUPPORTED_DEVELOPMENT_CHAINS,
@@ -13,8 +13,7 @@ import {
 } from "@metrom-xyz/chains";
 import { Network, NetworkToChainId } from "@aptos-labs/ts-sdk";
 
-// TODO: use APTOS build env
-export const CHAIN_TYPE = ChainType.Evm;
+export const CHAIN_TYPE = APTOS ? ChainType.Aptos : ChainType.Evm;
 
 export const BASE_URL = "https://app.metrom.xyz";
 
