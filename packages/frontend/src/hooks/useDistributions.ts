@@ -75,7 +75,7 @@ export function useDistributions({
 
             try {
                 const response = await fetch(
-                    `${SERVICE_URLS[ENVIRONMENT].metrom}/v2/data-hashes${chainType}/${chainId}/${campaignId}?from=${from}&to=${to}`,
+                    `${SERVICE_URLS[ENVIRONMENT].metrom}/v2/data-hashes/${chainType}/${chainId}/${campaignId}?from=${from}&to=${to}`,
                     {
                         method: "GET",
                         headers: {
