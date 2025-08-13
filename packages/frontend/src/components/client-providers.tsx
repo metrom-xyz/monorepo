@@ -17,7 +17,6 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { hashFn } from "wagmi/query";
 import { Environment } from "@metrom-xyz/sdk";
 import AptosCoreProvider from "./aptos-core-provider";
-import { AptosJSProClient } from "@aptos-labs/js-pro";
 
 dayjs.extend(duration);
 dayjs.extend(localizedFormat);
@@ -46,14 +45,6 @@ export const aptosConfig = new AptosConfig({
 // TODO: rate limit?
 // https://aptos.dev/en/build/indexer/indexer-api#rate-limits
 export const aptosClient = new Aptos(aptosConfig);
-export const aptosJsProClient = new AptosJSProClient({
-    network: {
-        network:
-            ENVIRONMENT === Environment.Production
-                ? Network.MAINNET
-                : Network.TESTNET,
-    },
-});
 
 export function ClientProviders({
     children,
