@@ -42,10 +42,6 @@ export const aptosConfig = new AptosConfig({
             : Network.TESTNET,
 });
 
-// TODO: rate limit?
-// https://aptos.dev/en/build/indexer/indexer-api#rate-limits
-export const aptosClient = new Aptos(aptosConfig);
-
 export function ClientProviders({
     children,
 }: Readonly<{

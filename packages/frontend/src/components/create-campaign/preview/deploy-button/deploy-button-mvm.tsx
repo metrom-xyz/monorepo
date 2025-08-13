@@ -10,10 +10,10 @@ import { type Address, hexToBytes, zeroHash } from "viem";
 import { buildCampaignDataBundleMvm } from "@/src/utils/campaign";
 import { trackFathomEvent } from "@/src/utils/fathom";
 import {
+    useClients,
     useSignAndSubmitTransaction,
     useSimulateTransaction,
 } from "@aptos-labs/react";
-import { aptosClient } from "@/src/components/client-providers";
 import { useAccount } from "@/src/hooks/use-account";
 import {
     U32,
@@ -34,6 +34,7 @@ export function DeployButtonMvm({
     const chainId = useChainId();
     const chainData = useChainData({ chainId });
     const { address } = useAccount();
+    const { aptos } = useClients();
 
     const [deploying, setDeploying] = useState(false);
     const [txPayload, setTxPayload] =
@@ -120,7 +121,7 @@ export function DeployButtonMvm({
                 const tx = await signAndSubmitTransactionAsync({
                     data: txPayload,
                 });
-                const receipt = await aptosClient.waitForTransaction({
+                const receipt = await aptos.waitForTransaction({
                     transactionHash: tx.hash,
                 });
 
@@ -139,6 +140,7 @@ export function DeployButtonMvm({
         };
         void create();
     }, [
+        aptos,
         simulatedCreate,
         simulateCreateError,
         simulateCreateErrored,

@@ -17,10 +17,10 @@ import type {
 } from "@aptos-labs/ts-sdk";
 import { buildRewardsFunctionArgs } from "@/src/utils/aptos";
 import {
+    useClients,
     useSignAndSubmitTransaction,
     useSimulateTransaction,
 } from "@aptos-labs/react";
-import { aptosClient } from "../../client-providers";
 
 import styles from "./styles.module.css";
 
@@ -34,6 +34,7 @@ export function ChainOverviewMvm({
 }: ChainOverviewProps) {
     const t = useTranslations("rewards");
     const { address: account } = useAccount();
+    const { aptos } = useClients();
 
     const [claiming, setClaiming] = useState(false);
     const [recovering, setRecovering] = useState(false);
@@ -122,7 +123,7 @@ export function ChainOverviewMvm({
                 const tx = await signAndSubmitTransactionAsync({
                     data: recoverRewardsTxPayload,
                 });
-                const receipt = await aptosClient.waitForTransaction({
+                const receipt = await aptos.waitForTransaction({
                     transactionHash: tx.hash,
                 });
 
@@ -143,9 +144,9 @@ export function ChainOverviewMvm({
         };
         void recover();
     }, [
+        aptos,
         recoverRewardsTxPayload,
         simulatedRecoverAllErrored,
-        chainWithRewardsData.chainId,
         simulatedRecoverAll,
         signAndSubmitTransactionAsync,
         onRecoverAll,
@@ -165,7 +166,7 @@ export function ChainOverviewMvm({
                 const tx = await signAndSubmitTransactionAsync({
                     data: claimRewardsTxPayload,
                 });
-                const receipt = await aptosClient.waitForTransaction({
+                const receipt = await aptos.waitForTransaction({
                     transactionHash: tx.hash,
                 });
 
@@ -192,10 +193,10 @@ export function ChainOverviewMvm({
         };
         void claim();
     }, [
+        aptos,
         t,
         claimRewardsTxPayload,
         simulatedClaimAllErrored,
-        chainWithRewardsData.chainId,
         simulatedClaimAll,
         signAndSubmitTransactionAsync,
         onClaimAll,

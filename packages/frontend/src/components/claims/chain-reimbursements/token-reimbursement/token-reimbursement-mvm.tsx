@@ -15,10 +15,10 @@ import type {
     MoveFunctionId,
 } from "@aptos-labs/ts-sdk";
 import {
+    useClients,
     useSignAndSubmitTransaction,
     useSimulateTransaction,
 } from "@aptos-labs/react";
-import { aptosClient } from "@/src/components/client-providers";
 import { buildRewardsFunctionArgs } from "@/src/utils/aptos";
 
 import styles from "./styles.module.css";
@@ -32,6 +32,7 @@ export function TokenReimbursementMvm({
     const t = useTranslations("rewards.reimbursements");
     const { address: account } = useAccount();
     const chainData = useChainData({ chainId });
+    const { aptos } = useClients();
 
     const [recovering, setRecovering] = useState(false);
     const [recovered, setRecovered] = useState(false);
@@ -76,7 +77,7 @@ export function TokenReimbursementMvm({
                 const tx = await signAndSubmitTransactionAsync({
                     data: recoverRewardsTxPayload,
                 });
-                const receipt = await aptosClient.waitForTransaction({
+                const receipt = await aptos.waitForTransaction({
                     transactionHash: tx.hash,
                 });
 
@@ -106,6 +107,7 @@ export function TokenReimbursementMvm({
 
         void recover();
     }, [
+        aptos,
         chainId,
         recoverRewardsTxPayload,
         simulateRecoverErrored,
