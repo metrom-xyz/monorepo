@@ -1,15 +1,11 @@
 @reference "../../../app.css";
 
 .root {
-    @apply w-full flex flex-col gap-3 mb-7 md:mb-11 justify-center overflow-x-hidden;
+    @apply w-full flex flex-col gap-3 mb-7 md:mb-11 justify-center;
 }
 
-.scrollContainer {
-    @apply w-full flex items-center justify-between gap-2;
-}
-
-.cardsWrapper {
-    @apply w-full flex gap-3 overflow-x-scroll py-2 scrollbar-hide scroll-smooth;
+.container {
+    @apply w-full flex items-center gap-2 overflow-x-scroll sm:overflow-x-hidden sm:flex-wrap;
 }
 
 .scrollButton {
