@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import type { UseWatchBalanceParams, UseWatchBalanceReturnValue } from ".";
 import { useWatchBlockNumber } from "../use-watch-block-number";
 import { useQuery } from "@tanstack/react-query";
-import { aptosJsProClient } from "@/src/components/client-providers";
+import { useClients } from "@aptos-labs/react";
 
 export function useWatchBalanceMvm({
     address,
@@ -11,6 +11,7 @@ export function useWatchBalanceMvm({
     enabled = true,
 }: UseWatchBalanceParams = {}): UseWatchBalanceReturnValue {
     const blockNumber = useWatchBlockNumber({ enabled });
+    const { client } = useClients();
 
     const {
         data: balance,
@@ -34,7 +35,7 @@ export function useWatchBalanceMvm({
             if (!token || !address) return null;
 
             try {
-                return await aptosJsProClient.fetchBalance({
+                return await client.fetchBalance({
                     address,
                     asset: token,
                 });

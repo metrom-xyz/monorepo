@@ -7,7 +7,7 @@ import type {
 } from ".";
 import { useQuery } from "@tanstack/react-query";
 import { type Address, formatUnits } from "viem";
-import { aptosJsProClient } from "@/src/components/client-providers";
+import { useClients } from "@aptos-labs/react";
 import { useWatchBlockNumber } from "../use-watch-block-number";
 
 const collator = new Intl.Collator();
@@ -18,6 +18,7 @@ export function useWatchBalancesMvm<T extends UsdPricedErc20Token>({
     enabled = true,
 }: UseWatchBalancesParams<T> = {}): UseWatchBalancesReturnValue<T> {
     const blockNumber = useWatchBlockNumber();
+    const { client } = useClients();
 
     const { data: rewardTokenRawBalances, isLoading: loading } = useQuery({
         queryKey: [
@@ -39,7 +40,7 @@ export function useWatchBalancesMvm<T extends UsdPricedErc20Token>({
             try {
                 return await Promise.all(
                     tokens.map((token) =>
-                        aptosJsProClient.fetchBalance({
+                        client.fetchBalance({
                             address,
                             asset: token.address,
                         }),
