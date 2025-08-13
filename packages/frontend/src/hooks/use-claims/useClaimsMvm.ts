@@ -6,9 +6,9 @@ import type { ClaimWithRemaining } from "../../types/campaign";
 import { getChainData } from "../../utils/chain";
 import type { UseClaimsParams, UseClaimsReturnValue } from ".";
 import { useWallet } from "@aptos-labs/wallet-adapter-react";
-import { aptosClient } from "@/src/components/client-providers";
 import type { InputViewFunctionData, MoveFunctionId } from "@aptos-labs/ts-sdk";
 import { ChainType, type Claim } from "@metrom-xyz/sdk";
+import { useClients } from "@aptos-labs/react";
 
 type QueryKey = [string, Address | undefined];
 
@@ -47,6 +47,7 @@ export function useClaimsMvm({
 
     const queryClient = useQueryClient();
     const { account } = useWallet();
+    const { aptos } = useClients();
 
     const address = account?.address.toStringLong();
 
@@ -118,7 +119,7 @@ export function useClaimsMvm({
 
             try {
                 return await Promise.all(
-                    payloads.map((payload) => aptosClient.view({ payload })),
+                    payloads.map((payload) => aptos.view({ payload })),
                 );
             } catch (error) {
                 console.error(
