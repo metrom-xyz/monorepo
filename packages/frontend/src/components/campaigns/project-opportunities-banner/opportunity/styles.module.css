@@ -1,7 +1,7 @@
 @reference "../../../../app.css";
 
 .root {
-    @apply w-full;
+    @apply w-full sm:w-auto;
 }
 
 .card {
