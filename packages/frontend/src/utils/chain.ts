@@ -11,12 +11,13 @@ import {
 import { APTOS, ENVIRONMENT } from "../commons/env";
 import { Network, NetworkToChainId } from "@aptos-labs/ts-sdk";
 
-export const APTOS_NETWORK_ID: Record<
-    Network.TESTNET | Network.MAINNET,
-    number
-> = {
-    [Network.TESTNET]: NetworkToChainId[Network.TESTNET],
-    [Network.MAINNET]: NetworkToChainId[Network.MAINNET],
+export const APTOS_NETWORK_ID = {
+    [Environment.Development]: {
+        [Network.TESTNET]: NetworkToChainId[Network.TESTNET],
+    },
+    [Environment.Production]: {
+        [Network.MAINNET]: NetworkToChainId[Network.MAINNET],
+    },
 };
 
 export function aptosNetworkToId(network: Network): number {
@@ -24,7 +25,7 @@ export function aptosNetworkToId(network: Network): number {
 }
 
 export function chainIdToAptosNetwork(chainId?: number): Network | null {
-    const chain = Object.entries(APTOS_NETWORK_ID).find(
+    const chain = Object.entries(APTOS_NETWORK_ID[ENVIRONMENT]).find(
         ([, id]) => chainId === id,
     );
 
