@@ -1,19 +1,21 @@
 import { useEffect, useState } from "react";
 import type { HookBaseParams } from "@/src/types/hooks";
-import { aptosClient } from "@/src/components/client-providers";
+import { useClients } from "@aptos-labs/react";
 
 const BLOCk_WATCH_TIME_MS = 15000;
 
 export function useWatchBlockNumberMvm({
     enabled = true,
 }: HookBaseParams = {}) {
+    const { aptos } = useClients();
+
     const [blockNumber, setBlockNumber] = useState<bigint | undefined>();
 
     useEffect(() => {
         if (!enabled) return;
 
         const fetchBlock = async () => {
-            const { block_height } = await aptosClient.getLedgerInfo();
+            const { block_height } = await aptos.getLedgerInfo();
             setBlockNumber(BigInt(block_height));
         };
 
@@ -26,7 +28,7 @@ export function useWatchBlockNumberMvm({
         return () => {
             clearInterval(interval);
         };
-    }, [enabled]);
+    }, [aptos, enabled]);
 
     return blockNumber;
 }

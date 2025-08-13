@@ -14,8 +14,8 @@ import {
     type MoveFunctionId,
     type InputGenerateTransactionPayloadData,
 } from "@aptos-labs/ts-sdk";
-import { aptosClient } from "@/src/components/client-providers";
 import {
+    useClients,
     useSignAndSubmitTransaction,
     useSimulateTransaction,
 } from "@aptos-labs/react";
@@ -32,6 +32,7 @@ export function TokenClaimMvm({
     const t = useTranslations("rewards.claims");
     const { address: account } = useAccount();
     const chainData = useChainData({ chainId });
+    const { aptos } = useClients();
 
     const [claiming, setClaiming] = useState(false);
     const [claimed, setClaimed] = useState(false);
@@ -77,7 +78,7 @@ export function TokenClaimMvm({
                 const tx = await signAndSubmitTransactionAsync({
                     data: claimRewardsTxPayload,
                 });
-                const receipt = await aptosClient.waitForTransaction({
+                const receipt = await aptos.waitForTransaction({
                     transactionHash: tx.hash,
                 });
 
@@ -106,11 +107,14 @@ export function TokenClaimMvm({
         };
         void claim();
     }, [
+        aptos,
         chainId,
         simulatedClaim,
         simulatedClaimErrored,
         tokenClaims.token,
         tokenClaims.totalAmount,
+        claimRewardsTxPayload,
+        signAndSubmitTransactionAsync,
         onClaim,
     ]);
 

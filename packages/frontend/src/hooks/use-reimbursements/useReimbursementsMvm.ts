@@ -7,8 +7,8 @@ import { getChainData } from "../../utils/chain";
 import type { UseReimbursementsParams, UseReimbursementsReturnValue } from ".";
 import { useWallet } from "@aptos-labs/wallet-adapter-react";
 import type { InputViewFunctionData, MoveFunctionId } from "@aptos-labs/ts-sdk";
-import { aptosClient } from "@/src/components/client-providers";
 import { ChainType, type Reimbursement } from "@metrom-xyz/sdk";
+import { useClients } from "@aptos-labs/react";
 
 interface Payloads {
     recovered: InputViewFunctionData[];
@@ -53,6 +53,7 @@ export function useReimbursementsMvm({
 
     const queryClient = useQueryClient();
     const { account } = useWallet();
+    const { aptos } = useClients();
 
     const address = account?.address.toStringLong();
 
@@ -138,9 +139,7 @@ export function useReimbursementsMvm({
 
             try {
                 return await Promise.all(
-                    recoveredPayloads.map((payload) =>
-                        aptosClient.view({ payload }),
-                    ),
+                    recoveredPayloads.map((payload) => aptos.view({ payload })),
                 );
             } catch (error) {
                 console.error(
@@ -169,9 +168,7 @@ export function useReimbursementsMvm({
 
             try {
                 return await Promise.all(
-                    claimedPayloads.map((payload) =>
-                        aptosClient.view({ payload }),
-                    ),
+                    claimedPayloads.map((payload) => aptos.view({ payload })),
                 );
             } catch (error) {
                 console.error(
