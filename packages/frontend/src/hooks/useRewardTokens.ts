@@ -1,9 +1,9 @@
 import type { SupportedChain } from "@metrom-xyz/contracts";
-import { useChainId } from "wagmi";
 import { CHAIN_TYPE, METROM_API_CLIENT } from "../commons";
 import type { RewardToken } from "@metrom-xyz/sdk";
 import { useQuery } from "@tanstack/react-query";
 import type { HookBaseParams } from "../types/hooks";
+import { useChainId } from "./use-chain-id";
 import { APTOS } from "../commons/env";
 
 interface UseRewardTokensParams extends HookBaseParams {}
