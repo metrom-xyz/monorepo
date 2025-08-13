@@ -1,8 +1,10 @@
 "use client";
 
-import type { ReactNode } from "react";
+import { useEffect, type ReactNode } from "react";
 import { Nav } from "./nav";
 import { Footer } from "./footer";
+import { useAccount, useDisconnect } from "wagmi";
+import { APTOS } from "@/src/commons/env";
 
 import styles from "./styles.module.css";
 
@@ -11,6 +13,14 @@ interface LayoutProps {
 }
 
 export function Layout({ children }: LayoutProps) {
+    const { address } = useAccount();
+    const { disconnect } = useDisconnect();
+
+    // TODO: needed?
+    useEffect(() => {
+        if (APTOS && address) disconnect();
+    }, [address, disconnect]);
+
     return (
         <div className={styles.layout}>
             <Nav />

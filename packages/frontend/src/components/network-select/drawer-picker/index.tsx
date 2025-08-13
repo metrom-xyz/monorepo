@@ -1,4 +1,3 @@
-import type { Chain } from "viem";
 import classNames from "classnames";
 import { Typography } from "@metrom-xyz/ui";
 import { RemoveScroll } from "react-remove-scroll";
@@ -11,9 +10,9 @@ import commonStyles from "../styles.module.css";
 
 interface DrawerPickerProps {
     open: boolean;
-    chains: readonly Chain[];
+    chains: number[];
     value: number;
-    onChange: (chainId: number) => void;
+    onChange?: (chainId: number) => void;
     onClose: () => void;
 }
 
@@ -27,6 +26,7 @@ export function DrawerPicker({
     const { width } = useWindowSize();
 
     function getOnChangeHandler(chainId: number) {
+        if (!onChange) return;
         return () => {
             onChange(chainId);
         };
@@ -36,16 +36,16 @@ export function DrawerPicker({
         <RemoveScroll enabled={open && width < 640} className={styles.root}>
             <MobileDrawer open={open} onClose={onClose}>
                 <div className={styles.networksWrapper}>
-                    {chains.map((chain) => {
-                        const chainData = getChainData(chain.id);
+                    {chains.map((id) => {
+                        const chainData = getChainData(id);
 
                         return (
                             <div
-                                key={chain.id}
+                                key={id}
                                 className={classNames(styles.row, {
-                                    [commonStyles.active]: value === chain.id,
+                                    [commonStyles.active]: value === id,
                                 })}
-                                onClick={getOnChangeHandler(chain.id)}
+                                onClick={getOnChangeHandler(id)}
                             >
                                 {chainData?.icon && (
                                     <chainData.icon

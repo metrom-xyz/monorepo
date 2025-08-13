@@ -2,7 +2,8 @@ import type { CampaignPreviewTokenDistributables } from "@/src/types/campaign";
 import { Card, TextField, Typography } from "@metrom-xyz/ui";
 import type { SupportedChain } from "@metrom-xyz/contracts";
 import { useTranslations } from "next-intl";
-import { useAccount, useChainId, useReadContract } from "wagmi";
+import { useChainId, useReadContract } from "wagmi";
+import { useAccount } from "@/src/hooks/use-account";
 import { Dayjs } from "dayjs";
 import { useEffect, useMemo, useState } from "react";
 import {
@@ -26,7 +27,7 @@ interface RewardsProps {
 export function Rewards({ rewards, startDate, endDate }: RewardsProps) {
     const t = useTranslations("campaignPreview.rewards");
     const chain: SupportedChain = useChainId();
-    const chainData = useChainData(chain);
+    const chainData = useChainData({ chainId: chain });
     const { address: connectedAccount } = useAccount();
 
     const [resolvedFee, setResolvedFee] = useState<number>();
