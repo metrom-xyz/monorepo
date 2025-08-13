@@ -38,9 +38,9 @@ export function usePools({
 
             try {
                 const pools = await METROM_API_CLIENT.fetchAmmPools({
+                    // FIXME: remove mocked params
                     chainId: APTOS ? 17000 : chainId,
-                    chainType,
-                    // FIXME: remove
+                    chainType: ChainType.Evm,
                     dex,
                 });
                 return pools;
