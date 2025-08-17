@@ -7,7 +7,6 @@ export { baseData } from "./base";
 export { baseSepoliaData } from "./base-sepolia";
 export { taikoData } from "./taiko";
 export { scrollData } from "./scroll";
-export { formData, form } from "./form";
 export { gnosisData } from "./gnosis";
 export { hemiData } from "./hemi";
 export { sepoliaData } from "./sepolia";

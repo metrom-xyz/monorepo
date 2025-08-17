@@ -15,7 +15,6 @@ import {
     lumiaMainnet,
     sei,
     hemi,
-    form,
     mainnet,
 } from "viem/chains";
 import {
@@ -36,7 +35,6 @@ import {
     swellDevelopmentData,
     swellProductionData,
     hemiData,
-    formData,
     mainnetData,
 } from "./chains";
 import {
@@ -71,9 +69,6 @@ export const CHAIN_DATA: {
     },
     [Environment.Production]: {
         [SupportedProductionChain.Base]: baseData,
-        // [SupportedProductionChain.Mode]: modeData,
-        // [SupportedProductionChain.Mantle]: mantleData,
-        [SupportedProductionChain.Form]: formData,
         [SupportedProductionChain.Taiko]: taikoData,
         [SupportedProductionChain.Scroll]: scrollData,
         [SupportedProductionChain.Sonic]: sonicData,
@@ -102,7 +97,6 @@ export const SUPPORTED_PRODUCTION_CHAINS: [Chain, ...Chain[]] = [
     taiko,
     scroll,
     sonic,
-    form,
     gnosis,
     telos,
     lens,

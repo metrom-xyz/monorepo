@@ -1,6 +1,5 @@
 export * from "./base";
 export * from "./eth";
-export * from "./form";
 export * from "./gnosis";
 export * from "./hemi";
 export * from "./katana";
