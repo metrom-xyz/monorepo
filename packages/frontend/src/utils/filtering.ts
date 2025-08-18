@@ -1,6 +1,7 @@
 import { isAddress } from "viem";
 import {
     type AmmPool,
+    type CampaignTarget,
     DistributablesType,
     type Erc20Token,
     Status,
@@ -11,6 +12,19 @@ import { type Campaign } from "../types/campaign";
 import dayjs from "dayjs";
 
 export type CampaignSortOptions = "protocol" | "apr" | "rewards";
+
+export function getCampaignTargetField(target: CampaignTarget) {
+    if (target.type === TargetType.AmmPoolLiquidity)
+        return target.pool.dex.name;
+
+    if (
+        target.type === TargetType.LiquityV2Debt ||
+        target.type === TargetType.LiquityV2StabilityPool
+    )
+        return target.brand.name;
+
+    return "";
+}
 
 export function sortCampaigns(
     campaigns: Campaign[],
@@ -46,15 +60,8 @@ export function sortCampaigns(
     switch (sortField) {
         case "protocol": {
             sorted.sort((a, b) => {
-                const targetFieldA =
-                    a.target.type === TargetType.AmmPoolLiquidity
-                        ? a.target.pool.dex.name
-                        : a.target.brand.name;
-
-                const targetFieldB =
-                    b.target.type === TargetType.AmmPoolLiquidity
-                        ? b.target.pool.dex.name
-                        : b.target.brand.name;
+                const targetFieldA = getCampaignTargetField(a.target);
+                const targetFieldB = getCampaignTargetField(b.target);
 
                 return (
                     targetFieldA.localeCompare(targetFieldB, "en") *

@@ -4,6 +4,7 @@ import {
     AmmPoolLiquidityCampaignPreviewPayload,
     type AmmPoolLiquidityCampaignPayloadPart,
     type CampaignPreviewDistributables,
+    EmptyTargetCampaignPreviewPayload,
 } from "@/src/types/campaign";
 import { useTranslations } from "next-intl";
 import { useCallback, useEffect, useMemo, useState } from "react";
@@ -28,12 +29,17 @@ import {
     AMM_SUPPORTS_TOKENS_RATIO,
 } from "@/src/commons";
 import { WeightingStep } from "../../steps/weighting";
+import { EXPERIMENTAL_CHAINS } from "@/src/commons/env";
 
 import styles from "./styles.module.css";
 
 function validatePayload(
+    chainId: number,
     payload: AmmPoolLiquidityCampaignPayload,
-): AmmPoolLiquidityCampaignPreviewPayload | null {
+):
+    | AmmPoolLiquidityCampaignPreviewPayload
+    | EmptyTargetCampaignPreviewPayload
+    | null {
     const {
         dex,
         pool,
@@ -59,6 +65,17 @@ function validatePayload(
     )
         return null;
 
+    // TODO: handle chain type for same chain ids?
+    if (EXPERIMENTAL_CHAINS.includes(chainId)) {
+        return new EmptyTargetCampaignPreviewPayload(
+            startDate,
+            endDate,
+            distributables as CampaignPreviewDistributables,
+            kpiSpecification,
+            restrictions,
+        );
+    }
+
     return new AmmPoolLiquidityCampaignPreviewPayload(
         dex,
         pool,
@@ -75,7 +92,10 @@ function validatePayload(
 interface AmmPoolLiquidityFormProps {
     unsupportedChain: boolean;
     onPreviewClick: (
-        payload: AmmPoolLiquidityCampaignPreviewPayload | null,
+        payload:
+            | AmmPoolLiquidityCampaignPreviewPayload
+            | EmptyTargetCampaignPreviewPayload
+            | null,
     ) => void;
 }
 
@@ -95,8 +115,8 @@ export function AmmPoolLiquidityForm({
 
     const previewPayload = useMemo(() => {
         if (Object.values(errors).some((error) => !!error)) return null;
-        return validatePayload(payload);
-    }, [payload, errors]);
+        return validatePayload(chainId, payload);
+    }, [chainId, payload, errors]);
 
     const noDistributables = useMemo(() => {
         return (

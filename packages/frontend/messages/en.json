@@ -715,9 +715,11 @@
     "campaignActions": {
         "lp": "LP on {dex} {pool}",
         "borrow": "Borrow {debtToken} using {token} on {brand}",
-        "depositStabilityPool": "Deposit to {token} stability pool on {brand}"
+        "depositStabilityPool": "Deposit to {token} stability pool on {brand}",
+        "empty": "Empty target"
     },
     "socialCampaignPreview": {
+        "empty": "No target",
         "title": "{protocol} on {chain}",
         "totalRewards": "Total rewards",
         "startDate": "Start date",

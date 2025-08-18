@@ -8,13 +8,21 @@ import type {
 import type { Specification } from "src/types/campaigns";
 import type { ChainType } from "src/types/commons";
 
-export interface BackendAmmPoolLiquidityTarget {
-    type: "amm-pool-liquidity";
+export interface BaseTarget {
+    chainType: ChainType;
     chainId: number;
+}
+
+export interface BackendEmptyTarget extends BaseTarget {
+    type: "empty";
+}
+
+export interface BackendAmmPoolLiquidityTarget extends BaseTarget {
+    type: "amm-pool-liquidity";
     poolId: Hex;
 }
 
-export interface BaseBackendLiquityTarget<T> {
+export interface BaseBackendLiquityTarget<T> extends BaseTarget {
     type: T;
     chainId: number;
     brand: string;
@@ -65,6 +73,7 @@ export interface BackendCampaign {
     createdAt: number;
     snapshottedAt?: number;
     target:
+        | BackendEmptyTarget
         | BackendAmmPoolLiquidityTarget
         | BackendLiquityV2DebtTarget
         | BackendLiquityV2StabilityPoolTarget;
