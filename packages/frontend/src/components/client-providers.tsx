@@ -4,7 +4,7 @@ import { type ReactNode } from "react";
 import { TokenIconsProvider } from "./token-icon-provider";
 import { Toaster } from "@metrom-xyz/ui";
 import { AptosWalletAdapterProvider } from "@aptos-labs/wallet-adapter-react";
-import { Aptos, AptosConfig, Network } from "@aptos-labs/ts-sdk";
+import { AptosConfig, Network } from "@aptos-labs/ts-sdk";
 import dayjs from "dayjs";
 import duration from "dayjs/plugin/duration";
 import localizedFormat from "dayjs/plugin/localizedFormat";
