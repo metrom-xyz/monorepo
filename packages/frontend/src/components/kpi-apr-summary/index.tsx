@@ -1,9 +1,11 @@
 import { Typography } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
 import { formatPercentage, formatUsdAmount } from "@/src/utils/format";
-import { type Campaign, DistributablesType, TargetType } from "@metrom-xyz/sdk";
+import { DistributablesType } from "@metrom-xyz/sdk";
+import type { Campaign } from "@/src/types/campaign";
 import { useMemo } from "react";
-import { getAmmPoolLiquidityCampaignApr } from "@/src/utils/campaign";
+import { getCampaignApr } from "@/src/utils/campaign";
+import { getCampaignAprTargetText } from "@/src/utils/kpi";
 
 import styles from "./styles.module.css";
 
@@ -15,7 +17,6 @@ interface KpiAprSummaryProps {
 export function KpiAprSummary({ campaign }: KpiAprSummaryProps) {
     const t = useTranslations("kpiAprSummary");
 
-    const ammCampaign = campaign?.isTargeting(TargetType.AmmPoolLiquidity);
     const tokensCampaign = campaign?.isDistributing(DistributablesType.Tokens);
 
     const maxApr = useMemo(() => {
@@ -24,19 +25,16 @@ export function KpiAprSummary({ campaign }: KpiAprSummaryProps) {
 
         const { kpi } = campaign.specification;
 
-        if (ammCampaign)
-            return getAmmPoolLiquidityCampaignApr({
-                usdRewards: campaign.distributables.amountUsdValue,
-                duration: campaign.to - campaign.from,
-                poolUsdTvl: kpi.goal.upperUsdTarget,
-                poolLiquidity: campaign.target.pool.liquidity,
-                kpiSpecification: kpi,
-                // TODO: add liquidity in range and pool liquidity?
-                // range: liquidityInRange,
-            });
-
-        return undefined;
-    }, [campaign, ammCampaign, tokensCampaign]);
+        return getCampaignApr({
+            usdRewards: campaign.distributables.amountUsdValue,
+            duration: campaign.to - campaign.from,
+            usdTvl: kpi.goal.upperUsdTarget,
+            liquidity: campaign.getTargetLiquidity(),
+            kpiSpecification: kpi,
+            // TODO: add liquidity in range?
+            // range: liquidityInRange,
+        });
+    }, [campaign, tokensCampaign]);
 
     const lowerBound = campaign?.specification?.kpi?.goal.lowerUsdTarget;
     const upperBound = campaign?.specification?.kpi?.goal.upperUsdTarget;
@@ -45,7 +43,8 @@ export function KpiAprSummary({ campaign }: KpiAprSummaryProps) {
 
     return (
         <Typography size="sm" light className={styles.text}>
-            {t.rich("ammPoolLiquidity", {
+            {t.rich("text", {
+                target: t(getCampaignAprTargetText(campaign) as any),
                 lowerBound: formatUsdAmount({
                     amount: lowerBound,
                     cutoff: false,
