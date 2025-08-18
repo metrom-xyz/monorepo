@@ -4,6 +4,7 @@ import {
     type LiquityV2CampaignPayload,
     type LiquityV2CampaignPayloadPart,
     type CampaignPreviewDistributables,
+    EmptyTargetCampaignPreviewPayload,
 } from "@/src/types/campaign";
 import { useTranslations } from "next-intl";
 import { useCallback, useEffect, useMemo, useState } from "react";
@@ -20,12 +21,14 @@ import { LiquityV2ActionStep } from "../../steps/liquity-v2-action-step";
 import { LiquityV2CollateralStep } from "../../steps/liquity-v2-collateral-step";
 import { LiquityV2Action } from "@/src/types/common";
 import { KpiStep } from "../../steps/kpi-step";
+import { EXPERIMENTAL_CHAINS } from "@/src/commons/env";
 
 import styles from "./styles.module.css";
 
 function validatePayload(
+    chainId: number,
     payload: LiquityV2CampaignPayload,
-): LiquityV2CampaignPreviewPayload | null {
+): LiquityV2CampaignPreviewPayload | EmptyTargetCampaignPreviewPayload | null {
     const {
         brand,
         action,
@@ -58,6 +61,17 @@ function validatePayload(
     )
         return null;
 
+    // TODO: handle chain type for same chain ids?
+    if (EXPERIMENTAL_CHAINS.includes(chainId)) {
+        return new EmptyTargetCampaignPreviewPayload(
+            startDate,
+            endDate,
+            distributables as CampaignPreviewDistributables,
+            kpiSpecification,
+            restrictions,
+        );
+    }
+
     return new LiquityV2CampaignPreviewPayload(
         brand,
         action,
@@ -72,7 +86,12 @@ function validatePayload(
 
 interface LiquityV2ForksFormProps {
     unsupportedChain: boolean;
-    onPreviewClick: (payload: LiquityV2CampaignPreviewPayload | null) => void;
+    onPreviewClick: (
+        payload:
+            | LiquityV2CampaignPreviewPayload
+            | EmptyTargetCampaignPreviewPayload
+            | null,
+    ) => void;
 }
 
 const initialPayload: LiquityV2CampaignPayload = {
@@ -91,8 +110,8 @@ export function LiquityV2ForksForm({
 
     const previewPayload = useMemo(() => {
         if (Object.values(errors).some((error) => !!error)) return null;
-        return validatePayload(payload);
-    }, [payload, errors]);
+        return validatePayload(chainId, payload);
+    }, [chainId, payload, errors]);
 
     const noDistributables = useMemo(() => {
         return (
