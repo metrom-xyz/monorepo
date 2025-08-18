@@ -7,7 +7,6 @@ import { getChainData } from "../../utils/chain";
 import type { UseReimbursementsParams, UseReimbursementsReturnValue } from ".";
 import { useWallet } from "@aptos-labs/wallet-adapter-react";
 import type { InputViewFunctionData, MoveFunctionId } from "@aptos-labs/ts-sdk";
-import { ChainType, type Reimbursement } from "@metrom-xyz/sdk";
 import { useClients } from "@aptos-labs/react";
 
 interface Payloads {
@@ -16,34 +15,6 @@ interface Payloads {
 }
 
 type QueryKey = [string, Address | undefined];
-
-const rawReimbursements: Reimbursement[] = [
-    {
-        chainId: 197,
-        chainType: ChainType.Aptos,
-        campaignId:
-            "0xf9b18a4918b3965faf3d4ed06a7215999e5e2c0e6546dec28f92d97b49d51495",
-        token: {
-            decimals: 18,
-            symbol: "tDAI",
-            name: "Test DAI",
-            usdPrice: 0.999648,
-            address:
-                "0x681c42269c3ae5b6703f0bdef4a5573998997903f77bab75f40e2c3297e6be9d",
-        },
-        amount: {
-            raw: 1000000000000000000n,
-            formatted: 1,
-            usdValue: 1,
-        },
-        proof: [
-            "0x0216b99ab038419061fe7f0492e92a901960c8183e6cf87254793c233d77cde4",
-            "0xe154a39fb499261bcb3d242a24375029e6a4d833f97a7f224f3e31db419d870c",
-            "0x6a3f079eb5d9693807c315f931882d9007ff05e5d92c4492a1dc4a2c0c4d56ec",
-            "0x4729280108c9d41de63c59f6c0137d6bf7587a315c74f85b142fad8c6e47dec1",
-        ],
-    },
-];
 
 export function useReimbursementsMvm({
     enabled = true,
@@ -58,7 +29,7 @@ export function useReimbursementsMvm({
     const address = account?.address.toStringLong();
 
     const {
-        // data: rawReimbursements,
+        data: rawReimbursements,
         isError: reimbursementsErrored,
         isLoading: loadingReimbursements,
     } = useQuery({
@@ -69,9 +40,7 @@ export function useReimbursementsMvm({
 
             try {
                 const rawClaims = await METROM_API_CLIENT.fetchReimbursements({
-                    // address: account,
-                    // FIXME: remove, just for testing
-                    address: "0xc50275DAC18348425b7815BcdCC6dC82e0838CC5",
+                    address: account,
                 });
                 return rawClaims;
             } catch (error) {

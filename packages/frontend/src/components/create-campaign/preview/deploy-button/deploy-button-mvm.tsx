@@ -45,7 +45,7 @@ export function DeployButtonMvm({
             if (!chainData || !address) return null;
 
             const data = buildCampaignDataBundleMvm(payload);
-            if (!data) return null;
+            if (data === null) return null;
 
             const specHash =
                 specificationHash === zeroHash
@@ -148,6 +148,8 @@ export function DeployButtonMvm({
         signAndSubmitTransactionAsync,
         onCreate,
     ]);
+
+    console.log({ simulateCreateErrored, simulateCreateError });
 
     return (
         <Button

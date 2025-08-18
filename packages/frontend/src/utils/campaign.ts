@@ -75,6 +75,8 @@ export function buildCampaignDataBundleMvm(payload: CampaignPreviewPayload) {
             hexToBytes(stringToHex(payload.brand.slug).padEnd(66, "0") as Hex),
         );
         serializer.serializeBytes(hexToBytes(payload.collateral.token.address));
+    } else if (payload instanceof EmptyTargetCampaignPreviewPayload) {
+        return [];
     } else return null;
 
     return serializer.toUint8Array();

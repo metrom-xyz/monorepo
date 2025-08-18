@@ -4,7 +4,6 @@ import type { RewardToken } from "@metrom-xyz/sdk";
 import { useQuery } from "@tanstack/react-query";
 import type { HookBaseParams } from "../types/hooks";
 import { useChainId } from "./use-chain-id";
-import { APTOS } from "../commons/env";
 
 interface UseRewardTokensParams extends HookBaseParams {}
 
@@ -23,19 +22,6 @@ export function useRewardTokens({
         queryFn: async ({ queryKey }) => {
             const [, chainId] = queryKey as QueryKey;
             try {
-                // FIXME: remove
-                if (APTOS)
-                    return [
-                        {
-                            address:
-                                "0x000000000000000000000000000000000000000000000000000000000000000a",
-                            decimals: 8,
-                            symbol: "APT",
-                            minimumRate: { formatted: 1, raw: 100000000n },
-                            name: "Aptos Coin",
-                            usdPrice: 5.1898,
-                        },
-                    ] as RewardToken[];
                 return await METROM_API_CLIENT.fetchRewardTokens({
                     chainId,
                     chainType: CHAIN_TYPE,
