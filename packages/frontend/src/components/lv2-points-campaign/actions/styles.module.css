@@ -13,7 +13,7 @@
 }
 
 .actionsGroup {
-    @apply flex flex-col gap-12;
+    @apply h-fit flex flex-col gap-12;
 }
 
 .actionsGroupHeader {

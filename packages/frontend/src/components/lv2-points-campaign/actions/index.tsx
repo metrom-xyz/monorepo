@@ -101,21 +101,23 @@ const ActionsGroup = ({ group, protocol, chain }: ActionsGroupProps) => {
                 </Typography>
                 <LiquidityLandChip boost={group.boost} protocol={protocol} />
             </div>
-            <div className={styles.actionsWrapper}>
-                <div className={styles.actionsListHeader}>
-                    <Typography weight="medium" light uppercase size="sm">
-                        {t("action")}
-                    </Typography>
-                    <Typography weight="medium" light uppercase size="sm">
-                        {t("multiplier")}
-                    </Typography>
+            {group.actions.length > 0 && (
+                <div className={styles.actionsWrapper}>
+                    <div className={styles.actionsListHeader}>
+                        <Typography weight="medium" light uppercase size="sm">
+                            {t("action")}
+                        </Typography>
+                        <Typography weight="medium" light uppercase size="sm">
+                            {t("multiplier")}
+                        </Typography>
+                    </div>
+                    <div className={styles.actionsList}>
+                        {group.actions.map((action, index) => (
+                            <Action key={index} chain={chain} {...action} />
+                        ))}
+                    </div>
                 </div>
-                <div className={styles.actionsList}>
-                    {group.actions.map((action, index) => (
-                        <Action key={index} chain={chain} {...action} />
-                    ))}
-                </div>
-            </div>
+            )}
         </Card>
     );
 };
