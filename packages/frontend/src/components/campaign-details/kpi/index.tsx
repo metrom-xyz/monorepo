@@ -15,6 +15,7 @@ import { useKpiMeasurements } from "@/src/hooks/useKpiMeasurements";
 import { DistributionChart } from "./distribution-chart";
 import { AverageDistributionChart } from "./average-distribution-chart";
 import { KpiAprSummary } from "../../kpi-apr-summary";
+import type { Campaign } from "@/src/types/campaign";
 
 import styles from "./styles.module.css";
 
@@ -55,22 +56,13 @@ export function Kpi({ campaign, loading }: KpiProps) {
 
     const reachedGoalPercentage = measurement || 0;
 
-    let usdTvl;
-    if (campaign.status === Status.Ended) {
+    let usdTvl: number | undefined;
+    if (campaign.status === Status.Ended)
         usdTvl =
             loadingKpiMeasurements || kpiMeasurements.length === 0
                 ? undefined
                 : kpiMeasurements[kpiMeasurements.length - 1].value;
-    } else if (campaign.isTargeting(TargetType.AmmPoolLiquidity)) {
-        usdTvl = campaign.target.pool.usdTvl;
-    } else if (campaign.isTargeting(TargetType.LiquityV2Debt)) {
-        usdTvl = campaign.target.collateral.usdMintedDebt;
-    } else if (campaign.isTargeting(TargetType.LiquityV2StabilityPool)) {
-        usdTvl = campaign.target.collateral.usdStabilityPoolDebt;
-    } else {
-        console.warn(`Campaign type ${campaign.target} does not support KPIs`);
-        return null;
-    }
+    else usdTvl = (campaign as Campaign).getTargetUsdTvl();
 
     return (
         <div className={styles.root}>
@@ -80,7 +72,7 @@ export function Kpi({ campaign, loading }: KpiProps) {
                 </Typography>
                 {campaign.status !== Status.Ended && (
                     <InfoTooltip placement="top-start">
-                        <KpiAprSummary campaign={campaign} />
+                        <KpiAprSummary campaign={campaign as Campaign} />
                     </InfoTooltip>
                 )}
             </div>

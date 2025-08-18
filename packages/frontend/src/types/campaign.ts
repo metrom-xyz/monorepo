@@ -306,6 +306,32 @@ export class Campaign extends SdkCampaign {
             }
         }
     }
+
+    getTargetUsdTvl(): number | undefined {
+        switch (this.target.type) {
+            case TargetType.AmmPoolLiquidity:
+                return this.target.pool.usdTvl;
+            case TargetType.LiquityV2Debt:
+                return this.target.collateral.usdMintedDebt;
+            case TargetType.LiquityV2StabilityPool:
+                return this.target.collateral.usdStabilityPoolDebt;
+            default:
+                return undefined;
+        }
+    }
+
+    getTargetLiquidity(): bigint | undefined {
+        switch (this.target.type) {
+            case TargetType.AmmPoolLiquidity:
+                return this.target.pool.liquidity;
+            case TargetType.LiquityV2Debt:
+                return this.target.collateral.liquidity;
+            case TargetType.LiquityV2StabilityPool:
+                return this.target.collateral.liquidity;
+            default:
+                return undefined;
+        }
+    }
 }
 
 export interface DistributablesNamedCampaign<T extends DistributablesType>

@@ -43,7 +43,7 @@ export function Apr({ campaignId, chainId, chainType, apr, kpi }: AprProps) {
         id: ammCampaign ? campaign.target.pool.id : undefined,
         chainId: campaign?.target.chainId,
         chainType: campaign?.chainType,
-        enabled: campaign && popover && kpi !== undefined,
+        enabled: campaign && popover && kpi !== undefined && ammCampaign,
     });
 
     function handlePopoverOpen() {
@@ -59,7 +59,8 @@ export function Apr({ campaignId, chainId, chainType, apr, kpi }: AprProps) {
         }, 100);
     }
 
-    const loading = loadingCampaign || loadingPool || !campaign || !pool;
+    const loading =
+        loadingCampaign || loadingPool || !campaign || (ammCampaign && !pool);
     const lowerBound = campaign?.specification?.kpi?.goal.lowerUsdTarget;
     const upperBound = campaign?.specification?.kpi?.goal.upperUsdTarget;
     const minimumPayout = campaign?.specification?.kpi?.minimumPayoutPercentage;
@@ -88,7 +89,7 @@ export function Apr({ campaignId, chainId, chainType, apr, kpi }: AprProps) {
                             <div className={styles.chartWrapper}>
                                 <KpiSimulationChart
                                     loading={loading}
-                                    usdTvl={pool.usdTvl}
+                                    usdTvl={campaign.getTargetUsdTvl()}
                                     campaignDurationSeconds={
                                         campaign.to - campaign.from
                                     }

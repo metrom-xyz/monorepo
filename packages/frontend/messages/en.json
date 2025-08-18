@@ -31,7 +31,11 @@
         "retry": "Try again"
     },
     "kpiAprSummary": {
-        "ammPoolLiquidity": "The KPI rewards start distributing when the TVL of the pool is <bold>{lowerBound}</bold> and has a possibility to earn APR up to <apr>{maxApr}</apr> at the target TVL of <bold>{upperBound}</bold>."
+        "text": "The KPI rewards start distributing when the TVL {target} is <bold>{lowerBound}</bold> and has a possibility to earn APR up to <apr>{maxApr}</apr> at the target TVL of <bold>{upperBound}</bold>.",
+        "fallback": "",
+        "pool": "of the pool",
+        "debt": "of the debt",
+        "stabilityPool": "of the stability pool"
     },
     "allCampaigns": {
         "title": "all campaigns",

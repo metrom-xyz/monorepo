@@ -188,11 +188,11 @@ export function getCampaignPreviewApr(
             rewardsUsdValue += reward.amount.usdValue;
         }
 
-        return getAmmPoolLiquidityCampaignApr({
+        return getCampaignApr({
             usdRewards: rewardsUsdValue,
             duration,
-            poolUsdTvl: payload.pool.usdTvl,
-            poolLiquidity: payload.pool.liquidity,
+            usdTvl: payload.pool.usdTvl,
+            liquidity: payload.pool.liquidity,
             kpiSpecification: payload.kpiSpecification,
             range,
             liquidityByAddresses,
@@ -232,37 +232,36 @@ export function getCampaignPreviewApr(
     }
 }
 
-export function getAmmPoolLiquidityCampaignApr({
+export function getCampaignApr({
     duration,
     usdRewards,
-    poolUsdTvl,
-    poolLiquidity,
+    usdTvl,
+    liquidity,
     kpiSpecification,
     range,
     liquidityByAddresses,
 }: {
     duration?: number;
     usdRewards?: number;
-    poolUsdTvl?: number;
-    poolLiquidity?: bigint;
+    usdTvl?: number;
+    liquidity?: bigint;
     kpiSpecification?: KpiSpecification;
     range?: LiquidityInRange;
     liquidityByAddresses?: LiquidityByAddresses;
 }) {
-    if (!poolUsdTvl || !usdRewards || !duration || !poolLiquidity)
-        return undefined;
+    if (!usdTvl || !usdRewards || !duration || !liquidity) return undefined;
 
     let distributableUsdRewards = usdRewards;
     if (kpiSpecification) {
         distributableUsdRewards *= getDistributableRewardsPercentage(
-            poolUsdTvl,
+            usdTvl,
             kpiSpecification.goal.lowerUsdTarget,
             kpiSpecification.goal.upperUsdTarget,
             kpiSpecification.minimumPayoutPercentage,
         );
     }
 
-    let totalUsdTvl = poolUsdTvl;
+    let totalUsdTvl = usdTvl;
     if (range) {
         const multiplier =
             Math.min(
@@ -272,20 +271,20 @@ export function getAmmPoolLiquidityCampaignApr({
                 1_000_000,
             ) / 1_000_000;
 
-        totalUsdTvl = poolUsdTvl * multiplier;
+        totalUsdTvl = usdTvl * multiplier;
     } else if (liquidityByAddresses) {
         const adjustedLiquidity =
             liquidityByAddresses.type === RestrictionType.Blacklist
-                ? poolLiquidity - liquidityByAddresses.liquidity
+                ? liquidity - liquidityByAddresses.liquidity
                 : liquidityByAddresses.liquidity;
 
         const multiplier =
             Math.min(
-                Number((adjustedLiquidity * 1_000_000n) / poolLiquidity),
+                Number((adjustedLiquidity * 1_000_000n) / liquidity),
                 1_000_000,
             ) / 1_000_000;
 
-        totalUsdTvl = poolUsdTvl * multiplier;
+        totalUsdTvl = usdTvl * multiplier;
     }
 
     const rewardsRatio = distributableUsdRewards / totalUsdTvl;
