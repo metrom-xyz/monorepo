@@ -719,7 +719,7 @@
         "empty": "Empty target"
     },
     "socialCampaignPreview": {
-        "empty": "No target",
+        "empty": "Empty target",
         "title": "{protocol} on {chain}",
         "totalRewards": "Total rewards",
         "startDate": "Start date",
