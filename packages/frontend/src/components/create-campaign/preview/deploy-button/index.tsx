@@ -1,5 +1,8 @@
 import { APTOS } from "@/src/commons/env";
-import type { CampaignPreviewPayload } from "@/src/types/campaign";
+import {
+    EmptyTargetCampaignPreviewPayload,
+    type CampaignPreviewPayload,
+} from "@/src/types/campaign";
 import type { Hex } from "viem";
 import { DeployButtonEvm } from "./deploy-button-evm";
 import { DeployButtonMvm } from "./deploy-button-mvm";

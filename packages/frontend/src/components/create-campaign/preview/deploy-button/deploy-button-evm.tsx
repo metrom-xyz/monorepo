@@ -76,7 +76,7 @@ export function DeployButtonEvm({
         let pointArgs = [];
 
         const data = buildCampaignDataBundleEvm(payload);
-        if (!data) return [[], []];
+        if (data === null) return [[], []];
 
         if (payload.isDistributing(DistributablesType.Tokens))
             tokenArgs.push({
