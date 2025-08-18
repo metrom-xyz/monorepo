@@ -1,6 +1,6 @@
 import classNames from "classnames";
 import { ErrorIcon } from "@/src/assets/error-icon";
-import { useRef, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import { PopoverPicker } from "./popover-picker";
 import { DrawerPicker } from "./drawer-picker";
 import { useClickAway } from "react-use";
@@ -22,7 +22,7 @@ export function NetworkSelectMvm() {
 
     const activeChains = useActiveChains();
     const selectedChainId = useChainIdMvm();
-    const { changeNetwork } = useWallet();
+    const { changeNetwork, connected } = useWallet();
     const chainData = useChainData({ chainId: selectedChainId });
     const chainSupported = useIsChainSupported({ chainId: selectedChainId });
 
@@ -38,13 +38,16 @@ export function NetworkSelectMvm() {
         setPickerOpen((prev) => !prev);
     }
 
-    function handleNetworkOnChange(chainId: number) {
-        const network = chainIdToAptosNetwork(chainId);
-        if (!network) return;
+    const handleNetworkOnChange = useCallback(
+        async (chainId: number) => {
+            const network = chainIdToAptosNetwork(chainId);
+            if (!network) return;
 
-        changeNetwork(network);
-        setPickerOpen(false);
-    }
+            if (connected) await changeNetwork(network);
+            setPickerOpen(false);
+        },
+        [connected, changeNetwork],
+    );
 
     return (
         <>
