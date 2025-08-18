@@ -38,7 +38,7 @@ export function Activity({ chainId, transaction, payload }: ActivityProps) {
 
     const time = dayjs.unix(transaction.timestamp).to(dayjs(), true);
     const timeAgo = t("timeAgo", { time });
-    const explorerLink = getTxExplorerLink(transaction.hash, chainId);
+    const explorerLink = getTxExplorerLink(transaction.id, chainId);
 
     const { Icon, title } =
         payload.type === "create-campaign"
