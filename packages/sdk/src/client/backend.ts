@@ -21,6 +21,7 @@ import {
     Campaign,
     type LiquityV2DebtTarget,
     type LiquityV2StabilityPoolTarget,
+    type EmptyTarget,
     type PointDistributables,
     type Restrictions,
     RestrictionType,
@@ -904,6 +905,7 @@ function processCampaignsResponse(
                             backendCampaign.target.brand as SupportedLiquityV2
                         ],
                     },
+                    chainType: backendCampaign.target.chainType,
                     chainId: backendCampaign.target.chainId,
                     collateral: resolveLiquityV2Collateral(
                         response.resolvedLiquityV2Collaterals,
@@ -927,6 +929,7 @@ function processCampaignsResponse(
                             backendCampaign.target.brand as SupportedLiquityV2
                         ],
                     },
+                    chainType: backendCampaign.target.chainType,
                     chainId: backendCampaign.target.chainId,
                     collateral: resolveLiquityV2Collateral(
                         response.resolvedLiquityV2Collaterals,
@@ -939,6 +942,11 @@ function processCampaignsResponse(
                     ),
                 };
                 break;
+            }
+            case "empty": {
+                target = <EmptyTarget>{
+                    ...backendCampaign.target,
+                };
             }
         }
 

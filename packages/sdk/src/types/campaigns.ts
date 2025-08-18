@@ -12,6 +12,7 @@ import type { SupportedLiquityV2 } from "src/commons";
 import type { LiquityV2Collateral } from "./liquity-v2";
 
 export enum TargetType {
+    Empty = "empty",
     AmmPoolLiquidity = "amm-pool-liquidity",
     LiquityV2Debt = "liquity-v2-debt",
     LiquityV2StabilityPool = "liquity-v2-stability-pool",
@@ -21,22 +22,29 @@ export type LiquityV2TargetType =
     | TargetType.LiquityV2Debt
     | TargetType.LiquityV2StabilityPool;
 
-export interface AmmPoolLiquidityTarget {
-    type: TargetType.AmmPoolLiquidity;
+export interface BaseTarget {
+    chainType: ChainType;
     chainId: number;
+}
+
+export interface EmptyTarget extends BaseTarget {
+    type: "empty";
+}
+
+export interface AmmPoolLiquidityTarget extends BaseTarget {
+    type: TargetType.AmmPoolLiquidity;
     pool: AmmPool;
+}
+
+export interface LiquityV2Target<T> extends BaseTarget {
+    type: T;
+    brand: Brand<SupportedLiquityV2>;
+    collateral: LiquityV2Collateral;
 }
 
 export interface LiquityV2CollateralWithStabilityPoolDeposit
     extends Erc20Token {
     usdDeposit: number;
-}
-
-export interface LiquityV2Target<T> {
-    type: T;
-    chainId: number;
-    brand: Brand<SupportedLiquityV2>;
-    collateral: LiquityV2Collateral;
 }
 
 export type LiquityV2DebtTarget = LiquityV2Target<TargetType.LiquityV2Debt>;
@@ -45,6 +53,7 @@ export type LiquityV2StabilityPoolTarget =
     LiquityV2Target<TargetType.LiquityV2StabilityPool>;
 
 export type CampaignTarget =
+    | EmptyTarget
     | AmmPoolLiquidityTarget
     | LiquityV2DebtTarget
     | LiquityV2StabilityPoolTarget;

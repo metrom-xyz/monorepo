@@ -3,6 +3,7 @@ import {
     AmmPoolLiquidityCampaignPreviewPayload,
     CampaignKind,
     LiquityV2CampaignPreviewPayload,
+    EmptyTargetCampaignPreviewPayload,
     type CampaignPreviewPayload,
 } from "@/src/types/campaign";
 import type { LocalizedMessage } from "@/src/types/utils";
@@ -17,8 +18,6 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 import { MetromLightLogo } from "@/src/assets/metrom-light-logo";
 import { useRouter } from "@/src/i18n/routing";
-import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
-import { ApproveTokensButton } from "./approve-tokens-button";
 import { Rewards } from "./rewards";
 import { Header } from "./header";
 import { formatAmount, formatUsdAmount } from "@/src/utils/format";
@@ -27,7 +26,6 @@ import {
     buildSpecificationBundle,
     getCampaignPreviewApr,
 } from "@/src/utils/campaign";
-import { trackFathomEvent } from "@/src/utils/fathom";
 import {
     DistributablesType,
     SERVICE_URLS,
@@ -38,15 +36,23 @@ import { ENVIRONMENT, SAFE } from "@/src/commons/env";
 import { Kpi } from "./kpi";
 import { AprChip } from "../../apr-chip";
 import { Range } from "./range";
-import { formatUnits, parseUnits, zeroHash, type Hex } from "viem";
-import { encodeFunctionData } from "viem/utils";
-import { type BaseTransaction } from "@safe-global/safe-apps-sdk";
+import {
+    zeroHash,
+    type Hex,
+    parseUnits,
+    formatUnits,
+    encodeFunctionData,
+} from "viem";
 import { useLiquidityInRange } from "@/src/hooks/useLiquidityInRange";
-import { SAFE_APP_SDK } from "@/src/commons";
-import { useChainData } from "@/src/hooks/useChainData";
 import { Weighting } from "./weighting";
 import { Restrictions } from "./restrictions";
 import { useLiquidityByAddresses } from "@/src/hooks/useLiquidityByAddresses";
+import { useChainData } from "@/src/hooks/useChainData";
+import type { BaseTransaction } from "@safe-global/safe-apps-sdk";
+import { trackFathomEvent } from "@/src/utils/fathom";
+import { SAFE_APP_SDK } from "@/src/commons";
+import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
+import { ApproveTokensButton } from "./approve-tokens-button";
 
 import styles from "./styles.module.css";
 
@@ -147,6 +153,8 @@ export function CampaignPreview({
 
     const pointsCampaign = payload.isDistributing(DistributablesType.Points);
     const tokensCampaign = payload.isDistributing(DistributablesType.Tokens);
+    const emptyTargetCampaign =
+        payload instanceof EmptyTargetCampaignPreviewPayload;
     const kpi = !!payload.kpiSpecification && tokensCampaign;
 
     const kpiUsdTvl = useMemo(() => {
@@ -175,7 +183,7 @@ export function CampaignPreview({
         let pointArgs = [];
 
         const data = buildCampaignDataBundle(payload);
-        if (!data) return [[], []];
+        if (data === null) return [[], []];
 
         if (payload.isDistributing(DistributablesType.Tokens))
             tokenArgs.push({
@@ -387,7 +395,7 @@ export function CampaignPreview({
                                 })}
                             />
                         )}
-                        {tokensCampaign && (
+                        {!emptyTargetCampaign && tokensCampaign && (
                             <TextField
                                 boxed
                                 size="xl2"

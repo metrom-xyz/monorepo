@@ -58,6 +58,7 @@ export enum CampaignKind {
     AmmPoolLiquidity = 1,
     LiquityV2Debt = 2,
     LiquityV2StabilityPool = 3,
+    EmptyTarget = 5,
 }
 
 export enum CampaignType {
@@ -181,9 +182,19 @@ export class LiquityV2CampaignPreviewPayload extends BaseCampaignPreviewPayload 
     }
 }
 
+export class EmptyTargetCampaignPreviewPayload extends BaseCampaignPreviewPayload {
+    public readonly kind: CampaignKind = CampaignKind.EmptyTarget;
+    constructor(
+        ...baseArgs: ConstructorParameters<typeof BaseCampaignPreviewPayload>
+    ) {
+        super(...baseArgs);
+    }
+}
+
 export type CampaignPreviewPayload =
     | AmmPoolLiquidityCampaignPreviewPayload
-    | LiquityV2CampaignPreviewPayload;
+    | LiquityV2CampaignPreviewPayload
+    | EmptyTargetCampaignPreviewPayload;
 
 export interface DistributablesCampaignPreviewPayload<
     T extends DistributablesType,

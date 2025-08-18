@@ -12,6 +12,7 @@ import {
 import {
     AmmPoolLiquidityCampaignPreviewPayload,
     LiquityV2CampaignPreviewPayload,
+    EmptyTargetCampaignPreviewPayload,
     type BaseCampaignPreviewPayload,
     type CampaignPreviewPayload,
 } from "../types/campaign";
@@ -46,6 +47,8 @@ export function buildCampaignDataBundle(payload: CampaignPreviewPayload) {
                 payload.collateral.token.address,
             ],
         );
+    } else if (payload instanceof EmptyTargetCampaignPreviewPayload) {
+        return "0x";
     } else return null;
 }
 
@@ -121,6 +124,12 @@ export function getCampaignName(
                 token: campaign.target.collateral.token.symbol,
             });
         }
+        case TargetType.Empty: {
+            return t("campaignActions.empty");
+        }
+        default: {
+            return "-";
+        }
     }
 }
 
@@ -151,6 +160,12 @@ export async function getSocialPreviewCampaignName(
                 protocol: campaign.target.brand.name,
                 chain,
             });
+        }
+        case TargetType.Empty: {
+            return t("socialCampaignPreview.empty");
+        }
+        default: {
+            return "-";
         }
     }
 }
