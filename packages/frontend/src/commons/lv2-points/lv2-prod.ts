@@ -50,20 +50,19 @@ export const lv2PointsCampaignsProd: Record<
                     },
                 ],
             },
-            [Lv2PointsCampaign2Action.StabilityPool]: {
-                title: "Liquity V2",
-                description:
-                    "Users get incentivized to deposit liquidity on Liquidy V2.",
-                actions: [
-                    {
-                        name: "2.75% of EBISU will be allocated to Liquity v2 BOLD users according to the Liquity v2 user scores",
-                        href: "https://dune.com/liquity/v2-leaderboard",
-                        targets: [],
-                        minimumDuration: 0,
-                        multiplier: 1,
-                    },
-                ],
-            },
+            [Lv2PointsCampaign2Action.StabilityPool]: null,
+            // title: "Liquity V2",
+            // description:
+            //     "Users get incentivized to deposit liquidity on Liquidy V2.",
+            // actions: [
+            //     {
+            //         name: "2.75% of EBISU will be allocated to Liquity v2 BOLD users according to the Liquity v2 user scores",
+            //         href: "https://dune.com/liquity/v2-leaderboard",
+            //         targets: [],
+            //         minimumDuration: 0,
+            //         multiplier: 1,
+            //     },
+            // ],
             [Lv2PointsCampaign2Action.Debt]: {
                 title: "Borrow",
                 description:
