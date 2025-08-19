@@ -1,10 +1,11 @@
 import { type Activity } from "@metrom-xyz/sdk";
 import { CHAIN_TYPE, METROM_API_CLIENT } from "../commons";
-import { useAccount, useChainId } from "wagmi";
 import { useQuery } from "@tanstack/react-query";
 import type { Address } from "viem";
 import type { HookBaseParams } from "../types/hooks";
 import { useActiveChains } from "./use-active-chains";
+import { useChainId } from "./use-chain-id";
+import { useAccount } from "./use-account";
 
 interface UseActivitiesParams extends HookBaseParams {}
 
