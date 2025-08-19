@@ -30,7 +30,24 @@ export const lv2PointsCampaignsProd: Record<
         to: 1761915600,
         leaderboard: false,
         actions: {
-            [Lv2PointsCampaign2Action.Liquidity]: null,
+            [Lv2PointsCampaign2Action.Liquidity]: {
+                title: "Liquidity",
+                description:
+                    "Users get incentivized to provide liquidity in pools in AMMs.",
+                actions: [
+                    {
+                        targets: [
+                            "0x09fD37d9AA613789c517e76DF1c53aEce2b60Df4",
+                            "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
+                        ],
+                        minimumDuration: 3600,
+                        name: "ebUSD/USDC LP",
+                        description: "Curve",
+                        multiplier: 5,
+                        href: "https://www.curve.finance/dex/ethereum/pools/factory-stable-ng-487/deposit/",
+                    },
+                ],
+            },
             [Lv2PointsCampaign2Action.NetSwapVolume]: {
                 title: "Net swap volume",
                 description:
@@ -50,7 +67,41 @@ export const lv2PointsCampaignsProd: Record<
                     },
                 ],
             },
-            [Lv2PointsCampaign2Action.StabilityPool]: null,
+            [Lv2PointsCampaign2Action.StabilityPool]: {
+                title: "Deposit to stability pool",
+                description:
+                    "Users get incentivized to deposit liquidity in stability pools.",
+                actions: [
+                    {
+                        targets: ["0xcd5fe23c85820f7b72d0926fc9b05b43e359b7ee"],
+                        minimumDuration: 3600,
+                        name: "weETH stability pool",
+                        multiplier: 1,
+                        href: "https://ebisu.money/earn/weeth",
+                    },
+                    {
+                        targets: ["0x9d39a5de30e57443bff2a8307a4256c8797a3497"],
+                        minimumDuration: 3600,
+                        name: "sUSDe stability pool",
+                        multiplier: 1,
+                        href: "https://ebisu.money/earn/susde",
+                    },
+                    {
+                        targets: ["0x8236a87084f8b84306f72007f36f2618a5634494"],
+                        minimumDuration: 3600,
+                        name: "LBTC stability pool",
+                        multiplier: 1,
+                        href: "https://ebisu.money/earn/lbtc",
+                    },
+                    {
+                        targets: ["0x2260fac5e5542a773aa44fbcfedf7c193bc2c599"],
+                        minimumDuration: 3600,
+                        name: "WBTC stability pool",
+                        multiplier: 1,
+                        href: "https://ebisu.money/earn/wbtc",
+                    },
+                ],
+            },
             // title: "Liquity V2",
             // description:
             //     "Users get incentivized to deposit liquidity on Liquidy V2.",
