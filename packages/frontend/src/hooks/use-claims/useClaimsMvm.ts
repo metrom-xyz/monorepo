@@ -1,4 +1,4 @@
-import { formatUnits, type Address } from "viem";
+import { formatUnits, type Address, hexToBytes } from "viem";
 import { METROM_API_CLIENT } from "../../commons";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
@@ -65,7 +65,7 @@ export function useClaimsMvm({
                 return {
                     function: moveFunction,
                     functionArguments: [
-                        rawClaim.campaignId,
+                        hexToBytes(rawClaim.campaignId),
                         rawClaim.token.address,
                         address,
                     ],

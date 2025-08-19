@@ -1,4 +1,4 @@
-import { formatUnits, type Address, zeroAddress } from "viem";
+import { formatUnits, type Address, hexToBytes } from "viem";
 import { METROM_API_CLIENT } from "../../commons";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
@@ -6,7 +6,11 @@ import type { ReimbursementsWithRemaining } from "../../types/campaign";
 import { getChainData } from "../../utils/chain";
 import type { UseReimbursementsParams, UseReimbursementsReturnValue } from ".";
 import { useWallet } from "@aptos-labs/wallet-adapter-react";
-import type { InputViewFunctionData, MoveFunctionId } from "@aptos-labs/ts-sdk";
+import {
+    type InputViewFunctionData,
+    type MoveFunctionId,
+    AccountAddress,
+} from "@aptos-labs/ts-sdk";
 import { useClients } from "@aptos-labs/react";
 
 interface Payloads {
@@ -71,15 +75,15 @@ export function useReimbursementsMvm({
             recovered.push({
                 function: moveFunction,
                 functionArguments: [
-                    rawReimbursement.campaignId,
+                    hexToBytes(rawReimbursement.campaignId),
                     rawReimbursement.token.address,
-                    zeroAddress,
+                    AccountAddress.from("0x0").toStringLong(),
                 ],
             });
             claimed.push({
                 function: moveFunction,
                 functionArguments: [
-                    rawReimbursement.campaignId,
+                    hexToBytes(rawReimbursement.campaignId),
                     rawReimbursement.token.address,
                     address,
                 ],
