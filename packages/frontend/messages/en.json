@@ -31,7 +31,8 @@
         "retry": "Try again"
     },
     "kpiAprSummary": {
-        "text": "The KPI rewards start distributing when the TVL {target} is <bold>{lowerBound}</bold> and has a possibility to earn APR up to <apr>{maxApr}</apr> at the target TVL of <bold>{upperBound}</bold>.",
+        "textNoMinPayout": "The KPI rewards start distributing when the TVL {target} reaches <bold>{lowerBound}</bold> and has a possibility to earn APR up to <apr>{maxApr}</apr> at the target TVL of <bold>{upperBound}</bold>.",
+        "textWithMinPayout": "The KPI rewards start distributing immediately due to the configured <bold>{minimumPayout}</bold> minimum payout and has a possibility to earn APR up to <apr>{maxApr}</apr> at the target TVL of <bold>{upperBound}</bold>.",
         "fallback": "",
         "pool": "of the pool",
         "debt": "of the debt",

@@ -38,31 +38,51 @@ export function KpiAprSummary({ campaign }: KpiAprSummaryProps) {
 
     const lowerBound = campaign?.specification?.kpi?.goal.lowerUsdTarget;
     const upperBound = campaign?.specification?.kpi?.goal.upperUsdTarget;
+    const minimumPayout = campaign?.specification?.kpi?.minimumPayoutPercentage;
 
     if (!maxApr) return null;
 
     return (
         <Typography size="sm" light className={styles.text}>
-            {t.rich("text", {
-                target: t(getCampaignAprTargetText(campaign) as any),
-                lowerBound: formatUsdAmount({
-                    amount: lowerBound,
-                    cutoff: false,
-                }),
-                upperBound: formatUsdAmount({
-                    amount: upperBound,
-                    cutoff: false,
-                }),
-                maxApr: formatPercentage({
-                    percentage: maxApr,
-                }),
-                bold: (chunks) => (
-                    <span className={styles.boldText}>{chunks}</span>
-                ),
-                apr: (chunks) => (
-                    <span className={styles.aprText}>{chunks}</span>
-                ),
-            })}
+            {minimumPayout
+                ? t.rich("textWithMinPayout", {
+                      minimumPayout: formatPercentage({
+                          percentage: minimumPayout * 100,
+                      }),
+                      upperBound: formatUsdAmount({
+                          amount: upperBound,
+                          cutoff: false,
+                      }),
+                      maxApr: formatPercentage({
+                          percentage: maxApr,
+                      }),
+                      bold: (chunks) => (
+                          <span className={styles.boldText}>{chunks}</span>
+                      ),
+                      apr: (chunks) => (
+                          <span className={styles.aprText}>{chunks}</span>
+                      ),
+                  })
+                : t.rich("textNoMinPayout", {
+                      target: t(getCampaignAprTargetText(campaign) as any),
+                      lowerBound: formatUsdAmount({
+                          amount: lowerBound,
+                          cutoff: false,
+                      }),
+                      upperBound: formatUsdAmount({
+                          amount: upperBound,
+                          cutoff: false,
+                      }),
+                      maxApr: formatPercentage({
+                          percentage: maxApr,
+                      }),
+                      bold: (chunks) => (
+                          <span className={styles.boldText}>{chunks}</span>
+                      ),
+                      apr: (chunks) => (
+                          <span className={styles.aprText}>{chunks}</span>
+                      ),
+                  })}
         </Typography>
     );
 }
