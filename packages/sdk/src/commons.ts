@@ -34,6 +34,7 @@ export enum SupportedGmxV1 {
 
 export enum SupportedAmm {
     AlgebraIntegral = "algebra-integral",
+    Velodrome = "velodrome",
     UniswapV3 = "uniswap-v3",
     Carbon = "carbon",
     PancakeV3 = "pancake-v3",

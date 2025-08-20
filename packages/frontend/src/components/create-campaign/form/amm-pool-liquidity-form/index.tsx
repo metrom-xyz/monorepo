@@ -153,6 +153,14 @@ export function AmmPoolLiquidityForm({
         );
     }, [payload.pool]);
 
+    const rangeSupported = useMemo(() => {
+        return (
+            !!payload.pool &&
+            AMM_SUPPORTS_RANGE_INCENTIVES[payload.pool.amm as SupportedAmm] &&
+            payload.pool.liquidityType === AmmPoolLiquidityType.Concentrated
+        );
+    }, [payload.pool]);
+
     useEffect(() => {
         setPayload(initialPayload);
     }, [chainId]);
@@ -236,23 +244,18 @@ export function AmmPoolLiquidityForm({
                     onKpiChange={handlePayloadOnChange}
                     onError={handlePayloadOnError}
                 />
-                {payload.pool &&
-                    AMM_SUPPORTS_RANGE_INCENTIVES[
-                        payload.pool.amm as SupportedAmm
-                    ] &&
-                    payload.pool.liquidityType ===
-                        AmmPoolLiquidityType.Concentrated && (
-                        <RangeStep
-                            disabled={noDistributables || unsupportedChain}
-                            distributablesType={payload.distributables?.type}
-                            pool={payload.pool}
-                            priceRangeSpecification={
-                                payload.priceRangeSpecification
-                            }
-                            onRangeChange={handlePayloadOnChange}
-                            onError={handlePayloadOnError}
-                        />
-                    )}
+                {rangeSupported && (
+                    <RangeStep
+                        disabled={noDistributables || unsupportedChain}
+                        distributablesType={payload.distributables?.type}
+                        pool={payload.pool}
+                        priceRangeSpecification={
+                            payload.priceRangeSpecification
+                        }
+                        onRangeChange={handlePayloadOnChange}
+                        onError={handlePayloadOnError}
+                    />
+                )}
                 <RestrictionsStep
                     disabled={missingDistributables || unsupportedChain}
                     restrictions={payload.restrictions}
