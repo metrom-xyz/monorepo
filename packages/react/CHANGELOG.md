@@ -1,5 +1,11 @@
 # @metrom-xyz/react
 
+## 0.4.3
+
+### Patch Changes
+
+- Export `ChainType`
+
 ## 0.4.2
 
 ### Patch Changes
