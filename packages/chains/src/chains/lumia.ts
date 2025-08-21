@@ -19,10 +19,9 @@ export const lumiaData: ChainData = {
             slug: SupportedDex.Morphex,
             logo: MorphexLogo,
             name: "Morphex",
-            // TODO: add deposit url
             depositUrl: {
-                type: DepositUrlType.PathTokenAddresses,
-                template: "",
+                type: DepositUrlType.PathPoolAddress,
+                template: "https://morphex.exchange/create-position/{pool}",
             },
             supportsFetchAllPools: true,
         },
