@@ -4,6 +4,7 @@ export {
     SupportedDex,
     BackendCampaignStatus as CampaignStatus,
     Campaign,
+    ChainType,
 } from "@metrom-xyz/sdk";
 export { SupportedChain } from "@metrom-xyz/contracts";
 export * from "./hooks";
