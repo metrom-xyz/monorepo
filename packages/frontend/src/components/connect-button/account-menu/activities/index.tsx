@@ -1,7 +1,6 @@
 import { useActivities } from "@/src/hooks/useActivities";
 import { Activity, SkeletonActivity } from "./activity";
-import { useMemo } from "react";
-import { useChains } from "wagmi";
+import { useIsChainSupported } from "@/src/hooks/use-is-chain-supported";
 
 import styles from "./styles.module.css";
 
@@ -10,17 +9,14 @@ interface ActivitiesProps {
 }
 
 export function Activities({ chainId }: ActivitiesProps) {
-    const chains = useChains();
-    const unsupportedChain = useMemo(() => {
-        return !chains.some((chain) => chain.id === chainId);
-    }, [chains, chainId]);
+    const chainSupported = useIsChainSupported({ chainId });
 
     const { loading, activities } = useActivities({
-        enabled: !unsupportedChain,
+        enabled: chainSupported,
     });
 
     // TODO: add illustration
-    if (!loading && (unsupportedChain || activities.length === 0))
+    if (!loading && (!chainSupported || activities.length === 0))
         return <div className={styles.root}></div>;
 
     return (

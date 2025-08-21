@@ -1,28 +1,106 @@
 import {
-    CHAIN_DATA,
+    EVM_CHAIN_DATA,
+    MVM_CHAIN_DATA,
     Environment,
-    SupportedDevelopmentChain,
-    SupportedProductionChain,
     type ChainData,
+    SupportedDevelopmentEvmChain,
+    SupportedProductionEvmChain,
+    SupportedDevelopmentMvmChain,
+    SupportedProductionMvmChain,
 } from "@metrom-xyz/chains";
-import { ENVIRONMENT } from "../commons/env";
+import { APTOS, ENVIRONMENT } from "../commons/env";
+import { Network, NetworkToChainId } from "@aptos-labs/ts-sdk";
+
+export const APTOS_NETWORK_ID = {
+    [Environment.Development]: {
+        [Network.TESTNET]: NetworkToChainId[Network.TESTNET],
+    },
+    [Environment.Production]: {
+        [Network.MAINNET]: NetworkToChainId[Network.MAINNET],
+    },
+};
+
+export function aptosNetworkToId(network: Network): number {
+    return NetworkToChainId[network];
+}
+
+export function chainIdToAptosNetwork(chainId?: number): Network | null {
+    const chain = Object.entries(APTOS_NETWORK_ID[ENVIRONMENT]).find(
+        ([, id]) => chainId === id,
+    );
+
+    if (!chain) {
+        console.error(`Could not find unsupported aptos chain id ${chainId}`);
+        return null;
+    }
+    return chain[0] as Network;
+}
+
+// FIXME: how to differentiate between eth mainnet and aptos mainnet, since they both have id 1
+export function getCrossVmChainData(chainId: number): ChainData | undefined {
+    let chainData: ChainData | undefined;
+
+    switch (ENVIRONMENT) {
+        case Environment.Development: {
+            chainData =
+                MVM_CHAIN_DATA[Environment.Development][
+                    chainId as SupportedDevelopmentMvmChain
+                ] ||
+                EVM_CHAIN_DATA[Environment.Development][
+                    chainId as SupportedDevelopmentEvmChain
+                ];
+
+            break;
+        }
+        case Environment.Production: {
+            chainData =
+                MVM_CHAIN_DATA[Environment.Production][
+                    chainId as SupportedProductionMvmChain
+                ] ||
+                EVM_CHAIN_DATA[Environment.Production][
+                    chainId as SupportedProductionMvmChain
+                ];
+
+            break;
+        }
+        default: {
+            throw new Error(`Unsupported environment ${ENVIRONMENT}`);
+        }
+    }
+
+    return chainData;
+}
 
 export function getChainData(chainId: number): ChainData | undefined {
     let chainData: ChainData | undefined;
 
     switch (ENVIRONMENT) {
         case Environment.Development: {
-            chainData =
-                CHAIN_DATA[Environment.Development][
-                    chainId as SupportedDevelopmentChain
-                ];
+            if (APTOS)
+                chainData =
+                    MVM_CHAIN_DATA[Environment.Development][
+                        chainId as SupportedDevelopmentMvmChain
+                    ];
+            else
+                chainData =
+                    EVM_CHAIN_DATA[Environment.Development][
+                        chainId as SupportedDevelopmentEvmChain
+                    ];
+
             break;
         }
         case Environment.Production: {
-            chainData =
-                CHAIN_DATA[Environment.Production][
-                    chainId as SupportedProductionChain
-                ];
+            if (APTOS)
+                chainData =
+                    MVM_CHAIN_DATA[Environment.Production][
+                        chainId as SupportedProductionMvmChain
+                    ];
+            else
+                chainData =
+                    EVM_CHAIN_DATA[Environment.Production][
+                        chainId as SupportedProductionEvmChain
+                    ];
+
             break;
         }
         default: {

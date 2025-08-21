@@ -6,8 +6,9 @@ import {
 } from "@metrom-xyz/ui";
 import type { Erc20Token, UsdPricedOnChainAmount } from "@metrom-xyz/sdk";
 import { useCallback, useEffect, useState } from "react";
-import { useWatchBalance } from "@/src/hooks/useWatchBalance";
-import { useAccount, useChainId } from "wagmi";
+import { useWatchBalance } from "@/src/hooks/use-watch-balance";
+import { useChainId } from "wagmi";
+import { useAccount } from "@/src/hooks/use-account";
 import { parseUnits } from "viem/utils";
 import type { Address } from "viem";
 import classNames from "classnames";

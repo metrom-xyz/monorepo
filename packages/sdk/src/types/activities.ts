@@ -2,7 +2,7 @@ import type { Address, Hash, Hex } from "viem";
 import type { Erc20Token, OnChainAmount } from "./commons";
 
 export interface ActivityTransaction {
-    hash: Hash;
+    id: Hash;
     timestamp: number;
 }
 

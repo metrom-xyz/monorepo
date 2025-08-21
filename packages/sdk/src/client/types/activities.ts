@@ -2,7 +2,7 @@ import type { Address, Hash, Hex } from "viem";
 import type { BackendErc20Token } from "./commons";
 
 export interface BackendActivityTransaction {
-    hash: Hash;
+    id: Hash;
     timestamp: number;
 }
 

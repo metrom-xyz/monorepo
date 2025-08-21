@@ -21,9 +21,9 @@ import { FilterableStatus } from "@/src/types/common";
 import type { CampaignSortOptions } from "@/src/utils/filtering";
 import { ProtocolLogo } from "../../protocol-logo";
 import { useSupportedProtocols } from "@/src/hooks/useSupportedProtocols";
-import { getChainData } from "@/src/utils/chain";
-import { useChains } from "wagmi";
 import { useDebounce } from "react-use";
+import { useChainIds } from "@/src/hooks/use-chains";
+import { getCrossVmChainData } from "@/src/utils/chain";
 
 import styles from "./styles.module.css";
 
@@ -46,7 +46,7 @@ const statusSelectRenderOption = (option: {
 
 const chainSelectRenderOption = (option: { label: string; value: number }) => {
     const ChainIcon =
-        option.value !== 0 ? getChainData(option.value)?.icon : null;
+        option.value !== 0 ? getCrossVmChainData(option.value)?.icon : null;
     return (
         <div className={styles.customOptionContainer}>
             {ChainIcon && <ChainIcon className={styles.icon} />}
@@ -94,8 +94,8 @@ export function Filters({
 }: FilterProps) {
     const t = useTranslations("allCampaigns");
 
-    const chains = useChains();
-    const protocols = useSupportedProtocols();
+    const chains = useChainIds();
+    const protocols = useSupportedProtocols({ crossVm: true });
     const router = useRouter();
     const pathname = usePathname();
     const searchParams = useSearchParams();
@@ -192,12 +192,12 @@ export function Filters({
             },
         ];
         for (const chain of chains) {
-            const chainData = getChainData(chain.id);
+            const chainData = getCrossVmChainData(chain);
             if (!chainData) continue;
 
             options.push({
                 label: chainData.name,
-                value: chain.id,
+                value: chain,
                 query: chainData.name.toLowerCase().replaceAll(" ", "-"),
             });
         }

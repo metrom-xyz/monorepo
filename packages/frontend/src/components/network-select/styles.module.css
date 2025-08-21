@@ -39,3 +39,7 @@
 .icon {
     @apply w-5 h-5 transition-none text-black dark:text-zinc-200;
 }
+
+.externalLinkIcon {
+    @apply h-4 w-4 transform -rotate-45 text-black dark:text-zinc-200;
+}

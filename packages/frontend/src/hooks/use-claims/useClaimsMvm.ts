@@ -1,33 +1,26 @@
-import { useAccount, useChains, useConfig } from "wagmi";
-import { formatUnits, type Address } from "viem";
-import { METROM_API_CLIENT } from "../commons";
-import { metromAbi } from "@metrom-xyz/contracts/abi";
+import { formatUnits, type Address, hexToBytes } from "viem";
+import { METROM_API_CLIENT } from "../../commons";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import type { HookBaseParams } from "../types/hooks";
-import type { ClaimWithRemaining } from "../types/campaign";
-import { getChainData } from "../utils/chain";
-import { readContracts } from "@wagmi/core";
-
-interface UseClaimsParams extends HookBaseParams {}
-
-interface UseClaimsReturnaValue {
-    loading: boolean;
-    invalidate: () => Promise<void>;
-    claims?: ClaimWithRemaining[];
-}
+import type { ClaimWithRemaining } from "../../types/campaign";
+import { getChainData } from "../../utils/chain";
+import type { UseClaimsParams, UseClaimsReturnValue } from ".";
+import { useWallet } from "@aptos-labs/wallet-adapter-react";
+import type { InputViewFunctionData, MoveFunctionId } from "@aptos-labs/ts-sdk";
+import { useClients } from "@aptos-labs/react";
 
 type QueryKey = [string, Address | undefined];
 
-export function useClaims({
+export function useClaimsMvm({
     enabled = true,
-}: UseClaimsParams = {}): UseClaimsReturnaValue {
+}: UseClaimsParams = {}): UseClaimsReturnValue {
     const [claims, setClaims] = useState<ClaimWithRemaining[]>();
 
-    const config = useConfig();
-    const supportedChains = useChains();
     const queryClient = useQueryClient();
-    const { address } = useAccount();
+    const { account } = useWallet();
+    const { aptos } = useClients();
+
+    const address = account?.address.toStringLong();
 
     const {
         data: rawClaims,
@@ -44,9 +37,8 @@ export function useClaims({
                     address: account,
                 });
 
-                return rawClaims.filter(({ chainId }) =>
-                    supportedChains.find(({ id }) => id === chainId),
-                );
+                // TODO: filter by active chains? Probably not needed since we're only supporting Aptos
+                return rawClaims;
             } catch (error) {
                 console.error(
                     `Could not fetch raw claims for address ${address}: ${error}`,
@@ -59,21 +51,21 @@ export function useClaims({
         enabled: enabled && !!address,
     });
 
-    const claimedContracts = useMemo(() => {
+    const claimedPayloads: InputViewFunctionData[] | undefined = useMemo(() => {
         if (!rawClaims) return undefined;
 
         return rawClaims
             .map((rawClaim) => {
                 const chainData = getChainData(rawClaim.chainId);
-                if (!chainData) return null;
+                if (!chainData || !address) return null;
+
+                const { metromContract: metrom } = chainData;
+                const moveFunction: MoveFunctionId = `${metrom.address}::metrom::claimed_campaign_reward`;
 
                 return {
-                    chainId: rawClaim.chainId,
-                    address: chainData.metromContract.address,
-                    abi: metromAbi,
-                    functionName: "claimedCampaignReward",
-                    args: [
-                        rawClaim.campaignId,
+                    function: moveFunction,
+                    functionArguments: [
+                        hexToBytes(rawClaim.campaignId),
                         rawClaim.token.address,
                         address,
                     ],
@@ -84,24 +76,23 @@ export function useClaims({
 
     const {
         data: claimedData,
-        error: claimedErrored,
+        error: claimedError,
         isLoading: loadingClaimed,
-        isError: claimedError,
+        isError: claimedErrored,
     } = useQuery({
-        queryKey: ["claimed-campaign-rewards", claimedContracts],
+        queryKey: ["claimed-campaign-rewards", claimedPayloads],
         queryFn: async ({ queryKey }) => {
-            const [, contracts] = queryKey as [string, typeof claimedContracts];
+            const [, payloads] = queryKey as [string, typeof claimedPayloads];
 
-            if (!contracts) return null;
+            if (!payloads) return null;
 
             try {
-                return await readContracts(config, {
-                    allowFailure: false,
-                    contracts,
-                });
+                return await Promise.all(
+                    payloads.map((payload) => aptos.view({ payload })),
+                );
             } catch (error) {
                 console.error(
-                    `Could not call fetch claimed campaign rewards: ${error}`,
+                    `Could not fetch claimed campaign rewards: ${error}`,
                 );
                 throw error;
             }
@@ -109,7 +100,7 @@ export function useClaims({
         retryDelay: 1000,
         refetchOnWindowFocus: false,
         staleTime: 60000,
-        enabled: !!claimedContracts,
+        enabled: enabled && !!claimedPayloads,
     });
 
     useEffect(() => {
@@ -129,10 +120,10 @@ export function useClaims({
 
         const claims: ClaimWithRemaining[] = [];
         for (let i = 0; i < claimedData.length; i++) {
-            const rawClaimed = claimedData[i] as unknown as bigint;
+            const rawClaimed = claimedData[i] as unknown as number;
             const rawClaim = rawClaims[i];
 
-            const rawRemaining = rawClaim.amount.raw - rawClaimed;
+            const rawRemaining = rawClaim.amount.raw - BigInt(rawClaimed);
             const formattedRemaining = Number(
                 formatUnits(rawRemaining, rawClaim.token.decimals),
             );
