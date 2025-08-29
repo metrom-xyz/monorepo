@@ -1,5 +1,10 @@
 import type {
     Claim,
+    AaveV3BorrowTarget,
+    AaveV3Collateral,
+    AaveV3Market,
+    AaveV3NetSupplyTarget,
+    AaveV3SupplyTarget,
     OnChainAmount,
     Reimbursement,
     Restrictions,
@@ -22,10 +27,15 @@ import {
 } from "@metrom-xyz/sdk";
 import type { Dayjs } from "dayjs";
 import type { Address } from "viem";
-import { LiquityV2Action, type WhitelistedErc20TokenAmount } from "./common";
+import {
+    AaveV3Action,
+    LiquityV2Action,
+    type WhitelistedErc20TokenAmount,
+} from "./common";
 import {
     DepositUrlType,
     ProtocolType,
+    type AaveV3Protocol,
     type ChainData,
     type DexProtocol,
     type LiquityV2Protocol,
@@ -59,11 +69,15 @@ export enum CampaignKind {
     LiquityV2Debt = 2,
     LiquityV2StabilityPool = 3,
     EmptyTarget = 5,
+    AaveV3Supply = 6,
+    AaveV3Borrow = 7,
+    AaveV3NetSupply = 8,
 }
 
 export enum CampaignType {
     LiquityV2 = "liquity-v2",
     AmmPoolLiquidity = "amm-pool-liquidity",
+    AaveV3 = "aave-v3",
 }
 
 export interface AugmentedPriceRangeBound {
@@ -82,7 +96,6 @@ export interface BaseCampaignPayload {
     endDate?: Dayjs;
     distributables?: CampaignPayloadDistributables;
     kpiSpecification?: KpiSpecification;
-    priceRangeSpecification?: AugmentedPriceRangeSpecification;
     restrictions?: Restrictions;
 }
 
@@ -97,6 +110,13 @@ export interface LiquityV2CampaignPayload extends BaseCampaignPayload {
     brand?: LiquityV2Protocol;
     action?: LiquityV2Action;
     collateral?: LiquityV2Collateral;
+}
+
+export interface AaveV3CampaignPayload extends BaseCampaignPayload {
+    brand?: AaveV3Protocol;
+    action?: AaveV3Action;
+    market?: AaveV3Market;
+    collateral?: AaveV3Collateral;
 }
 
 export interface CampaignPayloadTokenDistributables {
@@ -178,6 +198,45 @@ export class LiquityV2CampaignPreviewPayload extends BaseCampaignPreviewPayload 
                 this.kind = CampaignKind.LiquityV2Debt;
                 break;
             }
+            default: {
+                throw new Error(
+                    `Unsupported action ${action} for liquity-v2 campaign payload`,
+                );
+            }
+        }
+    }
+}
+
+export class AaveV3CampaignPreviewPayload extends BaseCampaignPreviewPayload {
+    public readonly kind: CampaignKind;
+
+    constructor(
+        public readonly brand: AaveV3Protocol,
+        public readonly action: AaveV3Action,
+        public readonly market: AaveV3Market,
+        public readonly collateral: AaveV3Collateral,
+        ...baseArgs: ConstructorParameters<typeof BaseCampaignPreviewPayload>
+    ) {
+        super(...baseArgs);
+
+        switch (action) {
+            case AaveV3Action.Borrow: {
+                this.kind = CampaignKind.AaveV3Borrow;
+                break;
+            }
+            case AaveV3Action.Supply: {
+                this.kind = CampaignKind.AaveV3Supply;
+                break;
+            }
+            case AaveV3Action.NetSupply: {
+                this.kind = CampaignKind.AaveV3NetSupply;
+                break;
+            }
+            default: {
+                throw new Error(
+                    `Unsupported action ${action} for aave-v3 campaign payload`,
+                );
+            }
         }
     }
 }
@@ -194,6 +253,7 @@ export class EmptyTargetCampaignPreviewPayload extends BaseCampaignPreviewPayloa
 export type CampaignPreviewPayload =
     | AmmPoolLiquidityCampaignPreviewPayload
     | LiquityV2CampaignPreviewPayload
+    | AaveV3CampaignPreviewPayload
     | EmptyTargetCampaignPreviewPayload;
 
 export interface DistributablesCampaignPreviewPayload<
@@ -206,18 +266,20 @@ export interface DistributablesCampaignPreviewPayload<
           : never;
 }
 
-export interface TargetedCampaignPreviewPayload<T extends TargetType>
-    extends BaseCampaignPreviewPayload {
-    target: T extends TargetType.AmmPoolLiquidity
-        ? AmmPoolLiquidityTarget
-        : T extends TargetType.LiquityV2Debt
-          ? LiquityV2DebtTarget
-          : T extends TargetType.LiquityV2StabilityPool
-            ? LiquityV2StabilityPoolTarget
-            : never;
-}
+// export interface TargetedCampaignPreviewPayload<T extends TargetType>
+//     extends BaseCampaignPreviewPayload {
+//     target: T extends TargetType.AmmPoolLiquidity
+//         ? AmmPoolLiquidityTarget
+//         : T extends TargetType.LiquityV2Debt
+//           ? LiquityV2DebtTarget
+//           : T extends TargetType.LiquityV2StabilityPool
+//             ? LiquityV2StabilityPoolTarget
+//             : // TODO: add liquidity new stuff
+//               never;
+// }
 
 export interface CampaignPayloadErrors {
+    // TODO: more errors for aave-v3 campaign?
     pool?: boolean;
     startDate?: boolean;
     endDate?: boolean;
@@ -230,11 +292,22 @@ export interface CampaignPayloadErrors {
 
 export type BaseCampaignPayloadPart = PropertyUnion<BaseCampaignPayload>;
 
+export type CampaignPayloadPart<T extends ProtocolType | undefined> =
+    T extends ProtocolType.Dex
+        ? Partial<AmmPoolLiquidityCampaignPayload>
+        : T extends ProtocolType.LiquityV2
+          ? Partial<LiquityV2CampaignPayload>
+          : T extends ProtocolType.AaveV3
+            ? Partial<AaveV3CampaignPayload>
+            : never;
+
 export type AmmPoolLiquidityCampaignPayloadPart =
     PropertyUnion<AmmPoolLiquidityCampaignPayload>;
 
 export type LiquityV2CampaignPayloadPart =
     PropertyUnion<LiquityV2CampaignPayload>;
+
+export type AaveV3CampaignPayloadPart = PropertyUnion<AaveV3CampaignPayload>;
 
 export class Campaign extends SdkCampaign {
     constructor(
@@ -315,6 +388,10 @@ export class Campaign extends SdkCampaign {
                 return this.target.collateral.usdMintedDebt;
             case TargetType.LiquityV2StabilityPool:
                 return this.target.collateral.usdStabilityPoolDebt;
+            case TargetType.AaveV3Borrow:
+                return this.target.asset.usdDebt;
+            case TargetType.AaveV3Supply || TargetType.AaveV3NetSupply:
+                return this.target.asset.usdSupply;
             default:
                 return undefined;
         }
@@ -328,6 +405,10 @@ export class Campaign extends SdkCampaign {
                 return this.target.collateral.liquidity;
             case TargetType.LiquityV2StabilityPool:
                 return this.target.collateral.liquidity;
+            case TargetType.AaveV3Borrow:
+                return this.target.asset.debt;
+            case TargetType.AaveV3Supply || TargetType.AaveV3NetSupply:
+                return this.target.asset.supply;
             default:
                 return undefined;
         }
@@ -350,5 +431,11 @@ export interface TargetedNamedCampaign<T extends TargetType> extends Campaign {
           ? LiquityV2DebtTarget
           : T extends TargetType.LiquityV2StabilityPool
             ? LiquityV2StabilityPoolTarget
-            : never;
+            : T extends TargetType.AaveV3Borrow
+              ? AaveV3BorrowTarget
+              : T extends TargetType.AaveV3Supply
+                ? AaveV3SupplyTarget
+                : T extends TargetType.AaveV3NetSupply
+                  ? AaveV3NetSupplyTarget
+                  : never;
 }

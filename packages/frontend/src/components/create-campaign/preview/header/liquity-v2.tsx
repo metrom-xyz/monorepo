@@ -4,7 +4,7 @@ import type { LiquityV2CampaignPreviewPayload } from "@/src/types/campaign";
 import { useMemo } from "react";
 import { LIQUITY_V2_SUPPORTED_ACTIONS } from "../../steps/liquity-v2-action-step";
 import { RemoteLogo } from "@/src/components/remote-logo";
-import { useChainId } from "wagmi";
+import { useChainId } from "@/src/hooks/use-chain-id";
 
 import styles from "./styles.module.css";
 

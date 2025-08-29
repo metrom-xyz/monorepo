@@ -28,6 +28,10 @@ export enum SupportedLiquityV2 {
     Orki = "orki",
 }
 
+export enum SupportedAaveV3 {
+    Aave = "aave",
+}
+
 export enum SupportedGmxV1 {
     Amped = "amped",
 }

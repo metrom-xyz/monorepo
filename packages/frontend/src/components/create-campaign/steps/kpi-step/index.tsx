@@ -15,9 +15,9 @@ import { KpiMetric, type KpiSpecification } from "@metrom-xyz/sdk";
 import { usePrevious } from "react-use";
 import { KpiSimulationChart } from "../../../kpi-simulation-chart";
 import { GoalInputs } from "./goal-inputs";
-import { useChainId } from "wagmi";
 import { InfoMessage } from "@/src/components/info-message";
 import type { Dayjs } from "dayjs";
+import { useChainId } from "@/src/hooks/use-chain-id";
 
 import styles from "./styles.module.css";
 

@@ -149,8 +149,6 @@ export function DeployButtonMvm({
         onCreate,
     ]);
 
-    console.log({ simulateCreateErrored, simulateCreateError });
-
     return (
         <Button
             icon={ArrowRightIcon}

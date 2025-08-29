@@ -128,6 +128,10 @@
                 "title": "LIQUITY V2",
                 "description": "Incentivize users borrowing and other actions on Liquity V2 and its forks."
             },
+            "aaveV3": {
+                "title": "AAVE V3",
+                "description": "Incentivize users borrowing and supplying on Aave V3."
+            },
             "empty": {
                 "message1": "Campaign creation isn't supported on the selected chain.",
                 "message2": "Please choose a different chain."
@@ -135,7 +139,8 @@
         },
         "type": {
             "amm": "AMM Campaign",
-            "liquityV2": "Liquity v2 campaign"
+            "liquityV2": "Liquity v2 campaign",
+            "aaveV3": "Aave v3 campaign"
         },
         "form": {
             "base": {
@@ -296,6 +301,31 @@
                     "apply": "Apply"
                 }
             },
+            "aaveV3": {
+                "brand": { "title": "Platform" },
+                "action": {
+                    "title": "Action",
+                    "list": {
+                        "borrow": "Borrow",
+                        "supply": "Supply",
+                        "netSupply": "Net supply"
+                    }
+                },
+                "market": {
+                    "title": "Market"
+                },
+                "collaterals": {
+                    "title": "Collateral",
+                    "filters": "Collateral",
+                    "list": {
+                        "token": "Token",
+                        "empty": "Nothing here",
+                        "debt": "Debt",
+                        "deposits": "Deposits"
+                    },
+                    "apply": "Apply"
+                }
+            },
             "ammPoolLiquidity": {
                 "dex": { "title": "Dex" },
                 "pool": {
@@ -363,6 +393,13 @@
                     "borrow": "Borrow {debtToken} using {collateral}",
                     "depositCollateral": "Deposit collateral",
                     "depositToStabilityPool": "Deposit to {collateral} stability pool"
+                }
+            },
+            "aaveV3Actions": {
+                "list": {
+                    "borrow": "Borrow using {collateral}",
+                    "supply": "Supply {collateral}",
+                    "netSupply": "Net supply {collateral}"
                 }
             }
         },

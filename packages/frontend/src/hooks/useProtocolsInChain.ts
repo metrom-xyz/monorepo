@@ -1,4 +1,5 @@
 import type {
+    AaveV3Protocol,
     DexProtocol,
     LiquityV2Protocol,
     Protocol,
@@ -10,6 +11,7 @@ import type { HookBaseParams, HookCrossVmParams } from "../types/hooks";
 interface ProtocolByType {
     [ProtocolType.Dex]: DexProtocol;
     [ProtocolType.LiquityV2]: LiquityV2Protocol;
+    [ProtocolType.AaveV3]: AaveV3Protocol;
 }
 
 type ProtocolsInChain<T extends ProtocolType | undefined> =

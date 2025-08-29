@@ -95,27 +95,25 @@ export function Overview({
                         title={t("txSubmitted")}
                         icon={ClaimReward}
                     >
-                        {
-                            <div className={styles.notification}>
-                                <div className={styles.tokens}>
-                                    {tokens?.map(({ token }) => (
-                                        <RemoteLogo
-                                            key={token.address}
-                                            size="sm"
-                                            chain={chainId}
-                                            address={token.address}
-                                            defaultText={token.symbol}
-                                            className={styles.token}
-                                        />
-                                    ))}
-                                </div>
-                                <Typography weight="medium" size="sm" light>
-                                    {formatUsdAmount({
-                                        amount: totalUsd,
-                                    })}
-                                </Typography>
+                        <div className={styles.notification}>
+                            <div className={styles.tokens}>
+                                {tokens?.map(({ token }) => (
+                                    <RemoteLogo
+                                        key={token.address}
+                                        size="sm"
+                                        chain={chainId}
+                                        address={token.address}
+                                        defaultText={token.symbol}
+                                        className={styles.token}
+                                    />
+                                ))}
                             </div>
-                        }
+                            <Typography weight="medium" size="sm" light>
+                                {formatUsdAmount({
+                                    amount: totalUsd,
+                                })}
+                            </Typography>
+                        </div>
                     </ToastNotification>
                 ));
             } catch (error) {

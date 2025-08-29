@@ -19,6 +19,7 @@ export * from "./types/fee-tokens";
 export * from "./types/initialized-ticks";
 export * from "./types/kpi-measurements";
 export * from "./types/leaderboards";
+export * from "./types/aave-v3";
 export * from "./types/liquity-v2";
 export * from "./types/pools";
 export * from "./types/reward-tokens";

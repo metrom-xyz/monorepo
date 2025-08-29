@@ -15,9 +15,10 @@ import {
     EmptyTargetCampaignPreviewPayload,
     type BaseCampaignPreviewPayload,
     type CampaignPreviewPayload,
+    AaveV3CampaignPreviewPayload,
 } from "../types/campaign";
 import type { TranslationsType } from "../types/utils";
-import { LiquityV2Action } from "../types/common";
+import { AaveV3Action, LiquityV2Action } from "../types/common";
 import { getDistributableRewardsPercentage } from "./kpi";
 import {
     type Hex,
@@ -74,6 +75,12 @@ export function buildCampaignDataBundleMvm(payload: CampaignPreviewPayload) {
         serializer.serializeBytes(
             hexToBytes(stringToHex(payload.brand.slug).padEnd(66, "0") as Hex),
         );
+        serializer.serializeBytes(hexToBytes(payload.collateral.token.address));
+    } else if (payload instanceof AaveV3CampaignPreviewPayload) {
+        serializer.serializeBytes(
+            hexToBytes(stringToHex(payload.brand.slug).padEnd(66, "0") as Hex),
+        );
+        serializer.serializeBytes(hexToBytes(payload.market.address));
         serializer.serializeBytes(hexToBytes(payload.collateral.token.address));
     } else if (payload instanceof EmptyTargetCampaignPreviewPayload) {
         return [];
@@ -260,6 +267,41 @@ export function getCampaignPreviewApr(
 
         return apr;
     }
+
+    if (
+        payload instanceof AaveV3CampaignPreviewPayload &&
+        payload.isDistributing(DistributablesType.Tokens)
+    ) {
+        let rewardsUsdValue = 0;
+        for (const reward of payload.distributables.tokens) {
+            if (!reward.amount.usdValue) return undefined;
+            rewardsUsdValue += reward.amount.usdValue;
+        }
+
+        let usdTvl = 0;
+        let liquidity = 0n;
+        switch (payload.action) {
+            case AaveV3Action.Borrow: {
+                usdTvl = payload.collateral.usdDebt;
+                liquidity = payload.collateral.debt;
+                break;
+            }
+            case AaveV3Action.Supply || AaveV3Action.NetSupply: {
+                usdTvl = payload.collateral.usdSupply;
+                liquidity = payload.collateral.supply;
+                break;
+            }
+        }
+
+        return getCampaignApr({
+            usdRewards: rewardsUsdValue,
+            duration,
+            usdTvl,
+            liquidity,
+            kpiSpecification: payload.kpiSpecification,
+            range,
+        });
+    }
 }
 
 export function getCampaignApr({
@@ -279,7 +321,13 @@ export function getCampaignApr({
     range?: LiquidityInRange;
     liquidityByAddresses?: LiquidityByAddresses;
 }) {
-    if (!usdTvl || !usdRewards || !duration || !liquidity) return undefined;
+    if (
+        !duration ||
+        usdRewards === undefined ||
+        usdTvl === undefined ||
+        liquidity === undefined
+    )
+        return undefined;
 
     let distributableUsdRewards = usdRewards;
     if (kpiSpecification) {

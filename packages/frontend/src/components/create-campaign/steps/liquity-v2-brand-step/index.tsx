@@ -1,5 +1,4 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { useChainId } from "wagmi";
 import { useTranslations } from "next-intl";
 import { Step } from "@/src/components/step";
 import { StepPreview } from "@/src/components/step/preview";
@@ -12,12 +11,12 @@ import {
 } from "@/src/types/campaign";
 import { ProtocolType, type LiquityV2Protocol } from "@metrom-xyz/chains";
 import { useProtocolsInChain } from "@/src/hooks/useProtocolsInChain";
-import { useTheme } from "next-themes";
 import { ProtocolLogo } from "@/src/components/protocol-logo";
+import { useChainId } from "@/src/hooks/use-chain-id";
 
 import styles from "./styles.module.css";
 
-interface LiquityV2BrandStepProps {
+interface LiquidityBrandStepProps {
     disabled?: boolean;
     brand?: LiquityV2CampaignPayload["brand"];
     onBrandChange: (value: LiquityV2CampaignPayloadPart) => void;
@@ -27,11 +26,10 @@ export function LiquityV2BrandStep({
     disabled,
     brand,
     onBrandChange,
-}: LiquityV2BrandStepProps) {
+}: LiquidityBrandStepProps) {
     const t = useTranslations("newCampaign.form.liquityV2.brand");
     const [open, setOpen] = useState(true);
 
-    const { resolvedTheme } = useTheme();
     const chainId = useChainId();
     const supportedBrands = useProtocolsInChain({
         chainId,

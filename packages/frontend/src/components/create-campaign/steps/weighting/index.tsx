@@ -9,10 +9,9 @@ import {
     type AmmPoolLiquidityCampaignPayloadPart,
     type CampaignPayloadErrors,
 } from "@/src/types/campaign";
-import classNames from "classnames";
 import { WeightingInputs } from "./weighting-inputs";
 import type { LocalizedMessage } from "@/src/types/utils";
-import { useChainId } from "wagmi";
+import { useChainId } from "@/src/hooks/use-chain-id";
 import { usePrevious } from "react-use";
 import { formatPercentage } from "@/src/utils/format";
 import { InfoMessage } from "@/src/components/info-message";
