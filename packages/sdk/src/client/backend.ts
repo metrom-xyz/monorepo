@@ -1,6 +1,11 @@
 import { formatUnits, type Address, type Hex } from "viem";
 import type { SupportedChain } from "@metrom-xyz/contracts";
-import { SupportedAmm, SupportedDex, SupportedLiquityV2 } from "../commons";
+import {
+    SupportedAmm,
+    SupportedDex,
+    SupportedAaveV3,
+    SupportedLiquityV2,
+} from "../commons";
 import type {
     BackendCampaignResponse,
     BackendCampaignsResponse,
@@ -74,6 +79,8 @@ import type {
 import { tickToScaledPrice } from "../utils";
 import type { BackendLiquityV2CollateralsResponse } from "./types/liquity-v2";
 import type { LiquityV2Collateral } from "src/types/liquity-v2";
+import type { AaveV3Collateral } from "../types/aave-v3";
+import type { BackendAaveV3CollateralsResponse } from "./types/aave-v3";
 
 const MIN_TICK = -887272;
 const MAX_TICK = -MIN_TICK;
@@ -180,6 +187,11 @@ export interface FetchInitializedTicksParams extends ChainParams {
 
 export interface FetchLiquityV2CollateralsParams extends ChainParams {
     brand: SupportedLiquityV2;
+}
+
+export interface FetchAaveV3CollateralsParams extends ChainParams {
+    brand: SupportedAaveV3;
+    market: string;
 }
 
 interface InitializedTick {
@@ -869,6 +881,39 @@ export class MetromApiClient {
                 usdMintedDebt: collateral.mintedDebt,
                 usdTvl: collateral.usdTvl,
                 usdStabilityPoolDebt: collateral.stabilityPoolDebt,
+            };
+        });
+    }
+
+    async fetchAaveV3Collaterals(
+        params: FetchAaveV3CollateralsParams,
+    ): Promise<AaveV3Collateral[]> {
+        const url = new URL(
+            `v2/aave-v3/${params.chainType}/${params.chainId}/${params.brand}/${params.market}/collaterals`,
+            this.baseUrl,
+        );
+
+        const response = await fetch(url);
+        if (!response.ok)
+            throw new Error(
+                `response not ok while fetching aave-v3 collaterals: ${await response.text()}`,
+            );
+
+        const parsedResponse =
+            (await response.json()) as BackendAaveV3CollateralsResponse;
+
+        return parsedResponse.collaterals.map((collateral) => {
+            return {
+                // FIXME: it's probably better to have this in the response
+                ...collateral,
+                chainId: params.chainId,
+                chainType: params.chainType,
+                token: resolveToken(
+                    parsedResponse.resolvedTokens,
+                    collateral.address,
+                ),
+                debt: BigInt(collateral.debt),
+                supply: BigInt(collateral.supply),
             };
         });
     }

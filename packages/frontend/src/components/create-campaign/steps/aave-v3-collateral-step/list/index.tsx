@@ -1,0 +1,67 @@
+import type { AaveV3Collateral, LiquityV2Collateral } from "@metrom-xyz/sdk";
+import { Typography } from "@metrom-xyz/ui";
+import { useTranslations } from "next-intl";
+import { AaveV3Action, LiquityV2Action } from "@/src/types/common";
+import { Row, RowSkeleton } from "./row";
+import type { AaveV3CampaignPayload } from "@/src/types/campaign";
+
+import styles from "./styles.module.css";
+
+interface CollateralsListProps {
+    loading?: boolean;
+    action?: AaveV3CampaignPayload["action"];
+    selected?: AaveV3CampaignPayload["collateral"];
+    collaterals?: AaveV3Collateral[];
+    onChange: (collateral: AaveV3Collateral) => void;
+}
+
+export function CollateralsList({
+    loading,
+    action,
+    selected,
+    collaterals,
+    onChange,
+}: CollateralsListProps) {
+    const t = useTranslations("newCampaign.form.aaveV3.collaterals");
+
+    return (
+        <div className={styles.root}>
+            <div className={styles.listHeader}>
+                <Typography uppercase size="sm" weight="medium" light>
+                    {t("list.token")}
+                </Typography>
+                <Typography uppercase size="sm" weight="medium" light>
+                    {t(
+                        action === AaveV3Action.Borrow
+                            ? "list.debt"
+                            : "list.deposits",
+                    )}
+                </Typography>
+            </div>
+            {loading ? (
+                <>
+                    <RowSkeleton />
+                    <RowSkeleton />
+                    <RowSkeleton />
+                </>
+            ) : collaterals && collaterals.length > 0 ? (
+                collaterals.map((collateral) => {
+                    return (
+                        <Row
+                            key={collateral.token.address}
+                            action={action}
+                            selected={collateral == selected}
+                            collateral={collateral}
+                            onChange={onChange}
+                        />
+                    );
+                })
+            ) : (
+                <div className={styles.empty}>
+                    {/* TODO: add illustration */}
+                    <Typography>{t("list.empty")}</Typography>
+                </div>
+            )}
+        </div>
+    );
+}

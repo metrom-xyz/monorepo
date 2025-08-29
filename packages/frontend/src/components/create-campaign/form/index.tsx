@@ -19,6 +19,7 @@ import { useChainId } from "@/src/hooks/use-chain-id";
 import { useActiveChains } from "@/src/hooks/use-active-chains";
 
 import styles from "./styles.module.css";
+import { AaveV3Form } from "./aave-v3-form";
 
 enum View {
     Form = "form",
@@ -44,6 +45,11 @@ export function CreateCampaignForm<T extends CampaignType>({
     const liquityV2Protocols = useProtocolsInChain({
         chainId: selectedChain,
         type: ProtocolType.LiquityV2,
+        active: true,
+    });
+    const aaveV3Protocols = useProtocolsInChain({
+        chainId: selectedChain,
+        type: ProtocolType.AaveV3,
         active: true,
     });
 
@@ -72,11 +78,15 @@ export function CreateCampaignForm<T extends CampaignType>({
         );
     }, [activeChains, connectedChainId, connected, selectedChain]);
 
+    const supportedProtocols = [
+        ...dexesProtocols,
+        ...liquityV2Protocols,
+        ...aaveV3Protocols,
+    ];
+
     return (
         <div className={styles.root}>
-            {dexesProtocols.length > 0 && liquityV2Protocols.length > 0 && (
-                <FormHeader type={type} />
-            )}
+            {supportedProtocols.length > 1 && <FormHeader type={type} />}
             {type === CampaignType.AmmPoolLiquidity && (
                 <AmmPoolLiquidityForm
                     unsupportedChain={unsupportedChain}
@@ -85,6 +95,13 @@ export function CreateCampaignForm<T extends CampaignType>({
             )}
             {type === CampaignType.LiquityV2 && (
                 <LiquityV2ForksForm
+                    unsupportedChain={unsupportedChain}
+                    onPreviewClick={handlePreviewOnClick}
+                />
+            )}
+            {/* TODO: disable form if not for aptos? Or more generic if not for that chain  */}
+            {type === CampaignType.AaveV3 && (
+                <AaveV3Form
                     unsupportedChain={unsupportedChain}
                     onPreviewClick={handlePreviewOnClick}
                 />

@@ -2,8 +2,7 @@ import type { CampaignPreviewTokenDistributables } from "@/src/types/campaign";
 import { Card, TextField, Typography } from "@metrom-xyz/ui";
 import type { SupportedChain } from "@metrom-xyz/contracts";
 import { useTranslations } from "next-intl";
-import { useChainId, useReadContract } from "wagmi";
-import { useAccount } from "@/src/hooks/use-account";
+import { useChainId } from "@/src/hooks/use-chain-id";
 import { Dayjs } from "dayjs";
 import { useEffect, useMemo, useState } from "react";
 import {
@@ -12,9 +11,8 @@ import {
     formatUsdAmount,
 } from "@/src/utils/format";
 import { RemoteLogo } from "@/src/components/remote-logo";
-import { metromAbi } from "@metrom-xyz/contracts/abi";
 import { FEE_UNIT } from "@/src/commons";
-import { useChainData } from "@/src/hooks/useChainData";
+import { useProtocolFees } from "@/src/hooks/use-protocol-fees";
 
 import styles from "./styles.module.css";
 
@@ -26,9 +24,9 @@ interface RewardsProps {
 
 export function Rewards({ rewards, startDate, endDate }: RewardsProps) {
     const t = useTranslations("campaignPreview.rewards");
+
     const chain: SupportedChain = useChainId();
-    const chainData = useChainData({ chainId: chain });
-    const { address: connectedAccount } = useAccount();
+    const { fee, feeRebate } = useProtocolFees();
 
     const [resolvedFee, setResolvedFee] = useState<number>();
 
@@ -51,25 +49,12 @@ export function Rewards({ rewards, startDate, endDate }: RewardsProps) {
         return daysDuration >= 1 ? totalRewardsUsdAmount / daysDuration : 0;
     }, [startDate, endDate, totalRewardsUsdAmount]);
 
-    const { data: protocolFee } = useReadContract({
-        address: chainData?.metromContract.address,
-        abi: metromAbi,
-        functionName: "fee",
-    });
-
-    const { data: feeRebate } = useReadContract({
-        address: chainData?.metromContract.address,
-        abi: metromAbi,
-        functionName: "feeRebate",
-        args: connectedAccount && [connectedAccount],
-    });
-
     useEffect(() => {
-        if (protocolFee !== undefined && feeRebate !== undefined) {
+        if (fee !== undefined && feeRebate !== undefined) {
             const resolvedFeeRebate = feeRebate / FEE_UNIT;
-            setResolvedFee(protocolFee - protocolFee * resolvedFeeRebate);
+            setResolvedFee(fee - fee * resolvedFeeRebate);
         }
-    }, [feeRebate, protocolFee]);
+    }, [feeRebate, fee]);
 
     return (
         <div className={styles.root}>

@@ -1,7 +1,9 @@
 import { FunctionComponent } from "react";
 import { SVGIcon } from "./common";
 import {
+    AaveV3Market,
     Erc20Token,
+    SupportedAaveV3,
     SupportedDex,
     SupportedLiquityV2,
     TargetType,
@@ -10,9 +12,11 @@ import {
 export enum ProtocolType {
     Dex = "dex",
     LiquityV2 = "liquity-v2",
+    AaveV3 = "aave-v3",
 }
 
-export interface ProtocolBase<S = string> {
+export interface ProtocolBase<S = string, T = ProtocolType> {
+    type: T;
     active: boolean;
     slug: S;
     name: string;
@@ -26,8 +30,8 @@ export enum DepositUrlType {
     QueryTokenAddresses = "query-pool-addresses",
 }
 
-export interface DexProtocol extends ProtocolBase<SupportedDex> {
-    type: ProtocolType.Dex;
+export interface DexProtocol
+    extends ProtocolBase<SupportedDex, ProtocolType.Dex> {
     depositUrl: {
         type: DepositUrlType;
         template: string;
@@ -35,8 +39,8 @@ export interface DexProtocol extends ProtocolBase<SupportedDex> {
     supportsFetchAllPools: boolean;
 }
 
-export interface LiquityV2Protocol extends ProtocolBase<SupportedLiquityV2> {
-    type: ProtocolType.LiquityV2;
+export interface LiquityV2Protocol
+    extends ProtocolBase<SupportedLiquityV2, ProtocolType.LiquityV2> {
     debtToken: Erc20Token;
     actionUrls: Record<
         TargetType.LiquityV2Debt | TargetType.LiquityV2StabilityPool,
@@ -44,4 +48,15 @@ export interface LiquityV2Protocol extends ProtocolBase<SupportedLiquityV2> {
     >;
 }
 
-export type Protocol = DexProtocol | LiquityV2Protocol;
+export interface AaveV3Protocol
+    extends ProtocolBase<SupportedAaveV3, ProtocolType.AaveV3> {
+    markets: AaveV3Market[];
+    actionUrls: Record<
+        | TargetType.AaveV3Borrow
+        | TargetType.AaveV3Supply
+        | TargetType.AaveV3NetSupply,
+        string
+    >;
+}
+
+export type Protocol = DexProtocol | LiquityV2Protocol | AaveV3Protocol;

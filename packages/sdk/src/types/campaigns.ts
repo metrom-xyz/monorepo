@@ -8,14 +8,18 @@ import type {
     UsdPricedErc20Token,
     UsdPricedOnChainAmount,
 } from "./commons";
-import type { SupportedLiquityV2 } from "src/commons";
+import type { SupportedAaveV3, SupportedLiquityV2 } from "src/commons";
 import type { LiquityV2Collateral } from "./liquity-v2";
+import type { AaveV3Collateral, AaveV3Market } from "./aave-v3";
 
 export enum TargetType {
     Empty = "empty",
     AmmPoolLiquidity = "amm-pool-liquidity",
     LiquityV2Debt = "liquity-v2-debt",
     LiquityV2StabilityPool = "liquity-v2-stability-pool",
+    AaveV3Borrow = "aave-v3-borrow",
+    AaveV3Supply = "aave-v3-supply",
+    AaveV3NetSupply = "aave-v3-net-supply",
 }
 
 export type LiquityV2TargetType =
@@ -28,7 +32,7 @@ export interface BaseTarget {
 }
 
 export interface EmptyTarget extends BaseTarget {
-    type: "empty";
+    type: TargetType.Empty;
 }
 
 export interface AmmPoolLiquidityTarget extends BaseTarget {
@@ -42,21 +46,34 @@ export interface LiquityV2Target<T> extends BaseTarget {
     collateral: LiquityV2Collateral;
 }
 
+export interface AaveV3Target<T> extends BaseTarget {
+    type: T;
+    brand: Brand<SupportedAaveV3>;
+    market: AaveV3Market;
+    asset: AaveV3Collateral;
+}
+
 export interface LiquityV2CollateralWithStabilityPoolDeposit
     extends Erc20Token {
     usdDeposit: number;
 }
 
 export type LiquityV2DebtTarget = LiquityV2Target<TargetType.LiquityV2Debt>;
-
 export type LiquityV2StabilityPoolTarget =
     LiquityV2Target<TargetType.LiquityV2StabilityPool>;
+
+export type AaveV3BorrowTarget = AaveV3Target<TargetType.AaveV3Borrow>;
+export type AaveV3SupplyTarget = AaveV3Target<TargetType.AaveV3Supply>;
+export type AaveV3NetSupplyTarget = AaveV3Target<TargetType.AaveV3NetSupply>;
 
 export type CampaignTarget =
     | EmptyTarget
     | AmmPoolLiquidityTarget
     | LiquityV2DebtTarget
-    | LiquityV2StabilityPoolTarget;
+    | LiquityV2StabilityPoolTarget
+    | AaveV3BorrowTarget
+    | AaveV3SupplyTarget
+    | AaveV3NetSupplyTarget;
 
 export interface TokenDistributable {
     token: UsdPricedErc20Token;
@@ -187,5 +204,11 @@ export interface TargetedCampaign<T extends TargetType> extends Campaign {
           ? LiquityV2DebtTarget
           : T extends TargetType.LiquityV2StabilityPool
             ? LiquityV2StabilityPoolTarget
-            : never;
+            : T extends TargetType.AaveV3Borrow
+              ? AaveV3BorrowTarget
+              : T extends TargetType.AaveV3Supply
+                ? AaveV3SupplyTarget
+                : T extends TargetType.AaveV3NetSupply
+                  ? AaveV3NetSupplyTarget
+                  : never;
 }

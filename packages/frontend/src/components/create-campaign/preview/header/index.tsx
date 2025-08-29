@@ -1,5 +1,6 @@
 import {
     AmmPoolLiquidityCampaignPreviewPayload,
+    AaveV3CampaignPreviewPayload,
     LiquityV2CampaignPreviewPayload,
     type BaseCampaignPreviewPayload,
 } from "@/src/types/campaign";
@@ -8,6 +9,7 @@ import { useTranslations } from "next-intl";
 import { formatDateTime } from "@/src/utils/format";
 import { LiquityV2 } from "./liquity-v2";
 import { AmmPoolLiquidity } from "./amm-pool-liquidity";
+import { AaveV3 } from "./aave-v3";
 
 import styles from "./styles.module.css";
 
@@ -24,6 +26,7 @@ export function Header({ payload, backDisabled, onBack }: HeaderProps) {
         payload instanceof AmmPoolLiquidityCampaignPreviewPayload;
     const liquityV2Campaign =
         payload instanceof LiquityV2CampaignPreviewPayload;
+    const aaveV3Campaign = payload instanceof AaveV3CampaignPreviewPayload;
 
     return (
         <div className={styles.root}>
@@ -43,6 +46,7 @@ export function Header({ payload, backDisabled, onBack }: HeaderProps) {
                     <AmmPoolLiquidity payload={payload} />
                 )}
                 {liquityV2Campaign && <LiquityV2 payload={payload} />}
+                {aaveV3Campaign && <AaveV3 payload={payload} />}
             </div>
             <div className={styles.durationContainer}>
                 <TextField

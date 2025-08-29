@@ -1,0 +1,38 @@
+@reference "../../../../app.css";
+
+.preview {
+    @apply flex gap-2 items-center;
+}
+
+.previewLabelWrapper {
+    @apply w-full flex justify-between items-center;
+}
+
+.previewTextWrapper {
+    @apply flex items-center gap-2;
+}
+
+.previewLabel {
+    font-size: inherit;
+    color: inherit;
+}
+
+.previewWrapper {
+    @apply flex items-center gap-2;
+}
+
+.collateralWrapper {
+    @apply flex;
+}
+
+.collateralLogo:not(:first-child) {
+    @apply -ml-2;
+}
+
+.contentWrapper {
+    @apply flex flex-col gap-4 p-4;
+}
+
+.applyButton {
+    @apply w-full;
+}

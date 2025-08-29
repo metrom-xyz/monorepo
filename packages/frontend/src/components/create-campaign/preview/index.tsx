@@ -280,31 +280,6 @@ export function CampaignPreview({
                             disabled={!!error}
                             onCreate={handleOnCreate}
                         />
-                        {/* {tokensApproved && (
-                            <Button
-                                icon={ArrowRightIcon}
-                                iconPlacement="right"
-                                disabled={!!error || simulateCreateErrored}
-                                loading={
-                                    uploadingSpecification ||
-                                    simulatingCreate ||
-                                    deploying
-                                }
-                                className={{ root: styles.deployButton }}
-                                onClick={
-                                    SAFE
-                                        ? handleOnSafeDeploy
-                                        : handleOnStandardDeploy
-                                }
-                            >
-                                {t("deploy")}
-                            </Button>
-                        )}
-                        <ApproveTokensButton
-                            tokenAmounts={tokensToApprove}
-                            onApproved={handleOnRewardsApproved}
-                            onSafeTx={handleSafeTransaction}
-                        /> */}
                     </div>
                 </div>
             </div>

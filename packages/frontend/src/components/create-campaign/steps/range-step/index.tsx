@@ -11,7 +11,7 @@ import {
     Typography,
 } from "@metrom-xyz/ui";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { useChainId } from "wagmi";
+import { useChainId } from "@/src/hooks/use-chain-id";
 import { useTranslations } from "next-intl";
 import { RangeInputs } from "./range-inputs";
 import { LiquidityDensityChart } from "@/src/components/liquidity-density-chart";

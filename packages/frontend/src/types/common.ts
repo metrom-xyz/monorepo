@@ -43,3 +43,9 @@ export enum LiquityV2Action {
     Debt = "debt",
     StabilityPool = "stabilty-pool",
 }
+
+export enum AaveV3Action {
+    Borrow = "borrow",
+    Supply = "supply",
+    NetSupply = "net-supply",
+}
