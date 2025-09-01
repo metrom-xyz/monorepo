@@ -11,7 +11,7 @@ export const aptosDevelopmentData: ChainData = {
     blockExplorers: {
         default: {
             name: "Aptos Explorer",
-            url: "https://explorer.aptoslabs.com/?network=testnet",
+            url: "https://explorer.aptoslabs.com",
         },
     },
     icon: AptosLogo,
