@@ -11,6 +11,7 @@ import { CampaignsTable } from "../campaigns-table";
 import { Typography } from "@metrom-xyz/ui";
 import { useMemo } from "react";
 import { Campaign, Status } from "@metrom-xyz/sdk";
+import { CHAIN_TYPE } from "@/src/commons";
 
 import styles from "./styles.module.css";
 
@@ -25,6 +26,7 @@ export function Project({ project }: ProjectProps) {
 
     const { loading: loadingCampaigns, campaigns } = useCampaigns({
         chainId: details.campaignsFilters.chainId,
+        chainType: CHAIN_TYPE,
         dex: details.campaignsFilters.dex,
         enabled: !!details,
     });

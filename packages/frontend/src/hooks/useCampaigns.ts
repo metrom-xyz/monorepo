@@ -5,17 +5,19 @@ import { Campaign } from "../types/campaign";
 import type { HookBaseParams } from "../types/hooks";
 import { useTranslations } from "next-intl";
 import { getChainData } from "../utils/chain";
-import type { SupportedDex } from "@metrom-xyz/sdk";
+import type { ChainType, SupportedDex } from "@metrom-xyz/sdk";
 import type { CampaignStatus } from "@metrom-xyz/chains";
 
 interface UseCampaignsParams extends HookBaseParams {
     chainId?: number;
+    chainType?: ChainType;
     dex?: SupportedDex;
     status?: CampaignStatus;
 }
 
 export function useCampaigns({
     chainId,
+    chainType,
     dex,
     status,
     enabled = true,
@@ -31,6 +33,7 @@ export function useCampaigns({
             try {
                 const campaigns = await METROM_API_CLIENT.fetchCampaigns({
                     chainId,
+                    chainType,
                     dex,
                     status,
                 });
