@@ -20,18 +20,12 @@ import {
 import type { TranslationsType } from "../types/utils";
 import { AaveV3Action, LiquityV2Action } from "../types/common";
 import { getDistributableRewardsPercentage } from "./kpi";
-import {
-    type Hex,
-    encodeAbiParameters,
-    stringToHex,
-    isAddress,
-    hexToBytes,
-} from "viem";
+import { type Hex, encodeAbiParameters, stringToHex, isAddress } from "viem";
 import { SECONDS_IN_YEAR, WEIGHT_UNIT } from "../commons";
 import { type LiquityV2Protocol } from "@metrom-xyz/chains";
 import { getTranslations } from "next-intl/server";
 import { getChainData } from "./chain";
-import { Serializer, Hex as BcsHex } from "@aptos-labs/ts-sdk";
+import { Serializer, AccountAddress, MoveString } from "@aptos-labs/ts-sdk";
 
 export function buildCampaignDataBundleEvm(payload: CampaignPreviewPayload) {
     if (payload instanceof AmmPoolLiquidityCampaignPreviewPayload)
@@ -61,30 +55,28 @@ export function buildCampaignDataBundleEvm(payload: CampaignPreviewPayload) {
 }
 
 export function buildCampaignDataBundleMvm(payload: CampaignPreviewPayload) {
-    const serializer = new Serializer();
-
+    const serializableParts = [];
     if (payload instanceof AmmPoolLiquidityCampaignPreviewPayload) {
-        serializer.serializeBytes(
-            hexToBytes(
-                BcsHex.fromHexString(payload.pool.id)
-                    .toString()
-                    .padEnd(64, "0") as Hex,
-            ),
-        );
+        serializableParts.push(AccountAddress.fromString(payload.pool.id));
     } else if (payload instanceof LiquityV2CampaignPreviewPayload) {
-        serializer.serializeBytes(
-            hexToBytes(stringToHex(payload.brand.slug).padEnd(66, "0") as Hex),
+        serializableParts.push(new MoveString(payload.brand.slug));
+        serializableParts.push(
+            AccountAddress.fromString(payload.collateral.token.address),
         );
-        serializer.serializeBytes(hexToBytes(payload.collateral.token.address));
     } else if (payload instanceof AaveV3CampaignPreviewPayload) {
-        serializer.serializeBytes(
-            hexToBytes(stringToHex(payload.brand.slug).padEnd(66, "0") as Hex),
+        serializableParts.push(new MoveString(payload.brand.slug));
+        serializableParts.push(
+            AccountAddress.fromString(payload.market.address),
         );
-        serializer.serializeBytes(hexToBytes(payload.market.address));
-        serializer.serializeBytes(hexToBytes(payload.collateral.token.address));
+        serializableParts.push(
+            AccountAddress.fromString(payload.collateral.token.address),
+        );
     } else if (payload instanceof EmptyTargetCampaignPreviewPayload) {
         return [];
     } else return null;
+
+    const serializer = new Serializer();
+    for (const part of serializableParts) part.serialize(serializer);
 
     return serializer.toUint8Array();
 }
