@@ -6,7 +6,7 @@ import {
     useState,
     type ChangeEvent,
 } from "react";
-import { useChainId } from "@/src/hooks/use-chain-id";
+import { useChainId } from "@/src/hooks/useChainId";
 import { usePool } from "@/src/hooks/usePool";
 import type { AmmPoolLiquidityCampaignPayload } from "@/src/types/campaign";
 import { type Address, type Hex, isAddress, isHash } from "viem";

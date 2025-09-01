@@ -22,7 +22,7 @@ import type { CampaignSortOptions } from "@/src/utils/filtering";
 import { ProtocolLogo } from "../../protocol-logo";
 import { useSupportedProtocols } from "@/src/hooks/useSupportedProtocols";
 import { useDebounce } from "react-use";
-import { useChainIds } from "@/src/hooks/use-chains";
+import { useChainIds } from "@/src/hooks/useChainsIds";
 import { getCrossVmChainData } from "@/src/utils/chain";
 
 import styles from "./styles.module.css";

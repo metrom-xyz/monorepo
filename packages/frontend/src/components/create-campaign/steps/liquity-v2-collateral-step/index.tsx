@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { useChainId } from "@/src/hooks/use-chain-id";
+import { useChainId } from "@/src/hooks/useChainId";
 import { Step } from "@/src/components/step";
 import { StepPreview } from "@/src/components/step/preview";
 import { StepContent } from "@/src/components/step/content";

@@ -1,6 +1,6 @@
 import { useAccount, useReadContract } from "wagmi";
 import type { UseProtocolFeesParams, UseProtocolFeesReturnValue } from ".";
-import { useChainId } from "../use-chain-id";
+import { useChainId } from "../useChainId";
 import { useChainData } from "../useChainData";
 import { metromAbi } from "@metrom-xyz/contracts/abi";
 

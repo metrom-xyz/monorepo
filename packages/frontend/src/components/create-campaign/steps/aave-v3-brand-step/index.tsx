@@ -12,7 +12,7 @@ import {
 import { ProtocolType, type AaveV3Protocol } from "@metrom-xyz/chains";
 import { useProtocolsInChain } from "@/src/hooks/useProtocolsInChain";
 import { ProtocolLogo } from "@/src/components/protocol-logo";
-import { useChainId } from "@/src/hooks/use-chain-id";
+import { useChainId } from "@/src/hooks/useChainId";
 
 import styles from "./styles.module.css";
 

@@ -1,5 +1,5 @@
 import { useChainData } from "../useChainData";
-import { useChainId } from "../use-chain-id";
+import { useChainId } from "../useChainId";
 import { useViewModule } from "@aptos-labs/react";
 import type { UseProtocolFeesParams, UseProtocolFeesReturnValue } from ".";
 import { useWallet } from "@aptos-labs/wallet-adapter-react";

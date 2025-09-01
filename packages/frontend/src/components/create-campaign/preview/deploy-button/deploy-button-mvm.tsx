@@ -1,12 +1,12 @@
 import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
-import { useChainId } from "@/src/hooks/use-chain-id";
+import { useChainId } from "@/src/hooks/useChainId";
 import { useChainData } from "@/src/hooks/useChainData";
 import { Button } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
 import type { DeployButtonProps } from ".";
 import { useCallback, useEffect, useState } from "react";
 import { DistributablesType } from "@metrom-xyz/sdk";
-import { type Address, hexToBytes, zeroHash } from "viem";
+import { type Address, zeroHash } from "viem";
 import { buildCampaignDataBundleMvm } from "@/src/utils/campaign";
 import { trackFathomEvent } from "@/src/utils/fathom";
 import {
@@ -14,12 +14,15 @@ import {
     useSignAndSubmitTransaction,
     useSimulateTransaction,
 } from "@aptos-labs/react";
-import { useAccount } from "@/src/hooks/use-account";
+import { useAccount } from "@/src/hooks/useAccount";
 import {
+    Hex,
     U32,
     U64,
     type InputGenerateTransactionPayloadData,
 } from "@aptos-labs/ts-sdk";
+import { ConnectButtonMvm } from "@/src/components/connect-button/mvm";
+import { WalletIcon } from "@/src/assets/wallet-icon";
 
 import styles from "./styles.module.css";
 
@@ -33,7 +36,7 @@ export function DeployButtonMvm({
     const t = useTranslations("campaignPreview");
     const chainId = useChainId();
     const chainData = useChainData({ chainId });
-    const { address } = useAccount();
+    const { address, connected } = useAccount();
     const { aptos } = useClients();
 
     const [deploying, setDeploying] = useState(false);
@@ -50,7 +53,7 @@ export function DeployButtonMvm({
             const specHash =
                 specificationHash === zeroHash
                     ? null
-                    : hexToBytes(specificationHash);
+                    : Hex.fromHexInput(specificationHash).toUint8Array();
 
             if (payload.isDistributing(DistributablesType.Tokens)) {
                 const rewardTokens: Address[] = [];
@@ -149,12 +152,31 @@ export function DeployButtonMvm({
         onCreate,
     ]);
 
+    if (!connected)
+        return (
+            <ConnectButtonMvm
+                customComponent={
+                    <Button
+                        icon={WalletIcon}
+                        iconPlacement="right"
+                        className={{
+                            root: styles.button,
+                        }}
+                    >
+                        {t("connectWallet")}
+                    </Button>
+                }
+            />
+        );
+
     return (
         <Button
             icon={ArrowRightIcon}
             iconPlacement="right"
             disabled={
-                disabled || simulateCreateErrored || !simulatedCreate?.success
+                disabled ||
+                simulateCreateErrored ||
+                (!!simulatedCreate && !simulatedCreate.success)
             }
             loading={uploadingSpecification || simulatingCreate || deploying}
             className={{ root: styles.button }}

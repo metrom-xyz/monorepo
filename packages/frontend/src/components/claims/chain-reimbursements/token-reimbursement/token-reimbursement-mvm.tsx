@@ -1,6 +1,6 @@
 import { Typography, Button, Card } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
-import { useAccount } from "@/src/hooks/use-account";
+import { useAccount } from "@/src/hooks/useAccount";
 import { useCallback, useMemo, useState } from "react";
 import { toast } from "sonner";
 import { formatAmount, formatUsdAmount } from "@/src/utils/format";

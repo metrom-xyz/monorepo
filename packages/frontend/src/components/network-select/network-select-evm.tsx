@@ -8,7 +8,7 @@ import { useClickAway } from "react-use";
 import { AnimatePresence, motion } from "motion/react";
 import { useChainData } from "@/src/hooks/useChainData";
 import { useIsChainSupported } from "@/src/hooks/use-is-chain-supported";
-import { useActiveChains } from "@/src/hooks/use-active-chains";
+import { useActiveChains } from "@/src/hooks/useActiveChains";
 import { SUPPORTED_CHAINS_MVM } from "@/src/commons";
 
 import styles from "./styles.module.css";

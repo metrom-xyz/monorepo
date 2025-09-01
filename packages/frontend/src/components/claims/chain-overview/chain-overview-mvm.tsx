@@ -1,7 +1,7 @@
 import classNames from "classnames";
 import { Typography, Button, Card } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
-import { useAccount } from "@/src/hooks/use-account";
+import { useAccount } from "@/src/hooks/useAccount";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { trackFathomEvent } from "@/src/utils/fathom";
 import { toast } from "sonner";

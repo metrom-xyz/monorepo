@@ -10,7 +10,7 @@ import { CampaignType } from "@/src/types/campaign";
 import { ProtocolType } from "@metrom-xyz/chains";
 import { useProtocolsInChain } from "@/src/hooks/useProtocolsInChain";
 import { Redirect } from "./redirect";
-import { useChainId } from "@/src/hooks/use-chain-id";
+import { useChainId } from "@/src/hooks/useChainId";
 
 import styles from "./styles.module.css";
 

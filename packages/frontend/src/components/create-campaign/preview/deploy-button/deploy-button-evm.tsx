@@ -1,6 +1,6 @@
 import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
 import { SAFE } from "@/src/commons/env";
-import { useChainId } from "@/src/hooks/use-chain-id";
+import { useChainId } from "@/src/hooks/useChainId";
 import { useChainData } from "@/src/hooks/useChainData";
 import { Button } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";

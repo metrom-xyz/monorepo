@@ -5,6 +5,7 @@ import { Nav } from "./nav";
 import { Footer } from "./footer";
 import { useAccount, useDisconnect } from "wagmi";
 import { APTOS } from "@/src/commons/env";
+import { useWallet } from "@aptos-labs/wallet-adapter-react";
 
 import styles from "./styles.module.css";
 
@@ -13,13 +14,15 @@ interface LayoutProps {
 }
 
 export function Layout({ children }: LayoutProps) {
-    const { address } = useAccount();
-    const { disconnect } = useDisconnect();
+    const { isConnected: connectedEvm } = useAccount();
+    const { connected: connectedMvm, disconnect: disconnectMvm } = useWallet();
+    const { disconnect: disconnectEvm } = useDisconnect();
 
-    // TODO: needed?
+    // Needed to make sure the unnecessary wallet provider gets disconnected.
     useEffect(() => {
-        if (APTOS && address) disconnect();
-    }, [address, disconnect]);
+        if (APTOS && connectedEvm) disconnectEvm();
+        if (!APTOS && connectedMvm) disconnectMvm();
+    }, [connectedEvm, connectedMvm, disconnectMvm, disconnectEvm]);
 
     return (
         <div className={styles.layout}>

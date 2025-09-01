@@ -2,7 +2,7 @@ import type { AaveV3Collateral } from "@metrom-xyz/sdk";
 import { RemoteLogo } from "@/src/components/remote-logo";
 import { Skeleton, Typography } from "@metrom-xyz/ui";
 import { useCallback } from "react";
-import { useChainId } from "@/src/hooks/use-chain-id";
+import { useChainId } from "@/src/hooks/useChainId";
 import classNames from "classnames";
 import { AaveV3Action, LiquityV2Action } from "@/src/types/common";
 import type { AaveV3CampaignPayload } from "@/src/types/campaign";

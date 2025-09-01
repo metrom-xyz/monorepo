@@ -8,7 +8,7 @@ import {
 } from "@metrom-xyz/ui";
 import { ChevronDown } from "@/src/assets/chevron-down";
 import { useTranslations } from "next-intl";
-import { useChainId } from "@/src/hooks/use-chain-id";
+import { useChainId } from "@/src/hooks/useChainId";
 import { parseUnits } from "viem";
 import { RemoteLogo } from "@/src/components/remote-logo";
 import type {

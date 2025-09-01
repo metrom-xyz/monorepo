@@ -4,7 +4,7 @@ import {
     CampaignType,
     type CampaignPreviewPayload,
 } from "@/src/types/campaign";
-import { useAccount } from "@/src/hooks/use-account";
+import { useAccount } from "@/src/hooks/useAccount";
 import { useMemo, useState } from "react";
 import { trackFathomEvent } from "@/src/utils/fathom";
 import { Modal } from "@metrom-xyz/ui";
@@ -15,8 +15,8 @@ import { LiquityV2ForksForm } from "./liquity-v2-forks-form";
 import { useRouter } from "@/src/i18n/routing";
 import { ProtocolType } from "@metrom-xyz/chains";
 import { useProtocolsInChain } from "@/src/hooks/useProtocolsInChain";
-import { useChainId } from "@/src/hooks/use-chain-id";
-import { useActiveChains } from "@/src/hooks/use-active-chains";
+import { useChainId } from "@/src/hooks/useChainId";
+import { useActiveChains } from "@/src/hooks/useActiveChains";
 
 import styles from "./styles.module.css";
 import { AaveV3Form } from "./aave-v3-form";

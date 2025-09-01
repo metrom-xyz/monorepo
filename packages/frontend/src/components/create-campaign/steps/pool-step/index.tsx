@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { useChainId } from "@/src/hooks/use-chain-id";
+import { useChainId } from "@/src/hooks/useChainId";
 import { useTranslations } from "next-intl";
 import { type AmmPoolWithTvl } from "@metrom-xyz/sdk";
 import { Step } from "@/src/components/step";

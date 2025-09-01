@@ -18,7 +18,7 @@ import { type WriteContractErrorType, encodeFunctionData } from "viem";
 import { SAFE } from "@/src/commons/env";
 import { SAFE_APP_SDK } from "@/src/commons";
 import { useChainData } from "@/src/hooks/useChainData";
-import { useAccount } from "@/src/hooks/use-account";
+import { useAccount } from "@/src/hooks/useAccount";
 import type { TokenClaimProps } from ".";
 
 import styles from "./styles.module.css";

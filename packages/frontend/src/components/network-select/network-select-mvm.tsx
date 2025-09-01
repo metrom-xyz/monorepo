@@ -7,8 +7,8 @@ import { useClickAway } from "react-use";
 import { AnimatePresence, motion } from "motion/react";
 import { useChainData } from "@/src/hooks/useChainData";
 import { useIsChainSupported } from "@/src/hooks/use-is-chain-supported";
-import { useActiveChains } from "@/src/hooks/use-active-chains";
-import { useChainIdMvm } from "@/src/hooks/use-chain-id/useChainIdMvm";
+import { useActiveChains } from "@/src/hooks/useActiveChains";
+import { useChainId } from "@/src/hooks/useChainId";
 import { useWallet } from "@aptos-labs/wallet-adapter-react";
 import { chainIdToAptosNetwork } from "@/src/utils/chain";
 
@@ -21,7 +21,7 @@ export function NetworkSelectMvm() {
     const rootRef = useRef<HTMLDivElement>(null);
 
     const activeChains = useActiveChains();
-    const selectedChainId = useChainIdMvm();
+    const selectedChainId = useChainId();
     const { changeNetwork, connected } = useWallet();
     const chainData = useChainData({ chainId: selectedChainId });
     const chainSupported = useIsChainSupported({ chainId: selectedChainId });

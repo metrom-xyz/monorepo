@@ -8,7 +8,7 @@ import {
 } from "@/src/types/campaign";
 import { useTranslations } from "next-intl";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { useChainId } from "@/src/hooks/use-chain-id";
+import { useChainId } from "@/src/hooks/useChainId";
 import { DistributablesType } from "@metrom-xyz/sdk";
 import { AaveV3CollateralStep } from "../../steps/aave-v3-collateral-step";
 import { StartDateStep } from "../../steps/start-date-step";
