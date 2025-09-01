@@ -2,7 +2,7 @@ import { Popover, Typography } from "@metrom-xyz/ui";
 import classNames from "classnames";
 import { useWindowSize } from "react-use";
 import { getCrossVmChainData } from "@/src/utils/chain";
-import { BASE_URL, SUPPORTED_CHAINS_MVM } from "@/src/commons";
+import { METROM_APTOS_BASE_URL, SUPPORTED_CHAINS_MVM } from "@/src/commons";
 import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
 import { APTOS } from "@/src/commons/env";
 
@@ -54,11 +54,10 @@ export function PopoverPicker({
                         return (
                             <a
                                 key={id}
-                                // TODO: metrom Aptos url
-                                href={`${BASE_URL}`}
+                                href={METROM_APTOS_BASE_URL}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className={classNames(styles.network)}
+                                className={styles.network}
                             >
                                 {chainData?.icon && (
                                     <chainData.icon

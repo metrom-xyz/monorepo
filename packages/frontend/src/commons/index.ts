@@ -17,6 +17,11 @@ export const CHAIN_TYPE = APTOS ? ChainType.Aptos : ChainType.Evm;
 
 export const BASE_URL = "https://app.metrom.xyz";
 
+export const METROM_APTOS_BASE_URL =
+    ENVIRONMENT === Environment.Production
+        ? "https://aptos.metrom.xyz"
+        : "https://aptos.dev.metrom.xyz";
+
 export const TURTLE_API_BASE_URL = "https://earn.turtle.vision";
 
 export const LIQUIDITY_LAND_REFERRAL_URL =
