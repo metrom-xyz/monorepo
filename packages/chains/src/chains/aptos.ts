@@ -1,12 +1,7 @@
-import { SupportedAaveV3, SupportedDex, TargetType } from "@metrom-xyz/sdk";
-import {
-    AaveDarkLogo,
-    AaveLightLogo,
-    AlgebraIntegralLogo,
-    AptosLogo,
-} from "../assets";
+import { SupportedAaveV3, TargetType } from "@metrom-xyz/sdk";
+import { AaveDarkLogo, AaveLightLogo, AptosLogo } from "../assets";
 import { ChainData } from "../types/chains";
-import { DepositUrlType, ProtocolType } from "../types/protocol";
+import { ProtocolType } from "../types/protocol";
 import { ADDRESS, SupportedChain } from "@metrom-xyz/aptos-contracts";
 
 export const aptosDevelopmentData: ChainData = {
@@ -21,19 +16,6 @@ export const aptosDevelopmentData: ChainData = {
     },
     icon: AptosLogo,
     protocols: [
-        {
-            active: true,
-            type: ProtocolType.Dex,
-            slug: SupportedDex.TestIntegral,
-            logo: AlgebraIntegralLogo,
-            name: "Algebra integral",
-            depositUrl: {
-                type: DepositUrlType.PathPoolAddress,
-                template:
-                    "https://integral.algebra.finance/pool/{pool}/new-position",
-            },
-            supportsFetchAllPools: true,
-        },
         {
             active: true,
             type: ProtocolType.AaveV3,
