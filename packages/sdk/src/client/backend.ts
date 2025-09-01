@@ -1008,7 +1008,7 @@ function processCampaignsResponse(
                     market: backendCampaign.target.market,
                     collateral: resolveAaveV3Collateral(
                         response.resolvedAaveV3Collaterals,
-                        response.resolvedPricedTokens,
+                        response.resolvedTokens,
                         backendCampaign.target.chainId,
                         backendCampaign.target.chainType,
                         backendCampaign.target.brand,
@@ -1032,7 +1032,7 @@ function processCampaignsResponse(
                     market: backendCampaign.target.market,
                     collateral: resolveAaveV3Collateral(
                         response.resolvedAaveV3Collaterals,
-                        response.resolvedPricedTokens,
+                        response.resolvedTokens,
                         backendCampaign.target.chainId,
                         backendCampaign.target.chainType,
                         backendCampaign.target.brand,
@@ -1056,7 +1056,7 @@ function processCampaignsResponse(
                     market: backendCampaign.target.market,
                     collateral: resolveAaveV3Collateral(
                         response.resolvedAaveV3Collaterals,
-                        response.resolvedPricedTokens,
+                        response.resolvedTokens,
                         backendCampaign.target.chainId,
                         backendCampaign.target.chainType,
                         backendCampaign.target.brand,
@@ -1238,7 +1238,7 @@ function resolveLiquityV2Collateral(
 
 function resolveAaveV3Collateral(
     aaveV3CollateralsRegistry: BackendResolvedAaveV3CollateralsRegistry,
-    pricedTokensRegistry: BackendResolvedPricedTokensRegistry,
+    resolvedTokensRegistry: BackendResolvedTokensRegistry,
     chainId: number,
     chainType: ChainType,
     brand: string,
@@ -1273,8 +1273,8 @@ function resolveAaveV3Collateral(
         ...resolvedAaveV3Collateral,
         chainId,
         chainType,
-        token: resolvePricedTokenInChain(
-            pricedTokensRegistry,
+        token: resolveTokenInChain(
+            resolvedTokensRegistry,
             chainId,
             chainType,
             id,
