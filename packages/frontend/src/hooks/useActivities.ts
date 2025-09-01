@@ -3,9 +3,9 @@ import { CHAIN_TYPE, METROM_API_CLIENT } from "../commons";
 import { useQuery } from "@tanstack/react-query";
 import type { Address } from "viem";
 import type { HookBaseParams } from "../types/hooks";
-import { useActiveChains } from "./use-active-chains";
-import { useChainId } from "./use-chain-id";
-import { useAccount } from "./use-account";
+import { useActiveChains } from "./useActiveChains";
+import { useChainId } from "./useChainId";
+import { useAccount } from "./useAccount";
 
 interface UseActivitiesParams extends HookBaseParams {}
 

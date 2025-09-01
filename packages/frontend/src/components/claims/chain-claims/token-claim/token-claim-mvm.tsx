@@ -8,7 +8,7 @@ import { RemoteLogo } from "@/src/components/remote-logo";
 import { ClaimSuccess } from "../../notification/claim-success";
 import { ClaimFail } from "../../notification/claim-fail";
 import { useChainData } from "@/src/hooks/useChainData";
-import { useAccount } from "@/src/hooks/use-account";
+import { useAccount } from "@/src/hooks/useAccount";
 import type { TokenClaimProps } from ".";
 import {
     type MoveFunctionId,

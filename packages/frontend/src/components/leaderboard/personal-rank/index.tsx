@@ -1,4 +1,4 @@
-import { useAccount } from "@/src/hooks/use-account";
+import { useAccount } from "@/src/hooks/useAccount";
 import { Card, Typography } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
 import { SupportedChain } from "@metrom-xyz/contracts";
@@ -15,6 +15,7 @@ import { useMemo } from "react";
 import type { Address } from "viem";
 
 import styles from "./styles.module.css";
+import { ConnectButton } from "../../connect-button";
 
 export interface PersonalRankProps {
     chain?: SupportedChain;
@@ -75,14 +76,18 @@ export function PersonalRank({
                 {loading ? (
                     <SkeletonRow size="lg" />
                 ) : !connectedAddress ? (
-                    <button
-                        onClick={handleOnConnect}
-                        className={styles.connectWallet}
-                    >
-                        <Typography weight="medium" size="sm">
-                            {t("connect")}
-                        </Typography>
-                    </button>
+                    <ConnectButton
+                        customComponent={
+                            <button
+                                onClick={handleOnConnect}
+                                className={styles.connectWallet}
+                            >
+                                <Typography weight="medium" size="sm">
+                                    {t("connect")}
+                                </Typography>
+                            </button>
+                        }
+                    />
                 ) : blacklisted ? (
                     <Typography weight="medium" light>
                         {t("blacklisted")}

@@ -7,8 +7,8 @@ import {
 import type { Erc20Token, UsdPricedOnChainAmount } from "@metrom-xyz/sdk";
 import { useCallback, useEffect, useState } from "react";
 import { useWatchBalance } from "@/src/hooks/use-watch-balance";
-import { useChainId } from "@/src/hooks/use-chain-id";
-import { useAccount } from "@/src/hooks/use-account";
+import { useChainId } from "@/src/hooks/useChainId";
+import { useAccount } from "@/src/hooks/useAccount";
 import { parseUnits } from "viem/utils";
 import type { Address } from "viem";
 import classNames from "classnames";

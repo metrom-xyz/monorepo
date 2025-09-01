@@ -7,7 +7,7 @@ import {
     useSwitchChain,
     useWriteContract,
 } from "wagmi";
-import { useAccount } from "@/src/hooks/use-account";
+import { useAccount } from "@/src/hooks/useAccount";
 import { metromAbi } from "@metrom-xyz/contracts/abi";
 import { useCallback, useMemo, useState } from "react";
 import { toast } from "sonner";

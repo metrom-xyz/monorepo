@@ -16,7 +16,7 @@ import type {
 } from "@/src/types/campaign";
 import { type ChainData } from "@metrom-xyz/chains";
 import { getChainData } from "@/src/utils/chain";
-import { useAccount } from "@/src/hooks/use-account";
+import { useAccount } from "@/src/hooks/useAccount";
 
 import styles from "./styles.module.css";
 

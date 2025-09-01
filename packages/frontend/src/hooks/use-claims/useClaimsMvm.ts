@@ -1,4 +1,4 @@
-import { formatUnits, type Address, hexToBytes } from "viem";
+import { formatUnits, type Address } from "viem";
 import { METROM_API_CLIENT } from "../../commons";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
@@ -6,7 +6,11 @@ import type { ClaimWithRemaining } from "../../types/campaign";
 import { getChainData } from "../../utils/chain";
 import type { UseClaimsParams, UseClaimsReturnValue } from ".";
 import { useWallet } from "@aptos-labs/wallet-adapter-react";
-import type { InputViewFunctionData, MoveFunctionId } from "@aptos-labs/ts-sdk";
+import {
+    type InputViewFunctionData,
+    type MoveFunctionId,
+    AccountAddress,
+} from "@aptos-labs/ts-sdk";
 import { useClients } from "@aptos-labs/react";
 
 type QueryKey = [string, Address | undefined];
@@ -65,7 +69,9 @@ export function useClaimsMvm({
                 return {
                     function: moveFunction,
                     functionArguments: [
-                        hexToBytes(rawClaim.campaignId),
+                        AccountAddress.fromString(
+                            rawClaim.campaignId,
+                        ).bcsToBytes(),
                         rawClaim.token.address,
                         address,
                     ],

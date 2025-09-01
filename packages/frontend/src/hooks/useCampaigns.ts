@@ -47,7 +47,7 @@ export function useCampaigns({
                     })
                     .sort((a, b) => a.createdAt - b.createdAt);
             } catch (error) {
-                console.error(`Could not fetch campaigns: ${error}`);
+                console.error(`Could not fetch campaigns: ${error}`, error);
                 throw error;
             }
         },

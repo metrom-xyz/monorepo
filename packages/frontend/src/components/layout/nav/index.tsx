@@ -17,9 +17,9 @@ import type { SVGIcon } from "@/src/types/common";
 import type { TranslationsKeys } from "@/src/types/utils";
 import type { Address } from "viem";
 import { useClaims } from "@/src/hooks/use-claims";
-import { useActiveChains } from "@/src/hooks/use-active-chains";
-import { useChainId } from "@/src/hooks/use-chain-id";
-import { useAccount } from "@/src/hooks/use-account";
+import { useActiveChains } from "@/src/hooks/useActiveChains";
+import { useChainId } from "@/src/hooks/useChainId";
+import { useAccount } from "@/src/hooks/useAccount";
 
 import styles from "./styles.module.css";
 

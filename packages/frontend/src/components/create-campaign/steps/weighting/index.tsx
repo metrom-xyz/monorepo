@@ -11,7 +11,7 @@ import {
 } from "@/src/types/campaign";
 import { WeightingInputs } from "./weighting-inputs";
 import type { LocalizedMessage } from "@/src/types/utils";
-import { useChainId } from "@/src/hooks/use-chain-id";
+import { useChainId } from "@/src/hooks/useChainId";
 import { usePrevious } from "react-use";
 import { formatPercentage } from "@/src/utils/format";
 import { InfoMessage } from "@/src/components/info-message";

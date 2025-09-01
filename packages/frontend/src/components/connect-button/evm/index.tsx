@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@metrom-xyz/ui";
-import { useEffect, useState } from "react";
+import { cloneElement, useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
 import { type Address } from "blo";
 import { AccountMenu, type Balance } from "../account-menu";
@@ -21,11 +21,12 @@ import {
 } from "@reown/appkit/react";
 import { Avatar } from "../../avatar/avatar";
 import { Account } from "../../account";
+import type { ConnectButtonProps } from "..";
 
 import styles from "./styles.module.css";
 import commonStyles from "../styles.module.css";
 
-export function ConnectButtonEvm() {
+export function ConnectButtonEvm({ customComponent }: ConnectButtonProps) {
     const t = useTranslations();
 
     const [balance, setBalance] = useState<Balance>();
@@ -141,6 +142,10 @@ export function ConnectButtonEvm() {
                             </div>
                         </div>
                     </>
+                ) : customComponent ? (
+                    cloneElement(customComponent, {
+                        onClick: handleOnConnect,
+                    })
                 ) : (
                     <Button
                         size="sm"

@@ -1,21 +1,27 @@
-import type { Claim } from "@metrom-xyz/sdk";
-import { type Address, hexToBytes } from "viem";
+import { AccountAddress, Hex } from "@aptos-labs/ts-sdk";
+import type {
+    ClaimWithRemaining,
+    ReimbursementsWithRemaining,
+} from "../types/campaign";
 
-export function buildRewardsFunctionArgs<T extends Claim>(
-    account: Address,
-    claims: T[],
-) {
+export function buildRewardsFunctionArgs<
+    T extends ClaimWithRemaining | ReimbursementsWithRemaining,
+>(account: string, claims: T[]) {
     const campaignIds: Uint8Array[] = [];
     const proofs: Uint8Array[][] = [];
-    const tokens: Address[] = [];
+    const tokens: string[] = [];
     const amounts: bigint[] = [];
-    const receivers: Address[] = [];
+    const receivers: string[] = [];
 
     claims.forEach((claim) => {
-        campaignIds.push(hexToBytes(claim.campaignId));
-        proofs.push(claim.proof.map((proof) => hexToBytes(proof)));
+        campaignIds.push(
+            AccountAddress.fromString(claim.campaignId).bcsToBytes(),
+        );
+        proofs.push(
+            claim.proof.map((proof) => Hex.fromHexInput(proof).toUint8Array()),
+        );
         tokens.push(claim.token.address);
-        amounts.push(claim.amount.raw);
+        amounts.push(claim.remaining.raw);
         receivers.push(account);
     });
 

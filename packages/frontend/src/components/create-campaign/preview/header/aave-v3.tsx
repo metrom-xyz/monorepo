@@ -4,7 +4,7 @@ import type { AaveV3CampaignPreviewPayload } from "@/src/types/campaign";
 import { useMemo } from "react";
 import { AAVE_V3_ACTIONS } from "../../steps/aave-v3-action-step";
 import { RemoteLogo } from "@/src/components/remote-logo";
-import { useChainId } from "@/src/hooks/use-chain-id";
+import { useChainId } from "@/src/hooks/useChainId";
 
 import styles from "./styles.module.css";
 

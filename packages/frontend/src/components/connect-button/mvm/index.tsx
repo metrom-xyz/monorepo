@@ -5,7 +5,7 @@ import {
     WalletItem,
 } from "@aptos-labs/wallet-adapter-react";
 import { Button, Modal, Typography } from "@metrom-xyz/ui";
-import { useMemo, useState } from "react";
+import { cloneElement, useMemo, useState } from "react";
 import { AccountMenu, type Balance } from "../account-menu";
 import type { Address } from "viem";
 import { trackFathomEvent } from "@/src/utils/fathom";
@@ -14,11 +14,12 @@ import { Account } from "../../account";
 import { useTranslations } from "next-intl";
 import { useAptBalance } from "@aptos-labs/react";
 import { formatApt } from "@aptos-labs/js-pro";
+import type { ConnectButtonProps } from "..";
 
 import styles from "./styles.module.css";
 import commonStyles from "../styles.module.css";
 
-export function ConnectButtonMvm() {
+export function ConnectButtonMvm({ customComponent }: ConnectButtonProps) {
     const t = useTranslations();
 
     const [open, setOpen] = useState(false);
@@ -71,109 +72,123 @@ export function ConnectButtonMvm() {
     const address = account?.address.toString() as Address | undefined;
 
     return (
-        <div>
-            {connected && network && address ? (
-                <>
-                    <AccountMenu
-                        account={address}
-                        chainId={network.chainId}
-                        open={accountMenu}
-                        balance={balance}
-                        onClose={handleAccountMenuClose}
-                        onDisconnect={disconnect}
-                    />
-                    <div
-                        className={commonStyles.walletWrapper}
-                        onClick={handleAccountMenuOpen}
-                    >
-                        <div className={commonStyles.account}>
-                            <Avatar address={address} height={28} width={28} />
-                            <Account
-                                address={address}
-                                variant="full"
-                                className={commonStyles.displayName}
-                            />
+        <div className={commonStyles.root}>
+            <div className={commonStyles.wrapper}>
+                {connected && network && address ? (
+                    <>
+                        <AccountMenu
+                            account={address}
+                            chainId={network.chainId}
+                            open={accountMenu}
+                            balance={balance}
+                            onClose={handleAccountMenuClose}
+                            onDisconnect={disconnect}
+                        />
+                        <div
+                            className={commonStyles.walletWrapper}
+                            onClick={handleAccountMenuOpen}
+                        >
+                            <div className={commonStyles.account}>
+                                <Avatar
+                                    address={address}
+                                    height={28}
+                                    width={28}
+                                />
+                                <Account
+                                    address={address}
+                                    variant="full"
+                                    className={commonStyles.displayName}
+                                />
+                            </div>
                         </div>
-                    </div>
-                </>
-            ) : (
-                <Button
-                    size="sm"
-                    onClick={handleModalOnOpen}
-                    className={{
-                        root: commonStyles.connectButton,
-                    }}
-                >
-                    {t("navigation.connect")}
-                </Button>
-            )}
-            <Modal onDismiss={handleModalOnClose} open={open}>
-                <div className={styles.modal}>
-                    <div className={styles.title}>
-                        <Typography weight="medium">
-                            {t("wallets.title")}
-                        </Typography>
-                    </div>
-                    {[...availableWallets, ...installableWallets].map(
-                        (wallet) => (
-                            <WalletItem
-                                key={wallet.name}
-                                wallet={wallet}
-                                onConnect={handleModalOnClose}
-                                className={styles.walletItem}
-                            >
-                                {isInstallRequired(wallet) ? (
-                                    <WalletItem.InstallLink
-                                        className={styles.walletButton}
-                                    >
-                                        <div className={styles.leftContent}>
-                                            <WalletItem.Icon
-                                                className={styles.walletIcon}
-                                            />
+                    </>
+                ) : customComponent ? (
+                    cloneElement(customComponent, {
+                        onClick: handleModalOnOpen,
+                    })
+                ) : (
+                    <Button
+                        size="sm"
+                        onClick={handleModalOnOpen}
+                        className={{
+                            root: commonStyles.connectButton,
+                        }}
+                    >
+                        {t("navigation.connect")}
+                    </Button>
+                )}
+                <Modal onDismiss={handleModalOnClose} open={open}>
+                    <div className={styles.modal}>
+                        <div className={styles.title}>
+                            <Typography weight="medium">
+                                {t("wallets.title")}
+                            </Typography>
+                        </div>
+                        {[...availableWallets, ...installableWallets].map(
+                            (wallet) => (
+                                <WalletItem
+                                    key={wallet.name}
+                                    wallet={wallet}
+                                    onConnect={handleModalOnClose}
+                                    className={styles.walletItem}
+                                >
+                                    {isInstallRequired(wallet) ? (
+                                        <WalletItem.InstallLink
+                                            className={styles.walletButton}
+                                        >
+                                            <div className={styles.leftContent}>
+                                                <WalletItem.Icon
+                                                    className={
+                                                        styles.walletIcon
+                                                    }
+                                                />
+                                                <Typography
+                                                    size="sm"
+                                                    weight="medium"
+                                                >
+                                                    {wallet.name}
+                                                </Typography>
+                                            </div>
                                             <Typography
                                                 size="sm"
                                                 weight="medium"
+                                                uppercase
                                             >
-                                                {wallet.name}
+                                                {t("wallets.install")}
                                             </Typography>
-                                        </div>
-                                        <Typography
-                                            size="sm"
-                                            weight="medium"
-                                            uppercase
+                                        </WalletItem.InstallLink>
+                                    ) : (
+                                        <WalletItem.ConnectButton
+                                            className={styles.walletButton}
                                         >
-                                            {t("wallets.install")}
-                                        </Typography>
-                                    </WalletItem.InstallLink>
-                                ) : (
-                                    <WalletItem.ConnectButton
-                                        className={styles.walletButton}
-                                    >
-                                        <div className={styles.leftContent}>
-                                            <WalletItem.Icon
-                                                className={styles.walletIcon}
-                                            />
+                                            <div className={styles.leftContent}>
+                                                <WalletItem.Icon
+                                                    className={
+                                                        styles.walletIcon
+                                                    }
+                                                />
+                                                <Typography
+                                                    size="sm"
+                                                    weight="medium"
+                                                >
+                                                    {wallet.name}
+                                                </Typography>
+                                            </div>
                                             <Typography
                                                 size="sm"
                                                 weight="medium"
+                                                uppercase
                                             >
-                                                {wallet.name}
+                                                {t("wallets.connect")}
                                             </Typography>
-                                        </div>
-                                        <Typography
-                                            size="sm"
-                                            weight="medium"
-                                            uppercase
-                                        >
-                                            {t("wallets.connect")}
-                                        </Typography>
-                                    </WalletItem.ConnectButton>
-                                )}
-                            </WalletItem>
-                        ),
-                    )}
-                </div>
-            </Modal>
+                                        </WalletItem.ConnectButton>
+                                    )}
+                                </WalletItem>
+                            ),
+                        )}
+                    </div>
+                </Modal>
+            </div>
         </div>
     );
 }

@@ -1,5 +1,5 @@
 import { useEffect, useMemo } from "react";
-import { useChainId } from "@/src/hooks/use-chain-id";
+import { useChainId } from "@/src/hooks/useChainId";
 import {
     type AaveV3CampaignPayload,
     type AaveV3CampaignPayloadPart,

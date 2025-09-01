@@ -1,11 +1,11 @@
 import type { Address, Hex } from "viem";
 import { METROM_API_CLIENT } from "../commons";
 import { useQuery } from "@tanstack/react-query";
-import { useAccount } from "wagmi";
 import type { HookBaseParams } from "../types/hooks";
 import type { SupportedChain } from "@metrom-xyz/contracts";
 import type { Leaderboard, Rank } from "../types/campaign";
 import { ChainType } from "@metrom-xyz/sdk";
+import { useAccount } from "./useAccount";
 
 interface UseLeaderboardParams extends HookBaseParams {
     campaignId?: Hex;

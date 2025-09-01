@@ -1,4 +1,4 @@
-import { formatUnits, type Address, hexToBytes } from "viem";
+import { formatUnits, type Address } from "viem";
 import { METROM_API_CLIENT } from "../../commons";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
@@ -75,7 +75,9 @@ export function useReimbursementsMvm({
             recovered.push({
                 function: moveFunction,
                 functionArguments: [
-                    hexToBytes(rawReimbursement.campaignId),
+                    AccountAddress.fromString(
+                        rawReimbursement.campaignId,
+                    ).bcsToBytes(),
                     rawReimbursement.token.address,
                     AccountAddress.from("0x0").toStringLong(),
                 ],
@@ -83,7 +85,9 @@ export function useReimbursementsMvm({
             claimed.push({
                 function: moveFunction,
                 functionArguments: [
-                    hexToBytes(rawReimbursement.campaignId),
+                    AccountAddress.fromString(
+                        rawReimbursement.campaignId,
+                    ).bcsToBytes(),
                     rawReimbursement.token.address,
                     address,
                 ],
@@ -173,14 +177,15 @@ export function useReimbursementsMvm({
 
         const reimbursements: ReimbursementsWithRemaining[] = [];
         for (let i = 0; i < recoveredData.length; i++) {
-            const rawRecovered = recoveredData[i] as unknown as number;
-            const rawClaimed = claimedData[i] as unknown as number;
+            const rawRecovered = recoveredData[i][0] as unknown as number;
+            const rawClaimed = claimedData[i][0] as unknown as number;
             const rawReimbursement = rawReimbursements[i];
 
             const rawRemaining =
                 rawReimbursement.amount.raw -
                 BigInt(rawRecovered) -
                 BigInt(rawClaimed);
+
             const formattedRemaining = Number(
                 formatUnits(rawRemaining, rawReimbursement.token.decimals),
             );

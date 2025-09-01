@@ -3,23 +3,18 @@ import { Link } from "@/src/i18n/routing";
 import { useTranslations } from "next-intl";
 import { useEffect } from "react";
 import { trackFathomEvent } from "@/src/utils/fathom";
-import { useAppKit } from "@reown/appkit/react";
-import { useAccount } from "@/src/hooks/use-account";
+import { useAccount } from "@/src/hooks/useAccount";
+import { ConnectButton } from "../../connect-button";
 
 import styles from "./styles.module.css";
 
 export function Empty() {
     const t = useTranslations("rewards.claims");
     const { address } = useAccount();
-    const { open } = useAppKit();
 
     useEffect(() => {
         trackFathomEvent("NO_REWARDS_CLAIM");
     }, []);
-
-    async function handleOnConnect() {
-        await open();
-    }
 
     return !!address ? (
         <Card className={styles.root}>
@@ -41,9 +36,7 @@ export function Empty() {
             <Typography size="lg" weight="medium" className={styles.body}>
                 {t("walletNotConnected.body")}
             </Typography>
-            <Button onClick={handleOnConnect} size="sm">
-                {t("walletNotConnected.action")}
-            </Button>
+            <ConnectButton />
         </Card>
     );
 }

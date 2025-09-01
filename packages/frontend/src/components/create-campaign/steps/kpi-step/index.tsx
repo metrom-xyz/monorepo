@@ -17,7 +17,7 @@ import { KpiSimulationChart } from "../../../kpi-simulation-chart";
 import { GoalInputs } from "./goal-inputs";
 import { InfoMessage } from "@/src/components/info-message";
 import type { Dayjs } from "dayjs";
-import { useChainId } from "@/src/hooks/use-chain-id";
+import { useChainId } from "@/src/hooks/useChainId";
 
 import styles from "./styles.module.css";
 
