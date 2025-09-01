@@ -11,6 +11,7 @@ import type {
     UsdPricedErc20TokenAmount,
     UsdPricedOnChainAmount,
     Weighting,
+    EmptyTarget,
 } from "@metrom-xyz/sdk";
 import {
     Campaign as SdkCampaign,
@@ -266,20 +267,7 @@ export interface DistributablesCampaignPreviewPayload<
           : never;
 }
 
-// export interface TargetedCampaignPreviewPayload<T extends TargetType>
-//     extends BaseCampaignPreviewPayload {
-//     target: T extends TargetType.AmmPoolLiquidity
-//         ? AmmPoolLiquidityTarget
-//         : T extends TargetType.LiquityV2Debt
-//           ? LiquityV2DebtTarget
-//           : T extends TargetType.LiquityV2StabilityPool
-//             ? LiquityV2StabilityPoolTarget
-//             : // TODO: add liquidity new stuff
-//               never;
-// }
-
 export interface CampaignPayloadErrors {
-    // TODO: more errors for aave-v3 campaign?
     pool?: boolean;
     startDate?: boolean;
     endDate?: boolean;
@@ -389,9 +377,9 @@ export class Campaign extends SdkCampaign {
             case TargetType.LiquityV2StabilityPool:
                 return this.target.collateral.usdStabilityPoolDebt;
             case TargetType.AaveV3Borrow:
-                return this.target.asset.usdDebt;
+                return this.target.collateral.usdDebt;
             case TargetType.AaveV3Supply || TargetType.AaveV3NetSupply:
-                return this.target.asset.usdSupply;
+                return this.target.collateral.usdSupply;
             default:
                 return undefined;
         }
@@ -406,9 +394,9 @@ export class Campaign extends SdkCampaign {
             case TargetType.LiquityV2StabilityPool:
                 return this.target.collateral.liquidity;
             case TargetType.AaveV3Borrow:
-                return this.target.asset.debt;
+                return this.target.collateral.debt;
             case TargetType.AaveV3Supply || TargetType.AaveV3NetSupply:
-                return this.target.asset.supply;
+                return this.target.collateral.supply;
             default:
                 return undefined;
         }
@@ -437,5 +425,7 @@ export interface TargetedNamedCampaign<T extends TargetType> extends Campaign {
                 ? AaveV3SupplyTarget
                 : T extends TargetType.AaveV3NetSupply
                   ? AaveV3NetSupplyTarget
-                  : never;
+                  : T extends TargetType.Empty
+                    ? EmptyTarget
+                    : never;
 }

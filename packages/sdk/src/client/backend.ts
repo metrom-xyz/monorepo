@@ -12,6 +12,7 @@ import type {
     BackendCampaignStatus,
 } from "./types/campaigns";
 import type {
+    BackendResolvedAaveV3CollateralsRegistry,
     BackendResolvedAmmPoolsRegistry,
     BackendResolvedLiquityV2CollateralsRegistry,
     BackendResolvedPricedTokensRegistry,
@@ -33,6 +34,9 @@ import {
     TargetType,
     type TokenDistributable,
     type TokenDistributables,
+    type AaveV3BorrowTarget,
+    type AaveV3SupplyTarget,
+    type AaveV3NetSupplyTarget,
 } from "../types/campaigns";
 import {
     ChainType,
@@ -110,6 +114,10 @@ const LIQUITY_V2_BRAND_NAME: Record<SupportedLiquityV2, string> = {
     [SupportedLiquityV2.Orki]: "Orki",
     [SupportedLiquityV2.Quill]: "Quill",
     [SupportedLiquityV2.Liquity]: "Liquity",
+};
+
+const AAVE_V3_BRAND_NAME: Record<SupportedAaveV3, string> = {
+    [SupportedAaveV3.Aave]: "Aave",
 };
 
 export interface FetchCampaignsParams {
@@ -934,8 +942,7 @@ function processCampaignsResponse(
                         response.resolvedAmmPools,
                         response.resolvedTokens,
                         backendCampaign.target.chainId,
-                        // FIXME: add chainType from respose
-                        ChainType.Evm,
+                        backendCampaign.target.chainType,
                         backendCampaign.target.poolId,
                     ),
                 };
@@ -944,6 +951,8 @@ function processCampaignsResponse(
             case "liquity-v2-debt": {
                 target = <LiquityV2DebtTarget>{
                     type: TargetType.LiquityV2Debt,
+                    chainType: backendCampaign.target.chainType,
+                    chainId: backendCampaign.target.chainId,
                     brand: {
                         slug: backendCampaign.target
                             .brand as SupportedLiquityV2,
@@ -951,14 +960,11 @@ function processCampaignsResponse(
                             backendCampaign.target.brand as SupportedLiquityV2
                         ],
                     },
-                    chainType: backendCampaign.target.chainType,
-                    chainId: backendCampaign.target.chainId,
                     collateral: resolveLiquityV2Collateral(
                         response.resolvedLiquityV2Collaterals,
                         response.resolvedPricedTokens,
                         backendCampaign.target.chainId,
-                        // FIXME: add chainType from respose
-                        ChainType.Evm,
+                        backendCampaign.target.chainType,
                         backendCampaign.target.brand,
                         backendCampaign.target.collateral as Address,
                     ),
@@ -968,6 +974,8 @@ function processCampaignsResponse(
             case "liquity-v2-stability-pool": {
                 target = <LiquityV2StabilityPoolTarget>{
                     type: TargetType.LiquityV2StabilityPool,
+                    chainType: backendCampaign.target.chainType,
+                    chainId: backendCampaign.target.chainId,
                     brand: {
                         slug: backendCampaign.target
                             .brand as SupportedLiquityV2,
@@ -975,15 +983,84 @@ function processCampaignsResponse(
                             backendCampaign.target.brand as SupportedLiquityV2
                         ],
                     },
-                    chainType: backendCampaign.target.chainType,
-                    chainId: backendCampaign.target.chainId,
                     collateral: resolveLiquityV2Collateral(
                         response.resolvedLiquityV2Collaterals,
                         response.resolvedPricedTokens,
                         backendCampaign.target.chainId,
-                        // FIXME: add chainType from respose
-                        ChainType.Evm,
+                        backendCampaign.target.chainType,
                         backendCampaign.target.brand,
+                        backendCampaign.target.collateral as Address,
+                    ),
+                };
+                break;
+            }
+            case "aave-v3-borrow": {
+                target = <AaveV3BorrowTarget>{
+                    type: TargetType.AaveV3Borrow,
+                    chainType: backendCampaign.target.chainType,
+                    chainId: backendCampaign.target.chainId,
+                    brand: {
+                        slug: backendCampaign.target.brand as SupportedAaveV3,
+                        name: AAVE_V3_BRAND_NAME[
+                            backendCampaign.target.brand as SupportedAaveV3
+                        ],
+                    },
+                    market: backendCampaign.target.market,
+                    collateral: resolveAaveV3Collateral(
+                        response.resolvedAaveV3Collaterals,
+                        response.resolvedPricedTokens,
+                        backendCampaign.target.chainId,
+                        backendCampaign.target.chainType,
+                        backendCampaign.target.brand,
+                        backendCampaign.target.market,
+                        backendCampaign.target.collateral as Address,
+                    ),
+                };
+                break;
+            }
+            case "aave-v3-supply": {
+                target = <AaveV3SupplyTarget>{
+                    type: TargetType.AaveV3Supply,
+                    chainType: backendCampaign.target.chainType,
+                    chainId: backendCampaign.target.chainId,
+                    brand: {
+                        slug: backendCampaign.target.brand as SupportedAaveV3,
+                        name: AAVE_V3_BRAND_NAME[
+                            backendCampaign.target.brand as SupportedAaveV3
+                        ],
+                    },
+                    market: backendCampaign.target.market,
+                    collateral: resolveAaveV3Collateral(
+                        response.resolvedAaveV3Collaterals,
+                        response.resolvedPricedTokens,
+                        backendCampaign.target.chainId,
+                        backendCampaign.target.chainType,
+                        backendCampaign.target.brand,
+                        backendCampaign.target.market,
+                        backendCampaign.target.collateral as Address,
+                    ),
+                };
+                break;
+            }
+            case "aave-v3-net-supply": {
+                target = <AaveV3NetSupplyTarget>{
+                    type: TargetType.AaveV3NetSupply,
+                    chainType: backendCampaign.target.chainType,
+                    chainId: backendCampaign.target.chainId,
+                    brand: {
+                        slug: backendCampaign.target.brand as SupportedAaveV3,
+                        name: AAVE_V3_BRAND_NAME[
+                            backendCampaign.target.brand as SupportedAaveV3
+                        ],
+                    },
+                    market: backendCampaign.target.market,
+                    collateral: resolveAaveV3Collateral(
+                        response.resolvedAaveV3Collaterals,
+                        response.resolvedPricedTokens,
+                        backendCampaign.target.chainId,
+                        backendCampaign.target.chainType,
+                        backendCampaign.target.brand,
+                        backendCampaign.target.market,
                         backendCampaign.target.collateral as Address,
                     ),
                 };
@@ -1156,6 +1233,54 @@ function resolveLiquityV2Collateral(
         usdTvl: resolvedLiquityV2Collateral.usdTvl,
         usdMintedDebt: resolvedLiquityV2Collateral.mintedDebt,
         usdStabilityPoolDebt: resolvedLiquityV2Collateral.stabilityPoolDebt,
+    };
+}
+
+function resolveAaveV3Collateral(
+    aaveV3CollateralsRegistry: BackendResolvedAaveV3CollateralsRegistry,
+    pricedTokensRegistry: BackendResolvedPricedTokensRegistry,
+    chainId: number,
+    chainType: ChainType,
+    brand: string,
+    market: string,
+    id: Hex,
+): AaveV3Collateral {
+    const byChain = aaveV3CollateralsRegistry[chainType][chainId];
+    if (!byChain)
+        throw new Error(
+            `Could not find resolved Aave V3 collaterals by chain with id ${chainId} and type ${chainType}`,
+        );
+
+    const byBrand = byChain[brand];
+    if (!byBrand)
+        throw new Error(
+            `Could not find resolved Aave V3 collaterals with brand ${brand} in chain with id ${chainId} and type ${chainType}`,
+        );
+
+    const byMarket = byBrand[market];
+    if (!byMarket)
+        throw new Error(
+            `Could not find resolved Aave V3 collaterals with market ${market} and brand ${brand} in chain with id ${chainId} and type ${chainType}`,
+        );
+
+    const resolvedAaveV3Collateral = byMarket[id];
+    if (!resolvedAaveV3Collateral)
+        throw new Error(
+            `Could not find resolved Aave V3 collateral with market ${market} and brand ${brand} with id ${id} in chain with id ${chainId} and type ${chainType}`,
+        );
+
+    return {
+        ...resolvedAaveV3Collateral,
+        chainId,
+        chainType,
+        token: resolvePricedTokenInChain(
+            pricedTokensRegistry,
+            chainId,
+            chainType,
+            id,
+        ),
+        debt: BigInt(resolvedAaveV3Collateral.debt),
+        supply: BigInt(resolvedAaveV3Collateral.supply),
     };
 }
 

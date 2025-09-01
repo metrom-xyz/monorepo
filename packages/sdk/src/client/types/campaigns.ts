@@ -1,5 +1,6 @@
 import type { Address, Hex } from "viem";
 import type {
+    BackendResolvedAaveV3CollateralsRegistry,
     BackendResolvedAmmPoolsRegistry,
     BackendResolvedLiquityV2CollateralsRegistry,
     BackendResolvedPricedTokensRegistry,
@@ -29,11 +30,23 @@ export interface BaseBackendLiquityTarget<T> extends BaseTarget {
     collateral: Address;
 }
 
+export interface BackendAaveV3Target<T> extends BaseTarget {
+    type: T;
+    brand: string;
+    market: string;
+    collateral: string;
+}
+
 export type BackendLiquityV2DebtTarget =
     BaseBackendLiquityTarget<"liquity-v2-debt">;
 
 export type BackendLiquityV2StabilityPoolTarget =
     BaseBackendLiquityTarget<"liquity-v2-stability-pool">;
+
+export type BackendAaveV3BorrowTarget = BackendAaveV3Target<"aave-v3-borrow">;
+export type BackendAaveV3SupplyTarget = BackendAaveV3Target<"aave-v3-supply">;
+export type BackendAaveV3NetSupplyTarget =
+    BackendAaveV3Target<"aave-v3-net-supply">;
 
 export interface BackendTokenDistributable {
     token: Address;
@@ -64,6 +77,13 @@ export interface BackendLiquityV2Collateral {
     stabilityPoolDebt: number;
 }
 
+export interface BackendAaveV3Collateral {
+    debt: string;
+    supply: string;
+    usdDebt: number;
+    usdSupply: number;
+}
+
 export interface BackendCampaign {
     chainId: number;
     id: Hex;
@@ -76,7 +96,10 @@ export interface BackendCampaign {
         | BackendEmptyTarget
         | BackendAmmPoolLiquidityTarget
         | BackendLiquityV2DebtTarget
-        | BackendLiquityV2StabilityPoolTarget;
+        | BackendLiquityV2StabilityPoolTarget
+        | BackendAaveV3BorrowTarget
+        | BackendAaveV3SupplyTarget
+        | BackendAaveV3NetSupplyTarget;
     specification?: Specification;
     distributables: BackendTokenDistributables | BackendPointDistributables;
     apr?: number;
@@ -87,6 +110,7 @@ export interface BackendCampaignsResponse {
     resolvedPricedTokens: BackendResolvedPricedTokensRegistry;
     resolvedAmmPools: BackendResolvedAmmPoolsRegistry;
     resolvedLiquityV2Collaterals: BackendResolvedLiquityV2CollateralsRegistry;
+    resolvedAaveV3Collaterals: BackendResolvedAaveV3CollateralsRegistry;
     campaigns: BackendCampaign[];
 }
 
@@ -95,5 +119,6 @@ export interface BackendCampaignResponse {
     resolvedPricedTokens: BackendResolvedPricedTokensRegistry;
     resolvedAmmPools: BackendResolvedAmmPoolsRegistry;
     resolvedLiquityV2Collaterals: BackendResolvedLiquityV2CollateralsRegistry;
+    resolvedAaveV3Collaterals: BackendResolvedAaveV3CollateralsRegistry;
     campaign: BackendCampaign;
 }

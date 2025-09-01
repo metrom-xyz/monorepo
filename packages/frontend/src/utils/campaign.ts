@@ -153,6 +153,24 @@ export function getCampaignName(
                 token: campaign.target.collateral.token.symbol,
             });
         }
+        case TargetType.AaveV3Borrow: {
+            return t("campaignActions.aaveV3Borrow", {
+                brand: campaign.target.brand.name,
+                token: campaign.target.collateral.token.symbol,
+            });
+        }
+        case TargetType.AaveV3Supply: {
+            return t("campaignActions.aaveV3Supply", {
+                brand: campaign.target.brand.name,
+                token: campaign.target.collateral.token.symbol,
+            });
+        }
+        case TargetType.AaveV3NetSupply: {
+            return t("campaignActions.aaveV3NetSupply", {
+                brand: campaign.target.brand.name,
+                token: campaign.target.collateral.token.symbol,
+            });
+        }
         case TargetType.Empty: {
             return t("campaignActions.empty");
         }

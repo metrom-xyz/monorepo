@@ -5,7 +5,7 @@ import { useAccount } from "wagmi";
 import type { HookBaseParams } from "../types/hooks";
 import type { SupportedChain } from "@metrom-xyz/contracts";
 import type { Leaderboard, Rank } from "../types/campaign";
-import type { ChainType } from "@metrom-xyz/sdk";
+import { ChainType } from "@metrom-xyz/sdk";
 
 interface UseLeaderboardParams extends HookBaseParams {
     campaignId?: Hex;
