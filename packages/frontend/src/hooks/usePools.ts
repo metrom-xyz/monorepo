@@ -33,13 +33,15 @@ export function usePools({
     const { data: pools, isPending: loading } = useQuery({
         queryKey: ["pools", dex, chainId, chainType],
         queryFn: async ({ queryKey }) => {
+            // TODO: remove this when Aptos will support dexes
+            if (APTOS) return [];
+
             const [, dex, chainId, chainType] = queryKey as QueryKey;
             if (!dex) return null;
 
             try {
                 const pools = await METROM_API_CLIENT.fetchAmmPools({
-                    // FIXME: remove mocked params
-                    chainId: APTOS ? 17000 : chainId,
+                    chainId,
                     chainType: ChainType.Evm,
                     dex,
                 });
