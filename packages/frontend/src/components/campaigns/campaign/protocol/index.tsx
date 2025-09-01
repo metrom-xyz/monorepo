@@ -18,7 +18,7 @@ export function Protocol({ campaign }: ProtocolProps) {
     });
 
     const [popoverOpen, setPopoverOpen] = useState(false);
-    const [dexDetails, setDexDetails] = useState<HTMLDivElement | null>(null);
+    const [details, setDetails] = useState<HTMLDivElement | null>(null);
     const dexDetailsPopoverRef = useRef<HTMLDivElement>(null);
 
     const protocol = protocols.find((protocol) => {
@@ -28,6 +28,11 @@ export function Protocol({ campaign }: ProtocolProps) {
             }
             case TargetType.LiquityV2Debt:
             case TargetType.LiquityV2StabilityPool: {
+                return protocol.slug === campaign.target.brand.slug;
+            }
+            case TargetType.AaveV3Borrow:
+            case TargetType.AaveV3Supply:
+            case TargetType.AaveV3NetSupply: {
                 return protocol.slug === campaign.target.brand.slug;
             }
         }
@@ -44,20 +49,22 @@ export function Protocol({ campaign }: ProtocolProps) {
     return (
         <div className={styles.root}>
             <div className={styles.root}>
-                <Popover
-                    open={popoverOpen}
-                    anchor={dexDetails}
-                    ref={dexDetailsPopoverRef}
-                    placement="top"
-                >
-                    <div className={styles.detailsContainer}>
-                        <Typography weight="medium" size="sm">
-                            {protocol?.name}
-                        </Typography>
-                    </div>
-                </Popover>
+                {protocol && (
+                    <Popover
+                        open={popoverOpen}
+                        anchor={details}
+                        ref={dexDetailsPopoverRef}
+                        placement="top"
+                    >
+                        <div className={styles.detailsContainer}>
+                            <Typography weight="medium" size="sm">
+                                {protocol.name}
+                            </Typography>
+                        </div>
+                    </Popover>
+                )}
                 <div
-                    ref={setDexDetails}
+                    ref={setDetails}
                     onMouseEnter={handleDexDetailsPopoverOpen}
                     onMouseLeave={handleDexDetailsPopoverClose}
                 >

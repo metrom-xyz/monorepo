@@ -82,7 +82,7 @@ export function AmmPoolLiquityHeader({ campaign }: AmmPoolLiquityHeaderProps) {
                 <div className={styles.leftActions}>
                     <Button
                         size="sm"
-                        href={depositLink}
+                        href={depositLink || undefined}
                         disabled={!depositLink}
                         onClick={handleAddLiquidityOnClick}
                         target="_blank"

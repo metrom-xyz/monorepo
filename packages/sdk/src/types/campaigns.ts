@@ -10,7 +10,7 @@ import type {
 } from "./commons";
 import type { SupportedAaveV3, SupportedLiquityV2 } from "src/commons";
 import type { LiquityV2Collateral } from "./liquity-v2";
-import type { AaveV3Collateral, AaveV3Market } from "./aave-v3";
+import type { AaveV3Collateral } from "./aave-v3";
 
 export enum TargetType {
     Empty = "empty",
@@ -25,6 +25,11 @@ export enum TargetType {
 export type LiquityV2TargetType =
     | TargetType.LiquityV2Debt
     | TargetType.LiquityV2StabilityPool;
+
+export type AaveV3TargetType =
+    | TargetType.AaveV3Borrow
+    | TargetType.AaveV3Supply
+    | TargetType.AaveV3NetSupply;
 
 export interface BaseTarget {
     chainType: ChainType;
@@ -49,8 +54,8 @@ export interface LiquityV2Target<T> extends BaseTarget {
 export interface AaveV3Target<T> extends BaseTarget {
     type: T;
     brand: Brand<SupportedAaveV3>;
-    market: AaveV3Market;
-    asset: AaveV3Collateral;
+    market: string;
+    collateral: AaveV3Collateral;
 }
 
 export interface LiquityV2CollateralWithStabilityPoolDeposit
@@ -210,5 +215,7 @@ export interface TargetedCampaign<T extends TargetType> extends Campaign {
                 ? AaveV3SupplyTarget
                 : T extends TargetType.AaveV3NetSupply
                   ? AaveV3NetSupplyTarget
-                  : never;
+                  : T extends TargetType.Empty
+                    ? EmptyTarget
+                    : never;
 }

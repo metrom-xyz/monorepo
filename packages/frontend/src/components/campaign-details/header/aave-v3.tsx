@@ -3,7 +3,7 @@ import { Typography, Button, InfoTooltip } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
 import { useRouter } from "@/src/i18n/routing";
 import { AprChip } from "../../apr-chip";
-import { DistributablesType, type LiquityV2TargetType } from "@metrom-xyz/sdk";
+import { DistributablesType, type AaveV3TargetType } from "@metrom-xyz/sdk";
 import { type TargetedNamedCampaign } from "@/src/types/campaign";
 import { ProtocolType } from "@metrom-xyz/chains";
 import { useProtocolsInChain } from "@/src/hooks/useProtocolsInChain";
@@ -11,17 +11,17 @@ import { ProtocolLogo } from "../../protocol-logo";
 
 import styles from "./styles.module.css";
 
-interface LiquityV2HeaderProps {
-    campaign: TargetedNamedCampaign<LiquityV2TargetType>;
+interface AaveV3HeaderProps {
+    campaign: TargetedNamedCampaign<AaveV3TargetType>;
 }
 
-export function LiquityV2Header({ campaign }: LiquityV2HeaderProps) {
+export function AaveV3Header({ campaign }: AaveV3HeaderProps) {
     const t = useTranslations("campaignDetails.header");
     const router = useRouter();
 
     const brand = useProtocolsInChain({
         chainId: campaign.chainId,
-        type: ProtocolType.LiquityV2,
+        type: ProtocolType.AaveV3,
     }).find((brand) => brand.slug === campaign.target.brand.slug);
 
     const ChainIcon = campaign.chainData?.icon;
@@ -68,9 +68,9 @@ export function LiquityV2Header({ campaign }: LiquityV2HeaderProps) {
                         target="_blank"
                         rel="noopener noreferrer"
                     >
-                        {t(`liquityV2.${campaign.target.type}`, {
+                        {t(`aaveV3.${campaign.target.type}`, {
                             collateral: campaign.target.collateral.token.symbol,
-                            debtToken: brand?.debtToken.symbol || "",
+                            brand: campaign.target.brand.name,
                         })}
                     </Button>
                 </div>

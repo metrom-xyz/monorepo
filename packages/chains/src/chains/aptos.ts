@@ -32,9 +32,9 @@ export const aptosDevelopmentData: ChainData = {
                 },
             ],
             actionUrls: {
-                [TargetType.AaveV3Borrow]: "",
-                [TargetType.AaveV3Supply]: "",
-                [TargetType.AaveV3NetSupply]: "",
+                [TargetType.AaveV3Borrow]: "https://aptos.aave.com/",
+                [TargetType.AaveV3Supply]: "https://aptos.aave.com/",
+                [TargetType.AaveV3NetSupply]: "https://aptos.aave.com/",
             },
         },
     ],

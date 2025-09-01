@@ -539,6 +539,11 @@
                 "liquity-v2-debt": "Borrow {debtToken} using {collateral}",
                 "liquity-v2-collateral": "Deposit collateral",
                 "liquity-v2-stability-pool": "Deposit to {collateral} stability pool"
+            },
+            "aaveV3": {
+                "aave-v3-borrow": "Borrow using {collateral} on {brand}",
+                "aave-v3-supply": "Supply {collateral} on {brand}",
+                "aave-v3-net-supply": "Net supply {collateral} on {brand}"
             }
         },
         "details": {
@@ -763,10 +768,13 @@
         "lp": "LP on {dex} {pool}",
         "borrow": "Borrow {debtToken} using {token} on {brand}",
         "depositStabilityPool": "Deposit to {token} stability pool on {brand}",
-        "empty": "Empty target"
+        "aaveV3Borrow": "Borrow using {token} on {brand}",
+        "aaveV3Supply": "Supply {token} on {brand}",
+        "aaveV3NetSupply": "Net supply {token} on {brand}",
+        "empty": "Test campaign"
     },
     "socialCampaignPreview": {
-        "empty": "Empty target",
+        "empty": "Test campaign",
         "title": "{protocol} on {chain}",
         "totalRewards": "Total rewards",
         "startDate": "Start date",
