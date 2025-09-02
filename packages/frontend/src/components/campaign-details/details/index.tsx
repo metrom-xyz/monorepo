@@ -1,10 +1,12 @@
 import { useTranslations } from "next-intl";
-import styles from "./styles.module.css";
 import { TextField, Typography } from "@metrom-xyz/ui";
-import { Campaign, Status, TargetType } from "@metrom-xyz/sdk";
+import { Status } from "@metrom-xyz/sdk";
 import { formatUsdAmount } from "@/src/utils/format";
 import { CampaignDuration } from "../../campaign-duration";
 import type { TranslationsKeys } from "@/src/types/utils";
+import type { Campaign } from "@/src/types/campaign";
+
+import styles from "./styles.module.css";
 
 interface DetailsProps {
     campaign?: Campaign;
@@ -24,23 +26,23 @@ export function Details({ campaign, loading }: DetailsProps) {
     const t = useTranslations("campaignDetails.details");
 
     const detailsLoading = loading || !campaign;
+    const tvl = campaign?.getTargetUsdTvl();
 
     return (
         <div className={styles.root}>
             <div className={styles.topContent}>
-                {campaign?.isTargeting(TargetType.AmmPoolLiquidity) &&
-                    campaign.target.pool.usdTvl && (
-                        <TextField
-                            boxed
-                            size="xl"
-                            label={t("tvl")}
-                            loading={detailsLoading}
-                            value={formatUsdAmount({
-                                amount: campaign.target.pool.usdTvl,
-                                cutoff: false,
-                            })}
-                        />
-                    )}
+                {tvl !== undefined && (
+                    <TextField
+                        boxed
+                        size="xl"
+                        label={t("tvl")}
+                        loading={detailsLoading}
+                        value={formatUsdAmount({
+                            amount: tvl,
+                            cutoff: false,
+                        })}
+                    />
+                )}
                 <TextField
                     boxed
                     size="xl"
