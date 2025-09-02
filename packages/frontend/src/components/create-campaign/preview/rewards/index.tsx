@@ -12,7 +12,7 @@ import {
 } from "@/src/utils/format";
 import { RemoteLogo } from "@/src/components/remote-logo";
 import { FEE_UNIT } from "@/src/commons";
-import { useProtocolFees } from "@/src/hooks/use-protocol-fees";
+import { useProtocolFees } from "@/src/hooks/useProtocolFees";
 
 import styles from "./styles.module.css";
 

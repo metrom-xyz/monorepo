@@ -25,7 +25,7 @@ export function useCampaignDurationLimits({
     const chainId = useChainId();
     const chainData = useChainData({ chainId });
 
-    const evmLimits = useReadContracts({
+    const limitsEvm = useReadContracts({
         contracts: [
             {
                 abi: metromAbi,
@@ -43,56 +43,42 @@ export function useCampaignDurationLimits({
         },
     });
 
-    const mvmMinLimit = useViewModule({
+    const minLimitMvm = useViewModule({
         payload: {
             function: `${chainData?.metromContract.address}::metrom::minimum_campaign_duration`,
         },
         enabled: APTOS && !!chainData && enabled,
     });
 
-    const mvmMaxLimit = useViewModule({
+    const maxLimitMvm = useViewModule({
         payload: {
             function: `${chainData?.metromContract.address}::metrom::maximum_campaign_duration`,
         },
         enabled: APTOS && !!chainData && enabled,
     });
 
-    const limits: CampaignDurationLimits | undefined = useMemo(() => {
-        if (
-            evmLimits.isLoading ||
-            mvmMinLimit.isLoading ||
-            mvmMaxLimit.isLoading
-        )
-            return undefined;
+    const loading =
+        limitsEvm.isLoading || minLimitMvm.isLoading || maxLimitMvm.isLoading;
 
-        if (APTOS && mvmMinLimit.data && mvmMaxLimit.data) {
+    const limits: CampaignDurationLimits | undefined = useMemo(() => {
+        if (loading) return undefined;
+
+        if (APTOS && minLimitMvm.data && maxLimitMvm.data)
             return {
-                minimumSeconds: Number(mvmMinLimit.data[0]),
-                maximumSeconds: Number(mvmMaxLimit.data[0]),
+                minimumSeconds: Number(minLimitMvm.data[0]),
+                maximumSeconds: Number(maxLimitMvm.data[0]),
             };
-        }
-        if (!APTOS && evmLimits.data) {
+        if (!APTOS && limitsEvm.data)
             return {
-                minimumSeconds: Number(evmLimits.data[0].result),
-                maximumSeconds: Number(evmLimits.data[1].result),
+                minimumSeconds: Number(limitsEvm.data[0].result),
+                maximumSeconds: Number(limitsEvm.data[1].result),
             };
-        }
 
         return undefined;
-    }, [
-        evmLimits.isLoading,
-        evmLimits.data,
-        mvmMinLimit.isLoading,
-        mvmMinLimit.data,
-        mvmMaxLimit.isLoading,
-        mvmMaxLimit.data,
-    ]);
+    }, [limitsEvm.data, minLimitMvm.data, maxLimitMvm.data]);
 
     return {
-        loading:
-            evmLimits.isLoading ||
-            mvmMinLimit.isLoading ||
-            mvmMaxLimit.isLoading,
+        loading,
         limits,
     };
 }
