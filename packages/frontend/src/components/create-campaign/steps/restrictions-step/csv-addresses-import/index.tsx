@@ -1,13 +1,14 @@
 import classNames from "classnames";
 import { Typography } from "@metrom-xyz/ui";
 import { useEffect, useRef, useState, type ChangeEvent } from "react";
-import { isAddress, type Address } from "viem";
+import { type Address } from "viem";
 import Papa from "papaparse";
 import { toast } from "sonner";
 import { useTranslations } from "next-intl";
 import { MAXIMUM_RESTRICTIONS } from "..";
 import { ImportFail } from "./notifications/import-fail";
 import { ImportSuccess } from "./notifications/import-success";
+import { isAddress } from "@/src/utils/address";
 
 import styles from "./styles.module.css";
 

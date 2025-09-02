@@ -9,13 +9,14 @@ import {
 import { useChainId } from "@/src/hooks/useChainId";
 import { usePool } from "@/src/hooks/usePool";
 import type { AmmPoolLiquidityCampaignPayload } from "@/src/types/campaign";
-import { type Address, type Hex, isAddress, isHash } from "viem";
+import { type Address, type Hex, isHash } from "viem";
 import { useDebounce } from "react-use";
 import { TextInput, Typography } from "@metrom-xyz/ui";
 import { SearchIcon } from "@/src/assets/search-icon";
 import { Pool, SkeletonPool } from "../pool";
 import type { AmmPoolWithTvl } from "@metrom-xyz/sdk";
 import { CHAIN_TYPE } from "@/src/commons";
+import { isAddress } from "@/src/utils/address";
 
 import styles from "./styles.module.css";
 

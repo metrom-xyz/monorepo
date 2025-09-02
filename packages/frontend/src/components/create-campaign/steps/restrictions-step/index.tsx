@@ -26,13 +26,14 @@ import {
     type ChangeEvent,
 } from "react";
 import { usePrevious } from "react-use";
-import { isAddress, type Address } from "viem";
+import { type Address } from "viem";
 import { XIcon } from "@/src/assets/x-icon";
 import { Dot } from "./dot";
 import { CsvAddressesImport } from "./csv-addresses-import";
 import { Avatar } from "@/src/components/avatar/avatar";
 import { Account } from "@/src/components/account";
 import { InfoMessage } from "@/src/components/info-message";
+import { isAddress } from "@/src/utils/address";
 
 import styles from "./styles.module.css";
 

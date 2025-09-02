@@ -1,4 +1,6 @@
-import { type Address, zeroAddress } from "viem";
+import { type Address, zeroAddress, isAddress as isAddressViem } from "viem";
+import { APTOS } from "../commons/env";
+import { AccountAddress } from "@aptos-labs/ts-sdk";
 
 export function shortenAddress(address?: Address, long?: boolean) {
     if (!address) return "";
@@ -22,4 +24,9 @@ export function getColorFromAddress(address: Address) {
     }
 
     return `#${(hash & 0x00ffffff).toString(16).padStart(6, "0")}`;
+}
+
+export function isAddress(address: string): boolean {
+    if (APTOS) return AccountAddress.isValid({ input: address }).valid;
+    return isAddressViem(address);
 }

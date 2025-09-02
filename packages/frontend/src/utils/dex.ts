@@ -1,16 +1,15 @@
 import { SupportedChain } from "@metrom-xyz/contracts";
-import { type Hex, isAddress } from "viem";
+import { type Hex } from "viem";
 import type { Address } from "blo";
 import { chainIdToAptosNetwork, getChainData } from "./chain";
-import { AccountAddress } from "@aptos-labs/ts-sdk";
 import { APTOS } from "../commons/env";
+import { isAddress } from "./address";
 
 export function getExplorerLink(
     address: Address,
     chainId?: SupportedChain,
 ): string | undefined {
-    if (!chainId || (!isAddress(address) && !AccountAddress.isValid(address)))
-        return undefined;
+    if (!chainId || !isAddress(address)) return undefined;
 
     const explorer = getChainData(chainId)?.blockExplorers?.default;
 

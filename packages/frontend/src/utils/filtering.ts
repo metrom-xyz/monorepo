@@ -1,4 +1,4 @@
-import { isAddress } from "viem";
+import { isAddress } from "./address";
 import {
     type AmmPool,
     type CampaignTarget,
