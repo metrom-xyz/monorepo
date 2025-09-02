@@ -18,7 +18,7 @@ import { useChainData } from "@/src/hooks/useChainData";
 import { AnimatePresence, motion } from "motion/react";
 import { Avatar } from "../../avatar/avatar";
 import { Account } from "../../account";
-import { useIsChainSupported } from "@/src/hooks/use-is-chain-supported";
+import { useIsChainSupported } from "@/src/hooks/useIsChainSupported";
 
 import styles from "./styles.module.css";
 

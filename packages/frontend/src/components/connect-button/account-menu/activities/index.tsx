@@ -1,6 +1,6 @@
 import { useActivities } from "@/src/hooks/useActivities";
 import { Activity, SkeletonActivity } from "./activity";
-import { useIsChainSupported } from "@/src/hooks/use-is-chain-supported";
+import { useIsChainSupported } from "@/src/hooks/useIsChainSupported";
 
 import styles from "./styles.module.css";
 
