@@ -34,7 +34,7 @@ export function getTxExplorerLink(
 
     if (APTOS) {
         const network = chainIdToAptosNetwork(chainId);
-        return `${explorer.url}/txn/${parseInt(hash, 16)}?network=${network}`;
+        return `${explorer.url}/txn/${hash}?network=${network}`;
     }
     return `${explorer.url}/tx/${hash}`;
 }
