@@ -165,7 +165,10 @@ export function filterCampaigns(
                     return campaign.target.pool.dex.slug === protocol;
                 }
                 case TargetType.LiquityV2Debt:
-                case TargetType.LiquityV2StabilityPool: {
+                case TargetType.LiquityV2StabilityPool:
+                case TargetType.AaveV3Borrow:
+                case TargetType.AaveV3Supply:
+                case TargetType.AaveV3NetSupply: {
                     return campaign.target.brand.slug === protocol;
                 }
             }
@@ -189,9 +192,7 @@ export function filterCampaigns(
         const lowercaseSearchQuery = searchQuery.toLowerCase();
 
         const campaignByAddress = filteredCampaigns.filter(
-            (campaign) =>
-                campaign.isTargeting(TargetType.AmmPoolLiquidity) &&
-                campaign.target.pool.id.toLowerCase() === lowercaseSearchQuery,
+            (campaign) => campaign.id === lowercaseSearchQuery,
         );
 
         return campaignByAddress;
