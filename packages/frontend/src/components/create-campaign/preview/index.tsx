@@ -5,6 +5,7 @@ import {
     LiquityV2CampaignPreviewPayload,
     EmptyTargetCampaignPreviewPayload,
     type CampaignPreviewPayload,
+    AaveV3CampaignPreviewPayload,
 } from "@/src/types/campaign";
 import type { LocalizedMessage } from "@/src/types/utils";
 import { useEffect, useMemo, useRef, useState } from "react";
@@ -102,9 +103,7 @@ export function CampaignPreview({
         payload instanceof EmptyTargetCampaignPreviewPayload;
     const kpi = !!payload.kpiSpecification && tokensCampaign;
 
-    const kpiUsdTvl = useMemo(() => {
-        if (!kpi) return 0;
-
+    const targetUsdTvl = useMemo(() => {
         if (payload instanceof AmmPoolLiquidityCampaignPreviewPayload)
             return payload.pool.usdTvl;
 
@@ -116,8 +115,19 @@ export function CampaignPreview({
             return 0;
         }
 
+        if (payload instanceof AaveV3CampaignPreviewPayload) {
+            if (
+                payload.kind === CampaignKind.AaveV3Supply ||
+                payload.kind === CampaignKind.AaveV3NetSupply
+            )
+                return payload.collateral.usdSupply;
+            if (payload.kind === CampaignKind.AaveV3Borrow)
+                return payload.collateral.usdDebt;
+            return 0;
+        }
+
         return 0;
-    }, [kpi, payload]);
+    }, [payload]);
 
     // There's no need to approve tokens for Aptos
     useEffect(() => {
@@ -193,16 +203,14 @@ export function CampaignPreview({
                 />
                 <div className={styles.content}>
                     <div className={styles.contentGrid}>
-                        {ammPoolLiquidityCampaign && (
-                            <TextField
-                                boxed
-                                size="xl"
-                                label={t("tvl")}
-                                value={formatUsdAmount({
-                                    amount: payload.pool.usdTvl,
-                                })}
-                            />
-                        )}
+                        <TextField
+                            boxed
+                            size="xl"
+                            label={t("tvl")}
+                            value={formatUsdAmount({
+                                amount: targetUsdTvl,
+                            })}
+                        />
                         {!emptyTargetCampaign && tokensCampaign && (
                             <TextField
                                 boxed
@@ -251,7 +259,7 @@ export function CampaignPreview({
                     )}
                     {kpi && (
                         <Kpi
-                            usdTvl={kpiUsdTvl}
+                            usdTvl={targetUsdTvl}
                             from={payload.startDate}
                             to={payload.endDate}
                             distributables={payload.distributables}

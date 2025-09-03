@@ -120,15 +120,14 @@ export function AmmPoolLiquityHeader({ campaign }: AmmPoolLiquityHeaderProps) {
                         {t("explorer")}
                     </Button>
                 </div>
-                {campaign.apr !== undefined &&
-                    campaign.isDistributing(DistributablesType.Tokens) && (
-                        <AprChip
-                            prefix
-                            size="lg"
-                            apr={campaign.apr}
-                            kpi={!!campaign.specification?.kpi}
-                        />
-                    )}
+                {campaign.isDistributing(DistributablesType.Tokens) && (
+                    <AprChip
+                        prefix
+                        size="lg"
+                        apr={campaign.apr}
+                        kpi={!!campaign.specification?.kpi}
+                    />
+                )}
             </div>
         </div>
     );
