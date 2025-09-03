@@ -26,6 +26,14 @@ export const lv2PointsCampaignsProd: Record<
         protocol: SupportedLiquityV2.Ebisu,
         brand: { main: "#f14d9d", light: "#f28fbd" },
         icon: EbisuLogo,
+        protocolIntro: {
+            articles: [
+                {
+                    title: "Introducing xEBISU",
+                    href: "https://mirror.xyz/0xE5147053538249EFD3791508A2c8D8BB154C910A/KyQg9sjOzLrZ_7hgkDXQmwD4EuiMgVeDRbGOwik9c4M",
+                },
+            ],
+        },
         from: 1753963200,
         to: 1761915600,
         leaderboard: false,
