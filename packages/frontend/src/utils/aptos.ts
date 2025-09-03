@@ -1,12 +1,10 @@
 import { AccountAddress, Hex } from "@aptos-labs/ts-sdk";
-import type {
-    ClaimWithRemaining,
-    ReimbursementsWithRemaining,
-} from "../types/campaign";
+import type { Claim, Reimbursement } from "@metrom-xyz/sdk";
 
-export function buildRewardsFunctionArgs<
-    T extends ClaimWithRemaining | ReimbursementsWithRemaining,
->(account: string, claims: T[]) {
+export function buildRewardsFunctionArgs<T extends Claim | Reimbursement>(
+    account: string,
+    claims: T[],
+) {
     const campaignIds: Uint8Array[] = [];
     const proofs: Uint8Array[][] = [];
     const tokens: string[] = [];
@@ -21,7 +19,7 @@ export function buildRewardsFunctionArgs<
             claim.proof.map((proof) => Hex.fromHexInput(proof).toUint8Array()),
         );
         tokens.push(claim.token.address);
-        amounts.push(claim.remaining.raw);
+        amounts.push(claim.amount.raw);
         receivers.push(account);
     });
 

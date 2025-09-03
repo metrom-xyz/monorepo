@@ -126,7 +126,7 @@ export function useClaimsMvm({
 
         const claims: ClaimWithRemaining[] = [];
         for (let i = 0; i < claimedData.length; i++) {
-            const rawClaimed = claimedData[i] as unknown as number;
+            const rawClaimed = claimedData[i][0] as unknown as number;
             const rawClaim = rawClaims[i];
 
             const rawRemaining = rawClaim.amount.raw - BigInt(rawClaimed);
