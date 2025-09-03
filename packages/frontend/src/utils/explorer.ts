@@ -1,9 +1,14 @@
 import { SupportedChain } from "@metrom-xyz/contracts";
 import { type Hex } from "viem";
 import type { Address } from "blo";
-import { chainIdToAptosNetwork, getChainData } from "./chain";
+import {
+    chainIdToAptosNetwork,
+    getChainData,
+    getCrossVmChainData,
+} from "./chain";
 import { APTOS } from "../commons/env";
-import { isAddress } from "./address";
+import { getAddressChainType, isAddress } from "./address";
+import { ChainType } from "@metrom-xyz/sdk";
 
 export function getExplorerLink(
     address: Address,
@@ -11,11 +16,13 @@ export function getExplorerLink(
 ): string | undefined {
     if (!chainId || !isAddress(address)) return undefined;
 
-    const explorer = getChainData(chainId)?.blockExplorers?.default;
-
+    const explorer = getCrossVmChainData(chainId)?.blockExplorers?.default;
     if (!explorer) return undefined;
 
-    if (APTOS) {
+    const addressChainType = getAddressChainType(address);
+    if (!addressChainType) return undefined;
+
+    if (addressChainType === ChainType.Aptos) {
         const network = chainIdToAptosNetwork(chainId);
         return `${explorer.url}/account/${address}?network=${network}`;
     }

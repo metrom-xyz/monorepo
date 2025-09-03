@@ -75,7 +75,7 @@ export function useCampaignDurationLimits({
             };
 
         return undefined;
-    }, [limitsEvm.data, minLimitMvm.data, maxLimitMvm.data]);
+    }, [loading, limitsEvm.data, minLimitMvm.data, maxLimitMvm.data]);
 
     return {
         loading,

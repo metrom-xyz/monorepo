@@ -15,7 +15,7 @@ import type { Address } from "viem";
 import { RewardsBreakdown } from "./rewards-breakdown";
 import { formatPercentage } from "@/src/utils/format";
 import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
-import { getExplorerLink } from "@/src/utils/dex";
+import { getExplorerLink } from "@/src/utils/explorer";
 import classNames from "classnames";
 import { NoDistributionsIcon } from "@/src/assets/no-distributions-icon";
 import { PointsBreakdown } from "./points-breakdown";

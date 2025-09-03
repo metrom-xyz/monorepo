@@ -9,7 +9,7 @@ import { formatAmount } from "@/src/utils/format";
 import { trackFathomEvent } from "@/src/utils/fathom";
 import { RemoteLogo } from "@/src/components/remote-logo";
 import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
-import { getTxExplorerLink } from "@/src/utils/dex";
+import { getTxExplorerLink } from "@/src/utils/explorer";
 import { useCampaign } from "@/src/hooks/useCampaign";
 import { PoolRemoteLogo } from "@/src/components/pool-remote-logo";
 import { ProtocolType } from "@metrom-xyz/chains";
