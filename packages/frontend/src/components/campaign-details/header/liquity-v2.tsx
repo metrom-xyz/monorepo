@@ -8,6 +8,7 @@ import { type TargetedNamedCampaign } from "@/src/types/campaign";
 import { ProtocolType } from "@metrom-xyz/chains";
 import { useProtocolsInChain } from "@/src/hooks/useProtocolsInChain";
 import { ProtocolLogo } from "../../protocol-logo";
+import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
 
 import styles from "./styles.module.css";
 
@@ -65,8 +66,13 @@ export function LiquityV2Header({ campaign }: LiquityV2HeaderProps) {
                         size="sm"
                         href={actionLink || undefined}
                         disabled={!actionLink}
+                        icon={ArrowRightIcon}
+                        iconPlacement="right"
                         target="_blank"
                         rel="noopener noreferrer"
+                        className={{
+                            icon: styles.externalLinkIcon,
+                        }}
                     >
                         {t(`liquityV2.${campaign.target.type}`, {
                             collateral: campaign.target.collateral.token.symbol,

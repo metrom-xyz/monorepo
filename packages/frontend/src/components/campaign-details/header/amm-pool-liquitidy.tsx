@@ -85,8 +85,13 @@ export function AmmPoolLiquityHeader({ campaign }: AmmPoolLiquityHeaderProps) {
                         href={depositLink || undefined}
                         disabled={!depositLink}
                         onClick={handleAddLiquidityOnClick}
+                        icon={ArrowRightIcon}
+                        iconPlacement="right"
                         target="_blank"
                         rel="noopener noreferrer"
+                        className={{
+                            icon: styles.externalLinkIcon,
+                        }}
                     >
                         {t("ammPoolLiquidity.deposit")}
                     </Button>
@@ -99,10 +104,11 @@ export function AmmPoolLiquityHeader({ campaign }: AmmPoolLiquityHeaderProps) {
                         size="sm"
                         variant="secondary"
                         border={false}
-                        icon={ArrowRightIcon}
                         href={explorerLink}
                         disabled={!explorerLink}
                         onClick={handleExploreOnClick}
+                        icon={ArrowRightIcon}
+                        iconPlacement="right"
                         target="_blank"
                         rel="noopener noreferrer"
                         className={{

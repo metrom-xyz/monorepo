@@ -3,11 +3,18 @@ import { Typography, Button, InfoTooltip } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
 import { useRouter } from "@/src/i18n/routing";
 import { AprChip } from "../../apr-chip";
-import { DistributablesType, type AaveV3TargetType } from "@metrom-xyz/sdk";
+import {
+    ChainType,
+    DistributablesType,
+    type AaveV3TargetType,
+} from "@metrom-xyz/sdk";
 import { type TargetedNamedCampaign } from "@/src/types/campaign";
 import { ProtocolType } from "@metrom-xyz/chains";
 import { useProtocolsInChain } from "@/src/hooks/useProtocolsInChain";
 import { ProtocolLogo } from "../../protocol-logo";
+import { APTOS } from "@/src/commons/env";
+import { METROM_APTOS_BASE_URL } from "@/src/commons";
+import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
 
 import styles from "./styles.module.css";
 
@@ -57,17 +64,39 @@ export function AaveV3Header({ campaign }: AaveV3HeaderProps) {
             </div>
             <div className={styles.actionsContainer}>
                 <div className={styles.leftActions}>
-                    {campaign.isDistributing(DistributablesType.Tokens) && (
+                    {campaign.chainType === ChainType.Aptos &&
+                    !APTOS &&
+                    campaign.isDistributing(DistributablesType.Tokens) ? (
+                        <Button
+                            size="sm"
+                            onClick={handleClaimOnClick}
+                            href={`${METROM_APTOS_BASE_URL}/claims`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            icon={ArrowRightIcon}
+                            iconPlacement="right"
+                            className={{
+                                icon: styles.externalLinkIcon,
+                            }}
+                        >
+                            {t("claim")}
+                        </Button>
+                    ) : campaign.isDistributing(DistributablesType.Tokens) ? (
                         <Button size="sm" onClick={handleClaimOnClick}>
                             {t("claim")}
                         </Button>
-                    )}
+                    ) : null}
                     <Button
                         size="sm"
                         href={actionLink || undefined}
                         disabled={!actionLink}
                         target="_blank"
                         rel="noopener noreferrer"
+                        icon={ArrowRightIcon}
+                        iconPlacement="right"
+                        className={{
+                            icon: styles.externalLinkIcon,
+                        }}
                     >
                         {t(`aaveV3.${campaign.target.type}`, {
                             collateral: campaign.target.collateral.token.symbol,
