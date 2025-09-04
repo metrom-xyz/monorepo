@@ -61,10 +61,10 @@ export function Activity({ chainId, transaction, payload }: ActivityProps) {
                   title: t("claimReward"),
               };
 
-    const protocols = [...dexes, ...liquityV2s, ...aaveV3s];
     const campaignTargetProtocol = useMemo(() => {
         if (!campaign) return undefined;
 
+        const protocols = [...dexes, ...liquityV2s, ...aaveV3s];
         return protocols.find(({ slug }) => {
             if (campaign?.isTargeting(TargetType.AmmPoolLiquidity))
                 return slug === campaign.target.pool.dex.slug;
@@ -77,7 +77,7 @@ export function Activity({ chainId, transaction, payload }: ActivityProps) {
             )
                 return slug === campaign.target.brand.slug;
         });
-    }, [campaign, protocols]);
+    }, [campaign, dexes, liquityV2s, aaveV3s]);
 
     function handleActivityOnClick() {
         trackFathomEvent("CLICK_ACTIVITY");
