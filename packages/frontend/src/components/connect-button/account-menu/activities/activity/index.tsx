@@ -15,6 +15,8 @@ import { PoolRemoteLogo } from "@/src/components/pool-remote-logo";
 import { ProtocolType } from "@metrom-xyz/chains";
 import { useProtocolsInChain } from "@/src/hooks/useProtocolsInChain";
 import { CHAIN_TYPE } from "@/src/commons";
+import { useMemo } from "react";
+import { ProtocolLogo } from "@/src/components/protocol-logo";
 
 import styles from "./styles.module.css";
 import classNames from "classnames";
@@ -29,6 +31,14 @@ export function Activity({ chainId, transaction, payload }: ActivityProps) {
     const dexes = useProtocolsInChain({
         chainId: chainId,
         type: ProtocolType.Dex,
+    });
+    const liquityV2s = useProtocolsInChain({
+        chainId: chainId,
+        type: ProtocolType.LiquityV2,
+    });
+    const aaveV3s = useProtocolsInChain({
+        chainId: chainId,
+        type: ProtocolType.AaveV3,
     });
     const { campaign, loading } = useCampaign({
         chainId,
@@ -51,13 +61,23 @@ export function Activity({ chainId, transaction, payload }: ActivityProps) {
                   title: t("claimReward"),
               };
 
-    const dex = campaign?.isTargeting(TargetType.AmmPoolLiquidity)
-        ? dexes.find((dex) => {
-              // FIXME: better way to handle this
-              return dex.slug === campaign.target.pool.dex.slug;
-          })
-        : undefined;
-    const DexLogo = dex?.logo;
+    const protocols = [...dexes, ...liquityV2s, ...aaveV3s];
+    const campaignTargetProtocol = useMemo(() => {
+        if (!campaign) return undefined;
+
+        return protocols.find(({ slug }) => {
+            if (campaign?.isTargeting(TargetType.AmmPoolLiquidity))
+                return slug === campaign.target.pool.dex.slug;
+            if (
+                campaign?.isTargeting(TargetType.LiquityV2Debt) ||
+                campaign?.isTargeting(TargetType.LiquityV2StabilityPool) ||
+                campaign?.isTargeting(TargetType.AaveV3Borrow) ||
+                campaign?.isTargeting(TargetType.AaveV3Supply) ||
+                campaign?.isTargeting(TargetType.AaveV3NetSupply)
+            )
+                return slug === campaign.target.brand.slug;
+        });
+    }, [campaign, protocols]);
 
     function handleActivityOnClick() {
         trackFathomEvent("CLICK_ACTIVITY");
@@ -100,15 +120,13 @@ export function Activity({ chainId, transaction, payload }: ActivityProps) {
                         <>
                             {!loading && campaign ? (
                                 <Link
-                                    href={`/campaigns/${chainId}/${payload.id}`}
+                                    href={`/campaigns/${campaign.chainType}/${chainId}/${payload.id}`}
                                     onClick={handleActivityOnClick}
                                 >
                                     <div className={styles.campaignNameWrapper}>
-                                        {DexLogo && (
-                                            <DexLogo
-                                                className={styles.dexIcon}
-                                            />
-                                        )}
+                                        <ProtocolLogo
+                                            protocol={campaignTargetProtocol}
+                                        />
                                         {campaign.target.type ===
                                             "amm-pool-liquidity" && (
                                             <PoolRemoteLogo
