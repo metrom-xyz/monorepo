@@ -15,6 +15,10 @@
         px-4;
 }
 
+.list {
+    @apply max-h-[342px];
+}
+
 .empty {
     @apply flex justify-center py-4;
 }

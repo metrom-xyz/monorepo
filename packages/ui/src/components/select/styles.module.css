@@ -14,6 +14,10 @@
         h-fit;
 }
 
+.list {
+    @apply max-h-[288px];
+}
+
 .emptyOptionList {
     @apply flex
         justify-center

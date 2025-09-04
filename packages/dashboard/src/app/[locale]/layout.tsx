@@ -21,7 +21,7 @@ export const metadata: Metadata = {
 };
 
 interface Params {
-    locale: Locale;
+    locale: string;
 }
 
 interface LayoutParams {
@@ -32,9 +32,9 @@ interface LayoutParams {
 export default async function RootLayout({ children, params }: LayoutParams) {
     const { locale } = await params;
 
-    if (!routing.locales.includes(locale)) notFound();
+    if (!routing.locales.includes(locale as Locale)) notFound();
 
-    setRequestLocale(locale);
+    setRequestLocale(locale as Locale);
 
     return (
         <html lang={locale} suppressHydrationWarning className="theme-bg">

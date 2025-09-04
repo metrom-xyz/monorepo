@@ -16,7 +16,7 @@ import { ThemeProvider } from "next-themes";
 import { BASE_URL } from "@/src/commons";
 
 interface Params {
-    locale: Locale;
+    locale: string;
 }
 
 interface LayoutParams {
@@ -53,9 +53,9 @@ export const metadata: Metadata = {
 export default async function Layout({ children, params }: LayoutParams) {
     const { locale } = await params;
 
-    if (!routing.locales.includes(locale)) notFound();
+    if (!routing.locales.includes(locale as Locale)) notFound();
 
-    setRequestLocale(locale);
+    setRequestLocale(locale as Locale);
 
     return (
         <html lang={locale} suppressHydrationWarning>

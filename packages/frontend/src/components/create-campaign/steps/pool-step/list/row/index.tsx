@@ -4,26 +4,30 @@ import { Typography, Skeleton } from "@metrom-xyz/ui";
 import classNames from "classnames";
 import { formatPercentage, formatUsdAmount } from "@/src/utils/format";
 import { PoolRemoteLogo } from "@/src/components/pool-remote-logo";
+import type { RowComponentProps } from "react-window";
 
 import styles from "./styles.module.css";
 
 interface PickerRowProps {
-    style?: any;
-    pool: AmmPoolWithTvl;
+    pools: AmmPoolWithTvl[];
     chain: number;
     loading?: boolean;
-    active?: boolean;
+    value?: AmmPoolWithTvl;
     onClick: (pool: AmmPoolWithTvl) => void;
 }
 
 export function Row({
     style,
-    pool,
+    index,
+    pools,
     chain,
-    active,
+    value,
     loading,
     onClick,
-}: PickerRowProps) {
+}: RowComponentProps<PickerRowProps>) {
+    const pool = pools[index];
+    const active = !!pool && pool.id === value?.id;
+
     const handlePoolOnClick = useCallback(() => {
         onClick(pool);
     }, [onClick, pool]);
