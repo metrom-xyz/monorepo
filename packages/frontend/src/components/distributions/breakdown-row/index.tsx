@@ -9,16 +9,14 @@ import { useMemo } from "react";
 import { useAccount } from "@/src/hooks/useAccount";
 import { AccountRow, AccountRowSkeleton } from "./account-row";
 import type { ProcessedDistribution } from "@/src/types/distributions";
+import type { RowComponentProps } from "react-window";
 
 import styles from "./styles.module.css";
 
 interface BreakdownRowProps {
-    style?: any;
-    index: number;
-    active: boolean;
+    active?: number;
     chainId: number;
-    previousDistro?: ProcessedDistribution;
-    distro: ProcessedDistribution;
+    distros: ProcessedDistribution[];
     campaignFrom?: number;
 }
 
@@ -27,41 +25,43 @@ export function BreakdownRow({
     index,
     active,
     chainId,
-    previousDistro,
-    distro,
+    distros,
     campaignFrom,
-}: BreakdownRowProps) {
+}: RowComponentProps<BreakdownRowProps>) {
     const t = useTranslations("campaignDistributions");
 
     const { address } = useAccount();
+
+    const previous: ProcessedDistribution | undefined = distros[index - 1];
+    const current: ProcessedDistribution = distros[index];
 
     const notFirstDistro = useMemo(
         () =>
             !!campaignFrom &&
             dayjs
-                .unix(distro.timestamp)
+                .unix(current.timestamp)
                 .diff(dayjs.unix(campaignFrom), "hours") > 1 &&
             index === 0,
-        [campaignFrom, distro.timestamp, index],
+        [campaignFrom, current.timestamp, index],
     );
 
     // there are cases where distributions didn't happen hourly
     const aggregatedDistros = useMemo(() => {
-        if (!previousDistro) return 0;
+        if (!previous) return 0;
 
         return dayjs
-            .unix(distro.timestamp)
-            .diff(dayjs.unix(previousDistro.timestamp), "hours");
-    }, [previousDistro, distro.timestamp]);
+            .unix(current.timestamp)
+            .diff(dayjs.unix(previous.timestamp), "hours");
+    }, [previous, current.timestamp]);
 
     return (
         <div style={style} className={styles.root}>
-            {Object.entries(distro.weights).map(([token, weight]) => {
+            {Object.entries(current.weights).map(([token, weight]) => {
                 return (
                     <div key={token} className={styles.tokenColumn}>
                         <div
                             className={classNames(styles.title, {
-                                [styles.active]: active,
+                                [styles.active]: active === index,
                             })}
                         >
                             <RemoteLogo
@@ -69,7 +69,7 @@ export function BreakdownRow({
                                 chain={chainId}
                             />
                             <Typography weight="medium" size="lg">
-                                {formatDateTime(distro.timestamp)}
+                                {formatDateTime(current.timestamp)}
                             </Typography>
                             {notFirstDistro && (
                                 <ErrorText

@@ -5,28 +5,37 @@ import classNames from "classnames";
 import { Typography, Skeleton } from "@metrom-xyz/ui";
 import { formatAmount, formatUsdAmount } from "@/src/utils/format";
 import { RemoteLogo } from "@/src/components/remote-logo";
+import type { RowComponentProps } from "react-window";
+import type { WhitelistedErc20TokenAmount } from "@/src/types/common";
 
 import styles from "./styles.module.css";
 
 interface PickerRowProps {
-    tokenWithBalance: Erc20TokenWithBalance<WhitelistedErc20Token> | null;
+    tokensWithBalance: Erc20TokenWithBalance<WhitelistedErc20Token>[];
+    unavailable?: WhitelistedErc20TokenAmount[];
     chain: number;
-    style?: any;
     loading?: boolean;
-    disabled?: boolean;
-    active?: boolean;
+    value?: WhitelistedErc20Token;
     onClick: (token: WhitelistedErc20Token) => void;
 }
 
 export function Row({
-    tokenWithBalance,
+    tokensWithBalance,
+    unavailable,
     chain,
     style,
+    index,
     loading,
-    disabled,
-    active,
+    value,
     onClick,
-}: PickerRowProps) {
+}: RowComponentProps<PickerRowProps>) {
+    const tokenWithBalance = tokensWithBalance[index];
+    const disabled = !!unavailable?.find(
+        ({ token: { address } }) => address === tokenWithBalance?.token.address,
+    );
+    const active =
+        !!tokenWithBalance && tokenWithBalance.token.address === value?.address;
+
     const handleRewardTokenOnClick = useCallback(() => {
         if (!tokenWithBalance || disabled) return;
         onClick(tokenWithBalance.token);

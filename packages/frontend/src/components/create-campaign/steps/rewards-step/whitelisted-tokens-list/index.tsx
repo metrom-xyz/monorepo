@@ -3,14 +3,11 @@
 import { useRef } from "react";
 import { useAccount } from "@/src/hooks/useAccount";
 import { useChainWithType } from "@/src/hooks/useChainWithType";
-import { FixedSizeList } from "react-window";
+import { List } from "react-window";
 import { useTranslations } from "next-intl";
 import { type WhitelistedErc20Token } from "@metrom-xyz/sdk";
 import { Typography } from "@metrom-xyz/ui";
-import {
-    useWatchBalances,
-    type Erc20TokenWithBalance,
-} from "@/src/hooks/use-watch-balances";
+import { useWatchBalances } from "@/src/hooks/use-watch-balances";
 import { Row } from "./row";
 import { AnimatePresence, easeInOut, motion } from "motion/react";
 import type { WhitelistedErc20TokenAmount } from "@/src/types/common";
@@ -86,56 +83,27 @@ export function WhitelistedTokensList({
                             </Typography>
                         </div>
                         {loading || tokensWithBalance.length > 0 ? (
-                            <FixedSizeList
-                                ref={listRef}
-                                height={
-                                    loading
-                                        ? TOKENS_LIMIT * 57
-                                        : Math.min(
-                                              tokensWithBalance.length,
-                                              TOKENS_LIMIT,
-                                          ) * 57
-                                }
-                                width={"100%"}
-                                itemCount={
+                            <List
+                                listRef={listRef}
+                                rowHeight={57}
+                                rowCount={
                                     loading
                                         ? TOKENS_LIMIT
                                         : tokensWithBalance.length
                                 }
-                                itemData={
-                                    loading
+                                rowProps={{
+                                    loading: loading || loadingBalances,
+                                    unavailable,
+                                    value,
+                                    tokensWithBalance: loading
                                         ? new Array(TOKENS_LIMIT).fill(null)
-                                        : tokensWithBalance
-                                }
-                                itemSize={57}
-                            >
-                                {({ index, style, data }) => {
-                                    const whitelistedToken: Erc20TokenWithBalance<WhitelistedErc20Token> | null =
-                                        data[index];
-                                    return (
-                                        <Row
-                                            style={style}
-                                            chain={chainId}
-                                            loading={loading || loadingBalances}
-                                            disabled={
-                                                !!unavailable?.find(
-                                                    ({ token: { address } }) =>
-                                                        address ===
-                                                        whitelistedToken?.token
-                                                            .address,
-                                                )
-                                            }
-                                            active={
-                                                !!whitelistedToken &&
-                                                whitelistedToken.token
-                                                    .address === value?.address
-                                            }
-                                            tokenWithBalance={whitelistedToken}
-                                            onClick={onClick}
-                                        />
-                                    );
+                                        : tokensWithBalance,
+                                    chain: chainId,
+                                    onClick,
                                 }}
-                            </FixedSizeList>
+                                rowComponent={Row}
+                                className={styles.list}
+                            />
                         ) : (
                             <div
                                 className={classNames(

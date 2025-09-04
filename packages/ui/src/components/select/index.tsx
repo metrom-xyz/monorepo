@@ -14,7 +14,7 @@ import type { BaseInputProps } from "../commons/input";
 import { Popover } from "../popover";
 import { TextInput } from "../text-input";
 import { useClickAway, useDebounce } from "react-use";
-import { FixedSizeList, type ListChildComponentProps } from "react-window";
+import { List, type RowComponentProps } from "react-window";
 import { Typography } from "../typography";
 import classNames from "classnames";
 import { ChevronUp } from "../../assets/chevron-up";
@@ -131,7 +131,7 @@ function Component<V extends ValueType, O extends SelectOption<V>>(
         [onChange],
     );
 
-    const itemData = useMemo(() => {
+    const rowProps = useMemo(() => {
         const data: ItemData<V, O> = {
             options: filteredOptions,
             onChange: handleInnerChange,
@@ -196,15 +196,17 @@ function Component<V extends ValueType, O extends SelectOption<V>>(
                         <Typography>{messages.noResults}</Typography>
                     </div>
                 ) : (
-                    <FixedSizeList<ItemData<V, O>>
-                        height={Math.min(filteredOptions.length, 6) * 48}
-                        width={anchorEl?.parentElement?.clientWidth || "auto"}
-                        itemCount={filteredOptions.length}
-                        itemData={itemData}
-                        itemSize={48}
-                    >
-                        {OptionRow}
-                    </FixedSizeList>
+                    <List
+                        rowHeight={48}
+                        rowCount={filteredOptions.length}
+                        rowProps={rowProps}
+                        rowComponent={OptionRow}
+                        style={{
+                            width:
+                                anchorEl?.parentElement?.clientWidth || "auto",
+                        }}
+                        className={styles.list}
+                    />
                 )}
             </Popover>
         </div>
@@ -214,8 +216,12 @@ function Component<V extends ValueType, O extends SelectOption<V>>(
 function OptionRow<V extends ValueType, O extends SelectOption<V>>({
     index,
     style,
-    data: { onChange, options, value, renderOption, dataTestIds },
-}: ListChildComponentProps<ItemData<ValueType, O>>) {
+    onChange,
+    options,
+    value,
+    renderOption,
+    dataTestIds,
+}: RowComponentProps<ItemData<ValueType, O>>) {
     const item = options[index];
 
     const handleClick = useCallback(() => {

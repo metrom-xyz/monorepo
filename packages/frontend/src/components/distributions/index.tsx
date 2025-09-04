@@ -1,10 +1,9 @@
 "use client";
 
 import { Card, Typography } from "@metrom-xyz/ui";
-import { useCallback, useMemo, useRef, useState } from "react";
-import AutoSizer from "react-virtualized-auto-sizer";
+import { useCallback, useMemo, useState } from "react";
 import type { Hex } from "viem";
-import { VariableSizeList } from "react-window";
+import { List, useListRef } from "react-window";
 import { BreakdownRow, BreakdownRowSkeleton } from "./breakdown-row";
 import { useTranslations } from "next-intl";
 import type { SupportedChain } from "@metrom-xyz/contracts";
@@ -48,7 +47,7 @@ export function Distributions({
     const [active, setActiveDistribution] = useState<number>();
     const [distros, setDistros] = useState<ProcessedDistribution[]>([]);
 
-    const breakdownListRef = useRef(null);
+    const breakdownListRef = useListRef(null);
 
     const { campaign, loading: loadingCampaign } = useCampaign({
         chainId: chain,
@@ -90,7 +89,11 @@ export function Distributions({
             );
 
             setActiveDistribution(index < 0 ? undefined : index);
-            (breakdownListRef.current as any).scrollToItem(index, "start");
+            breakdownListRef.current.scrollToRow({
+                index,
+                align: "start",
+                behavior: "smooth",
+            });
         },
         [distros, breakdownListRef],
     );
@@ -175,48 +178,19 @@ export function Distributions({
                         {loading ? (
                             <BreakdownRowSkeleton />
                         ) : distros.length > 0 ? (
-                            <AutoSizer>
-                                {({ height, width }) => {
-                                    return (
-                                        <VariableSizeList
-                                            ref={breakdownListRef}
-                                            height={height}
-                                            width={width}
-                                            itemCount={distros.length}
-                                            itemData={distros}
-                                            itemSize={getAccountRowSize}
-                                            className={styles.breakdownsList}
-                                        >
-                                            {({ index, style, data }) => {
-                                                const previous:
-                                                    | ProcessedDistribution
-                                                    | undefined =
-                                                    data[index - 1];
-                                                const current: ProcessedDistribution =
-                                                    data[index];
-
-                                                return (
-                                                    <BreakdownRow
-                                                        style={style}
-                                                        index={index}
-                                                        active={
-                                                            active === index
-                                                        }
-                                                        chainId={chain}
-                                                        previousDistro={
-                                                            previous
-                                                        }
-                                                        distro={current}
-                                                        campaignFrom={
-                                                            campaign?.from
-                                                        }
-                                                    />
-                                                );
-                                            }}
-                                        </VariableSizeList>
-                                    );
+                            <List
+                                listRef={breakdownListRef}
+                                rowCount={distros.length}
+                                rowHeight={getAccountRowSize}
+                                rowProps={{
+                                    distros,
+                                    active,
+                                    chainId: chain,
+                                    campaignFrom: campaign?.from,
                                 }}
-                            </AutoSizer>
+                                rowComponent={BreakdownRow}
+                                className={styles.breakdownsList}
+                            />
                         ) : (
                             <div className={styles.empty}>
                                 <NoDistributionsIcon />

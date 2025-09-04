@@ -1,17 +1,9 @@
-import {
-    useCallback,
-    useState,
-    type ChangeEvent,
-    useMemo,
-    useRef,
-    useEffect,
-} from "react";
+import { useCallback, useState, type ChangeEvent, useMemo } from "react";
 import { useDebounce } from "react-use";
 import type { Erc20Token, SupportedDex, AmmPoolWithTvl } from "@metrom-xyz/sdk";
 import { useChainWithType } from "@/src/hooks/useChainWithType";
 import { TextInput, Chip, Typography } from "@metrom-xyz/ui";
-import AutoSizer from "react-virtualized-auto-sizer";
-import { FixedSizeList } from "react-window";
+import { List, useListRef } from "react-window";
 import { SearchIcon } from "@/src/assets/search-icon";
 import { useTranslations } from "next-intl";
 import { usePools } from "@/src/hooks/usePools";
@@ -19,9 +11,9 @@ import { useBaseTokens } from "@/src/hooks/useBaseTokens";
 import { filterPools } from "@/src/utils/filtering";
 import { Row } from "./row";
 import { RemoteLogo } from "@/src/components/remote-logo";
+import { CHAIN_TYPE } from "@/src/commons";
 
 import styles from "./styles.module.css";
-import { CHAIN_TYPE } from "@/src/commons";
 
 interface ListPoolPickerProps {
     value?: AmmPoolWithTvl;
@@ -36,7 +28,7 @@ export function ListPoolPicker({ value, dex, onChange }: ListPoolPickerProps) {
     const [search, setSearch] = useState("");
     const [debouncedSearch, setDebouncedSearch] = useState(search);
     const [baseTokenFilter, setBaseTokenFilter] = useState<Erc20Token>();
-    const listRef = useRef(null);
+    const listRef = useListRef(null);
 
     const { id: chainId } = useChainWithType();
     const baseTokens = useBaseTokens(chainId);
@@ -60,11 +52,6 @@ export function ListPoolPicker({ value, dex, onChange }: ListPoolPickerProps) {
         return pools.findIndex((pool) => pool.id === value?.id);
     }, [pools, value?.id]);
 
-    useEffect(() => {
-        if (!listRef.current) return;
-        (listRef.current as any).scrollToItem(selectedIndex, "start");
-    }, [selectedIndex]);
-
     useDebounce(
         () => {
             setDebouncedSearch(search);
@@ -83,6 +70,21 @@ export function ListPoolPicker({ value, dex, onChange }: ListPoolPickerProps) {
         },
         [baseTokenFilter?.address],
     );
+
+    const handleScrollToActive = useCallback(() => {
+        if (
+            !listRef.current ||
+            selectedIndex < 0 ||
+            selectedIndex > filteredPools.length
+        )
+            return;
+
+        listRef.current.scrollToRow({
+            index: selectedIndex,
+            align: "start",
+            behavior: "instant",
+        });
+    }, [listRef, selectedIndex, filteredPools]);
 
     function handleSearchOnChange(event: ChangeEvent<HTMLInputElement>) {
         setSearch(event.target.value);
@@ -146,43 +148,23 @@ export function ListPoolPicker({ value, dex, onChange }: ListPoolPickerProps) {
                     </Typography>
                 </div>
                 {loading || (filteredPools && filteredPools.length > 0) ? (
-                    <AutoSizer>
-                        {({ height, width }) => {
-                            return (
-                                <FixedSizeList
-                                    ref={listRef}
-                                    height={height}
-                                    width={width}
-                                    itemCount={itemCount}
-                                    itemData={
-                                        loading
-                                            ? new Array(6).fill(null)
-                                            : filteredPools
-                                    }
-                                    itemSize={LIST_ITEM_HEIGHT}
-                                    className={styles.list}
-                                >
-                                    {({ index, style, data }) => {
-                                        const pool: AmmPoolWithTvl =
-                                            data[index];
-                                        return (
-                                            <Row
-                                                style={style}
-                                                chain={chainId}
-                                                loading={loading}
-                                                active={
-                                                    pool &&
-                                                    pool.id === value?.id
-                                                }
-                                                pool={pool}
-                                                onClick={onChange}
-                                            />
-                                        );
-                                    }}
-                                </FixedSizeList>
-                            );
+                    <List
+                        onResize={handleScrollToActive}
+                        listRef={listRef}
+                        rowHeight={LIST_ITEM_HEIGHT}
+                        rowCount={itemCount}
+                        rowProps={{
+                            loading,
+                            chain: chainId,
+                            value,
+                            pools: loading
+                                ? new Array(6).fill(null)
+                                : (filteredPools as AmmPoolWithTvl[]),
+                            onClick: onChange,
                         }}
-                    </AutoSizer>
+                        rowComponent={Row}
+                        className={styles.list}
+                    />
                 ) : (
                     <div className={styles.emptyList}>
                         {/* TODO: add illustration */}

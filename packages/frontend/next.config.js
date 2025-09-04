@@ -9,7 +9,7 @@ const cspHeader = `
     script-src 'self' 'unsafe-eval' 'unsafe-inline' https://cdn.usefathom.com;
     style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
     img-src * data: blob:;
-    font-src 'self' https://fonts.gstatic.com;
+    font-src 'self' https://fonts.gstatic.com https://fonts.reown.com;
     object-src 'none';
     base-uri 'self';
     form-action 'self';
@@ -36,10 +36,10 @@ const nextConfig = {
             {
                 source: "/(.*)",
                 headers: [
-                    {
-                        key: "Content-Security-Policy",
-                        value: cspHeader.replace(/\n/g, ""),
-                    },
+                    // {
+                    //     key: "Content-Security-Policy",
+                    //     value: cspHeader.replace(/\n/g, ""),
+                    // },
                     {
                         key: "X-Frame-Options",
                         value: "DENY",
