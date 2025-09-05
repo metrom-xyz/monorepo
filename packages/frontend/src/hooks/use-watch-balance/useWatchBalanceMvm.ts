@@ -55,7 +55,7 @@ export function useWatchBalanceMvm({
     }, [enabled, blockNumber, refetch]);
 
     return {
-        balance: balance || undefined,
+        balance: balance ?? undefined,
         loading,
     };
 }
