@@ -4,10 +4,16 @@ import { getChains } from "@wagmi/core";
 import { useConfig } from "wagmi";
 import type { ChainWithType } from "../types/chain";
 
-export function useChainsWithTypes(): ChainWithType[] {
+interface UseChainsWithTypesParams {
+    chainType?: ChainType;
+}
+
+export function useChainsWithTypes({
+    chainType,
+}: UseChainsWithTypesParams = {}): ChainWithType[] {
     const config = useConfig();
 
-    return getChains(config)
+    const chains = getChains(config)
         .map(({ id }) => ({ id, type: ChainType.Evm }))
         .concat(
             SUPPORTED_CHAINS_MVM.map((id) => ({
@@ -15,4 +21,7 @@ export function useChainsWithTypes(): ChainWithType[] {
                 type: ChainType.Aptos,
             })),
         );
+
+    if (chainType) return chains.filter(({ type }) => type === chainType);
+    return chains;
 }

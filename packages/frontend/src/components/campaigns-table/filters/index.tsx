@@ -26,6 +26,7 @@ import { useDebounce } from "react-use";
 import { useChainsWithTypes } from "@/src/hooks/useChainsWithTypes";
 import { getCrossVmChainData } from "@/src/utils/chain";
 import { ChainType } from "@metrom-xyz/sdk";
+import { APTOS } from "@/src/commons/env";
 
 import styles from "./styles.module.css";
 
@@ -100,8 +101,10 @@ export function Filters({
 }: FilterProps) {
     const t = useTranslations("allCampaigns");
 
-    const chains = useChainsWithTypes();
-    const protocols = useSupportedProtocols({ crossVm: true });
+    const chains = useChainsWithTypes({
+        chainType: APTOS ? ChainType.Aptos : undefined,
+    });
+    const protocols = useSupportedProtocols({ crossVm: !APTOS });
     const router = useRouter();
     const pathname = usePathname();
     const searchParams = useSearchParams();
