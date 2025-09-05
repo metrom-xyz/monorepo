@@ -378,7 +378,8 @@ export class Campaign extends SdkCampaign {
                 return this.target.collateral.usdStabilityPoolDebt;
             case TargetType.AaveV3Borrow:
                 return this.target.collateral.usdDebt;
-            case TargetType.AaveV3Supply || TargetType.AaveV3NetSupply:
+            case TargetType.AaveV3NetSupply:
+            case TargetType.AaveV3Supply:
                 return this.target.collateral.usdSupply;
             default:
                 return undefined;
@@ -395,7 +396,8 @@ export class Campaign extends SdkCampaign {
                 return this.target.collateral.liquidity;
             case TargetType.AaveV3Borrow:
                 return this.target.collateral.debt;
-            case TargetType.AaveV3Supply || TargetType.AaveV3NetSupply:
+            case TargetType.AaveV3NetSupply:
+            case TargetType.AaveV3Supply:
                 return this.target.collateral.supply;
             default:
                 return undefined;

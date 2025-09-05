@@ -70,7 +70,10 @@ function getCampaignTargetProtocol(
                 return protocol.slug === target.pool.dex.slug;
             }
             case TargetType.LiquityV2Debt:
-            case TargetType.LiquityV2StabilityPool: {
+            case TargetType.LiquityV2StabilityPool:
+            case TargetType.AaveV3Borrow:
+            case TargetType.AaveV3Supply:
+            case TargetType.AaveV3NetSupply: {
                 return protocol.slug === target.brand.slug;
             }
         }
