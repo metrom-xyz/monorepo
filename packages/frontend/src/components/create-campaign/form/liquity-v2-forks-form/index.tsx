@@ -8,7 +8,7 @@ import {
 } from "@/src/types/campaign";
 import { useTranslations } from "next-intl";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { useChainId } from "@/src/hooks/useChainId";
+import { useChainWithType } from "@/src/hooks/useChainWithType";
 import { DistributablesType } from "@metrom-xyz/sdk";
 import { StartDateStep } from "../../steps/start-date-step";
 import { EndDateStep } from "../../steps/end-date-step";
@@ -103,7 +103,7 @@ export function LiquityV2ForksForm({
     onPreviewClick,
 }: LiquityV2ForksFormProps) {
     const t = useTranslations("newCampaign");
-    const chainId = useChainId();
+    const { id: chainId } = useChainWithType();
 
     const [payload, setPayload] = useState(initialPayload);
     const [errors, setErrors] = useState<CampaignPayloadErrors>({});

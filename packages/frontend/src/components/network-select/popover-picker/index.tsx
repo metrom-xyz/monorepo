@@ -5,6 +5,7 @@ import { getCrossVmChainData } from "@/src/utils/chain";
 import { METROM_APTOS_BASE_URL, SUPPORTED_CHAINS_MVM } from "@/src/commons";
 import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
 import { APTOS } from "@/src/commons/env";
+import type { ChainWithType } from "@/src/types/chain";
 
 import styles from "./styles.module.css";
 import commonStyles from "../styles.module.css";
@@ -12,7 +13,7 @@ import commonStyles from "../styles.module.css";
 interface PopoverPickerProps {
     anchor: Element | null;
     open: boolean;
-    chains: readonly number[];
+    chains: readonly ChainWithType[];
     value: number;
     onChange?: (chainId: number) => void;
 }
@@ -47,8 +48,8 @@ export function PopoverPicker({
                     [styles.grid]: chains.length > 1,
                 })}
             >
-                {chains.map((id) => {
-                    const chainData = getCrossVmChainData(id);
+                {chains.map(({ id, type }) => {
+                    const chainData = getCrossVmChainData(id, type);
 
                     if (!APTOS && SUPPORTED_CHAINS_MVM.includes(id))
                         return (

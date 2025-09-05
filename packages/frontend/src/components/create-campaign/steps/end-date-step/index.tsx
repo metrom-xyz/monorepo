@@ -1,7 +1,7 @@
 "use client";
 
 import { useTranslations } from "next-intl";
-import { useChainId } from "@/src/hooks/useChainId";
+import { useChainWithType } from "@/src/hooks/useChainWithType";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import dayjs, { type Dayjs, type ManipulateType } from "dayjs";
 import { Step } from "@/src/components/step";
@@ -71,7 +71,7 @@ export function EndDateStep({
     const [durationPreset, setDurationPreset] = useState<DurationPreset>();
     const [dateError, setDateError] = useState("");
 
-    const chainId = useChainId();
+    const { id: chainId } = useChainWithType();
 
     const { limits } = useCampaignDurationLimits();
 

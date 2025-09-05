@@ -7,7 +7,7 @@ import {
 import type { Erc20Token, UsdPricedOnChainAmount } from "@metrom-xyz/sdk";
 import { useCallback, useEffect, useState } from "react";
 import { useWatchBalance } from "@/src/hooks/use-watch-balance";
-import { useChainId } from "@/src/hooks/useChainId";
+import { useChainWithType } from "@/src/hooks/useChainWithType";
 import { useAccount } from "@/src/hooks/useAccount";
 import { parseUnits } from "viem/utils";
 import type { Address } from "viem";
@@ -45,7 +45,7 @@ export function Reward({
         UsdPricedOnChainAmount | undefined
     >(reward.amount);
     const { address } = useAccount();
-    const chain = useChainId();
+    const { id: chain } = useChainWithType();
     const { balance: rewardTokenBalance } = useWatchBalance({
         address,
         token: reward.token.address,

@@ -1,5 +1,5 @@
 import type { HookBaseParams } from "@/src/types/hooks";
-import { useChainId } from "./useChainId";
+import { useChainWithType } from "./useChainWithType";
 import { useChainData } from "./useChainData";
 import { useReadContracts } from "wagmi";
 import { metromAbi } from "@metrom-xyz/contracts/abi";
@@ -22,7 +22,7 @@ export interface UseCampaignDurationReturnValue {
 export function useCampaignDurationLimits({
     enabled,
 }: UseCampaignDurationLimitsParams = {}): UseCampaignDurationReturnValue {
-    const chainId = useChainId();
+    const { id: chainId } = useChainWithType();
     const chainData = useChainData({ chainId });
 
     const limitsEvm = useReadContracts({

@@ -7,22 +7,21 @@ import {
     getCrossVmChainData,
 } from "./chain";
 import { APTOS } from "../commons/env";
-import { getAddressChainType, isAddress } from "./address";
+import { isAddress } from "./address";
 import { ChainType } from "@metrom-xyz/sdk";
 
 export function getExplorerLink(
     address: Address,
     chainId?: SupportedChain,
+    chainType?: ChainType,
 ): string | undefined {
-    if (!chainId || !isAddress(address)) return undefined;
+    if (!chainType || !chainId || !isAddress(address)) return undefined;
 
-    const explorer = getCrossVmChainData(chainId)?.blockExplorers?.default;
+    const explorer = getCrossVmChainData(chainId, chainType)?.blockExplorers
+        ?.default;
     if (!explorer) return undefined;
 
-    const addressChainType = getAddressChainType(address);
-    if (!addressChainType) return undefined;
-
-    if (addressChainType === ChainType.Aptos) {
+    if (chainType === ChainType.Aptos) {
         const network = chainIdToAptosNetwork(chainId);
         return `${explorer.url}/account/${address}?network=${network}`;
     }

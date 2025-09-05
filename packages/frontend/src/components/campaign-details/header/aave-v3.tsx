@@ -28,6 +28,7 @@ export function AaveV3Header({ campaign }: AaveV3HeaderProps) {
 
     const brand = useProtocolsInChain({
         chainId: campaign.chainId,
+        chainType: campaign.chainType,
         type: ProtocolType.AaveV3,
         crossVm: true,
     }).find((brand) => brand.slug === campaign.target.brand.slug);

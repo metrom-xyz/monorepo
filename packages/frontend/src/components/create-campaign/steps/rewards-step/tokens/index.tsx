@@ -16,7 +16,7 @@ import { RemoteLogo } from "@/src/components/remote-logo";
 import { ChevronDown } from "@/src/assets/chevron-down";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslations } from "next-intl";
-import { useChainId } from "@/src/hooks/useChainId";
+import { useChainWithType } from "@/src/hooks/useChainWithType";
 import { useAccount } from "@/src/hooks/useAccount";
 import type {
     CampaignPayloadErrors,
@@ -61,7 +61,7 @@ export function RewardTokens({
     >([]);
 
     const { address } = useAccount();
-    const chainId = useChainId();
+    const { id: chainId } = useChainWithType();
     const { balance: tokenBalance } = useWatchBalance({
         address,
         token: token?.address,

@@ -1,5 +1,5 @@
 import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
-import { useChainId } from "@/src/hooks/useChainId";
+import { useChainWithType } from "@/src/hooks/useChainWithType";
 import { useChainData } from "@/src/hooks/useChainData";
 import { Button } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
@@ -34,7 +34,7 @@ export function DeployButtonMvm({
     onCreate,
 }: DeployButtonProps) {
     const t = useTranslations("campaignPreview");
-    const chainId = useChainId();
+    const { id: chainId } = useChainWithType();
     const chainData = useChainData({ chainId });
     const { address, connected } = useAccount();
     const { aptos } = useClients();

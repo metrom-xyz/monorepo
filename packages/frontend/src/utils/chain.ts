@@ -10,6 +10,8 @@ import {
 } from "@metrom-xyz/chains";
 import { APTOS, ENVIRONMENT } from "../commons/env";
 import { Network, NetworkToChainId } from "@aptos-labs/ts-sdk";
+import { SupportedChain as SupportedChainMvm } from "@metrom-xyz/aptos-contracts";
+import { ChainType } from "@metrom-xyz/sdk";
 
 export const APTOS_NETWORK_ID = {
     [Environment.Development]: {
@@ -20,46 +22,53 @@ export const APTOS_NETWORK_ID = {
     },
 };
 
-export function aptosNetworkToId(network: Network): number {
+export function aptosNetworkToId(network: string): number {
     return NetworkToChainId[network];
 }
 
-export function chainIdToAptosNetwork(chainId?: number): Network | null {
+export function chainIdToAptosNetwork(
+    chainId?: number,
+): SupportedChainMvm | null {
     const chain = Object.entries(APTOS_NETWORK_ID[ENVIRONMENT]).find(
         ([, id]) => chainId === id,
     );
 
-    if (!chain) {
-        console.error(`Could not find unsupported aptos chain id ${chainId}`);
-        return null;
-    }
-    return chain[0] as Network;
+    if (!chain) return null;
+    return chain[0] as SupportedChainMvm;
 }
 
-// FIXME: how to differentiate between eth mainnet and aptos mainnet, since they both have id 1
-export function getCrossVmChainData(chainId: number): ChainData | undefined {
+export function getCrossVmChainData(
+    chainId: number,
+    chainType: ChainType,
+): ChainData | undefined {
     let chainData: ChainData | undefined;
 
     switch (ENVIRONMENT) {
         case Environment.Development: {
             chainData =
-                MVM_CHAIN_DATA[Environment.Development][
-                    chainId as SupportedDevelopmentMvmChain
-                ] ||
-                EVM_CHAIN_DATA[Environment.Development][
-                    chainId as SupportedDevelopmentEvmChain
-                ];
+                chainType === ChainType.Aptos
+                    ? MVM_CHAIN_DATA[Environment.Development][
+                          chainIdToAptosNetwork(
+                              chainId,
+                          ) as unknown as SupportedDevelopmentMvmChain
+                      ]
+                    : EVM_CHAIN_DATA[Environment.Development][
+                          chainId as SupportedDevelopmentEvmChain
+                      ];
 
             break;
         }
         case Environment.Production: {
             chainData =
-                MVM_CHAIN_DATA[Environment.Production][
-                    chainId as SupportedProductionMvmChain
-                ] ||
-                EVM_CHAIN_DATA[Environment.Production][
-                    chainId as SupportedProductionMvmChain
-                ];
+                chainType === ChainType.Aptos
+                    ? MVM_CHAIN_DATA[Environment.Production][
+                          chainIdToAptosNetwork(
+                              chainId,
+                          ) as unknown as SupportedProductionMvmChain
+                      ]
+                    : EVM_CHAIN_DATA[Environment.Production][
+                          chainId as SupportedProductionEvmChain
+                      ];
 
             break;
         }
@@ -79,7 +88,9 @@ export function getChainData(chainId: number): ChainData | undefined {
             if (APTOS)
                 chainData =
                     MVM_CHAIN_DATA[Environment.Development][
-                        chainId as SupportedDevelopmentMvmChain
+                        chainIdToAptosNetwork(
+                            chainId,
+                        ) as unknown as SupportedDevelopmentMvmChain
                     ];
             else
                 chainData =
@@ -93,7 +104,9 @@ export function getChainData(chainId: number): ChainData | undefined {
             if (APTOS)
                 chainData =
                     MVM_CHAIN_DATA[Environment.Production][
-                        chainId as SupportedProductionMvmChain
+                        chainIdToAptosNetwork(
+                            chainId,
+                        ) as unknown as SupportedProductionMvmChain
                     ];
             else
                 chainData =

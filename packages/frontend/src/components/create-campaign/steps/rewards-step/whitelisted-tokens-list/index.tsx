@@ -2,7 +2,7 @@
 
 import { useRef } from "react";
 import { useAccount } from "@/src/hooks/useAccount";
-import { useChainId } from "@/src/hooks/useChainId";
+import { useChainWithType } from "@/src/hooks/useChainWithType";
 import { FixedSizeList } from "react-window";
 import { useTranslations } from "next-intl";
 import { type WhitelistedErc20Token } from "@metrom-xyz/sdk";
@@ -47,7 +47,7 @@ export function WhitelistedTokensList({
     const listRef = useRef(null);
 
     const { address } = useAccount();
-    const chainId = useChainId();
+    const { id: chainId } = useChainWithType();
 
     const { tokensWithBalance: tokensWithBalance, loading: loadingBalances } =
         useWatchBalances<WhitelistedErc20Token>({ address, tokens: values });

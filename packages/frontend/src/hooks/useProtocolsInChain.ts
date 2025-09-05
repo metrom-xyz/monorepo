@@ -7,6 +7,7 @@ import type {
 } from "@metrom-xyz/chains";
 import { useChainData } from "./useChainData";
 import type { HookBaseParams, HookCrossVmParams } from "../types/hooks";
+import type { ChainType } from "@metrom-xyz/sdk";
 
 interface ProtocolByType {
     [ProtocolType.Dex]: DexProtocol;
@@ -21,17 +22,19 @@ interface UseProtocolsInChainParams<T extends ProtocolType | undefined>
     extends HookBaseParams,
         HookCrossVmParams {
     chainId: number;
+    chainType?: ChainType;
     active?: boolean;
     type?: T;
 }
 
 export function useProtocolsInChain<T extends ProtocolType | undefined>({
     chainId,
+    chainType,
     type,
     active,
     crossVm = false,
 }: UseProtocolsInChainParams<T>): ProtocolsInChain<T> {
-    const chainData = useChainData({ chainId, crossVm });
+    const chainData = useChainData({ chainId, chainType, crossVm });
     if (!chainData) return [] as unknown as ProtocolsInChain<T>;
 
     const filteredProtocols = chainData.protocols.filter((protocol) => {

@@ -3,7 +3,7 @@
 import { Details } from "./details";
 import { Header } from "./header";
 import { Leaderboard } from "../leaderboard";
-import type { SupportedLiquityV2 } from "@metrom-xyz/sdk";
+import { ChainType, type SupportedLiquityV2 } from "@metrom-xyz/sdk";
 import { ENVIRONMENT } from "@/src/commons/env";
 import { useLv2PointsCampaignLeaderboard } from "@/src/hooks/useLv2PointsCampaignLeaderboard";
 import { LV2_POINTS_CAMPAIGNS } from "@/src/commons/lv2-points";
@@ -60,7 +60,7 @@ export function Lv2PointsCampaign({ protocol }: Lv2PointsCampaignProps) {
                 />
             )}
             <Actions
-                chain={chain}
+                chain={chain.id}
                 protocol={protocol}
                 actions={actions}
                 pointsName={pointsName}
@@ -68,7 +68,8 @@ export function Lv2PointsCampaign({ protocol }: Lv2PointsCampaignProps) {
             {showLeaderboard && (
                 <Leaderboard
                     noDistributionDate
-                    chainId={chain}
+                    chainId={chain.id}
+                    chainType={chain.type}
                     loading={loadingLeaderboard}
                     leaderboard={leaderboard}
                     messages={{

@@ -1,4 +1,5 @@
 import {
+    ChainType,
     type Restrictions,
     type UsdPricedErc20TokenAmount,
 } from "@metrom-xyz/sdk";
@@ -27,6 +28,7 @@ import styles from "./styles.module.css";
 
 interface LeaderboardProps {
     chainId?: SupportedChain;
+    chainType?: ChainType;
     restrictions?: Restrictions;
     leaderboard?: Leaderboard;
     noDistributionDate?: boolean;
@@ -47,6 +49,7 @@ export interface PersonalRank {
 
 export function Leaderboard({
     chainId,
+    chainType,
     restrictions,
     leaderboard,
     noDistributionDate,
@@ -183,6 +186,7 @@ export function Leaderboard({
                                                 href={getExplorerLink(
                                                     distribution.account,
                                                     chainId,
+                                                    chainType,
                                                 )}
                                                 target="_blank"
                                                 rel="noopener noreferrer"

@@ -12,7 +12,7 @@ import {
 import { ProtocolType, type AaveV3Protocol } from "@metrom-xyz/chains";
 import { useProtocolsInChain } from "@/src/hooks/useProtocolsInChain";
 import { ProtocolLogo } from "@/src/components/protocol-logo";
-import { useChainId } from "@/src/hooks/useChainId";
+import { useChainWithType } from "@/src/hooks/useChainWithType";
 
 import styles from "./styles.module.css";
 
@@ -30,7 +30,7 @@ export function AaveV3BrandStep({
     const t = useTranslations("newCampaign.form.aaveV3.brand");
     const [open, setOpen] = useState(true);
 
-    const chainId = useChainId();
+    const { id: chainId } = useChainWithType();
     const supportedBrand = useProtocolsInChain({
         chainId,
         type: ProtocolType.AaveV3,

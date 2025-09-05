@@ -1,4 +1,4 @@
-import { SupportedGmxV1, SupportedLiquityV2 } from "@metrom-xyz/sdk";
+import { ChainType, SupportedGmxV1, SupportedLiquityV2 } from "@metrom-xyz/sdk";
 import {
     Lv2PointsCampaign2Action,
     type Lv2PointsCampaign,
@@ -21,7 +21,7 @@ export const lv2PointsCampaignsProd: Record<
         description:
             "Ebisu Money, a stablecoin credit protocol where users can borrow ebUSD at user-set rates.",
         url: "https://ebisu.money",
-        chain: mainnet.id as SupportedChain,
+        chain: { id: mainnet.id as SupportedChain, type: ChainType.Evm },
         pointsName: "Ebisu Points",
         protocol: SupportedLiquityV2.Ebisu,
         brand: { main: "#f14d9d", light: "#f28fbd" },
@@ -164,7 +164,7 @@ export const lv2PointsCampaignsProd: Record<
         description:
             "Permissionless credit protocol and the native stablecoin of the Swellchain.",
         url: "https://www.orki.finance",
-        chain: SupportedChain.Swell,
+        chain: { id: SupportedChain.Swell, type: ChainType.Evm },
         protocol: SupportedLiquityV2.Orki,
         pointsName: "Orki Drops",
         brand: { main: "#2973EB", light: "#94B9F5" },
@@ -374,7 +374,7 @@ export const lv2PointsCampaignsProd: Record<
         description:
             "Experience efficient trading and profit sharing in one dynamic platform.",
         url: "https://amped.finance",
-        chain: SupportedChain.Sonic,
+        chain: { id: SupportedChain.Sonic, type: ChainType.Evm },
         protocol: SupportedGmxV1.Amped,
         pointsName: "Amped Points",
         brand: { main: "#e05573", light: "#ffb1c6" },
@@ -414,7 +414,7 @@ export const lv2PointsCampaignsProd: Record<
         description:
             "A secure, over-collateralized stablecoin protocol on Scroll's zk-Rollup network.",
         url: "https://app.quill.finance",
-        chain: SupportedChain.Scroll,
+        chain: { id: SupportedChain.Scroll, type: ChainType.Evm },
         protocol: SupportedLiquityV2.Quill,
         pointsName: "Quill Liquidity Points",
         brand: { main: "#FF5500", light: "#FFBFA3" },

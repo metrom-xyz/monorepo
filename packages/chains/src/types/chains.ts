@@ -4,6 +4,7 @@ import type { SVGIcon } from "./common";
 import type { Erc20Token } from "@metrom-xyz/sdk";
 import type { Protocol } from "./protocol";
 import { SupportedChain as SupportedChainEvm } from "@metrom-xyz/contracts";
+import { SupportedChain as SupportedChainMvm } from "@metrom-xyz/aptos-contracts";
 import { mainnet } from "viem/chains";
 
 export interface ChainData {
@@ -17,13 +18,11 @@ export interface ChainData {
 }
 
 export enum SupportedDevelopmentMvmChain {
-    // TODO: use the chain id from the SupportedChain once added
-    AptosTestnet = 2,
+    AptosTestnet = SupportedChainMvm.Testnet,
 }
 
 export enum SupportedProductionMvmChain {
-    // TODO: use the chain id from the SupportedChain once added
-    Aptos = 1,
+    Aptos = SupportedChainMvm.Mainnet,
 }
 
 export enum SupportedDevelopmentEvmChain {

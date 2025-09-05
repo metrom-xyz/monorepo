@@ -1,6 +1,6 @@
 import type { HookBaseParams } from "@/src/types/hooks";
 import { APTOS } from "@/src/commons/env";
-import { useChainId } from "./useChainId";
+import { useChainWithType } from "./useChainWithType";
 import { useChainData } from "./useChainData";
 import { useAccount } from "./useAccount";
 import { useReadContracts } from "wagmi";
@@ -26,7 +26,7 @@ export interface UseProtocolFeesReturnValue {
 export function useProtocolFees({
     enabled,
 }: UseProtocolFeesParams = {}): UseProtocolFeesReturnValue {
-    const chainId = useChainId();
+    const { id: chainId } = useChainWithType();
     const chainData = useChainData({ chainId });
     const { address: addressEvm } = useAccount();
     const { account: accountMvm } = useWallet();
@@ -67,8 +67,6 @@ export function useProtocolFees({
 
     const loading =
         feesEvm.isLoading || feeMvm.isLoading || rebateFeeMvm.isLoading;
-
-    console.log({ feesEvm });
 
     const fees: ProtocolFees | undefined = useMemo(() => {
         if (loading) return undefined;

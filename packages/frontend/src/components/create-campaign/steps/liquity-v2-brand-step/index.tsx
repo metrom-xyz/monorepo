@@ -12,7 +12,7 @@ import {
 import { ProtocolType, type LiquityV2Protocol } from "@metrom-xyz/chains";
 import { useProtocolsInChain } from "@/src/hooks/useProtocolsInChain";
 import { ProtocolLogo } from "@/src/components/protocol-logo";
-import { useChainId } from "@/src/hooks/useChainId";
+import { useChainWithType } from "@/src/hooks/useChainWithType";
 
 import styles from "./styles.module.css";
 
@@ -30,7 +30,7 @@ export function LiquityV2BrandStep({
     const t = useTranslations("newCampaign.form.liquityV2.brand");
     const [open, setOpen] = useState(true);
 
-    const chainId = useChainId();
+    const { id: chainId } = useChainWithType();
     const supportedBrands = useProtocolsInChain({
         chainId,
         type: ProtocolType.LiquityV2,

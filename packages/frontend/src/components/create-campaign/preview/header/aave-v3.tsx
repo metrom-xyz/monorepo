@@ -4,7 +4,7 @@ import type { AaveV3CampaignPreviewPayload } from "@/src/types/campaign";
 import { useMemo } from "react";
 import { AAVE_V3_ACTIONS } from "../../steps/aave-v3-action-step";
 import { RemoteLogo } from "@/src/components/remote-logo";
-import { useChainId } from "@/src/hooks/useChainId";
+import { useChainWithType } from "@/src/hooks/useChainWithType";
 
 import styles from "./styles.module.css";
 
@@ -14,7 +14,7 @@ interface AaveV3Props {
 
 export function AaveV3({ payload }: AaveV3Props) {
     const t = useTranslations("campaignPreview.header");
-    const chainId = useChainId();
+    const { id: chainId } = useChainWithType();
 
     const action = useMemo(() => {
         return AAVE_V3_ACTIONS.find(({ value }) => value === payload.action);

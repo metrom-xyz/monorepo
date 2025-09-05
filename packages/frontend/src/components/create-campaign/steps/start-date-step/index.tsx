@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { usePrevious } from "react-use";
-import { useChainId } from "@/src/hooks/useChainId";
+import { useChainWithType } from "@/src/hooks/useChainWithType";
 import dayjs, { type Dayjs } from "dayjs";
 import { useTranslations } from "next-intl";
 import { Step } from "@/src/components/step";
@@ -41,7 +41,7 @@ export function StartDateStep({
     const [dateError, setDateError] = useState("");
 
     const previousDate = usePrevious(date);
-    const chainId = useChainId();
+    const { id: chainId } = useChainWithType();
 
     const prevDate = usePrevious(startDate);
 

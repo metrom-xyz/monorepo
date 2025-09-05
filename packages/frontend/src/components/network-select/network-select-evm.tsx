@@ -10,6 +10,7 @@ import { useChainData } from "@/src/hooks/useChainData";
 import { useIsChainSupported } from "@/src/hooks/useIsChainSupported";
 import { useActiveChains } from "@/src/hooks/useActiveChains";
 import { SUPPORTED_CHAINS_MVM } from "@/src/commons";
+import { ChainType } from "@metrom-xyz/sdk";
 
 import styles from "./styles.module.css";
 
@@ -32,12 +33,20 @@ export function NetworkSelectEvm() {
     useEffect(() => {
         if (!!address) return;
 
-        const supported = activeChains.some((id) => id === selectedChainId);
-        if (!supported) switchChain({ chainId: activeChains[0] });
+        const supported = activeChains.some(
+            ({ id, type }) => id === selectedChainId && type === ChainType.Evm,
+        );
+        if (!supported) switchChain({ chainId: activeChains[0].id });
     }, [activeChains, address, selectedChainId, switchChain]);
 
     const chains = useMemo(() => {
-        return [...activeChains, ...SUPPORTED_CHAINS_MVM];
+        return [
+            ...activeChains,
+            ...SUPPORTED_CHAINS_MVM.map((id) => ({
+                id,
+                type: ChainType.Aptos,
+            })),
+        ];
     }, [activeChains]);
 
     useClickAway(rootRef, () => {

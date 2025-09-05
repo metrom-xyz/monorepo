@@ -8,8 +8,9 @@ import { AnimatePresence, motion } from "motion/react";
 import { useChainData } from "@/src/hooks/useChainData";
 import { useIsChainSupported } from "@/src/hooks/useIsChainSupported";
 import { useActiveChains } from "@/src/hooks/useActiveChains";
-import { useChainId } from "@/src/hooks/useChainId";
+import { useChainWithType } from "@/src/hooks/useChainWithType";
 import { useWallet } from "@aptos-labs/wallet-adapter-react";
+import { Network } from "@aptos-labs/ts-sdk";
 import { chainIdToAptosNetwork } from "@/src/utils/chain";
 
 import styles from "./styles.module.css";
@@ -21,7 +22,7 @@ export function NetworkSelectMvm() {
     const rootRef = useRef<HTMLDivElement>(null);
 
     const activeChains = useActiveChains();
-    const selectedChainId = useChainId();
+    const { id: selectedChainId } = useChainWithType();
     const { changeNetwork, connected } = useWallet();
     const chainData = useChainData({ chainId: selectedChainId });
     const chainSupported = useIsChainSupported({ chainId: selectedChainId });
@@ -43,7 +44,7 @@ export function NetworkSelectMvm() {
             const network = chainIdToAptosNetwork(chainId);
             if (!network) return;
 
-            if (connected) await changeNetwork(network);
+            if (connected) await changeNetwork(network as string as Network);
             setPickerOpen(false);
         },
         [connected, changeNetwork],

@@ -88,6 +88,7 @@ export function CampaignDetails({
                 )}
                 <Leaderboard
                     chainId={campaign?.chainId}
+                    chainType={campaign?.chainType}
                     restrictions={campaign?.restrictions}
                     leaderboard={leaderboard}
                     loading={loadingLeaderboard}

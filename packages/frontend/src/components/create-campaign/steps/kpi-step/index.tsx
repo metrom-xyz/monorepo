@@ -17,7 +17,7 @@ import { KpiSimulationChart } from "../../../kpi-simulation-chart";
 import { GoalInputs } from "./goal-inputs";
 import { InfoMessage } from "@/src/components/info-message";
 import type { Dayjs } from "dayjs";
-import { useChainId } from "@/src/hooks/useChainId";
+import { useChainWithType } from "@/src/hooks/useChainWithType";
 
 import styles from "./styles.module.css";
 
@@ -61,7 +61,7 @@ export function KpiStep({
     >(kpiSpecification?.goal.upperUsdTarget);
 
     const prevKpiSpecification = usePrevious(kpiSpecification);
-    const chainId = useChainId();
+    const { id: chainId } = useChainWithType();
 
     const totalRewardsUsdAmount = useMemo(() => {
         if (!distributables || !distributables.tokens) return 0;

@@ -8,7 +8,7 @@ import {
 } from "@/src/types/campaign";
 import { useTranslations } from "next-intl";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { useChainId } from "@/src/hooks/useChainId";
+import { useChainWithType } from "@/src/hooks/useChainWithType";
 import { DistributablesType } from "@metrom-xyz/sdk";
 import { AaveV3CollateralStep } from "../../steps/aave-v3-collateral-step";
 import { StartDateStep } from "../../steps/start-date-step";
@@ -107,7 +107,7 @@ export function AaveV3Form({
     onPreviewClick,
 }: AaveV3FormProps) {
     const t = useTranslations("newCampaign");
-    const chainId = useChainId();
+    const { id: chainId } = useChainWithType();
 
     const [payload, setPayload] = useState(initialPayload);
     const [errors, setErrors] = useState<CampaignPayloadErrors>({});

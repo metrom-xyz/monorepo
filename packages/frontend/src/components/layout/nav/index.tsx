@@ -18,7 +18,7 @@ import type { TranslationsKeys } from "@/src/types/utils";
 import type { Address } from "viem";
 import { useClaims } from "@/src/hooks/use-claims";
 import { useActiveChains } from "@/src/hooks/useActiveChains";
-import { useChainId } from "@/src/hooks/useChainId";
+import { useChainWithType } from "@/src/hooks/useChainWithType";
 import { useAccount } from "@/src/hooks/useAccount";
 
 import styles from "./styles.module.css";
@@ -38,7 +38,7 @@ export function Nav() {
     const pathname = usePathname();
     const { address } = useAccount();
     const { claims } = useClaims();
-    const chain = useChainId();
+    const { id: chain } = useChainWithType();
     const activeChains = useActiveChains();
 
     const pendingClaimsCount = useMemo(() => {
@@ -71,7 +71,7 @@ export function Nav() {
                     {ROUTES.map(({ path, label, icon: Icon }) => {
                         const disabled =
                             path === "/campaigns/create" &&
-                            !activeChains.find((id) => id === chain);
+                            !activeChains.find(({ id }) => id === chain);
                         const active =
                             pathname === path ||
                             (path !== "/" && pathname.startsWith(path));
@@ -145,7 +145,7 @@ export function Nav() {
                     {ROUTES.map(({ path, label, icon: Icon }) => {
                         const disabled =
                             path === "/campaigns/create" &&
-                            !activeChains.find((id) => id === chain);
+                            !activeChains.find(({ id }) => id === chain);
                         const active =
                             pathname === path ||
                             (path !== "/" && pathname.startsWith(path));

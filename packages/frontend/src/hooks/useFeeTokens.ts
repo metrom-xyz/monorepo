@@ -3,7 +3,7 @@ import { CHAIN_TYPE, METROM_API_CLIENT } from "../commons";
 import type { FeeToken } from "@metrom-xyz/sdk";
 import { useQuery } from "@tanstack/react-query";
 import type { HookBaseParams } from "../types/hooks";
-import { useChainId } from "./useChainId";
+import { useChainWithType } from "./useChainWithType";
 
 interface UseFeeTokensParams extends HookBaseParams {}
 
@@ -13,7 +13,7 @@ export function useFeeTokens({ enabled = true }: UseFeeTokensParams = {}): {
     loading: boolean;
     tokens: FeeToken[] | undefined;
 } {
-    const chainId: SupportedChain = useChainId();
+    const { id: chainId } = useChainWithType();
 
     const { data: tokens, isPending: loading } = useQuery({
         queryKey: ["fee-tokens", chainId],

@@ -1,4 +1,8 @@
-import type { SupportedGmxV1, SupportedLiquityV2 } from "@metrom-xyz/sdk";
+import type {
+    ChainType,
+    SupportedGmxV1,
+    SupportedLiquityV2,
+} from "@metrom-xyz/sdk";
 import type { FunctionComponent } from "react";
 import type { Address } from "viem";
 import type { BrandColor, ProjectIntro, SVGIcon } from "./common";
@@ -42,7 +46,7 @@ export interface Lv2PointsCampaign {
     name: string;
     description: string;
     url: string;
-    chain: SupportedChain;
+    chain: { id: SupportedChain; type: ChainType };
     protocol: SupportedLiquityV2 | SupportedGmxV1;
     pointsName: string;
     brand: BrandColor;

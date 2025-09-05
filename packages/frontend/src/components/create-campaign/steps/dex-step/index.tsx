@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { useChainId } from "@/src/hooks/useChainId";
+import { useChainWithType } from "@/src/hooks/useChainWithType";
 import { useTranslations } from "next-intl";
 import { Step } from "@/src/components/step";
 import { StepPreview } from "@/src/components/step/preview";
@@ -25,7 +25,7 @@ export function DexStep({ disabled, dex, onDexChange }: DexStepProps) {
     const t = useTranslations("newCampaign.form.ammPoolLiquidity.dex");
     const [open, setOpen] = useState(false);
 
-    const chainId = useChainId();
+    const { id: chainId } = useChainWithType();
     const availableDexes = useProtocolsInChain({
         chainId,
         type: ProtocolType.Dex,

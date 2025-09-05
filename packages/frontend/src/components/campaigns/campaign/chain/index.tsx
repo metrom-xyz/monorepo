@@ -1,15 +1,21 @@
 import { useChainData } from "@/src/hooks/useChainData";
 import { Popover, Skeleton, Typography } from "@metrom-xyz/ui";
 import { useRef, useState } from "react";
+import type { ChainType } from "@metrom-xyz/sdk";
 
 import styles from "./styles.module.css";
 
 interface ChainProps {
     id: number;
+    type: ChainType;
 }
 
-export function Chain({ id }: ChainProps) {
-    const chainData = useChainData({ chainId: id, crossVm: true });
+export function Chain({ id, type }: ChainProps) {
+    const chainData = useChainData({
+        chainId: id,
+        chainType: type,
+        crossVm: true,
+    });
 
     const [popoverOpen, setPopoverOpen] = useState(false);
     const [chainName, setChainName] = useState<HTMLDivElement | null>(null);

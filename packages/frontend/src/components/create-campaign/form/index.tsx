@@ -15,11 +15,11 @@ import { LiquityV2ForksForm } from "./liquity-v2-forks-form";
 import { useRouter } from "@/src/i18n/routing";
 import { ProtocolType } from "@metrom-xyz/chains";
 import { useProtocolsInChain } from "@/src/hooks/useProtocolsInChain";
-import { useChainId } from "@/src/hooks/useChainId";
+import { useChainWithType } from "@/src/hooks/useChainWithType";
 import { useActiveChains } from "@/src/hooks/useActiveChains";
+import { AaveV3Form } from "./aave-v3-form";
 
 import styles from "./styles.module.css";
-import { AaveV3Form } from "./aave-v3-form";
 
 enum View {
     Form = "form",
@@ -34,7 +34,7 @@ export function CreateCampaignForm<T extends CampaignType>({
     type,
 }: CreateCampaignFormProps<T>) {
     const { chainId: connectedChainId, connected } = useAccount();
-    const selectedChain = useChainId();
+    const { id: selectedChain } = useChainWithType();
     const activeChains = useActiveChains();
     const router = useRouter();
     const dexesProtocols = useProtocolsInChain({
@@ -74,7 +74,7 @@ export function CreateCampaignForm<T extends CampaignType>({
         return (
             connected &&
             (!connectedChainId ||
-                !activeChains.some((id) => id === selectedChain))
+                !activeChains.some(({ id }) => id === selectedChain))
         );
     }, [activeChains, connectedChainId, connected, selectedChain]);
 

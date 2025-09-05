@@ -10,6 +10,7 @@ import {
 import { FilterableStatus } from "../types/common";
 import { type Campaign } from "../types/campaign";
 import dayjs from "dayjs";
+import { CHAIN_ALL } from "../components/campaigns-table/filters";
 
 export type CampaignSortOptions = "protocol" | "apr" | "rewards";
 
@@ -139,24 +140,29 @@ export function filterCampaigns(
     campaigns: Campaign[],
     status: FilterableStatus,
     protocol: string,
-    chainId: number | null,
+    chain: string,
     searchQuery: string,
 ): Campaign[] {
     if (campaigns.length === 0) return [];
     if (
         !searchQuery &&
         status === FilterableStatus.All &&
-        !chainId &&
+        !chain &&
         protocol === ""
     )
         return campaigns;
 
     let filteredCampaigns = campaigns;
 
-    if (chainId)
+    if (chain !== CHAIN_ALL) {
+        const [chainType, chainId] = chain.split("-");
+
         filteredCampaigns = filteredCampaigns.filter(
-            (campaign) => campaign.chainId === chainId,
+            (campaign) =>
+                campaign.chainId === Number(chainId) &&
+                campaign.chainType === chainType,
         );
+    }
 
     if (protocol !== "") {
         filteredCampaigns = filteredCampaigns.filter((campaign) => {

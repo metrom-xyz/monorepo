@@ -11,7 +11,7 @@ import {
     Typography,
 } from "@metrom-xyz/ui";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { useChainId } from "@/src/hooks/useChainId";
+import { useChainWithType } from "@/src/hooks/useChainWithType";
 import { useTranslations } from "next-intl";
 import { RangeInputs } from "./range-inputs";
 import { LiquidityDensityChart } from "@/src/components/liquidity-density-chart";
@@ -68,7 +68,7 @@ export function RangeStep({
     );
 
     const prevRangeSpecification = usePrevious(priceRangeSpecification);
-    const chainId = useChainId();
+    const { id: chainId } = useChainWithType();
     const { liquidityDensity, loading: loadingLiquidityDensity } =
         useLiquidityDensity({
             pool,
