@@ -22,7 +22,7 @@
         "deploy:swell": "pnpm prepare:deploy swellchain && pnpm codegen && graph deploy metrom-swell -l 0.0.2",
         "deploy:hemi": "pnpm prepare:deploy hemi && pnpm codegen && graph deploy metrom-hemi -l 0.0.1",
         "deploy:lens": "pnpm prepare:deploy lens && pnpm codegen && graph deploy metrom-lens -l 0.0.1",
-        "deploy:lumia": "pnpm prepare:deploy lumia && pnpm codegen && graph deploy metrom-lumia -l 0.0.1",
+        "deploy:lumia": "pnpm prepare:deploy lumia && pnpm codegen && graph build && goldsky subgraph deploy metrom-lumia/0.0.1",
         "lint": "eslint .",
         "format": "eslint --fix ."
     },
