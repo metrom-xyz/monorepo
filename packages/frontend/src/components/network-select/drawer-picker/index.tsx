@@ -7,13 +7,14 @@ import { getCrossVmChainData } from "@/src/utils/chain";
 import { APTOS } from "@/src/commons/env";
 import { METROM_APTOS_BASE_URL, SUPPORTED_CHAINS_MVM } from "@/src/commons";
 import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
+import type { ChainWithType } from "@/src/types/chain";
 
 import styles from "./styles.module.css";
 import commonStyles from "../styles.module.css";
 
 interface DrawerPickerProps {
     open: boolean;
-    chains: number[];
+    chains: ChainWithType[];
     value: number;
     onChange?: (chainId: number) => void;
     onClose: () => void;
@@ -39,8 +40,8 @@ export function DrawerPicker({
         <RemoveScroll enabled={open && width < 640} className={styles.root}>
             <MobileDrawer open={open} onClose={onClose}>
                 <div className={styles.networksWrapper}>
-                    {chains.map((id) => {
-                        const chainData = getCrossVmChainData(id);
+                    {chains.map(({ id, type }) => {
+                        const chainData = getCrossVmChainData(id, type);
 
                         if (!APTOS && SUPPORTED_CHAINS_MVM.includes(id))
                             return (

@@ -13,6 +13,7 @@ import {
     useCallback,
     useEffect,
     useMemo,
+    useRef,
     useState,
     type ChangeEvent,
     type ReactNode,
@@ -22,12 +23,13 @@ import type { CampaignSortOptions } from "@/src/utils/filtering";
 import { ProtocolLogo } from "../../protocol-logo";
 import { useSupportedProtocols } from "@/src/hooks/useSupportedProtocols";
 import { useDebounce } from "react-use";
-import { useChainIds } from "@/src/hooks/useChainsIds";
+import { useChainsWithTypes } from "@/src/hooks/useChainsWithTypes";
 import { getCrossVmChainData } from "@/src/utils/chain";
+import { ChainType } from "@metrom-xyz/sdk";
 
 import styles from "./styles.module.css";
 
-export const CHAIN_ALL = 0;
+export const CHAIN_ALL = "0";
 
 const statusSelectRenderOption = (option: {
     label: string;
@@ -44,9 +46,13 @@ const statusSelectRenderOption = (option: {
     );
 };
 
-const chainSelectRenderOption = (option: { label: string; value: number }) => {
+const chainSelectRenderOption = (option: { label: string; value: string }) => {
+    const [chainType, chainId] = option.value.split("-");
+
     const ChainIcon =
-        option.value !== 0 ? getCrossVmChainData(option.value)?.icon : null;
+        option.value !== CHAIN_ALL
+            ? getCrossVmChainData(Number(chainId), chainType as ChainType)?.icon
+            : null;
     return (
         <div className={styles.customOptionContainer}>
             {ChainIcon && <ChainIcon className={styles.icon} />}
@@ -76,7 +82,7 @@ export interface Filters {
     search: string;
     protocol: string;
     status: FilterableStatus;
-    chain: number;
+    chain: string;
 }
 
 interface FilterProps {
@@ -94,7 +100,7 @@ export function Filters({
 }: FilterProps) {
     const t = useTranslations("allCampaigns");
 
-    const chains = useChainIds();
+    const chains = useChainsWithTypes();
     const protocols = useSupportedProtocols({ crossVm: true });
     const router = useRouter();
     const pathname = usePathname();
@@ -123,7 +129,7 @@ export function Filters({
             status !== FilterableStatus.All ||
             !!sortField ||
             !!order ||
-            !!chain,
+            chain !== CHAIN_ALL,
         [search, protocol, status, sortField, order, chain],
     );
 
@@ -182,7 +188,7 @@ export function Filters({
     const chainOptions = useMemo(() => {
         const options: {
             label: string;
-            value: number;
+            value: string;
             query: string | null;
         }[] = [
             {
@@ -192,12 +198,12 @@ export function Filters({
             },
         ];
         for (const chain of chains) {
-            const chainData = getCrossVmChainData(chain);
+            const chainData = getCrossVmChainData(chain.id, chain.type);
             if (!chainData) continue;
 
             options.push({
                 label: chainData.name,
-                value: chain,
+                value: `${chain.type}-${chain.id}`,
                 query: chainData.name.toLowerCase().replaceAll(" ", "-"),
             });
         }
@@ -252,7 +258,7 @@ export function Filters({
     );
 
     const handleChainChange = useCallback(
-        (chain: SelectOption<number> & { query: string | null }) => {
+        (chain: SelectOption<string> & { query: string | null }) => {
             setChain(chain.value);
             const params = new URLSearchParams(searchParams.toString());
             if (!chain.query) params.delete("chain");

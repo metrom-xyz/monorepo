@@ -4,7 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import type { Address } from "viem";
 import type { HookBaseParams } from "../types/hooks";
 import { useActiveChains } from "./useActiveChains";
-import { useChainId } from "./useChainId";
+import { useChainWithType } from "./useChainWithType";
 import { useAccount } from "./useAccount";
 
 interface UseActivitiesParams extends HookBaseParams {}
@@ -18,7 +18,7 @@ export function useActivities({ enabled = true }: UseActivitiesParams = {}): {
     loading: boolean;
     activities: Activity[];
 } {
-    const chainId = useChainId();
+    const { id: chainId } = useChainWithType();
     const activeChains = useActiveChains();
     const { address } = useAccount();
 
@@ -50,7 +50,7 @@ export function useActivities({ enabled = true }: UseActivitiesParams = {}): {
             enabled &&
             !!chainId &&
             !!address &&
-            !!activeChains.find((id) => id === chainId),
+            !!activeChains.find(({ id }) => id === chainId),
     });
 
     return {

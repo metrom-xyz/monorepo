@@ -8,7 +8,7 @@ import {
 } from "react";
 import { useDebounce } from "react-use";
 import type { Erc20Token, SupportedDex, AmmPoolWithTvl } from "@metrom-xyz/sdk";
-import { useChainId } from "@/src/hooks/useChainId";
+import { useChainWithType } from "@/src/hooks/useChainWithType";
 import { TextInput, Chip, Typography } from "@metrom-xyz/ui";
 import AutoSizer from "react-virtualized-auto-sizer";
 import { FixedSizeList } from "react-window";
@@ -38,7 +38,7 @@ export function ListPoolPicker({ value, dex, onChange }: ListPoolPickerProps) {
     const [baseTokenFilter, setBaseTokenFilter] = useState<Erc20Token>();
     const listRef = useRef(null);
 
-    const chainId = useChainId();
+    const { id: chainId } = useChainWithType();
     const baseTokens = useBaseTokens(chainId);
     const { pools, loading } = usePools({
         chainId,

@@ -1,7 +1,7 @@
 import { formatPercentage } from "@/src/utils/format";
 import { Typography } from "@metrom-xyz/ui";
 import { type AmmPoolLiquidityCampaignPreviewPayload } from "@/src/types/campaign";
-import { useChainId } from "@/src/hooks/useChainId";
+import { useChainWithType } from "@/src/hooks/useChainWithType";
 import { ProtocolType } from "@metrom-xyz/chains";
 import { useMemo } from "react";
 import { PoolRemoteLogo } from "@/src/components/pool-remote-logo";
@@ -14,7 +14,7 @@ interface AmmPoolLiquidityProps {
 }
 
 export function AmmPoolLiquidity({ payload }: AmmPoolLiquidityProps) {
-    const chainId = useChainId();
+    const { id: chainId } = useChainWithType();
     const availableDexes = useProtocolsInChain({
         chainId,
         type: ProtocolType.Dex,

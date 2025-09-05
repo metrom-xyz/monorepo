@@ -11,7 +11,7 @@ import {
 } from "@/src/types/campaign";
 import { WeightingInputs } from "./weighting-inputs";
 import type { LocalizedMessage } from "@/src/types/utils";
-import { useChainId } from "@/src/hooks/useChainId";
+import { useChainWithType } from "@/src/hooks/useChainWithType";
 import { usePrevious } from "react-use";
 import { formatPercentage } from "@/src/utils/format";
 import { InfoMessage } from "@/src/components/info-message";
@@ -43,7 +43,7 @@ export function WeightingStep({
     const [token0, setToken0] = useState<number | undefined>(weighting?.token0);
     const [token1, setToken1] = useState<number | undefined>(weighting?.token1);
 
-    const chainId = useChainId();
+    const { id: chainId } = useChainWithType();
     const prevWeighting = usePrevious(weighting);
 
     const liquidity = useMemo(() => {

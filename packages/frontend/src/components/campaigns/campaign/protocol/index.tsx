@@ -14,6 +14,7 @@ interface ProtocolProps {
 export function Protocol({ campaign }: ProtocolProps) {
     const protocols = useProtocolsInChain({
         chainId: campaign.chainId,
+        chainType: campaign.chainType,
         crossVm: true,
     });
 

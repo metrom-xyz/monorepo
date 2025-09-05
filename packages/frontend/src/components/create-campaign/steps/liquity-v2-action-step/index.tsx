@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { useChainId } from "@/src/hooks/useChainId";
+import { useChainWithType } from "@/src/hooks/useChainWithType";
 import { Step } from "@/src/components/step";
 import { StepPreview } from "@/src/components/step/preview";
 import { StepContent } from "@/src/components/step/content";
@@ -46,7 +46,7 @@ export function LiquityV2ActionStep({
 
     const [open, setOpen] = useState(false);
 
-    const chainId = useChainId();
+    const { id: chainId } = useChainWithType();
 
     const selectedAction = useMemo(() => {
         if (!action) return undefined;

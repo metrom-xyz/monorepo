@@ -30,6 +30,7 @@ export function AmmPoolLiquityHeader({ campaign }: AmmPoolLiquityHeaderProps) {
     const explorerLink = getExplorerLink(
         campaign.target.pool.id,
         campaign.chainId,
+        campaign.chainType,
     );
 
     function handleAddLiquidityOnClick() {

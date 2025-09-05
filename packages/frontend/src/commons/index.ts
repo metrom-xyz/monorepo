@@ -4,14 +4,14 @@ import {
     METROM_API_CLIENT as METROM_API_CLIENTS,
     SupportedAmm,
 } from "@metrom-xyz/sdk";
-import { type Chain } from "viem";
 import { APTOS, ENVIRONMENT } from "./env";
 import SafeAppsSdk from "@safe-global/safe-apps-sdk";
 import {
     SUPPORTED_DEVELOPMENT_CHAINS,
     SUPPORTED_PRODUCTION_CHAINS,
 } from "@metrom-xyz/chains";
-import { Network, NetworkToChainId } from "@aptos-labs/ts-sdk";
+import { NetworkToChainId } from "@aptos-labs/ts-sdk";
+import { SupportedChain as SupportedAptosChain } from "@metrom-xyz/aptos-contracts";
 
 export const CHAIN_TYPE = APTOS ? ChainType.Aptos : ChainType.Evm;
 
@@ -39,15 +39,15 @@ export const METROM_DATA_MANAGER_JWT_ISSUER = "metrom-data-manager";
 
 export const MAXIMUM_REWARDS_RESTRICTIONS = 20;
 
-export const SUPPORTED_CHAINS_EVM: [Chain, ...Chain[]] =
+export const SUPPORTED_CHAINS_EVM =
     ENVIRONMENT === Environment.Production
         ? SUPPORTED_PRODUCTION_CHAINS
         : SUPPORTED_DEVELOPMENT_CHAINS;
 
 export const SUPPORTED_CHAINS_MVM =
     ENVIRONMENT === Environment.Production
-        ? [NetworkToChainId[Network.MAINNET]]
-        : [NetworkToChainId[Network.TESTNET]];
+        ? [NetworkToChainId[SupportedAptosChain.Mainnet]]
+        : [NetworkToChainId[SupportedAptosChain.Testnet]];
 
 export const TOKEN_ICONS_URL = `https://raw.githubusercontent.com/metrom-xyz/token-icons/refs/heads/main/${ENVIRONMENT === Environment.Production ? "mainnet" : "testnet"}-icons.json`;
 

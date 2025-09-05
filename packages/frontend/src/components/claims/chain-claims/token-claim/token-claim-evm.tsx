@@ -20,6 +20,7 @@ import { SAFE_APP_SDK } from "@/src/commons";
 import { useChainData } from "@/src/hooks/useChainData";
 import { useAccount } from "@/src/hooks/useAccount";
 import type { TokenClaimProps } from ".";
+import { ChainType } from "@metrom-xyz/sdk";
 
 import styles from "./styles.module.css";
 
@@ -34,7 +35,7 @@ export function TokenClaimEvm({
     const publicClient = usePublicClient();
     const { switchChainAsync } = useSwitchChain();
     const { writeContractAsync } = useWriteContract();
-    const chainData = useChainData({ chainId });
+    const chainData = useChainData({ chainId, chainType: ChainType.Evm });
 
     const [claiming, setClaiming] = useState(false);
     const [claimed, setClaimed] = useState(false);

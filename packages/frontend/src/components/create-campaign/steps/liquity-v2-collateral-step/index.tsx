@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { useChainId } from "@/src/hooks/useChainId";
+import { useChainWithType } from "@/src/hooks/useChainWithType";
 import { Step } from "@/src/components/step";
 import { StepPreview } from "@/src/components/step/preview";
 import { StepContent } from "@/src/components/step/content";
@@ -36,7 +36,7 @@ export function LiquityV2CollateralStep({
 
     const [open, setOpen] = useState(false);
 
-    const chainId = useChainId();
+    const { id: chainId } = useChainWithType();
     const { loading, collaterals } = useLiquityV2Collaterals({
         chainId,
         chainType: CHAIN_TYPE,

@@ -6,7 +6,7 @@ import {
     useState,
     type ChangeEvent,
 } from "react";
-import { useChainId } from "@/src/hooks/useChainId";
+import { useChainWithType } from "@/src/hooks/useChainWithType";
 import { usePool } from "@/src/hooks/usePool";
 import type { AmmPoolLiquidityCampaignPayload } from "@/src/types/campaign";
 import { type Address, type Hex, isHash } from "viem";
@@ -34,7 +34,7 @@ export function AddressPoolPicker({
     const t = useTranslations("newCampaign.form.ammPoolLiquidity.pool");
     const [search, setSearch] = useState("");
     const [id, setId] = useState<Address | Hex>();
-    const chainId = useChainId();
+    const { id: chainId } = useChainWithType();
 
     const { pool: importedPool, loading: loadingImportedPool } = usePool({
         chainId,

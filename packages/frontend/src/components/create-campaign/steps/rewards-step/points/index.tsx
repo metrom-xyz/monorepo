@@ -8,7 +8,7 @@ import {
 } from "@metrom-xyz/ui";
 import { ChevronDown } from "@/src/assets/chevron-down";
 import { useTranslations } from "next-intl";
-import { useChainId } from "@/src/hooks/useChainId";
+import { useChainWithType } from "@/src/hooks/useChainWithType";
 import { parseUnits } from "viem";
 import { RemoteLogo } from "@/src/components/remote-logo";
 import type {
@@ -58,7 +58,7 @@ export function RewardPoints({
     });
     const [token, setToken] = useState<FeeToken | undefined>(fee?.token);
 
-    const chainId = useChainId();
+    const { id: chainId } = useChainWithType();
     const prevCampaignDuration = usePrevious(campaignDuration);
 
     const { tokens: feeTokens, loading } = useFeeTokens();

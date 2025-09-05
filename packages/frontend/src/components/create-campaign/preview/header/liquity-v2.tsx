@@ -4,7 +4,7 @@ import type { LiquityV2CampaignPreviewPayload } from "@/src/types/campaign";
 import { useMemo } from "react";
 import { LIQUITY_V2_SUPPORTED_ACTIONS } from "../../steps/liquity-v2-action-step";
 import { RemoteLogo } from "@/src/components/remote-logo";
-import { useChainId } from "@/src/hooks/useChainId";
+import { useChainWithType } from "@/src/hooks/useChainWithType";
 
 import styles from "./styles.module.css";
 
@@ -14,7 +14,7 @@ interface LiquityV2Props {
 
 export function LiquityV2({ payload }: LiquityV2Props) {
     const t = useTranslations("campaignPreview.header");
-    const chainId = useChainId();
+    const { id: chainId } = useChainWithType();
 
     const action = useMemo(() => {
         return LIQUITY_V2_SUPPORTED_ACTIONS.find(

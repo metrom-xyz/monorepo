@@ -2,8 +2,10 @@ import { APTOS } from "@/src/commons/env";
 import { useChains } from "wagmi";
 import { getChainData } from "@/src/utils/chain";
 import { SUPPORTED_CHAINS_MVM } from "@/src/commons";
+import { ChainType } from "@metrom-xyz/sdk";
+import type { ChainWithType } from "../types/chain";
 
-export function useActiveChains() {
+export function useActiveChains(): ChainWithType[] {
     const evmChains = useChains();
 
     const activeEvmChains = evmChains
@@ -12,8 +14,12 @@ export function useActiveChains() {
             if (!chainData) return false;
             return chainData.active;
         })
-        .map(({ id }) => id);
+        .map(({ id }) => ({ id, type: ChainType.Evm }));
 
-    if (APTOS) return SUPPORTED_CHAINS_MVM;
+    if (APTOS)
+        return SUPPORTED_CHAINS_MVM.map((id) => ({
+            id,
+            type: ChainType.Aptos,
+        }));
     return activeEvmChains;
 }

@@ -27,14 +27,6 @@ export function getColorFromAddress(address: Address) {
     return `#${(hash & 0x00ffffff).toString(16).padStart(6, "0")}`;
 }
 
-export function getAddressChainType(address: string): ChainType | undefined {
-    if (isAddressViem(address)) return ChainType.Evm;
-    if (AccountAddress.isValid({ input: address, strict: true }).valid)
-        return ChainType.Aptos;
-
-    return undefined;
-}
-
 export function isAddress(address: string): boolean {
     return (
         isAddressViem(address) ||

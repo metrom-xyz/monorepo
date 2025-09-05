@@ -1,5 +1,5 @@
 import { useEffect, useMemo } from "react";
-import { useChainId } from "@/src/hooks/useChainId";
+import { useChainWithType } from "@/src/hooks/useChainWithType";
 import {
     type AaveV3CampaignPayload,
     type AaveV3CampaignPayloadPart,
@@ -16,8 +16,8 @@ export function AaveV3MarketStep({
     brand,
     onMarketChange,
 }: AaveV3MarketStepProps) {
-    const chainId = useChainId();
-    const chainData = useChainData({ chainId, crossVm: true });
+    const { id: chainId, type: chainType } = useChainWithType();
+    const chainData = useChainData({ chainId, chainType, crossVm: true });
 
     const markets = useMemo(() => {
         if (!chainData || !brand) return [];

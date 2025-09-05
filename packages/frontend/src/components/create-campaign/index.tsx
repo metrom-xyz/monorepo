@@ -10,7 +10,7 @@ import { CampaignType } from "@/src/types/campaign";
 import { ProtocolType } from "@metrom-xyz/chains";
 import { useProtocolsInChain } from "@/src/hooks/useProtocolsInChain";
 import { Redirect } from "./redirect";
-import { useChainId } from "@/src/hooks/useChainId";
+import { useChainWithType } from "@/src/hooks/useChainWithType";
 
 import styles from "./styles.module.css";
 
@@ -41,7 +41,7 @@ const CAMPAIGN_TYPES = [
 export function CreateCampaign() {
     const t = useTranslations("newCampaign.pickType");
 
-    const chainId = useChainId();
+    const { id: chainId } = useChainWithType();
     const dexProtocols = useProtocolsInChain({
         chainId,
         type: ProtocolType.Dex,

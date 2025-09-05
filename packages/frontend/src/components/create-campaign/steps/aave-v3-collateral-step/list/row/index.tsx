@@ -2,7 +2,7 @@ import type { AaveV3Collateral } from "@metrom-xyz/sdk";
 import { RemoteLogo } from "@/src/components/remote-logo";
 import { Skeleton, Typography } from "@metrom-xyz/ui";
 import { useCallback } from "react";
-import { useChainId } from "@/src/hooks/useChainId";
+import { useChainWithType } from "@/src/hooks/useChainWithType";
 import classNames from "classnames";
 import { AaveV3Action, LiquityV2Action } from "@/src/types/common";
 import type { AaveV3CampaignPayload } from "@/src/types/campaign";
@@ -18,7 +18,7 @@ interface RowProps {
 }
 
 export function Row({ action, selected, collateral, onChange }: RowProps) {
-    const chainId = useChainId();
+    const { id: chainId } = useChainWithType();
 
     const handleOnClick = useCallback(() => {
         onChange(collateral);
