@@ -18,7 +18,7 @@
         "@aptos-labs/wallet-adapter-react": "^7.0.1",
         "@fontsource/ibm-plex-mono": "^5.2.5",
         "@fontsource/ibm-plex-sans": "^5.2.5",
-        "@metrom-xyz/aptos-contracts": "^0.8.0",
+        "@metrom-xyz/aptos-contracts": "^0.9.0",
         "@metrom-xyz/chains": "workspace:*",
         "@metrom-xyz/contracts": "^0.50.0",
         "@metrom-xyz/sdk": "workspace:*",
