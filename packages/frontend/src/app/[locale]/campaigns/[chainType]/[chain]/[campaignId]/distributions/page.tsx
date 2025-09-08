@@ -8,7 +8,7 @@ import type { ChainType } from "@metrom-xyz/sdk";
 
 export interface Params {
     locale: Locale;
-    chain: SupportedChain;
+    chain: string;
     chainType: ChainType;
     campaignId: Hex;
 }
@@ -32,7 +32,7 @@ export default async function DistributionsPage({
 
     return (
         <Distributions
-            chain={chain}
+            chain={parseInt(chain)}
             chainType={chainType}
             campaignId={campaignId}
         />

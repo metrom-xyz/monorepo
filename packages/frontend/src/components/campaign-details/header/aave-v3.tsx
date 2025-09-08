@@ -70,7 +70,6 @@ export function AaveV3Header({ campaign }: AaveV3HeaderProps) {
                     campaign.isDistributing(DistributablesType.Tokens) ? (
                         <Button
                             size="sm"
-                            onClick={handleClaimOnClick}
                             href={`${METROM_APTOS_BASE_URL}/claims`}
                             target="_blank"
                             rel="noopener noreferrer"
