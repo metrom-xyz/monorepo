@@ -229,8 +229,10 @@ export function getCampaignPreviewApr(
         payload instanceof AmmPoolLiquidityCampaignPreviewPayload &&
         payload.isDistributing(DistributablesType.Tokens)
     ) {
+        const { distributables, pool, kpiSpecification } = payload;
+
         let rewardsUsdValue = 0;
-        for (const reward of payload.distributables.tokens) {
+        for (const reward of distributables.tokens) {
             if (!reward.amount.usdValue) return undefined;
             rewardsUsdValue += reward.amount.usdValue;
         }
@@ -238,9 +240,9 @@ export function getCampaignPreviewApr(
         return getCampaignApr({
             usdRewards: rewardsUsdValue,
             duration,
-            usdTvl: payload.pool.usdTvl,
-            liquidity: payload.pool.liquidity,
-            kpiSpecification: payload.kpiSpecification,
+            usdTvl: pool.usdTvl,
+            liquidity: pool.liquidity,
+            kpiSpecification,
             range,
             liquidityByAddresses,
         });
@@ -250,20 +252,22 @@ export function getCampaignPreviewApr(
         payload instanceof LiquityV2CampaignPreviewPayload &&
         payload.isDistributing(DistributablesType.Tokens)
     ) {
+        const { action, distributables, collateral } = payload;
+
         let rewardsUsdValue = 0;
-        for (const reward of payload.distributables.tokens) {
+        for (const reward of distributables.tokens) {
             if (!reward.amount.usdValue) return undefined;
             rewardsUsdValue += reward.amount.usdValue;
         }
 
         let liquityUsdValue = 0;
-        switch (payload.action) {
+        switch (action) {
             case LiquityV2Action.Debt: {
-                liquityUsdValue = payload.collateral.usdMintedDebt;
+                liquityUsdValue = collateral.usdMintedDebt;
                 break;
             }
             case LiquityV2Action.StabilityPool: {
-                liquityUsdValue = payload.collateral.usdStabilityPoolDebt;
+                liquityUsdValue = collateral.usdStabilityPoolDebt;
                 break;
             }
         }
@@ -282,23 +286,31 @@ export function getCampaignPreviewApr(
         payload instanceof AaveV3CampaignPreviewPayload &&
         payload.isDistributing(DistributablesType.Tokens)
     ) {
+        const { action, distributables, collateral, kpiSpecification } =
+            payload;
+
         let rewardsUsdValue = 0;
-        for (const reward of payload.distributables.tokens) {
+        for (const reward of distributables.tokens) {
             if (!reward.amount.usdValue) return undefined;
             rewardsUsdValue += reward.amount.usdValue;
         }
 
         let usdTvl = 0;
         let liquidity = 0n;
-        switch (payload.action) {
+        switch (action) {
             case AaveV3Action.Borrow: {
-                usdTvl = payload.collateral.usdDebt;
-                liquidity = payload.collateral.debt;
+                usdTvl = collateral.usdDebt;
+                liquidity = collateral.debt;
                 break;
             }
-            case AaveV3Action.Supply || AaveV3Action.NetSupply: {
-                usdTvl = payload.collateral.usdSupply;
-                liquidity = payload.collateral.supply;
+            case AaveV3Action.Supply: {
+                usdTvl = collateral.usdSupply;
+                liquidity = collateral.supply;
+                break;
+            }
+            case AaveV3Action.NetSupply: {
+                usdTvl = collateral.usdSupply - collateral.usdDebt;
+                liquidity = collateral.supply - collateral.debt;
                 break;
             }
         }
@@ -308,7 +320,7 @@ export function getCampaignPreviewApr(
             duration,
             usdTvl,
             liquidity,
-            kpiSpecification: payload.kpiSpecification,
+            kpiSpecification,
             range,
         });
     }
