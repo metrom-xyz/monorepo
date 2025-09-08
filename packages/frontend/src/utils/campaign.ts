@@ -309,8 +309,11 @@ export function getCampaignPreviewApr(
                 break;
             }
             case AaveV3Action.NetSupply: {
-                usdTvl = collateral.usdSupply - collateral.usdDebt;
-                liquidity = collateral.supply - collateral.debt;
+                usdTvl = Math.max(collateral.usdSupply - collateral.usdDebt, 0);
+                liquidity =
+                    collateral.supply - collateral.debt > 0n
+                        ? collateral.supply - collateral.debt
+                        : 0n;
                 break;
             }
         }
