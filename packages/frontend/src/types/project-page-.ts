@@ -1,6 +1,7 @@
 import type { FunctionComponent } from "react";
 import type { BrandColor, ProjectIntro, SVGIcon } from "./common";
-import type { SupportedDex } from "@metrom-xyz/sdk";
+import type { ChainType, SupportedDex } from "@metrom-xyz/sdk";
+import type { SupportedCrossVmChain } from "./chain";
 
 interface CampaignsFilters {
     chainId?: number;
@@ -9,6 +10,7 @@ interface CampaignsFilters {
 }
 
 export interface ProjectPage {
+    chain: { id: SupportedCrossVmChain; type: ChainType };
     name: string;
     description: string;
     url: string;

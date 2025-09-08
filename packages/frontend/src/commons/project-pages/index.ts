@@ -1,11 +1,15 @@
 import type { ProjectPage } from "@/src/types/project-page-";
 import { LensLogoDark, SupportedChain } from "@metrom-xyz/chains";
-import { Environment } from "@metrom-xyz/sdk";
+import { ChainType, Environment } from "@metrom-xyz/sdk";
 
 export const PROJECT_PAGES: Record<Environment, Record<string, ProjectPage>> = {
     [Environment.Development]: {},
     [Environment.Production]: {
         lens: {
+            chain: {
+                id: SupportedChain.Lens,
+                type: ChainType.Evm,
+            },
             name: "Lens",
             description:
                 "Lens is a high performance L2 leveraging ZKsync, Avail & Ethereum's security. Purpose-built for SocialFi, it offers modular social primitives, quick settlement & decentralized storage.",

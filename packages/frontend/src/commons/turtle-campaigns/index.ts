@@ -1,5 +1,6 @@
 import type { TurtleCampaign } from "@/src/types/turtle";
-import { Environment, KatanaLogo } from "@metrom-xyz/chains";
+import { Environment, KatanaLogo, SupportedChain } from "@metrom-xyz/chains";
+import { ChainType } from "@metrom-xyz/sdk";
 
 export const TURTLE_REFERRAL_CODE = "D8B9mk2Z";
 export const TURTLE_DISTRIBUTOR_URL =
@@ -10,6 +11,10 @@ export const TURTLE_CAMPAIGNS: Record<Environment, TurtleCampaign[]> = {
     [Environment.Production]: [
         {
             id: "2c86d3a1-cfe8-486d-915d-1b9ff5e924e9",
+            chain: {
+                id: 1 as SupportedChain,
+                type: ChainType.Evm,
+            },
             distributor: `${TURTLE_DISTRIBUTOR_URL}&campaignName=katana`,
             description:
                 "The Samurai's Call campaign is designed to seed dapps on Katana. Hold your deposits through launch to unlock all KAT token rewards.",

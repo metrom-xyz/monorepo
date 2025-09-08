@@ -1,6 +1,8 @@
 import type { SVGIcon } from "@metrom-xyz/chains";
 import type { FunctionComponent } from "react";
 import type { BrandColor } from "./common";
+import type { ChainType } from "@metrom-xyz/sdk";
+import type { SupportedCrossVmChain } from "./chain";
 
 export interface Token {
     address: string;
@@ -46,6 +48,7 @@ export interface TurtleDealsResponse {
 
 export interface TurtleCampaign {
     id: string;
+    chain: { id: SupportedCrossVmChain; type: ChainType };
     distributor: string;
     name: string;
     description: string;
