@@ -60,7 +60,7 @@ export function Lv2PointsCampaign({ protocol }: Lv2PointsCampaignProps) {
                 />
             )}
             <Actions
-                chain={chain.id}
+                chain={chain}
                 protocol={protocol}
                 actions={actions}
                 pointsName={pointsName}

@@ -1,18 +1,17 @@
 import { RemoteLogo } from "@/src/components/remote-logo";
 import classNames from "classnames";
 import type { Action } from "@/src/types/lv2-points-campaign";
-import type { SupportedChain } from "@metrom-xyz/contracts";
 import { PoolRemoteLogo } from "@/src/components/pool-remote-logo";
 import { InfoTooltip, Typography } from "@metrom-xyz/ui";
 import { TimeProgressIcon } from "@/src/assets/time-progress-icon";
 import { useTranslations } from "next-intl";
 import dayjs from "dayjs";
-import type { LocalizedMessage } from "@/src/types/utils";
+import type { ChainWithType } from "@/src/types/chain";
 
 import styles from "./styles.module.css";
 
 interface ActionProps extends Action {
-    chain: SupportedChain;
+    chain: ChainWithType;
 }
 
 export function Action({
@@ -38,11 +37,15 @@ export function Action({
         >
             <div className={styles.target}>
                 {targets.length === 0 ? null : targets.length === 1 ? (
-                    <RemoteLogo size="sm" chain={chain} address={targets[0]} />
+                    <RemoteLogo
+                        size="sm"
+                        chain={chain.id}
+                        address={targets[0]}
+                    />
                 ) : (
                     <PoolRemoteLogo
                         size="sm"
-                        chain={chain}
+                        chain={chain.id}
                         tokens={targets.map((target) => ({
                             address: target,
                         }))}

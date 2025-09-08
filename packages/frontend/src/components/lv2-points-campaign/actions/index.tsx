@@ -5,15 +5,15 @@ import {
 } from "@/src/types/lv2-points-campaign";
 import { useTranslations } from "next-intl";
 import { Card, Typography } from "@metrom-xyz/ui";
-import type { SupportedChain } from "@metrom-xyz/contracts";
 import { Action } from "./action";
 import { LiquidityLandChip } from "../liquidity-land-chip";
 import type { SupportedLiquityV2 } from "@metrom-xyz/sdk";
+import type { ChainWithType } from "@/src/types/chain";
 
 import styles from "./styles.module.css";
 
 interface ActionsProps {
-    chain: SupportedChain;
+    chain: ChainWithType;
     protocol: SupportedLiquityV2;
     pointsName: string;
     actions: Lv2PointsCampaign["actions"];
@@ -84,7 +84,7 @@ export function Actions({
 interface ActionsGroupProps {
     group: ActionsGroup;
     protocol: SupportedLiquityV2;
-    chain: SupportedChain;
+    chain: ChainWithType;
 }
 
 const ActionsGroup = ({ group, protocol, chain }: ActionsGroupProps) => {
