@@ -6,18 +6,18 @@ import { getCampaignName } from "../utils/campaign";
 import type { HookBaseParams } from "../types/hooks";
 import { useTranslations } from "next-intl";
 import { Campaign } from "../types/campaign";
-import { getChainData } from "../utils/chain";
-import type { ChainType } from "@metrom-xyz/sdk";
+import { getCrossVmChainData } from "../utils/chain";
+import { ChainType } from "@metrom-xyz/sdk";
 
 interface UseCampaignParams extends HookBaseParams {
-    chainId?: SupportedChain;
+    chainId?: number;
     chainType?: ChainType;
     id?: Hex;
 }
 
 type QueryKey = [
     string,
-    SupportedChain | undefined,
+    number | undefined,
     ChainType | undefined,
     Hex | undefined,
 ];
@@ -42,10 +42,11 @@ export function useCampaign({
                     chainType,
                     id,
                 });
+
                 return new Campaign(
                     campaign,
                     getCampaignName(t, campaign),
-                    getChainData(chainId),
+                    getCrossVmChainData(chainId, chainType),
                 );
             } catch (error) {
                 console.error(
