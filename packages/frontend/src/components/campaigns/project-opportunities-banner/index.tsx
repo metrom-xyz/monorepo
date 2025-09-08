@@ -8,6 +8,7 @@ import { Lv2BannerGraphic3 } from "@/src/assets/lv2-banner-graphic-3";
 import { TURTLE_CAMPAIGNS } from "@/src/commons/turtle-campaigns";
 import { Opportunity } from "./opportunity";
 import { PROJECT_PAGES } from "@/src/commons/project-pages";
+import { useChainType } from "@/src/hooks/useChainType";
 
 import styles from "./styles.module.css";
 
@@ -16,12 +17,18 @@ const ILLUSTRATIONS = [Lv2BannerGraphic1, Lv2BannerGraphic2, Lv2BannerGraphic3];
 export function ProjectOpportunitiesBanner() {
     const t = useTranslations("projectOpportunitiesBanner");
 
+    const chainType = useChainType();
+
     const lv2CampaignsActive = Object.entries(
         LV2_POINTS_CAMPAIGNS[ENVIRONMENT],
-    ).some(([_, campaign]) => !!campaign);
-    const turtleCampaignsActive = TURTLE_CAMPAIGNS[ENVIRONMENT].length > 0;
+    ).some(([_, campaign]) => !!campaign && campaign?.chain.type === chainType);
+
+    const turtleCampaignsActive = TURTLE_CAMPAIGNS[ENVIRONMENT].some(
+        (campaign) => campaign.chain.type === chainType,
+    );
+
     const protocolPages = Object.entries(PROJECT_PAGES[ENVIRONMENT]).some(
-        ([_, project]) => !!project,
+        ([_, project]) => !!project && project?.chain.type === chainType,
     );
 
     if (!lv2CampaignsActive && !turtleCampaignsActive && !protocolPages)

@@ -6,8 +6,8 @@ import type {
 import type { FunctionComponent } from "react";
 import type { Address } from "viem";
 import type { BrandColor, ProjectIntro, SVGIcon } from "./common";
-import type { SupportedChain } from "@metrom-xyz/contracts";
 import type { LocalizedMessage } from "./utils";
+import type { SupportedCrossVmChain } from "./chain";
 
 export interface Lv2BackendPointsLeaderboardRank {
     account: Address;
@@ -46,7 +46,7 @@ export interface Lv2PointsCampaign {
     name: string;
     description: string;
     url: string;
-    chain: { id: SupportedChain; type: ChainType };
+    chain: { id: SupportedCrossVmChain; type: ChainType };
     protocol: SupportedLiquityV2 | SupportedGmxV1;
     pointsName: string;
     brand: BrandColor;
