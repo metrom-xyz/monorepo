@@ -111,8 +111,11 @@ export default async function Image({ params }: CampaignDetailsPageProps) {
         join(process.cwd(), "assets/ibm-plex-sans-500.ttf"),
     );
 
-    const campaign = await getCampaign(campaignId, chain);
-    const protocol = getCampaignTargetProtocol(chain, campaign.target);
+    const campaign = await getCampaign(campaignId, parseInt(chain));
+    const protocol = getCampaignTargetProtocol(
+        parseInt(chain),
+        campaign.target,
+    );
 
     let tokenAddresses: Address[] = [];
     if (campaign.isTargeting(TargetType.AmmPoolLiquidity))
@@ -124,7 +127,7 @@ export default async function Image({ params }: CampaignDetailsPageProps) {
             ...campaign.distributables.list.map(({ token }) => token.address),
         );
 
-    const tokenUris = await getTokenUris(chain, tokenAddresses);
+    const tokenUris = await getTokenUris(parseInt(chain), tokenAddresses);
 
     const ammPoolLiquidity = campaign.isTargeting(TargetType.AmmPoolLiquidity);
     const liquityV2 =
