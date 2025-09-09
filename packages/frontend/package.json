@@ -16,6 +16,7 @@
         "@aptos-labs/react": "^0.1.4",
         "@aptos-labs/ts-sdk": "^4.0.0",
         "@aptos-labs/wallet-adapter-react": "^7.0.1",
+        "@ensofinance/shortcuts-widget": "^1.0.61",
         "@fontsource/ibm-plex-mono": "^5.2.5",
         "@fontsource/ibm-plex-sans": "^5.2.5",
         "@metrom-xyz/aptos-contracts": "^0.9.0",
