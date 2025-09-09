@@ -24,3 +24,10 @@ export const EXPERIMENTAL_CHAINS: number[] =
     process.env.NEXT_PUBLIC_EXPERIMENTAL_CHAINS?.split(",")
         .map((chain) => parseInt(chain.trim()))
         .filter(Boolean) || [];
+
+export const ENSO_FINANCE_API_KEY: string =
+    process.env.NEXT_PUBLIC_ENSO_FINANCE_API_KEY!;
+if (!APTOS && !ENSO_FINANCE_API_KEY)
+    throw new Error(
+        "A valid NEXT_PUBLIC_ENSO_FINANCE_API_KEY env variable is needed",
+    );
