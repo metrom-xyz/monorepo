@@ -512,6 +512,9 @@
             "minimumDuration": "Hold your position for <bold>{time}</bold> after completing the action to start farming points.",
             "netSwapVolumeEbUSD": "Users get incentivized to buy ebUSD and hold them. The points for ebUSD are distributed once every <bold>{time}</bold>."
         },
+        "enso": {
+            "depositToStakeDao": "Deposit to stakeDAO"
+        },
         "noPoints": "You don't have any {points}.",
         "distribution": "Distribution"
     },
