@@ -11,7 +11,7 @@ import {
 import { type TargetedNamedCampaign } from "@/src/types/campaign";
 import { ProtocolType } from "@metrom-xyz/chains";
 import { useProtocolsInChain } from "@/src/hooks/useProtocolsInChain";
-import { ProtocolLogo } from "../../protocol-logo";
+import { RemoteLogo } from "../../remote-logo";
 import { APTOS } from "@/src/commons/env";
 import { METROM_APTOS_BASE_URL } from "@/src/commons";
 import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
@@ -54,7 +54,11 @@ export function AaveV3Header({ campaign }: AaveV3HeaderProps) {
                             </Typography>
                         </InfoTooltip>
                     )}
-                    <ProtocolLogo protocol={brand} size="lg" />
+                    <RemoteLogo
+                        size="xl"
+                        address={campaign.target.collateral.token.address}
+                        chain={campaign.target.chainId}
+                    />
                     <Typography size="xl4" weight="medium">
                         {campaign.name}
                     </Typography>

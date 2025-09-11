@@ -2,6 +2,7 @@ import { Typography } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
 import { RestrictionType, type LiquityV2TargetType } from "@metrom-xyz/sdk";
 import { type TargetedNamedCampaign } from "@/src/types/campaign";
+import { RemoteLogo } from "@/src/components/remote-logo";
 
 import styles from "./styles.module.css";
 
@@ -16,6 +17,10 @@ export function LiquidityV2<T extends LiquityV2TargetType>({
 
     return (
         <div className={styles.root}>
+            <RemoteLogo
+                address={campaign.target.collateral.token.address}
+                chain={campaign.target.chainId}
+            />
             <div className={styles.titleContainer}>
                 <Typography size="lg" weight="medium" truncate>
                     {campaign.name}

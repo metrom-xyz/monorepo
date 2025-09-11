@@ -7,7 +7,7 @@ import { DistributablesType, type LiquityV2TargetType } from "@metrom-xyz/sdk";
 import { type TargetedNamedCampaign } from "@/src/types/campaign";
 import { ProtocolType } from "@metrom-xyz/chains";
 import { useProtocolsInChain } from "@/src/hooks/useProtocolsInChain";
-import { ProtocolLogo } from "../../protocol-logo";
+import { RemoteLogo } from "../../remote-logo";
 import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
 
 import styles from "./styles.module.css";
@@ -46,7 +46,11 @@ export function LiquityV2Header({ campaign }: LiquityV2HeaderProps) {
                             </Typography>
                         </InfoTooltip>
                     )}
-                    <ProtocolLogo protocol={brand} size="lg" />
+                    <RemoteLogo
+                        size="xl"
+                        address={campaign.target.collateral.token.address}
+                        chain={campaign.target.chainId}
+                    />
                     <Typography size="xl4" weight="medium">
                         {campaign.name}
                     </Typography>
