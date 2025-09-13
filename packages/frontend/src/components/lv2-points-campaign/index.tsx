@@ -10,9 +10,7 @@ import { LV2_POINTS_CAMPAIGNS } from "@/src/commons/lv2-points";
 import { Actions } from "./actions";
 import { ProjectIntro } from "../protocol-intro";
 import { useTranslations } from "next-intl";
-import { Button, Modal } from "@metrom-xyz/ui";
-import SwapWidget from "@ensofinance/shortcuts-widget";
-import { useState } from "react";
+import { Widget } from "@metrom-xyz/enso-shortcuts-widget";
 
 import styles from "./styles.module.css";
 
@@ -22,8 +20,6 @@ interface Lv2PointsCampaignProps {
 
 export function Lv2PointsCampaign({ protocol }: Lv2PointsCampaignProps) {
     const t = useTranslations("lv2PointsCampaignPage");
-
-    const [ensoModal, setEnsoModal] = useState(false);
 
     const { loading: loadingLeaderboard, leaderboard } =
         useLv2PointsCampaignLeaderboard({ protocol });
@@ -47,13 +43,6 @@ export function Lv2PointsCampaign({ protocol }: Lv2PointsCampaignProps) {
         actions,
     } = campaign;
 
-    function handleEnsoModalOnOpen() {
-        setEnsoModal(true);
-    }
-    function handleEnsoModalOnClose() {
-        setEnsoModal(false);
-    }
-
     return (
         <div className={styles.root}>
             <Header
@@ -65,22 +54,14 @@ export function Lv2PointsCampaign({ protocol }: Lv2PointsCampaignProps) {
             />
             <Details from={from} to={to} protocol={name} />
             {protocol === SupportedLiquityV2.Ebisu && (
-                <>
-                    <Modal open={ensoModal} onDismiss={handleEnsoModalOnClose}>
-                        <SwapWidget
-                            apiKey={ENSO_FINANCE_API_KEY}
-                            tokenIn="0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2"
-                            chainId={1}
-                            tokenOut="0x2b4b2a06c0fdebd8de1545abdffa64ec26416796"
-                            outChainId={1}
-                            adaptive
-                            indicateRoute
-                        />
-                    </Modal>
-                    <Button onClick={handleEnsoModalOnOpen}>
-                        {t("enso.depositToStakeDao")}
-                    </Button>
-                </>
+                <Widget
+                    apiKey={ENSO_FINANCE_API_KEY}
+                    tokenIn="0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2"
+                    chainId={1}
+                    tokenOut="0x2b4b2a06c0fdebd8de1545abdffa64ec26416796"
+                    outChainId={1}
+                    indicateRoute
+                />
             )}
             {protocolIntro && (
                 <ProjectIntro
