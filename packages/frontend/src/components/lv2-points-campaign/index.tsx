@@ -3,13 +3,14 @@
 import { Details } from "./details";
 import { Header } from "./header";
 import { Leaderboard } from "../leaderboard";
-import { ChainType, type SupportedLiquityV2 } from "@metrom-xyz/sdk";
-import { ENVIRONMENT } from "@/src/commons/env";
+import { SupportedLiquityV2 } from "@metrom-xyz/sdk";
+import { ENSO_FINANCE_API_KEY, ENVIRONMENT } from "@/src/commons/env";
 import { useLv2PointsCampaignLeaderboard } from "@/src/hooks/useLv2PointsCampaignLeaderboard";
 import { LV2_POINTS_CAMPAIGNS } from "@/src/commons/lv2-points";
 import { Actions } from "./actions";
 import { ProjectIntro } from "../protocol-intro";
 import { useTranslations } from "next-intl";
+import { Widget } from "@metrom-xyz/enso-shortcuts-widget";
 
 import styles from "./styles.module.css";
 
@@ -52,6 +53,15 @@ export function Lv2PointsCampaign({ protocol }: Lv2PointsCampaignProps) {
                 icon={icon}
             />
             <Details from={from} to={to} protocol={name} />
+            {protocol === SupportedLiquityV2.Ebisu && (
+                <Widget
+                    apiKey={ENSO_FINANCE_API_KEY}
+                    tokenIn="0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2"
+                    chainId={1}
+                    tokenOut="0x2b4b2a06c0fdebd8de1545abdffa64ec26416796"
+                    outChainId={1}
+                />
+            )}
             {protocolIntro && (
                 <ProjectIntro
                     project={protocol}
