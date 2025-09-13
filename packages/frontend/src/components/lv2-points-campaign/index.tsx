@@ -60,7 +60,6 @@ export function Lv2PointsCampaign({ protocol }: Lv2PointsCampaignProps) {
                     chainId={1}
                     tokenOut="0x2b4b2a06c0fdebd8de1545abdffa64ec26416796"
                     outChainId={1}
-                    indicateRoute
                 />
             )}
             {protocolIntro && (
