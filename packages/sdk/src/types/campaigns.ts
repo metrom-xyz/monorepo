@@ -20,6 +20,7 @@ export enum TargetType {
     AaveV3Borrow = "aave-v3-borrow",
     AaveV3Supply = "aave-v3-supply",
     AaveV3NetSupply = "aave-v3-net-supply",
+    AaveV3BridgeAndSupply = "aave-v3-bridge-and-supply",
 }
 
 export type LiquityV2TargetType =
@@ -29,7 +30,8 @@ export type LiquityV2TargetType =
 export type AaveV3TargetType =
     | TargetType.AaveV3Borrow
     | TargetType.AaveV3Supply
-    | TargetType.AaveV3NetSupply;
+    | TargetType.AaveV3NetSupply
+    | TargetType.AaveV3BridgeAndSupply;
 
 export interface BaseTarget {
     chainType: ChainType;
@@ -70,6 +72,8 @@ export type LiquityV2StabilityPoolTarget =
 export type AaveV3BorrowTarget = AaveV3Target<TargetType.AaveV3Borrow>;
 export type AaveV3SupplyTarget = AaveV3Target<TargetType.AaveV3Supply>;
 export type AaveV3NetSupplyTarget = AaveV3Target<TargetType.AaveV3NetSupply>;
+export type AaveV3BridgeAndSupplyTarget =
+    AaveV3Target<TargetType.AaveV3BridgeAndSupply>;
 
 export type CampaignTarget =
     | EmptyTarget
@@ -78,7 +82,8 @@ export type CampaignTarget =
     | LiquityV2StabilityPoolTarget
     | AaveV3BorrowTarget
     | AaveV3SupplyTarget
-    | AaveV3NetSupplyTarget;
+    | AaveV3NetSupplyTarget
+    | AaveV3BridgeAndSupplyTarget;
 
 export interface TokenDistributable {
     token: UsdPricedErc20Token;
@@ -215,7 +220,9 @@ export interface TargetedCampaign<T extends TargetType> extends Campaign {
                 ? AaveV3SupplyTarget
                 : T extends TargetType.AaveV3NetSupply
                   ? AaveV3NetSupplyTarget
-                  : T extends TargetType.Empty
-                    ? EmptyTarget
-                    : never;
+                  : T extends TargetType.AaveV3BridgeAndSupply
+                    ? AaveV3BridgeAndSupplyTarget
+                    : T extends TargetType.Empty
+                      ? EmptyTarget
+                      : never;
 }
