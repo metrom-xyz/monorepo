@@ -4,7 +4,7 @@ import { type ReactNode } from "react";
 import { TokenIconsProvider } from "./token-icon-provider";
 import { Toaster } from "@metrom-xyz/ui";
 import { AptosWalletAdapterProvider } from "@aptos-labs/wallet-adapter-react";
-import { AptosConfig, Network } from "@aptos-labs/ts-sdk";
+import { Network } from "@aptos-labs/ts-sdk";
 import dayjs from "dayjs";
 import duration from "dayjs/plugin/duration";
 import localizedFormat from "dayjs/plugin/localizedFormat";
@@ -12,7 +12,11 @@ import relativeTime from "dayjs/plugin/relativeTime";
 import utc from "dayjs/plugin/utc";
 import Fathom from "./fathom";
 import { ReownAppKitContextProvider } from "../context/reown-app-kit";
-import { APTOS_CLIENT_API_KEY, ENVIRONMENT } from "../commons/env";
+import {
+    APTOS_CLIENT_API_KEY,
+    APTOS_CLIENT_TESTNET_API_KEY,
+    ENVIRONMENT,
+} from "../commons/env";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { hashFn } from "wagmi/query";
 import { Environment } from "@metrom-xyz/sdk";
@@ -34,14 +38,6 @@ const queryClient = new QueryClient({
     },
 });
 
-export const aptosConfig = new AptosConfig({
-    clientConfig: { API_KEY: APTOS_CLIENT_API_KEY },
-    network:
-        ENVIRONMENT === Environment.Production
-            ? Network.MAINNET
-            : Network.TESTNET,
-});
-
 export function ClientProviders({
     children,
 }: Readonly<{
@@ -52,7 +48,16 @@ export function ClientProviders({
             <AptosWalletAdapterProvider
                 autoConnect={true}
                 disableTelemetry={true}
-                dappConfig={aptosConfig}
+                dappConfig={{
+                    network:
+                        ENVIRONMENT === Environment.Production
+                            ? Network.MAINNET
+                            : Network.TESTNET,
+                    aptosApiKeys: {
+                        mainnet: APTOS_CLIENT_API_KEY,
+                        testnet: APTOS_CLIENT_TESTNET_API_KEY,
+                    },
+                }}
             >
                 <AptosCoreProvider>
                     <ReownAppKitContextProvider>
