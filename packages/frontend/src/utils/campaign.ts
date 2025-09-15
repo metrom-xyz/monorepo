@@ -16,6 +16,7 @@ import {
     type BaseCampaignPreviewPayload,
     type CampaignPreviewPayload,
     AaveV3CampaignPreviewPayload,
+    CampaignKind,
 } from "../types/campaign";
 import type { TranslationsType } from "../types/utils";
 import { AaveV3Action, LiquityV2Action } from "../types/common";
@@ -64,6 +65,9 @@ export function buildCampaignDataBundleMvm(payload: CampaignPreviewPayload) {
             AccountAddress.fromString(payload.collateral.token.address),
         );
     } else if (payload instanceof AaveV3CampaignPreviewPayload) {
+        // TODO: have the bridge brand in the campaign payload
+        if (payload.kind === CampaignKind.AaveV3BridgeAndSupply)
+            serializableParts.push(new MoveString("layer-zero"));
         serializableParts.push(new MoveString(payload.brand.slug));
         serializableParts.push(
             AccountAddress.fromString(payload.market.address),
@@ -303,6 +307,7 @@ export function getCampaignPreviewApr(
                 liquidity = collateral.debt;
                 break;
             }
+            case AaveV3Action.BridgeAndSupply:
             case AaveV3Action.Supply: {
                 usdTvl = collateral.usdSupply;
                 liquidity = collateral.supply;

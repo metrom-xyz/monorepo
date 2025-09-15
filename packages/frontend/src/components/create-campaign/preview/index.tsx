@@ -118,7 +118,8 @@ export function CampaignPreview({
         if (payload instanceof AaveV3CampaignPreviewPayload) {
             if (
                 payload.kind === CampaignKind.AaveV3Supply ||
-                payload.kind === CampaignKind.AaveV3NetSupply
+                payload.kind === CampaignKind.AaveV3NetSupply ||
+                payload.kind === CampaignKind.AaveV3BridgeAndSupply
             )
                 return payload.collateral.usdSupply;
             if (payload.kind === CampaignKind.AaveV3Borrow)

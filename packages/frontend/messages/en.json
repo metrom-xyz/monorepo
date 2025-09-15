@@ -308,7 +308,8 @@
                     "list": {
                         "borrow": "Borrow",
                         "supply": "Supply",
-                        "netSupply": "Net supply"
+                        "netSupply": "Net supply",
+                        "bridgeAndSupply": "Bridge and supply"
                     }
                 },
                 "market": {
@@ -399,7 +400,8 @@
                 "list": {
                     "borrow": "Borrow using {collateral}",
                     "supply": "Supply {collateral}",
-                    "netSupply": "Net supply {collateral}"
+                    "netSupply": "Net supply {collateral}",
+                    "bridgeAndSupply": "Bridge and supply {collateral}"
                 }
             }
         },
@@ -546,7 +548,8 @@
             "aaveV3": {
                 "aave-v3-borrow": "Borrow using {collateral} on {brand}",
                 "aave-v3-supply": "Supply {collateral} on {brand}",
-                "aave-v3-net-supply": "Net supply {collateral} on {brand}"
+                "aave-v3-net-supply": "Net supply {collateral} on {brand}",
+                "aave-v3-bridge-and-supply": "Bridge and supply {collateral} on {brand}"
             }
         },
         "details": {
@@ -774,6 +777,7 @@
         "aaveV3Borrow": "Borrow using {token} on {brand}",
         "aaveV3Supply": "Supply {token} on {brand}",
         "aaveV3NetSupply": "Net supply {token} on {brand}",
+        "aaveV3BridgeAndSupply": "Bridge and supply {token} on {brand}",
         "empty": "Test campaign"
     },
     "socialCampaignPreview": {

@@ -213,25 +213,28 @@ export function AaveV3Form({
                     onDistributablesChange={handlePayloadOnChange}
                     onError={handlePayloadOnError}
                 />
-                <KpiStep
-                    disabled={noDistributables || unsupportedChain}
-                    usdTvl={
-                        payload.action === AaveV3Action.Borrow
-                            ? payload.collateral?.usdDebt
-                            : payload.collateral?.usdSupply
-                    }
-                    distributables={
-                        payload.distributables?.type ===
-                        DistributablesType.Tokens
-                            ? payload.distributables
-                            : undefined
-                    }
-                    startDate={payload.startDate}
-                    endDate={payload.endDate}
-                    kpiSpecification={payload.kpiSpecification}
-                    onKpiChange={handlePayloadOnChange}
-                    onError={handlePayloadOnError}
-                />
+                {payload.action &&
+                    payload.action !== AaveV3Action.BridgeAndSupply && (
+                        <KpiStep
+                            disabled={noDistributables || unsupportedChain}
+                            usdTvl={
+                                payload.action === AaveV3Action.Borrow
+                                    ? payload.collateral?.usdDebt
+                                    : payload.collateral?.usdSupply
+                            }
+                            distributables={
+                                payload.distributables?.type ===
+                                DistributablesType.Tokens
+                                    ? payload.distributables
+                                    : undefined
+                            }
+                            startDate={payload.startDate}
+                            endDate={payload.endDate}
+                            kpiSpecification={payload.kpiSpecification}
+                            onKpiChange={handlePayloadOnChange}
+                            onError={handlePayloadOnError}
+                        />
+                    )}
                 <RestrictionsStep
                     disabled={missingDistributables || unsupportedChain}
                     restrictions={payload.restrictions}
