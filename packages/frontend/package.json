@@ -21,7 +21,7 @@
         "@metrom-xyz/aptos-contracts": "^0.9.0",
         "@metrom-xyz/chains": "workspace:*",
         "@metrom-xyz/contracts": "^0.50.0",
-        "@metrom-xyz/enso-shortcuts-widget": "^1.1.1",
+        "@metrom-xyz/enso-shortcuts-widget": "^1.1.2",
         "@metrom-xyz/sdk": "workspace:*",
         "@metrom-xyz/ui": "workspace:*",
         "@reown/appkit": "^1.7.20",
