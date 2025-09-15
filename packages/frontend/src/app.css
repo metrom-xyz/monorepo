@@ -1,7 +1,7 @@
 @import "tailwindcss";
 @import "@metrom-xyz/ui/style.css";
 @import "@metrom-xyz/ui/theme.css";
-@import "@metrom-xyz/enso-shortcuts-widget/styles.css";
+/* @import "@metrom-xyz/enso-shortcuts-widget/styles.css"; */
 
 /* Used to temporarily disable the css transition when switching theme,
 to ensure consistency. */
