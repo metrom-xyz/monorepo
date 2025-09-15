@@ -15,6 +15,7 @@ import { ChainType } from "@metrom-xyz/sdk";
 
 export const APTOS_NETWORK_ID = {
     [Environment.Development]: {
+        [Network.MAINNET]: NetworkToChainId[Network.MAINNET],
         [Network.TESTNET]: NetworkToChainId[Network.TESTNET],
     },
     [Environment.Production]: {

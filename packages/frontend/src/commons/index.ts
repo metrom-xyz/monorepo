@@ -49,7 +49,10 @@ export const SUPPORTED_CHAINS_EVM =
 export const SUPPORTED_CHAINS_MVM =
     ENVIRONMENT === Environment.Production
         ? [NetworkToChainId[SupportedAptosChain.Mainnet]]
-        : [NetworkToChainId[SupportedAptosChain.Testnet]];
+        : [
+              NetworkToChainId[SupportedAptosChain.Mainnet],
+              NetworkToChainId[SupportedAptosChain.Testnet],
+          ];
 
 export const TOKEN_ICONS_URL = `https://raw.githubusercontent.com/metrom-xyz/token-icons/refs/heads/main/${ENVIRONMENT === Environment.Production ? "mainnet" : "testnet"}-icons.json`;
 

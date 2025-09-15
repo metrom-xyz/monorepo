@@ -41,6 +41,48 @@ export const aptosDevelopmentData: ChainData = {
     baseTokens: [],
 };
 
+// Aptos production deployment for the development environment
+export const aptosDevelopmentProductionData: ChainData = {
+    active: true,
+    name: "Aptos",
+    metromContract: {
+        address:
+            "0x493e77803da878852618f16be3867fdf328734b89a35fe15cf39a0cfb070246d",
+        blockCreated: 432012827,
+    },
+    blockExplorers: {
+        default: {
+            name: "Aptos Explorer",
+            url: "https://explorer.aptoslabs.com",
+        },
+    },
+    icon: AptosLogo,
+    protocols: [
+        {
+            active: true,
+            type: ProtocolType.AaveV3,
+            slug: SupportedAaveV3.Aave,
+            logo: AaveDarkLogo,
+            logoLight: AaveLightLogo,
+            name: "Aave",
+            markets: [
+                {
+                    address:
+                        "0x39ddcd9e1a39fa14f25e3f9ec8a86074d05cc0881cbf667df8a6ee70942016fb",
+                    name: "Aptos v3 market",
+                    slug: "aptos-v3",
+                },
+            ],
+            actionUrls: {
+                [TargetType.AaveV3Borrow]: "https://aptos.aave.com/",
+                [TargetType.AaveV3Supply]: "https://aptos.aave.com/",
+                [TargetType.AaveV3NetSupply]: "https://aptos.aave.com/",
+            },
+        },
+    ],
+    baseTokens: [],
+};
+
 export const aptosProductionData: ChainData = {
     active: true,
     name: "Aptos",
