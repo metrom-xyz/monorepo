@@ -10,7 +10,7 @@ import {
 } from "@/src/types/campaign";
 import { CollateralsList } from "./list";
 import { Typography } from "@metrom-xyz/ui";
-import type { AaveV3Collateral, LiquityV2Collateral } from "@metrom-xyz/sdk";
+import type { AaveV3Collateral } from "@metrom-xyz/sdk";
 import { RemoteLogo } from "@/src/components/remote-logo";
 import { CHAIN_TYPE } from "@/src/commons";
 import { useAaveV3Collaterals } from "@/src/hooks/useAaveV3Collaterals";

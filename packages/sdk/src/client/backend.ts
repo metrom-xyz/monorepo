@@ -37,6 +37,7 @@ import {
     type AaveV3BorrowTarget,
     type AaveV3SupplyTarget,
     type AaveV3NetSupplyTarget,
+    type AaveV3BridgeAndSupplyTarget,
 } from "../types/campaigns";
 import {
     ChainType,
@@ -1046,6 +1047,30 @@ function processCampaignsResponse(
             case "aave-v3-net-supply": {
                 target = <AaveV3NetSupplyTarget>{
                     type: TargetType.AaveV3NetSupply,
+                    chainType: backendCampaign.target.chainType,
+                    chainId: backendCampaign.target.chainId,
+                    brand: {
+                        slug: backendCampaign.target.brand as SupportedAaveV3,
+                        name: AAVE_V3_BRAND_NAME[
+                            backendCampaign.target.brand as SupportedAaveV3
+                        ],
+                    },
+                    market: backendCampaign.target.market,
+                    collateral: resolveAaveV3Collateral(
+                        response.resolvedAaveV3Collaterals,
+                        response.resolvedTokens,
+                        backendCampaign.target.chainId,
+                        backendCampaign.target.chainType,
+                        backendCampaign.target.brand,
+                        backendCampaign.target.market,
+                        backendCampaign.target.collateral as Address,
+                    ),
+                };
+                break;
+            }
+            case "aave-v3-bridge-and-supply": {
+                target = <AaveV3BridgeAndSupplyTarget>{
+                    type: TargetType.AaveV3BridgeAndSupply,
                     chainType: backendCampaign.target.chainType,
                     chainId: backendCampaign.target.chainId,
                     brand: {

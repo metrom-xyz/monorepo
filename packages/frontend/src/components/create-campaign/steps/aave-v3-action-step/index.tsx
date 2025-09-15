@@ -31,6 +31,11 @@ export const AAVE_V3_ACTIONS = [
         logo: null,
         value: AaveV3Action.NetSupply,
     },
+    {
+        title: "list.bridgeAndSupply",
+        logo: null,
+        value: AaveV3Action.BridgeAndSupply,
+    },
 ] as const;
 
 interface AaveV3ActionStepProps {

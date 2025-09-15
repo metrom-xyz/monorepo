@@ -12,6 +12,7 @@ import type {
     UsdPricedOnChainAmount,
     Weighting,
     EmptyTarget,
+    AaveV3BridgeAndSupplyTarget,
 } from "@metrom-xyz/sdk";
 import {
     Campaign as SdkCampaign,
@@ -73,6 +74,7 @@ export enum CampaignKind {
     AaveV3Supply = 6,
     AaveV3Borrow = 7,
     AaveV3NetSupply = 8,
+    AaveV3BridgeAndSupply = 9,
 }
 
 export enum CampaignType {
@@ -231,6 +233,10 @@ export class AaveV3CampaignPreviewPayload extends BaseCampaignPreviewPayload {
             }
             case AaveV3Action.NetSupply: {
                 this.kind = CampaignKind.AaveV3NetSupply;
+                break;
+            }
+            case AaveV3Action.BridgeAndSupply: {
+                this.kind = CampaignKind.AaveV3BridgeAndSupply;
                 break;
             }
             default: {
@@ -439,7 +445,9 @@ export interface TargetedNamedCampaign<T extends TargetType> extends Campaign {
                 ? AaveV3SupplyTarget
                 : T extends TargetType.AaveV3NetSupply
                   ? AaveV3NetSupplyTarget
-                  : T extends TargetType.Empty
-                    ? EmptyTarget
-                    : never;
+                  : T extends TargetType.AaveV3BridgeAndSupply
+                    ? AaveV3BridgeAndSupplyTarget
+                    : T extends TargetType.Empty
+                      ? EmptyTarget
+                      : never;
 }
