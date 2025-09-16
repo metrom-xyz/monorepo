@@ -1,0 +1,16 @@
+{
+    "include": ["./src/**/*.ts", "./src/**/*.tsx"],
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "compilerOptions": {
+        "target": "ESNext",
+        "module": "ESNext",
+        "moduleResolution": "Bundler",
+        "esModuleInterop": true,
+        "skipLibCheck": true,
+        "jsx": "react-jsx",
+        "declaration": true,
+        "emitDeclarationOnly": true,
+        "declarationDir": "./dist",
+        "rootDir": "./src"
+    }
+}

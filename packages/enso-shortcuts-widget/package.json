@@ -1,0 +1,66 @@
+{
+    "name": "@metrom-xyz/enso-shortcuts-widget",
+    "version": "1.1.4",
+    "publishConfig": {
+        "access": "public"
+    },
+    "type": "module",
+    "main": "./dist/index.js",
+    "module": "./dist/index.js",
+    "types": "./dist/index.d.ts",
+    "exports": {
+        ".": "./dist/index.js",
+        "./styles.css": "./dist/styles.css"
+    },
+    "description": "Multi-purpose widget powered by Enso API",
+    "scripts": {
+        "dev": "vite build --watch --minify=false --mode=dev",
+        "build": "vite build && tsc --build --force",
+        "lint": "eslint .",
+        "preview": "vite preview"
+    },
+    "dependencies": {
+        "@ensofinance/sdk": "1.0.18",
+        "@fontsource/ibm-plex-mono": "^5.2.6",
+        "@fontsource/ibm-plex-sans": "^5.2.6",
+        "next-themes": "^0.4.4",
+        "react-use": "^17.6.0",
+        "react-window": "^2.1.0",
+        "sonner": "^2.0.7",
+        "url": "^0.11.4",
+        "zustand": "^5.0.3"
+    },
+    "peerDependencies": {
+        "@metrom-xyz/ui": "workspace:*",
+        "@tanstack/react-query": "^5.81.5",
+        "react": "^19.1.1",
+        "react-dom": "^19.1.1",
+        "viem": "^2.37.3",
+        "wagmi": "^2.16.9"
+    },
+    "devDependencies": {
+        "@eslint/js": "^9.17.0",
+        "@tailwindcss/postcss": "^4.1.13",
+        "@types/react": "^19.1.1",
+        "@types/react-dom": "^19.1.1",
+        "@vitejs/plugin-react": "^4.3.4",
+        "@vitejs/plugin-react-swc": "^4.0.1",
+        "eslint": "^9.17.0",
+        "eslint-plugin-prettier": "^5.5.4",
+        "eslint-plugin-react-hooks": "^5.0.0",
+        "eslint-plugin-react-refresh": "^0.4.16",
+        "globals": "^15.14.0",
+        "postcss": "^8.5.6",
+        "prettier": "^3.4.2",
+        "tailwindcss": "^4.1.13",
+        "typescript": "~5.6.2",
+        "typescript-eslint": "^8.18.2",
+        "viem": "^2.37.3",
+        "vite": "^7.1.4",
+        "vite-plugin-dts": "^4.5.4",
+        "vite-tsconfig-paths": "^5.1.4"
+    },
+    "files": [
+        "dist"
+    ]
+}
