@@ -6,9 +6,15 @@ import {
     getPositionOrThrow,
 } from "../commons";
 import { LiquidityChange, LiquidityTransfer } from "../../generated/schema";
-import { POOL_ADDRESS } from "../constants";
+import { POOL_ADDRESS, TRANSPARENT_ADDRESSES } from "../constants";
 
 export function handleTransfer(event: TransferEvent): void {
+    if (
+        TRANSPARENT_ADDRESSES.includes(event.params.from) ||
+        TRANSPARENT_ADDRESSES.includes(event.params.to)
+    )
+        return;
+
     if (event.params.from == ADDRESS_ZERO) {
         // mint scenario
         let position = getOrCreatePosition(POOL_ADDRESS, event.params.to);
@@ -37,6 +43,7 @@ export function handleTransfer(event: TransferEvent): void {
         let transfer = new LiquidityTransfer(getEventId(event));
         transfer.timestamp = event.block.timestamp;
         transfer.blockNumber = event.block.number;
+        transfer.pool = event.address;
         transfer.from = event.params.from;
         transfer.to = event.params.to;
         transfer.amount = event.params.value;

@@ -33,6 +33,7 @@ type LiquidityTransfer @entity(immutable: true) {
     id: Bytes!
     timestamp: BigInt!
     blockNumber: BigInt!
+    pool: Pool!
     from: Bytes!
     to: Bytes!
     amount: BigInt!
