@@ -1,0 +1,88 @@
+specVersion: 1.0.0
+indexerHints:
+  prune: {{pruningBlocks}}
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum
+    name: Factory
+    network: {{network}}
+    source:
+      abi: Factory
+      address: "{{factoryAddress}}"
+      startBlock: {{factoryStartBlock}}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      file: ./src/mappings/factory.ts
+      entities:
+        - Pool
+        - Token
+      abis:
+        - name: Factory
+          file: ./abis/Factory.json
+        - name: Erc20
+          file: ./abis/Erc20.json
+        - name: Erc20BytesName
+          file: ./abis/Erc20BytesName.json
+        - name: Erc20BytesSymbol
+          file: ./abis/Erc20BytesSymbol.json
+      eventHandlers:
+        - event: NewPool(indexed address,indexed address,indexed uint24,uint24,address)
+          handler: handlePoolCreated
+  - kind: ethereum/contract
+    name: LiquidityManager
+    network: {{network}}
+    source:
+      abi: LiquidityManager
+      address: "{{liquidityManagerAddress}}"
+      startBlock: {{liquidityManagerStartBlock}}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      file: ./src/mappings/liquidity-manager.ts
+      entities:
+        - Pool
+        - Position
+        - Event
+      abis:
+        - name: LiquidityManager
+          file: ./abis/LiquidityManager.json
+        - name: Factory
+          file: ./abis/Factory.json
+      eventHandlers:
+        - event: AddLiquidity(indexed uint256,address,uint128,uint256,uint256)
+          handler: handleIncreaseLiquidity
+        - event: DecLiquidity(indexed uint256,address,uint128,uint256,uint256)
+          handler: handleDecreaseLiquidity
+        - event: Transfer(indexed address,indexed address,indexed uint256)
+          handler: handleTransfer
+templates:
+  - kind: ethereum/contract
+    name: Pool
+    network: {{network}}
+    source:
+      abi: Pool
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      file: ./src/mappings/pool.ts
+      entities:
+        - Pool
+        - Position
+        - Event
+      abis:
+        - name: Pool
+          file: ./abis/Pool.json
+      eventHandlers:
+        - event: Mint(address,indexed address,indexed int24,indexed
+            int24,uint128,uint256,uint256)
+          handler: handleMint
+        - event: Burn(indexed address,indexed int24,indexed int24,uint128,uint256,uint256)
+          handler: handleBurn
+        - event: Swap(indexed address,indexed address,indexed
+            uint24,bool,uint256,uint256,int24)
+          handler: handleSwap
