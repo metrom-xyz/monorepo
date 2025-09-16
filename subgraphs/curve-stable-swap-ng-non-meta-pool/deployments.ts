@@ -25,6 +25,7 @@ export interface PoolConfig {
     };
     Pool: Contract;
     ProxyTokens: NamedContract[];
+    TransparentAddresses: string[];
 }
 
 export const DEPLOYMENTS: Record<string, ChainConfig> = {
@@ -54,6 +55,7 @@ export const DEPLOYMENTS: Record<string, ChainConfig> = {
                         startBlock: 22537747,
                     },
                 ],
+                TransparentAddresses: [],
             },
             "ebusd-usdc": {
                 Pool: {
@@ -66,7 +68,18 @@ export const DEPLOYMENTS: Record<string, ChainConfig> = {
                         address: "0xc26f3C4F14e90649260A19896E27674Ba188862e",
                         startBlock: 22640658,
                     },
+                    {
+                        name: "StakeDaoVault",
+                        address: "0x2B4b2a06C0FdeBd8de1545ABdffa64EC26416796",
+                        startBlock: 22639808,
+                    },
+                    {
+                        name: "sdebUSDUSDCVault",
+                        address: "0x547f9999ffBAf1158307fE554420be8D77839841",
+                        startBlock: 22639808,
+                    },
                 ],
+                TransparentAddresses: [],
             },
         },
     },

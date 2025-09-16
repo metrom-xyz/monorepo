@@ -36,6 +36,9 @@ constantsFile += `export const NATIVE_TOKEN_SYMBOL = "${chainConfig.nativeToken.
 constantsFile += `export const NATIVE_TOKEN_NAME = "${chainConfig.nativeToken.name}";\n`;
 constantsFile += `export const NATIVE_TOKEN_DECIMALS = BigInt.fromI32(${chainConfig.nativeToken.decimals});\n`;
 constantsFile += `export const POOL_ADDRESS = Address.fromString("${poolConfig.Pool.address}");\n`;
+constantsFile += `export const TRANSPARENT_ADDRESSES: Address[] = [];\n`
+for (const address of poolConfig.TransparentAddresses)
+    constantsFile += `TRANSPARENT_ADDRESSES.push(Address.fromString("${address}"));\n`;
 
 try {
     const constantsFileOut = join(
