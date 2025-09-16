@@ -1,7 +1,5 @@
 import { type Address, zeroAddress, isAddress as isAddressViem } from "viem";
-import { APTOS } from "../commons/env";
 import { AccountAddress } from "@aptos-labs/ts-sdk";
-import { ChainType } from "@metrom-xyz/sdk";
 
 export function shortenAddress(address?: Address, long?: boolean) {
     if (!address) return "";
