@@ -6,11 +6,10 @@
     },
     "type": "module",
     "main": "./dist/index.js",
-    "module": "./dist/index.js",
     "types": "./dist/index.d.ts",
     "exports": {
         ".": "./dist/index.js",
-        "./styles.css": "./dist/styles.css"
+        "./style.css": "./dist/style.css"
     },
     "description": "Multi-purpose widget powered by Enso API",
     "scripts": {
@@ -32,7 +31,7 @@
     },
     "peerDependencies": {
         "@metrom-xyz/ui": "workspace:*",
-        "@tanstack/react-query": "^5.81.5",
+        "@tanstack/react-query": "^5.89.0",
         "react": "^19.1.1",
         "react-dom": "^19.1.1",
         "viem": "^2.37.3",
@@ -40,6 +39,8 @@
     },
     "devDependencies": {
         "@eslint/js": "^9.17.0",
+        "@metrom-xyz/ui": "workspace:*",
+        "@tanstack/react-query": "^5.89.0",
         "@tailwindcss/postcss": "^4.1.13",
         "@types/react": "^19.1.1",
         "@types/react-dom": "^19.1.1",
@@ -52,13 +53,16 @@
         "globals": "^15.14.0",
         "postcss": "^8.5.6",
         "prettier": "^3.4.2",
+        "react": "^19.1.1",
+        "react-dom": "^19.1.1",
         "tailwindcss": "^4.1.13",
         "typescript": "~5.6.2",
         "typescript-eslint": "^8.18.2",
         "viem": "^2.37.3",
         "vite": "^7.1.4",
         "vite-plugin-dts": "^4.5.4",
-        "vite-tsconfig-paths": "^5.1.4"
+        "vite-tsconfig-paths": "^5.1.4",
+        "wagmi": "^2.16.9"
     },
     "files": [
         "dist"

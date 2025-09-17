@@ -21,6 +21,11 @@
         "@metrom-xyz/contracts": "^0.50.0",
         "@metrom-xyz/sdk": "workspace:*"
     },
+    "peerDependencies": {
+        "react": "^19.1.1",
+        "react-dom": "^19.1.1",
+        "viem": "^2.37.3"
+    },
     "devDependencies": {
         "@eslint/js": "^9.34.0",
         "@types/node": "^24.3.1",
@@ -30,15 +35,12 @@
         "eslint": "^9.34.0",
         "eslint-plugin-react-refresh": "^0.4.20",
         "globals": "^16.3.0",
+        "react": "^19.1.1",
+        "react-dom": "^19.1.1",
         "typescript": "^5.9.2",
         "typescript-eslint": "^8.42.0",
         "viem": "^2.37.3",
         "vite": "^7.1.4",
         "vite-plugin-dts": "^4.5.4"
-    },
-    "peerDependencies": {
-        "react": "^19.0.0",
-        "react-dom": "^19.0.0",
-        "viem": "^2.37.3"
     }
 }
