@@ -1,7 +1,6 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react-swc";
 import dts from "vite-plugin-dts";
-import { peerDependencies, devDependencies } from "./package.json";
 
 export default defineConfig({
     plugins: [react(), dts({ tsconfigPath: "./tsconfig.json" })],
@@ -9,14 +8,17 @@ export default defineConfig({
         emptyOutDir: true,
         lib: {
             entry: { index: "src/index.tsx" },
-            cssFileName: "styles",
+            cssFileName: "style",
             formats: ["es"],
         },
         rollupOptions: {
             external: [
-                ...Object.keys(peerDependencies),
-                ...Object.keys(devDependencies),
-                "react/jsx-runtime",
+                /^@metrom-xyz\/ui($|\/)/,
+                /^@tanstack\/react-query($|\/)/,
+                /^react($|\/)/,
+                /^react-dom($|\/)/,
+                /^viem($|\/)/,
+                /^wagmi($|\/)/,
             ],
         },
     },

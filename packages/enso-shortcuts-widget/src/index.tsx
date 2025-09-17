@@ -4,8 +4,7 @@ import "@fontsource/ibm-plex-sans/700.css";
 import "@fontsource/ibm-plex-mono/500.css";
 import "./index.css";
 
-import { useContext, useEffect } from "react";
-import { WagmiContext } from "wagmi";
+import { useEffect } from "react";
 import { useStore } from "./store";
 import { setApiKey } from "./util/enso";
 import { TxTracker } from "./util/useTracker";
@@ -41,16 +40,6 @@ const Widget = ({
     onSuccess,
     onConnectWallet,
 }: WidgetProps) => {
-    const context = useContext(WagmiContext);
-
-    useEffect(() => {
-        if (!context) {
-            console.error(
-                "Wagmi context is not available. Ensure you are using the EVMProvider.",
-            );
-        }
-    }, [context]);
-
     const setObligatedChainId = useStore((state) => state.setObligatedChainId);
     const setTokenOutChainId = useStore((state) => state.setTokenOutChainId);
 

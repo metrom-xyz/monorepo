@@ -12,9 +12,11 @@ export default defineConfig({
         },
         rollupOptions: {
             external: [
-                ...Object.keys(peerDependencies),
-                ...Object.keys(devDependencies),
-                "react/jsx-runtime",
+                /^@fontsource\/ibm-plex-mono($|\/)/,
+                /^@fontsource\/ibm-plex-sans($|\/)/,
+                /^react($|\/)/,
+                /^react-dom($|\/)/,
+                /^sonner($|\/)/,
             ],
             output: {
                 preserveModules: true,

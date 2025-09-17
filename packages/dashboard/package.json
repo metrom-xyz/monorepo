@@ -20,7 +20,7 @@
         "@reown/appkit": "1.7.20",
         "@reown/appkit-adapter-wagmi": "1.7.20",
         "@safe-global/safe-apps-sdk": "^9.1.0",
-        "@tanstack/react-query": "^5.86.0",
+        "@tanstack/react-query": "^5.89.0",
         "@wagmi/core": "^2.20.3",
         "blo": "^2.0.0",
         "classnames": "^2.5.1",
