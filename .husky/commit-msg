@@ -1,1 +1,1 @@
-pnpm commitlint
+npm run commitlint

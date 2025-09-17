@@ -9,7 +9,8 @@ import { Environment } from "@metrom-xyz/sdk";
 export default function AptosCoreProvider({ children }: PropsWithChildren) {
     const wallet = useWallet();
     const core = useWalletAdapterCore({
-        wallet,
+        // TODO: fix type issue
+        wallet: wallet as any,
         defaultNetwork:
             ENVIRONMENT === Environment.Production
                 ? { network: Network.MAINNET }
