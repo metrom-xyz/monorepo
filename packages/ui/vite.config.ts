@@ -1,5 +1,4 @@
 import { defineConfig } from "vite";
-import { peerDependencies, devDependencies } from "./package.json";
 
 export default defineConfig({
     build: {

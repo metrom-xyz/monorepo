@@ -19,7 +19,7 @@
     "dependencies": {
         "@metrom-xyz/aptos-contracts": "^0.9.0",
         "@metrom-xyz/contracts": "^0.50.0",
-        "@metrom-xyz/sdk": "workspace:*"
+        "@metrom-xyz/sdk": "*"
     },
     "peerDependencies": {
         "react": "^19.1.1",

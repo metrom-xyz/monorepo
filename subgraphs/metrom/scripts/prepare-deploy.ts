@@ -104,4 +104,4 @@ try {
     process.exit(1);
 }
 
-exec("pnpm format");
+exec("npm format");
