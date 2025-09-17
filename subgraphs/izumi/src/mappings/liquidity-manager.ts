@@ -10,6 +10,7 @@ import {
     Position,
 } from "../../generated/schema";
 import { BI_0, getEventId, LiquidityManagerContract } from "../commons";
+import { TRACK_STATE_STARTING_FROM_BLOCK } from "../addresses";
 
 function getNftPositionId(tokenId: BigInt): Bytes {
     return Bytes.fromByteArray(Bytes.fromBigInt(tokenId));
@@ -64,6 +65,8 @@ export function handleIncreaseLiquidity(event: AddLiquidityEvent): void {
         );
         position.save();
 
+        if (event.block.number < TRACK_STATE_STARTING_FROM_BLOCK) return;
+
         let liquidityChange = new LiquidityChange(
             getEventId(event.block.number, event.logIndex),
         );
@@ -84,6 +87,8 @@ export function handleDecreaseLiquidity(event: DecLiquidityEvent): void {
             event.params.liquidityDelta,
         );
         position.save();
+
+        if (event.block.number < TRACK_STATE_STARTING_FROM_BLOCK) return;
 
         let liquidityChange = new LiquidityChange(
             getEventId(event.block.number, event.logIndex),
@@ -108,6 +113,8 @@ export function handleTransfer(event: TransferEvent): void {
 
     position.owner = event.params.to;
     position.save();
+
+    if (event.block.number < TRACK_STATE_STARTING_FROM_BLOCK) return;
 
     let liquidityTransfer = new LiquidityTransfer(
         getEventId(event.block.number, event.logIndex),

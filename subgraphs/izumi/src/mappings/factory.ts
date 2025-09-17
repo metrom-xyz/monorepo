@@ -26,6 +26,8 @@ export function handlePoolCreated(event: NewPoolEvent): void {
     let pool = new Pool(event.params.pool);
     pool.token0 = token0.id;
     pool.token1 = token1.id;
+    pool.token0Tvl = BI_0;
+    pool.token1Tvl = BI_0;
     pool.tick = 0;
     pool.price = BD_0;
     pool.sqrtPriceX96 = BI_0;
