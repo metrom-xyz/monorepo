@@ -13,10 +13,10 @@
     "dependencies": {
         "@fontsource/ibm-plex-mono": "^5.2.6",
         "@fontsource/ibm-plex-sans": "^5.2.6",
-        "@metrom-xyz/chains": "workspace:*",
+        "@metrom-xyz/chains": "*",
         "@metrom-xyz/contracts": "^0.50.0",
-        "@metrom-xyz/sdk": "workspace:*",
-        "@metrom-xyz/ui": "workspace:*",
+        "@metrom-xyz/sdk": "*",
+        "@metrom-xyz/ui": "*",
         "@reown/appkit": "1.7.20",
         "@reown/appkit-adapter-wagmi": "1.7.20",
         "@safe-global/safe-apps-sdk": "^9.1.0",

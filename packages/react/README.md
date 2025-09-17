@@ -9,7 +9,7 @@ under the hood, so a few required packages must be installed, alongside
 `@metrom-xyz/react`:
 
 ```bash
-pnpm add @metrom-xyz/react wagmi viem @tanstack/react-query
+npm add @metrom-xyz/react wagmi viem @tanstack/react-query
 # or
 yarn add @metrom-xyz/react wagmi viem @tanstack/react-query
 # or
