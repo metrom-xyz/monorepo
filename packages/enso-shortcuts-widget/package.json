@@ -1,9 +1,6 @@
 {
     "name": "@metrom-xyz/enso-shortcuts-widget",
     "version": "1.1.4",
-    "publishConfig": {
-        "access": "public"
-    },
     "type": "module",
     "main": "./dist/index.js",
     "types": "./dist/index.d.ts",
@@ -13,8 +10,8 @@
     },
     "description": "Multi-purpose widget powered by Enso API",
     "scripts": {
-        "dev": "vite build --watch --minify=false --mode=dev",
-        "build": "vite build && tsc --build --force",
+        "dev": "vite",
+        "build": "vite build --config vite.config.build.ts && tsc --build --force",
         "lint": "eslint .",
         "preview": "vite preview"
     },
@@ -40,8 +37,9 @@
     "devDependencies": {
         "@eslint/js": "^9.17.0",
         "@metrom-xyz/ui": "*",
-        "@tanstack/react-query": "^5.89.0",
+        "@rainbow-me/rainbowkit": "^2.2.8",
         "@tailwindcss/postcss": "^4.1.13",
+        "@tanstack/react-query": "^5.89.0",
         "@types/react": "^19.1.1",
         "@types/react-dom": "^19.1.1",
         "@vitejs/plugin-react": "^4.3.4",
