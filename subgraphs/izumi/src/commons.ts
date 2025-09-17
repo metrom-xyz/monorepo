@@ -2,7 +2,11 @@ import { Address, BigDecimal, BigInt, Bytes } from "@graphprotocol/graph-ts";
 import { Pool, SwapChange, Tick, Token } from "../generated/schema";
 import { LiquidityManager } from "../generated/LiquidityManager/LiquidityManager";
 import { Factory } from "../generated/Factory/Factory";
-import { FACTORY_ADDRESS, LIQUIDITY_MANAGER_ADDRESS } from "./addresses";
+import {
+    FACTORY_ADDRESS,
+    LIQUIDITY_MANAGER_ADDRESS,
+    TRACK_STATE_STARTING_FROM_BLOCK,
+} from "./addresses";
 import { Erc20 } from "../generated/Factory/Erc20";
 import { Erc20BytesSymbol } from "../generated/Factory/Erc20BytesSymbol";
 import { Erc20BytesName } from "../generated/Factory/Erc20BytesName";
@@ -117,17 +121,6 @@ export function getOrCreateTick(poolAddress: Bytes, idx: i32): Tick {
     return tick;
 }
 
-export function getFeeAdjustedAmount(amount: BigInt, fee: i32): BigInt {
-    // fees are taken from the input amount, so if the given amount
-    // is negative (i.e. removing from pool, we just leave the
-    // amount unchanged)
-    return amount.lt(BI_0)
-        ? amount
-        : amount
-              .times(BI_1_000_000.minus(BigInt.fromI32(fee)))
-              .div(BI_1_000_000);
-}
-
 function exponentToBigDecimal(decimals: i32): BigDecimal {
     let result = "1";
 
@@ -159,13 +152,26 @@ export function updatePoolState(
     blockTimestamp: BigInt,
     pool: Pool,
 ): void {
-    if (blockNumber <= pool._stateUpdateBlockNumber) return;
+    if (
+        blockNumber < TRACK_STATE_STARTING_FROM_BLOCK ||
+        blockNumber <= pool._stateUpdateBlockNumber
+    )
+        return;
 
-    const state = PoolContract.bind(changetype<Address>(pool.id)).state();
+    const poolContract = PoolContract.bind(changetype<Address>(pool.id));
+
+    const state = poolContract.state();
     const newTick = state.getCurrentPoint();
     const newSqrtPriceX96 = state.getSqrtPrice_96();
     const newPrice = getPrice(newSqrtPriceX96, pool.token0, pool.token1);
     const newLiquidity = state.getLiquidity();
+
+    const token0Tvl = Erc20.bind(changetype<Address>(pool.token0)).balanceOf(
+        changetype<Address>(pool.id),
+    );
+    const token1Tvl = Erc20.bind(changetype<Address>(pool.token1)).balanceOf(
+        changetype<Address>(pool.id),
+    );
 
     if (newTick != pool.tick || newSqrtPriceX96 != pool.sqrtPriceX96) {
         let swapChange = new SwapChange(
@@ -179,6 +185,8 @@ export function updatePoolState(
         swapChange.save();
     }
 
+    pool.token0Tvl = token0Tvl;
+    pool.token1Tvl = token1Tvl;
     pool.tick = newTick;
     pool.price = newPrice;
     pool.sqrtPriceX96 = newSqrtPriceX96;

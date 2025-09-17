@@ -8,12 +8,14 @@ import { Position, LiquidityChange } from "../../generated/schema";
 import {
     BI_0,
     getEventId,
-    getFeeAdjustedAmount,
     getOrCreateTick,
     getPoolOrThrow,
     updatePoolState,
 } from "../commons";
-import { LIQUIDITY_MANAGER_ADDRESS } from "../addresses";
+import {
+    LIQUIDITY_MANAGER_ADDRESS,
+    TRACK_STATE_STARTING_FROM_BLOCK,
+} from "../addresses";
 
 export function handleSwap(event: SwapEvent): void {
     updatePoolState(
@@ -100,6 +102,8 @@ export function handleMint(event: MintEvent): void {
     );
     upperTick.save();
 
+    updatePoolState(event.block.number, event.block.timestamp, pool);
+
     if (event.params.owner == LIQUIDITY_MANAGER_ADDRESS) return;
 
     if (!event.params.liquidity.isZero()) {
@@ -113,17 +117,17 @@ export function handleMint(event: MintEvent): void {
         position.liquidity = position.liquidity.plus(event.params.liquidity);
         position.save();
 
-        let liquidityChange = new LiquidityChange(
-            getEventId(event.block.number, event.logIndex),
-        );
-        liquidityChange.timestamp = event.block.timestamp;
-        liquidityChange.blockNumber = event.block.number;
-        liquidityChange.delta = event.params.liquidity;
-        liquidityChange.position = position.id;
-        liquidityChange.save();
+        if (event.block.number >= TRACK_STATE_STARTING_FROM_BLOCK) {
+            let liquidityChange = new LiquidityChange(
+                getEventId(event.block.number, event.logIndex),
+            );
+            liquidityChange.timestamp = event.block.timestamp;
+            liquidityChange.blockNumber = event.block.number;
+            liquidityChange.delta = event.params.liquidity;
+            liquidityChange.position = position.id;
+            liquidityChange.save();
+        }
     }
-
-    updatePoolState(event.block.number, event.block.timestamp, pool);
 }
 
 export function handleBurn(event: BurnEvent): void {
@@ -147,6 +151,8 @@ export function handleBurn(event: BurnEvent): void {
     );
     upperTick.save();
 
+    updatePoolState(event.block.number, event.block.timestamp, pool);
+
     if (event.params.owner == LIQUIDITY_MANAGER_ADDRESS) return;
 
     if (!event.params.liquidity.isZero()) {
@@ -159,15 +165,15 @@ export function handleBurn(event: BurnEvent): void {
         position.liquidity = position.liquidity.minus(event.params.liquidity);
         position.save();
 
-        let liquidityChange = new LiquidityChange(
-            getEventId(event.block.number, event.logIndex),
-        );
-        liquidityChange.timestamp = event.block.timestamp;
-        liquidityChange.blockNumber = event.block.number;
-        liquidityChange.delta = event.params.liquidity.neg();
-        liquidityChange.position = position.id;
-        liquidityChange.save();
+        if (event.block.number >= TRACK_STATE_STARTING_FROM_BLOCK) {
+            let liquidityChange = new LiquidityChange(
+                getEventId(event.block.number, event.logIndex),
+            );
+            liquidityChange.timestamp = event.block.timestamp;
+            liquidityChange.blockNumber = event.block.number;
+            liquidityChange.delta = event.params.liquidity.neg();
+            liquidityChange.position = position.id;
+            liquidityChange.save();
+        }
     }
-
-    updatePoolState(event.block.number, event.block.timestamp, pool);
 }

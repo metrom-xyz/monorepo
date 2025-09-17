@@ -1019,6 +1019,58 @@ importers:
         specifier: ^2.37.3
         version: 2.37.3(bufferutil@4.0.9)(typescript@5.9.2)(utf-8-validate@5.0.10)(zod@3.25.56)
 
+  subgraphs/izumi:
+    dependencies:
+      '@0xgraph/cli':
+        specifier: ^0.2.1
+        version: 0.2.1(@swc/core@1.13.4)(@types/node@24.3.1)(bufferutil@4.0.9)(encoding@0.1.13)(node-fetch@2.7.0(encoding@0.1.13))(typescript@5.9.2)(utf-8-validate@5.0.10)
+      '@graphprotocol/graph-cli':
+        specifier: ^0.97.1
+        version: 0.97.1(@types/node@24.3.1)(bufferutil@4.0.9)(typescript@5.9.2)(utf-8-validate@5.0.10)(zod@3.25.56)
+      '@graphprotocol/graph-ts':
+        specifier: 0.38.1
+        version: 0.38.1
+      '@metrom-xyz/graph-cli':
+        specifier: workspace:*
+        version: link:../../packages/graph-cli
+    devDependencies:
+      '@eslint/js':
+        specifier: ^9.34.0
+        version: 9.34.0
+      '@types/mustache':
+        specifier: ^4.2.6
+        version: 4.2.6
+      '@types/node':
+        specifier: ^24.3.1
+        version: 24.3.1
+      eslint:
+        specifier: ^9.34.0
+        version: 9.34.0(jiti@2.5.1)
+      eslint-config-prettier:
+        specifier: ^10.1.8
+        version: 10.1.8(eslint@9.34.0(jiti@2.5.1))
+      eslint-config-turbo:
+        specifier: ^2.5.6
+        version: 2.5.6(eslint@9.34.0(jiti@2.5.1))(turbo@2.5.6)
+      eslint-plugin-prettier:
+        specifier: ^5.5.4
+        version: 5.5.4(@types/eslint@9.6.1)(eslint-config-prettier@10.1.8(eslint@9.34.0(jiti@2.5.1)))(eslint@9.34.0(jiti@2.5.1))(prettier@3.6.2)
+      mustache:
+        specifier: ^4.2.0
+        version: 4.2.0
+      prettier:
+        specifier: ^3.6.2
+        version: 3.6.2
+      tsx:
+        specifier: ^4.20.5
+        version: 4.20.5
+      typescript:
+        specifier: ^5.9.2
+        version: 5.9.2
+      typescript-eslint:
+        specifier: ^8.42.0
+        version: 8.42.0(eslint@9.34.0(jiti@2.5.1))(typescript@5.9.2)
+
   subgraphs/liquity-v2:
     dependencies:
       '@0xgraph/cli':
@@ -3846,9 +3898,11 @@ packages:
 
   '@telegram-apps/transformers@1.2.2':
     resolution: {integrity: sha512-vvMwXckd1D7Ozc0h66PSUwF5QLrRV9HlGJFFeBuUex8QEk5mSPtsJkLiqB8aBbwuFDa91+TUSM/CxqPZO/e9YQ==}
+    deprecated: This package is not supported anymore. Use @tma.js/transfomers instead
 
   '@telegram-apps/types@1.2.1':
     resolution: {integrity: sha512-so4HLh7clur0YyMthi9KVIgWoGpZdXlFOuQjk3+Q5NAvJZ11nAheBSwPlGw/Ko92+zwvrSBE/lQyN2+p17RP+w==}
+    deprecated: This package is not supported anymore. Use @tma.js/types instead
 
   '@testing-library/dom@10.4.0':
     resolution: {integrity: sha512-pemlzrSESWbdAloYml3bAJMEfNh1Z7EduzqPKprCH5S341frlpYnUEW0H72dLxa6IsYr+mPno20GiSm+h9dEdQ==}

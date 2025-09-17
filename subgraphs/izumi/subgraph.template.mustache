@@ -1,6 +1,13 @@
 specVersion: 1.0.0
 indexerHints:
   prune: {{pruningBlocks}}
+{{#grafting}}
+features:
+  - grafting
+graft:
+  base: {{base}}
+  block: {{block}} 
+{{/grafting}}
 schema:
   file: ./schema.graphql
 dataSources:
@@ -52,6 +59,8 @@ dataSources:
           file: ./abis/LiquidityManager.json
         - name: Factory
           file: ./abis/Factory.json
+        - name: Erc20
+          file: ./abis/Erc20.json
       eventHandlers:
         - event: AddLiquidity(indexed uint256,address,uint128,uint256,uint256)
           handler: handleIncreaseLiquidity
@@ -77,6 +86,8 @@ templates:
       abis:
         - name: Pool
           file: ./abis/Pool.json
+        - name: Erc20
+          file: ./abis/Erc20.json
       eventHandlers:
         - event: Mint(address,indexed address,indexed int24,indexed
             int24,uint128,uint256,uint256)
