@@ -1,9 +1,7 @@
 import { defineConfig } from "vite";
 import dts from "vite-plugin-dts";
 import react from "@vitejs/plugin-react-swc";
-import pkg from "./package.json";
 
-// https://vite.dev/config/
 export default defineConfig({
     plugins: [react(), dts({ tsconfigPath: "./tsconfig.lib.json" })],
     build: {
@@ -15,7 +13,13 @@ export default defineConfig({
             formats: ["es"],
         },
         rollupOptions: {
-            external: Object.keys(pkg.peerDependencies),
+            external: [
+                /^@tanstack\/react-query($|\/)/,
+                /^react($|\/)/,
+                /^react-dom($|\/)/,
+                /^viem($|\/)/,
+                /^wagmi($|\/)/,
+            ],
         },
     },
 });
