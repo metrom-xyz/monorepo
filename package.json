@@ -1,10 +1,10 @@
 {
     "type": "module",
     "name": "metrom-monorepo",
-    "packageManager": "pnpm@10.13.1",
+    "packageManager": "npm@11.6.0",
     "private": true,
     "scripts": {
-        "changeset:publish": "pnpm build && changeset publish",
+        "changeset:publish": "npm build && changeset publish",
         "lint": "turbo run lint",
         "format": "turbo run format",
         "build": "turbo run build",
@@ -20,5 +20,9 @@
         "husky": "^9.1.7",
         "prettier": "^3.6.2",
         "turbo": "^2.5.6"
-    }
+    },
+    "workspaces": [
+        "packages/*",
+        "subgraphs/*"
+    ]
 }

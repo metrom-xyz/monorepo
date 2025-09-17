@@ -1,15 +1,15 @@
 # Contributing
 
 This document provides detailed instructions on contributing to the Metrom
-frontend, which is built with Next.js and uses `pnpm` as the package manager.
+frontend, which is built with Next.js and uses `npm` as the package manager.
 
 ## Getting started
 
-To begin, install the package dependencies using `pnpm`. Run the following
+To begin, install the package dependencies using `npm`. Run the following
 command from the root of the project:
 
 ```
-pnpm install
+npm install
 ```
 
 ### Building the packages
@@ -18,7 +18,7 @@ The frontend depends on internal packages (`sdk`, `ui`), so ensure they are
 built by running:
 
 ```
-pnpm build
+npm build
 ```
 
 ### Setting up environment variables
@@ -43,5 +43,5 @@ contents of `.env.example`.
 Once the environment variables are set up, start the development server:
 
 ```
-pnpm dev
+npm dev
 ```

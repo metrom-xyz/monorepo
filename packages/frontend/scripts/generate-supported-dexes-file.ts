@@ -66,4 +66,4 @@ for (const protocol of protocols) {
 const outPath = join(import.meta.dirname, "../SUPPORTED_PROTOCOLS.md");
 writeFileSync(outPath, out);
 
-exec(`pnpm format ${outPath}`);
+exec(`npm format ${outPath}`);

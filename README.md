@@ -19,7 +19,7 @@
 
 # Metrom monorepo
 
-A monorepo for all things Metrom. The packages are managed through `pnpm`
+A monorepo for all things Metrom. The packages are managed through `npm`
 workspaces and `turborepo`.
 
 ## Packages
