@@ -1,6 +1,10 @@
 import { Typography } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
-import { RestrictionType, type AaveV3TargetType } from "@metrom-xyz/sdk";
+import {
+    RestrictionType,
+    TargetType,
+    type AaveV3TargetType,
+} from "@metrom-xyz/sdk";
 import { type TargetedNamedCampaign } from "@/src/types/campaign";
 import { RemoteLogo } from "@/src/components/remote-logo";
 

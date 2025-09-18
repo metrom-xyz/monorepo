@@ -35,7 +35,7 @@ export const aptosDevelopmentData: ChainData = {
                 [TargetType.AaveV3Borrow]: "https://aptos.aave.com/",
                 [TargetType.AaveV3Supply]: "https://aptos.aave.com/",
                 [TargetType.AaveV3NetSupply]: "https://aptos.aave.com/",
-                [TargetType.AaveV3BridgeAndSupply]: "https://aptos.aave.com/",
+                [TargetType.AaveV3BridgeAndSupply]: "https://stargate.finance/",
             },
         },
     ],
@@ -78,7 +78,8 @@ export const aptosDevelopmentProductionData: ChainData = {
                 [TargetType.AaveV3Borrow]: "https://aptos.aave.com/",
                 [TargetType.AaveV3Supply]: "https://aptos.aave.com/",
                 [TargetType.AaveV3NetSupply]: "https://aptos.aave.com/",
-                [TargetType.AaveV3BridgeAndSupply]: "https://aptos.aave.com/",
+                [TargetType.AaveV3BridgeAndSupply]:
+                    "https://stargate.finance/bridge?dstChain=aptos&dstToken={collateral}",
             },
         },
     ],
@@ -116,7 +117,8 @@ export const aptosProductionData: ChainData = {
                 [TargetType.AaveV3Borrow]: "https://aptos.aave.com/",
                 [TargetType.AaveV3Supply]: "https://aptos.aave.com/",
                 [TargetType.AaveV3NetSupply]: "https://aptos.aave.com/",
-                [TargetType.AaveV3BridgeAndSupply]: "https://aptos.aave.com/",
+                [TargetType.AaveV3BridgeAndSupply]:
+                    "https://stargate.finance/bridge?dstChain=aptos&dstToken={collateral}",
             },
         },
     ],

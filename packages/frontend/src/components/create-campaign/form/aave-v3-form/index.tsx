@@ -22,9 +22,10 @@ import { AaveV3BrandStep } from "../../steps/aave-v3-brand-step";
 import { AaveV3ActionStep } from "../../steps/aave-v3-action-step";
 import { AaveV3MarketStep } from "../../steps/aave-v3-market-step";
 import { KpiStep } from "../../steps/kpi-step";
+import { AaveV3Action } from "@/src/types/common";
+import { AaveV3BridgeAndSupplyBoostStep } from "../../steps/aave-v3-bridge-supply-boost";
 
 import styles from "./styles.module.css";
-import { AaveV3Action } from "@/src/types/common";
 
 function validatePayload(
     chainId: number,
@@ -35,6 +36,7 @@ function validatePayload(
         action,
         market,
         collateral,
+        boostingFactor,
         startDate,
         endDate,
         distributables,
@@ -64,6 +66,9 @@ function validatePayload(
     )
         return null;
 
+    if (action === AaveV3Action.BridgeAndSupply && boostingFactor > 0.05)
+        return null;
+
     // TODO: handle chain type for same chain ids?
     if (EXPERIMENTAL_CHAINS.includes(chainId)) {
         return new EmptyTargetCampaignPreviewPayload(
@@ -80,6 +85,7 @@ function validatePayload(
         action,
         market,
         collateral,
+        boostingFactor,
         startDate,
         endDate,
         distributables as CampaignPreviewDistributables,
@@ -98,8 +104,11 @@ interface AaveV3FormProps {
     ) => void;
 }
 
+export const DEFAULT_BOOST = 0.01;
+
 const initialPayload: AaveV3CampaignPayload = {
     distributables: { type: DistributablesType.Tokens },
+    boostingFactor: DEFAULT_BOOST,
 };
 
 export function AaveV3Form({
@@ -118,15 +127,6 @@ export function AaveV3Form({
     }, [chainId, payload, errors]);
 
     const noDistributables = useMemo(() => {
-        return (
-            !payload.distributables ||
-            payload.distributables.type === DistributablesType.Points ||
-            !payload.distributables.tokens ||
-            payload.distributables.tokens.length === 0
-        );
-    }, [payload.distributables]);
-
-    const missingDistributables = useMemo(() => {
         if (!payload.distributables) return true;
 
         const { type } = payload.distributables;
@@ -235,8 +235,17 @@ export function AaveV3Form({
                             onError={handlePayloadOnError}
                         />
                     )}
+                {payload.action &&
+                    payload.action === AaveV3Action.BridgeAndSupply && (
+                        <AaveV3BridgeAndSupplyBoostStep
+                            disabled={noDistributables || unsupportedChain}
+                            boostingFactor={payload.boostingFactor}
+                            onBoostingFactorChange={handlePayloadOnChange}
+                            onError={handlePayloadOnError}
+                        />
+                    )}
                 <RestrictionsStep
-                    disabled={missingDistributables || unsupportedChain}
+                    disabled={noDistributables || unsupportedChain}
                     restrictions={payload.restrictions}
                     onRestrictionsChange={handlePayloadOnChange}
                     onError={handlePayloadOnError}
