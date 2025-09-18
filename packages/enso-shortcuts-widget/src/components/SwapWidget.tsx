@@ -472,7 +472,7 @@ const SwapWidget = ({
                     {displayTokenRotation && (
                         <div
                             onClick={handleInvertTokensOnClick}
-                            className="flex justify-center items-center absolute top-[43%] place-self-center rounded-full p-1 theme-surface theme-surface-2-hover hover:cursor-pointer transition-colors duration-200 ease-in-out z-10"
+                            className="flex justify-center items-center absolute top-[43%] place-self-center rounded-full p-1 dark:bg-dark-surface bg-white hover:dark:bg-zinc-800 hover:bg-zinc-200 hover:cursor-pointer transition-colors duration-200 ease-in-out z-10"
                         >
                             <ArrowRightIcon
                                 height={24}

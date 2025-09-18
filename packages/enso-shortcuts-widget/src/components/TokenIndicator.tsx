@@ -78,59 +78,64 @@ export const TokenIndicator = ({
             <TokenIcon token={token} chainId={chainId} />
         )}
 
-        <div className="flex flex-col items-start">
-            <Typography
-                weight="medium"
-                size="lg"
-                truncate
-                noWrap
-                className={
-                    size === "short"
-                        ? "overflow-hidden max-w-16"
-                        : "overflow-hidden max-w-48"
-                }
-            >
-                {token?.symbol}
-            </Typography>
-            {token.underlyingTokens?.length > 0 && (
+        <div className="flex flex-col">
+            <div className="flex flex-col items-start">
                 <Typography
                     weight="medium"
-                    light
-                    size="xs"
-                    noWrap
+                    size="lg"
                     truncate
-                    className="overflow-hidden max-w-48"
+                    noWrap
+                    className={
+                        size === "short"
+                            ? "overflow-hidden max-w-36"
+                            : "overflow-hidden max-w-48"
+                    }
                 >
-                    {token.underlyingTokens
-                        .map((token) => token.symbol)
-                        .join("/")}
+                    {token?.symbol}
                 </Typography>
-            )}
-        </div>
+            </div>
 
-        {token.type === "defi" && (
-            <div className="flex flex-col self-end">
-                {token.apy && (
-                    <div className="flex items-center gap-1">
-                        <Typography light size="xs" weight="medium">
-                            APY
-                        </Typography>
-                        <Typography size="xs" weight="medium">
-                            {token.apy.toFixed(2)}%
-                        </Typography>
-                    </div>
+            <div className="flex gap-2.5">
+                {token.underlyingTokens?.length > 0 && (
+                    <Typography
+                        weight="medium"
+                        light
+                        size="xs"
+                        noWrap
+                        truncate
+                        className="overflow-hidden max-w-48"
+                    >
+                        {token.underlyingTokens
+                            .map((token) => token.symbol)
+                            .join("/")}
+                    </Typography>
                 )}
-                {token.tvl && (
-                    <div className="flex items-center gap-1">
-                        <Typography light size="xs" weight="medium">
-                            TVL
-                        </Typography>
-                        <Typography size="xs" weight="medium">
-                            {formatCompactUsd(token.tvl)}
-                        </Typography>
+
+                {token.type === "defi" && (
+                    <div className="flex flex-col self-end">
+                        {/* {token.apy && (
+                            <div className="flex items-center gap-1">
+                                <Typography light size="xs" weight="medium">
+                                    APY
+                                </Typography>
+                                <Typography size="xs" weight="medium">
+                                    {token.apy.toFixed(2)}%
+                                </Typography>
+                            </div>
+                        )} */}
+                        {token.tvl && (
+                            <div className="flex items-center gap-1">
+                                <Typography light size="xs" weight="medium">
+                                    TVL
+                                </Typography>
+                                <Typography size="xs" weight="medium">
+                                    {formatCompactUsd(token.tvl)}
+                                </Typography>
+                            </div>
+                        )}
                     </div>
                 )}
             </div>
-        )}
+        </div>
     </div>
 );
