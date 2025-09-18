@@ -426,8 +426,11 @@ const TokenSelector = ({
                 <Button
                     variant="secondary"
                     size="sm"
+                    border={false}
                     onClick={handlePopoverToggle}
-                    className={{ root: "min-h-16! min-w-32! py-2! px-3!" }}
+                    className={{
+                        root: "min-h-16! min-w-32! py-2! px-3! dark:bg-dark-surface! bg-white! hover:dark:bg-zinc-800! hover:bg-zinc-200!",
+                    }}
                 >
                     {loading ? (
                         <TokenIndicatorSkeleton />
