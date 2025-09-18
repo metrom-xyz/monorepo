@@ -2,7 +2,17 @@
     "extends": ["//"],
     "tasks": {
         "build": {
-            "outputs": [".next/**"]
+            "env": [
+                "NEXT_PUBLIC_ENVIRONMENT",
+                "NEXT_PUBLIC_SAFE",
+                "NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID",
+                "NEXT_PUBLIC_FATHOM_SITE_ID",
+                "NEXT_PUBLIC_APTOS",
+                "NEXT_PUBLIC_APTOS_CLIENT_API_KEY",
+                "NEXT_PUBLIC_EXPERIMENTAL_CHAINS",
+                "NEXT_PUBLIC_ENSO_FINANCE_API_KEY"
+            ],
+            "outputs": [".next/**", "!.next/cache/**"] 
         }
     }
 }
