@@ -11,7 +11,7 @@
         "build:fleek": "turbo run build:fleek",
         "test": "turbo run test",
         "commitlint": "commitlint -e",
-        "prepare": "husky"
+        "prepare": "node .husky/install.js"
     },
     "devDependencies": {
         "@changesets/cli": "^2.29.6",
