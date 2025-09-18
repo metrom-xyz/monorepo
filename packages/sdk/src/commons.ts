@@ -19,6 +19,7 @@ export enum SupportedDex {
     Carbon = "carbon",
     Velodrome = "velodrome",
     Morphex = "morphex",
+    Izumi = "izumi",
 }
 
 export enum SupportedLiquityV2 {
