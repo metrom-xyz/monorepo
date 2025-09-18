@@ -42,9 +42,9 @@ export default async function Lv2PointsCampaignPage({
 
 export async function generateStaticParams() {
     return routing.locales.flatMap((locale) =>
-        [SupportedLiquityV2.Quill, SupportedLiquityV2.Orki].map((type) => ({
+        Object.keys(LV2_POINTS_CAMPAIGNS[ENVIRONMENT]).map((protocol) => ({
             locale,
-            type,
+            protocol,
         })),
     );
 }
