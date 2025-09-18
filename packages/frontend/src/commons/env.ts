@@ -25,6 +25,8 @@ export const EXPERIMENTAL_CHAINS: number[] =
         .map((chain) => parseInt(chain.trim()))
         .filter(Boolean) || [];
 
+export const ENSO_FINANCE_WIDGET: boolean =
+    process.env.NEXT_PUBLIC_ENSO_FINANCE_WIDGET === "true";
 export const ENSO_FINANCE_API_KEY: string =
     process.env.NEXT_PUBLIC_ENSO_FINANCE_API_KEY!;
 if (!APTOS && !ENSO_FINANCE_API_KEY && ENVIRONMENT === Environment.Production)

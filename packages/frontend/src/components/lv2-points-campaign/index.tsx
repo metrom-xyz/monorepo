@@ -4,7 +4,11 @@ import { Details } from "./details";
 import { Header } from "./header";
 import { Leaderboard } from "../leaderboard";
 import { SupportedLiquityV2 } from "@metrom-xyz/sdk";
-import { ENSO_FINANCE_API_KEY, ENVIRONMENT } from "@/src/commons/env";
+import {
+    ENSO_FINANCE_API_KEY,
+    ENSO_FINANCE_WIDGET,
+    ENVIRONMENT,
+} from "@/src/commons/env";
 import { useLv2PointsCampaignLeaderboard } from "@/src/hooks/useLv2PointsCampaignLeaderboard";
 import { LV2_POINTS_CAMPAIGNS } from "@/src/commons/lv2-points";
 import { Actions } from "./actions";
@@ -59,7 +63,7 @@ export function Lv2PointsCampaign({ protocol }: Lv2PointsCampaignProps) {
                 icon={icon}
             />
             <Details from={from} to={to} protocol={name} />
-            {protocol === SupportedLiquityV2.Ebisu && (
+            {ENSO_FINANCE_WIDGET && protocol === SupportedLiquityV2.Ebisu && (
                 <Widget
                     apiKey={ENSO_FINANCE_API_KEY}
                     tokenIn="0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2"
