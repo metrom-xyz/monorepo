@@ -3,6 +3,9 @@
     "tasks": {
         "build": {
             "outputs": ["dist/**"]
+        },
+        "build-storybook": {
+            "outputs": ["storybook-static/**"]
         }
     }
 }
