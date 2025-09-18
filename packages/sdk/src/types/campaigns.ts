@@ -8,7 +8,11 @@ import type {
     UsdPricedErc20Token,
     UsdPricedOnChainAmount,
 } from "./commons";
-import type { SupportedAaveV3, SupportedLiquityV2 } from "src/commons";
+import type {
+    SupportedAaveV3,
+    SupportedBridge,
+    SupportedLiquityV2,
+} from "src/commons";
 import type { LiquityV2Collateral } from "./liquity-v2";
 import type { AaveV3Collateral } from "./aave-v3";
 
@@ -72,8 +76,14 @@ export type LiquityV2StabilityPoolTarget =
 export type AaveV3BorrowTarget = AaveV3Target<TargetType.AaveV3Borrow>;
 export type AaveV3SupplyTarget = AaveV3Target<TargetType.AaveV3Supply>;
 export type AaveV3NetSupplyTarget = AaveV3Target<TargetType.AaveV3NetSupply>;
-export type AaveV3BridgeAndSupplyTarget =
-    AaveV3Target<TargetType.AaveV3BridgeAndSupply>;
+export type AaveV3BridgeAndSupplyTarget = BaseTarget & {
+    type: TargetType.AaveV3BridgeAndSupply;
+    bridge: Brand<SupportedBridge>;
+    brand: Brand<SupportedAaveV3>;
+    market: string;
+    collateral: AaveV3Collateral;
+    boostingFactor: number;
+};
 
 export type CampaignTarget =
     | EmptyTarget

@@ -6,6 +6,7 @@ import { AprChip } from "../../apr-chip";
 import {
     ChainType,
     DistributablesType,
+    TargetType,
     type AaveV3TargetType,
 } from "@metrom-xyz/sdk";
 import { type TargetedNamedCampaign } from "@/src/types/campaign";
@@ -35,6 +36,10 @@ export function AaveV3Header({ campaign }: AaveV3HeaderProps) {
 
     const ChainIcon = campaign.chainData?.icon;
     const actionLink = brand?.actionUrls[campaign.target.type];
+    const supplyActionLink = brand?.actionUrls[TargetType.AaveV3Supply];
+    const bridgeActionLink = brand?.actionUrls[
+        TargetType.AaveV3BridgeAndSupply
+    ].replace("{collateral}", campaign.target.collateral.token.address);
 
     const handleClaimOnClick = useCallback(() => {
         router.push("/claims");
@@ -90,23 +95,70 @@ export function AaveV3Header({ campaign }: AaveV3HeaderProps) {
                             {t("claim")}
                         </Button>
                     ) : null}
-                    <Button
-                        size="sm"
-                        href={actionLink || undefined}
-                        disabled={!actionLink}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        icon={ArrowRightIcon}
-                        iconPlacement="right"
-                        className={{
-                            icon: styles.externalLinkIcon,
-                        }}
-                    >
-                        {t(`aaveV3.${campaign.target.type}`, {
-                            collateral: campaign.target.collateral.token.symbol,
-                            brand: campaign.target.brand.name,
-                        })}
-                    </Button>
+
+                    {campaign.target.type ===
+                        TargetType.AaveV3BridgeAndSupply && (
+                        <>
+                            <Button
+                                size="sm"
+                                href={bridgeActionLink || undefined}
+                                disabled={!bridgeActionLink}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                icon={ArrowRightIcon}
+                                iconPlacement="right"
+                                className={{
+                                    icon: styles.externalLinkIcon,
+                                }}
+                            >
+                                {t("aaveV3.aave-v3-bridge", {
+                                    collateral:
+                                        campaign.target.collateral.token.symbol,
+                                    bridge: campaign.target.bridge.name,
+                                })}
+                            </Button>
+                            <Button
+                                size="sm"
+                                href={supplyActionLink || undefined}
+                                disabled={!supplyActionLink}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                icon={ArrowRightIcon}
+                                iconPlacement="right"
+                                className={{
+                                    icon: styles.externalLinkIcon,
+                                }}
+                            >
+                                {t("aaveV3.aave-v3-supply", {
+                                    collateral:
+                                        campaign.target.collateral.token.symbol,
+                                    brand: campaign.target.brand.name,
+                                })}
+                            </Button>
+                        </>
+                    )}
+
+                    {campaign.target.type !==
+                        TargetType.AaveV3BridgeAndSupply && (
+                        <Button
+                            size="sm"
+                            href={actionLink || undefined}
+                            disabled={!actionLink}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            icon={ArrowRightIcon}
+                            iconPlacement="right"
+                            className={{
+                                icon: styles.externalLinkIcon,
+                            }}
+                        >
+                            {t(`aaveV3.${campaign.target.type}`, {
+                                collateral:
+                                    campaign.target.collateral.token.symbol,
+                                brand: campaign.target.brand.name,
+                            })}
+                        </Button>
+                    )}
                 </div>
                 {campaign.isDistributing(DistributablesType.Tokens) && (
                     <AprChip

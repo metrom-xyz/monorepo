@@ -5,6 +5,7 @@ import {
     SupportedDex,
     SupportedAaveV3,
     SupportedLiquityV2,
+    SupportedBridge,
 } from "../commons";
 import type {
     BackendCampaignResponse,
@@ -120,6 +121,10 @@ const LIQUITY_V2_BRAND_NAME: Record<SupportedLiquityV2, string> = {
 
 const AAVE_V3_BRAND_NAME: Record<SupportedAaveV3, string> = {
     [SupportedAaveV3.Aave]: "Aave",
+};
+
+const BRIDGE_BRAND_NAME: Record<SupportedBridge, string> = {
+    [SupportedBridge.LayerZero]: "Layer Zero",
 };
 
 export interface FetchCampaignsParams {
@@ -956,8 +961,7 @@ function processCampaignsResponse(
                     chainType: backendCampaign.target.chainType,
                     chainId: backendCampaign.target.chainId,
                     brand: {
-                        slug: backendCampaign.target
-                            .brand as SupportedLiquityV2,
+                        slug: backendCampaign.target.brand,
                         name: LIQUITY_V2_BRAND_NAME[
                             backendCampaign.target.brand as SupportedLiquityV2
                         ],
@@ -979,8 +983,7 @@ function processCampaignsResponse(
                     chainType: backendCampaign.target.chainType,
                     chainId: backendCampaign.target.chainId,
                     brand: {
-                        slug: backendCampaign.target
-                            .brand as SupportedLiquityV2,
+                        slug: backendCampaign.target.brand,
                         name: LIQUITY_V2_BRAND_NAME[
                             backendCampaign.target.brand as SupportedLiquityV2
                         ],
@@ -1002,7 +1005,7 @@ function processCampaignsResponse(
                     chainType: backendCampaign.target.chainType,
                     chainId: backendCampaign.target.chainId,
                     brand: {
-                        slug: backendCampaign.target.brand as SupportedAaveV3,
+                        slug: backendCampaign.target.brand,
                         name: AAVE_V3_BRAND_NAME[
                             backendCampaign.target.brand as SupportedAaveV3
                         ],
@@ -1026,7 +1029,7 @@ function processCampaignsResponse(
                     chainType: backendCampaign.target.chainType,
                     chainId: backendCampaign.target.chainId,
                     brand: {
-                        slug: backendCampaign.target.brand as SupportedAaveV3,
+                        slug: backendCampaign.target.brand,
                         name: AAVE_V3_BRAND_NAME[
                             backendCampaign.target.brand as SupportedAaveV3
                         ],
@@ -1050,7 +1053,7 @@ function processCampaignsResponse(
                     chainType: backendCampaign.target.chainType,
                     chainId: backendCampaign.target.chainId,
                     brand: {
-                        slug: backendCampaign.target.brand as SupportedAaveV3,
+                        slug: backendCampaign.target.brand,
                         name: AAVE_V3_BRAND_NAME[
                             backendCampaign.target.brand as SupportedAaveV3
                         ],
@@ -1073,21 +1076,33 @@ function processCampaignsResponse(
                     type: TargetType.AaveV3BridgeAndSupply,
                     chainType: backendCampaign.target.chainType,
                     chainId: backendCampaign.target.chainId,
-                    brand: {
-                        slug: backendCampaign.target.brand as SupportedAaveV3,
-                        name: AAVE_V3_BRAND_NAME[
-                            backendCampaign.target.brand as SupportedAaveV3
+                    bridge: {
+                        slug: backendCampaign.target.bridgeBrand,
+                        name: BRIDGE_BRAND_NAME[
+                            backendCampaign.target
+                                .bridgeBrand as SupportedBridge
                         ],
                     },
-                    market: backendCampaign.target.market,
+                    brand: {
+                        slug: backendCampaign.target.aaveV3Brand,
+                        name: AAVE_V3_BRAND_NAME[
+                            backendCampaign.target
+                                .aaveV3Brand as SupportedAaveV3
+                        ],
+                    },
+                    market: backendCampaign.target.aaveV3Market,
+                    boostingFactor:
+                        (Number(backendCampaign.target.boostingFactor) /
+                            1_000_000) *
+                        100,
                     collateral: resolveAaveV3Collateral(
                         response.resolvedAaveV3Collaterals,
                         response.resolvedTokens,
                         backendCampaign.target.chainId,
                         backendCampaign.target.chainType,
-                        backendCampaign.target.brand,
-                        backendCampaign.target.market,
-                        backendCampaign.target.collateral as Address,
+                        backendCampaign.target.aaveV3Brand,
+                        backendCampaign.target.aaveV3Market,
+                        backendCampaign.target.aaveV3Collateral as Address,
                     ),
                 };
                 break;

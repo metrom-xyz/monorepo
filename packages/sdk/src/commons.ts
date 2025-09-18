@@ -33,6 +33,10 @@ export enum SupportedAaveV3 {
     Aave = "aave",
 }
 
+export enum SupportedBridge {
+    LayerZero = "layer-zero",
+}
+
 export enum SupportedGmxV1 {
     Amped = "amped",
 }

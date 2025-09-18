@@ -1,0 +1,39 @@
+@reference "../../../../app.css";
+
+.previewLabelWrapper {
+    @apply w-full flex justify-between items-center;
+}
+
+.previewTextWrapper {
+    @apply flex items-center gap-2;
+}
+
+.previewLabel {
+    font-size: inherit;
+    color: inherit;
+}
+
+.boostWrapper {
+    @apply flex gap-2;
+}
+
+.weight {
+    @apply flex gap-1;
+}
+
+.previewLabel {
+    font-size: inherit;
+    color: inherit;
+}
+
+.stepContent {
+    @apply flex flex-col gap-3 p-4;
+}
+
+.boldText {
+    @apply text-black dark:text-white font-bold;
+}
+
+.applyButton {
+    @apply w-full;
+}
