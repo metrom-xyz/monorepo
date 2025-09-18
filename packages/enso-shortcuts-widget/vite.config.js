@@ -2,7 +2,7 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react-swc";
 import dts from "vite-plugin-dts";
 
-export default defineConfig({
+export default defineConfig((env) => ({
     plugins: [react(), dts({ tsconfigPath: "./tsconfig.json" })],
     build: {
         emptyOutDir: true,
@@ -22,4 +22,10 @@ export default defineConfig({
             ],
         },
     },
-});
+    optimizeDeps:
+        env.command === "serve"
+            ? {
+                  include: ["@metrom-xyz/ui"],
+              }
+            : undefined,
+}));
