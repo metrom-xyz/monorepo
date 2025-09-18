@@ -8,6 +8,7 @@ import {
     type LiquityV2DebtTarget,
     type LiquidityByAddresses,
     RestrictionType,
+    SupportedBridge,
 } from "@metrom-xyz/sdk";
 import {
     AmmPoolLiquidityCampaignPreviewPayload,
@@ -26,7 +27,12 @@ import { SECONDS_IN_YEAR, WEIGHT_UNIT } from "../commons";
 import { type LiquityV2Protocol } from "@metrom-xyz/chains";
 import { getTranslations } from "next-intl/server";
 import { getChainData } from "./chain";
-import { Serializer, AccountAddress, MoveString } from "@aptos-labs/ts-sdk";
+import {
+    Serializer,
+    AccountAddress,
+    MoveString,
+    U32,
+} from "@aptos-labs/ts-sdk";
 
 export function buildCampaignDataBundleEvm(payload: CampaignPreviewPayload) {
     if (payload instanceof AmmPoolLiquidityCampaignPreviewPayload)
@@ -67,7 +73,8 @@ export function buildCampaignDataBundleMvm(payload: CampaignPreviewPayload) {
     } else if (payload instanceof AaveV3CampaignPreviewPayload) {
         // TODO: have the bridge brand in the campaign payload
         if (payload.kind === CampaignKind.AaveV3BridgeAndSupply)
-            serializableParts.push(new MoveString("layer-zero"));
+            serializableParts.push(new MoveString(SupportedBridge.LayerZero));
+
         serializableParts.push(new MoveString(payload.brand.slug));
         serializableParts.push(
             AccountAddress.fromString(payload.market.address),
@@ -75,6 +82,12 @@ export function buildCampaignDataBundleMvm(payload: CampaignPreviewPayload) {
         serializableParts.push(
             AccountAddress.fromString(payload.collateral.token.address),
         );
+
+        if (payload.kind === CampaignKind.AaveV3BridgeAndSupply) {
+            serializableParts.push(
+                new U32(payload.boostingFactor * 100 * 1_000_000),
+            );
+        }
     } else if (payload instanceof EmptyTargetCampaignPreviewPayload) {
         return [];
     } else return null;
@@ -175,6 +188,12 @@ export function getCampaignName(
                 token: campaign.target.collateral.token.symbol,
             });
         }
+        case TargetType.AaveV3BridgeAndSupply: {
+            return t("campaignActions.aaveV3BridgeAndSupply", {
+                brand: campaign.target.brand.name,
+                token: campaign.target.collateral.token.symbol,
+            });
+        }
         case TargetType.Empty: {
             return t("campaignActions.empty");
         }
@@ -200,13 +219,12 @@ export async function getSocialPreviewCampaignName(
                 chain,
             });
         }
-        case TargetType.LiquityV2Debt: {
-            return t("socialCampaignPreview.title", {
-                protocol: campaign.target.brand.name,
-                chain,
-            });
-        }
-        case TargetType.LiquityV2StabilityPool: {
+        case TargetType.LiquityV2StabilityPool:
+        case TargetType.LiquityV2Debt:
+        case TargetType.AaveV3Borrow:
+        case TargetType.AaveV3Supply:
+        case TargetType.AaveV3NetSupply:
+        case TargetType.AaveV3BridgeAndSupply: {
             return t("socialCampaignPreview.title", {
                 protocol: campaign.target.brand.name,
                 chain,

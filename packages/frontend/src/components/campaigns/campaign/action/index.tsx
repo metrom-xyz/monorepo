@@ -24,7 +24,8 @@ export function Action({ campaign }: ActionProps) {
     const aaveV3 =
         campaign.isTargeting(TargetType.AaveV3Borrow) ||
         campaign.isTargeting(TargetType.AaveV3Supply) ||
-        campaign.isTargeting(TargetType.AaveV3NetSupply);
+        campaign.isTargeting(TargetType.AaveV3NetSupply) ||
+        campaign.isTargeting(TargetType.AaveV3BridgeAndSupply);
 
     const empty = campaign.isTargeting(TargetType.Empty);
 

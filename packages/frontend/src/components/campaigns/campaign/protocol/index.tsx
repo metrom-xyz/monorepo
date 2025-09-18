@@ -33,7 +33,8 @@ export function Protocol({ campaign }: ProtocolProps) {
             }
             case TargetType.AaveV3Borrow:
             case TargetType.AaveV3Supply:
-            case TargetType.AaveV3NetSupply: {
+            case TargetType.AaveV3NetSupply:
+            case TargetType.AaveV3BridgeAndSupply: {
                 return protocol.slug === campaign.target.brand.slug;
             }
         }
