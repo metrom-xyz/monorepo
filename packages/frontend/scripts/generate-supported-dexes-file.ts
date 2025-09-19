@@ -20,6 +20,7 @@ const HOMEPAGES: Record<SupportedDex, string> = {
     [SupportedDex.Carbon]: "https://carbondefi.xyz/",
     [SupportedDex.Velodrome]: "https://velodrome.finance/",
     [SupportedDex.Morphex]: "https://morphex.exchange/",
+    [SupportedDex.Izumi]: "https://izumi.finance/",
 };
 
 // TODO: add support for MVM_CHAIN_DATA generation
