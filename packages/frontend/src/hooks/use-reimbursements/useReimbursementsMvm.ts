@@ -12,6 +12,7 @@ import {
     AccountAddress,
 } from "@aptos-labs/ts-sdk";
 import { useClients } from "@aptos-labs/react";
+import { useChainWithType } from "../useChainWithType";
 
 interface Payloads {
     recovered: InputViewFunctionData[];
@@ -28,6 +29,7 @@ export function useReimbursementsMvm({
 
     const queryClient = useQueryClient();
     const { account } = useWallet();
+    const { id } = useChainWithType();
     const { aptos } = useClients();
 
     const address = account?.address.toStringLong();
@@ -65,34 +67,37 @@ export function useReimbursementsMvm({
 
         if (!rawReimbursements) return { recovered, claimed };
 
-        rawReimbursements.forEach((rawReimbursement) => {
-            const chainData = getChainData(rawReimbursement.chainId);
-            if (!chainData || !address) return null;
+        rawReimbursements
+            // Filter claims by the connected Aptos chain
+            .filter((rawReimbursement) => rawReimbursement.chainId === id)
+            .forEach((rawReimbursement) => {
+                const chainData = getChainData(rawReimbursement.chainId);
+                if (!chainData || !address) return null;
 
-            const { metromContract: metrom } = chainData;
-            const moveFunction: MoveFunctionId = `${metrom.address}::metrom::claimed_campaign_reward`;
+                const { metromContract: metrom } = chainData;
+                const moveFunction: MoveFunctionId = `${metrom.address}::metrom::claimed_campaign_reward`;
 
-            recovered.push({
-                function: moveFunction,
-                functionArguments: [
-                    AccountAddress.fromString(
-                        rawReimbursement.campaignId,
-                    ).bcsToBytes(),
-                    rawReimbursement.token.address,
-                    AccountAddress.from("0x0").toStringLong(),
-                ],
+                recovered.push({
+                    function: moveFunction,
+                    functionArguments: [
+                        AccountAddress.fromString(
+                            rawReimbursement.campaignId,
+                        ).bcsToBytes(),
+                        rawReimbursement.token.address,
+                        AccountAddress.from("0x0").toStringLong(),
+                    ],
+                });
+                claimed.push({
+                    function: moveFunction,
+                    functionArguments: [
+                        AccountAddress.fromString(
+                            rawReimbursement.campaignId,
+                        ).bcsToBytes(),
+                        rawReimbursement.token.address,
+                        address,
+                    ],
+                });
             });
-            claimed.push({
-                function: moveFunction,
-                functionArguments: [
-                    AccountAddress.fromString(
-                        rawReimbursement.campaignId,
-                    ).bcsToBytes(),
-                    rawReimbursement.token.address,
-                    address,
-                ],
-            });
-        });
 
         return { recovered, claimed } as Payloads;
     }, [address, rawReimbursements]);

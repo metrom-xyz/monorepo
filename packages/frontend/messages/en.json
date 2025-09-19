@@ -308,11 +308,22 @@
                     "list": {
                         "borrow": "Borrow",
                         "supply": "Supply",
-                        "netSupply": "Net supply"
+                        "netSupply": "Net supply",
+                        "bridgeAndSupply": "Bridge and supply"
                     }
                 },
                 "market": {
                     "title": "Market"
+                },
+                "boost": {
+                    "title": "Boosting",
+                    "factor": "Factor {boostingFactor}",
+                    "infoMessage": "Pick a boost factor that will increase a position weight once the bridged funds are supplied to the market.",
+                    "boostingFactor": "Boosting factor",
+                    "apply": "Apply",
+                    "warnings": {
+                        "notApplied": "Not applied"
+                    }
                 },
                 "collaterals": {
                     "title": "Collateral",
@@ -399,7 +410,8 @@
                 "list": {
                     "borrow": "Borrow using {collateral}",
                     "supply": "Supply {collateral}",
-                    "netSupply": "Net supply {collateral}"
+                    "netSupply": "Net supply {collateral}",
+                    "bridgeAndSupply": "Bridge and supply {collateral}"
                 }
             }
         },
@@ -546,7 +558,9 @@
             "aaveV3": {
                 "aave-v3-borrow": "Borrow using {collateral} on {brand}",
                 "aave-v3-supply": "Supply {collateral} on {brand}",
-                "aave-v3-net-supply": "Net supply {collateral} on {brand}"
+                "aave-v3-net-supply": "Net supply {collateral} on {brand}",
+                "aave-v3-bridge": "Bridge {collateral}",
+                "and-supply": "Supply {collateral} on {brand}"
             }
         },
         "details": {
@@ -774,6 +788,7 @@
         "aaveV3Borrow": "Borrow using {token} on {brand}",
         "aaveV3Supply": "Supply {token} on {brand}",
         "aaveV3NetSupply": "Net supply {token} on {brand}",
+        "aaveV3BridgeAndSupply": "Bridge and supply {token} on {brand}",
         "empty": "Test campaign"
     },
     "socialCampaignPreview": {

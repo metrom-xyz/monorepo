@@ -18,6 +18,7 @@ export interface ChainData {
 }
 
 export enum SupportedDevelopmentMvmChain {
+    AptosMainnet = SupportedChainMvm.Mainnet,
     AptosTestnet = SupportedChainMvm.Testnet,
 }
 

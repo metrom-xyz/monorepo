@@ -12,6 +12,7 @@ import {
     AccountAddress,
 } from "@aptos-labs/ts-sdk";
 import { useClients } from "@aptos-labs/react";
+import { useChainWithType } from "../useChainWithType";
 
 type QueryKey = [string, Address | undefined];
 
@@ -22,6 +23,7 @@ export function useClaimsMvm({
 
     const queryClient = useQueryClient();
     const { account } = useWallet();
+    const { id } = useChainWithType();
     const { aptos } = useClients();
 
     const address = account?.address.toStringLong();
@@ -58,26 +60,30 @@ export function useClaimsMvm({
     const claimedPayloads: InputViewFunctionData[] | undefined = useMemo(() => {
         if (!rawClaims) return undefined;
 
-        return rawClaims
-            .map((rawClaim) => {
-                const chainData = getChainData(rawClaim.chainId);
-                if (!chainData || !address) return null;
+        return (
+            rawClaims
+                // Filter claims by the connected Aptos chain
+                .filter((rawClaim) => rawClaim.chainId === id)
+                .map((rawClaim) => {
+                    const chainData = getChainData(rawClaim.chainId);
+                    if (!chainData || !address) return null;
 
-                const { metromContract: metrom } = chainData;
-                const moveFunction: MoveFunctionId = `${metrom.address}::metrom::claimed_campaign_reward`;
+                    const { metromContract: metrom } = chainData;
+                    const moveFunction: MoveFunctionId = `${metrom.address}::metrom::claimed_campaign_reward`;
 
-                return {
-                    function: moveFunction,
-                    functionArguments: [
-                        AccountAddress.fromString(
-                            rawClaim.campaignId,
-                        ).bcsToBytes(),
-                        rawClaim.token.address,
-                        address,
-                    ],
-                };
-            })
-            .filter((claim) => !!claim);
+                    return {
+                        function: moveFunction,
+                        functionArguments: [
+                            AccountAddress.fromString(
+                                rawClaim.campaignId,
+                            ).bcsToBytes(),
+                            rawClaim.token.address,
+                            address,
+                        ],
+                    };
+                })
+                .filter((claim) => !!claim)
+        );
     }, [address, rawClaims]);
 
     const {

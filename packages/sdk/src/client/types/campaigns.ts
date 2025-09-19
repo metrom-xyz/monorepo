@@ -47,6 +47,14 @@ export type BackendAaveV3BorrowTarget = BackendAaveV3Target<"aave-v3-borrow">;
 export type BackendAaveV3SupplyTarget = BackendAaveV3Target<"aave-v3-supply">;
 export type BackendAaveV3NetSupplyTarget =
     BackendAaveV3Target<"aave-v3-net-supply">;
+export type BackendAaveV3BridgeAndSupplyTarget = BaseTarget & {
+    type: "aave-v3-bridge-and-supply";
+    bridgeBrand: string;
+    aaveV3Brand: string;
+    aaveV3Market: string;
+    aaveV3Collateral: string;
+    boostingFactor: string;
+};
 
 export interface BackendTokenDistributable {
     token: Address;
@@ -99,7 +107,8 @@ export interface BackendCampaign {
         | BackendLiquityV2StabilityPoolTarget
         | BackendAaveV3BorrowTarget
         | BackendAaveV3SupplyTarget
-        | BackendAaveV3NetSupplyTarget;
+        | BackendAaveV3NetSupplyTarget
+        | BackendAaveV3BridgeAndSupplyTarget;
     specification?: Specification;
     distributables: BackendTokenDistributables | BackendPointDistributables;
     apr?: number;

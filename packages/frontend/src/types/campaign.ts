@@ -12,6 +12,7 @@ import type {
     UsdPricedOnChainAmount,
     Weighting,
     EmptyTarget,
+    AaveV3BridgeAndSupplyTarget,
 } from "@metrom-xyz/sdk";
 import {
     Campaign as SdkCampaign,
@@ -73,6 +74,7 @@ export enum CampaignKind {
     AaveV3Supply = 6,
     AaveV3Borrow = 7,
     AaveV3NetSupply = 8,
+    AaveV3BridgeAndSupply = 9,
 }
 
 export enum CampaignType {
@@ -118,6 +120,7 @@ export interface AaveV3CampaignPayload extends BaseCampaignPayload {
     action?: AaveV3Action;
     market?: AaveV3Market;
     collateral?: AaveV3Collateral;
+    boostingFactor: number;
 }
 
 export interface CampaignPayloadTokenDistributables {
@@ -216,6 +219,7 @@ export class AaveV3CampaignPreviewPayload extends BaseCampaignPreviewPayload {
         public readonly action: AaveV3Action,
         public readonly market: AaveV3Market,
         public readonly collateral: AaveV3Collateral,
+        public readonly boostingFactor: number,
         ...baseArgs: ConstructorParameters<typeof BaseCampaignPreviewPayload>
     ) {
         super(...baseArgs);
@@ -231,6 +235,10 @@ export class AaveV3CampaignPreviewPayload extends BaseCampaignPreviewPayload {
             }
             case AaveV3Action.NetSupply: {
                 this.kind = CampaignKind.AaveV3NetSupply;
+                break;
+            }
+            case AaveV3Action.BridgeAndSupply: {
+                this.kind = CampaignKind.AaveV3BridgeAndSupply;
                 break;
             }
             default: {
@@ -275,6 +283,7 @@ export interface CampaignPayloadErrors {
     weighting?: boolean;
     kpiSpecification?: boolean;
     priceRangeSpecification?: boolean;
+    boostingFactor?: boolean;
     restrictions?: boolean;
 }
 
@@ -427,7 +436,9 @@ export interface TargetedNamedCampaign<T extends TargetType> extends Campaign {
                 ? AaveV3SupplyTarget
                 : T extends TargetType.AaveV3NetSupply
                   ? AaveV3NetSupplyTarget
-                  : T extends TargetType.Empty
-                    ? EmptyTarget
-                    : never;
+                  : T extends TargetType.AaveV3BridgeAndSupply
+                    ? AaveV3BridgeAndSupplyTarget
+                    : T extends TargetType.Empty
+                      ? EmptyTarget
+                      : never;
 }
