@@ -43,6 +43,7 @@ export enum SupportedAmm {
     UniswapV3 = "uniswap-v3",
     Carbon = "carbon",
     PancakeV3 = "pancake-v3",
+    Izumi = "izumi",
 }
 
 export interface ServiceUrls {
