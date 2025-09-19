@@ -27,6 +27,8 @@ export const TURTLE_API_BASE_URL = "https://earn.turtle.vision";
 export const LIQUIDITY_LAND_REFERRAL_URL =
     "https://app.liquidity.land?ref=2AQfO-fN";
 
+export const ENSO_WIDGET_REFERRAL_CODE = "6578715329019f91";
+
 export const SECONDS_IN_YEAR = 60 * 60 * 24 * 365;
 
 export const FEE_UNIT = 1_000_000;

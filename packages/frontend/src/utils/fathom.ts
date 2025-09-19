@@ -17,7 +17,8 @@ type RegisteredEvents =
     | "CLICK_TELEGRAM_LINK"
     | "CLICK_X_LINK"
     | "CLICK_GITHUB_LINK"
-    | "CLICK_DISCORD_LINK";
+    | "CLICK_DISCORD_LINK"
+    | "ENSO_WIDGET_TX_SUCCESS";
 
 export function trackFathomEvent(event: RegisteredEvents, opts?: EventOptions) {
     trackEvent(event, opts);
