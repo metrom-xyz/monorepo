@@ -8,5 +8,6 @@
 |[Kim](https://www.kim.exchange)|-|-|-|-|-|-|-|✅|-|-|-|-|
 |[BaseSwap](https://baseswap.fi/)|-|-|-|-|-|-|-|✅|-|-|-|-|
 |[Unagi](https://unagiswap.xyz/)|-|-|-|-|-|-|-|-|-|✅|-|-|
+|[Izumi](https://izumi.finance/)|-|-|-|-|-|-|-|-|-|✅|-|-|
 |[Scribe](https://scribe.exchange)|-|-|-|-|-|-|-|-|-|-|✅|-|
 |[Morphex](https://morphex.exchange/)|-|-|-|-|-|-|-|-|-|-|-|✅|
