@@ -25,8 +25,16 @@ export function AmmPoolLiquityHeader({ campaign }: AmmPoolLiquityHeaderProps) {
         router.push("/claims");
     }, [router]);
 
+    // FIXME: temp fix, have the tick spacing in the pool, from the API
+    const velodromePoolParams =
+        campaign.target.pool.amm === "velodrome"
+            ? {
+                  type: campaign.target.pool.fee === 0.05 ? 50 : 200,
+              }
+            : undefined;
+
     const ChainIcon = campaign.chainData?.icon;
-    const depositLink = campaign.getDepositLiquidityUrl();
+    const depositLink = campaign.getDepositLiquidityUrl(velodromePoolParams);
     const explorerLink = getExplorerLink(
         campaign.target.pool.id,
         campaign.chainId,

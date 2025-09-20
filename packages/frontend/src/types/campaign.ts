@@ -331,7 +331,9 @@ export class Campaign extends SdkCampaign {
         return this.target.type === type;
     }
 
-    getDepositLiquidityUrl(): string | undefined {
+    getDepositLiquidityUrl(
+        params?: Record<string, string | number>,
+    ): string | undefined {
         if (!this.isTargeting(TargetType.AmmPoolLiquidity)) return undefined;
 
         const pool = this.target.pool;
@@ -344,21 +346,31 @@ export class Campaign extends SdkCampaign {
         if (!dex) return undefined;
         const { depositUrl } = dex as DexProtocol;
         const { template, type } = depositUrl;
+        const queryParams = params
+            ? Object.entries(params)
+                  .map(([key, value]) => `&${key}=${value}`)
+                  .join("")
+            : "";
 
         switch (type) {
             case DepositUrlType.PathPoolAddress: {
-                return template.replace("{pool}", `${pool.id}`);
+                return template
+                    .replace("{pool}", `${pool.id}`)
+                    .concat(queryParams);
             }
             case DepositUrlType.PathTokenAddresses: {
-                return template.replace(
-                    "{pool}",
-                    `${pool.tokens.map(({ address }) => address).join("/")}`,
-                );
+                return template
+                    .replace(
+                        "{pool}",
+                        `${pool.tokens.map(({ address }) => address).join("/")}`,
+                    )
+                    .concat(queryParams);
             }
             case DepositUrlType.QueryTokenAddresses: {
                 const url = template
                     .replace("{token_0}", pool.tokens[0].address)
-                    .replace("{token_1}", pool.tokens[1].address);
+                    .replace("{token_1}", pool.tokens[1].address)
+                    .concat(queryParams);
 
                 return pool.fee ? `${url}&fee=${pool.fee * 10000}` : url;
             }
