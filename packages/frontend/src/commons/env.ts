@@ -29,7 +29,12 @@ export const ENSO_FINANCE_WIDGET: boolean =
     process.env.NEXT_PUBLIC_ENSO_FINANCE_WIDGET === "true";
 export const ENSO_FINANCE_API_KEY: string =
     process.env.NEXT_PUBLIC_ENSO_FINANCE_API_KEY!;
-if (!APTOS && !ENSO_FINANCE_API_KEY && ENVIRONMENT === Environment.Production)
+if (
+    ENSO_FINANCE_WIDGET &&
+    !APTOS &&
+    !ENSO_FINANCE_API_KEY &&
+    ENVIRONMENT === Environment.Production
+)
     throw new Error(
         "A valid NEXT_PUBLIC_ENSO_FINANCE_API_KEY env variable is needed",
     );
