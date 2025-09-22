@@ -107,6 +107,7 @@ const DEX_BRAND_NAME: Record<SupportedDex, string> = {
     [SupportedDex.Carbon]: "Carbon DeFi",
     [SupportedDex.Velodrome]: "Velodrome",
     [SupportedDex.Morphex]: "Morphex",
+    [SupportedDex.Izumi]: "Izumi",
 };
 
 const LIQUITY_V2_BRAND_NAME: Record<SupportedLiquityV2, string> = {

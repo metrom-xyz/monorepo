@@ -6,6 +6,7 @@ import { UniswapLogo } from "../assets/logos/dexes/uniswap";
 import { UnagiLogo } from "../assets/logos/dexes/unagi";
 import type { ChainData } from "../types/chains";
 import { DepositUrlType, ProtocolType } from "../types/protocol";
+import { IzumiLogo } from "../assets/logos/dexes/izumi";
 
 export const taikoData: ChainData = {
     active: true,
@@ -36,6 +37,19 @@ export const taikoData: ChainData = {
                 type: DepositUrlType.QueryTokenAddresses,
                 template:
                     "https://unagiswap.xyz/pool/create/amm/v3?from={token_0}&to={token_1}",
+            },
+            supportsFetchAllPools: true,
+        },
+        {
+            active: true,
+            type: ProtocolType.Dex,
+            slug: SupportedDex.Izumi,
+            logo: IzumiLogo,
+            name: "Izumi",
+            depositUrl: {
+                type: DepositUrlType.PathPoolAddress,
+                template:
+                    "https://izumi.finance/trade/pool/?chain_id=167000&pool_address={pool}",
             },
             supportsFetchAllPools: true,
         },

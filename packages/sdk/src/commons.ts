@@ -19,6 +19,7 @@ export enum SupportedDex {
     Carbon = "carbon",
     Velodrome = "velodrome",
     Morphex = "morphex",
+    Izumi = "izumi",
 }
 
 export enum SupportedLiquityV2 {
@@ -42,6 +43,7 @@ export enum SupportedAmm {
     UniswapV3 = "uniswap-v3",
     Carbon = "carbon",
     PancakeV3 = "pancake-v3",
+    Izumi = "izumi",
 }
 
 export interface ServiceUrls {
