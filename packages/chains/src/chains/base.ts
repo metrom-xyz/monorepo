@@ -1,4 +1,4 @@
-import { SupportedDex } from "@metrom-xyz/sdk";
+import { SupportedDex, TargetType } from "@metrom-xyz/sdk";
 import { SupportedChain, ADDRESS } from "@metrom-xyz/contracts";
 import { BaseLogo } from "../assets/logos/chains/base";
 import { BaseSwapLogo } from "../assets/logos/dexes/baseswap";
@@ -7,7 +7,6 @@ import { UniswapLogo } from "../assets/logos/dexes/uniswap";
 import type { ChainData } from "../types/chains";
 import { DepositUrlType, ProtocolType } from "../types/protocol";
 import { KimLogo } from "../assets";
-import { PartnerActionType } from "../types/partner";
 
 export const baseData: ChainData = {
     active: true,
@@ -56,7 +55,7 @@ export const baseData: ChainData = {
     partnerActions: [
         {
             active: true,
-            type: PartnerActionType.JumperWhitelistedAmmPoolLiquidity,
+            type: TargetType.JumperWhitelistedAmmPoolLiquidity,
         },
     ],
     baseTokens: [

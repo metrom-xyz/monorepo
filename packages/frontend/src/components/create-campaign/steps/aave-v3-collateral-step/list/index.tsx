@@ -1,15 +1,15 @@
-import type { AaveV3Collateral, LiquityV2Collateral } from "@metrom-xyz/sdk";
+import type { AaveV3Collateral } from "@metrom-xyz/sdk";
 import { Typography } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
-import { AaveV3Action, LiquityV2Action } from "@/src/types/common";
+import { AaveV3Action } from "@/src/types/common";
 import { Row, RowSkeleton } from "./row";
-import type { AaveV3CampaignPayload } from "@/src/types/campaign";
+import { CampaignKind, type AaveV3CampaignPayload } from "@/src/types/campaign";
 
 import styles from "./styles.module.css";
 
 interface CollateralsListProps {
     loading?: boolean;
-    action?: AaveV3CampaignPayload["action"];
+    action?: CampaignKind;
     selected?: AaveV3CampaignPayload["collateral"];
     collaterals?: AaveV3Collateral[];
     onChange: (collateral: AaveV3Collateral) => void;
@@ -32,7 +32,7 @@ export function CollateralsList({
                 </Typography>
                 <Typography uppercase size="sm" weight="medium" light>
                     {t(
-                        action === AaveV3Action.Borrow
+                        action === CampaignKind.AaveV3Borrow
                             ? "list.debt"
                             : "list.deposits",
                     )}

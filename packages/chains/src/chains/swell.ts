@@ -7,7 +7,6 @@ import { SwellLogo } from "../assets/logos/chains/swell";
 import { VelodromeLogo } from "../assets/logos/dexes/velodrome";
 import { OrkiDarkLogo } from "../assets/logos/liquity-v2-platforms/orki-dark";
 import { OrkiLightLogo } from "../assets/logos/liquity-v2-platforms/orki-light";
-import { PartnerActionType } from "../types/partner";
 
 // FIXME: remove this once done with development testing
 export const swellDevelopmentData: ChainData = {
@@ -55,7 +54,7 @@ export const swellDevelopmentData: ChainData = {
     partnerActions: [
         {
             active: true,
-            type: PartnerActionType.JumperWhitelistedAmmPoolLiquidity,
+            type: TargetType.JumperWhitelistedAmmPoolLiquidity,
         },
     ],
     baseTokens: [
@@ -140,7 +139,7 @@ export const swellProductionData: ChainData = {
     partnerActions: [
         {
             active: true,
-            type: PartnerActionType.JumperWhitelistedAmmPoolLiquidity,
+            type: TargetType.JumperWhitelistedAmmPoolLiquidity,
         },
     ],
     baseTokens: [

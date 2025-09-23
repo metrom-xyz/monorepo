@@ -5,12 +5,11 @@ import { StepPreview } from "@/src/components/step/preview";
 import { StepContent } from "@/src/components/step/content";
 import { useTranslations } from "next-intl";
 import {
-    type AaveV3CampaignPayload,
+    CampaignKind,
     type AaveV3CampaignPayloadPart,
 } from "@/src/types/campaign";
 import { Typography } from "@metrom-xyz/ui";
 import classNames from "classnames";
-import { AaveV3Action } from "@/src/types/common";
 
 import styles from "./styles.module.css";
 
@@ -19,28 +18,23 @@ export const AAVE_V3_ACTIONS = [
     {
         title: "list.borrow",
         logo: null,
-        value: AaveV3Action.Borrow,
+        value: CampaignKind.AaveV3Borrow,
     },
     {
         title: "list.supply",
         logo: null,
-        value: AaveV3Action.Supply,
+        value: CampaignKind.AaveV3Supply,
     },
     {
         title: "list.netSupply",
         logo: null,
-        value: AaveV3Action.NetSupply,
-    },
-    {
-        title: "list.bridgeAndSupply",
-        logo: null,
-        value: AaveV3Action.BridgeAndSupply,
+        value: CampaignKind.AaveV3NetSupply,
     },
 ] as const;
 
 interface AaveV3ActionStepProps {
     disabled?: boolean;
-    action?: AaveV3CampaignPayload["action"];
+    action?: CampaignKind;
     onActionChange: (value: AaveV3CampaignPayloadPart) => void;
 }
 
@@ -70,7 +64,7 @@ export function AaveV3ActionStep({
     }, [disabled, action]);
 
     const getActionChangeHandler = useCallback(
-        (newAction: AaveV3Action) => {
+        (newAction: CampaignKind) => {
             return () => {
                 if (action && action === newAction) return;
                 onActionChange({

@@ -2,13 +2,13 @@ import { SupportedChain, ADDRESS } from "@metrom-xyz/contracts";
 import {
     DepositUrlType,
     LensLogo,
-    PartnerActionType,
     ProtocolType,
     SupportedDex,
     UniswapLogo,
     type ChainData,
 } from "..";
 import { lens } from "viem/chains";
+import { TargetType } from "@metrom-xyz/sdk";
 
 export const lensData: ChainData = {
     active: true,
@@ -33,7 +33,7 @@ export const lensData: ChainData = {
     partnerActions: [
         {
             active: true,
-            type: PartnerActionType.JumperWhitelistedAmmPoolLiquidity,
+            type: TargetType.JumperWhitelistedAmmPoolLiquidity,
         },
     ],
     baseTokens: [

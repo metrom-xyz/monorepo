@@ -2,7 +2,6 @@
 
 import { useRouter } from "@/src/i18n/routing";
 import {
-    PartnerActionType,
     ProtocolType,
     type AaveV3Protocol,
     type DexProtocol,
@@ -12,6 +11,7 @@ import {
 import { useEffect } from "react";
 import { SkeletonForm } from "./skeleton-form";
 import { CampaignType } from "@/src/types/campaign";
+import type { PartnerActionTargetType } from "@metrom-xyz/sdk";
 
 interface RedirectProps {
     supported: (
@@ -23,15 +23,14 @@ interface RedirectProps {
 }
 
 const PROTOCOL_TO_CAMPAIGN_TYPE: Record<
-    ProtocolType | PartnerActionType,
+    ProtocolType | PartnerActionTargetType,
     CampaignType
 > = {
     [ProtocolType.Dex]: CampaignType.AmmPoolLiquidity,
     [ProtocolType.LiquityV2]: CampaignType.LiquityV2,
     [ProtocolType.AaveV3]: CampaignType.AaveV3,
-    [PartnerActionType.AaveV3BridgeAndSupply]:
-        CampaignType.AaveV3BridgeAndSupply,
-    [PartnerActionType.JumperWhitelistedAmmPoolLiquidity]:
+    "aave-v3-bridge-and-supply": CampaignType.AaveV3BridgeAndSupply,
+    "jumper-whitelisted-amm-pool-liquidity":
         CampaignType.JumperWhitelistedAmmPoolLiquidity,
 };
 

@@ -13,6 +13,7 @@ import type {
     Weighting,
     EmptyTarget,
     AaveV3BridgeAndSupplyTarget,
+    PartnerActionTargetType,
 } from "@metrom-xyz/sdk";
 import {
     Campaign as SdkCampaign,
@@ -29,23 +30,16 @@ import {
 } from "@metrom-xyz/sdk";
 import type { Dayjs } from "dayjs";
 import type { Address } from "viem";
-import {
-    AaveV3Action,
-    LiquityV2Action,
-    type WhitelistedErc20TokenAmount,
-} from "./common";
+import { LiquityV2Action, type WhitelistedErc20TokenAmount } from "./common";
 import {
     DepositUrlType,
-    PartnerActionType,
     ProtocolType,
     type AaveV3Protocol,
     type ChainData,
     type DexProtocol,
     type LiquityV2Protocol,
-    type Protocol,
 } from "@metrom-xyz/chains";
 import type { PropertyUnion } from "./utils";
-import type { PartnerActionPayload } from "./partner-action";
 
 export interface ClaimWithRemaining extends Claim {
     remaining: UsdPricedOnChainAmount;
@@ -125,16 +119,10 @@ export interface LiquityV2CampaignPayload extends BaseCampaignPayload {
 
 export interface AaveV3CampaignPayload extends BaseCampaignPayload {
     brand?: AaveV3Protocol;
-    action?: AaveV3Action;
+    action?: CampaignKind;
     market?: AaveV3Market;
     collateral?: AaveV3Collateral;
-    boostingFactor: number;
-}
-
-export interface PartnerActionCampaignPayload extends BaseCampaignPayload {
-    protocol?: Protocol;
-    actionType?: PartnerActionType;
-    actionPayload?: PartnerActionPayload;
+    boostingFactor?: number;
 }
 
 export interface CampaignPayloadTokenDistributables {
@@ -230,52 +218,30 @@ export class AaveV3CampaignPreviewPayload extends BaseCampaignPreviewPayload {
 
     constructor(
         public readonly brand: AaveV3Protocol,
-        public readonly action: AaveV3Action,
+        public readonly action: CampaignKind,
         public readonly market: AaveV3Market,
         public readonly collateral: AaveV3Collateral,
-        public readonly boostingFactor: number,
+        public readonly boostingFactor?: number,
         ...baseArgs: ConstructorParameters<typeof BaseCampaignPreviewPayload>
     ) {
         super(...baseArgs);
-
-        switch (action) {
-            case AaveV3Action.Borrow: {
-                this.kind = CampaignKind.AaveV3Borrow;
-                break;
-            }
-            case AaveV3Action.Supply: {
-                this.kind = CampaignKind.AaveV3Supply;
-                break;
-            }
-            case AaveV3Action.NetSupply: {
-                this.kind = CampaignKind.AaveV3NetSupply;
-                break;
-            }
-            case AaveV3Action.BridgeAndSupply: {
-                this.kind = CampaignKind.AaveV3BridgeAndSupply;
-                break;
-            }
-            default: {
-                throw new Error(
-                    `Unsupported action ${action} for aave-v3 campaign payload`,
-                );
-            }
-        }
+        this.kind = action;
     }
 }
 
-export class PartnerActionCampaignPreviewPayload extends BaseCampaignPreviewPayload {
-    public readonly kind: CampaignKind;
+// export class AaveV3BridgeAndSupplyCampaignPreviewPayload extends BaseCampaignPreviewPayload {
+//     public readonly kind: CampaignKind = CampaignKind.AaveV3BridgeAndSupply;
 
-    constructor(
-        public readonly actionType: PartnerActionType,
-        public readonly actionPayload: PartnerActionPayload,
-        ...baseArgs: ConstructorParameters<typeof BaseCampaignPreviewPayload>
-    ) {
-        super(...baseArgs);
-        this.kind = actionPayload.kind;
-    }
-}
+//     constructor(
+//         public readonly brand: AaveV3Protocol,
+//         public readonly market: AaveV3Market,
+//         public readonly collateral: AaveV3Collateral,
+//         public readonly boostingFactor: number,
+//         ...baseArgs: ConstructorParameters<typeof BaseCampaignPreviewPayload>
+//     ) {
+//         super(...baseArgs);
+//     }
+// }
 
 export class EmptyTargetCampaignPreviewPayload extends BaseCampaignPreviewPayload {
     public readonly kind: CampaignKind = CampaignKind.EmptyTarget;
@@ -290,7 +256,6 @@ export type CampaignPreviewPayload =
     | AmmPoolLiquidityCampaignPreviewPayload
     | LiquityV2CampaignPreviewPayload
     | AaveV3CampaignPreviewPayload
-    | PartnerActionCampaignPreviewPayload
     | EmptyTargetCampaignPreviewPayload;
 
 export interface DistributablesCampaignPreviewPayload<
@@ -333,9 +298,6 @@ export type LiquityV2CampaignPayloadPart =
     PropertyUnion<LiquityV2CampaignPayload>;
 
 export type AaveV3CampaignPayloadPart = PropertyUnion<AaveV3CampaignPayload>;
-
-export type PartnerActionCampaignPayloadPart =
-    PropertyUnion<PartnerActionCampaignPayload>;
 
 export class Campaign extends SdkCampaign {
     constructor(

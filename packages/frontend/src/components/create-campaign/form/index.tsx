@@ -24,6 +24,7 @@ import { PARTNER_ACTION_CAMPAIGNS } from "@/src/commons";
 import { useTranslations } from "next-intl";
 
 import styles from "./styles.module.css";
+import { AaveV3BridgeAndSupplyForm } from "./aave-v3-bridge-and-supply-form";
 
 enum View {
     Form = "form",
@@ -127,6 +128,12 @@ export function CreateCampaignForm<T extends CampaignType>({
             {ammPoolLiquidity && (
                 <AmmPoolLiquidityForm
                     campaignKind={ammPoolLiquidityCampaignKind}
+                    unsupportedChain={unsupportedChain}
+                    onPreviewClick={handlePreviewOnClick}
+                />
+            )}
+            {type === CampaignType.AaveV3BridgeAndSupply && (
+                <AaveV3BridgeAndSupplyForm
                     unsupportedChain={unsupportedChain}
                     onPreviewClick={handlePreviewOnClick}
                 />

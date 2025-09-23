@@ -21,7 +21,7 @@ import {
     CampaignType,
 } from "../types/campaign";
 import type { TranslationsType } from "../types/utils";
-import { AaveV3Action, LiquityV2Action } from "../types/common";
+import { LiquityV2Action } from "../types/common";
 import { getDistributableRewardsPercentage } from "./kpi";
 import { type Hex, encodeAbiParameters, stringToHex, isAddress } from "viem";
 import { SECONDS_IN_YEAR, WEIGHT_UNIT } from "../commons";
@@ -94,7 +94,10 @@ export function buildCampaignDataBundleMvm(payload: CampaignPreviewPayload) {
             AccountAddress.fromString(payload.collateral.token.address),
         );
 
-        if (payload.kind === CampaignKind.AaveV3BridgeAndSupply) {
+        if (
+            payload.boostingFactor &&
+            payload.kind === CampaignKind.AaveV3BridgeAndSupply
+        ) {
             serializableParts.push(
                 new U32(payload.boostingFactor * 100 * 1_000_000),
             );
@@ -331,18 +334,18 @@ export function getCampaignPreviewApr(
         let usdTvl = 0;
         let liquidity = 0n;
         switch (action) {
-            case AaveV3Action.Borrow: {
+            case CampaignKind.AaveV3Borrow: {
                 usdTvl = collateral.usdDebt;
                 liquidity = collateral.debt;
                 break;
             }
-            case AaveV3Action.BridgeAndSupply:
-            case AaveV3Action.Supply: {
+            case CampaignKind.AaveV3BridgeAndSupply:
+            case CampaignKind.AaveV3Supply: {
                 usdTvl = collateral.usdSupply;
                 liquidity = collateral.supply;
                 break;
             }
-            case AaveV3Action.NetSupply: {
+            case CampaignKind.AaveV3NetSupply: {
                 usdTvl = Math.max(collateral.usdSupply - collateral.usdDebt, 0);
                 liquidity =
                     collateral.supply - collateral.debt > 0n

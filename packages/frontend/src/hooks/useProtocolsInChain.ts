@@ -15,7 +15,7 @@ interface ProtocolByType {
     [ProtocolType.AaveV3]: AaveV3Protocol;
 }
 
-type ProtocolsInChain<T extends ProtocolType | undefined> =
+export type ProtocolsInChain<T extends ProtocolType | undefined> =
     T extends ProtocolType ? readonly ProtocolByType[T][] : readonly Protocol[];
 
 interface UseProtocolsInChainParams<T extends ProtocolType | undefined>

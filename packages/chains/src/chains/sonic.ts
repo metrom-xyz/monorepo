@@ -1,12 +1,11 @@
 import { SupportedChain, ADDRESS } from "@metrom-xyz/contracts";
-import { SupportedDex } from "@metrom-xyz/sdk";
+import { SupportedDex, TargetType } from "@metrom-xyz/sdk";
 import { SonicLogo } from "../assets/logos/chains/sonic";
 import { UniswapLogo } from "../assets/logos/dexes/uniswap";
 import { SilverSwapLogo } from "../assets/logos/dexes/silverswap";
 import { sonic } from "viem/chains";
 import type { ChainData } from "../types/chains";
 import { DepositUrlType, ProtocolType } from "../types/protocol";
-import { PartnerActionType } from "../types/partner";
 
 export const sonicData: ChainData = {
     active: true,
@@ -48,7 +47,7 @@ export const sonicData: ChainData = {
     partnerActions: [
         {
             active: true,
-            type: PartnerActionType.JumperWhitelistedAmmPoolLiquidity,
+            type: TargetType.JumperWhitelistedAmmPoolLiquidity,
         },
     ],
     baseTokens: [

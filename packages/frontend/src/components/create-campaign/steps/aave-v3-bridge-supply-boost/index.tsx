@@ -25,7 +25,7 @@ import { useChainWithType } from "@/src/hooks/useChainWithType";
 import { usePrevious } from "react-use";
 import { InfoMessage } from "@/src/components/info-message";
 import numeral from "numeral";
-import { DEFAULT_BOOST } from "../../form/aave-v3-form";
+import { DEFAULT_BOOST } from "../../form/aave-v3-bridge-and-supply-form";
 
 import styles from "./styles.module.css";
 

@@ -335,8 +335,7 @@
                     "list": {
                         "borrow": "Borrow",
                         "supply": "Supply",
-                        "netSupply": "Net supply",
-                        "bridgeAndSupply": "Bridge and supply"
+                        "netSupply": "Net supply"
                     }
                 },
                 "market": {

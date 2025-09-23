@@ -1,11 +1,10 @@
 import { SupportedChain, ADDRESS } from "@metrom-xyz/contracts";
-import { SupportedDex } from "@metrom-xyz/sdk";
+import { SupportedDex, TargetType } from "@metrom-xyz/sdk";
 import { sei } from "viem/chains";
 import { SeiLogo } from "../assets/logos/chains/sei";
 import { CarbonLogo } from "../assets/logos/dexes/carbon";
 import type { ChainData } from "../types/chains";
 import { DepositUrlType, ProtocolType } from "../types/protocol";
-import { PartnerActionType } from "../types/partner";
 
 export const seiDevelopmentData: ChainData = {
     active: true,
@@ -87,7 +86,7 @@ export const seiProductionData: ChainData = {
     partnerActions: [
         {
             active: true,
-            type: PartnerActionType.JumperWhitelistedAmmPoolLiquidity,
+            type: TargetType.JumperWhitelistedAmmPoolLiquidity,
         },
     ],
     baseTokens: [

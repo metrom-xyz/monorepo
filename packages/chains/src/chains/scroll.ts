@@ -1,4 +1,4 @@
-import { SupportedDex } from "@metrom-xyz/sdk";
+import { SupportedDex, TargetType } from "@metrom-xyz/sdk";
 import { SupportedChain, ADDRESS } from "@metrom-xyz/contracts";
 import { ScrollLogo } from "../assets/logos/chains/scroll";
 import { scroll } from "viem/chains";
@@ -6,7 +6,6 @@ import { UniswapLogo } from "../assets/logos/dexes/uniswap";
 import type { ChainData } from "../types/chains";
 import { DepositUrlType, ProtocolType } from "../types/protocol";
 import { ScribeLogo } from "../assets";
-import { PartnerActionType } from "../types/partner";
 
 export const scrollData: ChainData = {
     active: true,
@@ -43,7 +42,7 @@ export const scrollData: ChainData = {
     partnerActions: [
         {
             active: true,
-            type: PartnerActionType.JumperWhitelistedAmmPoolLiquidity,
+            type: TargetType.JumperWhitelistedAmmPoolLiquidity,
         },
     ],
     baseTokens: [

@@ -1,4 +1,4 @@
-import { SupportedDex } from "@metrom-xyz/sdk";
+import { SupportedDex, TargetType } from "@metrom-xyz/sdk";
 import { GnosisLogo } from "../assets/logos/chains/gnosis";
 import { gnosis } from "viem/chains";
 import { SwaprLogo } from "../assets/logos/dexes/swapr";
@@ -6,7 +6,6 @@ import { ADDRESS, SupportedChain } from "@metrom-xyz/contracts";
 import type { ChainData } from "../types/chains";
 import { DepositUrlType, ProtocolType } from "../types/protocol";
 import { UniswapLogo } from "../assets";
-import { PartnerActionType } from "../types/partner";
 
 export const gnosisData: ChainData = {
     active: true,
@@ -43,7 +42,7 @@ export const gnosisData: ChainData = {
     partnerActions: [
         {
             active: true,
-            type: PartnerActionType.JumperWhitelistedAmmPoolLiquidity,
+            type: TargetType.JumperWhitelistedAmmPoolLiquidity,
         },
     ],
     baseTokens: [

@@ -39,6 +39,7 @@ import {
     type AaveV3SupplyTarget,
     type AaveV3NetSupplyTarget,
     type AaveV3BridgeAndSupplyTarget,
+    type JumperWhitelistedAmmPoolLiquidityTarget,
 } from "../types/campaigns";
 import {
     ChainType,
@@ -944,6 +945,19 @@ function processCampaignsResponse(
         switch (backendCampaign.target.type) {
             case "amm-pool-liquidity": {
                 target = <AmmPoolLiquidityTarget>{
+                    ...backendCampaign.target,
+                    pool: resolveAmmPool(
+                        response.resolvedAmmPools,
+                        response.resolvedTokens,
+                        backendCampaign.target.chainId,
+                        backendCampaign.target.chainType,
+                        backendCampaign.target.poolId,
+                    ),
+                };
+                break;
+            }
+            case "jumper-whitelisted-amm-pool-liquidity": {
+                target = <JumperWhitelistedAmmPoolLiquidityTarget>{
                     ...backendCampaign.target,
                     pool: resolveAmmPool(
                         response.resolvedAmmPools,

@@ -1,12 +1,38 @@
 import { Typography } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
-import type { AaveV3CampaignPreviewPayload } from "@/src/types/campaign";
+import {
+    CampaignKind,
+    type AaveV3CampaignPreviewPayload,
+} from "@/src/types/campaign";
 import { useMemo } from "react";
-import { AAVE_V3_ACTIONS } from "../../steps/aave-v3-action-step";
 import { RemoteLogo } from "@/src/components/remote-logo";
 import { useChainWithType } from "@/src/hooks/useChainWithType";
 
 import styles from "./styles.module.css";
+
+// TODO: maybe have this in the commons, and add all campaign kinds so it's not scoped for each campaign type
+export const CAMPAIGN_KIND_TITLES = [
+    {
+        title: "list.borrow",
+        logo: null,
+        value: CampaignKind.AaveV3Borrow,
+    },
+    {
+        title: "list.supply",
+        logo: null,
+        value: CampaignKind.AaveV3Supply,
+    },
+    {
+        title: "list.netSupply",
+        logo: null,
+        value: CampaignKind.AaveV3NetSupply,
+    },
+    {
+        title: "list.bridgeAndSupply",
+        logo: null,
+        value: CampaignKind.AaveV3BridgeAndSupply,
+    },
+] as const;
 
 interface AaveV3Props {
     payload: AaveV3CampaignPreviewPayload;
@@ -17,7 +43,9 @@ export function AaveV3({ payload }: AaveV3Props) {
     const { id: chainId } = useChainWithType();
 
     const action = useMemo(() => {
-        return AAVE_V3_ACTIONS.find(({ value }) => value === payload.action);
+        return CAMPAIGN_KIND_TITLES.find(
+            ({ value }) => value === payload.action,
+        );
     }, [payload]);
 
     return (

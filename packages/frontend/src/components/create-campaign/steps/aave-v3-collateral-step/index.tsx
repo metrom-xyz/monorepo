@@ -5,6 +5,7 @@ import { StepPreview } from "@/src/components/step/preview";
 import { StepContent } from "@/src/components/step/content";
 import { useTranslations } from "next-intl";
 import {
+    CampaignKind,
     type AaveV3CampaignPayload,
     type AaveV3CampaignPayloadPart,
 } from "@/src/types/campaign";
@@ -21,7 +22,7 @@ interface AaveV3CollateralStepProps {
     disabled?: boolean;
     brand?: AaveV3CampaignPayload["brand"];
     market?: AaveV3CampaignPayload["market"];
-    action?: AaveV3CampaignPayload["action"];
+    action?: CampaignKind;
     collateral?: AaveV3CampaignPayload["collateral"];
     onCollateralChange: (value: AaveV3CampaignPayloadPart) => void;
 }

@@ -5,10 +5,11 @@ import { useTranslations } from "next-intl";
 import { usePartnerActions } from "@/src/hooks/usePartnerActions";
 import { useChainWithType } from "@/src/hooks/useChainWithType";
 import { Link } from "@/src/i18n/routing";
-import { JumperLogo, PartnerActionType } from "@metrom-xyz/chains";
+import { JumperLogo } from "@metrom-xyz/chains";
 import type { ReactNode } from "react";
 import type { LocalizedMessage } from "@/src/types/utils";
 import { ChevronLeft } from "@/src/assets/chevron-left";
+import type { PartnerActionTargetType } from "@metrom-xyz/sdk";
 
 import styles from "./styles.module.css";
 
@@ -19,15 +20,15 @@ interface ActionCard {
     icon: ReactNode;
 }
 
-const ACTIONS: Record<PartnerActionType, ActionCard> = {
-    [PartnerActionType.AaveV3BridgeAndSupply]: {
-        type: PartnerActionType.AaveV3BridgeAndSupply,
+const ACTIONS: Record<PartnerActionTargetType, ActionCard> = {
+    "aave-v3-bridge-and-supply": {
+        type: "aave-v3-bridge-and-supply",
         title: "list.aaveV3BridgeAndSupply.title",
         description: "list.aaveV3BridgeAndSupply.description",
         icon: <JumperLogo />,
     },
-    [PartnerActionType.JumperWhitelistedAmmPoolLiquidity]: {
-        type: PartnerActionType.JumperWhitelistedAmmPoolLiquidity,
+    "jumper-whitelisted-amm-pool-liquidity": {
+        type: "jumper-whitelisted-amm-pool-liquidity",
         title: "list.jumperWhitelistedAmmPoolLiquidity.title",
         description: "list.jumperWhitelistedAmmPoolLiquidity.description",
         icon: <JumperLogo />,

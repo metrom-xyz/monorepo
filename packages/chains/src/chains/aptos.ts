@@ -3,7 +3,6 @@ import { AaveDarkLogo, AaveLightLogo, AptosLogo } from "../assets";
 import { ChainData } from "../types/chains";
 import { ProtocolType } from "../types/protocol";
 import { ADDRESS, SupportedChain } from "@metrom-xyz/aptos-contracts";
-import { PartnerActionType } from "../types/partner";
 
 export const aptosDevelopmentData: ChainData = {
     active: true,
@@ -36,10 +35,12 @@ export const aptosDevelopmentData: ChainData = {
                 [TargetType.AaveV3Borrow]: "https://aptos.aave.com/",
                 [TargetType.AaveV3Supply]: "https://aptos.aave.com/",
                 [TargetType.AaveV3NetSupply]: "https://aptos.aave.com/",
-                [TargetType.AaveV3BridgeAndSupply]: "https://stargate.finance/",
+                [TargetType.AaveV3BridgeAndSupply]:
+                    "https://stargate.finance/bridge?dstChain=aptos&dstToken={collateral}",
             },
         },
     ],
+    partnerActions: [{ active: true, type: TargetType.AaveV3BridgeAndSupply }],
     baseTokens: [],
 };
 
@@ -84,12 +85,7 @@ export const aptosDevelopmentProductionData: ChainData = {
             },
         },
     ],
-    partnerActions: [
-        {
-            active: true,
-            type: PartnerActionType.AaveV3BridgeAndSupply,
-        },
-    ],
+    partnerActions: [{ active: true, type: TargetType.AaveV3BridgeAndSupply }],
     baseTokens: [],
 };
 
@@ -129,6 +125,6 @@ export const aptosProductionData: ChainData = {
             },
         },
     ],
-
+    partnerActions: [{ active: true, type: TargetType.AaveV3BridgeAndSupply }],
     baseTokens: [],
 };

@@ -48,6 +48,4 @@ export enum AaveV3Action {
     Borrow = "borrow",
     Supply = "supply",
     NetSupply = "net-supply",
-    // TODO: remove this since it's a partner action now
-    BridgeAndSupply = "bridge-and-supply",
 }

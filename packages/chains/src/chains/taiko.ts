@@ -1,4 +1,4 @@
-import { SupportedDex } from "@metrom-xyz/sdk";
+import { SupportedDex, TargetType } from "@metrom-xyz/sdk";
 import { SupportedChain, ADDRESS } from "@metrom-xyz/contracts";
 import { TaikoLogo } from "../assets/logos/chains/taiko";
 import { taiko } from "viem/chains";
@@ -7,7 +7,6 @@ import { UnagiLogo } from "../assets/logos/dexes/unagi";
 import type { ChainData } from "../types/chains";
 import { DepositUrlType, ProtocolType } from "../types/protocol";
 import { IzumiLogo } from "../assets/logos/dexes/izumi";
-import { PartnerActionType } from "../types/partner";
 
 export const taikoData: ChainData = {
     active: true,
@@ -58,7 +57,7 @@ export const taikoData: ChainData = {
     partnerActions: [
         {
             active: true,
-            type: PartnerActionType.JumperWhitelistedAmmPoolLiquidity,
+            type: TargetType.JumperWhitelistedAmmPoolLiquidity,
         },
     ],
     baseTokens: [

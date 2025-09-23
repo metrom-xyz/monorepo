@@ -1,9 +1,6 @@
-export enum PartnerActionType {
-    AaveV3BridgeAndSupply = "aave-v3-bridge-and-supply",
-    JumperWhitelistedAmmPoolLiquidity = "jumper-whitelisted-amm-pool-liquidity",
-}
+import { type PartnerActionTargetType } from "@metrom-xyz/sdk";
 
 export interface PartnerAction {
     active: boolean;
-    type: PartnerActionType;
+    type: PartnerActionTargetType;
 }
