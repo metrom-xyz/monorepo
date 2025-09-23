@@ -31,11 +31,7 @@ export default async function CampaignFormPage({
 
 export async function generateStaticParams() {
     return routing.locales.flatMap((locale) =>
-        [
-            CampaignType.AmmPoolLiquidity,
-            CampaignType.LiquityV2,
-            CampaignType.AaveV3,
-        ].map((type) => ({
+        Object.values(CampaignType).map((type) => ({
             locale,
             type,
         })),

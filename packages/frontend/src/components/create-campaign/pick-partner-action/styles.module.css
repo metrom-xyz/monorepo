@@ -1,22 +1,22 @@
-@reference "../../app.css";
+@reference "../../../app.css";
 
 .root {
     @apply flex items-center flex-col gap-6 px-4 w-full;
+}
+
+.header {
+    @apply flex items-center justify-between gap-6;
 }
 
 .description {
     @apply text-center max-w-2xl;
 }
 
-.campaignCardsWrapper {
+.actions {
     @apply flex flex-wrap justify-center gap-2 sm:gap-3 max-w-4xl;
 }
 
-.emptyWrapper {
-    @apply flex items-center flex-col;
-}
-
-.campaignLinkCard {
+.action {
     @apply h-full
         max-w-[27rem]
         theme-surface-hover
@@ -25,20 +25,11 @@
         ease-in-out;
 }
 
-.campaignCard {
-    @apply max-w-[27rem]
-        theme-surface-hover
-        cursor-pointer
-        transition-colors
-        duration-200
-        ease-in-out;
-}
-
-.campaignCardBody {
+.actionBody {
     @apply h-full flex flex-col sm:flex-row gap-4 items-center sm:items-start;
 }
 
-.iconWrapper {
+.actionIcon {
     @apply flex
         items-center
         justify-center
@@ -54,14 +45,14 @@
     @apply flex flex-col gap-2 items-center sm:items-start;
 }
 
-.ammIcon {
-    @apply h-10 w-10 text-black dark:text-white;
-}
-
-.liquidityV2Icon {
-    @apply h-14 w-14 dark:stroke-zinc-900;
-}
-
-.partnerActionsIcon {
-    @apply h-10 w-10;
+.back {
+    @apply p-1.5
+        mr-auto
+        rounded-lg
+        hover:cursor-pointer
+        theme-surface
+        theme-surface-hover
+        transition-colors
+        duration-200
+        ease-in-out;
 }

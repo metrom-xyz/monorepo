@@ -36,13 +36,16 @@ import {
 } from "./common";
 import {
     DepositUrlType,
+    PartnerActionType,
     ProtocolType,
     type AaveV3Protocol,
     type ChainData,
     type DexProtocol,
     type LiquityV2Protocol,
+    type Protocol,
 } from "@metrom-xyz/chains";
 import type { PropertyUnion } from "./utils";
+import type { PartnerActionPayload } from "./partner-action";
 
 export interface ClaimWithRemaining extends Claim {
     remaining: UsdPricedOnChainAmount;
@@ -75,12 +78,17 @@ export enum CampaignKind {
     AaveV3Borrow = 7,
     AaveV3NetSupply = 8,
     AaveV3BridgeAndSupply = 9,
+    JumperWhitelistedAmmPoolLiquidity = 10,
 }
 
 export enum CampaignType {
     LiquityV2 = "liquity-v2",
     AmmPoolLiquidity = "amm-pool-liquidity",
     AaveV3 = "aave-v3",
+    AaveV3BridgeAndSupply = "aave-v3-bridge-and-supply",
+    JumperWhitelistedAmmPoolLiquidity = "jumper-whitelisted-amm-pool-liquidity",
+    // Maybe we can avoid this type since it's used only in the route
+    // PartnerAction = "partner-action",
 }
 
 export interface AugmentedPriceRangeBound {
@@ -121,6 +129,12 @@ export interface AaveV3CampaignPayload extends BaseCampaignPayload {
     market?: AaveV3Market;
     collateral?: AaveV3Collateral;
     boostingFactor: number;
+}
+
+export interface PartnerActionCampaignPayload extends BaseCampaignPayload {
+    protocol?: Protocol;
+    actionType?: PartnerActionType;
+    actionPayload?: PartnerActionPayload;
 }
 
 export interface CampaignPayloadTokenDistributables {
@@ -170,8 +184,8 @@ export class BaseCampaignPreviewPayload {
 }
 
 export class AmmPoolLiquidityCampaignPreviewPayload extends BaseCampaignPreviewPayload {
-    public readonly kind: CampaignKind = CampaignKind.AmmPoolLiquidity;
     constructor(
+        public readonly kind: CampaignKind,
         public readonly dex: DexProtocol,
         public readonly pool: AmmPoolWithTvl,
         public readonly weighting?: Weighting,
@@ -250,6 +264,19 @@ export class AaveV3CampaignPreviewPayload extends BaseCampaignPreviewPayload {
     }
 }
 
+export class PartnerActionCampaignPreviewPayload extends BaseCampaignPreviewPayload {
+    public readonly kind: CampaignKind;
+
+    constructor(
+        public readonly actionType: PartnerActionType,
+        public readonly actionPayload: PartnerActionPayload,
+        ...baseArgs: ConstructorParameters<typeof BaseCampaignPreviewPayload>
+    ) {
+        super(...baseArgs);
+        this.kind = actionPayload.kind;
+    }
+}
+
 export class EmptyTargetCampaignPreviewPayload extends BaseCampaignPreviewPayload {
     public readonly kind: CampaignKind = CampaignKind.EmptyTarget;
     constructor(
@@ -263,6 +290,7 @@ export type CampaignPreviewPayload =
     | AmmPoolLiquidityCampaignPreviewPayload
     | LiquityV2CampaignPreviewPayload
     | AaveV3CampaignPreviewPayload
+    | PartnerActionCampaignPreviewPayload
     | EmptyTargetCampaignPreviewPayload;
 
 export interface DistributablesCampaignPreviewPayload<
@@ -305,6 +333,9 @@ export type LiquityV2CampaignPayloadPart =
     PropertyUnion<LiquityV2CampaignPayload>;
 
 export type AaveV3CampaignPayloadPart = PropertyUnion<AaveV3CampaignPayload>;
+
+export type PartnerActionCampaignPayloadPart =
+    PropertyUnion<PartnerActionCampaignPayload>;
 
 export class Campaign extends SdkCampaign {
     constructor(

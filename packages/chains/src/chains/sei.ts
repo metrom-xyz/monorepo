@@ -5,6 +5,7 @@ import { SeiLogo } from "../assets/logos/chains/sei";
 import { CarbonLogo } from "../assets/logos/dexes/carbon";
 import type { ChainData } from "../types/chains";
 import { DepositUrlType, ProtocolType } from "../types/protocol";
+import { PartnerActionType } from "../types/partner";
 
 export const seiDevelopmentData: ChainData = {
     active: true,
@@ -81,6 +82,12 @@ export const seiProductionData: ChainData = {
                     "https://sei.carbondefi.xyz/trade/disposable?base={token_0}&quote={token_1}",
             },
             supportsFetchAllPools: true,
+        },
+    ],
+    partnerActions: [
+        {
+            active: true,
+            type: PartnerActionType.JumperWhitelistedAmmPoolLiquidity,
         },
     ],
     baseTokens: [

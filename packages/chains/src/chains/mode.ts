@@ -2,6 +2,7 @@ import { SupportedChain, ADDRESS } from "@metrom-xyz/contracts";
 import { ModeLogo } from "../assets/logos/chains/mode";
 import { mode } from "viem/chains";
 import type { ChainData } from "../types/chains";
+import { PartnerActionType } from "../types/partner";
 
 export const modeData: ChainData = {
     active: false,
@@ -10,6 +11,12 @@ export const modeData: ChainData = {
     blockExplorers: mode.blockExplorers,
     icon: ModeLogo,
     protocols: [],
+    partnerActions: [
+        {
+            active: true,
+            type: PartnerActionType.JumperWhitelistedAmmPoolLiquidity,
+        },
+    ],
     baseTokens: [
         {
             address: "0x4200000000000000000000000000000000000006",

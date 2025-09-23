@@ -6,6 +6,7 @@ import { SilverSwapLogo } from "../assets/logos/dexes/silverswap";
 import { sonic } from "viem/chains";
 import type { ChainData } from "../types/chains";
 import { DepositUrlType, ProtocolType } from "../types/protocol";
+import { PartnerActionType } from "../types/partner";
 
 export const sonicData: ChainData = {
     active: true,
@@ -42,6 +43,12 @@ export const sonicData: ChainData = {
                 template: "https://silverswap.io/chain/sonic/liquidity/add-v3",
             },
             supportsFetchAllPools: true,
+        },
+    ],
+    partnerActions: [
+        {
+            active: true,
+            type: PartnerActionType.JumperWhitelistedAmmPoolLiquidity,
         },
     ],
     baseTokens: [

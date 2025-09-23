@@ -2,6 +2,7 @@ import { SupportedChain, ADDRESS } from "@metrom-xyz/contracts";
 import { MantleLogo } from "../assets/logos/chains/mantle";
 import { mantle } from "viem/chains";
 import type { ChainData } from "../types/chains";
+import { PartnerActionType } from "../types/partner";
 
 export const mantleData: ChainData = {
     active: false,
@@ -10,6 +11,12 @@ export const mantleData: ChainData = {
     blockExplorers: mantle.blockExplorers,
     icon: MantleLogo,
     protocols: [],
+    partnerActions: [
+        {
+            active: true,
+            type: PartnerActionType.JumperWhitelistedAmmPoolLiquidity,
+        },
+    ],
     baseTokens: [
         {
             address: "0x78c1b0c915c4faa5fffa6cabf0219da63d7f4cb8",

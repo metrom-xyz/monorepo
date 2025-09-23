@@ -6,6 +6,7 @@ import { ADDRESS, SupportedChain } from "@metrom-xyz/contracts";
 import type { ChainData } from "../types/chains";
 import { DepositUrlType, ProtocolType } from "../types/protocol";
 import { UniswapLogo } from "../assets";
+import { PartnerActionType } from "../types/partner";
 
 export const gnosisData: ChainData = {
     active: true,
@@ -37,6 +38,12 @@ export const gnosisData: ChainData = {
                 template: "https://oku.trade/app/gnosis/liquidity/{pool}",
             },
             supportsFetchAllPools: true,
+        },
+    ],
+    partnerActions: [
+        {
+            active: true,
+            type: PartnerActionType.JumperWhitelistedAmmPoolLiquidity,
         },
     ],
     baseTokens: [

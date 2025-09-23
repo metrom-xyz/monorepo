@@ -18,6 +18,7 @@ import {
     type CampaignPreviewPayload,
     AaveV3CampaignPreviewPayload,
     CampaignKind,
+    CampaignType,
 } from "../types/campaign";
 import type { TranslationsType } from "../types/utils";
 import { AaveV3Action, LiquityV2Action } from "../types/common";
@@ -33,6 +34,16 @@ import {
     MoveString,
     U32,
 } from "@aptos-labs/ts-sdk";
+
+export const AMM_POOL_CAMPAIGN_KIND: Record<
+    | CampaignType.AmmPoolLiquidity
+    | CampaignType.JumperWhitelistedAmmPoolLiquidity,
+    CampaignKind
+> = {
+    [CampaignType.AmmPoolLiquidity]: CampaignKind.AmmPoolLiquidity,
+    [CampaignType.JumperWhitelistedAmmPoolLiquidity]:
+        CampaignKind.JumperWhitelistedAmmPoolLiquidity,
+};
 
 export function buildCampaignDataBundleEvm(payload: CampaignPreviewPayload) {
     if (payload instanceof AmmPoolLiquidityCampaignPreviewPayload)

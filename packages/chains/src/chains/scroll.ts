@@ -6,6 +6,7 @@ import { UniswapLogo } from "../assets/logos/dexes/uniswap";
 import type { ChainData } from "../types/chains";
 import { DepositUrlType, ProtocolType } from "../types/protocol";
 import { ScribeLogo } from "../assets";
+import { PartnerActionType } from "../types/partner";
 
 export const scrollData: ChainData = {
     active: true,
@@ -37,6 +38,12 @@ export const scrollData: ChainData = {
                 template: "https://oku.trade/app/sonic/liquidity/{pool}",
             },
             supportsFetchAllPools: true,
+        },
+    ],
+    partnerActions: [
+        {
+            active: true,
+            type: PartnerActionType.JumperWhitelistedAmmPoolLiquidity,
         },
     ],
     baseTokens: [

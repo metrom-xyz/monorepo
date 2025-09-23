@@ -7,6 +7,7 @@ import { UnagiLogo } from "../assets/logos/dexes/unagi";
 import type { ChainData } from "../types/chains";
 import { DepositUrlType, ProtocolType } from "../types/protocol";
 import { IzumiLogo } from "../assets/logos/dexes/izumi";
+import { PartnerActionType } from "../types/partner";
 
 export const taikoData: ChainData = {
     active: true,
@@ -52,6 +53,12 @@ export const taikoData: ChainData = {
                     "https://izumi.finance/trade/pool/?chain_id=167000&pool_address={pool}",
             },
             supportsFetchAllPools: true,
+        },
+    ],
+    partnerActions: [
+        {
+            active: true,
+            type: PartnerActionType.JumperWhitelistedAmmPoolLiquidity,
         },
     ],
     baseTokens: [

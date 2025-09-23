@@ -7,6 +7,7 @@ import { UniswapLogo } from "../assets/logos/dexes/uniswap";
 import type { ChainData } from "../types/chains";
 import { DepositUrlType, ProtocolType } from "../types/protocol";
 import { KimLogo } from "../assets";
+import { PartnerActionType } from "../types/partner";
 
 export const baseData: ChainData = {
     active: true,
@@ -50,6 +51,12 @@ export const baseData: ChainData = {
                 template: "https://oku.trade/app/base/liquidity/{pool}",
             },
             supportsFetchAllPools: false,
+        },
+    ],
+    partnerActions: [
+        {
+            active: true,
+            type: PartnerActionType.JumperWhitelistedAmmPoolLiquidity,
         },
     ],
     baseTokens: [

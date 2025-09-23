@@ -2,6 +2,7 @@ import { SupportedChain, ADDRESS } from "@metrom-xyz/contracts";
 import {
     DepositUrlType,
     LensLogo,
+    PartnerActionType,
     ProtocolType,
     SupportedDex,
     UniswapLogo,
@@ -27,6 +28,12 @@ export const lensData: ChainData = {
                 template: "https://oku.trade/app/lens/liquidity/{pool}",
             },
             supportsFetchAllPools: true,
+        },
+    ],
+    partnerActions: [
+        {
+            active: true,
+            type: PartnerActionType.JumperWhitelistedAmmPoolLiquidity,
         },
     ],
     baseTokens: [

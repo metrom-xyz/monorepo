@@ -3,6 +3,7 @@ import { AaveDarkLogo, AaveLightLogo, AptosLogo } from "../assets";
 import { ChainData } from "../types/chains";
 import { ProtocolType } from "../types/protocol";
 import { ADDRESS, SupportedChain } from "@metrom-xyz/aptos-contracts";
+import { PartnerActionType } from "../types/partner";
 
 export const aptosDevelopmentData: ChainData = {
     active: true,
@@ -83,6 +84,12 @@ export const aptosDevelopmentProductionData: ChainData = {
             },
         },
     ],
+    partnerActions: [
+        {
+            active: true,
+            type: PartnerActionType.AaveV3BridgeAndSupply,
+        },
+    ],
     baseTokens: [],
 };
 
@@ -122,5 +129,6 @@ export const aptosProductionData: ChainData = {
             },
         },
     ],
+
     baseTokens: [],
 };
