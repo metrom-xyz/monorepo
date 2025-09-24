@@ -7,7 +7,7 @@ import { LiquityV2CampaignIcon } from "@/src/assets/liquity-v2-campaign-icon";
 import { AmmCampaignIcon } from "@/src/assets/amm-campaign-icon";
 import classNames from "classnames";
 import { CampaignType } from "@/src/types/campaign";
-import { ProtocolType } from "@metrom-xyz/chains";
+import { AaveThemeLogo, ProtocolType } from "@metrom-xyz/chains";
 import { useProtocolsInChain } from "@/src/hooks/useProtocolsInChain";
 import { Redirect } from "./redirect";
 import { useChainWithType } from "@/src/hooks/useChainWithType";
@@ -41,7 +41,7 @@ const CAMPAIGN_TYPES = [
         description: "aaveV3.description",
         type: CampaignType.AaveV3,
         protocol: ProtocolType.AaveV3,
-        icon: <LiquityV2CampaignIcon className={styles.liquidityV2Icon} />,
+        icon: <AaveThemeLogo className={styles.aaveIcon} />,
     },
 ];
 
