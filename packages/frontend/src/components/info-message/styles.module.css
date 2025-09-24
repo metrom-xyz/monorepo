@@ -3,3 +3,7 @@
 .link {
     @apply text-brand-green-dark font-medium;
 }
+
+.text {
+    @apply leading-5;
+}

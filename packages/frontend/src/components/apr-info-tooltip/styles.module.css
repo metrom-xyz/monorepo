@@ -1,0 +1,13 @@
+@reference "../../app.css";
+
+.tooltip :global(.content) {
+    @apply max-w-72;
+}
+
+.tooltip :global(.icon) {
+    @apply h-6 w-6;
+}
+
+.bold {
+    @apply text-black dark:text-white font-bold;
+}
