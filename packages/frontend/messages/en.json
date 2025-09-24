@@ -429,6 +429,7 @@
     "campaignPreview": {
         "header": {
             "back": "Close",
+            "action": "Action",
             "startDate": "Start date",
             "runTimeLabel": "Run time",
             "endDate": "End date",
@@ -822,6 +823,7 @@
         "aaveV3Supply": "Supply {token} on {brand}",
         "aaveV3NetSupply": "Net supply {token} on {brand}",
         "aaveV3BridgeAndSupply": "Bridge and supply {token} on {brand}",
+        "jumperWhitelistedAmmPoolLiquidity": "Bridge through Jumper and LP on {dex} {pool}",
         "empty": "Test campaign"
     },
     "socialCampaignPreview": {

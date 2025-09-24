@@ -229,20 +229,6 @@ export class AaveV3CampaignPreviewPayload extends BaseCampaignPreviewPayload {
     }
 }
 
-// export class AaveV3BridgeAndSupplyCampaignPreviewPayload extends BaseCampaignPreviewPayload {
-//     public readonly kind: CampaignKind = CampaignKind.AaveV3BridgeAndSupply;
-
-//     constructor(
-//         public readonly brand: AaveV3Protocol,
-//         public readonly market: AaveV3Market,
-//         public readonly collateral: AaveV3Collateral,
-//         public readonly boostingFactor: number,
-//         ...baseArgs: ConstructorParameters<typeof BaseCampaignPreviewPayload>
-//     ) {
-//         super(...baseArgs);
-//     }
-// }
-
 export class EmptyTargetCampaignPreviewPayload extends BaseCampaignPreviewPayload {
     public readonly kind: CampaignKind = CampaignKind.EmptyTarget;
     constructor(

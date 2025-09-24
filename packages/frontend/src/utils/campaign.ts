@@ -217,6 +217,88 @@ export function getCampaignName(
     }
 }
 
+export function getCampaignPreviewName(
+    t: TranslationsType<never>,
+    payload: BaseCampaignPreviewPayload,
+): string {
+    if (payload instanceof AmmPoolLiquidityCampaignPreviewPayload) {
+        const dex = payload.pool.dex.name;
+        const pool = payload.pool.tokens.map((token) => token.symbol).join("/");
+
+        switch (payload.kind) {
+            case CampaignKind.AmmPoolLiquidity: {
+                return t("campaignActions.lp", { dex, pool });
+            }
+            case CampaignKind.JumperWhitelistedAmmPoolLiquidity: {
+                return t("campaignActions.jumperWhitelistedAmmPoolLiquidity", {
+                    dex,
+                    pool,
+                });
+            }
+            default: {
+                return "-";
+            }
+        }
+    } else if (payload instanceof LiquityV2CampaignPreviewPayload) {
+        const targetProtocol = getChainData(
+            payload.collateral.chainId,
+        )?.protocols.find(({ slug }) => slug === payload.brand.slug) as
+            | LiquityV2Protocol
+            | undefined;
+
+        const brand = payload.brand.name;
+        const debtToken = targetProtocol?.debtToken.symbol || "";
+        const token = payload.collateral.token.symbol;
+
+        switch (payload.kind) {
+            case CampaignKind.LiquityV2Debt: {
+                return t("campaignActions.borrow", {
+                    brand,
+                    debtToken,
+                    token,
+                });
+            }
+            case CampaignKind.LiquityV2StabilityPool: {
+                return t("campaignActions.depositStabilityPool", {
+                    brand,
+                    token,
+                });
+            }
+            default: {
+                return "-";
+            }
+        }
+    } else if (payload instanceof AaveV3CampaignPreviewPayload) {
+        const brand = payload.brand.name;
+        const token = payload.collateral.token.symbol;
+
+        switch (payload.kind) {
+            case CampaignKind.AaveV3Borrow: {
+                return t("campaignActions.aaveV3Borrow", { brand, token });
+            }
+            case CampaignKind.AaveV3Supply: {
+                return t("campaignActions.aaveV3Supply", { brand, token });
+            }
+            case CampaignKind.AaveV3NetSupply: {
+                return t("campaignActions.aaveV3NetSupply", { brand, token });
+            }
+            case CampaignKind.AaveV3BridgeAndSupply: {
+                return t("campaignActions.aaveV3BridgeAndSupply", {
+                    brand,
+                    token,
+                });
+            }
+            default: {
+                return "-";
+            }
+        }
+    } else if (payload instanceof EmptyTargetCampaignPreviewPayload) {
+        return t("campaignActions.empty");
+    } else {
+        return "-";
+    }
+}
+
 export async function getSocialPreviewCampaignName(
     campaign: Campaign,
 ): Promise<string> {

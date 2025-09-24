@@ -10,6 +10,8 @@ import { formatDateTime } from "@/src/utils/format";
 import { LiquityV2 } from "./liquity-v2";
 import { AmmPoolLiquidity } from "./amm-pool-liquidity";
 import { AaveV3 } from "./aave-v3";
+import { useChainData } from "@/src/hooks/useChainData";
+import { useChainWithType } from "@/src/hooks/useChainWithType";
 
 import styles from "./styles.module.css";
 
@@ -21,12 +23,15 @@ interface HeaderProps {
 
 export function Header({ payload, backDisabled, onBack }: HeaderProps) {
     const t = useTranslations("campaignPreview.header");
+    const { id: chainId, type: chainType } = useChainWithType();
+    const chainData = useChainData({ chainId, chainType });
 
-    const ammPoolLiquidityCampaign =
+    const ammPoolLiquidity =
         payload instanceof AmmPoolLiquidityCampaignPreviewPayload;
-    const liquityV2Campaign =
-        payload instanceof LiquityV2CampaignPreviewPayload;
-    const aaveV3Campaign = payload instanceof AaveV3CampaignPreviewPayload;
+    const liquityV2 = payload instanceof LiquityV2CampaignPreviewPayload;
+    const aaveV3 = payload instanceof AaveV3CampaignPreviewPayload;
+
+    const ChainLogo = chainData?.icon;
 
     return (
         <div className={styles.root}>
@@ -41,13 +46,21 @@ export function Header({ payload, backDisabled, onBack }: HeaderProps) {
             >
                 {t("back")}
             </Button>
-            <div className={styles.titleContainer}>
-                {ammPoolLiquidityCampaign && (
-                    <AmmPoolLiquidity payload={payload} />
-                )}
-                {liquityV2Campaign && <LiquityV2 payload={payload} />}
-                {aaveV3Campaign && <AaveV3 payload={payload} />}
-            </div>
+            <TextField
+                label={t("action")}
+                value={
+                    <div className={styles.titleContainer}>
+                        {ChainLogo && (
+                            <ChainLogo className={styles.chainIcon} />
+                        )}
+                        {ammPoolLiquidity && (
+                            <AmmPoolLiquidity payload={payload} />
+                        )}
+                        {liquityV2 && <LiquityV2 payload={payload} />}
+                        {aaveV3 && <AaveV3 payload={payload} />}
+                    </div>
+                }
+            />
             <div className={styles.durationContainer}>
                 <TextField
                     uppercase
