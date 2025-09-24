@@ -780,7 +780,15 @@
             "reimbursed": "Reimbursed"
         }
     },
-    "apr": "APR",
+    "aprChip": {
+        "apr": "APR"
+    },
+    "aprInfoTooltip": {
+        "priceRange": "Displayed APR assumes your liquidity is fully within the incentivized range. If only part of your position is in range, rewards scale down. Positions completely out of range do not earn rewards.",
+        "weighting": "Rewards are distributed based on each position's composition (<bold>{token0Weight}</bold> on <bold>{token0Symbol}</bold> balance, <bold>{token1Weight}</bold> on <bold>{token1Symbol}</bold> balance, and <bold>{feeWeight}</bold> based on concentration), and displayed APR assumed optimal composition.",
+        "priceRangeAndWeighting": "Displayed APR assumes your liquidity is fully within the incentivized range and matches the optimal composition. Rewards are distributed based on your position's composition (<bold>{token0Weight}</bold> on <bold>{token0Symbol}</bold> balance, <bold>{token1Weight}</bold> on <bold>{token1Symbol}</bold> balance, <bold>{feeWeight}</bold> on concentration).",
+        "learnMore": "Learn more"
+    },
     "campaignActions": {
         "lp": "LP on {dex} {pool}",
         "borrow": "Borrow {debtToken} using {token} on {brand}",

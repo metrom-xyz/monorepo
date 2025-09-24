@@ -3,6 +3,7 @@ import { Popover } from "../popover";
 import { Info } from "../../assets/info";
 import classNames from "classnames";
 import type { Placement } from "@floating-ui/react";
+import { useClickAway } from "react-use";
 
 import styles from "./styles.module.css";
 
@@ -24,6 +25,7 @@ export function InfoTooltip({
     const [popover, setPopover] = useState(false);
     const [anchor, setAnchor] = useState<HTMLDivElement | null>(null);
     const popoverRef = useRef<HTMLDivElement>(null);
+    const rootRef = useRef<HTMLDivElement>(null);
 
     function handlePopoverOpen() {
         setPopover(true);
@@ -37,8 +39,16 @@ export function InfoTooltip({
         setPopover((prev) => !prev);
     }
 
+    useClickAway(rootRef, () => {
+        if (trigger !== "click") return;
+        handlePopoverClose();
+    });
+
     return (
-        <div className={classNames("root", styles.root, className)}>
+        <div
+            ref={rootRef}
+            className={classNames("root", styles.root, className)}
+        >
             <Popover
                 placement={placement}
                 anchor={anchor}

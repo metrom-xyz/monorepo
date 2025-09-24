@@ -1,7 +1,12 @@
 @reference "../../app.css";
 
 .root {
+    @apply h-full flex gap-2.5 items-center rounded-lg;
+}
+
+.chip {
     @apply flex
+        h-full
         w-fit
         justify-center
         items-center

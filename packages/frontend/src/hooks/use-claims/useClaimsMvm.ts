@@ -84,7 +84,7 @@ export function useClaimsMvm({
                 })
                 .filter((claim) => !!claim)
         );
-    }, [address, rawClaims]);
+    }, [address, rawClaims, id]);
 
     const {
         data: claimedData,
