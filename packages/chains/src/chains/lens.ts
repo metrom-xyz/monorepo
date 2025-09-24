@@ -32,7 +32,7 @@ export const lensData: ChainData = {
     ],
     partnerActions: [
         {
-            active: true,
+            active: false,
             type: TargetType.JumperWhitelistedAmmPoolLiquidity,
         },
     ],

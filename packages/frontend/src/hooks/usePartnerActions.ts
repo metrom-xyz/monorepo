@@ -13,6 +13,6 @@ export function usePartnerActions({
 
     return useMemo(() => {
         if (!chainData || !chainData.partnerActions) return [];
-        return chainData.partnerActions;
+        return chainData.partnerActions.filter((action) => action.active);
     }, [chainData]);
 }

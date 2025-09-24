@@ -54,7 +54,7 @@ export const baseData: ChainData = {
     ],
     partnerActions: [
         {
-            active: true,
+            active: false,
             type: TargetType.JumperWhitelistedAmmPoolLiquidity,
         },
     ],
