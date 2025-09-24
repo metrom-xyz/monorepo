@@ -5,7 +5,7 @@ import { useTranslations } from "next-intl";
 import { usePartnerActions } from "@/src/hooks/usePartnerActions";
 import { useChainWithType } from "@/src/hooks/useChainWithType";
 import { Link } from "@/src/i18n/routing";
-import { JumperLogo } from "@metrom-xyz/chains";
+import { AaveLightLogo, JumperLogo } from "@metrom-xyz/chains";
 import type { ReactNode } from "react";
 import type { LocalizedMessage } from "@/src/types/utils";
 import { ChevronLeft } from "@/src/assets/chevron-left";
@@ -25,13 +25,13 @@ const ACTIONS: Record<PartnerActionTargetType, ActionCard> = {
         type: "aave-v3-bridge-and-supply",
         title: "list.aaveV3BridgeAndSupply.title",
         description: "list.aaveV3BridgeAndSupply.description",
-        icon: <JumperLogo />,
+        icon: <AaveLightLogo className={styles.acionIcon} />,
     },
     "jumper-whitelisted-amm-pool-liquidity": {
         type: "jumper-whitelisted-amm-pool-liquidity",
         title: "list.jumperWhitelistedAmmPoolLiquidity.title",
         description: "list.jumperWhitelistedAmmPoolLiquidity.description",
-        icon: <JumperLogo />,
+        icon: <JumperLogo className={styles.acionIcon} />,
     },
 };
 
@@ -71,7 +71,7 @@ export function PickPartnerAction({ onBack }: PickPartnerActionProps) {
                             <Link key={type} href={`/campaigns/create/${type}`}>
                                 <Card className={styles.action}>
                                     <div className={styles.actionBody}>
-                                        <div className={styles.actionIcon}>
+                                        <div className={styles.actionWrapper}>
                                             {icon}
                                         </div>
                                         <div className={styles.rightContent}>

@@ -10,6 +10,7 @@ import { PoolRemoteLogo } from "../../pool-remote-logo";
 import { AprChip } from "../../apr-chip";
 import { DistributablesType, TargetType } from "@metrom-xyz/sdk";
 import type { TargetedNamedCampaign } from "@/src/types/campaign";
+import { useVelodromePoolTickSpacing } from "@/src/hooks/usePoolTickSpacing";
 
 import styles from "./styles.module.css";
 
@@ -21,15 +22,20 @@ export function AmmPoolLiquityHeader({ campaign }: AmmPoolLiquityHeaderProps) {
     const t = useTranslations("campaignDetails.header");
     const router = useRouter();
 
+    const { tickSpacing, loading: loadingTickSpacing } =
+        useVelodromePoolTickSpacing({
+            pool: campaign.target.pool,
+            enabled: campaign.target.pool.amm === "velodrome",
+        });
+
     const handleClaimOnClick = useCallback(() => {
         router.push("/claims");
     }, [router]);
 
-    // FIXME: temp fix, have the tick spacing in the pool, from the API
     const velodromePoolParams =
-        campaign.target.pool.amm === "velodrome"
+        campaign.target.pool.amm === "velodrome" && tickSpacing !== undefined
             ? {
-                  type: campaign.target.pool.fee === 0.05 ? 50 : 200,
+                  type: tickSpacing,
               }
             : undefined;
 
@@ -91,8 +97,13 @@ export function AmmPoolLiquityHeader({ campaign }: AmmPoolLiquityHeaderProps) {
                 <div className={styles.leftActions}>
                     <Button
                         size="sm"
-                        href={depositLink || undefined}
-                        disabled={!depositLink}
+                        href={
+                            !!depositLink && !loadingTickSpacing
+                                ? depositLink
+                                : undefined
+                        }
+                        disabled={!depositLink || loadingTickSpacing}
+                        loading={loadingTickSpacing}
                         onClick={handleAddLiquidityOnClick}
                         icon={ArrowRightIcon}
                         iconPlacement="right"

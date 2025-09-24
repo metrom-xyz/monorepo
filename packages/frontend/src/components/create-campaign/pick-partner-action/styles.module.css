@@ -29,7 +29,11 @@
     @apply h-full flex flex-col sm:flex-row gap-4 items-center sm:items-start;
 }
 
-.actionIcon {
+.acionIcon {
+    @apply h-10 w-10;
+}
+
+.actionWrapper {
     @apply flex
         items-center
         justify-center

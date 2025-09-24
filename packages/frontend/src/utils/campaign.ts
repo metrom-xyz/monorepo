@@ -208,6 +208,14 @@ export function getCampaignName(
                 token: campaign.target.collateral.token.symbol,
             });
         }
+        case TargetType.JumperWhitelistedAmmPoolLiquidity: {
+            return t("campaignActions.jumperWhitelistedAmmPoolLiquidity", {
+                dex: campaign.target.pool.dex.name,
+                pool: campaign.target.pool.tokens
+                    .map((token) => token.symbol)
+                    .join("/"),
+            });
+        }
         case TargetType.Empty: {
             return t("campaignActions.empty");
         }

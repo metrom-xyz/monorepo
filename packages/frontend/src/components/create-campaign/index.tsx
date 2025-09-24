@@ -121,11 +121,7 @@ export function CreateCampaign() {
                             <Link key={path} href={path}>
                                 <Card className={styles.campaignLinkCard}>
                                     <div className={styles.campaignCardBody}>
-                                        <div
-                                            className={classNames(
-                                                styles.iconWrapper,
-                                            )}
-                                        >
+                                        <div className={styles.iconWrapper}>
                                             {icon}
                                         </div>
                                         <div className={styles.rightContent}>
