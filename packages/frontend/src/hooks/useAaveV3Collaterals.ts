@@ -48,12 +48,17 @@ export function useAaveV3Collaterals({
             if (!brand || !market) return null;
 
             try {
-                return await METROM_API_CLIENT.fetchAaveV3Collaterals({
-                    chainId,
-                    chainType,
-                    brand,
-                    market,
-                });
+                const collaterals =
+                    await METROM_API_CLIENT.fetchAaveV3Collaterals({
+                        chainId,
+                        chainType,
+                        brand,
+                        market,
+                    });
+
+                return collaterals.sort((a, b) =>
+                    a.token.name.localeCompare(b.token.name, "en"),
+                );
             } catch (error) {
                 console.error(
                     `Could not fetch aave-v3 collaterals for brand ${brand} and market ${market}, in chain with id ${chainId} and type ${chainType}: ${error}`,
