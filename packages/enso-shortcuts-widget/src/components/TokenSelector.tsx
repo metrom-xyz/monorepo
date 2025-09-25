@@ -19,6 +19,7 @@ import ChainSelector from "./ChainSelector";
 import ProjectSelector from "./ProjectSelector";
 import { List, RowComponentProps } from "react-window";
 import { TokenIndicator } from "./TokenIndicator";
+import { AnimatePresence, motion } from "motion/react";
 
 type TokenWithBalance = Token & {
     balance?: string;
@@ -380,7 +381,7 @@ const TokenSelector = ({
                     onChange={(e) =>
                         obligatedToken || setSearchText(e.target.value)
                     }
-                    className="sm:px-4"
+                    className="sm:px-4 [&>.inputWrapper>input]:bg-zinc-200! dark:[&>.inputWrapper>input]:bg-dark-surface-2!"
                 />
                 <div className="flex justify-between items-center sm:px-4">
                     <Typography uppercase size="xs" weight="medium" light>
@@ -409,48 +410,60 @@ const TokenSelector = ({
     );
 
     return (
-        <div ref={rootRef}>
-            <MobileDrawer
-                open={selectorOpen && width < 640}
-                onClose={handleSelectorToggle}
-            >
-                {SelectorContent}
-            </MobileDrawer>
-            <Popover
-                open={selectorOpen}
-                anchor={popoverAnchor}
-                ref={chainNamePopoverRef}
-                placement="right-start"
-                className="hidden sm:flex"
-            >
-                {SelectorContent}
-            </Popover>
-            <div ref={setPopoverAnchor} className="h-full">
-                <Button
-                    variant="secondary"
-                    size="sm"
-                    border={false}
-                    onClick={handleSelectorToggle}
-                    className={{
-                        root: "min-h-16! min-w-32! py-2! px-3! bg-transparent! hover:bg-zinc-200! hover:dark:bg-zinc-700!",
-                    }}
+        <>
+            <AnimatePresence>
+                {selectorOpen && (
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        className="z-30 flex sm:hidden fixed top-0 bottom-0 left-0 right-0 bg-light-overlay dark:bg-dark-overlay"
+                    />
+                )}
+            </AnimatePresence>
+            <div ref={rootRef}>
+                <MobileDrawer
+                    open={selectorOpen && width < 640}
+                    onClose={handleSelectorToggle}
                 >
-                    {loading ? (
-                        <TokenIndicatorSkeleton />
-                    ) : selectValueToken ? (
-                        <TokenIndicator
-                            chainId={selectionChainId}
-                            token={selectValueToken || undefined}
-                            size="short"
-                        />
-                    ) : (
-                        <Typography size="sm" weight="medium" uppercase>
-                            Select token
-                        </Typography>
-                    )}
-                </Button>
+                    {SelectorContent}
+                </MobileDrawer>
+                <Popover
+                    open={selectorOpen}
+                    anchor={popoverAnchor}
+                    ref={chainNamePopoverRef}
+                    placement="right-start"
+                    className="hidden sm:flex"
+                >
+                    {SelectorContent}
+                </Popover>
+                <div ref={setPopoverAnchor} className="h-full">
+                    <Button
+                        variant="secondary"
+                        size="sm"
+                        border={false}
+                        onClick={handleSelectorToggle}
+                        className={{
+                            root: "min-h-16! min-w-32! py-2! px-3! bg-transparent! hover:bg-zinc-200! hover:dark:bg-zinc-700!",
+                        }}
+                    >
+                        {loading ? (
+                            <TokenIndicatorSkeleton />
+                        ) : selectValueToken ? (
+                            <TokenIndicator
+                                chainId={selectionChainId}
+                                token={selectValueToken || undefined}
+                                size="short"
+                            />
+                        ) : (
+                            <Typography size="sm" weight="medium" uppercase>
+                                Select token
+                            </Typography>
+                        )}
+                    </Button>
+                </div>
             </div>
-        </div>
+        </>
     );
 };
 

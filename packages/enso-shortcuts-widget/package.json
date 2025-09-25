@@ -19,6 +19,7 @@
         "@ensofinance/sdk": "1.0.18",
         "@fontsource/ibm-plex-mono": "^5.2.6",
         "@fontsource/ibm-plex-sans": "^5.2.6",
+        "motion": "^12.23.22",
         "next-themes": "^0.4.4",
         "react-use": "^17.6.0",
         "react-window": "^2.1.0",
