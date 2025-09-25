@@ -578,7 +578,6 @@
     "campaignDetails": {
         "title": "Campaign details",
         "header": {
-            "rewardsMayVary": "Rewards may vary",
             "explorer": "Explorer",
             "claim": "Claim",
             "ammPoolLiquidity": {

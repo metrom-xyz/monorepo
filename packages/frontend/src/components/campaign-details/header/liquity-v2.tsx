@@ -55,9 +55,6 @@ export function LiquityV2Header({ campaign }: LiquityV2HeaderProps) {
                         {campaign.name}
                     </Typography>
                 </div>
-                <Typography size="sm" weight="medium" light>
-                    {t("rewardsMayVary")}
-                </Typography>
             </div>
             <div className={styles.actionsContainer}>
                 <div className={styles.leftActions}>
