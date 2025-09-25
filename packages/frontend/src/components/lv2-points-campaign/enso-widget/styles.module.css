@@ -3,3 +3,7 @@
 .root {
     @apply w-full flex flex-col gap-4;
 }
+
+.title {
+    @apply flex flex-col gap-1;
+}

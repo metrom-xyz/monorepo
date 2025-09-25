@@ -559,7 +559,8 @@
             "netSwapVolumeEbUSD": "Users get incentivized to buy ebUSD and hold them. The points for ebUSD are distributed once every <bold>{time}</bold>."
         },
         "enso": {
-            "depositToStakeDao": "Deposit to stakeDAO"
+            "title": "Deposit to stakeDAO vault",
+            "subtitle": "StakeDAO vault provides 2.5X more CRV rewards"
         },
         "noPoints": "You don't have any {points}.",
         "distribution": "Distribution"

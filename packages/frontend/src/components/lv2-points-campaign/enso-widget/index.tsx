@@ -23,9 +23,14 @@ export function EnsoWidget() {
 
     return (
         <div className={styles.root}>
-            <Typography size="lg" weight="medium" uppercase>
-                {t("depositToStakeDao")}
-            </Typography>
+            <div className={styles.title}>
+                <Typography size="lg" weight="medium" uppercase>
+                    {t("title")}
+                </Typography>
+                <Typography weight="medium" light>
+                    {t("subtitle")}
+                </Typography>
+            </div>
             <Widget
                 apiKey={ENSO_FINANCE_API_KEY}
                 tokenIn="0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2"

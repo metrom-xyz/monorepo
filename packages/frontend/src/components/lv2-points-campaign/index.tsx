@@ -53,7 +53,6 @@ export function Lv2PointsCampaign({ protocol }: Lv2PointsCampaignProps) {
                 icon={icon}
             />
             <Details from={from} to={to} protocol={name} />
-            {protocol === SupportedLiquityV2.Ebisu && <EnsoWidget />}
             {protocolIntro && (
                 <ProjectIntro
                     project={protocol}
@@ -61,6 +60,7 @@ export function Lv2PointsCampaign({ protocol }: Lv2PointsCampaignProps) {
                     {...protocolIntro}
                 />
             )}
+            {protocol === SupportedLiquityV2.Ebisu && <EnsoWidget />}
             <Actions
                 chain={chain}
                 protocol={protocol}
