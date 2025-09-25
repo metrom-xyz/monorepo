@@ -52,7 +52,6 @@ export function SkeletonHeader() {
                     <Skeleton size="xl4" width={400} />
                     <Skeleton size="lg" width={60} />
                 </div>
-                <Skeleton size="sm" width={125} />
             </div>
             <div className={styles.actionsContainer}>
                 <div className={styles.leftActions}>

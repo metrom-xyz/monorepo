@@ -22,9 +22,6 @@ export function EmptyHeader({ campaign }: EmptyHeaderProps) {
                         {campaign.name}
                     </Typography>
                 </div>
-                <Typography size="sm" weight="medium" light>
-                    {t("rewardsMayVary")}
-                </Typography>
             </div>
         </div>
     );

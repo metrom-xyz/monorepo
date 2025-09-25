@@ -83,9 +83,6 @@ export function AmmPoolLiquityHeader({ campaign }: AmmPoolLiquityHeaderProps) {
                         </Typography>
                     )}
                 </div>
-                <Typography size="sm" weight="medium" light>
-                    {t("rewardsMayVary")}
-                </Typography>
             </div>
             <div className={styles.actionsContainer}>
                 <div className={styles.leftActions}>
