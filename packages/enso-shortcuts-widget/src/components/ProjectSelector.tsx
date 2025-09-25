@@ -89,6 +89,7 @@ const ProjectSelector = ({
                     </div>
                 );
             }}
+            className="[&>.root>.inputWrapper>input]:bg-zinc-200! dark:[&>.root>.inputWrapper>input]:bg-dark-surface-2!"
         />
     );
 };
