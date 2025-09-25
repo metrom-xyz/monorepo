@@ -58,9 +58,9 @@ export function AprInfoTooltip({
                             <span className={styles.bold}>{chunks}</span>
                         ),
                     })}
-                    linkText={t("learnMore")}
-                    // TODO: add final url
-                    link="https://docs.metrom.xyz/rbi/understanding-rbi-campaigns"
+                    // TODO: add documentation link
+                    // linkText={t("learnMore")}
+                    // link=""
                 />
             );
         if (priceRange)
@@ -69,9 +69,9 @@ export function AprInfoTooltip({
                     size="sm"
                     spaced
                     text={t("priceRange")}
-                    linkText={t("learnMore")}
-                    // TODO: add final url
-                    link="https://docs.metrom.xyz/rbi/understanding-rbi-campaigns"
+                    // TODO: add documentation link
+                    // linkText={t("learnMore")}
+                    // link=""
                 />
             );
         if (weighting)
@@ -89,12 +89,12 @@ export function AprInfoTooltip({
                             <span className={styles.bold}>{chunks}</span>
                         ),
                     })}
-                    linkText={t("learnMore")}
-                    // TODO: add final url
-                    link="https://docs.metrom.xyz/rbi/understanding-rbi-campaigns"
+                    // TODO: add documentation link
+                    // linkText={t("learnMore")}
+                    // link=""
                 />
             );
-    }, [priceRange, weighting, t]);
+    }, [token0Symbol, token1Symbol, priceRange, weighting, t]);
 
     if (!priceRange && !weighting) return null;
 
