@@ -1,7 +1,14 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { getDefaultConfig, RainbowKitProvider } from "@rainbow-me/rainbowkit";
-import { mainnet, polygon, optimism, arbitrum, base } from "wagmi/chains";
+import {
+    mainnet,
+    polygon,
+    optimism,
+    arbitrum,
+    base,
+    gnosis,
+} from "wagmi/chains";
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 import { WagmiProvider } from "wagmi";
 import { App } from "./app";
@@ -14,7 +21,7 @@ const RAINBOWKIT_PROJECT_ID = import.meta.env.VITE_RAINBOWKIT_PROJECT_ID ?? "";
 const config = getDefaultConfig({
     appName: "My RainbowKit App",
     projectId: RAINBOWKIT_PROJECT_ID,
-    chains: [mainnet, polygon, optimism, arbitrum, base],
+    chains: [mainnet, polygon, optimism, arbitrum, base, gnosis],
 });
 
 const queryClient = new QueryClient();
