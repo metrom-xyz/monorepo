@@ -5,6 +5,10 @@ import { toast } from "sonner";
 import { useQuery } from "@tanstack/react-query";
 import { useChainEtherscanUrl } from "./common";
 import { SupportedChainId } from "../constants";
+import { ErrorNotification } from "../components/notifications/error";
+import { Button } from "@metrom-xyz/ui";
+import { SuccessNotification } from "../components/notifications/success";
+import { LoadingNotification } from "../components/notifications/loading";
 
 type TrackParams = {
     hash: `0x${string}` | undefined;
@@ -79,45 +83,86 @@ const useLayerZeroUrl = (hash?: `0x${string}`, reset?: () => void) => {
     useEffect(() => {
         if (!hash) return;
 
-        const action = {
-            label: "View on Explorer",
-            onClick: () =>
-                window.open(`https://layerzeroscan.com/tx/${hash}`, "_blank"),
-        };
+        const action = (
+            <Button
+                href={`https://layerzeroscan.com/tx/${hash}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                size="xs"
+                className={{
+                    contentWrapper: "w-7!",
+                }}
+            >
+                View
+            </Button>
+        );
 
         if (!loadingToastId) {
             setLoadingToastId(hash);
-            toast.loading("Pending (0/4)", {
-                id: hash,
-                description: "Waiting for source transaction completion",
-                action,
-            });
+            toast.custom(
+                () => (
+                    <LoadingNotification
+                        toastId={hash}
+                        title="Pending (0/4)"
+                        description="Waiting for source transaction completion"
+                        action={action}
+                    />
+                ),
+                { id: hash },
+            );
         } else if (
             data?.source?.status &&
             data.source.status !== LayerZeroStatus.Success
         ) {
-            toast.loading("Pending (1/4)", {
-                id: loadingToastId,
-                description: "Waiting for funds to be sent on destination",
-            });
+            toast.custom(
+                () => (
+                    <LoadingNotification
+                        toastId={loadingToastId}
+                        title="Pending (1/4)"
+                        description="Waiting for funds to be sent on destination"
+                        action={action}
+                    />
+                ),
+                { id: loadingToastId },
+            );
         } else if (data?.status?.name === LayerZeroStatus.Delivered) {
             reset?.();
-            toast.success("Success (4/4)", {
-                id: loadingToastId,
-                description: "Bridging is complete",
-                action,
-            });
+            toast.custom(
+                () => (
+                    <SuccessNotification
+                        toastId={loadingToastId}
+                        title="Success (4/4)"
+                        description="Bridging is complete"
+                        action={action}
+                    />
+                ),
+                { id: loadingToastId },
+            );
             setLoadingToastId(undefined);
         } else if (data?.status?.name === LayerZeroStatus.Confirming) {
-            toast.loading("Pending (3/4)", {
-                id: loadingToastId,
-                description: "Waiting for destination execution",
-            });
+            toast.custom(
+                () => (
+                    <LoadingNotification
+                        toastId={loadingToastId}
+                        title="Pending (3/4)"
+                        description="Waiting for destination execution"
+                        action={action}
+                    />
+                ),
+                { id: loadingToastId },
+            );
         } else if (data?.status?.name === LayerZeroStatus.Inflight) {
-            toast.loading("Pending (2/4)", {
-                id: loadingToastId,
-                description: "Waiting for funds to be delivered on destination",
-            });
+            toast.custom(
+                () => (
+                    <LoadingNotification
+                        toastId={loadingToastId}
+                        title="Pending (2/4)"
+                        description="Waiting for funds to be delivered on destination"
+                        action={action}
+                    />
+                ),
+                { id: loadingToastId },
+            );
         }
     }, [data, hash]);
 };
@@ -132,49 +177,66 @@ const useSingleChainTransactionTracking = (
     const [loadingToastId, setLoadingToastId] = useState<string | undefined>();
     const link = useChainEtherscanUrl({ hash, chainId });
 
+    const action = (
+        <Button
+            href={link}
+            target="_blank"
+            rel="noopener noreferrer"
+            size="xs"
+            className={{
+                contentWrapper: "w-7!",
+            }}
+        >
+            View
+        </Button>
+    );
+
     // toast error if tx failed to be mined and success if it is having confirmation
     useEffect(() => {
         if (!reset) return;
 
         if (waitForTransaction.error) {
-            toast.error("Error", {
-                id: hash,
-                description: waitForTransaction.error.message,
-                action: link
-                    ? {
-                          label: "View on Explorer",
-                          onClick: () => window.open(link, "_blank"),
-                      }
-                    : undefined,
-            });
+            toast.custom(
+                () => (
+                    <ErrorNotification
+                        toastId={hash}
+                        title="Error"
+                        description={waitForTransaction.error.message}
+                        action={action}
+                    />
+                ),
+                { id: hash },
+            );
         } else if (waitForTransaction.data) {
             // Close loading toast if it exists
             setLoadingToastId(undefined);
             // reset tx hash to eliminate recurring notifications
             reset?.();
 
-            toast.success("Success", {
-                id: loadingToastId,
-                description: description,
-                action: link
-                    ? {
-                          label: "View on Explorer",
-                          onClick: () => window.open(link, "_blank"),
-                      }
-                    : undefined,
-            });
+            toast.custom(
+                () => (
+                    <SuccessNotification
+                        toastId={loadingToastId}
+                        title="Success"
+                        description={description}
+                        action={action}
+                    />
+                ),
+                { id: loadingToastId },
+            );
         } else if (waitForTransaction.isLoading) {
             if (!loadingToastId) {
-                toast.loading("Transaction Pending", {
-                    id: hash,
-                    description: description,
-                    action: link
-                        ? {
-                              label: "View on Explorer",
-                              onClick: () => window.open(link, "_blank"),
-                          }
-                        : undefined,
-                });
+                toast.custom(
+                    () => (
+                        <LoadingNotification
+                            toastId={hash}
+                            title="Transaction Pending"
+                            description={description}
+                            action={action}
+                        />
+                    ),
+                    { id: hash },
+                );
                 setLoadingToastId(hash);
             }
         }

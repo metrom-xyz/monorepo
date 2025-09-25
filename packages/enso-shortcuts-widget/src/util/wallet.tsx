@@ -21,6 +21,7 @@ import {
 } from "../util/index";
 import { useTxTracker } from "./useTracker";
 import { toast } from "sonner";
+import { ErrorNotification } from "../components/notifications/error";
 
 const useInterval = (callback: () => void, interval: number) => {
     const savedCallback = useCallback(callback, []);
@@ -149,10 +150,16 @@ export const useExtendedSendTransaction = ({
     const send = useCallback(() => {
         sendTransaction.sendTransaction(args, {
             onError: (error) => {
-                toast.error("Error", {
-                    // @ts-expect-error fix
-                    description: error?.cause?.shortMessage || error.message,
-                });
+                toast.custom((toastId) => (
+                    <ErrorNotification
+                        toastId={toastId}
+                        title="Error"
+                        description={
+                            // @ts-expect-error fix
+                            error?.cause?.shortMessage || error.message
+                        }
+                    />
+                ));
                 console.error(error);
             },
             onSuccess,

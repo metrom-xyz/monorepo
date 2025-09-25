@@ -12,6 +12,7 @@ export interface ToastNotificationProps {
     icon?: FunctionComponent<SVGProps<SVGSVGElement>>;
     children?: ReactNode;
     variant?: "success" | "fail";
+    noDismiss?: boolean;
     className?: string;
 }
 
@@ -39,6 +40,7 @@ export function ToastNotification({
     title,
     children,
     variant = "success",
+    noDismiss = false,
     className,
 }: ToastNotificationProps) {
     function handleOnDismiss() {
@@ -75,9 +77,11 @@ export function ToastNotification({
                     {children}
                 </div>
             </div>
-            <button onClick={handleOnDismiss}>
-                <X className={styles.dismissIcon} />
-            </button>
+            {!noDismiss && (
+                <button onClick={handleOnDismiss}>
+                    <X className={styles.dismissIcon} />
+                </button>
+            )}
         </div>
     );
 }

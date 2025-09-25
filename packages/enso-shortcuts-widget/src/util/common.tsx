@@ -206,8 +206,7 @@ const getCurrentChainTokens = (chainId: SupportedChainId) => {
         // sort by token symbol priority
         const sortedTokenList = [...tokenList]
             .sort((a, b) => {
-                // eslint-disable-next-line no-constant-binary-expression
-                return priority[b.symbol] ?? 0 - priority[a.symbol] ?? 0;
+                return (priority[b.symbol] ?? 0) - (priority[a.symbol] ?? 0);
             })
             .map((token) => ({
                 ...token,
