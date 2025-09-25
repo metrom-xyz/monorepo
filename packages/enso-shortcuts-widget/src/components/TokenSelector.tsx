@@ -29,8 +29,8 @@ type TokenWithBalance = Token & {
 
 const TokenIndicatorSkeleton = () => (
     <div className="w-full flex items-center gap-2">
-        <div className="h-7 w-7 theme-surface rounded-full animate-pulse" />
-        <div className="h-6 w-14 theme-surface animate-pulse rounded-md" />
+        <div className="h-8 w-8 theme-surface-2 rounded-full animate-pulse" />
+        <div className="h-6 w-14 theme-surface-2 animate-pulse rounded-md" />
     </div>
 );
 
@@ -429,7 +429,7 @@ const TokenSelector = ({
                     border={false}
                     onClick={handlePopoverToggle}
                     className={{
-                        root: "min-h-16! min-w-32! py-2! px-3! bg-transparent! hover:theme-surface-2!",
+                        root: "min-h-16! min-w-32! py-2! px-3! bg-transparent! hover:bg-zinc-200! hover:dark:bg-zinc-700!",
                     }}
                 >
                     {loading ? (
