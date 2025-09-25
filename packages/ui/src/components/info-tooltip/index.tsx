@@ -26,13 +26,19 @@ export function InfoTooltip({
     const [anchor, setAnchor] = useState<HTMLDivElement | null>(null);
     const popoverRef = useRef<HTMLDivElement>(null);
     const rootRef = useRef<HTMLDivElement>(null);
+    const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
     function handlePopoverOpen() {
         setPopover(true);
+        if (timeoutRef.current) clearTimeout(timeoutRef.current);
     }
 
     function handlePopoverClose() {
-        setPopover(false);
+        if (trigger === "hover")
+            timeoutRef.current = setTimeout(() => {
+                setPopover(false);
+            }, 100);
+        else setPopover(false);
     }
 
     function handlePopoverToggle() {
@@ -47,29 +53,28 @@ export function InfoTooltip({
     return (
         <div
             ref={rootRef}
+            {...(trigger === "click"
+                ? { onClick: handlePopoverToggle }
+                : {
+                      onMouseEnter: handlePopoverOpen,
+                      onMouseLeave: handlePopoverClose,
+                  })}
             className={classNames("root", styles.root, className)}
         >
-            <Popover
-                placement={placement}
-                anchor={anchor}
-                open={popover}
-                ref={popoverRef}
-                className={styles.popover}
-            >
-                <div className={classNames("content", styles.content)}>
-                    {children}
-                </div>
-            </Popover>
-            <div
-                ref={setAnchor}
-                {...(trigger === "click"
-                    ? { onClick: handlePopoverToggle }
-                    : {
-                          onMouseEnter: handlePopoverOpen,
-                          onMouseLeave: handlePopoverClose,
-                      })}
-                className={classNames("iconWrapper", styles.iconWrapper)}
-            >
+            <div ref={setAnchor}>
+                <Popover
+                    placement={placement}
+                    anchor={anchor}
+                    open={popover}
+                    ref={popoverRef}
+                    className={styles.popover}
+                >
+                    <div className={classNames("content", styles.content)}>
+                        {children}
+                    </div>
+                </Popover>
+            </div>
+            <div className={classNames("iconWrapper", styles.iconWrapper)}>
                 {icon ? (
                     icon
                 ) : (

@@ -99,7 +99,7 @@ export function AprInfoTooltip({
     if (!priceRange && !weighting) return null;
 
     return (
-        <InfoTooltip trigger="click" placement="top" className={styles.tooltip}>
+        <InfoTooltip placement="top" className={styles.tooltip}>
             {getInfoMessage()}
         </InfoTooltip>
     );
