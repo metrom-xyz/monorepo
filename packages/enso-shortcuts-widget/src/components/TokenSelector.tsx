@@ -5,10 +5,11 @@ import { useCurrentChainList } from "../util/common";
 import { formatNumber, normalizeValue } from "../util";
 import { useEnsoBalances, useEnsoToken } from "../util/enso";
 import { SupportedChainId } from "../constants";
-import { useClickAway } from "react-use";
+import { useClickAway, useWindowSize } from "react-use";
 import { ProjectFilter, Token } from "../types";
 import {
     Button,
+    MobileDrawer,
     Popover,
     Skeleton,
     TextInput,
@@ -57,7 +58,7 @@ const DetailedTokenIndicator = ({
         return (
             <div
                 style={style}
-                className="flex w-full px-4 items-center justify-center"
+                className="flex w-full sm:px-4 items-center justify-center"
             >
                 <div className="w-full flex gap-3 items-center">
                     <Skeleton circular width={36} />
@@ -75,7 +76,7 @@ const DetailedTokenIndicator = ({
     return (
         <div
             style={style}
-            className={`w-full flex items-center justify-between px-4 cursor-pointer theme-surface-hover transition-colors duration-200 ease-in-out ${value === token.address ? "theme-surface-active" : ""}`}
+            className={`w-full flex items-center justify-between sm:px-4 cursor-pointer theme-surface-hover transition-colors duration-200 ease-in-out ${value === token.address ? "theme-surface-active" : ""}`}
             onClick={handleTokenOnClick}
         >
             <TokenIndicator token={token} />
@@ -142,10 +143,11 @@ const TokenSelector = ({
     const [composedSelectedProject, setComposedSelectedProject] = useState(
         project || "",
     );
-    const [popoverOpen, setPopoverOpen] = useState(false);
+    const [selectorOpen, setSelectorOpen] = useState(false);
     const [popoverAnchor, setPopoverAnchor] = useState<HTMLDivElement | null>(
         null,
     );
+    const { width } = useWindowSize();
     const chainNamePopoverRef = useRef<HTMLDivElement>(null);
     const rootRef = useRef<HTMLDivElement>(null);
 
@@ -172,7 +174,7 @@ const TokenSelector = ({
         });
 
     useClickAway(rootRef, () => {
-        setPopoverOpen(false);
+        setSelectorOpen(false);
     });
 
     useEffect(() => {
@@ -318,7 +320,7 @@ const TokenSelector = ({
             onChange(tokenAddress);
             setChainId(selectionChainId);
             setSelectionChainId(selectionChainId);
-            setPopoverOpen(false);
+            setSelectorOpen(false);
         },
         [onChange, selectionChainId, setChainId],
     );
@@ -334,11 +336,11 @@ const TokenSelector = ({
         return tokenOptions.find(({ address }) => address === selectValue);
     }, [selectValue, tokenOptions]);
 
-    const handlePopoverToggle = useCallback(() => {
-        if (popoverOpen || obligatedToken || searchedToken) setSearchText("");
+    const handleSelectorToggle = useCallback(() => {
+        if (selectorOpen || obligatedToken || searchedToken) setSearchText("");
         setSelectionChainId(chainId);
-        setPopoverOpen((prev) => !prev);
-    }, [popoverOpen]);
+        setSelectorOpen((prev) => !prev);
+    }, [selectorOpen]);
 
     const loading =
         balancesLoading ||
@@ -353,81 +355,82 @@ const TokenSelector = ({
         [loading, tokenOptions.length],
     );
 
+    const SelectorContent = (
+        <div className="w-full max-w-[450px] h-[500px]">
+            <div className="flex flex-col w-full h-full gap-2.5">
+                <div className="flex justify-between gap-2 sm:px-4 sm:pt-4">
+                    <ChainSelector
+                        disabled={!!project}
+                        value={selectionChainId}
+                        onChange={setSelectionChainId}
+                    />
+                    <ProjectSelector
+                        disabled={!!project}
+                        value={composedSelectedProject}
+                        onChange={setComposedSelectedProject}
+                        chainId={selectionChainId}
+                        projectsFilter={projectsFilter}
+                    />
+                </div>
+                <TextInput
+                    autoFocus
+                    size="sm"
+                    placeholder="Search by name or paste address"
+                    value={searchText}
+                    onChange={(e) =>
+                        obligatedToken || setSearchText(e.target.value)
+                    }
+                    className="sm:px-4"
+                />
+                <div className="flex justify-between items-center sm:px-4">
+                    <Typography uppercase size="xs" weight="medium" light>
+                        Token
+                    </Typography>
+                    <Typography uppercase size="xs" weight="medium" light>
+                        Balance
+                    </Typography>
+                </div>
+                <List
+                    rowCount={itemCount}
+                    rowHeight={48}
+                    rowProps={{
+                        loading,
+                        tokens: loading
+                            ? new Array(7).fill(null)
+                            : (tokenOptions as TokenWithBalance[]),
+                        value: selectValue,
+                        onClick: onValueChange,
+                    }}
+                    rowComponent={DetailedTokenIndicator}
+                    className="h-[350px]"
+                />
+            </div>
+        </div>
+    );
+
     return (
         <div ref={rootRef}>
+            <MobileDrawer
+                open={selectorOpen && width < 640}
+                onClose={handleSelectorToggle}
+            >
+                {SelectorContent}
+            </MobileDrawer>
             <Popover
-                open={popoverOpen}
+                open={selectorOpen}
                 anchor={popoverAnchor}
                 ref={chainNamePopoverRef}
                 placement="right-start"
+                className="hidden sm:flex"
             >
-                <div className="w-full max-w-[450px] h-[500px]">
-                    <div className="flex flex-col w-full h-full gap-2.5">
-                        <div className="flex justify-between gap-2 px-4 pt-4">
-                            <ChainSelector
-                                disabled={!!project}
-                                value={selectionChainId}
-                                onChange={setSelectionChainId}
-                            />
-                            <ProjectSelector
-                                disabled={!!project}
-                                value={composedSelectedProject}
-                                onChange={setComposedSelectedProject}
-                                chainId={selectionChainId}
-                                projectsFilter={projectsFilter}
-                            />
-                        </div>
-                        <TextInput
-                            autoFocus
-                            size="sm"
-                            placeholder="Search by name or paste address"
-                            value={searchText}
-                            onChange={(e) =>
-                                obligatedToken || setSearchText(e.target.value)
-                            }
-                            className="px-4"
-                        />
-                        <div className="flex justify-between items-center px-4">
-                            <Typography
-                                uppercase
-                                size="xs"
-                                weight="medium"
-                                light
-                            >
-                                Token
-                            </Typography>
-                            <Typography
-                                uppercase
-                                size="xs"
-                                weight="medium"
-                                light
-                            >
-                                Balance
-                            </Typography>
-                        </div>
-                        <List
-                            rowCount={itemCount}
-                            rowHeight={48}
-                            rowProps={{
-                                loading,
-                                tokens: loading
-                                    ? new Array(7).fill(null)
-                                    : (tokenOptions as TokenWithBalance[]),
-                                value: selectValue,
-                                onClick: onValueChange,
-                            }}
-                            rowComponent={DetailedTokenIndicator}
-                            className="h-[350px]"
-                        />
-                    </div>
-                </div>
+                {SelectorContent}
             </Popover>
             <div ref={setPopoverAnchor} className="h-full">
                 <Button
                     variant="secondary"
                     size="sm"
                     border={false}
-                    onClick={handlePopoverToggle}
+                    onClick={handleSelectorToggle}
                     className={{
                         root: "min-h-16! min-w-32! py-2! px-3! bg-transparent! hover:bg-zinc-200! hover:dark:bg-zinc-700!",
                     }}

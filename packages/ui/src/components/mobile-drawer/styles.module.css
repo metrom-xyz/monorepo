@@ -1,0 +1,27 @@
+@reference "../../theme.css";
+
+.root {
+    @apply sm:hidden
+        flex
+        z-30
+        fixed
+        left-0
+        right-0
+        bottom-0
+        w-full;
+}
+
+.drawer {
+    @apply bg-zinc-100 dark:bg-zinc-900
+        rounded-t-4xl
+        h-full
+        w-full
+        flex
+        flex-col
+        gap-6
+        p-6;
+}
+
+.drawBar {
+    @apply self-center bg-zinc-500 h-1 w-9 rounded-xl;
+}
