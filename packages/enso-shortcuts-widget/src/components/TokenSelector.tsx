@@ -429,7 +429,7 @@ const TokenSelector = ({
                     border={false}
                     onClick={handlePopoverToggle}
                     className={{
-                        root: "min-h-16! min-w-32! py-2! px-3! dark:bg-dark-surface! bg-white! hover:dark:bg-zinc-750! hover:bg-zinc-200!",
+                        root: "min-h-16! min-w-32! py-2! px-3! bg-transparent! hover:theme-surface-2!",
                     }}
                 >
                     {loading ? (
