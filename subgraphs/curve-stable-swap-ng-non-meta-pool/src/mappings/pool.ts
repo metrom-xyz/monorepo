@@ -4,9 +4,21 @@ import {
     RemoveLiquidityOne,
     RemoveLiquidityImbalance,
     TokenExchange,
+    Transfer,
 } from "../../generated/Pool/Pool";
-import { BigInt, ethereum } from "@graphprotocol/graph-ts";
-import { BI_0, getOrCreatePool, getPoolOrThrow } from "../commons";
+import { BigInt, Bytes, ethereum } from "@graphprotocol/graph-ts";
+import {
+    ADDRESS_ZERO,
+    BI_0,
+    getEventId,
+    getOrCreatePool,
+    getOrCreatePosition,
+    getPoolOrThrow,
+    getPositionOrThrow,
+    getStakingTx,
+} from "../commons";
+import { LiquidityChange, LiquidityTransfer } from "../../generated/schema";
+import { DEPOSIT_AND_STAKE_ZAP_ADDRESS, STAKING_CONTRACTS } from "../constants";
 
 export function handleTokenExchange(event: TokenExchange): void {
     const pool = getPoolOrThrow(event.address);
@@ -97,4 +109,94 @@ export function handleRemoveLiquidityImbalance(
         event.params.token_amounts,
         true,
     );
+}
+
+export function handleTransfer(event: Transfer): void {
+    // handle staking transactions
+    const stakingTx = getStakingTx();
+    if (!!stakingTx.hash && event.transaction.hash == stakingTx.hash!) return;
+
+    if (
+        STAKING_CONTRACTS.includes(event.params.sender) ||
+        STAKING_CONTRACTS.includes(event.params.receiver)
+    ) {
+        stakingTx.hash = event.transaction.hash;
+        stakingTx.save();
+        return;
+    } else {
+        stakingTx.hash = null;
+        stakingTx.save();
+    }
+
+    if (event.params.receiver == DEPOSIT_AND_STAKE_ZAP_ADDRESS) {
+        // handle deposit & stake transactions (treat this as a mint to the tx's sender)
+        const position = getOrCreatePosition(
+            event.address,
+            event.transaction.from,
+        );
+        position.liquidity = position.liquidity.plus(event.params.value);
+        position.save();
+
+        let liquidityChange = new LiquidityChange(getEventId(event));
+        liquidityChange.timestamp = event.block.timestamp;
+        liquidityChange.blockNumber = event.block.number;
+        liquidityChange.delta = event.params.value;
+        liquidityChange.position = position.id;
+        liquidityChange.save();
+    } else if (event.params.sender == ADDRESS_ZERO) {
+        // lp token mint
+        const position = getOrCreatePosition(
+            event.address,
+            event.params.receiver,
+        );
+        position.liquidity = position.liquidity.plus(event.params.value);
+        position.save();
+
+        let liquidityChange = new LiquidityChange(getEventId(event));
+        liquidityChange.timestamp = event.block.timestamp;
+        liquidityChange.blockNumber = event.block.number;
+        liquidityChange.delta = event.params.value;
+        liquidityChange.position = position.id;
+        liquidityChange.save();
+    } else if (event.params.receiver == ADDRESS_ZERO) {
+        // lp token burn
+        const position = getOrCreatePosition(
+            event.address,
+            event.params.sender,
+        );
+        position.liquidity = position.liquidity.minus(event.params.value);
+        position.save();
+
+        let liquidityChange = new LiquidityChange(getEventId(event));
+        liquidityChange.timestamp = event.block.timestamp;
+        liquidityChange.blockNumber = event.block.number;
+        liquidityChange.delta = event.params.value.neg();
+        liquidityChange.position = position.id;
+        liquidityChange.save();
+    } else {
+        const fromPosition = getPositionOrThrow(
+            event.address,
+            event.params.sender,
+        );
+        fromPosition.liquidity = fromPosition.liquidity.minus(
+            event.params.value,
+        );
+        fromPosition.save();
+
+        const toPosition = getOrCreatePosition(
+            event.address,
+            event.params.receiver,
+        );
+        toPosition.liquidity = toPosition.liquidity.plus(event.params.value);
+        toPosition.save();
+
+        const transfer = new LiquidityTransfer(getEventId(event));
+        transfer.timestamp = event.block.timestamp;
+        transfer.blockNumber = event.block.number;
+        transfer.pool = changetype<Bytes>(event.address);
+        transfer.from = event.params.sender;
+        transfer.to = event.params.receiver;
+        transfer.amount = event.params.value;
+        transfer.save();
+    }
 }

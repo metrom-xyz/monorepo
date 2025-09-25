@@ -6,7 +6,7 @@ import {
     crypto,
     ethereum,
 } from "@graphprotocol/graph-ts";
-import { Pool, Position, Token } from "../generated/schema";
+import { Pool, Position, StakingTx, Token } from "../generated/schema";
 import { Erc20 } from "../generated/Pool/Erc20";
 import { Erc20BytesSymbol } from "../generated/Pool/Erc20BytesSymbol";
 import { Erc20BytesName } from "../generated/Pool/Erc20BytesName";
@@ -21,6 +21,7 @@ import {
 export const ADDRESS_ZERO = Address.zero();
 export const BI_0 = BigInt.zero();
 export const BI_1 = BigInt.fromI32(1);
+export const STAKING_TX_ID = Bytes.fromI32(1);
 
 export const ERC20_TRANSFER_EVENT_SIGNATURE = crypto.keccak256(
     ByteArray.fromUTF8("Transfer(address,address,uint256)"),
@@ -175,4 +176,14 @@ export function getOrCreateToken(address: Address): Token {
     token.save();
 
     return token;
+}
+
+export function getStakingTx(): StakingTx {
+    let stakingTx = StakingTx.load(STAKING_TX_ID);
+    if (stakingTx !== null) return stakingTx;
+
+    stakingTx = new StakingTx(STAKING_TX_ID);
+    stakingTx.save();
+
+    return stakingTx;
 }

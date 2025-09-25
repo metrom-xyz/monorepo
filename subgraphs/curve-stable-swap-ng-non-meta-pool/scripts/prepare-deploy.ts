@@ -36,9 +36,10 @@ constantsFile += `export const NATIVE_TOKEN_SYMBOL = "${chainConfig.nativeToken.
 constantsFile += `export const NATIVE_TOKEN_NAME = "${chainConfig.nativeToken.name}";\n`;
 constantsFile += `export const NATIVE_TOKEN_DECIMALS = BigInt.fromI32(${chainConfig.nativeToken.decimals});\n`;
 constantsFile += `export const POOL_ADDRESS = Address.fromString("${poolConfig.Pool.address}");\n`;
-constantsFile += `export const TRANSPARENT_ADDRESSES: Address[] = [];\n`
-for (const address of poolConfig.TransparentAddresses)
-    constantsFile += `TRANSPARENT_ADDRESSES.push(Address.fromString("${address}"));\n`;
+constantsFile += `export const DEPOSIT_AND_STAKE_ZAP_ADDRESS = Address.fromString("${chainConfig.DepositAndStakeZipAddress}");\n`;
+constantsFile += `export const STAKING_CONTRACTS: Address[] = [];\n`;
+for (const contract of poolConfig.StakingContracts)
+    constantsFile += `STAKING_CONTRACTS.push(Address.fromString("${contract.address}"));\n`;
 
 try {
     const constantsFileOut = join(
@@ -75,7 +76,6 @@ try {
                 network,
                 PoolAddress: poolConfig.Pool.address,
                 PoolStartBlock: poolConfig.Pool.startBlock,
-                ProxyTokens: poolConfig.ProxyTokens,
             },
         ),
     );
@@ -85,4 +85,4 @@ try {
     process.exit(1);
 }
 
-exec("npm format");
+exec("npm run format");

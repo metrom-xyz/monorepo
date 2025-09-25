@@ -24,8 +24,7 @@ export interface PoolConfig {
         block: number;
     };
     Pool: Contract;
-    ProxyTokens: NamedContract[];
-    TransparentAddresses: string[];
+    StakingContracts: NamedContract[];
 }
 
 export const DEPLOYMENTS: Record<string, ChainConfig> = {
@@ -43,7 +42,7 @@ export const DEPLOYMENTS: Record<string, ChainConfig> = {
                     address: "0xEFc6516323FbD28e80B85A497B65A86243a54B3E",
                     startBlock: 22512006,
                 },
-                ProxyTokens: [
+                StakingContracts: [
                     {
                         name: "GaugeToken",
                         address: "0x07a01471fA544D9C6531B631E6A96A79a9AD05E9",
@@ -55,22 +54,26 @@ export const DEPLOYMENTS: Record<string, ChainConfig> = {
                         startBlock: 22537747,
                     },
                 ],
-                TransparentAddresses: [],
             },
             "ebusd-usdc": {
                 Pool: {
                     address: "0xd25f2cc6819fbd34641712122397efbaf9b6a6e2",
                     startBlock: 22639808,
                 },
-                ProxyTokens: [
+                StakingContracts: [
                     {
-                        name: "GaugeToken",
+                        name: "Gauge",
                         address: "0xc26f3C4F14e90649260A19896E27674Ba188862e",
                         startBlock: 22640658,
                     },
                     {
-                        name: "StakeDaoVault",
+                        name: "StakeDaoRewardVault",
                         address: "0x2B4b2a06C0FdeBd8de1545ABdffa64EC26416796",
+                        startBlock: 22639808,
+                    },
+                    {
+                        name: "StakeDaoConvexSidecar",
+                        address: "0x43f78aa9af702f599270a0e8f9871d6efd885e72",
                         startBlock: 22639808,
                     },
                     {
@@ -78,8 +81,22 @@ export const DEPLOYMENTS: Record<string, ChainConfig> = {
                         address: "0x547f9999ffBAf1158307fE554420be8D77839841",
                         startBlock: 22639808,
                     },
+                    {
+                        name: "ConvexVoterProxy",
+                        address: "0x989AEb4d175e16225E39E87d0D97A3360524AD80",
+                        startBlock: 22639808,
+                    },
+                    {
+                        name: "EnsoShortcuts",
+                        address: "0x4Fe93ebC4Ce6Ae4f81601cC7Ce7139023919E003",
+                        startBlock: 22639808,
+                    },
+                    {
+                        name: "CurveYCRVVoter",
+                        address: "0x52f541764E6e90eeBc5c21Ff570De0e2D63766B6",
+                        startBlock: 22639808,
+                    },
                 ],
-                TransparentAddresses: [],
             },
         },
     },
