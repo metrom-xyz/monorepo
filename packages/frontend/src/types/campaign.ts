@@ -13,6 +13,7 @@ import type {
     Weighting,
     EmptyTarget,
     AaveV3BridgeAndSupplyTarget,
+    PartnerActionTargetType,
 } from "@metrom-xyz/sdk";
 import {
     Campaign as SdkCampaign,
@@ -29,11 +30,7 @@ import {
 } from "@metrom-xyz/sdk";
 import type { Dayjs } from "dayjs";
 import type { Address } from "viem";
-import {
-    AaveV3Action,
-    LiquityV2Action,
-    type WhitelistedErc20TokenAmount,
-} from "./common";
+import { LiquityV2Action, type WhitelistedErc20TokenAmount } from "./common";
 import {
     DepositUrlType,
     ProtocolType,
@@ -75,12 +72,17 @@ export enum CampaignKind {
     AaveV3Borrow = 7,
     AaveV3NetSupply = 8,
     AaveV3BridgeAndSupply = 9,
+    JumperWhitelistedAmmPoolLiquidity = 10,
 }
 
 export enum CampaignType {
     LiquityV2 = "liquity-v2",
     AmmPoolLiquidity = "amm-pool-liquidity",
     AaveV3 = "aave-v3",
+    AaveV3BridgeAndSupply = "aave-v3-bridge-and-supply",
+    JumperWhitelistedAmmPoolLiquidity = "jumper-whitelisted-amm-pool-liquidity",
+    // Maybe we can avoid this type since it's used only in the route
+    // PartnerAction = "partner-action",
 }
 
 export interface AugmentedPriceRangeBound {
@@ -117,10 +119,10 @@ export interface LiquityV2CampaignPayload extends BaseCampaignPayload {
 
 export interface AaveV3CampaignPayload extends BaseCampaignPayload {
     brand?: AaveV3Protocol;
-    action?: AaveV3Action;
+    action?: CampaignKind;
     market?: AaveV3Market;
     collateral?: AaveV3Collateral;
-    boostingFactor: number;
+    boostingFactor?: number;
 }
 
 export interface CampaignPayloadTokenDistributables {
@@ -170,8 +172,8 @@ export class BaseCampaignPreviewPayload {
 }
 
 export class AmmPoolLiquidityCampaignPreviewPayload extends BaseCampaignPreviewPayload {
-    public readonly kind: CampaignKind = CampaignKind.AmmPoolLiquidity;
     constructor(
+        public readonly kind: CampaignKind,
         public readonly dex: DexProtocol,
         public readonly pool: AmmPoolWithTvl,
         public readonly weighting?: Weighting,
@@ -216,37 +218,14 @@ export class AaveV3CampaignPreviewPayload extends BaseCampaignPreviewPayload {
 
     constructor(
         public readonly brand: AaveV3Protocol,
-        public readonly action: AaveV3Action,
+        public readonly action: CampaignKind,
         public readonly market: AaveV3Market,
         public readonly collateral: AaveV3Collateral,
-        public readonly boostingFactor: number,
+        public readonly boostingFactor?: number,
         ...baseArgs: ConstructorParameters<typeof BaseCampaignPreviewPayload>
     ) {
         super(...baseArgs);
-
-        switch (action) {
-            case AaveV3Action.Borrow: {
-                this.kind = CampaignKind.AaveV3Borrow;
-                break;
-            }
-            case AaveV3Action.Supply: {
-                this.kind = CampaignKind.AaveV3Supply;
-                break;
-            }
-            case AaveV3Action.NetSupply: {
-                this.kind = CampaignKind.AaveV3NetSupply;
-                break;
-            }
-            case AaveV3Action.BridgeAndSupply: {
-                this.kind = CampaignKind.AaveV3BridgeAndSupply;
-                break;
-            }
-            default: {
-                throw new Error(
-                    `Unsupported action ${action} for aave-v3 campaign payload`,
-                );
-            }
-        }
+        this.kind = action;
     }
 }
 

@@ -18,9 +18,10 @@ import {
     type CampaignPreviewPayload,
     AaveV3CampaignPreviewPayload,
     CampaignKind,
+    CampaignType,
 } from "../types/campaign";
 import type { TranslationsType } from "../types/utils";
-import { AaveV3Action, LiquityV2Action } from "../types/common";
+import { LiquityV2Action } from "../types/common";
 import { getDistributableRewardsPercentage } from "./kpi";
 import { type Hex, encodeAbiParameters, stringToHex, isAddress } from "viem";
 import { SECONDS_IN_YEAR, WEIGHT_UNIT } from "../commons";
@@ -33,6 +34,16 @@ import {
     MoveString,
     U32,
 } from "@aptos-labs/ts-sdk";
+
+export const AMM_POOL_CAMPAIGN_KIND: Record<
+    | CampaignType.AmmPoolLiquidity
+    | CampaignType.JumperWhitelistedAmmPoolLiquidity,
+    CampaignKind
+> = {
+    [CampaignType.AmmPoolLiquidity]: CampaignKind.AmmPoolLiquidity,
+    [CampaignType.JumperWhitelistedAmmPoolLiquidity]:
+        CampaignKind.JumperWhitelistedAmmPoolLiquidity,
+};
 
 export function buildCampaignDataBundleEvm(payload: CampaignPreviewPayload) {
     if (payload instanceof AmmPoolLiquidityCampaignPreviewPayload)
@@ -83,7 +94,10 @@ export function buildCampaignDataBundleMvm(payload: CampaignPreviewPayload) {
             AccountAddress.fromString(payload.collateral.token.address),
         );
 
-        if (payload.kind === CampaignKind.AaveV3BridgeAndSupply) {
+        if (
+            payload.boostingFactor &&
+            payload.kind === CampaignKind.AaveV3BridgeAndSupply
+        ) {
             serializableParts.push(
                 new U32(payload.boostingFactor * 100 * 1_000_000),
             );
@@ -194,12 +208,102 @@ export function getCampaignName(
                 token: campaign.target.collateral.token.symbol,
             });
         }
+        case TargetType.JumperWhitelistedAmmPoolLiquidity: {
+            return t("campaignActions.jumperWhitelistedAmmPoolLiquidity", {
+                dex: campaign.target.pool.dex.name,
+                pool: campaign.target.pool.tokens
+                    .map((token) => token.symbol)
+                    .join("/"),
+            });
+        }
         case TargetType.Empty: {
             return t("campaignActions.empty");
         }
         default: {
             return "-";
         }
+    }
+}
+
+export function getCampaignPreviewName(
+    t: TranslationsType<never>,
+    payload: BaseCampaignPreviewPayload,
+): string {
+    if (payload instanceof AmmPoolLiquidityCampaignPreviewPayload) {
+        const dex = payload.pool.dex.name;
+        const pool = payload.pool.tokens.map((token) => token.symbol).join("/");
+
+        switch (payload.kind) {
+            case CampaignKind.AmmPoolLiquidity: {
+                return t("campaignActions.lp", { dex, pool });
+            }
+            case CampaignKind.JumperWhitelistedAmmPoolLiquidity: {
+                return t("campaignActions.jumperWhitelistedAmmPoolLiquidity", {
+                    dex,
+                    pool,
+                });
+            }
+            default: {
+                return "-";
+            }
+        }
+    } else if (payload instanceof LiquityV2CampaignPreviewPayload) {
+        const targetProtocol = getChainData(
+            payload.collateral.chainId,
+        )?.protocols.find(({ slug }) => slug === payload.brand.slug) as
+            | LiquityV2Protocol
+            | undefined;
+
+        const brand = payload.brand.name;
+        const debtToken = targetProtocol?.debtToken.symbol || "";
+        const token = payload.collateral.token.symbol;
+
+        switch (payload.kind) {
+            case CampaignKind.LiquityV2Debt: {
+                return t("campaignActions.borrow", {
+                    brand,
+                    debtToken,
+                    token,
+                });
+            }
+            case CampaignKind.LiquityV2StabilityPool: {
+                return t("campaignActions.depositStabilityPool", {
+                    brand,
+                    token,
+                });
+            }
+            default: {
+                return "-";
+            }
+        }
+    } else if (payload instanceof AaveV3CampaignPreviewPayload) {
+        const brand = payload.brand.name;
+        const token = payload.collateral.token.symbol;
+
+        switch (payload.kind) {
+            case CampaignKind.AaveV3Borrow: {
+                return t("campaignActions.aaveV3Borrow", { brand, token });
+            }
+            case CampaignKind.AaveV3Supply: {
+                return t("campaignActions.aaveV3Supply", { brand, token });
+            }
+            case CampaignKind.AaveV3NetSupply: {
+                return t("campaignActions.aaveV3NetSupply", { brand, token });
+            }
+            case CampaignKind.AaveV3BridgeAndSupply: {
+                return t("campaignActions.aaveV3BridgeAndSupply", {
+                    brand,
+                    token,
+                });
+            }
+            default: {
+                return "-";
+            }
+        }
+    } else if (payload instanceof EmptyTargetCampaignPreviewPayload) {
+        return t("campaignActions.empty");
+    } else {
+        return "-";
     }
 }
 
@@ -320,18 +424,18 @@ export function getCampaignPreviewApr(
         let usdTvl = 0;
         let liquidity = 0n;
         switch (action) {
-            case AaveV3Action.Borrow: {
+            case CampaignKind.AaveV3Borrow: {
                 usdTvl = collateral.usdDebt;
                 liquidity = collateral.debt;
                 break;
             }
-            case AaveV3Action.BridgeAndSupply:
-            case AaveV3Action.Supply: {
+            case CampaignKind.AaveV3BridgeAndSupply:
+            case CampaignKind.AaveV3Supply: {
                 usdTvl = collateral.usdSupply;
                 liquidity = collateral.supply;
                 break;
             }
-            case AaveV3Action.NetSupply: {
+            case CampaignKind.AaveV3NetSupply: {
                 usdTvl = Math.max(collateral.usdSupply - collateral.usdDebt, 0);
                 liquidity =
                     collateral.supply - collateral.debt > 0n

@@ -45,11 +45,16 @@ export function useLiquityV2Collaterals({
             if (!brand) return null;
 
             try {
-                return await METROM_API_CLIENT.fetchLiquityV2Collaterals({
-                    chainId,
-                    chainType,
-                    brand,
-                });
+                const collaterals =
+                    await METROM_API_CLIENT.fetchLiquityV2Collaterals({
+                        chainId,
+                        chainType,
+                        brand,
+                    });
+
+                return collaterals.sort((a, b) =>
+                    a.token.name.localeCompare(b.token.name, "en"),
+                );
             } catch (error) {
                 console.error(
                     `Could not fetch liquity v2 collaterals for brand ${brand} in chain with id ${chainId}: ${error}`,

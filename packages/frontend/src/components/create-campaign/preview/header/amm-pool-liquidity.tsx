@@ -2,44 +2,30 @@ import { formatPercentage } from "@/src/utils/format";
 import { Typography } from "@metrom-xyz/ui";
 import { type AmmPoolLiquidityCampaignPreviewPayload } from "@/src/types/campaign";
 import { useChainWithType } from "@/src/hooks/useChainWithType";
-import { ProtocolType } from "@metrom-xyz/chains";
-import { useMemo } from "react";
 import { PoolRemoteLogo } from "@/src/components/pool-remote-logo";
-import { useProtocolsInChain } from "@/src/hooks/useProtocolsInChain";
-
-import styles from "./styles.module.css";
+import { getCampaignPreviewName } from "@/src/utils/campaign";
+import { useTranslations } from "next-intl";
 
 interface AmmPoolLiquidityProps {
     payload: AmmPoolLiquidityCampaignPreviewPayload;
 }
 
 export function AmmPoolLiquidity({ payload }: AmmPoolLiquidityProps) {
+    const t = useTranslations();
     const { id: chainId } = useChainWithType();
-    const availableDexes = useProtocolsInChain({
-        chainId,
-        type: ProtocolType.Dex,
-        active: true,
-    });
-
-    const selectedDex = useMemo(() => {
-        return availableDexes.find(
-            ({ slug }) => slug === payload.pool.dex.slug,
-        );
-    }, [availableDexes, payload]);
 
     return (
-        <div className={styles.titleContainer}>
+        <>
             <PoolRemoteLogo
+                size="lg"
                 chain={chainId}
-                size="xl"
                 tokens={payload.pool.tokens.map((token) => ({
                     address: token.address,
                     defaultText: token.symbol,
                 }))}
             />
-            <Typography size="xl4" weight="medium" noWrap truncate>
-                {selectedDex?.name}{" "}
-                {payload.pool.tokens.map((token) => token.symbol).join(" / ")}
+            <Typography size="xl" weight="medium" noWrap truncate>
+                {getCampaignPreviewName(t, payload)}
             </Typography>
             {payload.pool.fee && (
                 <Typography size="lg" weight="medium" light>
@@ -49,6 +35,6 @@ export function AmmPoolLiquidity({ payload }: AmmPoolLiquidityProps) {
                     })}
                 </Typography>
             )}
-        </div>
+        </>
     );
 }

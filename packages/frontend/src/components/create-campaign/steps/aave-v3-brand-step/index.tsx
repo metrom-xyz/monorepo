@@ -30,9 +30,10 @@ export function AaveV3BrandStep({
     const t = useTranslations("newCampaign.form.aaveV3.brand");
     const [open, setOpen] = useState(true);
 
-    const { id: chainId } = useChainWithType();
+    const { id: chainId, type: chainType } = useChainWithType();
     const supportedBrand = useProtocolsInChain({
         chainId,
+        chainType,
         type: ProtocolType.AaveV3,
         active: true,
     });

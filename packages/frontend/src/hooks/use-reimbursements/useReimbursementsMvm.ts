@@ -100,7 +100,7 @@ export function useReimbursementsMvm({
             });
 
         return { recovered, claimed } as Payloads;
-    }, [address, rawReimbursements]);
+    }, [address, rawReimbursements, id]);
 
     // reimbursements recovered are assigned to the zero address,
     // so we have to fetch them separately

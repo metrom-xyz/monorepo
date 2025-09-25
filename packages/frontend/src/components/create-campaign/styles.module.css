@@ -1,7 +1,7 @@
 @reference "../../app.css";
 
 .root {
-    @apply flex items-center flex-col gap-6 px-4 mt-1 w-full;
+    @apply flex items-center flex-col gap-6 px-4 w-full;
 }
 
 .description {
@@ -16,10 +16,19 @@
     @apply flex items-center flex-col;
 }
 
-.campaignCard {
+.campaignLinkCard {
     @apply h-full
         max-w-[27rem]
         theme-surface-hover
+        transition-colors
+        duration-200
+        ease-in-out;
+}
+
+.campaignCard {
+    @apply max-w-[27rem]
+        theme-surface-hover
+        cursor-pointer
         transition-colors
         duration-200
         ease-in-out;
@@ -51,4 +60,12 @@
 
 .liquidityV2Icon {
     @apply h-14 w-14 dark:stroke-zinc-900;
+}
+
+.aaveIcon {
+    @apply h-10 w-10;
+}
+
+.partnerActionsIcon {
+    @apply h-10 w-10;
 }

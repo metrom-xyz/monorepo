@@ -1,4 +1,4 @@
-import { SupportedDex } from "@metrom-xyz/sdk";
+import { SupportedDex, TargetType } from "@metrom-xyz/sdk";
 import { SupportedChain, ADDRESS } from "@metrom-xyz/contracts";
 import { ScrollLogo } from "../assets/logos/chains/scroll";
 import { scroll } from "viem/chains";
@@ -37,6 +37,12 @@ export const scrollData: ChainData = {
                 template: "https://oku.trade/app/sonic/liquidity/{pool}",
             },
             supportsFetchAllPools: true,
+        },
+    ],
+    partnerActions: [
+        {
+            active: false,
+            type: TargetType.JumperWhitelistedAmmPoolLiquidity,
         },
     ],
     baseTokens: [

@@ -8,6 +8,7 @@ import {
     type ChainData,
 } from "..";
 import { lens } from "viem/chains";
+import { TargetType } from "@metrom-xyz/sdk";
 
 export const lensData: ChainData = {
     active: true,
@@ -27,6 +28,12 @@ export const lensData: ChainData = {
                 template: "https://oku.trade/app/lens/liquidity/{pool}",
             },
             supportsFetchAllPools: true,
+        },
+    ],
+    partnerActions: [
+        {
+            active: false,
+            type: TargetType.JumperWhitelistedAmmPoolLiquidity,
         },
     ],
     baseTokens: [

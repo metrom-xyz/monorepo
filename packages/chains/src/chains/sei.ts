@@ -1,5 +1,5 @@
 import { SupportedChain, ADDRESS } from "@metrom-xyz/contracts";
-import { SupportedDex } from "@metrom-xyz/sdk";
+import { SupportedDex, TargetType } from "@metrom-xyz/sdk";
 import { sei } from "viem/chains";
 import { SeiLogo } from "../assets/logos/chains/sei";
 import { CarbonLogo } from "../assets/logos/dexes/carbon";
@@ -81,6 +81,12 @@ export const seiProductionData: ChainData = {
                     "https://sei.carbondefi.xyz/trade/disposable?base={token_0}&quote={token_1}",
             },
             supportsFetchAllPools: true,
+        },
+    ],
+    partnerActions: [
+        {
+            active: false,
+            type: TargetType.JumperWhitelistedAmmPoolLiquidity,
         },
     ],
     baseTokens: [

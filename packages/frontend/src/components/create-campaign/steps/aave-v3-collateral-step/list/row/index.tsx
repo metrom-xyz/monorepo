@@ -4,14 +4,13 @@ import { Skeleton, Typography } from "@metrom-xyz/ui";
 import { useCallback } from "react";
 import { useChainWithType } from "@/src/hooks/useChainWithType";
 import classNames from "classnames";
-import { AaveV3Action, LiquityV2Action } from "@/src/types/common";
-import type { AaveV3CampaignPayload } from "@/src/types/campaign";
 import { formatUsdAmount } from "@/src/utils/format";
+import { CampaignKind } from "@/src/types/campaign";
 
 import styles from "./styles.module.css";
 
 interface RowProps {
-    action?: AaveV3CampaignPayload["action"];
+    action?: CampaignKind;
     selected?: boolean;
     collateral: AaveV3Collateral;
     onChange: (collateral: AaveV3Collateral) => void;
@@ -41,7 +40,7 @@ export function Row({ action, selected, collateral, onChange }: RowProps) {
             <Typography weight="medium" size="sm" light>
                 {formatUsdAmount({
                     amount:
-                        action === AaveV3Action.Borrow
+                        action === CampaignKind.AaveV3Borrow
                             ? collateral.usdDebt
                             : collateral.usdSupply,
                 })}

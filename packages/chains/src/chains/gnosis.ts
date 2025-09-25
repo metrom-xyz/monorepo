@@ -1,4 +1,4 @@
-import { SupportedDex } from "@metrom-xyz/sdk";
+import { SupportedDex, TargetType } from "@metrom-xyz/sdk";
 import { GnosisLogo } from "../assets/logos/chains/gnosis";
 import { gnosis } from "viem/chains";
 import { SwaprLogo } from "../assets/logos/dexes/swapr";
@@ -37,6 +37,12 @@ export const gnosisData: ChainData = {
                 template: "https://oku.trade/app/gnosis/liquidity/{pool}",
             },
             supportsFetchAllPools: true,
+        },
+    ],
+    partnerActions: [
+        {
+            active: false,
+            type: TargetType.JumperWhitelistedAmmPoolLiquidity,
         },
     ],
     baseTokens: [

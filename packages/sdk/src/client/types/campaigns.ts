@@ -23,6 +23,12 @@ export interface BackendAmmPoolLiquidityTarget extends BaseTarget {
     poolId: Hex;
 }
 
+export interface BackendJumperWhitelistedAmmPoolLiquidityTarget
+    extends BaseTarget {
+    type: "jumper-whitelisted-amm-pool-liquidity";
+    poolId: Hex;
+}
+
 export interface BaseBackendLiquityTarget<T> extends BaseTarget {
     type: T;
     chainId: number;
@@ -108,7 +114,8 @@ export interface BackendCampaign {
         | BackendAaveV3BorrowTarget
         | BackendAaveV3SupplyTarget
         | BackendAaveV3NetSupplyTarget
-        | BackendAaveV3BridgeAndSupplyTarget;
+        | BackendAaveV3BridgeAndSupplyTarget
+        | BackendJumperWhitelistedAmmPoolLiquidityTarget;
     specification?: Specification;
     distributables: BackendTokenDistributables | BackendPointDistributables;
     apr?: number;

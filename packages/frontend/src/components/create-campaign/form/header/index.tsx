@@ -17,6 +17,9 @@ const CAMPAIGN_TYPE_TITLE: Record<
     "amm-pool-liquidity": "amm",
     "liquity-v2": "liquityV2",
     "aave-v3": "aaveV3",
+    "aave-v3-bridge-and-supply": "aaveV3BridgeAndSupply",
+    "jumper-whitelisted-amm-pool-liquidity":
+        "jumperWhitelistedAmmPoolLiquidity",
 };
 
 export function FormHeader({ type }: FormHeaderProps) {

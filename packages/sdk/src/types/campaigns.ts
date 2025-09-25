@@ -25,6 +25,7 @@ export enum TargetType {
     AaveV3Supply = "aave-v3-supply",
     AaveV3NetSupply = "aave-v3-net-supply",
     AaveV3BridgeAndSupply = "aave-v3-bridge-and-supply",
+    JumperWhitelistedAmmPoolLiquidity = "jumper-whitelisted-amm-pool-liquidity",
 }
 
 export type LiquityV2TargetType =
@@ -35,7 +36,12 @@ export type AaveV3TargetType =
     | TargetType.AaveV3Borrow
     | TargetType.AaveV3Supply
     | TargetType.AaveV3NetSupply
+    // TODO: this is an aave v3 target, but also a partner action target
     | TargetType.AaveV3BridgeAndSupply;
+
+export type PartnerActionTargetType =
+    | TargetType.AaveV3BridgeAndSupply
+    | TargetType.JumperWhitelistedAmmPoolLiquidity;
 
 export interface BaseTarget {
     chainType: ChainType;
@@ -48,6 +54,11 @@ export interface EmptyTarget extends BaseTarget {
 
 export interface AmmPoolLiquidityTarget extends BaseTarget {
     type: TargetType.AmmPoolLiquidity;
+    pool: AmmPool;
+}
+
+export interface JumperWhitelistedAmmPoolLiquidityTarget extends BaseTarget {
+    type: TargetType.JumperWhitelistedAmmPoolLiquidity;
     pool: AmmPool;
 }
 
@@ -93,7 +104,8 @@ export type CampaignTarget =
     | AaveV3BorrowTarget
     | AaveV3SupplyTarget
     | AaveV3NetSupplyTarget
-    | AaveV3BridgeAndSupplyTarget;
+    | AaveV3BridgeAndSupplyTarget
+    | JumperWhitelistedAmmPoolLiquidityTarget;
 
 export interface TokenDistributable {
     token: UsdPricedErc20Token;

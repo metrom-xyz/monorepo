@@ -51,6 +51,12 @@ export const swellDevelopmentData: ChainData = {
             },
         },
     ],
+    partnerActions: [
+        {
+            active: false,
+            type: TargetType.JumperWhitelistedAmmPoolLiquidity,
+        },
+    ],
     baseTokens: [
         {
             address: "0x4200000000000000000000000000000000000006",
@@ -128,6 +134,12 @@ export const swellProductionData: ChainData = {
                 [TargetType.LiquityV2StabilityPool]:
                     "https://app.orki.finance/earn",
             },
+        },
+    ],
+    partnerActions: [
+        {
+            active: false,
+            type: TargetType.JumperWhitelistedAmmPoolLiquidity,
         },
     ],
     baseTokens: [

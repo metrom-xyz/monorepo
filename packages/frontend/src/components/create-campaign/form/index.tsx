@@ -1,13 +1,14 @@
 "use client";
 
 import {
+    CampaignKind,
     CampaignType,
     type CampaignPreviewPayload,
 } from "@/src/types/campaign";
 import { useAccount } from "@/src/hooks/useAccount";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { trackFathomEvent } from "@/src/utils/fathom";
-import { Modal } from "@metrom-xyz/ui";
+import { Modal, Typography } from "@metrom-xyz/ui";
 import { CampaignPreview } from "../preview";
 import { FormHeader } from "./header";
 import { AmmPoolLiquidityForm } from "./amm-pool-liquidity-form";
@@ -18,8 +19,12 @@ import { useProtocolsInChain } from "@/src/hooks/useProtocolsInChain";
 import { useChainWithType } from "@/src/hooks/useChainWithType";
 import { useActiveChains } from "@/src/hooks/useActiveChains";
 import { AaveV3Form } from "./aave-v3-form";
+import { usePartnerActions } from "@/src/hooks/usePartnerActions";
+import { PARTNER_ACTION_CAMPAIGNS } from "@/src/commons";
+import { useTranslations } from "next-intl";
 
 import styles from "./styles.module.css";
+import { AaveV3BridgeAndSupplyForm } from "./aave-v3-bridge-and-supply-form";
 
 enum View {
     Form = "form",
@@ -33,6 +38,8 @@ export interface CreateCampaignFormProps<T> {
 export function CreateCampaignForm<T extends CampaignType>({
     type,
 }: CreateCampaignFormProps<T>) {
+    const t = useTranslations("newCampaign.form");
+
     const { chainId: connectedChainId, connected } = useAccount();
     const { id: selectedChain } = useChainWithType();
     const activeChains = useActiveChains();
@@ -52,6 +59,7 @@ export function CreateCampaignForm<T extends CampaignType>({
         type: ProtocolType.AaveV3,
         active: true,
     });
+    const partnerActions = usePartnerActions({ chainId: selectedChain });
 
     const [view, setView] = useState(View.Form);
     const [payload, setPayload] = useState<CampaignPreviewPayload | null>(null);
@@ -78,17 +86,54 @@ export function CreateCampaignForm<T extends CampaignType>({
         );
     }, [activeChains, connectedChainId, connected, selectedChain]);
 
-    const supportedProtocols = [
-        ...dexesProtocols,
-        ...liquityV2Protocols,
-        ...aaveV3Protocols,
-    ];
+    const unsupportedPartnerAction = useMemo(
+        () =>
+            partnerActions.length === 0 &&
+            PARTNER_ACTION_CAMPAIGNS.includes(type),
+        [partnerActions, type],
+    );
+
+    const supported = [
+        dexesProtocols,
+        liquityV2Protocols,
+        aaveV3Protocols,
+        partnerActions,
+    ]
+        .filter((protocols) => protocols.length > 0)
+        .flat();
+
+    const ammPoolLiquidity =
+        type === CampaignType.AmmPoolLiquidity ||
+        type === CampaignType.JumperWhitelistedAmmPoolLiquidity;
+    const ammPoolLiquidityCampaignKind =
+        type === CampaignType.AmmPoolLiquidity
+            ? CampaignKind.AmmPoolLiquidity
+            : CampaignKind.JumperWhitelistedAmmPoolLiquidity;
+
+    if (unsupportedPartnerAction)
+        return (
+            <div className={styles.emptyWrapper}>
+                <Typography weight="medium" size="lg">
+                    {t("empty.message1")}
+                </Typography>
+                <Typography weight="medium" size="lg">
+                    {t("empty.message2")}
+                </Typography>
+            </div>
+        );
 
     return (
         <div className={styles.root}>
-            {supportedProtocols.length > 1 && <FormHeader type={type} />}
-            {type === CampaignType.AmmPoolLiquidity && (
+            {supported.length > 1 && <FormHeader type={type} />}
+            {ammPoolLiquidity && (
                 <AmmPoolLiquidityForm
+                    campaignKind={ammPoolLiquidityCampaignKind}
+                    unsupportedChain={unsupportedChain}
+                    onPreviewClick={handlePreviewOnClick}
+                />
+            )}
+            {type === CampaignType.AaveV3BridgeAndSupply && (
+                <AaveV3BridgeAndSupplyForm
                     unsupportedChain={unsupportedChain}
                     onPreviewClick={handlePreviewOnClick}
                 />

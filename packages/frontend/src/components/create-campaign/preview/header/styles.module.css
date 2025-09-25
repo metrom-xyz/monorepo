@@ -12,22 +12,8 @@
     @apply flex flex-wrap items-center gap-4 sm:mb-4;
 }
 
-.liquityV2Action {
-    @apply w-fit 
-        bg-zinc-100 dark:bg-zinc-900
-        rounded-2xl
-        flex
-        gap-2.5
-        items-center
-        p-2.5;
-}
-
-.collateralsWrapper {
-    @apply flex items-center;
-}
-
-.collateralLogo:not(:first-child) {
-    @apply -ml-2;
+.chainIcon {
+    @apply h-7 w-7;
 }
 
 .durationContainer {

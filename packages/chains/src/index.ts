@@ -57,6 +57,7 @@ export { SupportedChain } from "@metrom-xyz/contracts";
 export * from "./types/common";
 export * from "./types/chains";
 export * from "./types/protocol";
+export * from "./types/partner";
 export * from "./assets";
 
 export const EVM_CHAIN_DATA: {

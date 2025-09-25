@@ -35,10 +35,12 @@ export const aptosDevelopmentData: ChainData = {
                 [TargetType.AaveV3Borrow]: "https://aptos.aave.com/",
                 [TargetType.AaveV3Supply]: "https://aptos.aave.com/",
                 [TargetType.AaveV3NetSupply]: "https://aptos.aave.com/",
-                [TargetType.AaveV3BridgeAndSupply]: "https://stargate.finance/",
+                [TargetType.AaveV3BridgeAndSupply]:
+                    "https://stargate.finance/bridge?dstChain=aptos&dstToken={collateral}",
             },
         },
     ],
+    partnerActions: [{ active: true, type: TargetType.AaveV3BridgeAndSupply }],
     baseTokens: [],
 };
 
@@ -83,6 +85,7 @@ export const aptosDevelopmentProductionData: ChainData = {
             },
         },
     ],
+    partnerActions: [{ active: true, type: TargetType.AaveV3BridgeAndSupply }],
     baseTokens: [],
 };
 
@@ -122,5 +125,6 @@ export const aptosProductionData: ChainData = {
             },
         },
     ],
+    partnerActions: [{ active: true, type: TargetType.AaveV3BridgeAndSupply }],
     baseTokens: [],
 };

@@ -132,17 +132,44 @@
                 "title": "AAVE V3",
                 "description": "Incentivize users borrowing and supplying on Aave V3."
             },
+            "partnerAction": {
+                "title": "PARTNER ACTION",
+                "description": "Pick an incentivization strategy from a set of custom built actions."
+            },
             "empty": {
                 "message1": "Campaign creation isn't supported on the selected chain.",
                 "message2": "Please choose a different chain."
             }
         },
+        "partnerAction": {
+            "pickAction": {
+                "title": "Pick an action type",
+                "description": "Pick an incentivization strategy from a set of custom built actions.",
+                "list": {
+                    "aaveV3BridgeAndSupply": {
+                        "title": "Aave v3 Bridge and supply",
+                        "description": "Incentive users bridging through LayerZero protocol and then supplying liquidity to Aave v3 market."
+                    },
+                    "jumperWhitelistedAmmPoolLiquidity": {
+                        "title": "Jumper AMM pool liquidity",
+                        "description": "Incentivize users bridging through Jumper and then providing liquidity to various types of AMMs."
+                    }
+                }
+            }
+        },
         "type": {
             "amm": "AMM Campaign",
             "liquityV2": "Liquity v2 campaign",
-            "aaveV3": "Aave v3 campaign"
+            "aaveV3": "Aave v3 campaign",
+            "partnerActions": "Partner action",
+            "aaveV3BridgeAndSupply": "Aave v3 Bridge and supply",
+            "jumperWhitelistedAmmPoolLiquidity": "Jumper AMM pool liquidity"
         },
         "form": {
+            "empty": {
+                "message1": "Partner action campaign creation isn't supported on the selected chain.",
+                "message2": "Please choose a different chain."
+            },
             "base": {
                 "startDate": {
                     "title": "Start date",
@@ -308,8 +335,7 @@
                     "list": {
                         "borrow": "Borrow",
                         "supply": "Supply",
-                        "netSupply": "Net supply",
-                        "bridgeAndSupply": "Bridge and supply"
+                        "netSupply": "Net supply"
                     }
                 },
                 "market": {
@@ -382,6 +408,13 @@
                         "notApplied": "Not applied"
                     }
                 }
+            },
+            "partnerAction": {
+                "protocol": { "title": "Protocol" },
+                "action": {
+                    "title": "Action",
+                    "list": { "bridge-and-supply": "Bridge and supply" }
+                }
             }
         },
         "submit": {
@@ -396,6 +429,7 @@
     "campaignPreview": {
         "header": {
             "back": "Close",
+            "action": "Action",
             "startDate": "Start date",
             "runTimeLabel": "Run time",
             "endDate": "End date",
@@ -789,6 +823,7 @@
         "aaveV3Supply": "Supply {token} on {brand}",
         "aaveV3NetSupply": "Net supply {token} on {brand}",
         "aaveV3BridgeAndSupply": "Bridge and supply {token} on {brand}",
+        "jumperWhitelistedAmmPoolLiquidity": "Bridge through Jumper and LP on {dex} {pool}",
         "empty": "Test campaign"
     },
     "socialCampaignPreview": {

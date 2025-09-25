@@ -1,4 +1,4 @@
-import { SupportedDex } from "@metrom-xyz/sdk";
+import { SupportedDex, TargetType } from "@metrom-xyz/sdk";
 import { SupportedChain, ADDRESS } from "@metrom-xyz/contracts";
 import { BaseLogo } from "../assets/logos/chains/base";
 import { BaseSwapLogo } from "../assets/logos/dexes/baseswap";
@@ -50,6 +50,12 @@ export const baseData: ChainData = {
                 template: "https://oku.trade/app/base/liquidity/{pool}",
             },
             supportsFetchAllPools: false,
+        },
+    ],
+    partnerActions: [
+        {
+            active: false,
+            type: TargetType.JumperWhitelistedAmmPoolLiquidity,
         },
     ],
     baseTokens: [

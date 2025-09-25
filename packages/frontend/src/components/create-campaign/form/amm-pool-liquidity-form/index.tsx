@@ -5,6 +5,7 @@ import {
     type AmmPoolLiquidityCampaignPayloadPart,
     type CampaignPreviewDistributables,
     EmptyTargetCampaignPreviewPayload,
+    CampaignKind,
 } from "@/src/types/campaign";
 import { useTranslations } from "next-intl";
 import { useCallback, useEffect, useMemo, useState } from "react";
@@ -36,6 +37,7 @@ import styles from "./styles.module.css";
 function validatePayload(
     chainId: number,
     payload: AmmPoolLiquidityCampaignPayload,
+    campaignKind: CampaignKind,
 ):
     | AmmPoolLiquidityCampaignPreviewPayload
     | EmptyTargetCampaignPreviewPayload
@@ -77,6 +79,7 @@ function validatePayload(
     }
 
     return new AmmPoolLiquidityCampaignPreviewPayload(
+        campaignKind,
         dex,
         pool,
         weighting,
@@ -90,6 +93,7 @@ function validatePayload(
 }
 
 interface AmmPoolLiquidityFormProps {
+    campaignKind: CampaignKind;
     unsupportedChain: boolean;
     onPreviewClick: (
         payload:
@@ -104,6 +108,7 @@ const initialPayload: AmmPoolLiquidityCampaignPayload = {
 };
 
 export function AmmPoolLiquidityForm({
+    campaignKind,
     unsupportedChain,
     onPreviewClick,
 }: AmmPoolLiquidityFormProps) {
@@ -115,8 +120,8 @@ export function AmmPoolLiquidityForm({
 
     const previewPayload = useMemo(() => {
         if (Object.values(errors).some((error) => !!error)) return null;
-        return validatePayload(chainId, payload);
-    }, [chainId, payload, errors]);
+        return validatePayload(chainId, payload, campaignKind);
+    }, [chainId, payload, errors, campaignKind]);
 
     const noDistributables = useMemo(() => {
         return (
