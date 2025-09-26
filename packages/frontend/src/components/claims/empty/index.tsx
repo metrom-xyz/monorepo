@@ -16,7 +16,7 @@ export function Empty() {
         trackFathomEvent("NO_REWARDS_CLAIM");
     }, []);
 
-    return !!address ? (
+    return address ? (
         <Card className={styles.root}>
             <Typography weight="medium" uppercase className={styles.title}>
                 {t("empty.title")}

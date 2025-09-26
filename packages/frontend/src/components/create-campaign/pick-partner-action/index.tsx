@@ -8,7 +8,7 @@ import { Link } from "@/src/i18n/routing";
 import { AaveThemeLogo, JumperLogo } from "@metrom-xyz/chains";
 import type { ReactNode } from "react";
 import type { LocalizedMessage } from "@/src/types/utils";
-import { ChevronLeft } from "@/src/assets/chevron-left";
+import { ChevronLeftIcon } from "@/src/assets/chevron-left-icon";
 import type { PartnerActionTargetType } from "@metrom-xyz/sdk";
 
 import styles from "./styles.module.css";
@@ -49,7 +49,7 @@ export function PickPartnerAction({ onBack }: PickPartnerActionProps) {
         <div className={styles.root}>
             <div className={styles.header}>
                 <div onClick={onBack} className={styles.back}>
-                    <ChevronLeft />
+                    <ChevronLeftIcon />
                 </div>
                 <Typography weight="medium" size="lg" uppercase>
                     {t("title")}
@@ -80,9 +80,11 @@ export function PickPartnerAction({ onBack }: PickPartnerActionProps) {
                                                 weight="medium"
                                                 size="lg"
                                             >
+                                                {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
                                                 {t<any>(title)}
                                             </Typography>
                                             <Typography weight="medium" light>
+                                                {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
                                                 {t<any>(description)}
                                             </Typography>
                                         </div>

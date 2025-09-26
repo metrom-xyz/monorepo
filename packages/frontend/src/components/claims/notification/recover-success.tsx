@@ -1,6 +1,6 @@
 import { useTranslations } from "next-intl";
 import { ToastNotification, Typography } from "@metrom-xyz/ui";
-import { ClaimReward } from "@/src/assets/claim-reward";
+import { ClaimRewardIcon } from "@/src/assets/claim-reward-icon";
 import { RemoteLogo } from "@/src/components/remote-logo";
 import type { Erc20Token } from "@metrom-xyz/sdk";
 import { formatAmount } from "@/src/utils/format";
@@ -29,7 +29,7 @@ export function RecoverSuccess({
         <ToastNotification
             toastId={toastId}
             title={safe ? t("safe") : t("standard")}
-            icon={ClaimReward}
+            icon={ClaimRewardIcon}
         >
             {!!chain && !!token && !!amount && (
                 <div className={styles.contentWrapper}>

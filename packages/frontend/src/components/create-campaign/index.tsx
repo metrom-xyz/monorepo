@@ -13,12 +13,22 @@ import { Redirect } from "./redirect";
 import { useChainWithType } from "@/src/hooks/useChainWithType";
 import { CompassIcon } from "@/src/assets/compass-icon";
 import { usePartnerActions } from "@/src/hooks/usePartnerActions";
-import { useState } from "react";
+import { useState, type ReactNode } from "react";
 import { PickPartnerAction } from "./pick-partner-action";
+import type { LocalizedMessage } from "@/src/types/utils";
 
 import styles from "./styles.module.css";
 
-const CAMPAIGN_TYPES = [
+interface CampaignTypeConfig {
+    path: string;
+    title: LocalizedMessage<"newCampaign.pickType">;
+    description: LocalizedMessage<"newCampaign.pickType">;
+    type: CampaignType;
+    protocol: ProtocolType;
+    icon: ReactNode;
+}
+
+const CAMPAIGN_TYPES: CampaignTypeConfig[] = [
     {
         path: `/campaigns/create/${CampaignType.AmmPoolLiquidity}`,
         title: "amm.title",
@@ -129,9 +139,11 @@ export function CreateCampaign() {
                                                 weight="medium"
                                                 size="lg"
                                             >
+                                                {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
                                                 {t<any>(title)}
                                             </Typography>
                                             <Typography weight="medium" light>
+                                                {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
                                                 {t<any>(description)}
                                             </Typography>
                                         </div>

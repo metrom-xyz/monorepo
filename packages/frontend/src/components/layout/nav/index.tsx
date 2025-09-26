@@ -1,14 +1,14 @@
 "use client";
 
 import { Link, usePathname } from "@/src/i18n/routing";
-import { MetromSquareLogo } from "@/src/assets/metrom-square-logo";
+import { MetromSquareLogo } from "@/src/assets/logos/metrom/metrom-square-logo";
 import { useTranslations } from "next-intl";
 import { ConnectButton } from "../../connect-button";
 import { Typography } from "@metrom-xyz/ui";
 import classNames from "classnames";
 import { NewCampaignIcon } from "@/src/assets/new-campaign-icon";
 import { AllCampaignsIcon } from "@/src/assets/all-campaigns-icon";
-import { ClaimsIcon } from "@/src/assets/claims";
+import { ClaimsIcon } from "@/src/assets/claims-icon";
 import { NetworkSelect } from "../../network-select";
 import { NavThemeSwitcher } from "../../nav-theme-switcher";
 import { useMemo, type FunctionComponent } from "react";

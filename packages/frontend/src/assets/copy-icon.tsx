@@ -1,4 +1,6 @@
-export function CopyIcon(props: any) {
+import type { SVGIcon } from "../types/common";
+
+export function CopyIcon(props: SVGIcon) {
     return (
         <svg
             width="800px"

@@ -27,7 +27,7 @@ import { type Hex, encodeAbiParameters, stringToHex, isAddress } from "viem";
 import { SECONDS_IN_YEAR, WEIGHT_UNIT } from "../commons";
 import { type LiquityV2Protocol } from "@metrom-xyz/chains";
 import { getTranslations } from "next-intl/server";
-import { getChainData } from "./chain";
+import { getChainData, getCrossVmChainData } from "./chain";
 import {
     Serializer,
     AccountAddress,
@@ -312,11 +312,15 @@ export async function getSocialPreviewCampaignName(
 ): Promise<string> {
     const t = await getTranslations();
 
-    const chain = getChainData(campaign.chainId)?.name.toUpperCase();
+    const chain = getCrossVmChainData(
+        campaign.chainId,
+        campaign.chainType,
+    )?.name.toUpperCase();
 
     if (!chain) return "-";
 
     switch (campaign.target.type) {
+        case TargetType.JumperWhitelistedAmmPoolLiquidity:
         case TargetType.AmmPoolLiquidity: {
             return t("socialCampaignPreview.title", {
                 protocol: campaign.target.pool.dex.name,

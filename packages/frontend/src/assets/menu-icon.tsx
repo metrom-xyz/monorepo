@@ -1,4 +1,6 @@
-export function MenuIcon(props: any) {
+import type { SVGIcon } from "../types/common";
+
+export function MenuIcon(props: SVGIcon) {
     return (
         <svg
             width="36"

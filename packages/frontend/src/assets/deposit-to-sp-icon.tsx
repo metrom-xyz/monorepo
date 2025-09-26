@@ -1,4 +1,6 @@
-export function DepositToSpIcon(props: any) {
+import type { SVGIcon } from "../types/common";
+
+export function DepositToSpIcon(props: SVGIcon) {
     return (
         <svg width="21" height="14" viewBox="0 0 21 14" fill="none" {...props}>
             <path

@@ -1,4 +1,6 @@
-export function LinkIcon(props: any) {
+import type { SVGIcon } from "../types/common";
+
+export function LinkIcon(props: SVGIcon) {
     return (
         <svg
             width="24"

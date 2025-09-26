@@ -25,7 +25,7 @@ interface DistributionsProps {
     campaignId: Hex;
 }
 
-export interface DistributionChartData extends ProcessedDistribution {}
+export type DistributionChartData = ProcessedDistribution;
 
 export interface StackedBar {
     dataKey: string;

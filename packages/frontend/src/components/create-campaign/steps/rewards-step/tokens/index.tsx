@@ -13,7 +13,7 @@ import {
 } from "@metrom-xyz/ui";
 import { formatUsdAmount } from "@/src/utils/format";
 import { RemoteLogo } from "@/src/components/remote-logo";
-import { ChevronDown } from "@/src/assets/chevron-down";
+import { ChevronDownIcon } from "@/src/assets/chevron-down-icon";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslations } from "next-intl";
 import { useChainWithType } from "@/src/hooks/useChainWithType";
@@ -69,7 +69,7 @@ export function RewardTokens({
     const { tokens: rewardTokens, loading } = useRewardTokens();
 
     const rewardsError = useMemo(() => {
-        if (!!amountError) return amountError;
+        if (amountError) return amountError;
         if (!distributables.tokens || distributables.tokens.length === 0)
             return "";
 
@@ -191,7 +191,7 @@ export function RewardTokens({
 
     const handleExistingTokensValidation = useCallback(
         (address: Address, error?: TokensErrorMessage) => {
-            if (!!error) {
+            if (error) {
                 setExistingTokensErrors((state) => [
                     ...state,
                     { address, error },
@@ -264,7 +264,7 @@ export function RewardTokens({
                         >
                             {token?.symbol || t("selectPlaceholder")}
                         </Typography>
-                        <ChevronDown className={styles.chevronDown} />
+                        <ChevronDownIcon className={styles.chevronDown} />
                     </div>
                 </div>
                 <Button

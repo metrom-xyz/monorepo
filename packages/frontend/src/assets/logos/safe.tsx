@@ -1,4 +1,6 @@
-export function SafeLogo(props: any) {
+import type { SVGIcon } from "@/src/types/common";
+
+export function SafeLogo(props: SVGIcon) {
     return (
         <svg
             width="24.06369"

@@ -31,7 +31,7 @@ export function NetworkSelectEvm() {
     // Since mainnet is not marked as active in our config, we need to
     // manually switch to the first supported active chain.
     useEffect(() => {
-        if (!!address) return;
+        if (address) return;
 
         const supported = activeChains.some(
             ({ id, type }) => id === selectedChainId && type === ChainType.Evm,

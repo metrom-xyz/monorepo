@@ -1,4 +1,6 @@
-export function AmmCampaignIcon(props: any) {
+import type { SVGIcon } from "../types/common";
+
+export function AmmCampaignIcon(props: SVGIcon) {
     return (
         <svg width="43" height="43" viewBox="0 0 43 43" fill="none" {...props}>
             <path

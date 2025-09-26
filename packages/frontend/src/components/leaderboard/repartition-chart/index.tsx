@@ -3,10 +3,10 @@ import { useTranslations } from "next-intl";
 import { Card, Typography } from "@metrom-xyz/ui";
 import { Cell, Pie, PieChart, Tooltip } from "recharts";
 import type { Address } from "viem";
-import { formatPercentage } from "@/src/utils/format";
 import { shuffle } from "@/src/utils/common";
 import type { Leaderboard, Rank } from "@/src/types/campaign";
 import classNames from "classnames";
+import { RankTooltip } from "./tooltip";
 
 import styles from "./styles.module.css";
 
@@ -19,7 +19,7 @@ export interface RepartitionChartProps {
     };
 }
 
-interface ChartData {
+export interface RepartitionChartData {
     name?: Address;
     position?: number;
     color?: string;
@@ -62,7 +62,7 @@ export function RepartitionChart({
 
         const leaderboardEntries = Object.entries(leaderboard.sortedRanks);
 
-        const topRepartitions: ChartData[] = leaderboardEntries
+        const topRepartitions: RepartitionChartData[] = leaderboardEntries
             .slice(0, CELLS_LIMIT)
             .map(([account, distribution], i) => ({
                 name: account as Address,
@@ -153,32 +153,5 @@ export function RepartitionChart({
                 </div>
             </div>
         </Card>
-    );
-}
-
-function RankTooltip({ payload }: any) {
-    const t = useTranslations("campaignDetails.leaderboard");
-
-    if (!payload || !payload.length) return null;
-
-    const color = payload[0].payload.color;
-
-    return (
-        <div className={styles.tooltipWrapper}>
-            <Typography
-                weight="bold"
-                size="xl"
-                style={{
-                    color,
-                }}
-            >
-                {payload[0].payload.position
-                    ? `#${payload[0].payload.position}`
-                    : t("others")}
-            </Typography>
-            <Typography weight="bold" size="xl2">
-                {formatPercentage({ percentage: payload[0].value })}
-            </Typography>
-        </div>
     );
 }

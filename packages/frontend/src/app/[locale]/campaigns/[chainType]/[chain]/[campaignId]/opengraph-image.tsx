@@ -1,13 +1,14 @@
-import { CHAIN_TYPE, METROM_API_CLIENT, TOKEN_ICONS_URL } from "@/src/commons";
+import { METROM_API_CLIENT, TOKEN_ICONS_URL } from "@/src/commons";
 import { ImageResponse } from "next/og";
 import type { CampaignDetailsPageProps } from "./page";
-import { MetromSquareLogo } from "@/src/assets/metrom-square-logo";
+import { MetromSquareLogo } from "@/src/assets/logos/metrom/metrom-square-logo";
 import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 import { Campaign } from "@/src/types/campaign";
 import { getTranslations } from "next-intl/server";
 import { getSocialPreviewCampaignName } from "@/src/utils/campaign";
 import {
+    ChainType,
     DistributablesType,
     TargetType,
     type CampaignTarget,
@@ -25,7 +26,8 @@ import utc from "dayjs/plugin/utc";
 import { RemoteLogo } from "@/src/components/campaign-social-preview/remote-logo";
 import { LiquityV2 } from "@/src/components/campaign-social-preview/liquity-v2";
 import { PointsIcon } from "@/src/assets/points-icon";
-import { getChainData } from "@/src/utils/chain";
+import { getCrossVmChainData } from "@/src/utils/chain";
+import { AaveV3 } from "@/src/components/campaign-social-preview/aave-v3";
 
 dayjs.extend(relativeTime);
 dayjs.extend(utc);
@@ -39,45 +41,54 @@ export const contentType = "image/png";
 
 type TokenIcons = Record<number, Record<Address, string>>;
 
-async function getCampaign(id: Address, chainId: SupportedChain) {
+async function getCampaign(
+    id: Address,
+    chainType: ChainType,
+    chainId: SupportedChain,
+) {
     try {
         const campaign = await METROM_API_CLIENT.fetchCampaign({
             id,
-            chainType: CHAIN_TYPE,
+            chainType,
             chainId,
         });
 
         return new Campaign(
             campaign,
             await getSocialPreviewCampaignName(campaign),
-            getChainData(chainId),
+            getCrossVmChainData(chainId, chainType),
         );
     } catch (error) {
         console.error(
             `Could not find campaign with id ${id} in chain ${chainId}`,
+            error,
         );
         notFound();
     }
 }
 
 function getCampaignTargetProtocol(
+    chainType: ChainType,
     chainId: SupportedChain,
     target: CampaignTarget,
 ) {
-    return getChainData(chainId)?.protocols.find((protocol) => {
-        switch (target.type) {
-            case TargetType.AmmPoolLiquidity: {
-                return protocol.slug === target.pool.dex.slug;
+    return getCrossVmChainData(chainId, chainType)?.protocols.find(
+        (protocol) => {
+            switch (target.type) {
+                case TargetType.JumperWhitelistedAmmPoolLiquidity:
+                case TargetType.AmmPoolLiquidity: {
+                    return protocol.slug === target.pool.dex.slug;
+                }
+                case TargetType.LiquityV2Debt:
+                case TargetType.LiquityV2StabilityPool:
+                case TargetType.AaveV3Borrow:
+                case TargetType.AaveV3Supply:
+                case TargetType.AaveV3NetSupply: {
+                    return protocol.slug === target.brand.slug;
+                }
             }
-            case TargetType.LiquityV2Debt:
-            case TargetType.LiquityV2StabilityPool:
-            case TargetType.AaveV3Borrow:
-            case TargetType.AaveV3Supply:
-            case TargetType.AaveV3NetSupply: {
-                return protocol.slug === target.brand.slug;
-            }
-        }
-    });
+        },
+    );
 }
 
 async function getTokenUris(
@@ -104,24 +115,37 @@ async function getTokenUris(
 }
 
 export default async function Image({ params }: CampaignDetailsPageProps) {
-    const { chain, campaignId } = await params;
+    const { chain, chainType, campaignId } = await params;
     const t = await getTranslations();
 
     const ibmPlexSans = await readFile(
         join(process.cwd(), "assets/ibm-plex-sans-500.ttf"),
     );
 
-    const campaign = await getCampaign(campaignId, parseInt(chain));
+    const campaign = await getCampaign(campaignId, chainType, parseInt(chain));
     const protocol = getCampaignTargetProtocol(
+        chainType,
         parseInt(chain),
         campaign.target,
     );
 
-    let tokenAddresses: Address[] = [];
+    const tokenAddresses: Address[] = [];
     if (campaign.isTargeting(TargetType.AmmPoolLiquidity))
         tokenAddresses.push(
             ...campaign.target.pool.tokens.map(({ address }) => address),
         );
+    if (
+        campaign.isTargeting(TargetType.LiquityV2Debt) ||
+        campaign.isTargeting(TargetType.LiquityV2StabilityPool)
+    )
+        tokenAddresses.push(campaign.target.collateral.token.address);
+    if (
+        campaign.isTargeting(TargetType.AaveV3Borrow) ||
+        campaign.isTargeting(TargetType.AaveV3Supply) ||
+        campaign.isTargeting(TargetType.AaveV3NetSupply) ||
+        campaign.isTargeting(TargetType.AaveV3BridgeAndSupply)
+    )
+        tokenAddresses.push(campaign.target.collateral.token.address);
     if (campaign.isDistributing(DistributablesType.Tokens))
         tokenAddresses.push(
             ...campaign.distributables.list.map(({ token }) => token.address),
@@ -133,6 +157,11 @@ export default async function Image({ params }: CampaignDetailsPageProps) {
     const liquityV2 =
         campaign.isTargeting(TargetType.LiquityV2Debt) ||
         campaign.isTargeting(TargetType.LiquityV2StabilityPool);
+    const aaveV3 =
+        campaign.isTargeting(TargetType.AaveV3Borrow) ||
+        campaign.isTargeting(TargetType.AaveV3NetSupply) ||
+        campaign.isTargeting(TargetType.AaveV3Supply) ||
+        campaign.isTargeting(TargetType.AaveV3BridgeAndSupply);
 
     return new ImageResponse(
         (
@@ -145,11 +174,13 @@ export default async function Image({ params }: CampaignDetailsPageProps) {
                     style={{ gap: 12 }}
                 >
                     <span tw="text-2xl">METROM.XYZ</span>
-                    <MetromSquareLogo tw="h-12 w-12" />
+                    <MetromSquareLogo width={48} height={48} />
                 </div>
                 <div tw="w-full flex items-center gap-6" style={{ gap: 24 }}>
                     {!!protocol?.logo && (
-                        <protocol.logo style={{ height: 112, width: 112 }} />
+                        <div tw="flex w-32 h-32">
+                            <protocol.logo width={128} height={128} />
+                        </div>
                     )}
                     <span tw="text-[52px]">{campaign.name}</span>
                 </div>
@@ -159,6 +190,12 @@ export default async function Image({ params }: CampaignDetailsPageProps) {
                 >
                     <div tw="flex items-center justify-between">
                         <div tw="flex items-center">
+                            {aaveV3 && (
+                                <AaveV3
+                                    collateral={campaign.target.collateral}
+                                    tokenUris={tokenUris}
+                                />
+                            )}
                             {ammPoolLiquidity && (
                                 <AmmLiquidityPool
                                     pool={campaign.target.pool}

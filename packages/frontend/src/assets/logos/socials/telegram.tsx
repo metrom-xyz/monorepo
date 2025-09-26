@@ -1,4 +1,6 @@
-export function TelegramLogo(props: any) {
+import type { SVGIcon } from "@/src/types/common";
+
+export function TelegramLogo(props: SVGIcon) {
     return (
         <svg
             width="26"

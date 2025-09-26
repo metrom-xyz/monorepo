@@ -1,4 +1,4 @@
-import { Error } from "@/src/assets/error";
+import { ErrorIcon } from "@/src/assets/error-icon";
 import { ToastNotification, Typography } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
 
@@ -14,7 +14,7 @@ export function ClaimFail({ toastId, message }: ClaimFailProps) {
         <ToastNotification
             toastId={toastId}
             title={t("title")}
-            icon={Error}
+            icon={ErrorIcon}
             variant="fail"
         >
             <Typography weight="medium">

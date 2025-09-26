@@ -1,4 +1,4 @@
-import { ClaimReward } from "@/src/assets/claim-reward";
+import { ClaimRewardIcon } from "@/src/assets/claim-reward-icon";
 import { NewCampaignIcon } from "@/src/assets/new-campaign-icon";
 import { TargetType, type Activity } from "@metrom-xyz/sdk";
 import dayjs from "dayjs";
@@ -17,9 +17,9 @@ import { useProtocolsInChain } from "@/src/hooks/useProtocolsInChain";
 import { CHAIN_TYPE } from "@/src/commons";
 import { useMemo } from "react";
 import { ProtocolLogo } from "@/src/components/protocol-logo";
+import classNames from "classnames";
 
 import styles from "./styles.module.css";
-import classNames from "classnames";
 
 interface ActivityProps extends Activity {
     chainId: number;
@@ -57,7 +57,7 @@ export function Activity({ chainId, transaction, payload }: ActivityProps) {
                   title: t("createCampaign"),
               }
             : {
-                  Icon: ClaimReward,
+                  Icon: ClaimRewardIcon,
                   title: t("claimReward"),
               };
 

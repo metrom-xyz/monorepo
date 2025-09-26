@@ -2,11 +2,7 @@ import { useMemo, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 import { Card, Popover, Typography } from "@metrom-xyz/ui";
 import { Cell, Pie, PieChart, Tooltip } from "recharts";
-import {
-    formatAmount,
-    formatPercentage,
-    formatUsdAmount,
-} from "@/src/utils/format";
+import { formatAmount, formatUsdAmount } from "@/src/utils/format";
 import classNames from "classnames";
 import { NoDistributionsIcon } from "@/src/assets/no-distributions-icon";
 import type {
@@ -15,6 +11,7 @@ import type {
 } from "@metrom-xyz/sdk";
 import { RemoteLogo } from "@/src/components/remote-logo";
 import type { SupportedChain } from "@metrom-xyz/contracts";
+import { RankTooltip } from "./tooltip";
 
 import styles from "./styles.module.css";
 
@@ -26,7 +23,7 @@ interface AverageDistributionChartProps {
     minimumPayoutPercentage?: number;
 }
 
-interface ChartData {
+export interface AverageDistributionChartData {
     type: "reimbursed" | "distributed";
     color?: string;
     value: number;
@@ -41,7 +38,8 @@ export function AverageDistributionChart({
 }: AverageDistributionChartProps) {
     const t = useTranslations("campaignDetails.kpi.charts");
 
-    const [popover, setPopover] = useState<ChartData["type"]>();
+    const [popover, setPopover] =
+        useState<AverageDistributionChartData["type"]>();
     const [anchor, setAnchor] = useState<HTMLDivElement | SVGElement | null>(
         null,
     );
@@ -73,7 +71,7 @@ export function AverageDistributionChart({
 
         const { distributed, reimbursed } = assignedPercentages;
 
-        const data: ChartData[] = [];
+        const data: AverageDistributionChartData[] = [];
         if (distributed > 0) {
             data.push({
                 type: "distributed",
@@ -135,7 +133,7 @@ export function AverageDistributionChart({
         };
     }, [distributables, assignedPercentages]);
 
-    function getPopoverOpenHandler(type: ChartData["type"]) {
+    function getPopoverOpenHandler(type: AverageDistributionChartData["type"]) {
         return () => {
             setPopover(type);
         };
@@ -274,30 +272,5 @@ export function AverageDistributionChart({
                 </PieChart>
             </div>
         </Card>
-    );
-}
-
-function RankTooltip({ payload }: any) {
-    const t = useTranslations("campaignDetails.kpi.charts");
-
-    if (!payload || !payload.length) return null;
-
-    const color = payload[0].payload.color;
-
-    return (
-        <div className={styles.tooltipWrapper}>
-            <Typography
-                weight="bold"
-                uppercase
-                style={{
-                    color,
-                }}
-            >
-                {t(payload[0].payload.type)}
-            </Typography>
-            <Typography weight="bold" size="xl2">
-                {formatPercentage({ percentage: payload[0].value })}
-            </Typography>
-        </div>
     );
 }

@@ -1,4 +1,6 @@
-export function ChevronLeft(props: any) {
+import type { SVGIcon } from "../types/common";
+
+export function ChevronLeftIcon(props: SVGIcon) {
     return (
         <svg
             width="20"

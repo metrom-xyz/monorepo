@@ -5,7 +5,6 @@ import {
     DistributablesType,
     KpiMetric,
     Status,
-    TargetType,
     type DistributablesCampaign,
     type KpiSpecification,
 } from "@metrom-xyz/sdk";

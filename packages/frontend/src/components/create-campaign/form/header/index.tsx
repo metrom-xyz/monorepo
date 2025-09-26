@@ -1,6 +1,6 @@
 import { Typography } from "@metrom-xyz/ui";
 import styles from "./styles.module.css";
-import { ChevronLeft } from "@/src/assets/chevron-left";
+import { ChevronLeftIcon } from "@/src/assets/chevron-left-icon";
 import { useTranslations } from "next-intl";
 import { useRouter } from "@/src/i18n/routing";
 import type { CampaignType } from "@/src/types/campaign";
@@ -33,7 +33,7 @@ export function FormHeader({ type }: FormHeaderProps) {
     return (
         <div className={styles.root}>
             <div onClick={handleBackOnClick} className={styles.back}>
-                <ChevronLeft />
+                <ChevronLeftIcon />
             </div>
             <Typography
                 weight="medium"

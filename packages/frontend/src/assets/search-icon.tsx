@@ -1,4 +1,6 @@
-export function SearchIcon(props: any) {
+import type { SVGIcon } from "../types/common";
+
+export function SearchIcon(props: SVGIcon) {
     return (
         <svg
             width="15"

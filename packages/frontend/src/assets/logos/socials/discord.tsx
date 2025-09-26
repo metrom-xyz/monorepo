@@ -1,4 +1,6 @@
-export function DiscordLogo(props: any) {
+import type { SVGIcon } from "@/src/types/common";
+
+export function DiscordLogo(props: SVGIcon) {
     return (
         <svg
             width="28"

@@ -6,7 +6,7 @@ import {
     NumberInput,
     Typography,
 } from "@metrom-xyz/ui";
-import { ChevronDown } from "@/src/assets/chevron-down";
+import { ChevronDownIcon } from "@/src/assets/chevron-down-icon";
 import { useTranslations } from "next-intl";
 import { useChainWithType } from "@/src/hooks/useChainWithType";
 import { parseUnits } from "viem";
@@ -183,7 +183,7 @@ export function RewardPoints({
                         <Typography weight="medium" size="sm">
                             {t("select")}
                         </Typography>
-                        <ChevronDown className={styles.chevronDown} />
+                        <ChevronDownIcon className={styles.chevronDown} />
                     </div>
                 </div>
                 <div className={styles.horizontalDivider} />

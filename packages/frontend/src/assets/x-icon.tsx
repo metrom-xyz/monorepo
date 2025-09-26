@@ -1,4 +1,6 @@
-export function XIcon(props: any) {
+import type { SVGIcon } from "../types/common";
+
+export function XIcon(props: SVGIcon) {
     return (
         <svg
             width="8"

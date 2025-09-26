@@ -1,4 +1,6 @@
-export function RewardIcon(props: any) {
+import type { SVGIcon } from "../types/common";
+
+export function RewardIcon(props: SVGIcon) {
     return (
         <svg
             width="24"

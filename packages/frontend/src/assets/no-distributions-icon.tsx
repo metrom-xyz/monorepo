@@ -1,4 +1,6 @@
-export function NoDistributionsIcon(props: any) {
+import type { SVGIcon } from "../types/common";
+
+export function NoDistributionsIcon(props: SVGIcon) {
     return (
         <svg
             width="24"

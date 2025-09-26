@@ -1,4 +1,6 @@
-export function SettingsIcon(props: any) {
+import type { SVGIcon } from "../types/common";
+
+export function SettingsIcon(props: SVGIcon) {
     return (
         <svg
             width="15"

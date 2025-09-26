@@ -1,5 +1,4 @@
 import { Distributions } from "@/src/components/distributions";
-import type { SupportedChain } from "@metrom-xyz/contracts";
 import { routing, type Locale } from "@/src/i18n/routing";
 import type { Hex } from "viem";
 import { notFound } from "next/navigation";

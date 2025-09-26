@@ -12,7 +12,7 @@ export interface CampaignDurationLimits {
     maximumSeconds: number;
 }
 
-export interface UseCampaignDurationLimitsParams extends HookBaseParams {}
+export type UseCampaignDurationLimitsParams = HookBaseParams;
 
 export interface UseCampaignDurationReturnValue {
     loading: boolean;

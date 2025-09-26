@@ -1,4 +1,6 @@
-export function LiquityV2CampaignIcon(props: any) {
+import type { SVGIcon } from "../types/common";
+
+export function LiquityV2CampaignIcon(props: SVGIcon) {
     return (
         <svg width="59" height="59" viewBox="0 0 59 59" fill="none" {...props}>
             <path

@@ -1,4 +1,6 @@
-export function CompassIcon(props: any) {
+import type { SVGIcon } from "../types/common";
+
+export function CompassIcon(props: SVGIcon) {
     return (
         <svg
             xmlns="http://www.w3.org/2000/svg"

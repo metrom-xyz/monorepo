@@ -1,6 +1,4 @@
 import { Typography } from "@metrom-xyz/ui";
-import { useTranslations } from "next-intl";
-import { useRouter } from "@/src/i18n/routing";
 import { TargetType } from "@metrom-xyz/sdk";
 import { type TargetedNamedCampaign } from "@/src/types/campaign";
 
@@ -11,9 +9,6 @@ interface EmptyHeaderProps {
 }
 
 export function EmptyHeader({ campaign }: EmptyHeaderProps) {
-    const t = useTranslations("campaignDetails.header");
-    const router = useRouter();
-
     return (
         <div className={styles.root}>
             <div className={styles.titleContainer}>

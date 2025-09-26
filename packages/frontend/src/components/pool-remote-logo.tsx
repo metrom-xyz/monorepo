@@ -18,7 +18,7 @@ export function PoolRemoteLogo({
         <UiPoolRemoteLogo
             chain={chain}
             tokens={tokens.map((token) => {
-                let resolvedUri = token.address
+                const resolvedUri = token.address
                     ? uris?.[token.address]
                     : undefined;
 

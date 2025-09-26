@@ -2,7 +2,7 @@
 
 import { type ReactNode } from "react";
 import { motion } from "motion/react";
-import { ChevronDown } from "@/src/assets/chevron-down";
+import { ChevronDownIcon } from "@/src/assets/chevron-down-icon";
 import classNames from "classnames";
 import { Typography } from "@metrom-xyz/ui";
 
@@ -76,7 +76,7 @@ export function StepPreview({
             </div>
             {decorator && (
                 <div className={styles.iconWrapper}>
-                    <ChevronDown
+                    <ChevronDownIcon
                         className={classNames(styles.icon, {
                             [styles.iconOpen]: open,
                         })}

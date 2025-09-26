@@ -4,7 +4,7 @@ import { useClaimsMvm } from "./useClaimsMvm";
 import type { HookBaseParams } from "@/src/types/hooks";
 import type { ClaimWithRemaining } from "@/src/types/campaign";
 
-export interface UseClaimsParams extends HookBaseParams {}
+export type UseClaimsParams = HookBaseParams;
 
 export interface UseClaimsReturnValue {
     loading: boolean;

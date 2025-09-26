@@ -1,18 +1,26 @@
 import { FlatCompat } from "@eslint/eslintrc";
+import pluginQuery from "@tanstack/eslint-plugin-query";
+import eslint from "@eslint/js";
+import { defineConfig } from "eslint/config";
+import tseslint from "typescript-eslint";
 
 const compat = new FlatCompat({
     baseDirectory: import.meta.dirname,
 });
 
-const eslintConfig = [
+export default defineConfig(
     ...compat.config({
-        extends: [
-            "next",
-            "plugin:prettier/recommended",
-            "plugin:@tanstack/eslint-plugin-query/recommended",
-        ],
-        rules: { "prettier/prettier": ["error", { endOfLine: "auto" }] },
+        parserOptions: {
+            tsconfigRootDir: import.meta.dirname,
+        },
+        extends: ["next", "next/typescript", "prettier"],
+        settings: {
+            next: {
+                rootDir: "packages/frontend/",
+            },
+        },
     }),
-];
-
-export default eslintConfig;
+    ...pluginQuery.configs["flat/recommended"],
+    eslint.configs.recommended,
+    tseslint.configs.recommended,
+);
