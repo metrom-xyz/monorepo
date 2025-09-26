@@ -82,20 +82,11 @@
     @apply flex
         gap-1
         items-center
+        hover:[&>.icons]:opacity-100
         cursor-pointer
         transition-opacity
         duration-200
         ease-in-out;
-}
-
-.address {
-    @apply transition-opacity
-        duration-200
-        ease-in-out;
-}
-
-.address:hover {
-    @apply opacity-50;
 }
 
 .clipWrapper:hover .copyIconContainer {

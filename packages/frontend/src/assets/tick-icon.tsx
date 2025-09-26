@@ -13,7 +13,7 @@ export function TickIcon(props: SVGIcon) {
             <path
                 d="M7.75 11.9999L10.58 14.8299L16.25 9.16992"
                 stroke="currentColor"
-                strokeWidth="1.5"
+                strokeWidth="2"
                 strokeLinecap="round"
                 strokeLinejoin="round"
             />
