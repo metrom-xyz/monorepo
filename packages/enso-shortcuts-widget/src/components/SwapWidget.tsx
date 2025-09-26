@@ -641,19 +641,12 @@ const SwapWidget = ({
                         >
                             Powered by{" "}
                             <a
-                                target={"_blank"}
-                                href={"https://www.enso.build/"}
-                                color={"fg.muted"}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                href="https://www.enso.build/"
+                                color="fg.muted"
                             >
                                 Enso
-                            </a>{" "}
-                            and{" "}
-                            <a
-                                target={"_blank"}
-                                href={"https://stargate.finance/"}
-                                color={"fg.muted"}
-                            >
-                                Stargate
                             </a>
                         </Typography>
                     </div>
