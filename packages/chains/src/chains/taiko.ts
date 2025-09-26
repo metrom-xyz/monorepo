@@ -56,7 +56,7 @@ export const taikoData: ChainData = {
     ],
     partnerActions: [
         {
-            active: false,
+            active: true,
             type: TargetType.JumperWhitelistedAmmPoolLiquidity,
         },
     ],

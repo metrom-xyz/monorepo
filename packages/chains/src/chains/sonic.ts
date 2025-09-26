@@ -46,7 +46,7 @@ export const sonicData: ChainData = {
     ],
     partnerActions: [
         {
-            active: false,
+            active: true,
             type: TargetType.JumperWhitelistedAmmPoolLiquidity,
         },
     ],
