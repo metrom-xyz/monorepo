@@ -44,6 +44,10 @@ export function ConnectButtonEvm({ customComponent }: ConnectButtonProps) {
     const [accountMenu, setAccountMenu] = useState(false);
 
     useEffect(() => {
+        setBalance(undefined);
+    }, [chainId]);
+
+    useEffect(() => {
         const fetch = async () => {
             try {
                 const response = await fetchBalance();
