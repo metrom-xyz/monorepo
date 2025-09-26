@@ -158,14 +158,13 @@ export function AccountMenu({
                                     </div>
                                     <div className={styles.addressAndBalance}>
                                         <div
-                                            className={styles.clipWrapper}
                                             onClick={handleCopyClick}
+                                            className={styles.clipWrapper}
                                         >
                                             <Account
                                                 address={account as Address}
                                                 size="lg"
                                                 weight="medium"
-                                                className={styles.address}
                                             />
                                             <div className={styles.icons}>
                                                 {copied ? (
