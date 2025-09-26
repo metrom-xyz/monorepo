@@ -647,6 +647,15 @@ const SwapWidget = ({
                                 color="fg.muted"
                             >
                                 Enso
+                            </a>{" "}
+                            and{" "}
+                            <a
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                href="https://stargate.finance/"
+                                color="fg.muted"
+                            >
+                                Stargate
                             </a>
                         </Typography>
                     </div>
