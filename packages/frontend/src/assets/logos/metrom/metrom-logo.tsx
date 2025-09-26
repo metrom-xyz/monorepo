@@ -1,4 +1,6 @@
-export function MetromLogo(props: any) {
+import type { SVGIcon } from "../../../types/common";
+
+export function MetromLogo(props: SVGIcon) {
     return (
         <svg
             width="264"

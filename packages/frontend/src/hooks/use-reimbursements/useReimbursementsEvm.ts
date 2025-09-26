@@ -9,7 +9,7 @@ import type { ReimbursementsWithRemaining } from "../../types/campaign";
 import { getChainData } from "../../utils/chain";
 import { readContracts } from "@wagmi/core";
 
-interface UseReimbursementsParams extends HookBaseParams {}
+type UseReimbursementsParams = HookBaseParams;
 
 interface UseReimbursementsReturnValue {
     loading: boolean;

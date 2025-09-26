@@ -72,8 +72,8 @@ export function DeployButtonEvm({
 
         if (!tokensApproved || !startDate || !endDate) return [[], []];
 
-        let tokenArgs = [];
-        let pointArgs = [];
+        const tokenArgs = [];
+        const pointArgs = [];
 
         const data = buildCampaignDataBundleEvm(payload);
         if (data === null) return [[], []];

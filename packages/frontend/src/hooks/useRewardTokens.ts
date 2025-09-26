@@ -5,7 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import type { HookBaseParams } from "../types/hooks";
 import { useChainWithType } from "./useChainWithType";
 
-interface UseRewardTokensParams extends HookBaseParams {}
+type UseRewardTokensParams = HookBaseParams;
 
 type QueryKey = [string, SupportedChain];
 

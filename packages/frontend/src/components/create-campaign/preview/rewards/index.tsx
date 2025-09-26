@@ -1,6 +1,5 @@
 import type { CampaignPreviewTokenDistributables } from "@/src/types/campaign";
 import { Card, TextField, Typography } from "@metrom-xyz/ui";
-import type { SupportedChain } from "@metrom-xyz/contracts";
 import { useTranslations } from "next-intl";
 import { useChainWithType } from "@/src/hooks/useChainWithType";
 import { Dayjs } from "dayjs";

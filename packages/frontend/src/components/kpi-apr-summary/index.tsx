@@ -64,7 +64,8 @@ export function KpiAprSummary({ campaign }: KpiAprSummaryProps) {
                       ),
                   })
                 : t.rich("textNoMinPayout", {
-                      target: t(getCampaignAprTargetText(campaign) as any),
+                      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                      target: t<any>(getCampaignAprTargetText(campaign)),
                       lowerBound: formatUsdAmount({
                           amount: lowerBound,
                           cutoff: false,

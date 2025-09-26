@@ -1,4 +1,6 @@
-export function ArticleIcon(props: any) {
+import type { SVGIcon } from "../types/common";
+
+export function ArticleIcon(props: SVGIcon) {
     return (
         <svg
             width="36"

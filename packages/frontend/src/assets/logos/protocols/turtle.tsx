@@ -1,4 +1,6 @@
-export function TurtleLogo(props: any) {
+import type { SVGIcon } from "@/src/types/common";
+
+export function TurtleLogo(props: SVGIcon) {
     return (
         <svg
             xmlns="http://www.w3.org/2000/svg"

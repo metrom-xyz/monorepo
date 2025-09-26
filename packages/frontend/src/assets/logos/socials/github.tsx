@@ -1,4 +1,6 @@
-export function GithubLogo(props: any) {
+import type { SVGIcon } from "@/src/types/common";
+
+export function GithubLogo(props: SVGIcon) {
     return (
         <svg
             width="24"

@@ -32,7 +32,7 @@ export function getDistributableRewardsPercentage(
         upperUsdTarget,
     );
 
-    let minPayoutPercentage = minimumPayoutPercentage || 0;
+    const minPayoutPercentage = minimumPayoutPercentage || 0;
     const goalBoundPercentage = 1 - minPayoutPercentage;
     const goalReachedPercentage = goalBoundPercentage * reachedPercentage;
 
@@ -70,7 +70,7 @@ export function getAggregatedKpiMeasurements(
             continue;
         }
 
-        let distributions = [];
+        const distributions = [];
         let percentageSum = 0;
         let valueSum = 0;
         for (const item of window) {

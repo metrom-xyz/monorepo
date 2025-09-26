@@ -103,34 +103,28 @@ export function LiquityV2ActionStep({
             </StepPreview>
             <StepContent>
                 <div className={styles.actionsWrapper}>
-                    {LIQUITY_V2_SUPPORTED_ACTIONS.map(
-                        ({ title, logo, value }) => (
-                            <div
-                                key={value}
-                                onClick={getActionChangeHandler(value)}
-                                className={classNames(styles.action, {
-                                    [styles.active]:
-                                        selectedAction?.value === value,
-                                })}
-                            >
-                                {/* <div className={styles.actionIconWrapper}>
+                    {LIQUITY_V2_SUPPORTED_ACTIONS.map(({ title, value }) => (
+                        <div
+                            key={value}
+                            onClick={getActionChangeHandler(value)}
+                            className={classNames(styles.action, {
+                                [styles.active]:
+                                    selectedAction?.value === value,
+                            })}
+                        >
+                            {/* <div className={styles.actionIconWrapper}>
                                     {logo}
                                 </div> */}
-                                <div className={styles.textWrapper}>
-                                    <Typography
-                                        weight="medium"
-                                        size="lg"
-                                        uppercase
-                                    >
-                                        {t(title, {
-                                            debtToken:
-                                                brand?.debtToken.symbol || "",
-                                        })}
-                                    </Typography>
-                                </div>
+                            <div className={styles.textWrapper}>
+                                <Typography weight="medium" size="lg" uppercase>
+                                    {t(title, {
+                                        debtToken:
+                                            brand?.debtToken.symbol || "",
+                                    })}
+                                </Typography>
                             </div>
-                        ),
-                    )}
+                        </div>
+                    ))}
                 </div>
             </StepContent>
         </Step>

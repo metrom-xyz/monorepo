@@ -7,7 +7,7 @@ import { TelegramLogo } from "@/src/assets/logos/socials/telegram";
 import { Typography } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
 import { trackFathomEvent } from "@/src/utils/fathom";
-import { MetromLogo } from "@/src/assets/metrom-logo";
+import { MetromLogo } from "@/src/assets/logos/metrom/metrom-logo";
 
 import styles from "./styles.module.css";
 

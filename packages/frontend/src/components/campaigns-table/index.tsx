@@ -166,7 +166,7 @@ export function CampaignsTable({
                                         onClick={
                                             sort
                                                 ? getSortChangeHandler(
-                                                      name as any,
+                                                      name as CampaignSortOptions,
                                                   )
                                                 : undefined
                                         }

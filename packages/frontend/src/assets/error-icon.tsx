@@ -1,4 +1,6 @@
-export function ErrorIcon(props: any) {
+import type { SVGIcon } from "../types/common";
+
+export function ErrorIcon(props: SVGIcon) {
     return (
         <svg
             width="12"

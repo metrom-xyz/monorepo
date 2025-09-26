@@ -3,7 +3,7 @@ import { useClickAway, useWindowSize } from "react-use";
 import { useEffect, useRef, useState } from "react";
 import { Skeleton, Typography } from "@metrom-xyz/ui";
 import { type Address } from "viem";
-import { Disconnect } from "@/src/assets/disconnect";
+import { Disconnect } from "@/src/assets/disconnect-icon";
 import { Activities } from "./activities";
 import { useTranslations } from "next-intl";
 import { TickIcon } from "@/src/assets/tick-icon";

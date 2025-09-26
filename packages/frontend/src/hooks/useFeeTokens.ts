@@ -5,7 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import type { HookBaseParams } from "../types/hooks";
 import { useChainWithType } from "./useChainWithType";
 
-interface UseFeeTokensParams extends HookBaseParams {}
+type UseFeeTokensParams = HookBaseParams;
 
 type QueryKey = [string, SupportedChain];
 

@@ -13,7 +13,6 @@ import type {
     Weighting,
     EmptyTarget,
     AaveV3BridgeAndSupplyTarget,
-    PartnerActionTargetType,
 } from "@metrom-xyz/sdk";
 import {
     Campaign as SdkCampaign,

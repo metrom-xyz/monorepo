@@ -1,4 +1,3 @@
-import type { SupportedChain } from "@metrom-xyz/contracts";
 import type { Hex } from "viem";
 import { METROM_API_CLIENT } from "../commons";
 import { useQuery } from "@tanstack/react-query";

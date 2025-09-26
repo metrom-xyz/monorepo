@@ -105,7 +105,7 @@ export function RestrictionsStep({
         }
 
         if (!isAddress(address)) setError("errors.notAnAddress");
-        else if (!!addresses.find((existing) => existing === address))
+        else if (addresses.find((existing) => existing === address))
             setError("errors.alreadyRestricted");
         else setError("");
     }, [address, addresses]);
@@ -198,13 +198,9 @@ export function RestrictionsStep({
                             <ErrorText
                                 size="xs"
                                 weight="medium"
-                                level={!!error ? "error" : "warning"}
+                                level={error ? "error" : "warning"}
                             >
-                                {!!error
-                                    ? t(error)
-                                    : !!warning
-                                      ? t(warning)
-                                      : null}
+                                {error ? t(error) : warning ? t(warning) : null}
                             </ErrorText>
                         </div>
                         <Switch

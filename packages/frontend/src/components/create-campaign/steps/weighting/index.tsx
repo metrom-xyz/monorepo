@@ -147,7 +147,7 @@ export function WeightingStep({
                                 weight="medium"
                                 level="warning"
                             >
-                                {!!warning ? t(warning) : null}
+                                {warning ? t(warning) : null}
                             </ErrorText>
                         </div>
                         <Switch

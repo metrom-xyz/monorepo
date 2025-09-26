@@ -7,8 +7,7 @@ import { useActiveChains } from "./useActiveChains";
 import { useChainWithType } from "./useChainWithType";
 import { useAccount } from "./useAccount";
 
-interface UseActivitiesParams extends HookBaseParams {}
-
+type UseActivitiesParams = HookBaseParams;
 type QueryKey = [string, Address | undefined];
 
 const TIME_RANGE = 60 * 60 * 24 * 7; // 1 week

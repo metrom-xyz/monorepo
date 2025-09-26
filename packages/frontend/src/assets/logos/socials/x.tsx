@@ -1,4 +1,6 @@
-export function XLogo(props: any) {
+import type { SVGIcon } from "@/src/types/common";
+
+export function XLogo(props: SVGIcon) {
     return (
         <svg
             width="22"

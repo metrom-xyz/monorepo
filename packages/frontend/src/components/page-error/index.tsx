@@ -1,4 +1,4 @@
-import { Button, Typography } from "@metrom-xyz/ui";
+import { Button, Card, Typography } from "@metrom-xyz/ui";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
 
@@ -18,6 +18,9 @@ export function PageError({ error, reset }: PageErrorProps) {
             <Typography size="xl4" weight="medium">
                 {t("title")}
             </Typography>
+            <Card className={styles.card}>
+                <code className={styles.code}>{error.message}</code>
+            </Card>
             <div className={styles.buttonsWrapper}>
                 <Link href="/">
                     <Button size="sm">{t("home")}</Button>

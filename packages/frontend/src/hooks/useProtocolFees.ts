@@ -10,7 +10,7 @@ import { useViewModule } from "@aptos-labs/react";
 import { useMemo } from "react";
 import { zeroAddress } from "viem";
 
-export interface UseProtocolFeesParams extends HookBaseParams {}
+export type UseProtocolFeesParams = HookBaseParams;
 
 export interface ProtocolFees {
     fee?: number;

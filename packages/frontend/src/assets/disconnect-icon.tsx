@@ -1,4 +1,6 @@
-export function Disconnect(props: any) {
+import type { SVGIcon } from "../types/common";
+
+export function Disconnect(props: SVGIcon) {
     return (
         <svg
             width="22"

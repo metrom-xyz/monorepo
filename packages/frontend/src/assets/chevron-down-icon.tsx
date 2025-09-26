@@ -1,4 +1,6 @@
-export function ChevronDown(props: any) {
+import type { SVGIcon } from "../types/common";
+
+export function ChevronDownIcon(props: SVGIcon) {
     return (
         <svg
             fill="none"

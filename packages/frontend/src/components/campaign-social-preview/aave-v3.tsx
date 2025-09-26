@@ -1,13 +1,13 @@
-import type { LiquityV2Collateral } from "@metrom-xyz/sdk";
+import type { AaveV3Collateral } from "@metrom-xyz/sdk";
 import { RemoteLogo } from "./remote-logo";
 import type { Address } from "viem";
 
-interface LiquityV2Props {
-    collateral: LiquityV2Collateral;
+interface AaveV3Props {
+    collateral: AaveV3Collateral;
     tokenUris: Record<Address, string>;
 }
 
-export function LiquityV2({ collateral, tokenUris }: LiquityV2Props) {
+export function AaveV3({ collateral, tokenUris }: AaveV3Props) {
     return (
         <div tw="flex" style={{ gap: 18 }}>
             <div tw="flex">

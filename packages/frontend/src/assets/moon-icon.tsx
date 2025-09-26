@@ -1,4 +1,6 @@
-export function MoonIcon(props: any) {
+import type { SVGIcon } from "../types/common";
+
+export function MoonIcon(props: SVGIcon) {
     return (
         <svg width="20" height="20" viewBox="0 0 20 20" fill="none" {...props}>
             <path

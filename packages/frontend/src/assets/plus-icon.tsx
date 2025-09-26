@@ -1,4 +1,6 @@
-export function PlusIcon(props: any) {
+import type { SVGIcon } from "../types/common";
+
+export function PlusIcon(props: SVGIcon) {
     return (
         <svg
             width="12"

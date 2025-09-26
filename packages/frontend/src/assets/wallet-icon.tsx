@@ -1,4 +1,6 @@
-export function WalletIcon(props: any) {
+import type { SVGIcon } from "../types/common";
+
+export function WalletIcon(props: SVGIcon) {
     return (
         <svg
             width="14"

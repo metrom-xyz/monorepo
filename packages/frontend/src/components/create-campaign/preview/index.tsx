@@ -10,7 +10,7 @@ import {
 import type { LocalizedMessage } from "@/src/types/utils";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
-import { MetromLightLogo } from "@/src/assets/metrom-light-logo";
+import { MetromLightLogo } from "@/src/assets/logos/metrom/metrom-light-logo";
 import { useRouter } from "@/src/i18n/routing";
 import { Rewards } from "./rewards";
 import { Header } from "./header";

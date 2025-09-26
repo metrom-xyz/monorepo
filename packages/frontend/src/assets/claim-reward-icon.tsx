@@ -1,4 +1,6 @@
-export function ClaimReward(props: any) {
+import type { SVGIcon } from "../types/common";
+
+export function ClaimRewardIcon(props: SVGIcon) {
     return (
         <svg
             xmlns="http://www.w3.org/2000/svg"

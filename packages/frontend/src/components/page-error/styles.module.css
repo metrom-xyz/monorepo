@@ -4,6 +4,14 @@
     @apply flex flex-col justify-center items-center gap-10;
 }
 
+.card {
+    @apply w-full max-w-[30rem] max-h-72 overflow-y-auto break-words;
+}
+
+.code {
+    @apply text-sm;
+}
+
 .buttonsWrapper {
     @apply flex gap-2;
 }

@@ -11,18 +11,6 @@
     @apply flex items-center justify-center h-full;
 }
 
-.tooltipWrapper {
-    @apply absolute
-        select-none
-        flex
-        flex-col
-        items-center
-        justify-center
-        top-[90px]
-        w-[240px]
-        left-1.5;
-}
-
 .chartWrapper {
     @apply flex
         items-center

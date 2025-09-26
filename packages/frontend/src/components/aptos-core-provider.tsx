@@ -13,6 +13,7 @@ export default function AptosCoreProvider({ children }: PropsWithChildren) {
 
     const core = useWalletAdapterCore({
         // FIXME: fix type issue
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         wallet: wallet as any,
         config: {
             apiKey: {

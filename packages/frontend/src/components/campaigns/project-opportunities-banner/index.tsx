@@ -21,14 +21,14 @@ export function ProjectOpportunitiesBanner() {
 
     const lv2CampaignsActive = Object.entries(
         LV2_POINTS_CAMPAIGNS[ENVIRONMENT],
-    ).some(([_, campaign]) => !!campaign && campaign?.chain.type === chainType);
+    ).some(([, campaign]) => !!campaign && campaign?.chain.type === chainType);
 
     const turtleCampaignsActive = TURTLE_CAMPAIGNS[ENVIRONMENT].some(
         (campaign) => campaign.chain.type === chainType,
     );
 
     const protocolPages = Object.entries(PROJECT_PAGES[ENVIRONMENT]).some(
-        ([_, project]) => !!project && project?.chain.type === chainType,
+        ([, project]) => !!project && project?.chain.type === chainType,
     );
 
     if (!lv2CampaignsActive && !turtleCampaignsActive && !protocolPages)

@@ -6,7 +6,7 @@ import {
     type CampaignPreviewPayload,
 } from "@/src/types/campaign";
 import { useAccount } from "@/src/hooks/useAccount";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { trackFathomEvent } from "@/src/utils/fathom";
 import { Modal, Typography } from "@metrom-xyz/ui";
 import { CampaignPreview } from "../preview";

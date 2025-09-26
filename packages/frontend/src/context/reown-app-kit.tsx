@@ -22,7 +22,7 @@ const transports = SUPPORTED_CHAINS_EVM.reduce(
     },
     {} as Record<
         number,
-        Transport<string, Record<string, any>, EIP1193RequestFn>
+        Transport<string, Record<string, unknown>, EIP1193RequestFn>
     >,
 );
 

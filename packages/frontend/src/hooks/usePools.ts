@@ -42,7 +42,7 @@ export function usePools({
             try {
                 const pools = await METROM_API_CLIENT.fetchAmmPools({
                     chainId,
-                    chainType: ChainType.Evm,
+                    chainType,
                     dex,
                 });
                 return pools;

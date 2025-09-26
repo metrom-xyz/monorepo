@@ -1,4 +1,6 @@
-export function BorderedPlusIcon(props: any) {
+import type { SVGIcon } from "../types/common";
+
+export function BorderedPlusIcon(props: SVGIcon) {
     return (
         <svg
             width="24"

@@ -144,6 +144,7 @@ export function TurtleCampaignDetails({
                             textSecondary: "#9ca3af",
                             borderColor: "transparent",
                         },
+                        // eslint-disable-next-line @typescript-eslint/no-explicit-any
                         theme: resolvedTheme as any,
                         shared: {
                             borderRadius: "0.5rem",

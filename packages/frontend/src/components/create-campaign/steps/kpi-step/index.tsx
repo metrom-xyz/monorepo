@@ -242,13 +242,9 @@ export function KpiStep({
                             <ErrorText
                                 size="xs"
                                 weight="medium"
-                                level={!!error ? "error" : "warning"}
+                                level={error ? "error" : "warning"}
                             >
-                                {!!error
-                                    ? t(error)
-                                    : !!warning
-                                      ? t(warning)
-                                      : null}
+                                {error ? t(error) : warning ? t(warning) : null}
                             </ErrorText>
                         </div>
                         <Switch

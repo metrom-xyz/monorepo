@@ -28,7 +28,7 @@ export function Account({
 
     const account = useMemo(() => {
         if (APTOS) return truncateAddress(address);
-        if (!!ensName) return ensName;
+        if (ensName) return ensName;
         if (variant === "full") return address;
 
         return shortenAddress(address, variant === "long");

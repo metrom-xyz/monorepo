@@ -9,7 +9,7 @@ interface AmmLiquidityPoolProps {
 
 export function AmmLiquidityPool({ pool, tokenUris }: AmmLiquidityPoolProps) {
     return (
-        <div tw="flex items-center" style={{ gap: 18 }}>
+        <div tw="flex" style={{ gap: 18 }}>
             <div tw="relative flex" style={{ gap: 1 }}>
                 {pool.tokens.map(({ address }, index) => (
                     <RemoteLogo

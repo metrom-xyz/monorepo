@@ -1,5 +1,4 @@
-import classNames from "classnames";
-import { Typography, Button, Skeleton, Card } from "@metrom-xyz/ui";
+import { Typography, Button, Card } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
 import {
     usePublicClient,
