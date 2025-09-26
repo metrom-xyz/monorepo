@@ -430,17 +430,10 @@ export function getCampaignPreviewApr(
                 break;
             }
             case CampaignKind.AaveV3BridgeAndSupply:
+            case CampaignKind.AaveV3NetSupply:
             case CampaignKind.AaveV3Supply: {
                 usdTvl = collateral.usdSupply;
                 liquidity = collateral.supply;
-                break;
-            }
-            case CampaignKind.AaveV3NetSupply: {
-                usdTvl = Math.max(collateral.usdSupply - collateral.usdDebt, 0);
-                liquidity =
-                    collateral.supply - collateral.debt > 0n
-                        ? collateral.supply - collateral.debt
-                        : 0n;
                 break;
             }
         }
