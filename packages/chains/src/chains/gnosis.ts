@@ -41,7 +41,7 @@ export const gnosisData: ChainData = {
     ],
     partnerActions: [
         {
-            active: false,
+            active: true,
             type: TargetType.JumperWhitelistedAmmPoolLiquidity,
         },
     ],

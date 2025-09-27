@@ -13,7 +13,7 @@ export const modeData: ChainData = {
     protocols: [],
     partnerActions: [
         {
-            active: false,
+            active: true,
             type: TargetType.JumperWhitelistedAmmPoolLiquidity,
         },
     ],

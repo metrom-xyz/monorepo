@@ -53,7 +53,7 @@ export const swellDevelopmentData: ChainData = {
     ],
     partnerActions: [
         {
-            active: false,
+            active: true,
             type: TargetType.JumperWhitelistedAmmPoolLiquidity,
         },
     ],
@@ -138,7 +138,7 @@ export const swellProductionData: ChainData = {
     ],
     partnerActions: [
         {
-            active: false,
+            active: true,
             type: TargetType.JumperWhitelistedAmmPoolLiquidity,
         },
     ],
