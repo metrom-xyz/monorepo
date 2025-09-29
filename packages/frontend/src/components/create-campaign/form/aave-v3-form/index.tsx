@@ -198,7 +198,7 @@ export function AaveV3Form({
                 <AaveV3CollateralStep
                     disabled={!payload.kind || unsupportedChain}
                     brand={payload.brand}
-                    action={payload.kind}
+                    kind={payload.kind}
                     market={payload.market}
                     collateral={payload.collateral}
                     onCollateralChange={handlePayloadOnChange}
