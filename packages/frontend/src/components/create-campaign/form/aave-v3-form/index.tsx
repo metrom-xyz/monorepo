@@ -20,9 +20,14 @@ import { Button } from "@metrom-xyz/ui";
 import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
 import { EXPERIMENTAL_CHAINS } from "@/src/commons/env";
 import { AaveV3BrandStep } from "../../steps/aave-v3-brand-step";
-import { AaveV3ActionStep } from "../../steps/aave-v3-action-step";
 import { AaveV3MarketStep } from "../../steps/aave-v3-market-step";
 import { KpiStep } from "../../steps/kpi-step";
+import {
+    CampaignKindStep,
+    type CampaignKindOption,
+} from "../../steps/campaign-kind-step";
+import type { LocalizedMessage } from "@/src/types/utils";
+import { validateDistributables } from "@/src/utils/creation-form";
 
 import styles from "./styles.module.css";
 
@@ -31,8 +36,8 @@ function validatePayload(
     payload: AaveV3CampaignPayload,
 ): AaveV3CampaignPreviewPayload | EmptyTargetCampaignPreviewPayload | null {
     const {
+        kind,
         brand,
-        action,
         market,
         collateral,
         startDate,
@@ -43,9 +48,9 @@ function validatePayload(
     } = payload;
 
     if (
+        !kind ||
         !brand ||
         !collateral ||
-        !action ||
         !market ||
         !startDate ||
         !endDate ||
@@ -53,16 +58,7 @@ function validatePayload(
     )
         return null;
 
-    if (
-        distributables.type === DistributablesType.Points &&
-        (!distributables.fee || !distributables.type)
-    )
-        return null;
-    if (
-        distributables.type === DistributablesType.Tokens &&
-        (!distributables.tokens || distributables.tokens.length === 0)
-    )
-        return null;
+    if (!validateDistributables(distributables)) return null;
 
     // TODO: handle chain type for same chain ids?
     if (EXPERIMENTAL_CHAINS.includes(chainId)) {
@@ -76,8 +72,8 @@ function validatePayload(
     }
 
     return new AaveV3CampaignPreviewPayload(
+        kind,
         brand,
-        action,
         market,
         collateral,
         undefined,
@@ -98,6 +94,23 @@ interface AaveV3FormProps {
             | null,
     ) => void;
 }
+
+export const AAVE_V3_CAMPAIGN_KIND_OPTIONS: CampaignKindOption<
+    LocalizedMessage<"newCampaign">
+>[] = [
+    {
+        label: "form.aaveV3.actions.borrow",
+        value: CampaignKind.AaveV3Borrow,
+    },
+    {
+        label: "form.aaveV3.actions.supply",
+        value: CampaignKind.AaveV3Supply,
+    },
+    {
+        label: "form.aaveV3.actions.netSupply",
+        value: CampaignKind.AaveV3NetSupply,
+    },
+] as const;
 
 const initialPayload: AaveV3CampaignPayload = {
     distributables: { type: DistributablesType.Tokens },
@@ -136,6 +149,12 @@ export function AaveV3Form({
         return true;
     }, [payload.distributables]);
 
+    const kindOptions = AAVE_V3_CAMPAIGN_KIND_OPTIONS.map((option) => ({
+        ...option,
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        label: t<any>(option.label),
+    }));
+
     useEffect(() => {
         setPayload(initialPayload);
     }, [chainId]);
@@ -170,15 +189,16 @@ export function AaveV3Form({
                     brand={payload.brand}
                     onMarketChange={handlePayloadOnChange}
                 />
-                <AaveV3ActionStep
+                <CampaignKindStep
                     disabled={!payload.brand || unsupportedChain}
-                    action={payload.action}
-                    onActionChange={handlePayloadOnChange}
+                    kinds={kindOptions}
+                    kind={payload.kind}
+                    onKindChange={handlePayloadOnChange}
                 />
                 <AaveV3CollateralStep
-                    disabled={!payload.action || unsupportedChain}
+                    disabled={!payload.kind || unsupportedChain}
                     brand={payload.brand}
-                    action={payload.action}
+                    action={payload.kind}
                     market={payload.market}
                     collateral={payload.collateral}
                     onCollateralChange={handlePayloadOnChange}
@@ -205,11 +225,11 @@ export function AaveV3Form({
                     onDistributablesChange={handlePayloadOnChange}
                     onError={handlePayloadOnError}
                 />
-                {payload.action && (
+                {payload.kind && (
                     <KpiStep
                         disabled={noDistributables || unsupportedChain}
                         usdTvl={
-                            payload.action === CampaignKind.AaveV3Borrow
+                            payload.kind === CampaignKind.AaveV3Borrow
                                 ? payload.collateral?.usdDebt
                                 : payload.collateral?.usdSupply
                         }

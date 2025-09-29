@@ -4,20 +4,19 @@ import { Skeleton, Typography } from "@metrom-xyz/ui";
 import { useCallback } from "react";
 import { useChainId } from "wagmi";
 import classNames from "classnames";
-import { LiquityV2Action } from "@/src/types/common";
-import type { LiquityV2CampaignPayload } from "@/src/types/campaign";
+import { CampaignKind } from "@/src/types/campaign";
 import { formatUsdAmount } from "@/src/utils/format";
 
 import styles from "./styles.module.css";
 
 interface RowProps {
-    action?: LiquityV2CampaignPayload["action"];
+    kind?: CampaignKind;
     selected?: boolean;
     collateral: LiquityV2Collateral;
     onChange: (collateral: LiquityV2Collateral) => void;
 }
 
-export function Row({ action, selected, collateral, onChange }: RowProps) {
+export function Row({ kind, selected, collateral, onChange }: RowProps) {
     const chainId = useChainId();
 
     const handleOnClick = useCallback(() => {
@@ -41,7 +40,7 @@ export function Row({ action, selected, collateral, onChange }: RowProps) {
             <Typography weight="medium" size="sm" light>
                 {formatUsdAmount({
                     amount:
-                        action === LiquityV2Action.Debt
+                        kind === CampaignKind.LiquityV2Debt
                             ? collateral.usdMintedDebt
                             : collateral.usdStabilityPoolDebt,
                 })}
