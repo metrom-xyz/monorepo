@@ -8,7 +8,7 @@ import styles from "./styles.module.css";
 
 interface CollateralsListProps {
     loading?: boolean;
-    action?: CampaignKind;
+    kind?: CampaignKind;
     selected?: AaveV3CampaignPayload["collateral"];
     collaterals?: AaveV3Collateral[];
     onChange: (collateral: AaveV3Collateral) => void;
@@ -16,7 +16,7 @@ interface CollateralsListProps {
 
 export function CollateralsList({
     loading,
-    action,
+    kind,
     selected,
     collaterals,
     onChange,
@@ -31,7 +31,7 @@ export function CollateralsList({
                 </Typography>
                 <Typography uppercase size="sm" weight="medium" light>
                     {t(
-                        action === CampaignKind.AaveV3Borrow
+                        kind === CampaignKind.AaveV3Borrow
                             ? "list.debt"
                             : "list.deposits",
                     )}
@@ -48,7 +48,7 @@ export function CollateralsList({
                     return (
                         <Row
                             key={collateral.token.address}
-                            action={action}
+                            kind={kind}
                             selected={collateral == selected}
                             collateral={collateral}
                             onChange={onChange}
