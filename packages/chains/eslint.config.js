@@ -1,27 +1,20 @@
-import js from "@eslint/js";
-import globals from "globals";
-import reactRefresh from "eslint-plugin-react-refresh";
 import tseslint from "typescript-eslint";
+import { FlatCompat } from "@eslint/eslintrc";
+import eslint from "@eslint/js";
+import { defineConfig } from "eslint/config";
 
-export default tseslint.config(
-    {
-        ignores: ["dist/*"],
-    },
-    {
-        extends: [js.configs.recommended, ...tseslint.configs.recommended],
-        files: ["**/*.{ts,tsx}"],
-        languageOptions: {
-            ecmaVersion: 2020,
-            globals: globals.browser,
+const compat = new FlatCompat({
+    baseDirectory: import.meta.dirname,
+});
+
+export default defineConfig(
+    { ignores: ["dist/**"] },
+    ...compat.config({
+        parserOptions: {
+            tsconfigRootDir: import.meta.dirname,
         },
-        plugins: {
-            "react-refresh": reactRefresh,
-        },
-        rules: {
-            "react-refresh/only-export-components": [
-                "warn",
-                { allowConstantExport: true },
-            ],
-        },
-    },
+        extends: ["prettier"],
+    }),
+    eslint.configs.recommended,
+    tseslint.configs.recommended,
 );
