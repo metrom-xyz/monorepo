@@ -1,4 +1,10 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import {
+    useCallback,
+    useEffect,
+    useMemo,
+    useState,
+    type ReactSVGElement,
+} from "react";
 import { useChainWithType } from "@/src/hooks/useChainWithType";
 import { Step } from "@/src/components/step";
 import { StepPreview } from "@/src/components/step/preview";
@@ -6,74 +12,63 @@ import { StepContent } from "@/src/components/step/content";
 import { useTranslations } from "next-intl";
 import {
     CampaignKind,
-    type AaveV3CampaignPayloadPart,
+    type BaseCampaignPayloadPart,
 } from "@/src/types/campaign";
 import { Typography } from "@metrom-xyz/ui";
 import classNames from "classnames";
 
 import styles from "./styles.module.css";
 
-// TODO: add proper icons
-export const AAVE_V3_ACTIONS = [
-    {
-        title: "list.borrow",
-        logo: null,
-        value: CampaignKind.AaveV3Borrow,
-    },
-    {
-        title: "list.supply",
-        logo: null,
-        value: CampaignKind.AaveV3Supply,
-    },
-    {
-        title: "list.netSupply",
-        logo: null,
-        value: CampaignKind.AaveV3NetSupply,
-    },
-] as const;
-
-interface AaveV3ActionStepProps {
-    disabled?: boolean;
-    action?: CampaignKind;
-    onActionChange: (value: AaveV3CampaignPayloadPart) => void;
+export interface CampaignKindOption<T extends string> {
+    label: T;
+    value: CampaignKind;
+    icon?: ReactSVGElement;
 }
 
-export function AaveV3ActionStep({
+export interface CampaignKindStepProps {
+    disabled?: boolean;
+    kinds: CampaignKindOption<string>[];
+    kind?: CampaignKind;
+    onKindChange: (value: BaseCampaignPayloadPart) => void;
+}
+
+export function CampaignKindStep({
     disabled,
-    action,
-    onActionChange,
-}: AaveV3ActionStepProps) {
-    const t = useTranslations("newCampaign.form.aaveV3.action");
+    kinds,
+    kind,
+    onKindChange,
+}: CampaignKindStepProps) {
+    const t = useTranslations("newCampaign.form.base.kind");
 
     const [open, setOpen] = useState(false);
 
     const { id: chainId } = useChainWithType();
 
     const selected = useMemo(() => {
-        if (!action) return undefined;
-        return AAVE_V3_ACTIONS.find(({ value }) => value === action);
-    }, [action]);
+        if (!kind) return undefined;
+        return kinds.find(({ value }) => value === kind);
+    }, [kinds, kind]);
 
     useEffect(() => {
         setOpen(false);
     }, [chainId]);
 
     useEffect(() => {
-        if (disabled || !!action) return;
+        if (disabled || !!kind) return;
         setOpen(true);
-    }, [disabled, action]);
+    }, [disabled, kind]);
 
-    const getActionChangeHandler = useCallback(
-        (newAction: CampaignKind) => {
+    const getKindChangeHandler = useCallback(
+        (newKind: CampaignKind) => {
             return () => {
-                if (action && action === newAction) return;
-                onActionChange({
-                    action: newAction,
+                if (kind && kind === newKind) return;
+                onKindChange({
+                    kind: newKind,
                 });
                 setOpen(false);
             };
         },
-        [action, onActionChange],
+        [kind, onKindChange],
     );
 
     function handleStepOnClick() {
@@ -84,31 +79,31 @@ export function AaveV3ActionStep({
         <Step
             disabled={disabled}
             open={open}
-            completed={!!action}
+            completed={!!kind}
             onPreviewClick={handleStepOnClick}
         >
             <StepPreview label={t("title")}>
                 {!!selected && (
                     <div className={styles.preview}>
                         <Typography size="lg" weight="medium">
-                            {t(selected.title)}
+                            {selected.label}
                         </Typography>
                     </div>
                 )}
             </StepPreview>
             <StepContent>
-                <div className={styles.actionsWrapper}>
-                    {AAVE_V3_ACTIONS.map(({ title, value }) => (
+                <div className={styles.wrapper}>
+                    {kinds.map(({ label, value }) => (
                         <div
                             key={value}
-                            onClick={getActionChangeHandler(value)}
-                            className={classNames(styles.action, {
+                            onClick={getKindChangeHandler(value)}
+                            className={classNames(styles.kind, {
                                 [styles.active]: selected?.value === value,
                             })}
                         >
-                            <div className={styles.textWrapper}>
+                            <div className={styles.text}>
                                 <Typography weight="medium" size="lg" uppercase>
-                                    {t(title)}
+                                    {label}
                                 </Typography>
                             </div>
                         </div>

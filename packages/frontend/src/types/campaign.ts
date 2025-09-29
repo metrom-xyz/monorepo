@@ -29,7 +29,7 @@ import {
 } from "@metrom-xyz/sdk";
 import type { Dayjs } from "dayjs";
 import type { Address } from "viem";
-import { LiquityV2Action, type WhitelistedErc20TokenAmount } from "./common";
+import { type WhitelistedErc20TokenAmount } from "./common";
 import {
     DepositUrlType,
     ProtocolType,
@@ -96,6 +96,7 @@ export interface AugmentedPriceRangeSpecification {
 }
 
 export interface BaseCampaignPayload {
+    kind?: CampaignKind;
     startDate?: Dayjs;
     endDate?: Dayjs;
     distributables?: CampaignPayloadDistributables;
@@ -112,13 +113,11 @@ export interface AmmPoolLiquidityCampaignPayload extends BaseCampaignPayload {
 
 export interface LiquityV2CampaignPayload extends BaseCampaignPayload {
     brand?: LiquityV2Protocol;
-    action?: LiquityV2Action;
     collateral?: LiquityV2Collateral;
 }
 
 export interface AaveV3CampaignPayload extends BaseCampaignPayload {
     brand?: AaveV3Protocol;
-    action?: CampaignKind;
     market?: AaveV3Market;
     collateral?: AaveV3Collateral;
     boostingFactor?: number;
@@ -184,47 +183,26 @@ export class AmmPoolLiquidityCampaignPreviewPayload extends BaseCampaignPreviewP
 }
 
 export class LiquityV2CampaignPreviewPayload extends BaseCampaignPreviewPayload {
-    public readonly kind: CampaignKind;
-
     constructor(
+        public readonly kind: CampaignKind,
         public readonly brand: LiquityV2Protocol,
-        public readonly action: LiquityV2Action,
         public readonly collateral: LiquityV2Collateral,
         ...baseArgs: ConstructorParameters<typeof BaseCampaignPreviewPayload>
     ) {
         super(...baseArgs);
-
-        switch (action) {
-            case LiquityV2Action.StabilityPool: {
-                this.kind = CampaignKind.LiquityV2StabilityPool;
-                break;
-            }
-            case LiquityV2Action.Debt: {
-                this.kind = CampaignKind.LiquityV2Debt;
-                break;
-            }
-            default: {
-                throw new Error(
-                    `Unsupported action ${action} for liquity-v2 campaign payload`,
-                );
-            }
-        }
     }
 }
 
 export class AaveV3CampaignPreviewPayload extends BaseCampaignPreviewPayload {
-    public readonly kind: CampaignKind;
-
     constructor(
+        public readonly kind: CampaignKind,
         public readonly brand: AaveV3Protocol,
-        public readonly action: CampaignKind,
         public readonly market: AaveV3Market,
         public readonly collateral: AaveV3Collateral,
         public readonly boostingFactor?: number,
         ...baseArgs: ConstructorParameters<typeof BaseCampaignPreviewPayload>
     ) {
         super(...baseArgs);
-        this.kind = action;
     }
 }
 

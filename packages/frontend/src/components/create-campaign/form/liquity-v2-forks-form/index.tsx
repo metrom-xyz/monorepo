@@ -5,6 +5,7 @@ import {
     type LiquityV2CampaignPayloadPart,
     type CampaignPreviewDistributables,
     EmptyTargetCampaignPreviewPayload,
+    CampaignKind,
 } from "@/src/types/campaign";
 import { useTranslations } from "next-intl";
 import { useCallback, useEffect, useMemo, useState } from "react";
@@ -17,11 +18,15 @@ import { RestrictionsStep } from "../../steps/restrictions-step";
 import { Button } from "@metrom-xyz/ui";
 import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
 import { LiquityV2BrandStep } from "../../steps/liquity-v2-brand-step";
-import { LiquityV2ActionStep } from "../../steps/liquity-v2-action-step";
 import { LiquityV2CollateralStep } from "../../steps/liquity-v2-collateral-step";
-import { LiquityV2Action } from "@/src/types/common";
 import { KpiStep } from "../../steps/kpi-step";
 import { EXPERIMENTAL_CHAINS } from "@/src/commons/env";
+import {
+    CampaignKindStep,
+    type CampaignKindOption,
+} from "../../steps/campaign-kind-step";
+import { validateDistributables } from "@/src/utils/creation-form";
+import type { LocalizedMessage } from "@/src/types/utils";
 
 import styles from "./styles.module.css";
 
@@ -30,8 +35,8 @@ function validatePayload(
     payload: LiquityV2CampaignPayload,
 ): LiquityV2CampaignPreviewPayload | EmptyTargetCampaignPreviewPayload | null {
     const {
+        kind,
         brand,
-        action,
         collateral,
         startDate,
         endDate,
@@ -41,25 +46,16 @@ function validatePayload(
     } = payload;
 
     if (
+        !kind ||
         !brand ||
         !collateral ||
-        !action ||
         !startDate ||
         !endDate ||
         !distributables
     )
         return null;
 
-    if (
-        distributables.type === DistributablesType.Points &&
-        (!distributables.fee || !distributables.type)
-    )
-        return null;
-    if (
-        distributables.type === DistributablesType.Tokens &&
-        (!distributables.tokens || distributables.tokens.length === 0)
-    )
-        return null;
+    if (!validateDistributables(distributables)) return null;
 
     // TODO: handle chain type for same chain ids?
     if (EXPERIMENTAL_CHAINS.includes(chainId)) {
@@ -73,8 +69,8 @@ function validatePayload(
     }
 
     return new LiquityV2CampaignPreviewPayload(
+        kind,
         brand,
-        action,
         collateral,
         startDate,
         endDate,
@@ -93,6 +89,19 @@ interface LiquityV2ForksFormProps {
             | null,
     ) => void;
 }
+
+export const LIQUIDITY_V2_CAMPAIGN_KIND_OPTIONS: CampaignKindOption<
+    LocalizedMessage<"newCampaign">
+>[] = [
+    {
+        label: "form.liquityV2.actions.borrow",
+        value: CampaignKind.LiquityV2Debt,
+    },
+    {
+        label: "form.liquityV2.actions.depositToStabilityPool",
+        value: CampaignKind.LiquityV2StabilityPool,
+    },
+] as const;
 
 const initialPayload: LiquityV2CampaignPayload = {
     distributables: { type: DistributablesType.Tokens },
@@ -140,6 +149,16 @@ export function LiquityV2ForksForm({
         return true;
     }, [payload.distributables]);
 
+    const kindOptions = useMemo(() => {
+        return LIQUIDITY_V2_CAMPAIGN_KIND_OPTIONS.map((option) => ({
+            ...option,
+            // @ts-expect-error find a way to fix the type issues
+            label: t(option.label, {
+                debtToken: payload.brand?.debtToken.symbol,
+            }),
+        }));
+    }, [payload.brand?.debtToken.symbol, t]);
+
     useEffect(() => {
         setPayload(initialPayload);
     }, [chainId]);
@@ -170,16 +189,16 @@ export function LiquityV2ForksForm({
                     brand={payload.brand}
                     onBrandChange={handlePayloadOnChange}
                 />
-                <LiquityV2ActionStep
+                <CampaignKindStep
                     disabled={!payload.brand || unsupportedChain}
-                    action={payload.action}
-                    brand={payload.brand}
-                    onActionChange={handlePayloadOnChange}
+                    kinds={kindOptions}
+                    kind={payload.kind}
+                    onKindChange={handlePayloadOnChange}
                 />
                 <LiquityV2CollateralStep
-                    disabled={!payload.action || unsupportedChain}
+                    disabled={!payload.kind || unsupportedChain}
                     brand={payload.brand}
-                    action={payload.action}
+                    kind={payload.kind}
                     collateral={payload.collateral}
                     onCollateralChange={handlePayloadOnChange}
                 />
@@ -208,9 +227,10 @@ export function LiquityV2ForksForm({
                 <KpiStep
                     disabled={noDistributables || unsupportedChain}
                     usdTvl={
-                        payload.action === LiquityV2Action.Debt
+                        payload.kind === CampaignKind.LiquityV2Debt
                             ? payload.collateral?.usdMintedDebt
-                            : payload.action === LiquityV2Action.StabilityPool
+                            : payload.kind ===
+                                CampaignKind.LiquityV2StabilityPool
                               ? payload.collateral?.usdStabilityPoolDebt
                               : undefined
                     }

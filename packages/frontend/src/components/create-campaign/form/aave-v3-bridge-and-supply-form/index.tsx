@@ -23,6 +23,7 @@ import { KpiStep } from "../../steps/kpi-step";
 import { AaveV3BridgeAndSupplyBoostStep } from "../../steps/aave-v3-bridge-supply-boost";
 import { AaveV3MarketStep } from "../../steps/aave-v3-market-step";
 import { AaveV3BrandStep } from "../../steps/aave-v3-brand-step";
+import { validateDistributables } from "@/src/utils/creation-form";
 
 import styles from "./styles.module.css";
 
@@ -31,8 +32,8 @@ function validatePayload(
     payload: AaveV3CampaignPayload,
 ): AaveV3CampaignPreviewPayload | EmptyTargetCampaignPreviewPayload | null {
     const {
+        kind,
         brand,
-        action,
         market,
         collateral,
         boostingFactor,
@@ -44,9 +45,9 @@ function validatePayload(
     } = payload;
 
     if (
+        !kind ||
         !brand ||
         !collateral ||
-        !action ||
         !boostingFactor ||
         !market ||
         !startDate ||
@@ -55,17 +56,7 @@ function validatePayload(
     )
         return null;
 
-    if (
-        distributables.type === DistributablesType.Points &&
-        (!distributables.fee || !distributables.type)
-    )
-        return null;
-    if (
-        distributables.type === DistributablesType.Tokens &&
-        (!distributables.tokens || distributables.tokens.length === 0)
-    )
-        return null;
-
+    if (!validateDistributables(distributables)) return null;
     if (boostingFactor > 0.05) return null;
 
     // TODO: handle chain type for same chain ids?
@@ -80,8 +71,8 @@ function validatePayload(
     }
 
     return new AaveV3CampaignPreviewPayload(
+        kind,
         brand,
-        action,
         market,
         collateral,
         boostingFactor,
@@ -107,7 +98,7 @@ export const DEFAULT_BOOST = 0.01;
 
 const initialPayload: AaveV3CampaignPayload = {
     distributables: { type: DistributablesType.Tokens },
-    action: CampaignKind.AaveV3BridgeAndSupply,
+    kind: CampaignKind.AaveV3BridgeAndSupply,
     boostingFactor: DEFAULT_BOOST,
 };
 
