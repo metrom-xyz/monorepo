@@ -22,7 +22,7 @@ interface AaveV3CollateralStepProps {
     disabled?: boolean;
     brand?: AaveV3CampaignPayload["brand"];
     market?: AaveV3CampaignPayload["market"];
-    action?: CampaignKind;
+    kind?: CampaignKind;
     collateral?: AaveV3CampaignPayload["collateral"];
     onCollateralChange: (value: AaveV3CampaignPayloadPart) => void;
 }
@@ -31,7 +31,7 @@ export function AaveV3CollateralStep({
     disabled,
     brand,
     market,
-    action,
+    kind,
     collateral,
     onCollateralChange,
 }: AaveV3CollateralStepProps) {
@@ -54,11 +54,11 @@ export function AaveV3CollateralStep({
     useEffect(() => {
         if (disabled || !!collateral) return;
         setOpen(true);
-    }, [collateral, disabled, action]);
+    }, [collateral, disabled, kind]);
 
     useEffect(() => {
         onCollateralChange({ collateral: undefined });
-    }, [brand, action, onCollateralChange]);
+    }, [brand, kind, onCollateralChange]);
 
     const handleCollateralChange = useCallback(
         (collateral: AaveV3Collateral) => {
@@ -112,7 +112,7 @@ export function AaveV3CollateralStep({
             <StepContent>
                 <CollateralsList
                     loading={loading}
-                    action={action}
+                    kind={kind}
                     selected={collateral}
                     collaterals={collaterals}
                     onChange={handleCollateralChange}

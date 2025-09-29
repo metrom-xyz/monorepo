@@ -10,13 +10,13 @@ import { CampaignKind } from "@/src/types/campaign";
 import styles from "./styles.module.css";
 
 interface RowProps {
-    action?: CampaignKind;
+    kind?: CampaignKind;
     selected?: boolean;
     collateral: AaveV3Collateral;
     onChange: (collateral: AaveV3Collateral) => void;
 }
 
-export function Row({ action, selected, collateral, onChange }: RowProps) {
+export function Row({ kind, selected, collateral, onChange }: RowProps) {
     const { id: chainId } = useChainWithType();
 
     const handleOnClick = useCallback(() => {
@@ -40,7 +40,7 @@ export function Row({ action, selected, collateral, onChange }: RowProps) {
             <Typography weight="medium" size="sm" light>
                 {formatUsdAmount({
                     amount:
-                        action === CampaignKind.AaveV3Borrow
+                        kind === CampaignKind.AaveV3Borrow
                             ? collateral.usdDebt
                             : collateral.usdSupply,
                 })}
