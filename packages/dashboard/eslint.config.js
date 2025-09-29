@@ -1,22 +1,26 @@
-import tseslint from "typescript-eslint";
-import reactHooks from "eslint-plugin-react-hooks";
 import { FlatCompat } from "@eslint/eslintrc";
+import pluginQuery from "@tanstack/eslint-plugin-query";
 import eslint from "@eslint/js";
 import { defineConfig } from "eslint/config";
+import tseslint from "typescript-eslint";
 
 const compat = new FlatCompat({
     baseDirectory: import.meta.dirname,
 });
 
 export default defineConfig(
-    { ignores: ["dist/**"] },
     ...compat.config({
         parserOptions: {
             tsconfigRootDir: import.meta.dirname,
         },
-        extends: ["prettier"],
+        extends: ["next", "next/typescript", "prettier"],
+        settings: {
+            next: {
+                rootDir: "packages/dashboard/",
+            },
+        },
     }),
-    reactHooks.configs["recommended-latest"],
+    ...pluginQuery.configs["flat/recommended"],
     eslint.configs.recommended,
     tseslint.configs.recommended,
 );
