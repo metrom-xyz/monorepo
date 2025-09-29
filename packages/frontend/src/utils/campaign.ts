@@ -21,7 +21,6 @@ import {
     CampaignType,
 } from "../types/campaign";
 import type { TranslationsType } from "../types/utils";
-import { LiquityV2Action } from "../types/common";
 import { getDistributableRewardsPercentage } from "./kpi";
 import { type Hex, encodeAbiParameters, stringToHex, isAddress } from "viem";
 import { SECONDS_IN_YEAR, WEIGHT_UNIT } from "../commons";
@@ -382,7 +381,7 @@ export function getCampaignPreviewApr(
         payload instanceof LiquityV2CampaignPreviewPayload &&
         payload.isDistributing(DistributablesType.Tokens)
     ) {
-        const { action, distributables, collateral } = payload;
+        const { kind, distributables, collateral, kpiSpecification } = payload;
 
         let rewardsUsdValue = 0;
         for (const reward of distributables.tokens) {
@@ -391,33 +390,39 @@ export function getCampaignPreviewApr(
         }
 
         let liquityUsdValue = 0;
-        switch (action) {
-            case LiquityV2Action.Debt: {
+        switch (kind) {
+            case CampaignKind.LiquityV2Debt: {
                 liquityUsdValue = collateral.usdMintedDebt;
                 break;
             }
-            case LiquityV2Action.StabilityPool: {
+            case CampaignKind.LiquityV2StabilityPool: {
                 liquityUsdValue = collateral.usdStabilityPoolDebt;
                 break;
             }
         }
 
-        // TODO: add KPI once supported for liquity v2
+        return getCampaignApr({
+            usdRewards: rewardsUsdValue,
+            duration,
+            usdTvl: liquityUsdValue,
+            liquidity: collateral.liquidity,
+            kpiSpecification,
+            range,
+        });
+
         // TODO: add liquidity by addresses once supported
-
-        const rewardsRatio = rewardsUsdValue / liquityUsdValue;
-        const yearMultiplier = SECONDS_IN_YEAR / duration;
-        const apr = rewardsRatio * yearMultiplier * 100;
-
-        return apr;
     }
 
     if (
         payload instanceof AaveV3CampaignPreviewPayload &&
         payload.isDistributing(DistributablesType.Tokens)
     ) {
-        const { action, distributables, collateral, kpiSpecification } =
-            payload;
+        const {
+            kind: action,
+            distributables,
+            collateral,
+            kpiSpecification,
+        } = payload;
 
         let rewardsUsdValue = 0;
         for (const reward of distributables.tokens) {

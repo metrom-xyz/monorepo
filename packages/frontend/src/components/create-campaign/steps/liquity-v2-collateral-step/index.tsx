@@ -5,6 +5,7 @@ import { StepPreview } from "@/src/components/step/preview";
 import { StepContent } from "@/src/components/step/content";
 import { useTranslations } from "next-intl";
 import {
+    CampaignKind,
     type LiquityV2CampaignPayload,
     type LiquityV2CampaignPayloadPart,
 } from "@/src/types/campaign";
@@ -20,7 +21,7 @@ import styles from "./styles.module.css";
 interface LiquityV2CollateralStepProps {
     disabled?: boolean;
     brand?: LiquityV2CampaignPayload["brand"];
-    action?: LiquityV2CampaignPayload["action"];
+    kind?: CampaignKind;
     collateral?: LiquityV2CampaignPayload["collateral"];
     onCollateralChange: (value: LiquityV2CampaignPayloadPart) => void;
 }
@@ -28,7 +29,7 @@ interface LiquityV2CollateralStepProps {
 export function LiquityV2CollateralStep({
     disabled,
     brand,
-    action,
+    kind,
     collateral,
     onCollateralChange,
 }: LiquityV2CollateralStepProps) {
@@ -50,11 +51,11 @@ export function LiquityV2CollateralStep({
     useEffect(() => {
         if (disabled || !!collateral) return;
         setOpen(true);
-    }, [collateral, disabled, action]);
+    }, [collateral, disabled, kind]);
 
     useEffect(() => {
         onCollateralChange({ collateral: undefined });
-    }, [brand, action, onCollateralChange]);
+    }, [brand, kind, onCollateralChange]);
 
     const handleCollateralChange = useCallback(
         (collateral: LiquityV2Collateral) => {
@@ -108,7 +109,7 @@ export function LiquityV2CollateralStep({
             <StepContent>
                 <CollateralsList
                     loading={loading}
-                    action={action}
+                    kind={kind}
                     selected={collateral}
                     collaterals={collaterals}
                     onChange={handleCollateralChange}

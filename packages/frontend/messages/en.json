@@ -171,6 +171,9 @@
                 "message2": "Please choose a different chain."
             },
             "base": {
+                "kind": {
+                    "title": "Action"
+                },
                 "startDate": {
                     "title": "Start date",
                     "apply": "Apply",
@@ -308,13 +311,9 @@
             },
             "liquityV2": {
                 "brand": { "title": "Protocol" },
-                "action": {
-                    "title": "Action",
-                    "list": {
-                        "borrow": "Borrow {debtToken}",
-                        "depositCollateral": "Deposit collateral",
-                        "depositToStabilityPool": "Deposit to stability pool"
-                    }
+                "actions": {
+                    "borrow": "Borrow {debtToken}",
+                    "depositToStabilityPool": "Deposit to stability pool"
                 },
                 "collaterals": {
                     "title": "Collateral",
@@ -330,13 +329,10 @@
             },
             "aaveV3": {
                 "brand": { "title": "Platform" },
-                "action": {
-                    "title": "Action",
-                    "list": {
-                        "borrow": "Borrow",
-                        "supply": "Supply",
-                        "netSupply": "Net supply"
-                    }
+                "actions": {
+                    "borrow": "Borrow",
+                    "supply": "Supply",
+                    "netSupply": "Net supply"
                 },
                 "market": {
                     "title": "Market"

@@ -22,9 +22,9 @@ import { AaveV3Form } from "./aave-v3-form";
 import { usePartnerActions } from "@/src/hooks/usePartnerActions";
 import { PARTNER_ACTION_CAMPAIGNS } from "@/src/commons";
 import { useTranslations } from "next-intl";
+import { AaveV3BridgeAndSupplyForm } from "./aave-v3-bridge-and-supply-form";
 
 import styles from "./styles.module.css";
-import { AaveV3BridgeAndSupplyForm } from "./aave-v3-bridge-and-supply-form";
 
 enum View {
     Form = "form",
@@ -127,7 +127,7 @@ export function CreateCampaignForm<T extends CampaignType>({
             {supported.length > 1 && <FormHeader type={type} />}
             {ammPoolLiquidity && (
                 <AmmPoolLiquidityForm
-                    campaignKind={ammPoolLiquidityCampaignKind}
+                    kind={ammPoolLiquidityCampaignKind}
                     unsupportedChain={unsupportedChain}
                     onPreviewClick={handlePreviewOnClick}
                 />
