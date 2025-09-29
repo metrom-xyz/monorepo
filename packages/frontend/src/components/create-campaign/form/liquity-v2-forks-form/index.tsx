@@ -90,7 +90,7 @@ interface LiquityV2ForksFormProps {
     ) => void;
 }
 
-export const LIQUIDITY_V2_CAMPAIGN_KIND_OPTIONS: CampaignKindOption<
+const LIQUITY_V2_CAMPAIGN_KIND_OPTIONS: CampaignKindOption<
     LocalizedMessage<"newCampaign">
 >[] = [
     {
@@ -150,7 +150,7 @@ export function LiquityV2ForksForm({
     }, [payload.distributables]);
 
     const kindOptions = useMemo(() => {
-        return LIQUIDITY_V2_CAMPAIGN_KIND_OPTIONS.map((option) => ({
+        return LIQUITY_V2_CAMPAIGN_KIND_OPTIONS.map((option) => ({
             ...option,
             // @ts-expect-error find a way to fix the type issues
             label: t(option.label, {
