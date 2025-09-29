@@ -29,7 +29,7 @@ export function NetworkSelect() {
     // Since mainnet is not marked as active in our config, we need to
     // manually switch to the first supported active chain.
     useEffect(() => {
-        if (!!address) return;
+        if (address) return;
 
         const supported = activeChains.some(({ id }) => id === selectedChainId);
         if (!supported) switchChain({ chainId: activeChains[0].id });

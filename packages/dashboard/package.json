@@ -39,8 +39,10 @@
         "wagmi": "^2.16.9"
     },
     "devDependencies": {
-        "@eslint/eslintrc": "^3",
+        "@eslint/eslintrc": "^3.3.1",
+        "@eslint/js": "^9.36.0",
         "@tailwindcss/postcss": "^4.1.12",
+        "@tanstack/eslint-plugin-query": "^5.91.0",
         "@types/node": "^24.3.1",
         "@types/numeral": "^2.0.5",
         "@types/react": "^19.1.12",
@@ -48,6 +50,7 @@
         "eslint": "^9.34.0",
         "eslint-config-next": "15.5.2",
         "tailwindcss": "^4.1.12",
-        "typescript": "^5.9.2"
+        "typescript": "^5.9.2",
+        "typescript-eslint": "^8.44.1"
     }
 }

@@ -1,12 +1,22 @@
-import eslint from "@eslint/js";
+import eslintConfigPrettier from "eslint-config-prettier/flat";
 import tseslint from "typescript-eslint";
-import prettier from "eslint-config-prettier";
+import { FlatCompat } from "@eslint/eslintrc";
+import eslint from "@eslint/js";
+import { defineConfig } from "eslint/config";
 
-export default [
-    {
-        ignores: ["dist/**"],
-    },
+const compat = new FlatCompat({
+    baseDirectory: import.meta.dirname,
+});
+
+export default defineConfig(
+    { ignores: ["dist/**"] },
+    ...compat.config({
+        parserOptions: {
+            tsconfigRootDir: import.meta.dirname,
+        },
+        extends: ["prettier"],
+    }),
+    eslintConfigPrettier,
     eslint.configs.recommended,
-    ...tseslint.configs.recommended,
-    prettier,
-];
+    tseslint.configs.recommended,
+);

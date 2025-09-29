@@ -36,6 +36,7 @@
         "wagmi": "^2.16.9"
     },
     "devDependencies": {
+        "@eslint/eslintrc": "^3.3.1",
         "@eslint/js": "^9.17.0",
         "@metrom-xyz/ui": "file:../ui",
         "@rainbow-me/rainbowkit": "^2.2.8",
