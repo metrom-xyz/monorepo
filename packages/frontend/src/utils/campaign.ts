@@ -381,7 +381,7 @@ export function getCampaignPreviewApr(
         payload instanceof LiquityV2CampaignPreviewPayload &&
         payload.isDistributing(DistributablesType.Tokens)
     ) {
-        const { kind, distributables, collateral, kpiSpecification } = payload;
+        const { distributables, kpiSpecification } = payload;
 
         let rewardsUsdValue = 0;
         for (const reward of distributables.tokens) {
@@ -389,23 +389,13 @@ export function getCampaignPreviewApr(
             rewardsUsdValue += reward.amount.usdValue;
         }
 
-        let liquityUsdValue = 0;
-        switch (kind) {
-            case CampaignKind.LiquityV2Debt: {
-                liquityUsdValue = collateral.usdMintedDebt;
-                break;
-            }
-            case CampaignKind.LiquityV2StabilityPool: {
-                liquityUsdValue = collateral.usdStabilityPoolDebt;
-                break;
-            }
-        }
+        const liquidity = payload.getTargetLiquidity();
 
         return getCampaignApr({
             usdRewards: rewardsUsdValue,
             duration,
-            usdTvl: liquityUsdValue,
-            liquidity: collateral.liquidity,
+            usdTvl: liquidity?.usd,
+            liquidity: liquidity?.raw,
             kpiSpecification,
             range,
         });
@@ -417,12 +407,7 @@ export function getCampaignPreviewApr(
         payload instanceof AaveV3CampaignPreviewPayload &&
         payload.isDistributing(DistributablesType.Tokens)
     ) {
-        const {
-            kind: action,
-            distributables,
-            collateral,
-            kpiSpecification,
-        } = payload;
+        const { distributables, kpiSpecification } = payload;
 
         let rewardsUsdValue = 0;
         for (const reward of distributables.tokens) {
@@ -430,28 +415,13 @@ export function getCampaignPreviewApr(
             rewardsUsdValue += reward.amount.usdValue;
         }
 
-        let usdTvl = 0;
-        let liquidity = 0n;
-        switch (action) {
-            case CampaignKind.AaveV3Borrow: {
-                usdTvl = collateral.usdDebt;
-                liquidity = collateral.debt;
-                break;
-            }
-            case CampaignKind.AaveV3BridgeAndSupply:
-            case CampaignKind.AaveV3NetSupply:
-            case CampaignKind.AaveV3Supply: {
-                usdTvl = collateral.usdSupply;
-                liquidity = collateral.supply;
-                break;
-            }
-        }
+        const liquidity = payload.getTargetLiquidity();
 
         return getCampaignApr({
             usdRewards: rewardsUsdValue,
             duration,
-            usdTvl,
-            liquidity,
+            usdTvl: liquidity?.usd,
+            liquidity: liquidity?.raw,
             kpiSpecification,
             range,
         });

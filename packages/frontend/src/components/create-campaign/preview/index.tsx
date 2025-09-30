@@ -1,11 +1,8 @@
 import { Button, Typography, TextField, ErrorText } from "@metrom-xyz/ui";
 import {
     AmmPoolLiquidityCampaignPreviewPayload,
-    CampaignKind,
-    LiquityV2CampaignPreviewPayload,
     EmptyTargetCampaignPreviewPayload,
     type CampaignPreviewPayload,
-    AaveV3CampaignPreviewPayload,
 } from "@/src/types/campaign";
 import type { LocalizedMessage } from "@/src/types/utils";
 import { useEffect, useMemo, useRef, useState } from "react";
@@ -103,33 +100,6 @@ export function CampaignPreview({
         payload instanceof EmptyTargetCampaignPreviewPayload;
     const kpi = !!payload.kpiSpecification && tokensCampaign;
 
-    const targetUsdTvl = useMemo(() => {
-        if (payload instanceof AmmPoolLiquidityCampaignPreviewPayload)
-            return payload.pool.usdTvl;
-
-        if (payload instanceof LiquityV2CampaignPreviewPayload) {
-            if (payload.kind === CampaignKind.LiquityV2Debt)
-                return payload.collateral.usdMintedDebt;
-            if (payload.kind === CampaignKind.LiquityV2StabilityPool)
-                return payload.collateral.usdStabilityPoolDebt;
-            return 0;
-        }
-
-        if (payload instanceof AaveV3CampaignPreviewPayload) {
-            if (
-                payload.kind === CampaignKind.AaveV3Supply ||
-                payload.kind === CampaignKind.AaveV3NetSupply ||
-                payload.kind === CampaignKind.AaveV3BridgeAndSupply
-            )
-                return payload.collateral.usdSupply;
-            if (payload.kind === CampaignKind.AaveV3Borrow)
-                return payload.collateral.usdDebt;
-            return 0;
-        }
-
-        return 0;
-    }, [payload]);
-
     // There's no need to approve tokens for Aptos
     useEffect(() => {
         if (tokensApproved) return;
@@ -209,7 +179,7 @@ export function CampaignPreview({
                             size="xl"
                             label={t("tvl")}
                             value={formatUsdAmount({
-                                amount: targetUsdTvl,
+                                amount: payload.getTargetLiquidity()?.usd,
                             })}
                         />
                         {!emptyTargetCampaign && tokensCampaign && (
@@ -260,7 +230,7 @@ export function CampaignPreview({
                     )}
                     {kpi && (
                         <Kpi
-                            usdTvl={targetUsdTvl}
+                            usdTvl={payload.getTargetLiquidity()?.usd}
                             from={payload.startDate}
                             to={payload.endDate}
                             distributables={payload.distributables}
