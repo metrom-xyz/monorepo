@@ -179,6 +179,14 @@ export class AmmPoolLiquidityCampaignPreviewPayload extends BaseCampaignPreviewP
         ...baseArgs: ConstructorParameters<typeof BaseCampaignPreviewPayload>
     ) {
         super(...baseArgs);
+
+        if (
+            kind !== CampaignKind.AmmPoolLiquidity &&
+            kind !== CampaignKind.JumperWhitelistedAmmPoolLiquidity
+        )
+            throw new Error(
+                `Unsupported kind ${kind} for amm pool liquidity campaign payload`,
+            );
     }
 }
 
@@ -190,6 +198,14 @@ export class LiquityV2CampaignPreviewPayload extends BaseCampaignPreviewPayload 
         ...baseArgs: ConstructorParameters<typeof BaseCampaignPreviewPayload>
     ) {
         super(...baseArgs);
+
+        if (
+            kind !== CampaignKind.LiquityV2Debt &&
+            kind !== CampaignKind.LiquityV2StabilityPool
+        )
+            throw new Error(
+                `Unsupported kind ${kind} for liquity-v2 campaign payload`,
+            );
     }
 }
 
@@ -203,6 +219,16 @@ export class AaveV3CampaignPreviewPayload extends BaseCampaignPreviewPayload {
         ...baseArgs: ConstructorParameters<typeof BaseCampaignPreviewPayload>
     ) {
         super(...baseArgs);
+
+        if (
+            kind !== CampaignKind.AaveV3Borrow &&
+            kind !== CampaignKind.AaveV3Supply &&
+            kind !== CampaignKind.AaveV3NetSupply &&
+            kind !== CampaignKind.AaveV3BridgeAndSupply
+        )
+            throw new Error(
+                `Unsupported kind ${kind} for aave-v3 campaign payload`,
+            );
     }
 }
 
