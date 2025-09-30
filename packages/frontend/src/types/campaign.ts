@@ -153,7 +153,12 @@ export type CampaignPreviewDistributables =
     | CampaignPreviewTokenDistributables
     | CampaignPreviewPointDistributables;
 
-export class BaseCampaignPreviewPayload {
+export interface TargetLiquidity {
+    usd: number;
+    raw?: bigint;
+}
+
+export abstract class BaseCampaignPreviewPayload {
     constructor(
         public readonly startDate: Dayjs,
         public readonly endDate: Dayjs,
@@ -167,6 +172,8 @@ export class BaseCampaignPreviewPayload {
     ): this is DistributablesCampaignPreviewPayload<T> {
         return this.distributables.type === type;
     }
+
+    abstract getTargetLiquidity(): TargetLiquidity | undefined;
 }
 
 export class AmmPoolLiquidityCampaignPreviewPayload extends BaseCampaignPreviewPayload {
@@ -188,6 +195,10 @@ export class AmmPoolLiquidityCampaignPreviewPayload extends BaseCampaignPreviewP
                 `Unsupported kind ${kind} for amm pool liquidity campaign payload`,
             );
     }
+
+    getTargetLiquidity(): TargetLiquidity | undefined {
+        return { usd: this.pool.usdTvl, raw: this.pool.liquidity };
+    }
 }
 
 export class LiquityV2CampaignPreviewPayload extends BaseCampaignPreviewPayload {
@@ -206,6 +217,21 @@ export class LiquityV2CampaignPreviewPayload extends BaseCampaignPreviewPayload 
             throw new Error(
                 `Unsupported kind ${kind} for liquity-v2 campaign payload`,
             );
+    }
+
+    getTargetLiquidity(): TargetLiquidity | undefined {
+        if (this.kind === CampaignKind.LiquityV2Debt)
+            return {
+                usd: this.collateral.usdMintedDebt,
+                raw: this.collateral.liquidity,
+            };
+        if (this.kind === CampaignKind.LiquityV2StabilityPool)
+            return {
+                usd: this.collateral.usdStabilityPoolDebt,
+                raw: this.collateral.liquidity,
+            };
+
+        return undefined;
     }
 }
 
@@ -230,6 +256,22 @@ export class AaveV3CampaignPreviewPayload extends BaseCampaignPreviewPayload {
                 `Unsupported kind ${kind} for aave-v3 campaign payload`,
             );
     }
+
+    getTargetLiquidity(): TargetLiquidity | undefined {
+        if (this.kind === CampaignKind.AaveV3Borrow)
+            return { usd: this.collateral.usdDebt, raw: this.collateral.debt };
+        if (
+            this.kind === CampaignKind.AaveV3Supply ||
+            this.kind === CampaignKind.AaveV3NetSupply ||
+            this.kind === CampaignKind.AaveV3BridgeAndSupply
+        )
+            return {
+                usd: this.collateral.usdSupply,
+                raw: this.collateral.supply,
+            };
+
+        return undefined;
+    }
 }
 
 export class EmptyTargetCampaignPreviewPayload extends BaseCampaignPreviewPayload {
@@ -238,6 +280,10 @@ export class EmptyTargetCampaignPreviewPayload extends BaseCampaignPreviewPayloa
         ...baseArgs: ConstructorParameters<typeof BaseCampaignPreviewPayload>
     ) {
         super(...baseArgs);
+    }
+
+    getTargetLiquidity(): TargetLiquidity | undefined {
+        return undefined;
     }
 }
 
