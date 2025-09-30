@@ -144,7 +144,6 @@ export function CreateCampaignForm<T extends CampaignType>({
                     onPreviewClick={handlePreviewOnClick}
                 />
             )}
-            {/* TODO: disable form if not for aptos? Or more generic if not for that chain  */}
             {type === CampaignType.AaveV3 && (
                 <AaveV3Form
                     unsupportedChain={unsupportedChain}
