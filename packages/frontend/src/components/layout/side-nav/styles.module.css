@@ -1,0 +1,21 @@
+@reference "../../../app.css";
+
+.root {
+    @apply h-full w-[76px] z-10 hidden fixed sm:flex flex-col self-start border-r border-zinc-300 dark:border-zinc-800;
+}
+
+.logoWrapper {
+    @apply p-4 border-b border-zinc-300 dark:border-zinc-800;
+}
+
+.logo {
+    @apply w-11 h-11;
+}
+
+.items {
+    @apply flex flex-col gap-4 p-4;
+}
+
+.icon {
+    @apply w-5 h-5 text-black dark:text-zinc-200;
+}

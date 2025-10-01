@@ -1,13 +1,21 @@
 @reference "../../app.css";
 
 .layout {
-    @apply min-h-screen flex flex-col items-center gap-10 theme-bg;
+    @apply min-h-screen flex justify-between theme-bg;
+}
+
+.content {
+    @apply w-full flex flex-1 flex-col gap-10;
+}
+
+.top {
+    @apply w-full flex justify-center sm:pr-4 sm:pl-[5.813rem] xl:px-[5.813rem];
 }
 
 .main {
-    @apply w-full flex justify-center flex-1;
+    @apply h-full w-full flex justify-center sm:pr-4 sm:pl-[5.813rem] xl:px-[5.813rem];
 }
 
 .footer {
-    @apply w-full flex justify-center px-4 pb-4;
+    @apply w-full flex justify-center px-4 pb-4 sm:pl-[5.813rem];
 }

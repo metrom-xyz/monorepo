@@ -1,0 +1,92 @@
+@reference "../../../app.css";
+
+.root {
+    @apply sm:relative
+        sm:h-20
+        w-full
+        max-w-screen-xl
+        px-4
+        pt-4
+        sm:pt-0
+        sm:px-0
+        flex
+        justify-between
+        items-center;
+}
+
+.mobileNavigationWrapper {
+    @apply sm:hidden
+        w-full
+        z-20
+        h-16
+        fixed
+        left-0
+        -bottom-0.5
+        flex
+        items-center
+        justify-between
+        border-t
+        border-gray-200 dark:border-zinc-600
+        theme-surface;
+}
+
+.mobileNavLink {
+    @apply h-full
+        w-full
+        flex
+        flex-col
+        items-center
+        justify-center
+        px-3;
+}
+
+.logoWrapper {
+    @apply sm:hidden;
+}
+
+.logo {
+    @apply h-10 w-10;
+}
+
+.themePicker {
+    @apply bg-white dark:bg-zinc-800
+        h-10
+        px-3
+        rounded-md
+        flex
+        items-center
+        justify-center
+        cursor-pointer
+        theme-surface-hover
+        transition-colors
+        duration-200
+        ease-in-out;
+}
+
+.tabActive {
+    @apply bg-zinc-200 sm:bg-white dark:bg-zinc-800 hover:bg-white hover:dark:bg-zinc-800;
+}
+
+.rightContentContainer {
+    @apply w-full flex justify-end gap-2;
+}
+
+.claimsBadge {
+    @apply flex
+        items-center
+        justify-center
+        absolute
+        px-0.5
+        h-5
+        min-w-5
+        bg-brand-green
+        rounded-md
+        right-4
+        top-auto
+        md:-right-1.5
+        md:-top-1.5;
+}
+
+.claimsBadgeText {
+    @apply text-black;
+}

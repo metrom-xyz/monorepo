@@ -1,11 +1,12 @@
 "use client";
 
 import { useEffect, type ReactNode } from "react";
-import { Nav } from "./nav";
+import { TopNav } from "./top-nav";
 import { Footer } from "./footer";
 import { useAccount, useDisconnect } from "wagmi";
 import { APTOS } from "@/src/commons/env";
 import { useWallet } from "@aptos-labs/wallet-adapter-react";
+import { SideNav } from "./side-nav";
 
 import styles from "./styles.module.css";
 
@@ -26,10 +27,15 @@ export function Layout({ children }: LayoutProps) {
 
     return (
         <div className={styles.layout}>
-            <Nav />
-            <div className={styles.main}>{children}</div>
-            <div className={styles.footer}>
-                <Footer />
+            <SideNav />
+            <div className={styles.content}>
+                <div className={styles.top}>
+                    <TopNav />
+                </div>
+                <div className={styles.main}>{children}</div>
+                <div className={styles.footer}>
+                    <Footer />
+                </div>
             </div>
         </div>
     );
