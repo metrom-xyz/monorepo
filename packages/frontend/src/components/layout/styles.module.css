@@ -17,5 +17,5 @@
 }
 
 .footer {
-    @apply w-full flex justify-center sm:pr-4 pb-4 sm:pl-[5.813rem] xl:px-[5.813rem];
+    @apply w-full flex justify-center px-4 pb-4 sm:pr-4 sm:pl-[5.813rem] xl:px-[5.813rem];
 }
