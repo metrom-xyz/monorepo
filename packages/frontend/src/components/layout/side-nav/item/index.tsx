@@ -54,7 +54,7 @@ export function Item({
             onNavigate={(e) => {
                 if (active) e.preventDefault();
             }}
-            className={classNames(styles.root)}
+            className={styles.root}
         >
             <div
                 className={classNames(styles.iconWrapper, {

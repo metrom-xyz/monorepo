@@ -1,3 +1,5 @@
+"use client";
+
 import { MetromSquareLogo } from "@/src/assets/logos/metrom/metrom-square-logo";
 import { useMemo } from "react";
 import { useTranslations } from "next-intl";
