@@ -1,7 +1,7 @@
 @reference "../../../app.css";
 
 .root {
-    @apply h-full w-[6.813rem] z-20 hidden fixed sm:flex flex-col items-center self-start border-r border-zinc-300 dark:border-zinc-800;
+    @apply h-full w-[6.813rem] z-20 hidden fixed sm:flex flex-col gap-2 items-center self-start border-r border-zinc-300 dark:border-zinc-800;
 }
 
 .logoWrapper {
@@ -13,7 +13,7 @@
 }
 
 .items {
-    @apply flex flex-col gap-4 p-4;
+    @apply flex flex-col gap-6 p-4;
 }
 
 .icon {

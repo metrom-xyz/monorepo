@@ -66,7 +66,7 @@ export function TopNav() {
                             <div
                                 key={path}
                                 className={classNames(
-                                    styles.tab,
+                                    styles.mobileNavLink,
                                     styles.disabled,
                                 )}
                             >

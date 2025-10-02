@@ -24,6 +24,29 @@ export function Item({
     claimsCount,
     icon: Icon,
 }: ItemProps) {
+    if (disabled) {
+        return (
+            <div className={classNames(styles.root, styles.disabled)}>
+                <div
+                    className={classNames(styles.iconWrapper, styles.disabled)}
+                >
+                    {Icon && (
+                        <Icon
+                            className={classNames(styles.icon, styles.disabled)}
+                        />
+                    )}
+                </div>
+                <Typography
+                    weight="medium"
+                    size="sm"
+                    className={classNames(styles.label, styles.disabled)}
+                >
+                    {label}
+                </Typography>
+            </div>
+        );
+    }
+
     return (
         <Link
             key={path}
@@ -31,15 +54,20 @@ export function Item({
             onNavigate={(e) => {
                 if (active) e.preventDefault();
             }}
-            className={styles.root}
+            className={classNames(styles.root)}
         >
             <div
                 className={classNames(styles.iconWrapper, {
                     [styles.active]: active,
-                    [styles.disabled]: disabled,
                 })}
             >
-                {Icon && <Icon className={styles.icon} />}
+                {Icon && (
+                    <Icon
+                        className={classNames(styles.icon, {
+                            [styles.active]: active,
+                        })}
+                    />
+                )}
                 <AnimatePresence>
                     {claimsCount && (
                         <motion.span
@@ -59,7 +87,13 @@ export function Item({
                     )}
                 </AnimatePresence>
             </div>
-            <Typography weight="medium" size="sm">
+            <Typography
+                weight="medium"
+                size="sm"
+                className={classNames(styles.label, {
+                    [styles.active]: active,
+                })}
+            >
                 {label}
             </Typography>
         </Link>
