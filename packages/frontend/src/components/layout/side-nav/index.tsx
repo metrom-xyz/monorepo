@@ -1,10 +1,5 @@
 import { MetromSquareLogo } from "@/src/assets/logos/metrom/metrom-square-logo";
-import type { TranslationsKeys } from "@/src/types/utils";
-import { useMemo, type FunctionComponent } from "react";
-import type { SVGIcon } from "@/src/types/common";
-import { AllCampaignsIcon } from "@/src/assets/all-campaigns-icon";
-import { NewCampaignIcon } from "@/src/assets/new-campaign-icon";
-import { ClaimsIcon } from "@/src/assets/claims-icon";
+import { useMemo } from "react";
 import { useTranslations } from "next-intl";
 import { Link, usePathname } from "@/src/i18n/routing";
 import { useAccount } from "@/src/hooks/useAccount";
@@ -13,18 +8,9 @@ import { useChainWithType } from "@/src/hooks/useChainWithType";
 import { useActiveChains } from "@/src/hooks/useActiveChains";
 import type { Address } from "viem";
 import { Item } from "./item";
+import { ROUTES } from "..";
 
 import styles from "./styles.module.css";
-
-const ROUTES: {
-    path: string;
-    label: TranslationsKeys<"navigation">;
-    icon: FunctionComponent<SVGIcon>;
-}[] = [
-    { path: "/", label: "opportunities", icon: AllCampaignsIcon },
-    { path: "/campaigns/create", label: "newCampaign", icon: NewCampaignIcon },
-    { path: "/claims", label: "claims", icon: ClaimsIcon },
-];
 
 export function SideNav() {
     const t = useTranslations("navigation");
@@ -63,7 +49,7 @@ export function SideNav() {
                         pathname === path ||
                         (path !== "/" && pathname.startsWith(path));
                     const claimsCount =
-                        label === "claims" ? pendingClaims : undefined;
+                        label === "claim" ? pendingClaims : undefined;
 
                     return (
                         <Item

@@ -9,13 +9,13 @@
 }
 
 .top {
-    @apply w-full flex justify-center sm:pr-4 sm:pl-[5.813rem] xl:px-[5.813rem];
+    @apply w-full flex justify-center pt-8 pr-4 2xl:pr-8;
 }
 
 .main {
-    @apply h-full w-full flex justify-center sm:pr-4 sm:pl-[5.813rem] xl:px-[5.813rem];
+    @apply h-full w-full flex justify-center sm:pr-4 sm:pl-[7.813rem] 2xl:px-[7.813rem];
 }
 
 .footer {
-    @apply w-full flex justify-center px-4 pb-4 sm:pr-4 sm:pl-[5.813rem] xl:px-[5.813rem];
+    @apply w-full flex justify-center px-4 pb-6 sm:pr-4 sm:pl-[7.813rem] 2xl:px-[7.813rem];
 }

@@ -2,12 +2,8 @@
 
 .root {
     @apply sm:relative
-        sm:h-20
         w-full
-        max-w-screen-xl
         px-4
-        pt-4
-        sm:pt-0
         sm:px-0
         flex
         justify-between
@@ -34,6 +30,7 @@
     @apply h-full
         w-full
         flex
+        text-center
         flex-col
         items-center
         justify-center

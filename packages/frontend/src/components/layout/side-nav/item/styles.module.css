@@ -1,15 +1,27 @@
 @reference "../../../../app.css";
 
 .root {
+    @apply w-full flex flex-col items-center gap-2 text-center;
+}
+
+.root:hover {
+    @apply [&>.iconWrapper]:bg-zinc-200 dark:[&>.iconWrapper]:bg-zinc-700;
+}
+
+.iconWrapper {
     @apply relative flex items-center justify-center w-11 h-11 rounded-lg theme-surface theme-surface-hover transition-colors duration-200 ease-in-out;
 }
 
-.root.active {
+.iconWrapper.active {
     @apply theme-surface-active;
 }
 
-.root.disabled {
+.iconWrapper.disabled {
     @apply cursor-not-allowed hover:bg-transparent;
+}
+
+.icon {
+    @apply w-5 h-5 text-black dark:text-zinc-200;
 }
 
 .popover {
@@ -34,8 +46,4 @@
 
 .claimsBadgeText {
     @apply text-black;
-}
-
-.icon {
-    @apply w-5 h-5 text-black dark:text-zinc-200;
 }

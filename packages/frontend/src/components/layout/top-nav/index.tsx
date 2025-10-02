@@ -5,33 +5,19 @@ import { useTranslations } from "next-intl";
 import { ConnectButton } from "../../connect-button";
 import { Typography } from "@metrom-xyz/ui";
 import classNames from "classnames";
-import { NewCampaignIcon } from "@/src/assets/new-campaign-icon";
-import { AllCampaignsIcon } from "@/src/assets/all-campaigns-icon";
-import { ClaimsIcon } from "@/src/assets/claims-icon";
 import { NetworkSelect } from "../../network-select";
 import { NavThemeSwitcher } from "../../nav-theme-switcher";
-import { useMemo, type FunctionComponent } from "react";
+import { useMemo } from "react";
 import { AnimatePresence, motion } from "motion/react";
-import type { SVGIcon } from "@/src/types/common";
-import type { TranslationsKeys } from "@/src/types/utils";
 import type { Address } from "viem";
 import { useClaims } from "@/src/hooks/use-claims";
 import { useActiveChains } from "@/src/hooks/useActiveChains";
 import { useChainWithType } from "@/src/hooks/useChainWithType";
 import { useAccount } from "@/src/hooks/useAccount";
 import { MetromSquareLogo } from "@/src/assets/logos/metrom/metrom-square-logo";
+import { ROUTES } from "..";
 
 import styles from "./styles.module.css";
-
-const ROUTES: {
-    path: string;
-    label: TranslationsKeys<"navigation">;
-    icon: FunctionComponent<SVGIcon>;
-}[] = [
-    { path: "/", label: "opportunities", icon: AllCampaignsIcon },
-    { path: "/campaigns/create", label: "newCampaign", icon: NewCampaignIcon },
-    { path: "/claims", label: "claims", icon: ClaimsIcon },
-];
 
 export function TopNav() {
     const t = useTranslations("navigation");
@@ -107,7 +93,7 @@ export function TopNav() {
                                 {t(label)}
                             </Typography>
                             <AnimatePresence>
-                                {label === "claims" && pendingClaimsCount && (
+                                {label === "claim" && pendingClaimsCount && (
                                     <motion.span
                                         initial={{ scale: 0 }}
                                         animate={{ scale: 1 }}
