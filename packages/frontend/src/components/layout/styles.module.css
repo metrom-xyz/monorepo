@@ -9,7 +9,7 @@
 }
 
 .top {
-    @apply w-full flex justify-center pt-8 pr-4 2xl:pr-8;
+    @apply w-full flex justify-center pt-4 sm:pt-8 sm:pr-4 2xl:pr-8;
 }
 
 .main {
@@ -17,5 +17,5 @@
 }
 
 .footer {
-    @apply w-full flex justify-center px-4 pb-6 sm:pr-4 sm:pl-[7.813rem] 2xl:px-[7.813rem];
+    @apply w-full flex justify-center px-4 pb-4 sm:pb-6 sm:pr-4 sm:pl-[7.813rem] 2xl:px-[7.813rem];
 }
