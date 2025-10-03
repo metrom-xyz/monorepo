@@ -25,7 +25,7 @@ export const ROUTES: {
     icon: FunctionComponent<SVGIcon>;
 }[] = [
     { path: "/", label: "discover", icon: AllCampaignsIcon },
-    { path: "/campaigns/create", label: "newCampaign", icon: NewCampaignIcon },
+    { path: "/campaigns/create", label: "createCampaign", icon: NewCampaignIcon },
     { path: "/claims", label: "claim", icon: ClaimsIcon },
 ];
 

@@ -1,7 +1,7 @@
 {
     "navigation": {
         "discover": "Discover",
-        "newCampaign": "New campaign",
+        "createCampaign": "Create campaign",
         "claim": "Claim",
         "connect": "Connect"
     },
