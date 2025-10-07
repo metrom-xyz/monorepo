@@ -6,9 +6,9 @@ import { useChainWithType } from "@/src/hooks/useChainWithType";
 import classNames from "classnames";
 import { formatUsdAmount } from "@/src/utils/format";
 import { CampaignKind } from "@/src/types/campaign";
+import { getAaveV3UsdTvl } from "@/src/utils/aave-v3";
 
 import styles from "./styles.module.css";
-import { getAaveV3UsdTvl } from "@/src/utils/aave-v3";
 
 interface RowProps {
     kind?: CampaignKind;
