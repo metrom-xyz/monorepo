@@ -18,7 +18,7 @@ export function getAaveV3UsdTvl({ collateral, kind }: GetUsdTvlParams) {
         return collateral.usdSupply;
 
     if (kind === CampaignKind.AaveV3NetSupply)
-        return Math.max(collateral.usdSupply - collateral.usdDebt, 0);
+        return collateral.usdSupply - collateral.usdDebt;
 
     return undefined;
 }
