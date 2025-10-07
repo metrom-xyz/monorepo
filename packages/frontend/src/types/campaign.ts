@@ -432,9 +432,14 @@ export class Campaign extends SdkCampaign {
                 return this.target.collateral.usdStabilityPoolDebt;
             case TargetType.AaveV3Borrow:
                 return this.target.collateral.usdDebt;
-            case TargetType.AaveV3NetSupply:
+            case TargetType.AaveV3BridgeAndSupply:
             case TargetType.AaveV3Supply:
                 return this.target.collateral.usdSupply;
+            case TargetType.AaveV3NetSupply:
+                return (
+                    this.target.collateral.usdSupply -
+                    this.target.collateral.usdDebt
+                );
             default:
                 return undefined;
         }
@@ -450,9 +455,13 @@ export class Campaign extends SdkCampaign {
                 return this.target.collateral.liquidity;
             case TargetType.AaveV3Borrow:
                 return this.target.collateral.debt;
-            case TargetType.AaveV3NetSupply:
+            case TargetType.AaveV3BridgeAndSupply:
             case TargetType.AaveV3Supply:
                 return this.target.collateral.supply;
+            case TargetType.AaveV3NetSupply:
+                return (
+                    this.target.collateral.supply - this.target.collateral.debt
+                );
             default:
                 return undefined;
         }
