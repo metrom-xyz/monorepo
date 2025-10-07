@@ -262,14 +262,8 @@ export class AaveV3CampaignPreviewPayload extends BaseCampaignPreviewPayload {
             return { usd: this.collateral.usdDebt, raw: this.collateral.debt };
         if (this.kind === CampaignKind.AaveV3NetSupply) {
             return {
-                usd: Math.max(
-                    this.collateral.usdSupply - this.collateral.usdDebt,
-                    0,
-                ),
-                raw:
-                    this.collateral.supply - this.collateral.debt > 0n
-                        ? this.collateral.supply - this.collateral.debt
-                        : 0n,
+                usd: this.collateral.usdSupply - this.collateral.usdDebt,
+                raw: this.collateral.supply - this.collateral.debt,
             };
         }
         if (
