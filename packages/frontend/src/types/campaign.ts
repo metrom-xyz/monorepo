@@ -260,9 +260,20 @@ export class AaveV3CampaignPreviewPayload extends BaseCampaignPreviewPayload {
     getTargetLiquidity(): TargetLiquidity | undefined {
         if (this.kind === CampaignKind.AaveV3Borrow)
             return { usd: this.collateral.usdDebt, raw: this.collateral.debt };
+        if (this.kind === CampaignKind.AaveV3NetSupply) {
+            return {
+                usd: Math.max(
+                    this.collateral.usdSupply - this.collateral.usdDebt,
+                    0,
+                ),
+                raw:
+                    this.collateral.supply - this.collateral.debt > 0n
+                        ? this.collateral.supply - this.collateral.debt
+                        : 0n,
+            };
+        }
         if (
             this.kind === CampaignKind.AaveV3Supply ||
-            this.kind === CampaignKind.AaveV3NetSupply ||
             this.kind === CampaignKind.AaveV3BridgeAndSupply
         )
             return {

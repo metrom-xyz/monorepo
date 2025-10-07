@@ -8,6 +8,7 @@ import { formatUsdAmount } from "@/src/utils/format";
 import { CampaignKind } from "@/src/types/campaign";
 
 import styles from "./styles.module.css";
+import { getAaveV3UsdTvl } from "@/src/utils/aave-v3";
 
 interface RowProps {
     kind?: CampaignKind;
@@ -39,10 +40,7 @@ export function Row({ kind, selected, collateral, onChange }: RowProps) {
             </div>
             <Typography weight="medium" size="sm" light>
                 {formatUsdAmount({
-                    amount:
-                        kind === CampaignKind.AaveV3Borrow
-                            ? collateral.usdDebt
-                            : collateral.usdSupply,
+                    amount: getAaveV3UsdTvl({ collateral, kind }),
                 })}
             </Typography>
         </div>

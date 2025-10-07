@@ -28,6 +28,7 @@ import {
 } from "../../steps/campaign-kind-step";
 import type { LocalizedMessage } from "@/src/types/utils";
 import { validateDistributables } from "@/src/utils/creation-form";
+import { getAaveV3UsdTvl } from "@/src/utils/aave-v3";
 
 import styles from "./styles.module.css";
 
@@ -228,11 +229,10 @@ export function AaveV3Form({
                 {payload.kind && (
                     <KpiStep
                         disabled={noDistributables || unsupportedChain}
-                        usdTvl={
-                            payload.kind === CampaignKind.AaveV3Borrow
-                                ? payload.collateral?.usdDebt
-                                : payload.collateral?.usdSupply
-                        }
+                        usdTvl={getAaveV3UsdTvl({
+                            collateral: payload.collateral,
+                            kind: payload.kind,
+                        })}
                         distributables={
                             payload.distributables?.type ===
                             DistributablesType.Tokens
