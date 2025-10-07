@@ -5,12 +5,11 @@ import {
     type LiquityV2CampaignPayloadPart,
     type CampaignPreviewDistributables,
     EmptyTargetCampaignPreviewPayload,
-    CampaignKind,
 } from "@/src/types/campaign";
 import { useTranslations } from "next-intl";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useChainWithType } from "@/src/hooks/useChainWithType";
-import { DistributablesType } from "@metrom-xyz/sdk";
+import { CampaignKind, DistributablesType } from "@metrom-xyz/sdk";
 import { StartDateStep } from "../../steps/start-date-step";
 import { EndDateStep } from "../../steps/end-date-step";
 import { RewardsStep } from "../../steps/rewards-step";

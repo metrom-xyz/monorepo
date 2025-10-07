@@ -9,6 +9,7 @@ export const mainnetData: ChainData = {
     metromContract: { address: "0x" },
     blockExplorers: mainnet.blockExplorers,
     icon: EthLogo,
+    forms: [],
     protocols: [],
     baseTokens: [],
 };

@@ -6,54 +6,47 @@ import { useTranslations } from "next-intl";
 import { LiquityV2CampaignIcon } from "@/src/assets/liquity-v2-campaign-icon";
 import { AmmCampaignIcon } from "@/src/assets/amm-campaign-icon";
 import classNames from "classnames";
-import { CampaignType } from "@/src/types/campaign";
-import { AaveThemeLogo, ProtocolType } from "@metrom-xyz/chains";
-import { useProtocolsInChain } from "@/src/hooks/useProtocolsInChain";
-import { Redirect } from "./redirect";
+import { AaveThemeLogo } from "@metrom-xyz/chains";
 import { useChainWithType } from "@/src/hooks/useChainWithType";
 import { CompassIcon } from "@/src/assets/compass-icon";
-import { usePartnerActions } from "@/src/hooks/usePartnerActions";
 import { useState, type ReactNode } from "react";
 import { PickPartnerAction } from "./pick-partner-action";
-import type { LocalizedMessage } from "@/src/types/utils";
+import type { TranslationsKeys } from "@/src/types/utils";
+import { useForms } from "@/src/hooks/useForms";
+import { BaseCampaignType } from "@metrom-xyz/sdk";
+import { FormNotSupported } from "./form-not-supported";
+import { Redirect } from "./redirect";
 
 import styles from "./styles.module.css";
 
 interface CampaignTypeConfig {
-    path: string;
-    title: LocalizedMessage<"newCampaign.pickType">;
-    description: LocalizedMessage<"newCampaign.pickType">;
-    type: CampaignType;
-    protocol: ProtocolType;
+    title: TranslationsKeys<"newCampaign.pickType">;
+    description: TranslationsKeys<"newCampaign.pickType">;
     icon: ReactNode;
 }
 
-const CAMPAIGN_TYPES: CampaignTypeConfig[] = [
-    {
-        path: `/campaigns/create/${CampaignType.AmmPoolLiquidity}`,
+const FORM_INFO: Record<BaseCampaignType, CampaignTypeConfig> = {
+    [BaseCampaignType.AmmPoolLiquidity]: {
         title: "amm.title",
         description: "amm.description",
-        type: CampaignType.AmmPoolLiquidity,
-        protocol: ProtocolType.Dex,
         icon: <AmmCampaignIcon className={styles.ammIcon} />,
     },
-    {
-        path: `/campaigns/create/${CampaignType.LiquityV2}`,
+    [BaseCampaignType.LiquityV2]: {
         title: "liquityV2.title",
         description: "liquityV2.description",
-        type: CampaignType.LiquityV2,
-        protocol: ProtocolType.LiquityV2,
         icon: <LiquityV2CampaignIcon className={styles.liquidityV2Icon} />,
     },
-    {
-        path: `/campaigns/create/${CampaignType.AaveV3}`,
+    [BaseCampaignType.AaveV3]: {
         title: "aaveV3.title",
         description: "aaveV3.description",
-        type: CampaignType.AaveV3,
-        protocol: ProtocolType.AaveV3,
         icon: <AaveThemeLogo className={styles.aaveIcon} />,
     },
-];
+    [BaseCampaignType.HoldToken]: {
+        title: "holdToken.title",
+        description: "holdToken.description",
+        icon: <AaveThemeLogo className={styles.aaveIcon} />,
+    },
+};
 
 export function CreateCampaign() {
     const t = useTranslations("newCampaign.pickType");
@@ -61,22 +54,12 @@ export function CreateCampaign() {
     const [showPartnerActions, setShowPartnerActions] = useState(false);
 
     const { id: chainId } = useChainWithType();
-    const dexProtocols = useProtocolsInChain({
+
+    const forms = useForms({ chainId, partner: false });
+    const partnerForms = useForms({
         chainId,
-        type: ProtocolType.Dex,
-        active: true,
+        partner: true,
     });
-    const liquityV2Protocols = useProtocolsInChain({
-        chainId,
-        type: ProtocolType.LiquityV2,
-        active: true,
-    });
-    const aaveV3Protocols = useProtocolsInChain({
-        chainId,
-        type: ProtocolType.AaveV3,
-        active: true,
-    });
-    const partnerActions = usePartnerActions({ chainId });
 
     function handleShowPartnerAction() {
         setShowPartnerActions(true);
@@ -86,29 +69,18 @@ export function CreateCampaign() {
         setShowPartnerActions(false);
     }
 
-    const supported = [
-        ...dexProtocols,
-        ...liquityV2Protocols,
-        ...aaveV3Protocols,
-        ...partnerActions,
-    ];
+    const supported = [...forms, ...partnerForms];
 
-    if (supported.length === 0)
-        return (
-            <div className={styles.emptyWrapper}>
-                <Typography weight="medium" size="lg">
-                    {t("empty.message1")}
-                </Typography>
-                <Typography weight="medium" size="lg">
-                    {t("empty.message2")}
-                </Typography>
-            </div>
-        );
-
+    if (supported.length === 0) return <FormNotSupported chainId={chainId} />;
     if (supported.length === 1) return <Redirect supported={supported} />;
 
     if (showPartnerActions)
-        return <PickPartnerAction onBack={handleHidePartnerActions} />;
+        return (
+            <PickPartnerAction
+                forms={partnerForms}
+                onBack={handleHidePartnerActions}
+            />
+        );
 
     return (
         <div className={styles.root}>
@@ -119,41 +91,33 @@ export function CreateCampaign() {
                 {t("description")}
             </Typography>
             <div className={styles.campaignCardsWrapper}>
-                {CAMPAIGN_TYPES.map(
-                    ({ path, title, description, protocol, icon }) => {
-                        const disabled =
-                            supported.filter(
-                                (supported) => supported.type === protocol,
-                            ).length === 0;
-                        if (disabled) return null;
+                {forms.map(({ active, partner, type }) => {
+                    const info = FORM_INFO[type as BaseCampaignType];
+                    if (!info || partner || !active) return null;
 
-                        return (
-                            <Link key={path} href={path}>
-                                <Card className={styles.campaignLinkCard}>
-                                    <div className={styles.campaignCardBody}>
-                                        <div className={styles.iconWrapper}>
-                                            {icon}
-                                        </div>
-                                        <div className={styles.rightContent}>
-                                            <Typography
-                                                weight="medium"
-                                                size="lg"
-                                            >
-                                                {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
-                                                {t<any>(title)}
-                                            </Typography>
-                                            <Typography weight="medium" light>
-                                                {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
-                                                {t<any>(description)}
-                                            </Typography>
-                                        </div>
+                    const { title, icon, description } = info;
+
+                    return (
+                        <Link key={type} href={`/campaigns/create/${type}`}>
+                            <Card className={styles.campaignLinkCard}>
+                                <div className={styles.campaignCardBody}>
+                                    <div className={styles.iconWrapper}>
+                                        {icon}
                                     </div>
-                                </Card>
-                            </Link>
-                        );
-                    },
-                )}
-                {partnerActions.length > 0 && (
+                                    <div className={styles.rightContent}>
+                                        <Typography weight="medium" size="lg">
+                                            {t(title)}
+                                        </Typography>
+                                        <Typography weight="medium" light>
+                                            {t(description)}
+                                        </Typography>
+                                    </div>
+                                </div>
+                            </Card>
+                        </Link>
+                    );
+                })}
+                {partnerForms.length > 0 && (
                     <div onClick={handleShowPartnerAction}>
                         <Card className={styles.campaignCard}>
                             <div className={styles.campaignCardBody}>

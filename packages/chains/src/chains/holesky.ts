@@ -1,4 +1,4 @@
-import { SupportedDex } from "@metrom-xyz/sdk";
+import { BaseCampaignType, SupportedDex } from "@metrom-xyz/sdk";
 import { EthLogo } from "../assets/logos/chains/eth";
 import { AlgebraIntegralLogo } from "../assets/logos/dexes/algebra-integral";
 import { SupportedChain, ADDRESS } from "@metrom-xyz/contracts";
@@ -12,6 +12,13 @@ export const holeskyData: ChainData = {
     metromContract: ADDRESS[SupportedChain.Holesky],
     blockExplorers: holesky.blockExplorers,
     icon: EthLogo,
+    forms: [
+        {
+            active: true,
+            partner: false,
+            type: BaseCampaignType.AmmPoolLiquidity,
+        },
+    ],
     protocols: [
         {
             active: true,

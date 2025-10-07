@@ -1,4 +1,4 @@
-import { SupportedDex } from "@metrom-xyz/sdk";
+import { BaseCampaignType, SupportedDex } from "@metrom-xyz/sdk";
 import { SupportedChain, ADDRESS } from "@metrom-xyz/contracts";
 import { lumiaMainnet } from "viem/chains";
 import type { ChainData } from "../types/chains";
@@ -12,6 +12,13 @@ export const lumiaData: ChainData = {
     metromContract: ADDRESS[SupportedChain.Lumia],
     blockExplorers: lumiaMainnet.blockExplorers,
     icon: LumiaLogo,
+    forms: [
+        {
+            active: true,
+            partner: false,
+            type: BaseCampaignType.AmmPoolLiquidity,
+        },
+    ],
     protocols: [
         {
             active: true,

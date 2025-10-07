@@ -1,4 +1,8 @@
-import { SupportedDex, TargetType } from "@metrom-xyz/sdk";
+import {
+    BaseCampaignType,
+    PartnerCampaignType,
+    SupportedDex,
+} from "@metrom-xyz/sdk";
 import { SupportedChain, ADDRESS } from "@metrom-xyz/contracts";
 import { TaikoLogo } from "../assets/logos/chains/taiko";
 import { taiko } from "viem/chains";
@@ -14,6 +18,18 @@ export const taikoData: ChainData = {
     metromContract: ADDRESS[SupportedChain.Taiko],
     blockExplorers: taiko.blockExplorers,
     icon: TaikoLogo,
+    forms: [
+        {
+            active: true,
+            partner: false,
+            type: BaseCampaignType.AmmPoolLiquidity,
+        },
+        {
+            active: false,
+            partner: true,
+            type: PartnerCampaignType.JumperWhitelistedAmmPoolLiquidity,
+        },
+    ],
     protocols: [
         {
             active: true,
@@ -52,12 +68,6 @@ export const taikoData: ChainData = {
                     "https://izumi.finance/trade/pool/?chain_id=167000&pool_address={pool}",
             },
             supportsFetchAllPools: true,
-        },
-    ],
-    partnerActions: [
-        {
-            active: false,
-            type: TargetType.JumperWhitelistedAmmPoolLiquidity,
         },
     ],
     baseTokens: [

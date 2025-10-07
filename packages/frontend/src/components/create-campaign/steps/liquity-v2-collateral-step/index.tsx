@@ -5,13 +5,12 @@ import { StepPreview } from "@/src/components/step/preview";
 import { StepContent } from "@/src/components/step/content";
 import { useTranslations } from "next-intl";
 import {
-    CampaignKind,
     type LiquityV2CampaignPayload,
     type LiquityV2CampaignPayloadPart,
 } from "@/src/types/campaign";
 import { CollateralsList } from "./list";
 import { Typography } from "@metrom-xyz/ui";
-import type { LiquityV2Collateral } from "@metrom-xyz/sdk";
+import type { CampaignKind, LiquityV2Collateral } from "@metrom-xyz/sdk";
 import { RemoteLogo } from "@/src/components/remote-logo";
 import { useLiquityV2Collaterals } from "@/src/hooks/useLiquityV2Collaterals";
 import { CHAIN_TYPE } from "@/src/commons";

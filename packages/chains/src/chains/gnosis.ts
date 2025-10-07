@@ -1,4 +1,8 @@
-import { SupportedDex, TargetType } from "@metrom-xyz/sdk";
+import {
+    BaseCampaignType,
+    PartnerCampaignType,
+    SupportedDex,
+} from "@metrom-xyz/sdk";
 import { GnosisLogo } from "../assets/logos/chains/gnosis";
 import { gnosis } from "viem/chains";
 import { SwaprLogo } from "../assets/logos/dexes/swapr";
@@ -13,6 +17,18 @@ export const gnosisData: ChainData = {
     metromContract: ADDRESS[SupportedChain.Gnosis],
     blockExplorers: gnosis.blockExplorers,
     icon: GnosisLogo,
+    forms: [
+        {
+            active: true,
+            partner: false,
+            type: BaseCampaignType.AmmPoolLiquidity,
+        },
+        {
+            active: true,
+            partner: true,
+            type: PartnerCampaignType.JumperWhitelistedAmmPoolLiquidity,
+        },
+    ],
     protocols: [
         {
             active: true,
@@ -37,12 +53,6 @@ export const gnosisData: ChainData = {
                 template: "https://oku.trade/app/gnosis/liquidity/{pool}",
             },
             supportsFetchAllPools: true,
-        },
-    ],
-    partnerActions: [
-        {
-            active: false,
-            type: TargetType.JumperWhitelistedAmmPoolLiquidity,
         },
     ],
     baseTokens: [

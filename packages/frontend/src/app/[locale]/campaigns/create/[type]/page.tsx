@@ -1,6 +1,10 @@
 import { CreateCampaignForm } from "@/src/components/create-campaign/form";
 import { routing, type Locale } from "@/src/i18n/routing";
-import { CampaignType } from "@/src/types/campaign";
+import {
+    BaseCampaignType,
+    PartnerCampaignType,
+    type CampaignType,
+} from "@metrom-xyz/sdk";
 import { setRequestLocale } from "next-intl/server";
 
 interface Params {
@@ -30,8 +34,13 @@ export default async function CampaignFormPage({
 }
 
 export async function generateStaticParams() {
+    const types: CampaignType[] = [
+        ...Object.values(BaseCampaignType),
+        ...Object.values(PartnerCampaignType),
+    ];
+
     return routing.locales.flatMap((locale) =>
-        Object.values(CampaignType).map((type) => ({
+        types.map((type) => ({
             locale,
             type,
         })),

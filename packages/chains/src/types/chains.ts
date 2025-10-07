@@ -6,7 +6,7 @@ import type { Protocol } from "./protocol";
 import { SupportedChain as SupportedChainEvm } from "@metrom-xyz/contracts";
 import { SupportedChain as SupportedChainMvm } from "@metrom-xyz/aptos-contracts";
 import { mainnet } from "viem/chains";
-import { PartnerAction } from "./partner";
+import { Form } from "./forms";
 
 export interface ChainData {
     active: boolean;
@@ -14,8 +14,8 @@ export interface ChainData {
     metromContract: ChainContract;
     blockExplorers: Chain["blockExplorers"];
     icon: FunctionComponent<SVGIcon>;
+    forms: Form[];
     protocols: Protocol[];
-    partnerActions?: PartnerAction[];
     baseTokens: Erc20Token[];
 }
 

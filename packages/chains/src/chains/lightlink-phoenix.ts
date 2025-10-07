@@ -1,4 +1,4 @@
-import { SupportedDex } from "@metrom-xyz/sdk";
+import { BaseCampaignType, SupportedDex } from "@metrom-xyz/sdk";
 import { SupportedChain, ADDRESS } from "@metrom-xyz/contracts";
 import { LightLinkPhoenixLogo } from "../assets/logos/chains/lightlink-phoenix";
 import { lightlinkPhoenix } from "viem/chains";
@@ -12,6 +12,13 @@ export const lightlinkPhoenixData: ChainData = {
     metromContract: ADDRESS[SupportedChain.LightLinkPhoenix],
     blockExplorers: lightlinkPhoenix.blockExplorers,
     icon: LightLinkPhoenixLogo,
+    forms: [
+        {
+            active: true,
+            partner: false,
+            type: BaseCampaignType.AmmPoolLiquidity,
+        },
+    ],
     protocols: [
         {
             active: true,

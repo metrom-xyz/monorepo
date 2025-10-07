@@ -1,5 +1,9 @@
 import { SupportedChain, ADDRESS } from "@metrom-xyz/contracts";
-import { SupportedDex, TargetType } from "@metrom-xyz/sdk";
+import {
+    BaseCampaignType,
+    PartnerCampaignType,
+    SupportedDex,
+} from "@metrom-xyz/sdk";
 import { SonicLogo } from "../assets/logos/chains/sonic";
 import { UniswapLogo } from "../assets/logos/dexes/uniswap";
 import { SilverSwapLogo } from "../assets/logos/dexes/silverswap";
@@ -18,6 +22,18 @@ export const sonicData: ChainData = {
         },
     },
     icon: SonicLogo,
+    forms: [
+        {
+            active: true,
+            partner: false,
+            type: BaseCampaignType.AmmPoolLiquidity,
+        },
+        {
+            active: false,
+            partner: true,
+            type: PartnerCampaignType.JumperWhitelistedAmmPoolLiquidity,
+        },
+    ],
     protocols: [
         {
             active: true,
@@ -42,12 +58,6 @@ export const sonicData: ChainData = {
                 template: "https://silverswap.io/chain/sonic/liquidity/add-v3",
             },
             supportsFetchAllPools: true,
-        },
-    ],
-    partnerActions: [
-        {
-            active: false,
-            type: TargetType.JumperWhitelistedAmmPoolLiquidity,
         },
     ],
     baseTokens: [

@@ -45,7 +45,11 @@ import {
     SupportedProductionMvmChain,
 } from "./types/chains";
 import { Environment } from "@metrom-xyz/sdk";
-import { aptosDevelopmentData, aptosDevelopmentProductionData, aptosProductionData } from "./chains/aptos";
+import {
+    aptosDevelopmentData,
+    aptosDevelopmentProductionData,
+    aptosProductionData,
+} from "./chains/aptos";
 
 export {
     Environment,
@@ -54,10 +58,10 @@ export {
     Campaign,
 } from "@metrom-xyz/sdk";
 export { SupportedChain } from "@metrom-xyz/contracts";
-export * from "./types/common";
 export * from "./types/chains";
+export * from "./types/common";
+export * from "./types/forms";
 export * from "./types/protocol";
-export * from "./types/partner";
 export * from "./assets";
 
 export const EVM_CHAIN_DATA: {
@@ -93,7 +97,8 @@ export const MVM_CHAIN_DATA: {
     [Environment.Production]: Record<SupportedProductionMvmChain, ChainData>;
 } = {
     [Environment.Development]: {
-        [SupportedDevelopmentMvmChain.AptosMainnet]: aptosDevelopmentProductionData,
+        [SupportedDevelopmentMvmChain.AptosMainnet]:
+            aptosDevelopmentProductionData,
         [SupportedDevelopmentMvmChain.AptosTestnet]: aptosDevelopmentData,
     },
     [Environment.Production]: {

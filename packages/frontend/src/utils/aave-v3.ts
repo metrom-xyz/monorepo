@@ -1,5 +1,4 @@
-import type { AaveV3Collateral } from "@metrom-xyz/sdk";
-import { CampaignKind } from "../types/campaign";
+import { type AaveV3Collateral, CampaignKind } from "@metrom-xyz/sdk";
 
 interface GetUsdTvlParams {
     collateral?: AaveV3Collateral;
