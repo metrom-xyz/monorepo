@@ -4,7 +4,7 @@ import {
     type KpiRewardDistribution,
     TargetType,
 } from "@metrom-xyz/sdk";
-import type { LocalizedMessage } from "../types/utils";
+import type { TranslationsKeys } from "../types/utils";
 
 const TICK_ACTIVE_PROXIMITY_THRESHOLD = 1;
 
@@ -121,7 +121,7 @@ export function getAggregatedKpiMeasurements(
 
 export function getCampaignAprTargetText(
     campaign?: Campaign,
-): LocalizedMessage<"kpiAprSummary"> {
+): TranslationsKeys<"kpiAprSummary"> {
     if (!campaign) return "fallback";
 
     if (campaign.isTargeting(TargetType.AmmPoolLiquidity)) return "pool";
