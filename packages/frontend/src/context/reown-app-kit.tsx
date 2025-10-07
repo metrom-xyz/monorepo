@@ -13,11 +13,13 @@ import { WALLETCONNECT_PROJECT_ID, SAFE } from "../commons/env";
 import { useTheme } from "next-themes";
 import { WagmiAdapter } from "@reown/appkit-adapter-wagmi";
 import type { EIP1193RequestFn, Transport } from "viem";
-import { mainnet } from "viem/chains";
+import { holesky, mainnet } from "viem/chains";
 
 const transports = SUPPORTED_CHAINS_EVM.reduce(
     (prev, chain) => {
-        prev[chain.id] = http(chain.rpcUrls.default.http[0]);
+        if (chain.id === holesky.id)
+            prev[chain.id] = http("https://holesky.drpc.org");
+        else prev[chain.id] = http(chain.rpcUrls.default.http[0]);
         return prev;
     },
     {} as Record<
