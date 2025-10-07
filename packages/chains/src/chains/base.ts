@@ -1,4 +1,8 @@
-import { SupportedDex, TargetType } from "@metrom-xyz/sdk";
+import {
+    BaseCampaignType,
+    PartnerCampaignType,
+    SupportedDex,
+} from "@metrom-xyz/sdk";
 import { SupportedChain, ADDRESS } from "@metrom-xyz/contracts";
 import { BaseLogo } from "../assets/logos/chains/base";
 import { BaseSwapLogo } from "../assets/logos/dexes/baseswap";
@@ -14,6 +18,18 @@ export const baseData: ChainData = {
     metromContract: ADDRESS[SupportedChain.Base],
     blockExplorers: base.blockExplorers,
     icon: BaseLogo,
+    forms: [
+        {
+            active: true,
+            partner: false,
+            type: BaseCampaignType.AmmPoolLiquidity,
+        },
+        {
+            active: true,
+            partner: true,
+            type: PartnerCampaignType.JumperWhitelistedAmmPoolLiquidity,
+        },
+    ],
     protocols: [
         {
             active: false,
@@ -50,12 +66,6 @@ export const baseData: ChainData = {
                 template: "https://oku.trade/app/base/liquidity/{pool}",
             },
             supportsFetchAllPools: false,
-        },
-    ],
-    partnerActions: [
-        {
-            active: false,
-            type: TargetType.JumperWhitelistedAmmPoolLiquidity,
         },
     ],
     baseTokens: [

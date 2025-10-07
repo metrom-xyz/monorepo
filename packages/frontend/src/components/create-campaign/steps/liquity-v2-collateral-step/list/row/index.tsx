@@ -1,10 +1,9 @@
-import type { LiquityV2Collateral } from "@metrom-xyz/sdk";
+import { CampaignKind, type LiquityV2Collateral } from "@metrom-xyz/sdk";
 import { RemoteLogo } from "@/src/components/remote-logo";
 import { Skeleton, Typography } from "@metrom-xyz/ui";
 import { useCallback } from "react";
 import { useChainId } from "wagmi";
 import classNames from "classnames";
-import { CampaignKind } from "@/src/types/campaign";
 import { formatUsdAmount } from "@/src/utils/format";
 
 import styles from "./styles.module.css";

@@ -8,7 +8,7 @@ import {
     type ChainData,
 } from "..";
 import { lens } from "viem/chains";
-import { TargetType } from "@metrom-xyz/sdk";
+import { BaseCampaignType, PartnerCampaignType } from "@metrom-xyz/sdk";
 
 export const lensData: ChainData = {
     active: true,
@@ -16,6 +16,18 @@ export const lensData: ChainData = {
     metromContract: ADDRESS[SupportedChain.Lens],
     blockExplorers: lens.blockExplorers,
     icon: LensLogo,
+    forms: [
+        {
+            active: true,
+            partner: false,
+            type: BaseCampaignType.AmmPoolLiquidity,
+        },
+        {
+            active: true,
+            partner: true,
+            type: PartnerCampaignType.JumperWhitelistedAmmPoolLiquidity,
+        },
+    ],
     protocols: [
         {
             active: true,
@@ -28,12 +40,6 @@ export const lensData: ChainData = {
                 template: "https://oku.trade/app/lens/liquidity/{pool}",
             },
             supportsFetchAllPools: true,
-        },
-    ],
-    partnerActions: [
-        {
-            active: false,
-            type: TargetType.JumperWhitelistedAmmPoolLiquidity,
         },
     ],
     baseTokens: [

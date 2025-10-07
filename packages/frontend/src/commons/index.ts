@@ -12,7 +12,6 @@ import {
 } from "@metrom-xyz/chains";
 import { NetworkToChainId } from "@aptos-labs/ts-sdk";
 import { SupportedChain as SupportedAptosChain } from "@metrom-xyz/aptos-contracts";
-import { CampaignType } from "../types/campaign";
 
 export const CHAIN_TYPE = APTOS ? ChainType.Aptos : ChainType.Evm;
 
@@ -74,11 +73,6 @@ export const AMM_SUPPORTS_TOKENS_RATIO: Record<SupportedAmm, boolean> = {
     [SupportedAmm.PancakeV3]: true,
     [SupportedAmm.Izumi]: true,
 };
-
-export const PARTNER_ACTION_CAMPAIGNS: CampaignType[] = [
-    CampaignType.AaveV3BridgeAndSupply,
-    CampaignType.JumperWhitelistedAmmPoolLiquidity,
-];
 
 // taken from https://github.com/wevm/wagmi/blob/80326815bea2f175623157f57465f9dfae1f4c5c/packages/connectors/src/safe.ts#L45
 export const SAFE_CONNECTOR_ID = "safe";

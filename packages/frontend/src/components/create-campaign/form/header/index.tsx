@@ -1,10 +1,11 @@
 import { Typography } from "@metrom-xyz/ui";
-import styles from "./styles.module.css";
 import { ChevronLeftIcon } from "@/src/assets/chevron-left-icon";
 import { useTranslations } from "next-intl";
 import { useRouter } from "@/src/i18n/routing";
-import type { CampaignType } from "@/src/types/campaign";
 import type { TranslationsKeys } from "@/src/types/utils";
+import type { CampaignType } from "@metrom-xyz/sdk";
+
+import styles from "./styles.module.css";
 
 interface FormHeaderProps {
     type: CampaignType;
@@ -17,6 +18,7 @@ const CAMPAIGN_TYPE_TITLE: Record<
     "amm-pool-liquidity": "amm",
     "liquity-v2": "liquityV2",
     "aave-v3": "aaveV3",
+    "hold-token": "holdToken",
     "aave-v3-bridge-and-supply": "aaveV3BridgeAndSupply",
     "jumper-whitelisted-amm-pool-liquidity":
         "jumperWhitelistedAmmPoolLiquidity",

@@ -12,10 +12,6 @@
     @apply flex flex-wrap justify-center gap-2 sm:gap-3 max-w-4xl;
 }
 
-.emptyWrapper {
-    @apply flex items-center flex-col;
-}
-
 .campaignLinkCard {
     @apply h-full
         max-w-[27rem]

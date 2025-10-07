@@ -1,7 +1,12 @@
 import { EthLogo } from "../assets/logos/chains/eth";
 import { SupportedChain, ADDRESS } from "@metrom-xyz/contracts";
 import { sepolia } from "viem/chains";
-import { SupportedDex, SupportedLiquityV2, TargetType } from "@metrom-xyz/sdk";
+import {
+    BaseCampaignType,
+    SupportedDex,
+    SupportedLiquityV2,
+    TargetType,
+} from "@metrom-xyz/sdk";
 import { LiquityLogo } from "../assets/logos/liquity-v2-platforms/liquity";
 import { EbisuLogo } from "../assets/logos/liquity-v2-platforms/ebisu";
 import { CarbonLogo } from "../assets/logos/dexes/carbon";
@@ -14,6 +19,18 @@ export const sepoliaData: ChainData = {
     metromContract: ADDRESS[SupportedChain.Sepolia],
     blockExplorers: sepolia.blockExplorers,
     icon: EthLogo,
+    forms: [
+        {
+            active: true,
+            partner: false,
+            type: BaseCampaignType.AmmPoolLiquidity,
+        },
+        {
+            active: true,
+            partner: false,
+            type: BaseCampaignType.LiquityV2,
+        },
+    ],
     protocols: [
         {
             active: true,

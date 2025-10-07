@@ -1,11 +1,10 @@
-import type { AaveV3Collateral } from "@metrom-xyz/sdk";
+import { type AaveV3Collateral, CampaignKind } from "@metrom-xyz/sdk";
 import { RemoteLogo } from "@/src/components/remote-logo";
 import { Skeleton, Typography } from "@metrom-xyz/ui";
 import { useCallback } from "react";
 import { useChainWithType } from "@/src/hooks/useChainWithType";
 import classNames from "classnames";
 import { formatUsdAmount } from "@/src/utils/format";
-import { CampaignKind } from "@/src/types/campaign";
 import { getAaveV3UsdTvl } from "@/src/utils/aave-v3";
 
 import styles from "./styles.module.css";
