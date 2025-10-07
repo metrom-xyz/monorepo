@@ -1,8 +1,8 @@
-import type { AaveV3Collateral } from "@metrom-xyz/sdk";
+import { type AaveV3Collateral, CampaignKind } from "@metrom-xyz/sdk";
 import { Typography } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
 import { Row, RowSkeleton } from "./row";
-import { CampaignKind, type AaveV3CampaignPayload } from "@/src/types/campaign";
+import { type AaveV3CampaignPayload } from "@/src/types/campaign";
 
 import styles from "./styles.module.css";
 

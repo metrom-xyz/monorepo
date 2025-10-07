@@ -1,4 +1,10 @@
-import { SupportedDex, SupportedLiquityV2, TargetType } from "@metrom-xyz/sdk";
+import {
+    BaseCampaignType,
+    PartnerCampaignType,
+    SupportedDex,
+    SupportedLiquityV2,
+    TargetType,
+} from "@metrom-xyz/sdk";
 import { ADDRESS, SupportedChain } from "@metrom-xyz/contracts";
 import { swellchain } from "viem/chains";
 import type { ChainData } from "../types/chains";
@@ -18,6 +24,23 @@ export const swellDevelopmentData: ChainData = {
     },
     blockExplorers: swellchain.blockExplorers,
     icon: SwellLogo,
+    forms: [
+        {
+            active: true,
+            partner: false,
+            type: BaseCampaignType.AmmPoolLiquidity,
+        },
+        {
+            active: true,
+            partner: false,
+            type: BaseCampaignType.LiquityV2,
+        },
+        {
+            active: true,
+            partner: true,
+            type: PartnerCampaignType.JumperWhitelistedAmmPoolLiquidity,
+        },
+    ],
     protocols: [
         {
             active: true,
@@ -49,12 +72,6 @@ export const swellDevelopmentData: ChainData = {
                 [TargetType.LiquityV2StabilityPool]:
                     "https://app.orki.finance/earn",
             },
-        },
-    ],
-    partnerActions: [
-        {
-            active: false,
-            type: TargetType.JumperWhitelistedAmmPoolLiquidity,
         },
     ],
     baseTokens: [
@@ -103,6 +120,23 @@ export const swellProductionData: ChainData = {
     metromContract: ADDRESS[SupportedChain.Swell],
     blockExplorers: swellchain.blockExplorers,
     icon: SwellLogo,
+    forms: [
+        {
+            active: true,
+            partner: false,
+            type: BaseCampaignType.AmmPoolLiquidity,
+        },
+        {
+            active: true,
+            partner: false,
+            type: BaseCampaignType.LiquityV2,
+        },
+        {
+            active: false,
+            partner: true,
+            type: PartnerCampaignType.JumperWhitelistedAmmPoolLiquidity,
+        },
+    ],
     protocols: [
         {
             active: true,
@@ -134,12 +168,6 @@ export const swellProductionData: ChainData = {
                 [TargetType.LiquityV2StabilityPool]:
                     "https://app.orki.finance/earn",
             },
-        },
-    ],
-    partnerActions: [
-        {
-            active: false,
-            type: TargetType.JumperWhitelistedAmmPoolLiquidity,
         },
     ],
     baseTokens: [

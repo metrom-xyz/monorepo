@@ -1,5 +1,5 @@
 import { SupportedChain, ADDRESS } from "@metrom-xyz/contracts";
-import { SupportedDex } from "@metrom-xyz/sdk";
+import { BaseCampaignType, SupportedDex } from "@metrom-xyz/sdk";
 import { TelosLogo } from "../assets/logos/chains/telos";
 import { UniswapLogo } from "../assets/logos/dexes/uniswap";
 import { telos } from "viem/chains";
@@ -17,6 +17,13 @@ export const telosData: ChainData = {
         },
     },
     icon: TelosLogo,
+    forms: [
+        {
+            active: true,
+            partner: false,
+            type: BaseCampaignType.AmmPoolLiquidity,
+        },
+    ],
     protocols: [
         {
             active: true,

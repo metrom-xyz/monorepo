@@ -1,4 +1,9 @@
-import { SupportedAaveV3, TargetType } from "@metrom-xyz/sdk";
+import {
+    BaseCampaignType,
+    PartnerCampaignType,
+    SupportedAaveV3,
+    TargetType,
+} from "@metrom-xyz/sdk";
 import { AaveDarkLogo, AaveLightLogo, AptosLogo } from "../assets";
 import { ChainData } from "../types/chains";
 import { ProtocolType } from "../types/protocol";
@@ -15,6 +20,23 @@ export const aptosDevelopmentData: ChainData = {
         },
     },
     icon: AptosLogo,
+    forms: [
+        {
+            active: true,
+            partner: false,
+            type: BaseCampaignType.AaveV3,
+        },
+        {
+            active: true,
+            partner: false,
+            type: BaseCampaignType.HoldToken,
+        },
+        {
+            active: true,
+            partner: true,
+            type: PartnerCampaignType.AaveV3BridgeAndSupply,
+        },
+    ],
     protocols: [
         {
             active: true,
@@ -40,7 +62,6 @@ export const aptosDevelopmentData: ChainData = {
             },
         },
     ],
-    partnerActions: [{ active: true, type: TargetType.AaveV3BridgeAndSupply }],
     baseTokens: [],
 };
 
@@ -60,6 +81,23 @@ export const aptosDevelopmentProductionData: ChainData = {
         },
     },
     icon: AptosLogo,
+    forms: [
+        {
+            active: true,
+            partner: false,
+            type: BaseCampaignType.AaveV3,
+        },
+        {
+            active: true,
+            partner: false,
+            type: BaseCampaignType.HoldToken,
+        },
+        {
+            active: true,
+            partner: true,
+            type: PartnerCampaignType.AaveV3BridgeAndSupply,
+        },
+    ],
     protocols: [
         {
             active: true,
@@ -85,7 +123,6 @@ export const aptosDevelopmentProductionData: ChainData = {
             },
         },
     ],
-    partnerActions: [{ active: true, type: TargetType.AaveV3BridgeAndSupply }],
     baseTokens: [],
 };
 
@@ -100,6 +137,23 @@ export const aptosProductionData: ChainData = {
         },
     },
     icon: AptosLogo,
+    forms: [
+        {
+            active: true,
+            partner: false,
+            type: BaseCampaignType.AaveV3,
+        },
+        {
+            active: true,
+            partner: false,
+            type: BaseCampaignType.HoldToken,
+        },
+        {
+            active: true,
+            partner: true,
+            type: PartnerCampaignType.AaveV3BridgeAndSupply,
+        },
+    ],
     protocols: [
         {
             active: true,
@@ -125,6 +179,5 @@ export const aptosProductionData: ChainData = {
             },
         },
     ],
-    partnerActions: [{ active: true, type: TargetType.AaveV3BridgeAndSupply }],
     baseTokens: [],
 };
