@@ -16,6 +16,33 @@ import type {
 import type { LiquityV2Collateral } from "./liquity-v2";
 import type { AaveV3Collateral } from "./aave-v3";
 
+export enum CampaignKind {
+    AmmPoolLiquidity = 1,
+    LiquityV2Debt = 2,
+    LiquityV2StabilityPool = 3,
+    EmptyTarget = 5,
+    AaveV3Supply = 6,
+    AaveV3Borrow = 7,
+    AaveV3NetSupply = 8,
+    AaveV3BridgeAndSupply = 9,
+    JumperWhitelistedAmmPoolLiquidity = 10,
+    HoldToken = 11,
+}
+
+export enum BaseCampaignType {
+    LiquityV2 = "liquity-v2",
+    AmmPoolLiquidity = "amm-pool-liquidity",
+    AaveV3 = "aave-v3",
+    HoldToken = "hold-token",
+}
+
+export enum PartnerCampaignType {
+    AaveV3BridgeAndSupply = "aave-v3-bridge-and-supply",
+    JumperWhitelistedAmmPoolLiquidity = "jumper-whitelisted-amm-pool-liquidity",
+}
+
+export type CampaignType = BaseCampaignType | PartnerCampaignType;
+
 export enum TargetType {
     Empty = "empty",
     AmmPoolLiquidity = "amm-pool-liquidity",
@@ -26,6 +53,7 @@ export enum TargetType {
     AaveV3NetSupply = "aave-v3-net-supply",
     AaveV3BridgeAndSupply = "aave-v3-bridge-and-supply",
     JumperWhitelistedAmmPoolLiquidity = "jumper-whitelisted-amm-pool-liquidity",
+    HoldToken = "hold-token",
 }
 
 export type LiquityV2TargetType =
@@ -36,12 +64,7 @@ export type AaveV3TargetType =
     | TargetType.AaveV3Borrow
     | TargetType.AaveV3Supply
     | TargetType.AaveV3NetSupply
-    // TODO: this is an aave v3 target, but also a partner action target
     | TargetType.AaveV3BridgeAndSupply;
-
-export type PartnerActionTargetType =
-    | TargetType.AaveV3BridgeAndSupply
-    | TargetType.JumperWhitelistedAmmPoolLiquidity;
 
 export interface BaseTarget {
     chainType: ChainType;
@@ -96,6 +119,11 @@ export type AaveV3BridgeAndSupplyTarget = BaseTarget & {
     boostingFactor: number;
 };
 
+export interface HoldTokenTarget extends BaseTarget {
+    type: TargetType.HoldToken;
+    token: Erc20Token;
+}
+
 export type CampaignTarget =
     | EmptyTarget
     | AmmPoolLiquidityTarget
@@ -105,7 +133,8 @@ export type CampaignTarget =
     | AaveV3SupplyTarget
     | AaveV3NetSupplyTarget
     | AaveV3BridgeAndSupplyTarget
-    | JumperWhitelistedAmmPoolLiquidityTarget;
+    | JumperWhitelistedAmmPoolLiquidityTarget
+    | HoldTokenTarget;
 
 export interface TokenDistributable {
     token: UsdPricedErc20Token;
@@ -229,7 +258,7 @@ export interface DistributablesCampaign<T extends DistributablesType>
           : never;
 }
 
-export interface TargetedCampaign<T extends TargetType> extends Campaign {
+export interface BaseTargetedCampaign<T extends TargetType> {
     target: T extends TargetType.AmmPoolLiquidity
         ? AmmPoolLiquidityTarget
         : T extends TargetType.LiquityV2Debt
@@ -244,7 +273,14 @@ export interface TargetedCampaign<T extends TargetType> extends Campaign {
                   ? AaveV3NetSupplyTarget
                   : T extends TargetType.AaveV3BridgeAndSupply
                     ? AaveV3BridgeAndSupplyTarget
-                    : T extends TargetType.Empty
-                      ? EmptyTarget
-                      : never;
+                    : T extends TargetType.JumperWhitelistedAmmPoolLiquidity
+                      ? JumperWhitelistedAmmPoolLiquidityTarget
+                      : T extends TargetType.HoldToken
+                        ? HoldTokenTarget
+                        : T extends TargetType.Empty
+                          ? EmptyTarget
+                          : never;
 }
+
+export type TargetedCampaign<T extends TargetType> = BaseTargetedCampaign<T> &
+    Campaign;

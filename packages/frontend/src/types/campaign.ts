@@ -1,31 +1,23 @@
-import type {
-    Claim,
-    AaveV3BorrowTarget,
-    AaveV3Collateral,
-    AaveV3Market,
-    AaveV3NetSupplyTarget,
-    AaveV3SupplyTarget,
-    OnChainAmount,
-    Reimbursement,
-    Restrictions,
-    UsdPricedErc20TokenAmount,
-    UsdPricedOnChainAmount,
-    Weighting,
-    EmptyTarget,
-    AaveV3BridgeAndSupplyTarget,
-} from "@metrom-xyz/sdk";
 import {
+    CampaignKind,
     Campaign as SdkCampaign,
     TargetType,
+    type Claim,
+    type AaveV3Collateral,
+    type AaveV3Market,
+    type OnChainAmount,
+    type Reimbursement,
+    type Restrictions,
+    type UsdPricedErc20TokenAmount,
+    type UsdPricedOnChainAmount,
+    type Weighting,
     type AmmPoolWithTvl,
-    type AmmPoolLiquidityTarget,
     type DistributablesType,
     type KpiSpecification,
-    type LiquityV2DebtTarget,
     type PointDistributables,
     type TokenDistributables,
     type LiquityV2Collateral,
-    type LiquityV2StabilityPoolTarget,
+    type BaseTargetedCampaign,
 } from "@metrom-xyz/sdk";
 import type { Dayjs } from "dayjs";
 import type { Address } from "viem";
@@ -60,28 +52,6 @@ export interface Leaderboard {
     timestamp?: number;
     connectedAccountRank?: Rank;
     sortedRanks: Rank[];
-}
-
-export enum CampaignKind {
-    AmmPoolLiquidity = 1,
-    LiquityV2Debt = 2,
-    LiquityV2StabilityPool = 3,
-    EmptyTarget = 5,
-    AaveV3Supply = 6,
-    AaveV3Borrow = 7,
-    AaveV3NetSupply = 8,
-    AaveV3BridgeAndSupply = 9,
-    JumperWhitelistedAmmPoolLiquidity = 10,
-}
-
-export enum CampaignType {
-    LiquityV2 = "liquity-v2",
-    AmmPoolLiquidity = "amm-pool-liquidity",
-    AaveV3 = "aave-v3",
-    AaveV3BridgeAndSupply = "aave-v3-bridge-and-supply",
-    JumperWhitelistedAmmPoolLiquidity = "jumper-whitelisted-amm-pool-liquidity",
-    // Maybe we can avoid this type since it's used only in the route
-    // PartnerAction = "partner-action",
 }
 
 export interface AugmentedPriceRangeBound {
@@ -474,22 +444,29 @@ export interface DistributablesNamedCampaign<T extends DistributablesType>
           : never;
 }
 
-export interface TargetedNamedCampaign<T extends TargetType> extends Campaign {
-    target: T extends TargetType.AmmPoolLiquidity
-        ? AmmPoolLiquidityTarget
-        : T extends TargetType.LiquityV2Debt
-          ? LiquityV2DebtTarget
-          : T extends TargetType.LiquityV2StabilityPool
-            ? LiquityV2StabilityPoolTarget
-            : T extends TargetType.AaveV3Borrow
-              ? AaveV3BorrowTarget
-              : T extends TargetType.AaveV3Supply
-                ? AaveV3SupplyTarget
-                : T extends TargetType.AaveV3NetSupply
-                  ? AaveV3NetSupplyTarget
-                  : T extends TargetType.AaveV3BridgeAndSupply
-                    ? AaveV3BridgeAndSupplyTarget
-                    : T extends TargetType.Empty
-                      ? EmptyTarget
-                      : never;
-}
+// export interface TargetedNamedCampaign<T extends TargetType> extends Campaign {
+//     target: T extends TargetType.AmmPoolLiquidity
+//         ? AmmPoolLiquidityTarget
+//         : T extends TargetType.LiquityV2Debt
+//           ? LiquityV2DebtTarget
+//           : T extends TargetType.LiquityV2StabilityPool
+//             ? LiquityV2StabilityPoolTarget
+//             : T extends TargetType.AaveV3Borrow
+//               ? AaveV3BorrowTarget
+//               : T extends TargetType.AaveV3Supply
+//                 ? AaveV3SupplyTarget
+//                 : T extends TargetType.AaveV3NetSupply
+//                   ? AaveV3NetSupplyTarget
+//                   : T extends TargetType.HoldToken
+//                     ? HoldTokenTarget
+//                     : T extends TargetType.AaveV3BridgeAndSupply
+//                       ? AaveV3BridgeAndSupplyTarget
+//                       : T extends TargetType.JumperWhitelistedAmmPoolLiquidity
+//                         ? JumperWhitelistedAmmPoolLiquidityTarget
+//                         : T extends TargetType.Empty
+//                           ? EmptyTarget
+//                           : never;
+// }
+
+export type TargetedNamedCampaign<T extends TargetType> =
+    BaseTargetedCampaign<T> & Campaign;

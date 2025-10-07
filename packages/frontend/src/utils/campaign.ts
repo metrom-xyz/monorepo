@@ -9,6 +9,7 @@ import {
     type LiquidityByAddresses,
     RestrictionType,
     SupportedBridge,
+    CampaignKind,
 } from "@metrom-xyz/sdk";
 import {
     AmmPoolLiquidityCampaignPreviewPayload,
@@ -17,8 +18,6 @@ import {
     type BaseCampaignPreviewPayload,
     type CampaignPreviewPayload,
     AaveV3CampaignPreviewPayload,
-    CampaignKind,
-    CampaignType,
 } from "../types/campaign";
 import type { TranslationsType } from "../types/utils";
 import { getDistributableRewardsPercentage } from "./kpi";
@@ -33,16 +32,6 @@ import {
     MoveString,
     U32,
 } from "@aptos-labs/ts-sdk";
-
-export const AMM_POOL_CAMPAIGN_KIND: Record<
-    | CampaignType.AmmPoolLiquidity
-    | CampaignType.JumperWhitelistedAmmPoolLiquidity,
-    CampaignKind
-> = {
-    [CampaignType.AmmPoolLiquidity]: CampaignKind.AmmPoolLiquidity,
-    [CampaignType.JumperWhitelistedAmmPoolLiquidity]:
-        CampaignKind.JumperWhitelistedAmmPoolLiquidity,
-};
 
 export function buildCampaignDataBundleEvm(payload: CampaignPreviewPayload) {
     if (payload instanceof AmmPoolLiquidityCampaignPreviewPayload)

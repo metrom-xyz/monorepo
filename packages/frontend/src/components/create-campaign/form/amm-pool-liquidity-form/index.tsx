@@ -5,13 +5,13 @@ import {
     type AmmPoolLiquidityCampaignPayloadPart,
     type CampaignPreviewDistributables,
     EmptyTargetCampaignPreviewPayload,
-    CampaignKind,
 } from "@/src/types/campaign";
 import { useTranslations } from "next-intl";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useChainWithType } from "@/src/hooks/useChainWithType";
 import {
     AmmPoolLiquidityType,
+    CampaignKind,
     DistributablesType,
     SupportedAmm,
 } from "@metrom-xyz/sdk";

@@ -2,7 +2,6 @@ import {
     type AaveV3CampaignPayload,
     type AaveV3CampaignPayloadPart,
     AaveV3CampaignPreviewPayload,
-    CampaignKind,
     type CampaignPayloadErrors,
     type CampaignPreviewDistributables,
     EmptyTargetCampaignPreviewPayload,
@@ -10,7 +9,7 @@ import {
 import { useTranslations } from "next-intl";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useChainWithType } from "@/src/hooks/useChainWithType";
-import { DistributablesType } from "@metrom-xyz/sdk";
+import { CampaignKind, DistributablesType } from "@metrom-xyz/sdk";
 import { AaveV3CollateralStep } from "../../steps/aave-v3-collateral-step";
 import { StartDateStep } from "../../steps/start-date-step";
 import { EndDateStep } from "../../steps/end-date-step";

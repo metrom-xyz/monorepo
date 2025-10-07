@@ -132,13 +132,13 @@
                 "title": "AAVE V3",
                 "description": "Incentivize users borrowing and supplying on Aave V3."
             },
+            "holdToken": {
+                "title": "HOLD TOKEN",
+                "description": "Incentivize users holding any ERC20 token."
+            },
             "partnerAction": {
                 "title": "PARTNER ACTION",
                 "description": "Pick an incentivization strategy from a set of custom built actions."
-            },
-            "empty": {
-                "message1": "Campaign creation isn't supported on the selected chain.",
-                "message2": "Please choose a different chain."
             }
         },
         "partnerAction": {
@@ -158,18 +158,15 @@
             }
         },
         "type": {
-            "amm": "AMM Campaign",
-            "liquityV2": "Liquity v2 campaign",
-            "aaveV3": "Aave v3 campaign",
+            "amm": "AMM liquidity pool",
+            "liquityV2": "Liquity v2",
+            "aaveV3": "Aave v3",
+            "holdToken": "Hold token",
             "partnerActions": "Partner action",
-            "aaveV3BridgeAndSupply": "Aave v3 Bridge and supply",
+            "aaveV3BridgeAndSupply": "Aave v3 bridge and supply",
             "jumperWhitelistedAmmPoolLiquidity": "Jumper AMM pool liquidity"
         },
         "form": {
-            "empty": {
-                "message1": "Partner action campaign creation isn't supported on the selected chain.",
-                "message2": "Please choose a different chain."
-            },
             "base": {
                 "kind": {
                     "title": "Action"
@@ -421,6 +418,11 @@
                 "approve": "Approve {amount} {symbol} ({currentIndex}/{totalAmount})"
             },
             "preview": "Campaign preview"
+        },
+        "empty": {
+            "message1": "Campaign creation isn't supported on {chain} chain.",
+            "message2": "{campaignType} campaign creation isn't supported on {chain} chain.",
+            "message3": "Please choose a different chain."
         }
     },
     "campaignPreview": {

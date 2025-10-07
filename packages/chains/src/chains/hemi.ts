@@ -1,5 +1,5 @@
 import { SupportedChain, ADDRESS } from "@metrom-xyz/contracts";
-import { SupportedDex } from "@metrom-xyz/sdk";
+import { BaseCampaignType, SupportedDex } from "@metrom-xyz/sdk";
 import {
     DepositUrlType,
     HemiLogo,
@@ -15,6 +15,13 @@ export const hemiData: ChainData = {
     metromContract: ADDRESS[SupportedChain.Hemi],
     blockExplorers: hemi.blockExplorers,
     icon: HemiLogo,
+    forms: [
+        {
+            active: true,
+            partner: false,
+            type: BaseCampaignType.AmmPoolLiquidity,
+        },
+    ],
     protocols: [
         {
             active: true,
