@@ -96,6 +96,16 @@ export const DEPLOYMENTS: Record<string, ChainConfig> = {
                         address: "0x52f541764E6e90eeBc5c21Ff570De0e2D63766B6",
                         startBlock: 22639808,
                     },
+                    {
+                        name: "ebUSDUSDCConvexPoolDeposit",
+                        address: "0x0167850fFeAC15501781E7Cb45dD7208bF60b386",
+                        startBlock: 23095654,
+                    },
+                    {
+                        name: "sdebUSDUSDCGauge",
+                        address: "0xD1FC12930E0fC341Fec363a6B3783f9f29625A76",
+                        startBlock: 23087938,
+                    },
                 ],
             },
         },
