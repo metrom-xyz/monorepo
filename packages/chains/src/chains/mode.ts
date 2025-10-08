@@ -12,7 +12,7 @@ export const modeData: ChainData = {
     icon: ModeLogo,
     forms: [
         {
-            active: true,
+            active: false,
             partner: true,
             type: PartnerCampaignType.JumperWhitelistedAmmPoolLiquidity,
         },

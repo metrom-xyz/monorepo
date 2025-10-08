@@ -59,7 +59,7 @@ export function StepPreview({
                 )}
                 {completed && (
                     <motion.div
-                        initial="hide"
+                        initial={false}
                         animate="show"
                         exit="hide"
                         variants={{

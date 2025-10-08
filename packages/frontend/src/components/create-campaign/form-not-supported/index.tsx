@@ -1,4 +1,4 @@
-import { Typography } from "@metrom-xyz/ui";
+import { Button, Typography } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
 import {
     BaseCampaignType,
@@ -7,6 +7,7 @@ import {
 } from "@metrom-xyz/sdk";
 import { useChainData } from "@/src/hooks/useChainData";
 import type { TranslationsKeys } from "@/src/types/utils";
+import { Link } from "@/src/i18n/routing";
 
 import styles from "./styles.module.css";
 
@@ -45,6 +46,9 @@ export function FormNotSupported({ type, chainId }: FormNotSupportedProps) {
             <Typography weight="medium" size="lg">
                 {t("empty.message3")}
             </Typography>
+            <Link href="/campaigns/create">
+                <Button size="sm">{t("empty.backToCreate")}</Button>
+            </Link>
         </div>
     );
 }

@@ -4,6 +4,7 @@ import {
     LiquityV2CampaignPreviewPayload,
     type BaseCampaignPreviewPayload,
     EmptyTargetCampaignPreviewPayload,
+    HoldTokenCampaignPreviewPayload,
 } from "@/src/types/campaign";
 import { Button, TextField } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
@@ -14,6 +15,7 @@ import { AaveV3 } from "./aave-v3";
 import { useChainData } from "@/src/hooks/useChainData";
 import { useChainWithType } from "@/src/hooks/useChainWithType";
 import { Empty } from "./empty";
+import { HoldToken } from "./hold-token";
 
 import styles from "./styles.module.css";
 
@@ -32,6 +34,7 @@ export function Header({ payload, backDisabled, onBack }: HeaderProps) {
         payload instanceof AmmPoolLiquidityCampaignPreviewPayload;
     const liquityV2 = payload instanceof LiquityV2CampaignPreviewPayload;
     const aaveV3 = payload instanceof AaveV3CampaignPreviewPayload;
+    const holdToken = payload instanceof HoldTokenCampaignPreviewPayload;
     const empty = payload instanceof EmptyTargetCampaignPreviewPayload;
 
     const ChainLogo = chainData?.icon;
@@ -61,6 +64,7 @@ export function Header({ payload, backDisabled, onBack }: HeaderProps) {
                         )}
                         {liquityV2 && <LiquityV2 payload={payload} />}
                         {aaveV3 && <AaveV3 payload={payload} />}
+                        {holdToken && <HoldToken payload={payload} />}
                         {empty && <Empty payload={payload} />}
                     </div>
                 }

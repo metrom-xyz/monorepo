@@ -4,6 +4,7 @@ import {
     EmptyTargetCampaignPreviewPayload,
     type CampaignPreviewPayload,
 } from "@/src/types/campaign";
+import { buildSpecificationBundle } from "@/src/utils/campaign-bundle";
 import type { LocalizedMessage } from "@/src/types/utils";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
@@ -12,10 +13,7 @@ import { useRouter } from "@/src/i18n/routing";
 import { Rewards } from "./rewards";
 import { Header } from "./header";
 import { formatAmount, formatUsdAmount } from "@/src/utils/format";
-import {
-    buildSpecificationBundle,
-    getCampaignPreviewApr,
-} from "@/src/utils/campaign";
+import { getCampaignPreviewApr } from "@/src/utils/campaign";
 import {
     DistributablesType,
     SERVICE_URLS,

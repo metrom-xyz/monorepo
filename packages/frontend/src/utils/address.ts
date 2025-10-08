@@ -1,5 +1,7 @@
 import { type Address, zeroAddress, isAddress as isAddressViem } from "viem";
 import { AccountAddress } from "@aptos-labs/ts-sdk";
+import { CHAIN_TYPE } from "../commons";
+import { ChainType } from "@metrom-xyz/sdk";
 
 export function shortenAddress(address?: Address, long?: boolean) {
     if (!address) return "";
@@ -26,8 +28,8 @@ export function getColorFromAddress(address: Address) {
 }
 
 export function isAddress(address: string): boolean {
-    return (
-        isAddressViem(address) ||
-        AccountAddress.isValid({ input: address }).valid
-    );
+    if (CHAIN_TYPE === ChainType.Aptos)
+        return AccountAddress.isValid({ input: address }).valid;
+    if (CHAIN_TYPE === ChainType.Evm) return isAddressViem(address);
+    return false;
 }

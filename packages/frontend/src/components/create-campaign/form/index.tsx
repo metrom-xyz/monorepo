@@ -22,6 +22,7 @@ import { AaveV3Form } from "./aave-v3-form";
 import { AaveV3BridgeAndSupplyForm } from "./aave-v3-bridge-and-supply-form";
 import { useForms } from "@/src/hooks/useForms";
 import { FormNotSupported } from "../form-not-supported";
+import { HoldTokenForm } from "./hold-token-form";
 
 import styles from "./styles.module.css";
 
@@ -95,6 +96,12 @@ export function CreateCampaignForm<T extends CampaignType>({
             )}
             {type === BaseCampaignType.AaveV3 && (
                 <AaveV3Form
+                    unsupportedChain={unsupportedChain}
+                    onPreviewClick={handlePreviewOnClick}
+                />
+            )}
+            {type === BaseCampaignType.HoldToken && (
+                <HoldTokenForm
                     unsupportedChain={unsupportedChain}
                     onPreviewClick={handlePreviewOnClick}
                 />

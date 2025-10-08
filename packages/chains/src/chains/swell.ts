@@ -36,7 +36,7 @@ export const swellDevelopmentData: ChainData = {
             type: BaseCampaignType.LiquityV2,
         },
         {
-            active: true,
+            active: false,
             partner: true,
             type: PartnerCampaignType.JumperWhitelistedAmmPoolLiquidity,
         },
