@@ -12,7 +12,7 @@ export const mantleData: ChainData = {
     icon: MantleLogo,
     forms: [
         {
-            active: true,
+            active: false,
             partner: true,
             type: PartnerCampaignType.JumperWhitelistedAmmPoolLiquidity,
         },

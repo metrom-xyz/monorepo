@@ -23,7 +23,7 @@ export const lensData: ChainData = {
             type: BaseCampaignType.AmmPoolLiquidity,
         },
         {
-            active: true,
+            active: false,
             partner: true,
             type: PartnerCampaignType.JumperWhitelistedAmmPoolLiquidity,
         },

@@ -4,6 +4,7 @@ import {
     type WhitelistedErc20Token,
 } from "@metrom-xyz/sdk";
 import type { SVGProps } from "react";
+import type { Address } from "viem";
 
 export enum Theme {
     System = "system",
@@ -37,4 +38,10 @@ export type SVGIcon = Omit<SVGProps<SVGSVGElement>, "dangerouslySetInnerHTML">;
 export interface WhitelistedErc20TokenAmount {
     token: WhitelistedErc20Token;
     amount: UsdPricedOnChainAmount;
+}
+
+export interface TokenInfo {
+    address: Address;
+    name: string;
+    symbol: string;
 }

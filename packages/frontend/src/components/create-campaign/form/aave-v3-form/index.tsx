@@ -25,7 +25,7 @@ import {
     CampaignKindStep,
     type CampaignKindOption,
 } from "../../steps/campaign-kind-step";
-import type { LocalizedMessage } from "@/src/types/utils";
+import type { TranslationsKeys } from "@/src/types/utils";
 import { validateDistributables } from "@/src/utils/creation-form";
 import { getAaveV3UsdTvl } from "@/src/utils/aave-v3";
 
@@ -96,7 +96,7 @@ interface AaveV3FormProps {
 }
 
 export const AAVE_V3_CAMPAIGN_KIND_OPTIONS: CampaignKindOption<
-    LocalizedMessage<"newCampaign">
+    TranslationsKeys<"newCampaign">
 >[] = [
     {
         label: "form.aaveV3.actions.borrow",
@@ -151,8 +151,7 @@ export function AaveV3Form({
 
     const kindOptions = AAVE_V3_CAMPAIGN_KIND_OPTIONS.map((option) => ({
         ...option,
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        label: t<any>(option.label),
+        label: t(option.label),
     }));
 
     useEffect(() => {

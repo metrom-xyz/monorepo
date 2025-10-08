@@ -21,7 +21,7 @@ import {
 } from "@metrom-xyz/sdk";
 import type { Dayjs } from "dayjs";
 import type { Address } from "viem";
-import { type WhitelistedErc20TokenAmount } from "./common";
+import { type TokenInfo, type WhitelistedErc20TokenAmount } from "./common";
 import {
     DepositUrlType,
     ProtocolType,
@@ -91,6 +91,11 @@ export interface AaveV3CampaignPayload extends BaseCampaignPayload {
     market?: AaveV3Market;
     collateral?: AaveV3Collateral;
     boostingFactor?: number;
+}
+
+export interface HoldTokenCampaignPayload extends BaseCampaignPayload {
+    token?: TokenInfo;
+    stakingTokens: TokenInfo[];
 }
 
 export interface CampaignPayloadTokenDistributables {
@@ -249,6 +254,21 @@ export class AaveV3CampaignPreviewPayload extends BaseCampaignPreviewPayload {
     }
 }
 
+export class HoldTokenCampaignPreviewPayload extends BaseCampaignPreviewPayload {
+    public readonly kind: CampaignKind = CampaignKind.HoldToken;
+    constructor(
+        public readonly token: TokenInfo,
+        public readonly stakingTokens: TokenInfo[],
+        ...baseArgs: ConstructorParameters<typeof BaseCampaignPreviewPayload>
+    ) {
+        super(...baseArgs);
+    }
+
+    getTargetLiquidity(): TargetLiquidity | undefined {
+        return undefined;
+    }
+}
+
 export class EmptyTargetCampaignPreviewPayload extends BaseCampaignPreviewPayload {
     public readonly kind: CampaignKind = CampaignKind.EmptyTarget;
     constructor(
@@ -280,6 +300,7 @@ export interface DistributablesCampaignPreviewPayload<
 
 export interface CampaignPayloadErrors {
     pool?: boolean;
+    holdTokens?: boolean;
     startDate?: boolean;
     endDate?: boolean;
     rewards?: boolean;
@@ -308,6 +329,9 @@ export type LiquityV2CampaignPayloadPart =
     PropertyUnion<LiquityV2CampaignPayload>;
 
 export type AaveV3CampaignPayloadPart = PropertyUnion<AaveV3CampaignPayload>;
+
+export type HoldTokenCampaignPayloadPart =
+    PropertyUnion<HoldTokenCampaignPayload>;
 
 export class Campaign extends SdkCampaign {
     constructor(
@@ -443,30 +467,6 @@ export interface DistributablesNamedCampaign<T extends DistributablesType>
           ? PointDistributables
           : never;
 }
-
-// export interface TargetedNamedCampaign<T extends TargetType> extends Campaign {
-//     target: T extends TargetType.AmmPoolLiquidity
-//         ? AmmPoolLiquidityTarget
-//         : T extends TargetType.LiquityV2Debt
-//           ? LiquityV2DebtTarget
-//           : T extends TargetType.LiquityV2StabilityPool
-//             ? LiquityV2StabilityPoolTarget
-//             : T extends TargetType.AaveV3Borrow
-//               ? AaveV3BorrowTarget
-//               : T extends TargetType.AaveV3Supply
-//                 ? AaveV3SupplyTarget
-//                 : T extends TargetType.AaveV3NetSupply
-//                   ? AaveV3NetSupplyTarget
-//                   : T extends TargetType.HoldToken
-//                     ? HoldTokenTarget
-//                     : T extends TargetType.AaveV3BridgeAndSupply
-//                       ? AaveV3BridgeAndSupplyTarget
-//                       : T extends TargetType.JumperWhitelistedAmmPoolLiquidity
-//                         ? JumperWhitelistedAmmPoolLiquidityTarget
-//                         : T extends TargetType.Empty
-//                           ? EmptyTarget
-//                           : never;
-// }
 
 export type TargetedNamedCampaign<T extends TargetType> =
     BaseTargetedCampaign<T> & Campaign;
