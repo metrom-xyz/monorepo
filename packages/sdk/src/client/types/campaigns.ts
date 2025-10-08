@@ -91,13 +91,6 @@ export interface BackendLiquityV2Collateral {
     stabilityPoolDebt: number;
 }
 
-export interface BackendAaveV3Collateral {
-    debt: string;
-    supply: string;
-    usdDebt: number;
-    usdSupply: number;
-}
-
 export interface BackendCampaign {
     chainId: number;
     id: Hex;

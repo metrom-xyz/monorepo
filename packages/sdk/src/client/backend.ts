@@ -930,6 +930,7 @@ export class MetromApiClient {
                 ),
                 debt: BigInt(collateral.debt),
                 supply: BigInt(collateral.supply),
+                netSupply: BigInt(collateral.netSupply),
             };
         });
     }
@@ -1336,6 +1337,7 @@ function resolveAaveV3Collateral(
         ),
         debt: BigInt(resolvedAaveV3Collateral.debt),
         supply: BigInt(resolvedAaveV3Collateral.supply),
+        netSupply: BigInt(resolvedAaveV3Collateral.netSupply),
     };
 }
 

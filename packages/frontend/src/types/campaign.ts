@@ -262,8 +262,8 @@ export class AaveV3CampaignPreviewPayload extends BaseCampaignPreviewPayload {
             return { usd: this.collateral.usdDebt, raw: this.collateral.debt };
         if (this.kind === CampaignKind.AaveV3NetSupply) {
             return {
-                usd: this.collateral.usdSupply - this.collateral.usdDebt,
-                raw: this.collateral.supply - this.collateral.debt,
+                usd: this.collateral.usdNetSupply,
+                raw: this.collateral.netSupply,
             };
         }
         if (
@@ -425,6 +425,7 @@ export class Campaign extends SdkCampaign {
     getTargetUsdTvl(): number | undefined {
         switch (this.target.type) {
             case TargetType.AmmPoolLiquidity:
+            case TargetType.JumperWhitelistedAmmPoolLiquidity:
                 return this.target.pool.usdTvl;
             case TargetType.LiquityV2Debt:
                 return this.target.collateral.usdMintedDebt;
@@ -436,10 +437,7 @@ export class Campaign extends SdkCampaign {
             case TargetType.AaveV3Supply:
                 return this.target.collateral.usdSupply;
             case TargetType.AaveV3NetSupply:
-                return (
-                    this.target.collateral.usdSupply -
-                    this.target.collateral.usdDebt
-                );
+                return this.target.collateral.usdNetSupply;
             default:
                 return undefined;
         }
@@ -448,6 +446,7 @@ export class Campaign extends SdkCampaign {
     getTargetLiquidity(): bigint | undefined {
         switch (this.target.type) {
             case TargetType.AmmPoolLiquidity:
+            case TargetType.JumperWhitelistedAmmPoolLiquidity:
                 return this.target.pool.liquidity;
             case TargetType.LiquityV2Debt:
                 return this.target.collateral.liquidity;
@@ -459,9 +458,7 @@ export class Campaign extends SdkCampaign {
             case TargetType.AaveV3Supply:
                 return this.target.collateral.supply;
             case TargetType.AaveV3NetSupply:
-                return (
-                    this.target.collateral.supply - this.target.collateral.debt
-                );
+                return this.target.collateral.netSupply;
             default:
                 return undefined;
         }

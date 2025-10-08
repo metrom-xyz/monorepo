@@ -1,9 +1,7 @@
 import type { ChainType } from "src/types/commons";
 import type { Address, Hex } from "viem";
-import type {
-    BackendAaveV3Collateral,
-    BackendLiquityV2Collateral,
-} from "./campaigns";
+import type { BackendLiquityV2Collateral } from "./campaigns";
+import type { BackendAaveV3Collateral } from "./aave-v3";
 
 export type BackendResolvedTokensRegistry = Record<
     ChainType,

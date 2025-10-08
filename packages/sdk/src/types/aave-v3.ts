@@ -7,8 +7,10 @@ export interface AaveV3Collateral {
     token: Erc20Token;
     debt: bigint;
     supply: bigint;
+    netSupply: bigint;
     usdDebt: number;
     usdSupply: number;
+    usdNetSupply: number;
 }
 
 export interface AaveV3Market {
