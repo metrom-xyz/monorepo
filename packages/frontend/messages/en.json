@@ -354,7 +354,8 @@
                         "token": "Token",
                         "empty": "Nothing here",
                         "debt": "Debt",
-                        "deposits": "Deposits"
+                        "deposits": "Deposits",
+                        "netDeposits": "Net deposits"
                     },
                     "apply": "Apply"
                 }

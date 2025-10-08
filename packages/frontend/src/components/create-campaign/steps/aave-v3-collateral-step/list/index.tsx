@@ -33,7 +33,9 @@ export function CollateralsList({
                     {t(
                         kind === CampaignKind.AaveV3Borrow
                             ? "list.debt"
-                            : "list.deposits",
+                            : kind === CampaignKind.AaveV3NetSupply
+                              ? "list.netDeposits"
+                              : "list.deposits",
                     )}
                 </Typography>
             </div>

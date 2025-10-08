@@ -173,6 +173,7 @@ export function AaveV3BridgeAndSupplyForm({
                     disabled={
                         !payload.brand || !payload.market || unsupportedChain
                     }
+                    kind={payload.kind}
                     brand={payload.brand}
                     market={payload.market}
                     collateral={payload.collateral}
