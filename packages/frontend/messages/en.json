@@ -403,6 +403,28 @@
                     }
                 }
             },
+            "holdToken": {
+                "picker": {
+                    "title": "Token",
+                    "infoMessage": "Pick a specific fungible token to reward users who hold it. Optionally pick one or multiple staking token addresses (tokens that track a staking position for the original asset).",
+                    "tokenAddressInput": {
+                        "label": "Token address",
+                        "placeholder": "Enter token address"
+                    },
+                    "stakingTokenAddressInput": {
+                        "label": "Staking token address",
+                        "placeholder": "Enter staking token address"
+                    },
+                    "errors": {
+                        "notAnAddress": "Not a valid address",
+                        "notFound": "Token not found",
+                        "alreadyAdded": "Already added"
+                    },
+                    "maxTokensLimit": "Maximum token limit reached",
+                    "add": "Add",
+                    "list": "List"
+                }
+            },
             "partnerAction": {
                 "protocol": { "title": "Protocol" },
                 "action": {
@@ -422,7 +444,8 @@
         "empty": {
             "message1": "Campaign creation isn't supported on {chain} chain.",
             "message2": "{campaignType} campaign creation isn't supported on {chain} chain.",
-            "message3": "Please choose a different chain."
+            "message3": "Please choose a different chain.",
+            "backToCreate": "Back to create"
         }
     },
     "campaignPreview": {
@@ -831,6 +854,7 @@
         "aaveV3NetSupply": "Net supply {token} on {brand}",
         "aaveV3BridgeAndSupply": "Bridge and supply {token} on {brand}",
         "jumperWhitelistedAmmPoolLiquidity": "Bridge through Jumper and LP on {dex} {pool}",
+        "holdToken": "Hold {token}",
         "empty": "Test campaign"
     },
     "socialCampaignPreview": {

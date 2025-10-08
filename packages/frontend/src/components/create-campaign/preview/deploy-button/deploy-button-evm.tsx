@@ -12,7 +12,7 @@ import {
     type UsdPricedErc20TokenAmount,
 } from "@metrom-xyz/sdk";
 import { formatUnits, parseUnits, encodeFunctionData } from "viem";
-import { buildCampaignDataBundleEvm } from "@/src/utils/campaign";
+import { buildCampaignDataBundleEvm } from "@/src/utils/campaign-bundle";
 import { metromAbi } from "@metrom-xyz/contracts/abi";
 import type { BaseTransaction } from "@safe-global/safe-apps-sdk";
 import { trackFathomEvent } from "@/src/utils/fathom";
