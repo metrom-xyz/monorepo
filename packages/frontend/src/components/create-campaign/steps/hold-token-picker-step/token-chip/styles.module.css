@@ -1,0 +1,21 @@
+@reference "../../../../../app.css";
+
+.root {
+    @apply h-[50px] theme-surface-2 rounded-lg py-3 px-4;
+}
+
+.loading {
+    @apply animate-pulse;
+}
+
+.content {
+    @apply w-full flex items-center justify-between gap-3;
+}
+
+.token {
+    @apply flex items-center gap-2;
+}
+
+.icon {
+    @apply cursor-pointer;
+}

@@ -7,7 +7,7 @@ import type { DeployButtonProps } from ".";
 import { useCallback, useEffect, useState } from "react";
 import { DistributablesType } from "@metrom-xyz/sdk";
 import { type Address, zeroHash } from "viem";
-import { buildCampaignDataBundleMvm } from "@/src/utils/campaign";
+import { buildCampaignDataBundleMvm } from "@/src/utils/campaign-bundle";
 import { trackFathomEvent } from "@/src/utils/fathom";
 import {
     useClients,

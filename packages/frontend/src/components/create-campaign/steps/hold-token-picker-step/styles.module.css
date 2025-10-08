@@ -1,0 +1,38 @@
+@reference "../../../../app.css";
+
+.step {
+    @apply h-auto!;
+}
+
+.stepPreview {
+    @apply hover:cursor-default! hover:bg-inherit! h-full! p-0!;
+}
+
+.previewLabelWrapper {
+    @apply w-full flex items-start justify-between gap-1 px-4 pt-5;
+}
+
+.previewLabelWrapper.disabled {
+    @apply p-0 flex-row items-center;
+}
+
+.previewTextWrapper {
+    @apply flex flex-col gap-1;
+}
+
+.titleWrapper {
+    @apply flex items-center gap-1;
+}
+
+.previewLabel {
+    font-size: inherit;
+    color: inherit;
+}
+
+.previewWrapper {
+    @apply h-full w-full flex flex-col gap-2.5 px-4 pb-4;
+}
+
+.inputWrapper {
+    @apply flex flex-col gap-1.5;
+}
