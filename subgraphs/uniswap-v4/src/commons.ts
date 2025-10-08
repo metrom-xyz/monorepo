@@ -1,0 +1,209 @@
+import {
+    Address,
+    BigDecimal,
+    BigInt,
+    Bytes,
+    ethereum,
+} from "@graphprotocol/graph-ts";
+import { Pool, Position, Tick, Token } from "../generated/schema";
+import { PositionManager } from "../generated/PositionManager/PositionManager";
+import { PoolManager } from "../generated/PoolManager/PoolManager";
+import {
+    NATIVE_TOKEN_ADDRESS,
+    NATIVE_TOKEN_DECIMALS,
+    NATIVE_TOKEN_NAME,
+    NATIVE_TOKEN_SYMBOL,
+    POOL_MANAGER_ADDRESS,
+    POSITION_MANAGER_ADDRESS,
+} from "./constants";
+import { Erc20 } from "../generated/PoolManager/Erc20";
+import { Erc20BytesSymbol } from "../generated/PoolManager/Erc20BytesSymbol";
+import { Erc20BytesName } from "../generated/PoolManager/Erc20BytesName";
+import { hexToBigInt } from "./math";
+
+export const BI_0 = BigInt.zero();
+export const BI_1 = BigInt.fromI32(1);
+export const BI_1_000_000 = BigInt.fromI32(1_000_000);
+export const BI_MAX_U256 = hexToBigInt(
+    "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+);
+export const BI_Q96 = BigInt.fromI32(2).pow(96);
+export const MASK_UPPER_200_BITS = hexToBigInt(
+    "ffffffffffffffffffffffffffffffffffffffffffffffffff00000000000000",
+);
+export const MASK_24_BITS = BigInt.fromI32(0xffffff);
+export const TICK_LOWER_OFFSET: i32 = 8;
+export const TICK_UPPER_OFFSET: i32 = 32;
+
+export const BD_0 = BigDecimal.zero();
+export const BD_1 = BigDecimal.fromString("1");
+export const BD_10 = BigDecimal.fromString("10");
+export const BD_TICK_BASE = BigDecimal.fromString("1.0001");
+export const BD_Q192 = BigDecimal.fromString(
+    BigInt.fromI32(2)
+        .pow(192 as u8)
+        .toString(),
+);
+
+export const BYTES_EMPTY_POOL_ID = Bytes.fromHexString("0x00");
+
+export const PositionManagerContract = PositionManager.bind(
+    POSITION_MANAGER_ADDRESS,
+);
+export const PoolManagerContract = PoolManager.bind(POOL_MANAGER_ADDRESS);
+
+export function getEventId(event: ethereum.Event): Bytes {
+    return changetype<Bytes>(
+        event.block.number.leftShift(40).plus(event.logIndex).reverse(),
+    );
+}
+
+export function getPoolOrThrow(id: Bytes): Pool {
+    let pool = Pool.load(id);
+    if (pool != null) return pool;
+
+    throw new Error(`Could not find pool with id ${id.toHex()}`);
+}
+
+export function getTokenOrThrow(address: Address): Token {
+    let token = Token.load(address);
+    if (token != null) return token;
+
+    throw new Error(`Could not find token with address ${address.toHex()}`);
+}
+
+export function fetchTokenSymbol(address: Address): string | null {
+    let contract = Erc20.bind(address);
+    let result = contract.try_symbol();
+    if (!result.reverted) return result.value;
+
+    let bytesContract = Erc20BytesSymbol.bind(address);
+    let bytesResult = bytesContract.try_symbol();
+    if (!bytesResult.reverted) return bytesResult.value.toString();
+
+    return null;
+}
+
+export function fetchTokenName(address: Address): string | null {
+    let contract = Erc20.bind(address);
+    let result = contract.try_name();
+    if (!result.reverted) return result.value;
+
+    let bytesContract = Erc20BytesName.bind(address);
+    let bytesResult = bytesContract.try_name();
+    if (!bytesResult.reverted) return bytesResult.value.toString();
+
+    return null;
+}
+
+export function fetchTokenDecimals(address: Address): i32 {
+    let contract = Erc20.bind(address);
+    let result = contract.try_decimals();
+    return result.reverted ? -1 : result.value.toI32();
+}
+
+export function getOrCreateToken(address: Address): Token | null {
+    let token = Token.load(address);
+    if (token !== null) return token;
+
+    if (address == NATIVE_TOKEN_ADDRESS) {
+        token = new Token(NATIVE_TOKEN_ADDRESS);
+        token.symbol = NATIVE_TOKEN_SYMBOL;
+        token.name = NATIVE_TOKEN_NAME;
+        token.decimals = NATIVE_TOKEN_DECIMALS;
+        token.save();
+        return token;
+    }
+
+    let symbol = fetchTokenSymbol(address);
+    if (symbol === null) return null;
+
+    let name = fetchTokenName(address);
+    if (name === null) return null;
+
+    let decimals = fetchTokenDecimals(address);
+    if (decimals === -1) return null;
+
+    token = new Token(address);
+    token.symbol = symbol;
+    token.name = name;
+    token.decimals = decimals;
+    token.save();
+
+    return token;
+}
+
+export function getOrCreateTick(poolAddress: Bytes, idx: i32): Tick {
+    let id = poolAddress.concat(Bytes.fromI32(idx));
+    let tick = Tick.load(id);
+    if (tick !== null) {
+        return tick;
+    }
+
+    tick = new Tick(id);
+    tick.idx = idx;
+    tick.pool = poolAddress;
+    tick.liquidityGross = BI_0;
+    tick.liquidityNet = BI_0;
+    tick.save();
+
+    return tick;
+}
+
+export function getFeeAdjustedAmount(amount: BigInt, fee: i32): BigInt {
+    // fees are taken from the input amount, so if the given amount
+    // is negative (i.e. removing from pool, we just leave the
+    // amount unchanged)
+    return amount.lt(BI_0)
+        ? amount
+        : amount
+              .times(BI_1_000_000.minus(BigInt.fromI32(fee)))
+              .div(BI_1_000_000);
+}
+
+function exponentToBigDecimal(decimals: i32): BigDecimal {
+    let result = "1";
+
+    for (let i = 0; i < decimals; i++) {
+        result += "0";
+    }
+
+    return BigDecimal.fromString(result);
+}
+
+export function getPrice(
+    sqrtPriceX96: BigInt,
+    token0Id: Bytes,
+    token1Id: Bytes,
+): BigDecimal {
+    let token0 = getTokenOrThrow(changetype<Address>(token0Id));
+    let token1 = getTokenOrThrow(changetype<Address>(token1Id));
+
+    return sqrtPriceX96
+        .times(sqrtPriceX96)
+        .toBigDecimal()
+        .div(BD_Q192)
+        .times(exponentToBigDecimal(token0.decimals))
+        .div(exponentToBigDecimal(token1.decimals));
+}
+
+export function getNftPositionId(tokenId: BigInt): Bytes {
+    return Bytes.fromByteArray(Bytes.fromBigInt(tokenId));
+}
+
+export function getOrCreateNftPosition(tokenId: BigInt): Position {
+    const id = getNftPositionId(tokenId);
+    let position = Position.load(id);
+    if (position != null) return position;
+
+    position = new Position(id);
+    position.owner = Address.zero();
+    position.lowerTick = 0;
+    position.upperTick = 0;
+    position.liquidity = BI_0;
+    position.direct = false;
+    position.pool = BYTES_EMPTY_POOL_ID;
+    position.save();
+
+    return position;
+}
