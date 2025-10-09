@@ -1,6 +1,5 @@
 import { type Chain } from "viem";
 import {
-    holesky,
     base,
     baseSepolia,
     taiko,
@@ -18,7 +17,6 @@ import {
     mainnet,
 } from "viem/chains";
 import {
-    holeskyData,
     sonicData,
     baseData,
     baseSepoliaData,
@@ -69,7 +67,6 @@ export const EVM_CHAIN_DATA: {
     [Environment.Production]: Record<SupportedProductionEvmChain, ChainData>;
 } = {
     [Environment.Development]: {
-        [SupportedDevelopmentEvmChain.Holesky]: holeskyData,
         [SupportedDevelopmentEvmChain.BaseSepolia]: baseSepoliaData,
         [SupportedDevelopmentEvmChain.Sepolia]: sepoliaData,
         [SupportedDevelopmentEvmChain.Swell]: swellDevelopmentData,
@@ -108,7 +105,6 @@ export const MVM_CHAIN_DATA: {
 
 // Needed for wagmi context setup, not needed for MVM chains
 export const SUPPORTED_DEVELOPMENT_CHAINS: [Chain, ...Chain[]] = [
-    holesky,
     baseSepolia,
     sepolia,
     sei,
