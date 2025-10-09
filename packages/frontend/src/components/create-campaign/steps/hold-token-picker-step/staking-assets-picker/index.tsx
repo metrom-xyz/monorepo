@@ -7,6 +7,7 @@ import { isAddress } from "@/src/utils/address";
 import { useAssetInfo } from "@/src/hooks/useAssetInfo";
 import { AssetChip, AssetChipLoading } from "../asset-chip";
 import type { TokenInfo } from "@/src/types/common";
+import { useDebounce } from "react-use";
 
 import styles from "./styles.module.css";
 
@@ -33,13 +34,21 @@ export function StakingAssetsPicker({
     const t = useTranslations("newCampaign.form.holdFungibleAsset.picker");
 
     const [assetAddress, setAssetAddress] = useState("");
-    const [blurAssetAddress, setBlurAssetAddress] = useState("");
+    const [debouncedAssetAddress, setDebouncedAssetAddress] = useState("");
     const [error, setError] = useState<ErrorMessage>("");
 
     const { info: assetInfo, loading: loadingAssetInfo } = useAssetInfo({
-        address: blurAssetAddress,
-        enabled: isAddress(blurAssetAddress) && !disabled,
+        address: debouncedAssetAddress,
+        enabled: isAddress(debouncedAssetAddress) && !disabled,
     });
+
+    useDebounce(
+        () => {
+            setDebouncedAssetAddress(assetAddress);
+        },
+        300,
+        [assetAddress],
+    );
 
     useEffect(() => {
         if (!assetAddress) {
@@ -68,17 +77,18 @@ export function StakingAssetsPicker({
         setAssetAddress(address);
     }
 
-    const handleAssetOnBlur = useCallback(() => {
-        setBlurAssetAddress(assetAddress);
-    }, [assetAddress]);
-
     const handleOnAdd = useCallback(() => {
         if (!assetInfo) return;
 
         setAssetAddress("");
-        setBlurAssetAddress("");
+        setDebouncedAssetAddress("");
         onChange([...stakingAssets, assetInfo]);
     }, [stakingAssets, assetInfo, onChange]);
+
+    function handleClearAsset() {
+        setAssetAddress("");
+        setDebouncedAssetAddress("");
+    }
 
     const getRemoveAssetHandler = useCallback(
         (toRemove: Address) => {
@@ -101,24 +111,33 @@ export function StakingAssetsPicker({
                 </Typography>
                 {assetInfo === undefined && loadingAssetInfo ? (
                     <AssetChipLoading />
+                ) : assetInfo ? (
+                    <AssetChip
+                        {...assetInfo}
+                        error={!!error}
+                        chainId={chainId}
+                        onRemove={handleClearAsset}
+                    />
                 ) : (
                     <TextInput
                         placeholder={t("stakingTokenAddressInput.placeholder")}
                         value={assetAddress}
                         disabled={disabled}
                         error={!!error}
-                        onBlur={handleAssetOnBlur}
                         onChange={handleTokenOnChange}
+                        className={styles.assetInput}
                     />
                 )}
             </div>
             <Button
                 variant="secondary"
                 size="sm"
+                loading={loadingAssetInfo}
                 disabled={
                     disabled ||
                     !!error ||
                     !assetAddress ||
+                    !assetInfo ||
                     loadingAssetInfo ||
                     stakingAssets.length >= MAXIMUM_STAKING_ASSETS
                 }
