@@ -160,15 +160,14 @@ export function HoldFungibleAssetPickerStep({
                             />
                         )}
                     </div>
-                    {assetInfo && (
-                        <StakingAssetsPicker
-                            chainId={chainId}
-                            disabled={!asset}
-                            stakingAssets={stakingAssets}
-                            onChange={handleStakingAssetsOnChange}
-                            onError={setStakingAssetError}
-                        />
-                    )}
+                    <StakingAssetsPicker
+                        visible={!!assetInfo}
+                        chainId={chainId}
+                        disabled={!asset}
+                        stakingAssets={stakingAssets}
+                        onChange={handleStakingAssetsOnChange}
+                        onError={setStakingAssetError}
+                    />
                 </div>
             </StepPreview>
             <StepContent></StepContent>
