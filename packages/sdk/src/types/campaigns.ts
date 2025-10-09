@@ -57,6 +57,10 @@ export enum TargetType {
     HoldFungibleAsset = "hold-fungible-asset",
 }
 
+export type AmmPoolLiquidityTargetType =
+    | TargetType.AmmPoolLiquidity
+    | TargetType.JumperWhitelistedAmmPoolLiquidity;
+
 export type LiquityV2TargetType =
     | TargetType.LiquityV2Debt
     | TargetType.LiquityV2StabilityPool;
