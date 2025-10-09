@@ -12,8 +12,12 @@
     @apply w-full flex items-center justify-between gap-3;
 }
 
-.token {
+.asset {
     @apply flex items-center gap-2;
+}
+
+.assetName {
+    @apply max-w-44;
 }
 
 .icon {

@@ -6,7 +6,7 @@ import classNames from "classnames";
 
 import styles from "./styles.module.css";
 
-interface TokenChipProps {
+interface AssetChipProps {
     chainId: number;
     address: string;
     name: string;
@@ -14,22 +14,27 @@ interface TokenChipProps {
     onRemove: () => void;
 }
 
-export function TokenChip({
+export function AssetChip({
     chainId,
     address,
     name,
     symbol,
     onRemove,
-}: TokenChipProps) {
+}: AssetChipProps) {
     return (
         <div className={styles.root}>
             <div className={styles.content}>
-                <div className={styles.token}>
+                <div className={styles.asset}>
                     <RemoteLogo address={address as Address} chain={chainId} />
                     <Typography weight="medium" size="lg">
                         {symbol}
                     </Typography>
-                    <Typography weight="medium" size="lg">
+                    <Typography
+                        weight="medium"
+                        light
+                        truncate
+                        className={styles.assetName}
+                    >
                         {name}
                     </Typography>
                 </div>
@@ -39,6 +44,6 @@ export function TokenChip({
     );
 }
 
-export function TokenChipLoading() {
+export function AssetChipLoading() {
     return <div className={classNames(styles.root, styles.loading)}></div>;
 }

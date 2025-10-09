@@ -1,12 +1,12 @@
 import { RemoteLogo } from "@/src/components/remote-logo";
 import { useChainWithType } from "@/src/hooks/useChainWithType";
-import type { HoldTokenCampaignPreviewPayload } from "@/src/types/campaign";
+import type { HoldFungibleAssetCampaignPreviewPayload } from "@/src/types/campaign";
 import { getCampaignPreviewName } from "@/src/utils/campaign";
 import { Typography } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
 
 interface HoldTokenProps {
-    payload: HoldTokenCampaignPreviewPayload;
+    payload: HoldFungibleAssetCampaignPreviewPayload;
 }
 
 export function HoldToken({ payload }: HoldTokenProps) {
@@ -18,7 +18,7 @@ export function HoldToken({ payload }: HoldTokenProps) {
             <RemoteLogo
                 size="lg"
                 chain={chainId}
-                address={payload.token.address}
+                address={payload.asset.address}
             />
             <Typography weight="medium" size="xl">
                 {getCampaignPreviewName(t, payload)}

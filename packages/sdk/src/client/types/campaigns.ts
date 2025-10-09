@@ -4,6 +4,7 @@ import type {
     BackendResolvedAmmPoolsRegistry,
     BackendResolvedLiquityV2CollateralsRegistry,
     BackendResolvedPricedTokensRegistry,
+    BackendResolvedPricedTokensWithTvlRegistry,
     BackendResolvedTokensRegistry,
 } from "./commons";
 import type { Specification } from "src/types/campaigns";
@@ -41,6 +42,12 @@ export interface BackendAaveV3Target<T> extends BaseTarget {
     brand: string;
     market: string;
     collateral: string;
+}
+
+export interface BackendHoldFungibleAssetTarget extends BaseTarget {
+    type: "hold-fungible-asset";
+    address: Address;
+    stakingAssetAddresses: Address[];
 }
 
 export type BackendLiquityV2DebtTarget =
@@ -107,6 +114,7 @@ export interface BackendCampaign {
         | BackendAaveV3BorrowTarget
         | BackendAaveV3SupplyTarget
         | BackendAaveV3NetSupplyTarget
+        | BackendHoldFungibleAssetTarget
         | BackendAaveV3BridgeAndSupplyTarget
         | BackendJumperWhitelistedAmmPoolLiquidityTarget;
     specification?: Specification;
@@ -117,6 +125,7 @@ export interface BackendCampaign {
 export interface BackendCampaignsResponse {
     resolvedTokens: BackendResolvedTokensRegistry;
     resolvedPricedTokens: BackendResolvedPricedTokensRegistry;
+    resolvedPricedTokensWithTvl: BackendResolvedPricedTokensWithTvlRegistry;
     resolvedAmmPools: BackendResolvedAmmPoolsRegistry;
     resolvedLiquityV2Collaterals: BackendResolvedLiquityV2CollateralsRegistry;
     resolvedAaveV3Collaterals: BackendResolvedAaveV3CollateralsRegistry;
@@ -126,6 +135,7 @@ export interface BackendCampaignsResponse {
 export interface BackendCampaignResponse {
     resolvedTokens: BackendResolvedTokensRegistry;
     resolvedPricedTokens: BackendResolvedPricedTokensRegistry;
+    resolvedPricedTokensWithTvl: BackendResolvedPricedTokensWithTvlRegistry;
     resolvedAmmPools: BackendResolvedAmmPoolsRegistry;
     resolvedLiquityV2Collaterals: BackendResolvedLiquityV2CollateralsRegistry;
     resolvedAaveV3Collaterals: BackendResolvedAaveV3CollateralsRegistry;

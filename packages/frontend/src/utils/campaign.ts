@@ -15,7 +15,7 @@ import {
     EmptyTargetCampaignPreviewPayload,
     type BaseCampaignPreviewPayload,
     AaveV3CampaignPreviewPayload,
-    HoldTokenCampaignPreviewPayload,
+    HoldFungibleAssetCampaignPreviewPayload,
 } from "../types/campaign";
 import type { TranslationsType } from "../types/utils";
 import { getDistributableRewardsPercentage } from "./kpi";
@@ -175,8 +175,8 @@ export function getCampaignPreviewName(
                 return "-";
             }
         }
-    } else if (payload instanceof HoldTokenCampaignPreviewPayload) {
-        return t("campaignActions.holdToken", { token: payload.token.symbol });
+    } else if (payload instanceof HoldFungibleAssetCampaignPreviewPayload) {
+        return t("campaignActions.holdFungibleAsset", { token: payload.asset.symbol });
     } else if (payload instanceof EmptyTargetCampaignPreviewPayload) {
         return t("campaignActions.empty");
     } else {

@@ -4,109 +4,110 @@ import { useTranslations } from "next-intl";
 import { useCallback, useEffect, useState, type ChangeEvent } from "react";
 import { type Address } from "viem";
 import { isAddress } from "@/src/utils/address";
-import { useTokenInfo } from "@/src/hooks/useTokenInfo";
-import { TokenChip, TokenChipLoading } from "../token-chip";
+import { useAssetInfo } from "@/src/hooks/useAssetInfo";
+import { AssetChip, AssetChipLoading } from "../asset-chip";
 import type { TokenInfo } from "@/src/types/common";
 
 import styles from "./styles.module.css";
 
-type ErrorMessage = LocalizedMessage<"newCampaign.form.holdToken.picker">;
+type ErrorMessage =
+    LocalizedMessage<"newCampaign.form.holdFungibleAsset.picker">;
 
-interface StakingTokenPickerProps {
+interface StakingAssetsPickerProps {
     disabled?: boolean;
     chainId: number;
-    stakingTokens: TokenInfo[];
-    onChange: (stakingTokens: TokenInfo[]) => void;
+    stakingAssets: TokenInfo[];
+    onChange: (stakingAssets: TokenInfo[]) => void;
     onError: (error: ErrorMessage) => void;
 }
 
-export const MAXIMUM_STAKING_TOKEN_ADDRESSES = 5;
+export const MAXIMUM_STAKING_ASSETS = 5;
 
-export function StakingTokenPicker({
+export function StakingAssetsPicker({
     disabled,
     chainId,
-    stakingTokens,
+    stakingAssets,
     onChange,
     onError,
-}: StakingTokenPickerProps) {
-    const t = useTranslations("newCampaign.form.holdToken.picker");
+}: StakingAssetsPickerProps) {
+    const t = useTranslations("newCampaign.form.holdFungibleAsset.picker");
 
-    const [tokenAddress, setTokenAddress] = useState("");
-    const [blurTokenAddress, setBlurTokenAddress] = useState("");
+    const [assetAddress, setAssetAddress] = useState("");
+    const [blurAssetAddress, setBlurAssetAddress] = useState("");
     const [error, setError] = useState<ErrorMessage>("");
 
-    const { info: tokenInfo, loading: loadingTokenInfo } = useTokenInfo({
-        address: blurTokenAddress,
-        enabled: isAddress(blurTokenAddress) && !disabled,
+    const { info: assetInfo, loading: loadingAssetInfo } = useAssetInfo({
+        address: blurAssetAddress,
+        enabled: isAddress(blurAssetAddress) && !disabled,
     });
 
     useEffect(() => {
-        if (!tokenAddress) {
+        if (!assetAddress) {
             setError("");
             onError("");
             return;
         }
 
         let error: ErrorMessage = "";
-        if (!isAddress(tokenAddress)) error = "errors.notAnAddress";
+        if (!isAddress(assetAddress)) error = "errors.notAnAddress";
         else if (
-            stakingTokens.find(
-                (stakingToken) => stakingToken.address === blurTokenAddress,
+            stakingAssets.find(
+                (stakingAsset) => stakingAsset.address === assetInfo?.address,
             )
         )
             error = "errors.alreadyAdded";
-        else if (tokenInfo === null) error = "errors.notFound";
+        else if (assetInfo === null) error = "errors.notFound";
         else error = "";
 
         setError(error);
         onError(error);
-    }, [tokenAddress, tokenInfo, blurTokenAddress, stakingTokens, onError]);
+    }, [assetAddress, assetInfo, stakingAssets, onError]);
 
     function handleTokenOnChange(event: ChangeEvent<HTMLInputElement>) {
-        const token = event.target.value as Address;
-        setTokenAddress(token);
+        const address = event.target.value as Address;
+        setAssetAddress(address);
     }
 
-    const handleTokenOnBlur = useCallback(() => {
-        setBlurTokenAddress(tokenAddress);
-    }, [tokenAddress]);
+    const handleAssetOnBlur = useCallback(() => {
+        setBlurAssetAddress(assetAddress);
+    }, [assetAddress]);
 
-    const handleOnAddStakingToken = useCallback(() => {
-        if (!tokenInfo) return;
+    const handleOnAdd = useCallback(() => {
+        if (!assetInfo) return;
 
-        setTokenAddress("");
-        setBlurTokenAddress("");
-        onChange([...stakingTokens, tokenInfo]);
-    }, [stakingTokens, tokenInfo, onChange]);
+        setAssetAddress("");
+        setBlurAssetAddress("");
+        onChange([...stakingAssets, assetInfo]);
+    }, [stakingAssets, assetInfo, onChange]);
 
-    const getRemoveStakingTokenHandler = useCallback(
+    const getRemoveAssetHandler = useCallback(
         (toRemove: Address) => {
             return () => {
                 onChange(
-                    stakingTokens.filter(
-                        (stakingToken) => stakingToken.address !== toRemove,
+                    stakingAssets.filter(
+                        (stakingAsset) => stakingAsset.address !== toRemove,
                     ),
                 );
             };
         },
-        [stakingTokens, onChange],
+        [stakingAssets, onChange],
     );
 
     return (
         <div className={styles.root}>
             <div className={styles.inputWrapper}>
                 <Typography weight="medium" size="xs" uppercase light>
-                    {t("tokenAddressInput.label")}
+                    {t("stakingTokenAddressInput.label")}
                 </Typography>
-                {tokenInfo === undefined && loadingTokenInfo ? (
-                    <TokenChipLoading />
+                {assetInfo === undefined && loadingAssetInfo ? (
+                    <AssetChipLoading />
                 ) : (
                     <TextInput
                         placeholder={t("stakingTokenAddressInput.placeholder")}
-                        value={tokenAddress}
+                        value={assetAddress}
                         disabled={disabled}
                         error={!!error}
-                        onBlur={handleTokenOnBlur}
+                        onBlur={handleAssetOnBlur}
                         onChange={handleTokenOnChange}
                     />
                 )}
@@ -117,33 +118,34 @@ export function StakingTokenPicker({
                 disabled={
                     disabled ||
                     !!error ||
-                    !tokenAddress ||
-                    stakingTokens.length >= MAXIMUM_STAKING_TOKEN_ADDRESSES
+                    !assetAddress ||
+                    loadingAssetInfo ||
+                    stakingAssets.length >= MAXIMUM_STAKING_ASSETS
                 }
-                onClick={handleOnAddStakingToken}
+                onClick={handleOnAdd}
                 className={{ root: styles.addButton }}
             >
-                {stakingTokens.length >= MAXIMUM_STAKING_TOKEN_ADDRESSES
+                {stakingAssets.length >= MAXIMUM_STAKING_ASSETS
                     ? t("maxTokensLimit")
                     : t("add")}
             </Button>
-            {stakingTokens.length > 0 && (
+            {stakingAssets.length > 0 && (
                 <>
                     <div className={styles.divider}></div>
                     <div className={styles.listWrapper}>
                         <Typography weight="medium" light size="xs" uppercase>
-                            {t("list")}
+                            {t("stakingTokens")}
                         </Typography>
                         <div className={styles.list}>
-                            {stakingTokens.map(({ address, name, symbol }) => {
+                            {stakingAssets.map(({ address, name, symbol }) => {
                                 return (
-                                    <TokenChip
+                                    <AssetChip
                                         key={address}
                                         name={name}
                                         symbol={symbol}
                                         address={address}
                                         chainId={chainId}
-                                        onRemove={getRemoveStakingTokenHandler(
+                                        onRemove={getRemoveAssetHandler(
                                             address,
                                         )}
                                     />
