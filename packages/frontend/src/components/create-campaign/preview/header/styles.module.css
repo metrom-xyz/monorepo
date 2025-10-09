@@ -31,3 +31,11 @@
 .textField:last-child {
     @apply sm:items-end;
 }
+
+.fungibleAssetWrapper {
+    @apply flex items-end;
+}
+
+.fungibleStakingAssets {
+    @apply flex -ml-3.5;
+}

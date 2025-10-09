@@ -854,7 +854,7 @@
         "aaveV3NetSupply": "Net supply {token} on {brand}",
         "aaveV3BridgeAndSupply": "Bridge and supply {token} on {brand}",
         "jumperWhitelistedAmmPoolLiquidity": "Bridge through Jumper and LP on {dex} {pool}",
-        "holdFungibleAsset": "Hold {token}",
+        "holdFungibleAsset": "Hold {name} ({symbol})",
         "empty": "Test campaign"
     },
     "socialCampaignPreview": {
