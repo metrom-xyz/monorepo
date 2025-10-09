@@ -8,6 +8,7 @@ import { useAssetInfo } from "@/src/hooks/useAssetInfo";
 import { AssetChip, AssetChipLoading } from "../asset-chip";
 import type { TokenInfo } from "@/src/types/common";
 import { useDebounce } from "react-use";
+import { AnimatePresence, easeInOut, motion } from "motion/react";
 
 import styles from "./styles.module.css";
 
@@ -15,6 +16,7 @@ type ErrorMessage =
     LocalizedMessage<"newCampaign.form.holdFungibleAsset.picker">;
 
 interface StakingAssetsPickerProps {
+    visible?: boolean;
     disabled?: boolean;
     chainId: number;
     stakingAssets: TokenInfo[];
@@ -25,6 +27,7 @@ interface StakingAssetsPickerProps {
 export const MAXIMUM_STAKING_ASSETS = 5;
 
 export function StakingAssetsPicker({
+    visible,
     disabled,
     chainId,
     stakingAssets,
@@ -104,76 +107,99 @@ export function StakingAssetsPicker({
     );
 
     return (
-        <div className={styles.root}>
-            <div className={styles.inputWrapper}>
-                <Typography weight="medium" size="xs" uppercase light>
-                    {t("stakingTokenAddressInput.label")}
-                </Typography>
-                {assetInfo === undefined && loadingAssetInfo ? (
-                    <AssetChipLoading />
-                ) : assetInfo ? (
-                    <AssetChip
-                        {...assetInfo}
-                        error={!!error}
-                        chainId={chainId}
-                        onRemove={handleClearAsset}
-                    />
-                ) : (
-                    <TextInput
-                        placeholder={t("stakingTokenAddressInput.placeholder")}
-                        value={assetAddress}
-                        disabled={disabled}
-                        error={!!error}
-                        onChange={handleTokenOnChange}
-                        className={styles.assetInput}
-                    />
-                )}
-            </div>
-            <Button
-                variant="secondary"
-                size="sm"
-                loading={loadingAssetInfo}
-                disabled={
-                    disabled ||
-                    !!error ||
-                    !assetAddress ||
-                    !assetInfo ||
-                    loadingAssetInfo ||
-                    stakingAssets.length >= MAXIMUM_STAKING_ASSETS
-                }
-                onClick={handleOnAdd}
-                className={{ root: styles.addButton }}
-            >
-                {stakingAssets.length >= MAXIMUM_STAKING_ASSETS
-                    ? t("maxTokensLimit")
-                    : t("add")}
-            </Button>
-            {stakingAssets.length > 0 && (
-                <>
-                    <div className={styles.divider}></div>
-                    <div className={styles.listWrapper}>
-                        <Typography weight="medium" light size="xs" uppercase>
-                            {t("stakingTokens")}
+        <AnimatePresence>
+            {visible && (
+                <motion.div
+                    initial="hide"
+                    animate="show"
+                    exit="hide"
+                    variants={{
+                        hide: { height: 0 },
+                        show: { height: "auto" },
+                    }}
+                    transition={{ ease: easeInOut, duration: 0.2 }}
+                    className={styles.root}
+                >
+                    <div className={styles.inputWrapper}>
+                        <Typography weight="medium" size="xs" uppercase light>
+                            {t("stakingTokenAddressInput.label")}
                         </Typography>
-                        <div className={styles.list}>
-                            {stakingAssets.map(({ address, name, symbol }) => {
-                                return (
-                                    <AssetChip
-                                        key={address}
-                                        name={name}
-                                        symbol={symbol}
-                                        address={address}
-                                        chainId={chainId}
-                                        onRemove={getRemoveAssetHandler(
-                                            address,
-                                        )}
-                                    />
-                                );
-                            })}
-                        </div>
+                        {assetInfo === undefined && loadingAssetInfo ? (
+                            <AssetChipLoading />
+                        ) : assetInfo ? (
+                            <AssetChip
+                                {...assetInfo}
+                                error={!!error}
+                                chainId={chainId}
+                                onRemove={handleClearAsset}
+                            />
+                        ) : (
+                            <TextInput
+                                placeholder={t(
+                                    "stakingTokenAddressInput.placeholder",
+                                )}
+                                value={assetAddress}
+                                disabled={disabled}
+                                error={!!error}
+                                onChange={handleTokenOnChange}
+                                className={styles.assetInput}
+                            />
+                        )}
                     </div>
-                </>
+                    <Button
+                        variant="secondary"
+                        size="sm"
+                        loading={loadingAssetInfo}
+                        disabled={
+                            disabled ||
+                            !!error ||
+                            !assetAddress ||
+                            !assetInfo ||
+                            loadingAssetInfo ||
+                            stakingAssets.length >= MAXIMUM_STAKING_ASSETS
+                        }
+                        onClick={handleOnAdd}
+                        className={{ root: styles.addButton }}
+                    >
+                        {stakingAssets.length >= MAXIMUM_STAKING_ASSETS
+                            ? t("maxTokensLimit")
+                            : t("add")}
+                    </Button>
+                    {stakingAssets.length > 0 && (
+                        <>
+                            <div className={styles.divider}></div>
+                            <div className={styles.listWrapper}>
+                                <Typography
+                                    weight="medium"
+                                    light
+                                    size="xs"
+                                    uppercase
+                                >
+                                    {t("stakingTokens")}
+                                </Typography>
+                                <div className={styles.list}>
+                                    {stakingAssets.map(
+                                        ({ address, name, symbol }) => {
+                                            return (
+                                                <AssetChip
+                                                    key={address}
+                                                    name={name}
+                                                    symbol={symbol}
+                                                    address={address}
+                                                    chainId={chainId}
+                                                    onRemove={getRemoveAssetHandler(
+                                                        address,
+                                                    )}
+                                                />
+                                            );
+                                        },
+                                    )}
+                                </div>
+                            </div>
+                        </>
+                    )}
+                </motion.div>
             )}
-        </div>
+        </AnimatePresence>
     );
 }
