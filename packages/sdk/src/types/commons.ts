@@ -31,6 +31,10 @@ export interface UsdPricedErc20Token extends Erc20Token {
     usdPrice: number;
 }
 
+export interface UsdPricedErc20TokenWithTvl extends Erc20Token {
+    tvl: number;
+}
+
 export interface Erc20TokenAmount {
     token: Erc20Token;
     amount: OnChainAmount;

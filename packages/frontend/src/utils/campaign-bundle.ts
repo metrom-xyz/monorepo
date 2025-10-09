@@ -11,7 +11,7 @@ import {
     AaveV3CampaignPreviewPayload,
     AmmPoolLiquidityCampaignPreviewPayload,
     EmptyTargetCampaignPreviewPayload,
-    HoldTokenCampaignPreviewPayload,
+    HoldFungibleAssetCampaignPreviewPayload,
     LiquityV2CampaignPreviewPayload,
     type CampaignPreviewPayload,
 } from "../types/campaign";
@@ -78,13 +78,13 @@ export function buildCampaignDataBundleMvm(payload: CampaignPreviewPayload) {
                 new U32(payload.boostingFactor * 100 * 1_000_000),
             );
         }
-    } else if (payload instanceof HoldTokenCampaignPreviewPayload) {
+    } else if (payload instanceof HoldFungibleAssetCampaignPreviewPayload) {
         serializableParts.push(
-            AccountAddress.fromString(payload.token.address),
+            AccountAddress.fromString(payload.asset.address),
         );
         serializableParts.push(
             new MoveVector(
-                payload.stakingTokens.map(({ address }) =>
+                payload.stakingAssets.map(({ address }) =>
                     AccountAddress.fromString(address),
                 ),
             ),

@@ -2,9 +2,9 @@ import {
     type CampaignPayloadErrors,
     type CampaignPreviewDistributables,
     EmptyTargetCampaignPreviewPayload,
-    type HoldTokenCampaignPayload,
-    HoldTokenCampaignPreviewPayload,
-    type HoldTokenCampaignPayloadPart,
+    type HoldFungibleAssetCampaignPayload,
+    HoldFungibleAssetCampaignPreviewPayload,
+    type HoldFungibleAssetCampaignPayloadPart,
 } from "@/src/types/campaign";
 import { useTranslations } from "next-intl";
 import { useCallback, useEffect, useMemo, useState } from "react";
@@ -18,18 +18,21 @@ import { Button } from "@metrom-xyz/ui";
 import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
 import { EXPERIMENTAL_CHAINS } from "@/src/commons/env";
 import { validateDistributables } from "@/src/utils/creation-form";
-import { HoldTokenPickerStep } from "../../steps/hold-token-picker-step";
+import { HoldFungibleAssetPickerStep } from "../../steps/hold-token-picker-step";
 
 import styles from "./styles.module.css";
 
 function validatePayload(
     chainId: number,
-    payload: HoldTokenCampaignPayload,
-): HoldTokenCampaignPreviewPayload | EmptyTargetCampaignPreviewPayload | null {
+    payload: HoldFungibleAssetCampaignPayload,
+):
+    | HoldFungibleAssetCampaignPreviewPayload
+    | EmptyTargetCampaignPreviewPayload
+    | null {
     const {
         kind,
-        token,
-        stakingTokens,
+        asset,
+        stakingAssets,
         startDate,
         endDate,
         distributables,
@@ -37,7 +40,7 @@ function validatePayload(
         restrictions,
     } = payload;
 
-    if (!kind || !token || !startDate || !endDate || !distributables)
+    if (!kind || !asset || !startDate || !endDate || !distributables)
         return null;
 
     if (!validateDistributables(distributables)) return null;
@@ -53,9 +56,9 @@ function validatePayload(
         );
     }
 
-    return new HoldTokenCampaignPreviewPayload(
-        token,
-        stakingTokens,
+    return new HoldFungibleAssetCampaignPreviewPayload(
+        asset,
+        stakingAssets,
         startDate,
         endDate,
         distributables as CampaignPreviewDistributables,
@@ -64,26 +67,26 @@ function validatePayload(
     );
 }
 
-interface HoldTokenFormProps {
+interface HoldFungibleAssetFormProps {
     unsupportedChain: boolean;
     onPreviewClick: (
         payload:
-            | HoldTokenCampaignPreviewPayload
+            | HoldFungibleAssetCampaignPreviewPayload
             | EmptyTargetCampaignPreviewPayload
             | null,
     ) => void;
 }
 
-const initialPayload: HoldTokenCampaignPayload = {
+const initialPayload: HoldFungibleAssetCampaignPayload = {
     distributables: { type: DistributablesType.Tokens },
-    kind: CampaignKind.HoldToken,
-    stakingTokens: [],
+    kind: CampaignKind.HoldFungibleAsset,
+    stakingAssets: [],
 };
 
-export function HoldTokenForm({
+export function HoldFungibleAssetForm({
     unsupportedChain,
     onPreviewClick,
-}: HoldTokenFormProps) {
+}: HoldFungibleAssetFormProps) {
     const t = useTranslations("newCampaign");
     const { id: chainId } = useChainWithType();
 
@@ -105,7 +108,7 @@ export function HoldTokenForm({
     }, [chainId]);
 
     const handlePayloadOnChange = useCallback(
-        (part: HoldTokenCampaignPayloadPart) => {
+        (part: HoldFungibleAssetCampaignPayloadPart) => {
             setPayload((prev) => ({ ...prev, ...part }));
         },
         [],
@@ -125,15 +128,15 @@ export function HoldTokenForm({
     return (
         <div className={styles.root}>
             <div className={styles.stepsWrapper}>
-                <HoldTokenPickerStep
+                <HoldFungibleAssetPickerStep
                     disabled={unsupportedChain}
-                    token={payload.token}
-                    stakingTokens={payload.stakingTokens}
-                    onTokensChange={handlePayloadOnChange}
+                    asset={payload.asset}
+                    stakingAssets={payload.stakingAssets}
+                    onFungibleAssetChange={handlePayloadOnChange}
                     onError={handlePayloadOnError}
                 />
                 <StartDateStep
-                    disabled={!payload.token || unsupportedChain}
+                    disabled={!payload.asset || unsupportedChain}
                     startDate={payload.startDate}
                     endDate={payload.endDate}
                     onStartDateChange={handlePayloadOnChange}
@@ -156,7 +159,7 @@ export function HoldTokenForm({
                 />
                 <RestrictionsStep
                     disabled={
-                        !payload.token || noDistributables || unsupportedChain
+                        !payload.asset || noDistributables || unsupportedChain
                     }
                     restrictions={payload.restrictions}
                     onRestrictionsChange={handlePayloadOnChange}

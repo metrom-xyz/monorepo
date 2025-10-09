@@ -17,6 +17,7 @@ import type {
     BackendResolvedAmmPoolsRegistry,
     BackendResolvedLiquityV2CollateralsRegistry,
     BackendResolvedPricedTokensRegistry,
+    BackendResolvedPricedTokensWithTvlRegistry,
     BackendResolvedTokensRegistry,
 } from "./types/commons";
 import type {
@@ -40,6 +41,7 @@ import {
     type AaveV3NetSupplyTarget,
     type AaveV3BridgeAndSupplyTarget,
     type JumperWhitelistedAmmPoolLiquidityTarget,
+    type HoldFungibleAssetTarget,
 } from "../types/campaigns";
 import {
     ChainType,
@@ -49,6 +51,7 @@ import {
     type Erc20Token,
     type OnChainAmount,
     type UsdPricedErc20Token,
+    type UsdPricedErc20TokenWithTvl,
     type UsdPricedOnChainAmount,
 } from "../types/commons";
 import type {
@@ -957,19 +960,6 @@ function processCampaignsResponse(
                 };
                 break;
             }
-            case "jumper-whitelisted-amm-pool-liquidity": {
-                target = <JumperWhitelistedAmmPoolLiquidityTarget>{
-                    ...backendCampaign.target,
-                    pool: resolveAmmPool(
-                        response.resolvedAmmPools,
-                        response.resolvedTokens,
-                        backendCampaign.target.chainId,
-                        backendCampaign.target.chainType,
-                        backendCampaign.target.poolId,
-                    ),
-                };
-                break;
-            }
             case "liquity-v2-debt": {
                 target = <LiquityV2DebtTarget>{
                     type: TargetType.LiquityV2Debt,
@@ -1086,6 +1076,30 @@ function processCampaignsResponse(
                 };
                 break;
             }
+            case "hold-fungible-asset": {
+                target = <HoldFungibleAssetTarget>{
+                    type: TargetType.HoldFungibleAsset,
+                    chainType: backendCampaign.target.chainType,
+                    chainId: backendCampaign.target.chainId,
+                    asset: resolvePricedTokenWithTvlInChain(
+                        response.resolvedPricedTokensWithTvl,
+                        backendCampaign.target.chainId,
+                        backendCampaign.target.chainType,
+                        backendCampaign.target.address,
+                    ),
+                    stakingAssets:
+                        backendCampaign.target.stakingAssetAddresses.map(
+                            (address) =>
+                                resolvePricedTokenWithTvlInChain(
+                                    response.resolvedPricedTokensWithTvl,
+                                    backendCampaign.target.chainId,
+                                    backendCampaign.target.chainType,
+                                    address,
+                                ),
+                        ),
+                };
+                break;
+            }
             case "aave-v3-bridge-and-supply": {
                 target = <AaveV3BridgeAndSupplyTarget>{
                     type: TargetType.AaveV3BridgeAndSupply,
@@ -1118,6 +1132,19 @@ function processCampaignsResponse(
                         backendCampaign.target.aaveV3Brand,
                         backendCampaign.target.aaveV3Market,
                         backendCampaign.target.aaveV3Collateral as Address,
+                    ),
+                };
+                break;
+            }
+            case "jumper-whitelisted-amm-pool-liquidity": {
+                target = <JumperWhitelistedAmmPoolLiquidityTarget>{
+                    ...backendCampaign.target,
+                    pool: resolveAmmPool(
+                        response.resolvedAmmPools,
+                        response.resolvedTokens,
+                        backendCampaign.target.chainId,
+                        backendCampaign.target.chainType,
+                        backendCampaign.target.poolId,
                     ),
                 };
                 break;
@@ -1385,6 +1412,24 @@ function resolvePricedTokenInChain(
     if (!resolved)
         throw new Error(
             `Could not find resolved priced token with address ${address} in chain with id ${chainId} and type ${chainType}`,
+        );
+
+    return {
+        ...resolved,
+        address,
+    };
+}
+
+function resolvePricedTokenWithTvlInChain(
+    registry: BackendResolvedPricedTokensWithTvlRegistry,
+    chainId: number,
+    chainType: ChainType,
+    address: Address,
+): UsdPricedErc20TokenWithTvl {
+    const resolved = registry[chainType][chainId][address];
+    if (!resolved)
+        throw new Error(
+            `Could not find resolved priced token with tvl with address ${address} in chain with id ${chainId} and type ${chainType}`,
         );
 
     return {
