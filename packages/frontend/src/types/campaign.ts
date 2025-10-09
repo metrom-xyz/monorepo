@@ -93,9 +93,9 @@ export interface AaveV3CampaignPayload extends BaseCampaignPayload {
     boostingFactor?: number;
 }
 
-export interface HoldTokenCampaignPayload extends BaseCampaignPayload {
-    token?: TokenInfo;
-    stakingTokens: TokenInfo[];
+export interface HoldFungibleAssetCampaignPayload extends BaseCampaignPayload {
+    asset?: TokenInfo;
+    stakingAssets: TokenInfo[];
 }
 
 export interface CampaignPayloadTokenDistributables {
@@ -254,11 +254,11 @@ export class AaveV3CampaignPreviewPayload extends BaseCampaignPreviewPayload {
     }
 }
 
-export class HoldTokenCampaignPreviewPayload extends BaseCampaignPreviewPayload {
-    public readonly kind: CampaignKind = CampaignKind.HoldToken;
+export class HoldFungibleAssetCampaignPreviewPayload extends BaseCampaignPreviewPayload {
+    public readonly kind: CampaignKind = CampaignKind.HoldFungibleAsset;
     constructor(
-        public readonly token: TokenInfo,
-        public readonly stakingTokens: TokenInfo[],
+        public readonly asset: TokenInfo,
+        public readonly stakingAssets: TokenInfo[],
         ...baseArgs: ConstructorParameters<typeof BaseCampaignPreviewPayload>
     ) {
         super(...baseArgs);
@@ -300,7 +300,7 @@ export interface DistributablesCampaignPreviewPayload<
 
 export interface CampaignPayloadErrors {
     pool?: boolean;
-    holdTokens?: boolean;
+    holdFungibleAsset?: boolean;
     startDate?: boolean;
     endDate?: boolean;
     rewards?: boolean;
@@ -330,8 +330,8 @@ export type LiquityV2CampaignPayloadPart =
 
 export type AaveV3CampaignPayloadPart = PropertyUnion<AaveV3CampaignPayload>;
 
-export type HoldTokenCampaignPayloadPart =
-    PropertyUnion<HoldTokenCampaignPayload>;
+export type HoldFungibleAssetCampaignPayloadPart =
+    PropertyUnion<HoldFungibleAssetCampaignPayload>;
 
 export class Campaign extends SdkCampaign {
     constructor(

@@ -132,7 +132,7 @@
                 "title": "AAVE V3",
                 "description": "Incentivize users borrowing and supplying on Aave V3."
             },
-            "holdToken": {
+            "holdFungibleAsset": {
                 "title": "HOLD TOKEN",
                 "description": "Incentivize users holding any ERC20 token."
             },
@@ -161,7 +161,7 @@
             "amm": "AMM liquidity pool",
             "liquityV2": "Liquity v2",
             "aaveV3": "Aave v3",
-            "holdToken": "Hold token",
+            "holdFungibleAsset": "Hold token",
             "partnerActions": "Partner action",
             "aaveV3BridgeAndSupply": "Aave v3 bridge and supply",
             "jumperWhitelistedAmmPoolLiquidity": "Jumper AMM pool liquidity"
@@ -403,7 +403,7 @@
                     }
                 }
             },
-            "holdToken": {
+            "holdFungibleAsset": {
                 "picker": {
                     "title": "Token",
                     "infoMessage": "Pick a specific fungible token to reward users who hold it. Optionally pick one or multiple staking token addresses (tokens that track a staking position for the original asset).",
@@ -422,7 +422,7 @@
                     },
                     "maxTokensLimit": "Maximum token limit reached",
                     "add": "Add",
-                    "list": "List"
+                    "stakingTokens": "Staking tokens"
                 }
             },
             "partnerAction": {
@@ -854,7 +854,7 @@
         "aaveV3NetSupply": "Net supply {token} on {brand}",
         "aaveV3BridgeAndSupply": "Bridge and supply {token} on {brand}",
         "jumperWhitelistedAmmPoolLiquidity": "Bridge through Jumper and LP on {dex} {pool}",
-        "holdToken": "Hold {token}",
+        "holdFungibleAsset": "Hold {token}",
         "empty": "Test campaign"
     },
     "socialCampaignPreview": {

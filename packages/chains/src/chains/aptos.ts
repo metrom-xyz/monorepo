@@ -29,7 +29,7 @@ export const aptosDevelopmentData: ChainData = {
         {
             active: true,
             partner: false,
-            type: BaseCampaignType.HoldToken,
+            type: BaseCampaignType.HoldFungibleAsset,
         },
         {
             active: true,
@@ -90,7 +90,7 @@ export const aptosDevelopmentProductionData: ChainData = {
         {
             active: true,
             partner: false,
-            type: BaseCampaignType.HoldToken,
+            type: BaseCampaignType.HoldFungibleAsset,
         },
         {
             active: true,
@@ -146,7 +146,7 @@ export const aptosProductionData: ChainData = {
         {
             active: true,
             partner: false,
-            type: BaseCampaignType.HoldToken,
+            type: BaseCampaignType.HoldFungibleAsset,
         },
         {
             active: true,

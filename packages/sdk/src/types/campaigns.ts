@@ -6,6 +6,7 @@ import type {
     Erc20Token,
     OnChainAmount,
     UsdPricedErc20Token,
+    UsdPricedErc20TokenWithTvl,
     UsdPricedOnChainAmount,
 } from "./commons";
 import type {
@@ -26,14 +27,14 @@ export enum CampaignKind {
     AaveV3NetSupply = 8,
     AaveV3BridgeAndSupply = 9,
     JumperWhitelistedAmmPoolLiquidity = 10,
-    HoldToken = 11,
+    HoldFungibleAsset = 11,
 }
 
 export enum BaseCampaignType {
     LiquityV2 = "liquity-v2",
     AmmPoolLiquidity = "amm-pool-liquidity",
     AaveV3 = "aave-v3",
-    HoldToken = "hold-token",
+    HoldFungibleAsset = "hold-fungible-asset",
 }
 
 export enum PartnerCampaignType {
@@ -53,7 +54,7 @@ export enum TargetType {
     AaveV3NetSupply = "aave-v3-net-supply",
     AaveV3BridgeAndSupply = "aave-v3-bridge-and-supply",
     JumperWhitelistedAmmPoolLiquidity = "jumper-whitelisted-amm-pool-liquidity",
-    HoldToken = "hold-token",
+    HoldFungibleAsset = "hold-fungible-asset",
 }
 
 export type LiquityV2TargetType =
@@ -119,9 +120,10 @@ export type AaveV3BridgeAndSupplyTarget = BaseTarget & {
     boostingFactor: number;
 };
 
-export interface HoldTokenTarget extends BaseTarget {
-    type: TargetType.HoldToken;
-    token: Erc20Token;
+export interface HoldFungibleAssetTarget extends BaseTarget {
+    type: TargetType.HoldFungibleAsset;
+    asset: UsdPricedErc20TokenWithTvl;
+    stakingAssets: UsdPricedErc20TokenWithTvl[];
 }
 
 export type CampaignTarget =
@@ -134,7 +136,7 @@ export type CampaignTarget =
     | AaveV3NetSupplyTarget
     | AaveV3BridgeAndSupplyTarget
     | JumperWhitelistedAmmPoolLiquidityTarget
-    | HoldTokenTarget;
+    | HoldFungibleAssetTarget;
 
 export interface TokenDistributable {
     token: UsdPricedErc20Token;
@@ -275,8 +277,8 @@ export interface BaseTargetedCampaign<T extends TargetType> {
                     ? AaveV3BridgeAndSupplyTarget
                     : T extends TargetType.JumperWhitelistedAmmPoolLiquidity
                       ? JumperWhitelistedAmmPoolLiquidityTarget
-                      : T extends TargetType.HoldToken
-                        ? HoldTokenTarget
+                      : T extends TargetType.HoldFungibleAsset
+                        ? HoldFungibleAssetTarget
                         : T extends TargetType.Empty
                           ? EmptyTarget
                           : never;
