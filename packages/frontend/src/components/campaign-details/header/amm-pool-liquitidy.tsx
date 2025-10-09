@@ -8,14 +8,17 @@ import { formatPercentage } from "@/src/utils/format";
 import { trackFathomEvent } from "@/src/utils/fathom";
 import { PoolRemoteLogo } from "../../pool-remote-logo";
 import { AprChip } from "../../apr-chip";
-import { DistributablesType, TargetType } from "@metrom-xyz/sdk";
+import {
+    DistributablesType,
+    type AmmPoolLiquidityTargetType,
+} from "@metrom-xyz/sdk";
 import type { TargetedNamedCampaign } from "@/src/types/campaign";
 import { useVelodromePoolTickSpacing } from "@/src/hooks/useVelodromePoolTickSpacing";
 
 import styles from "./styles.module.css";
 
 interface AmmPoolLiquityHeaderProps {
-    campaign: TargetedNamedCampaign<TargetType.AmmPoolLiquidity>;
+    campaign: TargetedNamedCampaign<AmmPoolLiquidityTargetType>;
 }
 
 export function AmmPoolLiquityHeader({ campaign }: AmmPoolLiquityHeaderProps) {

@@ -6,6 +6,7 @@ import { TargetType } from "@metrom-xyz/sdk";
 import { LiquityV2Header } from "./liquity-v2";
 import { AaveV3Header } from "./aave-v3";
 import { EmptyHeader } from "./empty";
+import { HoldFungibleAsset } from "./hold-fungible-asset";
 
 import styles from "./styles.module.css";
 
@@ -14,7 +15,9 @@ interface HeaderProps {
 }
 
 export function Header({ campaign }: HeaderProps) {
-    const ammPoolLiquidity = campaign.isTargeting(TargetType.AmmPoolLiquidity);
+    const ammPoolLiquidity =
+        campaign.isTargeting(TargetType.AmmPoolLiquidity) ||
+        campaign.isTargeting(TargetType.JumperWhitelistedAmmPoolLiquidity);
 
     const liquityV2 =
         campaign.isTargeting(TargetType.LiquityV2Debt) ||
@@ -26,6 +29,10 @@ export function Header({ campaign }: HeaderProps) {
         campaign.isTargeting(TargetType.AaveV3NetSupply) ||
         campaign.isTargeting(TargetType.AaveV3BridgeAndSupply);
 
+    const holdFungibleAsset = campaign.isTargeting(
+        TargetType.HoldFungibleAsset,
+    );
+
     const empty = campaign.isTargeting(TargetType.Empty);
 
     return (
@@ -34,6 +41,7 @@ export function Header({ campaign }: HeaderProps) {
             {ammPoolLiquidity && <AmmPoolLiquityHeader campaign={campaign} />}
             {liquityV2 && <LiquityV2Header campaign={campaign} />}
             {aaveV3 && <AaveV3Header campaign={campaign} />}
+            {holdFungibleAsset && <HoldFungibleAsset campaign={campaign} />}
         </div>
     );
 }
