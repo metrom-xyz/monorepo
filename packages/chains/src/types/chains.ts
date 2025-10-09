@@ -29,7 +29,6 @@ export enum SupportedProductionMvmChain {
 }
 
 export enum SupportedDevelopmentEvmChain {
-    Holesky = SupportedChainEvm.Holesky,
     Sepolia = SupportedChainEvm.Sepolia,
     BaseSepolia = SupportedChainEvm.BaseSepolia,
     // TODO: this is temporary as we are testing, remove this as soon as that is done
