@@ -176,7 +176,10 @@ export function getCampaignPreviewName(
             }
         }
     } else if (payload instanceof HoldFungibleAssetCampaignPreviewPayload) {
-        return t("campaignActions.holdFungibleAsset", { token: payload.asset.symbol });
+        return t("campaignActions.holdFungibleAsset", {
+            name: payload.asset.name,
+            symbol: payload.asset.symbol,
+        });
     } else if (payload instanceof EmptyTargetCampaignPreviewPayload) {
         return t("campaignActions.empty");
     } else {
