@@ -41,9 +41,9 @@ const FORM_INFO: Record<BaseCampaignType, CampaignTypeConfig> = {
         description: "aaveV3.description",
         icon: <AaveThemeLogo className={styles.aaveIcon} />,
     },
-    [BaseCampaignType.HoldToken]: {
-        title: "holdToken.title",
-        description: "holdToken.description",
+    [BaseCampaignType.HoldFungibleAsset]: {
+        title: "holdFungibleAsset.title",
+        description: "holdFungibleAsset.description",
         icon: <AaveThemeLogo className={styles.aaveIcon} />,
     },
 };

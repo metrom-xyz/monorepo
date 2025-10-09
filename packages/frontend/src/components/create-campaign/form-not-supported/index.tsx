@@ -8,6 +8,7 @@ import {
 import { useChainData } from "@/src/hooks/useChainData";
 import type { TranslationsKeys } from "@/src/types/utils";
 import { Link } from "@/src/i18n/routing";
+import { notFound } from "next/navigation";
 
 import styles from "./styles.module.css";
 
@@ -23,7 +24,7 @@ const CAMPAIGN_TYPE_TRANSLATION: Record<
     [BaseCampaignType.AmmPoolLiquidity]: "type.amm",
     [BaseCampaignType.LiquityV2]: "type.liquityV2",
     [BaseCampaignType.AaveV3]: "type.aaveV3",
-    [BaseCampaignType.HoldToken]: "type.holdToken",
+    [BaseCampaignType.HoldFungibleAsset]: "type.holdFungibleAsset",
     [PartnerCampaignType.AaveV3BridgeAndSupply]: "type.aaveV3BridgeAndSupply",
     [PartnerCampaignType.JumperWhitelistedAmmPoolLiquidity]:
         "type.jumperWhitelistedAmmPoolLiquidity",
@@ -32,6 +33,8 @@ const CAMPAIGN_TYPE_TRANSLATION: Record<
 export function FormNotSupported({ type, chainId }: FormNotSupportedProps) {
     const t = useTranslations("newCampaign");
     const chainData = useChainData({ chainId });
+
+    if (type && !CAMPAIGN_TYPE_TRANSLATION[type]) notFound();
 
     return (
         <div className={styles.root}>

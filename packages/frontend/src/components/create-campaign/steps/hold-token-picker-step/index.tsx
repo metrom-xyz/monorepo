@@ -3,7 +3,7 @@ import { StepContent } from "@/src/components/step/content";
 import { StepPreview } from "@/src/components/step/preview";
 import type {
     CampaignPayloadErrors,
-    HoldTokenCampaignPayloadPart,
+    HoldFungibleAssetCampaignPayloadPart,
 } from "@/src/types/campaign";
 import type { Address } from "viem";
 import classNames from "classnames";
@@ -12,91 +12,92 @@ import { useTranslations } from "next-intl";
 import { useCallback, useEffect, useState, type ChangeEvent } from "react";
 import { InfoMessage } from "@/src/components/info-message";
 import { isAddress } from "@/src/utils/address";
-import { useTokenInfo } from "@/src/hooks/useTokenInfo";
+import { useAssetInfo } from "@/src/hooks/useAssetInfo";
 import { useChainWithType } from "@/src/hooks/useChainWithType";
-import { TokenChip, TokenChipLoading } from "./token-chip";
+import { AssetChip, AssetChipLoading } from "./asset-chip";
 import type { LocalizedMessage } from "@/src/types/utils";
-import { StakingTokenPicker } from "./staking-token-picker";
+import { StakingAssetsPicker } from "./staking-assets-picker";
 import type { TokenInfo } from "@/src/types/common";
 
 import styles from "./styles.module.css";
 
-interface HoldTokenPickerStepProps {
+interface HoldFungibleAssetPickerStepProps {
     disabled?: boolean;
-    token?: TokenInfo;
-    stakingTokens: TokenInfo[];
-    onTokensChange: (rewards: HoldTokenCampaignPayloadPart) => void;
+    asset?: TokenInfo;
+    stakingAssets: TokenInfo[];
+    onFungibleAssetChange: (fungibleAsset: HoldFungibleAssetCampaignPayloadPart) => void;
     onError: (errors: CampaignPayloadErrors) => void;
 }
 
-type ErrorMessage = LocalizedMessage<"newCampaign.form.holdToken.picker">;
+type ErrorMessage =
+    LocalizedMessage<"newCampaign.form.holdFungibleAsset.picker">;
 
-export function HoldTokenPickerStep({
+export function HoldFungibleAssetPickerStep({
     disabled,
-    token,
-    stakingTokens,
-    onTokensChange,
+    asset,
+    stakingAssets,
+    onFungibleAssetChange,
     onError,
-}: HoldTokenPickerStepProps) {
-    const t = useTranslations("newCampaign.form.holdToken.picker");
+}: HoldFungibleAssetPickerStepProps) {
+    const t = useTranslations("newCampaign.form.holdFungibleAsset.picker");
 
-    const [tokenError, setTokenError] = useState<ErrorMessage>("");
-    const [stakingTokenError, setStakingTokenError] =
+    const [assetError, setAssetError] = useState<ErrorMessage>("");
+    const [stakingAssetError, setStakingAssetError] =
         useState<ErrorMessage>("");
-    const [internalTokenAddress, setInternalTokenAddress] = useState(
-        token?.address || "",
+    const [internalAssetAddress, setInternalAssetAddress] = useState(
+        asset?.address || "",
     );
-    const [blurTokenAddress, setBlurTokenAddress] = useState(
-        token?.address || "",
+    const [blurAssetAddress, setAssetTokenAddress] = useState(
+        asset?.address || "",
     );
 
     const { id: chainId } = useChainWithType();
-    const { info: tokenInfo, loading: loadingTokenInfo } = useTokenInfo({
-        address: blurTokenAddress,
-        enabled: isAddress(blurTokenAddress),
+    const { info: assetInfo, loading: loadingAssetInfo } = useAssetInfo({
+        address: blurAssetAddress,
+        enabled: isAddress(blurAssetAddress) && !disabled,
     });
 
     useEffect(() => {
-        if (!internalTokenAddress) {
-            setTokenError("");
+        if (!internalAssetAddress) {
+            setAssetError("");
             return;
         }
 
-        if (!isAddress(internalTokenAddress))
-            setTokenError("errors.notAnAddress");
-        else if (tokenInfo === null) setTokenError("errors.notFound");
-        else setTokenError("");
-    }, [internalTokenAddress, tokenInfo]);
+        if (!isAddress(internalAssetAddress))
+            setAssetError("errors.notAnAddress");
+        else if (assetInfo === null) setAssetError("errors.notFound");
+        else setAssetError("");
+    }, [internalAssetAddress, assetInfo]);
 
     useEffect(() => {
         onError({
-            holdTokens: !!tokenError || !!stakingTokenError,
+            holdFungibleAsset: !!assetError || !!stakingAssetError,
         });
-    }, [onError, tokenError, stakingTokenError]);
+    }, [onError, assetError, stakingAssetError]);
 
     useEffect(() => {
-        if (tokenInfo) onTokensChange({ token: tokenInfo });
-    }, [internalTokenAddress, tokenInfo, onTokensChange]);
+        if (assetInfo) onFungibleAssetChange({ asset: assetInfo });
+    }, [internalAssetAddress, assetInfo, onFungibleAssetChange]);
 
-    function handleTokenOnChange(event: ChangeEvent<HTMLInputElement>) {
-        const token = event.target.value as Address;
-        setInternalTokenAddress(token);
+    function handleAssetOnChange(event: ChangeEvent<HTMLInputElement>) {
+        const address = event.target.value as Address;
+        setInternalAssetAddress(address);
     }
 
-    function handleStakingTokensOnChange(stakingTokens: TokenInfo[]) {
-        onTokensChange({ stakingTokens });
+    function handleStakingAssetsOnChange(stakingTokens: TokenInfo[]) {
+        onFungibleAssetChange({ stakingAssets: stakingTokens });
     }
 
-    const handleTokenOnBlur = useCallback(() => {
-        setBlurTokenAddress(internalTokenAddress);
-    }, [internalTokenAddress]);
+    const handleAssetOnBlur = useCallback(() => {
+        setAssetTokenAddress(internalAssetAddress);
+    }, [internalAssetAddress]);
 
-    const handleTokenOnRemove = useCallback(() => {
-        setInternalTokenAddress("");
-        setBlurTokenAddress("");
+    const handleOnRemove = useCallback(() => {
+        setInternalAssetAddress("");
+        setAssetTokenAddress("");
         // Also remove the staking tokens
-        onTokensChange({ token: undefined, stakingTokens: [] });
-    }, [onTokensChange]);
+        onFungibleAssetChange({ asset: undefined, stakingAssets: [] });
+    }, [onFungibleAssetChange]);
 
     return (
         <Step disabled={disabled} completed={true} open className={styles.step}>
@@ -118,10 +119,10 @@ export function HoldTokenPickerStep({
                                     {t("title")}
                                 </Typography>
                                 <ErrorText size="xs" weight="medium">
-                                    {tokenError
-                                        ? t(tokenError)
-                                        : stakingTokenError
-                                          ? t(stakingTokenError)
+                                    {assetError
+                                        ? t(assetError)
+                                        : stakingAssetError
+                                          ? t(stakingAssetError)
                                           : null}
                                 </ErrorText>
                             </div>
@@ -137,31 +138,31 @@ export function HoldTokenPickerStep({
                         <Typography weight="medium" size="xs" uppercase light>
                             {t("tokenAddressInput.label")}
                         </Typography>
-                        {tokenInfo === undefined && loadingTokenInfo ? (
-                            <TokenChipLoading />
-                        ) : tokenInfo ? (
-                            <TokenChip
-                                {...tokenInfo}
+                        {assetInfo === undefined && loadingAssetInfo ? (
+                            <AssetChipLoading />
+                        ) : assetInfo ? (
+                            <AssetChip
+                                {...assetInfo}
                                 chainId={chainId}
-                                onRemove={handleTokenOnRemove}
+                                onRemove={handleOnRemove}
                             />
                         ) : (
                             <TextInput
                                 placeholder={t("tokenAddressInput.placeholder")}
-                                value={internalTokenAddress}
-                                error={!!tokenError}
-                                onBlur={handleTokenOnBlur}
-                                onChange={handleTokenOnChange}
+                                value={internalAssetAddress}
+                                error={!!assetError}
+                                onBlur={handleAssetOnBlur}
+                                onChange={handleAssetOnChange}
                             />
                         )}
                     </div>
-                    {tokenInfo && (
-                        <StakingTokenPicker
+                    {assetInfo && (
+                        <StakingAssetsPicker
                             chainId={chainId}
-                            disabled={!token}
-                            stakingTokens={stakingTokens}
-                            onChange={handleStakingTokensOnChange}
-                            onError={setStakingTokenError}
+                            disabled={!asset}
+                            stakingAssets={stakingAssets}
+                            onChange={handleStakingAssetsOnChange}
+                            onError={setStakingAssetError}
                         />
                     )}
                 </div>

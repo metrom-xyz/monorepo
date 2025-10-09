@@ -6,20 +6,19 @@ import { useMemo } from "react";
 import type { HookBaseParams } from "../types/hooks";
 import type { TokenInfo } from "../types/common";
 
-interface UseTokenMetadataParams extends HookBaseParams {
+interface UseAssetInfoParams extends HookBaseParams {
     address?: string;
 }
 
-interface UseTokenMetadataReturnValue {
+interface UseAssetInfoReturnValue {
     loading: boolean;
     info?: TokenInfo | null;
-    error?: boolean;
 }
 
-export function useTokenInfo({
+export function useAssetInfo({
     address,
     enabled,
-}: UseTokenMetadataParams): UseTokenMetadataReturnValue {
+}: UseAssetInfoParams): UseAssetInfoReturnValue {
     const tokenMvm = useFungibleAssetMetadata({
         asset: address,
         enabled: !!address && APTOS && enabled,
@@ -54,7 +53,7 @@ export function useTokenInfo({
 
         if (APTOS && tokenMvm.data)
             return {
-                address: address as Address,
+                address: tokenMvm.data.assetType as Address,
                 name: tokenMvm.data.name,
                 symbol: tokenMvm.data.symbol,
             };
@@ -74,6 +73,5 @@ export function useTokenInfo({
     return {
         info,
         loading,
-        error: loading,
     };
 }
