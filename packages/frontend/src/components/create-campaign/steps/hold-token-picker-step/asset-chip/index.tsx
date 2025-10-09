@@ -11,6 +11,7 @@ interface AssetChipProps {
     address: string;
     name: string;
     symbol: string;
+    error?: boolean;
     onRemove: () => void;
 }
 
@@ -19,10 +20,11 @@ export function AssetChip({
     address,
     name,
     symbol,
+    error,
     onRemove,
 }: AssetChipProps) {
     return (
-        <div className={styles.root}>
+        <div className={classNames(styles.root, { [styles.error]: error })}>
             <div className={styles.content}>
                 <div className={styles.asset}>
                     <RemoteLogo address={address as Address} chain={chainId} />

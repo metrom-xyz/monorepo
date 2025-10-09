@@ -18,6 +18,7 @@ import { AssetChip, AssetChipLoading } from "./asset-chip";
 import type { LocalizedMessage } from "@/src/types/utils";
 import { StakingAssetsPicker } from "./staking-assets-picker";
 import type { TokenInfo } from "@/src/types/common";
+import { useDebounce } from "react-use";
 
 import styles from "./styles.module.css";
 
@@ -25,7 +26,9 @@ interface HoldFungibleAssetPickerStepProps {
     disabled?: boolean;
     asset?: TokenInfo;
     stakingAssets: TokenInfo[];
-    onFungibleAssetChange: (fungibleAsset: HoldFungibleAssetCampaignPayloadPart) => void;
+    onFungibleAssetChange: (
+        fungibleAsset: HoldFungibleAssetCampaignPayloadPart,
+    ) => void;
     onError: (errors: CampaignPayloadErrors) => void;
 }
 
@@ -44,30 +47,35 @@ export function HoldFungibleAssetPickerStep({
     const [assetError, setAssetError] = useState<ErrorMessage>("");
     const [stakingAssetError, setStakingAssetError] =
         useState<ErrorMessage>("");
-    const [internalAssetAddress, setInternalAssetAddress] = useState(
-        asset?.address || "",
-    );
-    const [blurAssetAddress, setAssetTokenAddress] = useState(
+    const [assetAddress, setAssetAddress] = useState(asset?.address || "");
+    const [debouncedAssetAddress, setDebouncedAssetAddress] = useState(
         asset?.address || "",
     );
 
     const { id: chainId } = useChainWithType();
     const { info: assetInfo, loading: loadingAssetInfo } = useAssetInfo({
-        address: blurAssetAddress,
-        enabled: isAddress(blurAssetAddress) && !disabled,
+        address: debouncedAssetAddress,
+        enabled: isAddress(debouncedAssetAddress) && !disabled,
     });
 
+    useDebounce(
+        () => {
+            setDebouncedAssetAddress(assetAddress);
+        },
+        300,
+        [assetAddress],
+    );
+
     useEffect(() => {
-        if (!internalAssetAddress) {
+        if (!assetAddress) {
             setAssetError("");
             return;
         }
 
-        if (!isAddress(internalAssetAddress))
-            setAssetError("errors.notAnAddress");
+        if (!isAddress(assetAddress)) setAssetError("errors.notAnAddress");
         else if (assetInfo === null) setAssetError("errors.notFound");
         else setAssetError("");
-    }, [internalAssetAddress, assetInfo]);
+    }, [assetAddress, assetInfo]);
 
     useEffect(() => {
         onError({
@@ -77,24 +85,20 @@ export function HoldFungibleAssetPickerStep({
 
     useEffect(() => {
         if (assetInfo) onFungibleAssetChange({ asset: assetInfo });
-    }, [internalAssetAddress, assetInfo, onFungibleAssetChange]);
+    }, [assetAddress, assetInfo, onFungibleAssetChange]);
 
     function handleAssetOnChange(event: ChangeEvent<HTMLInputElement>) {
         const address = event.target.value as Address;
-        setInternalAssetAddress(address);
+        setAssetAddress(address);
     }
 
     function handleStakingAssetsOnChange(stakingTokens: TokenInfo[]) {
         onFungibleAssetChange({ stakingAssets: stakingTokens });
     }
 
-    const handleAssetOnBlur = useCallback(() => {
-        setAssetTokenAddress(internalAssetAddress);
-    }, [internalAssetAddress]);
-
     const handleOnRemove = useCallback(() => {
-        setInternalAssetAddress("");
-        setAssetTokenAddress("");
+        setAssetAddress("");
+        setDebouncedAssetAddress("");
         // Also remove the staking tokens
         onFungibleAssetChange({ asset: undefined, stakingAssets: [] });
     }, [onFungibleAssetChange]);
@@ -149,10 +153,10 @@ export function HoldFungibleAssetPickerStep({
                         ) : (
                             <TextInput
                                 placeholder={t("tokenAddressInput.placeholder")}
-                                value={internalAssetAddress}
+                                value={assetAddress}
                                 error={!!assetError}
-                                onBlur={handleAssetOnBlur}
                                 onChange={handleAssetOnChange}
+                                className={styles.assetInput}
                             />
                         )}
                     </div>

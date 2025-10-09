@@ -36,3 +36,7 @@
 .inputWrapper {
     @apply flex flex-col gap-1.5;
 }
+
+.assetInput input {
+    @apply h-[54px];
+}

@@ -125,6 +125,8 @@ export function HoldFungibleAssetForm({
         onPreviewClick(previewPayload);
     }
 
+    console.log(payload.stakingAssets);
+
     return (
         <div className={styles.root}>
             <div className={styles.stepsWrapper}>

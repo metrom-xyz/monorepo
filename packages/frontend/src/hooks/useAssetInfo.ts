@@ -53,6 +53,8 @@ export function useAssetInfo({
 
         if (APTOS && tokenMvm.data)
             return {
+                // Use the returned asset address because Aptos accepts multiple formats
+                // for the same asset (e.g., 0xa, 0x0a, 0x00a all resolve to APT)
                 address: tokenMvm.data.assetType as Address,
                 name: tokenMvm.data.name,
                 symbol: tokenMvm.data.symbol,

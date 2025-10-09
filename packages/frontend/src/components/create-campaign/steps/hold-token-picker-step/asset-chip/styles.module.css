@@ -1,7 +1,20 @@
 @reference "../../../../../app.css";
 
 .root {
-    @apply h-[50px] theme-surface-2 rounded-lg py-3 px-4;
+    @apply h-[54px]
+        border
+        border-transparent
+        theme-surface-2
+        rounded-lg
+        py-3
+        px-4
+        transition-colors
+        duration-200
+        ease-in-out;
+}
+
+.root.error {
+    @apply border-red-600;
 }
 
 .loading {
