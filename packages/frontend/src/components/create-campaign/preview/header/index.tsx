@@ -15,7 +15,7 @@ import { AaveV3 } from "./aave-v3";
 import { useChainData } from "@/src/hooks/useChainData";
 import { useChainWithType } from "@/src/hooks/useChainWithType";
 import { Empty } from "./empty";
-import { HoldToken } from "./hold-token";
+import { HoldFungibleAsset } from "./hold-fungible-asset";
 
 import styles from "./styles.module.css";
 
@@ -64,7 +64,7 @@ export function Header({ payload, backDisabled, onBack }: HeaderProps) {
                         )}
                         {liquityV2 && <LiquityV2 payload={payload} />}
                         {aaveV3 && <AaveV3 payload={payload} />}
-                        {holdFungibleAsset && <HoldToken payload={payload} />}
+                        {holdFungibleAsset && <HoldFungibleAsset payload={payload} />}
                         {empty && <Empty payload={payload} />}
                     </div>
                 }

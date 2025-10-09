@@ -143,14 +143,18 @@ export function HoldFungibleAssetForm({
                     onError={handlePayloadOnError}
                 />
                 <EndDateStep
-                    disabled={!payload.startDate || unsupportedChain}
+                    disabled={
+                        !payload.asset || !payload.startDate || unsupportedChain
+                    }
                     startDate={payload.startDate}
                     endDate={payload.endDate}
                     onEndDateChange={handlePayloadOnChange}
                     onError={handlePayloadOnError}
                 />
                 <RewardsStep
-                    disabled={!payload.endDate || unsupportedChain}
+                    disabled={
+                        !payload.asset || !payload.endDate || unsupportedChain
+                    }
                     distributables={payload.distributables}
                     startDate={payload.startDate}
                     endDate={payload.endDate}

@@ -98,7 +98,11 @@ export function CreateCampaign() {
                     const { title, icon, description } = info;
 
                     return (
-                        <Link key={type} href={`/campaigns/create/${type}`}>
+                        <Link
+                            key={type}
+                            href={`/campaigns/create/${type}`}
+                            className={styles.link}
+                        >
                             <Card className={styles.campaignLinkCard}>
                                 <div className={styles.campaignCardBody}>
                                     <div className={styles.iconWrapper}>
