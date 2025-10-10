@@ -27,7 +27,7 @@ import {
 } from "../../steps/campaign-kind-step";
 import type { TranslationsKeys } from "@/src/types/utils";
 import { validateDistributables } from "@/src/utils/creation-form";
-import { getAaveV3UsdTvl } from "@/src/utils/aave-v3";
+import { getAaveV3UsdTarget } from "@/src/utils/aave-v3";
 
 import styles from "./styles.module.css";
 
@@ -227,7 +227,8 @@ export function AaveV3Form({
                 {payload.kind && (
                     <KpiStep
                         disabled={noDistributables || unsupportedChain}
-                        usdTvl={getAaveV3UsdTvl({
+                        kind={payload.kind}
+                        usdTvl={getAaveV3UsdTarget({
                             collateral: payload.collateral,
                             kind: payload.kind,
                         })}

@@ -8,12 +8,15 @@ import { useEffect, useState, type ChangeEvent } from "react";
 import { useTranslations } from "next-intl";
 import { useDebounce } from "react-use";
 import numeral from "numeral";
+import type { CampaignKind } from "@metrom-xyz/sdk";
+import { useCampaignTargetValueName } from "@/src/hooks/useCampaignTargetValueName";
 
 import styles from "./styles.module.css";
 
 interface GoalInputsProps {
     error?: boolean;
     enabled?: boolean;
+    kind?: CampaignKind;
     kpiSpecification?: BaseCampaignPayload["kpiSpecification"];
     onLowerUsdTargetChange: (value: number | undefined) => void;
     onUpperUsdTargetChange: (value: number | undefined) => void;
@@ -28,12 +31,14 @@ export interface NumberInputValues {
 export function GoalInputs({
     error,
     enabled,
+    kind,
     kpiSpecification,
     onLowerUsdTargetChange,
     onUpperUsdTargetChange,
     onMinimumPayoutPercentageChange,
 }: GoalInputsProps) {
     const t = useTranslations("newCampaign.form.base.kpi");
+    const targetValueName = useCampaignTargetValueName({ kind });
 
     const [minimumPayoutPercentage, setMinimumPayoutPercentage] = useState(
         kpiSpecification?.minimumPayoutPercentage || 0,
@@ -115,7 +120,7 @@ export function GoalInputs({
         <div className={styles.root}>
             <div className={styles.boundInputs}>
                 <NumberInput
-                    label={t("rangedTvl.lowerBound")}
+                    label={t("rangedTarget.lowerBound", { targetValueName })}
                     placeholder="$0"
                     prefix="$"
                     error={!!error}
@@ -124,7 +129,7 @@ export function GoalInputs({
                     onValueChange={handleLowerUsdTargetOnChange}
                 />
                 <NumberInput
-                    label={t("rangedTvl.upperBound")}
+                    label={t("rangedTarget.upperBound", { targetValueName })}
                     placeholder="$0"
                     prefix="$"
                     error={!!error}
