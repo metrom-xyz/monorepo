@@ -26,19 +26,19 @@ export function Details({ campaign, loading }: DetailsProps) {
     const t = useTranslations("campaignDetails.details");
 
     const detailsLoading = loading || !campaign;
-    const tvl = campaign?.getTargetUsdTvl();
+    const targetUsdValue = campaign?.getTargetUsdValue();
 
     return (
         <div className={styles.root}>
             <div className={styles.topContent}>
-                {tvl !== undefined && (
+                {targetUsdValue !== undefined && (
                     <TextField
                         boxed
                         size="xl"
-                        label={t("tvl")}
+                        label={campaign?.targetValueName || ""}
                         loading={detailsLoading}
                         value={formatUsdAmount({
-                            amount: tvl,
+                            amount: targetUsdValue,
                             cutoff: false,
                         })}
                     />

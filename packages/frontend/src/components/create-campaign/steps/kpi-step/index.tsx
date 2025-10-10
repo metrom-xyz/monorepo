@@ -11,18 +11,24 @@ import { Button, ErrorText, Switch, Typography } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { formatUsdAmount } from "@/src/utils/format";
-import { KpiMetric, type KpiSpecification } from "@metrom-xyz/sdk";
+import {
+    CampaignKind,
+    KpiMetric,
+    type KpiSpecification,
+} from "@metrom-xyz/sdk";
 import { usePrevious } from "react-use";
 import { KpiSimulationChart } from "../../../kpi-simulation-chart";
 import { GoalInputs } from "./goal-inputs";
 import { InfoMessage } from "@/src/components/info-message";
 import type { Dayjs } from "dayjs";
 import { useChainWithType } from "@/src/hooks/useChainWithType";
+import { useCampaignTargetValueName } from "@/src/hooks/useCampaignTargetValueName";
 
 import styles from "./styles.module.css";
 
 interface KpiStepProps {
     disabled?: boolean;
+    kind?: CampaignKind;
     usdTvl?: number;
     distributables?: CampaignPayloadTokenDistributables;
     startDate?: Dayjs;
@@ -37,6 +43,7 @@ type ErrorMessage = LocalizedMessage<"newCampaign.form.base.kpi">;
 // TODO: make KPI step work with liquityv2 campaigns
 export function KpiStep({
     disabled,
+    kind,
     usdTvl,
     distributables,
     startDate,
@@ -46,6 +53,8 @@ export function KpiStep({
     onError,
 }: KpiStepProps) {
     const t = useTranslations("newCampaign.form.base.kpi");
+    const targetValueName = useCampaignTargetValueName({ kind });
+
     const [open, setOpen] = useState(false);
     const [enabled, setEnabled] = useState(false);
     const [error, setError] = useState<ErrorMessage>("");
@@ -260,7 +269,7 @@ export function KpiStep({
             >
                 <div className={styles.tvlWrapper}>
                     <Typography uppercase weight="medium" light size="sm">
-                        {t("currentTvl")}
+                        {t("currentTarget", { targetValueName })}
                     </Typography>
                     <Typography weight="medium" size="sm">
                         {formatUsdAmount({ amount: usdTvl })}
@@ -270,11 +279,19 @@ export function KpiStep({
             <StepContent>
                 <div className={styles.stepContent}>
                     <InfoMessage
-                        text={t("infoMessage")}
+                        text={t.rich("infoMessage", {
+                            targetValueName,
+                            bold: (chunks) => (
+                                <span className={styles.boldText}>
+                                    {chunks}
+                                </span>
+                            ),
+                        })}
                         link="https://docs.metrom.xyz/creating-a-campaign/kpi-campaign"
                         linkText={t("readMore")}
                     />
                     <GoalInputs
+                        kind={kind}
                         enabled={enabled}
                         kpiSpecification={newKpiSpecification}
                         error={!!error}
@@ -301,11 +318,14 @@ export function KpiStep({
                                 size="xs"
                                 className={styles.simulationText}
                             >
-                                {t("simulation.description")}
+                                {t("simulation.description", {
+                                    targetValueName,
+                                })}
                             </Typography>
                         </div>
                         <KpiSimulationChart
                             tooltipSize="xs"
+                            targetValueName={targetValueName}
                             lowerUsdTarget={lowerUsdTargetRaw}
                             upperUsdTarget={upperUsdTargetRaw}
                             totalRewardsUsd={totalRewardsUsdAmount}
@@ -315,7 +335,7 @@ export function KpiStep({
                                     : 1
                             }
                             minimumPayoutPercentage={minimumPayoutPercentage}
-                            usdTvl={usdTvl}
+                            targetUsdValue={usdTvl}
                             error={!!error}
                         />
                     </div>

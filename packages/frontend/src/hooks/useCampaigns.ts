@@ -1,11 +1,15 @@
 import { METROM_API_CLIENT } from "../commons";
 import { useQuery } from "@tanstack/react-query";
-import { getCampaignName } from "../utils/campaign";
+import { getCampaignName, getCampaignTargetValueName } from "../utils/campaign";
 import { Campaign } from "../types/campaign";
 import type { HookBaseParams } from "../types/hooks";
 import { useTranslations } from "next-intl";
 import { getChainData } from "../utils/chain";
-import type { ChainType, SupportedDex } from "@metrom-xyz/sdk";
+import {
+    CAMPAIGN_TARGET_TO_KIND,
+    type ChainType,
+    type SupportedDex,
+} from "@metrom-xyz/sdk";
 import type { CampaignStatus } from "@metrom-xyz/chains";
 
 interface UseCampaignsParams extends HookBaseParams {
@@ -42,6 +46,10 @@ export function useCampaigns({
                         return new Campaign(
                             campaign,
                             getCampaignName(t, campaign),
+                            getCampaignTargetValueName(
+                                t,
+                                CAMPAIGN_TARGET_TO_KIND[campaign.target.type],
+                            ),
                             getChainData(campaign.chainId),
                         );
                     })

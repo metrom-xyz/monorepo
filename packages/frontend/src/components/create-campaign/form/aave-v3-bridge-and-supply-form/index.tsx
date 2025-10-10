@@ -202,6 +202,7 @@ export function AaveV3BridgeAndSupplyForm({
                 />
                 <KpiStep
                     disabled={noDistributables || unsupportedChain}
+                    kind={payload.kind}
                     usdTvl={payload.collateral?.usdSupply}
                     distributables={
                         payload.distributables?.type ===

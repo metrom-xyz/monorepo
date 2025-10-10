@@ -31,6 +31,7 @@ import { useLiquidityByAddresses } from "@/src/hooks/useLiquidityByAddresses";
 import { DeployButton } from "./deploy-button";
 
 import styles from "./styles.module.css";
+import { useCampaignTargetValueName } from "@/src/hooks/useCampaignTargetValueName";
 
 interface CampaignPreviewProps {
     payload: CampaignPreviewPayload;
@@ -46,6 +47,7 @@ export function CampaignPreview({
     onCreateNew,
 }: CampaignPreviewProps) {
     const t = useTranslations("campaignPreview");
+    const targetValueName = useCampaignTargetValueName({ kind: payload.kind });
     const router = useRouter();
 
     const feedback = useRef<HTMLDivElement>(null);
@@ -175,9 +177,9 @@ export function CampaignPreview({
                         <TextField
                             boxed
                             size="xl"
-                            label={t("tvl")}
+                            label={targetValueName}
                             value={formatUsdAmount({
-                                amount: payload.getTargetLiquidity()?.usd,
+                                amount: payload.getTargetValue()?.usd,
                             })}
                         />
                         {!emptyTargetCampaign && tokensCampaign && (
@@ -228,7 +230,8 @@ export function CampaignPreview({
                     )}
                     {kpi && (
                         <Kpi
-                            usdTvl={payload.getTargetLiquidity()?.usd}
+                            kind={payload.kind}
+                            targetUsdValue={payload.getTargetValue()?.usd}
                             from={payload.startDate}
                             to={payload.endDate}
                             distributables={payload.distributables}

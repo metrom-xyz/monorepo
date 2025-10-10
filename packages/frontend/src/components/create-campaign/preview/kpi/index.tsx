@@ -7,11 +7,14 @@ import type {
     CampaignPayloadTokenDistributables,
 } from "@/src/types/campaign";
 import { useMemo } from "react";
+import type { CampaignKind } from "@metrom-xyz/sdk";
+import { useCampaignTargetValueName } from "@/src/hooks/useCampaignTargetValueName";
 
 import styles from "./styles.module.css";
 
 interface KpiProps {
-    usdTvl?: number | null;
+    kind: CampaignKind;
+    targetUsdValue?: number | null;
     from: BaseCampaignPayload["startDate"];
     to: BaseCampaignPayload["endDate"];
     distributables?: CampaignPayloadTokenDistributables;
@@ -19,13 +22,15 @@ interface KpiProps {
 }
 
 export function Kpi({
-    usdTvl,
+    kind,
+    targetUsdValue,
     from,
     to,
     distributables,
     specification,
 }: KpiProps) {
     const t = useTranslations("campaignPreview.kpi");
+    const targetValueName = useCampaignTargetValueName({ kind });
 
     const totalRewardsUsdAmount = useMemo(() => {
         if (!distributables || !distributables.tokens) return 0;
@@ -78,7 +83,8 @@ export function Kpi({
             <Accordion title={t("simulation")} className={styles.chartWrapper}>
                 <KpiSimulationChart
                     tooltipSize="xs"
-                    usdTvl={usdTvl}
+                    targetValueName={targetValueName}
+                    targetUsdValue={targetUsdValue}
                     campaignDurationSeconds={
                         // we don't pass 0 as the default value to avoid potential 0
                         // division issues

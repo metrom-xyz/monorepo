@@ -5,7 +5,7 @@ import { useCallback } from "react";
 import { useChainWithType } from "@/src/hooks/useChainWithType";
 import classNames from "classnames";
 import { formatUsdAmount } from "@/src/utils/format";
-import { getAaveV3UsdTvl } from "@/src/utils/aave-v3";
+import { getAaveV3UsdTarget } from "@/src/utils/aave-v3";
 
 import styles from "./styles.module.css";
 
@@ -39,7 +39,7 @@ export function Row({ kind, selected, collateral, onChange }: RowProps) {
             </div>
             <Typography weight="medium" size="sm" light>
                 {formatUsdAmount({
-                    amount: getAaveV3UsdTvl({ collateral, kind }),
+                    amount: getAaveV3UsdTarget({ collateral, kind }),
                 })}
             </Typography>
         </div>

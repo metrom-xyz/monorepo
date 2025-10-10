@@ -29,7 +29,7 @@ export function KpiAprSummary({ campaign }: KpiAprSummaryProps) {
             usdRewards: campaign.distributables.amountUsdValue,
             duration: campaign.to - campaign.from,
             usdTvl: kpi.goal.upperUsdTarget,
-            liquidity: campaign.getTargetLiquidity(),
+            liquidity: campaign.getTargetRawValue(),
             kpiSpecification: kpi,
             // TODO: add liquidity in range?
             // range: liquidityInRange,
@@ -40,12 +40,13 @@ export function KpiAprSummary({ campaign }: KpiAprSummaryProps) {
     const upperBound = campaign?.specification?.kpi?.goal.upperUsdTarget;
     const minimumPayout = campaign?.specification?.kpi?.minimumPayoutPercentage;
 
-    if (!maxApr) return null;
+    if (!maxApr || !campaign) return null;
 
     return (
         <Typography size="sm" light className={styles.text}>
             {minimumPayout
                 ? t.rich("textWithMinPayout", {
+                      targetValueName: campaign.targetValueName,
                       minimumPayout: formatPercentage({
                           percentage: minimumPayout * 100,
                       }),
@@ -64,6 +65,7 @@ export function KpiAprSummary({ campaign }: KpiAprSummaryProps) {
                       ),
                   })
                 : t.rich("textNoMinPayout", {
+                      targetValueName: campaign.targetValueName,
                       target: t(getCampaignAprTargetText(campaign)),
                       lowerBound: formatUsdAmount({
                           amount: lowerBound,

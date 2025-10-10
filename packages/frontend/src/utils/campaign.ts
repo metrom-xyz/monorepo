@@ -100,6 +100,34 @@ export function getCampaignName(
     }
 }
 
+export function getCampaignTargetValueName(
+    t: TranslationsType<never>,
+    kind: CampaignKind,
+) {
+    switch (kind) {
+        case CampaignKind.AmmPoolLiquidity:
+        case CampaignKind.JumperWhitelistedAmmPoolLiquidity:
+        case CampaignKind.HoldFungibleAsset: {
+            return t("campaignTargetValueName.tvl");
+        }
+        case CampaignKind.LiquityV2Debt:
+        case CampaignKind.AaveV3Borrow: {
+            return t("campaignTargetValueName.debt");
+        }
+        case CampaignKind.LiquityV2StabilityPool:
+        case CampaignKind.AaveV3Supply:
+        case CampaignKind.AaveV3BridgeAndSupply: {
+            return t("campaignTargetValueName.deposits");
+        }
+        case CampaignKind.AaveV3NetSupply: {
+            return t("campaignTargetValueName.netDeposits");
+        }
+        default: {
+            return "-";
+        }
+    }
+}
+
 export function getCampaignPreviewName(
     t: TranslationsType<never>,
     payload: BaseCampaignPreviewPayload,
@@ -270,7 +298,7 @@ export function getCampaignPreviewApr(
             rewardsUsdValue += reward.amount.usdValue;
         }
 
-        const liquidity = payload.getTargetLiquidity();
+        const liquidity = payload.getTargetValue();
 
         return getCampaignApr({
             usdRewards: rewardsUsdValue,
@@ -296,7 +324,7 @@ export function getCampaignPreviewApr(
             rewardsUsdValue += reward.amount.usdValue;
         }
 
-        const liquidity = payload.getTargetLiquidity();
+        const liquidity = payload.getTargetValue();
 
         return getCampaignApr({
             usdRewards: rewardsUsdValue,

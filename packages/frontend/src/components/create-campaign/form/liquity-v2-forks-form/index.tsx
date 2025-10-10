@@ -224,6 +224,7 @@ export function LiquityV2ForksForm({
                 />
                 <KpiStep
                     disabled={noDistributables || unsupportedChain}
+                    kind={payload.kind}
                     usdTvl={
                         payload.kind === CampaignKind.LiquityV2Debt
                             ? payload.collateral?.usdMintedDebt

@@ -128,7 +128,7 @@ export type CampaignPreviewDistributables =
     | CampaignPreviewTokenDistributables
     | CampaignPreviewPointDistributables;
 
-export interface TargetLiquidity {
+export interface TargetValue {
     usd: number;
     raw?: bigint;
 }
@@ -148,7 +148,7 @@ export abstract class BaseCampaignPreviewPayload {
         return this.distributables.type === type;
     }
 
-    abstract getTargetLiquidity(): TargetLiquidity | undefined;
+    abstract getTargetValue(): TargetValue | undefined;
 }
 
 export class AmmPoolLiquidityCampaignPreviewPayload extends BaseCampaignPreviewPayload {
@@ -171,7 +171,7 @@ export class AmmPoolLiquidityCampaignPreviewPayload extends BaseCampaignPreviewP
             );
     }
 
-    getTargetLiquidity(): TargetLiquidity | undefined {
+    getTargetValue(): TargetValue | undefined {
         return { usd: this.pool.usdTvl, raw: this.pool.liquidity };
     }
 }
@@ -194,7 +194,7 @@ export class LiquityV2CampaignPreviewPayload extends BaseCampaignPreviewPayload 
             );
     }
 
-    getTargetLiquidity(): TargetLiquidity | undefined {
+    getTargetValue(): TargetValue | undefined {
         if (this.kind === CampaignKind.LiquityV2Debt)
             return {
                 usd: this.collateral.usdMintedDebt,
@@ -232,7 +232,7 @@ export class AaveV3CampaignPreviewPayload extends BaseCampaignPreviewPayload {
             );
     }
 
-    getTargetLiquidity(): TargetLiquidity | undefined {
+    getTargetValue(): TargetValue | undefined {
         if (this.kind === CampaignKind.AaveV3Borrow)
             return { usd: this.collateral.usdDebt, raw: this.collateral.debt };
         if (this.kind === CampaignKind.AaveV3NetSupply) {
@@ -264,7 +264,7 @@ export class HoldFungibleAssetCampaignPreviewPayload extends BaseCampaignPreview
         super(...baseArgs);
     }
 
-    getTargetLiquidity(): TargetLiquidity | undefined {
+    getTargetValue(): TargetValue | undefined {
         return undefined;
     }
 }
@@ -277,7 +277,7 @@ export class EmptyTargetCampaignPreviewPayload extends BaseCampaignPreviewPayloa
         super(...baseArgs);
     }
 
-    getTargetLiquidity(): TargetLiquidity | undefined {
+    getTargetValue(): TargetValue | undefined {
         return undefined;
     }
 }
@@ -337,6 +337,7 @@ export class Campaign extends SdkCampaign {
     constructor(
         campaign: SdkCampaign,
         public readonly name: string,
+        public readonly targetValueName: string,
         public readonly chainData?: ChainData,
     ) {
         super(
@@ -416,7 +417,7 @@ export class Campaign extends SdkCampaign {
         }
     }
 
-    getTargetUsdTvl(): number | undefined {
+    getTargetUsdValue(): number | undefined {
         switch (this.target.type) {
             case TargetType.AmmPoolLiquidity:
             case TargetType.JumperWhitelistedAmmPoolLiquidity:
@@ -437,7 +438,7 @@ export class Campaign extends SdkCampaign {
         }
     }
 
-    getTargetLiquidity(): bigint | undefined {
+    getTargetRawValue(): bigint | undefined {
         switch (this.target.type) {
             case TargetType.AmmPoolLiquidity:
             case TargetType.JumperWhitelistedAmmPoolLiquidity:
