@@ -27,7 +27,11 @@ export function AssetChip({
         <div className={classNames(styles.root, { [styles.error]: error })}>
             <div className={styles.content}>
                 <div className={styles.asset}>
-                    <RemoteLogo address={address as Address} chain={chainId} />
+                    <RemoteLogo
+                        address={address as Address}
+                        chain={chainId}
+                        defaultText={symbol}
+                    />
                     <Typography weight="medium" size="lg">
                         {symbol}
                     </Typography>
