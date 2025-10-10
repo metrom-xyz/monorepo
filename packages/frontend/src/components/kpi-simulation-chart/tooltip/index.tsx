@@ -19,6 +19,7 @@ interface TooltipProps {
         },
     ];
     size?: TypographySize;
+    targetValueName: string;
     lowerUsdTarget: number;
     upperUsdTarget: number;
     totalRewardsUsd: number;
@@ -29,6 +30,7 @@ export function TooltipContent({
     active,
     payload,
     size = "base",
+    targetValueName,
     lowerUsdTarget,
     upperUsdTarget,
     totalRewardsUsd,
@@ -38,16 +40,16 @@ export function TooltipContent({
 
     if (!active || !payload || !payload.length) return null;
 
-    const { usdTvl, aprPercentage } = payload[0].payload;
+    const { targetUsdValue, aprPercentage } = payload[0].payload;
 
     return (
         <div className={styles.root}>
             <div className={styles.row}>
                 <Typography weight="medium" light uppercase size={size}>
-                    {t("tvl")}
+                    {targetValueName}
                 </Typography>
                 <Typography weight="medium" size={size}>
-                    {formatUsdAmount({ amount: usdTvl })}
+                    {formatUsdAmount({ amount: targetUsdValue })}
                 </Typography>
             </div>
             <div className={styles.row}>
@@ -59,7 +61,7 @@ export function TooltipContent({
                         amount:
                             totalRewardsUsd *
                             getDistributableRewardsPercentage(
-                                usdTvl,
+                                targetUsdValue,
                                 lowerUsdTarget,
                                 upperUsdTarget,
                                 minimumPayouPercentage,
@@ -75,7 +77,7 @@ export function TooltipContent({
                     {formatPercentage({
                         percentage:
                             getReachedGoalPercentage(
-                                usdTvl,
+                                targetUsdValue,
                                 lowerUsdTarget,
                                 upperUsdTarget,
                             ) * 100,
@@ -112,7 +114,7 @@ export function TooltipCursor({
     if (!payload || !payload.length || !points || !height) return null;
 
     const {
-        usdTvl,
+        targetUsdValue,
         currentlyDistributing,
         currentlyNotDistributing,
         aprLinePoint,
@@ -136,7 +138,7 @@ export function TooltipCursor({
                 strokeDasharray={"3 3"}
                 ifOverflow="visible"
                 segment={[
-                    { x: usdTvl, y: reward },
+                    { x: targetUsdValue, y: reward },
                     { x: 0, y: reward },
                 ]}
                 className={styles.referenceLine}
@@ -144,7 +146,7 @@ export function TooltipCursor({
             <ReferenceLine
                 strokeDasharray={"3 3"}
                 ifOverflow="visible"
-                segment={[{ x: usdTvl }, { x: usdTvl, y: 0 }]}
+                segment={[{ x: targetUsdValue }, { x: targetUsdValue, y: 0 }]}
                 className={styles.referenceLine}
             />
             {cyRewards && (

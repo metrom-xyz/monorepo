@@ -89,7 +89,8 @@ export function Apr({ campaignId, chainId, chainType, apr, kpi }: AprProps) {
                             <div className={styles.chartWrapper}>
                                 <KpiSimulationChart
                                     loading={loading}
-                                    usdTvl={campaign.getTargetUsdTvl()}
+                                    targetValueName={campaign.targetValueName}
+                                    targetUsdValue={campaign.getTargetUsdValue()}
                                     campaignDurationSeconds={
                                         campaign.to - campaign.from
                                     }
@@ -126,6 +127,7 @@ export function SkeletonPopover() {
             <Skeleton width={400} className={styles.skeletonDescription} />
             <div className={styles.chartWrapper}>
                 <KpiSimulationChart
+                    targetValueName=""
                     loading={true}
                     campaignDurationSeconds={0}
                     totalRewardsUsd={0}

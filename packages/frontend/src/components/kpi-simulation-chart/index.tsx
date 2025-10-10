@@ -48,7 +48,7 @@ function clampValue(
 }
 
 export interface DistributedAreaDataPoint {
-    usdTvl: number;
+    targetUsdValue: number;
     currentlyDistributing: number;
     currentlyNotDistributing: number;
     aprPercentage: number;
@@ -56,11 +56,12 @@ export interface DistributedAreaDataPoint {
 }
 
 interface KpiSimulationChartProps {
+    targetValueName: string;
     minimumPayoutPercentage?: number;
     lowerUsdTarget?: number;
     upperUsdTarget?: number;
     totalRewardsUsd: number;
-    usdTvl?: number | null;
+    targetUsdValue?: number | null;
     campaignDurationSeconds: number;
     campaignEnded?: boolean;
     error?: boolean;
@@ -76,11 +77,12 @@ const POINTS_COUNT = 1000;
 export const CHART_MARGINS = { top: 30, right: 4, bottom: 4, left: 2 };
 
 export function KpiSimulationChart({
+    targetValueName,
     minimumPayoutPercentage = 0,
     lowerUsdTarget,
     upperUsdTarget,
     totalRewardsUsd,
-    usdTvl,
+    targetUsdValue,
     campaignDurationSeconds,
     campaignEnded,
     error,
@@ -93,51 +95,57 @@ export function KpiSimulationChart({
     const [chartRef, { width }] = useMeasure<HTMLDivElement>();
 
     const currentPayoutUsd =
-        usdTvl && lowerUsdTarget !== undefined && upperUsdTarget !== undefined
+        targetUsdValue &&
+        lowerUsdTarget !== undefined &&
+        upperUsdTarget !== undefined
             ? totalRewardsUsd *
               getDistributableRewardsPercentage(
-                  usdTvl,
+                  targetUsdValue,
                   lowerUsdTarget,
                   upperUsdTarget,
                   minimumPayoutPercentage,
               )
             : 0;
 
-    const sortedSignificantUsdTvls = useMemo(() => {
+    const sortedSignificantTargetUsdValues = useMemo(() => {
         if (
             lowerUsdTarget === undefined ||
             upperUsdTarget === undefined ||
-            usdTvl === null ||
-            usdTvl === undefined
+            targetUsdValue === null ||
+            targetUsdValue === undefined
         )
             return [];
 
-        const tvls = [usdTvl, lowerUsdTarget, upperUsdTarget];
-        tvls.sort((a, b) => a - b);
-        const fullRange = tvls[2] - tvls[0];
+        const targetValues = [targetUsdValue, lowerUsdTarget, upperUsdTarget];
+        targetValues.sort((a, b) => a - b);
+        const fullRange = targetValues[2] - targetValues[0];
         const padding = fullRange * 0.2;
 
-        return [tvls[0] - padding, ...tvls, tvls[2] + padding];
-    }, [lowerUsdTarget, usdTvl, upperUsdTarget]);
+        return [
+            targetValues[0] - padding,
+            ...targetValues,
+            targetValues[2] + padding,
+        ];
+    }, [lowerUsdTarget, targetUsdValue, upperUsdTarget]);
 
     const { poolTvlScale, lowerBoundScale, upperBoundScale } = useMemo(() => {
         if (
-            usdTvl === null ||
-            usdTvl === undefined ||
+            targetUsdValue === null ||
+            targetUsdValue === undefined ||
             lowerUsdTarget === undefined ||
             upperUsdTarget === undefined
         )
             return {};
 
         const chartWidth = width - CHART_MARGINS.left - CHART_MARGINS.right;
-        const tvls = [usdTvl, lowerUsdTarget, upperUsdTarget];
+        const tvls = [targetUsdValue, lowerUsdTarget, upperUsdTarget];
         const [poolTvlScale, lowerBoundScale, upperBoundScale] = tvls.map(
             (tvl) =>
                 getChartAxisScale(
                     tvl,
-                    sortedSignificantUsdTvls[0],
-                    sortedSignificantUsdTvls[
-                        sortedSignificantUsdTvls.length - 1
+                    sortedSignificantTargetUsdValues[0],
+                    sortedSignificantTargetUsdValues[
+                        sortedSignificantTargetUsdValues.length - 1
                     ],
                     0,
                     chartWidth,
@@ -147,8 +155,8 @@ export function KpiSimulationChart({
         return { poolTvlScale, lowerBoundScale, upperBoundScale };
     }, [
         lowerUsdTarget,
-        usdTvl,
-        sortedSignificantUsdTvls,
+        targetUsdValue,
+        sortedSignificantTargetUsdValues,
         upperUsdTarget,
         width,
     ]);
@@ -224,16 +232,16 @@ export function KpiSimulationChart({
         if (
             upperUsdTarget === undefined ||
             lowerUsdTarget === undefined ||
-            usdTvl === null ||
-            usdTvl === undefined ||
-            sortedSignificantUsdTvls.length === 0
+            targetUsdValue === null ||
+            targetUsdValue === undefined ||
+            sortedSignificantTargetUsdValues.length === 0
         )
             return [];
 
-        const lowerUsdTvl = sortedSignificantUsdTvls[0];
-        const upperUsdTvl = sortedSignificantUsdTvls[4];
-        const usdTvlRange = upperUsdTvl - lowerUsdTvl;
-        const domainStep = usdTvlRange / POINTS_COUNT;
+        const lowertTargetUsdValue = sortedSignificantTargetUsdValues[0];
+        const upperTargetUsdValue = sortedSignificantTargetUsdValues[4];
+        const targetUsdValueRange = upperTargetUsdValue - lowertTargetUsdValue;
+        const domainStep = targetUsdValueRange / POINTS_COUNT;
 
         const chartData: DistributedAreaDataPoint[] = [];
 
@@ -242,15 +250,15 @@ export function KpiSimulationChart({
 
         const aprPercentages = [];
         for (
-            let usdTvlStep = lowerUsdTvl;
-            usdTvlStep <= upperUsdTvl;
-            usdTvlStep += domainStep
+            let usdStep = lowertTargetUsdValue;
+            usdStep <= upperTargetUsdValue;
+            usdStep += domainStep
         ) {
-            if (usdTvlStep <= 0) continue;
+            if (usdStep <= 0) continue;
 
             const distributaleRewardsPercentage =
                 getDistributableRewardsPercentage(
-                    usdTvlStep,
+                    usdStep,
                     lowerUsdTarget,
                     upperUsdTarget,
                     minimumPayoutPercentage,
@@ -258,7 +266,7 @@ export function KpiSimulationChart({
             const distributedRewardsUsd =
                 totalRewardsUsd * distributaleRewardsPercentage;
 
-            const rewardsRatio = distributedRewardsUsd / usdTvlStep;
+            const rewardsRatio = distributedRewardsUsd / usdStep;
             const yearMultiplier = SECONDS_IN_YEAR / campaignDurationSeconds;
             const aprPercentage = rewardsRatio * yearMultiplier * 100;
 
@@ -270,11 +278,11 @@ export function KpiSimulationChart({
                 minAprPercentage = aprPercentage;
 
             chartData.push({
-                usdTvl: usdTvlStep,
+                targetUsdValue: usdStep,
                 currentlyDistributing:
-                    usdTvlStep <= usdTvl ? distributedRewardsUsd : 0,
+                    usdStep <= targetUsdValue ? distributedRewardsUsd : 0,
                 currentlyNotDistributing:
-                    usdTvlStep > usdTvl ? distributedRewardsUsd : 0,
+                    usdStep > targetUsdValue ? distributedRewardsUsd : 0,
                 aprPercentage,
             });
         }
@@ -309,8 +317,8 @@ export function KpiSimulationChart({
     }, [
         lowerUsdTarget,
         minimumPayoutPercentage,
-        usdTvl,
-        sortedSignificantUsdTvls,
+        targetUsdValue,
+        sortedSignificantTargetUsdValues,
         totalRewardsUsd,
         upperUsdTarget,
         campaignDurationSeconds,
@@ -343,8 +351,8 @@ export function KpiSimulationChart({
     if (
         upperUsdTarget === undefined ||
         lowerUsdTarget === undefined ||
-        usdTvl === null ||
-        usdTvl === undefined
+        targetUsdValue === null ||
+        targetUsdValue === undefined
     ) {
         return (
             <div className={classNames("root", styles.root, className)}>
@@ -450,7 +458,7 @@ export function KpiSimulationChart({
                 <XAxis
                     type="number"
                     format="number"
-                    dataKey="usdTvl"
+                    dataKey="targetUsdValue"
                     interval={0}
                     tick={
                         <TvlTick
@@ -459,13 +467,13 @@ export function KpiSimulationChart({
                             upperBoundScale={upperBoundScale}
                         />
                     }
-                    ticks={sortedSignificantUsdTvls.slice(1, 4)}
+                    ticks={sortedSignificantTargetUsdValues.slice(1, 4)}
                     tickFormatter={(value) =>
                         formatUsdAmount({ amount: value })
                     }
                     domain={[
-                        sortedSignificantUsdTvls[0],
-                        sortedSignificantUsdTvls[4],
+                        sortedSignificantTargetUsdValues[0],
+                        sortedSignificantTargetUsdValues[4],
                     ]}
                     className={styles.xAxis}
                 />
@@ -485,11 +493,11 @@ export function KpiSimulationChart({
                     ifOverflow="visible"
                     segment={[
                         {
-                            x: usdTvl,
+                            x: targetUsdValue,
                             y: 0,
                         },
                         {
-                            x: usdTvl,
+                            x: targetUsdValue,
                             y: totalRewardsUsd,
                         },
                     ]}
@@ -498,8 +506,12 @@ export function KpiSimulationChart({
                     <Label
                         value={
                             campaignEnded
-                                ? t("tvl.campaignEnded")
-                                : t("tvl.campaignActive")
+                                ? t("targetValue.campaignEnded", {
+                                      targetValueName,
+                                  })
+                                : t("targetValue.campaignActive", {
+                                      targetValueName,
+                                  })
                         }
                         dx={poolTvlDx}
                         angle={90}
@@ -560,12 +572,12 @@ export function KpiSimulationChart({
                             ifOverflow="visible"
                             segment={[
                                 { x: 0, y: currentPayoutUsd },
-                                { x: usdTvl, y: currentPayoutUsd },
+                                { x: targetUsdValue, y: currentPayoutUsd },
                             ]}
                             className={styles.referenceLine}
                         />
                         <ReferenceDot
-                            x={usdTvl}
+                            x={targetUsdValue}
                             y={currentPayoutUsd}
                             r={4}
                             fill="#6CFF95"
@@ -581,6 +593,7 @@ export function KpiSimulationChart({
                         content={
                             <TooltipContent
                                 size={tooltipSize}
+                                targetValueName={targetValueName}
                                 lowerUsdTarget={lowerUsdTarget}
                                 upperUsdTarget={upperUsdTarget}
                                 totalRewardsUsd={totalRewardsUsd}
