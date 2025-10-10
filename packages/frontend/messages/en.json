@@ -36,8 +36,8 @@
         "retry": "Try again"
     },
     "kpiAprSummary": {
-        "textNoMinPayout": "The KPI rewards start distributing when the TVL {target} reaches <bold>{lowerBound}</bold> and has a possibility to earn APR up to <apr>{maxApr}</apr> at the target TVL of <bold>{upperBound}</bold>.",
-        "textWithMinPayout": "The KPI rewards start distributing immediately due to the configured <bold>{minimumPayout}</bold> minimum payout and has a possibility to earn APR up to <apr>{maxApr}</apr> at the target TVL of <bold>{upperBound}</bold>.",
+        "textNoMinPayout": "The KPI rewards start distributing when the <bold>{targetValueName}</bold> value {target} reaches <bold>{lowerBound}</bold> and has a possibility to earn APR up to <apr>{maxApr}</apr> at the target <bold>{targetValueName}</bold> value of <bold>{upperBound}</bold>.",
+        "textWithMinPayout": "The KPI rewards start distributing immediately due to the configured <bold>{minimumPayout}</bold> minimum payout and has a possibility to earn APR up to <apr>{maxApr}</apr> at the target <bold>{targetValueName}</bold> value of <bold>{upperBound}</bold>.",
         "fallback": "",
         "pool": "of the pool",
         "debt": "of the debt",
@@ -284,12 +284,12 @@
                 },
                 "kpi": {
                     "title": "Set KPI",
-                    "currentTvl": "Current TVL",
-                    "infoMessage": "Structure incentives with a TVL KPI - distributed in proportion to performance, aligning incentives when targets are partially met.",
+                    "currentTarget": "Current {targetValueName}",
+                    "infoMessage": "Structure incentives with a <bold>{targetValueName} KPI</bold> - distributed in proportion to performance, aligning incentives when targets are partially met.",
                     "readMore": "Read more 🡥",
-                    "rangedTvl": {
-                        "lowerBound": "Lower TVL bound",
-                        "upperBound": "Upper TVL bound"
+                    "rangedTarget": {
+                        "lowerBound": "Lower {targetValueName} bound",
+                        "upperBound": "Upper {targetValueName} bound"
                     },
                     "errors": {
                         "missing": "Bound missing",
@@ -300,7 +300,7 @@
                     },
                     "simulation": {
                         "title": "KPI simulation",
-                        "description": "Disclaimer: This is an interactive simulation tool to visualize how incentives are distributed for different TVL scenarios. Please review the values you entered carefully before submitting."
+                        "description": "Disclaimer: This is an interactive simulation tool to visualize how incentives are distributed for different {targetValueName} scenarios. Please review the values you entered carefully before submitting."
                     },
                     "minimumPayout": "Minimum payout",
                     "apply": "Apply"
@@ -471,7 +471,6 @@
                 }
             }
         },
-        "tvl": "TVL",
         "apr": "APR",
         "points": "Points",
         "range": {
@@ -620,7 +619,6 @@
             }
         },
         "details": {
-            "tvl": "Tvl",
             "status": "Status",
             "duration": "Duration",
             "statusType": {
@@ -661,7 +659,7 @@
             "title": "KPI",
             "lowerBound": "Lower bound",
             "upperBound": "Upper bound",
-            "chart": "Rewards payout and APR over TVL",
+            "chart": "Rewards payout and APR over {targetValueName}",
             "averageGoalReached": "Average goal reached",
             "minimumPayout": "Minimum payout",
             "charts": {
@@ -807,22 +805,17 @@
     },
     "simulationChart": {
         "emptyData": "Missing data for the simulation",
-        "tvl": {
-            "campaignActive": "Current TVL",
-            "campaignEnded": "Final TVL"
+        "targetValue": {
+            "campaignActive": "Current {targetValueName}",
+            "campaignEnded": "Final {targetValueName}"
         },
         "lowerBound": "Lower bound",
         "upperBound": "Upper bound",
-        "labels": {
-            "tvl": "TVL",
-            "reward": "Reward"
-        },
         "errors": {
             "wrongData": "Wrong data, cant't run the simulation",
             "missingData": "Fill both lower and upper bound values for the simulation"
         },
         "tooltip": {
-            "tvl": "TVL",
             "payout": "Payout",
             "kpiReached": "KPI reached",
             "apr": "APR"
@@ -879,5 +872,11 @@
             "title": "Safe connected",
             "content": "Please notify the wallet participants to sign transactions."
         }
+    },
+    "campaignTargetValueName": {
+        "tvl": "TVL",
+        "debt": "debt",
+        "deposits": "deposits",
+        "netDeposits": "net deposits"
     }
 }

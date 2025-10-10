@@ -36,3 +36,7 @@
 .chartWrapper {
     @apply flex flex-col px-2 pt-3 rounded-md theme-surface-2;
 }
+
+.boldText {
+    @apply text-black dark:text-white font-bold;
+}

@@ -1,3 +1,5 @@
+import { TargetType, CampaignKind } from "./types/campaigns";
+
 export enum Environment {
     Development = "development",
     Production = "production",
@@ -54,6 +56,20 @@ export interface ServiceUrls {
     dataManager: string;
     metrom: string;
 }
+
+export const CAMPAIGN_TARGET_TO_KIND: Record<TargetType, CampaignKind> = {
+    [TargetType.AmmPoolLiquidity]: CampaignKind.AmmPoolLiquidity,
+    [TargetType.LiquityV2Debt]: CampaignKind.LiquityV2Debt,
+    [TargetType.LiquityV2StabilityPool]: CampaignKind.LiquityV2StabilityPool,
+    [TargetType.Empty]: CampaignKind.EmptyTarget,
+    [TargetType.AaveV3Supply]: CampaignKind.AaveV3Supply,
+    [TargetType.AaveV3Borrow]: CampaignKind.AaveV3Borrow,
+    [TargetType.AaveV3NetSupply]: CampaignKind.AaveV3NetSupply,
+    [TargetType.AaveV3BridgeAndSupply]: CampaignKind.AaveV3BridgeAndSupply,
+    [TargetType.JumperWhitelistedAmmPoolLiquidity]:
+        CampaignKind.JumperWhitelistedAmmPoolLiquidity,
+    [TargetType.HoldFungibleAsset]: CampaignKind.HoldFungibleAsset,
+};
 
 export const SERVICE_URLS: Record<Environment, ServiceUrls> = {
     [Environment.Development]: {

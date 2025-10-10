@@ -6,8 +6,12 @@ import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 import { Campaign } from "@/src/types/campaign";
 import { getTranslations } from "next-intl/server";
-import { getSocialPreviewCampaignName } from "@/src/utils/campaign";
 import {
+    getCampaignTargetValueName,
+    getSocialPreviewCampaignName,
+} from "@/src/utils/campaign";
+import {
+    CAMPAIGN_TARGET_TO_KIND,
     ChainType,
     DistributablesType,
     TargetType,
@@ -47,6 +51,8 @@ async function getCampaign(
     chainId: SupportedChain,
 ) {
     try {
+        const t = await getTranslations();
+
         const campaign = await METROM_API_CLIENT.fetchCampaign({
             id,
             chainType,
@@ -56,6 +62,10 @@ async function getCampaign(
         return new Campaign(
             campaign,
             await getSocialPreviewCampaignName(campaign),
+            getCampaignTargetValueName(
+                t,
+                CAMPAIGN_TARGET_TO_KIND[campaign.target.type],
+            ),
             getCrossVmChainData(chainId, chainType),
         );
     } catch (error) {

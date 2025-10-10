@@ -5,7 +5,6 @@ import {
     DistributablesType,
     KpiMetric,
     Status,
-    type DistributablesCampaign,
     type KpiSpecification,
 } from "@metrom-xyz/sdk";
 import { useMemo } from "react";
@@ -14,12 +13,15 @@ import { useKpiMeasurements } from "@/src/hooks/useKpiMeasurements";
 import { DistributionChart } from "./distribution-chart";
 import { AverageDistributionChart } from "./average-distribution-chart";
 import { KpiAprSummary } from "../../kpi-apr-summary";
-import type { Campaign } from "@/src/types/campaign";
+import type {
+    Campaign,
+    DistributablesNamedCampaign,
+} from "@/src/types/campaign";
 
 import styles from "./styles.module.css";
 
 interface KpiProps {
-    campaign?: DistributablesCampaign<DistributablesType.Tokens>;
+    campaign?: DistributablesNamedCampaign<DistributablesType.Tokens>;
     loading: boolean;
 }
 
@@ -61,7 +63,7 @@ export function Kpi({ campaign, loading }: KpiProps) {
             loadingKpiMeasurements || kpiMeasurements.length === 0
                 ? undefined
                 : kpiMeasurements[kpiMeasurements.length - 1].value;
-    else usdTvl = (campaign as Campaign).getTargetUsdTvl();
+    else usdTvl = (campaign as Campaign).getTargetUsdValue();
 
     return (
         <div className={styles.root}>
@@ -126,7 +128,7 @@ export function Kpi({ campaign, loading }: KpiProps) {
                     </div>
                     <Card className={styles.chart}>
                         <Typography size="sm" uppercase light weight="medium">
-                            {t("chart")}
+                            {t("chart", { targetValueName: campaign.targetValueName })}
                         </Typography>
                         <div className={styles.chartWrapper}>
                             <KpiSimulationChart
@@ -134,7 +136,8 @@ export function Kpi({ campaign, loading }: KpiProps) {
                                     specificationLoading ||
                                     loadingKpiMeasurements
                                 }
-                                usdTvl={usdTvl}
+                                targetValueName={campaign.targetValueName}
+                                targetUsdValue={usdTvl}
                                 campaignEnded={campaign.status === Status.Ended}
                                 campaignDurationSeconds={
                                     campaign.to - campaign.from

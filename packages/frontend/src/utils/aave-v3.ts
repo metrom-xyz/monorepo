@@ -5,7 +5,7 @@ interface GetUsdTvlParams {
     kind?: CampaignKind;
 }
 
-export function getAaveV3UsdTvl({ collateral, kind }: GetUsdTvlParams) {
+export function getAaveV3UsdTarget({ collateral, kind }: GetUsdTvlParams) {
     if (!collateral || !kind) return undefined;
 
     if (kind === CampaignKind.AaveV3Borrow) return collateral.usdDebt;
