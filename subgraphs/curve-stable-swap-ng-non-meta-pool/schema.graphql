@@ -23,7 +23,6 @@ type Position @entity(immutable: false) {
     owner: Bytes!
     liquidity: BigInt!
     pool: Pool!
-    liquidityChanges: [LiquidityChange!]! @derivedFrom(field: "position")
 }
 
 type LiquidityChange @entity(immutable: true) {

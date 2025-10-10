@@ -4,7 +4,6 @@ import {
     RemoveLiquidityOne,
     RemoveLiquidityImbalance,
     TokenExchange,
-    Transfer,
 } from "../../generated/Pool/Pool";
 import { BigInt, Bytes, ethereum } from "@graphprotocol/graph-ts";
 import {
@@ -15,10 +14,15 @@ import {
     getOrCreatePosition,
     getPoolOrThrow,
     getPositionOrThrow,
-    getStakingTx,
 } from "../commons";
+import { Transfer } from "../../generated/Pool/Erc20";
 import { LiquidityChange, LiquidityTransfer } from "../../generated/schema";
-import { DEPOSIT_AND_STAKE_ZAP_ADDRESS, STAKING_CONTRACTS } from "../constants";
+import {
+    DEPOSIT_AND_STAKE_ZAP_ADDRESS,
+    ENSO_SHORTCUTS_ADDRESS,
+    POOL_ADDRESS,
+    STAKING_CONTRACTS,
+} from "../constants";
 
 export function handleTokenExchange(event: TokenExchange): void {
     const pool = getPoolOrThrow(event.address);
@@ -112,90 +116,66 @@ export function handleRemoveLiquidityImbalance(
 }
 
 export function handleTransfer(event: Transfer): void {
-    // handle staking transactions
-    const stakingTx = getStakingTx();
-    if (!!stakingTx.hash && event.transaction.hash == stakingTx.hash!) return;
+    if (event.params.value.isZero()) return;
 
-    if (
-        STAKING_CONTRACTS.includes(event.params.sender) ||
-        STAKING_CONTRACTS.includes(event.params.receiver)
+    if (event.params.from == ADDRESS_ZERO) {
+        const recipient =
+            event.params.to == DEPOSIT_AND_STAKE_ZAP_ADDRESS ||
+            event.params.to == ENSO_SHORTCUTS_ADDRESS
+                ? event.transaction.from
+                : event.params.to;
+
+        // mint
+        const position = getOrCreatePosition(recipient);
+        position.liquidity = position.liquidity.plus(event.params.value);
+        position.save();
+
+        const change = new LiquidityChange(getEventId(event));
+        change.timestamp = event.block.timestamp;
+        change.blockNumber = event.block.number;
+        change.position = position.id;
+        change.delta = event.params.value;
+        change.save();
+    } else if (
+        event.params.to == ADDRESS_ZERO ||
+        event.params.to == ENSO_SHORTCUTS_ADDRESS
     ) {
-        stakingTx.hash = event.transaction.hash;
-        stakingTx.save();
-        return;
-    } else {
-        stakingTx.hash = null;
-        stakingTx.save();
-    }
-
-    if (event.params.receiver == DEPOSIT_AND_STAKE_ZAP_ADDRESS) {
-        // handle deposit & stake transactions (treat this as a mint to the tx's sender)
-        const position = getOrCreatePosition(
-            event.address,
-            event.transaction.from,
-        );
-        position.liquidity = position.liquidity.plus(event.params.value);
-        position.save();
-
-        let liquidityChange = new LiquidityChange(getEventId(event));
-        liquidityChange.timestamp = event.block.timestamp;
-        liquidityChange.blockNumber = event.block.number;
-        liquidityChange.delta = event.params.value;
-        liquidityChange.position = position.id;
-        liquidityChange.save();
-    } else if (event.params.sender == ADDRESS_ZERO) {
-        // lp token mint
-        const position = getOrCreatePosition(
-            event.address,
-            event.params.receiver,
-        );
-        position.liquidity = position.liquidity.plus(event.params.value);
-        position.save();
-
-        let liquidityChange = new LiquidityChange(getEventId(event));
-        liquidityChange.timestamp = event.block.timestamp;
-        liquidityChange.blockNumber = event.block.number;
-        liquidityChange.delta = event.params.value;
-        liquidityChange.position = position.id;
-        liquidityChange.save();
-    } else if (event.params.receiver == ADDRESS_ZERO) {
-        // lp token burn
-        const position = getOrCreatePosition(
-            event.address,
-            event.params.sender,
-        );
+        // burn
+        const position = getOrCreatePosition(event.params.from);
         position.liquidity = position.liquidity.minus(event.params.value);
         position.save();
 
-        let liquidityChange = new LiquidityChange(getEventId(event));
-        liquidityChange.timestamp = event.block.timestamp;
-        liquidityChange.blockNumber = event.block.number;
-        liquidityChange.delta = event.params.value.neg();
-        liquidityChange.position = position.id;
-        liquidityChange.save();
+        const change = new LiquidityChange(getEventId(event));
+        change.timestamp = event.block.timestamp;
+        change.blockNumber = event.block.number;
+        change.position = position.id;
+        change.delta = event.params.value.neg();
+        change.save();
     } else {
-        const fromPosition = getPositionOrThrow(
-            event.address,
-            event.params.sender,
-        );
+        // transfer
+
+        if (
+            STAKING_CONTRACTS.includes(event.params.from) ||
+            STAKING_CONTRACTS.includes(event.params.to)
+        )
+            return;
+
+        const fromPosition = getPositionOrThrow(event.params.from);
         fromPosition.liquidity = fromPosition.liquidity.minus(
             event.params.value,
         );
         fromPosition.save();
 
-        const toPosition = getOrCreatePosition(
-            event.address,
-            event.params.receiver,
-        );
+        const toPosition = getOrCreatePosition(event.params.to);
         toPosition.liquidity = toPosition.liquidity.plus(event.params.value);
         toPosition.save();
 
         const transfer = new LiquidityTransfer(getEventId(event));
         transfer.timestamp = event.block.timestamp;
         transfer.blockNumber = event.block.number;
-        transfer.pool = changetype<Bytes>(event.address);
-        transfer.from = event.params.sender;
-        transfer.to = event.params.receiver;
+        transfer.pool = changetype<Bytes>(POOL_ADDRESS);
+        transfer.from = event.params.from;
+        transfer.to = event.params.to;
         transfer.amount = event.params.value;
         transfer.save();
     }
