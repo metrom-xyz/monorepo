@@ -228,6 +228,7 @@ export function AmmPoolLiquidityForm({
                 )}
                 <KpiStep
                     disabled={noDistributables || unsupportedChain}
+                    kind={payload.kind}
                     usdTvl={payload.pool?.usdTvl}
                     distributables={
                         payload.distributables?.type ===

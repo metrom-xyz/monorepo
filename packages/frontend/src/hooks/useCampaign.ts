@@ -1,12 +1,12 @@
 import type { Hex } from "viem";
 import { METROM_API_CLIENT } from "../commons";
 import { useQuery } from "@tanstack/react-query";
-import { getCampaignName } from "../utils/campaign";
+import { getCampaignName, getCampaignTargetValueName } from "../utils/campaign";
 import type { HookBaseParams } from "../types/hooks";
 import { useTranslations } from "next-intl";
 import { Campaign } from "../types/campaign";
 import { getCrossVmChainData } from "../utils/chain";
-import { ChainType } from "@metrom-xyz/sdk";
+import { CAMPAIGN_TARGET_TO_KIND, ChainType } from "@metrom-xyz/sdk";
 
 interface UseCampaignParams extends HookBaseParams {
     chainId?: number;
@@ -45,6 +45,10 @@ export function useCampaign({
                 return new Campaign(
                     campaign,
                     getCampaignName(t, campaign),
+                    getCampaignTargetValueName(
+                        t,
+                        CAMPAIGN_TARGET_TO_KIND[campaign.target.type],
+                    ),
                     getCrossVmChainData(chainId, chainType),
                 );
             } catch (error) {
