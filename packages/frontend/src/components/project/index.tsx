@@ -4,13 +4,10 @@ import { ENVIRONMENT } from "@/src/commons/env";
 import { PROJECT_PAGES } from "@/src/commons/project-pages";
 import { useTranslations } from "next-intl";
 import { Header } from "./header";
-import { Details } from "./details";
 import { ProjectIntro } from "../protocol-intro";
 import { useCampaigns } from "@/src/hooks/useCampaigns";
 import { CampaignsTable } from "../campaigns-table";
 import { Typography } from "@metrom-xyz/ui";
-import { useMemo } from "react";
-import { Campaign, Status } from "@metrom-xyz/sdk";
 import { CHAIN_TYPE } from "@/src/commons";
 
 import styles from "./styles.module.css";
@@ -31,32 +28,6 @@ export function Project({ project }: ProjectProps) {
         enabled: !!details,
     });
 
-    const duration = useMemo(() => {
-        if (!campaigns) return undefined;
-
-        const liveCampaigns = campaigns.filter(
-            ({ status }) => status === Status.Live,
-        );
-        const endedCampaigns = campaigns.filter(
-            ({ status }) => status === Status.Ended,
-        );
-
-        let toSort: Campaign[] = [];
-        if (liveCampaigns.length > 0) toSort = liveCampaigns;
-        else toSort = endedCampaigns;
-
-        const campaignsByFrom = toSort.sort((a, b) => b.from - a.from);
-        const campaignsByTo = toSort.sort((a, b) => b.to - a.to);
-
-        if (campaignsByFrom.length === 0 || campaignsByTo.length === 0)
-            return { from: 0, to: 0 };
-
-        return {
-            from: campaignsByFrom[0].from,
-            to: campaignsByTo[campaignsByTo.length - 1].to,
-        };
-    }, [campaigns]);
-
     if (!project) return null;
 
     const { name, description, url, brand, icon, intro } = details;
@@ -70,7 +41,6 @@ export function Project({ project }: ProjectProps) {
                 brand={brand}
                 icon={icon}
             />
-            <Details from={duration?.from} to={duration?.to} />
             {intro && (
                 <ProjectIntro project={project} brand={brand} {...intro} />
             )}
