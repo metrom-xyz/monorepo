@@ -12,11 +12,11 @@ graft:
 {{/grafting}}
 dataSources:
   - kind: ethereum
-    name: Pool
+    name: PoolMetadata
     network: {{network}}
     source:
       address: "{{PoolAddress}}"
-      startBlock: {{PoolStartBlock}}
+      startBlock: {{startBlock}}
       abi: Pool
     mapping:
       kind: ethereum/events

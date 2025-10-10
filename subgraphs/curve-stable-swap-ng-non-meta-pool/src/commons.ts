@@ -1,12 +1,5 @@
-import {
-    Address,
-    BigInt,
-    ByteArray,
-    Bytes,
-    crypto,
-    ethereum,
-} from "@graphprotocol/graph-ts";
-import { Pool, Position, StakingTx, Token } from "../generated/schema";
+import { Address, BigInt, Bytes, ethereum } from "@graphprotocol/graph-ts";
+import { Pool, Position, Token } from "../generated/schema";
 import { Erc20 } from "../generated/Pool/Erc20";
 import { Erc20BytesSymbol } from "../generated/Pool/Erc20BytesSymbol";
 import { Erc20BytesName } from "../generated/Pool/Erc20BytesName";
@@ -16,21 +9,15 @@ import {
     NATIVE_TOKEN_DECIMALS,
     NATIVE_TOKEN_NAME,
     NATIVE_TOKEN_SYMBOL,
+    POOL_ADDRESS,
 } from "./constants";
 
 export const ADDRESS_ZERO = Address.zero();
 export const BI_0 = BigInt.zero();
 export const BI_1 = BigInt.fromI32(1);
-export const STAKING_TX_ID = Bytes.fromI32(1);
-
-export const ERC20_TRANSFER_EVENT_SIGNATURE = crypto.keccak256(
-    ByteArray.fromUTF8("Transfer(address,address,uint256)"),
-);
 
 export function getEventId(event: ethereum.Event): Bytes {
-    return changetype<Bytes>(
-        event.block.number.leftShift(40).plus(event.logIndex).reverse(),
-    );
+    return changetype<Bytes>(event.block.number);
 }
 
 export function getOrCreatePool(address: Address): Pool {
@@ -74,37 +61,31 @@ export function getPoolOrThrow(id: Bytes): Pool {
     throw new Error(`Could not find pool ${id.toHex()}`);
 }
 
-export function getPositionId(poolAddress: Address, owner: Address): Bytes {
-    return poolAddress.concat(owner);
+export function getPositionId(owner: Address): Bytes {
+    return changetype<Address>(owner);
 }
 
-export function getOrCreatePosition(
-    poolAddress: Address,
-    owner: Address,
-): Position {
-    let id = getPositionId(poolAddress, owner);
+export function getOrCreatePosition(owner: Address): Position {
+    let id = getPositionId(owner);
     let position = Position.load(id);
     if (position !== null) return position;
 
     position = new Position(id);
     position.owner = owner;
     position.liquidity = BI_0;
-    position.pool = poolAddress;
+    position.pool = POOL_ADDRESS;
     position.save();
 
     return position;
 }
 
-export function getPositionOrThrow(
-    poolAddress: Address,
-    owner: Address,
-): Position {
-    let id = getPositionId(poolAddress, owner);
+export function getPositionOrThrow(owner: Address): Position {
+    let id = getPositionId(owner);
     let position = Position.load(id);
     if (position !== null) return position;
 
     throw new Error(
-        `Could not find position on pool ${poolAddress.toHex()} for owner ${owner.toHex()}`,
+        `Could not find position on pool ${POOL_ADDRESS.toHex()} for owner ${owner.toHex()}`,
     );
 }
 
@@ -176,14 +157,4 @@ export function getOrCreateToken(address: Address): Token {
     token.save();
 
     return token;
-}
-
-export function getStakingTx(): StakingTx {
-    let stakingTx = StakingTx.load(STAKING_TX_ID);
-    if (stakingTx !== null) return stakingTx;
-
-    stakingTx = new StakingTx(STAKING_TX_ID);
-    stakingTx.save();
-
-    return stakingTx;
 }
