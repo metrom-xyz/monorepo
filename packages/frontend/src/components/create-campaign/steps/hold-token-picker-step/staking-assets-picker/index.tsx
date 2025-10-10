@@ -135,6 +135,7 @@ export function StakingAssetsPicker({
                             />
                         ) : (
                             <TextInput
+                                autoFocus
                                 placeholder={t(
                                     "stakingTokenAddressInput.placeholder",
                                 )}

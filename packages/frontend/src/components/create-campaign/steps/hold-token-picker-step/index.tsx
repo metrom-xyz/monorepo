@@ -99,7 +99,6 @@ export function HoldFungibleAssetPickerStep({
     const handleOnRemove = useCallback(() => {
         setAssetAddress("");
         setDebouncedAssetAddress("");
-        // Also remove the staking tokens
         onFungibleAssetChange({ asset: undefined, stakingAssets: [] });
     }, [onFungibleAssetChange]);
 
@@ -152,6 +151,7 @@ export function HoldFungibleAssetPickerStep({
                             />
                         ) : (
                             <TextInput
+                                autoFocus
                                 placeholder={t("tokenAddressInput.placeholder")}
                                 value={assetAddress}
                                 error={!!assetError}

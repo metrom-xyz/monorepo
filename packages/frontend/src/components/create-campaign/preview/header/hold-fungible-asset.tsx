@@ -25,14 +25,16 @@ export function HoldFungibleAsset({ payload }: HoldFungibleAssetProps) {
                     address={payload.asset.address}
                     defaultText={payload.asset.symbol}
                 />
-                <PoolRemoteLogo
-                    chain={chainId}
-                    tokens={payload.stakingAssets.map((asset) => ({
-                        address: asset.address,
-                        defaultText: asset.symbol,
-                    }))}
-                    className={{ root: styles.fungibleStakingAssets }}
-                />
+                {payload.stakingAssets.length > 0 && (
+                    <PoolRemoteLogo
+                        chain={chainId}
+                        tokens={payload.stakingAssets.map((asset) => ({
+                            address: asset.address,
+                            defaultText: asset.symbol,
+                        }))}
+                        className={{ root: styles.fungibleStakingAssets }}
+                    />
+                )}
             </div>
             <Typography weight="medium" size="xl">
                 {getCampaignPreviewName(t, payload)}
