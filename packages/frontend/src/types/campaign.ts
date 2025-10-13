@@ -18,10 +18,11 @@ import {
     type TokenDistributables,
     type LiquityV2Collateral,
     type BaseTargetedCampaign,
+    type FungibleAssetInfo,
 } from "@metrom-xyz/sdk";
 import type { Dayjs } from "dayjs";
 import type { Address } from "viem";
-import { type TokenInfo, type WhitelistedErc20TokenAmount } from "./common";
+import { type WhitelistedErc20TokenAmount } from "./common";
 import {
     DepositUrlType,
     ProtocolType,
@@ -94,8 +95,8 @@ export interface AaveV3CampaignPayload extends BaseCampaignPayload {
 }
 
 export interface HoldFungibleAssetCampaignPayload extends BaseCampaignPayload {
-    asset?: TokenInfo;
-    stakingAssets: TokenInfo[];
+    asset?: FungibleAssetInfo;
+    stakingAssets: FungibleAssetInfo[];
 }
 
 export interface CampaignPayloadTokenDistributables {
@@ -257,8 +258,8 @@ export class AaveV3CampaignPreviewPayload extends BaseCampaignPreviewPayload {
 export class HoldFungibleAssetCampaignPreviewPayload extends BaseCampaignPreviewPayload {
     public readonly kind: CampaignKind = CampaignKind.HoldFungibleAsset;
     constructor(
-        public readonly asset: TokenInfo,
-        public readonly stakingAssets: TokenInfo[],
+        public readonly asset: FungibleAssetInfo,
+        public readonly stakingAssets: FungibleAssetInfo[],
         ...baseArgs: ConstructorParameters<typeof BaseCampaignPreviewPayload>
     ) {
         super(...baseArgs);

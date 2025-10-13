@@ -6,7 +6,7 @@ import type {
     Erc20Token,
     OnChainAmount,
     UsdPricedErc20Token,
-    UsdPricedErc20TokenWithTvl,
+    UsdPricedErc20TokenWithTotalSupply,
     UsdPricedOnChainAmount,
 } from "./commons";
 import type {
@@ -126,8 +126,8 @@ export type AaveV3BridgeAndSupplyTarget = BaseTarget & {
 
 export interface HoldFungibleAssetTarget extends BaseTarget {
     type: TargetType.HoldFungibleAsset;
-    asset: UsdPricedErc20TokenWithTvl;
-    stakingAssets: UsdPricedErc20TokenWithTvl[];
+    asset: UsdPricedErc20TokenWithTotalSupply;
+    stakingAssets: UsdPricedErc20TokenWithTotalSupply[];
 }
 
 export type CampaignTarget =

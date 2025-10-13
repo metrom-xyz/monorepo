@@ -16,6 +16,7 @@ export * from "./types/campaigns";
 export * from "./types/claims";
 export * from "./types/commons";
 export * from "./types/fee-tokens";
+export * from "./types/fungible-asset";
 export * from "./types/initialized-ticks";
 export * from "./types/kpi-measurements";
 export * from "./types/leaderboards";

@@ -432,7 +432,7 @@ export const lv2PointsCampaignsProd: Record<
             ],
         },
         from: 1746720000,
-        to: 1762621258,
+        to: 1762621200,
         leaderboard: true,
         actions: {
             [Lv2PointsCampaign2Action.Liquidity]: {

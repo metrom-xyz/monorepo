@@ -4,7 +4,7 @@ import type {
     BackendResolvedAmmPoolsRegistry,
     BackendResolvedLiquityV2CollateralsRegistry,
     BackendResolvedPricedTokensRegistry,
-    BackendResolvedPricedTokensWithTvlRegistry,
+    BackendResolvedPricedTokensWithTotalSuppliesRegistry as BackendResolvedPricedTokensWithTotalSuppliesRegistry,
     BackendResolvedTokensRegistry,
 } from "./commons";
 import type { Specification } from "src/types/campaigns";
@@ -125,7 +125,7 @@ export interface BackendCampaign {
 export interface BackendCampaignsResponse {
     resolvedTokens: BackendResolvedTokensRegistry;
     resolvedPricedTokens: BackendResolvedPricedTokensRegistry;
-    resolvedPricedTokensWithTvl: BackendResolvedPricedTokensWithTvlRegistry;
+    resolvedPricedTokenWithTotalSupplies: BackendResolvedPricedTokensWithTotalSuppliesRegistry;
     resolvedAmmPools: BackendResolvedAmmPoolsRegistry;
     resolvedLiquityV2Collaterals: BackendResolvedLiquityV2CollateralsRegistry;
     resolvedAaveV3Collaterals: BackendResolvedAaveV3CollateralsRegistry;
@@ -135,7 +135,7 @@ export interface BackendCampaignsResponse {
 export interface BackendCampaignResponse {
     resolvedTokens: BackendResolvedTokensRegistry;
     resolvedPricedTokens: BackendResolvedPricedTokensRegistry;
-    resolvedPricedTokensWithTvl: BackendResolvedPricedTokensWithTvlRegistry;
+    resolvedPricedTokenWithTotalSupplies: BackendResolvedPricedTokensWithTotalSuppliesRegistry;
     resolvedAmmPools: BackendResolvedAmmPoolsRegistry;
     resolvedLiquityV2Collaterals: BackendResolvedLiquityV2CollateralsRegistry;
     resolvedAaveV3Collaterals: BackendResolvedAaveV3CollateralsRegistry;

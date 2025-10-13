@@ -83,6 +83,12 @@ export function getCampaignName(
                 token: campaign.target.collateral.token.symbol,
             });
         }
+        case TargetType.HoldFungibleAsset: {
+            return t("campaignActions.holdFungibleAsset", {
+                name: campaign.target.asset.name,
+                symbol: campaign.target.asset.symbol,
+            });
+        }
         case TargetType.JumperWhitelistedAmmPoolLiquidity: {
             return t("campaignActions.jumperWhitelistedAmmPoolLiquidity", {
                 dex: campaign.target.pool.dex.name,

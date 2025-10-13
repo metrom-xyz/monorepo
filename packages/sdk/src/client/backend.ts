@@ -17,7 +17,7 @@ import type {
     BackendResolvedAmmPoolsRegistry,
     BackendResolvedLiquityV2CollateralsRegistry,
     BackendResolvedPricedTokensRegistry,
-    BackendResolvedPricedTokensWithTvlRegistry,
+    BackendResolvedPricedTokensWithTotalSuppliesRegistry,
     BackendResolvedTokensRegistry,
 } from "./types/commons";
 import type {
@@ -51,7 +51,7 @@ import {
     type Erc20Token,
     type OnChainAmount,
     type UsdPricedErc20Token,
-    type UsdPricedErc20TokenWithTvl,
+    type UsdPricedErc20TokenWithTotalSupply,
     type UsdPricedOnChainAmount,
 } from "../types/commons";
 import type {
@@ -91,6 +91,8 @@ import type { BackendLiquityV2CollateralsResponse } from "./types/liquity-v2";
 import type { LiquityV2Collateral } from "src/types/liquity-v2";
 import type { AaveV3Collateral } from "../types/aave-v3";
 import type { BackendAaveV3CollateralsResponse } from "./types/aave-v3";
+import type { FungibleAssetInfo } from "src/types/fungible-asset";
+import type { BackendFungibleAssetResponse } from "./types/fungible-asset";
 
 const MIN_TICK = -887272;
 const MAX_TICK = -MIN_TICK;
@@ -206,6 +208,10 @@ export interface FetchInitializedTicksParams extends ChainParams {
 
 export interface FetchLiquityV2CollateralsParams extends ChainParams {
     brand: SupportedLiquityV2;
+}
+
+export interface FetchFungibleAssetParams extends ChainParams {
+    address: Address;
 }
 
 export interface FetchAaveV3CollateralsParams extends ChainParams {
@@ -937,6 +943,30 @@ export class MetromApiClient {
             };
         });
     }
+
+    async fetchFungibleAssetInfo(
+        params: FetchFungibleAssetParams,
+    ): Promise<FungibleAssetInfo> {
+        const url = new URL(
+            `v1/fungible-assets/${params.chainType}/${params.chainId}/${params.address}/`,
+            this.baseUrl,
+        );
+
+        const response = await fetch(url);
+        if (!response.ok)
+            throw new Error(
+                `response not ok while fetching fungible asset info: ${await response.text()}`,
+            );
+
+        const parsedResponse =
+            (await response.json()) as BackendFungibleAssetResponse;
+
+        return {
+            ...parsedResponse,
+            address: params.address,
+            totalSupply: BigInt(parsedResponse.totalSupply),
+        };
+    }
 }
 
 function processCampaignsResponse(
@@ -1081,8 +1111,8 @@ function processCampaignsResponse(
                     type: TargetType.HoldFungibleAsset,
                     chainType: backendCampaign.target.chainType,
                     chainId: backendCampaign.target.chainId,
-                    asset: resolvePricedTokenWithTvlInChain(
-                        response.resolvedPricedTokensWithTvl,
+                    asset: resolvePricedTokenWithTotalSuppliesInChain(
+                        response.resolvedPricedTokenWithTotalSupplies,
                         backendCampaign.target.chainId,
                         backendCampaign.target.chainType,
                         backendCampaign.target.address,
@@ -1090,8 +1120,8 @@ function processCampaignsResponse(
                     stakingAssets:
                         backendCampaign.target.stakingAssetAddresses.map(
                             (address) =>
-                                resolvePricedTokenWithTvlInChain(
-                                    response.resolvedPricedTokensWithTvl,
+                                resolvePricedTokenWithTotalSuppliesInChain(
+                                    response.resolvedPricedTokenWithTotalSupplies,
                                     backendCampaign.target.chainId,
                                     backendCampaign.target.chainType,
                                     address,
@@ -1420,20 +1450,21 @@ function resolvePricedTokenInChain(
     };
 }
 
-function resolvePricedTokenWithTvlInChain(
-    registry: BackendResolvedPricedTokensWithTvlRegistry,
+function resolvePricedTokenWithTotalSuppliesInChain(
+    registry: BackendResolvedPricedTokensWithTotalSuppliesRegistry,
     chainId: number,
     chainType: ChainType,
     address: Address,
-): UsdPricedErc20TokenWithTvl {
+): UsdPricedErc20TokenWithTotalSupply {
     const resolved = registry[chainType][chainId][address];
     if (!resolved)
         throw new Error(
-            `Could not find resolved priced token with tvl with address ${address} in chain with id ${chainId} and type ${chainType}`,
+            `Could not find resolved priced token with total supplies with address ${address} in chain with id ${chainId} and type ${chainType}`,
         );
 
     return {
         ...resolved,
+        totalSupply: BigInt(resolved.totalSupply),
         address,
     };
 }
