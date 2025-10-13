@@ -5,12 +5,12 @@
     "scripts": {
         "prepare:deploy": "tsx ./scripts/prepare-deploy.ts",
         "codegen": "graph codegen",
-        "deploy:liquity:sepolia": "npm prepare:deploy sepolia liquity && npm codegen && graph deploy metrom-liquity-sepolia -l 0.0.11",
-        "deploy:ebisu:sepolia": "npm prepare:deploy sepolia ebisu && npm codegen && graph deploy metrom-ebisu-sepolia -l 0.0.2",
-        "deploy:quill:scroll": "npm prepare:deploy scroll quill && npm codegen && graph deploy metrom-quill-scroll -l 0.0.7",
-        "deploy:orki:swell": "npm prepare:deploy swellchain orki && npm codegen && graph deploy metrom-orki-swell -l 0.0.4",
-        "deploy:ebisu:mainnet": "npm prepare:deploy mainnet ebisu && npm codegen && graph deploy metrom-ebisu-mainnet -l 0.0.1",
-        "deploy:liquity:mainnet": "npm prepare:deploy mainnet liquity && npm codegen && graph deploy metrom-liquity-mainnet -l 0.0.1",
+        "deploy:liquity:sepolia": "npm run prepare:deploy sepolia liquity && npm run codegen && graph deploy --studio metrom-liquity-sepolia -l 0.0.11",
+        "deploy:ebisu:sepolia": "npm run prepare:deploy sepolia ebisu && npm run codegen && graph deploy --studio metrom-ebisu-sepolia -l 0.0.2",
+        "deploy:quill:scroll": "npm run prepare:deploy scroll quill && npm run codegen && graph deploy --studio  metrom-quill-scroll -l 0.0.7",
+        "deploy:orki:swell": "npm run prepare:deploy swellchain orki && npm run codegen && graph deploy --studio metrom-orki-swell -l 0.0.4",
+        "deploy:ebisu:mainnet": "npm run prepare:deploy mainnet ebisu && npm run codegen && graph deploy --studio metrom-ebisu-mainnet -l 0.0.1",
+        "deploy:liquity:mainnet": "npm run prepare:deploy mainnet liquity && npm run codegen && graph deploy --studio metrom-liquity-mainnet -l 0.0.2",
         "lint": "eslint .",
         "format": "eslint --fix ."
     },
