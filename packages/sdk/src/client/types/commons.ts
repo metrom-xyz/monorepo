@@ -13,9 +13,9 @@ export type BackendResolvedPricedTokensRegistry = Record<
     Record<number, Record<Address, BackendUsdPricedErc20Token>>
 >;
 
-export type BackendResolvedPricedTokensWithTvlRegistry = Record<
+export type BackendResolvedPricedTokensWithTotalSuppliesRegistry = Record<
     ChainType,
-    Record<number, Record<Address, BackendUsdPricedErc20TokenWithTvl>>
+    Record<number, Record<Address, BackendUsdPricedErc20TokenWithTotalSupply>>
 >;
 
 export type BackendResolvedAmmPoolsRegistry = Record<
@@ -46,8 +46,10 @@ export interface BackendUsdPricedErc20Token extends BackendErc20Token {
     usdPrice: number;
 }
 
-export interface BackendUsdPricedErc20TokenWithTvl extends BackendErc20Token {
-    tvl: number;
+export interface BackendUsdPricedErc20TokenWithTotalSupply
+    extends BackendUsdPricedErc20Token {
+    totalSupply: string;
+    usdTotalSupply: number;
 }
 
 export interface BackendWhitelistedErc20Token

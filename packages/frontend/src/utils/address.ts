@@ -29,7 +29,7 @@ export function getColorFromAddress(address: Address) {
 
 export function isAddress(address: string): boolean {
     if (CHAIN_TYPE === ChainType.Aptos)
-        return AccountAddress.isValid({ input: address }).valid;
+        return AccountAddress.isValid({ input: address, strict: true }).valid;
     if (CHAIN_TYPE === ChainType.Evm) return isAddressViem(address);
     return false;
 }
