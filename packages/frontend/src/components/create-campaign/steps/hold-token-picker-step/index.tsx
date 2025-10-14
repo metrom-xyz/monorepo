@@ -12,20 +12,20 @@ import { useTranslations } from "next-intl";
 import { useCallback, useEffect, useState, type ChangeEvent } from "react";
 import { InfoMessage } from "@/src/components/info-message";
 import { isAddress } from "@/src/utils/address";
-import { useAssetInfo } from "@/src/hooks/useAssetInfo";
+import { useFungibleAssetInfo } from "@/src/hooks/useFungibleAssetInfo";
 import { useChainWithType } from "@/src/hooks/useChainWithType";
 import { AssetChip, AssetChipLoading } from "./asset-chip";
 import type { LocalizedMessage } from "@/src/types/utils";
 import { StakingAssetsPicker } from "./staking-assets-picker";
-import type { TokenInfo } from "@/src/types/common";
 import { useDebounce } from "react-use";
+import type { FungibleAssetInfo } from "@metrom-xyz/sdk";
 
 import styles from "./styles.module.css";
 
 interface HoldFungibleAssetPickerStepProps {
     disabled?: boolean;
-    asset?: TokenInfo;
-    stakingAssets: TokenInfo[];
+    asset?: FungibleAssetInfo;
+    stakingAssets: FungibleAssetInfo[];
     onFungibleAssetChange: (
         fungibleAsset: HoldFungibleAssetCampaignPayloadPart,
     ) => void;
@@ -53,7 +53,11 @@ export function HoldFungibleAssetPickerStep({
     );
 
     const { id: chainId } = useChainWithType();
-    const { info: assetInfo, loading: loadingAssetInfo } = useAssetInfo({
+    const {
+        info: assetInfo,
+        errored: assetInfoErrored,
+        loading: loadingAssetInfo,
+    } = useFungibleAssetInfo({
         address: debouncedAssetAddress,
         enabled: isAddress(debouncedAssetAddress) && !disabled,
     });
@@ -73,9 +77,10 @@ export function HoldFungibleAssetPickerStep({
         }
 
         if (!isAddress(assetAddress)) setAssetError("errors.notAnAddress");
-        else if (assetInfo === null) setAssetError("errors.notFound");
+        else if (!assetInfo && assetInfoErrored)
+            setAssetError("errors.notFound");
         else setAssetError("");
-    }, [assetAddress, assetInfo]);
+    }, [assetAddress, assetInfo, assetInfoErrored]);
 
     useEffect(() => {
         onError({
@@ -92,7 +97,7 @@ export function HoldFungibleAssetPickerStep({
         setAssetAddress(address);
     }
 
-    function handleStakingAssetsOnChange(stakingTokens: TokenInfo[]) {
+    function handleStakingAssetsOnChange(stakingTokens: FungibleAssetInfo[]) {
         onFungibleAssetChange({ stakingAssets: stakingTokens });
     }
 
@@ -141,7 +146,7 @@ export function HoldFungibleAssetPickerStep({
                         <Typography weight="medium" size="xs" uppercase light>
                             {t("tokenAddressInput.label")}
                         </Typography>
-                        {assetInfo === undefined && loadingAssetInfo ? (
+                        {!assetInfo && loadingAssetInfo ? (
                             <AssetChipLoading />
                         ) : assetInfo ? (
                             <AssetChip
