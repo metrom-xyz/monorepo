@@ -963,7 +963,6 @@ export class MetromApiClient {
 
         return {
             ...parsedResponse,
-            address: params.address,
             totalSupply: BigInt(parsedResponse.totalSupply),
         };
     }

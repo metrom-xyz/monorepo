@@ -4,11 +4,11 @@ import { useTranslations } from "next-intl";
 import { useCallback, useEffect, useState, type ChangeEvent } from "react";
 import { type Address } from "viem";
 import { isAddress } from "@/src/utils/address";
-import { useAssetInfo } from "@/src/hooks/useAssetInfo";
+import { useFungibleAssetInfo } from "@/src/hooks/useFungibleAssetInfo";
 import { AssetChip, AssetChipLoading } from "../asset-chip";
-import type { TokenInfo } from "@/src/types/common";
 import { useDebounce } from "react-use";
 import { AnimatePresence, easeInOut, motion } from "motion/react";
+import type { FungibleAssetInfo } from "@metrom-xyz/sdk";
 
 import styles from "./styles.module.css";
 
@@ -19,8 +19,8 @@ interface StakingAssetsPickerProps {
     visible?: boolean;
     disabled?: boolean;
     chainId: number;
-    stakingAssets: TokenInfo[];
-    onChange: (stakingAssets: TokenInfo[]) => void;
+    stakingAssets: FungibleAssetInfo[];
+    onChange: (stakingAssets: FungibleAssetInfo[]) => void;
     onError: (error: ErrorMessage) => void;
 }
 
@@ -40,7 +40,11 @@ export function StakingAssetsPicker({
     const [debouncedAssetAddress, setDebouncedAssetAddress] = useState("");
     const [error, setError] = useState<ErrorMessage>("");
 
-    const { info: assetInfo, loading: loadingAssetInfo } = useAssetInfo({
+    const {
+        info: assetInfo,
+        errored: assetInfoErrored,
+        loading: loadingAssetInfo,
+    } = useFungibleAssetInfo({
         address: debouncedAssetAddress,
         enabled: isAddress(debouncedAssetAddress) && !disabled,
     });
@@ -68,12 +72,12 @@ export function StakingAssetsPicker({
             )
         )
             error = "errors.alreadyAdded";
-        else if (assetInfo === null) error = "errors.notFound";
+        else if (assetInfoErrored) error = "errors.notFound";
         else error = "";
 
         setError(error);
         onError(error);
-    }, [assetAddress, assetInfo, stakingAssets, onError]);
+    }, [assetAddress, assetInfo, stakingAssets, assetInfoErrored, onError]);
 
     function handleTokenOnChange(event: ChangeEvent<HTMLInputElement>) {
         const address = event.target.value as Address;
@@ -124,7 +128,7 @@ export function StakingAssetsPicker({
                         <Typography weight="medium" size="xs" uppercase light>
                             {t("stakingTokenAddressInput.label")}
                         </Typography>
-                        {assetInfo === undefined && loadingAssetInfo ? (
+                        {!assetInfo && loadingAssetInfo ? (
                             <AssetChipLoading />
                         ) : assetInfo ? (
                             <AssetChip
