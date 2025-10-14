@@ -46,8 +46,8 @@ export function AmmPoolLiquityHeader({ campaign }: AmmPoolLiquityHeaderProps) {
     const depositLink = campaign.getDepositLiquidityUrl(velodromePoolParams);
     const explorerLink = getExplorerLink(
         campaign.target.pool.id,
-        campaign.chainId,
-        campaign.chainType,
+        campaign.target.chainId,
+        campaign.target.chainType,
     );
 
     function handleAddLiquidityOnClick() {

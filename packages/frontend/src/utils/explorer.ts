@@ -28,6 +28,24 @@ export function getExplorerLink(
     return `${explorer.url}/address/${address}`;
 }
 
+export function getFungibleAssetExplorerLink(
+    address: Address,
+    chainId?: SupportedChain,
+    chainType?: ChainType,
+): string | undefined {
+    if (!chainType || !chainId || !isAddress(address)) return undefined;
+
+    const explorer = getCrossVmChainData(chainId, chainType)?.blockExplorers
+        ?.default;
+    if (!explorer) return undefined;
+
+    if (chainType === ChainType.Aptos) {
+        const network = chainIdToAptosNetwork(chainId);
+        return `${explorer.url}/fungible_asset/${address}?network=${network}`;
+    }
+    return `${explorer.url}/token/${address}`;
+}
+
 export function getTxExplorerLink(
     hash: Hex,
     chainId?: SupportedChain,
