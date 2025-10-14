@@ -6,6 +6,9 @@ import { useRouter } from "@/src/i18n/routing";
 import { useCallback } from "react";
 import { RemoteLogo } from "../../remote-logo";
 import { AprChip } from "../../apr-chip";
+import { trackFathomEvent } from "@/src/utils/fathom";
+import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
+import { getFungibleAssetExplorerLink } from "@/src/utils/explorer";
 
 import styles from "./styles.module.css";
 
@@ -18,10 +21,19 @@ export function HoldFungibleAsset({ campaign }: HoldFungibleAssetProps) {
     const router = useRouter();
 
     const ChainIcon = campaign.chainData?.icon;
+    const explorerLink = getFungibleAssetExplorerLink(
+        campaign.target.asset.address,
+        campaign.target.chainId,
+        campaign.target.chainType,
+    );
 
     const handleClaimOnClick = useCallback(() => {
         router.push("/claims");
     }, [router]);
+
+    function handleExploreOnClick() {
+        trackFathomEvent("CLICK_FUNGIBLE_ASSET_EXPLORE");
+    }
 
     return (
         <div className={styles.root}>
@@ -54,23 +66,25 @@ export function HoldFungibleAsset({ campaign }: HoldFungibleAssetProps) {
                             {t("claim")}
                         </Button>
                     )}
-                    {/* <Button
+                    <Button
                         size="sm"
-                        href={actionLink || undefined}
-                        disabled={!actionLink}
+                        variant="secondary"
+                        border={false}
+                        href={explorerLink}
+                        disabled={!explorerLink}
+                        onClick={handleExploreOnClick}
                         icon={ArrowRightIcon}
                         iconPlacement="right"
                         target="_blank"
                         rel="noopener noreferrer"
                         className={{
+                            root: styles.exploreButton,
+                            contentWrapper: styles.exploreButton,
                             icon: styles.externalLinkIcon,
                         }}
                     >
-                        {t(`liquityV2.${campaign.target.type}`, {
-                            collateral: campaign.target.collateral.token.symbol,
-                            debtToken: brand?.debtToken.symbol || "",
-                        })}
-                    </Button> */}
+                        {t("explorer")}
+                    </Button>
                 </div>
                 {campaign.isDistributing(DistributablesType.Tokens) && (
                     <AprChip
