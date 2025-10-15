@@ -122,6 +122,7 @@ export function PoolStep({
             <StepContent>
                 {dex?.supportsFetchAllPools ? (
                     <ListPoolPicker
+                        open={open}
                         value={pool}
                         dex={dex.slug}
                         onChange={handlePoolOnChange}
