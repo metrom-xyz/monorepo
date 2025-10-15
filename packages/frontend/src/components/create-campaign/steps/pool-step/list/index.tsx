@@ -1,9 +1,15 @@
-import { useCallback, useState, type ChangeEvent, useMemo } from "react";
+import {
+    useCallback,
+    useState,
+    type ChangeEvent,
+    useMemo,
+    useEffect,
+} from "react";
 import { useDebounce } from "react-use";
 import type { Erc20Token, SupportedDex, AmmPoolWithTvl } from "@metrom-xyz/sdk";
 import { useChainWithType } from "@/src/hooks/useChainWithType";
 import { TextInput, Chip, Typography } from "@metrom-xyz/ui";
-import { List, useListRef } from "react-window";
+import { List, useListCallbackRef } from "react-window";
 import { SearchIcon } from "@/src/assets/search-icon";
 import { useTranslations } from "next-intl";
 import { usePools } from "@/src/hooks/usePools";
@@ -16,6 +22,7 @@ import { CHAIN_TYPE } from "@/src/commons";
 import styles from "./styles.module.css";
 
 interface ListPoolPickerProps {
+    open: boolean;
     value?: AmmPoolWithTvl;
     dex?: SupportedDex;
     onChange: (pool: AmmPoolWithTvl) => void;
@@ -23,12 +30,17 @@ interface ListPoolPickerProps {
 
 const LIST_ITEM_HEIGHT = 57;
 
-export function ListPoolPicker({ value, dex, onChange }: ListPoolPickerProps) {
+export function ListPoolPicker({
+    open,
+    value,
+    dex,
+    onChange,
+}: ListPoolPickerProps) {
     const t = useTranslations("newCampaign.form.ammPoolLiquidity.pool");
     const [search, setSearch] = useState("");
     const [debouncedSearch, setDebouncedSearch] = useState(search);
     const [baseTokenFilter, setBaseTokenFilter] = useState<Erc20Token>();
-    const listRef = useListRef(null);
+    const [list, setList] = useListCallbackRef(null);
 
     const { id: chainId } = useChainWithType();
     const baseTokens = useBaseTokens(chainId);
@@ -52,6 +64,22 @@ export function ListPoolPicker({ value, dex, onChange }: ListPoolPickerProps) {
         return pools.findIndex((pool) => pool.id === value?.id);
     }, [pools, value?.id]);
 
+    useEffect(() => {
+        if (
+            !open ||
+            !list ||
+            selectedIndex < 0 ||
+            selectedIndex > filteredPools.length
+        )
+            return;
+
+        list.scrollToRow({
+            index: selectedIndex,
+            align: "start",
+            behavior: "instant",
+        });
+    }, [filteredPools.length, list, open, selectedIndex]);
+
     useDebounce(
         () => {
             setDebouncedSearch(search);
@@ -70,21 +98,6 @@ export function ListPoolPicker({ value, dex, onChange }: ListPoolPickerProps) {
         },
         [baseTokenFilter?.address],
     );
-
-    const handleScrollToActive = useCallback(() => {
-        if (
-            !listRef.current ||
-            selectedIndex < 0 ||
-            selectedIndex > filteredPools.length
-        )
-            return;
-
-        listRef.current.scrollToRow({
-            index: selectedIndex,
-            align: "start",
-            behavior: "instant",
-        });
-    }, [listRef, selectedIndex, filteredPools]);
 
     function handleSearchOnChange(event: ChangeEvent<HTMLInputElement>) {
         setSearch(event.target.value);
@@ -149,8 +162,7 @@ export function ListPoolPicker({ value, dex, onChange }: ListPoolPickerProps) {
                 </div>
                 {loading || (filteredPools && filteredPools.length > 0) ? (
                     <List
-                        onResize={handleScrollToActive}
-                        listRef={listRef}
+                        listRef={setList}
                         rowHeight={LIST_ITEM_HEIGHT}
                         rowCount={itemCount}
                         rowProps={{

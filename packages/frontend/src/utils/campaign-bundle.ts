@@ -75,7 +75,7 @@ export function buildCampaignDataBundleMvm(payload: CampaignPreviewPayload) {
             payload.kind === CampaignKind.AaveV3BridgeAndSupply
         ) {
             serializableParts.push(
-                new U32(payload.boostingFactor * 100 * 1_000_000),
+                new U32(Math.floor(payload.boostingFactor * 100 * 1_000_000)),
             );
         }
     } else if (payload instanceof HoldFungibleAssetCampaignPreviewPayload) {
