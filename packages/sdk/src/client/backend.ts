@@ -6,20 +6,14 @@ import {
     SupportedAaveV3,
     SupportedLiquityV2,
     SupportedBridge,
+    type SupportedProtocol,
 } from "../commons";
 import type {
     BackendCampaignResponse,
     BackendCampaignsResponse,
     BackendCampaignStatus,
 } from "./types/campaigns";
-import type {
-    BackendResolvedAaveV3CollateralsRegistry,
-    BackendResolvedAmmPoolsRegistry,
-    BackendResolvedLiquityV2CollateralsRegistry,
-    BackendResolvedPricedTokensRegistry,
-    BackendResolvedPricedTokensWithTotalSuppliesRegistry,
-    BackendResolvedTokensRegistry,
-} from "./types/commons";
+import type { BackendResolvedPricedTokensRegistry } from "./types/commons";
 import type {
     BackendErc20Token,
     BackendUsdPricedErc20Token,
@@ -51,7 +45,6 @@ import {
     type Erc20Token,
     type OnChainAmount,
     type UsdPricedErc20Token,
-    type UsdPricedErc20TokenWithTotalSupply,
     type UsdPricedOnChainAmount,
 } from "../types/commons";
 import type {
@@ -134,11 +127,21 @@ const BRIDGE_BRAND_NAME: Record<SupportedBridge, string> = {
 };
 
 export interface FetchCampaignsParams {
-    status?: BackendCampaignStatus;
-    owner?: Address;
-    chainId?: SupportedChain;
+    page: number;
+    pageSize: number;
+    orderBy?: string;
+    asc?: boolean;
     chainType?: ChainType;
-    dex?: SupportedDex;
+    chainId?: SupportedChain;
+    type?: "rewards" | "points";
+    protocol?: SupportedProtocol;
+    status?: BackendCampaignStatus;
+    tvlRange?: string;
+}
+
+export interface PaginatedCampaignsResponse {
+    totalItems: number;
+    campaigns: Campaign[];
 }
 
 export interface ChainParams {
@@ -242,27 +245,31 @@ enum Direction {
 export class MetromApiClient {
     constructor(public readonly baseUrl: string) {}
 
-    async fetchCampaigns(params?: FetchCampaignsParams): Promise<Campaign[]> {
+    async fetchCampaigns(
+        params: FetchCampaignsParams,
+    ): Promise<PaginatedCampaignsResponse> {
         const url = new URL("v2/campaigns", this.baseUrl);
 
-        if (params)
-            for (const param in params) {
-                const value = params[param as keyof FetchCampaignsParams];
-                if (!value) continue;
-                url.searchParams.set(param, value.toString());
-            }
+        for (const param in params) {
+            const value = params[param as keyof FetchCampaignsParams];
+            if (!value) continue;
+            url.searchParams.set(param, value.toString());
+        }
 
         const response = await fetch(url);
 
         if (!response.ok)
             throw new Error(
-                `response not ok while fetching campaigns: ${await response.text()}`,
+                `Response not ok while fetching campaigns: ${await response.text()}`,
             );
 
         const parsedResponse =
             (await response.json()) as BackendCampaignsResponse;
 
-        return processCampaignsResponse(parsedResponse);
+        return {
+            totalItems: parsedResponse.totalItems,
+            campaigns: processCampaignsResponse(parsedResponse),
+        };
     }
 
     async fetchCampaign(params: FetchCampaignParams): Promise<Campaign> {
@@ -274,14 +281,14 @@ export class MetromApiClient {
         );
         if (!response.ok)
             throw new Error(
-                `response not ok while fetching campaign with id ${params.id} on chain id ${params.chainId} and type ${params.chainType}: ${await response.text()}`,
+                `Response not ok while fetching campaign with id ${params.id} on chain id ${params.chainId} and type ${params.chainType}: ${await response.text()}`,
             );
 
         const parsedResponse =
             (await response.json()) as BackendCampaignResponse;
 
         const processedCampaigns = processCampaignsResponse({
-            ...parsedResponse,
+            totalItems: 1,
             campaigns: [parsedResponse.campaign],
         });
 
@@ -302,7 +309,7 @@ export class MetromApiClient {
         );
         if (!response.ok)
             throw new Error(
-                `response not ok while fetching pools: ${await response.text()}`,
+                `Response not ok while fetching pools: ${await response.text()}`,
             );
 
         const parsedResponse = (await response.json()) as BackendPoolsResponse;
@@ -340,7 +347,7 @@ export class MetromApiClient {
 
         if (!response.ok)
             throw new Error(
-                `response not ok while fetching pools: ${await response.text()}`,
+                `Response not ok while fetching pools: ${await response.text()}`,
             );
 
         const parsedResponse = (await response.json()) as BackendPoolResponse;
@@ -374,7 +381,7 @@ export class MetromApiClient {
         );
         if (!response.ok)
             throw new Error(
-                `response not ok while fetching claimable rewards: ${await response.text()}`,
+                `Response not ok while fetching claimable rewards: ${await response.text()}`,
             );
 
         const parsedResponse = (await response.json()) as BackendClaimsResponse;
@@ -407,7 +414,7 @@ export class MetromApiClient {
         );
         if (!response.ok)
             throw new Error(
-                `response not ok while fetching reimbursements: ${await response.text()}`,
+                `Response not ok while fetching reimbursements: ${await response.text()}`,
             );
 
         const parsedResponse =
@@ -444,7 +451,7 @@ export class MetromApiClient {
         );
         if (!response.ok)
             throw new Error(
-                `response not ok while fetching reward tokens: ${await response.text()}`,
+                `Response not ok while fetching reward tokens: ${await response.text()}`,
             );
 
         const parsedResponse =
@@ -472,7 +479,7 @@ export class MetromApiClient {
         );
         if (!response.ok)
             throw new Error(
-                `response not ok while fetching reward tokens: ${await response.text()}`,
+                `Response not ok while fetching reward tokens: ${await response.text()}`,
             );
 
         const parsedResponse =
@@ -501,7 +508,7 @@ export class MetromApiClient {
         const response = await fetch(url);
         if (!response.ok)
             throw new Error(
-                `response not ok while fetching activity for address ${params.address} from ${params.from} to ${params.to}: ${await response.text()}`,
+                `Response not ok while fetching activity for address ${params.address} from ${params.from} to ${params.to}: ${await response.text()}`,
             );
 
         const parsedResponse =
@@ -559,7 +566,7 @@ export class MetromApiClient {
         const response = await fetch(url);
         if (!response.ok)
             throw new Error(
-                `response not ok while fetching kpi measurements for campaign with id ${campaign.id} in chain with id ${campaign.chainId} and type ${campaign.chainType} from ${from} to ${to}: ${await response.text()}`,
+                `Response not ok while fetching kpi measurements for campaign with id ${campaign.id} in chain with id ${campaign.chainId} and type ${campaign.chainType} from ${from} to ${to}: ${await response.text()}`,
             );
 
         const parsedResponse =
@@ -672,7 +679,7 @@ export class MetromApiClient {
         const response = await fetch(url);
         if (!response.ok)
             throw new Error(
-                `response not ok while fetching leaderboard for campaign with id ${params.campaignId} in chain with id ${params.chainId} and type ${params.chainType}: ${await response.text()}`,
+                `Response not ok while fetching leaderboard for campaign with id ${params.campaignId} in chain with id ${params.chainId} and type ${params.chainType}: ${await response.text()}`,
             );
 
         const { resolvedPricedTokens, updatedAt, leaderboard } =
@@ -750,7 +757,7 @@ export class MetromApiClient {
         const response = await fetch(url);
         if (!response.ok)
             throw new Error(
-                `response not ok while fetching liquidity in range ${params.from}-${params.to} for pool ${params.pool.id} in chain with id ${params.chainId} and type ${params.chainType}: ${await response.text()}`,
+                `Response not ok while fetching liquidity in range ${params.from}-${params.to} for pool ${params.pool.id} in chain with id ${params.chainId} and type ${params.chainType}: ${await response.text()}`,
             );
 
         const { activeTick, liquidity } =
@@ -778,7 +785,7 @@ export class MetromApiClient {
         const response = await fetch(url);
         if (!response.ok)
             throw new Error(
-                `response not ok while fetching liquidity by addresses ${params.addresses.join(",")} for pool ${params.pool.id} in chain with id ${params.chainId} and type ${params.chainType}: ${await response.text()}`,
+                `Response not ok while fetching liquidity by addresses ${params.addresses.join(",")} for pool ${params.pool.id} in chain with id ${params.chainId} and type ${params.chainType}: ${await response.text()}`,
             );
 
         const { liquidities } =
@@ -807,7 +814,7 @@ export class MetromApiClient {
         const response = await fetch(url);
         if (!response.ok)
             throw new Error(
-                `response not ok while fetching ${params.surroundingAmount} surrounding initialized ticks for pool ${params.pool.id} in chain with id ${params.chainId} and type ${params.chainId}: ${await response.text()}`,
+                `Response not ok while fetching ${params.surroundingAmount} surrounding initialized ticks for pool ${params.pool.id} in chain with id ${params.chainId} and type ${params.chainId}: ${await response.text()}`,
             );
 
         const { activeTick, ticks: initializedTicks } =
@@ -887,7 +894,7 @@ export class MetromApiClient {
         const response = await fetch(url);
         if (!response.ok)
             throw new Error(
-                `response not ok while fetching liquity v2 collaterals: ${await response.text()}`,
+                `Response not ok while fetching liquity v2 collaterals: ${await response.text()}`,
             );
 
         const parsedResponse =
@@ -921,7 +928,7 @@ export class MetromApiClient {
         const response = await fetch(url);
         if (!response.ok)
             throw new Error(
-                `response not ok while fetching aave-v3 collaterals: ${await response.text()}`,
+                `Response not ok while fetching aave-v3 collaterals: ${await response.text()}`,
             );
 
         const parsedResponse =
@@ -955,7 +962,7 @@ export class MetromApiClient {
         const response = await fetch(url);
         if (!response.ok)
             throw new Error(
-                `response not ok while fetching fungible asset info: ${await response.text()}`,
+                `Response not ok while fetching fungible asset info: ${await response.text()}`,
             );
 
         const parsedResponse =
@@ -974,166 +981,100 @@ function processCampaignsResponse(
     const campaigns = [];
 
     for (const backendCampaign of response.campaigns) {
+        const { chainType, chainId, type } = backendCampaign.target;
+
         let target;
-        switch (backendCampaign.target.type) {
+        switch (type) {
             case "amm-pool-liquidity": {
                 target = <AmmPoolLiquidityTarget>{
-                    ...backendCampaign.target,
-                    pool: resolveAmmPool(
-                        response.resolvedAmmPools,
-                        response.resolvedTokens,
-                        backendCampaign.target.chainId,
-                        backendCampaign.target.chainType,
-                        backendCampaign.target.poolId,
-                    ),
+                    type: TargetType.AmmPoolLiquidity,
+                    chainType,
+                    chainId,
+                    pool: {
+                        ...backendCampaign.target,
+                        dex: {
+                            slug: backendCampaign.target.dex,
+                            name: DEX_BRAND_NAME[backendCampaign.target.dex],
+                        },
+                        liquidity: backendCampaign.target.liquidity
+                            ? BigInt(backendCampaign.target.liquidity)
+                            : undefined,
+                    },
                 };
                 break;
             }
             case "liquity-v2-debt": {
                 target = <LiquityV2DebtTarget>{
+                    ...backendCampaign.target,
                     type: TargetType.LiquityV2Debt,
-                    chainType: backendCampaign.target.chainType,
-                    chainId: backendCampaign.target.chainId,
                     brand: {
                         slug: backendCampaign.target.brand,
                         name: LIQUITY_V2_BRAND_NAME[
-                            backendCampaign.target.brand as SupportedLiquityV2
+                            backendCampaign.target.brand
                         ],
                     },
-                    collateral: resolveLiquityV2Collateral(
-                        response.resolvedLiquityV2Collaterals,
-                        response.resolvedPricedTokens,
-                        backendCampaign.target.chainId,
-                        backendCampaign.target.chainType,
-                        backendCampaign.target.brand,
-                        backendCampaign.target.collateral as Address,
-                    ),
                 };
                 break;
             }
             case "liquity-v2-stability-pool": {
                 target = <LiquityV2StabilityPoolTarget>{
+                    ...backendCampaign.target,
                     type: TargetType.LiquityV2StabilityPool,
-                    chainType: backendCampaign.target.chainType,
-                    chainId: backendCampaign.target.chainId,
                     brand: {
                         slug: backendCampaign.target.brand,
                         name: LIQUITY_V2_BRAND_NAME[
-                            backendCampaign.target.brand as SupportedLiquityV2
+                            backendCampaign.target.brand
                         ],
                     },
-                    collateral: resolveLiquityV2Collateral(
-                        response.resolvedLiquityV2Collaterals,
-                        response.resolvedPricedTokens,
-                        backendCampaign.target.chainId,
-                        backendCampaign.target.chainType,
-                        backendCampaign.target.brand,
-                        backendCampaign.target.collateral as Address,
-                    ),
                 };
                 break;
             }
             case "aave-v3-borrow": {
                 target = <AaveV3BorrowTarget>{
+                    ...backendCampaign.target,
                     type: TargetType.AaveV3Borrow,
-                    chainType: backendCampaign.target.chainType,
-                    chainId: backendCampaign.target.chainId,
                     brand: {
                         slug: backendCampaign.target.brand,
-                        name: AAVE_V3_BRAND_NAME[
-                            backendCampaign.target.brand as SupportedAaveV3
-                        ],
+                        name: AAVE_V3_BRAND_NAME[backendCampaign.target.brand],
                     },
                     market: backendCampaign.target.market,
-                    collateral: resolveAaveV3Collateral(
-                        response.resolvedAaveV3Collaterals,
-                        response.resolvedTokens,
-                        backendCampaign.target.chainId,
-                        backendCampaign.target.chainType,
-                        backendCampaign.target.brand,
-                        backendCampaign.target.market,
-                        backendCampaign.target.collateral as Address,
-                    ),
                 };
                 break;
             }
             case "aave-v3-supply": {
                 target = <AaveV3SupplyTarget>{
+                    ...backendCampaign.target,
                     type: TargetType.AaveV3Supply,
-                    chainType: backendCampaign.target.chainType,
-                    chainId: backendCampaign.target.chainId,
                     brand: {
                         slug: backendCampaign.target.brand,
-                        name: AAVE_V3_BRAND_NAME[
-                            backendCampaign.target.brand as SupportedAaveV3
-                        ],
+                        name: AAVE_V3_BRAND_NAME[backendCampaign.target.brand],
                     },
                     market: backendCampaign.target.market,
-                    collateral: resolveAaveV3Collateral(
-                        response.resolvedAaveV3Collaterals,
-                        response.resolvedTokens,
-                        backendCampaign.target.chainId,
-                        backendCampaign.target.chainType,
-                        backendCampaign.target.brand,
-                        backendCampaign.target.market,
-                        backendCampaign.target.collateral as Address,
-                    ),
                 };
                 break;
             }
             case "aave-v3-net-supply": {
                 target = <AaveV3NetSupplyTarget>{
+                    ...backendCampaign.target,
                     type: TargetType.AaveV3NetSupply,
-                    chainType: backendCampaign.target.chainType,
-                    chainId: backendCampaign.target.chainId,
                     brand: {
                         slug: backendCampaign.target.brand,
-                        name: AAVE_V3_BRAND_NAME[
-                            backendCampaign.target.brand as SupportedAaveV3
-                        ],
+                        name: AAVE_V3_BRAND_NAME[backendCampaign.target.brand],
                     },
                     market: backendCampaign.target.market,
-                    collateral: resolveAaveV3Collateral(
-                        response.resolvedAaveV3Collaterals,
-                        response.resolvedTokens,
-                        backendCampaign.target.chainId,
-                        backendCampaign.target.chainType,
-                        backendCampaign.target.brand,
-                        backendCampaign.target.market,
-                        backendCampaign.target.collateral as Address,
-                    ),
                 };
                 break;
             }
             case "hold-fungible-asset": {
                 target = <HoldFungibleAssetTarget>{
+                    ...backendCampaign.target,
                     type: TargetType.HoldFungibleAsset,
-                    chainType: backendCampaign.target.chainType,
-                    chainId: backendCampaign.target.chainId,
-                    asset: resolvePricedTokenWithTotalSuppliesInChain(
-                        response.resolvedPricedTokenWithTotalSupplies,
-                        backendCampaign.target.chainId,
-                        backendCampaign.target.chainType,
-                        backendCampaign.target.address,
-                    ),
-                    stakingAssets:
-                        backendCampaign.target.stakingAssetAddresses.map(
-                            (address) =>
-                                resolvePricedTokenWithTotalSuppliesInChain(
-                                    response.resolvedPricedTokenWithTotalSupplies,
-                                    backendCampaign.target.chainId,
-                                    backendCampaign.target.chainType,
-                                    address,
-                                ),
-                        ),
                 };
                 break;
             }
             case "aave-v3-bridge-and-supply": {
                 target = <AaveV3BridgeAndSupplyTarget>{
                     type: TargetType.AaveV3BridgeAndSupply,
-                    chainType: backendCampaign.target.chainType,
-                    chainId: backendCampaign.target.chainId,
                     bridge: {
                         slug: backendCampaign.target.bridgeBrand,
                         name: BRIDGE_BRAND_NAME[
@@ -1153,28 +1094,25 @@ function processCampaignsResponse(
                         (Number(backendCampaign.target.boostingFactor) /
                             1_000_000) *
                         100,
-                    collateral: resolveAaveV3Collateral(
-                        response.resolvedAaveV3Collaterals,
-                        response.resolvedTokens,
-                        backendCampaign.target.chainId,
-                        backendCampaign.target.chainType,
-                        backendCampaign.target.aaveV3Brand,
-                        backendCampaign.target.aaveV3Market,
-                        backendCampaign.target.aaveV3Collateral as Address,
-                    ),
+                    collateral: backendCampaign.target.aaveV3Collateral,
                 };
                 break;
             }
             case "jumper-whitelisted-amm-pool-liquidity": {
                 target = <JumperWhitelistedAmmPoolLiquidityTarget>{
-                    ...backendCampaign.target,
-                    pool: resolveAmmPool(
-                        response.resolvedAmmPools,
-                        response.resolvedTokens,
-                        backendCampaign.target.chainId,
-                        backendCampaign.target.chainType,
-                        backendCampaign.target.poolId,
-                    ),
+                    type: TargetType.JumperWhitelistedAmmPoolLiquidity,
+                    chainType,
+                    chainId,
+                    pool: {
+                        ...backendCampaign.target,
+                        dex: {
+                            slug: backendCampaign.target.dex,
+                            name: DEX_BRAND_NAME[backendCampaign.target.dex],
+                        },
+                        liquidity: backendCampaign.target.liquidity
+                            ? BigInt(backendCampaign.target.liquidity)
+                            : undefined,
+                    },
                 };
                 break;
             }
@@ -1186,8 +1124,8 @@ function processCampaignsResponse(
         }
 
         let distributables;
-        switch (backendCampaign.distributables.type) {
-            case "tokens": {
+        switch (backendCampaign.type) {
+            case "rewards": {
                 distributables = <TokenDistributables>{
                     type: "tokens",
                     list: [],
@@ -1195,24 +1133,16 @@ function processCampaignsResponse(
                     remainingUsdValue: 0,
                 };
 
-                for (const backendReward of backendCampaign.distributables
-                    .list) {
-                    const resolvedToken = resolvePricedTokenInChain(
-                        response.resolvedPricedTokens,
-                        backendCampaign.chainId,
-                        backendCampaign.chainType,
-                        backendReward.token,
-                    );
-
+                for (const backendReward of backendCampaign.rewards) {
                     const amount = stringToUsdPricedOnChainAmount(
                         backendReward.amount,
-                        resolvedToken.decimals,
-                        resolvedToken.usdPrice,
+                        backendReward.decimals,
+                        backendReward.usdPrice,
                     );
                     const remaining = stringToUsdPricedOnChainAmount(
                         backendReward.remaining,
-                        resolvedToken.decimals,
-                        resolvedToken.usdPrice,
+                        backendReward.decimals,
+                        backendReward.usdPrice,
                     );
 
                     distributables.amountUsdValue += amount.usdValue;
@@ -1221,7 +1151,7 @@ function processCampaignsResponse(
                     distributables.list.push(<TokenDistributable>{
                         amount,
                         remaining,
-                        token: resolvedToken,
+                        token: backendReward,
                     });
                 }
                 break;
@@ -1229,10 +1159,7 @@ function processCampaignsResponse(
             case "points": {
                 distributables = <PointDistributables>{
                     type: "points",
-                    amount: stringToOnChainAmount(
-                        backendCampaign.distributables.amount,
-                        18,
-                    ),
+                    amount: stringToOnChainAmount(backendCampaign.points, 18),
                 };
                 break;
             }
@@ -1252,6 +1179,9 @@ function processCampaignsResponse(
             };
         }
 
+        if (!target)
+            throw new Error(`Unsupported campaign target type ${type}`);
+
         campaigns.push(
             new Campaign(
                 backendCampaign.chainId,
@@ -1264,6 +1194,7 @@ function processCampaignsResponse(
                 distributables,
                 backendCampaign.snapshottedAt,
                 backendCampaign.specification,
+                backendCampaign.usdTvl,
                 backendCampaign.apr,
                 restrictions,
             ),
@@ -1271,148 +1202,6 @@ function processCampaignsResponse(
     }
 
     return campaigns;
-}
-
-function resolveAmmPool(
-    poolsRegistry: BackendResolvedAmmPoolsRegistry,
-    tokensRegistry: BackendResolvedTokensRegistry,
-    chainId: number,
-    chainType: ChainType,
-    id: Hex,
-): AmmPool {
-    const resolvedPool = poolsRegistry[chainType][chainId][id];
-    if (!resolvedPool)
-        throw new Error(
-            `Could not find resolved pool with id ${id} in chain with id ${chainId} and type ${chainType}`,
-        );
-
-    return {
-        ...resolvedPool,
-        chainId,
-        chainType,
-        id,
-        dex: {
-            slug: resolvedPool.dex as SupportedDex,
-            name: DEX_BRAND_NAME[resolvedPool.dex as SupportedDex],
-        },
-        amm: resolvedPool.amm as SupportedAmm,
-        tokens: resolvedPool.tokens.map((address) =>
-            resolveTokenInChain(tokensRegistry, chainId, chainType, address),
-        ),
-        liquidityType: resolvedPool.liquidityType as AmmPoolLiquidityType,
-        liquidity: resolvedPool.liquidity
-            ? BigInt(resolvedPool.liquidity)
-            : undefined,
-    };
-}
-
-function resolveLiquityV2Collateral(
-    liquityV2CollateralsRegistry: BackendResolvedLiquityV2CollateralsRegistry,
-    pricedTokensRegistry: BackendResolvedPricedTokensRegistry,
-    chainId: number,
-    chainType: ChainType,
-    brand: string,
-    id: Hex,
-): LiquityV2Collateral {
-    const byChain = liquityV2CollateralsRegistry[chainType][chainId];
-    if (!byChain)
-        throw new Error(
-            `Could not find resolved Liquity V2 collaterals by chain with id ${chainId} and type ${chainType}`,
-        );
-
-    const byBrand = byChain[brand];
-    if (!byBrand)
-        throw new Error(
-            `Could not find resolved Liquity V2 collaterals with brand ${brand} in chain with id ${chainId} and type ${chainType}`,
-        );
-
-    const resolvedLiquityV2Collateral = byBrand[id];
-    if (!resolvedLiquityV2Collateral)
-        throw new Error(
-            `Could not find resolved Liquity V2 collateral with brand ${brand} with id ${id} in chain with id ${chainId} and type ${chainType}`,
-        );
-
-    return {
-        chainId,
-        chainType,
-        token: resolvePricedTokenInChain(
-            pricedTokensRegistry,
-            chainId,
-            chainType,
-            id,
-        ),
-        liquidity: BigInt(resolvedLiquityV2Collateral.tvl),
-        usdTvl: resolvedLiquityV2Collateral.usdTvl,
-        usdMintedDebt: resolvedLiquityV2Collateral.mintedDebt,
-        usdStabilityPoolDebt: resolvedLiquityV2Collateral.stabilityPoolDebt,
-    };
-}
-
-function resolveAaveV3Collateral(
-    aaveV3CollateralsRegistry: BackendResolvedAaveV3CollateralsRegistry,
-    resolvedTokensRegistry: BackendResolvedTokensRegistry,
-    chainId: number,
-    chainType: ChainType,
-    brand: string,
-    market: string,
-    id: Hex,
-): AaveV3Collateral {
-    const byChain = aaveV3CollateralsRegistry[chainType][chainId];
-    if (!byChain)
-        throw new Error(
-            `Could not find resolved Aave V3 collaterals by chain with id ${chainId} and type ${chainType}`,
-        );
-
-    const byBrand = byChain[brand];
-    if (!byBrand)
-        throw new Error(
-            `Could not find resolved Aave V3 collaterals with brand ${brand} in chain with id ${chainId} and type ${chainType}`,
-        );
-
-    const byMarket = byBrand[market];
-    if (!byMarket)
-        throw new Error(
-            `Could not find resolved Aave V3 collaterals with market ${market} and brand ${brand} in chain with id ${chainId} and type ${chainType}`,
-        );
-
-    const resolvedAaveV3Collateral = byMarket[id];
-    if (!resolvedAaveV3Collateral)
-        throw new Error(
-            `Could not find resolved Aave V3 collateral with market ${market} and brand ${brand} with id ${id} in chain with id ${chainId} and type ${chainType}`,
-        );
-
-    return {
-        ...resolvedAaveV3Collateral,
-        chainId,
-        chainType,
-        token: resolveTokenInChain(
-            resolvedTokensRegistry,
-            chainId,
-            chainType,
-            id,
-        ),
-        debt: BigInt(resolvedAaveV3Collateral.debt),
-        supply: BigInt(resolvedAaveV3Collateral.supply),
-        netSupply: BigInt(resolvedAaveV3Collateral.netSupply),
-    };
-}
-
-function resolveTokenInChain(
-    registry: BackendResolvedTokensRegistry,
-    chainId: number,
-    chainType: ChainType,
-    address: Address,
-): Erc20Token {
-    const resolved = registry[chainType][chainId][address];
-    if (!resolved)
-        throw new Error(
-            `Could not find resolved token with address ${address} in chain with id ${chainId} and type ${chainType}`,
-        );
-
-    return {
-        ...resolved,
-        address,
-    };
 }
 
 function resolveToken(
@@ -1445,25 +1234,6 @@ function resolvePricedTokenInChain(
 
     return {
         ...resolved,
-        address,
-    };
-}
-
-function resolvePricedTokenWithTotalSuppliesInChain(
-    registry: BackendResolvedPricedTokensWithTotalSuppliesRegistry,
-    chainId: number,
-    chainType: ChainType,
-    address: Address,
-): UsdPricedErc20TokenWithTotalSupply {
-    const resolved = registry[chainType][chainId][address];
-    if (!resolved)
-        throw new Error(
-            `Could not find resolved priced token with total supplies with address ${address} in chain with id ${chainId} and type ${chainType}`,
-        );
-
-    return {
-        ...resolved,
-        totalSupply: BigInt(resolved.totalSupply),
         address,
     };
 }

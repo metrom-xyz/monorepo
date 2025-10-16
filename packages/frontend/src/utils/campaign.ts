@@ -50,37 +50,37 @@ export function getCampaignName(
             return t("campaignActions.borrow", {
                 brand: campaign.target.brand.name,
                 debtToken: targetProtocol?.debtToken.symbol || "",
-                token: campaign.target.collateral.token.symbol,
+                token: campaign.target.collateral.symbol,
             });
         }
         case TargetType.LiquityV2StabilityPool: {
             return t("campaignActions.depositStabilityPool", {
                 brand: campaign.target.brand.name,
-                token: campaign.target.collateral.token.symbol,
+                token: campaign.target.collateral.symbol,
             });
         }
         case TargetType.AaveV3Borrow: {
             return t("campaignActions.aaveV3Borrow", {
                 brand: campaign.target.brand.name,
-                token: campaign.target.collateral.token.symbol,
+                token: campaign.target.collateral.symbol,
             });
         }
         case TargetType.AaveV3Supply: {
             return t("campaignActions.aaveV3Supply", {
                 brand: campaign.target.brand.name,
-                token: campaign.target.collateral.token.symbol,
+                token: campaign.target.collateral.symbol,
             });
         }
         case TargetType.AaveV3NetSupply: {
             return t("campaignActions.aaveV3NetSupply", {
                 brand: campaign.target.brand.name,
-                token: campaign.target.collateral.token.symbol,
+                token: campaign.target.collateral.symbol,
             });
         }
         case TargetType.AaveV3BridgeAndSupply: {
             return t("campaignActions.aaveV3BridgeAndSupply", {
                 brand: campaign.target.brand.name,
-                token: campaign.target.collateral.token.symbol,
+                token: campaign.target.collateral.symbol,
             });
         }
         case TargetType.HoldFungibleAsset: {

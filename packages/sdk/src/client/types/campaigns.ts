@@ -1,14 +1,9 @@
 import type { Address, Hex } from "viem";
-import type {
-    BackendResolvedAaveV3CollateralsRegistry,
-    BackendResolvedAmmPoolsRegistry,
-    BackendResolvedLiquityV2CollateralsRegistry,
-    BackendResolvedPricedTokensRegistry,
-    BackendResolvedPricedTokensWithTotalSuppliesRegistry as BackendResolvedPricedTokensWithTotalSuppliesRegistry,
-    BackendResolvedTokensRegistry,
-} from "./commons";
+import type { BackendErc20Token } from "./commons";
 import type { Specification } from "src/types/campaigns";
 import type { ChainType } from "src/types/commons";
+import type { BackendCampaignAmmPool } from "./pools";
+import type { SupportedAaveV3, SupportedLiquityV2 } from "src/commons";
 
 export interface BaseTarget {
     chainType: ChainType;
@@ -19,35 +14,41 @@ export interface BackendEmptyTarget extends BaseTarget {
     type: "empty";
 }
 
-export interface BackendAmmPoolLiquidityTarget extends BaseTarget {
+export interface BackendAmmPoolLiquidityTarget
+    extends BaseTarget,
+        BackendCampaignAmmPool {
     type: "amm-pool-liquidity";
-    poolId: Hex;
 }
 
 export interface BackendJumperWhitelistedAmmPoolLiquidityTarget
-    extends BaseTarget {
+    extends BaseTarget,
+        BackendCampaignAmmPool {
     type: "jumper-whitelisted-amm-pool-liquidity";
-    poolId: Hex;
 }
 
 export interface BaseBackendLiquityTarget<T> extends BaseTarget {
     type: T;
     chainId: number;
+    brand: SupportedLiquityV2;
+    collateral: BackendErc20Token;
+}
+
+export interface BackendGmxV1Target extends BaseTarget {
+    type: "gmx-v1-liquidity";
     brand: string;
-    collateral: Address;
 }
 
 export interface BackendAaveV3Target<T> extends BaseTarget {
     type: T;
-    brand: string;
+    brand: SupportedAaveV3;
     market: string;
-    collateral: string;
+    collateral: BackendErc20Token;
 }
 
 export interface BackendHoldFungibleAssetTarget extends BaseTarget {
     type: "hold-fungible-asset";
-    address: Address;
-    stakingAssetAddresses: Address[];
+    asset: BackendErc20Token;
+    stakingAssets: BackendErc20Token[];
 }
 
 export type BackendLiquityV2DebtTarget =
@@ -65,7 +66,7 @@ export type BackendAaveV3BridgeAndSupplyTarget = BaseTarget & {
     bridgeBrand: string;
     aaveV3Brand: string;
     aaveV3Market: string;
-    aaveV3Collateral: string;
+    aaveV3Collateral: BackendErc20Token;
     boostingFactor: string;
 };
 
@@ -75,14 +76,10 @@ export interface BackendTokenDistributable {
     remaining: string;
 }
 
-export interface BackendTokenDistributables {
-    type: "tokens";
-    list: BackendTokenDistributable[];
-}
-
-export interface BackendPointDistributables {
-    type: "points";
+export interface BackendReward extends BackendErc20Token {
     amount: string;
+    remaining: string;
+    usdPrice: number;
 }
 
 export enum BackendCampaignStatus {
@@ -98,7 +95,7 @@ export interface BackendLiquityV2Collateral {
     stabilityPoolDebt: number;
 }
 
-export interface BackendCampaign {
+export interface BackendBaseCampaign {
     chainId: number;
     id: Hex;
     chainType: ChainType;
@@ -106,11 +103,13 @@ export interface BackendCampaign {
     to: number;
     createdAt: number;
     snapshottedAt?: number;
+    type: "rewards" | "points";
     target:
         | BackendEmptyTarget
         | BackendAmmPoolLiquidityTarget
         | BackendLiquityV2DebtTarget
         | BackendLiquityV2StabilityPoolTarget
+        | BackendGmxV1Target
         | BackendAaveV3BorrowTarget
         | BackendAaveV3SupplyTarget
         | BackendAaveV3NetSupplyTarget
@@ -118,26 +117,27 @@ export interface BackendCampaign {
         | BackendAaveV3BridgeAndSupplyTarget
         | BackendJumperWhitelistedAmmPoolLiquidityTarget;
     specification?: Specification;
-    distributables: BackendTokenDistributables | BackendPointDistributables;
+    usdTvl?: number;
     apr?: number;
 }
 
+export interface BackendPointsCampaign extends BackendBaseCampaign {
+    type: "points";
+    points: string;
+}
+
+export interface BackendRewardsCampaign extends BackendBaseCampaign {
+    type: "rewards";
+    rewards: BackendReward[];
+}
+
+export type BackendCampaign = BackendPointsCampaign | BackendRewardsCampaign;
+
 export interface BackendCampaignsResponse {
-    resolvedTokens: BackendResolvedTokensRegistry;
-    resolvedPricedTokens: BackendResolvedPricedTokensRegistry;
-    resolvedPricedTokenWithTotalSupplies: BackendResolvedPricedTokensWithTotalSuppliesRegistry;
-    resolvedAmmPools: BackendResolvedAmmPoolsRegistry;
-    resolvedLiquityV2Collaterals: BackendResolvedLiquityV2CollateralsRegistry;
-    resolvedAaveV3Collaterals: BackendResolvedAaveV3CollateralsRegistry;
+    totalItems: number;
     campaigns: BackendCampaign[];
 }
 
 export interface BackendCampaignResponse {
-    resolvedTokens: BackendResolvedTokensRegistry;
-    resolvedPricedTokens: BackendResolvedPricedTokensRegistry;
-    resolvedPricedTokenWithTotalSupplies: BackendResolvedPricedTokensWithTotalSuppliesRegistry;
-    resolvedAmmPools: BackendResolvedAmmPoolsRegistry;
-    resolvedLiquityV2Collaterals: BackendResolvedLiquityV2CollateralsRegistry;
-    resolvedAaveV3Collaterals: BackendResolvedAaveV3CollateralsRegistry;
     campaign: BackendCampaign;
 }

@@ -6,7 +6,6 @@ import type {
     Erc20Token,
     OnChainAmount,
     UsdPricedErc20Token,
-    UsdPricedErc20TokenWithTotalSupply,
     UsdPricedOnChainAmount,
 } from "./commons";
 import type {
@@ -14,8 +13,6 @@ import type {
     SupportedBridge,
     SupportedLiquityV2,
 } from "src/commons";
-import type { LiquityV2Collateral } from "./liquity-v2";
-import type { AaveV3Collateral } from "./aave-v3";
 
 export enum CampaignKind {
     AmmPoolLiquidity = 1,
@@ -93,14 +90,14 @@ export interface JumperWhitelistedAmmPoolLiquidityTarget extends BaseTarget {
 export interface LiquityV2Target<T> extends BaseTarget {
     type: T;
     brand: Brand<SupportedLiquityV2>;
-    collateral: LiquityV2Collateral;
+    collateral: Erc20Token;
 }
 
 export interface AaveV3Target<T> extends BaseTarget {
     type: T;
     brand: Brand<SupportedAaveV3>;
     market: string;
-    collateral: AaveV3Collateral;
+    collateral: Erc20Token;
 }
 
 export interface LiquityV2CollateralWithStabilityPoolDeposit
@@ -120,14 +117,14 @@ export type AaveV3BridgeAndSupplyTarget = BaseTarget & {
     bridge: Brand<SupportedBridge>;
     brand: Brand<SupportedAaveV3>;
     market: string;
-    collateral: AaveV3Collateral;
+    collateral: Erc20Token;
     boostingFactor: number;
 };
 
 export interface HoldFungibleAssetTarget extends BaseTarget {
     type: TargetType.HoldFungibleAsset;
-    asset: UsdPricedErc20TokenWithTotalSupply;
-    stakingAssets: UsdPricedErc20TokenWithTotalSupply[];
+    asset: Erc20Token;
+    stakingAssets: Erc20Token[];
 }
 
 export type CampaignTarget =
@@ -232,6 +229,7 @@ export class Campaign {
             | PointDistributables,
         public readonly snapshottedAt?: number,
         public readonly specification?: Specification,
+        public readonly usdTvl?: number,
         public readonly apr?: number,
         public readonly restrictions?: Restrictions,
     ) {
