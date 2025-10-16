@@ -40,7 +40,7 @@ export function buildCampaignDataBundleEvm(payload: CampaignPreviewPayload) {
             ],
             [
                 stringToHex(payload.brand.slug).padEnd(66, "0") as Hex,
-                payload.collateral.token.address,
+                payload.collateral.address,
             ],
         );
     } else if (payload instanceof EmptyTargetCampaignPreviewPayload) {
@@ -55,7 +55,7 @@ export function buildCampaignDataBundleMvm(payload: CampaignPreviewPayload) {
     } else if (payload instanceof LiquityV2CampaignPreviewPayload) {
         serializableParts.push(new MoveString(payload.brand.slug));
         serializableParts.push(
-            AccountAddress.fromString(payload.collateral.token.address),
+            AccountAddress.fromString(payload.collateral.address),
         );
     } else if (payload instanceof AaveV3CampaignPreviewPayload) {
         // TODO: have the bridge brand in the campaign payload
@@ -67,7 +67,7 @@ export function buildCampaignDataBundleMvm(payload: CampaignPreviewPayload) {
             AccountAddress.fromString(payload.market.address),
         );
         serializableParts.push(
-            AccountAddress.fromString(payload.collateral.token.address),
+            AccountAddress.fromString(payload.collateral.address),
         );
 
         if (

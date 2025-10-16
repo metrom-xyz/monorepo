@@ -18,7 +18,7 @@ export function AaveV3({ payload }: AaveV3Props) {
             <RemoteLogo
                 size="lg"
                 chain={chainId}
-                address={payload.collateral.token.address}
+                address={payload.collateral.address}
             />
             <Typography weight="medium" size="xl">
                 {getCampaignPreviewName(t, payload)}

@@ -47,7 +47,7 @@ export function CollateralsList({
                 collaterals.map((collateral) => {
                     return (
                         <Row
-                            key={collateral.token.address}
+                            key={collateral.address}
                             kind={kind}
                             selected={collateral == selected}
                             collateral={collateral}

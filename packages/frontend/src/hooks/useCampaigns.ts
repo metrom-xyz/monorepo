@@ -6,28 +6,36 @@ import type { HookBaseParams } from "../types/hooks";
 import { useTranslations } from "next-intl";
 import { getChainData } from "../utils/chain";
 import {
+    BackendCampaignOrderBy,
+    BackendCampaignStatus,
+    BackendCampaignType,
     CAMPAIGN_TARGET_TO_KIND,
     type ChainType,
     type SupportedProtocol,
 } from "@metrom-xyz/sdk";
-import type { CampaignStatus } from "@metrom-xyz/chains";
 
 interface UseCampaignsParams extends HookBaseParams {
     page: number;
     pageSize: number;
+    type: BackendCampaignType;
     chainId?: number;
     chainType?: ChainType;
-    protocol?: SupportedProtocol;
-    status?: CampaignStatus;
+    protocol?: string;
+    status?: string;
+    orderBy?: string;
+    asc?: boolean;
 }
 
 export function useCampaigns({
     page,
     pageSize,
+    type,
     chainId,
     chainType,
     protocol,
     status,
+    orderBy,
+    asc,
     enabled = true,
 }: UseCampaignsParams): {
     loading: boolean;
@@ -37,17 +45,31 @@ export function useCampaigns({
     const t = useTranslations();
 
     const { data: pagedCampaigns, isPending: loading } = useQuery({
-        queryKey: ["campaigns", page, pageSize, chainId, protocol, status],
+        queryKey: [
+            "campaigns",
+            page,
+            pageSize,
+            type,
+            chainId,
+            chainType,
+            protocol,
+            status,
+            orderBy,
+            asc,
+        ],
         queryFn: async () => {
             try {
                 const { campaigns, totalItems } =
                     await METROM_API_CLIENT.fetchCampaigns({
                         page,
                         pageSize,
+                        type,
                         chainId,
                         chainType,
-                        protocol,
-                        status,
+                        protocol: protocol as SupportedProtocol,
+                        status: status as BackendCampaignStatus,
+                        orderBy: orderBy as BackendCampaignOrderBy,
+                        asc,
                     });
 
                 return {

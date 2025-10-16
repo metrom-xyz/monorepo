@@ -39,7 +39,7 @@ export function AaveV3Header({ campaign }: AaveV3HeaderProps) {
     const supplyActionLink = brand?.actionUrls[TargetType.AaveV3Supply];
     const bridgeActionLink = brand?.actionUrls[
         TargetType.AaveV3BridgeAndSupply
-    ].replace("{collateral}", campaign.target.collateral.token.address);
+    ].replace("{collateral}", campaign.target.collateral.address);
 
     const handleClaimOnClick = useCallback(() => {
         router.push("/claims");
@@ -61,7 +61,7 @@ export function AaveV3Header({ campaign }: AaveV3HeaderProps) {
                     )}
                     <RemoteLogo
                         size="xl"
-                        address={campaign.target.collateral.token.address}
+                        address={campaign.target.collateral.address}
                         chain={campaign.target.chainId}
                     />
                     <Typography size="xl4" weight="medium">
@@ -110,7 +110,7 @@ export function AaveV3Header({ campaign }: AaveV3HeaderProps) {
                             >
                                 {t("aaveV3.aave-v3-bridge", {
                                     collateral:
-                                        campaign.target.collateral.token.symbol,
+                                        campaign.target.collateral.symbol,
                                     bridge: campaign.target.bridge.name,
                                 })}
                             </Button>
@@ -128,7 +128,7 @@ export function AaveV3Header({ campaign }: AaveV3HeaderProps) {
                             >
                                 {t("aaveV3.aave-v3-supply", {
                                     collateral:
-                                        campaign.target.collateral.token.symbol,
+                                        campaign.target.collateral.symbol,
                                     brand: campaign.target.brand.name,
                                 })}
                             </Button>
@@ -150,8 +150,7 @@ export function AaveV3Header({ campaign }: AaveV3HeaderProps) {
                             }}
                         >
                             {t(`aaveV3.${campaign.target.type}`, {
-                                collateral:
-                                    campaign.target.collateral.token.symbol,
+                                collateral: campaign.target.collateral.symbol,
                                 brand: campaign.target.brand.name,
                             })}
                         </Button>
