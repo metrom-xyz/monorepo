@@ -2,6 +2,7 @@ import type { ChainType } from "src/types/commons";
 import type { Address, Hex } from "viem";
 import type { BackendLiquityV2Collateral } from "./campaigns";
 import type { BackendAaveV3Collateral } from "./aave-v3";
+import type { SupportedAmm, SupportedDex } from "src/commons";
 
 export type BackendResolvedTokensRegistry = Record<
     ChainType,
@@ -37,6 +38,7 @@ export type BackendResolvedAaveV3CollateralsRegistry = Record<
 >;
 
 export interface BackendErc20Token {
+    address: Address;
     decimals: number;
     symbol: string;
     name: string;
@@ -58,9 +60,10 @@ export interface BackendWhitelistedErc20Token
     minimumRate: string;
 }
 
+// TODO: move this type to pools, specific for pool API response
 export interface BackendAmmPool {
-    dex: string;
-    amm: string;
+    dex: SupportedDex;
+    amm: SupportedAmm;
     tokens: Address[];
     liquidityType: string;
     liquidity?: string;

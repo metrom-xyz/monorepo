@@ -10,11 +10,13 @@ import {
 import type { TranslationsKeys } from "@/src/types/utils";
 import { useTranslations } from "next-intl";
 import { usePagination } from "@/src/hooks/usePagination";
-import type { Campaign } from "@/src/types/campaign";
 import { useRouter as useLocalizedRouter } from "@/i18n/routing";
 import { CampaignRow, SkeletonCampaign } from "../campaigns/campaign";
 import { CHAIN_ALL, Filters } from "./filters";
 import { FilterableStatus } from "@/src/types/common";
+import { useCampaigns } from "@/src/hooks/useCampaigns";
+import { APTOS } from "@/src/commons/env";
+import { ChainType } from "@metrom-xyz/sdk";
 
 import styles from "./styles.module.css";
 
@@ -57,16 +59,10 @@ const TABLE_COLUMNS: {
 ];
 
 interface CampaignsTableProps {
-    campaigns?: Campaign[];
-    loading?: boolean;
     disableFilters?: boolean;
 }
 
-export function CampaignsTable({
-    campaigns,
-    loading,
-    disableFilters,
-}: CampaignsTableProps) {
+export function CampaignsTable({ disableFilters }: CampaignsTableProps) {
     const t = useTranslations("allCampaigns");
     const localizedRouter = useLocalizedRouter();
 
@@ -80,33 +76,39 @@ export function CampaignsTable({
         status: FilterableStatus.All,
     });
 
-    const filteredCampaigns = useMemo(() => {
-        return sortCampaigns(
-            filterCampaigns(
-                campaigns || [],
-                filters.status,
-                filters.protocol,
-                filters.chain,
-                filters.search,
-            ),
-            sortField,
-            order,
-        );
-    }, [campaigns, filters, sortField, order]);
-
-    const { data: pagedCampaigns, totalPages } = usePagination({
-        data: filteredCampaigns,
+    const { loading, campaigns, totalCampaigns } = useCampaigns({
         page: pageNumber,
-        size: PAGE_SIZE,
+        pageSize: PAGE_SIZE,
+        chainType: APTOS ? ChainType.Aptos : undefined,
     });
 
-    useEffect(() => {
-        let updatedPageNumber = pageNumber;
-        if (pageNumber > totalPages) {
-            updatedPageNumber = totalPages || 1;
-            setPageNumber(updatedPageNumber);
-        }
-    }, [pageNumber, totalPages]);
+    // const filteredCampaigns = useMemo(() => {
+    //     return sortCampaigns(
+    //         filterCampaigns(
+    //             campaigns || [],
+    //             filters.status,
+    //             filters.protocol,
+    //             filters.chain,
+    //             filters.search,
+    //         ),
+    //         sortField,
+    //         order,
+    //     );
+    // }, [campaigns, filters, sortField, order]);
+
+    // const { data: pagedCampaigns, totalPages } = usePagination({
+    //     data: filteredCampaigns,
+    //     page: pageNumber,
+    //     size: PAGE_SIZE,
+    // });
+
+    // useEffect(() => {
+    //     let updatedPageNumber = pageNumber;
+    //     if (pageNumber > totalPages) {
+    //         updatedPageNumber = totalPages || 1;
+    //         setPageNumber(updatedPageNumber);
+    //     }
+    // }, [pageNumber, totalPages]);
 
     const getSortChangeHandler = useCallback(
         (column: CampaignSortOptions) => {
@@ -208,7 +210,7 @@ export function CampaignsTable({
                                     <SkeletonCampaign />
                                     <SkeletonCampaign />
                                 </>
-                            ) : pagedCampaigns.length === 0 ? (
+                            ) : campaigns?.length === 0 ? (
                                 <div className={styles.empty}>
                                     <Typography uppercase weight="medium">
                                         {t("empty.title")}
@@ -224,7 +226,7 @@ export function CampaignsTable({
                                     </Button>
                                 </div>
                             ) : (
-                                pagedCampaigns.map((campaign) => {
+                                campaigns?.map((campaign) => {
                                     return (
                                         <CampaignRow
                                             key={campaign.id}
@@ -240,7 +242,7 @@ export function CampaignsTable({
             <div className={styles.paginationWrapper}>
                 <Pagination
                     page={pageNumber}
-                    totalPages={totalPages}
+                    totalPages={Math.ceil(totalCampaigns / PAGE_SIZE)}
                     onNext={handleNextPage}
                     onPrevious={handlePreviousPage}
                     onPage={handlePage}

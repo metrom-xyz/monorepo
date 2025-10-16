@@ -43,6 +43,13 @@ export enum SupportedGmxV1 {
     Amped = "amped",
 }
 
+export type SupportedProtocol =
+    | SupportedDex
+    | SupportedLiquityV2
+    | SupportedAaveV3
+    | SupportedBridge
+    | SupportedGmxV1;
+
 export enum SupportedAmm {
     AlgebraIntegral = "algebra-integral",
     Velodrome = "velodrome",
