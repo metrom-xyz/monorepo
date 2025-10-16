@@ -18,7 +18,7 @@ export function LiquidityV2<T extends LiquityV2TargetType>({
     return (
         <div className={styles.root}>
             <RemoteLogo
-                address={campaign.target.collateral.token.address}
+                address={campaign.target.collateral.address}
                 chain={campaign.target.chainId}
             />
             <div className={styles.titleContainer}>

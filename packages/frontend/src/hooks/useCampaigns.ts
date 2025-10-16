@@ -8,52 +8,66 @@ import { getChainData } from "../utils/chain";
 import {
     CAMPAIGN_TARGET_TO_KIND,
     type ChainType,
-    type SupportedDex,
+    type SupportedProtocol,
 } from "@metrom-xyz/sdk";
 import type { CampaignStatus } from "@metrom-xyz/chains";
 
 interface UseCampaignsParams extends HookBaseParams {
+    page: number;
+    pageSize: number;
     chainId?: number;
     chainType?: ChainType;
-    dex?: SupportedDex;
+    protocol?: SupportedProtocol;
     status?: CampaignStatus;
 }
 
 export function useCampaigns({
+    page,
+    pageSize,
     chainId,
     chainType,
-    dex,
+    protocol,
     status,
     enabled = true,
-}: UseCampaignsParams = {}): {
+}: UseCampaignsParams): {
     loading: boolean;
+    totalCampaigns: number;
     campaigns?: Campaign[];
 } {
     const t = useTranslations();
 
-    const { data: campaigns, isPending: loading } = useQuery({
-        queryKey: ["campaigns", chainId, dex, status],
+    const { data: pagedCampaigns, isPending: loading } = useQuery({
+        queryKey: ["campaigns", page, pageSize, chainId, protocol, status],
         queryFn: async () => {
             try {
-                const campaigns = await METROM_API_CLIENT.fetchCampaigns({
-                    chainId,
-                    chainType,
-                    dex,
-                    status,
-                });
-                return campaigns
-                    .map((campaign) => {
-                        return new Campaign(
-                            campaign,
-                            getCampaignName(t, campaign),
-                            getCampaignTargetValueName(
-                                t,
-                                CAMPAIGN_TARGET_TO_KIND[campaign.target.type],
-                            ),
-                            getChainData(campaign.chainId),
-                        );
-                    })
-                    .sort((a, b) => a.createdAt - b.createdAt);
+                const { campaigns, totalItems } =
+                    await METROM_API_CLIENT.fetchCampaigns({
+                        page,
+                        pageSize,
+                        chainId,
+                        chainType,
+                        protocol,
+                        status,
+                    });
+
+                return {
+                    totalItems,
+                    campaigns: campaigns
+                        .map((campaign) => {
+                            return new Campaign(
+                                campaign,
+                                getCampaignName(t, campaign),
+                                getCampaignTargetValueName(
+                                    t,
+                                    CAMPAIGN_TARGET_TO_KIND[
+                                        campaign.target.type
+                                    ],
+                                ),
+                                getChainData(campaign.chainId),
+                            );
+                        })
+                        .sort((a, b) => a.createdAt - b.createdAt),
+                };
             } catch (error) {
                 console.error(`Could not fetch campaigns: ${error}`, error);
                 throw error;
@@ -64,6 +78,7 @@ export function useCampaigns({
 
     return {
         loading,
-        campaigns,
+        totalCampaigns: pagedCampaigns?.totalItems || 0,
+        campaigns: pagedCampaigns?.campaigns,
     };
 }
