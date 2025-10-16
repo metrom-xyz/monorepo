@@ -99,11 +99,11 @@ export function AaveV3CollateralStep({
                             <RemoteLogo
                                 size="sm"
                                 chain={chainId}
-                                address={collateral.token.address}
+                                address={collateral.address}
                             />
                         </div>
                         <Typography weight="medium" size="sm">
-                            {collateral?.token.symbol}
+                            {collateral?.symbol}
                         </Typography>
                     </div>
                 )}

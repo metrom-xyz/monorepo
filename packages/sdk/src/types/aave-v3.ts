@@ -1,10 +1,9 @@
 import type { Address } from "viem";
-import type { ChainType, Erc20Token } from "./commons";
+import type { ChainType, UsdPricedErc20Token } from "./commons";
 
-export interface AaveV3Collateral {
+export interface AaveV3Collateral extends UsdPricedErc20Token {
     chainId: number;
     chainType: ChainType;
-    token: Erc20Token;
     debt: bigint;
     supply: bigint;
     netSupply: bigint;

@@ -165,7 +165,7 @@ export function getCampaignPreviewName(
 
         const brand = payload.brand.name;
         const debtToken = targetProtocol?.debtToken.symbol || "";
-        const token = payload.collateral.token.symbol;
+        const token = payload.collateral.symbol;
 
         switch (payload.kind) {
             case CampaignKind.LiquityV2Debt: {
@@ -187,7 +187,7 @@ export function getCampaignPreviewName(
         }
     } else if (payload instanceof AaveV3CampaignPreviewPayload) {
         const brand = payload.brand.name;
-        const token = payload.collateral.token.symbol;
+        const token = payload.collateral.symbol;
 
         switch (payload.kind) {
             case CampaignKind.AaveV3Borrow: {

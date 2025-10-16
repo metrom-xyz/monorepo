@@ -48,9 +48,6 @@
         "kpi": "KPI",
         "restricted": "Restricted",
         "filters": {
-            "search": {
-                "label": "Search"
-            },
             "protocol": {
                 "label": "Protocol",
                 "all": "All"

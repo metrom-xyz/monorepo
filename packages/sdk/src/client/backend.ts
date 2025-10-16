@@ -9,9 +9,11 @@ import {
     type SupportedProtocol,
 } from "../commons";
 import type {
+    BackendCampaignOrderBy,
     BackendCampaignResponse,
     BackendCampaignsResponse,
     BackendCampaignStatus,
+    BackendCampaignType,
 } from "./types/campaigns";
 import type { BackendResolvedPricedTokensRegistry } from "./types/commons";
 import type {
@@ -36,6 +38,7 @@ import {
     type AaveV3BridgeAndSupplyTarget,
     type JumperWhitelistedAmmPoolLiquidityTarget,
     type HoldFungibleAssetTarget,
+    DistributablesType,
 } from "../types/campaigns";
 import {
     ChainType,
@@ -79,7 +82,7 @@ import type {
     BackendInitializedTicksResponse,
     BackendLiquidityInRangeResponse,
 } from "./types/initialized-ticks";
-import { tickToScaledPrice } from "../utils";
+import { tickToScaledPrice, unix } from "../utils";
 import type { BackendLiquityV2CollateralsResponse } from "./types/liquity-v2";
 import type { LiquityV2Collateral } from "src/types/liquity-v2";
 import type { AaveV3Collateral } from "../types/aave-v3";
@@ -129,11 +132,11 @@ const BRIDGE_BRAND_NAME: Record<SupportedBridge, string> = {
 export interface FetchCampaignsParams {
     page: number;
     pageSize: number;
-    orderBy?: string;
+    type: BackendCampaignType;
+    orderBy?: BackendCampaignOrderBy;
     asc?: boolean;
     chainType?: ChainType;
     chainId?: SupportedChain;
-    type?: "rewards" | "points";
     protocol?: SupportedProtocol;
     status?: BackendCampaignStatus;
     tvlRange?: string;
@@ -902,13 +905,10 @@ export class MetromApiClient {
 
         return parsedResponse.collaterals.map((collateral) => {
             return {
-                // FIXME: it's probably better to have this in the response
+                ...collateral,
+                // FIXME: it's probably better to have chain id and chainType in the response
                 chainId: params.chainId,
                 chainType: params.chainType,
-                token: resolvePricedToken(
-                    parsedResponse.resolvedPricedTokens,
-                    collateral.address,
-                ),
                 liquidity: BigInt(collateral.tvl),
                 usdMintedDebt: collateral.mintedDebt,
                 usdTvl: collateral.usdTvl,
@@ -936,14 +936,10 @@ export class MetromApiClient {
 
         return parsedResponse.collaterals.map((collateral) => {
             return {
-                // FIXME: it's probably better to have this in the response
                 ...collateral,
+                // FIXME: it's probably better to have chain id and chainType in the response
                 chainId: params.chainId,
                 chainType: params.chainType,
-                token: resolveToken(
-                    parsedResponse.resolvedTokens,
-                    collateral.address,
-                ),
                 debt: BigInt(collateral.debt),
                 supply: BigInt(collateral.supply),
                 netSupply: BigInt(collateral.netSupply),
@@ -981,10 +977,10 @@ function processCampaignsResponse(
     const campaigns = [];
 
     for (const backendCampaign of response.campaigns) {
-        const { chainType, chainId, type } = backendCampaign.target;
+        const { chainType, chainId } = backendCampaign.target;
 
         let target;
-        switch (type) {
+        switch (backendCampaign.target.type) {
             case "amm-pool-liquidity": {
                 target = <AmmPoolLiquidityTarget>{
                     type: TargetType.AmmPoolLiquidity,
@@ -1124,45 +1120,40 @@ function processCampaignsResponse(
         }
 
         let distributables;
-        switch (backendCampaign.type) {
-            case "rewards": {
-                distributables = <TokenDistributables>{
-                    type: "tokens",
-                    list: [],
-                    amountUsdValue: 0,
-                    remainingUsdValue: 0,
-                };
+        if ("rewards" in backendCampaign) {
+            distributables = <TokenDistributables>{
+                type: DistributablesType.Tokens,
+                list: [],
+                amountUsdValue: 0,
+                remainingUsdValue: 0,
+            };
 
-                for (const backendReward of backendCampaign.rewards) {
-                    const amount = stringToUsdPricedOnChainAmount(
-                        backendReward.amount,
-                        backendReward.decimals,
-                        backendReward.usdPrice,
-                    );
-                    const remaining = stringToUsdPricedOnChainAmount(
-                        backendReward.remaining,
-                        backendReward.decimals,
-                        backendReward.usdPrice,
-                    );
+            for (const backendReward of backendCampaign.rewards) {
+                const amount = stringToUsdPricedOnChainAmount(
+                    backendReward.amount,
+                    backendReward.decimals,
+                    backendReward.usdPrice,
+                );
+                const remaining = stringToUsdPricedOnChainAmount(
+                    backendReward.remaining,
+                    backendReward.decimals,
+                    backendReward.usdPrice,
+                );
 
-                    distributables.amountUsdValue += amount.usdValue;
-                    distributables.remainingUsdValue += remaining.usdValue;
+                distributables.amountUsdValue += amount.usdValue;
+                distributables.remainingUsdValue += remaining.usdValue;
 
-                    distributables.list.push(<TokenDistributable>{
-                        amount,
-                        remaining,
-                        token: backendReward,
-                    });
-                }
-                break;
+                distributables.list.push(<TokenDistributable>{
+                    amount,
+                    remaining,
+                    token: backendReward,
+                });
             }
-            case "points": {
-                distributables = <PointDistributables>{
-                    type: "points",
-                    amount: stringToOnChainAmount(backendCampaign.points, 18),
-                };
-                break;
-            }
+        } else if ("points" in backendCampaign) {
+            distributables = <PointDistributables>{
+                type: DistributablesType.Points,
+                amount: stringToOnChainAmount(backendCampaign.points, 18),
+            };
         }
 
         let restrictions: Restrictions | undefined = undefined;
@@ -1180,19 +1171,30 @@ function processCampaignsResponse(
         }
 
         if (!target)
-            throw new Error(`Unsupported campaign target type ${type}`);
+            throw new Error(
+                `Unsupported campaign target type ${backendCampaign.target.type}`,
+            );
+        if (!distributables)
+            throw new Error("Unsupported campaign distributables");
+
+        const from = unix(new Date(backendCampaign.from));
+        const to = unix(new Date(backendCampaign.to));
+        const createdAt = unix(new Date(backendCampaign.createdAt));
+        const snapshottedAt = backendCampaign.snapshottedAt
+            ? unix(new Date(backendCampaign.snapshottedAt))
+            : undefined;
 
         campaigns.push(
             new Campaign(
                 backendCampaign.chainId,
                 backendCampaign.chainType,
                 backendCampaign.id,
-                backendCampaign.from,
-                backendCampaign.to,
-                backendCampaign.createdAt,
+                from,
+                to,
+                createdAt,
                 target,
                 distributables,
-                backendCampaign.snapshottedAt,
+                snapshottedAt,
                 backendCampaign.specification,
                 backendCampaign.usdTvl,
                 backendCampaign.apr,

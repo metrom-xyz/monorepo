@@ -1,22 +1,17 @@
 import { Button, Pagination, Typography } from "@metrom-xyz/ui";
 import classNames from "classnames";
 import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
-import { useCallback, useEffect, useMemo, useState } from "react";
-import {
-    filterCampaigns,
-    sortCampaigns,
-    type CampaignSortOptions,
-} from "@/src/utils/filtering";
+import { useCallback, useMemo, useState } from "react";
+import { type CampaignSortOptions } from "@/src/utils/filtering";
 import type { TranslationsKeys } from "@/src/types/utils";
 import { useTranslations } from "next-intl";
-import { usePagination } from "@/src/hooks/usePagination";
 import { useRouter as useLocalizedRouter } from "@/i18n/routing";
 import { CampaignRow, SkeletonCampaign } from "../campaigns/campaign";
 import { CHAIN_ALL, Filters } from "./filters";
 import { FilterableStatus } from "@/src/types/common";
 import { useCampaigns } from "@/src/hooks/useCampaigns";
 import { APTOS } from "@/src/commons/env";
-import { ChainType } from "@metrom-xyz/sdk";
+import { BackendCampaignType, ChainType } from "@metrom-xyz/sdk";
 
 import styles from "./styles.module.css";
 
@@ -34,7 +29,7 @@ const TABLE_COLUMNS: {
     {
         name: "protocol",
         label: "protocol",
-        sort: true,
+        sort: false,
     },
     {
         name: "action",
@@ -54,7 +49,7 @@ const TABLE_COLUMNS: {
     {
         name: "rewards",
         label: "rewards",
-        sort: true,
+        sort: false,
     },
 ];
 
@@ -70,45 +65,31 @@ export function CampaignsTable({ disableFilters }: CampaignsTableProps) {
     const [order, setOrder] = useState<number | undefined>();
     const [pageNumber, setPageNumber] = useState(1);
     const [filters, setFilters] = useState<Filters>({
-        chain: CHAIN_ALL,
+        chainId: CHAIN_ALL,
         protocol: "",
-        search: "",
         status: FilterableStatus.All,
     });
+
+    const normalizedChainId = useMemo(
+        () =>
+            filters.chainId === CHAIN_ALL ? undefined : Number(filters.chainId),
+        [filters.chainId],
+    );
 
     const { loading, campaigns, totalCampaigns } = useCampaigns({
         page: pageNumber,
         pageSize: PAGE_SIZE,
-        chainType: APTOS ? ChainType.Aptos : undefined,
+        type: BackendCampaignType.Rewards,
+        chainType: APTOS ? ChainType.Aptos : filters.chainType,
+        chainId: normalizedChainId,
+        protocol: filters.protocol,
+        status:
+            filters.status !== FilterableStatus.All
+                ? filters.status
+                : undefined,
+        orderBy: sortField,
+        asc: order === 1 ? true : order === -1 ? false : undefined,
     });
-
-    // const filteredCampaigns = useMemo(() => {
-    //     return sortCampaigns(
-    //         filterCampaigns(
-    //             campaigns || [],
-    //             filters.status,
-    //             filters.protocol,
-    //             filters.chain,
-    //             filters.search,
-    //         ),
-    //         sortField,
-    //         order,
-    //     );
-    // }, [campaigns, filters, sortField, order]);
-
-    // const { data: pagedCampaigns, totalPages } = usePagination({
-    //     data: filteredCampaigns,
-    //     page: pageNumber,
-    //     size: PAGE_SIZE,
-    // });
-
-    // useEffect(() => {
-    //     let updatedPageNumber = pageNumber;
-    //     if (pageNumber > totalPages) {
-    //         updatedPageNumber = totalPages || 1;
-    //         setPageNumber(updatedPageNumber);
-    //     }
-    // }, [pageNumber, totalPages]);
 
     const getSortChangeHandler = useCallback(
         (column: CampaignSortOptions) => {
@@ -134,13 +115,18 @@ export function CampaignsTable({ disableFilters }: CampaignsTableProps) {
 
     function handleClearFilters() {
         setFilters({
-            chain: CHAIN_ALL,
+            chainId: CHAIN_ALL,
             protocol: "",
-            search: "",
             status: FilterableStatus.All,
         });
+        setPageNumber(1);
         setSortField(undefined);
         setOrder(undefined);
+    }
+
+    function handleFiltersOnChange(filters: Partial<Filters>) {
+        setPageNumber(1);
+        setFilters((prev) => ({ ...prev, ...filters }));
     }
 
     const handleCreateCampaign = useCallback(() => {
@@ -154,7 +140,7 @@ export function CampaignsTable({ disableFilters }: CampaignsTableProps) {
                     sortField={sortField}
                     order={order}
                     onClearFilters={handleClearFilters}
-                    onFiltersChange={setFilters}
+                    onFiltersChange={handleFiltersOnChange}
                 />
             )}
             <div className={styles.scrollContainer}>
@@ -210,7 +196,7 @@ export function CampaignsTable({ disableFilters }: CampaignsTableProps) {
                                     <SkeletonCampaign />
                                     <SkeletonCampaign />
                                 </>
-                            ) : campaigns?.length === 0 ? (
+                            ) : !campaigns || campaigns.length === 0 ? (
                                 <div className={styles.empty}>
                                     <Typography uppercase weight="medium">
                                         {t("empty.title")}

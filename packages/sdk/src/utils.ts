@@ -25,3 +25,7 @@ export function scaledPriceToTick(
 
     return Math.round(Math.log(scaledPrice) / Math.log(1.0001));
 }
+
+export function unix(date: Date): number {
+    return Math.floor(date.getTime() / 1000);
+}

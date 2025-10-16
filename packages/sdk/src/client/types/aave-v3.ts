@@ -1,8 +1,6 @@
-import type { Address } from "viem";
-import type { BackendErc20Token } from "./commons";
+import type { BackendUsdPricedErc20Token } from "./commons";
 
-export interface BackendAaveV3Collateral {
-    address: Address;
+export interface BackendAaveV3Collateral extends BackendUsdPricedErc20Token {
     debt: string;
     supply: string;
     netSupply: string;
@@ -12,6 +10,5 @@ export interface BackendAaveV3Collateral {
 }
 
 export interface BackendAaveV3CollateralsResponse {
-    resolvedTokens: Record<Address, BackendErc20Token>;
     collaterals: BackendAaveV3Collateral[];
 }
