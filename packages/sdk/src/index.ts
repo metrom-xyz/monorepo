@@ -25,7 +25,11 @@ export * from "./types/liquity-v2";
 export * from "./types/pools";
 export * from "./types/reward-tokens";
 
-export { BackendCampaignStatus } from "./client/types/campaigns";
+export {
+    BackendCampaignStatus,
+    BackendCampaignType,
+    BackendCampaignOrderBy,
+} from "./client/types/campaigns";
 
 export * from "./commons";
 export * from "./utils";

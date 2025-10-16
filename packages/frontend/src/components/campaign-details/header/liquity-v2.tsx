@@ -48,7 +48,7 @@ export function LiquityV2Header({ campaign }: LiquityV2HeaderProps) {
                     )}
                     <RemoteLogo
                         size="xl"
-                        address={campaign.target.collateral.token.address}
+                        address={campaign.target.collateral.address}
                         chain={campaign.target.chainId}
                     />
                     <Typography size="xl4" weight="medium">
@@ -76,7 +76,7 @@ export function LiquityV2Header({ campaign }: LiquityV2HeaderProps) {
                         }}
                     >
                         {t(`liquityV2.${campaign.target.type}`, {
-                            collateral: campaign.target.collateral.token.symbol,
+                            collateral: campaign.target.collateral.symbol,
                             debtToken: brand?.debtToken.symbol || "",
                         })}
                     </Button>

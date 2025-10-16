@@ -30,10 +30,10 @@ export function Row({ kind, selected, collateral, onChange }: RowProps) {
             <div className={styles.collateral}>
                 <RemoteLogo
                     chain={chainId}
-                    address={collateral.token.address}
+                    address={collateral.address}
                 />
                 <Typography weight="medium" size="lg">
-                    {collateral.token.symbol}
+                    {collateral.symbol}
                 </Typography>
             </div>
             <Typography weight="medium" size="sm" light>

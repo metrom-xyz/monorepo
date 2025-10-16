@@ -53,7 +53,7 @@ export function useLiquityV2Collaterals({
                     });
 
                 return collaterals.sort((a, b) =>
-                    a.token.name.localeCompare(b.token.name, "en"),
+                    a.name.localeCompare(b.name, "en"),
                 );
             } catch (error) {
                 console.error(

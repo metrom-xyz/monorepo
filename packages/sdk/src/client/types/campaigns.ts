@@ -88,6 +88,17 @@ export enum BackendCampaignStatus {
     Expired = "expired",
 }
 
+export enum BackendCampaignType {
+    Rewards = "rewards",
+    Points = "points",
+}
+
+export enum BackendCampaignOrderBy {
+    Apr = "apr",
+    UsdTvl = "usdTvl",
+    From = "from",
+}
+
 export interface BackendLiquityV2Collateral {
     tvl: string;
     usdTvl: number;
@@ -99,11 +110,10 @@ export interface BackendBaseCampaign {
     chainId: number;
     id: Hex;
     chainType: ChainType;
-    from: number;
-    to: number;
-    createdAt: number;
-    snapshottedAt?: number;
-    type: "rewards" | "points";
+    from: string;
+    to: string;
+    createdAt: string;
+    snapshottedAt?: string;
     target:
         | BackendEmptyTarget
         | BackendAmmPoolLiquidityTarget
@@ -121,17 +131,16 @@ export interface BackendBaseCampaign {
     apr?: number;
 }
 
-export interface BackendPointsCampaign extends BackendBaseCampaign {
-    type: "points";
+export interface BackendPointsCampaign {
     points: string;
 }
 
-export interface BackendRewardsCampaign extends BackendBaseCampaign {
-    type: "rewards";
+export interface BackendRewardsCampaign {
     rewards: BackendReward[];
 }
 
-export type BackendCampaign = BackendPointsCampaign | BackendRewardsCampaign;
+export type BackendCampaign = BackendBaseCampaign &
+    (BackendPointsCampaign | BackendRewardsCampaign);
 
 export interface BackendCampaignsResponse {
     totalItems: number;

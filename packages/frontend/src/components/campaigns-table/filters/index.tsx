@@ -1,27 +1,19 @@
 import classNames from "classnames";
-import { SearchIcon } from "@/src/assets/search-icon";
-import {
-    Button,
-    Select,
-    TextInput,
-    Typography,
-    type SelectOption,
-} from "@metrom-xyz/ui";
+import { Button, Select, Typography, type SelectOption } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import {
     useCallback,
     useEffect,
     useMemo,
+    useRef,
     useState,
-    type ChangeEvent,
     type ReactNode,
 } from "react";
 import { FilterableStatus } from "@/src/types/common";
 import type { CampaignSortOptions } from "@/src/utils/filtering";
 import { ProtocolLogo } from "../../protocol-logo";
 import { useSupportedProtocols } from "@/src/hooks/useSupportedProtocols";
-import { useDebounce } from "react-use";
 import { useChainsWithTypes } from "@/src/hooks/useChainsWithTypes";
 import { getCrossVmChainData } from "@/src/utils/chain";
 import { ChainType } from "@metrom-xyz/sdk";
@@ -79,17 +71,17 @@ const protocolSelectRenderOption = (option: {
 };
 
 export interface Filters {
-    search: string;
     protocol: string;
     status: FilterableStatus;
-    chain: string;
+    chainId: string;
+    chainType?: ChainType;
 }
 
 interface FilterProps {
     sortField?: CampaignSortOptions;
     order?: number;
-    onClearFilters?: () => void;
-    onFiltersChange?: (filters: Filters) => void;
+    onClearFilters: () => void;
+    onFiltersChange: (filters: Partial<Filters>) => void;
 }
 
 export function Filters({
@@ -108,31 +100,21 @@ export function Filters({
     const pathname = usePathname();
     const searchParams = useSearchParams();
 
-    const [search, setSearch] = useState("");
     const [protocol, setProtocol] = useState("");
     const [status, setStatus] = useState<FilterableStatus>(
         FilterableStatus.All,
     );
     const [chain, setChain] = useState(CHAIN_ALL);
-    const [debouncedSearch, setDebouncedSearch] = useState(search);
-
-    useDebounce(
-        () => {
-            setDebouncedSearch(search);
-        },
-        300,
-        [search],
-    );
+    const chainInitialized = useRef(false);
 
     const filtersActive = useMemo(
         () =>
-            !!search ||
             !!protocol ||
             status !== FilterableStatus.All ||
             !!sortField ||
             !!order ||
             chain !== CHAIN_ALL,
-        [search, protocol, status, sortField, order, chain],
+        [protocol, status, sortField, order, chain],
     );
 
     const statusOptions = useMemo(() => {
@@ -143,7 +125,7 @@ export function Filters({
             },
             {
                 label: t("filters.status.live"),
-                value: FilterableStatus.Live,
+                value: FilterableStatus.Active,
                 color: "bg-green-500",
             },
             {
@@ -153,7 +135,7 @@ export function Filters({
             },
             {
                 label: t("filters.status.ended"),
-                value: FilterableStatus.Ended,
+                value: FilterableStatus.Expired,
                 color: "bg-zinc-500",
             },
         ];
@@ -213,67 +195,70 @@ export function Filters({
     }, [chains, t]);
 
     useEffect(() => {
+        // Skip updating the search params once initialized to avoid
+        // unnecessary re-renders
+        if (chainInitialized.current) return;
+        chainInitialized.current = true;
+
         const chain = searchParams.get("chain");
-        if (chain) {
-            const resolvedChain = chainOptions.find(
-                (option) => option.query === chain,
-            );
+        if (!chain) return;
 
-            const params = new URLSearchParams(searchParams.toString());
-            if (resolvedChain?.query) {
-                setChain(resolvedChain.value);
-                params.set("chain", resolvedChain.query);
-            } else {
-                setChain(CHAIN_ALL);
-                params.delete("chain");
-            }
+        const resolvedChain = chainOptions.find(
+            (option) => option.query === chain,
+        );
+
+        const params = new URLSearchParams(searchParams.toString());
+        if (resolvedChain?.query) {
+            setChain(resolvedChain.value);
+            params.set("chain", resolvedChain.query);
+        } else {
+            setChain(CHAIN_ALL);
+            params.delete("chain");
         }
-    }, [searchParams, pathname, chainOptions]);
-
-    useEffect(() => {
-        if (!onFiltersChange) return;
-
-        onFiltersChange({
-            search: debouncedSearch,
-            protocol,
-            status,
-            chain,
-        });
-    }, [debouncedSearch, protocol, status, chain, onFiltersChange]);
-
-    function handleSearchChange(event: ChangeEvent<HTMLInputElement>) {
-        setSearch(event.target.value);
-    }
+    }, [chainOptions, searchParams]);
 
     const handleProtocolChange = useCallback(
         (protocol: SelectOption<string>) => {
             setProtocol(protocol.value);
+            onFiltersChange({ protocol: protocol.value });
         },
-        [],
+        [onFiltersChange],
     );
 
     const handleStatusChange = useCallback(
         (status: SelectOption<FilterableStatus>) => {
             setStatus(status.value);
+            onFiltersChange({ status: status.value });
         },
-        [],
+        [onFiltersChange],
     );
 
     const handleChainChange = useCallback(
         (chain: SelectOption<string> & { query: string | null }) => {
-            setChain(chain.value);
             const params = new URLSearchParams(searchParams.toString());
+
             if (!chain.query) params.delete("chain");
             else params.set("chain", chain.query);
+
             router.replace(`${pathname}?${params.toString()}`, {
                 scroll: false,
             });
+
+            let chainType = undefined;
+            let chainId = undefined;
+            if (chain.value !== CHAIN_ALL) {
+                const chainTypeAndId = chain.value.split("-");
+                chainType = chainTypeAndId[0] as ChainType;
+                chainId = chainTypeAndId[1];
+            }
+
+            setChain(chain.value);
+            onFiltersChange({ chainId, chainType });
         },
-        [pathname, router, searchParams],
+        [pathname, router, searchParams, onFiltersChange],
     );
 
     const handleClearFilters = useCallback(() => {
-        setSearch("");
         setProtocol("");
         setStatus(FilterableStatus.All);
         setChain(CHAIN_ALL);
@@ -287,14 +272,6 @@ export function Filters({
 
     return (
         <div className={styles.root}>
-            <TextInput
-                className={classNames(styles.searchFilter, styles.filterInput)}
-                icon={SearchIcon}
-                iconPlacement="right"
-                placeholder={t("filters.search.label")}
-                value={search}
-                onChange={handleSearchChange}
-            />
             <div className={styles.selectionFilters}>
                 <Select
                     options={statusOptions}
