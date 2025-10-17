@@ -153,10 +153,6 @@ export function CampaignsTable({
 
     return (
         <div className={styles.root}>
-            <LoadingBar
-                loading={placeholderData && fetching}
-                className={styles.loadingBar}
-            />
             {!disableFilters && (
                 <Filters
                     sortField={sortField}
@@ -205,6 +201,10 @@ export function CampaignsTable({
                             )}
                         </div>
                         <div className={styles.body}>
+                            <LoadingBar
+                                loading={placeholderData && fetching}
+                                className={styles.loadingBar}
+                            />
                             {loading ? (
                                 <>
                                     <SkeletonCampaign />

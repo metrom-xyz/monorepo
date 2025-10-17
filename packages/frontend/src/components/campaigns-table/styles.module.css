@@ -5,7 +5,11 @@
 }
 
 .loadingBar {
-    @apply fixed top-0 left-0 z-50;
+    @apply px-3 absolute overflow-y-hidden;
+}
+
+.loadingBar :global(.progress) {
+    @apply rounded-bl-xl rounded-br-xl;
 }
 
 .tableWrapper {
@@ -63,7 +67,11 @@
         col-span-full;
 }
 
-.body > :first-child > div {
+.body {
+    @apply relative rounded-xl;
+}
+
+.body > :nth-child(2) > div {
     @apply rounded-t-xl;
 }
 
