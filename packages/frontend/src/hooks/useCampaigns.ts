@@ -18,10 +18,10 @@ interface UseCampaignsParams extends HookBaseParams {
     page: number;
     pageSize: number;
     type: BackendCampaignType;
-    chainId?: number;
-    chainType?: ChainType;
-    protocol?: string;
-    status?: string;
+    chainIds?: number[];
+    chainTypes?: ChainType[];
+    protocols?: string[];
+    statuses?: string[];
     orderBy?: string;
     asc?: boolean;
 }
@@ -30,10 +30,10 @@ export function useCampaigns({
     page,
     pageSize,
     type,
-    chainId,
-    chainType,
-    protocol,
-    status,
+    chainIds,
+    chainTypes,
+    protocols,
+    statuses,
     orderBy,
     asc,
     enabled = true,
@@ -44,16 +44,18 @@ export function useCampaigns({
 } {
     const t = useTranslations();
 
+    console.log("chainIds", chainIds);
+
     const { data: pagedCampaigns, isPending: loading } = useQuery({
         queryKey: [
             "campaigns",
             page,
             pageSize,
             type,
-            chainId,
-            chainType,
-            protocol,
-            status,
+            chainIds,
+            chainTypes,
+            protocols,
+            statuses,
             orderBy,
             asc,
         ],
@@ -64,31 +66,27 @@ export function useCampaigns({
                         page,
                         pageSize,
                         type,
-                        chainId,
-                        chainType,
-                        protocol: protocol as SupportedProtocol,
-                        status: status as BackendCampaignStatus,
+                        chainIds,
+                        chainTypes,
+                        protocols: protocols as SupportedProtocol[],
+                        statuses: statuses as BackendCampaignStatus[],
                         orderBy: orderBy as BackendCampaignOrderBy,
                         asc,
                     });
 
                 return {
                     totalItems,
-                    campaigns: campaigns
-                        .map((campaign) => {
-                            return new Campaign(
-                                campaign,
-                                getCampaignName(t, campaign),
-                                getCampaignTargetValueName(
-                                    t,
-                                    CAMPAIGN_TARGET_TO_KIND[
-                                        campaign.target.type
-                                    ],
-                                ),
-                                getChainData(campaign.chainId),
-                            );
-                        })
-                        .sort((a, b) => a.createdAt - b.createdAt),
+                    campaigns: campaigns.map((campaign) => {
+                        return new Campaign(
+                            campaign,
+                            getCampaignName(t, campaign),
+                            getCampaignTargetValueName(
+                                t,
+                                CAMPAIGN_TARGET_TO_KIND[campaign.target.type],
+                            ),
+                            getChainData(campaign.chainId),
+                        );
+                    }),
                 };
             } catch (error) {
                 console.error(`Could not fetch campaigns: ${error}`, error);
