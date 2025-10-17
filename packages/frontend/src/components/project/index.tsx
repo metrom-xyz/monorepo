@@ -5,10 +5,8 @@ import { PROJECT_PAGES } from "@/src/commons/project-pages";
 import { useTranslations } from "next-intl";
 import { Header } from "./header";
 import { ProjectIntro } from "../protocol-intro";
-import { useCampaigns } from "@/src/hooks/useCampaigns";
 import { CampaignsTable } from "../campaigns-table";
 import { Typography } from "@metrom-xyz/ui";
-import { CHAIN_TYPE } from "@/src/commons";
 
 import styles from "./styles.module.css";
 
@@ -21,16 +19,18 @@ export function Project({ project }: ProjectProps) {
 
     const details = PROJECT_PAGES[ENVIRONMENT][project];
 
-    const { loading: loadingCampaigns, campaigns } = useCampaigns({
-        chainId: details.campaignsFilters.chainId,
-        chainType: CHAIN_TYPE,
-        dex: details.campaignsFilters.dex,
-        enabled: !!details,
-    });
-
     if (!project) return null;
 
-    const { name, description, url, brand, icon, intro } = details;
+    const {
+        name,
+        description,
+        url,
+        brand,
+        icon,
+        intro,
+        chain,
+        campaignsFilters,
+    } = details;
 
     return (
         <div className={styles.root}>
@@ -49,9 +49,12 @@ export function Project({ project }: ProjectProps) {
                     {t("explore")}
                 </Typography>
                 <CampaignsTable
-                    campaigns={campaigns}
-                    loading={loadingCampaigns}
                     disableFilters
+                    optionalFilters={{
+                        chainId: campaignsFilters.chainId?.toString(),
+                        chainType: chain.type,
+                        protocol: campaignsFilters.dex,
+                    }}
                 />
             </div>
         </div>

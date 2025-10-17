@@ -148,14 +148,14 @@ export default async function Image({ params }: CampaignDetailsPageProps) {
         campaign.isTargeting(TargetType.LiquityV2Debt) ||
         campaign.isTargeting(TargetType.LiquityV2StabilityPool)
     )
-        tokenAddresses.push(campaign.target.collateral.token.address);
+        tokenAddresses.push(campaign.target.collateral.address);
     if (
         campaign.isTargeting(TargetType.AaveV3Borrow) ||
         campaign.isTargeting(TargetType.AaveV3Supply) ||
         campaign.isTargeting(TargetType.AaveV3NetSupply) ||
         campaign.isTargeting(TargetType.AaveV3BridgeAndSupply)
     )
-        tokenAddresses.push(campaign.target.collateral.token.address);
+        tokenAddresses.push(campaign.target.collateral.address);
     if (campaign.isDistributing(DistributablesType.Tokens))
         tokenAddresses.push(
             ...campaign.distributables.list.map(({ token }) => token.address),
@@ -202,7 +202,8 @@ export default async function Image({ params }: CampaignDetailsPageProps) {
                         <div tw="flex items-center">
                             {aaveV3 && (
                                 <AaveV3
-                                    collateral={campaign.target.collateral}
+                                    address={campaign.target.collateral.address}
+                                    symbol={campaign.target.collateral.symbol}
                                     tokenUris={tokenUris}
                                 />
                             )}
@@ -214,7 +215,8 @@ export default async function Image({ params }: CampaignDetailsPageProps) {
                             )}
                             {liquityV2 && (
                                 <LiquityV2
-                                    collateral={campaign.target.collateral}
+                                    address={campaign.target.collateral.address}
+                                    symbol={campaign.target.collateral.symbol}
                                     tokenUris={tokenUris}
                                 />
                             )}

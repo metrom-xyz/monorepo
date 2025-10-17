@@ -209,13 +209,24 @@ export function Filters({
 
         const params = new URLSearchParams(searchParams.toString());
         if (resolvedChain?.query) {
+            let chainType = undefined;
+            let chainId = undefined;
+            if (resolvedChain.value !== CHAIN_ALL) {
+                const chainTypeAndId = resolvedChain.value.split("-");
+                chainType = chainTypeAndId[0] as ChainType;
+                chainId = chainTypeAndId[1];
+            }
+
             setChain(resolvedChain.value);
+            onFiltersChange({ chainId, chainType });
+
             params.set("chain", resolvedChain.query);
         } else {
             setChain(CHAIN_ALL);
+            onFiltersChange({ chainId: CHAIN_ALL });
             params.delete("chain");
         }
-    }, [chainOptions, searchParams]);
+    }, [chainOptions, searchParams, onFiltersChange]);
 
     const handleProtocolChange = useCallback(
         (protocol: SelectOption<string>) => {

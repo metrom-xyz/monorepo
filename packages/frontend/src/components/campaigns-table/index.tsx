@@ -55,9 +55,13 @@ const TABLE_COLUMNS: {
 
 interface CampaignsTableProps {
     disableFilters?: boolean;
+    optionalFilters?: Partial<Filters>;
 }
 
-export function CampaignsTable({ disableFilters }: CampaignsTableProps) {
+export function CampaignsTable({
+    disableFilters,
+    optionalFilters,
+}: CampaignsTableProps) {
     const t = useTranslations("allCampaigns");
     const localizedRouter = useLocalizedRouter();
 
@@ -68,25 +72,39 @@ export function CampaignsTable({ disableFilters }: CampaignsTableProps) {
         chainId: CHAIN_ALL,
         protocol: "",
         status: FilterableStatus.All,
+        ...optionalFilters,
     });
 
-    const normalizedChainId = useMemo(
-        () =>
-            filters.chainId === CHAIN_ALL ? undefined : Number(filters.chainId),
-        [filters.chainId],
-    );
+    // TODO: remove this once we have the new multi filters
+    const { chainTypes, chainIds, protocols, statuses } = useMemo(() => {
+        return {
+            chainIds:
+                filters.chainId === CHAIN_ALL
+                    ? undefined
+                    : [Number(filters.chainId)],
+            protocols: !filters.protocol ? undefined : [filters.protocol],
+            statuses:
+                filters.status !== FilterableStatus.All
+                    ? [filters.status]
+                    : undefined,
+            chainTypes: APTOS
+                ? [ChainType.Aptos]
+                : filters.chainType
+                  ? [filters.chainType]
+                  : undefined,
+        };
+    }, [filters]);
+
+    console.log("filters", chainTypes, chainIds, protocols, statuses);
 
     const { loading, campaigns, totalCampaigns } = useCampaigns({
         page: pageNumber,
         pageSize: PAGE_SIZE,
         type: BackendCampaignType.Rewards,
-        chainType: APTOS ? ChainType.Aptos : filters.chainType,
-        chainId: normalizedChainId,
-        protocol: filters.protocol,
-        status:
-            filters.status !== FilterableStatus.All
-                ? filters.status
-                : undefined,
+        chainTypes,
+        chainIds,
+        protocols,
+        statuses,
         orderBy: sortField,
         asc: order === 1 ? true : order === -1 ? false : undefined,
     });
