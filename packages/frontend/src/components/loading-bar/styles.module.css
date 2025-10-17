@@ -1,0 +1,9 @@
+@reference "../../app.css";
+
+.root {
+    @apply w-full h-0.5 bg-transparent;
+}
+
+.progress {
+    @apply h-full dark:bg-brand-green bg-brand-green-dark;
+}

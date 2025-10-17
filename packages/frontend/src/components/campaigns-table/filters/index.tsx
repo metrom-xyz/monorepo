@@ -256,7 +256,7 @@ export function Filters({
             });
 
             let chainType = undefined;
-            let chainId = undefined;
+            let chainId = CHAIN_ALL;
             if (chain.value !== CHAIN_ALL) {
                 const chainTypeAndId = chain.value.split("-");
                 chainType = chainTypeAndId[0] as ChainType;
