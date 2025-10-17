@@ -954,7 +954,7 @@ export class MetromApiClient {
         params: FetchFungibleAssetParams,
     ): Promise<FungibleAssetInfo> {
         const url = new URL(
-            `v1/fungible-assets/${params.chainType}/${params.chainId}/${params.address}/`,
+            `v2/fungible-assets/${params.chainType}/${params.chainId}/${params.address}`,
             this.baseUrl,
         );
 
