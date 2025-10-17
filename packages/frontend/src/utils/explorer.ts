@@ -7,7 +7,7 @@ import {
     getCrossVmChainData,
 } from "./chain";
 import { APTOS } from "../commons/env";
-import { isAddress } from "./address";
+import { isAddressOnChainType } from "./address";
 import { ChainType } from "@metrom-xyz/sdk";
 
 export function getExplorerLink(
@@ -15,7 +15,8 @@ export function getExplorerLink(
     chainId?: SupportedChain,
     chainType?: ChainType,
 ): string | undefined {
-    if (!chainType || !chainId || !isAddress(address)) return undefined;
+    if (!chainType || !chainId || !isAddressOnChainType(address, chainType))
+        return undefined;
 
     const explorer = getCrossVmChainData(chainId, chainType)?.blockExplorers
         ?.default;
@@ -33,7 +34,8 @@ export function getFungibleAssetExplorerLink(
     chainId?: SupportedChain,
     chainType?: ChainType,
 ): string | undefined {
-    if (!chainType || !chainId || !isAddress(address)) return undefined;
+    if (!chainType || !chainId || !isAddressOnChainType(address, chainType))
+        return undefined;
 
     const explorer = getCrossVmChainData(chainId, chainType)?.blockExplorers
         ?.default;
