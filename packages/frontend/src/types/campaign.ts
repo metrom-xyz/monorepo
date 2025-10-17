@@ -266,7 +266,7 @@ export class HoldFungibleAssetCampaignPreviewPayload extends BaseCampaignPreview
     }
 
     getTargetValue(): TargetValue | undefined {
-        return undefined;
+        return { usd: this.asset.usdTotalSupply, raw: this.asset.totalSupply };
     }
 }
 

@@ -267,80 +267,28 @@ export function getCampaignPreviewApr(
     liquidityByAddresses?: LiquidityByAddresses,
 ): number | undefined {
     const duration = payload.endDate.unix() - payload.startDate.unix();
-    if (duration <= 0) return undefined;
+    if (duration <= 0 || !payload.isDistributing(DistributablesType.Tokens))
+        return undefined;
 
-    if (
-        payload instanceof AmmPoolLiquidityCampaignPreviewPayload &&
-        payload.isDistributing(DistributablesType.Tokens)
-    ) {
-        const { distributables, pool, kpiSpecification } = payload;
+    const { distributables, kpiSpecification } = payload;
 
-        let rewardsUsdValue = 0;
-        for (const reward of distributables.tokens) {
-            if (!reward.amount.usdValue) return undefined;
-            rewardsUsdValue += reward.amount.usdValue;
-        }
-
-        return getCampaignApr({
-            usdRewards: rewardsUsdValue,
-            duration,
-            usdTvl: pool.usdTvl,
-            liquidity: pool.liquidity,
-            kpiSpecification,
-            range,
-            liquidityByAddresses,
-        });
+    let rewardsUsdValue = 0;
+    for (const reward of distributables.tokens) {
+        if (!reward.amount.usdValue) return undefined;
+        rewardsUsdValue += reward.amount.usdValue;
     }
 
-    if (
-        payload instanceof LiquityV2CampaignPreviewPayload &&
-        payload.isDistributing(DistributablesType.Tokens)
-    ) {
-        const { distributables, kpiSpecification } = payload;
+    const liquidity = payload.getTargetValue();
 
-        let rewardsUsdValue = 0;
-        for (const reward of distributables.tokens) {
-            if (!reward.amount.usdValue) return undefined;
-            rewardsUsdValue += reward.amount.usdValue;
-        }
-
-        const liquidity = payload.getTargetValue();
-
-        return getCampaignApr({
-            usdRewards: rewardsUsdValue,
-            duration,
-            usdTvl: liquidity?.usd,
-            liquidity: liquidity?.raw,
-            kpiSpecification,
-            range,
-        });
-
-        // TODO: add liquidity by addresses once supported
-    }
-
-    if (
-        payload instanceof AaveV3CampaignPreviewPayload &&
-        payload.isDistributing(DistributablesType.Tokens)
-    ) {
-        const { distributables, kpiSpecification } = payload;
-
-        let rewardsUsdValue = 0;
-        for (const reward of distributables.tokens) {
-            if (!reward.amount.usdValue) return undefined;
-            rewardsUsdValue += reward.amount.usdValue;
-        }
-
-        const liquidity = payload.getTargetValue();
-
-        return getCampaignApr({
-            usdRewards: rewardsUsdValue,
-            duration,
-            usdTvl: liquidity?.usd,
-            liquidity: liquidity?.raw,
-            kpiSpecification,
-            range,
-        });
-    }
+    return getCampaignApr({
+        usdRewards: rewardsUsdValue,
+        duration,
+        usdTvl: liquidity?.usd,
+        liquidity: liquidity?.raw,
+        kpiSpecification,
+        range,
+        liquidityByAddresses,
+    });
 }
 
 export function getCampaignApr({
