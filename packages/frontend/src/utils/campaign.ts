@@ -308,12 +308,7 @@ export function getCampaignApr({
     range?: LiquidityInRange;
     liquidityByAddresses?: LiquidityByAddresses;
 }) {
-    if (
-        !duration ||
-        usdRewards === undefined ||
-        usdTvl === undefined ||
-        liquidity === undefined
-    )
+    if (!duration || usdRewards === undefined || usdTvl === undefined)
         return undefined;
 
     let distributableUsdRewards = usdRewards;
@@ -338,6 +333,13 @@ export function getCampaignApr({
 
         totalUsdTvl = usdTvl * multiplier;
     } else if (liquidityByAddresses) {
+        if (!liquidity) {
+            console.error(
+                "Missing raw liquidity while calculating APR for liquidity by addresses",
+            );
+            return undefined;
+        }
+
         const adjustedLiquidity =
             liquidityByAddresses.type === RestrictionType.Blacklist
                 ? liquidity - liquidityByAddresses.liquidity
