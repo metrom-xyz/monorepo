@@ -5,7 +5,7 @@ import { AnimatePresence, motion } from "motion/react";
 
 import styles from "./styles.module.css";
 
-const MIN_LOADING_TIMEOUT = 50;
+const MIN_LOADING_TIMEOUT = 300;
 const INITIAL_SPEED = 5;
 const SLOWDOWN_FACTOR = 20;
 
@@ -58,7 +58,7 @@ export function LoadingBar({ loading, className }: LoadingBarProps) {
             <AnimatePresence>
                 {show && (
                     <motion.div
-                        className={styles.progress}
+                        className={classNames("progress", styles.progress)}
                         initial={{ width: "0%" }}
                         animate={{ width: `${progress}%` }}
                         exit={{ width: "100%" }}
