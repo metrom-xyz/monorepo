@@ -12,6 +12,7 @@ import { FilterableStatus } from "@/src/types/common";
 import { useCampaigns } from "@/src/hooks/useCampaigns";
 import { APTOS } from "@/src/commons/env";
 import { BackendCampaignType, ChainType } from "@metrom-xyz/sdk";
+import { LoadingBar } from "../loading-bar";
 
 import styles from "./styles.module.css";
 
@@ -95,19 +96,18 @@ export function CampaignsTable({
         };
     }, [filters]);
 
-    console.log("filters", chainTypes, chainIds, protocols, statuses);
-
-    const { loading, campaigns, totalCampaigns } = useCampaigns({
-        page: pageNumber,
-        pageSize: PAGE_SIZE,
-        type: BackendCampaignType.Rewards,
-        chainTypes,
-        chainIds,
-        protocols,
-        statuses,
-        orderBy: sortField,
-        asc: order === 1 ? true : order === -1 ? false : undefined,
-    });
+    const { loading, fetching, placeholderData, campaigns, totalCampaigns } =
+        useCampaigns({
+            page: pageNumber,
+            pageSize: PAGE_SIZE,
+            type: BackendCampaignType.Rewards,
+            chainTypes,
+            chainIds,
+            protocols,
+            statuses,
+            orderBy: sortField,
+            asc: order === 1 ? true : order === -1 ? false : undefined,
+        });
 
     const getSortChangeHandler = useCallback(
         (column: CampaignSortOptions) => {
@@ -153,6 +153,10 @@ export function CampaignsTable({
 
     return (
         <div className={styles.root}>
+            <LoadingBar
+                loading={placeholderData && fetching}
+                className={styles.loadingBar}
+            />
             {!disableFilters && (
                 <Filters
                     sortField={sortField}

@@ -1,5 +1,5 @@
 import { METROM_API_CLIENT } from "../commons";
-import { useQuery } from "@tanstack/react-query";
+import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { getCampaignName, getCampaignTargetValueName } from "../utils/campaign";
 import { Campaign } from "../types/campaign";
 import type { HookBaseParams } from "../types/hooks";
@@ -39,14 +39,19 @@ export function useCampaigns({
     enabled = true,
 }: UseCampaignsParams): {
     loading: boolean;
+    fetching: boolean;
+    placeholderData: boolean;
     totalCampaigns: number;
     campaigns?: Campaign[];
 } {
     const t = useTranslations();
 
-    console.log("chainIds", chainIds);
-
-    const { data: pagedCampaigns, isPending: loading } = useQuery({
+    const {
+        data: pagedCampaigns,
+        isPlaceholderData: placeholderData,
+        isPending: loading,
+        isFetching: fetching,
+    } = useQuery({
         queryKey: [
             "campaigns",
             page,
@@ -93,11 +98,14 @@ export function useCampaigns({
                 throw error;
             }
         },
+        placeholderData: keepPreviousData,
         enabled,
     });
 
     return {
         loading,
+        fetching,
+        placeholderData,
         totalCampaigns: pagedCampaigns?.totalItems || 0,
         campaigns: pagedCampaigns?.campaigns,
     };
