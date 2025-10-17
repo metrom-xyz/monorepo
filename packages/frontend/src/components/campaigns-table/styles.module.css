@@ -4,6 +4,10 @@
     @apply max-w-screen-xl w-full flex flex-col gap-4;
 }
 
+.loadingBar {
+    @apply fixed top-0 left-0 z-50;
+}
+
 .tableWrapper {
     @apply overflow-x-scroll sm:overflow-x-auto;
 }
