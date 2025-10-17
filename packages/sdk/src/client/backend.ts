@@ -135,10 +135,10 @@ export interface FetchCampaignsParams {
     type: BackendCampaignType;
     orderBy?: BackendCampaignOrderBy;
     asc?: boolean;
-    chainType?: ChainType;
-    chainId?: SupportedChain;
-    protocol?: SupportedProtocol;
-    status?: BackendCampaignStatus;
+    chainTypes?: ChainType[];
+    chainIds?: SupportedChain[];
+    protocols?: SupportedProtocol[];
+    statuses?: BackendCampaignStatus[];
     tvlRange?: string;
 }
 
@@ -256,7 +256,10 @@ export class MetromApiClient {
         for (const param in params) {
             const value = params[param as keyof FetchCampaignsParams];
             if (!value) continue;
-            url.searchParams.set(param, value.toString());
+
+            if (Array.isArray(value))
+                url.searchParams.set(param, value.join(","));
+            else url.searchParams.set(param, value.toString());
         }
 
         const response = await fetch(url);
