@@ -3,38 +3,28 @@
 import { Popover, Skeleton, Typography } from "@metrom-xyz/ui";
 import { AprChip } from "@/src/components/apr-chip";
 import React, { useRef, useState } from "react";
-import { type Hex } from "viem";
-import { useCampaign } from "@/src/hooks/useCampaign";
 import { KpiSimulationChart } from "@/src/components/kpi-simulation-chart";
 import { usePool } from "@/src/hooks/usePool";
-import { ChainType, DistributablesType, TargetType } from "@metrom-xyz/sdk";
+import { DistributablesType, TargetType } from "@metrom-xyz/sdk";
 import { useTranslations } from "next-intl";
 import { KpiAprSummary } from "@/src/components/kpi-apr-summary";
+import type { Campaign } from "@/src/types/campaign";
 
 import styles from "./styles.module.css";
 
 interface AprProps {
-    campaignId: Hex;
-    chainId: number;
-    chainType: ChainType;
+    campaign: Campaign;
     apr?: number;
     kpi?: boolean;
 }
 
-export function Apr({ campaignId, chainId, chainType, apr, kpi }: AprProps) {
+export function Apr({ campaign, apr, kpi }: AprProps) {
     const t = useTranslations("allCampaigns.apr");
 
     const [popover, setPopover] = useState(false);
     const [anchor, setAnchor] = useState<HTMLDivElement | null>(null);
     const popoverRef = useRef<HTMLDivElement>(null);
     const timeoutRef = useRef<NodeJS.Timeout | null>(null);
-
-    const { loading: loadingCampaign, campaign } = useCampaign({
-        id: campaignId,
-        chainId,
-        chainType,
-        enabled: popover && kpi !== undefined,
-    });
 
     const ammCampaign = campaign?.isTargeting(TargetType.AmmPoolLiquidity);
     const tokensCampaign = campaign?.isDistributing(DistributablesType.Tokens);
@@ -59,8 +49,7 @@ export function Apr({ campaignId, chainId, chainType, apr, kpi }: AprProps) {
         }, 100);
     }
 
-    const loading =
-        loadingCampaign || loadingPool || !campaign || (ammCampaign && !pool);
+    const loading = loadingPool || !campaign || (ammCampaign && !pool);
     const lowerBound = campaign?.specification?.kpi?.goal.lowerUsdTarget;
     const upperBound = campaign?.specification?.kpi?.goal.upperUsdTarget;
     const minimumPayout = campaign?.specification?.kpi?.minimumPayoutPercentage;

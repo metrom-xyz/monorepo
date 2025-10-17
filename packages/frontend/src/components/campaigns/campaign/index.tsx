@@ -50,9 +50,7 @@ export function CampaignRow({ campaign }: CampaignProps) {
                     status={campaign.status}
                 />
                 <Apr
-                    campaignId={campaign.id}
-                    chainId={campaign.chainId}
-                    chainType={campaign.chainType}
+                    campaign={campaign}
                     apr={campaign.apr}
                     kpi={!!campaign.specification?.kpi}
                 />
