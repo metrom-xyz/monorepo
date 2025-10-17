@@ -5,7 +5,7 @@
 }
 
 .loadingBar {
-    @apply px-3 absolute overflow-y-hidden;
+    @apply px-3 rounded-bl-xl rounded-br-xl absolute overflow-y-hidden;
 }
 
 .loadingBar :global(.progress) {
