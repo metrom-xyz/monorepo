@@ -245,7 +245,8 @@ export function AverageDistributionChart({
                         animationEasing="ease-in-out"
                         animationDuration={500}
                         cornerRadius={6}
-                        data={chartData}
+                        // FIXME: the type: "reimbursed" | "distributed" is causing issues with the chart type, fix this
+                        data={chartData as unknown as Record<string, unknown>[]}
                         innerRadius={70}
                         outerRadius={120}
                         startAngle={90}
