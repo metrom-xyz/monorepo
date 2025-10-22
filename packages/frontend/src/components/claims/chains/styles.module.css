@@ -32,7 +32,7 @@
 }
 
 .rowActive {
-    @apply bg-zinc-200 dark:bg-zinc-700 theme-surface-hover;
+    @apply bg-zinc-200 dark:bg-zinc-700 surface-primary-hover;
 }
 
 .chainNameWrapper {

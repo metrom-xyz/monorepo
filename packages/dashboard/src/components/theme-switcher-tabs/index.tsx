@@ -2,11 +2,11 @@ import classNames from "classnames";
 import { useTheme } from "next-themes";
 import { Tab, Tabs, Typography } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
-
-import styles from "./styles.module.css";
 import { Theme } from "@/types/common";
 import { MoonIcon } from "@/assets/moon-icon";
 import { SunIcon } from "@/assets/sun-icon";
+
+import styles from "./styles.module.css";
 
 interface ThemeSwitcherTabsProps {
     popover?: boolean;

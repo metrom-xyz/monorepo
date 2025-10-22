@@ -163,7 +163,7 @@ export function WeightingStep({
             >
                 <div className={styles.weightsWrapper}>
                     <div className={styles.weight}>
-                        <Typography uppercase light weight="medium" size="sm">
+                        <Typography uppercase variant="tertiary"weight="medium" size="sm">
                             {token0Symbol}
                         </Typography>
                         <Typography uppercase weight="medium" size="sm">
@@ -173,7 +173,7 @@ export function WeightingStep({
                         </Typography>
                     </div>
                     <div className={styles.weight}>
-                        <Typography uppercase light weight="medium" size="sm">
+                        <Typography uppercase variant="tertiary"weight="medium" size="sm">
                             {token1Symbol}
                         </Typography>
                         <Typography uppercase weight="medium" size="sm">
@@ -183,7 +183,7 @@ export function WeightingStep({
                         </Typography>
                     </div>
                     <div className={styles.weight}>
-                        <Typography uppercase light weight="medium" size="sm">
+                        <Typography uppercase variant="tertiary"weight="medium" size="sm">
                             {t("fees")}
                         </Typography>
                         <Typography uppercase weight="medium" size="sm">

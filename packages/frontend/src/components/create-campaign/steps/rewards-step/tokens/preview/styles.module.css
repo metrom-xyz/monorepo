@@ -13,7 +13,7 @@
         transition-colors
         duration-200
         ease-in-out
-        theme-surface-2
+        surface-secondary
         rounded-lg;
 }
 
@@ -67,7 +67,7 @@
 .rewardSkeleton {
     @apply h-[70px]
         w-full 
-        theme-surface-2
+        surface-secondary
         rounded-lg
         flex
         items-center

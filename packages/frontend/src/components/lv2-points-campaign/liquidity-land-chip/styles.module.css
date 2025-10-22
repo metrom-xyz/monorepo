@@ -12,7 +12,7 @@
 }
 
 .chip {
-    @apply theme-surface
+    @apply surface-primary
         rounded-[2.813rem]
         px-4
         py-2

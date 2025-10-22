@@ -73,7 +73,7 @@ export function Row({
                         <Typography
                             size="xs"
                             weight="medium"
-                            light
+                            variant="tertiary"
                             className={styles.fee}
                         >
                             {formatPercentage({
@@ -87,7 +87,7 @@ export function Row({
             {loading ? (
                 <Skeleton width={64} size="sm" />
             ) : (
-                <Typography weight="medium" size="sm" light>
+                <Typography weight="medium" size="sm" variant="tertiary">
                     {formatUsdAmount({ amount: pool.usdTvl })}
                 </Typography>
             )}

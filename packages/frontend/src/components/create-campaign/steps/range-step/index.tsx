@@ -259,7 +259,7 @@ export function RangeStep({
                             <Typography
                                 uppercase
                                 weight="medium"
-                                light
+                                variant="tertiary"
                                 size="sm"
                             >
                                 {t("currentPrice")}
@@ -285,7 +285,7 @@ export function RangeStep({
                             <Typography
                                 uppercase
                                 weight="medium"
-                                light
+                                variant="tertiary"
                                 size="sm"
                             >
                                 {t("range.label")}
@@ -348,7 +348,7 @@ export function RangeStep({
                     <div className={styles.chartWrapper}>
                         <Typography
                             weight="medium"
-                            light
+                            variant="tertiary"
                             uppercase
                             size="xs"
                             className={styles.chartTitleText}

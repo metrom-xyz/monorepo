@@ -125,7 +125,7 @@ export function StakingAssetsPicker({
                     className={styles.root}
                 >
                     <div className={styles.inputWrapper}>
-                        <Typography weight="medium" size="xs" uppercase light>
+                        <Typography weight="medium" size="xs" uppercase variant="tertiary">
                             {t("stakingTokenAddressInput.label")}
                         </Typography>
                         {!assetInfo && loadingAssetInfo ? (
@@ -176,7 +176,7 @@ export function StakingAssetsPicker({
                             <div className={styles.listWrapper}>
                                 <Typography
                                     weight="medium"
-                                    light
+                                    variant="tertiary"
                                     size="xs"
                                     uppercase
                                 >

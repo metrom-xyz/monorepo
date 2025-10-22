@@ -93,7 +93,7 @@ export function Activity({ chainId, transaction, payload }: ActivityProps) {
                     <div className={styles.titleWrapper}>
                         <div className={styles.title}>
                             <Typography
-                                light
+                                variant="tertiary"
                                 weight="medium"
                                 uppercase
                                 size="sm"
@@ -112,7 +112,7 @@ export function Activity({ chainId, transaction, payload }: ActivityProps) {
                                 </a>
                             )}
                         </div>
-                        <Typography light truncate weight="medium" size="sm">
+                        <Typography variant="tertiary"truncate weight="medium" size="sm">
                             {timeAgo}
                         </Typography>
                     </div>

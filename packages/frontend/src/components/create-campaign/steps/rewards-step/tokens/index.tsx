@@ -228,10 +228,10 @@ export function RewardTokens({
                     onError={handleExistingTokensValidation}
                 />
                 <div className={styles.totalValueWrapper}>
-                    <Typography uppercase size="xs" weight="medium" light>
+                    <Typography uppercase size="xs" weight="medium" variant="tertiary">
                         {formatUsdAmount({ amount: totalRewardsUsdAmount })}
                     </Typography>
-                    <Typography uppercase size="xs" weight="medium" light>
+                    <Typography uppercase size="xs" weight="medium" variant="tertiary">
                         {t("totalUsd")}
                     </Typography>
                 </div>
