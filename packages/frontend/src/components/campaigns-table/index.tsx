@@ -8,11 +8,11 @@ import { useTranslations } from "next-intl";
 import { useRouter as useLocalizedRouter } from "@/i18n/routing";
 import { CampaignRow, SkeletonCampaign } from "../campaigns/campaign";
 import { CHAIN_ALL, Filters } from "./filters";
-import { FilterableStatus } from "@/src/types/common";
 import { useCampaigns } from "@/src/hooks/useCampaigns";
 import { APTOS } from "@/src/commons/env";
 import { BackendCampaignType, ChainType } from "@metrom-xyz/sdk";
 import { LoadingBar } from "../loading-bar";
+import { useDebounce } from "react-use";
 
 import styles from "./styles.module.css";
 
@@ -77,29 +77,43 @@ export function CampaignsTable({
     const [filters, setFilters] = useState<Filters>({
         chainId: CHAIN_ALL,
         protocol: "",
-        status: FilterableStatus.All,
+        statuses: [],
+        ...optionalFilters,
+    });
+    const [debouncedFilters, setDebouncedFilters] = useState<Filters>({
+        chainId: CHAIN_ALL,
+        protocol: "",
+        statuses: [],
         ...optionalFilters,
     });
 
-    // TODO: remove this once we have the new multi filters
+    useDebounce(
+        () => {
+            setDebouncedFilters(filters);
+        },
+        300,
+        [filters],
+    );
+
     const { chainTypes, chainIds, protocols, statuses } = useMemo(() => {
+        const { statuses } = debouncedFilters;
+
         return {
             chainIds:
-                filters.chainId === CHAIN_ALL
+                debouncedFilters.chainId === CHAIN_ALL
                     ? undefined
-                    : [Number(filters.chainId)],
-            protocols: !filters.protocol ? undefined : [filters.protocol],
-            statuses:
-                filters.status !== FilterableStatus.All
-                    ? [filters.status]
-                    : undefined,
+                    : [Number(debouncedFilters.chainId)],
+            protocols: !debouncedFilters.protocol
+                ? undefined
+                : [debouncedFilters.protocol],
+            statuses: statuses.map(({ value }) => value),
             chainTypes: APTOS
                 ? [ChainType.Aptos]
-                : filters.chainType
-                  ? [filters.chainType]
+                : debouncedFilters.chainType
+                  ? [debouncedFilters.chainType]
                   : undefined,
         };
-    }, [filters]);
+    }, [debouncedFilters]);
 
     const { loading, fetching, placeholderData, campaigns, totalCampaigns } =
         useCampaigns({
@@ -140,7 +154,7 @@ export function CampaignsTable({
         setFilters({
             chainId: CHAIN_ALL,
             protocol: "",
-            status: FilterableStatus.All,
+            statuses: [],
         });
         setPageNumber(1);
         setSortField(undefined);
@@ -166,89 +180,81 @@ export function CampaignsTable({
                     onFiltersChange={handleFiltersOnChange}
                 />
             )}
-            <div className={styles.scrollContainer}>
-                <div className={styles.tableWrapper}>
-                    <div className={styles.table}>
-                        <div className={styles.header}>
-                            {TABLE_COLUMNS.map(
-                                ({ name, label, sort }, index) => (
-                                    <div
-                                        key={index}
-                                        onClick={
-                                            sort
-                                                ? getSortChangeHandler(
-                                                      name as CampaignSortOptions,
-                                                  )
-                                                : undefined
-                                        }
-                                        className={classNames(styles.column, {
-                                            [styles.sort]: sort,
+            <div className={styles.tableWrapper}>
+                <div className={styles.table}>
+                    <div className={styles.header}>
+                        {TABLE_COLUMNS.map(({ name, label, sort }, index) => (
+                            <div
+                                key={index}
+                                onClick={
+                                    sort
+                                        ? getSortChangeHandler(
+                                              name as CampaignSortOptions,
+                                          )
+                                        : undefined
+                                }
+                                className={classNames(styles.column, {
+                                    [styles.sort]: sort,
+                                })}
+                            >
+                                <Typography size="sm" weight="medium">
+                                    {t(`header.${label}`)}
+                                </Typography>
+                                {sort && (
+                                    <ArrowRightIcon
+                                        className={classNames(styles.sortIcon, {
+                                            [styles.asc]:
+                                                sortField === name &&
+                                                order === 1,
                                         })}
-                                    >
-                                        <Typography size="sm" weight="medium">
-                                            {t(`header.${label}`)}
-                                        </Typography>
-                                        {sort && (
-                                            <ArrowRightIcon
-                                                className={classNames(
-                                                    styles.sortIcon,
-                                                    {
-                                                        [styles.asc]:
-                                                            sortField ===
-                                                                name &&
-                                                            order === 1,
-                                                    },
-                                                )}
-                                            />
-                                        )}
-                                    </div>
-                                ),
-                            )}
-                        </div>
-                        <div className={styles.body}>
-                            <LoadingBar
-                                loading={placeholderData && fetching}
-                                className={styles.loadingBar}
-                            />
-                            {loading ? (
-                                <>
-                                    <SkeletonCampaign />
-                                    <SkeletonCampaign />
-                                    <SkeletonCampaign />
-                                    <SkeletonCampaign />
-                                    <SkeletonCampaign />
-                                    <SkeletonCampaign />
-                                    <SkeletonCampaign />
-                                    <SkeletonCampaign />
-                                    <SkeletonCampaign />
-                                    <SkeletonCampaign />
-                                </>
-                            ) : !campaigns || campaigns.length === 0 ? (
-                                <div className={styles.empty}>
-                                    <Typography uppercase weight="medium">
-                                        {t("empty.title")}
-                                    </Typography>
-                                    <Typography size="lg" weight="medium">
-                                        {t("empty.description")}
-                                    </Typography>
-                                    <Button
-                                        size="sm"
-                                        onClick={handleCreateCampaign}
-                                    >
-                                        {t("empty.create")}
-                                    </Button>
-                                </div>
-                            ) : (
-                                campaigns?.map((campaign) => {
-                                    return (
-                                        <CampaignRow
-                                            key={`${campaign.chainType}-${campaign.chainId}-${campaign.id}`}
-                                            campaign={campaign}
-                                        />
-                                    );
-                                })
-                            )}
-                        </div>
+                                    />
+                                )}
+                            </div>
+                        ))}
+                    </div>
+                    <div className={styles.body}>
+                        <LoadingBar
+                            loading={placeholderData && fetching}
+                            className={styles.loadingBar}
+                        />
+                        {loading ? (
+                            <>
+                                <SkeletonCampaign />
+                                <SkeletonCampaign />
+                                <SkeletonCampaign />
+                                <SkeletonCampaign />
+                                <SkeletonCampaign />
+                                <SkeletonCampaign />
+                                <SkeletonCampaign />
+                                <SkeletonCampaign />
+                                <SkeletonCampaign />
+                                <SkeletonCampaign />
+                            </>
+                        ) : !campaigns || campaigns.length === 0 ? (
+                            <div className={styles.empty}>
+                                <Typography uppercase weight="medium">
+                                    {t("empty.title")}
+                                </Typography>
+                                <Typography size="lg" weight="medium">
+                                    {t("empty.description")}
+                                </Typography>
+                                <Button
+                                    size="sm"
+                                    onClick={handleCreateCampaign}
+                                >
+                                    {t("empty.create")}
+                                </Button>
+                            </div>
+                        ) : (
+                            campaigns?.map((campaign) => {
+                                return (
+                                    <CampaignRow
+                                        key={`${campaign.chainType}-${campaign.chainId}-${campaign.id}`}
+                                        campaign={campaign}
+                                    />
+                                );
+                            })
+                        )}
                     </div>
                 </div>
             </div>

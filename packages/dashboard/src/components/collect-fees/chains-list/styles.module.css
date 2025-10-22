@@ -24,11 +24,11 @@
 }
 
 .chain.skeleton {
-    @apply h-11 pointer-events-none animate-pulse bg-zinc-200 dark:bg-dark-surface-2;
+    @apply h-11 pointer-events-none animate-pulse surface-secondary;
 }
 
 .chain.selected {
-    @apply bg-zinc-200 dark:bg-zinc-700 theme-surface-hover;
+    @apply bg-zinc-200 dark:bg-zinc-700 surface-primary-hover;
 }
 
 .icon {

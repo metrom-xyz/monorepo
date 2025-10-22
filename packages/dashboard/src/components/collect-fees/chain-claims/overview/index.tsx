@@ -108,7 +108,7 @@ export function Overview({
                                     />
                                 ))}
                             </div>
-                            <Typography weight="medium" size="sm" light>
+                            <Typography weight="medium" size="sm" variant="tertiary">
                                 {formatUsdAmount({
                                     amount: totalUsd,
                                 })}
@@ -131,11 +131,11 @@ export function Overview({
             <TextField
                 label={t("chain")}
                 loading={loading}
-                size="xl4"
+                size="xl3"
                 value={
                     <div className={styles.field}>
                         {Icon && <Icon className={styles.icon} />}
-                        <Typography size="xl4" weight="medium">
+                        <Typography size="xl3" weight="medium">
                             {chain}
                         </Typography>
                     </div>
@@ -144,9 +144,9 @@ export function Overview({
             <TextField
                 label={t("unclaimed")}
                 loading={loading}
-                size="xl4"
+                size="xl3"
                 value={
-                    <Typography size="xl4" weight="medium">
+                    <Typography size="xl3" weight="medium">
                         {formatUsdAmount({ amount: totalUsd })}
                     </Typography>
                 }

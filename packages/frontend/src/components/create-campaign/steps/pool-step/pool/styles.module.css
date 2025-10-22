@@ -13,7 +13,7 @@
         duration-200
         ease-in-out
         hover:cursor-pointer
-        theme-surface-hover;
+        surface-primary-hover;
 }
 
 .pool {

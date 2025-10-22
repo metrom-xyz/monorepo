@@ -83,7 +83,7 @@ export function Row({
                               })
                             : "-"}
                     </Typography>
-                    <Typography size="xs" weight="medium" light>
+                    <Typography size="xs" weight="medium" variant="tertiary">
                         {tokenWithBalance.balance
                             ? formatUsdAmount({
                                   amount:

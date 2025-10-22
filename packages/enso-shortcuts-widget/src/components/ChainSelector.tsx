@@ -79,7 +79,7 @@ const ChainSelector = ({
             disabled={disabled}
             onChange={onSelectChange}
             renderOption={ChainIndicator}
-            className="[&>.root>.inputWrapper>input]:bg-zinc-200! dark:[&>.root>.inputWrapper>input]:bg-dark-surface-2!"
+            className="[&>.root>.inputWrapper>input]:bg-zinc-200! dark:[&>.root>.inputWrapper>input]:surface-secondary!"
         />
     );
 };

@@ -129,7 +129,7 @@ export function DistributionChart({
         return (
             <Card className={styles.root}>
                 <div className={styles.header}>
-                    <Typography weight="medium" light uppercase size="sm">
+                    <Typography weight="medium" variant="tertiary"uppercase size="sm">
                         {t("distributions")}
                     </Typography>
                     <div
@@ -169,7 +169,7 @@ export function DistributionChart({
     ) {
         return (
             <Card className={styles.root}>
-                <Typography weight="medium" light uppercase size="sm">
+                <Typography weight="medium" variant="tertiary"uppercase size="sm">
                     {t("distributions")}
                 </Typography>
                 <div className={classNames(styles.container, styles.empty)}>
@@ -186,7 +186,7 @@ export function DistributionChart({
         <Card className={styles.root}>
             <div className={styles.header}>
                 <div className={styles.leftContent}>
-                    <Typography weight="medium" light uppercase size="sm">
+                    <Typography weight="medium" variant="tertiary"uppercase size="sm">
                         {t("distributions")}
                     </Typography>
                     <AnimatePresence>

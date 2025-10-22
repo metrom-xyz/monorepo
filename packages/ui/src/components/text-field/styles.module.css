@@ -8,7 +8,7 @@
 }
 
 .boxed {
-    @apply p-4 theme-surface rounded-2xl;
+    @apply p-4 surface-primary rounded-2xl;
 }
 
 .alignCenter {

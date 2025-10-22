@@ -8,7 +8,7 @@ import { APTOS } from "../commons/env";
 import { truncateAddress } from "@aptos-labs/wallet-adapter-react";
 import { useAccountName } from "../hooks/useAccountName";
 
-interface AccountProps extends Omit<TypographyProps, "children"> {
+interface AccountProps extends Omit<TypographyProps, "children" | "variant"> {
     address?: Address;
     variant?: "full" | "long" | "short";
     className?: string;

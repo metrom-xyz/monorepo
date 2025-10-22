@@ -1,0 +1,204 @@
+@reference "../../theme.css";
+
+.baseInputWrapper :global(.inputIcon) {
+    @apply w-4;
+}
+
+.inputWrapper {
+    @apply flex
+        items-center
+        cursor-pointer
+        border-2
+        border-transparent
+        transform-border
+        duration-200
+        ease-in-out;
+}
+
+.inputWrapper.error {
+    @apply border-error;
+}
+
+.inputWrapper.active {
+    @apply border-gray-300 dark:border-neutral-600;
+}
+
+.inputWrapper.xs,
+.inputWrapper.sm,
+.inputWrapper.base {
+    @apply gap-1;
+}
+
+.inputWrapper.lg {
+    @apply gap-2;
+}
+
+.counter {
+    @apply flex items-center justify-center rounded bg-brand-green-dark dark:bg-brand-green;
+}
+
+.counter.xs {
+    @apply size-3.5;
+}
+
+.counter.sm {
+    @apply size-4;
+}
+
+.counter.base,
+.counter.lg {
+    @apply w-[1.125rem] h-[1.125rem];
+}
+
+.counterText {
+    @apply dark:text-neutral-800! text-gray-100!;
+}
+
+.counterText.xs {
+    @apply text-[0.5rem];
+}
+
+.counterText.sm,
+.counterText.base,
+.counterText.lg {
+    @apply h-[1.125rem] text-[0.625rem];
+}
+
+.selectedOptions {
+    @apply flex max-w-1/2 overflow-hidden;
+}
+
+.input {
+    @apply flex-1
+        min-w-6
+        cursor-pointer
+        font-sans
+        font-normal
+        outline-none
+        border-transparent
+        transition-colors
+        duration-200
+        ease-in-out;
+}
+
+.input,
+.input > input {
+    @apply pl-0! border-transparent! pointer-events-none;
+}
+
+.input.visible {
+    @apply pointer-events-auto;
+}
+
+.dropdownRoot {
+    @apply z-30
+        overflow-hidden
+        h-fit;
+}
+
+.list {
+    @apply max-h-[288px];
+}
+
+.emptyOptionList {
+    @apply flex
+        justify-center
+        items-center
+        p-3
+        h-12;
+}
+
+.option {
+    @apply cursor-pointer
+        flex
+        gap-3
+        items-center
+        outline-none
+        box-border
+        text-primary
+        surface-secondary
+        surface-secondary-hover
+        not-last:border-b
+        not-last:border-b-gray-300
+        not-last:dark:border-b-neutral-700
+        transition-colors
+        ease-in-out
+        duration-200;
+}
+
+.option.xs {
+    @apply p-2;
+}
+
+.option.sm,
+.option.base,
+.option.lg {
+    @apply px-3 py-2;
+}
+
+.pickedOption {
+    @apply surface-secondary-hover;
+}
+
+.checkboxWrapper {
+    @apply relative;
+}
+
+.checkboxWrapper.sm {
+    @apply size-3;
+}
+
+.checkboxWrapper.base {
+    @apply size-4;
+}
+
+.checkbox {
+    @apply absolute
+        cursor-pointer
+        transition-colors
+        duration-200
+        ease-in-out
+        appearance-none
+        rounded
+        border
+        border-gray-500
+        dark:border-neutral-200
+        checked:bg-brand-green-dark
+        checked:dark:bg-brand-green
+        checked:border-transparent;
+}
+
+.checkbox.sm {
+    @apply size-3;
+}
+
+.checkbox.base {
+    @apply size-4;
+}
+
+.checkIcon {
+    @apply absolute
+        top-1/2
+        left-1/2
+        -translate-x-1/2
+        -translate-y-1/2
+        text-gray-100
+        dark:text-neutral-800
+        opacity-0
+        duration-200
+        ease-in-out
+        transform
+        pointer-events-none;
+}
+
+.checkIcon.sm {
+    @apply size-1.5;
+}
+
+.checkIcon.base {
+    @apply size-2.5;
+}
+
+.checkIcon.checked {
+    @apply opacity-100;
+}

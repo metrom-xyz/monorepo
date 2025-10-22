@@ -58,7 +58,11 @@ export function NavThemeSwitcher() {
                     {resolvedTheme === Theme.Dark && <MoonIcon />}
                     {resolvedTheme === Theme.Light && <SunIcon />}
                 </div>
-                <PopoverPicker anchor={wrapper} open={pickerOpen} />
+                <PopoverPicker
+                    anchor={wrapper}
+                    open={pickerOpen}
+                    onOpen={setPickerOpen}
+                />
                 <DrawerPicker
                     open={pickerOpen}
                     onClose={handleThemePickerOnClose}

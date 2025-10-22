@@ -38,7 +38,7 @@ export function TooltipContent({ chain, active, payload }: TooltipProps) {
     return (
         <div className={styles.root}>
             <div className={styles.fieldWrapper}>
-                <Typography weight="medium" light uppercase>
+                <Typography weight="medium" variant="tertiary"uppercase>
                     {t("time")}
                 </Typography>
                 <Typography weight="medium" uppercase>
@@ -46,13 +46,13 @@ export function TooltipContent({ chain, active, payload }: TooltipProps) {
                 </Typography>
             </div>
             <div className={styles.fieldWrapper}>
-                <Typography weight="medium" light uppercase>
+                <Typography weight="medium" variant="tertiary"uppercase>
                     {t("token")}
                 </Typography>
                 <RemoteLogo address={token} chain={chain} />
             </div>
             <div className={styles.fieldWrapper}>
-                <Typography weight="medium" light uppercase>
+                <Typography weight="medium" variant="tertiary"uppercase>
                     {t("account")}
                 </Typography>
                 <div className={styles.accountWrapper}>
@@ -70,7 +70,7 @@ export function TooltipContent({ chain, active, payload }: TooltipProps) {
                 </div>
             </div>
             <div className={styles.fieldWrapper}>
-                <Typography weight="medium" light uppercase>
+                <Typography weight="medium" variant="tertiary"uppercase>
                     {t("distributed")}
                 </Typography>
                 <Typography size="sm" weight="medium">
@@ -80,7 +80,7 @@ export function TooltipContent({ chain, active, payload }: TooltipProps) {
                 </Typography>
             </div>
             <div className={styles.fieldWrapper}>
-                <Typography weight="medium" light uppercase>
+                <Typography weight="medium" variant="tertiary"uppercase>
                     {t("weight")}
                 </Typography>
                 <Typography size="sm" weight="medium">

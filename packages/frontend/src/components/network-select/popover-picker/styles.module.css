@@ -21,7 +21,7 @@
         rounded-lg
         gap-2
         cursor-pointer
-        theme-surface-hover
+        surface-primary-hover
         transition-colors
         duration-200
         ease-in-out;

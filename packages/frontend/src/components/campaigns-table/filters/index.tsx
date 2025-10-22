@@ -1,5 +1,11 @@
 import classNames from "classnames";
-import { Button, Select, Typography, type SelectOption } from "@metrom-xyz/ui";
+import {
+    Button,
+    Select,
+    Typography,
+    type SelectOption,
+    MultiSelect,
+} from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import {
@@ -30,9 +36,9 @@ const statusSelectRenderOption = (option: {
 }) => {
     return (
         <div className={styles.customOptionContainer}>
-            {option.value !== FilterableStatus.All && (
+            {/* {option.value !== FilterableStatus.All && (
                 <span className={classNames(styles.dot, option.color)} />
-            )}
+            )} */}
             <Typography weight="medium">{option.label}</Typography>
         </div>
     );
@@ -72,7 +78,7 @@ const protocolSelectRenderOption = (option: {
 
 export interface Filters {
     protocol: string;
-    status: FilterableStatus;
+    statuses: SelectOption<FilterableStatus>[];
     chainId: string;
     chainType?: ChainType;
 }
@@ -99,30 +105,26 @@ export function Filters({
     const router = useRouter();
     const pathname = usePathname();
     const searchParams = useSearchParams();
-
-    const [protocol, setProtocol] = useState("");
-    const [status, setStatus] = useState<FilterableStatus>(
-        FilterableStatus.All,
-    );
-    const [chain, setChain] = useState(CHAIN_ALL);
     const chainInitialized = useRef(false);
+
+    const [chain, setChain] = useState(CHAIN_ALL);
+    const [protocol, setProtocol] = useState("");
+    const [statuses, setStatuses] = useState<SelectOption<FilterableStatus>[]>(
+        [],
+    );
 
     const filtersActive = useMemo(
         () =>
             !!protocol ||
-            status !== FilterableStatus.All ||
+            statuses.length > 0 ||
             !!sortField ||
             !!order ||
             chain !== CHAIN_ALL,
-        [protocol, status, sortField, order, chain],
+        [protocol, statuses, sortField, order, chain],
     );
 
-    const statusOptions = useMemo(() => {
+    const statusOptions: SelectOption<FilterableStatus>[] = useMemo(() => {
         return [
-            {
-                label: t("filters.status.all"),
-                value: FilterableStatus.All,
-            },
             {
                 label: t("filters.status.live"),
                 value: FilterableStatus.Active,
@@ -237,9 +239,9 @@ export function Filters({
     );
 
     const handleStatusChange = useCallback(
-        (status: SelectOption<FilterableStatus>) => {
-            setStatus(status.value);
-            onFiltersChange({ status: status.value });
+        (statuses: SelectOption<FilterableStatus>[]) => {
+            setStatuses(statuses);
+            onFiltersChange({ statuses });
         },
         [onFiltersChange],
     );
@@ -271,7 +273,7 @@ export function Filters({
 
     const handleClearFilters = useCallback(() => {
         setProtocol("");
-        setStatus(FilterableStatus.All);
+        setStatuses([]);
         setChain(CHAIN_ALL);
 
         const params = new URLSearchParams(searchParams.toString());
@@ -284,11 +286,13 @@ export function Filters({
     return (
         <div className={styles.root}>
             <div className={styles.selectionFilters}>
-                <Select
+                <MultiSelect
+                    hideLabel
                     options={statusOptions}
-                    value={status}
+                    values={statuses}
                     onChange={handleStatusChange}
                     label={t("filters.status.label")}
+                    placeholder={t("filters.status.label")}
                     messages={{
                         noResults: "",
                     }}
@@ -296,11 +300,13 @@ export function Filters({
                     renderOption={statusSelectRenderOption}
                 />
                 <Select
+                    search
+                    hideLabel
                     options={protocolOptions}
                     value={protocol}
-                    search
                     onChange={handleProtocolChange}
                     label={t("filters.protocol.label")}
+                    placeholder={t("filters.protocol.label")}
                     messages={{
                         noResults: "",
                     }}
@@ -311,9 +317,11 @@ export function Filters({
                     <Select
                         options={chainOptions}
                         value={chain}
+                        hideLabel
                         search
                         onChange={handleChainChange}
                         label={t("filters.chain.label")}
+                        placeholder={t("filters.chain.label")}
                         messages={{
                             noResults: "",
                         }}

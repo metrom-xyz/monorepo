@@ -95,7 +95,7 @@ export function BreakdownRow({
                         <div className={styles.header}>
                             <Typography
                                 weight="medium"
-                                light
+                                variant="tertiary"
                                 size="sm"
                                 uppercase
                             >
@@ -103,7 +103,7 @@ export function BreakdownRow({
                             </Typography>
                             <Typography
                                 weight="medium"
-                                light
+                                variant="tertiary"
                                 size="sm"
                                 uppercase
                             >
@@ -111,7 +111,7 @@ export function BreakdownRow({
                             </Typography>
                             <Typography
                                 weight="medium"
-                                light
+                                variant="tertiary"
                                 size="sm"
                                 uppercase
                             >

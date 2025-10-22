@@ -25,7 +25,7 @@
 }
 
 .tab.popover {
-    @apply theme-surface-hover;
+    @apply surface-primary-hover;
 }
 
 .tab:not(.popover):first-child {

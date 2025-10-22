@@ -295,10 +295,10 @@ export function ChainOverviewEvm({
         <Card className={classNames(styles.root, className)}>
             <div className={styles.chainNameWrapper}>
                 <ChainIcon className={styles.chainIcon} />
-                <Typography size="xl4" truncate>
+                <Typography size="xl3" truncate>
                     {chainWithRewardsData.chainData.name}
                 </Typography>
-                <Typography size="xl2" weight="medium" light>
+                <Typography size="xl2" weight="medium" variant="tertiary">
                     {formatUsdAmount({
                         amount: chainWithRewardsData.totalUsdValue,
                     })}

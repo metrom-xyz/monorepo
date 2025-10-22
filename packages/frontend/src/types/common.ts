@@ -26,7 +26,6 @@ export interface ProjectIntro {
 }
 
 export enum FilterableStatus {
-    All = "",
     Active = BackendCampaignStatus.Active,
     Upcoming = BackendCampaignStatus.Upcoming,
     Expired = BackendCampaignStatus.Expired,

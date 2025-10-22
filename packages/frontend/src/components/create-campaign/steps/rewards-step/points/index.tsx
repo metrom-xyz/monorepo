@@ -168,7 +168,7 @@ export function RewardPoints({
                         ) : (
                             <Typography
                                 uppercase
-                                light
+                                variant="tertiary"
                                 weight="medium"
                                 size="xs"
                             >
@@ -187,7 +187,7 @@ export function RewardPoints({
                     </div>
                 </div>
                 <div className={styles.horizontalDivider} />
-                <Typography light weight="medium" size="xs" uppercase>
+                <Typography variant="tertiary"weight="medium" size="xs" uppercase>
                     {t("usdCost", {
                         usd: formatUsdAmount({ amount: resolvedFee?.usd }),
                     })}

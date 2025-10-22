@@ -107,10 +107,10 @@ export function AccountMenu({
                         <div className={styles.balanceWrapper}>
                             {balance ? (
                                 <>
-                                    <Typography light weight="medium" size="lg">
+                                    <Typography variant="tertiary"weight="medium" size="lg">
                                         {balance.symbol}
                                     </Typography>
-                                    <Typography light weight="medium" size="lg">
+                                    <Typography variant="tertiary"weight="medium" size="lg">
                                         {formatAmount({
                                             amount: Number(balance.balance),
                                         })}

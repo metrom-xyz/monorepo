@@ -33,7 +33,7 @@ export function Accordion({ title, children, className }: AccordionProps) {
                     })}
                 />
                 {typeof title === "string" ? (
-                    <Typography uppercase weight="medium" light>
+                    <Typography uppercase weight="medium" variant="tertiary">
                         {title}
                     </Typography>
                 ) : (

@@ -8,12 +8,9 @@
     @apply invisible sm:visible;
 }
 
+.filterInput,
 .filterInput :global(.input) {
-    @apply w-full theme-surface py-2 font-medium transition-colors duration-200 ease-in-out;
-}
-
-.selectionFilters .filterInput {
-    @apply w-full;
+    @apply w-48;
 }
 
 .selectionFilters {

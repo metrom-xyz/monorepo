@@ -68,7 +68,7 @@ const BridgingFee = ({
 
     return (
         <div className="flex gap-1 items-center">
-            <Typography uppercase light size="xs" weight="medium">
+            <Typography uppercase variant="tertiary"size="xs" weight="medium">
                 Bridging fee:
             </Typography>
             {nativeTokenInfo && gasCostUSD ? (
@@ -76,7 +76,7 @@ const BridgingFee = ({
                     <Typography size="xs" weight="medium">
                         {formatNumber(gasValue, true)} {nativeTokenInfo?.symbol}
                     </Typography>
-                    <Typography size="xs" weight="medium" light>
+                    <Typography size="xs" weight="medium" variant="tertiary">
                         {formatUSD(gasCostUSD)}
                     </Typography>
                 </>
@@ -472,12 +472,12 @@ const SwapWidget = ({
                     {displayTokenRotation && (
                         <div
                             onClick={handleInvertTokensOnClick}
-                            className="flex justify-center items-center absolute top-[43%] place-self-center rounded-full p-1 dark:bg-dark-surface bg-white hover:bg-zinc-200! hover:dark:bg-zinc-700! hover:cursor-pointer transition-colors duration-200 ease-in-out z-10"
+                            className="flex justify-center items-center absolute top-[43%] place-self-center rounded-full p-1 dark:bg-dark-surface-primary bg-white hover:bg-zinc-200! hover:dark:bg-zinc-700! hover:cursor-pointer transition-colors duration-200 ease-in-out z-10"
                         >
                             <ArrowRightIcon
                                 height={24}
                                 width={24}
-                                className="theme-text rotate-90"
+                                className="text-primary rotate-90"
                             />
                         </div>
                     )}

@@ -6,14 +6,16 @@ import styles from "./styles.module.css";
 interface PopoverPickerProps {
     anchor: Element | null;
     open: boolean;
+    onOpen: (open: boolean) => void;
 }
 
-export function PopoverPicker({ anchor, open }: PopoverPickerProps) {
+export function PopoverPicker({ anchor, open, onOpen }: PopoverPickerProps) {
     return (
         <Popover
             placement="bottom-start"
-            anchor={anchor}
             open={open}
+            anchor={anchor}
+            onOpenChange={onOpen}
             className={styles.root}
         >
             <ThemeSwitcherTabs popover className={styles.tabs} />

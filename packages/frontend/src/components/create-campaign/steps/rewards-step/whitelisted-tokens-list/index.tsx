@@ -69,7 +69,7 @@ export function WhitelistedTokensList({
                                 uppercase
                                 size="xs"
                                 weight="medium"
-                                light
+                                variant="tertiary"
                             >
                                 {t("list.token")}
                             </Typography>
@@ -77,7 +77,7 @@ export function WhitelistedTokensList({
                                 uppercase
                                 size="xs"
                                 weight="medium"
-                                light
+                                variant="tertiary"
                             >
                                 {t("list.balance")}
                             </Typography>

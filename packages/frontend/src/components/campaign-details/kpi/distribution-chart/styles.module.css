@@ -40,7 +40,7 @@
 }
 
 .loadingBar {
-    @apply h-80 animate-pulse theme-surface-2 w-full max-w-10 rounded-t-md;
+    @apply h-80 animate-pulse surface-secondary w-full max-w-10 rounded-t-md;
 }
 
 .reimbursedBar {
@@ -48,7 +48,7 @@
 }
 
 .distributedBar {
-    @apply fill-brand-green dark:fill-brand-green-dark;
+    @apply fill-brand-green-dark dark:fill-brand-green;
 }
 
 .timeTick {

@@ -9,7 +9,7 @@
         flex
         flex-col
         sm:min-w-[360px]
-        bg-zinc-100 dark:bg-dark-bg
+        bg-zinc-100 dark:bg-dark-background-main
         overflow-hidden
         m-5
         gap-2
@@ -32,8 +32,8 @@
         justify-between
         p-2.5
         rounded-2xl
-        theme-surface
-        theme-surface-hover
+        surface-primary
+        surface-primary-hover
         cursor-pointer
         transition-colors
         duration-200

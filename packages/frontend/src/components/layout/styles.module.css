@@ -1,7 +1,7 @@
 @reference "../../app.css";
 
 .layout {
-    @apply min-h-screen flex flex-col items-center gap-10 theme-bg;
+    @apply min-h-screen flex flex-col items-center gap-10 background-main;
 }
 
 .main {

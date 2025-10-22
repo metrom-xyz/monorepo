@@ -25,7 +25,7 @@ export function InfoMessage({
         <div className={className}>
             <Typography
                 weight="medium"
-                light
+                variant="tertiary"
                 size={size}
                 className={classNames({ [styles.text]: spaced })}
             >

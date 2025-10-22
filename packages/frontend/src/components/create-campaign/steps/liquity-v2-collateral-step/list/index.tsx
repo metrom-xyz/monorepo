@@ -26,10 +26,10 @@ export function CollateralsList({
     return (
         <div className={styles.root}>
             <div className={styles.listHeader}>
-                <Typography uppercase size="sm" weight="medium" light>
+                <Typography uppercase size="sm" weight="medium" variant="tertiary">
                     {t("list.token")}
                 </Typography>
-                <Typography uppercase size="sm" weight="medium" light>
+                <Typography uppercase size="sm" weight="medium" variant="tertiary">
                     {t(
                         kind === CampaignKind.LiquityV2Debt
                             ? "list.debt"

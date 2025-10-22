@@ -99,7 +99,7 @@ export function TokenClaim({ amount, token }: TokenClaimProps) {
                                 <Typography size="lg" weight="medium">
                                     {formatAmount({ amount: amount.formatted })}
                                 </Typography>
-                                <Typography weight="medium" size="sm" light>
+                                <Typography weight="medium" size="sm" variant="tertiary">
                                     {formatUsdAmount({
                                         amount: amount.usdValue,
                                     })}
@@ -138,7 +138,7 @@ export function TokenClaim({ amount, token }: TokenClaimProps) {
                         <Typography weight="medium" size="lg">
                             {formatAmount({ amount: amount.formatted })}
                         </Typography>
-                        <Typography weight="medium" size="sm" light>
+                        <Typography weight="medium" size="sm" variant="tertiary">
                             {formatUsdAmount({
                                 amount: amount.usdValue,
                             })}
