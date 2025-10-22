@@ -81,6 +81,7 @@ export function NetworkSelectMvm() {
                     chains={activeChains}
                     open={pickerOpen}
                     value={selectedChainId}
+                    onOpen={setPickerOpen}
                     onChange={handleNetworkOnChange}
                 />
                 <DrawerPicker

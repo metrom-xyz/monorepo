@@ -27,7 +27,7 @@ export function EnsoWidget() {
                 <Typography size="lg" weight="medium" uppercase>
                     {t("title")}
                 </Typography>
-                <Typography weight="medium" light>
+                <Typography weight="medium" variant="tertiary">
                     {t("subtitle")}
                 </Typography>
             </div>

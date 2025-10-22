@@ -31,8 +31,8 @@ type TokenWithBalance = Token & {
 
 const TokenIndicatorSkeleton = () => (
     <div className="w-full flex items-center gap-2">
-        <div className="h-8 w-8 theme-surface-2 rounded-full animate-pulse" />
-        <div className="h-6 w-14 theme-surface-2 animate-pulse rounded-md" />
+        <div className="h-8 w-8 surface-secondary rounded-full animate-pulse" />
+        <div className="h-6 w-14 surface-secondary animate-pulse rounded-md" />
     </div>
 );
 
@@ -77,7 +77,7 @@ const DetailedTokenIndicator = ({
     return (
         <div
             style={style}
-            className={`w-full flex items-center justify-between sm:px-4 cursor-pointer theme-surface-hover transition-colors duration-200 ease-in-out ${value === token.address ? "theme-surface-active" : ""}`}
+            className={`w-full flex items-center justify-between sm:px-4 cursor-pointer surface-primary-hover transition-colors duration-200 ease-in-out ${value === token.address ? "theme-surface-active" : ""}`}
             onClick={handleTokenOnClick}
         >
             <TokenIndicator token={token} />
@@ -89,7 +89,7 @@ const DetailedTokenIndicator = ({
                           )
                         : "-"}
                 </Typography>
-                <Typography size="xs" weight="medium" light>
+                <Typography size="xs" weight="medium" variant="tertiary">
                     {token.costUsd ? `$${token.costUsd.toFixed(2)}` : "-"}
                 </Typography>
             </div>
@@ -381,13 +381,23 @@ const TokenSelector = ({
                     onChange={(e) =>
                         obligatedToken || setSearchText(e.target.value)
                     }
-                    className="sm:px-4 [&>.inputWrapper>input]:bg-zinc-200! dark:[&>.inputWrapper>input]:bg-dark-surface-2!"
+                    className="sm:px-4 [&>.inputWrapper>input]:bg-zinc-200! dark:[&>.inputWrapper>input]:bg-dark-surface-primary!"
                 />
                 <div className="flex justify-between items-center sm:px-4">
-                    <Typography uppercase size="xs" weight="medium" light>
+                    <Typography
+                        uppercase
+                        size="xs"
+                        weight="medium"
+                        variant="tertiary"
+                    >
                         Token
                     </Typography>
-                    <Typography uppercase size="xs" weight="medium" light>
+                    <Typography
+                        uppercase
+                        size="xs"
+                        weight="medium"
+                        variant="tertiary"
+                    >
                         Balance
                     </Typography>
                 </div>
@@ -429,10 +439,11 @@ const TokenSelector = ({
                     {SelectorContent}
                 </MobileDrawer>
                 <Popover
+                    ref={chainNamePopoverRef}
                     open={selectorOpen}
                     anchor={popoverAnchor}
-                    ref={chainNamePopoverRef}
                     placement="right-start"
+                    onOpenChange={setSelectorOpen}
                     className="hidden sm:flex"
                 >
                     {SelectorContent}

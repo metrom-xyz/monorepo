@@ -92,7 +92,7 @@
 }
 
 .distributingArea path {
-    @apply fill-brand-green dark:fill-brand-green-dark;
+    @apply fill-brand-green-dark dark:fill-brand-green;
 }
 
 .xAxis > line {
@@ -111,4 +111,8 @@
         transition-colors
         duration-200
         ease-in-out;
+}
+
+.referenceDot circle {
+    @apply fill-brand-green-dark dark:fill-brand-green;
 }

@@ -2,24 +2,24 @@
 
 @variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
 
-@utility theme-bg {
-    @apply bg-light-bg dark:bg-dark-bg;
+@utility background-main {
+    @apply bg-light-background-main dark:bg-dark-background-main;
 }
 
-@utility theme-surface {
-    @apply bg-light-surface dark:bg-dark-surface;
+@utility surface-primary {
+    @apply bg-light-surface-primary dark:bg-dark-surface-primary;
 }
 
-@utility theme-surface-2 {
-    @apply bg-light-surface-2 dark:bg-dark-surface-2;
+@utility surface-secondary {
+    @apply bg-light-surface-secondary dark:bg-dark-surface-secondary;
 }
 
-@utility theme-surface-hover {
-    @apply hover:bg-zinc-200 hover:dark:bg-zinc-700;
+@utility surface-primary-hover {
+    @apply hover:bg-gray-150 hover:dark:bg-neutral-800;
 }
 
-@utility theme-surface-2-hover {
-    @apply hover:bg-zinc-250 hover:dark:bg-zinc-750;
+@utility surface-secondary-hover {
+    @apply hover:bg-gray-50 hover:dark:bg-neutral-700;
 }
 
 @utility theme-surface-active {
@@ -30,16 +30,28 @@
     @apply bg-zinc-250 dark:bg-zinc-750;
 }
 
-@utility theme-text {
-    @apply text-light-text dark:text-dark-text;
+@utility text-primary {
+    @apply text-light-text-primary dark:text-dark-text-primary;
+}
+
+@utility text-secondary {
+    @apply text-light-text-secondary dark:text-dark-text-secondary;
+}
+
+@utility text-tertiary {
+    @apply text-light-text-tertiary dark:text-dark-text-tertiary;
+}
+
+@utility stroke-divider {
+    @apply border-light-stroke-divider dark:border-dark-stroke-divider;
 }
 
 @theme {
     --font-sans: "IBM Plex Sans", ui-sans-serif, sans-serif;
     --font-mono: "IBM Plex Mono", ui-monospace, monospace;
 
-    --text-xl5: 3rem;
-    --text-xl4: 2.25rem;
+    --text-xl4: 3rem;
+    --text-xl3: 2.25rem;
     --text-xl2: 1.5rem;
     --text-xl: 1.25rem;
     --text-lg: 1.125rem;
@@ -50,26 +62,42 @@
 
     --color-safe-brand: #12ff80;
     --color-brand-green: #6cff95;
-    --color-brand-green-dark: #5bc97f;
+    --color-brand-green-dark: #0ea400;
     --color-brand-blue: #3c82f6;
     --color-carrot-orange: #ef802b;
+    --color-error: #b91c1c;
+    --color-warning: #ca8a04;
     --color-black: #000000;
     --color-white: #ffffff;
+
+    --color-gray-150: #f1f3f5;
 
     --color-zinc-250: #e2e2e2;
     --color-zinc-750: #5a5a5a;
 
-    --color-light-bg: theme(colors.gray.100);
-    --color-light-surface: theme(colors.white);
-    --color-light-surface-2: theme(colors.zinc.100);
-    --color-light-text: theme(colors.black);
-    --color-light-overlay: oklch(0 0 0 / 0.3);
+    --color-light-background-main: theme(colors.gray.200);
+    --color-light-surface-primary: theme(colors.gray.100);
+    --color-light-surface-secondary: theme(colors.gray.150);
+    --color-light-text-primary: theme(colors.gray.900);
+    --color-light-text-secondary: theme(colors.gray.700);
+    --color-light-text-tertiary: theme(colors.gray.500);
+    --color-light-link-primary: var(--color-brand-green-dark);
+    --color-light-link-secondary: theme(colors.gray.500);
+    --color-light-stroke-divider: theme(colors.gray.200);
+    /* gray-950 with 30% opacity */
+    --color-light-overlay: oklch(13% 0.028 261.692 / 0.3);
 
-    --color-dark-bg: oklch(0.155 0.005 285.823);
-    --color-dark-surface: #202024;
-    --color-dark-surface-2: theme(colors.zinc.700);
-    --color-dark-text: theme(colors.zinc.300);
-    --color-dark-overlay: oklch(0 0 0 / 0.5);
+    --color-dark-background-main: theme(colors.neutral.950);
+    --color-dark-surface-primary: theme(colors.neutral.900);
+    --color-dark-surface-secondary: theme(colors.neutral.800);
+    --color-dark-text-primary: theme(colors.neutral.100);
+    --color-dark-text-secondary: theme(colors.neutral.300);
+    --color-dark-text-tertiary: theme(colors.neutral.400);
+    --color-dark-link-primary: var(--color-brand-green);
+    --color-dark-link-secondary: theme(colors.neutral.100);
+    --color-dark-stroke-divider: theme(colors.neutral.800);
+    /* neutral-950 with 30% opacity */
+    --color-dark-overlay: oklch(14.5% 0 0 / 0.3);
 
     --color-neutral-gray: #9ca3af;
 

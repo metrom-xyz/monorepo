@@ -1,7 +1,7 @@
 @reference "../../theme.css";
 
 .root {
-    @apply theme-text
+    @apply text-primary
         font-normal
         font-sans;
 }
@@ -42,24 +42,36 @@
     @apply text-xl leading-7 sm:text-xl2 sm:leading-8;
 }
 
+.xl3 {
+    @apply text-xl2 leading-8 sm:text-xl3 sm:leading-10;
+}
+
 .xl4 {
-    @apply text-xl2 leading-8 sm:text-xl4 sm:leading-10;
+    @apply text-xl3 leading-10 sm:text-xl4 sm:leading-[3rem];
 }
 
-.xl5 {
-    @apply text-xl4 leading-10 sm:text-xl5 sm:leading-[3rem];
+.primary {
+    @apply text-primary;
 }
 
-.light {
-    @apply text-neutral-gray dark:text-zinc-400;
+.secondary {
+    @apply text-secondary;
 }
 
-.normal {
+.tertiary {
+    @apply text-tertiary;
+}
+
+.regular {
     @apply font-normal;
 }
 
 .medium {
     @apply font-medium;
+}
+
+.semibold {
+    @apply font-semibold;
 }
 
 .bold {

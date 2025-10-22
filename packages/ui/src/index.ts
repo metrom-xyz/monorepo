@@ -15,6 +15,7 @@ export * from "./components/pool-remote-logo";
 export * from "./components/popover";
 export * from "./components/remote-logo";
 export * from "./components/select";
+export * from "./components/multi-select";
 export * from "./components/skeleton";
 export * from "./components/slider";
 export * from "./components/step-number-input";

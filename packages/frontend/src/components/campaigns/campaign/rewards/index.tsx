@@ -45,13 +45,19 @@ export function Rewards({
     return (
         <div className={styles.root}>
             <Popover
+                ref={breakdownPopoverRef}
                 open={popoverOpen}
                 anchor={rewardsBreakdown}
-                ref={breakdownPopoverRef}
+                onOpenChange={setPopoverOpen}
                 placement="top"
             >
                 <div className={styles.breakdownContainer}>
-                    <Typography size="sm" weight="medium" uppercase light>
+                    <Typography
+                        size="sm"
+                        weight="medium"
+                        uppercase
+                        variant="tertiary"
+                    >
                         {t("tooltip.rewards")}
                     </Typography>
                     {rewards.list
@@ -83,7 +89,12 @@ export function Rewards({
                                 </div>
                             );
                         })}
-                    <Typography weight="medium" size="sm" uppercase light>
+                    <Typography
+                        weight="medium"
+                        size="sm"
+                        uppercase
+                        variant="tertiary"
+                    >
                         {t("tooltip.totalUsdValue")}
                     </Typography>
                     <Typography size="lg" weight="medium">

@@ -8,7 +8,7 @@
         py-7
         h-[5.25rem]
         rounded-2xl
-        theme-surface-hover
+        surface-primary-hover
         hover:cursor-pointer
         transition-all
         duration-200
@@ -24,7 +24,7 @@
 }
 
 .root.disabled {
-    @apply hover:cursor-default hover:bg-light-surface hover:dark:bg-dark-surface;
+    @apply hover:cursor-default hover:bg-light-surface-primary hover:dark:bg-dark-surface-primary;
 }
 
 .wrapper {
@@ -37,7 +37,7 @@
         w-full
         min-h-6
         text-base
-        theme-text
+        text-primary
         transition
         duration-200
         ease-in-out;

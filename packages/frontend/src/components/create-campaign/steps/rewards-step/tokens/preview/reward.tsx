@@ -125,7 +125,7 @@ export function Reward({
                         onBlur={handleRewardAmountOnBlur}
                         className={styles.rewardTokenAmountInput}
                     />
-                    <Typography weight="medium" light size="xs">
+                    <Typography weight="medium" variant="tertiary"size="xs">
                         {reward.amount.usdValue
                             ? formatUsdAmount({
                                   amount: reward.amount.usdValue,

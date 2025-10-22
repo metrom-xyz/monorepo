@@ -36,9 +36,10 @@ export function Chain({ id, type }: ChainProps) {
             {ChainIcon ? (
                 <>
                     <Popover
+                        ref={chainNamePopoverRef}
                         open={popoverOpen}
                         anchor={chainName}
-                        ref={chainNamePopoverRef}
+                        onOpenChange={setPopoverOpen}
                         placement="top"
                     >
                         <div className={styles.chainNameContainer}>

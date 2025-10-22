@@ -147,7 +147,7 @@ export function TokenClaimMvm({
                     <Typography size="lg" weight="medium">
                         {formatAmount({ amount: tokenClaims.totalAmount })}
                     </Typography>
-                    <Typography size="sm" weight="medium" light>
+                    <Typography size="sm" weight="medium" variant="tertiary">
                         {formatUsdAmount({
                             amount:
                                 tokenClaims.totalAmount *

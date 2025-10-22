@@ -40,8 +40,8 @@
         h-6
         rounded-md
         px-2.5
-        theme-surface-2
-        theme-surface-2-hover
+        surface-secondary
+        surface-secondary-hover
         hover:cursor-pointer
         transition-colors
         duration-200

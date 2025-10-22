@@ -1,7 +1,7 @@
 @reference "../../app.css";
 
 .root {
-    @apply theme-surface
+    @apply surface-primary
         rounded-2xl
         transition-colors
         duration-200
