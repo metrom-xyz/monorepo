@@ -63,10 +63,11 @@ export function InfoTooltip({
         >
             <div ref={setAnchor}>
                 <Popover
+                    ref={popoverRef}
                     placement={placement}
                     anchor={anchor}
                     open={popover}
-                    ref={popoverRef}
+                    onOpenChange={setPopover}
                     className={styles.popover}
                 >
                     <div className={classNames("content", styles.content)}>

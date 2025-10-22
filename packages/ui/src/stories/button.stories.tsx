@@ -43,10 +43,118 @@ export const Loading: Story = {
 
 export const Sizes: Story = {
     render: (args) => (
-        <div className="flex flex-col gap-4">
-            <Button {...args} icon={SettingsIcon} size="xs" />
-            <Button {...args} icon={SettingsIcon} size="sm" />
-            <Button {...args} icon={SettingsIcon} size="lg" />
+        <div className="flex gap-8">
+            <div className="flex flex-col gap-4">
+                <Button {...args} icon={SettingsIcon} size="xs" />
+                <Button {...args} icon={SettingsIcon} size="sm" />
+                <Button {...args} icon={SettingsIcon} size="base" />
+                <Button {...args} icon={SettingsIcon} size="lg" />
+            </div>
+            <div className="flex flex-col gap-4">
+                <Button
+                    {...args}
+                    icon={SettingsIcon}
+                    variant="secondary"
+                    size="xs"
+                />
+                <Button
+                    {...args}
+                    icon={SettingsIcon}
+                    variant="secondary"
+                    size="sm"
+                />
+                <Button
+                    {...args}
+                    icon={SettingsIcon}
+                    variant="secondary"
+                    size="base"
+                />
+                <Button
+                    {...args}
+                    icon={SettingsIcon}
+                    variant="secondary"
+                    size="lg"
+                />
+            </div>
+        </div>
+    ),
+};
+
+export const Links: Story = {
+    render: () => (
+        <div className="flex gap-8">
+            <div className="flex flex-col gap-4">
+                <Button
+                    href="https://app.metrom.xyz/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    size="xs"
+                >
+                    Metrom link
+                </Button>
+                <Button
+                    href="https://app.metrom.xyz/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    size="sm"
+                >
+                    Metrom link
+                </Button>
+                <Button
+                    href="https://app.metrom.xyz/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    size="base"
+                >
+                    Metrom link
+                </Button>
+                <Button
+                    href="https://app.metrom.xyz/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    size="lg"
+                >
+                    Metrom link
+                </Button>
+            </div>
+            <div className="flex flex-col gap-4">
+                <Button
+                    href="https://app.metrom.xyz/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    variant="secondary"
+                    size="xs"
+                >
+                    Metrom link
+                </Button>
+                <Button
+                    href="https://app.metrom.xyz/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    variant="secondary"
+                    size="sm"
+                >
+                    Metrom link
+                </Button>
+                <Button
+                    href="https://app.metrom.xyz/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    variant="secondary"
+                    size="base"
+                >
+                    Metrom link
+                </Button>
+                <Button
+                    href="https://app.metrom.xyz/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    variant="secondary"
+                    size="lg"
+                >
+                    Metrom link
+                </Button>
+            </div>
         </div>
     ),
 };

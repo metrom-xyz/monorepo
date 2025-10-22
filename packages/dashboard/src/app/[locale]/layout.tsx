@@ -37,7 +37,7 @@ export default async function RootLayout({ children, params }: LayoutParams) {
     setRequestLocale(locale as Locale);
 
     return (
-        <html lang={locale} suppressHydrationWarning className="theme-bg">
+        <html lang={locale} suppressHydrationWarning className="background-main">
             <body>
                 <NextIntlClientProvider>
                     <ThemeProvider attribute={"data-theme"}>

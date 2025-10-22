@@ -68,7 +68,12 @@ export function Leaderboard({
                         {t("title")}
                     </Typography>
                     <div className={styles.subtitleContainer}>
-                        <Typography weight="medium" size="sm" light uppercase>
+                        <Typography
+                            weight="medium"
+                            size="sm"
+                            variant="tertiary"
+                            uppercase
+                        >
                             {t("noDistribution")}
                         </Typography>
                     </div>
@@ -91,7 +96,12 @@ export function Leaderboard({
                 </Typography>
                 {!noDistributionDate && (
                     <div className={styles.subtitleContainer}>
-                        <Typography weight="medium" size="sm" light uppercase>
+                        <Typography
+                            weight="medium"
+                            size="sm"
+                            variant="tertiary"
+                            uppercase
+                        >
                             {leaderboard && t("subtitleLatest")}
                         </Typography>
                         {loading ? (
@@ -100,7 +110,7 @@ export function Leaderboard({
                             <Typography
                                 weight="medium"
                                 size="sm"
-                                light
+                                variant="tertiary"
                                 uppercase
                             >
                                 {leaderboard && leaderboard.timestamp
@@ -127,7 +137,7 @@ export function Leaderboard({
                             <Typography
                                 uppercase
                                 weight="medium"
-                                light
+                                variant="tertiary"
                                 size="sm"
                             >
                                 {t("rank")}
@@ -135,7 +145,7 @@ export function Leaderboard({
                             <Typography
                                 uppercase
                                 weight="medium"
-                                light
+                                variant="tertiary"
                                 size="sm"
                             >
                                 {t("account")}
@@ -143,7 +153,7 @@ export function Leaderboard({
                             <Typography
                                 uppercase
                                 weight="medium"
-                                light
+                                variant="tertiary"
                                 size="sm"
                             >
                                 {t("rewardsDistributed")}
@@ -165,7 +175,10 @@ export function Leaderboard({
                                     className={styles.row}
                                 >
                                     <div>
-                                        <Typography weight="medium" light>
+                                        <Typography
+                                            weight="medium"
+                                            variant="tertiary"
+                                        >
                                             #{i + 1}
                                         </Typography>
                                         <Typography weight="medium">
@@ -220,7 +233,7 @@ export function Leaderboard({
                                 </div>
                             ))
                         ) : (
-                            <Typography weight="medium" light>
+                            <Typography weight="medium" variant="tertiary">
                                 {t("noRewards")}
                             </Typography>
                         )}

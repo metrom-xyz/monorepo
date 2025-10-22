@@ -65,7 +65,7 @@ const Slippage = ({
     return (
         <div ref={rootRef}>
             <div className="flex items-center gap-1">
-                <Typography uppercase light size="xs" weight="medium">
+                <Typography uppercase variant="tertiary"size="xs" weight="medium">
                     Slippage tolerance:
                 </Typography>
                 <div ref={setPopoverAnchor}>
@@ -87,10 +87,11 @@ const Slippage = ({
                 </div>
             </div>
             <Popover
-                open={popoverOpen}
-                anchor={popoverAnchor}
                 ref={chainNamePopoverRef}
                 placement="right-start"
+                open={popoverOpen}
+                anchor={popoverAnchor}
+                onOpenChange={setPopoverOpen}
             >
                 <div className="w-full flex flex-col gap-2.5 max-w-72 p-4">
                     <div className="flex gap-2.5">

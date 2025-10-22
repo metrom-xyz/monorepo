@@ -2,7 +2,7 @@
 
 .root {
     @apply overflow-y-hidden
-        theme-surface
+        surface-primary
         rounded-b-2xl
         transition-colors
         duration-200

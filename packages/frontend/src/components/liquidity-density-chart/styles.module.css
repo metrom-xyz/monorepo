@@ -59,7 +59,7 @@
 }
 
 .zoomButton {
-    @apply w-8 h-8 rounded-md theme-surface theme-surface-hover dark:hover:bg-zinc-750;
+    @apply w-8 h-8 rounded-md surface-primary surface-primary-hover dark:hover:bg-zinc-750;
 }
 
 .zoomButtons > svg {

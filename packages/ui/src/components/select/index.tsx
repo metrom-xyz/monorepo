@@ -10,7 +10,7 @@ import React, {
     useEffect,
     useMemo,
 } from "react";
-import type { BaseInputProps } from "../commons/input";
+import type { BaseInputProps, BaseInputSize } from "../commons/input";
 import { Popover } from "../popover";
 import { TextInput } from "../text-input";
 import { useClickAway, useDebounce } from "react-use";
@@ -53,10 +53,18 @@ type ItemData<V extends ValueType, O extends SelectOption<V>> = Pick<
     SelectProps<V, O>,
     "options" | "value" | "onChange" | "renderOption"
 > & {
+    size?: BaseInputSize;
     dataTestIds?: {
         option?: string;
     };
     className?: string;
+};
+
+export const LIST_ITEM_HEIGHT: Record<BaseInputSize, number> = {
+    xs: 40,
+    sm: 44,
+    base: 48,
+    lg: 50,
 };
 
 function Component<V extends ValueType, O extends SelectOption<V>>(
@@ -64,6 +72,7 @@ function Component<V extends ValueType, O extends SelectOption<V>>(
         id,
         options,
         value,
+        size = "base",
         search,
         onChange,
         className,
@@ -134,10 +143,11 @@ function Component<V extends ValueType, O extends SelectOption<V>>(
     const rowProps = useMemo(() => {
         const data: ItemData<V, O> = {
             options: filteredOptions,
-            onChange: handleInnerChange,
             value,
-            className,
+            size,
+            onChange: handleInnerChange,
             renderOption,
+            className,
             dataTestIds: {
                 option: dataTestIds?.option,
             },
@@ -175,6 +185,7 @@ function Component<V extends ValueType, O extends SelectOption<V>>(
                 }
                 disabled={disabled}
                 loading={loading}
+                size={size}
                 {...rest}
                 className={styles.input}
                 onChange={handleChange}
@@ -182,7 +193,9 @@ function Component<V extends ValueType, O extends SelectOption<V>>(
             />
             <Popover
                 anchor={anchorEl}
+                contained
                 open={open}
+                onOpenChange={setOpen}
                 placement="bottom-start"
                 className={styles.dropdownRoot}
             >
@@ -197,7 +210,7 @@ function Component<V extends ValueType, O extends SelectOption<V>>(
                     </div>
                 ) : (
                     <List
-                        rowHeight={48}
+                        rowHeight={LIST_ITEM_HEIGHT[size]}
                         rowCount={filteredOptions.length}
                         rowProps={rowProps}
                         rowComponent={OptionRow}
@@ -216,9 +229,10 @@ function Component<V extends ValueType, O extends SelectOption<V>>(
 function OptionRow<V extends ValueType, O extends SelectOption<V>>({
     index,
     style,
-    onChange,
     options,
     value,
+    size = "base",
+    onChange,
     renderOption,
     dataTestIds,
 }: RowComponentProps<ItemData<ValueType, O>>) {
@@ -234,12 +248,17 @@ function OptionRow<V extends ValueType, O extends SelectOption<V>>({
                 dataTestIds?.option && `${dataTestIds.option}-${item.value}`
             }
             style={style}
+            onClick={handleClick}
             className={classNames(styles.option, {
                 [styles.pickedOption]: value === item.value,
+                [styles[size]]: true,
             })}
-            onClick={handleClick}
         >
-            {renderOption ? <div>{renderOption(item)}</div> : item.label}
+            {renderOption ? (
+                <div>{renderOption(item)}</div>
+            ) : (
+                <Typography size={size}>{item.label}</Typography>
+            )}
         </div>
     );
 }

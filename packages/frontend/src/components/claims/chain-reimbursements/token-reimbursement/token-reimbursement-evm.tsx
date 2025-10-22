@@ -201,7 +201,7 @@ export function TokenReimbursementEvm({
                             amount: tokenReimbursements.totalAmount,
                         })}
                     </Typography>
-                    <Typography size="sm" weight="medium" light>
+                    <Typography size="sm" weight="medium" variant="tertiary">
                         {formatUsdAmount({
                             amount:
                                 tokenReimbursements.totalAmount *

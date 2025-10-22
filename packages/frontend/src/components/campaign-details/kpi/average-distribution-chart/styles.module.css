@@ -70,7 +70,7 @@
         w-[280px]
         h-[280px]
         rounded-full
-        theme-bg
+        background-main
         transition-colors
         duration-200
         ease-in-out;
@@ -81,7 +81,7 @@
 }
 
 .loading {
-    @apply animate-pulse theme-bg;
+    @apply animate-pulse background-main;
 }
 
 .cell {
@@ -96,7 +96,7 @@
 }
 
 .cell.distributed {
-    @apply fill-brand-green dark:fill-brand-green-dark;
+    @apply fill-brand-green-dark dark:fill-brand-green;
 }
 
 .cell.reimbursed {
@@ -104,7 +104,7 @@
 }
 
 .chartWrapperLoading {
-    @apply animate-pulse theme-bg;
+    @apply animate-pulse background-main;
 }
 
 .chartContainer {

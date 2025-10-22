@@ -42,7 +42,7 @@ export function AccountRow({
                 ></div>
                 <Typography
                     size="sm"
-                    light
+                    variant="tertiary"
                     weight="medium"
                     className={classNames({
                         [styles.connected]: connected,

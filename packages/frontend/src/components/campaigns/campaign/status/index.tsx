@@ -55,7 +55,7 @@ export function Status({
                 {showDuration && (
                     <Typography
                         className={styles.statusDuration}
-                        light
+                        variant="tertiary"
                         size="sm"
                         weight="medium"
                     >
