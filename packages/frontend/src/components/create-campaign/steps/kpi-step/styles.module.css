@@ -34,7 +34,7 @@
 }
 
 .chartWrapper {
-    @apply flex flex-col px-2 pt-3 rounded-md theme-surface-2;
+    @apply flex flex-col px-2 pt-3 rounded-md surface-secondary;
 }
 
 .boldText {

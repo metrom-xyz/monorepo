@@ -153,10 +153,10 @@ export function ListPoolPicker({
                 }}
             >
                 <div className={styles.listHeader}>
-                    <Typography uppercase size="sm" weight="medium" light>
+                    <Typography uppercase size="sm" weight="medium" variant="tertiary">
                         {t("list.pool")}
                     </Typography>
-                    <Typography uppercase size="sm" weight="medium" light>
+                    <Typography uppercase size="sm" weight="medium" variant="tertiary">
                         {t("list.tvl")}
                     </Typography>
                 </div>

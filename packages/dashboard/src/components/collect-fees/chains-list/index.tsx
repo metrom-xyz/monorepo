@@ -51,7 +51,7 @@ export function ChainsList({
                 loading={loading}
                 value={formatUsdAmount({ amount: totalUsd })}
             />
-            <Typography uppercase light weight="medium" size="sm">
+            <Typography uppercase variant="tertiary"weight="medium" size="sm">
                 {t("chains")}
             </Typography>
             <div className={styles.list}>

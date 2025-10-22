@@ -32,7 +32,7 @@ export function AmmPoolLiquidity({ campaign }: AmmPoolLiquidityProps) {
                         size="sm"
                         weight="medium"
                         className={styles.campaignFee}
-                        light
+                        variant="tertiary"
                     >
                         {formatPercentage({
                             percentage: campaign.target.pool.fee,

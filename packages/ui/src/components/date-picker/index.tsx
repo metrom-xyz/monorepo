@@ -123,11 +123,15 @@ export const DatePicker = ({
                             onClick={disabled ? undefined : handleCellClick}
                             key={index}
                             data-index={index}
-                            light={isDateInRange(
-                                dayjs(cell.value),
-                                range?.from,
-                                range?.to,
-                            )}
+                            variant={
+                                isDateInRange(
+                                    dayjs(cell.value),
+                                    range?.from,
+                                    range?.to,
+                                )
+                                    ? "tertiary"
+                                    : "primary"
+                            }
                             className={classNames(
                                 className?.cell,
                                 styles.cell,

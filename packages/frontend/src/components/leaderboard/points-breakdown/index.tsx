@@ -8,7 +8,7 @@ interface PointsBreakdownProps {
 
 export function PointsBreakdown({ distributed }: PointsBreakdownProps) {
     return (
-        <Typography weight="medium" light>
+        <Typography weight="medium" variant="tertiary">
             {formatAmount({
                 amount:
                     typeof distributed === "number"

@@ -40,27 +40,43 @@
 }
 
 .hasLeftIcon input {
-    @apply pl-9;
+    @apply pl-5;
 }
 
 .hasRightIcon input {
-    @apply pr-9;
+    @apply pr-5;
 }
 
 .input {
-    @apply rounded-md
-        px-2
-        py-3
+    @apply w-full
+        rounded-md
         font-sans
         font-normal
         outline-none
-        border
+        border-2
         border-transparent
-        placeholder:text-zinc-400
+        focus:border-gray-300
+        dark:focus:border-neutral-600
+        placeholder:text-tertiary
+        /* FIXME: this doesn't work on Firefor, find a way to fix this and enable it back */
+        /* focus:placeholder:text-light-text-primary
+        dark:focus:placeholder:text-dark-text-primary */
         placeholder:select-none
-        theme-surface-2
-        theme-text
-        w-full;
+        surface-secondary
+        text-primary
+        transition-colors
+        duration-200
+        ease-in-out;
+}
+
+.input.xs {
+    @apply p-2;
+}
+
+.input.sm,
+.input.base,
+.input.lg {
+    @apply px-3 py-2;
 }
 
 .xs {
@@ -80,28 +96,28 @@
 }
 
 .inputIcon {
-    @apply theme-text;
+    @apply text-primary stroke-2;
 }
 
 .inputIcon.xs {
-    @apply h-3 w-3;
+    @apply size-3;
 }
 
 .inputIcon.sm {
-    @apply h-4 w-4;
+    @apply size-4;
 }
 
 .inputIcon.base {
-    @apply h-[1.125rem] w-[1.125rem];
+    @apply size-[1.125rem];
 }
 
 .inputIcon.lg {
-    @apply h-5 w-5;
+    @apply size-5;
 }
 
 .inputError,
 .inputError > input {
-    @apply border-red-600;
+    @apply border-error;
 }
 
 .errorText {
@@ -118,4 +134,8 @@
         gap-1.5
         w-fit
         mb-1.5;
+}
+
+.label.hide {
+    @apply invisible;
 }

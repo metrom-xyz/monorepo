@@ -45,7 +45,7 @@ export function TooltipContent({
     return (
         <div className={styles.root}>
             <div className={styles.row}>
-                <Typography weight="medium" light uppercase size={size}>
+                <Typography weight="medium" variant="tertiary"uppercase size={size}>
                     {targetValueName}
                 </Typography>
                 <Typography weight="medium" size={size}>
@@ -53,7 +53,7 @@ export function TooltipContent({
                 </Typography>
             </div>
             <div className={styles.row}>
-                <Typography weight="medium" light uppercase size={size}>
+                <Typography weight="medium" variant="tertiary"uppercase size={size}>
                     {t("payout")}
                 </Typography>
                 <Typography weight="medium" size={size}>
@@ -70,7 +70,7 @@ export function TooltipContent({
                 </Typography>
             </div>
             <div className={styles.row}>
-                <Typography weight="medium" light uppercase size={size}>
+                <Typography weight="medium" variant="tertiary"uppercase size={size}>
                     {t("kpiReached")}
                 </Typography>
                 <Typography weight="medium" size={size}>
@@ -85,7 +85,7 @@ export function TooltipContent({
                 </Typography>
             </div>
             <div className={styles.row}>
-                <Typography weight="medium" light uppercase size={size}>
+                <Typography weight="medium" variant="tertiary"uppercase size={size}>
                     {t("apr")}
                 </Typography>
                 <AprChip apr={aprPercentage} size={size} kpi />

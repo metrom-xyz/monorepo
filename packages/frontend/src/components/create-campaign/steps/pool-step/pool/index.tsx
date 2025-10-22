@@ -31,7 +31,7 @@ export function Pool({ pool, chain, onClick }: PoolProps) {
                         <Typography
                             size="xs"
                             weight="medium"
-                            light
+                            variant="tertiary"
                             className={styles.fee}
                         >
                             {formatPercentage({
@@ -42,7 +42,7 @@ export function Pool({ pool, chain, onClick }: PoolProps) {
                     ) : null}
                 </div>
             </div>
-            <Typography weight="medium" size="sm" light>
+            <Typography weight="medium" size="sm" variant="tertiary">
                 {formatUsdAmount({ amount: pool.usdTvl })}
             </Typography>
         </div>

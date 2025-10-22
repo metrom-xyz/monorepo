@@ -127,7 +127,7 @@ export function Kpi({ campaign, loading }: KpiProps) {
                         />
                     </div>
                     <Card className={styles.chart}>
-                        <Typography size="sm" uppercase light weight="medium">
+                        <Typography size="sm" uppercase variant="tertiary"weight="medium">
                             {t("chart", {
                                 targetValueName: campaign.targetValueName,
                             })}

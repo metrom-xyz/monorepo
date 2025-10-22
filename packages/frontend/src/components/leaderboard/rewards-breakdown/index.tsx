@@ -34,10 +34,11 @@ export function RewardsBreakdown({
     return (
         <>
             <Popover
-                placement="top"
+                ref={rewardsPopoverRef}
                 anchor={rewardedAmountWrapper}
                 open={popoverOpen}
-                ref={rewardsPopoverRef}
+                onOpenChange={setPopoverOpen}
+                placement="top"
             >
                 <div className={styles.rewardsPopover}>
                     {distributed
@@ -63,7 +64,7 @@ export function RewardsBreakdown({
                                         cutoff: false,
                                     })}
                                 </Typography>
-                                <Typography weight="medium" light>
+                                <Typography weight="medium" variant="tertiary">
                                     {distributed.amount.usdValue
                                         ? formatUsdAmount({
                                               amount: distributed.amount
@@ -82,7 +83,7 @@ export function RewardsBreakdown({
                 onMouseLeave={handleRewardedAmountPopoverClose}
                 className={styles.rankWrapper}
             >
-                <Typography weight="medium" light>
+                <Typography weight="medium" variant="tertiary">
                     {usdValue
                         ? formatUsdAmount({ amount: usdValue, cutoff: false })
                         : "-"}

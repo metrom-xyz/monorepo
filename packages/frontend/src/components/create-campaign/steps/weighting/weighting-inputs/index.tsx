@@ -55,7 +55,7 @@ export function WeightingInputs({
             <div className={styles.inputsWrapper}>
                 <NumberInput
                     prefixElement={
-                        <Typography uppercase light weight="medium" size="xs">
+                        <Typography uppercase variant="tertiary"weight="medium" size="xs">
                             {pool?.tokens[0].symbol}
                         </Typography>
                     }
@@ -70,7 +70,7 @@ export function WeightingInputs({
                 />
                 <NumberInput
                     prefixElement={
-                        <Typography uppercase light weight="medium" size="xs">
+                        <Typography uppercase variant="tertiary"weight="medium" size="xs">
                             {pool?.tokens[1].symbol}
                         </Typography>
                     }
@@ -85,7 +85,7 @@ export function WeightingInputs({
                 />
                 <NumberInput
                     prefixElement={
-                        <Typography uppercase light weight="medium" size="xs">
+                        <Typography uppercase variant="tertiary"weight="medium" size="xs">
                             {t("fees")}
                         </Typography>
                     }
