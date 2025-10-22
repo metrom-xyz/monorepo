@@ -96,7 +96,7 @@ const ActionsGroup = ({ group, protocol, chain }: ActionsGroupProps) => {
                 <Typography weight="medium" uppercase size="sm">
                     {group.title}
                 </Typography>
-                <Typography weight="medium" light>
+                <Typography weight="medium" variant="tertiary">
                     {group.description}
                 </Typography>
                 <LiquidityLandChip boost={group.boost} protocol={protocol} />
@@ -104,10 +104,10 @@ const ActionsGroup = ({ group, protocol, chain }: ActionsGroupProps) => {
             {group.actions.length > 0 && (
                 <div className={styles.actionsWrapper}>
                     <div className={styles.actionsListHeader}>
-                        <Typography weight="medium" light uppercase size="sm">
+                        <Typography weight="medium" variant="tertiary"uppercase size="sm">
                             {t("action")}
                         </Typography>
-                        <Typography weight="medium" light uppercase size="sm">
+                        <Typography weight="medium" variant="tertiary"uppercase size="sm">
                             {t("multiplier")}
                         </Typography>
                     </div>

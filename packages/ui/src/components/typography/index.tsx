@@ -18,13 +18,13 @@ export type TypographySize =
     | "lg"
     | "xl"
     | "xl2"
-    | "xl4"
-    | "xl5";
+    | "xl3"
+    | "xl4";
 
 interface BaseTypographyProps {
     size?: TypographySize;
-    weight?: "normal" | "medium" | "bold";
-    light?: boolean;
+    weight?: "regular" | "medium" | "semibold" | "bold";
+    variant?: "primary" | "secondary" | "tertiary";
     uppercase?: boolean;
     noWrap?: boolean;
     truncate?: boolean;
@@ -54,15 +54,15 @@ const COMPONENT_MAP: Record<TypographySize, ElementType> = {
     lg: "p",
     xl: "p",
     xl2: "h1",
+    xl3: "h1",
     xl4: "h1",
-    xl5: "h1",
 };
 
 const Component = <V extends TypographySize>(
     {
         size = "base",
-        weight = "normal",
-        light,
+        weight = "regular",
+        variant = "primary",
         uppercase,
         noWrap,
         truncate,
@@ -93,7 +93,7 @@ const Component = <V extends TypographySize>(
         <Root
             className={classNames(className, styles.root, {
                 [styles.rootUppercase]: uppercase,
-                [styles.light]: light,
+                [styles[variant]]: true,
                 [styles[size]]: true,
                 [styles[weight]]: true,
                 [styles.noWrap]: noWrap,

@@ -38,7 +38,7 @@ export interface BaseInputWrapperProps<V> {
     size?: BaseInputSize;
     loading?: boolean;
     error?: boolean;
-    border?: boolean;
+    hideLabel?: boolean;
     errorText?: string;
     prefixElement?: ReactNode;
     icon?: FunctionComponent<React.SVGProps<SVGSVGElement>>;
@@ -53,6 +53,7 @@ export function BaseInputWrapper<V>({
     size = "base",
     loading,
     error,
+    hideLabel = false,
     errorText,
     prefixElement,
     icon: Icon,
@@ -97,14 +98,16 @@ export function BaseInputWrapper<V>({
         >
             {!!label && (
                 <label
-                    className={classNames("label", styles.label)}
+                    className={classNames("label", styles.label, {
+                        [styles.hide]: hideLabel,
+                    })}
                     htmlFor={id}
                 >
                     <Typography
                         uppercase
                         size="xs"
                         weight="medium"
-                        light
+                        variant="tertiary"
                         className="labelText"
                     >
                         {label}
@@ -128,6 +131,7 @@ export function BaseInputWrapper<V>({
                     className: classNames(children.props.className, {
                         [styles.inputError]: !!error,
                         [styles.inputLoading]: !!loading,
+                        [styles[size]]: true,
                     }),
                     style: {
                         ...(inputLeftPadding

@@ -17,5 +17,5 @@
 }
 
 .icon {
-    @apply theme-text h-4 w-4;
+    @apply text-primary h-4 w-4;
 }

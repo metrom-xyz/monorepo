@@ -34,13 +34,19 @@ export function Points({ status, amount, daysDuration }: PointsProps) {
     return (
         <div className={styles.root}>
             <Popover
+                ref={popoverRef}
                 open={popover}
                 anchor={breakdown}
-                ref={popoverRef}
+                onOpenChange={setPopover}
                 placement="top"
             >
                 <div className={styles.breakdownContainer}>
-                    <Typography size="sm" weight="medium" light uppercase>
+                    <Typography
+                        size="sm"
+                        weight="medium"
+                        variant="tertiary"
+                        uppercase
+                    >
                         {t("tooltip.points")}
                     </Typography>
                     <Typography size="lg" weight="medium">

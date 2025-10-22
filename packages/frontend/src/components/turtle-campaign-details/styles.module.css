@@ -21,7 +21,7 @@
 }
 
 .dealsWrapper > div:not(.skeletonDeals) {
-    @apply theme-bg;
+    @apply background-main;
 }
 
 .dealsWrapper > div > div {
@@ -33,11 +33,11 @@
 }
 
 .skeletonDeals {
-    @apply flex flex-col gap-4 rounded-2xl p-3 theme-surface;
+    @apply flex flex-col gap-4 rounded-2xl p-3 surface-primary;
 }
 
 .skeletonDealHeader {
-    @apply h-[19px] w-full rounded-xl theme-surface-2 animate-pulse;
+    @apply h-[19px] w-full rounded-xl surface-secondary animate-pulse;
 }
 
 .skeletonDealsWrapper {
@@ -45,5 +45,5 @@
 }
 
 .skeletonDeal {
-    @apply w-full sm:w-[327px] h-[350px] rounded-xl theme-surface-2 animate-pulse;
+    @apply w-full sm:w-[327px] h-[350px] rounded-xl surface-secondary animate-pulse;
 }

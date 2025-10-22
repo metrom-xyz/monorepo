@@ -133,6 +133,10 @@ export function AverageDistributionChart({
         };
     }, [distributables, assignedPercentages]);
 
+    function handlePopoverOnChange() {
+        setPopover(popover);
+    }
+
     function getPopoverOpenHandler(type: AverageDistributionChartData["type"]) {
         return () => {
             setPopover(type);
@@ -146,7 +150,12 @@ export function AverageDistributionChart({
     if (loading)
         return (
             <Card className={styles.root}>
-                <Typography uppercase weight="medium" light size="sm">
+                <Typography
+                    uppercase
+                    weight="medium"
+                    variant="tertiary"
+                    size="sm"
+                >
                     {t("averageDistribution")}
                 </Typography>
                 <div
@@ -158,7 +167,12 @@ export function AverageDistributionChart({
     if (!chartData) {
         return (
             <Card className={styles.root}>
-                <Typography uppercase weight="medium" light size="sm">
+                <Typography
+                    uppercase
+                    weight="medium"
+                    variant="tertiary"
+                    size="sm"
+                >
                     {t("averageDistribution")}
                 </Typography>
                 <div className={classNames(styles.chartWrapper, styles.empty)}>
@@ -178,17 +192,18 @@ export function AverageDistributionChart({
 
     return (
         <Card className={styles.root}>
-            <Typography uppercase weight="medium" light size="sm">
+            <Typography uppercase weight="medium" variant="tertiary" size="sm">
                 {t("averageDistribution")}
             </Typography>
             <Popover
+                ref={popoverRef}
                 placement={
                     popover === "distributed" ? "left-start" : "right-start"
                 }
                 margin={-52}
                 anchor={anchor}
                 open={!!popover}
-                ref={popoverRef}
+                onOpenChange={handlePopoverOnChange}
                 className={styles.popover}
             >
                 <div className={styles.popoverContent}>
@@ -202,13 +217,17 @@ export function AverageDistributionChart({
                                     },
                                 )}
                             />
-                            <Typography weight="medium" light uppercase>
+                            <Typography
+                                weight="medium"
+                                variant="tertiary"
+                                uppercase
+                            >
                                 {popover === "distributed"
                                     ? t("distributed")
                                     : t("reimbursed")}
                             </Typography>
                         </div>
-                        <Typography weight="medium" light>
+                        <Typography weight="medium" variant="tertiary">
                             {formatUsdAmount({
                                 amount:
                                     popover === "distributed"
@@ -231,7 +250,7 @@ export function AverageDistributionChart({
                             <Typography weight="medium">
                                 {formatAmount({ amount: amount.formatted })}
                             </Typography>
-                            <Typography weight="medium" light>
+                            <Typography weight="medium" variant="tertiary">
                                 {formatUsdAmount({ amount: amount.usdValue })}
                             </Typography>
                         </div>

@@ -53,9 +53,10 @@ export function Protocol({ campaign }: ProtocolProps) {
             <div className={styles.root}>
                 {protocol && (
                     <Popover
+                        ref={dexDetailsPopoverRef}
                         open={popoverOpen}
                         anchor={details}
-                        ref={dexDetailsPopoverRef}
+                        onOpenChange={setPopoverOpen}
                         placement="top"
                     >
                         <div className={styles.detailsContainer}>

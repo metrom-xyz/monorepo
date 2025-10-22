@@ -28,7 +28,7 @@ export function AmmPoolLiquidity({ payload }: AmmPoolLiquidityProps) {
                 {getCampaignPreviewName(t, payload)}
             </Typography>
             {payload.pool.fee && (
-                <Typography size="lg" weight="medium" light>
+                <Typography size="lg" weight="medium" variant="tertiary">
                     {formatPercentage({
                         percentage: payload.pool.fee,
                         keepDust: true,

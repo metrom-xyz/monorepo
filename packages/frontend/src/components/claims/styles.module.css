@@ -9,7 +9,7 @@
 }
 
 .fullSideCardWrapper {
-    @apply theme-surface
+    @apply surface-primary
         rounded-xl
         w-full
         h-[55vh]

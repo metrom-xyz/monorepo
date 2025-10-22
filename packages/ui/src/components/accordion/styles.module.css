@@ -3,7 +3,7 @@
 .root {
     @apply w-full
         rounded-2xl
-        theme-surface;
+        surface-primary;
 }
 
 .preview {
@@ -15,7 +15,7 @@
         select-none
         cursor-pointer
         rounded-2xl
-        theme-surface-hover
+        surface-primary-hover
         transition-all
         duration-200
         ease-in-out;
@@ -26,7 +26,7 @@
 }
 
 .icon {
-    @apply w-4 h-4 stroke-2 transition-transform theme-text;
+    @apply w-4 h-4 stroke-2 transition-transform text-primary;
 }
 
 .icon.open {

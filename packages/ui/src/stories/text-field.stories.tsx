@@ -43,8 +43,8 @@ export const Sizes: Story = {
                 <TextField {...args} size="lg" value="Metrom text field lg" />
                 <TextField {...args} size="xl" value="Metrom text field xl" />
                 <TextField {...args} size="xl2" value="Metrom text field xl2" />
-                <TextField {...args} size="xl4" value="Metrom text field xl4" />
-                <TextField {...args} size="xl5" value="Metrom text field xl5" />
+                <TextField {...args} size="xl3" value="Metrom text field xl4" />
+                <TextField {...args} size="xl4" value="Metrom text field xl5" />
             </div>
             <div className="flex flex-col gap-4">
                 <TextField
@@ -86,13 +86,13 @@ export const Sizes: Story = {
                 <TextField
                     {...args}
                     boxed
-                    size="xl4"
+                    size="xl3"
                     value="Metrom text field xl4"
                 />
                 <TextField
                     {...args}
                     boxed
-                    size="xl5"
+                    size="xl4"
                     value="Metrom text field xl5"
                 />
             </div>

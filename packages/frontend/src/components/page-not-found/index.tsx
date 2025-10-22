@@ -14,10 +14,10 @@ export function PageNotFound({ message }: PageNotFoundProps) {
 
     return (
         <div className={styles.root}>
-            <Typography size="xl5" weight="bold">
+            <Typography size="xl4" weight="bold">
                 404
             </Typography>
-            <Typography size="xl4" weight="medium">
+            <Typography size="xl3" weight="medium">
                 {message}
             </Typography>
             <Link href="/">

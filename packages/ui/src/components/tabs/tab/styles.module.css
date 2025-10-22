@@ -10,12 +10,16 @@
         transition-colors
         duration-200
         ease-in-out
-        theme-surface-2
+        surface-secondary
         opacity-50;
 }
 
 .active {
     @apply theme-surface-2-active opacity-100;
+}
+
+.icon {
+    
 }
 
 .xs {

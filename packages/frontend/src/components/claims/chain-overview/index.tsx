@@ -28,7 +28,7 @@ export function SkeletonChainOverview() {
         <Card className={styles.root}>
             <div className={styles.chainNameWrapper}>
                 <Skeleton className={styles.chainIcon} />
-                <Skeleton width={100} size="xl4" />
+                <Skeleton width={100} size="xl3" />
                 <Skeleton width={50} size="xl2" />
             </div>
             <Button size="sm" loading>

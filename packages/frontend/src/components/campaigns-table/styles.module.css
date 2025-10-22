@@ -88,7 +88,7 @@
         items-center
         justify-center
         gap-7
-        theme-surface
+        surface-primary
         rounded-2xl;
 }
 

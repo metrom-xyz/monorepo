@@ -30,7 +30,7 @@ export function TooltipContent({ chain, active, payload }: TooltipProps) {
     return (
         <div className={styles.root}>
             <div className={styles.fieldWrapper}>
-                <Typography weight="medium" light uppercase>
+                <Typography weight="medium" variant="tertiary"uppercase>
                     {t("time")}
                 </Typography>
                 <Typography weight="medium" uppercase>
@@ -45,7 +45,7 @@ export function TooltipContent({ chain, active, payload }: TooltipProps) {
                             styles.reimbursed,
                         )}
                     ></div>
-                    <Typography weight="medium" light uppercase>
+                    <Typography weight="medium" variant="tertiary"uppercase>
                         {t("reimbursed")}
                     </Typography>
                 </div>
@@ -61,7 +61,7 @@ export function TooltipContent({ chain, active, payload }: TooltipProps) {
                             styles.distributed,
                         )}
                     ></div>
-                    <Typography weight="medium" light uppercase>
+                    <Typography weight="medium" variant="tertiary"uppercase>
                         {t("distributed")}
                     </Typography>
                 </div>
@@ -70,13 +70,13 @@ export function TooltipContent({ chain, active, payload }: TooltipProps) {
                 </Typography>
             </div>
             <div className={classNames(styles.row, styles.breakdownWrapper)}>
-                <Typography weight="medium" light uppercase>
+                <Typography weight="medium" variant="tertiary"uppercase>
                     {t("token")}
                 </Typography>
-                <Typography weight="medium" light uppercase>
+                <Typography weight="medium" variant="tertiary"uppercase>
                     {t("distributed")}
                 </Typography>
-                <Typography weight="medium" light uppercase>
+                <Typography weight="medium" variant="tertiary"uppercase>
                     {t("reimbursed")}
                 </Typography>
             </div>

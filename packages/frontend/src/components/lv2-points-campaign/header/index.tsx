@@ -33,10 +33,10 @@ export function Header({
                     <Icon className={styles.icon} />
                 </div>
                 <div className={styles.titleWrapper}>
-                    <Typography weight="medium" size="xl4" uppercase>
+                    <Typography weight="medium" size="xl3" uppercase>
                         {t("title", { protocol: name })}
                     </Typography>
-                    <Typography weight="medium" light size="sm">
+                    <Typography weight="medium" variant="tertiary" size="sm">
                         {description}
                     </Typography>
                 </div>

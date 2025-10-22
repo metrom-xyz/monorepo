@@ -13,7 +13,7 @@ export function EmptyHeader({ campaign }: EmptyHeaderProps) {
         <div className={styles.root}>
             <div className={styles.titleContainer}>
                 <div className={styles.title}>
-                    <Typography size="xl4" weight="medium">
+                    <Typography size="xl3" weight="medium">
                         {campaign.name}
                     </Typography>
                 </div>

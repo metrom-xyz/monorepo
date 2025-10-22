@@ -13,11 +13,11 @@
 }
 
 .label {
-    @apply w-16 h-4 rounded-sm theme-surface animate-pulse;
+    @apply w-16 h-4 rounded-sm surface-primary animate-pulse;
 }
 
 .filterInput {
-    @apply w-[17rem] h-[2.625rem] rounded-md theme-surface py-2 animate-pulse;
+    @apply w-[17rem] h-[2.625rem] rounded-md surface-primary py-2 animate-pulse;
 }
 
 .filterInput:first-child {
@@ -65,7 +65,7 @@
 }
 
 .headerSkeleton {
-    @apply w-16 h-4 theme-surface animate-pulse rounded-md;
+    @apply w-16 h-4 surface-primary animate-pulse rounded-md;
 }
 
 .campaignSkeleton {
@@ -73,5 +73,5 @@
 }
 
 .campaignSkeleton > div {
-    @apply col-span-full grid grid-cols-subgrid min-h-[72px] theme-surface animate-pulse;
+    @apply col-span-full grid grid-cols-subgrid min-h-[72px] surface-primary animate-pulse;
 }

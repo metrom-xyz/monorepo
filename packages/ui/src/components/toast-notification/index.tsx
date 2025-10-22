@@ -71,7 +71,7 @@ export function ToastNotification({
                         styles.contentWrapper,
                     )}
                 >
-                    <Typography uppercase light weight="medium" size="sm">
+                    <Typography uppercase variant="tertiary"weight="medium" size="sm">
                         {title}
                     </Typography>
                     {children}

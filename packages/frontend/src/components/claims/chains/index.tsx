@@ -24,7 +24,7 @@ export function Chains({ className, options, value, onChange }: ChainsProps) {
 
     return (
         <Card className={classNames(styles.root, className)}>
-            <Typography light weight="medium" className={styles.header}>
+            <Typography variant="tertiary"weight="medium" className={styles.header}>
                 {t("chain")}
             </Typography>
             <div className={styles.chainsWrapper}>

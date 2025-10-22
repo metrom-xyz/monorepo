@@ -107,7 +107,7 @@ export function RepartitionChart({
 
     return (
         <Card className={styles.root}>
-            <Typography uppercase weight="medium" light size="sm">
+            <Typography uppercase weight="medium" variant="tertiary"size="sm">
                 {messages?.title ? messages.title : t("repartition")}
             </Typography>
             <div className={styles.container}>

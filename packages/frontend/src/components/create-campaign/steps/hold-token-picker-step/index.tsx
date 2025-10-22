@@ -143,7 +143,7 @@ export function HoldFungibleAssetPickerStep({
                 <div className={styles.previewWrapper}>
                     <InfoMessage text={t("infoMessage")} />
                     <div className={styles.inputWrapper}>
-                        <Typography weight="medium" size="xs" uppercase light>
+                        <Typography weight="medium" size="xs" uppercase variant="tertiary">
                             {t("tokenAddressInput.label")}
                         </Typography>
                         {!assetInfo && loadingAssetInfo ? (

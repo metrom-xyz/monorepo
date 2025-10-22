@@ -1,5 +1,6 @@
 import type { Preview } from "@storybook/react-vite";
 import { withThemeByDataAttribute } from "@storybook/addon-themes";
+import { useEffect } from "react";
 
 import "@fontsource/ibm-plex-sans/400.css";
 import "@fontsource/ibm-plex-sans/500.css";
@@ -7,8 +8,40 @@ import "@fontsource/ibm-plex-sans/700.css";
 import "@fontsource/ibm-plex-mono/500.css";
 import "./global.css";
 
+enum Theme {
+    Dark = "dark",
+    Light = "light",
+}
+
 const preview: Preview = {
+    decorators: [
+        (Story, context) => {
+            const theme: Theme = context.globals.theme || "dark";
+
+            const backgrounds: Record<Theme, string> = {
+                light: "#e5e7eb",
+                dark: "#0a0a0a",
+            };
+
+            useEffect(() => {
+                document.body.style.backgroundColor = backgrounds[theme];
+                document.documentElement.setAttribute("data-theme", theme);
+            }, [theme]);
+
+            return (
+                <div data-theme={theme}>
+                    <Story />
+                </div>
+            );
+        },
+    ],
     parameters: {
+        docs: {
+            canvas: {
+                className:
+                    "bg-light-background-main! dark:bg-dark-background-main!",
+            },
+        },
         controls: {
             matchers: {
                 color: /(background|color)$/i,
@@ -16,19 +49,13 @@ const preview: Preview = {
             },
         },
         backgrounds: {
-            values: [
-                { name: "Dark", value: "#09090b" },
-                { name: "Surface dark", value: "#202024" },
-                { name: "Light", value: "#f3f4f6" },
-                { name: "Surface light", value: "#ffffff" },
-            ],
-            options: [
-                { name: "Dark", value: "#09090b" },
-                { name: "Surface dark", value: "#202024" },
-                { name: "Light", value: "#f3f4f6" },
-                { name: "Surface light", value: "#ffffff" },
-            ],
-            default: "Light",
+            disable: true,
+            // options: {
+            //     "surface-dark": { name: "Surface dark", value: "#202024" },
+            //     light: { name: "Light", value: "#e5e7eb" },
+            //     "surface-light": { name: "Surface light", value: "#ffffff" },
+            //     dark: { name: "Dark", value: "#0a0a0a" },
+            // },
         },
         options: {
             storySort: {
@@ -50,6 +77,7 @@ const preview: Preview = {
                         "Text",
                         "Number",
                         "Select",
+                        "Multi select",
                         "Slider",
                         "Date picker",
                         "Date time picker",
@@ -63,6 +91,9 @@ const preview: Preview = {
             },
         },
     },
+    initialGlobals: {
+        backgrounds: { value: "dark" },
+    },
 };
 
 export const decorators = [
@@ -71,7 +102,7 @@ export const decorators = [
             light: "light",
             dark: "dark",
         },
-        defaultTheme: "light",
+        defaultTheme: "dark",
         attributeName: "data-theme",
         parentSelector: "html",
     }),

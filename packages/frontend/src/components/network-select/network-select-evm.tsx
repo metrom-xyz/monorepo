@@ -105,6 +105,7 @@ export function NetworkSelectEvm() {
                     open={pickerOpen}
                     value={selectedChainId}
                     onChange={handleNetworkOnChange}
+                    onOpen={setPickerOpen}
                 />
                 <DrawerPicker
                     chains={chains}

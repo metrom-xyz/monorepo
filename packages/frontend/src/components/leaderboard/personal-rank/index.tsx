@@ -62,13 +62,13 @@ export function PersonalRank({
     return (
         <Card className={styles.root}>
             <div className={styles.header}>
-                <Typography uppercase weight="medium" light size="sm">
+                <Typography uppercase weight="medium" variant="tertiary"size="sm">
                     {t("yourRank")}
                 </Typography>
-                <Typography uppercase weight="medium" light size="sm">
+                <Typography uppercase weight="medium" variant="tertiary"size="sm">
                     {t("account")}
                 </Typography>
-                <Typography uppercase weight="medium" light size="sm">
+                <Typography uppercase weight="medium" variant="tertiary"size="sm">
                     {t("rewardsDistributed")}
                 </Typography>
             </div>
@@ -89,11 +89,11 @@ export function PersonalRank({
                         }
                     />
                 ) : blacklisted ? (
-                    <Typography weight="medium" light>
+                    <Typography weight="medium" variant="tertiary">
                         {t("blacklisted")}
                     </Typography>
                 ) : !connectedAccountRank ? (
-                    <Typography weight="medium" light>
+                    <Typography weight="medium" variant="tertiary">
                         {messages?.noRewards
                             ? messages.noRewards
                             : t("noRewards")}
@@ -101,7 +101,7 @@ export function PersonalRank({
                 ) : (
                     <div className={styles.row}>
                         <div>
-                            <Typography size="lg" weight="medium" light>
+                            <Typography size="lg" weight="medium" variant="tertiary">
                                 # {connectedAccountRank.position}
                             </Typography>
                             <Typography size="lg" weight="medium">

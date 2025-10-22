@@ -9,7 +9,7 @@
         grid
         grid-cols-subgrid
         items-center
-        theme-surface-hover
+        surface-primary-hover
         cursor-pointer
         transition-colors
         duration-200

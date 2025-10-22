@@ -276,7 +276,7 @@ export function KpiStep({
                 disabled={!enabled}
             >
                 <div className={styles.tvlWrapper}>
-                    <Typography uppercase weight="medium" light size="sm">
+                    <Typography uppercase weight="medium" variant="tertiary"size="sm">
                         {t("currentTarget", { targetValueName })}
                     </Typography>
                     {loadingUsdTvl ? (
@@ -318,7 +318,7 @@ export function KpiStep({
                             <Typography
                                 uppercase
                                 weight="medium"
-                                light
+                                variant="tertiary"
                                 size="xs"
                                 className={styles.simulationText}
                             >
@@ -326,7 +326,7 @@ export function KpiStep({
                             </Typography>
                             <Typography
                                 weight="medium"
-                                light
+                                variant="tertiary"
                                 size="xs"
                                 className={styles.simulationText}
                             >

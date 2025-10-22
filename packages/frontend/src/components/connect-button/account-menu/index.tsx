@@ -186,14 +186,14 @@ export function AccountMenu({
                                             {balance ? (
                                                 <>
                                                     <Typography
-                                                        light
+                                                        variant="tertiary"
                                                         weight="medium"
                                                         size="lg"
                                                     >
                                                         {balance.symbol}
                                                     </Typography>
                                                     <Typography
-                                                        light
+                                                        variant="tertiary"
                                                         weight="medium"
                                                         size="lg"
                                                     >

@@ -7,7 +7,7 @@
         justify-between
         items-center
         rounded-xl
-        theme-surface
+        surface-primary
         gap-10
         p-4
         sm:p-8
@@ -30,11 +30,11 @@
 }
 
 .socialLink {
-    @apply p-2.5 rounded-full theme-surface-hover transition-colors duration-200 ease-in-out;
+    @apply p-2.5 rounded-full surface-primary-hover transition-colors duration-200 ease-in-out;
 }
 
 .supportLink {
-    @apply p-1.5 rounded-md theme-surface-hover transition-colors duration-200 ease-in-out;
+    @apply p-1.5 rounded-md surface-primary-hover transition-colors duration-200 ease-in-out;
 }
 
 .socialIcon {

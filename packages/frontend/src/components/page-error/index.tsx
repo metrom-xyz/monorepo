@@ -15,7 +15,7 @@ export function PageError({ error, reset }: PageErrorProps) {
 
     return (
         <div className={styles.root}>
-            <Typography size="xl4" weight="medium">
+            <Typography size="xl3" weight="medium">
                 {t("title")}
             </Typography>
             <Card className={styles.card}>

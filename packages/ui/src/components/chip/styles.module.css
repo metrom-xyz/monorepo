@@ -3,7 +3,7 @@
 .root {
     @apply flex
         justify-center
-        theme-surface-2
+        surface-secondary
         rounded-[2.813rem]
         select-none
         transition-colors
@@ -20,7 +20,7 @@
 }
 
 .rootClickable {
-    @apply cursor-pointer theme-surface-2-hover;
+    @apply cursor-pointer surface-secondary-hover;
 }
 
 .rootActive {

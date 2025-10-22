@@ -19,7 +19,7 @@
 .campaignLinkCard {
     @apply h-full
         max-w-[27rem]
-        theme-surface-hover
+        surface-primary-hover
         transition-colors
         duration-200
         ease-in-out;
@@ -27,7 +27,7 @@
 
 .campaignCard {
     @apply max-w-[27rem]
-        theme-surface-hover
+        surface-primary-hover
         cursor-pointer
         transition-colors
         duration-200
@@ -46,7 +46,7 @@
         min-h-[5.75rem]
         p-3
         rounded-2xl
-        theme-surface-2
+        surface-secondary
         dark:bg-zinc-800;
 }
 

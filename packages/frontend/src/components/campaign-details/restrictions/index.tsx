@@ -24,7 +24,7 @@ export function Restrictions({ type, list }: RestrictionsProps) {
                     {t("title")}
                 </Typography>
                 <InfoTooltip placement="top-start">
-                    <Typography size="sm" light className={styles.tooltipText}>
+                    <Typography size="sm" variant="tertiary"className={styles.tooltipText}>
                         {t.rich("tooltip.allows", {
                             bold: (chunks) => (
                                 <span className={styles.bold}>{chunks}</span>

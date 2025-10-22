@@ -99,7 +99,7 @@ export const TokenIndicator = ({
                 {token.underlyingTokens?.length > 0 && (
                     <Typography
                         weight="medium"
-                        light
+                        variant="tertiary"
                         size="xs"
                         noWrap
                         truncate
@@ -115,7 +115,7 @@ export const TokenIndicator = ({
                     <div className="flex flex-col self-end">
                         {/* {token.apy && (
                             <div className="flex items-center gap-1">
-                                <Typography light size="xs" weight="medium">
+                                <Typography variant="tertiary"size="xs" weight="medium">
                                     APY
                                 </Typography>
                                 <Typography size="xs" weight="medium">
@@ -125,7 +125,7 @@ export const TokenIndicator = ({
                         )} */}
                         {token.tvl && (
                             <div className="flex items-center gap-1">
-                                <Typography light size="xs" weight="medium">
+                                <Typography variant="tertiary"size="xs" weight="medium">
                                     TVL
                                 </Typography>
                                 <Typography size="xs" weight="medium">

@@ -15,34 +15,43 @@
 }
 
 .primary {
-    @apply rounded-xl
-        text-white
-        dark:text-black
-        bg-black dark:bg-zinc-200
-        hover:bg-zinc-800 dark:hover:bg-zinc-300;
+    @apply rounded-lg
+        border
+        border-transparent
+        text-gray-100
+        dark:text-neutral-950
+        bg-gray-900
+        dark:bg-neutral-100
+        hover:bg-gray-800
+        dark:hover:bg-neutral-300;
 }
 
 .primary.disabled {
-    @apply bg-zinc-700 dark:bg-zinc-600
-        text-zinc-400
-        hover:bg-zinc-700 hover:dark:bg-zinc-600 
+    @apply text-gray-500
+        dark:text-neutral-500
+        bg-gray-800
+        dark:bg-neutral-700
         cursor-not-allowed;
 }
 
 .secondary {
-    @apply rounded-xl
-        text-black
-        dark:text-zinc-200
-        bg-zinc-100 dark:bg-zinc-900
-        theme-surface-hover
+    @apply rounded-lg
+        bg-transparent
         border
-        border-zinc-500 dark:border-zinc-500;
+        text-gray-900
+        dark:text-neutral-100
+        border-gray-900
+        dark:border-neutral-100
+        hover:bg-gray-950/[8%]
+        dark:hover:bg-neutral-100/[12%];
 }
 
 .secondary.disabled {
-    @apply bg-zinc-50 dark:bg-zinc-900
-        text-zinc-400
-        hover:bg-zinc-50 hover:dark:bg-zinc-900
+    @apply text-gray-400
+        dark:text-neutral-700
+        border-gray-400
+        dark:border-neutral-700
+        dark:hover:bg-transparent
         cursor-not-allowed;
 }
 
@@ -51,51 +60,52 @@
     @apply border-transparent;
 }
 
-.primary.lg {
-    @apply px-6 py-5;
-}
-
-.primary.sm {
-    @apply px-5 py-3 text-sm;
-}
-
-.primary.xs {
-    @apply px-4 py-2 text-xs;
-}
-
-.secondary.lg {
-    @apply px-4 py-4;
-}
-
-.secondary.sm {
-    @apply px-4 py-2.5 text-sm;
-}
-
+.primary.xs,
 .secondary.xs {
-    @apply px-2 py-1 text-xs;
+    @apply p-2 text-xs rounded-md;
 }
 
-.icon.lg {
-    @apply w-5 h-5;
+.primary.sm,
+.secondary.sm {
+    @apply px-3 py-2.5 text-sm;
 }
 
-.icon.sm {
-    @apply w-4 h-4;
+.primary.base,
+.secondary.base {
+    @apply p-3 text-base;
+}
+
+.primary.lg,
+.secondary.lg {
+    @apply px-4 py-3 text-lg;
 }
 
 .icon.xs {
-    @apply w-3.5 h-3.5;
+    @apply size-3;
+}
+
+.icon.sm,
+.icon.base {
+    @apply size-4;
+}
+
+.icon.lg {
+    @apply size-5;
 }
 
 .spinner {
-    @apply text-black dark:text-slate-200 origin-center animate-spin;
+    @apply text-gray-100 dark:text-neutral-950 origin-center animate-spin;
 }
 
 .wrapper {
     @apply min-h-6
         flex
         items-center
-        first:mr-2
-        last:ml-2
+        first:mr-1
+        last:ml-1
         only:m-0;
+}
+
+.wrapper.xs {
+    @apply first:mr-0.5 last:ml-0.5;
 }

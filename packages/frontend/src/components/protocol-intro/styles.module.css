@@ -25,7 +25,7 @@
         transition-opacity
         duration-200
         ease-in-out
-        theme-surface;
+        surface-primary;
 }
 
 .article > :not(:first-child) {
@@ -37,7 +37,7 @@
 }
 
 .iconWrapper {
-    @apply flex items-center justify-center rounded-xl p-4 theme-surface;
+    @apply flex items-center justify-center rounded-xl p-4 surface-primary;
 }
 
 .rightContent {

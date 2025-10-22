@@ -42,8 +42,8 @@ export const Sizes: Story = {
             <Skeleton {...args} size="lg" />
             <Skeleton {...args} size="xl" />
             <Skeleton {...args} size="xl2" />
+            <Skeleton {...args} size="xl3" />
             <Skeleton {...args} size="xl4" />
-            <Skeleton {...args} size="xl5" />
         </div>
     ),
 };
