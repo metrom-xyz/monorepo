@@ -217,7 +217,7 @@ export function EndDateStep({
                         onChange={setDate}
                     />
                     <div className={styles.campaignDuration}>
-                        <Typography uppercase size="sm" weight="medium" light>
+                        <Typography uppercase size="sm" weight="medium" variant="tertiary">
                             {t("campaignDuration")}
                         </Typography>
                         <Typography uppercase size="sm" weight="medium">

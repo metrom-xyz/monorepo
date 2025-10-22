@@ -28,21 +28,31 @@
 
 .option {
     @apply cursor-pointer
-        p-3
-        h-12
         flex
         items-center
         outline-none
         box-border
-        placeholder-black/20
-        theme-text
-        bg-white dark:bg-zinc-800
-        theme-surface-hover
+        text-primary
+        surface-secondary
+        surface-secondary-hover
+        not-last:border-b
+        not-last:border-b-gray-300
+        not-last:dark:border-b-neutral-700
         transition-colors
         ease-in-out
         duration-200;
 }
 
+.option.xs {
+    @apply p-2;
+}
+
+.option.sm,
+.option.base,
+.option.lg {
+    @apply px-3 py-2;
+}
+
 .pickedOption {
-    @apply theme-surface-active theme-surface-hover;
+    @apply bg-gray-50 dark:bg-neutral-700 surface-secondary-hover;
 }

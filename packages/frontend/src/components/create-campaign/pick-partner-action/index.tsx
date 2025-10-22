@@ -48,7 +48,7 @@ export function PickPartnerAction({ forms, onBack }: PickPartnerActionProps) {
                     {t("title")}
                 </Typography>
             </div>
-            <Typography weight="medium" light className={styles.description}>
+            <Typography weight="medium" variant="tertiary"className={styles.description}>
                 {t("description")}
             </Typography>
             <div className={styles.actions}>
@@ -73,7 +73,7 @@ export function PickPartnerAction({ forms, onBack }: PickPartnerActionProps) {
                                         >
                                             {t(title)}
                                         </Typography>
-                                        <Typography weight="medium" light>
+                                        <Typography weight="medium" variant="tertiary">
                                             {t(description)}
                                         </Typography>
                                     </div>

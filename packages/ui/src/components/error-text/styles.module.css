@@ -9,19 +9,19 @@
 }
 
 .icon.error {
-    @apply text-red-600;
+    @apply text-error;
 }
 
 .icon.warning {
-    @apply text-yellow-600;
+    @apply text-warning;
 }
 
 .text.error {
-    @apply !text-red-600;
+    @apply text-error;
 }
 
 .text.warning {
-    @apply !text-yellow-600;
+    @apply text-warning;
 }
 
 .xs {

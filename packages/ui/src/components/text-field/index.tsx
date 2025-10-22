@@ -35,7 +35,7 @@ export function TextField({
                 [styles.alignRight]: alignment === "right",
             })}
         >
-            <Typography uppercase weight="medium" light size="sm">
+            <Typography uppercase weight="medium" variant="tertiary"size="sm">
                 {label}
             </Typography>
             {loading ? (

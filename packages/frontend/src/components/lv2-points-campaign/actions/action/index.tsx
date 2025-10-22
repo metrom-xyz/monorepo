@@ -54,7 +54,7 @@ export function Action({
                 <div className={styles.text}>
                     <Typography weight="medium">{name}</Typography>
                     {description && (
-                        <Typography weight="medium" light uppercase size="xs">
+                        <Typography weight="medium" variant="tertiary"uppercase size="xs">
                             {description}
                         </Typography>
                     )}
