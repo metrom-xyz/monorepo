@@ -47,6 +47,10 @@
         "title": "all campaigns",
         "kpi": "KPI",
         "restricted": "Restricted",
+        "tabs": {
+            "tokens": "Tokens",
+            "points": "Points"
+        },
         "filters": {
             "protocol": {
                 "label": "Protocol",
