@@ -1,7 +1,7 @@
 import { Button, Pagination, Typography } from "@metrom-xyz/ui";
 import classNames from "classnames";
 import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { type CampaignSortOptions } from "@/src/utils/filtering";
 import type { TranslationsKeys } from "@/src/types/utils";
 import { useTranslations } from "next-intl";
@@ -60,11 +60,13 @@ const TABLE_COLUMNS: {
 ];
 
 interface CampaignsTableProps {
+    type: BackendCampaignType;
     disableFilters?: boolean;
     optionalFilters?: Partial<Filters>;
 }
 
 export function CampaignsTable({
+    type,
     disableFilters,
     optionalFilters,
 }: CampaignsTableProps) {
@@ -86,6 +88,10 @@ export function CampaignsTable({
         statuses: [],
         ...optionalFilters,
     });
+
+    useEffect(() => {
+        setPageNumber(1);
+    }, [type]);
 
     useDebounce(
         () => {
@@ -119,7 +125,7 @@ export function CampaignsTable({
         useCampaigns({
             page: pageNumber,
             pageSize: PAGE_SIZE,
-            type: BackendCampaignType.Rewards,
+            type,
             chainTypes,
             chainIds,
             protocols,
@@ -171,7 +177,11 @@ export function CampaignsTable({
     }, [localizedRouter]);
 
     return (
-        <div className={styles.root}>
+        <div
+            className={classNames(styles.root, {
+                [styles.topLeftSquared]: type === BackendCampaignType.Rewards,
+            })}
+        >
             {!disableFilters && (
                 <Filters
                     sortField={sortField}
@@ -197,7 +207,12 @@ export function CampaignsTable({
                                     [styles.sort]: sort,
                                 })}
                             >
-                                <Typography size="sm" weight="medium">
+                                <Typography
+                                    size="sm"
+                                    weight="medium"
+                                    variant="tertiary"
+                                    uppercase
+                                >
                                     {t(`header.${label}`)}
                                 </Typography>
                                 {sort && (
@@ -261,6 +276,7 @@ export function CampaignsTable({
             <div className={styles.paginationWrapper}>
                 <Pagination
                     page={pageNumber}
+                    loading={loading || (placeholderData && fetching)}
                     totalPages={Math.ceil(totalCampaigns / PAGE_SIZE)}
                     onNext={handleNextPage}
                     onPrevious={handlePreviousPage}
