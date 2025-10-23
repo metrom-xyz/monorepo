@@ -6,7 +6,7 @@ import {
     useEffect,
 } from "react";
 import { useDebounce } from "react-use";
-import type { Erc20Token, SupportedDex, AmmPoolWithTvl } from "@metrom-xyz/sdk";
+import type { Erc20Token, SupportedDex, AmmPool } from "@metrom-xyz/sdk";
 import { useChainWithType } from "@/src/hooks/useChainWithType";
 import { TextInput, Chip, Typography } from "@metrom-xyz/ui";
 import { List, useListCallbackRef } from "react-window";
@@ -23,9 +23,9 @@ import styles from "./styles.module.css";
 
 interface ListPoolPickerProps {
     open: boolean;
-    value?: AmmPoolWithTvl;
+    value?: AmmPool;
     dex?: SupportedDex;
-    onChange: (pool: AmmPoolWithTvl) => void;
+    onChange: (pool: AmmPool) => void;
 }
 
 const LIST_ITEM_HEIGHT = 57;
@@ -171,7 +171,7 @@ export function ListPoolPicker({
                             value,
                             pools: loading
                                 ? new Array(6).fill(null)
-                                : (filteredPools as AmmPoolWithTvl[]),
+                                : filteredPools,
                             onClick: onChange,
                         }}
                         rowComponent={Row}

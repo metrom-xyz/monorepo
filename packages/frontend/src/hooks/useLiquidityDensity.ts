@@ -1,14 +1,18 @@
-import { type AmmPool, type LiquidityDensity } from "@metrom-xyz/sdk";
+import {
+    type AmmPool,
+    type CampaignAmmPool,
+    type LiquidityDensity,
+} from "@metrom-xyz/sdk";
 import { METROM_API_CLIENT } from "../commons";
 import { useQuery } from "@tanstack/react-query";
 import type { HookBaseParams } from "../types/hooks";
 
 interface UseLiquidityDensityParams extends HookBaseParams {
-    pool?: AmmPool;
+    pool?: AmmPool | CampaignAmmPool;
     computeAmount?: number;
 }
 
-type QueryKey = [string, AmmPool | undefined];
+type QueryKey = [string, AmmPool | CampaignAmmPool | undefined];
 
 const SURROUNDING_AMOUNT = 200;
 

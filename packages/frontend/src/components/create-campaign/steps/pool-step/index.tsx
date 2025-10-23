@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { useChainWithType } from "@/src/hooks/useChainWithType";
 import { useTranslations } from "next-intl";
-import { type AmmPoolWithTvl } from "@metrom-xyz/sdk";
+import type { AmmPool } from "@metrom-xyz/sdk";
 import { Step } from "@/src/components/step";
 import { StepPreview } from "@/src/components/step/preview";
 import { StepContent } from "@/src/components/step/content";
@@ -55,7 +55,7 @@ export function PoolStep({
     }, [onPoolChange, dex?.slug]);
 
     const handlePoolOnChange = useCallback(
-        (newPool: AmmPoolWithTvl) => {
+        (newPool: AmmPool) => {
             if (pool && pool.id === newPool.id) return;
             onPoolChange({
                 pool: newPool,

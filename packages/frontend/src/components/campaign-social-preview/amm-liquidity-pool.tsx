@@ -1,9 +1,9 @@
-import type { AmmPool } from "@metrom-xyz/sdk";
+import type { CampaignAmmPool } from "@metrom-xyz/sdk";
 import { RemoteLogo } from "./remote-logo";
 import type { Address } from "viem";
 
 interface AmmLiquidityPoolProps {
-    pool: AmmPool;
+    pool: CampaignAmmPool;
     tokenUris: Record<Address, string>;
 }
 

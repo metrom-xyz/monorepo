@@ -11,7 +11,6 @@ import {
     type UsdPricedErc20TokenAmount,
     type UsdPricedOnChainAmount,
     type Weighting,
-    type AmmPoolWithTvl,
     type DistributablesType,
     type KpiSpecification,
     type TokenDistributables,
@@ -20,6 +19,7 @@ import {
     type FungibleAssetInfo,
     type FixedPointDistributables,
     type DynamicPointDistributables,
+    type AmmPool,
 } from "@metrom-xyz/sdk";
 import type { Dayjs } from "dayjs";
 import type { Address } from "viem";
@@ -78,7 +78,7 @@ export interface BaseCampaignPayload {
 
 export interface AmmPoolLiquidityCampaignPayload extends BaseCampaignPayload {
     dex?: DexProtocol;
-    pool?: AmmPoolWithTvl;
+    pool?: AmmPool;
     weighting?: Weighting;
     priceRangeSpecification?: AugmentedPriceRangeSpecification;
 }
@@ -169,7 +169,7 @@ export class AmmPoolLiquidityCampaignPreviewPayload extends BaseCampaignPreviewP
     constructor(
         public readonly kind: CampaignKind,
         public readonly dex: DexProtocol,
-        public readonly pool: AmmPoolWithTvl,
+        public readonly pool: AmmPool,
         public readonly weighting?: Weighting,
         public readonly priceRangeSpecification?: AugmentedPriceRangeSpecification,
         ...baseArgs: ConstructorParameters<typeof BaseCampaignPreviewPayload>

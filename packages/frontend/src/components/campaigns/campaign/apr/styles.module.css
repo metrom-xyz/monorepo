@@ -17,7 +17,7 @@
 }
 
 .skeletonDescription {
-    @apply h-[60px];
+    @apply h-6;
 }
 
 .skeletonDescription :global(.skeleton) {

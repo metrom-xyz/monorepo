@@ -1,11 +1,13 @@
 import { Typography } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
 import { formatPercentage, formatUsdAmount } from "@/src/utils/format";
-import { DistributablesType } from "@metrom-xyz/sdk";
+import { DistributablesType, TargetType } from "@metrom-xyz/sdk";
 import type { Campaign } from "@/src/types/campaign";
 import { useMemo } from "react";
 import { getCampaignApr } from "@/src/utils/campaign";
 import { getCampaignAprTargetText } from "@/src/utils/kpi";
+import { useLiquidityByAddresses } from "@/src/hooks/useLiquidityByAddresses";
+import { usePool } from "@/src/hooks/usePool";
 
 import styles from "./styles.module.css";
 
@@ -18,9 +20,34 @@ export function KpiAprSummary({ campaign }: KpiAprSummaryProps) {
     const t = useTranslations("kpiAprSummary");
 
     const tokensCampaign = campaign?.isDistributing(DistributablesType.Tokens);
+    const ammPoolLiquidityCampaign =
+        campaign?.isTargeting(TargetType.AmmPoolLiquidity) ||
+        campaign?.isTargeting(TargetType.JumperWhitelistedAmmPoolLiquidity);
+
+    const { loading: loadingPool, pool } = usePool({
+        id: ammPoolLiquidityCampaign ? campaign?.target.pool.id : undefined,
+        chainId: campaign?.target.chainId,
+        chainType: campaign?.target.chainType,
+        enabled: campaign && ammPoolLiquidityCampaign,
+    });
+
+    const { loading: loadingLiquidityByAddresses, liquidityByAddresses } =
+        useLiquidityByAddresses({
+            type: campaign?.restrictions?.type,
+            pool: pool,
+            addresses: campaign?.restrictions?.list,
+            enabled: !!pool && !!campaign?.restrictions,
+        });
 
     const maxApr = useMemo(() => {
-        if (!campaign || !tokensCampaign || !campaign.specification?.kpi)
+        if (
+            !campaign ||
+            !tokensCampaign ||
+            !campaign.specification?.kpi ||
+            loadingPool ||
+            loadingLiquidityByAddresses ||
+            (campaign.restrictions && !liquidityByAddresses)
+        )
             return undefined;
 
         const { kpi } = campaign.specification;
@@ -29,16 +56,33 @@ export function KpiAprSummary({ campaign }: KpiAprSummaryProps) {
             usdRewards: campaign.distributables.amountUsdValue,
             duration: campaign.to - campaign.from,
             usdTvl: kpi.goal.upperUsdTarget,
-            liquidity: campaign.getTargetRawValue(),
             kpiSpecification: kpi,
-            // TODO: add liquidity in range?
+            liquidity: pool?.liquidity,
+            liquidityByAddresses,
+            // TODO: add liquidity in range
             // range: liquidityInRange,
         });
-    }, [campaign, tokensCampaign]);
+    }, [
+        campaign,
+        liquidityByAddresses,
+        loadingLiquidityByAddresses,
+        loadingPool,
+        tokensCampaign,
+        pool?.liquidity,
+    ]);
 
     const lowerBound = campaign?.specification?.kpi?.goal.lowerUsdTarget;
     const upperBound = campaign?.specification?.kpi?.goal.upperUsdTarget;
     const minimumPayout = campaign?.specification?.kpi?.minimumPayoutPercentage;
+
+    if (loadingPool || loadingLiquidityByAddresses)
+        return (
+            <div className={styles.loadingWrapper}>
+                <div className={styles.loading} />
+                <div className={styles.loading} />
+                <div className={styles.loading} />
+            </div>
+        );
 
     if (!maxApr || !campaign) return null;
 
