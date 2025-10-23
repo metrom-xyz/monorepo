@@ -1,28 +1,5 @@
 @reference "../../theme.css";
 
 .root {
-    @apply flex
-        items-center
-        rounded-md
-        surface-secondary;
-}
-
-.xs {
-    @apply p-0.5;
-}
-
-.sm {
-    @apply p-1;
-}
-
-.base {
-    @apply p-2;
-}
-
-.lg {
-    @apply p-3;
-}
-
-.xl {
-    @apply p-3.5;
+    @apply w-full flex;
 }

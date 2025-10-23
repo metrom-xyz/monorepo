@@ -22,6 +22,7 @@
     @apply hover:bg-gray-50 hover:dark:bg-neutral-700;
 }
 
+/* TODO: remove these */
 @utility theme-surface-active {
     @apply bg-zinc-200 dark:bg-zinc-700;
 }
@@ -71,6 +72,7 @@
     --color-white: #ffffff;
 
     --color-gray-150: #f1f3f5;
+    --color-gray-100: #f9fafb;
 
     --color-zinc-250: #e2e2e2;
     --color-zinc-750: #5a5a5a;

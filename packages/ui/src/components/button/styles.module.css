@@ -51,7 +51,7 @@
         dark:text-neutral-700
         border-gray-400
         dark:border-neutral-700
-        dark:hover:bg-transparent
+        hover:bg-transparent
         cursor-not-allowed;
 }
 
@@ -91,6 +91,14 @@
 
 .icon.lg {
     @apply size-5;
+}
+
+.icon.light {
+    @apply flex dark:hidden;
+}
+
+.icon.dark {
+    @apply hidden dark:flex;
 }
 
 .spinner {

@@ -1,43 +1,72 @@
 @reference "../../../theme.css";
 
 .root {
-    @apply flex
+    @apply w-fit
+        flex
         items-center
-        justify-center
-        w-full
-        rounded-md
-        cursor-pointer
+        gap-2
+        select-none
+        rounded-t-xl
+        cursor-pointer;
+}
+
+.root,
+.root > p {
+    @apply uppercase
+        font-medium
+        text-gray-500
+        dark:text-neutral-400
         transition-colors
         duration-200
-        ease-in-out
-        surface-secondary
-        opacity-50;
+        ease-in-out;
+}
+
+.root.active {
+    @apply bg-gray-100 dark:bg-neutral-900;
+}
+
+.root.active,
+.root.active > p {
+    @apply text-brand-green-dark dark:text-brand-green;
 }
 
 .active {
     @apply theme-surface-2-active opacity-100;
 }
 
-.icon {
-    
+.root.xs {
+    @apply px-3 py-2 text-xs;
 }
 
-.xs {
-    @apply p-1;
+.root.sm {
+    @apply px-4 py-2 text-sm;
 }
 
-.sm {
-    @apply p-2;
+.root.base {
+    @apply px-5 py-3 text-base;
 }
 
-.base {
-    @apply p-3;
+.root.lg {
+    @apply px-5 py-3 text-lg;
 }
 
-.lg {
-    @apply p-4;
+.root.xl {
+    @apply px-5 py-3 text-xl;
 }
 
-.xl {
-    @apply p-5;
+.icon.xs {
+    @apply size-4;
+}
+
+.icon.sm {
+    @apply size-[1.125rem];
+}
+
+.icon.base,
+.icon.lg {
+    @apply size-5;
+}
+
+.icon.xl {
+    @apply size-6;
 }

@@ -12,40 +12,14 @@
     @apply w-9 h-9 flex items-center justify-center;
 }
 
-.item {
-    @apply w-9
-        h-9
-        rounded-md
-        flex
-        items-center
-        justify-center
-        cursor-pointer
-        surface-secondary-hover
-        transition-colors
-        duration-200
-        ease-in-out;
+.button {
+    @apply size-9!;
 }
 
-.itemActive {
-    @apply theme-surface-active;
+.button.loading {
+    @apply animate-pulse;
 }
 
-.clickable {
-    @apply cursor-pointer
-        surface-secondary-hover
-        transition-colors
-        duration-200
-        ease-in-out;
-}
-
-.arrowItem {
-    @apply theme-surface-active;
-}
-
-.arrowItem:disabled {
-    @apply bg-zinc-200 dark:bg-zinc-800 cursor-not-allowed;
-}
-
-.arrowItem:disabled > .arrowIcon {
-    @apply text-zinc-400;
+.button.active {
+    @apply bg-gray-50 dark:bg-neutral-700 pointer-events-none;
 }
