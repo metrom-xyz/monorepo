@@ -5,7 +5,7 @@ export function validateDistributables(
     distributables: CampaignPayloadDistributables,
 ) {
     if (
-        distributables.type === DistributablesType.Points &&
+        distributables.type === DistributablesType.FixedPoints &&
         (!distributables.fee || !distributables.type)
     )
         return false;

@@ -140,6 +140,7 @@ export type CampaignTarget =
     | HoldFungibleAssetTarget;
 
 export interface TokenDistributable {
+    dailyUsd: number;
     token: UsdPricedErc20Token;
     amount: UsdPricedOnChainAmount;
     remaining: UsdPricedOnChainAmount;
@@ -147,7 +148,8 @@ export interface TokenDistributable {
 
 export enum DistributablesType {
     Tokens = "tokens",
-    Points = "points",
+    FixedPoints = "fixed-points",
+    DynamicPoints = "dynamic-points",
 }
 
 export interface TokenDistributables {
@@ -157,10 +159,23 @@ export interface TokenDistributables {
     remainingUsdValue: number;
 }
 
-export interface PointDistributables {
-    type: DistributablesType.Points;
+export interface FixedPointDistributables {
+    type: DistributablesType.FixedPoints;
     amount: OnChainAmount;
+    dailyPer1k?: number;
 }
+
+export interface DynamicPointDistributables {
+    type: DistributablesType.DynamicPoints;
+    dailyPer1k?: number;
+    distributionIntervalSeconds: number;
+    multiplier: number;
+}
+
+export type CampaignDistributables =
+    | TokenDistributables
+    | FixedPointDistributables
+    | DynamicPointDistributables;
 
 export enum KpiMetric {
     RangePoolTvl = "range-pool-tvl",
@@ -224,9 +239,7 @@ export class Campaign {
         public readonly to: number,
         public readonly createdAt: number,
         public readonly target: CampaignTarget,
-        public readonly distributables:
-            | TokenDistributables
-            | PointDistributables,
+        public readonly distributables: CampaignDistributables,
         public readonly snapshottedAt?: number,
         public readonly specification?: Specification,
         public readonly usdTvl?: number,
@@ -257,9 +270,11 @@ export interface DistributablesCampaign<T extends DistributablesType>
     extends Campaign {
     distributables: T extends DistributablesType.Tokens
         ? TokenDistributables
-        : T extends DistributablesType.Points
-          ? PointDistributables
-          : never;
+        : T extends DistributablesType.FixedPoints
+          ? FixedPointDistributables
+          : T extends DistributablesType.DynamicPoints
+            ? DynamicPointDistributables
+            : never;
 }
 
 export interface BaseTargetedCampaign<T extends TargetType> {

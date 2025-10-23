@@ -14,11 +14,12 @@ import {
     type AmmPoolWithTvl,
     type DistributablesType,
     type KpiSpecification,
-    type PointDistributables,
     type TokenDistributables,
     type LiquityV2Collateral,
     type BaseTargetedCampaign,
     type FungibleAssetInfo,
+    type FixedPointDistributables,
+    type DynamicPointDistributables,
 } from "@metrom-xyz/sdk";
 import type { Dayjs } from "dayjs";
 import type { Address } from "viem";
@@ -104,10 +105,15 @@ export interface CampaignPayloadTokenDistributables {
     tokens?: WhitelistedErc20TokenAmount[];
 }
 
-export interface CampaignPayloadPointDistributables {
-    type: DistributablesType.Points;
+export interface CampaignPayloadFixedPointDistributables {
+    type: DistributablesType.FixedPoints;
     fee?: WhitelistedErc20TokenAmount;
     points?: number;
+}
+
+export interface CampaignPayloadDynamicPointDistributables {
+    type: DistributablesType.DynamicPoints;
+    // TODO: implement for dynamic points
 }
 
 export interface CampaignPreviewTokenDistributables {
@@ -115,19 +121,26 @@ export interface CampaignPreviewTokenDistributables {
     tokens: [WhitelistedErc20TokenAmount, ...WhitelistedErc20TokenAmount[]];
 }
 
-export interface CampaignPreviewPointDistributables {
-    type: DistributablesType.Points;
+export interface CampaignPreviewFixedPointDistributables {
+    type: DistributablesType.FixedPoints;
     fee: WhitelistedErc20TokenAmount;
     points: number;
 }
 
+export interface CampaignPreviewDynamicPointDistributables {
+    type: DistributablesType.DynamicPoints;
+    // TODO: implement for dynamic points
+}
+
 export type CampaignPayloadDistributables =
     | CampaignPayloadTokenDistributables
-    | CampaignPayloadPointDistributables;
+    | CampaignPayloadFixedPointDistributables
+    | CampaignPayloadDynamicPointDistributables;
 
 export type CampaignPreviewDistributables =
     | CampaignPreviewTokenDistributables
-    | CampaignPreviewPointDistributables;
+    | CampaignPreviewFixedPointDistributables
+    | CampaignPreviewDynamicPointDistributables;
 
 export interface TargetValue {
     usd: number;
@@ -294,9 +307,11 @@ export interface DistributablesCampaignPreviewPayload<
 > extends BaseCampaignPreviewPayload {
     distributables: T extends DistributablesType.Tokens
         ? CampaignPreviewTokenDistributables
-        : T extends DistributablesType.Points
-          ? CampaignPreviewPointDistributables
-          : never;
+        : T extends DistributablesType.FixedPoints
+          ? CampaignPreviewFixedPointDistributables
+          : T extends DistributablesType.DynamicPoints
+            ? CampaignPreviewDynamicPointDistributables
+            : never;
 }
 
 export interface CampaignPayloadErrors {
@@ -470,9 +485,11 @@ export interface DistributablesNamedCampaign<T extends DistributablesType>
     extends Campaign {
     distributables: T extends DistributablesType.Tokens
         ? TokenDistributables
-        : T extends DistributablesType.Points
-          ? PointDistributables
-          : never;
+        : T extends DistributablesType.FixedPoints
+          ? FixedPointDistributables
+          : T extends DistributablesType.DynamicPoints
+            ? DynamicPointDistributables
+            : never;
 }
 
 export type TargetedNamedCampaign<T extends TargetType> =

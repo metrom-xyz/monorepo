@@ -51,7 +51,7 @@ export function CampaignDetails({
         return <PageNotFound message={t("notFound")} />;
 
     const tokensCampaign = campaign?.isDistributing(DistributablesType.Tokens);
-    const pointsCampaign = campaign?.isDistributing(DistributablesType.Points);
+    const fixedPointsCampaign = campaign?.isDistributing(DistributablesType.FixedPoints);
     const ammPoolCampaign = campaign?.isTargeting(TargetType.AmmPoolLiquidity);
 
     return (
@@ -68,7 +68,7 @@ export function CampaignDetails({
                 {tokensCampaign && (
                     <Rewards campaign={campaign} loading={loadingCampaign} />
                 )}
-                {pointsCampaign && (
+                {fixedPointsCampaign && (
                     <Points campaign={campaign} loading={loadingCampaign} />
                 )}
                 {ammPoolCampaign && (

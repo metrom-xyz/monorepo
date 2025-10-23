@@ -76,10 +76,26 @@ export interface BackendTokenDistributable {
     remaining: string;
 }
 
-export interface BackendReward extends BackendErc20Token {
+export interface BackendFixedPoints {
+    dailyPer1k?: number;
+    amount: string;
+}
+
+export interface BackendDynamicPoints {
+    dailyPer1k?: number;
+    distributionIntervalSeconds: number;
+    multiplier: number;
+}
+
+export interface BackendAsset extends BackendErc20Token {
     amount: string;
     remaining: string;
     usdPrice: number;
+}
+
+export interface BackendRewards {
+    dailyUsd: number;
+    assets: BackendAsset[];
 }
 
 export enum BackendCampaignStatus {
@@ -131,16 +147,24 @@ export interface BackendBaseCampaign {
     apr?: number;
 }
 
-export interface BackendPointsCampaign {
-    points: string;
+export interface BackendFixedPointsCampaign {
+    fixedPoints: BackendFixedPoints;
+}
+
+export interface BackendDynamicPointsCampaign {
+    dynamicPoints: BackendDynamicPoints;
 }
 
 export interface BackendRewardsCampaign {
-    rewards: BackendReward[];
+    rewards: BackendRewards;
 }
 
 export type BackendCampaign = BackendBaseCampaign &
-    (BackendPointsCampaign | BackendRewardsCampaign);
+    (
+        | BackendFixedPointsCampaign
+        | BackendDynamicPointsCampaign
+        | BackendRewardsCampaign
+    );
 
 export interface BackendCampaignsResponse {
     totalItems: number;

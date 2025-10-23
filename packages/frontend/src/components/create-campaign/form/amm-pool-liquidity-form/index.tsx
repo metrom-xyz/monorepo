@@ -118,7 +118,8 @@ export function AmmPoolLiquidityForm({
     const noDistributables = useMemo(() => {
         return (
             !payload.distributables ||
-            payload.distributables.type === DistributablesType.Points ||
+            payload.distributables.type === DistributablesType.FixedPoints ||
+            payload.distributables.type === DistributablesType.DynamicPoints ||
             !payload.distributables.tokens ||
             payload.distributables.tokens.length === 0
         );
@@ -129,7 +130,7 @@ export function AmmPoolLiquidityForm({
 
         const { type } = payload.distributables;
 
-        if (type === DistributablesType.Points)
+        if (type === DistributablesType.FixedPoints)
             return (
                 !payload.distributables.fee || !payload.distributables.points
             );

@@ -24,6 +24,6 @@ export interface BackendActivity {
 }
 
 export interface BackendActivitiesResponse {
-    resolvedTokens: Record<Address, BackendErc20Token>;
+    tokens: Record<Address, BackendErc20Token>;
     activities: BackendActivity[];
 }
