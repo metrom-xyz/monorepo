@@ -48,6 +48,11 @@ const TABLE_COLUMNS: {
         sort: true,
     },
     {
+        name: "tvl",
+        label: "tvl",
+        sort: false,
+    },
+    {
         name: "rewards",
         label: "rewards",
         sort: false,

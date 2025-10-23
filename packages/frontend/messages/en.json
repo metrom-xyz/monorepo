@@ -71,6 +71,7 @@
             "action": "Action",
             "status": "Status",
             "apr": "APR",
+            "tvl": "TVL",
             "rewards": "Daily rewards"
         },
         "apr": {

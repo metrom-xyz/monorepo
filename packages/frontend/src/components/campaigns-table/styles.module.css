@@ -19,7 +19,7 @@
 .table {
     @apply min-w-[800px] 
         grid
-        grid-cols-[0.1fr_0.4fr_3fr_1fr_1fr_1fr]
+        grid-cols-[0.1fr_0.4fr_3fr_1fr_1fr_1fr_1fr]
         gap-5
         items-center;
 }

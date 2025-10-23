@@ -4,13 +4,14 @@ import { SkeletonStatus, Status } from "./status";
 import { Rewards, SkeletonRewards } from "./rewards";
 import { Chain, SkeletonChain } from "./chain";
 import { Link } from "@/src/i18n/routing";
-import { Card } from "@metrom-xyz/ui";
+import { Card, Skeleton, Typography } from "@metrom-xyz/ui";
 import classNames from "classnames";
 import { Protocol, SkeletonProtocol } from "./protocol";
 import { Points } from "./points";
 import dayjs from "dayjs";
 import { DistributablesType } from "@metrom-xyz/sdk";
 import { type Campaign } from "@/src/types/campaign";
+import { formatUsdAmount } from "@/src/utils/format";
 
 import styles from "./styles.module.css";
 
@@ -50,6 +51,9 @@ export function CampaignRow({ campaign }: CampaignProps) {
                     apr={campaign.apr}
                     kpi={!!campaign.specification?.kpi}
                 />
+                <Typography weight="medium">
+                    {formatUsdAmount({ amount: campaign.usdTvl })}
+                </Typography>
                 {fixedPoints && (
                     <Points
                         status={campaign.status}
@@ -81,6 +85,7 @@ export function SkeletonCampaign() {
                 </div>
                 <SkeletonStatus />
                 <SkeletonApr />
+                <Skeleton width={100} />
                 <SkeletonRewards />
             </Card>
         </div>
