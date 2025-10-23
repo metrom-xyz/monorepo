@@ -94,11 +94,11 @@ export function CampaignPreview({
     const { loading: loadingLiquidityByAddresses, liquidityByAddresses } =
         useLiquidityByAddresses(liquidityByAddressesParams);
 
-    const pointsCampaign = payload.isDistributing(DistributablesType.Points);
-    const tokensCampaign = payload.isDistributing(DistributablesType.Tokens);
+    const fixedPoints = payload.isDistributing(DistributablesType.FixedPoints);
+    const tokens = payload.isDistributing(DistributablesType.Tokens);
     const emptyTargetCampaign =
         payload instanceof EmptyTargetCampaignPreviewPayload;
-    const kpi = !!payload.kpiSpecification && tokensCampaign;
+    const kpi = !!payload.kpiSpecification && tokens;
 
     // There's no need to approve tokens for Aptos
     useEffect(() => {
@@ -182,7 +182,7 @@ export function CampaignPreview({
                                 amount: payload.getTargetValue()?.usd,
                             })}
                         />
-                        {!emptyTargetCampaign && tokensCampaign && (
+                        {!emptyTargetCampaign && tokens && (
                             <TextField
                                 boxed
                                 size="xl2"
@@ -204,7 +204,7 @@ export function CampaignPreview({
                                 }
                             />
                         )}
-                        {pointsCampaign && (
+                        {fixedPoints && (
                             <TextField
                                 boxed
                                 size="xl"
@@ -215,7 +215,7 @@ export function CampaignPreview({
                             />
                         )}
                     </div>
-                    {tokensCampaign && (
+                    {tokens && (
                         <Rewards
                             rewards={payload.distributables}
                             startDate={payload.startDate}

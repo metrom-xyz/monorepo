@@ -227,7 +227,12 @@ export default async function Image({ params }: CampaignDetailsPageProps) {
                         />
                     </div>
                     <div tw="flex items-center" style={{ gap: 24 }}>
-                        {campaign.isDistributing(DistributablesType.Points) && (
+                        {(campaign.isDistributing(
+                            DistributablesType.FixedPoints,
+                        ) ||
+                            campaign.isDistributing(
+                                DistributablesType.DynamicPoints,
+                            )) && (
                             <TextField
                                 title={t("socialCampaignPreview.totalRewards")}
                                 value={
@@ -235,7 +240,7 @@ export default async function Image({ params }: CampaignDetailsPageProps) {
                                         <span tw="text-[30px]">
                                             {formatAmount({
                                                 amount: campaign.distributables
-                                                    .amount.formatted,
+                                                    .dailyPer1k,
                                             })}
                                         </span>
                                         <div

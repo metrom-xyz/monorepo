@@ -14,7 +14,7 @@ import { RemoteLogo } from "@/src/components/remote-logo";
 import type {
     CampaignPayloadErrors,
     BaseCampaignPayloadPart,
-    CampaignPayloadPointDistributables,
+    CampaignPayloadFixedPointDistributables,
 } from "@/src/types/campaign";
 import type { LocalizedMessage } from "@/src/types/utils";
 import { formatUsdAmount } from "@/src/utils/format";
@@ -31,7 +31,7 @@ export interface NumberInputValues {
 
 interface RewardPointsProps {
     campaignDuration?: number;
-    distributables: CampaignPayloadPointDistributables;
+    distributables: CampaignPayloadFixedPointDistributables;
     onError: (errors: CampaignPayloadErrors, error?: string) => void;
     onPointsChange: (points: BaseCampaignPayloadPart) => void;
 }
@@ -123,7 +123,7 @@ export function RewardPoints({
         setOpen(false);
         onPointsChange({
             distributables: {
-                type: DistributablesType.Points,
+                type: DistributablesType.FixedPoints,
                 fee: {
                     token,
                     amount: {
