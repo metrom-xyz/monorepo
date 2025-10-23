@@ -3,6 +3,7 @@ import { ChevronRight } from "../..//assets/chevron-right";
 import classNames from "classnames";
 import { useMemo } from "react";
 import { Typography } from "../typography";
+import { Button } from "../button";
 
 import styles from "./styles.module.css";
 
@@ -11,6 +12,7 @@ const PAGES_THRESHOLD = 3;
 export interface PaginationProps {
     page: number;
     totalPages: number;
+    loading?: boolean;
     onPrevious: () => void;
     onNext: () => void;
     onPage: (number: number) => void;
@@ -19,6 +21,7 @@ export interface PaginationProps {
 export function Pagination({
     page,
     totalPages,
+    loading,
     onPrevious,
     onNext,
     onPage,
@@ -42,13 +45,19 @@ export function Pagination({
 
     return (
         <div className={styles.root}>
-            <button
-                className={classNames(styles.item, styles.arrowItem)}
+            <Button
+                variant="secondary"
+                size="xs"
+                disabled={page === 1 || loading}
                 onClick={onPrevious}
-                disabled={page === 1}
+                className={{
+                    root: classNames(styles.button, {
+                        [styles.loading]: loading,
+                    }),
+                }}
             >
                 <ChevronLeft className={styles.arrowIcon} />
-            </button>
+            </Button>
             {pages.map((number, i) => {
                 const disabled = page === number;
 
@@ -59,26 +68,37 @@ export function Pagination({
                         </Typography>
                     );
                 return (
-                    <button
+                    <Button
                         key={i}
-                        className={classNames(styles.item, {
-                            [styles.itemActive]: disabled,
-                            [styles.clickable]: !disabled,
-                        })}
-                        disabled={disabled}
+                        variant="secondary"
+                        size="xs"
+                        border={false}
+                        disabled={disabled || loading}
                         onClick={() => onPage(number)}
+                        className={{
+                            root: classNames(styles.button, {
+                                [styles.active]: disabled,
+                                [styles.loading]: loading,
+                            }),
+                        }}
                     >
                         <Typography>{number}</Typography>
-                    </button>
+                    </Button>
                 );
             })}
-            <button
-                className={classNames(styles.item, styles.arrowItem)}
+            <Button
+                variant="secondary"
+                size="xs"
+                disabled={page === totalPages || loading}
                 onClick={onNext}
-                disabled={page === totalPages}
+                className={{
+                    root: classNames(styles.button, {
+                        [styles.loading]: loading,
+                    }),
+                }}
             >
                 <ChevronRight className={styles.arrowIcon} />
-            </button>
+            </Button>
         </div>
     );
 }
