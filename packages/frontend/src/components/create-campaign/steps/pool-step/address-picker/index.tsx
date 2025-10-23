@@ -14,7 +14,7 @@ import { useDebounce } from "react-use";
 import { TextInput, Typography } from "@metrom-xyz/ui";
 import { SearchIcon } from "@/src/assets/search-icon";
 import { Pool, SkeletonPool } from "../pool";
-import type { AmmPoolWithTvl } from "@metrom-xyz/sdk";
+import type { AmmPool } from "@metrom-xyz/sdk";
 import { CHAIN_TYPE } from "@/src/commons";
 import { isAddress } from "@/src/utils/address";
 
@@ -22,7 +22,7 @@ import styles from "./styles.module.css";
 
 export interface AddressPoolPickerProps {
     dex?: AmmPoolLiquidityCampaignPayload["dex"];
-    onChange: (pool: AmmPoolWithTvl) => void;
+    onChange: (pool: AmmPool) => void;
     onError: (error: string) => void;
 }
 

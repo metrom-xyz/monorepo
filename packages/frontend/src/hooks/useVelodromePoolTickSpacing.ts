@@ -1,10 +1,10 @@
 import { useReadContract } from "wagmi";
 import type { HookBaseParams } from "../types/hooks";
 import { velodromPoolAbi } from "../commons/abi";
-import type { AmmPool } from "@metrom-xyz/sdk";
+import type { AmmPool, CampaignAmmPool } from "@metrom-xyz/sdk";
 
 interface UsePoolTickSpacing extends HookBaseParams {
-    pool?: AmmPool;
+    pool?: AmmPool | CampaignAmmPool;
 }
 
 export function useVelodromePoolTickSpacing({

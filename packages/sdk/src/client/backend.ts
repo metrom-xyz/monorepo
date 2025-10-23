@@ -43,9 +43,7 @@ import {
 } from "../types/campaigns";
 import {
     ChainType,
-    type AmmPool,
     type AmmPoolLiquidityType,
-    type AmmPoolWithTvl,
     type Erc20Token,
     type OnChainAmount,
     type UsdPricedErc20Token,
@@ -90,6 +88,7 @@ import type { AaveV3Collateral } from "../types/aave-v3";
 import type { BackendAaveV3CollateralsResponse } from "./types/aave-v3";
 import type { FungibleAssetInfo } from "src/types/fungible-asset";
 import type { BackendFungibleAssetResponse } from "./types/fungible-asset";
+import type { AmmPool, CampaignAmmPool } from "src/types/pools";
 
 const MIN_TICK = -887272;
 const MAX_TICK = -MIN_TICK;
@@ -208,7 +207,7 @@ export interface FetchLiquidityInRangeParams extends ChainParams {
 }
 
 export interface FetchInitializedTicksParams extends ChainParams {
-    pool: AmmPool;
+    pool: AmmPool | CampaignAmmPool;
     surroundingAmount: number;
     computeAmount?: number;
 }
@@ -307,7 +306,7 @@ export class MetromApiClient {
         return processedCampaigns[0];
     }
 
-    async fetchAmmPools(params: FetchPoolsParams): Promise<AmmPoolWithTvl[]> {
+    async fetchAmmPools(params: FetchPoolsParams): Promise<AmmPool[]> {
         const response = await fetch(
             new URL(
                 `v2/amm-pools/${params.chainType}/${params.chainId}/${params.dex}`,
@@ -328,22 +327,20 @@ export class MetromApiClient {
                 chainId: params.chainId,
                 chainType: params.chainType,
                 dex: {
-                    slug: ammPool.dex as SupportedDex,
-                    name: DEX_BRAND_NAME[ammPool.dex as SupportedDex],
+                    slug: ammPool.dex,
+                    name: DEX_BRAND_NAME[ammPool.dex],
                 },
-                amm: ammPool.amm as SupportedAmm,
+                amm: ammPool.amm,
                 tokens: ammPool.tokens.map((address) =>
                     resolveToken(parsedResponse.tokens, address),
                 ),
                 liquidityType: ammPool.liquidityType as AmmPoolLiquidityType,
-                liquidity: ammPool.liquidity
-                    ? BigInt(ammPool.liquidity)
-                    : undefined,
+                liquidity: BigInt(ammPool.liquidity),
             };
         });
     }
 
-    async fetchPool(params: FetchPoolParams): Promise<AmmPoolWithTvl | null> {
+    async fetchPool(params: FetchPoolParams): Promise<AmmPool | null> {
         const response = await fetch(
             new URL(
                 `v2/amm-pools/${params.chainType}/${params.chainId}/${params.id}`,
@@ -376,9 +373,7 @@ export class MetromApiClient {
             ),
             liquidityType: parsedResponse.ammPool
                 .liquidityType as AmmPoolLiquidityType,
-            liquidity: parsedResponse.ammPool.liquidity
-                ? BigInt(parsedResponse.ammPool.liquidity)
-                : undefined,
+            liquidity: BigInt(parsedResponse.ammPool.liquidity),
         };
     }
 
@@ -996,9 +991,6 @@ function processCampaignsResponse(
                             slug: backendCampaign.target.dex,
                             name: DEX_BRAND_NAME[backendCampaign.target.dex],
                         },
-                        liquidity: backendCampaign.target.liquidity
-                            ? BigInt(backendCampaign.target.liquidity)
-                            : undefined,
                     },
                 };
                 break;
@@ -1109,9 +1101,6 @@ function processCampaignsResponse(
                             slug: backendCampaign.target.dex,
                             name: DEX_BRAND_NAME[backendCampaign.target.dex],
                         },
-                        liquidity: backendCampaign.target.liquidity
-                            ? BigInt(backendCampaign.target.liquidity)
-                            : undefined,
                     },
                 };
                 break;
@@ -1295,7 +1284,7 @@ function stringToUsdPricedOnChainAmount(
 function computeSurroundingTicks(
     initializedTicksByIdx: Record<number, InitializedTick>,
     activeTickProcessed: ProcessedTick,
-    pool: AmmPool,
+    pool: AmmPool | CampaignAmmPool,
     numSurroundingTicks: number = 1000,
     direction: Direction,
 ): TickWithPrices[] {

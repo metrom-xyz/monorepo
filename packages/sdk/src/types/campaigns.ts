@@ -1,6 +1,6 @@
 import type { Address, Hex } from "viem";
 import type {
-    AmmPool,
+    
     Brand,
     ChainType,
     Erc20Token,
@@ -13,6 +13,7 @@ import type {
     SupportedBridge,
     SupportedLiquityV2,
 } from "src/commons";
+import type { CampaignAmmPool } from "./pools";
 
 export enum CampaignKind {
     AmmPoolLiquidity = 1,
@@ -79,12 +80,12 @@ export interface EmptyTarget extends BaseTarget {
 
 export interface AmmPoolLiquidityTarget extends BaseTarget {
     type: TargetType.AmmPoolLiquidity;
-    pool: AmmPool;
+    pool: CampaignAmmPool;
 }
 
 export interface JumperWhitelistedAmmPoolLiquidityTarget extends BaseTarget {
     type: TargetType.JumperWhitelistedAmmPoolLiquidity;
-    pool: AmmPool;
+    pool: CampaignAmmPool;
 }
 
 export interface LiquityV2Target<T> extends BaseTarget {

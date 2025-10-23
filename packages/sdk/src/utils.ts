@@ -1,8 +1,8 @@
-import type { AmmPool } from "./types/commons";
+import type { AmmPool, CampaignAmmPool } from "./types/pools";
 
 export function tickToScaledPrice(
     tick: number,
-    pool: AmmPool,
+    pool: AmmPool | CampaignAmmPool,
     token0To1: boolean,
 ) {
     const scalingFactor = token0To1
@@ -14,7 +14,7 @@ export function tickToScaledPrice(
 
 export function scaledPriceToTick(
     price: number,
-    pool: AmmPool,
+    pool: AmmPool | CampaignAmmPool,
     token0To1: boolean,
 ): number {
     const scalingFactor = token0To1
