@@ -19,8 +19,6 @@ interface CampaignProps {
     campaign: Campaign;
 }
 
-// TODO: reinstate the arrow on hover, but on click, bring the user
-// to the provide liquidity page for the targeted dex
 export function CampaignRow({ campaign }: CampaignProps) {
     const hoursDuration = dayjs
         .unix(campaign.to)
