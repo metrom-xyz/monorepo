@@ -1,7 +1,7 @@
 @reference "../../../app.css";
 
 .root {
-    @apply max-w-screen-xl w-full sm:items-end flex-col sm:flex-row flex gap-3 mb-7;
+    @apply max-w-screen-xl w-full sm:items-end flex-col sm:flex-row flex gap-3 p-5;
 }
 
 .searchFilter :global(.label) {

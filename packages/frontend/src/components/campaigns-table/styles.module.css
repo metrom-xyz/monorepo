@@ -1,7 +1,19 @@
 @reference "../../app.css";
 
 .root {
-    @apply max-w-screen-xl w-full flex flex-col gap-4;
+    @apply max-w-screen-xl
+        w-full
+        flex
+        flex-col
+        surface-primary
+        rounded-xl
+        transition-all
+        duration-200
+        ease-in-out;
+}
+
+.root.topLeftSquared {
+    @apply rounded-tl-none;
 }
 
 .loadingBar {
@@ -25,7 +37,7 @@
 }
 
 .header {
-    @apply grid grid-cols-subgrid col-span-full items-center px-7;
+    @apply grid grid-cols-subgrid col-span-full items-center px-5 pt-5;
 }
 
 .column {
@@ -68,15 +80,7 @@
 }
 
 .body {
-    @apply relative rounded-xl;
-}
-
-.body > :nth-child(2) > div {
-    @apply rounded-t-xl;
-}
-
-.body > :last-child > div {
-    @apply rounded-b-xl;
+    @apply relative;
 }
 
 .empty {
@@ -93,7 +97,7 @@
 }
 
 .paginationWrapper {
-    @apply w-full h-8 flex justify-end;
+    @apply w-full p-5 mt-5 flex justify-end;
 }
 
 .customOptionContainer {

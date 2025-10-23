@@ -1,7 +1,7 @@
 @reference "../../../app.css";
 
 .root {
-    @apply grid col-span-full grid-cols-subgrid;
+    @apply grid col-span-full grid-cols-subgrid border-t stroke-divider;
 }
 
 .card {
@@ -9,17 +9,17 @@
         grid
         grid-cols-subgrid
         items-center
-        surface-primary-hover
         cursor-pointer
-        transition-colors
-        duration-200
-        ease-in-out
         rounded-none
         bg-none
         min-h-[72px]
         max-h-[72px]
-        px-7
-        py-4;
+        px-5
+        py-4
+        surface-primary-hover
+        transition-colors
+        duration-200
+        ease-in-out;
 }
 
 .card > :nth-child(1),
