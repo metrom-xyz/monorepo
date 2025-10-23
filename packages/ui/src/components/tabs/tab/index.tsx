@@ -29,13 +29,19 @@ export function Tab<T>({
 
     return (
         <div
+            onClick={handleOnClick}
             className={classNames("root", styles.root, className, {
                 [styles.active]: value === active,
                 [styles[size]]: true,
             })}
-            onClick={handleOnClick}
         >
-            {Icon && <Icon className={classNames("icon", styles.icon)} />}
+            {Icon && (
+                <Icon
+                    className={classNames("icon", styles.icon, {
+                        [styles[size]]: true,
+                    })}
+                />
+            )}
             {children}
         </div>
     );

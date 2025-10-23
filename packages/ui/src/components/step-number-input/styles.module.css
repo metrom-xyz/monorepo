@@ -16,16 +16,7 @@ input[type="number"] {
 
 /* TODO: to be based on size */
 .stepButton {
-    @apply w-8
-        h-8
-        rounded-md
-        surface-primary
-        surface-primary-hover
-        dark:hover:bg-zinc-750;
-}
-
-.icon {
-    @apply text-primary dark:text-zinc-200;
+    @apply w-8 h-8;
 }
 
 .stepDownButton {
@@ -37,11 +28,11 @@ input[type="number"] {
 }
 
 .wrapper input {
-    @apply pl-12;
+    @apply pl-12!;
 }
 
 .wrapper input {
-    @apply pr-12;
+    @apply pr-12!;
 }
 
 .hiddenInput {
