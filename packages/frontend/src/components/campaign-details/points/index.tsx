@@ -11,7 +11,7 @@ import type {
 import styles from "./styles.module.css";
 
 interface PointsProps {
-    campaign: DistributablesCampaign<DistributablesType.Points>;
+    campaign: DistributablesCampaign<DistributablesType.FixedPoints>;
     loading: boolean;
 }
 

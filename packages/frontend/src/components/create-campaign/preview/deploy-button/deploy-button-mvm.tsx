@@ -78,7 +78,7 @@ export function DeployButtonMvm({
                 });
             }
 
-            if (payload.isDistributing(DistributablesType.Points)) {
+            if (payload.isDistributing(DistributablesType.FixedPoints)) {
                 setTxPayload({
                     function: `${chainData.metromContract.address}::metrom::create_points_campaign`,
                     functionArguments: [

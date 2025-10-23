@@ -8,12 +8,12 @@ export interface BackendAmmPoolWithTvlAndId extends BackendAmmPoolWithTvl {
 }
 
 export interface BackendPoolsResponse {
-    resolvedTokens: Record<Address, BackendErc20Token>;
+    tokens: Record<Address, BackendErc20Token>;
     ammPools: BackendAmmPoolWithTvlAndId[];
 }
 
 export interface BackendPoolResponse {
-    resolvedTokens: Record<Address, BackendErc20Token>;
+    tokens: Record<Address, BackendErc20Token>;
     ammPool: BackendAmmPoolWithTvlAndId;
 }
 

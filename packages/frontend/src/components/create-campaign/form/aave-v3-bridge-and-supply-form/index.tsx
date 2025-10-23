@@ -121,7 +121,7 @@ export function AaveV3BridgeAndSupplyForm({
 
         const { type } = payload.distributables;
 
-        if (type === DistributablesType.Points)
+        if (type === DistributablesType.FixedPoints)
             return (
                 !payload.distributables.fee || !payload.distributables.points
             );

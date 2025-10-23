@@ -26,12 +26,8 @@ export function CampaignRow({ campaign }: CampaignProps) {
         .diff(dayjs.unix(campaign.from), "hours", false);
     const daysDuration = hoursDuration / 24;
 
-    const distributesTokens = campaign.isDistributing(
-        DistributablesType.Tokens,
-    );
-    const distributesPoints = campaign.isDistributing(
-        DistributablesType.Points,
-    );
+    const rewards = campaign.isDistributing(DistributablesType.Tokens);
+    const fixedPoints = campaign.isDistributing(DistributablesType.FixedPoints);
 
     return (
         <Link
@@ -54,14 +50,14 @@ export function CampaignRow({ campaign }: CampaignProps) {
                     apr={campaign.apr}
                     kpi={!!campaign.specification?.kpi}
                 />
-                {distributesPoints && (
+                {fixedPoints && (
                     <Points
                         status={campaign.status}
                         amount={campaign.distributables.amount}
                         daysDuration={daysDuration}
                     />
                 )}
-                {distributesTokens && (
+                {rewards && (
                     <Rewards
                         status={campaign.status}
                         daysDuration={daysDuration}

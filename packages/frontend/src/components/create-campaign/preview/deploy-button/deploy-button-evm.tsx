@@ -46,7 +46,7 @@ export function DeployButtonEvm({
             case DistributablesType.Tokens: {
                 return payload.distributables.tokens;
             }
-            case DistributablesType.Points: {
+            case DistributablesType.FixedPoints: {
                 const { amount, token } = payload.distributables.fee;
                 const adjustedFeeAmountRaw = (amount.raw * 115n) / 100n;
                 const adjustedFeeAmountFormatted = Number(
@@ -63,6 +63,10 @@ export function DeployButtonEvm({
                         },
                     },
                 ];
+            }
+            // TODO: implement dynamic points
+            case DistributablesType.DynamicPoints: {
+                throw new Error("Not implemented");
             }
         }
     }, [payload.distributables]);
@@ -91,7 +95,7 @@ export function DeployButtonEvm({
                 })),
             });
 
-        if (payload.isDistributing(DistributablesType.Points))
+        if (payload.isDistributing(DistributablesType.FixedPoints))
             pointArgs.push({
                 from: startDate.unix(),
                 to: endDate.unix(),

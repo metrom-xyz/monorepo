@@ -109,11 +109,11 @@ export function RewardsStep({
                                     </Typography>
                                 </Tab>
                                 <Tab
-                                    value={DistributablesType.Points}
+                                    value={DistributablesType.FixedPoints}
                                     className={classNames(styles.tab, {
                                         [styles.activeTab]:
                                             distributables?.type ===
-                                            DistributablesType.Points,
+                                            DistributablesType.FixedPoints,
                                     })}
                                 >
                                     <Typography weight="medium" size="sm">
@@ -128,7 +128,8 @@ export function RewardsStep({
                 className={{ root: !disabled ? styles.stepPreview : "" }}
             >
                 <div className={styles.previewWrapper}>
-                    {distributables?.type === DistributablesType.Points && (
+                    {distributables?.type ===
+                        DistributablesType.FixedPoints && (
                         <RewardPoints
                             campaignDuration={campaignDuration}
                             distributables={distributables}

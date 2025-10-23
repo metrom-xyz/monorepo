@@ -26,7 +26,7 @@ import {
     type LiquityV2DebtTarget,
     type LiquityV2StabilityPoolTarget,
     type EmptyTarget,
-    type PointDistributables,
+    type FixedPointDistributables,
     type Restrictions,
     RestrictionType,
     TargetType,
@@ -39,6 +39,7 @@ import {
     type JumperWhitelistedAmmPoolLiquidityTarget,
     type HoldFungibleAssetTarget,
     DistributablesType,
+    type DynamicPointDistributables,
 } from "../types/campaigns";
 import {
     ChainType,
@@ -332,7 +333,7 @@ export class MetromApiClient {
                 },
                 amm: ammPool.amm as SupportedAmm,
                 tokens: ammPool.tokens.map((address) =>
-                    resolveToken(parsedResponse.resolvedTokens, address),
+                    resolveToken(parsedResponse.tokens, address),
                 ),
                 liquidityType: ammPool.liquidityType as AmmPoolLiquidityType,
                 liquidity: ammPool.liquidity
@@ -371,7 +372,7 @@ export class MetromApiClient {
             },
             amm: parsedResponse.ammPool.amm as SupportedAmm,
             tokens: parsedResponse.ammPool.tokens.map((address) =>
-                resolveToken(parsedResponse.resolvedTokens, address),
+                resolveToken(parsedResponse.tokens, address),
             ),
             liquidityType: parsedResponse.ammPool
                 .liquidityType as AmmPoolLiquidityType,
@@ -524,7 +525,7 @@ export class MetromApiClient {
             switch (activity.payload.type) {
                 case "claim-reward": {
                     const resolvedToken = resolveToken(
-                        parsedResponse.resolvedTokens,
+                        parsedResponse.tokens,
                         activity.payload.token,
                     );
 
@@ -1131,31 +1132,41 @@ function processCampaignsResponse(
                 remainingUsdValue: 0,
             };
 
-            for (const backendReward of backendCampaign.rewards) {
+            for (const backendAsset of backendCampaign.rewards.assets) {
                 const amount = stringToUsdPricedOnChainAmount(
-                    backendReward.amount,
-                    backendReward.decimals,
-                    backendReward.usdPrice,
+                    backendAsset.amount,
+                    backendAsset.decimals,
+                    backendAsset.usdPrice,
                 );
                 const remaining = stringToUsdPricedOnChainAmount(
-                    backendReward.remaining,
-                    backendReward.decimals,
-                    backendReward.usdPrice,
+                    backendAsset.remaining,
+                    backendAsset.decimals,
+                    backendAsset.usdPrice,
                 );
 
                 distributables.amountUsdValue += amount.usdValue;
                 distributables.remainingUsdValue += remaining.usdValue;
 
                 distributables.list.push(<TokenDistributable>{
+                    dailyUsd: backendCampaign.rewards.dailyUsd,
                     amount,
                     remaining,
-                    token: backendReward,
+                    token: backendAsset,
                 });
             }
-        } else if ("points" in backendCampaign) {
-            distributables = <PointDistributables>{
-                type: DistributablesType.Points,
-                amount: stringToOnChainAmount(backendCampaign.points, 18),
+        } else if ("fixedPoints" in backendCampaign) {
+            distributables = <FixedPointDistributables>{
+                type: DistributablesType.FixedPoints,
+                ...backendCampaign.fixedPoints,
+                amount: stringToOnChainAmount(
+                    backendCampaign.fixedPoints.amount,
+                    18,
+                ),
+            };
+        } else if ("dynamicPoints" in backendCampaign) {
+            distributables = <DynamicPointDistributables>{
+                type: DistributablesType.DynamicPoints,
+                ...backendCampaign.dynamicPoints,
             };
         }
 
