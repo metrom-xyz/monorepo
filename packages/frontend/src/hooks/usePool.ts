@@ -1,6 +1,6 @@
 import type { SupportedChain } from "@metrom-xyz/contracts";
 import { METROM_API_CLIENT } from "../commons";
-import { ChainType, type AmmPoolWithTvl } from "@metrom-xyz/sdk";
+import { ChainType, type AmmPool } from "@metrom-xyz/sdk";
 import { useQuery } from "@tanstack/react-query";
 import type { Address, Hex } from "viem";
 import type { HookBaseParams } from "../types/hooks";
@@ -25,7 +25,7 @@ export function usePool({
     enabled = true,
 }: UsePoolParams): {
     loading: boolean;
-    pool?: AmmPoolWithTvl | null;
+    pool?: AmmPool | undefined;
 } {
     const { data: pool, isFetching: loading } = useQuery({
         queryKey: ["pool", chainId, chainType, id],

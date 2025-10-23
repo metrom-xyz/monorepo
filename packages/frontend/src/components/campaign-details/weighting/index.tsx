@@ -1,6 +1,6 @@
 import { useTranslations } from "next-intl";
 import { TextField, Typography } from "@metrom-xyz/ui";
-import type { AmmPool, Specification, Weighting } from "@metrom-xyz/sdk";
+import type { CampaignAmmPool, Specification, Weighting } from "@metrom-xyz/sdk";
 import { formatPercentage } from "@/src/utils/format";
 import { WEIGHT_UNIT } from "@/src/commons";
 
@@ -8,7 +8,7 @@ import styles from "./styles.module.css";
 
 interface WeightingProps {
     specification?: Specification;
-    pool?: AmmPool;
+    pool?: CampaignAmmPool;
 }
 
 export function Weighting({ specification, pool }: WeightingProps) {

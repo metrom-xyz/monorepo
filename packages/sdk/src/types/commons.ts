@@ -1,5 +1,4 @@
-import type { SupportedAmm, SupportedDex } from "src/commons";
-import type { Address, Hex } from "viem";
+import type { Address } from "viem";
 
 export enum ChainType {
     Evm = "evm",
@@ -54,21 +53,4 @@ export interface WhitelistedErc20Token extends UsdPricedErc20Token {
 export enum AmmPoolLiquidityType {
     Concentrated = "concentrated",
     FullRange = "full-range",
-}
-
-export interface AmmPool {
-    chainId: number;
-    chainType: ChainType;
-    id: Hex;
-    dex: Brand<SupportedDex>;
-    amm: SupportedAmm;
-    tokens: Erc20Token[];
-    liquidityType: AmmPoolLiquidityType;
-    liquidity?: bigint;
-    usdTvl?: number;
-    fee?: number;
-}
-
-export interface AmmPoolWithTvl extends AmmPool {
-    usdTvl: number;
 }

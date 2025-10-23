@@ -1,7 +1,7 @@
 import styles from "./styles.module.css";
 import { useTranslations } from "next-intl";
 import { Typography, type TypographySize } from "@metrom-xyz/ui";
-import type { AmmPool } from "@metrom-xyz/sdk";
+import type { AmmPool, CampaignAmmPool } from "@metrom-xyz/sdk";
 import { formatAmount } from "@/src/utils/format";
 import type { ScaledLiquidityTick } from "..";
 
@@ -12,7 +12,7 @@ interface Payload {
 interface TooltipProps {
     size?: TypographySize;
     active?: boolean;
-    pool?: AmmPool;
+    pool?: AmmPool | CampaignAmmPool;
     payload?: Payload[];
 }
 

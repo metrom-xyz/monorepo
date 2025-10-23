@@ -67,14 +67,14 @@ export function Apr({ campaign, apr, kpi }: AprProps) {
                     open={popover}
                     ref={popoverRef}
                 >
-                    {loading ? (
-                        <SkeletonPopover />
-                    ) : tokensCampaign && kpi ? (
-                        <div className={styles.popoverContent}>
-                            <Typography size="sm" weight="medium" uppercase>
-                                {t("title")}
-                            </Typography>
-                            <KpiAprSummary campaign={campaign} />
+                    <div className={styles.popoverContent}>
+                        <Typography size="sm" weight="medium" uppercase>
+                            {t("title")}
+                        </Typography>
+                        <KpiAprSummary campaign={campaign} />
+                        {loading ? (
+                            <SkeletonPopover />
+                        ) : tokensCampaign && kpi ? (
                             <div className={styles.chartWrapper}>
                                 <KpiSimulationChart
                                     loading={loading}
@@ -94,8 +94,8 @@ export function Apr({ campaign, apr, kpi }: AprProps) {
                                     tooltipSize="xs"
                                 />
                             </div>
-                        </div>
-                    ) : null}
+                        ) : null}
+                    </div>
                 </Popover>
             </div>
             <div className={styles.aprWrapper}>
@@ -111,17 +111,13 @@ export function SkeletonApr() {
 
 export function SkeletonPopover() {
     return (
-        <div className={styles.popoverContent}>
-            <Skeleton size="sm" width={120} />
-            <Skeleton width={400} className={styles.skeletonDescription} />
-            <div className={styles.chartWrapper}>
-                <KpiSimulationChart
-                    targetValueName=""
-                    loading={true}
-                    campaignDurationSeconds={0}
-                    totalRewardsUsd={0}
-                />
-            </div>
+        <div className={styles.chartWrapper}>
+            <KpiSimulationChart
+                targetValueName=""
+                loading={true}
+                campaignDurationSeconds={0}
+                totalRewardsUsd={0}
+            />
         </div>
     );
 }

@@ -17,6 +17,7 @@ import {
 import {
     tickToScaledPrice,
     type AmmPool,
+    type CampaignAmmPool,
     type LiquidityDensity,
 } from "@metrom-xyz/sdk";
 import { useCallback, useMemo, useState } from "react";
@@ -39,7 +40,7 @@ interface RangeBound {
 interface LiquidityDensityProps {
     error?: boolean;
     loading?: boolean;
-    pool?: AmmPool;
+    pool?: AmmPool | CampaignAmmPool;
     density?: LiquidityDensity;
     from?: RangeBound;
     to?: RangeBound;
