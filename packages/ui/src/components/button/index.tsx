@@ -9,7 +9,8 @@ import {
     type ReactNode,
     type SVGProps,
 } from "react";
-import { SpinnerIcon } from "../../assets/spinner";
+import { SpinnerDarkIcon } from "../../assets/spinner-dark";
+import { SpinnerLightIcon } from "../../assets/spinner-light";
 
 import styles from "./styles.module.css";
 
@@ -74,16 +75,30 @@ const Component = (props: ButtonProps, ref: RefType<typeof props>) => {
     let resolvedIcon;
     if (loading)
         resolvedIcon = (
-            <SpinnerIcon
-                className={classNames(
-                    className?.icon,
-                    styles.spinner,
-                    styles.icon,
-                    {
-                        [styles[size]]: true,
-                    },
-                )}
-            />
+            <>
+                <SpinnerDarkIcon
+                    className={classNames(
+                        className?.icon,
+                        styles.spinner,
+                        styles.icon,
+                        styles.dark,
+                        {
+                            [styles[size]]: true,
+                        },
+                    )}
+                />
+                <SpinnerLightIcon
+                    className={classNames(
+                        className?.icon,
+                        styles.spinner,
+                        styles.icon,
+                        styles.light,
+                        {
+                            [styles[size]]: true,
+                        },
+                    )}
+                />
+            </>
         );
     else if (hasIcon)
         resolvedIcon = (
