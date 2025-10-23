@@ -7,5 +7,5 @@ export * from "./info";
 export * from "./minus";
 export * from "./plus";
 export * from "./settings";
-export * from "./spinner";
+export * from "./spinner-dark";
 export * from "./x";

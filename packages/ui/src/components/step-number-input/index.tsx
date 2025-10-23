@@ -101,7 +101,6 @@ export const StepNumberInput: React.ForwardRefExoticComponent<StepNumberInputPro
                 <div className={styles.wrapper}>
                     <Button
                         variant="secondary"
-                        border={false}
                         size="xs"
                         icon={Minus}
                         disabled={disabled || loading}
@@ -111,7 +110,7 @@ export const StepNumberInput: React.ForwardRefExoticComponent<StepNumberInputPro
                                 styles.stepButton,
                                 styles.stepDownButton,
                             ),
-                            icon: styles.icon,
+                            // icon: styles.icon,
                         }}
                     />
                     <NumberFormatBase
@@ -122,7 +121,9 @@ export const StepNumberInput: React.ForwardRefExoticComponent<StepNumberInputPro
                         onValueChange={handleOnValueChange}
                         onKeyDown={handleOnKeyDown}
                         onBlur={onBlur}
-                        className={classNames("input", commonStyles.input)}
+                        className={classNames("input", commonStyles.input, {
+                            [commonStyles[size]]: true,
+                        })}
                     />
                     <input
                         ref={internalRef}

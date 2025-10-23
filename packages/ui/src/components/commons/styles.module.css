@@ -58,7 +58,7 @@
         focus:border-gray-300
         dark:focus:border-neutral-600
         placeholder:text-tertiary
-        /* FIXME: this doesn't work on Firefor, find a way to fix this and enable it back */
+        /* FIXME: this doesn't work on Firefox, find a way to fix this and enable it back */
         /* focus:placeholder:text-light-text-primary
         dark:focus:placeholder:text-dark-text-primary */
         placeholder:select-none
@@ -137,5 +137,5 @@
 }
 
 .label.hide {
-    @apply invisible;
+    @apply hidden;
 }
