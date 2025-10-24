@@ -56,49 +56,48 @@ export function Apr({ campaign, apr, kpi }: AprProps) {
 
     return (
         <div
+            ref={setAnchor}
             onMouseEnter={handlePopoverOpen}
             onMouseLeave={handlePopoverClose}
             className={styles.root}
         >
-            <div ref={setAnchor}>
-                <Popover
-                    ref={popoverRef}
-                    anchor={anchor}
-                    open={popover}
-                    onOpenChange={setPopover}
-                    placement="left-start"
-                >
-                    <div className={styles.popoverContent}>
-                        <Typography size="sm" weight="medium" uppercase>
-                            {t("title")}
-                        </Typography>
-                        <KpiAprSummary campaign={campaign} />
-                        {loading ? (
-                            <SkeletonPopover />
-                        ) : tokensCampaign && kpi ? (
-                            <div className={styles.chartWrapper}>
-                                <KpiSimulationChart
-                                    loading={loading}
-                                    targetValueName={campaign.targetValueName}
-                                    targetUsdValue={campaign.getTargetUsdValue()}
-                                    campaignDurationSeconds={
-                                        campaign.to - campaign.from
-                                    }
-                                    totalRewardsUsd={
-                                        campaign.distributables.amountUsdValue
-                                    }
-                                    lowerUsdTarget={lowerBound}
-                                    upperUsdTarget={upperBound}
-                                    minimumPayoutPercentage={minimumPayout}
-                                    // TODO: add liquidity in range to simulation?
-                                    // range={liquidityInRange}
-                                    tooltipSize="xs"
-                                />
-                            </div>
-                        ) : null}
-                    </div>
-                </Popover>
-            </div>
+            <Popover
+                ref={popoverRef}
+                anchor={anchor}
+                open={popover}
+                onOpenChange={setPopover}
+                placement="bottom"
+            >
+                <div className={styles.popoverContent}>
+                    <Typography size="sm" weight="semibold" uppercase>
+                        {t("title")}
+                    </Typography>
+                    <KpiAprSummary campaign={campaign} />
+                    {loading ? (
+                        <SkeletonPopover />
+                    ) : tokensCampaign && kpi ? (
+                        <div className={styles.chartWrapper}>
+                            <KpiSimulationChart
+                                loading={loading}
+                                targetValueName={campaign.targetValueName}
+                                targetUsdValue={campaign.getTargetUsdValue()}
+                                campaignDurationSeconds={
+                                    campaign.to - campaign.from
+                                }
+                                totalRewardsUsd={
+                                    campaign.distributables.amountUsdValue
+                                }
+                                lowerUsdTarget={lowerBound}
+                                upperUsdTarget={upperBound}
+                                minimumPayoutPercentage={minimumPayout}
+                                // TODO: add liquidity in range to simulation?
+                                // range={liquidityInRange}
+                                tooltipSize="xs"
+                            />
+                        </div>
+                    ) : null}
+                </div>
+            </Popover>
             <div className={styles.aprWrapper}>
                 <AprChip apr={apr} kpi={kpi} placeholder />
             </div>
@@ -107,7 +106,7 @@ export function Apr({ campaign, apr, kpi }: AprProps) {
 }
 
 export function SkeletonApr() {
-    return <Skeleton width={80} size="xl" />;
+    return <Skeleton width={90} size="xl" />;
 }
 
 export function SkeletonPopover() {

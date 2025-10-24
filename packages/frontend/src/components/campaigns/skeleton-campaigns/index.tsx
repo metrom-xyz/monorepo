@@ -1,28 +1,29 @@
 import classNames from "classnames";
+import { BackendCampaignType } from "@metrom-xyz/sdk";
 
 import styles from "./styles.module.css";
 
-export function SkeletonCampaigns() {
+interface SkeletonCampaignsProps {
+    type: BackendCampaignType;
+}
+
+export function SkeletonCampaigns({ type }: SkeletonCampaignsProps) {
     return (
         <div className={styles.root}>
-            <div className={styles.filters}>
-                <div className={styles.filterInput}></div>
-                {Array.from({ length: 3 }).map((_, index) => (
-                    <div key={index} className={styles.inputWithLabel}>
-                        <div className={styles.label} />
-                        <div
-                            className={classNames(styles.filterInput, {
-                                [styles.last]: index === 2,
-                            })}
-                        />
-                    </div>
-                ))}
-            </div>
             <div className={styles.scrollContainer}>
                 <div className={styles.tableWrapper}>
-                    <div className={styles.table}>
+                    <div
+                        className={classNames(styles.table, {
+                            [styles[type]]: true,
+                        })}
+                    >
                         <div className={styles.header}>
-                            {Array.from({ length: 6 }).map((_, index) => (
+                            {Array.from({
+                                length:
+                                    type === BackendCampaignType.Rewards
+                                        ? 7
+                                        : 6,
+                            }).map((_, index) => (
                                 <div
                                     key={index}
                                     className={styles.headerSkeleton}

@@ -9,11 +9,11 @@
 }
 
 .rewardsWrapper {
-    @apply w-full flex items-center gap-1 pointer-events-none sm:pointer-events-auto;
+    @apply w-full flex items-center gap-2 pointer-events-none sm:pointer-events-auto;
 }
 
 .tokenIcons {
-    @apply min-h-full flex flex-1 items-center justify-end gap-[1px];
+    @apply min-h-full flex items-center gap-[1px];
 }
 
 .tokenIcon {
@@ -21,11 +21,11 @@
 }
 
 .tokenIcon:not(:first-child) {
-    @apply -ml-4;
+    @apply -ml-3;
 }
 
 .breakdownContainer {
-    @apply flex flex-col gap-3 p-3;
+    @apply flex flex-col gap-3;
 }
 
 .breakdownRow {
@@ -37,5 +37,5 @@
 }
 
 .textRewards {
-    @apply text-base min-w-[50px] text-right;
+    @apply text-base min-w-[50px];
 }

@@ -13,26 +13,18 @@ import styles from "./styles.module.css";
 
 interface RewardsProps {
     status: Status;
-    daysDuration: number;
+    dailyUsd: number;
     rewards: TokenDistributables;
     chainId: SupportedChain;
 }
 
-export function Rewards({
-    status,
-    daysDuration,
-    rewards,
-    chainId,
-}: RewardsProps) {
+export function Rewards({ status, dailyUsd, rewards, chainId }: RewardsProps) {
     const t = useTranslations("allCampaigns.rewards");
 
     const [popoverOpen, setPopoverOpen] = useState(false);
     const [rewardsBreakdown, setRewardsBreakdown] =
         useState<HTMLDivElement | null>(null);
     const breakdownPopoverRef = useRef<HTMLDivElement>(null);
-
-    const perDayUsdValue =
-        daysDuration >= 1 ? rewards.amountUsdValue / daysDuration : 0;
 
     function handleRewardsBreakdownPopoverOpen() {
         setPopoverOpen(true);
@@ -49,7 +41,7 @@ export function Rewards({
                 open={popoverOpen}
                 anchor={rewardsBreakdown}
                 onOpenChange={setPopoverOpen}
-                placement="top"
+                placement="bottom"
             >
                 <div className={styles.breakdownContainer}>
                     <Typography
@@ -102,13 +94,13 @@ export function Rewards({
                     </Typography>
                 </div>
             </Popover>
-            <div className={styles.rewardsWrapper}>
-                <div
-                    ref={setRewardsBreakdown}
-                    onMouseEnter={handleRewardsBreakdownPopoverOpen}
-                    onMouseLeave={handleRewardsBreakdownPopoverClose}
-                    className={styles.tokenIcons}
-                >
+            <div
+                ref={setRewardsBreakdown}
+                onMouseEnter={handleRewardsBreakdownPopoverOpen}
+                onMouseLeave={handleRewardsBreakdownPopoverClose}
+                className={styles.rewardsWrapper}
+            >
+                <div className={styles.tokenIcons}>
                     {rewards.list.map((reward, i) => {
                         return (
                             <div
@@ -117,6 +109,7 @@ export function Rewards({
                                 style={{ zIndex: i }}
                             >
                                 <RemoteLogo
+                                    size="sm"
                                     chain={chainId}
                                     address={reward.token.address}
                                     defaultText={reward.token.symbol}
@@ -126,9 +119,9 @@ export function Rewards({
                     })}
                 </div>
                 <Typography weight="medium" className={styles.textRewards}>
-                    {status === Status.Ended
+                    {status === Status.Expired
                         ? "-"
-                        : formatUsdAmount({ amount: perDayUsdValue })}
+                        : formatUsdAmount({ amount: dailyUsd })}
                 </Typography>
             </div>
         </div>
@@ -139,10 +132,10 @@ export function SkeletonRewards() {
     return (
         <div className={classNames(styles.rewardsWrapper, styles.loading)}>
             <div className={styles.tokenIcons}>
-                {new Array(5).fill(null).map((_, i) => {
+                {new Array(3).fill(null).map((_, i) => {
                     return (
                         <div key={i} className={styles.tokenIcon}>
-                            <RemoteLogo loading />
+                            <RemoteLogo size="sm" loading />
                         </div>
                     );
                 })}
