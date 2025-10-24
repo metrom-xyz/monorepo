@@ -3,7 +3,6 @@ import { useState } from "storybook/preview-api";
 import { type SelectOption } from "../components/select/index";
 import { Typography } from "../components/typography";
 import { MultiSelect } from "../components/multi-select";
-import { Card } from "../components/card";
 
 const meta: Meta = {
     title: "Input/Multi select",
@@ -39,15 +38,13 @@ export const Base: Story = {
         }
 
         return (
-            <Card>
-                <MultiSelect
-                    {...args}
-                    options={args.options as SelectOption<number>[]}
-                    values={values}
-                    onChange={handleSelectOnChange}
-                    className="w-60"
-                />
-            </Card>
+            <MultiSelect
+                {...args}
+                options={args.options as SelectOption<number>[]}
+                values={values}
+                onChange={handleSelectOnChange}
+                className="w-60"
+            />
         );
     },
 };

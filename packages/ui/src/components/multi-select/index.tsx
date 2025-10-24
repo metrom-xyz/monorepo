@@ -132,17 +132,20 @@ function Component<V extends ValueType, O extends SelectOption<V>>(
 
     const handleSelect = useCallback(
         (item: O) => {
-            const existing = values.includes(item);
+            const existing = values.find(({ value }) => value === item.value);
 
             let newValues = [];
             if (existing)
                 newValues = options.filter(
                     (option) =>
-                        values.includes(option) && option.value !== item.value,
+                        values.find(({ value }) => value === option.value) &&
+                        option.value !== item.value,
                 );
             else
                 newValues = options
-                    .filter((option) => values.includes(option))
+                    .filter((option) =>
+                        values.find(({ value }) => value === option.value),
+                    )
                     .concat(item);
 
             if (inputRef.current && search) inputRef.current.focus();
@@ -307,7 +310,7 @@ function OptionRow<V extends ValueType, O extends SelectOption<V>>({
         onSelect(item);
     }, [item, onSelect]);
 
-    const selected = values.includes(item);
+    const selected = !!values.find(({ value }) => value === item.value);
 
     return (
         <div
