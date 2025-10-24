@@ -54,7 +54,12 @@ export function Action({
                 <div className={styles.text}>
                     <Typography weight="medium">{name}</Typography>
                     {description && (
-                        <Typography weight="medium" variant="tertiary"uppercase size="xs">
+                        <Typography
+                            weight="medium"
+                            variant="tertiary"
+                            uppercase
+                            size="xs"
+                        >
                             {description}
                         </Typography>
                     )}
@@ -63,7 +68,6 @@ export function Action({
             <div className={styles.details}>
                 {!!minimumDuration && (
                     <InfoTooltip
-                        placement="top"
                         icon={<TimeProgressIcon height={20} width={20} />}
                         className={styles.infoTooltip}
                     >

@@ -1,7 +1,6 @@
 import classNames from "classnames";
 import {
     Button,
-    Select,
     Typography,
     type SelectOption,
     MultiSelect,
@@ -16,47 +15,26 @@ import {
     useState,
     type ReactNode,
 } from "react";
-import { FilterableStatus } from "@/src/types/common";
 import type { CampaignSortOptions } from "@/src/utils/filtering";
 import { ProtocolLogo } from "../../protocol-logo";
 import { useSupportedProtocols } from "@/src/hooks/useSupportedProtocols";
 import { useChainsWithTypes } from "@/src/hooks/useChainsWithTypes";
 import { getCrossVmChainData } from "@/src/utils/chain";
-import { ChainType } from "@metrom-xyz/sdk";
+import { ChainType, Status } from "@metrom-xyz/sdk";
 import { APTOS } from "@/src/commons/env";
+import { CampaignStatusDot } from "../../campaign-status-dot";
 
 import styles from "./styles.module.css";
-
-export const CHAIN_ALL = "0";
 
 const statusSelectRenderOption = (option: {
     label: string;
     color?: string;
-    value: FilterableStatus;
+    value: Status;
 }) => {
     return (
         <div className={styles.customOptionContainer}>
-            {/* {option.value !== FilterableStatus.All && (
-                <span className={classNames(styles.dot, option.color)} />
-            )} */}
+            <CampaignStatusDot status={option.value} />
             <Typography weight="medium">{option.label}</Typography>
-        </div>
-    );
-};
-
-const chainSelectRenderOption = (option: { label: string; value: string }) => {
-    const [chainType, chainId] = option.value.split("-");
-
-    const ChainIcon =
-        option.value !== CHAIN_ALL
-            ? getCrossVmChainData(Number(chainId), chainType as ChainType)?.icon
-            : null;
-    return (
-        <div className={styles.customOptionContainer}>
-            {ChainIcon && <ChainIcon className={styles.icon} />}
-            <Typography className={styles.selectOptionText} weight="medium">
-                {option.label}
-            </Typography>
         </div>
     );
 };
@@ -76,11 +54,29 @@ const protocolSelectRenderOption = (option: {
     );
 };
 
+const chainSelectRenderOption = (option: { label: string; value: string }) => {
+    const [chainType, chainId] = option.value.split("_");
+
+    const ChainIcon = getCrossVmChainData(
+        Number(chainId),
+        chainType as ChainType,
+    )?.icon;
+
+    return (
+        <div className={styles.customOptionContainer}>
+            {ChainIcon && <ChainIcon className={styles.icon} />}
+            <Typography className={styles.selectOptionText} weight="medium">
+                {option.label}
+            </Typography>
+        </div>
+    );
+};
+
 export interface Filters {
-    protocol: string;
-    statuses: SelectOption<FilterableStatus>[];
-    chainId: string;
-    chainType?: ChainType;
+    protocols: SelectOption<string>[];
+    statuses: SelectOption<Status>[];
+    chainIds: string[];
+    chainTypes?: ChainType[];
 }
 
 interface FilterProps {
@@ -88,6 +84,12 @@ interface FilterProps {
     order?: number;
     onClearFilters: () => void;
     onFiltersChange: (filters: Partial<Filters>) => void;
+}
+
+interface ChainOption {
+    label: string;
+    value: string;
+    query: string;
 }
 
 export function Filters({
@@ -98,103 +100,73 @@ export function Filters({
 }: FilterProps) {
     const t = useTranslations("allCampaigns");
 
-    const chains = useChainsWithTypes({
+    const supportedChains = useChainsWithTypes({
         chainType: APTOS ? ChainType.Aptos : undefined,
     });
-    const protocols = useSupportedProtocols({ crossVm: !APTOS });
+    const supportedProtocols = useSupportedProtocols({ crossVm: !APTOS });
     const router = useRouter();
     const pathname = usePathname();
     const searchParams = useSearchParams();
     const chainInitialized = useRef(false);
 
-    const [chain, setChain] = useState(CHAIN_ALL);
-    const [protocol, setProtocol] = useState("");
-    const [statuses, setStatuses] = useState<SelectOption<FilterableStatus>[]>(
-        [],
-    );
+    const [chains, setChains] = useState<ChainOption[]>([]);
+    const [protocols, setProtocols] = useState<SelectOption<string>[]>([]);
+    const [statuses, setStatuses] = useState<SelectOption<Status>[]>([]);
 
     const filtersActive = useMemo(
         () =>
-            !!protocol ||
+            protocols.length > 0 ||
             statuses.length > 0 ||
+            chains.length > 0 ||
             !!sortField ||
-            !!order ||
-            chain !== CHAIN_ALL,
-        [protocol, statuses, sortField, order, chain],
+            !!order,
+        [protocols, statuses, sortField, order, chains],
     );
 
-    const statusOptions: SelectOption<FilterableStatus>[] = useMemo(() => {
-        return [
-            {
-                label: t("filters.status.live"),
-                value: FilterableStatus.Active,
-                color: "bg-green-500",
-            },
-            {
-                label: t("filters.status.upcoming"),
-                value: FilterableStatus.Upcoming,
-                color: "bg-blue-500",
-            },
-            {
-                label: t("filters.status.ended"),
-                value: FilterableStatus.Expired,
-                color: "bg-zinc-500",
-            },
-        ];
-    }, [t]);
+    const statusOptions: SelectOption<Status>[] = [
+        {
+            label: t("filters.status.live"),
+            value: Status.Active,
+        },
+        {
+            label: t("filters.status.upcoming"),
+            value: Status.Upcoming,
+        },
+        {
+            label: t("filters.status.ended"),
+            value: Status.Expired,
+        },
+    ];
 
-    const protocolOptions = useMemo(() => {
-        const options: {
-            label: string;
-            icon?: ReactNode;
-            value: string;
-        }[] = [
-            {
-                label: t("filters.protocol.all"),
-                value: "",
-            },
-        ];
+    const protocolOptions: SelectOption<string>[] = useMemo(() => {
+        return supportedProtocols.map((protocol) => ({
+            label: protocol.name,
+            icon: (
+                <ProtocolLogo
+                    size="sm"
+                    protocol={protocol}
+                    className={styles.icon}
+                />
+            ),
+            value: protocol.slug,
+        }));
+    }, [supportedProtocols]);
 
-        for (const protocol of protocols) {
-            options.push({
-                label: protocol.name,
-                icon: (
-                    <ProtocolLogo
-                        protocol={protocol}
-                        size="sm"
-                        className={styles.icon}
-                    />
-                ),
-                value: protocol.slug,
-            });
-        }
-        return options;
-    }, [protocols, t]);
+    const chainOptions: ChainOption[] = useMemo(() => {
+        const options: ChainOption[] = [];
 
-    const chainOptions = useMemo(() => {
-        const options: {
-            label: string;
-            value: string;
-            query: string | null;
-        }[] = [
-            {
-                label: t("filters.chain.all"),
-                value: CHAIN_ALL,
-                query: null,
-            },
-        ];
-        for (const chain of chains) {
+        for (const chain of supportedChains) {
             const chainData = getCrossVmChainData(chain.id, chain.type);
             if (!chainData) continue;
 
             options.push({
                 label: chainData.name,
-                value: `${chain.type}-${chain.id}`,
-                query: chainData.name.toLowerCase().replaceAll(" ", "-"),
+                value: `${chain.type}_${chain.id}`,
+                query: chainData.name.toLowerCase().replaceAll(" ", "_"),
             });
         }
         return options;
-    }, [chains, t]);
+    }, [supportedChains]);
 
     useEffect(() => {
         // Skip updating the search params once initialized to avoid
@@ -202,44 +174,53 @@ export function Filters({
         if (chainInitialized.current) return;
         chainInitialized.current = true;
 
-        const chain = searchParams.get("chain");
-        if (!chain) return;
+        const chains = searchParams.get("chains");
+        if (!chains) return;
 
-        const resolvedChain = chainOptions.find(
-            (option) => option.query === chain,
+        const resolvedChains = chainOptions.filter((option) =>
+            chains.split(",").includes(option.query),
         );
 
         const params = new URLSearchParams(searchParams.toString());
-        if (resolvedChain?.query) {
-            let chainType = undefined;
-            let chainId = undefined;
-            if (resolvedChain.value !== CHAIN_ALL) {
-                const chainTypeAndId = resolvedChain.value.split("-");
-                chainType = chainTypeAndId[0] as ChainType;
-                chainId = chainTypeAndId[1];
-            }
+        if (resolvedChains.length > 0) {
+            const chainTypes: ChainType[] = [];
+            const chainIds: string[] = [];
+            resolvedChains.forEach((resolvedChain) => {
+                const [chainType, chainId] = resolvedChain.value.split("_");
+                if (!chainTypes.includes(chainType as ChainType))
+                    chainTypes.push(chainType as ChainType);
+                if (!chainIds.includes(chainId)) chainIds.push(chainId);
+            });
 
-            setChain(resolvedChain.value);
-            onFiltersChange({ chainId, chainType });
+            setChains(resolvedChains);
+            onFiltersChange({
+                chainIds,
+                chainTypes: chainTypes as ChainType[],
+            });
 
-            params.set("chain", resolvedChain.query);
+            params.set(
+                "chains",
+                resolvedChains
+                    .map((resolvedChain) => resolvedChain.query)
+                    .join(","),
+            );
         } else {
-            setChain(CHAIN_ALL);
-            onFiltersChange({ chainId: CHAIN_ALL });
-            params.delete("chain");
+            setChains([]);
+            onFiltersChange({ chainIds: [], chainTypes: [] });
+            params.delete("chains");
         }
     }, [chainOptions, searchParams, onFiltersChange]);
 
-    const handleProtocolChange = useCallback(
-        (protocol: SelectOption<string>) => {
-            setProtocol(protocol.value);
-            onFiltersChange({ protocol: protocol.value });
+    const handleProtocolsChange = useCallback(
+        (protocols: SelectOption<string>[]) => {
+            setProtocols(protocols);
+            onFiltersChange({ protocols });
         },
         [onFiltersChange],
     );
 
     const handleStatusChange = useCallback(
-        (statuses: SelectOption<FilterableStatus>[]) => {
+        (statuses: SelectOption<Status>[]) => {
             setStatuses(statuses);
             onFiltersChange({ statuses });
         },
@@ -247,37 +228,45 @@ export function Filters({
     );
 
     const handleChainChange = useCallback(
-        (chain: SelectOption<string> & { query: string | null }) => {
+        (chains: (SelectOption<string> & { query: string })[]) => {
             const params = new URLSearchParams(searchParams.toString());
 
-            if (!chain.query) params.delete("chain");
-            else params.set("chain", chain.query);
+            if (chains.length === 0) params.delete("chains");
+            else
+                params.set(
+                    "chains",
+                    chains.map((chain) => chain.query).join(","),
+                );
 
             router.replace(`${pathname}?${params.toString()}`, {
                 scroll: false,
             });
 
-            let chainType = undefined;
-            let chainId = CHAIN_ALL;
-            if (chain.value !== CHAIN_ALL) {
-                const chainTypeAndId = chain.value.split("-");
-                chainType = chainTypeAndId[0] as ChainType;
-                chainId = chainTypeAndId[1];
-            }
+            const chainTypes: ChainType[] = [];
+            const chainIds: string[] = [];
+            chains.forEach((chain) => {
+                const [chainType, chainId] = chain.value.split("_");
+                if (!chainTypes.includes(chainType as ChainType))
+                    chainTypes.push(chainType as ChainType);
+                if (!chainIds.includes(chainId)) chainIds.push(chainId);
+            });
 
-            setChain(chain.value);
-            onFiltersChange({ chainId, chainType });
+            setChains(chains);
+            onFiltersChange({
+                chainIds,
+                chainTypes: chainTypes as ChainType[],
+            });
         },
         [pathname, router, searchParams, onFiltersChange],
     );
 
     const handleClearFilters = useCallback(() => {
-        setProtocol("");
+        setProtocols([]);
         setStatuses([]);
-        setChain(CHAIN_ALL);
+        setChains([]);
 
         const params = new URLSearchParams(searchParams.toString());
-        params.delete("chain");
+        params.delete("chains");
         router.replace(`${pathname}?${params.toString()}`, { scroll: false });
 
         if (onClearFilters) onClearFilters();
@@ -299,12 +288,12 @@ export function Filters({
                     className={styles.filterInput}
                     renderOption={statusSelectRenderOption}
                 />
-                <Select
+                <MultiSelect
                     search
                     hideLabel
                     options={protocolOptions}
-                    value={protocol}
-                    onChange={handleProtocolChange}
+                    values={protocols}
+                    onChange={handleProtocolsChange}
                     label={t("filters.protocol.label")}
                     placeholder={t("filters.protocol.label")}
                     messages={{
@@ -314,11 +303,11 @@ export function Filters({
                     renderOption={protocolSelectRenderOption}
                 />
                 <div className={styles.lastFilterWrapper}>
-                    <Select
-                        options={chainOptions}
-                        value={chain}
-                        hideLabel
+                    <MultiSelect
                         search
+                        hideLabel
+                        options={chainOptions}
+                        values={chains}
                         onChange={handleChainChange}
                         label={t("filters.chain.label")}
                         placeholder={t("filters.chain.label")}
