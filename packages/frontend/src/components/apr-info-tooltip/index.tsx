@@ -48,6 +48,7 @@ export function AprInfoTooltip({
                 <InfoMessage
                     size="sm"
                     spaced
+                    weight="regular"
                     text={t.rich("priceRangeAndWeighting", {
                         feeWeight,
                         token0Weight,
@@ -68,6 +69,7 @@ export function AprInfoTooltip({
                 <InfoMessage
                     size="sm"
                     spaced
+                    weight="regular"
                     text={t("priceRange")}
                     // TODO: add documentation link
                     // linkText={t("learnMore")}
@@ -79,6 +81,7 @@ export function AprInfoTooltip({
                 <InfoMessage
                     size="sm"
                     spaced
+                    weight="regular"
                     text={t.rich("weighting", {
                         feeWeight,
                         token0Weight,
@@ -99,8 +102,6 @@ export function AprInfoTooltip({
     if (!priceRange && !weighting) return null;
 
     return (
-        <InfoTooltip placement="top" className={styles.tooltip}>
-            {getInfoMessage()}
-        </InfoTooltip>
+        <InfoTooltip className={styles.tooltip}>{getInfoMessage()}</InfoTooltip>
     );
 }

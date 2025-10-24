@@ -8,6 +8,10 @@
     @apply flex gap-2 items-center;
 }
 
+.infoTooltip {
+    @apply hidden sm:flex;
+}
+
 .card {
     @apply w-full
         flex

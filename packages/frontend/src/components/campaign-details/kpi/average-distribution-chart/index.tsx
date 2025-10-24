@@ -204,7 +204,6 @@ export function AverageDistributionChart({
                 anchor={anchor}
                 open={!!popover}
                 onOpenChange={handlePopoverOnChange}
-                className={styles.popover}
             >
                 <div className={styles.popoverContent}>
                     <div className={styles.header}>

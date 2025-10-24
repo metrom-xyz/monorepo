@@ -1118,6 +1118,7 @@ function processCampaignsResponse(
         if ("rewards" in backendCampaign) {
             distributables = <TokenDistributables>{
                 type: DistributablesType.Tokens,
+                dailyUsd: backendCampaign.rewards.dailyUsd,
                 list: [],
                 amountUsdValue: 0,
                 remainingUsdValue: 0,
@@ -1139,7 +1140,6 @@ function processCampaignsResponse(
                 distributables.remainingUsdValue += remaining.usdValue;
 
                 distributables.list.push(<TokenDistributable>{
-                    dailyUsd: backendCampaign.rewards.dailyUsd,
                     amount,
                     remaining,
                     token: backendAsset,

@@ -5,6 +5,7 @@ import { formatUsdAmount } from "@/src/utils/format";
 import { CampaignDuration } from "../../campaign-duration";
 import type { TranslationsKeys } from "@/src/types/utils";
 import type { Campaign } from "@/src/types/campaign";
+import { CampaignStatusDot } from "../../campaign-status-dot";
 
 import styles from "./styles.module.css";
 
@@ -18,8 +19,8 @@ const STATUS_TEXT_MAP: Record<
     TranslationsKeys<"campaignDetails.details.statusType">
 > = {
     upcoming: "upcoming",
-    live: "live",
-    ended: "ended",
+    active: "live",
+    expired: "ended",
 };
 
 export function Details({ campaign, loading }: DetailsProps) {
@@ -50,13 +51,7 @@ export function Details({ campaign, loading }: DetailsProps) {
                     loading={detailsLoading}
                     value={
                         <div className={styles.statusWrapper}>
-                            <div className={styles.statusDot}>
-                                <div
-                                    className={
-                                        campaign && styles[campaign.status]
-                                    }
-                                ></div>
-                            </div>
+                            <CampaignStatusDot status={campaign?.status} />
                             <Typography weight="medium" size="xl">
                                 {campaign
                                     ? t(

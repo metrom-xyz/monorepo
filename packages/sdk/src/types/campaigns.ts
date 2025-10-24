@@ -140,7 +140,6 @@ export type CampaignTarget =
     | HoldFungibleAssetTarget;
 
 export interface TokenDistributable {
-    dailyUsd: number;
     token: UsdPricedErc20Token;
     amount: UsdPricedOnChainAmount;
     remaining: UsdPricedOnChainAmount;
@@ -154,6 +153,7 @@ export enum DistributablesType {
 
 export interface TokenDistributables {
     type: DistributablesType.Tokens;
+    dailyUsd: number;
     list: TokenDistributable[];
     amountUsdValue: number;
     remainingUsdValue: number;

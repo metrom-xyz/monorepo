@@ -64,7 +64,6 @@ export function AmmPoolLiquityHeader({ campaign }: AmmPoolLiquityHeaderProps) {
                 <div className={styles.title}>
                     {ChainIcon && (
                         <InfoTooltip
-                            placement="top"
                             icon={<ChainIcon className={styles.chainLogo} />}
                         >
                             <Typography size="sm">
@@ -84,7 +83,11 @@ export function AmmPoolLiquityHeader({ campaign }: AmmPoolLiquityHeaderProps) {
                         {campaign.name}
                     </Typography>
                     {campaign.target.pool.fee && (
-                        <Typography size="lg" weight="medium" variant="tertiary">
+                        <Typography
+                            size="lg"
+                            weight="medium"
+                            variant="tertiary"
+                        >
                             {formatPercentage({
                                 percentage: campaign.target.pool.fee,
                                 keepDust: true,
