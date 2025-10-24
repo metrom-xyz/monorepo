@@ -1,5 +1,4 @@
 import {
-    BackendCampaignStatus,
     type UsdPricedOnChainAmount,
     type WhitelistedErc20Token,
 } from "@metrom-xyz/sdk";
@@ -23,12 +22,6 @@ export interface Article {
 
 export interface ProjectIntro {
     articles: Article[];
-}
-
-export enum FilterableStatus {
-    Active = BackendCampaignStatus.Active,
-    Upcoming = BackendCampaignStatus.Upcoming,
-    Expired = BackendCampaignStatus.Expired,
 }
 
 export type SVGIcon = Omit<SVGProps<SVGSVGElement>, "dangerouslySetInnerHTML">;

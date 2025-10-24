@@ -39,7 +39,7 @@ export function useKpiMeasurements({
 
             if (!derivedFrom)
                 derivedFrom =
-                    campaign.status === Status.Ended
+                    campaign.status === Status.Expired
                         ? dayjs
                               .unix(campaign.to)
                               .utc()
@@ -49,7 +49,7 @@ export function useKpiMeasurements({
 
             if (!derivedTo)
                 derivedTo =
-                    campaign.status === Status.Ended
+                    campaign.status === Status.Expired
                         ? dayjs.unix(campaign.to).utc().unix()
                         : dayjs().utc().unix();
 

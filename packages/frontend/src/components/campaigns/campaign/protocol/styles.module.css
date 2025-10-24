@@ -3,7 +3,3 @@
 .root {
     @apply w-full flex justify-center;
 }
-
-.detailsContainer {
-    @apply p-3;
-}
