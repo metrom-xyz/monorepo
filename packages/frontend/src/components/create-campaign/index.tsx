@@ -87,7 +87,11 @@ export function CreateCampaign() {
             <Typography weight="medium" size="lg" uppercase>
                 {t("title")}
             </Typography>
-            <Typography weight="medium" variant="tertiary"className={styles.description}>
+            <Typography
+                weight="medium"
+                variant="tertiary"
+                className={styles.description}
+            >
                 {t("description")}
             </Typography>
             <div className={styles.campaignCardsWrapper}>
@@ -112,7 +116,10 @@ export function CreateCampaign() {
                                         <Typography weight="medium" size="lg">
                                             {t(title)}
                                         </Typography>
-                                        <Typography weight="medium" variant="tertiary">
+                                        <Typography
+                                            weight="medium"
+                                            variant="tertiary"
+                                        >
                                             {t(description)}
                                         </Typography>
                                     </div>
@@ -134,7 +141,10 @@ export function CreateCampaign() {
                                     <Typography weight="medium" size="lg">
                                         {t("partnerAction.title")}
                                     </Typography>
-                                    <Typography weight="medium" variant="tertiary">
+                                    <Typography
+                                        weight="medium"
+                                        variant="tertiary"
+                                    >
                                         {t("partnerAction.description")}
                                     </Typography>
                                 </div>

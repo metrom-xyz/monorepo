@@ -1,0 +1,25 @@
+@reference "../../app.css";
+
+.root {
+    @apply flex items-center justify-center relative size-3.5 rounded-full;
+}
+
+.root.active {
+    @apply bg-brand-green-dark/[28%] dark:bg-brand-green/[28%];
+}
+
+.dot {
+    @apply relative size-2 rounded-full px-1;
+}
+
+.dot.active {
+    @apply bg-brand-green-dark dark:bg-brand-green;
+}
+
+.dot.upcoming {
+    @apply bg-brand-blue;
+}
+
+.dot.expired {
+    @apply bg-neutral-400;
+}

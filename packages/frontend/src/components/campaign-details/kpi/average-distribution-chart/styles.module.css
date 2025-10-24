@@ -7,18 +7,8 @@
         sm:max-w-80;
 }
 
-.popover {
-    @apply rounded-lg
-        bg-white dark:bg-zinc-900
-        border-zinc-200 dark:border-zinc-600;
-}
-
 .popoverContent {
-    @apply flex
-        flex-col
-        gap-2
-        p-2
-        rounded-lg;
+    @apply flex flex-col gap-2;
 }
 
 .header {

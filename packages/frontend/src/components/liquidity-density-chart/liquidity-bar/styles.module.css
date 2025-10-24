@@ -6,11 +6,12 @@
         text-xs
         leading-none
         font-medium
-        fill-black dark:fill-white;
+        fill-light-text-primary
+        dark:fill-dark-text-primary;
 }
 
 .bar {
-    @apply fill-[#d1d5db] dark:fill-zinc-600;
+    @apply fill-gray-200 dark:fill-neutral-800;
 }
 
 .bar.inRange {

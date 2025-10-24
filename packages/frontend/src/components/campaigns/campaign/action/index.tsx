@@ -60,7 +60,7 @@ export function SkeletonAction() {
                     styles.titleContainerLoading,
                 )}
             >
-                <Skeleton size="lg" width={120} />
+                <Skeleton size="lg" width={300} />
                 <Skeleton size="sm" width={50} className={styles.campaignFee} />
             </div>
         </div>

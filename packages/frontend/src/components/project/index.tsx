@@ -51,9 +51,14 @@ export function Project({ project }: ProjectProps) {
                 <CampaignsTable
                     disableFilters
                     optionalFilters={{
-                        chainId: campaignsFilters.chainId?.toString(),
-                        chainType: chain.type,
-                        protocol: campaignsFilters.dex,
+                        chainIds: campaignsFilters.chainId
+                            ? [campaignsFilters.chainId.toString()]
+                            : [],
+                        chainTypes: chain.type ? [chain.type] : [],
+                        protocols: campaignsFilters.dex
+                            ? // TODO: find a better way
+                              [{ label: "", value: campaignsFilters.dex }]
+                            : [],
                     }}
                 />
             </div>

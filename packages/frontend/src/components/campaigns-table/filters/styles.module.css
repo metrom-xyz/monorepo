@@ -30,15 +30,11 @@
 }
 
 .customOptionContainer {
-    @apply flex items-center;
-}
-
-.dot {
-    @apply mr-3 rounded-full w-3 h-3;
+    @apply flex gap-1.5 items-center;
 }
 
 .icon {
-    @apply w-5 h-5 mr-3;
+    @apply size-5;
 }
 
 .selectOptionText {

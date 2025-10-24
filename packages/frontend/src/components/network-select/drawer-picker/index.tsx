@@ -71,10 +71,10 @@ export function DrawerPicker({
                         return (
                             <div
                                 key={id}
+                                onClick={getOnChangeHandler(id)}
                                 className={classNames(styles.row, {
                                     [commonStyles.active]: value === id,
                                 })}
-                                onClick={getOnChangeHandler(id)}
                             >
                                 {chainData?.icon && (
                                     <chainData.icon

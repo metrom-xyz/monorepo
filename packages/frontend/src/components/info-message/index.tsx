@@ -1,4 +1,8 @@
-import { Typography, type TypographySize } from "@metrom-xyz/ui";
+import {
+    Typography,
+    type TypographyProps,
+    type TypographySize,
+} from "@metrom-xyz/ui";
 import type { ReactNode } from "react";
 import classNames from "classnames";
 
@@ -9,6 +13,7 @@ interface InfoMessageProps {
     link?: string;
     linkText?: string;
     size?: TypographySize;
+    weight?: TypographyProps["weight"];
     spaced?: boolean;
     className?: string;
 }
@@ -18,13 +23,14 @@ export function InfoMessage({
     link,
     linkText,
     size = "xs",
+    weight = "medium",
     spaced,
     className,
 }: InfoMessageProps) {
     return (
         <div className={className}>
             <Typography
-                weight="medium"
+                weight={weight}
                 variant="tertiary"
                 size={size}
                 className={classNames({ [styles.text]: spaced })}

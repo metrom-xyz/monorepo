@@ -6,5 +6,6 @@
         text-xs
         leading-none
         font-medium
-        fill-black dark:fill-white;
+        fill-light-text-primary
+        dark:fill-dark-text-primary;
 }

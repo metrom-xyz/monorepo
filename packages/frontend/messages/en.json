@@ -53,19 +53,16 @@
         },
         "filters": {
             "protocol": {
-                "label": "Protocol",
-                "all": "All"
+                "label": "Protocol"
             },
             "status": {
                 "label": "Status",
-                "all": "All",
                 "live": "Live",
                 "upcoming": "Upcoming",
                 "ended": "Ended"
             },
             "chain": {
-                "label": "Chain",
-                "all": "All"
+                "label": "Chain"
             },
             "clear": "Clear filters"
         },
@@ -76,7 +73,8 @@
             "status": "Status",
             "apr": "APR",
             "tvl": "TVL",
-            "rewards": "Daily rewards"
+            "rewards": "Daily rewards",
+            "dailyPer1k": "Points/$1k/day"
         },
         "apr": {
             "title": "This campaign has KPI set"

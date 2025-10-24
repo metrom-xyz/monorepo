@@ -1,4 +1,4 @@
-import { ToastNotification, Typography, SpinnerIcon } from "@metrom-xyz/ui";
+import { ToastNotification, Typography, SpinnerDarkIcon } from "@metrom-xyz/ui";
 import { ReactNode } from "react";
 
 interface LoadingNotificationProps {
@@ -19,7 +19,7 @@ export function LoadingNotification({
             toastId={toastId}
             title={title}
             noDismiss
-            icon={SpinnerIcon}
+            icon={SpinnerDarkIcon}
             className="[&>.wrapper>.iconWrapper>.icon]:animate-spin [&>.wrapper]:w-full [&>.wrapper>.contentWrapper]:w-full"
         >
             <div className="flex items-center gap-2">
