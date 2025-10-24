@@ -225,9 +225,9 @@ export interface Restrictions {
 }
 
 export enum Status {
-    Live = "live",
+    Active = "active",
     Upcoming = "upcoming",
-    Ended = "ended",
+    Expired = "expired",
 }
 
 export class Campaign {
@@ -253,8 +253,8 @@ export class Campaign {
             now < this.from
                 ? Status.Upcoming
                 : now > this.to
-                  ? Status.Ended
-                  : Status.Live;
+                  ? Status.Expired
+                  : Status.Active;
     }
 
     isDistributing<T extends DistributablesType>(
