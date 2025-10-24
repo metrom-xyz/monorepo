@@ -10,6 +10,7 @@ import styles from "./styles.module.css";
 export interface InfoTooltipProps {
     trigger?: "hover" | "click";
     placement?: Placement;
+    margin?: number;
     children?: ReactNode;
     icon?: ReactNode;
     className?: string;
@@ -17,7 +18,8 @@ export interface InfoTooltipProps {
 
 export function InfoTooltip({
     trigger = "hover",
-    placement,
+    placement = "bottom",
+    margin,
     children,
     icon,
     className,
@@ -65,14 +67,13 @@ export function InfoTooltip({
                 <Popover
                     ref={popoverRef}
                     placement={placement}
+                    margin={margin}
                     anchor={anchor}
                     open={popover}
                     onOpenChange={setPopover}
                     className={styles.popover}
                 >
-                    <div className={classNames("content", styles.content)}>
-                        {children}
-                    </div>
+                    <div className={"content"}>{children}</div>
                 </Popover>
             </div>
             <div className={classNames("iconWrapper", styles.iconWrapper)}>

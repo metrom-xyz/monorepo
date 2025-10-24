@@ -195,6 +195,7 @@ function Component<V extends ValueType, O extends SelectOption<V>>(
                 anchor={anchorEl}
                 contained
                 open={open}
+                margin={4}
                 onOpenChange={setOpen}
                 placement="bottom-start"
                 className={styles.dropdownRoot}
