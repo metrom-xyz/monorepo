@@ -1,15 +1,11 @@
 @reference "../../theme.css";
 
 .root {
-    @apply w-fit;
+    @apply flex w-fit;
 }
 
 .popover {
     @apply max-w-64 md:max-w-[450px];
-}
-
-.content {
-    @apply p-2;
 }
 
 .iconWrapper {

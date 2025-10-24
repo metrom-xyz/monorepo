@@ -1,7 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { useRef, useState } from "storybook/preview-api";
 import { Popover } from "../components/popover/index";
-import { Card } from "../components/card";
 import { Typography } from "../components/typography";
 import { TextField } from "../components/text-field";
 
@@ -47,14 +46,12 @@ export const Base: Story = {
                     anchor={wrapper}
                     open={args.open || open}
                 >
-                    <Card className="max-w-fit">
-                        <div className="flex flex-col gap-4">
-                            <Typography uppercase>
-                                My custom popover content
-                            </Typography>
-                            <TextField label="Field" value="Description" />
-                        </div>
-                    </Card>
+                    <div className="flex flex-col gap-4 p-4">
+                        <Typography uppercase>
+                            My custom popover content
+                        </Typography>
+                        <TextField label="Field" value="Description" />
+                    </div>
                 </Popover>
             </>
         );

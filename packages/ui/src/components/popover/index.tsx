@@ -18,6 +18,7 @@ import styles from "./styles.module.css";
 export interface PopoverProps {
     open: boolean;
     anchor?: Element | null;
+    variant?: "primary" | "secondary";
     contained?: boolean;
     margin?: number;
     placement?: Placement;
@@ -31,6 +32,7 @@ export const Popover = forwardRef<HTMLDivElement, PopoverProps>(
         {
             open,
             anchor,
+            variant = "primary",
             contained = false,
             margin,
             placement,
@@ -47,7 +49,7 @@ export const Popover = forwardRef<HTMLDivElement, PopoverProps>(
             open,
             onOpenChange,
             middleware: [
-                offset(margin || 4),
+                offset(margin || 10),
                 contained
                     ? size({
                           apply({ rects, elements }) {
@@ -86,7 +88,9 @@ export const Popover = forwardRef<HTMLDivElement, PopoverProps>(
                             exit={{ opacity: 0 }}
                             transition={{ duration: 0.2, ease: easeInOut }}
                             style={{ ...floatingStyles }}
-                            className={classNames(styles.root, className)}
+                            className={classNames(styles.root, className, {
+                                [styles[variant]]: true,
+                            })}
                         >
                             {children}
                         </motion.div>
