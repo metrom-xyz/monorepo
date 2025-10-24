@@ -87,7 +87,7 @@ export function KpiAprSummary({ campaign }: KpiAprSummaryProps) {
     if (!maxApr || !campaign) return null;
 
     return (
-        <Typography size="sm" variant="tertiary"className={styles.text}>
+        <Typography size="sm" variant="tertiary" className={styles.text}>
             {minimumPayout
                 ? t.rich("textWithMinPayout", {
                       targetValueName: campaign.targetValueName,

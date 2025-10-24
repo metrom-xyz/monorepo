@@ -40,13 +40,11 @@ export function Chain({ id, type }: ChainProps) {
                         open={popoverOpen}
                         anchor={chainName}
                         onOpenChange={setPopoverOpen}
-                        placement="top"
+                        placement="bottom"
                     >
-                        <div className={styles.chainNameContainer}>
-                            <Typography weight="medium" size="sm">
-                                {chainData?.name}
-                            </Typography>
-                        </div>
+                        <Typography weight="medium" size="sm">
+                            {chainData?.name}
+                        </Typography>
                     </Popover>
                     <div
                         ref={setChainName}
