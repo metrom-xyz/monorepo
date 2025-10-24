@@ -1,29 +1,13 @@
 @reference "../../../../app.css";
 
-.statusRoot {
+.root {
     @apply max-w-28 w-full flex items-center gap-2 col-span-1;
 }
 
-.statusText {
-    @apply w-full flex flex-col justify-end gap-1;
+.text {
+    @apply w-full flex flex-col justify-end gap-1 flex-1;
 }
 
-.statusDot {
-    @apply w-2 h-2 rounded-full px-1;
-}
-
-.statusDotLive {
-    @apply bg-brand-green;
-}
-
-.statusDotUpcoming {
-    @apply bg-brand-blue;
-}
-
-.statusDotEnded {
-    @apply bg-zinc-400;
-}
-
-.statusDuration {
-    @apply flex whitespace-nowrap;
+.duration {
+    @apply h-3.5 flex whitespace-nowrap;
 }

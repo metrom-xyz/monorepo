@@ -58,7 +58,7 @@ export function Kpi({ campaign, loading }: KpiProps) {
     const reachedGoalPercentage = measurement || 0;
 
     let usdTvl: number | undefined;
-    if (campaign.status === Status.Ended)
+    if (campaign.status === Status.Expired)
         usdTvl =
             loadingKpiMeasurements || kpiMeasurements.length === 0
                 ? undefined
@@ -71,8 +71,8 @@ export function Kpi({ campaign, loading }: KpiProps) {
                 <Typography size="lg" weight="medium" uppercase>
                     {t("title")}
                 </Typography>
-                {campaign.status !== Status.Ended && (
-                    <InfoTooltip placement="top-start">
+                {campaign.status !== Status.Expired && (
+                    <InfoTooltip className={styles.infoTooltip}>
                         <KpiAprSummary campaign={campaign as Campaign} />
                     </InfoTooltip>
                 )}
@@ -127,7 +127,12 @@ export function Kpi({ campaign, loading }: KpiProps) {
                         />
                     </div>
                     <Card className={styles.chart}>
-                        <Typography size="sm" uppercase variant="tertiary"weight="medium">
+                        <Typography
+                            size="sm"
+                            uppercase
+                            variant="tertiary"
+                            weight="medium"
+                        >
                             {t("chart", {
                                 targetValueName: campaign.targetValueName,
                             })}
@@ -140,7 +145,9 @@ export function Kpi({ campaign, loading }: KpiProps) {
                                 }
                                 targetValueName={campaign.targetValueName}
                                 targetUsdValue={usdTvl}
-                                campaignEnded={campaign.status === Status.Ended}
+                                campaignEnded={
+                                    campaign.status === Status.Expired
+                                }
                                 campaignDurationSeconds={
                                     campaign.to - campaign.from
                                 }

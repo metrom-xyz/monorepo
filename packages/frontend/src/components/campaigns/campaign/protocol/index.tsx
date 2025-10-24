@@ -24,7 +24,8 @@ export function Protocol({ campaign }: ProtocolProps) {
 
     const protocol = protocols.find((protocol) => {
         switch (campaign.target.type) {
-            case TargetType.AmmPoolLiquidity: {
+            case TargetType.AmmPoolLiquidity:
+            case TargetType.JumperWhitelistedAmmPoolLiquidity: {
                 return protocol.slug === campaign.target.pool.dex.slug;
             }
             case TargetType.LiquityV2Debt:
@@ -50,20 +51,18 @@ export function Protocol({ campaign }: ProtocolProps) {
 
     return (
         <div className={styles.root}>
-            <div className={styles.root}>
+            <div>
                 {protocol && (
                     <Popover
                         ref={dexDetailsPopoverRef}
                         open={popoverOpen}
                         anchor={details}
                         onOpenChange={setPopoverOpen}
-                        placement="top"
+                        placement="bottom"
                     >
-                        <div className={styles.detailsContainer}>
-                            <Typography weight="medium" size="sm">
-                                {protocol.name}
-                            </Typography>
-                        </div>
+                        <Typography weight="medium" size="sm">
+                            {protocol.name}
+                        </Typography>
                     </Popover>
                 )}
                 <div

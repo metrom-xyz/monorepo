@@ -4,10 +4,6 @@
     @apply w-[1.25rem] h-[1.25rem];
 }
 
-.chainNameContainer {
-    @apply p-3;
-}
-
 .icon {
-    @apply w-[1.25rem] h-[1.25rem] text-black dark:text-zinc-200 fill-black col-span-1;
+    @apply w-[1.25rem] h-[1.25rem] text-primary col-span-1;
 }

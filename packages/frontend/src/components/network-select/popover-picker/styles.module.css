@@ -5,7 +5,7 @@
 }
 
 .networksWrapper {
-    @apply p-2 gap-2;
+    @apply gap-2;
 }
 
 .networksWrapper.grid {

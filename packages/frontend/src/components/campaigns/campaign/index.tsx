@@ -7,26 +7,25 @@ import { Link } from "@/src/i18n/routing";
 import { Card, Skeleton, Typography } from "@metrom-xyz/ui";
 import classNames from "classnames";
 import { Protocol, SkeletonProtocol } from "./protocol";
-import { Points } from "./points";
-import dayjs from "dayjs";
-import { DistributablesType } from "@metrom-xyz/sdk";
+import { FixedPoints } from "./fixed-points";
+import { BackendCampaignType, DistributablesType } from "@metrom-xyz/sdk";
 import { type Campaign } from "@/src/types/campaign";
 import { formatUsdAmount } from "@/src/utils/format";
+import { DynamicPoints } from "./dynamic-points";
 
 import styles from "./styles.module.css";
 
 interface CampaignProps {
+    type: BackendCampaignType;
     campaign: Campaign;
 }
 
-export function CampaignRow({ campaign }: CampaignProps) {
-    const hoursDuration = dayjs
-        .unix(campaign.to)
-        .diff(dayjs.unix(campaign.from), "hours", false);
-    const daysDuration = hoursDuration / 24;
-
+export function CampaignRow({ type, campaign }: CampaignProps) {
     const rewards = campaign.isDistributing(DistributablesType.Tokens);
     const fixedPoints = campaign.isDistributing(DistributablesType.FixedPoints);
+    const dynamicPoints = campaign.isDistributing(
+        DistributablesType.DynamicPoints,
+    );
 
     return (
         <Link
@@ -44,27 +43,34 @@ export function CampaignRow({ campaign }: CampaignProps) {
                     to={campaign.to}
                     status={campaign.status}
                 />
-                <Apr
-                    campaign={campaign}
-                    apr={campaign.apr}
-                    kpi={!!campaign.specification?.kpi}
-                />
+                {type === BackendCampaignType.Rewards && (
+                    <Apr
+                        campaign={campaign}
+                        apr={campaign.apr}
+                        kpi={!!campaign.specification?.kpi}
+                    />
+                )}
                 <Typography weight="medium">
                     {campaign.usdTvl !== undefined
                         ? formatUsdAmount({ amount: campaign.usdTvl })
                         : "-"}
                 </Typography>
                 {fixedPoints && (
-                    <Points
+                    <FixedPoints
                         status={campaign.status}
-                        amount={campaign.distributables.amount}
-                        daysDuration={daysDuration}
+                        {...campaign.distributables}
+                    />
+                )}
+                {dynamicPoints && (
+                    <DynamicPoints
+                        status={campaign.status}
+                        {...campaign.distributables}
                     />
                 )}
                 {rewards && (
                     <Rewards
                         status={campaign.status}
-                        daysDuration={daysDuration}
+                        dailyUsd={campaign.distributables.dailyUsd}
                         rewards={campaign.distributables}
                         chainId={campaign.chainId}
                     />

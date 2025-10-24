@@ -2,9 +2,9 @@
 
 import { Typography, Skeleton } from "@metrom-xyz/ui";
 import dayjs from "dayjs";
-import classNames from "classnames";
 import { useTranslations } from "next-intl";
 import { Status as StatusState } from "@metrom-xyz/sdk";
+import { CampaignStatusDot } from "@/src/components/campaign-status-dot";
 
 import styles from "./styles.module.css";
 
@@ -19,7 +19,7 @@ export function Status({
     from: rawFrom,
     to: rawTo,
     status,
-    showDuration = true,
+    showDuration = false,
 }: CampaignStatusProps) {
     const t = useTranslations("allCampaigns.status");
     const now = dayjs();
@@ -31,7 +31,7 @@ export function Status({
     if (status === StatusState.Upcoming) {
         text = t("upcoming.text");
         duration = t("upcoming.duration", { days: from.to(now, true) });
-    } else if (status === StatusState.Ended) {
+    } else if (status === StatusState.Expired) {
         text = t("ended.text");
         duration = t("ended.duration", { days: now.to(to, true) });
     } else {
@@ -40,21 +40,15 @@ export function Status({
     }
 
     return (
-        <div className={styles.statusRoot}>
-            <div
-                className={classNames(styles.statusDot, {
-                    [styles.statusDotLive]: status === StatusState.Live,
-                    [styles.statusDotUpcoming]: status === StatusState.Upcoming,
-                    [styles.statusDotEnded]: status === StatusState.Ended,
-                })}
-            />
-            <div className={styles.statusText}>
+        <div className={styles.root}>
+            <CampaignStatusDot status={status} />
+            <div className={styles.text}>
                 <Typography size="sm" weight="medium">
                     {text}
                 </Typography>
-                {showDuration && (
+                {(!!showDuration || status !== StatusState.Expired) && (
                     <Typography
-                        className={styles.statusDuration}
+                        className={styles.duration}
                         variant="tertiary"
                         size="sm"
                         weight="medium"
@@ -69,11 +63,11 @@ export function Status({
 
 export function SkeletonStatus() {
     return (
-        <div className={styles.statusRoot}>
-            <Skeleton width={8} circular />
-            <div className={styles.statusText}>
-                <Skeleton width={50} />
-                <Skeleton width={30} className={styles.statusDuration} />
+        <div className={styles.root}>
+            <Skeleton width={12} circular />
+            <div className={styles.text}>
+                <Skeleton width={40} size="sm" />
+                <Skeleton width={90} size="sm" className={styles.duration} />
             </div>
         </div>
     );

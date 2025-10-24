@@ -5,19 +5,21 @@
         flex-col
         gap-2
         p-2
-        rounded-lg
+        rounded-md
         min-w-56
         border
-        bg-white dark:bg-zinc-900
-        border-zinc-200 dark:border-zinc-600;
+        bg-gray-100
+        dark:bg-neutral-950
+        border-gray-300
+        dark:border-neutral-600;
 }
 
 .referenceLine line {
-    @apply stroke-black dark:stroke-zinc-400;
+    @apply stroke-gray-900 dark:stroke-neutral-400;
 }
 
 .referenceCircle {
-    @apply fill-black stroke-white dark:stroke-zinc-400;
+    @apply fill-gray-900 stroke-white dark:stroke-neutral-400;
 }
 
 .row {

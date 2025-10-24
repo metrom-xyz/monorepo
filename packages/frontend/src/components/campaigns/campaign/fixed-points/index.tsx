@@ -7,21 +7,18 @@ import { formatAmount } from "@/src/utils/format";
 
 import styles from "./styles.module.css";
 
-interface PointsProps {
+interface FixedPointsProps {
     status: Status;
     amount: OnChainAmount;
-    daysDuration: number;
+    dailyPer1k?: number;
 }
 
-export function Points({ status, amount, daysDuration }: PointsProps) {
+export function FixedPoints({ status, amount, dailyPer1k }: FixedPointsProps) {
     const t = useTranslations("allCampaigns.points");
 
     const [popover, setPopover] = useState(false);
     const [breakdown, setBreakdown] = useState<HTMLDivElement | null>(null);
     const popoverRef = useRef<HTMLDivElement>(null);
-
-    const perDayPoints =
-        daysDuration >= 1 ? amount.formatted / daysDuration : 0;
 
     function handleBreakdownPopoverOpen() {
         setPopover(true);
@@ -38,7 +35,7 @@ export function Points({ status, amount, daysDuration }: PointsProps) {
                 open={popover}
                 anchor={breakdown}
                 onOpenChange={setPopover}
-                placement="top"
+                placement="bottom"
             >
                 <div className={styles.breakdownContainer}>
                     <Typography
@@ -63,9 +60,9 @@ export function Points({ status, amount, daysDuration }: PointsProps) {
                 <PointsIcon className={styles.icon} />
             </div>
             <Typography weight="medium" className={styles.textPoints}>
-                {status === Status.Ended
+                {status === Status.Expired
                     ? "-"
-                    : formatAmount({ amount: perDayPoints })}
+                    : formatAmount({ amount: dailyPer1k })}
             </Typography>
         </div>
     );
