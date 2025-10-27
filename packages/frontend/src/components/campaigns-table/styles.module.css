@@ -56,9 +56,13 @@
     @apply cursor-pointer;
 }
 
+.column.disabled {
+    @apply cursor-not-allowed;
+}
+
 .sortIcon {
-    @apply h-3.5
-        w-3.5
+    @apply size-4
+        text-tertiary
         rotate-90
         opacity-0
         transition-all
