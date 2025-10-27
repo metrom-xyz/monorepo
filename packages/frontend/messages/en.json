@@ -1,6 +1,6 @@
 {
     "navigation": {
-        "allCampaigns": "All campaigns",
+        "discover": "Discover",
         "newCampaign": "New campaign",
         "claims": "Claims",
         "connect": "Connect"
@@ -44,7 +44,7 @@
         "stabilityPool": "of the stability pool"
     },
     "allCampaigns": {
-        "title": "all campaigns",
+        "title": "discover",
         "kpi": "KPI",
         "restricted": "Restricted",
         "tabs": {
@@ -530,7 +530,7 @@
                 "2": "Please collect signatures and execute it before the campaign start date."
             }
         },
-        "allCampaigns": "All campaigns",
+        "discover": "Discover",
         "newCampaign": "New campaign"
     },
     "campaignDuration": {
@@ -747,7 +747,7 @@
             "empty": {
                 "title": "No claims found",
                 "body": "There are currently no claims associated with the connected wallet. Explore the available opportunities on the all campaigns page.",
-                "action": "All campaigns"
+                "action": "Discover"
             },
             "walletNotConnected": {
                 "title": "Wallet not connected",
