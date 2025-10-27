@@ -31,7 +31,7 @@ export function SkeletonChainOverview() {
                 <Skeleton width={100} size="xl3" />
                 <Skeleton width={50} size="xl2" />
             </div>
-            <Button size="sm" loading>
+            <Button size="sm" loading iconPlacement="right">
                 {t("claims.loading")}
             </Button>
         </Card>
