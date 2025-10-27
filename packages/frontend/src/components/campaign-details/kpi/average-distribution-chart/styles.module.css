@@ -24,11 +24,11 @@
 }
 
 .legendDot.reimbursed {
-    @apply bg-[#D1D5DB];
+    @apply bg-gray-200 dark:bg-neutral-800;
 }
 
 .legendDot.distributed {
-    @apply bg-brand-green;
+    @apply bg-brand-green-dark dark:bg-brand-green;
 }
 
 .tokenRow {
@@ -78,8 +78,8 @@
     @apply rounded-3xl cursor-pointer
         outline-none
         hover:opacity-85
-        stroke-gray-100
-        dark:stroke-zinc-950
+        stroke-gray-200
+        dark:stroke-neutral-950
         transition-all
         duration-200
         ease-in-out;
@@ -90,7 +90,7 @@
 }
 
 .cell.reimbursed {
-    @apply fill-[#d1d5db] dark:fill-zinc-700;
+    @apply chart-area-secondary;
 }
 
 .chartWrapperLoading {

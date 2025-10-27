@@ -47,6 +47,10 @@
     @apply border-light-stroke-divider dark:border-dark-stroke-divider;
 }
 
+@utility chart-area-secondary {
+    @apply fill-gray-300 dark:fill-neutral-800;
+}
+
 @theme {
     --font-sans: "IBM Plex Sans", ui-sans-serif, sans-serif;
     --font-mono: "IBM Plex Mono", ui-monospace, monospace;
