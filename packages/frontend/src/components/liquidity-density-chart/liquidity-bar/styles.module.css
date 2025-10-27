@@ -11,7 +11,7 @@
 }
 
 .bar {
-    @apply fill-gray-200 dark:fill-neutral-800;
+    @apply chart-area-secondary;
 }
 
 .bar.inRange {

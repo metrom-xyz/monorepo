@@ -44,7 +44,7 @@
 }
 
 .reimbursedBar {
-    @apply fill-[#d1d5db] dark:fill-zinc-700;
+    @apply chart-area-secondary;
 }
 
 .distributedBar {
@@ -57,7 +57,8 @@
         text-xs
         leading-none
         font-medium
-        fill-black dark:fill-zinc-200
+        fill-light-text-primary
+        dark:fill-dark-text-primary
         transition-colors
         duration-200
         ease-in-out;

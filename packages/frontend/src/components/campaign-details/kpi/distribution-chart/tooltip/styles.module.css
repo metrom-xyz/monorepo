@@ -22,15 +22,15 @@
 }
 
 .legendDot {
-    @apply h-3 w-3 rounded-full;
+    @apply size-3 rounded-full;
 }
 
 .legendDot.reimbursed {
-    @apply bg-[#D1D5DB];
+    @apply bg-gray-200 dark:bg-neutral-800;
 }
 
 .legendDot.distributed {
-    @apply bg-brand-green;
+    @apply bg-brand-green-dark dark:bg-brand-green;
 }
 
 .breakdownWrapper {

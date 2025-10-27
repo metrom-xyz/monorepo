@@ -580,8 +580,6 @@ export function KpiSimulationChart({
                             x={targetUsdValue}
                             y={currentPayoutUsd}
                             r={4}
-                            // fill="#6CFF95"
-                            stroke="#000"
                             strokeWidth={1}
                             className={styles.referenceDot}
                         />
