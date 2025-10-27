@@ -141,7 +141,7 @@ export function Nav() {
                                                 >
                                                     <Typography
                                                         size="xs"
-                                                        weight="medium"
+                                                        weight="bold"
                                                         className={
                                                             styles.claimsBadgeText
                                                         }
@@ -191,10 +191,16 @@ export function Nav() {
                                     if (active) e.preventDefault();
                                 }}
                                 className={classNames(styles.mobileNavLink, {
-                                    [styles.tabActive]: active,
+                                    [styles.active]: active,
                                 })}
                             >
-                                {Icon && <Icon className={styles.tabIcon} />}
+                                {Icon && (
+                                    <Icon
+                                        className={classNames(styles.icon, {
+                                            [styles.active]: active,
+                                        })}
+                                    />
+                                )}
                                 <Typography weight="medium" size="sm">
                                     {t(label)}
                                 </Typography>
@@ -209,7 +215,7 @@ export function Nav() {
                                             >
                                                 <Typography
                                                     size="xs"
-                                                    weight="medium"
+                                                    weight="bold"
                                                     className={
                                                         styles.claimsBadgeText
                                                     }

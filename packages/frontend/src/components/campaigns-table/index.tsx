@@ -174,11 +174,12 @@ export function CampaignsTable({
     const getSortChangeHandler = useCallback(
         (column: CampaignSortOptions) => {
             return () => {
+                if (placeholderData && fetching) return;
                 setSortField(column);
                 setOrder(column === sortField && order === 1 ? -1 : 1);
             };
         },
-        [sortField, order],
+        [placeholderData, fetching, sortField, order],
     );
 
     function handlePreviousPage() {
@@ -260,6 +261,8 @@ export function CampaignsTable({
                                             : undefined
                                     }
                                     className={classNames(styles.column, {
+                                        [styles.disabled]:
+                                            placeholderData && fetching,
                                         [styles.sort]: sort,
                                     })}
                                 >
