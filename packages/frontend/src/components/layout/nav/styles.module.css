@@ -60,10 +60,14 @@
     @apply h-full
         w-full
         flex
-        flex-col
+        gap-1
         items-center
         justify-center
         px-3;
+}
+
+.mobileNavLink.active > p {
+    @apply text-brand-green-dark dark:text-brand-green;
 }
 
 .metromLogo {
@@ -150,19 +154,19 @@
         justify-center
         absolute
         px-0.5
-        h-5
-        min-w-5
-        bg-brand-green
+        h-[1.125rem]
+        min-w-[1.125rem]
+        bg-brand-green-dark
         dark:bg-brand-green
         rounded-md
         right-4
-        top-auto
+        top-2.5
         md:-right-1.5
         md:-top-1.5;
 }
 
 .claimsBadgeText {
-    @apply text-black;
+    @apply text-[0.625rem] sm:text-xs text-gray-100 dark:text-neutral-800;
 }
 
 .rightContentContainer {
