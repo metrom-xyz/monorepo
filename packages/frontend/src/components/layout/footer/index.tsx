@@ -8,6 +8,7 @@ import { Typography } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
 import { trackFathomEvent } from "@/src/utils/fathom";
 import { MetromLogo } from "@/src/assets/logos/metrom/metrom-logo";
+import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
 
 import styles from "./styles.module.css";
 
@@ -16,7 +17,7 @@ export function Footer() {
 
     return (
         <div className={styles.root}>
-            <div className={styles.leftContent}>
+            <div className={styles.wrapper}>
                 <div className={styles.socials}>
                     <a
                         aria-label={t("socials.github")}
@@ -68,7 +69,10 @@ export function Footer() {
                     rel="noopener noreferrer"
                     className={styles.supportLink}
                 >
-                    <Typography>{t("support")}</Typography>
+                    <Typography size="xs" weight="semibold">
+                        {t("support")}
+                    </Typography>
+                    <ArrowRightIcon className={styles.linkIcon} />
                 </a>
                 <a
                     href="https://docs.metrom.xyz"
@@ -77,13 +81,19 @@ export function Footer() {
                     onClick={() => trackFathomEvent("CLICK_DOCUMENTATION_LINK")}
                     className={styles.supportLink}
                 >
-                    <Typography>{t("documentation")}</Typography>
+                    <Typography size="xs" weight="semibold">
+                        {t("documentation")}
+                    </Typography>
+                    <ArrowRightIcon className={styles.linkIcon} />
                 </a>
                 <a
                     href="mailto:hello@metrom.xyz"
                     className={styles.supportLink}
                 >
-                    <Typography>{t("contactUs")}</Typography>
+                    <Typography size="xs" weight="semibold">
+                        {t("contactUs")}
+                    </Typography>
+                    <ArrowRightIcon className={styles.linkIcon} />
                 </a>
             </div>
         </div>
