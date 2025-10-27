@@ -28,7 +28,7 @@ const ROUTES: {
     label: TranslationsKeys<"navigation">;
     icon: FunctionComponent<SVGIcon>;
 }[] = [
-    { path: "/", label: "allCampaigns", icon: AllCampaignsIcon },
+    { path: "/", label: "discover", icon: AllCampaignsIcon },
     { path: "/campaigns/create", label: "newCampaign", icon: NewCampaignIcon },
     { path: "/claims", label: "claims", icon: ClaimsIcon },
 ];
@@ -86,7 +86,15 @@ export function Nav() {
                                     )}
                                 >
                                     {Icon && (
-                                        <Icon className={styles.tabIcon} />
+                                        <Icon
+                                            className={classNames(
+                                                styles.icon,
+                                                styles.disabled,
+                                                {
+                                                    [styles.active]: active,
+                                                },
+                                            )}
+                                        />
                                     )}
                                     <Typography weight="medium">
                                         {t(label)}
@@ -104,13 +112,20 @@ export function Nav() {
                             >
                                 <div
                                     className={classNames(styles.tab, {
-                                        [styles.tabActive]: active,
+                                        [styles.active]: active,
                                     })}
                                 >
                                     {Icon && (
-                                        <Icon className={styles.tabIcon} />
+                                        <Icon
+                                            className={classNames(styles.icon, {
+                                                [styles.active]: active,
+                                            })}
+                                        />
                                     )}
-                                    <Typography weight="medium">
+                                    <Typography
+                                        weight="medium"
+                                        className={styles.label}
+                                    >
                                         {t(label)}
                                     </Typography>
                                     <AnimatePresence>
