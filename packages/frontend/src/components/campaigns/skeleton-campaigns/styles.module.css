@@ -1,35 +1,19 @@
 @reference "../../../app.css";
 
 .root {
-    @apply max-w-screen-xl w-full flex flex-col px-5 sm:px-0;
+    @apply max-w-screen-xl h-full w-full flex-col;
+}
+
+.tabs {
+    @apply h-[3.25rem] w-[9.25rem] surface-primary animate-pulse rounded-t-xl;
+}
+
+.wrapper {
+    @apply w-full min-h-[61rem] flex-col flex gap-3 p-5 surface-primary rounded-xl rounded-tl-none;
 }
 
 .filters {
-    @apply max-w-screen-xl w-full sm:items-end flex-col sm:flex-row flex gap-3 mb-7;
-}
-
-.inputWithLabel {
-    @apply flex flex-col gap-1.5;
-}
-
-.label {
-    @apply w-16 h-4 rounded-sm surface-primary animate-pulse;
-}
-
-.filterInput {
-    @apply w-[17rem] h-[2.625rem] rounded-md surface-primary py-2 animate-pulse;
-}
-
-.filterInput:first-child {
-    @apply w-[14.75rem];
-}
-
-.filterInput.last {
-    @apply w-[10.25rem];
-}
-
-.scrollContainer {
-    @apply w-full mb-5;
+    @apply w-full sm:items-end flex-col sm:flex-row flex gap-3 p-5;
 }
 
 .tableWrapper {
@@ -48,10 +32,6 @@
     @apply grid-cols-[0.1fr_0.3fr_3.1fr_0.9fr_0.9fr_1fr];
 }
 
-.header {
-    @apply grid grid-cols-subgrid col-span-full items-center px-7;
-}
-
 .body {
     @apply sm:w-full
         my-0
@@ -66,10 +46,6 @@
 
 .body > :last-child > div {
     @apply rounded-b-xl;
-}
-
-.headerSkeleton {
-    @apply w-16 h-4 surface-primary animate-pulse rounded-md;
 }
 
 .campaignSkeleton {
