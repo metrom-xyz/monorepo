@@ -3,44 +3,65 @@
 .root {
     @apply w-full
         flex
-        flex-row
+        flex-col
+        relative
+        sm:flex-row
         justify-between
         items-center
-        rounded-xl
-        surface-primary
-        gap-10
-        p-4
-        sm:p-8
+        border-t
+        border-gray-300
+        dark:border-neutral-700
+        gap-3
+        p-5
+        sm:px-4
+        sm:py-10
         sm:mb-6
         mb-[63px]
         sm:mt-10
         max-w-screen-xl;
 }
 
-.leftContent {
-    @apply flex flex-col-reverse sm:flex-col gap-6 sm:gap-11;
+.logo {
+    @apply max-w-20
+        sm:max-w-40
+        text-primary
+        self-start
+        sm:absolute
+        sm:top-1/2
+        sm:left-1/2
+        sm:-translate-x-1/2
+        sm:-translate-y-1/2;
 }
 
-.logo {
-    @apply max-w-40 dark:text-zinc-200;
+.wrapper {
+    @apply w-full flex items-center flex-row-reverse justify-between sm:flex-row;
 }
 
 .socials {
-    @apply flex justify-between -mx-2.5;
-}
-
-.socialLink {
-    @apply p-2.5 rounded-full surface-primary-hover transition-colors duration-200 ease-in-out;
-}
-
-.supportLink {
-    @apply p-1.5 rounded-md surface-primary-hover transition-colors duration-200 ease-in-out;
+    @apply flex flex-row justify-between -mx-2.5;
 }
 
 .socialIcon {
-    @apply w-5 h-5 text-zinc-900 dark:text-zinc-200;
+    @apply size-3.5 sm:size-5 text-primary transition-colors duration-200 ease-in-out;
 }
 
 .support {
-    @apply h-full flex flex-col items-end gap-1;
+    @apply min-w-fit h-full flex items-center gap-4;
+}
+
+.socialLink {
+    @apply p-2.5 rounded-full hover:[&>p,&>svg]:text-brand-green-dark hover:[&>p,&>svg]:dark:text-brand-green;
+}
+
+.supportLink {
+    @apply flex items-center gap-1 hover:[&>p,&>svg]:text-brand-green-dark hover:[&>p,&>svg]:dark:text-brand-green;
+}
+
+.supportLink > p,
+.supportLink > svg {
+    @apply transition-colors duration-200 ease-in-out;
+}
+
+.linkIcon {
+    @apply size-3.5 transform -rotate-45;
 }

@@ -37,7 +37,7 @@ export function SkeletonTokenClaim() {
                     <Skeleton width={40} size="sm" />
                 </div>
             </div>
-            <Button variant="secondary" size="sm" loading>
+            <Button variant="secondary" size="sm" loading iconPlacement="right">
                 {t("loading")}
             </Button>
         </Card>

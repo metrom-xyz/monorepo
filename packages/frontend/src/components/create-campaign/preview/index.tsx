@@ -335,7 +335,7 @@ export function CampaignPreview({
                     variant="secondary"
                     className={{ root: styles.feedbackButton }}
                 >
-                    {t("allCampaigns")}
+                    {t("discover")}
                 </Button>
                 <Button
                     onClick={onCreateNew}

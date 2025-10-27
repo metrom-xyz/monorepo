@@ -89,7 +89,7 @@
 }
 
 .notDistributingArea path {
-    @apply fill-gray-200 dark:fill-neutral-800;
+    @apply chart-area-secondary;
 }
 
 .distributingArea path {
@@ -115,5 +115,5 @@
 }
 
 .referenceDot circle {
-    @apply fill-brand-green-dark dark:fill-brand-green;
+    @apply fill-brand-green-dark dark:fill-brand-green stroke-gray-900 dark:stroke-neutral-400;
 }

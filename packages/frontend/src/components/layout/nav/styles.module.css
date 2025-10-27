@@ -109,22 +109,39 @@
         gap-2
         h-10
         px-3
+        hover:[&>p,&>svg]:text-brand-green-dark
+        hover:[&>p,&>svg]:dark:text-brand-green
         relative
         select-none
-        rounded-md
-        cursor-pointer
-        transition-colors
-        duration-200
-        ease-in-out
-        surface-primary-hover;
+        cursor-pointer;
 }
 
 .tab.disabled {
-    @apply cursor-not-allowed hover:bg-transparent;
+    @apply cursor-not-allowed;
 }
 
-.tabIcon {
-    @apply w-5 h-5 text-black dark:text-zinc-200;
+.tab.disabled > p {
+    @apply text-secondary;
+}
+
+.tab.active > p {
+    @apply text-brand-green-dark dark:text-brand-green;
+}
+
+.icon {
+    @apply size-5 text-primary transition-colors duration-200 ease-in-out;
+}
+
+.icon.active {
+    @apply text-brand-green-dark dark:text-brand-green;
+}
+
+.icon.disabled {
+    @apply text-primary;
+}
+
+.label {
+    @apply transition-colors duration-200 ease-in-out;
 }
 
 .claimsBadge {
@@ -136,6 +153,7 @@
         h-5
         min-w-5
         bg-brand-green
+        dark:bg-brand-green
         rounded-md
         right-4
         top-auto
@@ -145,10 +163,6 @@
 
 .claimsBadgeText {
     @apply text-black;
-}
-
-.tabActive {
-    @apply bg-zinc-200 sm:bg-white dark:bg-zinc-800 hover:bg-white hover:dark:bg-zinc-800;
 }
 
 .rightContentContainer {
