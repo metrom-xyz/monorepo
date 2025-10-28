@@ -7,6 +7,11 @@
         gap-2
         select-none
         rounded-t-xl
+        px-3
+        py-2
+        text-xs
+        hover:text-brand-green-dark
+        hover:dark:text-brand-green
         cursor-pointer;
 }
 
@@ -34,39 +39,35 @@
     @apply theme-surface-2-active opacity-100;
 }
 
-.root.xs {
-    @apply px-3 py-2 text-xs;
-}
-
 .root.sm {
-    @apply px-4 py-2 text-sm;
+    @apply sm:px-4 sm:py-2 sm:text-sm;
 }
 
 .root.base {
-    @apply px-5 py-3 text-base;
+    @apply sm:px-5 sm:py-3 sm:text-base;
 }
 
 .root.lg {
-    @apply px-5 py-3 text-lg;
+    @apply sm:px-5 sm:py-3 sm:text-lg;
 }
 
 .root.xl {
-    @apply px-5 py-3 text-xl;
+    @apply sm:px-5 sm:py-3 sm:text-xl;
 }
 
-.icon.xs {
+.icon {
     @apply size-4;
 }
 
 .icon.sm {
-    @apply size-[1.125rem];
+    @apply sm:size-[1.125rem];
 }
 
 .icon.base,
 .icon.lg {
-    @apply size-5;
+    @apply sm:size-5;
 }
 
 .icon.xl {
-    @apply size-6;
+    @apply sm:size-6;
 }
