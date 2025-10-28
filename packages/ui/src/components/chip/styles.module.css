@@ -3,26 +3,50 @@
 .root {
     @apply flex
         justify-center
-        surface-secondary
-        rounded-[2.813rem]
+        items-center
+        bg-transparent
+        rounded-[6.25rem]
         select-none
+        border-gray-300
+        dark:border-neutral-600
         transition-colors
         duration-200
         ease-in-out;
 }
 
-.sm {
-    @apply px-2 py-2;
+.root.active:hover {
+    @apply bg-brand-green-dark dark:bg-brand-green;
 }
 
-.xs {
-    @apply px-1.5 py-1.5;
+.root.xs {
+    @apply border px-2 py-1 gap-1;
 }
 
-.rootClickable {
-    @apply cursor-pointer surface-secondary-hover;
+.root.sm {
+    @apply border-2 px-3 py-1.5 gap-2;
 }
 
-.rootActive {
-    @apply theme-surface-2-active;
+.clickable {
+    @apply cursor-pointer hover:bg-gray-500/[8%] hover:dark:bg-neutral-100/[8%];
+}
+
+.active {
+    @apply bg-brand-green-dark dark:bg-brand-green;
+}
+
+.active > p,
+.active > svg {
+    @apply text-gray-100 dark:text-neutral-900;
+}
+
+.icon {
+    @apply cursor-pointer text-primary;
+}
+
+.icon.xs {
+    @apply size-2;
+}
+
+.icon.sm {
+    @apply size-2.5;
 }
