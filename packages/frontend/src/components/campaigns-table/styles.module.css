@@ -33,19 +33,19 @@
 }
 
 .table.rewards {
-    @apply grid-cols-[0.1fr_0.3fr_3.5fr_0.8fr_0.9fr_0.9fr_1.1fr];
+    @apply grid-cols-[0.1fr_0.3fr_3.5fr_0.8fr_0.9fr_0.9fr_1fr];
 }
 
 .table.points {
-    @apply grid-cols-[0.1fr_0.3fr_3.1fr_0.9fr_0.9fr_1fr];
+    @apply grid-cols-[0.1fr_0.3fr_3.1fr_0.9fr_0.9fr_0.8fr];
 }
 
 .header {
-    @apply grid grid-cols-subgrid col-span-full items-center px-5 pt-5;
+    @apply grid grid-cols-subgrid col-span-full items-center px-3 sm:px-5 pt-5;
 }
 
 .column {
-    @apply w-fit flex items-center gap-1;
+    @apply w-full flex items-center gap-1;
 }
 
 .column:hover > .sortIcon {

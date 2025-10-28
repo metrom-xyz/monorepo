@@ -35,7 +35,12 @@ export function DynamicPoints({
     }
 
     return (
-        <div className={styles.root}>
+        <div
+            ref={setBreakdown}
+            onMouseEnter={handleBreakdownPopoverOpen}
+            onMouseLeave={handleBreakdownPopoverClose}
+            className={styles.root}
+        >
             <Popover
                 ref={popoverRef}
                 open={popover}
@@ -61,12 +66,7 @@ export function DynamicPoints({
                     </Typography>
                 </div>
             </Popover>
-            <div
-                ref={setBreakdown}
-                onMouseEnter={handleBreakdownPopoverOpen}
-                onMouseLeave={handleBreakdownPopoverClose}
-                className={styles.iconWrapper}
-            >
+            <div className={styles.iconWrapper}>
                 <PointsIcon className={styles.icon} />
             </div>
             <Typography weight="medium" className={styles.textPoints}>

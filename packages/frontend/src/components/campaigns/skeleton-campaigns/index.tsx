@@ -18,18 +18,7 @@ export function SkeletonCampaigns({ type }: SkeletonCampaignsProps) {
                         className={classNames(styles.table, {
                             [styles[type]]: true,
                         })}
-                    >
-                        <div className={styles.body}>
-                            {Array.from({ length: 10 }).map((_, index) => (
-                                <div
-                                    key={index}
-                                    className={styles.campaignSkeleton}
-                                >
-                                    <div></div>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
+                    ></div>
                 </div>
             </div>
         </div>
