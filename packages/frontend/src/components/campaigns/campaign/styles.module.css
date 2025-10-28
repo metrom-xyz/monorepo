@@ -14,7 +14,8 @@
         bg-none
         min-h-[72px]
         max-h-[72px]
-        px-5
+        px-3
+        sm:px-5
         py-4
         surface-primary-hover
         transition-colors

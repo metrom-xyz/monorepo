@@ -1,7 +1,11 @@
 @reference "../../app.css";
 
 .layout {
-    @apply min-h-screen flex flex-col items-center gap-10 background-main;
+    @apply flex flex-col items-center gap-10 background-main;
+}
+
+.content {
+    @apply flex flex-col w-full items-center gap-10 min-h-screen;
 }
 
 .main {
@@ -9,5 +13,5 @@
 }
 
 .footer {
-    @apply w-full flex justify-center px-4 pb-4;
+    @apply w-full flex justify-center px-4 sm:px-0 pb-4 sm:mt-20;
 }
