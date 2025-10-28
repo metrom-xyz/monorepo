@@ -24,6 +24,7 @@ export interface PopoverProps {
     placement?: Placement;
     className?: string;
     children?: ReactNode;
+    root?: HTMLElement | null;
     onOpenChange: (open: boolean) => void;
 }
 
@@ -38,6 +39,7 @@ export const Popover = forwardRef<HTMLDivElement, PopoverProps>(
             placement,
             className,
             children,
+            root,
             onOpenChange,
         }: PopoverProps,
         ref,
@@ -73,7 +75,7 @@ export const Popover = forwardRef<HTMLDivElement, PopoverProps>(
         return (
             <AnimatePresence>
                 {open && (
-                    <FloatingPortal>
+                    <FloatingPortal root={root}>
                         <motion.div
                             ref={(element) => {
                                 if (ref) {
