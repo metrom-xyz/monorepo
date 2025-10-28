@@ -36,14 +36,15 @@ export type MultiSelectProps<V extends ValueType, O extends SelectOption<V>> = {
     onChange: (option: O[]) => void;
     renderOption?: (option: O) => ReactElement;
     loading?: boolean;
+    portalContainer?: HTMLElement | null;
     messages: {
         noResults: string;
     };
+    className?: string;
     dataTestIds?: {
         textInput?: string;
         option?: string;
     };
-    className?: string;
 } & Omit<BaseInputProps<unknown>, "onChange" | "values" | "value" | "id">;
 
 type ItemData<V extends ValueType, O extends SelectOption<V>> = Pick<
@@ -52,10 +53,10 @@ type ItemData<V extends ValueType, O extends SelectOption<V>> = Pick<
 > & {
     onSelect: (option: O) => void;
     size?: BaseInputSize;
+    className?: string;
     dataTestIds?: {
         option?: string;
     };
-    className?: string;
 };
 
 function Component<V extends ValueType, O extends SelectOption<V>>(
@@ -74,8 +75,9 @@ function Component<V extends ValueType, O extends SelectOption<V>>(
         disabled,
         loading,
         messages,
-        dataTestIds,
+        portalContainer,
         className,
+        dataTestIds,
         ...rest
     }: MultiSelectProps<V, O>,
     ref: ForwardedRef<HTMLDivElement>,
@@ -134,7 +136,7 @@ function Component<V extends ValueType, O extends SelectOption<V>>(
         (item: O) => {
             const existing = values.find(({ value }) => value === item.value);
 
-            let newValues = [];
+            let newValues: O[] = [];
             if (existing)
                 newValues = options.filter(
                     (option) =>
@@ -253,6 +255,7 @@ function Component<V extends ValueType, O extends SelectOption<V>>(
                 </div>
             </BaseInputWrapper>
             <Popover
+                root={portalContainer}
                 anchor={anchorEl}
                 contained
                 open={open}
