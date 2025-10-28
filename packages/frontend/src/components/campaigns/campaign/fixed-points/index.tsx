@@ -29,7 +29,12 @@ export function FixedPoints({ status, amount, dailyPer1k }: FixedPointsProps) {
     }
 
     return (
-        <div className={styles.root}>
+        <div
+            ref={setBreakdown}
+            onMouseEnter={handleBreakdownPopoverOpen}
+            onMouseLeave={handleBreakdownPopoverClose}
+            className={styles.root}
+        >
             <Popover
                 ref={popoverRef}
                 open={popover}
@@ -51,12 +56,7 @@ export function FixedPoints({ status, amount, dailyPer1k }: FixedPointsProps) {
                     </Typography>
                 </div>
             </Popover>
-            <div
-                ref={setBreakdown}
-                onMouseEnter={handleBreakdownPopoverOpen}
-                onMouseLeave={handleBreakdownPopoverClose}
-                className={styles.iconWrapper}
-            >
+            <div className={styles.iconWrapper}>
                 <PointsIcon className={styles.icon} />
             </div>
             <Typography weight="medium" className={styles.textPoints}>

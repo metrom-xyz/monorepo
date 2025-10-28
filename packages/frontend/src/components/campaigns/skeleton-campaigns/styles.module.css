@@ -1,11 +1,11 @@
 @reference "../../../app.css";
 
 .root {
-    @apply max-w-screen-xl h-full w-full flex-col;
+    @apply max-w-screen-xl h-full w-full flex-col px-4 sm:px-0;
 }
 
 .tabs {
-    @apply h-[3.25rem] w-[9.25rem] surface-primary animate-pulse rounded-t-xl;
+    @apply h-[3.25rem] w-[9.25rem] surface-primary rounded-t-xl;
 }
 
 .wrapper {
@@ -25,33 +25,9 @@
 }
 
 .table.rewards {
-    @apply grid-cols-[0.1fr_0.3fr_3.5fr_0.8fr_0.9fr_0.9fr_1.1fr];
+    @apply grid-cols-[0.1fr_0.3fr_3.5fr_0.8fr_0.9fr_0.9fr_1fr];
 }
 
 .table.points {
-    @apply grid-cols-[0.1fr_0.3fr_3.1fr_0.9fr_0.9fr_1fr];
-}
-
-.body {
-    @apply sm:w-full
-        my-0
-        grid
-        grid-cols-subgrid
-        col-span-full;
-}
-
-.body > :first-child > div {
-    @apply rounded-t-xl;
-}
-
-.body > :last-child > div {
-    @apply rounded-b-xl;
-}
-
-.campaignSkeleton {
-    @apply w-full grid col-span-full grid-cols-subgrid;
-}
-
-.campaignSkeleton > div {
-    @apply col-span-full grid grid-cols-subgrid min-h-[72px] surface-primary animate-pulse;
+    @apply grid-cols-[0.1fr_0.3fr_3.1fr_0.9fr_0.9fr_0.8fr];
 }
