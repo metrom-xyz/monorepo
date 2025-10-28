@@ -52,8 +52,8 @@ export function NavThemeSwitcher() {
             <div ref={rootRef}>
                 <div
                     ref={setWrapper}
-                    className={classNames(styles.themeWrapper)}
                     onClick={handleThemePickerOnToggle}
+                    className={classNames(styles.themeWrapper)}
                 >
                     {resolvedTheme === Theme.Dark && <MoonIcon />}
                     {resolvedTheme === Theme.Light && <SunIcon />}

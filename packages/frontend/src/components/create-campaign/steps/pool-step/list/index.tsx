@@ -18,6 +18,7 @@ import { filterPools } from "@/src/utils/filtering";
 import { Row } from "./row";
 import { RemoteLogo } from "@/src/components/remote-logo";
 import { CHAIN_TYPE } from "@/src/commons";
+import classNames from "classnames";
 
 import styles from "./styles.module.css";
 
@@ -119,16 +120,8 @@ export function ListPoolPicker({
                     {baseTokens.map((token) => (
                         <Chip
                             key={token.address}
-                            clickable
                             active={baseTokenFilter?.address === token.address}
                             onClick={getBaseTokenChangeHandler(token)}
-                            className={{
-                                root:
-                                    baseTokenFilter &&
-                                    baseTokenFilter.address !== token.address
-                                        ? styles.baseTokenChipNotActive
-                                        : undefined,
-                            }}
                         >
                             <div className={styles.baseTokenChip}>
                                 <RemoteLogo
@@ -137,7 +130,14 @@ export function ListPoolPicker({
                                     address={token.address}
                                     chain={chainId}
                                 />
-                                <Typography weight="medium">
+                                <Typography
+                                    weight="medium"
+                                    className={classNames(styles.symbol, {
+                                        [styles.active]:
+                                            baseTokenFilter?.address ===
+                                            token.address,
+                                    })}
+                                >
                                     {token.symbol}
                                 </Typography>
                             </div>
@@ -153,10 +153,20 @@ export function ListPoolPicker({
                 }}
             >
                 <div className={styles.listHeader}>
-                    <Typography uppercase size="sm" weight="medium" variant="tertiary">
+                    <Typography
+                        uppercase
+                        size="sm"
+                        weight="medium"
+                        variant="tertiary"
+                    >
                         {t("list.pool")}
                     </Typography>
-                    <Typography uppercase size="sm" weight="medium" variant="tertiary">
+                    <Typography
+                        uppercase
+                        size="sm"
+                        weight="medium"
+                        variant="tertiary"
+                    >
                         {t("list.tvl")}
                     </Typography>
                 </div>

@@ -25,12 +25,12 @@
     @apply flex gap-2 items-center select-none;
 }
 
-.baseTokenChip > p {
-    @apply mr-1;
+.symbol {
+    @apply text-primary transition-colors duration-200 ease-in-out;
 }
 
-.baseTokenChipNotActive {
-    @apply bg-zinc-50 dark:bg-zinc-900;
+.symbol.active {
+    @apply text-gray-100 dark:text-neutral-900;
 }
 
 .listWrapper {
