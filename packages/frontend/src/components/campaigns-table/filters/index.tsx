@@ -4,6 +4,8 @@ import {
     Typography,
     type SelectOption,
     MultiSelect,
+    Chip,
+    MobileDrawer,
 } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
@@ -23,18 +25,35 @@ import { getCrossVmChainData } from "@/src/utils/chain";
 import { ChainType, Status } from "@metrom-xyz/sdk";
 import { APTOS } from "@/src/commons/env";
 import { CampaignStatusDot } from "../../campaign-status-dot";
+import { TrashIcon } from "@/src/assets/trash-icon";
+import { FilterIcon } from "@/src/assets/filter-icon";
+import { useClickAway } from "react-use";
+import { FilterActiveIcon } from "@/src/assets/filter-active-icon";
 
 import styles from "./styles.module.css";
 
-const statusSelectRenderOption = (option: {
-    label: string;
-    color?: string;
-    value: Status;
-}) => {
+const statusSelectRenderOption = (
+    option: { label: string; value: Status },
+    active?: boolean,
+) => {
     return (
         <div className={styles.customOptionContainer}>
-            <CampaignStatusDot status={option.value} />
-            <Typography weight="medium">{option.label}</Typography>
+            <CampaignStatusDot
+                status={option.value}
+                className={
+                    active && option.value === Status.Active
+                        ? styles.statusDotLiveActive
+                        : undefined
+                }
+            />
+            <Typography
+                weight="medium"
+                className={classNames(styles.statusLabel, {
+                    [styles.active]: active,
+                })}
+            >
+                {option.label}
+            </Typography>
         </div>
     );
 };
@@ -107,11 +126,13 @@ export function Filters({
     const router = useRouter();
     const pathname = usePathname();
     const searchParams = useSearchParams();
-    const chainInitialized = useRef(false);
+    const chainInitializedRef = useRef(false);
+    const mobileDrawerRef = useRef<HTMLInputElement>(null);
 
     const [chains, setChains] = useState<ChainOption[]>([]);
     const [protocols, setProtocols] = useState<SelectOption<string>[]>([]);
     const [statuses, setStatuses] = useState<SelectOption<Status>[]>([]);
+    const [drawer, setDrawer] = useState(false);
 
     const filtersActive = useMemo(
         () =>
@@ -171,8 +192,8 @@ export function Filters({
     useEffect(() => {
         // Skip updating the search params once initialized to avoid
         // unnecessary re-renders
-        if (chainInitialized.current) return;
-        chainInitialized.current = true;
+        if (chainInitializedRef.current) return;
+        chainInitializedRef.current = true;
 
         const chains = searchParams.get("chains");
         if (!chains) return;
@@ -211,13 +232,9 @@ export function Filters({
         }
     }, [chainOptions, searchParams, onFiltersChange]);
 
-    const handleProtocolsChange = useCallback(
-        (protocols: SelectOption<string>[]) => {
-            setProtocols(protocols);
-            onFiltersChange({ protocols });
-        },
-        [onFiltersChange],
-    );
+    useClickAway(mobileDrawerRef, () => {
+        setDrawer(false);
+    });
 
     const handleStatusChange = useCallback(
         (statuses: SelectOption<Status>[]) => {
@@ -227,7 +244,15 @@ export function Filters({
         [onFiltersChange],
     );
 
-    const handleChainChange = useCallback(
+    const handleProtocolsChange = useCallback(
+        (protocols: SelectOption<string>[]) => {
+            setProtocols(protocols);
+            onFiltersChange({ protocols });
+        },
+        [onFiltersChange],
+    );
+
+    const handleChainsChange = useCallback(
         (chains: (SelectOption<string> & { query: string })[]) => {
             const params = new URLSearchParams(searchParams.toString());
 
@@ -272,9 +297,69 @@ export function Filters({
         if (onClearFilters) onClearFilters();
     }, [pathname, searchParams, router, onClearFilters]);
 
+    function handleDrawerOnToggle() {
+        setDrawer((prev) => !prev);
+    }
+
+    const getStatusChipCloseHandler = useCallback(
+        (status: SelectOption<Status>) => {
+            return () => {
+                const newStatuses = statuses.filter(
+                    ({ value }) => value !== status.value,
+                );
+                handleStatusChange(newStatuses);
+            };
+        },
+        [statuses, handleStatusChange],
+    );
+
+    const getProtocolChipCloseHandler = useCallback(
+        (protocol: SelectOption<string>) => {
+            return () => {
+                const newProtocols = protocols.filter(
+                    ({ value }) => value !== protocol.value,
+                );
+                handleProtocolsChange(newProtocols);
+            };
+        },
+        [protocols, handleProtocolsChange],
+    );
+
+    const getChainChipCloseHandler = useCallback(
+        (chain: SelectOption<string> & { query: string }) => {
+            return () => {
+                const newChains = chains.filter(
+                    ({ value }) => value !== chain.value,
+                );
+                handleChainsChange(newChains);
+            };
+        },
+        [chains, handleChainsChange],
+    );
+
+    const getStatusMobileChipClickHandler = useCallback(
+        (status: SelectOption<Status>) => {
+            return () => {
+                const existing = statuses.find(
+                    ({ value }) => value === status.value,
+                );
+
+                let newStatuses: SelectOption<Status>[] = [];
+                if (existing)
+                    newStatuses = statuses.filter(
+                        ({ value }) => value !== status.value,
+                    );
+                else newStatuses = statuses.concat(status);
+
+                handleStatusChange(newStatuses);
+            };
+        },
+        [statuses, handleStatusChange],
+    );
+
     return (
         <div className={styles.root}>
-            <div className={styles.selectionFilters}>
+            <div className={styles.inputs}>
                 <MultiSelect
                     hideLabel
                     options={statusOptions}
@@ -282,11 +367,11 @@ export function Filters({
                     onChange={handleStatusChange}
                     label={t("filters.status.label")}
                     placeholder={t("filters.status.label")}
+                    renderOption={statusSelectRenderOption}
                     messages={{
                         noResults: "",
                     }}
                     className={styles.filterInput}
-                    renderOption={statusSelectRenderOption}
                 />
                 <MultiSelect
                     search
@@ -296,11 +381,11 @@ export function Filters({
                     onChange={handleProtocolsChange}
                     label={t("filters.protocol.label")}
                     placeholder={t("filters.protocol.label")}
+                    renderOption={protocolSelectRenderOption}
                     messages={{
                         noResults: "",
                     }}
                     className={styles.filterInput}
-                    renderOption={protocolSelectRenderOption}
                 />
                 <div className={styles.lastFilterWrapper}>
                     <MultiSelect
@@ -308,19 +393,20 @@ export function Filters({
                         hideLabel
                         options={chainOptions}
                         values={chains}
-                        onChange={handleChainChange}
+                        onChange={handleChainsChange}
                         label={t("filters.chain.label")}
                         placeholder={t("filters.chain.label")}
+                        renderOption={chainSelectRenderOption}
                         messages={{
                             noResults: "",
                         }}
                         className={styles.filterInput}
-                        renderOption={chainSelectRenderOption}
                     />
                     <Button
                         variant="secondary"
-                        size="xs"
                         border={false}
+                        icon={TrashIcon}
+                        iconPlacement="left"
                         onClick={handleClearFilters}
                         className={{
                             root: classNames(styles.clearButton, {
@@ -331,6 +417,115 @@ export function Filters({
                         {t("filters.clear")}
                     </Button>
                 </div>
+            </div>
+            <div ref={mobileDrawerRef} className={styles.inputsMobile}>
+                <Button
+                    variant="secondary"
+                    border={false}
+                    icon={filtersActive ? FilterActiveIcon : FilterIcon}
+                    iconPlacement="left"
+                    onClick={handleDrawerOnToggle}
+                >
+                    {t("filters.filters")}
+                </Button>
+                <MobileDrawer open={drawer} onClose={handleDrawerOnToggle}>
+                    <div className={styles.mobileDrawerContent}>
+                        <Typography weight="semibold">
+                            {t("filters.filterBy")}
+                        </Typography>
+                        <div className={styles.statusFilterMobile}>
+                            <Typography
+                                uppercase
+                                size="xs"
+                                weight="medium"
+                                variant="tertiary"
+                            >
+                                {t("filters.status.label")}
+                            </Typography>
+                            <div className={styles.statusChipsFilterMobile}>
+                                {statusOptions.map((option) => {
+                                    const active = !!statuses.find(
+                                        (status) =>
+                                            status.value === option.value,
+                                    );
+
+                                    return (
+                                        <Chip
+                                            key={option.value}
+                                            active={active}
+                                            onClick={getStatusMobileChipClickHandler(
+                                                option,
+                                            )}
+                                        >
+                                            {statusSelectRenderOption(
+                                                option,
+                                                active,
+                                            )}
+                                        </Chip>
+                                    );
+                                })}
+                            </div>
+                        </div>
+                        <MultiSelect
+                            portalContainer={mobileDrawerRef.current}
+                            search
+                            options={protocolOptions}
+                            values={protocols}
+                            onChange={handleProtocolsChange}
+                            label={t("filters.protocol.label")}
+                            placeholder={t("filters.protocol.label")}
+                            renderOption={protocolSelectRenderOption}
+                            messages={{
+                                noResults: "",
+                            }}
+                            className={styles.filterInput}
+                        />
+                        <div className={styles.dividier} />
+                        <MultiSelect
+                            portalContainer={mobileDrawerRef.current}
+                            search
+                            options={chainOptions}
+                            values={chains}
+                            onChange={handleChainsChange}
+                            label={t("filters.chain.label")}
+                            placeholder={t("filters.chain.label")}
+                            renderOption={chainSelectRenderOption}
+                            messages={{
+                                noResults: "",
+                            }}
+                            className={styles.filterInput}
+                        />
+                    </div>
+                </MobileDrawer>
+            </div>
+            <div className={styles.chips}>
+                {statuses.map((status) => (
+                    <Chip
+                        key={status.value}
+                        onClose={getStatusChipCloseHandler(status)}
+                        className={styles.chip}
+                    >
+                        {statusSelectRenderOption(status)}
+                    </Chip>
+                ))}
+                {protocols.map((protocol) => (
+                    <Chip
+                        key={protocol.value}
+                        onClose={getProtocolChipCloseHandler(protocol)}
+                        className={styles.chip}
+                    >
+                        {protocolSelectRenderOption(protocol)}
+                    </Chip>
+                ))}
+                {chains.map((chain) => (
+                    <Chip
+                        key={chain.value}
+                        onClose={getChainChipCloseHandler(chain)}
+                        className={styles.chip}
+                    >
+                        {chainSelectRenderOption(chain)}
+                    </Chip>
+                ))}
             </div>
         </div>
     );
