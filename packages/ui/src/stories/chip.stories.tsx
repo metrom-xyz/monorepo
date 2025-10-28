@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { fn } from "storybook/test";
 import { Chip } from "../components/chip/index";
 
 const meta: Meta = {
@@ -14,20 +15,37 @@ const meta: Meta = {
 export default meta;
 type Story = StoryObj<typeof Chip>;
 
-export const Base: Story = {};
+export const Base: Story = {
+    render: (args) => {
+        return (
+            <div className="flex flex-col gap-4">
+                <Chip {...args}>Metrom chip</Chip>
+            </div>
+        );
+    },
+};
 
-export const Clickable: Story = {
+export const WithOnClick: Story = {
     args: {
-        clickable: true,
+        onClick: fn(),
+    },
+};
+
+export const WithOnClose: Story = {
+    args: {
+        onClose: fn(),
     },
 };
 
 export const Sizes: Story = {
     render: () => {
         return (
-            <div className="flex flex-col gap-4">
+            <div className="w-full flex flex-col gap-4 items-start">
                 <Chip size="xs">Metrom chip</Chip>
                 <Chip size="sm">Metrom chip</Chip>
+                <Chip size="sm" onClose={() => {}}>
+                    Metrom chip
+                </Chip>
             </div>
         );
     },
