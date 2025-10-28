@@ -65,16 +65,20 @@ const Slippage = ({
     return (
         <div ref={rootRef}>
             <div className="flex items-center gap-1">
-                <Typography uppercase variant="tertiary"size="xs" weight="medium">
+                <Typography
+                    uppercase
+                    variant="tertiary"
+                    size="xs"
+                    weight="medium"
+                >
                     Slippage tolerance:
                 </Typography>
                 <div ref={setPopoverAnchor}>
                     <Chip
                         size="xs"
-                        clickable
                         active={popoverOpen}
                         onClick={handlePopoverToggle}
-                        className={{ root: "w-12! py-0! px-1! rounded-sm!" }}
+                        className="w-12! py-0! px-1! rounded-sm!"
                     >
                         <Typography
                             size="xs"
@@ -98,10 +102,9 @@ const Slippage = ({
                         {SLIPPAGE_OPTIONS.map(({ value, label }) => (
                             <Chip
                                 key={value}
-                                clickable
                                 active={slippage === value}
                                 onClick={getSlippageOnClickHandler(value)}
-                                className={{ root: "rounded-md!" }}
+                                className="rounded-md!"
                             >
                                 <Typography weight="medium">{label}</Typography>
                             </Chip>

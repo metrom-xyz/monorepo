@@ -1,7 +1,7 @@
 @reference "../../app.css";
 
 .root {
-    @apply flex items-center justify-center relative size-3.5 rounded-full;
+    @apply flex items-center justify-center relative size-3.5 rounded-full transition-colors duration-200 ease-in-out;
 }
 
 .root.active {

@@ -26,8 +26,10 @@ export function Layout({ children }: LayoutProps) {
 
     return (
         <div className={styles.layout}>
-            <Nav />
-            <div className={styles.main}>{children}</div>
+            <div className={styles.content}>
+                <Nav />
+                <div className={styles.main}>{children}</div>
+            </div>
             <div className={styles.footer}>
                 <Footer />
             </div>
