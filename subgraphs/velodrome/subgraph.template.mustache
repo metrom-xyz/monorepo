@@ -5,35 +5,6 @@ schema:
   file: ./schema.graphql
 dataSources:
   - kind: ethereum
-    name: PoolFactory
-    network: {{network}}
-    source:
-      abi: PoolFactory
-      address: "{{poolFactoryAddress}}"
-      startBlock: {{poolFactoryStartBlock}}
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.9
-      language: wasm/assemblyscript
-      file: ./src/mappings/full-range/factory.ts
-      entities: []
-      abis:
-        - name: PoolFactory
-          file: ./abis/PoolFactory.json
-        - name: Pool
-          file: ./abis/Pool.json
-        - name: Erc20
-          file: ./abis/Erc20.json
-        - name: Erc20BytesName
-          file: ./abis/Erc20BytesName.json
-        - name: Erc20BytesSymbol
-          file: ./abis/Erc20BytesSymbol.json
-      eventHandlers:
-        - event: SetCustomFee(indexed address,uint256)
-          handler: handleSetCustomFee
-        - event: PoolCreated(indexed address,indexed address,indexed bool,address,uint256)
-          handler: handlePoolCreated
-  - kind: ethereum
     name: ClFactory
     network: {{network}}
     source:
@@ -147,33 +118,6 @@ dataSources:
         - event: Rebalance((address,(address,address,uint24,int24,int24,uint128),uint160,uint256,uint256,uint256,uint256))
           handler: handleRebalance
 templates:
-  - kind: ethereum/contract
-    name: Pool
-    network: {{network}}
-    source:
-      abi: Pool
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.9
-      language: wasm/assemblyscript
-      file: ./src/mappings/full-range/pool.ts
-      entities:
-        - FullRangePool
-        - FullRangePosition
-        - FullRangeLiquidityChange
-        - FullRangeLiquidityTransfer
-      abis:
-        - name: Pool
-          file: ./abis/Pool.json
-      eventHandlers:
-        - event: Swap(indexed address,indexed address,uint256,uint256,uint256,uint256)
-          handler: handleSwap
-        - event: Mint(indexed address,indexed address,uint256,uint256)
-          handler: handleMint
-        - event: Burn(indexed address,indexed address,uint256,uint256)
-          handler: handleBurn
-        - event: Transfer(indexed address,indexed address,uint256)
-          handler: handleTransfer
   - kind: ethereum/contract
     name: ClPool
     network: {{network}}
