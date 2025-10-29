@@ -4,16 +4,24 @@
     @apply flex sm:hidden justify-end;
 }
 
+.resizeDrawer {
+    @apply h-[90%];
+}
+
 .drawerContent {
-    @apply w-full flex flex-col gap-5;
+    @apply w-full flex flex-1 flex-col gap-5;
 }
 
 .header {
     @apply flex justify-between items-center;
 }
 
-.statusFilter {
+.statusesFilter {
     @apply flex flex-col gap-3 pt-2 pb-5 border-b stroke-divider;
+}
+
+.chainsFilter {
+    @apply flex-1!;
 }
 
 .dividier {
