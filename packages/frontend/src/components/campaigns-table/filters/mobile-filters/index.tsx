@@ -55,6 +55,7 @@ export function MobileFilters({
         filters.statuses,
     );
     const [drawer, setDrawer] = useState(false);
+    const [selectOpen, setSelectOpen] = useState(false);
 
     const drawerRef = useRef<HTMLInputElement>(null);
 
@@ -117,7 +118,11 @@ export function MobileFilters({
             >
                 {t("filters")}
             </Button>
-            <MobileDrawer open={drawer} onClose={handleDrawerOnToggle}>
+            <MobileDrawer
+                open={drawer}
+                onClose={handleDrawerOnToggle}
+                className={selectOpen ? styles.resizeDrawer : undefined}
+            >
                 <div className={styles.drawerContent}>
                     <div className={styles.header}>
                         <Typography weight="semibold">
@@ -140,7 +145,7 @@ export function MobileFilters({
                             {t("clear")}
                         </Button>
                     </div>
-                    <div className={styles.statusFilter}>
+                    <div className={styles.statusesFilter}>
                         <Typography
                             uppercase
                             size="xs"
@@ -178,6 +183,7 @@ export function MobileFilters({
                         options={protocolOptions}
                         values={protocols}
                         onChange={setProtocols}
+                        onOpenChange={setSelectOpen}
                         label={t("protocol.label")}
                         placeholder={t("protocol.label")}
                         renderOption={protocolSelectRenderOption}
@@ -193,13 +199,17 @@ export function MobileFilters({
                         options={chainOptions}
                         values={chains}
                         onChange={setChains}
+                        onOpenChange={setSelectOpen}
                         label={t("chain.label")}
                         placeholder={t("chain.label")}
                         renderOption={chainSelectRenderOption}
                         messages={{
                             noResults: "",
                         }}
-                        className={commonStyles.filterInput}
+                        className={classNames(
+                            commonStyles.filterInput,
+                            styles.chainsFilter,
+                        )}
                     />
                     <Button
                         size="sm"
