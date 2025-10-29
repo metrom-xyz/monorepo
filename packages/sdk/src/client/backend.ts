@@ -251,15 +251,16 @@ export class MetromApiClient {
     async fetchCampaigns(
         params: FetchCampaignsParams,
     ): Promise<PaginatedCampaignsResponse> {
-        const url = new URL("v2/campaigns", this.baseUrl);
+        const url = new URL(`v2/campaigns/${params.type}`, this.baseUrl);
 
         for (const param in params) {
             const value = params[param as keyof FetchCampaignsParams];
-            if (!value) continue;
+            if (!value || param === "type") continue;
 
-            if (Array.isArray(value))
+            if (Array.isArray(value)) {
+                if (value.length === 0) continue;
                 url.searchParams.set(param, value.join(","));
-            else url.searchParams.set(param, value.toString());
+            } else url.searchParams.set(param, value.toString());
         }
 
         const response = await fetch(url);
