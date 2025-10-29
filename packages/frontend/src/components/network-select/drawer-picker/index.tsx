@@ -1,8 +1,7 @@
 import classNames from "classnames";
-import { Typography } from "@metrom-xyz/ui";
+import { MobileDrawer, Typography } from "@metrom-xyz/ui";
 import { RemoveScroll } from "react-remove-scroll";
 import { useWindowSize } from "react-use";
-import { MobileDrawer } from "../../mobile-drawer";
 import { getCrossVmChainData } from "@/src/utils/chain";
 import { APTOS } from "@/src/commons/env";
 import { METROM_APTOS_BASE_URL, SUPPORTED_CHAINS_MVM } from "@/src/commons";
