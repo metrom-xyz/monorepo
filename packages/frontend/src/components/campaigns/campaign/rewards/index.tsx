@@ -44,54 +44,81 @@ export function Rewards({ status, dailyUsd, rewards, chainId }: RewardsProps) {
                 placement="bottom"
             >
                 <div className={styles.breakdownContainer}>
-                    <Typography
-                        size="sm"
-                        weight="medium"
-                        uppercase
-                        variant="tertiary"
-                    >
-                        {t("tooltip.rewards")}
-                    </Typography>
-                    {rewards.list
-                        .sort((a, b) => b.amount.usdValue - a.amount.usdValue)
-                        .map((reward) => {
-                            return (
-                                <div
-                                    key={reward.token.address}
-                                    className={styles.breakdownRow}
-                                >
-                                    <div>
-                                        <RemoteLogo
-                                            chain={chainId}
-                                            size="sm"
-                                            address={reward.token.address}
-                                            defaultText={reward.token.symbol}
-                                        />
-                                        <Typography weight="medium" size="sm">
-                                            {reward.token.symbol}
-                                        </Typography>
+                    <div className={styles.header}>
+                        <Typography
+                            size="sm"
+                            weight="medium"
+                            uppercase
+                            variant="tertiary"
+                        >
+                            {t("tooltip.totalUsdValue")}
+                        </Typography>
+                        <div className={styles.totalUsdValueChip}>
+                            <Typography size="sm" weight="medium">
+                                {formatUsdAmount({
+                                    amount: rewards.amountUsdValue,
+                                })}
+                            </Typography>
+                        </div>
+                    </div>
+                    <div className={styles.rows}>
+                        {rewards.list
+                            .sort(
+                                (a, b) => b.amount.usdValue - a.amount.usdValue,
+                            )
+                            .map((reward) => {
+                                return (
+                                    <div
+                                        key={reward.token.address}
+                                        className={styles.breakdownRow}
+                                    >
+                                        <div>
+                                            <RemoteLogo
+                                                chain={chainId}
+                                                size="xs"
+                                                address={reward.token.address}
+                                                defaultText={
+                                                    reward.token.symbol
+                                                }
+                                            />
+                                            <Typography
+                                                weight="medium"
+                                                size="sm"
+                                                variant="tertiary"
+                                            >
+                                                {reward.token.symbol}
+                                            </Typography>
+                                        </div>
+                                        <div>
+                                            <Typography
+                                                weight="medium"
+                                                size="sm"
+                                            >
+                                                {formatAmount({
+                                                    amount: reward.amount
+                                                        .formatted,
+                                                })}
+                                            </Typography>
+                                            <div
+                                                className={
+                                                    styles.tokenUsdValueChip
+                                                }
+                                            >
+                                                <Typography
+                                                    weight="medium"
+                                                    size="sm"
+                                                >
+                                                    {formatUsdAmount({
+                                                        amount: reward.amount
+                                                            .usdValue,
+                                                    })}
+                                                </Typography>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div>
-                                        <Typography weight="medium" size="sm">
-                                            {formatAmount({
-                                                amount: reward.amount.formatted,
-                                            })}
-                                        </Typography>
-                                    </div>
-                                </div>
-                            );
-                        })}
-                    <Typography
-                        weight="medium"
-                        size="sm"
-                        uppercase
-                        variant="tertiary"
-                    >
-                        {t("tooltip.totalUsdValue")}
-                    </Typography>
-                    <Typography size="lg" weight="medium">
-                        {formatUsdAmount({ amount: rewards.amountUsdValue })}
-                    </Typography>
+                                );
+                            })}
+                    </div>
                 </div>
             </Popover>
             <div
