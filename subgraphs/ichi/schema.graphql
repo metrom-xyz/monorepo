@@ -1,0 +1,31 @@
+type Vault @entity(immutable: false) {
+    id: Bytes!
+    pool: Bytes!
+    liquidity: BigInt!
+}
+
+type Position @entity(immutable: false) {
+    id: Bytes!
+    owner: Bytes!
+    liquidity: BigInt!
+    vault: Vault!
+}
+
+type LiquidityChange @entity(immutable: true) {
+    id: Bytes!
+    timestamp: BigInt!
+    blockNumber: BigInt!
+    delta: BigInt!
+    position: Position!
+    vault: Vault!
+}
+
+type LiquidityTransfer @entity(immutable: true) {
+    id: Bytes!
+    timestamp: BigInt!
+    blockNumber: BigInt!
+    from: Bytes!
+    to: Bytes!
+    amount: BigInt!
+    vault: Vault!
+}
