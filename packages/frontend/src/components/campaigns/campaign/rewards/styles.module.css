@@ -28,8 +28,32 @@
     @apply flex flex-col gap-3;
 }
 
+.header {
+    @apply flex justify-between gap-7 items-center;
+}
+
+.totalUsdValueChip {
+    @apply px-1.5 py-1 rounded-sm bg-gray-600 dark:bg-neutral-100;
+}
+
+.totalUsdValueChip > p {
+    @apply text-neutral-50 dark:text-neutral-900;
+}
+
+.rows {
+    @apply flex flex-col gap-1;
+}
+
+.tokenUsdValueChip {
+    @apply px-1.5 py-1 rounded-sm bg-white dark:bg-neutral-700;
+}
+
+.tokenUsdValueChip > p {
+    @apply text-gray-500 dark:text-neutral-100;
+}
+
 .breakdownRow {
-    @apply flex items-center gap-6 justify-between;
+    @apply flex items-center gap-6 justify-between bg-gray-150 dark:bg-neutral-900 rounded-sm px-2 py-1;
 }
 
 .breakdownRow > div {
