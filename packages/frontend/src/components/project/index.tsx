@@ -32,6 +32,16 @@ export function Project({ project }: ProjectProps) {
         campaignsFilters,
     } = details;
 
+    const chainsFilter = campaignsFilters
+        ? [
+              {
+                  value: `${chain.type}_${campaignsFilters.chainId}`,
+                  label: "",
+                  query: "",
+              },
+          ]
+        : undefined;
+
     return (
         <div className={styles.root}>
             <Header
@@ -51,10 +61,7 @@ export function Project({ project }: ProjectProps) {
                 <CampaignsTable
                     disableFilters
                     optionalFilters={{
-                        chainIds: campaignsFilters.chainId
-                            ? [campaignsFilters.chainId.toString()]
-                            : [],
-                        chainTypes: chain.type ? [chain.type] : [],
+                        chains: chainsFilter,
                         protocols: campaignsFilters.dex
                             ? // TODO: find a better way
                               [{ label: "", value: campaignsFilters.dex }]
