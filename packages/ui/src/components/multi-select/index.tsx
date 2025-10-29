@@ -33,6 +33,7 @@ export type MultiSelectProps<V extends ValueType, O extends SelectOption<V>> = {
     options: O[];
     values: O[];
     search?: boolean;
+    onOpenChange?: (open: boolean) => void;
     onChange: (option: O[]) => void;
     renderOption?: (option: O) => ReactElement;
     loading?: boolean;
@@ -70,6 +71,7 @@ function Component<V extends ValueType, O extends SelectOption<V>>(
         options,
         values,
         search,
+        onOpenChange,
         onChange,
         renderOption,
         disabled,
@@ -100,6 +102,11 @@ function Component<V extends ValueType, O extends SelectOption<V>>(
         if (open) inputRef.current.focus();
         setQuery("");
     }, [open, search]);
+
+    useEffect(() => {
+        if (!onOpenChange) return;
+        onOpenChange(open);
+    }, [open, onOpenChange]);
 
     useEffect(() => {
         setSelectedOptions(values);

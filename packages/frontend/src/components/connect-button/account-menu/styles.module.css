@@ -1,7 +1,7 @@
 @reference "../../../app.css";
 
 .root {
-    @apply bg-zinc-100 dark:bg-zinc-900
+    @apply surface-primary
         rounded-t-4xl
         sm:rounded-t-none
         h-full

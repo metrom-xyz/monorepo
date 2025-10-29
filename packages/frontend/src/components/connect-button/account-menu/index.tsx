@@ -120,7 +120,7 @@ export function AccountMenu({
                             top: 0,
                             bottom: 0,
                         }}
-                        dragElastic={1}
+                        dragElastic={{ top: 0, bottom: 0.5 }}
                         onDragEnd={(_, info) => {
                             if (info.offset.y > 100) onClose();
                         }}

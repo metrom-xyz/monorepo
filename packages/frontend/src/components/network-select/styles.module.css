@@ -16,18 +16,6 @@
         ease-in-out;
 }
 
-.overlay {
-    @apply z-30
-        flex
-        sm:hidden
-        fixed
-        top-0
-        bottom-0
-        left-0
-        right-0
-        bg-light-overlay dark:bg-dark-overlay;
-}
-
 .active {
     @apply bg-zinc-200 dark:bg-zinc-700;
 }
