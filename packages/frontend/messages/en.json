@@ -101,8 +101,7 @@
         },
         "rewards": {
             "tooltip": {
-                "rewards": "Rewards",
-                "totalUsdValue": "Total USD value"
+                "totalUsdValue": "Total USD rewards"
             }
         },
         "points": {
