@@ -9,50 +9,6 @@ type Gauge @entity(immutable: true) {
     id: Bytes!
 }
 
-type FullRangePool @entity(immutable: false) {
-    id: Bytes!
-    stable: Boolean!
-    token0: Token!
-    token1: Token!
-    token0Tvl: BigInt!
-    token1Tvl: BigInt!
-    liquidity: BigInt!
-    price: BigDecimal!
-    fee: Int!
-    positions: [FullRangePosition!]! @derivedFrom(field: "pool")
-    liquidityChanges: [FullRangeLiquidityChange!]! @derivedFrom(field: "pool")
-    liquidityTransfers: [FullRangeLiquidityTransfer!]!
-        @derivedFrom(field: "pool")
-}
-
-type FullRangePosition @entity(immutable: false) {
-    id: Bytes!
-    owner: Bytes!
-    liquidity: BigInt!
-    pool: FullRangePool!
-    liquidityChanges: [FullRangeLiquidityChange!]!
-        @derivedFrom(field: "position")
-}
-
-type FullRangeLiquidityChange @entity(immutable: true) {
-    id: Bytes!
-    timestamp: BigInt!
-    blockNumber: BigInt!
-    delta: BigInt!
-    pool: FullRangePool!
-    position: FullRangePosition!
-}
-
-type FullRangeLiquidityTransfer @entity(immutable: true) {
-    id: Bytes!
-    timestamp: BigInt!
-    blockNumber: BigInt!
-    from: Bytes!
-    to: Bytes!
-    amount: BigInt!
-    pool: FullRangePool!
-}
-
 type ConcentratedPool @entity(immutable: false) {
     id: Bytes!
     token0: Token!

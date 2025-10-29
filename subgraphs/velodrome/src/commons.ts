@@ -10,7 +10,6 @@ import {
     AlmStrategyPosition,
     ConcentratedPool,
     ConcentratedPosition,
-    FullRangePool,
     Tick,
     Token,
 } from "../generated/schema";
@@ -53,15 +52,6 @@ export const AlmCoreContract = AlmCore.bind(ALM_CORE_ADDRESS);
 export function getEventId(event: ethereum.Event): Bytes {
     return changetype<Bytes>(
         event.block.number.leftShift(40).plus(event.logIndex).reverse(),
-    );
-}
-
-export function getFullRangePoolOrThrow(address: Address): FullRangePool {
-    let pool = FullRangePool.load(address);
-    if (pool !== null) return pool;
-
-    throw new Error(
-        `Could not find full range pool with address ${address.toHex()}`,
     );
 }
 
