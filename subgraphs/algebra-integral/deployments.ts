@@ -94,6 +94,17 @@ export const DEPLOYMENTS: {
                 version: NonFungiblePositionManagerVersion.V1_0,
             },
         },
+        hydrex: {
+            Factory: {
+                address: "0x36077D39cdC65E1e3FB65810430E5b2c4D5fA29E",
+                startBlock: 31648963,
+            },
+            NonFungiblePositionManager: {
+                address: "0xC63E9672f8e93234C73cE954a1d1292e4103Ab86",
+                startBlock: 31649041,
+                version: NonFungiblePositionManagerVersion.V1_2,
+            },
+        },
     },
     scroll: {
         scribe: {
