@@ -5,7 +5,6 @@ import { useAccount, useChainId, useSwitchChain } from "wagmi";
 import { PopoverPicker } from "./popover-picker";
 import { DrawerPicker } from "./drawer-picker";
 import { useClickAway } from "react-use";
-import { AnimatePresence, motion } from "motion/react";
 import { useChainData } from "@/src/hooks/useChainData";
 import { useIsChainSupported } from "@/src/hooks/useIsChainSupported";
 import { useActiveChains } from "@/src/hooks/useActiveChains";
@@ -74,47 +73,35 @@ export function NetworkSelectEvm() {
     }
 
     return (
-        <>
-            <AnimatePresence>
-                {pickerOpen && (
-                    <motion.div
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                        className={classNames(styles.overlay)}
-                    />
-                )}
-            </AnimatePresence>
-            <div ref={rootRef}>
-                <div
-                    ref={setWrapper}
-                    className={classNames(styles.networkWrapper, {
-                        [styles.wrong]: !chainSupported,
-                    })}
-                    onClick={handleNetworkPickerOnToggle}
-                >
-                    {!chainSupported ? (
-                        <ErrorIcon className={styles.icon} />
-                    ) : chainData ? (
-                        <chainData.icon className={styles.icon} />
-                    ) : null}
-                </div>
-                <PopoverPicker
-                    anchor={wrapper}
-                    chains={chains}
-                    open={pickerOpen}
-                    value={selectedChainId}
-                    onChange={handleNetworkOnChange}
-                    onOpen={setPickerOpen}
-                />
-                <DrawerPicker
-                    chains={chains}
-                    open={pickerOpen}
-                    value={selectedChainId}
-                    onChange={handleNetworkOnChange}
-                    onClose={handleNetworkPickerOnClose}
-                />
+        <div ref={rootRef}>
+            <div
+                ref={setWrapper}
+                className={classNames(styles.networkWrapper, {
+                    [styles.wrong]: !chainSupported,
+                })}
+                onClick={handleNetworkPickerOnToggle}
+            >
+                {!chainSupported ? (
+                    <ErrorIcon className={styles.icon} />
+                ) : chainData ? (
+                    <chainData.icon className={styles.icon} />
+                ) : null}
             </div>
-        </>
+            <PopoverPicker
+                anchor={wrapper}
+                chains={chains}
+                open={pickerOpen}
+                value={selectedChainId}
+                onChange={handleNetworkOnChange}
+                onOpen={setPickerOpen}
+            />
+            <DrawerPicker
+                chains={chains}
+                open={pickerOpen}
+                value={selectedChainId}
+                onChange={handleNetworkOnChange}
+                onClose={handleNetworkPickerOnClose}
+            />
+        </div>
     );
 }
