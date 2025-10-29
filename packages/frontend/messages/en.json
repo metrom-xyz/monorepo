@@ -54,6 +54,7 @@
         "filters": {
             "filters": "Filters",
             "filterBy": "Filter campaigns by",
+            "saveFilters": "Save filters",
             "protocol": {
                 "label": "Protocol"
             },

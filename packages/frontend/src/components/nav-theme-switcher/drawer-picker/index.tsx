@@ -1,7 +1,7 @@
 import { RemoveScroll } from "react-remove-scroll";
 import { useWindowSize } from "react-use";
 import { ThemeSwitcherTabs } from "../../theme-switcher-tabs";
-import { MobileDrawer } from "../../mobile-drawer";
+import { MobileDrawer } from "@metrom-xyz/ui";
 
 import styles from "./styles.module.css";
 

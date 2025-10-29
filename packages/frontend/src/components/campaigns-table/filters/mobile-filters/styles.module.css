@@ -1,0 +1,29 @@
+@reference "../../../../app.css";
+
+.root {
+    @apply flex sm:hidden justify-end;
+}
+
+.drawerContent {
+    @apply w-full flex flex-col gap-5;
+}
+
+.header {
+    @apply flex justify-between items-center;
+}
+
+.statusFilter {
+    @apply flex flex-col gap-3 pt-2 pb-5 border-b stroke-divider;
+}
+
+.dividier {
+    @apply border-t w-full stroke-divider;
+}
+
+.statusChipsFilter {
+    @apply flex gap-2;
+}
+
+.saveFiltersButton {
+    @apply w-full;
+}
