@@ -1,0 +1,43 @@
+specVersion: 1.0.0
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum
+    name: Factory
+    network: {{network}}
+    source:
+      abi: Factory
+      address: "{{factoryAddress}}"
+      startBlock: {{factoryStartBlock}}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      file: ./src/mappings/factory.ts
+      entities: []
+      abis:
+        - name: Factory
+          file: ./abis/Factory.json
+        - name: Vault
+          file: ./abis/Vault.json
+      eventHandlers:
+        - event: ICHIVaultCreated(indexed address,address,address,bool,address,bool,uint256)
+          handler: handleVaultCreated
+templates:
+  - kind: ethereum/contract
+    name: Vault
+    network: {{network}}
+    source:
+      abi: Vault
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      file: ./src/mappings/vault.ts
+      entities: []
+      abis:
+        - name: Vault
+          file: ./abis/Vault.json
+      eventHandlers:
+        - event: Transfer(indexed address,indexed address,uint256)
+          handler: handleTransfer
