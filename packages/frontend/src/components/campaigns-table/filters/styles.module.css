@@ -14,31 +14,7 @@
 }
 
 .inputs {
-    @apply hidden sm:flex justify-between items-center gap-3;
-}
-
-.mobileDrawerContent {
-    @apply w-full flex flex-col gap-5;
-}
-
-.inputsMobile {
-    @apply flex justify-end sm:hidden;
-}
-
-.statusFilterMobile {
-    @apply flex flex-col gap-3 pt-2 pb-5 border-b stroke-divider;
-}
-
-.dividier {
-    @apply border-t w-full stroke-divider;
-}
-
-.statusChipsFilterMobile {
-    @apply flex gap-2;
-}
-
-.saveFiltersButtonMobile {
-    @apply w-full;
+    @apply invisible absolute sm:visible sm:relative sm:flex justify-between items-center gap-3;
 }
 
 .chips {

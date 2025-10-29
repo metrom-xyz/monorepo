@@ -7,7 +7,7 @@ import type { TranslationsKeys } from "@/src/types/utils";
 import { useTranslations } from "next-intl";
 import { useRouter as useLocalizedRouter } from "@/i18n/routing";
 import { CampaignRow, SkeletonCampaign } from "../campaigns/campaign";
-import { Filters } from "./filters";
+import { Filters, type FilterParams, type RawFilters } from "./filters";
 import { useCampaigns } from "@/src/hooks/useCampaigns";
 import { APTOS } from "@/src/commons/env";
 import { BackendCampaignType, ChainType } from "@metrom-xyz/sdk";
@@ -100,7 +100,7 @@ const TABLE_POINTS_COLUMNS: {
 
 interface CampaignsTableProps {
     disableFilters?: boolean;
-    optionalFilters?: Partial<Filters>;
+    optionalFilters?: Partial<RawFilters>;
 }
 
 export function CampaignsTable({
@@ -116,16 +116,14 @@ export function CampaignsTable({
     const [sortField, setSortField] = useState<CampaignSortOptions>();
     const [order, setOrder] = useState<number | undefined>();
     const [pageNumber, setPageNumber] = useState(1);
-    const [filters, setFilters] = useState<Filters>({
-        chainTypes: [],
-        chainIds: [],
+    const [rawFilters, setRawFilters] = useState<RawFilters>({
+        chains: [],
         protocols: [],
         statuses: [],
         ...optionalFilters,
     });
-    const [debouncedFilters, setDebouncedFilters] = useState<Filters>({
-        chainTypes: [],
-        chainIds: [],
+    const [debouncedRawFilters, setDebouncedRawFilters] = useState<RawFilters>({
+        chains: [],
         protocols: [],
         statuses: [],
         ...optionalFilters,
@@ -137,26 +135,36 @@ export function CampaignsTable({
 
     useDebounce(
         () => {
-            setDebouncedFilters(filters);
+            setDebouncedRawFilters(rawFilters);
         },
         300,
-        [filters],
+        [rawFilters],
     );
 
-    const { chainTypes, chainIds, protocols, statuses } = useMemo(() => {
-        const { statuses, protocols, chainIds, chainTypes } = debouncedFilters;
+    const { chainTypes, chainIds, protocols, statuses }: FilterParams =
+        useMemo(() => {
+            const { statuses, protocols, chains } = debouncedRawFilters;
 
-        return {
-            chainIds: chainIds.map(Number),
-            protocols: protocols.map(({ value }) => value),
-            statuses: statuses.map(({ value }) => value),
-            chainTypes: APTOS
-                ? [ChainType.Aptos]
-                : chainTypes
-                  ? chainTypes
-                  : undefined,
-        };
-    }, [debouncedFilters]);
+            const chainTypes: ChainType[] = [];
+            const chainIds: string[] = [];
+            chains.forEach((chain) => {
+                const [chainType, chainId] = chain.value.split("_");
+                if (!chainTypes.includes(chainType as ChainType))
+                    chainTypes.push(chainType as ChainType);
+                if (!chainIds.includes(chainId)) chainIds.push(chainId);
+            });
+
+            return {
+                chainIds: chainIds.map(Number),
+                protocols: protocols.map(({ value }) => value),
+                statuses: statuses.map(({ value }) => value),
+                chainTypes: APTOS
+                    ? [ChainType.Aptos]
+                    : chainTypes
+                      ? chainTypes
+                      : undefined,
+            };
+        }, [debouncedRawFilters]);
 
     const { loading, fetching, placeholderData, campaigns, totalCampaigns } =
         useCampaigns({
@@ -195,8 +203,8 @@ export function CampaignsTable({
     }
 
     function handleClearFilters() {
-        setFilters({
-            chainIds: [],
+        setRawFilters({
+            chains: [],
             protocols: [],
             statuses: [],
         });
@@ -205,9 +213,9 @@ export function CampaignsTable({
         setOrder(undefined);
     }
 
-    function handleFiltersOnChange(filters: Partial<Filters>) {
+    function handleFiltersOnChange(filters: Partial<RawFilters>) {
         setPageNumber(1);
-        setFilters((prev) => ({ ...prev, ...filters }));
+        setRawFilters((prev) => ({ ...prev, ...filters }));
     }
 
     const handleCreateCampaign = useCallback(() => {
@@ -239,6 +247,7 @@ export function CampaignsTable({
                     <Filters
                         sortField={sortField}
                         order={order}
+                        filters={rawFilters}
                         onClearFilters={handleClearFilters}
                         onFiltersChange={handleFiltersOnChange}
                     />
