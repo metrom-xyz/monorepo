@@ -66,6 +66,7 @@ export function NetworkSelectMvm() {
             </div>
             <PopoverPicker
                 anchor={wrapper}
+                container={rootRef.current}
                 chains={activeChains}
                 open={pickerOpen}
                 value={selectedChainId}
