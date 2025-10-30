@@ -5,7 +5,7 @@
 }
 
 .resizeDrawer {
-    @apply h-[90%];
+    @apply h-[95%];
 }
 
 .drawerContent {

@@ -4,13 +4,13 @@
     @apply max-w-screen-xl w-full flex-col flex sm:gap-3 pb-0 pt-4 px-3 sm:pb-5;
 }
 
-.searchFilter :global(.label) {
-    @apply invisible sm:visible;
-}
-
 .filterInput,
 .filterInput :global(.input) {
     @apply sm:w-48;
+}
+
+.filterInput.desktop {
+    @apply w-0 sm:w-48;
 }
 
 .inputs {

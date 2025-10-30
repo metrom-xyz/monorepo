@@ -16,18 +16,6 @@
     @apply h-6 w-6 dark:text-zinc-200;
 }
 
-.overlay {
-    @apply z-30
-        flex
-        sm:hidden
-        fixed
-        top-0
-        bottom-0
-        left-0
-        right-0
-        bg-light-overlay dark:bg-dark-overlay;
-}
-
 .themeWrapper {
     @apply bg-white dark:bg-zinc-800
         w-10

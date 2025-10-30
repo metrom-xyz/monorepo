@@ -5,7 +5,6 @@ import { SunIcon } from "@/src/assets/sun-icon";
 import classNames from "classnames";
 import { useTheme } from "next-themes";
 import { DrawerPicker } from "./drawer-picker";
-import { AnimatePresence, motion } from "motion/react";
 import { PopoverPicker } from "./popover-picker";
 import { useClickAway } from "react-use";
 
@@ -38,36 +37,25 @@ export function NavThemeSwitcher() {
     if (!mounted) return;
 
     return (
-        <>
-            <AnimatePresence>
-                {pickerOpen && (
-                    <motion.div
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                        className={classNames(styles.overlay)}
-                    />
-                )}
-            </AnimatePresence>
-            <div ref={rootRef}>
-                <div
-                    ref={setWrapper}
-                    onClick={handleThemePickerOnToggle}
-                    className={classNames(styles.themeWrapper)}
-                >
-                    {resolvedTheme === Theme.Dark && <MoonIcon />}
-                    {resolvedTheme === Theme.Light && <SunIcon />}
-                </div>
-                <PopoverPicker
-                    anchor={wrapper}
-                    open={pickerOpen}
-                    onOpen={setPickerOpen}
-                />
-                <DrawerPicker
-                    open={pickerOpen}
-                    onClose={handleThemePickerOnClose}
-                />
+        <div ref={rootRef}>
+            <div
+                ref={setWrapper}
+                onClick={handleThemePickerOnToggle}
+                className={classNames(styles.themeWrapper)}
+            >
+                {resolvedTheme === Theme.Dark && <MoonIcon />}
+                {resolvedTheme === Theme.Light && <SunIcon />}
             </div>
-        </>
+            <PopoverPicker
+                container={rootRef.current}
+                anchor={wrapper}
+                open={pickerOpen}
+                onOpen={setPickerOpen}
+            />
+            <DrawerPicker
+                open={pickerOpen}
+                onClose={handleThemePickerOnClose}
+            />
+        </div>
     );
 }

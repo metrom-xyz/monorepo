@@ -139,7 +139,6 @@ export function MobileFilters({
                                 root: classNames(commonStyles.clearButton, {
                                     [commonStyles.visible]: active,
                                 }),
-                                icon: styles.trashIcon,
                             }}
                         >
                             {t("clear")}
