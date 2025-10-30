@@ -65,7 +65,7 @@ export const DateTimePicker = ({
         const originalValue = dayjs(value);
         const rectifiedValue = rectifyDate(dayjs(value), min, max);
         if (!originalValue.isSame(rectifiedValue, "seconds"))
-            onChange(rectifiedValue);
+            onChange(rectifiedValue.set("seconds", 0).set("milliseconds", 0));
     }, [max, min, onChange, value]);
 
     const handleDateChange = useCallback(
