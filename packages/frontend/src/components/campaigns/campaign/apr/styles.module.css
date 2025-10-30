@@ -8,6 +8,10 @@
     @apply w-fit;
 }
 
+.popover {
+    @apply pb-0!;
+}
+
 .popoverContent {
     @apply flex flex-col gap-2 w-[400px];
 }
