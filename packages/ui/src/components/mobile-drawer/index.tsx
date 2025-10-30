@@ -29,7 +29,6 @@ export function MobileDrawer({
                         className={classNames("overlay", styles.overlay)}
                     />
                     <motion.div
-                        layout
                         initial={{ y: "100%" }}
                         animate={{ y: 0 }}
                         exit={{ y: "100%" }}

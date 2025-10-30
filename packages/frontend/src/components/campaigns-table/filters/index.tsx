@@ -325,7 +325,7 @@ export function Filters({
                     messages={{
                         noResults: "",
                     }}
-                    className={styles.filterInput}
+                    className={classNames(styles.filterInput, styles.desktop)}
                 />
                 <MultiSelect
                     search
@@ -339,7 +339,7 @@ export function Filters({
                     messages={{
                         noResults: "",
                     }}
-                    className={styles.filterInput}
+                    className={classNames(styles.filterInput, styles.desktop)}
                 />
                 <div className={styles.lastFilterWrapper}>
                     <MultiSelect
@@ -354,7 +354,10 @@ export function Filters({
                         messages={{
                             noResults: "",
                         }}
-                        className={styles.filterInput}
+                        className={classNames(
+                            styles.filterInput,
+                            styles.desktop,
+                        )}
                     />
                     <Button
                         variant="secondary"
