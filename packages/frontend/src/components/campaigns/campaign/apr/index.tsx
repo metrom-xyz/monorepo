@@ -65,8 +65,9 @@ export function Apr({ campaign, apr, kpi }: AprProps) {
                 ref={popoverRef}
                 anchor={anchor}
                 open={popover}
-                onOpenChange={setPopover}
                 placement="bottom"
+                onOpenChange={setPopover}
+                className={styles.popover}
             >
                 <div className={styles.popoverContent}>
                     <Typography size="sm" weight="semibold" uppercase>

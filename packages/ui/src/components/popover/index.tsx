@@ -90,9 +90,14 @@ export const Popover = forwardRef<HTMLDivElement, PopoverProps>(
                             exit={{ opacity: 0 }}
                             transition={{ duration: 0.2, ease: easeInOut }}
                             style={{ ...floatingStyles }}
-                            className={classNames(styles.root, className, {
-                                [styles[variant]]: true,
-                            })}
+                            className={classNames(
+                                "root",
+                                styles.root,
+                                className,
+                                {
+                                    [styles[variant]]: true,
+                                },
+                            )}
                         >
                             {children}
                         </motion.div>
