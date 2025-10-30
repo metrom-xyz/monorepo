@@ -15,6 +15,7 @@ interface PopoverPickerProps {
     open: boolean;
     chains: readonly ChainWithType[];
     value: number;
+    container: HTMLElement | null;
     onChange?: (chainId: number) => void;
     onOpen: (open: boolean) => void;
 }
@@ -24,6 +25,7 @@ export function PopoverPicker({
     open,
     chains,
     value,
+    container,
     onChange,
     onOpen,
 }: PopoverPickerProps) {
@@ -40,6 +42,7 @@ export function PopoverPicker({
 
     return (
         <Popover
+            root={container}
             placement="bottom-start"
             anchor={anchor}
             open={open}
