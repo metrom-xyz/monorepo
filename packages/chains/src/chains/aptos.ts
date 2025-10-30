@@ -27,7 +27,7 @@ export const aptosDevelopmentData: ChainData = {
             type: BaseCampaignType.AaveV3,
         },
         {
-            active: true,
+            active: false,
             partner: false,
             type: BaseCampaignType.HoldFungibleAsset,
         },
@@ -88,7 +88,7 @@ export const aptosDevelopmentProductionData: ChainData = {
             type: BaseCampaignType.AaveV3,
         },
         {
-            active: true,
+            active: false,
             partner: false,
             type: BaseCampaignType.HoldFungibleAsset,
         },
@@ -144,7 +144,7 @@ export const aptosProductionData: ChainData = {
             type: BaseCampaignType.AaveV3,
         },
         {
-            active: true,
+            active: false,
             partner: false,
             type: BaseCampaignType.HoldFungibleAsset,
         },
