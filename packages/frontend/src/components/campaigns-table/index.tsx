@@ -1,4 +1,4 @@
-import { Button, Pagination, Tab, Tabs, Typography } from "@metrom-xyz/ui";
+import { Button, Pagination, Typography } from "@metrom-xyz/ui";
 import classNames from "classnames";
 import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
 import { useCallback, useEffect, useMemo, useState } from "react";
@@ -13,8 +13,6 @@ import { APTOS } from "@/src/commons/env";
 import { BackendCampaignType, ChainType } from "@metrom-xyz/sdk";
 import { LoadingBar } from "../loading-bar";
 import { useDebounce } from "react-use";
-import { TokensIcon } from "@/src/assets/tokens-icon";
-import { PointsIcon } from "@/src/assets/points-icon";
 
 import styles from "./styles.module.css";
 
@@ -99,20 +97,23 @@ const TABLE_POINTS_COLUMNS: {
 ];
 
 interface CampaignsTableProps {
+    type: BackendCampaignType;
     disableFilters?: boolean;
     optionalFilters?: Partial<RawFilters>;
+    onCountChange?: (count: number) => void;
+    onLoadingChange?: (fetching: boolean) => void;
 }
 
 export function CampaignsTable({
+    type,
     disableFilters,
     optionalFilters,
+    onCountChange,
+    onLoadingChange,
 }: CampaignsTableProps) {
     const t = useTranslations("allCampaigns");
     const localizedRouter = useLocalizedRouter();
 
-    const [type, setType] = useState<BackendCampaignType>(
-        BackendCampaignType.Rewards,
-    );
     const [sortField, setSortField] = useState<CampaignSortOptions>();
     const [order, setOrder] = useState<number | undefined>();
     const [pageNumber, setPageNumber] = useState(1);
@@ -131,6 +132,14 @@ export function CampaignsTable({
 
     useEffect(() => {
         setPageNumber(1);
+        setRawFilters({
+            chains: [],
+            protocols: [],
+            statuses: [],
+        });
+        setPageNumber(1);
+        setSortField(undefined);
+        setOrder(undefined);
     }, [type]);
 
     useDebounce(
@@ -178,6 +187,16 @@ export function CampaignsTable({
             orderBy: sortField,
             asc: order === 1 ? true : order === -1 ? false : undefined,
         });
+
+    useEffect(() => {
+        if (!onLoadingChange) return;
+        onLoadingChange(loading);
+    }, [loading, onLoadingChange]);
+
+    useEffect(() => {
+        if (!onCountChange) return;
+        onCountChange(totalCampaigns);
+    }, [totalCampaigns, onCountChange]);
 
     const getSortChangeHandler = useCallback(
         (column: CampaignSortOptions) => {
@@ -228,134 +247,120 @@ export function CampaignsTable({
             : TABLE_POINTS_COLUMNS;
 
     return (
-        <>
-            <Tabs size="xl" value={type} onChange={setType}>
-                <Tab icon={TokensIcon} value={BackendCampaignType.Rewards}>
-                    {t("tabs.tokens")}
-                </Tab>
-                <Tab icon={PointsIcon} value={BackendCampaignType.Points}>
-                    {t("tabs.points")}
-                </Tab>
-            </Tabs>
-            <div
-                className={classNames(styles.root, {
-                    [styles.topLeftSquared]:
-                        type === BackendCampaignType.Rewards,
-                })}
-            >
-                {!disableFilters && (
-                    <Filters
-                        sortField={sortField}
-                        order={order}
-                        filters={rawFilters}
-                        onClearFilters={handleClearFilters}
-                        onFiltersChange={handleFiltersOnChange}
-                    />
-                )}
-                <div className={styles.tableWrapper}>
-                    <div
-                        className={classNames(styles.table, {
-                            [styles[type]]: true,
-                        })}
-                    >
-                        <div className={styles.header}>
-                            {columns.map(({ name, label, sort }, index) => (
-                                <div
-                                    key={index}
-                                    onClick={
-                                        sort
-                                            ? getSortChangeHandler(
-                                                  name as CampaignSortOptions,
-                                              )
-                                            : undefined
-                                    }
-                                    className={classNames(styles.column, {
-                                        [styles.disabled]:
-                                            placeholderData && fetching,
-                                        [styles.sort]: sort,
-                                    })}
+        <div
+            className={classNames(styles.root, {
+                [styles.topLeftSquared]: type === BackendCampaignType.Rewards,
+            })}
+        >
+            {!disableFilters && (
+                <Filters
+                    sortField={sortField}
+                    order={order}
+                    filters={rawFilters}
+                    onClearFilters={handleClearFilters}
+                    onFiltersChange={handleFiltersOnChange}
+                />
+            )}
+            <div className={styles.tableWrapper}>
+                <div
+                    className={classNames(styles.table, {
+                        [styles[type]]: true,
+                    })}
+                >
+                    <div className={styles.header}>
+                        {columns.map(({ name, label, sort }, index) => (
+                            <div
+                                key={index}
+                                onClick={
+                                    sort
+                                        ? getSortChangeHandler(
+                                              name as CampaignSortOptions,
+                                          )
+                                        : undefined
+                                }
+                                className={classNames(styles.column, {
+                                    [styles.disabled]:
+                                        placeholderData && fetching,
+                                    [styles.sort]: sort,
+                                })}
+                            >
+                                <Typography
+                                    size="sm"
+                                    weight="medium"
+                                    variant="tertiary"
+                                    uppercase
                                 >
-                                    <Typography
-                                        size="sm"
-                                        weight="medium"
-                                        variant="tertiary"
-                                        uppercase
-                                    >
-                                        {t(`header.${label}`)}
-                                    </Typography>
-                                    {sort && (
-                                        <ArrowRightIcon
-                                            className={classNames(
-                                                styles.sortIcon,
-                                                {
-                                                    [styles.asc]:
-                                                        sortField === name &&
-                                                        order === 1,
-                                                },
-                                            )}
-                                        />
-                                    )}
-                                </div>
-                            ))}
-                        </div>
-                        <div className={styles.body}>
-                            <LoadingBar
-                                loading={placeholderData && fetching}
-                                className={styles.loadingBar}
-                            />
-                            {loading ? (
-                                <>
-                                    <SkeletonCampaign />
-                                    <SkeletonCampaign />
-                                    <SkeletonCampaign />
-                                    <SkeletonCampaign />
-                                    <SkeletonCampaign />
-                                    <SkeletonCampaign />
-                                    <SkeletonCampaign />
-                                    <SkeletonCampaign />
-                                    <SkeletonCampaign />
-                                    <SkeletonCampaign />
-                                </>
-                            ) : !campaigns || campaigns.length === 0 ? (
-                                <div className={styles.empty}>
-                                    <Typography uppercase weight="medium">
-                                        {t("empty.title")}
-                                    </Typography>
-                                    <Typography size="lg" weight="medium">
-                                        {t("empty.description")}
-                                    </Typography>
-                                    <Button
-                                        size="sm"
-                                        onClick={handleCreateCampaign}
-                                    >
-                                        {t("empty.create")}
-                                    </Button>
-                                </div>
-                            ) : (
-                                campaigns?.map((campaign) => {
-                                    return (
-                                        <CampaignRow
-                                            key={campaign.id}
-                                            type={type}
-                                            campaign={campaign}
-                                        />
-                                    );
-                                })
-                            )}
-                        </div>
+                                    {t(`header.${label}`)}
+                                </Typography>
+                                {sort && (
+                                    <ArrowRightIcon
+                                        className={classNames(styles.sortIcon, {
+                                            [styles.asc]:
+                                                sortField === name &&
+                                                order === 1,
+                                        })}
+                                    />
+                                )}
+                            </div>
+                        ))}
+                    </div>
+                    <div className={styles.body}>
+                        <LoadingBar
+                            loading={placeholderData && fetching}
+                            className={styles.loadingBar}
+                        />
+                        {loading ? (
+                            <>
+                                <SkeletonCampaign type={type} />
+                                <SkeletonCampaign type={type} />
+                                <SkeletonCampaign type={type} />
+                                <SkeletonCampaign type={type} />
+                                <SkeletonCampaign type={type} />
+                                <SkeletonCampaign type={type} />
+                                <SkeletonCampaign type={type} />
+                                <SkeletonCampaign type={type} />
+                                <SkeletonCampaign type={type} />
+                                <SkeletonCampaign type={type} />
+                            </>
+                        ) : !campaigns || campaigns.length === 0 ? (
+                            <div className={styles.empty}>
+                                <Typography uppercase weight="medium">
+                                    {t("empty.title")}
+                                </Typography>
+                                <Typography size="lg" weight="medium">
+                                    {t("empty.description")}
+                                </Typography>
+                                <Button
+                                    size="sm"
+                                    onClick={handleCreateCampaign}
+                                >
+                                    {t("empty.create")}
+                                </Button>
+                            </div>
+                        ) : (
+                            campaigns?.map((campaign) => {
+                                return (
+                                    <CampaignRow
+                                        key={campaign.id}
+                                        type={type}
+                                        campaign={campaign}
+                                    />
+                                );
+                            })
+                        )}
                     </div>
                 </div>
-                <div className={styles.paginationWrapper}>
-                    <Pagination
-                        page={pageNumber}
-                        loading={loading || (placeholderData && fetching)}
-                        totalPages={Math.ceil(totalCampaigns / PAGE_SIZE)}
-                        onNext={handleNextPage}
-                        onPrevious={handlePreviousPage}
-                        onPage={handlePage}
-                    />
-                </div>
             </div>
-        </>
+            <div className={styles.paginationWrapper}>
+                <Pagination
+                    page={pageNumber}
+                    loading={loading || (placeholderData && fetching)}
+                    totalPages={Math.ceil(totalCampaigns / PAGE_SIZE)}
+                    onNext={handleNextPage}
+                    onPrevious={handlePreviousPage}
+                    onPage={handlePage}
+                />
+            </div>
+        </div>
     );
 }

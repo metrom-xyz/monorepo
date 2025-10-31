@@ -1,0 +1,10 @@
+@reference "../../app.css";
+
+.root {
+    @apply max-w-screen-xl
+        w-full
+        flex
+        flex-col
+        surface-primary
+        rounded-xl;
+}

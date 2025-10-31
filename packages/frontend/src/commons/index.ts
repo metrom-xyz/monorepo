@@ -29,6 +29,8 @@ export const LIQUIDITY_LAND_REFERRAL_URL =
 
 export const ENSO_WIDGET_REFERRAL_CODE = "6578715329019f91";
 
+export const MIN_LOADING_TIMEOUT_MS = 300;
+
 export const SECONDS_IN_YEAR = 60 * 60 * 24 * 365;
 
 export const FEE_UNIT = 1_000_000;
