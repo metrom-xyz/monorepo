@@ -136,9 +136,19 @@ export function Filters({
     const searchParams = useSearchParams();
     const chainInitializedRef = useRef(false);
 
-    const [chains, setChains] = useState<ChainFilterOption[]>([]);
-    const [protocols, setProtocols] = useState<SelectOption<string>[]>([]);
-    const [statuses, setStatuses] = useState<SelectOption<Status>[]>([]);
+    const [chains, setChains] = useState<ChainFilterOption[]>(filters.chains);
+    const [protocols, setProtocols] = useState<SelectOption<string>[]>(
+        filters.protocols,
+    );
+    const [statuses, setStatuses] = useState<SelectOption<Status>[]>(
+        filters.statuses,
+    );
+
+    useEffect(() => {
+        setChains(filters.chains);
+        setProtocols(filters.protocols);
+        setStatuses(filters.statuses);
+    }, [filters.chains, filters.protocols, filters.statuses]);
 
     const filtersActive = useMemo(
         () =>

@@ -80,7 +80,11 @@ export function CampaignRow({ type, campaign }: CampaignProps) {
     );
 }
 
-export function SkeletonCampaign() {
+interface SkeletonCampaignProps {
+    type: BackendCampaignType;
+}
+
+export function SkeletonCampaign({ type }: SkeletonCampaignProps) {
     return (
         <div className={styles.root}>
             <Card className={classNames(styles.card, styles.loading)}>
@@ -90,7 +94,7 @@ export function SkeletonCampaign() {
                     <SkeletonAction />
                 </div>
                 <SkeletonStatus />
-                <SkeletonApr />
+                {type === BackendCampaignType.Rewards && <SkeletonApr />}
                 <Skeleton width={100} />
                 <SkeletonRewards />
             </Card>
