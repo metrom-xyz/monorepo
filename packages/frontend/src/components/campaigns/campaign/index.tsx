@@ -52,7 +52,9 @@ export function CampaignRow({ campaign }: CampaignProps) {
                     kpi={!!campaign.specification?.kpi}
                 />
                 <Typography weight="medium">
-                    {formatUsdAmount({ amount: campaign.usdTvl })}
+                    {campaign.usdTvl !== undefined
+                        ? formatUsdAmount({ amount: campaign.usdTvl })
+                        : "-"}
                 </Typography>
                 {fixedPoints && (
                     <Points
