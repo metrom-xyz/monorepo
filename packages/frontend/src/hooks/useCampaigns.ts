@@ -1,5 +1,5 @@
 import { METROM_API_CLIENT } from "../commons";
-import { keepPreviousData, useQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { getCampaignName, getCampaignTargetValueName } from "../utils/campaign";
 import { Campaign } from "../types/campaign";
 import type { HookBaseParams } from "../types/hooks";
@@ -98,7 +98,13 @@ export function useCampaigns({
                 throw error;
             }
         },
-        placeholderData: keepPreviousData,
+        placeholderData: (prevDate, prevQuery) => {
+            if (!prevQuery) return undefined;
+
+            // Don't keep previous data as placeholder if the type has changed
+            const prevType = prevQuery.queryKey[3];
+            return prevType === type ? prevDate : undefined;
+        },
         enabled,
     });
 
