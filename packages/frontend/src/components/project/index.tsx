@@ -7,6 +7,7 @@ import { Header } from "./header";
 import { ProjectIntro } from "../protocol-intro";
 import { CampaignsTable } from "../campaigns-table";
 import { Typography } from "@metrom-xyz/ui";
+import { BackendCampaignType } from "@metrom-xyz/sdk";
 
 import styles from "./styles.module.css";
 
@@ -59,6 +60,7 @@ export function Project({ project }: ProjectProps) {
                     {t("explore")}
                 </Typography>
                 <CampaignsTable
+                    type={BackendCampaignType.Points}
                     disableFilters
                     optionalFilters={{
                         chains: chainsFilter,
