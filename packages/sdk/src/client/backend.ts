@@ -266,7 +266,7 @@ export class MetromApiClient {
 
         for (const param in params) {
             const value = params[param as keyof FetchCampaignsParams];
-            if (!value || param === "type") continue;
+            if (value === undefined || param === "type") continue;
 
             if (Array.isArray(value)) {
                 if (value.length === 0) continue;
