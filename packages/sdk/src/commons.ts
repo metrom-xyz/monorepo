@@ -22,6 +22,7 @@ export enum SupportedDex {
     Velodrome = "velodrome",
     Morphex = "morphex",
     Izumi = "izumi",
+    Hydrex = "hydrex",
 }
 
 export enum SupportedLiquityV2 {
