@@ -1,5 +1,16 @@
 # @metrom-xyz/react
 
+## 0.5.0
+
+### Minor Changes
+
+- Adapt to new v2 API endpoints
+
+### Patch Changes
+
+- Updated dependencies
+  - @metrom-xyz/sdk@0.7.0
+
 ## 0.4.3
 
 ### Patch Changes
