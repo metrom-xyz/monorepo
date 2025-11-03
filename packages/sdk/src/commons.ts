@@ -85,6 +85,6 @@ export const SERVICE_URLS: Record<Environment, ServiceUrls> = {
     },
     [Environment.Production]: {
         dataManager: "https://data-manager.metrom.xyz",
-        metrom: "https://api.metrom.xyz",
+        metrom: "https://v2-api.metrom.xyz",
     },
 };
