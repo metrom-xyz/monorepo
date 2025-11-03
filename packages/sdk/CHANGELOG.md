@@ -1,5 +1,11 @@
 # @metrom-xyz/sdk
 
+## 0.7.0
+
+### Minor Changes
+
+- Adapt to new v2 API endpoints
+
 ## 0.6.0
 
 ### Minor Changes
