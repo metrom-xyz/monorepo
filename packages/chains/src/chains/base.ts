@@ -11,6 +11,7 @@ import { UniswapLogo } from "../assets/logos/dexes/uniswap";
 import type { ChainData } from "../types/chains";
 import { DepositUrlType, ProtocolType } from "../types/protocol";
 import { KimLogo } from "../assets";
+import { HydrexLogo } from "../assets/logos/dexes/hydrex";
 
 export const baseData: ChainData = {
     active: true,
@@ -52,6 +53,18 @@ export const baseData: ChainData = {
             depositUrl: {
                 type: DepositUrlType.PathPoolAddress,
                 template: `https://baseswap.fi/pool/v3/${SupportedChain.Base}-{pool}`,
+            },
+            supportsFetchAllPools: true,
+        },
+        {
+            active: true,
+            type: ProtocolType.Dex,
+            slug: SupportedDex.Hydrex,
+            logo: HydrexLogo,
+            name: "Hydrex",
+            depositUrl: {
+                type: DepositUrlType.PathPoolAddress,
+                template: "https://www.hydrex.fi/liquidity/{pool}/create",
             },
             supportsFetchAllPools: true,
         },
