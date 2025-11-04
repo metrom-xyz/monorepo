@@ -1,0 +1,16 @@
+@reference "../../../app.css";
+
+.root {
+    @apply w-full
+        col-span-full
+        h-[720px]
+        flex
+        flex-col
+        items-center
+        justify-center
+        gap-3;
+}
+
+.textWrapper {
+    @apply flex flex-col items-center;
+}

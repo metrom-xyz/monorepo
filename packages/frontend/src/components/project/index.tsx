@@ -60,7 +60,7 @@ export function Project({ project }: ProjectProps) {
                     {t("explore")}
                 </Typography>
                 <CampaignsTable
-                    type={BackendCampaignType.Points}
+                    type={BackendCampaignType.Rewards}
                     disableFilters
                     optionalFilters={{
                         chains: chainsFilter,

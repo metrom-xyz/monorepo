@@ -31,3 +31,7 @@
 .chartWrapper {
     @apply w-full max-w-[400px] h-[270px];
 }
+
+.chartWrapper.loading {
+    @apply mb-3;
+}

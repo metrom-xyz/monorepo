@@ -3,6 +3,7 @@ import {
     Chip,
     MobileDrawer,
     MultiSelect,
+    Skeleton,
     Typography,
     type SelectOption,
 } from "@metrom-xyz/ui";
@@ -32,6 +33,8 @@ interface MobileFiltersProps {
     statusOptions: SelectOption<Status>[];
     protocolOptions: SelectOption<string>[];
     chainOptions: ChainFilterOption[];
+    totalCampaigns?: number;
+    loading?: boolean;
     onFiltersChange: (filters: Partial<RawFilters>) => void;
     onFiltersClear: () => void;
 }
@@ -42,6 +45,8 @@ export function MobileFilters({
     statusOptions,
     protocolOptions,
     chainOptions,
+    totalCampaigns,
+    loading,
     onFiltersChange,
     onFiltersClear,
 }: MobileFiltersProps) {
@@ -118,6 +123,17 @@ export function MobileFilters({
             >
                 {t("filters")}
             </Button>
+            <div className={styles.totalCampaigns}>
+                {loading ? (
+                    <Skeleton width={120} size="xs" />
+                ) : (
+                    <Typography size="xs" variant="tertiary">
+                        {t("campaignsFound", {
+                            count: totalCampaigns || 0,
+                        })}
+                    </Typography>
+                )}
+            </div>
             <MobileDrawer
                 open={drawer}
                 onClose={handleDrawerOnToggle}

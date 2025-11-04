@@ -9,6 +9,7 @@ import { DistributablesType, TargetType } from "@metrom-xyz/sdk";
 import { useTranslations } from "next-intl";
 import { KpiAprSummary } from "@/src/components/kpi-apr-summary";
 import type { Campaign } from "@/src/types/campaign";
+import classNames from "classnames";
 
 import styles from "./styles.module.css";
 
@@ -112,7 +113,7 @@ export function SkeletonApr() {
 
 export function SkeletonPopover() {
     return (
-        <div className={styles.chartWrapper}>
+        <div className={classNames(styles.chartWrapper, styles.loading)}>
             <KpiSimulationChart
                 targetValueName=""
                 loading={true}
