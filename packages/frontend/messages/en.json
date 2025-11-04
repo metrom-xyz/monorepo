@@ -68,7 +68,8 @@
             "chain": {
                 "label": "Chain"
             },
-            "clear": "Clear filters"
+            "clear": "Clear filters",
+            "campaignsFound": "{count, plural, =1 {# campaign found} other {# campaigns found}}"
         },
         "header": {
             "chain": "Chain",
@@ -853,6 +854,7 @@
     },
     "campaignActions": {
         "lp": "LP on {dex} {pool}",
+        "gmxV1": "Provide liquidity on {brand}",
         "borrow": "Borrow {debtToken} using {token} on {brand}",
         "depositStabilityPool": "Deposit to {token} stability pool on {brand}",
         "aaveV3Borrow": "Borrow using {token} on {brand}",
