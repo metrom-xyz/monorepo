@@ -73,6 +73,7 @@ export const CAMPAIGN_TARGET_TO_KIND: Record<TargetType, CampaignKind> = {
     [TargetType.AmmPoolLiquidity]: CampaignKind.AmmPoolLiquidity,
     [TargetType.LiquityV2Debt]: CampaignKind.LiquityV2Debt,
     [TargetType.LiquityV2StabilityPool]: CampaignKind.LiquityV2StabilityPool,
+    [TargetType.GmxV1Liquidity]: CampaignKind.GmxV1Liquidity,
     [TargetType.Empty]: CampaignKind.EmptyTarget,
     [TargetType.AaveV3Supply]: CampaignKind.AaveV3Supply,
     [TargetType.AaveV3Borrow]: CampaignKind.AaveV3Borrow,

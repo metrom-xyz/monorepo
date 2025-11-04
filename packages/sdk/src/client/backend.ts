@@ -7,6 +7,7 @@ import {
     SupportedLiquityV2,
     SupportedBridge,
     type SupportedProtocol,
+    SupportedGmxV1,
 } from "../commons";
 import type {
     BackendCampaignOrderBy,
@@ -40,6 +41,7 @@ import {
     type HoldFungibleAssetTarget,
     DistributablesType,
     type DynamicPointDistributables,
+    type GmxV1LiquidityTarget,
 } from "../types/campaigns";
 import {
     ChainType,
@@ -116,6 +118,10 @@ const DEX_BRAND_NAME: Record<SupportedDex, string> = {
     [SupportedDex.Honeypop]: "Honeypop",
     [SupportedDex.Lithos]: "Lithos",
     [SupportedDex.Quickswap]: "Quickswap",
+};
+
+const GMX_V1_BRAND_NAME: Record<SupportedGmxV1, string> = {
+    [SupportedGmxV1.Amped]: "Amped",
 };
 
 const LIQUITY_V2_BRAND_NAME: Record<SupportedLiquityV2, string> = {
@@ -1029,6 +1035,16 @@ function processCampaignsResponse(
                             slug: backendCampaign.target.dex,
                             name: DEX_BRAND_NAME[backendCampaign.target.dex],
                         },
+                    },
+                };
+                break;
+            }
+            case "gmx-v1-liquidity": {
+                target = <GmxV1LiquidityTarget>{
+                    type: TargetType.GmxV1Liquidity,
+                    brand: {
+                        slug: backendCampaign.target.brand,
+                        name: GMX_V1_BRAND_NAME[backendCampaign.target.brand],
                     },
                 };
                 break;
