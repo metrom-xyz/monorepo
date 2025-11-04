@@ -4,6 +4,7 @@ import { Project } from "@/src/components/project";
 import { routing, type Locale } from "@/src/i18n/routing";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
+import { connection } from "next/server";
 
 export interface Params {
     project: string;
@@ -34,6 +35,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
 
     setRequestLocale(locale);
 
+    await connection();
     return <Project project={project} />;
 }
 
