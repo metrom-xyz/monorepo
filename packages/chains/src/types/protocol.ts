@@ -5,12 +5,14 @@ import {
     Erc20Token,
     SupportedAaveV3,
     SupportedDex,
+    SupportedGmxV1,
     SupportedLiquityV2,
     TargetType,
 } from "@metrom-xyz/sdk";
 
 export enum ProtocolType {
     Dex = "dex",
+    GmxV1Liquidity = "gmx-v1-liquidity",
     LiquityV2 = "liquity-v2",
     AaveV3 = "aave-v3",
 }
@@ -39,6 +41,12 @@ export interface DexProtocol
     supportsFetchAllPools: boolean;
 }
 
+export interface GmxV1LiquidityProtocol
+    extends ProtocolBase<SupportedGmxV1, ProtocolType.GmxV1Liquidity> {
+    brand: string;
+    actionUrl: string;
+}
+
 export interface LiquityV2Protocol
     extends ProtocolBase<SupportedLiquityV2, ProtocolType.LiquityV2> {
     debtToken: Erc20Token;
@@ -60,4 +68,8 @@ export interface AaveV3Protocol
     >;
 }
 
-export type Protocol = DexProtocol | LiquityV2Protocol | AaveV3Protocol;
+export type Protocol =
+    | DexProtocol
+    | GmxV1LiquidityProtocol
+    | LiquityV2Protocol
+    | AaveV3Protocol;
