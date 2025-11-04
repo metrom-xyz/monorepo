@@ -57,6 +57,15 @@ export const sonicData: ChainData = {
             brand: "amped",
             actionUrl: "https://alp.amped.finance/#/earn",
         },
+        {
+            active: false,
+            type: ProtocolType.GmxV1Liquidity,
+            slug: SupportedGmxV1.Amped,
+            logo: AmpedLogo,
+            name: "Amped",
+            brand: "amped",
+            actionUrl: "https://alp.amped.finance/#/earn",
+        },
     ],
     baseTokens: [
         {
