@@ -10,6 +10,7 @@ import type {
 import type {
     SupportedAaveV3,
     SupportedBridge,
+    SupportedGmxV1,
     SupportedLiquityV2,
 } from "src/commons";
 import type { CampaignAmmPool } from "./pools";
@@ -18,6 +19,7 @@ export enum CampaignKind {
     AmmPoolLiquidity = 1,
     LiquityV2Debt = 2,
     LiquityV2StabilityPool = 3,
+    GmxV1Liquidity = 4,
     EmptyTarget = 5,
     AaveV3Supply = 6,
     AaveV3Borrow = 7,
@@ -44,6 +46,7 @@ export type CampaignType = BaseCampaignType | PartnerCampaignType;
 export enum TargetType {
     Empty = "empty",
     AmmPoolLiquidity = "amm-pool-liquidity",
+    GmxV1Liquidity = "gmx-v1-liquidity",
     LiquityV2Debt = "liquity-v2-debt",
     LiquityV2StabilityPool = "liquity-v2-stability-pool",
     AaveV3Borrow = "aave-v3-borrow",
@@ -80,6 +83,11 @@ export interface EmptyTarget extends BaseTarget {
 export interface AmmPoolLiquidityTarget extends BaseTarget {
     type: TargetType.AmmPoolLiquidity;
     pool: CampaignAmmPool;
+}
+
+export interface GmxV1LiquidityTarget extends BaseTarget {
+    type: TargetType.GmxV1Liquidity;
+    brand: Brand<SupportedGmxV1>;
 }
 
 export interface JumperWhitelistedAmmPoolLiquidityTarget extends BaseTarget {
@@ -133,6 +141,7 @@ export interface HoldFungibleAssetTarget extends BaseTarget {
 export type CampaignTarget =
     | EmptyTarget
     | AmmPoolLiquidityTarget
+    | GmxV1LiquidityTarget
     | LiquityV2DebtTarget
     | LiquityV2StabilityPoolTarget
     | AaveV3BorrowTarget
