@@ -2,6 +2,8 @@ import {
     BaseCampaignType,
     PartnerCampaignType,
     SupportedDex,
+    SupportedLiquityV2,
+    TargetType,
 } from "@metrom-xyz/sdk";
 import { SupportedChain, ADDRESS } from "@metrom-xyz/contracts";
 import { ScrollLogo } from "../assets/logos/chains/scroll";
@@ -9,7 +11,7 @@ import { scroll } from "viem/chains";
 import { UniswapLogo } from "../assets/logos/dexes/uniswap";
 import type { ChainData } from "../types/chains";
 import { DepositUrlType, ProtocolType } from "../types/protocol";
-import { AmbientLogo, HoneypopLogo } from "../assets";
+import { AmbientLogo, HoneypopLogo, QuillLogo } from "../assets";
 
 export const scrollData: ChainData = {
     active: true,
@@ -66,6 +68,24 @@ export const scrollData: ChainData = {
                 template: "https://honeypop.app/add/{pool}",
             },
             supportsFetchAllPools: true,
+        },
+        {
+            active: false,
+            type: ProtocolType.LiquityV2,
+            slug: SupportedLiquityV2.Quill,
+            logo: QuillLogo,
+            name: "Quill",
+            debtToken: {
+                address: "0xdb9e8f82d6d45fff803161f2a5f75543972b229a",
+                decimals: 18,
+                name: "USDQ",
+                symbol: "USDQ",
+            },
+            actionUrls: {
+                [TargetType.LiquityV2Debt]: "https://app.quill.finance/borrow",
+                [TargetType.LiquityV2StabilityPool]:
+                    "https://app.quill.finance/earn",
+            },
         },
     ],
     baseTokens: [
