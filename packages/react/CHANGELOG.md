@@ -1,5 +1,11 @@
 # @metrom-xyz/react
 
+## 0.5.1
+
+### Patch Changes
+
+- Export missing types
+
 ## 0.5.0
 
 ### Minor Changes
