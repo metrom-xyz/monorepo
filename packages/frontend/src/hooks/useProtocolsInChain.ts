@@ -1,6 +1,7 @@
 import type {
     AaveV3Protocol,
     DexProtocol,
+    GmxV1LiquidityProtocol,
     LiquityV2Protocol,
     Protocol,
     ProtocolType,
@@ -11,6 +12,7 @@ import type { ChainType } from "@metrom-xyz/sdk";
 
 interface ProtocolByType {
     [ProtocolType.Dex]: DexProtocol;
+    [ProtocolType.GmxV1Liquidity]: GmxV1LiquidityProtocol;
     [ProtocolType.LiquityV2]: LiquityV2Protocol;
     [ProtocolType.AaveV3]: AaveV3Protocol;
 }

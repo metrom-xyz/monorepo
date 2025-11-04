@@ -28,6 +28,7 @@ export function Protocol({ campaign }: ProtocolProps) {
             case TargetType.JumperWhitelistedAmmPoolLiquidity: {
                 return protocol.slug === campaign.target.pool.dex.slug;
             }
+            case TargetType.GmxV1Liquidity:
             case TargetType.LiquityV2Debt:
             case TargetType.LiquityV2StabilityPool: {
                 return protocol.slug === campaign.target.brand.slug;
