@@ -3,6 +3,7 @@ import {
     BaseCampaignType,
     PartnerCampaignType,
     SupportedDex,
+    SupportedGmxV1,
 } from "@metrom-xyz/sdk";
 import { SonicLogo } from "../assets/logos/chains/sonic";
 import { UniswapLogo } from "../assets/logos/dexes/uniswap";
@@ -10,6 +11,7 @@ import { SilverSwapLogo } from "../assets/logos/dexes/silverswap";
 import { sonic } from "viem/chains";
 import type { ChainData } from "../types/chains";
 import { DepositUrlType, ProtocolType } from "../types/protocol";
+import { AmpedLogo } from "../assets";
 
 export const sonicData: ChainData = {
     active: true,
@@ -58,6 +60,15 @@ export const sonicData: ChainData = {
                 template: "https://silverswap.io/chain/sonic/liquidity/add-v3",
             },
             supportsFetchAllPools: true,
+        },
+        {
+            active: false,
+            type: ProtocolType.GmxV1Liquidity,
+            slug: SupportedGmxV1.Amped,
+            logo: AmpedLogo,
+            name: "Amped",
+            brand: "amped",
+            actionUrl: "https://alp.amped.finance/#/earn",
         },
     ],
     baseTokens: [
