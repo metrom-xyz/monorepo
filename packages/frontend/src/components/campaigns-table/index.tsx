@@ -1,18 +1,28 @@
-import { Button, Pagination, Typography } from "@metrom-xyz/ui";
+import { Pagination, Typography, type SelectOption } from "@metrom-xyz/ui";
 import classNames from "classnames";
 import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { type CampaignSortOptions } from "@/src/utils/filtering";
 import type { TranslationsKeys } from "@/src/types/utils";
+import { useSearchParams } from "next/navigation";
 import { useTranslations } from "next-intl";
-import { useRouter as useLocalizedRouter } from "@/i18n/routing";
 import { CampaignRow, SkeletonCampaign } from "../campaigns/campaign";
-import { Filters, type FilterParams, type RawFilters } from "./filters";
+import {
+    Filters,
+    type ChainFilterOption,
+    type FilterParams,
+    type RawFilters,
+} from "./filters";
 import { useCampaigns } from "@/src/hooks/useCampaigns";
 import { APTOS } from "@/src/commons/env";
-import { BackendCampaignType, ChainType } from "@metrom-xyz/sdk";
+import { BackendCampaignType, ChainType, Status } from "@metrom-xyz/sdk";
 import { LoadingBar } from "../loading-bar";
-import { useDebounce } from "react-use";
+import { useDebounce, usePrevious } from "react-use";
+import { EmptyTable } from "./empty-table";
+import { useChainsWithTypes } from "@/src/hooks/useChainsWithTypes";
+import { getCrossVmChainData } from "@/src/utils/chain";
+import { ProtocolLogo } from "../protocol-logo";
+import { useSupportedProtocols } from "@/src/hooks/useSupportedProtocols";
 
 import styles from "./styles.module.css";
 
@@ -100,19 +110,21 @@ interface CampaignsTableProps {
     type: BackendCampaignType;
     disableFilters?: boolean;
     optionalFilters?: Partial<RawFilters>;
-    onCountChange?: (count: number) => void;
-    onLoadingChange?: (fetching: boolean) => void;
 }
 
 export function CampaignsTable({
     type,
     disableFilters,
     optionalFilters,
-    onCountChange,
-    onLoadingChange,
 }: CampaignsTableProps) {
     const t = useTranslations("allCampaigns");
-    const localizedRouter = useLocalizedRouter();
+    const searchParams = useSearchParams();
+    const chainInitializedRef = useRef(false);
+    const supportedChains = useChainsWithTypes({
+        chainType: APTOS ? ChainType.Aptos : undefined,
+    });
+    const supportedProtocols = useSupportedProtocols({ crossVm: !APTOS });
+    const prevType = usePrevious(type);
 
     const [sortField, setSortField] = useState<CampaignSortOptions>();
     const [order, setOrder] = useState<number | undefined>();
@@ -130,8 +142,85 @@ export function CampaignsTable({
         ...optionalFilters,
     });
 
+    const statusOptions: SelectOption<Status>[] = [
+        {
+            label: t("filters.status.live"),
+            value: Status.Active,
+        },
+        {
+            label: t("filters.status.upcoming"),
+            value: Status.Upcoming,
+        },
+        {
+            label: t("filters.status.ended"),
+            value: Status.Expired,
+        },
+    ];
+
+    const protocolOptions: SelectOption<string>[] = useMemo(() => {
+        return supportedProtocols.map((protocol) => ({
+            label: protocol.name,
+            icon: (
+                <ProtocolLogo
+                    size="sm"
+                    protocol={protocol}
+                    className={styles.icon}
+                />
+            ),
+            value: protocol.slug,
+        }));
+    }, [supportedProtocols]);
+
+    const chainOptions: ChainFilterOption[] = useMemo(() => {
+        const options: ChainFilterOption[] = [];
+
+        for (const chain of supportedChains) {
+            const chainData = getCrossVmChainData(chain.id, chain.type);
+            if (!chainData) continue;
+
+            options.push({
+                label: chainData.name,
+                value: `${chain.type}_${chain.id}`,
+                query: chainData.name.toLowerCase().replaceAll(" ", "_"),
+            });
+        }
+        return options;
+    }, [supportedChains]);
+
     useEffect(() => {
-        setPageNumber(1);
+        // Skip updating the search params once initialized to avoid
+        // unnecessary re-renders
+        if (chainInitializedRef.current) return;
+
+        const chains = searchParams.get("chains");
+        if (!chains) return;
+
+        const resolvedChains = chainOptions.filter((option) =>
+            chains.split(",").includes(option.query),
+        );
+
+        const params = new URLSearchParams(searchParams.toString());
+        if (resolvedChains.length > 0) {
+            setRawFilters((prev) => ({ ...prev, chains: resolvedChains }));
+
+            params.set(
+                "chains",
+                resolvedChains
+                    .map((resolvedChain) => resolvedChain.query)
+                    .join(","),
+            );
+            chainInitializedRef.current = true;
+        } else {
+            setRawFilters((prev) => ({ ...prev, chains: [] }));
+            params.delete("chains");
+        }
+    }, [chainOptions, searchParams]);
+
+    useEffect(() => {
+        // Avoid clearing the filters the first time, otherwise the query params
+        // get removed.
+        if ((!prevType && type) || prevType === type) return;
+
         setRawFilters({
             chains: [],
             protocols: [],
@@ -140,7 +229,7 @@ export function CampaignsTable({
         setPageNumber(1);
         setSortField(undefined);
         setOrder(undefined);
-    }, [type]);
+    }, [prevType, type]);
 
     useDebounce(
         () => {
@@ -188,16 +277,6 @@ export function CampaignsTable({
             asc: order === 1 ? true : order === -1 ? false : undefined,
         });
 
-    useEffect(() => {
-        if (!onLoadingChange) return;
-        onLoadingChange(loading);
-    }, [loading, onLoadingChange]);
-
-    useEffect(() => {
-        if (!onCountChange) return;
-        onCountChange(totalCampaigns);
-    }, [totalCampaigns, onCountChange]);
-
     const getSortChangeHandler = useCallback(
         (column: CampaignSortOptions) => {
             return () => {
@@ -237,10 +316,6 @@ export function CampaignsTable({
         setRawFilters((prev) => ({ ...prev, ...filters }));
     }
 
-    const handleCreateCampaign = useCallback(() => {
-        localizedRouter.push("/campaigns/create");
-    }, [localizedRouter]);
-
     const columns =
         type === BackendCampaignType.Rewards
             ? TABLE_REWARDS_COLUMNS
@@ -257,6 +332,11 @@ export function CampaignsTable({
                     sortField={sortField}
                     order={order}
                     filters={rawFilters}
+                    totalCampaigns={totalCampaigns}
+                    loading={loading}
+                    statusOptions={statusOptions}
+                    protocolOptions={protocolOptions}
+                    chainOptions={chainOptions}
                     onClearFilters={handleClearFilters}
                     onFiltersChange={handleFiltersOnChange}
                 />
@@ -323,20 +403,7 @@ export function CampaignsTable({
                                 <SkeletonCampaign type={type} />
                             </>
                         ) : !campaigns || campaigns.length === 0 ? (
-                            <div className={styles.empty}>
-                                <Typography uppercase weight="medium">
-                                    {t("empty.title")}
-                                </Typography>
-                                <Typography size="lg" weight="medium">
-                                    {t("empty.description")}
-                                </Typography>
-                                <Button
-                                    size="sm"
-                                    onClick={handleCreateCampaign}
-                                >
-                                    {t("empty.create")}
-                                </Button>
-                            </div>
+                            <EmptyTable />
                         ) : (
                             campaigns?.map((campaign) => {
                                 return (

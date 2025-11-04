@@ -4,10 +4,11 @@ import classNames from "classnames";
 import { TargetType } from "@metrom-xyz/sdk";
 import { AmmPoolLiquidity } from "./amm-pool-liquidity";
 import type { Campaign } from "@/src/types/campaign";
-import { LiquidityV2 } from "./liquity-v2";
+import { LiquityV2 } from "./liquity-v2";
 import { AaveV3 } from "./aave-v3";
 import { Empty } from "./empty";
 import { HoldFungibleAsset } from "./hold-fungible-asset";
+import { GmxV1Liquidity } from "./gmx-v1-liquidity";
 
 import styles from "./styles.module.css";
 
@@ -19,6 +20,8 @@ export function Action({ campaign }: ActionProps) {
     const ammPoolLiquidity =
         campaign.isTargeting(TargetType.AmmPoolLiquidity) ||
         campaign.isTargeting(TargetType.JumperWhitelistedAmmPoolLiquidity);
+
+    const gmxV1Liquidity = campaign.isTargeting(TargetType.GmxV1Liquidity);
 
     const liquityV2 =
         campaign.isTargeting(TargetType.LiquityV2Debt) ||
@@ -40,7 +43,8 @@ export function Action({ campaign }: ActionProps) {
         <div className={styles.root}>
             {empty && <Empty campaign={campaign} />}
             {ammPoolLiquidity && <AmmPoolLiquidity campaign={campaign} />}
-            {liquityV2 && <LiquidityV2 campaign={campaign} />}
+            {gmxV1Liquidity && <GmxV1Liquidity campaign={campaign} />}
+            {liquityV2 && <LiquityV2 campaign={campaign} />}
             {aaveV3 && <AaveV3 campaign={campaign} />}
             {holdFungibleAsset && <HoldFungibleAsset campaign={campaign} />}
         </div>

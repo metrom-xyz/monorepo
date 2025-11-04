@@ -38,6 +38,11 @@ export function getCampaignName(
                     .join("/"),
             });
         }
+        case TargetType.GmxV1Liquidity: {
+            return t("campaignActions.gmxV1", {
+                brand: campaign.target.brand.name,
+            });
+        }
         case TargetType.LiquityV2Debt: {
             const targetProtocol = getChainData(
                 campaign.chainId,
