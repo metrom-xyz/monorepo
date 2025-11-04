@@ -91,19 +91,6 @@
     @apply relative;
 }
 
-.empty {
-    @apply w-full
-        col-span-full
-        h-[720px]
-        flex
-        flex-col
-        items-center
-        justify-center
-        gap-7
-        surface-primary
-        rounded-2xl;
-}
-
 .paginationWrapper {
     @apply w-full p-5 mt-5 flex justify-end;
 }
