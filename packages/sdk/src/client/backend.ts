@@ -130,6 +130,10 @@ const GMX_V1_BRAND_NAME: Record<SupportedGmxV1, string> = {
     [SupportedGmxV1.Amped]: "Amped",
 };
 
+const GMX_V1_BRAND_NAME: Record<SupportedGmxV1, string> = {
+    [SupportedGmxV1.Amped]: "Amped",
+};
+
 const LIQUITY_V2_BRAND_NAME: Record<SupportedLiquityV2, string> = {
     [SupportedLiquityV2.Ebisu]: "Ebisu",
     [SupportedLiquityV2.Orki]: "Orki",
