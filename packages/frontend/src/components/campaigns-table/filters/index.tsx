@@ -8,7 +8,6 @@ import {
     Skeleton,
 } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useMemo, type ReactNode } from "react";
 import type { CampaignSortOptions } from "@/src/utils/filtering";
 import { getCrossVmChainData } from "@/src/utils/chain";
@@ -127,10 +126,6 @@ export function Filters({
 }: FilterProps) {
     const t = useTranslations("allCampaigns");
 
-    const router = useRouter();
-    const pathname = usePathname();
-    const searchParams = useSearchParams();
-
     const filtersActive = useMemo(
         () =>
             filters.protocols.length > 0 ||
@@ -157,31 +152,14 @@ export function Filters({
 
     const handleChainsChange = useCallback(
         (chains: (SelectOption<string> & { query: string })[]) => {
-            const params = new URLSearchParams(searchParams.toString());
-
-            if (chains.length === 0) params.delete("chains");
-            else
-                params.set(
-                    "chains",
-                    chains.map((chain) => chain.query).join(","),
-                );
-
-            router.replace(`${pathname}?${params.toString()}`, {
-                scroll: false,
-            });
-
             onFiltersChange({ chains });
         },
-        [pathname, router, searchParams, onFiltersChange],
+        [onFiltersChange],
     );
 
     const handleClearFilters = useCallback(() => {
-        const params = new URLSearchParams(searchParams.toString());
-        params.delete("chains");
-        router.replace(`${pathname}?${params.toString()}`, { scroll: false });
-
         if (onClearFilters) onClearFilters();
-    }, [pathname, searchParams, router, onClearFilters]);
+    }, [onClearFilters]);
 
     const getStatusChipCloseHandler = useCallback(
         (status: SelectOption<Status>) => {

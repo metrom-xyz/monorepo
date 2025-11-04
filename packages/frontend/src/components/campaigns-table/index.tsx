@@ -1,10 +1,10 @@
 import { Pagination, Typography, type SelectOption } from "@metrom-xyz/ui";
 import classNames from "classnames";
 import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { type CampaignSortOptions } from "@/src/utils/filtering";
 import type { TranslationsKeys } from "@/src/types/utils";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter, usePathname } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { CampaignRow, SkeletonCampaign } from "../campaigns/campaign";
 import {
@@ -27,6 +27,7 @@ import { useSupportedProtocols } from "@/src/hooks/useSupportedProtocols";
 import styles from "./styles.module.css";
 
 const PAGE_SIZE = 10;
+
 const TABLE_REWARDS_COLUMNS: {
     name: string;
     label: TranslationsKeys<"allCampaigns.header">;
@@ -106,6 +107,8 @@ const TABLE_POINTS_COLUMNS: {
     },
 ];
 
+const URL_ENABLED_FILTERS = ["chains", "statuses", "protocols"];
+
 interface CampaignsTableProps {
     type: BackendCampaignType;
     disableFilters?: boolean;
@@ -118,8 +121,9 @@ export function CampaignsTable({
     optionalFilters,
 }: CampaignsTableProps) {
     const t = useTranslations("allCampaigns");
+    const pathname = usePathname();
+    const router = useRouter();
     const searchParams = useSearchParams();
-    const chainInitializedRef = useRef(false);
     const supportedChains = useChainsWithTypes({
         chainType: APTOS ? ChainType.Aptos : undefined,
     });
@@ -129,33 +133,24 @@ export function CampaignsTable({
     const [sortField, setSortField] = useState<CampaignSortOptions>();
     const [order, setOrder] = useState<number | undefined>();
     const [pageNumber, setPageNumber] = useState(1);
-    const [rawFilters, setRawFilters] = useState<RawFilters>({
-        chains: [],
-        protocols: [],
-        statuses: [],
-        ...optionalFilters,
-    });
-    const [debouncedRawFilters, setDebouncedRawFilters] = useState<RawFilters>({
-        chains: [],
-        protocols: [],
-        statuses: [],
-        ...optionalFilters,
-    });
 
-    const statusOptions: SelectOption<Status>[] = [
-        {
-            label: t("filters.status.live"),
-            value: Status.Active,
-        },
-        {
-            label: t("filters.status.upcoming"),
-            value: Status.Upcoming,
-        },
-        {
-            label: t("filters.status.ended"),
-            value: Status.Expired,
-        },
-    ];
+    const statusOptions: SelectOption<Status>[] = useMemo(
+        () => [
+            {
+                label: t("filters.status.live"),
+                value: Status.Active,
+            },
+            {
+                label: t("filters.status.upcoming"),
+                value: Status.Upcoming,
+            },
+            {
+                label: t("filters.status.ended"),
+                value: Status.Expired,
+            },
+        ],
+        [t],
+    );
 
     const protocolOptions: SelectOption<string>[] = useMemo(() => {
         return supportedProtocols.map((protocol) => ({
@@ -187,41 +182,52 @@ export function CampaignsTable({
         return options;
     }, [supportedChains]);
 
-    useEffect(() => {
-        // Skip updating the search params once initialized to avoid
-        // unnecessary re-renders
-        if (chainInitializedRef.current) return;
+    const initialFilters = useMemo(() => {
+        const queryFilters: Record<string, string> = {};
+        URL_ENABLED_FILTERS.forEach((filter) => {
+            const value = searchParams.get(filter);
+            if (!value) return;
+            queryFilters[filter] = value;
+        });
 
-        const chains = searchParams.get("chains");
-        if (!chains) return;
+        const filters: RawFilters = {
+            chains: [],
+            protocols: [],
+            statuses: [],
+            ...optionalFilters,
+        };
 
-        const resolvedChains = chainOptions.filter((option) =>
-            chains.split(",").includes(option.query),
-        );
+        Object.entries(queryFilters).forEach(([key, value]) => {
+            if (key === "statuses")
+                filters.statuses = statusOptions.filter((option) =>
+                    value.split(",").includes(option.value),
+                );
+            if (key === "protocols")
+                filters.protocols = protocolOptions.filter((option) =>
+                    value.split(",").includes(option.value),
+                );
+            if (key === "chains")
+                filters.chains = chainOptions.filter((option) =>
+                    value.split(",").includes(option.query),
+                );
+        });
 
-        const params = new URLSearchParams(searchParams.toString());
-        if (resolvedChains.length > 0) {
-            setRawFilters((prev) => ({ ...prev, chains: resolvedChains }));
+        return filters;
+    }, [
+        searchParams,
+        chainOptions,
+        protocolOptions,
+        statusOptions,
+        optionalFilters,
+    ]);
 
-            params.set(
-                "chains",
-                resolvedChains
-                    .map((resolvedChain) => resolvedChain.query)
-                    .join(","),
-            );
-            chainInitializedRef.current = true;
-        } else {
-            setRawFilters((prev) => ({ ...prev, chains: [] }));
-            params.delete("chains");
-        }
-    }, [chainOptions, searchParams]);
-
-    useEffect(() => {
-        // Avoid clearing the filters the first time, otherwise the query params
-        // get removed.
-        if ((!prevType && type) || prevType === type) return;
-
+    const handleClearFilters = useCallback(() => {
         setRawFilters({
+            chains: [],
+            protocols: [],
+            statuses: [],
+        });
+        setDebouncedRawFilters({
             chains: [],
             protocols: [],
             statuses: [],
@@ -229,7 +235,20 @@ export function CampaignsTable({
         setPageNumber(1);
         setSortField(undefined);
         setOrder(undefined);
-    }, [prevType, type]);
+
+        router.replace(pathname, { scroll: false });
+    }, [pathname, router]);
+
+    const [rawFilters, setRawFilters] = useState<RawFilters>(initialFilters);
+    const [debouncedRawFilters, setDebouncedRawFilters] =
+        useState<RawFilters>(initialFilters);
+
+    useEffect(() => {
+        // Avoid clearing the filters the first time, otherwise the query params
+        // get removed.
+        if ((!prevType && type) || prevType === type) return;
+        handleClearFilters();
+    }, [handleClearFilters, prevType, type]);
 
     useDebounce(
         () => {
@@ -300,18 +319,27 @@ export function CampaignsTable({
         setPageNumber(page);
     }
 
-    function handleClearFilters() {
-        setRawFilters({
-            chains: [],
-            protocols: [],
-            statuses: [],
-        });
-        setPageNumber(1);
-        setSortField(undefined);
-        setOrder(undefined);
-    }
-
     function handleFiltersOnChange(filters: Partial<RawFilters>) {
+        const params = new URLSearchParams(searchParams.toString());
+
+        Object.entries(filters).forEach(([key, value]) => {
+            if (URL_ENABLED_FILTERS.includes(key)) {
+                if (value.length === 0) params.delete(key);
+                else if ("query" in value[0])
+                    params.set(
+                        key,
+                        (value as ChainFilterOption[])
+                            .map((chain) => chain.query)
+                            .join(","),
+                    );
+                else params.set(key, value.map(({ value }) => value).join(","));
+            }
+        });
+
+        router.replace(`${pathname}?${params.toString()}`, {
+            scroll: false,
+        });
+
         setPageNumber(1);
         setRawFilters((prev) => ({ ...prev, ...filters }));
     }
