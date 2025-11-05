@@ -30,9 +30,9 @@ import commonStyles from "../styles.module.css";
 interface MobileFiltersProps {
     filters: RawFilters;
     active?: boolean;
-    statusOptions: SelectOption<Status>[];
-    protocolOptions: SelectOption<string>[];
-    chainOptions: ChainFilterOption[];
+    statusOptions?: SelectOption<Status>[];
+    protocolOptions?: SelectOption<string>[];
+    chainOptions?: ChainFilterOption[];
     totalCampaigns?: number;
     loading?: boolean;
     onFiltersChange: (filters: Partial<RawFilters>) => void;
@@ -169,63 +169,70 @@ export function MobileFilters({
                         >
                             {t("status.label")}
                         </Typography>
-                        <div className={styles.statusChipsFilter}>
-                            {statusOptions.map((option) => {
-                                const active = !!statuses.find(
-                                    (status) => status.value === option.value,
-                                );
+                        {statusOptions && (
+                            <div className={styles.statusChipsFilter}>
+                                {statusOptions.map((option) => {
+                                    const active = !!statuses.find(
+                                        (status) =>
+                                            status.value === option.value,
+                                    );
 
-                                return (
-                                    <Chip
-                                        key={option.value}
-                                        active={active}
-                                        onClick={getStatusMobileChipClickHandler(
-                                            option,
-                                        )}
-                                    >
-                                        {statusSelectRenderOption(
-                                            option,
-                                            active,
-                                        )}
-                                    </Chip>
-                                );
-                            })}
-                        </div>
-                    </div>
-                    <MultiSelect
-                        portalContainer={drawerRef.current}
-                        search
-                        options={protocolOptions}
-                        values={protocols}
-                        onChange={setProtocols}
-                        onOpenChange={setSelectOpen}
-                        label={t("protocol.label")}
-                        placeholder={t("protocol.label")}
-                        renderOption={protocolSelectRenderOption}
-                        messages={{
-                            noResults: "",
-                        }}
-                        className={commonStyles.filterInput}
-                    />
-                    <div className={styles.dividier} />
-                    <MultiSelect
-                        portalContainer={drawerRef.current}
-                        search
-                        options={chainOptions}
-                        values={chains}
-                        onChange={setChains}
-                        onOpenChange={setSelectOpen}
-                        label={t("chain.label")}
-                        placeholder={t("chain.label")}
-                        renderOption={chainSelectRenderOption}
-                        messages={{
-                            noResults: "",
-                        }}
-                        className={classNames(
-                            commonStyles.filterInput,
-                            styles.chainsFilter,
+                                    return (
+                                        <Chip
+                                            key={option.value}
+                                            active={active}
+                                            onClick={getStatusMobileChipClickHandler(
+                                                option,
+                                            )}
+                                        >
+                                            {statusSelectRenderOption(
+                                                option,
+                                                active,
+                                            )}
+                                        </Chip>
+                                    );
+                                })}
+                            </div>
                         )}
-                    />
+                    </div>
+                    {protocolOptions && (
+                        <MultiSelect
+                            portalContainer={drawerRef.current}
+                            search
+                            options={protocolOptions}
+                            values={protocols}
+                            onChange={setProtocols}
+                            onOpenChange={setSelectOpen}
+                            label={t("protocol.label")}
+                            placeholder={t("protocol.label")}
+                            renderOption={protocolSelectRenderOption}
+                            messages={{
+                                noResults: "",
+                            }}
+                            className={commonStyles.filterInput}
+                        />
+                    )}
+                    <div className={styles.dividier} />
+                    {chainOptions && (
+                        <MultiSelect
+                            portalContainer={drawerRef.current}
+                            search
+                            options={chainOptions}
+                            values={chains}
+                            onChange={setChains}
+                            onOpenChange={setSelectOpen}
+                            label={t("chain.label")}
+                            placeholder={t("chain.label")}
+                            renderOption={chainSelectRenderOption}
+                            messages={{
+                                noResults: "",
+                            }}
+                            className={classNames(
+                                commonStyles.filterInput,
+                                styles.chainsFilter,
+                            )}
+                        />
+                    )}
                     <Button
                         size="sm"
                         icon={ArrowRightIcon}
