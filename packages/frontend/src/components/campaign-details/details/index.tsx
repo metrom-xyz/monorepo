@@ -27,7 +27,7 @@ export function Details({ campaign, loading }: DetailsProps) {
     const t = useTranslations("campaignDetails.details");
 
     const detailsLoading = loading || !campaign;
-    const targetUsdValue = campaign?.getTargetUsdValue();
+    const targetUsdValue = campaign?.usdTvl;
 
     return (
         <div className={styles.root}>

@@ -432,52 +432,6 @@ export class Campaign extends SdkCampaign {
             }
         }
     }
-
-    getTargetUsdValue(): number | undefined {
-        // TODO: remove the method which is useless at this point
-        return this.usdTvl;
-        // switch (this.target.type) {
-        //     case TargetType.AmmPoolLiquidity:
-        //     case TargetType.JumperWhitelistedAmmPoolLiquidity:
-        //         return this.target.pool.usdTvl;
-        //     case TargetType.LiquityV2Debt:
-        //         return this.target.collateral.usdMintedDebt;
-        //     case TargetType.LiquityV2StabilityPool:
-        //         return this.target.collateral.usdStabilityPoolDebt;
-        //     case TargetType.AaveV3Borrow:
-        //         return this.target.collateral.usdDebt;
-        //     case TargetType.AaveV3BridgeAndSupply:
-        //     case TargetType.AaveV3Supply:
-        //         return this.target.collateral.usdSupply;
-        //     case TargetType.AaveV3NetSupply:
-        //         return this.target.collateral.usdNetSupply;
-        //     default:
-        //         return undefined;
-        // }
-    }
-
-    getTargetRawValue(): bigint | undefined {
-        // TODO: remove this if not needed anymore
-        return undefined;
-        // switch (this.target.type) {
-        //     case TargetType.AmmPoolLiquidity:
-        //     case TargetType.JumperWhitelistedAmmPoolLiquidity:
-        //         return this.target.pool.liquidity;
-        //     case TargetType.LiquityV2Debt:
-        //         return this.target.collateral.liquidity;
-        //     case TargetType.LiquityV2StabilityPool:
-        //         return this.target.collateral.liquidity;
-        //     case TargetType.AaveV3Borrow:
-        //         return this.target.collateral.debt;
-        //     case TargetType.AaveV3BridgeAndSupply:
-        //     case TargetType.AaveV3Supply:
-        //         return this.target.collateral.supply;
-        //     case TargetType.AaveV3NetSupply:
-        //         return this.target.collateral.netSupply;
-        //     default:
-        //         return undefined;
-        // }
-    }
 }
 
 export interface DistributablesNamedCampaign<T extends DistributablesType>
