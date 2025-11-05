@@ -18,6 +18,7 @@ import {
     useCampaignsFiltersOptions,
     type ChainFilterOption,
 } from "@/src/hooks/useCampaignsFiltersOptions";
+import { URL_ENABLED_CAMPAIGNS_FILTERS } from "../campaigns";
 
 import styles from "./styles.module.css";
 
@@ -102,18 +103,18 @@ const TABLE_POINTS_COLUMNS: {
     },
 ];
 
-const URL_ENABLED_FILTERS = ["chains", "statuses", "protocols"];
-
 interface CampaignsTableProps {
     type: BackendCampaignType;
     disableFilters?: boolean;
     optionalFilters?: Partial<RawFilters>;
+    onClearFilters: () => void;
 }
 
 export function CampaignsTable({
     type,
     disableFilters,
     optionalFilters,
+    onClearFilters,
 }: CampaignsTableProps) {
     const t = useTranslations("allCampaigns");
     const pathname = usePathname();
@@ -128,7 +129,7 @@ export function CampaignsTable({
 
     const initialFilters = useMemo(() => {
         const queryFilters: Record<string, string> = {};
-        URL_ENABLED_FILTERS.forEach((filter) => {
+        URL_ENABLED_CAMPAIGNS_FILTERS.forEach((filter) => {
             const value = searchParams.get(filter);
             if (!value) return;
             queryFilters[filter] = value;
@@ -179,9 +180,8 @@ export function CampaignsTable({
         setPageNumber(1);
         setSortField(undefined);
         setOrder(undefined);
-
-        router.replace(pathname, { scroll: false });
-    }, [pathname, router]);
+        onClearFilters();
+    }, [onClearFilters]);
 
     const [rawFilters, setRawFilters] = useState<RawFilters>(initialFilters);
     const [debouncedRawFilters, setDebouncedRawFilters] =
@@ -267,7 +267,7 @@ export function CampaignsTable({
         const params = new URLSearchParams(searchParams.toString());
 
         Object.entries(filters).forEach(([key, value]) => {
-            if (URL_ENABLED_FILTERS.includes(key)) {
+            if (URL_ENABLED_CAMPAIGNS_FILTERS.includes(key)) {
                 if (value.length === 0) params.delete(key);
                 else if ("query" in value[0])
                     params.set(

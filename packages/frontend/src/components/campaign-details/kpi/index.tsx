@@ -63,7 +63,7 @@ export function Kpi({ campaign, loading }: KpiProps) {
             loadingKpiMeasurements || kpiMeasurements.length === 0
                 ? undefined
                 : kpiMeasurements[kpiMeasurements.length - 1].value;
-    else usdTvl = (campaign as Campaign).getTargetUsdValue();
+    else usdTvl = (campaign as Campaign).usdTvl;
 
     return (
         <div className={styles.root}>

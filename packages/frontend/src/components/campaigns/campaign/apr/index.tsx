@@ -82,7 +82,7 @@ export function Apr({ campaign, apr, kpi }: AprProps) {
                             <KpiSimulationChart
                                 loading={loading}
                                 targetValueName={campaign.targetValueName}
-                                targetUsdValue={campaign.getTargetUsdValue()}
+                                targetUsdValue={campaign.usdTvl}
                                 campaignDurationSeconds={
                                     campaign.to - campaign.from
                                 }

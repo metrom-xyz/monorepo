@@ -108,9 +108,9 @@ interface FilterProps {
     order?: number;
     totalCampaigns?: number;
     loading?: boolean;
-    statusOptions: SelectOption<Status>[];
-    protocolOptions: SelectOption<string>[];
-    chainOptions: ChainFilterOption[];
+    statusOptions?: SelectOption<Status>[];
+    protocolOptions?: SelectOption<string>[];
+    chainOptions?: ChainFilterOption[];
     onClearFilters: () => void;
     onFiltersChange: (filters: Partial<RawFilters>) => void;
 }
@@ -203,43 +203,15 @@ export function Filters({
     return (
         <div className={styles.root}>
             <div className={styles.inputs}>
-                <MultiSelect
-                    hideLabel
-                    options={statusOptions}
-                    values={filters.statuses}
-                    onChange={handleStatusesChange}
-                    label={t("filters.status.label")}
-                    placeholder={t("filters.status.label")}
-                    renderOption={statusSelectRenderOption}
-                    messages={{
-                        noResults: "",
-                    }}
-                    className={classNames(styles.filterInput, styles.desktop)}
-                />
-                <MultiSelect
-                    search
-                    hideLabel
-                    options={protocolOptions}
-                    values={filters.protocols}
-                    onChange={handleProtocolsChange}
-                    label={t("filters.protocol.label")}
-                    placeholder={t("filters.protocol.label")}
-                    renderOption={protocolSelectRenderOption}
-                    messages={{
-                        noResults: "",
-                    }}
-                    className={classNames(styles.filterInput, styles.desktop)}
-                />
-                <div className={styles.lastFilterWrapper}>
+                {statusOptions && (
                     <MultiSelect
-                        search
                         hideLabel
-                        options={chainOptions}
-                        values={filters.chains}
-                        onChange={handleChainsChange}
-                        label={t("filters.chain.label")}
-                        placeholder={t("filters.chain.label")}
-                        renderOption={chainSelectRenderOption}
+                        options={statusOptions}
+                        values={filters.statuses}
+                        onChange={handleStatusesChange}
+                        label={t("filters.status.label")}
+                        placeholder={t("filters.status.label")}
+                        renderOption={statusSelectRenderOption}
                         messages={{
                             noResults: "",
                         }}
@@ -248,6 +220,46 @@ export function Filters({
                             styles.desktop,
                         )}
                     />
+                )}
+                {protocolOptions && (
+                    <MultiSelect
+                        search
+                        hideLabel
+                        options={protocolOptions}
+                        values={filters.protocols}
+                        onChange={handleProtocolsChange}
+                        label={t("filters.protocol.label")}
+                        placeholder={t("filters.protocol.label")}
+                        renderOption={protocolSelectRenderOption}
+                        messages={{
+                            noResults: "",
+                        }}
+                        className={classNames(
+                            styles.filterInput,
+                            styles.desktop,
+                        )}
+                    />
+                )}
+                <div className={styles.lastFilterWrapper}>
+                    {chainOptions && (
+                        <MultiSelect
+                            search
+                            hideLabel
+                            options={chainOptions}
+                            values={filters.chains}
+                            onChange={handleChainsChange}
+                            label={t("filters.chain.label")}
+                            placeholder={t("filters.chain.label")}
+                            renderOption={chainSelectRenderOption}
+                            messages={{
+                                noResults: "",
+                            }}
+                            className={classNames(
+                                styles.filterInput,
+                                styles.desktop,
+                            )}
+                        />
+                    )}
                     <div className={styles.clearWrapper}>
                         <Button
                             variant="secondary"
