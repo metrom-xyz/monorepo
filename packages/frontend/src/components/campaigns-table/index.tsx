@@ -1,4 +1,4 @@
-import { Pagination, Typography, type SelectOption } from "@metrom-xyz/ui";
+import { Pagination, Typography } from "@metrom-xyz/ui";
 import classNames from "classnames";
 import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
 import { useCallback, useEffect, useMemo, useState } from "react";
@@ -7,22 +7,17 @@ import type { TranslationsKeys } from "@/src/types/utils";
 import { useSearchParams, useRouter, usePathname } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { CampaignRow, SkeletonCampaign } from "../campaigns/campaign";
-import {
-    Filters,
-    type ChainFilterOption,
-    type FilterParams,
-    type RawFilters,
-} from "./filters";
+import { Filters, type FilterParams, type RawFilters } from "./filters";
 import { useCampaigns } from "@/src/hooks/useCampaigns";
 import { APTOS } from "@/src/commons/env";
-import { BackendCampaignType, ChainType, Status } from "@metrom-xyz/sdk";
+import { BackendCampaignType, ChainType } from "@metrom-xyz/sdk";
 import { LoadingBar } from "../loading-bar";
 import { useDebounce, usePrevious } from "react-use";
 import { EmptyTable } from "./empty-table";
-import { useChainsWithTypes } from "@/src/hooks/useChainsWithTypes";
-import { getCrossVmChainData } from "@/src/utils/chain";
-import { ProtocolLogo } from "../protocol-logo";
-import { useSupportedProtocols } from "@/src/hooks/useSupportedProtocols";
+import {
+    useCampaignsFiltersOptions,
+    type ChainFilterOption,
+} from "@/src/hooks/useCampaignsFiltersOptions";
 
 import styles from "./styles.module.css";
 
@@ -124,63 +119,12 @@ export function CampaignsTable({
     const pathname = usePathname();
     const router = useRouter();
     const searchParams = useSearchParams();
-    const supportedChains = useChainsWithTypes({
-        chainType: APTOS ? ChainType.Aptos : undefined,
-    });
-    const supportedProtocols = useSupportedProtocols({ crossVm: !APTOS });
+    const filterOptions = useCampaignsFiltersOptions();
     const prevType = usePrevious(type);
 
     const [sortField, setSortField] = useState<CampaignSortOptions>();
     const [order, setOrder] = useState<number | undefined>();
     const [pageNumber, setPageNumber] = useState(1);
-
-    const statusOptions: SelectOption<Status>[] = useMemo(
-        () => [
-            {
-                label: t("filters.status.live"),
-                value: Status.Active,
-            },
-            {
-                label: t("filters.status.upcoming"),
-                value: Status.Upcoming,
-            },
-            {
-                label: t("filters.status.ended"),
-                value: Status.Expired,
-            },
-        ],
-        [t],
-    );
-
-    const protocolOptions: SelectOption<string>[] = useMemo(() => {
-        return supportedProtocols.map((protocol) => ({
-            label: protocol.name,
-            icon: (
-                <ProtocolLogo
-                    size="sm"
-                    protocol={protocol}
-                    className={styles.icon}
-                />
-            ),
-            value: protocol.slug,
-        }));
-    }, [supportedProtocols]);
-
-    const chainOptions: ChainFilterOption[] = useMemo(() => {
-        const options: ChainFilterOption[] = [];
-
-        for (const chain of supportedChains) {
-            const chainData = getCrossVmChainData(chain.id, chain.type);
-            if (!chainData) continue;
-
-            options.push({
-                label: chainData.name,
-                value: `${chain.type}_${chain.id}`,
-                query: chainData.name.toLowerCase().replaceAll(" ", "_"),
-            });
-        }
-        return options;
-    }, [supportedChains]);
 
     const initialFilters = useMemo(() => {
         const queryFilters: Record<string, string> = {};
@@ -199,15 +143,15 @@ export function CampaignsTable({
 
         Object.entries(queryFilters).forEach(([key, value]) => {
             if (key === "statuses")
-                filters.statuses = statusOptions.filter((option) =>
-                    value.split(",").includes(option.value),
+                filters.statuses = filterOptions.statusOptions.filter(
+                    (option) => value.split(",").includes(option.value),
                 );
             if (key === "protocols")
-                filters.protocols = protocolOptions.filter((option) =>
-                    value.split(",").includes(option.value),
+                filters.protocols = filterOptions.protocolOptions.filter(
+                    (option) => value.split(",").includes(option.value),
                 );
             if (key === "chains")
-                filters.chains = chainOptions.filter((option) =>
+                filters.chains = filterOptions.chainOptions.filter((option) =>
                     value.split(",").includes(option.query),
                 );
         });
@@ -215,9 +159,9 @@ export function CampaignsTable({
         return filters;
     }, [
         searchParams,
-        chainOptions,
-        protocolOptions,
-        statusOptions,
+        filterOptions.chainOptions,
+        filterOptions.protocolOptions,
+        filterOptions.statusOptions,
         optionalFilters,
     ]);
 
@@ -357,14 +301,12 @@ export function CampaignsTable({
         >
             {!disableFilters && (
                 <Filters
+                    {...filterOptions}
                     sortField={sortField}
                     order={order}
                     filters={rawFilters}
                     totalCampaigns={totalCampaigns}
                     loading={loading}
-                    statusOptions={statusOptions}
-                    protocolOptions={protocolOptions}
-                    chainOptions={chainOptions}
                     onClearFilters={handleClearFilters}
                     onFiltersChange={handleFiltersOnChange}
                 />

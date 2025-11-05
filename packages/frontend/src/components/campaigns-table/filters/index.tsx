@@ -8,13 +8,16 @@ import {
     Skeleton,
 } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
-import { useCallback, useMemo, type ReactNode } from "react";
+import { useCallback, useMemo } from "react";
 import type { CampaignSortOptions } from "@/src/utils/filtering";
 import { getCrossVmChainData } from "@/src/utils/chain";
 import { ChainType, Status } from "@metrom-xyz/sdk";
 import { CampaignStatusDot } from "../../campaign-status-dot";
 import { TrashIcon } from "@/src/assets/trash-icon";
 import { MobileFilters } from "./mobile-filters";
+import type { ChainFilterOption } from "@/src/hooks/useCampaignsFiltersOptions";
+import { ProtocolLogo } from "../../protocol-logo";
+import type { Protocol } from "@metrom-xyz/chains";
 
 import styles from "./styles.module.css";
 
@@ -46,12 +49,18 @@ export const statusSelectRenderOption = (
 
 export const protocolSelectRenderOption = (option: {
     label: string;
-    icon?: ReactNode;
+    protocol?: Protocol;
     value: string;
 }) => {
     return (
         <div className={styles.customOptionContainer}>
-            {option.icon && option.icon}
+            {option.protocol && (
+                <ProtocolLogo
+                    size="sm"
+                    protocol={option.protocol}
+                    className={styles.icon}
+                />
+            )}
             <Typography className={styles.selectOptionText} weight="medium">
                 {option.label}
             </Typography>
@@ -104,12 +113,6 @@ interface FilterProps {
     chainOptions: ChainFilterOption[];
     onClearFilters: () => void;
     onFiltersChange: (filters: Partial<RawFilters>) => void;
-}
-
-export interface ChainFilterOption {
-    label: string;
-    value: string;
-    query: string;
 }
 
 export function Filters({
