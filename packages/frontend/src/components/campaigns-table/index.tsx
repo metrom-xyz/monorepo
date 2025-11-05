@@ -107,7 +107,7 @@ interface CampaignsTableProps {
     type: BackendCampaignType;
     disableFilters?: boolean;
     optionalFilters?: Partial<RawFilters>;
-    onClearFilters: () => void;
+    onClearFilters?: () => void;
 }
 
 export function CampaignsTable({
@@ -180,7 +180,8 @@ export function CampaignsTable({
         setPageNumber(1);
         setSortField(undefined);
         setOrder(undefined);
-        onClearFilters();
+
+        if (onClearFilters) onClearFilters();
     }, [onClearFilters]);
 
     const [rawFilters, setRawFilters] = useState<RawFilters>(initialFilters);
