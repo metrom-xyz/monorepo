@@ -12,7 +12,6 @@ import {
     chainSelectRenderOption,
     protocolSelectRenderOption,
     statusSelectRenderOption,
-    type ChainFilterOption,
     type RawFilters,
 } from "..";
 import { FilterActiveIcon } from "@/src/assets/filter-active-icon";
@@ -23,6 +22,7 @@ import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
 import { useClickAway } from "react-use";
 import { TrashIcon } from "@/src/assets/trash-icon";
 import classNames from "classnames";
+import type { ChainFilterOption } from "@/src/hooks/useCampaignsFiltersOptions";
 
 import styles from "./styles.module.css";
 import commonStyles from "../styles.module.css";
