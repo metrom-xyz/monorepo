@@ -7,15 +7,22 @@ import { useTranslations } from "next-intl";
 import { TokensIcon } from "@/src/assets/tokens-icon";
 import { PointsIcon } from "@/src/assets/points-icon";
 import { BackendCampaignType } from "@metrom-xyz/sdk";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { ProjectsList } from "../projects-list";
 import { ProjectsIcon } from "@/src/assets/projects-icon";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { SkeletonCampaigns } from "./skeleton-campaigns";
+import { usePrevious } from "react-use";
 
 import styles from "./styles.module.css";
 
 export type BackendCampaignTypeAndProjects = BackendCampaignType | "projects";
+
+export const URL_ENABLED_CAMPAIGNS_FILTERS = [
+    "chains",
+    "statuses",
+    "protocols",
+];
 
 export function Campaigns() {
     const t = useTranslations("allCampaigns");
@@ -24,6 +31,19 @@ export function Campaigns() {
     const searchParams = useSearchParams();
 
     const [type, setType] = useState<BackendCampaignTypeAndProjects>();
+
+    const prevType = usePrevious(type);
+
+    const handleClearUrlFilterParams = useCallback(() => {
+        const params = new URLSearchParams(searchParams.toString());
+        URL_ENABLED_CAMPAIGNS_FILTERS.forEach((filter) => {
+            params.delete(filter);
+        });
+
+        router.replace(`${pathname}?${params.toString()}`, {
+            scroll: false,
+        });
+    }, [pathname, router, searchParams]);
 
     // This hooks initializes the type state with the values coming from the url param, or
     // if it's missing it defaults to rewards and adds that to the url.
@@ -60,10 +80,17 @@ export function Campaigns() {
 
         const params = new URLSearchParams(searchParams.toString());
         params.set("type", type);
+
+        if (prevType && prevType !== type) {
+            URL_ENABLED_CAMPAIGNS_FILTERS.forEach((filter) => {
+                params.delete(filter);
+            });
+        }
+
         router.replace(`${pathname}?${params.toString()}`, {
             scroll: false,
         });
-    }, [pathname, router, searchParams, type]);
+    }, [pathname, router, searchParams, type, prevType]);
 
     if (!type) return <SkeletonCampaigns type={BackendCampaignType.Rewards} />;
 
@@ -84,7 +111,10 @@ export function Campaigns() {
             {type === "projects" ? (
                 <ProjectsList />
             ) : (
-                <CampaignsTable type={type} />
+                <CampaignsTable
+                    type={type}
+                    onClearFilters={handleClearUrlFilterParams}
+                />
             )}
         </div>
     );
