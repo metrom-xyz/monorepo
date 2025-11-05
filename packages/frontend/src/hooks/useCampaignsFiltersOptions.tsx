@@ -17,7 +17,7 @@ export function useCampaignsFiltersOptions() {
     const t = useTranslations("allCampaigns.filters");
     const chainType = useChainType();
     const supportedChains = useChainsWithTypes({
-        chainType: chainType ? ChainType.Aptos : undefined,
+        chainType: chainType === ChainType.Aptos ? ChainType.Aptos : undefined,
     });
     const supportedProtocols = useSupportedProtocols({
         crossVm: chainType !== ChainType.Aptos,
