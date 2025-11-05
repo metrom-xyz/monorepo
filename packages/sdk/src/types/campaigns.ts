@@ -1,6 +1,5 @@
 import type { Address, Hex } from "viem";
 import type {
-    
     Brand,
     ChainType,
     Erc20Token,
@@ -125,7 +124,6 @@ export type AaveV3BridgeAndSupplyTarget = BaseTarget & {
 export interface HoldFungibleAssetTarget extends BaseTarget {
     type: TargetType.HoldFungibleAsset;
     asset: Erc20Token;
-    stakingAssets: Erc20Token[];
 }
 
 export type CampaignTarget =

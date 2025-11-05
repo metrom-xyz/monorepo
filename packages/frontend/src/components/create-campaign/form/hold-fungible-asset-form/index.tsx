@@ -32,7 +32,6 @@ function validatePayload(
     const {
         kind,
         asset,
-        stakingAssets,
         startDate,
         endDate,
         distributables,
@@ -58,7 +57,6 @@ function validatePayload(
 
     return new HoldFungibleAssetCampaignPreviewPayload(
         asset,
-        stakingAssets,
         startDate,
         endDate,
         distributables as CampaignPreviewDistributables,
@@ -80,7 +78,6 @@ interface HoldFungibleAssetFormProps {
 const initialPayload: HoldFungibleAssetCampaignPayload = {
     distributables: { type: DistributablesType.Tokens },
     kind: CampaignKind.HoldFungibleAsset,
-    stakingAssets: [],
 };
 
 export function HoldFungibleAssetForm({
@@ -131,7 +128,6 @@ export function HoldFungibleAssetForm({
                 <HoldFungibleAssetPickerStep
                     disabled={unsupportedChain}
                     asset={payload.asset}
-                    stakingAssets={payload.stakingAssets}
                     onFungibleAssetChange={handlePayloadOnChange}
                     onError={handlePayloadOnError}
                 />

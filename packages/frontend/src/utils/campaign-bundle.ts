@@ -5,7 +5,6 @@ import {
     AccountAddress,
     MoveString,
     U32,
-    MoveVector,
 } from "@aptos-labs/ts-sdk";
 import {
     AaveV3CampaignPreviewPayload,
@@ -42,6 +41,11 @@ export function buildCampaignDataBundleEvm(payload: CampaignPreviewPayload) {
                 stringToHex(payload.brand.slug).padEnd(66, "0") as Hex,
                 payload.collateral.address,
             ],
+        );
+    } else if (payload instanceof HoldFungibleAssetCampaignPreviewPayload) {
+        return encodeAbiParameters(
+            [{ name: "asset", type: "address" }],
+            [payload.asset.address],
         );
     } else if (payload instanceof EmptyTargetCampaignPreviewPayload) {
         return "0x";
@@ -81,13 +85,6 @@ export function buildCampaignDataBundleMvm(payload: CampaignPreviewPayload) {
     } else if (payload instanceof HoldFungibleAssetCampaignPreviewPayload) {
         serializableParts.push(
             AccountAddress.fromString(payload.asset.address),
-        );
-        serializableParts.push(
-            new MoveVector(
-                payload.stakingAssets.map(({ address }) =>
-                    AccountAddress.fromString(address),
-                ),
-            ),
         );
     } else if (payload instanceof EmptyTargetCampaignPreviewPayload) {
         return [];

@@ -404,7 +404,7 @@
             "holdFungibleAsset": {
                 "picker": {
                     "title": "Token",
-                    "infoMessage": "Pick a specific fungible token to reward users who hold it. Optionally pick one or multiple staking token addresses (tokens that track a staking position for the original asset).",
+                    "infoMessage": "Pick a specific fungible token to reward users who hold it.",
                     "tokenAddressInput": {
                         "label": "Token address",
                         "placeholder": "Enter token address"

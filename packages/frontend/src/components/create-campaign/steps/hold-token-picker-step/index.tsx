@@ -16,7 +16,6 @@ import { useFungibleAssetInfo } from "@/src/hooks/useFungibleAssetInfo";
 import { useChainWithType } from "@/src/hooks/useChainWithType";
 import { AssetChip, AssetChipLoading } from "./asset-chip";
 import type { LocalizedMessage } from "@/src/types/utils";
-import { StakingAssetsPicker } from "./staking-assets-picker";
 import { useDebounce } from "react-use";
 import type { FungibleAssetInfo } from "@metrom-xyz/sdk";
 
@@ -25,7 +24,6 @@ import styles from "./styles.module.css";
 interface HoldFungibleAssetPickerStepProps {
     disabled?: boolean;
     asset?: FungibleAssetInfo;
-    stakingAssets: FungibleAssetInfo[];
     onFungibleAssetChange: (
         fungibleAsset: HoldFungibleAssetCampaignPayloadPart,
     ) => void;
@@ -38,15 +36,12 @@ type ErrorMessage =
 export function HoldFungibleAssetPickerStep({
     disabled,
     asset,
-    stakingAssets,
     onFungibleAssetChange,
     onError,
 }: HoldFungibleAssetPickerStepProps) {
     const t = useTranslations("newCampaign.form.holdFungibleAsset.picker");
 
     const [assetError, setAssetError] = useState<ErrorMessage>("");
-    const [stakingAssetError, setStakingAssetError] =
-        useState<ErrorMessage>("");
     const [assetAddress, setAssetAddress] = useState(asset?.address || "");
     const [debouncedAssetAddress, setDebouncedAssetAddress] = useState(
         asset?.address || "",
@@ -84,9 +79,9 @@ export function HoldFungibleAssetPickerStep({
 
     useEffect(() => {
         onError({
-            holdFungibleAsset: !!assetError || !!stakingAssetError,
+            holdFungibleAsset: !!assetError,
         });
-    }, [onError, assetError, stakingAssetError]);
+    }, [onError, assetError]);
 
     useEffect(() => {
         if (assetInfo) onFungibleAssetChange({ asset: assetInfo });
@@ -97,14 +92,10 @@ export function HoldFungibleAssetPickerStep({
         setAssetAddress(address);
     }
 
-    function handleStakingAssetsOnChange(stakingTokens: FungibleAssetInfo[]) {
-        onFungibleAssetChange({ stakingAssets: stakingTokens });
-    }
-
     const handleOnRemove = useCallback(() => {
         setAssetAddress("");
         setDebouncedAssetAddress("");
-        onFungibleAssetChange({ asset: undefined, stakingAssets: [] });
+        onFungibleAssetChange({ asset: undefined });
     }, [onFungibleAssetChange]);
 
     return (
@@ -127,11 +118,7 @@ export function HoldFungibleAssetPickerStep({
                                     {t("title")}
                                 </Typography>
                                 <ErrorText size="xs" weight="medium">
-                                    {assetError
-                                        ? t(assetError)
-                                        : stakingAssetError
-                                          ? t(stakingAssetError)
-                                          : null}
+                                    {assetError ? t(assetError) : null}
                                 </ErrorText>
                             </div>
                         </div>
@@ -165,14 +152,6 @@ export function HoldFungibleAssetPickerStep({
                             />
                         )}
                     </div>
-                    <StakingAssetsPicker
-                        visible={!!assetInfo}
-                        chainId={chainId}
-                        disabled={!asset}
-                        stakingAssets={stakingAssets}
-                        onChange={handleStakingAssetsOnChange}
-                        onError={setStakingAssetError}
-                    />
                 </div>
             </StepPreview>
             <StepContent></StepContent>
