@@ -30,6 +30,11 @@ export const sepoliaData: ChainData = {
             partner: false,
             type: BaseCampaignType.LiquityV2,
         },
+        {
+            active: true,
+            partner: false,
+            type: BaseCampaignType.HoldFungibleAsset,
+        },
     ],
     protocols: [
         {

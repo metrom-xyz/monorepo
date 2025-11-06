@@ -18,6 +18,11 @@ export const baseSepoliaData: ChainData = {
             partner: false,
             type: BaseCampaignType.AmmPoolLiquidity,
         },
+        {
+            active: true,
+            partner: false,
+            type: BaseCampaignType.HoldFungibleAsset,
+        },
     ],
     protocols: [
         {
