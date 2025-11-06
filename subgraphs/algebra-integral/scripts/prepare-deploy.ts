@@ -73,13 +73,13 @@ try {
                 nftPositionManagerStartBlock:
                     contracts.NonFungiblePositionManager.startBlock,
                 v1_0:
-                    contracts.NonFungiblePositionManager.version ===
+                    contracts.version ===
                     NonFungiblePositionManagerVersion.V1_0,
                 v1_1:
-                    contracts.NonFungiblePositionManager.version ===
+                    contracts.version ===
                     NonFungiblePositionManagerVersion.V1_1,
                 v1_2:
-                    contracts.NonFungiblePositionManager.version ===
+                    contracts.version ===
                     NonFungiblePositionManagerVersion.V1_2,
             },
         ),
@@ -90,4 +90,4 @@ try {
     process.exit(1);
 }
 
-exec("npm format");
+exec("npm run format");
