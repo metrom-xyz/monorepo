@@ -2,6 +2,11 @@ import createNextIntlPlugin from "next-intl/plugin";
 
 const withNextIntl = createNextIntlPlugin();
 
+const ALLOWED_FRAME_ANCESTORS = [
+    "https://app.safe.global",
+    "https://vault.petra.app",
+];
+
 const cspHeader = `
     default-src 'self';
     connect-src 'self' https: https://verify.walletconnect.org  wss://relay.walletconnect.org wss://www.walletlink.org;
@@ -13,7 +18,7 @@ const cspHeader = `
     object-src 'none';
     base-uri 'self';
     form-action 'self';
-    frame-ancestors 'none';
+    frame-ancestors ${ALLOWED_FRAME_ANCESTORS.join(" ")};
     upgrade-insecure-requests;
 `;
 
@@ -39,10 +44,6 @@ const nextConfig = {
                     {
                         key: "Content-Security-Policy",
                         value: cspHeader.replace(/\n/g, ""),
-                    },
-                    {
-                        key: "X-Frame-Options",
-                        value: "DENY",
                     },
                 ],
             },
