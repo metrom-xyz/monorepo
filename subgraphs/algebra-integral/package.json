@@ -9,7 +9,7 @@
         "deploy:silverswap:sonic": "npm run prepare:deploy sonic silverswap && npm run codegen && graph deploy --studio metrom-silverswap-sonic -l 0.0.8",
         "deploy:fibonacci:form": "npm run prepare:deploy form fibonacci && npm run codegen && graph deploy --studio metrom-fibonacci-form -l 0.0.9 --node https://formapi.0xgraph.xyz/deploy --ipfs https://formapi.0xgraph.xyz/ipfs",
         "deploy:swapr:gnosis": "npm run prepare:deploy gnosis swapr && npm run codegen && graph deploy --studio metrom-swapr-gnosis -l 0.0.17",
-        "deploy:hydrex:base": "npm run prepare:deploy base hydrex && npm run codegen && graph deploy --studio metrom-hydrex-base -l 0.0.1",
+        "deploy:hydrex:base": "npm run prepare:deploy base hydrex && npm run codegen && graph deploy metrom-hydrex-base -l 0.0.6",
         "lint": "eslint .",
         "format": "eslint --fix ."
     },

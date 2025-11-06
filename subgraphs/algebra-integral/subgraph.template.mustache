@@ -16,9 +16,7 @@ dataSources:
       apiVersion: 0.0.7
       language: wasm/assemblyscript
       file: ./src/mappings/factory.ts
-      entities:
-        - Pool
-        - Token
+      entities: []
       abis:
         - name: Factory
           file: ./abis/Factory.json
@@ -43,10 +41,7 @@ dataSources:
       apiVersion: 0.0.7
       language: wasm/assemblyscript
       file: ./src/mappings/non-fungible-position-manager.ts
-      entities:
-        - Pool
-        - Position
-        - Event
+      entities: []
       abis:
         - name: NonFungiblePositionManager
           {{#v1_0}}
@@ -79,22 +74,22 @@ templates:
       apiVersion: 0.0.7
       language: wasm/assemblyscript
       file: ./src/mappings/pool.ts
-      entities:
-        - Pool
-        - Position
-        - Event
+      entities: []
       abis:
         - name: Pool
-          file: ./abis/Pool.json
+          file: ./abis/UnifiedPool.json
       eventHandlers:
         - event: Initialize(uint160,int24)
           handler: handleInitialize
         - event: Fee(uint16)
           handler: handleFee
         - event: Swap(indexed address,indexed address,int256,int256,uint160,uint128,int24)
-          handler: handleSwap
-        - event: Mint(address,indexed address,indexed int24,indexed
-            int24,uint128,uint256,uint256)
+          handler: handleSwapV1_0
+        - event: Swap(indexed address,indexed address,int256,int256,uint160,uint128,int24,uint24,uint24)
+          handler: handleSwapV1_2
+        - event: Mint(address,indexed address,indexed int24,indexed int24,uint128,uint256,uint256)
           handler: handleMint
         - event: Burn(indexed address,indexed int24,indexed int24,uint128,uint256,uint256)
-          handler: handleBurn
+          handler: handleBurnV1_0
+        - event: Burn(indexed address,indexed int24,indexed int24,uint128,uint256,uint256,uint24)
+          handler: handleBurnV1_2

@@ -1,9 +1,17 @@
-import { Address, Bytes, crypto } from "@graphprotocol/graph-ts";
+import {
+    Address,
+    BigInt,
+    Bytes,
+    crypto,
+    ethereum,
+} from "@graphprotocol/graph-ts";
 import {
     Initialize as InitializeEvent,
-    Swap as SwapEvent,
+    Swap1 as SwapEventV1_0,
+    Swap as SwapEventV1_2,
     Mint as MintEvent,
-    Burn as BurnEvent,
+    Burn as BurnEventV1_2,
+    Burn1 as BurnEventV1_0,
     Fee as FeeEvent,
 } from "../../generated/templates/Pool/Pool";
 import {
@@ -41,33 +49,68 @@ export function handleFee(event: FeeEvent): void {
     pool.save();
 }
 
-export function handleSwap(event: SwapEvent): void {
-    let pool = getPoolOrThrow(event.address);
-    pool.liquidity = event.params.liquidity;
+function handleSwap(
+    pool: Pool,
+    event: ethereum.Event,
+    liquidity: BigInt,
+    amount0: BigInt,
+    amount1: BigInt,
+    price: BigInt,
+    tick: i32,
+    fee: i32,
+): void {
+    pool.liquidity = liquidity;
     pool.token0Tvl = pool.token0Tvl.plus(
-        getFeeAdjustedAmount(event.params.amount0, pool.fee),
+        getFeeAdjustedAmount(amount0, pool.fee),
     );
     pool.token1Tvl = pool.token1Tvl.plus(
-        getFeeAdjustedAmount(event.params.amount1, pool.fee),
+        getFeeAdjustedAmount(amount1, pool.fee),
     );
-    pool.price = getPrice(event.params.price, pool.token0, pool.token1);
+    pool.price = getPrice(price, pool.token0, pool.token1);
 
-    if (
-        event.params.price.notEqual(pool.sqrtPriceX96) ||
-        event.params.tick != pool.tick
-    ) {
+    if (price.notEqual(pool.sqrtPriceX96) || tick != pool.tick) {
         let swapChange = new SwapChange(getEventId(event));
         swapChange.timestamp = event.block.timestamp;
         swapChange.blockNumber = event.block.number;
         swapChange.pool = pool.id;
-        swapChange.tick = event.params.tick;
-        swapChange.sqrtPriceX96 = event.params.price;
+        swapChange.tick = tick;
+        swapChange.sqrtPriceX96 = price;
         swapChange.save();
     }
 
-    pool.tick = event.params.tick;
-    pool.sqrtPriceX96 = event.params.price;
+    if (fee !== -1) pool.fee = fee;
+    pool.tick = tick;
+    pool.sqrtPriceX96 = price;
     pool.save();
+}
+
+export function handleSwapV1_0(event: SwapEventV1_0): void {
+    const pool = getPoolOrThrow(event.address);
+    handleSwap(
+        pool,
+        event,
+        event.params.liquidity,
+        event.params.amount0,
+        event.params.amount1,
+        event.params.price,
+        event.params.tick,
+        pool.fee,
+    );
+}
+
+export function handleSwapV1_2(event: SwapEventV1_2): void {
+    const pool = getPoolOrThrow(event.address);
+
+    handleSwap(
+        pool,
+        event,
+        event.params.liquidity,
+        event.params.amount0,
+        event.params.amount1,
+        event.params.price,
+        event.params.tick,
+        event.params.overrideFee > 0 ? event.params.overrideFee : pool.fee,
+    );
 }
 
 function getDirectPositionId(
@@ -181,57 +224,79 @@ export function handleMint(event: MintEvent): void {
     }
 }
 
-export function handleBurn(event: BurnEvent): void {
-    let pool = getPoolOrThrow(event.address);
-    pool.token0Tvl = pool.token0Tvl.minus(event.params.amount0);
-    pool.token1Tvl = pool.token1Tvl.minus(event.params.amount1);
+function handleBurn(
+    poolAddress: Address,
+    event: ethereum.Event,
+    owner: Address,
+    liquidity: BigInt,
+    amount0: BigInt,
+    amount1: BigInt,
+    bottomTick: i32,
+    topTick: i32,
+): void {
+    const pool = getPoolOrThrow(poolAddress);
+    pool.token0Tvl = pool.token0Tvl.minus(amount0);
+    pool.token1Tvl = pool.token1Tvl.minus(amount1);
 
-    if (
-        event.params.bottomTick <= pool.tick &&
-        event.params.topTick > pool.tick
-    )
-        pool.liquidity = pool.liquidity.plus(event.params.liquidityAmount);
+    if (bottomTick <= pool.tick && topTick > pool.tick)
+        pool.liquidity = pool.liquidity.minus(liquidity);
 
     pool.save();
 
-    let lowerTick = getOrCreateTick(pool.id, event.params.bottomTick);
-    lowerTick.liquidityGross = lowerTick.liquidityGross.minus(
-        event.params.liquidityAmount,
-    );
-    lowerTick.liquidityNet = lowerTick.liquidityNet.minus(
-        event.params.liquidityAmount,
-    );
+    const lowerTick = getOrCreateTick(pool.id, bottomTick);
+    lowerTick.liquidityGross = lowerTick.liquidityGross.minus(liquidity);
+    lowerTick.liquidityNet = lowerTick.liquidityNet.minus(liquidity);
     lowerTick.save();
 
-    let upperTick = getOrCreateTick(pool.id, event.params.topTick);
-    upperTick.liquidityGross = upperTick.liquidityGross.minus(
-        event.params.liquidityAmount,
-    );
-    upperTick.liquidityNet = upperTick.liquidityNet.plus(
-        event.params.liquidityAmount,
-    );
+    const upperTick = getOrCreateTick(pool.id, topTick);
+    upperTick.liquidityGross = upperTick.liquidityGross.minus(liquidity);
+    upperTick.liquidityNet = upperTick.liquidityNet.plus(liquidity);
     upperTick.save();
 
-    if (event.params.owner == NON_FUNGIBLE_POSITION_MANAGER_ADDRESS) return;
+    if (NON_FUNGIBLE_POSITION_MANAGER_ADDRESS) return;
 
-    if (!event.params.liquidityAmount.isZero()) {
-        let position = getDirectPositionOrThrow(
+    if (!liquidity.isZero()) {
+        const position = getDirectPositionOrThrow(
             event.address,
-            event.params.owner,
-            event.params.bottomTick,
-            event.params.topTick,
+            owner,
+            bottomTick,
+            topTick,
         );
 
-        position.liquidity = position.liquidity.minus(
-            event.params.liquidityAmount,
-        );
+        position.liquidity = position.liquidity.minus(liquidity);
         position.save();
 
-        let liquidityChange = new LiquidityChange(getEventId(event));
+        const liquidityChange = new LiquidityChange(getEventId(event));
         liquidityChange.timestamp = event.block.timestamp;
         liquidityChange.blockNumber = event.block.number;
-        liquidityChange.delta = event.params.liquidityAmount.neg();
+        liquidityChange.delta = liquidity.neg();
         liquidityChange.position = position.id;
         liquidityChange.save();
     }
+}
+
+export function handleBurnV1_0(event: BurnEventV1_0): void {
+    handleBurn(
+        event.address,
+        event,
+        event.params.owner,
+        event.params.liquidityAmount,
+        event.params.amount0,
+        event.params.amount1,
+        event.params.bottomTick,
+        event.params.topTick,
+    );
+}
+
+export function handleBurnV1_2(event: BurnEventV1_2): void {
+    handleBurn(
+        event.address,
+        event,
+        event.params.owner,
+        event.params.liquidityAmount,
+        event.params.amount0,
+        event.params.amount1,
+        event.params.bottomTick,
+        event.params.topTick,
+    );
 }
