@@ -242,7 +242,7 @@ export function CampaignsTable({
                                 campaigns?.map((campaign) => {
                                     return (
                                         <CampaignRow
-                                            key={campaign.id}
+                                            key={`${campaign.chainType}-${campaign.chainId}-${campaign.id}`}
                                             campaign={campaign}
                                         />
                                     );
