@@ -9,7 +9,7 @@
 }
 
 .wrapper {
-    @apply w-full min-h-[61rem] flex-col flex gap-3 p-5 surface-primary rounded-xl rounded-tl-none;
+    @apply w-full min-h-[59.625rem] flex-col flex gap-3 p-5 surface-primary rounded-xl rounded-tl-none;
 }
 
 .filters {

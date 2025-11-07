@@ -1,19 +1,36 @@
 @reference "../../theme.css";
 
 .root {
-    @apply w-full sm:w-auto justify-center flex gap-1 sm:gap-2;
+    @apply w-full sm:w-auto justify-center flex;
 }
 
-.arrowIcon {
-    @apply w-5 h-5 text-primary;
+.icon {
+    @apply w-3 h-3 text-primary;
 }
 
 .ellipsis {
-    @apply w-9 h-9 flex items-center justify-center;
+    @apply w-6 h-6 flex items-end justify-center;
 }
 
 .button {
-    @apply size-9!;
+    @apply flex
+        items-center
+        justify-center
+        gap-0.5
+        min-h-6
+        min-w-6
+        cursor-pointer
+        hover:[&>p,&>svg]:text-brand-green-dark
+        hover:[&>p,&>svg]:dark:text-brand-green;
+}
+
+.button.step {
+    @apply p-2;
+}
+
+.button > p,
+.button > svg {
+    @apply transition-colors duration-200 ease-in-out;
 }
 
 .button.loading {
@@ -21,5 +38,9 @@
 }
 
 .button.active {
-    @apply bg-gray-50 dark:bg-neutral-700 pointer-events-none;
+    @apply [&>p,&>svg]:text-brand-green-dark [&>p,&>svg]:dark:text-brand-green pointer-events-none;
+}
+
+.button.disabled {
+    @apply pointer-events-none [&>p,&>svg]:text-gray-400 [&>p,&>svg]:dark:text-neutral-700;
 }
