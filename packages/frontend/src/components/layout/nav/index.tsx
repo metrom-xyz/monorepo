@@ -10,7 +10,6 @@ import { NewCampaignIcon } from "@/src/assets/new-campaign-icon";
 import { AllCampaignsIcon } from "@/src/assets/all-campaigns-icon";
 import { ClaimsIcon } from "@/src/assets/claims-icon";
 import { NetworkSelect } from "../../network-select";
-import { NavThemeSwitcher } from "../../nav-theme-switcher";
 import { useMemo, type FunctionComponent } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import type { SVGIcon } from "@/src/types/common";
@@ -20,6 +19,7 @@ import { useClaims } from "@/src/hooks/use-claims";
 import { useActiveChains } from "@/src/hooks/useActiveChains";
 import { useChainWithType } from "@/src/hooks/useChainWithType";
 import { useAccount } from "@/src/hooks/useAccount";
+import { ThemeToggle } from "../../theme-toggle";
 
 import styles from "./styles.module.css";
 
@@ -63,8 +63,8 @@ export function Nav() {
                     </Link>
                 </div>
                 <div className={styles.rightContentContainer}>
+                    <ThemeToggle />
                     <NetworkSelect />
-                    {!address && <NavThemeSwitcher />}
                     <ConnectButton />
                 </div>
                 <div className={styles.tabs}>
