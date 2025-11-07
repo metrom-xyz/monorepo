@@ -92,7 +92,7 @@
 }
 
 .paginationWrapper {
-    @apply w-full p-5 mt-5 flex justify-end;
+    @apply w-full p-5 flex justify-start;
 }
 
 .customOptionContainer {
