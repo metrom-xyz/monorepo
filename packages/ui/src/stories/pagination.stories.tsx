@@ -9,7 +9,13 @@ const meta: Meta = {
         layout: "centered",
     },
     tags: ["autodocs"],
-    args: { totalPages: 20 },
+    args: {
+        totalPages: 20,
+        messages: {
+            previous: "Prev",
+            next: "Next",
+        },
+    },
 } satisfies Meta<typeof Pagination>;
 
 export default meta;

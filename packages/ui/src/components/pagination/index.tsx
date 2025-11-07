@@ -1,18 +1,21 @@
-import { ChevronLeft } from "../..//assets/chevron-left";
-import { ChevronRight } from "../..//assets/chevron-right";
 import classNames from "classnames";
 import { useMemo } from "react";
 import { Typography } from "../typography";
-import { Button } from "../button";
+import { ArrowLeft } from "../../assets/arrow-left";
+import { ArrowRight } from "../../assets/arrow-right";
 
 import styles from "./styles.module.css";
 
-const PAGES_THRESHOLD = 3;
+const PAGES_THRESHOLD = 1;
 
 export interface PaginationProps {
     page: number;
     totalPages: number;
     loading?: boolean;
+    messages: {
+        previous: string;
+        next: string;
+    };
     onPrevious: () => void;
     onNext: () => void;
     onPage: (number: number) => void;
@@ -22,6 +25,7 @@ export function Pagination({
     page,
     totalPages,
     loading,
+    messages,
     onPrevious,
     onNext,
     onPage,
@@ -45,60 +49,60 @@ export function Pagination({
 
     return (
         <div className={styles.root}>
-            <Button
-                variant="secondary"
-                size="xs"
-                disabled={page === 1 || loading}
+            <div
+                className={classNames(styles.button, styles.step, {
+                    [styles.disabled]: page === 1 || loading,
+                    [styles.loading]: loading,
+                })}
                 onClick={onPrevious}
-                className={{
-                    root: classNames(styles.button, {
-                        [styles.loading]: loading,
-                    }),
-                }}
             >
-                <ChevronLeft className={styles.arrowIcon} />
-            </Button>
+                <ArrowLeft className={styles.icon} />
+                <Typography size="xs" weight="semibold">
+                    {messages.previous}
+                </Typography>
+            </div>
             {pages.map((number, i) => {
-                const disabled = page === number;
+                const active = page === number;
 
                 if (number < 0)
                     return (
-                        <Typography key={i} className={styles.ellipsis}>
+                        <Typography
+                            key={i}
+                            size="xs"
+                            weight="semibold"
+                            className={styles.ellipsis}
+                        >
                             ...
                         </Typography>
                     );
                 return (
-                    <Button
+                    <div
                         key={i}
-                        variant="secondary"
-                        size="xs"
-                        border={false}
-                        disabled={disabled || loading}
                         onClick={() => onPage(number)}
-                        className={{
-                            root: classNames(styles.button, {
-                                [styles.active]: disabled,
-                                [styles.loading]: loading,
-                            }),
-                        }}
+                        className={classNames(styles.button, {
+                            [styles.active]: active || loading,
+                            [styles.loading]: loading,
+                            [styles.disabled]: loading,
+                        })}
                     >
-                        <Typography>{number}</Typography>
-                    </Button>
+                        <Typography size="xs" weight="semibold">
+                            {number}
+                        </Typography>
+                    </div>
                 );
             })}
-            <Button
-                variant="secondary"
-                size="xs"
-                disabled={page === totalPages || loading}
+            <div
                 onClick={onNext}
-                className={{
-                    root: classNames(styles.button, {
-                        [styles.loading]: loading,
-                    }),
-                }}
+                className={classNames(styles.button, styles.step, {
+                    [styles.disabled]: page === totalPages || loading,
+                    [styles.loading]: loading,
+                })}
             >
-                <ChevronRight className={styles.arrowIcon} />
-            </Button>
+                <Typography size="xs" weight="semibold">
+                    {messages.next}
+                </Typography>
+                <ArrowRight className={styles.icon} />
+            </div>
         </div>
     );
 }

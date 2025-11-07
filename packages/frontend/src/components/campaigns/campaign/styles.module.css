@@ -4,6 +4,10 @@
     @apply grid col-span-full grid-cols-subgrid border-t stroke-divider;
 }
 
+.root:last-child {
+    @apply border-b;
+}
+
 .card {
     @apply col-span-full
         grid
