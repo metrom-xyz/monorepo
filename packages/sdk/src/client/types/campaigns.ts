@@ -83,8 +83,7 @@ export interface BackendFixedPoints {
 
 export interface BackendDynamicPoints {
     dailyPer1k?: number;
-    distributionIntervalSeconds: number;
-    multiplier: number;
+    distributionIntervalSeconds?: number;
 }
 
 export interface BackendAsset extends BackendErc20Token {

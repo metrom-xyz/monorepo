@@ -1,6 +1,5 @@
 import type { Address, Hex } from "viem";
 import type {
-    
     Brand,
     ChainType,
     Erc20Token,
@@ -169,8 +168,7 @@ export interface FixedPointDistributables {
 export interface DynamicPointDistributables {
     type: DistributablesType.DynamicPoints;
     dailyPer1k?: number;
-    distributionIntervalSeconds: number;
-    multiplier: number;
+    distributionIntervalSeconds?: number;
 }
 
 export type CampaignDistributables =
