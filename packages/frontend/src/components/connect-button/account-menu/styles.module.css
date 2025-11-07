@@ -6,12 +6,10 @@
         sm:rounded-t-none
         h-full
         w-full
-        sm:w-[28rem]
+        sm:w-[30rem]
         flex
         flex-col
-        gap-6
-        p-6
-        sm:p-3;
+        gap-6;
 }
 
 .overlay {
@@ -47,11 +45,18 @@
 }
 
 .drawBar {
-    @apply self-center bg-zinc-500 h-1 w-9 rounded-xl sm:hidden;
+    @apply self-center bg-gray-400 dark:bg-neutral-500 h-1 w-9 rounded-xl sm:hidden;
 }
 
 .headerWrapper {
-    @apply flex justify-between items-center;
+    @apply flex
+        justify-between
+        border-b
+        stroke-divider
+        items-center
+        p-6
+        sm:px-5
+        sm:py-8;
 }
 
 .accountContainer {
@@ -60,10 +65,6 @@
 
 .topContent {
     @apply flex items-center gap-3;
-}
-
-.avatarWrapper {
-    @apply p-2 rounded-lg bg-zinc-200 dark:bg-zinc-800;
 }
 
 .addressAndBalance {
@@ -89,60 +90,21 @@
         ease-in-out;
 }
 
-.clipWrapper:hover .copyIconContainer {
-    @apply opacity-100;
-}
-
 .balance {
-    @apply flex justify-between mr-8 min-w-32;
-}
-
-.icon {
-    @apply w-5 h-5;
-}
-
-.iconWrapper {
-    @apply p-2 rounded-lg bg-zinc-200 dark:bg-zinc-800;
+    @apply flex justify-between mr-1 min-w-32;
 }
 
 .disconnect {
-    @apply cursor-pointer
-        surface-primary-hover
+    @apply size-7
+        text-primary
+        cursor-pointer
         transition-colors
         duration-200
         ease-in-out;
 }
 
-.unsupportedChain {
-    @apply bg-red-300 dark:bg-red-600;
-}
-
-.tabs {
-    @apply flex gap-2;
-}
-
-.tab {
-    @apply flex
-        items-center
-        gap-2
-        h-10
-        px-3
-        select-none
-        rounded-md
-        cursor-pointer
-        transition-colors
-        duration-200
-        ease-in-out
-        bg-white dark:bg-zinc-800
-        hover:bg-white hover:dark:bg-zinc-800;
-}
-
-.tabIcon {
-    @apply w-5 h-5;
-}
-
-.tabActive {
-    @apply bg-zinc-200 dark:bg-zinc-700 surface-primary-hover;
+.disconnect > svg {
+    @apply size-7;
 }
 
 .copyIcon {
@@ -158,13 +120,9 @@
 }
 
 .icons {
-    @apply opacity-0
-        flex
-        items-center
-        justify-center
-        w-7
-        h-7
-        transition-opacity
-        duration-200
-        ease-in-out;
+    @apply flex items-center justify-center size-7;
+}
+
+.activityFeed {
+    @apply flex flex-col gap-8 px-6 sm:px-5;;
 }

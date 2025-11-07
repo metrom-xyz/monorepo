@@ -10,11 +10,6 @@
         "connect": "Connect",
         "install": "Install"
     },
-    "theme": {
-        "system": "System",
-        "dark": "Dark",
-        "light": "Light"
-    },
     "footer": {
         "support": "Support",
         "documentation": "Documentation",
@@ -809,10 +804,7 @@
         }
     },
     "accountMenu": {
-        "tabs": {
-            "activity": "Activity",
-            "campaigns": "Campaigns"
-        },
+        "activityFeed": "Activity feed",
         "activities": {
             "claimReward": "Claim reward",
             "createCampaign": "Create campaign",

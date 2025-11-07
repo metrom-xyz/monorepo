@@ -8,10 +8,7 @@ import "@fontsource/ibm-plex-sans/700.css";
 import "@fontsource/ibm-plex-mono/500.css";
 import "./global.css";
 
-enum Theme {
-    Dark = "dark",
-    Light = "light",
-}
+import { Theme } from "../src";
 
 const preview: Preview = {
     decorators: [

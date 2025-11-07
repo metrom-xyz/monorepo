@@ -44,8 +44,10 @@ export function PopoverPicker({
         <Popover
             root={container}
             placement="bottom-start"
+            variant="secondary"
             anchor={anchor}
             open={open}
+            margin={4}
             onOpenChange={onOpen}
             className={styles.root}
         >

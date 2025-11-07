@@ -8,17 +8,13 @@ import { Activities } from "./activities";
 import { useTranslations } from "next-intl";
 import { TickIcon } from "@/src/assets/tick-icon";
 import { CopyIcon } from "@/src/assets/copy-icon";
-import { ThemeSwitcherTabs } from "../../theme-switcher-tabs";
 import { formatAmount } from "@/src/utils/format";
-import { ErrorIcon } from "@/src/assets/error-icon";
 import { RemoveScroll } from "react-remove-scroll";
 import { SAFE } from "@/src/commons/env";
 import { SafeLogo } from "@/src/assets/logos/safe";
-import { useChainData } from "@/src/hooks/useChainData";
 import { AnimatePresence, motion } from "motion/react";
 import { Avatar } from "../../avatar/avatar";
 import { Account } from "../../account";
-import { useIsChainSupported } from "@/src/hooks/useIsChainSupported";
 
 import styles from "./styles.module.css";
 
@@ -37,12 +33,6 @@ interface AccountMenuProps {
     onDisconnect: () => void;
 }
 
-enum Tab {
-    Activity,
-    Campaigns,
-}
-
-// TODO: finish this (add campaigns tab)
 export function AccountMenu({
     className,
     chainId,
@@ -53,13 +43,10 @@ export function AccountMenu({
     onDisconnect,
 }: AccountMenuProps) {
     const t = useTranslations("accountMenu");
-    const [tab, setTab] = useState(Tab.Activity);
     const [copied, setCopied] = useState(false);
 
     const { width } = useWindowSize();
     const rootRef = useRef(null);
-    const chainData = useChainData({ chainId });
-    const chainSupported = useIsChainSupported({ chainId });
 
     useClickAway(rootRef, onClose);
 
@@ -72,10 +59,6 @@ export function AccountMenu({
     function handleDisconnect() {
         onClose();
         onDisconnect();
-    }
-
-    function handleActivityClick() {
-        setTab(Tab.Activity);
     }
 
     const handleCopyClick = () => {
@@ -136,26 +119,19 @@ export function AccountMenu({
                             <div className={styles.drawBar}></div>
                             <div className={styles.headerWrapper}>
                                 <div className={styles.accountContainer}>
-                                    <div className={styles.avatarWrapper}>
-                                        {SAFE ? (
-                                            <div
-                                                className={classNames(
-                                                    styles.avatar,
-                                                    styles.safeAvatar,
-                                                )}
-                                            >
-                                                <SafeLogo
-                                                    className={styles.safeLogo}
-                                                />
-                                            </div>
-                                        ) : (
-                                            <Avatar
-                                                address={account as Address}
-                                                height={36}
-                                                width={36}
+                                    {SAFE ? (
+                                        <div className={styles.safeAvatar}>
+                                            <SafeLogo
+                                                className={styles.safeLogo}
                                             />
-                                        )}
-                                    </div>
+                                        </div>
+                                    ) : (
+                                        <Avatar
+                                            address={account as Address}
+                                            height={40}
+                                            width={40}
+                                        />
+                                    )}
                                     <div className={styles.addressAndBalance}>
                                         <div
                                             onClick={handleCopyClick}
@@ -188,14 +164,14 @@ export function AccountMenu({
                                                     <Typography
                                                         variant="tertiary"
                                                         weight="medium"
-                                                        size="lg"
+                                                        size="sm"
                                                     >
                                                         {balance.symbol}
                                                     </Typography>
                                                     <Typography
                                                         variant="tertiary"
                                                         weight="medium"
-                                                        size="lg"
+                                                        size="sm"
                                                     >
                                                         {formatAmount({
                                                             amount: balance.amount,
@@ -204,7 +180,7 @@ export function AccountMenu({
                                                 </>
                                             ) : (
                                                 <Skeleton
-                                                    size="lg"
+                                                    size="sm"
                                                     width={120}
                                                 />
                                             )}
@@ -212,57 +188,22 @@ export function AccountMenu({
                                     </div>
                                 </div>
                                 <div className={styles.rightContent}>
-                                    <div
-                                        className={classNames(
-                                            styles.iconWrapper,
-                                            {
-                                                [styles.unsupportedChain]:
-                                                    !chainSupported,
-                                            },
-                                        )}
-                                    >
-                                        {!chainSupported ? (
-                                            <ErrorIcon
-                                                className={styles.icon}
-                                            />
-                                        ) : chainData ? (
-                                            <chainData.icon
-                                                className={styles.icon}
-                                            />
-                                        ) : null}
-                                    </div>
                                     {!SAFE && (
                                         <div
                                             onClick={handleDisconnect}
-                                            className={classNames(
-                                                styles.iconWrapper,
-                                                styles.disconnect,
-                                            )}
+                                            className={styles.disconnect}
                                         >
-                                            <Disconnect
-                                                className={styles.icon}
-                                            />
+                                            <Disconnect />
                                         </div>
                                     )}
                                 </div>
                             </div>
-                            <ThemeSwitcherTabs />
-                            <div className={styles.tabs}>
-                                <div
-                                    onClick={handleActivityClick}
-                                    className={classNames(styles.tab, {
-                                        [styles.tabActive]:
-                                            tab === Tab.Activity,
-                                    })}
-                                >
-                                    <Typography>
-                                        {t("tabs.activity")}
-                                    </Typography>
-                                </div>
-                            </div>
-                            {tab === Tab.Activity && (
+                            <div className={styles.activityFeed}>
+                                <Typography size="lg" weight="medium">
+                                    {t("activityFeed")}
+                                </Typography>
                                 <Activities chainId={chainId} />
-                            )}
+                            </div>
                         </RemoveScroll>
                     </motion.div>
                 )}

@@ -10,6 +10,7 @@ import { useIsChainSupported } from "@/src/hooks/useIsChainSupported";
 import { useActiveChains } from "@/src/hooks/useActiveChains";
 import { SUPPORTED_CHAINS_MVM } from "@/src/commons";
 import { ChainType } from "@metrom-xyz/sdk";
+import { Typography } from "@metrom-xyz/ui";
 
 import styles from "./styles.module.css";
 
@@ -76,15 +77,21 @@ export function NetworkSelectEvm() {
         <div ref={rootRef}>
             <div
                 ref={setWrapper}
+                onClick={handleNetworkPickerOnToggle}
                 className={classNames(styles.networkWrapper, {
                     [styles.wrong]: !chainSupported,
+                    [styles.open]: pickerOpen,
                 })}
-                onClick={handleNetworkPickerOnToggle}
             >
                 {!chainSupported ? (
-                    <ErrorIcon className={styles.icon} />
+                    <ErrorIcon className={styles.errorIcon} />
                 ) : chainData ? (
-                    <chainData.icon className={styles.icon} />
+                    <>
+                        <chainData.icon className={styles.icon} />
+                        <Typography weight="medium">
+                            {chainData.name}
+                        </Typography>
+                    </>
                 ) : null}
             </div>
             <PopoverPicker

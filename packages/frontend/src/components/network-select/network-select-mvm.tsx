@@ -11,6 +11,7 @@ import { useChainWithType } from "@/src/hooks/useChainWithType";
 import { useWallet } from "@aptos-labs/wallet-adapter-react";
 import { Network } from "@aptos-labs/ts-sdk";
 import { chainIdToAptosNetwork } from "@/src/utils/chain";
+import { Typography } from "@metrom-xyz/ui";
 
 import styles from "./styles.module.css";
 
@@ -53,15 +54,21 @@ export function NetworkSelectMvm() {
         <div ref={rootRef}>
             <div
                 ref={setWrapper}
+                onClick={handleNetworkPickerOnToggle}
                 className={classNames(styles.networkWrapper, {
                     [styles.wrong]: !chainSupported,
+                    [styles.open]: pickerOpen,
                 })}
-                onClick={handleNetworkPickerOnToggle}
             >
                 {!chainSupported ? (
-                    <ErrorIcon className={styles.icon} />
+                    <ErrorIcon className={styles.errorIcon} />
                 ) : chainData ? (
-                    <chainData.icon className={styles.icon} />
+                    <>
+                        <chainData.icon className={styles.icon} />
+                        <Typography weight="medium">
+                            {chainData.name}
+                        </Typography>
+                    </>
                 ) : null}
             </div>
             <PopoverPicker
