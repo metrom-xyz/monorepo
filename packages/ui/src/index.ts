@@ -32,3 +32,8 @@ export * from "./components/text-input";
 export * from "./utils/date";
 export * from "./utils/components";
 export * from "./utils/formatting";
+
+export enum Theme {
+    Dark = "dark",
+    Light = "light",
+}
