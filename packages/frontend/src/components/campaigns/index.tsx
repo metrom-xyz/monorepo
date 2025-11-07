@@ -1,6 +1,5 @@
 "use client";
 
-import { ProjectOpportunitiesBanner } from "./project-opportunities-banner";
 import { CampaignsTable } from "../campaigns-table";
 import { Tab, Tabs } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
@@ -96,7 +95,6 @@ export function Campaigns() {
 
     return (
         <div className={styles.root}>
-            <ProjectOpportunitiesBanner />
             <Tabs value={type} onChange={setType}>
                 <Tab icon={TokensIcon} value={BackendCampaignType.Rewards}>
                     {t("tabs.tokens")}

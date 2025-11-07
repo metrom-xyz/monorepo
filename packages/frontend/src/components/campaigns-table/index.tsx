@@ -300,19 +300,19 @@ export function CampaignsTable({
                 [styles.topLeftSquared]: type === BackendCampaignType.Rewards,
             })}
         >
-            {!disableFilters && (
-                <Filters
-                    {...filterOptions}
-                    sortField={sortField}
-                    order={order}
-                    filters={rawFilters}
-                    totalCampaigns={totalCampaigns}
-                    loading={loading}
-                    onClearFilters={handleClearFilters}
-                    onFiltersChange={handleFiltersOnChange}
-                />
-            )}
             <div className={styles.tableWrapper}>
+                {!disableFilters && (
+                    <Filters
+                        {...filterOptions}
+                        sortField={sortField}
+                        order={order}
+                        filters={rawFilters}
+                        totalCampaigns={totalCampaigns}
+                        loading={loading}
+                        onClearFilters={handleClearFilters}
+                        onFiltersChange={handleFiltersOnChange}
+                    />
+                )}
                 <div
                     className={classNames(styles.table, {
                         [styles[type]]: true,
@@ -379,7 +379,7 @@ export function CampaignsTable({
                             campaigns?.map((campaign) => {
                                 return (
                                     <CampaignRow
-                                        key={campaign.id}
+                                        key={`${campaign.chainType}-${campaign.chainId}-${campaign.id}`}
                                         type={type}
                                         campaign={campaign}
                                     />
@@ -394,6 +394,10 @@ export function CampaignsTable({
                     page={pageNumber}
                     loading={loading || (placeholderData && fetching)}
                     totalPages={Math.ceil(totalCampaigns / PAGE_SIZE)}
+                    messages={{
+                        previous: t("pagination.prev"),
+                        next: t("pagination.next"),
+                    }}
                     onNext={handleNextPage}
                     onPrevious={handlePreviousPage}
                     onPage={handlePage}
