@@ -71,6 +71,10 @@
             "clear": "Clear filters",
             "campaignsFound": "{count, plural, =1 {# campaign found} other {# campaigns found}}"
         },
+        "pagination": {
+            "prev": "Prev",
+            "next": "Next"
+        },
         "header": {
             "chain": "Chain",
             "protocol": "Protocol",
@@ -106,10 +110,9 @@
                 "totalUsdValue": "Total USD rewards"
             }
         },
-        "points": {
-            "tooltip": {
-                "points": "Points"
-            }
+        "projects": {
+            "campaigns": "<highlighted>{count}</highlighted> campaigns",
+            "active": "{count} active"
         },
         "turtleDeal": {
             "action": "Deposit {tokens} to {owner} turtle vault"
