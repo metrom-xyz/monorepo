@@ -8,14 +8,6 @@
     @apply grid grid-cols-2 gap-2 max-h-[400px] overflow-y-auto;
 }
 
-.networksWrapper > :first-child {
-    @apply rounded-t-xl;
-}
-
-.networksWrapper > :last-child {
-    @apply rounded-b-xl;
-}
-
 .row {
-    @apply flex items-center gap-4 p-4 rounded-lg;
+    @apply flex items-center gap-4 p-3 rounded-sm;
 }

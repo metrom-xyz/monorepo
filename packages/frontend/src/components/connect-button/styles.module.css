@@ -9,21 +9,23 @@
 }
 
 .connectButton {
-    @apply h-10 rounded-lg;
+    @apply h-8;
 }
 
 .walletWrapper {
-    @apply bg-white dark:bg-zinc-800
-        sm:px-2
-        h-10
-        min-w-10
+    @apply sm:px-2
+        h-8
+        min-w-8
         rounded-md
         flex
         items-center
         sm:justify-between
         justify-center
         cursor-pointer
-        surface-primary-hover
+        bg-gray-50
+        dark:bg-neutral-800
+        hover:bg-gray-150
+        hover:dark:bg-neutral-700
         transition-colors
         duration-200
         ease-in-out;

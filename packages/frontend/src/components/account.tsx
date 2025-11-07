@@ -35,7 +35,7 @@ export function Account({
     }, [address, variant, ensName]);
 
     return (
-        <Typography {...rest} className={className}>
+        <Typography {...rest} weight="medium" className={className}>
             {account}
         </Typography>
     );

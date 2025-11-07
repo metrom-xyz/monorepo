@@ -5,7 +5,6 @@ import { cloneElement, useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
 import { type Address } from "blo";
 import { AccountMenu, type Balance } from "../account-menu";
-import classNames from "classnames";
 import { trackFathomEvent } from "@/src/utils/fathom";
 import { useAccount, useConnect, useConnectors, useDisconnect } from "wagmi";
 import { SAFE } from "@/src/commons/env";
@@ -22,6 +21,7 @@ import {
 import { Avatar } from "../../avatar/avatar";
 import { Account } from "../../account";
 import type { ConnectButtonProps } from "..";
+import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
 
 import styles from "./styles.module.css";
 import commonStyles from "../styles.module.css";
@@ -119,24 +119,19 @@ export function ConnectButtonEvm({ customComponent }: ConnectButtonProps) {
                             onDisconnect={disconnect}
                         />
                         <div
-                            className={commonStyles.walletWrapper}
                             onClick={handleAccountMenuOpen}
+                            className={commonStyles.walletWrapper}
                         >
                             <div className={commonStyles.account}>
                                 {SAFE ? (
-                                    <div
-                                        className={classNames(
-                                            styles.avatar,
-                                            styles.safeAvatar,
-                                        )}
-                                    >
+                                    <div className={styles.safeAvatar}>
                                         <SafeLogo className={styles.safeLogo} />
                                     </div>
                                 ) : (
                                     <Avatar
                                         address={address as Address}
-                                        height={28}
-                                        width={28}
+                                        height={20}
+                                        width={20}
                                     />
                                 )}
                                 <Account
@@ -152,7 +147,9 @@ export function ConnectButtonEvm({ customComponent }: ConnectButtonProps) {
                     })
                 ) : (
                     <Button
-                        size="sm"
+                        size="xs"
+                        icon={ArrowRightIcon}
+                        iconPlacement="right"
                         onClick={handleOnConnect}
                         className={{
                             root: commonStyles.connectButton,

@@ -15,6 +15,7 @@ import { useTranslations } from "next-intl";
 import { useAptBalance } from "@aptos-labs/react";
 import { formatApt } from "@aptos-labs/js-pro";
 import type { ConnectButtonProps } from "..";
+import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
 
 import styles from "./styles.module.css";
 import commonStyles from "../styles.module.css";
@@ -85,14 +86,14 @@ export function ConnectButtonMvm({ customComponent }: ConnectButtonProps) {
                             onDisconnect={disconnect}
                         />
                         <div
-                            className={commonStyles.walletWrapper}
                             onClick={handleAccountMenuOpen}
+                            className={commonStyles.walletWrapper}
                         >
                             <div className={commonStyles.account}>
                                 <Avatar
                                     address={address}
-                                    height={28}
-                                    width={28}
+                                    height={20}
+                                    width={20}
                                 />
                                 <Account
                                     address={address}
@@ -108,8 +109,10 @@ export function ConnectButtonMvm({ customComponent }: ConnectButtonProps) {
                     })
                 ) : (
                     <Button
-                        size="sm"
+                        size="xs"
                         onClick={handleModalOnOpen}
+                        icon={ArrowRightIcon}
+                        iconPlacement="right"
                         className={{
                             root: commonStyles.connectButton,
                         }}
