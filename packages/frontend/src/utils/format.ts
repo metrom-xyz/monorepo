@@ -4,6 +4,7 @@ import numeral from "numeral";
 const HIDE_DECIMALS_AMOUNT_CUTOFF = 1000;
 const HUMANIZE_AMOUNT_CUTOFF = 100_000;
 const HUMANIZE_PERCENTAGE_CUTOFF = 100_000;
+const FORCE_DECIMALS_AMOUNT_CUTOOF = 1_000_000;
 
 interface FormatAmountParams {
     amount?: number | null;
@@ -15,11 +16,15 @@ export function formatUsdAmount({
     cutoff = true,
 }: FormatAmountParams): string {
     if (amount && amount < 0.01) return "$<0.01";
-    if (amount && amount < HIDE_DECIMALS_AMOUNT_CUTOFF)
-        return numeral(amount).format("($0,0.[00])");
+    if (
+        amount &&
+        (amount < HIDE_DECIMALS_AMOUNT_CUTOFF ||
+            amount > FORCE_DECIMALS_AMOUNT_CUTOOF)
+    )
+        return numeral(amount).format("$0,0.[00]a");
 
     return numeral(amount).format(
-        `($0,0]${amount && cutoff && amount >= HUMANIZE_AMOUNT_CUTOFF ? "a" : ""})`,
+        `$0,0${amount && cutoff && amount >= HUMANIZE_AMOUNT_CUTOFF ? "a" : ""}`,
     );
 }
 
