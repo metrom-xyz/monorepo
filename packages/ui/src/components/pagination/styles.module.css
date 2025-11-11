@@ -9,7 +9,11 @@
 }
 
 .ellipsis {
-    @apply w-6 h-6 flex items-end justify-center;
+    @apply w-6 h-6 flex items-end justify-center transition-colors duration-200 ease-in-out;
+}
+
+.ellipsis.disabled {
+    @apply pointer-events-none text-gray-400 dark:text-neutral-700;
 }
 
 .button {
@@ -33,7 +37,7 @@
     @apply transition-colors duration-200 ease-in-out;
 }
 
-.button.loading {
+.loading {
     @apply animate-pulse;
 }
 

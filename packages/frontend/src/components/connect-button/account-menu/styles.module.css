@@ -124,5 +124,5 @@
 }
 
 .activityFeed {
-    @apply flex flex-col gap-8 px-6 sm:px-5;;
+    @apply flex flex-col gap-8 px-6 sm:px-5;
 }
