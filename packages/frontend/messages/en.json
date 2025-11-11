@@ -806,8 +806,8 @@
     "accountMenu": {
         "activityFeed": "Activity feed",
         "activities": {
-            "claimReward": "Claim reward",
-            "createCampaign": "Create campaign",
+            "claimed": "Claimed",
+            "campaignCreated": "Campaign created",
             "timeAgo": "{time} ago"
         }
     },
