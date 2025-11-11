@@ -11,7 +11,7 @@ export interface TabsProps<T> {
     onChange: (value: T) => void;
     size?: TabsSize;
     value?: T;
-    children: ReactElement[];
+    children: ReactElement[] | ReactElement;
     className?: string;
 }
 

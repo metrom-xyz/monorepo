@@ -1,7 +1,7 @@
-import type { SVGIcon } from "@metrom-xyz/chains";
 import type { FunctionComponent } from "react";
-import type { BrandColor } from "./common";
+import type { SVGIcon } from "./common";
 import type { ChainWithType } from "./chain";
+import type { Branding } from "./project";
 
 export interface Token {
     address: string;
@@ -52,7 +52,7 @@ export interface TurtleCampaign {
     name: string;
     description: string;
     url: string;
-    brand: BrandColor;
+    brand: Branding;
     owner: string;
     ownerLogo: FunctionComponent<SVGIcon>;
 }

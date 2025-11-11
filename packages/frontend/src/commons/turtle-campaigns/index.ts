@@ -20,7 +20,12 @@ export const TURTLE_CAMPAIGNS: Record<Environment, TurtleCampaign[]> = {
                 "The Samurai's Call campaign is designed to seed dapps on Katana. Hold your deposits through launch to unlock all KAT token rewards.",
             name: "The Samurai's Call",
             url: "https://app.turtle.club/campaigns/katana",
-            brand: { main: "#d4e000", light: "#f2f7b3" },
+            brand: {
+                main: "#d4e000",
+                light: "#f2f7b3",
+                contrast: { dark: "", light: "" },
+                iconBackground: "",
+            },
             owner: "Katana",
             ownerLogo: KatanaLogo,
         },
