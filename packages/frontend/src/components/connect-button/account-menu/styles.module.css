@@ -9,6 +9,8 @@
         sm:w-[30rem]
         flex
         flex-col
+        py-6
+        sm:py-0
         gap-6;
 }
 
@@ -54,8 +56,7 @@
         border-b
         stroke-divider
         items-center
-        p-6
-        sm:px-5
+        p-5
         sm:py-8;
 }
 
@@ -124,5 +125,5 @@
 }
 
 .activityFeed {
-    @apply flex flex-col gap-8 px-6 sm:px-5;
+    @apply flex flex-col gap-8 px-5;
 }
