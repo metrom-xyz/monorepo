@@ -554,20 +554,17 @@
             }
         }
     },
-    "projectOpportunitiesBanner": {
-        "title": "Project opportunities",
-        "campaignTitle": "{pointsName} campaign"
-    },
     "projectIntro": {
-        "title": "{project} in a nutshell",
-        "article": "Article"
+        "relatedArticles": "Related articles"
     },
     "projectPage": {
         "title": "Project page - {project}",
         "header": {
-            "title": "{protocol}"
+            "title": "{protocol}",
+            "visitWebsite": "Visit website"
         },
-        "explore": "Explore opportunities"
+        "points": "Points",
+        "tokens": "Tokens"
     },
     "lv2PointsCampaignPage": {
         "title": "Points campaign running on {protocol}",
@@ -808,7 +805,10 @@
         "activities": {
             "claimed": "Claimed",
             "campaignCreated": "Campaign created",
-            "timeAgo": "{time} ago"
+            "empty": {
+                "title": "No recent activity",
+                "description": "Your latest actions will show up here once available"
+            }
         }
     },
     "simulationChart": {
