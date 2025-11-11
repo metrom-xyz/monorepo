@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { Link } from "@/src/i18n/routing";
 import type { SVGIcon } from "@/src/types/common";
 import { type FunctionComponent } from "react";
 import { easeInOut, motion } from "motion/react";
