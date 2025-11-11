@@ -107,6 +107,7 @@ interface CampaignsTableProps {
     type: BackendCampaignType;
     disableFilters?: boolean;
     optionalFilters?: Partial<RawFilters>;
+    className?: string;
     onClearFilters?: () => void;
 }
 
@@ -114,6 +115,7 @@ export function CampaignsTable({
     type,
     disableFilters,
     optionalFilters,
+    className,
     onClearFilters,
 }: CampaignsTableProps) {
     const t = useTranslations("allCampaigns");
@@ -296,7 +298,7 @@ export function CampaignsTable({
 
     return (
         <div
-            className={classNames(styles.root, {
+            className={classNames(styles.root, className, {
                 [styles.topLeftSquared]: type === BackendCampaignType.Rewards,
             })}
         >

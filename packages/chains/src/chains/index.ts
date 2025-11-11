@@ -13,6 +13,7 @@ export { gnosisData } from "./gnosis";
 export { hemiData } from "./hemi";
 export { sepoliaData } from "./sepolia";
 export { telosData } from "./telos";
+export { katanaData } from "./katana";
 export { lensData } from "./lens";
 export { lightlinkPhoenixData } from "./lightlink-phoenix";
 export { lumiaData } from "./lumia";

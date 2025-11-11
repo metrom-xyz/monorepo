@@ -1,5 +1,4 @@
-import { ENVIRONMENT } from "@/src/commons/env";
-import { PROJECT_PAGES } from "@/src/commons/project-pages";
+import { PROJECTS_METADATA } from "@/src/commons/projects";
 import { Project } from "@/src/components/project";
 import { routing, type Locale } from "@/src/i18n/routing";
 import { getTranslations, setRequestLocale } from "next-intl/server";
@@ -29,7 +28,8 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
 
     if (
         !routing.locales.includes(locale) ||
-        !PROJECT_PAGES[ENVIRONMENT][project]
+        // TODO: do we need per env configuration?
+        !PROJECTS_METADATA[project]
     )
         notFound();
 
@@ -41,7 +41,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
 
 export async function generateStaticParams() {
     return routing.locales.flatMap((locale) =>
-        Object.keys(PROJECT_PAGES[ENVIRONMENT]).map((project) => ({
+        Object.keys(PROJECTS_METADATA).map((project) => ({
             locale,
             project,
         })),

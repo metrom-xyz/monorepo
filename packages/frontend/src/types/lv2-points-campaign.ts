@@ -1,9 +1,10 @@
 import type { SupportedGmxV1, SupportedLiquityV2 } from "@metrom-xyz/sdk";
 import type { FunctionComponent } from "react";
 import type { Address } from "viem";
-import type { BrandColor, ProjectIntro, SVGIcon } from "./common";
+import type { SVGIcon } from "./common";
 import type { LocalizedMessage } from "./utils";
 import type { ChainWithType } from "./chain";
+import type { Branding, ProjectIntro } from "./project";
 
 export interface Lv2BackendPointsLeaderboardRank {
     account: Address;
@@ -45,8 +46,9 @@ export interface Lv2PointsCampaign {
     chain: ChainWithType;
     protocol: SupportedLiquityV2 | SupportedGmxV1;
     pointsName: string;
-    brand: BrandColor;
+    brand: Branding;
     icon: FunctionComponent<SVGIcon>;
+    illustration: FunctionComponent<SVGIcon>;
     protocolIntro?: ProjectIntro;
     from: number;
     to: number;

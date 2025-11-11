@@ -1,7 +1,8 @@
 import type { FunctionComponent } from "react";
-import type { BrandColor, ProjectIntro, SVGIcon } from "./common";
 import type { SupportedDex } from "@metrom-xyz/sdk";
 import type { ChainWithType } from "./chain";
+import type { Branding, ProjectIntro } from "./project";
+import type { SVGIcon } from "./common";
 
 interface CampaignsFilters {
     chainId?: number;
@@ -14,7 +15,7 @@ export interface ProjectPage {
     name: string;
     description: string;
     url: string;
-    brand: BrandColor;
+    brand: Branding;
     icon: FunctionComponent<SVGIcon>;
     intro?: ProjectIntro;
     campaignsFilters: CampaignsFilters;

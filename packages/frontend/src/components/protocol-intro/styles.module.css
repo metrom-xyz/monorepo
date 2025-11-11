@@ -9,49 +9,21 @@
 }
 
 .link {
-    @apply w-full md:max-w-1/2;
-}
-
-.article {
-    @apply relative
-        overflow-hidden
-        h-fit
-        flex
-        gap-4
-        items-center
-        rounded-2xl
-        p-4
-        hover:opacity-80
-        transition-opacity
-        duration-200
-        ease-in-out
-        surface-primary;
-}
-
-.article > :not(:first-child) {
-    @apply z-10;
-}
-
-.illustration {
-    @apply absolute z-0 text-white opacity-50 right-0 -bottom-5;
+    @apply flex w-full gap-3 md:max-w-1/2 surface-primary p-5 rounded-lg;
 }
 
 .iconWrapper {
-    @apply flex items-center justify-center rounded-xl p-4 surface-primary;
+    @apply size-8 flex items-center justify-center rounded p-2 bg-gray-200 dark:bg-neutral-100;
+}
+
+.articleIcon {
+    @apply size-4 text-gray-900 dark:text-neutral-800;
 }
 
 .rightContent {
-    @apply w-full flex flex-col gap-2;
-}
-
-.titleWrapper {
-    @apply flex justify-between;
-}
-
-.text {
-    @apply text-black;
+    @apply w-full flex justify-between items-center;
 }
 
 .externalLinkIcon {
-    @apply h-5 w-5 transform -rotate-45 text-black;
+    @apply h-6 w-6 transform -rotate-45 text-primary;
 }

@@ -5,14 +5,14 @@ import type { Erc20Token } from "@metrom-xyz/sdk";
 import type { Protocol } from "./protocol";
 import { SupportedChain as SupportedChainEvm } from "@metrom-xyz/contracts";
 import { SupportedChain as SupportedChainMvm } from "@metrom-xyz/aptos-contracts";
-import { mainnet } from "viem/chains";
+import { katana, mainnet } from "viem/chains";
 import { Form } from "./forms";
 
 export interface ChainData {
     active: boolean;
     name: string;
     metromContract: ChainContract;
-    blockExplorers: Chain["blockExplorers"];
+    blockExplorers: Chain["blockExplorers"] | null;
     icon: FunctionComponent<SVGIcon>;
     forms: Form[];
     protocols: Protocol[];
@@ -35,6 +35,8 @@ export enum SupportedDevelopmentEvmChain {
     Sei = SupportedChainEvm.Sei,
     // TODO: this is temporary as we are testing, remove this as soon as that is done
     Swell = SupportedChainEvm.Swell,
+    // TODO: this is required for the Katana vault campaigns testing, remove this as soon as that is done
+    Katana = katana.id,
 }
 
 export enum SupportedProductionEvmChain {
@@ -50,6 +52,8 @@ export enum SupportedProductionEvmChain {
     Lumia = SupportedChainEvm.Lumia,
     // This is required for the Turtle integration
     Mainnet = mainnet.id,
+    // This is required for the Katana vault campaigns
+    Katana = katana.id,
     Sei = SupportedChainEvm.Sei,
     Swell = SupportedChainEvm.Swell,
     Hemi = SupportedChainEvm.Hemi,
