@@ -1,7 +1,4 @@
-import { ClaimRewardIcon } from "@/src/assets/claim-reward-icon";
-import { NewCampaignIcon } from "@/src/assets/new-campaign-icon";
 import { TargetType, type Activity } from "@metrom-xyz/sdk";
-import dayjs from "dayjs";
 import { useTranslations } from "next-intl";
 import { Typography, Skeleton } from "@metrom-xyz/ui";
 import { Link } from "@/src/i18n/routing";
@@ -18,6 +15,7 @@ import { CHAIN_TYPE } from "@/src/commons";
 import { useMemo } from "react";
 import { ProtocolLogo } from "@/src/components/protocol-logo";
 import classNames from "classnames";
+import { Action } from "@/src/components/campaigns/campaign/action";
 
 import styles from "./styles.module.css";
 
@@ -27,6 +25,12 @@ interface ActivityProps extends Activity {
 
 export function Activity({ chainId, transaction, payload }: ActivityProps) {
     const t = useTranslations("accountMenu.activities");
+
+    const { campaign, loading } = useCampaign({
+        chainId,
+        chainType: CHAIN_TYPE,
+        id: payload.type === "create-campaign" ? payload.id : undefined,
+    });
 
     const dexes = useProtocolsInChain({
         chainId: chainId,
@@ -40,26 +44,13 @@ export function Activity({ chainId, transaction, payload }: ActivityProps) {
         chainId: chainId,
         type: ProtocolType.AaveV3,
     });
-    const { campaign, loading } = useCampaign({
-        chainId,
-        chainType: CHAIN_TYPE,
-        id: payload.type === "create-campaign" ? payload.id : undefined,
-    });
 
-    const time = dayjs.unix(transaction.timestamp).to(dayjs(), true);
-    const timeAgo = t("timeAgo", { time });
     const explorerLink = getTxExplorerLink(transaction.id, chainId);
 
-    const { Icon, title } =
+    const title =
         payload.type === "create-campaign"
-            ? {
-                  Icon: NewCampaignIcon,
-                  title: t("createCampaign"),
-              }
-            : {
-                  Icon: ClaimRewardIcon,
-                  title: t("claimReward"),
-              };
+            ? t("campaignCreated")
+            : t("claimed");
 
     const campaignTargetProtocol = useMemo(() => {
         if (!campaign) return undefined;
@@ -83,137 +74,103 @@ export function Activity({ chainId, transaction, payload }: ActivityProps) {
         trackFathomEvent("CLICK_ACTIVITY");
     }
 
+    const createCampaign = payload.type === "create-campaign";
+
     return (
-        <div className={styles.root}>
-            <div className={styles.wrapper}>
-                <div className={styles.iconWrapper}>
-                    <Icon className={styles.icon} />
-                </div>
-                <div className={styles.bodyWrapper}>
-                    <div className={styles.titleWrapper}>
-                        <div className={styles.title}>
-                            <Typography
-                                variant="tertiary"
-                                weight="medium"
-                                uppercase
-                                size="sm"
+        <div
+            className={classNames(styles.root, {
+                [styles.createCampaign]: createCampaign,
+            })}
+        >
+            <div className={styles.leftContent}>
+                <Typography weight="medium" size="sm">
+                    {title}
+                </Typography>
+                <ArrowRightIcon className={styles.arrow} />
+            </div>
+            <div className={styles.rightContent}>
+                {createCampaign ? (
+                    <>
+                        {!loading && campaign ? (
+                            <Link
+                                href={`/campaigns/${campaign.chainType}/${chainId}/${payload.id}`}
+                                onClick={handleActivityOnClick}
                             >
-                                {title}
-                            </Typography>
-                            {explorerLink && (
-                                <a
-                                    href={explorerLink}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                >
-                                    <ArrowRightIcon
-                                        className={styles.externalLinkIcon}
+                                <div className={styles.details}>
+                                    <ProtocolLogo
+                                        size="xs"
+                                        protocol={campaignTargetProtocol}
                                     />
-                                </a>
-                            )}
-                        </div>
-                        <Typography variant="tertiary"truncate weight="medium" size="sm">
-                            {timeAgo}
-                        </Typography>
-                    </div>
-                    {payload.type === "create-campaign" ? (
-                        <>
-                            {!loading && campaign ? (
-                                <Link
-                                    href={`/campaigns/${campaign.chainType}/${chainId}/${payload.id}`}
-                                    onClick={handleActivityOnClick}
-                                >
-                                    <div className={styles.campaignNameWrapper}>
-                                        <ProtocolLogo
-                                            protocol={campaignTargetProtocol}
-                                        />
-                                        {campaign.target.type ===
-                                            "amm-pool-liquidity" && (
-                                            <PoolRemoteLogo
-                                                size="sm"
-                                                chain={campaign.chainId}
-                                                tokens={campaign.target.pool.tokens.map(
-                                                    (token) => ({
-                                                        address: token.address,
-                                                        defaultText:
-                                                            token.symbol,
-                                                    }),
-                                                )}
-                                            />
-                                        )}
-                                        <Typography
-                                            weight="medium"
-                                            truncate
-                                            className={styles.seeCampaignLink}
-                                        >
-                                            {campaign.name}
-                                        </Typography>
-                                    </div>
-                                </Link>
-                            ) : (
-                                <div className={styles.campaignNameWrapper}>
-                                    <Skeleton
-                                        width={16}
-                                        circular
-                                        className={styles.skeleton}
-                                    />
-                                    <PoolRemoteLogo
-                                        size="sm"
-                                        tokens={[
-                                            { address: "0x1" },
-                                            { address: "0x2" },
-                                        ]}
-                                        loading
-                                        className={{ root: styles.skeleton }}
-                                    />
-                                    <Skeleton
-                                        width={90}
-                                        className={styles.skeleton}
+                                    <Action
+                                        campaign={campaign}
+                                        nameSize="sm"
+                                        logoSize="xs"
+                                        hideChips
+                                        className={styles.action}
                                     />
                                 </div>
-                            )}
-                        </>
-                    ) : (
-                        <div className={styles.claimRewardWrapper}>
-                            <RemoteLogo
-                                size="sm"
-                                chain={chainId}
-                                address={payload.token.address}
-                                defaultText={payload.token.symbol}
-                            />
-                            <Typography noWrap>
-                                {payload.token.symbol}
-                            </Typography>
-                            <Typography>
-                                {formatAmount({
-                                    amount: payload.amount.formatted,
-                                })}
-                            </Typography>
-                        </div>
-                    )}
-                </div>
+                            </Link>
+                        ) : (
+                            <div
+                                className={classNames(
+                                    styles.details,
+                                    styles.loading,
+                                )}
+                            >
+                                <Skeleton
+                                    width={16}
+                                    circular
+                                    className={styles.skeleton}
+                                />
+                                <PoolRemoteLogo
+                                    size="xs"
+                                    tokens={[
+                                        { address: "0x1" },
+                                        { address: "0x2" },
+                                    ]}
+                                    loading
+                                    className={{ root: styles.skeleton }}
+                                />
+                                <Skeleton
+                                    size="sm"
+                                    width={90}
+                                    className={styles.skeleton}
+                                />
+                            </div>
+                        )}
+                    </>
+                ) : (
+                    <div className={styles.details}>
+                        <RemoteLogo
+                            size="xs"
+                            chain={chainId}
+                            address={payload.token.address}
+                            defaultText={payload.token.symbol}
+                        />
+                        <Typography size="xs" weight="medium">
+                            {payload.token.symbol}
+                        </Typography>
+                        <Typography size="xs" weight="medium">
+                            {formatAmount({
+                                amount: payload.amount.formatted,
+                            })}
+                        </Typography>
+                    </div>
+                )}
+                {explorerLink && (
+                    <a
+                        href={explorerLink}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        <ArrowRightIcon className={styles.externalLinkIcon} />
+                    </a>
+                )}
             </div>
         </div>
     );
 }
 
 export function SkeletonActivity() {
-    return (
-        <div className={styles.root}>
-            <div className={styles.wrapper}>
-                <div
-                    className={classNames(styles.iconWrapper, styles.loading)}
-                />
-                <div className={styles.bodyWrapper}>
-                    <Skeleton
-                        width={60}
-                        size="sm"
-                        className={styles.skeleton}
-                    />
-                    <Skeleton width={140} className={styles.skeleton} />
-                </div>
-            </div>
-            <Skeleton width={50} className={styles.skeleton} />
-        </div>
-    );
+    return <div className={classNames(styles.root, styles.loading)}></div>;
 }

@@ -1,4 +1,9 @@
-import { Skeleton, Typography } from "@metrom-xyz/ui";
+import {
+    Skeleton,
+    Typography,
+    type RemoteLogoSize,
+    type TypographySize,
+} from "@metrom-xyz/ui";
 import { PoolRemoteLogo } from "@/src/components/pool-remote-logo";
 import classNames from "classnames";
 import { RestrictionType, TargetType } from "@metrom-xyz/sdk";
@@ -14,11 +19,23 @@ import { useTranslations } from "next-intl";
 
 import styles from "./styles.module.css";
 
-interface ActionProps {
-    campaign: Campaign;
+export interface ActionSizes {
+    nameSize?: TypographySize;
+    logoSize?: RemoteLogoSize;
 }
 
-export function Action({ campaign }: ActionProps) {
+interface ActionProps extends ActionSizes {
+    campaign: Campaign;
+    hideChips?: boolean;
+    className?: string;
+}
+
+export function Action({
+    campaign,
+    hideChips = false,
+    className,
+    ...sizes
+}: ActionProps) {
     const t = useTranslations("allCampaigns");
 
     const ammPoolLiquidity =
@@ -46,37 +63,46 @@ export function Action({ campaign }: ActionProps) {
     const empty = campaign.isTargeting(TargetType.Empty);
 
     return (
-        <div className={styles.root}>
-            {empty && <Empty campaign={campaign} />}
-            {ammPoolLiquidity && <AmmPoolLiquidity campaign={campaign} />}
-            {gmxV1Liquidity && <GmxV1Liquidity campaign={campaign} />}
-            {liquityV2 && <LiquityV2 campaign={campaign} />}
-            {aaveV3 && <AaveV3 campaign={campaign} />}
-            {holdFungibleAsset && <HoldFungibleAsset campaign={campaign} />}
-            {katanaVault && <KatanaVault campaign={campaign} />}
-            <div className={styles.chipsWrapper}>
-                {campaign.specification?.kpi && (
-                    <div className={styles.chip}>
-                        <Typography size="xs" weight="medium" uppercase>
-                            {t("kpi")}
-                        </Typography>
-                    </div>
-                )}
-                {campaign.specification?.priceRange && (
-                    <div className={styles.chip}>
-                        <Typography size="xs" weight="medium" uppercase>
-                            {t("pool.range")}
-                        </Typography>
-                    </div>
-                )}
-                {campaign.restrictions?.type === RestrictionType.Whitelist && (
-                    <div className={styles.chip}>
-                        <Typography size="xs" weight="medium" uppercase>
-                            {t("restricted")}
-                        </Typography>
-                    </div>
-                )}
-            </div>
+        <div className={classNames(styles.root, className)}>
+            {empty && <Empty campaign={campaign} {...sizes} />}
+            {ammPoolLiquidity && (
+                <AmmPoolLiquidity campaign={campaign} {...sizes} />
+            )}
+            {gmxV1Liquidity && (
+                <GmxV1Liquidity campaign={campaign} {...sizes} />
+            )}
+            {liquityV2 && <LiquityV2 campaign={campaign} {...sizes} />}
+            {aaveV3 && <AaveV3 campaign={campaign} {...sizes} />}
+            {holdFungibleAsset && (
+                <HoldFungibleAsset campaign={campaign} {...sizes} />
+            )}
+            {katanaVault && <KatanaVault campaign={campaign} {...sizes} />}
+            {!hideChips && (
+                <div className={styles.chipsWrapper}>
+                    {campaign.specification?.kpi && (
+                        <div className={styles.chip}>
+                            <Typography size="xs" weight="medium" uppercase>
+                                {t("kpi")}
+                            </Typography>
+                        </div>
+                    )}
+                    {campaign.specification?.priceRange && (
+                        <div className={styles.chip}>
+                            <Typography size="xs" weight="medium" uppercase>
+                                {t("pool.range")}
+                            </Typography>
+                        </div>
+                    )}
+                    {campaign.restrictions?.type ===
+                        RestrictionType.Whitelist && (
+                        <div className={styles.chip}>
+                            <Typography size="xs" weight="medium" uppercase>
+                                {t("restricted")}
+                            </Typography>
+                        </div>
+                    )}
+                </div>
+            )}
         </div>
     );
 }

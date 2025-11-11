@@ -1,84 +1,45 @@
 @reference "../../../../../app.css";
 
 .root {
-    @apply bg-zinc-200 dark:bg-zinc-800
-        min-h-[68px]
-        rounded-xl
-        flex
-        snap-start
-        justify-between
-        p-3
-        pr-5;
+    @apply min-h-8 w-full flex items-center gap-3 sm:gap-6 px-3 py-2 surface-secondary rounded-lg;
 }
 
-.wrapper {
-    @apply w-full flex flex-1 gap-3 items-center;
+.root.loading {
+    @apply animate-pulse;
 }
 
-.iconWrapper {
-    @apply surface-secondary
-        rounded-lg
-        flex
-        justify-center
-        items-center
-        p-1
-        w-full
-        max-w-10
-        h-10;
+.root.createCampaign {
+    @apply flex flex-col items-start sm:items-center sm:flex-row;
 }
 
-.iconWrapper.loading {
-    @apply animate-pulse bg-zinc-300 dark:bg-zinc-900;
+.leftContent {
+    @apply flex justify-between gap-3 sm:gap-6;
 }
 
-.icon {
-    @apply w-7 h-7 text-primary;
+.rightContent {
+    @apply flex gap-1.5;
 }
 
-.bodyWrapper {
-    @apply w-full flex flex-col gap-1;
+.arrow {
+    @apply size-4 text-gray-500 dark:text-neutral-400;
 }
 
-.titleWrapper {
-    @apply flex w-full justify-between;
+.details {
+    @apply w-fit flex justify-between items-center gap-3;
 }
 
-.title {
-    @apply flex items-center gap-1;
+.details.loading {
+    @apply w-[9.375rem];
 }
 
-.externalLinkIcon {
-    @apply h-4 w-4 transform -rotate-45;
-}
-
-.campaignLink {
-    @apply w-fit;
-}
-
-.campaignNameWrapper {
-    @apply w-full
-        flex
-        items-center
-        gap-2
-        transition-opacity
-        duration-200
-        ease-in-out
-        hover:opacity-70;
-}
-
-.dexIcon,
-.dexIcon > svg {
-    @apply w-4 h-4;
-}
-
-.seeCampaignLink {
-    @apply no-underline max-w-60;
-}
-
-.claimRewardWrapper {
-    @apply w-full flex items-center gap-2;
+.action > p {
+    @apply sm:max-w-[7.25rem] overflow-hidden text-nowrap text-ellipsis;
 }
 
 .skeleton :global(.skeleton) {
-    @apply bg-zinc-300 dark:bg-zinc-900;
+    @apply bg-gray-300 dark:bg-neutral-700;
+}
+
+.externalLinkIcon {
+    @apply size-4 transform -rotate-45;
 }

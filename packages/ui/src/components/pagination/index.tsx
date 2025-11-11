@@ -70,7 +70,10 @@ export function Pagination({
                             key={i}
                             size="xs"
                             weight="semibold"
-                            className={styles.ellipsis}
+                            className={classNames(styles.ellipsis, {
+                                [styles.disabled]: loading,
+                                [styles.loading]: loading,
+                            })}
                         >
                             ...
                         </Typography>
