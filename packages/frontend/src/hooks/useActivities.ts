@@ -6,16 +6,22 @@ import type { HookBaseParams } from "../types/hooks";
 import { useActiveChains } from "./useActiveChains";
 import { useChainWithType } from "./useChainWithType";
 import { useAccount } from "./useAccount";
+import dayjs from "dayjs";
 
 type UseActivitiesParams = HookBaseParams;
 type QueryKey = [string, Address | undefined];
+
+export interface GroupedActivities {
+    timestamp: number;
+    activities: Activity[];
+}
 
 const TIME_RANGE = 60 * 60 * 24 * 7; // 1 week
 
 // TODO: dynamic from and to
 export function useActivities({ enabled = true }: UseActivitiesParams = {}): {
     loading: boolean;
-    activities: Activity[];
+    activities: GroupedActivities[];
 } {
     const { id: chainId } = useChainWithType();
     const activeChains = useActiveChains();
@@ -37,7 +43,41 @@ export function useActivities({ enabled = true }: UseActivitiesParams = {}): {
                     to,
                 });
 
-                return activities;
+                const groupedActivities = activities.reduce(
+                    (prev, curr) => {
+                        const dayUnix = dayjs
+                            .unix(curr.transaction.timestamp)
+                            .startOf("day")
+                            .unix();
+
+                        if (!prev[dayUnix]) {
+                            prev[dayUnix] = {
+                                timestamp: dayUnix,
+                                activities: [curr],
+                            };
+                            return prev;
+                        }
+
+                        const prevDayUnix = prev[dayUnix].timestamp;
+
+                        if (
+                            dayjs
+                                .unix(dayUnix)
+                                .isSame(dayjs.unix(prevDayUnix), "day")
+                        )
+                            prev[prevDayUnix].activities.push(curr);
+                        else
+                            prev[dayUnix] = {
+                                timestamp: dayUnix,
+                                activities: [curr],
+                            };
+
+                        return prev;
+                    },
+                    {} as Record<number, GroupedActivities>,
+                );
+
+                return Object.values(groupedActivities);
             } catch (error) {
                 console.error(
                     `Could not fetch activity for address ${address} in chain id ${chainId}: ${error}`,

@@ -1,6 +1,6 @@
 import { useActivities } from "@/src/hooks/useActivities";
-import { Activity, SkeletonActivity } from "./activity";
 import { useIsChainSupported } from "@/src/hooks/useIsChainSupported";
+import { ActivitiesGroup, SkeletonActivitiesGroup } from "./activities-group";
 
 import styles from "./styles.module.css";
 
@@ -23,20 +23,19 @@ export function Activities({ chainId }: ActivitiesProps) {
         <div className={styles.root}>
             {loading ? (
                 <>
-                    <SkeletonActivity />
-                    <SkeletonActivity />
-                    <SkeletonActivity />
-                    <SkeletonActivity />
-                    <SkeletonActivity />
-                    <SkeletonActivity />
-                    <SkeletonActivity />
-                    <SkeletonActivity />
-                    <SkeletonActivity />
-                    <SkeletonActivity />
+                    <SkeletonActivitiesGroup />
+                    <SkeletonActivitiesGroup />
+                    <SkeletonActivitiesGroup />
                 </>
             ) : (
                 activities.map((activity, i) => {
-                    return <Activity key={i} chainId={chainId} {...activity} />;
+                    return (
+                        <ActivitiesGroup
+                            key={i}
+                            chainId={chainId}
+                            {...activity}
+                        />
+                    );
                 })
             )}
         </div>

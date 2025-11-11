@@ -3,22 +3,29 @@ import { formatPercentage } from "@/src/utils/format";
 import { PoolRemoteLogo } from "@/src/components/pool-remote-logo";
 import { type AmmPoolLiquidityTargetType } from "@metrom-xyz/sdk";
 import type { TargetedNamedCampaign } from "@/src/types/campaign";
+import type { ActionSizes } from ".";
 
-interface AmmPoolLiquidityProps {
-    campaign: TargetedNamedCampaign<AmmPoolLiquidityTargetType>;
+interface AmmPoolLiquidityProps<T extends AmmPoolLiquidityTargetType>
+    extends ActionSizes {
+    campaign: TargetedNamedCampaign<T>;
 }
 
-export function AmmPoolLiquidity({ campaign }: AmmPoolLiquidityProps) {
+export function AmmPoolLiquidity<T extends AmmPoolLiquidityTargetType>({
+    campaign,
+    nameSize,
+    logoSize,
+}: AmmPoolLiquidityProps<T>) {
     return (
         <>
             <PoolRemoteLogo
+                size={logoSize}
                 chain={campaign.chainId}
                 tokens={campaign.target.pool.tokens.map((token) => ({
                     address: token.address,
                     defaultText: token.symbol,
                 }))}
             />
-            <Typography size="lg" weight="medium" truncate>
+            <Typography size={nameSize} weight="medium" truncate>
                 {campaign.name}
             </Typography>
             {campaign.target.pool.fee && (
