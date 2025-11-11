@@ -1,10 +1,24 @@
 @reference "../../app.css";
 
 .root {
-    @apply max-w-screen-xl
+    @apply relative
+        max-w-screen-xl
         w-full
-        flex
-        flex-col
+        min-h-[45rem]
         surface-primary
-        rounded-xl;
+        rounded-xl
+        overflow-x-scroll
+        sm:overflow-x-auto;
+}
+
+.loadingBar {
+    @apply px-3 rounded-bl-xl rounded-br-xl absolute overflow-x-hidden;
+}
+
+.loadingBar :global(.progress) {
+    @apply rounded-bl-xl rounded-br-xl;
+}
+
+.list {
+    @apply min-w-[80rem] grid grid-cols-4 grid-rows-4 gap-5 px-5 pb-5 pt-4;
 }

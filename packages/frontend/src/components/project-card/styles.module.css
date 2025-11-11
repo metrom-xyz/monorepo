@@ -1,0 +1,81 @@
+@reference "../../app.css";
+
+.root {
+    @apply w-full rounded-lg overflow-hidden max-w-[18.438rem];
+}
+
+.card {
+    @apply flex flex-col;
+}
+
+.header {
+    @apply relative p-5 rounded-lg overflow-hidden;
+}
+
+.illustration {
+    @apply absolute -top-8 left-2/5 w-70 h-48;
+}
+
+.illustration > svg {
+    @apply w-full h-full;
+}
+
+.types {
+    @apply absolute top-0 right-0 w-fit flex;
+}
+
+.type {
+    @apply py-1 px-3 backdrop-blur-sm bg-[#04040433];
+}
+
+.type:first-child {
+    @apply rounded-bl-lg;
+}
+
+.type:last-child {
+    @apply rounded-tr-lg;
+}
+
+.headerContent {
+    @apply relative flex items-center gap-3;
+}
+
+.projectIconWrapper {
+    @apply flex items-center justify-center rounded-full w-12 h-12;
+}
+
+.projectIcon {
+    @apply w-9 h-9;
+}
+
+.headerData {
+    @apply flex flex-col gap-2;
+}
+
+.mainText {
+    @apply text-gray-900 dark:text-neutral-950;
+}
+
+.activeText {
+    @apply text-gray-50 dark:text-neutral-100;
+}
+
+.chains {
+    @apply w-full flex gap-0.5 px-5 py-2 overflow-x-auto;
+}
+
+.chainChip {
+    @apply flex
+        w-fit
+        items-center
+        gap-0.5
+        rounded-[2.5rem]
+        px-2
+        py-1.5
+        bg-[#F9FAFB7A]
+        dark:bg-[#04040452];
+}
+
+.chainIcon {
+    @apply h-4 w-4;
+}

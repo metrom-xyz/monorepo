@@ -15,6 +15,7 @@ import {
     sei,
     hemi,
     mainnet,
+    katana,
 } from "viem/chains";
 import {
     sonicData,
@@ -25,6 +26,7 @@ import {
     gnosisData,
     sepoliaData,
     telosData,
+    katanaData,
     lensData,
     lightlinkPhoenixData,
     lumiaData,
@@ -71,6 +73,7 @@ export const EVM_CHAIN_DATA: {
         [SupportedDevelopmentEvmChain.Sepolia]: sepoliaData,
         [SupportedDevelopmentEvmChain.Swell]: swellDevelopmentData,
         [SupportedDevelopmentEvmChain.Sei]: seiDevelopmentData,
+        [SupportedProductionEvmChain.Katana]: katanaData,
     },
     [Environment.Production]: {
         [SupportedProductionEvmChain.Base]: baseData,
@@ -84,6 +87,7 @@ export const EVM_CHAIN_DATA: {
         [SupportedProductionEvmChain.LightLinkPhoenix]: lightlinkPhoenixData,
         [SupportedProductionEvmChain.Lumia]: lumiaData,
         [SupportedProductionEvmChain.Mainnet]: mainnetData,
+        [SupportedProductionEvmChain.Katana]: katanaData,
         [SupportedProductionEvmChain.Sei]: seiProductionData,
         [SupportedProductionEvmChain.Hemi]: hemiData,
     },
@@ -109,6 +113,8 @@ export const SUPPORTED_DEVELOPMENT_CHAINS: [Chain, ...Chain[]] = [
     sepolia,
     sei,
     swellchain,
+    // TODO: this is required for the Katana vault campaigns testing, remove this as soon as that is done
+    katana,
 ];
 
 // Needed for wagmi context setup, not needed for MVM chains
@@ -124,6 +130,8 @@ export const SUPPORTED_PRODUCTION_CHAINS: [Chain, ...Chain[]] = [
     lumiaMainnet,
     // This is required for the Turtle integration
     mainnet,
+    // This is required for the Katana vault campaigns
+    katana,
     swellchain,
     hemi,
     sei,

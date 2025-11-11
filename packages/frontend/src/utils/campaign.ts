@@ -102,6 +102,9 @@ export function getCampaignName(
                     .join("/"),
             });
         }
+        case TargetType.KatanaVault: {
+            return campaign.target.name;
+        }
         case TargetType.Empty: {
             return t("campaignActions.empty");
         }
