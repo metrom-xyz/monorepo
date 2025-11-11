@@ -1,7 +1,7 @@
-import { Skeleton } from "@metrom-xyz/ui";
+import { Skeleton, Typography } from "@metrom-xyz/ui";
 import { PoolRemoteLogo } from "@/src/components/pool-remote-logo";
 import classNames from "classnames";
-import { TargetType } from "@metrom-xyz/sdk";
+import { RestrictionType, TargetType } from "@metrom-xyz/sdk";
 import { AmmPoolLiquidity } from "./amm-pool-liquidity";
 import type { Campaign } from "@/src/types/campaign";
 import { LiquityV2 } from "./liquity-v2";
@@ -9,6 +9,8 @@ import { AaveV3 } from "./aave-v3";
 import { Empty } from "./empty";
 import { HoldFungibleAsset } from "./hold-fungible-asset";
 import { GmxV1Liquidity } from "./gmx-v1-liquidity";
+import { KatanaVault } from "./katana-vault";
+import { useTranslations } from "next-intl";
 
 import styles from "./styles.module.css";
 
@@ -17,6 +19,8 @@ interface ActionProps {
 }
 
 export function Action({ campaign }: ActionProps) {
+    const t = useTranslations("allCampaigns");
+
     const ammPoolLiquidity =
         campaign.isTargeting(TargetType.AmmPoolLiquidity) ||
         campaign.isTargeting(TargetType.JumperWhitelistedAmmPoolLiquidity);
@@ -37,6 +41,8 @@ export function Action({ campaign }: ActionProps) {
         TargetType.HoldFungibleAsset,
     );
 
+    const katanaVault = campaign.isTargeting(TargetType.KatanaVault);
+
     const empty = campaign.isTargeting(TargetType.Empty);
 
     return (
@@ -47,23 +53,42 @@ export function Action({ campaign }: ActionProps) {
             {liquityV2 && <LiquityV2 campaign={campaign} />}
             {aaveV3 && <AaveV3 campaign={campaign} />}
             {holdFungibleAsset && <HoldFungibleAsset campaign={campaign} />}
+            {katanaVault && <KatanaVault campaign={campaign} />}
+            <div className={styles.chipsWrapper}>
+                {campaign.specification?.kpi && (
+                    <div className={styles.chip}>
+                        <Typography size="xs" weight="medium" uppercase>
+                            {t("kpi")}
+                        </Typography>
+                    </div>
+                )}
+                {campaign.specification?.priceRange && (
+                    <div className={styles.chip}>
+                        <Typography size="xs" weight="medium" uppercase>
+                            {t("pool.range")}
+                        </Typography>
+                    </div>
+                )}
+                {campaign.restrictions?.type === RestrictionType.Whitelist && (
+                    <div className={styles.chip}>
+                        <Typography size="xs" weight="medium" uppercase>
+                            {t("restricted")}
+                        </Typography>
+                    </div>
+                )}
+            </div>
         </div>
     );
 }
 
 export function SkeletonAction() {
     return (
-        <div className={styles.root}>
+        <div className={classNames(styles.root, styles.loading)}>
             <PoolRemoteLogo
                 tokens={[{ address: "0x1" }, { address: "0x2" }]}
                 loading
             />
-            <div
-                className={classNames(
-                    styles.titleContainer,
-                    styles.titleContainerLoading,
-                )}
-            >
+            <div className={classNames(styles.titleContainer, styles.loading)}>
                 <Skeleton size="lg" width={300} />
                 <Skeleton size="sm" width={50} className={styles.campaignFee} />
             </div>
