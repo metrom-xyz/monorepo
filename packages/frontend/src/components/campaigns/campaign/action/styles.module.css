@@ -1,29 +1,25 @@
 @reference "../../../../app.css";
 
 .root {
-    @apply w-full flex items-center gap-3;
+    @apply flex items-center gap-3;
 }
 
-.poolContainer {
-    @apply w-full flex items-center gap-2;
-}
-
-.titleContainer {
-    @apply w-fit max-w-full flex items-center gap-1.5;
-}
-
-.titleContainerLoading {
+.root.loading {
     @apply w-full;
 }
 
-.campaignFee {
-    @apply flex;
+.titleContainer {
+    @apply w-fit max-w-full flex items-center gap-3;
+}
+
+.titleContainer.loading {
+    @apply w-full;
 }
 
 .chipsWrapper {
-    @apply flex gap-1;
+    @apply flex gap-1.5;
 }
 
 .chip {
-    @apply bg-zinc-100 dark:bg-zinc-800 rounded-lg py-1 px-1.5 w-fit;
+    @apply bg-gray-200 dark:bg-neutral-700 rounded-sm py-1 px-1.5 w-fit;
 }

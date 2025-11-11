@@ -1,20 +1,20 @@
 import { Typography } from "@metrom-xyz/ui";
-import { type LiquityV2TargetType } from "@metrom-xyz/sdk";
+import { TargetType } from "@metrom-xyz/sdk";
 import { type TargetedNamedCampaign } from "@/src/types/campaign";
 import { RemoteLogo } from "@/src/components/remote-logo";
 
-interface LiquityV2Props<T extends LiquityV2TargetType> {
+interface KatanaVaultProps<T extends TargetType.KatanaVault> {
     campaign: TargetedNamedCampaign<T>;
 }
 
-export function LiquityV2<T extends LiquityV2TargetType>({
+export function KatanaVault<T extends TargetType.KatanaVault>({
     campaign,
-}: LiquityV2Props<T>) {
+}: KatanaVaultProps<T>) {
     return (
         <>
             <RemoteLogo
-                address={campaign.target.collateral.address}
-                chain={campaign.target.chainId}
+                src={campaign.target.vaultIconUrl}
+                className="rounded-full!"
             />
             <Typography size="lg" weight="medium" truncate>
                 {campaign.name}
