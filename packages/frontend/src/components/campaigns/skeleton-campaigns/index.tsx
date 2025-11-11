@@ -10,7 +10,9 @@ interface SkeletonCampaignsProps {
 export function SkeletonCampaigns({ type }: SkeletonCampaignsProps) {
     return (
         <div className={styles.root}>
-            <div className={styles.tabs} />
+            <div className={styles.tabs}>
+                <div className={styles.tab} />
+            </div>
             <div className={styles.wrapper}>
                 <div className={styles.filters} />
                 <div className={styles.tableWrapper}>
