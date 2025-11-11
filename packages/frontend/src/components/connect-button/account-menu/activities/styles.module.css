@@ -12,3 +12,11 @@
         sm:pb-4
         snap-y;
 }
+
+.empty {
+    @apply h-64 sm:h-[37.5rem] flex items-center justify-center flex-col gap-3;
+}
+
+.emptyTextWrapper {
+    @apply flex items-center flex-col;
+}
