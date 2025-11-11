@@ -70,6 +70,9 @@ export interface ServiceUrls {
 }
 
 export const CAMPAIGN_TARGET_TO_KIND: Record<TargetType, CampaignKind> = {
+    // Katana vault campaign is not a metrom campaign, so it doesn't have a campaign kind;
+    // we use the empty kind to avoid types issues.
+    [TargetType.KatanaVault]: CampaignKind.EmptyTarget,
     [TargetType.AmmPoolLiquidity]: CampaignKind.AmmPoolLiquidity,
     [TargetType.LiquityV2Debt]: CampaignKind.LiquityV2Debt,
     [TargetType.LiquityV2StabilityPool]: CampaignKind.LiquityV2StabilityPool,

@@ -3,7 +3,11 @@ import type { BackendErc20Token } from "./commons";
 import type { Specification } from "src/types/campaigns";
 import type { ChainType, Erc20Token } from "src/types/commons";
 import type { BackendCampaignAmmPool } from "./pools";
-import type { SupportedAaveV3, SupportedGmxV1, SupportedLiquityV2 } from "src/commons";
+import type {
+    SupportedAaveV3,
+    SupportedGmxV1,
+    SupportedLiquityV2,
+} from "src/commons";
 
 export interface BaseTarget {
     chainType: ChainType;
@@ -70,6 +74,15 @@ export type BackendAaveV3BridgeAndSupplyTarget = BaseTarget & {
     aaveV3Market: string;
     aaveV3Collateral: BackendErc20Token;
     boostingFactor: string;
+};
+
+export type BackendKatanaVaultCampaignTarget = BaseTarget & {
+    type: "katana-vault";
+    id: string;
+    name: string;
+    description: string;
+    campaignIconUrl: string;
+    vaultIconUrl: string;
 };
 
 export interface BackendTokenDistributable {
@@ -142,7 +155,8 @@ export interface BackendBaseCampaign {
         | BackendAaveV3NetSupplyTarget
         | BackendHoldFungibleAssetTarget
         | BackendAaveV3BridgeAndSupplyTarget
-        | BackendJumperWhitelistedAmmPoolLiquidityTarget;
+        | BackendJumperWhitelistedAmmPoolLiquidityTarget
+        | BackendKatanaVaultCampaignTarget;
     specification?: Specification;
     usdTvl?: number;
     apr?: number;

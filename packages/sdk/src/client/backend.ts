@@ -42,6 +42,7 @@ import {
     DistributablesType,
     type DynamicPointDistributables,
     type GmxV1LiquidityTarget,
+    type KatanaVaultTarget,
 } from "../types/campaigns";
 import {
     ChainType,
@@ -1156,6 +1157,13 @@ function processCampaignsResponse(
                             name: DEX_BRAND_NAME[backendCampaign.target.dex],
                         },
                     },
+                };
+                break;
+            }
+            case "katana-vault": {
+                target = <KatanaVaultTarget>{
+                    ...backendCampaign.target,
+                    type: TargetType.KatanaVault,
                 };
                 break;
             }
