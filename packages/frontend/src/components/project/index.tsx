@@ -1,13 +1,15 @@
 "use client";
 
-import { ENVIRONMENT } from "@/src/commons/env";
-import { PROJECT_PAGES } from "@/src/commons/project-pages";
-import { useTranslations } from "next-intl";
 import { Header } from "./header";
 import { ProjectIntro } from "../protocol-intro";
 import { CampaignsTable } from "../campaigns-table";
-import { Typography } from "@metrom-xyz/ui";
 import { BackendCampaignType } from "@metrom-xyz/sdk";
+import { PROJECTS_METADATA } from "@/src/commons/projects";
+import { ProjectKind } from "@/src/types/project";
+import { Tab, Tabs } from "@metrom-xyz/ui";
+import { PointsIcon } from "@/src/assets/points-icon";
+import { useTranslations } from "next-intl";
+import { TokensIcon } from "@/src/assets/tokens-icon";
 
 import styles from "./styles.module.css";
 
@@ -18,59 +20,84 @@ interface ProjectProps {
 export function Project({ project }: ProjectProps) {
     const t = useTranslations("projectPage");
 
-    const details = PROJECT_PAGES[ENVIRONMENT][project];
+    const details = PROJECTS_METADATA[project];
 
     if (!project) return null;
 
     const {
         name,
+        kind,
         description,
         url,
-        brand,
+        branding,
         icon,
+        illustration,
         intro,
-        chain,
-        campaignsFilters,
     } = details;
-
-    const chainsFilter = campaignsFilters
-        ? [
-              {
-                  value: `${chain.type}_${campaignsFilters.chainId}`,
-                  label: "",
-                  query: "",
-              },
-          ]
-        : undefined;
 
     return (
         <div className={styles.root}>
             <Header
                 name={name}
-                description={description}
                 url={url}
-                brand={brand}
+                description={description}
+                branding={branding}
                 icon={icon}
+                illustration={illustration}
             />
-            {intro && (
-                <ProjectIntro project={project} brand={brand} {...intro} />
+            {intro && <ProjectIntro {...intro} />}
+            {kind === ProjectKind.PointsTracking && (
+                <div className={styles.tableWrapper}>
+                    <Tabs
+                        value={BackendCampaignType.Points}
+                        onChange={() => {}}
+                    >
+                        <Tab
+                            icon={PointsIcon}
+                            value={BackendCampaignType.Points}
+                        >
+                            {t("points")}
+                        </Tab>
+                    </Tabs>
+                    <CampaignsTable
+                        type={BackendCampaignType.Points}
+                        disableFilters
+                        optionalFilters={{
+                            protocols: [{ label: "", value: project }],
+                        }}
+                        className={styles.table}
+                    />
+                </div>
             )}
-            <div className={styles.opportunities}>
-                <Typography size="lg" weight="medium" uppercase>
-                    {t("explore")}
-                </Typography>
-                <CampaignsTable
-                    type={BackendCampaignType.Rewards}
-                    disableFilters
-                    optionalFilters={{
-                        chains: chainsFilter,
-                        protocols: campaignsFilters.dex
-                            ? // TODO: find a better way
-                              [{ label: "", value: campaignsFilters.dex }]
-                            : [],
-                    }}
-                />
-            </div>
+            {kind === ProjectKind.Chain && (
+                <div className={styles.tableWrapper}>
+                    <Tabs
+                        value={BackendCampaignType.Rewards}
+                        onChange={() => {}}
+                    >
+                        <Tab
+                            icon={TokensIcon}
+                            value={BackendCampaignType.Rewards}
+                        >
+                            {t("tokens")}
+                        </Tab>
+                    </Tabs>
+                    <CampaignsTable
+                        type={BackendCampaignType.Rewards}
+                        disableFilters
+                        optionalFilters={{
+                            chains: [
+                                {
+                                    label: "",
+                                    query: "",
+                                    value: `${details.chainType}_${details.chainId}`,
+                                },
+                            ],
+                        }}
+                        className={styles.table}
+                    />
+                </div>
+            )}
         </div>
     );
 }

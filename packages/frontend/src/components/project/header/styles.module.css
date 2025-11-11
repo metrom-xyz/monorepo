@@ -1,29 +1,61 @@
 @reference "../../../app.css";
 
 .root {
-    @apply w-full flex flex-col gap-4 md:gap-0 md:flex-row justify-between items-start md:items-end;
+    @apply w-full relative overflow-hidden flex gap-4 p-5 rounded-lg;
 }
 
-.leftContent {
-    @apply w-full flex flex-1 flex-row items-start gap-3.5;
+.illustration {
+    @apply absolute -top-5 right-0;
 }
 
-.iconWrapper {
-    @apply flex items-center justify-center w-full h-12 max-w-12 md:h-17 md:max-w-17 rounded-2xl;
+.projectIconWrapper {
+    @apply flex items-center justify-center rounded-full w-20 h-20;
 }
 
-.icon {
-    @apply h-8 w-8 md:h-12 md:w-12;
+.projectIcon {
+    @apply w-16 h-16 rounded-full;
 }
 
-.titleWrapper {
-    @apply flex flex-col gap-1 max-w-screen-md;
+.rightContent {
+    @apply flex flex-col gap-2 flex-1;
 }
 
-.exploreButton {
-    @apply h-12;
+.title {
+    @apply flex flex-wrap items-center gap-2 sm:gap-4;
+}
+
+.types {
+    @apply w-fit flex;
+}
+
+.type {
+    @apply py-1 px-3 backdrop-blur-sm bg-[#04040433];
+}
+
+.type.loading {
+    @apply w-16 h-6 bg-gray-200 dark:bg-neutral-800 animate-pulse rounded-md;
+}
+
+.type:first-child {
+    @apply rounded-l;
+}
+
+.type:last-child {
+    @apply rounded-r;
+}
+
+.mainText {
+    @apply text-gray-900 dark:text-neutral-950;
+}
+
+.activeText {
+    @apply text-gray-50 dark:text-neutral-100;
+}
+
+.externalLink {
+    @apply w-fit flex items-center py-1 px-1.5 rounded-lg bg-neutral-100;
 }
 
 .externalLinkIcon {
-    @apply h-4 w-4 transform -rotate-45;
+    @apply h-3 w-3 transform -rotate-45 text-gray-900 dark:text-neutral-950;
 }
