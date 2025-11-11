@@ -1,41 +1,26 @@
 @reference "../../app.css";
 
-.icon,
-.icon > svg {
-    @apply w-6 h-6;
-}
-
-.iconBig,
-.iconBig > svg {
-    @apply w-8 h-8;
+.icon.xs,
+.icon.xs > svg {
+    @apply size-3.5 sm:size-4;
 }
 
 .icon.sm,
 .icon.sm > svg {
-    @apply w-[1.25rem] h-[1.25rem];
+    @apply size-4 sm:size-5;
 }
 
-.iconBig.sm,
-.iconBig.sm > svg {
-    @apply w-7 h-7;
-}
-
-.icon.md,
-.icon.md > svg {
-    @apply w-7 h-7;
-}
-
-.iconBig.md,
-.iconBig.md > svg {
-    @apply w-9 h-9;
+.icon.base,
+.icon.base > svg {
+    @apply size-5 sm:size-7;
 }
 
 .icon.lg,
 .icon.lg > svg {
-    @apply w-11 h-11;
+    @apply size-6 sm:size-9;
 }
 
-.iconBig.lg,
-.iconBig.lg > svg {
-    @apply w-12 h-12;
+.icon.xl,
+.icon.xl > svg {
+    @apply size-8 sm:size-11;
 }
