@@ -4,6 +4,10 @@ type Vault @entity(immutable: false) {
     liquidity: BigInt!
 }
 
+type Gauge @entity(immutable: true) {
+    id: Bytes!
+}
+
 type Position @entity(immutable: false) {
     id: Bytes!
     owner: Bytes!
