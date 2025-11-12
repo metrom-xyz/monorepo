@@ -50,6 +50,8 @@ try {
                 network,
                 factoryAddress: contracts.Factory.address,
                 factoryStartBlock: contracts.Factory.startBlock,
+                gaugesFactoryAddress: contracts.GaugesFactory?.address,
+                gaugesFactoryStartBlock: contracts.GaugesFactory?.startBlock,
             },
         ),
     );
