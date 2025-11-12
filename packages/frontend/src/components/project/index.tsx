@@ -101,3 +101,15 @@ export function Project({ project }: ProjectProps) {
         </div>
     );
 }
+
+export function SkeletonProject() {
+    return (
+        <div className={styles.root}>
+            <div className={styles.skeletonHeader}></div>
+            <div className={styles.skeletonProjectIntro}>
+                <div className={styles.skeletonIntroArticle}></div>
+                <div className={styles.skeletonIntroArticle}></div>
+            </div>
+        </div>
+    );
+}

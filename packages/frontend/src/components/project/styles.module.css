@@ -11,3 +11,15 @@
 .table {
     @apply rounded-tl-none;
 }
+
+.skeletonHeader {
+    @apply w-full h-[7.75rem] rounded-lg bg-gray-200 dark:bg-neutral-800 animate-pulse;
+}
+
+.skeletonProjectIntro {
+    @apply w-full flex gap-4;
+}
+
+.skeletonIntroArticle {
+    @apply flex w-full md:max-w-1/2 bg-gray-200 dark:bg-neutral-800 animate-pulse h-[4.5rem] rounded-lg;
+}
