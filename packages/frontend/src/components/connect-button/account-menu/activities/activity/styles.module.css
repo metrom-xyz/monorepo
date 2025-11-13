@@ -1,7 +1,7 @@
 @reference "../../../../../app.css";
 
 .root {
-    @apply min-h-8 w-full flex items-center gap-3 sm:gap-6 px-3 py-2 surface-secondary rounded-lg;
+    @apply min-h-8 w-full flex items-center gap-3 sm:gap-5 px-3 py-2 surface-secondary rounded-lg;
 }
 
 .root.loading {
@@ -13,7 +13,7 @@
 }
 
 .leftContent {
-    @apply flex justify-between gap-3 sm:gap-6;
+    @apply flex justify-between gap-3 sm:gap-5;
 }
 
 .rightContent {
@@ -33,7 +33,7 @@
 }
 
 .action > p {
-    @apply sm:max-w-[7.25rem] overflow-hidden text-nowrap text-ellipsis;
+    @apply sm:max-w-[7rem] overflow-hidden text-nowrap text-ellipsis;
 }
 
 .skeleton :global(.skeleton) {

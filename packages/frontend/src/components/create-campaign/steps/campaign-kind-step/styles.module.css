@@ -10,21 +10,23 @@
 
 .kind {
     @apply w-full 
-        rounded-2xl
         flex
         gap-6
         items-center
         p-3.5
+        rounded-lg
+        border
+        border-gray-300
+        dark:border-neutral-600
         transition-colors
         duration-200
         ease-in-out
         hover:cursor-pointer
-        surface-secondary
-        surface-secondary-hover;
+        surface-primary-hover;
 }
 
 .active {
-    @apply theme-surface-2-active;
+    @apply bg-gray-150 dark:bg-neutral-800;
 }
 
 .text {
