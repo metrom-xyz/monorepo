@@ -44,7 +44,7 @@
 }
 
 .label.completed {
-    @apply -translate-y-2 text-neutral-gray dark:text-zinc-400 text-xs;
+    @apply -translate-y-2 text-tertiary text-xs;
 }
 
 .children {

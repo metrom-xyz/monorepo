@@ -11,7 +11,6 @@
         duration-200
         ease-in-out
         cursor-pointer
-        surface-primary
         surface-primary-hover;
 }
 
@@ -24,7 +23,7 @@
 }
 
 .active {
-    @apply theme-surface-active;
+    @apply bg-gray-150 dark:bg-neutral-800;
 }
 
 .disabled {

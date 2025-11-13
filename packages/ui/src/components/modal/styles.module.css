@@ -10,5 +10,5 @@
         flex
         justify-center
         items-center
-        bg-light-overlay dark:bg-dark-overlay;
+        overlay;
 }

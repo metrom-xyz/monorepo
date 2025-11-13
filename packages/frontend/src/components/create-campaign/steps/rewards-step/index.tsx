@@ -1,5 +1,5 @@
 import { useCallback, useMemo, useState } from "react";
-import { Typography, ErrorText, Tabs, Tab } from "@metrom-xyz/ui";
+import { Typography, ErrorText, Chip } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
 import { Step } from "@/src/components/step";
 import { StepPreview } from "@/src/components/step/preview";
@@ -50,13 +50,14 @@ export function RewardsStep({
         [onError],
     );
 
-    const handleOnRewardTypeSwitch = useCallback(
+    const getRewardTypeSwitchHandler = useCallback(
         (type: DistributablesType) => {
-            onDistributablesChange({
-                distributables: {
-                    type,
-                },
-            });
+            return () =>
+                onDistributablesChange({
+                    distributables: {
+                        type,
+                    },
+                });
         },
         [onDistributablesChange],
     );
@@ -91,36 +92,28 @@ export function RewardsStep({
                             </ErrorText>
                         </div>
                         <div className={styles.topRightContent}>
-                            <Tabs
-                                size="sm"
-                                value={distributables?.type}
-                                onChange={handleOnRewardTypeSwitch}
+                            <Chip
+                                active={
+                                    distributables?.type ===
+                                    DistributablesType.Tokens
+                                }
+                                onClick={getRewardTypeSwitchHandler(
+                                    DistributablesType.Tokens,
+                                )}
                             >
-                                <Tab
-                                    value={DistributablesType.Tokens}
-                                    className={classNames(styles.tab, {
-                                        [styles.activeTab]:
-                                            distributables?.type ===
-                                            DistributablesType.Tokens,
-                                    })}
-                                >
-                                    <Typography weight="medium" size="sm">
-                                        {t("tabs.tokens")}
-                                    </Typography>
-                                </Tab>
-                                <Tab
-                                    value={DistributablesType.FixedPoints}
-                                    className={classNames(styles.tab, {
-                                        [styles.activeTab]:
-                                            distributables?.type ===
-                                            DistributablesType.FixedPoints,
-                                    })}
-                                >
-                                    <Typography weight="medium" size="sm">
-                                        {t("tabs.points")}
-                                    </Typography>
-                                </Tab>
-                            </Tabs>
+                                {t("tabs.tokens")}
+                            </Chip>
+                            <Chip
+                                active={
+                                    distributables?.type ===
+                                    DistributablesType.FixedPoints
+                                }
+                                onClick={getRewardTypeSwitchHandler(
+                                    DistributablesType.FixedPoints,
+                                )}
+                            >
+                                {t("tabs.points")}
+                            </Chip>
                         </div>
                     </div>
                 }
