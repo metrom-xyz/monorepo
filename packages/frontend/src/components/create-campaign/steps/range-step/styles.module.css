@@ -4,32 +4,12 @@
     @apply flex flex-col gap-3 p-4;
 }
 
+.flipPriceWrapper {
+    @apply flex justify-end items-center gap-2;
+}
+
 .priceTabs {
     @apply w-fit self-end;
-}
-
-.priceTab {
-    @apply bg-white dark:bg-zinc-800 opacity-100 w-auto;
-}
-
-.priceTab > p {
-    @apply text-zinc-400;
-}
-
-.priceTab:first-child {
-    @apply rounded-r-none;
-}
-
-.priceTab:last-child {
-    @apply rounded-l-none;
-}
-
-.activePriceTab {
-    @apply bg-black dark:bg-zinc-900;
-}
-
-.activePriceTab > p {
-    @apply text-white;
 }
 
 .previewLabelWrapper {
@@ -47,14 +27,6 @@
 
 .priceWrapper {
     @apply w-full flex gap-1;
-}
-
-.chartWrapper {
-    @apply flex flex-col gap-2 p-2 rounded-md surface-secondary;
-}
-
-.chartTitleText {
-    @apply dark:text-zinc-200;
 }
 
 .liquidityDensityChart :global(.emptyContainer) {
