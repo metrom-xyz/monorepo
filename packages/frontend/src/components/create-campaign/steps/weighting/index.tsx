@@ -93,12 +93,7 @@ export function WeightingStep({
         setToken1(undefined);
     }, [enabled, weighting, onWeightingChange]);
 
-    function handleSwitchOnClick(
-        _: boolean,
-        event:
-            | React.MouseEvent<HTMLButtonElement>
-            | React.KeyboardEvent<HTMLButtonElement>,
-    ) {
+    function handleSwitchOnClick(event: React.MouseEvent<HTMLDivElement>) {
         event.stopPropagation();
         setEnabled((enabled) => !enabled);
     }
@@ -163,7 +158,12 @@ export function WeightingStep({
             >
                 <div className={styles.weightsWrapper}>
                     <div className={styles.weight}>
-                        <Typography uppercase variant="tertiary"weight="medium" size="sm">
+                        <Typography
+                            uppercase
+                            variant="tertiary"
+                            weight="medium"
+                            size="sm"
+                        >
                             {token0Symbol}
                         </Typography>
                         <Typography uppercase weight="medium" size="sm">
@@ -173,7 +173,12 @@ export function WeightingStep({
                         </Typography>
                     </div>
                     <div className={styles.weight}>
-                        <Typography uppercase variant="tertiary"weight="medium" size="sm">
+                        <Typography
+                            uppercase
+                            variant="tertiary"
+                            weight="medium"
+                            size="sm"
+                        >
                             {token1Symbol}
                         </Typography>
                         <Typography uppercase weight="medium" size="sm">
@@ -183,7 +188,12 @@ export function WeightingStep({
                         </Typography>
                     </div>
                     <div className={styles.weight}>
-                        <Typography uppercase variant="tertiary"weight="medium" size="sm">
+                        <Typography
+                            uppercase
+                            variant="tertiary"
+                            weight="medium"
+                            size="sm"
+                        >
                             {t("fees")}
                         </Typography>
                         <Typography uppercase weight="medium" size="sm">

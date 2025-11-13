@@ -27,7 +27,7 @@
 }
 
 .active {
-    @apply theme-surface-active;
+    @apply bg-gray-150 dark:bg-neutral-800;
 }
 
 .loading {

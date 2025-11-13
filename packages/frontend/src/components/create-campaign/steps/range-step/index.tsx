@@ -3,11 +3,10 @@ import { StepContent } from "@/src/components/step/content";
 import { StepPreview } from "@/src/components/step/preview";
 import {
     Button,
+    Chip,
     ErrorText,
     Skeleton,
     Switch,
-    Tab,
-    Tabs,
     Typography,
 } from "@metrom-xyz/ui";
 import { useCallback, useEffect, useMemo, useState } from "react";
@@ -16,7 +15,6 @@ import { useTranslations } from "next-intl";
 import { RangeInputs } from "./range-inputs";
 import { LiquidityDensityChart } from "@/src/components/liquidity-density-chart";
 import { DistributablesType, tickToScaledPrice } from "@metrom-xyz/sdk";
-import classNames from "classnames";
 import { usePrevious } from "react-use";
 import { useLiquidityDensity } from "@/src/hooks/useLiquidityDensity";
 import { formatAmount } from "@/src/utils/format";
@@ -160,12 +158,7 @@ export function RangeStep({
         setError("");
     }, [distributablesType, onRangeChange]);
 
-    function handleSwitchOnClick(
-        _: boolean,
-        event:
-            | React.MouseEvent<HTMLButtonElement>
-            | React.KeyboardEvent<HTMLButtonElement>,
-    ) {
+    function handleSwitchOnClick(event: React.MouseEvent<HTMLDivElement>) {
         event.stopPropagation();
         setEnabled((enabled) => !enabled);
     }
@@ -308,33 +301,14 @@ export function RangeStep({
             </StepPreview>
             <StepContent>
                 <div className={styles.stepContent}>
-                    <Tabs
-                        size="sm"
-                        value={token0To1}
-                        onChange={handleOnFlipPrice}
-                        className={styles.priceTabs}
-                    >
-                        <Tab
-                            value={token0To1}
-                            className={classNames(styles.priceTab, {
-                                [styles.activePriceTab]: token0To1,
-                            })}
-                        >
-                            <Typography weight="medium" size="sm">
-                                {pool?.tokens[0].symbol}
-                            </Typography>
-                        </Tab>
-                        <Tab
-                            value={!token0To1}
-                            className={classNames(styles.priceTab, {
-                                [styles.activePriceTab]: !token0To1,
-                            })}
-                        >
-                            <Typography weight="medium" size="sm">
-                                {pool?.tokens[1].symbol}
-                            </Typography>
-                        </Tab>
-                    </Tabs>
+                    <div className={styles.flipPriceWrapper}>
+                        <Chip active={token0To1} onClick={handleOnFlipPrice}>
+                            {pool?.tokens[0].symbol}
+                        </Chip>
+                        <Chip active={!token0To1} onClick={handleOnFlipPrice}>
+                            {pool?.tokens[1].symbol}
+                        </Chip>
+                    </div>
                     <RangeInputs
                         pool={pool}
                         error={!!error}
@@ -345,13 +319,12 @@ export function RangeStep({
                         onFromChange={setFrom}
                         onToChange={setTo}
                     />
-                    <div className={styles.chartWrapper}>
+                    <div>
                         <Typography
                             weight="medium"
                             variant="tertiary"
                             uppercase
                             size="xs"
-                            className={styles.chartTitleText}
                         >
                             {t("chart")}
                         </Typography>

@@ -29,9 +29,9 @@ import { Weighting } from "./weighting";
 import { Restrictions } from "./restrictions";
 import { useLiquidityByAddresses } from "@/src/hooks/useLiquidityByAddresses";
 import { DeployButton } from "./deploy-button";
+import { useCampaignTargetValueName } from "@/src/hooks/useCampaignTargetValueName";
 
 import styles from "./styles.module.css";
-import { useCampaignTargetValueName } from "@/src/hooks/useCampaignTargetValueName";
 
 interface CampaignPreviewProps {
     payload: CampaignPreviewPayload;

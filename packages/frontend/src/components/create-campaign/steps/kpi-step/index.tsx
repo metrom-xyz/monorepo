@@ -191,12 +191,7 @@ export function KpiStep({
         setError("");
     }, [distributables?.type, onKpiChange]);
 
-    function handleSwitchOnClick(
-        _: boolean,
-        event:
-            | React.MouseEvent<HTMLButtonElement>
-            | React.KeyboardEvent<HTMLButtonElement>,
-    ) {
+    function handleSwitchOnClick(event: React.MouseEvent<HTMLDivElement>) {
         event.stopPropagation();
         setEnabled((enabled) => !enabled);
     }
@@ -268,7 +263,12 @@ export function KpiStep({
                 disabled={!enabled}
             >
                 <div className={styles.tvlWrapper}>
-                    <Typography uppercase weight="medium" variant="tertiary"size="sm">
+                    <Typography
+                        uppercase
+                        weight="medium"
+                        variant="tertiary"
+                        size="sm"
+                    >
                         {t("currentTarget", { targetValueName })}
                     </Typography>
                     <Typography weight="medium" size="sm">
@@ -308,7 +308,6 @@ export function KpiStep({
                                 weight="medium"
                                 variant="tertiary"
                                 size="xs"
-                                className={styles.simulationText}
                             >
                                 {t("simulation.title")}
                             </Typography>
@@ -316,7 +315,6 @@ export function KpiStep({
                                 weight="medium"
                                 variant="tertiary"
                                 size="xs"
-                                className={styles.simulationText}
                             >
                                 {t("simulation.description", {
                                     targetValueName,
