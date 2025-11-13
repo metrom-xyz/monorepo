@@ -58,6 +58,10 @@ html.no-transition *::after {
     @apply fill-gray-300 dark:fill-neutral-800;
 }
 
+@utility overlay {
+    @apply bg-light-overlay dark:bg-dark-overlay backdrop-blur-[0.25rem];
+}
+
 @theme {
     --font-sans: "IBM Plex Sans", ui-sans-serif, sans-serif;
     --font-mono: "IBM Plex Mono", ui-monospace, monospace;
@@ -97,8 +101,7 @@ html.no-transition *::after {
     --color-light-link-primary: var(--color-brand-green-dark);
     --color-light-link-secondary: theme(colors.gray.500);
     --color-light-stroke-divider: theme(colors.gray.200);
-    /* gray-950 with 30% opacity */
-    --color-light-overlay: oklch(13% 0.028 261.692 / 0.3);
+    --color-light-overlay: oklch(0.07 0 0 / 0.24);
 
     --color-dark-background-main: theme(colors.neutral.950);
     --color-dark-surface-primary: theme(colors.neutral.900);
@@ -109,8 +112,7 @@ html.no-transition *::after {
     --color-dark-link-primary: var(--color-brand-green);
     --color-dark-link-secondary: theme(colors.neutral.100);
     --color-dark-stroke-divider: theme(colors.neutral.800);
-    /* neutral-950 with 30% opacity */
-    --color-dark-overlay: oklch(14.5% 0 0 / 0.3);
+    --color-dark-overlay: oklch(0.07 0 0 / 0.5);
 
     --color-neutral-gray: #9ca3af;
 

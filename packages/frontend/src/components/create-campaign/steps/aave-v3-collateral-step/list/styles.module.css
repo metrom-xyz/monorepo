@@ -3,17 +3,14 @@
 .root {
     @apply flex
         flex-col
-        pt-4
+        p-4
         gap-1
         w-full
         overflow-hidden;
 }
 
 .listHeader {
-    @apply flex
-        justify-between
-        items-center
-        px-4;
+    @apply flex justify-between items-center mb-1;
 }
 
 .empty {
