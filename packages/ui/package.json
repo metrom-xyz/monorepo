@@ -24,7 +24,6 @@
         "@floating-ui/react": "^0.27.16",
         "dayjs": "^1.11.18",
         "motion": "^12.23.12",
-        "rc-switch": "^4.1.0",
         "react-number-format": "^5.4.4",
         "react-remove-scroll": "^2.7.0",
         "react-use": "^17.5.1",

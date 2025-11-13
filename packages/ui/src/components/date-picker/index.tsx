@@ -50,10 +50,28 @@ export const DatePicker = ({
 
     const handlePreviousMonth = useCallback(() => {
         setLookupDate(lookupDate.subtract(1, "month"));
+
+        const html = document.documentElement;
+        html.classList.add("no-transition");
+
+        requestAnimationFrame(() => {
+            setTimeout(() => {
+                html.classList.remove("no-transition");
+            }, 1);
+        });
     }, [lookupDate]);
 
     const handleNextMonth = useCallback(() => {
         setLookupDate(lookupDate.add(1, "month"));
+
+        const html = document.documentElement;
+        html.classList.add("no-transition");
+
+        requestAnimationFrame(() => {
+            setTimeout(() => {
+                html.classList.remove("no-transition");
+            }, 1);
+        });
     }, [lookupDate]);
 
     const handleCellClick = useCallback(
@@ -69,17 +87,16 @@ export const DatePicker = ({
     );
 
     return (
-        <div className={classNames(styles.root)}>
-            <div className={classNames(styles.header)}>
+        <div className={styles.root}>
+            <div className={styles.header}>
                 <div
                     onClick={handlePreviousMonth}
                     className={styles.headerIconWrapper}
                 >
-                    <ChevronLeft />
+                    <ChevronLeft className={styles.chevron} />
                 </div>
                 <Typography
                     uppercase
-                    size="lg"
                     weight="medium"
                     className={styles.headerMonth}
                 >
@@ -89,7 +106,7 @@ export const DatePicker = ({
                     onClick={handleNextMonth}
                     className={styles.headerIconWrapper}
                 >
-                    <ChevronRight />
+                    <ChevronRight className={styles.chevron} />
                 </div>
             </div>
             <div className={styles.weeksHeader}>
@@ -100,8 +117,8 @@ export const DatePicker = ({
                             key={dayOfWeek}
                             size="sm"
                             uppercase
-                            className={styles.weekDay}
                             weight="medium"
+                            className={styles.weekDay}
                         >
                             {cell.value.format("dd")}
                         </Typography>
@@ -120,18 +137,11 @@ export const DatePicker = ({
                         dayjs(value).date() === cell.value.date();
                     return (
                         <Typography
-                            onClick={disabled ? undefined : handleCellClick}
                             key={index}
                             data-index={index}
-                            variant={
-                                isDateInRange(
-                                    dayjs(cell.value),
-                                    range?.from,
-                                    range?.to,
-                                )
-                                    ? "tertiary"
-                                    : "primary"
-                            }
+                            onClick={disabled ? undefined : handleCellClick}
+                            size="sm"
+                            weight="medium"
                             className={classNames(
                                 className?.cell,
                                 styles.cell,
