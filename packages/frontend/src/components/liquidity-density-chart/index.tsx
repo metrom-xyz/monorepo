@@ -223,7 +223,6 @@ export function LiquidityDensityChart({
                             icon={ZoomOutIcon}
                             disabled={zoomLevel === MIN_ZOOM_LEVEL}
                             onClick={handleOnZoomOut}
-                            border={false}
                             className={{ root: styles.zoomButton }}
                         />
                         <Button
@@ -232,7 +231,6 @@ export function LiquidityDensityChart({
                             icon={ZoomInIcon}
                             disabled={zoomLevel === MAX_ZOOM_LEVEL}
                             onClick={handleOnZoomIn}
-                            border={false}
                             className={{ root: styles.zoomButton }}
                         />
                     </div>

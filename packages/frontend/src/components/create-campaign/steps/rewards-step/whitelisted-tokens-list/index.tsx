@@ -112,7 +112,12 @@ export function WhitelistedTokensList({
                                 )}
                             >
                                 {/* TODO: add illustration */}
-                                <Typography>
+                                <Typography
+                                    size="sm"
+                                    weight="medium"
+                                    variant="secondary"
+                                    uppercase
+                                >
                                     {messages?.empty
                                         ? messages.empty
                                         : t("list.empty")}

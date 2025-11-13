@@ -131,12 +131,7 @@ export function RestrictionsStep({
         setOpen(enabled);
     }, [enabled]);
 
-    function handleSwitchOnClick(
-        _: boolean,
-        event:
-            | React.MouseEvent<HTMLButtonElement>
-            | React.KeyboardEvent<HTMLButtonElement>,
-    ) {
+    function handleSwitchOnClick(event: React.MouseEvent<HTMLDivElement>) {
         event.stopPropagation();
         setEnabled((enabled) => !enabled);
     }
@@ -278,7 +273,12 @@ export function RestrictionsStep({
                     </div>
                     <div className={styles.divider}></div>
                     <div className={styles.listWrapper}>
-                        <Typography weight="medium" variant="tertiary"size="xs" uppercase>
+                        <Typography
+                            weight="medium"
+                            variant="tertiary"
+                            size="xs"
+                            uppercase
+                        >
                             {t("list")}
                         </Typography>
                         {addresses.length > 0 && (
