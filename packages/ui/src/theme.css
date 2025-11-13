@@ -1,5 +1,12 @@
 @import "tailwindcss";
 
+html.no-transition *,
+html.no-transition *::before,
+html.no-transition *::after {
+    transition: none !important;
+    animation: none !important;
+}
+
 @variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
 
 @utility background-main {
