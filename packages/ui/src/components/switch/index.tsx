@@ -1,43 +1,49 @@
-import React, { type ReactElement, forwardRef } from "react";
-import RcSwitch, {
-    type SwitchChangeEventHandler,
-    type SwitchClickEventHandler,
-} from "rc-switch";
-import "rc-switch/assets/index.css";
+import { easeInOut, motion } from "motion/react";
 import classNames from "classnames";
 
 import styles from "./styles.module.css";
 
-export interface SwitchProps
-    extends Omit<
-        React.HTMLAttributes<HTMLButtonElement>,
-        "onChange" | "onClick" | "dangerouslySetInnerHTML"
-    > {
-    className?: string;
-    size?: "lg" | "sm" | "xs";
+export interface SwitchProps {
+    size?: "xs" | "sm" | "lg";
     disabled?: boolean;
-    checkedChildren?: React.ReactNode;
-    unCheckedChildren?: React.ReactNode;
-    onChange?: SwitchChangeEventHandler;
-    onKeyDown?: React.KeyboardEventHandler<HTMLButtonElement>;
-    onClick?: SwitchClickEventHandler;
     tabIndex?: number;
     checked?: boolean;
-    defaultChecked?: boolean;
-    style?: React.CSSProperties;
-    title?: string;
+    onClick?: (event: React.MouseEvent<HTMLDivElement>) => void;
+    className?: string;
 }
 
-export const Switch = forwardRef<HTMLButtonElement, SwitchProps>(
-    function Switch({ size = "sm", className, ...props }, ref): ReactElement {
-        return (
-            <RcSwitch
-                {...props}
-                ref={ref}
-                className={classNames(className, styles.root, {
+export function Switch({
+    size = "sm",
+    disabled,
+    tabIndex,
+    checked,
+    onClick,
+    className,
+}: SwitchProps) {
+    return (
+        <div
+            tabIndex={tabIndex}
+            onClick={onClick}
+            className={classNames(styles.root, className, {
+                [styles.disabled]: disabled,
+                [styles.checked]: checked,
+                [styles[size]]: true,
+            })}
+        >
+            <motion.div
+                initial={false}
+                animate={{
+                    left: checked ? "auto" : "0.130rem",
+                    right: checked ? "0.130rem" : "auto",
+                }}
+                transition={{
+                    ease: easeInOut,
+                    duration: 0.2,
+                }}
+                className={classNames("circle", styles.circle, {
                     [styles[size]]: true,
                 })}
-            />
-        );
-    },
-);
+            ></motion.div>
+        </div>
+    );
+}
