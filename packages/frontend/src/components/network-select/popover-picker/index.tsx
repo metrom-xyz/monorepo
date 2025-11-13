@@ -15,7 +15,9 @@ interface PopoverPickerProps {
     open: boolean;
     chains: readonly ChainWithType[];
     value: number;
+    container: HTMLElement | null;
     onChange?: (chainId: number) => void;
+    onOpen: (open: boolean) => void;
 }
 
 export function PopoverPicker({
@@ -23,7 +25,9 @@ export function PopoverPicker({
     open,
     chains,
     value,
+    container,
     onChange,
+    onOpen,
 }: PopoverPickerProps) {
     const { width } = useWindowSize();
 
@@ -38,9 +42,13 @@ export function PopoverPicker({
 
     return (
         <Popover
+            root={container}
             placement="bottom-start"
+            variant="secondary"
             anchor={anchor}
             open={open}
+            margin={4}
+            onOpenChange={onOpen}
             className={styles.root}
         >
             <div

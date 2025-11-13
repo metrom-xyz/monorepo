@@ -69,7 +69,7 @@ export function WhitelistedTokensList({
                                 uppercase
                                 size="xs"
                                 weight="medium"
-                                light
+                                variant="tertiary"
                             >
                                 {t("list.token")}
                             </Typography>
@@ -77,7 +77,7 @@ export function WhitelistedTokensList({
                                 uppercase
                                 size="xs"
                                 weight="medium"
-                                light
+                                variant="tertiary"
                             >
                                 {t("list.balance")}
                             </Typography>
@@ -112,7 +112,12 @@ export function WhitelistedTokensList({
                                 )}
                             >
                                 {/* TODO: add illustration */}
-                                <Typography>
+                                <Typography
+                                    size="sm"
+                                    weight="medium"
+                                    variant="secondary"
+                                    uppercase
+                                >
                                     {messages?.empty
                                         ? messages.empty
                                         : t("list.empty")}

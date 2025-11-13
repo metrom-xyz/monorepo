@@ -37,8 +37,8 @@ export const Sizes: Story = {
                 <ErrorText {...args} size="lg" />
                 <ErrorText {...args} size="xl" />
                 <ErrorText {...args} size="xl2" />
+                <ErrorText {...args} size="xl3" />
                 <ErrorText {...args} size="xl4" />
-                <ErrorText {...args} size="xl5" />
             </div>
         );
     },

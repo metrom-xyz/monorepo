@@ -37,13 +37,13 @@ export function Rewards({ campaign, loading }: RewardsProps) {
             </Typography>
             <Card className={styles.table}>
                 <div className={styles.header}>
-                    <Typography uppercase weight="medium" light size="sm">
+                    <Typography uppercase weight="medium" variant="tertiary"size="sm">
                         {t("token")}
                     </Typography>
-                    <Typography uppercase weight="medium" light size="sm">
+                    <Typography uppercase weight="medium" variant="tertiary"size="sm">
                         {t("inUsd")}
                     </Typography>
-                    <Typography uppercase weight="medium" light size="sm">
+                    <Typography uppercase weight="medium" variant="tertiary"size="sm">
                         {t("amount")}
                     </Typography>
                 </div>
@@ -61,7 +61,7 @@ export function Rewards({ campaign, loading }: RewardsProps) {
                                     {reward.token.symbol}
                                 </Typography>
                             </div>
-                            <Typography uppercase weight="medium" light>
+                            <Typography uppercase weight="medium" variant="tertiary">
                                 {reward.amount.usdValue
                                     ? formatUsdAmount({
                                           amount: reward.amount.usdValue,

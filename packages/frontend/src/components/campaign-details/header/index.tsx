@@ -57,7 +57,7 @@ export function SkeletonHeader() {
                         loading
                         size="xl"
                     />
-                    <Skeleton size="xl4" width={400} />
+                    <Skeleton size="xl3" width={400} />
                     <Skeleton size="lg" width={60} />
                 </div>
             </div>

@@ -1,6 +1,6 @@
 {
     "navigation": {
-        "allCampaigns": "All campaigns",
+        "discover": "Discover",
         "newCampaign": "New campaign",
         "claims": "Claims",
         "connect": "Connect"
@@ -9,11 +9,6 @@
         "title": "Connect wallet",
         "connect": "Connect",
         "install": "Install"
-    },
-    "theme": {
-        "system": "System",
-        "dark": "Dark",
-        "light": "Light"
     },
     "footer": {
         "support": "Support",
@@ -44,26 +39,36 @@
         "stabilityPool": "of the stability pool"
     },
     "allCampaigns": {
-        "title": "all campaigns",
+        "title": "discover",
         "kpi": "KPI",
         "restricted": "Restricted",
+        "tabs": {
+            "tokens": "Tokens",
+            "points": "Points",
+            "projects": "Projects"
+        },
         "filters": {
+            "filters": "Filters",
+            "filterBy": "Filter campaigns by",
+            "saveFilters": "Save filters",
             "protocol": {
-                "label": "Protocol",
-                "all": "All"
+                "label": "Protocol"
             },
             "status": {
                 "label": "Status",
-                "all": "All",
                 "live": "Live",
                 "upcoming": "Upcoming",
                 "ended": "Ended"
             },
             "chain": {
-                "label": "Chain",
-                "all": "All"
+                "label": "Chain"
             },
-            "clear": "Clear filters"
+            "clear": "Clear filters",
+            "campaignsFound": "{count, plural, =1 {# campaign found} other {# campaigns found}}"
+        },
+        "pagination": {
+            "prev": "Prev",
+            "next": "Next"
         },
         "header": {
             "chain": "Chain",
@@ -72,7 +77,8 @@
             "status": "Status",
             "apr": "APR",
             "tvl": "TVL",
-            "rewards": "Daily rewards"
+            "rewards": "Daily rewards",
+            "dailyPer1k": "Points/$1k/day"
         },
         "apr": {
             "title": "This campaign has KPI set"
@@ -96,14 +102,12 @@
         },
         "rewards": {
             "tooltip": {
-                "rewards": "Rewards",
-                "totalUsdValue": "Total USD value"
+                "totalUsdValue": "Total USD rewards"
             }
         },
-        "points": {
-            "tooltip": {
-                "points": "Points"
-            }
+        "projects": {
+            "campaigns": "<highlighted>{count}</highlighted> campaigns",
+            "active": "{count} active"
         },
         "turtleDeal": {
             "action": "Deposit {tokens} to {owner} turtle vault"
@@ -519,7 +523,7 @@
                 "2": "Please collect signatures and execute it before the campaign start date."
             }
         },
-        "allCampaigns": "All campaigns",
+        "discover": "Discover",
         "newCampaign": "New campaign"
     },
     "campaignDuration": {
@@ -541,20 +545,17 @@
             }
         }
     },
-    "projectOpportunitiesBanner": {
-        "title": "Project opportunities",
-        "campaignTitle": "{pointsName} campaign"
-    },
     "projectIntro": {
-        "title": "{project} in a nutshell",
-        "article": "Article"
+        "relatedArticles": "Related articles"
     },
     "projectPage": {
         "title": "Project page - {project}",
         "header": {
-            "title": "{protocol}"
+            "title": "{protocol}",
+            "visitWebsite": "Visit website"
         },
-        "explore": "Explore opportunities"
+        "points": "Points",
+        "tokens": "Tokens"
     },
     "lv2PointsCampaignPage": {
         "title": "Points campaign running on {protocol}",
@@ -736,7 +737,7 @@
             "empty": {
                 "title": "No claims found",
                 "body": "There are currently no claims associated with the connected wallet. Explore the available opportunities on the all campaigns page.",
-                "action": "All campaigns"
+                "action": "Discover"
             },
             "walletNotConnected": {
                 "title": "Wallet not connected",
@@ -791,14 +792,14 @@
         }
     },
     "accountMenu": {
-        "tabs": {
-            "activity": "Activity",
-            "campaigns": "Campaigns"
-        },
+        "activityFeed": "Activity feed",
         "activities": {
-            "claimReward": "Claim reward",
-            "createCampaign": "Create campaign",
-            "timeAgo": "{time} ago"
+            "claimed": "Claimed",
+            "campaignCreated": "Campaign created",
+            "empty": {
+                "title": "No recent activity",
+                "description": "Your latest actions will show up here once available"
+            }
         }
     },
     "simulationChart": {
@@ -838,6 +839,7 @@
     },
     "campaignActions": {
         "lp": "LP on {dex} {pool}",
+        "gmxV1": "Provide liquidity on {brand}",
         "borrow": "Borrow {debtToken} using {token} on {brand}",
         "depositStabilityPool": "Deposit to {token} stability pool on {brand}",
         "aaveV3Borrow": "Borrow using {token} on {brand}",

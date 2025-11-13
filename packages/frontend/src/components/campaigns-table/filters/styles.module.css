@@ -1,31 +1,44 @@
 @reference "../../../app.css";
 
 .root {
-    @apply max-w-screen-xl w-full sm:items-end flex-col sm:flex-row flex gap-3 mb-7;
+    @apply max-w-screen-xl w-full flex-col flex sm:gap-3 pb-0 pt-4 px-3 sm:px-5 sm:pb-5;
 }
 
-.searchFilter :global(.label) {
-    @apply invisible sm:visible;
-}
-
+.filterInput,
 .filterInput :global(.input) {
-    @apply w-full theme-surface py-2 font-medium transition-colors duration-200 ease-in-out;
+    @apply sm:w-48;
 }
 
-.selectionFilters .filterInput {
-    @apply w-full;
+.filterInput.desktop {
+    @apply w-0 sm:w-48;
 }
 
-.selectionFilters {
-    @apply flex justify-between flex-wrap sm:flex-nowrap items-center gap-3;
+.inputs {
+    @apply invisible absolute sm:visible sm:relative sm:flex justify-between items-center gap-3;
+}
+
+.chips {
+    @apply hidden sm:flex flex-wrap gap-2.5;
+}
+
+.chip {
+    @apply h-9;
 }
 
 .lastFilterWrapper {
-    @apply w-full flex items-end gap-3;
+    @apply w-full flex justify-between items-end gap-3;
+}
+
+.clearWrapper {
+    @apply w-full flex items-center justify-end gap-3;
+}
+
+.totalCampaigns {
+    @apply min-w-32 text-right;
 }
 
 .clearButton {
-    @apply min-w-24 h-[42px] opacity-0 transition-opacity duration-200 ease-in-out pointer-events-none;
+    @apply min-w-24 h-[2.75rem] opacity-0 transition-opacity duration-200 ease-in-out pointer-events-none;
 }
 
 .clearButton.visible {
@@ -33,15 +46,27 @@
 }
 
 .customOptionContainer {
-    @apply flex items-center;
+    @apply flex gap-1.5 items-center;
 }
 
-.dot {
-    @apply mr-3 rounded-full w-3 h-3;
+.statusLabel {
+    @apply text-primary transition-colors duration-200 ease-in-out;
+}
+
+.statusLabel.active {
+    @apply text-gray-100 dark:text-neutral-900;
+}
+
+.statusDotLiveActive {
+    @apply bg-neutral-900/[28%]!;
+}
+
+.statusDotLiveActive :global(.dot) {
+    @apply bg-neutral-900;
 }
 
 .icon {
-    @apply w-5 h-5 mr-3;
+    @apply size-5 rounded-full;
 }
 
 .selectOptionText {

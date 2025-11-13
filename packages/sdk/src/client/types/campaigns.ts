@@ -3,7 +3,11 @@ import type { BackendErc20Token } from "./commons";
 import type { Specification } from "src/types/campaigns";
 import type { ChainType } from "src/types/commons";
 import type { BackendCampaignAmmPool } from "./pools";
-import type { SupportedAaveV3, SupportedLiquityV2 } from "src/commons";
+import type {
+    SupportedAaveV3,
+    SupportedGmxV1,
+    SupportedLiquityV2,
+} from "src/commons";
 
 export interface BaseTarget {
     chainType: ChainType;
@@ -35,7 +39,7 @@ export interface BaseBackendLiquityTarget<T> extends BaseTarget {
 
 export interface BackendGmxV1Target extends BaseTarget {
     type: "gmx-v1-liquidity";
-    brand: string;
+    brand: SupportedGmxV1;
 }
 
 export interface BackendAaveV3Target<T> extends BaseTarget {
@@ -68,6 +72,15 @@ export type BackendAaveV3BridgeAndSupplyTarget = BaseTarget & {
     aaveV3Market: string;
     aaveV3Collateral: BackendErc20Token;
     boostingFactor: string;
+};
+
+export type BackendTurtleClubVaultCampaignTarget = BaseTarget & {
+    type: "turtle-club-vault";
+    id: string;
+    name: string;
+    description: string;
+    campaignIconUrl: string;
+    vaultIconUrl: string;
 };
 
 export interface BackendTokenDistributable {
@@ -140,7 +153,8 @@ export interface BackendBaseCampaign {
         | BackendAaveV3NetSupplyTarget
         | BackendHoldFungibleAssetTarget
         | BackendAaveV3BridgeAndSupplyTarget
-        | BackendJumperWhitelistedAmmPoolLiquidityTarget;
+        | BackendJumperWhitelistedAmmPoolLiquidityTarget
+        | BackendTurtleClubVaultCampaignTarget;
     specification?: Specification;
     usdTvl?: number;
     apr?: number;

@@ -1,15 +1,19 @@
 @reference "../../../../app.css";
 
 .root {
-    @apply w-fit pointer-events-none md:pointer-events-auto;
+    @apply w-fit justify-center pointer-events-none md:pointer-events-auto;
 }
 
 .aprWrapper {
     @apply w-fit;
 }
 
+.popover {
+    @apply pb-0!;
+}
+
 .popoverContent {
-    @apply flex flex-col gap-2 w-[450px] p-2;
+    @apply flex flex-col gap-2 w-[400px];
 }
 
 .description {
@@ -25,5 +29,9 @@
 }
 
 .chartWrapper {
-    @apply w-full max-w-[450px] h-[270px];
+    @apply w-full max-w-[400px] h-[270px];
+}
+
+.chartWrapper.loading {
+    @apply mb-3;
 }

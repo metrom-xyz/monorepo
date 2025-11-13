@@ -1,8 +1,9 @@
-import type { BrandColor, SVGIcon } from "@/src/types/common";
+import type { SVGIcon } from "@/src/types/common";
 import type { FunctionComponent } from "react";
 import { Button, Typography } from "@metrom-xyz/ui";
 import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
 import { useTranslations } from "next-intl";
+import type { Branding } from "@/src/types/project";
 
 import styles from "./styles.module.css";
 
@@ -11,7 +12,7 @@ interface HeaderProps {
     distributor: string;
     owner: string;
     description: string;
-    brand: BrandColor;
+    brand: Branding;
     url: string;
     ownerLogo: FunctionComponent<SVGIcon>;
 }
@@ -38,10 +39,14 @@ export function Header({
                         <Icon className={styles.icon} />
                     </div>
                     <div className={styles.titleWrapper}>
-                        <Typography weight="medium" size="xl4" uppercase>
+                        <Typography weight="medium" size="xl3" uppercase>
                             {t("title", { owner })}
                         </Typography>
-                        <Typography weight="medium" light size="sm">
+                        <Typography
+                            weight="medium"
+                            variant="tertiary"
+                            size="sm"
+                        >
                             {description}
                         </Typography>
                     </div>

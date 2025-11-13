@@ -51,7 +51,6 @@ export function AaveV3Header({ campaign }: AaveV3HeaderProps) {
                 <div className={styles.title}>
                     {ChainIcon && (
                         <InfoTooltip
-                            placement="top"
                             icon={<ChainIcon className={styles.chainLogo} />}
                         >
                             <Typography size="sm">
@@ -64,7 +63,7 @@ export function AaveV3Header({ campaign }: AaveV3HeaderProps) {
                         address={campaign.target.collateral.address}
                         chain={campaign.target.chainId}
                     />
-                    <Typography size="xl4" weight="medium">
+                    <Typography size="xl3" weight="medium">
                         {campaign.name}
                     </Typography>
                 </div>

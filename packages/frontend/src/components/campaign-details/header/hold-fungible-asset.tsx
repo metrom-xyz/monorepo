@@ -41,7 +41,6 @@ export function HoldFungibleAsset({ campaign }: HoldFungibleAssetProps) {
                 <div className={styles.title}>
                     {ChainIcon && (
                         <InfoTooltip
-                            placement="top"
                             icon={<ChainIcon className={styles.chainLogo} />}
                         >
                             <Typography size="sm">
@@ -54,7 +53,7 @@ export function HoldFungibleAsset({ campaign }: HoldFungibleAssetProps) {
                         address={campaign.target.asset.address}
                         chain={campaign.target.chainId}
                     />
-                    <Typography size="xl4" weight="medium">
+                    <Typography size="xl3" weight="medium">
                         {campaign.name}
                     </Typography>
                 </div>

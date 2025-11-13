@@ -9,8 +9,8 @@
         mr-auto
         rounded-lg
         hover:cursor-pointer
-        theme-surface
-        theme-surface-hover
+        surface-primary
+        surface-primary-hover
         transition-colors
         duration-200
         ease-in-out;

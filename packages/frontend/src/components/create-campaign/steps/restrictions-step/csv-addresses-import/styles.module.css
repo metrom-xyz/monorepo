@@ -10,8 +10,8 @@
         rounded-md
         px-2.5
         py-1.5
-        theme-surface-2
-        theme-surface-2-hover
+        surface-secondary
+        surface-secondary-hover
         hover:cursor-pointer
         transition-colors
         duration-200

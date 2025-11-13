@@ -115,6 +115,7 @@ export function Filters({
                     ref={fromRef}
                     anchor={fromAnchor}
                     open={fromPopover}
+                    onOpenChange={setFromPopover}
                     className={styles.popover}
                 >
                     <DateTimePicker
@@ -128,6 +129,7 @@ export function Filters({
                     ref={toRef}
                     anchor={toAnchor}
                     open={toPopover}
+                    onOpenChange={setToPopover}
                     className={styles.popover}
                 >
                     <DateTimePicker

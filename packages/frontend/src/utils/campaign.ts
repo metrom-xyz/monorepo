@@ -38,6 +38,11 @@ export function getCampaignName(
                     .join("/"),
             });
         }
+        case TargetType.GmxV1Liquidity: {
+            return t("campaignActions.gmxV1", {
+                brand: campaign.target.brand.name,
+            });
+        }
         case TargetType.LiquityV2Debt: {
             const targetProtocol = getChainData(
                 campaign.chainId,
@@ -96,6 +101,9 @@ export function getCampaignName(
                     .map((token) => token.symbol)
                     .join("/"),
             });
+        }
+        case TargetType.TurtleClubVault: {
+            return campaign.target.name;
         }
         case TargetType.Empty: {
             return t("campaignActions.empty");
