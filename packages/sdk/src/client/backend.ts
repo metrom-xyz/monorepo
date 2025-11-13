@@ -42,7 +42,7 @@ import {
     DistributablesType,
     type DynamicPointDistributables,
     type GmxV1LiquidityTarget,
-    type KatanaVaultTarget,
+    type TurtleClubVaultTarget,
 } from "../types/campaigns";
 import {
     ChainType,
@@ -1160,10 +1160,10 @@ function processCampaignsResponse(
                 };
                 break;
             }
-            case "katana-vault": {
-                target = <KatanaVaultTarget>{
+            case "turtle-club-vault": {
+                target = <TurtleClubVaultTarget>{
                     ...backendCampaign.target,
-                    type: TargetType.KatanaVault,
+                    type: TargetType.TurtleClubVault,
                 };
                 break;
             }
