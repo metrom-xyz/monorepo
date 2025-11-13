@@ -55,7 +55,7 @@ export enum TargetType {
     AaveV3BridgeAndSupply = "aave-v3-bridge-and-supply",
     JumperWhitelistedAmmPoolLiquidity = "jumper-whitelisted-amm-pool-liquidity",
     HoldFungibleAsset = "hold-fungible-asset",
-    KatanaVault = "katana-vault",
+    TurtleClubVault = "turtle-club-vault",
 }
 
 export type AmmPoolLiquidityTargetType =
@@ -139,8 +139,8 @@ export interface HoldFungibleAssetTarget extends BaseTarget {
     stakingAssets: Erc20Token[];
 }
 
-export interface KatanaVaultTarget extends BaseTarget {
-    type: TargetType.KatanaVault;
+export interface TurtleClubVaultTarget extends BaseTarget {
+    type: TargetType.TurtleClubVault;
     id: string;
     name: string;
     description: string;
@@ -160,7 +160,7 @@ export type CampaignTarget =
     | AaveV3BridgeAndSupplyTarget
     | JumperWhitelistedAmmPoolLiquidityTarget
     | HoldFungibleAssetTarget
-    | KatanaVaultTarget;
+    | TurtleClubVaultTarget;
 
 export interface TokenDistributable {
     token: UsdPricedErc20Token;
@@ -318,8 +318,8 @@ export interface BaseTargetedCampaign<T extends TargetType> {
                       ? JumperWhitelistedAmmPoolLiquidityTarget
                       : T extends TargetType.HoldFungibleAsset
                         ? HoldFungibleAssetTarget
-                        : T extends TargetType.KatanaVault
-                          ? KatanaVaultTarget
+                        : T extends TargetType.TurtleClubVault
+                          ? TurtleClubVaultTarget
                           : T extends TargetType.Empty
                             ? EmptyTarget
                             : never;

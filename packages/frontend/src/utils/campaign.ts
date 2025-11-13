@@ -102,7 +102,7 @@ export function getCampaignName(
                     .join("/"),
             });
         }
-        case TargetType.KatanaVault: {
+        case TargetType.TurtleClubVault: {
             return campaign.target.name;
         }
         case TargetType.Empty: {
