@@ -14,7 +14,7 @@ import { AaveV3 } from "./aave-v3";
 import { Empty } from "./empty";
 import { HoldFungibleAsset } from "./hold-fungible-asset";
 import { GmxV1Liquidity } from "./gmx-v1-liquidity";
-import { KatanaVault } from "./katana-vault";
+import { TurtleClubVault } from "./katana-vault";
 import { useTranslations } from "next-intl";
 
 import styles from "./styles.module.css";
@@ -58,7 +58,7 @@ export function Action({
         TargetType.HoldFungibleAsset,
     );
 
-    const katanaVault = campaign.isTargeting(TargetType.KatanaVault);
+    const turtleClubVault = campaign.isTargeting(TargetType.TurtleClubVault);
 
     const empty = campaign.isTargeting(TargetType.Empty);
 
@@ -76,7 +76,9 @@ export function Action({
             {holdFungibleAsset && (
                 <HoldFungibleAsset campaign={campaign} {...sizes} />
             )}
-            {katanaVault && <KatanaVault campaign={campaign} {...sizes} />}
+            {turtleClubVault && (
+                <TurtleClubVault campaign={campaign} {...sizes} />
+            )}
             {!hideChips && (
                 <div className={styles.chipsWrapper}>
                     {campaign.specification?.kpi && (
