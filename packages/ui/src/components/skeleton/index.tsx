@@ -25,7 +25,7 @@ export function Skeleton({
         <span
             style={{
                 maxWidth: width,
-                height: circular ? width : size ? undefined : height,
+                height: circular ? width : height,
             }}
             className={classNames(styles.root, className, {
                 [styles[size]]: true,
