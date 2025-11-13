@@ -94,13 +94,13 @@ export function AaveV3BrandStep({
                     {supportedBrand.map((availablePlatform) => (
                         <div
                             key={availablePlatform.slug}
+                            onClick={getPlatformChangeHandler(
+                                availablePlatform,
+                            )}
                             className={classNames(styles.brandRow, {
                                 [styles.brandRowSelected]:
                                     selected?.slug === availablePlatform.slug,
                             })}
-                            onClick={getPlatformChangeHandler(
-                                availablePlatform,
-                            )}
                         >
                             <ProtocolLogo protocol={availablePlatform} />
                             <Typography size="lg" weight="medium">

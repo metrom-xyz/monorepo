@@ -93,12 +93,7 @@ export function AaveV3BridgeAndSupplyBoostStep({
         setBoost(DEFAULT_BOOST);
     }, [enabled, boostingFactor, onBoostingFactorChange]);
 
-    function handleSwitchOnClick(
-        _: boolean,
-        event:
-            | React.MouseEvent<HTMLButtonElement>
-            | React.KeyboardEvent<HTMLButtonElement>,
-    ) {
+    function handleSwitchOnClick(event: React.MouseEvent<HTMLDivElement>) {
         event.stopPropagation();
         setEnabled((enabled) => !enabled);
     }

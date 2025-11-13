@@ -21,7 +21,7 @@
 }
 
 .horizontalDivider {
-    @apply h-[1px] bg-zinc-200 dark:bg-zinc-800;
+    @apply h-[1px] border stroke-divider;
 }
 
 .feeTokenSelect {
@@ -35,12 +35,14 @@
         pl-2.5
         pr-1
         py-1.5
-        surface-secondary
-        surface-secondary-hover
-        hover:cursor-pointer
+        border
+        border-gray-300
+        dark:border-neutral-600
         transition-colors
         duration-200
-        ease-in-out;
+        ease-in-out
+        hover:cursor-pointer
+        surface-primary-hover;
 }
 
 .applyButton {
