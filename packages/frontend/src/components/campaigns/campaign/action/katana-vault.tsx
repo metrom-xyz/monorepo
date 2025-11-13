@@ -4,16 +4,16 @@ import { type TargetedNamedCampaign } from "@/src/types/campaign";
 import { RemoteLogo } from "@/src/components/remote-logo";
 import type { ActionSizes } from ".";
 
-interface KatanaVaultProps<T extends TargetType.KatanaVault>
+interface TurtleClubVaultProps<T extends TargetType.TurtleClubVault>
     extends ActionSizes {
     campaign: TargetedNamedCampaign<T>;
 }
 
-export function KatanaVault<T extends TargetType.KatanaVault>({
+export function TurtleClubVault<T extends TargetType.TurtleClubVault>({
     nameSize,
     logoSize,
     campaign,
-}: KatanaVaultProps<T>) {
+}: TurtleClubVaultProps<T>) {
     return (
         <>
             <RemoteLogo size={logoSize} src={campaign.target.vaultIconUrl} />
