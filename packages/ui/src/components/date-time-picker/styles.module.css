@@ -1,18 +1,22 @@
 @reference "../../theme.css";
 
 .root {
-    @apply w-full
+    @apply w-fit
         flex
-        justify-between
-        rounded-md;
+        gap-3
+        p-3
+        border-2
+        rounded-md
+        border-gray-300
+        dark:border-neutral-600;
 }
 
 .divider {
-    @apply w-[1px] ml-2 bg-zinc-200 dark:bg-zinc-800;
+    @apply w-[1px] border stroke-divider;
 }
 
 .timeWrapper {
-    @apply flex flex-col gap-2;
+    @apply flex flex-col;
 }
 
 .header {
@@ -20,16 +24,15 @@
 }
 
 .wheelsWrapper {
-    @apply flex h-full;
+    @apply flex gap-1 h-full mt-4;
 }
 
 .cellList {
     @apply relative
-        h-[268px]
+        h-[14rem]
         overflow-y-auto
         overflow-x-hidden
         scroll-pt-0.5
-        px-1
         snap-y;
 }
 
@@ -38,31 +41,29 @@
 }
 
 .cell {
-    @apply w-9
-        h-9
+    @apply size-8
         snap-start
         select-none
         cursor-pointer
         flex
         justify-center
         items-center
-        rounded-md
-        surface-primary-hover
+        border
+        border-transparent
+        rounded-lg
         transition-colors
         duration-200
         ease-in-out;
 }
 
 .cellDisabled {
-    @apply cursor-not-allowed
-        hover:bg-transparent
-        text-zinc-300 dark:text-zinc-600;
+    @apply cursor-not-allowed text-tertiary;
 }
 
 .cellSelected {
-    @apply bg-zinc-100 dark:bg-zinc-700 !text-zinc-900 dark:!text-zinc-200;
+    @apply bg-brand-green-dark/[16%] dark:bg-brand-green/[20%] border-brand-green-dark dark:border-brand-green;
 }
 
 .cellSelectable {
-    @apply text-zinc-400 dark:text-zinc-300;
+    @apply text-primary;
 }
