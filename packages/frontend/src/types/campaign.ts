@@ -97,7 +97,6 @@ export interface AaveV3CampaignPayload extends BaseCampaignPayload {
 
 export interface HoldFungibleAssetCampaignPayload extends BaseCampaignPayload {
     asset?: FungibleAssetInfo;
-    stakingAssets: FungibleAssetInfo[];
 }
 
 export interface CampaignPayloadTokenDistributables {
@@ -272,7 +271,6 @@ export class HoldFungibleAssetCampaignPreviewPayload extends BaseCampaignPreview
     public readonly kind: CampaignKind = CampaignKind.HoldFungibleAsset;
     constructor(
         public readonly asset: FungibleAssetInfo,
-        public readonly stakingAssets: FungibleAssetInfo[],
         ...baseArgs: ConstructorParameters<typeof BaseCampaignPreviewPayload>
     ) {
         super(...baseArgs);

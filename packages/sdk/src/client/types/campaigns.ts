@@ -48,7 +48,6 @@ export interface BackendAaveV3Target<T> extends BaseTarget {
 export interface BackendHoldFungibleAssetTarget extends BaseTarget {
     type: "hold-fungible-asset";
     asset: BackendErc20Token;
-    stakingAssets: BackendErc20Token[];
 }
 
 export type BackendLiquityV2DebtTarget =

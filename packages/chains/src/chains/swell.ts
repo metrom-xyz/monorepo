@@ -40,6 +40,11 @@ export const swellDevelopmentData: ChainData = {
             partner: true,
             type: PartnerCampaignType.JumperWhitelistedAmmPoolLiquidity,
         },
+        {
+            active: true,
+            partner: false,
+            type: BaseCampaignType.HoldFungibleAsset,
+        },
     ],
     protocols: [
         {

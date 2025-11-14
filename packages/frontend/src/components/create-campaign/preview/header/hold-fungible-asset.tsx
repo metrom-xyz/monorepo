@@ -4,9 +4,6 @@ import type { HoldFungibleAssetCampaignPreviewPayload } from "@/src/types/campai
 import { getCampaignPreviewName } from "@/src/utils/campaign";
 import { Typography } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
-import { PoolRemoteLogo } from "@/src/components/pool-remote-logo";
-
-import styles from "./styles.module.css";
 
 interface HoldFungibleAssetProps {
     payload: HoldFungibleAssetCampaignPreviewPayload;
@@ -18,24 +15,12 @@ export function HoldFungibleAsset({ payload }: HoldFungibleAssetProps) {
 
     return (
         <>
-            <div className={styles.fungibleAssetWrapper}>
-                <RemoteLogo
-                    size="lg"
-                    chain={chainId}
-                    address={payload.asset.address}
-                    defaultText={payload.asset.symbol}
-                />
-                {payload.stakingAssets.length > 0 && (
-                    <PoolRemoteLogo
-                        chain={chainId}
-                        tokens={payload.stakingAssets.map((asset) => ({
-                            address: asset.address,
-                            defaultText: asset.symbol,
-                        }))}
-                        className={{ root: styles.fungibleStakingAssets }}
-                    />
-                )}
-            </div>
+            <RemoteLogo
+                size="lg"
+                chain={chainId}
+                address={payload.asset.address}
+                defaultText={payload.asset.symbol}
+            />
             <Typography weight="medium" size="xl">
                 {getCampaignPreviewName(t, payload)}
             </Typography>
