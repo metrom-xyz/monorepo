@@ -28,6 +28,7 @@ import {
 import type { TranslationsKeys } from "@/src/types/utils";
 import { validateDistributables } from "@/src/utils/creation-form";
 import { getAaveV3UsdTarget } from "@/src/utils/aave-v3";
+import { AaveV3BlacklistedCrossBorrowCollateralsStep } from "../../steps/aave-v3-blacklisted-cross-borrow-collaterals";
 
 import styles from "./styles.module.css";
 
@@ -44,6 +45,7 @@ function validatePayload(
         endDate,
         distributables,
         kpiSpecification,
+        blacklistedCollaterals,
         restrictions,
     } = payload;
 
@@ -59,6 +61,12 @@ function validatePayload(
         return null;
 
     if (!validateDistributables(distributables)) return null;
+    if (
+        kind !== CampaignKind.AaveV3NetSupply &&
+        blacklistedCollaterals &&
+        blacklistedCollaterals.length > 0
+    )
+        return null;
 
     // TODO: handle chain type for same chain ids?
     if (EXPERIMENTAL_CHAINS.includes(chainId)) {
@@ -77,6 +85,7 @@ function validatePayload(
         market,
         collateral,
         undefined,
+        blacklistedCollaterals,
         startDate,
         endDate,
         distributables as CampaignPreviewDistributables,
@@ -202,6 +211,23 @@ export function AaveV3Form({
                     collateral={payload.collateral}
                     onCollateralChange={handlePayloadOnChange}
                 />
+                {payload.kind === CampaignKind.AaveV3NetSupply && (
+                    <AaveV3BlacklistedCrossBorrowCollateralsStep
+                        disabled={
+                            !payload.kind ||
+                            !payload.collateral ||
+                            unsupportedChain
+                        }
+                        brand={payload.brand}
+                        market={payload.market}
+                        collateral={payload.collateral}
+                        blacklistedCollaterals={payload.blacklistedCollaterals}
+                        onBlacklistedCrossBorrowCollateralsChange={
+                            handlePayloadOnChange
+                        }
+                        onError={handlePayloadOnError}
+                    />
+                )}
                 <StartDateStep
                     disabled={!payload.collateral || unsupportedChain}
                     startDate={payload.startDate}

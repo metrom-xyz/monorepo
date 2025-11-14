@@ -349,9 +349,18 @@
                         "token": "Token",
                         "empty": "Nothing here",
                         "debt": "Debt",
-                        "deposits": "Deposits",
-                        "netDeposits": "Net deposits"
+                        "deposits": "Deposits"
                     },
+                    "apply": "Apply"
+                },
+                "blacklistedCrossBorrowCollaterals": {
+                    "title": "Block cross borrow",
+                    "blocks": "Blocks borrowing",
+                    "collaterals": "Collaterals",
+                    "notApplied": "Not applied",
+                    "emptyCollaterals": "No collaterals",
+                    "infoMessage": "Net supply <bold>{symbol}</bold> = Supplied <bold>{symbol}</bold> - ({borrowed}).",
+                    "borrowed": "borrowed {symbol}",
                     "apply": "Apply"
                 }
             },
@@ -843,6 +852,7 @@
         "aaveV3Borrow": "Borrow using {token} on {brand}",
         "aaveV3Supply": "Supply {token} on {brand}",
         "aaveV3NetSupply": "Net supply {token} on {brand}",
+        "aaveV3NetSupplyBlocksBorrowing": "(Blocks borrowing <bold>{symbols}</bold>)",
         "aaveV3BridgeAndSupply": "Bridge and supply {token} on {brand}",
         "jumperWhitelistedAmmPoolLiquidity": "Bridge through Jumper and LP on {dex} {pool}",
         "holdFungibleAsset": "Hold {name} ({symbol})",
