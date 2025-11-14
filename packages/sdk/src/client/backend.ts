@@ -85,7 +85,10 @@ import { tickToScaledPrice, unix } from "../utils";
 import type { BackendLiquityV2CollateralsResponse } from "./types/liquity-v2";
 import type { LiquityV2Collateral } from "src/types/liquity-v2";
 import type { AaveV3Collateral } from "../types/aave-v3";
-import type { BackendAaveV3CollateralsResponse } from "./types/aave-v3";
+import type {
+    BackendAaveV3CollateralsResponse,
+    BackendAaveV3CollateralUsdNetSupplyResponse,
+} from "./types/aave-v3";
 import type { FungibleAssetInfo } from "src/types/fungible-asset";
 import type { BackendFungibleAssetResponse } from "./types/fungible-asset";
 import type { AmmPool, CampaignAmmPool } from "src/types/pools";
@@ -224,6 +227,13 @@ export interface FetchFungibleAssetParams extends ChainParams {
 export interface FetchAaveV3CollateralsParams extends ChainParams {
     brand: SupportedAaveV3;
     market: string;
+}
+
+export interface FetchAaveV3CollateralUsdNetSupplyParams extends ChainParams {
+    brand: SupportedAaveV3;
+    market: string;
+    collateral: Address;
+    blacklistedCrossBorrowCollaterals?: Address[];
 }
 
 interface InitializedTick {
@@ -943,9 +953,35 @@ export class MetromApiClient {
                 chainType: params.chainType,
                 debt: BigInt(collateral.debt),
                 supply: BigInt(collateral.supply),
-                netSupply: BigInt(collateral.netSupply),
             };
         });
+    }
+
+    async fetchAaveV3CollateralUsdNetSupply(
+        params: FetchAaveV3CollateralUsdNetSupplyParams,
+    ): Promise<number> {
+        const url = new URL(
+            `v2/aave-v3/${params.chainType}/${params.chainId}/${params.brand}/${params.market}/usd-net-supplies`,
+            this.baseUrl,
+        );
+
+        url.searchParams.set("collateral", params.collateral);
+        if (params.blacklistedCrossBorrowCollaterals)
+            url.searchParams.set(
+                "blacklistedCrossBorrowCollaterals",
+                params.blacklistedCrossBorrowCollaterals.join(","),
+            );
+
+        const response = await fetch(url);
+        if (!response.ok)
+            throw new Error(
+                `Response not ok while fetching aave-v3 collateral usd net supply: ${await response.text()}`,
+            );
+
+        const parsedResponse =
+            (await response.json()) as BackendAaveV3CollateralUsdNetSupplyResponse;
+
+        return parsedResponse.usdNetSupply;
     }
 
     async fetchFungibleAssetInfo(

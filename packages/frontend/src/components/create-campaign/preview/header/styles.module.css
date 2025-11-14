@@ -39,3 +39,7 @@
 .fungibleStakingAssets {
     @apply flex -ml-3.5;
 }
+
+.boldText {
+    @apply text-black dark:text-white font-bold;
+}

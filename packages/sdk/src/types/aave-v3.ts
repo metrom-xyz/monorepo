@@ -6,10 +6,8 @@ export interface AaveV3Collateral extends UsdPricedErc20Token {
     chainType: ChainType;
     debt: bigint;
     supply: bigint;
-    netSupply: bigint;
     usdDebt: number;
     usdSupply: number;
-    usdNetSupply: number;
 }
 
 export interface AaveV3Market {
