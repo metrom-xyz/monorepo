@@ -75,6 +75,7 @@ function validatePayload(
         market,
         collateral,
         boostingFactor,
+        undefined,
         startDate,
         endDate,
         distributables as CampaignPreviewDistributables,

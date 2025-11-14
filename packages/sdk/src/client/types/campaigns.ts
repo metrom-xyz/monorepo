@@ -59,8 +59,10 @@ export type BackendLiquityV2StabilityPoolTarget =
 
 export type BackendAaveV3BorrowTarget = BackendAaveV3Target<"aave-v3-borrow">;
 export type BackendAaveV3SupplyTarget = BackendAaveV3Target<"aave-v3-supply">;
-export type BackendAaveV3NetSupplyTarget =
-    BackendAaveV3Target<"aave-v3-net-supply">;
+export interface BackendAaveV3NetSupplyTarget
+    extends BackendAaveV3Target<"aave-v3-net-supply"> {
+    blacklistedCrossBorrowCollaterals: Address[];
+}
 export type BackendAaveV3BridgeAndSupplyTarget = BaseTarget & {
     type: "aave-v3-bridge-and-supply";
     bridgeBrand: string;

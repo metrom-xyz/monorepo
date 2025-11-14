@@ -1,0 +1,42 @@
+@reference "../../../../app.css";
+
+.previewLabelWrapper {
+    @apply w-full flex justify-between items-center;
+}
+
+.previewTextWrapper {
+    @apply flex gap-2;
+}
+
+.previewLabel {
+    font-size: inherit;
+    color: inherit;
+}
+
+.blocksWrapper {
+    @apply flex gap-1;
+}
+
+.boldText {
+    @apply text-black dark:text-white font-bold;
+}
+
+.stepContent {
+    @apply flex flex-col gap-3 p-4;
+}
+
+.collaterals {
+    @apply w-full flex gap-2 flex-wrap;
+}
+
+.collateral {
+    @apply flex gap-2 items-center select-none pr-1;
+}
+
+.collateral.loading {
+    @apply w-20 h-9 rounded-[2.813rem] animate-pulse bg-zinc-200 dark:bg-dark-surface-2;
+}
+
+.applyButton {
+    @apply w-full;
+}

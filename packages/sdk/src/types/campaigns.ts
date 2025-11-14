@@ -111,7 +111,10 @@ export type LiquityV2StabilityPoolTarget =
 
 export type AaveV3BorrowTarget = AaveV3Target<TargetType.AaveV3Borrow>;
 export type AaveV3SupplyTarget = AaveV3Target<TargetType.AaveV3Supply>;
-export type AaveV3NetSupplyTarget = AaveV3Target<TargetType.AaveV3NetSupply>;
+export interface AaveV3NetSupplyTarget
+    extends AaveV3Target<TargetType.AaveV3NetSupply> {
+    blacklistedCrossBorrowCollaterals: Address[];
+}
 export type AaveV3BridgeAndSupplyTarget = BaseTarget & {
     type: TargetType.AaveV3BridgeAndSupply;
     bridge: Brand<SupportedBridge>;
