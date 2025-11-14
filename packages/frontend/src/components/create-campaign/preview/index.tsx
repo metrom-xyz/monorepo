@@ -1,5 +1,6 @@
 import { Button, Typography, TextField, ErrorText } from "@metrom-xyz/ui";
 import {
+    AaveV3CampaignPreviewPayload,
     AmmPoolLiquidityCampaignPreviewPayload,
     EmptyTargetCampaignPreviewPayload,
     type CampaignPreviewPayload,
@@ -29,9 +30,14 @@ import { Weighting } from "./weighting";
 import { Restrictions } from "./restrictions";
 import { useLiquidityByAddresses } from "@/src/hooks/useLiquidityByAddresses";
 import { DeployButton } from "./deploy-button";
+import { useCampaignTargetValueName } from "@/src/hooks/useCampaignTargetValueName";
+import {
+    useAaveV3CollateralUsdNetSupply,
+    type UseAaveV3CollateralUsdNetSupplyParams,
+} from "@/src/hooks/useAaveV3CollateralUsdNetSupply";
+import { useChainWithType } from "@/src/hooks/useChainWithType";
 
 import styles from "./styles.module.css";
-import { useCampaignTargetValueName } from "@/src/hooks/useCampaignTargetValueName";
 
 interface CampaignPreviewProps {
     payload: CampaignPreviewPayload;
@@ -49,6 +55,7 @@ export function CampaignPreview({
     const t = useTranslations("campaignPreview");
     const targetValueName = useCampaignTargetValueName({ kind: payload.kind });
     const router = useRouter();
+    const chain = useChainWithType();
 
     const feedback = useRef<HTMLDivElement>(null);
 
@@ -60,6 +67,7 @@ export function CampaignPreview({
 
     const ammPoolLiquidityCampaign =
         payload instanceof AmmPoolLiquidityCampaignPreviewPayload;
+    const aaveV3Campaign = payload instanceof AaveV3CampaignPreviewPayload;
 
     const liquidityInRangeParams = useMemo(() => {
         if (!ammPoolLiquidityCampaign || !payload.priceRangeSpecification)
@@ -89,16 +97,37 @@ export function CampaignPreview({
         };
     }, [ammPoolLiquidityCampaign, payload]);
 
+    const aaveV3CollateralUsdNetSupplyParams: UseAaveV3CollateralUsdNetSupplyParams =
+        useMemo(() => {
+            if (!aaveV3Campaign)
+                return {
+                    chainId: chain.id,
+                    chainType: chain.type,
+                    enabled: false,
+                };
+
+            return {
+                chainId: chain.id,
+                chainType: chain.type,
+                brand: payload.brand.slug,
+                market: payload.market.address,
+                collateral: payload.collateral.address,
+                blacklistedCrossBorrowCollaterals:
+                    payload.blacklistedCollaterals?.map(
+                        ({ address }) => address,
+                    ),
+                enabled: true,
+            };
+        }, [aaveV3Campaign, chain.id, chain.type, payload]);
+
     const { loading: loadingLiquidityInRange, liquidityInRange } =
         useLiquidityInRange(liquidityInRangeParams);
     const { loading: loadingLiquidityByAddresses, liquidityByAddresses } =
         useLiquidityByAddresses(liquidityByAddressesParams);
-
-    const fixedPoints = payload.isDistributing(DistributablesType.FixedPoints);
-    const tokens = payload.isDistributing(DistributablesType.Tokens);
-    const emptyTargetCampaign =
-        payload instanceof EmptyTargetCampaignPreviewPayload;
-    const kpi = !!payload.kpiSpecification && tokens;
+    const {
+        loading: loadingAaveV3CollateralUsdNetSupply,
+        usdNetSupply: aaveV3CollateralUsdNetSupply,
+    } = useAaveV3CollateralUsdNetSupply(aaveV3CollateralUsdNetSupplyParams);
 
     // There's no need to approve tokens for Aptos
     useEffect(() => {
@@ -156,6 +185,12 @@ export function CampaignPreview({
         router.push("/");
     }
 
+    const fixedPoints = payload.isDistributing(DistributablesType.FixedPoints);
+    const tokens = payload.isDistributing(DistributablesType.Tokens);
+    const emptyTargetCampaign =
+        payload instanceof EmptyTargetCampaignPreviewPayload;
+    const kpi = !!payload.kpiSpecification && tokens;
+
     const range = ammPoolLiquidityCampaign && !!payload.priceRangeSpecification;
     const weighting = ammPoolLiquidityCampaign && !!payload.weighting;
     const restrictions =
@@ -189,7 +224,8 @@ export function CampaignPreview({
                                 label={t("apr")}
                                 loading={
                                     loadingLiquidityInRange ||
-                                    loadingLiquidityByAddresses
+                                    loadingLiquidityByAddresses ||
+                                    loadingAaveV3CollateralUsdNetSupply
                                 }
                                 value={
                                     <AprChip
@@ -198,6 +234,7 @@ export function CampaignPreview({
                                             payload,
                                             liquidityInRange,
                                             liquidityByAddresses,
+                                            aaveV3CollateralUsdNetSupply,
                                         )}
                                         kpi={!!payload.kpiSpecification}
                                     />

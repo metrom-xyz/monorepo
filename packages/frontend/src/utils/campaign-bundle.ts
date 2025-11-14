@@ -78,6 +78,17 @@ export function buildCampaignDataBundleMvm(payload: CampaignPreviewPayload) {
                 new U32(Math.floor(payload.boostingFactor * 100 * 1_000_000)),
             );
         }
+
+        if (payload.kind === CampaignKind.AaveV3NetSupply) {
+            const blacklistedCollaterals = payload.blacklistedCollaterals || [];
+            serializableParts.push(
+                new MoveVector(
+                    blacklistedCollaterals.map(({ address }) =>
+                        AccountAddress.fromString(address),
+                    ),
+                ),
+            );
+        }
     } else if (payload instanceof HoldFungibleAssetCampaignPreviewPayload) {
         serializableParts.push(
             AccountAddress.fromString(payload.asset.address),

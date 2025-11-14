@@ -265,6 +265,7 @@ export function getCampaignPreviewApr(
     payload: BaseCampaignPreviewPayload,
     range?: LiquidityInRange,
     liquidityByAddresses?: LiquidityByAddresses,
+    usdTvl?: number,
 ): number | undefined {
     const duration = payload.endDate.unix() - payload.startDate.unix();
     if (duration <= 0 || !payload.isDistributing(DistributablesType.Tokens))
@@ -283,7 +284,7 @@ export function getCampaignPreviewApr(
     return getCampaignApr({
         usdRewards: rewardsUsdValue,
         duration,
-        usdTvl: liquidity?.usd,
+        usdTvl: usdTvl || liquidity?.usd,
         liquidity: liquidity?.raw,
         kpiSpecification,
         range,

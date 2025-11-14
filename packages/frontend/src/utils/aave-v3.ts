@@ -10,13 +10,5 @@ export function getAaveV3UsdTarget({ collateral, kind }: GetUsdTvlParams) {
 
     if (kind === CampaignKind.AaveV3Borrow) return collateral.usdDebt;
 
-    if (
-        kind === CampaignKind.AaveV3Supply ||
-        kind === CampaignKind.AaveV3BridgeAndSupply
-    )
-        return collateral.usdSupply;
-
-    if (kind === CampaignKind.AaveV3NetSupply) return collateral.usdNetSupply;
-
-    return undefined;
+    return collateral.usdSupply;
 }

@@ -93,6 +93,7 @@ export interface AaveV3CampaignPayload extends BaseCampaignPayload {
     market?: AaveV3Market;
     collateral?: AaveV3Collateral;
     boostingFactor?: number;
+    blacklistedCollaterals?: AaveV3Collateral[];
 }
 
 export interface HoldFungibleAssetCampaignPayload extends BaseCampaignPayload {
@@ -231,6 +232,7 @@ export class AaveV3CampaignPreviewPayload extends BaseCampaignPreviewPayload {
         public readonly market: AaveV3Market,
         public readonly collateral: AaveV3Collateral,
         public readonly boostingFactor?: number,
+        public readonly blacklistedCollaterals?: AaveV3Collateral[],
         ...baseArgs: ConstructorParameters<typeof BaseCampaignPreviewPayload>
     ) {
         super(...baseArgs);
@@ -249,22 +251,11 @@ export class AaveV3CampaignPreviewPayload extends BaseCampaignPreviewPayload {
     getTargetValue(): TargetValue | undefined {
         if (this.kind === CampaignKind.AaveV3Borrow)
             return { usd: this.collateral.usdDebt, raw: this.collateral.debt };
-        if (this.kind === CampaignKind.AaveV3NetSupply) {
-            return {
-                usd: this.collateral.usdNetSupply,
-                raw: this.collateral.netSupply,
-            };
-        }
-        if (
-            this.kind === CampaignKind.AaveV3Supply ||
-            this.kind === CampaignKind.AaveV3BridgeAndSupply
-        )
-            return {
-                usd: this.collateral.usdSupply,
-                raw: this.collateral.supply,
-            };
 
-        return undefined;
+        return {
+            usd: this.collateral.usdSupply,
+            raw: this.collateral.supply,
+        };
     }
 }
 
@@ -324,6 +315,7 @@ export interface CampaignPayloadErrors {
     kpiSpecification?: boolean;
     priceRangeSpecification?: boolean;
     boostingFactor?: boolean;
+    blacklistedCrossSupplyCollaterals?: boolean;
     restrictions?: boolean;
 }
 
