@@ -34,11 +34,15 @@
 }
 
 .dotWrapper {
-    @apply flex items-center justify-center bg-zinc-100 dark:bg-zinc-900 h-5 w-5 rounded-full;
+    @apply flex items-center justify-center bg-gray-100 dark:bg-neutral-900 h-5 w-5 rounded-full;
 }
 
-.tab {
-    @apply flex items-center gap-2;
+.chips {
+    @apply w-full flex items-center gap-1;
+}
+
+.chip {
+    @apply w-full flex items-center gap-2;
 }
 
 .dot {
@@ -46,15 +50,11 @@
 }
 
 .dot.green {
-    @apply bg-brand-green;
+    @apply bg-brand-green-dark dark:bg-brand-green;
 }
 
 .dot.red {
-    @apply bg-red-600;
-}
-
-.textInputWrapper {
-    @apply relative mt-3;
+    @apply bg-error;
 }
 
 .textInput :global(.inputWrapper),
@@ -63,11 +63,11 @@
 }
 
 .importCsvInput {
-    @apply absolute right-0 bottom-[57px];
+    @apply justify-self-end;
 }
 
 .divider {
-    @apply h-[1px] bg-zinc-200 dark:bg-zinc-800;
+    @apply h-[1px] border stroke-divider;
 }
 
 .listWrapper {
@@ -79,7 +79,7 @@
 }
 
 .row {
-    @apply flex items-center justify-between snap-start px-4 py-5 bg-zinc-100 dark:bg-zinc-900 rounded-lg;
+    @apply flex items-center justify-between snap-start px-4 py-5 surface-secondary rounded-lg;
 }
 
 .accountWrapper {
