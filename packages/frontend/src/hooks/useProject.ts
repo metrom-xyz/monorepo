@@ -1,7 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import type { HookBaseParams } from "../types/hooks";
 import type { Project } from "../types/project";
-import { gnosis, lens, mainnet, scroll } from "viem/chains";
 
 interface UseProjectParams extends HookBaseParams {
     name: string;
@@ -30,10 +29,10 @@ export function useProject({
 
             return {
                 name,
-                types: ["lending"],
+                types: [],
                 activeCampaigns: 10,
                 totalCampaigns: 14,
-                chains: [mainnet.id, scroll.id, lens.id, gnosis.id],
+                chains: [],
             };
             // TODO: implement API call
         },

@@ -8,7 +8,11 @@ import { Card, Skeleton, Typography } from "@metrom-xyz/ui";
 import classNames from "classnames";
 import { Protocol, SkeletonProtocol } from "./protocol";
 import { FixedPoints } from "./fixed-points";
-import { BackendCampaignType, DistributablesType } from "@metrom-xyz/sdk";
+import {
+    BackendCampaignType,
+    DistributablesType,
+    TargetType,
+} from "@metrom-xyz/sdk";
 import { type Campaign } from "@/src/types/campaign";
 import { formatUsdAmount } from "@/src/utils/format";
 import { DynamicPoints } from "./dynamic-points";
@@ -27,11 +31,12 @@ export function CampaignRow({ type, campaign }: CampaignProps) {
         DistributablesType.DynamicPoints,
     );
 
+    const href = campaign.isTargeting(TargetType.TurtleClub)
+        ? `/projects/katana_${campaign.target.campaignId}#/deal/${campaign.target.id}`
+        : `/campaigns/${campaign.chainType}/${campaign.chainId}/${campaign.id}`;
+
     return (
-        <Link
-            href={`/campaigns/${campaign.chainType}/${campaign.chainId}/${campaign.id}`}
-            className={styles.root}
-        >
+        <Link href={href} className={styles.root}>
             <Card className={styles.card}>
                 <Chain id={campaign.chainId} type={campaign.chainType} />
                 <Protocol campaign={campaign} />

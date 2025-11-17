@@ -1,6 +1,6 @@
 import type { SVGIcon } from "../types/common";
 
-export function NoCampaignsIcon(props: SVGIcon) {
+export function EmptyIcon(props: SVGIcon) {
     return (
         <svg
             width="20"
