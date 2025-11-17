@@ -23,7 +23,13 @@ export async function generateMetadata({ params }: ProjectPageProps) {
 }
 
 export default async function ProjectPage({ params }: ProjectPageProps) {
-    const { locale, project } = await params;
+    const { locale, project: rawProject } = await params;
+
+    // For LiquidityDeals we need an id for the overall deals. This is the case
+    // for Turtle Club. We add the id to the project slug because the Earn component from Turtle
+    // doesn't work if there's any query param in the path.
+    // TODO: find a better solution.
+    const [project, campaignId] = rawProject.split("_");
 
     if (
         !routing.locales.includes(locale) ||
@@ -34,7 +40,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
 
     setRequestLocale(locale);
 
-    return <Project project={project} />;
+    return <Project project={project} campaignId={campaignId} />;
 }
 
 export async function generateStaticParams() {

@@ -1,4 +1,4 @@
-import { NoCampaignsIcon } from "@/src/assets/no-campaigns-icon";
+import { EmptyIcon } from "@/src/assets/empty-icon";
 import { Typography } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
 
@@ -9,7 +9,7 @@ export function EmptyTable() {
 
     return (
         <div className={styles.root}>
-            <NoCampaignsIcon />
+            <EmptyIcon />
             <div className={styles.textWrapper}>
                 <Typography uppercase weight="medium" size="sm">
                     {t("empty.title")}

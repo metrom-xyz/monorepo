@@ -77,7 +77,7 @@ const DetailedTokenIndicator = ({
     return (
         <div
             style={style}
-            className={`w-full flex items-center justify-between sm:px-4 cursor-pointer surface-primary-hover transition-colors duration-200 ease-in-out ${value === token.address ? "theme-surface-active" : ""}`}
+            className={`w-full flex items-center justify-between sm:px-4 cursor-pointer surface-primary-hover transition-colors duration-200 ease-in-out ${value === token.address ? "bg-gray-150 dark:bg-neutral-800" : ""}`}
             onClick={handleTokenOnClick}
         >
             <TokenIndicator token={token} />

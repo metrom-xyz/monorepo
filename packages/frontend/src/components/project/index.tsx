@@ -10,14 +10,16 @@ import { Tab, Tabs } from "@metrom-xyz/ui";
 import { PointsIcon } from "@/src/assets/points-icon";
 import { useTranslations } from "next-intl";
 import { TokensIcon } from "@/src/assets/tokens-icon";
+import { LiquidityProviderDeal } from "./liquidity-provider-deal";
 
 import styles from "./styles.module.css";
 
 interface ProjectProps {
     project: string;
+    campaignId?: string;
 }
 
-export function Project({ project }: ProjectProps) {
+export function Project({ project, campaignId }: ProjectProps) {
     const t = useTranslations("projectPage");
 
     const details = PROJECTS_METADATA[project];
@@ -97,6 +99,12 @@ export function Project({ project }: ProjectProps) {
                         className={styles.table}
                     />
                 </div>
+            )}
+            {kind === ProjectKind.LiquidityDeals && (
+                <LiquidityProviderDeal
+                    protocol={details.protocol}
+                    campaignId={campaignId}
+                />
             )}
         </div>
     );

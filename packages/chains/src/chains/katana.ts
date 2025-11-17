@@ -1,6 +1,7 @@
 import { zeroAddress } from "viem";
-import { KatanaLogo, type ChainData } from "..";
+import { KatanaLogo, ProtocolType, TurtleClubLogo, type ChainData } from "..";
 import { katana } from "viem/chains";
+import { SupportedLiquidityProviderDeal } from "@metrom-xyz/sdk";
 
 export const katanaData: ChainData = {
     active: false,
@@ -11,6 +12,15 @@ export const katanaData: ChainData = {
     blockExplorers: null,
     icon: KatanaLogo,
     forms: [],
-    protocols: [],
+    protocols: [
+        {
+            type: ProtocolType.LiquidityProviderDeal,
+            active: false,
+            logo: TurtleClubLogo,
+            name: "Turtle Club",
+            slug: SupportedLiquidityProviderDeal.TurtleClub,
+            actionUrl: "https://app.turtle.xyz/campaigns/katana",
+        },
+    ],
     baseTokens: [],
 };
