@@ -1,7 +1,9 @@
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import type { HookBaseParams } from "../types/hooks";
 import type { Project } from "../types/project";
-import { gnosis, lens, mainnet, scroll, sonic } from "viem/chains";
+import { katana, lens, mainnet, scroll, sonic, swellchain } from "viem/chains";
+import { CHAIN_TYPE } from "../commons";
+import { ChainType } from "@metrom-xyz/sdk";
 
 interface UseProjectsParams extends HookBaseParams {
     // TODO: what filters do we want?
@@ -20,6 +22,52 @@ interface UseProjectsReturnValue {
 
 // type QueryKey = [string, number, number, number[] | undefined];
 
+// TODO: remove this once we have the projects API
+const PROJECTS: Project[] = [
+    {
+        name: "quill",
+        types: [],
+        activeCampaigns: 10,
+        totalCampaigns: 14,
+        chains: [scroll.id],
+    },
+    {
+        name: "orki",
+        types: [],
+        activeCampaigns: 26,
+        totalCampaigns: 30,
+        chains: [swellchain.id],
+    },
+    {
+        name: "ebisu",
+        types: [],
+        activeCampaigns: 8,
+        totalCampaigns: 10,
+        chains: [mainnet.id],
+    },
+    {
+        name: "lens",
+        types: [],
+        activeCampaigns: 11,
+        totalCampaigns: 11,
+        chains: [lens.id],
+    },
+    {
+        name: "amped",
+        types: [],
+        activeCampaigns: 4,
+        totalCampaigns: 4,
+        chains: [sonic.id],
+    },
+    {
+        name: "katana",
+        types: [],
+        activeCampaigns: 1,
+        totalCampaigns: 1,
+        chains: [mainnet.id, katana.id],
+    },
+];
+
 export function useProjects({
     page,
     pageSize,
@@ -36,54 +84,11 @@ export function useProjects({
         queryFn: async () => {
             // const [, page, pageSize, chainIds] = queryKey as QueryKey;
 
+            // TODO: implement API call
             return {
                 totalItems: 0,
-                projects: [
-                    {
-                        name: "quill",
-                        types: ["lending"],
-                        activeCampaigns: 10,
-                        totalCampaigns: 14,
-                        chains: [mainnet.id, scroll.id, lens.id, gnosis.id],
-                    },
-                    {
-                        name: "orki",
-                        types: ["tge", "lending"],
-                        activeCampaigns: 26,
-                        totalCampaigns: 30,
-                        chains: [mainnet.id, gnosis.id],
-                    },
-                    {
-                        name: "ebisu",
-                        types: ["dex", "lending"],
-                        activeCampaigns: 8,
-                        totalCampaigns: 10,
-                        chains: [scroll.id, lens.id, gnosis.id],
-                    },
-                    {
-                        name: "lens",
-                        types: ["dex"],
-                        activeCampaigns: 11,
-                        totalCampaigns: 11,
-                        chains: [lens.id],
-                    },
-                    {
-                        name: "amped",
-                        types: ["lending"],
-                        activeCampaigns: 4,
-                        totalCampaigns: 4,
-                        chains: [sonic.id],
-                    },
-                    {
-                        name: "katana",
-                        types: ["lending"],
-                        activeCampaigns: 1,
-                        totalCampaigns: 1,
-                        chains: [mainnet.id],
-                    },
-                ],
+                projects: CHAIN_TYPE === ChainType.Evm ? PROJECTS : [],
             } as { totalItems: number; projects?: Project[] };
-            // TODO: implement API call
         },
         placeholderData: keepPreviousData,
         enabled,
