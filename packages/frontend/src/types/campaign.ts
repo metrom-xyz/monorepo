@@ -231,6 +231,7 @@ export class AaveV3CampaignPreviewPayload extends BaseCampaignPreviewPayload {
         public readonly brand: AaveV3Protocol,
         public readonly market: AaveV3Market,
         public readonly collateral: AaveV3Collateral,
+        public readonly usdNetSupply?: number,
         public readonly boostingFactor?: number,
         public readonly blacklistedCollaterals?: AaveV3Collateral[],
         ...baseArgs: ConstructorParameters<typeof BaseCampaignPreviewPayload>
@@ -251,6 +252,12 @@ export class AaveV3CampaignPreviewPayload extends BaseCampaignPreviewPayload {
     getTargetValue(): TargetValue | undefined {
         if (this.kind === CampaignKind.AaveV3Borrow)
             return { usd: this.collateral.usdDebt, raw: this.collateral.debt };
+
+        if (
+            this.kind === CampaignKind.AaveV3NetSupply &&
+            this.usdNetSupply !== undefined
+        )
+            return { usd: this.usdNetSupply };
 
         return {
             usd: this.collateral.usdSupply,

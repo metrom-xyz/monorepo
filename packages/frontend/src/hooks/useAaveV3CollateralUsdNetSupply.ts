@@ -94,6 +94,9 @@ export function useAaveV3CollateralUsdNetSupply({
 
     return {
         loading,
-        usdNetSupply: usdNetSupply === 0 ? usdNetSupply : undefined,
+        usdNetSupply:
+            usdNetSupply === 0 || usdNetSupply !== null
+                ? usdNetSupply
+                : undefined,
     };
 }

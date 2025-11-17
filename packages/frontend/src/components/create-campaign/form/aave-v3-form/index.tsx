@@ -9,7 +9,11 @@ import {
 import { useTranslations } from "next-intl";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useChainWithType } from "@/src/hooks/useChainWithType";
-import { CampaignKind, DistributablesType } from "@metrom-xyz/sdk";
+import {
+    CampaignKind,
+    DistributablesType,
+    SupportedAaveV3,
+} from "@metrom-xyz/sdk";
 import { AaveV3CollateralStep } from "../../steps/aave-v3-collateral-step";
 import { StartDateStep } from "../../steps/start-date-step";
 import { EndDateStep } from "../../steps/end-date-step";
@@ -27,14 +31,16 @@ import {
 } from "../../steps/campaign-kind-step";
 import type { TranslationsKeys } from "@/src/types/utils";
 import { validateDistributables } from "@/src/utils/creation-form";
-import { getAaveV3UsdTarget } from "@/src/utils/aave-v3";
 import { AaveV3BlacklistedCrossBorrowCollateralsStep } from "../../steps/aave-v3-blacklisted-cross-borrow-collaterals";
+import { useAaveV3CollateralUsdNetSupply } from "@/src/hooks/useAaveV3CollateralUsdNetSupply";
+import { getAaveV3UsdTarget } from "@/src/utils/aave-v3";
 
 import styles from "./styles.module.css";
 
 function validatePayload(
     chainId: number,
     payload: AaveV3CampaignPayload,
+    usdNetSupply?: number,
 ): AaveV3CampaignPreviewPayload | EmptyTargetCampaignPreviewPayload | null {
     const {
         kind,
@@ -56,7 +62,8 @@ function validatePayload(
         !market ||
         !startDate ||
         !endDate ||
-        !distributables
+        !distributables ||
+        (kind === CampaignKind.AaveV3NetSupply && usdNetSupply === undefined)
     )
         return null;
 
@@ -84,6 +91,7 @@ function validatePayload(
         brand,
         market,
         collateral,
+        usdNetSupply,
         undefined,
         blacklistedCollaterals,
         startDate,
@@ -130,15 +138,27 @@ export function AaveV3Form({
     onPreviewClick,
 }: AaveV3FormProps) {
     const t = useTranslations("newCampaign");
-    const { id: chainId } = useChainWithType();
+    const { id: chainId, type: chainType } = useChainWithType();
 
     const [payload, setPayload] = useState(initialPayload);
     const [errors, setErrors] = useState<CampaignPayloadErrors>({});
 
+    const { loading: loadingUsdNetSupply, usdNetSupply } =
+        useAaveV3CollateralUsdNetSupply({
+            chainId,
+            chainType,
+            market: payload.market?.address,
+            brand: payload.brand?.slug as SupportedAaveV3,
+            collateral: payload.collateral?.address,
+            blacklistedCrossBorrowCollaterals:
+                payload.blacklistedCollaterals?.map(({ address }) => address),
+            enabled: payload.kind === CampaignKind.AaveV3NetSupply,
+        });
+
     const previewPayload = useMemo(() => {
         if (Object.values(errors).some((error) => !!error)) return null;
-        return validatePayload(chainId, payload);
-    }, [chainId, payload, errors]);
+        return validatePayload(chainId, payload, usdNetSupply);
+    }, [chainId, usdNetSupply, payload, errors]);
 
     const noDistributables = useMemo(() => {
         if (!payload.distributables) return true;
@@ -184,6 +204,14 @@ export function AaveV3Form({
     function handlePreviewOnClick() {
         onPreviewClick(previewPayload);
     }
+
+    const usdTvl =
+        payload.kind === CampaignKind.AaveV3NetSupply
+            ? usdNetSupply
+            : getAaveV3UsdTarget({
+                  collateral: payload.collateral,
+                  kind: payload.kind,
+              });
 
     return (
         <div className={styles.root}>
@@ -254,10 +282,8 @@ export function AaveV3Form({
                     <KpiStep
                         disabled={noDistributables || unsupportedChain}
                         kind={payload.kind}
-                        usdTvl={getAaveV3UsdTarget({
-                            collateral: payload.collateral,
-                            kind: payload.kind,
-                        })}
+                        loadingUsdTvl={loadingUsdNetSupply}
+                        usdTvl={usdTvl}
                         distributables={
                             payload.distributables?.type ===
                             DistributablesType.Tokens
