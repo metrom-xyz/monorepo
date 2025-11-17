@@ -44,7 +44,7 @@ export function useAaveV3CollateralUsdNetSupply({
         active: true,
     });
 
-    const { data: usdNetSupply, isPending: loading } = useQuery({
+    const { data: usdNetSupply, isLoading: loading } = useQuery({
         queryKey: [
             "aave-v3-collateral-usd-net-supply",
             chainType,

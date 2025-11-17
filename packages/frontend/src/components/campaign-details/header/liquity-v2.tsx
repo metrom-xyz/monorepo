@@ -87,6 +87,7 @@ export function LiquityV2Header({ campaign }: LiquityV2HeaderProps) {
                         size="lg"
                         apr={campaign.apr}
                         kpi={!!campaign.specification?.kpi}
+                        campaign={campaign}
                     />
                 )}
             </div>
