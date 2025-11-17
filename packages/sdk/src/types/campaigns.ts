@@ -113,7 +113,7 @@ export type AaveV3BorrowTarget = AaveV3Target<TargetType.AaveV3Borrow>;
 export type AaveV3SupplyTarget = AaveV3Target<TargetType.AaveV3Supply>;
 export interface AaveV3NetSupplyTarget
     extends AaveV3Target<TargetType.AaveV3NetSupply> {
-    blacklistedCrossBorrowCollaterals: Address[];
+    blacklistedCrossBorrowCollaterals: Erc20Token[];
 }
 export type AaveV3BridgeAndSupplyTarget = BaseTarget & {
     type: TargetType.AaveV3BridgeAndSupply;

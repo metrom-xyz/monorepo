@@ -92,6 +92,7 @@ export function HoldFungibleAsset({ campaign }: HoldFungibleAssetProps) {
                         size="lg"
                         apr={campaign.apr}
                         kpi={!!campaign.specification?.kpi}
+                        campaign={campaign}
                     />
                 )}
             </div>

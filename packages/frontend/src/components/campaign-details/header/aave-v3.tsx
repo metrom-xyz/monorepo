@@ -92,7 +92,6 @@ export function AaveV3Header({ campaign }: AaveV3HeaderProps) {
                             {t("claim")}
                         </Button>
                     ) : null}
-
                     {campaign.target.type ===
                         TargetType.AaveV3BridgeAndSupply && (
                         <>
@@ -134,7 +133,6 @@ export function AaveV3Header({ campaign }: AaveV3HeaderProps) {
                             </Button>
                         </>
                     )}
-
                     {campaign.target.type !==
                         TargetType.AaveV3BridgeAndSupply && (
                         <Button
@@ -162,6 +160,7 @@ export function AaveV3Header({ campaign }: AaveV3HeaderProps) {
                         size="lg"
                         apr={campaign.apr}
                         kpi={!!campaign.specification?.kpi}
+                        campaign={campaign}
                     />
                 )}
             </div>
