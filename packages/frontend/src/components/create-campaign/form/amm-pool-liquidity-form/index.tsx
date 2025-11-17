@@ -266,8 +266,8 @@ export function AmmPoolLiquidityForm({
                 icon={ArrowRightIcon}
                 iconPlacement="right"
                 disabled={!previewPayload}
-                className={{ root: styles.button }}
                 onClick={handlePreviewOnClick}
+                className={{ root: styles.button }}
             >
                 {t("submit.preview")}
             </Button>
