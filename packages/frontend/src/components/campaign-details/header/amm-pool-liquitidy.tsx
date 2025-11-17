@@ -146,10 +146,7 @@ export function AmmPoolLiquityHeader({ campaign }: AmmPoolLiquityHeaderProps) {
                         size="lg"
                         apr={campaign.apr}
                         kpi={!!campaign.specification?.kpi}
-                        priceRange={campaign.specification?.priceRange}
-                        weighting={campaign.specification?.weighting}
-                        token0Symbol={campaign.target.pool.tokens[0].symbol}
-                        token1Symbol={campaign.target.pool.tokens[1].symbol}
+                        campaign={campaign}
                     />
                 )}
             </div>

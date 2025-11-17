@@ -1,7 +1,7 @@
 import type { Address, Hex } from "viem";
 import type { BackendErc20Token } from "./commons";
 import type { Specification } from "src/types/campaigns";
-import type { ChainType } from "src/types/commons";
+import type { ChainType, Erc20Token } from "src/types/commons";
 import type { BackendCampaignAmmPool } from "./pools";
 import type { SupportedAaveV3, SupportedLiquityV2 } from "src/commons";
 
@@ -61,7 +61,7 @@ export type BackendAaveV3BorrowTarget = BackendAaveV3Target<"aave-v3-borrow">;
 export type BackendAaveV3SupplyTarget = BackendAaveV3Target<"aave-v3-supply">;
 export interface BackendAaveV3NetSupplyTarget
     extends BackendAaveV3Target<"aave-v3-net-supply"> {
-    blacklistedCrossBorrowCollaterals: Address[];
+    blacklistedCrossBorrowCollaterals: Erc20Token[];
 }
 export type BackendAaveV3BridgeAndSupplyTarget = BaseTarget & {
     type: "aave-v3-bridge-and-supply";

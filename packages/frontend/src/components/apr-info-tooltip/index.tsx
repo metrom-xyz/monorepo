@@ -1,6 +1,10 @@
 import { InfoTooltip } from "@metrom-xyz/ui";
 import { InfoMessage } from "../info-message";
-import type { PriceRangeSpecification, Weighting } from "@metrom-xyz/sdk";
+import type {
+    Erc20Token,
+    PriceRangeSpecification,
+    Weighting,
+} from "@metrom-xyz/sdk";
 import { useTranslations } from "next-intl";
 import { useCallback } from "react";
 import { formatPercentage } from "@/src/utils/format";
@@ -13,6 +17,8 @@ interface AprInfoTooltiProps {
     weighting?: Weighting;
     token0Symbol?: string;
     token1Symbol?: string;
+    aaveV3Collateral?: Erc20Token;
+    blacklistedCrossBorrowCollaterals?: Erc20Token[];
 }
 
 export function AprInfoTooltip({
@@ -20,6 +26,8 @@ export function AprInfoTooltip({
     weighting,
     token0Symbol,
     token1Symbol,
+    aaveV3Collateral,
+    blacklistedCrossBorrowCollaterals,
 }: AprInfoTooltiProps) {
     const t = useTranslations("aprInfoTooltip");
 
@@ -94,9 +102,38 @@ export function AprInfoTooltip({
                     // link=""
                 />
             );
-    }, [token0Symbol, token1Symbol, priceRange, weighting, t]);
+        if (aaveV3Collateral)
+            return (
+                <InfoMessage
+                    size="sm"
+                    spaced
+                    text={t.rich("aaveV3NetSupply", {
+                        collateral: aaveV3Collateral.symbol,
+                        blacklisted: blacklistedCrossBorrowCollaterals
+                            ? `, ${blacklistedCrossBorrowCollaterals
+                                  .map(({ symbol }) => symbol)
+                                  .join(", ")}`
+                            : "",
+                        bold: (chunks) => (
+                            <span className={styles.bold}>{chunks}</span>
+                        ),
+                    })}
+                    // TODO: add documentation link
+                    // linkText={t("learnMore")}
+                    // link=""
+                />
+            );
+    }, [
+        token0Symbol,
+        token1Symbol,
+        priceRange,
+        weighting,
+        aaveV3Collateral,
+        blacklistedCrossBorrowCollaterals,
+        t,
+    ]);
 
-    if (!priceRange && !weighting) return null;
+    if (!priceRange && !weighting && !aaveV3Collateral) return null;
 
     return (
         <InfoTooltip placement="top" className={styles.tooltip}>

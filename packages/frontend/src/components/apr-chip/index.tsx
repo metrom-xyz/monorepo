@@ -2,7 +2,7 @@ import { Typography, type TypographySize } from "@metrom-xyz/ui";
 import { formatPercentage } from "@/src/utils/format";
 import classNames from "classnames";
 import { useTranslations } from "next-intl";
-import type { PriceRangeSpecification, Weighting } from "@metrom-xyz/sdk";
+import { TargetType, type Campaign } from "@metrom-xyz/sdk";
 import { AprInfoTooltip } from "../apr-info-tooltip";
 
 import styles from "./styles.module.css";
@@ -13,10 +13,7 @@ interface AprChipProps {
     prefix?: boolean;
     placeholder?: boolean;
     kpi?: boolean;
-    priceRange?: PriceRangeSpecification;
-    weighting?: Weighting;
-    token0Symbol?: string;
-    token1Symbol?: string;
+    campaign?: Campaign;
     className?: string;
 }
 
@@ -26,10 +23,7 @@ export function AprChip({
     prefix = false,
     placeholder,
     kpi,
-    priceRange,
-    weighting,
-    token0Symbol,
-    token1Symbol,
+    campaign,
     className,
 }: AprChipProps) {
     const t = useTranslations("aprChip");
@@ -45,15 +39,38 @@ export function AprChip({
         xl5: ["xl4", "xl5"],
     };
 
+    const ammPoolLiquidityCampaign = campaign?.isTargeting(
+        TargetType.AmmPoolLiquidity,
+    );
+    const aaveV3NetSupplyCampaign = campaign?.isTargeting(
+        TargetType.AaveV3NetSupply,
+    );
+    const token0Symbol = ammPoolLiquidityCampaign
+        ? campaign.target.pool.tokens[0].symbol
+        : undefined;
+    const token1Symbol = ammPoolLiquidityCampaign
+        ? campaign.target.pool.tokens[1].symbol
+        : undefined;
+    const blacklistedCrossBorrowCollaterals = aaveV3NetSupplyCampaign
+        ? campaign.target.blacklistedCrossBorrowCollaterals
+        : undefined;
+    const aaveV3Collateral = aaveV3NetSupplyCampaign
+        ? campaign.target.collateral
+        : undefined;
+
     return (
         <div className={styles.root}>
             {apr !== undefined && (
                 <>
                     <AprInfoTooltip
-                        priceRange={priceRange}
-                        weighting={weighting}
+                        priceRange={campaign?.specification?.priceRange}
+                        weighting={campaign?.specification?.weighting}
                         token0Symbol={token0Symbol}
                         token1Symbol={token1Symbol}
+                        aaveV3Collateral={aaveV3Collateral}
+                        blacklistedCrossBorrowCollaterals={
+                            blacklistedCrossBorrowCollaterals
+                        }
                     />
                     <div
                         className={classNames(styles.chip, className, {
