@@ -1,5 +1,5 @@
 import { Popover, Skeleton, Typography } from "@metrom-xyz/ui";
-import { TargetType } from "@metrom-xyz/sdk";
+import { SupportedLiquidityProviderDeal, TargetType } from "@metrom-xyz/sdk";
 import type { Campaign } from "@/src/types/campaign";
 import { useRef, useState } from "react";
 import { useProtocolsInChain } from "@/src/hooks/useProtocolsInChain";
@@ -38,6 +38,13 @@ export function Protocol({ campaign }: ProtocolProps) {
             case TargetType.AaveV3NetSupply:
             case TargetType.AaveV3BridgeAndSupply: {
                 return protocol.slug === campaign.target.brand.slug;
+            }
+            case TargetType.TurtleClub: {
+                return (
+                    protocol.slug ===
+                    (campaign.target
+                        .type as unknown as SupportedLiquidityProviderDeal)
+                );
             }
         }
     });

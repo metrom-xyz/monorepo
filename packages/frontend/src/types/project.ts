@@ -1,5 +1,8 @@
 import type { SVGIcon } from "@metrom-xyz/chains";
-import type { ChainType } from "@metrom-xyz/sdk";
+import type {
+    ChainType,
+    SupportedLiquidityProviderDeal,
+} from "@metrom-xyz/sdk";
 import type { FunctionComponent } from "react";
 
 export interface Project {
@@ -57,6 +60,8 @@ export interface ProjectMetadataPartner extends BaseProjectMetadata {
 
 export interface ProjectMetadataLiquidityDeals extends BaseProjectMetadata {
     kind: ProjectKind.LiquidityDeals;
+    protocol: SupportedLiquidityProviderDeal;
+    campaignId: string;
 }
 
 export interface ProjectMetadataChain extends BaseProjectMetadata {
