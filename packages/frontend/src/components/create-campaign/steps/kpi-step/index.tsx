@@ -7,7 +7,13 @@ import {
     type CampaignPayloadTokenDistributables,
 } from "@/src/types/campaign";
 import type { LocalizedMessage } from "@/src/types/utils";
-import { Button, ErrorText, Switch, Typography } from "@metrom-xyz/ui";
+import {
+    Button,
+    ErrorText,
+    Skeleton,
+    Switch,
+    Typography,
+} from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { formatUsdAmount } from "@/src/utils/format";
@@ -29,6 +35,7 @@ import styles from "./styles.module.css";
 interface KpiStepProps {
     disabled?: boolean;
     kind?: CampaignKind;
+    loadingUsdTvl?: boolean;
     usdTvl?: number;
     distributables?: CampaignPayloadTokenDistributables;
     startDate?: Dayjs;
@@ -44,6 +51,7 @@ type ErrorMessage = LocalizedMessage<"newCampaign.form.base.kpi">;
 export function KpiStep({
     disabled,
     kind,
+    loadingUsdTvl,
     usdTvl,
     distributables,
     startDate,
@@ -271,9 +279,13 @@ export function KpiStep({
                     <Typography uppercase weight="medium" light size="sm">
                         {t("currentTarget", { targetValueName })}
                     </Typography>
-                    <Typography weight="medium" size="sm">
-                        {formatUsdAmount({ amount: usdTvl })}
-                    </Typography>
+                    {loadingUsdTvl ? (
+                        <Skeleton width={50} size="sm" />
+                    ) : (
+                        <Typography weight="medium" size="sm">
+                            {formatUsdAmount({ amount: usdTvl })}
+                        </Typography>
+                    )}
                 </div>
             </StepPreview>
             <StepContent>
