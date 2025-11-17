@@ -74,6 +74,7 @@ function validatePayload(
         brand,
         market,
         collateral,
+        undefined,
         boostingFactor,
         undefined,
         startDate,
