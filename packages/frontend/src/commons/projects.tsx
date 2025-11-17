@@ -13,7 +13,7 @@ import { EbisuIllustration } from "../assets/logos/projects/ebisu-illustration";
 import { LensIllustration } from "../assets/logos/projects/lens-illustration";
 import { AmpedIllustration } from "../assets/logos/projects/amped-illustration";
 import { lens } from "viem/chains";
-import { ChainType } from "@metrom-xyz/sdk";
+import { ChainType, SupportedLiquidityProviderDeal } from "@metrom-xyz/sdk";
 
 export const PROJECTS_METADATA: Record<string, ProjectMetadata> = {
     quill: {
@@ -155,6 +155,8 @@ export const PROJECTS_METADATA: Record<string, ProjectMetadata> = {
     // TODO: find a way to add the missing info for Katana here, like id, owner, url...
     katana: {
         kind: ProjectKind.LiquidityDeals,
+        protocol: SupportedLiquidityProviderDeal.TurtleClub,
+        campaignId: "2c86d3a1-cfe8-486d-915d-1b9ff5e924e9",
         description:
             "The Samurai's Call campaign is designed to seed dapps on Katana. Hold your deposits through launch to unlock all KAT token rewards.",
         name: "The Samurai's Call",

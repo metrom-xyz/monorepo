@@ -29,11 +29,7 @@ html.no-transition *::after {
     @apply hover:bg-gray-50 hover:dark:bg-neutral-700;
 }
 
-/* TODO: remove these */
-@utility theme-surface-active {
-    @apply bg-zinc-200 dark:bg-zinc-700;
-}
-
+/* TODO: remove this */
 @utility theme-surface-2-active {
     @apply bg-zinc-250 dark:bg-zinc-750;
 }

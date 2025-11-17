@@ -4,8 +4,10 @@ import { TURTLE_REFERRAL_CODE } from "@/src/commons/turtle-campaigns";
 import { useAppKit } from "@reown/appkit/react";
 import { EarnPage, useWagmiAdapter } from "@turtledev/react";
 
+import styles from "./styles.module.css";
+
 interface EarnProps {
-    campaignId: string;
+    campaignId?: string;
     address?: string;
 }
 
@@ -14,12 +16,14 @@ export function Earn({ campaignId, address }: EarnProps) {
     const adapter = useWagmiAdapter();
 
     return (
-        <EarnPage
-            referral={TURTLE_REFERRAL_CODE}
-            campaignId={campaignId}
-            user={address}
-            openConnectionModal={open}
-            {...adapter}
-        />
+        <div className={styles.root}>
+            <EarnPage
+                referral={TURTLE_REFERRAL_CODE}
+                campaignId={campaignId}
+                user={address}
+                openConnectionModal={open}
+                {...adapter}
+            />
+        </div>
     );
 }

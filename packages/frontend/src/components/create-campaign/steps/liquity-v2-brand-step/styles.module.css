@@ -16,10 +16,6 @@
         snap-y;
 }
 
-.brandRowSelected {
-    @apply theme-surface-active;
-}
-
 .brandRow {
     @apply flex
         gap-2

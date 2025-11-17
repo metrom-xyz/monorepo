@@ -14,7 +14,7 @@ import { AaveV3 } from "./aave-v3";
 import { Empty } from "./empty";
 import { HoldFungibleAsset } from "./hold-fungible-asset";
 import { GmxV1Liquidity } from "./gmx-v1-liquidity";
-import { TurtleClubVault } from "./katana-vault";
+import { TurtleClubVault } from "./turtle-club-vault";
 import { useTranslations } from "next-intl";
 
 import styles from "./styles.module.css";
@@ -58,7 +58,7 @@ export function Action({
         TargetType.HoldFungibleAsset,
     );
 
-    const turtleClubVault = campaign.isTargeting(TargetType.TurtleClubVault);
+    const turtleClubVault = campaign.isTargeting(TargetType.TurtleClub);
 
     const empty = campaign.isTargeting(TargetType.Empty);
 

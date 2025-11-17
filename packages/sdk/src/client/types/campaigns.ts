@@ -76,8 +76,9 @@ export type BackendAaveV3BridgeAndSupplyTarget = BaseTarget & {
     boostingFactor: string;
 };
 
-export type BackendTurtleClubVaultCampaignTarget = BaseTarget & {
-    type: "turtle-club-vault";
+export type BackendTurtleClubCampaignTarget = BaseTarget & {
+    type: "turtle-club";
+    campaignId: string;
     id: string;
     name: string;
     description: string;
@@ -156,7 +157,7 @@ export interface BackendBaseCampaign {
         | BackendHoldFungibleAssetTarget
         | BackendAaveV3BridgeAndSupplyTarget
         | BackendJumperWhitelistedAmmPoolLiquidityTarget
-        | BackendTurtleClubVaultCampaignTarget;
+        | BackendTurtleClubCampaignTarget;
     specification?: Specification;
     usdTvl?: number;
     apr?: number;

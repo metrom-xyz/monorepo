@@ -6,6 +6,7 @@ import {
     SupportedAaveV3,
     SupportedDex,
     SupportedGmxV1,
+    SupportedLiquidityProviderDeal,
     SupportedLiquityV2,
     TargetType,
 } from "@metrom-xyz/sdk";
@@ -15,6 +16,7 @@ export enum ProtocolType {
     GmxV1Liquidity = "gmx-v1-liquidity",
     LiquityV2 = "liquity-v2",
     AaveV3 = "aave-v3",
+    LiquidityProviderDeal = "liquidity-provider-deal",
 }
 
 export interface ProtocolBase<S = string, T = ProtocolType> {
@@ -68,8 +70,17 @@ export interface AaveV3Protocol
     >;
 }
 
+export interface LiquidityProviderDeal
+    extends ProtocolBase<
+        SupportedLiquidityProviderDeal,
+        ProtocolType.LiquidityProviderDeal
+    > {
+    actionUrl: string;
+}
+
 export type Protocol =
     | DexProtocol
     | GmxV1LiquidityProtocol
     | LiquityV2Protocol
-    | AaveV3Protocol;
+    | AaveV3Protocol
+    | LiquidityProviderDeal;

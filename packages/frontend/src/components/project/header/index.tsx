@@ -4,12 +4,6 @@ import { Typography } from "@metrom-xyz/ui";
 import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
 import { useTranslations } from "next-intl";
 import type { Branding } from "@/src/types/project";
-import { useProject } from "@/src/hooks/useProject";
-import {
-    ProjectCampaignsTotals,
-    SekeletonProjectCampaignsTotals,
-} from "../../project-campaigns-totals";
-import classNames from "classnames";
 
 import styles from "./styles.module.css";
 
@@ -32,7 +26,7 @@ export function Header({
 }: HeaderProps) {
     const t = useTranslations("projectPage.header");
 
-    const { project, loading } = useProject({ name });
+    // const { project, loading } = useProject({ name });
 
     return (
         <div
@@ -57,7 +51,8 @@ export function Header({
                     >
                         {t("title", { protocol: name })}
                     </Typography>
-                    <div className={styles.types}>
+                    {/* TODO: add back once we fetch from API */}
+                    {/* <div className={styles.types}>
                         {loading || !project ? (
                             <div
                                 className={classNames(
@@ -79,7 +74,7 @@ export function Header({
                                 </div>
                             ))
                         )}
-                    </div>
+                    </div> */}
                     <a
                         href={url}
                         target="_blank"
@@ -103,14 +98,14 @@ export function Header({
                 >
                     {description}
                 </Typography>
-                {loading || !project ? (
+                {/* {loading || !project ? (
                     <SekeletonProjectCampaignsTotals />
                 ) : (
                     <ProjectCampaignsTotals
                         total={project.totalCampaigns}
                         active={project.activeCampaigns}
                     />
-                )}
+                )} */}
             </div>
         </div>
     );

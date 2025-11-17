@@ -107,7 +107,11 @@
         },
         "projects": {
             "campaigns": "<highlighted>{count}</highlighted> campaigns",
-            "active": "{count} active"
+            "active": "{count} active",
+            "empty": {
+                "title": "No projects found",
+                "description": "No projects found on Metrom."
+            }
         },
         "turtleDeal": {
             "action": "Deposit {tokens} to {owner} turtle vault"
@@ -594,22 +598,12 @@
         "noPoints": "You don't have any {points}.",
         "distribution": "Distribution"
     },
-    "turtleCampaignPage": {
-        "header": {
-            "title": "{owner} campaign on Turtle Club",
-            "deposit": "Deposit",
-            "fallback": "Campaign on Turtle Club"
-        },
-        "tvl": "Tvl",
-        "status": "Status",
-        "live": "Live",
+    "liquidityProviderDeals": {
         "exploreDeals": "Explore deals"
     },
     "campaignDetails": {
         "title": "Campaign details",
         "header": {
-            "explorer": "Explorer",
-            "claim": "Claim",
             "ammPoolLiquidity": {
                 "deposit": "Deposit"
             },
@@ -624,16 +618,19 @@
                 "aave-v3-net-supply": "Net supply {collateral} on {brand}",
                 "aave-v3-bridge": "Bridge {collateral}",
                 "and-supply": "Supply {collateral} on {brand}"
-            }
+            },
+            "kpi": "KPI",
+            "range": "Range",
+            "status": {
+                "live": "Live ends in {days}",
+                "upcoming": "Upcoming in {days}",
+                "ended": "Ended {days} ago"
+            },
+            "allowlist": "Rewards limited to only allowed addresses"
         },
         "details": {
             "status": "Status",
             "duration": "Duration",
-            "statusType": {
-                "live": "Live",
-                "upcoming": "Upcoming",
-                "ended": "Ended"
-            },
             "startDate": "Start date",
             "endDate": "End date"
         },
