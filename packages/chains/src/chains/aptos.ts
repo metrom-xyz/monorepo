@@ -27,7 +27,7 @@ export const aptosDevelopmentData: ChainData = {
             type: BaseCampaignType.AaveV3,
         },
         {
-            active: false,
+            active: true,
             partner: false,
             type: BaseCampaignType.HoldFungibleAsset,
         },
