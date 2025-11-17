@@ -232,11 +232,12 @@ export function AaveV3BridgeAndSupplyForm({
                 />
             </div>
             <Button
+                size="lg"
                 icon={ArrowRightIcon}
                 iconPlacement="right"
                 disabled={!previewPayload}
-                className={{ root: styles.button }}
                 onClick={handlePreviewOnClick}
+                className={{ root: styles.button }}
             >
                 {t("submit.preview")}
             </Button>
