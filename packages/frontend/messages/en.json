@@ -604,6 +604,8 @@
     "campaignDetails": {
         "title": "Campaign details",
         "header": {
+            "explorer": "Explorer",
+            "claim": "Claim",
             "ammPoolLiquidity": {
                 "deposit": "Deposit"
             },
@@ -630,6 +632,11 @@
         },
         "details": {
             "status": "Status",
+            "statusType": {
+                "live": "Live",
+                "upcoming": "Upcoming",
+                "ended": "Ended"
+            },
             "duration": "Duration",
             "startDate": "Start date",
             "endDate": "End date"
