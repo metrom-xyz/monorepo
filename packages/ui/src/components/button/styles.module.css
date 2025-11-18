@@ -77,7 +77,7 @@
 
 .primary.lg,
 .secondary.lg {
-    @apply px-4 py-3 text-lg;
+    @apply px-4 py-3 text-lg rounded-xl;
 }
 
 .icon.xs {

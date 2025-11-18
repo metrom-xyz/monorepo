@@ -15,7 +15,7 @@
 }
 
 .root.disabled {
-    @apply pointer-events-none;
+    @apply pointer-events-none opacity-40;
 }
 
 .root.xs {

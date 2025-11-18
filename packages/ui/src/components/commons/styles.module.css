@@ -49,7 +49,7 @@
 
 .input {
     @apply w-full
-        rounded-md
+        rounded-lg
         font-sans
         font-normal
         outline-none
