@@ -1,4 +1,8 @@
-import { toast, Toaster as SonnerToast, type ToasterProps } from "sonner";
+import {
+    toast,
+    Toaster as SonnerToast,
+    type ToasterProps as SonnerToasterProps,
+} from "sonner";
 import type { FunctionComponent, ReactNode, SVGProps } from "react";
 import { X } from "../../assets/x";
 import classNames from "classnames";
@@ -6,28 +10,34 @@ import { Typography } from "../typography";
 
 import styles from "./styles.module.css";
 
+type ToasterVariant = "success" | "warning" | "fail";
+
 export interface ToastNotificationProps {
     toastId: string | number;
     title: string;
     icon?: FunctionComponent<SVGProps<SVGSVGElement>>;
     children?: ReactNode;
-    variant?: "success" | "fail";
+    variant?: ToasterVariant;
     noDismiss?: boolean;
     className?: string;
 }
 
-export function Toaster(props: ToasterProps) {
+export interface ToasterProps extends SonnerToasterProps {
+    variant?: ToasterVariant;
+}
+
+export function Toaster({ variant = "success", ...rest }: ToasterProps) {
     return (
         <SonnerToast
             duration={5000}
             visibleToasts={5}
             expand
             position="bottom-right"
-            {...props}
+            {...rest}
             toastOptions={{
                 unstyled: true,
                 classNames: {
-                    toast: styles.toast,
+                    toast: classNames(styles.toast),
                 },
             }}
         />
@@ -50,28 +60,31 @@ export function ToastNotification({
     const hasIcon = !!Icon;
 
     return (
-        <div className={classNames("root", styles.root, className)}>
+        <div
+            className={classNames("root", styles.root, className, {
+                [styles[variant]]: true,
+            })}
+        >
             <div className={classNames("wrapper", styles.wrapper)}>
-                <div
-                    className={classNames("iconWrapper", styles.iconWrapper, {
-                        [styles.error]: variant === "fail",
-                    })}
-                >
-                    {hasIcon && (
-                        <Icon
-                            className={classNames("icon", styles.icon, {
-                                [styles.error]: variant === "fail",
-                            })}
-                        />
-                    )}
-                </div>
+                {hasIcon && (
+                    <Icon
+                        className={classNames("icon", styles.icon, {
+                            [styles[variant]]: true,
+                        })}
+                    />
+                )}
                 <div
                     className={classNames(
                         "contentWrapper",
                         styles.contentWrapper,
                     )}
                 >
-                    <Typography uppercase variant="tertiary"weight="medium" size="sm">
+                    <Typography
+                        uppercase
+                        variant="tertiary"
+                        weight="medium"
+                        size="sm"
+                    >
                         {title}
                     </Typography>
                     {children}
