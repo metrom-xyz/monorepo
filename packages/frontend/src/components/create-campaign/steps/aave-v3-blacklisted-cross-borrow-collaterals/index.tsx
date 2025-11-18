@@ -244,7 +244,7 @@ export function AaveV3BlacklistedCrossBorrowCollateralsStep({
                                         ({ symbol }) =>
                                             `${t.rich("borrowed", { symbol })}`,
                                     )
-                                    .join(" + ") || "",
+                                    .join(" ") || "",
                             bold: (chunks) => (
                                 <span className={styles.boldText}>
                                     {chunks}

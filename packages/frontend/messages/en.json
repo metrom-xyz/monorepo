@@ -359,8 +359,8 @@
                     "collaterals": "Collaterals",
                     "notApplied": "Not applied",
                     "emptyCollaterals": "No collaterals",
-                    "infoMessage": "Net supply <bold>{symbol}</bold> = Supplied <bold>{symbol}</bold> - ({borrowed}).",
-                    "borrowed": "borrowed {symbol}",
+                    "infoMessage": "Net supply <bold>{symbol}</bold> = Supplied <bold>{symbol}</bold> - (borrowed <bold>{symbol}</bold>{borrowed}).",
+                    "borrowed": " + borrowed {symbol}",
                     "apply": "Apply"
                 }
             },
