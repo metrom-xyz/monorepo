@@ -9,20 +9,24 @@
         flex
         flex-col
         sm:min-w-[360px]
-        bg-zinc-100 dark:bg-dark-background-main
-        overflow-hidden
-        m-5
-        gap-2
-        p-3
-        rounded-4xl;
+        rounded-4xl
+        border
+        surface-primary
+        border-gray-300
+        dark:border-neutral-800
+        overflow-hidden;
 }
 
 .title {
-    @apply w-full flex justify-center mb-2;
+    @apply w-full flex items-center justify-between px-7 py-5;
+}
+
+.closeIcon {
+    @apply text-primary size-3 cursor-pointer;
 }
 
 .walletItem {
-    @apply flex items-center justify-between rounded-md;
+    @apply flex items-center justify-between;
 }
 
 .walletButton {
@@ -30,9 +34,8 @@
         flex
         items-center
         justify-between
-        h-9
-        p-3
-        rounded-lg
+        px-7
+        py-4
         surface-primary
         surface-primary-hover
         cursor-pointer
@@ -46,5 +49,5 @@
 }
 
 .walletIcon {
-    @apply w-10 h-10;
+    @apply size-8;
 }

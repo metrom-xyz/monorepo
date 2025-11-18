@@ -4,7 +4,7 @@ import {
     useWallet,
     WalletItem,
 } from "@aptos-labs/wallet-adapter-react";
-import { Button, Modal, Typography } from "@metrom-xyz/ui";
+import { Button, Modal, Typography, X } from "@metrom-xyz/ui";
 import { cloneElement, useMemo, useState } from "react";
 import { AccountMenu, type Balance } from "../account-menu";
 import type { Address } from "viem";
@@ -125,6 +125,10 @@ export function ConnectButtonMvm({ customComponent }: ConnectButtonProps) {
                             <Typography weight="medium">
                                 {t("wallets.title")}
                             </Typography>
+                            <X
+                                onClick={handleModalOnClose}
+                                className={styles.closeIcon}
+                            />
                         </div>
                         {[...availableWallets, ...installableWallets].map(
                             (wallet) => (
@@ -144,20 +148,10 @@ export function ConnectButtonMvm({ customComponent }: ConnectButtonProps) {
                                                         styles.walletIcon
                                                     }
                                                 />
-                                                <Typography
-                                                    size="sm"
-                                                    weight="medium"
-                                                >
+                                                <Typography weight="medium">
                                                     {wallet.name}
                                                 </Typography>
                                             </div>
-                                            <Typography
-                                                size="sm"
-                                                weight="medium"
-                                                uppercase
-                                            >
-                                                {t("wallets.install")}
-                                            </Typography>
                                         </WalletItem.InstallLink>
                                     ) : (
                                         <WalletItem.ConnectButton
@@ -169,20 +163,10 @@ export function ConnectButtonMvm({ customComponent }: ConnectButtonProps) {
                                                         styles.walletIcon
                                                     }
                                                 />
-                                                <Typography
-                                                    size="sm"
-                                                    weight="medium"
-                                                >
+                                                <Typography weight="medium">
                                                     {wallet.name}
                                                 </Typography>
                                             </div>
-                                            <Typography
-                                                size="sm"
-                                                weight="medium"
-                                                uppercase
-                                            >
-                                                {t("wallets.connect")}
-                                            </Typography>
                                         </WalletItem.ConnectButton>
                                     )}
                                 </WalletItem>
