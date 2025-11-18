@@ -2,7 +2,7 @@
 
 .root {
     @apply w-fit
-        rounded-md
+        rounded-lg
         border-1
         border-gray-300
         dark:border-neutral-600
