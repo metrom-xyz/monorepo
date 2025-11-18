@@ -2,35 +2,58 @@
 
 .root {
     @apply w-full
-        min-w-72
+        min-w-80
         flex
         items-center
         justify-between
-        gap-4;
+        p-3
+        gap-4
+        rounded-lg;
+}
+
+.root {
+    @apply relative overflow-hidden;
+}
+
+.root::before {
+    content: "";
+    @apply absolute -left-1 top-1 bottom-1 w-1.5 rounded-l-lg;
+}
+
+.root.success::before {
+    @apply bg-brand-green-dark dark:bg-brand-green;
+}
+
+.root.warning::before {
+    @apply bg-warning;
+}
+
+.root.fail::before {
+    @apply bg-error;
 }
 
 .toast {
-    @apply absolute right-0 rounded-2xl surface-primary p-3;
+    @apply absolute right-0 rounded-lg surface-primary;
 }
 
 .wrapper {
-    @apply flex items-center gap-4;
-}
-
-.iconWrapper {
-    @apply p-3.5 surface-secondary rounded-lg;
-}
-
-.iconWrapper.error {
-    @apply bg-red-600;
+    @apply flex gap-1;
 }
 
 .icon {
-    @apply w-6 h-6 text-primary;
+    @apply size-4 text-primary;
 }
 
-.icon.error {
-    @apply stroke-white dark:stroke-zinc-100 text-white dark:text-zinc-100;
+.icon.success {
+    @apply text-brand-green-dark dark:text-brand-green;
+}
+
+.icon.warning {
+    @apply text-warning;
+}
+
+.icon.fail {
+    @apply text-error;
 }
 
 .contentWrapper {
