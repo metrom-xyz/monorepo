@@ -80,10 +80,6 @@ export function WeightingStep({
     }, [open, prevWeighting, unsavedChanges]);
 
     function handleStepOnClick() {
-        if (open && !weighting) {
-            setToken0(0);
-            setToken1(0);
-        }
         setOpen((open) => !open);
     }
 
