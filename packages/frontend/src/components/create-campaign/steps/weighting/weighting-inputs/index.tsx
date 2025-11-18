@@ -14,8 +14,8 @@ interface WeightingInputsProps {
     token0?: number;
     token1?: number;
     liquidity?: number;
-    onToken0Change: (value?: number) => void;
-    onToken1Change: (value?: number) => void;
+    onToken0Change: (value: number) => void;
+    onToken1Change: (value: number) => void;
 }
 
 export function WeightingInputs({
