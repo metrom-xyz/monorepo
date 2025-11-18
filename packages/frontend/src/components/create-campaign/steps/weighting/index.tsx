@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { Typography, ErrorText, Switch, Button } from "@metrom-xyz/ui";
+import { Typography, ErrorText, Button } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
 import { Step } from "@/src/components/step";
 import { StepPreview } from "@/src/components/step/preview";
@@ -38,10 +38,9 @@ export function WeightingStep({
     const t = useTranslations("newCampaign.form.base.weighting");
 
     const [open, setOpen] = useState(false);
-    const [enabled, setEnabled] = useState(false);
     const [warning, setWarning] = useState<ErrorMessage>("");
-    const [token0, setToken0] = useState<number | undefined>(weighting?.token0);
-    const [token1, setToken1] = useState<number | undefined>(weighting?.token1);
+    const [token0, setToken0] = useState<number>(weighting?.token0 || 0);
+    const [token1, setToken1] = useState<number>(weighting?.token1 || 0);
 
     const { id: chainId } = useChainWithType();
     const prevWeighting = usePrevious(weighting);
@@ -51,60 +50,39 @@ export function WeightingStep({
     }, [token0, token1]);
 
     const unsavedChanges = useMemo(() => {
+        if (disabled) return false;
+
         return (
             !prevWeighting ||
             prevWeighting.token0 !== token0 ||
             prevWeighting.token1 !== token1 ||
             prevWeighting.liquidity !== liquidity
         );
-    }, [prevWeighting, token0, token1, liquidity]);
+    }, [disabled, prevWeighting, token0, token1, liquidity]);
 
     useEffect(() => {
         setOpen(false);
     }, [chainId]);
 
     useEffect(() => {
-        setOpen(enabled);
-    }, [enabled]);
+        if (disabled || !!weighting) return;
+        setOpen(true);
+    }, [disabled, weighting]);
 
     useEffect(() => {
-        if (enabled && !open && unsavedChanges) setWarning("notApplied");
+        onError({ weighting: !weighting });
+    }, [weighting, onError]);
+
+    useEffect(() => {
+        if (!open && unsavedChanges) setWarning("notApplied");
         else setWarning("");
-    }, [enabled, open, unsavedChanges]);
-
-    useEffect(() => {
-        onError({
-            weighting: enabled && !weighting,
-        });
-    }, [enabled, weighting, onError]);
-
-    // this hooks is used to disable and close the step when
-    // the weighting gets disabled, after the campaign creation
-    useEffect(() => {
-        if (enabled && !!prevWeighting && !weighting) setEnabled(false);
-    }, [enabled, prevWeighting, weighting]);
-
-    // reset state once the step gets disabled
-    useEffect(() => {
-        if (enabled) return;
-        if (weighting) onWeightingChange({ weighting: undefined });
-
-        setToken0(undefined);
-        setToken1(undefined);
-    }, [enabled, weighting, onWeightingChange]);
-
-    function handleSwitchOnClick(
-        _: boolean,
-        event:
-            | React.MouseEvent<HTMLButtonElement>
-            | React.KeyboardEvent<HTMLButtonElement>,
-    ) {
-        event.stopPropagation();
-        setEnabled((enabled) => !enabled);
-    }
+    }, [open, unsavedChanges]);
 
     function handleStepOnClick() {
-        if (!enabled) return;
+        if (open && !weighting) {
+            setToken0(0);
+            setToken1(0);
+        }
         setOpen((open) => !open);
     }
 
@@ -127,7 +105,7 @@ export function WeightingStep({
     return (
         <Step
             disabled={disabled}
-            completed={enabled}
+            completed={!!token0 || !!token1 || !!weighting}
             open={open}
             onPreviewClick={handleStepOnClick}
         >
@@ -150,16 +128,8 @@ export function WeightingStep({
                                 {warning ? t(warning) : null}
                             </ErrorText>
                         </div>
-                        <Switch
-                            tabIndex={-1}
-                            size="lg"
-                            checked={enabled}
-                            onClick={handleSwitchOnClick}
-                        />
                     </div>
                 }
-                decorator={false}
-                disabled={!enabled}
             >
                 <div className={styles.weightsWrapper}>
                     <div className={styles.weight}>
