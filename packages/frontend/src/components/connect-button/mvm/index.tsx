@@ -109,7 +109,6 @@ export function ConnectButtonMvm({ customComponent }: ConnectButtonProps) {
                     })
                 ) : (
                     <Button
-                        size="xs"
                         onClick={handleModalOnOpen}
                         icon={ArrowRightIcon}
                         iconPlacement="right"
