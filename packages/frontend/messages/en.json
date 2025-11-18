@@ -6,9 +6,7 @@
         "connect": "Connect"
     },
     "wallets": {
-        "title": "Connect wallet",
-        "connect": "Connect",
-        "install": "Install"
+        "title": "Connect wallet"
     },
     "footer": {
         "support": "Support",
