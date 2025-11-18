@@ -9,14 +9,14 @@
 }
 
 .connectButton {
-    @apply h-8;
+    @apply h-9;
 }
 
 .walletWrapper {
     @apply sm:px-2
         h-8
         min-w-8
-        rounded-md
+        rounded-lg
         flex
         items-center
         sm:justify-between
