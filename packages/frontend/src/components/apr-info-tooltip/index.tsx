@@ -109,11 +109,13 @@ export function AprInfoTooltip({
                     spaced
                     text={t.rich("aaveV3NetSupply", {
                         collateral: aaveV3Collateral.symbol,
-                        blacklisted: blacklistedCrossBorrowCollaterals
-                            ? `, ${blacklistedCrossBorrowCollaterals
-                                  .map(({ symbol }) => symbol)
-                                  .join(", ")}`
-                            : "",
+                        blacklisted:
+                            blacklistedCrossBorrowCollaterals &&
+                            blacklistedCrossBorrowCollaterals.length > 0
+                                ? `, ${blacklistedCrossBorrowCollaterals
+                                      .map(({ symbol }) => symbol)
+                                      .join(", ")}`
+                                : "",
                         bold: (chunks) => (
                             <span className={styles.bold}>{chunks}</span>
                         ),
