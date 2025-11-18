@@ -70,13 +70,14 @@ export function WeightingStep({
     }, [disabled, weighting]);
 
     useEffect(() => {
-        onError({ weighting: !weighting });
-    }, [weighting, onError]);
+        onError({ weighting: unsavedChanges || !weighting });
+    }, [unsavedChanges, weighting, onError]);
 
     useEffect(() => {
-        if (!open && unsavedChanges) setWarning("notApplied");
+        if ((!open || prevWeighting) && unsavedChanges)
+            setWarning("notApplied");
         else setWarning("");
-    }, [open, unsavedChanges]);
+    }, [open, prevWeighting, unsavedChanges]);
 
     function handleStepOnClick() {
         if (open && !weighting) {
@@ -105,7 +106,7 @@ export function WeightingStep({
     return (
         <Step
             disabled={disabled}
-            completed={!!token0 || !!token1 || !!weighting}
+            completed={!!weighting}
             open={open}
             onPreviewClick={handleStepOnClick}
         >
