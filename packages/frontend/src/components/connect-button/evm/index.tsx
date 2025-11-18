@@ -147,7 +147,6 @@ export function ConnectButtonEvm({ customComponent }: ConnectButtonProps) {
                     })
                 ) : (
                     <Button
-                        size="xs"
                         icon={ArrowRightIcon}
                         iconPlacement="right"
                         onClick={handleOnConnect}
