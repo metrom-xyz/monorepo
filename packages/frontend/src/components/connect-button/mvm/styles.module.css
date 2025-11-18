@@ -30,8 +30,9 @@
         flex
         items-center
         justify-between
-        p-2.5
-        rounded-2xl
+        h-9
+        p-3
+        rounded-lg
         surface-primary
         surface-primary-hover
         cursor-pointer
