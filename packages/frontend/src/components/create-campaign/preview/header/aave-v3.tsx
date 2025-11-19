@@ -27,7 +27,7 @@ export function AaveV3({ payload }: AaveV3Props) {
             </Typography>
             {payload.blacklistedCollaterals &&
                 payload.blacklistedCollaterals.length > 0 && (
-                    <Typography weight="medium" light>
+                    <Typography weight="medium" variant="tertiary">
                         {t.rich(
                             "campaignActions.aaveV3NetSupplyBlocksBorrowing",
                             {
