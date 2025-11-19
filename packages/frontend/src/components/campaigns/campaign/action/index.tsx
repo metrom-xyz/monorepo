@@ -6,7 +6,11 @@ import {
 } from "@metrom-xyz/ui";
 import { PoolRemoteLogo } from "@/src/components/pool-remote-logo";
 import classNames from "classnames";
-import { RestrictionType, TargetType } from "@metrom-xyz/sdk";
+import {
+    DistributablesType,
+    RestrictionType,
+    TargetType,
+} from "@metrom-xyz/sdk";
 import { AmmPoolLiquidity } from "./amm-pool-liquidity";
 import type { Campaign } from "@/src/types/campaign";
 import { LiquityV2 } from "./liquity-v2";
@@ -16,6 +20,7 @@ import { HoldFungibleAsset } from "./hold-fungible-asset";
 import { GmxV1Liquidity } from "./gmx-v1-liquidity";
 import { TurtleClubVault } from "./turtle-club-vault";
 import { useTranslations } from "next-intl";
+import { DynamicPointsBoostChip } from "@/src/components/dynamic-points-boost-chip";
 
 import styles from "./styles.module.css";
 
@@ -62,6 +67,10 @@ export function Action({
 
     const empty = campaign.isTargeting(TargetType.Empty);
 
+    const dynamicPoints = campaign.isDistributing(
+        DistributablesType.DynamicPoints,
+    );
+
     return (
         <div className={classNames(styles.root, className)}>
             {empty && <Empty campaign={campaign} {...sizes} />}
@@ -78,6 +87,12 @@ export function Action({
             )}
             {turtleClubVault && (
                 <TurtleClubVault campaign={campaign} {...sizes} />
+            )}
+            {dynamicPoints && liquityV2 && (
+                <DynamicPointsBoostChip
+                    protocol={campaign.target.brand.slug}
+                    boosting={campaign.distributables.boosting}
+                />
             )}
             {!hideChips && (
                 <div className={styles.chipsWrapper}>
