@@ -31,11 +31,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
     // TODO: find a better solution.
     const [project, campaignId] = rawProject.split("_");
 
-    if (
-        !routing.locales.includes(locale) ||
-        // TODO: do we need per env configuration?
-        !PROJECTS_METADATA[project]
-    )
+    if (!routing.locales.includes(locale) || !PROJECTS_METADATA[project])
         notFound();
 
     setRequestLocale(locale);

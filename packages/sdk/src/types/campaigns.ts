@@ -12,6 +12,7 @@ import type {
     SupportedBridge,
     SupportedGmxV1,
     SupportedLiquityV2,
+    SupportedPointsBooster,
 } from "src/commons";
 import type { CampaignAmmPool } from "./pools";
 
@@ -189,10 +190,17 @@ export interface FixedPointDistributables {
     dailyPer1k?: number;
 }
 
+export interface PointsBoosting {
+    type: SupportedPointsBooster;
+    endpoint: string;
+    multiplier: number;
+}
+
 export interface DynamicPointDistributables {
     type: DistributablesType.DynamicPoints;
     dailyPer1k?: number;
     distributionIntervalSeconds?: number;
+    boosting?: PointsBoosting;
 }
 
 export type CampaignDistributables =

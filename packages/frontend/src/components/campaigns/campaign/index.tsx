@@ -7,7 +7,6 @@ import { Link } from "@/src/i18n/routing";
 import { Card, Skeleton, Typography } from "@metrom-xyz/ui";
 import classNames from "classnames";
 import { Protocol, SkeletonProtocol } from "./protocol";
-import { FixedPoints } from "./fixed-points";
 import {
     BackendCampaignType,
     DistributablesType,
@@ -15,7 +14,7 @@ import {
 } from "@metrom-xyz/sdk";
 import { type Campaign } from "@/src/types/campaign";
 import { formatUsdAmount } from "@/src/utils/format";
-import { DynamicPoints } from "./dynamic-points";
+import { Points } from "./points";
 
 import styles from "./styles.module.css";
 
@@ -60,14 +59,8 @@ export function CampaignRow({ type, campaign }: CampaignProps) {
                         ? formatUsdAmount({ amount: campaign.usdTvl })
                         : "-"}
                 </Typography>
-                {fixedPoints && (
-                    <FixedPoints
-                        status={campaign.status}
-                        {...campaign.distributables}
-                    />
-                )}
-                {dynamicPoints && (
-                    <DynamicPoints
+                {(fixedPoints || dynamicPoints) && (
+                    <Points
                         status={campaign.status}
                         {...campaign.distributables}
                     />

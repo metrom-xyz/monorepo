@@ -6,7 +6,7 @@ import type { Leaderboard, Rank } from "../types/campaign";
 import { type SupportedLiquityV2 } from "@metrom-xyz/sdk";
 import { ENVIRONMENT } from "../commons/env";
 import type { Lv2BackendLeaderboardResponse } from "../types/lv2-points-campaign";
-import { LV2_SERVICE_BASE_URLS } from "../commons/lv2-points";
+import { DYNAMIC_POINTS_BASE_SERVICE_URLS } from "../commons/dynamic-points";
 
 interface UseLv2PointsCampaignLeaderboardParams extends HookBaseParams {
     protocol?: SupportedLiquityV2;
@@ -32,7 +32,7 @@ export function useLv2PointsCampaignLeaderboard({
             try {
                 const url = new URL(
                     "/api/v1/points/leaderboard",
-                    LV2_SERVICE_BASE_URLS[ENVIRONMENT](protocol),
+                    DYNAMIC_POINTS_BASE_SERVICE_URLS[ENVIRONMENT](protocol),
                 );
 
                 url.searchParams.set("page", "1");

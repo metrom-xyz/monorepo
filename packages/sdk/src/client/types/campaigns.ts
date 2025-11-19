@@ -7,6 +7,7 @@ import type {
     SupportedAaveV3,
     SupportedGmxV1,
     SupportedLiquityV2,
+    SupportedPointsBooster,
 } from "src/commons";
 
 export interface BaseTarget {
@@ -97,9 +98,16 @@ export interface BackendFixedPoints {
     amount: string;
 }
 
+export interface BackendPointsBoosting {
+    type: SupportedPointsBooster;
+    endpoint: string;
+    multiplier: number;
+}
+
 export interface BackendDynamicPoints {
     dailyPer1k?: number;
     distributionIntervalSeconds?: number;
+    boosting?: BackendPointsBoosting;
 }
 
 export interface BackendAsset extends BackendErc20Token {
