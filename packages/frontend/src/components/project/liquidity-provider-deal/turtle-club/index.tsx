@@ -1,8 +1,11 @@
 import dynamic from "next/dynamic";
 import { useTheme } from "next-themes";
 import { useAccount } from "@/src/hooks/useAccount";
-import { Typography } from "@metrom-xyz/ui";
+import { TextField, Typography } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
+import { useTurtleDeals } from "@/src/hooks/useTurtleDeals";
+import { useMemo } from "react";
+import { formatUsdAmount } from "@/src/utils/format";
 
 import styles from "./styles.module.css";
 
@@ -63,44 +66,81 @@ export function TurtleClub({ campaignId }: TurtleClubProps) {
     const t = useTranslations("liquidityProviderDeals");
     const { address } = useAccount();
     const { resolvedTheme } = useTheme();
+    const { deals, loading } = useTurtleDeals({ campaignId });
+
+    const totalDealsTvl = useMemo(() => {
+        if (!deals) return null;
+
+        return deals.reduce((prev, deal) => prev + deal.data.tvl, 0);
+    }, [deals]);
 
     return (
-        <div className={styles.dealsWrapper}>
-            <Typography size="lg" weight="medium" uppercase>
-                {t("exploreDeals")}
-            </Typography>
-            <TurtleProvider
-                themeConfig={{
-                    light: {
-                        ...defaultThemeConfig.light,
-                        bgPrimary: "oklch(92.8% 0.006 264.531)",
-                        bgAccent: "#f1f3f5",
-                        textPrimary: "oklch(21% 0.034 264.665)",
-                        textSecondary: "oklch(37.3% 0.034 259.733)",
-                        borderColor: "transparent",
-                    },
-                    dark: {
-                        ...defaultThemeConfig.dark,
-                        bgPrimary: "oklch(14.5% 0 0)",
-                        bgAccent: "oklch(26.9% 0 0)",
-                        textPrimary: "oklch(97% 0 0)",
-                        textSecondary: "oklch(87% 0 0)",
-                        borderColor: "transparent",
-                    },
-                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                    theme: resolvedTheme as any,
-                    shared: {
-                        borderRadius: "0.5rem",
-                        gap: "1rem",
-                        padding: "1rem",
-                        fontFamily: "IBM Plex Sans, ui-sans-serif, sans-serif",
-                        fontSize: "1rem",
-                        fontWeight: "400",
-                    },
-                }}
-            >
-                <Earn campaignId={campaignId} address={address} />
-            </TurtleProvider>
+        <div className={styles.root}>
+            <div className={styles.details}>
+                <TextField
+                    boxed
+                    size="xl"
+                    label={t("tvl")}
+                    loading={loading}
+                    value={formatUsdAmount({
+                        amount: totalDealsTvl,
+                        cutoff: false,
+                    })}
+                />
+                <TextField
+                    boxed
+                    size="xl"
+                    label={t("status")}
+                    value={
+                        <div className={styles.statusWrapper}>
+                            <div className={styles.statusDot}>
+                                <div className={styles.live}></div>
+                            </div>
+                            <Typography weight="medium" size="xl">
+                                {t("live")}
+                            </Typography>
+                        </div>
+                    }
+                />
+            </div>
+            <div className={styles.dealsWrapper}>
+                <Typography size="lg" weight="medium" uppercase>
+                    {t("exploreDeals")}
+                </Typography>
+                <TurtleProvider
+                    themeConfig={{
+                        light: {
+                            ...defaultThemeConfig.light,
+                            bgPrimary: "oklch(92.8% 0.006 264.531)",
+                            bgAccent: "#f1f3f5",
+                            textPrimary: "oklch(21% 0.034 264.665)",
+                            textSecondary: "oklch(37.3% 0.034 259.733)",
+                            borderColor: "transparent",
+                        },
+                        dark: {
+                            ...defaultThemeConfig.dark,
+                            bgPrimary: "oklch(14.5% 0 0)",
+                            bgAccent: "oklch(26.9% 0 0)",
+                            textPrimary: "oklch(97% 0 0)",
+                            textSecondary: "oklch(87% 0 0)",
+                            borderColor: "transparent",
+                        },
+                        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                        theme: resolvedTheme as any,
+                        shared: {
+                            borderRadius: "0.5rem",
+                            gap: "1rem",
+                            padding: "1rem",
+                            fontFamily:
+                                "IBM Plex Sans, ui-sans-serif, sans-serif",
+                            fontSize: "1rem",
+                            fontWeight: "400",
+                        },
+                    }}
+                >
+                    <Earn campaignId={campaignId} address={address} />
+                </TurtleProvider>
+            </div>
         </div>
     );
 }
