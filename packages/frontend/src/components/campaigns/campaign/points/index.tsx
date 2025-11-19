@@ -5,12 +5,12 @@ import { formatAmount } from "@/src/utils/format";
 
 import styles from "./styles.module.css";
 
-interface DynamicPointsProps {
+interface PointsProps {
     status: Status;
     dailyPer1k?: number;
 }
 
-export function DynamicPoints({ status, dailyPer1k }: DynamicPointsProps) {
+export function Points({ status, dailyPer1k }: PointsProps) {
     return (
         <div className={styles.root}>
             <div className={styles.iconWrapper}>

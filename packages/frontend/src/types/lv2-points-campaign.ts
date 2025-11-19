@@ -18,10 +18,6 @@ export interface Lv2BackendLeaderboardResponse {
     totalItems: number;
 }
 
-export interface Lv2BackendLiquidityLandUsersResponse {
-    accounts: Address[];
-}
-
 export interface Action {
     name: string;
     targets: Address[];

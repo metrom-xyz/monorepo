@@ -1,0 +1,38 @@
+@reference "../../app.css";
+
+.root {
+    @apply w-fit rounded-sm p-[1px];
+    background: linear-gradient(90deg, #3374d2, #d01773, #ee144b, #fb5d12);
+}
+
+.chip {
+    @apply surface-primary
+        rounded-sm
+        px-2
+        py-1
+        flex
+        items-center
+        bg-gradient-to-r
+        from-[#3374d21a]
+        via-[#bc27851a]
+        to-[#fd680a1a]
+        transition-colors
+        duration-200
+        ease-in-out;
+}
+
+.chip.active {
+    @apply bg-transparent;
+}
+
+.chip.loading {
+    @apply animate-pulse pointer-events-none;
+}
+
+.text {
+    @apply leading-3;
+}
+
+.text.loading {
+    @apply text-transparent;
+}
