@@ -568,6 +568,10 @@
         "points": "Points",
         "tokens": "Tokens"
     },
+    "pointsBoostChip": {
+        "getBoost": "{boost} boost",
+        "boostActive": "{boost} boosted"
+    },
     "lv2PointsCampaignPage": {
         "title": "Points campaign running on {protocol}",
         "header": {
@@ -581,9 +585,7 @@
         "actions": {
             "title": "Earn {points}",
             "action": "Action",
-            "multiplier": "Multiplier",
-            "getBoost": "Get {boost} more points",
-            "boostActive": "{boost} more points active"
+            "multiplier": "Multiplier"
         },
         "action": {
             "minimumDuration": "Hold your position for <bold>{time}</bold> after completing the action to start farming points.",
@@ -597,7 +599,10 @@
         "distribution": "Distribution"
     },
     "liquidityProviderDeals": {
-        "exploreDeals": "Explore deals"
+        "exploreDeals": "Explore deals",
+        "tvl": "TVL",
+        "status": "Status",
+        "live": "Live"
     },
     "campaignDetails": {
         "title": "Campaign details",

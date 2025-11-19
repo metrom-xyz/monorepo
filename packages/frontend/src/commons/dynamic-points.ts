@@ -1,8 +1,8 @@
-import { Environment, SupportedLiquityV2 } from "@metrom-xyz/sdk";
+import { Environment, type SupportedProtocol } from "@metrom-xyz/sdk";
 
-export const LV2_SERVICE_BASE_URLS: Record<
+export const DYNAMIC_POINTS_BASE_SERVICE_URLS: Record<
     Environment,
-    (protocol: SupportedLiquityV2) => string
+    (protocol: SupportedProtocol) => string
 > = {
     [Environment.Development]: (protocol) =>
         `https://${protocol}.dev.metrom.xyz/`,
