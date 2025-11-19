@@ -93,6 +93,12 @@ export function Action({
                     boosting={campaign.distributables.boosting}
                 />
             )}
+            {dynamicPoints && liquityV2 && (
+                <DynamicPointsBoostChip
+                    protocol={campaign.target.brand.slug}
+                    boosting={campaign.distributables.boosting}
+                />
+            )}
             {!hideChips && (
                 <div className={styles.chipsWrapper}>
                     {campaign.specification?.kpi && (
