@@ -48,16 +48,12 @@
         sm:px-6
         py-4
         mx-5
-        bg-brand-green
+        surface-primary
         rounded-3xl;
 }
 
 .metromLogo {
-    @apply m-7 text-black;
-}
-
-.feedbackText {
-    @apply dark:text-black;
+    @apply mb-4 size-10;
 }
 
 .feedbackActionsContainer {

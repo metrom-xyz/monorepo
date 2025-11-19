@@ -9,7 +9,6 @@ import { buildSpecificationBundle } from "@/src/utils/campaign-bundle";
 import type { LocalizedMessage } from "@/src/types/utils";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
-import { MetromLightLogo } from "@/src/assets/logos/metrom/metrom-light-logo";
 import { useRouter } from "@/src/i18n/routing";
 import { Rewards } from "./rewards";
 import { Header } from "./header";
@@ -36,6 +35,7 @@ import {
     type UseAaveV3CollateralUsdNetSupplyParams,
 } from "@/src/hooks/useAaveV3CollateralUsdNetSupply";
 import { useChainWithType } from "@/src/hooks/useChainWithType";
+import { MetromSquareLogo } from "@/src/assets/logos/metrom/metrom-square-logo";
 
 import styles from "./styles.module.css";
 
@@ -305,7 +305,7 @@ export function CampaignPreview({
 
     return (
         <div className={styles.feedback}>
-            <MetromLightLogo className={styles.metromLogo} />
+            <MetromSquareLogo className={styles.metromLogo} />
             <Typography
                 uppercase
                 weight="medium"
@@ -313,19 +313,11 @@ export function CampaignPreview({
             >
                 {t("congratulations")}
             </Typography>
-            <Typography
-                size="xl2"
-                weight="medium"
-                className={styles.feedbackText}
-            >
+            <Typography size="xl2" weight="medium">
                 {SAFE ? t("launched.safe.1") : t("launched.standard")}
             </Typography>
             {SAFE && (
-                <Typography
-                    size="xl"
-                    weight="medium"
-                    className={styles.feedbackText}
-                >
+                <Typography size="xl" weight="medium">
                     {t("launched.safe.2")}
                 </Typography>
             )}
