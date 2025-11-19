@@ -65,16 +65,20 @@ const Slippage = ({
     return (
         <div ref={rootRef}>
             <div className="flex items-center gap-1">
-                <Typography uppercase light size="xs" weight="medium">
+                <Typography
+                    uppercase
+                    variant="tertiary"
+                    size="xs"
+                    weight="medium"
+                >
                     Slippage tolerance:
                 </Typography>
                 <div ref={setPopoverAnchor}>
                     <Chip
                         size="xs"
-                        clickable
                         active={popoverOpen}
                         onClick={handlePopoverToggle}
-                        className={{ root: "w-12! py-0! px-1! rounded-sm!" }}
+                        className="w-12! py-0! px-1! rounded-sm!"
                     >
                         <Typography
                             size="xs"
@@ -87,20 +91,20 @@ const Slippage = ({
                 </div>
             </div>
             <Popover
-                open={popoverOpen}
-                anchor={popoverAnchor}
                 ref={chainNamePopoverRef}
                 placement="right-start"
+                open={popoverOpen}
+                anchor={popoverAnchor}
+                onOpenChange={setPopoverOpen}
             >
                 <div className="w-full flex flex-col gap-2.5 max-w-72 p-4">
                     <div className="flex gap-2.5">
                         {SLIPPAGE_OPTIONS.map(({ value, label }) => (
                             <Chip
                                 key={value}
-                                clickable
                                 active={slippage === value}
                                 onClick={getSlippageOnClickHandler(value)}
-                                className={{ root: "rounded-md!" }}
+                                className="rounded-md!"
                             >
                                 <Typography weight="medium">{label}</Typography>
                             </Chip>

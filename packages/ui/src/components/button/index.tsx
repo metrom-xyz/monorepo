@@ -9,7 +9,8 @@ import {
     type ReactNode,
     type SVGProps,
 } from "react";
-import { SpinnerIcon } from "../../assets/spinner";
+import { SpinnerDarkIcon } from "../../assets/spinner-dark";
+import { SpinnerLightIcon } from "../../assets/spinner-light";
 
 import styles from "./styles.module.css";
 
@@ -24,7 +25,7 @@ export interface BaseButtonProps {
     };
     icon?: FunctionComponent<SVGProps<SVGSVGElement>>;
     iconPlacement?: "left" | "right";
-    size?: "lg" | "sm" | "xs";
+    size?: "lg" | "sm" | "base" | "xs";
     variant?: "primary" | "secondary";
     border?: boolean;
     children?: ReactNode;
@@ -44,7 +45,7 @@ export type RefType<P extends ButtonProps> = ForwardedRef<
 const Component = (props: ButtonProps, ref: RefType<typeof props>) => {
     const {
         variant = "primary",
-        size = "lg",
+        size = "base",
         disabled,
         onClick,
         loading,
@@ -74,16 +75,30 @@ const Component = (props: ButtonProps, ref: RefType<typeof props>) => {
     let resolvedIcon;
     if (loading)
         resolvedIcon = (
-            <SpinnerIcon
-                className={classNames(
-                    className?.icon,
-                    styles.spinner,
-                    styles.icon,
-                    {
-                        [styles[size]]: true,
-                    },
-                )}
-            />
+            <>
+                <SpinnerDarkIcon
+                    className={classNames(
+                        className?.icon,
+                        styles.spinner,
+                        styles.icon,
+                        styles.dark,
+                        {
+                            [styles[size]]: true,
+                        },
+                    )}
+                />
+                <SpinnerLightIcon
+                    className={classNames(
+                        className?.icon,
+                        styles.spinner,
+                        styles.icon,
+                        styles.light,
+                        {
+                            [styles[size]]: true,
+                        },
+                    )}
+                />
+            </>
         );
     else if (hasIcon)
         resolvedIcon = (
@@ -102,6 +117,7 @@ const Component = (props: ButtonProps, ref: RefType<typeof props>) => {
                     className={classNames(
                         className?.contentWrapper,
                         styles.wrapper,
+                        { [styles[size]]: true },
                     )}
                 >
                     {children}

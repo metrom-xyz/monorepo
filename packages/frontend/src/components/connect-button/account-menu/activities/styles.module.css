@@ -2,13 +2,21 @@
 
 .root {
     @apply flex
+        w-full
         max-h-[352px]
-        sm:max-h-max
+        sm:max-h-[80vh]
         flex-col
-        gap-2
         overflow-y-auto
         scroll-pt-1
         pb-9
         sm:pb-4
         snap-y;
+}
+
+.empty {
+    @apply h-64 sm:h-[37.5rem] flex items-center justify-center flex-col gap-3;
+}
+
+.emptyTextWrapper {
+    @apply flex items-center flex-col;
 }

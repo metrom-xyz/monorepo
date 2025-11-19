@@ -7,6 +7,7 @@ import {
     SupportedLiquityV2,
     SupportedBridge,
     type SupportedProtocol,
+    SupportedGmxV1,
 } from "../commons";
 import type {
     BackendCampaignOrderBy,
@@ -40,6 +41,8 @@ import {
     type HoldFungibleAssetTarget,
     DistributablesType,
     type DynamicPointDistributables,
+    type GmxV1LiquidityTarget,
+    type TurtleClubTarget,
 } from "../types/campaigns";
 import {
     ChainType,
@@ -116,6 +119,10 @@ const DEX_BRAND_NAME: Record<SupportedDex, string> = {
     [SupportedDex.Morphex]: "Morphex",
     [SupportedDex.Izumi]: "Izumi",
     [SupportedDex.Hydrex]: "Hydrex",
+};
+
+const GMX_V1_BRAND_NAME: Record<SupportedGmxV1, string> = {
+    [SupportedGmxV1.Amped]: "Amped",
 };
 
 const LIQUITY_V2_BRAND_NAME: Record<SupportedLiquityV2, string> = {
@@ -266,7 +273,7 @@ export class MetromApiClient {
 
         for (const param in params) {
             const value = params[param as keyof FetchCampaignsParams];
-            if (!value || param === "type") continue;
+            if (value === undefined || param === "type") continue;
 
             if (Array.isArray(value)) {
                 if (value.length === 0) continue;
@@ -1033,6 +1040,16 @@ function processCampaignsResponse(
                 };
                 break;
             }
+            case "gmx-v1-liquidity": {
+                target = <GmxV1LiquidityTarget>{
+                    type: TargetType.GmxV1Liquidity,
+                    brand: {
+                        slug: backendCampaign.target.brand,
+                        name: GMX_V1_BRAND_NAME[backendCampaign.target.brand],
+                    },
+                };
+                break;
+            }
             case "liquity-v2-debt": {
                 target = <LiquityV2DebtTarget>{
                     ...backendCampaign.target,
@@ -1143,6 +1160,13 @@ function processCampaignsResponse(
                 };
                 break;
             }
+            case "turtle-club": {
+                target = <TurtleClubTarget>{
+                    ...backendCampaign.target,
+                    type: TargetType.TurtleClub,
+                };
+                break;
+            }
             case "empty": {
                 target = <EmptyTarget>{
                     ...backendCampaign.target,
@@ -1154,6 +1178,7 @@ function processCampaignsResponse(
         if ("rewards" in backendCampaign) {
             distributables = <TokenDistributables>{
                 type: DistributablesType.Tokens,
+                dailyUsd: backendCampaign.rewards.dailyUsd,
                 list: [],
                 amountUsdValue: 0,
                 remainingUsdValue: 0,
@@ -1175,7 +1200,6 @@ function processCampaignsResponse(
                 distributables.remainingUsdValue += remaining.usdValue;
 
                 distributables.list.push(<TokenDistributable>{
-                    dailyUsd: backendCampaign.rewards.dailyUsd,
                     amount,
                     remaining,
                     token: backendAsset,

@@ -3,7 +3,12 @@ import type { BackendErc20Token } from "./commons";
 import type { Specification } from "src/types/campaigns";
 import type { ChainType, Erc20Token } from "src/types/commons";
 import type { BackendCampaignAmmPool } from "./pools";
-import type { SupportedAaveV3, SupportedLiquityV2 } from "src/commons";
+import type {
+    SupportedAaveV3,
+    SupportedGmxV1,
+    SupportedLiquityV2,
+    SupportedPointsBooster,
+} from "src/commons";
 
 export interface BaseTarget {
     chainType: ChainType;
@@ -35,7 +40,7 @@ export interface BaseBackendLiquityTarget<T> extends BaseTarget {
 
 export interface BackendGmxV1Target extends BaseTarget {
     type: "gmx-v1-liquidity";
-    brand: string;
+    brand: SupportedGmxV1;
 }
 
 export interface BackendAaveV3Target<T> extends BaseTarget {
@@ -72,6 +77,16 @@ export type BackendAaveV3BridgeAndSupplyTarget = BaseTarget & {
     boostingFactor: string;
 };
 
+export type BackendTurtleClubCampaignTarget = BaseTarget & {
+    type: "turtle-club";
+    campaignId: string;
+    id: string;
+    name: string;
+    description: string;
+    campaignIconUrl: string;
+    vaultIconUrl: string;
+};
+
 export interface BackendTokenDistributable {
     token: Address;
     amount: string;
@@ -83,9 +98,16 @@ export interface BackendFixedPoints {
     amount: string;
 }
 
+export interface BackendPointsBoosting {
+    type: SupportedPointsBooster;
+    endpoint: string;
+    multiplier: number;
+}
+
 export interface BackendDynamicPoints {
     dailyPer1k?: number;
     distributionIntervalSeconds?: number;
+    boosting?: BackendPointsBoosting;
 }
 
 export interface BackendAsset extends BackendErc20Token {
@@ -142,7 +164,8 @@ export interface BackendBaseCampaign {
         | BackendAaveV3NetSupplyTarget
         | BackendHoldFungibleAssetTarget
         | BackendAaveV3BridgeAndSupplyTarget
-        | BackendJumperWhitelistedAmmPoolLiquidityTarget;
+        | BackendJumperWhitelistedAmmPoolLiquidityTarget
+        | BackendTurtleClubCampaignTarget;
     specification?: Specification;
     usdTvl?: number;
     apr?: number;

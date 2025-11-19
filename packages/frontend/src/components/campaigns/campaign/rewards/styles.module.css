@@ -9,11 +9,11 @@
 }
 
 .rewardsWrapper {
-    @apply w-full flex items-center gap-1 pointer-events-none sm:pointer-events-auto;
+    @apply w-full flex items-center gap-2 pointer-events-none sm:pointer-events-auto;
 }
 
 .tokenIcons {
-    @apply min-h-full flex flex-1 items-center justify-end gap-[1px];
+    @apply min-h-full flex items-center gap-[1px];
 }
 
 .tokenIcon {
@@ -21,15 +21,39 @@
 }
 
 .tokenIcon:not(:first-child) {
-    @apply -ml-4;
+    @apply -ml-3;
 }
 
 .breakdownContainer {
-    @apply flex flex-col gap-3 p-3;
+    @apply flex flex-col gap-3;
+}
+
+.header {
+    @apply flex justify-between gap-7 items-center;
+}
+
+.totalUsdValueChip {
+    @apply px-1.5 py-1 rounded-sm bg-gray-600 dark:bg-neutral-100;
+}
+
+.totalUsdValueChip > p {
+    @apply text-neutral-50 dark:text-neutral-900;
+}
+
+.rows {
+    @apply flex flex-col gap-1;
+}
+
+.tokenUsdValueChip {
+    @apply px-1.5 py-1 rounded-sm bg-white dark:bg-neutral-700;
+}
+
+.tokenUsdValueChip > p {
+    @apply text-gray-500 dark:text-neutral-100;
 }
 
 .breakdownRow {
-    @apply flex items-center gap-6 justify-between;
+    @apply flex items-center gap-6 justify-between bg-gray-150 dark:bg-neutral-900 rounded-sm px-2 py-1;
 }
 
 .breakdownRow > div {
@@ -37,5 +61,5 @@
 }
 
 .textRewards {
-    @apply text-base min-w-[50px] text-right;
+    @apply text-base min-w-[50px];
 }

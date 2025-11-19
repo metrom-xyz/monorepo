@@ -35,8 +35,8 @@ export function AprChip({
         lg: ["base", "lg"],
         xl: ["lg", "xl"],
         xl2: ["xl", "xl2"],
-        xl4: ["xl2", "xl4"],
-        xl5: ["xl4", "xl5"],
+        xl3: ["xl2", "xl4"],
+        xl4: ["xl3", "xl4"],
     };
 
     const ammPoolLiquidityCampaign = campaign?.isTargeting(

@@ -7,11 +7,15 @@
         gap-3
         px-4
         select-none
+        rounded-lg
+        border
+        border-gray-300
+        dark:border-neutral-600
         transition-colors
         duration-200
         ease-in-out
         hover:cursor-pointer
-        theme-surface-hover;
+        surface-primary-hover;
 }
 
 .collateral {
@@ -19,5 +23,5 @@
 }
 
 .active {
-    @apply theme-surface-active;
+    @apply bg-gray-150 dark:bg-neutral-800;
 }

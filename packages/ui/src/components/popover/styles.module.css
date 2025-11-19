@@ -1,11 +1,21 @@
 @reference "../../theme.css";
 
 .root {
-    @apply rounded-xl
-        border
-        bg-white dark:bg-zinc-800
-        border-zinc-200 dark:border-zinc-600
+    @apply w-fit
+        rounded-lg
+        border-1
+        border-gray-300
+        dark:border-neutral-600
+        p-3
         z-50;
+}
+
+.root.primary {
+    @apply bg-gray-100 dark:bg-neutral-950;
+}
+
+.root.secondary {
+    @apply surface-secondary;
 }
 
 .open {

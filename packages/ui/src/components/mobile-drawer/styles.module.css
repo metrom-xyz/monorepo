@@ -11,17 +11,31 @@
         w-full;
 }
 
+.overlay {
+    @apply z-30
+        flex
+        sm:hidden
+        fixed
+        top-0
+        bottom-0
+        left-0
+        right-0
+        bg-light-overlay
+        dark:bg-dark-overlay;
+}
+
 .drawer {
-    @apply bg-zinc-100 dark:bg-zinc-900
-        rounded-t-4xl
+    @apply surface-primary
+        rounded-t-3xl
         h-full
         w-full
         flex
         flex-col
         gap-6
-        p-6;
+        py-6
+        px-5;
 }
 
 .drawBar {
-    @apply self-center bg-zinc-500 h-1 w-9 rounded-xl;
+    @apply self-center bg-gray-400 dark:bg-neutral-500 h-1 w-9 rounded-xl;
 }

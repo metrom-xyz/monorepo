@@ -10,7 +10,9 @@ import type {
 import type {
     SupportedAaveV3,
     SupportedBridge,
+    SupportedGmxV1,
     SupportedLiquityV2,
+    SupportedPointsBooster,
 } from "src/commons";
 import type { CampaignAmmPool } from "./pools";
 
@@ -18,6 +20,7 @@ export enum CampaignKind {
     AmmPoolLiquidity = 1,
     LiquityV2Debt = 2,
     LiquityV2StabilityPool = 3,
+    GmxV1Liquidity = 4,
     EmptyTarget = 5,
     AaveV3Supply = 6,
     AaveV3Borrow = 7,
@@ -44,6 +47,7 @@ export type CampaignType = BaseCampaignType | PartnerCampaignType;
 export enum TargetType {
     Empty = "empty",
     AmmPoolLiquidity = "amm-pool-liquidity",
+    GmxV1Liquidity = "gmx-v1-liquidity",
     LiquityV2Debt = "liquity-v2-debt",
     LiquityV2StabilityPool = "liquity-v2-stability-pool",
     AaveV3Borrow = "aave-v3-borrow",
@@ -52,6 +56,7 @@ export enum TargetType {
     AaveV3BridgeAndSupply = "aave-v3-bridge-and-supply",
     JumperWhitelistedAmmPoolLiquidity = "jumper-whitelisted-amm-pool-liquidity",
     HoldFungibleAsset = "hold-fungible-asset",
+    TurtleClub = "turtle-club",
 }
 
 export type AmmPoolLiquidityTargetType =
@@ -80,6 +85,11 @@ export interface EmptyTarget extends BaseTarget {
 export interface AmmPoolLiquidityTarget extends BaseTarget {
     type: TargetType.AmmPoolLiquidity;
     pool: CampaignAmmPool;
+}
+
+export interface GmxV1LiquidityTarget extends BaseTarget {
+    type: TargetType.GmxV1Liquidity;
+    brand: Brand<SupportedGmxV1>;
 }
 
 export interface JumperWhitelistedAmmPoolLiquidityTarget extends BaseTarget {
@@ -130,9 +140,20 @@ export interface HoldFungibleAssetTarget extends BaseTarget {
     stakingAssets: Erc20Token[];
 }
 
+export interface TurtleClubTarget extends BaseTarget {
+    type: TargetType.TurtleClub;
+    campaignId: string;
+    id: string;
+    name: string;
+    description: string;
+    campaignIconUrl: string;
+    vaultIconUrl: string;
+}
+
 export type CampaignTarget =
     | EmptyTarget
     | AmmPoolLiquidityTarget
+    | GmxV1LiquidityTarget
     | LiquityV2DebtTarget
     | LiquityV2StabilityPoolTarget
     | AaveV3BorrowTarget
@@ -140,10 +161,10 @@ export type CampaignTarget =
     | AaveV3NetSupplyTarget
     | AaveV3BridgeAndSupplyTarget
     | JumperWhitelistedAmmPoolLiquidityTarget
-    | HoldFungibleAssetTarget;
+    | HoldFungibleAssetTarget
+    | TurtleClubTarget;
 
 export interface TokenDistributable {
-    dailyUsd: number;
     token: UsdPricedErc20Token;
     amount: UsdPricedOnChainAmount;
     remaining: UsdPricedOnChainAmount;
@@ -157,6 +178,7 @@ export enum DistributablesType {
 
 export interface TokenDistributables {
     type: DistributablesType.Tokens;
+    dailyUsd: number;
     list: TokenDistributable[];
     amountUsdValue: number;
     remainingUsdValue: number;
@@ -168,10 +190,17 @@ export interface FixedPointDistributables {
     dailyPer1k?: number;
 }
 
+export interface PointsBoosting {
+    type: SupportedPointsBooster;
+    endpoint: string;
+    multiplier: number;
+}
+
 export interface DynamicPointDistributables {
     type: DistributablesType.DynamicPoints;
     dailyPer1k?: number;
     distributionIntervalSeconds?: number;
+    boosting?: PointsBoosting;
 }
 
 export type CampaignDistributables =
@@ -225,9 +254,9 @@ export interface Restrictions {
 }
 
 export enum Status {
-    Live = "live",
+    Active = "active",
     Upcoming = "upcoming",
-    Ended = "ended",
+    Expired = "expired",
 }
 
 export class Campaign {
@@ -253,8 +282,8 @@ export class Campaign {
             now < this.from
                 ? Status.Upcoming
                 : now > this.to
-                  ? Status.Ended
-                  : Status.Live;
+                  ? Status.Expired
+                  : Status.Active;
     }
 
     isDistributing<T extends DistributablesType>(
@@ -298,9 +327,11 @@ export interface BaseTargetedCampaign<T extends TargetType> {
                       ? JumperWhitelistedAmmPoolLiquidityTarget
                       : T extends TargetType.HoldFungibleAsset
                         ? HoldFungibleAssetTarget
-                        : T extends TargetType.Empty
-                          ? EmptyTarget
-                          : never;
+                        : T extends TargetType.TurtleClub
+                          ? TurtleClubTarget
+                          : T extends TargetType.Empty
+                            ? EmptyTarget
+                            : never;
 }
 
 export type TargetedCampaign<T extends TargetType> = BaseTargetedCampaign<T> &

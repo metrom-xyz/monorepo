@@ -1,7 +1,7 @@
 @reference "../../app.css";
 
 .link {
-    @apply text-brand-green-dark font-medium;
+    @apply text-brand-green-dark dark:text-brand-green font-medium;
 }
 
 .text {

@@ -7,34 +7,35 @@ import { Link } from "@/src/i18n/routing";
 import { Card, Skeleton, Typography } from "@metrom-xyz/ui";
 import classNames from "classnames";
 import { Protocol, SkeletonProtocol } from "./protocol";
-import { Points } from "./points";
-import dayjs from "dayjs";
-import { DistributablesType } from "@metrom-xyz/sdk";
+import {
+    BackendCampaignType,
+    DistributablesType,
+    TargetType,
+} from "@metrom-xyz/sdk";
 import { type Campaign } from "@/src/types/campaign";
 import { formatUsdAmount } from "@/src/utils/format";
+import { Points } from "./points";
 
 import styles from "./styles.module.css";
 
 interface CampaignProps {
+    type: BackendCampaignType;
     campaign: Campaign;
 }
 
-// TODO: reinstate the arrow on hover, but on click, bring the user
-// to the provide liquidity page for the targeted dex
-export function CampaignRow({ campaign }: CampaignProps) {
-    const hoursDuration = dayjs
-        .unix(campaign.to)
-        .diff(dayjs.unix(campaign.from), "hours", false);
-    const daysDuration = hoursDuration / 24;
-
+export function CampaignRow({ type, campaign }: CampaignProps) {
     const rewards = campaign.isDistributing(DistributablesType.Tokens);
     const fixedPoints = campaign.isDistributing(DistributablesType.FixedPoints);
+    const dynamicPoints = campaign.isDistributing(
+        DistributablesType.DynamicPoints,
+    );
+
+    const href = campaign.isTargeting(TargetType.TurtleClub)
+        ? `/projects/katana_${campaign.target.campaignId}#/deal/${campaign.target.id}`
+        : `/campaigns/${campaign.chainType}/${campaign.chainId}/${campaign.id}`;
 
     return (
-        <Link
-            href={`/campaigns/${campaign.chainType}/${campaign.chainId}/${campaign.id}`}
-            className={styles.root}
-        >
+        <Link href={href} className={styles.root}>
             <Card className={styles.card}>
                 <Chain id={campaign.chainId} type={campaign.chainType} />
                 <Protocol campaign={campaign} />
@@ -46,27 +47,28 @@ export function CampaignRow({ campaign }: CampaignProps) {
                     to={campaign.to}
                     status={campaign.status}
                 />
-                <Apr
-                    campaign={campaign}
-                    apr={campaign.apr}
-                    kpi={!!campaign.specification?.kpi}
-                />
+                {type === BackendCampaignType.Rewards && (
+                    <Apr
+                        campaign={campaign}
+                        apr={campaign.apr}
+                        kpi={!!campaign.specification?.kpi}
+                    />
+                )}
                 <Typography weight="medium">
                     {campaign.usdTvl !== undefined
                         ? formatUsdAmount({ amount: campaign.usdTvl })
                         : "-"}
                 </Typography>
-                {fixedPoints && (
+                {(fixedPoints || dynamicPoints) && (
                     <Points
                         status={campaign.status}
-                        amount={campaign.distributables.amount}
-                        daysDuration={daysDuration}
+                        {...campaign.distributables}
                     />
                 )}
                 {rewards && (
                     <Rewards
                         status={campaign.status}
-                        daysDuration={daysDuration}
+                        dailyUsd={campaign.distributables.dailyUsd}
                         rewards={campaign.distributables}
                         chainId={campaign.chainId}
                     />
@@ -76,7 +78,11 @@ export function CampaignRow({ campaign }: CampaignProps) {
     );
 }
 
-export function SkeletonCampaign() {
+interface SkeletonCampaignProps {
+    type: BackendCampaignType;
+}
+
+export function SkeletonCampaign({ type }: SkeletonCampaignProps) {
     return (
         <div className={styles.root}>
             <Card className={classNames(styles.card, styles.loading)}>
@@ -86,7 +92,7 @@ export function SkeletonCampaign() {
                     <SkeletonAction />
                 </div>
                 <SkeletonStatus />
-                <SkeletonApr />
+                {type === BackendCampaignType.Rewards && <SkeletonApr />}
                 <Skeleton width={100} />
                 <SkeletonRewards />
             </Card>

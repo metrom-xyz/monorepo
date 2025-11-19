@@ -12,10 +12,9 @@ import {
     Button,
     ErrorText,
     Switch,
-    Tabs,
-    Tab,
     TextInput,
     Typography,
+    Chip,
 } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
 import {
@@ -131,12 +130,7 @@ export function RestrictionsStep({
         setOpen(enabled);
     }, [enabled]);
 
-    function handleSwitchOnClick(
-        _: boolean,
-        event:
-            | React.MouseEvent<HTMLButtonElement>
-            | React.KeyboardEvent<HTMLButtonElement>,
-    ) {
+    function handleSwitchOnClick(event: React.MouseEvent<HTMLDivElement>) {
         event.stopPropagation();
         setEnabled((enabled) => !enabled);
     }
@@ -144,6 +138,12 @@ export function RestrictionsStep({
     function handleStepOnClick() {
         if (!enabled) return;
         setOpen((open) => !open);
+    }
+
+    function getTypeOnChangeHandler(type: RestrictionType) {
+        return () => {
+            setType(type);
+        };
     }
 
     function handleAddressOnChange(event: ChangeEvent<HTMLInputElement>) {
@@ -231,24 +231,32 @@ export function RestrictionsStep({
                         linkText={t("readMore")}
                     />
                     <div className={styles.inputsWrapper}>
-                        <Tabs value={type} onChange={setType}>
-                            <Tab value={RestrictionType.Blacklist}>
-                                <div className={styles.tab}>
-                                    <Dot color="red" />
-                                    <Typography weight="medium">
-                                        {t("blacklist")}
-                                    </Typography>
-                                </div>
-                            </Tab>
-                            <Tab value={RestrictionType.Whitelist}>
-                                <div className={styles.tab}>
-                                    <Dot color="green" />
-                                    <Typography weight="medium">
-                                        {t("whitelist")}
-                                    </Typography>
-                                </div>
-                            </Tab>
-                        </Tabs>
+                        <div className={styles.chips}>
+                            <Chip
+                                active={type === RestrictionType.Blacklist}
+                                onClick={getTypeOnChangeHandler(
+                                    RestrictionType.Blacklist,
+                                )}
+                                className={styles.chip}
+                            >
+                                <Dot color="red" />
+                                <Typography weight="medium">
+                                    {t("blacklist")}
+                                </Typography>
+                            </Chip>
+                            <Chip
+                                active={type === RestrictionType.Whitelist}
+                                onClick={getTypeOnChangeHandler(
+                                    RestrictionType.Whitelist,
+                                )}
+                                className={styles.chip}
+                            >
+                                <Dot color="green" />
+                                <Typography weight="medium">
+                                    {t("whitelist")}
+                                </Typography>
+                            </Chip>
+                        </div>
                         <div className={styles.textInputWrapper}>
                             <CsvAddressesImport
                                 onImport={setAddresses}
@@ -278,7 +286,12 @@ export function RestrictionsStep({
                     </div>
                     <div className={styles.divider}></div>
                     <div className={styles.listWrapper}>
-                        <Typography weight="medium" light size="xs" uppercase>
+                        <Typography
+                            weight="medium"
+                            variant="tertiary"
+                            size="xs"
+                            uppercase
+                        >
                             {t("list")}
                         </Typography>
                         {addresses.length > 0 && (
