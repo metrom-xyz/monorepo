@@ -34,7 +34,15 @@
 }
 
 .collateral.loading {
-    @apply w-20 h-9 rounded-[2.813rem] animate-pulse bg-zinc-200 dark:bg-dark-surface-2;
+    @apply w-24 h-9 rounded-[6.25rem] bg-gray-200 dark:bg-neutral-800 animate-pulse;
+}
+
+.symbol {
+    @apply text-primary transition-colors duration-200 ease-in-out;
+}
+
+.symbol.active {
+    @apply text-gray-100 dark:text-neutral-900;
 }
 
 .applyButton {
