@@ -68,7 +68,7 @@
     @apply flex
         w-fit
         items-center
-        gap-0.5
+        gap-1
         rounded-[2.5rem]
         px-2
         py-1.5

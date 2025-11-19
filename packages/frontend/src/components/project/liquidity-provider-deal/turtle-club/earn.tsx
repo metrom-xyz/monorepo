@@ -16,7 +16,7 @@ export function Earn({ campaignId, address }: EarnProps) {
     const adapter = useWagmiAdapter();
 
     return (
-        <div className={styles.root}>
+        <div className={styles.earn}>
             <EarnPage
                 referral={TURTLE_REFERRAL_CODE}
                 campaignId={campaignId}
