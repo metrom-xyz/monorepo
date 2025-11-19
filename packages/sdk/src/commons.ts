@@ -67,6 +67,10 @@ export enum SupportedAmm {
     BalancerV3 = "balancer-v3",
 }
 
+export enum SupportedPointsBooster {
+    LiquidityLand = "liquidity-land",
+}
+
 export interface ServiceUrls {
     dataManager: string;
     metrom: string;
