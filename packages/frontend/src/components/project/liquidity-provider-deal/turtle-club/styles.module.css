@@ -1,20 +1,32 @@
 @reference "../../../../app.css";
 
-.root > div {
-    @apply w-full rounded-lg;
+.root {
+    @apply flex flex-col gap-8;
 }
 
-.root > div > div {
+.details {
+    @apply flex flex-col sm:flex-row gap-4;
+}
+
+.earn > div {
+    @apply w-full rounded-xl;
+}
+
+.earn > div > div {
     @apply max-w-full p-0 gap-0;
 }
 
-.root > div,
-.root > div > div > div > div {
+.earn > div,
+.earn > div > div > div > div {
     @apply surface-primary;
 }
 
-.root > div > div > div > div:first-child {
-    @apply px-3 mt-1;
+.earn > div > div > div > div:first-child {
+    @apply pl-3 mt-1;
+}
+
+.earn > div > div > div > div:nth-child(2) {
+    @apply pr-3 mt-3;
 }
 
 .dealsWrapper {
