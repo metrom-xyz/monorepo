@@ -9,7 +9,7 @@ import { ENSO_WIDGET_REFERRAL_CODE } from "@/src/commons";
 import styles from "./styles.module.css";
 
 export function EnsoWidget() {
-    const t = useTranslations("lv2PointsCampaignPage.enso");
+    const t = useTranslations("enso");
 
     const { open } = useAppKit();
 
