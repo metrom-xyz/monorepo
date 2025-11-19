@@ -1,8 +1,4 @@
-import {
-    toast,
-    Toaster as SonnerToast,
-    type ToasterProps as SonnerToasterProps,
-} from "sonner";
+import { toast, Toaster as SonnerToast, type ToasterProps } from "sonner";
 import type { FunctionComponent, ReactNode, SVGProps } from "react";
 import { X } from "../../assets/x";
 import classNames from "classnames";
@@ -22,23 +18,17 @@ export interface ToastNotificationProps {
     className?: string;
 }
 
-export interface ToasterProps extends SonnerToasterProps {
-    variant?: ToasterVariant;
-}
-
-export function Toaster({ variant = "success", ...rest }: ToasterProps) {
+export function Toaster(props: ToasterProps) {
     return (
         <SonnerToast
             duration={5000}
             visibleToasts={5}
             expand
             position="bottom-right"
-            {...rest}
+            {...props}
             toastOptions={{
                 unstyled: true,
-                classNames: {
-                    toast: classNames(styles.toast),
-                },
+                classNames: { toast: styles.toast },
             }}
         />
     );
