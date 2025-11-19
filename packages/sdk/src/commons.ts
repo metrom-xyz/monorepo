@@ -65,6 +65,10 @@ export enum SupportedAmm {
     Izumi = "izumi",
 }
 
+export enum SupportedPointsBooster {
+    LiquidityLand = "liquidity-land",
+}
+
 export interface ServiceUrls {
     dataManager: string;
     metrom: string;
