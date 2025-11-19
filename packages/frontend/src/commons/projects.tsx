@@ -12,6 +12,7 @@ import { OrkiIllustration } from "../assets/logos/projects/orki-illustration";
 import { EbisuIllustration } from "../assets/logos/projects/ebisu-illustration";
 import { LensIllustration } from "../assets/logos/projects/lens-illustration";
 import { AmpedIllustration } from "../assets/logos/projects/amped-illustration";
+import { KatanaIllustration } from "../assets/logos/projects/katana-illustration";
 import { lens } from "viem/chains";
 import { ChainType, SupportedLiquidityProviderDeal } from "@metrom-xyz/sdk";
 
@@ -152,7 +153,6 @@ export const PROJECTS_METADATA: Record<string, ProjectMetadata> = {
             iconBackground: "#FFFFFF",
         },
     },
-    // TODO: find a way to add the missing info for Katana here, like id, owner, url...
     katana: {
         kind: ProjectKind.LiquidityDeals,
         protocol: SupportedLiquidityProviderDeal.TurtleClub,
@@ -162,11 +162,11 @@ export const PROJECTS_METADATA: Record<string, ProjectMetadata> = {
         name: "The Samurai's Call",
         url: "https://app.turtle.club/campaigns/katana",
         icon: KatanaLogo,
-        illustration: EbisuIllustration,
+        illustration: KatanaIllustration,
         branding: {
             main: "#D4E000",
             light: "#DFE0C1",
-            contrast: { light: "", dark: "#222313" },
+            contrast: { light: "#EEF0DA", dark: "#222313" },
             iconBackground: "#11162F",
         },
     },

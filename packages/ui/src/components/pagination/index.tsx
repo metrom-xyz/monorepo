@@ -51,7 +51,8 @@ export function Pagination({
         <div className={styles.root}>
             <div
                 className={classNames(styles.button, styles.step, {
-                    [styles.disabled]: page === 1 || loading,
+                    [styles.disabled]:
+                        page === 1 || loading || totalPages === 0,
                     [styles.loading]: loading,
                 })}
                 onClick={onPrevious}
@@ -71,7 +72,7 @@ export function Pagination({
                             size="xs"
                             weight="semibold"
                             className={classNames(styles.ellipsis, {
-                                [styles.disabled]: loading,
+                                [styles.disabled]: loading || totalPages === 0,
                                 [styles.loading]: loading,
                             })}
                         >
@@ -85,7 +86,7 @@ export function Pagination({
                         className={classNames(styles.button, {
                             [styles.active]: active || loading,
                             [styles.loading]: loading,
-                            [styles.disabled]: loading,
+                            [styles.disabled]: loading || totalPages === 0,
                         })}
                     >
                         <Typography size="xs" weight="semibold">
@@ -97,7 +98,8 @@ export function Pagination({
             <div
                 onClick={onNext}
                 className={classNames(styles.button, styles.step, {
-                    [styles.disabled]: page === totalPages || loading,
+                    [styles.disabled]:
+                        page === totalPages || loading || totalPages === 0,
                     [styles.loading]: loading,
                 })}
             >
