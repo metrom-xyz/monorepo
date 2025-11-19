@@ -24,6 +24,7 @@ export const METROM_APTOS_BASE_URL =
         : "https://aptos.dev.metrom.xyz";
 
 export const TURTLE_API_BASE_URL = "https://earn.turtle.vision";
+export const TURTLE_REFERRAL_CODE = "D8B9mk2Z";
 
 export const POINTS_BOOSTER_REFERRAL_URLS: Record<
     SupportedPointsBooster,

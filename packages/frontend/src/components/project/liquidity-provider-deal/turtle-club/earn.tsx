@@ -1,6 +1,6 @@
 "use client";
 
-import { TURTLE_REFERRAL_CODE } from "@/src/commons/turtle-campaigns";
+import { TURTLE_REFERRAL_CODE } from "@/src/commons";
 import { useAppKit } from "@reown/appkit/react";
 import { EarnPage, useWagmiAdapter } from "@turtledev/react";
 

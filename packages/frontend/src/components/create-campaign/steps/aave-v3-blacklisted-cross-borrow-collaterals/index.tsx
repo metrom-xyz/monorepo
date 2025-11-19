@@ -143,12 +143,7 @@ export function AaveV3BlacklistedCrossBorrowCollateralsStep({
         onBlacklistedCrossBorrowCollateralsChange,
     ]);
 
-    function handleSwitchOnClick(
-        _: boolean,
-        event:
-            | React.MouseEvent<HTMLButtonElement>
-            | React.KeyboardEvent<HTMLButtonElement>,
-    ) {
+    function handleSwitchOnClick(event: React.MouseEvent<HTMLDivElement>) {
         event.stopPropagation();
         setEnabled((enabled) => !enabled);
     }
@@ -252,7 +247,12 @@ export function AaveV3BlacklistedCrossBorrowCollateralsStep({
                             ),
                         })}
                     />
-                    <Typography uppercase weight="medium" size="sm" light>
+                    <Typography
+                        uppercase
+                        weight="medium"
+                        size="sm"
+                        variant="tertiary"
+                    >
                         {t("collaterals")}
                     </Typography>
                     <div className={styles.collaterals}>
@@ -287,7 +287,6 @@ export function AaveV3BlacklistedCrossBorrowCollateralsStep({
                                 return (
                                     <Chip
                                         key={collateral.address}
-                                        clickable
                                         active={active}
                                         onClick={getCollateralOnPickHandler(
                                             collateral,
@@ -299,7 +298,13 @@ export function AaveV3BlacklistedCrossBorrowCollateralsStep({
                                                 chain={collateral.chainId}
                                                 size="xs"
                                             />
-                                            <Typography weight="medium">
+                                            <Typography
+                                                weight="medium"
+                                                className={classNames(
+                                                    styles.symbol,
+                                                    { [styles.active]: active },
+                                                )}
+                                            >
                                                 {collateral.symbol}
                                             </Typography>
                                         </div>
