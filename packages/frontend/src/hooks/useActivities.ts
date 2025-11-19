@@ -77,7 +77,9 @@ export function useActivities({ enabled = true }: UseActivitiesParams = {}): {
                     {} as Record<number, GroupedActivities>,
                 );
 
-                return Object.values(groupedActivities);
+                return Object.values(groupedActivities).sort(
+                    (a, b) => b.timestamp - a.timestamp,
+                );
             } catch (error) {
                 console.error(
                     `Could not fetch activity for address ${address} in chain id ${chainId}: ${error}`,
