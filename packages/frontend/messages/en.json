@@ -568,35 +568,13 @@
         "points": "Points",
         "tokens": "Tokens"
     },
+    "enso": {
+        "title": "Deposit to stakeDAO vault",
+        "subtitle": "StakeDAO vault provides 2.5X more CRV rewards"
+    },
     "pointsBoostChip": {
         "getBoost": "{boost} boost",
         "boostActive": "{boost} boosted"
-    },
-    "lv2PointsCampaignPage": {
-        "title": "Points campaign running on {protocol}",
-        "header": {
-            "title": "{protocol} campaign"
-        },
-        "details": {
-            "type": "Campaign type",
-            "points": "Points campaign",
-            "createdBy": "Created by"
-        },
-        "actions": {
-            "title": "Earn {points}",
-            "action": "Action",
-            "multiplier": "Multiplier"
-        },
-        "action": {
-            "minimumDuration": "Hold your position for <bold>{time}</bold> after completing the action to start farming points.",
-            "netSwapVolumeEbUSD": "Users get incentivized to buy ebUSD and hold them. The points for ebUSD are distributed once every <bold>{time}</bold>."
-        },
-        "enso": {
-            "title": "Deposit to stakeDAO vault",
-            "subtitle": "StakeDAO vault provides 2.5X more CRV rewards"
-        },
-        "noPoints": "You don't have any {points}.",
-        "distribution": "Distribution"
     },
     "liquidityProviderDeals": {
         "exploreDeals": "Explore deals",
