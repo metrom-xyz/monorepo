@@ -1,7 +1,7 @@
 import { Typography, Button, Card } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
 import { useAccount } from "@/src/hooks/useAccount";
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
 import { formatAmount, formatUsdAmount } from "@/src/utils/format";
 import { trackFathomEvent } from "@/src/utils/fathom";
@@ -61,6 +61,16 @@ export function TokenReimbursementMvm({
     } = useSimulateTransaction({
         data: recoverRewardsTxPayload,
     });
+
+    useEffect(() => {
+        if (simulatingRecover || (simulatedRecover && simulatedRecover.success))
+            return;
+
+        console.warn(
+            `Recover simulation failed with error ${simulatedRecover?.vm_status}`,
+            simulatedRecover,
+        );
+    }, [simulatingRecover, simulatedRecover]);
 
     const { signAndSubmitTransactionAsync } = useSignAndSubmitTransaction();
 

@@ -1,6 +1,6 @@
 import { Typography, Button, Card } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
 import { formatAmount, formatUsdAmount } from "@/src/utils/format";
 import { trackFathomEvent } from "@/src/utils/fathom";
@@ -61,6 +61,16 @@ export function TokenClaimMvm({
     } = useSimulateTransaction({
         data: claimRewardsTxPayload,
     });
+
+    useEffect(() => {
+        if (simulatingClaim || (simulatedClaim && simulatedClaim.success))
+            return;
+
+        console.warn(
+            `Claim simulation failed with error ${simulatedClaim?.vm_status}`,
+            simulatedClaim,
+        );
+    }, [simulatingClaim, simulatedClaim]);
 
     const { signAndSubmitTransactionAsync } = useSignAndSubmitTransaction();
 
