@@ -84,11 +84,11 @@ export function CreateCampaign() {
 
     return (
         <div className={styles.root}>
-            <Typography weight="medium" size="lg" uppercase>
+            <Typography weight="semibold" size="xl2">
                 {t("title")}
             </Typography>
             <Typography
-                weight="medium"
+                size="lg"
                 variant="tertiary"
                 className={styles.description}
             >
