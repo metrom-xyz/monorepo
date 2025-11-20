@@ -12,27 +12,16 @@
     @apply mb-2;
 }
 
-.row {
-    @apply w-full 
-        flex
-        items-center
-        justify-between
-        p-3
-        gap-3
-        rounded-lg;
+.buttonRoot {
+    @apply w-full;
 }
 
-.rowAnimated {
-    @apply cursor-pointer
-        bg-zinc-100 dark:bg-zinc-900
-        hover:bg-zinc-200 dark:hover:bg-zinc-700
-        transition-colors
-        ease-in-out
-        duration-200;
+.buttonContentWrapper {
+    @apply w-full flex gap-3 justify-between items-center;
 }
 
-.rowActive {
-    @apply bg-zinc-200 dark:bg-zinc-700 surface-primary-hover;
+.active {
+    @apply bg-gray-950/[8%] dark:bg-neutral-100/[12%];
 }
 
 .chainNameWrapper {

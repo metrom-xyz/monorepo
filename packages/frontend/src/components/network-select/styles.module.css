@@ -29,7 +29,7 @@
 }
 
 .wrong {
-    @apply bg-error;
+    @apply bg-error hover:bg-error;
 }
 
 .icon {

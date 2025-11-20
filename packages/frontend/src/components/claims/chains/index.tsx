@@ -1,5 +1,5 @@
 import classNames from "classnames";
-import { Typography, Skeleton, Card } from "@metrom-xyz/ui";
+import { Typography, Skeleton, Card, Button } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
 import { formatUsdAmount } from "@/src/utils/format";
 import type { ChainData } from "@metrom-xyz/chains";
@@ -24,7 +24,11 @@ export function Chains({ className, options, value, onChange }: ChainsProps) {
 
     return (
         <Card className={classNames(styles.root, className)}>
-            <Typography variant="tertiary"weight="medium" className={styles.header}>
+            <Typography
+                variant="tertiary"
+                weight="medium"
+                className={styles.header}
+            >
                 {t("chain")}
             </Typography>
             <div className={styles.chainsWrapper}>
@@ -32,17 +36,16 @@ export function Chains({ className, options, value, onChange }: ChainsProps) {
                     const ChainIcon = option.data.icon;
 
                     return (
-                        <div
+                        <Button
                             key={option.chainId}
+                            variant="secondary"
                             onClick={() => onChange(option.chainId)}
-                            className={classNames(
-                                styles.row,
-                                styles.rowAnimated,
-                                {
-                                    [styles.rowActive]:
-                                        option.chainId === value,
-                                },
-                            )}
+                            className={{
+                                root: classNames(styles.buttonRoot, {
+                                    [styles.active]: option.chainId === value,
+                                }),
+                                contentWrapper: styles.buttonContentWrapper,
+                            }}
                         >
                             <div className={styles.chainNameWrapper}>
                                 <ChainIcon className={styles.chainIcon} />
@@ -53,7 +56,7 @@ export function Chains({ className, options, value, onChange }: ChainsProps) {
                                     amount: option.totalUsdValue,
                                 })}
                             </Typography>
-                        </div>
+                        </Button>
                     );
                 })}
             </div>
@@ -69,13 +72,17 @@ export function ChainsSkeleton() {
             <Skeleton width={60} className={styles.header} />
             {PLACEHOLDER.map((_, i) => {
                 return (
-                    <div key={i} className={styles.row}>
-                        <div className={styles.chainNameWrapper}>
-                            <Skeleton className={styles.chainIcon} />
-                            <Skeleton width={70} />
-                        </div>
-                        <Skeleton width={40} />
-                    </div>
+                    <Button
+                        key={i}
+                        loading
+                        variant="secondary"
+                        className={{
+                            root: styles.buttonRoot,
+                            contentWrapper: classNames(
+                                styles.buttonContentWrapper,
+                            ),
+                        }}
+                    ></Button>
                 );
             })}
         </Card>
