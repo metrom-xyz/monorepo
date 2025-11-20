@@ -19,14 +19,15 @@
 .action {
     @apply h-full
         max-w-[27rem]
-        surface-primary-hover
+        hover:bg-gray-150
+        dark:hover:bg-neutral-800
         transition-colors
         duration-200
         ease-in-out;
 }
 
 .actionBody {
-    @apply h-full flex flex-col sm:flex-row gap-4 items-center sm:items-start;
+    @apply h-full flex flex-col sm:flex-row gap-4 items-center;
 }
 
 .actionIcon {
@@ -41,8 +42,8 @@
         min-h-[5.75rem]
         p-3
         rounded-2xl
-        surface-secondary
-        dark:bg-zinc-800;
+        bg-gray-200
+        dark:bg-neutral-950;
 }
 
 .rightContent {
