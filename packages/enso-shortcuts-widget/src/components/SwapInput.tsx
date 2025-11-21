@@ -84,7 +84,7 @@ const SwapInput = ({
     }
 
     return (
-        <div className="w-full flex flex-col gap-2 p-2 rounded-2xl border border-zinc-500 min-h-[6.5rem]">
+        <div className="w-full flex flex-col gap-2 p-2 rounded-2xl border border-gray-500 min-h-[6.5rem]">
             <div className="flex w-full gap-2">
                 <TokenSelector
                     project={project}
