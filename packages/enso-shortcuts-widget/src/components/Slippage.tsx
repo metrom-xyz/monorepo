@@ -91,13 +91,14 @@ const Slippage = ({
                 </div>
             </div>
             <Popover
+                root={popoverAnchor}
                 ref={chainNamePopoverRef}
                 placement="right-start"
                 open={popoverOpen}
                 anchor={popoverAnchor}
                 onOpenChange={setPopoverOpen}
             >
-                <div className="w-full flex flex-col gap-2.5 max-w-72 p-4">
+                <div className="w-full flex flex-col gap-2.5">
                     <div className="flex gap-2.5">
                         {SLIPPAGE_OPTIONS.map(({ value, label }) => (
                             <Chip

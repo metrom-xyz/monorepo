@@ -359,7 +359,7 @@ const TokenSelector = ({
     const SelectorContent = (
         <div className="w-full max-w-[450px] h-[500px]">
             <div className="flex flex-col w-full h-full gap-2.5">
-                <div className="flex justify-between gap-2 sm:px-4 sm:pt-4">
+                <div className="flex justify-between gap-2 sm:px-3 sm:pt-3">
                     <ChainSelector
                         disabled={!!project}
                         value={selectionChainId}
@@ -381,7 +381,7 @@ const TokenSelector = ({
                     onChange={(e) =>
                         obligatedToken || setSearchText(e.target.value)
                     }
-                    className="sm:px-4 [&>.inputWrapper>input]:bg-zinc-200! dark:[&>.inputWrapper>input]:bg-dark-surface-primary!"
+                    className="sm:px-4 [&>.inputWrapper>input]:bg-gray-200! dark:[&>.inputWrapper>input]:bg-dark-surface-primary!"
                 />
                 <div className="flex justify-between items-center sm:px-4">
                     <Typography
@@ -439,12 +439,13 @@ const TokenSelector = ({
                     {SelectorContent}
                 </MobileDrawer>
                 <Popover
+                    root={popoverAnchor}
                     ref={chainNamePopoverRef}
                     open={selectorOpen}
                     anchor={popoverAnchor}
                     placement="right-start"
                     onOpenChange={setSelectorOpen}
-                    className="hidden sm:flex"
+                    className="hidden sm:flex p-0!"
                 >
                     {SelectorContent}
                 </Popover>
@@ -455,7 +456,7 @@ const TokenSelector = ({
                         border={false}
                         onClick={handleSelectorToggle}
                         className={{
-                            root: "min-h-16! min-w-32! py-2! px-3! bg-transparent! hover:bg-zinc-200! hover:dark:bg-zinc-700!",
+                            root: "min-h-16! min-w-32! py-2! px-3! bg-transparent! hover:bg-gray-200! hover:dark:bg-neutral-700!",
                         }}
                     >
                         {loading ? (
