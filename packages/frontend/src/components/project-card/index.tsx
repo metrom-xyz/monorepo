@@ -8,6 +8,7 @@ import type { Branding } from "@/src/types/project";
 import { ChainType } from "@metrom-xyz/sdk";
 import { getCrossVmChainData } from "@/src/utils/chain";
 import { useTheme } from "next-themes";
+import { ProjectCampaignsTotals } from "../project-campaigns-totals";
 
 import styles from "./styles.module.css";
 
@@ -32,8 +33,8 @@ export function ProjectCard({
     href,
     types,
     chains,
-    // activeCampaigns,
-    // totalCampaigns,
+    activeCampaigns,
+    totalCampaigns,
     branding,
     icon: Icon,
     illustration: Illustration,
@@ -102,11 +103,10 @@ export function ProjectCard({
                             >
                                 {name}
                             </Typography>
-                            {/* TODO: add this once we have the projects API */}
-                            {/* <ProjectCampaignsTotals
+                            <ProjectCampaignsTotals
                                 total={totalCampaigns}
                                 active={activeCampaigns}
-                            /> */}
+                            />
                         </div>
                     </div>
                 </div>

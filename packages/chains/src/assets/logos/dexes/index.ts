@@ -1,6 +1,7 @@
 export * from "./algebra-integral";
 export * from "./baseswap";
 export * from "./carbon";
+export * from "./curve";
 export * from "./fibonacci";
 export * from "./kim";
 export * from "./scribe";
