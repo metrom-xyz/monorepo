@@ -1,11 +1,21 @@
 import { EthLogo } from "../assets/logos/chains/eth";
 import { mainnet } from "viem/chains";
 import type { ChainData } from "../types/chains";
-import { ProtocolType } from "../types/protocol";
-import { SupportedLiquityV2, TargetType } from "@metrom-xyz/sdk";
-import { EbisuLogo } from "../assets";
+import { DepositUrlType, ProtocolType } from "../types/protocol";
+import {
+    SupportedDex,
+    SupportedLiquidityProviderDeal,
+    SupportedLiquityV2,
+    TargetType,
+} from "@metrom-xyz/sdk";
+import {
+    CurveLogo,
+    EbisuLogo,
+    TurtleDarkLogo,
+    TurtleLightLogo,
+} from "../assets";
 
-// This is required for the Turtle integration
+// This is required for the Turtle integration and for dynamic points campaigns
 export const mainnetData: ChainData = {
     active: false,
     name: mainnet.name,
@@ -27,11 +37,30 @@ export const mainnetData: ChainData = {
                 symbol: "ebUSD",
             },
             actionUrls: {
-                [TargetType.LiquityV2Debt]:
-                    "https://ebisu.money/borrow/ethereum",
-                [TargetType.LiquityV2StabilityPool]:
-                    "https://ebisu.money/earn/ethereum",
+                [TargetType.LiquityV2Debt]: "https://ebisu.money/borrow",
+                [TargetType.LiquityV2StabilityPool]: "https://ebisu.money/earn",
             },
+        },
+        {
+            active: false,
+            type: ProtocolType.Dex,
+            slug: SupportedDex.Curve,
+            logo: CurveLogo,
+            name: "Curve",
+            depositUrl: {
+                template: "https://www.curve.finance/dex/ethereum/pools",
+                type: DepositUrlType.PathPoolAddress,
+            },
+            supportsFetchAllPools: true,
+        },
+        {
+            type: ProtocolType.LiquidityProviderDeal,
+            active: false,
+            logo: TurtleDarkLogo,
+            logoLight: TurtleLightLogo,
+            name: "Turtle Club",
+            slug: SupportedLiquidityProviderDeal.Turtle,
+            actionUrl: "https://app.turtle.xyz/campaigns/katana",
         },
     ],
     baseTokens: [],

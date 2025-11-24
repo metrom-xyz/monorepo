@@ -10,15 +10,10 @@ import { ProjectKind } from "@/src/types/project";
 
 import styles from "./styles.module.css";
 
-const PAGE_SIZE = 10;
-
 export function ProjectsList() {
     const t = useTranslations("allCampaigns.projects");
 
-    const { loading, fetching, placeholderData, projects } = useProjects({
-        page: 1,
-        pageSize: PAGE_SIZE,
-    });
+    const { loading, fetching, placeholderData, projects } = useProjects();
 
     return (
         <div className={styles.root}>
@@ -48,20 +43,26 @@ export function ProjectsList() {
                     </div>
                 ) : (
                     projects.map((project) => {
-                        const { name } = project;
+                        const { slug } = project;
 
-                        const metadata = PROJECTS_METADATA[name];
+                        const metadata = PROJECTS_METADATA[slug];
+                        if (!metadata) return null;
+
                         const href =
                             metadata.kind === ProjectKind.LiquidityDeals
-                                ? `/projects/${name}_${metadata.campaignId}`
-                                : `/projects/${name}`;
+                                ? `/projects/${slug}_${metadata.campaignId}`
+                                : `/projects/${slug}`;
 
                         return (
                             <ProjectCard
-                                key={name}
+                                key={slug}
                                 href={href}
                                 {...project}
+                                totalCampaigns={project.campaigns.total}
+                                activeCampaigns={project.campaigns.active}
                                 name={metadata.name}
+                                types={metadata.types}
+                                chains={metadata.chains}
                                 icon={metadata.icon}
                                 illustration={metadata.illustration}
                                 branding={metadata.branding}

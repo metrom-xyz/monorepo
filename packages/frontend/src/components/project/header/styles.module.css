@@ -13,7 +13,7 @@
 }
 
 .projectIcon {
-    @apply w-16 h-16 rounded-full;
+    @apply w-14 h-14 rounded-full;
 }
 
 .rightContent {

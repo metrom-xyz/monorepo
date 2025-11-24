@@ -18,7 +18,7 @@ import { AaveV3 } from "./aave-v3";
 import { Empty } from "./empty";
 import { HoldFungibleAsset } from "./hold-fungible-asset";
 import { GmxV1Liquidity } from "./gmx-v1-liquidity";
-import { TurtleClubVault } from "./turtle-club-vault";
+import { TurtleVault } from "./turtle-vault";
 import { useTranslations } from "next-intl";
 import { DynamicPointsBoostChip } from "@/src/components/dynamic-points-boost-chip";
 
@@ -63,7 +63,7 @@ export function Action({
         TargetType.HoldFungibleAsset,
     );
 
-    const turtleClubVault = campaign.isTargeting(TargetType.TurtleClub);
+    const turtleVault = campaign.isTargeting(TargetType.Turtle);
 
     const empty = campaign.isTargeting(TargetType.Empty);
 
@@ -85,9 +85,7 @@ export function Action({
             {holdFungibleAsset && (
                 <HoldFungibleAsset campaign={campaign} {...sizes} />
             )}
-            {turtleClubVault && (
-                <TurtleClubVault campaign={campaign} {...sizes} />
-            )}
+            {turtleVault && <TurtleVault campaign={campaign} {...sizes} />}
             {dynamicPoints && liquityV2 && (
                 <DynamicPointsBoostChip
                     protocol={campaign.target.brand.slug}

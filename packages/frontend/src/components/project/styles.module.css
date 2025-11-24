@@ -4,8 +4,12 @@
     @apply w-full max-w-screen-xl flex flex-col items-center px-4 sm:px-0 gap-4 md:gap-8;
 }
 
+.widgets {
+    @apply w-full flex;
+}
+
 .tableWrapper {
-    @apply w-full flex flex-col mt-6;
+    @apply w-full flex flex-col;
 }
 
 .table {
