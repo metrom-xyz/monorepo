@@ -11,6 +11,7 @@ import { PointsIcon } from "@/src/assets/points-icon";
 import { useTranslations } from "next-intl";
 import { TokensIcon } from "@/src/assets/tokens-icon";
 import { LiquidityProviderDeal } from "./liquidity-provider-deal";
+import { PROJECTS_WIDGETS } from "@/src/commons/project-widgets";
 
 import styles from "./styles.module.css";
 
@@ -37,10 +38,13 @@ export function Project({ project, campaignId }: ProjectProps) {
         intro,
     } = details;
 
+    const Widget = PROJECTS_WIDGETS[project];
+
     return (
         <div className={styles.root}>
             <Header
                 name={name}
+                slug={project}
                 url={url}
                 description={description}
                 branding={branding}
@@ -48,6 +52,11 @@ export function Project({ project, campaignId }: ProjectProps) {
                 illustration={illustration}
             />
             {intro && <ProjectIntro {...intro} />}
+            {Widget && (
+                <div className={styles.widgets}>
+                    <Widget />
+                </div>
+            )}
             {kind === ProjectKind.PointsTracking && (
                 <div className={styles.tableWrapper}>
                     <Tabs

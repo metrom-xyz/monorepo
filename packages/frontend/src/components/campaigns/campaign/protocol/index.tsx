@@ -39,7 +39,7 @@ export function Protocol({ campaign }: ProtocolProps) {
             case TargetType.AaveV3BridgeAndSupply: {
                 return protocol.slug === campaign.target.brand.slug;
             }
-            case TargetType.TurtleClub: {
+            case TargetType.Turtle: {
                 return (
                     protocol.slug ===
                     (campaign.target

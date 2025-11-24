@@ -77,14 +77,31 @@ export type BackendAaveV3BridgeAndSupplyTarget = BaseTarget & {
     boostingFactor: string;
 };
 
-export type BackendTurtleClubCampaignTarget = BaseTarget & {
-    type: "turtle-club";
-    campaignId: string;
+export interface BackendTurtleIncentive {
     id: string;
     name: string;
+    iconUrl: string;
+    apr: number | null;
+}
+
+export type BackendTurtleCampaignTarget = BaseTarget & {
+    type: "turtle";
+    productId: string;
+    opportunityId: string;
+    name: string;
     description: string;
-    campaignIconUrl: string;
-    vaultIconUrl: string;
+    iconUrl: string;
+    incentives: BackendTurtleIncentive[];
+    performanceFee: number | null;
+    managementFee: number | null;
+    depositFee: number | null;
+    withdrawalFee: number | null;
+};
+
+export type BackendAmmPoolNetSwapVolumeTarget = BaseTarget & {
+    type: "amm-pool-net-swap-volume";
+    ammPool: BackendCampaignAmmPool;
+    targetToken: Erc20Token;
 };
 
 export interface BackendTokenDistributable {
@@ -165,7 +182,8 @@ export interface BackendBaseCampaign {
         | BackendHoldFungibleAssetTarget
         | BackendAaveV3BridgeAndSupplyTarget
         | BackendJumperWhitelistedAmmPoolLiquidityTarget
-        | BackendTurtleClubCampaignTarget;
+        | BackendTurtleCampaignTarget
+        | BackendAmmPoolNetSwapVolumeTarget;
     specification?: Specification;
     usdTvl?: number;
     apr?: number;

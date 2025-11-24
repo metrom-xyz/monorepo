@@ -4,11 +4,18 @@ import { Typography } from "@metrom-xyz/ui";
 import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
 import { useTranslations } from "next-intl";
 import type { Branding } from "@/src/types/project";
+import { useProject } from "@/src/hooks/useProject";
+import { PROJECTS_METADATA } from "@/src/commons/projects";
+import {
+    ProjectCampaignsTotals,
+    SekeletonProjectCampaignsTotals,
+} from "../../project-campaigns-totals";
 
 import styles from "./styles.module.css";
 
 interface HeaderProps {
     name: string;
+    slug: string;
     description: string;
     branding: Branding;
     url: string;
@@ -18,6 +25,7 @@ interface HeaderProps {
 
 export function Header({
     name,
+    slug,
     description,
     branding,
     url,
@@ -26,7 +34,10 @@ export function Header({
 }: HeaderProps) {
     const t = useTranslations("projectPage.header");
 
-    // const { project, loading } = useProject({ name });
+    const { project, loading } = useProject({ slug });
+
+    const metadata = PROJECTS_METADATA[slug];
+    if (!metadata) return null;
 
     return (
         <div
@@ -40,7 +51,10 @@ export function Header({
                 className={styles.projectIconWrapper}
                 style={{ backgroundColor: branding.iconBackground }}
             >
-                <Icon className={styles.projectIcon} />
+                <Icon
+                    style={{ color: metadata.branding.main }}
+                    className={styles.projectIcon}
+                />
             </div>
             <div className={styles.rightContent}>
                 <div className={styles.title}>
@@ -51,17 +65,9 @@ export function Header({
                     >
                         {t("title", { protocol: name })}
                     </Typography>
-                    {/* TODO: add back once we fetch from API */}
-                    {/* <div className={styles.types}>
-                        {loading || !project ? (
-                            <div
-                                className={classNames(
-                                    styles.type,
-                                    styles.loading,
-                                )}
-                            />
-                        ) : (
-                            project.types.map((type) => (
+                    {metadata.types.length > 0 && (
+                        <div className={styles.types}>
+                            {metadata.types.map((type) => (
                                 <div key={type} className={styles.type}>
                                     <Typography
                                         size="xs"
@@ -72,9 +78,9 @@ export function Header({
                                         {type}
                                     </Typography>
                                 </div>
-                            ))
-                        )}
-                    </div> */}
+                            ))}
+                        </div>
+                    )}
                     <a
                         href={url}
                         target="_blank"
@@ -98,14 +104,14 @@ export function Header({
                 >
                     {description}
                 </Typography>
-                {/* {loading || !project ? (
+                {loading || !project ? (
                     <SekeletonProjectCampaignsTotals />
                 ) : (
                     <ProjectCampaignsTotals
-                        total={project.totalCampaigns}
-                        active={project.activeCampaigns}
+                        total={project.campaigns.total}
+                        active={project.campaigns.active}
                     />
-                )} */}
+                )}
             </div>
         </div>
     );

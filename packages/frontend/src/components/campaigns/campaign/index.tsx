@@ -29,9 +29,14 @@ export function CampaignRow({ type, campaign }: CampaignProps) {
     const dynamicPoints = campaign.isDistributing(
         DistributablesType.DynamicPoints,
     );
+    const noDistributables = campaign.isDistributing(
+        DistributablesType.NoDistributables,
+    );
+    const turtleCampaign = campaign.isTargeting(TargetType.Turtle);
 
-    const href = campaign.isTargeting(TargetType.TurtleClub)
-        ? `/projects/katana_${campaign.target.campaignId}#/deal/${campaign.target.id}`
+    const href = campaign.isTargeting(TargetType.Turtle)
+        ? // TODO: is this url still supported with the new Earn widget?
+          `/projects/katana_${campaign.target.productId}#/deal/${campaign.target.opportunityId}`
         : `/campaigns/${campaign.chainType}/${campaign.chainId}/${campaign.id}`;
 
     return (
@@ -46,6 +51,7 @@ export function CampaignRow({ type, campaign }: CampaignProps) {
                     from={campaign.from}
                     to={campaign.to}
                     status={campaign.status}
+                    showDuration={!turtleCampaign}
                 />
                 {type === BackendCampaignType.Rewards && (
                     <Apr
@@ -73,6 +79,8 @@ export function CampaignRow({ type, campaign }: CampaignProps) {
                         chainId={campaign.chainId}
                     />
                 )}
+                {/* TODO: what do we show here? */}
+                {noDistributables && <div>-</div>}
             </Card>
         </Link>
     );

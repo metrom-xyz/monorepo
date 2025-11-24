@@ -23,6 +23,7 @@ export * from "./types/leaderboards";
 export * from "./types/aave-v3";
 export * from "./types/liquity-v2";
 export * from "./types/pools";
+export * from "./types/projects";
 export * from "./types/reward-tokens";
 
 export {
