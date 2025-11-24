@@ -120,6 +120,8 @@ export function AmmPoolLiquidityForm({
             !payload.distributables ||
             payload.distributables.type === DistributablesType.FixedPoints ||
             payload.distributables.type === DistributablesType.DynamicPoints ||
+            payload.distributables.type ===
+                DistributablesType.NoDistributables ||
             !payload.distributables.tokens ||
             payload.distributables.tokens.length === 0
         );

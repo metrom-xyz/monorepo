@@ -68,6 +68,9 @@ export function DeployButtonEvm({
             case DistributablesType.DynamicPoints: {
                 throw new Error("Not implemented");
             }
+            case DistributablesType.NoDistributables: {
+                throw new Error("Not supported");
+            }
         }
     }, [payload.distributables]);
 

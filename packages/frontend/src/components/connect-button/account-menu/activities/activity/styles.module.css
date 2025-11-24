@@ -1,7 +1,7 @@
 @reference "../../../../../app.css";
 
 .root {
-    @apply min-h-8 w-full flex items-center gap-3 sm:gap-5 px-3 py-2 surface-secondary rounded-lg;
+    @apply w-[25rem] h-10 flex items-center gap-3 px-3 py-2 surface-secondary rounded-lg overflow-hidden;
 }
 
 .root.loading {
@@ -13,11 +13,11 @@
 }
 
 .leftContent {
-    @apply flex justify-between gap-3 sm:gap-5;
+    @apply min-w-fit flex justify-between gap-3;
 }
 
 .rightContent {
-    @apply flex gap-1.5;
+    @apply flex items-center gap-1.5;
 }
 
 .arrow {
