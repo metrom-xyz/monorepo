@@ -46,7 +46,7 @@ export function Status({
                 <Typography size="sm" weight="medium">
                     {text}
                 </Typography>
-                {(!!showDuration || status !== StatusState.Expired) && (
+                {showDuration && status !== StatusState.Expired && (
                     <Typography
                         className={styles.duration}
                         variant="tertiary"

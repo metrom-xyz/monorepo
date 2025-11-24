@@ -14,7 +14,7 @@ import type {
     SupportedLiquityV2,
     SupportedPointsBooster,
 } from "src/commons";
-import type { CampaignAmmPool } from "./pools";
+import type { AmmPool, CampaignAmmPool } from "./pools";
 
 export enum CampaignKind {
     AmmPoolLiquidity = 1,
@@ -56,7 +56,8 @@ export enum TargetType {
     AaveV3BridgeAndSupply = "aave-v3-bridge-and-supply",
     JumperWhitelistedAmmPoolLiquidity = "jumper-whitelisted-amm-pool-liquidity",
     HoldFungibleAsset = "hold-fungible-asset",
-    TurtleClub = "turtle-club",
+    Turtle = "turtle",
+    AmmPoolNetSwapVolume = "amm-pool-net-swap-volume",
 }
 
 export type AmmPoolLiquidityTargetType =
@@ -140,15 +141,32 @@ export interface HoldFungibleAssetTarget extends BaseTarget {
     stakingAssets: Erc20Token[];
 }
 
-export interface TurtleClubTarget extends BaseTarget {
-    type: TargetType.TurtleClub;
-    campaignId: string;
+export interface TurtleIncentive {
     id: string;
     name: string;
-    description: string;
-    campaignIconUrl: string;
-    vaultIconUrl: string;
+    iconUrl: string;
+    apr: number | null;
 }
+
+export interface TurtleTarget extends BaseTarget {
+    type: TargetType.Turtle;
+    productId: string;
+    opportunityId: string;
+    name: string;
+    description: string;
+    iconUrl: string;
+    incentives: TurtleIncentive[];
+    performanceFee: number | null;
+    managementFee: number | null;
+    depositFee: number | null;
+    withdrawalFee: number | null;
+}
+
+export type AmmPoolNetSwapVolumeTarget = BaseTarget & {
+    type: "amm-pool-net-swap-volume";
+    ammPool: AmmPool;
+    targetToken: Erc20Token;
+};
 
 export type CampaignTarget =
     | EmptyTarget
@@ -162,7 +180,8 @@ export type CampaignTarget =
     | AaveV3BridgeAndSupplyTarget
     | JumperWhitelistedAmmPoolLiquidityTarget
     | HoldFungibleAssetTarget
-    | TurtleClubTarget;
+    | TurtleTarget
+    | AmmPoolNetSwapVolumeTarget;
 
 export interface TokenDistributable {
     token: UsdPricedErc20Token;
@@ -174,6 +193,7 @@ export enum DistributablesType {
     Tokens = "tokens",
     FixedPoints = "fixed-points",
     DynamicPoints = "dynamic-points",
+    NoDistributables = "no-distributables",
 }
 
 export interface TokenDistributables {
@@ -203,10 +223,15 @@ export interface DynamicPointDistributables {
     boosting?: PointsBoosting;
 }
 
+export interface NoDistributables {
+    type: DistributablesType.NoDistributables;
+}
+
 export type CampaignDistributables =
     | TokenDistributables
     | FixedPointDistributables
-    | DynamicPointDistributables;
+    | DynamicPointDistributables
+    | NoDistributables;
 
 export enum KpiMetric {
     RangePoolTvl = "range-pool-tvl",
@@ -327,11 +352,13 @@ export interface BaseTargetedCampaign<T extends TargetType> {
                       ? JumperWhitelistedAmmPoolLiquidityTarget
                       : T extends TargetType.HoldFungibleAsset
                         ? HoldFungibleAssetTarget
-                        : T extends TargetType.TurtleClub
-                          ? TurtleClubTarget
-                          : T extends TargetType.Empty
-                            ? EmptyTarget
-                            : never;
+                        : T extends TargetType.Turtle
+                          ? TurtleTarget
+                          : T extends TargetType.AmmPoolNetSwapVolume
+                            ? AmmPoolNetSwapVolumeTarget
+                            : T extends TargetType.Empty
+                              ? EmptyTarget
+                              : never;
 }
 
 export type TargetedCampaign<T extends TargetType> = BaseTargetedCampaign<T> &

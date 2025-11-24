@@ -4,19 +4,18 @@ import { type TargetedNamedCampaign } from "@/src/types/campaign";
 import { RemoteLogo } from "@/src/components/remote-logo";
 import type { ActionSizes } from ".";
 
-interface TurtleClubVaultProps<T extends TargetType.TurtleClub>
-    extends ActionSizes {
+interface TurtleVaultProps<T extends TargetType.Turtle> extends ActionSizes {
     campaign: TargetedNamedCampaign<T>;
 }
 
-export function TurtleClubVault<T extends TargetType.TurtleClub>({
+export function TurtleVault<T extends TargetType.Turtle>({
     nameSize,
     logoSize,
     campaign,
-}: TurtleClubVaultProps<T>) {
+}: TurtleVaultProps<T>) {
     return (
         <>
-            <RemoteLogo size={logoSize} src={campaign.target.vaultIconUrl} />
+            <RemoteLogo size={logoSize} src={campaign.target.iconUrl} />
             <Typography size={nameSize} weight="medium" truncate>
                 {campaign.name}
             </Typography>

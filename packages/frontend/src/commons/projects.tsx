@@ -2,7 +2,6 @@ import {
     AmpedLogo,
     EbisuLogo,
     KatanaLogo,
-    LensLogoDark,
     OrkiDarkLogo,
     QuillLogo,
 } from "@metrom-xyz/chains";
@@ -10,21 +9,22 @@ import { ProjectKind, type ProjectMetadata } from "../types/project";
 import { QuillIllustration } from "../assets/logos/projects/quill-illustration";
 import { OrkiIllustration } from "../assets/logos/projects/orki-illustration";
 import { EbisuIllustration } from "../assets/logos/projects/ebisu-illustration";
-import { LensIllustration } from "../assets/logos/projects/lens-illustration";
 import { AmpedIllustration } from "../assets/logos/projects/amped-illustration";
 import { KatanaIllustration } from "../assets/logos/projects/katana-illustration";
-import { lens } from "viem/chains";
-import { ChainType, SupportedLiquidityProviderDeal } from "@metrom-xyz/sdk";
+import { katana, mainnet, scroll, sonic, swellchain } from "viem/chains";
+import { SupportedLiquidityProviderDeal } from "@metrom-xyz/sdk";
 
 export const PROJECTS_METADATA: Record<string, ProjectMetadata> = {
     quill: {
         kind: ProjectKind.PointsTracking,
         name: "Quill",
+        types: ["CDP"],
         description:
             "A secure, over-collateralized stablecoin protocol on Scroll's zk-Rollup network.",
         url: "https://app.quill.finance",
         icon: QuillLogo,
         illustration: QuillIllustration,
+        chains: [scroll.id],
         branding: {
             main: "#FF5500",
             light: "#FFAC83",
@@ -50,11 +50,13 @@ export const PROJECTS_METADATA: Record<string, ProjectMetadata> = {
     orki: {
         kind: ProjectKind.PointsTracking,
         name: "Orki",
+        types: ["CDP"],
         description:
             "Permissionless credit protocol and the native stablecoin of the Swellchain.",
         url: "https://www.orki.finance",
         icon: OrkiDarkLogo,
         illustration: OrkiIllustration,
+        chains: [swellchain.id],
         branding: {
             main: "#2973EB",
             light: "#85B3FF",
@@ -80,11 +82,13 @@ export const PROJECTS_METADATA: Record<string, ProjectMetadata> = {
     ebisu: {
         kind: ProjectKind.PointsTracking,
         name: "Ebisu",
+        types: ["CDP"],
         description:
             "Ebisu Money, a stablecoin credit protocol where users can borrow ebUSD at user-set rates.",
         url: "https://ebisu.money",
         icon: EbisuLogo,
         illustration: EbisuIllustration,
+        chains: [mainnet.id],
         branding: {
             main: "#FF9ECE",
             light: "#EE2D8C",
@@ -103,46 +107,16 @@ export const PROJECTS_METADATA: Record<string, ProjectMetadata> = {
             ],
         },
     },
-    lens: {
-        kind: ProjectKind.Chain,
-        chainType: ChainType.Evm,
-        chainId: lens.id,
-        name: "Lens",
-        description:
-            "Lens is a high performance L2 leveraging ZKsync, Avail & Ethereum's security. Purpose-built for SocialFi, it offers modular social primitives, quick settlement & decentralized storage.",
-        url: "https://lens.xyz",
-        icon: LensLogoDark,
-        illustration: LensIllustration,
-        branding: {
-            main: "#646262",
-            light: "#DDDDDD",
-            contrast: {
-                light: "#EBEBEB",
-                dark: "#232323",
-            },
-            iconBackground: "#FFFFFF",
-        },
-        intro: {
-            articles: [
-                {
-                    title: "Introducing the New Lens",
-                    href: "https://lens.xyz/news/introducing-the-new-lens",
-                },
-                {
-                    title: "GHO: Stablecoin as Gas on Lens Chain",
-                    href: "https://lens.xyz/news/gho-stablecoin-as-gas-on-lens-chain",
-                },
-            ],
-        },
-    },
     amped: {
         kind: ProjectKind.PointsTracking,
         name: "Amped points",
+        types: ["Perpetuals"],
         description:
             "Experience efficient trading and profit sharing in one dynamic platform.",
         url: "https://amped.finance",
         icon: AmpedLogo,
         illustration: AmpedIllustration,
+        chains: [sonic.id],
         branding: {
             main: "#E05573",
             light: "#EDD1D7",
@@ -155,14 +129,16 @@ export const PROJECTS_METADATA: Record<string, ProjectMetadata> = {
     },
     katana: {
         kind: ProjectKind.LiquidityDeals,
-        protocol: SupportedLiquidityProviderDeal.TurtleClub,
+        name: "The Samurai's Call",
+        types: ["LP deal"],
+        protocol: SupportedLiquidityProviderDeal.Turtle,
         campaignId: "2c86d3a1-cfe8-486d-915d-1b9ff5e924e9",
         description:
             "The Samurai's Call campaign is designed to seed dapps on Katana. Hold your deposits through launch to unlock all KAT token rewards.",
-        name: "The Samurai's Call",
         url: "https://app.turtle.club/campaigns/katana",
         icon: KatanaLogo,
         illustration: KatanaIllustration,
+        chains: [mainnet.id, katana.id],
         branding: {
             main: "#D4E000",
             light: "#DFE0C1",

@@ -5,14 +5,6 @@ import type {
 } from "@metrom-xyz/sdk";
 import type { FunctionComponent } from "react";
 
-export interface Project {
-    name: string;
-    chains: number[];
-    activeCampaigns: number;
-    totalCampaigns: number;
-    types: string[];
-}
-
 export interface Branding {
     main: string;
     light: string;
@@ -41,11 +33,13 @@ export enum ProjectKind {
 
 export interface BaseProjectMetadata {
     name: string;
+    types: string[];
     description: string;
     url: string;
     icon: FunctionComponent<SVGIcon>;
     illustration: FunctionComponent<SVGIcon>;
     branding: Branding;
+    chains: number[];
     intro?: ProjectIntro;
     leaderboard?: boolean;
 }

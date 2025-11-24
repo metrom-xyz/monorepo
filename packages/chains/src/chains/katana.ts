@@ -1,5 +1,11 @@
 import { zeroAddress } from "viem";
-import { KatanaLogo, ProtocolType, TurtleClubLogo, type ChainData } from "..";
+import {
+    KatanaLogo,
+    ProtocolType,
+    TurtleDarkLogo,
+    TurtleLightLogo,
+    type ChainData,
+} from "..";
 import { katana } from "viem/chains";
 import { SupportedLiquidityProviderDeal } from "@metrom-xyz/sdk";
 
@@ -16,9 +22,10 @@ export const katanaData: ChainData = {
         {
             type: ProtocolType.LiquidityProviderDeal,
             active: false,
-            logo: TurtleClubLogo,
+            logo: TurtleDarkLogo,
+            logoLight: TurtleLightLogo,
             name: "Turtle Club",
-            slug: SupportedLiquidityProviderDeal.TurtleClub,
+            slug: SupportedLiquidityProviderDeal.Turtle,
             actionUrl: "https://app.turtle.xyz/campaigns/katana",
         },
     ],

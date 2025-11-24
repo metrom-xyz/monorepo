@@ -2,6 +2,7 @@ export * from "./algebra-integral";
 export * from "./ambient";
 export * from "./balancer";
 export * from "./carbon";
+export * from "./curve";
 export * from "./fibonacci";
 export * from "./honeypop";
 export * from "./hydrex";

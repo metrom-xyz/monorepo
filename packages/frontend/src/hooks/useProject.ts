@@ -1,9 +1,9 @@
-import { useQuery } from "@tanstack/react-query";
 import type { HookBaseParams } from "../types/hooks";
-import type { Project } from "../types/project";
+import type { Project } from "@metrom-xyz/sdk";
+import { useProjects } from "./useProjects";
 
 interface UseProjectParams extends HookBaseParams {
-    name: string;
+    slug: string;
 }
 
 interface UseProjectReturnValue {
@@ -12,36 +12,15 @@ interface UseProjectReturnValue {
     project?: Project;
 }
 
-type QueryKey = [string, string];
-
 export function useProject({
-    name,
+    slug,
     enabled,
 }: UseProjectParams): UseProjectReturnValue {
-    const {
-        data: project,
-        isPending: loading,
-        isFetching: fetching,
-    } = useQuery({
-        queryKey: ["project", name],
-        queryFn: async ({ queryKey }) => {
-            const [, name] = queryKey as QueryKey;
-
-            return {
-                name,
-                types: [],
-                activeCampaigns: 10,
-                totalCampaigns: 14,
-                chains: [],
-            };
-            // TODO: implement API call
-        },
-        enabled,
-    });
+    const { loading, fetching, projects } = useProjects({ enabled });
 
     return {
         loading,
         fetching,
-        project: project || undefined,
+        project: projects?.find((project) => project.slug === slug),
     };
 }
