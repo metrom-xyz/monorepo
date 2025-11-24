@@ -78,10 +78,6 @@ export enum SupportedPointsBooster {
     LiquidityLand = "liquidity-land",
 }
 
-export enum SupportedPointsBooster {
-    LiquidityLand = "liquidity-land",
-}
-
 export interface ServiceUrls {
     dataManager: string;
     metrom: string;
