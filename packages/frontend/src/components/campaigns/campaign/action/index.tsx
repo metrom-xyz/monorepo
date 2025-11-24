@@ -26,6 +26,7 @@ import styles from "./styles.module.css";
 
 export interface ActionSizes {
     nameSize?: TypographySize;
+    feeSize?: TypographySize;
     logoSize?: RemoteLogoSize;
 }
 

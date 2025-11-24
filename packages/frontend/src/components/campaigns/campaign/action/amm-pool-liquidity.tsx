@@ -13,6 +13,7 @@ interface AmmPoolLiquidityProps<T extends AmmPoolLiquidityTargetType>
 export function AmmPoolLiquidity<T extends AmmPoolLiquidityTargetType>({
     campaign,
     nameSize,
+    feeSize = "sm",
     logoSize,
 }: AmmPoolLiquidityProps<T>) {
     return (
@@ -29,7 +30,7 @@ export function AmmPoolLiquidity<T extends AmmPoolLiquidityTargetType>({
                 {campaign.name}
             </Typography>
             {campaign.target.pool.fee && (
-                <Typography size="sm" weight="medium" variant="tertiary">
+                <Typography size={feeSize} weight="medium" variant="tertiary">
                     {formatPercentage({
                         percentage: campaign.target.pool.fee,
                         keepDust: true,

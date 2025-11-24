@@ -117,6 +117,11 @@ export interface CampaignPayloadDynamicPointDistributables {
     // TODO: implement for dynamic points
 }
 
+// Needed to support Turtle campaigns
+export interface CampaignPayloadNoDistributables {
+    type: DistributablesType.NoDistributables;
+}
+
 export interface CampaignPreviewTokenDistributables {
     type: DistributablesType.Tokens;
     tokens: [WhitelistedErc20TokenAmount, ...WhitelistedErc20TokenAmount[]];
@@ -133,15 +138,22 @@ export interface CampaignPreviewDynamicPointDistributables {
     // TODO: implement for dynamic points
 }
 
+// Needed to support Turtle campaigns
+export interface CampaignPreviewNoDistributables {
+    type: DistributablesType.NoDistributables;
+}
+
 export type CampaignPayloadDistributables =
     | CampaignPayloadTokenDistributables
     | CampaignPayloadFixedPointDistributables
-    | CampaignPayloadDynamicPointDistributables;
+    | CampaignPayloadDynamicPointDistributables
+    | CampaignPayloadNoDistributables;
 
 export type CampaignPreviewDistributables =
     | CampaignPreviewTokenDistributables
     | CampaignPreviewFixedPointDistributables
-    | CampaignPreviewDynamicPointDistributables;
+    | CampaignPreviewDynamicPointDistributables
+    | CampaignPreviewNoDistributables;
 
 export interface TargetValue {
     usd: number;
