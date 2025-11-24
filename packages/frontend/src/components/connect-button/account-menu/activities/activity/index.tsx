@@ -83,7 +83,7 @@ export function Activity({ chainId, transaction, payload }: ActivityProps) {
             })}
         >
             <div className={styles.leftContent}>
-                <Typography weight="medium" size="sm">
+                <Typography weight="medium" size="xs">
                     {title}
                 </Typography>
                 <ArrowRightIcon className={styles.arrow} />
@@ -103,7 +103,8 @@ export function Activity({ chainId, transaction, payload }: ActivityProps) {
                                     />
                                     <Action
                                         campaign={campaign}
-                                        nameSize="sm"
+                                        nameSize="xs"
+                                        feeSize="xs"
                                         logoSize="xs"
                                         hideChips
                                         className={styles.action}
