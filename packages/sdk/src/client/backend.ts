@@ -42,7 +42,9 @@ import {
     DistributablesType,
     type DynamicPointDistributables,
     type GmxV1LiquidityTarget,
-    type TurtleClubTarget,
+    type TurtleTarget,
+    type AmmPoolNetSwapVolumeTarget,
+    type NoDistributables,
 } from "../types/campaigns";
 import {
     ChainType,
@@ -95,6 +97,8 @@ import type {
 import type { FungibleAssetInfo } from "src/types/fungible-asset";
 import type { BackendFungibleAssetResponse } from "./types/fungible-asset";
 import type { AmmPool, CampaignAmmPool } from "src/types/pools";
+import type { BackendProjectsResponse } from "./types/projects";
+import type { Project } from "src/types/projects";
 
 const MIN_TICK = -887272;
 const MAX_TICK = -MIN_TICK;
@@ -114,6 +118,7 @@ const DEX_BRAND_NAME: Record<SupportedDex, string> = {
     [SupportedDex.Morphex]: "Morphex",
     [SupportedDex.Izumi]: "Izumi",
     [SupportedDex.Hydrex]: "Hydrex",
+    [SupportedDex.Curve]: "Curve",
     [SupportedDex.BalancerV3]: "Balancer",
     [SupportedDex.Ambient]: "Ambient",
     [SupportedDex.Honeypop]: "Honeypop",
@@ -1013,6 +1018,23 @@ export class MetromApiClient {
             totalSupply: BigInt(parsedResponse.totalSupply),
         };
     }
+
+    async fetchProjects(): Promise<Project[]> {
+        const url = new URL("v2/projects", this.baseUrl);
+
+        const response = await fetch(url);
+        if (!response.ok)
+            throw new Error(
+                `Response not ok while projects: ${await response.text()}`,
+            );
+
+        const { projects } = (await response.json()) as BackendProjectsResponse;
+
+        return Object.entries(projects).map(([slug, project]) => ({
+            slug,
+            campaigns: project.campaigns,
+        }));
+    }
 }
 
 function processCampaignsResponse(
@@ -1160,10 +1182,20 @@ function processCampaignsResponse(
                 };
                 break;
             }
-            case "turtle-club": {
-                target = <TurtleClubTarget>{
+            case "turtle": {
+                target = <TurtleTarget>{
                     ...backendCampaign.target,
-                    type: TargetType.TurtleClub,
+                    type: TargetType.Turtle,
+                };
+                break;
+            }
+            case "amm-pool-net-swap-volume": {
+                target = <AmmPoolNetSwapVolumeTarget>{
+                    type: TargetType.AmmPoolNetSwapVolume,
+                    chainType,
+                    chainId,
+                    ammPool: {},
+                    targetToken: backendCampaign.target.targetToken,
                 };
                 break;
             }
@@ -1218,6 +1250,10 @@ function processCampaignsResponse(
             distributables = <DynamicPointDistributables>{
                 type: DistributablesType.DynamicPoints,
                 ...backendCampaign.dynamicPoints,
+            };
+        } else {
+            distributables = <NoDistributables>{
+                type: DistributablesType.NoDistributables,
             };
         }
 

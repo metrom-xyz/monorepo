@@ -1,5 +1,5 @@
 import { SupportedLiquidityProviderDeal } from "@metrom-xyz/sdk";
-import { TurtleClub } from "./turtle-club";
+import { Turtle } from "./turtle";
 
 import styles from "./styles.module.css";
 
@@ -14,8 +14,8 @@ export function LiquidityProviderDeal({
 }: LiquidityProviderDealProps) {
     return (
         <div className={styles.root}>
-            {protocol === SupportedLiquidityProviderDeal.TurtleClub && (
-                <TurtleClub campaignId={campaignId} />
+            {protocol === SupportedLiquidityProviderDeal.Turtle && (
+                <Turtle campaignId={campaignId} />
             )}
         </div>
     );

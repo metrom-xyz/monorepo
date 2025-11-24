@@ -19,6 +19,7 @@ export enum SupportedDex {
     Izumi = "izumi",
     Hydrex = "hydrex",
     BalancerV3 = "balancer-v3",
+    Curve = "curve",
     Ambient = "ambient",
     Honeypop = "honeypop",
     Lithos = "lithos",
@@ -45,7 +46,7 @@ export enum SupportedGmxV1 {
 }
 
 export enum SupportedLiquidityProviderDeal {
-    TurtleClub = "turtle-club",
+    Turtle = "turtle",
 }
 
 export type SupportedProtocol =
@@ -80,8 +81,11 @@ export interface ServiceUrls {
 
 export const CAMPAIGN_TARGET_TO_KIND: Record<TargetType, CampaignKind> = {
     // Turtle Club vault campaign is not a metrom campaign, so it doesn't have a campaign kind;
-    // we use the empty kind to avoid types issues.
-    [TargetType.TurtleClub]: CampaignKind.EmptyTarget,
+    // we use the empty kind to avoid type issues.
+    [TargetType.Turtle]: CampaignKind.EmptyTarget,
+    // Amm pool net swap volume is not currently supported, so it doesn't have a campaign kind;
+    // we use the empty kind to avoid type issues.
+    [TargetType.AmmPoolNetSwapVolume]: CampaignKind.EmptyTarget,
     [TargetType.AmmPoolLiquidity]: CampaignKind.AmmPoolLiquidity,
     [TargetType.LiquityV2Debt]: CampaignKind.LiquityV2Debt,
     [TargetType.LiquityV2StabilityPool]: CampaignKind.LiquityV2StabilityPool,

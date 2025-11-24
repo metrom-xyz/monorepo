@@ -58,11 +58,11 @@ const defaultThemeConfig = {
     },
 };
 
-interface TurtleClubProps {
+interface TurtleProps {
     campaignId?: string;
 }
 
-export function TurtleClub({ campaignId }: TurtleClubProps) {
+export function Turtle({ campaignId }: TurtleProps) {
     const t = useTranslations("liquidityProviderDeals");
     const { address } = useAccount();
     const { resolvedTheme } = useTheme();

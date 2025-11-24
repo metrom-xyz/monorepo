@@ -102,7 +102,7 @@ export function getCampaignName(
                     .join("/"),
             });
         }
-        case TargetType.TurtleClub: {
+        case TargetType.Turtle: {
             return campaign.target.name;
         }
         case TargetType.Empty: {
