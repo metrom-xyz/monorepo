@@ -11,14 +11,14 @@ import { lens } from "viem/chains";
 import { BaseCampaignType, PartnerCampaignType } from "@metrom-xyz/sdk";
 
 export const lensData: ChainData = {
-    active: true,
+    active: false,
     name: lens.name,
     metromContract: ADDRESS[SupportedChain.Lens],
     blockExplorers: lens.blockExplorers,
     icon: LensLogo,
     forms: [
         {
-            active: true,
+            active: false,
             partner: false,
             type: BaseCampaignType.AmmPoolLiquidity,
         },
@@ -30,7 +30,7 @@ export const lensData: ChainData = {
     ],
     protocols: [
         {
-            active: true,
+            active: false,
             type: ProtocolType.Dex,
             slug: SupportedDex.UniswapV3,
             logo: UniswapLogo,
