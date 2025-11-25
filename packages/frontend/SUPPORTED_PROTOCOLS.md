@@ -4,7 +4,7 @@
 |[Swapr](https://swapr.eth.link/)|-|✅|-|-|-|-|-|-|-|-|-|-|
 |[SilverSwap](https://silverswap.io/)|-|-|✅|-|-|-|-|-|-|-|-|-|
 |[Carbon DeFi](https://carbondefi.xyz/)|-|-|-|-|✅|-|-|-|-|-|-|-|
-|[Velodrome](https://velodrome.finance/)|-|-|-|-|-|-|✅|-|-|-|-|-|
+|[Velodrome](https://velo.drome.eth.limo/)|-|-|-|-|-|-|✅|-|-|-|-|-|
 |[Kim](https://www.kim.exchange)|-|-|-|-|-|-|-|✅|-|-|-|-|
 |[BaseSwap](https://baseswap.fi/)|-|-|-|-|-|-|-|✅|-|-|-|-|
 |[Unagi](https://unagiswap.xyz/)|-|-|-|-|-|-|-|-|-|✅|-|-|
