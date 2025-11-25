@@ -5,7 +5,7 @@
 }
 
 .root.loading {
-    @apply animate-pulse;
+    @apply w-[23rem] animate-pulse;
 }
 
 .root.createCampaign {

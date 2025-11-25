@@ -110,10 +110,33 @@ export function Project({ project, campaignId }: ProjectProps) {
                 </div>
             )}
             {kind === ProjectKind.LiquidityDeals && (
-                <LiquidityProviderDeal
-                    protocol={details.protocol}
-                    campaignId={campaignId}
-                />
+                <>
+                    <LiquidityProviderDeal
+                        protocol={details.protocol}
+                        campaignId={campaignId}
+                    />
+                    <div className={styles.tableWrapper}>
+                        <Tabs
+                            value={BackendCampaignType.Rewards}
+                            onChange={() => {}} 
+                        >
+                            <Tab
+                                icon={TokensIcon}
+                                value={BackendCampaignType.Rewards}
+                            >
+                                {t("tokens")}
+                            </Tab>
+                        </Tabs>
+                        <CampaignsTable
+                            type={BackendCampaignType.Rewards}
+                            disableFilters
+                            optionalFilters={{
+                                protocols: [{ label: "", value: project }],
+                            }}
+                            className={styles.table}
+                        />
+                    </div>
+                </>
             )}
         </div>
     );
