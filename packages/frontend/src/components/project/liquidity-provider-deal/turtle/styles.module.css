@@ -8,51 +8,14 @@
     @apply flex flex-col sm:flex-row gap-4;
 }
 
-.earn > div {
-    @apply w-full rounded-xl;
+.earn {
+    @apply w-[28.125rem] h-[37.5rem] [&div]:text-neutral-100 [&div]:dark:text-primary;
 }
 
-.earn > div > div {
-    @apply max-w-full p-0 gap-0;
+.earn.loading {
+    @apply bg-gray-200 dark:bg-neutral-800 animate-pulse rounded-2xl;
 }
 
-.earn > div,
-.earn > div > div > div > div {
-    @apply surface-primary;
-}
-
-.earn > div > div > div > div:first-child {
-    @apply pl-3 mt-1;
-}
-
-.earn > div > div > div > div:nth-child(2) {
-    @apply pr-3 mt-3;
-}
-
-.dealsWrapper {
+.widgetWrapper {
     @apply w-full flex flex-col gap-4;
-}
-
-.dealsWrapper > div:not(.skeletonDeals) {
-    @apply background-main;
-}
-
-.dealsWrapper > div > div {
-    @apply p-0 border-none;
-}
-
-.skeletonDeals {
-    @apply flex flex-col gap-4 rounded-2xl p-3 surface-primary;
-}
-
-.skeletonDealHeader {
-    @apply h-[19px] w-full rounded-xl surface-secondary animate-pulse;
-}
-
-.skeletonDealsWrapper {
-    @apply w-full flex gap-2 flex-wrap;
-}
-
-.skeletonDeal {
-    @apply w-full sm:w-[327px] h-[350px] rounded-xl surface-secondary animate-pulse;
 }
