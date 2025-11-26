@@ -1,0 +1,17 @@
+@reference "../../../../app.css";
+
+.root {
+    @apply w-full flex flex-wrap items-center gap-3;
+}
+
+.tag {
+    @apply flex gap-1 h-6 py-1 px-2 rounded-sm border border-gray-300 dark:border-neutral-700;
+}
+
+.restrictions {
+    @apply h-6 py-1 px-2 rounded-sm bg-warning/[12%];
+}
+
+.calendarIcon {
+    @apply size-3.5 text-primary;
+}
