@@ -12,13 +12,18 @@ import { EbisuIllustration } from "../assets/logos/projects/ebisu-illustration";
 import { AmpedIllustration } from "../assets/logos/projects/amped-illustration";
 import { KatanaIllustration } from "../assets/logos/projects/katana-illustration";
 import { katana, mainnet, scroll, sonic, swellchain } from "viem/chains";
-import { SupportedLiquidityProviderDeal } from "@metrom-xyz/sdk";
+import {
+    SupportedGmxV1,
+    SupportedLiquidityProviderDeal,
+    SupportedLiquityV2,
+} from "@metrom-xyz/sdk";
 
 export const PROJECTS_METADATA: Record<string, ProjectMetadata> = {
     quill: {
         kind: ProjectKind.PointsTracking,
         name: "Quill",
         types: ["CDP"],
+        protocol: SupportedLiquityV2.Quill,
         description:
             "A secure, over-collateralized stablecoin protocol on Scroll's zk-Rollup network.",
         url: "https://app.quill.finance",
@@ -51,6 +56,7 @@ export const PROJECTS_METADATA: Record<string, ProjectMetadata> = {
         kind: ProjectKind.PointsTracking,
         name: "Orki",
         types: ["CDP"],
+        protocol: SupportedLiquityV2.Orki,
         description:
             "Permissionless credit protocol and the native stablecoin of the Swellchain.",
         url: "https://www.orki.finance",
@@ -83,6 +89,7 @@ export const PROJECTS_METADATA: Record<string, ProjectMetadata> = {
         kind: ProjectKind.PointsTracking,
         name: "Ebisu",
         types: ["CDP"],
+        protocol: SupportedLiquityV2.Ebisu,
         description:
             "Ebisu Money, a stablecoin credit protocol where users can borrow ebUSD at user-set rates.",
         url: "https://ebisu.money",
@@ -111,6 +118,7 @@ export const PROJECTS_METADATA: Record<string, ProjectMetadata> = {
         kind: ProjectKind.PointsTracking,
         name: "Amped points",
         types: ["Perpetuals"],
+        protocol: SupportedGmxV1.Amped,
         description:
             "Experience efficient trading and profit sharing in one dynamic platform.",
         url: "https://amped.finance",
@@ -127,7 +135,7 @@ export const PROJECTS_METADATA: Record<string, ProjectMetadata> = {
             iconBackground: "#FFFFFF",
         },
     },
-    katana: {
+    "turtle-katana": {
         kind: ProjectKind.LiquidityDeals,
         name: "The Samurai's Call",
         types: ["LP deal"],

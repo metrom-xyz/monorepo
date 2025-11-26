@@ -9,6 +9,7 @@ import { ChainType } from "@metrom-xyz/sdk";
 import { getCrossVmChainData } from "@/src/utils/chain";
 import { useTheme } from "next-themes";
 import { ProjectCampaignsTotals } from "../project-campaigns-totals";
+import classNames from "classnames";
 
 import styles from "./styles.module.css";
 
@@ -142,4 +143,8 @@ export function ProjectCard({
             </motion.div>
         </MotionLink>
     );
+}
+
+export function SkeletonProjectCard() {
+    return <div className={classNames(styles.root, styles.loading)}></div>;
 }

@@ -15,6 +15,7 @@ import {
 import { type Campaign } from "@/src/types/campaign";
 import { formatUsdAmount } from "@/src/utils/format";
 import { Points } from "./points";
+import { TURTLE_APP_EARN_URL } from "@/src/commons";
 
 import styles from "./styles.module.css";
 
@@ -35,8 +36,7 @@ export function CampaignRow({ type, campaign }: CampaignProps) {
     const turtleCampaign = campaign.isTargeting(TargetType.Turtle);
 
     const href = campaign.isTargeting(TargetType.Turtle)
-        ? // TODO: is this url still supported with the new Earn widget?
-          `/projects/katana_${campaign.target.productId}#/deal/${campaign.target.opportunityId}`
+        ? `${TURTLE_APP_EARN_URL}/${campaign.target.opportunityId}`
         : `/campaigns/${campaign.chainType}/${campaign.chainId}/${campaign.id}`;
 
     return (
