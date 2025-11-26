@@ -9,7 +9,6 @@ import { useTranslations } from "next-intl";
 import type { SupportedChain } from "@metrom-xyz/contracts";
 import { useCampaign } from "@/src/hooks/useCampaign";
 import { Header, SkeletonHeader } from "../campaign-details/header";
-import { CampaignDuration } from "../campaign-duration";
 import { Filters } from "./filters";
 import { NoDistributionsIcon } from "@/src/assets/no-distributions-icon";
 import classNames from "classnames";
@@ -123,7 +122,6 @@ export function Distributions({
                 ) : (
                     <Header campaign={campaign} />
                 )}
-                <CampaignDuration from={campaign?.from} to={campaign?.to} />
             </div>
             <Filters
                 chain={chain}
