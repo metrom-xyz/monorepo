@@ -542,25 +542,6 @@
         "discover": "Discover",
         "newCampaign": "New campaign"
     },
-    "campaignDuration": {
-        "startDate": "Start date",
-        "endDate": "End date",
-        "status": {
-            "duration": "Duration",
-            "live": {
-                "text": "Live",
-                "duration": "{days} left"
-            },
-            "upcoming": {
-                "text": "Upcoming",
-                "duration": "in {days}"
-            },
-            "ended": {
-                "text": "Ended",
-                "duration": "{days} ago"
-            }
-        }
-    },
     "projectIntro": {
         "relatedArticles": "Related articles"
     },
@@ -588,8 +569,6 @@
     "campaignDetails": {
         "title": "Campaign details",
         "header": {
-            "explorer": "Explorer",
-            "claim": "Claim",
             "ammPoolLiquidity": {
                 "deposit": "Deposit"
             },
@@ -608,19 +587,14 @@
             "kpi": "KPI",
             "range": "Range",
             "status": {
-                "live": "Live ends in {days}",
-                "upcoming": "Upcoming in {days}",
-                "ended": "Ended {days} ago"
+                "active": "LIVE ends in {days}",
+                "upcoming": "UPCOMING in {days}",
+                "expired": "ENDED {days} ago"
             },
             "allowlist": "Rewards limited to only allowed addresses"
         },
         "details": {
             "status": "Status",
-            "statusType": {
-                "live": "Live",
-                "upcoming": "Upcoming",
-                "ended": "Ended"
-            },
             "duration": "Duration",
             "startDate": "Start date",
             "endDate": "End date"
