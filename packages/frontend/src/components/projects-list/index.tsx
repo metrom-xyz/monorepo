@@ -1,4 +1,4 @@
-import { ProjectCard } from "../project-card";
+import { ProjectCard, SkeletonProjectCard } from "../project-card";
 import { useProjects } from "@/src/hooks/useProjects";
 import { LoadingBar } from "../loading-bar";
 import { PROJECTS_METADATA } from "@/src/commons/projects";
@@ -6,7 +6,6 @@ import { useTranslations } from "next-intl";
 import { EmptyIcon } from "@/src/assets/empty-icon";
 import { Typography } from "@metrom-xyz/ui";
 import classNames from "classnames";
-import { ProjectKind } from "@/src/types/project";
 
 import styles from "./styles.module.css";
 
@@ -23,12 +22,18 @@ export function ProjectsList() {
             />
             <div
                 className={classNames(styles.list, {
-                    [styles.empty]: !projects || projects.length === 0,
+                    [styles.empty]:
+                        !loading && (!projects || projects.length === 0),
                 })}
             >
                 {loading ? (
-                    // TODO: add loading once we fetch from API
-                    <div></div>
+                    <>
+                        <SkeletonProjectCard />
+                        <SkeletonProjectCard />
+                        <SkeletonProjectCard />
+                        <SkeletonProjectCard />
+                        <SkeletonProjectCard />
+                    </>
                 ) : !projects || projects.length === 0 ? (
                     <div className={styles.empty}>
                         <EmptyIcon />
@@ -48,15 +53,10 @@ export function ProjectsList() {
                         const metadata = PROJECTS_METADATA[slug];
                         if (!metadata) return null;
 
-                        const href =
-                            metadata.kind === ProjectKind.LiquidityDeals
-                                ? `/projects/${slug}_${metadata.campaignId}`
-                                : `/projects/${slug}`;
-
                         return (
                             <ProjectCard
                                 key={slug}
-                                href={href}
+                                href={`/projects/${slug}`}
                                 {...project}
                                 totalCampaigns={project.campaigns.total}
                                 activeCampaigns={project.campaigns.active}
