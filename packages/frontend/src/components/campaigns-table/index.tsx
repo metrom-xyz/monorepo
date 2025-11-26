@@ -169,6 +169,8 @@ export function CampaignsTable({
     ]);
 
     const handleClearFilters = useCallback(() => {
+        if (optionalFilters && disableFilters) return;
+
         setRawFilters({
             chains: [],
             protocols: [],
@@ -184,7 +186,7 @@ export function CampaignsTable({
         setOrder(undefined);
 
         if (onClearFilters) onClearFilters();
-    }, [onClearFilters]);
+    }, [disableFilters, optionalFilters, onClearFilters]);
 
     const [rawFilters, setRawFilters] = useState<RawFilters>(initialFilters);
     const [debouncedRawFilters, setDebouncedRawFilters] =

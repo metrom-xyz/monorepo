@@ -60,7 +60,8 @@ export const mainnetData: ChainData = {
             logoLight: TurtleLightLogo,
             name: "Turtle Club",
             slug: SupportedLiquidityProviderDeal.Turtle,
-            actionUrl: "https://app.turtle.xyz/campaigns/katana",
+            actionUrl:
+                "https://app.turtle.xyz/earn/partners/e791ff11-980c-4d1c-9da4-43474ce69b9a",
         },
     ],
     baseTokens: [],

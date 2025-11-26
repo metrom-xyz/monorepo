@@ -8,14 +8,6 @@
     @apply w-full flex;
 }
 
-.tableWrapper {
-    @apply w-full flex flex-col;
-}
-
-.table {
-    @apply rounded-tl-none;
-}
-
 .skeletonHeader {
     @apply w-full h-[7.75rem] rounded-lg bg-gray-200 dark:bg-neutral-800 animate-pulse;
 }

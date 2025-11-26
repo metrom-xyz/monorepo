@@ -23,7 +23,7 @@
 .rewardTokenAmountInput :global(.input),
 .rewardTokenAmountInput :global(.inputWrapper) {
     @apply w-full
-        max-w-56
+        max-w-52
         border-none
         placeholder:text-tertiary
         bg-transparent
