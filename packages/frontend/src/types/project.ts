@@ -2,6 +2,7 @@ import type { SVGIcon } from "@metrom-xyz/chains";
 import type {
     ChainType,
     SupportedLiquidityProviderDeal,
+    SupportedProtocol,
 } from "@metrom-xyz/sdk";
 import type { FunctionComponent } from "react";
 
@@ -34,6 +35,7 @@ export enum ProjectKind {
 export interface BaseProjectMetadata {
     name: string;
     types: string[];
+    protocol: SupportedProtocol;
     description: string;
     url: string;
     icon: FunctionComponent<SVGIcon>;

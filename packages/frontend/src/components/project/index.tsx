@@ -22,6 +22,7 @@ export function Project({ project }: ProjectProps) {
     const {
         name,
         kind,
+        protocol,
         description,
         url,
         branding,
@@ -57,7 +58,7 @@ export function Project({ project }: ProjectProps) {
                     ]}
                     disableFilters
                     optionalFilters={{
-                        protocols: [{ label: "", value: project }],
+                        protocols: [{ label: "", value: protocol }],
                     }}
                 />
             )}
@@ -93,7 +94,7 @@ export function Project({ project }: ProjectProps) {
                         ]}
                         disableFilters
                         optionalFilters={{
-                            protocols: [{ label: "", value: project }],
+                            protocols: [{ label: "", value: protocol }],
                         }}
                     />
                 </>
