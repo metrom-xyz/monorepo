@@ -1,42 +1,33 @@
 @reference "../../../app.css";
 
 .root {
-    @apply flex flex-col gap-3 sm:gap-8 w-full;
+    @apply w-full flex flex-col sm:flex-row gap-3 justify-between items-start;
 }
 
 .titleContainer {
-    @apply w-full flex flex-col gap-4;
+    @apply w-full flex flex-col gap-3 flex-1;
 }
 
 .title {
-    @apply flex sm:flex-wrap items-center gap-5;
+    @apply w-full min-h-10 flex flex-wrap items-center gap-3;
 }
 
 .chainLogo {
-    @apply h-8 w-8;
+    @apply size-6 sm:size-9;
 }
 
-.actionsContainer {
-    @apply flex flex-col-reverse sm:flex-row gap-3 flex-wrap justify-between sm:mb-2;
-}
-
-.actionsContainer button,
-.actionsContainer a {
-    @apply min-w-28;
-}
-
-.leftActions {
-    @apply flex flex-wrap gap-3 min-h-12;
-}
-
-.exploreButton {
-    @apply h-12;
+.actions {
+    @apply flex flex-wrap gap-3 justify-between;
 }
 
 .externalLinkIcon {
-    @apply h-4 w-4 transform -rotate-45;
+    @apply size-4 transform -rotate-45;
 }
 
-.aprContainer {
-    @apply px-4 py-3 h-12 w-fit;
+.externalLinkIcon.explore {
+    @apply size-4 sm:size-6;
+}
+
+.loadingAction {
+    @apply h-[2.875rem] w-52 rounded-lg bg-gray-200 dark:bg-neutral-800 animate-pulse;
 }

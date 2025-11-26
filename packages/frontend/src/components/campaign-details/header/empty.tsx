@@ -10,13 +10,11 @@ interface EmptyHeaderProps {
 
 export function EmptyHeader({ campaign }: EmptyHeaderProps) {
     return (
-        <div className={styles.root}>
-            <div className={styles.titleContainer}>
-                <div className={styles.title}>
-                    <Typography size="xl3" weight="medium">
-                        {campaign.name}
-                    </Typography>
-                </div>
+        <div className={styles.titleContainer}>
+            <div className={styles.title}>
+                <Typography size="xl3" weight="medium">
+                    {campaign.name}
+                </Typography>
             </div>
         </div>
     );
