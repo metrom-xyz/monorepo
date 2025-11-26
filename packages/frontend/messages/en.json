@@ -564,9 +564,7 @@
         "header": {
             "title": "{protocol}",
             "visitWebsite": "Visit website"
-        },
-        "points": "Points",
-        "tokens": "Tokens"
+        }
     },
     "enso": {
         "title": "Deposit to stakeDAO vault",

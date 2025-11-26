@@ -46,6 +46,7 @@
 .rewardTokenAmountInput :global(.inputWrapper) {
     @apply w-full
         max-w-44
+        border-none
         bg-transparent
         h-6
         leading-6
