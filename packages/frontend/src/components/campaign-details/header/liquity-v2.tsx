@@ -1,14 +1,12 @@
-import { useCallback } from "react";
 import { Typography, Button, InfoTooltip } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
-import { useRouter } from "@/src/i18n/routing";
-import { AprChip } from "../../apr-chip";
-import { DistributablesType, type LiquityV2TargetType } from "@metrom-xyz/sdk";
+import { type LiquityV2TargetType } from "@metrom-xyz/sdk";
 import { type TargetedNamedCampaign } from "@/src/types/campaign";
 import { ProtocolType } from "@metrom-xyz/chains";
 import { useProtocolsInChain } from "@/src/hooks/useProtocolsInChain";
 import { RemoteLogo } from "../../remote-logo";
 import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
+import { Tags } from "./tags";
 
 import styles from "./styles.module.css";
 
@@ -18,7 +16,6 @@ interface LiquityV2HeaderProps {
 
 export function LiquityV2Header({ campaign }: LiquityV2HeaderProps) {
     const t = useTranslations("campaignDetails.header");
-    const router = useRouter();
 
     const brand = useProtocolsInChain({
         chainId: campaign.chainId,
@@ -28,12 +25,8 @@ export function LiquityV2Header({ campaign }: LiquityV2HeaderProps) {
     const ChainIcon = campaign.chainData?.icon;
     const actionLink = brand?.actionUrls[campaign.target.type];
 
-    const handleClaimOnClick = useCallback(() => {
-        router.push("/claims");
-    }, [router]);
-
     return (
-        <div className={styles.root}>
+        <>
             <div className={styles.titleContainer}>
                 <div className={styles.title}>
                     {ChainIcon && (
@@ -46,7 +39,7 @@ export function LiquityV2Header({ campaign }: LiquityV2HeaderProps) {
                         </InfoTooltip>
                     )}
                     <RemoteLogo
-                        size="xl"
+                        size="lg"
                         address={campaign.target.collateral.address}
                         chain={campaign.target.chainId}
                     />
@@ -54,42 +47,27 @@ export function LiquityV2Header({ campaign }: LiquityV2HeaderProps) {
                         {campaign.name}
                     </Typography>
                 </div>
+                <Tags campaign={campaign} />
             </div>
-            <div className={styles.actionsContainer}>
-                <div className={styles.leftActions}>
-                    {campaign.isDistributing(DistributablesType.Tokens) && (
-                        <Button size="sm" onClick={handleClaimOnClick}>
-                            {t("claim")}
-                        </Button>
-                    )}
-                    <Button
-                        size="sm"
-                        href={actionLink || undefined}
-                        disabled={!actionLink}
-                        icon={ArrowRightIcon}
-                        iconPlacement="right"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className={{
-                            icon: styles.externalLinkIcon,
-                        }}
-                    >
-                        {t(`liquityV2.${campaign.target.type}`, {
-                            collateral: campaign.target.collateral.symbol,
-                            debtToken: brand?.debtToken.symbol || "",
-                        })}
-                    </Button>
-                </div>
-                {campaign.isDistributing(DistributablesType.Tokens) && (
-                    <AprChip
-                        prefix
-                        size="lg"
-                        apr={campaign.apr}
-                        kpi={!!campaign.specification?.kpi}
-                        campaign={campaign}
-                    />
-                )}
+            <div className={styles.actions}>
+                <Button
+                    size="sm"
+                    href={actionLink || undefined}
+                    disabled={!actionLink}
+                    icon={ArrowRightIcon}
+                    iconPlacement="right"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={{
+                        icon: styles.externalLinkIcon,
+                    }}
+                >
+                    {t(`liquityV2.${campaign.target.type}`, {
+                        collateral: campaign.target.collateral.symbol,
+                        debtToken: brand?.debtToken.symbol || "",
+                    })}
+                </Button>
             </div>
-        </div>
+        </>
     );
 }

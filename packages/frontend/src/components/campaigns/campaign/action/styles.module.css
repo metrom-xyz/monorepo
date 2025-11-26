@@ -16,10 +16,6 @@
     @apply w-full;
 }
 
-.chipsWrapper {
+.tags {
     @apply flex gap-1.5;
-}
-
-.chip {
-    @apply bg-gray-200 dark:bg-neutral-700 rounded-sm py-1 px-1.5 w-fit;
 }

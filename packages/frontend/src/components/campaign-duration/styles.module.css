@@ -1,5 +1,0 @@
-@reference "../../app.css";
-
-.root {
-    @apply flex flex-wrap sm:flex-nowrap justify-between gap-4;
-}

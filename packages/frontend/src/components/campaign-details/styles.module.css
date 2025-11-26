@@ -5,7 +5,7 @@
 }
 
 .headerWrapper {
-    @apply flex flex-col items-center w-full max-w-screen-lg gap-10;
+    @apply flex flex-col items-center w-full max-w-screen-xl gap-10;
 }
 
 .header {
@@ -13,7 +13,7 @@
 }
 
 .contentWrapper {
-    @apply w-full max-w-screen-lg flex flex-col gap-8;
+    @apply w-full max-w-screen-xl flex flex-col gap-8;
 }
 
 .notFound {
