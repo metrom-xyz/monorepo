@@ -6,12 +6,20 @@ import { useTranslations } from "next-intl";
 import { TokensIcon } from "@/src/assets/tokens-icon";
 import { PointsIcon } from "@/src/assets/points-icon";
 import { BackendCampaignType } from "@metrom-xyz/sdk";
-import { useCallback, useEffect, useState } from "react";
+import {
+    useCallback,
+    useEffect,
+    useState,
+    type FunctionComponent,
+} from "react";
 import { ProjectsList } from "../projects-list";
 import { ProjectsIcon } from "@/src/assets/projects-icon";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { SkeletonCampaigns } from "./skeleton-campaigns";
 import { usePrevious } from "react-use";
+import type { RawFilters } from "../campaigns-table/filters";
+import type { TranslationsKeys } from "@/src/types/utils";
+import type { SVGIcon } from "@/src/types/common";
 
 import styles from "./styles.module.css";
 
@@ -23,7 +31,45 @@ export const URL_ENABLED_CAMPAIGNS_FILTERS = [
     "protocols",
 ];
 
-export function Campaigns() {
+interface CampaignsProps {
+    disableFilters?: boolean;
+    optionalFilters?: Partial<RawFilters>;
+    tabs?: BackendCampaignTypeAndProjects[];
+}
+
+const TABS: {
+    type: BackendCampaignTypeAndProjects;
+    label: TranslationsKeys<"allCampaigns.tabs">;
+    icon: FunctionComponent<SVGIcon>;
+}[] = [
+    {
+        type: BackendCampaignType.Rewards,
+        label: "tokens",
+        icon: TokensIcon,
+    },
+    {
+        type: BackendCampaignType.Points,
+        label: "points",
+        icon: PointsIcon,
+    },
+    {
+        type: "projects",
+        label: "projects",
+        icon: ProjectsIcon,
+    },
+];
+
+const DEFAULT_ACTIVE_TABS: BackendCampaignTypeAndProjects[] = [
+    BackendCampaignType.Rewards,
+    BackendCampaignType.Points,
+    "projects",
+];
+
+export function Campaigns({
+    disableFilters = false,
+    optionalFilters,
+    tabs = DEFAULT_ACTIVE_TABS,
+}: CampaignsProps) {
     const t = useTranslations("allCampaigns");
     const router = useRouter();
     const pathname = usePathname();
@@ -96,21 +142,23 @@ export function Campaigns() {
     return (
         <div className={styles.root}>
             <Tabs value={type} onChange={setType}>
-                <Tab icon={TokensIcon} value={BackendCampaignType.Rewards}>
-                    {t("tabs.tokens")}
-                </Tab>
-                <Tab icon={PointsIcon} value={BackendCampaignType.Points}>
-                    {t("tabs.points")}
-                </Tab>
-                <Tab icon={ProjectsIcon} value={"projects"}>
-                    {t("tabs.projects")}
-                </Tab>
+                {TABS.filter(({ type }) => tabs.includes(type)).map(
+                    ({ type, label, icon }) => {
+                        return (
+                            <Tab key={type} icon={icon} value={type}>
+                                {t(`tabs.${label}`)}
+                            </Tab>
+                        );
+                    },
+                )}
             </Tabs>
             {type === "projects" ? (
                 <ProjectsList />
             ) : (
                 <CampaignsTable
                     type={type}
+                    disableFilters={disableFilters}
+                    optionalFilters={optionalFilters}
                     onClearFilters={handleClearUrlFilterParams}
                 />
             )}
