@@ -94,7 +94,10 @@ export function ProjectCard({
                             className={styles.projectIconWrapper}
                             style={{ backgroundColor: branding.iconBackground }}
                         >
-                            <Icon className={styles.projectIcon} />
+                            <Icon
+                                style={{ color: branding.main }}
+                                className={styles.projectIcon}
+                            />
                         </div>
                         <div className={styles.headerData}>
                             <Typography
