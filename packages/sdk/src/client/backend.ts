@@ -1029,11 +1029,7 @@ export class MetromApiClient {
             );
 
         const { projects } = (await response.json()) as BackendProjectsResponse;
-
-        return Object.entries(projects).map(([slug, project]) => ({
-            slug,
-            campaigns: project.campaigns,
-        }));
+        return projects;
     }
 }
 
