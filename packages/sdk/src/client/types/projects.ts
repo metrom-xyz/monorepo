@@ -1,4 +1,5 @@
 export interface BackendProject {
+    slug: string;
     campaigns: {
         active: number;
         total: number;
@@ -6,5 +7,5 @@ export interface BackendProject {
 }
 
 export interface BackendProjectsResponse {
-    projects: Record<string, BackendProject>;
+    projects: BackendProject[];
 }
