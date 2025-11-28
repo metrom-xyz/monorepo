@@ -4,7 +4,6 @@
     @apply flex
         flex-col
         pt-4
-        gap-1
         w-full
         overflow-hidden;
 }
@@ -13,7 +12,8 @@
     @apply flex
         justify-between
         items-center
-        px-4;
+        px-4
+        mb-1;
 }
 
 .empty {

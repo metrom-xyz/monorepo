@@ -7,6 +7,7 @@ import {
     SupportedLiquityV2,
     SupportedBridge,
     type SupportedProtocol,
+    SupportedGmxV1,
 } from "../commons";
 import type {
     BackendCampaignOrderBy,
@@ -40,6 +41,10 @@ import {
     type HoldFungibleAssetTarget,
     DistributablesType,
     type DynamicPointDistributables,
+    type GmxV1LiquidityTarget,
+    type TurtleTarget,
+    type AmmPoolNetSwapVolumeTarget,
+    type NoDistributables,
 } from "../types/campaigns";
 import {
     ChainType,
@@ -92,6 +97,8 @@ import type {
 import type { FungibleAssetInfo } from "src/types/fungible-asset";
 import type { BackendFungibleAssetResponse } from "./types/fungible-asset";
 import type { AmmPool, CampaignAmmPool } from "src/types/pools";
+import type { BackendProjectsResponse } from "./types/projects";
+import type { Project } from "src/types/projects";
 
 const MIN_TICK = -887272;
 const MAX_TICK = -MIN_TICK;
@@ -117,6 +124,11 @@ const DEX_BRAND_NAME: Record<SupportedDex, string> = {
     [SupportedDex.Izumi]: "Izumi",
     [SupportedDex.Hydrex]: "Hydrex",
     [SupportedDex.Balancer]: "Balancer",
+    [SupportedDex.Curve]: "Curve",
+};
+
+const GMX_V1_BRAND_NAME: Record<SupportedGmxV1, string> = {
+    [SupportedGmxV1.Amped]: "Amped",
 };
 
 const LIQUITY_V2_BRAND_NAME: Record<SupportedLiquityV2, string> = {
@@ -267,7 +279,7 @@ export class MetromApiClient {
 
         for (const param in params) {
             const value = params[param as keyof FetchCampaignsParams];
-            if (!value || param === "type") continue;
+            if (value === undefined || param === "type") continue;
 
             if (Array.isArray(value)) {
                 if (value.length === 0) continue;
@@ -1007,6 +1019,19 @@ export class MetromApiClient {
             totalSupply: BigInt(parsedResponse.totalSupply),
         };
     }
+
+    async fetchProjects(): Promise<Project[]> {
+        const url = new URL("v2/projects", this.baseUrl);
+
+        const response = await fetch(url);
+        if (!response.ok)
+            throw new Error(
+                `Response not ok while projects: ${await response.text()}`,
+            );
+
+        const { projects } = (await response.json()) as BackendProjectsResponse;
+        return projects;
+    }
 }
 
 function processCampaignsResponse(
@@ -1030,6 +1055,16 @@ function processCampaignsResponse(
                             slug: backendCampaign.target.dex,
                             name: DEX_BRAND_NAME[backendCampaign.target.dex],
                         },
+                    },
+                };
+                break;
+            }
+            case "gmx-v1-liquidity": {
+                target = <GmxV1LiquidityTarget>{
+                    type: TargetType.GmxV1Liquidity,
+                    brand: {
+                        slug: backendCampaign.target.brand,
+                        name: GMX_V1_BRAND_NAME[backendCampaign.target.brand],
                     },
                 };
                 break;
@@ -1144,6 +1179,23 @@ function processCampaignsResponse(
                 };
                 break;
             }
+            case "turtle": {
+                target = <TurtleTarget>{
+                    ...backendCampaign.target,
+                    type: TargetType.Turtle,
+                };
+                break;
+            }
+            case "amm-pool-net-swap-volume": {
+                target = <AmmPoolNetSwapVolumeTarget>{
+                    type: TargetType.AmmPoolNetSwapVolume,
+                    chainType,
+                    chainId,
+                    ammPool: {},
+                    targetToken: backendCampaign.target.targetToken,
+                };
+                break;
+            }
             case "empty": {
                 target = <EmptyTarget>{
                     ...backendCampaign.target,
@@ -1155,6 +1207,7 @@ function processCampaignsResponse(
         if ("rewards" in backendCampaign) {
             distributables = <TokenDistributables>{
                 type: DistributablesType.Tokens,
+                dailyUsd: backendCampaign.rewards.dailyUsd,
                 list: [],
                 amountUsdValue: 0,
                 remainingUsdValue: 0,
@@ -1176,7 +1229,6 @@ function processCampaignsResponse(
                 distributables.remainingUsdValue += remaining.usdValue;
 
                 distributables.list.push(<TokenDistributable>{
-                    dailyUsd: backendCampaign.rewards.dailyUsd,
                     amount,
                     remaining,
                     token: backendAsset,
@@ -1195,6 +1247,10 @@ function processCampaignsResponse(
             distributables = <DynamicPointDistributables>{
                 type: DistributablesType.DynamicPoints,
                 ...backendCampaign.dynamicPoints,
+            };
+        } else {
+            distributables = <NoDistributables>{
+                type: DistributablesType.NoDistributables,
             };
         }
 

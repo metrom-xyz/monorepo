@@ -116,10 +116,10 @@ export const DateTimePicker = ({
             <div className={styles.divider} />
             <div className={styles.timeWrapper}>
                 <div className={styles.header}>
-                    <Typography uppercase size="lg" weight="medium">
+                    <Typography uppercase weight="medium">
                         HH
                     </Typography>
-                    <Typography uppercase size="lg" weight="medium">
+                    <Typography uppercase weight="medium">
                         MM
                     </Typography>
                 </div>
@@ -150,6 +150,14 @@ export const DateTimePicker = ({
                                     selected={!!selected}
                                 >
                                     <Typography
+                                        data-data={`hour-${hour}`}
+                                        size="sm"
+                                        weight="medium"
+                                        onClick={
+                                            disabled
+                                                ? undefined
+                                                : handleTimeChange
+                                        }
                                         className={classNames(
                                             className?.cell,
                                             styles.cell,
@@ -160,12 +168,6 @@ export const DateTimePicker = ({
                                                 [styles.cellSelected]: selected,
                                             },
                                         )}
-                                        onClick={
-                                            disabled
-                                                ? undefined
-                                                : handleTimeChange
-                                        }
-                                        data-data={`hour-${hour}`}
                                     >
                                         {hour}
                                     </Typography>
@@ -199,6 +201,14 @@ export const DateTimePicker = ({
                                     selected={!!selected}
                                 >
                                     <Typography
+                                        data-data={`minute-${minute}`}
+                                        size="sm"
+                                        weight="medium"
+                                        onClick={
+                                            disabled
+                                                ? undefined
+                                                : handleTimeChange
+                                        }
                                         className={classNames(
                                             className?.cell,
                                             styles.cell,
@@ -209,12 +219,6 @@ export const DateTimePicker = ({
                                                 [styles.cellSelected]: selected,
                                             },
                                         )}
-                                        onClick={
-                                            disabled
-                                                ? undefined
-                                                : handleTimeChange
-                                        }
-                                        data-data={`minute-${minute}`}
                                     >
                                         {minute}
                                     </Typography>

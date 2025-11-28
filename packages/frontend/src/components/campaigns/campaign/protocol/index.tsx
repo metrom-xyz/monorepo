@@ -1,5 +1,5 @@
 import { Popover, Skeleton, Typography } from "@metrom-xyz/ui";
-import { TargetType } from "@metrom-xyz/sdk";
+import { SupportedLiquidityProviderDeal, TargetType } from "@metrom-xyz/sdk";
 import type { Campaign } from "@/src/types/campaign";
 import { useRef, useState } from "react";
 import { useProtocolsInChain } from "@/src/hooks/useProtocolsInChain";
@@ -24,9 +24,11 @@ export function Protocol({ campaign }: ProtocolProps) {
 
     const protocol = protocols.find((protocol) => {
         switch (campaign.target.type) {
-            case TargetType.AmmPoolLiquidity: {
+            case TargetType.AmmPoolLiquidity:
+            case TargetType.JumperWhitelistedAmmPoolLiquidity: {
                 return protocol.slug === campaign.target.pool.dex.slug;
             }
+            case TargetType.GmxV1Liquidity:
             case TargetType.LiquityV2Debt:
             case TargetType.LiquityV2StabilityPool: {
                 return protocol.slug === campaign.target.brand.slug;
@@ -36,6 +38,13 @@ export function Protocol({ campaign }: ProtocolProps) {
             case TargetType.AaveV3NetSupply:
             case TargetType.AaveV3BridgeAndSupply: {
                 return protocol.slug === campaign.target.brand.slug;
+            }
+            case TargetType.Turtle: {
+                return (
+                    protocol.slug ===
+                    (campaign.target
+                        .type as unknown as SupportedLiquidityProviderDeal)
+                );
             }
         }
     });
@@ -50,19 +59,18 @@ export function Protocol({ campaign }: ProtocolProps) {
 
     return (
         <div className={styles.root}>
-            <div className={styles.root}>
+            <div>
                 {protocol && (
                     <Popover
+                        ref={dexDetailsPopoverRef}
                         open={popoverOpen}
                         anchor={details}
-                        ref={dexDetailsPopoverRef}
-                        placement="top"
+                        onOpenChange={setPopoverOpen}
+                        placement="bottom"
                     >
-                        <div className={styles.detailsContainer}>
-                            <Typography weight="medium" size="sm">
-                                {protocol.name}
-                            </Typography>
-                        </div>
+                        <Typography weight="medium" size="sm">
+                            {protocol.name}
+                        </Typography>
                     </Popover>
                 )}
                 <div

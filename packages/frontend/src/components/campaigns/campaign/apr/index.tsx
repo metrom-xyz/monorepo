@@ -9,6 +9,7 @@ import { DistributablesType, TargetType } from "@metrom-xyz/sdk";
 import { useTranslations } from "next-intl";
 import { KpiAprSummary } from "@/src/components/kpi-apr-summary";
 import type { Campaign } from "@/src/types/campaign";
+import classNames from "classnames";
 
 import styles from "./styles.module.css";
 
@@ -56,62 +57,61 @@ export function Apr({ campaign, apr, kpi }: AprProps) {
 
     return (
         <div
+            ref={setAnchor}
             onMouseEnter={handlePopoverOpen}
             onMouseLeave={handlePopoverClose}
             className={styles.root}
         >
-            <div ref={setAnchor}>
-                <Popover
-                    placement="left"
-                    anchor={anchor}
-                    open={popover}
-                    ref={popoverRef}
-                >
-                    <div className={styles.popoverContent}>
-                        <Typography size="sm" weight="medium" uppercase>
-                            {t("title")}
-                        </Typography>
-                        <KpiAprSummary campaign={campaign} />
-                        {loading ? (
-                            <SkeletonPopover />
-                        ) : tokensCampaign && kpi ? (
-                            <div className={styles.chartWrapper}>
-                                <KpiSimulationChart
-                                    loading={loading}
-                                    targetValueName={campaign.targetValueName}
-                                    targetUsdValue={campaign.getTargetUsdValue()}
-                                    campaignDurationSeconds={
-                                        campaign.to - campaign.from
-                                    }
-                                    totalRewardsUsd={
-                                        campaign.distributables.amountUsdValue
-                                    }
-                                    lowerUsdTarget={lowerBound}
-                                    upperUsdTarget={upperBound}
-                                    minimumPayoutPercentage={minimumPayout}
-                                    // TODO: add liquidity in range to simulation?
-                                    // range={liquidityInRange}
-                                    tooltipSize="xs"
-                                />
-                            </div>
-                        ) : null}
-                    </div>
-                </Popover>
-            </div>
-            <div className={styles.aprWrapper}>
-                <AprChip apr={apr} kpi={kpi} placeholder />
-            </div>
+            <Popover
+                ref={popoverRef}
+                anchor={anchor}
+                open={popover}
+                placement="bottom"
+                onOpenChange={setPopover}
+                className={styles.popover}
+            >
+                <div className={styles.popoverContent}>
+                    <Typography size="sm" weight="semibold" uppercase>
+                        {t("title")}
+                    </Typography>
+                    <KpiAprSummary campaign={campaign} />
+                    {loading ? (
+                        <SkeletonPopover />
+                    ) : tokensCampaign && kpi ? (
+                        <div className={styles.chartWrapper}>
+                            <KpiSimulationChart
+                                loading={loading}
+                                targetValueName={campaign.targetValueName}
+                                targetUsdValue={campaign.usdTvl}
+                                campaignDurationSeconds={
+                                    campaign.to - campaign.from
+                                }
+                                totalRewardsUsd={
+                                    campaign.distributables.amountUsdValue
+                                }
+                                lowerUsdTarget={lowerBound}
+                                upperUsdTarget={upperBound}
+                                minimumPayoutPercentage={minimumPayout}
+                                // TODO: add liquidity in range to simulation?
+                                // range={liquidityInRange}
+                                tooltipSize="xs"
+                            />
+                        </div>
+                    ) : null}
+                </div>
+            </Popover>
+            <AprChip apr={apr} kpi={kpi} placeholder />
         </div>
     );
 }
 
 export function SkeletonApr() {
-    return <Skeleton width={80} size="xl" />;
+    return <Skeleton width={90} size="xl2" />;
 }
 
 export function SkeletonPopover() {
     return (
-        <div className={styles.chartWrapper}>
+        <div className={classNames(styles.chartWrapper, styles.loading)}>
             <KpiSimulationChart
                 targetValueName=""
                 loading={true}

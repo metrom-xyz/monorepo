@@ -66,7 +66,7 @@ const SwapInput = ({
 
     useEffect(() => {
         inputOnChange(debouncedValue);
-    }, [debouncedValue]);
+    }, [debouncedValue, inputOnChange]);
     useEffect(() => {
         setTempInputValue(inputValue);
     }, [inputValue]);
@@ -84,7 +84,7 @@ const SwapInput = ({
     }
 
     return (
-        <div className="w-full flex flex-col gap-2 p-2 rounded-2xl border border-zinc-500 min-h-[6.5rem]">
+        <div className="w-full flex flex-col gap-2 p-2 rounded-2xl border border-gray-500 min-h-[6.5rem]">
             <div className="flex w-full gap-2">
                 <TokenSelector
                     project={project}
@@ -101,7 +101,7 @@ const SwapInput = ({
 
                 <div className="flex w-full h-full justify-end items-center self-center">
                     {loading ? (
-                        <div className="h-10 w-full max-w-40 theme-surface-2 rounded-md animate-pulse" />
+                        <div className="h-10 w-full max-w-40 surface-secondary rounded-md animate-pulse" />
                     ) : (
                         <TextInput
                             type="number"
@@ -124,7 +124,7 @@ const SwapInput = ({
                         {formatNumber(balanceValue)} {tokenInInfo?.symbol}
                     </Typography>
 
-                    <div className="rounded-sm px-1 theme-surface theme-surface-2-hover hover:cursor-pointer transition-colors duration-200 ease-in-out">
+                    <div className="rounded-sm px-1 surface-primary surface-secondary-hover hover:cursor-pointer transition-colors duration-200 ease-in-out">
                         <Typography
                             uppercase
                             weight="medium"

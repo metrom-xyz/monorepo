@@ -71,3 +71,9 @@ export function formatDateTime(dateTime?: Dayjs | number): string {
     if (typeof dateTime === "number") dateTime = dayjs.unix(dateTime);
     return dateTime.format("DD MMM YYYY | HH:mm");
 }
+
+export function formatDate(date?: Dayjs | number): string {
+    if (!date) return "-";
+    if (typeof date === "number") date = dayjs.unix(date);
+    return date.format("DD MMM YYYY");
+}

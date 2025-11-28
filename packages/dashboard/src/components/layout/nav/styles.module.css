@@ -37,7 +37,7 @@
 }
 
 .menuIconWrapper > svg {
-    @apply h-7 w-7 theme-text;
+    @apply h-7 w-7 text-primary;
 }
 
 .mobileNavigationWrapper {
@@ -53,7 +53,7 @@
         justify-between
         border-t
         border-gray-200 dark:border-zinc-600
-        theme-surface;
+        surface-primary;
 }
 
 .mobileNavLink {
@@ -79,7 +79,7 @@
         items-center
         justify-center
         cursor-pointer
-        theme-surface-hover
+        surface-primary-hover
         transition-colors
         duration-200
         ease-in-out;
@@ -116,7 +116,7 @@
         transition-colors
         duration-200
         ease-in-out
-        theme-surface-hover;
+        surface-primary-hover;
 }
 
 .tab.disabled {

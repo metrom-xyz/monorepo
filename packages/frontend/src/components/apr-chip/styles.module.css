@@ -1,17 +1,18 @@
 @reference "../../app.css";
 
 .root {
-    @apply flex gap-2.5 items-center rounded-lg;
+    @apply flex gap-2.5 items-center rounded-lg justify-center;
 }
 
 .chip {
     @apply flex
         h-full
-        w-fit
+        w-full
         justify-center
         items-center
         bg-brand-blue
         rounded-lg
+        py-1
         col-span-4
         sm:col-span-1;
 }
@@ -26,8 +27,4 @@
 
 .text {
     @apply !text-white dark:!text-slate-200;
-}
-
-.empty {
-    @apply w-full col-span-4 sm:col-span-1 text-left;
 }

@@ -1,50 +1,84 @@
 import classNames from "classnames";
-import { Button, Select, Typography, type SelectOption } from "@metrom-xyz/ui";
-import { useTranslations } from "next-intl";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import {
-    useCallback,
-    useEffect,
-    useMemo,
-    useRef,
-    useState,
-    type ReactNode,
-} from "react";
-import { FilterableStatus } from "@/src/types/common";
+    Button,
+    Typography,
+    type SelectOption,
+    MultiSelect,
+    Chip,
+    Skeleton,
+} from "@metrom-xyz/ui";
+import { useTranslations } from "next-intl";
+import { useCallback, useMemo } from "react";
 import type { CampaignSortOptions } from "@/src/utils/filtering";
-import { ProtocolLogo } from "../../protocol-logo";
-import { useSupportedProtocols } from "@/src/hooks/useSupportedProtocols";
-import { useChainsWithTypes } from "@/src/hooks/useChainsWithTypes";
 import { getCrossVmChainData } from "@/src/utils/chain";
-import { ChainType } from "@metrom-xyz/sdk";
-import { APTOS } from "@/src/commons/env";
+import { ChainType, Status } from "@metrom-xyz/sdk";
+import { CampaignStatusDot } from "../../campaign-status-dot";
+import { TrashIcon } from "@/src/assets/trash-icon";
+import { MobileFilters } from "./mobile-filters";
+import type { ChainFilterOption } from "@/src/hooks/useCampaignsFiltersOptions";
+import { ProtocolLogo } from "../../protocol-logo";
+import type { Protocol } from "@metrom-xyz/chains";
 
 import styles from "./styles.module.css";
 
-export const CHAIN_ALL = "0";
-
-const statusSelectRenderOption = (option: {
-    label: string;
-    color?: string;
-    value: FilterableStatus;
-}) => {
+export const statusSelectRenderOption = (
+    option: { label: string; value: Status },
+    active?: boolean,
+) => {
     return (
         <div className={styles.customOptionContainer}>
-            {option.value !== FilterableStatus.All && (
-                <span className={classNames(styles.dot, option.color)} />
-            )}
-            <Typography weight="medium">{option.label}</Typography>
+            <CampaignStatusDot
+                status={option.value}
+                className={
+                    active && option.value === Status.Active
+                        ? styles.statusDotLiveActive
+                        : undefined
+                }
+            />
+            <Typography
+                weight="medium"
+                className={classNames(styles.statusLabel, {
+                    [styles.active]: active,
+                })}
+            >
+                {option.label}
+            </Typography>
         </div>
     );
 };
 
-const chainSelectRenderOption = (option: { label: string; value: string }) => {
-    const [chainType, chainId] = option.value.split("-");
+export const protocolSelectRenderOption = (option: {
+    label: string;
+    protocol?: Protocol;
+    value: string;
+}) => {
+    return (
+        <div className={styles.customOptionContainer}>
+            {option.protocol && (
+                <ProtocolLogo
+                    size="sm"
+                    protocol={option.protocol}
+                    className={styles.icon}
+                />
+            )}
+            <Typography className={styles.selectOptionText} weight="medium">
+                {option.label}
+            </Typography>
+        </div>
+    );
+};
 
-    const ChainIcon =
-        option.value !== CHAIN_ALL
-            ? getCrossVmChainData(Number(chainId), chainType as ChainType)?.icon
-            : null;
+export const chainSelectRenderOption = (option: {
+    label: string;
+    value: string;
+}) => {
+    const [chainType, chainId] = option.value.split("_");
+
+    const ChainIcon = getCrossVmChainData(
+        Number(chainId),
+        chainType as ChainType,
+    )?.icon;
+
     return (
         <div className={styles.customOptionContainer}>
             {ChainIcon && <ChainIcon className={styles.icon} />}
@@ -55,286 +89,248 @@ const chainSelectRenderOption = (option: { label: string; value: string }) => {
     );
 };
 
-const protocolSelectRenderOption = (option: {
-    label: string;
-    icon?: ReactNode;
-    value: string;
-}) => {
-    return (
-        <div className={styles.customOptionContainer}>
-            {option.icon && option.icon}
-            <Typography className={styles.selectOptionText} weight="medium">
-                {option.label}
-            </Typography>
-        </div>
-    );
-};
+export interface RawFilters {
+    protocols: SelectOption<string>[];
+    statuses: SelectOption<Status>[];
+    chains: ChainFilterOption[];
+}
 
-export interface Filters {
-    protocol: string;
-    status: FilterableStatus;
-    chainId: string;
-    chainType?: ChainType;
+export interface FilterParams {
+    protocols: string[];
+    statuses: Status[];
+    chainIds: number[];
+    chainTypes?: ChainType[];
 }
 
 interface FilterProps {
+    filters: RawFilters;
     sortField?: CampaignSortOptions;
     order?: number;
+    totalCampaigns?: number;
+    loading?: boolean;
+    statusOptions?: SelectOption<Status>[];
+    protocolOptions?: SelectOption<string>[];
+    chainOptions?: ChainFilterOption[];
     onClearFilters: () => void;
-    onFiltersChange: (filters: Partial<Filters>) => void;
+    onFiltersChange: (filters: Partial<RawFilters>) => void;
 }
 
 export function Filters({
+    filters,
     sortField,
     order,
+    totalCampaigns,
+    loading,
+    statusOptions,
+    protocolOptions,
+    chainOptions,
     onClearFilters,
     onFiltersChange,
 }: FilterProps) {
     const t = useTranslations("allCampaigns");
 
-    const chains = useChainsWithTypes({
-        chainType: APTOS ? ChainType.Aptos : undefined,
-    });
-    const protocols = useSupportedProtocols({ crossVm: !APTOS });
-    const router = useRouter();
-    const pathname = usePathname();
-    const searchParams = useSearchParams();
-
-    const [protocol, setProtocol] = useState("");
-    const [status, setStatus] = useState<FilterableStatus>(
-        FilterableStatus.All,
-    );
-    const [chain, setChain] = useState(CHAIN_ALL);
-    const chainInitialized = useRef(false);
-
     const filtersActive = useMemo(
         () =>
-            !!protocol ||
-            status !== FilterableStatus.All ||
+            filters.protocols.length > 0 ||
+            filters.statuses.length > 0 ||
+            filters.chains.length > 0 ||
             !!sortField ||
-            !!order ||
-            chain !== CHAIN_ALL,
-        [protocol, status, sortField, order, chain],
+            !!order,
+        [filters, sortField, order],
     );
 
-    const statusOptions = useMemo(() => {
-        return [
-            {
-                label: t("filters.status.all"),
-                value: FilterableStatus.All,
-            },
-            {
-                label: t("filters.status.live"),
-                value: FilterableStatus.Active,
-                color: "bg-green-500",
-            },
-            {
-                label: t("filters.status.upcoming"),
-                value: FilterableStatus.Upcoming,
-                color: "bg-blue-500",
-            },
-            {
-                label: t("filters.status.ended"),
-                value: FilterableStatus.Expired,
-                color: "bg-zinc-500",
-            },
-        ];
-    }, [t]);
-
-    const protocolOptions = useMemo(() => {
-        const options: {
-            label: string;
-            icon?: ReactNode;
-            value: string;
-        }[] = [
-            {
-                label: t("filters.protocol.all"),
-                value: "",
-            },
-        ];
-
-        for (const protocol of protocols) {
-            options.push({
-                label: protocol.name,
-                icon: (
-                    <ProtocolLogo
-                        protocol={protocol}
-                        size="sm"
-                        className={styles.icon}
-                    />
-                ),
-                value: protocol.slug,
-            });
-        }
-        return options;
-    }, [protocols, t]);
-
-    const chainOptions = useMemo(() => {
-        const options: {
-            label: string;
-            value: string;
-            query: string | null;
-        }[] = [
-            {
-                label: t("filters.chain.all"),
-                value: CHAIN_ALL,
-                query: null,
-            },
-        ];
-        for (const chain of chains) {
-            const chainData = getCrossVmChainData(chain.id, chain.type);
-            if (!chainData) continue;
-
-            options.push({
-                label: chainData.name,
-                value: `${chain.type}-${chain.id}`,
-                query: chainData.name.toLowerCase().replaceAll(" ", "-"),
-            });
-        }
-        return options;
-    }, [chains, t]);
-
-    useEffect(() => {
-        // Skip updating the search params once initialized to avoid
-        // unnecessary re-renders
-        if (chainInitialized.current) return;
-        chainInitialized.current = true;
-
-        const chain = searchParams.get("chain");
-        if (!chain) return;
-
-        const resolvedChain = chainOptions.find(
-            (option) => option.query === chain,
-        );
-
-        const params = new URLSearchParams(searchParams.toString());
-        if (resolvedChain?.query) {
-            let chainType = undefined;
-            let chainId = undefined;
-            if (resolvedChain.value !== CHAIN_ALL) {
-                const chainTypeAndId = resolvedChain.value.split("-");
-                chainType = chainTypeAndId[0] as ChainType;
-                chainId = chainTypeAndId[1];
-            }
-
-            setChain(resolvedChain.value);
-            onFiltersChange({ chainId, chainType });
-
-            params.set("chain", resolvedChain.query);
-        } else {
-            setChain(CHAIN_ALL);
-            onFiltersChange({ chainId: CHAIN_ALL });
-            params.delete("chain");
-        }
-    }, [chainOptions, searchParams, onFiltersChange]);
-
-    const handleProtocolChange = useCallback(
-        (protocol: SelectOption<string>) => {
-            setProtocol(protocol.value);
-            onFiltersChange({ protocol: protocol.value });
+    const handleStatusesChange = useCallback(
+        (statuses: SelectOption<Status>[]) => {
+            onFiltersChange({ statuses });
         },
         [onFiltersChange],
     );
 
-    const handleStatusChange = useCallback(
-        (status: SelectOption<FilterableStatus>) => {
-            setStatus(status.value);
-            onFiltersChange({ status: status.value });
+    const handleProtocolsChange = useCallback(
+        (protocols: SelectOption<string>[]) => {
+            onFiltersChange({ protocols });
         },
         [onFiltersChange],
     );
 
-    const handleChainChange = useCallback(
-        (chain: SelectOption<string> & { query: string | null }) => {
-            const params = new URLSearchParams(searchParams.toString());
-
-            if (!chain.query) params.delete("chain");
-            else params.set("chain", chain.query);
-
-            router.replace(`${pathname}?${params.toString()}`, {
-                scroll: false,
-            });
-
-            let chainType = undefined;
-            let chainId = CHAIN_ALL;
-            if (chain.value !== CHAIN_ALL) {
-                const chainTypeAndId = chain.value.split("-");
-                chainType = chainTypeAndId[0] as ChainType;
-                chainId = chainTypeAndId[1];
-            }
-
-            setChain(chain.value);
-            onFiltersChange({ chainId, chainType });
+    const handleChainsChange = useCallback(
+        (chains: (SelectOption<string> & { query: string })[]) => {
+            onFiltersChange({ chains });
         },
-        [pathname, router, searchParams, onFiltersChange],
+        [onFiltersChange],
     );
 
     const handleClearFilters = useCallback(() => {
-        setProtocol("");
-        setStatus(FilterableStatus.All);
-        setChain(CHAIN_ALL);
-
-        const params = new URLSearchParams(searchParams.toString());
-        params.delete("chain");
-        router.replace(`${pathname}?${params.toString()}`, { scroll: false });
-
         if (onClearFilters) onClearFilters();
-    }, [pathname, searchParams, router, onClearFilters]);
+    }, [onClearFilters]);
+
+    const getStatusChipCloseHandler = useCallback(
+        (status: SelectOption<Status>) => {
+            return () => {
+                const newStatuses = filters.statuses.filter(
+                    ({ value }) => value !== status.value,
+                );
+                handleStatusesChange(newStatuses);
+            };
+        },
+        [filters.statuses, handleStatusesChange],
+    );
+
+    const getProtocolChipCloseHandler = useCallback(
+        (protocol: SelectOption<string>) => {
+            return () => {
+                const newProtocols = filters.protocols.filter(
+                    ({ value }) => value !== protocol.value,
+                );
+                handleProtocolsChange(newProtocols);
+            };
+        },
+        [filters.protocols, handleProtocolsChange],
+    );
+
+    const getChainChipCloseHandler = useCallback(
+        (chain: SelectOption<string> & { query: string }) => {
+            return () => {
+                const newChains = filters.chains.filter(
+                    ({ value }) => value !== chain.value,
+                );
+                handleChainsChange(newChains);
+            };
+        },
+        [filters.chains, handleChainsChange],
+    );
 
     return (
         <div className={styles.root}>
-            <div className={styles.selectionFilters}>
-                <Select
-                    options={statusOptions}
-                    value={status}
-                    onChange={handleStatusChange}
-                    label={t("filters.status.label")}
-                    messages={{
-                        noResults: "",
-                    }}
-                    className={styles.filterInput}
-                    renderOption={statusSelectRenderOption}
-                />
-                <Select
-                    options={protocolOptions}
-                    value={protocol}
-                    search
-                    onChange={handleProtocolChange}
-                    label={t("filters.protocol.label")}
-                    messages={{
-                        noResults: "",
-                    }}
-                    className={styles.filterInput}
-                    renderOption={protocolSelectRenderOption}
-                />
-                <div className={styles.lastFilterWrapper}>
-                    <Select
-                        options={chainOptions}
-                        value={chain}
-                        search
-                        onChange={handleChainChange}
-                        label={t("filters.chain.label")}
+            <div className={styles.inputs}>
+                {statusOptions && (
+                    <MultiSelect
+                        hideLabel
+                        options={statusOptions}
+                        values={filters.statuses}
+                        onChange={handleStatusesChange}
+                        label={t("filters.status.label")}
+                        placeholder={t("filters.status.label")}
+                        renderOption={statusSelectRenderOption}
                         messages={{
                             noResults: "",
                         }}
-                        className={styles.filterInput}
-                        renderOption={chainSelectRenderOption}
+                        className={classNames(
+                            styles.filterInput,
+                            styles.desktop,
+                        )}
                     />
-                    <Button
-                        variant="secondary"
-                        size="xs"
-                        border={false}
-                        onClick={handleClearFilters}
-                        className={{
-                            root: classNames(styles.clearButton, {
-                                [styles.visible]: filtersActive,
-                            }),
+                )}
+                {protocolOptions && (
+                    <MultiSelect
+                        search
+                        hideLabel
+                        options={protocolOptions}
+                        values={filters.protocols}
+                        onChange={handleProtocolsChange}
+                        label={t("filters.protocol.label")}
+                        placeholder={t("filters.protocol.label")}
+                        renderOption={protocolSelectRenderOption}
+                        messages={{
+                            noResults: "",
                         }}
-                    >
-                        {t("filters.clear")}
-                    </Button>
+                        className={classNames(
+                            styles.filterInput,
+                            styles.desktop,
+                        )}
+                    />
+                )}
+                <div className={styles.lastFilterWrapper}>
+                    {chainOptions && (
+                        <MultiSelect
+                            search
+                            hideLabel
+                            options={chainOptions}
+                            values={filters.chains}
+                            onChange={handleChainsChange}
+                            label={t("filters.chain.label")}
+                            placeholder={t("filters.chain.label")}
+                            renderOption={chainSelectRenderOption}
+                            messages={{
+                                noResults: "",
+                            }}
+                            className={classNames(
+                                styles.filterInput,
+                                styles.desktop,
+                            )}
+                        />
+                    )}
+                    <div className={styles.clearWrapper}>
+                        <Button
+                            variant="secondary"
+                            border={false}
+                            icon={TrashIcon}
+                            iconPlacement="left"
+                            onClick={handleClearFilters}
+                            className={{
+                                root: classNames(styles.clearButton, {
+                                    [styles.visible]: filtersActive,
+                                }),
+                            }}
+                        >
+                            {t("filters.clear")}
+                        </Button>
+                        <div className={styles.totalCampaigns}>
+                            {loading ? (
+                                <Skeleton width={120} size="xs" />
+                            ) : (
+                                <Typography size="xs" variant="tertiary">
+                                    {t("filters.campaignsFound", {
+                                        count: totalCampaigns || 0,
+                                    })}
+                                </Typography>
+                            )}
+                        </div>
+                    </div>
                 </div>
             </div>
+            <MobileFilters
+                filters={filters}
+                active={filtersActive}
+                statusOptions={statusOptions}
+                protocolOptions={protocolOptions}
+                chainOptions={chainOptions}
+                totalCampaigns={totalCampaigns}
+                loading={loading}
+                onFiltersChange={onFiltersChange}
+                onFiltersClear={handleClearFilters}
+            />
+            {filtersActive && (
+                <div className={styles.chips}>
+                    {filters.statuses.map((status) => (
+                        <Chip
+                            key={status.value}
+                            onClose={getStatusChipCloseHandler(status)}
+                            className={styles.chip}
+                        >
+                            {statusSelectRenderOption(status)}
+                        </Chip>
+                    ))}
+                    {filters.protocols.map((protocol) => (
+                        <Chip
+                            key={protocol.value}
+                            onClose={getProtocolChipCloseHandler(protocol)}
+                            className={styles.chip}
+                        >
+                            {protocolSelectRenderOption(protocol)}
+                        </Chip>
+                    ))}
+                    {filters.chains.map((chain) => (
+                        <Chip
+                            key={chain.value}
+                            onClose={getChainChipCloseHandler(chain)}
+                            className={styles.chip}
+                        >
+                            {chainSelectRenderOption(chain)}
+                        </Chip>
+                    ))}
+                </div>
+            )}
         </div>
     );
 }

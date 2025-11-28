@@ -23,6 +23,7 @@ const HOMEPAGES: Record<SupportedDex, string> = {
     [SupportedDex.Izumi]: "https://izumi.finance/",
     [SupportedDex.Hydrex]: "https://www.hydrex.fi/",
     [SupportedDex.Balancer]: "https://balancer.fi/",
+    [SupportedDex.Curve]: "https://www.curve.finance/",
 };
 
 // TODO: add support for MVM_CHAIN_DATA generation

@@ -1,12 +1,12 @@
 "use client";
 
-import { ENVIRONMENT } from "@/src/commons/env";
-import { PROJECT_PAGES } from "@/src/commons/project-pages";
-import { useTranslations } from "next-intl";
 import { Header } from "./header";
-import { ProjectIntro } from "../protocol-intro";
-import { CampaignsTable } from "../campaigns-table";
-import { Typography } from "@metrom-xyz/ui";
+import { Intro } from "./intro";
+import { BackendCampaignType } from "@metrom-xyz/sdk";
+import { PROJECTS_METADATA } from "@/src/commons/projects";
+import { ProjectKind } from "@/src/types/project";
+import { PROJECTS_WIDGETS } from "@/src/commons/project-widgets";
+import { Campaigns } from "../campaigns";
 
 import styles from "./styles.module.css";
 
@@ -15,47 +15,101 @@ interface ProjectProps {
 }
 
 export function Project({ project }: ProjectProps) {
-    const t = useTranslations("projectPage");
-
-    const details = PROJECT_PAGES[ENVIRONMENT][project];
+    const details = PROJECTS_METADATA[project];
 
     if (!project) return null;
 
     const {
         name,
+        kind,
+        protocol,
         description,
         url,
-        brand,
+        branding,
         icon,
+        illustration,
         intro,
-        chain,
-        campaignsFilters,
     } = details;
+
+    const Widget = PROJECTS_WIDGETS[project];
 
     return (
         <div className={styles.root}>
             <Header
                 name={name}
-                description={description}
+                slug={project}
                 url={url}
-                brand={brand}
+                description={description}
+                branding={branding}
                 icon={icon}
+                illustration={illustration}
             />
-            {intro && (
-                <ProjectIntro project={project} brand={brand} {...intro} />
+            {intro && <Intro {...intro} />}
+            {Widget && (
+                <div className={styles.widgets}>
+                    <Widget />
+                </div>
             )}
-            <div className={styles.opportunities}>
-                <Typography size="lg" weight="medium" uppercase>
-                    {t("explore")}
-                </Typography>
-                <CampaignsTable
+            {kind === ProjectKind.PointsTracking && (
+                <Campaigns
+                    tabs={[
+                        BackendCampaignType.Points,
+                        BackendCampaignType.Rewards,
+                    ]}
                     disableFilters
                     optionalFilters={{
-                        chainId: campaignsFilters.chainId?.toString(),
-                        chainType: chain.type,
-                        protocol: campaignsFilters.dex,
+                        protocols: [{ label: "", value: protocol }],
                     }}
                 />
+            )}
+            {kind === ProjectKind.Chain && (
+                <Campaigns
+                    tabs={[
+                        BackendCampaignType.Points,
+                        BackendCampaignType.Rewards,
+                    ]}
+                    disableFilters
+                    optionalFilters={{
+                        chains: [
+                            {
+                                label: "",
+                                query: "",
+                                value: `${details.chainType}_${details.chainId}`,
+                            },
+                        ],
+                    }}
+                />
+            )}
+            {kind === ProjectKind.LiquidityDeals && (
+                <>
+                    {/* TODO: enable this if we need to show TVL and status */}
+                    {/* <LiquidityProviderDeal
+                        protocol={details.protocol}
+                        campaignId={campaignId}
+                    /> */}
+                    <Campaigns
+                        tabs={[
+                            BackendCampaignType.Points,
+                            BackendCampaignType.Rewards,
+                        ]}
+                        disableFilters
+                        optionalFilters={{
+                            protocols: [{ label: "", value: protocol }],
+                        }}
+                    />
+                </>
+            )}
+        </div>
+    );
+}
+
+export function SkeletonProject() {
+    return (
+        <div className={styles.root}>
+            <div className={styles.skeletonHeader}></div>
+            <div className={styles.skeletonProjectIntro}>
+                <div className={styles.skeletonIntroArticle}></div>
+                <div className={styles.skeletonIntroArticle}></div>
             </div>
         </div>
     );

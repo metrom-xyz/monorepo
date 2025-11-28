@@ -26,20 +26,6 @@
     @apply flex items-center gap-3;
 }
 
-.menuIconWrapper {
-    @apply md:hidden
-        bg-white dark:bg-zinc-800
-        rounded-md
-        p-1.5
-        transition-colors
-        duration-200
-        ease-in-out;
-}
-
-.menuIconWrapper > svg {
-    @apply h-7 w-7 theme-text;
-}
-
 .mobileNavigationWrapper {
     @apply sm:hidden
         w-full
@@ -52,37 +38,26 @@
         items-center
         justify-between
         border-t
-        border-gray-200 dark:border-zinc-600
-        theme-surface;
+        stroke-divider
+        surface-primary;
 }
 
 .mobileNavLink {
     @apply h-full
         w-full
         flex
-        flex-col
+        gap-1
         items-center
         justify-center
         px-3;
 }
 
-.metromLogo {
-    @apply h-10 w-10;
+.mobileNavLink.active > p {
+    @apply text-brand-green-dark dark:text-brand-green;
 }
 
-.themePicker {
-    @apply bg-white dark:bg-zinc-800
-        h-10
-        px-3
-        rounded-md
-        flex
-        items-center
-        justify-center
-        cursor-pointer
-        theme-surface-hover
-        transition-colors
-        duration-200
-        ease-in-out;
+.metromLogo {
+    @apply size-9;
 }
 
 .tabs {
@@ -109,22 +84,40 @@
         gap-2
         h-10
         px-3
+        hover:[&>p,&>svg]:text-brand-green-dark
+        hover:[&>p,&>svg]:dark:text-brand-green
         relative
         select-none
-        rounded-md
-        cursor-pointer
-        transition-colors
-        duration-200
-        ease-in-out
-        theme-surface-hover;
+        cursor-pointer;
 }
 
 .tab.disabled {
-    @apply cursor-not-allowed hover:bg-transparent;
+    @apply cursor-not-allowed;
 }
 
-.tabIcon {
-    @apply w-5 h-5 text-black dark:text-zinc-200;
+.tab.disabled > p,
+.tab.disabled > svg {
+    @apply text-secondary;
+}
+
+.tab.active > p {
+    @apply text-brand-green-dark dark:text-brand-green;
+}
+
+.icon {
+    @apply size-5 text-primary transition-colors duration-200 ease-in-out;
+}
+
+.icon.active {
+    @apply text-brand-green-dark dark:text-brand-green;
+}
+
+.icon.disabled {
+    @apply text-primary;
+}
+
+.label {
+    @apply transition-colors duration-200 ease-in-out;
 }
 
 .claimsBadge {
@@ -133,24 +126,21 @@
         justify-center
         absolute
         px-0.5
-        h-5
-        min-w-5
-        bg-brand-green
+        h-[1.125rem]
+        min-w-[1.125rem]
+        bg-brand-green-dark
+        dark:bg-brand-green
         rounded-md
         right-4
-        top-auto
+        top-2.5
         md:-right-1.5
         md:-top-1.5;
 }
 
 .claimsBadgeText {
-    @apply text-black;
-}
-
-.tabActive {
-    @apply bg-zinc-200 sm:bg-white dark:bg-zinc-800 hover:bg-white hover:dark:bg-zinc-800;
+    @apply text-[0.625rem] sm:text-xs text-gray-100 dark:text-neutral-800;
 }
 
 .rightContentContainer {
-    @apply flex items-center gap-2;
+    @apply flex items-center gap-3;
 }

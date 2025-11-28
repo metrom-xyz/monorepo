@@ -84,7 +84,7 @@
 
 .disconnect {
     @apply cursor-pointer
-        theme-surface-hover
+        surface-primary-hover
         transition-colors
         duration-200
         ease-in-out;
@@ -119,11 +119,11 @@
 }
 
 .tabActive {
-    @apply bg-zinc-200 dark:bg-zinc-700 theme-surface-hover;
+    @apply bg-zinc-200 dark:bg-zinc-700 surface-primary-hover;
 }
 
 .copyIcon {
-    @apply w-5 h-5 theme-text;
+    @apply w-5 h-5 text-primary;
 }
 
 .tickIcon {

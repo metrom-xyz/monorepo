@@ -3,6 +3,7 @@ import {
     Environment,
     METROM_API_CLIENT as METROM_API_CLIENTS,
     SupportedAmm,
+    SupportedPointsBooster,
 } from "@metrom-xyz/sdk";
 import { APTOS, ENVIRONMENT } from "./env";
 import SafeAppsSdk from "@safe-global/safe-apps-sdk";
@@ -23,11 +24,20 @@ export const METROM_APTOS_BASE_URL =
         : "https://aptos.dev.metrom.xyz";
 
 export const TURTLE_API_BASE_URL = "https://earn.turtle.vision";
+export const TURTLE_APP_EARN_URL = "https://app.turtle.xyz/earn/opportunities";
+export const TURTLE_REFERRAL_CODE = "D8B9mk2Z";
 
-export const LIQUIDITY_LAND_REFERRAL_URL =
-    "https://app.liquidity.land?ref=2AQfO-fN";
+export const POINTS_BOOSTER_REFERRAL_URLS: Record<
+    SupportedPointsBooster,
+    string
+> = {
+    [SupportedPointsBooster.LiquidityLand]:
+        "https://app.liquidity.land?ref=2AQfO-fN",
+};
 
 export const ENSO_WIDGET_REFERRAL_CODE = "6578715329019f91";
+
+export const MIN_LOADING_TIMEOUT_MS = 300;
 
 export const SECONDS_IN_YEAR = 60 * 60 * 24 * 365;
 

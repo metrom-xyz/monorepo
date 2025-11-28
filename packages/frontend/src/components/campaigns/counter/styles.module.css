@@ -1,0 +1,9 @@
+@reference "../../../app.css";
+
+.root {
+    @apply flex items-center gap-2;
+}
+
+.counter {
+    @apply min-w-8 text-right;
+}

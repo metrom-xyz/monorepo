@@ -34,7 +34,7 @@ export function Row({ kind, selected, collateral, onChange }: RowProps) {
                     {collateral.symbol}
                 </Typography>
             </div>
-            <Typography weight="medium" size="sm" light>
+            <Typography weight="medium" size="sm" variant="tertiary">
                 {formatUsdAmount({
                     amount: getAaveV3UsdTarget({ collateral, kind }),
                 })}

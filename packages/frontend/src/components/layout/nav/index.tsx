@@ -10,7 +10,6 @@ import { NewCampaignIcon } from "@/src/assets/new-campaign-icon";
 import { AllCampaignsIcon } from "@/src/assets/all-campaigns-icon";
 import { ClaimsIcon } from "@/src/assets/claims-icon";
 import { NetworkSelect } from "../../network-select";
-import { NavThemeSwitcher } from "../../nav-theme-switcher";
 import { useMemo, type FunctionComponent } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import type { SVGIcon } from "@/src/types/common";
@@ -20,6 +19,7 @@ import { useClaims } from "@/src/hooks/use-claims";
 import { useActiveChains } from "@/src/hooks/useActiveChains";
 import { useChainWithType } from "@/src/hooks/useChainWithType";
 import { useAccount } from "@/src/hooks/useAccount";
+import { ThemeToggle } from "../../theme-toggle";
 
 import styles from "./styles.module.css";
 
@@ -28,7 +28,7 @@ const ROUTES: {
     label: TranslationsKeys<"navigation">;
     icon: FunctionComponent<SVGIcon>;
 }[] = [
-    { path: "/", label: "allCampaigns", icon: AllCampaignsIcon },
+    { path: "/", label: "discover", icon: AllCampaignsIcon },
     { path: "/campaigns/create", label: "newCampaign", icon: NewCampaignIcon },
     { path: "/claims", label: "claims", icon: ClaimsIcon },
 ];
@@ -63,8 +63,8 @@ export function Nav() {
                     </Link>
                 </div>
                 <div className={styles.rightContentContainer}>
+                    <ThemeToggle />
                     <NetworkSelect />
-                    {!address && <NavThemeSwitcher />}
                     <ConnectButton />
                 </div>
                 <div className={styles.tabs}>
@@ -86,7 +86,15 @@ export function Nav() {
                                     )}
                                 >
                                     {Icon && (
-                                        <Icon className={styles.tabIcon} />
+                                        <Icon
+                                            className={classNames(
+                                                styles.icon,
+                                                styles.disabled,
+                                                {
+                                                    [styles.active]: active,
+                                                },
+                                            )}
+                                        />
                                     )}
                                     <Typography weight="medium">
                                         {t(label)}
@@ -104,13 +112,20 @@ export function Nav() {
                             >
                                 <div
                                     className={classNames(styles.tab, {
-                                        [styles.tabActive]: active,
+                                        [styles.active]: active,
                                     })}
                                 >
                                     {Icon && (
-                                        <Icon className={styles.tabIcon} />
+                                        <Icon
+                                            className={classNames(styles.icon, {
+                                                [styles.active]: active,
+                                            })}
+                                        />
                                     )}
-                                    <Typography weight="medium">
+                                    <Typography
+                                        weight="medium"
+                                        className={styles.label}
+                                    >
                                         {t(label)}
                                     </Typography>
                                     <AnimatePresence>
@@ -126,7 +141,7 @@ export function Nav() {
                                                 >
                                                     <Typography
                                                         size="xs"
-                                                        weight="medium"
+                                                        weight="bold"
                                                         className={
                                                             styles.claimsBadgeText
                                                         }
@@ -176,10 +191,16 @@ export function Nav() {
                                     if (active) e.preventDefault();
                                 }}
                                 className={classNames(styles.mobileNavLink, {
-                                    [styles.tabActive]: active,
+                                    [styles.active]: active,
                                 })}
                             >
-                                {Icon && <Icon className={styles.tabIcon} />}
+                                {Icon && (
+                                    <Icon
+                                        className={classNames(styles.icon, {
+                                            [styles.active]: active,
+                                        })}
+                                    />
+                                )}
                                 <Typography weight="medium" size="sm">
                                     {t(label)}
                                 </Typography>
@@ -194,7 +215,7 @@ export function Nav() {
                                             >
                                                 <Typography
                                                     size="xs"
-                                                    weight="medium"
+                                                    weight="bold"
                                                     className={
                                                         styles.claimsBadgeText
                                                     }
