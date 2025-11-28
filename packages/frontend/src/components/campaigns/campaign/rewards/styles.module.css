@@ -32,14 +32,6 @@
     @apply flex justify-between gap-7 items-center px-2;
 }
 
-.totalUsdValueChip {
-    @apply px-1.5 py-1 rounded-sm bg-gray-600 dark:bg-neutral-100;
-}
-
-.totalUsdValueChip > p {
-    @apply text-neutral-50 dark:text-neutral-900;
-}
-
 .rows {
     @apply flex flex-col gap-1;
 }
