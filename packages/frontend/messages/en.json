@@ -102,11 +102,6 @@
                 "duration": "{days} ago"
             }
         },
-        "rewards": {
-            "tooltip": {
-                "totalUsdValue": "Total USD rewards"
-            }
-        },
         "projects": {
             "campaigns": "<highlighted>{count}</highlighted> campaigns",
             "active": "{count} active",
@@ -592,21 +587,16 @@
             },
             "allowlist": "Rewards limited to only allowed addresses"
         },
-        "details": {
-            "status": "Status",
-            "duration": "Duration",
-            "startDate": "Start date",
-            "endDate": "End date"
+        "content": {
+            "tvl": "TVL",
+            "apr": "APR",
+            "tokens": "Tokens",
+            "dailyRewards": "Daily rewards",
+            "totalValue": "Total value",
+            "rewardRatio": "Reward ratio",
+            "dailyPer1k": "Points/$1k/day",
+            "totalPoints": "Total points"
         },
-        "rewards": {
-            "title": "Total rewards",
-            "token": "Token",
-            "inUsd": "In $",
-            "amount": "Amount",
-            "daily": "Daily rewards",
-            "total": "Total value"
-        },
-        "weighting": { "title": "Reward ratio", "fees": "Fees" },
         "points": {
             "title": "Points",
             "total": "Total",
@@ -850,5 +840,11 @@
         "debt": "debt",
         "deposits": "deposits",
         "netDeposits": "net deposits"
+    },
+    "campaignRewardsPopover": {
+        "totalUsdValue": "Total USD rewards"
+    },
+    "campaignWeighting": {
+        "fees": "Fees"
     }
 }

@@ -1,4 +1,4 @@
-@reference "../../../../app.css";
+@reference "../../app.css";
 
 .root {
     @apply flex items-center justify-between col-span-1;

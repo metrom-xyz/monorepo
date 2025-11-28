@@ -1,35 +1,44 @@
 import { InfoTooltip } from "@metrom-xyz/ui";
 import { InfoMessage } from "../info-message";
-import type {
-    Erc20Token,
-    PriceRangeSpecification,
-    Weighting,
-} from "@metrom-xyz/sdk";
 import { useTranslations } from "next-intl";
 import { useCallback } from "react";
 import { formatPercentage } from "@/src/utils/format";
 import { WEIGHT_UNIT } from "@/src/commons";
+import type { Campaign } from "@/src/types/campaign";
+import { TargetType } from "@metrom-xyz/sdk";
+import classNames from "classnames";
 
 import styles from "./styles.module.css";
 
 interface AprInfoTooltiProps {
-    priceRange?: PriceRangeSpecification;
-    weighting?: Weighting;
-    token0Symbol?: string;
-    token1Symbol?: string;
-    aaveV3Collateral?: Erc20Token;
-    blacklistedCrossBorrowCollaterals?: Erc20Token[];
+    campaign: Campaign;
+    className?: string;
 }
 
-export function AprInfoTooltip({
-    priceRange,
-    weighting,
-    token0Symbol,
-    token1Symbol,
-    aaveV3Collateral,
-    blacklistedCrossBorrowCollaterals,
-}: AprInfoTooltiProps) {
+export function AprInfoTooltip({ campaign, className }: AprInfoTooltiProps) {
     const t = useTranslations("aprInfoTooltip");
+
+    const ammPoolLiquidityCampaign = campaign?.isTargeting(
+        TargetType.AmmPoolLiquidity,
+    );
+    const aaveV3NetSupplyCampaign = campaign?.isTargeting(
+        TargetType.AaveV3NetSupply,
+    );
+    const token0Symbol = ammPoolLiquidityCampaign
+        ? campaign.target.pool.tokens[0].symbol
+        : undefined;
+    const token1Symbol = ammPoolLiquidityCampaign
+        ? campaign.target.pool.tokens[1].symbol
+        : undefined;
+    const blacklistedCrossBorrowCollaterals = aaveV3NetSupplyCampaign
+        ? campaign.target.blacklistedCrossBorrowCollaterals
+        : undefined;
+    const aaveV3Collateral = aaveV3NetSupplyCampaign
+        ? campaign.target.collateral
+        : undefined;
+
+    const weighting = campaign?.specification?.weighting;
+    const priceRange = campaign?.specification?.priceRange;
 
     const getInfoMessage = useCallback(() => {
         const token0Weight =
@@ -141,6 +150,8 @@ export function AprInfoTooltip({
     if (!priceRange && !weighting && !aaveV3Collateral) return null;
 
     return (
-        <InfoTooltip className={styles.tooltip}>{getInfoMessage()}</InfoTooltip>
+        <InfoTooltip className={classNames(styles.tooltip, className)}>
+            {getInfoMessage()}
+        </InfoTooltip>
     );
 }
