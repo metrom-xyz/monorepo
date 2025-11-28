@@ -14,10 +14,6 @@
         ease-in-out;
 }
 
-.root.active:hover {
-    @apply bg-brand-green-dark dark:bg-brand-green;
-}
-
 .root.xs {
     @apply border px-2 py-1 gap-1;
 }
@@ -31,11 +27,19 @@
 }
 
 .active {
+    @apply border-transparent;
+}
+
+.active.primary {
     @apply bg-brand-green-dark dark:bg-brand-green;
 }
 
-.active > p,
-.active > svg {
+.active.secondary {
+    @apply bg-gray-300 dark:bg-neutral-600;
+}
+
+.active.primary > p,
+.active.primary > svg {
     @apply text-gray-100 dark:text-neutral-900;
 }
 

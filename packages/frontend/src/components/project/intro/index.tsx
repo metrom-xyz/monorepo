@@ -6,9 +6,9 @@ import type { ProjectIntro } from "@/src/types/project";
 
 import styles from "./styles.module.css";
 
-type ProjectIntroProps = ProjectIntro;
+type IntroProps = ProjectIntro;
 
-export function ProjectIntro({ articles }: ProjectIntroProps) {
+export function Intro({ articles }: IntroProps) {
     const t = useTranslations("projectIntro");
 
     return (

@@ -8,6 +8,7 @@ import styles from "./styles.module.css";
 export interface BaseChipsProps {
     size?: "xs" | "sm";
     active?: boolean;
+    variant?: "primary" | "secondary";
     children: string | ReactNode;
     className?: string;
     onClose?: React.MouseEventHandler<SVGSVGElement>;
@@ -19,6 +20,7 @@ export type ChipProps = BaseChipsProps &
 export const Chip = ({
     size = "sm",
     active,
+    variant = "primary",
     children,
     onClick,
     onClose,
@@ -43,6 +45,7 @@ export const Chip = ({
                 [styles[size]]: true,
                 [styles.clickable]: !!onClick,
                 [styles.active]: active,
+                [styles[variant]]: true,
             })}
         >
             {typeof children === "string" ? (

@@ -1,7 +1,7 @@
 "use client";
 
 import { Header } from "./header";
-import { ProjectIntro } from "../protocol-intro";
+import { Intro } from "./intro";
 import { BackendCampaignType } from "@metrom-xyz/sdk";
 import { PROJECTS_METADATA } from "@/src/commons/projects";
 import { ProjectKind } from "@/src/types/project";
@@ -44,7 +44,7 @@ export function Project({ project }: ProjectProps) {
                 icon={icon}
                 illustration={illustration}
             />
-            {intro && <ProjectIntro {...intro} />}
+            {intro && <Intro {...intro} />}
             {Widget && (
                 <div className={styles.widgets}>
                     <Widget />
