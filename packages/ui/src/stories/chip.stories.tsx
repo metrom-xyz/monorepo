@@ -15,11 +15,25 @@ const meta: Meta = {
 export default meta;
 type Story = StoryObj<typeof Chip>;
 
-export const Base: Story = {
+export const Primary: Story = {
     render: (args) => {
         return (
             <div className="flex flex-col gap-4">
-                <Chip {...args}>Metrom chip</Chip>
+                <Chip {...args} variant="primary">
+                    Metrom chip
+                </Chip>
+            </div>
+        );
+    },
+};
+
+export const Secondary: Story = {
+    render: (args) => {
+        return (
+            <div className="flex flex-col gap-4">
+                <Chip {...args} variant="secondary">
+                    Metrom chip
+                </Chip>
             </div>
         );
     },

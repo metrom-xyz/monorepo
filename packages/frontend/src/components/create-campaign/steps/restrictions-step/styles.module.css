@@ -57,13 +57,17 @@
     @apply bg-error;
 }
 
-.textInput :global(.inputWrapper),
-.textInput :global(.inputWrapper) :global(.input) {
+.textInputWrapper {
+    @apply flex flex-col items-end;
+}
+
+.textInput {
     @apply w-full;
 }
 
-.importCsvInput {
-    @apply justify-self-end;
+.textInput :global(.inputWrapper),
+.textInput :global(.inputWrapper) :global(.input) {
+    @apply w-full;
 }
 
 .divider {

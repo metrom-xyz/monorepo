@@ -4,6 +4,10 @@
     @apply w-full relative;
 }
 
+.inputWrapper:focus-within > .inputIconWrapper > svg {
+    @apply text-primary;
+}
+
 .inputIconWrapper {
     @apply absolute
         top-0
@@ -57,10 +61,9 @@
         border-transparent
         focus:border-gray-300
         dark:focus:border-neutral-600
-        placeholder:text-tertiary
         /* FIXME: this doesn't work on Firefox, find a way to fix this and enable it back */
-        /* focus:placeholder:text-light-text-primary
-        dark:focus:placeholder:text-dark-text-primary */
+        focus:placeholder:text-light-text-primary
+        dark:focus:placeholder:text-dark-text-primary
         placeholder:select-none
         surface-secondary
         text-primary
@@ -99,7 +102,7 @@
 }
 
 .inputIcon {
-    @apply text-primary stroke-2;
+    @apply text-tertiary stroke-2;
 }
 
 .inputIcon.xs {
