@@ -2,8 +2,8 @@ import { Typography, type TypographySize } from "@metrom-xyz/ui";
 import { formatPercentage } from "@/src/utils/format";
 import classNames from "classnames";
 import { useTranslations } from "next-intl";
-import { TargetType, type Campaign } from "@metrom-xyz/sdk";
 import { AprInfoTooltip } from "../apr-info-tooltip";
+import type { Campaign } from "@/src/types/campaign";
 
 import styles from "./styles.module.css";
 
@@ -39,39 +39,11 @@ export function AprChip({
         xl4: ["xl3", "xl4"],
     };
 
-    const ammPoolLiquidityCampaign = campaign?.isTargeting(
-        TargetType.AmmPoolLiquidity,
-    );
-    const aaveV3NetSupplyCampaign = campaign?.isTargeting(
-        TargetType.AaveV3NetSupply,
-    );
-    const token0Symbol = ammPoolLiquidityCampaign
-        ? campaign.target.pool.tokens[0].symbol
-        : undefined;
-    const token1Symbol = ammPoolLiquidityCampaign
-        ? campaign.target.pool.tokens[1].symbol
-        : undefined;
-    const blacklistedCrossBorrowCollaterals = aaveV3NetSupplyCampaign
-        ? campaign.target.blacklistedCrossBorrowCollaterals
-        : undefined;
-    const aaveV3Collateral = aaveV3NetSupplyCampaign
-        ? campaign.target.collateral
-        : undefined;
-
     return (
         <div className={styles.root}>
-            {apr !== undefined && (
+            {campaign && apr !== undefined && (
                 <>
-                    <AprInfoTooltip
-                        priceRange={campaign?.specification?.priceRange}
-                        weighting={campaign?.specification?.weighting}
-                        token0Symbol={token0Symbol}
-                        token1Symbol={token1Symbol}
-                        aaveV3Collateral={aaveV3Collateral}
-                        blacklistedCrossBorrowCollaterals={
-                            blacklistedCrossBorrowCollaterals
-                        }
-                    />
+                    <AprInfoTooltip campaign={campaign} />
                     <div
                         className={classNames(styles.chip, className, {
                             [styles.witkKpi]: kpi,

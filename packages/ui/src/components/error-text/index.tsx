@@ -7,11 +7,13 @@ import styles from "./styles.module.css";
 
 type ErrorTextProps = TypographyProps & {
     level?: "error" | "warning";
+    mountAnimation?: boolean;
 };
 
 export function ErrorText({
     level = "error",
     size = "base",
+    mountAnimation = true,
     children,
     className,
     ...rest
@@ -20,7 +22,7 @@ export function ErrorText({
         <AnimatePresence>
             {!!children && (
                 <motion.div
-                    initial="hide"
+                    initial={mountAnimation ? "hide" : false}
                     animate="show"
                     exit="hide"
                     variants={{
