@@ -135,50 +135,53 @@ export const DatePicker = ({
                         !disabled &&
                         dayjs(value).month() === cell.value.month() &&
                         dayjs(value).date() === cell.value.date();
+
+                    const rangeBoundStart =
+                        range?.from && isOnlyDateSame(cell.value, range.from);
+                    const rangeBoundEnd =
+                        range?.to && isOnlyDateSame(cell.value, range.to);
+                    const rangeBound = rangeBoundStart || rangeBoundEnd;
+
                     return (
-                        <Typography
-                            key={index}
-                            data-index={index}
-                            onClick={disabled ? undefined : handleCellClick}
-                            size="sm"
-                            weight="medium"
-                            className={classNames(
-                                className?.cell,
-                                styles.cell,
-                                {
-                                    [styles.cellToday]: dayjs().isSame(
-                                        cell.value,
-                                        "days",
-                                    ),
-                                    [styles.cellDisabled]: disabled,
-                                    [styles.cellSelectable]: !disabled,
-                                    [styles.cellSelected]: selected,
-                                    [styles.cellInRange]: isDateInRange(
-                                        dayjs(cell.value),
-                                        range?.from,
-                                        range?.to,
-                                    ),
-                                    [styles.cellRangeBoundStart]:
-                                        range?.from && range.to
-                                            ? isOnlyDateSame(
-                                                  cell.value,
-                                                  range.from,
-                                              )
-                                            : false,
-                                    [styles.cellRangeBoundEnd]:
-                                        range?.from && range.to
-                                            ? isOnlyDateSame(
-                                                  cell.value,
-                                                  range.to,
-                                              )
-                                            : false,
-                                    [styles.startOfWeek]: index % 7 === 0,
-                                    [styles.endOfWeek]: (index + 1) % 7 === 0,
-                                },
-                            )}
+                        <div
+                            className={classNames(styles.cellWrapper, {
+                                [styles.cellWrapperRangeBound]: rangeBound,
+                                [styles.cellWrapperRangeBoundStart]: rangeBoundStart,
+                                [styles.cellWrapperRangeBoundEnd]: rangeBoundEnd,
+                            })}
                         >
-                            {cell.text}
-                        </Typography>
+                            <Typography
+                                key={index}
+                                data-index={index}
+                                onClick={disabled ? undefined : handleCellClick}
+                                size="sm"
+                                weight="medium"
+                                className={classNames(
+                                    className?.cell,
+                                    styles.cell,
+                                    {
+                                        [styles.cellToday]: dayjs().isSame(
+                                            cell.value,
+                                            "days",
+                                        ),
+                                        [styles.cellDisabled]: disabled,
+                                        [styles.cellSelectable]: !disabled,
+                                        [styles.cellSelected]: selected,
+                                        [styles.cellInRange]: isDateInRange(
+                                            dayjs(cell.value),
+                                            range?.from,
+                                            range?.to,
+                                        ),
+                                        [styles.cellRangeBound]: rangeBound,
+                                        [styles.startOfWeek]: index % 7 === 0,
+                                        [styles.endOfWeek]:
+                                            (index + 1) % 7 === 0,
+                                    },
+                                )}
+                            >
+                                {cell.text}
+                            </Typography>
+                        </div>
                     );
                 })}
             </div>

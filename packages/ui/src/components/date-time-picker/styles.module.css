@@ -1,14 +1,7 @@
 @reference "../../theme.css";
 
 .root {
-    @apply w-fit
-        flex
-        gap-3
-        p-3
-        border
-        rounded-md
-        border-gray-300
-        dark:border-neutral-600;
+    @apply w-fit flex gap-3;
 }
 
 .divider {
@@ -50,7 +43,7 @@
         items-center
         border
         border-transparent
-        rounded-lg
+        rounded-full
         transition-colors
         duration-200
         ease-in-out;
@@ -61,7 +54,7 @@
 }
 
 .cellSelected {
-    @apply bg-brand-green-dark/[16%] dark:bg-brand-green/[20%] border-brand-green-dark dark:border-brand-green;
+    @apply text-gray-100! dark:text-neutral-950! bg-brand-green-dark dark:bg-brand-green;
 }
 
 .cellSelectable {

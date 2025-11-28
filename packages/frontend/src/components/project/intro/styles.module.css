@@ -1,4 +1,4 @@
-@reference "../../app.css";
+@reference "../../../app.css";
 
 .root {
     @apply w-full flex flex-col gap-4;
@@ -9,7 +9,7 @@
 }
 
 .link {
-    @apply flex w-full gap-3 md:max-w-1/2 surface-primary p-5 rounded-lg;
+    @apply flex w-full gap-3 md:max-w-1/2 surface-primary p-5 rounded-xl;
 }
 
 .iconWrapper {
