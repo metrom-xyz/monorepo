@@ -22,7 +22,7 @@ import { URL_ENABLED_CAMPAIGNS_FILTERS } from "../campaigns";
 
 import styles from "./styles.module.css";
 
-const PAGE_SIZE = 10;
+const PAGE_SIZE = 15;
 
 const TABLE_REWARDS_COLUMNS: {
     name: string;
