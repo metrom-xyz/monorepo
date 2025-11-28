@@ -1,7 +1,10 @@
 import { Apr, SkeletonApr } from "./apr";
 import { Action, SkeletonAction } from "./action";
 import { SkeletonStatus, Status } from "./status";
-import { Rewards, SkeletonRewards } from "./rewards";
+import {
+    CampaignRewardsPopover,
+    SkeletonCampaignRewards,
+} from "../../campaign-rewards-popover";
 import { Chain, SkeletonChain } from "./chain";
 import { Link } from "@/src/i18n/routing";
 import { Card, Skeleton, Typography } from "@metrom-xyz/ui";
@@ -78,11 +81,10 @@ export function CampaignRow({ type, campaign }: CampaignProps) {
                     />
                 )}
                 {rewards && (
-                    <Rewards
+                    <CampaignRewardsPopover
                         status={campaign.status}
-                        dailyUsd={campaign.distributables.dailyUsd}
-                        rewards={campaign.distributables}
                         chainId={campaign.chainId}
+                        distributables={campaign.distributables}
                     />
                 )}
                 {/* TODO: what do we show here? */}
@@ -108,7 +110,7 @@ export function SkeletonCampaign({ type }: SkeletonCampaignProps) {
                 <SkeletonStatus />
                 {type === BackendCampaignType.Rewards && <SkeletonApr />}
                 <Skeleton width={100} />
-                <SkeletonRewards />
+                <SkeletonCampaignRewards />
             </Card>
         </div>
     );
