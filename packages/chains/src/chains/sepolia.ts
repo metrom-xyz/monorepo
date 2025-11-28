@@ -87,7 +87,7 @@ export const sepoliaData: ChainData = {
         {
             active: true,
             type: ProtocolType.Dex,
-            slug: SupportedDex.BalancerV3,
+            slug: SupportedDex.Balancer,
             logo: BalancerLogo,
             name: "Balancer v3",
             depositUrl: {
