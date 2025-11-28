@@ -23,6 +23,7 @@ export enum SupportedDex {
     Morphex = "morphex",
     Izumi = "izumi",
     Hydrex = "hydrex",
+    BalancerV3 = "balancer-v3",
 }
 
 export enum SupportedLiquityV2 {
@@ -58,6 +59,7 @@ export enum SupportedAmm {
     Carbon = "carbon",
     PancakeV3 = "pancake-v3",
     Izumi = "izumi",
+    BalancerV3 = "balancer-v3",
 }
 
 export interface ServiceUrls {

@@ -12,6 +12,7 @@ import { EbisuLogo } from "../assets/logos/liquity-v2-platforms/ebisu";
 import { CarbonLogo } from "../assets/logos/dexes/carbon";
 import type { ChainData } from "../types/chains";
 import { DepositUrlType, ProtocolType } from "../types/protocol";
+import { BalancerLogo } from "../assets/logos/dexes/balancer";
 
 export const sepoliaData: ChainData = {
     active: true,
@@ -83,6 +84,61 @@ export const sepoliaData: ChainData = {
             },
             supportsFetchAllPools: true,
         },
+        {
+            active: true,
+            type: ProtocolType.Dex,
+            slug: SupportedDex.BalancerV3,
+            logo: BalancerLogo,
+            name: "Balancer v3",
+            depositUrl: {
+                type: DepositUrlType.PathPoolAddress,
+                template: "https://balancer.fi/pools/sepolia/v2/{pool}",
+            },
+            supportsFetchAllPools: false,
+        },
     ],
-    baseTokens: [],
+    baseTokens: [
+        {
+            address: "0xA80A089DE4720F8cffA34DAC70f6B648832A0DDb",
+            decimals: 18,
+            symbol: "DAI",
+            name: "DAI",
+        },
+        {
+            address: "0x8116d0a0e8d4f0197b428c520953f302adca0b50",
+            decimals: 18,
+            symbol: "ETH",
+            name: "Ether",
+        },
+        {
+            address: "0xbdb72f78302e6174e48aa5872f0dd986ed6d98d9",
+            decimals: 18,
+            symbol: "rETH",
+            name: "Rocket pool eth",
+        },
+        {
+            address: "0xff9f477b09c6937ff6313ae90e79022609851a9c",
+            decimals: 18,
+            symbol: "wstETH",
+            name: "Wrapped liquid staked Ether",
+        },
+        {
+            address: "0xee8448abed49f5fe7f9c6670e572d463d308d76e",
+            decimals: 18,
+            symbol: "WETH",
+            name: "Wrapped Ether",
+        },
+        {
+            address: "0x874207c9693d301f74e92de3a5a045f4ecb582d2",
+            decimals: 18,
+            symbol: "ezETH",
+            name: "Renzo Restaked Ether",
+        },
+        {
+            address: "0x874207c9693d301f74e92de3a5a045f4ecb582d2",
+            decimals: 18,
+            symbol: "LINK",
+            name: "Chainlink token",
+        },
+    ],
 };
