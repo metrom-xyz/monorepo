@@ -29,11 +29,11 @@
 }
 
 .table {
-    @apply min-w-[800px] grid gap-x-7 gap-y-5 items-center;
+    @apply min-w-[800px] grid gap-x-8 gap-y-5 items-center;
 }
 
 .table.rewards {
-    @apply grid-cols-[0.1fr_0.3fr_3.5fr_0.8fr_0.9fr_0.9fr_1fr];
+    @apply grid-cols-[0.1fr_0.3fr_3.7fr_0.8fr_0.7fr_0.8fr_1fr];
 }
 
 .table.points {

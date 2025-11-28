@@ -84,7 +84,6 @@ export function Rewards({ status, dailyUsd, rewards, chainId }: RewardsProps) {
                                             <Typography
                                                 weight="medium"
                                                 size="sm"
-                                                variant="tertiary"
                                             >
                                                 {reward.token.symbol}
                                             </Typography>
@@ -99,21 +98,16 @@ export function Rewards({ status, dailyUsd, rewards, chainId }: RewardsProps) {
                                                         .formatted,
                                                 })}
                                             </Typography>
-                                            <div
-                                                className={
-                                                    styles.tokenUsdValueChip
-                                                }
+                                            <Typography
+                                                variant="tertiary"
+                                                weight="medium"
+                                                size="sm"
                                             >
-                                                <Typography
-                                                    weight="medium"
-                                                    size="sm"
-                                                >
-                                                    {formatUsdAmount({
-                                                        amount: reward.amount
-                                                            .usdValue,
-                                                    })}
-                                                </Typography>
-                                            </div>
+                                                {formatUsdAmount({
+                                                    amount: reward.amount
+                                                        .usdValue,
+                                                })}
+                                            </Typography>
                                         </div>
                                     </div>
                                 );
@@ -136,7 +130,7 @@ export function Rewards({ status, dailyUsd, rewards, chainId }: RewardsProps) {
                                 style={{ zIndex: i }}
                             >
                                 <RemoteLogo
-                                    size="sm"
+                                    size="xs"
                                     chain={chainId}
                                     address={reward.token.address}
                                     defaultText={reward.token.symbol}

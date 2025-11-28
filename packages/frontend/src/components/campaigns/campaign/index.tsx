@@ -44,7 +44,7 @@ export function CampaignRow({ type, campaign }: CampaignProps) {
             <Card className={styles.card}>
                 <Chain id={campaign.chainId} type={campaign.chainType} />
                 <Protocol campaign={campaign} />
-                <div className={styles.poolContainer}>
+                <div className={styles.pool}>
                     <Action campaign={campaign} />
                 </div>
                 <Status

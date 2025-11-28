@@ -60,7 +60,9 @@ export function Footer() {
                         <TelegramLogo className={styles.socialIcon} />
                     </a>
                 </div>
-                <MetromLogo className={styles.logo} />
+                <div>
+                    <MetromLogo className={styles.logo} />
+                </div>
             </div>
             <div className={styles.support}>
                 <a

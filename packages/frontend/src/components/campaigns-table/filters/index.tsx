@@ -300,35 +300,37 @@ export function Filters({
                 onFiltersChange={onFiltersChange}
                 onFiltersClear={handleClearFilters}
             />
-            <div className={styles.chips}>
-                {filters.statuses.map((status) => (
-                    <Chip
-                        key={status.value}
-                        onClose={getStatusChipCloseHandler(status)}
-                        className={styles.chip}
-                    >
-                        {statusSelectRenderOption(status)}
-                    </Chip>
-                ))}
-                {filters.protocols.map((protocol) => (
-                    <Chip
-                        key={protocol.value}
-                        onClose={getProtocolChipCloseHandler(protocol)}
-                        className={styles.chip}
-                    >
-                        {protocolSelectRenderOption(protocol)}
-                    </Chip>
-                ))}
-                {filters.chains.map((chain) => (
-                    <Chip
-                        key={chain.value}
-                        onClose={getChainChipCloseHandler(chain)}
-                        className={styles.chip}
-                    >
-                        {chainSelectRenderOption(chain)}
-                    </Chip>
-                ))}
-            </div>
+            {filtersActive && (
+                <div className={styles.chips}>
+                    {filters.statuses.map((status) => (
+                        <Chip
+                            key={status.value}
+                            onClose={getStatusChipCloseHandler(status)}
+                            className={styles.chip}
+                        >
+                            {statusSelectRenderOption(status)}
+                        </Chip>
+                    ))}
+                    {filters.protocols.map((protocol) => (
+                        <Chip
+                            key={protocol.value}
+                            onClose={getProtocolChipCloseHandler(protocol)}
+                            className={styles.chip}
+                        >
+                            {protocolSelectRenderOption(protocol)}
+                        </Chip>
+                    ))}
+                    {filters.chains.map((chain) => (
+                        <Chip
+                            key={chain.value}
+                            onClose={getChainChipCloseHandler(chain)}
+                            className={styles.chip}
+                        >
+                            {chainSelectRenderOption(chain)}
+                        </Chip>
+                    ))}
+                </div>
+            )}
         </div>
     );
 }

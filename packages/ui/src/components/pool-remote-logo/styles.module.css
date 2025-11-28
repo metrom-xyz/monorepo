@@ -1,7 +1,7 @@
 @reference "../../theme.css";
 
 .root {
-    @apply relative w-fit flex gap-[1px];
+    @apply relative w-auto flex gap-[1px];
 }
 
 .root > * {
