@@ -29,7 +29,7 @@
 }
 
 .header {
-    @apply flex justify-between gap-7 items-center;
+    @apply flex justify-between gap-7 items-center px-2;
 }
 
 .totalUsdValueChip {
@@ -42,14 +42,6 @@
 
 .rows {
     @apply flex flex-col gap-1;
-}
-
-.tokenUsdValueChip {
-    @apply px-1.5 py-1 rounded-sm bg-white dark:bg-neutral-700;
-}
-
-.tokenUsdValueChip > p {
-    @apply text-gray-500 dark:text-neutral-100;
 }
 
 .breakdownRow {

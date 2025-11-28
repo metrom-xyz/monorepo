@@ -70,11 +70,14 @@
 }
 
 .input.xs {
-    @apply p-2;
+    @apply px-2 py-1;
 }
 
 .input.sm,
-.input.base,
+.input.base {
+    @apply px-3 py-1.5;
+}
+
 .input.lg {
     @apply px-3 py-2;
 }

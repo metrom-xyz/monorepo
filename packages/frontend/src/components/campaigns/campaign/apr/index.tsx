@@ -100,15 +100,13 @@ export function Apr({ campaign, apr, kpi }: AprProps) {
                     ) : null}
                 </div>
             </Popover>
-            <div className={styles.aprWrapper}>
-                <AprChip apr={apr} kpi={kpi} placeholder />
-            </div>
+            <AprChip apr={apr} kpi={kpi} placeholder />
         </div>
     );
 }
 
 export function SkeletonApr() {
-    return <Skeleton width={90} size="xl" />;
+    return <Skeleton width={90} size="xl2" />;
 }
 
 export function SkeletonPopover() {
