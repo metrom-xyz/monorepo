@@ -366,16 +366,11 @@ export function CampaignsTable({
                         />
                         {loading ? (
                             <>
-                                <SkeletonCampaign type={type} />
-                                <SkeletonCampaign type={type} />
-                                <SkeletonCampaign type={type} />
-                                <SkeletonCampaign type={type} />
-                                <SkeletonCampaign type={type} />
-                                <SkeletonCampaign type={type} />
-                                <SkeletonCampaign type={type} />
-                                <SkeletonCampaign type={type} />
-                                <SkeletonCampaign type={type} />
-                                <SkeletonCampaign type={type} />
+                                {Array.from({ length: PAGE_SIZE }).map(
+                                    (_, i) => (
+                                        <SkeletonCampaign key={i} type={type} />
+                                    ),
+                                )}
                             </>
                         ) : !campaigns || campaigns.length === 0 ? (
                             <EmptyTable />

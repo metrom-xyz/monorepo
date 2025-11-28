@@ -53,13 +53,11 @@ export function Rewards({ status, dailyUsd, rewards, chainId }: RewardsProps) {
                         >
                             {t("tooltip.totalUsdValue")}
                         </Typography>
-                        <div className={styles.totalUsdValueChip}>
-                            <Typography size="sm" weight="medium">
-                                {formatUsdAmount({
-                                    amount: rewards.amountUsdValue,
-                                })}
-                            </Typography>
-                        </div>
+                        <Typography size="sm" weight="medium">
+                            {formatUsdAmount({
+                                amount: rewards.amountUsdValue,
+                            })}
+                        </Typography>
                     </div>
                     <div className={styles.rows}>
                         {rewards.list
