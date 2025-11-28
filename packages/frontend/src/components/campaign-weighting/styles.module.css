@@ -1,0 +1,29 @@
+@reference "../../app.css";
+
+.root {
+    @apply flex gap-3;
+}
+
+.bar {
+    @apply w-4 flex flex-col overflow-hidden rounded-full;
+}
+
+.section:first-child {
+    @apply bg-[#4E80EE];
+}
+
+.section:nth-child(2) {
+    @apply bg-[#3563CB];
+}
+
+.section:last-child {
+    @apply bg-[#90B2FF];
+}
+
+.labelsWrapper {
+    @apply flex gap-3;
+}
+
+.labels {
+    @apply flex flex-col gap-1;
+}

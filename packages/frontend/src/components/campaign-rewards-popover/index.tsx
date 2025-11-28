@@ -1,8 +1,12 @@
 "use client";
 
-import { Typography, Skeleton, Popover } from "@metrom-xyz/ui";
+import {
+    Typography,
+    Skeleton,
+    Popover,
+    type RemoteLogoSize,
+} from "@metrom-xyz/ui";
 import { Status, type TokenDistributables } from "@metrom-xyz/sdk";
-import { SupportedChain } from "@metrom-xyz/contracts";
 import { formatAmount, formatUsdAmount } from "@/src/utils/format";
 import { useRef, useState } from "react";
 import { useTranslations } from "next-intl";
@@ -11,15 +15,22 @@ import classNames from "classnames";
 
 import styles from "./styles.module.css";
 
-interface RewardsProps {
+interface CampaignRewardsPopoverProps {
     status: Status;
-    dailyUsd: number;
-    rewards: TokenDistributables;
-    chainId: SupportedChain;
+    chainId: number;
+    distributables: TokenDistributables;
+    hideUsdValue?: boolean;
+    logoSize?: RemoteLogoSize;
 }
 
-export function Rewards({ status, dailyUsd, rewards, chainId }: RewardsProps) {
-    const t = useTranslations("allCampaigns.rewards");
+export function CampaignRewardsPopover({
+    status,
+    chainId,
+    distributables,
+    hideUsdValue = false,
+    logoSize = "sm",
+}: CampaignRewardsPopoverProps) {
+    const t = useTranslations("campaignRewardsPopover");
 
     const [popoverOpen, setPopoverOpen] = useState(false);
     const [rewardsBreakdown, setRewardsBreakdown] =
@@ -51,16 +62,16 @@ export function Rewards({ status, dailyUsd, rewards, chainId }: RewardsProps) {
                             uppercase
                             variant="tertiary"
                         >
-                            {t("tooltip.totalUsdValue")}
+                            {t("totalUsdValue")}
                         </Typography>
                         <Typography size="sm" weight="medium">
                             {formatUsdAmount({
-                                amount: rewards.amountUsdValue,
+                                amount: distributables.amountUsdValue,
                             })}
                         </Typography>
                     </div>
                     <div className={styles.rows}>
-                        {rewards.list
+                        {distributables.list
                             .sort(
                                 (a, b) => b.amount.usdValue - a.amount.usdValue,
                             )
@@ -121,7 +132,7 @@ export function Rewards({ status, dailyUsd, rewards, chainId }: RewardsProps) {
             >
                 {status !== Status.Expired && (
                     <div className={styles.tokenIcons}>
-                        {rewards.list.map((reward, i) => {
+                        {distributables.list.map((reward, i) => {
                             return (
                                 <div
                                     key={reward.token.address}
@@ -129,7 +140,7 @@ export function Rewards({ status, dailyUsd, rewards, chainId }: RewardsProps) {
                                     style={{ zIndex: i }}
                                 >
                                     <RemoteLogo
-                                        size="xs"
+                                        size={logoSize}
                                         chain={chainId}
                                         address={reward.token.address}
                                         defaultText={reward.token.symbol}
@@ -139,24 +150,34 @@ export function Rewards({ status, dailyUsd, rewards, chainId }: RewardsProps) {
                         })}
                     </div>
                 )}
-                <Typography weight="medium" className={styles.textRewards}>
-                    {status === Status.Expired
-                        ? "-"
-                        : formatUsdAmount({ amount: dailyUsd })}
-                </Typography>
+                {!hideUsdValue && (
+                    <Typography weight="medium" className={styles.textRewards}>
+                        {status === Status.Expired
+                            ? "-"
+                            : formatUsdAmount({
+                                  amount: distributables.dailyUsd,
+                              })}
+                    </Typography>
+                )}
             </div>
         </div>
     );
 }
 
-export function SkeletonRewards() {
+interface SkeletonCampaignRewardsProps {
+    logoSize?: RemoteLogoSize;
+}
+
+export function SkeletonCampaignRewards({
+    logoSize = "sm",
+}: SkeletonCampaignRewardsProps) {
     return (
         <div className={classNames(styles.rewardsWrapper, styles.loading)}>
             <div className={styles.tokenIcons}>
                 {new Array(3).fill(null).map((_, i) => {
                     return (
                         <div key={i} className={styles.tokenIcon}>
-                            <RemoteLogo size="sm" loading />
+                            <RemoteLogo size={logoSize} loading />
                         </div>
                     );
                 })}

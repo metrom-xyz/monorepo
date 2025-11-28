@@ -5,9 +5,9 @@
 }
 
 .tooltip :global(.icon) {
-    @apply h-6 w-6;
+    @apply size-5;
 }
 
 .bold {
-    @apply text-black dark:text-white font-bold;
+    @apply text-primary font-bold;
 }
