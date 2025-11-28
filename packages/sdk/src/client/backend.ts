@@ -116,6 +116,7 @@ const DEX_BRAND_NAME: Record<SupportedDex, string> = {
     [SupportedDex.Morphex]: "Morphex",
     [SupportedDex.Izumi]: "Izumi",
     [SupportedDex.Hydrex]: "Hydrex",
+    [SupportedDex.BalancerV3]: "Balancer v3",
 };
 
 const LIQUITY_V2_BRAND_NAME: Record<SupportedLiquityV2, string> = {
