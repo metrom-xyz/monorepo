@@ -82,7 +82,7 @@ export function AprChip({
                                 <Typography
                                     size={sizes[size][0]}
                                     weight="medium"
-                                    className={classNames(styles.text)}
+                                    className={styles.text}
                                 >
                                     {t("apr")}
                                 </Typography>
@@ -99,11 +99,7 @@ export function AprChip({
                 </>
             )}
             {apr === undefined && placeholder && (
-                <Typography
-                    size={sizes[size][1]}
-                    className={styles.empty}
-                    weight="medium"
-                >
+                <Typography size={sizes[size][1]} weight="medium">
                     -
                 </Typography>
             )}
