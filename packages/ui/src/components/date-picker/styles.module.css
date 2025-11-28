@@ -47,6 +47,18 @@
     @apply grid grid-cols-7 grid-rows-4;
 }
 
+.cellWrapperRangeBound {
+    @apply bg-brand-green-dark/[8%] dark:bg-brand-green/[10%];
+}
+
+.cellWrapperRangeBoundStart {
+    @apply rounded-l-full;
+}
+
+.cellWrapperRangeBoundEnd {
+    @apply rounded-r-full;
+}
+
 .cell {
     @apply size-8
         select-none
@@ -57,7 +69,7 @@
         border
         border-transparent
         transition-colors
-        rounded-lg
+        rounded-full
         duration-200
         ease-in-out;
 }
@@ -70,8 +82,8 @@
     @apply cursor-not-allowed text-tertiary;
 }
 
-.cellSelected {
-    @apply bg-brand-green-dark/[16%] dark:bg-brand-green/[20%] border-brand-green-dark dark:border-brand-green;
+.cellSelected:not(.cellInRange) {
+    @apply text-gray-100! dark:text-neutral-950! bg-brand-green-dark dark:bg-brand-green;
 }
 
 .cellSelectable {
@@ -82,22 +94,14 @@
     @apply bg-brand-green-dark/[8%] dark:bg-brand-green/[10%] rounded-none transition-none;
 }
 
-.cellRangeBoundStart {
-    @apply bg-brand-green-dark/[16%] dark:bg-brand-green/[20%] border-brand-green-dark dark:border-brand-green;
-}
-
-.cellRangeBoundEnd {
-    @apply bg-brand-green-dark/[16%] dark:bg-brand-green/[20%] border-brand-green-dark dark:border-brand-green;
-}
-
-.cellRangeBoundStart.cellRangeBoundEnd {
-    @apply rounded-lg;
+.cellRangeBound {
+    @apply text-gray-100! dark:text-neutral-950! bg-brand-green-dark dark:bg-brand-green;
 }
 
 .cellInRange.startOfWeek {
-    @apply rounded-l-lg;
+    @apply rounded-l-full;
 }
 
 .cellInRange.endOfWeek {
-    @apply rounded-r-lg;
+    @apply rounded-r-full;
 }

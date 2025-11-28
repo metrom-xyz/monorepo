@@ -120,6 +120,7 @@ export function ListPoolPicker({
                     {baseTokens.map((token) => (
                         <Chip
                             key={token.address}
+                            variant="secondary"
                             active={baseTokenFilter?.address === token.address}
                             onClick={getBaseTokenChangeHandler(token)}
                         >

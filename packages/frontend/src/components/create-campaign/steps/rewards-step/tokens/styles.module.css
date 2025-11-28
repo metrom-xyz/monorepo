@@ -25,7 +25,6 @@
     @apply w-full
         max-w-52
         border-none
-        placeholder:text-tertiary
         bg-transparent
         h-7
         leading-6
