@@ -60,12 +60,8 @@ function handleSwap(
     fee: i32,
 ): void {
     pool.liquidity = liquidity;
-    pool.token0Tvl = pool.token0Tvl.plus(
-        getFeeAdjustedAmount(amount0, pool.fee),
-    );
-    pool.token1Tvl = pool.token1Tvl.plus(
-        getFeeAdjustedAmount(amount1, pool.fee),
-    );
+    pool.token0Tvl = pool.token0Tvl.plus(getFeeAdjustedAmount(amount0, fee));
+    pool.token1Tvl = pool.token1Tvl.plus(getFeeAdjustedAmount(amount1, fee));
     pool.price = getPrice(price, pool.token0, pool.token1);
 
     if (price.notEqual(pool.sqrtPriceX96) || tick != pool.tick) {
