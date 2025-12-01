@@ -48,7 +48,7 @@
 }
 
 .hasRightIcon input {
-    @apply pr-5;
+    @apply pr-9!;
 }
 
 .input {
@@ -73,7 +73,7 @@
 }
 
 .input.xs {
-    @apply px-2 py-1;
+    @apply px-2 py-1.5;
 }
 
 .input.sm,
