@@ -8,14 +8,6 @@
     @apply flex flex-col gap-3;
 }
 
-.iconWrapper {
-    @apply flex items-center;
-}
-
-.icon {
-    @apply size-6;
-}
-
 .textPoints {
     @apply text-base min-w-[50px];
 }

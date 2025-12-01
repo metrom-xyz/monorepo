@@ -201,6 +201,7 @@ export function EndDateStep({
                         {DURATION_PRESETS.map((preset, index) => (
                             <Chip
                                 key={index}
+                                variant="secondary"
                                 onClick={getDurationPresetHandler(preset)}
                                 active={preset.label === durationPreset?.label}
                             >
