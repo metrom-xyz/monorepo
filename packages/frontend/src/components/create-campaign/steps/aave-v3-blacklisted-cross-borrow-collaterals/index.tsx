@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { Typography, ErrorText, Switch, Button, Chip } from "@metrom-xyz/ui";
+import { Typography, ErrorText, Toggle, Button, Chip } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
 import { Step } from "@/src/components/step";
 import { StepPreview } from "@/src/components/step/preview";
@@ -143,7 +143,7 @@ export function AaveV3BlacklistedCrossBorrowCollateralsStep({
         onBlacklistedCrossBorrowCollateralsChange,
     ]);
 
-    function handleSwitchOnClick(event: React.MouseEvent<HTMLDivElement>) {
+    function handleToggleOnClick(event: React.MouseEvent<HTMLDivElement>) {
         event.stopPropagation();
         setEnabled((enabled) => !enabled);
     }
@@ -206,11 +206,11 @@ export function AaveV3BlacklistedCrossBorrowCollateralsStep({
                                 {warning ? t(warning) : null}
                             </ErrorText>
                         </div>
-                        <Switch
+                        <Toggle
                             tabIndex={-1}
                             size="lg"
                             checked={enabled}
-                            onClick={handleSwitchOnClick}
+                            onClick={handleToggleOnClick}
                         />
                     </div>
                 }
