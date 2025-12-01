@@ -3,7 +3,7 @@ import classNames from "classnames";
 
 import styles from "./styles.module.css";
 
-export interface SwitchProps {
+export interface ToggleProps {
     size?: "xs" | "sm" | "lg";
     disabled?: boolean;
     tabIndex?: number;
@@ -12,14 +12,14 @@ export interface SwitchProps {
     className?: string;
 }
 
-export function Switch({
+export function Toggle({
     size = "sm",
     disabled,
     tabIndex,
     checked,
     onClick,
     className,
-}: SwitchProps) {
+}: ToggleProps) {
     return (
         <div
             tabIndex={tabIndex}

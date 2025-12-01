@@ -11,7 +11,7 @@ import {
     Button,
     ErrorText,
     Skeleton,
-    Switch,
+    Toggle,
     Typography,
 } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
@@ -199,7 +199,7 @@ export function KpiStep({
         setError("");
     }, [distributables?.type, onKpiChange]);
 
-    function handleSwitchOnClick(event: React.MouseEvent<HTMLDivElement>) {
+    function handleToggleOnClick(event: React.MouseEvent<HTMLDivElement>) {
         event.stopPropagation();
         setEnabled((enabled) => !enabled);
     }
@@ -259,11 +259,11 @@ export function KpiStep({
                                 {error ? t(error) : warning ? t(warning) : null}
                             </ErrorText>
                         </div>
-                        <Switch
+                        <Toggle
                             tabIndex={-1}
                             size="lg"
                             checked={enabled}
-                            onClick={handleSwitchOnClick}
+                            onClick={handleToggleOnClick}
                         />
                     </div>
                 }

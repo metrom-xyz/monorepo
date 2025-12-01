@@ -1,18 +1,18 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { Switch } from "../components/switch/index";
+import { Toggle } from "../components/toggle/index";
 import { useState } from "react";
 
 const meta: Meta = {
-    title: "Input/Switch",
-    component: Switch,
+    title: "Input/Toggle",
+    component: Toggle,
     parameters: {
         layout: "centered",
     },
     tags: ["autodocs"],
-} satisfies Meta<typeof Switch>;
+} satisfies Meta<typeof Toggle>;
 
 export default meta;
-type Story = StoryObj<typeof Switch>;
+type Story = StoryObj<typeof Toggle>;
 
 export const Base: Story = {
     render: (args) => {
@@ -22,6 +22,6 @@ export const Base: Story = {
             setChecked((prev) => !prev);
         }
 
-        return <Switch {...args} checked={checked} onClick={handleOnClick} />;
+        return <Toggle {...args} checked={checked} onClick={handleOnClick} />;
     },
 };

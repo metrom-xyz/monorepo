@@ -78,7 +78,7 @@ const preview: Preview = {
                         "Slider",
                         "Date picker",
                         "Date time picker",
-                        "Switch",
+                        "Toggle",
                         "Tabs",
                     ],
                     "Surfaces",
