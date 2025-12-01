@@ -14,7 +14,8 @@ import {
     Toggle,
     TextInput,
     Typography,
-    Chip,
+    Switch,
+    SwitchOption,
 } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
 import {
@@ -140,10 +141,8 @@ export function RestrictionsStep({
         setOpen((open) => !open);
     }
 
-    function getTypeOnChangeHandler(type: RestrictionType) {
-        return () => {
-            setType(type);
-        };
+    function onTypeChange(type: RestrictionType) {
+        setType(type);
     }
 
     function handleAddressOnChange(event: ChangeEvent<HTMLInputElement>) {
@@ -231,32 +230,26 @@ export function RestrictionsStep({
                         linkText={t("readMore")}
                     />
                     <div className={styles.inputsWrapper}>
-                        <div className={styles.chips}>
-                            <Chip
-                                active={type === RestrictionType.Blacklist}
-                                onClick={getTypeOnChangeHandler(
-                                    RestrictionType.Blacklist,
-                                )}
-                                className={styles.chip}
+                        <Switch value={type} onChange={onTypeChange}>
+                            <SwitchOption
+                                value={RestrictionType.Blacklist}
+                                className={styles.switchOption}
                             >
                                 <Dot color="red" />
-                                <Typography weight="medium">
+                                <Typography size="sm" weight="medium">
                                     {t("blacklist")}
                                 </Typography>
-                            </Chip>
-                            <Chip
-                                active={type === RestrictionType.Whitelist}
-                                onClick={getTypeOnChangeHandler(
-                                    RestrictionType.Whitelist,
-                                )}
-                                className={styles.chip}
+                            </SwitchOption>
+                            <SwitchOption
+                                value={RestrictionType.Whitelist}
+                                className={styles.switchOption}
                             >
                                 <Dot color="green" />
-                                <Typography weight="medium">
+                                <Typography size="sm" weight="medium">
                                     {t("whitelist")}
                                 </Typography>
-                            </Chip>
-                        </div>
+                            </SwitchOption>
+                        </Switch>
                         <div className={styles.textInputWrapper}>
                             <CsvAddressesImport
                                 onImport={setAddresses}

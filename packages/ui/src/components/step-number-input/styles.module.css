@@ -14,25 +14,64 @@ input[type="number"] {
     @apply relative flex items-center;
 }
 
-/* TODO: to be based on size */
 .stepButton {
-    @apply w-8 h-8;
+    @apply bg-gray-300 dark:bg-neutral-700 hover:bg-gray-300 dark:hover:bg-neutral-700;
+}
+
+.stepButton.xs {
+    @apply size-7;
+}
+
+.stepButton.sm {
+    @apply size-8;
+}
+
+.stepButton.base {
+    @apply size-9;
+}
+
+.stepButton.lg {
+    @apply size-11;
+}
+
+.stepButtonIcon {
+    @apply size-5! text-primary;
 }
 
 .stepDownButton {
-    @apply absolute left-2;
+    @apply absolute left-0.5;
 }
 
 .stepUpButton {
-    @apply absolute right-2;
+    @apply absolute right-0.5;
 }
 
-.wrapper input {
+.wrapper.xs input {
+    @apply pl-10!;
+}
+.wrapper.xs input {
+    @apply pr-10!;
+}
+
+.wrapper.sm input {
+    @apply pl-11!;
+}
+.wrapper.sm input {
+    @apply pr-11!;
+}
+
+.wrapper.base input {
     @apply pl-12!;
 }
-
-.wrapper input {
+.wrapper.base input {
     @apply pr-12!;
+}
+
+.wrapper.lg input {
+    @apply pl-14!;
+}
+.wrapper.lg input {
+    @apply pr-14!;
 }
 
 .hiddenInput {

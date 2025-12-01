@@ -98,9 +98,12 @@ export const StepNumberInput: React.ForwardRefExoticComponent<StepNumberInputPro
                 errorText={errorText}
                 className={className}
             >
-                <div className={styles.wrapper}>
+                <div
+                    className={classNames(styles.wrapper, {
+                        [styles[size]]: true,
+                    })}
+                >
                     <Button
-                        variant="secondary"
                         size="xs"
                         icon={Minus}
                         disabled={disabled || loading}
@@ -109,7 +112,11 @@ export const StepNumberInput: React.ForwardRefExoticComponent<StepNumberInputPro
                             root: classNames(
                                 styles.stepButton,
                                 styles.stepDownButton,
+                                {
+                                    [styles[size]]: true,
+                                },
                             ),
+                            icon: styles.stepButtonIcon,
                         }}
                     />
                     <NumberFormatBase
@@ -132,7 +139,6 @@ export const StepNumberInput: React.ForwardRefExoticComponent<StepNumberInputPro
                         className={styles.hiddenInput}
                     />
                     <Button
-                        variant="secondary"
                         size="xs"
                         icon={Plus}
                         disabled={disabled || loading}
@@ -141,7 +147,11 @@ export const StepNumberInput: React.ForwardRefExoticComponent<StepNumberInputPro
                             root: classNames(
                                 styles.stepButton,
                                 styles.stepUpButton,
+                                {
+                                    [styles[size]]: true,
+                                },
                             ),
+                            icon: styles.stepButtonIcon,
                         }}
                     />
                 </div>

@@ -19,6 +19,8 @@ export * from "./components/multi-select";
 export * from "./components/skeleton";
 export * from "./components/slider";
 export * from "./components/step-number-input";
+export * from "./components/switch";
+export * from "./components/switch/switch-option";
 export * from "./components/toggle";
 export * from "./components/tabs";
 export * from "./components/tabs/tab";

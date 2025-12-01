@@ -1,0 +1,20 @@
+@reference "../../theme.css";
+
+.root {
+    @apply flex
+        relative
+        items-center
+        justify-between
+        rounded-lg
+        p-1
+        bg-gray-150
+        dark:bg-neutral-800
+        cursor-pointer
+        transition-colors
+        duration-200
+        ease-in-out;
+}
+
+.root.disabled {
+    @apply pointer-events-none opacity-40;
+}
