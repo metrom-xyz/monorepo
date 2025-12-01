@@ -3,9 +3,10 @@ import { StepContent } from "@/src/components/step/content";
 import { StepPreview } from "@/src/components/step/preview";
 import {
     Button,
-    Chip,
     ErrorText,
     Skeleton,
+    Switch,
+    SwitchOption,
     Toggle,
     Typography,
 } from "@metrom-xyz/ui";
@@ -302,12 +303,18 @@ export function RangeStep({
             <StepContent>
                 <div className={styles.stepContent}>
                     <div className={styles.flipPriceWrapper}>
-                        <Chip active={token0To1} onClick={handleOnFlipPrice}>
-                            {pool?.tokens[0].symbol}
-                        </Chip>
-                        <Chip active={!token0To1} onClick={handleOnFlipPrice}>
-                            {pool?.tokens[1].symbol}
-                        </Chip>
+                        <Switch value={token0To1} onChange={handleOnFlipPrice}>
+                            <SwitchOption value={true}>
+                                <Typography size="sm" weight="medium">
+                                    {pool?.tokens[0].symbol}
+                                </Typography>
+                            </SwitchOption>
+                            <SwitchOption value={false}>
+                                <Typography size="sm" weight="medium">
+                                    {pool?.tokens[1].symbol}
+                                </Typography>
+                            </SwitchOption>
+                        </Switch>
                     </div>
                     <RangeInputs
                         pool={pool}
