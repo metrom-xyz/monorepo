@@ -11,7 +11,7 @@ import { RestrictionType } from "@metrom-xyz/sdk";
 import {
     Button,
     ErrorText,
-    Switch,
+    Toggle,
     TextInput,
     Typography,
     Chip,
@@ -130,7 +130,7 @@ export function RestrictionsStep({
         setOpen(enabled);
     }, [enabled]);
 
-    function handleSwitchOnClick(event: React.MouseEvent<HTMLDivElement>) {
+    function handleToggleOnClick(event: React.MouseEvent<HTMLDivElement>) {
         event.stopPropagation();
         setEnabled((enabled) => !enabled);
     }
@@ -203,11 +203,11 @@ export function RestrictionsStep({
                                 {error ? t(error) : warning ? t(warning) : null}
                             </ErrorText>
                         </div>
-                        <Switch
+                        <Toggle
                             tabIndex={-1}
                             size="lg"
                             checked={enabled}
-                            onClick={handleSwitchOnClick}
+                            onClick={handleToggleOnClick}
                         />
                     </div>
                 }

@@ -6,7 +6,7 @@ import {
     Chip,
     ErrorText,
     Skeleton,
-    Switch,
+    Toggle,
     Typography,
 } from "@metrom-xyz/ui";
 import { useCallback, useEffect, useMemo, useState } from "react";
@@ -158,7 +158,7 @@ export function RangeStep({
         setError("");
     }, [distributablesType, onRangeChange]);
 
-    function handleSwitchOnClick(event: React.MouseEvent<HTMLDivElement>) {
+    function handleToggleOnClick(event: React.MouseEvent<HTMLDivElement>) {
         event.stopPropagation();
         setEnabled((enabled) => !enabled);
     }
@@ -235,11 +235,11 @@ export function RangeStep({
                                 {error ? t(error) : warning ? t(warning) : null}
                             </ErrorText>
                         </div>
-                        <Switch
+                        <Toggle
                             tabIndex={-1}
                             size="lg"
                             checked={enabled}
-                            onClick={handleSwitchOnClick}
+                            onClick={handleToggleOnClick}
                         />
                     </div>
                 }
