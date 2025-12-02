@@ -845,6 +845,7 @@
         "totalUsdValue": "Total USD rewards"
     },
     "campaignWeighting": {
-        "fees": "Fees"
+        "fees": "Fees",
+        "tooltip": "This reward includes <bold>protocol and transaction fees</bold> deducted from your earnings."
     }
 }
