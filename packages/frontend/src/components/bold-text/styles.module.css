@@ -1,0 +1,5 @@
+@reference "../../app.css";
+
+.root {
+    @apply text-black dark:text-white font-bold;
+}
