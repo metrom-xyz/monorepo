@@ -1,11 +1,11 @@
 @reference "../../../../../app.css";
 
 .root {
-    @apply w-[25rem] h-10 flex items-center gap-3 px-3 py-2 surface-secondary rounded-lg overflow-hidden;
+    @apply w-full max-w-[25rem] min-h-10 flex items-center gap-3 px-3 py-2 surface-secondary rounded-lg overflow-hidden;
 }
 
 .root.loading {
-    @apply w-[23rem] animate-pulse;
+    @apply w-full max-w-[23rem] min-h-10 animate-pulse;
 }
 
 .root.createCampaign {
@@ -33,7 +33,7 @@
 }
 
 .action > p {
-    @apply sm:max-w-[7rem] overflow-hidden text-nowrap text-ellipsis;
+    @apply sm:max-w-[6.5rem] overflow-hidden text-nowrap text-ellipsis;
 }
 
 .skeleton :global(.skeleton) {
