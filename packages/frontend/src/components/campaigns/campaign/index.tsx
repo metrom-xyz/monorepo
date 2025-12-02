@@ -35,12 +35,18 @@ export function CampaignRow({ type, campaign }: CampaignProps) {
     );
     const turtleCampaign = campaign.isTargeting(TargetType.Turtle);
 
-    const href = campaign.isTargeting(TargetType.Turtle)
-        ? `${TURTLE_APP_EARN_URL}/${campaign.target.opportunityId}`
-        : `/campaigns/${campaign.chainType}/${campaign.chainId}/${campaign.id}`;
+    const linkProps = campaign.isTargeting(TargetType.Turtle)
+        ? {
+              href: `${TURTLE_APP_EARN_URL}/${campaign.target.opportunityId}`,
+              target: "_blank",
+              rel: "noopener noreferrer",
+          }
+        : {
+              href: `/campaigns/${campaign.chainType}/${campaign.chainId}/${campaign.id}`,
+          };
 
     return (
-        <Link href={href} className={styles.root}>
+        <Link {...linkProps} className={styles.root}>
             <Card className={styles.card}>
                 <Chain id={campaign.chainId} type={campaign.chainType} />
                 <Protocol campaign={campaign} />
