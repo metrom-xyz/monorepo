@@ -89,7 +89,7 @@ export function Header({
                     >
                         <Typography
                             size="xs"
-                            weight="semibold"
+                            weight="medium"
                             className={styles.mainText}
                         >
                             {t("visitWebsite")}
