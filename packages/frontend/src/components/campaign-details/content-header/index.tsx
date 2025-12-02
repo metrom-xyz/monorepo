@@ -208,5 +208,11 @@ export function ContentHeader({ campaign }: ContentHeaderProps) {
 }
 
 export function SkeletonContentHeader() {
-    return <div className={styles.root}></div>;
+    return (
+        <div className={styles.root}>
+            <div className={classNames(styles.box, styles.loading)}></div>
+            <div className={classNames(styles.box, styles.loading)}></div>
+            <div className={classNames(styles.box, styles.loading)}></div>
+        </div>
+    );
 }

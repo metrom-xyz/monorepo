@@ -1,11 +1,11 @@
 @reference "../../app.css";
 
 .root {
-    @apply flex gap-3;
+    @apply flex gap-3 items-center;
 }
 
 .bar {
-    @apply w-4 flex flex-col overflow-hidden rounded-full;
+    @apply h-16 w-4 flex flex-col overflow-hidden rounded-full;
 }
 
 .section:first-child {
@@ -26,4 +26,8 @@
 
 .labels {
     @apply flex flex-col gap-1;
+}
+
+.fees {
+    @apply flex gap-1;
 }
