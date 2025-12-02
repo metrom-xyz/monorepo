@@ -57,5 +57,9 @@
 }
 
 .externalLinkIcon {
-    @apply h-3 w-3 transform -rotate-45 text-gray-900 dark:text-neutral-950;
+    @apply size-3 transform -rotate-45 text-gray-900 dark:text-neutral-950;
+}
+
+.externalLinkIcon > path {
+    @apply stroke-2;
 }

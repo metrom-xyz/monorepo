@@ -1,13 +1,13 @@
 @reference "../../app.css";
 
 .root {
-    @apply flex gap-2.5 items-center rounded-lg justify-center;
+    @apply w-fit flex gap-2.5 items-center rounded-lg justify-center;
 }
 
 .chip {
     @apply flex
         h-full
-        w-full
+        sm:w-full
         justify-center
         items-center
         bg-brand-blue
