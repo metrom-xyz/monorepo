@@ -38,6 +38,7 @@ export enum SupportedDevelopmentEvmChain {
 }
 
 export enum SupportedProductionEvmChain {
+    ArbitrumOne = SupportedChainEvm.ArbitrumOne,
     Base = SupportedChainEvm.Base,
     Taiko = SupportedChainEvm.Taiko,
     Scroll = SupportedChainEvm.Scroll,

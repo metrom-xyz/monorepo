@@ -7,7 +7,7 @@ import { LumiaLogo } from "../assets/logos/chains/lumia";
 import { MorphexLogo } from "../assets/logos/dexes/morphex";
 
 export const lumiaData: ChainData = {
-    active: true,
+    active: false,
     name: "Lumia",
     metromContract: ADDRESS[SupportedChain.Lumia],
     blockExplorers: lumiaMainnet.blockExplorers,

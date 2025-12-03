@@ -15,6 +15,7 @@ import {
     sei,
     hemi,
     mainnet,
+    arbitrum,
 } from "viem/chains";
 import {
     sonicData,
@@ -34,6 +35,7 @@ import {
     swellProductionData,
     hemiData,
     mainnetData,
+    arbitrumData,
 } from "./chains";
 import {
     ChainData,
@@ -73,6 +75,7 @@ export const EVM_CHAIN_DATA: {
         [SupportedDevelopmentEvmChain.Sei]: seiDevelopmentData,
     },
     [Environment.Production]: {
+        [SupportedProductionEvmChain.ArbitrumOne]: arbitrumData,
         [SupportedProductionEvmChain.Base]: baseData,
         [SupportedProductionEvmChain.Taiko]: taikoData,
         [SupportedProductionEvmChain.Scroll]: scrollData,
@@ -113,6 +116,7 @@ export const SUPPORTED_DEVELOPMENT_CHAINS: [Chain, ...Chain[]] = [
 
 // Needed for wagmi context setup, not needed for MVM chains
 export const SUPPORTED_PRODUCTION_CHAINS: [Chain, ...Chain[]] = [
+    arbitrum,
     base,
     taiko,
     scroll,
