@@ -1,4 +1,5 @@
 export { aptosDevelopmentData, aptosProductionData } from "./aptos";
+export { arbitrumData } from "./arbitrum";
 export { modeData } from "./mode";
 export { mantleData } from "./mantle";
 export { sonicData } from "./sonic";
