@@ -69,7 +69,7 @@ export const baseData: ChainData = {
             supportsFetchAllPools: true,
         },
         {
-            active: false,
+            active: true,
             type: ProtocolType.Dex,
             slug: SupportedDex.UniswapV3,
             logo: UniswapLogo,
