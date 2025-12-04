@@ -60,6 +60,10 @@ export function TokenClaimMvm({
         isError: simulatedClaimErrored,
     } = useSimulateTransaction({
         data: claimRewardsTxPayload,
+        options: {
+            estimateGasUnitPrice: true,
+            estimateMaxGasAmount: true,
+        },
     });
 
     useEffect(() => {

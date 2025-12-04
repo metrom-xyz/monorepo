@@ -86,6 +86,10 @@ export function ChainOverviewMvm({
     } = useSimulateTransaction({
         data: recoverRewardsTxPayload,
         refetchOnMount: false,
+        options: {
+            estimateGasUnitPrice: true,
+            estimateMaxGasAmount: true,
+        },
         enabled: !!account && chainWithRewardsData.reimbursements.length > 0,
     });
 
@@ -96,6 +100,10 @@ export function ChainOverviewMvm({
     } = useSimulateTransaction({
         data: claimRewardsTxPayload,
         refetchOnMount: false,
+        options: {
+            estimateGasUnitPrice: true,
+            estimateMaxGasAmount: true,
+        },
         enabled: !!account && chainWithRewardsData.claims.length > 0,
     });
 
