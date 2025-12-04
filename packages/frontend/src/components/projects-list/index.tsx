@@ -12,10 +12,6 @@ import { useChainType } from "@/src/hooks/useChainType";
 
 import styles from "./styles.module.css";
 
-const PAGE_SIZE = 10;
-
-// const URL_ENABLED_FILTERS = ["chains"];
-
 export function ProjectsList() {
     const t = useTranslations("allCampaigns.projects");
 

@@ -3,20 +3,25 @@
 .root {
     @apply w-full
         flex
-        flex-col
-        gap-7;
+        items-center
+        px-3
+        py-2
+        sm:px-5
+        sm:py-4
+        bg-gray-200
+        dark:bg-neutral-700;
 }
 
-.header {
-    @apply grid grid-cols-[0.8fr_1fr_0.9fr] md:grid-cols-3;
+.root:last-child {
+    @apply rounded-b-lg;
 }
 
-.header > :last-child {
-    @apply justify-self-end;
+.restricted {
+    @apply flex items-center flex-col sm:flex-row gap-1;
 }
 
-.rowWrapper {
-    @apply w-full flex items-center md:h-6;
+.text {
+    @apply flex items-center gap-1;
 }
 
 .row {
@@ -36,14 +41,13 @@
 }
 
 .connectWallet {
-    @apply w-fit
-        h-6
-        rounded-md
-        px-2.5
-        surface-secondary
-        surface-secondary-hover
-        hover:cursor-pointer
-        transition-colors
-        duration-200
-        ease-in-out;
+    @apply w-fit flex items-center gap-1 cursor-pointer;
+}
+
+.arrowIcon {
+    @apply size-4;
+}
+
+.arrowIcon > path {
+    @apply stroke-2;
 }

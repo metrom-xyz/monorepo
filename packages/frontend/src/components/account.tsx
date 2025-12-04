@@ -4,8 +4,6 @@ import type { Address } from "viem";
 import { mainnet } from "viem/chains";
 import { shortenAddress } from "../utils/address";
 import { useMemo } from "react";
-import { APTOS } from "../commons/env";
-import { truncateAddress } from "@aptos-labs/wallet-adapter-react";
 import { useAccountName } from "../hooks/useAccountName";
 
 interface AccountProps extends Omit<TypographyProps, "children" | "variant"> {
@@ -27,7 +25,6 @@ export function Account({
     });
 
     const account = useMemo(() => {
-        if (APTOS) return truncateAddress(address);
         if (ensName) return ensName;
         if (variant === "full") return address;
 

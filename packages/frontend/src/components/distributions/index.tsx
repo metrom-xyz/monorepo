@@ -10,11 +10,11 @@ import type { SupportedChain } from "@metrom-xyz/contracts";
 import { useCampaign } from "@/src/hooks/useCampaign";
 import { Header, SkeletonHeader } from "../campaign-details/header";
 import { Filters } from "./filters";
-import { NoDistributionsIcon } from "@/src/assets/no-distributions-icon";
 import classNames from "classnames";
 import type { ProcessedDistribution } from "@/src/types/distributions";
 import { Chart, type BarPayload } from "./chart";
 import type { ChainType } from "@metrom-xyz/sdk";
+import { EmptyIcon } from "@/src/assets/empty-icon";
 
 import styles from "./styles.module.css";
 
@@ -156,7 +156,7 @@ export function Distributions({
                             />
                         ) : (
                             <div className={styles.empty}>
-                                <NoDistributionsIcon />
+                                <EmptyIcon />
                                 <Typography uppercase weight="medium" size="sm">
                                     {t("empty")}
                                 </Typography>
@@ -191,7 +191,7 @@ export function Distributions({
                             />
                         ) : (
                             <div className={styles.empty}>
-                                <NoDistributionsIcon />
+                                <EmptyIcon />
                                 <Typography uppercase weight="medium" size="sm">
                                     {t("empty")}
                                 </Typography>

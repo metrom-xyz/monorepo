@@ -97,7 +97,6 @@ export function ConnectButtonMvm({ customComponent }: ConnectButtonProps) {
                                 />
                                 <Account
                                     address={address}
-                                    variant="full"
                                     className={commonStyles.displayName}
                                 />
                             </div>
