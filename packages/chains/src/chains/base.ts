@@ -12,6 +12,7 @@ import type { ChainData } from "../types/chains";
 import { DepositUrlType, ProtocolType } from "../types/protocol";
 import { KimLogo } from "../assets";
 import { HydrexLogo } from "../assets/logos/dexes/hydrex";
+import { BalancerLogo } from "../assets/logos/dexes/balancer";
 
 export const baseData: ChainData = {
     active: true,
@@ -77,6 +78,18 @@ export const baseData: ChainData = {
             depositUrl: {
                 type: DepositUrlType.PathPoolAddress,
                 template: "https://oku.trade/app/base/liquidity/{pool}",
+            },
+            supportsFetchAllPools: false,
+        },
+        {
+            active: true,
+            type: ProtocolType.Dex,
+            slug: SupportedDex.BalancerV3,
+            logo: BalancerLogo,
+            name: "Balancer v3",
+            depositUrl: {
+                type: DepositUrlType.PathPoolAddress,
+                template: "https://balancer.fi/pools/base/v3/{pool}",
             },
             supportsFetchAllPools: false,
         },
