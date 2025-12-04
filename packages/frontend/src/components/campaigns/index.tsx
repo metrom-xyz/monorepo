@@ -76,19 +76,10 @@ export function Campaigns({
     const searchParams = useSearchParams();
 
     const [type, setType] = useState<BackendCampaignTypeAndProjects>();
-
     const prevType = usePrevious(type);
 
-    const handleClearUrlFilterParams = useCallback(() => {
-        const params = new URLSearchParams(searchParams.toString());
-        URL_ENABLED_CAMPAIGNS_FILTERS.forEach((filter) => {
-            params.delete(filter);
-        });
-
-        router.replace(`${pathname}?${params.toString()}`, {
-            scroll: false,
-        });
-    }, [pathname, router, searchParams]);
+    const activeTabOptions = TABS.filter(({ type }) => tabs.includes(type));
+    const activeTabs = activeTabOptions.map(({ type }) => type);
 
     // This hooks initializes the type state with the values coming from the url param, or
     // if it's missing it defaults to rewards and adds that to the url.
@@ -97,6 +88,7 @@ export function Campaigns({
 
         const params = new URLSearchParams(searchParams.toString());
         const urlType = params.get("type");
+        const defaultType = activeTabs[0];
 
         if (
             urlType &&
@@ -104,21 +96,26 @@ export function Campaigns({
             urlType !== BackendCampaignType.Rewards &&
             urlType !== "projects"
         ) {
-            setType(BackendCampaignType.Rewards);
+            setType(defaultType || BackendCampaignType.Rewards);
             return;
         }
 
-        if (urlType) {
+        if (
+            urlType &&
+            activeTabs.includes(urlType as BackendCampaignTypeAndProjects)
+        ) {
             setType(urlType as BackendCampaignTypeAndProjects);
             return;
         }
 
-        params.set("type", BackendCampaignType.Rewards);
-        router.replace(`${pathname}?${params.toString()}`, {
-            scroll: false,
-        });
-        setType(BackendCampaignType.Rewards);
-    }, [pathname, router, searchParams, type]);
+        if (defaultType) {
+            params.set("type", defaultType);
+            router.replace(`${pathname}?${params.toString()}`, {
+                scroll: false,
+            });
+            setType(defaultType);
+        }
+    }, [activeTabs, pathname, router, searchParams, type]);
 
     useEffect(() => {
         if (!type) return;
@@ -137,26 +134,36 @@ export function Campaigns({
         });
     }, [pathname, router, searchParams, type, prevType]);
 
+    const handleClearUrlFilterParams = useCallback(() => {
+        const params = new URLSearchParams(searchParams.toString());
+        URL_ENABLED_CAMPAIGNS_FILTERS.forEach((filter) => {
+            params.delete(filter);
+        });
+
+        router.replace(`${pathname}?${params.toString()}`, {
+            scroll: false,
+        });
+    }, [pathname, router, searchParams]);
+
     if (!type) return <SkeletonCampaigns type={BackendCampaignType.Rewards} />;
 
     return (
         <div className={styles.root}>
             <Tabs value={type} onChange={setType}>
-                {TABS.filter(({ type }) => tabs.includes(type)).map(
-                    ({ type, label, icon }) => {
-                        return (
-                            <Tab key={type} icon={icon} value={type}>
-                                {t(`tabs.${label}`)}
-                            </Tab>
-                        );
-                    },
-                )}
+                {activeTabOptions.map(({ type, label, icon }) => {
+                    return (
+                        <Tab key={type} icon={icon} value={type}>
+                            {t(`tabs.${label}`)}
+                        </Tab>
+                    );
+                })}
             </Tabs>
             {type === "projects" ? (
                 <ProjectsList />
             ) : (
                 <CampaignsTable
                     type={type}
+                    tabs={activeTabs}
                     disableFilters={disableFilters}
                     optionalFilters={optionalFilters}
                     onClearFilters={handleClearUrlFilterParams}
