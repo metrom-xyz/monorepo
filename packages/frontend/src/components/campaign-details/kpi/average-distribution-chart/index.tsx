@@ -4,7 +4,6 @@ import { Card, Popover, Typography } from "@metrom-xyz/ui";
 import { Cell, Pie, PieChart, Tooltip } from "recharts";
 import { formatAmount, formatUsdAmount } from "@/src/utils/format";
 import classNames from "classnames";
-import { NoDistributionsIcon } from "@/src/assets/no-distributions-icon";
 import type {
     TokenDistributables,
     UsdPricedErc20TokenAmount,
@@ -12,6 +11,7 @@ import type {
 import { RemoteLogo } from "@/src/components/remote-logo";
 import type { SupportedChain } from "@metrom-xyz/contracts";
 import { RankTooltip } from "./tooltip";
+import { EmptyIcon } from "@/src/assets/empty-icon";
 
 import styles from "./styles.module.css";
 
@@ -176,7 +176,7 @@ export function AverageDistributionChart({
                     {t("averageDistribution")}
                 </Typography>
                 <div className={classNames(styles.chartWrapper, styles.empty)}>
-                    <NoDistributionsIcon />
+                    <EmptyIcon />
                     <Typography uppercase weight="medium" size="sm">
                         {t("noDistribution")}
                     </Typography>
@@ -266,7 +266,7 @@ export function AverageDistributionChart({
                         // FIXME: the type: "reimbursed" | "distributed" is causing issues with the chart type, fix this
                         data={chartData as unknown as Record<string, unknown>[]}
                         innerRadius={70}
-                        outerRadius={120}
+                        outerRadius={110}
                         startAngle={90}
                         endAngle={450}
                         minAngle={5}

@@ -27,7 +27,7 @@ interface ProjectCardProps {
 
 const CHAINS_MARQUEE_LIMIT = 3;
 
-const MotionLink = motion(Link);
+const MotionLink = motion.create(Link);
 
 export function ProjectCard({
     name,

@@ -1,14 +1,22 @@
 import {
     ChainType,
+    RestrictionType,
     type Restrictions,
     type UsdPricedErc20TokenAmount,
 } from "@metrom-xyz/sdk";
 import { shortenAddress } from "@/src/utils/address";
-import { Typography, Skeleton, Card, type SkeletonProps } from "@metrom-xyz/ui";
+import {
+    Typography,
+    Skeleton,
+    Card,
+    type SkeletonProps,
+    Pointer,
+} from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
 import dayjs from "dayjs";
 import { PersonalRank, type PersonalRankProps } from "./personal-rank";
 import {
+    EmptyRepartitionChart,
     RepartitionChart,
     type RepartitionChartProps,
 } from "./repartition-chart";
@@ -17,12 +25,13 @@ import { RewardsBreakdown } from "./rewards-breakdown";
 import { formatPercentage } from "@/src/utils/format";
 import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
 import { getExplorerLink } from "@/src/utils/explorer";
-import classNames from "classnames";
-import { NoDistributionsIcon } from "@/src/assets/no-distributions-icon";
 import { PointsBreakdown } from "./points-breakdown";
 import type { SupportedChain } from "@metrom-xyz/contracts";
 import type { Leaderboard } from "@/src/types/campaign";
 import { useWindowSize } from "react-use";
+import { EmptyIcon } from "@/src/assets/empty-icon";
+import { useAccount } from "@/src/hooks/useAccount";
+import classNames from "classnames";
 
 import styles from "./styles.module.css";
 
@@ -58,13 +67,16 @@ export function Leaderboard({
 }: LeaderboardProps) {
     const t = useTranslations("campaignDetails.leaderboard");
 
+    const { address: connectedAddress } = useAccount();
     const { width } = useWindowSize();
+
+    const whitelist = restrictions?.type === RestrictionType.Whitelist;
 
     if (!loading && !leaderboard) {
         return (
             <div className={styles.root}>
                 <div className={styles.titleContainer}>
-                    <Typography size="lg" weight="medium" uppercase>
+                    <Typography weight="medium" uppercase>
                         {t("title")}
                     </Typography>
                     <div className={styles.subtitleContainer}>
@@ -72,18 +84,22 @@ export function Leaderboard({
                             weight="medium"
                             size="sm"
                             variant="tertiary"
-                            uppercase
                         >
                             {t("noDistribution")}
                         </Typography>
                     </div>
                 </div>
-                <Card className={classNames(styles.noDistribution)}>
-                    <NoDistributionsIcon />
-                    <Typography uppercase weight="medium" size="sm">
-                        {t("noDistribution")}
-                    </Typography>
-                </Card>
+                <div className={styles.cardsWrapper}>
+                    <div className={styles.leaderboardWrapper}>
+                        <Card className={styles.noDistribution}>
+                            <EmptyIcon />
+                            <Typography uppercase weight="medium" size="sm">
+                                {t("noDistribution")}
+                            </Typography>
+                        </Card>
+                    </div>
+                    <EmptyRepartitionChart />
+                </div>
             </div>
         );
     }
@@ -91,7 +107,7 @@ export function Leaderboard({
     return (
         <div className={styles.root}>
             <div className={styles.titleContainer}>
-                <Typography size="lg" weight="medium" uppercase>
+                <Typography weight="medium" uppercase>
                     {t("title")}
                 </Typography>
                 {!noDistributionDate && (
@@ -100,7 +116,6 @@ export function Leaderboard({
                             weight="medium"
                             size="sm"
                             variant="tertiary"
-                            uppercase
                         >
                             {leaderboard && t("subtitleLatest")}
                         </Typography>
@@ -125,13 +140,6 @@ export function Leaderboard({
             </div>
             <div className={styles.cardsWrapper}>
                 <div className={styles.leaderboardWrapper}>
-                    <PersonalRank
-                        chain={chainId}
-                        loading={loading}
-                        restrictions={restrictions}
-                        connectedAccountRank={leaderboard?.connectedAccountRank}
-                        messages={messages?.personalRank}
-                    />
                     <Card className={styles.tableWrapper}>
                         <div className={styles.header}>
                             <Typography
@@ -169,74 +177,112 @@ export function Leaderboard({
                             </>
                         ) : leaderboard &&
                           Object.keys(leaderboard.sortedRanks).length > 0 ? (
-                            leaderboard.sortedRanks.map((distribution, i) => (
-                                <div
-                                    key={distribution.account}
-                                    className={styles.row}
-                                >
-                                    <div>
-                                        <Typography
-                                            weight="medium"
-                                            variant="tertiary"
-                                        >
-                                            #{i + 1}
-                                        </Typography>
-                                        <Typography weight="medium">
-                                            {formatPercentage({
-                                                percentage: distribution.weight,
+                            leaderboard.sortedRanks.map(
+                                (
+                                    { account, distributed, weight, usdValue },
+                                    i,
+                                ) => {
+                                    const connected =
+                                        account.toLowerCase() ===
+                                        connectedAddress?.toLowerCase();
+
+                                    return (
+                                        <div
+                                            key={account}
+                                            className={classNames(styles.row, {
+                                                [styles.connected]: connected,
                                             })}
-                                        </Typography>
-                                    </div>
-                                    <div className={styles.accountWrapper}>
-                                        <Typography weight="medium">
-                                            {shortenAddress(
-                                                distribution.account,
-                                                width > 640,
-                                            )}
-                                        </Typography>
-                                        {chainId && (
-                                            <a
-                                                href={getExplorerLink(
-                                                    distribution.account,
-                                                    chainId,
-                                                    chainType,
+                                        >
+                                            <div>
+                                                <Typography
+                                                    weight="medium"
+                                                    variant="tertiary"
+                                                >
+                                                    # {i + 1}
+                                                </Typography>
+                                                <Typography weight="medium">
+                                                    {formatPercentage({
+                                                        percentage: weight,
+                                                    })}
+                                                </Typography>
+                                                {connected && width > 640 && (
+                                                    <Pointer
+                                                        size="sm"
+                                                        uppercase
+                                                        color={
+                                                            whitelist
+                                                                ? "green"
+                                                                : "blue"
+                                                        }
+                                                        text={t("you")}
+                                                    />
                                                 )}
-                                                target="_blank"
-                                                rel="noopener noreferrer"
+                                            </div>
+                                            <div
+                                                className={
+                                                    styles.accountWrapper
+                                                }
                                             >
-                                                <ArrowRightIcon
-                                                    className={
-                                                        styles.externalLinkIcon
-                                                    }
-                                                />
-                                            </a>
-                                        )}
-                                    </div>
-                                    <div>
-                                        {distribution.distributed instanceof
-                                        Array ? (
-                                            <RewardsBreakdown
-                                                chain={chainId}
-                                                distributed={
-                                                    distribution.distributed
-                                                }
-                                                usdValue={distribution.usdValue}
-                                            />
-                                        ) : (
-                                            <PointsBreakdown
-                                                distributed={
-                                                    distribution.distributed
-                                                }
-                                            />
-                                        )}
-                                    </div>
-                                </div>
-                            ))
+                                                <Typography weight="medium">
+                                                    {shortenAddress(
+                                                        account,
+                                                        width > 640,
+                                                    )}
+                                                </Typography>
+                                                {chainId && (
+                                                    <a
+                                                        href={getExplorerLink(
+                                                            account,
+                                                            chainId,
+                                                            chainType,
+                                                        )}
+                                                        target="_blank"
+                                                        rel="noopener noreferrer"
+                                                    >
+                                                        <ArrowRightIcon
+                                                            className={
+                                                                styles.externalLinkIcon
+                                                            }
+                                                        />
+                                                    </a>
+                                                )}
+                                            </div>
+                                            <div>
+                                                {distributed instanceof
+                                                Array ? (
+                                                    <RewardsBreakdown
+                                                        chain={chainId}
+                                                        distributed={
+                                                            distributed
+                                                        }
+                                                        usdValue={usdValue}
+                                                    />
+                                                ) : (
+                                                    <PointsBreakdown
+                                                        distributed={
+                                                            distributed
+                                                        }
+                                                    />
+                                                )}
+                                            </div>
+                                        </div>
+                                    );
+                                },
+                            )
                         ) : (
                             <Typography weight="medium" variant="tertiary">
                                 {t("noRewards")}
                             </Typography>
                         )}
+                        <PersonalRank
+                            chain={chainId}
+                            loading={loading}
+                            restrictions={restrictions}
+                            connectedAccountRank={
+                                leaderboard?.connectedAccountRank
+                            }
+                            messages={messages?.personalRank}
+                        />
                     </Card>
                 </div>
                 <RepartitionChart

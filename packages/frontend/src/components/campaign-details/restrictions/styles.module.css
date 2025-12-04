@@ -1,27 +1,35 @@
 @reference "../../../app.css";
 
 .root {
-    @apply flex flex-col gap-4;
+    @apply max-w-screen-xl;
 }
 
 .titleWrapper {
     @apply flex gap-2 items-center;
 }
 
-.tooltipText {
-    @apply leading-5;
+.dot {
+    @apply size-2.5 rounded-full;
 }
 
-.bold {
-    @apply text-black dark:text-white font-bold;
+.dot.blacklist {
+    @apply bg-error;
+}
+
+.dot.whitelist {
+    @apply bg-brand-green-dark dark:bg-brand-green;
 }
 
 .list {
-    @apply max-h-64 overflow-y-auto flex flex-col gap-6 p-4;
+    @apply max-h-64 overflow-y-auto flex flex-col py-4;
 }
 
 .row {
-    @apply flex items-center justify-between;
+    @apply flex items-center justify-between px-3 py-1 sm:px-5 sm:py-2;
+}
+
+.row.connected {
+    @apply bg-gray-200 dark:bg-neutral-700;
 }
 
 .account {
