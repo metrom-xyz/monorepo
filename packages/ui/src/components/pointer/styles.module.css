@@ -1,0 +1,68 @@
+@reference "../../theme.css";
+
+.root {
+    @apply relative rounded-sm ml-2;
+}
+
+.root.xs,
+.root.sm,
+.root.base {
+    @apply px-1 py-0.5;
+}
+
+.root.lg {
+    @apply px-1.5 py-0.5;
+}
+
+.root.blue {
+    @apply bg-brand-blue;
+}
+
+.root.green {
+    @apply bg-brand-green-dark dark:bg-brand-green;
+}
+
+.root.red {
+    @apply bg-error text-gray-100 dark:text-neutral-100;
+}
+
+.text.green {
+    @apply text-gray-100 dark:text-neutral-900;
+}
+
+.text.blue,
+.text.red {
+    @apply text-gray-100 dark:text-neutral-100;
+}
+
+.arrow {
+    @apply absolute;
+}
+
+.arrow.left {
+    @apply -left-1.5 top-1/2 -translate-y-1/2;
+}
+
+.arrow.top {
+    @apply left-1/2 -top-1.5 -translate-x-1/2 rotate-90;
+}
+
+.arrow.right {
+    @apply -right-1.5 top-1/2 -translate-y-1/2 rotate-180;
+}
+
+.arrow.bottom {
+    @apply left-1/2 -bottom-1.5 -translate-x-1/2 -rotate-90;
+}
+
+.arrow.blue {
+    @apply text-brand-blue;
+}
+
+.arrow.green {
+    @apply text-brand-green-dark dark:text-brand-green;
+}
+
+.arrow.red {
+    @apply text-error;
+}

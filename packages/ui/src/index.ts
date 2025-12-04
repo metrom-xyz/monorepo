@@ -11,6 +11,7 @@ export * from "./components/info-tooltip";
 export * from "./components/mobile-drawer";
 export * from "./components/modal";
 export * from "./components/pagination";
+export * from "./components/pointer";
 export * from "./components/pool-remote-logo";
 export * from "./components/popover";
 export * from "./components/remote-logo";
