@@ -4,5 +4,5 @@
     @apply w-full
         p-4
         surface-primary
-        rounded-2xl;
+        rounded-lg;
 }

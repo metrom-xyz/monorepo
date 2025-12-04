@@ -44,7 +44,7 @@ export function Accordion({ title, children, className }: AccordionProps) {
                 <motion.div
                     initial={{ height: 0 }}
                     animate={{ height: open ? "auto" : 0 }}
-                    transition={{ ease: easeInOut }}
+                    transition={{ ease: easeInOut, duration: 200 }}
                     className={classNames("content", styles.content)}
                 >
                     {children}
