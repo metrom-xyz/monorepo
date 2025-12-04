@@ -60,6 +60,10 @@ export function TokenReimbursementMvm({
         isError: simulateRecoverErrored,
     } = useSimulateTransaction({
         data: recoverRewardsTxPayload,
+        options: {
+            estimateGasUnitPrice: true,
+            estimateMaxGasAmount: true,
+        },
     });
 
     useEffect(() => {

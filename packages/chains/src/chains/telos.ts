@@ -7,7 +7,7 @@ import type { ChainData } from "../types/chains";
 import { DepositUrlType, ProtocolType } from "../types/protocol";
 
 export const telosData: ChainData = {
-    active: true,
+    active: false,
     name: telos.name,
     metromContract: ADDRESS[SupportedChain.Telos],
     blockExplorers: {
