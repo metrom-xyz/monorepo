@@ -18,7 +18,10 @@ import {
     useCampaignsFiltersOptions,
     type ChainFilterOption,
 } from "@/src/hooks/useCampaignsFiltersOptions";
-import { URL_ENABLED_CAMPAIGNS_FILTERS } from "../campaigns";
+import {
+    URL_ENABLED_CAMPAIGNS_FILTERS,
+    type BackendCampaignTypeAndProjects,
+} from "../campaigns";
 
 import styles from "./styles.module.css";
 
@@ -105,6 +108,7 @@ const TABLE_POINTS_COLUMNS: {
 
 interface CampaignsTableProps {
     type: BackendCampaignType;
+    tabs: BackendCampaignTypeAndProjects[];
     disableFilters?: boolean;
     optionalFilters?: Partial<RawFilters>;
     className?: string;
@@ -113,6 +117,7 @@ interface CampaignsTableProps {
 
 export function CampaignsTable({
     type,
+    tabs,
     disableFilters,
     optionalFilters,
     className,
@@ -301,7 +306,8 @@ export function CampaignsTable({
     return (
         <div
             className={classNames(styles.root, className, {
-                [styles.topLeftSquared]: type === BackendCampaignType.Rewards,
+                [styles.topLeftSquared]:
+                    type === BackendCampaignType.Rewards || tabs.length === 1,
             })}
         >
             <div className={styles.tableWrapper}>

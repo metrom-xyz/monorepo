@@ -1,53 +1,74 @@
-import { keepPreviousData, useQuery } from "@tanstack/react-query";
-import type { HookBaseParams } from "../types/hooks";
 import { METROM_API_CLIENT } from "../commons";
-import type { BackendCampaignTypeAndProjects } from "../components/campaigns";
+import { useQuery } from "@tanstack/react-query";
+import type { HookBaseParams } from "../types/hooks";
+import {
+    BackendCampaignType,
+    type ChainType,
+    type SupportedProtocol,
+} from "@metrom-xyz/sdk";
 
 interface UseCampaignsCountParams extends HookBaseParams {
-    type?: BackendCampaignTypeAndProjects;
-}
-
-interface UseCampaignsCountReturnValue {
-    loading: boolean;
-    fetching: boolean;
-    count?: number;
+    chainIds?: number[];
+    chainTypes?: ChainType[];
+    protocols?: string[];
 }
 
 export function useCampaignsCount({
-    type,
-    enabled,
-}: UseCampaignsCountParams): UseCampaignsCountReturnValue {
+    chainIds,
+    chainTypes,
+    protocols,
+    enabled = true,
+}: UseCampaignsCountParams): {
+    loading: boolean;
+    fetching: boolean;
+    rewards?: number;
+    points?: number;
+} {
     const {
-        data: count,
+        data,
         isPending: loading,
         isFetching: fetching,
     } = useQuery({
-        queryKey: ["campaigns-count", type],
+        queryKey: ["campaigns-count", chainIds, chainTypes, protocols],
         queryFn: async () => {
-            if (!type) return null;
-            // TODO: if the projects are configured on the FE get this value from the config files, otherwise fetch from API
-            if (type === "projects") return 0;
-
             try {
-                const { totalItems } = await METROM_API_CLIENT.fetchCampaigns({
-                    page: 1,
-                    pageSize: 0,
-                    type,
-                });
+                const { totalItems: rewards } =
+                    await METROM_API_CLIENT.fetchCampaigns({
+                        page: 1,
+                        pageSize: 0,
+                        type: BackendCampaignType.Rewards,
+                        chainIds,
+                        chainTypes,
+                        protocols: protocols as SupportedProtocol[],
+                    });
+                const { totalItems: points } =
+                    await METROM_API_CLIENT.fetchCampaigns({
+                        page: 1,
+                        pageSize: 0,
+                        type: BackendCampaignType.Points,
+                        chainIds,
+                        chainTypes,
+                        protocols: protocols as SupportedProtocol[],
+                    });
 
-                return totalItems;
+                return {
+                    rewards,
+                    points,
+                };
             } catch (error) {
-                console.error(`Could not fetch campaigns: ${error}`, error);
+                console.error(
+                    `Could not fetch campaigns count: ${error}`,
+                    error,
+                );
                 throw error;
             }
         },
-        placeholderData: keepPreviousData,
         enabled,
     });
 
     return {
         loading,
         fetching,
-        count: count !== null ? count : undefined,
+        ...data,
     };
 }
