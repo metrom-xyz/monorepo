@@ -41,9 +41,9 @@ export function AprChip({
 
     return (
         <div className={styles.root}>
-            {campaign && apr !== undefined && (
+            {apr !== undefined && (
                 <>
-                    <AprInfoTooltip campaign={campaign} />
+                    {campaign && <AprInfoTooltip campaign={campaign} />}
                     <div
                         className={classNames(styles.chip, className, {
                             [styles.witkKpi]: kpi,

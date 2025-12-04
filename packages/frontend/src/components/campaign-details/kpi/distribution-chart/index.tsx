@@ -17,10 +17,10 @@ import { TooltipContent } from "./tooltip";
 import { Card, Chip, Skeleton, Typography } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
 import classNames from "classnames";
-import { NoDistributionsIcon } from "@/src/assets/no-distributions-icon";
 import { useKpiMeasurements } from "@/src/hooks/useKpiMeasurements";
 import { getAggregatedKpiMeasurements } from "@/src/utils/kpi";
 import { AnimatePresence, easeInOut, motion } from "motion/react";
+import { EmptyIcon } from "@/src/assets/empty-icon";
 
 import styles from "./styles.module.css";
 
@@ -183,7 +183,7 @@ export function DistributionChart({
                     {t("distributions")}
                 </Typography>
                 <div className={classNames(styles.container, styles.empty)}>
-                    <NoDistributionsIcon />
+                    <EmptyIcon />
                     <Typography uppercase weight="medium" size="sm">
                         {t("noDistribution")}
                     </Typography>

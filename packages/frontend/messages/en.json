@@ -633,30 +633,31 @@
             }
         },
         "restrictions": {
-            "title": "Restrictions",
-            "allows": "Allows {count, plural, =0 {} =1 {# address} other {# adresses}}",
-            "tooltip": {
-                "allows": "Rewards for this campaign are restricted. Rewards will be available <bold>exclusively to</bold> the addresses listed below."
-            }
+            "restrictions": "Address restrictions",
+            "allowed": "{count} allowed",
+            "blocked": "{count} blocked",
+            "addressBlocked": "Your address is blocked",
+            "addressAllowed": "Your address is allowed"
         },
         "leaderboard": {
             "title": "Leaderboard",
             "subtitleLatest": "As of the latest distribution:",
             "noDistribution": "No distribution yet",
             "connectedAccountRank": {
-                "connect": "View your rank",
-                "blacklisted": "Your address is blocked from farming rewards in the campaign.",
+                "notEligible": "Not eligible to farm rewards",
+                "eligible": "Eligible to farm rewards",
+                "blocked": "Your address is blocked",
+                "allowed": "Your address is allowed",
                 "noRewards": "You don't have any rewards.",
-                "yourRank": "Your rank",
-                "account": "Account",
-                "rewardsDistributed": "Distributed"
+                "connect": "Connect your wallet to view your status"
             },
             "rank": "Rank",
             "account": "Account",
             "rewardsDistributed": "Distributed",
             "noRewards": "No rewards distributed",
             "repartition": "LP distribution",
-            "others": "Others"
+            "others": "Others",
+            "you": "You"
         },
         "notFound": "Campaign not found!"
     },

@@ -7,6 +7,7 @@ import { shuffle } from "@/src/utils/common";
 import type { Leaderboard, Rank } from "@/src/types/campaign";
 import classNames from "classnames";
 import { RankTooltip } from "./tooltip";
+import { EmptyIcon } from "@/src/assets/empty-icon";
 
 import styles from "./styles.module.css";
 
@@ -107,7 +108,7 @@ export function RepartitionChart({
 
     return (
         <Card className={styles.root}>
-            <Typography uppercase weight="medium" variant="tertiary"size="sm">
+            <Typography uppercase weight="medium" variant="tertiary" size="sm">
                 {messages?.title ? messages.title : t("repartition")}
             </Typography>
             <div className={styles.container}>
@@ -129,7 +130,7 @@ export function RepartitionChart({
                                 cornerRadius={6}
                                 data={chartData}
                                 innerRadius={70}
-                                outerRadius={120}
+                                outerRadius={110}
                                 startAngle={90}
                                 endAngle={450}
                                 minAngle={5}
@@ -150,6 +151,23 @@ export function RepartitionChart({
                             />
                         </PieChart>
                     )}
+                </div>
+            </div>
+        </Card>
+    );
+}
+
+export function EmptyRepartitionChart() {
+    const t = useTranslations("campaignDetails.leaderboard");
+
+    return (
+        <Card className={styles.root}>
+            <div className={styles.container}>
+                <div className={styles.noDistribution}>
+                    <EmptyIcon />
+                    <Typography uppercase weight="medium" size="sm">
+                        {t("noDistribution")}
+                    </Typography>
                 </div>
             </div>
         </Card>

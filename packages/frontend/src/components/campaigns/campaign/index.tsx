@@ -84,6 +84,7 @@ export function CampaignRow({ type, campaign }: CampaignProps) {
                     <CampaignRewardsPopover
                         status={campaign.status}
                         chainId={campaign.chainId}
+                        logoSize="xs"
                         distributables={campaign.distributables}
                     />
                 )}
