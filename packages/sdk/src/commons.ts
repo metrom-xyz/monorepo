@@ -23,7 +23,7 @@ export enum SupportedDex {
     Morphex = "morphex",
     Izumi = "izumi",
     Hydrex = "hydrex",
-    Balancer = "balancer",
+    BalancerV3 = "balancer-v3",
 }
 
 export enum SupportedLiquityV2 {
