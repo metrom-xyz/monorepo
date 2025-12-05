@@ -1,6 +1,7 @@
 export { aptosDevelopmentData, aptosProductionData } from "./aptos";
 export { arbitrumData } from "./arbitrum";
 export { modeData } from "./mode";
+export { plasmaData } from "./plasma";
 export { mantleData } from "./mantle";
 export { sonicData } from "./sonic";
 export { swellDevelopmentData, swellProductionData } from "./swell";

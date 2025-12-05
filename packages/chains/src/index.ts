@@ -16,6 +16,7 @@ import {
     hemi,
     mainnet,
     arbitrum,
+    plasma,
 } from "viem/chains";
 import {
     sonicData,
@@ -36,6 +37,7 @@ import {
     hemiData,
     mainnetData,
     arbitrumData,
+    plasmaData,
 } from "./chains";
 import {
     ChainData,
@@ -89,6 +91,7 @@ export const EVM_CHAIN_DATA: {
         [SupportedProductionEvmChain.Mainnet]: mainnetData,
         [SupportedProductionEvmChain.Sei]: seiProductionData,
         [SupportedProductionEvmChain.Hemi]: hemiData,
+        [SupportedProductionEvmChain.Plasma]: plasmaData,
     },
 };
 
@@ -131,6 +134,7 @@ export const SUPPORTED_PRODUCTION_CHAINS: [Chain, ...Chain[]] = [
     swellchain,
     hemi,
     sei,
+    plasma,
 ].sort((a, b) => {
     // keep the active chains first, this way the default selected
     // chain will always be an active one

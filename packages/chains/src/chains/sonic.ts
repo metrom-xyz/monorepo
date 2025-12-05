@@ -6,7 +6,6 @@ import {
 } from "@metrom-xyz/sdk";
 import { SonicLogo } from "../assets/logos/chains/sonic";
 import { UniswapLogo } from "../assets/logos/dexes/uniswap";
-import { SilverSwapLogo } from "../assets/logos/dexes/silverswap";
 import { sonic } from "viem/chains";
 import type { ChainData } from "../types/chains";
 import { DepositUrlType, ProtocolType } from "../types/protocol";
@@ -44,18 +43,6 @@ export const sonicData: ChainData = {
             depositUrl: {
                 type: DepositUrlType.PathPoolAddress,
                 template: "https://oku.trade/app/sonic/liquidity/{pool}",
-            },
-            supportsFetchAllPools: true,
-        },
-        {
-            active: false,
-            type: ProtocolType.Dex,
-            slug: SupportedDex.SilverSwap,
-            logo: SilverSwapLogo,
-            name: "SilverSwap",
-            depositUrl: {
-                type: DepositUrlType.PathPoolAddress,
-                template: "https://silverswap.io/chain/sonic/liquidity/add-v3",
             },
             supportsFetchAllPools: true,
         },

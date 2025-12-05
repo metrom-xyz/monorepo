@@ -53,4 +53,5 @@ export enum SupportedProductionEvmChain {
     Sei = SupportedChainEvm.Sei,
     Swell = SupportedChainEvm.Swell,
     Hemi = SupportedChainEvm.Hemi,
+    Plasma = SupportedChainEvm.Plasma,
 }

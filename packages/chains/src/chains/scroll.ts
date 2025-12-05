@@ -9,7 +9,7 @@ import { scroll } from "viem/chains";
 import { UniswapLogo } from "../assets/logos/dexes/uniswap";
 import type { ChainData } from "../types/chains";
 import { DepositUrlType, ProtocolType } from "../types/protocol";
-import { ScribeLogo } from "../assets";
+import { AmbientLogo, HoneypopLogo } from "../assets";
 
 export const scrollData: ChainData = {
     active: true,
@@ -31,18 +31,6 @@ export const scrollData: ChainData = {
     ],
     protocols: [
         {
-            active: false,
-            type: ProtocolType.Dex,
-            slug: SupportedDex.Scribe,
-            logo: ScribeLogo,
-            name: "Scribe",
-            depositUrl: {
-                type: DepositUrlType.PathPoolAddress,
-                template: "https://app.scribe.exchange/pools/v4/{pool}",
-            },
-            supportsFetchAllPools: true,
-        },
-        {
             active: true,
             type: ProtocolType.Dex,
             slug: SupportedDex.UniswapV3,
@@ -51,6 +39,31 @@ export const scrollData: ChainData = {
             depositUrl: {
                 type: DepositUrlType.PathPoolAddress,
                 template: "https://oku.trade/app/sonic/liquidity/{pool}",
+            },
+            supportsFetchAllPools: true,
+        },
+        {
+            active: true,
+            type: ProtocolType.Dex,
+            slug: SupportedDex.Ambient,
+            logo: AmbientLogo,
+            name: "Ambient",
+            depositUrl: {
+                type: DepositUrlType.QueryTokenAddresses,
+                template:
+                    "https://ambient.finance/trade/pool/chain=0x82750&tokenA={token_0}&tokenB={token_1}",
+            },
+            supportsFetchAllPools: true,
+        },
+        {
+            active: true,
+            type: ProtocolType.Dex,
+            slug: SupportedDex.Honeypop,
+            logo: HoneypopLogo,
+            name: "Honeypop",
+            depositUrl: {
+                type: DepositUrlType.PathTokenAddresses,
+                template: "https://honeypop.app/add/{pool}",
             },
             supportsFetchAllPools: true,
         },

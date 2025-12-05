@@ -5,13 +5,8 @@ import { writeFileSync } from "node:fs";
 import { join } from "node:path";
 
 const HOMEPAGES: Record<SupportedDex, string> = {
-    [SupportedDex.BaseSwap]: "https://baseswap.fi/",
     [SupportedDex.Fibonacci]: "https://www.fibonacci-dex.xy",
-    [SupportedDex.Kim]: "https://www.kim.exchange",
     [SupportedDex.Panko]: "https://panko.finance/",
-    [SupportedDex.Scribe]: "https://scribe.exchange",
-    [SupportedDex.SilverSwap]: "https://silverswap.io/",
-    [SupportedDex.Swapr]: "https://swapr.eth.link/",
     [SupportedDex.Swapsicle]: "https://www.swapsicle.io/",
     [SupportedDex.TestIntegral]: "placeholder",
     [SupportedDex.ThirdTrade]: "https://third.trade/",
@@ -23,6 +18,10 @@ const HOMEPAGES: Record<SupportedDex, string> = {
     [SupportedDex.Izumi]: "https://izumi.finance/",
     [SupportedDex.Hydrex]: "https://www.hydrex.fi/",
     [SupportedDex.BalancerV3]: "https://balancer.fi/",
+    [SupportedDex.Ambient]: "https://ambient.finance/",
+    [SupportedDex.Honeypop]: "https://honeypop.app/",
+    [SupportedDex.Lithos]: "https://lithos.to/",
+    [SupportedDex.Quickswap]: "https://dapp.quickswap.exchange/",
 };
 
 // TODO: add support for MVM_CHAIN_DATA generation
