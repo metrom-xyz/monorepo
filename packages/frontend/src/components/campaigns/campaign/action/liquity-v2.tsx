@@ -1,45 +1,28 @@
 import { Typography } from "@metrom-xyz/ui";
-import { useTranslations } from "next-intl";
-import { RestrictionType, type LiquityV2TargetType } from "@metrom-xyz/sdk";
+import { type LiquityV2TargetType } from "@metrom-xyz/sdk";
 import { type TargetedNamedCampaign } from "@/src/types/campaign";
 import { RemoteLogo } from "@/src/components/remote-logo";
+import type { ActionSizes } from ".";
 
-import styles from "./styles.module.css";
-
-interface LiquityV2Props<T extends LiquityV2TargetType> {
+interface LiquityV2Props<T extends LiquityV2TargetType> extends ActionSizes {
     campaign: TargetedNamedCampaign<T>;
 }
 
-export function LiquidityV2<T extends LiquityV2TargetType>({
+export function LiquityV2<T extends LiquityV2TargetType>({
+    nameSize,
+    logoSize,
     campaign,
 }: LiquityV2Props<T>) {
-    const t = useTranslations("allCampaigns");
-
     return (
-        <div className={styles.root}>
+        <>
             <RemoteLogo
+                size={logoSize}
                 address={campaign.target.collateral.address}
                 chain={campaign.target.chainId}
             />
-            <div className={styles.titleContainer}>
-                <Typography size="lg" weight="medium" truncate>
-                    {campaign.name}
-                </Typography>
-                {campaign.specification?.kpi && (
-                    <div className={styles.chip}>
-                        <Typography size="sm" weight="medium" uppercase>
-                            {t("kpi")}
-                        </Typography>
-                    </div>
-                )}
-                {campaign.restrictions?.type === RestrictionType.Whitelist && (
-                    <div className={styles.chip}>
-                        <Typography size="xs" weight="medium" uppercase>
-                            {t("restricted")}
-                        </Typography>
-                    </div>
-                )}
-            </div>
-        </div>
+            <Typography size={nameSize} weight="medium" truncate>
+                {campaign.name}
+            </Typography>
+        </>
     );
 }

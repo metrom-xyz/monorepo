@@ -6,8 +6,8 @@ import {
     ErrorText,
     Skeleton,
     Switch,
-    Tab,
-    Tabs,
+    SwitchOption,
+    Toggle,
     Typography,
 } from "@metrom-xyz/ui";
 import { useCallback, useEffect, useMemo, useState } from "react";
@@ -16,7 +16,6 @@ import { useTranslations } from "next-intl";
 import { RangeInputs } from "./range-inputs";
 import { LiquidityDensityChart } from "@/src/components/liquidity-density-chart";
 import { DistributablesType, tickToScaledPrice } from "@metrom-xyz/sdk";
-import classNames from "classnames";
 import { usePrevious } from "react-use";
 import { useLiquidityDensity } from "@/src/hooks/useLiquidityDensity";
 import { formatAmount } from "@/src/utils/format";
@@ -160,12 +159,7 @@ export function RangeStep({
         setError("");
     }, [distributablesType, onRangeChange]);
 
-    function handleSwitchOnClick(
-        _: boolean,
-        event:
-            | React.MouseEvent<HTMLButtonElement>
-            | React.KeyboardEvent<HTMLButtonElement>,
-    ) {
+    function handleToggleOnClick(event: React.MouseEvent<HTMLDivElement>) {
         event.stopPropagation();
         setEnabled((enabled) => !enabled);
     }
@@ -242,11 +236,11 @@ export function RangeStep({
                                 {error ? t(error) : warning ? t(warning) : null}
                             </ErrorText>
                         </div>
-                        <Switch
+                        <Toggle
                             tabIndex={-1}
                             size="lg"
                             checked={enabled}
-                            onClick={handleSwitchOnClick}
+                            onClick={handleToggleOnClick}
                         />
                     </div>
                 }
@@ -259,7 +253,7 @@ export function RangeStep({
                             <Typography
                                 uppercase
                                 weight="medium"
-                                light
+                                variant="tertiary"
                                 size="sm"
                             >
                                 {t("currentPrice")}
@@ -285,7 +279,7 @@ export function RangeStep({
                             <Typography
                                 uppercase
                                 weight="medium"
-                                light
+                                variant="tertiary"
                                 size="sm"
                             >
                                 {t("range.label")}
@@ -308,33 +302,20 @@ export function RangeStep({
             </StepPreview>
             <StepContent>
                 <div className={styles.stepContent}>
-                    <Tabs
-                        size="sm"
-                        value={token0To1}
-                        onChange={handleOnFlipPrice}
-                        className={styles.priceTabs}
-                    >
-                        <Tab
-                            value={token0To1}
-                            className={classNames(styles.priceTab, {
-                                [styles.activePriceTab]: token0To1,
-                            })}
-                        >
-                            <Typography weight="medium" size="sm">
-                                {pool?.tokens[0].symbol}
-                            </Typography>
-                        </Tab>
-                        <Tab
-                            value={!token0To1}
-                            className={classNames(styles.priceTab, {
-                                [styles.activePriceTab]: !token0To1,
-                            })}
-                        >
-                            <Typography weight="medium" size="sm">
-                                {pool?.tokens[1].symbol}
-                            </Typography>
-                        </Tab>
-                    </Tabs>
+                    <div className={styles.flipPriceWrapper}>
+                        <Switch value={token0To1} onChange={handleOnFlipPrice}>
+                            <SwitchOption value={true}>
+                                <Typography size="sm" weight="medium">
+                                    {pool?.tokens[0].symbol}
+                                </Typography>
+                            </SwitchOption>
+                            <SwitchOption value={false}>
+                                <Typography size="sm" weight="medium">
+                                    {pool?.tokens[1].symbol}
+                                </Typography>
+                            </SwitchOption>
+                        </Switch>
+                    </div>
                     <RangeInputs
                         pool={pool}
                         error={!!error}
@@ -345,13 +326,12 @@ export function RangeStep({
                         onFromChange={setFrom}
                         onToChange={setTo}
                     />
-                    <div className={styles.chartWrapper}>
+                    <div>
                         <Typography
                             weight="medium"
-                            light
+                            variant="tertiary"
                             uppercase
                             size="xs"
-                            className={styles.chartTitleText}
                         >
                             {t("chart")}
                         </Typography>

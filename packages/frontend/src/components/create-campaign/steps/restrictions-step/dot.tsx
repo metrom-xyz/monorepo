@@ -8,10 +8,8 @@ interface DotProps {
 
 export function Dot({ color }: DotProps) {
     return (
-        <div className={styles.dotWrapper}>
-            <div
-                className={classNames(styles.dot, { [styles[color]]: true })}
-            ></div>
-        </div>
+        <div
+            className={classNames(styles.dot, { [styles[color]]: true })}
+        ></div>
     );
 }

@@ -25,7 +25,7 @@ export function PoolStepPreview({ chainId, tokens, fee, usdTvl }: AmmPool) {
                         {tokens.map((token) => token.symbol).join(" / ")}
                     </Typography>
                     {fee && (
-                        <Typography size="sm" light weight="medium">
+                        <Typography size="sm" variant="tertiary"weight="medium">
                             {formatPercentage({
                                 percentage: fee,
                                 keepDust: true,
@@ -34,7 +34,7 @@ export function PoolStepPreview({ chainId, tokens, fee, usdTvl }: AmmPool) {
                     )}
                 </div>
             </div>
-            <Typography weight="medium" size="sm" light>
+            <Typography weight="medium" size="sm" variant="tertiary">
                 {formatUsdAmount({ amount: usdTvl })}
             </Typography>
         </div>

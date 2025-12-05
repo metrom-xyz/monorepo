@@ -6,12 +6,14 @@ import { Typography } from "../typography";
 
 import styles from "./styles.module.css";
 
+type ToasterVariant = "success" | "warning" | "fail";
+
 export interface ToastNotificationProps {
     toastId: string | number;
     title: string;
     icon?: FunctionComponent<SVGProps<SVGSVGElement>>;
     children?: ReactNode;
-    variant?: "success" | "fail";
+    variant?: ToasterVariant;
     noDismiss?: boolean;
     className?: string;
 }
@@ -26,9 +28,7 @@ export function Toaster(props: ToasterProps) {
             {...props}
             toastOptions={{
                 unstyled: true,
-                classNames: {
-                    toast: styles.toast,
-                },
+                classNames: { toast: styles.toast },
             }}
         />
     );
@@ -50,28 +50,31 @@ export function ToastNotification({
     const hasIcon = !!Icon;
 
     return (
-        <div className={classNames("root", styles.root, className)}>
+        <div
+            className={classNames("root", styles.root, className, {
+                [styles[variant]]: true,
+            })}
+        >
             <div className={classNames("wrapper", styles.wrapper)}>
-                <div
-                    className={classNames("iconWrapper", styles.iconWrapper, {
-                        [styles.error]: variant === "fail",
-                    })}
-                >
-                    {hasIcon && (
-                        <Icon
-                            className={classNames("icon", styles.icon, {
-                                [styles.error]: variant === "fail",
-                            })}
-                        />
-                    )}
-                </div>
+                {hasIcon && (
+                    <Icon
+                        className={classNames("icon", styles.icon, {
+                            [styles[variant]]: true,
+                        })}
+                    />
+                )}
                 <div
                     className={classNames(
                         "contentWrapper",
                         styles.contentWrapper,
                     )}
                 >
-                    <Typography uppercase light weight="medium" size="sm">
+                    <Typography
+                        uppercase
+                        variant="tertiary"
+                        weight="medium"
+                        size="sm"
+                    >
                         {title}
                     </Typography>
                     {children}

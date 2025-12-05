@@ -1,5 +1,5 @@
 import { useCallback, useMemo, useState } from "react";
-import { Typography, ErrorText, Tabs, Tab } from "@metrom-xyz/ui";
+import { Typography, ErrorText, SwitchOption, Switch } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
 import { Step } from "@/src/components/step";
 import { StepPreview } from "@/src/components/step/preview";
@@ -50,7 +50,7 @@ export function RewardsStep({
         [onError],
     );
 
-    const handleOnRewardTypeSwitch = useCallback(
+    const handleRewardTypeOnChange = useCallback(
         (type: DistributablesType) => {
             onDistributablesChange({
                 distributables: {
@@ -91,36 +91,23 @@ export function RewardsStep({
                             </ErrorText>
                         </div>
                         <div className={styles.topRightContent}>
-                            <Tabs
-                                size="sm"
+                            <Switch
                                 value={distributables?.type}
-                                onChange={handleOnRewardTypeSwitch}
+                                onChange={handleRewardTypeOnChange}
                             >
-                                <Tab
-                                    value={DistributablesType.Tokens}
-                                    className={classNames(styles.tab, {
-                                        [styles.activeTab]:
-                                            distributables?.type ===
-                                            DistributablesType.Tokens,
-                                    })}
-                                >
-                                    <Typography weight="medium" size="sm">
+                                <SwitchOption value={DistributablesType.Tokens}>
+                                    <Typography size="sm" weight="medium">
                                         {t("tabs.tokens")}
                                     </Typography>
-                                </Tab>
-                                <Tab
+                                </SwitchOption>
+                                <SwitchOption
                                     value={DistributablesType.FixedPoints}
-                                    className={classNames(styles.tab, {
-                                        [styles.activeTab]:
-                                            distributables?.type ===
-                                            DistributablesType.FixedPoints,
-                                    })}
                                 >
-                                    <Typography weight="medium" size="sm">
+                                    <Typography size="sm" weight="medium">
                                         {t("tabs.points")}
                                     </Typography>
-                                </Tab>
-                            </Tabs>
+                                </SwitchOption>
+                            </Switch>
                         </div>
                     </div>
                 }

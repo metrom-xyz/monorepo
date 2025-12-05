@@ -1,0 +1,41 @@
+@reference "../../../../../app.css";
+
+.root {
+    @apply w-full flex flex-col;
+}
+
+.root:last-child .timeline {
+    @apply hidden;
+}
+
+.root:last-child .activities {
+    @apply pl-6;
+}
+
+.header {
+    @apply flex items-center gap-3;
+}
+
+.timelineDot {
+    @apply size-6 flex items-center justify-center rounded-full bg-brand-green-dark/[12%] dark:bg-brand-green/[12%];
+}
+
+.timelineDotIcon {
+    @apply size-4 text-brand-green-dark dark:text-brand-green;
+}
+
+.content {
+    @apply flex gap-[1.438rem] pl-[0.688rem] py-1;
+}
+
+.timeline {
+    @apply h-full w-0.5 bg-brand-green-dark/[12%] dark:bg-brand-green/[12%];
+}
+
+.activities {
+    @apply w-full flex flex-col gap-3 pb-8 pt-2;
+}
+
+.loading {
+    @apply animate-pulse bg-gray-200 dark:bg-neutral-800;
+}

@@ -1,0 +1,29 @@
+@reference "../../../app.css";
+
+.root {
+    @apply w-full flex flex-col gap-4;
+}
+
+.articlesWrapper {
+    @apply w-full flex flex-wrap md:flex-nowrap gap-4;
+}
+
+.link {
+    @apply flex w-full gap-3 md:max-w-1/2 surface-primary p-5 rounded-xl;
+}
+
+.iconWrapper {
+    @apply size-8 flex items-center justify-center rounded p-2 bg-gray-200 dark:bg-neutral-100;
+}
+
+.articleIcon {
+    @apply size-4 text-gray-900 dark:text-neutral-800;
+}
+
+.rightContent {
+    @apply w-full flex justify-between items-center;
+}
+
+.externalLinkIcon {
+    @apply h-6 w-6 transform -rotate-45 text-primary;
+}

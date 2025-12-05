@@ -29,7 +29,7 @@ export function PriceRange({ campaign }: PriceRangeProps) {
             enabled:
                 campaign &&
                 !!campaign.specification?.priceRange &&
-                campaign.status !== Status.Ended,
+                campaign.status !== Status.Expired,
         });
 
     if (
@@ -53,7 +53,7 @@ export function PriceRange({ campaign }: PriceRangeProps) {
                 <div
                     className={classNames(styles.leftContent, {
                         [styles.leftContentEnded]:
-                            campaign.status === Status.Ended,
+                            campaign.status === Status.Expired,
                     })}
                 >
                     <TextField
@@ -83,9 +83,9 @@ export function PriceRange({ campaign }: PriceRangeProps) {
                         })}
                     />
                 </div>
-                {campaign.status !== Status.Ended && (
+                {campaign.status !== Status.Expired && (
                     <Card className={styles.card}>
-                        <Typography size="sm" uppercase light weight="medium">
+                        <Typography size="sm" uppercase variant="tertiary"weight="medium">
                             {t("chart")}
                         </Typography>
                         <div className={classNames(styles.chartWrapper)}>

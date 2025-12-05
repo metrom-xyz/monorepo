@@ -94,7 +94,7 @@ export function ConnectButton() {
                                     initial={{ opacity: 0 }}
                                     animate={{ opacity: 1 }}
                                     exit={{ opacity: 0 }}
-                                    className={classNames(styles.overlay)}
+                                    className={styles.overlay}
                                 />
                             )}
                         </AnimatePresence>

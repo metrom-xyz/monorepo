@@ -37,7 +37,7 @@ export function AssetChip({
                     </Typography>
                     <Typography
                         weight="medium"
-                        light
+                        variant="tertiary"
                         truncate
                         className={styles.assetName}
                     >

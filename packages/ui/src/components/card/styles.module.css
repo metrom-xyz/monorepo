@@ -3,6 +3,6 @@
 .root {
     @apply w-full
         p-4
-        theme-surface
+        surface-primary
         rounded-2xl;
 }

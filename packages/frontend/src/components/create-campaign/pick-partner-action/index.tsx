@@ -44,11 +44,15 @@ export function PickPartnerAction({ forms, onBack }: PickPartnerActionProps) {
                 <div onClick={onBack} className={styles.back}>
                     <ChevronLeftIcon />
                 </div>
-                <Typography weight="medium" size="lg" uppercase>
+                <Typography weight="semibold" size="xl2">
                     {t("title")}
                 </Typography>
             </div>
-            <Typography weight="medium" light className={styles.description}>
+            <Typography
+                size="lg"
+                variant="tertiary"
+                className={styles.description}
+            >
                 {t("description")}
             </Typography>
             <div className={styles.actions}>
@@ -73,7 +77,10 @@ export function PickPartnerAction({ forms, onBack }: PickPartnerActionProps) {
                                         >
                                             {t(title)}
                                         </Typography>
-                                        <Typography weight="medium" light>
+                                        <Typography
+                                            weight="medium"
+                                            variant="tertiary"
+                                        >
                                             {t(description)}
                                         </Typography>
                                     </div>

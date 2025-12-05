@@ -201,7 +201,7 @@ export function EndDateStep({
                         {DURATION_PRESETS.map((preset, index) => (
                             <Chip
                                 key={index}
-                                clickable
+                                variant="secondary"
                                 onClick={getDurationPresetHandler(preset)}
                                 active={preset.label === durationPreset?.label}
                             >
@@ -217,7 +217,12 @@ export function EndDateStep({
                         onChange={setDate}
                     />
                     <div className={styles.campaignDuration}>
-                        <Typography uppercase size="sm" weight="medium" light>
+                        <Typography
+                            uppercase
+                            size="sm"
+                            weight="medium"
+                            variant="tertiary"
+                        >
                             {t("campaignDuration")}
                         </Typography>
                         <Typography uppercase size="sm" weight="medium">

@@ -3,7 +3,12 @@ import type { BackendErc20Token } from "./commons";
 import type { Specification } from "src/types/campaigns";
 import type { ChainType, Erc20Token } from "src/types/commons";
 import type { BackendCampaignAmmPool } from "./pools";
-import type { SupportedAaveV3, SupportedLiquityV2 } from "src/commons";
+import type {
+    SupportedAaveV3,
+    SupportedGmxV1,
+    SupportedLiquityV2,
+    SupportedPointsBooster,
+} from "src/commons";
 
 export interface BaseTarget {
     chainType: ChainType;
@@ -35,7 +40,7 @@ export interface BaseBackendLiquityTarget<T> extends BaseTarget {
 
 export interface BackendGmxV1Target extends BaseTarget {
     type: "gmx-v1-liquidity";
-    brand: string;
+    brand: SupportedGmxV1;
 }
 
 export interface BackendAaveV3Target<T> extends BaseTarget {
@@ -72,6 +77,33 @@ export type BackendAaveV3BridgeAndSupplyTarget = BaseTarget & {
     boostingFactor: string;
 };
 
+export interface BackendTurtleIncentive {
+    id: string;
+    name: string;
+    iconUrl: string;
+    apr: number | null;
+}
+
+export type BackendTurtleCampaignTarget = BaseTarget & {
+    type: "turtle";
+    productId: string;
+    opportunityId: string;
+    name: string;
+    description: string;
+    iconUrl: string;
+    incentives: BackendTurtleIncentive[];
+    performanceFee: number | null;
+    managementFee: number | null;
+    depositFee: number | null;
+    withdrawalFee: number | null;
+};
+
+export type BackendAmmPoolNetSwapVolumeTarget = BaseTarget & {
+    type: "amm-pool-net-swap-volume";
+    ammPool: BackendCampaignAmmPool;
+    targetToken: Erc20Token;
+};
+
 export interface BackendTokenDistributable {
     token: Address;
     amount: string;
@@ -83,9 +115,16 @@ export interface BackendFixedPoints {
     amount: string;
 }
 
+export interface BackendPointsBoosting {
+    type: SupportedPointsBooster;
+    endpoint: string;
+    multiplier: number;
+}
+
 export interface BackendDynamicPoints {
     dailyPer1k?: number;
     distributionIntervalSeconds?: number;
+    boosting?: BackendPointsBoosting;
 }
 
 export interface BackendAsset extends BackendErc20Token {
@@ -142,7 +181,9 @@ export interface BackendBaseCampaign {
         | BackendAaveV3NetSupplyTarget
         | BackendHoldFungibleAssetTarget
         | BackendAaveV3BridgeAndSupplyTarget
-        | BackendJumperWhitelistedAmmPoolLiquidityTarget;
+        | BackendJumperWhitelistedAmmPoolLiquidityTarget
+        | BackendTurtleCampaignTarget
+        | BackendAmmPoolNetSwapVolumeTarget;
     specification?: Specification;
     usdTvl?: number;
     apr?: number;

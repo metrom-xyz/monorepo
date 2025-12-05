@@ -18,6 +18,7 @@ const HOMEPAGES: Record<SupportedDex, string> = {
     [SupportedDex.Izumi]: "https://izumi.finance/",
     [SupportedDex.Hydrex]: "https://www.hydrex.fi/",
     [SupportedDex.BalancerV3]: "https://balancer.fi/",
+    [SupportedDex.Curve]: "https://www.curve.finance/",
     [SupportedDex.Ambient]: "https://ambient.finance/",
     [SupportedDex.Honeypop]: "https://honeypop.app/",
     [SupportedDex.Lithos]: "https://lithos.to/",

@@ -1,0 +1,41 @@
+@reference "../../../../app.css";
+
+.root {
+    @apply flex sm:hidden justify-end items-center;
+}
+
+.totalCampaigns {
+    @apply min-w-32 text-right;
+}
+
+.resizeDrawer {
+    @apply h-[95%];
+}
+
+.drawerContent {
+    @apply w-full flex flex-1 flex-col gap-5;
+}
+
+.header {
+    @apply flex justify-between items-center;
+}
+
+.statusesFilter {
+    @apply flex flex-col gap-3 pt-2 pb-5 border-b stroke-divider;
+}
+
+.chainsFilter {
+    @apply flex-1!;
+}
+
+.dividier {
+    @apply border-t w-full stroke-divider;
+}
+
+.statusChipsFilter {
+    @apply flex gap-2;
+}
+
+.saveFiltersButton {
+    @apply w-full;
+}

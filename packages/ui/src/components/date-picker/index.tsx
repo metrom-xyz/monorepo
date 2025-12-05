@@ -50,10 +50,28 @@ export const DatePicker = ({
 
     const handlePreviousMonth = useCallback(() => {
         setLookupDate(lookupDate.subtract(1, "month"));
+
+        const html = document.documentElement;
+        html.classList.add("no-transition");
+
+        requestAnimationFrame(() => {
+            setTimeout(() => {
+                html.classList.remove("no-transition");
+            }, 1);
+        });
     }, [lookupDate]);
 
     const handleNextMonth = useCallback(() => {
         setLookupDate(lookupDate.add(1, "month"));
+
+        const html = document.documentElement;
+        html.classList.add("no-transition");
+
+        requestAnimationFrame(() => {
+            setTimeout(() => {
+                html.classList.remove("no-transition");
+            }, 1);
+        });
     }, [lookupDate]);
 
     const handleCellClick = useCallback(
@@ -69,17 +87,16 @@ export const DatePicker = ({
     );
 
     return (
-        <div className={classNames(styles.root)}>
-            <div className={classNames(styles.header)}>
+        <div className={styles.root}>
+            <div className={styles.header}>
                 <div
                     onClick={handlePreviousMonth}
                     className={styles.headerIconWrapper}
                 >
-                    <ChevronLeft />
+                    <ChevronLeft className={styles.chevron} />
                 </div>
                 <Typography
                     uppercase
-                    size="lg"
                     weight="medium"
                     className={styles.headerMonth}
                 >
@@ -89,7 +106,7 @@ export const DatePicker = ({
                     onClick={handleNextMonth}
                     className={styles.headerIconWrapper}
                 >
-                    <ChevronRight />
+                    <ChevronRight className={styles.chevron} />
                 </div>
             </div>
             <div className={styles.weeksHeader}>
@@ -100,8 +117,8 @@ export const DatePicker = ({
                             key={dayOfWeek}
                             size="sm"
                             uppercase
-                            className={styles.weekDay}
                             weight="medium"
+                            className={styles.weekDay}
                         >
                             {cell.value.format("dd")}
                         </Typography>
@@ -118,53 +135,53 @@ export const DatePicker = ({
                         !disabled &&
                         dayjs(value).month() === cell.value.month() &&
                         dayjs(value).date() === cell.value.date();
+
+                    const rangeBoundStart =
+                        range?.from && isOnlyDateSame(cell.value, range.from);
+                    const rangeBoundEnd =
+                        range?.to && isOnlyDateSame(cell.value, range.to);
+                    const rangeBound = rangeBoundStart || rangeBoundEnd;
+
                     return (
-                        <Typography
-                            onClick={disabled ? undefined : handleCellClick}
-                            key={index}
-                            data-index={index}
-                            light={isDateInRange(
-                                dayjs(cell.value),
-                                range?.from,
-                                range?.to,
-                            )}
-                            className={classNames(
-                                className?.cell,
-                                styles.cell,
-                                {
-                                    [styles.cellToday]: dayjs().isSame(
-                                        cell.value,
-                                        "days",
-                                    ),
-                                    [styles.cellDisabled]: disabled,
-                                    [styles.cellSelectable]: !disabled,
-                                    [styles.cellSelected]: selected,
-                                    [styles.cellInRange]: isDateInRange(
-                                        dayjs(cell.value),
-                                        range?.from,
-                                        range?.to,
-                                    ),
-                                    [styles.cellRangeBoundStart]:
-                                        range?.from && range.to
-                                            ? isOnlyDateSame(
-                                                  cell.value,
-                                                  range.from,
-                                              )
-                                            : false,
-                                    [styles.cellRangeBoundEnd]:
-                                        range?.from && range.to
-                                            ? isOnlyDateSame(
-                                                  cell.value,
-                                                  range.to,
-                                              )
-                                            : false,
-                                    [styles.startOfWeek]: index % 7 === 0,
-                                    [styles.endOfWeek]: (index + 1) % 7 === 0,
-                                },
-                            )}
+                        <div
+                            className={classNames(styles.cellWrapper, {
+                                [styles.cellWrapperRangeBound]: rangeBound,
+                                [styles.cellWrapperRangeBoundStart]: rangeBoundStart,
+                                [styles.cellWrapperRangeBoundEnd]: rangeBoundEnd,
+                            })}
                         >
-                            {cell.text}
-                        </Typography>
+                            <Typography
+                                key={index}
+                                data-index={index}
+                                onClick={disabled ? undefined : handleCellClick}
+                                size="sm"
+                                weight="medium"
+                                className={classNames(
+                                    className?.cell,
+                                    styles.cell,
+                                    {
+                                        [styles.cellToday]: dayjs().isSame(
+                                            cell.value,
+                                            "days",
+                                        ),
+                                        [styles.cellDisabled]: disabled,
+                                        [styles.cellSelectable]: !disabled,
+                                        [styles.cellSelected]: selected,
+                                        [styles.cellInRange]: isDateInRange(
+                                            dayjs(cell.value),
+                                            range?.from,
+                                            range?.to,
+                                        ),
+                                        [styles.cellRangeBound]: rangeBound,
+                                        [styles.startOfWeek]: index % 7 === 0,
+                                        [styles.endOfWeek]:
+                                            (index + 1) % 7 === 0,
+                                    },
+                                )}
+                            >
+                                {cell.text}
+                            </Typography>
+                        </div>
                     );
                 })}
             </div>

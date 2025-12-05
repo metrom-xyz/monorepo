@@ -8,13 +8,14 @@
 }
 
 .reward {
-    @apply border
-        border-transparent
+    @apply h-[4.375rem]
         transition-colors
+        rounded-lg
         duration-200
         ease-in-out
-        theme-surface-2
-        rounded-lg;
+        surface-secondary
+        bg-gray-150
+        dark:bg-neutral-800;
 }
 
 .rewardPreviewWrapper {
@@ -43,6 +44,7 @@
 .rewardTokenAmountInput :global(.inputWrapper) {
     @apply w-full
         max-w-44
+        border-none
         bg-transparent
         h-6
         leading-6
@@ -65,15 +67,12 @@
 }
 
 .rewardSkeleton {
-    @apply h-[70px]
+    @apply h-[4.375rem]
         w-full 
-        theme-surface-2
-        rounded-lg
         flex
         items-center
-        justify-center;
-}
-
-.rewardSkeletonText {
-    @apply text-zinc-400;
+        justify-center
+        rounded-lg
+        bg-gray-150
+        dark:bg-neutral-800;
 }

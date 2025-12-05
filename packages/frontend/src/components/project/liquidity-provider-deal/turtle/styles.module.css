@@ -1,0 +1,21 @@
+@reference "../../../../app.css";
+
+.root {
+    @apply flex flex-col gap-8;
+}
+
+.details {
+    @apply flex flex-col sm:flex-row gap-4;
+}
+
+.earn {
+    @apply w-[28.125rem] h-[37.5rem] [&div]:text-neutral-100 [&div]:dark:text-primary;
+}
+
+.earn.loading {
+    @apply bg-gray-200 dark:bg-neutral-800 animate-pulse rounded-2xl;
+}
+
+.widgetWrapper {
+    @apply w-full flex flex-col gap-4;
+}

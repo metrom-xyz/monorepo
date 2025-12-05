@@ -25,14 +25,6 @@
     @apply flex gap-2 items-center select-none;
 }
 
-.baseTokenChip > p {
-    @apply mr-1;
-}
-
-.baseTokenChipNotActive {
-    @apply bg-zinc-50 dark:bg-zinc-900;
-}
-
 .listWrapper {
     @apply w-full overflow-hidden;
 }

@@ -11,11 +11,11 @@ import { RestrictionType } from "@metrom-xyz/sdk";
 import {
     Button,
     ErrorText,
-    Switch,
-    Tabs,
-    Tab,
+    Toggle,
     TextInput,
     Typography,
+    Switch,
+    SwitchOption,
 } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
 import {
@@ -131,12 +131,7 @@ export function RestrictionsStep({
         setOpen(enabled);
     }, [enabled]);
 
-    function handleSwitchOnClick(
-        _: boolean,
-        event:
-            | React.MouseEvent<HTMLButtonElement>
-            | React.KeyboardEvent<HTMLButtonElement>,
-    ) {
+    function handleToggleOnClick(event: React.MouseEvent<HTMLDivElement>) {
         event.stopPropagation();
         setEnabled((enabled) => !enabled);
     }
@@ -144,6 +139,10 @@ export function RestrictionsStep({
     function handleStepOnClick() {
         if (!enabled) return;
         setOpen((open) => !open);
+    }
+
+    function onTypeChange(type: RestrictionType) {
+        setType(type);
     }
 
     function handleAddressOnChange(event: ChangeEvent<HTMLInputElement>) {
@@ -203,11 +202,11 @@ export function RestrictionsStep({
                                 {error ? t(error) : warning ? t(warning) : null}
                             </ErrorText>
                         </div>
-                        <Switch
+                        <Toggle
                             tabIndex={-1}
                             size="lg"
                             checked={enabled}
-                            onClick={handleSwitchOnClick}
+                            onClick={handleToggleOnClick}
                         />
                     </div>
                 }
@@ -231,24 +230,26 @@ export function RestrictionsStep({
                         linkText={t("readMore")}
                     />
                     <div className={styles.inputsWrapper}>
-                        <Tabs value={type} onChange={setType}>
-                            <Tab value={RestrictionType.Blacklist}>
-                                <div className={styles.tab}>
-                                    <Dot color="red" />
-                                    <Typography weight="medium">
-                                        {t("blacklist")}
-                                    </Typography>
-                                </div>
-                            </Tab>
-                            <Tab value={RestrictionType.Whitelist}>
-                                <div className={styles.tab}>
-                                    <Dot color="green" />
-                                    <Typography weight="medium">
-                                        {t("whitelist")}
-                                    </Typography>
-                                </div>
-                            </Tab>
-                        </Tabs>
+                        <Switch value={type} onChange={onTypeChange}>
+                            <SwitchOption
+                                value={RestrictionType.Blacklist}
+                                className={styles.switchOption}
+                            >
+                                <Dot color="red" />
+                                <Typography size="sm" weight="medium">
+                                    {t("blacklist")}
+                                </Typography>
+                            </SwitchOption>
+                            <SwitchOption
+                                value={RestrictionType.Whitelist}
+                                className={styles.switchOption}
+                            >
+                                <Dot color="green" />
+                                <Typography size="sm" weight="medium">
+                                    {t("whitelist")}
+                                </Typography>
+                            </SwitchOption>
+                        </Switch>
                         <div className={styles.textInputWrapper}>
                             <CsvAddressesImport
                                 onImport={setAddresses}
@@ -278,7 +279,12 @@ export function RestrictionsStep({
                     </div>
                     <div className={styles.divider}></div>
                     <div className={styles.listWrapper}>
-                        <Typography weight="medium" light size="xs" uppercase>
+                        <Typography
+                            weight="medium"
+                            variant="tertiary"
+                            size="xs"
+                            uppercase
+                        >
                             {t("list")}
                         </Typography>
                         {addresses.length > 0 && (

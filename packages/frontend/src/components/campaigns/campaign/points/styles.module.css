@@ -1,21 +1,13 @@
 @reference "../../../../app.css";
 
 .root {
-    @apply flex items-center justify-between col-span-1;
+    @apply flex items-center col-span-1 gap-2;
 }
 
 .breakdownContainer {
-    @apply flex flex-col gap-3 p-3;
-}
-
-.iconWrapper {
-    @apply flex flex-1 items-center justify-end mr-1;
-}
-
-.icon {
-    @apply w-7 h-8;
+    @apply flex flex-col gap-3;
 }
 
 .textPoints {
-    @apply text-base min-w-[50px] text-right;
+    @apply text-base min-w-[50px];
 }

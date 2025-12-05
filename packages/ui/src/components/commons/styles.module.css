@@ -4,6 +4,10 @@
     @apply w-full relative;
 }
 
+.inputWrapper:focus-within > .inputIconWrapper > svg {
+    @apply text-primary;
+}
+
 .inputIconWrapper {
     @apply absolute
         top-0
@@ -40,27 +44,45 @@
 }
 
 .hasLeftIcon input {
-    @apply pl-9;
+    @apply pl-5;
 }
 
 .hasRightIcon input {
-    @apply pr-9;
+    @apply pr-9!;
 }
 
 .input {
-    @apply rounded-md
-        px-2
-        py-3
+    @apply w-full
+        rounded-lg
         font-sans
         font-normal
         outline-none
-        border
+        border-2
         border-transparent
-        placeholder:text-zinc-400
+        focus:border-gray-300
+        dark:focus:border-neutral-600
+        /* FIXME: this doesn't work on Firefox, find a way to fix this and enable it back */
+        focus:placeholder:text-light-text-primary
+        dark:focus:placeholder:text-dark-text-primary
         placeholder:select-none
-        theme-surface-2
-        theme-text
-        w-full;
+        surface-secondary
+        text-primary
+        transition-colors
+        duration-200
+        ease-in-out;
+}
+
+.input.xs {
+    @apply px-2 py-1.5;
+}
+
+.input.sm,
+.input.base {
+    @apply px-3 py-1.5;
+}
+
+.input.lg {
+    @apply px-3 py-2;
 }
 
 .xs {
@@ -80,28 +102,28 @@
 }
 
 .inputIcon {
-    @apply theme-text;
+    @apply text-tertiary stroke-2;
 }
 
 .inputIcon.xs {
-    @apply h-3 w-3;
+    @apply size-3;
 }
 
 .inputIcon.sm {
-    @apply h-4 w-4;
+    @apply size-4;
 }
 
 .inputIcon.base {
-    @apply h-[1.125rem] w-[1.125rem];
+    @apply size-[1.125rem];
 }
 
 .inputIcon.lg {
-    @apply h-5 w-5;
+    @apply size-5;
 }
 
 .inputError,
 .inputError > input {
-    @apply border-red-600;
+    @apply border-error;
 }
 
 .errorText {
@@ -118,4 +140,8 @@
         gap-1.5
         w-fit
         mb-1.5;
+}
+
+.label.hide {
+    @apply hidden;
 }

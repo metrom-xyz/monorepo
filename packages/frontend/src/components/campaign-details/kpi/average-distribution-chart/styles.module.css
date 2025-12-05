@@ -7,18 +7,8 @@
         sm:max-w-80;
 }
 
-.popover {
-    @apply rounded-lg
-        bg-white dark:bg-zinc-900
-        border-zinc-200 dark:border-zinc-600;
-}
-
 .popoverContent {
-    @apply flex
-        flex-col
-        gap-2
-        p-2
-        rounded-lg;
+    @apply flex flex-col gap-2;
 }
 
 .header {
@@ -34,11 +24,11 @@
 }
 
 .legendDot.reimbursed {
-    @apply bg-[#D1D5DB];
+    @apply bg-gray-200 dark:bg-neutral-800;
 }
 
 .legendDot.distributed {
-    @apply bg-brand-green;
+    @apply bg-brand-green-dark dark:bg-brand-green;
 }
 
 .tokenRow {
@@ -70,7 +60,7 @@
         w-[280px]
         h-[280px]
         rounded-full
-        theme-bg
+        background-main
         transition-colors
         duration-200
         ease-in-out;
@@ -81,30 +71,30 @@
 }
 
 .loading {
-    @apply animate-pulse theme-bg;
+    @apply animate-pulse background-main;
 }
 
 .cell {
     @apply rounded-3xl cursor-pointer
         outline-none
         hover:opacity-85
-        stroke-gray-100
-        dark:stroke-zinc-950
+        stroke-gray-200
+        dark:stroke-neutral-950
         transition-all
         duration-200
         ease-in-out;
 }
 
 .cell.distributed {
-    @apply fill-brand-green dark:fill-brand-green-dark;
+    @apply fill-brand-green-dark dark:fill-brand-green;
 }
 
 .cell.reimbursed {
-    @apply fill-[#d1d5db] dark:fill-zinc-700;
+    @apply chart-area-secondary;
 }
 
 .chartWrapperLoading {
-    @apply animate-pulse theme-bg;
+    @apply animate-pulse background-main;
 }
 
 .chartContainer {

@@ -1,6 +1,7 @@
 import { Address, Bytes } from "@graphprotocol/graph-ts";
 import { Transfer } from "../../generated/templates/Vault/Vault";
 import {
+    Gauge,
     LiquidityChange,
     LiquidityTransfer,
     Position,
@@ -79,6 +80,12 @@ export function handleTransfer(event: Transfer): void {
         change.save();
     } else {
         // transfer
+        if (
+            Gauge.load(event.params.from) !== null ||
+            Gauge.load(event.params.to) !== null
+        )
+            return;
+
         const fromPosition = getPositionOrThrow(
             event.address,
             event.params.from,

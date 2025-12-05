@@ -91,6 +91,7 @@ export function NetworkSelect() {
                     open={pickerOpen}
                     value={selectedChainId}
                     onChange={handleNetworkOnChange}
+                    onOpen={setPickerOpen}
                 />
                 <DrawerPicker
                     chains={activeChains}

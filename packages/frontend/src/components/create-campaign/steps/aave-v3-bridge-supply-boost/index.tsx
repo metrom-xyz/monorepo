@@ -8,7 +8,7 @@ import {
 import {
     Typography,
     ErrorText,
-    Switch,
+    Toggle,
     Button,
     SliderInput,
 } from "@metrom-xyz/ui";
@@ -93,12 +93,7 @@ export function AaveV3BridgeAndSupplyBoostStep({
         setBoost(DEFAULT_BOOST);
     }, [enabled, boostingFactor, onBoostingFactorChange]);
 
-    function handleSwitchOnClick(
-        _: boolean,
-        event:
-            | React.MouseEvent<HTMLButtonElement>
-            | React.KeyboardEvent<HTMLButtonElement>,
-    ) {
+    function handleToggleOnClick(event: React.MouseEvent<HTMLDivElement>) {
         event.stopPropagation();
         setEnabled((enabled) => !enabled);
     }
@@ -145,11 +140,11 @@ export function AaveV3BridgeAndSupplyBoostStep({
                                 {warning ? t(warning) : null}
                             </ErrorText>
                         </div>
-                        <Switch
+                        <Toggle
                             tabIndex={-1}
                             size="lg"
                             checked={enabled}
-                            onClick={handleSwitchOnClick}
+                            onClick={handleToggleOnClick}
                         />
                     </div>
                 }

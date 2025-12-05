@@ -1,65 +1,20 @@
 @reference "../../theme.css";
 
 .root {
-    @apply bg-zinc-200 dark:bg-zinc-700 border-none;
+    @apply flex
+        relative
+        items-center
+        justify-between
+        rounded-lg
+        p-1
+        bg-gray-150
+        dark:bg-neutral-800
+        cursor-pointer
+        transition-colors
+        duration-200
+        ease-in-out;
 }
 
-.root:global(.rc-switch-checked) {
-    @apply bg-black dark:bg-zinc-500 border-none;
-}
-
-.root:global(.rc-switch-disabled) {
-    @apply bg-zinc-100 dark:bg-zinc-700 border-none;
-}
-
-.root:global(.rc-switch-disabled) {
-    @apply after:bg-zinc-200 dark:after:bg-zinc-800;
-}
-
-.root:global(.rc-switch-unchecked) {
-    @apply border-none;
-}
-
-.root:global(.rc-switch) {
-    @apply after:transform-none after:animate-none dark:after:bg-zinc-300;
-}
-
-.root:global(.rc-switch:focus) {
-    @apply shadow-none;
-}
-
-.root.lg {
-    @apply w-14 h-8;
-}
-
-.root.lg:global(.rc-switch::after) {
-    @apply w-6 h-6 left-1 top-1 shadow-none;
-}
-
-.root.lg:global(.rc-switch-checked::after) {
-    @apply left-7;
-}
-
-.root.sm {
-    @apply w-10 h-6;
-}
-
-.root.sm:global(.rc-switch::after) {
-    @apply w-4 h-4 left-1 top-1 shadow-none;
-}
-
-.root.sm:global(.rc-switch-checked::after) {
-    @apply left-5;
-}
-
-.root.xs {
-    @apply w-8 h-4;
-}
-
-.root.xs:global(.rc-switch::after) {
-    @apply w-3 h-3 left-0.5 top-0.5 shadow-none;
-}
-
-.root.xs:global(.rc-switch-checked::after) {
-    @apply left-4;
+.root.disabled {
+    @apply pointer-events-none opacity-40;
 }

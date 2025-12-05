@@ -1,43 +1,59 @@
-import React, { type ReactElement, forwardRef } from "react";
-import RcSwitch, {
-    type SwitchChangeEventHandler,
-    type SwitchClickEventHandler,
-} from "rc-switch";
-import "rc-switch/assets/index.css";
 import classNames from "classnames";
+import React, { useId, type ReactElement } from "react";
+import { matchChildByType } from "../../utils/components";
+import { SwitchOption, type SwitchOptionProps } from "./switch-option";
 
 import styles from "./styles.module.css";
 
-export interface SwitchProps
-    extends Omit<
-        React.HTMLAttributes<HTMLButtonElement>,
-        "onChange" | "onClick" | "dangerouslySetInnerHTML"
-    > {
-    className?: string;
-    size?: "lg" | "sm" | "xs";
+export interface SwitchProps<T> {
+    id?: string;
+    size?: "xs" | "sm" | "lg";
     disabled?: boolean;
-    checkedChildren?: React.ReactNode;
-    unCheckedChildren?: React.ReactNode;
-    onChange?: SwitchChangeEventHandler;
-    onKeyDown?: React.KeyboardEventHandler<HTMLButtonElement>;
-    onClick?: SwitchClickEventHandler;
     tabIndex?: number;
-    checked?: boolean;
-    defaultChecked?: boolean;
-    style?: React.CSSProperties;
-    title?: string;
+    value?: T;
+    onChange: (value: T) => void;
+    className?: string;
+    children: [ReactElement, ReactElement];
 }
 
-export const Switch = forwardRef<HTMLButtonElement, SwitchProps>(
-    function Switch({ size = "sm", className, ...props }, ref): ReactElement {
-        return (
-            <RcSwitch
-                {...props}
-                ref={ref}
-                className={classNames(className, styles.root, {
-                    [styles[size]]: true,
-                })}
-            />
-        );
-    },
-);
+export function Switch<T>({
+    id,
+    size = "sm",
+    disabled,
+    tabIndex,
+    value,
+    onChange,
+    className,
+    children,
+}: SwitchProps<T>) {
+    const generatedId = useId();
+    const resolvedId = id || generatedId;
+
+    function handleOnChange(value: T) {
+        onChange(value);
+    }
+
+    return (
+        <div
+            tabIndex={tabIndex}
+            className={classNames(styles.root, className, {
+                [styles.disabled]: disabled,
+                [styles[size]]: true,
+            })}
+        >
+            {React.Children.map(children, (child) => {
+                return matchChildByType<SwitchOptionProps<T>>(
+                    child,
+                    SwitchOption,
+                )
+                    ? React.cloneElement(child, {
+                          ...child.props,
+                          id: resolvedId,
+                          active: value,
+                          onClick: handleOnChange,
+                      })
+                    : null;
+            })}
+        </div>
+    );
+}

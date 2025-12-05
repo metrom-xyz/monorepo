@@ -5,7 +5,9 @@
 }
 
 .dexWrapper {
-    @apply max-h-96
+    @apply flex
+        flex-col
+        max-h-96
         overflow-y-auto
         scroll-pt-0.5
         snap-y;
@@ -15,19 +17,18 @@
     @apply flex
         gap-2
         items-center
-        px-4
-        py-5
+        p-4
         select-none
         snap-start
         transition-colors
         duration-200
         ease-in-out
         hover:cursor-pointer
-        theme-surface-hover;
+        surface-primary-hover;
 }
 
 .dexRowSelected {
-    @apply theme-surface-active;
+    @apply bg-gray-150 dark:bg-neutral-800;
 }
 
 .dexRow > * {

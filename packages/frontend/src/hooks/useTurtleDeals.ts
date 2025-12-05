@@ -7,7 +7,7 @@ import type {
 } from "../types/turtle";
 
 interface UseTurtleDealsProps extends HookBaseParams {
-    campaignId: string;
+    campaignId?: string;
     dealId?: string;
 }
 
@@ -18,7 +18,6 @@ interface UseTurtleDealsReturnValue {
 
 type QueryKey = [string, string | undefined, string | undefined];
 
-// TODO: handle multiple campaign ids?
 export function useTurtleDeals({
     enabled,
     campaignId,

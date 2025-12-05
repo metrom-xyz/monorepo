@@ -31,8 +31,8 @@ type TokenWithBalance = Token & {
 
 const TokenIndicatorSkeleton = () => (
     <div className="w-full flex items-center gap-2">
-        <div className="h-8 w-8 theme-surface-2 rounded-full animate-pulse" />
-        <div className="h-6 w-14 theme-surface-2 animate-pulse rounded-md" />
+        <div className="h-8 w-8 surface-secondary rounded-full animate-pulse" />
+        <div className="h-6 w-14 surface-secondary animate-pulse rounded-md" />
     </div>
 );
 
@@ -77,7 +77,7 @@ const DetailedTokenIndicator = ({
     return (
         <div
             style={style}
-            className={`w-full flex items-center justify-between sm:px-4 cursor-pointer theme-surface-hover transition-colors duration-200 ease-in-out ${value === token.address ? "theme-surface-active" : ""}`}
+            className={`w-full flex items-center justify-between sm:px-4 cursor-pointer surface-primary-hover transition-colors duration-200 ease-in-out ${value === token.address ? "bg-gray-150 dark:bg-neutral-800" : ""}`}
             onClick={handleTokenOnClick}
         >
             <TokenIndicator token={token} />
@@ -89,7 +89,7 @@ const DetailedTokenIndicator = ({
                           )
                         : "-"}
                 </Typography>
-                <Typography size="xs" weight="medium" light>
+                <Typography size="xs" weight="medium" variant="tertiary">
                     {token.costUsd ? `$${token.costUsd.toFixed(2)}` : "-"}
                 </Typography>
             </div>
@@ -359,7 +359,7 @@ const TokenSelector = ({
     const SelectorContent = (
         <div className="w-full max-w-[450px] h-[500px]">
             <div className="flex flex-col w-full h-full gap-2.5">
-                <div className="flex justify-between gap-2 sm:px-4 sm:pt-4">
+                <div className="flex justify-between gap-2 sm:px-3 sm:pt-3">
                     <ChainSelector
                         disabled={!!project}
                         value={selectionChainId}
@@ -381,13 +381,23 @@ const TokenSelector = ({
                     onChange={(e) =>
                         obligatedToken || setSearchText(e.target.value)
                     }
-                    className="sm:px-4 [&>.inputWrapper>input]:bg-zinc-200! dark:[&>.inputWrapper>input]:bg-dark-surface-2!"
+                    className="sm:px-4 [&>.inputWrapper>input]:bg-gray-200! dark:[&>.inputWrapper>input]:bg-dark-surface-primary!"
                 />
                 <div className="flex justify-between items-center sm:px-4">
-                    <Typography uppercase size="xs" weight="medium" light>
+                    <Typography
+                        uppercase
+                        size="xs"
+                        weight="medium"
+                        variant="tertiary"
+                    >
                         Token
                     </Typography>
-                    <Typography uppercase size="xs" weight="medium" light>
+                    <Typography
+                        uppercase
+                        size="xs"
+                        weight="medium"
+                        variant="tertiary"
+                    >
                         Balance
                     </Typography>
                 </div>
@@ -429,11 +439,13 @@ const TokenSelector = ({
                     {SelectorContent}
                 </MobileDrawer>
                 <Popover
+                    root={popoverAnchor}
+                    ref={chainNamePopoverRef}
                     open={selectorOpen}
                     anchor={popoverAnchor}
-                    ref={chainNamePopoverRef}
                     placement="right-start"
-                    className="hidden sm:flex"
+                    onOpenChange={setSelectorOpen}
+                    className="hidden sm:flex p-0!"
                 >
                     {SelectorContent}
                 </Popover>
@@ -444,7 +456,7 @@ const TokenSelector = ({
                         border={false}
                         onClick={handleSelectorToggle}
                         className={{
-                            root: "min-h-16! min-w-32! py-2! px-3! bg-transparent! hover:bg-zinc-200! hover:dark:bg-zinc-700!",
+                            root: "min-h-16! min-w-32! py-2! px-3! bg-transparent! hover:bg-gray-200! hover:dark:bg-neutral-700!",
                         }}
                     >
                         {loading ? (

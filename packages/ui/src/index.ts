@@ -15,10 +15,13 @@ export * from "./components/pool-remote-logo";
 export * from "./components/popover";
 export * from "./components/remote-logo";
 export * from "./components/select";
+export * from "./components/multi-select";
 export * from "./components/skeleton";
 export * from "./components/slider";
 export * from "./components/step-number-input";
 export * from "./components/switch";
+export * from "./components/switch/switch-option";
+export * from "./components/toggle";
 export * from "./components/tabs";
 export * from "./components/tabs/tab";
 export * from "./components/text-field";
@@ -31,3 +34,8 @@ export * from "./components/text-input";
 export * from "./utils/date";
 export * from "./utils/components";
 export * from "./utils/formatting";
+
+export enum Theme {
+    Dark = "dark",
+    Light = "light",
+}

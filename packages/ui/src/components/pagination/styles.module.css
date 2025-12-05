@@ -1,51 +1,50 @@
 @reference "../../theme.css";
 
 .root {
-    @apply w-full sm:w-auto justify-center flex gap-1 sm:gap-2;
+    @apply w-full sm:w-auto justify-center flex;
 }
 
-.arrowIcon {
-    @apply w-5 h-5 theme-text;
+.icon {
+    @apply w-3 h-3 text-primary;
 }
 
 .ellipsis {
-    @apply w-9 h-9 flex items-center justify-center;
+    @apply w-6 h-6 flex items-end justify-center transition-colors duration-200 ease-in-out;
 }
 
-.item {
-    @apply w-9
-        h-9
-        rounded-md
-        flex
+.ellipsis.disabled {
+    @apply pointer-events-none text-gray-400 dark:text-neutral-700;
+}
+
+.button {
+    @apply flex
         items-center
         justify-center
+        gap-0.5
+        min-h-6
+        min-w-6
         cursor-pointer
-        theme-surface-2-hover
-        transition-colors
-        duration-200
-        ease-in-out;
+        hover:[&>p,&>svg]:text-brand-green-dark
+        hover:[&>p,&>svg]:dark:text-brand-green;
 }
 
-.itemActive {
-    @apply theme-surface-active;
+.button.step {
+    @apply p-2;
 }
 
-.clickable {
-    @apply cursor-pointer
-        theme-surface-2-hover
-        transition-colors
-        duration-200
-        ease-in-out;
+.button > p,
+.button > svg {
+    @apply transition-colors duration-200 ease-in-out;
 }
 
-.arrowItem {
-    @apply theme-surface-active;
+.loading {
+    @apply animate-pulse;
 }
 
-.arrowItem:disabled {
-    @apply bg-zinc-200 dark:bg-zinc-800 cursor-not-allowed;
+.button.active {
+    @apply [&>p,&>svg]:text-brand-green-dark [&>p,&>svg]:dark:text-brand-green pointer-events-none;
 }
 
-.arrowItem:disabled > .arrowIcon {
-    @apply text-zinc-400;
+.button.disabled {
+    @apply pointer-events-none [&>p,&>svg]:text-gray-400 [&>p,&>svg]:dark:text-neutral-700;
 }

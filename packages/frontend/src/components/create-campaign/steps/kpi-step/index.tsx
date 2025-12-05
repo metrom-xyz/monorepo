@@ -11,7 +11,7 @@ import {
     Button,
     ErrorText,
     Skeleton,
-    Switch,
+    Toggle,
     Typography,
 } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
@@ -199,12 +199,7 @@ export function KpiStep({
         setError("");
     }, [distributables?.type, onKpiChange]);
 
-    function handleSwitchOnClick(
-        _: boolean,
-        event:
-            | React.MouseEvent<HTMLButtonElement>
-            | React.KeyboardEvent<HTMLButtonElement>,
-    ) {
+    function handleToggleOnClick(event: React.MouseEvent<HTMLDivElement>) {
         event.stopPropagation();
         setEnabled((enabled) => !enabled);
     }
@@ -264,11 +259,11 @@ export function KpiStep({
                                 {error ? t(error) : warning ? t(warning) : null}
                             </ErrorText>
                         </div>
-                        <Switch
+                        <Toggle
                             tabIndex={-1}
                             size="lg"
                             checked={enabled}
-                            onClick={handleSwitchOnClick}
+                            onClick={handleToggleOnClick}
                         />
                     </div>
                 }
@@ -276,7 +271,12 @@ export function KpiStep({
                 disabled={!enabled}
             >
                 <div className={styles.tvlWrapper}>
-                    <Typography uppercase weight="medium" light size="sm">
+                    <Typography
+                        uppercase
+                        weight="medium"
+                        variant="tertiary"
+                        size="sm"
+                    >
                         {t("currentTarget", { targetValueName })}
                     </Typography>
                     {loadingUsdTvl ? (
@@ -318,17 +318,15 @@ export function KpiStep({
                             <Typography
                                 uppercase
                                 weight="medium"
-                                light
+                                variant="tertiary"
                                 size="xs"
-                                className={styles.simulationText}
                             >
                                 {t("simulation.title")}
                             </Typography>
                             <Typography
                                 weight="medium"
-                                light
+                                variant="tertiary"
                                 size="xs"
-                                className={styles.simulationText}
                             >
                                 {t("simulation.description", {
                                     targetValueName,
