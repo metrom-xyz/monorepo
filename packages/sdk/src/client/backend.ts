@@ -102,14 +102,9 @@ const DEX_BRAND_NAME: Record<SupportedDex, string> = {
     [SupportedDex.UniswapV3]: "Uniswap v3",
     [SupportedDex.TestIntegral]: "Test Integral",
     [SupportedDex.Swapsicle]: "Swapsicle",
-    [SupportedDex.Kim]: "Kim",
     [SupportedDex.Panko]: "Panko",
-    [SupportedDex.Scribe]: "Scribe",
-    [SupportedDex.BaseSwap]: "BaseSwap",
     [SupportedDex.Fibonacci]: "Fibonacci",
     [SupportedDex.ThirdTrade]: "ThirdTrade",
-    [SupportedDex.SilverSwap]: "SilverSwap",
-    [SupportedDex.Swapr]: "Swapr",
     [SupportedDex.Unagi]: "Unagi",
     [SupportedDex.Carbon]: "Carbon DeFi",
     [SupportedDex.Velodrome]: "Velodrome",
@@ -117,6 +112,10 @@ const DEX_BRAND_NAME: Record<SupportedDex, string> = {
     [SupportedDex.Izumi]: "Izumi",
     [SupportedDex.Hydrex]: "Hydrex",
     [SupportedDex.BalancerV3]: "Balancer",
+    [SupportedDex.Ambient]: "Ambient",
+    [SupportedDex.Honeypop]: "Honeypop",
+    [SupportedDex.Lithos]: "Lithos",
+    [SupportedDex.Quickswap]: "Quickswap",
 };
 
 const LIQUITY_V2_BRAND_NAME: Record<SupportedLiquityV2, string> = {

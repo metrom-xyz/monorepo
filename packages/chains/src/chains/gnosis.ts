@@ -5,7 +5,6 @@ import {
 } from "@metrom-xyz/sdk";
 import { GnosisLogo } from "../assets/logos/chains/gnosis";
 import { gnosis } from "viem/chains";
-import { SwaprLogo } from "../assets/logos/dexes/swapr";
 import { ADDRESS, SupportedChain } from "@metrom-xyz/contracts";
 import type { ChainData } from "../types/chains";
 import { DepositUrlType, ProtocolType } from "../types/protocol";
@@ -30,18 +29,6 @@ export const gnosisData: ChainData = {
         },
     ],
     protocols: [
-        {
-            active: true,
-            type: ProtocolType.Dex,
-            slug: SupportedDex.Swapr,
-            logo: SwaprLogo,
-            name: "Swapr",
-            depositUrl: {
-                type: DepositUrlType.PathPoolAddress,
-                template: "https://v3.swapr.eth.limo/#/info/pools/{pool}",
-            },
-            supportsFetchAllPools: true,
-        },
         {
             active: true,
             type: ProtocolType.Dex,

@@ -9,14 +9,9 @@ export enum SupportedDex {
     UniswapV3 = "uniswap-v3",
     TestIntegral = "test-integral",
     Swapsicle = "swapsicle",
-    Kim = "kim",
     Panko = "panko",
-    Scribe = "scribe",
-    BaseSwap = "baseswap",
     Fibonacci = "fibonacci",
     ThirdTrade = "third-trade",
-    SilverSwap = "silverswap",
-    Swapr = "swapr",
     Unagi = "unagi",
     Carbon = "carbon",
     Velodrome = "velodrome",
@@ -24,6 +19,10 @@ export enum SupportedDex {
     Izumi = "izumi",
     Hydrex = "hydrex",
     BalancerV3 = "balancer-v3",
+    Ambient = "ambient",
+    Honeypop = "honeypop",
+    Lithos = "lithos",
+    Quickswap = "quickswap",
 }
 
 export enum SupportedLiquityV2 {
@@ -60,6 +59,9 @@ export enum SupportedAmm {
     PancakeV3 = "pancake-v3",
     Izumi = "izumi",
     BalancerV3 = "balancer-v3",
+    Croc = "croc",
+    Curve = "curve",
+    Lithos = "lithos",
 }
 
 export interface ServiceUrls {

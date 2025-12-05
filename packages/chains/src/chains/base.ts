@@ -5,14 +5,13 @@ import {
 } from "@metrom-xyz/sdk";
 import { SupportedChain, ADDRESS } from "@metrom-xyz/contracts";
 import { BaseLogo } from "../assets/logos/chains/base";
-import { BaseSwapLogo } from "../assets/logos/dexes/baseswap";
 import { base } from "viem/chains";
 import { UniswapLogo } from "../assets/logos/dexes/uniswap";
 import type { ChainData } from "../types/chains";
 import { DepositUrlType, ProtocolType } from "../types/protocol";
-import { KimLogo } from "../assets";
 import { HydrexLogo } from "../assets/logos/dexes/hydrex";
 import { BalancerLogo } from "../assets/logos/dexes/balancer";
+import { QuickswapLogo } from "../assets/logos/dexes/quickswap";
 
 export const baseData: ChainData = {
     active: true,
@@ -33,30 +32,6 @@ export const baseData: ChainData = {
         },
     ],
     protocols: [
-        {
-            active: false,
-            type: ProtocolType.Dex,
-            slug: SupportedDex.Kim,
-            logo: KimLogo,
-            name: "Kim",
-            depositUrl: {
-                type: DepositUrlType.PathPoolAddress,
-                template: "https://app.kim.exchange/pools/v4/{pool}",
-            },
-            supportsFetchAllPools: true,
-        },
-        {
-            active: true,
-            type: ProtocolType.Dex,
-            slug: SupportedDex.BaseSwap,
-            logo: BaseSwapLogo,
-            name: "BaseSwap",
-            depositUrl: {
-                type: DepositUrlType.PathPoolAddress,
-                template: `https://baseswap.fi/pool/v3/${SupportedChain.Base}-{pool}`,
-            },
-            supportsFetchAllPools: true,
-        },
         {
             active: true,
             type: ProtocolType.Dex,
@@ -92,6 +67,19 @@ export const baseData: ChainData = {
                 template: "https://balancer.fi/pools/base/v3/{pool}",
             },
             supportsFetchAllPools: false,
+        },
+        {
+            active: true,
+            type: ProtocolType.Dex,
+            slug: SupportedDex.Quickswap,
+            logo: QuickswapLogo,
+            name: "Quickswap",
+            depositUrl: {
+                type: DepositUrlType.PathTokenAddresses,
+                template:
+                    "https://dapp.quickswap.exchange/pool/v4/{pool}?chainId=8453",
+            },
+            supportsFetchAllPools: true,
         },
     ],
     baseTokens: [
