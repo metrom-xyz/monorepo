@@ -25,7 +25,7 @@ import {
 
 import styles from "./styles.module.css";
 
-const PAGE_SIZE = 15;
+const PAGE_SIZE = 10;
 
 const TABLE_REWARDS_COLUMNS: {
     name: string;

@@ -37,6 +37,10 @@
         "stabilityPool": "of the stability pool"
     },
     "allCampaigns": {
+        "headerTitle": {
+            "title": "Discover opportunities",
+            "subtitle": "Explore yield and points campaigns, and earn rewards across chains"
+        },
         "title": "discover",
         "kpi": "KPI",
         "restricted": "Restricted",

@@ -119,24 +119,26 @@ export function Rewards({ status, dailyUsd, rewards, chainId }: RewardsProps) {
                 onMouseLeave={handleRewardsBreakdownPopoverClose}
                 className={styles.rewardsWrapper}
             >
-                <div className={styles.tokenIcons}>
-                    {rewards.list.map((reward, i) => {
-                        return (
-                            <div
-                                key={reward.token.address}
-                                className={styles.tokenIcon}
-                                style={{ zIndex: i }}
-                            >
-                                <RemoteLogo
-                                    size="xs"
-                                    chain={chainId}
-                                    address={reward.token.address}
-                                    defaultText={reward.token.symbol}
-                                />
-                            </div>
-                        );
-                    })}
-                </div>
+                {status !== Status.Expired && (
+                    <div className={styles.tokenIcons}>
+                        {rewards.list.map((reward, i) => {
+                            return (
+                                <div
+                                    key={reward.token.address}
+                                    className={styles.tokenIcon}
+                                    style={{ zIndex: i }}
+                                >
+                                    <RemoteLogo
+                                        size="xs"
+                                        chain={chainId}
+                                        address={reward.token.address}
+                                        defaultText={reward.token.symbol}
+                                    />
+                                </div>
+                            );
+                        })}
+                    </div>
+                )}
                 <Typography weight="medium" className={styles.textRewards}>
                     {status === Status.Expired
                         ? "-"
