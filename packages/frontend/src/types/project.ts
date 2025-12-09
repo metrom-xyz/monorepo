@@ -26,6 +26,7 @@ export interface ProjectIntro {
 }
 
 export enum ProjectKind {
+    GenericProtocol,
     PointsTracking,
     Partner,
     LiquidityDeals,
@@ -41,7 +42,6 @@ export interface BaseProjectMetadata {
     icon: FunctionComponent<SVGIcon>;
     illustration: FunctionComponent<SVGIcon>;
     branding: Branding;
-    chains: number[];
     intro?: ProjectIntro;
     leaderboard?: boolean;
 }
@@ -66,7 +66,12 @@ export interface ProjectMetadataChain extends BaseProjectMetadata {
     chainId: number;
 }
 
+export interface ProjectMetadataGenericProtocol extends BaseProjectMetadata {
+    kind: ProjectKind.GenericProtocol;
+}
+
 export type ProjectMetadata =
+    | ProjectMetadataGenericProtocol
     | ProjectMetadataPointsTracking
     | ProjectMetadataPartner
     | ProjectMetadataLiquidityDeals

@@ -1,4 +1,5 @@
 import {
+    AaveLightLogo,
     AmpedLogo,
     EbisuLogo,
     KatanaLogo,
@@ -11,12 +12,13 @@ import { OrkiIllustration } from "../assets/logos/projects/orki-illustration";
 import { EbisuIllustration } from "../assets/logos/projects/ebisu-illustration";
 import { AmpedIllustration } from "../assets/logos/projects/amped-illustration";
 import { KatanaIllustration } from "../assets/logos/projects/katana-illustration";
-import { katana, mainnet, scroll, sonic, swellchain } from "viem/chains";
 import {
+    SupportedAaveV3,
     SupportedGmxV1,
     SupportedLiquidityProviderDeal,
     SupportedLiquityV2,
 } from "@metrom-xyz/sdk";
+import { AaveIllustration } from "../assets/logos/projects/aave-illustration";
 
 export const PROJECTS_METADATA: Record<string, ProjectMetadata> = {
     quill: {
@@ -29,12 +31,11 @@ export const PROJECTS_METADATA: Record<string, ProjectMetadata> = {
         url: "https://app.quill.finance",
         icon: QuillLogo,
         illustration: QuillIllustration,
-        chains: [scroll.id],
         branding: {
             main: "#FF5500",
-            light: "#FFAC83",
+            light: "#FFE2D4",
             contrast: {
-                light: "#FFE7DB",
+                light: "#FFEBE2",
                 dark: "#361708",
             },
             iconBackground: "#FF5500",
@@ -62,12 +63,11 @@ export const PROJECTS_METADATA: Record<string, ProjectMetadata> = {
         url: "https://www.orki.finance",
         icon: OrkiDarkLogo,
         illustration: OrkiIllustration,
-        chains: [swellchain.id],
         branding: {
             main: "#2973EB",
-            light: "#85B3FF",
+            light: "#E0E9F9",
             contrast: {
-                light: "#CFE1FF",
+                light: "#E7F0FE",
                 dark: "#101D32",
             },
             iconBackground: "#2973EB",
@@ -95,12 +95,11 @@ export const PROJECTS_METADATA: Record<string, ProjectMetadata> = {
         url: "https://ebisu.money",
         icon: EbisuLogo,
         illustration: EbisuIllustration,
-        chains: [mainnet.id],
         branding: {
-            main: "#FF9ECE",
-            light: "#EE2D8C",
+            main: "#EE2D8C",
+            light: "#FFE2F0",
             contrast: {
-                light: "#F7CEE3",
+                light: "#FBEDF6",
                 dark: "#361325",
             },
             iconBackground: "#FFFFFF",
@@ -124,7 +123,6 @@ export const PROJECTS_METADATA: Record<string, ProjectMetadata> = {
         url: "https://amped.finance",
         icon: AmpedLogo,
         illustration: AmpedIllustration,
-        chains: [sonic.id],
         branding: {
             main: "#E05573",
             light: "#EDD1D7",
@@ -146,12 +144,28 @@ export const PROJECTS_METADATA: Record<string, ProjectMetadata> = {
         url: "https://app.turtle.club/campaigns/katana",
         icon: KatanaLogo,
         illustration: KatanaIllustration,
-        chains: [mainnet.id, katana.id],
         branding: {
             main: "#D4E000",
             light: "#DFE0C1",
             contrast: { light: "#EEF0DA", dark: "#222313" },
             iconBackground: "#11162F",
+        },
+    },
+    aave: {
+        kind: ProjectKind.GenericProtocol,
+        name: "Aave",
+        types: ["Lending"],
+        protocol: SupportedAaveV3.Aave,
+        description:
+            "Decentralised non-custodial liquidity protocol where users can participate as suppliers or borrowers. Suppliers provide liquidity to the market while earning interest, and borrowers can access liquidity by providing collateral that exceeds the borrowed amount.",
+        url: "https://aave.com",
+        icon: AaveLightLogo,
+        illustration: AaveIllustration,
+        branding: {
+            main: "#9391F7",
+            light: "#FBFBFF",
+            contrast: { light: "#E5E6F5", dark: "#1F1B29" },
+            iconBackground: "#9391F7",
         },
     },
 };
