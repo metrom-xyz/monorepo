@@ -137,17 +137,23 @@ export const DatePicker = ({
                         dayjs(value).date() === cell.value.date();
 
                     const rangeBoundStart =
-                        range?.from && isOnlyDateSame(cell.value, range.from);
+                        range?.from &&
+                        range?.to &&
+                        isOnlyDateSame(cell.value, range.from);
                     const rangeBoundEnd =
-                        range?.to && isOnlyDateSame(cell.value, range.to);
+                        range?.from &&
+                        range?.to &&
+                        isOnlyDateSame(cell.value, range.to);
                     const rangeBound = rangeBoundStart || rangeBoundEnd;
 
                     return (
                         <div
                             className={classNames(styles.cellWrapper, {
                                 [styles.cellWrapperRangeBound]: rangeBound,
-                                [styles.cellWrapperRangeBoundStart]: rangeBoundStart,
-                                [styles.cellWrapperRangeBoundEnd]: rangeBoundEnd,
+                                [styles.cellWrapperRangeBoundStart]:
+                                    rangeBoundStart,
+                                [styles.cellWrapperRangeBoundEnd]:
+                                    rangeBoundEnd,
                             })}
                         >
                             <Typography
