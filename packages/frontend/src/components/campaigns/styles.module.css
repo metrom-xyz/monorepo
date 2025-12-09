@@ -1,5 +1,13 @@
 @reference "../../app.css";
 
 .root {
-    @apply max-w-screen-xl w-full flex flex-col px-4 sm:px-0;
+    @apply max-w-screen-xl w-full flex flex-col gap-14 px-4 sm:px-0;
+}
+
+.header {
+    @apply flex flex-col gap-1;
+}
+
+.tableWrapper {
+    @apply flex flex-col;
 }

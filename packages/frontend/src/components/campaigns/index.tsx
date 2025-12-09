@@ -1,7 +1,7 @@
 "use client";
 
 import { CampaignsTable } from "../campaigns-table";
-import { Tab, Tabs } from "@metrom-xyz/ui";
+import { Tab, Tabs, Typography } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
 import { TokensIcon } from "@/src/assets/tokens-icon";
 import { PointsIcon } from "@/src/assets/points-icon";
@@ -149,26 +149,34 @@ export function Campaigns({
 
     return (
         <div className={styles.root}>
-            <Tabs value={type} onChange={setType}>
-                {activeTabOptions.map(({ type, label, icon }) => {
-                    return (
-                        <Tab key={type} icon={icon} value={type}>
-                            {t(`tabs.${label}`)}
-                        </Tab>
-                    );
-                })}
-            </Tabs>
-            {type === "projects" ? (
-                <ProjectsList />
-            ) : (
-                <CampaignsTable
-                    type={type}
-                    tabs={activeTabs}
-                    disableFilters={disableFilters}
-                    optionalFilters={optionalFilters}
-                    onClearFilters={handleClearUrlFilterParams}
-                />
-            )}
+            <div className={styles.header}>
+                <Typography size="xl2" weight="semibold">
+                    {t("headerTitle.title")}
+                </Typography>
+                <Typography size="lg">{t("headerTitle.subtitle")}</Typography>
+            </div>
+            <div className={styles.tableWrapper}>
+                <Tabs value={type} onChange={setType}>
+                    {activeTabOptions.map(({ type, label, icon }) => {
+                        return (
+                            <Tab key={type} icon={icon} value={type}>
+                                {t(`tabs.${label}`)}
+                            </Tab>
+                        );
+                    })}
+                </Tabs>
+                {type === "projects" ? (
+                    <ProjectsList />
+                ) : (
+                    <CampaignsTable
+                        type={type}
+                        tabs={activeTabs}
+                        disableFilters={disableFilters}
+                        optionalFilters={optionalFilters}
+                        onClearFilters={handleClearUrlFilterParams}
+                    />
+                )}
+            </div>
         </div>
     );
 }
