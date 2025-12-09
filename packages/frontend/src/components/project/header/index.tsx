@@ -42,7 +42,7 @@ export function Header({
     return (
         <div
             style={{
-                background: `linear-gradient(to left, ${branding.main}, ${branding.light})`,
+                background: `linear-gradient(45deg, ${branding.light}, ${branding.main})`,
             }}
             className={styles.root}
         >

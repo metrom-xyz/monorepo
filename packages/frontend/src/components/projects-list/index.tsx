@@ -6,12 +6,16 @@ import { useTranslations } from "next-intl";
 import { EmptyIcon } from "@/src/assets/empty-icon";
 import { Typography } from "@metrom-xyz/ui";
 import classNames from "classnames";
+import { getChainsForProtocol } from "@/src/utils/protocols";
+import { ChainType, type SupportedProtocol } from "@metrom-xyz/sdk";
+import { useChainType } from "@/src/hooks/useChainType";
 
 import styles from "./styles.module.css";
 
 export function ProjectsList() {
     const t = useTranslations("allCampaigns.projects");
 
+    const chainType = useChainType();
     const { loading, fetching, placeholderData, projects } = useProjects();
 
     return (
@@ -53,6 +57,12 @@ export function ProjectsList() {
                         const metadata = PROJECTS_METADATA[slug];
                         if (!metadata) return null;
 
+                        const chains = getChainsForProtocol(
+                            slug as SupportedProtocol,
+                            chainType !== ChainType.Aptos,
+                        );
+                        if (chains.length === 0) return null;
+
                         return (
                             <ProjectCard
                                 key={slug}
@@ -62,7 +72,7 @@ export function ProjectsList() {
                                 activeCampaigns={project.campaigns.active}
                                 name={metadata.name}
                                 types={metadata.types}
-                                chains={metadata.chains}
+                                chains={chains}
                                 icon={metadata.icon}
                                 illustration={metadata.illustration}
                                 branding={metadata.branding}

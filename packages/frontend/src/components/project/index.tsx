@@ -37,7 +37,9 @@ export function Project({ project }: ProjectProps) {
 
     const optionalFilters: RawFilters = useMemo(() => {
         switch (kind) {
+            case ProjectKind.GenericProtocol:
             case ProjectKind.PointsTracking:
+            case ProjectKind.LiquidityDeals:
                 return {
                     chains: [],
                     statuses: [],
@@ -55,13 +57,6 @@ export function Project({ project }: ProjectProps) {
                     statuses: [],
                     protocols: [],
                 };
-            case ProjectKind.LiquidityDeals: {
-                return {
-                    chains: [],
-                    statuses: [],
-                    protocols: [{ label: "", value: protocol }],
-                };
-            }
             default:
                 return { chains: [], statuses: [], protocols: [] };
         }
@@ -124,34 +119,12 @@ export function Project({ project }: ProjectProps) {
                     <Widget />
                 </div>
             )}
-            {kind === ProjectKind.PointsTracking && (
-                <Campaigns
-                    tabs={tabs}
-                    disableFilters
-                    optionalFilters={optionalFilters}
-                />
-            )}
-            {kind === ProjectKind.Chain && (
-                <Campaigns
-                    tabs={tabs}
-                    disableFilters
-                    optionalFilters={optionalFilters}
-                />
-            )}
-            {kind === ProjectKind.LiquidityDeals && (
-                <>
-                    {/* TODO: enable this if we need to show TVL and status */}
-                    {/* <LiquidityProviderDeal
-                        protocol={details.protocol}
-                        campaignId={campaignId}
-                    /> */}
-                    <Campaigns
-                        tabs={tabs}
-                        disableFilters
-                        optionalFilters={optionalFilters}
-                    />
-                </>
-            )}
+            <Campaigns
+                tabs={tabs}
+                disableFilters
+                hideHeader
+                optionalFilters={optionalFilters}
+            />
         </div>
     );
 }

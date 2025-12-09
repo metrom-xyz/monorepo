@@ -34,6 +34,7 @@ export const URL_ENABLED_CAMPAIGNS_FILTERS = [
 interface CampaignsProps {
     disableFilters?: boolean;
     optionalFilters?: Partial<RawFilters>;
+    hideHeader?: boolean;
     tabs?: BackendCampaignTypeAndProjects[];
 }
 
@@ -68,6 +69,7 @@ const DEFAULT_ACTIVE_TABS: BackendCampaignTypeAndProjects[] = [
 export function Campaigns({
     disableFilters = false,
     optionalFilters,
+    hideHeader = false,
     tabs = DEFAULT_ACTIVE_TABS,
 }: CampaignsProps) {
     const t = useTranslations("allCampaigns");
@@ -145,16 +147,26 @@ export function Campaigns({
         });
     }, [pathname, router, searchParams]);
 
-    if (!type) return <SkeletonCampaigns type={BackendCampaignType.Rewards} />;
+    if (!type)
+        return (
+            <SkeletonCampaigns
+                type={BackendCampaignType.Rewards}
+                hideHeader={hideHeader}
+            />
+        );
 
     return (
         <div className={styles.root}>
-            <div className={styles.header}>
-                <Typography size="xl2" weight="semibold">
-                    {t("headerTitle.title")}
-                </Typography>
-                <Typography size="lg">{t("headerTitle.subtitle")}</Typography>
-            </div>
+            {!hideHeader && (
+                <div className={styles.header}>
+                    <Typography size="xl2" weight="semibold">
+                        {t("headerTitle.title")}
+                    </Typography>
+                    <Typography size="lg">
+                        {t("headerTitle.subtitle")}
+                    </Typography>
+                </div>
+            )}
             <div className={styles.tableWrapper}>
                 <Tabs value={type} onChange={setType}>
                     {activeTabOptions.map(({ type, label, icon }) => {
