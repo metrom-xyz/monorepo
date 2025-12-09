@@ -5,18 +5,18 @@ import { easeInOut, motion } from "motion/react";
 import Marquee from "react-fast-marquee";
 import { Theme, Typography } from "@metrom-xyz/ui";
 import type { Branding } from "@/src/types/project";
-import { ChainType } from "@metrom-xyz/sdk";
 import { getCrossVmChainData } from "@/src/utils/chain";
 import { useTheme } from "next-themes";
 import { ProjectCampaignsTotals } from "../project-campaigns-totals";
 import classNames from "classnames";
+import type { ChainWithType } from "@/src/types/chain";
 
 import styles from "./styles.module.css";
 
 interface ProjectCardProps {
     name: string;
     href: string;
-    chains: number[];
+    chains: ChainWithType[];
     activeCampaigns: number;
     totalCampaigns: number;
     types: string[];
@@ -58,7 +58,7 @@ export function ProjectCard({
             <motion.div whileHover="animate" className={styles.card}>
                 <div
                     style={{
-                        background: `linear-gradient(to left, ${branding.main}, ${branding.light})`,
+                        background: `linear-gradient(to left bottom, ${branding.main}, ${branding.light})`,
                     }}
                     className={styles.header}
                 >
@@ -123,15 +123,17 @@ export function ProjectCard({
                         gradientWidth={24}
                     >
                         {chains.map((chain) => {
-                            // TODO: chain type from API
                             const chainData = getCrossVmChainData(
-                                chain,
-                                ChainType.Evm,
+                                chain.id,
+                                chain.type,
                             );
                             if (!chainData) return null;
 
                             return (
-                                <div key={chain} className={styles.chainChip}>
+                                <div
+                                    key={`${chain.id}_${chain.type}`}
+                                    className={styles.chainChip}
+                                >
                                     <chainData.icon
                                         className={styles.chainIcon}
                                     />

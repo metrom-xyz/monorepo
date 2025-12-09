@@ -5,15 +5,21 @@ import styles from "./styles.module.css";
 
 interface SkeletonCampaignsProps {
     type: BackendCampaignType;
+    hideHeader?: boolean;
 }
 
-export function SkeletonCampaigns({ type }: SkeletonCampaignsProps) {
+export function SkeletonCampaigns({
+    type,
+    hideHeader = false,
+}: SkeletonCampaignsProps) {
     return (
         <div className={styles.root}>
-            <div className={styles.header}>
-                <div className={styles.title}></div>
-                <div className={styles.subtitle}></div>
-            </div>
+            {!hideHeader && (
+                <div className={styles.header}>
+                    <div className={styles.title}></div>
+                    <div className={styles.subtitle}></div>
+                </div>
+            )}
             <div>
                 <div className={styles.tabs}>
                     <div className={styles.tab} />
