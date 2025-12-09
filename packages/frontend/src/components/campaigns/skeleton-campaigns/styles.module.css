@@ -1,7 +1,19 @@
 @reference "../../../app.css";
 
 .root {
-    @apply max-w-screen-xl h-full w-full flex-col px-4 sm:px-0;
+    @apply max-w-screen-xl h-full w-full flex flex-col gap-14 px-4 sm:px-0;
+}
+
+.header {
+    @apply w-full flex flex-col gap-2;
+}
+
+.title {
+    @apply w-60 h-7 animate-pulse surface-primary rounded-lg;
+}
+
+.subtitle {
+    @apply w-full max-w-96 h-6 animate-pulse surface-primary rounded-lg;
 }
 
 .tabs {
@@ -13,7 +25,7 @@
 }
 
 .wrapper {
-    @apply w-full min-h-[81.25rem] flex-col flex gap-3 p-5 surface-primary rounded-xl rounded-tl-none;
+    @apply w-full min-h-[58.75rem] flex-col flex gap-3 p-5 surface-primary rounded-xl rounded-tl-none;
 }
 
 .filters {
