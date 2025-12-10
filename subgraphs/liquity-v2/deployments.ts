@@ -52,4 +52,12 @@ export const DEPLOYMENTS: {
             },
         },
     },
+    "plasma-mainnet": {
+        ebisu: {
+            DebtToken: {
+                address: "0xef7b1a03e0897c33b63159e38d779e3970c0e2fc",
+                startBlock: 3617380,
+            },
+        },
+    },
 };
