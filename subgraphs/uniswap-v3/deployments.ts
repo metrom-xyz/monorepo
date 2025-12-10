@@ -188,4 +188,16 @@ export const DEPLOYMENTS: {
             },
         },
     },
+    "saga-evm": {
+        "uni-v3": {
+            Factory: {
+                address: "0x454050C4c9190390981Ac4b8d5AFcd7aC65eEffa",
+                startBlock: 18885,
+            },
+            NonFungiblePositionManager: {
+                address: "0xdD489C75be1039ec7d843A6aC2Fd658350B067Cf",
+                startBlock: 18902,
+            },
+        },
+    },
 };
