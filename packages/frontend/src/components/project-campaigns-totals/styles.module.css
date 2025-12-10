@@ -17,11 +17,11 @@
 }
 
 .statusDot {
-    @apply bg-white/[28%];
+    @apply bg-white/[28%]!;
 }
 
 .statusDot :global(.dot) {
-    @apply bg-gray-50 dark:bg-neutral-100;
+    @apply bg-gray-50! dark:bg-neutral-100!;
 }
 
 .activeText {
