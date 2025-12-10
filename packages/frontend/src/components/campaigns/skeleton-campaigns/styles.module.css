@@ -5,7 +5,7 @@
 }
 
 .header {
-    @apply w-full flex flex-col gap-2;
+    @apply w-full flex flex-col gap-3;
 }
 
 .title {
