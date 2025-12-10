@@ -11,6 +11,7 @@
         "deploy:orki:swell": "npm run prepare:deploy swellchain orki && npm run codegen && graph deploy --studio metrom-orki-swell -l 0.0.4",
         "deploy:ebisu:mainnet": "npm run prepare:deploy mainnet ebisu && npm run codegen && graph deploy --studio metrom-ebisu-mainnet -l 0.0.1",
         "deploy:liquity:mainnet": "npm run prepare:deploy mainnet liquity && npm run codegen && graph deploy --studio metrom-liquity-mainnet -l 0.0.2",
+        "deploy:ebisu:plasma": "npm run prepare:deploy plasma-mainnet ebisu && npm run codegen && graph build && goldsky subgraph deploy metrom-ebisu-plasma/0.0.1",
         "lint": "eslint .",
         "format": "eslint --fix ."
     },
