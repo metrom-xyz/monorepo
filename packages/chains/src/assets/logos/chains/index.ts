@@ -6,6 +6,7 @@ export * from "./gnosis";
 export * from "./hemi";
 export * from "./katana";
 export * from "./lightlink-phoenix";
+export * from "./linea";
 export * from "./lens";
 export * from "./lens-dark";
 export * from "./mantle";

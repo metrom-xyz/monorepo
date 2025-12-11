@@ -6,9 +6,17 @@ import { useTranslations } from "next-intl";
 import { EmptyIcon } from "@/src/assets/empty-icon";
 import { Typography } from "@metrom-xyz/ui";
 import classNames from "classnames";
-import { getChainsForProtocol } from "@/src/utils/protocols";
-import { ChainType, type SupportedProtocol } from "@metrom-xyz/sdk";
+import {
+    getChainsForProtocol,
+    getChainsForTurtleDeal,
+} from "@/src/utils/protocols";
+import {
+    ChainType,
+    SupportedTurtleDeal,
+    type SupportedProtocol,
+} from "@metrom-xyz/sdk";
 import { useChainType } from "@/src/hooks/useChainType";
+import type { ChainWithType } from "@/src/types/chain";
 
 import styles from "./styles.module.css";
 
@@ -57,10 +65,20 @@ export function ProjectsList() {
                         const metadata = PROJECTS_METADATA[slug];
                         if (!metadata) return null;
 
-                        const chains = getChainsForProtocol(
-                            slug as SupportedProtocol,
-                            chainType !== ChainType.Aptos,
-                        );
+                        let chains: ChainWithType[] = [];
+
+                        // handle protocol-chain keys, for turtle projects
+                        if (slug.includes("-"))
+                            chains = getChainsForTurtleDeal(
+                                slug as SupportedTurtleDeal,
+                                chainType !== ChainType.Aptos,
+                            );
+                        else
+                            chains = getChainsForProtocol(
+                                slug as SupportedProtocol,
+                                chainType !== ChainType.Aptos,
+                            );
+
                         if (chains.length === 0) return null;
 
                         return (

@@ -18,6 +18,7 @@ import {
     arbitrum,
     plasma,
     katana,
+    linea,
 } from "viem/chains";
 import {
     sonicData,
@@ -54,6 +55,7 @@ import {
     aptosDevelopmentProductionData,
     aptosProductionData,
 } from "./chains/aptos";
+import { lineaData } from "./chains/linea";
 
 export {
     Environment,
@@ -93,6 +95,7 @@ export const EVM_CHAIN_DATA: {
         [SupportedProductionEvmChain.Lumia]: lumiaData,
         [SupportedProductionEvmChain.Mainnet]: mainnetData,
         [SupportedProductionEvmChain.Katana]: katanaData,
+        [SupportedProductionEvmChain.Linea]: lineaData,
         [SupportedProductionEvmChain.Sei]: seiProductionData,
         [SupportedProductionEvmChain.Hemi]: hemiData,
         [SupportedProductionEvmChain.Plasma]: plasmaData,
@@ -135,14 +138,15 @@ export const SUPPORTED_PRODUCTION_CHAINS: [Chain, ...Chain[]] = [
     lens,
     lightlinkPhoenix,
     lumiaMainnet,
-    // This is required for the Turtle integration
-    mainnet,
-    // This is required for the Katana vault campaigns
-    katana,
     swellchain,
     hemi,
     sei,
     plasma,
+    // This is required for the Turtle integration
+    mainnet,
+    // These are required for Turtle campaigns
+    katana,
+    linea,
 ].sort((a, b) => {
     // keep the active chains first, this way the default selected
     // chain will always be an active one

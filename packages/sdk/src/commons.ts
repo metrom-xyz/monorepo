@@ -49,6 +49,11 @@ export enum SupportedLiquidityProviderDeal {
     Turtle = "turtle",
 }
 
+export enum SupportedTurtleDeal {
+    TurtleKatana = "turtle-katana",
+    TurtleLinea = "turtle-linea",
+}
+
 export type SupportedProtocol =
     | SupportedDex
     | SupportedLiquityV2
