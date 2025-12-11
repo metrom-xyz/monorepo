@@ -1,25 +1,21 @@
-import { zeroAddress } from "viem";
-import {
-    KatanaLogo,
-    ProtocolType,
-    TurtleDarkLogo,
-    TurtleLightLogo,
-    type ChainData,
-} from "..";
-import { katana } from "viem/chains";
 import {
     SupportedLiquidityProviderDeal,
     SupportedTurtleDeal,
 } from "@metrom-xyz/sdk";
+import { linea } from "viem/chains";
+import type { ChainData } from "../types/chains";
+import { ProtocolType } from "../types/protocol";
+import { zeroAddress } from "viem";
+import { LineaLogo, TurtleDarkLogo, TurtleLightLogo } from "../assets";
 
-export const katanaData: ChainData = {
+export const lineaData: ChainData = {
     active: false,
-    name: katana.name,
+    name: "Linea",
     metromContract: {
         address: zeroAddress,
     },
-    blockExplorers: null,
-    icon: KatanaLogo,
+    blockExplorers: linea.blockExplorers,
+    icon: LineaLogo,
     forms: [],
     protocols: [
         {
@@ -29,9 +25,9 @@ export const katanaData: ChainData = {
             logoLight: TurtleLightLogo,
             name: "Turtle Club",
             slug: SupportedLiquidityProviderDeal.Turtle,
-            deal: SupportedTurtleDeal.TurtleKatana,
+            deal: SupportedTurtleDeal.TurtleLinea,
             actionUrl:
-                "https://app.turtle.xyz/earn/partners/e791ff11-980c-4d1c-9da4-43474ce69b9a",
+                "https://app.turtle.xyz/earn/partners/987929cb-50d1-49b6-8400-8e7f5f4f1d45",
         },
     ],
     baseTokens: [],
