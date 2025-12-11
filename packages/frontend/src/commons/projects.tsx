@@ -3,6 +3,7 @@ import {
     AmpedLogo,
     EbisuLogo,
     KatanaLogo,
+    LineaLogo,
     OrkiDarkLogo,
     QuillLogo,
 } from "@metrom-xyz/chains";
@@ -19,6 +20,7 @@ import {
     SupportedLiquityV2,
 } from "@metrom-xyz/sdk";
 import { AaveIllustration } from "../assets/logos/projects/aave-illustration";
+import { LineaIllustration } from "../assets/logos/projects/linea-illustration";
 
 export const PROJECTS_METADATA: Record<string, ProjectMetadata> = {
     quill: {
@@ -138,10 +140,10 @@ export const PROJECTS_METADATA: Record<string, ProjectMetadata> = {
         name: "The Samurai's Call",
         types: ["LP deal"],
         protocol: SupportedLiquidityProviderDeal.Turtle,
-        campaignId: "2c86d3a1-cfe8-486d-915d-1b9ff5e924e9",
+        campaignId: "",
         description:
             "The Samurai's Call campaign is designed to seed dapps on Katana. Hold your deposits through launch to unlock all KAT token rewards.",
-        url: "https://app.turtle.club/campaigns/katana",
+        url: "https://app.turtle.xyz/earn/partners/e791ff11-980c-4d1c-9da4-43474ce69b9a",
         icon: KatanaLogo,
         illustration: KatanaIllustration,
         branding: {
@@ -149,6 +151,24 @@ export const PROJECTS_METADATA: Record<string, ProjectMetadata> = {
             light: "#DFE0C1",
             contrast: { light: "#EEF0DA", dark: "#222313" },
             iconBackground: "#11162F",
+        },
+    },
+    "turtle-linea": {
+        kind: ProjectKind.LiquidityDeals,
+        name: "Linea Ignition",
+        types: ["LP deal"],
+        protocol: SupportedLiquidityProviderDeal.Turtle,
+        campaignId: "",
+        description:
+            "Vault assets are deployed into eligible Linea Ignition campaign lending pools.",
+        url: "https://app.turtle.xyz/earn/partners/987929cb-50d1-49b6-8400-8e7f5f4f1d45",
+        icon: LineaLogo,
+        illustration: LineaIllustration,
+        branding: {
+            main: "#61DFFF",
+            light: "#FFFFFF",
+            contrast: { light: "#61DFFF29", dark: "#1C2527" },
+            iconBackground: "#61DFFF",
         },
     },
     aave: {

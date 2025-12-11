@@ -24,13 +24,7 @@ export function QuickswapLogo(props: SVGIcon) {
                     />
                 </pattern>
             </defs>
-            <rect
-                width={24}
-                height={24}
-                fill="url(#a)"
-                data-name="quick symbol"
-                rx={12}
-            />
+            <rect width={24} height={24} fill="url(#a)" rx={12} />
         </svg>
     );
 }

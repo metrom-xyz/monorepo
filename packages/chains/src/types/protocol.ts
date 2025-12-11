@@ -8,6 +8,7 @@ import {
     SupportedGmxV1,
     SupportedLiquidityProviderDeal,
     SupportedLiquityV2,
+    SupportedTurtleDeal,
     TargetType,
 } from "@metrom-xyz/sdk";
 
@@ -75,6 +76,7 @@ export interface LiquidityProviderDeal
         SupportedLiquidityProviderDeal,
         ProtocolType.LiquidityProviderDeal
     > {
+    deal: SupportedTurtleDeal;
     actionUrl: string;
 }
 

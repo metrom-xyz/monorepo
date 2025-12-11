@@ -6,6 +6,7 @@ import {
     SupportedDex,
     SupportedLiquidityProviderDeal,
     SupportedLiquityV2,
+    SupportedTurtleDeal,
     TargetType,
 } from "@metrom-xyz/sdk";
 import {
@@ -60,6 +61,7 @@ export const mainnetData: ChainData = {
             logoLight: TurtleLightLogo,
             name: "Turtle Club",
             slug: SupportedLiquidityProviderDeal.Turtle,
+            deal: SupportedTurtleDeal.TurtleKatana,
             actionUrl:
                 "https://app.turtle.xyz/earn/partners/e791ff11-980c-4d1c-9da4-43474ce69b9a",
         },

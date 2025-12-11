@@ -5,7 +5,7 @@ import type { Erc20Token } from "@metrom-xyz/sdk";
 import type { Protocol } from "./protocol";
 import { SupportedChain as SupportedChainEvm } from "@metrom-xyz/contracts";
 import { SupportedChain as SupportedChainMvm } from "@metrom-xyz/aptos-contracts";
-import { katana, mainnet } from "viem/chains";
+import { katana, linea, mainnet } from "viem/chains";
 import { Form } from "./forms";
 
 export interface ChainData {
@@ -50,12 +50,13 @@ export enum SupportedProductionEvmChain {
     Lens = SupportedChainEvm.Lens,
     LightLinkPhoenix = SupportedChainEvm.LightLinkPhoenix,
     Lumia = SupportedChainEvm.Lumia,
-    // This is required for the Turtle integration
-    Mainnet = mainnet.id,
-    // This is required for the Katana vault campaigns
-    Katana = katana.id,
     Sei = SupportedChainEvm.Sei,
     Swell = SupportedChainEvm.Swell,
     Hemi = SupportedChainEvm.Hemi,
     Plasma = SupportedChainEvm.Plasma,
+    // This is required for the Turtle integration
+    Mainnet = mainnet.id,
+    // These are required for Turtle campaigns
+    Katana = katana.id,
+    Linea = linea.id,
 }
