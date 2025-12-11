@@ -6,7 +6,6 @@ import { exec } from "node:child_process";
 import Mustache from "mustache";
 
 const NETWORK_NAME: Record<SupportedChain, string> = {
-    [SupportedChain.Holesky]: "holesky",
     [SupportedChain.BaseSepolia]: "base-sepolia",
     [SupportedChain.Sepolia]: "sepolia",
 
@@ -25,6 +24,9 @@ const NETWORK_NAME: Record<SupportedChain, string> = {
     [SupportedChain.Hemi]: "hemi",
     [SupportedChain.Lens]: "lens",
     [SupportedChain.Lumia]: "lumia",
+    [SupportedChain.ArbitrumOne]: "arbitrum-one",
+    [SupportedChain.Plasma]: "plasma-mainnet",
+    [SupportedChain.Saga]: "saga-evm",
 };
 
 const [, , rawNetwork = ""] = process.argv;
