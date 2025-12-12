@@ -15,7 +15,7 @@ import {
 import { type Campaign } from "@/src/types/campaign";
 import { formatUsdAmount } from "@/src/utils/format";
 import { Points } from "./points";
-import { TURTLE_APP_EARN_URL } from "@/src/commons";
+import { TURTLE_APP_EARN_URL, TURTLE_REFERRAL_CODE } from "@/src/commons";
 
 import styles from "./styles.module.css";
 
@@ -37,7 +37,7 @@ export function CampaignRow({ type, campaign }: CampaignProps) {
 
     const linkProps = campaign.isTargeting(TargetType.Turtle)
         ? {
-              href: `${TURTLE_APP_EARN_URL}/${campaign.target.opportunityId}`,
+              href: `${TURTLE_APP_EARN_URL}/${campaign.target.opportunityId}?ref=${TURTLE_REFERRAL_CODE}`,
               target: "_blank",
               rel: "noopener noreferrer",
           }
