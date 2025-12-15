@@ -1,7 +1,7 @@
 import type { FunctionComponent } from "react";
 import type { ChainContract, Chain } from "viem";
 import type { SVGIcon } from "./common";
-import type { Erc20Token } from "@metrom-xyz/sdk";
+import type { ChainType, Erc20Token } from "@metrom-xyz/sdk";
 import type { Protocol } from "./protocol";
 import { SupportedChain as SupportedChainEvm } from "@metrom-xyz/contracts";
 import { SupportedChain as SupportedChainMvm } from "@metrom-xyz/aptos-contracts";
@@ -9,8 +9,11 @@ import { katana, linea, mainnet } from "viem/chains";
 import { Form } from "./forms";
 
 export interface ChainData {
+    id: number;
+    type: ChainType;
     active: boolean;
     name: string;
+    slug: string;
     metromContract: ChainContract;
     blockExplorers: Chain["blockExplorers"] | null;
     icon: FunctionComponent<SVGIcon>;

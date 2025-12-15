@@ -2,11 +2,14 @@ import { SupportedChain, ADDRESS } from "@metrom-xyz/contracts";
 import { MantleLogo } from "../assets/logos/chains/mantle";
 import { mantle } from "viem/chains";
 import type { ChainData } from "../types/chains";
-import { PartnerCampaignType } from "@metrom-xyz/sdk";
+import { ChainType, PartnerCampaignType } from "@metrom-xyz/sdk";
 
 export const mantleData: ChainData = {
     active: false,
+    id: mantle.id,
+    type: ChainType.Evm,
     name: mantle.name,
+    slug: "mantle",
     metromContract: ADDRESS[SupportedChain.Mantle],
     blockExplorers: mantle.blockExplorers,
     icon: MantleLogo,

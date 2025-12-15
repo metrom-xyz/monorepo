@@ -11,6 +11,7 @@ import { useMemo } from "react";
 import type { FilterParams, RawFilters } from "../campaigns-table/filters";
 import { useCampaignsCount } from "@/src/hooks/useCampaignsCount";
 import { APTOS } from "@/src/commons/env";
+import { getChainDataBySlug } from "@/src/utils/chain";
 
 import styles from "./styles.module.css";
 
@@ -39,12 +40,34 @@ export function Project({ project }: ProjectProps) {
         switch (kind) {
             case ProjectKind.GenericProtocol:
             case ProjectKind.PointsTracking:
-            case ProjectKind.LiquidityDeals:
                 return {
                     chains: [],
                     statuses: [],
                     protocols: [{ label: "", value: protocol }],
                 };
+            case ProjectKind.LiquidityDeals: {
+                const [, chain] = project.split("-");
+                const chainData = getChainDataBySlug(chain);
+
+                if (!chainData) {
+                    console.warn(
+                        `Unsupported liquidity deals project with chain ${chain}`,
+                    );
+                    return { chains: [], statuses: [], protocols: [] };
+                }
+
+                return {
+                    chains: [
+                        {
+                            label: "",
+                            query: "",
+                            value: `${chainData.type}_${chainData.id}`,
+                        },
+                    ],
+                    statuses: [],
+                    protocols: [{ label: "", value: protocol }],
+                };
+            }
             case ProjectKind.Chain:
                 return {
                     chains: [
@@ -60,7 +83,7 @@ export function Project({ project }: ProjectProps) {
             default:
                 return { chains: [], statuses: [], protocols: [] };
         }
-    }, [details, kind, protocol]);
+    }, [details, kind, protocol, project]);
 
     const { chainTypes, chainIds, protocols }: FilterParams = useMemo(() => {
         const { chains, statuses, protocols } = optionalFilters;

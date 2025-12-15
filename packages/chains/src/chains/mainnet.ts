@@ -3,6 +3,7 @@ import { mainnet } from "viem/chains";
 import type { ChainData } from "../types/chains";
 import { DepositUrlType, ProtocolType } from "../types/protocol";
 import {
+    ChainType,
     SupportedDex,
     SupportedLiquidityProviderDeal,
     SupportedLiquityV2,
@@ -19,7 +20,10 @@ import {
 // This is required for the Turtle integration and for dynamic points campaigns
 export const mainnetData: ChainData = {
     active: false,
+    id: mainnet.id,
+    type: ChainType.Evm,
     name: mainnet.name,
+    slug: "ethereum",
     metromContract: { address: "0x" },
     blockExplorers: mainnet.blockExplorers,
     icon: EthLogo,

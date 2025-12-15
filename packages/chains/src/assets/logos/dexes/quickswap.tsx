@@ -1,6 +1,9 @@
+import { useSvgIds } from "../../../hooks/useSvgIds";
 import { SVGIcon } from "../../../types/common";
 
 export function QuickswapLogo(props: SVGIcon) {
+    const svg = useSvgIds();
+
     return (
         <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -11,7 +14,7 @@ export function QuickswapLogo(props: SVGIcon) {
         >
             <defs>
                 <pattern
-                    id="a"
+                    id={svg.id("a")}
                     width="100%"
                     height="100%"
                     preserveAspectRatio="none"
@@ -24,7 +27,7 @@ export function QuickswapLogo(props: SVGIcon) {
                     />
                 </pattern>
             </defs>
-            <rect width={24} height={24} fill="url(#a)" rx={12} />
+            <rect width={24} height={24} fill={svg.url("a")} rx={12} />
         </svg>
     );
 }
