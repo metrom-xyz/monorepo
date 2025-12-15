@@ -55,11 +55,11 @@
 }
 
 .box:first-child {
-    @apply rounded-t-xl sm:rounded-tl-xl sm:rounded-tr-none;
+    @apply rounded-t-lg sm:rounded-tl-lg sm:rounded-tr-none;
 }
 
 .box:last-child {
-    @apply sm:rounded-tr-xl;
+    @apply sm:rounded-tr-lg;
 }
 
 .tokenRewards {
@@ -67,7 +67,7 @@
 }
 
 .tokenRewards:last-child {
-    @apply sm:rounded-tr-xl;
+    @apply sm:rounded-tr-lg;
 }
 
 .rewardBox {

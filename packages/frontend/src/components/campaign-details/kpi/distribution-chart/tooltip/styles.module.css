@@ -4,8 +4,9 @@
     @apply flex
         flex-col
         gap-2
-        p-2
-        rounded-md
+        p-3
+        min-w-60
+        rounded-lg
         border
         bg-gray-100
         dark:bg-neutral-950
@@ -22,19 +23,23 @@
 }
 
 .legendDot {
-    @apply size-3 rounded-full;
+    @apply size-2 rounded-full;
 }
 
 .legendDot.reimbursed {
-    @apply bg-gray-200 dark:bg-neutral-800;
+    @apply bg-gray-300 dark:bg-neutral-700;
 }
 
 .legendDot.distributed {
     @apply bg-brand-green-dark dark:bg-brand-green;
 }
 
-.breakdownWrapper {
-    @apply mt-3;
+.percentageChip {
+    @apply px-1 py-0.5 rounded-sm bg-gray-200 dark:bg-neutral-700;
+}
+
+.divider {
+    @apply border stroke-divider my-1.5;
 }
 
 .row {

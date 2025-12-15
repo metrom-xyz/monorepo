@@ -1,7 +1,7 @@
 @reference "../../app.css";
 
 .root {
-    @apply w-full flex flex-col gap-4 px-3 pb-3 sm:px-5 sm:pb-5;
+    @apply w-full flex flex-col gap-4;
 }
 
 .titleContainer {
@@ -38,7 +38,7 @@
 }
 
 .noDistribution {
-    @apply min-h-[20.125rem] flex flex-col items-center justify-center gap-2 bg-gray-100 dark:bg-neutral-800;
+    @apply min-h-[23.438rem] flex flex-col items-center justify-center gap-2 bg-gray-100 dark:bg-neutral-800;
 }
 
 .tableWrapper {
@@ -85,7 +85,6 @@
 .row.connected {
     @apply bg-gray-200 dark:bg-neutral-700;
 }
-
 
 .accountWrapper {
     @apply flex items-center gap-1;

@@ -9,8 +9,9 @@ import {
     Tooltip,
     XAxis,
     YAxis,
+    type ReferenceLineSegment,
 } from "recharts";
-import { useMemo } from "react";
+import { useCallback, useMemo } from "react";
 import { useTranslations } from "next-intl";
 import {
     ErrorText,
@@ -30,6 +31,7 @@ import { formatUsdAmount } from "@/src/utils/format";
 import { useMeasure } from "react-use";
 import { SECONDS_IN_YEAR } from "@/src/commons";
 import { ChartIcon } from "@/src/assets/chart-icon";
+import type { AxisDomain } from "recharts/types/util/types";
 
 import styles from "./styles.module.css";
 
@@ -68,13 +70,17 @@ interface KpiSimulationChartProps {
     loading?: boolean;
     tooltipSize?: TypographySize;
     tooltip?: boolean;
+    complex?: boolean;
     className?: string;
 }
 
+export const MAX_AREA_HEIGHT = 364;
+export const CHART_MARGINS = { top: 34, right: 4, bottom: 4, left: 2 };
 const REFERENCE_LINE_PROXIMITY_THRESHOLD = 16;
-const REFERENCE_LINE_LABEL_DX = 8;
+const REFERENCE_LINE_LABEL_DX = 10;
 const POINTS_COUNT = 1000;
-export const CHART_MARGINS = { top: 30, right: 4, bottom: 4, left: 2 };
+const CHART_STYLES = { cursor: "pointer" };
+const Y_AXIS_DOMAIN: AxisDomain = [0, "dataMax"];
 
 export function KpiSimulationChart({
     targetValueName,
@@ -88,6 +94,7 @@ export function KpiSimulationChart({
     error,
     loading,
     tooltipSize,
+    complex = false,
     tooltip = true,
     className,
 }: KpiSimulationChartProps) {
@@ -107,6 +114,8 @@ export function KpiSimulationChart({
               )
             : 0;
 
+    const minPayoutUsd = totalRewardsUsd * minimumPayoutPercentage;
+
     const sortedSignificantTargetUsdValues = useMemo(() => {
         if (
             lowerUsdTarget === undefined ||
@@ -119,12 +128,17 @@ export function KpiSimulationChart({
         const targetValues = [targetUsdValue, lowerUsdTarget, upperUsdTarget];
         targetValues.sort((a, b) => a - b);
         const fullRange = targetValues[2] - targetValues[0];
-        const padding = fullRange * 0.2;
+        const basicPadding = fullRange * 0.28;
+        const paddingForLowerZeroLowerBound = fullRange * 0.25;
+        const lowerBoundPadding =
+            targetValues[0] === 0
+                ? paddingForLowerZeroLowerBound
+                : basicPadding;
 
         return [
-            targetValues[0] - padding,
+            targetValues[0] - lowerBoundPadding,
             ...targetValues,
-            targetValues[2] + padding,
+            targetValues[2] + basicPadding,
         ];
     }, [lowerUsdTarget, targetUsdValue, upperUsdTarget]);
 
@@ -324,6 +338,99 @@ export function KpiSimulationChart({
         campaignDurationSeconds,
     ]);
 
+    const xAxisDomain = useMemo(
+        () => [
+            sortedSignificantTargetUsdValues[0],
+            sortedSignificantTargetUsdValues[4],
+        ],
+        [sortedSignificantTargetUsdValues],
+    );
+
+    const yAxisTicks = useMemo(() => {
+        if (minPayoutUsd > 0)
+            return [minPayoutUsd, currentPayoutUsd, totalRewardsUsd].sort(
+                (a, b) => a - b,
+            );
+        return [currentPayoutUsd, totalRewardsUsd];
+    }, [currentPayoutUsd, minPayoutUsd, totalRewardsUsd]);
+
+    const targetValueReferenceLineSegment: ReferenceLineSegment =
+        useMemo(() => {
+            return [
+                {
+                    x: targetUsdValue || 0,
+                    y: 0,
+                },
+                {
+                    x: targetUsdValue || 0,
+                    y: totalRewardsUsd,
+                },
+            ];
+        }, [targetUsdValue, totalRewardsUsd]);
+
+    const lowerBoundReferenceLineSegment: ReferenceLineSegment = useMemo(
+        () => [
+            {
+                x: lowerUsdTarget,
+                y: 0,
+            },
+            {
+                x: lowerUsdTarget,
+                y: totalRewardsUsd,
+            },
+        ],
+        [lowerUsdTarget, totalRewardsUsd],
+    );
+
+    const uppderBoundReferenceLineSegment: ReferenceLineSegment = useMemo(
+        () => [
+            {
+                x: upperUsdTarget,
+                y: 0,
+            },
+            {
+                x: upperUsdTarget,
+                y: totalRewardsUsd,
+            },
+        ],
+        [totalRewardsUsd, upperUsdTarget],
+    );
+
+    const currentPayoutReferenceLineSegment: ReferenceLineSegment = useMemo(
+        () => [
+            { x: 0, y: currentPayoutUsd },
+            { x: targetUsdValue || 0, y: currentPayoutUsd },
+        ],
+        [currentPayoutUsd, targetUsdValue],
+    );
+
+    const tickFormatter = useCallback((value: unknown) => {
+        return formatUsdAmount({ amount: value as number });
+    }, []);
+
+    const TooltipContentMemoized = useCallback(
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        (props: any) => (
+            <TooltipContent
+                {...props}
+                size={tooltipSize}
+                targetValueName={targetValueName}
+                lowerUsdTarget={lowerUsdTarget || 0}
+                upperUsdTarget={upperUsdTarget || 0}
+                totalRewardsUsd={totalRewardsUsd}
+                minimumPayouPercentage={minimumPayoutPercentage}
+            />
+        ),
+        [
+            lowerUsdTarget,
+            minimumPayoutPercentage,
+            targetValueName,
+            tooltipSize,
+            totalRewardsUsd,
+            upperUsdTarget,
+        ],
+    );
+
     if (loading) {
         return (
             <div className={classNames("root", styles.root, className)}>
@@ -416,7 +523,7 @@ export function KpiSimulationChart({
                 data={chartData}
                 margin={CHART_MARGINS}
                 accessibilityLayer={false}
-                style={{ cursor: "pointer" }}
+                style={CHART_STYLES}
             >
                 <Area
                     type="monotone"
@@ -425,7 +532,7 @@ export function KpiSimulationChart({
                     stroke="none"
                     fillOpacity={1}
                     animationEasing="ease-in-out"
-                    animationDuration={200}
+                    animationDuration={400}
                     isAnimationActive={true}
                     activeDot={false}
                     className={styles.distributingArea}
@@ -437,7 +544,7 @@ export function KpiSimulationChart({
                     stroke="none"
                     fillOpacity={1}
                     animationEasing="ease-in-out"
-                    animationDuration={200}
+                    animationDuration={400}
                     isAnimationActive={true}
                     activeDot={false}
                     className={styles.notDistributingArea}
@@ -448,7 +555,7 @@ export function KpiSimulationChart({
                     dataKey="aprLinePoint"
                     fillOpacity={1}
                     animationEasing="ease-in-out"
-                    animationDuration={200}
+                    animationDuration={400}
                     isAnimationActive={true}
                     activeDot={false}
                     dot={false}
@@ -468,13 +575,8 @@ export function KpiSimulationChart({
                         />
                     }
                     ticks={sortedSignificantTargetUsdValues.slice(1, 4)}
-                    tickFormatter={(value) =>
-                        formatUsdAmount({ amount: value })
-                    }
-                    domain={[
-                        sortedSignificantTargetUsdValues[0],
-                        sortedSignificantTargetUsdValues[4],
-                    ]}
+                    tickFormatter={tickFormatter}
+                    domain={xAxisDomain}
                     className={styles.xAxis}
                 />
                 <YAxis
@@ -483,25 +585,24 @@ export function KpiSimulationChart({
                     axisLine={false}
                     tickLine={false}
                     mirror
-                    tick={<RewardTick />}
-                    domain={[0, "dataMax"]}
-                    ticks={[currentPayoutUsd, totalRewardsUsd]}
+                    tick={
+                        <RewardTick
+                            complex={complex}
+                            minPayoutPercentage={minimumPayoutPercentage}
+                            minPayoutUsd={minPayoutUsd}
+                            currentPayoutUsd={currentPayoutUsd}
+                            totalRewardsUsd={totalRewardsUsd}
+                        />
+                    }
+                    domain={Y_AXIS_DOMAIN}
+                    ticks={yAxisTicks}
                 />
 
                 <ReferenceLine
-                    strokeDasharray={"3 3"}
+                    strokeDasharray={"4 4"}
                     ifOverflow="visible"
-                    segment={[
-                        {
-                            x: targetUsdValue,
-                            y: 0,
-                        },
-                        {
-                            x: targetUsdValue,
-                            y: totalRewardsUsd,
-                        },
-                    ]}
-                    className={styles.referenceLine}
+                    segment={targetValueReferenceLineSegment}
+                    className={classNames(styles.referenceLine, styles.green)}
                 >
                     <Label
                         value={
@@ -520,18 +621,9 @@ export function KpiSimulationChart({
                 </ReferenceLine>
 
                 <ReferenceLine
-                    strokeDasharray={"3 3"}
+                    strokeDasharray={"4 4"}
                     ifOverflow="visible"
-                    segment={[
-                        {
-                            x: lowerUsdTarget,
-                            y: 0,
-                        },
-                        {
-                            x: lowerUsdTarget,
-                            y: totalRewardsUsd,
-                        },
-                    ]}
+                    segment={lowerBoundReferenceLineSegment}
                     className={styles.referenceLine}
                 >
                     <Label
@@ -543,18 +635,9 @@ export function KpiSimulationChart({
                 </ReferenceLine>
 
                 <ReferenceLine
-                    strokeDasharray={"3 3"}
+                    strokeDasharray={"4 4"}
                     ifOverflow="visible"
-                    segment={[
-                        {
-                            x: upperUsdTarget,
-                            y: 0,
-                        },
-                        {
-                            x: upperUsdTarget,
-                            y: totalRewardsUsd,
-                        },
-                    ]}
+                    segment={uppderBoundReferenceLineSegment}
                     className={styles.referenceLine}
                 >
                     <Label
@@ -568,19 +651,19 @@ export function KpiSimulationChart({
                 {currentPayoutUsd > 0 && (
                     <>
                         <ReferenceLine
-                            strokeDasharray={"3 3"}
+                            strokeDasharray={"4 4"}
                             ifOverflow="visible"
-                            segment={[
-                                { x: 0, y: currentPayoutUsd },
-                                { x: targetUsdValue, y: currentPayoutUsd },
-                            ]}
-                            className={styles.referenceLine}
+                            segment={currentPayoutReferenceLineSegment}
+                            className={classNames(
+                                styles.referenceLine,
+                                styles.green,
+                            )}
                         />
                         <ReferenceDot
                             x={targetUsdValue}
                             y={currentPayoutUsd}
-                            r={4}
-                            strokeWidth={1}
+                            r={5}
+                            strokeWidth={2}
                             className={styles.referenceDot}
                         />
                     </>
@@ -589,16 +672,7 @@ export function KpiSimulationChart({
                 {tooltip && (
                     <Tooltip
                         isAnimationActive={false}
-                        content={
-                            <TooltipContent
-                                size={tooltipSize}
-                                targetValueName={targetValueName}
-                                lowerUsdTarget={lowerUsdTarget}
-                                upperUsdTarget={upperUsdTarget}
-                                totalRewardsUsd={totalRewardsUsd}
-                                minimumPayouPercentage={minimumPayoutPercentage}
-                            />
-                        }
+                        content={TooltipContentMemoized}
                         cursor={
                             <TooltipCursor totalRewardsUsd={totalRewardsUsd} />
                         }

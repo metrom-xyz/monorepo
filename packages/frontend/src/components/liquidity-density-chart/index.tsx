@@ -29,6 +29,7 @@ import { ZoomOutIcon } from "@/src/assets/zoom-out-icon";
 import { ZoomInIcon } from "@/src/assets/zoom-in-icon";
 import { formatUnits } from "viem";
 import { LiquidityChartIcon } from "@/src/assets/liquidity-chart-icon";
+import type { AxisDomain } from "recharts/types/util/types";
 
 import styles from "./styles.module.css";
 
@@ -69,6 +70,8 @@ export interface ScaledLiquidityTick {
 const ZOOM_FACTOR = 50;
 const MAX_ZOOM_LEVEL = 5;
 const MIN_ZOOM_LEVEL = 1;
+const CHART_STYLES = { cursor: "pointer" };
+const Y_AXIS_DOMAIN: AxisDomain = [0, "dataMax"];
 
 export function LiquidityDensityChart({
     error,
@@ -86,6 +89,11 @@ export function LiquidityDensityChart({
     const t = useTranslations("liquidityDensityChart");
     const [tooltipIndex, setTooltipIndex] = useState<number>();
     const [zoomLevel, setZoomLevel] = useState<number>(MAX_ZOOM_LEVEL / 2);
+
+    const barChartMargins = useMemo(
+        () => ({ top: 24, bottom: showPriceRange ? 20 : 0 }),
+        [showPriceRange],
+    );
 
     const { ticks, activeTickIdx } = useMemo(() => {
         if (!density) return { ticks: [], activeTickIdx: null };
@@ -244,11 +252,11 @@ export function LiquidityDensityChart({
                     data={visibleTicks}
                     onMouseMove={handleOnMouseMove}
                     onMouseLeave={handleOnMouseLeave}
-                    margin={{ top: 24, bottom: showPriceRange ? 20 : 0 }}
+                    margin={barChartMargins}
                     accessibilityLayer={false}
-                    style={{ cursor: "pointer" }}
+                    style={CHART_STYLES}
                 >
-                    <YAxis hide domain={[0, "dataMax"]} />
+                    <YAxis hide domain={Y_AXIS_DOMAIN} />
                     <XAxis hide dataKey={token0To1 ? "price0" : "price1"} />
                     <Bar
                         dataKey="liquidity"

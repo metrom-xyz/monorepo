@@ -16,6 +16,10 @@
     @apply w-full max-w-screen-xl flex flex-col gap-6 sm:gap-8 rounded-xl bg-gray-150 dark:bg-neutral-900;
 }
 
+.contentBody {
+    @apply px-3 pb-3 sm:px-5 sm:pb-5 flex flex-col gap-6 sm:gap-8;
+}
+
 .notFound {
     @apply flex flex-col justify-center items-center gap-10;
 }

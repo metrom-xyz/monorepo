@@ -126,11 +126,11 @@ export function RepartitionChart({
                             <Pie
                                 dataKey="value"
                                 animationEasing="ease-in-out"
-                                animationDuration={500}
+                                animationDuration={400}
                                 cornerRadius={6}
                                 data={chartData}
                                 innerRadius={70}
-                                outerRadius={110}
+                                outerRadius={113}
                                 startAngle={90}
                                 endAngle={450}
                                 minAngle={5}
