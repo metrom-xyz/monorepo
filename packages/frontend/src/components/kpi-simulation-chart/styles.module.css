@@ -89,7 +89,7 @@
 }
 
 .notDistributingArea path {
-    @apply chart-area-secondary;
+    @apply fill-gray-300 dark:fill-neutral-700;
 }
 
 .distributingArea path {
@@ -101,7 +101,7 @@
 }
 
 .referenceLine line {
-    @apply stroke-1
+    @apply stroke-2
         stroke-gray-900
         dark:stroke-neutral-400
         font-sans
@@ -114,6 +114,10 @@
         ease-in-out;
 }
 
+.referenceLine.green line {
+    @apply stroke-brand-green-dark dark:stroke-brand-green;
+}
+
 .referenceDot circle {
-    @apply fill-brand-green-dark dark:fill-brand-green stroke-gray-900 dark:stroke-neutral-400;
+    @apply fill-brand-green-dark dark:fill-brand-green stroke-gray-100 dark:stroke-neutral-800;
 }

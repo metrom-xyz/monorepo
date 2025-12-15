@@ -48,7 +48,7 @@
         "react-remove-scroll": "^2.7.0",
         "react-use": "^17.5.1",
         "react-window": "^2.0.2",
-        "recharts": "^3.2.1",
+        "recharts": "^3.5.1",
         "sharp": "^0.34.3",
         "sonner": "^2.0.7",
         "viem": "^2.37.3",

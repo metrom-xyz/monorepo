@@ -1,7 +1,7 @@
 @reference "../../../app.css";
 
 .root {
-    @apply sm:max-w-80 flex flex-col gap-3 bg-gray-100 dark:bg-neutral-800;
+    @apply sm:max-w-80 flex flex-col gap-3 p-5 bg-gray-100 dark:bg-neutral-800;
 }
 
 .container {
@@ -27,7 +27,7 @@
         outline-none
         hover:opacity-85
         stroke-gray-200
-        dark:stroke-neutral-950
+        dark:stroke-neutral-900
         transition-all
         duration-200
         ease-in-out;

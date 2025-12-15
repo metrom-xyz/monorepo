@@ -49,7 +49,11 @@ export function AprChip({
                             [styles.witkKpi]: kpi,
                         })}
                     >
-                        <div className={classNames(styles.wrapper)}>
+                        <div
+                            className={classNames(styles.wrapper, {
+                                [styles[size]]: true,
+                            })}
+                        >
                             {prefix && (
                                 <Typography
                                     size={sizes[size][0]}
