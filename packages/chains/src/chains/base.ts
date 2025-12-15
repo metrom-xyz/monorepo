@@ -1,5 +1,6 @@
 import {
     BaseCampaignType,
+    ChainType,
     PartnerCampaignType,
     SupportedDex,
 } from "@metrom-xyz/sdk";
@@ -15,7 +16,10 @@ import { QuickswapLogo } from "../assets/logos/dexes/quickswap";
 
 export const baseData: ChainData = {
     active: true,
+    id: base.id,
+    type: ChainType.Evm,
     name: base.name,
+    slug: "base",
     metromContract: ADDRESS[SupportedChain.Base],
     blockExplorers: base.blockExplorers,
     icon: BaseLogo,

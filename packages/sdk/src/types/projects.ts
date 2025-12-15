@@ -1,7 +1,9 @@
+export interface ProjectCampaignTotals {
+    active: number;
+    total: number;
+}
+
 export interface Project {
     slug: string;
-    campaigns: {
-        active: number;
-        total: number;
-    };
+    campaigns: ProjectCampaignTotals;
 }

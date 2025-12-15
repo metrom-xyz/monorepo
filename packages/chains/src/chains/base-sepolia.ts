@@ -1,4 +1,4 @@
-import { BaseCampaignType, SupportedDex } from "@metrom-xyz/sdk";
+import { BaseCampaignType, ChainType, SupportedDex } from "@metrom-xyz/sdk";
 import { SupportedChain, ADDRESS } from "@metrom-xyz/contracts";
 import { baseSepolia } from "viem/chains";
 import type { ChainData } from "../types/chains";
@@ -8,7 +8,10 @@ import { UniswapLogo } from "../assets/logos/dexes/uniswap";
 
 export const baseSepoliaData: ChainData = {
     active: true,
+    id: baseSepolia.id,
+    type: ChainType.Evm,
     name: baseSepolia.name,
+    slug: "base_sepolia",
     metromContract: ADDRESS[SupportedChain.BaseSepolia],
     blockExplorers: baseSepolia.blockExplorers,
     icon: BaseLogo,

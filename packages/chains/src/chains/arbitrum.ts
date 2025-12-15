@@ -2,12 +2,15 @@ import { arbitrum } from "viem/chains";
 import { ChainData } from "../types/chains";
 import { ADDRESS, SupportedChain } from "@metrom-xyz/contracts";
 import { ArbitrumLogo, UniswapLogo } from "../assets";
-import { BaseCampaignType, SupportedDex } from "@metrom-xyz/sdk";
+import { BaseCampaignType, ChainType, SupportedDex } from "@metrom-xyz/sdk";
 import { DepositUrlType, ProtocolType } from "../types/protocol";
 
 export const arbitrumData: ChainData = {
     active: false,
+    id: arbitrum.id,
+    type: ChainType.Evm,
     name: arbitrum.name,
+    slug: "arbitrum",
     metromContract: ADDRESS[SupportedChain.ArbitrumOne],
     blockExplorers: arbitrum.blockExplorers,
     icon: ArbitrumLogo,

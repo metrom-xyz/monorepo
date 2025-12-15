@@ -1,5 +1,5 @@
 import { SupportedChain, ADDRESS } from "@metrom-xyz/contracts";
-import { BaseCampaignType, SupportedDex } from "@metrom-xyz/sdk";
+import { BaseCampaignType, ChainType, SupportedDex } from "@metrom-xyz/sdk";
 import { TelosLogo } from "../assets/logos/chains/telos";
 import { UniswapLogo } from "../assets/logos/dexes/uniswap";
 import { telos } from "viem/chains";
@@ -8,7 +8,10 @@ import { DepositUrlType, ProtocolType } from "../types/protocol";
 
 export const telosData: ChainData = {
     active: false,
+    id: telos.id,
+    type: ChainType.Evm,
     name: telos.name,
+    slug: "telos",
     metromContract: ADDRESS[SupportedChain.Telos],
     blockExplorers: {
         default: {

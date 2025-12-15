@@ -1,5 +1,6 @@
 import {
     BaseCampaignType,
+    ChainType,
     PartnerCampaignType,
     SupportedDex,
 } from "@metrom-xyz/sdk";
@@ -12,7 +13,10 @@ import { UniswapLogo } from "../assets";
 
 export const gnosisData: ChainData = {
     active: true,
+    id: gnosis.id,
+    type: ChainType.Evm,
     name: gnosis.name,
+    slug: "gnosis",
     metromContract: ADDRESS[SupportedChain.Gnosis],
     blockExplorers: gnosis.blockExplorers,
     icon: GnosisLogo,
