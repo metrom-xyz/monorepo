@@ -1,6 +1,7 @@
 import { SupportedChain, ADDRESS } from "@metrom-xyz/contracts";
 import {
     BaseCampaignType,
+    ChainType,
     PartnerCampaignType,
     SupportedDex,
     SupportedGmxV1,
@@ -14,7 +15,10 @@ import { AmpedLogo } from "../assets";
 
 export const sonicData: ChainData = {
     active: true,
+    id: sonic.id,
+    type: ChainType.Evm,
     name: sonic.name,
+    slug: "sonic",
     metromContract: ADDRESS[SupportedChain.Sonic],
     blockExplorers: {
         default: {

@@ -1,4 +1,5 @@
 import {
+    ChainType,
     SupportedLiquidityProviderDeal,
     SupportedTurtleDeal,
 } from "@metrom-xyz/sdk";
@@ -10,7 +11,10 @@ import { LineaLogo, TurtleDarkLogo, TurtleLightLogo } from "../assets";
 
 export const lineaData: ChainData = {
     active: false,
+    id: linea.id,
+    type: ChainType.Evm,
     name: "Linea",
+    slug: "linea",
     metromContract: {
         address: zeroAddress,
     },

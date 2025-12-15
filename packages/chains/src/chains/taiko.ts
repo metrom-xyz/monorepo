@@ -1,5 +1,6 @@
 import {
     BaseCampaignType,
+    ChainType,
     PartnerCampaignType,
     SupportedDex,
 } from "@metrom-xyz/sdk";
@@ -14,7 +15,10 @@ import { IzumiLogo } from "../assets/logos/dexes/izumi";
 
 export const taikoData: ChainData = {
     active: true,
+    id: taiko.id,
+    type: ChainType.Evm,
     name: "Taiko",
+    slug: "taiko",
     metromContract: ADDRESS[SupportedChain.Taiko],
     blockExplorers: taiko.blockExplorers,
     icon: TaikoLogo,

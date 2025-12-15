@@ -1,5 +1,6 @@
 import {
     BaseCampaignType,
+    ChainType,
     PartnerCampaignType,
     SupportedAaveV3,
     TargetType,
@@ -11,7 +12,10 @@ import { ADDRESS, SupportedChain } from "@metrom-xyz/aptos-contracts";
 
 export const aptosDevelopmentData: ChainData = {
     active: true,
+    id: 2,
+    type: ChainType.Aptos,
     name: "Aptos Testnet",
+    slug: "aptos_testnet",
     metromContract: ADDRESS[SupportedChain.Testnet],
     blockExplorers: {
         default: {
@@ -68,7 +72,10 @@ export const aptosDevelopmentData: ChainData = {
 // Aptos production deployment for the development environment
 export const aptosDevelopmentProductionData: ChainData = {
     active: true,
+    id: 1,
+    type: ChainType.Aptos,
     name: "Aptos",
+    slug: "aptos",
     metromContract: {
         address:
             "0x493e77803da878852618f16be3867fdf328734b89a35fe15cf39a0cfb070246d",
@@ -128,7 +135,10 @@ export const aptosDevelopmentProductionData: ChainData = {
 
 export const aptosProductionData: ChainData = {
     active: true,
+    id: 1,
+    type: ChainType.Aptos,
     name: "Aptos",
+    slug: "aptos",
     metromContract: ADDRESS[SupportedChain.Mainnet],
     blockExplorers: {
         default: {

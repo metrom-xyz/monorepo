@@ -1,4 +1,4 @@
-import { BaseCampaignType, SupportedDex } from "@metrom-xyz/sdk";
+import { BaseCampaignType, ChainType, SupportedDex } from "@metrom-xyz/sdk";
 import { SupportedChain, ADDRESS } from "@metrom-xyz/contracts";
 import { plasma } from "viem/chains";
 import type { ChainData } from "../types/chains";
@@ -7,7 +7,10 @@ import { DepositUrlType, ProtocolType } from "../types/protocol";
 
 export const plasmaData: ChainData = {
     active: true,
+    id: plasma.id,
+    type: ChainType.Evm,
     name: plasma.name,
+    slug: "plasma",
     metromContract: ADDRESS[SupportedChain.Plasma],
     blockExplorers: plasma.blockExplorers,
     icon: PlasmaLogo,

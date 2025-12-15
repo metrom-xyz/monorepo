@@ -1,9 +1,11 @@
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
-import type { HookBaseParams } from "../types/hooks";
-import { type Project } from "@metrom-xyz/sdk";
+import type { HookBaseParams, HookCrossVmParams } from "../types/hooks";
+import { ChainType, type Project } from "@metrom-xyz/sdk";
 import { METROM_API_CLIENT } from "../commons";
 
-type UseProjectsParams = HookBaseParams;
+interface UseProjectsParams extends HookBaseParams, HookCrossVmParams {
+    chainType?: ChainType;
+}
 
 interface UseProjectsReturnValue {
     loading: boolean;
@@ -14,6 +16,8 @@ interface UseProjectsReturnValue {
 
 export function useProjects({
     enabled,
+    chainType,
+    crossVm = true,
 }: UseProjectsParams = {}): UseProjectsReturnValue {
     const {
         data: projects,
@@ -21,10 +25,13 @@ export function useProjects({
         isPending: loading,
         isFetching: fetching,
     } = useQuery({
-        queryKey: ["projects"],
+        queryKey: ["projects", chainType, crossVm],
         queryFn: async () => {
             try {
-                return await METROM_API_CLIENT.fetchProjects();
+                return await METROM_API_CLIENT.fetchProjects({
+                    chainType,
+                    crossVm,
+                });
             } catch (error) {
                 console.error(`Could not fetch projects: ${error}`);
                 throw error;

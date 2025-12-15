@@ -3,6 +3,7 @@ import { SupportedChain, ADDRESS } from "@metrom-xyz/contracts";
 import { sepolia } from "viem/chains";
 import {
     BaseCampaignType,
+    ChainType,
     SupportedDex,
     SupportedLiquityV2,
     TargetType,
@@ -16,7 +17,10 @@ import { BalancerLogo } from "../assets/logos/dexes/balancer";
 
 export const sepoliaData: ChainData = {
     active: true,
+    id: sepolia.id,
+    type: ChainType.Evm,
     name: sepolia.name,
+    slug: "sepolia",
     metromContract: ADDRESS[SupportedChain.Sepolia],
     blockExplorers: sepolia.blockExplorers,
     icon: EthLogo,

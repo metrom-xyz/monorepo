@@ -1,6 +1,7 @@
 import { SupportedChain, ADDRESS } from "@metrom-xyz/contracts";
 import {
     BaseCampaignType,
+    ChainType,
     PartnerCampaignType,
     SupportedDex,
 } from "@metrom-xyz/sdk";
@@ -12,7 +13,10 @@ import { DepositUrlType, ProtocolType } from "../types/protocol";
 
 export const seiDevelopmentData: ChainData = {
     active: true,
+    id: sei.id,
+    type: ChainType.Evm,
     name: "Sei",
+    slug: "sei",
     metromContract: {
         address: "0xD4AC4AaFb81eC774E49AA755A66EfCe4574D6276",
         blockCreated: 141_494_257,
@@ -70,7 +74,10 @@ export const seiDevelopmentData: ChainData = {
 
 export const seiProductionData: ChainData = {
     active: true,
-    name: sei.name,
+    id: sei.id,
+    type: ChainType.Evm,
+    name: "Sei",
+    slug: "sei",
     metromContract: ADDRESS[SupportedChain.Sei],
     blockExplorers: {
         default: {

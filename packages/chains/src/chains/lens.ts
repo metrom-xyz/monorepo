@@ -8,11 +8,14 @@ import {
     type ChainData,
 } from "..";
 import { lens } from "viem/chains";
-import { BaseCampaignType, PartnerCampaignType } from "@metrom-xyz/sdk";
+import { BaseCampaignType, ChainType, PartnerCampaignType } from "@metrom-xyz/sdk";
 
 export const lensData: ChainData = {
     active: false,
+    id: lens.id,
+    type: ChainType.Evm,
     name: lens.name,
+    slug: "lens",
     metromContract: ADDRESS[SupportedChain.Lens],
     blockExplorers: lens.blockExplorers,
     icon: LensLogo,

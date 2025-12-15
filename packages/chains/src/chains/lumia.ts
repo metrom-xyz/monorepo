@@ -1,4 +1,4 @@
-import { BaseCampaignType, SupportedDex } from "@metrom-xyz/sdk";
+import { BaseCampaignType, ChainType, SupportedDex } from "@metrom-xyz/sdk";
 import { SupportedChain, ADDRESS } from "@metrom-xyz/contracts";
 import { lumiaMainnet } from "viem/chains";
 import type { ChainData } from "../types/chains";
@@ -8,7 +8,10 @@ import { MorphexLogo } from "../assets/logos/dexes/morphex";
 
 export const lumiaData: ChainData = {
     active: false,
+    id: lumiaMainnet.id,
+    type: ChainType.Evm,
     name: "Lumia",
+    slug: "lumia",
     metromContract: ADDRESS[SupportedChain.Lumia],
     blockExplorers: lumiaMainnet.blockExplorers,
     icon: LumiaLogo,

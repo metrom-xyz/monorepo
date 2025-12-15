@@ -24,7 +24,10 @@ export function ProjectsList() {
     const t = useTranslations("allCampaigns.projects");
 
     const chainType = useChainType();
-    const { loading, fetching, placeholderData, projects } = useProjects();
+    const { loading, fetching, placeholderData, projects } = useProjects({
+        chainType: chainType === ChainType.Aptos ? chainType : undefined,
+        crossVm: chainType === ChainType.Evm,
+    });
 
     return (
         <div className={styles.root}>

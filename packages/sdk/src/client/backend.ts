@@ -236,6 +236,11 @@ export interface FetchFungibleAssetParams extends ChainParams {
     address: Address;
 }
 
+export interface FetchProjectsParams {
+    chainType?: ChainType;
+    crossVm?: boolean;
+}
+
 export interface FetchAaveV3CollateralsParams extends ChainParams {
     brand: SupportedAaveV3;
     market: string;
@@ -1019,7 +1024,9 @@ export class MetromApiClient {
         };
     }
 
-    async fetchProjects(): Promise<Project[]> {
+    async fetchProjects(
+        params: FetchProjectsParams = { crossVm: true },
+    ): Promise<Project[]> {
         const url = new URL("v2/projects", this.baseUrl);
 
         const response = await fetch(url);
@@ -1029,7 +1036,35 @@ export class MetromApiClient {
             );
 
         const { projects } = (await response.json()) as BackendProjectsResponse;
-        return projects;
+
+        return projects
+            .filter(
+                (project) =>
+                    !params.chainType || project.campaigns[params.chainType],
+            )
+            .map((project) => {
+                let campaigns;
+
+                if (params.crossVm) {
+                    campaigns = Object.values(project.campaigns).reduce(
+                        (acc, totals) => ({
+                            active: acc.active + totals.active,
+                            total: acc.total + totals.total,
+                        }),
+                        { active: 0, total: 0 },
+                    );
+                } else if (params.chainType)
+                    campaigns = project.campaigns[params.chainType];
+                else return null;
+
+                return { ...project, campaigns };
+            })
+            .filter((project) => project !== null)
+            .sort((a, b) => {
+                if (a.campaigns.active !== b.campaigns.active)
+                    return b.campaigns.active - a.campaigns.active;
+                return b.campaigns.total - a.campaigns.total;
+            });
     }
 }
 

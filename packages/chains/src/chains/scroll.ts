@@ -1,5 +1,6 @@
 import {
     BaseCampaignType,
+    ChainType,
     PartnerCampaignType,
     SupportedDex,
     SupportedLiquityV2,
@@ -15,7 +16,10 @@ import { AmbientLogo, HoneypopLogo, QuillLogo } from "../assets";
 
 export const scrollData: ChainData = {
     active: true,
+    id: scroll.id,
+    type: ChainType.Evm,
     name: scroll.name,
+    slug: "scroll",
     metromContract: ADDRESS[SupportedChain.Scroll],
     blockExplorers: scroll.blockExplorers,
     icon: ScrollLogo,

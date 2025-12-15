@@ -124,3 +124,38 @@ export function getChainData(chainId: number): ChainData | undefined {
 
     return chainData;
 }
+
+export function getChainDataBySlug(slug: string): ChainData | undefined {
+    let chainData: ChainData | undefined;
+
+    switch (ENVIRONMENT) {
+        case Environment.Development: {
+            if (APTOS)
+                chainData = Object.values(
+                    MVM_CHAIN_DATA[Environment.Development],
+                ).find((data) => data.slug === slug);
+            else
+                chainData = Object.values(
+                    EVM_CHAIN_DATA[Environment.Development],
+                ).find((data) => data.slug === slug);
+            break;
+        }
+        case Environment.Production: {
+            if (APTOS)
+                chainData = Object.values(
+                    MVM_CHAIN_DATA[Environment.Production],
+                ).find((data) => data.slug === slug);
+            else
+                chainData = Object.values(
+                    EVM_CHAIN_DATA[Environment.Production],
+                ).find((data) => data.slug === slug);
+
+            break;
+        }
+        default: {
+            throw new Error(`Unsupported environment ${ENVIRONMENT}`);
+        }
+    }
+
+    return chainData;
+}

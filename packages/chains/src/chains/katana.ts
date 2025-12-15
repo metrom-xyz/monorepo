@@ -8,13 +8,17 @@ import {
 } from "..";
 import { katana } from "viem/chains";
 import {
+    ChainType,
     SupportedLiquidityProviderDeal,
     SupportedTurtleDeal,
 } from "@metrom-xyz/sdk";
 
 export const katanaData: ChainData = {
     active: false,
+    id: katana.id,
+    type: ChainType.Evm,
     name: katana.name,
+    slug: "katana",
     metromContract: {
         address: zeroAddress,
     },
