@@ -232,7 +232,7 @@ export function Filters({
                         placeholder={t("filters.protocol.label")}
                         renderOption={protocolSelectRenderOption}
                         messages={{
-                            noResults: "",
+                            noResults: t("filters.noResults"),
                         }}
                         className={classNames(
                             styles.filterInput,
@@ -252,7 +252,7 @@ export function Filters({
                             placeholder={t("filters.chain.label")}
                             renderOption={chainSelectRenderOption}
                             messages={{
-                                noResults: "",
+                                noResults: t("filters.noResults"),
                             }}
                             className={classNames(
                                 styles.filterInput,

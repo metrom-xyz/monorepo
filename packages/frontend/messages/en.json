@@ -65,6 +65,7 @@
             "chain": {
                 "label": "Chain"
             },
+            "noResults": "No results",
             "clear": "Clear filters",
             "campaignsFound": "{count, plural, =1 {# campaign found} other {# campaigns found}}"
         },
