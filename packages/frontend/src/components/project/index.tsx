@@ -127,21 +127,23 @@ export function Project({ project }: ProjectProps) {
 
     return (
         <div className={styles.root}>
-            <Header
-                name={name}
-                slug={project}
-                url={url}
-                description={description}
-                branding={branding}
-                icon={icon}
-                illustration={illustration}
-            />
-            {intro && <Intro {...intro} />}
-            {Widget && (
-                <div className={styles.widgets}>
-                    <Widget />
-                </div>
-            )}
+            <div className={styles.topContent}>
+                <Header
+                    name={name}
+                    slug={project}
+                    url={url}
+                    description={description}
+                    branding={branding}
+                    icon={icon}
+                    illustration={illustration}
+                />
+                {intro && <Intro {...intro} />}
+                {Widget && (
+                    <div className={styles.widgets}>
+                        <Widget />
+                    </div>
+                )}
+            </div>
             <Campaigns
                 tabs={tabs}
                 disableFilters

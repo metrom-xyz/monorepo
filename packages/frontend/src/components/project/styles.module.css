@@ -1,7 +1,11 @@
 @reference "../../app.css";
 
 .root {
-    @apply w-full max-w-screen-xl flex flex-col items-center px-4 sm:px-0 gap-4 md:gap-8;
+    @apply w-full max-w-screen-xl flex flex-col items-center gap-4 md:gap-8;
+}
+
+.topContent {
+    @apply w-full max-w-screen-xl flex flex-col gap-4 md:gap-8 px-4 sm:px-0;
 }
 
 .widgets {
