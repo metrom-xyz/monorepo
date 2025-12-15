@@ -4,8 +4,8 @@
     @apply flex
         flex-col
         gap-2
-        p-2
-        rounded-md
+        p-3
+        rounded-lg
         border
         bg-gray-100
         dark:bg-neutral-950

@@ -1,7 +1,7 @@
 @reference "../../../app.css";
 
 .root {
-    @apply sm:max-w-80 flex flex-col gap-3 p-5 bg-gray-100 dark:bg-neutral-800;
+    @apply sm:max-w-80 flex flex-col gap-3 p-3 sm:p-5 bg-gray-100 dark:bg-neutral-800;
 }
 
 .container {

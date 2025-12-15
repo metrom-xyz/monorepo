@@ -91,7 +91,7 @@ export function LiquidityDensityChart({
     const [zoomLevel, setZoomLevel] = useState<number>(MAX_ZOOM_LEVEL / 2);
 
     const barChartMargins = useMemo(
-        () => ({ top: 24, bottom: showPriceRange ? 20 : 0 }),
+        () => ({ top: 24, bottom: showPriceRange ? 40 : 0 }),
         [showPriceRange],
     );
 

@@ -5,11 +5,11 @@ import {
     type TargetedCampaign,
 } from "@metrom-xyz/sdk";
 import { useTranslations } from "next-intl";
-import { Card, TextField, Typography } from "@metrom-xyz/ui";
-import { formatAmount } from "@/src/utils/format";
+import { Card, Typography } from "@metrom-xyz/ui";
 import { useLiquidityDensity } from "@/src/hooks/useLiquidityDensity";
 import { LiquidityDensityChart } from "../../liquidity-density-chart";
 import classNames from "classnames";
+import { BoldText } from "../../bold-text";
 
 import styles from "./styles.module.css";
 
@@ -50,39 +50,6 @@ export function PriceRange({ campaign }: PriceRangeProps) {
                 {t("title")}
             </Typography>
             <div className={styles.wrapper}>
-                <div
-                    className={classNames(styles.leftContent, {
-                        [styles.leftContentEnded]:
-                            campaign.status === Status.Expired,
-                    })}
-                >
-                    <TextField
-                        boxed
-                        size="xl"
-                        label={t("lowerPrice.label")}
-                        value={t("lowerPrice.value", {
-                            token0: pool.tokens[0].symbol,
-                            token1: pool.tokens[1].symbol,
-                            price: formatAmount({
-                                amount: fromPrice,
-                                cutoff: false,
-                            }),
-                        })}
-                    />
-                    <TextField
-                        boxed
-                        size="xl"
-                        label={t("upperPrice.label")}
-                        value={t("upperPrice.value", {
-                            token0: pool.tokens[0].symbol,
-                            token1: pool.tokens[1].symbol,
-                            price: formatAmount({
-                                amount: toPrice,
-                                cutoff: false,
-                            }),
-                        })}
-                    />
-                </div>
                 {campaign.status !== Status.Expired && (
                     <Card className={styles.card}>
                         <Typography
@@ -91,7 +58,11 @@ export function PriceRange({ campaign }: PriceRangeProps) {
                             variant="tertiary"
                             weight="medium"
                         >
-                            {t("chart")}
+                            {t.rich("chart", {
+                                token0: pool.tokens[0].symbol,
+                                token1: pool.tokens[1].symbol,
+                                bold: (chunks) => <BoldText>{chunks}</BoldText>,
+                            })}
                         </Typography>
                         <div className={classNames(styles.chartWrapper)}>
                             <LiquidityDensityChart
@@ -108,6 +79,7 @@ export function PriceRange({ campaign }: PriceRangeProps) {
                                 loading={loadingLiquidityDensity}
                                 token0To1
                                 showPriceRange
+                                tooltipSize="sm"
                             />
                         </div>
                     </Card>

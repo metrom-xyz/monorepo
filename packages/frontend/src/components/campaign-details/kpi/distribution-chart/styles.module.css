@@ -1,7 +1,7 @@
 @reference "../../../../app.css";
 
 .root {
-    @apply h-full flex flex-col gap-3 p-5 bg-gray-100 dark:bg-neutral-800;
+    @apply h-full flex flex-col gap-3 p-3 sm:p-5 bg-gray-100 dark:bg-neutral-800;
 }
 
 .header {
