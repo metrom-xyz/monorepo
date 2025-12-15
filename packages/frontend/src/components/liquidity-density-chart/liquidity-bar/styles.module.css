@@ -10,12 +10,20 @@
         dark:fill-dark-text-primary;
 }
 
+.label.tertiary {
+    @apply text-[0.625rem] fill-light-text-tertiary dark:fill-dark-text-tertiary;
+}
+
+.label.big {
+    @apply text-lg;
+}
+
 .bar {
-    @apply chart-area-secondary;
+    @apply fill-gray-300 dark:fill-neutral-700;
 }
 
 .bar.inRange {
-    @apply fill-[#6CFF9566] dark:fill-brand-green/65;
+    @apply fill-brand-green-dark/50 dark:fill-brand-green/65;
 }
 
 .bar.activeTick {
