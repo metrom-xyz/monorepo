@@ -6,7 +6,7 @@ import { BaseCampaignType, ChainType, SupportedDex } from "@metrom-xyz/sdk";
 import { DepositUrlType, ProtocolType } from "../types/protocol";
 
 export const arbitrumData: ChainData = {
-    active: false,
+    active: true,
     id: arbitrum.id,
     type: ChainType.Evm,
     name: arbitrum.name,
