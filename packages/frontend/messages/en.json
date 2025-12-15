@@ -605,15 +605,7 @@
         },
         "priceRange": {
             "title": "Price range",
-            "lowerPrice": {
-                "label": "Lower price",
-                "value": "{price} {token1} PER {token0}"
-            },
-            "upperPrice": {
-                "label": "Upper price",
-                "value": "{price} {token1} PER {token0}"
-            },
-            "chart": "Range visualizer"
+            "chart": "Range visualizer <bold>{token1} PER {token0}</bold>"
         },
         "kpi": {
             "title": "KPI",
@@ -826,6 +818,8 @@
         "tooltip": {
             "price": "1 {token0} = {price} {token1}"
         },
+        "lowerPrice": "Lower price",
+        "upperPrice": "Upper price",
         "emptyData": "Missing price range data",
         "errors": {
             "wrongData": "Wrong data",

@@ -77,69 +77,64 @@ export function Kpi({ campaign, loading }: KpiProps) {
                     </InfoTooltip>
                 )}
             </div>
-            <div className={styles.cards}>
-                <div className={styles.distributionChartsWrapper}>
-                    <DistributionChart
-                        campaign={campaign}
-                        loading={loadingKpiMeasurements}
-                        minimumPayoutPercentage={minimumPayoutPercentage}
-                    />
-                    <AverageDistributionChart
-                        chain={campaign.chainId}
-                        loading={loadingKpiMeasurements}
-                        distributables={campaign.distributables}
-                        kpiMeasurementPercentage={measurement}
-                        minimumPayoutPercentage={
-                            campaign.specification.kpi.minimumPayoutPercentage
-                        }
-                    />
-                </div>
-                <Accordion
-                    title={t("details")}
-                    className={styles.detailsAccordion}
-                >
-                    <div className={styles.wrapper}>
-                        <div className={styles.chart}>
-                            <Typography
-                                size="sm"
-                                uppercase
-                                variant="tertiary"
-                                weight="medium"
-                            >
-                                {t("chart", {
-                                    targetValueName: campaign.targetValueName,
-                                })}
-                            </Typography>
-                            <div className={styles.chartWrapper}>
-                                <KpiSimulationChart
-                                    complex={width > 640}
-                                    tooltipSize="sm"
-                                    loading={
-                                        specificationLoading ||
-                                        loadingKpiMeasurements
-                                    }
-                                    targetValueName={campaign.targetValueName}
-                                    targetUsdValue={usdTvl}
-                                    campaignEnded={
-                                        campaign.status === Status.Expired
-                                    }
-                                    campaignDurationSeconds={
-                                        campaign.to - campaign.from
-                                    }
-                                    totalRewardsUsd={
-                                        campaign.distributables.amountUsdValue
-                                    }
-                                    lowerUsdTarget={lowerUsdTarget}
-                                    upperUsdTarget={upperUsdTarget}
-                                    minimumPayoutPercentage={
-                                        minimumPayoutPercentage
-                                    }
-                                />
-                            </div>
+            <div className={styles.distributionChartsWrapper}>
+                <DistributionChart
+                    campaign={campaign}
+                    loading={loadingKpiMeasurements}
+                    minimumPayoutPercentage={minimumPayoutPercentage}
+                />
+                <AverageDistributionChart
+                    chain={campaign.chainId}
+                    loading={loadingKpiMeasurements}
+                    distributables={campaign.distributables}
+                    kpiMeasurementPercentage={measurement}
+                    minimumPayoutPercentage={
+                        campaign.specification.kpi.minimumPayoutPercentage
+                    }
+                />
+            </div>
+            <Accordion title={t("details")} className={styles.detailsAccordion}>
+                <div className={styles.wrapper}>
+                    <div className={styles.chart}>
+                        <Typography
+                            size="sm"
+                            uppercase
+                            variant="tertiary"
+                            weight="medium"
+                        >
+                            {t("chart", {
+                                targetValueName: campaign.targetValueName,
+                            })}
+                        </Typography>
+                        <div className={styles.chartWrapper}>
+                            <KpiSimulationChart
+                                complex={width > 640}
+                                tooltipSize="sm"
+                                loading={
+                                    specificationLoading ||
+                                    loadingKpiMeasurements
+                                }
+                                targetValueName={campaign.targetValueName}
+                                targetUsdValue={usdTvl}
+                                campaignEnded={
+                                    campaign.status === Status.Expired
+                                }
+                                campaignDurationSeconds={
+                                    campaign.to - campaign.from
+                                }
+                                totalRewardsUsd={
+                                    campaign.distributables.amountUsdValue
+                                }
+                                lowerUsdTarget={lowerUsdTarget}
+                                upperUsdTarget={upperUsdTarget}
+                                minimumPayoutPercentage={
+                                    minimumPayoutPercentage
+                                }
+                            />
                         </div>
                     </div>
-                </Accordion>
-            </div>
+                </div>
+            </Accordion>
         </div>
     );
 }

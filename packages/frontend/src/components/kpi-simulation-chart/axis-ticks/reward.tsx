@@ -18,7 +18,7 @@ interface RewardTickProps {
     totalRewardsUsd: number;
 }
 
-const MIN_AXIS_MARGIN = 4;
+const MIN_AXIS_MARGIN = 0;
 
 export function RewardTick({
     payload,
