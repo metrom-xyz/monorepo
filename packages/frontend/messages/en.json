@@ -617,19 +617,15 @@
         },
         "kpi": {
             "title": "KPI",
-            "lowerBound": "Lower bound",
-            "upperBound": "Upper bound",
+            "details": "KPI details",
             "chart": "Rewards payout and APR over {targetValueName}",
-            "averageGoalReached": "Average goal reached",
-            "minimumPayout": "Minimum payout",
             "charts": {
                 "distributions": "Distributions",
                 "noDistribution": "No distribution yet",
                 "averageDistribution": "Average distribution",
                 "reimbursed": "Reimbursed",
                 "distributed": "Distributed",
-                "week": "W {week}",
-                "weekDuration": "{from} to {to}"
+                "week": "Week {week}"
             }
         },
         "restrictions": {
@@ -780,6 +776,11 @@
             "payout": "Payout",
             "kpiReached": "KPI reached",
             "apr": "APR"
+        },
+        "axis": {
+            "totRewards": "Tot. rewards",
+            "currentRewards": "Rewards (current TVL)",
+            "minPayout": "Min. payout"
         }
     },
     "distributionChart": {

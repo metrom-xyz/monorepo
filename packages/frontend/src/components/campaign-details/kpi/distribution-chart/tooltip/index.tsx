@@ -30,11 +30,16 @@ export function TooltipContent({ chain, active, payload }: TooltipProps) {
     return (
         <div className={styles.root}>
             <div className={styles.fieldWrapper}>
-                <Typography weight="medium" variant="tertiary"uppercase>
+                <Typography
+                    size="sm"
+                    weight="medium"
+                    variant="tertiary"
+                    uppercase
+                >
                     {t("time")}
                 </Typography>
-                <Typography weight="medium" uppercase>
-                    {dayjs.unix(to).format("DD MMM HH:mm")}
+                <Typography size="sm" weight="medium" uppercase>
+                    {dayjs.unix(to).format("DD MMM - HH:mm")}
                 </Typography>
             </div>
             <div className={styles.fieldWrapper}>
@@ -45,13 +50,20 @@ export function TooltipContent({ chain, active, payload }: TooltipProps) {
                             styles.reimbursed,
                         )}
                     ></div>
-                    <Typography weight="medium" variant="tertiary"uppercase>
+                    <Typography
+                        size="sm"
+                        weight="medium"
+                        variant="tertiary"
+                        uppercase
+                    >
                         {t("reimbursed")}
                     </Typography>
                 </div>
-                <Typography weight="medium" uppercase>
-                    {formatPercentage({ percentage: reimbursed * 100 })}
-                </Typography>
+                <div className={styles.percentageChip}>
+                    <Typography size="sm" weight="medium" uppercase>
+                        {formatPercentage({ percentage: reimbursed * 100 })}
+                    </Typography>
+                </div>
             </div>
             <div className={styles.fieldWrapper}>
                 <div className={styles.textWrapper}>
@@ -61,38 +73,67 @@ export function TooltipContent({ chain, active, payload }: TooltipProps) {
                             styles.distributed,
                         )}
                     ></div>
-                    <Typography weight="medium" variant="tertiary"uppercase>
+                    <Typography
+                        size="sm"
+                        weight="medium"
+                        variant="tertiary"
+                        uppercase
+                    >
                         {t("distributed")}
                     </Typography>
                 </div>
-                <Typography weight="medium" uppercase>
-                    {formatPercentage({ percentage: distributed * 100 })}
-                </Typography>
+                <div className={styles.percentageChip}>
+                    <Typography size="sm" weight="medium" uppercase>
+                        {formatPercentage({ percentage: distributed * 100 })}
+                    </Typography>
+                </div>
             </div>
+            <div className={styles.divider}></div>
             <div className={classNames(styles.row, styles.breakdownWrapper)}>
-                <Typography weight="medium" variant="tertiary"uppercase>
+                <Typography
+                    size="sm"
+                    weight="medium"
+                    variant="tertiary"
+                    uppercase
+                >
                     {t("token")}
                 </Typography>
-                <Typography weight="medium" variant="tertiary"uppercase>
+                <Typography
+                    size="sm"
+                    weight="medium"
+                    variant="tertiary"
+                    uppercase
+                >
                     {t("distributed")}
                 </Typography>
-                <Typography weight="medium" variant="tertiary"uppercase>
+                <Typography
+                    size="sm"
+                    weight="medium"
+                    variant="tertiary"
+                    uppercase
+                >
                     {t("reimbursed")}
                 </Typography>
             </div>
             {distributions.map(({ distributed, reimbursed, token }) => (
                 <div key={token.address} className={styles.row}>
                     <div className={styles.tokenWrapper}>
-                        <RemoteLogo address={token.address} chain={chain} />
-                        <Typography weight="medium">{token.symbol}</Typography>
+                        <RemoteLogo
+                            address={token.address}
+                            chain={chain}
+                            size="xs"
+                        />
+                        <Typography size="sm" weight="medium">
+                            {token.symbol}
+                        </Typography>
                     </div>
-                    <Typography weight="medium">
+                    <Typography size="sm" weight="medium">
                         {formatAmount({
                             amount: distributed.formatted,
                             cutoff: false,
                         })}
                     </Typography>
-                    <Typography weight="medium">
+                    <Typography size="sm" weight="medium">
                         {formatAmount({
                             amount: reimbursed.formatted,
                             cutoff: false,

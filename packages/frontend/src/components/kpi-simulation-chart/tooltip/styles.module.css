@@ -3,10 +3,10 @@
 .root {
     @apply flex
         flex-col
-        gap-2
-        p-2
-        rounded-md
-        min-w-56
+        gap-2.5
+        p-3
+        rounded-lg
+        min-w-60
         border
         bg-gray-100
         dark:bg-neutral-950
@@ -15,13 +15,36 @@
 }
 
 .referenceLine line {
-    @apply stroke-gray-900 dark:stroke-neutral-400;
+    @apply stroke-2 stroke-gray-900 dark:stroke-neutral-400;
 }
 
 .referenceCircle {
-    @apply fill-gray-900 stroke-white dark:stroke-neutral-400;
+    @apply fill-gray-300 dark:fill-neutral-700 stroke-gray-100 dark:stroke-neutral-800;
+}
+
+.referenceCircle.apr {
+    @apply fill-carrot-orange;
 }
 
 .row {
     @apply flex justify-between gap-4 items-center;
+}
+
+.aprChip {
+    @apply bg-carrot-orange
+        rounded-sm
+        py-0.5
+        px-1;
+}
+
+.wrapper {
+    @apply flex gap-1 py-1 px-3 items-baseline whitespace-nowrap;
+}
+
+.witkKpi {
+    @apply bg-carrot-orange;
+}
+
+.aprText {
+    @apply !text-white dark:!text-slate-200;
 }

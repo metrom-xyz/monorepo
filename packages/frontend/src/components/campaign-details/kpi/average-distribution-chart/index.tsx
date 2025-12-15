@@ -217,6 +217,7 @@ export function AverageDistributionChart({
                                 )}
                             />
                             <Typography
+                                size="sm"
                                 weight="medium"
                                 variant="tertiary"
                                 uppercase
@@ -226,7 +227,7 @@ export function AverageDistributionChart({
                                     : t("reimbursed")}
                             </Typography>
                         </div>
-                        <Typography weight="medium" variant="tertiary">
+                        <Typography size="sm" weight="medium">
                             {formatUsdAmount({
                                 amount:
                                     popover === "distributed"
@@ -239,19 +240,28 @@ export function AverageDistributionChart({
                         <div key={token.address} className={styles.tokenRow}>
                             <div className={styles.tokenWrapper}>
                                 <RemoteLogo
+                                    size="xs"
                                     address={token.address}
                                     chain={chain}
                                 />
-                                <Typography weight="medium">
+                                <Typography size="sm" weight="medium">
                                     {token.symbol}
                                 </Typography>
                             </div>
-                            <Typography weight="medium">
-                                {formatAmount({ amount: amount.formatted })}
-                            </Typography>
-                            <Typography weight="medium" variant="tertiary">
-                                {formatUsdAmount({ amount: amount.usdValue })}
-                            </Typography>
+                            <div>
+                                <Typography size="sm" weight="medium">
+                                    {formatAmount({ amount: amount.formatted })}
+                                </Typography>
+                                <Typography
+                                    size="sm"
+                                    weight="medium"
+                                    variant="tertiary"
+                                >
+                                    {formatUsdAmount({
+                                        amount: amount.usdValue,
+                                    })}
+                                </Typography>
+                            </div>
                         </div>
                     ))}
                 </div>
@@ -261,12 +271,12 @@ export function AverageDistributionChart({
                     <Pie
                         dataKey="value"
                         animationEasing="ease-in-out"
-                        animationDuration={500}
+                        animationDuration={400}
                         cornerRadius={6}
                         // FIXME: the type: "reimbursed" | "distributed" is causing issues with the chart type, fix this
                         data={chartData as unknown as Record<string, unknown>[]}
                         innerRadius={70}
-                        outerRadius={110}
+                        outerRadius={113}
                         startAngle={90}
                         endAngle={450}
                         minAngle={5}

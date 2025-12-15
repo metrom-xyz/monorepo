@@ -4,7 +4,10 @@
     @apply flex
         flex-col
         gap-6
-        sm:max-w-80;
+        sm:max-w-80
+        p-5
+        bg-gray-100
+        dark:bg-neutral-800;
 }
 
 .popoverContent {
@@ -16,15 +19,15 @@
 }
 
 .headerTextWrapper {
-    @apply flex items-center gap-1;
+    @apply flex items-center gap-1 px-2;
 }
 
 .legendDot {
-    @apply h-3 w-3 rounded-full;
+    @apply size-2 rounded-full;
 }
 
 .legendDot.reimbursed {
-    @apply bg-gray-200 dark:bg-neutral-800;
+    @apply bg-gray-300 dark:bg-neutral-700;
 }
 
 .legendDot.distributed {
@@ -32,19 +35,11 @@
 }
 
 .tokenRow {
-    @apply grid grid-cols-3 gap-3 items-center;
+    @apply flex items-center gap-6 justify-between bg-gray-150 dark:bg-neutral-900 rounded-sm px-2 py-1;
 }
 
-.tokenRow > :first-child {
-    @apply justify-self-start;
-}
-
-.tokenRow > :nth-child(2) {
-    @apply justify-self-center;
-}
-
-.tokenRow > :last-child {
-    @apply justify-self-end;
+.tokenRow > div {
+    @apply flex items-center gap-2;
 }
 
 .tokenWrapper {
@@ -57,9 +52,10 @@
         justify-center
         self-center
         mt-4
-        w-[280px]
-        h-[280px]
+        size-[15.625rem]
         rounded-full
+        bg-gray-200
+        dark:bg-neutral-900
         background-main
         transition-colors
         duration-200
@@ -79,7 +75,7 @@
         outline-none
         hover:opacity-85
         stroke-gray-200
-        dark:stroke-neutral-950
+        dark:stroke-neutral-900
         transition-all
         duration-200
         ease-in-out;
@@ -90,7 +86,7 @@
 }
 
 .cell.reimbursed {
-    @apply chart-area-secondary;
+    @apply fill-gray-300 dark:fill-neutral-700;
 }
 
 .chartWrapperLoading {

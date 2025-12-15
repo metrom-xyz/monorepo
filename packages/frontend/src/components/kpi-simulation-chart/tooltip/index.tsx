@@ -9,7 +9,7 @@ import {
     getDistributableRewardsPercentage,
     getReachedGoalPercentage,
 } from "@/src/utils/kpi";
-import { AprChip } from "../../apr-chip";
+import classNames from "classnames";
 
 interface TooltipProps {
     active?: boolean;
@@ -108,7 +108,15 @@ export function TooltipContent({
                 >
                     {t("apr")}
                 </Typography>
-                <AprChip apr={aprPercentage} size={size} kpi />
+                <div className={styles.aprChip}>
+                    <Typography
+                        size="sm"
+                        weight="medium"
+                        className={styles.aprText}
+                    >
+                        {formatPercentage({ percentage: aprPercentage })}
+                    </Typography>
+                </div>
             </div>
         </div>
     );
@@ -155,7 +163,7 @@ export function TooltipCursor({
     return (
         <>
             <ReferenceLine
-                strokeDasharray={"3 3"}
+                strokeDasharray={"4 4"}
                 ifOverflow="visible"
                 segment={[
                     { x: targetUsdValue, y: reward },
@@ -164,17 +172,20 @@ export function TooltipCursor({
                 className={styles.referenceLine}
             />
             <ReferenceLine
-                strokeDasharray={"3 3"}
+                strokeDasharray={"4 4"}
                 ifOverflow="visible"
-                segment={[{ x: targetUsdValue }, { x: targetUsdValue, y: 0 }]}
+                segment={[
+                    { x: targetUsdValue, y: reward },
+                    { x: targetUsdValue, y: 0 },
+                ]}
                 className={styles.referenceLine}
             />
             {cyRewards && (
                 <circle
                     cx={points[0].x}
                     cy={cyRewards}
-                    r={4}
-                    strokeWidth={1}
+                    r={5}
+                    strokeWidth={2}
                     className={styles.referenceCircle}
                 />
             )}
@@ -182,9 +193,9 @@ export function TooltipCursor({
                 <circle
                     cx={points[0].x}
                     cy={cyApr}
-                    r={4}
-                    strokeWidth={1}
-                    className={styles.referenceCircle}
+                    r={5}
+                    strokeWidth={2}
+                    className={classNames(styles.referenceCircle, styles.apr)}
                 />
             )}
         </>
