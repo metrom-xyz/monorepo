@@ -569,6 +569,10 @@ export function KpiSimulationChart({
                     interval={0}
                     tick={
                         <TvlTick
+                            complex={complex}
+                            targetUsdValue={targetUsdValue}
+                            lowerUsdTarget={lowerUsdTarget}
+                            upperUsdTarget={upperUsdTarget}
                             poolTvlScale={poolTvlScale}
                             lowerBoundScale={lowerBoundScale}
                             upperBoundScale={upperBoundScale}
@@ -604,20 +608,24 @@ export function KpiSimulationChart({
                     segment={targetValueReferenceLineSegment}
                     className={classNames(styles.referenceLine, styles.green)}
                 >
-                    <Label
-                        value={
-                            campaignEnded
-                                ? t("targetValue.campaignEnded", {
-                                      targetValueName,
-                                  })
-                                : t("targetValue.campaignActive", {
-                                      targetValueName,
-                                  })
-                        }
-                        dx={poolTvlDx}
-                        angle={90}
-                        className={styles.axisLabel}
-                    />
+                    {!complex && (
+                        <Label
+                            value={
+                                campaignEnded
+                                    ? t("targetValue.campaignEnded", {
+                                          targetValueName,
+                                      })
+                                    : t("targetValue.campaignActive", {
+                                          targetValueName,
+                                      })
+                            }
+                            dx={poolTvlDx}
+                            angle={90}
+                            className={classNames(styles.axisLabel, {
+                                [styles.complex]: complex,
+                            })}
+                        />
+                    )}
                 </ReferenceLine>
 
                 <ReferenceLine
@@ -626,12 +634,16 @@ export function KpiSimulationChart({
                     segment={lowerBoundReferenceLineSegment}
                     className={styles.referenceLine}
                 >
-                    <Label
-                        value={t("lowerBound")}
-                        dx={lowerBoundDx}
-                        angle={270}
-                        className={styles.axisLabel}
-                    />
+                    {!complex && (
+                        <Label
+                            value={t("lowerBound")}
+                            dx={lowerBoundDx}
+                            angle={270}
+                            className={classNames(styles.axisLabel, {
+                                [styles.complex]: complex,
+                            })}
+                        />
+                    )}
                 </ReferenceLine>
 
                 <ReferenceLine
@@ -640,12 +652,14 @@ export function KpiSimulationChart({
                     segment={uppderBoundReferenceLineSegment}
                     className={styles.referenceLine}
                 >
-                    <Label
-                        value={t("upperBound")}
-                        dx={upperBoundDx}
-                        angle={90}
-                        className={styles.axisLabel}
-                    />
+                    {!complex && (
+                        <Label
+                            value={t("upperBound")}
+                            dx={upperBoundDx}
+                            angle={90}
+                            className={styles.axisLabel}
+                        />
+                    )}
                 </ReferenceLine>
 
                 {currentPayoutUsd > 0 && (

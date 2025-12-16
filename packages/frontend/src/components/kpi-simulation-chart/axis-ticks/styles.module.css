@@ -5,11 +5,15 @@
         uppercase
         text-xs
         leading-none
-        font-medium
+        font-bold
         fill-light-text-primary
         dark:fill-dark-text-primary;
 }
 
 .axis.tertiary {
-    @apply text-[0.625rem] fill-light-text-tertiary dark:fill-dark-text-tertiary;
+    @apply text-[0.625rem] fill-light-text-tertiary dark:fill-dark-text-tertiary font-medium;
+}
+
+.axis.complex {
+    @apply text-sm;
 }
