@@ -35,7 +35,7 @@ export function RewardTick({
     if (!payload || payload.value === undefined || !y) return null;
 
     // Complex chart has a 2 rows label
-    const elementHeight = complex ? 24 : 12;
+    const elementHeight = complex ? 28 : 14;
 
     const bottom = y + elementHeight;
     const overflow = Math.max(0, bottom - (MAX_AREA_HEIGHT - MIN_AXIS_MARGIN));
@@ -45,7 +45,14 @@ export function RewardTick({
 
     return (
         <g transform={`translate(${x},${adjustedY})`}>
-            <text x={-10} y={-3} dy={0} className={styles.axis}>
+            <text
+                x={-10}
+                y={-3}
+                dy={0}
+                className={classNames(styles.axis, {
+                    [styles.complex]: complex,
+                })}
+            >
                 {formatUsdAmount({ amount: payload.value })}
                 {complex && isMinimumPayout && minPayoutPercentage > 0 && (
                     <tspan
