@@ -760,6 +760,7 @@
         },
         "lowerBound": "Lower bound",
         "upperBound": "Upper bound",
+        "currentTvl": "Current TVL",
         "errors": {
             "wrongData": "Wrong data, cant't run the simulation",
             "missingData": "Fill both lower and upper bound values for the simulation"
