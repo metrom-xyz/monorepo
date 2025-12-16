@@ -19,6 +19,7 @@ import {
     plasma,
     katana,
     linea,
+    saga,
 } from "viem/chains";
 import {
     sonicData,
@@ -56,6 +57,7 @@ import {
     aptosProductionData,
 } from "./chains/aptos";
 import { lineaData } from "./chains/linea";
+import { sagaData } from "./chains/saga";
 
 export {
     Environment,
@@ -99,6 +101,7 @@ export const EVM_CHAIN_DATA: {
         [SupportedProductionEvmChain.Sei]: seiProductionData,
         [SupportedProductionEvmChain.Hemi]: hemiData,
         [SupportedProductionEvmChain.Plasma]: plasmaData,
+        [SupportedProductionEvmChain.Saga]: sagaData,
     },
 };
 
@@ -142,6 +145,7 @@ export const SUPPORTED_PRODUCTION_CHAINS: [Chain, ...Chain[]] = [
     hemi,
     sei,
     plasma,
+    saga,
     // This is required for the Turtle integration
     mainnet,
     // These are required for Turtle campaigns
