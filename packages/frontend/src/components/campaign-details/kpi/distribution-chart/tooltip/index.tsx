@@ -89,7 +89,7 @@ export function TooltipContent({ chain, active, payload }: TooltipProps) {
                 </div>
             </div>
             <div className={styles.divider}></div>
-            <div className={classNames(styles.row, styles.breakdownWrapper)}>
+            <div className={classNames(styles.header, styles.breakdownWrapper)}>
                 <Typography
                     size="sm"
                     weight="medium"
@@ -133,7 +133,7 @@ export function TooltipContent({ chain, active, payload }: TooltipProps) {
                             cutoff: false,
                         })}
                     </Typography>
-                    <Typography size="sm" weight="medium">
+                    <Typography size="sm" weight="medium" variant="tertiary">
                         {formatAmount({
                             amount: reimbursed.formatted,
                             cutoff: false,

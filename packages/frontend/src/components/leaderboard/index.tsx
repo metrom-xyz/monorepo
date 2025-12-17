@@ -303,9 +303,9 @@ export function SkeletonRow({
 }) {
     return (
         <div className={styles.row}>
-            <Skeleton size={size} width={80} />
-            <Skeleton size={size} width={120} />
-            <Skeleton size={size} width={120} />
+            <Skeleton size={size} width={80} className={styles.skeleton} />
+            <Skeleton size={size} width={120} className={styles.skeleton} />
+            <Skeleton size={size} width={120} className={styles.skeleton} />
         </div>
     );
 }

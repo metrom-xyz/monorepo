@@ -93,3 +93,7 @@
 .externalLinkIcon {
     @apply h-4 w-4 transform -rotate-45 text-black dark:text-zinc-200;
 }
+
+.skeleton :global(.skeleton) {
+    @apply bg-gray-200 dark:bg-neutral-700;
+}

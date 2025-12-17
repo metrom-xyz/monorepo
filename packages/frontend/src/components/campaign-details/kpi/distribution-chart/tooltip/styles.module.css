@@ -42,19 +42,26 @@
     @apply border stroke-divider my-1.5;
 }
 
-.row {
-    @apply grid grid-cols-3 gap-3 items-center;
+.header {
+    @apply grid grid-cols-[1.2fr_0.7fr_0.7fr] gap-3 items-center px-2;
 }
 
-.row > :first-child {
+.row {
+    @apply grid grid-cols-[1.2fr_0.7fr_0.7fr] gap-3 items-center bg-gray-150 dark:bg-neutral-900 rounded-sm px-2 py-1;
+}
+
+.row > :first-child,
+.header > :first-child {
     @apply justify-self-start;
 }
 
-.row > :nth-child(2) {
-    @apply justify-self-center;
+.row > :nth-child(2),
+.header > :nth-child(2) {
+    @apply justify-self-end;
 }
 
-.row > :last-child {
+.row > :last-child,
+.header > :last-child {
     @apply justify-self-end;
 }
 
