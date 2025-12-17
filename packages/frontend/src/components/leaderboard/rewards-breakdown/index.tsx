@@ -4,6 +4,7 @@ import { SupportedChain } from "@metrom-xyz/contracts";
 import { useRef, useState } from "react";
 import { formatAmount, formatUsdAmount } from "@/src/utils/format";
 import { RemoteLogo } from "@/src/components/remote-logo";
+import { useTranslations } from "next-intl";
 
 import styles from "./styles.module.css";
 
@@ -18,6 +19,8 @@ export function RewardsBreakdown({
     usdValue,
     distributed,
 }: RewardsBreakdownProps) {
+    const t = useTranslations("campaignDetails.leaderboard");
+
     const [popoverOpen, setPopoverOpen] = useState(false);
     const [rewardedAmountWrapper, setRewardedAmountWrapper] =
         useState<HTMLDivElement | null>(null);
@@ -31,6 +34,10 @@ export function RewardsBreakdown({
         setPopoverOpen(false);
     }
 
+    const totalDistributedUsd = usdValue
+        ? formatUsdAmount({ amount: usdValue, cutoff: false })
+        : "-";
+
     return (
         <>
             <Popover
@@ -40,39 +47,60 @@ export function RewardsBreakdown({
                 onOpenChange={setPopoverOpen}
                 placement="top"
             >
-                <div className={styles.rewardsPopover}>
+                <div className={styles.popover}>
+                    <div className={styles.header}>
+                        <Typography
+                            size="sm"
+                            weight="medium"
+                            variant="tertiary"
+                            uppercase
+                        >
+                            {t("distributedUsd")}
+                        </Typography>
+                        <Typography size="sm" weight="medium" uppercase>
+                            {totalDistributedUsd}
+                        </Typography>
+                    </div>
                     {distributed
                         .sort((a, b) => b.amount.usdValue - a.amount.usdValue)
                         .map((distributed) => (
                             <div
                                 key={distributed.token.address}
-                                className={styles.rewardsPopoverRow}
+                                className={styles.row}
                             >
                                 <div>
                                     <RemoteLogo
+                                        size="xs"
                                         chain={chain}
                                         address={distributed.token.address}
                                         defaultText={distributed.token.symbol}
                                     />
-                                    <Typography weight="medium">
+                                    <Typography weight="medium" size="sm">
                                         {distributed.token.symbol}
                                     </Typography>
                                 </div>
-                                <Typography weight="medium">
-                                    {formatAmount({
-                                        amount: distributed.amount.formatted,
-                                        cutoff: false,
-                                    })}
-                                </Typography>
-                                <Typography weight="medium" variant="tertiary">
-                                    {distributed.amount.usdValue
-                                        ? formatUsdAmount({
-                                              amount: distributed.amount
-                                                  .usdValue,
-                                              cutoff: false,
-                                          })
-                                        : "-"}
-                                </Typography>
+                                <div>
+                                    <Typography weight="medium" size="sm">
+                                        {formatAmount({
+                                            amount: distributed.amount
+                                                .formatted,
+                                            cutoff: false,
+                                        })}
+                                    </Typography>
+                                    <Typography
+                                        weight="medium"
+                                        variant="tertiary"
+                                        size="sm"
+                                    >
+                                        {distributed.amount.usdValue
+                                            ? formatUsdAmount({
+                                                  amount: distributed.amount
+                                                      .usdValue,
+                                                  cutoff: false,
+                                              })
+                                            : "-"}
+                                    </Typography>
+                                </div>
                             </div>
                         ))}
                 </div>
@@ -84,9 +112,7 @@ export function RewardsBreakdown({
                 className={styles.rankWrapper}
             >
                 <Typography weight="medium" variant="tertiary">
-                    {usdValue
-                        ? formatUsdAmount({ amount: usdValue, cutoff: false })
-                        : "-"}
+                    {totalDistributedUsd}
                 </Typography>
             </div>
         </>

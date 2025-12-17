@@ -16,11 +16,11 @@
 }
 
 .header {
-    @apply flex justify-between mb-3;
+    @apply flex justify-between mb-3 px-2;
 }
 
 .headerTextWrapper {
-    @apply flex items-center gap-1 px-2;
+    @apply flex items-center gap-1;
 }
 
 .legendDot {
