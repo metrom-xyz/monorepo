@@ -69,6 +69,8 @@ export function PersonalRank({
             </div>
         );
 
+    if (connectedAccountRank && connectedAccountRank.position <= 5) return null;
+
     if (!connectedAddress)
         return (
             <div className={styles.root}>
@@ -131,8 +133,6 @@ export function PersonalRank({
                 </div>
             </div>
         );
-
-    if (connectedAccountRank && connectedAccountRank.position <= 5) return null;
 
     return (
         <div className={styles.root}>
