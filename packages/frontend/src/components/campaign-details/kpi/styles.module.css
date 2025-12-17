@@ -17,7 +17,7 @@
 }
 
 .detailsAccordion :global(.preview) {
-    @apply p-3 sm:p-5;
+    @apply p-3 sm:p-5 hover:bg-gray-100 hover:dark:bg-neutral-800;
 }
 
 .wrapper {
