@@ -5,7 +5,6 @@ import { useQuery } from "@tanstack/react-query";
 import type { HookBaseParams } from "../types/hooks";
 import { useProtocolsInChain } from "./useProtocolsInChain";
 import { ProtocolType } from "@metrom-xyz/chains";
-import { APTOS } from "../commons/env";
 
 interface UsePoolsParams extends HookBaseParams {
     chainId: SupportedChain;
@@ -33,9 +32,6 @@ export function usePools({
     const { data: pools, isPending: loading } = useQuery({
         queryKey: ["pools", dex, chainId, chainType],
         queryFn: async ({ queryKey }) => {
-            // TODO: remove this when Aptos will support dexes
-            if (APTOS) return [];
-
             const [, dex, chainId, chainType] = queryKey as QueryKey;
             if (!dex) return null;
 
