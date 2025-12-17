@@ -164,7 +164,7 @@ export function Leaderboard({
                                 variant="tertiary"
                                 size="sm"
                             >
-                                {t("rewardsDistributed")}
+                                {t("distributed")}
                             </Typography>
                         </div>
                         {loading ? (
