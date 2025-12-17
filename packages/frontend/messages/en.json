@@ -780,8 +780,8 @@
         "tooltip": {
             "time": "Time",
             "token": "Token",
-            "distributed": "Distributed",
-            "reimbursed": "Reimbursed"
+            "distributed": "Dist.",
+            "reimbursed": "Reimb."
         }
     },
     "aprChip": {
@@ -843,7 +843,6 @@
         "totalUsdValue": "Total USD rewards"
     },
     "campaignWeighting": {
-        "fees": "Fees",
-        "tooltip": "This reward includes <bold>protocol and transaction fees</bold> deducted from your earnings."
+        "fees": "Fees"
     }
 }

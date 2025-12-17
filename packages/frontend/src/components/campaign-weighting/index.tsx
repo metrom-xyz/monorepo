@@ -1,12 +1,10 @@
 import type { CampaignAmmPool, Specification } from "@metrom-xyz/sdk";
 import { useTranslations } from "next-intl";
 import { WEIGHT_UNIT } from "@/src/commons";
-import { InfoTooltip, Typography } from "@metrom-xyz/ui";
-import { BoldText } from "../bold-text";
+import { Typography } from "@metrom-xyz/ui";
 import { formatPercentage } from "@/src/utils/format";
 
 import styles from "./styles.module.css";
-import { InfoMessage } from "../info-message";
 
 interface CampaignWeightingProps {
     specification?: Specification;
@@ -70,17 +68,6 @@ export function CampaignWeighting({
                         >
                             {t("fees")}
                         </Typography>
-                        <InfoTooltip>
-                            <InfoMessage
-                                size="sm"
-                                spaced
-                                text={t.rich("tooltip", {
-                                    bold: (chunks) => (
-                                        <BoldText>{chunks}</BoldText>
-                                    ),
-                                })}
-                            />
-                        </InfoTooltip>
                     </div>
                 </div>
             </div>
