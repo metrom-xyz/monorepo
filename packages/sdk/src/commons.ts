@@ -24,6 +24,7 @@ export enum SupportedDex {
     Honeypop = "honeypop",
     Lithos = "lithos",
     Quickswap = "quickswap",
+    Hyperion = "hyperion",
 }
 
 export enum SupportedLiquityV2 {
