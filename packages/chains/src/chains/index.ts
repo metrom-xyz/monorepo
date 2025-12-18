@@ -19,3 +19,4 @@ export { lightlinkPhoenixData } from "./lightlink-phoenix";
 export { lumiaData } from "./lumia";
 export { mainnetData } from "./mainnet";
 export { seiDevelopmentData, seiProductionData } from "./sei";
+export { bscData } from "./bsc";
