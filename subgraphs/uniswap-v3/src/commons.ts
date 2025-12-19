@@ -11,6 +11,7 @@ import { Factory } from "../generated/Factory/Factory";
 import {
     FACTORY_ADDRESS,
     NON_FUNGIBLE_POSITION_MANAGER_ADDRESS,
+    
 } from "./addresses";
 import { Erc20 } from "../generated/Factory/Erc20";
 import { Erc20BytesSymbol } from "../generated/Factory/Erc20BytesSymbol";
