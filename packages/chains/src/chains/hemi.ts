@@ -34,7 +34,7 @@ export const hemiData: ChainData = {
             name: "Uniswap v3",
             depositUrl: {
                 type: DepositUrlType.PathPoolAddress,
-                template: "https://oku.trade/app/hemi/liquidity/{pool}",
+                template: "https://oku.trade/uniswap/v3/liquidity/hemi/{pool}",
             },
             supportsFetchAllPools: true,
         },

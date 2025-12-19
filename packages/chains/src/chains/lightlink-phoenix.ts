@@ -31,7 +31,7 @@ export const lightlinkPhoenixData: ChainData = {
             name: "Uniswap v3",
             depositUrl: {
                 type: DepositUrlType.PathPoolAddress,
-                template: "https://oku.trade/app/lightlink/liquidity/{pool}",
+                template: "https://oku.trade/uniswap/v3/liquidity/lightlink/{pool}",
             },
             supportsFetchAllPools: true,
         },

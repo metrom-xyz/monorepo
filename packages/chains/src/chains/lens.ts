@@ -40,7 +40,7 @@ export const lensData: ChainData = {
             name: "Uniswap v3",
             depositUrl: {
                 type: DepositUrlType.PathPoolAddress,
-                template: "https://oku.trade/app/lens/liquidity/{pool}",
+                template: "https://oku.trade/uniswap/v3/liquidity/lens/{pool}",
             },
             supportsFetchAllPools: true,
         },
