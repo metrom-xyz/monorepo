@@ -41,7 +41,7 @@ export const gnosisData: ChainData = {
             name: "Uniswap v3",
             depositUrl: {
                 type: DepositUrlType.PathPoolAddress,
-                template: "https://oku.trade/app/gnosis/liquidity/{pool}",
+                template: "https://oku.trade/uniswap/v3/liquidity/gnosis/{pool}",
             },
             supportsFetchAllPools: true,
         },
