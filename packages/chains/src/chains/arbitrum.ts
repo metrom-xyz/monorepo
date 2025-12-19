@@ -29,7 +29,7 @@ export const arbitrumData: ChainData = {
             logo: UniswapLogo,
             name: "Uniswap v3",
             depositUrl: {
-                type: DepositUrlType.PathTokenAddresses,
+                type: DepositUrlType.PathPoolAddress,
                 template:
                     "https://app.uniswap.org/explore/pools/arbitrum/{pool}",
             },
