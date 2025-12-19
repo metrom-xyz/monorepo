@@ -31,7 +31,7 @@ export const arbitrumData: ChainData = {
             depositUrl: {
                 type: DepositUrlType.PathTokenAddresses,
                 template:
-                    "https://app.uniswap.org/explore/pools/base_sepolia/{pool}",
+                    "https://app.uniswap.org/explore/pools/arbitrum/{pool}",
             },
             supportsFetchAllPools: false,
         },
