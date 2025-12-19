@@ -9,7 +9,7 @@ export const sagaData: ChainData = {
     active: true,
     id: saga.id,
     type: ChainType.Evm,
-    name: saga.name,
+    name: "Saga EVM",
     slug: "saga",
     metromContract: ADDRESS[SupportedChain.Saga],
     blockExplorers: saga.blockExplorers,
@@ -32,7 +32,7 @@ export const sagaData: ChainData = {
                 type: DepositUrlType.PathTokenAddresses,
                 template: "https://oku.trade/info/saga/pool/{pool}",
             },
-            supportsFetchAllPools: false,
+            supportsFetchAllPools: true,
         },
     ],
     baseTokens: [
