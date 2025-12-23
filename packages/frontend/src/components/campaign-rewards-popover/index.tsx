@@ -20,6 +20,7 @@ interface CampaignRewardsPopoverProps {
     chainId: number;
     distributables: TokenDistributables;
     hideUsdValue?: boolean;
+    hideOnExpired?: boolean;
     logoSize?: RemoteLogoSize;
 }
 
@@ -28,6 +29,7 @@ export function CampaignRewardsPopover({
     chainId,
     distributables,
     hideUsdValue = false,
+    hideOnExpired = false,
     logoSize = "sm",
 }: CampaignRewardsPopoverProps) {
     const t = useTranslations("campaignRewardsPopover");
@@ -44,6 +46,8 @@ export function CampaignRewardsPopover({
     function handleRewardsBreakdownPopoverClose() {
         setPopoverOpen(false);
     }
+
+    const showRewards = hideOnExpired ? status !== Status.Expired : true;
 
     return (
         <div className={styles.root}>
@@ -130,7 +134,7 @@ export function CampaignRewardsPopover({
                 onMouseLeave={handleRewardsBreakdownPopoverClose}
                 className={styles.rewardsWrapper}
             >
-                {status !== Status.Expired && (
+                {showRewards && (
                     <div className={styles.tokenIcons}>
                         {distributables.list.map((reward, i) => {
                             return (

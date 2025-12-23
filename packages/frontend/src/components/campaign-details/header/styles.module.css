@@ -5,7 +5,7 @@
 }
 
 .titleContainer {
-    @apply w-full flex flex-col gap-3 flex-1;
+    @apply w-full flex flex-col gap-5 flex-1;
 }
 
 .title {
@@ -13,7 +13,7 @@
 }
 
 .chainLogo {
-    @apply size-6 sm:size-9;
+    @apply size-6 sm:size-9 mr-2;
 }
 
 .actions {

@@ -38,5 +38,5 @@
 }
 
 .noDistribution {
-    @apply flex flex-col justify-center items-center gap-2 size-[15.625rem];
+    @apply flex flex-col justify-center items-center size-[15.625rem];
 }

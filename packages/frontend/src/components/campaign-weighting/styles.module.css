@@ -4,30 +4,26 @@
     @apply flex gap-3 items-center;
 }
 
-.bar {
-    @apply h-16 w-4 flex flex-col overflow-hidden rounded-full;
+.section {
+    @apply flex flex-col gap-2;
 }
 
-.section:first-child {
+.bar {
+    @apply h-3 rounded-full;
+}
+
+.bar:first-child {
     @apply bg-[#4E80EE];
 }
 
-.section:nth-child(2) {
+.bar:nth-child(2) {
     @apply bg-[#3563CB];
 }
 
-.section:last-child {
+.bar:last-child {
     @apply bg-[#90B2FF];
 }
 
-.labelsWrapper {
-    @apply flex gap-3;
-}
-
 .labels {
-    @apply flex flex-col gap-1;
-}
-
-.fees {
-    @apply flex gap-1;
+    @apply flex items-center gap-1;
 }
