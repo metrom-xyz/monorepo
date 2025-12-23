@@ -124,6 +124,7 @@ const DEX_BRAND_NAME: Record<SupportedDex, string> = {
     [SupportedDex.Honeypop]: "Honeypop",
     [SupportedDex.Lithos]: "Lithos",
     [SupportedDex.Quickswap]: "Quickswap",
+    [SupportedDex.Hyperion]: "Hyperion",
 };
 
 const GMX_V1_BRAND_NAME: Record<SupportedGmxV1, string> = {
