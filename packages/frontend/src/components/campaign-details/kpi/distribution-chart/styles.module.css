@@ -33,7 +33,7 @@
 }
 
 .container.empty {
-    @apply flex flex-col gap-2 justify-center items-center;
+    @apply flex flex-col gap-2 justify-center items-center min-h-[18.75rem];
 }
 
 .loadingBar {

@@ -1,0 +1,9 @@
+@reference "../../app.css";
+
+.root {
+    @apply flex flex-col items-center text-center gap-1;
+}
+
+.icon {
+    @apply size-7 text-tertiary mb-0.5;
+}

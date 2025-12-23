@@ -29,9 +29,9 @@ import { PointsBreakdown } from "./points-breakdown";
 import type { SupportedChain } from "@metrom-xyz/contracts";
 import type { Leaderboard } from "@/src/types/campaign";
 import { useWindowSize } from "react-use";
-import { EmptyIcon } from "@/src/assets/empty-icon";
 import { useAccount } from "@/src/hooks/useAccount";
 import classNames from "classnames";
+import { EmptyState } from "../empty-state";
 
 import styles from "./styles.module.css";
 
@@ -92,10 +92,10 @@ export function Leaderboard({
                 <div className={styles.cardsWrapper}>
                     <div className={styles.leaderboardWrapper}>
                         <Card className={styles.noDistribution}>
-                            <EmptyIcon />
-                            <Typography uppercase weight="medium" size="sm">
-                                {t("noDistribution")}
-                            </Typography>
+                            <EmptyState
+                                title={t("empty.title")}
+                                subtitle={t("empty.subtitle")}
+                            />
                         </Card>
                     </div>
                     <EmptyRepartitionChart />

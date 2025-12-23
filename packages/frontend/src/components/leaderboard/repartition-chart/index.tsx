@@ -7,7 +7,7 @@ import { shuffle } from "@/src/utils/common";
 import type { Leaderboard, Rank } from "@/src/types/campaign";
 import classNames from "classnames";
 import { RankTooltip } from "./tooltip";
-import { EmptyIcon } from "@/src/assets/empty-icon";
+import { EmptyState } from "../../empty-state";
 
 import styles from "./styles.module.css";
 
@@ -164,10 +164,10 @@ export function EmptyRepartitionChart() {
         <Card className={styles.root}>
             <div className={styles.container}>
                 <div className={styles.noDistribution}>
-                    <EmptyIcon />
-                    <Typography uppercase weight="medium" size="sm">
-                        {t("noDistribution")}
-                    </Typography>
+                    <EmptyState
+                        title={t("empty.title")}
+                        subtitle={t("empty.subtitle")}
+                    />
                 </div>
             </div>
         </Card>

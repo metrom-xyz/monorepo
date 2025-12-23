@@ -26,49 +26,51 @@ export function CampaignWeighting({
 
     return (
         <div className={styles.root}>
-            <div className={styles.bar}>
+            <div className={styles.section}>
                 <div
-                    style={{ height: `${token0Weight}%` }}
-                    className={styles.section}
+                    className={styles.bar}
+                    style={{ width: `${token0Weight}%` }}
                 ></div>
-                <div
-                    style={{ height: `${token1Weight}%` }}
-                    className={styles.section}
-                ></div>
-                <div
-                    style={{ height: `${liquidityWeight}%` }}
-                    className={styles.section}
-                ></div>
-            </div>
-            <div className={styles.labelsWrapper}>
                 <div className={styles.labels}>
                     <Typography size="sm" weight="medium">
                         {formatPercentage({ percentage: token0Weight })}
                     </Typography>
-                    <Typography size="sm" weight="medium">
-                        {formatPercentage({ percentage: token1Weight })}
-                    </Typography>
-                    <Typography size="sm" weight="medium">
-                        {formatPercentage({ percentage: liquidityWeight })}
-                    </Typography>
-                </div>
-                <div className={styles.labels}>
                     <Typography size="sm" weight="medium" variant="tertiary">
                         {pool.tokens[0].symbol}
+                    </Typography>
+                </div>
+            </div>
+            <div className={styles.section}>
+                <div
+                    className={styles.bar}
+                    style={{ width: `${token1Weight}%` }}
+                ></div>
+                <div className={styles.labels}>
+                    <Typography size="sm" weight="medium">
+                        {formatPercentage({ percentage: token1Weight })}
                     </Typography>
                     <Typography size="sm" weight="medium" variant="tertiary">
                         {pool.tokens[1].symbol}
                     </Typography>
-                    <div className={styles.fees}>
-                        <Typography
-                            size="sm"
-                            weight="medium"
-                            variant="tertiary"
-                            uppercase
-                        >
-                            {t("fees")}
-                        </Typography>
-                    </div>
+                </div>
+            </div>
+            <div className={styles.section}>
+                <div
+                    className={styles.bar}
+                    style={{ width: `${liquidityWeight}%` }}
+                ></div>
+                <div className={styles.labels}>
+                    <Typography size="sm" weight="medium">
+                        {formatPercentage({ percentage: liquidityWeight })}
+                    </Typography>
+                    <Typography
+                        size="sm"
+                        weight="medium"
+                        variant="tertiary"
+                        uppercase
+                    >
+                        {t("fees")}
+                    </Typography>
                 </div>
             </div>
         </div>

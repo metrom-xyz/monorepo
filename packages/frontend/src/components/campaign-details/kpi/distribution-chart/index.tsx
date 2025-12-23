@@ -19,7 +19,7 @@ import { useTranslations } from "next-intl";
 import classNames from "classnames";
 import { useKpiMeasurements } from "@/src/hooks/useKpiMeasurements";
 import { getAggregatedKpiMeasurements } from "@/src/utils/kpi";
-import { EmptyIcon } from "@/src/assets/empty-icon";
+import { EmptyState } from "@/src/components/empty-state";
 
 import styles from "./styles.module.css";
 
@@ -185,11 +185,12 @@ export function DistributionChart({
                 >
                     {t("distributions")}
                 </Typography>
+
                 <div className={classNames(styles.container, styles.empty)}>
-                    <EmptyIcon />
-                    <Typography uppercase weight="medium" size="sm">
-                        {t("noDistribution")}
-                    </Typography>
+                    <EmptyState
+                        title={t("empty.title")}
+                        subtitle={t("empty.subtitle")}
+                    />
                 </div>
             </Card>
         );

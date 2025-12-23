@@ -38,7 +38,7 @@
 }
 
 .noDistribution {
-    @apply min-h-[23.438rem] flex flex-col items-center justify-center gap-2 bg-gray-100 dark:bg-neutral-800;
+    @apply min-h-[23.438rem] flex flex-col items-center justify-center bg-gray-100 dark:bg-neutral-800;
 }
 
 .tableWrapper {
