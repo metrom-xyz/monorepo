@@ -200,4 +200,16 @@ export const DEPLOYMENTS: {
             },
         },
     },
+    bsc: {
+        "uni-v3": {
+            Factory: {
+                address: "0xdB1d10011AD0Ff90774D0C6Bb92e5C5c8b4461F7",
+                startBlock: 26324014,
+            },
+            NonFungiblePositionManager: {
+                address: "0x7b8A01B39D58278b5DE7e48c8449c9f4F5170613",
+                startBlock: 26324045,
+            },
+        },
+    },
 };

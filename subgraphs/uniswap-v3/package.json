@@ -21,6 +21,7 @@
         "deploy:taraswap:taraxa": "npm run prepare:deploy taraxa taraswap && npm run codegen && metrom-graph deploy production metrom-taraswap-taraxa 0.0.1",
         "deploy:uni-v3:arbitrum": "npm run prepare:deploy arbitrum-one uni-v3 && npm run codegen && graph deploy metrom-uni-v3-arbitrum -l 0.0.1",
         "deploy:uni-v3:saga-evm": "npm run prepare:deploy saga-evm uni-v3 && npm run codegen && graph build && goldsky subgraph deploy metrom-uni-v3-saga/0.0.1",
+        "deploy:uni-v3:bsc": "npm run prepare:deploy bsc uni-v3 && npm run codegen && graph deploy metrom-uni-v-3-bsc -l 0.0.1",
         "lint": "eslint .",
         "format": "eslint --fix ."
     },
