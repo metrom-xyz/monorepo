@@ -11,7 +11,7 @@ import type {
 import { RemoteLogo } from "@/src/components/remote-logo";
 import type { SupportedChain } from "@metrom-xyz/contracts";
 import { RankTooltip } from "./tooltip";
-import { EmptyIcon } from "@/src/assets/empty-icon";
+import { EmptyState } from "@/src/components/empty-state";
 
 import styles from "./styles.module.css";
 
@@ -176,10 +176,10 @@ export function AverageDistributionChart({
                     {t("averageDistribution")}
                 </Typography>
                 <div className={classNames(styles.chartWrapper, styles.empty)}>
-                    <EmptyIcon />
-                    <Typography uppercase weight="medium" size="sm">
-                        {t("noDistribution")}
-                    </Typography>
+                    <EmptyState
+                        title={t("empty.title")}
+                        subtitle={t("empty.subtitle")}
+                    />
                 </div>
             </Card>
         );

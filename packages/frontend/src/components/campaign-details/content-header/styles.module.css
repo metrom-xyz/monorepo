@@ -9,11 +9,12 @@
         flex-1
         flex
         flex-row
-        sm:min-h-[8.75rem]
+        sm:min-h-[7.25rem]
         sm:flex-col
         items-center
         sm:items-start
         justify-between
+        gap-4
         p-3
         sm:py-5
         sm:px-6
@@ -50,6 +51,10 @@
     @apply sm:w-full flex items-center justify-between gap-2;
 }
 
+.mainText {
+    @apply text-[1.75rem];
+}
+
 .infoIcon :global(.icon) {
     @apply text-neutral-100;
 }
@@ -63,7 +68,7 @@
 }
 
 .tokenRewards {
-    @apply w-full flex flex-[2.2] flex-col sm:flex-row sm:gap-3 bg-gray-100 dark:bg-neutral-800;
+    @apply w-full flex flex-[2.3] flex-col sm:flex-row sm:gap-3 bg-gray-100 dark:bg-neutral-800;
 }
 
 .tokenRewards:last-child {
@@ -76,12 +81,12 @@
         flex-row
         items-center
         sm:items-start
-        justify-between
         sm:flex-col
+        justify-between
         p-3
         sm:p-5
         gap-3
-        sm:gap-7;
+        sm:gap-4;
 }
 
 .rewardBox:not(:last-child) {

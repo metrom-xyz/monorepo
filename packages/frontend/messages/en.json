@@ -612,7 +612,10 @@
             "chart": "Rewards payout and APR over {targetValueName}",
             "charts": {
                 "distributions": "Distributions",
-                "noDistribution": "No distribution yet",
+                "empty": {
+                    "title": "Distributions chart pending",
+                    "subtitle": "Distributions will appear once the first KPI measurement has been taken"
+                },
                 "averageDistribution": "Average distribution",
                 "reimbursed": "Reimbursed",
                 "distributed": "Distributed",
@@ -630,6 +633,10 @@
             "title": "Leaderboard",
             "subtitleLatest": "As of the latest distribution:",
             "noDistribution": "No distribution yet",
+            "empty": {
+                "title": "Leaderboard pending",
+                "subtitle": "Liquidity providers will appear once the first distribution has been completed"
+            },
             "connectedAccountRank": {
                 "notEligible": "Not eligible to farm rewards",
                 "eligible": "Eligible to farm rewards",
