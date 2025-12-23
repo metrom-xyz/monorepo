@@ -7,6 +7,7 @@ import { shuffle } from "@/src/utils/common";
 import type { Leaderboard, Rank } from "@/src/types/campaign";
 import classNames from "classnames";
 import { RankTooltip } from "./tooltip";
+import { EmptyState } from "../../empty-state";
 
 import styles from "./styles.module.css";
 
@@ -107,7 +108,7 @@ export function RepartitionChart({
 
     return (
         <Card className={styles.root}>
-            <Typography uppercase weight="medium" variant="tertiary"size="sm">
+            <Typography uppercase weight="medium" variant="tertiary" size="sm">
                 {messages?.title ? messages.title : t("repartition")}
             </Typography>
             <div className={styles.container}>
@@ -125,11 +126,11 @@ export function RepartitionChart({
                             <Pie
                                 dataKey="value"
                                 animationEasing="ease-in-out"
-                                animationDuration={500}
+                                animationDuration={400}
                                 cornerRadius={6}
                                 data={chartData}
                                 innerRadius={70}
-                                outerRadius={120}
+                                outerRadius={113}
                                 startAngle={90}
                                 endAngle={450}
                                 minAngle={5}
@@ -150,6 +151,23 @@ export function RepartitionChart({
                             />
                         </PieChart>
                     )}
+                </div>
+            </div>
+        </Card>
+    );
+}
+
+export function EmptyRepartitionChart() {
+    const t = useTranslations("campaignDetails.leaderboard");
+
+    return (
+        <Card className={styles.root}>
+            <div className={styles.container}>
+                <div className={styles.noDistribution}>
+                    <EmptyState
+                        title={t("empty.title")}
+                        subtitle={t("empty.subtitle")}
+                    />
                 </div>
             </div>
         </Card>

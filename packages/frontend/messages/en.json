@@ -103,11 +103,6 @@
                 "duration": "{days} ago"
             }
         },
-        "rewards": {
-            "tooltip": {
-                "totalUsdValue": "Total USD rewards"
-            }
-        },
         "projects": {
             "campaigns": "<highlighted>{count}</highlighted> campaigns",
             "active": "{count} active",
@@ -542,25 +537,6 @@
         "discover": "Discover",
         "newCampaign": "New campaign"
     },
-    "campaignDuration": {
-        "startDate": "Start date",
-        "endDate": "End date",
-        "status": {
-            "duration": "Duration",
-            "live": {
-                "text": "Live",
-                "duration": "{days} left"
-            },
-            "upcoming": {
-                "text": "Upcoming",
-                "duration": "in {days}"
-            },
-            "ended": {
-                "text": "Ended",
-                "duration": "{days} ago"
-            }
-        }
-    },
     "projectIntro": {
         "relatedArticles": "Related articles"
     },
@@ -588,8 +564,6 @@
     "campaignDetails": {
         "title": "Campaign details",
         "header": {
-            "explorer": "Explorer",
-            "claim": "Claim",
             "ammPoolLiquidity": {
                 "deposit": "Deposit"
             },
@@ -608,32 +582,22 @@
             "kpi": "KPI",
             "range": "Range",
             "status": {
-                "live": "Live ends in {days}",
-                "upcoming": "Upcoming in {days}",
-                "ended": "Ended {days} ago"
+                "active": "LIVE ends in {days}",
+                "upcoming": "UPCOMING in {days}",
+                "expired": "ENDED {days} ago"
             },
             "allowlist": "Rewards limited to only allowed addresses"
         },
-        "details": {
-            "status": "Status",
-            "statusType": {
-                "live": "Live",
-                "upcoming": "Upcoming",
-                "ended": "Ended"
-            },
-            "duration": "Duration",
-            "startDate": "Start date",
-            "endDate": "End date"
+        "content": {
+            "tvl": "TVL",
+            "apr": "APR",
+            "tokens": "Tokens",
+            "dailyRewards": "Daily rewards",
+            "totalValue": "Total value",
+            "rewardRatio": "Reward ratio",
+            "dailyPer1k": "Points/$1k/day",
+            "totalPoints": "Total points"
         },
-        "rewards": {
-            "title": "Total rewards",
-            "token": "Token",
-            "inUsd": "In $",
-            "amount": "Amount",
-            "daily": "Daily rewards",
-            "total": "Total value"
-        },
-        "weighting": { "title": "Reward ratio", "fees": "Fees" },
         "points": {
             "title": "Points",
             "total": "Total",
@@ -641,58 +605,55 @@
         },
         "priceRange": {
             "title": "Price range",
-            "lowerPrice": {
-                "label": "Lower price",
-                "value": "{price} {token1} PER {token0}"
-            },
-            "upperPrice": {
-                "label": "Upper price",
-                "value": "{price} {token1} PER {token0}"
-            },
-            "chart": "Range visualizer"
+            "chart": "Range visualizer <bold>{token1} PER {token0}</bold>"
         },
         "kpi": {
             "title": "KPI",
-            "lowerBound": "Lower bound",
-            "upperBound": "Upper bound",
+            "details": "KPI details",
             "chart": "Rewards payout and APR over {targetValueName}",
-            "averageGoalReached": "Average goal reached",
-            "minimumPayout": "Minimum payout",
             "charts": {
                 "distributions": "Distributions",
-                "noDistribution": "No distribution yet",
+                "empty": {
+                    "title": "Distributions chart pending",
+                    "subtitle": "Distributions will appear once the first KPI measurement has been taken"
+                },
                 "averageDistribution": "Average distribution",
                 "reimbursed": "Reimbursed",
                 "distributed": "Distributed",
-                "week": "W {week}",
-                "weekDuration": "{from} to {to}"
+                "week": "Week {week}"
             }
         },
         "restrictions": {
-            "title": "Restrictions",
-            "allows": "Allows {count, plural, =0 {} =1 {# address} other {# adresses}}",
-            "tooltip": {
-                "allows": "Rewards for this campaign are restricted. Rewards will be available <bold>exclusively to</bold> the addresses listed below."
-            }
+            "restrictions": "Address restrictions",
+            "allowed": "{count} allowed",
+            "blocked": "{count} blocked",
+            "addressBlocked": "Your address is blocked",
+            "addressAllowed": "Your address is allowed"
         },
         "leaderboard": {
             "title": "Leaderboard",
             "subtitleLatest": "As of the latest distribution:",
             "noDistribution": "No distribution yet",
+            "empty": {
+                "title": "Leaderboard pending",
+                "subtitle": "Liquidity providers will appear once the first distribution has been completed"
+            },
             "connectedAccountRank": {
-                "connect": "View your rank",
-                "blacklisted": "Your address is blocked from farming rewards in the campaign.",
+                "notEligible": "Not eligible to farm rewards",
+                "eligible": "Eligible to farm rewards",
+                "blocked": "Your address is blocked",
+                "allowed": "Your address is allowed",
                 "noRewards": "You don't have any rewards.",
-                "yourRank": "Your rank",
-                "account": "Account",
-                "rewardsDistributed": "Distributed"
+                "connect": "Connect your wallet to view your status"
             },
             "rank": "Rank",
             "account": "Account",
-            "rewardsDistributed": "Distributed",
+            "distributed": "Distributed",
+            "distributedUsd": "Total USD distributed",
             "noRewards": "No rewards distributed",
             "repartition": "LP distribution",
-            "others": "Others"
+            "others": "Others",
+            "you": "You"
         },
         "notFound": "Campaign not found!"
     },
@@ -807,6 +768,7 @@
         },
         "lowerBound": "Lower bound",
         "upperBound": "Upper bound",
+        "currentTvl": "Current TVL",
         "errors": {
             "wrongData": "Wrong data, cant't run the simulation",
             "missingData": "Fill both lower and upper bound values for the simulation"
@@ -815,14 +777,19 @@
             "payout": "Payout",
             "kpiReached": "KPI reached",
             "apr": "APR"
+        },
+        "axis": {
+            "totRewards": "Tot. rewards",
+            "currentRewards": "Rewards (current TVL)",
+            "minPayout": "Min. payout"
         }
     },
     "distributionChart": {
         "tooltip": {
             "time": "Time",
             "token": "Token",
-            "distributed": "Distributed",
-            "reimbursed": "Reimbursed"
+            "distributed": "Dist.",
+            "reimbursed": "Reimb."
         }
     },
     "aprChip": {
@@ -860,6 +827,8 @@
         "tooltip": {
             "price": "1 {token0} = {price} {token1}"
         },
+        "lowerPrice": "Lower price",
+        "upperPrice": "Upper price",
         "emptyData": "Missing price range data",
         "errors": {
             "wrongData": "Wrong data",
@@ -877,5 +846,11 @@
         "debt": "debt",
         "deposits": "deposits",
         "netDeposits": "net deposits"
+    },
+    "campaignRewardsPopover": {
+        "totalUsdValue": "Total USD rewards"
+    },
+    "campaignWeighting": {
+        "fees": "Fees"
     }
 }

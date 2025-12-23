@@ -19,21 +19,13 @@ export function RankTooltip({ payload }: RankTooltipProps) {
 
     if (!payload || !payload.length) return null;
 
-    const color = payload[0].payload.color;
-
     return (
         <div className={styles.root}>
-            <Typography
-                weight="bold"
-                uppercase
-                style={{
-                    color,
-                }}
-            >
-                {t(payload[0].payload.type)}
-            </Typography>
             <Typography weight="bold" size="xl2">
                 {formatPercentage({ percentage: payload[0].value })}
+            </Typography>
+            <Typography size="sm" variant="tertiary">
+                {t(payload[0].payload.type)}
             </Typography>
         </div>
     );

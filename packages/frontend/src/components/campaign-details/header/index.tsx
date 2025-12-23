@@ -1,4 +1,4 @@
-import { Skeleton, Button } from "@metrom-xyz/ui";
+import { Skeleton } from "@metrom-xyz/ui";
 import { PoolRemoteLogo } from "../../pool-remote-logo";
 import type { Campaign } from "@/src/types/campaign";
 import { AmmPoolLiquityHeader } from "./amm-pool-liquitidy";
@@ -7,6 +7,7 @@ import { LiquityV2Header } from "./liquity-v2";
 import { AaveV3Header } from "./aave-v3";
 import { EmptyHeader } from "./empty";
 import { HoldFungibleAsset } from "./hold-fungible-asset";
+import { SkeletonTags } from "./tags";
 
 import styles from "./styles.module.css";
 
@@ -51,27 +52,19 @@ export function SkeletonHeader() {
         <div className={styles.root}>
             <div className={styles.titleContainer}>
                 <div className={styles.title}>
-                    <Skeleton circular width={32} />
+                    <Skeleton circular width={36} />
                     <PoolRemoteLogo
                         tokens={[{ address: "0x1" }, { address: "0x2" }]}
                         loading
-                        size="xl"
+                        size="lg"
                     />
                     <Skeleton size="xl3" width={400} />
                     <Skeleton size="lg" width={60} />
                 </div>
+                <SkeletonTags />
             </div>
-            <div className={styles.actionsContainer}>
-                <div className={styles.leftActions}>
-                    <Button size="sm" loading></Button>
-                    <Button size="sm" loading></Button>
-                    <Button
-                        size="sm"
-                        variant="secondary"
-                        border={false}
-                        loading
-                    ></Button>
-                </div>
+            <div className={styles.actions}>
+                <div className={styles.loadingAction}></div>
             </div>
         </div>
     );

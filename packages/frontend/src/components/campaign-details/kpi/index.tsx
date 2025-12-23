@@ -1,6 +1,5 @@
-import { Card, InfoTooltip, TextField, Typography } from "@metrom-xyz/ui";
+import { Accordion, InfoTooltip, Typography } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
-import { formatPercentage, formatUsdAmount } from "@/src/utils/format";
 import {
     DistributablesType,
     KpiMetric,
@@ -17,6 +16,7 @@ import type {
     Campaign,
     DistributablesNamedCampaign,
 } from "@/src/types/campaign";
+import { useWindowSize } from "react-use";
 
 import styles from "./styles.module.css";
 
@@ -28,8 +28,7 @@ interface KpiProps {
 export function Kpi({ campaign, loading }: KpiProps) {
     const t = useTranslations("campaignDetails.kpi");
 
-    const specificationLoading = loading || !campaign;
-
+    const { width } = useWindowSize();
     const { kpiMeasurements, loading: loadingKpiMeasurements } =
         useKpiMeasurements({ campaign });
 
@@ -55,7 +54,8 @@ export function Kpi({ campaign, loading }: KpiProps) {
 
     if (!campaign?.specification?.kpi) return null;
 
-    const reachedGoalPercentage = measurement || 0;
+    const specificationLoading = loading || !campaign;
+    // const reachedGoalPercentage = measurement || 0;
 
     let usdTvl: number | undefined;
     if (campaign.status === Status.Expired)
@@ -77,56 +77,25 @@ export function Kpi({ campaign, loading }: KpiProps) {
                     </InfoTooltip>
                 )}
             </div>
-            <div className={styles.card}>
+            <div className={styles.distributionChartsWrapper}>
+                <DistributionChart
+                    campaign={campaign}
+                    loading={loadingKpiMeasurements}
+                    minimumPayoutPercentage={minimumPayoutPercentage}
+                />
+                <AverageDistributionChart
+                    chain={campaign.chainId}
+                    loading={loadingKpiMeasurements}
+                    distributables={campaign.distributables}
+                    kpiMeasurementPercentage={measurement}
+                    minimumPayoutPercentage={
+                        campaign.specification.kpi.minimumPayoutPercentage
+                    }
+                />
+            </div>
+            <Accordion title={t("details")} className={styles.detailsAccordion}>
                 <div className={styles.wrapper}>
-                    <div className={styles.leftContentWrapper}>
-                        <TextField
-                            boxed
-                            size="xl"
-                            label={t("lowerBound")}
-                            loading={specificationLoading}
-                            value={formatUsdAmount({
-                                amount: lowerUsdTarget,
-                                cutoff: false,
-                            })}
-                        />
-                        <TextField
-                            boxed
-                            size="xl"
-                            label={t("upperBound")}
-                            loading={specificationLoading}
-                            value={formatUsdAmount({
-                                amount: upperUsdTarget,
-                                cutoff: false,
-                            })}
-                        />
-                        <TextField
-                            boxed
-                            size="xl"
-                            label={t("minimumPayout")}
-                            loading={specificationLoading}
-                            value={formatPercentage({
-                                percentage: minimumPayoutPercentage
-                                    ? minimumPayoutPercentage * 100
-                                    : 0,
-                            })}
-                        />
-                        <TextField
-                            boxed
-                            size="xl"
-                            label={t("averageGoalReached")}
-                            loading={specificationLoading}
-                            value={
-                                campaign.status === Status.Upcoming
-                                    ? "-"
-                                    : formatPercentage({
-                                          percentage:
-                                              reachedGoalPercentage * 100,
-                                      })
-                            }
-                        />
-                    </div>
-                    <Card className={styles.chart}>
+                    <div className={styles.chart}>
                         <Typography
                             size="sm"
                             uppercase
@@ -139,6 +108,8 @@ export function Kpi({ campaign, loading }: KpiProps) {
                         </Typography>
                         <div className={styles.chartWrapper}>
                             <KpiSimulationChart
+                                complex={width > 640}
+                                tooltipSize="sm"
                                 loading={
                                     specificationLoading ||
                                     loadingKpiMeasurements
@@ -161,25 +132,9 @@ export function Kpi({ campaign, loading }: KpiProps) {
                                 }
                             />
                         </div>
-                    </Card>
+                    </div>
                 </div>
-                <div className={styles.distributionChartsWrapper}>
-                    <DistributionChart
-                        campaign={campaign}
-                        loading={loadingKpiMeasurements}
-                        minimumPayoutPercentage={minimumPayoutPercentage}
-                    />
-                    <AverageDistributionChart
-                        chain={campaign.chainId}
-                        loading={loadingKpiMeasurements}
-                        distributables={campaign.distributables}
-                        kpiMeasurementPercentage={measurement}
-                        minimumPayoutPercentage={
-                            campaign.specification.kpi.minimumPayoutPercentage
-                        }
-                    />
-                </div>
-            </div>
+            </Accordion>
         </div>
     );
 }

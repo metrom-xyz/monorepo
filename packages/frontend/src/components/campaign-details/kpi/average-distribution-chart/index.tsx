@@ -4,7 +4,6 @@ import { Card, Popover, Typography } from "@metrom-xyz/ui";
 import { Cell, Pie, PieChart, Tooltip } from "recharts";
 import { formatAmount, formatUsdAmount } from "@/src/utils/format";
 import classNames from "classnames";
-import { NoDistributionsIcon } from "@/src/assets/no-distributions-icon";
 import type {
     TokenDistributables,
     UsdPricedErc20TokenAmount,
@@ -12,6 +11,7 @@ import type {
 import { RemoteLogo } from "@/src/components/remote-logo";
 import type { SupportedChain } from "@metrom-xyz/contracts";
 import { RankTooltip } from "./tooltip";
+import { EmptyState } from "@/src/components/empty-state";
 
 import styles from "./styles.module.css";
 
@@ -176,10 +176,10 @@ export function AverageDistributionChart({
                     {t("averageDistribution")}
                 </Typography>
                 <div className={classNames(styles.chartWrapper, styles.empty)}>
-                    <NoDistributionsIcon />
-                    <Typography uppercase weight="medium" size="sm">
-                        {t("noDistribution")}
-                    </Typography>
+                    <EmptyState
+                        title={t("empty.title")}
+                        subtitle={t("empty.subtitle")}
+                    />
                 </div>
             </Card>
         );
@@ -217,6 +217,7 @@ export function AverageDistributionChart({
                                 )}
                             />
                             <Typography
+                                size="sm"
                                 weight="medium"
                                 variant="tertiary"
                                 uppercase
@@ -226,7 +227,7 @@ export function AverageDistributionChart({
                                     : t("reimbursed")}
                             </Typography>
                         </div>
-                        <Typography weight="medium" variant="tertiary">
+                        <Typography size="sm" weight="medium">
                             {formatUsdAmount({
                                 amount:
                                     popover === "distributed"
@@ -239,19 +240,28 @@ export function AverageDistributionChart({
                         <div key={token.address} className={styles.tokenRow}>
                             <div className={styles.tokenWrapper}>
                                 <RemoteLogo
+                                    size="xs"
                                     address={token.address}
                                     chain={chain}
                                 />
-                                <Typography weight="medium">
+                                <Typography size="sm" weight="medium">
                                     {token.symbol}
                                 </Typography>
                             </div>
-                            <Typography weight="medium">
-                                {formatAmount({ amount: amount.formatted })}
-                            </Typography>
-                            <Typography weight="medium" variant="tertiary">
-                                {formatUsdAmount({ amount: amount.usdValue })}
-                            </Typography>
+                            <div>
+                                <Typography size="sm" weight="medium">
+                                    {formatAmount({ amount: amount.formatted })}
+                                </Typography>
+                                <Typography
+                                    size="sm"
+                                    weight="medium"
+                                    variant="tertiary"
+                                >
+                                    {formatUsdAmount({
+                                        amount: amount.usdValue,
+                                    })}
+                                </Typography>
+                            </div>
                         </div>
                     ))}
                 </div>
@@ -261,12 +271,12 @@ export function AverageDistributionChart({
                     <Pie
                         dataKey="value"
                         animationEasing="ease-in-out"
-                        animationDuration={500}
+                        animationDuration={400}
                         cornerRadius={6}
                         // FIXME: the type: "reimbursed" | "distributed" is causing issues with the chart type, fix this
                         data={chartData as unknown as Record<string, unknown>[]}
                         innerRadius={70}
-                        outerRadius={120}
+                        outerRadius={113}
                         startAngle={90}
                         endAngle={450}
                         minAngle={5}

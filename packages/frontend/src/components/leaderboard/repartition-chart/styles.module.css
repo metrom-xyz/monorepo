@@ -1,7 +1,7 @@
 @reference "../../../app.css";
 
 .root {
-    @apply sm:max-w-80 flex flex-col gap-3;
+    @apply sm:max-w-80 flex flex-col gap-3 p-3 sm:p-5 bg-gray-100 dark:bg-neutral-800;
 }
 
 .container {
@@ -13,9 +13,10 @@
         items-center
         justify-center
         self-center
-        size-[17.5rem]
+        size-[15.625rem]
         rounded-full
-        background-main
+        bg-gray-200
+        dark:bg-neutral-900
         transition-colors
         duration-200
         ease-in-out;
@@ -26,16 +27,16 @@
         outline-none
         hover:opacity-85
         stroke-gray-200
-        dark:stroke-neutral-950
+        dark:stroke-neutral-900
         transition-all
         duration-200
         ease-in-out;
 }
 
 .loading {
-    @apply animate-pulse background-main;
+    @apply animate-pulse bg-gray-200 dark:bg-neutral-900;
 }
 
-.chartContainer {
-    @apply size-[15rem];
+.noDistribution {
+    @apply flex flex-col justify-center items-center size-[15.625rem];
 }

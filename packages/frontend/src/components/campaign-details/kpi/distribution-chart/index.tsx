@@ -17,10 +17,9 @@ import { TooltipContent } from "./tooltip";
 import { Card, Chip, Skeleton, Typography } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
 import classNames from "classnames";
-import { NoDistributionsIcon } from "@/src/assets/no-distributions-icon";
 import { useKpiMeasurements } from "@/src/hooks/useKpiMeasurements";
 import { getAggregatedKpiMeasurements } from "@/src/utils/kpi";
-import { AnimatePresence, easeInOut, motion } from "motion/react";
+import { EmptyState } from "@/src/components/empty-state";
 
 import styles from "./styles.module.css";
 
@@ -40,6 +39,10 @@ interface DistributionChartProps {
 
 const THREE_HOURS_SECONDS = 60 * 60 * 3;
 const ONE_DAY_SECONDS = 60 * 60 * 24;
+const BAR_RADIUS: [number, number, number, number] = [6, 6, 0, 0];
+const X_AXIS_PADDINGS = { left: 0, right: 0 };
+const Y_AXIS_TICKS = [0, 1];
+const BAR_CHART_STYLES = { cursor: "pointer" };
 
 export function DistributionChart({
     campaign,
@@ -144,17 +147,17 @@ export function DistributionChart({
                         )}
                     >
                         <Skeleton
-                            width={33}
+                            width={64}
                             size="xl"
                             className={styles.skeletonChip}
                         />
                         <Skeleton
-                            width={33}
+                            width={64}
                             size="xl"
                             className={styles.skeletonChip}
                         />
                         <Skeleton
-                            width={33}
+                            width={64}
                             size="xl"
                             className={styles.skeletonChip}
                         />
@@ -182,11 +185,12 @@ export function DistributionChart({
                 >
                     {t("distributions")}
                 </Typography>
+
                 <div className={classNames(styles.container, styles.empty)}>
-                    <NoDistributionsIcon />
-                    <Typography uppercase weight="medium" size="sm">
-                        {t("noDistribution")}
-                    </Typography>
+                    <EmptyState
+                        title={t("empty.title")}
+                        subtitle={t("empty.subtitle")}
+                    />
                 </div>
             </Card>
         );
@@ -204,29 +208,6 @@ export function DistributionChart({
                     >
                         {t("distributions")}
                     </Typography>
-                    <AnimatePresence>
-                        {from && to && (
-                            <motion.div
-                                initial={{ opacity: 0 }}
-                                animate={{ opacity: 1 }}
-                                exit={{ opacity: 0 }}
-                                transition={{ ease: easeInOut, duration: 0.2 }}
-                            >
-                                <Typography weight="medium" size="xs">
-                                    {t("weekDuration", {
-                                        from: dayjs
-                                            .unix(from)
-                                            .format("DD MMM")
-                                            .toUpperCase(),
-                                        to: dayjs
-                                            .unix(to)
-                                            .format("DD MMM")
-                                            .toUpperCase(),
-                                    })}
-                                </Typography>
-                            </motion.div>
-                        )}
-                    </AnimatePresence>
                 </div>
                 <div className={styles.rightContent}>
                     {Array.from({ length: weeksCount }).map((_, index) => (
@@ -255,15 +236,15 @@ export function DistributionChart({
                 <ResponsiveContainer width="100%" className={styles.container}>
                     <BarChart
                         data={chartData}
-                        style={{ cursor: "pointer" }}
+                        style={BAR_CHART_STYLES}
                         accessibilityLayer={false}
                     >
-                        <YAxis ticks={[0, 1]} hide />
+                        <YAxis ticks={Y_AXIS_TICKS} hide />
                         <XAxis
                             type="category"
                             dataKey="to"
                             height={20}
-                            padding={{ left: 0, right: 0 }}
+                            padding={X_AXIS_PADDINGS}
                             tickSize={4}
                             interval={"preserveStartEnd"}
                             axisLine={false}
@@ -278,12 +259,11 @@ export function DistributionChart({
                         <Bar
                             dataKey="reimbursed"
                             stackId="distribution"
-                            radius={[6, 6, 0, 0]}
+                            radius={BAR_RADIUS}
                             className={styles.reimbursedBar}
                         />
 
                         <Tooltip
-                            position={{ y: -100 }}
                             isAnimationActive={false}
                             cursor={false}
                             content={

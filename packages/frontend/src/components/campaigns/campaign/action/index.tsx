@@ -1,6 +1,5 @@
 import {
     Skeleton,
-    Typography,
     type RemoteLogoSize,
     type TypographySize,
 } from "@metrom-xyz/ui";
@@ -21,6 +20,7 @@ import { GmxV1Liquidity } from "./gmx-v1-liquidity";
 import { TurtleVault } from "./turtle-vault";
 import { useTranslations } from "next-intl";
 import { DynamicPointsBoostChip } from "@/src/components/dynamic-points-boost-chip";
+import { CampaignTag } from "@/src/components/campaign-tag";
 
 import styles from "./styles.module.css";
 
@@ -94,28 +94,16 @@ export function Action({
                 />
             )}
             {!hideChips && (
-                <div className={styles.chipsWrapper}>
+                <div className={styles.tags}>
                     {campaign.specification?.kpi && (
-                        <div className={styles.chip}>
-                            <Typography size="xs" weight="medium" uppercase>
-                                {t("kpi")}
-                            </Typography>
-                        </div>
+                        <CampaignTag text={t("kpi")} />
                     )}
                     {campaign.specification?.priceRange && (
-                        <div className={styles.chip}>
-                            <Typography size="xs" weight="medium" uppercase>
-                                {t("pool.range")}
-                            </Typography>
-                        </div>
+                        <CampaignTag text={t("pool.range")} />
                     )}
                     {campaign.restrictions?.type ===
                         RestrictionType.Whitelist && (
-                        <div className={styles.chip}>
-                            <Typography size="xs" weight="medium" uppercase>
-                                {t("restricted")}
-                            </Typography>
-                        </div>
+                        <CampaignTag text={t("restricted")} />
                     )}
                 </div>
             )}

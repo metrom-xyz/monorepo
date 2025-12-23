@@ -7,16 +7,13 @@ import { ChainType, DistributablesType, TargetType } from "@metrom-xyz/sdk";
 import { useCampaign } from "@/src/hooks/useCampaign";
 import type { Hex } from "viem";
 import { Header, SkeletonHeader } from "./header";
-import { Details } from "./details";
-import { Rewards } from "./rewards";
-import { Points } from "./points";
 import { Kpi } from "./kpi";
 import { PageNotFound } from "../page-not-found";
-import { PriceRange } from "./price-range";
 import { Leaderboard } from "../leaderboard";
 import { useLeaderboard } from "@/src/hooks/useLeaderboard";
-import { Weighting } from "./weighting";
 import { Restrictions } from "./restrictions";
+import { ContentHeader, SkeletonContentHeader } from "./content-header";
+import { PriceRange } from "./price-range";
 
 import styles from "./styles.module.css";
 
@@ -51,8 +48,9 @@ export function CampaignDetails({
         return <PageNotFound message={t("notFound")} />;
 
     const tokensCampaign = campaign?.isDistributing(DistributablesType.Tokens);
-    const fixedPointsCampaign = campaign?.isDistributing(DistributablesType.FixedPoints);
-    const ammPoolCampaign = campaign?.isTargeting(TargetType.AmmPoolLiquidity);
+    const ammPoolLiquidityCampaigns = campaign?.isTargeting(
+        TargetType.AmmPoolLiquidity,
+    );
 
     return (
         <div className={styles.root}>
@@ -64,36 +62,33 @@ export function CampaignDetails({
                 )}
             </div>
             <div className={styles.contentWrapper}>
-                <Details campaign={campaign} loading={loadingCampaign} />
-                {tokensCampaign && (
-                    <Rewards campaign={campaign} loading={loadingCampaign} />
+                {!campaign || loadingCampaign ? (
+                    <SkeletonContentHeader />
+                ) : (
+                    <ContentHeader campaign={campaign} />
                 )}
-                {fixedPointsCampaign && (
-                    <Points campaign={campaign} loading={loadingCampaign} />
-                )}
-                {ammPoolCampaign && (
-                    <>
-                        <Weighting
-                            specification={campaign.specification}
-                            pool={campaign.target.pool}
-                        />
+
+                <div className={styles.contentBody}>
+                    {ammPoolLiquidityCampaigns && (
                         <PriceRange campaign={campaign} />
-                    </>
-                )}
-                {tokensCampaign && (
-                    <Kpi campaign={campaign} loading={loadingCampaign} />
-                )}
-                {campaign?.restrictions && (
-                    <Restrictions {...campaign.restrictions} />
-                )}
-                <Leaderboard
-                    chainId={campaign?.chainId}
-                    chainType={campaign?.chainType}
-                    restrictions={campaign?.restrictions}
-                    leaderboard={leaderboard}
-                    loading={loadingLeaderboard}
-                />
+                    )}
+
+                    {tokensCampaign && (
+                        <Kpi campaign={campaign} loading={loadingCampaign} />
+                    )}
+
+                    <Leaderboard
+                        chainId={campaign?.chainId}
+                        chainType={campaign?.chainType}
+                        restrictions={campaign?.restrictions}
+                        leaderboard={leaderboard}
+                        loading={loadingLeaderboard}
+                    />
+                </div>
             </div>
+            {campaign?.restrictions && (
+                <Restrictions {...campaign.restrictions} />
+            )}
         </div>
     );
 }

@@ -1,0 +1,98 @@
+@reference "../../../app.css";
+
+.root {
+    @apply flex flex-col sm:flex-row;
+}
+
+.box {
+    @apply w-full
+        flex-1
+        flex
+        flex-row
+        sm:min-h-[7.25rem]
+        sm:flex-col
+        items-center
+        sm:items-start
+        justify-between
+        gap-4
+        p-3
+        sm:py-5
+        sm:px-6
+        bg-gray-100
+        dark:bg-neutral-800;
+}
+
+.box:not(:last-child),
+.tokenRewards:not(:last-child) {
+    @apply border-b-[0.125rem] sm:border-r-[0.125rem] sm:border-b-0 border-gray-200 dark:border-neutral-700;
+}
+
+.box.blue {
+    @apply bg-brand-blue border-none;
+}
+
+.box.orange {
+    @apply bg-carrot-orange border-none;
+}
+
+.box.loading {
+    @apply animate-pulse;
+}
+
+.lightText {
+    @apply text-neutral-100;
+}
+
+.boxGroup {
+    @apply w-full flex;
+}
+
+.label {
+    @apply sm:w-full flex items-center justify-between gap-2;
+}
+
+.mainText {
+    @apply text-[1.75rem];
+}
+
+.infoIcon :global(.icon) {
+    @apply text-neutral-100;
+}
+
+.box:first-child {
+    @apply rounded-t-lg sm:rounded-tl-lg sm:rounded-tr-none;
+}
+
+.box:last-child {
+    @apply sm:rounded-tr-lg;
+}
+
+.tokenRewards {
+    @apply w-full flex flex-[2.3] flex-col sm:flex-row sm:gap-3 bg-gray-100 dark:bg-neutral-800;
+}
+
+.tokenRewards:last-child {
+    @apply sm:rounded-tr-lg;
+}
+
+.rewardBox {
+    @apply w-full
+        flex
+        flex-row
+        items-center
+        sm:items-start
+        sm:flex-col
+        justify-between
+        p-3
+        sm:p-5
+        gap-3
+        sm:gap-4;
+}
+
+.rewardBox:not(:last-child) {
+    @apply border-b-[0.125rem] sm:border-b-0 border-gray-200 dark:border-neutral-700;
+}
+
+.tokenIcons {
+    @apply flex items-center sm:min-h-10;
+}

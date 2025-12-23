@@ -42,6 +42,9 @@ interface ChartProps {
     onBarClick: (data: BarPayload) => void;
 }
 
+const CHART_STYLES = { cursor: "pointer" };
+const X_AXIS_PADDINGS = { left: 0, right: 0 };
+
 const Chart = memo(function Chart({
     chain,
     distros,
@@ -58,26 +61,32 @@ const Chart = memo(function Chart({
         [onBarClick],
     );
 
+    const TooltipContentMemoized = useCallback(
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        (props: any) => <TooltipContent {...props} chain={chain} />,
+        [chain],
+    );
+
     return (
         <ResponsiveContainer width="100%">
             <BarChart
                 data={distros}
                 barSize={25}
                 accessibilityLayer={false}
-                style={{ cursor: "pointer" }}
+                style={CHART_STYLES}
             >
                 <Tooltip
                     isAnimationActive={false}
                     cursor={false}
                     shared={false}
-                    content={<TooltipContent chain={chain} />}
+                    content={TooltipContentMemoized}
                 />
                 <YAxis hide />
                 <XAxis
                     type="category"
                     dataKey="timestamp"
                     height={20}
-                    padding={{ left: 0, right: 0 }}
+                    padding={X_AXIS_PADDINGS}
                     tickSize={4}
                     interval="preserveStartEnd"
                     tick={<Tick />}

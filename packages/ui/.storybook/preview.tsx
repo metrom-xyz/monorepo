@@ -47,12 +47,6 @@ const preview: Preview = {
         },
         backgrounds: {
             disable: true,
-            // options: {
-            //     "surface-dark": { name: "Surface dark", value: "#202024" },
-            //     light: { name: "Light", value: "#e5e7eb" },
-            //     "surface-light": { name: "Surface light", value: "#ffffff" },
-            //     dark: { name: "Dark", value: "#0a0a0a" },
-            // },
         },
         options: {
             storySort: {

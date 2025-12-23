@@ -2,6 +2,7 @@ import { closestTick } from "@/src/utils/liquidity-density";
 import type { ScaledLiquidityTick } from "..";
 import classNames from "classnames";
 import { formatAmount } from "@/src/utils/format";
+import { useTranslations } from "next-intl";
 
 import styles from "./styles.module.css";
 
@@ -65,6 +66,8 @@ export function LiquidityBar({
     tooltipIndex,
     showPriceRange,
 }: LiquidityBarProps) {
+    const t = useTranslations("liquidityDensityChart");
+
     if (
         !idx ||
         index === undefined ||
@@ -136,7 +139,6 @@ export function LiquidityBar({
                     <text
                         x={percentage > 0 ? x : x + 15}
                         y={y - 8}
-                        fontSize={12}
                         textAnchor={percentage > 0 ? "start" : "end"}
                         className={styles.label}
                     >
@@ -144,24 +146,42 @@ export function LiquidityBar({
                     </text>
                     {showPriceRange && closestFrom === idx && (
                         <text
-                            x={x}
-                            y={320}
-                            fontSize={12}
+                            x={x + 15}
+                            y={300}
                             textAnchor="end"
-                            className={styles.label}
+                            className={classNames(styles.label, styles.big)}
                         >
                             {formatAmount({ amount: fromPrice })}
+                            <tspan
+                                x={x + 15}
+                                dy={12}
+                                className={classNames(
+                                    styles.label,
+                                    styles.tertiary,
+                                )}
+                            >
+                                {t("lowerPrice")}
+                            </tspan>
                         </text>
                     )}
                     {showPriceRange && closestTo === idx && (
                         <text
                             x={x}
-                            y={320}
-                            fontSize={12}
+                            y={300}
                             textAnchor="start"
-                            className={styles.label}
+                            className={classNames(styles.label, styles.big)}
                         >
                             {formatAmount({ amount: toPrice })}
+                            <tspan
+                                x={x}
+                                dy={12}
+                                className={classNames(
+                                    styles.label,
+                                    styles.tertiary,
+                                )}
+                            >
+                                {t("upperPrice")}
+                            </tspan>
                         </text>
                     )}
                 </>

@@ -4,20 +4,8 @@
     @apply flex flex-col gap-4;
 }
 
-.wrapper {
-    @apply w-full flex flex-col sm:flex-row gap-4;
-}
-
-.leftContent {
-    @apply flex-[1] flex flex-col gap-4;
-}
-
-.leftContentEnded {
-    @apply flex-row;
-}
-
 .card {
-    @apply w-full flex-[2] flex flex-col items-stretch;
+    @apply w-full flex flex-col sm:max-w-3/5 p-3 sm:p-5 bg-gray-100 dark:bg-neutral-800;
 }
 
 .chartWrapper {

@@ -1,0 +1,29 @@
+@reference "../../app.css";
+
+.root {
+    @apply flex gap-3 items-center;
+}
+
+.section {
+    @apply flex flex-col gap-2;
+}
+
+.bar {
+    @apply h-3 rounded-full;
+}
+
+.bar:first-child {
+    @apply bg-[#4E80EE];
+}
+
+.bar:nth-child(2) {
+    @apply bg-[#3563CB];
+}
+
+.bar:last-child {
+    @apply bg-[#90B2FF];
+}
+
+.labels {
+    @apply flex items-center gap-1;
+}
