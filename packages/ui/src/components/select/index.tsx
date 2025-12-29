@@ -67,6 +67,8 @@ export const LIST_ITEM_HEIGHT: Record<BaseInputSize, number> = {
     lg: 50,
 };
 
+export const MAX_VISIBLE_ITEMS = 6;
+
 function Component<V extends ValueType, O extends SelectOption<V>>(
     {
         id,
@@ -162,6 +164,11 @@ function Component<V extends ValueType, O extends SelectOption<V>>(
         dataTestIds,
     ]);
 
+    const listHeight = useMemo(() => {
+        const visible = Math.min(filteredOptions.length, MAX_VISIBLE_ITEMS);
+        return visible * LIST_ITEM_HEIGHT[size];
+    }, [filteredOptions.length, size]);
+
     return (
         <div className={className} ref={dropdownRef}>
             <TextInput
@@ -216,10 +223,10 @@ function Component<V extends ValueType, O extends SelectOption<V>>(
                         rowProps={rowProps}
                         rowComponent={OptionRow}
                         style={{
+                            height: listHeight,
                             width:
                                 anchorEl?.parentElement?.clientWidth || "auto",
                         }}
-                        className={styles.list}
                     />
                 )}
             </Popover>

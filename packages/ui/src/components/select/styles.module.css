@@ -16,12 +16,9 @@
         h-fit;
 }
 
-.list {
-    @apply h-full max-h-[288px];
-}
-
 .emptyOptionList {
     @apply flex
+        surface-secondary
         justify-center
         items-center
         p-3

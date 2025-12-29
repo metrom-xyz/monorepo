@@ -98,10 +98,6 @@
         h-fit;
 }
 
-.list {
-    @apply max-h-[288px];
-}
-
 .emptyOptionList {
     @apply flex
         surface-secondary

@@ -23,7 +23,12 @@ import classNames from "classnames";
 import { ChevronUp } from "../../assets/chevron-up";
 import { ChevronDown } from "../../assets/chevron-down";
 import { Check } from "../../assets/check";
-import { LIST_ITEM_HEIGHT, type SelectOption, type ValueType } from "../select";
+import {
+    LIST_ITEM_HEIGHT,
+    MAX_VISIBLE_ITEMS,
+    type SelectOption,
+    type ValueType,
+} from "../select";
 
 import styles from "./styles.module.css";
 import commonStyles from "../commons/styles.module.css";
@@ -187,6 +192,11 @@ function Component<V extends ValueType, O extends SelectOption<V>>(
         dataTestIds,
     ]);
 
+    const listHeight = useMemo(() => {
+        const visible = Math.min(filteredOptions.length, MAX_VISIBLE_ITEMS);
+        return visible * LIST_ITEM_HEIGHT[size];
+    }, [filteredOptions.length, size]);
+
     return (
         <div ref={dropdownRef} className={className}>
             <BaseInputWrapper
@@ -287,10 +297,10 @@ function Component<V extends ValueType, O extends SelectOption<V>>(
                         rowProps={rowProps}
                         rowComponent={OptionRow}
                         style={{
+                            height: listHeight,
                             width:
                                 anchorEl?.parentElement?.clientWidth || "auto",
                         }}
-                        className={styles.list}
                     />
                 )}
             </Popover>
@@ -306,6 +316,7 @@ const CHECKBOX_SIZE: Record<BaseInputSize, "base" | "sm"> = {
 };
 
 function OptionRow<V extends ValueType, O extends SelectOption<V>>({
+    ariaAttributes,
     index,
     style,
     options,
@@ -334,6 +345,7 @@ function OptionRow<V extends ValueType, O extends SelectOption<V>>({
                 [styles.pickedOption]: selected,
                 [styles[size]]: true,
             })}
+            {...ariaAttributes}
         >
             <div
                 className={classNames(styles.checkboxWrapper, {
