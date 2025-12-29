@@ -17,7 +17,7 @@
 }
 
 .list {
-    @apply max-h-[288px];
+    @apply h-full max-h-[288px];
 }
 
 .emptyOptionList {
