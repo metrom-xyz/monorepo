@@ -228,6 +228,7 @@ function Component<V extends ValueType, O extends SelectOption<V>>(
 }
 
 function OptionRow<V extends ValueType, O extends SelectOption<V>>({
+    ariaAttributes,
     index,
     style,
     options,
@@ -254,6 +255,7 @@ function OptionRow<V extends ValueType, O extends SelectOption<V>>({
                 [styles.pickedOption]: value === item.value,
                 [styles[size]]: true,
             })}
+            {...ariaAttributes}
         >
             {renderOption ? (
                 <div>{renderOption(item)}</div>

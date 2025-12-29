@@ -20,15 +20,18 @@ export function Tags({ campaign }: TagsProps) {
 
     return (
         <div className={styles.root}>
-            {specification?.kpi && <CampaignTag text={t("kpi")} />}
-            {specification?.priceRange && <CampaignTag text={t("range")} />}
+            {specification?.kpi && <CampaignTag size="sm" text={t("kpi")} />}
+            {specification?.priceRange && (
+                <CampaignTag size="sm" text={t("range")} />
+            )}
             <div className={styles.tag}>
                 <CalendarIcon className={styles.calendarIcon} />
-                <Typography size="xs" weight="medium" uppercase>
+                <Typography size="sm" weight="medium" uppercase>
                     {`${formatDateTime(from)} - ${formatDateTime(to)}`}
                 </Typography>
             </div>
             <Status
+                size="sm"
                 from={campaign.from}
                 to={campaign.to}
                 status={campaign.status}
@@ -39,7 +42,7 @@ export function Tags({ campaign }: TagsProps) {
                         <ErrorText
                             mountAnimation={false}
                             level="warning"
-                            size="xs"
+                            size="sm"
                             weight="medium"
                         >
                             {t("allowlist")}
