@@ -94,8 +94,7 @@
     @apply z-30
         p-0
         border-2
-        overflow-hidden
-        h-fit;
+        overflow-hidden;
 }
 
 .emptyOptionList {

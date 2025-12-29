@@ -293,7 +293,7 @@ function Component<V extends ValueType, O extends SelectOption<V>>(
                 ) : (
                     <div
                         style={{
-                            height: listHeight,
+                            height: `${listHeight}px`,
                             overflow: "hidden",
                         }}
                     >
@@ -303,6 +303,7 @@ function Component<V extends ValueType, O extends SelectOption<V>>(
                             rowProps={rowProps}
                             rowComponent={OptionRow}
                             style={{
+                                height: `${listHeight}px`,
                                 width:
                                     anchorEl?.parentElement?.clientWidth ||
                                     "auto",
