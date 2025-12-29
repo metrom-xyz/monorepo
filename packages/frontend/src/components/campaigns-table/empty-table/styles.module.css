@@ -10,7 +10,3 @@
         justify-center
         gap-3;
 }
-
-.textWrapper {
-    @apply flex flex-col items-center;
-}

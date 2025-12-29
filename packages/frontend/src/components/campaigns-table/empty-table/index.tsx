@@ -1,6 +1,6 @@
-import { EmptyIcon } from "@/src/assets/empty-icon";
-import { Typography } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
+import { SearchOffIcon } from "@/src/assets/search-off-icon";
+import { EmptyState } from "../../empty-state";
 
 import styles from "./styles.module.css";
 
@@ -9,15 +9,11 @@ export function EmptyTable() {
 
     return (
         <div className={styles.root}>
-            <EmptyIcon />
-            <div className={styles.textWrapper}>
-                <Typography uppercase weight="medium" size="sm">
-                    {t("empty.title")}
-                </Typography>
-                <Typography size="sm" variant="tertiary">
-                    {t("empty.description")}
-                </Typography>
-            </div>
+            <EmptyState
+                title={t("empty.title")}
+                subtitle={t("empty.description")}
+                icon={SearchOffIcon}
+            />
         </div>
     );
 }
