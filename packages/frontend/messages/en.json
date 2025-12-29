@@ -115,7 +115,7 @@
         },
         "empty": {
             "title": "No campaigns found",
-            "description": "No campaigns found on Metrom.",
+            "description": "Update your filters to explore more options",
             "create": "Create campaign"
         }
     },
