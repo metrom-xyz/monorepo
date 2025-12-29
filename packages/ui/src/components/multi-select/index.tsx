@@ -291,17 +291,24 @@ function Component<V extends ValueType, O extends SelectOption<V>>(
                         <Typography>{messages.noResults}</Typography>
                     </div>
                 ) : (
-                    <List
-                        rowHeight={LIST_ITEM_HEIGHT[size]}
-                        rowCount={filteredOptions.length}
-                        rowProps={rowProps}
-                        rowComponent={OptionRow}
+                    <div
                         style={{
                             height: listHeight,
-                            width:
-                                anchorEl?.parentElement?.clientWidth || "auto",
+                            overflow: "hidden",
                         }}
-                    />
+                    >
+                        <List
+                            rowHeight={LIST_ITEM_HEIGHT[size]}
+                            rowCount={filteredOptions.length}
+                            rowProps={rowProps}
+                            rowComponent={OptionRow}
+                            style={{
+                                width:
+                                    anchorEl?.parentElement?.clientWidth ||
+                                    "auto",
+                            }}
+                        />
+                    </div>
                 )}
             </Popover>
         </div>
