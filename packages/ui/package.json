@@ -27,7 +27,7 @@
         "react-number-format": "^5.4.4",
         "react-remove-scroll": "^2.7.0",
         "react-use": "^17.5.1",
-        "react-window": "^2.0.2"
+        "react-window": "^2.2.3"
     },
     "peerDependencies": {
         "@fontsource/ibm-plex-mono": "^5.0.15",

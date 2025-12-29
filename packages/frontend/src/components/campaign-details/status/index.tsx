@@ -1,6 +1,6 @@
 import { Status as StatusState } from "@metrom-xyz/sdk";
 import { CampaignStatusDot } from "../../campaign-status-dot";
-import { Typography } from "@metrom-xyz/ui";
+import { Typography, type TypographySize } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
 import dayjs from "dayjs";
 import classNames from "classnames";
@@ -11,9 +11,10 @@ interface StatusProps {
     from: number;
     to: number;
     status: StatusState;
+    size?: TypographySize;
 }
 
-export function Status({ from, to, status }: StatusProps) {
+export function Status({ from, to, status, size = "xs" }: StatusProps) {
     const t = useTranslations("campaignDetails.header.status");
 
     const now = dayjs();
@@ -25,7 +26,7 @@ export function Status({ from, to, status }: StatusProps) {
     return (
         <div className={classNames(styles.root, { [styles[status]]: true })}>
             <CampaignStatusDot status={status} />
-            <Typography weight="medium" size="xs">
+            <Typography weight="medium" size={size}>
                 {t(status, { days: duration })}
             </Typography>
         </div>
