@@ -68,7 +68,7 @@ export function ContentHeader({ campaign }: ContentHeaderProps) {
                         />
                     </div>
                     <Typography
-                        size="xl3"
+                        size="xl2"
                         weight="medium"
                         className={classNames(styles.mainText, {
                             [styles.lightText]: blueApr || orangeApr,
@@ -92,7 +92,7 @@ export function ContentHeader({ campaign }: ContentHeaderProps) {
                             {t("dailyPer1k")}
                         </Typography>
                         <Typography
-                            size="xl3"
+                            size="xl2"
                             weight="medium"
                             className={styles.mainText}
                         >
@@ -113,7 +113,7 @@ export function ContentHeader({ campaign }: ContentHeaderProps) {
                                 {t("totalPoints")}
                             </Typography>
                             <Typography
-                                size="xl3"
+                                size="xl2"
                                 weight="medium"
                                 className={styles.mainText}
                             >
@@ -137,7 +137,7 @@ export function ContentHeader({ campaign }: ContentHeaderProps) {
                     {t("tvl")}
                 </Typography>
                 <Typography
-                    size="xl3"
+                    size="xl2"
                     weight="medium"
                     className={styles.mainText}
                 >
@@ -160,6 +160,7 @@ export function ContentHeader({ campaign }: ContentHeaderProps) {
                         <div className={styles.tokenIcons}>
                             <CampaignRewardsPopover
                                 logoSize="base"
+                                symbolSize="xl2"
                                 hideUsdValue
                                 status={campaign.status}
                                 chainId={campaign.chainId}
@@ -177,7 +178,7 @@ export function ContentHeader({ campaign }: ContentHeaderProps) {
                             {t("dailyRewards")}
                         </Typography>
                         <Typography
-                            size="xl3"
+                            size="xl2"
                             weight="medium"
                             className={styles.mainText}
                         >
@@ -196,7 +197,7 @@ export function ContentHeader({ campaign }: ContentHeaderProps) {
                             {t("totalValue")}
                         </Typography>
                         <Typography
-                            size="xl3"
+                            size="xl2"
                             weight="medium"
                             className={styles.mainText}
                         >

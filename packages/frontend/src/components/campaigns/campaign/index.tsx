@@ -83,6 +83,7 @@ export function CampaignRow({ type, campaign }: CampaignProps) {
                 {rewards && (
                     <CampaignRewardsPopover
                         logoSize="xs"
+                        hideSymbol
                         hideOnExpired
                         status={campaign.status}
                         chainId={campaign.chainId}

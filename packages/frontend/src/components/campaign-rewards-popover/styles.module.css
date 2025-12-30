@@ -44,6 +44,10 @@
     @apply flex items-center gap-2;
 }
 
+.xl2 {
+    @apply text-[1.75rem];
+}
+
 .textRewards {
     @apply text-base min-w-[50px];
 }
