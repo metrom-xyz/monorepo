@@ -13,12 +13,7 @@ import {
 } from "recharts";
 import { useCallback, useMemo } from "react";
 import { useTranslations } from "next-intl";
-import {
-    ErrorText,
-    Skeleton,
-    Typography,
-    type TypographySize,
-} from "@metrom-xyz/ui";
+import { ErrorText, Skeleton, type TypographySize } from "@metrom-xyz/ui";
 import { TvlTick } from "./axis-ticks/tvl";
 import { RewardTick } from "./axis-ticks/reward";
 import { TooltipContent, TooltipCursor } from "./tooltip";
@@ -32,6 +27,7 @@ import { useMeasure } from "react-use";
 import { SECONDS_IN_YEAR } from "@/src/commons";
 import { ChartIcon } from "@/src/assets/chart-icon";
 import type { AxisDomain } from "recharts/types/util/types";
+import { EmptyState } from "../empty-state";
 
 import styles from "./styles.module.css";
 
@@ -478,12 +474,7 @@ export function KpiSimulationChart({
                             {t("errors.missingData")}
                         </ErrorText>
                     ) : (
-                        <>
-                            <ChartIcon />
-                            <Typography uppercase size="sm" weight="medium">
-                                {t("emptyData")}
-                            </Typography>
-                        </>
+                        <EmptyState title={t("emptyData")} icon={ChartIcon} />
                     )}
                 </div>
             </div>

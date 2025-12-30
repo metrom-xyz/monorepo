@@ -20,9 +20,19 @@ export function Tags({ campaign }: TagsProps) {
 
     return (
         <div className={styles.root}>
-            {specification?.kpi && <CampaignTag size="sm" text={t("kpi")} />}
+            {specification?.kpi && (
+                <CampaignTag
+                    size="sm"
+                    text={t("kpi")}
+                    className={styles.campaignTag}
+                />
+            )}
             {specification?.priceRange && (
-                <CampaignTag size="sm" text={t("range")} />
+                <CampaignTag
+                    size="sm"
+                    text={t("range")}
+                    className={styles.campaignTag}
+                />
             )}
             <div className={styles.tag}>
                 <CalendarIcon className={styles.calendarIcon} />
