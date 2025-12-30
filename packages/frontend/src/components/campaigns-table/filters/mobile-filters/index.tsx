@@ -120,6 +120,7 @@ export function MobileFilters({
                 icon={active ? FilterActiveIcon : FilterIcon}
                 iconPlacement="left"
                 onClick={handleDrawerOnToggle}
+                className={{ root: styles.filtersButton }}
             >
                 {t("filters")}
             </Button>
