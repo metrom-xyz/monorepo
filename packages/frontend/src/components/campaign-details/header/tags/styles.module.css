@@ -9,7 +9,7 @@
 }
 
 .tag {
-    @apply flex gap-1 h-6 py-1 px-2 rounded-sm border border-gray-300 dark:border-neutral-700;
+    @apply flex gap-1 h-6 py-1 px-2 rounded-sm border border-gray-300 dark:border-neutral-700 items-center;
 }
 
 .restrictions {
