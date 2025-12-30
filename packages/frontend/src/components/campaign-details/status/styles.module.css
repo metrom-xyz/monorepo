@@ -1,7 +1,7 @@
 @reference "../../../app.css";
 
 .root {
-    @apply flex py-1 px-1.5 items-center gap-1 h-6 border border-transparent rounded-sm;
+    @apply flex py-1 px-2 items-center gap-1 h-6 border border-transparent rounded-sm;
 }
 
 .root.active {
