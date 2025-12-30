@@ -9,7 +9,7 @@
 }
 
 .rewardsWrapper {
-    @apply w-full flex items-center gap-2 pointer-events-none sm:pointer-events-auto;
+    @apply w-full flex items-center gap-2 pointer-events-none sm:pointer-events-auto cursor-pointer;
 }
 
 .tokenIcons {
