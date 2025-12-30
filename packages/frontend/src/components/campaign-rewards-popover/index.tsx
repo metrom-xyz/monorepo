@@ -5,6 +5,7 @@ import {
     Skeleton,
     Popover,
     type RemoteLogoSize,
+    type TypographySize,
 } from "@metrom-xyz/ui";
 import { Status, type TokenDistributables } from "@metrom-xyz/sdk";
 import { formatAmount, formatUsdAmount } from "@/src/utils/format";
@@ -21,7 +22,9 @@ interface CampaignRewardsPopoverProps {
     distributables: TokenDistributables;
     hideUsdValue?: boolean;
     hideOnExpired?: boolean;
+    hideSymbol?: boolean;
     logoSize?: RemoteLogoSize;
+    symbolSize?: TypographySize;
 }
 
 export function CampaignRewardsPopover({
@@ -30,7 +33,9 @@ export function CampaignRewardsPopover({
     distributables,
     hideUsdValue = false,
     hideOnExpired = false,
+    hideSymbol = false,
     logoSize = "sm",
+    symbolSize = "sm",
 }: CampaignRewardsPopoverProps) {
     const t = useTranslations("campaignRewardsPopover");
 
@@ -153,6 +158,17 @@ export function CampaignRewardsPopover({
                             );
                         })}
                     </div>
+                )}
+                {!hideSymbol && distributables.list.length === 1 && (
+                    <Typography
+                        size={symbolSize}
+                        weight="medium"
+                        className={classNames({
+                            [styles.xl2]: symbolSize === "xl2",
+                        })}
+                    >
+                        {distributables.list[0].token.symbol}
+                    </Typography>
                 )}
                 {!hideUsdValue && (
                     <Typography weight="medium" className={styles.textRewards}>

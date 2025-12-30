@@ -24,7 +24,7 @@
 
 .box:not(:last-child),
 .tokenRewards:not(:last-child) {
-    @apply border-b-[0.125rem] sm:border-r-[0.125rem] sm:border-b-0 border-gray-200 dark:border-neutral-700;
+    @apply border-b-[0.125rem] sm:border-r-[0.125rem] sm:border-b-0 border-gray-150 dark:border-neutral-900;
 }
 
 .box.blue {
@@ -90,9 +90,9 @@
 }
 
 .rewardBox:not(:last-child) {
-    @apply border-b-[0.125rem] sm:border-b-0 border-gray-200 dark:border-neutral-700;
+    @apply border-b-[0.125rem] sm:border-b-0 border-gray-150 dark:border-neutral-900;
 }
 
 .tokenIcons {
-    @apply flex items-center sm:min-h-10;
+    @apply flex items-center sm:min-h-8;
 }
