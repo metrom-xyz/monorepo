@@ -35,7 +35,7 @@ export function RewardTick({
     if (!payload || payload.value === undefined || !y) return null;
 
     // Complex chart has a 2 rows label
-    const elementHeight = complex ? 28 : 14;
+    const elementHeight = complex ? 24 : 14;
 
     const bottom = y + elementHeight;
     const overflow = Math.max(0, bottom - (MAX_AREA_HEIGHT - MIN_AXIS_MARGIN));
