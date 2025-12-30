@@ -1,7 +1,11 @@
 @reference "../../../../app.css";
 
 .root {
-    @apply flex sm:hidden items-center;
+    @apply flex sm:hidden justify-between items-center;
+}
+
+.filtersButton {
+    @apply p-0!;
 }
 
 .totalCampaigns {
