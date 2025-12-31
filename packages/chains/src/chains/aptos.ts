@@ -186,6 +186,11 @@ export const aptosProductionData: ChainData = {
             partner: true,
             type: PartnerCampaignType.AaveV3BridgeAndSupply,
         },
+        {
+            active: true,
+            partner: false,
+            type: BaseCampaignType.AmmPoolLiquidity,
+        },
     ],
     protocols: [
         {
