@@ -211,6 +211,18 @@ export const aptosProductionData: ChainData = {
                     "https://stargate.finance/bridge?dstChain=aptos&dstToken={collateral}",
             },
         },
+        {
+            active: true,
+            type: ProtocolType.Dex,
+            slug: SupportedDex.Hyperion,
+            logo: HyperionLogo,
+            name: "Hyperion",
+            supportsFetchAllPools: true,
+            depositUrl: {
+                type: DepositUrlType.PathPoolAddress,
+                template: "https://hyperion.xyz/pool/{pool}",
+            },
+        },
     ],
     baseTokens: [],
 };
