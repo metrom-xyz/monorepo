@@ -74,6 +74,7 @@ export enum SupportedAmm {
     Croc = "croc",
     Curve = "curve",
     Lithos = "lithos",
+    Hyperion = "hyperion",
 }
 
 export enum SupportedPointsBooster {
