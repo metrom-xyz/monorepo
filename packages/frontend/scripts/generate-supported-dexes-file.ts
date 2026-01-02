@@ -23,6 +23,7 @@ const HOMEPAGES: Record<SupportedDex, string> = {
     [SupportedDex.Honeypop]: "https://honeypop.app/",
     [SupportedDex.Lithos]: "https://lithos.to/",
     [SupportedDex.Quickswap]: "https://dapp.quickswap.exchange/",
+    [SupportedDex.Hyperion]: "https://hyperion.xyz/",
 };
 
 // TODO: add support for MVM_CHAIN_DATA generation
