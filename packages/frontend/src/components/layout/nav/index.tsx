@@ -19,7 +19,7 @@ import { useActiveChains } from "@/src/hooks/useActiveChains";
 import { useChainWithType } from "@/src/hooks/useChainWithType";
 import { useAccount } from "@/src/hooks/useAccount";
 import { ThemeToggle } from "../../theme-toggle";
-import { MetromHatSquareLogo } from "@/src/assets/logos/metrom/metrom-hat-square-logo";
+import { MetromSquareLogo } from "@/src/assets/logos/metrom/metrom-square-logo";
 
 import styles from "./styles.module.css";
 
@@ -59,7 +59,7 @@ export function Nav() {
             <div className={styles.main}>
                 <div className={styles.leftContent}>
                     <Link href="/">
-                        <MetromHatSquareLogo className={styles.metromLogo} />
+                        <MetromSquareLogo className={styles.metromLogo} />
                     </Link>
                 </div>
                 <div className={styles.rightContentContainer}>

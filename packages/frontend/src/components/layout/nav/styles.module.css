@@ -57,7 +57,7 @@
 }
 
 .metromLogo {
-    @apply size-12;
+    @apply size-9;
 }
 
 .tabs {
