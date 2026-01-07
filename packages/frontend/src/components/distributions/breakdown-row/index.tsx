@@ -99,6 +99,22 @@ export function BreakdownRow({
                                 size="sm"
                                 uppercase
                             >
+                                {t("rank")}
+                            </Typography>
+                            <Typography
+                                weight="medium"
+                                variant="tertiary"
+                                size="sm"
+                                uppercase
+                            >
+                                {t("weight")}
+                            </Typography>
+                            <Typography
+                                weight="medium"
+                                variant="tertiary"
+                                size="sm"
+                                uppercase
+                            >
                                 {t("account")}
                             </Typography>
                             <Typography
@@ -109,14 +125,6 @@ export function BreakdownRow({
                             >
                                 {t("distributed")}
                             </Typography>
-                            <Typography
-                                weight="medium"
-                                variant="tertiary"
-                                size="sm"
-                                uppercase
-                            >
-                                {t("weight")}
-                            </Typography>
                         </div>
                         <div className={styles.accounts}>
                             {Object.entries(weight)
@@ -125,9 +133,10 @@ export function BreakdownRow({
                                         b[1].percentage.formatted -
                                         a[1].percentage.formatted,
                                 )
-                                .map(([account, weight]) => (
+                                .map(([account, weight], index) => (
                                     <AccountRow
                                         key={account}
+                                        rank={index}
                                         account={account as Address}
                                         connected={
                                             address?.toLowerCase() ===

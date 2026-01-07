@@ -1,11 +1,15 @@
 @reference "../../app.css";
 
 .root {
-    @apply w-full max-w-screen-lg flex flex-col items-center gap-8;
+    @apply w-full max-w-screen-xl flex flex-col items-center gap-12 px-4 sm:px-0;
 }
 
 .header {
     @apply w-full flex flex-col sm:gap-3 gap-8;
+}
+
+.divider {
+    @apply h-[0.063rem] w-full bg-gray-300 dark:bg-neutral-800;
 }
 
 .campaignIdInput {
@@ -21,7 +25,7 @@
 }
 
 .breakdownListWrapper {
-    @apply w-full h-[32rem] p-0 overflow-y-hidden;
+    @apply w-full h-[37.5rem] p-0 overflow-y-hidden;
 }
 
 .breakdownsList {
@@ -45,7 +49,7 @@
 }
 
 .loadingBar {
-    @apply h-96 animate-pulse surface-secondary w-full max-w-10 rounded-t-md;
+    @apply h-[28.125rem] animate-pulse surface-secondary w-full max-w-10 rounded-t-md;
 }
 
 .chart {

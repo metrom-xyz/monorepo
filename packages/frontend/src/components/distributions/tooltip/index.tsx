@@ -4,13 +4,18 @@ import {
     formatPercentage,
 } from "@/src/utils/format";
 import { useTranslations } from "next-intl";
-import { Typography } from "@metrom-xyz/ui";
+import { Theme, Typography } from "@metrom-xyz/ui";
 import type { DistributionChartData } from "..";
 import type { SupportedChain } from "@metrom-xyz/contracts";
 import dayjs from "dayjs";
-import { type Address, zeroAddress } from "viem";
+import { type Address } from "viem";
 import { RemoteLogo } from "../../remote-logo";
-import { getColorFromAddress } from "@/src/utils/address";
+import {
+    getColorFromAddress,
+    isZeroAddress,
+    shortenAddress,
+} from "@/src/utils/address";
+import { useTheme } from "next-themes";
 
 import styles from "./styles.module.css";
 
@@ -27,32 +32,38 @@ interface TooltipProps {
 
 export function TooltipContent({ chain, active, payload }: TooltipProps) {
     const t = useTranslations("campaignDistributions");
+    const { resolvedTheme } = useTheme();
 
     if (!active || !payload || !payload.length) return null;
 
-    const { timestamp, weights } = payload[0].payload;
+    const { timestamp, weights, tokens } = payload[0].payload;
 
-    const token = payload[0].name.split(".")[1] as Address;
+    const tokenAddress = payload[0].name.split(".")[1] as Address;
     const account = payload[0].name.split(".")[2] as Address;
+    const token = tokens[tokenAddress];
 
     return (
         <div className={styles.root}>
             <div className={styles.fieldWrapper}>
-                <Typography weight="medium" variant="tertiary"uppercase>
+                <Typography
+                    size="sm"
+                    weight="medium"
+                    variant="tertiary"
+                    uppercase
+                >
                     {t("time")}
                 </Typography>
-                <Typography weight="medium" uppercase>
+                <Typography size="sm" weight="medium" uppercase>
                     {formatDateTime(dayjs.unix(timestamp))}
                 </Typography>
             </div>
             <div className={styles.fieldWrapper}>
-                <Typography weight="medium" variant="tertiary"uppercase>
-                    {t("token")}
-                </Typography>
-                <RemoteLogo address={token} chain={chain} />
-            </div>
-            <div className={styles.fieldWrapper}>
-                <Typography weight="medium" variant="tertiary"uppercase>
+                <Typography
+                    size="sm"
+                    weight="medium"
+                    variant="tertiary"
+                    uppercase
+                >
                     {t("account")}
                 </Typography>
                 <div className={styles.accountWrapper}>
@@ -61,32 +72,65 @@ export function TooltipContent({ chain, active, payload }: TooltipProps) {
                         style={{
                             backgroundColor: getColorFromAddress(
                                 account as Address,
+                                resolvedTheme as Theme,
                             ),
                         }}
                     ></div>
                     <Typography size="sm" weight="medium">
-                        {account === zeroAddress ? t("reimbursed") : account}
+                        {isZeroAddress(account)
+                            ? t("reimbursed")
+                            : shortenAddress(account, true)}
                     </Typography>
                 </div>
             </div>
             <div className={styles.fieldWrapper}>
-                <Typography weight="medium" variant="tertiary"uppercase>
+                <Typography
+                    size="sm"
+                    weight="medium"
+                    variant="tertiary"
+                    uppercase
+                >
+                    {t("token")}
+                </Typography>
+                <div className={styles.tokenWrapper}>
+                    <RemoteLogo
+                        size="xs"
+                        address={tokenAddress}
+                        chain={chain}
+                    />
+                    <Typography size="sm" weight="medium">
+                        {token.token.symbol}
+                    </Typography>
+                </div>
+            </div>
+            <div className={styles.fieldWrapper}>
+                <Typography
+                    size="sm"
+                    weight="medium"
+                    variant="tertiary"
+                    uppercase
+                >
                     {t("distributed")}
                 </Typography>
                 <Typography size="sm" weight="medium">
                     {formatAmount({
-                        amount: weights[token][account].amount.formatted,
+                        amount: weights[tokenAddress][account].amount.formatted,
                     })}
                 </Typography>
             </div>
             <div className={styles.fieldWrapper}>
-                <Typography weight="medium" variant="tertiary"uppercase>
+                <Typography
+                    size="sm"
+                    weight="medium"
+                    variant="tertiary"
+                    uppercase
+                >
                     {t("weight")}
                 </Typography>
                 <Typography size="sm" weight="medium">
                     {formatPercentage({
                         percentage:
-                            weights[token][account].percentage.formatted,
+                            weights[tokenAddress][account].percentage.formatted,
                     })}
                 </Typography>
             </div>

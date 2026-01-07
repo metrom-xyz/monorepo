@@ -1,13 +1,25 @@
 @reference "../../../app.css";
 
 .root {
-    @apply w-full flex flex-col gap-4;
+    @apply w-full flex flex-col gap-6;
 }
 
-.card {
-    @apply flex items-end gap-2;
+.inputs {
+    @apply flex gap-4 items-end;
+}
+
+.searchButton {
+    @apply h-12;
+}
+
+.chips {
+    @apply flex gap-2 items-center;
+}
+
+.input :global(.input) {
+    @apply cursor-pointer;
 }
 
 .popover {
-    @apply p-0 border-none;
+    @apply border-2;
 }

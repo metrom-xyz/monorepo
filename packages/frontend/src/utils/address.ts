@@ -2,6 +2,7 @@ import { type Address, zeroAddress, isAddress as isAddressViem } from "viem";
 import { AccountAddress } from "@aptos-labs/ts-sdk";
 import { CHAIN_TYPE } from "../commons";
 import { ChainType } from "@metrom-xyz/sdk";
+import { Theme } from "@metrom-xyz/ui";
 
 export function shortenAddress(address?: Address, long?: boolean) {
     if (!address) return "";
@@ -14,8 +15,9 @@ export function shortenAddress(address?: Address, long?: boolean) {
     return `${address.slice(0, start)}...${address.slice(-end)}`;
 }
 
-export function getColorFromAddress(address: Address) {
-    if (address === zeroAddress) return "#D1D5DB";
+export function getColorFromAddress(address: Address, theme: Theme) {
+    if (isZeroAddress(address))
+        return theme === Theme.Light ? "#d1d5dc" : "#404040";
 
     let hash = 0;
     const cleanAddress = address.toLowerCase().replace(/^0x/, "");
@@ -42,4 +44,11 @@ export function isAddressOnChainType(
         return AccountAddress.isValid({ input: address, strict: true }).valid;
     if (chainType === ChainType.Evm) return isAddressViem(address);
     return false;
+}
+
+export function isZeroAddress(address: string) {
+    return (
+        address === zeroAddress ||
+        address === AccountAddress.from("0x0").toStringLong()
+    );
 }

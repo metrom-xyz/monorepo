@@ -5,7 +5,7 @@
 }
 
 .header {
-    @apply grid grid-cols-[0.8fr_0.6fr_0.5fr];
+    @apply grid grid-cols-[0.2fr_0.2fr_1fr_0.6fr];
 }
 
 .tokenColumn {
@@ -29,7 +29,11 @@
 }
 
 .accountRow {
-    @apply w-full grid grid-cols-[0.8fr_0.6fr_0.5fr];
+    @apply w-full grid grid-cols-[0.2fr_0.2fr_1fr_0.6fr];
+}
+
+.rank {
+    @apply w-full flex items-center;
 }
 
 .account {
@@ -62,16 +66,6 @@
 
 .legend {
     @apply w-4 h-4 rounded-sm;
-}
-
-.header > :first-child,
-.accountRow > :first-child {
-    @apply w-[400px];
-}
-
-.header > :nth-child(2),
-.accountRow > :nth-child(2) {
-    @apply justify-self-end;
 }
 
 .header > :last-child,
