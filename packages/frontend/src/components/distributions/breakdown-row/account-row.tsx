@@ -1,6 +1,6 @@
-import { type Address, zeroAddress } from "viem";
-import { getColorFromAddress } from "@/src/utils/address";
-import { Skeleton, Typography } from "@metrom-xyz/ui";
+import { type Address } from "viem";
+import { getColorFromAddress, isZeroAddress } from "@/src/utils/address";
+import { Skeleton, Theme, Typography } from "@metrom-xyz/ui";
 import classNames from "classnames";
 import { useTranslations } from "next-intl";
 import {
@@ -9,10 +9,12 @@ import {
     formatPercentage,
 } from "@/src/utils/format";
 import type { OnChainAmount } from "@metrom-xyz/sdk";
+import { useTheme } from "next-themes";
 
 import styles from "./styles.module.css";
 
 interface AccountRowProps {
+    rank: number;
     account: Address;
     connected: boolean;
     amount: OnChainAmount;
@@ -21,6 +23,7 @@ interface AccountRowProps {
 }
 
 export function AccountRow({
+    rank,
     account,
     connected,
     amount,
@@ -28,15 +31,25 @@ export function AccountRow({
     percentage,
 }: AccountRowProps) {
     const t = useTranslations("campaignDistributions");
+    const { resolvedTheme } = useTheme();
 
     return (
         <div className={styles.accountRow}>
+            <Typography variant="tertiary" weight="medium">
+                #{rank + 1}
+            </Typography>
+            <Typography>
+                {formatPercentage({
+                    percentage: percentage.formatted,
+                })}
+            </Typography>
             <div className={styles.account}>
                 <div
                     className={styles.legend}
                     style={{
                         backgroundColor: getColorFromAddress(
                             account as Address,
+                            resolvedTheme as Theme,
                         ),
                     }}
                 ></div>
@@ -48,7 +61,7 @@ export function AccountRow({
                         [styles.connected]: connected,
                     })}
                 >
-                    {account === zeroAddress ? t("reimbursed") : account}
+                    {isZeroAddress(account) ? t("reimbursed") : account}
                 </Typography>
             </div>
             <div className={styles.amount}>
@@ -69,11 +82,6 @@ export function AccountRow({
                     })}
                 </Typography>
             </div>
-            <Typography>
-                {formatPercentage({
-                    percentage: percentage.formatted,
-                })}
-            </Typography>
         </div>
     );
 }

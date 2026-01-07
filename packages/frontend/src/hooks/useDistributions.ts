@@ -231,7 +231,10 @@ export function useDistributions({
 
                 const decimals = tokensRegistry[token as Address].decimals;
                 const totalFormatted = Number(formatUnits(totalRaw, decimals));
-                tokens[token] = { raw: totalRaw, formatted: totalFormatted };
+                tokens[token] = {
+                    amount: { raw: totalRaw, formatted: totalFormatted },
+                    token: tokensRegistry[token as Address],
+                };
             }
 
             for (const {

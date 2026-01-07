@@ -247,7 +247,6 @@ export function DistributionChart({
                             padding={X_AXIS_PADDINGS}
                             tickSize={4}
                             interval={"preserveStartEnd"}
-                            axisLine={false}
                             tick={<Tick />}
                         />
 

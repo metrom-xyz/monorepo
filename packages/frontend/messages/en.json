@@ -634,6 +634,7 @@
             "title": "Leaderboard",
             "subtitleLatest": "As of the latest distribution:",
             "noDistribution": "No distribution yet",
+            "seeDistributions": "See distributions",
             "empty": {
                 "title": "Leaderboard pending",
                 "subtitle": "Liquidity providers will appear once the first distribution has been completed"
@@ -659,7 +660,6 @@
     },
     "campaignDistributions": {
         "filters": {
-            "title": "Distributions filters",
             "from": "From",
             "to": "To",
             "search": "Search",
@@ -667,7 +667,10 @@
             "errors": {
                 "inconsistentRange": "Dates range not valid.",
                 "rangeTooWide": "Dates range wide; max supported range is 7 days."
-            }
+            },
+            "past24h": "Past 24h",
+            "past48h": "Past 48h",
+            "lastWeekDistributions": "Last week distributions"
         },
         "distributionsOverview": "Distributions overview",
         "distributionsBreakdown": "Distributions breakdown",
@@ -678,6 +681,7 @@
         "reimbursed": "Reimbursed",
         "token": "Token",
         "time": "Time",
+        "rank": "Rank",
         "account": "Account",
         "distributed": "Distributed",
         "weight": "Weight",

@@ -1,9 +1,9 @@
-import type { OnChainAmount } from "@metrom-xyz/sdk";
+import type { Erc20TokenAmount, OnChainAmount } from "@metrom-xyz/sdk";
 import type { Address } from "viem";
 
 export interface ProcessedDistribution {
     timestamp: number;
-    tokens: Record<string, OnChainAmount>;
+    tokens: Record<string, Erc20TokenAmount>;
     weights: Record<string, Record<string, Weight>>;
 }
 

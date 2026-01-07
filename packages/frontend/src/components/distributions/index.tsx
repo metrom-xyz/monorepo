@@ -11,9 +11,9 @@ import { useCampaign } from "@/src/hooks/useCampaign";
 import { Header, SkeletonHeader } from "../campaign-details/header";
 import { Filters } from "./filters";
 import classNames from "classnames";
-import type { ProcessedDistribution } from "@/src/types/distributions";
+import type { ProcessedDistribution, Weight } from "@/src/types/distributions";
 import { Chart, type BarPayload } from "./chart";
-import type { ChainType } from "@metrom-xyz/sdk";
+import { type ChainType } from "@metrom-xyz/sdk";
 import { EmptyIcon } from "@/src/assets/empty-icon";
 
 import styles from "./styles.module.css";
@@ -29,7 +29,8 @@ export type DistributionChartData = ProcessedDistribution;
 export interface StackedBar {
     dataKey: string;
     account: string;
-    token: string;
+    tokenAddress: string;
+    weight: Weight;
 }
 
 const ACCOUNT_ROW_SIZE = 28;
@@ -59,23 +60,26 @@ export function Distributions({
         const bars: StackedBar[] = [];
 
         for (const dist of distros) {
-            for (const [token, accounts] of Object.entries(dist.weights)) {
-                for (const account of Object.keys(accounts)) {
-                    const key = `${token}.${account}`;
+            for (const [tokenAddress, accounts] of Object.entries(
+                dist.weights,
+            )) {
+                for (const [account, weight] of Object.entries(accounts)) {
+                    const key = `${tokenAddress}.${account}`;
                     if (existing[key]) continue;
 
                     bars.push({
-                        dataKey: `weights.${token}.${account}.percentage.formatted`,
+                        dataKey: `weights.${tokenAddress}.${account}.percentage.formatted`,
                         account,
-                        token,
+                        tokenAddress,
+                        weight,
                     });
                     existing[key] = true;
                 }
             }
         }
-
         return bars.sort(
-            (a, b) => a.account.localeCompare(b.account, "en") * 1,
+            (a, b) =>
+                a.weight.percentage.formatted - b.weight.percentage.formatted,
         );
     }, [distros]);
 
@@ -123,6 +127,7 @@ export function Distributions({
                     <Header campaign={campaign} />
                 )}
             </div>
+            <div className={styles.divider}></div>
             <Filters
                 chain={chain}
                 chainType={chainType}
@@ -132,7 +137,7 @@ export function Distributions({
             />
             <div className={styles.dataWrapper}>
                 <div className={styles.section}>
-                    <Typography size="lg" weight="medium" uppercase>
+                    <Typography weight="medium" uppercase>
                         {t("distributionsOverview")}
                     </Typography>
                     <Card
