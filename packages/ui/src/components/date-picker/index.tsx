@@ -148,6 +148,7 @@ export const DatePicker = ({
 
                     return (
                         <div
+                            key={index}
                             className={classNames(styles.cellWrapper, {
                                 [styles.cellWrapperRangeBound]: rangeBound,
                                 [styles.cellWrapperRangeBoundStart]:
@@ -157,7 +158,6 @@ export const DatePicker = ({
                             })}
                         >
                             <Typography
-                                key={index}
                                 data-index={index}
                                 onClick={disabled ? undefined : handleCellClick}
                                 size="sm"
