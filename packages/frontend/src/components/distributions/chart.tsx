@@ -2,6 +2,7 @@ import type { ProcessedDistribution } from "@/src/types/distributions";
 import {
     Bar,
     BarChart,
+    BarStack,
     ResponsiveContainer,
     Tooltip,
     XAxis,
@@ -13,14 +14,11 @@ import { getColorFromAddress } from "@/src/utils/address";
 import type { SupportedChain } from "@metrom-xyz/contracts";
 import dayjs from "dayjs";
 import { memo, useCallback } from "react";
+import type { StackedBar } from ".";
+import { useTheme } from "next-themes";
+import type { Theme } from "@metrom-xyz/ui";
 
 import styles from "./styles.module.css";
-
-export interface StackedBar {
-    dataKey: string;
-    account: string;
-    token: string;
-}
 
 interface TickProps {
     payload?: {
@@ -44,6 +42,7 @@ interface ChartProps {
 
 const CHART_STYLES = { cursor: "pointer" };
 const X_AXIS_PADDINGS = { left: 0, right: 0 };
+const BAR_RADIUS: [number, number, number, number] = [6, 6, 0, 0];
 
 const Chart = memo(function Chart({
     chain,
@@ -51,6 +50,8 @@ const Chart = memo(function Chart({
     bars,
     onBarClick,
 }: ChartProps) {
+    const { resolvedTheme } = useTheme();
+
     const handleOnBarClick = useCallback(
         (data: unknown) => {
             const { timestamp } = data as BarPayload;
@@ -71,7 +72,6 @@ const Chart = memo(function Chart({
         <ResponsiveContainer width="100%">
             <BarChart
                 data={distros}
-                barSize={25}
                 accessibilityLayer={false}
                 style={CHART_STYLES}
             >
@@ -91,15 +91,21 @@ const Chart = memo(function Chart({
                     interval="preserveStartEnd"
                     tick={<Tick />}
                 />
-                {bars.map(({ dataKey, account, token }) => (
-                    <Bar
-                        key={`${token}-${account}`}
-                        dataKey={dataKey}
-                        stackId={token}
-                        isAnimationActive={false}
-                        fill={getColorFromAddress(account as Address)}
-                        onClick={handleOnBarClick}
-                    />
+                {bars.map(({ dataKey, account, tokenAddress }) => (
+                    <BarStack
+                        key={`${tokenAddress}-${account}`}
+                        stackId={tokenAddress}
+                        radius={BAR_RADIUS}
+                    >
+                        <Bar
+                            dataKey={dataKey}
+                            fill={getColorFromAddress(
+                                account as Address,
+                                resolvedTheme as Theme,
+                            )}
+                            onClick={handleOnBarClick}
+                        />
+                    </BarStack>
                 ))}
             </BarChart>
         </ResponsiveContainer>

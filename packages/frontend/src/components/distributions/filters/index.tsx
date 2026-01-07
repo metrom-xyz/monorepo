@@ -1,16 +1,15 @@
 import {
     Button,
-    Card,
+    Chip,
     DateTimePicker,
     ErrorText,
     Popover,
     TextInput,
-    Typography,
 } from "@metrom-xyz/ui";
 import { formatDateTime } from "@/src/utils/format";
 import { useTranslations } from "next-intl";
 import { useEffect, useRef, useState } from "react";
-import type { Dayjs } from "dayjs";
+import type { Dayjs, ManipulateType } from "dayjs";
 import dayjs from "dayjs";
 import { useClickAway } from "react-use";
 import { useDistributions } from "@/src/hooks/useDistributions";
@@ -18,6 +17,10 @@ import type { ProcessedDistribution } from "@/src/types/distributions";
 import type { Hex } from "viem";
 import type { SupportedChain } from "@metrom-xyz/contracts";
 import type { ChainType } from "@metrom-xyz/sdk";
+import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
+import { CalendarIcon } from "@/src/assets/calendar-icon";
+import { getClosestAvailableTime } from "@/src/utils/date";
+import type { TranslationsKeys } from "@/src/types/utils";
 
 import styles from "./styles.module.css";
 
@@ -28,6 +31,30 @@ interface FiltersProps {
     onFetched: (distributions: ProcessedDistribution[]) => void;
     onLoading: (loading: boolean) => void;
 }
+
+interface DurationPreset {
+    label: TranslationsKeys<"campaignDistributions.filters">;
+    unit: ManipulateType;
+    value: number;
+}
+
+const DURATION_PRESETS: DurationPreset[] = [
+    {
+        label: "past24h",
+        unit: "hours",
+        value: 24,
+    },
+    {
+        label: "past48h",
+        unit: "hours",
+        value: 48,
+    },
+    {
+        label: "lastWeekDistributions",
+        unit: "days",
+        value: 7,
+    },
+];
 
 export function Filters({
     campaignId,
@@ -40,15 +67,12 @@ export function Filters({
 
     const [from, setFrom] = useState<Dayjs | undefined>();
     const [to, setTo] = useState<Dayjs | undefined>();
+    const [activePreset, setActivePreset] = useState<string | undefined>();
     const [error, setError] = useState("");
     const [fromPopover, setFromPopover] = useState(false);
     const [toPopover, setToPopover] = useState(false);
-    const [fromAnchor, setFromAnchor] = useState<
-        HTMLDivElement | SVGElement | null
-    >(null);
-    const [toAnchor, setToAnchor] = useState<
-        HTMLDivElement | SVGElement | null
-    >(null);
+    const [fromAnchor, setFromAnchor] = useState<HTMLDivElement | null>(null);
+    const [toAnchor, setToAnchor] = useState<HTMLDivElement | null>(null);
 
     const fromRef = useRef<HTMLDivElement>(null);
     const toRef = useRef<HTMLDivElement>(null);
@@ -88,21 +112,38 @@ export function Filters({
         };
     }
 
+    function getDurationPresetHandler({ label, unit, value }: DurationPreset) {
+        return () => {
+            const now = dayjs();
+
+            setFrom(getClosestAvailableTime(now.subtract(value, unit)));
+            setTo(getClosestAvailableTime(now));
+            setActivePreset(label);
+        };
+    }
+
+    function clearDurationPreset() {
+        setActivePreset(undefined);
+        setFrom(undefined);
+        setTo(undefined);
+    }
+
     return (
         <div className={styles.root}>
-            <Typography size="lg" weight="medium" uppercase>
-                {t("title")}
-            </Typography>
-            <Card className={styles.card}>
+            <div className={styles.inputs}>
                 <TextInput
+                    size="lg"
                     label={t("from")}
                     ref={setFromAnchor}
                     value={formatDateTime(from)}
                     onClick={getPopoverHandler("from", true)}
                     error={!!error}
                     readOnly
+                    icon={CalendarIcon}
+                    className={styles.input}
                 />
                 <TextInput
+                    size="lg"
                     label={t("to")}
                     disabled={!from}
                     ref={setToAnchor}
@@ -110,12 +151,17 @@ export function Filters({
                     onClick={getPopoverHandler("to", true)}
                     error={!!error}
                     readOnly
+                    icon={CalendarIcon}
+                    className={styles.input}
                 />
                 <Popover
                     ref={fromRef}
                     anchor={fromAnchor}
                     open={fromPopover}
                     onOpenChange={setFromPopover}
+                    placement="bottom-start"
+                    variant="secondary"
+                    margin={4}
                     className={styles.popover}
                 >
                     <DateTimePicker
@@ -130,6 +176,9 @@ export function Filters({
                     anchor={toAnchor}
                     open={toPopover}
                     onOpenChange={setToPopover}
+                    placement="bottom-start"
+                    variant="secondary"
+                    margin={4}
                     className={styles.popover}
                 >
                     <DateTimePicker
@@ -141,9 +190,12 @@ export function Filters({
                 </Popover>
                 <Button
                     size="sm"
+                    icon={ArrowRightIcon}
+                    iconPlacement="right"
                     disabled={!from || !to || !!error}
                     loading={loading}
                     onClick={fetchDistributions}
+                    className={{ root: styles.searchButton }}
                 >
                     {loading
                         ? t("loading", {
@@ -155,7 +207,24 @@ export function Filters({
                 <ErrorText level="error" size="xs" weight="medium">
                     {error}
                 </ErrorText>
-            </Card>
+            </div>
+            <div className={styles.chips}>
+                {DURATION_PRESETS.map((preset) => (
+                    <Chip
+                        key={preset.label}
+                        variant="secondary"
+                        onClick={getDurationPresetHandler(preset)}
+                        onClose={
+                            preset.label === activePreset
+                                ? clearDurationPreset
+                                : undefined
+                        }
+                        active={preset.label === activePreset}
+                    >
+                        {t(preset.label)}
+                    </Chip>
+                ))}
+            </div>
         </div>
     );
 }

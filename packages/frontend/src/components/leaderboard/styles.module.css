@@ -5,7 +5,27 @@
 }
 
 .titleContainer {
-    @apply flex flex-col sm:flex-row gap-1;
+    @apply flex gap-1 items-center;
+}
+
+.titleContainer.spaced {
+    @apply justify-between;
+}
+
+.leftTitleContent {
+    @apply flex flex-col sm:flex-row gap-1 items-center;
+}
+
+.distributionsLink {
+    @apply flex items-center gap-1 justify-self-end;
+}
+
+.distributionsLink > svg {
+    @apply size-5;
+}
+
+.distributionsLink > svg > path {
+    @apply stroke-2;
 }
 
 .subtitleContainer {

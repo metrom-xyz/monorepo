@@ -81,6 +81,7 @@ export function CampaignDetails({
                         chainId={campaign?.chainId}
                         chainType={campaign?.chainType}
                         restrictions={campaign?.restrictions}
+                        distributablesType={campaign?.distributables.type}
                         leaderboard={leaderboard}
                         loading={loadingLeaderboard}
                     />
