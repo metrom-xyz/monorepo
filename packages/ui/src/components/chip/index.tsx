@@ -28,12 +28,13 @@ export const Chip = ({
     ...rest
 }: ChipProps) => {
     function handleOnClose(event: React.MouseEvent<SVGSVGElement>) {
-        if (!onClose || onClick) return;
+        if (!onClose) return;
+        event.stopPropagation();
         onClose(event);
     }
 
     function handleOnClick(event: React.MouseEvent<HTMLDivElement>) {
-        if (!onClick || onClose) return;
+        if (!onClick) return;
         onClick(event);
     }
 

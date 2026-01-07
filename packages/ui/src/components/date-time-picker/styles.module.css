@@ -5,7 +5,7 @@
 }
 
 .divider {
-    @apply w-[1px] border stroke-divider;
+    @apply w-[1px] border border-gray-200 dark:border-neutral-700;
 }
 
 .timeWrapper {
