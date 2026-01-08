@@ -58,6 +58,7 @@ export enum SupportedProductionEvmChain {
     Hemi = SupportedChainEvm.Hemi,
     Plasma = SupportedChainEvm.Plasma,
     Saga = SupportedChainEvm.Saga,
+    Bsc = SupportedChainEvm.Bsc,
     // This is required for the Turtle integration
     Mainnet = mainnet.id,
     // These are required for Turtle campaigns
