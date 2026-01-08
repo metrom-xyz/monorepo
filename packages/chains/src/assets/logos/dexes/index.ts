@@ -5,6 +5,7 @@ export * from "./carbon";
 export * from "./curve";
 export * from "./fibonacci";
 export * from "./honeypop";
+export * from "./hyperion";
 export * from "./hydrex";
 export * from "./izumi";
 export * from "./lithos";

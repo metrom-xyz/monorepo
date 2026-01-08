@@ -3,11 +3,17 @@ import {
     ChainType,
     PartnerCampaignType,
     SupportedAaveV3,
+    SupportedDex,
     TargetType,
 } from "@metrom-xyz/sdk";
-import { AaveDarkLogo, AaveLightLogo, AptosLogo } from "../assets";
+import {
+    AaveDarkLogo,
+    AaveLightLogo,
+    AptosLogo,
+    HyperionLogo,
+} from "../assets";
 import { ChainData } from "../types/chains";
-import { ProtocolType } from "../types/protocol";
+import { DepositUrlType, ProtocolType } from "../types/protocol";
 import { ADDRESS, SupportedChain } from "@metrom-xyz/aptos-contracts";
 
 export const aptosDevelopmentData: ChainData = {
@@ -95,6 +101,11 @@ export const aptosDevelopmentProductionData: ChainData = {
             type: BaseCampaignType.AaveV3,
         },
         {
+            active: true,
+            partner: false,
+            type: BaseCampaignType.AmmPoolLiquidity,
+        },
+        {
             active: false,
             partner: false,
             type: BaseCampaignType.HoldFungibleAsset,
@@ -106,6 +117,18 @@ export const aptosDevelopmentProductionData: ChainData = {
         },
     ],
     protocols: [
+        {
+            active: true,
+            type: ProtocolType.Dex,
+            slug: SupportedDex.Hyperion,
+            logo: HyperionLogo,
+            name: "Hyperion",
+            supportsFetchAllPools: true,
+            depositUrl: {
+                type: DepositUrlType.PathPoolAddress,
+                template: "https://hyperion.xyz/pool/{pool}",
+            },
+        },
         {
             active: true,
             type: ProtocolType.AaveV3,
@@ -163,6 +186,11 @@ export const aptosProductionData: ChainData = {
             partner: true,
             type: PartnerCampaignType.AaveV3BridgeAndSupply,
         },
+        {
+            active: true,
+            partner: false,
+            type: BaseCampaignType.AmmPoolLiquidity,
+        },
     ],
     protocols: [
         {
@@ -186,6 +214,18 @@ export const aptosProductionData: ChainData = {
                 [TargetType.AaveV3NetSupply]: "https://aptos.aave.com/",
                 [TargetType.AaveV3BridgeAndSupply]:
                     "https://stargate.finance/bridge?dstChain=aptos&dstToken={collateral}",
+            },
+        },
+        {
+            active: true,
+            type: ProtocolType.Dex,
+            slug: SupportedDex.Hyperion,
+            logo: HyperionLogo,
+            name: "Hyperion",
+            supportsFetchAllPools: true,
+            depositUrl: {
+                type: DepositUrlType.PathPoolAddress,
+                template: "https://hyperion.xyz/pool/{pool}",
             },
         },
     ],
