@@ -1,15 +1,7 @@
 @reference "../../../app.css";
 
 .root {
-    @apply flex p-4 gap-4 rounded-lg;
-}
-
-.header {
-    @apply grid grid-cols-[0.2fr_0.2fr_1fr_0.6fr];
-}
-
-.tokenColumn {
-    @apply w-full min-w-full flex flex-col gap-4;
+    @apply flex py-3 px-4 gap-4 border-t stroke-divider;
 }
 
 .title {
@@ -24,12 +16,8 @@
     @apply p-0 bg-transparent;
 }
 
-.accounts {
-    @apply flex flex-col gap-2;
-}
-
 .accountRow {
-    @apply w-full grid grid-cols-[0.2fr_0.2fr_1fr_0.6fr];
+    @apply w-full grid items-center grid-cols-[0.15fr_0.2fr_1.2fr_0.7fr_0.3fr];
 }
 
 .rank {
@@ -45,7 +33,7 @@
 }
 
 .amount {
-    @apply flex items-baseline gap-1;
+    @apply flex flex-col items-end gap-1 cursor-pointer;
 }
 
 .amount.loading {
@@ -68,7 +56,56 @@
     @apply w-4 h-4 rounded-sm;
 }
 
-.header > :last-child,
+.accountRow > :nth-child(4) {
+    @apply justify-self-end;
+}
+
 .accountRow > :last-child {
     @apply justify-self-end;
+}
+
+.distroPopover {
+    @apply flex flex-col gap-1;
+}
+
+.popoverHeader {
+    @apply flex justify-between gap-7 items-center px-2;
+}
+
+.popoverTokenRows {
+    @apply flex flex-col gap-1;
+}
+
+.tokenRow {
+    @apply w-full flex items-center justify-between gap-10 bg-gray-150 dark:bg-neutral-900 rounded-sm px-2 py-1;
+}
+
+.totalEearnedTokenRow {
+    @apply w-full grid items-center grid-cols-2 bg-gray-150 dark:bg-neutral-900 rounded-sm px-2 py-1;
+}
+
+.tokenRow > :last-child,
+.totalEearnedTokenRow > :last-child {
+    @apply justify-self-end;
+}
+
+.tokenRow > div,
+.totalEearnedTokenRow > div {
+    @apply flex items-center gap-2;
+}
+
+.amountChangeBox {
+    @apply flex items-center gap-1 rounded-sm py-0.5 px-1;
+}
+
+.amountChangeBox.negative {
+    @apply bg-error/[12%];
+}
+
+.amountChangeBox.positive {
+    @apply bg-brand-green-dark/[12%] dark:bg-brand-green/[12%];
+}
+
+.trendIcon {
+    @apply size-5;
 }

@@ -1,20 +1,47 @@
 "use client";
 
-import { Card, Typography } from "@metrom-xyz/ui";
-import { useCallback, useMemo, useState } from "react";
-import type { Hex } from "viem";
-import { List, useListRef } from "react-window";
-import { BreakdownRow, BreakdownRowSkeleton } from "./breakdown-row";
+import {
+    Card,
+    ErrorText,
+    InfoTooltip,
+    Tab,
+    Tabs,
+    TextInput,
+    Typography,
+} from "@metrom-xyz/ui";
+import {
+    useCallback,
+    useEffect,
+    useMemo,
+    useRef,
+    useState,
+    type ChangeEvent,
+} from "react";
+import { type Hex } from "viem";
 import { useTranslations } from "next-intl";
 import type { SupportedChain } from "@metrom-xyz/contracts";
 import { useCampaign } from "@/src/hooks/useCampaign";
 import { Header, SkeletonHeader } from "../campaign-details/header";
 import { Filters } from "./filters";
 import classNames from "classnames";
-import type { ProcessedDistribution, Weight } from "@/src/types/distributions";
+import type {
+    DistributedErc20Token,
+    ProcessedDistribution,
+    UsdAccountWeights,
+    Weight,
+} from "@/src/types/distributions";
 import { Chart, type BarPayload } from "./chart";
-import { type ChainType } from "@metrom-xyz/sdk";
+import {
+    type ChainType,
+    type UsdPricedErc20TokenAmount,
+} from "@metrom-xyz/sdk";
 import { EmptyIcon } from "@/src/assets/empty-icon";
+import { formatDateTime } from "@/src/utils/format";
+import { BreakdownRow, BreakdownRowSkeleton } from "./breakdown-row";
+import { List } from "react-window";
+import { SearchIcon } from "@/src/assets/search-icon";
+import dayjs from "dayjs";
+import { BoldText } from "../bold-text";
 
 import styles from "./styles.module.css";
 
@@ -33,8 +60,16 @@ export interface StackedBar {
     weight: Weight;
 }
 
-const ACCOUNT_ROW_SIZE = 28;
-const ACCOUNT_ROW_PADDINGS = 152;
+export interface ActiveDistributionWeights {
+    account: string;
+    rank: number;
+    tokens: Record<string, DistributedErc20Token>;
+    usdSummary: UsdAccountWeights;
+    tokensSummary: Record<string, UsdPricedErc20TokenAmount>;
+    weights: Record<string, Weight>;
+}
+
+const TAB_WIDTH = 172;
 
 export function Distributions({
     chain,
@@ -44,10 +79,11 @@ export function Distributions({
     const t = useTranslations("campaignDistributions");
 
     const [loading, setLoading] = useState(false);
-    const [active, setActiveDistribution] = useState<number>();
+    const [activeIndex, setActiveIndex] = useState<number>();
     const [distros, setDistros] = useState<ProcessedDistribution[]>([]);
+    const [addressFilter, setAddressFilter] = useState<string>("");
 
-    const breakdownListRef = useListRef(null);
+    const timestampTabsRef = useRef<HTMLDivElement | null>(null);
 
     const { campaign, loading: loadingCampaign } = useCampaign({
         chainId: chain,
@@ -55,20 +91,33 @@ export function Distributions({
         id: campaignId,
     });
 
+    useEffect(() => {
+        if (distros.length === 0) return;
+        setActiveIndex(0);
+    }, [distros]);
+
+    useEffect(() => {
+        if (activeIndex === undefined || !timestampTabsRef.current) return;
+
+        const scrollPosition = activeIndex * TAB_WIDTH;
+        timestampTabsRef.current.scrollTo({
+            left: scrollPosition,
+            behavior: "smooth",
+        });
+    }, [activeIndex, timestampTabsRef]);
+
     const bars = useMemo(() => {
         const existing: Record<string, boolean> = {};
         const bars: StackedBar[] = [];
 
         for (const dist of distros) {
-            for (const [tokenAddress, accounts] of Object.entries(
-                dist.weights,
-            )) {
-                for (const [account, weight] of Object.entries(accounts)) {
-                    const key = `${tokenAddress}.${account}`;
+            for (const [account, weights] of Object.entries(dist.weights)) {
+                for (const [tokenAddress, weight] of Object.entries(weights)) {
+                    const key = `${account}.${tokenAddress}`;
                     if (existing[key]) continue;
 
                     bars.push({
-                        dataKey: `weights.${tokenAddress}.${account}.percentage.formatted`,
+                        dataKey: `weights.${account}.${tokenAddress}.percentage.formatted`,
                         account,
                         tokenAddress,
                         weight,
@@ -85,38 +134,84 @@ export function Distributions({
 
     const handleBarOnClick = useCallback(
         (value: BarPayload) => {
-            if (!breakdownListRef.current) return;
+            if (!timestampTabsRef.current) return;
 
             const index = distros.findIndex(
                 ({ timestamp }) => timestamp === value.timestamp,
             );
 
-            setActiveDistribution(index < 0 ? undefined : index);
-            breakdownListRef.current.scrollToRow({
-                index,
-                align: "start",
-                behavior: "smooth",
-            });
-        },
-        [distros, breakdownListRef],
-    );
-
-    // Get the size of the variable size list item based on the number of
-    // accounts in that particular distribution.
-    const getAccountRowSize = useCallback(
-        (index: number) => {
-            if (distros.length === 0) return 0;
-            let maxAccounts = 0;
-
-            for (const [, weights] of Object.entries(distros[index].weights)) {
-                if (Object.keys(weights).length > maxAccounts)
-                    maxAccounts = Object.keys(weights).length;
-            }
-
-            return maxAccounts * ACCOUNT_ROW_SIZE + ACCOUNT_ROW_PADDINGS;
+            if (index < 0) return;
+            setActiveIndex(index);
         },
         [distros],
     );
+
+    const activeDistroWeights: ActiveDistributionWeights[] = useMemo(() => {
+        if (distros.length === 0 || activeIndex === undefined) return [];
+
+        return Object.entries(distros[activeIndex].weights)
+            .map(([account, weights]) => {
+                return {
+                    account,
+                    tokens: distros[activeIndex].tokens,
+                    usdSummary: distros[activeIndex].usdSummary[account],
+                    tokensSummary: distros[activeIndex].tokensSummary[account],
+                    weights,
+                };
+            })
+            .sort((a, b) => b.usdSummary.percentage - a.usdSummary.percentage)
+            .map((distroWeights, index) => ({
+                ...distroWeights,
+                rank: index,
+            }))
+            .filter(({ account }) => {
+                if (addressFilter)
+                    return (
+                        account === addressFilter ||
+                        account.includes(addressFilter)
+                    );
+                return true;
+            });
+    }, [activeIndex, distros, addressFilter]);
+
+    const notFirstDistro = useMemo(() => {
+        if (!campaign?.from || activeIndex === undefined || distros.length < 2)
+            return false;
+
+        const distroTimeHours = dayjs
+            .unix(distros[1].timestamp)
+            .diff(dayjs.unix(distros[0].timestamp), "hours");
+
+        return (
+            dayjs
+                .unix(distros[activeIndex].timestamp)
+                .diff(dayjs.unix(campaign.from), "hours") > distroTimeHours &&
+            activeIndex === 0
+        );
+    }, [campaign?.from, activeIndex, distros]);
+
+    // there are cases where distributions are skipped
+    const aggregatedDistros = useMemo(() => {
+        if (activeIndex === undefined || distros.length < 2) return 0;
+        if (!distros[activeIndex - 1]) return 0;
+
+        const distroTimeHours = dayjs
+            .unix(distros[1].timestamp)
+            .diff(dayjs.unix(distros[0].timestamp), "hours");
+
+        const aggregatedDistros =
+            dayjs
+                .unix(distros[activeIndex].timestamp)
+                .diff(dayjs.unix(distros[activeIndex - 1].timestamp), "hours") /
+            distroTimeHours;
+
+        return Math.floor(aggregatedDistros);
+    }, [activeIndex, distros]);
+
+    function handleAddressFilterOnChange(event: ChangeEvent<HTMLInputElement>) {
+        const address = event.target.value;
+        setAddressFilter(address);
+    }
 
     return (
         <div className={styles.root}>
@@ -137,9 +232,20 @@ export function Distributions({
             />
             <div className={styles.dataWrapper}>
                 <div className={styles.section}>
-                    <Typography weight="medium" uppercase>
-                        {t("distributionsOverview")}
-                    </Typography>
+                    <div className={styles.sectionHeader}>
+                        <Typography weight="medium" uppercase>
+                            {t("distributionsOverview")}
+                        </Typography>
+                        <InfoTooltip>
+                            <Typography size="sm" weight="medium">
+                                {t.rich("distributionsOverviewInfoText", {
+                                    bold: (chunks) => (
+                                        <BoldText>{chunks}</BoldText>
+                                    ),
+                                })}
+                            </Typography>
+                        </InfoTooltip>
+                    </div>
                     <Card
                         className={classNames(styles.chartWrapper, {
                             [styles.loading]: loading,
@@ -170,39 +276,156 @@ export function Distributions({
                     </Card>
                 </div>
                 <div className={styles.section}>
-                    <Typography size="lg" weight="medium" uppercase>
-                        {t("distributionsBreakdown")}
-                    </Typography>
-                    <Card
-                        className={classNames(styles.breakdownListWrapper, {
-                            [styles.loading]: loading,
-                        })}
-                    >
-                        {loading ? (
-                            <BreakdownRowSkeleton />
-                        ) : distros.length > 0 ? (
-                            <List
-                                listRef={breakdownListRef}
-                                rowCount={distros.length}
-                                rowHeight={getAccountRowSize}
-                                rowProps={{
-                                    distros,
-                                    active,
-                                    chainId: chain,
-                                    campaignFrom: campaign?.from,
-                                }}
-                                rowComponent={BreakdownRow}
-                                className={styles.breakdownsList}
-                            />
-                        ) : (
-                            <div className={styles.empty}>
-                                <EmptyIcon />
-                                <Typography uppercase weight="medium" size="sm">
-                                    {t("empty")}
+                    <div className={styles.distributionsBreakdownHeader}>
+                        <div className={styles.sectionHeader}>
+                            <Typography size="lg" weight="medium" uppercase>
+                                {t("distributionsBreakdown")}
+                            </Typography>
+                            <InfoTooltip>
+                                <Typography size="sm" weight="medium">
+                                    {t.rich("distributionsBreakdownInfoText", {
+                                        bold: (chunks) => (
+                                            <BoldText>{chunks}</BoldText>
+                                        ),
+                                        green: (chunks) => (
+                                            <span className={styles.greenText}>
+                                                {chunks}
+                                            </span>
+                                        ),
+                                        red: (chunks) => (
+                                            <span className={styles.redText}>
+                                                {chunks}
+                                            </span>
+                                        ),
+                                    })}
+                                </Typography>
+                            </InfoTooltip>
+                        </div>
+                        <TextInput
+                            icon={SearchIcon}
+                            placeholder={t("searchAddress")}
+                            value={addressFilter}
+                            onChange={handleAddressFilterOnChange}
+                            className={styles.searchAddressInput}
+                        />
+                    </div>
+                    <div>
+                        <div
+                            ref={timestampTabsRef}
+                            className={styles.timestampBars}
+                        >
+                            <Tabs value={activeIndex} onChange={setActiveIndex}>
+                                {distros.map(({ timestamp }, index) => (
+                                    <Tab
+                                        key={timestamp}
+                                        value={index}
+                                        className={styles.timestampBar}
+                                    >
+                                        <Typography
+                                            size="sm"
+                                            weight="medium"
+                                            uppercase
+                                        >
+                                            {formatDateTime(timestamp)}
+                                        </Typography>
+                                    </Tab>
+                                ))}
+                            </Tabs>
+                        </div>
+                        <Card
+                            className={classNames(styles.breakdownListWrapper, {
+                                [styles.loading]: loading,
+                                [styles.noBorderRadius]: distros.length > 0,
+                            })}
+                        >
+                            {notFirstDistro && (
+                                <div className={styles.warningMessage}>
+                                    <ErrorText size="xs" level="warning">
+                                        {t(
+                                            "warningMessages.notFirstDistribution",
+                                        )}
+                                    </ErrorText>
+                                </div>
+                            )}
+                            {aggregatedDistros > 1 && (
+                                <div className={styles.warningMessage}>
+                                    <ErrorText size="xs" level="warning">
+                                        {t(
+                                            "warningMessages.notFirstDistribution",
+                                            { amount: aggregatedDistros },
+                                        )}
+                                    </ErrorText>
+                                </div>
+                            )}
+                            <div className={styles.breakdownListheader}>
+                                <Typography
+                                    weight="medium"
+                                    variant="tertiary"
+                                    size="sm"
+                                    uppercase
+                                >
+                                    {t("rank")}
+                                </Typography>
+                                <Typography
+                                    weight="medium"
+                                    variant="tertiary"
+                                    size="sm"
+                                    uppercase
+                                >
+                                    {t("weight")}
+                                </Typography>
+                                <Typography
+                                    weight="medium"
+                                    variant="tertiary"
+                                    size="sm"
+                                    uppercase
+                                >
+                                    {t("account")}
+                                </Typography>
+                                <Typography
+                                    weight="medium"
+                                    variant="tertiary"
+                                    size="sm"
+                                    uppercase
+                                >
+                                    {t("inThisDistro")}
+                                </Typography>
+                                <Typography
+                                    weight="medium"
+                                    variant="tertiary"
+                                    size="sm"
+                                    uppercase
+                                >
+                                    {t("total")}
                                 </Typography>
                             </div>
-                        )}
-                    </Card>
+                            {loading ? (
+                                <BreakdownRowSkeleton />
+                            ) : Object.keys(activeDistroWeights).length > 0 ? (
+                                <List
+                                    rowCount={activeDistroWeights.length}
+                                    rowHeight={70}
+                                    rowProps={{
+                                        activeDistroWeights,
+                                        chainId: chain,
+                                    }}
+                                    rowComponent={BreakdownRow}
+                                    className={styles.breakdownList}
+                                />
+                            ) : (
+                                <div className={styles.empty}>
+                                    <EmptyIcon />
+                                    <Typography
+                                        uppercase
+                                        weight="medium"
+                                        size="sm"
+                                    >
+                                        {t("empty")}
+                                    </Typography>
+                                </div>
+                            )}
+                        </Card>
+                    </div>
                 </div>
             </div>
         </div>

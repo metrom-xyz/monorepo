@@ -195,7 +195,7 @@ export function Filters({
                     disabled={!from || !to || !!error}
                     loading={loading}
                     onClick={fetchDistributions}
-                    className={{ root: styles.searchButton }}
+                    className={{ root: styles.button }}
                 >
                     {loading
                         ? t("loading", {
@@ -204,6 +204,16 @@ export function Filters({
                           })
                         : t("search")}
                 </Button>
+                {(from || to) && (
+                    <Button
+                        size="sm"
+                        disabled={!from || !to || !!error || loading}
+                        onClick={clearDurationPreset}
+                        className={{ root: styles.button }}
+                    >
+                        {t("clear")}
+                    </Button>
+                )}
                 <ErrorText level="error" size="xs" weight="medium">
                     {error}
                 </ErrorText>

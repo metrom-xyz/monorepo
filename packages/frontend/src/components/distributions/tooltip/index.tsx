@@ -2,6 +2,7 @@ import {
     formatAmount,
     formatDateTime,
     formatPercentage,
+    formatUsdAmount,
 } from "@/src/utils/format";
 import { useTranslations } from "next-intl";
 import { Theme, Typography } from "@metrom-xyz/ui";
@@ -38,8 +39,8 @@ export function TooltipContent({ chain, active, payload }: TooltipProps) {
 
     const { timestamp, weights, tokens } = payload[0].payload;
 
-    const tokenAddress = payload[0].name.split(".")[1] as Address;
-    const account = payload[0].name.split(".")[2] as Address;
+    const account = payload[0].name.split(".")[1] as Address;
+    const tokenAddress = payload[0].name.split(".")[2] as Address;
     const token = tokens[tokenAddress];
 
     return (
@@ -112,11 +113,19 @@ export function TooltipContent({ chain, active, payload }: TooltipProps) {
                 >
                     {t("distributed")}
                 </Typography>
-                <Typography size="sm" weight="medium">
-                    {formatAmount({
-                        amount: weights[tokenAddress][account].amount.formatted,
-                    })}
-                </Typography>
+                <div className={styles.amount}>
+                    <Typography size="sm" weight="medium">
+                        {formatAmount({
+                            amount: weights[account][tokenAddress].amount
+                                .formatted,
+                        })}
+                    </Typography>
+                    <Typography size="sm" weight="medium" variant="tertiary">
+                        {formatUsdAmount({
+                            amount: weights[account][tokenAddress].usdAmount,
+                        })}
+                    </Typography>
+                </div>
             </div>
             <div className={styles.fieldWrapper}>
                 <Typography
@@ -130,7 +139,7 @@ export function TooltipContent({ chain, active, payload }: TooltipProps) {
                 <Typography size="sm" weight="medium">
                     {formatPercentage({
                         percentage:
-                            weights[tokenAddress][account].percentage.formatted,
+                            weights[account][tokenAddress].percentage.formatted,
                     })}
                 </Typography>
             </div>

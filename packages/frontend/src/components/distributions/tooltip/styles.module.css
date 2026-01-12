@@ -29,3 +29,7 @@
 .legendSquare {
     @apply w-4 h-4 rounded-sm;
 }
+
+.amount {
+    @apply flex items-center gap-1;
+}

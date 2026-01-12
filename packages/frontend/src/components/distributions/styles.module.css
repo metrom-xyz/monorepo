@@ -20,20 +20,60 @@
     @apply flex flex-col gap-4;
 }
 
+.sectionHeader {
+    @apply flex items-center gap-2;
+}
+
 .chartsWrapper {
     @apply w-full flex flex-col gap-4;
 }
 
-.breakdownListWrapper {
-    @apply w-full h-[37.5rem] p-0 overflow-y-hidden;
+.distributionsBreakdownHeader {
+    @apply flex justify-between;
 }
 
-.breakdownsList {
+.searchAddressInput {
+    @apply sm:w-96;
+}
+
+.timestampBars {
+    @apply w-full overflow-x-auto;
+}
+
+.timestampBar {
+    @apply min-w-fit;
+}
+
+.breakdownListWrapper {
+    @apply flex flex-col w-full h-[37.5rem] p-0 overflow-y-hidden;
+}
+
+.breakdownListWrapper.noBorderRadius {
+    @apply rounded-t-none;
+}
+
+.warningMessage {
+    @apply px-4 py-2 bg-warning/[12%];
+}
+
+.breakdownListheader {
+    @apply grid grid-cols-[0.15fr_0.2fr_1.2fr_0.7fr_0.3fr] p-4;
+}
+
+.breakdownListheader > :nth-child(4) {
+    @apply justify-self-end;
+}
+
+.breakdownListheader > :last-child {
+    @apply justify-self-end;
+}
+
+.breakdownList {
     @apply scroll-smooth;
 }
 
 .dataWrapper {
-    @apply w-full h-full flex flex-col gap-8;
+    @apply w-full h-full flex flex-col gap-12;
 }
 
 .chartWrapper {
@@ -66,4 +106,12 @@
         transition-colors
         duration-200
         ease-in-out;
+}
+
+.redText {
+    @apply text-error bg-error/[12%] rounded-md px-1 font-bold;
+}
+
+.greenText {
+    @apply text-brand-green-dark dark:text-brand-green bg-brand-green-dark/[12%] dark:bg-brand-green/[12%] rounded-md px-1 font-bold;
 }
