@@ -663,6 +663,7 @@
             "from": "From",
             "to": "To",
             "search": "Search",
+            "clear": "Clear",
             "loading": "Loading distributions ({completed}/{total})",
             "errors": {
                 "inconsistentRange": "Dates range not valid.",
@@ -673,7 +674,10 @@
             "lastWeekDistributions": "Last week distributions"
         },
         "distributionsOverview": "Distributions overview",
+        "distributionsOverviewInfoText": "This chart shows accounts earning rewards in the campaign and their distribution amounts. The <bold>weight</bold> represents each account's share of rewards in a given distribution. Hover over the chart for details.",
+        "distributionsBreakdownInfoText": "This list details earned rewards, showing amounts for the current distribution and cumulative totals through the selected distribution. Hover over USD amounts to see the token breakdown. Under <bold>in this distribution</bold>, hovering also reveals whether the account earned <green>more</green> or <red>less</red> compared to the previous distribution.",
         "distributionsBreakdown": "Distributions breakdown",
+        "searchAddress": "Search address",
         "warningMessages": {
             "notFirstDistribution": "This distribution includes all previous ones, as this is not the first one for the campaign.",
             "multiDistribution": "This distribution includes data from multiple distributions (~{amount})."
@@ -683,7 +687,13 @@
         "time": "Time",
         "rank": "Rank",
         "account": "Account",
+        "total": "Total",
         "distributed": "Distributed",
+        "inThisDistro": "In this distribution",
+        "earnedInThisDistro": "Earned in this distribution",
+        "reimbursedInThisDistro": "Reimbursed in this distribution",
+        "totalEarned": "Total earned",
+        "totalReimbursed": "Total reimbursed",
         "weight": "Weight",
         "empty": "No data"
     },
