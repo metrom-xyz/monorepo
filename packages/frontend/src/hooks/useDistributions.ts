@@ -4,7 +4,8 @@ import {
     ChainType,
     DistributablesType,
     SERVICE_URLS,
-    type Erc20Token,
+    type UsdPricedErc20Token,
+    type UsdPricedErc20TokenAmount,
 } from "@metrom-xyz/sdk";
 import { ENVIRONMENT } from "../commons/env";
 import { useCampaign } from "./useCampaign";
@@ -162,7 +163,7 @@ export function useDistributions({
     const processed = useMemo(() => {
         if (!distributions || !campaign) return [];
 
-        const tokensRegistry: Record<Address, Erc20Token> = {};
+        const tokensRegistry: Record<Address, UsdPricedErc20Token> = {};
         // TODO: for points campaigns?
         if (campaign.isDistributing(DistributablesType.Tokens)) {
             for (const { token } of campaign.distributables.list) {
@@ -196,8 +197,60 @@ export function useDistributions({
                 }
             }
 
+            // total USD values of each account, accrued up until the current distribution across all tokens
+            const totalUsdAmountByAccount: Record<string, number> = {};
+            // total tokens and USD amounts, accrued up until the current distribution
+            const totalTokensAmountByAccount: Record<
+                string,
+                Record<string, UsdPricedErc20TokenAmount>
+            > = {};
+
+            for (const [tokenAddress, accounts] of Object.entries(
+                overallDeltaMap,
+            )) {
+                const token = tokensRegistry[tokenAddress as Address];
+                if (!token) continue;
+
+                for (const [account, accrued] of Object.entries(accounts)) {
+                    const formattedAmount = Number(
+                        formatUnits(accrued, token.decimals),
+                    );
+                    const usdValue = formattedAmount * token.usdPrice;
+
+                    if (!totalUsdAmountByAccount[account])
+                        totalUsdAmountByAccount[account] = 0;
+
+                    totalUsdAmountByAccount[account] += usdValue;
+
+                    if (!totalTokensAmountByAccount[account])
+                        totalTokensAmountByAccount[account] = {};
+
+                    if (!totalTokensAmountByAccount[account][tokenAddress])
+                        totalTokensAmountByAccount[account][tokenAddress] = {
+                            amount: {
+                                formatted: 0,
+                                raw: 0n,
+                                usdValue: 0,
+                            },
+                            token,
+                        };
+
+                    totalTokensAmountByAccount[account][
+                        tokenAddress
+                    ].amount.formatted += formattedAmount;
+                    totalTokensAmountByAccount[account][
+                        tokenAddress
+                    ].amount.raw += accrued;
+                    totalTokensAmountByAccount[account][
+                        tokenAddress
+                    ].amount.usdValue += usdValue;
+                }
+            }
+
             deltas.push({
                 timestamp: dist.timestamp,
+                totalUsdAmountByAccount,
+                totalTokensAmountByAccount,
                 leaves: Object.entries(deltaMap).flatMap(
                     ([tokenAddress, accounts]) =>
                         Object.entries(accounts).map(
@@ -214,6 +267,7 @@ export function useDistributions({
         const processed = deltas.map((distro, index) => {
             const tokens: ProcessedDistribution["tokens"] = {};
             const weights: ProcessedDistribution["weights"] = {};
+            const usdSummary: ProcessedDistribution["usdSummary"] = {};
 
             const tokenTotals: Record<string, bigint> = {};
 
@@ -250,16 +304,15 @@ export function useDistributions({
                 const delta = BigInt(amount);
                 const total = tokenTotals[token];
                 const decimals = tokensRegistry[token].decimals;
+                const usdPrice = tokensRegistry[token].usdPrice;
 
                 const formattedAmount = Number(formatUnits(delta, decimals));
                 const rawPercentage =
                     total === 0n ? 0n : (delta * 1_000_000n) / total;
                 const formattedPercentage = Number(rawPercentage) / 10_000;
 
-                if (!weights[token]) weights[token] = {};
+                if (!weights[account]) weights[account] = {};
 
-                // Calculate the amount difference between the current and latest
-                // delta (for the same token and account).
                 const prevDelta = deltas[index - 1]
                     ? (deltas[index - 1].leaves.find(
                           (leaf) =>
@@ -273,8 +326,13 @@ export function useDistributions({
                     formatUnits(rawAmountChange, decimals),
                 );
 
-                weights[token][account] = {
+                const usdAmount = formattedAmount * usdPrice;
+                const usdAmountChange = formattedAmountChange * usdPrice;
+
+                weights[account][token] = {
+                    usdAmount,
                     amount: { raw: delta, formatted: formattedAmount },
+                    usdAmountChange,
                     amountChange: {
                         raw: rawAmountChange,
                         formatted: formattedAmountChange,
@@ -284,11 +342,31 @@ export function useDistributions({
                         formatted: formattedPercentage,
                     },
                 };
+
+                if (!usdSummary[account]) {
+                    usdSummary[account] = {
+                        totalAmount: 0,
+                        amount: 0,
+                        amountChange: 0,
+                        percentage: 0,
+                    };
+                }
+
+                usdSummary[account].amount += usdAmount;
+                usdSummary[account].amountChange += usdAmountChange;
+                usdSummary[account].percentage = formattedPercentage;
+            }
+
+            for (const account of Object.keys(usdSummary)) {
+                usdSummary[account].totalAmount =
+                    distro.totalUsdAmountByAccount[account] || 0;
             }
 
             return {
                 timestamp: distro.timestamp,
                 tokens,
+                usdSummary,
+                tokensSummary: distro.totalTokensAmountByAccount,
                 weights,
             };
         });

@@ -81,7 +81,7 @@ const Chart = memo(function Chart({
                     shared={false}
                     content={TooltipContentMemoized}
                 />
-                <YAxis hide />
+                <YAxis hide domain={[0, "dataMax"]} />
                 <XAxis
                     type="category"
                     dataKey="timestamp"
@@ -98,6 +98,7 @@ const Chart = memo(function Chart({
                         radius={BAR_RADIUS}
                     >
                         <Bar
+                            isAnimationActive={false}
                             dataKey={dataKey}
                             fill={getColorFromAddress(
                                 account as Address,
