@@ -408,6 +408,7 @@ export function Distributions({
                                     rowProps={{
                                         activeDistroWeights,
                                         chainId: chain,
+                                        chainType,
                                     }}
                                     rowComponent={BreakdownRow}
                                     className={styles.breakdownList}

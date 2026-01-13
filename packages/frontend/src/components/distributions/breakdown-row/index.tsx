@@ -6,11 +6,13 @@ import { useAccount } from "@/src/hooks/useAccount";
 import { AccountRow, AccountRowSkeleton } from "./account-row";
 import type { RowComponentProps } from "react-window";
 import type { ActiveDistributionWeights } from "..";
+import type { ChainType } from "@metrom-xyz/sdk";
 
 import styles from "./styles.module.css";
 
 interface BreakdownRowProps {
     chainId: number;
+    chainType: ChainType;
     activeDistroWeights: ActiveDistributionWeights[];
 }
 
@@ -18,6 +20,7 @@ export function BreakdownRow({
     style,
     index,
     chainId,
+    chainType,
     activeDistroWeights,
 }: RowComponentProps<BreakdownRowProps>) {
     const { address } = useAccount();
@@ -29,6 +32,7 @@ export function BreakdownRow({
             <AccountRow
                 rank={distro.rank}
                 chainId={chainId}
+                chainType={chainType}
                 account={distro.account as Address}
                 totalUsdAmount={distro.usdSummary.totalAmount}
                 usdAmount={distro.usdSummary.amount}

@@ -77,15 +77,19 @@
 }
 
 .tokenRow {
-    @apply w-full flex items-center justify-between gap-10 bg-gray-150 dark:bg-neutral-900 rounded-sm px-2 py-1;
+    @apply grid grid-cols-[minmax(0,0.7fr)_1fr_1fr] gap-4 bg-gray-150 dark:bg-neutral-900 rounded-sm px-2 py-1;
 }
 
 .totalEearnedTokenRow {
-    @apply w-full grid items-center grid-cols-2 bg-gray-150 dark:bg-neutral-900 rounded-sm px-2 py-1;
+    @apply w-full grid items-center grid-cols-2 gap-4 bg-gray-150 dark:bg-neutral-900 rounded-sm px-2 py-1;
 }
 
 .tokenRow > :last-child,
 .totalEearnedTokenRow > :last-child {
+    @apply justify-self-end;
+}
+
+.tokenRow > :nth-child(2) {
     @apply justify-self-end;
 }
 
@@ -108,4 +112,8 @@
 
 .trendIcon {
     @apply size-3;
+}
+
+.externalLinkIcon {
+    @apply h-4 w-4 transform -rotate-45 text-primary;
 }
